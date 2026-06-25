@@ -5,13 +5,38 @@
 
 #include "brave/components/ai_chat/core/browser/engine/oai_serialization_utils.h"
 
+#include <string>
+
 #include "brave/components/ai_chat/core/browser/engine/oai_message_utils.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace ai_chat {
+
+namespace {
+
+// Serializes a single tool call with the given `arguments_json` and returns the
+// resulting "arguments" string written to the message dict.
+std::string SerializeToolCallArguments(const std::string& arguments_json) {
+  OAIMessage message;
+  message.tool_calls.push_back(
+      mojom::ToolUseEvent::New("tool", "call_1", arguments_json, std::nullopt,
+                               std::nullopt, nullptr, false));
+
+  base::DictValue dict;
+  SerializeToolCallsOnMessageDict(message, dict);
+
+  const base::ListValue* tool_calls = dict.FindList("tool_calls");
+  EXPECT_TRUE(tool_calls);
+  EXPECT_EQ(tool_calls->size(), 1u);
+  const base::DictValue* function =
+      (*tool_calls)[0].GetDict().FindDict("function");
+  EXPECT_TRUE(function);
+  return *function->FindString("arguments");
+}
+
+}  // namespace
 
 TEST(OAISerializationUtilsTest, MemoryContentBlockToDict_StringValues) {
   auto block = mojom::MemoryContentBlock::New();
@@ -152,6 +177,31 @@ TEST(OAISerializationUtilsTest,
   const std::string* tool_call_id = dict.FindString("tool_call_id");
   ASSERT_TRUE(tool_call_id);
   EXPECT_EQ(*tool_call_id, "call_0");
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_EmptyArgumentsNormalizedToObject) {
+  // Some models emit an empty string for the arguments of a tool that takes no
+  // parameters. An empty string is not valid JSON, so it must be normalized to
+  // an empty object before being echoed back to the server.
+  EXPECT_EQ(SerializeToolCallArguments(""), "{}");
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_NonEmptyArgumentsUnchanged) {
+  // Non-empty arguments must be passed through verbatim.
+  EXPECT_EQ(SerializeToolCallArguments(R"({"query":"weather"})"),
+            R"({"query":"weather"})");
+}
+
+TEST(OAISerializationUtilsTest,
+     SerializeToolCallsOnMessageDict_EmptyIshJsonValuesUnchanged) {
+  // Only a truly empty string is normalized. Valid JSON values that merely look
+  // "empty" (null, an empty JSON string, an empty array, an empty object) are
+  // non-empty strings and must be passed through verbatim.
+  for (const char* args : {"null", R"("")", "[]", "{}"}) {
+    EXPECT_EQ(SerializeToolCallArguments(args), args) << "args=" << args;
+  }
 }
 
 }  // namespace ai_chat
