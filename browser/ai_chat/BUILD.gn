@@ -40,8 +40,8 @@ static_library("ai_chat") {
     "tools/history_search_tool.h",
     "web_mcp_injection/web_mcp_injection_rule.cc",
     "web_mcp_injection/web_mcp_injection_rule.h",
-    "web_mcp_injection/web_mcp_injection_tab_helper.cc",
-    "web_mcp_injection/web_mcp_injection_tab_helper.h",
+    "web_mcp_injection/web_mcp_injector.cc",
+    "web_mcp_injection/web_mcp_injector.h",
   ]
 
   if (enable_ai_chat_tab_management_tool) {

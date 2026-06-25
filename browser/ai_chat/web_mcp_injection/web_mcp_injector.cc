@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injection_tab_helper.h"
+#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
 
 #include <string>
 
@@ -69,26 +69,23 @@ std::string BuildRegisterToolScript(const WebMcpInjectionRule& rule) {
 }  // namespace
 
 // static
-void WebMcpInjectionTabHelper::MaybeCreateForWebContents(
+std::unique_ptr<WebMcpInjector> WebMcpInjector::MaybeCreate(
     content::WebContents* web_contents) {
   // kWebMCP's base::Feature gates the runtime feature; if it is force-disabled
-  // there is no point injecting. The script itself also guards against a
-  // missing navigator.modelContext, so this is a cheap early-out.
+  // there is no point injecting.
   if (!base::FeatureList::IsEnabled(blink::features::kWebMCP) ||
       GetWebMcpInjectionRules().empty()) {
-    return;
+    return nullptr;
   }
-  CreateForWebContents(web_contents);
+  return std::make_unique<WebMcpInjector>(web_contents);
 }
 
-WebMcpInjectionTabHelper::WebMcpInjectionTabHelper(
-    content::WebContents* web_contents)
-    : content::WebContentsObserver(web_contents),
-      content::WebContentsUserData<WebMcpInjectionTabHelper>(*web_contents) {}
+WebMcpInjector::WebMcpInjector(content::WebContents* web_contents)
+    : content::WebContentsObserver(web_contents) {}
 
-WebMcpInjectionTabHelper::~WebMcpInjectionTabHelper() = default;
+WebMcpInjector::~WebMcpInjector() = default;
 
-void WebMcpInjectionTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
+void WebMcpInjector::DocumentOnLoadCompletedInPrimaryMainFrame() {
   const GURL& url = web_contents()->GetLastCommittedURL();
   // Only inject into secure pages. WebMCP itself is restricted to secure
   // contexts, and tool scripts should never run over plaintext http.
@@ -104,12 +101,12 @@ void WebMcpInjectionTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   }
 }
 
-void WebMcpInjectionTabHelper::PrimaryPageChanged(content::Page& page) {
+void WebMcpInjector::PrimaryPageChanged(content::Page& page) {
   // Rebind the remote for the new page.
   script_injector_remote_.reset();
 }
 
-void WebMcpInjectionTabHelper::InjectScript(const std::string& script) {
+void WebMcpInjector::InjectScript(std::string_view script) {
   content::RenderFrameHost* rfh = web_contents()->GetPrimaryMainFrame();
   if (!rfh || !rfh->IsRenderFrameLive()) {
     return;
@@ -128,7 +125,5 @@ void WebMcpInjectionTabHelper::InjectScript(const std::string& script) {
       blink::mojom::UserActivationOption::kDoNotActivate,
       blink::mojom::PromiseResultOption::kDoNotWait, base::DoNothing());
 }
-
-WEB_CONTENTS_USER_DATA_KEY_IMPL(WebMcpInjectionTabHelper);
 
 }  // namespace ai_chat

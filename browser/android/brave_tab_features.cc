@@ -7,6 +7,7 @@
 
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
+#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
 #include "chrome/browser/android/tab_android.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/web_contents.h"
@@ -20,6 +21,9 @@ BraveTabFeatures::BraveTabFeatures(content::WebContents* web_contents,
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         TabAndroid::FromWebContents(web_contents)->GetAndroidId(),
         web_contents);
+    // Injects Brave-provided WebMCP tools into matching pages; see
+    // WebMcpInjector. Null when WebMCP is disabled or has no rules.
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(web_contents);
   }
 }
 

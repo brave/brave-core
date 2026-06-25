@@ -28,6 +28,7 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_utils.h"
 #include "brave/browser/ai_chat/tab_data_web_contents_observer.h"
+#include "brave/browser/ai_chat/web_mcp_injection/web_mcp_injector.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -60,6 +61,9 @@ void BraveTabFeatures::Init(TabInterface& tab, Profile* profile) {
   if (ai_chat::IsAllowedForContext(profile)) {
     tab_data_observer_ = std::make_unique<ai_chat::TabDataWebContentsObserver>(
         tab.GetHandle().raw_value(), tab.GetContents());
+    // Injects Brave-provided WebMCP tools into matching pages; see
+    // WebMcpInjector. Null when WebMCP is disabled or has no rules.
+    web_mcp_injector_ = ai_chat::WebMcpInjector::MaybeCreate(tab.GetContents());
   }
 #endif
 
