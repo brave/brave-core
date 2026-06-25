@@ -243,6 +243,7 @@ class BraveBrowserView : public BrowserView,
   void HideSplitView() override;
   void ReparentTopContainerForEndOfImmersive() override;
   bool ShouldDrawTabStrokes() const override;
+  void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
   bool IsBraveWebViewRoundedCornersEnabled();
