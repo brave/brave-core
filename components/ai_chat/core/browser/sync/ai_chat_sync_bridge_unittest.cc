@@ -22,11 +22,13 @@
 #include "base/test/task_environment.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync/base/deletion_origin.h"
 #include "components/sync/model/conflict_resolution.h"
 #include "components/sync/model/data_batch.h"
 #include "components/sync/model/metadata_batch.h"
@@ -76,6 +78,18 @@ ACTION(RecordLocalChangeMetadata) {
 auto HasServerVersion(int64_t version) {
   return Pointee(Property(&sync_pb::EntityMetadata::server_version, version));
 }
+
+// An AIChatDatabase that fails every write of a record's sync metadata.
+class MetadataWriteFailingAIChatDatabase : public AIChatDatabase {
+ public:
+  using AIChatDatabase::AIChatDatabase;
+
+  bool UpdateEntityMetadata(syncer::DataType data_type,
+                            const std::string& storage_key,
+                            const sync_pb::EntityMetadata& metadata) override {
+    return false;
+  }
+};
 
 // A database whose remote-apply and delete paths start failing after
 // |writes_before_failure| successful writes, to exercise the bridge's error
@@ -286,9 +300,12 @@ class AIChatSyncBridgeTest : public testing::Test {
                             base::Unretained(this)));
   }
 
-  void OnRemoteChangesApplied(std::vector<std::string> conversation_uuids) {
+  void OnRemoteChangesApplied(
+      std::vector<std::string> conversation_uuids,
+      std::vector<std::string> deleted_conversation_uuids) {
     ++remote_changes_applied_count_;
     last_affected_conversation_uuids_ = std::move(conversation_uuids);
+    last_deleted_conversation_uuids_ = std::move(deleted_conversation_uuids);
   }
 
   // Replaces the database with one that fails every remote write after
@@ -297,6 +314,15 @@ class AIChatSyncBridgeTest : public testing::Test {
     db_.reset();
     db_ = std::make_unique<FailingAIChatDatabase>(db_file_path(), encryptor_,
                                                   writes_before_failure);
+    CreateBridge();
+  }
+
+  // Replaces the database with one that fails to write sync metadata, then
+  // creates the bridge over it.
+  void CreateBridgeWithFailingMetadataWrites() {
+    db_.reset();
+    db_ = std::make_unique<MetadataWriteFailingAIChatDatabase>(db_file_path(),
+                                                               encryptor_);
     CreateBridge();
   }
 
@@ -381,6 +407,19 @@ class AIChatSyncBridgeTest : public testing::Test {
     metadata.set_server_version(server_version);
     ASSERT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION,
                                           storage_key, metadata));
+  }
+
+  // Runs AIChatSyncBackend::DeleteAllData() over the bridge and database, as
+  // AIChatService does to delete every conversation, and returns its result.
+  // The backend takes the bridge, and destroys it before returning.
+  bool DeleteAllDataThroughBackend() {
+    auto backend = base::MakeRefCounted<AIChatSyncBackend>(
+        base::SequencedTaskRunner::GetCurrentDefault());
+    backend->SetBridge(std::move(bridge_));
+    const bool deleted = backend->DeleteAllData(db_.get());
+    mock_processor_ = nullptr;
+    backend->Shutdown();
+    return deleted;
   }
 
   // Adds a conversation with one entry to the database. Returns the entry
@@ -576,6 +615,7 @@ class AIChatSyncBridgeTest : public testing::Test {
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;
   int remote_changes_applied_count_ = 0;
   std::vector<std::string> last_affected_conversation_uuids_;
+  std::vector<std::string> last_deleted_conversation_uuids_;
 };
 
 TEST_F(AIChatSyncBridgeTest, SetDatabaseCallsModelReadyToSyncOnce) {
@@ -734,6 +774,86 @@ TEST_F(AIChatSyncBridgeTest, OnConversationAddedNoOpWhenNotTracking) {
 
   EXPECT_CALL(*mock_processor_, Put(_, _, _)).Times(0);
   bridge_->OnConversationAdded("conv-1");
+}
+
+// Deleting every conversation sends a deletion for every record sync tracks,
+// including ones with no local row. Each deletion waits in the sync metadata
+// until it's sent, so the wipe keeps the metadata.
+TEST_F(AIChatSyncBridgeTest, DeleteAllDataSendsDeletionsAndKeepsThem) {
+  const std::string entry_uuid = AddTestConversation("conv", "Test");
+  CreateBridge();
+  const std::vector<std::string> tracked = {"c:conv", "e:" + entry_uuid,
+                                            "e:skipped-entry"};
+  ON_CALL(*mock_processor_, GetAllTrackedStorageKeys())
+      .WillByDefault(testing::Return(tracked));
+  for (const std::string& storage_key : tracked) {
+    EXPECT_CALL(*mock_processor_, Delete(storage_key, _, _))
+        .WillOnce([](const std::string& storage_key,
+                     const syncer::DeletionOrigin&,
+                     syncer::MetadataChangeList* metadata_change_list) {
+          sync_pb::EntityMetadata metadata;
+          metadata.set_is_deleted(true);
+          metadata_change_list->UpdateMetadata(storage_key, metadata);
+        });
+  }
+
+  EXPECT_TRUE(DeleteAllDataThroughBackend());
+
+  EXPECT_THAT(db_->GetAllConversations(), IsEmpty());
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_THAT(
+      saved.GetAllMetadata(),
+      UnorderedElementsAre(Pair("c:conv", _), Pair("e:" + entry_uuid, _),
+                           Pair("e:skipped-entry", _)));
+}
+
+// The deletions and the wipe are saved together, so when the deletions can't
+// be saved, the conversations are kept too, and the delete reports failure. AI
+// Chat sync then stops, because the processor already counts the deletions as
+// made, and would send them.
+TEST_F(AIChatSyncBridgeTest,
+       DeleteAllDataThatFailsKeepsEverythingAndStopsSync) {
+  AddTestConversation("conv", "Test");
+  CreateBridgeWithFailingMetadataWrites();
+  ON_CALL(*mock_processor_, GetAllTrackedStorageKeys())
+      .WillByDefault(testing::Return(std::vector<std::string>{"c:conv"}));
+  EXPECT_CALL(*mock_processor_, Delete("c:conv", _, _))
+      .WillOnce([](const std::string& storage_key,
+                   const syncer::DeletionOrigin&,
+                   syncer::MetadataChangeList* metadata_change_list) {
+        metadata_change_list->UpdateMetadata(storage_key,
+                                             sync_pb::EntityMetadata());
+      });
+  EXPECT_CALL(*mock_processor_,
+              ReportError(Property(
+                  &syncer::ModelError::type,
+                  syncer::ModelError::Type::kAIChatFailedToDeleteAllData)));
+
+  EXPECT_FALSE(DeleteAllDataThroughBackend());
+
+  EXPECT_THAT(
+      db_->GetAllConversations(),
+      ElementsAre(Pointee(testing::Field(&mojom::Conversation::uuid, "conv"))));
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_THAT(saved.GetAllMetadata(), IsEmpty());
+}
+
+// While sync isn't tracking records there's nothing to send, so the whole
+// database is wiped, sync metadata included.
+TEST_F(AIChatSyncBridgeTest, DeleteAllDataWhenNotTrackingWipesEverything) {
+  AddTestConversation("conv", "Test");
+  ASSERT_NO_FATAL_FAILURE(SaveSyncMetadata("token", "c:other-conv", 1));
+  CreateBridge(/*is_tracking_metadata=*/false);
+  EXPECT_CALL(*mock_processor_, Delete).Times(0);
+
+  EXPECT_TRUE(DeleteAllDataThroughBackend());
+
+  EXPECT_THAT(db_->GetAllConversations(), IsEmpty());
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_THAT(saved.GetAllMetadata(), IsEmpty());
 }
 
 TEST_F(AIChatSyncBridgeTest, ApplyDisableSyncChangesClearsMetadata) {
@@ -1246,6 +1366,30 @@ TEST_F(AIChatSyncBridgeTest, EntryTombstoneNamesTheParentConversation) {
 
   EXPECT_EQ(remote_changes_applied_count_, 1);
   EXPECT_THAT(last_affected_conversation_uuids_, ElementsAre("conv"));
+  EXPECT_THAT(last_deleted_conversation_uuids_, IsEmpty());
+}
+
+// A conversation's tombstone names the conversation as changed, like any
+// record, and as deleted.
+TEST_F(AIChatSyncBridgeTest, ConversationTombstoneNamesTheConversationDeleted) {
+  CreateBridge();
+  AddTestConversation("deleted", "Title");
+  AddTestConversation("changed", "Title");
+
+  syncer::EntityChangeList changes;
+  changes.push_back(
+      syncer::EntityChange::CreateDelete("c:deleted", syncer::EntityData()));
+  changes.push_back(syncer::EntityChange::CreateDelete("e:changed-entry-1",
+                                                       syncer::EntityData()));
+  ASSERT_FALSE(bridge_
+                   ->ApplyIncrementalSyncChanges(
+                       bridge_->CreateMetadataChangeList(), std::move(changes))
+                   .has_value());
+
+  EXPECT_EQ(remote_changes_applied_count_, 1);
+  EXPECT_THAT(last_affected_conversation_uuids_,
+              UnorderedElementsAre("deleted", "changed"));
+  EXPECT_THAT(last_deleted_conversation_uuids_, ElementsAre("deleted"));
 }
 
 TEST_F(AIChatSyncBridgeTest, MergeFullSyncDataReturnsErrorWhenApplyFails) {

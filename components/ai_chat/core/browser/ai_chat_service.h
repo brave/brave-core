@@ -17,6 +17,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/containers/flat_set.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
@@ -116,6 +117,10 @@ class AIChatService : public KeyedService,
   // background sequence where the bridge lives.
   std::unique_ptr<syncer::DataTypeControllerDelegate>
   CreateSyncControllerDelegate();
+
+  // After remote sync changed the conversation of `handler`, reads it from the
+  // database for `ConversationHandler::OnRemoteSyncDataApplied()`.
+  void ReloadRemotelyChangedConversation(ConversationHandler& handler);
 
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
@@ -414,6 +419,16 @@ class AIChatService : public KeyedService,
       SkusServiceGetter getter,
       mojo::PendingRemote<skus::mojom::SkusService> service);
   void OnConversationListChanged();
+  // Called on this sequence (UI thread) by AIChatSyncBridge after it applies a
+  // batch of remote changes, with the uuids of the conversations the batch
+  // wrote to or deleted, and of those it deleted. Reloads the conversation
+  // list, and pushes the new data into the active ConversationHandler of each
+  // named conversation — stopping any in-flight LLM request or tool-use loop
+  // on those handlers first, since their local state has been superseded by
+  // the remote write.
+  void OnRemoteSyncDataApplied(
+      std::vector<std::string> conversation_uuids,
+      std::vector<std::string> deleted_conversation_uuids);
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
@@ -472,6 +487,14 @@ class AIChatService : public KeyedService,
 
   // All conversation metadata. Mainly just titles and uuids.
   ConversationMap conversations_;
+
+  // Conversations remote sync batches named since the conversation list last
+  // loaded. The next load erases those it doesn't find, unless they're open.
+  base::flat_set<std::string> sync_changed_conversation_uuids_;
+
+  // Whether only remote sync asked for the conversation load in progress. That
+  // load leaves the content of open conversations alone.
+  bool conversation_load_is_for_sync_only_ = false;
 
   // Used to restore a WorkspaceAssociatedContent from a url.
   base::RepeatingCallback<

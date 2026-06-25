@@ -17,6 +17,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/files/file_path.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/path_service.h"
@@ -31,6 +32,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/sync/model/in_memory_metadata_change_list.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/protocol/data_type_state.pb.h"
 #include "components/sync/protocol/entity_metadata.pb.h"
@@ -204,6 +206,24 @@ class AIChatDatabaseTest : public testing::Test,
                                history[0]->Clone()));
     CHECK(db_->AddConversationEntry(conversation_uuid, response->Clone()));
     return history;
+  }
+
+  // Names of the tables holding any rows, other than sql::MetaTable's.
+  std::vector<std::string> TablesWithRows() {
+    std::vector<std::string> tables;
+    sql::Statement names(db_->GetDB().GetUniqueStatement(
+        "SELECT name FROM sqlite_master WHERE type='table' AND name!='meta'"));
+    CHECK(names.is_valid());
+    while (names.Step()) {
+      std::string table = names.ColumnString(0);
+      sql::Statement count(db_->GetDB().GetUniqueStatement(
+          absl::StrFormat("SELECT COUNT(*) FROM %s", table)));
+      CHECK(count.Step());
+      if (count.ColumnInt(0) > 0) {
+        tables.push_back(std::move(table));
+      }
+    }
+    return tables;
   }
 
   void SetEditingEntryUuid(std::string_view entry_uuid,
@@ -1382,6 +1402,37 @@ TEST_P(AIChatDatabaseTest, DeleteAllData) {
   }
 }
 
+// Every table but the sync metadata is emptied, so a table added later fails
+// this test until the wipe covers it. The sync metadata changes passed in are
+// saved, and the rest of the sync metadata is kept.
+TEST_P(AIChatDatabaseTest, DeleteAllDataExceptSyncMetadata) {
+  AddConversationWithEveryChildRow("conversation", "edit");
+  sync_pb::DataTypeState state;
+  state.mutable_progress_marker()->set_token("token");
+  ASSERT_TRUE(db_->UpdateDataTypeState(syncer::AI_CHAT_CONVERSATION, state));
+  ASSERT_TRUE(db_->UpdateEntityMetadata(syncer::AI_CHAT_CONVERSATION, "e:kept",
+                                        sync_pb::EntityMetadata()));
+  ASSERT_THAT(TablesWithRows(), testing::Contains("conversation"));
+
+  syncer::InMemoryMetadataChangeList deletions;
+  sync_pb::EntityMetadata deleted;
+  deleted.set_is_deleted(true);
+  deletions.UpdateMetadata("c:conversation", deleted);
+  ASSERT_TRUE(db_->DeleteAllDataExceptSyncMetadata(deletions));
+
+  EXPECT_THAT(TablesWithRows(), testing::ElementsAre("ai_chat_sync_metadata"));
+  syncer::MetadataBatch saved;
+  ASSERT_TRUE(db_->GetAllSyncMetadata(&saved));
+  EXPECT_EQ(saved.GetDataTypeState().progress_marker().token(), "token");
+  EXPECT_THAT(
+      saved.GetAllMetadata(),
+      testing::UnorderedElementsAre(
+          testing::Pair("c:conversation",
+                        testing::Pointee(testing::Property(
+                            &sync_pb::EntityMetadata::is_deleted, true))),
+          testing::Pair("e:kept", testing::_)));
+}
+
 TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
   GURL page_url = GURL("https://example.com/page");
   std::vector<std::string> expected_contents = {"First contents"};
@@ -1992,6 +2043,73 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataFillsInStub) {
   ASSERT_TRUE(data);
   ASSERT_EQ(data->entries.size(), 1u);
   EXPECT_EQ(data->entries[0]->uuid, "entry-1");
+}
+
+// A conversation another device deleted is saved again by this device's next
+// turn. A turn from a third device that arrived after the delete may hold the
+// uuid in a hidden stub row by then, which adding the conversation fills in and
+// lists, rather than colliding with it.
+TEST_F(AIChatDatabaseSyncTest, AddConversationFillsInStub) {
+  auto remote_entry = mojom::ConversationTurn::New();
+  remote_entry->uuid = "remote-entry";
+  remote_entry->character_type = mojom::CharacterType::HUMAN;
+  remote_entry->action_type = mojom::ActionType::QUERY;
+  remote_entry->text = "From a third device";
+  remote_entry->created_time = base::Time::Now();
+  ASSERT_TRUE(db_->ApplyRemoteEntry("conv", std::move(remote_entry),
+                                    base::Time(), {}, {}));
+  ASSERT_TRUE(db_->GetAllConversations().empty());
+
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Title";
+  auto local_entry = mojom::ConversationTurn::New();
+  local_entry->uuid = "local-entry";
+  local_entry->character_type = mojom::CharacterType::HUMAN;
+  local_entry->action_type = mojom::ActionType::QUERY;
+  local_entry->text = "From this device";
+  local_entry->created_time = base::Time::Now();
+  EXPECT_TRUE(db_->AddConversation(std::move(conversation), {},
+                                   std::move(local_entry)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Title");
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  EXPECT_THAT(base::ToVector(data->entries, &mojom::ConversationTurn::uuid),
+              testing::UnorderedElementsAre("remote-entry", "local-entry"));
+}
+
+// Adding a conversation updates a row that already has its uuid, so when the
+// title can't be encrypted, adding it fails rather than clear the stored title.
+TEST_F(AIChatDatabaseSyncTest, AddConversationEncryptionFailureKeepsTitle) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "conv";
+  conversation->title = "Original";
+  ASSERT_TRUE(db_->ApplyRemoteConversationMetadata(conversation->Clone(),
+                                                   base::Time()));
+
+  db_.reset();
+  db_ = std::make_unique<AIChatDatabase>(
+      db_file_path(), os_crypt_async::GetTestEncryptorWithoutKeysForTesting());
+  conversation->title = "Updated";
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "From this device";
+  entry->created_time = base::Time::Now();
+  EXPECT_FALSE(
+      db_->AddConversation(std::move(conversation), {}, std::move(entry)));
+
+  db_.reset();
+  base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
+  os_crypt_->GetInstance(future.GetCallback());
+  db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Original");
 }
 
 TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsAssociatedContent) {

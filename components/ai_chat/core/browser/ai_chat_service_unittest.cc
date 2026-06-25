@@ -15,6 +15,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/containers/to_vector.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback.h"
@@ -413,6 +414,67 @@ class AIChatServiceUnitTest : public testing::Test,
   // private member, since TEST_P bodies are not friends of AIChatService).
   AIChatSyncBackend* SyncBackendPtr() {
     return ai_chat_service_->sync_backend_.get();
+  }
+
+  // Drives what the sync bridge would call after applying a remote batch.
+  void ApplyRemoteSyncData(
+      std::vector<std::string> conversation_uuids,
+      std::vector<std::string> deleted_conversation_uuids = {}) {
+    ai_chat_service_->OnRemoteSyncDataApplied(
+        std::move(conversation_uuids), std::move(deleted_conversation_uuids));
+  }
+
+  // Deletes a conversation from the database without telling the service, as
+  // the sync bridge does when it applies a deletion from another device.
+  void DeleteConversationFromDatabase(const std::string& conversation_uuid) {
+    base::test::TestFuture<bool> deleted;
+    ai_chat_service_->ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteConversation)
+        .WithArgs(conversation_uuid)
+        .Then(deleted.GetCallback());
+    ASSERT_TRUE(deleted.Get());
+  }
+
+  // Saves a turn with associated content to a conversation in the database
+  // without telling the service, as the sync bridge does when it applies a turn
+  // from another device.
+  void AddEntryWithContentToDatabase(const std::string& conversation_uuid,
+                                     const std::string& content_uuid) {
+    mojom::ConversationTurnPtr entry =
+        std::move(CreateSampleChatHistory(1u).front());
+    std::vector<mojom::AssociatedContentPtr> content;
+    content.push_back(mojom::AssociatedContent::New(
+        content_uuid, mojom::ContentType::PageContent, "Page", 1,
+        GURL("https://example.com/from-another-device"), 100,
+        entry->uuid.value(), false));
+    base::test::TestFuture<bool> entry_added;
+    ai_chat_service_->ai_chat_db_
+        .AsyncCall(&AIChatDatabase::AddConversationEntry)
+        .WithArgs(conversation_uuid, std::move(entry),
+                  std::optional<std::string>())
+        .Then(entry_added.GetCallback());
+    ASSERT_TRUE(entry_added.Get());
+    base::test::TestFuture<bool> content_added;
+    ai_chat_service_->ai_chat_db_
+        .AsyncCall(&AIChatDatabase::AddOrUpdateAssociatedContent)
+        .WithArgs(conversation_uuid, std::move(content),
+                  std::vector<std::string>{"Page text"})
+        .Then(content_added.GetCallback());
+    ASSERT_TRUE(content_added.Get());
+  }
+
+  mojom::ConversationArchivePtr ReadConversationFromDatabase(
+      const std::string& conversation_uuid) {
+    base::test::TestFuture<mojom::ConversationArchivePtr> archive;
+    ai_chat_service_->ai_chat_db_
+        .AsyncCall(&AIChatDatabase::GetConversationData)
+        .WithArgs(conversation_uuid)
+        .Then(archive.GetCallback());
+    return archive.Take();
+  }
+
+  // Runs the database tasks posted so far, and the replies they post back.
+  void FlushDatabaseTasks() {
+    ai_chat_service_->ai_chat_db_.FlushPostedTasksForTesting();
   }
 
   // Returns whether the sync backend currently resolves a non-null controller
@@ -1001,6 +1063,332 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   EXPECT_TRUE(SyncControllerDelegateResolves());
 
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
+}
+
+// A remote batch must refresh only the conversations it names. An open
+// conversation sync did not write can hold history that is not in the database
+// — a temporary conversation never persists, and CreateConversation() defers
+// the first write until there is content — so reloading it would discard that
+// history along with any in-flight response.
+//
+// Both conversations here are temporary, so neither has anything in the
+// database and a refresh that reaches a handler is observable as its history
+// emptying. Waiting for the named one to empty is what makes the assertion on
+// the unnamed one meaningful: a single loop over every open handler would have
+// emptied them in the same pass.
+TEST_P(AIChatServiceUnitTest, RemoteSyncDataRefreshesOnlyNamedConversations) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* named = CreateConversation();
+  named->SetTemporary(true);
+  auto named_client = CreateConversationClient(named);
+  named->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* unnamed = CreateConversation();
+  unnamed->SetTemporary(true);
+  auto unnamed_client = CreateConversationClient(unnamed);
+  unnamed->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ASSERT_EQ(named->GetConversationHistory().size(), 2u);
+  ASSERT_EQ(unnamed->GetConversationHistory().size(), 2u);
+
+  ApplyRemoteSyncData({named->get_conversation_uuid()});
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return named->GetConversationHistory().empty(); }));
+  EXPECT_EQ(unnamed->GetConversationHistory().size(), 2u);
+}
+
+// A conversation another device deleted must leave the list. Loading the list
+// only adds and updates, so the load a remote batch starts erases the named
+// conversations the database no longer lists. An open one stays listed while
+// open, because its handler points at its metadata, and leaves once it closes
+// with no history.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncDataRemovesDeletedConversationsFromList) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* closed = CreateConversation();
+  const std::string closed_uuid = closed->get_conversation_uuid();
+  auto closed_client = CreateConversationClient(closed);
+  closed->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  DisconnectConversationClient(closed_client.get());
+  WaitForConversationUnload();
+  ASSERT_FALSE(ai_chat_service_->GetConversation(closed_uuid));
+
+  ConversationHandler* open = CreateConversation();
+  const std::string open_uuid = open->get_conversation_uuid();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  ExpectConversationsSize(FROM_HERE, 2u);
+
+  ASSERT_NO_FATAL_FAILURE(DeleteConversationFromDatabase(closed_uuid));
+  ASSERT_NO_FATAL_FAILURE(DeleteConversationFromDatabase(open_uuid));
+  ApplyRemoteSyncData({closed_uuid, open_uuid}, {closed_uuid, open_uuid});
+
+  // Answered once the reload the batch started has finished.
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> listed;
+  ai_chat_service_->GetConversations(listed.GetCallback());
+  EXPECT_THAT(base::ToVector(listed.Take(), &mojom::Conversation::uuid),
+              testing::ElementsAre(open_uuid));
+  EXPECT_TRUE(open->GetConversationHistory().empty());
+
+  DisconnectConversationClient(open_client.get());
+  WaitForConversationUnload();
+  ExpectConversationsSize(FROM_HERE, 0u);
+}
+
+// A remote batch must leave alone the content of an open conversation it
+// didn't change. Content attached but not sent yet isn't in the database, so
+// reloading the conversation's content from the database would drop it.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncDataKeepsUnsentContentOfOtherConversations) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto content = std::make_unique<NiceMock<MockAssociatedContent>>();
+  content->SetUrl(GURL("https://example.com/attached"));
+  ai_chat_service_->AssociateOwnedContent(std::move(content),
+                                          open->get_conversation_uuid());
+  ASSERT_EQ(open->associated_content_manager()->GetAssociatedContent().size(),
+            1u);
+
+  ApplyRemoteSyncData({"conversation-from-another-device"});
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> listed;
+  ai_chat_service_->GetConversations(listed.GetCallback());
+  ASSERT_TRUE(listed.Wait());
+  FlushDatabaseTasks();
+
+  EXPECT_EQ(open->associated_content_manager()->GetAssociatedContent().size(),
+            1u);
+}
+
+// An open conversation another device deleted is saved again by its next
+// turn. Otherwise the turn would be added to a conversation that's gone, so it
+// would show but never be stored.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncDeleteOfOpenConversationSavesItsNextTurns) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  const std::string uuid = open->get_conversation_uuid();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  ASSERT_NO_FATAL_FAILURE(DeleteConversationFromDatabase(uuid));
+
+  // The turn comes straight after the batch, before any reload has finished.
+  ApplyRemoteSyncData({uuid}, {uuid});
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  mojom::ConversationArchivePtr saved = ReadConversationFromDatabase(uuid);
+  ASSERT_TRUE(saved);
+  EXPECT_EQ(saved->entries.size(), 2u);
+}
+
+// A conversation opened while another device's deletion of it is applied gets
+// its handler only after the batch has been reported, so the report can't mark
+// it as not saved. The list reload that follows finds the conversation gone
+// and marks it, so its next turn saves it again.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncDeleteOfConversationOpenedDuringApplySavesItsNextTurns) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* closed = CreateConversation();
+  const std::string uuid = closed->get_conversation_uuid();
+  auto closed_client = CreateConversationClient(closed);
+  closed->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  DisconnectConversationClient(closed_client.get());
+  WaitForConversationUnload();
+  ASSERT_FALSE(ai_chat_service_->GetConversation(uuid));
+  ExpectConversationsSize(FROM_HERE, 1u);
+  ASSERT_NO_FATAL_FAILURE(DeleteConversationFromDatabase(uuid));
+
+  // Opening reads the conversation from the database, and the batch is
+  // reported before that read returns.
+  base::test::TestFuture<ConversationHandler*> opened;
+  ai_chat_service_->GetConversation(uuid, opened.GetCallback());
+  ApplyRemoteSyncData({uuid}, {uuid});
+  ConversationHandler* open = opened.Get();
+  ASSERT_TRUE(open);
+  auto open_client = CreateConversationClient(open);
+  // Answered once the reload the batch started has finished.
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> listed;
+  ai_chat_service_->GetConversations(listed.GetCallback());
+  ASSERT_TRUE(listed.Wait());
+
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  mojom::ConversationArchivePtr saved = ReadConversationFromDatabase(uuid);
+  ASSERT_TRUE(saved);
+  EXPECT_EQ(saved->entries.size(), 2u);
+}
+
+// Content another device added to an open conversation must show. The
+// conversation's own reload reads its content before the list reload updates
+// the metadata that says which content the conversation has, so the list
+// reload reads the content again.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncDataShowsContentAddedToOpenConversation) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  const std::string uuid = open->get_conversation_uuid();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  const std::string content_uuid = "content-from-another-device";
+  ASSERT_NO_FATAL_FAILURE(AddEntryWithContentToDatabase(uuid, content_uuid));
+
+  ApplyRemoteSyncData({uuid});
+  base::test::TestFuture<std::vector<mojom::ConversationPtr>> listed;
+  ai_chat_service_->GetConversations(listed.GetCallback());
+  ASSERT_TRUE(listed.Wait());
+  FlushDatabaseTasks();
+
+  EXPECT_THAT(open->associated_content_manager()->GetAssociatedContent(),
+              testing::ElementsAre(testing::Pointee(testing::Field(
+                  &mojom::AssociatedContent::uuid, content_uuid))));
+}
+
+// A turn submitted while the reload a remote batch started is reading the
+// database is saved after that read, so the read misses it. The reload reads
+// again rather than drop the turn.
+TEST_P(AIChatServiceUnitTest, RemoteSyncReloadKeepsTurnSubmittedDuringItsRead) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  open->SetEngineForTesting(std::make_unique<NiceMock<MockEngineConsumer>>());
+
+  ApplyRemoteSyncData({open->get_conversation_uuid()});
+  open->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+  ASSERT_EQ(open->GetConversationHistory().size(), 3u);
+
+  // The reload stops the reply to the turn, since the batch changed the
+  // conversation, and reads again.
+  ASSERT_TRUE(
+      base::test::RunUntil([&] { return !open->IsRequestInProgress(); }));
+  FlushDatabaseTasks();
+  EXPECT_EQ(open->GetConversationHistory().size(), 3u);
+}
+
+// The reply to a turn submitted while the reload a remote batch started was
+// reading is stopped as soon as that read returns, not once the read that
+// follows does. Otherwise the reply, based on history the batch replaced, could
+// be added and saved while the second read runs.
+TEST_P(AIChatServiceUnitTest, RemoteSyncReloadStopsReplyBeforeReadingAgain) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  open->SetEngineForTesting(std::make_unique<NiceMock<MockEngineConsumer>>());
+  const uint64_t local_change_count = open->local_change_count();
+  mojom::ConversationArchivePtr read =
+      ReadConversationFromDatabase(open->get_conversation_uuid());
+  ASSERT_TRUE(read);
+  open->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+  ASSERT_TRUE(open->IsRequestInProgress());
+
+  // The reload's read returns without the turn.
+  open->OnRemoteSyncDataApplied(local_change_count, std::move(read));
+
+  EXPECT_FALSE(open->IsRequestInProgress());
+  FlushDatabaseTasks();
+  EXPECT_EQ(open->GetConversationHistory().size(), 3u);
+}
+
+// The list reload that follows a remote batch reads the content of each open
+// conversation the batch changed again. A turn sent with content while that
+// read runs is saved after it, so the read misses the content. The list reload
+// reads again rather than drop the content.
+TEST_P(AIChatServiceUnitTest,
+       RemoteSyncListReloadKeepsContentSentDuringItsRead) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* open = CreateConversation();
+  const std::string uuid = open->get_conversation_uuid();
+  auto open_client = CreateConversationClient(open);
+  open->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  open->SetEngineForTesting(std::make_unique<NiceMock<MockEngineConsumer>>());
+
+  ApplyRemoteSyncData({uuid});
+  // Answered once the list reload has started reading the content again.
+  base::test::TestFuture<void> sent;
+  ai_chat_service_->GetConversations(
+      base::BindLambdaForTesting([&](std::vector<mojom::ConversationPtr>) {
+        auto content = std::make_unique<NiceMock<MockAssociatedContent>>();
+        content->SetUrl(GURL("https://example.com/attached"));
+        // Fetched, so the turn saves its text.
+        content->SetTextContent("Page text");
+        content->GetContent(base::DoNothing());
+        ai_chat_service_->AssociateOwnedContent(std::move(content), uuid);
+        open->SubmitHumanConversationEntry(mojom::ConversationTurn::New());
+        sent.SetValue();
+      }));
+  ASSERT_TRUE(sent.Wait());
+  // Returns the list reload's read, which can start another, then that one.
+  FlushDatabaseTasks();
+  FlushDatabaseTasks();
+
+  EXPECT_THAT(open->associated_content_manager()->GetAssociatedContent(),
+              testing::ElementsAre(testing::Pointee(
+                  testing::Field(&mojom::AssociatedContent::url,
+                                 GURL("https://example.com/attached")))));
+}
+
+// With AI Chat sync, deleting every conversation goes through the sync
+// backend, which first sends a deletion for each record sync tracks. Sync
+// tracks none here, so the database is wiped, as without sync.
+TEST_P(AIChatServiceUnitTest, DeleteAllConversationsWithSyncWipesTheDatabase) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* conversation = CreateConversation();
+  const std::string uuid = conversation->get_conversation_uuid();
+  conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  mojom::ConversationArchivePtr saved = ReadConversationFromDatabase(uuid);
+  ASSERT_TRUE(saved);
+  ASSERT_EQ(saved->entries.size(), 2u);
+
+  ai_chat_service_->DeleteConversations(std::nullopt, std::nullopt);
+
+  saved = ReadConversationFromDatabase(uuid);
+  ASSERT_TRUE(saved);
+  EXPECT_THAT(saved->entries, testing::IsEmpty());
 }
 
 TEST_P(AIChatServiceUnitTest, GetConversations_StorageTurnedOffWhileLoading) {

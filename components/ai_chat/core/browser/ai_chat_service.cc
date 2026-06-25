@@ -22,6 +22,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -105,6 +106,14 @@ void CopyTextToClipboardAsConfidential(std::string_view text) {
   ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
   scw.WriteText(base::UTF8ToUTF16(text));
   scw.MarkAsConfidential();
+}
+
+// Nothing that asks to delete every conversation waits for the result, so a
+// failure is only logged. The list reload that follows shows what's left.
+void LogIfDeleteAllDataFailed(bool deleted) {
+  if (!deleted) {
+    DVLOG(0) << "Failed to delete all AI Chat conversations";
+  }
 }
 
 }  // namespace
@@ -454,9 +463,17 @@ void AIChatService::DeleteConversations(std::optional<base::Time> begin_time,
     conversations_.clear();
     content_conversations_.clear();
 
-    // Delete database data
+    // Delete database data. With AI Chat sync, the backend first sends a
+    // deletion for every synced record, so other devices delete them too.
     if (ai_chat_db_) {
-      ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteAllData));
+      if (sync_backend_) {
+        ai_chat_db_.PostTaskWithThisObject(
+            base::BindOnce(&AIChatSyncBackend::DeleteAllData, sync_backend_)
+                .Then(base::BindOnce(&LogIfDeleteAllDataFailed)));
+      } else {
+        ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAllData)
+            .Then(base::BindOnce(&LogIfDeleteAllDataFailed));
+      }
       ReloadConversations();
     }
     if (ai_chat_metrics_ != nullptr) {
@@ -545,16 +562,26 @@ void AIChatService::MaybeInitStorage() {
       // buffers the start until SetDatabase() reports the model ready. The
       // database is attached in OnOsCryptAsyncReady() once the encryptor is
       // available.
+      //
+      // Hop from the bridge sequence back to this service's sequence (UI) when
+      // remote changes are applied, so we can refresh the in-memory
+      // conversation list and any active ConversationHandlers.
+      auto on_remote_changes_applied = base::BindPostTask(
+          base::SequencedTaskRunner::GetCurrentDefault(),
+          base::BindRepeating(&AIChatService::OnRemoteSyncDataApplied,
+                              weak_ptr_factory_.GetWeakPtr()));
       db_task_runner_->PostTask(
           FROM_HERE,
           base::BindOnce(
-              [](scoped_refptr<AIChatSyncBackend> backend) {
+              [](scoped_refptr<AIChatSyncBackend> backend,
+                 AIChatSyncBridge::RemoteChangesAppliedCallback
+                     on_remote_changes_applied) {
                 backend->SetBridge(std::make_unique<AIChatSyncBridge>(
                     std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
                         syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
-                    /*on_remote_changes_applied=*/base::DoNothing()));
+                    std::move(on_remote_changes_applied)));
               },
-              sync_backend_));
+              sync_backend_, std::move(on_remote_changes_applied)));
     }
     if (!ai_chat_db_ && !os_crypt_init_pending_) {
       DVLOG(0) << "Initializing OS Crypt Async";
@@ -683,6 +710,14 @@ void AIChatService::OnLoadConversationsLazyData(
     return;
   }
   DVLOG(1) << "Loaded " << conversations.size() << " conversations.";
+  const bool load_is_for_sync_only =
+      std::exchange(conversation_load_is_for_sync_only_, false);
+  // Taken before the loop moves the conversations.
+  base::flat_set<std::string> loaded_uuids;
+  if (!sync_changed_conversation_uuids_.empty()) {
+    loaded_uuids = base::MakeFlatSet<std::string>(conversations, {},
+                                                  &mojom::Conversation::uuid);
+  }
   for (auto& conversation : conversations) {
     std::string uuid = conversation->uuid;
     DVLOG(2) << "Loaded conversation " << conversation->uuid
@@ -713,6 +748,20 @@ void AIChatService::OnLoadConversationsLazyData(
     if (handler_it != conversation_handlers_.end() && ai_chat_db_) {
       // Notify the handler that metadata is possibly changed
       ConversationHandler* handler = handler_it->second.get();
+      // Remote sync changed this conversation. Its own reload kept only the
+      // content its metadata listed, which this load has just updated, so
+      // reload it again. That reload reads again if a turn is saved while it
+      // reads.
+      if (sync_changed_conversation_uuids_.contains(uuid)) {
+        ReloadRemotelyChangedConversation(*handler);
+        continue;
+      }
+      // A load only remote sync asked for leaves alone the content of an open
+      // conversation the batch didn't change, which can hold attachments not
+      // saved yet.
+      if (load_is_for_sync_only) {
+        continue;
+      }
       // If a reload was asked for, then we should also update the deeper
       // conversation data from the database, since the reload was likely due
       // to underlying data changing.
@@ -732,6 +781,24 @@ void AIChatService::OnLoadConversationsLazyData(
               handler->GetWeakPtr()));
     }
   }
+  // A conversation remote sync named that the database no longer lists was
+  // deleted on another device. An open one stays, because its handler points
+  // at its metadata, and is marked as not saved, so that its next turn saves
+  // it again. OnRemoteSyncDataApplied() did that for the ones open then, but
+  // one can have been opened since, while the deletion was being applied. With
+  // no history, it's erased when the handler unloads.
+  for (const std::string& uuid :
+       std::exchange(sync_changed_conversation_uuids_, {})) {
+    if (loaded_uuids.contains(uuid)) {
+      continue;
+    }
+    if (!conversation_handlers_.contains(uuid)) {
+      conversations_.erase(uuid);
+    } else if (mojom::ConversationPtr* conversation =
+                   base::FindOrNull(conversations_, uuid)) {
+      (*conversation)->has_content = false;
+    }
+  }
   if (on_conversations_loaded_callbacks_.has_value()) {
     // Taken first, since a callback can ask for the conversations again, and
     // must then get them straight away.
@@ -745,6 +812,9 @@ void AIChatService::OnLoadConversationsLazyData(
 }
 
 void AIChatService::ReloadConversations(bool from_cancel) {
+  if (!from_cancel) {
+    conversation_load_is_for_sync_only_ = false;
+  }
   // If in the middle of a conversation load, then make sure data is ignored,
   // and ask again when current load is complete.
   if (!from_cancel && on_conversations_loaded_callbacks_.has_value() &&
@@ -1545,6 +1615,65 @@ void AIChatService::OnConversationListChanged() {
     }
     remote->OnConversationListChanged(std::move(client_conversations));
   }
+}
+
+void AIChatService::OnRemoteSyncDataApplied(
+    std::vector<std::string> conversation_uuids,
+    std::vector<std::string> deleted_conversation_uuids) {
+  // This hops here from the bridge sequence, so storage can have been turned
+  // off (and ai_chat_db_ reset) since the batch was applied.
+  if (!ai_chat_db_) {
+    return;
+  }
+  // An open conversation another device deleted is marked as not saved, so
+  // that its next turn saves it again instead of adding to a conversation
+  // that's gone.
+  for (const std::string& uuid : deleted_conversation_uuids) {
+    if (!conversation_handlers_.contains(uuid)) {
+      continue;
+    }
+    if (mojom::ConversationPtr* conversation =
+            base::FindOrNull(conversations_, uuid)) {
+      (*conversation)->has_content = false;
+    }
+  }
+  // Reload each open conversation the batch wrote to or deleted, so its
+  // visible history matches the database. Only those: an open conversation
+  // sync didn't touch can hold entries that are not in the database yet
+  // (CreateConversation() defers the first write until there is content, and
+  // temporary conversations never persist), and reloading it would discard
+  // them along with any in-flight response.
+  for (const std::string& uuid : conversation_uuids) {
+    if (ConversationHandler* handler = GetConversation(uuid)) {
+      ReloadRemotelyChangedConversation(*handler);
+    }
+  }
+  // Reload the list, so it shows the conversations the batch added. Loading
+  // only adds and updates, so the load also erases the named conversations it
+  // no longer finds. This is async and notifies observers itself once the read
+  // completes, so don't broadcast the still-stale list here.
+  sync_changed_conversation_uuids_.insert(conversation_uuids.begin(),
+                                          conversation_uuids.end());
+  // A load already in progress for another reason still refreshes the content
+  // of open conversations.
+  const bool load_in_progress =
+      on_conversations_loaded_callbacks_.has_value() &&
+      !on_conversations_loaded_callbacks_->empty();
+  const bool load_is_for_sync_only =
+      !load_in_progress || conversation_load_is_for_sync_only_;
+  ReloadConversations();
+  conversation_load_is_for_sync_only_ = load_is_for_sync_only;
+}
+
+void AIChatService::ReloadRemotelyChangedConversation(
+    ConversationHandler& handler) {
+  if (!ai_chat_db_) {
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
+      .WithArgs(handler.get_conversation_uuid())
+      .Then(base::BindOnce(&ConversationHandler::OnRemoteSyncDataApplied,
+                           handler.GetWeakPtr(), handler.local_change_count()));
 }
 
 void AIChatService::OpenConversationWithStagedEntries(

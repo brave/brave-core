@@ -81,6 +81,12 @@ class AIChatSyncBackend
                                    const std::string& entry_uuid);
   void OnConversationEntryDeleted(const std::string& entry_uuid);
 
+  // Deletes every conversation in `database`. While AI Chat sync tracks
+  // records, the bridge does it, and sends a deletion for each record.
+  // Otherwise `database` is wiped. Returns whether the conversations were
+  // deleted.
+  bool DeleteAllData(AIChatDatabase* database);
+
  private:
   friend class base::RefCountedDeleteOnSequence<AIChatSyncBackend>;
   friend class base::DeleteHelper<AIChatSyncBackend>;

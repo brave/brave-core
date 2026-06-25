@@ -12,3 +12,4 @@ substitutions:
       entries:
         - kAIChatFailedToLoadMetadata
         - kAIChatFailedToApplyRemoteChange
+        - kAIChatFailedToDeleteAllData

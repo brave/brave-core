@@ -388,6 +388,40 @@ void ConversationHandler::OnArchiveContentUpdated(
                                                    conversation_data);
 }
 
+void ConversationHandler::OnRemoteSyncDataApplied(
+    uint64_t local_change_count,
+    mojom::ConversationArchivePtr conversation_data) {
+  // A null archive means the database couldn't be read, so there is nothing
+  // to replace the history with.
+  if (!conversation_data) {
+    return;
+  }
+
+  // Any in-flight engine request or tool-use loop is reasoning over chat
+  // history that the remote write has just replaced. Stop them so we
+  // don't append a stale reply onto the new history.
+  if (is_request_in_progress_ ||
+      tool_use_task_state_ != mojom::TaskState::kNone) {
+    StopInProgressGeneration();
+  }
+
+  // The read can have missed a local change made while it ran, so read again.
+  if (local_change_count != local_change_count_) {
+    ai_chat_service_->ReloadRemotelyChangedConversation(*this);
+    return;
+  }
+
+  // LoadArchivedContent() also drops content the archive no longer lists, so
+  // call it even when the archive lists none.
+  associated_content_manager_->LoadArchivedContent(metadata_,
+                                                   conversation_data);
+  chat_history_ = std::move(conversation_data->entries);
+
+  // Push a null entry update — the WebUI re-fetches the whole history on
+  // a null payload, which is what we want here.
+  OnHistoryUpdate(nullptr);
+}
+
 void ConversationHandler::OnAssociatedContentUpdated() {
   metadata_->associated_content =
       associated_content_manager_->GetAssociatedContent();
@@ -1295,14 +1329,7 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
     return;
   }
 
-  StopTask();
-
-  connection_issue_retry_timer_.Stop();
-  connection_issue_retry_count_ = 0;
-  is_request_in_progress_ = false;
-  thread_uuid_in_progress_ = std::nullopt;
-  engine_->ClearAllQueries();
-  OnAPIRequestInProgressChanged();
+  StopInProgressGeneration();
 
   mojom::CharacterType last_type = chat_history_.back()->character_type;
   if (last_type == mojom::CharacterType::HUMAN) {
@@ -1313,6 +1340,17 @@ void ConversationHandler::StopGenerationAndMaybeGetHumanEntry(
   } else {
     std::move(callback).Run(nullptr);
   }
+}
+
+void ConversationHandler::StopInProgressGeneration() {
+  StopTask();
+
+  connection_issue_retry_timer_.Stop();
+  connection_issue_retry_count_ = 0;
+  is_request_in_progress_ = false;
+  thread_uuid_in_progress_ = std::nullopt;
+  engine_->ClearAllQueries();
+  OnAPIRequestInProgressChanged();
 }
 
 void ConversationHandler::RespondToVisionModelSwitch(
@@ -2605,6 +2643,7 @@ void ConversationHandler::MaybeHandleNewThreadEntry(
 
 void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
                                                mojom::ToolUseEvent* tool_use) {
+  ++local_change_count_;
   CHECK(entry->uuid.has_value()) << "Cannot update tool use event for entry "
                                     "without uuid";
   for (auto& client : untrusted_conversation_ui_handlers_) {
@@ -2629,6 +2668,7 @@ void ConversationHandler::OnToolUseEventOutput(mojom::ConversationTurn* entry,
 
 void ConversationHandler::OnConversationEntryRemoved(
     std::optional<std::string> entry_uuid) {
+  ++local_change_count_;
   OnHistoryUpdate(nullptr);
   if (!entry_uuid.has_value()) {
     return;
@@ -2640,6 +2680,7 @@ void ConversationHandler::OnConversationEntryRemoved(
 
 void ConversationHandler::OnConversationEntryAdded(
     mojom::ConversationTurnPtr& entry) {
+  ++local_change_count_;
   if (entry->character_type == mojom::CharacterType::HUMAN) {
     associated_content_manager_->AssociateUnsentContentWithTurn(entry);
   }

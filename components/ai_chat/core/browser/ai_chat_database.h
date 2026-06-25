@@ -29,6 +29,7 @@ class Statement;
 
 namespace syncer {
 class MetadataBatch;
+class MetadataChangeList;
 }  // namespace syncer
 
 namespace ai_chat {
@@ -187,6 +188,13 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
 
   // Drops all data and tables in the database, and re-creates empty tables
   virtual bool DeleteAllData();
+
+  // Deletes every conversation and everything it owns, and saves
+  // `sync_metadata_changes`, in one transaction. Other sync metadata is kept.
+  // AI Chat sync uses this to delete every conversation along with the
+  // deletions it will send, which wait in the sync metadata until they're sent.
+  bool DeleteAllDataExceptSyncMetadata(
+      syncer::MetadataChangeList& sync_metadata_changes);
 
   // Clears (sets to NULL) the url/title/last_contents of associated content for
   // every conversation that has an entry dated within [begin_time, end_time].

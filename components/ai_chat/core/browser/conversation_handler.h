@@ -181,6 +181,20 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   void OnArchiveContentUpdated(mojom::ConversationArchivePtr conversation_data);
 
+  // Called with `conversation_data` read from the database after a remote
+  // sync batch changed this conversation, and the `local_change_count()` taken
+  // when the read started. Stops any in-flight request or tool-use task (their
+  // reply would be applied against now-stale local state). If a local change
+  // came since the read started, reads again. Otherwise replaces
+  // `chat_history_` and associated content with `conversation_data`, and
+  // notifies clients so the UI re-fetches.
+  void OnRemoteSyncDataApplied(uint64_t local_change_count,
+                               mojom::ConversationArchivePtr conversation_data);
+
+  // Counts the changes this handler made to its history, each of which it
+  // saves to the database.
+  uint64_t local_change_count() const { return local_change_count_; }
+
   bool IsAnyClientConnected();
   bool HasAnyHistory();
   bool IsRequestInProgress();
@@ -586,6 +600,8 @@ class ConversationHandler : public mojom::ConversationHandler,
       uint64_t trimmed_tokens);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnAPIRequestInProgressChanged();
+  // Stops the request or tool-use loop in progress, and any retry of it.
+  void StopInProgressGeneration();
   void OnToolUseTaskStateChanged();
   void OnStateForConversationEntriesChanged();
 
@@ -648,6 +664,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Is a conversation engine request in progress (does not include
   // non-conversation engine requests.
   bool is_request_in_progress_ = false;
+
+  // See local_change_count().
+  uint64_t local_change_count_ = 0;
 
   // Number of automatic retries performed for the current request after
   // receiving a connection issue error.
