@@ -156,8 +156,8 @@ def main():
     logging.debug("Updating release with id: %s", release_id)
     release = retry_func(
         lambda run: repo.releases.__call__(f'{release_id}').patch(data=data),
-        catch=requests.exceptions.ConnectionError, retries=3
-    )
+        catch=requests.exceptions.ConnectionError,
+        retries=3)
     logging.debug("Release body after update: \n'%s'", release['body'])
 
 
@@ -204,12 +204,11 @@ def parse_args():
         '--url',
         help='URL for Brave Browser raw markdown file (required)',
         required=True)
-    parser.add_argument(
-        '-s',
-        '--section-title',
-        default=DEFAULT_SECTION_TITLE,
-        help=('Markdown section heading for release notes '
-              '(default: "%(default)s")'))
+    parser.add_argument('-s',
+                        '--section-title',
+                        default=DEFAULT_SECTION_TITLE,
+                        help=('Markdown section heading for release notes '
+                              '(default: "%(default)s")'))
     return parser.parse_args()
 
 
