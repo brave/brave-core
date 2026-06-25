@@ -315,7 +315,7 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransaction(
     return std::nullopt;
   }
 
-  return base::ToVector(result->unwrap()->bytes());
+  return base::ToVector(result->bytes());
 }
 
 // static
@@ -326,7 +326,7 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeTransactionOutput(
     return std::nullopt;
   }
 
-  return base::ToVector(result->unwrap()->bytes());
+  return base::ToVector(result->bytes());
 }
 
 // static
@@ -338,7 +338,7 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeUtxo(
     return std::nullopt;
   }
 
-  return base::ToVector(result->unwrap()->bytes());
+  return base::ToVector(result->bytes());
 }
 
 // static
@@ -348,7 +348,7 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::EncodeCoinValue(
   if (!result->is_ok()) {
     return std::nullopt;
   }
-  return base::ToVector(result->unwrap()->bytes());
+  return base::ToVector(result->bytes());
 }
 
 // static
@@ -359,7 +359,7 @@ std::optional<cardano_rpc::CoinValue> CardanoTxDecoder::DecodeCoinValue(
   if (!result->is_ok()) {
     return std::nullopt;
   }
-  return FromRust(result->unwrap()->value());
+  return FromRust(result->value());
 }
 
 // static
@@ -380,12 +380,10 @@ std::optional<CardanoTxDecoder::DecodedTx> CardanoTxDecoder::DecodeTransaction(
     return std::nullopt;
   }
 
-  auto decoded_tx_rust = result->unwrap();
-
   DecodedTx decoded_tx;
-  decoded_tx.tx = FromRust(decoded_tx_rust->tx());
-  decoded_tx.raw_body_bytes = FromRust(decoded_tx_rust->raw_body());
-  decoded_tx.raw_tx_bytes = FromRust(decoded_tx_rust->raw_tx());
+  decoded_tx.tx = FromRust(result->tx());
+  decoded_tx.raw_body_bytes = FromRust(result->raw_body());
+  decoded_tx.raw_tx_bytes = FromRust(result->raw_tx());
 
   return decoded_tx;
 }
@@ -401,8 +399,7 @@ std::optional<std::vector<uint8_t>> CardanoTxDecoder::AddWitnessesToTransaction(
     return std::nullopt;
   }
 
-  auto signed_tx = result->unwrap();
-  return base::ToVector(signed_tx->bytes());
+  return base::ToVector(result->bytes());
 }
 
 }  // namespace brave_wallet
