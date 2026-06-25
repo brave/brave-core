@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
@@ -953,6 +954,32 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   EXPECT_TRUE(SyncControllerDelegateResolves());
 
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
+}
+
+// A storage off->on toggle must re-attach the database to the sync bridge and
+// notify RegisterSyncDatabaseReadyCallback() listeners, so the sync data type
+// controller can re-run initial sync. Without the notification the sync engine
+// would keep treating the wiped-and-recreated database as fully synced.
+TEST_P(AIChatServiceUnitTest, SyncDatabaseReadyCallbackFiresOnStorageReEnable) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  int ready_count = 0;
+  base::CallbackListSubscription subscription =
+      ai_chat_service_->RegisterSyncDatabaseReadyCallback(
+          base::BindLambdaForTesting([&] { ++ready_count; }));
+
+  // Toggle storage off then on. Re-enabling recreates the database and
+  // re-attaches it to the bridge, which must fire the callback.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+
+  EXPECT_GE(ready_count, 1);
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {

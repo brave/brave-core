@@ -16,6 +16,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/functional/callback.h"
 #include "base/functional/callback_helpers.h"
 #include "base/gtest_prod_util.h"
@@ -113,6 +114,17 @@ class AIChatService : public KeyedService,
   // background sequence where the bridge lives.
   std::unique_ptr<syncer::DataTypeControllerDelegate>
   CreateSyncControllerDelegate();
+
+  // Registers |callback|, run on this sequence whenever the on-disk database
+  // is (re)attached to the AI Chat sync bridge — i.e. after on-disk storage
+  // is enabled and the os_crypt encryptor becomes available. The AI Chat sync
+  // data type controller uses this to re-evaluate its precondition, so that
+  // toggling on-disk storage off then on performs a fresh initial sync (the
+  // sync engine otherwise keeps believing the now-empty database is fully
+  // synced and never re-downloads). The returned subscription unregisters the
+  // callback when destroyed.
+  base::CallbackListSubscription RegisterSyncDatabaseReadyCallback(
+      base::RepeatingClosure callback);
 
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
@@ -355,6 +367,16 @@ class AIChatService : public KeyedService,
       SkusServiceGetter getter,
       mojo::PendingRemote<skus::mojom::SkusService> service);
   void OnConversationListChanged();
+  // Called on this sequence (UI thread) by AIChatSyncBridge after it
+  // applies a batch of remote ADDs/UPDATEs/DELETEs. Refreshes the
+  // in-memory conversation list and pushes new data into any active
+  // ConversationHandler — stopping any in-flight LLM request or tool-use
+  // loop on those handlers first, since their local state has been
+  // superseded by the remote write.
+  void OnRemoteSyncDataApplied();
+  void OnConversationDataForRemoteSyncReload(
+      const std::string& uuid,
+      mojom::ConversationArchivePtr archive);
   void OnPremiumStatusReceived(GetPremiumStatusCallback callback,
                                mojom::PremiumStatus status,
                                mojom::PremiumInfoPtr info);
@@ -469,6 +491,10 @@ class AIChatService : public KeyedService,
   // can hand out a proxy delegate before the bridge itself exists; the bridge
   // is owned, accessed, and destroyed only on |db_task_runner_|.
   scoped_refptr<AIChatSyncBackend> sync_backend_;
+
+  // Notified whenever the database is (re)attached to |sync_backend_|'s
+  // bridge; see RegisterSyncDatabaseReadyCallback().
+  base::RepeatingClosureList sync_database_ready_callbacks_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
