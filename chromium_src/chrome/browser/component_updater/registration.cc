@@ -38,6 +38,7 @@
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/components/local_ai/core/local_models_updater.h"
+#include "brave/components/local_ai/core/on_device_speech_models_component_installer.h"
 #endif
 
 namespace component_updater {
@@ -61,6 +62,7 @@ void RegisterComponentsForUpdate() {
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
 #if BUILDFLAG(ENABLE_LOCAL_AI)
   local_ai::ManageLocalModelsComponentRegistration(cus);
+  local_ai::RegisterOnDeviceSpeechModelsComponent(cus);
 #endif
   RegisterQueryFilterComponent(cus);
 }
