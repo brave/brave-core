@@ -27,6 +27,7 @@
 #include "extensions/browser/extension_system.h"
 #include "extensions/browser/extension_util.h"
 #include "extensions/browser/install_verifier.h"
+#include "extensions/common/constants.h"
 #include "extensions/common/extension.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -370,4 +371,43 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
   EXPECT_TRUE(base::PathExists(extension->path()
                                    .AppendASCII("_metadata")
                                    .AppendASCII("computed_hashes.json")));
+}
+
+class BraveExtensionsManifestV2ReplaceBrowserTest
+    : public BraveExtensionsManifestV2InstallerBrowserTest {
+ public:
+  BraveExtensionsManifestV2ReplaceBrowserTest() {
+    feature_list_.InitAndEnableFeatureWithParameters(
+        extensions_mv2::features::kExtensionsManifestV2,
+        {{extensions_mv2::features::kBackupSettings.name, "true"},
+         {extensions_mv2::features::kImportSettingsOnInstall.name, "true"},
+         {extensions_mv2::features::kAutoInstallBraveHosted.name, "true"}});
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2ReplaceBrowserTest,
+                       AutoReplaceWithBraveHosted) {
+  auto extension =
+      extensions::ExtensionBuilder("test")
+          .SetID(extensions_mv2::kWebStoreNoScriptId)
+          .AddFlags(extensions::Extension::FROM_WEBSTORE)
+          .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
+          .Build();
+
+  auto* registrar = extensions::ExtensionRegistrar::Get(browser()->profile());
+  registrar->AddExtension(extension);
+  extensions::ExtensionRegistry::Get(browser()->profile())
+      ->TriggerOnInstalled(extension.get(), false);
+  registrar->DisableExtension(
+      extensions_mv2::kWebStoreNoScriptId,
+      {extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION});
+  WaitExtensionInstalled();
+
+  auto* registry = extensions::ExtensionRegistry::Get(browser()->profile());
+  EXPECT_FALSE(
+      registry->GetInstalledExtension(extensions_mv2::kWebStoreNoScriptId));
+  EXPECT_TRUE(registry->GetInstalledExtension(extensions_mv2::kNoScriptId));
 }
