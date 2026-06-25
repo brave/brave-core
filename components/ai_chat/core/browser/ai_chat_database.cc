@@ -2067,6 +2067,106 @@ bool AIChatDatabase::CreateSchema() {
   return true;
 }
 
+bool AIChatDatabase::ApplyRemoteConversationMetadata(
+    mojom::ConversationPtr conversation) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(conversation);
+  CHECK(!conversation->uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  // Upsert by uuid. Chromium builds SQLite with SQLITE_OMIT_UPSERT, so this is
+  // INSERT OR REPLACE and the column list has to name every column in the
+  // table: REPLACE resets the ones it leaves out. It cannot cascade into the
+  // entry or associated content rows, which hold conversation_uuid as a plain
+  // string column rather than a real foreign key and sync as their own
+  // per-record entities.
+  static constexpr char kUpsertConversationQuery[] =
+      "INSERT OR REPLACE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens)"
+      "  VALUES(?, ?, ?, ?, ?)";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpsertConversationQuery));
+  CHECK(statement.is_valid());
+  statement.BindString(0, conversation->uuid);
+  BindAndEncryptOptionalString(statement, 1, conversation->title);
+  BindOptionalString(statement, 2, conversation->model_key);
+  statement.BindInt64(3, conversation->total_tokens);
+  statement.BindInt64(4, conversation->trimmed_tokens);
+
+  if (!statement.Run()) {
+    DVLOG(0) << "Failed to upsert remote conversation: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+
+  return true;
+}
+
+bool AIChatDatabase::ApplyRemoteEntry(
+    std::string_view conversation_uuid,
+    mojom::ConversationTurnPtr entry,
+    std::vector<mojom::AssociatedContentPtr> associated_content,
+    std::vector<std::string> contents) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!conversation_uuid.empty());
+  CHECK(entry);
+  CHECK(entry->uuid.has_value() && !entry->uuid->empty());
+  CHECK_EQ(associated_content.size(), contents.size());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    DVLOG(0) << "Transaction cannot begin";
+    return false;
+  }
+
+  // AddConversationEntry refuses to create an orphan entry, so make sure the
+  // parent row exists first. An entry and its conversation metadata are
+  // separate sync records and can arrive in either order: OR IGNORE leaves an
+  // already-applied conversation untouched, and otherwise holds the entry in
+  // a stub row that ApplyRemoteConversationMetadata fills in when the
+  // metadata record arrives.
+  static constexpr char kInsertStubConversationQuery[] =
+      "INSERT OR IGNORE INTO conversation"
+      "  (uuid, title, model_key, total_tokens, trimmed_tokens)"
+      "  VALUES(?, NULL, NULL, 0, 0)";
+  sql::Statement stub_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kInsertStubConversationQuery));
+  CHECK(stub_statement.is_valid());
+  stub_statement.BindString(0, conversation_uuid);
+  if (!stub_statement.Run()) {
+    DVLOG(0) << "Failed to insert stub conversation: " << db_.GetErrorMessage();
+    return false;
+  }
+
+  // Full-replace the entry: delete the existing row along with its event,
+  // uploaded file and associated content rows, then re-insert. Local edit
+  // revisions of the entry go with it, since only the head revision syncs.
+  if (!DeleteConversationEntry(*entry->uuid)) {
+    return false;
+  }
+  if (!AddConversationEntry(conversation_uuid, std::move(entry))) {
+    return false;
+  }
+
+  // Re-add the associated content the delete above removed, with the
+  // caller-supplied texts. The caller is responsible for filling in local
+  // values for any field the remote sender omitted to fit the size budget.
+  // An empty list means the remote entry has none, and the rows stay deleted.
+  if (!associated_content.empty() &&
+      !AddOrUpdateAssociatedContent(conversation_uuid,
+                                    std::move(associated_content),
+                                    std::move(contents))) {
+    return false;
+  }
+
+  return transaction.Commit();
+}
+
 bool AIChatDatabase::GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!LazyInit()) {
