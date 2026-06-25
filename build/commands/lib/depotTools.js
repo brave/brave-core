@@ -143,6 +143,25 @@ function installDepotTools(options = config.defaultOptions) {
       })
     }
   })
+
+  applyBraveGclientPatches(options)
+}
+
+// Teach the checked-out gclient about Brave-only dep types (currently the
+// `aws` dep_type used by brave/DEPS for archives on Brave's own buckets).
+// Runs on every sync, after the depot_tools checkout and before any `gclient`
+// invocation, so DEPS using those types validate. The patch is idempotent (a
+// no-op once applied) and fails loudly if upstream depot_tools moves, so a
+// stale anchor surfaces here rather than as a confusing sync failure.
+function applyBraveGclientPatches(options = config.defaultOptions) {
+  options.cwd = config.braveCoreDir
+  const applyScript = path.join(
+    config.braveCoreDir,
+    'tools',
+    'package',
+    'apply.py',
+  )
+  util.run('vpython3', [applyScript, '--quiet', config.depotToolsDir], options)
 }
 
 // Opt-out of chromium build telemetry. See for details:

@@ -34,6 +34,70 @@ deps = {
     "condition": "checkout_mac",
   },
   "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@f34cb36d9287b76b52ba1a2ab58e50db96706dc8", # brave-orchard-0.14
+
+  "third_party/node": {
+    "bucket": "https://brave-build-deps-public.s3.brave.com/nodejs/",
+    "dep_type": "aws",
+    "condition": 'checkout_linux or checkout_mac or checkout_win',
+    "objects": [
+      {
+        "object_name": "node-v24.17.0-linux-x64.tar.gz",
+        "sha256sum": "e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f",
+        "condition": 'host_os == "linux"',
+      },
+      {
+        "object_name": "node-v24.17.0-darwin-arm64.tar.gz",
+        "sha256sum": "4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f",
+        "condition": 'host_os == "mac" and host_cpu == "arm64"',
+      },
+      {
+        "object_name": "node-v24.17.0-darwin-x64.tar.gz",
+        "sha256sum": "80da552fe037290cb130e9dea590f5eeeb7aa450636f0c89ab41415511c1ec27",
+        "condition": 'host_os == "mac" and host_cpu == "x64"',
+      },
+      {
+        "object_name": "node-v24.17.0-win-x64.zip",
+        "sha256sum": "f2aa33b35b75aca5f3f7b85675a6f6423201053e9381911e64961f3bda2528ab",
+        "condition": 'host_os == "win"',
+      },
+    ],
+  },
+
+  "../build/mac_files/sparkle_binaries": {
+    "bucket": "https://brave-build-deps-public.s3.brave.com",
+    "dep_type": "aws",
+    "condition": "checkout_mac and download_prebuilt_sparkle",
+    "objects": [
+      {
+        "object_name": "sparkle/sparkle-1.24.3.tar.gz",
+        "sha256sum": "34bcf1060627bd5f6eea67f9bce4590bf03d78e33b1d37accbcd00a3d43acf37",
+      },
+    ],
+  },
+
+  "third_party/brave-vpn-wireguard-nt-dlls": {
+    "bucket": "https://brave-build-deps-public.s3.brave.com",
+    "dep_type": "aws",
+    "condition": "checkout_win",
+    "objects": [
+      {
+        "object_name": "brave-vpn-wireguard-dlls/brave-vpn-wireguard-nt-dlls-0.10.1.zip",
+        "sha256sum": "31ed28a2b7178d51ece415bfc2fdde546ed76325b4153067204524e3c37a5326",
+      },
+    ],
+  },
+
+  "third_party/brave-vpn-wireguard-tunnel-dlls": {
+    "bucket": "https://brave-build-deps-public.s3.brave.com",
+    "dep_type": "aws",
+    "condition": "checkout_win",
+    "objects": [
+      {
+        "object_name": "brave-vpn-wireguard-dlls/brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip",
+        "sha256sum": "316db78a5a090e013f980b7068e3a1182e18da10e14159b7f5ef80699ce79c98",
+      },
+    ],
+  },
 }
 
 recursedeps = [
@@ -71,14 +135,6 @@ hooks = [
     ],
   },
   {
-    'name': 'download_sparkle',
-    'pattern': '.',
-    'condition': 'checkout_mac and download_prebuilt_sparkle',
-    'action': ['vpython3', 'build/download_dep.py',
-               'sparkle/sparkle-1.24.3.tar.gz',
-               '//build/mac_files/sparkle_binaries'],
-  },
-  {
     'name': 'download_omaha4',
     'pattern': '.',
     'condition': 'checkout_mac',
@@ -106,22 +162,6 @@ hooks = [
     # cryptography will be used. Second, we cannot update pip in vpython3 on at
     # least macOS due to permission issues.
     'action': ['python3', '-m', 'pip', '-q', '--disable-pip-version-check', 'install', '-U', '-t', 'third_party/cryptography', '--only-binary', 'cryptography', 'cryptography==37.0.4'],
-  },
-  {
-    'name': 'wireguard_nt',
-    'pattern': '.',
-    'condition': 'checkout_win',
-    'action': ['vpython3', 'build/download_dep.py',
-               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-nt-dlls-0.10.1.zip',
-               '//brave/third_party/brave-vpn-wireguard-nt-dlls'],
-  },
-  {
-    'name': 'wireguard_tunnel',
-    'pattern': '.',
-    'condition': 'checkout_win',
-    'action': ['vpython3', 'build/download_dep.py',
-               'brave-vpn-wireguard-dlls/brave-vpn-wireguard-tunnel-dlls-v0.5.3.zip',
-               '//brave/third_party/brave-vpn-wireguard-tunnel-dlls'],
   },
   {
     'name': 'download_wintun',
