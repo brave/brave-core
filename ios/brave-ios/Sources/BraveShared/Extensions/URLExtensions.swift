@@ -368,12 +368,12 @@ extension URL {
   ///
   /// ## Examples
   /// ```
-  /// URL(string: "example.com")!.resolvingScheme      // https://example.com
-  /// URL(string: "www.example.com")!.resolvingScheme  // https://www.example.com
-  /// URL(string: "https://example.com")!.resolvingScheme // https://example.com
-  /// URL(string: "http://example.com")!.resolvingScheme  // http://example.com
+  /// URL(string: "brave.com")!.httpsIfSchemeless      // https://brave.com
+  /// URL(string: "www.brave.com")!.httpsIfSchemeless  // https://www.brave.com
+  /// URL(string: "https://brave.com")!.httpsIfSchemeless // https://brave.com
+  /// URL(string: "http://brave.com")!.httpsIfSchemeless  // http://brave.com
   /// ```
-  public var resolvingScheme: URL {
+  public var httpsIfSchemeless: URL {
     guard scheme == nil else { return self }
     let urlWithScheme = "https://" + absoluteString
     return URL(string: urlWithScheme) ?? self

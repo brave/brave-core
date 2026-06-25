@@ -120,7 +120,7 @@ class ManagePasswordsViewModel {
 
   func addPassword(username: String, password: String, site: String) {
     let trimmedSite = site.trimmingCharacters(in: .whitespacesAndNewlines)
-    let resolvedSite = URL(string: trimmedSite)?.resolvingScheme.absoluteString ?? trimmedSite
+    let resolvedSite = URL(string: trimmedSite)?.httpsIfSchemeless.absoluteString ?? trimmedSite
 
     autofillDataManager.addNewPassword(
       forUsername: username.trimmingCharacters(in: .whitespacesAndNewlines),
