@@ -1,15 +1,21 @@
 #!/usr/bin/env python3
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import argparse
 import logging
+import os
 import re
 import sys
 
+import requests
 from argparse import RawTextHelpFormatter
 
-from lib.changelog import *
-from lib.config import (PLATFORM, get_env_var)
+from lib.changelog import download_from_url
 from lib.github import GitHub
-from lib.helpers import *
+from lib.helpers import BRAVE_REPO, get_release, retry_func
 
 if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
     try:
@@ -51,7 +57,8 @@ def assemble_body(preamble, sections):
     return '\n\n'.join(parts)
 
 
-def merge_release_changelog_section(body, section_title, section_content, logging):
+def merge_release_changelog_section(body, section_title, section_content,
+                                    logger):
     """Insert changelog section after removing all prior matching sections."""
     remove_titles = {section_title.lower()}
     preamble, sections = parse_h1_sections(body)
@@ -60,7 +67,7 @@ def merge_release_changelog_section(body, section_title, section_content, loggin
 
     for title, content in sections:
         if title.lower() in remove_titles:
-            logging.info("Removing existing release notes section: %s", title)
+            logger.info("Removing existing release notes section: %s", title)
             if insert_index is None:
                 insert_index = len(kept)
             continue
@@ -83,9 +90,9 @@ def main():
 
     The changelog excerpt is merged under a markdown heading given by
     --section-title (default: "Release Notes"). Before inserting, every
-    existing section with the same heading (case-insensitive), including repeated
-    copies, is removed. Other sections (install instructions, other platform notes)
-    are kept.
+    existing section with a matching heading (case-insensitive),
+    including repeated copies, is removed. Other sections (install
+    instructions, other platform notes) are kept.
 
     """
 
@@ -107,9 +114,8 @@ def main():
     tag = args.tag
 
     if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
-        logging.error(" Tag prefix must contain {} or {}".format(
-            "\"refs/tags/\"", "\"v\""))
-        exit(1)
+        logging.error(" Tag prefix must contain %s or %s", "refs/tags/", "v")
+        sys.exit(1)
 
     match = re.match(r'^refs/tags/(.*)$', tag)
     if match:
@@ -119,9 +125,9 @@ def main():
     if match:
         version = match.group(1)
 
-    logging.debug("CHANGELOG_URL: {}".format(changelog_url))
-    logging.debug("TAG: {}".format(tag))
-    logging.debug("VERSION: {}".format(version))
+    logging.debug("CHANGELOG_URL: %s", changelog_url)
+    logging.debug("TAG: %s", tag)
+    logging.debug("VERSION: %s", version)
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
@@ -131,29 +137,28 @@ def main():
     match = rn_regex.search(changelog_txt)
     if not match:
         logging.error("Unable to locate release notes!")
-        exit(1)
+        sys.exit(1)
 
     # BRAVE_REPO is defined in lib/helpers.py
     repo = GitHub(os.environ.get('GITHUB_TOKEN')).repos(BRAVE_REPO)
     release = get_release(repo, tag, allow_published_release_updates=True)
 
-    logging.debug(
-        "Release body before update: \n\'{}\'".format(release['body']))
+    logging.debug("Release body before update: \n'%s'", release['body'])
 
     logging.info("Merging original release body with changelog")
-    new_body = merge_release_changelog_section(
-        release['body'], args.section_title, match.group(1), logging)
-    logging.debug("release body is now: \n\'{}\'".format(new_body))
+    new_body = merge_release_changelog_section(release['body'],
+                                               args.section_title,
+                                               match.group(1), logging)
+    logging.debug("release body is now: \n'%s'", new_body)
 
     data = dict(tag_name=tag, name=release['name'], body=new_body)
-    id = release['id']
-    logging.debug("Updating release with id: {}".format(id))
+    release_id = release['id']
+    logging.debug("Updating release with id: %s", release_id)
     release = retry_func(
-        lambda run: repo.releases.__call__(f'{id}').patch(data=data),
+        lambda run: repo.releases.__call__(f'{release_id}').patch(data=data),
         catch=requests.exceptions.ConnectionError, retries=3
     )
-    logging.debug(
-        "Release body after update: \n\'{}\'".format(release['body']))
+    logging.debug("Release body after update: \n'%s'", release['body'])
 
 
 def debug_requests_on():
@@ -168,7 +173,7 @@ def debug_requests_on():
 
 
 def debug_requests_off():
-    '''Switches off logging of the requests module, might be some side-effects'''
+    '''Switches off logging of the requests module, might be side-effects'''
     HTTPConnection.debuglevel = 0
 
     root_logger = logging.getLogger()
@@ -179,22 +184,32 @@ def debug_requests_off():
 
 
 def parse_args():
-    desc = "Parse Brave Browser changelog and add markdown to release notes for tag" \
-        "\n\nRequires the following ENVIRONMENT VARIABLES be set:" \
-        "\n\nGITHUB_TOKEN: Github token to update draft release if not published yet. "
+    desc = ("Parse Brave Browser changelog and add markdown to release notes "
+            "for tag\n\nRequires the following ENVIRONMENT VARIABLES be set:"
+            "\n\nGITHUB_TOKEN: Github token to update draft release if not "
+            "published yet. ")
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
     parser.add_argument('-d', '--debug', action='store_true',
                         help='Print debug statements')
-    parser.add_argument('-t', '--tag',
-                        help='Brave version tag (allowed format: "v1.5.45" or "refs/tags/v1.5.45") (required)',
-                        required=True)
     parser.add_argument(
-        '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+        '-t',
+        '--tag',
+        help=('Brave version tag (allowed format: "v1.5.45" or '
+              '"refs/tags/v1.5.45") (required)'),
+        required=True)
     parser.add_argument(
-        '-s', '--section-title', default=DEFAULT_SECTION_TITLE,
-        help='Markdown section heading for release notes (default: "%(default)s")')
+        '-u',
+        '--url',
+        help='URL for Brave Browser raw markdown file (required)',
+        required=True)
+    parser.add_argument(
+        '-s',
+        '--section-title',
+        default=DEFAULT_SECTION_TITLE,
+        help=('Markdown section heading for release notes '
+              '(default: "%(default)s")'))
     return parser.parse_args()
 
 
