@@ -22,43 +22,7 @@ window.__firefox__.execute(function($) {
         }
       }
 
-      // Convert an unsinged byte (Uint8) to a hex character
-      // Unsigned bytes must be between 0 and 255
-      const byteToHex = (unsignedByte) => {
-        // convert the possibly signed byte (-128 to 127) to an unsigned byte (0 to 255).
-        // if you know, that you only deal with unsigned bytes (Uint8Array), you can omit this line
-        // const unsignedByte = byte & 0xff
-
-        // If the number can be represented with only 4 bits (0-15),
-        // the hexadecimal representation of this number is only one char (0-9, a-f).
-        if (unsignedByte < 16) {
-          return '0' + unsignedByte.toString(16)
-        } else {
-          return unsignedByte.toString(16)
-        }
-      }
-
-      // Convert an array of unsigned bytes (Uint8Array) to a hex string.
-      // Each value in the array must be between 0 and 255,
-      // resulting in hex values between 0 to f (i.e. 0 to 15)
-      const toHexString = (unsignedBytes) => {
-        return Array.from(unsignedBytes)
-          .map(byte => byteToHex(byte))
-          .join('')
-      }
-
-      // 1. Farble `getChannelData`
-      // This will also result in a farbled `copyFromChannel`
-      const getChannelData = window.AudioBuffer.prototype.getChannelData
-      window.AudioBuffer.prototype.getChannelData = function () {
-        const channelData = Reflect.apply(getChannelData, this, arguments)
-        // TODO: @JS Add more optimized audio farbling.
-        // Will be done as a future PR of #5482 here:
-        // https://github.com/brave/brave-ios/pull/5485
-        return channelData
-      }
-
-      // 2. Farble "destination" methods
+      // Farble "destination" methods
       const structuresToFarble = [
         [window.AnalyserNode, 'getFloatFrequencyData'],
         [window.AnalyserNode, 'getByteFrequencyData'],
