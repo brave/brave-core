@@ -87,15 +87,16 @@ std::string BuildUstarTar(
 
 // Builds the uncompressed tar bytes for a snap package containing
 // "package/snap.manifest.json" and "package/<bundle_file_path>".
-std::string BuildSnapTar(const std::string& manifest_json,
-                         const std::string& bundle_js,
-                         const std::string& bundle_file_path = "dist/bundle.js");
+std::string BuildSnapTar(
+    const std::string& manifest_json,
+    const std::string& bundle_js,
+    const std::string& bundle_file_path = "dist/bundle.js");
 
 // gzip-compresses |data|; the install pipeline expects a .tgz on the wire.
 std::string GzipCompressForTest(const std::string& data);
 
-// Convenience: builds a gzipped snap tarball from |manifest_json| + |bundle_js|.
-// Equivalent to GzipCompressForTest(BuildSnapTar(...)).
+// Convenience: builds a gzipped snap tarball from |manifest_json| +
+// |bundle_js|. Equivalent to GzipCompressForTest(BuildSnapTar(...)).
 std::string BuildSnapTarball(
     const std::string& manifest_json,
     const std::string& bundle_js,
@@ -110,10 +111,10 @@ std::string MakeNpmRegistryMetadataJson(const std::string& tarball_url,
 // FakeSnapBridge — implements the mojom::SnapBridge renderer interface
 // ---------------------------------------------------------------------------
 
-// Used by WalletPageSnapBridgeController / HiddenWebContentsSnapBridgeController
-// tests: bind it as the page-side bridge and assert passthrough calls. Each
-// method records its arguments and immediately runs the callback with the
-// matching canned response member.
+// Used by WalletPageSnapBridgeController /
+// HiddenWebContentsSnapBridgeController tests: bind it as the page-side bridge
+// and assert passthrough calls. Each method records its arguments and
+// immediately runs the callback with the matching canned response member.
 class FakeSnapBridge : public mojom::SnapBridge {
  public:
   FakeSnapBridge();

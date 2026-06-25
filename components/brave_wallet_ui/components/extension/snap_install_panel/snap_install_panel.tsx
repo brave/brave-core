@@ -7,9 +7,7 @@ import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
 import { BraveWallet } from '../../../constants/types'
-import {
-  useNotifySnapInstallRequestProcessedMutation,
-} from '../../../common/slices/api.slice'
+import { useNotifySnapInstallRequestProcessedMutation } from '../../../common/slices/api.slice'
 
 interface Props {
   pending: BraveWallet.PendingSnapInstall
@@ -28,15 +26,32 @@ export const SnapInstallPanel = ({ pending }: Props) => {
   const installData = pending.installData ?? null
   const state = pending.state
 
-  console.error('XXXZZZ SnapInstallPanel render: state=' + state + ' installData=' + JSON.stringify(installData) + ' error=' + pending.error)
+  console.error(
+    'XXXZZZ SnapInstallPanel render: state='
+      + state
+      + ' installData='
+      + JSON.stringify(installData)
+      + ' error='
+      + pending.error,
+  )
 
   const handleApprove = () => {
-    console.error('XXXZZZ SnapInstallPanel handleApprove: state=' + state + ' snapId=' + (installData?.snapId ?? 'null'))
+    console.error(
+      'XXXZZZ SnapInstallPanel handleApprove: state='
+        + state
+        + ' snapId='
+        + (installData?.snapId ?? 'null'),
+    )
     notifyProcessed({ approved: true })
   }
 
   const handleReject = () => {
-    console.error('XXXZZZ SnapInstallPanel handleReject: state=' + state + ' snapId=' + (installData?.snapId ?? 'null'))
+    console.error(
+      'XXXZZZ SnapInstallPanel handleReject: state='
+        + state
+        + ' snapId='
+        + (installData?.snapId ?? 'null'),
+    )
     notifyProcessed({ approved: false })
   }
 

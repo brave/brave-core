@@ -24,8 +24,8 @@ UntrustedSnapExecutorUI::UntrustedSnapExecutorUI(content::WebUI* web_ui)
   //   snap_prefetch_bridge.bundle.js (proxies bundle fetches from the iframe)
   //   bundle.js (MetaMask's IFrameSnapExecutor)
   untrusted_source->SetDefaultResource(IDR_BRAVE_WALLET_SNAP_EXECUTOR_HTML);
-  // Generated resource map: ses_lockdown.bundle.js, snap_prefetch_bridge.bundle.js,
-  // snap_executor.bundle.js (placeholder).
+  // Generated resource map: ses_lockdown.bundle.js,
+  // snap_prefetch_bridge.bundle.js, snap_executor.bundle.js (placeholder).
   untrusted_source->AddResourcePaths(kSnapExecutorGenerated);
   // SES 1.15.0 UMD — defines lockdown(), Compartment, harden() globally.
   // Must be loaded before MetaMask's bundle.js.
@@ -53,15 +53,12 @@ UntrustedSnapExecutorUI::UntrustedSnapExecutorUI(content::WebUI* web_ui)
   // Disable Trusted Types — SES Compartment passes a plain string to
   // new Function() which violates the default TT policy on WebUI pages.
   untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::RequireTrustedTypesFor,
-      "");
+      network::mojom::CSPDirectiveName::RequireTrustedTypesFor, "");
   // 'self' for snap bundle fetch(); '*' for snap endowment:network-access.
   untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ConnectSrc,
-      "connect-src 'self' *;");
+      network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self' *;");
   untrusted_source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc,
-      "frame-src 'none';");
+      network::mojom::CSPDirectiveName::FrameSrc, "frame-src 'none';");
 }
 
 UntrustedSnapExecutorUI::~UntrustedSnapExecutorUI() = default;

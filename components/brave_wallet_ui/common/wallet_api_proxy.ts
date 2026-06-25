@@ -49,9 +49,7 @@ export class WalletApiProxy {
     this.braveWalletService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 
-  addSnapsServiceObserver(
-    observer: BraveWallet.SnapsServiceObserverReceiver,
-  ) {
+  addSnapsServiceObserver(observer: BraveWallet.SnapsServiceObserverReceiver) {
     this.snapsService.addObserver(observer.$.bindNewPipeAndPassRemote())
   }
 

@@ -348,7 +348,9 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+#if BUILDFLAG(ENABLE_SNAPS)
 #include "brave/browser/ui/webui/brave_wallet/wallet_snap_host_ui.h"
+#endif
 #endif
 #endif
 
@@ -706,8 +708,10 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
       .Add<brave_rewards::mojom::RewardsPageHandler>()
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
       ;
+#if BUILDFLAG(ENABLE_SNAPS)
   registry.ForWebUI<WalletSnapHostUI>()
       .Add<brave_wallet::mojom::WalletSnapHostHandlerFactory>();
+#endif  // BUILDFLAG(ENABLE_SNAPS)
 #endif  // !BUILDFLAG(IS_ANDROID)
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 

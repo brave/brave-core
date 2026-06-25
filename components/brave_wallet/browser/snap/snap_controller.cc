@@ -10,23 +10,21 @@
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_bridge_controller.h"
-#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace brave_wallet {
 
-SnapController::SnapController(
-    SnapDataProvider& data_provider,
-    SnapPermissionController& permission_controller,
-    SnapBridgeController& bridge_controller)
+SnapController::SnapController(SnapDataProvider& data_provider,
+                               SnapPermissionController& permission_controller,
+                               SnapBridgeController& bridge_controller)
     : data_provider_(data_provider),
       permission_controller_(permission_controller),
       bridge_controller_(bridge_controller) {
-  bridge_controller_->SetDisconnectCallback(
-      base::BindRepeating(&SnapController::OnBridgeDisconnected,
-                          weak_ptr_factory_.GetWeakPtr()));
+  bridge_controller_->SetDisconnectCallback(base::BindRepeating(
+      &SnapController::OnBridgeDisconnected, weak_ptr_factory_.GetWeakPtr()));
 }
 
 SnapController::~SnapController() = default;
@@ -50,7 +48,7 @@ void SnapController::OnBridgeDisconnected() {
 }
 
 void SnapController::FailPendingCallback(size_t index,
-                                          const std::string& error) {
+                                         const std::string& error) {
   if (index >= pending_callbacks_.size() || !pending_callbacks_[index]) {
     return;
   }
@@ -62,14 +60,14 @@ void SnapController::FailPendingCallback(size_t index,
 // ---------------------------------------------------------------------------
 
 void SnapController::InvokeSnap(const std::string& snap_id,
-                                 const std::string& method,
-                                 base::Value params,
-                                 std::optional<url::Origin> caller_origin,
-                                 SnapResultCallback callback) {
+                                const std::string& method,
+                                base::Value params,
+                                std::optional<url::Origin> caller_origin,
+                                SnapResultCallback callback) {
   if (caller_origin.has_value()) {
     const url::Origin& origin = *caller_origin;
     if (origin.opaque() || (origin.scheme() != url::kHttpScheme &&
-                             origin.scheme() != url::kHttpsScheme)) {
+                            origin.scheme() != url::kHttpsScheme)) {
       std::move(callback).Run(std::nullopt, "requires a secure web origin");
       return;
     }
@@ -148,26 +146,24 @@ void SnapController::ContinueInvokeSnap(
   const size_t cb_index = pending_callbacks_.size();
   pending_callbacks_.push_back(std::move(callback));
 
-  bridge_controller_->EnsureBridgeReady(
-      base::BindOnce(&SnapController::DispatchInvoke,
-                     weak_ptr_factory_.GetWeakPtr(), cb_index, snap_id, method,
-                     std::move(params), origin_str));
+  bridge_controller_->EnsureBridgeReady(base::BindOnce(
+      &SnapController::DispatchInvoke, weak_ptr_factory_.GetWeakPtr(), cb_index,
+      snap_id, method, std::move(params), origin_str));
 }
 
 void SnapController::DispatchInvoke(size_t cb_index,
-                                     std::string snap_id,
-                                     std::string method,
-                                     base::Value params,
-                                     std::string origin_str) {
+                                    std::string snap_id,
+                                    std::string method,
+                                    base::Value params,
+                                    std::string origin_str) {
   if (!bridge_controller_->IsBound()) {
     FailPendingCallback(cb_index, "no_bridge");
     return;
   }
   bridge_controller_->LoadSnap(
-      snap_id,
-      base::BindOnce(&SnapController::OnLoadSnapResult,
-                     weak_ptr_factory_.GetWeakPtr(), cb_index, snap_id, method,
-                     std::move(params), origin_str));
+      snap_id, base::BindOnce(&SnapController::OnLoadSnapResult,
+                              weak_ptr_factory_.GetWeakPtr(), cb_index, snap_id,
+                              method, std::move(params), origin_str));
 }
 
 // ---------------------------------------------------------------------------
@@ -175,10 +171,10 @@ void SnapController::DispatchInvoke(size_t cb_index,
 // ---------------------------------------------------------------------------
 
 void SnapController::RequestSnaps(const url::Origin& origin,
-                                   const base::DictValue& snaps_dict,
-                                   RequestSnapsCallback callback) {
+                                  const base::DictValue& snaps_dict,
+                                  RequestSnapsCallback callback) {
   if (origin.opaque() || (origin.scheme() != url::kHttpScheme &&
-                           origin.scheme() != url::kHttpsScheme)) {
+                          origin.scheme() != url::kHttpsScheme)) {
     std::move(callback).Run(std::nullopt,
                             "wallet_requestSnaps requires a secure web origin");
     return;
@@ -270,28 +266,26 @@ void SnapController::OnSnapConnectionResolved(
 // ---------------------------------------------------------------------------
 
 void SnapController::GetSnapHomePage(const std::string& snap_id,
-                                      SnapHomePageCallback callback) {
+                                     SnapHomePageCallback callback) {
   if (!data_provider_->IsSnapEnabled(snap_id)) {
     std::move(callback).Run(std::nullopt, std::nullopt, "Snap is disabled");
     return;
   }
-  bridge_controller_->EnsureBridgeReady(
-      base::BindOnce(&SnapController::DispatchGetSnapHomePage,
-                     weak_ptr_factory_.GetWeakPtr(), snap_id,
-                     std::move(callback)));
+  bridge_controller_->EnsureBridgeReady(base::BindOnce(
+      &SnapController::DispatchGetSnapHomePage, weak_ptr_factory_.GetWeakPtr(),
+      snap_id, std::move(callback)));
 }
 
 void SnapController::DispatchGetSnapHomePage(std::string snap_id,
-                                              SnapHomePageCallback callback) {
+                                             SnapHomePageCallback callback) {
   if (!bridge_controller_->IsBound()) {
     std::move(callback).Run(std::nullopt, std::nullopt, "no_bridge");
     return;
   }
   bridge_controller_->LoadSnap(
-      snap_id,
-      base::BindOnce(&SnapController::OnLoadSnapForHomePage,
-                     weak_ptr_factory_.GetWeakPtr(), snap_id,
-                     std::move(callback)));
+      snap_id, base::BindOnce(&SnapController::OnLoadSnapForHomePage,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id,
+                              std::move(callback)));
 }
 
 void SnapController::OnLoadSnapForHomePage(
@@ -312,9 +306,9 @@ void SnapController::OnLoadSnapForHomePage(
 }
 
 void SnapController::SendSnapUserInput(const std::string& snap_id,
-                                        const std::string& interface_id,
-                                        const std::string& event_json,
-                                        SnapUserInputCallback callback) {
+                                       const std::string& interface_id,
+                                       const std::string& event_json,
+                                       SnapUserInputCallback callback) {
   if (!data_provider_->IsSnapEnabled(snap_id)) {
     std::move(callback).Run(std::nullopt, "Snap is disabled");
     return;
@@ -334,24 +328,23 @@ void SnapController::DispatchSendSnapUserInput(std::string snap_id,
     return;
   }
   bridge_controller_->SendSnapUserInputEvent(snap_id, interface_id, event_json,
-                                              std::move(callback));
+                                             std::move(callback));
 }
 
 // ---------------------------------------------------------------------------
 // Private bridge callbacks
 // ---------------------------------------------------------------------------
 
-void SnapController::OnLoadSnapResult(
-    size_t cb_index,
-    std::string snap_id,
-    std::string method,
-    base::Value params,
-    std::string caller_origin,
-    bool success,
-    const std::optional<std::string>& error) {
+void SnapController::OnLoadSnapResult(size_t cb_index,
+                                      std::string snap_id,
+                                      std::string method,
+                                      base::Value params,
+                                      std::string caller_origin,
+                                      bool success,
+                                      const std::optional<std::string>& error) {
   if (!success) {
-    FailPendingCallback(
-        cb_index, error.value_or("Failed to load snap: unknown error"));
+    FailPendingCallback(cb_index,
+                        error.value_or("Failed to load snap: unknown error"));
     return;
   }
   if (!bridge_controller_->IsBound()) {

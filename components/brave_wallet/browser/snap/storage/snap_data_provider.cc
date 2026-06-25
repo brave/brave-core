@@ -53,9 +53,10 @@ void SnapDataProvider::SetSnapEnabled(const std::string& snap_id,
 // Bundle I/O
 // ---------------------------------------------------------------------------
 
-void SnapDataProvider::SaveBundleFromDir(const std::string& snap_id,
-                                          const base::FilePath& unpacked_dir,
-                                          base::OnceCallback<void(bool)> on_done) {
+void SnapDataProvider::SaveBundleFromDir(
+    const std::string& snap_id,
+    const base::FilePath& unpacked_dir,
+    base::OnceCallback<void(bool)> on_done) {
   snap_storage_->MoveSnapFiles(snap_id, unpacked_dir, std::move(on_done));
 }
 
@@ -70,7 +71,7 @@ void SnapDataProvider::ReadBundle(
 // ---------------------------------------------------------------------------
 
 void SnapDataProvider::GetSnapState(const std::string& snap_id,
-                                     StateCallback callback) {
+                                    StateCallback callback) {
   auto it = state_cache_.find(snap_id);
   if (it != state_cache_.end()) {
     const std::string& json = it->second;
@@ -79,15 +80,14 @@ void SnapDataProvider::GetSnapState(const std::string& snap_id,
     return;
   }
   snap_storage_->ReadState(
-      snap_id,
-      base::BindOnce(&SnapDataProvider::OnStateLoaded,
-                     weak_ptr_factory_.GetWeakPtr(), snap_id,
-                     std::move(callback)));
+      snap_id, base::BindOnce(&SnapDataProvider::OnStateLoaded,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id,
+                              std::move(callback)));
 }
 
 void SnapDataProvider::UpdateSnapState(const std::string& snap_id,
-                                        std::string json,
-                                        StateWriteCallback on_done) {
+                                       std::string json,
+                                       StateWriteCallback on_done) {
   constexpr size_t kMaxStateBytes = 1 * 1024 * 1024;  // 1 MB
   if (json.size() > kMaxStateBytes) {
     std::move(on_done).Run("snap_manageState: state exceeds 1 MB limit");
@@ -101,7 +101,7 @@ void SnapDataProvider::UpdateSnapState(const std::string& snap_id,
 }
 
 void SnapDataProvider::ClearSnapState(const std::string& snap_id,
-                                       StateWriteCallback on_done) {
+                                      StateWriteCallback on_done) {
   state_cache_[snap_id] = "";
   snap_storage_->WriteState(
       snap_id, "{}",
@@ -148,8 +148,8 @@ void SnapDataProvider::OnStateCleared(StateWriteCallback on_done,
 }
 
 void SnapDataProvider::OnStateLoaded(std::string snap_id,
-                                      StateCallback callback,
-                                      std::optional<std::string> disk_json) {
+                                     StateCallback callback,
+                                     std::optional<std::string> disk_json) {
   if (!disk_json || disk_json->empty()) {
     state_cache_[snap_id] = "";
     std::move(callback).Run(std::nullopt);

@@ -30,7 +30,9 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_page/wallet_page_ui.h"
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
+#if BUILDFLAG(ENABLE_SNAPS)
 #include "brave/browser/ui/webui/brave_wallet/wallet_snap_host_ui.h"
+#endif
 #endif
 #endif
 
@@ -134,7 +136,7 @@ void RegisterChromeWebUIConfigs() {
 #if BUILDFLAG(ENABLE_SPEEDREADER)
   map.AddWebUIConfig(std::make_unique<SpeedreaderToolbarUIConfig>());
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#if BUILDFLAG(ENABLE_SNAPS)
   map.AddWebUIConfig(std::make_unique<WalletSnapHostUIConfig>());
 #endif
   map.AddWebUIConfig(

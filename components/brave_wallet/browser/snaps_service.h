@@ -14,14 +14,14 @@
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/types/expected.h"
-#include "base/values.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/types/expected.h"
+#include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer.h"
-#include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 #include "brave/components/brave_wallet/browser/snap/snap_request_handler_impl.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -122,8 +122,7 @@ class SnapsService : public mojom::SnapsService {
       bool approved,
       NotifySnapInstallRequestProcessedCallback callback) override;
 
-  void GetPendingSnapInstall(
-      GetPendingSnapInstallCallback callback) override;
+  void GetPendingSnapInstall(GetPendingSnapInstallCallback callback) override;
 
   void GetSnapHomePage(const std::string& snap_id,
                        GetSnapHomePageCallback callback) override;
@@ -200,12 +199,12 @@ class SnapsService : public mojom::SnapsService {
   std::unique_ptr<SnapRequestHandlerImpl> snap_request_handler_;
 
   // Pending snap install state — at most one in-flight at a time.
-  mojom::SnapInstallState pending_snap_state_ =
-      mojom::SnapInstallState::kIdle;
+  mojom::SnapInstallState pending_snap_state_ = mojom::SnapInstallState::kIdle;
   mojom::SnapInstallDataPtr pending_snap_install_data_;
   std::string pending_snap_error_;
 
-  // Callback for the in-flight snap install; called when FinishInstall completes.
+  // Callback for the in-flight snap install; called when FinishInstall
+  // completes.
   SnapInstaller::InstallCallback pending_install_callback_;
 
   // Installs requested while another was already in flight.

@@ -21,12 +21,15 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/snaps_service.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
-#include "brave/components/constants/webui_url_constants.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 #include "brave/components/brave_wallet_page/resources/grit/brave_wallet_page_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/favicon_source.h"
 #include "chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h"
@@ -227,6 +230,7 @@ void WalletPageUI::CreatePageHandler(
     wallet_service->Bind(std::move(swap_service_receiver));
     wallet_service->Bind(std::move(meld_integration_service));
     wallet_service->Bind(std::move(ipfs_service_receiver));
+#if BUILDFLAG(ENABLE_SNAPS)
     wallet_service->Bind(std::move(snaps_service_receiver));
 
     if (auto* snaps_service = wallet_service->snaps_service()) {
@@ -246,6 +250,7 @@ void WalletPageUI::CreatePageHandler(
       // which page hosts the executor iframes.
       snaps_service->BindSnapRequestHandler(std::move(snap_request_handler));
     }
+#endif  // BUILDFLAG(ENABLE_SNAPS)
   }
 
   auto* blockchain_registry = BlockchainRegistry::GetInstance();

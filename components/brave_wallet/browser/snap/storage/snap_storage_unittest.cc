@@ -75,7 +75,8 @@ TEST_F(SnapStorageTest, MoveSnapFilesMovesBundleAndManifest) {
 }
 
 TEST_F(SnapStorageTest, MoveSnapFilesMissingSourceReturnsFalse) {
-  base::FilePath nonexistent = temp_dir_.GetPath().AppendASCII("does_not_exist");
+  base::FilePath nonexistent =
+      temp_dir_.GetPath().AppendASCII("does_not_exist");
   base::test::TestFuture<bool> move;
   storage_->MoveSnapFiles("npm:@test/snap", nonexistent, move.GetCallback());
   EXPECT_FALSE(move.Get());
@@ -143,7 +144,8 @@ TEST_F(SnapStorageTest, HasSnapReflectsBundlePresence) {
   }
 
   base::test::TestFuture<bool> move;
-  storage_->MoveSnapFiles(snap_id, MakeUnpackedDir("B", "M"), move.GetCallback());
+  storage_->MoveSnapFiles(snap_id, MakeUnpackedDir("B", "M"),
+                          move.GetCallback());
   EXPECT_TRUE(move.Get());
 
   base::ScopedAllowBlockingForTesting allow_blocking;

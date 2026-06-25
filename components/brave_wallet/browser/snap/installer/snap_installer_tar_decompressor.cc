@@ -71,8 +71,8 @@ SnapInstaller::ExtractResult SnapInstallerTarDecompressor::ExtractTarballToDir(
     LOG(ERROR) << "XXXZZZ ExtractTarballToDir: snap.manifest.json NOT FOUND";
     return ExtractError("Failed to extract snap.manifest.json from tarball");
   }
-  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: manifest_json='"
-             << *manifest_json << "'";
+  LOG(ERROR) << "XXXZZZ ExtractTarballToDir: manifest_json='" << *manifest_json
+             << "'";
 
   // Phase 2: parse manifest for bundle filePath.
   std::string bundle_file_path;

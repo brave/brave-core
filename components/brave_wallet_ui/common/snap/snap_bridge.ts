@@ -32,9 +32,17 @@ const SNAP_EXECUTOR_ORIGIN = 'chrome-untrusted://snap-executor'
 
 // Base endowments always provided to every snap (factory-backed in the executor).
 const BASE_ENDOWMENTS = [
-  'console', 'crypto', 'SubtleCrypto', 'Date', 'Math',
-  'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval',
-  'TextEncoder', 'TextDecoder',
+  'console',
+  'crypto',
+  'SubtleCrypto',
+  'Date',
+  'Math',
+  'setTimeout',
+  'clearTimeout',
+  'setInterval',
+  'clearInterval',
+  'TextEncoder',
+  'TextDecoder',
 ]
 
 // Additional endowments keyed by snap initialPermission name.
@@ -42,9 +50,17 @@ const BASE_ENDOWMENTS = [
 // scuttles globalThis), so they are safe to request here.
 const PERMISSION_ENDOWMENTS: Record<string, string[]> = {
   'endowment:network-access': [
-    'fetch', 'Request', 'Headers', 'Response',
-    'URL', 'URLSearchParams', 'AbortController', 'AbortSignal',
-    'atob', 'btoa', 'WebSocket',
+    'fetch',
+    'Request',
+    'Headers',
+    'Response',
+    'URL',
+    'URLSearchParams',
+    'AbortController',
+    'AbortSignal',
+    'atob',
+    'btoa',
+    'WebSocket',
   ],
   'endowment:webassembly': ['WebAssembly'],
 }
@@ -53,11 +69,19 @@ const PERMISSION_ENDOWMENTS: Record<string, string[]> = {
 // Typed arrays and ArrayBuffer are always included since many crypto/encoding
 // libs (used by all three snaps) depend on them.
 const COMMON_GLOBALS = [
-  'Uint8Array', 'Int8Array', 'Uint16Array', 'Int16Array',
-  'Uint32Array', 'Int32Array', 'Float32Array', 'Float64Array',
-  'BigInt64Array', 'BigUint64Array', 'ArrayBuffer', 'DataView',
+  'Uint8Array',
+  'Int8Array',
+  'Uint16Array',
+  'Int16Array',
+  'Uint32Array',
+  'Int32Array',
+  'Float32Array',
+  'Float64Array',
+  'BigInt64Array',
+  'BigUint64Array',
+  'ArrayBuffer',
+  'DataView',
 ]
-
 
 // Parameters passed to the dialog handler when a snap calls snap_dialog or snap_confirm.
 export interface SnapDialogParams {
@@ -81,12 +105,24 @@ interface SnapConnection {
 
 // Convert a mojo_base.mojom.Value tagged union to a plain JS value.
 export function mojoValueToJs(v: MojoValue | null | undefined): unknown {
-  if (v === null || v === undefined) { return null }
-  if (v.nullValue !== undefined) { return null }
-  if (v.boolValue !== undefined) { return v.boolValue }
-  if (v.intValue !== undefined) { return v.intValue }
-  if (v.doubleValue !== undefined) { return v.doubleValue }
-  if (v.stringValue !== undefined) { return v.stringValue }
+  if (v === null || v === undefined) {
+    return null
+  }
+  if (v.nullValue !== undefined) {
+    return null
+  }
+  if (v.boolValue !== undefined) {
+    return v.boolValue
+  }
+  if (v.intValue !== undefined) {
+    return v.intValue
+  }
+  if (v.doubleValue !== undefined) {
+    return v.doubleValue
+  }
+  if (v.stringValue !== undefined) {
+    return v.stringValue
+  }
   if (v.listValue !== undefined) {
     return v.listValue.storage.map((item: MojoValue) => mojoValueToJs(item))
   }
@@ -102,12 +138,18 @@ export function mojoValueToJs(v: MojoValue | null | undefined): unknown {
 
 // Convert a plain JS value to a mojo_base.mojom.Value tagged union.
 export function jsToMojoValue(v: unknown): MojoValue {
-  if (v === null || v === undefined) { return { nullValue: 0 } }
-  if (typeof v === 'boolean') { return { boolValue: v } }
+  if (v === null || v === undefined) {
+    return { nullValue: 0 }
+  }
+  if (typeof v === 'boolean') {
+    return { boolValue: v }
+  }
   if (typeof v === 'number') {
     return Number.isInteger(v) ? { intValue: v } : { doubleValue: v }
   }
-  if (typeof v === 'string') { return { stringValue: v } }
+  if (typeof v === 'string') {
+    return { stringValue: v }
+  }
   if (Array.isArray(v)) {
     return { listValue: { storage: v.map((item) => jsToMojoValue(item)) } }
   }
@@ -149,9 +191,7 @@ export class SnapBridge {
     this.container = container ?? document.body
   }
 
-  setSnapRequestHandler(
-    handler: BraveWallet.SnapRequestHandlerRemote,
-  ): void {
+  setSnapRequestHandler(handler: BraveWallet.SnapRequestHandlerRemote): void {
     this.snapRequestHandler = handler
   }
 
@@ -192,17 +232,23 @@ export class SnapBridge {
       }
 
       const snapsService = this.getSnapsService()
-      const { sourceCode: code, error } = await snapsService.getSnapBundle(snapId)
+      const { sourceCode: code, error } =
+        await snapsService.getSnapBundle(snapId)
       if (error || !code) {
         return { success: false, error: error ?? 'Bundle not found' }
       }
       const sourceCode = code as string
 
       const { manifest } = await snapsService.getSnapManifest(snapId)
-      const endowmentPerms = ((manifest?.permissions ?? []) as string[])
-        .filter((p) => p.startsWith('endowment:'))
-      const extras = endowmentPerms.flatMap((p) => PERMISSION_ENDOWMENTS[p] ?? [])
-      const endowments = [...new Set([...BASE_ENDOWMENTS, ...extras, ...COMMON_GLOBALS])]
+      const endowmentPerms = ((manifest?.permissions ?? []) as string[]).filter(
+        (p) => p.startsWith('endowment:'),
+      )
+      const extras = endowmentPerms.flatMap(
+        (p) => PERMISSION_ENDOWMENTS[p] ?? [],
+      )
+      const endowments = [
+        ...new Set([...BASE_ENDOWMENTS, ...extras, ...COMMON_GLOBALS]),
+      ]
 
       await this.sendCommand(conn.commandStream, 'executeSnap', {
         snapId,
@@ -242,9 +288,8 @@ export class SnapBridge {
         },
       })
 
-      const mojoResult = result !== undefined && result !== null
-        ? jsToMojoValue(result)
-        : null
+      const mojoResult =
+        result !== undefined && result !== null ? jsToMojoValue(result) : null
       return { result: mojoResult, error: null }
     } catch (err) {
       const msg = err instanceof Error ? err.message : String(err)
@@ -262,7 +307,9 @@ export class SnapBridge {
     return resp.text()
   }
 
-  async getHomePage(snapId: string): Promise<{ content: unknown; interfaceId?: string; error?: string }> {
+  async getHomePage(
+    snapId: string,
+  ): Promise<{ content: unknown; interfaceId?: string; error?: string }> {
     try {
       console.error('XXXZZZ SnapBridge.getHomePage', snapId)
       let conn = this.connections.get(snapId)
@@ -270,12 +317,15 @@ export class SnapBridge {
         conn = await this.createConnection(snapId)
         const loadResult = await this.loadSnap(snapId)
         if (!loadResult.success) {
-          return { content: null, error: loadResult.error ?? 'Failed to load snap' }
+          return {
+            content: null,
+            error: loadResult.error ?? 'Failed to load snap',
+          }
         }
       }
 
       console.error('XXXZZZ SnapBridge.getHomePage: sending snapRpc onHomePage')
-      const result = await this.sendCommand(conn.commandStream, 'snapRpc', {
+      const result = (await this.sendCommand(conn.commandStream, 'snapRpc', {
         snapId,
         handler: 'onHomePage',
         origin: this.getCallerOrigin(),
@@ -284,8 +334,11 @@ export class SnapBridge {
           method: '',
           params: [],
         },
-      }) as Record<string, unknown> | null
-      console.error('XXXZZZ SnapBridge.getHomePage: result=', JSON.stringify(result)?.slice(0, 300))
+      })) as Record<string, unknown> | null
+      console.error(
+        'XXXZZZ SnapBridge.getHomePage: result=',
+        JSON.stringify(result)?.slice(0, 300),
+      )
 
       if (!result) {
         return { content: null }
@@ -293,7 +346,12 @@ export class SnapBridge {
 
       if (typeof result.id === 'string' && !result.content) {
         const content = conn.interfaces.get(result.id)
-        console.error('XXXZZZ SnapBridge.getHomePage: resolved interface id=', result.id, 'content=', !!content)
+        console.error(
+          'XXXZZZ SnapBridge.getHomePage: resolved interface id=',
+          result.id,
+          'content=',
+          !!content,
+        )
         return { content, interfaceId: result.id as string }
       }
 
@@ -371,7 +429,9 @@ export class SnapBridge {
     eventJson: string,
   ): Promise<{ contentJson: string | null; error: string | null }> {
     try {
-      const event = JSON.parse(eventJson) as Parameters<typeof this.sendUserInput>[2]
+      const event = JSON.parse(eventJson) as Parameters<
+        typeof this.sendUserInput
+      >[2]
       const result = await this.sendUserInput(snapId, interfaceId, event)
       if (result.error) {
         return { contentJson: null, error: result.error }
@@ -451,12 +511,17 @@ export class SnapBridge {
     // Debug: log all raw messages from the iframe to confirm postMessage flow
     window.addEventListener('message', (ev: MessageEvent) => {
       if (ev.source === iframe.contentWindow) {
-        console.error('XXXZZZ raw iframe msg:', JSON.stringify(ev.data)?.slice(0, 800))
+        console.error(
+          'XXXZZZ raw iframe msg:',
+          JSON.stringify(ev.data)?.slice(0, 800),
+        )
       }
     })
 
     this.connections.set(snapId, conn)
-    console.error('XXXZZZ SnapBridge.createConnection: streams ready, waiting for handshake...')
+    console.error(
+      'XXXZZZ SnapBridge.createConnection: streams ready, waiting for handshake...',
+    )
     return conn
   }
 
@@ -484,7 +549,11 @@ export class SnapBridge {
       const id = rpcIdCounter++
 
       const onData = (data: unknown) => {
-        const msg = data as { id?: number; result?: unknown; error?: { message?: string; code?: number } }
+        const msg = data as {
+          id?: number
+          result?: unknown
+          error?: { message?: string; code?: number }
+        }
         if (msg.id !== id) {
           return
         }
@@ -504,7 +573,9 @@ export class SnapBridge {
         method,
         params,
       })
-      console.error('XXXZZZ SnapBridge.sendCommand: message written, waiting for response...')
+      console.error(
+        'XXXZZZ SnapBridge.sendCommand: message written, waiting for response...',
+      )
     })
   }
 
@@ -531,8 +602,15 @@ export class SnapBridge {
 
     console.error('XXXZZZ handleRpcRequest:', msg.method, 'id=', msg.id)
 
-    const respond = (result?: unknown, error?: { code: number; message: string }) => {
-      console.error('XXXZZZ handleRpcRequest respond:', msg.method, error ? 'ERROR:'+error.message : 'OK')
+    const respond = (
+      result?: unknown,
+      error?: { code: number; message: string },
+    ) => {
+      console.error(
+        'XXXZZZ handleRpcRequest respond:',
+        msg.method,
+        error ? 'ERROR:' + error.message : 'OK',
+      )
       const response: Record<string, unknown> = { jsonrpc: '2.0', id: msg.id }
       if (error) {
         response.error = error
@@ -543,7 +621,12 @@ export class SnapBridge {
     }
 
     try {
-      const result = await this.dispatchSnapRequest(snapId, conn, msg.method, msg.params)
+      const result = await this.dispatchSnapRequest(
+        snapId,
+        conn,
+        msg.method,
+        msg.params,
+      )
       respond(result)
     } catch (err) {
       const errMsg = err instanceof Error ? err.message : String(err)
@@ -559,7 +642,9 @@ export class SnapBridge {
     params: unknown,
   ): Promise<unknown> {
     if (method === 'snap_createInterface') {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown> | undefined
+      const p = (Array.isArray(params) ? params[0] : params) as
+        | Record<string, unknown>
+        | undefined
       const ui = p?.ui ?? p
       const interfaceId = `${Date.now()}-${Math.random().toString(36).slice(2)}`
       conn.interfaces.set(interfaceId, ui)
@@ -567,7 +652,9 @@ export class SnapBridge {
     }
 
     if (method === 'snap_updateInterface') {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown> | undefined
+      const p = (Array.isArray(params) ? params[0] : params) as
+        | Record<string, unknown>
+        | undefined
       const id = p?.id as string | undefined
       const ui = p?.ui
       if (id) {
@@ -577,7 +664,9 @@ export class SnapBridge {
     }
 
     if (method === 'snap_getInterfaceState') {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown> | undefined
+      const p = (Array.isArray(params) ? params[0] : params) as
+        | Record<string, unknown>
+        | undefined
       const id = p?.id as string | undefined
       return id ? (conn.interfaceStates.get(id) ?? {}) : {}
     }
@@ -597,14 +686,19 @@ export class SnapBridge {
     // snap_manageState: serialize newState to JSON string before sending to
     // C++ (which stores raw bytes), and parse the returned JSON string back.
     if (method === 'snap_manageState') {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown> | undefined
+      const p = (Array.isArray(params) ? params[0] : params) as
+        | Record<string, unknown>
+        | undefined
       const operation = p?.operation as string | undefined
       const mojoParams: Record<string, unknown> = { operation }
       if (operation === 'update') {
         mojoParams.newStateJson = JSON.stringify(p?.newState ?? null)
       }
       const { result, error } = await this.snapRequestHandler.handleSnapRequest(
-        snapId, method, jsToMojoValue(mojoParams) as any)
+        snapId,
+        method,
+        jsToMojoValue(mojoParams) as any,
+      )
       if (error) throw new Error(error)
       const raw = mojoValueToJs(result ?? null) as string | null
       if (!raw || raw === 'null') return null
@@ -628,7 +722,10 @@ export class SnapBridge {
     }
     const jsResult = mojoValueToJs(result ?? null)
     if (method === 'snap_getBip44Entropy') {
-      console.error('XXXZZZ snap_getBip44Entropy result:', JSON.stringify(jsResult))
+      console.error(
+        'XXXZZZ snap_getBip44Entropy result:',
+        JSON.stringify(jsResult),
+      )
     }
     return jsResult
   }
@@ -645,7 +742,10 @@ export class SnapBridge {
     let dialogParams: SnapDialogParams
 
     if (method === 'snap_confirm') {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown>
+      const p = (Array.isArray(params) ? params[0] : params) as Record<
+        string,
+        unknown
+      >
       dialogParams = {
         dialogType: 'confirmation',
         prompt: p?.prompt as string | undefined,
@@ -653,7 +753,10 @@ export class SnapBridge {
         textAreaContent: p?.textAreaContent as string | undefined,
       }
     } else {
-      const p = (Array.isArray(params) ? params[0] : params) as Record<string, unknown>
+      const p = (Array.isArray(params) ? params[0] : params) as Record<
+        string,
+        unknown
+      >
       dialogParams = {
         dialogType: (p?.type as string) ?? 'confirmation',
         content: p?.content,

@@ -50,7 +50,9 @@ class EthAllowanceManager;
 class JsonRpcService;
 class KeyringService;
 class NetworkManager;
+#if BUILDFLAG(ENABLE_SNAPS)
 class SnapsService;
+#endif
 class TxService;
 class AccountDiscoveryManager;
 class AssetRatioService;
@@ -360,7 +362,9 @@ class BraveWalletService : public KeyedService,
   NetworkManager* network_manager() { return network_manager_.get(); }
   JsonRpcService* json_rpc_service() { return json_rpc_service_.get(); }
   KeyringService* keyring_service() { return keyring_service_.get(); }
+#if BUILDFLAG(ENABLE_SNAPS)
   SnapsService* snaps_service() { return snaps_service_.get(); }
+#endif
 
   TxService* tx_service() { return tx_service_.get(); }
   AssetRatioService* asset_ratio_service() {
@@ -491,7 +495,9 @@ class BraveWalletService : public KeyedService,
   std::unique_ptr<NetworkManager> network_manager_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<KeyringService> keyring_service_;
+#if BUILDFLAG(ENABLE_SNAPS)
   std::unique_ptr<SnapsService> snaps_service_;
+#endif
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
   std::unique_ptr<PolkadotWalletService> polkadot_wallet_service_;
   std::unique_ptr<ZCashWalletService> zcash_wallet_service_;

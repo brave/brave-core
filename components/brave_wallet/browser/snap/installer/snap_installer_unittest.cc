@@ -76,7 +76,8 @@ class SnapInstallerTest : public testing::Test {
   base::expected<mojom::SnapInstallDataPtr, std::string> Prepare(
       const std::string& snap_id,
       const std::string& version) {
-    base::test::TestFuture<base::expected<mojom::SnapInstallDataPtr, std::string>>
+    base::test::TestFuture<
+        base::expected<mojom::SnapInstallDataPtr, std::string>>
         future;
     installer_->PrepareInstall(snap_id, version, future.GetCallback());
     return future.Take();

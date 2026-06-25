@@ -75,8 +75,9 @@ class SnapController {
   // Called by SnapsService after construction to wire up the install delegate.
   void SetInstallSnapDelegate(InstallSnapDelegate delegate);
 
-  // Called by SnapsService after construction to wire up the connection-approval
-  // delegate. When unset (e.g. in unit tests) connections are auto-granted.
+  // Called by SnapsService after construction to wire up the
+  // connection-approval delegate. When unset (e.g. in unit tests) connections
+  // are auto-granted.
   void SetRequestConnectionDelegate(RequestConnectionDelegate delegate);
 
   // Invoked by EthereumProviderImpl for wallet_invokeSnap / wallet_snap.
@@ -162,8 +163,9 @@ class SnapController {
   void OnSingleSnapInstalled(std::shared_ptr<RequestSnapsState> state,
                              const std::string& snap_id,
                              base::expected<void, std::string> result);
-  // Resolves a RequestSnaps connection-approval request for an already-installed
-  // snap. Grants and records the snap on approval, then aggregates.
+  // Resolves a RequestSnaps connection-approval request for an
+  // already-installed snap. Grants and records the snap on approval, then
+  // aggregates.
   void OnSnapConnectionResolved(std::shared_ptr<RequestSnapsState> state,
                                 const std::string& snap_id,
                                 bool approved);

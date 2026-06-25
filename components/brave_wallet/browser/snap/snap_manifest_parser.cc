@@ -118,8 +118,7 @@ SnapManifestParser::Result SnapManifestParser::Parse(
     const std::string& snap_id,
     const std::string& version) {
   LOG(ERROR) << "XXXZZZ SnapManifestParser::Parse snap_id=" << snap_id
-             << " version=" << version
-             << " json_size=" << manifest_json.size();
+             << " version=" << version << " json_size=" << manifest_json.size();
   Result result;
   result.manifest = mojom::SnapManifest::New();
 

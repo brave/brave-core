@@ -42,8 +42,8 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_cip30_serializer.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_hd_keyring.h"
 #include "brave/components/brave_wallet/browser/ethereum_keyring.h"
-#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/filecoin_keyring.h"
+#include "brave/components/brave_wallet/browser/internal/hd_key.h"
 #include "brave/components/brave_wallet/browser/json_keystore_parser.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service_migrations.h"
@@ -3897,9 +3897,9 @@ void KeyringService::GetBip44EntropyForSnap(
   // This is the first 4 bytes of Hash160(pubkey) as a big-endian uint32.
   const auto root_fp = root->GetFingerprint();
   uint32_t master_fingerprint = (static_cast<uint32_t>(root_fp[0]) << 24) |
-                                 (static_cast<uint32_t>(root_fp[1]) << 16) |
-                                 (static_cast<uint32_t>(root_fp[2]) << 8) |
-                                 static_cast<uint32_t>(root_fp[3]);
+                                (static_cast<uint32_t>(root_fp[1]) << 16) |
+                                (static_cast<uint32_t>(root_fp[2]) << 8) |
+                                static_cast<uint32_t>(root_fp[3]);
 
   base::DictValue result;
   result.Set("privateKey",
@@ -3967,7 +3967,8 @@ void KeyringService::GetEntropyForSnap(
   preimage.insert(preimage.end(), salt_hash.begin(), salt_hash.end());
   const auto hash = KeccakHash(preimage);
 
-  // SIP_6_MAGIC_VALUE: hardened index 0xd36e6170 == 1399742832 | kHardenedOffset.
+  // SIP_6_MAGIC_VALUE: hardened index 0xd36e6170 == 1399742832 |
+  // kHardenedOffset.
   constexpr uint32_t kSip6MagicValue = 0xd36e6170u - kHardenedOffset;
   auto node = root->DeriveChild(DerivationIndex::Hardened(kSip6MagicValue));
   if (!node) {

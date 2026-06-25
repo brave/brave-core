@@ -216,8 +216,6 @@ static_library("browser") {
     "simulation_service.h",
     "siwe_message_parser.cc",
     "siwe_message_parser.h",
-    "snaps_service.cc",
-    "snaps_service.h",
     "sns_resolver_task.cc",
     "sns_resolver_task.h",
     "solana_account_meta.cc",
@@ -333,7 +331,6 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/internal:hd_key_common",
     "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
-    "//brave/components/brave_wallet/browser/snap",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/brave_wallet/common/buildflags:dev_buildflags",
@@ -401,6 +398,15 @@ static_library("browser") {
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
     "//sql",
   ]
+
+  if (enable_snaps) {
+    sources += [
+      "snaps_service.cc",
+      "snaps_service.h",
+    ]
+
+    deps += [ "//brave/components/brave_wallet/browser/snap" ]
+  }
 }
 
 # TODO(https://github.com/brave/brave-browser/issues/47669) this should be
@@ -572,8 +578,6 @@ source_set("test_support") {
     "json_rpc_service_test_utils.h",
     "polkadot/polkadot_test_utils.cc",
     "polkadot/polkadot_test_utils.h",
-    "snap/snap_test_utils.cc",
-    "snap/snap_test_utils.h",
     "solana_test_utils.cc",
     "solana_test_utils.h",
     "test_utils.cc",
@@ -592,7 +596,6 @@ source_set("test_support") {
     "//brave/components/brave_wallet/browser/bitcoin:generated_bitcoin_rpc_responses",
     "//brave/components/brave_wallet/browser/cardano:generated_cardano_rpc_blockfrost_api",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
-    "//brave/components/brave_wallet/browser/snap",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common/buildflags",
@@ -797,20 +800,6 @@ source_set("unit_tests") {
     "simulation_response_parser_unittest.cc",
     "simulation_service_unittest.cc",
     "siwe_message_parser_unittest.cc",
-    "snap/execution_environment/hidden_web_contents_snap_bridge_controller_unittest.cc",
-    "snap/execution_environment/wallet_page_snap_bridge_controller_unittest.cc",
-    "snap/installer/snap_installer_checksum_calculator_unittest.cc",
-    "snap/installer/snap_installer_tar_decompressor_unittest.cc",
-    "snap/installer/snap_installer_unittest.cc",
-    "snap/installer/snap_tar_utils_unittest.cc",
-    "snap/snap_controller_unittest.cc",
-    "snap/snap_manifest_parser_unittest.cc",
-    "snap/snap_permission_controller_unittest.cc",
-    "snap/snap_request_handler_impl_unittest.cc",
-    "snap/storage/snap_data_provider_unittest.cc",
-    "snap/storage/snap_registry_unittest.cc",
-    "snap/storage/snap_storage_unittest.cc",
-    "snaps_service_unittest.cc",
     "sns_resolver_task_unittest.cc",
     "solana_account_meta_unittest.cc",
     "solana_block_tracker_unittest.cc",
@@ -886,7 +875,6 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/browser/internal:polkadot_extrinsic_rs",
     "//brave/components/brave_wallet/browser/polkadot:generated_polkadot_substrate_rpc_responses",
-    "//brave/components/brave_wallet/browser/snap",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
@@ -935,6 +923,18 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/internal:test_support",
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
   ]
+
+  if (enable_snaps) {
+    sources += [ "snaps_service_unittest.cc" ]
+
+    deps += [
+      "//brave/components/brave_wallet/browser/snap:test_support",
+      "//brave/components/brave_wallet/browser/snap:unit_tests",
+      "//brave/components/brave_wallet/browser/snap/execution_environment:unit_tests",
+      "//brave/components/brave_wallet/browser/snap/installer:unit_tests",
+      "//brave/components/brave_wallet/browser/snap/storage:unit_tests",
+    ]
+  }
 
   if (use_blink) {
     sources += [ "permission_utils_unittest.cc" ]

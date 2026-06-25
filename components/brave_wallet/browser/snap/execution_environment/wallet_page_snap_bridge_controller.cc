@@ -72,7 +72,7 @@ void WalletPageSnapBridgeController::DrainReadyCallbacks() {
 // ---------------------------------------------------------------------------
 
 void WalletPageSnapBridgeController::LoadSnap(const std::string& snap_id,
-                                               LoadSnapCallback cb) {
+                                              LoadSnapCallback cb) {
   snap_bridge_->LoadSnap(snap_id, std::move(cb));
 }
 
@@ -83,7 +83,7 @@ void WalletPageSnapBridgeController::InvokeSnap(
     const std::string& caller_origin,
     InvokeSnapCallback cb) {
   snap_bridge_->InvokeSnap(snap_id, method, std::move(params), caller_origin,
-                            std::move(cb));
+                           std::move(cb));
 }
 
 void WalletPageSnapBridgeController::FetchSnapHomePage(
@@ -98,7 +98,7 @@ void WalletPageSnapBridgeController::SendSnapUserInputEvent(
     const std::string& event_json,
     SendSnapUserInputEventCallback cb) {
   snap_bridge_->SendSnapUserInputEvent(snap_id, interface_id, event_json,
-                                        std::move(cb));
+                                       std::move(cb));
 }
 
 }  // namespace brave_wallet

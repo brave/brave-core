@@ -93,8 +93,8 @@ SnapStorage::SnapStorage(const base::FilePath& profile_path)
 SnapStorage::~SnapStorage() = default;
 
 void SnapStorage::MoveSnapFiles(const std::string& snap_id,
-                                 const base::FilePath& unpacked_dir,
-                                 base::OnceCallback<void(bool)> on_done) {
+                                const base::FilePath& unpacked_dir,
+                                base::OnceCallback<void(bool)> on_done) {
   base::FilePath dest_dir = GetSnapDir(snap_id);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -112,17 +112,15 @@ void SnapStorage::ReadBundle(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadBundleFile, snap_dir),
-      std::move(cb));
+      base::BindOnce(&ReadBundleFile, snap_dir), std::move(cb));
 }
 
 void SnapStorage::DeleteSnap(const std::string& snap_id) {
   base::FilePath snap_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTask(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-       base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-      base::BindOnce(&DeleteSnapDir, snap_dir));
+  base::ThreadPool::PostTask(FROM_HERE,
+                             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+                              base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
+                             base::BindOnce(&DeleteSnapDir, snap_dir));
 }
 
 void SnapStorage::WriteState(const std::string& snap_id,
@@ -133,8 +131,7 @@ void SnapStorage::WriteState(const std::string& snap_id,
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::BindOnce(&WriteStateFile, snap_dir, json),
-      std::move(on_done));
+      base::BindOnce(&WriteStateFile, snap_dir, json), std::move(on_done));
 }
 
 void SnapStorage::ReadState(
@@ -145,8 +142,7 @@ void SnapStorage::ReadState(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadStateFile, snap_dir),
-      std::move(cb));
+      base::BindOnce(&ReadStateFile, snap_dir), std::move(cb));
 }
 
 bool SnapStorage::HasSnap(const std::string& snap_id) const {

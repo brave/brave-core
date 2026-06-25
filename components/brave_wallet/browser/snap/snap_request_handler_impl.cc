@@ -11,19 +11,19 @@
 #include "base/logging.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
-#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 
 namespace brave_wallet {
 
 namespace {
 
 constexpr char kMethodGetBip44Entropy[] = "snap_getBip44Entropy";
-constexpr char kMethodGetEntropy[]      = "snap_getEntropy";
-constexpr char kMethodManageState[]     = "snap_manageState";
-constexpr char kMethodDialog[]          = "snap_dialog";
-constexpr char kMethodConfirm[]         = "snap_confirm";
-constexpr char kMethodNotify[]          = "snap_notify";
+constexpr char kMethodGetEntropy[] = "snap_getEntropy";
+constexpr char kMethodManageState[] = "snap_manageState";
+constexpr char kMethodDialog[] = "snap_dialog";
+constexpr char kMethodConfirm[] = "snap_confirm";
+constexpr char kMethodNotify[] = "snap_notify";
 
 }  // namespace
 
@@ -69,7 +69,8 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
     const base::DictValue* dict = params.GetIfDict();
     const std::string* op_str = dict ? dict->FindString("operation") : nullptr;
     if (!op_str) {
-      LOG(ERROR) << "XXXZZZ HandleSnapRequest: snap_manageState missing operation";
+      LOG(ERROR)
+          << "XXXZZZ HandleSnapRequest: snap_manageState missing operation";
       std::move(callback).Run(std::nullopt,
                               "snap_manageState: missing operation");
       return;
@@ -83,7 +84,8 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
       op = SnapStateOperation::kUpdate;
       const std::string* json = dict->FindString("newStateJson");
       if (!json) {
-        LOG(ERROR) << "XXXZZZ HandleSnapRequest: snap_manageState missing newStateJson";
+        LOG(ERROR) << "XXXZZZ HandleSnapRequest: snap_manageState missing "
+                      "newStateJson";
         std::move(callback).Run(std::nullopt,
                                 "snap_manageState: missing newStateJson");
         return;
@@ -92,7 +94,8 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
     } else if (*op_str == "clear") {
       op = SnapStateOperation::kClear;
     } else {
-      LOG(ERROR) << "XXXZZZ HandleSnapRequest: snap_manageState unknown op=" << *op_str;
+      LOG(ERROR) << "XXXZZZ HandleSnapRequest: snap_manageState unknown op="
+                 << *op_str;
       std::move(callback).Run(
           std::nullopt, "snap_manageState: unknown operation: " + *op_str);
       return;
@@ -107,8 +110,7 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
     std::move(callback).Run(std::nullopt, std::nullopt);
   } else {
     LOG(ERROR) << "XXXZZZ HandleSnapRequest: unsupported method=" << method;
-    std::move(callback).Run(std::nullopt,
-                            "Unsupported snap method: " + method);
+    std::move(callback).Run(std::nullopt, "Unsupported snap method: " + method);
   }
 }
 
@@ -120,25 +122,22 @@ void SnapRequestHandlerImpl::HandleGetBip44Entropy(
   const base::DictValue* dict = params.GetIfDict();
   if (!dict) {
     LOG(ERROR) << "XXXZZZ HandleGetBip44Entropy: params not a dict";
-    std::move(callback).Run(
-        std::nullopt,
-        std::string(kMethodGetBip44Entropy) + ": params must be a dict");
+    std::move(callback).Run(std::nullopt, std::string(kMethodGetBip44Entropy) +
+                                              ": params must be a dict");
     return;
   }
   std::optional<int> coin_type = dict->FindInt("coinType");
   if (!coin_type || *coin_type < 0) {
     LOG(ERROR) << "XXXZZZ HandleGetBip44Entropy: missing/invalid coinType";
-    std::move(callback).Run(
-        std::nullopt,
-        std::string(kMethodGetBip44Entropy) + ": missing or invalid coinType");
+    std::move(callback).Run(std::nullopt, std::string(kMethodGetBip44Entropy) +
+                                              ": missing or invalid coinType");
     return;
   }
   LOG(ERROR) << "XXXZZZ HandleGetBip44Entropy: coinType=" << *coin_type;
   keyring_service_->GetBip44EntropyForSnap(
       static_cast<uint32_t>(*coin_type),
       base::BindOnce(
-          [](HandleSnapRequestCallback cb,
-             std::optional<base::Value> result) {
+          [](HandleSnapRequestCallback cb, std::optional<base::Value> result) {
             LOG(ERROR) << "XXXZZZ GetBip44EntropyForSnap: success="
                        << result.has_value();
             if (!result) {
@@ -161,9 +160,8 @@ void SnapRequestHandlerImpl::HandleGetEntropy(
   const base::DictValue* dict = params.GetIfDict();
   if (!dict) {
     LOG(ERROR) << "XXXZZZ HandleGetEntropy: params not a dict";
-    std::move(callback).Run(
-        std::nullopt,
-        std::string(kMethodGetEntropy) + ": params must be a dict");
+    std::move(callback).Run(std::nullopt, std::string(kMethodGetEntropy) +
+                                              ": params must be a dict");
     return;
   }
   // The only currently supported version is the numeric literal 1; the field
@@ -182,8 +180,7 @@ void SnapRequestHandlerImpl::HandleGetEntropy(
   keyring_service_->GetEntropyForSnap(
       snap_id, salt ? *salt : std::string(),
       base::BindOnce(
-          [](HandleSnapRequestCallback cb,
-             std::optional<base::Value> result) {
+          [](HandleSnapRequestCallback cb, std::optional<base::Value> result) {
             LOG(ERROR) << "XXXZZZ GetEntropyForSnap: success="
                        << result.has_value();
             if (!result) {
@@ -208,14 +205,13 @@ void SnapRequestHandlerImpl::HandleManageState(
   switch (operation) {
     case SnapStateOperation::kGet:
       data_provider_->GetSnapState(
-          snap_id,
-          base::BindOnce(
-              [](HandleSnapRequestCallback cb,
-                 std::optional<std::string> json) {
-                std::move(cb).Run(
-                    base::Value(json.value_or("null")), std::nullopt);
-              },
-              std::move(callback)));
+          snap_id, base::BindOnce(
+                       [](HandleSnapRequestCallback cb,
+                          std::optional<std::string> json) {
+                         std::move(cb).Run(base::Value(json.value_or("null")),
+                                           std::nullopt);
+                       },
+                       std::move(callback)));
       return;
 
     case SnapStateOperation::kUpdate:
@@ -235,13 +231,12 @@ void SnapRequestHandlerImpl::HandleManageState(
 
     case SnapStateOperation::kClear:
       data_provider_->ClearSnapState(
-          snap_id,
-          base::BindOnce(
-              [](HandleSnapRequestCallback cb,
-                 std::optional<std::string> /*error*/) {
-                std::move(cb).Run(base::Value("null"), std::nullopt);
-              },
-              std::move(callback)));
+          snap_id, base::BindOnce(
+                       [](HandleSnapRequestCallback cb,
+                          std::optional<std::string> /*error*/) {
+                         std::move(cb).Run(base::Value("null"), std::nullopt);
+                       },
+                       std::move(callback)));
       return;
   }
 }

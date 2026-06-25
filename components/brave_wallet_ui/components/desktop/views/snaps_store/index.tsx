@@ -21,7 +21,10 @@ export const SnapsStore = () => {
   const [statusMessage, setStatusMessage] = React.useState('')
   const [isError, setIsError] = React.useState(false)
 
-  const { data: snaps = [] as BraveWallet.SnapInstallData[], refetch: refetchSnaps } = useGetInstalledSnapsQuery()
+  const {
+    data: snaps = [] as BraveWallet.SnapInstallData[],
+    refetch: refetchSnaps,
+  } = useGetInstalledSnapsQuery()
   const { data: pendingSnap } = useGetPendingSnapInstallQuery()
   const [requestInstallSnap, { isLoading: isRequesting }] =
     useRequestInstallSnapMutation()
@@ -46,7 +49,12 @@ export const SnapsStore = () => {
 
   const handleInstall = React.useCallback(async () => {
     const id = snapIdInput.trim()
-    console.error('XXXZZZ handleInstall: raw input=' + JSON.stringify(snapIdInput) + ' trimmed=' + JSON.stringify(id))
+    console.error(
+      'XXXZZZ handleInstall: raw input='
+        + JSON.stringify(snapIdInput)
+        + ' trimmed='
+        + JSON.stringify(id),
+    )
     if (!id) {
       setStatusMessage('Please enter a snap ID (e.g. npm:@polkagate/snap)')
       setIsError(true)
@@ -57,12 +65,17 @@ export const SnapsStore = () => {
     setIsError(false)
 
     try {
-      console.error('XXXZZZ handleInstall: calling requestInstallSnap snapId=' + id)
+      console.error(
+        'XXXZZZ handleInstall: calling requestInstallSnap snapId=' + id,
+      )
       const result = await requestInstallSnap({
         snapId: id,
         version: 'latest',
       }).unwrap()
-      console.error('XXXZZZ handleInstall: requestInstallSnap result=' + JSON.stringify(result))
+      console.error(
+        'XXXZZZ handleInstall: requestInstallSnap result='
+          + JSON.stringify(result),
+      )
 
       if (!result.success) {
         if (result.error === 'already_pending') {
@@ -147,9 +160,7 @@ export const SnapsStore = () => {
 
       {/* Installed snaps list */}
       <div style={styles.listBox}>
-        <h3 style={styles.sectionTitle}>
-          Installed Snaps ({snaps.length})
-        </h3>
+        <h3 style={styles.sectionTitle}>Installed Snaps ({snaps.length})</h3>
         {snaps.length === 0 ? (
           <p style={styles.emptyText}>No snaps installed yet.</p>
         ) : (
@@ -172,7 +183,9 @@ export const SnapsStore = () => {
                   <td style={styles.td}>
                     <code style={styles.code}>{snap.snapId}</code>
                   </td>
-                  <td style={styles.td}>{snap.manifest?.proposedName || '—'}</td>
+                  <td style={styles.td}>
+                    {snap.manifest?.proposedName || '—'}
+                  </td>
                   <td style={styles.td}>{snap.version}</td>
                   <td style={styles.td}>
                     <span style={styles.permList}>

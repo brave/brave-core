@@ -105,11 +105,7 @@ export function SnapPage() {
       </div>
 
       {/* Error */}
-      {error && (
-        <div style={styles.errorBox}>
-          {error}
-        </div>
-      )}
+      {error && <div style={styles.errorBox}>{error}</div>}
 
       {/* Loading spinner */}
       {loading && !homePageData && (

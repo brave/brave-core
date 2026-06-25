@@ -69,8 +69,8 @@ class SnapsServiceTest : public testing::Test {
         &prefs_, nullptr);
     keyring_service_ = std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         &prefs_, &local_state_);
-    // browser_context = nullptr selects the WalletPageSnapBridgeController path,
-    // so no WebContents is needed.
+    // browser_context = nullptr selects the WalletPageSnapBridgeController
+    // path, so no WebContents is needed.
     service_ = std::make_unique<SnapsService>(
         *keyring_service_, prefs_, temp_dir_.GetPath(),
         url_loader_factory_.GetSafeWeakWrapper(),
@@ -341,10 +341,9 @@ TEST_F(SnapsServiceTest, GetSnapBundleUnknownReturnsError) {
 TEST_F(SnapsServiceTest, InvokeSnapInvalidParamsJson) {
   base::test::TestFuture<std::optional<std::string>, std::optional<std::string>>
       future;
-  service_->InvokeSnap(
-      "npm:test-snap", "foo", "this is not json",
-      future.GetCallback<const std::optional<std::string>&,
-                         const std::optional<std::string>&>());
+  service_->InvokeSnap("npm:test-snap", "foo", "this is not json",
+                       future.GetCallback<const std::optional<std::string>&,
+                                          const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_EQ(future.Get<1>(), "Invalid params JSON");
 }

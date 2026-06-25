@@ -228,11 +228,12 @@ class KeyringService : public mojom::KeyringService {
       base::OnceCallback<void(std::optional<base::Value>)> callback);
 
   // Derives deterministic 256-bit entropy for snap_getEntropy, following the
-  // SIP-6 reference implementation (https://metamask.github.io/SIPs/SIPS/sip-6).
-  // |input| is the requesting snap id and |salt| is an optional caller-provided
-  // salt ("" when unspecified). The callback receives a "0x"-prefixed hex
-  // string of the derived private key, or nullopt when the wallet is locked or
-  // key derivation fails.
+  // SIP-6 reference implementation
+  // (https://metamask.github.io/SIPs/SIPS/sip-6). |input| is the requesting
+  // snap id and |salt| is an optional caller-provided salt ("" when
+  // unspecified). The callback receives a "0x"-prefixed hex string of the
+  // derived private key, or nullopt when the wallet is locked or key derivation
+  // fails.
   void GetEntropyForSnap(
       const std::string& input,
       const std::string& salt,

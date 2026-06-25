@@ -116,18 +116,18 @@ bool IterateTar(base::span<const char> data, Visitor visitor) {
 }  // namespace
 
 std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
-                                               std::string_view path_suffix) {
+                                              std::string_view path_suffix) {
   auto data = base::as_chars(base::as_byte_span(tar_data));
   std::optional<std::string> result;
 
-  bool ok = IterateTar(data, [&](const std::string& path,
-                                  base::span<const char> file_span) {
-    if (EndsWithSuffix(path, path_suffix)) {
-      result.emplace(file_span.begin(), file_span.end());
-      return true;  // Stop.
-    }
-    return false;
-  });
+  bool ok = IterateTar(
+      data, [&](const std::string& path, base::span<const char> file_span) {
+        if (EndsWithSuffix(path, path_suffix)) {
+          result.emplace(file_span.begin(), file_span.end());
+          return true;  // Stop.
+        }
+        return false;
+      });
 
   if (!ok) {
     return std::nullopt;  // Malformed archive.
@@ -135,29 +135,30 @@ std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
   return result;
 }
 
-std::optional<SnapTarResult> ExtractSnapFiles(const std::string& tar_data,
-                                              std::string_view bundle_file_path) {
+std::optional<SnapTarResult> ExtractSnapFiles(
+    const std::string& tar_data,
+    std::string_view bundle_file_path) {
   auto data = base::as_chars(base::as_byte_span(tar_data));
   SnapTarResult result;
   bool found_manifest = false;
   bool found_bundle = false;
 
-  bool ok = IterateTar(data, [&](const std::string& path,
-                                  base::span<const char> file_span) {
-    if (!found_manifest && EndsWithSuffix(path, "snap.manifest.json")) {
-      result.manifest_json.assign(file_span.begin(), file_span.end());
-      found_manifest = true;
-    } else if (!found_bundle) {
-      bool matches = !bundle_file_path.empty()
-                         ? EndsWithSuffix(path, bundle_file_path)
-                         : IsDistJsFile(path);
-      if (matches) {
-        result.bundle_js.assign(file_span.begin(), file_span.end());
-        found_bundle = true;
-      }
-    }
-    return found_manifest && found_bundle;  // Stop when both found.
-  });
+  bool ok = IterateTar(
+      data, [&](const std::string& path, base::span<const char> file_span) {
+        if (!found_manifest && EndsWithSuffix(path, "snap.manifest.json")) {
+          result.manifest_json.assign(file_span.begin(), file_span.end());
+          found_manifest = true;
+        } else if (!found_bundle) {
+          bool matches = !bundle_file_path.empty()
+                             ? EndsWithSuffix(path, bundle_file_path)
+                             : IsDistJsFile(path);
+          if (matches) {
+            result.bundle_js.assign(file_span.begin(), file_span.end());
+            found_bundle = true;
+          }
+        }
+        return found_manifest && found_bundle;  // Stop when both found.
+      });
 
   if (!ok || !found_manifest || !found_bundle) {
     return std::nullopt;

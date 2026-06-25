@@ -22,8 +22,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/brave_wallet_panel/resources/grit/brave_wallet_panel_generated_map.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -81,11 +81,11 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
   source->AddString("braveWalletLedgerBridgeUrl", kUntrustedLedgerURL);
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
-      base::JoinString({"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
-                        kUntrustedLineChartURL, kUntrustedNftURL,
-                        kUntrustedMarketURL,
-                        base::StrCat({kUntrustedSnapExecutorURL, ";"})},
-                       " "));
+      base::JoinString(
+          {"frame-src", kUntrustedTrezorURL, kUntrustedLedgerURL,
+           kUntrustedLineChartURL, kUntrustedNftURL, kUntrustedMarketURL,
+           base::StrCat({kUntrustedSnapExecutorURL, ";"})},
+          " "));
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::StyleSrc,
       "style-src 'self' 'unsafe-inline' chrome://resources chrome://theme;");
@@ -223,7 +223,9 @@ void WalletPanelUI::CreatePanelHandler(
     wallet_service->Bind(std::move(simulation_service_receiver));
     wallet_service->Bind(std::move(meld_integration_service));
     wallet_service->Bind(std::move(brave_wallet_ipfs_service_receiver));
+#if BUILDFLAG(ENABLE_SNAPS)
     wallet_service->Bind(std::move(snaps_service_receiver));
+#endif
   }
 
   auto* blockchain_registry = brave_wallet::BlockchainRegistry::GetInstance();

@@ -34,8 +34,12 @@ export const SnapViewPanel = ({ snapId }: Props) => {
   const [sendUserInput] = useSendSnapUserInputMutation()
 
   // Local override for updated content after user interactions.
-  const [liveContentJson, setLiveContentJson] = React.useState<string | null>(null)
-  const [liveInterfaceId, setLiveInterfaceId] = React.useState<string | null>(null)
+  const [liveContentJson, setLiveContentJson] = React.useState<string | null>(
+    null,
+  )
+  const [liveInterfaceId, setLiveInterfaceId] = React.useState<string | null>(
+    null,
+  )
 
   // Reset live state when snapId changes or fresh data arrives.
   React.useEffect(() => {
@@ -49,7 +53,11 @@ export const SnapViewPanel = ({ snapId }: Props) => {
 
   const content = React.useMemo(() => {
     if (!contentJson) return null
-    try { return JSON.parse(contentJson) } catch { return null }
+    try {
+      return JSON.parse(contentJson)
+    } catch {
+      return null
+    }
   }, [contentJson])
 
   const handleUserInput = React.useCallback(

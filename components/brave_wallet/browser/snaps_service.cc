@@ -9,21 +9,21 @@
 #include <utility>
 
 #include "base/feature_list.h"
-#include "base/logging.h"
-#include "base/strings/string_util.h"
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
+#include "base/logging.h"
+#include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/hidden_web_contents_snap_bridge_controller.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_bridge_controller.h"
-#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
-#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
+#include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_bridge_controller.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer.h"
+#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
 #include "brave/components/brave_wallet/browser/snap/snap_request_handler_impl.h"
-#include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_bridge_controller.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -45,39 +45,37 @@ SnapsService::SnapsService(
     : keyring_service_(keyring_service),
       prefs_(prefs),
       data_provider_(std::make_unique<SnapDataProvider>(profile_path, prefs)),
-      permission_controller_(std::make_unique<SnapPermissionController>(
-          prefs,
-          *data_provider_)),
-      snap_installer_(std::make_unique<SnapInstaller>(*data_provider_,
-                                                       url_loader_factory)),
+      permission_controller_(
+          std::make_unique<SnapPermissionController>(prefs, *data_provider_)),
+      snap_installer_(
+          std::make_unique<SnapInstaller>(*data_provider_, url_loader_factory)),
       bridge_controller_(
-          browser_context &&
-                  base::FeatureList::IsEnabled(
-                      features::kBraveWalletSnapsBackground)
+          browser_context && base::FeatureList::IsEnabled(
+                                 features::kBraveWalletSnapsBackground)
               ? std::unique_ptr<SnapBridgeController>(
                     std::make_unique<HiddenWebContentsSnapBridgeController>(
-                        keyring_service, browser_context,
+                        keyring_service,
+                        browser_context,
                         std::move(open_snap_host_tab)))
               : std::unique_ptr<SnapBridgeController>(
                     std::make_unique<WalletPageSnapBridgeController>(
                         std::move(open_wallet_page)))),
       snap_controller_(std::make_unique<SnapController>(*data_provider_,
-                                                         *permission_controller_,
-                                                         *bridge_controller_)),
-      snap_request_handler_(std::make_unique<SnapRequestHandlerImpl>(
-          keyring_service,
-          *data_provider_,
-          *permission_controller_)) {
+                                                        *permission_controller_,
+                                                        *bridge_controller_)),
+      snap_request_handler_(
+          std::make_unique<SnapRequestHandlerImpl>(keyring_service,
+                                                   *data_provider_,
+                                                   *permission_controller_)) {
   using InstallSnapFn = void (SnapsService::*)(std::string, std::string,
                                                SnapInstaller::InstallCallback);
-  snap_controller_->SetInstallSnapDelegate(
-      base::BindRepeating(static_cast<InstallSnapFn>(&SnapsService::InstallSnap),
-                          weak_ptr_factory_.GetWeakPtr()));
-  snap_controller_->SetRequestConnectionDelegate(
-      base::BindRepeating(&SnapsService::RequestSnapConnection,
-                          weak_ptr_factory_.GetWeakPtr()));
-  const bool bg = browser_context &&
-                  base::FeatureList::IsEnabled(features::kBraveWalletSnapsBackground);
+  snap_controller_->SetInstallSnapDelegate(base::BindRepeating(
+      static_cast<InstallSnapFn>(&SnapsService::InstallSnap),
+      weak_ptr_factory_.GetWeakPtr()));
+  snap_controller_->SetRequestConnectionDelegate(base::BindRepeating(
+      &SnapsService::RequestSnapConnection, weak_ptr_factory_.GetWeakPtr()));
+  const bool bg = browser_context && base::FeatureList::IsEnabled(
+                                         features::kBraveWalletSnapsBackground);
   LOG(ERROR) << "XXXZZZ SnapsService: constructed, background_mode=" << bg
              << " browser_context=" << (browser_context ? "yes" : "null");
 }
@@ -103,7 +101,8 @@ void SnapsService::Bind(mojo::PendingReceiver<mojom::SnapsService> receiver) {
 
 void SnapsService::SetSnapBridge(
     mojo::PendingRemote<mojom::SnapBridge> bridge) {
-  LOG(ERROR) << "XXXZZZ SnapsService::SetSnapBridge: called, currently_bound=" << bridge_controller_->IsBound();
+  LOG(ERROR) << "XXXZZZ SnapsService::SetSnapBridge: called, currently_bound="
+             << bridge_controller_->IsBound();
   bridge_controller_->SetBridge(std::move(bridge));
 }
 
@@ -137,7 +136,7 @@ void SnapsService::GrantSnapConnection(const url::Origin& origin,
 }
 
 bool SnapsService::IsOriginAllowedByManifest(const url::Origin& origin,
-                                              const std::string& snap_id) const {
+                                             const std::string& snap_id) const {
   return permission_controller_->IsOriginAllowedByManifest(origin, snap_id);
 }
 
@@ -149,7 +148,7 @@ base::DictValue SnapsService::GetSnapsForOrigin(
     const url::Origin& origin) const {
   base::DictValue result;
   if (origin.opaque() || (origin.scheme() != url::kHttpScheme &&
-                           origin.scheme() != url::kHttpsScheme)) {
+                          origin.scheme() != url::kHttpsScheme)) {
     return result;
   }
   for (const auto& snap : data_provider_->GetAllSnaps()) {
@@ -157,7 +156,7 @@ base::DictValue SnapsService::GetSnapsForOrigin(
       continue;
     }
     if (permission_controller_->IsOriginAllowedByManifest(origin,
-                                                           snap->snap_id)) {
+                                                          snap->snap_id)) {
       base::DictValue snap_info;
       snap_info.Set("id", snap->snap_id);
       snap_info.Set("version", snap->version);
@@ -172,9 +171,9 @@ base::DictValue SnapsService::GetSnapsForOrigin(
 // ---------------------------------------------------------------------------
 
 void SnapsService::InvokeSnap(const std::string& snap_id,
-                               const std::string& method,
-                               const std::string& params_json,
-                               InvokeSnapCallback callback) {
+                              const std::string& method,
+                              const std::string& params_json,
+                              InvokeSnapCallback callback) {
   auto params = base::JSONReader::Read(params_json, base::JSON_PARSE_RFC);
   if (!params) {
     std::move(callback).Run(std::nullopt, "Invalid params JSON");
@@ -187,8 +186,8 @@ void SnapsService::InvokeSnap(const std::string& snap_id,
 }
 
 void SnapsService::OnInvokeSnapResult(InvokeSnapCallback callback,
-                                       std::optional<base::Value> result,
-                                       std::optional<std::string> error) {
+                                      std::optional<base::Value> result,
+                                      std::optional<std::string> error) {
   std::optional<std::string> result_json;
   if (result) {
     result_json = base::WriteJson(*result);
@@ -197,24 +196,24 @@ void SnapsService::OnInvokeSnapResult(InvokeSnapCallback callback,
 }
 
 void SnapsService::InstallSnap(const std::string& snap_id,
-                                const std::string& version,
-                                InstallSnapCallback callback) {
-  InstallSnap(snap_id, version,
-              base::BindOnce(&SnapsService::OnInstallSnapResult,
-                             weak_ptr_factory_.GetWeakPtr(),
-                             std::move(callback)));
+                               const std::string& version,
+                               InstallSnapCallback callback) {
+  InstallSnap(
+      snap_id, version,
+      base::BindOnce(&SnapsService::OnInstallSnapResult,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void SnapsService::OnInstallSnapResult(InstallSnapCallback callback,
-                                        base::expected<void, std::string> result) {
+void SnapsService::OnInstallSnapResult(
+    InstallSnapCallback callback,
+    base::expected<void, std::string> result) {
   std::move(callback).Run(
       result.has_value(),
-      result.has_value() ? std::nullopt
-                         : std::make_optional(result.error()));
+      result.has_value() ? std::nullopt : std::make_optional(result.error()));
 }
 
 void SnapsService::UninstallSnap(const std::string& snap_id,
-                                  UninstallSnapCallback callback) {
+                                 UninstallSnapCallback callback) {
   snap_installer_->UninstallSnap(snap_id);
   permission_controller_->PurgeConnectionGrantsForSnap(snap_id);
   std::move(callback).Run();
@@ -225,7 +224,7 @@ void SnapsService::GetInstalledSnaps(GetInstalledSnapsCallback callback) {
 }
 
 void SnapsService::GetSnapManifest(const std::string& snap_id,
-                                    GetSnapManifestCallback callback) {
+                                   GetSnapManifestCallback callback) {
   auto snap = data_provider_->GetSnap(snap_id);
   if (!snap) {
     std::move(callback).Run(nullptr);
@@ -235,7 +234,7 @@ void SnapsService::GetSnapManifest(const std::string& snap_id,
 }
 
 void SnapsService::GetSnapBundle(const std::string& snap_id,
-                                  GetSnapBundleCallback callback) {
+                                 GetSnapBundleCallback callback) {
   snap_installer_->GetSnapBundle(
       snap_id,
       base::BindOnce(&SnapsService::OnGetSnapBundleResult,
@@ -243,7 +242,7 @@ void SnapsService::GetSnapBundle(const std::string& snap_id,
 }
 
 void SnapsService::OnGetSnapBundleResult(GetSnapBundleCallback callback,
-                                          std::optional<std::string> bundle) {
+                                         std::optional<std::string> bundle) {
   if (!bundle) {
     std::move(callback).Run(std::nullopt, "Bundle not found");
     return;
@@ -256,11 +255,12 @@ void SnapsService::OnGetSnapBundleResult(GetSnapBundleCallback callback,
 // ---------------------------------------------------------------------------
 
 void SnapsService::SetSnapInstallState(mojom::SnapInstallState state,
-                                        mojom::SnapInstallDataPtr install_data,
-                                        const std::string& error) {
+                                       mojom::SnapInstallDataPtr install_data,
+                                       const std::string& error) {
   LOG(ERROR) << "XXXZZZ SetSnapInstallState: state=" << static_cast<int>(state)
              << " error='" << error << "'"
-             << " install_data=" << (install_data ? install_data->snap_id : "(null)");
+             << " install_data="
+             << (install_data ? install_data->snap_id : "(null)");
   pending_snap_state_ = state;
   if (install_data) {
     pending_snap_install_data_ = std::move(install_data);
@@ -277,13 +277,12 @@ void SnapsService::SetSnapInstallState(mojom::SnapInstallState state,
 }
 
 void SnapsService::RequestInstallSnap(const std::string& snap_id,
-                                       const std::string& version,
-                                       RequestInstallSnapCallback callback) {
+                                      const std::string& version,
+                                      RequestInstallSnapCallback callback) {
   const std::string normalized_id =
       base::StartsWith(snap_id, "npm:") ? snap_id : "npm:" + snap_id;
   LOG(ERROR) << "XXXZZZ RequestInstallSnap snap_id=" << snap_id
-             << " normalized_id=" << normalized_id
-             << " version=" << version
+             << " normalized_id=" << normalized_id << " version=" << version
              << " current_state=" << static_cast<int>(pending_snap_state_);
   if (pending_snap_state_ != mojom::SnapInstallState::kIdle) {
     LOG(ERROR) << "XXXZZZ RequestInstallSnap: already_pending, rejecting";
@@ -303,9 +302,8 @@ void SnapsService::RequestInstallSnap(const std::string& snap_id,
 void SnapsService::OnPrepareInstallResult(
     base::expected<mojom::SnapInstallDataPtr, std::string> result) {
   LOG(ERROR) << "XXXZZZ OnPrepareInstallResult success=" << result.has_value()
-             << (result.has_value()
-                     ? " snap_id=" + result.value()->snap_id
-                     : " error='" + result.error() + "'");
+             << (result.has_value() ? " snap_id=" + result.value()->snap_id
+                                    : " error='" + result.error() + "'");
   if (!result.has_value()) {
     SetSnapInstallState(mojom::SnapInstallState::kFailed, nullptr,
                         result.error());
@@ -320,11 +318,14 @@ void SnapsService::NotifySnapInstallRequestProcessed(
     NotifySnapInstallRequestProcessedCallback callback) {
   LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed approved=" << approved
              << " state=" << static_cast<int>(pending_snap_state_)
-             << " has_install_data=" << (pending_snap_install_data_ ? "yes" : "no")
-             << " has_pending_callback=" << (pending_install_callback_ ? "yes" : "no")
-             << " error='" << pending_snap_error_ << "'";
+             << " has_install_data="
+             << (pending_snap_install_data_ ? "yes" : "no")
+             << " has_pending_callback="
+             << (pending_install_callback_ ? "yes" : "no") << " error='"
+             << pending_snap_error_ << "'";
   if (pending_snap_state_ == mojom::SnapInstallState::kIdle) {
-    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: state=kIdle, returning early";
+    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: state=kIdle, "
+                  "returning early";
     std::move(callback).Run();
     return;
   }
@@ -349,7 +350,8 @@ void SnapsService::NotifySnapInstallRequestProcessed(
 
   if (pending_snap_state_ != mojom::SnapInstallState::kPendingApproval ||
       !pending_snap_install_data_) {
-    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: not kPendingApproval or no data, returning early";
+    LOG(ERROR) << "XXXZZZ NotifySnapInstallRequestProcessed: not "
+                  "kPendingApproval or no data, returning early";
     std::move(callback).Run();
     return;
   }
@@ -359,9 +361,8 @@ void SnapsService::NotifySnapInstallRequestProcessed(
   std::move(callback).Run();
 
   snap_installer_->FinishInstall(
-      snap_id,
-      base::BindOnce(&SnapsService::OnSnapFinishInstalled,
-                     weak_ptr_factory_.GetWeakPtr()));
+      snap_id, base::BindOnce(&SnapsService::OnSnapFinishInstalled,
+                              weak_ptr_factory_.GetWeakPtr()));
 }
 
 void SnapsService::OnSnapInstallSuccessTimeout() {
@@ -374,7 +375,8 @@ void SnapsService::OnSnapFinishInstalled(
     base::expected<void, std::string> result) {
   LOG(ERROR) << "XXXZZZ OnSnapFinishInstalled success=" << result.has_value()
              << (result.has_value() ? "" : " error='" + result.error() + "'")
-             << " has_pending_callback=" << (pending_install_callback_ ? "yes" : "no");
+             << " has_pending_callback="
+             << (pending_install_callback_ ? "yes" : "no");
   // Notify the dApp callback first (if this was a dApp-triggered install)
   // so RequestSnapsState::remaining is decremented before the install state
   // transitions to kSuccess and the delayed reset fires.
@@ -398,8 +400,8 @@ void SnapsService::OnSnapFinishInstalled(
 }
 
 void SnapsService::InstallSnap(std::string snap_id,
-                                          std::string version,
-                                          SnapInstaller::InstallCallback callback) {
+                               std::string version,
+                               SnapInstaller::InstallCallback callback) {
   LOG(ERROR) << "XXXZZZ InstallSnap(delegate) snap_id=" << snap_id
              << " version=" << version
              << " already_installed=" << data_provider_->IsInstalled(snap_id)
@@ -441,14 +443,14 @@ void SnapsService::ProcessNextSnapInstallation() {
 }
 
 void SnapsService::GetSnapHomePage(const std::string& snap_id,
-                                    GetSnapHomePageCallback callback) {
+                                   GetSnapHomePageCallback callback) {
   snap_controller_->GetSnapHomePage(snap_id, std::move(callback));
 }
 
 void SnapsService::SendSnapUserInput(const std::string& snap_id,
-                                      const std::string& interface_id,
-                                      const std::string& event_json,
-                                      SendSnapUserInputCallback callback) {
+                                     const std::string& interface_id,
+                                     const std::string& event_json,
+                                     SendSnapUserInputCallback callback) {
   snap_controller_->SendSnapUserInput(snap_id, interface_id, event_json,
                                       std::move(callback));
 }

@@ -46,7 +46,8 @@ TEST(SnapManifestParserTest, ProposedNameFallsBackToSnapId) {
 }
 
 TEST(SnapManifestParserTest, InvalidJsonFails) {
-  auto result = SnapManifestParser::Parse("this is not json", kSnapId, kVersion);
+  auto result =
+      SnapManifestParser::Parse("this is not json", kSnapId, kVersion);
   EXPECT_FALSE(result.manifest);
   EXPECT_EQ(result.error, "Invalid snap.manifest.json");
 }
@@ -74,8 +75,8 @@ TEST(SnapManifestParserTest, MissingShasumFails) {
 TEST(SnapManifestParserTest, DisallowedPermissionFails) {
   TestSnapManifestOptions options;
   options.permissions = {"snap_dialog", "evil:permission"};
-  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options), kSnapId,
-                                          kVersion);
+  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options),
+                                          kSnapId, kVersion);
   EXPECT_FALSE(result.manifest);
   EXPECT_THAT(result.error, testing::HasSubstr("disallowed permission"));
   EXPECT_THAT(result.error, testing::HasSubstr("evil:permission"));
@@ -101,8 +102,8 @@ TEST(SnapManifestParserTest, AllAllowedPermissionsAccepted) {
                          "endowment:ethereum-provider",
                          "endowment:name-lookup"};
   options.include_rpc_endowment = true;  // Emit the endowment:rpc config block.
-  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options), kSnapId,
-                                          kVersion);
+  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options),
+                                          kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.error.empty());
   EXPECT_EQ(result.manifest->permissions.size(), 17u);
@@ -126,10 +127,9 @@ TEST(SnapManifestParserTest, EndowmentNameLookupParsed) {
   EXPECT_TRUE(result.error.empty());
   EXPECT_THAT(result.manifest->permissions,
               testing::ElementsAre("endowment:name-lookup"));
-  EXPECT_THAT(
-      result.manifest->name_lookup_chains,
-      testing::ElementsAre("eip155:1",
-                           "bip122:000000000019d6689c085ae165831e93"));
+  EXPECT_THAT(result.manifest->name_lookup_chains,
+              testing::ElementsAre("eip155:1",
+                                   "bip122:000000000019d6689c085ae165831e93"));
   EXPECT_THAT(result.manifest->name_lookup_tlds,
               testing::ElementsAre("crypto", "eth"));
   EXPECT_THAT(result.manifest->name_lookup_schemes,
@@ -158,9 +158,10 @@ TEST(SnapManifestParserTest, EndowmentRpcParsed) {
   options.include_rpc_endowment = true;
   options.allow_dapps = true;
   options.allow_snaps = true;
-  options.allowed_rpc_origins = {"https://a.example.com", "https://b.example.com"};
-  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options), kSnapId,
-                                          kVersion);
+  options.allowed_rpc_origins = {"https://a.example.com",
+                                 "https://b.example.com"};
+  auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options),
+                                          kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.manifest->allow_dapps);
   EXPECT_TRUE(result.manifest->allow_snaps);

@@ -78,9 +78,7 @@ export function isSnapResponse(msg: unknown): msg is SnapResponse {
   return isObject(msg) && msg['type'] === 'response'
 }
 
-export function isSnapRequestMessage(
-  msg: unknown,
-): msg is SnapRequestMessage {
+export function isSnapRequestMessage(msg: unknown): msg is SnapRequestMessage {
   return isObject(msg) && msg['type'] === 'snap_request'
 }
 

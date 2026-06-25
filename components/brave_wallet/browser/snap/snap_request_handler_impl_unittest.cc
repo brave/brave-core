@@ -34,8 +34,8 @@
 namespace brave_wallet {
 
 namespace {
-using ReqFuture =
-    base::test::TestFuture<std::optional<base::Value>, std::optional<std::string>>;
+using ReqFuture = base::test::TestFuture<std::optional<base::Value>,
+                                         std::optional<std::string>>;
 constexpr char kSnapId[] = "npm:test-snap";
 }  // namespace
 
@@ -100,9 +100,10 @@ class SnapRequestHandlerImplTest : public testing::Test {
 
 TEST_F(SnapRequestHandlerImplTest, UnknownSnapRejected) {
   ReqFuture future;
-  handler_->HandleSnapRequest("npm:nope", "snap_dialog", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      "npm:nope", "snap_dialog", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_EQ(future.Get<1>(), "Unknown snap: npm:nope");
 }
@@ -112,9 +113,10 @@ TEST_F(SnapRequestHandlerImplTest, DisabledSnapRejected) {
   data_provider_->SetSnapEnabled(kSnapId, false);
 
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_dialog", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_dialog", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_EQ(future.Get<1>(), "Snap is disabled");
 }
@@ -122,9 +124,10 @@ TEST_F(SnapRequestHandlerImplTest, DisabledSnapRejected) {
 TEST_F(SnapRequestHandlerImplTest, MissingPermissionRejected) {
   InstallSnap(kSnapId, {"snap_dialog"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_notify", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_notify", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_THAT(*future.Get<1>(), testing::HasSubstr("does not have permission"));
 }
@@ -132,9 +135,10 @@ TEST_F(SnapRequestHandlerImplTest, MissingPermissionRejected) {
 TEST_F(SnapRequestHandlerImplTest, DialogReturnsTrue) {
   InstallSnap(kSnapId, {"snap_dialog"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_dialog", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_dialog", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   ASSERT_TRUE(future.Get<0>());
   EXPECT_EQ(*future.Get<0>(), base::Value(true));
   EXPECT_FALSE(future.Get<1>());
@@ -144,9 +148,10 @@ TEST_F(SnapRequestHandlerImplTest, ConfirmAliasesToDialog) {
   // snap_confirm requires the snap_dialog permission and also returns true.
   InstallSnap(kSnapId, {"snap_dialog"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_confirm", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_confirm", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   ASSERT_TRUE(future.Get<0>());
   EXPECT_EQ(*future.Get<0>(), base::Value(true));
   EXPECT_FALSE(future.Get<1>());
@@ -155,9 +160,10 @@ TEST_F(SnapRequestHandlerImplTest, ConfirmAliasesToDialog) {
 TEST_F(SnapRequestHandlerImplTest, NotifyReturnsNoResultNoError) {
   InstallSnap(kSnapId, {"snap_notify"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_notify", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_notify", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_FALSE(future.Get<1>());
 }
@@ -167,9 +173,10 @@ TEST_F(SnapRequestHandlerImplTest, UnsupportedMethodRejected) {
   // falls through to the unsupported-method branch.
   InstallSnap(kSnapId, {"custom_method"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "custom_method", base::Value(),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "custom_method", base::Value(),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
   EXPECT_EQ(future.Get<1>(), "Unsupported snap method: custom_method");
 }
@@ -177,10 +184,10 @@ TEST_F(SnapRequestHandlerImplTest, UnsupportedMethodRejected) {
 TEST_F(SnapRequestHandlerImplTest, GetEntropyParamsMustBeDict) {
   InstallSnap(kSnapId, {"snap_getEntropy"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
-                              base::Value("not-a-dict"),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_getEntropy", base::Value("not-a-dict"),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<1>(), "snap_getEntropy: params must be a dict");
 }
 
@@ -189,10 +196,10 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyVersionMustBe1) {
   // Missing version.
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
-                                base::Value(base::DictValue()),
-                                future.GetCallback<std::optional<base::Value>,
-                                                   const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_getEntropy", base::Value(base::DictValue()),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     EXPECT_EQ(future.Get<1>(), "snap_getEntropy: version must be 1");
   }
   // Wrong version.
@@ -200,10 +207,10 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyVersionMustBe1) {
     base::DictValue params;
     params.Set("version", 2);
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
-                                base::Value(std::move(params)),
-                                future.GetCallback<std::optional<base::Value>,
-                                                   const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_getEntropy", base::Value(std::move(params)),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     EXPECT_EQ(future.Get<1>(), "snap_getEntropy: version must be 1");
   }
 }
@@ -225,14 +232,14 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyUnlockedWalletSucceeds) {
       params.Set("salt", *salt);
     }
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_getEntropy",
-                                base::Value(std::move(params)),
-                                future.GetCallback<std::optional<base::Value>,
-                                                   const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_getEntropy", base::Value(std::move(params)),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     EXPECT_FALSE(future.Get<1>());
     EXPECT_TRUE(future.Get<0>() && future.Get<0>()->is_string());
     return future.Get<0>()->is_string() ? future.Get<0>()->GetString()
-                                         : std::string();
+                                        : std::string();
   };
 
   const std::string no_salt = request(std::nullopt);
@@ -254,7 +261,8 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyUnlockedWalletSucceeds) {
 //   mnemonic = "test test test test test test test test test test test ball"
 //   origin   = "npm:@metamask/example-snap" (the snap id / derivation input)
 //   salt     = "foo"
-//   result   = 0x6d8e92de419401c7da3cedd5f60ce5635b26059c2a4a8003877fec83653a4921
+//   result   =
+//   0x6d8e92de419401c7da3cedd5f60ce5635b26059c2a4a8003877fec83653a4921
 TEST_F(SnapRequestHandlerImplTest, GetEntropyMatchesMetaMaskReferenceVector) {
   constexpr char kMetaMaskTestMnemonic[] =
       "test test test test test test test test test test test ball";
@@ -267,10 +275,10 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyMatchesMetaMaskReferenceVector) {
   params.Set("version", 1);
   params.Set("salt", "foo");
   ReqFuture future;
-  handler_->HandleSnapRequest(kMetaMaskSnapId, "snap_getEntropy",
-                              base::Value(std::move(params)),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kMetaMaskSnapId, "snap_getEntropy", base::Value(std::move(params)),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   ASSERT_TRUE(future.Get<0>() && future.Get<0>()->is_string());
   EXPECT_EQ(
       future.Get<0>()->GetString(),
@@ -280,20 +288,20 @@ TEST_F(SnapRequestHandlerImplTest, GetEntropyMatchesMetaMaskReferenceVector) {
 TEST_F(SnapRequestHandlerImplTest, GetBip44ParamsMustBeDict) {
   InstallSnap(kSnapId, {"snap_getBip44Entropy"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_getBip44Entropy",
-                              base::Value("not-a-dict"),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_getBip44Entropy", base::Value("not-a-dict"),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<1>(), "snap_getBip44Entropy: params must be a dict");
 }
 
 TEST_F(SnapRequestHandlerImplTest, GetBip44MissingCoinType) {
   InstallSnap(kSnapId, {"snap_getBip44Entropy"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_getBip44Entropy",
-                              base::Value(base::DictValue()),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_getBip44Entropy", base::Value(base::DictValue()),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<1>(),
             "snap_getBip44Entropy: missing or invalid coinType");
 }
@@ -312,10 +320,10 @@ TEST_F(SnapRequestHandlerImplTest, GetBip44UnlockedWalletSucceeds) {
   base::DictValue params;
   params.Set("coinType", 60);
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_getBip44Entropy",
-                              base::Value(std::move(params)),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_getBip44Entropy", base::Value(std::move(params)),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_TRUE(future.Get<0>());
   EXPECT_FALSE(future.Get<1>());
 }
@@ -323,9 +331,10 @@ TEST_F(SnapRequestHandlerImplTest, GetBip44UnlockedWalletSucceeds) {
 TEST_F(SnapRequestHandlerImplTest, ManageStateGetReturnsNullWhenEmpty) {
   InstallSnap(kSnapId, {"snap_manageState"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_manageState", StateParams("get"),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_manageState", StateParams("get"),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   ASSERT_TRUE(future.Get<0>());
   EXPECT_EQ(*future.Get<0>(), base::Value("null"));
   EXPECT_FALSE(future.Get<1>());
@@ -335,19 +344,20 @@ TEST_F(SnapRequestHandlerImplTest, ManageStateUpdateThenGet) {
   InstallSnap(kSnapId, {"snap_manageState"});
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                                StateParams("update", R"({"a":1})"),
-                                future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_manageState", StateParams("update", R"({"a":1})"),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     ASSERT_TRUE(future.Get<0>());
     EXPECT_EQ(*future.Get<0>(), base::Value("null"));
     EXPECT_FALSE(future.Get<1>());
   }
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_manageState", StateParams("get"),
-                                future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_manageState", StateParams("get"),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     ASSERT_TRUE(future.Get<0>());
     EXPECT_EQ(*future.Get<0>(), base::Value(R"({"a":1})"));
   }
@@ -357,26 +367,27 @@ TEST_F(SnapRequestHandlerImplTest, ManageStateClear) {
   InstallSnap(kSnapId, {"snap_manageState"});
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                                StateParams("update", R"({"a":1})"),
-                                future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_manageState", StateParams("update", R"({"a":1})"),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     ASSERT_TRUE(future.Get<0>());
   }
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                                StateParams("clear"),
-                                future.GetCallback<std::optional<base::Value>,
-                                                   const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_manageState", StateParams("clear"),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     ASSERT_TRUE(future.Get<0>());
     EXPECT_EQ(*future.Get<0>(), base::Value("null"));
   }
   {
     ReqFuture future;
-    handler_->HandleSnapRequest(kSnapId, "snap_manageState", StateParams("get"),
-                                future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+    handler_->HandleSnapRequest(
+        kSnapId, "snap_manageState", StateParams("get"),
+        future.GetCallback<std::optional<base::Value>,
+                           const std::optional<std::string>&>());
     ASSERT_TRUE(future.Get<0>());
     EXPECT_EQ(*future.Get<0>(), base::Value("null"));
   }
@@ -385,32 +396,31 @@ TEST_F(SnapRequestHandlerImplTest, ManageStateClear) {
 TEST_F(SnapRequestHandlerImplTest, ManageStateMissingOperation) {
   InstallSnap(kSnapId, {"snap_manageState"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                              base::Value(base::DictValue()),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_manageState", base::Value(base::DictValue()),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<1>(), "snap_manageState: missing operation");
 }
 
 TEST_F(SnapRequestHandlerImplTest, ManageStateMissingNewStateJson) {
   InstallSnap(kSnapId, {"snap_manageState"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                              StateParams("update"),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_manageState", StateParams("update"),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<1>(), "snap_manageState: missing newStateJson");
 }
 
 TEST_F(SnapRequestHandlerImplTest, ManageStateUnknownOperation) {
   InstallSnap(kSnapId, {"snap_manageState"});
   ReqFuture future;
-  handler_->HandleSnapRequest(kSnapId, "snap_manageState",
-                              StateParams("frobnicate"),
-                              future.GetCallback<std::optional<base::Value>,
-                                                 const std::optional<std::string>&>());
-  EXPECT_EQ(future.Get<1>(),
-            "snap_manageState: unknown operation: frobnicate");
+  handler_->HandleSnapRequest(
+      kSnapId, "snap_manageState", StateParams("frobnicate"),
+      future.GetCallback<std::optional<base::Value>,
+                         const std::optional<std::string>&>());
+  EXPECT_EQ(future.Get<1>(), "snap_manageState: unknown operation: frobnicate");
 }
 
 }  // namespace brave_wallet

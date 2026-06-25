@@ -2956,9 +2956,9 @@ struct SnapManifest {
   // is present in |permissions|. All three are optional: empty |chains| means
   // the snap resolves on any chain, and empty matcher lists mean the snap is
   // consulted for any input (no tld/scheme filtering).
-  array<string> name_lookup_chains;     // CAIP-2 chain ids, e.g. "eip155:1".
-  array<string> name_lookup_tlds;       // matchers.tlds, e.g. "crypto".
-  array<string> name_lookup_schemes;    // matchers.schemes, e.g. "farcaster".
+  array<string> name_lookup_chains;  // CAIP-2 chain ids, e.g. "eip155:1".
+  array<string> name_lookup_tlds;  // matchers.tlds, e.g. "crypto".
+  array<string> name_lookup_schemes;  // matchers.schemes, e.g. "farcaster".
 };
 
 // Unified snap metadata: installer-level fields (bundle_size_bytes, icon_svg)
@@ -2975,23 +2975,23 @@ struct SnapInstallData {
 
 enum SnapInstallState {
   kIdle = 0,
-  kInstalling = 1,       // download + extract, or persisting after approval
+  kInstalling = 1,  // download + extract, or persisting after approval
   kPendingApproval = 2,  // install_data ready, waiting for user decision
-  kSuccess = 3,          // terminal, auto-clears to kIdle after a brief delay
-  kFailed = 4,           // terminal, cleared by user via NotifySnapInstallRequestProcessed(false)
+  kSuccess = 3,  // terminal, auto-clears to kIdle after a brief delay
+  kFailed = 4,  // terminal, cleared by user via NotifySnapInstallRequestProcessed(false)
 };
 
 struct PendingSnapInstall {
   SnapInstallState state;
   SnapInstallData? install_data;  // populated from kPendingApproval onward
-  string? error;                  // populated when state == kFailed
+  string? error;  // populated when state == kFailed
 };
 
 // A dApp's pending request to connect to an already-installed snap, awaiting
 // the user's approval in the wallet panel. Newly-installed snaps consent to the
 // connection via the install-approval dialog instead.
 struct PendingSnapConnection {
-  string origin;               // requesting dApp origin, serialized.
+  string origin;  // requesting dApp origin, serialized.
   string snap_id;
   SnapInstallData? snap_info;  // installed-snap metadata for display.
 };
@@ -3014,7 +3014,8 @@ interface SnapsService {
   // Invoke a snap RPC method from the wallet UI. Equivalent to
   // window.ethereum.request({ method: 'wallet_invokeSnap', ... }) but usable
   // from chrome:// pages that have no window.ethereum.
-  // params_json and result_json are JSON-serialized to avoid mojo_base.mojom.Value
+  // params_json and result_json are JSON-serialized to avoid
+  // mojo_base.mojom.Value
   // tagged-union complexity when called from TypeScript.
   InvokeSnap(string snap_id, string method, string params_json)
       => (string? result_json, string? error);
@@ -4015,13 +4016,14 @@ interface SnapBridge {
   // Create an iframe for the snap and load its bundle via fetch() on the
   // snap executor origin. The bundle URL is derived from snap_id by the
   // executor itself — no source string passes through Mojo.
-  LoadSnap(string snap_id)
-      => (bool success, string? error);
+  LoadSnap(string snap_id) => (bool success, string? error);
 
   // Execute an RPC call on the snap (in its iframe).
   // |caller_origin| is the serialized dApp origin passed to onRpcRequest;
   // use "brave-wallet" for internal wallet calls.
-  InvokeSnap(string snap_id, string method, mojo_base.mojom.Value params,
+  InvokeSnap(string snap_id,
+             string method,
+             mojo_base.mojom.Value params,
              string caller_origin)
       => (mojo_base.mojom.Value? result, string? error);
 
@@ -4036,15 +4038,16 @@ interface SnapBridge {
 
   // Send a user interaction event to a snap interface and return the updated
   // UI component tree. event_json is a JSON-serialised SnapUserInputEvent.
-  SendSnapUserInputEvent(string snap_id, string interface_id, string event_json)
+  SendSnapUserInputEvent(
+      string snap_id, string interface_id, string event_json)
       => (string? content_json, string? error);
 };
 
 // Implemented by SnapController (C++).
 // Called from the wallet page TypeScript when snap code calls snap.request().
 interface SnapRequestHandler {
-  HandleSnapRequest(string snap_id, string method,
-                    mojo_base.mojom.Value params)
+  HandleSnapRequest(
+      string snap_id, string method, mojo_base.mojom.Value params)
       => (mojo_base.mojom.Value? result, string? error);
 };
 

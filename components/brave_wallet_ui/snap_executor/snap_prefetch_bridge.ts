@@ -25,7 +25,10 @@ const snapParentWindow = window.parent
 const snapFetch = window.fetch.bind(window)
 const snapConsole = window.console
 const snapPostMessage = snapParentWindow.postMessage.bind(snapParentWindow)
-snapConsole.error('XXXZZZ snap_prefetch_bridge: loaded, parent=', !!snapParentWindow)
+snapConsole.error(
+  'XXXZZZ snap_prefetch_bridge: loaded, parent=',
+  !!snapParentWindow,
+)
 
 window.addEventListener('message', async (event: MessageEvent) => {
   // Note: event.source is nullified by executeLockdownEvents() inside bundle.js,
@@ -44,7 +47,12 @@ window.addEventListener('message', async (event: MessageEvent) => {
       throw new Error(`HTTP ${resp.status} ${resp.statusText}`)
     }
     const source = await resp.text()
-    snapConsole.error('XXXZZZ snap_prefetch_bridge: fetched', url, 'length=', source.length)
+    snapConsole.error(
+      'XXXZZZ snap_prefetch_bridge: fetched',
+      url,
+      'length=',
+      source.length,
+    )
     snapPostMessage(
       { type: 'brave_prefetch_bundle_response', requestId, source },
       '*',

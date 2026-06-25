@@ -32,8 +32,7 @@ HiddenWebContentsSnapBridgeController::HiddenWebContentsSnapBridgeController(
       open_debug_tab_(std::move(open_debug_tab)) {
   DCHECK(browser_context_);
   LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController: created";
-  keyring_service_->AddObserver(
-      keyring_observer_.BindNewPipeAndPassRemote());
+  keyring_service_->AddObserver(keyring_observer_.BindNewPipeAndPassRemote());
 }
 
 HiddenWebContentsSnapBridgeController::
@@ -41,16 +40,18 @@ HiddenWebContentsSnapBridgeController::
 
 void HiddenWebContentsSnapBridgeController::SetBridge(
     mojo::PendingRemote<mojom::SnapBridge> bridge) {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::SetBridge: binding, pending=" << pending_ready_callbacks_.size();
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::SetBridge: "
+                "binding, pending="
+             << pending_ready_callbacks_.size();
   snap_bridge_.reset();
   snap_bridge_.Bind(std::move(bridge));
   snap_bridge_.set_disconnect_handler(
-      base::BindOnce(
-          &HiddenWebContentsSnapBridgeController::OnBridgeDisconnect,
-          weak_ptr_factory_.GetWeakPtr()));
+      base::BindOnce(&HiddenWebContentsSnapBridgeController::OnBridgeDisconnect,
+                     weak_ptr_factory_.GetWeakPtr()));
   bridge_open_inflight_ = false;
   DrainReadyCallbacks();
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::SetBridge: drained callbacks";
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::SetBridge: "
+                "drained callbacks";
 }
 
 bool HiddenWebContentsSnapBridgeController::IsBound() const {
@@ -65,7 +66,12 @@ void HiddenWebContentsSnapBridgeController::SetDisconnectCallback(
 void HiddenWebContentsSnapBridgeController::EnsureBridgeReady(
     base::OnceClosure on_ready) {
   const bool locked = keyring_service_->IsLockedSync();
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureBridgeReady: bound=" << snap_bridge_.is_bound() << " locked=" << locked << " inflight=" << bridge_open_inflight_ << " pending=" << pending_ready_callbacks_.size();
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureBridgeReady: "
+         "bound="
+      << snap_bridge_.is_bound() << " locked=" << locked
+      << " inflight=" << bridge_open_inflight_
+      << " pending=" << pending_ready_callbacks_.size();
   if (snap_bridge_.is_bound()) {
     std::move(on_ready).Run();
     return;
@@ -83,7 +89,9 @@ void HiddenWebContentsSnapBridgeController::EnsureBridgeReady(
 
 void HiddenWebContentsSnapBridgeController::EnsureHostStarted() {
   if (bridge_open_inflight_) {
-    LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: already inflight, skipping";
+    LOG(ERROR)
+        << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: "
+           "already inflight, skipping";
     return;
   }
   bridge_open_inflight_ = true;
@@ -92,12 +100,17 @@ void HiddenWebContentsSnapBridgeController::EnsureHostStarted() {
       features::kBraveWalletSnapsBackgroundForegroundDebug);
 
   if (foreground_debug && open_debug_tab_) {
-    LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: opening foreground debug tab";
+    LOG(ERROR)
+        << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: "
+           "opening foreground debug tab";
     open_debug_tab_.Run();
     return;
   }
 
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: creating hidden WebContents -> " << kBraveUIWalletSnapHostURL;
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::EnsureHostStarted: "
+         "creating hidden WebContents -> "
+      << kBraveUIWalletSnapHostURL;
   // Create a hidden (never-composited) WebContents.
   content::WebContents::CreateParams params(browser_context_);
   params.is_never_composited = true;
@@ -112,7 +125,9 @@ void HiddenWebContentsSnapBridgeController::EnsureHostStarted() {
 }
 
 void HiddenWebContentsSnapBridgeController::TearDownHost() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::TearDownHost: pending=" << pending_ready_callbacks_.size();
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::TearDownHost: pending="
+      << pending_ready_callbacks_.size();
   snap_bridge_.reset();
   bridge_open_inflight_ = false;
   if (host_) {
@@ -126,7 +141,10 @@ void HiddenWebContentsSnapBridgeController::TearDownHost() {
 }
 
 void HiddenWebContentsSnapBridgeController::OnBridgeDisconnect() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::OnBridgeDisconnect: pending=" << pending_ready_callbacks_.size();
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::OnBridgeDisconnect: "
+         "pending="
+      << pending_ready_callbacks_.size();
   bridge_open_inflight_ = false;
   snap_bridge_.reset();
   // Destroy host so next EnsureBridgeReady creates a fresh one.
@@ -153,7 +171,8 @@ void HiddenWebContentsSnapBridgeController::FailPendingCallbacks(
   // Run every queued callback so their bound mojo responders are called
   // (not just dropped). Each dispatch method checks IsBound() — which is false
   // at this point — and returns the appropriate error to the mojo caller.
-  std::vector<base::OnceClosure> callbacks = std::move(pending_ready_callbacks_);
+  std::vector<base::OnceClosure> callbacks =
+      std::move(pending_ready_callbacks_);
   for (auto& cb : locked_waiting_callbacks_) {
     callbacks.push_back(std::move(cb));
   }
@@ -201,17 +220,23 @@ bool HiddenWebContentsSnapBridgeController::CanEnterFullscreenModeForTab(
 void HiddenWebContentsSnapBridgeController::DidFinishLoad(
     content::RenderFrameHost* /*render_frame_host*/,
     const GURL& validated_url) {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::DidFinishLoad: url=" << validated_url << " bridge_bound=" << snap_bridge_.is_bound();
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::DidFinishLoad: url="
+      << validated_url << " bridge_bound=" << snap_bridge_.is_bound();
 }
 
-void HiddenWebContentsSnapBridgeController::
-    PrimaryMainFrameRenderProcessGone(base::TerminationStatus status) {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::PrimaryMainFrameRenderProcessGone: status=" << static_cast<int>(status);
+void HiddenWebContentsSnapBridgeController::PrimaryMainFrameRenderProcessGone(
+    base::TerminationStatus status) {
+  LOG(ERROR) << "XXXZZZ "
+                "HiddenWebContentsSnapBridgeController::"
+                "PrimaryMainFrameRenderProcessGone: status="
+             << static_cast<int>(status);
   OnBridgeDisconnect();
 }
 
 void HiddenWebContentsSnapBridgeController::WebContentsDestroyed() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::WebContentsDestroyed";
+  LOG(ERROR)
+      << "XXXZZZ HiddenWebContentsSnapBridgeController::WebContentsDestroyed";
   content::WebContentsObserver::Observe(nullptr);
   // Ownership may have been transferred elsewhere (debug tab) or already reset.
   host_.release();
@@ -223,12 +248,15 @@ void HiddenWebContentsSnapBridgeController::WebContentsDestroyed() {
 // ---------------------------------------------------------------------------
 
 void HiddenWebContentsSnapBridgeController::Locked() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Locked: tearing down host";
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Locked: tearing "
+                "down host";
   TearDownHost();
 }
 
 void HiddenWebContentsSnapBridgeController::Unlocked() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Unlocked: locked_waiting=" << locked_waiting_callbacks_.size();
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::Unlocked: "
+                "locked_waiting="
+             << locked_waiting_callbacks_.size();
   if (!locked_waiting_callbacks_.empty()) {
     for (auto& cb : locked_waiting_callbacks_) {
       pending_ready_callbacks_.push_back(std::move(cb));
@@ -239,7 +267,8 @@ void HiddenWebContentsSnapBridgeController::Unlocked() {
 }
 
 void HiddenWebContentsSnapBridgeController::WalletReset() {
-  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::WalletReset: tearing down host";
+  LOG(ERROR) << "XXXZZZ HiddenWebContentsSnapBridgeController::WalletReset: "
+                "tearing down host";
   TearDownHost();
 }
 
@@ -247,9 +276,8 @@ void HiddenWebContentsSnapBridgeController::WalletReset() {
 // mojom::SnapBridge passthroughs
 // ---------------------------------------------------------------------------
 
-void HiddenWebContentsSnapBridgeController::LoadSnap(
-    const std::string& snap_id,
-    LoadSnapCallback cb) {
+void HiddenWebContentsSnapBridgeController::LoadSnap(const std::string& snap_id,
+                                                     LoadSnapCallback cb) {
   snap_bridge_->LoadSnap(snap_id, std::move(cb));
 }
 
@@ -260,7 +288,7 @@ void HiddenWebContentsSnapBridgeController::InvokeSnap(
     const std::string& caller_origin,
     InvokeSnapCallback cb) {
   snap_bridge_->InvokeSnap(snap_id, method, std::move(params), caller_origin,
-                            std::move(cb));
+                           std::move(cb));
 }
 
 void HiddenWebContentsSnapBridgeController::FetchSnapHomePage(
@@ -275,7 +303,7 @@ void HiddenWebContentsSnapBridgeController::SendSnapUserInputEvent(
     const std::string& event_json,
     SendSnapUserInputEventCallback cb) {
   snap_bridge_->SendSnapUserInputEvent(snap_id, interface_id, event_json,
-                                        std::move(cb));
+                                       std::move(cb));
 }
 
 }  // namespace brave_wallet

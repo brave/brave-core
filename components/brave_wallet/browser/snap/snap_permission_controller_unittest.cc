@@ -153,7 +153,8 @@ TEST_F(SnapPermissionControllerTest, OriginAllowDappsIgnoresAllowlist) {
       Origin("https://anything.example.com"), "npm:test-snap"));
 }
 
-TEST_F(SnapPermissionControllerTest, OriginAllowlistRespectedWithoutAllowDapps) {
+TEST_F(SnapPermissionControllerTest,
+       OriginAllowlistRespectedWithoutAllowDapps) {
   // Without allow_dapps the allowlist is consulted: listed origins pass,
   // others are denied.
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false,
@@ -167,7 +168,8 @@ TEST_F(SnapPermissionControllerTest, OriginAllowlistRespectedWithoutAllowDapps) 
 // --- CheckSnapMethodPermission ----------------------------------------------
 
 TEST_F(SnapPermissionControllerTest, CheckMethodUnknownSnap) {
-  auto error = controller_->CheckSnapMethodPermission("npm:unknown", "snap_dialog");
+  auto error =
+      controller_->CheckSnapMethodPermission("npm:unknown", "snap_dialog");
   ASSERT_TRUE(error);
   EXPECT_EQ(*error, "Unknown snap: npm:unknown");
 }
@@ -180,8 +182,8 @@ TEST_F(SnapPermissionControllerTest, CheckMethodAllowedWhenDeclared) {
 
 TEST_F(SnapPermissionControllerTest, CheckMethodRejectedWhenMissing) {
   InstallSnap("npm:test-snap", {"snap_dialog"});
-  auto error =
-      controller_->CheckSnapMethodPermission("npm:test-snap", "snap_manageState");
+  auto error = controller_->CheckSnapMethodPermission("npm:test-snap",
+                                                      "snap_manageState");
   ASSERT_TRUE(error);
   EXPECT_THAT(*error, testing::HasSubstr("does not have permission"));
 }

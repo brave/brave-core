@@ -8,7 +8,10 @@ import("//build/buildflag_header.gni")
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "ENABLE_BRAVE_WALLET=$enable_brave_wallet" ]
+  flags = [
+    "ENABLE_BRAVE_WALLET=$enable_brave_wallet",
+    "ENABLE_SNAPS=$enable_snaps",
+  ]
 }
 
 # Put dev build flag into a seprate header as it is supposed to be needed only

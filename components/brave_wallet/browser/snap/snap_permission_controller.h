@@ -35,8 +35,7 @@ class SnapDataProvider;
 // onRpcRequest handler at all.
 class SnapPermissionController {
  public:
-  SnapPermissionController(PrefService& prefs,
-                           SnapDataProvider& data_provider);
+  SnapPermissionController(PrefService& prefs, SnapDataProvider& data_provider);
   ~SnapPermissionController();
 
   SnapPermissionController(const SnapPermissionController&) = delete;

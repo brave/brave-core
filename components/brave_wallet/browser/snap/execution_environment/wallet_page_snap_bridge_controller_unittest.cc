@@ -22,8 +22,8 @@ namespace brave_wallet {
 class WalletPageSnapBridgeControllerTest : public testing::Test {
  public:
   void SetUp() override {
-    controller_ = std::make_unique<WalletPageSnapBridgeController>(
-        base::BindRepeating(
+    controller_ =
+        std::make_unique<WalletPageSnapBridgeController>(base::BindRepeating(
             &WalletPageSnapBridgeControllerTest::OnOpenWalletPage,
             base::Unretained(this)));
   }
@@ -122,10 +122,9 @@ TEST_F(WalletPageSnapBridgeControllerTest, FetchSnapHomePagePassthrough) {
                          std::optional<std::string>>
       future;
   controller_->FetchSnapHomePage(
-      "npm:test-snap",
-      future.GetCallback<const std::optional<std::string>&,
-                         const std::optional<std::string>&,
-                         const std::optional<std::string>&>());
+      "npm:test-snap", future.GetCallback<const std::optional<std::string>&,
+                                          const std::optional<std::string>&,
+                                          const std::optional<std::string>&>());
 
   EXPECT_EQ(future.Get<0>(), "{}");
   EXPECT_EQ(future.Get<1>(), "iface-1");

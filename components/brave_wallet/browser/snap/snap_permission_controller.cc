@@ -24,7 +24,7 @@ constexpr char kConnectedSnapsPref[] = "brave.wallet.connected_snaps";
 
 // snap_confirm is the legacy alias for snap_dialog; both map to the
 // "snap_dialog" permission entry in the manifest.
-constexpr char kMethodDialog[]  = "snap_dialog";
+constexpr char kMethodDialog[] = "snap_dialog";
 constexpr char kMethodConfirm[] = "snap_confirm";
 
 }  // namespace
@@ -58,9 +58,8 @@ bool SnapPermissionController::IsSnapConnected(
   return false;
 }
 
-void SnapPermissionController::GrantSnapConnection(
-    const url::Origin& origin,
-    const std::string& snap_id) {
+void SnapPermissionController::GrantSnapConnection(const url::Origin& origin,
+                                                   const std::string& snap_id) {
   if (IsSnapConnected(origin, snap_id)) {
     return;
   }
@@ -138,10 +137,9 @@ bool SnapPermissionController::IsOriginAllowedByManifest(
     return false;
   }
   const std::string serialized = origin.Serialize();
-  return std::ranges::any_of(snap->manifest->allowed_rpc_origins,
-                              [&serialized](const std::string& o) {
-                                return o == serialized;
-                              });
+  return std::ranges::any_of(
+      snap->manifest->allowed_rpc_origins,
+      [&serialized](const std::string& o) { return o == serialized; });
 }
 
 std::optional<std::string> SnapPermissionController::CheckSnapMethodPermission(
@@ -155,10 +153,9 @@ std::optional<std::string> SnapPermissionController::CheckSnapMethodPermission(
   const std::string& effective =
       (method == kMethodConfirm) ? kMethodDialog : method;
   const auto& perms = snap->manifest->permissions;
-  if (!std::ranges::any_of(perms,
-                            [&effective](const std::string& p) {
-                              return p == effective;
-                            })) {
+  if (!std::ranges::any_of(perms, [&effective](const std::string& p) {
+        return p == effective;
+      })) {
     return "Snap '" + snap_id + "' does not have permission to call " + method;
   }
   return std::nullopt;

@@ -15,9 +15,9 @@
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
-#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
-#include "brave/components/brave_wallet/browser/snap/snap_manifest_parser.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer_tar_decompressor.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_parser.h"
+#include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -28,8 +28,8 @@ namespace brave_wallet {
 namespace {
 
 // Download size limits.
-constexpr size_t kMaxMetadataBytes = 1 * 1024 * 1024;   // 1 MB
-constexpr size_t kMaxBundleBytes = 20 * 1024 * 1024;    // 10 MB
+constexpr size_t kMaxMetadataBytes = 1 * 1024 * 1024;  // 1 MB
+constexpr size_t kMaxBundleBytes = 20 * 1024 * 1024;   // 10 MB
 
 net::NetworkTrafficAnnotationTag GetTrafficAnnotation() {
   return net::DefineNetworkTrafficAnnotation("snap_installer", R"(
@@ -209,7 +209,8 @@ void SnapInstaller::OnMetadataFetched(std::unique_ptr<InstallContext> ctx,
   }
 
   ctx->tarball_url = GURL(*tarball_url);
-  LOG(ERROR) << "XXXZZZ OnMetadataFetched: tarball_url=" << ctx->tarball_url.spec();
+  LOG(ERROR) << "XXXZZZ OnMetadataFetched: tarball_url="
+             << ctx->tarball_url.spec();
   if (!ctx->tarball_url.is_valid()) {
     FailInstall(std::move(ctx), "Invalid tarball URL in snap metadata");
     return;
@@ -275,14 +276,15 @@ void SnapInstaller::OnBundleExtracted(std::unique_ptr<InstallContext> ctx,
   }
 
   LOG(ERROR) << "SNAP integrity: snap_id=" << ctx->snap_id
-             << " bundle_size=" << ctx->bundle_size_bytes
-             << " expected='" << parsed.expected_shasum << "'"
+             << " bundle_size=" << ctx->bundle_size_bytes << " expected='"
+             << parsed.expected_shasum << "'"
              << " computed='" << computed_shasum << "'"
              << (computed_shasum == parsed.expected_shasum ? " MATCH"
                                                            : " MISMATCH");
   if (computed_shasum != parsed.expected_shasum) {
     // TODO(snap): restore hard failure once checksum algorithm is confirmed.
-    LOG(ERROR) << "SNAP integrity: WARNING — checksum mismatch, continuing anyway";
+    LOG(ERROR)
+        << "SNAP integrity: WARNING — checksum mismatch, continuing anyway";
   }
 
   if (ctx->bundle_size_bytes > kMaxBundleBytes) {

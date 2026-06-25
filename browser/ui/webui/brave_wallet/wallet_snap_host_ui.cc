@@ -7,12 +7,12 @@
 
 #include <utility>
 
+#include "base/logging.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/snaps_service.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
-#include "base/logging.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/snap_host/resources/grit/snap_host_generated_map.h"
 #include "chrome/browser/profiles/profile.h"
@@ -26,8 +26,8 @@ WalletSnapHostUI::WalletSnapHostUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui, /*enable_chrome_send=*/false) {
   LOG(ERROR) << "XXXZZZ WalletSnapHostUI: constructed";
   auto* profile = Profile::FromWebUI(web_ui);
-  auto* source = content::WebUIDataSource::CreateAndAdd(
-      profile, kWalletSnapHostHost);
+  auto* source =
+      content::WebUIDataSource::CreateAndAdd(profile, kWalletSnapHostHost);
 
   // Allow embedding chrome-untrusted://snap-executor iframes.
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
@@ -36,8 +36,7 @@ WalletSnapHostUI::WalletSnapHostUI(content::WebUI* web_ui)
       std::string("frame-src ") + kUntrustedSnapExecutorURL + ";");
   // The host page itself only loads its own scripts — no inline eval needed.
   source->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::ScriptSrc,
-      "script-src 'self';");
+      network::mojom::CSPDirectiveName::ScriptSrc, "script-src 'self';");
 
   source->UseStringsJs();
   source->SetDefaultResource(IDR_BRAVE_WALLET_SNAP_HOST_HTML);
@@ -68,16 +67,19 @@ void WalletSnapHostUI::CreateSnapHostHandler(
   auto* wallet_service =
       brave_wallet::BraveWalletServiceFactory::GetServiceForContext(profile);
   if (!wallet_service) {
-    LOG(ERROR) << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: no wallet_service";
+    LOG(ERROR)
+        << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: no wallet_service";
     return;
   }
   if (auto* snaps = wallet_service->snaps_service()) {
-    LOG(ERROR) << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: wiring bridge";
+    LOG(ERROR)
+        << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: wiring bridge";
     snaps->SetSnapBridge(std::move(snap_bridge));
     snaps->BindSnapRequestHandler(std::move(snap_request_handler));
     snaps->Bind(std::move(snaps_service));
   } else {
-    LOG(ERROR) << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: no snaps_service";
+    LOG(ERROR)
+        << "XXXZZZ WalletSnapHostUI::CreateSnapHostHandler: no snaps_service";
   }
 }
 

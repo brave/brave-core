@@ -34,14 +34,17 @@ type UserInputCallback = (event: SnapUserInputEvent) => void
 
 function isSnapComponent(v: unknown): v is SnapComponent {
   return (
-    typeof v === 'object' &&
-    v !== null &&
-    typeof (v as SnapComponent).type === 'string' &&
-    typeof (v as SnapComponent).props === 'object'
+    typeof v === 'object'
+    && v !== null
+    && typeof (v as SnapComponent).type === 'string'
+    && typeof (v as SnapComponent).props === 'object'
   )
 }
 
-function renderChildren(children: unknown, onUserInput?: UserInputCallback): React.ReactNode {
+function renderChildren(
+  children: unknown,
+  onUserInput?: UserInputCallback,
+): React.ReactNode {
   if (children === undefined || children === null) {
     return null
   }
@@ -54,13 +57,24 @@ function renderChildren(children: unknown, onUserInput?: UserInputCallback): Rea
         return child
       }
       if (isSnapComponent(child)) {
-        return <SnapUIRenderer key={child.key ?? i} component={child} onUserInput={onUserInput} />
+        return (
+          <SnapUIRenderer
+            key={child.key ?? i}
+            component={child}
+            onUserInput={onUserInput}
+          />
+        )
       }
       return String(child)
     })
   }
   if (isSnapComponent(children)) {
-    return <SnapUIRenderer component={children} onUserInput={onUserInput} />
+    return (
+      <SnapUIRenderer
+        component={children}
+        onUserInput={onUserInput}
+      />
+    )
   }
   return String(children)
 }
@@ -202,10 +216,18 @@ export function SnapUIRenderer({
     }
 
     case 'Section':
-      return <div style={styles.section}>{renderChildren(children, onUserInput)}</div>
+      return (
+        <div style={styles.section}>
+          {renderChildren(children, onUserInput)}
+        </div>
+      )
 
     case 'Container': {
-      const containerChildren = Array.isArray(children) ? children : children ? [children] : []
+      const containerChildren = Array.isArray(children)
+        ? children
+        : children
+          ? [children]
+          : []
       const footerChild = containerChildren.find(
         (c: unknown) => isSnapComponent(c) && c.type === 'Footer',
       )
@@ -223,7 +245,9 @@ export function SnapUIRenderer({
     }
 
     case 'Footer':
-      return <div style={styles.footer}>{renderChildren(children, onUserInput)}</div>
+      return (
+        <div style={styles.footer}>{renderChildren(children, onUserInput)}</div>
+      )
 
     case 'Text':
       return <p style={styles.text}>{renderChildren(children, onUserInput)}</p>
@@ -237,7 +261,11 @@ export function SnapUIRenderer({
     case 'Heading': {
       const size = props.size
       const tag = size === 'lg' ? 'h1' : size === 'sm' ? 'h3' : 'h2'
-      return React.createElement(tag, { style: styles.heading }, renderChildren(children, onUserInput))
+      return React.createElement(
+        tag,
+        { style: styles.heading },
+        renderChildren(children, onUserInput),
+      )
     }
 
     case 'Button': {
@@ -251,7 +279,10 @@ export function SnapUIRenderer({
           type={props.type === 'submit' ? 'submit' : 'button'}
           onClick={() => {
             if (onUserInput && props.name) {
-              onUserInput({ type: 'ButtonClickEvent', name: props.name as string })
+              onUserInput({
+                type: 'ButtonClickEvent',
+                name: props.name as string,
+              })
             }
           }}
         >
@@ -274,7 +305,8 @@ export function SnapUIRenderer({
       return <span>{renderChildren(children, onUserInput)}</span>
 
     case 'Address': {
-      const addr = (props.address as string) ?? renderChildren(children, onUserInput)
+      const addr =
+        (props.address as string) ?? renderChildren(children, onUserInput)
       return <span style={styles.address}>{addr}</span>
     }
 
@@ -287,11 +319,26 @@ export function SnapUIRenderer({
       }
       // SVG inline content — encode as a data URL to avoid dangerouslySetInnerHTML
       // which is blocked by chrome://wallet's Trusted Types policy.
-      if (imgData.trimStart().startsWith('<svg') || imgData.trimStart().startsWith('<?xml')) {
+      if (
+        imgData.trimStart().startsWith('<svg')
+        || imgData.trimStart().startsWith('<?xml')
+      ) {
         const dataUrl = `data:image/svg+xml;charset=utf-8,${encodeURIComponent(imgData)}`
-        return <img src={dataUrl} style={styles.image} alt='' />
+        return (
+          <img
+            src={dataUrl}
+            style={styles.image}
+            alt=''
+          />
+        )
       }
-      return <img src={imgData} style={styles.image} alt='' />
+      return (
+        <img
+          src={imgData}
+          style={styles.image}
+          alt=''
+        />
+      )
     }
 
     case 'Icon': {
@@ -374,7 +421,9 @@ export function SnapUIRenderer({
             if (onUserInput && props.name) {
               const formData = new FormData(e.currentTarget)
               const value: Record<string, string> = {}
-              formData.forEach((v, k) => { value[k] = String(v) })
+              formData.forEach((v, k) => {
+                value[k] = String(v)
+              })
               onUserInput({
                 type: 'FormSubmitEvent',
                 name: props.name as string,
@@ -393,7 +442,14 @@ export function SnapUIRenderer({
       return (
         <div style={{ marginBottom: '8px' }}>
           {label && (
-            <label style={{ fontSize: '12px', fontWeight: 500, display: 'block', marginBottom: '4px' }}>
+            <label
+              style={{
+                fontSize: '12px',
+                fontWeight: 500,
+                display: 'block',
+                marginBottom: '4px',
+              }}
+            >
               {label}
             </label>
           )}
@@ -406,7 +462,11 @@ export function SnapUIRenderer({
     }
 
     case 'Tooltip':
-      return <span title={props.content as string}>{renderChildren(children, onUserInput)}</span>
+      return (
+        <span title={props.content as string}>
+          {renderChildren(children, onUserInput)}
+        </span>
+      )
 
     case 'Skeleton':
       return (
@@ -422,9 +482,21 @@ export function SnapUIRenderer({
 
     case 'Banner': {
       const severity = props.severity as string
-      const bg = severity === 'danger' ? '#f8d7da' : severity === 'warning' ? '#fff3cd' : '#d1ecf1'
+      const bg =
+        severity === 'danger'
+          ? '#f8d7da'
+          : severity === 'warning'
+            ? '#fff3cd'
+            : '#d1ecf1'
       return (
-        <div style={{ padding: '8px 12px', borderRadius: '6px', backgroundColor: bg, fontSize: '13px' }}>
+        <div
+          style={{
+            padding: '8px 12px',
+            borderRadius: '6px',
+            backgroundColor: bg,
+            fontSize: '13px',
+          }}
+        >
           {typeof props.title === 'string' && <strong>{props.title}: </strong>}
           {renderChildren(children, onUserInput)}
         </div>
@@ -459,12 +531,22 @@ export function SnapHomePageRenderer({
   // onHomePage returns { content: <component tree> }
   const content = (data as Record<string, unknown>).content
   if (isSnapComponent(content)) {
-    return <SnapUIRenderer component={content} onUserInput={onUserInput} />
+    return (
+      <SnapUIRenderer
+        component={content}
+        onUserInput={onUserInput}
+      />
+    )
   }
 
   // Fallback: try rendering data itself as a component
   if (isSnapComponent(data)) {
-    return <SnapUIRenderer component={data as SnapComponent} onUserInput={onUserInput} />
+    return (
+      <SnapUIRenderer
+        component={data as SnapComponent}
+        onUserInput={onUserInput}
+      />
+    )
   }
 
   return <pre style={{ fontSize: '11px' }}>{JSON.stringify(data, null, 2)}</pre>

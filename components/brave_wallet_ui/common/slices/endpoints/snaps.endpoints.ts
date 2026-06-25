@@ -16,8 +16,7 @@ export const snapsEndpoints = ({
       queryFn: async (_, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { pending } =
-            await api.snapsService.getPendingSnapInstall()
+          const { pending } = await api.snapsService.getPendingSnapInstall()
           return { data: pending }
         } catch (error) {
           return handleEndpointError(
@@ -40,12 +39,21 @@ export const snapsEndpoints = ({
         _extraOptions,
         baseQuery,
       ) => {
-        console.error('XXXZZZ requestInstallSnap: snapId=' + snapId + ' version=' + version)
+        console.error(
+          'XXXZZZ requestInstallSnap: snapId=' + snapId + ' version=' + version,
+        )
         try {
           const { data: api } = baseQuery(undefined)
-          const { success, error } =
-            await api.snapsService.requestInstallSnap(snapId, version)
-          console.error('XXXZZZ requestInstallSnap: result success=' + success + ' error=' + error)
+          const { success, error } = await api.snapsService.requestInstallSnap(
+            snapId,
+            version,
+          )
+          console.error(
+            'XXXZZZ requestInstallSnap: result success='
+              + success
+              + ' error='
+              + error,
+          )
           return { data: { success, error: error ?? undefined } }
         } catch (error) {
           console.error('XXXZZZ requestInstallSnap: threw', error)
@@ -60,22 +68,24 @@ export const snapsEndpoints = ({
     }),
 
     notifySnapInstallRequestProcessed: mutation<null, { approved: boolean }>({
-      queryFn: async (
-        { approved },
-        { endpoint },
-        _extraOptions,
-        baseQuery,
-      ) => {
-        console.error('XXXZZZ notifySnapInstallRequestProcessed: approved=' + approved)
+      queryFn: async ({ approved }, { endpoint }, _extraOptions, baseQuery) => {
+        console.error(
+          'XXXZZZ notifySnapInstallRequestProcessed: approved=' + approved,
+        )
         try {
           const { data: api } = baseQuery(undefined)
-          const mojoResult = await api.snapsService.notifySnapInstallRequestProcessed(
-            approved,
+          const mojoResult =
+            await api.snapsService.notifySnapInstallRequestProcessed(approved)
+          console.error(
+            'XXXZZZ notifySnapInstallRequestProcessed: mojo returned',
+            JSON.stringify(mojoResult),
           )
-          console.error('XXXZZZ notifySnapInstallRequestProcessed: mojo returned', JSON.stringify(mojoResult))
           return { data: null }
         } catch (error) {
-          console.error('XXXZZZ notifySnapInstallRequestProcessed: threw', error)
+          console.error(
+            'XXXZZZ notifySnapInstallRequestProcessed: threw',
+            error,
+          )
           return handleEndpointError(
             endpoint,
             'Failed to notify snap install processed',
@@ -104,7 +114,11 @@ export const snapsEndpoints = ({
     }),
 
     getSnapHomePage: query<
-      { contentJson: string | null; interfaceId: string | null; error: string | null },
+      {
+        contentJson: string | null
+        interfaceId: string | null
+        error: string | null
+      },
       { snapId: string }
     >({
       queryFn: async ({ snapId }, { endpoint }, _extra, baseQuery) => {
@@ -112,9 +126,19 @@ export const snapsEndpoints = ({
           const { data: api } = baseQuery(undefined)
           const { contentJson, interfaceId, error } =
             await api.snapsService.getSnapHomePage(snapId)
-          return { data: { contentJson: contentJson ?? null, interfaceId: interfaceId ?? null, error: error ?? null } }
+          return {
+            data: {
+              contentJson: contentJson ?? null,
+              interfaceId: interfaceId ?? null,
+              error: error ?? null,
+            },
+          }
         } catch (error) {
-          return handleEndpointError(endpoint, 'Failed to get snap home page', error)
+          return handleEndpointError(
+            endpoint,
+            'Failed to get snap home page',
+            error,
+          )
         }
       },
     }),
@@ -123,14 +147,29 @@ export const snapsEndpoints = ({
       { contentJson: string | null; error: string | null },
       { snapId: string; interfaceId: string; eventJson: string }
     >({
-      queryFn: async ({ snapId, interfaceId, eventJson }, { endpoint }, _extra, baseQuery) => {
+      queryFn: async (
+        { snapId, interfaceId, eventJson },
+        { endpoint },
+        _extra,
+        baseQuery,
+      ) => {
         try {
           const { data: api } = baseQuery(undefined)
           const { contentJson, error } =
-            await api.snapsService.sendSnapUserInput(snapId, interfaceId, eventJson)
-          return { data: { contentJson: contentJson ?? null, error: error ?? null } }
+            await api.snapsService.sendSnapUserInput(
+              snapId,
+              interfaceId,
+              eventJson,
+            )
+          return {
+            data: { contentJson: contentJson ?? null, error: error ?? null },
+          }
         } catch (error) {
-          return handleEndpointError(endpoint, 'Failed to send snap user input', error)
+          return handleEndpointError(
+            endpoint,
+            'Failed to send snap user input',
+            error,
+          )
         }
       },
     }),
@@ -142,8 +181,7 @@ export const snapsEndpoints = ({
       queryFn: async (_, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { pending } =
-            await api.snapsService.getPendingSnapConnection()
+          const { pending } = await api.snapsService.getPendingSnapConnection()
           return { data: pending ?? null }
         } catch (error) {
           return handleEndpointError(
@@ -156,32 +194,37 @@ export const snapsEndpoints = ({
       providesTags: ['PendingSnapConnection'],
     }),
 
-    notifySnapConnectionRequestProcessed: mutation<
-      null,
-      { approved: boolean }
-    >({
-      queryFn: async ({ approved }, { endpoint }, _extraOptions, baseQuery) => {
-        try {
-          const { data: api } = baseQuery(undefined)
-          await api.snapsService.notifySnapConnectionRequestProcessed(approved)
-          return { data: null }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Failed to notify snap connection processed',
-            error,
-          )
-        }
+    notifySnapConnectionRequestProcessed: mutation<null, { approved: boolean }>(
+      {
+        queryFn: async (
+          { approved },
+          { endpoint },
+          _extraOptions,
+          baseQuery,
+        ) => {
+          try {
+            const { data: api } = baseQuery(undefined)
+            await api.snapsService.notifySnapConnectionRequestProcessed(
+              approved,
+            )
+            return { data: null }
+          } catch (error) {
+            return handleEndpointError(
+              endpoint,
+              'Failed to notify snap connection processed',
+              error,
+            )
+          }
+        },
+        invalidatesTags: ['PendingSnapConnection'],
       },
-      invalidatesTags: ['PendingSnapConnection'],
-    }),
+    ),
 
     getSnapConnectedOrigins: query<string[], { snapId: string }>({
       queryFn: async ({ snapId }, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
-          const { origins } =
-            await api.snapsService.getConnectedOrigins(snapId)
+          const { origins } = await api.snapsService.getConnectedOrigins(snapId)
           return { data: origins }
         } catch (error) {
           return handleEndpointError(
@@ -196,10 +239,7 @@ export const snapsEndpoints = ({
       ],
     }),
 
-    disconnectSnapOrigin: mutation<
-      null,
-      { origin: string; snapId: string }
-    >({
+    disconnectSnapOrigin: mutation<null, { origin: string; snapId: string }>({
       queryFn: async (
         { origin, snapId },
         { endpoint },
@@ -252,12 +292,7 @@ export const snapsEndpoints = ({
     }),
 
     uninstallSnap: mutation<null, { snapId: string }>({
-      queryFn: async (
-        { snapId },
-        { endpoint },
-        _extraOptions,
-        baseQuery,
-      ) => {
+      queryFn: async ({ snapId }, { endpoint }, _extraOptions, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
           await api.snapsService.uninstallSnap(snapId)

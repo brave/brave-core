@@ -27,7 +27,7 @@ struct SnapTarResult {
 // Returns std::nullopt if no matching entry is found or the archive is
 // malformed.
 std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
-                                               std::string_view path_suffix);
+                                              std::string_view path_suffix);
 
 // Parses a POSIX ustar tar archive and extracts the snap manifest and bundle.
 //
@@ -37,8 +37,9 @@ std::optional<std::string> ExtractFileFromTar(const std::string& tar_data,
 // is empty it falls back to any .js file under a "dist/" directory.
 //
 // Returns std::nullopt if either file is absent or the archive is malformed.
-std::optional<SnapTarResult> ExtractSnapFiles(const std::string& tar_data,
-                                              std::string_view bundle_file_path);
+std::optional<SnapTarResult> ExtractSnapFiles(
+    const std::string& tar_data,
+    std::string_view bundle_file_path);
 
 }  // namespace brave_wallet
 

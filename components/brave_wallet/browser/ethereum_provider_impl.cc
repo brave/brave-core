@@ -13,9 +13,9 @@
 #include <vector>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/to_vector.h"
+#include "base/logging.h"
 #include "base/notreached.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
@@ -26,10 +26,12 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_provider_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
-#include "brave/components/brave_wallet/browser/snaps_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snap/snap_controller.h"
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/siwe_message_parser.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
@@ -74,10 +76,12 @@ constexpr char kAddEthereumChainMethod[] = "wallet_addEthereumChain";
 constexpr char kSwitchEthereumChainMethod[] = "wallet_switchEthereumChain";
 constexpr char kRequestPermissionsMethod[] = "wallet_requestPermissions";
 constexpr char kGetPermissionsMethod[] = "wallet_getPermissions";
+#if BUILDFLAG(ENABLE_SNAPS)
 constexpr char kWalletRequestSnaps[] = "wallet_requestSnaps";
 constexpr char kWalletInvokeSnap[] = "wallet_invokeSnap";
 constexpr char kWalletSnap[] = "wallet_snap";
 constexpr char kWalletGetSnaps[] = "wallet_getSnaps";
+#endif
 
 constexpr auto kMethodsRequireInteraction =
     base::MakeFixedFlatSet<std::string_view>(
@@ -911,6 +915,7 @@ void EthereumProviderImpl::SetupMethodHandlers() {
   add_handler(kEthSubscribe, &EthereumProviderImpl::HandleEthSubscribeMethod);
   add_handler(kEthUnsubscribe,
               &EthereumProviderImpl::HandleEthUnsubscribeMethod);
+#if BUILDFLAG(ENABLE_SNAPS)
   add_handler(kWalletRequestSnaps,
               &EthereumProviderImpl::HandleWalletRequestSnapsMethod);
   add_handler(kWalletInvokeSnap,
@@ -918,6 +923,7 @@ void EthereumProviderImpl::SetupMethodHandlers() {
   add_handler(kWalletSnap, &EthereumProviderImpl::HandleWalletInvokeSnapMethod);
   add_handler(kWalletGetSnaps,
               &EthereumProviderImpl::HandleWalletGetSnapsMethod);
+#endif
 }
 
 void EthereumProviderImpl::HandleEthAccountsMethod(JsonRpcRequest request,
@@ -1175,6 +1181,7 @@ void EthereumProviderImpl::HandleEthUnsubscribeMethod(
   EthUnsubscribe(*subscription_id, std::move(callback), std::move(request.id));
 }
 
+#if BUILDFLAG(ENABLE_SNAPS)
 void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
     JsonRpcRequest request,
     RequestCallback request_callback) {
@@ -1188,7 +1195,8 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
           ? &request.params.front().GetDict()
           : nullptr;
   if (!params_dict) {
-    LOG(ERROR) << "XXXZZZ HandleWalletInvokeSnapMethod: invalid params (no dict)";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletInvokeSnapMethod: invalid params (no dict)";
     RejectInvalidParams(std::move(request.id), std::move(request_callback));
     return;
   }
@@ -1196,14 +1204,16 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
   const std::string* snap_id = params_dict->FindString("snapId");
   const base::DictValue* snap_request = params_dict->FindDict("request");
   if (!snap_id || !snap_request) {
-    LOG(ERROR) << "XXXZZZ HandleWalletInvokeSnapMethod: missing snapId or request";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletInvokeSnapMethod: missing snapId or request";
     RejectInvalidParams(std::move(request.id), std::move(request_callback));
     return;
   }
 
   const std::string* method = snap_request->FindString("method");
   if (!method) {
-    LOG(ERROR) << "XXXZZZ HandleWalletInvokeSnapMethod: missing method in request";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletInvokeSnapMethod: missing method in request";
     RejectInvalidParams(std::move(request.id), std::move(request_callback));
     return;
   }
@@ -1217,13 +1227,13 @@ void EthereumProviderImpl::HandleWalletInvokeSnapMethod(
   }
 
   const base::Value* snap_params_val = snap_request->Find("params");
-  base::Value snap_params = snap_params_val
-                                ? snap_params_val->Clone()
-                                : base::Value(base::DictValue());
+  base::Value snap_params = snap_params_val ? snap_params_val->Clone()
+                                            : base::Value(base::DictValue());
 
   auto* ss = brave_wallet_service_->snaps_service();
   if (!ss) {
-    LOG(ERROR) << "XXXZZZ HandleWalletInvokeSnapMethod: SnapsService not available";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletInvokeSnapMethod: SnapsService not available";
     RejectMismatchError(std::move(request.id), "SnapsService not available",
                         std::move(request_callback));
     return;
@@ -1254,7 +1264,8 @@ void EthereumProviderImpl::HandleWalletRequestSnapsMethod(
     snaps_dict = &request.params.front().GetDict();
   }
   if (!snaps_dict) {
-    LOG(ERROR) << "XXXZZZ HandleWalletRequestSnapsMethod: invalid params (no dict)";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletRequestSnapsMethod: invalid params (no dict)";
     RejectInvalidParams(std::move(request.id), std::move(request_callback));
     return;
   }
@@ -1266,7 +1277,8 @@ void EthereumProviderImpl::HandleWalletRequestSnapsMethod(
 
   auto* ss = brave_wallet_service_->snaps_service();
   if (!ss) {
-    LOG(ERROR) << "XXXZZZ HandleWalletRequestSnapsMethod: SnapsService not available";
+    LOG(ERROR)
+        << "XXXZZZ HandleWalletRequestSnapsMethod: SnapsService not available";
     RejectMismatchError(std::move(request.id), "SnapsService not available",
                         std::move(request_callback));
     return;
@@ -1303,9 +1315,9 @@ void EthereumProviderImpl::HandleWalletGetSnapsMethod(
     LOG(ERROR) << "XXXZZZ HandleWalletGetSnapsMethod:   snap_id=" << snap_id;
   }
   std::move(request_callback)
-      .Run(mojom::EthereumProviderResponse::New(
-          std::move(request.id), base::Value(std::move(result)), false, "",
-          false));
+      .Run(mojom::EthereumProviderResponse::New(std::move(request.id),
+                                                base::Value(std::move(result)),
+                                                false, "", false));
 }
 
 void EthereumProviderImpl::OnSnapInvokeResult(
@@ -1334,8 +1346,7 @@ void EthereumProviderImpl::OnSnapRequestSnapsResult(
     std::optional<base::DictValue> result,
     std::optional<std::string> error) {
   LOG(ERROR) << "XXXZZZ OnSnapRequestSnapsResult has_result="
-             << result.has_value()
-             << " error='" << error.value_or("") << "'";
+             << result.has_value() << " error='" << error.value_or("") << "'";
   if (error) {
     base::Value formed_response = GetProviderErrorDictionary(
         mojom::ProviderError::kInternalError, *error);
@@ -1344,10 +1355,10 @@ void EthereumProviderImpl::OnSnapRequestSnapsResult(
     return;
   }
   std::move(callback).Run(mojom::EthereumProviderResponse::New(
-      std::move(id),
-      base::Value(std::move(result).value_or(base::DictValue())),
+      std::move(id), base::Value(std::move(result).value_or(base::DictValue())),
       false, "", false));
 }
+#endif  // BUILDFLAG(ENABLE_SNAPS)
 
 void EthereumProviderImpl::CommonRequestOrSendAsync(
     base::Value input_value,

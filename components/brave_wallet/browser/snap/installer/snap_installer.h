@@ -21,7 +21,6 @@
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/gurl.h"
 
-
 namespace network {
 class SharedURLLoaderFactory;
 class SimpleURLLoader;
@@ -84,9 +83,8 @@ class SnapInstaller {
   void UninstallSnap(const std::string& snap_id);
 
   // Reads bundle.js from disk for |snap_id|. Async; returns nullopt on error.
-  void GetSnapBundle(
-      const std::string& snap_id,
-      base::OnceCallback<void(std::optional<std::string>)> cb);
+  void GetSnapBundle(const std::string& snap_id,
+                     base::OnceCallback<void(std::optional<std::string>)> cb);
 
   // Result of the thread-pool extraction step. Files are written to
   // |unpacked_dir| (a subfolder of the snap's ScopedTempDir).
@@ -95,7 +93,7 @@ class SnapInstaller {
     ExtractResult(ExtractResult&&);
     ~ExtractResult();
 
-    std::string manifest_json;   // text of snap.manifest.json
+    std::string manifest_json;  // text of snap.manifest.json
     std::string computed_shasum;
     uint64_t bundle_size_bytes = 0;
     // Base of the snap-specific temp dir created on the thread pool.
@@ -105,7 +103,6 @@ class SnapInstaller {
   };
 
  private:
-
   // Per-install context carried through the async pipeline.
   struct InstallContext {
     InstallContext();
@@ -144,7 +141,6 @@ class SnapInstaller {
   // Completes |ctx|'s pipeline with an error.
   void FailInstall(std::unique_ptr<InstallContext> ctx,
                    const std::string& error);
-
 
   raw_ref<SnapDataProvider> data_provider_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;

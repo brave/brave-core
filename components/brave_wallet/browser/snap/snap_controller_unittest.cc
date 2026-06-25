@@ -32,8 +32,8 @@
 namespace brave_wallet {
 
 namespace {
-using InvokeFuture =
-    base::test::TestFuture<std::optional<base::Value>, std::optional<std::string>>;
+using InvokeFuture = base::test::TestFuture<std::optional<base::Value>,
+                                            std::optional<std::string>>;
 }  // namespace
 
 class SnapControllerTest : public testing::Test {
@@ -126,7 +126,8 @@ TEST_F(SnapControllerTest, InvokeSnapInsecureOriginRejected) {
 TEST_F(SnapControllerTest, InvokeSnapAutoGrantsPermittedOrigin) {
   InstallSnap("npm:test-snap", /*allow_dapps=*/true);
   const url::Origin origin = SecureOrigin();
-  ASSERT_FALSE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+  ASSERT_FALSE(
+      permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
 
   InvokeFuture future;
   controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
@@ -194,7 +195,8 @@ TEST_F(SnapControllerTest, InvokeSnapDisconnectFailsPending) {
 TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalApproveSucceeds) {
   InstallSnap("npm:test-snap", /*allow_dapps=*/true);
   const url::Origin origin = SecureOrigin();
-  ASSERT_FALSE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+  ASSERT_FALSE(
+      permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
 
   std::optional<std::string> requested_snap;
   controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
@@ -229,7 +231,8 @@ TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalRejectFails) {
                           future.GetCallback());
 
   EXPECT_EQ(future.Get<1>(), "user_rejected");
-  EXPECT_FALSE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
+  EXPECT_FALSE(
+      permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
 }
 
 TEST_F(SnapControllerTest, InvokeSnapAlreadyConnectedSkipsApproval) {
@@ -360,10 +363,9 @@ TEST_F(SnapControllerTest, GetSnapHomePageSuccess) {
                          std::optional<std::string>>
       future;
   controller_->GetSnapHomePage(
-      "npm:test-snap",
-      future.GetCallback<const std::optional<std::string>&,
-                         const std::optional<std::string>&,
-                         const std::optional<std::string>&>());
+      "npm:test-snap", future.GetCallback<const std::optional<std::string>&,
+                                          const std::optional<std::string>&,
+                                          const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<0>(), "{}");
   EXPECT_EQ(future.Get<1>(), "iface-1");
   EXPECT_FALSE(future.Get<2>());
@@ -375,10 +377,9 @@ TEST_F(SnapControllerTest, GetSnapHomePageNoBridge) {
                          std::optional<std::string>>
       future;
   controller_->GetSnapHomePage(
-      "npm:test-snap",
-      future.GetCallback<const std::optional<std::string>&,
-                         const std::optional<std::string>&,
-                         const std::optional<std::string>&>());
+      "npm:test-snap", future.GetCallback<const std::optional<std::string>&,
+                                          const std::optional<std::string>&,
+                                          const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<2>(), "no_bridge");
 }
 
@@ -389,10 +390,9 @@ TEST_F(SnapControllerTest, GetSnapHomePageLoadFailure) {
                          std::optional<std::string>>
       future;
   controller_->GetSnapHomePage(
-      "npm:test-snap",
-      future.GetCallback<const std::optional<std::string>&,
-                         const std::optional<std::string>&,
-                         const std::optional<std::string>&>());
+      "npm:test-snap", future.GetCallback<const std::optional<std::string>&,
+                                          const std::optional<std::string>&,
+                                          const std::optional<std::string>&>());
   EXPECT_EQ(future.Get<2>(), "nope");
 }
 

@@ -81,8 +81,8 @@ void SetChecksumField(std::string& header) {
 // ---------------------------------------------------------------------------
 
 TestSnapManifestOptions::TestSnapManifestOptions() = default;
-TestSnapManifestOptions::TestSnapManifestOptions(const TestSnapManifestOptions&) =
-    default;
+TestSnapManifestOptions::TestSnapManifestOptions(
+    const TestSnapManifestOptions&) = default;
 TestSnapManifestOptions& TestSnapManifestOptions::operator=(
     const TestSnapManifestOptions&) = default;
 TestSnapManifestOptions::~TestSnapManifestOptions() = default;
@@ -165,16 +165,16 @@ std::string BuildUstarTar(
   for (const auto& [path, content] : entries) {
     CHECK_LE(path.size(), 100u) << "ustar name field overflow: " << path;
     std::string header(kBlockSize, '\0');
-    std::ranges::copy(path, header.begin());           // name @ 0
-    SetOctalField(header, 100, 8, 0644);               // mode
-    SetOctalField(header, 108, 8, 0);                  // uid
-    SetOctalField(header, 116, 8, 0);                  // gid
-    SetOctalField(header, 124, 12, content.size());    // size
-    SetOctalField(header, 136, 12, 0);                 // mtime
-    header[156] = '0';                                 // typeflag: regular file
-    std::ranges::copy(std::string_view("ustar"),       // magic @ 257
+    std::ranges::copy(path, header.begin());         // name @ 0
+    SetOctalField(header, 100, 8, 0644);             // mode
+    SetOctalField(header, 108, 8, 0);                // uid
+    SetOctalField(header, 116, 8, 0);                // gid
+    SetOctalField(header, 124, 12, content.size());  // size
+    SetOctalField(header, 136, 12, 0);               // mtime
+    header[156] = '0';                               // typeflag: regular file
+    std::ranges::copy(std::string_view("ustar"),     // magic @ 257
                       header.begin() + 257);
-    header[263] = '0';                                 // version @ 263 ("00")
+    header[263] = '0';  // version @ 263 ("00")
     header[264] = '0';
     SetChecksumField(header);
     out += header;
@@ -257,10 +257,10 @@ void FakeSnapBridge::InvokeSnap(const std::string& snap_id,
   last_method = method;
   last_params = std::move(params);
   last_caller_origin = caller_origin;
-  std::move(cb).Run(
-      invoke_result ? std::optional<base::Value>(invoke_result->Clone())
-                    : std::nullopt,
-      invoke_error);
+  std::move(cb).Run(invoke_result
+                        ? std::optional<base::Value>(invoke_result->Clone())
+                        : std::nullopt,
+                    invoke_error);
 }
 
 void FakeSnapBridge::UnloadSnap(const std::string& snap_id,
@@ -309,8 +309,9 @@ void FakeSnapBridgeController::RunPendingReady() {
   std::move(pending_ready_cb_).Run();
 }
 
-void FakeSnapBridgeController::RunPendingLoad(bool success,
-                                             std::optional<std::string> error) {
+void FakeSnapBridgeController::RunPendingLoad(
+    bool success,
+    std::optional<std::string> error) {
   CHECK(pending_load_cb_);
   std::move(pending_load_cb_).Run(success, error);
 }
@@ -351,7 +352,7 @@ void FakeSnapBridgeController::EnsureBridgeReady(base::OnceClosure on_ready) {
 }
 
 void FakeSnapBridgeController::LoadSnap(const std::string& snap_id,
-                                       LoadSnapCallback cb) {
+                                        LoadSnapCallback cb) {
   load_snap_ids.push_back(snap_id);
   if (auto_run_load) {
     std::move(cb).Run(load_success, load_error);
@@ -361,10 +362,10 @@ void FakeSnapBridgeController::LoadSnap(const std::string& snap_id,
 }
 
 void FakeSnapBridgeController::InvokeSnap(const std::string& snap_id,
-                                         const std::string& method,
-                                         base::Value params,
-                                         const std::string& caller_origin,
-                                         InvokeSnapCallback cb) {
+                                          const std::string& method,
+                                          base::Value params,
+                                          const std::string& caller_origin,
+                                          InvokeSnapCallback cb) {
   InvokeCall call;
   call.snap_id = snap_id;
   call.method = method;
@@ -372,17 +373,17 @@ void FakeSnapBridgeController::InvokeSnap(const std::string& snap_id,
   call.caller_origin = caller_origin;
   invoke_calls.push_back(std::move(call));
   if (auto_run_invoke) {
-    std::move(cb).Run(
-        invoke_result ? std::optional<base::Value>(invoke_result->Clone())
-                      : std::nullopt,
-        invoke_error);
+    std::move(cb).Run(invoke_result
+                          ? std::optional<base::Value>(invoke_result->Clone())
+                          : std::nullopt,
+                      invoke_error);
   } else {
     pending_invoke_cb_ = std::move(cb);
   }
 }
 
 void FakeSnapBridgeController::FetchSnapHomePage(const std::string& snap_id,
-                                                FetchSnapHomePageCallback cb) {
+                                                 FetchSnapHomePageCallback cb) {
   std::move(cb).Run(home_page_content_json, home_page_interface_id,
                     home_page_error);
 }

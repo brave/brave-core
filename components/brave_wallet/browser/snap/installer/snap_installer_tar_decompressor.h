@@ -15,8 +15,8 @@ class SnapInstallerTarDecompressor {
  public:
   SnapInstallerTarDecompressor() = delete;
   SnapInstallerTarDecompressor(const SnapInstallerTarDecompressor&) = delete;
-  SnapInstallerTarDecompressor& operator=(
-      const SnapInstallerTarDecompressor&) = delete;
+  SnapInstallerTarDecompressor& operator=(const SnapInstallerTarDecompressor&) =
+      delete;
 
   // Reads the gzip-compressed tarball at |tarball_path|, decompresses it,
   // extracts bundle.js and manifest.json to an unpacked temp directory,

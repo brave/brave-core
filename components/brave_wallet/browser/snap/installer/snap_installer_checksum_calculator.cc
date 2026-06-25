@@ -76,10 +76,9 @@ std::string SnapInstallerChecksumCalculator::ComputeMetaMaskChecksum(
   std::sort(other_paths.begin(), other_paths.end());
 
   LOG(ERROR) << "SNAP checksum: bundle size=" << bundle_js.size()
-             << " prefix=" << HexPrefix(bundle_js)
-             << " suffix=" << HexPrefix(bundle_js.substr(
-                                bundle_js.size() > 24 ? bundle_js.size() - 24
-                                                      : 0));
+             << " prefix=" << HexPrefix(bundle_js) << " suffix="
+             << HexPrefix(bundle_js.substr(
+                    bundle_js.size() > 24 ? bundle_js.size() - 24 : 0));
 
   std::optional<std::string> icon_data;
   if (!icon_path.empty()) {

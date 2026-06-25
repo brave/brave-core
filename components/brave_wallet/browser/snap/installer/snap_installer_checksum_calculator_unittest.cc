@@ -50,7 +50,8 @@ TEST(SnapInstallerChecksumCalculatorTest, MatchesTestHelperShasum) {
 }
 
 TEST(SnapInstallerChecksumCalculatorTest, DeterministicAndInputSensitive) {
-  std::string tar = BuildSnapTar(kSourceOnlyManifest, "bundle-a", "dist/bundle.js");
+  std::string tar =
+      BuildSnapTar(kSourceOnlyManifest, "bundle-a", "dist/bundle.js");
   std::string a = Checksum(tar, "bundle-a", kSourceOnlyManifest);
   std::string b = Checksum(tar, "bundle-b", kSourceOnlyManifest);
   EXPECT_NE(a, b);
@@ -89,8 +90,8 @@ TEST(SnapInstallerChecksumCalculatorTest, AuxFilesAppendedInSortedOrder) {
   });
 
   EXPECT_EQ(Checksum(tar, bundle, kManifest),
-            base::Base64Encode(crypto::hash::Sha256(bundle + std::string("AAA") +
-                                                    std::string("BBB"))));
+            base::Base64Encode(crypto::hash::Sha256(
+                bundle + std::string("AAA") + std::string("BBB"))));
 }
 
 }  // namespace brave_wallet

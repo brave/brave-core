@@ -44,8 +44,8 @@ class WalletSnapHostUI
       mojo::PendingRemote<brave_wallet::mojom::SnapBridge> snap_bridge,
       mojo::PendingReceiver<brave_wallet::mojom::SnapRequestHandler>
           snap_request_handler,
-      mojo::PendingReceiver<brave_wallet::mojom::SnapsService>
-          snaps_service) override;
+      mojo::PendingReceiver<brave_wallet::mojom::SnapsService> snaps_service)
+      override;
 
   mojo::Receiver<brave_wallet::mojom::WalletSnapHostHandlerFactory>
       factory_receiver_{this};

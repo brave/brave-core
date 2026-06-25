@@ -20,6 +20,7 @@
 #include "brave/components/brave_wallet/browser/eth_logs_tracker.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/eth_request_helper.h"
 #include "components/content_settings/core/browser/content_settings_observer.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -203,6 +204,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void HandleEthUnsubscribeMethod(JsonRpcRequest request,
                                   RequestCallback request_callback);
 
+#if BUILDFLAG(ENABLE_SNAPS)
   // Snap RPC methods (wallet_requestSnaps, wallet_invokeSnap, wallet_getSnaps).
   void HandleWalletRequestSnapsMethod(JsonRpcRequest request,
                                       RequestCallback request_callback);
@@ -218,6 +220,7 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
                                 base::Value id,
                                 std::optional<base::DictValue> result,
                                 std::optional<std::string> error);
+#endif  // BUILDFLAG(ENABLE_SNAPS)
 
   mojom::AccountIdPtr FindAuthenticatedAccountByAddress(
       const std::string& address,

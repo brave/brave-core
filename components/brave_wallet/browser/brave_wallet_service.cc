@@ -13,17 +13,19 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/files/file_path.h"
+#include "base/json/json_reader.h"
+#include "base/json/json_writer.h"
 #include "base/notreached.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/account_discovery_manager.h"
 #include "brave/components/brave_wallet/browser/asset_ratio_service.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
-#include "brave/components/brave_wallet/browser/snaps_service.h"
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
+#if BUILDFLAG(ENABLE_SNAPS)
+#include "brave/components/brave_wallet/browser/snaps_service.h"
+#endif
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_ipfs_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
@@ -241,6 +243,7 @@ BraveWalletService::BraveWalletService(
       keyring_service_(std::make_unique<KeyringService>(json_rpc_service_.get(),
                                                         profile_prefs,
                                                         local_state)),
+#if BUILDFLAG(ENABLE_SNAPS)
       snaps_service_(std::make_unique<SnapsService>(
           *keyring_service_,
           *profile_prefs,
@@ -251,6 +254,7 @@ BraveWalletService::BraveWalletService(
                               base::Unretained(delegate_.get())),
           base::BindRepeating(&BraveWalletServiceDelegate::OpenSnapHostTab,
                               base::Unretained(delegate_.get())))),
+#endif
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service_.get(),
                                                 keyring_service_.get(),
@@ -478,6 +482,7 @@ void BraveWalletService::Bind(
   ipfs_service()->Bind(std::move(receiver));
 }
 
+#if BUILDFLAG(ENABLE_SNAPS)
 template <>
 void BraveWalletService::Bind(
     mojo::PendingReceiver<mojom::SnapsService> receiver) {
@@ -485,6 +490,7 @@ void BraveWalletService::Bind(
     snaps_service_->Bind(std::move(receiver));
   }
 }
+#endif
 
 void BraveWalletService::GetUserAssets(const std::string& chain_id,
                                        mojom::CoinType coin,

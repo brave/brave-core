@@ -37,8 +37,8 @@ TEST_F(SnapInstallerTarDecompressorTest, ExtractsValidTarball) {
   TestSnapManifestOptions options;
   options.shasum = ComputeSnapBundleShasum(bundle);
   const std::string manifest = MakeSnapManifestJson(options);
-  base::FilePath tarball =
-      WriteTarball(BuildSnapTarball(manifest, bundle, options.bundle_file_path));
+  base::FilePath tarball = WriteTarball(
+      BuildSnapTarball(manifest, bundle, options.bundle_file_path));
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   SnapInstaller::ExtractResult result =
@@ -51,8 +51,8 @@ TEST_F(SnapInstallerTarDecompressorTest, ExtractsValidTarball) {
   ASSERT_FALSE(result.temp_dir_path.empty());
   EXPECT_TRUE(base::PathExists(
       result.temp_dir_path.AppendASCII("unpacked").AppendASCII("bundle.js")));
-  EXPECT_TRUE(base::PathExists(
-      result.temp_dir_path.AppendASCII("unpacked").AppendASCII("manifest.json")));
+  EXPECT_TRUE(base::PathExists(result.temp_dir_path.AppendASCII("unpacked")
+                                   .AppendASCII("manifest.json")));
   // The downloaded tarball is consumed (deleted) by extraction.
   EXPECT_FALSE(base::PathExists(tarball));
 

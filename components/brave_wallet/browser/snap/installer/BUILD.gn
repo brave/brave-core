@@ -1,0 +1,60 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+
+assert(enable_snaps)
+
+source_set("installer") {
+  sources = [
+    "snap_installer.cc",
+    "snap_installer.h",
+    "snap_installer_checksum_calculator.cc",
+    "snap_installer_checksum_calculator.h",
+    "snap_installer_tar_decompressor.cc",
+    "snap_installer_tar_decompressor.h",
+    "snap_tar_utils.cc",
+    "snap_tar_utils.h",
+  ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_wallet/browser/snap:manifest_parser",
+    "//brave/components/brave_wallet/browser/snap/storage",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//crypto",
+    "//net/traffic_annotation",
+    "//services/network/public/cpp",
+    "//third_party/zlib/google:compression_utils",
+    "//url",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [
+    "snap_installer_checksum_calculator_unittest.cc",
+    "snap_installer_tar_decompressor_unittest.cc",
+    "snap_installer_unittest.cc",
+    "snap_tar_utils_unittest.cc",
+  ]
+
+  deps = [
+    ":installer",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_wallet/browser/snap:test_support",
+    "//brave/components/brave_wallet/browser/snap/storage",
+    "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:mojom",
+    "//components/prefs:test_support",
+    "//crypto",
+    "//services/network:test_support",
+    "//services/network/public/cpp",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

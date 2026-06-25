@@ -66,12 +66,12 @@ base::DictValue ManifestToDict(const mojom::SnapManifest& manifest) {
 // Reads a SnapInstallData from a single snap pref entry (outer dict keyed by
 // snap_id).
 mojom::SnapInstallDataPtr SnapFromPref(const std::string& snap_id,
-                                        const base::DictValue& outer) {
+                                       const base::DictValue& outer) {
   auto install_data = mojom::SnapInstallData::New();
   install_data->snap_id = snap_id;
   install_data->version = outer.FindString("version")
-                               ? *outer.FindString("version")
-                               : std::string();
+                              ? *outer.FindString("version")
+                              : std::string();
   install_data->bundle_size_bytes =
       static_cast<uint64_t>(outer.FindDouble("bundle_size_bytes").value_or(0));
   install_data->enabled = outer.FindBool("enabled").value_or(true);
@@ -151,8 +151,7 @@ void SnapRegistry::RegisterInstalledSnap(
     snap_info.Set("bundle_size_bytes",
                   static_cast<double>(install_data.bundle_size_bytes));
     snap_info.Set("manifest", ManifestToDict(*install_data.manifest));
-    snap_info.Set("installed_at",
-                  base::Time::Now().InSecondsFSinceUnixEpoch());
+    snap_info.Set("installed_at", base::Time::Now().InSecondsFSinceUnixEpoch());
     snap_info.Set("enabled", install_data.enabled);
     update->Set(install_data.snap_id, std::move(snap_info));
   }
