@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 9ebffc5cf89c7e23039138e5890906ed6a07ec0d..ac2a7cf026abdb4156c55a2e3df16b4468097b9b 100644
+index 32b7b6ea6bd7a6eac01b1e8e4efaa97e9f718812..d154925584dddf18b73981936b091aca59ec6d7a 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -173,7 +173,7 @@ void PageActionView::OnPageActionModelChanged(
@@ -19,10 +19,10 @@ index 9ebffc5cf89c7e23039138e5890906ed6a07ec0d..ac2a7cf026abdb4156c55a2e3df16b44
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -280,6 +281,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
-           .SetProperty(kPageActionTriggerKey,
-                        static_cast<std::underlying_type_t<PageActionTrigger>>(
-                            trigger_source))
+@@ -284,6 +285,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+               kPageActionEntryPointKey,
+               static_cast<std::underlying_type_t<PageActionEntryPoint>>(
+                   PageActionEntryPoint::kSuggestionChip))
 +          .SetProperty(kBravePageActionEventFlagKey,
 +                       event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
            .Build());
