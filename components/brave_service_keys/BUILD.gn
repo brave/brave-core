@@ -14,15 +14,23 @@ declare_args() {
   brave_services_key_id = ""
 }
 
-if (is_mac) {
+if (target_os == "android") {
+  _platform = "android"
+} else if (target_os == "ios") {
+  _platform = "ios"
+} else if (target_os == "linux") {
+  _platform = "linux"
+} else if (target_os == "mac") {
   _platform = "macos"
+} else if (target_os == "win") {
+  _platform = "windows"
 } else {
-  _platform = target_os
+  assert(false, "Unsupported target_os: $target_os")
 }
 
-# Release channel comes up as an empty string in `brave_channel`, so we need to
-# check that first.
-if (is_release_channel && brave_channel == "") {
+# Release channel is always `""` for `brave_channel`, so we check
+# `is_release_channel`.
+if (is_release_channel) {
   _channel = "release"
 } else {
   _channel = brave_channel
