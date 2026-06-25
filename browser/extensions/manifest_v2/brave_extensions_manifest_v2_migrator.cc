@@ -5,6 +5,7 @@
 
 #include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_migrator.h"
 
+#include <algorithm>
 #include <utility>
 
 #include "base/files/file_enumerator.h"
@@ -13,6 +14,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "brave/browser/extensions/manifest_v2/brave_extensions_manifest_v2_installer.h"
 #include "chrome/browser/profiles/profile.h"
 #include "extensions/browser/disable_reason.h"
 #include "extensions/browser/extension_file_task_runner.h"
@@ -25,6 +27,7 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_features.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace {
 
@@ -327,7 +330,34 @@ void ExtensionsManifestV2Migrator::BackupExtensionSettings(
       base::BindOnce(&BackupExtensionSettingsOnFileThread,
                      webstore_extension_id, webstore_extension_version,
                      profile_->GetPath()),
-      base::BindOnce([](const base::Version&) {}));
+      base::BindOnce(&ExtensionsManifestV2Migrator::OnBackupSettingsCompleted,
+                     weak_factory_.GetWeakPtr(), webstore_extension_id));
+}
+
+void ExtensionsManifestV2Migrator::OnBackupSettingsCompleted(
+    const extensions::ExtensionId& webstore_extension_id,
+    const base::Version& backup_version) {
+  if (!features::IsExtensionReplacementEnabled()) {
+    return;
+  }
+  const auto brave_hosted_extension_id =
+      GetBraveHostedExtensionId(webstore_extension_id);
+  if (!brave_hosted_extension_id) {
+    return;
+  }
+  auto* registry = extensions::ExtensionRegistry::Get(profile_);
+  const auto* extension =
+      registry->GetInstalledExtension(*brave_hosted_extension_id);
+  if (extension) {
+    // Already installed.
+    return;
+  }
+  auto installer = ExtensionManifestV2Installer::CreateSilent(
+      *brave_hosted_extension_id, profile_, profile_->GetURLLoaderFactory(),
+      base::BindOnce(&ExtensionsManifestV2Migrator::OnSilentInstall,
+                     weak_factory_.GetWeakPtr(), *brave_hosted_extension_id));
+  installer->BeginInstall();
+  silent_installers_.push_back(std::move(installer));
 }
 
 void ExtensionsManifestV2Migrator::OnSettingsImported(
@@ -338,6 +368,31 @@ void ExtensionsManifestV2Migrator::OnSettingsImported(
       ->RemoveDisableReasonAndMaybeEnable(
           brave_hosted_extension_id,
           extensions::disable_reason::DISABLE_RELOAD);
+}
+
+void ExtensionsManifestV2Migrator::OnSilentInstall(
+    const extensions::ExtensionId& extension_id,
+    bool success,
+    const std::string& error,
+    extensions::webstore_install::Result result) {
+  auto installer =
+      std::ranges::find_if(silent_installers_, [&extension_id](const auto& i) {
+        return i->extension_id() == extension_id;
+      });
+  if (installer != silent_installers_.end()) {
+    silent_installers_.erase(installer);
+  }
+
+  if (success) {
+    const auto webstore_extension_id =
+        GetWebStoreHostedExtensionId(extension_id);
+    if (webstore_extension_id) {
+      extensions::ExtensionRegistrar::Get(profile_)->UninstallExtension(
+          *webstore_extension_id,
+          extensions::UninstallReason::UNINSTALL_REASON_INTERNAL_MANAGEMENT,
+          nullptr);
+    }
+  }
 }
 
 //-----------------------------------------------------------------------------
