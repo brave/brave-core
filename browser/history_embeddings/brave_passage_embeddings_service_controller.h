@@ -84,7 +84,7 @@ class BravePassageEmbeddingsServiceController
   void MaybeLaunchService();
   void ResetServiceRemote();
 
-  bool EmbedderReady() override;
+  bool IsModelAvailable() override;
   EmbedderMetadata GetEmbedderMetadata() override;
   void GetEmbeddings(std::vector<std::string> passages,
                      PassagePriority priority,
@@ -113,7 +113,7 @@ class BravePassageEmbeddingsServiceController
       updater_state_observation_{this};
 
   // Set true when LocalModelsUpdaterState reports the EmbeddingGemma
-  // component is installed. Required for EmbedderReady() to return
+  // component is installed. Required for IsModelAvailable() to return
   // true.
   bool model_dir_ready_ = false;
 

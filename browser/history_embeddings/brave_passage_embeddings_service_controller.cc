@@ -201,7 +201,7 @@ void BravePassageEmbeddingsServiceController::OnProfileWillBeDestroyed(
   ResetServiceRemote();
 }
 
-bool BravePassageEmbeddingsServiceController::EmbedderReady() {
+bool BravePassageEmbeddingsServiceController::IsModelAvailable() {
   // Mirrors upstream's "do we have a model path to load from?" check
   // — true once LocalModelsUpdaterState reports the component is
   // installed. SchedulingEmbedder retries on the
@@ -243,7 +243,7 @@ void BravePassageEmbeddingsServiceController::GetEmbeddings(
     return;
   }
 
-  if (!EmbedderReady()) {
+  if (!IsModelAvailable()) {
     DVLOG(1) << "GetEmbeddings called before model dir is ready";
     std::move(callback).Run({}, ComputeEmbeddingsStatus::kModelUnavailable);
     return;
