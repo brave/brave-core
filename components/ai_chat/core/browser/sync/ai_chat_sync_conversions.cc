@@ -345,6 +345,17 @@ std::vector<std::string> ReadCompressibleStrings(
   return out;
 }
 
+// Decodes a compressible field whose mojom counterpart is a non-optional
+// string. Collapsing to "" is only correct because
+// AIChatSyncBridge::RestoreOmittedFieldsFromLocal() has already rewritten every
+// field this sender omitted for which this device holds a byte-identical copy.
+// A nullopt surviving to here therefore means "the sender omitted it to fit the
+// size budget and we have no matching local copy", and there is nothing to
+// write but the empty string.
+std::string ReadRestoredString(const sync_pb::AIChatCompressibleString& in) {
+  return ReadCompressibleString(in).value_or(std::string());
+}
+
 mojom::WebSourcePtr ProtoToWebSource(const sync_pb::AIChatWebSource& proto) {
   auto source = mojom::WebSource::New();
   source->title = proto.title();
@@ -375,8 +386,7 @@ mojom::ToolUseEventPtr ProtoToToolUse(
   auto tool_use = mojom::ToolUseEvent::New();
   tool_use->tool_name = proto.tool_name();
   tool_use->id = proto.id();
-  tool_use->arguments_json =
-      ReadCompressibleString(proto.arguments_json()).value_or(std::string());
+  tool_use->arguments_json = ReadRestoredString(proto.arguments_json());
   tool_use->is_server_result = proto.is_server_result();
   if (!proto.output().empty()) {
     std::vector<mojom::ContentBlockPtr> blocks;
@@ -387,10 +397,8 @@ mojom::ToolUseEventPtr ProtoToToolUse(
       switch (block_proto.content_case()) {
         case sync_pb::AIChatContentBlock::kTextContentBlock:
           blocks.push_back(mojom::ContentBlock::NewTextContentBlock(
-              mojom::TextContentBlock::New(
-                  ReadCompressibleString(
-                      block_proto.text_content_block().text())
-                      .value_or(std::string()))));
+              mojom::TextContentBlock::New(ReadRestoredString(
+                  block_proto.text_content_block().text()))));
           break;
         case sync_pb::AIChatContentBlock::kImageContentBlock:
           blocks.push_back(mojom::ContentBlock::NewImageContentBlock(
@@ -413,8 +421,7 @@ mojom::ToolUseEventPtr ProtoToToolUse(
     tool_use->artifacts = base::ToVector(proto.artifacts(), [](const auto& a) {
       auto artifact = mojom::ToolArtifact::New();
       artifact->type = a.type();
-      artifact->content_json =
-          ReadCompressibleString(a.content_json()).value_or(std::string());
+      artifact->content_json = ReadRestoredString(a.content_json());
       return artifact;
     });
   }
@@ -426,8 +433,7 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
   switch (proto.event_case()) {
     case sync_pb::AIChatEntryEventProto::kCompletion:
       return mojom::ConversationEntryEvent::NewCompletionEvent(
-          mojom::CompletionEvent::New(ReadCompressibleString(proto.completion())
-                                          .value_or(std::string())));
+          mojom::CompletionEvent::New(ReadRestoredString(proto.completion())));
     case sync_pb::AIChatEntryEventProto::kSearchQueries:
       return mojom::ConversationEntryEvent::NewSearchQueriesEvent(
           mojom::SearchQueriesEvent::New(
@@ -441,8 +447,7 @@ mojom::ConversationEntryEventPtr ProtoToEntryEvent(
       return mojom::ConversationEntryEvent::NewInlineSearchEvent(
           mojom::InlineSearchEvent::New(
               proto.inline_search().query(),
-              ReadCompressibleString(proto.inline_search().results_json())
-                  .value_or(std::string())));
+              ReadRestoredString(proto.inline_search().results_json())));
     case sync_pb::AIChatEntryEventProto::kToolUse:
       return mojom::ConversationEntryEvent::NewToolUseEvent(
           ProtoToToolUse(proto.tool_use()));
