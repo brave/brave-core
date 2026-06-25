@@ -1,8 +1,8 @@
 diff --git a/components/sync/service/sync_user_settings_impl.cc b/components/sync/service/sync_user_settings_impl.cc
-index 903a6035095dd6f8d13d1809b9f2822058bdbf34..52fb3717682cb1a2866a9e2c27770162553833e3 100644
+index 91391a70edc166a73cfe26f5125a9dd945ac489c..0525652bc72f09d141961aa7d3c37c59acf31f70 100644
 --- a/components/sync/service/sync_user_settings_impl.cc
 +++ b/components/sync/service/sync_user_settings_impl.cc
-@@ -378,7 +378,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+@@ -391,7 +391,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
    // though they're technically not registered.
    types.PutAll(ControlTypes());
  
@@ -11,7 +11,7 @@ index 903a6035095dd6f8d13d1809b9f2822058bdbf34..52fb3717682cb1a2866a9e2c27770162
                  "If adding a new sync data type, update the list below below if"
                  " you want to disable the new data type for local sync, aka"
                  " roaming profiles on Windows.");
-@@ -418,6 +418,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
+@@ -431,6 +431,7 @@ DataTypeSet SyncUserSettingsImpl::GetPreferredDataTypes() const {
      types.Remove(THEMES_IOS);
      types.Remove(THEMES_ANDROID);
    }
