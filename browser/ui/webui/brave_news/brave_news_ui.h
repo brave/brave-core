@@ -37,7 +37,6 @@ class BraveNewsUI : public UntrustedTopChromeWebUIController {
   static constexpr std::string_view GetWebUIName() { return "BraveNewsPanel"; }
 
  private:
-  raw_ptr<brave_news::BraveNewsController> controller_ = nullptr;
   WEB_UI_CONTROLLER_TYPE_DECL();
 };
 

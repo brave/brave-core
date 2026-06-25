@@ -35,8 +35,6 @@ BraveNewsUI::BraveNewsUI(content::WebUI* web_ui)
       content::BindingsPolicySet({content::BindingsPolicyValue::kMojoWebUi}));
 
   auto* browser_context = web_ui->GetWebContents()->GetBrowserContext();
-  controller_ = brave_news::BraveNewsControllerFactory::GetForBrowserContext(
-      browser_context);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(browser_context, kBraveNewsURL);
   webui::SetupWebUIDataSource(source, kBraveNewsSidebarGenerated,
@@ -76,10 +74,13 @@ WEB_UI_CONTROLLER_TYPE_IMPL(BraveNewsUI)
 
 void BraveNewsUI::BindInterface(
     mojo::PendingReceiver<brave_news::mojom::BraveNewsController> receiver) {
-  if (!controller_) {
+  auto* controller =
+      brave_news::BraveNewsControllerFactory::GetForBrowserContext(
+          web_ui()->GetWebContents()->GetBrowserContext());
+  if (!controller) {
     return;
   }
-  controller_->Bind(std::move(receiver));
+  controller->Bind(std::move(receiver));
 }
 
 BraveNewsUIConfig::BraveNewsUIConfig()
