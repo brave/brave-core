@@ -187,26 +187,6 @@ base::Token CreateStableFarblingToken(const GURL& url) {
   return base::Token(high, low);
 }
 
-bool IsSchemeSupportedForShields(const GURL& url) {
-  if (!url.is_valid()) {
-    return false;
-  }
-
-  if (url.SchemeIsBlob()) {
-    return true;
-  }
-
-  if (url.SchemeIsHTTPOrHTTPS()) {
-    return true;
-  }
-
-  // TODO(https://github.com/brave/brave-browser/issues/56048): Add support to
-  // turn shields on for "data://" based schemes and add tests.
-
-  // By default not supported.
-  return false;
-}
-
 // This santization helps to ensure URLs with inherited origin like
 // blob:https://a.com/uuid is properly mapped to the origin https://a.com,
 // to then correctly derive the eTLD+1. It's important that such URLs maps to
@@ -218,7 +198,7 @@ bool IsSchemeSupportedForShields(const GURL& url) {
 // https://sub.example.com/path returns the origin of |url|, i.e. scheme
 // + host + port with *no* path but is enough to derive the correct
 // eTLD+1.
-GURL GetOriginUrl(const GURL& url) {
+GURL GetEffectiveUrlFromOrigin(const GURL& url) {
   return url::Origin::Create(url).GetURL();
 }
 
@@ -321,14 +301,12 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return true;
   }
 
-  if (!IsSchemeSupportedForShields(url)) {
+  if (!url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
-  GURL effective_url = GetOriginUrl(url);
-
-  ContentSetting setting = map->GetContentSetting(
-      effective_url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
+  ContentSetting setting =
+      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
 
   // see EnableBraveShields - allow and default == true
   return setting == CONTENT_SETTING_BLOCK ? false : true;
@@ -845,11 +823,12 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          PrefService* local_state) {
   DCHECK(map);
 
-  if (!IsSchemeSupportedForShields(url)) {
+  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
+  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
     return;
   }
 
-  auto primary_pattern = GetPatternFromURL(url);
+  auto primary_pattern = GetPatternFromURL(effective_url);
   if (!primary_pattern.IsValid()) {
     return;
   }
@@ -867,7 +846,8 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         const GURL& url) {
   DCHECK(map);
 
-  if (!IsSchemeSupportedForShields(url)) {
+  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
+  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
     return false;
   }
 
@@ -883,7 +863,7 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  const GURL effective_url = GetOriginUrl(primary_url);
+  const GURL effective_url = GetEffectiveUrlFromOrigin(primary_url);
 
   const bool shields_up = GetBraveShieldsEnabled(map, effective_url);
   if (!shields_up) {
@@ -907,11 +887,11 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
                              const GURL& url,
                              base::span<const uint8_t> additional_entropy) {
   base::Token token;
-  if (!IsSchemeSupportedForShields(url)) {
+
+  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
+  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
     return token;
   }
-
-  const GURL effective_url = GetOriginUrl(url);
 
   // Get the farbling token from the Shields metadata.
   auto shields_metadata = GetShieldsMetadata(map, effective_url);
