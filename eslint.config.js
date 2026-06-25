@@ -287,7 +287,7 @@ export default defineConfig([
     },
   },
   {
-    files: ['build/commands/**/*.{js,cjs,mjs,ts,cts,mts}'],
+    files: ['build/**/*.{js,cjs,mjs,ts,cts,mts}'],
     plugins: {
       import: importPlugin,
     },
@@ -296,10 +296,10 @@ export default defineConfig([
 
       'import/enforce-node-protocol-usage': ['error', 'always'],
 
-      // Enforce import resolution for build/commands scripts. When running
-      // TypeScript natively via Node.js (no transpilation), imports must use
-      // the real file extension. For example, if a file is named config.ts,
-      // importing it as './config.js' is an error.
+      // Enforce import resolution for build scripts. When running TypeScript
+      // natively via Node.js (no transpilation), imports must use the real file
+      // extension. For example, if a file is named config.ts, importing it as
+      // './config.js' is an error.
       'import/no-unresolved': 'error',
     },
   },
@@ -313,9 +313,9 @@ export default defineConfig([
   },
 
   {
-    // Specific rules for NodeJS targets (except build/commands)
+    // Specific rules for Node.js targets (except build scripts)
     files: ['**/*.test.{js,ts}', '**/*.{cts,cjs}'],
-    ignores: ['build/commands/**/*'],
+    ignores: ['build/**/*'],
     plugins: {
       import: importPlugin,
     },
