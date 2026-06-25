@@ -8,20 +8,41 @@ import("//build/buildflag_header.gni")
 import("//testing/test.gni")
 
 declare_args() {
-  # BRAVE_SERVICES_KEY_ID = TARGET_OS + '-' + CV_MAJOR + '-' + RELEASE_CHANNEL
-  # It is used (in combination with a secret seed) to generate service keys
-  # for each service, OS, chrominum version, release channel
-  # combination.
+  # TODO(https://github.com/brave/brave-browser/issues/56449): Remove this once
+  # a couple of releases have gone through and we've confirmed the derived value
+  # is correct.
   brave_services_key_id = ""
 }
 
-if (is_official_build) {
-  assert(brave_services_key_id != "")
+if (is_mac) {
+  _platform = "macos"
+} else {
+  _platform = target_os
+}
+
+# Release channel comes up as an empty string in `brave_channel`, so we need to
+# check that first.
+if (is_release_channel && brave_channel == "") {
+  _channel = "release"
+} else {
+  _channel = brave_channel
+}
+
+_brave_services_key_id = "$_platform-$chromium_version_major-$_channel"
+
+# TODO(https://github.com/brave/brave-browser/issues/56449): Remove this once
+# a couple of releases have gone through and we've confirmed the derived value
+# is correct.
+if (is_official_build && brave_services_key_id != "") {
+  assert(
+      brave_services_key_id == _brave_services_key_id,
+      "brave_services_key_id mismatch: env='$brave_services_key_id' " +
+          "derived='$_brave_services_key_id'. Update your .env file to match")
 }
 
 buildflag_header("buildflags") {
   header = "buildflags.h"
-  flags = [ "BRAVE_SERVICES_KEY_ID=\"$brave_services_key_id\"" ]
+  flags = [ "BRAVE_SERVICES_KEY_ID=\"$_brave_services_key_id\"" ]
 }
 
 static_library("brave_service_keys") {
