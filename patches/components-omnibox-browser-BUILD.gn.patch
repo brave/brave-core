@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 89bc8f558223fecb519dd62851fff67266b2fb4b..b48df4c6756e9561755a81844ccada1e80dc2b32 100644
+index 36cef660afd7737f79009d80ea0d6561cfbd8b32..3d507d4031d9c6c69b6ad04f121ed01cc8b845b0 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -512,6 +512,9 @@ static_library("browser") {
@@ -18,5 +18,5 @@ index 89bc8f558223fecb519dd62851fff67266b2fb4b..b48df4c6756e9561755a81844ccada1e
  mojom("mojo_bindings") {
 +  generate_legacy_js_bindings = true
    sources = [ "omnibox.mojom" ]
-   if (!is_ios) {
-     sources += [ "searchbox.mojom" ]
+   webui_module_path = "chrome://resources/mojo/components/omnibox/browser"
+ 
