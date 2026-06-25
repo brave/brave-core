@@ -43,7 +43,8 @@ class SimpleURLLoader;
 // be loaded from chrome-untrusted:// WebUIs (e.g. the Brave News side panel).
 class BraveSanitizedImageSource : public content::URLDataSource {
  public:
-  BraveSanitizedImageSource(Profile* profile, bool serve_untrusted = false);
+  explicit BraveSanitizedImageSource(Profile* profile,
+                                     bool serve_untrusted = false);
   BraveSanitizedImageSource(
       Profile* profile,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
