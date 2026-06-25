@@ -1273,6 +1273,139 @@ TEST_F(AIChatDatabaseSyncTest, ClearDataTypeState) {
             sync_pb::DataTypeState::INITIAL_SYNC_STATE_UNSPECIFIED);
 }
 
+// Remote-apply path: ApplyRemoteConversationMetadata / ApplyRemoteEntry.
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteConversationMetadataInsertsNew) {
+  auto conversation = mojom::Conversation::New();
+  conversation->uuid = "remote-conv";
+  conversation->title = "Remote title";
+  conversation->model_key = "model-x";
+  conversation->total_tokens = 100;
+  conversation->trimmed_tokens = 5;
+
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(conversation)));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "remote-conv");
+  EXPECT_EQ(conversations[0]->title, "Remote title");
+  ASSERT_TRUE(conversations[0]->model_key.has_value());
+  EXPECT_EQ(*conversations[0]->model_key, "model-x");
+  EXPECT_EQ(conversations[0]->total_tokens, 100u);
+  EXPECT_EQ(conversations[0]->trimmed_tokens, 5u);
+}
+
+TEST_F(AIChatDatabaseSyncTest,
+       ApplyRemoteConversationMetadataUpsertPreservesEntries) {
+  // Seed a conversation with one entry through the normal local path.
+  {
+    auto conversation = mojom::Conversation::New();
+    conversation->uuid = "conv";
+    conversation->title = "Original";
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = "entry-1";
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = "Hello";
+    entry->created_time = base::Time::Now();
+    ASSERT_TRUE(
+        db_->AddConversation(std::move(conversation), {}, std::move(entry)));
+  }
+
+  // Upsert remote metadata for the same uuid with a changed title/tokens.
+  auto updated = mojom::Conversation::New();
+  updated->uuid = "conv";
+  updated->title = "Updated";
+  updated->total_tokens = 42;
+  EXPECT_TRUE(db_->ApplyRemoteConversationMetadata(std::move(updated)));
+
+  // Metadata is updated...
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->title, "Updated");
+  EXPECT_EQ(conversations[0]->total_tokens, 42u);
+
+  // ...and the existing entry survives (foreign_keys off, so REPLACE of the
+  // conversation row does not cascade into entries).
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->entries.size(), 1u);
+  EXPECT_EQ(data->entries[0]->uuid, "entry-1");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryCreatesStubConversation) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "Orphan entry";
+  entry->created_time = base::Time::Now();
+
+  // No parent conversation exists yet; a stub should be created.
+  EXPECT_TRUE(db_->ApplyRemoteEntry("orphan-conv", std::move(entry), {}, {}));
+
+  auto conversations = db_->GetAllConversations();
+  ASSERT_EQ(conversations.size(), 1u);
+  EXPECT_EQ(conversations[0]->uuid, "orphan-conv");
+
+  auto data = db_->GetConversationData("orphan-conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->entries.size(), 1u);
+  EXPECT_EQ(data->entries[0]->uuid, "entry-1");
+  EXPECT_EQ(data->entries[0]->text, "Orphan entry");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryReplacesExistingEntry) {
+  auto make_entry = [](const std::string& text) {
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = "entry-1";
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = text;
+    entry->created_time = base::Time::Now();
+    return entry;
+  };
+
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Original"), {}, {}));
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", make_entry("Replaced"), {}, {}));
+
+  // Same uuid is fully replaced, not duplicated.
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->entries.size(), 1u);
+  EXPECT_EQ(data->entries[0]->text, "Replaced");
+}
+
+TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsAssociatedContent) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-1";
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->text = "With content";
+  entry->created_time = base::Time::Now();
+
+  std::vector<mojom::AssociatedContentPtr> associated_content;
+  auto content = mojom::AssociatedContent::New();
+  content->uuid = "ac-1";
+  content->content_type = mojom::ContentType::PageContent;
+  content->url = GURL("https://example.com");
+  content->content_used_percentage = 50;
+  content->conversation_turn_uuid = "entry-1";
+  associated_content.push_back(std::move(content));
+  std::vector<std::string> contents = {"page text"};
+
+  EXPECT_TRUE(db_->ApplyRemoteEntry("conv", std::move(entry),
+                                    std::move(associated_content),
+                                    std::move(contents)));
+
+  auto data = db_->GetConversationData("conv");
+  ASSERT_TRUE(data);
+  ASSERT_EQ(data->associated_content.size(), 1u);
+  EXPECT_EQ(data->associated_content[0]->content_uuid, "ac-1");
+  EXPECT_EQ(data->associated_content[0]->content, "page text");
+  EXPECT_EQ(data->associated_content[0]->conversation_turn_uuid, "entry-1");
+}
+
 // Test the migration for each version upgrade
 class AIChatDatabaseMigrationTest : public testing::Test,
                                     public testing::WithParamInterface<int> {
