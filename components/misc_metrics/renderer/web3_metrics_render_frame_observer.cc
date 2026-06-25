@@ -9,13 +9,16 @@
 
 #include "base/check.h"
 #include "base/functional/bind.h"
+#include "base/strings/strcat.h"
 #include "brave/components/safe_builtins/renderer/safe_builtins_helpers.h"
+#include "components/grit/brave_components_resources.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/function_template.h"
 #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/web_document.h"
 #include "third_party/blink/public/web/web_local_frame.h"
+#include "ui/base/resource/resource_bundle.h"
 #include "url/origin.h"
 #include "v8/include/v8-context.h"
 #include "v8/include/v8-function.h"
@@ -23,65 +26,14 @@
 
 namespace misc_metrics {
 
-namespace {
-
-// Ensures that web3 providers are wrapped with a proxy
-// so that we can log accesses/invocations.
-constexpr char kInstallProxyScript[] = R"(function(cb) {
-    function wrap(target) {
-      // Only objects and functions can be proxied; primitives pass through.
-      if (target === null ||
-          (typeof target !== 'object' && typeof target !== 'function')) {
-        return target;
-      }
-      return new Proxy(target, {
-        get: function() {
-          cb();
-          return wrap(Reflect.get(...arguments));
-        },
-        apply: function() {
-          cb();
-          return wrap(Reflect.apply(...arguments));
-        }
-      });
-    }
-
-    ['ethereum', 'cardano', 'solana', 'web3'].forEach(function(name) {
-      var existing = Object.getOwnPropertyDescriptor(window, name);
-      // Don't try to redefine a non-configurable property
-      if (existing && !existing.configurable) {
-        return;
-      }
-      var current = window[name];
-      var stored = (current === undefined) ? undefined : wrap(current);
-      function define(enumerable) {
-        Object.defineProperty(window, name, {
-          configurable: true,
-          enumerable: enumerable,
-          get: function() { return stored; },
-          set: function(value) {
-            stored = wrap(value);
-            // Hidden until something is actually assigned; then expose it.
-            if (!enumerable) {
-              define(true);
-            }
-          }
-        });
-      }
-      // Start hidden if nothing is set yet, otherwise enumerable.
-      define(current !== undefined);
-    });
-
-    // EIP-6963 provider discovery request, dispatched by dapps.
-    window.addEventListener('eip6963:requestProvider', cb);
-  }
-)";
-
-}  // namespace
-
 Web3MetricsRenderFrameObserver::Web3MetricsRenderFrameObserver(
     content::RenderFrame* render_frame)
-    : RenderFrameObserver(render_frame) {}
+    : RenderFrameObserver(render_frame),
+      install_proxy_script_(base::StrCat(
+          {"(",
+           ui::ResourceBundle::GetSharedInstance().LoadDataResourceString(
+               IDR_MISC_METRICS_WEB3_INSTALL_PROXY_JS),
+           ")"})) {}
 
 Web3MetricsRenderFrameObserver::~Web3MetricsRenderFrameObserver() = default;
 
@@ -137,7 +89,7 @@ void Web3MetricsRenderFrameObserver::DidClearWindowObject() {
 
   // Load the installer function in a safe-builtins closure.
   v8::Local<v8::Value> installer_value;
-  if (!brave::LoadScriptWithSafeBuiltins(web_frame, kInstallProxyScript)
+  if (!brave::LoadScriptWithSafeBuiltins(web_frame, install_proxy_script_)
            .ToLocal(&installer_value) ||
       !installer_value->IsFunction()) {
     return;

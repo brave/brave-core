@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_MISC_METRICS_RENDERER_WEB3_METRICS_RENDER_FRAME_OBSERVER_H_
 
 #include <optional>
+#include <string>
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/misc_metrics/common/misc_metrics.mojom.h"
@@ -50,6 +51,7 @@ class Web3MetricsRenderFrameObserver : public content::RenderFrameObserver {
   mojom::Web3Metrics& GetWeb3Metrics();
 
   GURL url_;
+  std::string install_proxy_script_;
   mojo::Remote<mojom::Web3Metrics> web3_metrics_;
   base::WeakPtrFactory<Web3MetricsRenderFrameObserver> weak_ptr_factory_{this};
 };
