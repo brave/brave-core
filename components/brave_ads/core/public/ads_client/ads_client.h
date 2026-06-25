@@ -19,7 +19,6 @@ static_assert(BUILDFLAG(ENABLE_BRAVE_ADS));
 namespace brave_ads {
 
 class AdsClientNotifierObserver;
-struct NotificationAdInfo;
 
 class AdsClient {
  public:
@@ -53,7 +52,7 @@ class AdsClient {
       const = 0;
 
   // Show notification `ad`.
-  virtual void ShowNotificationAd(const NotificationAdInfo& ad) = 0;
+  virtual void ShowNotificationAd(mojom::NotificationAdInfoPtr ad) = 0;
 
   // Close the notification ad for the specified `placement_id`.
   virtual void CloseNotificationAd(const std::string& placement_id) = 0;

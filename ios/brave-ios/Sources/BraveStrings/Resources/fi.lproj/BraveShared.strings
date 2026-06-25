@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "kk";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Saat lisätietoja napauttamalla tästä.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Tämä on ensimmäinen Brave-mainoksesi";
-
 /* Bookmark title / Device name */
 "Name" = "Nimi";
 

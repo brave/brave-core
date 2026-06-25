@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "мес.";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Коснитесь здесь, чтобы узнать больше.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Это ваше первое объявление в Brave!";
-
 /* Bookmark title / Device name */
 "Name" = "Название";
 

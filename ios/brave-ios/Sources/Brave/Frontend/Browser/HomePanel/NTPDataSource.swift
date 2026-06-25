@@ -9,7 +9,7 @@ import UIKit
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
-  case sponsoredMedia(NTPSponsoredImageBackground, NewTabPageAd)
+  case sponsoredMedia(NTPSponsoredImageBackground, BraveAds.NewTabPageAdInfo)
 
   var backgroundVideoPath: URL? {
     if case .sponsoredMedia(let background, _) = self {
@@ -100,7 +100,7 @@ public class NTPDataSource {
       && !privateBrowsingManager.isPrivateBrowsing
   }
 
-  func getSponsoredMediaBackground(for newTabPageAd: NewTabPageAd) -> NTPWallpaper? {
+  func getSponsoredMediaBackground(for newTabPageAd: BraveAds.NewTabPageAdInfo) -> NTPWallpaper? {
     guard let sponsoredImageData = service.sponsoredImageData
     else { return nil }
 
@@ -108,13 +108,13 @@ public class NTPDataSource {
       Preferences.NewTabPage.backgroundMediaType == .sponsoredImagesAndVideos
 
     for campaign in sponsoredImageData.campaigns {
-      if campaign.campaignId != newTabPageAd.campaignID {
+      if campaign.campaignId != newTabPageAd.campaignId {
         continue
       }
 
       for creative in campaign.backgrounds {
         if creative.logo.imagePath != nil
-          && creative.creativeInstanceId == newTabPageAd.creativeInstanceID
+          && creative.creativeInstanceId == newTabPageAd.creativeInstanceId
           && (!creative.isVideoFile || isSponsoredVideoAllowed)
         {
           return .sponsoredMedia(creative, newTabPageAd)

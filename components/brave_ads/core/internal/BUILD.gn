@@ -293,6 +293,7 @@ static_library("internal") {
     "ad_units/notification_ad/notification_ad_handler_util.cc",
     "ad_units/notification_ad/notification_ad_handler_util.h",
     "ad_units/notification_ad/notification_ad_info.cc",
+    "ad_units/notification_ad/notification_ad_util.cc",
     "ad_units/notification_ad/notification_ad_value_util.cc",
     "ad_units/search_result_ad/search_result_ad_builder.cc",
     "ad_units/search_result_ad/search_result_ad_builder.h",

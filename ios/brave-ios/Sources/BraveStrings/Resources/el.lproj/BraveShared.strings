@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "μήνα";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Πατήστε εδώ για να μάθετε περισσότερα.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Αυτή είναι η πρώτη σας διαφήμιση Brave";
-
 /* Bookmark title / Device name */
 "Name" = "Όνομα";
 

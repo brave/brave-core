@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "月";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "轻击这里了解更多信息。";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "这是您的第一个 Brave 广告";
-
 /* Bookmark title / Device name */
 "Name" = "名稱";
 

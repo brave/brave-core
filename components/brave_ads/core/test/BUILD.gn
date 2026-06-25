@@ -181,6 +181,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_handler_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_info_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_test.cc",
+    "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/notification_ad_value_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/test/notification_ad_test_util.cc",
     "//brave/components/brave_ads/core/internal/ad_units/notification_ad/test/notification_ad_test_util.h",
