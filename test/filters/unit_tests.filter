@@ -130,6 +130,7 @@
 -AISummarizerTest.*
 -AIWriterTest.*
 -ActorSitePolicyTest.*
+-ActorTaskListBubbleControllerTest.*
 -All/ChangePasswordFormFinderTest.*/*
 -ChangePasswordFormFinderTest.*
 -ChromeComposeClientTest.*
@@ -623,6 +624,7 @@
 # These tests fail because ContextualTasksContextService cannot be created
 # because it depends on PageEmbeddingsService being created and that service is
 # not created because we disable kHistoryEmbeddings.
+-ContextualSearchboxHandlerTest.DriveDisclaimerControllerDoesNotCrashForIncognito
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SkipsLensInputs_InToolModes
 -ContextualTasksContextServiceFactoryTest.CreatesServiceForProfile
