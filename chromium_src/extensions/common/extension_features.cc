@@ -21,39 +21,28 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
 // upstream GN files with dependencies.
 namespace extensions_mv2::features {
 
-BASE_FEATURE(kExtensionsManifestV2, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kExtensionsManifestV2, base::FEATURE_ENABLED_BY_DEFAULT);
+
+BASE_FEATURE_PARAM(bool, kBackupSettings, &kExtensionsManifestV2, true);
 
 BASE_FEATURE_PARAM(bool,
-                   kExtensionsManifestV2BackupSettings,
+                   kImportSettingsOnInstall,
                    &kExtensionsManifestV2,
-                   "backup_settings",
-                   false);
+                   true);
 
-BASE_FEATURE_PARAM(bool,
-                   kExtensionsManifestV2BImportSettingsOnInstall,
-                   &kExtensionsManifestV2,
-                   "import_settings",
-                   false);
-
-BASE_FEATURE_PARAM(bool,
-                   kExtensionsManifestV2AutoInstallBraveHosted,
-                   &kExtensionsManifestV2,
-                   "auto_install_brave_hosted",
-                   false);
+BASE_FEATURE_PARAM(bool, kAutoInstallBraveHosted, &kExtensionsManifestV2, true);
 
 bool IsSettingsBackupEnabled() {
   return base::FeatureList::IsEnabled(features::kExtensionsManifestV2) &&
-         features::kExtensionsManifestV2BackupSettings.Get();
+         features::kBackupSettings.Get();
 }
 
 bool IsSettingsImportEnabled() {
-  return IsSettingsBackupEnabled() &&
-         features::kExtensionsManifestV2BImportSettingsOnInstall.Get();
+  return IsSettingsBackupEnabled() && features::kImportSettingsOnInstall.Get();
 }
 
 bool IsExtensionReplacementEnabled() {
-  return IsSettingsImportEnabled() &&
-         features::kExtensionsManifestV2AutoInstallBraveHosted.Get();
+  return IsSettingsImportEnabled() && features::kAutoInstallBraveHosted.Get();
 }
 
 }  // namespace extensions_mv2::features
