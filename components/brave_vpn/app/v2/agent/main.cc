@@ -5,10 +5,12 @@
 
 #include "base/at_exit.h"
 #include "base/command_line.h"
+#include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/logging.h"
-#include "base/logging/logging_settings.h"
 #include "base/process/memory.h"
 #include "brave/components/brave_vpn/app/v2/agent/agent_app.h"
+#include "brave/components/brave_vpn/app/v2/agent/single_instance.h"
 #include "brave/components/brave_vpn/app/v2/shared/app_utils.h"
 #include "brave/components/brave_vpn/app/v2/shared/crash_reporter_client.h"
 #include "brave/components/brave_vpn/app/v2/shared/switches.h"
@@ -21,6 +23,7 @@
 
 using brave_vpn::v2::AgentApp;
 using brave_vpn::v2::CrashReporterClient;
+using brave_vpn::v2::SingleInstance;
 
 namespace {
 // Split into two places to avoid patching:
@@ -68,6 +71,21 @@ int main(int argc, char* argv[]) {
   brave_vpn::v2::app_utils::ConfigureFrameworkBundlePath();
 #endif
 
+  // Create the user data directory for the agent process.
+  base::FilePath user_data_dir = brave_vpn::v2::app_utils::GetUserDataDir(
+      kBraveVpnAgentAppProductName, /*is_privileged_process=*/false);
+  if (!base::CreateDirectory(user_data_dir)) {
+    LOG(ERROR) << "Failed to create user-data dir " << user_data_dir;
+    return 1;
+  }
+
+  // Only one instance of the agent is allowed to run per OS session. Try to
+  // acquire the single-instance slot. If it fails, exit cleanly.
+  auto single_instance = SingleInstance::TryAcquire(user_data_dir);
+  if (!single_instance) {
+    return 0;
+  }
+
   if (process_type.empty()) {
     process_type = kBraveVpnAgentAppProcessType;
   }
@@ -77,9 +95,7 @@ int main(int argc, char* argv[]) {
     channel_name = "unknown";
   }
   CrashReporterClient::InitializeForProcess(
-      process_type, kBraveVpnAgentAppProductName, channel_name,
-      brave_vpn::v2::app_utils::GetUserDataDir(
-          kBraveVpnAgentAppProductName, /*is_privileged_process=*/false));
+      process_type, kBraveVpnAgentAppProductName, channel_name, user_data_dir);
 
   AgentApp agent_app;
   return agent_app.Run();

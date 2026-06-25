@@ -7,8 +7,7 @@
 
 #include "base/logging.h"
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
 
 AgentApp::AgentApp() = default;
 
@@ -19,5 +18,4 @@ int AgentApp::Run() {
   return 0;
 }
 
-}  // namespace v2
-}  // namespace brave_vpn
+}  // namespace brave_vpn::v2

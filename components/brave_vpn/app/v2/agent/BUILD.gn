@@ -19,7 +19,16 @@ source_set("core") {
   sources = [
     "agent_app.cc",
     "agent_app.h",
+    "single_instance.h",
   ]
+
+  if (is_win) {
+    sources += [ "win/single_instance_win.cc" ]
+  }
+
+  if (is_mac) {
+    sources += [ "posix/single_instance_posix.cc" ]
+  }
 
   public_deps = [ "//base" ]
 }
@@ -120,4 +129,16 @@ if (is_mac) {
         [ "{{bundle_contents_dir}}/Library/LaunchAgents/{{source_file_part}}" ]
     public_deps = [ ":brave_vpn_agent_launchd_plist" ]
   }
+}
+
+source_set("unit_tests") {
+  testonly = true
+  sources = [ "single_instance_unittest.cc" ]
+
+  deps = [
+    ":core",
+    "//base",
+    "//base/test:test_support",
+    "//testing/gtest",
+  ]
 }
