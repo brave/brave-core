@@ -74,7 +74,7 @@ struct ManagePasswordCredentialFields: View {
           } label: {
             Label(
               Strings.Autofill.managePasswordDetailRevealPassword,
-              braveSystemImage: isPasswordRevealed ? "leo.eye.on" : "leo.eye.off"
+              braveSystemImage: isPasswordRevealed ? "leo.eye.off" : "leo.eye.on"
             )
             .foregroundStyle(Color(braveSystemName: .iconInteractive))
             .labelStyle(.iconOnly)
