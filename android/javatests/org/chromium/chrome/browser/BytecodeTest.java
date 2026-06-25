@@ -679,27 +679,6 @@ public class BytecodeTest {
                         PrefService.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment",
-                        "createRequiredArgs",
-                        MethodModifier.STATIC,
-                        Bundle.class,
-                        int.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment",
-                        "onCreate",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        Bundle.class));
-        Assert.assertTrue(
-                methodExists(
-                        "org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase", // presubmit: ignore-long-line
-                        "onCreate",
-                        MethodModifier.REGULAR,
-                        void.class,
-                        Bundle.class));
-        Assert.assertTrue(
-                methodExists(
                         "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line
                         "getPermissionsType",
                         MethodModifier.STATIC,
