@@ -300,6 +300,7 @@ brave_chrome_browser_deps = [
   "//components/feed/core/common:feed_core_common",
   "//components/feed/core/shared_prefs:feed_shared_prefs",
   "//components/gcm_driver:gcm_buildflags",
+  "//components/history_embeddings/core",
   "//components/metrics",
   "//components/ntp_tiles",
   "//components/ntp_tiles:pref_names",
