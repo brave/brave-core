@@ -5,10 +5,12 @@
 
 import BraveUI
 import Combine
+import DesignSystem
 import Foundation
 import LocalAuthentication
 import Preferences
 import Shared
+import SwiftUI
 import UIKit
 import os.log
 
@@ -18,75 +20,71 @@ public enum AuthViewType {
 
 public class WindowProtection {
 
-  private class LockedViewController: UIViewController {
-    let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemThickMaterial))
-    let lockImageView = UIImageView(
-      image: UIImage(named: "browser-lock-icon", in: .module, compatibleWith: nil)!
-    )
-    let titleLabel = UILabel().then {
-      $0.font = .preferredFont(for: .title3, weight: .semibold)
-      $0.adjustsFontForContentSizeCategory = true
-      $0.textColor = UIColor(braveSystemName: .textPrimary)
-      $0.numberOfLines = 0
-      $0.textAlignment = .center
+  @Observable
+  fileprivate class ViewModel {
+    var isCancellable: Bool
+    var isUnlockButtonHidden: Bool
+
+    var onUnlock: (() -> Void)?
+    var onCancel: (() -> Void)?
+
+    init(isCancellable: Bool = false, isUnlockButtonHidden: Bool = false) {
+      self.isCancellable = isCancellable
+      self.isUnlockButtonHidden = isUnlockButtonHidden
     }
-    let unlockButton = FilledActionButton(type: .system).then {
-      $0.setTitle(Strings.unlockButtonTitle, for: .normal)
-      $0.setTitleColor(UIColor(braveSystemName: .schemesOnPrimary), for: .normal)
-      $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-      $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.backgroundColor = UIColor(braveSystemName: .buttonBackground)
-      $0.isHidden = true
+  }
+
+  fileprivate struct LockedView: View {
+    var viewModel: ViewModel
+
+    var body: some View {
+      VStack(spacing: 48) {
+        Image("browser-lock-icon", bundle: .module)
+        VStack {
+          Button {
+            viewModel.onUnlock?()
+          } label: {
+            Text(Strings.unlockButtonTitle)
+              .frame(maxWidth: .infinity)
+          }
+          .buttonStyle(.filled)
+          .opacity(viewModel.isUnlockButtonHidden ? 0 : 1)
+          if viewModel.isCancellable {
+            Button {
+              viewModel.onCancel?()
+            } label: {
+              Text(Strings.cancelButtonTitle)
+                .frame(maxWidth: .infinity)
+            }
+            .buttonStyle(.plainFaint)
+          }
+        }
+        .frame(maxWidth: 500)
+      }
+      .padding(24)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .background(.thickMaterial)
     }
-    let cancelButton = ActionButton(type: .system).then {
-      $0.setTitle(Strings.cancelButtonTitle, for: .normal)
-      $0.titleLabel?.font = .preferredFont(forTextStyle: .headline)
-      $0.titleLabel?.adjustsFontForContentSizeCategory = true
-      $0.setTitle(Strings.cancelButtonTitle, for: .normal)
-      $0.tintColor = UIColor(braveSystemName: .textPrimary)
-      $0.isHidden = true
+  }
+
+  private class LockedViewController: UIHostingController<LockedView> {
+    init(viewModel: ViewModel) {
+      super.init(rootView: LockedView(viewModel: viewModel))
+    }
+
+    @available(*, unavailable)
+    required init(coder: NSCoder) {
+      fatalError()
     }
 
     override func viewDidLoad() {
       super.viewDidLoad()
-
-      view.addSubview(backgroundView)
-      view.addSubview(titleLabel)
-      view.addSubview(lockImageView)
-      view.addSubview(unlockButton)
-      view.addSubview(cancelButton)
-      backgroundView.snp.makeConstraints {
-        $0.edges.equalTo(view)
-      }
-      titleLabel.snp.makeConstraints {
-        $0.leading.greaterThanOrEqualToSuperview().offset(20)
-        $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-        $0.centerX.equalToSuperview()
-        $0.bottom.equalTo(lockImageView.snp.top).offset(-40)
-      }
-      lockImageView.snp.makeConstraints {
-        $0.center.equalTo(view)
-      }
-      unlockButton.snp.makeConstraints {
-        $0.leading.greaterThanOrEqualToSuperview().offset(20)
-        $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-        $0.centerX.equalToSuperview()
-        $0.height.greaterThanOrEqualTo(44)
-        $0.width.greaterThanOrEqualTo(230)
-        $0.top.equalTo(lockImageView.snp.bottom).offset(60)
-      }
-      cancelButton.snp.makeConstraints {
-        $0.leading.greaterThanOrEqualToSuperview().offset(20)
-        $0.trailing.lessThanOrEqualToSuperview().offset(-20)
-        $0.centerX.equalToSuperview()
-        $0.height.greaterThanOrEqualTo(44)
-        $0.width.greaterThanOrEqualTo(230)
-        $0.top.equalTo(unlockButton.snp.bottom).offset(15)
-      }
+      view.backgroundColor = .clear
     }
   }
 
-  private let lockedViewController = LockedViewController()
+  private let lockedViewController: LockedViewController
+  private let viewModel: ViewModel = .init()
 
   private var cancellables: Set<AnyCancellable> = []
   private var passcodeWindow: UIWindow
@@ -116,16 +114,7 @@ public class WindowProtection {
 
   var isCancellable: Bool = false {
     didSet {
-      if oldValue != isCancellable {
-        lockedViewController.cancelButton.isHidden = !isCancellable
-      }
-    }
-  }
-
-  var unlockScreentitle: String = "" {
-    didSet {
-      lockedViewController.titleLabel.isHidden = unlockScreentitle.isEmpty
-      lockedViewController.titleLabel.text = unlockScreentitle
+      viewModel.isCancellable = isCancellable
     }
   }
 
@@ -141,20 +130,18 @@ public class WindowProtection {
   }
 
   public init(windowScene: UIWindowScene) {
+    lockedViewController = LockedViewController(viewModel: viewModel)
+
     passcodeWindow = UIWindow(windowScene: windowScene)
     passcodeWindow.windowLevel = .init(UIWindow.Level.statusBar.rawValue + 1)
     passcodeWindow.rootViewController = lockedViewController
 
-    lockedViewController.unlockButton.addTarget(
-      self,
-      action: #selector(tappedUnlock),
-      for: .touchUpInside
-    )
-    lockedViewController.cancelButton.addTarget(
-      self,
-      action: #selector(tappedCancel),
-      for: .touchUpInside
-    )
+    viewModel.onUnlock = { [unowned self] in
+      tappedUnlock()
+    }
+    viewModel.onCancel = { [unowned self] in
+      tappedCancel()
+    }
 
     NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
       .sink(receiveValue: { [weak self] _ in
@@ -235,7 +222,7 @@ public class WindowProtection {
       return
     }
 
-    lockedViewController.unlockButton.isHidden = true
+    viewModel.isUnlockButtonHidden = true
     isCancellable = viewType != .external
 
     context.evaluatePolicy(
@@ -256,7 +243,7 @@ public class WindowProtection {
             }
           )
         } else {
-          lockedViewController.unlockButton.isHidden = false
+          viewModel.isUnlockButtonHidden = false
 
           let errorPolicy = error as? LAError
           completion?(false, errorPolicy?.code)
@@ -292,3 +279,19 @@ public class WindowProtection {
     }
   }
 }
+
+#if DEBUG
+
+#Preview {
+  WindowProtection.LockedView(viewModel: .init())
+}
+
+#Preview("Cancellable") {
+  WindowProtection.LockedView(viewModel: .init(isCancellable: true))
+}
+
+#Preview("Unlock Hidden") {
+  WindowProtection.LockedView(viewModel: .init(isUnlockButtonHidden: true))
+}
+
+#endif

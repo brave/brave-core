@@ -33,22 +33,3 @@ open class ActionButton: BraveButton {
     }
   }
 }
-
-open class FilledActionButton: BraveButton {
-  override public init(frame: CGRect) {
-    super.init(frame: frame)
-
-    tintColor = .white
-  }
-
-  @available(*, unavailable)
-  required public init(coder: NSCoder) {
-    fatalError()
-  }
-
-  override open func layoutSubviews() {
-    super.layoutSubviews()
-
-    layer.cornerRadius = bounds.height / 2.0
-  }
-}
