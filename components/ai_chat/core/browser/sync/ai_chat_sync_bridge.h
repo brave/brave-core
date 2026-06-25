@@ -6,15 +6,22 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_SYNC_AI_CHAT_SYNC_BRIDGE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_SYNC_AI_CHAT_SYNC_BRIDGE_H_
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
+#include "base/functional/callback.h"
 #include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "components/sync/model/data_type_sync_bridge.h"
+
+namespace sync_pb {
+class AIChatConversationSpecifics_Entry;
+}  // namespace sync_pb
 
 namespace ai_chat {
 
@@ -39,8 +46,14 @@ class AIChatDatabase;
 // its processor live on so the sync start handshake survives storage toggles).
 class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
  public:
-  explicit AIChatSyncBridge(
-      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor);
+  // |on_remote_changes_applied| is invoked once per Merge/Apply batch when
+  // any remote ADD, UPDATE, or DELETE was applied to the database. Callers
+  // typically wrap a UI-thread callback in base::BindPostTask so the
+  // closure marshals from the bridge sequence to wherever the listener
+  // lives. It is OK for this to be a null callback (bridge will no-op).
+  AIChatSyncBridge(
+      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
+      base::RepeatingClosure on_remote_changes_applied);
   AIChatSyncBridge(const AIChatSyncBridge&) = delete;
   AIChatSyncBridge& operator=(const AIChatSyncBridge&) = delete;
   ~AIChatSyncBridge() override;
@@ -116,6 +129,23 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // |conversation_uuid|. No-op when the conversation is temporary or unknown.
   void PutEntry(const std::string& conversation_uuid,
                 const std::string& entry_uuid);
+  // Dispatches |specifics| (an ADD or UPDATE from the server) to the right
+  // database upsert. Silently skips invalid records.
+  void ApplyRemoteRecord(const sync_pb::AIChatConversationSpecifics& specifics);
+  // Restores local values into |remote_entry| for any field the remote sender
+  // omitted to fit the size budget, matching each omitted field to a local
+  // value by content hash. Operates in proto space so the downstream apply
+  // path can stay full-replace without losing locally-present content.
+  void RestoreOmittedFieldsFromLocal(
+      sync_pb::AIChatConversationSpecifics_Entry* remote_entry);
+
+  // Collects a hash -> content map of every value the local copy of
+  // |entry_uuid| in |conversation_uuid| still holds (its compressible strings,
+  // uploaded-file bytes, and archived associated-content texts), used by
+  // RestoreOmittedFieldsFromLocal to look up omitted values by content hash.
+  base::flat_map<uint32_t, std::string> BuildLocalContentByHash(
+      const std::string& conversation_uuid,
+      const std::string& entry_uuid);
 
   // Attached via SetDatabase()/ClearDatabase(); null before the first attach
   // and whenever on-disk storage is disabled.
@@ -124,6 +154,11 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // True once the initial metadata load + ModelReadyToSync() has run, so it is
   // done only for the first attached database.
   bool model_ready_to_sync_ = false;
+
+  // Invoked once per Merge/Apply batch when any remote ADD, UPDATE, or
+  // DELETE was applied to the local DB. Usually a base::BindPostTask back
+  // to the UI thread so the listener can refresh in-memory state.
+  base::RepeatingClosure on_remote_changes_applied_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
