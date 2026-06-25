@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "Generates Diff report",
   "main": "tools/report.js",
+  "type": "module",
   "scripts": {
     "report": "npm run gen && webpack ./tools/report.html && webpack-dev-server",
     "gen": "node ./tools/gen.js",

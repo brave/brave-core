@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const path = require('path')
-const fs = require('fs')
+import path from 'node:path'
+import fs from 'node:fs'
 
 
-const reportDir = path.join(__dirname, '../report/')
+const reportDir = path.join(import.meta.dirname, '../report/')
 
 // only want to take "url" directories:
 var dirs = fs.readdirSync(reportDir, {withFileTypes:true}).filter(d => d.isDirectory() && d.name.includes('.')).map(d => d.name)

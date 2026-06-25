@@ -280,8 +280,8 @@ export default defineConfig([
     },
   },
   {
-    // Brave JavaScript files uses require() to load modules.
-    files: ['**/*.{js,jsx,mjs,cjs}'],
+    // Allow use of require() in CommonJS files.
+    files: ['**/*.{cjs,cts}'],
     rules: {
       '@typescript-eslint/no-require-imports': 'off',
     },

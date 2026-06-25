@@ -3,22 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-const path = require('path')
-const fs = require('fs')
-const archiver = require('archiver')
+import path from 'node:path'
+import fs from 'node:fs'
+import { ZipArchive } from 'archiver'
 
 const zip_file = fs.createWriteStream('speedreader_report.zip')
-const zip = archiver('zip')
+const zip = new ZipArchive()
 zip.pipe(zip_file)
 
 
-const reportDir = path.join(__dirname, '../report/')
+const reportDir = path.join(import.meta.dirname, '../report/')
 zip.directory(reportDir, 'report', false)
 
-const toolsDir = __dirname
+const toolsDir = import.meta.dirname
 zip.directory(toolsDir, 'tools', false)
 
-const configDir = path.join(__dirname, '../')
+const configDir = path.join(import.meta.dirname, '../')
 
 zip.file(configDir + '/package.json', {name: 'package.json'})
 zip.file(configDir + '/webpack.config.js', {name: 'webpack.config.js'})
