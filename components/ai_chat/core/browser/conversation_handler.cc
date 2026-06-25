@@ -323,6 +323,38 @@ void ConversationHandler::OnArchiveContentUpdated(
                                                    conversation_data);
 }
 
+void ConversationHandler::OnRemoteSyncDataApplied(
+    mojom::ConversationArchivePtr conversation_data) {
+  // Any in-flight engine request or tool-use loop is reasoning over chat
+  // history that the remote write has just replaced. Stop them so we
+  // don't append a stale reply onto the new history.
+  if (is_request_in_progress_ ||
+      tool_use_task_state_ != mojom::TaskState::kNone) {
+    StopTask();
+    is_request_in_progress_ = false;
+    if (engine_) {
+      engine_->ClearAllQueries();
+    }
+    OnAPIRequestInProgressChanged();
+  }
+
+  // Replace history. If the remote-applied archive is empty, treat that
+  // as a remote-side wipe.
+  if (conversation_data) {
+    if (!conversation_data->associated_content.empty()) {
+      associated_content_manager_->LoadArchivedContent(metadata_,
+                                                       conversation_data);
+    }
+    chat_history_ = std::move(conversation_data->entries);
+  } else {
+    chat_history_.clear();
+  }
+
+  // Push a null entry update — the WebUI re-fetches the whole history on
+  // a null payload, which is what we want here.
+  OnHistoryUpdate(nullptr);
+}
+
 void ConversationHandler::OnAssociatedContentUpdated() {
   metadata_->associated_content =
       associated_content_manager_->GetAssociatedContent();
