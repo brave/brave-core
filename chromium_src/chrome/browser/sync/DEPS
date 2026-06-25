@@ -1,3 +1,6 @@
 include_rules = [
+  "+brave/browser/ai_chat",
+  "+brave/components/ai_chat/core/browser",
+  "+brave/components/ai_chat/core/common",
   "+brave/components/sync/service",
 ]

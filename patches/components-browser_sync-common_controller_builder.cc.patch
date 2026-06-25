@@ -1,0 +1,12 @@
+diff --git a/components/browser_sync/common_controller_builder.cc b/components/browser_sync/common_controller_builder.cc
+index a86411b6653ca3f092a02e03365a138a36f980b9..94577b475faf8b61432bf10fe1281713410a168a 100644
+--- a/components/browser_sync/common_controller_builder.cc
++++ b/components/browser_sync/common_controller_builder.cc
+@@ -592,6 +592,7 @@ CommonControllerBuilder::Build(syncer::DataTypeSet disabled_types,
+     add_controller(CreateCollaborationGroupDataTypeController(sync_service));
+   }
+ 
++  BRAVE_BUILD_SYNC_CONTROLLERS
+   return controllers;
+ }
+ 
