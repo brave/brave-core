@@ -468,6 +468,15 @@
     *** getAndroidAutofillFrameworkAvailability(...);
 }
 
+-keep class org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment {
+    *** createRequiredArgs(...);
+    *** onCreate(...);
+}
+
+-keep class org.chromium.chrome.browser.autofill.options.BraveAutofillOptionsFragmentBase {
+    *** onCreate(...);
+}
+
 -keep class org.chromium.components.browser_ui.settings.SettingsUtils {
     *** getVisiblePreferences(...);
 }

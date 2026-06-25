@@ -17,6 +17,38 @@ android_library("java") {
   ]
 }
 
+android_library("options_java") {
+  sources = [
+    "java/src/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase.java",
+    "java/src/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsSearchIndex.java",
+  ]
+
+  deps = [
+    ":options_java_resources",
+    "//brave/browser/android/preferences:pref_names_java",
+    "//build/android:build_java",
+    "//chrome/browser/autofill/android:java",
+    "//chrome/browser/profiles/android:java",
+    "//chrome/browser/settings:java",
+    "//components/browser_ui/settings/android:java",
+    "//components/prefs/android:java",
+    "//components/user_prefs/android:java",
+    "//content/public/android:content_full_java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_preference_preference_java",
+    "//ui/android:ui_no_recycler_view_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.autofill.brave"
+}
+
 generate_jni("jni_headers") {
   sources = [ "java/src/org/chromium/chrome/browser/autofill/BraveAutofillClientProviderUtils.java" ]
+}
+
+android_resources("options_java_resources") {
+  deps = [
+    "//brave/android/nala:java_resources",
+    "//brave/build/android:android_brave_strings_grd",
+  ]
 }

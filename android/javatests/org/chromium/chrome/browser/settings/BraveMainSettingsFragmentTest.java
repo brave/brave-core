@@ -110,7 +110,6 @@ public class BraveMainSettingsFragmentTest {
         "autofill_options",
         "autofill_payment_methods",
         "autofill_addresses",
-        "autofill_private_window",
         "support_section",
         "rate_brave",
         "about_section",
@@ -224,7 +223,7 @@ public class BraveMainSettingsFragmentTest {
                         // check
                         + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
                         + " to exclude new from indexing.",
-                34,
+                33,
                 nonVpnCount);
     }
 
