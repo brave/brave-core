@@ -123,7 +123,6 @@ struct ManagePasswordsView: View {
       }
     }
     .listSectionSpacing(.compact)
-    .scrollContentBackground(.hidden)
     .accessibilityHidden(isPrivacyOverlayActive)
     .searchable(
       text: $viewModel.searchText,
