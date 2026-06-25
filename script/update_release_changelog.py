@@ -18,11 +18,74 @@ if os.environ.get('DEBUG_HTTP_HEADERS') == 'true':
         from httplib import HTTPConnection  # python2
 
 
+DEFAULT_SECTION_TITLE = 'Release Notes'
+
+H1_SECTION_RE = re.compile(
+    r'^# (.+?)\s*\n(.*?)(?=^\# |\Z)',
+    flags=re.MULTILINE | re.DOTALL,
+)
+
+
+def parse_h1_sections(body):
+    """Split release body into preamble text and ordered H1 sections."""
+    body = (body or '').rstrip()
+    if not body:
+        return '', []
+
+    matches = list(H1_SECTION_RE.finditer(body))
+    if not matches:
+        return body, []
+
+    preamble = body[:matches[0].start()].rstrip()
+    sections = [(match.group(1), match.group(2).rstrip()) for match in matches]
+    return preamble, sections
+
+
+def assemble_body(preamble, sections):
+    """Rebuild release body from preamble and H1 sections."""
+    parts = []
+    if preamble:
+        parts.append(preamble)
+    for title, content in sections:
+        parts.append('# {}\n\n{}'.format(title, content.rstrip()))
+    return '\n\n'.join(parts)
+
+
+def merge_release_changelog_section(body, section_title, section_content, logging):
+    """Insert changelog section after removing all prior matching sections."""
+    remove_titles = {section_title.lower()}
+    preamble, sections = parse_h1_sections(body)
+    kept = []
+    insert_index = None
+
+    for title, content in sections:
+        if title.lower() in remove_titles:
+            logging.info("Removing existing release notes section: %s", title)
+            if insert_index is None:
+                insert_index = len(kept)
+            continue
+        kept.append((title, content))
+
+    new_section = (section_title, section_content.rstrip())
+    if insert_index is None:
+        kept.append(new_section)
+    else:
+        kept.insert(insert_index, new_section)
+
+    return assemble_body(preamble, kept)
+
+
 def main():
     """
     Download the brave-browser/CHANGELOG.md file, parse it and
     convert to markdown, then update the release notes for the
     release specified.
+
+    The changelog excerpt is merged under a markdown heading given by
+    --section-title (default: "Release Notes"). Before inserting, every
+    existing section with the same heading (case-insensitive), including repeated
+    copies, is removed. Other sections (install instructions, other platform notes)
+    are kept.
 
     """
 
@@ -66,9 +129,7 @@ def main():
                           r'.*?$\n+(.*?)\n+^##\s',
                           flags=re.DOTALL | re.MULTILINE)
     match = rn_regex.search(changelog_txt)
-    if match:
-        tag_changelog_txt = '# Release Notes\n\n{}'.format(match.group(1))
-    else:
+    if not match:
         logging.error("Unable to locate release notes!")
         exit(1)
 
@@ -80,7 +141,8 @@ def main():
         "Release body before update: \n\'{}\'".format(release['body']))
 
     logging.info("Merging original release body with changelog")
-    new_body = release['body'] + '\n\n' + tag_changelog_txt
+    new_body = merge_release_changelog_section(
+        release['body'], args.section_title, match.group(1), logging)
     logging.debug("release body is now: \n\'{}\'".format(new_body))
 
     data = dict(tag_name=tag, name=release['name'], body=new_body)
@@ -130,6 +192,9 @@ def parse_args():
                         required=True)
     parser.add_argument(
         '-u', '--url', help='URL for Brave Browser raw markdown file (required)', required=True)
+    parser.add_argument(
+        '-s', '--section-title', default=DEFAULT_SECTION_TITLE,
+        help='Markdown section heading for release notes (default: "%(default)s")')
     return parser.parse_args()
 
 
