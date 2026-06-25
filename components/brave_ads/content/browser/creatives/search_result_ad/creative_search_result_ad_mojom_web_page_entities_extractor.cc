@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/content/browser/creatives/search_result_ad/creative_search_result_ad_mojom_web_page_entities_extractor.h"
 
 #include <algorithm>
+#include <cstdint>
 #include <iterator>
 #include <string>
 #include <utility>
@@ -14,6 +15,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/flat_set.h"
 #include "base/logging.h"
+#include "base/numerics/checked_math.h"
 #include "base/strings/escape.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
@@ -94,10 +96,8 @@ bool GetIntValue(const schema_org::mojom::PropertyPtr& mojom_property,
     return false;
   }
 
-  *out_value =
-      static_cast<int32_t>(mojom_property->values->get_long_values()[0]);
-
-  return true;
+  const int64_t long_value = mojom_property->values->get_long_values()[0];
+  return base::CheckedNumeric<int32_t>(long_value).AssignIfValid(out_value);
 }
 
 bool GetDoubleValue(const schema_org::mojom::PropertyPtr& mojom_property,
