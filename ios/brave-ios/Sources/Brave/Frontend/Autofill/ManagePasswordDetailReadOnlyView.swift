@@ -5,20 +5,12 @@
 
 import BraveCore
 import BraveStrings
-import BraveUI
 import SwiftUI
-import UIKit
 
-struct ManagePasswordDetailView: View {
+struct ManagePasswordDetailReadOnlyView: View {
   @Environment(\.openURL) private var openURL
-  @Environment(\.dismiss) private var dismiss
-  @Environment(\.redactionReasons) private var redactionReasons
-  @State private var isPasswordRevealed = false
-
-  let viewModel: ManagePasswordsViewModel
+  @Binding var isPasswordRevealed: Bool
   let password: CWVPassword
-  var navigationTitle: String { URL(string: password.site)?.baseDomain ?? password.title }
-  let redactedTitle = Strings.Autofill.managePasswordsTitle
 
   var body: some View {
     Form {
@@ -40,11 +32,10 @@ struct ManagePasswordDetailView: View {
           } label: {
             Text(password.site).lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsWebsiteFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
         LabeledContent {
           Menu {
@@ -57,11 +48,10 @@ struct ManagePasswordDetailView: View {
             Text(password.username ?? "")
               .lineLimit(1)
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsUsernameFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
         LabeledContent {
           HStack(spacing: 8) {
@@ -87,7 +77,7 @@ struct ManagePasswordDetailView: View {
                 }
               }
               .contentShape(.rect)
-              .foregroundStyle(Color(braveSystemName: .textSecondary))
+              .foregroundStyle(.secondary)
             }
 
             Button {
@@ -104,17 +94,7 @@ struct ManagePasswordDetailView: View {
           }
         } label: {
           Text(Strings.Login.loginInfoDetailsPasswordFieldTitle)
-            .foregroundStyle(Color(braveSystemName: .textPrimary))
         }
-      }
-    }
-    .foregroundStyle(Color(braveSystemName: .textPrimary))
-    .accessibility(hidden: redactionReasons.contains(.privacy) ? true : false)
-    .navigationTitle(redactionReasons.contains(.privacy) ? redactedTitle : navigationTitle)
-    .navigationBarTitleDisplayMode(.inline)
-    .overlay {
-      if redactionReasons.contains(.privacy) {
-        Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
       }
     }
   }

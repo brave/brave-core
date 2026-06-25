@@ -10,7 +10,6 @@ import Favicon
 import LocalAuthentication
 import Preferences
 import SwiftUI
-import UIKit
 
 struct ManagePasswordsView: View {
   private typealias GroupID = ManagePasswordsViewModel.GroupID
@@ -25,6 +24,7 @@ struct ManagePasswordsView: View {
   @State private var selectedGroupIds: Set<GroupID> = []
   @State private var isDeleteSelectionDialogPresented: Bool = false
   @State private var isSceneInactive = false
+  @State private var addPasswordPresentation: ManagePasswordAddPresentation?
 
   private var isSearchActive: Bool {
     !viewModel.searchText.isEmpty
@@ -122,6 +122,7 @@ struct ManagePasswordsView: View {
         }
       }
     }
+    .listSectionSpacing(.compact)
     .accessibilityHidden(isPrivacyOverlayActive)
     .searchable(
       text: $viewModel.searchText,
@@ -145,7 +146,7 @@ struct ManagePasswordsView: View {
       if !isPrivacyOverlayActive {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            //TODO: Present Add Password Form
+            addPasswordPresentation = ManagePasswordAddPresentation()
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -211,6 +212,12 @@ struct ManagePasswordsView: View {
         await privacyLock.authenticate(onFailure: exitAfterAuthFailure)
       }
     }
+    .sheet(item: $addPasswordPresentation) { presentation in
+      NavigationStack {
+        ManagePasswordAddView(viewModel: viewModel, prefilledSite: presentation.prefilledSite)
+          .environment(\.redactionReasons, effectiveRedactionReasons)
+      }
+    }
     // Obscure list immediately when the scene deactivates (Control Center, Face ID sheet, etc.);
     // does not invalidate auth — that waits for `didEnterBackground`.
     .onReceive(NotificationCenter.default.publisher(for: UIScene.willDeactivateNotification)) { _ in
@@ -273,7 +280,7 @@ private struct ManagePasswordListRow: View {
     NavigationLink {
       Group {
         if passwords.count == 1, let password = passwords.first {
-          ManagePasswordDetailView(viewModel: viewModel, password: password)
+          ManagePasswordDetailContainerView(viewModel: viewModel, password: password)
         } else {
           ManagePasswordGroupView(viewModel: viewModel, domain: domain)
         }

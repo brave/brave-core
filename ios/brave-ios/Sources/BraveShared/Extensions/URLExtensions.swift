@@ -354,6 +354,30 @@ extension URL {
 
     return proposedPath
   }
+
+  /// Resolves the scheme of a URL, defaulting to `https` if none is present.
+  ///
+  /// This is useful when handling raw user input such as autofill form values, where the user
+  /// may type `example.com` or `www.example.com` without a scheme.
+  ///
+  /// - Returns: The original URL unchanged if a scheme is already present,
+  ///   otherwise a new URL with `https` prepended.
+  ///
+  /// - Note: This does not enforce a secure scheme — if the URL already has
+  ///   `http` or any other scheme, it is left as-is.
+  ///
+  /// ## Examples
+  /// ```
+  /// URL(string: "brave.com")!.httpsIfSchemeless      // https://brave.com
+  /// URL(string: "www.brave.com")!.httpsIfSchemeless  // https://www.brave.com
+  /// URL(string: "https://brave.com")!.httpsIfSchemeless // https://brave.com
+  /// URL(string: "http://brave.com")!.httpsIfSchemeless  // http://brave.com
+  /// ```
+  public var httpsIfSchemeless: URL {
+    guard scheme == nil else { return self }
+    let urlWithScheme = "https://" + absoluteString
+    return URL(string: urlWithScheme) ?? self
+  }
 }
 
 extension InternalURL {

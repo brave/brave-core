@@ -7,7 +7,6 @@ import BraveCore
 import BraveStrings
 import BraveUI
 import SwiftUI
-import UIKit
 
 /// Displays all login credentials for a selected domain.
 /// Each credential is shown as a separate row (username + masked password).
@@ -22,6 +21,7 @@ struct ManagePasswordGroupView: View {
 
   @State private var selectedCredentialIds: Set<String> = []
   @State private var isDeleteSelectionDialogPresented = false
+  @State private var addPasswordPresentation: ManagePasswordAddPresentation?
 
   private var passwords: [CWVPassword] {
     (viewModel.allowedGroups.first { $0.domain == domain }
@@ -33,7 +33,7 @@ struct ManagePasswordGroupView: View {
       Section {
         ForEach(passwords, id: \.identifier) { password in
           NavigationLink {
-            ManagePasswordDetailView(viewModel: viewModel, password: password)
+            ManagePasswordDetailContainerView(viewModel: viewModel, password: password)
               .environment(\.openURL, openURL)
               .environment(\.redactionReasons, redactionReasons)
           } label: {
@@ -65,7 +65,9 @@ struct ManagePasswordGroupView: View {
       if !redactionReasons.contains(.privacy) {
         ToolbarItem(placement: .topBarTrailing) {
           Button {
-            // TODO: Present Add Password Form
+            addPasswordPresentation = ManagePasswordAddPresentation(
+              prefilledSite: passwords.first?.site
+            )
           } label: {
             Label(Strings.addButtonTitle, braveSystemImage: "leo.plus.add")
           }
@@ -124,6 +126,12 @@ struct ManagePasswordGroupView: View {
     .overlay {
       if redactionReasons.contains(.privacy) {
         Color(uiColor: .systemGroupedBackground).ignoresSafeArea()
+      }
+    }
+    .sheet(item: $addPasswordPresentation) { presentation in
+      NavigationStack {
+        ManagePasswordAddView(viewModel: viewModel, prefilledSite: presentation.prefilledSite)
+          .environment(\.redactionReasons, redactionReasons)
       }
     }
   }
