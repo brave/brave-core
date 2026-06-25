@@ -31,6 +31,7 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -204,6 +205,21 @@ bool IsSchemeSupportedForShields(const GURL& url) {
 
   // By default not supported.
   return false;
+}
+
+// This santization helps to ensure URLs with inherited origin like
+// blob:https://a.com/uuid is properly mapped to the origin https://a.com,
+// to then correctly derive the eTLD+1. It's important that such URLs maps to
+// the same eTLD+1 as their inherited origin, because eTLD+1 is used to derive
+// the farbling seed / token. See
+// https://github.com/brave/brave-browser/issues/56048 for more details.
+//
+// For normal case, i.e without any inherited origin consideration like
+// https://sub.example.com/path returns the origin of |url|, i.e. scheme
+// + host + port with *no* path but is enough to derive the correct
+// eTLD+1.
+GURL GetOriginUrl(const GURL& url) {
+  return url::Origin::Create(url).GetURL();
 }
 
 }  // namespace
@@ -871,8 +887,7 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  // Scope the check on the origin.
-  const GURL effective_url = url::Origin::Create(primary_url).GetURL();
+  const GURL effective_url = GetOriginUrl(primary_url);
 
   const bool shields_up = GetBraveShieldsEnabled(map, effective_url);
   if (!shields_up) {
@@ -900,8 +915,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
     return token;
   }
 
+  const GURL effective_url = GetOriginUrl(url);
+
   // Get the farbling token from the Shields metadata.
-  auto shields_metadata = GetShieldsMetadata(map, url);
+  auto shields_metadata = GetShieldsMetadata(map, effective_url);
   if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
   }
@@ -911,10 +928,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
     if (!g_stable_farbling_tokens_seed) {
       token = base::Token::CreateRandom();
     } else {
-      token = CreateStableFarblingToken(url);
+      token = CreateStableFarblingToken(effective_url);
     }
     shields_metadata.Set("farbling_token", token.ToString());
-    SetShieldsMetadata(map, url, std::move(shields_metadata));
+    SetShieldsMetadata(map, effective_url, std::move(shields_metadata));
   }
 
   if (additional_entropy.empty()) {
