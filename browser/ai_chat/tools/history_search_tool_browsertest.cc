@@ -29,6 +29,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
 #include "brave/components/local_ai/core/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
@@ -58,47 +59,11 @@ const base::Time& CannedVisitTime() {
   return time;
 }
 
-// Minimal fake that records args and fires a canned result. The real
-// HistoryEmbeddingsService also implements this interface, so the tool sees
-// nothing unusual.
-class FakeHistoryEmbeddingsSearch
-    : public history_embeddings::HistoryEmbeddingsSearch {
- public:
-  history_embeddings::SearchResult Search(
-      history_embeddings::SearchResult* previous_search_result,
-      std::string query,
-      std::optional<base::Time> time_range_start,
-      size_t count,
-      bool skip_answering,
-      std::vector<history::URLID> url_id_filter,
-      history_embeddings::SearchResultCallback callback) override {
-    last_query_ = query;
-    last_time_range_start_ = time_range_start;
-    last_count_ = count;
-    last_skip_answering_ = skip_answering;
-
-    history_embeddings::SearchResult result;
-    result.query = query;
-    history_embeddings::ScoredUrl scored_url(
-        /*url_id=*/1, /*visit_id=*/1, base::Time::Now(),
-        /*score=*/0.9f, /*word_match_score=*/0.0f);
-    history_embeddings::ScoredUrlRow row(scored_url);
-    row.row.set_url(GURL(canned_url_));
-    row.row.set_title(u"Canned title");
-    row.row.set_last_visit(CannedVisitTime());
-    result.scored_url_rows.push_back(std::move(row));
-
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(callback, std::move(result)));
-    return history_embeddings::SearchResult();
-  }
-
-  std::string last_query_;
-  std::optional<base::Time> last_time_range_start_;
-  size_t last_count_ = 0;
-  bool last_skip_answering_ = false;
-  std::string canned_url_ = "https://example.com/canned";
-};
+void ConfigureFakeWithCannedRow(FakeHistoryEmbeddingsSearch& fake) {
+  fake.SetScoredRows({FakeHistoryEmbeddingsSearch::MakeRow(
+      /*url_id=*/1, GURL("https://example.com/canned"), u"Canned title",
+      CannedVisitTime(), /*score=*/0.9f)});
+}
 
 }  // namespace
 
@@ -167,6 +132,7 @@ IN_PROC_BROWSER_TEST_F(HistorySearchToolBrowserTest,
   CreateConversationWithMockEngine();
 
   FakeHistoryEmbeddingsSearch fake;
+  ConfigureFakeWithCannedRow(fake);
   InjectFakeSearch(&fake);
 
   // After our tool returns, ConversationHandler will issue a follow-up
@@ -203,15 +169,15 @@ IN_PROC_BROWSER_TEST_F(HistorySearchToolBrowserTest,
   // Wait for ConversationHandler to dispatch to our tool, which forwards
   // the query to the fake search service.
   ASSERT_TRUE(
-      base::test::RunUntil([&fake]() { return !fake.last_query_.empty(); }));
+      base::test::RunUntil([&fake]() { return !fake.last_query().empty(); }));
 
-  EXPECT_EQ(fake.last_query_, "kittens article");
-  EXPECT_EQ(fake.last_count_, 3u);
-  EXPECT_TRUE(fake.last_skip_answering_)
+  EXPECT_EQ(fake.last_query(), "kittens article");
+  EXPECT_EQ(fake.last_count(), 3u);
+  EXPECT_TRUE(fake.last_skip_answering())
       << "The tool must request the embeddings-only path -- answering is "
          "handled by the Leo model itself.";
-  ASSERT_TRUE(fake.last_time_range_start_.has_value());
-  EXPECT_LT(base::Time::Now() - *fake.last_time_range_start_,
+  ASSERT_TRUE(fake.last_time_range_start().has_value());
+  EXPECT_LT(base::Time::Now() - *fake.last_time_range_start(),
             base::Days(7) + base::Minutes(5));
 
   // The tool's output is plumbed back into the conversation as the
@@ -263,6 +229,7 @@ IN_PROC_BROWSER_TEST_F(HistorySearchToolBrowserTest,
   CreateConversationWithMockEngine();
 
   FakeHistoryEmbeddingsSearch fake;
+  ConfigureFakeWithCannedRow(fake);
   InjectFakeSearch(&fake);
 
   // After our tool returns, ConversationHandler will issue a follow-up
@@ -309,7 +276,7 @@ IN_PROC_BROWSER_TEST_F(HistorySearchToolBrowserTest,
     return false;
   }));
 
-  EXPECT_TRUE(fake.last_query_.empty())
+  EXPECT_TRUE(fake.last_query().empty())
       << "Search service must not be called with unparseable args";
 }
 

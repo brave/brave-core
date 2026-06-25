@@ -11,9 +11,11 @@
 #include "base/check.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_service_factory.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
@@ -47,6 +49,72 @@
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+namespace {
+
+struct PendingTab {
+  int32_t tab_id;
+  GURL url;
+};
+
+// Maps the embeddings `Search()` result rows back to open-tab IDs via the
+// URL-id index established in `OnUrlIdsResolved()` and forwards the ranked
+// tab IDs to the SearchTabsByContent caller.
+void DispatchTabIdsForScoredUrls(
+    TabSearchPageHandler::SearchTabsByContentCallback& callback,
+    const base::flat_map<history::URLID, int32_t>& tab_id_by_url_id,
+    history_embeddings::SearchResult result) {
+  std::vector<int32_t> tab_ids;
+  for (const auto& row : result.scored_url_rows) {
+    if (auto* tab_id =
+            base::FindOrNull(tab_id_by_url_id, row.scored_url.url_id)) {
+      tab_ids.push_back(*tab_id);
+    }
+  }
+  std::move(callback).Run(std::move(tab_ids));
+}
+
+void OnUrlIdsResolved(
+    std::vector<PendingTab> tabs,
+    std::string query,
+    history_embeddings::HistoryEmbeddingsSearch* embeddings_search,
+    TabSearchPageHandler::SearchTabsByContentCallback callback,
+    std::optional<std::vector<history::URLID>> url_ids) {
+  // HistoryService returned no result (e.g. shutdown / cancellation).
+  if (!url_ids) {
+    std::move(callback).Run({});
+    return;
+  }
+  CHECK_EQ(tabs.size(), url_ids->size());
+  std::vector<history::URLID> url_id_filter;
+  base::flat_map<history::URLID, int32_t> tab_id_by_url_id;
+  url_id_filter.reserve(url_ids->size());
+  for (size_t i = 0; i < url_ids->size(); ++i) {
+    if ((*url_ids)[i] == 0) {
+      continue;
+    }
+    url_id_filter.push_back((*url_ids)[i]);
+    tab_id_by_url_id.emplace((*url_ids)[i], tabs[i].tab_id);
+  }
+  // None of the open tabs have a corresponding URLID in history yet, so the
+  // embeddings search would have nothing to score against.
+  if (url_id_filter.empty()) {
+    std::move(callback).Run({});
+    return;
+  }
+  const size_t count = url_id_filter.size();
+  embeddings_search->Search(
+      /*previous_search_result=*/nullptr, query,
+      /*time_range_start=*/std::nullopt, count,
+      /*skip_answering=*/true, std::move(url_id_filter),
+      base::BindRepeating(&DispatchTabIdsForScoredUrls,
+                          base::OwnedRef(std::move(callback)),
+                          std::move(tab_id_by_url_id)));
+}
+
+}  // namespace
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
 #include <chrome/browser/ui/webui/tab_search/tab_search_page_handler.cc>
@@ -311,74 +379,54 @@ void TabSearchPageHandler::GetTabFocusShowFRE(
   std::move(callback).Run(!Profile::FromWebUI(web_ui_)->GetPrefs()->HasPrefPath(
       ai_chat::prefs::kBraveAIChatTabOrganizationEnabled));
 }
-
-namespace {
-
-struct PendingTab {
-  int32_t tab_id;
-  GURL url;
-};
-
-void OnUrlIdsResolved(
-    std::vector<PendingTab> tabs,
-    std::string query,
-    history_embeddings::HistoryEmbeddingsService* embeddings_service,
-    TabSearchPageHandler::SearchTabsByContentCallback callback,
-    std::optional<std::vector<history::URLID>> url_ids) {
-  if (!url_ids) {
-    std::move(callback).Run({});
-    return;
-  }
-  CHECK_EQ(tabs.size(), url_ids->size());
-  std::vector<history::URLID> url_id_filter;
-  base::flat_map<history::URLID, int32_t> tab_id_by_url_id;
-  url_id_filter.reserve(url_ids->size());
-  for (size_t i = 0; i < url_ids->size(); ++i) {
-    if ((*url_ids)[i] == 0) {
-      continue;
-    }
-    url_id_filter.push_back((*url_ids)[i]);
-    tab_id_by_url_id.emplace((*url_ids)[i], tabs[i].tab_id);
-  }
-  if (url_id_filter.empty()) {
-    std::move(callback).Run({});
-    return;
-  }
-  const size_t count = url_id_filter.size();
-  embeddings_service->Search(
-      /*previous_search_result=*/nullptr, query,
-      /*time_range_start=*/std::nullopt, count,
-      /*skip_answering=*/true, std::move(url_id_filter),
-      base::BindRepeating(
-          [](TabSearchPageHandler::SearchTabsByContentCallback& cb,
-             const base::flat_map<history::URLID, int32_t>& map,
-             history_embeddings::SearchResult result) {
-            std::vector<int32_t> tab_ids;
-            for (const auto& row : result.scored_url_rows) {
-              if (auto* tab_id = base::FindOrNull(map, row.scored_url.url_id)) {
-                tab_ids.push_back(*tab_id);
-              }
-            }
-            std::move(cb).Run(std::move(tab_ids));
-          },
-          base::OwnedRef(std::move(callback)), std::move(tab_id_by_url_id)));
+#else   // !BUILDFLAG(ENABLE_AI_CHAT)
+// Stub implementations when AI Chat is disabled
+void TabSearchPageHandler::GetSuggestedTopics(
+    GetSuggestedTopicsCallback callback) {
+  std::move(callback).Run({}, nullptr);
 }
 
-}  // namespace
+void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
+                                        GetFocusTabsCallback callback) {
+  std::move(callback).Run(false, nullptr);
+}
 
+void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
+  std::move(callback).Run();
+}
+
+void TabSearchPageHandler::OpenLeoGoPremiumPage() {}
+
+void TabSearchPageHandler::OpenLearnMorePage() {}
+
+void TabSearchPageHandler::SetTabFocusEnabled() {}
+
+void TabSearchPageHandler::GetTabFocusShowFRE(
+    GetTabFocusShowFRECallback callback) {
+  std::move(callback).Run(false);
+}
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
 void TabSearchPageHandler::SearchTabsByContent(
     const std::string& query,
     SearchTabsByContentCallback callback) {
   Profile* profile = Profile::FromWebUI(web_ui_);
+  // The history-embeddings setting is off for this profile, so there's
+  // no on-device ranker to consult.
   if (!history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile)) {
     std::move(callback).Run({});
     return;
   }
-  auto* embeddings_service =
-      HistoryEmbeddingsServiceFactory::GetForProfile(profile);
+  history_embeddings::HistoryEmbeddingsSearch* embeddings_search =
+      embeddings_search_for_testing_
+          ? embeddings_search_for_testing_.get()
+          : HistoryEmbeddingsServiceFactory::GetForProfile(profile);
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  if (query.empty() || !embeddings_service || !history_service) {
+  // Empty query, or one of the keyed services we depend on is unavailable
+  // for this profile (e.g. incognito).
+  if (query.empty() || !embeddings_search || !history_service) {
     std::move(callback).Run({});
     return;
   }
@@ -414,52 +462,28 @@ void TabSearchPageHandler::SearchTabsByContent(
         return true;
       });
 
+  // No tracked tabs to rank against — the ForEach loop only keeps
+  // tracked-browser HTTP/HTTPS tabs, so non-normal windows, other profiles
+  // and incognito don't reach here.
   if (tabs.empty()) {
     std::move(callback).Run({});
     return;
   }
 
-  std::vector<GURL> urls;
-  urls.reserve(tabs.size());
-  for (const auto& tab : tabs) {
-    urls.push_back(tab.url);
-  }
+  // Sequence the read-from-`tabs` (for URLs) before the move-of-`tabs` into the
+  // callback bind. Inlining the projection as a sibling argument leaves the
+  // order of evaluation unspecified and lets the move win on some toolchains.
+  const std::vector<GURL> urls = base::ToVector(tabs, &PendingTab::url);
   history_service->QueryUrlIds(
       urls,
       base::BindOnce(&OnUrlIdsResolved, std::move(tabs), query,
-                     embeddings_service, std::move(callback)),
+                     embeddings_search, std::move(callback)),
       &query_url_task_tracker_);
 }
-#else   // !BUILDFLAG(ENABLE_AI_CHAT)
-// Stub implementations when AI Chat is disabled
-void TabSearchPageHandler::GetSuggestedTopics(
-    GetSuggestedTopicsCallback callback) {
-  std::move(callback).Run({}, nullptr);
-}
-
-void TabSearchPageHandler::GetFocusTabs(const std::string& topic,
-                                        GetFocusTabsCallback callback) {
-  std::move(callback).Run(false, nullptr);
-}
-
-void TabSearchPageHandler::UndoFocusTabs(UndoFocusTabsCallback callback) {
-  std::move(callback).Run();
-}
-
-void TabSearchPageHandler::OpenLeoGoPremiumPage() {}
-
-void TabSearchPageHandler::OpenLearnMorePage() {}
-
-void TabSearchPageHandler::SetTabFocusEnabled() {}
-
-void TabSearchPageHandler::GetTabFocusShowFRE(
-    GetTabFocusShowFRECallback callback) {
-  std::move(callback).Run(false);
-}
-
+#else   // !BUILDFLAG(ENABLE_LOCAL_AI)
 void TabSearchPageHandler::SearchTabsByContent(
     const std::string& query,
     SearchTabsByContentCallback callback) {
   std::move(callback).Run({});
 }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
