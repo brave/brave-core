@@ -14,29 +14,18 @@
 
 namespace {
 
-bool MaybeEraseKnownMV2Extensions(
+void MaybeEraseKnownMV2Extensions(
     std::vector<extensions::Mv2DisabledDialogController::ExtensionInfo>&
         extensions) {
   if (!extensions_mv2::features::IsExtensionReplacementEnabled()) {
-    return false;
+    return;
   }
 
-  extensions.erase(
-      std::remove_if(extensions.begin(), extensions.end(),
-                     [](const auto& e) {
-                       return extensions_mv2::IsKnownWebStoreHostedExtension(
-                           e.id);
-                     }),
-      extensions.end());
-
-  return false;
+  std::erase_if(extensions, [](const auto& e) {
+    return extensions_mv2::IsKnownWebStoreHostedExtension(e.id);
+  });
 }
 
 }  // namespace
 
-#define window(...) \
-  window(__VA_ARGS__) || MaybeEraseKnownMV2Extensions(affected_extensions_info_)
-
 #include <chrome/browser/ui/extensions/mv2_disabled_dialog_controller.cc>
-
-#undef window
