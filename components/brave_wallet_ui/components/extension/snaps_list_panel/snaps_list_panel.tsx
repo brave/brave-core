@@ -6,65 +6,24 @@
 import * as React from 'react'
 
 import { BraveWallet } from '../../../constants/types'
-import {
-  useGetInstalledSnapsQuery,
-  useUninstallSnapMutation,
-  useGetSnapConnectedOriginsQuery,
-  useDisconnectSnapOriginMutation,
-} from '../../../common/slices/api.slice'
+import { useGetInstalledSnapsQuery } from '../../../common/slices/api.slice'
 import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { PanelActions } from '../../../panel/actions'
 
-// Lists the origins currently connected to a snap, each with a disconnect
-// button. Only mounted while the snap's manifest drawer is expanded, so the
-// query runs lazily.
-const ConnectedOriginsList = ({ snapId }: { snapId: string }) => {
-  const { data: origins = [], isLoading } = useGetSnapConnectedOriginsQuery({
-    snapId,
-  })
-  const [disconnectSnapOrigin] = useDisconnectSnapOriginMutation()
-
-  return (
-    <div style={styles.connectionsSection}>
-      <span style={styles.connectionsLabel}>Connected sites</span>
-      {isLoading ? (
-        <span style={styles.connectionsEmpty}>Loading…</span>
-      ) : origins.length === 0 ? (
-        <span style={styles.connectionsEmpty}>No connected sites.</span>
-      ) : (
-        <ul style={styles.originList}>
-          {origins.map((origin) => (
-            <li
-              key={origin}
-              style={styles.originItem}
-            >
-              <span style={styles.originName}>{origin}</span>
-              <button
-                style={styles.disconnectBtn}
-                title='Disconnect'
-                onClick={() => disconnectSnapOrigin({ origin, snapId })}
-              >
-                Disconnect
-              </button>
-            </li>
-          ))}
-        </ul>
-      )}
-    </div>
-  )
-}
+const hasPageHomePermission = (snap: BraveWallet.SnapInstallData) =>
+  snap.manifest?.permissions?.includes('endowment:page-home') ?? false
 
 export const SnapsListPanel = () => {
   const dispatch = useAppDispatch()
   const { data: snaps = [] as BraveWallet.SnapInstallData[], isLoading } =
     useGetInstalledSnapsQuery()
-  const [uninstallSnap] = useUninstallSnapMutation()
-  const [expandedManifestId, setExpandedManifestId] = React.useState<
-    string | null
-  >(null)
 
   const handleOpen = (snapId: string) => {
     dispatch(PanelActions.navigateToSnap(snapId))
+  }
+
+  const handleOpenDetails = (snapId: string) => {
+    dispatch(PanelActions.navigateToSnapDetails(snapId))
   }
 
   const handleOpenInTab = (snapId: string) => {
@@ -75,10 +34,6 @@ export const SnapsListPanel = () => {
 
   const handleOpenStore = () => {
     chrome.tabs.create({ url: 'brave://wallet/snaps-store' })
-  }
-
-  const toggleManifest = (snapId: string) => {
-    setExpandedManifestId((prev) => (prev === snapId ? null : snapId))
   }
 
   if (isLoading) {
@@ -106,7 +61,6 @@ export const SnapsListPanel = () => {
               key={snap.snapId}
               style={styles.item}
             >
-              {/* Name + ID */}
               <div style={styles.info}>
                 <span style={styles.name}>
                   {snap.manifest?.proposedName || snap.snapId}
@@ -114,15 +68,16 @@ export const SnapsListPanel = () => {
                 <span style={styles.id}>{snap.snapId}</span>
               </div>
 
-              {/* Action buttons */}
               <div style={styles.actions}>
-                <button
-                  style={styles.openBtn}
-                  title='Open in panel'
-                  onClick={() => handleOpen(snap.snapId)}
-                >
-                  Open
-                </button>
+                {hasPageHomePermission(snap) && (
+                  <button
+                    style={styles.openBtn}
+                    title='Open in panel'
+                    onClick={() => handleOpen(snap.snapId)}
+                  >
+                    Open
+                  </button>
+                )}
                 <button
                   style={styles.tabBtn}
                   title='Open in browser tab'
@@ -131,44 +86,13 @@ export const SnapsListPanel = () => {
                   ⎋ Tab
                 </button>
                 <button
-                  style={
-                    expandedManifestId === snap.snapId
-                      ? styles.manifestBtnActive
-                      : styles.manifestBtn
-                  }
-                  title='Show manifest'
-                  onClick={() => toggleManifest(snap.snapId)}
+                  style={styles.detailsBtn}
+                  title='Show details'
+                  onClick={() => handleOpenDetails(snap.snapId)}
                 >
-                  { }
-                </button>
-                <button
-                  style={styles.uninstallBtn}
-                  title='Uninstall'
-                  onClick={() => uninstallSnap({ snapId: snap.snapId })}
-                >
-                  ✕
+                  Details
                 </button>
               </div>
-
-              {/* Manifest drawer */}
-              {expandedManifestId === snap.snapId && (
-                <>
-                  <pre style={styles.manifest}>
-                    {JSON.stringify(
-                      {
-                        snap_id: snap.snapId,
-                        version: snap.version,
-                        proposed_name: snap.manifest?.proposedName,
-                        permissions: snap.manifest?.permissions,
-                        enabled: snap.enabled,
-                      },
-                      null,
-                      2,
-                    )}
-                  </pre>
-                  <ConnectedOriginsList snapId={snap.snapId} />
-                </>
-              )}
             </li>
           ))}
         </ul>
@@ -260,7 +184,7 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: 'pointer',
     whiteSpace: 'nowrap',
   },
-  manifestBtn: {
+  detailsBtn: {
     padding: '4px 8px',
     fontSize: '11px',
     background: 'transparent',
@@ -268,96 +192,7 @@ const styles: Record<string, React.CSSProperties> = {
     border: '1px solid #c0c4d0',
     borderRadius: '4px',
     cursor: 'pointer',
-  },
-  manifestBtnActive: {
-    padding: '4px 8px',
-    fontSize: '11px',
-    background: '#e0e7ff',
-    color: '#3730a3',
-    border: '1px solid #818cf8',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  uninstallBtn: {
-    padding: '4px 8px',
-    fontSize: '11px',
-    background: 'transparent',
-    color: '#d32f2f',
-    border: '1px solid #d32f2f',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-  manifest: {
-    width: '100%',
-    margin: '4px 0 0',
-    padding: '8px',
-    fontSize: '10px',
-    fontFamily: 'monospace',
-    background: '#fff',
-    border: '1px solid #e0e2e8',
-    borderRadius: '4px',
-    overflowX: 'auto',
-    whiteSpace: 'pre-wrap' as const,
-    wordBreak: 'break-all' as const,
-    color: '#374151',
-    lineHeight: 1.5,
-  },
-  connectionsSection: {
-    width: '100%',
-    margin: '8px 0 0',
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '6px',
-  },
-  connectionsLabel: {
-    fontSize: '10px',
-    fontWeight: 600,
-    color: '#6b7280',
-    textTransform: 'uppercase',
-    letterSpacing: '0.05em',
-  },
-  connectionsEmpty: {
-    fontSize: '11px',
-    color: '#6b7280',
-  },
-  originList: {
-    listStyle: 'none',
-    margin: 0,
-    padding: 0,
-    display: 'flex',
-    flexDirection: 'column',
-    gap: '4px',
-  },
-  originItem: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    gap: '6px',
-    padding: '6px 8px',
-    background: '#fff',
-    border: '1px solid #e0e2e8',
-    borderRadius: '4px',
-  },
-  originName: {
-    fontSize: '11px',
-    color: '#374151',
-    fontFamily: 'monospace',
-    overflow: 'hidden',
-    textOverflow: 'ellipsis',
     whiteSpace: 'nowrap',
-    minWidth: 0,
-    flex: 1,
-  },
-  disconnectBtn: {
-    padding: '4px 8px',
-    fontSize: '11px',
-    background: 'transparent',
-    color: '#d32f2f',
-    border: '1px solid #d32f2f',
-    borderRadius: '4px',
-    cursor: 'pointer',
-    whiteSpace: 'nowrap',
-    flexShrink: 0,
   },
   empty: {
     padding: '16px',

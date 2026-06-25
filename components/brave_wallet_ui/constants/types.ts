@@ -105,6 +105,7 @@ export type PanelTypes =
   | 'settings'
   | 'sitePermissions'
   | 'snaps'
+  | 'snap_details'
   | 'snap_view'
   | 'swap'
   | 'activity' // Transactions

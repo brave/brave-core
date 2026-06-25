@@ -153,6 +153,9 @@ base::DictValue SnapsService::GetSnapsForOrigin(
     return result;
   }
   for (const auto& snap : data_provider_->GetAllSnaps()) {
+    if (!snap->enabled) {
+      continue;
+    }
     if (permission_controller_->IsOriginAllowedByManifest(origin,
                                                            snap->snap_id)) {
       base::DictValue snap_info;
@@ -540,6 +543,17 @@ void SnapsService::DisconnectSnapOrigin(const std::string& origin,
   permission_controller_->RevokeSnapConnection(
       url::Origin::Create(GURL(origin)), snap_id);
   std::move(callback).Run();
+}
+
+void SnapsService::SetSnapEnabled(const std::string& snap_id,
+                                  bool enabled,
+                                  SetSnapEnabledCallback callback) {
+  if (!data_provider_->IsInstalled(snap_id)) {
+    std::move(callback).Run(false);
+    return;
+  }
+  data_provider_->SetSnapEnabled(snap_id, enabled);
+  std::move(callback).Run(true);
 }
 
 }  // namespace brave_wallet

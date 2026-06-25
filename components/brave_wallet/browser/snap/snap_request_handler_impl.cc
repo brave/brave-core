@@ -50,6 +50,10 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
     HandleSnapRequestCallback callback) {
   LOG(ERROR) << "XXXZZZ HandleSnapRequest snap_id=" << snap_id
              << " method=" << method;
+  if (!data_provider_->IsSnapEnabled(snap_id)) {
+    std::move(callback).Run(std::nullopt, "Snap is disabled");
+    return;
+  }
   if (auto error =
           permission_controller_->CheckSnapMethodPermission(snap_id, method)) {
     LOG(ERROR) << "XXXZZZ HandleSnapRequest: permission denied: " << *error;

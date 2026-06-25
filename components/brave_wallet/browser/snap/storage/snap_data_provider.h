@@ -42,9 +42,12 @@ class SnapDataProvider {
   // ---------------------------------------------------------------------------
 
   bool IsInstalled(const std::string& snap_id) const;
+  // Returns true when |snap_id| is installed and its enabled flag is set.
+  bool IsSnapEnabled(const std::string& snap_id) const;
   // Returns a clone of the snap's install data, or nullptr if not installed.
   mojom::SnapInstallDataPtr GetSnap(const std::string& snap_id) const;
   std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() const;
+  void SetSnapEnabled(const std::string& snap_id, bool enabled);
 
   // ---------------------------------------------------------------------------
   // Bundle I/O (async, thread-pool)

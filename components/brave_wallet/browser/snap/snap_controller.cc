@@ -123,6 +123,10 @@ void SnapController::ContinueInvokeSnap(
     std::move(callback).Run(std::nullopt, "Unknown snap: " + snap_id);
     return;
   }
+  if (!data_provider_->IsSnapEnabled(snap_id)) {
+    std::move(callback).Run(std::nullopt, "Snap is disabled: " + snap_id);
+    return;
+  }
 
   if (caller_origin.has_value()) {
     const url::Origin& origin = *caller_origin;
@@ -208,6 +212,10 @@ void SnapController::RequestSnaps(const url::Origin& origin,
   state->origin = origin;
 
   for (const auto& item : items) {
+    if (item.installed && !data_provider_->IsSnapEnabled(item.snap_id)) {
+      OnSnapConnectionResolved(state, item.snap_id, /*approved=*/false);
+      continue;
+    }
     if (!item.installed) {
       // Missing snaps are installed via the install-approval flow, which is the
       // user's consent to the connection.
@@ -263,6 +271,10 @@ void SnapController::OnSnapConnectionResolved(
 
 void SnapController::GetSnapHomePage(const std::string& snap_id,
                                       SnapHomePageCallback callback) {
+  if (!data_provider_->IsSnapEnabled(snap_id)) {
+    std::move(callback).Run(std::nullopt, std::nullopt, "Snap is disabled");
+    return;
+  }
   bridge_controller_->EnsureBridgeReady(
       base::BindOnce(&SnapController::DispatchGetSnapHomePage,
                      weak_ptr_factory_.GetWeakPtr(), snap_id,
@@ -303,6 +315,10 @@ void SnapController::SendSnapUserInput(const std::string& snap_id,
                                         const std::string& interface_id,
                                         const std::string& event_json,
                                         SnapUserInputCallback callback) {
+  if (!data_provider_->IsSnapEnabled(snap_id)) {
+    std::move(callback).Run(std::nullopt, "Snap is disabled");
+    return;
+  }
   bridge_controller_->EnsureBridgeReady(
       base::BindOnce(&SnapController::DispatchSendSnapUserInput,
                      weak_ptr_factory_.GetWeakPtr(), snap_id, interface_id,

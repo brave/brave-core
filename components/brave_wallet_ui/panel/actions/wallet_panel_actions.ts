@@ -18,6 +18,7 @@ export const cancelConnectHardwareWallet =
 export const {
   navigateTo,
   navigateToSnap,
+  navigateToSnapDetails,
   showConnectToSite,
   setHardwareWalletInteractionError,
   setSelectedTransactionId,

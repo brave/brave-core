@@ -95,6 +95,20 @@ TEST_F(SnapRegistryTest, RegisterOverwritesExisting) {
   EXPECT_EQ(registry_->GetAllSnaps().size(), 1u);
 }
 
+TEST_F(SnapRegistryTest, SetSnapEnabledPersists) {
+  registry_->RegisterInstalledSnap(
+      *MakeTestSnapInstallData("npm:@test/snap", "1.0.0"));
+  ASSERT_TRUE(registry_->GetSnap("npm:@test/snap")->enabled);
+
+  registry_->SetSnapEnabled("npm:@test/snap", false);
+  EXPECT_FALSE(registry_->GetSnap("npm:@test/snap")->enabled);
+
+  SnapRegistry reloaded(prefs_);
+  EXPECT_FALSE(reloaded.GetSnap("npm:@test/snap")->enabled);
+
+  registry_->SetSnapEnabled("npm:unknown", true);
+}
+
 TEST_F(SnapRegistryTest, PersistsAcrossReconstruction) {
   auto data = MakeTestSnapInstallData("npm:@test/snap", "2.0.0");
   data->bundle_size_bytes = 4096;

@@ -51,6 +51,10 @@ export const createPanelSlice = (initialState: PanelState = defaultState) => {
         state.selectedPanel = 'snap_view'
         state.viewingSnapId = action.payload
       },
+      navigateToSnapDetails(state, action: PayloadAction<string>) {
+        state.selectedPanel = 'snap_details'
+        state.viewingSnapId = action.payload
+      },
       showConnectToSite(
         state,
         action: PayloadAction<ShowConnectToSitePayload>,

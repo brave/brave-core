@@ -30,6 +30,11 @@ bool SnapDataProvider::IsInstalled(const std::string& snap_id) const {
   return snap_registry_->IsKnownSnap(snap_id);
 }
 
+bool SnapDataProvider::IsSnapEnabled(const std::string& snap_id) const {
+  auto snap = snap_registry_->GetSnap(snap_id);
+  return snap && snap->enabled;
+}
+
 mojom::SnapInstallDataPtr SnapDataProvider::GetSnap(
     const std::string& snap_id) const {
   return snap_registry_->GetSnap(snap_id);
@@ -37,6 +42,11 @@ mojom::SnapInstallDataPtr SnapDataProvider::GetSnap(
 
 std::vector<mojom::SnapInstallDataPtr> SnapDataProvider::GetAllSnaps() const {
   return snap_registry_->GetAllSnaps();
+}
+
+void SnapDataProvider::SetSnapEnabled(const std::string& snap_id,
+                                      bool enabled) {
+  snap_registry_->SetSnapEnabled(snap_id, enabled);
 }
 
 // ---------------------------------------------------------------------------

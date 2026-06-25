@@ -223,6 +223,34 @@ export const snapsEndpoints = ({
       ],
     }),
 
+    setSnapEnabled: mutation<
+      { success: boolean },
+      { snapId: string; enabled: boolean }
+    >({
+      queryFn: async (
+        { snapId, enabled },
+        { endpoint },
+        _extraOptions,
+        baseQuery,
+      ) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { success } = await api.snapsService.setSnapEnabled(
+            snapId,
+            enabled,
+          )
+          return { data: { success } }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to update snap enabled state',
+            error,
+          )
+        }
+      },
+      invalidatesTags: ['InstalledSnaps'],
+    }),
+
     uninstallSnap: mutation<null, { snapId: string }>({
       queryFn: async (
         { snapId },

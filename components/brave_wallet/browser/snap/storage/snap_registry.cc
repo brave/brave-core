@@ -165,4 +165,17 @@ void SnapRegistry::UnregisterSnap(const std::string& snap_id) {
   installed_snaps_.erase(snap_id);
 }
 
+void SnapRegistry::SetSnapEnabled(const std::string& snap_id, bool enabled) {
+  auto it = installed_snaps_.find(snap_id);
+  if (it == installed_snaps_.end() || it->second->enabled == enabled) {
+    return;
+  }
+  it->second->enabled = enabled;
+  ScopedDictPrefUpdate update(&*prefs_, kInstalledSnapsPref);
+  base::DictValue* snap_dict = update->FindDict(snap_id);
+  if (snap_dict) {
+    snap_dict->Set("enabled", enabled);
+  }
+}
+
 }  // namespace brave_wallet

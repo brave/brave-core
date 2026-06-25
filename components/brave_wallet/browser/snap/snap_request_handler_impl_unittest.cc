@@ -107,6 +107,18 @@ TEST_F(SnapRequestHandlerImplTest, UnknownSnapRejected) {
   EXPECT_EQ(future.Get<1>(), "Unknown snap: npm:nope");
 }
 
+TEST_F(SnapRequestHandlerImplTest, DisabledSnapRejected) {
+  InstallSnap(kSnapId, {"snap_dialog"});
+  data_provider_->SetSnapEnabled(kSnapId, false);
+
+  ReqFuture future;
+  handler_->HandleSnapRequest(kSnapId, "snap_dialog", base::Value(),
+                              future.GetCallback<std::optional<base::Value>,
+                                                 const std::optional<std::string>&>());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_EQ(future.Get<1>(), "Snap is disabled");
+}
+
 TEST_F(SnapRequestHandlerImplTest, MissingPermissionRejected) {
   InstallSnap(kSnapId, {"snap_dialog"});
   ReqFuture future;

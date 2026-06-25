@@ -104,6 +104,17 @@ TEST_F(SnapControllerTest, InvokeSnapUnknownSnap) {
   EXPECT_EQ(future.Get<1>(), "Unknown snap: npm:test-snap");
 }
 
+TEST_F(SnapControllerTest, InvokeSnapDisabled) {
+  InstallSnap("npm:test-snap");
+  data_provider_->SetSnapEnabled("npm:test-snap", false);
+
+  InvokeFuture future;
+  controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), std::nullopt,
+                          future.GetCallback());
+  EXPECT_FALSE(future.Get<0>());
+  EXPECT_EQ(future.Get<1>(), "Snap is disabled: npm:test-snap");
+}
+
 TEST_F(SnapControllerTest, InvokeSnapInsecureOriginRejected) {
   InstallSnap("npm:test-snap");
   InvokeFuture future;

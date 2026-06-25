@@ -147,6 +147,10 @@ class SnapsService : public mojom::SnapsService {
                             const std::string& snap_id,
                             DisconnectSnapOriginCallback callback) override;
 
+  void SetSnapEnabled(const std::string& snap_id,
+                      bool enabled,
+                      SetSnapEnabledCallback callback) override;
+
  private:
   // mojom callback adapters — each converts subsystem result types to the
   // shape expected by the mojo callback.

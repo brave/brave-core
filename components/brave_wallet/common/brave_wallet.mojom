@@ -3079,6 +3079,11 @@ interface SnapsService {
 
   // Revokes |origin|'s connection grant to |snap_id|.
   DisconnectSnapOrigin(string origin, string snap_id) => ();
+
+  // Enables or disables an installed snap at runtime. Disabled snaps are hidden
+  // from wallet_getSnaps and cannot be invoked. Returns false when |snap_id|
+  // is not installed.
+  SetSnapEnabled(string snap_id, bool enabled) => (bool success);
 };
 
 // For default wallet setting, user assets, permission checks, importing

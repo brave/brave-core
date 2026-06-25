@@ -287,6 +287,25 @@ TEST_F(SnapsServiceTest, GetSnapsForOrigin) {
   EXPECT_TRUE(service_->GetSnapsForOrigin(url::Origin()).empty());
 }
 
+TEST_F(SnapsServiceTest, GetSnapsForOriginExcludesDisabled) {
+  InstallFully("npm:test-snap", "1.0.0", /*allow_dapps=*/true);
+  const url::Origin origin =
+      url::Origin::Create(GURL("https://app.example.com"));
+
+  base::test::TestFuture<bool> set_enabled;
+  service_->SetSnapEnabled("npm:test-snap", false, set_enabled.GetCallback());
+  ASSERT_TRUE(set_enabled.Get());
+
+  EXPECT_FALSE(service_->GetSnapsForOrigin(origin).contains("npm:test-snap"));
+  EXPECT_TRUE(service_->IsSnapAvailable("npm:test-snap"));
+}
+
+TEST_F(SnapsServiceTest, SetSnapEnabledUnknownSnapFails) {
+  base::test::TestFuture<bool> set_enabled;
+  service_->SetSnapEnabled("npm:unknown", false, set_enabled.GetCallback());
+  EXPECT_FALSE(set_enabled.Get());
+}
+
 TEST_F(SnapsServiceTest, UninstallSnapRemovesAndPurges) {
   InstallFully("npm:test-snap");
   const url::Origin origin =

@@ -52,6 +52,10 @@ class SnapRegistry {
   // Called by SnapDataProvider during uninstall.
   void UnregisterSnap(const std::string& snap_id);
 
+  // Updates the persisted enabled flag for an installed snap. No-op when
+  // |snap_id| is unknown or |enabled| is already the current value.
+  void SetSnapEnabled(const std::string& snap_id, bool enabled);
+
  private:
   // In-memory cache keyed by snap_id; populated from PrefService on
   // construction and kept in sync by Register/UnregisterInstalledSnap.

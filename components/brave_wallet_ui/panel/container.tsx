@@ -88,6 +88,9 @@ import {
 import {
   SnapViewPanel, //
 } from '../components/extension/snap_view_panel/snap_view_panel'
+import {
+  SnapDetailsPanel, //
+} from '../components/extension/snap_details_panel/snap_details_panel'
 
 // Allow BigInts to be stringified
 ;(BigInt.prototype as any).toJSON = function () {
@@ -237,7 +240,7 @@ function Container() {
     )
   }
 
-  // Snap install approval gate â€” takes priority over most other views.
+  // Snap install approval gate — takes priority over most other views.
   if (
     pendingSnapInstall
     && pendingSnapInstall.state !== BraveWallet.SnapInstallState.kIdle
@@ -252,7 +255,7 @@ function Container() {
     )
   }
 
-  // Snap connection approval gate â€” takes priority over most other views.
+  // Snap connection approval gate — takes priority over most other views.
   if (pendingSnapConnection) {
     return (
       <PanelWrapper
@@ -284,6 +287,18 @@ function Container() {
         height={650}
       >
         <SnapViewPanel snapId={viewingSnapId} />
+      </PanelWrapper>
+    )
+  }
+
+  // Snap details screen.
+  if (selectedPanel === 'snap_details' && viewingSnapId) {
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <SnapDetailsPanel snapId={viewingSnapId} />
       </PanelWrapper>
     )
   }
