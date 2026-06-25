@@ -14,3 +14,8 @@ substitutions:
                       DeviceInfoSyncServiceFactory::GetForProfile(profile),
                       ios::HistoryServiceFactory::GetForProfile(profile)),
                   GetApplicationContext()->GetOSCryptAsync());
+
+  - description: 'Add the controllers of Brave sync data types.'
+    add_before_line:
+      line: 'return controllers;'
+      code: '  BRAVE_CREATE_CONTROLLERS'
