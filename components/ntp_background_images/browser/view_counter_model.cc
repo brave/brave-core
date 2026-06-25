@@ -11,6 +11,7 @@
 #include "base/functional/bind.h"
 #include "base/rand_util.h"
 #include "brave/components/ntp_background_images/browser/features.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_service.h"
 
 namespace ntp_background_images {
@@ -123,8 +124,23 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
     return;
   }
 
+#if BUILDFLAG(IS_ANDROID)
+  // On Android, show background images in a random order, avoiding an
+  // immediate repeat of the currently selected image.
+  if (total_image_count_ == 1) {
+    current_wallpaper_image_index_ = 0;
+    return;
+  }
+  // Choose uniformly among all indices except the current one.
+  int next_index = base::RandInt(0, total_image_count_ - 2);
+  if (next_index >= current_wallpaper_image_index_) {
+    ++next_index;
+  }
+  current_wallpaper_image_index_ = next_index;
+#else
   current_wallpaper_image_index_++;
   current_wallpaper_image_index_ %= total_image_count_;
+#endif
 }
 
 void ViewCounterModel::NextBrandedImage() {
