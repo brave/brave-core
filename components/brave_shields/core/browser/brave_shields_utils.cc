@@ -325,11 +325,7 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return false;
   }
 
-  // For blob://http://example.com/f23d2f49-6451-44c0-9cba-46ecb226be93
-  // scheme URLs, the |effective_url| would be the origin http://example.com.
-  // This helps to apply the same shield settings on blob://.
-  GURL effective_url =
-      url.is_valid() ? url::Origin::Create(url).GetURL() : GURL();
+  GURL effective_url = GetOriginUrl(url);
 
   ContentSetting setting = map->GetContentSetting(
       effective_url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
