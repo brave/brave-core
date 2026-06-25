@@ -1,4 +1,7 @@
 include_rules = [
+  "+brave/components/ai_chat/core/browser/ai_chat_service.h",
+  "+brave/components/ai_chat/core/common/buildflags/buildflags.h",
+  "+brave/components/ai_chat/core/common/features.h",
   "+brave/components/history/core/browser/sync/brave_history_delete_directives_data_type_controller.h",
   "+brave/components/history/core/browser/sync/brave_history_data_type_controller.h",
 ]

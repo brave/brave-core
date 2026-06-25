@@ -26,6 +26,7 @@
 #include "base/logging.h"
 #include "base/numerics/clamped_math.h"
 #include "base/strings/string_util.h"
+#include "base/task/bind_post_task.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -188,12 +189,18 @@ void AIChatService::Shutdown() {
   // Disconnect remotes
   receivers_.ClearWithReason(0, "Shutting down");
   weak_ptr_factory_.InvalidateWeakPtrs();
-  // Destroy bridge before database (bridge holds raw pointer to database).
-  // Bridge lives on db_task_runner_, so delete it there.
-  if (sync_bridge_ && db_task_runner_) {
-    db_task_runner_->DeleteSoon(FROM_HERE, std::move(sync_bridge_));
+  // Tear down the sync bridge on the DB sequence BEFORE destroying the
+  // database. The bridge holds a raw_ptr<AIChatDatabase>; if the database
+  // were destroyed first, the raw_ptr would dangle until the SyncBackend's
+  // last reference (held by any still-alive ProxyDataTypeControllerDelegate)
+  // is released and the bridge destructor finally runs. Posting Shutdown()
+  // and ai_chat_db_.Reset() in order on the same sequenced task runner
+  // guarantees bridge-then-database destruction order.
+  if (sync_backend_ && db_task_runner_) {
+    db_task_runner_->PostTask(
+        FROM_HERE, base::BindOnce(&SyncBackend::Shutdown, sync_backend_));
   }
-  sync_bridge_.reset();
+  sync_backend_.reset();
   if (ai_chat_db_) {
     ai_chat_db_.Reset();
   }
@@ -211,22 +218,52 @@ bool AIChatService::HasActiveConversationHandler(const std::string& uuid) {
   return conversation_handlers_.contains(uuid);
 }
 
+AIChatService::SyncBackend::SyncBackend(
+    scoped_refptr<base::SequencedTaskRunner> owning_task_runner)
+    : base::RefCountedDeleteOnSequence<SyncBackend>(
+          std::move(owning_task_runner)) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
+
+AIChatService::SyncBackend::~SyncBackend() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
+
+void AIChatService::SyncBackend::SetBridge(
+    std::unique_ptr<AIChatSyncBridge> bridge) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!bridge_) << "Sync bridge already installed";
+  bridge_ = std::move(bridge);
+}
+
+base::WeakPtr<syncer::DataTypeControllerDelegate>
+AIChatService::SyncBackend::GetControllerDelegate() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!bridge_) {
+    return nullptr;
+  }
+  return bridge_->change_processor()->GetControllerDelegate();
+}
+
+void AIChatService::SyncBackend::Shutdown() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  bridge_.reset();
+}
+
 std::unique_ptr<syncer::DataTypeControllerDelegate>
 AIChatService::CreateSyncControllerDelegate() {
-  if (!db_task_runner_ || !sync_bridge_) {
+  // Trigger storage init eagerly so that |db_task_runner_| exists by the
+  // time we return — the proxy must be bound to a real task runner. The
+  // bridge itself may still be created asynchronously after the os_crypt
+  // encryptor is ready; the proxy's callback will resolve the bridge
+  // lazily once SyncBackend::SetBridge() runs on the same sequence.
+  MaybeInitStorage();
+  if (!db_task_runner_ || !sync_backend_) {
     return nullptr;
   }
   return std::make_unique<syncer::ProxyDataTypeControllerDelegate>(
       db_task_runner_,
-      base::BindRepeating(
-          [](base::WeakPtr<AIChatSyncBridge> bridge)
-              -> base::WeakPtr<syncer::DataTypeControllerDelegate> {
-            if (!bridge) {
-              return nullptr;
-            }
-            return bridge->change_processor()->GetControllerDelegate();
-          },
-          sync_bridge_weak_));
+      base::BindRepeating(&SyncBackend::GetControllerDelegate, sync_backend_));
 }
 
 ConversationHandler* AIChatService::CreateConversation() {
@@ -454,8 +491,26 @@ void AIChatService::DeleteAssociatedWebContent(
 
 void AIChatService::MaybeInitStorage() {
   if (IsAIChatHistoryEnabled()) {
-    if (!ai_chat_db_) {
+    // Bring up the background sequence and the sync-bridge holder eagerly so
+    // CreateSyncControllerDelegate() can hand out a working
+    // ProxyDataTypeControllerDelegate even before the bridge itself has been
+    // constructed. The bridge installation happens later in
+    // OnOsCryptAsyncReady once the encryptor is available; until then,
+    // SyncBackend::GetControllerDelegate() returns null and the sync
+    // controller stays in the not-running state — but it is *registered*,
+    // which is what the settings UI's `aiChatRegistered` flag reflects.
+    if (!db_task_runner_) {
+      db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+          {base::MayBlock(), base::WithBaseSyncPrimitives(),
+           base::TaskPriority::USER_BLOCKING,
+           base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+    }
+    if (!sync_backend_ && features::IsBraveSyncAIChatEnabled()) {
+      sync_backend_ = base::MakeRefCounted<SyncBackend>(db_task_runner_);
+    }
+    if (!ai_chat_db_ && !os_crypt_init_pending_) {
       DVLOG(0) << "Initializing OS Crypt Async";
+      os_crypt_init_pending_ = true;
       os_crypt_async_->GetInstance(base::BindOnce(
           &AIChatService::OnOsCryptAsyncReady, weak_ptr_factory_.GetWeakPtr()));
       // Don't init DB until oscrypt is ready - we don't want to use the DB
@@ -478,38 +533,47 @@ void AIChatService::MaybeInitStorage() {
 void AIChatService::OnOsCryptAsyncReady(
     scoped_refptr<os_crypt_async::Encryptor> encryptor) {
   CHECK(features::IsAIChatHistoryEnabled());
+  CHECK(db_task_runner_)
+      << "MaybeInitStorage() must run before the os_crypt callback";
+  os_crypt_init_pending_ = false;
   // Pref might have changed since we started this process
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
   }
-  db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-      {base::MayBlock(), base::WithBaseSyncPrimitives(),
-       base::TaskPriority::USER_BLOCKING,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
   auto database = std::make_unique<AIChatDatabase>(
       profile_path_.Append(kDBFileName), std::move(encryptor));
   AIChatDatabase* database_ptr = database.get();
   ai_chat_db_ = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
       db_task_runner_, std::move(database));
 
-  // Create the sync bridge on the same background sequence as the database.
-  // The bridge gets a raw pointer to the database (safe: same sequence,
-  // and the database outlives the bridge since we destroy bridge first
-  // in Shutdown).
-  if (features::IsBraveSyncAIChatEnabled()) {
+  // Hand the bridge to the sync backend on the same background sequence as
+  // the database. The backend was created in MaybeInitStorage() so any
+  // proxy delegates already handed out to the sync engine resolve to this
+  // bridge as soon as this task runs. |weak_out| is also populated so the
+  // outbound notification paths on the UI thread can post bridge calls.
+  if (sync_backend_) {
+    // Hop from the bridge sequence back to this service's sequence (UI)
+    // when remote changes are applied, so we can refresh the in-memory
+    // conversation list and any active ConversationHandlers.
+    auto on_remote_changes_applied = base::BindPostTask(
+        base::SequencedTaskRunner::GetCurrentDefault(),
+        base::BindRepeating(&AIChatService::OnRemoteSyncDataApplied,
+                            weak_ptr_factory_.GetWeakPtr()));
     db_task_runner_->PostTask(
         FROM_HERE,
         base::BindOnce(
-            [](AIChatDatabase* db,
-               std::unique_ptr<AIChatSyncBridge>* bridge_out,
-               base::WeakPtr<AIChatSyncBridge>* weak_out) {
-              *bridge_out = std::make_unique<AIChatSyncBridge>(
+            [](scoped_refptr<SyncBackend> backend, AIChatDatabase* db,
+               base::WeakPtr<AIChatSyncBridge>* weak_out,
+               base::RepeatingClosure on_remote_changes_applied) {
+              auto bridge = std::make_unique<AIChatSyncBridge>(
                   std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
                       syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
-                  db);
-              *weak_out = (*bridge_out)->GetWeakPtr();
+                  db, std::move(on_remote_changes_applied));
+              *weak_out = bridge->GetWeakPtr();
+              backend->SetBridge(std::move(bridge));
             },
-            database_ptr, &sync_bridge_, &sync_bridge_weak_));
+            sync_backend_, database_ptr, &sync_bridge_weak_,
+            std::move(on_remote_changes_applied)));
   }
 }
 
@@ -761,7 +825,7 @@ void AIChatService::DeleteConversation(const std::string& id) {
     // Notify the sync bridge BEFORE the DB delete so it can enumerate the
     // conversation's entries (still present in the DB) and emit deletes for
     // each entry sync record. Both tasks run on db_task_runner_ in order.
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE, base::BindOnce(&AIChatSyncBridge::OnConversationDeleted,
                                     sync_bridge_weak_, id));
@@ -1011,7 +1075,7 @@ void AIChatService::HandleFirstEntry(
                   entry->Clone());
     // Notify the sync bridge of the new conversation and its first entry as
     // separate sync records.
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE, base::BindOnce(&AIChatSyncBridge::OnConversationAdded,
                                     sync_bridge_weak_, conversation->uuid));
@@ -1063,7 +1127,7 @@ void AIChatService::HandleNewEntry(
     }
     // Notify the sync bridge that a new entry exists and that conversation
     // metadata (model_key, last_modified time) may have changed.
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE,
           base::BindOnce(&AIChatSyncBridge::OnConversationEntryAdded,
@@ -1090,7 +1154,7 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversationEntry))
         .WithArgs(entry_uuid);
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE,
           base::BindOnce(&AIChatSyncBridge::OnConversationEntryDeleted,
@@ -1108,7 +1172,7 @@ void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateToolUseEvent))
         .WithArgs(entry_uuid, event_order, std::move(tool_use));
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE,
           base::BindOnce(&AIChatSyncBridge::OnConversationEntryModified,
@@ -1147,7 +1211,7 @@ void AIChatService::OnConversationTitleChanged(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
         .WithArgs(conversation_uuid, new_title);
-    if (sync_bridge_ && db_task_runner_) {
+    if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE, base::BindOnce(&AIChatSyncBridge::OnConversationModified,
                                     sync_bridge_weak_, conversation_uuid));
@@ -1299,6 +1363,37 @@ void AIChatService::OnConversationListChanged() {
     }
     remote->OnConversationListChanged(std::move(client_conversations));
   }
+}
+
+void AIChatService::OnRemoteSyncDataApplied() {
+  // For each currently-active ConversationHandler, re-fetch its archive
+  // and push it down so the visible chat history matches the DB. We do
+  // this BEFORE reloading the list so that a handler still pointing at a
+  // conversation whose metadata was just touched gets fresh data; the
+  // list refresh that follows handles any new conversations the user
+  // doesn't currently have open.
+  for (const auto& kv : conversation_handlers_) {
+    const std::string& uuid = kv.first;
+    ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationData)
+        .WithArgs(uuid)
+        .Then(base::BindOnce(
+            &AIChatService::OnConversationDataForRemoteSyncReload,
+            weak_ptr_factory_.GetWeakPtr(), uuid));
+  }
+  // Refresh the in-memory list from the DB so the UI reflects any new or
+  // deleted conversations.
+  ReloadConversations();
+  OnConversationListChanged();
+}
+
+void AIChatService::OnConversationDataForRemoteSyncReload(
+    const std::string& uuid,
+    mojom::ConversationArchivePtr archive) {
+  auto it = conversation_handlers_.find(uuid);
+  if (it == conversation_handlers_.end() || !it->second) {
+    return;
+  }
+  it->second->OnRemoteSyncDataApplied(std::move(archive));
 }
 
 void AIChatService::OpenConversationWithStagedEntries(
