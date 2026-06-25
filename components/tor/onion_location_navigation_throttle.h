@@ -20,19 +20,23 @@ class OnionLocationNavigationThrottle : public content::NavigationThrottle {
  public:
   static void MaybeCreateAndAdd(content::NavigationThrottleRegistry& registry,
                                 bool is_tor_disabled,
-                                bool is_tor_profile);
+                                bool is_tor_profile,
+                                bool onion_only_in_tor_windows);
   explicit OnionLocationNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
-      bool is_tor_profile);
+      bool is_tor_profile,
+      bool onion_only_in_tor_windows);
   ~OnionLocationNavigationThrottle() override;
 
   // content::NavigationThrottle implementation:
   ThrottleCheckResult WillProcessResponse() override;
   ThrottleCheckResult WillStartRequest() override;
+  ThrottleCheckResult WillRedirectRequest() override;
   const char* GetNameForLogging() override;
 
  private:
   bool is_tor_profile_ = false;
+  bool onion_only_in_tor_windows_;
 
   OnionLocationNavigationThrottle(const OnionLocationNavigationThrottle&) =
       delete;

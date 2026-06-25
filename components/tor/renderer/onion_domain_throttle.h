@@ -8,7 +8,16 @@
 
 #include <memory>
 
+#include "services/network/public/mojom/url_response_head.mojom-forward.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
+
+namespace net {
+struct RedirectInfo;
+}
+
+namespace network {
+struct HttpRequestHeadersUpdateParams;
+}
 
 namespace tor {
 
@@ -26,6 +35,11 @@ class OnionDomainThrottle : public blink::URLLoaderThrottle {
   // blink::URLLoaderThrottle
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
+  void WillRedirectRequest(
+      net::RedirectInfo* redirect_info,
+      const network::mojom::URLResponseHead& response_head,
+      bool* defer,
+      network::HttpRequestHeadersUpdateParams* headers_update_params) override;
   void DetachFromCurrentSequence() override {}
 
  private:
