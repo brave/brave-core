@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_bridge.h"
 #include "components/sync/model/data_type_local_change_processor.h"
 
@@ -103,6 +104,14 @@ void AIChatSyncBackend::OnConversationEntryDeleted(
   if (bridge_) {
     bridge_->OnConversationEntryDeleted(entry_uuid);
   }
+}
+
+bool AIChatSyncBackend::DeleteAllData(AIChatDatabase* database) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_ && bridge_->IsTrackingRecords()) {
+    return bridge_->DeleteAllConversations();
+  }
+  return database->DeleteAllData();
 }
 
 }  // namespace ai_chat

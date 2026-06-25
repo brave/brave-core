@@ -56,9 +56,12 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
  public:
   // Reports the conversations a batch of remote changes touched: each one a
   // record was written to, and each one a tombstone named, even if it was
-  // already gone. The list is never empty.
+  // already gone. That list is never empty. `deleted_conversation_uuids` lists
+  // the ones a conversation tombstone deleted, which `conversation_uuids` also
+  // names.
   using RemoteChangesAppliedCallback = base::RepeatingCallback<void(
-      std::vector<std::string> conversation_uuids)>;
+      std::vector<std::string> conversation_uuids,
+      std::vector<std::string> deleted_conversation_uuids)>;
 
   // |on_remote_changes_applied| runs on this sequence once per batch that
   // touched a conversation, naming only those: a listener that reloaded any
@@ -120,6 +123,17 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   void OnConversationEntryModified(const std::string& conversation_uuid,
                                    const std::string& entry_uuid);
   void OnConversationEntryDeleted(const std::string& entry_uuid);
+
+  // Whether AI Chat sync tracks records, meaning it has sent or received them
+  // and keeps sync metadata for them.
+  bool IsTrackingRecords() const;
+
+  // While AI Chat sync tracks records, deletes every conversation and sends a
+  // deletion for every record. The deletions wait in the sync metadata until
+  // they're sent, so both are saved in one transaction. If that fails, neither
+  // is, and AI Chat sync stops for the session, since the processor counts the
+  // deletions as made. Returns whether the conversations were deleted.
+  bool DeleteAllConversations();
 
   base::WeakPtr<AIChatSyncBridge> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
@@ -220,18 +234,21 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
       KeptLocalCopies& kept_local_copies,
       base::flat_set<std::string>& affected_conversation_uuids);
 
-  // Deletes the record |storage_key| names, and inserts its conversation into
-  // |affected_conversation_uuids|. Returns false only when the database fails
-  // to delete.
+  // Deletes the record `storage_key` names, and inserts its conversation into
+  // `affected_conversation_uuids`. A conversation's own record also inserts it
+  // into `deleted_conversation_uuids`. Returns false only when the database
+  // fails to delete.
   [[nodiscard]] bool ApplyRemoteTombstone(
       std::string_view storage_key,
-      base::flat_set<std::string>& affected_conversation_uuids);
+      base::flat_set<std::string>& affected_conversation_uuids,
+      base::flat_set<std::string>& deleted_conversation_uuids);
 
   // Runs |on_remote_changes_applied_| when |affected_conversation_uuids| isn't
   // empty. Also called when a batch fails part-way, since the records written
   // before the failure stay written.
   void NotifyRemoteChangesApplied(
-      base::flat_set<std::string> affected_conversation_uuids);
+      base::flat_set<std::string> affected_conversation_uuids,
+      base::flat_set<std::string> deleted_conversation_uuids);
 
   // Attached via SetDatabase()/ClearDatabase(); null before the first attach
   // and whenever on-disk storage is disabled.

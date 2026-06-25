@@ -17,6 +17,7 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/flat_set.h"
+#include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/sequence_checker.h"
 #include "base/strings/string_split.h"
@@ -29,6 +30,9 @@
 #include "brave/components/ai_chat/core/proto/store.pb.h"
 #include "components/os_crypt/async/common/encryptor.h"
 #include "components/sync/model/metadata_batch.h"
+#include "components/sync/model/metadata_change_list.h"
+#include "components/sync/model/model_error.h"
+#include "components/sync/model/sync_metadata_store_change_list.h"
 #include "components/sync/protocol/data_type_state.pb.h"
 #include "components/sync/protocol/entity_metadata.pb.h"
 #include "sql/init_status.h"
@@ -1131,26 +1135,57 @@ bool AIChatDatabase::AddConversation(mojom::ConversationPtr conversation,
     return false;
   }
 
+  // Update, and insert only when no row matched: a hidden stub row can hold
+  // the uuid already, when a turn synced from another device arrived after
+  // this conversation was deleted. Chromium builds SQLite with
+  // SQLITE_OMIT_UPSERT, and INSERT OR REPLACE would reset every column it
+  // doesn't name. Clearing is_sync_stub lists the conversation again.
+  static constexpr char kUpdateConversationQuery[] =
+      "UPDATE conversation SET title=?, model_key=?, total_tokens=?,"
+      " trimmed_tokens=?, modified_time=?, is_sync_stub=0 WHERE uuid=?";
   static constexpr char kInsertConversationQuery[] =
-      "INSERT INTO conversation(uuid, title, model_key, total_tokens, "
-      "trimmed_tokens, modified_time) "
+      "INSERT INTO conversation(title, model_key, total_tokens, "
+      "trimmed_tokens, modified_time, uuid) "
       "VALUES(?, ?, ?, ?, ?, ?)";
-  sql::Statement statement(
-      GetDB().GetUniqueStatement(kInsertConversationQuery));
-  CHECK(statement.is_valid());
+  // Both statements take the same parameters in the same order.
+  auto bind = [&](sql::Statement& statement) {
+    // Fail on an encryption error rather than bind NULL over a stored title.
+    if (conversation->title.empty()) {
+      statement.BindNull(0);
+    } else if (!BindAndEncryptString(statement, 0, conversation->title)) {
+      return false;
+    }
+    BindOptionalString(statement, 1, conversation->model_key);
+    statement.BindInt64(2, conversation->total_tokens);
+    statement.BindInt64(3, conversation->trimmed_tokens);
+    statement.BindTime(4, base::Time::Now());
+    statement.BindString(5, conversation->uuid);
+    return true;
+  };
 
-  statement.BindString(0, conversation->uuid);
-
-  BindAndEncryptOptionalString(statement, 1, conversation->title);
-  BindOptionalString(statement, 2, conversation->model_key);
-  statement.BindInt64(3, conversation->total_tokens);
-  statement.BindInt64(4, conversation->trimmed_tokens);
-  statement.BindTime(5, base::Time::Now());
-
-  if (!statement.Run()) {
-    DVLOG(0) << "Failed to execute 'conversation' insert statement: "
+  sql::Statement update_statement(
+      GetDB().GetUniqueStatement(kUpdateConversationQuery));
+  CHECK(update_statement.is_valid());
+  if (!bind(update_statement)) {
+    return false;
+  }
+  if (!update_statement.Run()) {
+    DVLOG(0) << "Failed to execute 'conversation' update statement: "
              << db_.GetErrorMessage();
     return false;
+  }
+  if (GetDB().GetLastChangeCount() == 0) {
+    sql::Statement insert_statement(
+        GetDB().GetUniqueStatement(kInsertConversationQuery));
+    CHECK(insert_statement.is_valid());
+    if (!bind(insert_statement)) {
+      return false;
+    }
+    if (!insert_statement.Run()) {
+      DVLOG(0) << "Failed to execute 'conversation' insert statement: "
+               << db_.GetErrorMessage();
+      return false;
+    }
   }
 
   if (!conversation->associated_content.empty()) {
@@ -2034,6 +2069,37 @@ bool AIChatDatabase::DeleteAllData() {
 
   // Re-init the database
   return LazyInit(true);
+}
+
+bool AIChatDatabase::DeleteAllDataExceptSyncMetadata(
+    syncer::MetadataChangeList& sync_metadata_changes) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!LazyInit()) {
+    return false;
+  }
+  sql::Transaction transaction(&GetDB());
+  if (!transaction.Begin()) {
+    return false;
+  }
+  for (const char* table : kEntryEventTables) {
+    if (!GetDB().Execute(absl::StrFormat("DELETE FROM %s", table))) {
+      return false;
+    }
+  }
+  for (const char* table :
+       {"associated_content", "conversation_entry", "thread", "conversation"}) {
+    if (!GetDB().Execute(absl::StrFormat("DELETE FROM %s", table))) {
+      return false;
+    }
+  }
+  bool saved = true;
+  syncer::SyncMetadataStoreChangeList metadata_store(
+      this, syncer::AI_CHAT_CONVERSATION,
+      base::BindRepeating(
+          [](bool* saved, const syncer::ModelError&) { *saved = false; },
+          base::Unretained(&saved)));
+  sync_metadata_changes.TransferChangesTo(&metadata_store);
+  return saved && transaction.Commit();
 }
 
 std::optional<std::vector<ClearedAssociatedContentEntry>>

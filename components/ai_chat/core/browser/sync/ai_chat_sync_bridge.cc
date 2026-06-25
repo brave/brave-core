@@ -737,6 +737,32 @@ void AIChatSyncBridge::OnConversationEntryDeleted(
                              metadata_change_list.get());
 }
 
+bool AIChatSyncBridge::IsTrackingRecords() const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  return database_ && change_processor()->IsTrackingMetadata();
+}
+
+bool AIChatSyncBridge::DeleteAllConversations() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(IsTrackingRecords());
+  // Held in memory, to be saved with the conversations' deletion.
+  std::unique_ptr<syncer::MetadataChangeList> metadata_change_list =
+      CreateMetadataChangeList();
+  for (const std::string& storage_key :
+       change_processor()->GetAllTrackedStorageKeys()) {
+    change_processor()->Delete(storage_key,
+                               syncer::DeletionOrigin::Unspecified(),
+                               metadata_change_list.get());
+  }
+  if (!database_->DeleteAllDataExceptSyncMetadata(*metadata_change_list)) {
+    metadata_change_list->DropAllChanges();
+    ReportError(
+        {FROM_HERE, syncer::ModelError::Type::kAIChatFailedToDeleteAllData});
+    return false;
+  }
+  return true;
+}
+
 bool AIChatSyncBridge::ApplyRemoteChanges(
     const syncer::EntityChangeList& changes,
     syncer::MetadataChangeList& metadata_change_list,
@@ -756,6 +782,7 @@ bool AIChatSyncBridge::ApplyRemoteChanges(
   const std::optional<base::flat_set<std::string>> edited_entry_uuids =
       database_->GetEditedEntryUuids();
   base::flat_set<std::string> affected_conversation_uuids;
+  base::flat_set<std::string> deleted_conversation_uuids;
   // The first change not written, which is end() once all are.
   auto it = changes.begin();
   if (edited_entry_uuids) {
@@ -763,7 +790,8 @@ bool AIChatSyncBridge::ApplyRemoteChanges(
       const auto& change = *it;
       const bool ok = change->type() == syncer::EntityChange::ACTION_DELETE
                           ? ApplyRemoteTombstone(change->storage_key(),
-                                                 affected_conversation_uuids)
+                                                 affected_conversation_uuids,
+                                                 deleted_conversation_uuids)
                           : ApplyRemoteRecord(
                                 change->data().specifics.ai_chat_conversation(),
                                 *edited_entry_uuids, kept_local_copies,
@@ -784,7 +812,8 @@ bool AIChatSyncBridge::ApplyRemoteChanges(
       storage_keys_skipping_local_puts_.insert((*it)->storage_key());
     }
   }
-  NotifyRemoteChangesApplied(std::move(affected_conversation_uuids));
+  NotifyRemoteChangesApplied(std::move(affected_conversation_uuids),
+                             std::move(deleted_conversation_uuids));
   return !failed;
 }
 
@@ -928,7 +957,8 @@ bool AIChatSyncBridge::ApplyRemoteRecord(
 
 bool AIChatSyncBridge::ApplyRemoteTombstone(
     std::string_view storage_key,
-    base::flat_set<std::string>& affected_conversation_uuids) {
+    base::flat_set<std::string>& affected_conversation_uuids,
+    base::flat_set<std::string>& deleted_conversation_uuids) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Tombstones bypass IsEntityDataValid(), so the uuid taken from the storage
   // key isn't validated. Skip an empty one rather than pass it to the
@@ -942,6 +972,7 @@ bool AIChatSyncBridge::ApplyRemoteTombstone(
       return false;
     }
     affected_conversation_uuids.emplace(*uuid);
+    deleted_conversation_uuids.emplace(*uuid);
     return true;
   }
   if (auto uuid = base::RemovePrefix(storage_key, kEntryStorageKeyPrefix)) {
@@ -962,11 +993,13 @@ bool AIChatSyncBridge::ApplyRemoteTombstone(
 }
 
 void AIChatSyncBridge::NotifyRemoteChangesApplied(
-    base::flat_set<std::string> affected_conversation_uuids) {
+    base::flat_set<std::string> affected_conversation_uuids,
+    base::flat_set<std::string> deleted_conversation_uuids) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!affected_conversation_uuids.empty()) {
     on_remote_changes_applied_.Run(
-        std::move(affected_conversation_uuids).extract());
+        std::move(affected_conversation_uuids).extract(),
+        std::move(deleted_conversation_uuids).extract());
   }
 }
 

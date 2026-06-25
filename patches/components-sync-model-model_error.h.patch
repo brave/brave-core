@@ -1,15 +1,16 @@
 diff --git a/components/sync/model/model_error.h b/components/sync/model/model_error.h
-index ce30805fab035ec2d0e203d7e62ef6947fa884c6..c776e2a75b619bdc4700d9923e9b735f35e745f7 100644
+index ce30805fab035ec2d0e203d7e62ef6947fa884c6..f891fc148582e4e3e0ba0e7e20dbf68c8700c67b 100644
 --- a/components/sync/model/model_error.h
 +++ b/components/sync/model/model_error.h
-@@ -205,7 +205,9 @@ class ModelError {
+@@ -205,7 +205,10 @@ class ModelError {
      kJourneysFailedToLoadMetadata = 194,
      kJourneysDatabaseError = 195,
      kAutofillEntitySuppressionEncryptionUnavailable = 196,
 -    kMaxValue = kAutofillEntitySuppressionEncryptionUnavailable,
 +    kAIChatFailedToLoadMetadata,
 +    kAIChatFailedToApplyRemoteChange,
-+    kMaxValue = kAIChatFailedToApplyRemoteChange,
++    kAIChatFailedToDeleteAllData,
++    kMaxValue = kAIChatFailedToDeleteAllData,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/sync/enums.xml:SyncModelError)
  
