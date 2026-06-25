@@ -11,3 +11,4 @@ substitutions:
       max_value: kMaxValue
       entries:
         - kAIChatFailedToLoadMetadata
+        - kAIChatFailedToApplyRemoteChange

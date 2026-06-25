@@ -1908,6 +1908,49 @@ TEST_F(AIChatDatabaseSyncTest, ApplyRemoteEntryPersistsAssociatedContent) {
   EXPECT_EQ(data->associated_content[0]->conversation_turn_uuid, "entry-1");
 }
 
+TEST_F(AIChatDatabaseSyncTest, GetConversationEntryWithEditsAndUuidsWithEdits) {
+  const base::Time now = base::Time::Now();
+  auto make_entry = [](std::string_view uuid, std::string_view text,
+                       base::Time created_time) {
+    auto entry = mojom::ConversationTurn::New();
+    entry->uuid = std::string(uuid);
+    entry->character_type = mojom::CharacterType::HUMAN;
+    entry->action_type = mojom::ActionType::QUERY;
+    entry->text = std::string(text);
+    entry->created_time = created_time;
+    return entry;
+  };
+
+  auto conv = mojom::Conversation::New();
+  conv->uuid = "conv";
+  auto edited = make_entry("edited-entry", "Original", now);
+  edited->edits.emplace();
+  edited->edits->push_back(
+      make_entry("edit-1", "Revised", now + base::Minutes(1)));
+  ASSERT_TRUE(db_->AddConversation(std::move(conv), {}, std::move(edited)));
+  ASSERT_TRUE(db_->AddConversationEntry(
+      "conv", make_entry("plain-entry", "Never edited", now)));
+
+  const auto uuids_with_edits = db_->GetEntryUuidsWithEditRevisions();
+  EXPECT_EQ(uuids_with_edits.size(), 1u);
+  EXPECT_TRUE(uuids_with_edits.contains("edited-entry"));
+
+  auto entry = db_->GetConversationEntryWithEdits("edited-entry");
+  ASSERT_TRUE(entry);
+  EXPECT_EQ(entry->text, "Original");
+  ASSERT_TRUE(entry->edits.has_value());
+  ASSERT_EQ(entry->edits->size(), 1u);
+  EXPECT_EQ((*entry->edits)[0]->text, "Revised");
+
+  // An unedited entry comes back with no revisions, and an edit row is not
+  // itself addressable as an entry.
+  auto plain = db_->GetConversationEntryWithEdits("plain-entry");
+  ASSERT_TRUE(plain);
+  EXPECT_FALSE(plain->edits.has_value());
+  EXPECT_FALSE(db_->GetConversationEntryWithEdits("edit-1"));
+  EXPECT_FALSE(db_->GetConversationEntryWithEdits("no-such-entry"));
+}
+
 // Test the migration for each version upgrade
 class AIChatDatabaseMigrationTest : public testing::Test,
                                     public testing::WithParamInterface<int> {
