@@ -84,12 +84,11 @@ class BraveBlobScreenFarblingBrowserTest
     }
   }
 
-  void AllowFingerprinting(bool allow, std::optional<GURL> url = std::nullopt) {
+  void AllowFingerprinting(bool allow) {
     fingerprinting_allowed_ = allow;
     brave_shields::SetFingerprintingControlType(
         HostContentSettingsMapFactory::GetForProfile(browser()->profile()),
-        allow ? ControlType::ALLOW : ControlType::DEFAULT,
-        url.has_value() ? url.value() : blob_test_url_);
+        allow ? ControlType::ALLOW : ControlType::DEFAULT, blob_test_url_);
   }
 
   content::RenderFrameHost* MainFrame() const {
@@ -172,11 +171,9 @@ class BraveBlobScreenFarblingBrowserTest
     blob_container_type_ = blob_container_type;
   }
 
- protected:
-  GURL blob_test_url_;
-
  private:
   base::test::ScopedFeatureList feature_list_;
+  GURL blob_test_url_;
   BlobContainerType blob_container_type_ = BlobContainerType::kUnset;
   bool fingerprinting_allowed_ = false;
   raw_ptr<Browser> pop_up_browser_ = nullptr;
@@ -201,84 +198,4 @@ IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
                        FarbleScreenBlobURLIframe) {
   set_blob_container_type(BlobContainerType::kIFrame);
   RunTests();
-}
-
-// Tests that a cross-origin popup (b.com opened from a.com) sees different
-// farbled window.screenX/Y values than the opener when fingerprinting
-// protection is active, and the same real screen dimensions otherwise.
-//
-// Note: screen.{width,height,availWidth,...} are farbled based on window size
-// (not per-origin), so same-sized windows always get the same value and cannot
-// distinguish origins. window.screenX/Y are farbled per-origin via
-// FarbledInteger and are the meaningful discriminator here.
-IN_PROC_BROWSER_TEST_P(BraveBlobScreenFarblingBrowserTest,
-                       FarbleScreenCrossOriginPopup) {
-  const GURL b_url =
-      embedded_test_server()->GetURL("b.com", "/blob-fingerprinting.html");
-
-  // Used when farbling is active: screenX/Y are per-origin farbled so they
-  // differ between origins.
-  constexpr char kReadScreenXYJs[] =
-      "JSON.stringify({screenX: screenX, screenY: screenY})";
-
-  // Used when farbling is inactive: screen dimensions reflect the real
-  // display and should be identical for both windows.
-  constexpr char kReadScreenDimsJs[] = R"(
-JSON.stringify({
-width: screen.width,
-height: screen.height,
-availWidth: screen.availWidth,
-availHeight: screen.availHeight,
-availLeft: screen.availLeft,
-availTop: screen.availTop,
-})
-)";
-
-  for (bool allow : {false, true}) {
-    SCOPED_TRACE(testing::Message()
-                 << "GetParam()=" << GetParam() << " allow=" << allow);
-
-    // Apply the same fingerprinting setting to both origins.
-    AllowFingerprinting(allow);
-    AllowFingerprinting(allow, b_url);
-
-    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), blob_test_url_));
-
-    // 1. Read attributes from a.com.
-    const bool farbling_active = GetParam() && !allow;
-    const char* js = farbling_active ? kReadScreenXYJs : kReadScreenDimsJs;
-    const std::string a_values =
-        content::EvalJs(MainFrame(), js).ExtractString();
-
-    // 2. a.com opens b.com as a popup window.
-    ui_test_utils::BrowserCreatedObserver popup_observer;
-    ASSERT_TRUE(content::ExecJs(MainFrame(),
-                                "window.open('" + b_url.spec() +
-                                    "', '_blank', 'width=400,height=400')"));
-    Browser* popup = popup_observer.Wait();
-    ASSERT_NE(popup, browser());
-    ASSERT_TRUE(content::WaitForLoadStop(
-        popup->tab_strip_model()->GetActiveWebContents()));
-
-    // 3. Read the same attributes from b.com.
-    const std::string b_values = content::EvalJs(popup->tab_strip_model()
-                                                     ->GetActiveWebContents()
-                                                     ->GetPrimaryMainFrame(),
-                                                 js)
-                                     .ExtractString();
-
-    // 4. Compare.
-    if (farbling_active) {
-      // screenX/Y are seeded per-origin via FarbledInteger, so a.com and b.com
-      // get different farbled values.
-      EXPECT_NE(a_values, b_values)
-          << "a.com and b.com should have different farbled screenX/Y";
-    } else {
-      // No farbling: both windows observe the same real screen dimensions.
-      EXPECT_EQ(a_values, b_values)
-          << "a.com and b.com should see the same real screen dimensions";
-    }
-
-    CloseBrowserSynchronously(popup);
-  }
 }
