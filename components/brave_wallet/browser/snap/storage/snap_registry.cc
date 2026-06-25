@@ -132,6 +132,14 @@ bool SnapRegistry::IsKnownSnap(const std::string& snap_id) const {
   return installed_snaps_.contains(snap_id);
 }
 
+bool SnapRegistry::IsSnapEnabled(const std::string& snap_id) const {
+  auto it = installed_snaps_.find(snap_id);
+  if (it == installed_snaps_.end()) {
+    return true;
+  }
+  return it->second->enabled;
+}
+
 std::vector<mojom::SnapInstallDataPtr> SnapRegistry::GetAllSnaps() const {
   std::vector<mojom::SnapInstallDataPtr> result;
   result.reserve(installed_snaps_.size());
@@ -144,6 +152,7 @@ std::vector<mojom::SnapInstallDataPtr> SnapRegistry::GetAllSnaps() const {
 void SnapRegistry::RegisterInstalledSnap(
     const mojom::SnapInstallData& install_data) {
   DCHECK(install_data.manifest);
+  const bool enabled = install_data.enabled;
   {
     ScopedDictPrefUpdate update(&*prefs_, kInstalledSnapsPref);
     base::DictValue snap_info;
@@ -152,10 +161,12 @@ void SnapRegistry::RegisterInstalledSnap(
                   static_cast<double>(install_data.bundle_size_bytes));
     snap_info.Set("manifest", ManifestToDict(*install_data.manifest));
     snap_info.Set("installed_at", base::Time::Now().InSecondsFSinceUnixEpoch());
-    snap_info.Set("enabled", install_data.enabled);
+    snap_info.Set("enabled", enabled);
     update->Set(install_data.snap_id, std::move(snap_info));
   }
-  installed_snaps_[install_data.snap_id] = install_data.Clone();
+  auto stored = install_data.Clone();
+  stored->enabled = enabled;
+  installed_snaps_[install_data.snap_id] = std::move(stored);
 }
 
 void SnapRegistry::UnregisterSnap(const std::string& snap_id) {

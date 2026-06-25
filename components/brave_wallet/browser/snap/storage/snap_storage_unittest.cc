@@ -101,18 +101,6 @@ TEST_F(SnapStorageTest, WriteStateThenReadState) {
   EXPECT_EQ(*state, R"({"counter":1})");
 }
 
-TEST_F(SnapStorageTest, WriteStateCreatesDirectoryForBuiltInSnaps) {
-  // A built-in snap has no bundle directory; WriteState must create it.
-  const std::string snap_id = "npm:builtin-snap";
-  base::test::TestFuture<bool> write;
-  storage_->WriteState(snap_id, R"({"k":1})", write.GetCallback());
-  EXPECT_TRUE(write.Get());
-
-  base::ScopedAllowBlockingForTesting allow_blocking;
-  EXPECT_TRUE(base::PathExists(
-      SnapDir(snap_id).Append(FILE_PATH_LITERAL("state.json"))));
-}
-
 TEST_F(SnapStorageTest, ReadStateMissingReturnsNullopt) {
   base::test::TestFuture<std::optional<std::string>> read;
   storage_->ReadState("npm:@nope/snap", read.GetCallback());

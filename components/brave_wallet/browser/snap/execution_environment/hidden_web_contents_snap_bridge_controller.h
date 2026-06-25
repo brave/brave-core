@@ -123,7 +123,6 @@ class HiddenWebContentsSnapBridgeController
   DisconnectCallback disconnect_callback_;
   mojo::Remote<mojom::SnapBridge> snap_bridge_;
   std::vector<base::OnceClosure> pending_ready_callbacks_;
-  std::vector<base::OnceClosure> locked_waiting_callbacks_;
   bool bridge_open_inflight_ = false;
 
   std::unique_ptr<content::WebContents> host_;

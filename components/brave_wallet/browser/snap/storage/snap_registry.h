@@ -41,6 +41,9 @@ class SnapRegistry {
   // Returns true if |snap_id| is installed.
   bool IsKnownSnap(const std::string& snap_id) const;
 
+  // Returns the enabled flag for |snap_id|. Unknown snaps default to enabled.
+  bool IsSnapEnabled(const std::string& snap_id) const;
+
   // Returns clones of all installed snaps.
   std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() const;
 
