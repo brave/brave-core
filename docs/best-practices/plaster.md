@@ -87,8 +87,9 @@ replace: 'protected final @Nullable View mNtpHeader;'
 
 ```yaml
 # ✅ CORRECT - simple visibility replacement for a method
-pattern: 'private void runMenuItemEnterAnimations()'
-replace: 'protected void runMenuItemEnterAnimations()'
+# Omit parentheses - upstream may add or change parameters
+pattern: 'private void runMenuItemEnterAnimations'
+replace: 'protected void runMenuItemEnterAnimations'
 ```
 
 ```java
