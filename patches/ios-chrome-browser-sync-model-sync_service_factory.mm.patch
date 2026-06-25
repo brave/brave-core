@@ -1,8 +1,16 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory.mm b/ios/chrome/browser/sync/model/sync_service_factory.mm
-index 91113b11cfb81e971978c2e909f16eef1f74df0b..d8dbfafa231a3441c01f8ed7882f7a733905c066 100644
+index 91113b11cfb81e971978c2e909f16eef1f74df0b..d270ccca0178c506073498fb8a32d93908195863 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory.mm
-@@ -227,7 +227,7 @@ std::unique_ptr<KeyedService> BuildSyncService(ProfileIOS* profile) {
+@@ -156,6 +156,7 @@ syncer::DataTypeController::TypeVector CreateControllers(
+       IOSUserEventServiceFactory::GetForProfile(profile));
+   builder.SetNotebooksService(nullptr);
+ 
++  BRAVE_COMMON_CONTROLLER_BUILDER_SET_SERVICES
+   syncer::DataTypeController::TypeVector controllers = builder.Build(
+       /*disabled_types=*/{}, sync_service, ::GetChannel());
+ 
+@@ -227,7 +228,7 @@ std::unique_ptr<KeyedService> BuildSyncService(ProfileIOS* profile) {
    init_params.debug_identifier = profile->GetProfileName();
    init_params.os_crypt_async = GetApplicationContext()->GetOSCryptAsync();
    auto sync_service =
