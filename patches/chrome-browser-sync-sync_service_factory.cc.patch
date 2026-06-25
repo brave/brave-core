@@ -2,6 +2,14 @@ diff --git a/chrome/browser/sync/sync_service_factory.cc b/chrome/browser/sync/s
 index 2031d8ca344ef74f7adb964a2c5d9d147166ab11..c324d387f3e974180554f7cb51603b01170a7758 100644
 --- a/chrome/browser/sync/sync_service_factory.cc
 +++ b/chrome/browser/sync/sync_service_factory.cc
+@@ -293,6 +293,7 @@ syncer::DataTypeController::TypeVector CreateCommonControllers(
+ #endif  // BUILDFLAG(IS_ANDROID)
+   );
+ 
++  BRAVE_COMMON_CONTROLLER_BUILDER_SET_SERVICES
+   return builder.Build(/*disabled_types=*/{}, sync_service,
+                        chrome::GetChannel());
+ }
 @@ -453,7 +453,7 @@ std::unique_ptr<KeyedService> BuildSyncService(
    }
  
