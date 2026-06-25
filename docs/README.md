@@ -31,6 +31,11 @@ resources outside this repository, go to:
 - [Cryptographic Features](cryptography.md) - Cryptographic features in Brave
   beyond standard Chromium encryption.
 
+### Feature Designs
+
+- [AI Chat Sync](aichat-sync.md) - How AI Chat conversations sync between a
+  user's devices through Chromium Sync.
+
 ### General Development
 
 - [Network Interception Best Practices](best-practices/network-interception.md) -
