@@ -45,8 +45,7 @@ source_set("page_action") {
     deps += [
       "//brave/app:brave_generated_resources_grit_grit",
       "//brave/app:command_ids",
-      "//brave/components/psst/browser/content",
-      "//brave/components/psst/common",
+      "//brave/components/psst/core/common",
       "//brave/components/vector_icons",
       "//chrome/browser/ui/color:mixers",
       "//ui/base",

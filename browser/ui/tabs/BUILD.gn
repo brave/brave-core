@@ -57,8 +57,7 @@ if (!is_android) {
     if (enable_psst) {
       deps += [
         "//brave/browser/psst",
-        "//brave/components/psst/browser/content",
-        "//brave/components/psst/common",
+        "//brave/components/psst/core/common",
       ]
     }
   }

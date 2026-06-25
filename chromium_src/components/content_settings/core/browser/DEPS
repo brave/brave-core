@@ -4,6 +4,6 @@ include_rules = [
   "+brave/components/brave_wallet/common/buildflags/buildflags.h",
   "+brave/components/constants",
   "+brave/components/psst/buildflags/buildflags.h",
-  "+brave/components/psst/common/constants.h",
-  "+brave/components/psst/common/features.h"
+  "+brave/components/psst/core/common/constants.h",
+  "+brave/components/psst/core/common/features.h"
 ]

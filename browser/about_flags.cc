@@ -115,7 +115,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PSST)
-#include "brave/components/psst/common/features.h"
+#include "brave/components/psst/core/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

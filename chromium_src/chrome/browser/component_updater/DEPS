@@ -7,5 +7,5 @@ include_rules = [
   "+brave/components/psst/buildflags",
   "+brave/components/brave_wallet",
   "+brave/components/p3a",
-  "+brave/components/psst/browser/core",
+  "+brave/components/psst/core",
 ]

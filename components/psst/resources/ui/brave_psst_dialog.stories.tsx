@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { Meta, StoryObj } from '@storybook/react'
 
-import * as Mojom from 'gen/brave/components/psst/common/psst_ui_common.mojom.m.js'
+import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
 import Flex from '$web-common/Flex'
 import { PsstDialogAPIProvider } from './api/psst_dialog_api_context'
 import { PsstProgressModal } from './components/PsstProgressModal'
