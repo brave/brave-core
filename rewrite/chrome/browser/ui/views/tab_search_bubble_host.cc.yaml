@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description:
+      'Anchor the tab search bubble to the button with its TOP_LEFT corner only
+      for the vertical tab strip; for horizontal tab strips it stays TOP_RIGHT
+      so the bubble opens to the left of the trailing-edge combo button. Drops
+      the kLeadingHorizontalTabstrip branch, leaving only the kVerticalTabstrip
+      condition.'
+    re_pattern:
+      'position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip \|\|\s+'
+    replace: ''
