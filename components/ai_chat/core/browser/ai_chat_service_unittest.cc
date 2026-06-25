@@ -15,6 +15,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/check.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/functional/bind.h"
@@ -409,6 +410,11 @@ class AIChatServiceUnitTest : public testing::Test,
   // private member, since TEST_P bodies are not friends of AIChatService).
   AIChatSyncBackend* SyncBackendPtr() {
     return ai_chat_service_->sync_backend_.get();
+  }
+
+  // Drives what the sync bridge would call after applying a remote batch.
+  void ApplyRemoteSyncData(std::vector<std::string> conversation_uuids) {
+    ai_chat_service_->OnRemoteSyncDataApplied(std::move(conversation_uuids));
   }
 
   // Returns whether the sync backend currently resolves a non-null controller
@@ -997,6 +1003,69 @@ TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   EXPECT_TRUE(SyncControllerDelegateResolves());
 
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
+}
+
+// A storage off->on toggle must re-attach the database to the sync bridge and
+// notify RegisterSyncDatabaseReadyCallback() listeners, so the sync data type
+// controller can re-run initial sync. Without the notification the sync engine
+// would keep treating the wiped-and-recreated database as fully synced.
+TEST_P(AIChatServiceUnitTest, SyncDatabaseReadyCallbackFiresOnStorageReEnable) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  int ready_count = 0;
+  base::CallbackListSubscription subscription =
+      ai_chat_service_->RegisterSyncDatabaseReadyCallback(
+          base::BindLambdaForTesting([&] { ++ready_count; }));
+
+  // Toggle storage off then on. Re-enabling recreates the database and
+  // re-attaches it to the bridge, which must fire the callback.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+
+  EXPECT_EQ(ready_count, 1);
+}
+
+// A remote batch must refresh only the conversations it names. An open
+// conversation sync did not write can hold history that is not in the database
+// — a temporary conversation never persists, and CreateConversation() defers
+// the first write until there is content — so reloading it would discard that
+// history along with any in-flight response.
+//
+// Both conversations here are temporary, so neither has anything in the
+// database and a refresh that reaches a handler is observable as its history
+// emptying. Waiting for the named one to empty is what makes the assertion on
+// the unnamed one meaningful: a single loop over every open handler would have
+// emptied them in the same pass.
+TEST_P(AIChatServiceUnitTest, RemoteSyncDataRefreshesOnlyNamedConversations) {
+  if (!IsAIChatHistoryEnabled()) {
+    return;
+  }
+  WaitForSyncBridgeReady();
+
+  ConversationHandler* named = CreateConversation();
+  named->SetTemporary(true);
+  auto named_client = CreateConversationClient(named);
+  named->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ConversationHandler* unnamed = CreateConversation();
+  unnamed->SetTemporary(true);
+  auto unnamed_client = CreateConversationClient(unnamed);
+  unnamed->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+
+  ASSERT_EQ(named->GetConversationHistory().size(), 2u);
+  ASSERT_EQ(unnamed->GetConversationHistory().size(), 2u);
+
+  ApplyRemoteSyncData({named->get_conversation_uuid()});
+
+  EXPECT_TRUE(base::test::RunUntil(
+      [&] { return named->GetConversationHistory().empty(); }));
+  EXPECT_EQ(unnamed->GetConversationHistory().size(), 2u);
 }
 
 TEST_P(AIChatServiceUnitTest, GetConversations_StorageTurnedOffWhileLoading) {
