@@ -28,6 +28,7 @@
 #include "chrome/browser/search/search.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
@@ -243,8 +244,9 @@ void SetLastUsedSidePanel(PrefService* prefs,
   prefs->SetInteger(kLastUsedBuiltInItemType, static_cast<int>(type));
 }
 
-std::optional<SidePanelEntryId> GetLastUsedSidePanel(Browser* browser) {
-  PrefService* prefs = browser->profile()->GetPrefs();
+std::optional<SidePanelEntryId> GetLastUsedSidePanel(
+    BrowserWindowInterface* browser) {
+  PrefService* prefs = browser->GetProfile()->GetPrefs();
   BuiltInItemType type =
       static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
   // If cached type item is not included in current model, return null.

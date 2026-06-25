@@ -10,26 +10,15 @@
 #include "ui/views/controls/button/toggle_button.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
-BraveExtensionsMenuEntryView::BraveExtensionsMenuEntryView(
-    Browser* browser,
-    bool is_enterprise,
-    ToolbarActionViewModel* view_model,
-    views::Button::PressedCallback action_button_callback,
-    base::RepeatingCallback<void(bool)> site_access_toggle_callback,
-    views::Button::PressedCallback site_permissions_button_callback)
-    : ExtensionsMenuEntryView(browser,
-                              is_enterprise,
-                              view_model,
-                              std::move(action_button_callback),
-                              std::move(site_access_toggle_callback),
-                              std::move(site_permissions_button_callback)) {
+BraveExtensionsMenuEntryView::~BraveExtensionsMenuEntryView() = default;
+
+void BraveExtensionsMenuEntryView::Init() {
   views::InstallRoundRectHighlightPathGenerator(site_permissions_button_,
                                                 gfx::Insets(), 4);
 
   site_access_toggle_->SetProperty(views::kMarginsKey,
                                    gfx::Insets().set_left(20));
 }
-BraveExtensionsMenuEntryView::~BraveExtensionsMenuEntryView() = default;
 
 void BraveExtensionsMenuEntryView::UpdateContextMenuButton(
     ExtensionsMenuViewModel::ControlState button_state) {

@@ -82,7 +82,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
 
         # Rust crates that are references to upstream crates and should have
         # licenses in upstream //third_party/rust.
-        os.path.join('brave', 'third_party', 'rust', 'aho_corasick'),
         os.path.join('brave', 'third_party', 'rust', 'anyhow'),
         os.path.join('brave', 'third_party', 'rust', 'base64'),
         os.path.join('brave', 'third_party', 'rust', 'bitflags'),

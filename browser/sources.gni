@@ -395,14 +395,6 @@ if (!is_android) {
 if (!is_android) {
   # Already included on android by upstream
 
-  # Including v2 back into brave build as we make use of `feed::FetchRssLinks` in `brave_news_tab_helper.cc`.
-  brave_chrome_browser_sources += [
-    "feed/feed_service_factory.cc",
-    "feed/feed_service_factory.h",
-    "feed/rss_links_fetcher.cc",
-    "feed/rss_links_fetcher.h",
-  ]
-
   brave_chrome_browser_deps += [
     "//brave/browser/ui/split_view",
     "//brave/browser/ui/tabs:impl",
@@ -416,7 +408,6 @@ if (!is_android) {
     "//chrome/browser/ui/thumbnails",
     "//components/feed:feature_list",
     "//components/feed/core/v2:feed_core_v2",
-    "//components/feed/mojom:mojo_bindings",
     "//components/regional_capabilities",
   ]
   if (enable_brave_news) {
@@ -598,7 +589,9 @@ if (is_android) {
     "//brave/components/brave_sync:sync_service_impl_helper",
     "//chrome/android:jni_headers",
     "//chrome/browser/password_manager/android:jni_headers",
+    "//components/password_manager/core/browser/form_parsing",
     "//components/password_manager/core/browser/import:importer",
+    "//components/password_manager/core/browser/leak_detection",
     "//components/sync_device_info",
   ]
 
@@ -692,15 +685,6 @@ if (is_win || is_android) {
     "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.cc",
     "//brave/browser/day_zero_browser_ui_expt/day_zero_browser_ui_expt_manager.h",
     "//brave/browser/day_zero_browser_ui_expt/pref_names.h",
-  ]
-}
-
-if (is_win && is_official_build) {
-  brave_chrome_browser_sources += [
-    "//chrome/browser/google/google_update_win.cc",
-    "//chrome/browser/google/google_update_win.h",
-    "//chrome/browser/google/switches.cc",
-    "//chrome/browser/google/switches.h",
   ]
 }
 

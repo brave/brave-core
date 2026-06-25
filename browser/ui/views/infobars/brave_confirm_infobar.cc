@@ -184,7 +184,7 @@ BraveConfirmInfoBar::BraveConfirmInfoBar(
     auto close_button = views::CreateVectorImageButton(base::BindRepeating(
         &BraveConfirmInfoBar::CloseButtonPressed, base::Unretained(this)));
     views::SetImageFromVectorIconWithColor(
-        close_button.get(), vector_icons::kCloseChromeRefreshIcon,
+        close_button.get(), vector_icons::kCloseChromeRefreshOldIcon,
         {kColorInfoBarButtonIcon, kColorInfoBarForeground,
          kColorInfoBarButtonIconHovered});
     close_button->SetTooltipText(l10n_util::GetStringUTF16(IDS_ACCNAME_CLOSE));

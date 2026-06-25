@@ -48,7 +48,7 @@ export interface BraveAdblockBrowserProxy {
   updateFilterLists: () => Promise<boolean>
   getCustomFilters: () => Promise<string>
   updateCustomFilters: (value: string) => void
-  getListSubscriptions: () => Promise<any>
+  getListSubscriptions: () => Promise<SubscriptionInfo[]>
   setSubscriptionEnabled: (url: string, enabled: boolean) => void
   addSubscription: (url: string) => void
   updateSubscription: (url: string) => void
@@ -88,7 +88,7 @@ export class BraveAdblockBrowserProxyImpl implements BraveAdblockBrowserProxy {
   }
 
   getListSubscriptions () {
-    return sendWithPromise<any>('brave_adblock.getListSubscriptions')
+    return sendWithPromise<SubscriptionInfo[]>('brave_adblock.getListSubscriptions')
   }
 
   setSubscriptionEnabled (url: string, enabled: boolean) {

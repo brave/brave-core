@@ -13,6 +13,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.robolectric.Robolectric;
 
@@ -24,6 +25,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsVisibilityManager;
+import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.tab_group_suggestion.toolbar.GroupSuggestionsButtonController;
 import org.chromium.chrome.browser.tabmodel.TabCreatorManager;
@@ -38,6 +40,8 @@ import java.util.function.Supplier;
 /** Unit tests for {@link BraveTabbedAdaptiveToolbarBehavior}. */
 @RunWith(BaseRobolectricTestRunner.class)
 public class BraveTabbedAdaptiveToolbarBehaviorTest {
+    @Mock private GlicButtonDelegate mGlicButtonDelegate;
+
     private BraveTabbedAdaptiveToolbarBehavior mBehavior;
 
     @Before
@@ -69,7 +73,7 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         groupSuggestionsControllerSupplier,
                         tabModelSelectorSupplier,
                         tabStripVisibilitySupplier,
-                        preventClose -> {},
+                        mGlicButtonDelegate,
                         () -> null,
                         Mockito.mock(BrowserControlsVisibilityManager.class));
     }

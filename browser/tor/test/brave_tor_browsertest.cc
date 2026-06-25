@@ -40,7 +40,8 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/autofill/chrome_autofill_client.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
@@ -236,7 +237,8 @@ IN_PROC_BROWSER_TEST_F(BraveTorBrowserTest, OpenCloseDisableTorWindow) {
 
   // Close Tor window, expect the Tor process to die.
   {
-    Browser* tor_browser = chrome::FindBrowserWithProfile(tor.tor_profile);
+    auto* tor_browser = ProfileBrowserCollection::GetForProfile(tor.tor_profile)
+                            ->FindTabbedBrowser();
     CloseTorWindow(tor.tor_profile);
     ui_test_utils::BrowserDestroyedObserver(tor_browser).Wait();
 
@@ -437,9 +439,10 @@ IN_PROC_BROWSER_TEST_F(BraveTorWithCustomProfileBrowserTest, Autofill) {
   auto* tor_profile = OpenTorWindow();
   EXPECT_NE(nullptr, tor_profile);
   EXPECT_TRUE(tor_profile->IsTor());
-  Browser* tor_browser = chrome::FindBrowserWithProfile(tor_profile);
+  auto* tor_browser =
+      ProfileBrowserCollection::GetForProfile(tor_profile)->FindTabbedBrowser();
   content::WebContents* web_contents =
-      tor_browser->tab_strip_model()->GetActiveWebContents();
+      tor_browser->GetTabStripModel()->GetActiveWebContents();
   TestAutofillInWindow(web_contents, fake_url, false);
 
   // Enable autofill in private windows.

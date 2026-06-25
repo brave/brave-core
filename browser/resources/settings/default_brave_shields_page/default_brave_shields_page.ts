@@ -243,7 +243,7 @@ class BraveShieldsPage extends BraveShieldsPageBase {
     router.navigateTo(router.getRoutes().SHIELDS_ADBLOCK)
   }
 
-  controlEqual_ (val1: any, val2: any) {
+  controlEqual_ (val1: unknown, val2: unknown) {
     return val1 === val2
   }
 

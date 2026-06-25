@@ -80,8 +80,6 @@ inline constexpr auto kPreconfiguredManifestV2Extensions =
 
 static_assert(kPreconfiguredManifestV2Extensions.size() == kBraveHosted.size());
 
-EXTENSIONS_EXPORT std::string BuildBraveMV2ExceptionList();
-
 EXTENSIONS_EXPORT bool IsKnownBraveHostedExtension(
     const extensions::ExtensionId& id);
 EXTENSIONS_EXPORT bool IsKnownWebStoreHostedExtension(

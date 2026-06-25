@@ -38,6 +38,7 @@ source_set("impl") {
     "//brave/components/tor:common",
     "//brave/components/tor:pref_names",
     "//chrome/browser:browser_process",
+    "//chrome/browser/lifetime",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//components/keyed_service/content",

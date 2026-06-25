@@ -683,8 +683,9 @@ ModelService::ModelService(PrefService* prefs_service,
 
 ModelService::~ModelService() = default;
 
-void ModelService::OnEncryptorReady(os_crypt_async::Encryptor encryptor) {
-  encryptor_.emplace(std::move(encryptor));
+void ModelService::OnEncryptorReady(
+    scoped_refptr<os_crypt_async::Encryptor> encryptor) {
+  encryptor_ = std::move(encryptor);
   // Refresh custom-model API keys in-place. Notifies observers via
   // `OnModelListUpdated()`, which propagates to engines through
   // `ConversationHandler::OnModelListUpdated()` ->

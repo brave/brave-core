@@ -16,7 +16,6 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
-#include "chrome/browser/ui/exclusive_access/fullscreen_observer.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -42,7 +41,6 @@ class BraveVerticalTabStripRegionView : public views::View,
                                         public views::ResizeAreaDelegate,
                                         public views::AnimationDelegateViews,
                                         public views::WidgetObserver,
-                                        public FullscreenObserver,
                                         public views::ContextMenuController {
   METADATA_HEADER(BraveVerticalTabStripRegionView, views::View)
  public:
@@ -126,8 +124,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
   void OnWidgetDestroying(views::Widget* widget) override;
 
-  // FullscreenObserver:
-  void OnFullscreenStateChanged() override;
+  void OnFullscreenStateChanged();
 
   // views::ContextMenuController:
   void ShowContextMenuForViewImpl(
@@ -245,8 +242,8 @@ class BraveVerticalTabStripRegionView : public views::View,
   BooleanPrefMember show_toolbar_on_fullscreen_pref_;
 #endif
 
-  base::ScopedObservation<FullscreenController, FullscreenObserver>
-      fullscreen_observation_{this};
+  // Subscription to be notified when the browser window enters fullscreen.
+  base::CallbackListSubscription fullscreen_subscription_;
 
   BooleanPrefMember vertical_tab_on_right_;
 

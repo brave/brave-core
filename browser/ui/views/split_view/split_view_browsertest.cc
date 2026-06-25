@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <cstdlib>
 #include <utility>
 
 #include "base/functional/callback_helpers.h"
@@ -250,7 +251,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_NE(gfx::Size(),
             browser_view->top_container_separator_for_testing()->size());
 
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   RunScheduledLayouts();
 
@@ -310,15 +311,20 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   EXPECT_EQ(gfx::Insets(BraveContentsContainerView::kBorderThickness),
             end_contents_container_view->GetBorder()->GetInsets());
 
+  // Tolerate a 1px rounding asymmetry: GetViewSizes uses std::round(0.5 *
+  // (available_size - resize_width)), which gives one side an extra pixel
+  // whenever that quantity is odd.
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() == end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) <= 1;
   }));
 
   multi_contents_view->OnResize(30, false);
   multi_contents_view->OnResize(30, true);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() != end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) > 1;
   }));
 
   // Check double click makes both contents view have same width.
@@ -329,7 +335,8 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest,
   event.SetClickCount(2);
   split_view_separator()->OnMouseReleased(event);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return start_contents_web_view->width() == end_contents_web_view->width();
+    return std::abs(start_contents_web_view->width() -
+                    end_contents_web_view->width()) <= 1;
   }));
 }
 
@@ -341,7 +348,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideEnabledBrowserTest, SelectTabTest) {
   EXPECT_FALSE(split_view_separator()->GetVisible());
 
   // Created new tab(at 3) for new split view with existing tab(at 2).
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
   EXPECT_TRUE(tab_strip()->tab_at(2)->split().has_value());
   EXPECT_FALSE(tab_strip()->tab_at(2)->IsActive());
@@ -404,7 +411,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
   // Shadow if split tab is not active.
   EXPECT_TRUE(brave_browser_view()->contents_shadow_);
 
-  chrome::NewSplitTab(browser(),
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   auto* tab_strip_model = browser()->tab_strip_model();
@@ -523,7 +530,7 @@ class SplitViewCommonBrowserTest : public InProcessBrowserTest {
   }
 
   void NewSplitTab() {
-    chrome::NewSplitTab(browser(),
+    chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                         split_tabs::SplitTabCreatedSource::kToolbarButton);
   }
 

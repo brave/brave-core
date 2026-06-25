@@ -14,8 +14,8 @@
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 
@@ -76,7 +76,8 @@ void VPNPanelHandler::CloseUI() {
 void VPNPanelHandler::OpenVpnUIUrl(
     brave_vpn::mojom::ManageURLType type,
     brave_vpn::mojom::ProductUrlsPtr product_urls) {
-  auto* browser = chrome::FindLastActiveWithProfile(profile_);
+  auto* browser =
+      ProfileBrowserCollection::GetForProfile(profile_)->GetLastActiveBrowser();
   const auto url =
       brave_vpn::GetManageURLForUIType(type, GURL(product_urls->manage));
   if (ShouldOpenSingletonTab(type)) {

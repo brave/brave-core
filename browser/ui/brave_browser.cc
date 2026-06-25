@@ -22,7 +22,6 @@
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/split_view/split_view_link_redirect_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/lifetime/browser_close_manager.h"
 #include "chrome/browser/profiles/profile.h"
@@ -114,8 +113,9 @@ void BraveBrowser::ScheduleUIUpdate(content::WebContents* source,
   }
 }
 
-void BraveBrowser::OnTabClosing(content::WebContents* contents) {
-  Browser::OnTabClosing(contents);
+void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
+                                bool* had_active_modal_dialog) {
+  Browser::OnTabClosing(tab, had_active_modal_dialog);
 
   if (!AreAllTabsSharedPinnedTabs()) {
     return;
@@ -305,22 +305,6 @@ bool BraveBrowser::TryToCloseWindow(
 void BraveBrowser::ResetTryToCloseWindow() {
   confirmed_to_close_ = false;
   Browser::ResetTryToCloseWindow();
-}
-
-bool BraveBrowser::NormalBrowserSupportsWindowFeature(
-    WindowFeature feature,
-    bool check_can_support) const {
-#if BUILDFLAG(IS_WIN)
-  if (feature == WindowFeature::kFeatureTitleBar) {
-    // In case of vertical tab strip is allowed, we need to have ability to
-    // show title bar on Windows.
-    return tabs::utils::ShouldShowBraveVerticalTabs(this) &&
-           tabs::utils::ShouldShowWindowTitleForVerticalTabs(this);
-  }
-#endif
-
-  return Browser::NormalBrowserSupportsWindowFeature(feature,
-                                                     check_can_support);
 }
 
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,

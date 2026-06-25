@@ -145,8 +145,12 @@ test("brave_components_unittests") {
     "//extensions/browser/*",
     "//extensions/common:core_api_provider",
     "//extensions/components/*",
-    "//extensions/renderer/*",
-    "//extensions/shell/*",
+
+    # //extensions/renderer/resources:extensions_renderer_generated_resources is
+    # a dependency of //extensions/common:common, and components do make use of
+    # things like URLPattern from it. Asserting on the local renderer is enough
+    # though to prevent renderer code.
+    "//extensions/renderer:*",
   ]
 
   if (is_ios) {

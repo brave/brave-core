@@ -8,8 +8,10 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/customize_chrome/side_panel_controller.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/public/tab_features.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -17,6 +19,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "ui/views/controls/webview/webview.h"
 
 class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
  protected:
@@ -28,13 +31,19 @@ class CustomizeChromeSidePanelBrowserTest : public InProcessBrowserTest {
         ->customize_chrome_side_panel_controller();
   }
 
-  SidePanelUI* GetSidePanelUI(Browser* browser) {
-    return browser->browser_window_features()->side_panel_ui();
-  }
-
+  // Returns the WebContents of the side panel that is currently shown in the
+  // BrowserView
   content::WebContents* GetCustomizeChromeWebContents() {
-    return GetSidePanelUI(browser())->GetWebContentsForTest(
-        SidePanelEntryId::kCustomizeChrome);
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+    if (!browser_view || !browser_view->side_panel()) {
+      return nullptr;
+    }
+    auto* view = browser_view->side_panel()->GetViewByID(
+        SidePanelWebUIView::kSidePanelWebViewId);
+    if (!view) {
+      return nullptr;
+    }
+    return static_cast<views::WebView*>(view)->web_contents();
   }
 };
 
@@ -56,7 +65,7 @@ IN_PROC_BROWSER_TEST_F(CustomizeChromeSidePanelBrowserTest, CloseButton) {
   ASSERT_TRUE(web_contents);
   content::WaitForLoadStop(web_contents);
 
-  // clicking the close button should close the side panel.
+  // Clicking the close button should close the side panel.
   // And the render frame will be deleted, so the returned result will be false.
   EXPECT_FALSE(content::ExecJs(web_contents,
                                R"-js-(

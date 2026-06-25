@@ -50,7 +50,7 @@ export class SettingsShieldsPageIndexElement extends
     };
   }
 
-  declare prefs: { [key: string]: any };
+  declare prefs: Record<string, unknown>;
 
   private showDefaultViews_() {
     const views = ['parent']

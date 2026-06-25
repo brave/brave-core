@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
+index db427713fb69db4f9fb20cbde0e801c0c2fa030f..da58bdffcf84cb8a6b2650a64fdac76ace749481 100644
+--- a/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
++++ b/chrome/browser/ui/views/bookmarks/bookmark_context_menu.cc
+@@ -74,6 +74,7 @@ BookmarkContextMenu::BookmarkContextMenu(
+   for (size_t i = 0; i < menu_model->GetItemCount(); ++i) {
+     views::MenuModelAdapter::AppendMenuItemFromModel(
+         menu_model, i, menu_, menu_model->GetCommandIdAt(i));
++    BRAVE_BOOKMARK_CONTEXT_MENU
+     if (menu_model->GetCommandIdAt(i) == IDC_BOOKMARK_BAR_SUBMENU) {
+       submodel = menu_model->GetSubmenuModelAt(i);
+     }

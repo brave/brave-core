@@ -146,7 +146,7 @@ extends SettingBraveDataCollectionPageElementBase
   }
 
   setStatsUsagePingEnabledPref_(userEnabled: boolean, isManaged: boolean) {
-    const pref: any = {
+    const pref: chrome.settingsPrivate.PrefObject<boolean> = {
       key: '',
       type: chrome.settingsPrivate.PrefType.BOOLEAN,
       value: userEnabled,

@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Inject Brave additions to the public interface of `DeviceInfoSyncBridge`.
+
+      Anchored on the destructor so all Brave-added declarations sit together,
+      immediately after the special-member declarations and before upstream's
+      public surface area. `DeleteDeviceInfo` and `GetAllBraveDeviceInfo` are
+      overrides of `DeviceInfoTracker`; `OnDeviceInfoDeleted` is the delayed
+      continuation that `DeleteDeviceInfo` posts to re-check whether the
+      deletion was ack'd by the sync server.
+    re_pattern: '( +)(~DeviceInfoSyncBridge\(\) override;)'
+    replace: |-
+      \1\2
+      \1void DeleteDeviceInfo(const std::string& client_id,
+      \1                      base::OnceClosure callback) override;
+      \1std::vector<std::unique_ptr<DeviceInfo>> GetAllBraveDeviceInfo()
+      \1    const override;
+      \1void OnDeviceInfoDeleted(const std::string& client_id, const int attempt,
+      \1                         base::OnceClosure callback);

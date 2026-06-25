@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/BUILD.gn b/ui/webui/resources/BUILD.gn
-index ff89ccb3a6debfc6bd69ee125a9bf74c14322f9d..9b6a19b00492d21d98806566e720d1d62f954397 100644
+index 074b55e748dab8f955c2f53fe940112900b390b9..5fbffba44b67488eebc4e9cb522bfbdbf873bdc6 100644
 --- a/ui/webui/resources/BUILD.gn
 +++ b/ui/webui/resources/BUILD.gn
-@@ -119,6 +119,7 @@ generate_grd("build_grd") {
+@@ -112,6 +112,7 @@ generate_grd("build_grd") {
      public_deps += [ ":build_cros_styles_grdp" ]
      grdp_files += [ "$target_gen_dir/cros_styles_resources.grdp" ]
    }

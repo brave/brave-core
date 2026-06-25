@@ -94,7 +94,9 @@ class SearchPage implements PageInterface {
   openCurrentSelection(disposition: WindowOpenDisposition): void {}
   setAimButtonVisible(visible: boolean): void {}
   updateAimPopupEligibility(eligible: boolean): void {}
-  onEmbeddedPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
+  onPermissionPromptChanged(isShowing: boolean, promptSize: Size): void {}
+  setRestoredTabIds(tabIds: number[]): void { }
+  setAimThreadRestoredTabs(tabs: TabInfo[]): void { }
 }
 
 export const search = new SearchPage()
@@ -133,7 +135,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(keywordQuery, false);
+      omniboxController.queryAutocomplete(keywordQuery, false, keywordQuery.length);
     } else {
       omniboxController.stopAutocomplete(true)
     }

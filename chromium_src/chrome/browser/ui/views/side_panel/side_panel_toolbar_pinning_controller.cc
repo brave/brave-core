@@ -5,6 +5,7 @@
 
 #include "chrome/browser/ui/views/side_panel/side_panel_toolbar_pinning_controller.h"
 
+#include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 
 #define UpdateActiveState UpdateActiveState_ChromiumImpl
@@ -16,7 +17,9 @@
 void SidePanelToolbarPinningController::UpdateActiveState(
     SidePanelEntryKey key,
     bool show_active_in_toolbar) {
-  if (!browser_view_->toolbar_button_provider()->GetPinnedToolbarActions()) {
+  auto* toolbar_button_provider = ToolbarButtonProvider::From(&*browser_);
+  if (!toolbar_button_provider ||
+      !toolbar_button_provider->GetPinnedToolbarActions()) {
     return;
   }
 

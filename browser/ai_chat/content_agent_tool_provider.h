@@ -71,7 +71,8 @@ class ContentAgentToolProvider : public ToolProvider,
                       actor::mojom::ActionResultPtr result);
   void OnActionsFinished(
       Tool::UseToolCallback callback,
-      std::vector<actor::ActionResultWithLatencyInfo> action_results);
+      std::vector<actor::ActionResultWithLatencyInfo> action_results,
+      actor::TabObservationStrategy observation_strategy);
   void ReceivedAnnotatedPageContent(
       Tool::UseToolCallback callback,
       optimization_guide::AIPageContentResultOrError result);

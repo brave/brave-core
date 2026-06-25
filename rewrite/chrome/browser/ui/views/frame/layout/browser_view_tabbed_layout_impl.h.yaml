@@ -1,0 +1,35 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make `GetHorizontalTabStripLeadingMargin` virtual.
+
+      Brave overrides this hook to tuck the first tab against the
+      caption-button cluster in compact horizontal tabs mode.
+    re_pattern: '(\s+)(int GetHorizontalTabStripLeadingMargin\()'
+    replace: '\1virtual \2'
+
+  - description: |
+      Make `CalculateSeparatorInfo` virtual.
+
+      Brave overrides this single hook to consolidate the old
+      `GetTopSeparatorType()` / `ShadowOverlayVisible()` tweaks. The
+      `SeparatorInfo` struct definition stays in the upstream .cc; the
+      override's body lives in
+      chromium_src/.../browser_view_tabbed_layout_impl.cc, which
+      `#include`s the upstream .cc and therefore sees the full type.
+    re_pattern: '(\s+)(SeparatorInfo CalculateSeparatorInfo\(\) const;)'
+    replace: '\1virtual \2'
+
+  - description: |
+      Friend `BraveBrowserViewTabbedLayoutImpl` from the base class.
+
+      The override needs access to the private nested `SeparatorInfo`
+      type and to the (still private) virtuals above.
+    re_pattern: '(class BrowserViewTabbedLayoutImpl\b.*?\n private:\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1  friend class BraveBrowserViewTabbedLayoutImpl;

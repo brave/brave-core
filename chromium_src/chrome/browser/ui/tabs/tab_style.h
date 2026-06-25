@@ -11,7 +11,6 @@
 #define GetSeparatorSize virtual GetSeparatorSize
 #define GetSeparatorMargins virtual GetSeparatorMargins
 #define GetSeparatorCornerRadius virtual GetSeparatorCornerRadius
-#define GetDragHandleExtension virtual GetDragHandleExtension
 #define GetTopCornerRadius virtual GetTopCornerRadius
 #define GetBottomCornerRadius virtual GetBottomCornerRadius
 #define GetContentsInsets virtual GetContentsInsets
@@ -27,7 +26,6 @@
 #undef GetSeparatorSize
 #undef GetSeparatorMargins
 #undef GetSeparatorCornerRadius
-#undef GetDragHandleExtension
 #undef GetTopCornerRadius
 #undef GetBottomCornerRadius
 #undef GetContentsInsets

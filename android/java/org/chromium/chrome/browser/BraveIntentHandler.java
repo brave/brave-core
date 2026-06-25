@@ -18,6 +18,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
+import org.chromium.components.external_intents.ExternalNavigationHandler;
 import org.chromium.content_public.browser.BrowserStartupController;
 
 import java.util.Locale;
@@ -153,7 +154,10 @@ public class BraveIntentHandler {
     protected static String getUrlFromText(Intent intent) {
         if (intent == null) return null;
         String text = IntentUtils.safeGetStringExtra(intent, Intent.EXTRA_TEXT);
-        return (text == null || isJavascriptSchemeOrInvalidUrl(text)) ? null : text;
+        if (text == null) return null;
+        String urlScheme = ExternalNavigationHandler.getSanitizedUrlScheme(text);
+        if (ExternalIntentUrlChecker.isUnsafeExternalScheme(urlScheme)) return null;
+        return text;
     }
 
     @Nullable
@@ -197,27 +201,18 @@ public class BraveIntentHandler {
         return null;
     }
 
-    private static boolean isJavascriptSchemeOrInvalidUrl(String unused_url) {
-        assert false;
-        return false;
-    }
-
     /**
-     * Bytecode-redirected from {@link IntentHandler#intentHasUnsafeUrl}. Defers to the upstream
-     * check (which handles chrome://, chrome-native://, devtools://, distiller://, about://) and
+     * Bytecode-redirected from {@link IntentHandler#isUrlUnsafe}. Defers to the upstream check
+     * (which handles chrome://, chrome-native://, devtools://, distiller://, about://) and
      * additionally blocks brave://, since it is a display alias for chrome:// and gets rewritten to
      * chrome:// deeper in the navigation stack — too late to protect this guard.
      */
-    public static boolean intentHasUnsafeUrl(@Nullable String url, Intent intent) {
-        if (BraveIntentHandlerInternal.intentHasUnsafeUrl(url, intent)) {
+    public static boolean isUrlUnsafe(@Nullable String url) {
+        if (BraveIntentHandlerInternal.isUrlUnsafe(url)) {
             return true;
         }
         if (url == null) return false;
         String scheme = Uri.parse(url).getScheme();
-        return scheme != null
-                && BRAVE_SCHEME.equals(scheme.toLowerCase(Locale.US))
-                && (intent.hasCategory(Intent.CATEGORY_BROWSABLE)
-                        || intent.hasCategory(Intent.CATEGORY_DEFAULT)
-                        || intent.getCategories() == null);
+        return scheme != null && BRAVE_SCHEME.equals(scheme.toLowerCase(Locale.US));
     }
 }

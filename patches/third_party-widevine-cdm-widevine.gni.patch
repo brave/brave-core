@@ -1,8 +1,8 @@
 diff --git a/third_party/widevine/cdm/widevine.gni b/third_party/widevine/cdm/widevine.gni
-index b932be1e74400ece2cd6511b343e42ba92cbcc03..093e75accc79d9ae9594704bdfe624d937ff547b 100644
+index 927b2e4809cf76e6b3ef51ee6cd2bbd04a92d60b..56996bf8dbfa06e42452fa2e416ba17826f3e5c3 100644
 --- a/third_party/widevine/cdm/widevine.gni
 +++ b/third_party/widevine/cdm/widevine.gni
-@@ -31,6 +31,7 @@ library_widevine_cdm_available =
+@@ -30,6 +30,7 @@ library_widevine_cdm_available =
      (target_os == "mac" && (target_cpu == "x64" || target_cpu == "arm64")) ||
      (target_os == "win" &&
       (target_cpu == "x86" || target_cpu == "x64" || target_cpu == "arm64"))

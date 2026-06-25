@@ -1,24 +1,58 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 65d3fa026cb568ab73d59504151a4cc42dde65ca..0eb601d4435f7db51d501af33b7d80218dbec438 100644
+index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086328a6442 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -336,6 +336,7 @@ std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
-         GetSpecificsFieldNumberFromDataType(data_type));
-   }
- 
-+  BRAVE_MAKE_LOCAL_DEVICE_SPECIFICS
-   return specifics;
+@@ -224,7 +224,8 @@ DeviceInfo SpecificsToModel(const DeviceInfoSpecifics& specifics) {
+       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
+       SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
+       SpecificsToGlicExperimentalTriggeringState(specifics),
+-      SpecificsToGlicExperimentalTriggeringVersion(specifics));
++      SpecificsToGlicExperimentalTriggeringVersion(specifics),
++      SpecificsToSelfDeleteSupport(specifics));
  }
  
-@@ -528,6 +529,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
+ // Allocate a EntityData and copies |specifics| into it.
+@@ -250,7 +251,7 @@ sync_pb::PhoneAsASecurityKeySpecificFields PhoneAsASecurityKeyInfoToProto(
+ }
+ 
+ // Converts a local DeviceInfo into a freshly allocated DeviceInfoSpecifics.
+-std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics(
++std::unique_ptr<DeviceInfoSpecifics> MakeLocalDeviceSpecifics_ChromiumImpl(
+     const DeviceInfo& info) {
+   auto specifics = std::make_unique<DeviceInfoSpecifics>();
+   specifics->set_cache_guid(info.guid());
+@@ -459,6 +460,18 @@ LocalDeviceInfoProvider* DeviceInfoSyncBridge::GetLocalDeviceInfoProvider() {
+ }
+ 
+ void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
++  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
++  // After initiating leave the sync chain `DeleteSpecifics` cleans
++  // `all_data_` map.
++  // It is possible that user close sync settings page or change the data type
++  // before the confirmation `DeviceInfoSyncBridge::OnDeviceInfoDeleted()`
++  // comes - this leaded to access to the invalid iterator and crash.
++  if (const DeviceInfo* current_info =
++          local_device_info_provider_->GetLocalDeviceInfo();
++      current_info && !all_data_.contains(current_info->guid())) {
++    return;
++  }
++
+   // Device info cannot be synced if the provider is not initialized. When it
+   // gets initialized, local device info will be sent.
+   if (!local_device_info_provider_->GetLocalDeviceInfo()) {
+@@ -548,17 +561,19 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
    for (const std::unique_ptr<EntityChange>& change : entity_changes) {
      const std::string guid = change->storage_key();
  
-+    BRAVE_DEVICE_INFO_SYNC_BRIDGE_APPLY_SYNC_CHANGES_SKIP_NEXT_IF
++#if 0  // Brave: re-upload defeats removing other devices in the sync chain
      // Reupload local device if it was deleted from the server.
      if (local_cache_guid_ == guid &&
          change->type() == EntityChange::ACTION_DELETE) {
-@@ -538,7 +540,7 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
+       has_tombstone_for_local_device = true;
+       continue;
+     }
++#endif
+ 
      // Ignore any remote changes that have a cache guid that is or was this
      // local device.
      if (device_info_prefs_->IsRecentLocalCacheGuid(guid)) {
@@ -27,19 +61,22 @@ index 65d3fa026cb568ab73d59504151a4cc42dde65ca..0eb601d4435f7db51d501af33b7d8021
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
-@@ -890,6 +892,7 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
+@@ -910,6 +925,10 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
      return;
    }
  
-+  BRAVE_ON_READ_ALL_METADATA_CLEAR_PROGRESS_TOKEN
++  if (!device_info_prefs_->IsResetDevicesProgressTokenDone()) {
++    metadata_batch->ClearProgressToken();
++    device_info_prefs_->SetResetDevicesProgressTokenDone();
++  }
    // In the regular case for sync being disabled, wait for MergeFullSyncData()
    // before initializing the LocalDeviceInfoProvider.
    if (!syncer::IsInitialSyncDone(
-@@ -1135,6 +1138,7 @@ void DeviceInfoSyncBridge::ExpireOldEntries() {
+@@ -1152,6 +1171,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
+ }
+ 
+ void DeviceInfoSyncBridge::ExpireOldEntries() {
++  return;
    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
    CHECK(store_);
    TRACE_EVENT0("sync", "DeviceInfoSyncBridge::ExpireOldEntries");
-+  BRAVE_SKIP_EXPIRE_OLD_ENTRIES
-   const base::Time expiration_threshold =
-       base::Time::Now() - kExpirationThreshold;
-   absl::flat_hash_set<std::string> cache_guids_to_expire;

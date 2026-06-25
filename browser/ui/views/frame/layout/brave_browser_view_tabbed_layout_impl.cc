@@ -227,24 +227,12 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   return layout;
 }
 
-gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
+gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
     ProposedLayout& layout,
     BrowserLayoutParams params,
-    bool needs_exclusion,
-    bool suppress_top_separator) const {
-  // Upstream suppresses the top separator when the side panel is shown and
-  // GetTopSeparatorType() == kTopContainer. Brave always wants the separator
-  // visible in that case, so undo only that specific suppression.
-  // See suppress_top_separator var in
-  // BrowserViewTabbedLayoutImpl::CalculateProposedLayout().
-  if (GetTopSeparatorType() == TopSeparatorType::kTopContainer) {
-    suppress_top_separator = false;
-  }
-
-  // Get base layout from parent
-  gfx::Rect bounds =
-      BrowserViewTabbedLayoutImpl::CalculateTopContainerLayoutImpl(
-          layout, params, needs_exclusion, suppress_top_separator);
+    bool needs_exclusion) const {
+  gfx::Rect bounds = BrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
+      layout, params, needs_exclusion);
 
   if (!delegate().ShouldShowVerticalTabs()) {
     return bounds;
@@ -300,47 +288,6 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
   toolbar_corners.upper_leading.type =
       CustomCornersBackground::CornerType::kRoundedWithBackground;
   toolbar_background->SetCorners(toolbar_corners);
-}
-
-BrowserViewTabbedLayoutImpl::TopSeparatorType
-BraveBrowserViewTabbedLayoutImpl::GetTopSeparatorType() const {
-  // Return kNone when there is no visible top UI (toolbar and bookmark bar).
-  // This fixes a 1px visible separator at the top of the contents view when in
-  // browser fullscreen, where the top chrome is hidden.
-  if (!delegate().IsToolbarVisible() && !delegate().IsBookmarkBarVisible()) {
-    return TopSeparatorType::kNone;
-  }
-
-  // Get the upstream separator type as a starting point. The top separator is
-  // a visual line that divides the browser's top UI (toolbar, tabs) from the
-  // main content area below it.
-  auto top_separator_type = BrowserViewTabbedLayoutImpl::GetTopSeparatorType();
-
-  // Handle the special case where Brave uses rounded corners for the web view.
-  // The upstream implementation may return kMultiContents which positions the
-  // separator at the contents container boundary, or kNone indicating no
-  // separator should be drawn.
-  if (top_separator_type == TopSeparatorType::kNone ||
-      top_separator_type == TopSeparatorType::kMultiContents) {
-    // When rounded corners are enabled, we add padding/margins around the
-    // MultiContentsView to create space for the rounded corners and shadow.
-    // The kMultiContents separator would only span the width of the contents
-    // container (excluding the padding), creating an awkward visual gap.
-    //
-    // With rounded corners: Return kNone - the separator is not needed since
-    //   the rounded corners and shadow provide sufficient visual separation.
-    //
-    // Without rounded corners: Return kTopContainer - draw the separator at
-    //   the top container boundary instead, ensuring it spans the full browser
-    //   window width for a clean visual divider.
-    return delegate().ShouldUseBraveWebViewRoundedCornersForContents()
-               ? TopSeparatorType::kNone
-               : TopSeparatorType::kTopContainer;
-  }
-
-  // For all other separator types (e.g., kTopContainer, kBookmarkBar), use the
-  // upstream behavior as-is since they already work correctly with Brave's UI.
-  return top_separator_type;
 }
 
 int BraveBrowserViewTabbedLayoutImpl::GetHorizontalTabStripLeadingMargin(
@@ -623,13 +570,6 @@ void BraveBrowserViewTabbedLayoutImpl::UpdateInsetsForVerticalTabStrip() {
 
   views().vertical_tab_strip_host->SetBorder(
       insets.IsEmpty() ? nullptr : views::CreateEmptyBorder(insets));
-}
-
-bool BraveBrowserViewTabbedLayoutImpl::ShadowOverlayVisible() const {
-  // Brave manages its own rounded-corners shadow around the contents and side
-  // panel via BraveContentsViewUtil. Suppress the upstream shadow overlay (and
-  // its accompanying main-area padding) so it doesn't double up.
-  return false;
 }
 
 void BraveBrowserViewTabbedLayoutImpl::UpdateMarginsForSideBar() {

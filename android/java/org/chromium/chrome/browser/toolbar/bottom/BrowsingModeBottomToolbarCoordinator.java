@@ -245,9 +245,14 @@ public class BrowsingModeBottomToolbarCoordinator {
                 });
     }
 
+    /** Returns the menu button in the bottom toolbar, or null if not present in the layout. */
+    @Nullable MenuButton getMenuButton() {
+        return mMenuButton;
+    }
+
     /**
      * @param enabled Whether to disable click events on the bottom toolbar. Setting true can also
-     *                prevent from all click events on toolbar and all children views on toolbar.
+     *     prevent from all click events on toolbar and all children views on toolbar.
      */
     void setTouchEnabled(boolean enabled) {
         mToolbarRoot.setTouchEnabled(enabled);

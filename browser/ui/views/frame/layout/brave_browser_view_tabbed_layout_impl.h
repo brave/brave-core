@@ -54,20 +54,29 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   gfx::Size GetMinimumSize(const views::View* host) const override;
   ProposedLayout CalculateProposedLayout(
       const BrowserLayoutParams& params) const override;
-  gfx::Rect CalculateTopContainerLayoutImpl(
-      ProposedLayout& layout,
-      BrowserLayoutParams params,
-      bool needs_exclusion,
-      bool suppress_top_separator) const override;
+  gfx::Rect CalculateTopContainerLayout(ProposedLayout& layout,
+                                        BrowserLayoutParams params,
+                                        bool needs_exclusion) const override;
   void ConfigureTopContainerBackground(
       const BrowserLayoutParams& params,
       CustomCornersBackground* background) override;
   void DoPostLayoutVisualAdjustments(
       const BrowserLayoutParams& params) override;
-  TopSeparatorType GetTopSeparatorType() const override;
+  // SeparatorInfo is the upstream's private nested type. Friend access (added
+  // via the chromium_src .h shadow) lets this subclass name it here; the body
+  // of the override lives in
+  // chromium_src/.../browser_view_tabbed_layout_impl.cc where the struct
+  // definition is visible from the included upstream .cc.
+  SeparatorInfo CalculateSeparatorInfo() const override;
   int GetHorizontalTabStripLeadingMargin(
       const BrowserLayoutParams& params) const override;
-  bool ShadowOverlayVisible() const override;
+
+  // Test-only accessors that expose individual SeparatorInfo bools without
+  // requiring the caller to see the upstream's private struct definition.
+  // Implemented alongside CalculateSeparatorInfo() in the chromium_src shadow.
+  bool GetTopContainerSeparatorForTesting() const;
+  bool GetMultiContentsSeparatorForTesting() const;
+  bool GetShadowBoxForTesting() const;
 
  private:
   void CalculateBraveVerticalTabStripLayout(

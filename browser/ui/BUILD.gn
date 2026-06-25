@@ -54,6 +54,7 @@ source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
     "//chrome/browser",
+    "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
   ]
@@ -87,9 +88,13 @@ source_set("ui") {
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/webcompat/core/common",
+    "//chrome/browser:command_updater_impl",
+    "//chrome/browser:defaults",
+    "//chrome/browser:file_select_helper",
     "//chrome/browser/contextual_search",
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
+    "//chrome/browser/ui:tab_modal_confirm_dialog_delegate",
     "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
@@ -99,6 +104,10 @@ source_set("ui") {
     "//chrome/browser/ui/toolbar",
     "//media",
   ]
+
+  if (is_mac) {
+    deps += [ "//chrome/browser:global_keyboard_shortcuts_mac" ]
+  }
 
   allow_circular_includes_from = brave_ui_allow_circular_includes_from
   deps += brave_ui_allow_circular_includes_from
@@ -569,6 +578,7 @@ source_set("ui") {
     deps += [
       "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
+      "//chrome/browser/ui:accelerator_utils_headers",
       "//chrome/browser/ui/location_bar",
     ]
   }
@@ -579,8 +589,6 @@ source_set("ui") {
       "views/bookmarks/bookmark_bar_instructions_view.h",
       "views/bookmarks/brave_bookmark_bar_view.cc",
       "views/bookmarks/brave_bookmark_bar_view.h",
-      "views/bookmarks/brave_bookmark_context_menu.cc",
-      "views/bookmarks/brave_bookmark_context_menu.h",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.cc",
       "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_tab_search_bubble_host.cc",
@@ -710,7 +718,7 @@ source_set("ui") {
       "//brave/browser/ui/views/tabs/accent_color",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",
-      "//chrome/browser/enterprise/watermark:watermark_view_lib",
+      "//chrome/browser/enterprise/watermark:watermark_lib",
       "//chrome/browser/glic",
       "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
@@ -1250,6 +1258,7 @@ source_set("ui") {
       deps += [
         "//brave/browser/extensions:component_loader",
         "//chrome/browser:flags",
+        "//extensions/browser:webstore_installer",
         "//third_party/widevine/cdm:buildflags",
       ]
 
@@ -1319,7 +1328,10 @@ source_set("ui") {
 
   if (is_win && is_official_build) {
     sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [ "//chrome/updater/app/server/win:updater_legacy_idl" ]
+    deps += [
+      "//chrome/browser/google",
+      "//chrome/updater/app/server/win:updater_legacy_idl",
+    ]
   }
 
   if (enable_tor) {

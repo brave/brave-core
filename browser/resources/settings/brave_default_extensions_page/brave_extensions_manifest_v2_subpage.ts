@@ -58,8 +58,8 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
     }
 
     if (loadTimeData.getBoolean('shouldExposeElementsForTesting')) {
-      (window as any).testing = (window as any).testing || {};
-      (window as any).testing[`extensionsV2Subpage`] = this.shadowRoot;
+      window.testing = window.testing || {};
+      window.testing[`extensionsV2Subpage`] = this.shadowRoot;
     }
 
     this.addWebUiListener('brave-extension-manifest-v2-changed',
@@ -77,13 +77,14 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
     this.getExtensions_()
   }
 
-  onExtensionV2EnabledChange_(e: any) {
+  onExtensionV2EnabledChange_(e: Event) {
     e.stopPropagation()
 
+    const target = e.target as HTMLInputElement
     this.closeToast_()
-    this.installInProgress_ = e.target.checked;
+    this.installInProgress_ = target.checked;
     this.browserProxy_
-      .enableExtensionManifestV2(e.target.id, e.target.checked)
+      .enableExtensionManifestV2(target.id, target.checked)
       .catch((reason: string) => {
         console.log(reason)
         this.toastMessage_ = reason
@@ -95,9 +96,9 @@ class BraveExtensionsV2Subpage extends BraveExtensionsV2SubpageBase {
       })
   }
 
-  removeExtension_(e: any) {
+  removeExtension_(e: Event) {
     e.stopPropagation()
-    this.browserProxy_.removeExtensionManifestV2(e.target.id)
+    this.browserProxy_.removeExtensionManifestV2((e.target as HTMLElement).id)
   }
 
   showRemoveButton_(ext: ExtensionV2): boolean {

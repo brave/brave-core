@@ -88,7 +88,11 @@ RegisterPolymerComponentReplacement(
 
       // onOpenDialogButtonClick_ is private in the superclass, so we have to
       // replace it to change its functionality
-      const anyThis = this as any
+      const anyThis = this as unknown as {
+        onOpenDialogButtonClick_: () => void
+        onSearchEngineListDialogClose_: () => void
+        showSearchEngineListDialog_: boolean
+      }
       anyThis.onOpenDialogButtonClick_ = () => {
         Router.getInstance().navigateTo(routes.DEFAULT_SEARCH)
       }
@@ -101,7 +105,9 @@ RegisterPolymerComponentReplacement(
     }
 
     override currentRouteChanged() {
-      const anyThis = this as any
+      const anyThis = this as unknown as {
+        showSearchEngineListDialog_: boolean
+      }
       anyThis.showSearchEngineListDialog_ =
         Router.getInstance().getCurrentRoute() === routes.DEFAULT_SEARCH
     }

@@ -129,7 +129,7 @@ inline constexpr BraveAction kShowShareMenuAction = {
         kShowShareMenu,  // assign id of itself to append to the end of the list
     .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
     .pref_name = prefs::kPinShareMenuButton,
-    .icon = omnibox::kShareChromeRefreshIcon};
+    .icon = omnibox::kShareChromeRefreshOldIcon};
 
 inline constexpr BraveAction kShowPwaInstallAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowPwaInstall,
@@ -139,7 +139,7 @@ inline constexpr BraveAction kShowPwaInstallAction = {
                           // list
     .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
     .pref_name = prefs::kPinPwaInstallButton,
-    .icon = kInstallDesktopChromeRefreshIcon};
+    .icon = kInstallDesktopChromeRefreshOldIcon};
 
 inline constexpr auto kBraveActions =
     base::MakeFixedFlatMap<side_panel::customize_chrome::mojom::ActionId,

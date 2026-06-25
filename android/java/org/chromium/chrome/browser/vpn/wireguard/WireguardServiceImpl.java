@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.vpn.wireguard;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,7 +16,6 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.text.HtmlCompat;
 
@@ -27,11 +28,14 @@ import com.wireguard.config.Config;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
+import org.chromium.base.SplitCompatService;
 import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
+import org.chromium.build.annotations.Initializer;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.base.SplitCompatService;
 import org.chromium.chrome.browser.vpn.DisconnectVpnBroadcastReceiver;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 
@@ -39,14 +43,15 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+@NullMarked
 public class WireguardServiceImpl extends SplitCompatService.Impl
         implements TunnelModel.TunnelStateUpdateListener {
     private static final String TAG = "WireguardService";
-    private Backend mBackend;
-    private TunnelModel mTunnelModel;
+    private @Nullable Backend mBackend;
+    private @Nullable TunnelModel mTunnelModel;
     private final IBinder mBinder = new LocalBinder();
-    private Timer mVpnStatisticsTimer;
-    private Timer mVpnRecordStatisticsTimer;
+    private @Nullable Timer mVpnStatisticsTimer;
+    private @Nullable Timer mVpnRecordStatisticsTimer;
     private static final int BRAVE_VPN_NOTIFICATION_ID = 801;
     private final Context mContext = ContextUtils.getApplicationContext();
 
@@ -62,10 +67,12 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
         return mBinder;
     }
 
+    @Nullable
     public TunnelModel getTunnelModel() {
         return mTunnelModel;
     }
 
+    @Initializer
     @Override
     public void onCreate() {
         super.onCreate();
@@ -77,7 +84,7 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {
+    public int onStartCommand(@Nullable Intent intent, int flags, int startId) {
         new Thread() {
             @Override
             public void run() {
@@ -95,6 +102,7 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
     private void startVpn() throws Exception {
         Config config = WireguardConfigUtils.loadConfig(mContext);
         mTunnelModel = TunnelModel.createTunnel(config, this);
+        assertNonNull(mBackend);
         mBackend.setState(mTunnelModel, Tunnel.State.UP, config);
         updateVpnStatisticsTimer();
         recordSessionTimes();
@@ -214,6 +222,8 @@ public class WireguardServiceImpl extends SplitCompatService.Impl
 
         // Capture references for the background task since member variables
         // may become invalid after onDestroy returns.
+        assertNonNull(mBackend);
+        assertNonNull(mTunnelModel);
         final Backend backend = mBackend;
         final TunnelModel tunnelModel = mTunnelModel;
 

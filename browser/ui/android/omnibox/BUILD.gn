@@ -12,11 +12,12 @@ android_library("java") {
     "java/src/org/chromium/chrome/browser/omnibox/BraveAutocompleteEditText.java",
     "java/src/org/chromium/chrome/browser/omnibox/OmniboxPrefManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/status/BraveStatusView.java",
-    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteCoordinator.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveLeoAutocompleteDelegate.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxSuggestionUiType.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactory.java",
+    "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveOmniboxViewHolderFactoryDummySuper.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/BraveSuggestionHost.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_leo/BraveLeoSuggestionProcessor.java",
     "java/src/org/chromium/chrome/browser/omnibox/suggestions/brave_leo/BraveLeoSuggestionViewBinder.java",
@@ -55,6 +56,7 @@ android_library("java") {
     "//third_party/androidx:androidx_annotation_annotation_java",
     "//third_party/androidx:androidx_recyclerview_recyclerview_java",
     "//ui/android:ui_no_recycler_view_java",
+    "//ui/android:ui_recycler_view_java",
     "//url:gurl_java",
   ]
 

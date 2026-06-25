@@ -3950,6 +3950,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SYNC_CATEGORY_TITLE" desc="Title for the Brave Sync settings page.">
       Sync
     </message>
+    <message name="IDS_PERMISSIONS_GEOLOCATION_ACCURACY_LABEL" desc="Label above the geolocation accuracy radio buttons in the permission prompt.">
+      Location precision
+    </message>
+    <message name="IDS_PERMISSIONS_GEOLOCATION_PRECISE" desc="Radio button label for precise location in the permission prompt.">
+      Precise
+    </message>
+    <message name="IDS_PERMISSIONS_GEOLOCATION_APPROXIMATE" desc="Radio button label for approximate location in the permission prompt.">
+      Approximate
+    </message>
   </messages>
   </release>
 </grit>

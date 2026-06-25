@@ -301,7 +301,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   browser_task_environment_.FastForwardBy(kOneSecond);
 
   auto request2(CreateRequestAndAllowContentSetting(
-      kOrigin2, ContentSettingsType::GEOLOCATION, kLifetime));
+      kOrigin2, ContentSettingsType::MEDIASTREAM_MIC, kLifetime));
   const base::Time expected_expiration_time2 =
       base::Time::Now() + *request2->GetLifetime();
   manager()->PermissionDecided(*request2, kOrigin2, kOrigin2,
@@ -314,7 +314,7 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
       {"notifications",
        base::NumberToString(expected_expiration_time.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
-       kOrigin.spec(), "geolocation",
+       kOrigin.spec(), "media-stream-mic",
        base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
        kOrigin2.spec()});
@@ -323,17 +323,19 @@ TEST_F(PermissionLifetimeManagerTest, DifferentTypePermissions) {
   browser_task_environment_.FastForwardBy(*request->GetLifetime() - kOneSecond);
   ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
-  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::GEOLOCATION,
+  ExpectContentSetting(FROM_HERE, kOrigin2,
+                       ContentSettingsType::MEDIASTREAM_MIC,
                        ContentSetting::CONTENT_SETTING_ALLOW);
   CheckExpirationsPref(
       FROM_HERE, kOneTypeOneExpirationPrefValue,
-      {"geolocation",
+      {"media-stream-mic",
        base::NumberToString(expected_expiration_time2.ToDeltaSinceWindowsEpoch()
                                 .InMicroseconds()),
        kOrigin2.spec()});
 
   browser_task_environment_.FastForwardBy(kOneSecond);
-  ExpectContentSetting(FROM_HERE, kOrigin2, ContentSettingsType::GEOLOCATION,
+  ExpectContentSetting(FROM_HERE, kOrigin2,
+                       ContentSettingsType::MEDIASTREAM_MIC,
                        ContentSetting::CONTENT_SETTING_DEFAULT);
 
   // Prefs data should be empty.
@@ -550,17 +552,17 @@ TEST_F(PermissionLifetimeManagerTest, ExternalContentSettingChange) {
        {ContentSetting::CONTENT_SETTING_DEFAULT,
         ContentSetting::CONTENT_SETTING_BLOCK}) {
     auto request(CreateRequestAndAllowContentSetting(
-        kOrigin, ContentSettingsType::GEOLOCATION, kLifetime));
+        kOrigin, ContentSettingsType::NOTIFICATIONS, kLifetime));
     manager()->PermissionDecided(*request, kOrigin, kOrigin,
                                  PermissionDecision::kAllow);
     EXPECT_TRUE(timer().IsRunning());
 
     host_content_settings_map_->SetContentSettingDefaultScope(
-        kOrigin, kOrigin, ContentSettingsType::GEOLOCATION,
+        kOrigin, kOrigin, ContentSettingsType::NOTIFICATIONS,
         external_content_setting);
     EXPECT_FALSE(timer().IsRunning());
 
-    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::GEOLOCATION,
+    ExpectContentSetting(FROM_HERE, kOrigin, ContentSettingsType::NOTIFICATIONS,
                          external_content_setting);
 
     // Prefs data should be empty.

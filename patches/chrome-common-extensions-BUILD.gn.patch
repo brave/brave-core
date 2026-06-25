@@ -1,12 +1,44 @@
 diff --git a/chrome/common/extensions/BUILD.gn b/chrome/common/extensions/BUILD.gn
-index bb8c86103c906e102aaa7c1b77764623596b0eca..ed48d62c16f51194b147c8812c55000fff64cc9b 100644
+index f69b81f0a828462e65b53d7ffc7d165bf0e0f509..183c063f79d9b6a5e9417d6440b703806de8a36c 100644
 --- a/chrome/common/extensions/BUILD.gn
 +++ b/chrome/common/extensions/BUILD.gn
-@@ -116,6 +116,7 @@ source_set("extensions") {
+@@ -2,6 +2,7 @@
+ # Use of this source code is governed by a BSD-style license that can be
+ # found in the LICENSE file.
  
-     sources += [ "api/file_system_provider_capabilities/file_system_provider_capabilities_handler.cc" ]
-   }
-+  import("//brave/common/extensions/sources.gni") public += brave_chrome_common_extensions_public sources += brave_chrome_common_extensions_sources deps += brave_chrome_common_extensions_deps public_deps += brave_chrome_common_extensions_public_deps
- }
++import("//brave/common/extensions/sources.gni")
+ import("//extensions/buildflags/buildflags.gni")
+ import("//tools/json_schema_compiler/json_features.gni")
  
- # TODO(zturner): Enable this on Windows. See
+@@ -26,6 +27,7 @@ source_set("extensions") {
+     "permissions/chrome_permission_message_rules.h",
+     "sync_helper.h",
+   ]
++  public += brave_chrome_common_extensions_public
+ 
+   # Files that can only be included from here.
+   sources = [
+@@ -50,6 +52,7 @@ source_set("extensions") {
+     "permissions/chrome_permission_message_rules.cc",
+     "sync_helper.cc",
+   ]
++  sources += brave_chrome_common_extensions_sources
+ 
+   public_deps = [
+     "//base",
+@@ -62,6 +65,7 @@ source_set("extensions") {
+     "//ui/gfx/geometry",
+     "//url",
+   ]
++  public_deps += brave_chrome_common_extensions_public_deps
+ 
+   deps = [
+     "//chrome/app:branded_strings",
+@@ -88,6 +92,7 @@ source_set("extensions") {
+     "//ui/message_center/public/cpp",
+     "//url",
+   ]
++  deps += brave_chrome_common_extensions_deps
+ 
+   # TODO(https://crbug.com/356905053): These sources do not currently build
+   # cleanly on the experimental desktop-android configuration. Gradually include

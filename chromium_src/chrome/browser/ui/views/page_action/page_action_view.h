@@ -6,7 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_PAGE_ACTION_PAGE_ACTION_VIEW_H_
 
-#include "chrome/browser/ui/page_actions/page_action_model_observer.h"
+#include "chrome/browser/ui/page_action/page_action_model_observer.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "ui/views/view.h"
 #include "ui/views/widget/native_widget_delegate.h"

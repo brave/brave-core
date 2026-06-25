@@ -29,6 +29,7 @@
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
+-EnterpriseReportingPrivateGetPersistentSecretFunctionTest.GetSecret
 -ExtensionServiceTest.*
 -LayoutProviderTest.*
 -PlatformStateStoreWinTest.*

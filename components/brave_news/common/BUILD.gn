@@ -19,6 +19,16 @@ mojom("mojom") {
   ]
 }
 
+# Renderer<->browser interface for discovering RSS links on a page. Lifted
+# from upstream's `components/feed/mojom:mojo_bindings` after Chromium removed
+# https://crrev.com/c/7795938 (renamed module from feed.mojom to
+# brave_news.mojom).
+mojom("rss_link_reader_mojom") {
+  sources = [ "rss_link_reader.mojom" ]
+
+  public_deps = [ "//url/mojom:url_mojom_gurl" ]
+}
+
 if (enable_brave_news) {
   source_set("unit_tests") {
     testonly = true

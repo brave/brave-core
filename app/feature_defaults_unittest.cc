@@ -34,6 +34,7 @@
 #include "components/lens/lens_features.h"
 #include "components/manta/features.h"
 #include "components/metrics/metrics_features.h"
+#include "components/metrics/private_metrics/private_insights/private_insights_features.h"
 #include "components/metrics/private_metrics/private_metrics_features.h"
 #include "components/metrics/structured/structured_metrics_features.h"
 #include "components/multistep_filter/core/features.h"
@@ -44,6 +45,7 @@
 #include "components/passage_embeddings/core/passage_embeddings_features.h"
 #include "components/performance_manager/public/features.h"
 #include "components/permissions/features.h"
+#include "components/personal_context/core/personal_context_features.h"
 #include "components/plus_addresses/core/common/features.h"
 #include "components/privacy_sandbox/privacy_sandbox_features.h"
 #include "components/private_ai/features.h"
@@ -53,6 +55,7 @@
 #include "components/shared_highlighting/core/common/shared_highlighting_features.h"
 #include "components/signin/public/base/signin_buildflags.h"
 #include "components/signin/public/base/signin_switches.h"
+#include "components/skills/features.h"
 #include "components/subresource_filter/core/common/common_features.h"
 #include "components/sync/base/features.h"
 #include "components/user_education/common/user_education_features.h"
@@ -74,6 +77,7 @@
 #if BUILDFLAG(IS_ANDROID)
 #include "android_webview/common/aw_features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
+#include "components/feed/feed_feature_list.h"
 #include "components/security_interstitials/core/features.h"
 #else
 #include "chrome/browser/enterprise/data_protection/data_protection_features.h"
@@ -85,6 +89,10 @@
 #include "components/translate/core/common/translate_util.h"
 #include "extensions/common/extension_features.h"
 #include "services/device/public/cpp/device_features.h"
+#endif
+
+#if BUILDFLAG(IS_WIN)
+#include "chrome/browser/startup/startup_features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_SCREEN_CAPTURE)
@@ -99,6 +107,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &autofill::features::kAutofillAiServerModel,
       &autofill::features::kAutofillEnableAmountExtraction,
       &autofill::features::kAutofillEnableBuyNowPayLater,
+      &autofill::features::kYourSavedInfoSettingsPage,
       &autofill::features::debug::kAutofillServerCommunication,
       &blink::features::kAdInterestGroupAPI,
       &blink::features::kAIProofreadingAPI,
@@ -122,6 +131,10 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kPrivateAggregationApi,
       &blink::features::kTranslationAPI,
       &blink::features::kUserMediaElement,
+#if BUILDFLAG(IS_ANDROID)
+      &chrome::android::kAndroidPageInfoAsAppMenuItem,
+      &chrome::android::kAndroidSearchInSettings,
+#endif
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
       &commerce::kCommerceDeveloper,
       &commerce::kCommerceMerchantViewer,
@@ -136,7 +149,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &enterprise_data_protection::kEnableForceDownloadToCloud,
       &enterprise_data_protection::kEnableForceDownloadToOneDrive,
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
-      &extensions_features::kExtensionManifestV2Disabled,
       &extensions_features::kExtensionManifestV2Unsupported,
       &extensions_features::kExtensionsManifestV3Only,
 #endif
@@ -162,6 +174,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif  // BUILDFLAG(ENABLE_DEVTOOLS_FRONTEND)
       &features::kDevToolsUseGcaApi,
       &features::kDigitalGoodsApi,
+      &features::kEmailVerificationProtocol,
       &features::kFedCm,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kFewerUpdateConfirmations,
@@ -169,7 +182,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kHttpsFirstBalancedMode,
       &features::kIdleDetection,
       &features::kIndigo,
-      &features::kInfobarRefresh,
+#if BUILDFLAG(IS_WIN)
+      &features::kLaunchOnStartup,
+#endif
       &features::kNewTabPageTriggerForPrerender2,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &features::kPdfInfoBar,
@@ -181,6 +196,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &features::kSCTAuditingHashdance,
       &features::kServiceWorkerAutoPreload,
+      &features::kSkillsEnabled,
       &features::kTabHoverCardImages,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kTrustSafetySentimentSurvey,
@@ -189,6 +205,9 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kWebIdentityDigitalCredentials,
       &features::kWebIdentityDigitalCredentialsCreation,
       &features::kWebOTP,
+#if BUILDFLAG(IS_ANDROID)
+      &feed::kAndroidOpenIncognitoAsWindow,
+#endif
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
       &history_clusters::features::kOnDeviceClustering,
@@ -234,13 +253,14 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
 #endif
       &permissions::features::kPermissionPredictionsV2,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
+      &personal_context::features::kPersonalContext,
       &plus_addresses::features::kPlusAddressesEnabled,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
-      &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxSettings4,
 #if !BUILDFLAG(IS_ANDROID)
       &private_ai::kPrivateAi,
 #endif  // !BUILDFLAG(IS_ANDROID)
+      &private_insights::kPrivateInsightsFeature,
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &safe_browsing::kNotificationTelemetry,

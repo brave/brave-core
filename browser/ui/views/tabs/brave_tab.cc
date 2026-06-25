@@ -161,7 +161,7 @@ void BraveTab::RemovedFromWidget() {
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 void BraveTab::MaybeStartObservingFullscreenChanges() {
-  if (!small_accent_icon_view_ || fullscreen_observation_.IsObserving()) {
+  if (!small_accent_icon_view_ || fullscreen_subscription_) {
     return;
   }
 
@@ -182,11 +182,16 @@ void BraveTab::MaybeStartObservingFullscreenChanges() {
     return;
   }
 
-  fullscreen_observation_.Observe(fullscreen_controller);
+  // Observe changes to fullscreen state.
+  fullscreen_subscription_ =
+      ExclusiveAccessManager::From(browser)
+          ->fullscreen_controller()
+          ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+              &BraveTab::OnFullscreenStateChanged, base::Unretained(this)));
 }
 
 void BraveTab::StopObservingFullscreenChanges() {
-  fullscreen_observation_.Reset();
+  fullscreen_subscription_ = {};
 }
 
 void BraveTab::OnFullscreenStateChanged() {
@@ -734,8 +739,8 @@ void BraveTab::UpdateTreeToggleButtonIcon() {
   const SkColor icon_color =
       tab_style_views()->CalculateTargetColors().foreground_color;
   const bool collapsed = GetTreeTabNode()->collapsed();
-  const auto& icon = collapsed ? vector_icons::kSubmenuArrowChromeRefreshIcon
-                               : vector_icons::kExpandMoreIcon;
+  const auto& icon = collapsed ? vector_icons::kSubmenuArrowChromeRefreshOldIcon
+                               : vector_icons::kExpandMoreOldIcon;
   tree_toggle_button_->SetImageModel(
       views::Button::STATE_NORMAL,
       ui::ImageModel::FromVectorIcon(icon, icon_color, icon_size));

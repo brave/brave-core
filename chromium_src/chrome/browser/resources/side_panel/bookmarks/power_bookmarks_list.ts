@@ -33,8 +33,8 @@ RegisterPolymerPrototypeModification({
       // custom order. Moving in same direcotry doesn't affect with upstream's
       // sort orders.
       if (oldParent === newParent && shouldShow &&
-          this.activeSortIndex_ === /* customOrder */5) {
-        prototype.updateDisplayLists_.apply(this)
+          this.activeSortIndex === /* customOrder */5) {
+        prototype.updateDisplayList_.apply(this)
       }
     }
   }

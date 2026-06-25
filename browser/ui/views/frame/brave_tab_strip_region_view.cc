@@ -207,7 +207,7 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
           base::BindRepeating(
               &BraveHorizontalTabStripRegionView::OnScrollNextPressed,
               weak_factory_.GetWeakPtr()),
-          vector_icons::kForwardArrowIcon),
+          vector_icons::kForwardArrowOldIcon),
       strip_idx.value() + 1);
   tab_scroll_previous_button_ = AddChildViewAt(
       std::make_unique<BraveTabStripScrollButton>(
@@ -215,7 +215,7 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
           base::BindRepeating(
               &BraveHorizontalTabStripRegionView::OnScrollPreviousPressed,
               weak_factory_.GetWeakPtr()),
-          vector_icons::kBackArrowIcon),
+          vector_icons::kBackArrowOldIcon),
       strip_idx.value());
 
   tab_scroll_previous_button_->SetProperty(views::kCrossAxisAlignmentKey,

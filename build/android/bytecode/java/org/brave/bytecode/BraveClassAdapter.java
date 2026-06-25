@@ -21,7 +21,6 @@ public class BraveClassAdapter {
         chain = new BraveCustomTabActivityClassAdapter(chain);
         chain = new BraveCustomTabToolbarButtonsViewBinderClassAdapter(chain);
         chain = new BraveApplicationImplBaseClassAdapter(chain);
-        chain = new BraveAutocompleteCoordinatorClassAdapter(chain);
         chain = new BraveAutocompleteEditTextClassAdapter(chain);
         chain = new BraveAutocompleteMediatorBaseClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
@@ -98,6 +97,7 @@ public class BraveClassAdapter {
         chain = new BraveMultiInstanceManagerApi31ClassAdapter(chain);
         chain = new BraveMultiInstanceOrchestratorImplClassAdapter(chain);
         chain = new BraveMultiWindowUtilsClassAdapter(chain);
+        chain = new BraveNewBackgroundTabAnimationDataClassAdapter(chain);
         chain = new BraveNewTabPageClassAdapter(chain);
         chain = new BraveNewTabPageCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
@@ -108,6 +108,7 @@ public class BraveClassAdapter {
         chain = new BraveNotificationPlatformBridgeClassAdapter(chain);
         chain = new BraveNullAccountManagerDelegateAdapter(chain);
         chain = new BraveOmniboxResourceProviderClassAdapter(chain);
+        chain = new BraveOmniboxViewHolderFactoryClassAdapter(chain);
         chain = new BravePartialCustomTabBottomSheetStrategyClassAdapter(chain);
         chain = new BravePasswordManagerHelperClassAdapter(chain);
         chain = new BravePasswordsPreferenceClassAdapter(chain);

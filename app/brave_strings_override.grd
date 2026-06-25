@@ -105,8 +105,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_chromeos">
         </if>
-      <if expr="is_win">
-        </if>
       <if expr="is_macosx or is_chromeos">
         </if>
       <if expr="not is_macosx and not is_chromeos">
@@ -169,6 +167,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_win">
         </if>
+      <if expr="is_win">
+        </if>
       <if expr="use_titlecase">
         </if>
       <if expr="not use_titlecase">
@@ -195,6 +195,8 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="not is_android and not is_chromeos">
         </if>
       <if expr="is_win or is_macosx">
+        </if>
+      <if expr="enable_pdf">
         </if>
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
         Extensions, apps, and themes from unknown sources can harm your device. Brave recommends only installing them from the <ph name="IDS_EXTENSION_WEB_STORE_TITLE">$1<ex>Web Store</ex></ph>
@@ -311,9 +313,6 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
       <if expr="is_win">
         </if>
 
-      <if expr="is_chromeos">
-        </if>
-
       <if expr="not is_android">
         </if>
 
@@ -337,9 +336,15 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
             Open link in Brave &amp;private window
           </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP_V2" desc="The name of the command to open a link in a Private browser window when the user is in an app window">
+            Open link in Brave &amp;Private window
+          </message>
         </if>
         <if expr="use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
+            Open Link in Brave &amp;Private Window
+          </message>
+          <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD_INAPP_V2" desc="In Title Case: The name of the command to open a link in a Private browser window when the user is in an app window">
             Open Link in Brave &amp;Private Window
           </message>
         </if>
@@ -469,6 +474,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
 
       <if expr="not is_android">
+        </if>
+      <if expr="is_macosx">
+        </if>
+      <if expr="is_win or is_linux or is_chromeos">
         </if>
       <if expr="enable_extensions">
         </if>

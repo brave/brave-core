@@ -31,6 +31,7 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
@@ -53,6 +54,7 @@ public class BraveStatusBarColorControllerUnitTest {
     @Mock private TopUiThemeColorProvider mTopUiThemeColorProvider;
     @Mock private EdgeToEdgeSystemBarColorHelper mSystemBarColorHelper;
     @Mock private DesktopWindowStateManager mDesktopWindowStateManager;
+    @Mock private BrowserControlsStateProvider mBrowserControlsStateProvider;
 
     private final MonotonicObservableSupplier<LayoutManager> mLayoutManagerSupplier =
             ObservableSuppliers.alwaysNull();
@@ -106,6 +108,7 @@ public class BraveStatusBarColorControllerUnitTest {
                 mTopUiThemeColorProvider,
                 mSystemBarColorHelper,
                 mDesktopWindowStateManager,
-                mOverviewColorSupplier);
+                mOverviewColorSupplier,
+                mBrowserControlsStateProvider);
     }
 }

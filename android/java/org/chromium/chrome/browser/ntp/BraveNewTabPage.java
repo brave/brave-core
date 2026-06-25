@@ -17,6 +17,7 @@ import org.chromium.build.annotations.EnsuresNonNull;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.feed.BraveFeedSurfaceCoordinator;
 import org.chromium.chrome.browser.feed.FeedActionDelegate;
@@ -88,7 +89,8 @@ public class BraveNewTabPage extends NewTabPage {
             OneshotSupplier<ModuleRegistry> moduleRegistrySupplier,
             MonotonicObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
             TopInsetProvider topInsetProvider,
-            StartupMetricsTracker startupMetricsTracker) {
+            StartupMetricsTracker startupMetricsTracker,
+            BackPressManager backPressManager) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -113,7 +115,8 @@ public class BraveNewTabPage extends NewTabPage {
                 moduleRegistrySupplier,
                 edgeToEdgeControllerSupplier,
                 topInsetProvider,
-                startupMetricsTracker);
+                startupMetricsTracker,
+                backPressManager);
 
         mBottomSheetController = bottomSheetController;
         mTabStripHeightSupplier = tabStripHeightSupplier;

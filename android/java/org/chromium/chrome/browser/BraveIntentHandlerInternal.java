@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser;
 
-import android.content.Intent;
-
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 
@@ -20,7 +18,7 @@ import org.chromium.build.annotations.Nullable;
 final class BraveIntentHandlerInternal {
     private BraveIntentHandlerInternal() {}
 
-    static boolean intentHasUnsafeUrl(@Nullable String url, Intent intent) {
+    static boolean isUrlUnsafe(@Nullable String url) {
         assert false;
         return false;
     }

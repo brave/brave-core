@@ -1,38 +1,40 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 0e7032634735c6f32404e69e3f302170bd66cb47..5bba71b4fbf6f9e0bcf0de3b0ce55b0eecfa0cdf 100644
+index a1c1ec1900819009a7e6ea855d759723f99aa54e..cf1ee145b4e6d367286f62b654c0322e0a17234b 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -78,6 +78,7 @@ class ChromeContextMenuItem {
-         Item.PRINT_PAGE,
-         Item.VIEW_PAGE_SOURCE,
+@@ -80,7 +80,8 @@ class ChromeContextMenuItem {
          Item.INSPECT_ELEMENT,
+         Item.COPY_VIDEO_FRAME,
+         Item.DOWNLOAD_VIDEO_FRAME,
+-        Item.LENS_OVERLAY
++        Item.LENS_OVERLAY,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -135,8 +136,9 @@ class ChromeContextMenuItem {
-         // Developer Group
-         int VIEW_PAGE_SOURCE = 41;
-         int INSPECT_ELEMENT = 42;
-+        int COPY_CLEAN_LINK = 43;
+@@ -141,8 +142,9 @@ class ChromeContextMenuItem {
+         int COPY_VIDEO_FRAME = 43;
+         int DOWNLOAD_VIDEO_FRAME = 44;
+         int LENS_OVERLAY = 45;
++        int COPY_CLEAN_LINK = 46;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 43;
+-        int NUM_ENTRIES = 46;
 +        int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -184,6 +186,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_print_page, // Item.PRINT_PAGE
-         R.id.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
-         R.id.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
+@@ -193,6 +195,7 @@ class ChromeContextMenuItem {
+         R.id.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
+         R.id.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
+         R.id.contextmenu_lens_overlay, // Item.LENS_OVERLAY
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -231,6 +234,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_print_page, // Item.PRINT_PAGE
-         R.string.contextmenu_view_page_source, // Item.VIEW_PAGE_SOURCE
-         R.string.contextmenu_inspect_element, // Item.INSPECT_ELEMENT
+@@ -243,6 +246,7 @@ class ChromeContextMenuItem {
+         R.string.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
+         R.string.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
+         R.string.contextmenu_search_tab_with_google_lens, // Item.LENS_OVERLAY
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  

@@ -103,6 +103,22 @@ RegisterPolymerTemplateModifications({
   // </if>
 })
 
+RegisterPolymerTemplateModifications({
+  'settings-autofill-section': (templateContent) => {
+    const emailSharedMenu = templateContent.querySelector('#emailSharedMenu')
+    if (!emailSharedMenu) {
+      console.error('[Settings] Could not find #emailSharedMenu to hide email verification card')
+      return
+    }
+    const emailCard = emailSharedMenu.closest('.card') as HTMLElement | null
+    if (!emailCard) {
+      console.error('[Settings] Could not find email verification card')
+      return
+    }
+    emailCard.hidden = true
+  }
+})
+
 // <if expr="enable_email_aliases">
 if (loadTimeData.getBoolean('isEmailAliasesEnabled')) {
   RegisterPolymerPrototypeModification({

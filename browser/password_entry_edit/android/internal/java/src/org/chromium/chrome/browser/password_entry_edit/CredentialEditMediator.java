@@ -273,12 +273,13 @@ public class CredentialEditMediator implements UiActionHandler {
                 mResources.getString(R.string.password_entry_edit_delete_credential_dialog_confirm);
         mConfirmationDialogDismissHandler =
                 mActionConfirmationDialog.show(
-                        new ConfirmationDialogParams(mActivity)
+                        new ConfirmationDialogParams.Builder(mActivity)
                                 .withTitle(title)
                                 .withDescription(message)
                                 .withPositiveButton(confirmation)
                                 .withNegativeButton(android.R.string.cancel)
-                                .withSupportStopShowing(false),
+                                .withSupportStopShowing(false)
+                                .build(),
                         (handler, result, stopShowing) ->
                                 onConfirmationDialogInteracted(
                                         result,

@@ -139,6 +139,11 @@ class BravePermissionDialogModel {
         BravePermissionDialogDelegate braveDelegate =
                 (BravePermissionDialogDelegate) (Object) delegate;
 
+        // Add geolocation accuracy selector if this is a GEOLOCATION_WITH_OPTIONS request.
+        if (braveDelegate.getIsGeolocationWithOptions()) {
+            addGeolocationAccuracyOptions((LinearLayout) customView, context, braveDelegate);
+        }
+
         String[] lifetimeOptions = braveDelegate.getLifetimeOptions();
         if (lifetimeOptions == null) {
             return;
@@ -153,7 +158,8 @@ class BravePermissionDialogModel {
 
         LinearLayout.LayoutParams lifetimeOptionsTextLayoutParams =
                 new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-        lifetimeOptionsTextLayoutParams.setMargins(0, 0, 0, ViewUtils.dpToPx(context, 8));
+        lifetimeOptionsTextLayoutParams.setMargins(
+                0, ViewUtils.dpToPx(context, 16), 0, ViewUtils.dpToPx(context, 8));
         lifetimeOptionsText.setLayoutParams(lifetimeOptionsTextLayoutParams);
         layout.addView(lifetimeOptionsText);
 
@@ -174,6 +180,40 @@ class BravePermissionDialogModel {
             }
         });
         radioGroup.check(0);
+        layout.addView(radioGroup);
+    }
+
+    /* Adds a geolocation accuracy (Precise / Approximate) radio group to the dialog. */
+    private static void addGeolocationAccuracyOptions(
+            LinearLayout layout, Context context, BravePermissionDialogDelegate braveDelegate) {
+        TextView label = new TextView(context);
+        label.setText(context.getString(R.string.permissions_geolocation_accuracy_label));
+        label.setTextAppearance(R.style.TextAppearance_TextMedium_Primary);
+
+        LinearLayout.LayoutParams labelParams =
+                new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        labelParams.setMargins(0, ViewUtils.dpToPx(context, 16), 0, ViewUtils.dpToPx(context, 8));
+        label.setLayoutParams(labelParams);
+        layout.addView(label);
+
+        RadioGroup radioGroup = new RadioGroup(context);
+        String[] options = {
+            context.getString(R.string.permissions_geolocation_precise),
+            context.getString(R.string.permissions_geolocation_approximate)
+        };
+        for (int i = 0; i < options.length; i++) {
+            RadioButton button = new RadioButton(context);
+            button.setText(options[i]);
+            button.setId(i);
+            radioGroup.addView(button);
+        }
+        radioGroup.setOnCheckedChangeListener(
+                (group, checkedId) -> braveDelegate.setSelectedGeolocationAccuracy(checkedId));
+        radioGroup.check(0); // default: Precise
+        LinearLayout.LayoutParams radioParams =
+                new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+        radioParams.setMargins(0, 0, 0, ViewUtils.dpToPx(context, 16));
+        radioGroup.setLayoutParams(radioParams);
         layout.addView(radioGroup);
     }
 

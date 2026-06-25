@@ -6,7 +6,6 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/brave_ui_features.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -56,13 +55,13 @@ IN_PROC_BROWSER_TEST_P(BrowserNavigatorPopupAsTabBrowserTest, OpenPopupAsTab) {
       }
       return browser()->tab_strip_model()->count() == 2;
     }));
-    EXPECT_EQ(1u, chrome::GetTotalBrowserCount());
+    EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
   } else {
     EXPECT_TRUE(base::test::RunUntil([&]() {
       if (popup_blocker_tab_helper->GetBlockedPopupsCount() != 0) {
         popup_blocker_tab_helper->ShowAllBlockedPopups();
       }
-      return chrome::GetTotalBrowserCount() == 2;
+      return GlobalBrowserCollection::GetInstance()->GetSize() == 2;
     }));
     GlobalBrowserCollection::GetInstance()->ForEach(
         [this](BrowserWindowInterface* b) {

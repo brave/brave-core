@@ -1,0 +1,26 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+// Based on Chromium code subject to the following license:
+// Copyright 2021 The Chromium Authors
+// Use of this source code is governed by a BSD-style license that can be
+// found in the LICENSE file.
+
+module brave_news.mojom;
+
+import "url/mojom/url.mojom";
+
+struct RssLinks {
+  // URL of the page.
+  url.mojom.Url page_url;
+  // List of RSS URLs discovered on the page.
+  array<url.mojom.Url> links;
+};
+
+// Implemented in the renderer; one instance per main frame.
+interface RssLinkReader {
+  // Scans the document for RSS links and returns them.
+  GetRssLinks() => (RssLinks rss_links);
+};

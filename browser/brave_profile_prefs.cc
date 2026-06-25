@@ -176,14 +176,14 @@ void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
   // Clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
-  // Disable NTP suggestions
-  // On Android we want to have enable_feed_v2 parameter enabled to
-  // provide linking with feed::FetchRssLinks at
-  // BraveNewsTabHelper::DOMContentLoaded, but kEnableSnippets and
-  // kArticlesListVisible must be defaulted to false to avoid failed assertion
-  // at BraveNewTabPage.initializeMainView. So override
+  // Disable NTP suggestions.
+  // On Android we want to have the enable_feed_v2 parameter enabled so the
+  // upstream feed prefs are registered (Brave News uses its own
+  // `brave_news::FetchRssLinks` for RSS discovery), but kEnableSnippets and
+  // kArticlesListVisible must default to false to avoid a failed assertion
+  // in BraveNewTabPage.initializeMainView. So override
   // feed::prefs::RegisterFeedSharedProfilePrefs for Android only. Related
-  // Chromium's commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
+  // Chromium commit: d3500b942cde04737bc13021173b6ffa11aaf1b9.
   registry->SetDefaultPrefValue(feed::prefs::kEnableSnippets,
                                 base::Value(false));
   registry->SetDefaultPrefValue(feed::prefs::kArticlesListVisible,

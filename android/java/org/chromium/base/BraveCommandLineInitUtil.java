@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.SharedPreferences;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.VisibleForTesting;
 
 import org.chromium.build.annotations.NullMarked;
 
@@ -39,14 +40,15 @@ public abstract class BraveCommandLineInitUtil {
 
     // Suppress to access SharedPreferences, which is discouraged; we cannot depend on //chrome from
     // //base to use ChromeSharedPreferences
+    @VisibleForTesting
     @SuppressWarnings("UseSharedPreferencesManagerFromChromeCheck")
-    private static void appendBraveSwitchesAndArguments() {
+    static void appendBraveSwitchesAndArguments() {
         SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
         String qaCommandLine = sharedPreferences.getString(PREF_QA_COMMAND_LINE, "");
         if (sharedPreferences.getBoolean(PREF_QA_VLOG_REWARDS, false)) {
             qaCommandLine += " --enable-logging=stderr";
             qaCommandLine +=
-                    " --vmodule=*/brave_ads/*=6,*/brave_user_model/*=6,*/bat_ads/*=6,*/brave_rewards/*=6";
+                    " --vmodule=*/brave_ads/*=6,*/brave_user_model/*=6,*/bat_ads/*=6,*/brave_rewards/*=6"; // presubmit: ignore-long-line
         }
 
         // For testing we need custom variations server url prior to the first time run, so we try
@@ -90,5 +92,15 @@ public abstract class BraveCommandLineInitUtil {
         @SuppressLint("VisibleForTests")
         String[] args = CommandLine.tokenizeQuotedArguments(qaCommandLine.toCharArray());
         CommandLine.getInstance().appendSwitchesAndArguments(args);
+
+        // In cr150, CreateFeatureList() (and thus VerifyAndParseSeedImpl) is now called
+        // from Java via InitializeFeatureList.initializeFeatureList() before
+        // BraveMainDelegate::BasicStartupComplete() runs AppendBraveCommandLineOptions.
+        // If --variations-pr= is set, the PR test seed has no signature, so we must
+        // add accept-empty-variations-seed-signature here — before any native code
+        // touches the seed — otherwise signature verification wipes the stored seed.
+        if (CommandLine.getInstance().hasSwitch("variations-pr")) {
+            CommandLine.getInstance().appendSwitch("accept-empty-variations-seed-signature");
+        }
     }
 }

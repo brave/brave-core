@@ -24,6 +24,7 @@ brave_chrome_renderer_sources = [
 brave_chrome_renderer_deps = [
   "//brave/common:mojo_bindings",
   "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/brave_news/renderer",
   "//brave/components/brave_origin:features",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
