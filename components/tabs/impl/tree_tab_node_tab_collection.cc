@@ -178,6 +178,22 @@ TreeTabNodeTabCollection::GetTreeTabNodeCollection(
   return nullptr;
 }
 
+// static
+tabs::TreeTabNodeTabCollection*
+TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
+    const tabs::TabInterface* tab) {
+  tabs::TabCollection* parent = tab->GetParentCollection(GetPassKeyStatic());
+  while (parent && parent->type() != tabs::TabCollection::Type::TREE_NODE) {
+    parent = parent->GetParentCollection();
+  }
+
+  if (parent && parent->type() == tabs::TabCollection::Type::TREE_NODE) {
+    return static_cast<tabs::TreeTabNodeTabCollection*>(parent);
+  }
+
+  return nullptr;
+}
+
 TreeTabNodeTabCollection::TreeTabNodeTabCollection(
     const tree_tab::TreeTabNodeId& tree_tab_node_id,
     std::unique_ptr<tabs::TabInterface> current_tab,

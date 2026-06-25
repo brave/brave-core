@@ -57,9 +57,14 @@ class TreeTabNodeTabCollection : public tabs::TabCollection {
   // to their parent collections and removing the TreeTabNodes themselves.
   static void FlattenTreeTabs(TabCollection& root);
 
-  // Finds the nearest TreeTabNodeTabCollection ancestor of |tab| and returns
-  // it, or nullptr if the tab is not inside a tree node.
+  // Returns direct parent TreeTabNodeTabCollection of |tab| and returns it, or
+  // nullptr if the tab is not inside a tree node.
   static tabs::TreeTabNodeTabCollection* GetTreeTabNodeCollection(
+      const tabs::TabInterface* tab);
+
+  // Finds the nearest ancestor TreeTabNodeTabCollection of |tab| and returns
+  // it. This is used when a tab is under group or split. Can return nullptr.
+  static tabs::TreeTabNodeTabCollection* GetNearestTreeTabNodeCollection(
       const tabs::TabInterface* tab);
 
   TreeTabNodeTabCollection(
