@@ -257,11 +257,16 @@ void AIChatService::Shutdown() {
 
 std::unique_ptr<syncer::DataTypeControllerDelegate>
 AIChatService::CreateSyncControllerDelegate() {
-  // Trigger storage init eagerly so that |db_task_runner_| exists by the
-  // time we return — the proxy must be bound to a real task runner. The
-  // bridge itself may still be created asynchronously after the os_crypt
-  // encryptor is ready; the proxy's callback will resolve the bridge
-  // lazily once AIChatSyncBackend::SetBridge() runs on the same sequence.
+  // Trigger storage init eagerly so that |db_task_runner_| and
+  // |sync_backend_| exist by the time we return — the proxy must be bound to a
+  // real task runner. The bridge is installed asynchronously on that sequence;
+  // the proxy's callback resolves it lazily once
+  // AIChatSyncBackend::SetBridge() runs there.
+  //
+  // This returns non-null whenever the sync feature is enabled, even with chat
+  // history off, so the data type is always registered and the controller's
+  // precondition can gate it at runtime. Returning null here would make the
+  // type absent for the whole browser session — see MaybeInitStorage().
   MaybeInitStorage();
   if (!db_task_runner_ || !sync_backend_) {
     return nullptr;
@@ -539,48 +544,64 @@ void AIChatService::OnAssociatedWebContentDeleted(
 }
 
 void AIChatService::MaybeInitStorage() {
-  if (IsAIChatHistoryEnabled()) {
-    // Bring up the background sequence and the sync backend eagerly so
-    // CreateSyncControllerDelegate() can hand out a working
-    // ProxyDataTypeControllerDelegate straight away. The backend lives for the
-    // whole service lifetime and is never swapped, so that delegate always
-    // resolves to the same object.
-    if (!db_task_runner_) {
-      db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
-          {base::MayBlock(), base::WithBaseSyncPrimitives(),
-           base::TaskPriority::USER_BLOCKING,
-           base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
-    }
-    if (!sync_backend_ && features::IsBraveSyncAIChatEnabled()) {
-      sync_backend_ = base::MakeRefCounted<AIChatSyncBackend>(db_task_runner_);
-      // Install the bridge (and its change processor) now, before the database
-      // exists. This is what the ProxyDataTypeControllerDelegate resolves to,
-      // so the change processor is present to receive OnSyncStarting() from the
-      // sync engine even if that arrives before the database is ready — it just
-      // buffers the start until SetDatabase() reports the model ready. The
-      // database is attached in OnOsCryptAsyncReady() once the encryptor is
-      // available.
-      //
-      // Hop from the bridge sequence back to this service's sequence (UI) when
-      // remote changes are applied, so we can refresh the in-memory
-      // conversation list and any active ConversationHandlers.
-      auto on_remote_changes_applied = base::BindPostTask(
-          base::SequencedTaskRunner::GetCurrentDefault(),
-          base::BindRepeating(&AIChatService::OnRemoteSyncDataApplied,
-                              weak_ptr_factory_.GetWeakPtr()));
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(
-              [](scoped_refptr<AIChatSyncBackend> backend,
-                 AIChatSyncBridge::RemoteChangesAppliedCallback
-                     on_remote_changes_applied) {
-                backend->SetBridge(std::make_unique<AIChatSyncBridge>(
-                    std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
-                        syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
-                    std::move(on_remote_changes_applied)));
-              },
-              sync_backend_, std::move(on_remote_changes_applied)));
-    }
+  const bool sync_enabled = features::IsBraveSyncAIChatEnabled();
+  const bool storage_enabled = IsAIChatHistoryEnabled();
+
+  if ((sync_enabled || storage_enabled) && !db_task_runner_) {
+    db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
+        {base::MayBlock(), base::WithBaseSyncPrimitives(),
+         base::TaskPriority::USER_BLOCKING,
+         base::TaskShutdownBehavior::BLOCK_SHUTDOWN});
+  }
+
+  // Bring the sync backend up on the feature flag alone, NOT on the storage
+  // pref, so CreateSyncControllerDelegate() can always hand out a working
+  // ProxyDataTypeControllerDelegate. The set of registered sync data types is
+  // fixed for the life of the SyncService (SyncServiceImpl::Initialize() takes
+  // its controllers once and DataTypeManagerImpl holds them const), so a null
+  // delegate here means the type is absent until the next browser start — i.e.
+  // turning chat history on could never turn sync on without a restart. What
+  // actually gates the type is AIChatDataTypeController::GetPreconditionState()
+  // reporting kMustStopAndClearData while storage is off. This mirrors upstream
+  // (e.g. skills::SkillDataTypeController: registration on the feature,
+  // precondition on the pref).
+  //
+  // The backend lives for the whole service lifetime and is never swapped, so
+  // the delegate always resolves to the same object. Cost is a ThreadPool
+  // sequence (not a dedicated thread) plus a refcounted holder.
+  if (sync_enabled && !sync_backend_) {
+    sync_backend_ = base::MakeRefCounted<AIChatSyncBackend>(db_task_runner_);
+    // Install the bridge (and its change processor) now, before the database
+    // exists. This is what the ProxyDataTypeControllerDelegate resolves to, so
+    // the change processor is present to receive OnSyncStarting() from the sync
+    // engine even if that arrives before the database is ready — it just
+    // buffers the start until SetDatabase() reports the model ready. The
+    // database is attached in OnOsCryptAsyncReady() once the encryptor is
+    // available. A bridge with no database is a supported steady state: it is
+    // also what ClearDatabase() leaves behind on a storage off toggle.
+    //
+    // Hop from the bridge sequence back to this service's sequence (UI) when
+    // remote changes are applied, so we can refresh the in-memory
+    // conversation list and any active ConversationHandlers.
+    auto on_remote_changes_applied = base::BindPostTask(
+        base::SequencedTaskRunner::GetCurrentDefault(),
+        base::BindRepeating(&AIChatService::OnRemoteSyncDataApplied,
+                            weak_ptr_factory_.GetWeakPtr()));
+    db_task_runner_->PostTask(
+        FROM_HERE,
+        base::BindOnce(
+            [](scoped_refptr<AIChatSyncBackend> backend,
+               AIChatSyncBridge::RemoteChangesAppliedCallback
+                   on_remote_changes_applied) {
+              backend->SetBridge(std::make_unique<AIChatSyncBridge>(
+                  std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
+                      syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
+                  std::move(on_remote_changes_applied)));
+            },
+            sync_backend_, std::move(on_remote_changes_applied)));
+  }
+
+  if (storage_enabled) {
     if (!ai_chat_db_ && !os_crypt_init_pending_) {
       DVLOG(0) << "Initializing OS Crypt Async";
       os_crypt_init_pending_ = true;

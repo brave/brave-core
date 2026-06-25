@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+
 source_set("sync") {
   sources = [
     "brave_sync_service_impl_delegate.cc",
@@ -30,6 +32,18 @@ if (!is_ios) {
       "//chrome/browser",
       "//chrome/test:test_support",
     ]
+
+    if (enable_ai_chat) {
+      sources += [ "ai_chat_sync_browsertest.cc" ]
+      deps += [
+        "//brave/components/ai_chat/core/common",
+        "//chrome/browser",
+        "//chrome/browser/sync",
+        "//components/prefs",
+        "//components/sync/base",
+        "//components/sync/service",
+      ]
+    }
 
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
   }

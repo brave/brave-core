@@ -46,6 +46,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_data_type_controller.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
@@ -62,6 +63,11 @@
 #include "brave/components/ai_chat/core/common/prefs.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/os_crypt/async/browser/test_utils.h"
+#include "components/signin/public/identity_manager/account_managed_status_finder_outcome.h"
+#include "components/sync/base/data_type.h"
+#include "components/sync/service/data_type_controller.h"
+#include "components/sync/test/fake_data_type_controller_delegate.h"
+#include "components/sync/test/test_sync_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/network/public/cpp/network_context_getter.h"
@@ -83,6 +89,23 @@ using ::testing::NiceMock;
 namespace ai_chat {
 
 namespace {
+
+// A TestSyncService that records DataTypePreconditionChanged() calls for the
+// AI Chat data type, so the AIChatDataTypeController's precondition triggering
+// can be asserted without a running sync engine.
+class PreconditionRecordingSyncService : public syncer::TestSyncService {
+ public:
+  void DataTypePreconditionChanged(syncer::DataType type) override {
+    if (type == syncer::AI_CHAT_CONVERSATION) {
+      ++precondition_changed_count_;
+    }
+  }
+
+  int precondition_changed_count() const { return precondition_changed_count_; }
+
+ private:
+  int precondition_changed_count_ = 0;
+};
 
 class MockAIChatCredentialManager : public AIChatCredentialManager {
  public:
@@ -415,6 +438,16 @@ class AIChatServiceUnitTest : public testing::Test,
   // Drives what the sync bridge would call after applying a remote batch.
   void ApplyRemoteSyncData(std::vector<std::string> conversation_uuids) {
     ai_chat_service_->OnRemoteSyncDataApplied(std::move(conversation_uuids));
+  }
+
+  // Round-trips the database sequence and the reply back to this one. Unlike
+  // WaitForSyncBridgeReady() this does not wait for a database, so it is usable
+  // while on-disk storage is disabled.
+  void FlushSyncBackendSequence() {
+    base::RunLoop run_loop;
+    ai_chat_service_->db_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
+    run_loop.Run();
   }
 
   // Returns whether the sync backend currently resolves a non-null controller
@@ -1066,6 +1099,122 @@ TEST_P(AIChatServiceUnitTest, RemoteSyncDataRefreshesOnlyNamedConversations) {
   EXPECT_TRUE(base::test::RunUntil(
       [&] { return named->GetConversationHistory().empty(); }));
   EXPECT_EQ(unnamed->GetConversationHistory().size(), 2u);
+}
+
+// The AI Chat sync data type controller must gate the type on the storage
+// pref: kMustStopAndClearData when off, kPreconditionsMet when on. Turning
+// storage off must immediately ask the engine to re-evaluate; turning it back
+// on must defer that until the database has re-attached to the bridge, so the
+// restarted type's initial sync sees an attached database.
+TEST_P(AIChatServiceUnitTest, DataTypeControllerPreconditionTracksStoragePref) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  PreconditionRecordingSyncService sync_service;
+  AIChatDataTypeController controller(
+      &sync_service, &prefs_, ai_chat_service_.get(),
+      std::make_unique<syncer::FakeDataTypeControllerDelegate>(
+          syncer::AI_CHAT_CONVERSATION),
+      std::make_unique<syncer::FakeDataTypeControllerDelegate>(
+          syncer::AI_CHAT_CONVERSATION));
+
+  const syncer::DataTypeController::PreconditionContext context(
+      signin::AccountManagedStatusFinderOutcome::kConsumerGmail);
+
+  // Storage on -> preconditions met.
+  EXPECT_EQ(syncer::DataTypeController::PreconditionState::kPreconditionsMet,
+            controller.GetPreconditionState(context));
+
+  // Storage off -> stop and clear, and the engine is asked to re-evaluate
+  // immediately (there is no database to wait for on disable).
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  EXPECT_EQ(
+      syncer::DataTypeController::PreconditionState::kMustStopAndClearData,
+      controller.GetPreconditionState(context));
+  EXPECT_EQ(1, sync_service.precondition_changed_count());
+
+  // Storage back on -> preconditions met again, and the engine is asked to
+  // re-evaluate once the database has re-attached to the bridge (the
+  // RegisterSyncDatabaseReadyCallback path), NOT directly from the pref
+  // change. os_crypt is synchronous in tests, so the re-attach and its
+  // notification happen within this SetBoolean() call; in production the
+  // notification is deferred until os_crypt finishes. The count reaching
+  // exactly 2 (and not 3) shows the re-evaluation came from the database-ready
+  // signal and that the pref change itself did not also fire it on enable.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  EXPECT_EQ(syncer::DataTypeController::PreconditionState::kPreconditionsMet,
+            controller.GetPreconditionState(context));
+  EXPECT_EQ(2, sync_service.precondition_changed_count());
+}
+
+// The set of registered sync data types is fixed when the SyncService is built
+// (SyncServiceImpl::Initialize() takes its controllers once), so the delegate
+// must exist even with chat history off. A null delegate here means the AI Chat
+// type is absent for the whole browser session, and enabling chat history could
+// never enable sync without a restart. Gating is the controller's
+// precondition's job, not registration's.
+TEST_P(AIChatServiceUnitTest, SyncControllerDelegateExistsWithStorageOff) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  ResetService();
+
+  EXPECT_TRUE(ai_chat_service_->CreateSyncControllerDelegate());
+}
+
+// With storage off at startup the bridge exists but has no database, so it has
+// never reported ModelReadyToSync(). Drive the kMustStopAndClearData path that
+// DataTypeManager takes for such a type — Stop() on a NOT_RUNNING controller,
+// which only clears metadata — against the real
+// ProxyDataTypeControllerDelegates rather than fakes. Upstream supports the
+// never-model-ready case explicitly
+// (ClientTagBasedDataTypeProcessor::ClearMetadataIfStopped() defers via
+// pending_clear_metadata_), but the proxy hop through AIChatSyncBackend is
+// Brave's wiring, so pin it here. Then check the off->on transition still
+// re-evaluates the precondition from the database-ready signal.
+TEST_P(AIChatServiceUnitTest, SyncControllerStopsAndClearsWithStorageOff) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  ResetService();
+
+  auto full_delegate = ai_chat_service_->CreateSyncControllerDelegate();
+  auto transport_delegate = ai_chat_service_->CreateSyncControllerDelegate();
+  ASSERT_TRUE(full_delegate);
+  ASSERT_TRUE(transport_delegate);
+
+  PreconditionRecordingSyncService sync_service;
+  AIChatDataTypeController controller(
+      &sync_service, &prefs_, ai_chat_service_.get(), std::move(full_delegate),
+      std::move(transport_delegate));
+
+  const syncer::DataTypeController::PreconditionContext context(
+      signin::AccountManagedStatusFinderOutcome::kConsumerGmail);
+  ASSERT_EQ(
+      syncer::DataTypeController::PreconditionState::kMustStopAndClearData,
+      controller.GetPreconditionState(context));
+  ASSERT_EQ(syncer::DataTypeController::NOT_RUNNING, controller.state());
+
+  bool stopped = false;
+  controller.Stop(syncer::CLEAR_METADATA,
+                  base::BindLambdaForTesting([&] { stopped = true; }));
+  EXPECT_TRUE(stopped);
+  // The clear is forwarded to the bridge sequence by the proxy; let it land.
+  FlushSyncBackendSequence();
+
+  // Enabling storage attaches the database, and that is what re-evaluates the
+  // precondition — not the pref change itself.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+  EXPECT_EQ(syncer::DataTypeController::PreconditionState::kPreconditionsMet,
+            controller.GetPreconditionState(context));
+  EXPECT_EQ(1, sync_service.precondition_changed_count());
 }
 
 TEST_P(AIChatServiceUnitTest, GetConversations_StorageTurnedOffWhileLoading) {
