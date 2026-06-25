@@ -189,7 +189,7 @@ export function getCurrentBackground(
 
   switch (type) {
     case SelectedBackgroundType.kBrave: {
-      const braveBackground = chooseIndex(braveBackgrounds, rotateIndex)
+      const braveBackground = chooseRandom(braveBackgrounds, randomValue)
       return braveBackground ? { type: 'brave', ...braveBackground } : null
     }
     case SelectedBackgroundType.kCustom: {
