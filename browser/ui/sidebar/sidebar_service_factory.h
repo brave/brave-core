@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -52,6 +53,9 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
           SidebarItem::BuiltInItemType::kHistory,
 #if BUILDFLAG(ENABLE_PLAYLIST)
           SidebarItem::BuiltInItemType::kPlaylist,
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+          SidebarItem::BuiltInItemType::kBraveNews,
 #endif
       });
 
