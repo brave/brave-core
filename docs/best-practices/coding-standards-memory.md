@@ -852,3 +852,50 @@ class Decoder {
 constexpr auto kMagic = std::to_array<uint8_t>({0x7f, 'E', 'L', 'F'});
 base::BindOnce(&Validate, base::span(kMagic));
 ```
+
+---
+
+<a id="CSM-038"></a>
+
+## ✅ Flag `base::Unretained` Only When the Callback Can Outlive `this`
+
+**`base::Unretained(this)` is safe whenever the bound callback is owned by
+`this` — directly or through a member that is destroyed with `this` — so the
+callback cannot run after `this` is gone.** This is the common, correct pattern;
+the only genuinely problematic case is a callback that can outlive `this`. Flag
+(and replace with a `WeakPtr`) only that case — not the member-owned callbacks
+below.
+
+Safe — the callback's owner is a member destroyed with `this`:
+
+- A `PrefChangeRegistrar` held as a member (including one observing
+  `local_state`) — its destructor unregisters every observer, so the callback
+  cannot fire afterwards
+- `base::OneShotTimer` / `base::RepeatingTimer` members (see
+  [CSM-011](#CSM-011))
+- Owned `mojo::Receiver`, `mojo::Remote`, or `mojo::AssociatedRemote`
+  disconnect/error handlers (see [CSM-012](#CSM-012))
+- A `base::CallbackListSubscription` stored as a member
+
+```cpp
+// ✅ SAFE - the registrar is a member destroyed with `this`, so the
+// callback cannot fire after `this` is gone.
+pref_change_registrar_.Init(prefs_);
+pref_change_registrar_.Add(
+    kSomePref,
+    base::BindRepeating(&MyClass::OnPrefChanged, base::Unretained(this)));
+```
+
+Problematic — the callback can outlive `this` (use a `WeakPtr` instead):
+
+```cpp
+// ❌ WRONG - posted to another sequence; `this` may be freed before it runs
+base::ThreadPool::PostTask(
+    FROM_HERE, base::BindOnce(&MyClass::DoWork, base::Unretained(this)));
+```
+
+Only flag `base::Unretained` when the callback is posted to a thread pool or
+another sequence (see [CSM-010](#CSM-010)), stored in a longer-lived object, or
+handed to an API whose lifetime is independent of `this`. A linter that flags
+every `base::Unretained(this)` produces mostly false positives, since
+member-owned callbacks are the dominant, correct usage.
