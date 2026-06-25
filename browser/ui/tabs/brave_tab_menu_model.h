@@ -25,6 +25,7 @@ class TabRestoreService;
 }  // namespace sessions
 
 class BrowserWindowInterface;
+class VerticalTabController;
 
 class BraveTabMenuModel : public TabMenuModel {
  public:
@@ -69,6 +70,7 @@ class BraveTabMenuModel : public TabMenuModel {
   }
 
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
+  raw_ptr<VerticalTabController> vertical_tab_controller_ = nullptr;
   bool all_muted_;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)

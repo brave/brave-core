@@ -16,7 +16,6 @@
 #include "brave/browser/ui/screenshot/screenshot_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
-#include "brave/browser/ui/tabs/brave_browser_tab_menu_model_delegate.h"
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
@@ -72,10 +71,9 @@ class BraveVPNController {};
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
 BrowserWindowFeatures::~BrowserWindowFeatures() {
-  // As window_feature_controller_ and tab_menu_model_delegate_ are dependent on
-  // vertical tab controller, it should be destroyed first.
+  // As window_feature_controller_ is dependent on vertical tab controller, it
+  // should be destroyed first.
   window_feature_controller_.reset();
-  tab_menu_model_delegate_.reset();
   vertical_tab_controller_.reset();
 }
 
@@ -116,13 +114,6 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
 
   brave_shields_ui_contents_cache_ =
       std::make_unique<BraveShieldsUIContentsCache>();
-
-  // Replace the original tab menu model delegate with our own.
-  tab_menu_model_delegate_ =
-      std::make_unique<brave::BraveBrowserTabMenuModelDelegate>(
-          browser->GetSessionID(), profile, app_browser_controller_.get(),
-          tab_groups::TabGroupSyncServiceFactory::GetForProfile(profile),
-          vertical_tab_controller_.get());
 
   brave_non_client_hit_test_helper_ =
       std::make_unique<BraveNonClientHitTestHelper>();

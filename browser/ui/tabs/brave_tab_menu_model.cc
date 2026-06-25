@@ -51,6 +51,9 @@ BraveTabMenuModel::BraveTabMenuModel(
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_window->GetProfile());
 
+  vertical_tab_controller_ =
+      browser_window->GetFeatures().vertical_tab_controller();
+
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);
   all_muted_ = model->GetAllTabsMuted(indices);
@@ -79,7 +82,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
 }
 
 std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
-  if (!tab_menu_model_delegate_->ShouldShowBraveVerticalTab()) {
+  if (!vertical_tab_controller_->ShouldShowBraveVerticalTabs()) {
     return TabMenuModel::GetLabelAt(index);
   }
 
@@ -126,9 +129,7 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
 
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  if (browser_window && browser_window->GetFeatures()
-                            .vertical_tab_controller()
-                            ->SupportsBraveVerticalTabs()) {
+  if (vertical_tab_controller_->SupportsBraveVerticalTabs()) {
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }

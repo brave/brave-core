@@ -561,7 +561,7 @@ void BraveTab::Layout(PassKey) {
 void BraveTab::MaybeAdjustLeftForPinnedTab(gfx::Rect* bounds,
                                            int visual_width) const {
   if (auto* vtc = GetVerticalTabController();
-      vtc && !vtc->ShouldShowBraveVerticalTabs()) {
+      !vtc || !vtc->ShouldShowBraveVerticalTabs()) {
     Tab::MaybeAdjustLeftForPinnedTab(bounds, visual_width);
     return;
   }
