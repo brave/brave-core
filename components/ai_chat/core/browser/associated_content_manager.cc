@@ -30,7 +30,7 @@
 namespace ai_chat {
 
 namespace {
-constexpr size_t kMaxToolsPerContent = 10;
+constexpr size_t kMaxToolsPerContent = 30;
 }
 
 AssociatedContentManager::AssociatedContentManager(
