@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 287ae9e1ff1cf5ad69c894cf2faf9ca7e881a2a3..9f8b755691f4136383ec095e7c3082520b96f836 100644
+index 65692f66ab989ec5ac057667e945d753e318923b..2c0db97c912cef3a030563474c0cacf307c00e3a 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
 @@ -4695,6 +4695,7 @@ const FeatureEntry::FeatureVariation kCanvasAccessibilityChoices[] = {

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
-index 0882cbd4a970255083a3d4c8e1c690d11842e7f1..5633b7281fa533f40e3299f4fb703457178694d4 100644
+index fcf577d904f3625a2782b4de26590effbd91a8d0..dfb5ce562bdb807c618ab20d53715ce481b21818 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.cc
 +++ b/chrome/browser/ui/page_action/page_action_controller.cc
 @@ -69,6 +69,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
