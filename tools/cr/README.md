@@ -45,13 +45,20 @@ Shared abstractions used by the entry points and tests:
 ## gclient hooks
 
 - `install_extra_deps.py` — a gclient hook (wired up from `DEPS`) that installs
-  archives Brave publishes to its own download buckets. It downloads the
-  archive, verifies its `sha256sum`, and extracts it straight on top of the
-  destination path. Unlike the toolchain builders in `toolchain/`, this hook is
-  not self-contained: it imports gclient code to evaluate condition statements
-  so they are interpreted consistently as if they were in a `DEPS` file.
+  archives declared in the `EXTRA_DEPS` table. It downloads the archive,
+  verifies its `sha256sum`, and extracts it into the destination path..
 
-  Downloads are declared in the `EXTRA_DEPS` table, as follows:
+  Dependencies come into ownership flavours:
+
+  - **Overlay** (with `overlayed_on`): the archive lays its members out relative
+    to the destination root and is extracted straight on top of the existing
+    upstream tree named by `overlayed_on` (validated against `DEPS`, so we never
+    overlay onto a rolled base).
+  - **Owned** (without `overlayed_on`): the object fully owns its destination
+    directory, which is wiped and re-extracted on every install so nothing from
+    a prior install lingers.
+
+  Downloads are declared as follows:
 
   ```python
   EXTRA_DEPS = {
@@ -62,6 +69,7 @@ Shared abstractions used by the entry points and tests:
         {
           'object_name': '<archive-name>.tar.xz',
           'sha256sum': '<hex sha256>',
+          # 'overlayed_on': '<upstream archive>',  # omit for an owned dep
           'condition': 'host_os == "linux"',  # one matching object per host
         },
       ],
@@ -69,8 +77,7 @@ Shared abstractions used by the entry points and tests:
   }
   ```
 
-  The archive must lay its members out relative to the destination root so it
-  can be extracted directly over it. Invoke with the target path, e.g.
+  Invoke with the target path, e.g.
   `install_extra_deps.py src/path/to/install/dir`.
 
 ## Subdirectories

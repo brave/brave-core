@@ -12,10 +12,16 @@ it deployed more generic, and reusable for other cases.
 
 `EXTRA_DEPS` mirrors the shape of a gclient `gcs` dependency, keyed by the
 checkout-relative destination path. Each object lists an `object_name`, its
-`sha256sum`, a `condition`, and `overlayed_on` -- the upstream Chromium archive
-the object is layered on top of (informational; recorded for traceability). The
-archive is expected to lay its members out relative to the destination root, so
-it can be extracted straight on top of it.
+`sha256sum`, a `condition`, and optionally `overlayed_on`, which selects how it
+is installed:
+
+  * Overlay (with `overlayed_on`) -- extracted on top of the upstream archive it
+    names, which is validated against DEPS so we never overlay a rolled base.
+  * Owned (without `overlayed_on`) -- fully owns its destination, which is wiped
+    and re-extracted each install so no stale extraction lingers.
+
+`bucket` is just an HTTPS prefix `object_name` is appended to: one of Brave's
+buckets, or an upstream distribution (e.g. `nodejs.org/dist`) used as one.
 
 `condition` strings (both dep-level and per-object) are resolved with
 depot_tools by loading the checkout's `.gclient` config and the owning
@@ -27,10 +33,14 @@ from __future__ import annotations
 
 import argparse
 from collections.abc import Mapping
+from dataclasses import dataclass
+import json
 import logging
+import shutil
 import sys
 import tarfile
 import tempfile
+import zipfile
 from pathlib import Path
 
 # `src/` directory (this script lives at src/brave/tools/cr/).
@@ -54,6 +64,11 @@ import gclient_utils  # pylint: disable=wrong-import-position,import-error
 # notice that most logs are DEBUG. No-op runs should not produce any output in
 # normal runs, to avoid cluttering the sync output.
 _LOG = logging.getLogger('install_extra_deps')
+
+# The extension we use for all sidecar files. Using stamp is deliberate to avoid
+# having gclient trying to read our sidecars.
+_STAMP = '.stamp'
+
 
 EXTRA_DEPS = {
     'src/third_party/rust-toolchain': {
@@ -109,50 +124,105 @@ def _select_object(objects: list[dict],
     return matches[0]
 
 
-def _extract(archive_path: Path, dest_dir: Path) -> None:
-    """Overlay the archive onto the destination directory.
+@dataclass(frozen=True)
+class TarballInstaller:
+    """Installs one resolved `EXTRA_DEPS` object into its destination.
 
-    This function extracts the archive in-place. Artefacts are supposed to be
-    laid out into the archive with the relative paths where they should be
-    installed. Furthermore, this function does not attempt to handle staleness
-    from previous extractions.
+    Handles the mechanics for a single object: download, sha256 verification,
+    extraction (wiping the destination first when it owns it), and the
+    gclient-style sidecar bookkeeping used to detect an existing install.
 
-    Extraction uses tarfile's `data` filter (PEP 706) so a malformed archive
-    cannot escape `dest_dir` via absolute paths, `..` traversal, or links
-    pointing outside it. The archive is only extracted though based on the
-    verified sha256, so this is just extra defense.
+    gclient drops a set of dotfile "sidecars" next to each `gcs` dep's extracted
+    tree (see `GcsDependency` in gclient.py and `GcsRoot` in gclient_scm.py),
+    keyed by a prefix that is the object name with `/` and `.` replaced by `_`:
+
+      .{prefix}_hash                the object's sha256
+      .{prefix}_content_names       JSON list of the archive's members
+
+    We deploy the very same files so our install state mirrors gclient's, but
+    append `.stamp` so gclient's own globs (`.*_hash`, `.*_content_names`)
+    never read or clobber ours.
     """
-    with tarfile.open(archive_path, mode='r:*') as tar:
-        tar.extractall(path=dest_dir, filter='data')
+
+    # The checkout directory the archive is extracted into.
+    dest_dir: Path
+    # The full URL the archive is downloaded from.
+    url: str
+    # The bucket object name; drives sidecar naming and diagnostics.
+    object_name: str
+    # The expected sha256 of the archive.
+    sha256sum: str
+    # True when the dep owns dest_dir (wiped before extract); False when it
+    # overlays an existing upstream tree (extracted on top).
+    owns_dest: bool
+
+    def is_installed(self) -> bool:
+        """True when the `_hash` sidecar already records `sha256sum`."""
+        return self._installed_hash() == self.sha256sum
+
+    def install(self) -> bool:
+        """Download and extract the object, writing the sidecars on success.
+
+        Returns False when the sidecar already records `sha256sum` and nothing
+        needed to be done.
+        """
+        if self.is_installed():
+            return False
+        with tempfile.TemporaryDirectory() as tmp_dir:
+            archive_path = Path(tmp_dir) / self.object_name
+            with archive_path.open('wb') as archive_file:
+                deps.DownloadUrl(self.url, archive_file)
+            deps.VerifySHA256(str(archive_path), self.sha256sum, self.url)
+            if self.owns_dest and self.dest_dir.exists():
+                # Drop the previous extraction so nothing stale lingers;
+                # overlays deliberately keep the upstream tree they sit on.
+                shutil.rmtree(self.dest_dir)
+            member_names = self._extract(archive_path)
+        self._write_sidecars(member_names)
+        return True
+
+    def _extract(self, archive_path: Path) -> list[str]:
+        """Extract the archive (tar or zip) into `dest_dir`.
+
+        Returns the archive's member names, as gclient records them in its
+        `.*_content_names` sidecar (`ZipFile.namelist()` / `tar.getnames()`).
+        """
+        if zipfile.is_zipfile(archive_path):
+            with zipfile.ZipFile(archive_path) as archive:
+                names = archive.namelist()
+                archive.extractall(path=self.dest_dir)
+                return names
+        with tarfile.open(archive_path, mode='r:*') as tar:
+            names = tar.getnames()
+            tar.extractall(path=self.dest_dir, filter='data')
+            return names
+
+    def _sidecar(self, suffix: str) -> Path:
+        """The `.{prefix}{suffix}.stamp` sidecar path in `dest_dir`."""
+        prefix = self.object_name.replace('/', '_').replace('.', '_')
+        return self.dest_dir / f'.{prefix}{suffix}{_STAMP}'
+
+    def _installed_hash(self) -> str:
+        """The sha256 from the `_hash` sidecar, or '' when absent."""
+        hash_file = self._sidecar('_hash')
+        if hash_file.is_file():
+            return hash_file.read_bytes().decode('utf-8').strip()
+        return ''
+
+    def _write_sidecars(self, member_names: list[str]) -> None:
+        """Write the gclient-equivalent sidecar set, each with a `.stamp` tail.
+        """
+        contents = {
+            '_hash': self.sha256sum,
+            '_content_names': json.dumps(member_names),
+        }
+        for suffix, content in contents.items():
+            self._sidecar(suffix).write_text(f'{content}\n',
+                                             encoding='utf-8',
+                                             newline='')
 
 
-def _marker_file_name(object_name: str) -> str:
-    """Return the install-marker filename for *object_name*.
-
-    The marker's name takes into account potential collisions with `gclient`s
-    own naming scheme for this type of source, to avoid stepping on each others
-    markers, specially as the rust WASM toolchain is deployed as a overlay on
-    top of a `gcs`-type dependency.
-    """
-    file_prefix = object_name.replace('/', '_').replace('.', '_')
-    return f'.extra_dep_{file_prefix}.stamp'
-
-
-def _installed_hash(dest_dir: Path, object_name: str) -> str:
-    """Return the sha256 recorded by the last successful install, or ''."""
-    marker_file = dest_dir / _marker_file_name(object_name)
-    if marker_file.is_file():
-        return marker_file.read_bytes().decode('utf-8').strip()
-    return ''
-
-
-def _record_hash(dest_dir: Path, object_name: str, sha256sum: str) -> None:
-    """Persist the installed sha256 for subsequent freshness checks."""
-    marker_file = dest_dir / _marker_file_name(object_name)
-    marker_file.write_text(f'{sha256sum}\n', encoding='utf-8', newline='')
-
-
-class ExtraDepsInstaller:
+class ExtraDepsRunner:
     """Installs `EXTRA_DEPS` entries with gclient-resolved conditions.
 
     Holds the loaded `.gclient` context for a run so each solution's variables
@@ -166,7 +236,7 @@ class ExtraDepsInstaller:
         self._scope_by_solution: dict[str, dict[str, object]] = {}
 
     @classmethod
-    def from_checkout(cls) -> ExtraDepsInstaller:
+    def from_checkout(cls) -> ExtraDepsRunner:
         """Build an installer from the checkout's `.gclient` config.
 
         This installer emulates DEPS as an environmnet. `_SRC_DIR.parent` is
@@ -280,29 +350,23 @@ class ExtraDepsInstaller:
             _LOG.debug('No matching object for %s on this host', path)
             return
 
-        # An overlay must only be applied on top of the upstream base it was
-        # built against. Verify that base is still the one pinned in DEPS before
-        # touching the destination.
+        # An overlay must sit on the base it was built against: validate it
+        # still matches DEPS before touching the destination. No `overlayed_on`
+        # means the dep owns its destination, so there is no base to validate.
         overlayed_on = obj.get('overlayed_on')
         if overlayed_on:
             self._validate_overlay_target(path, overlayed_on)
 
-        dest_dir = _SRC_DIR.parent / path
-        object_name = obj['object_name']
-        sha256sum = obj['sha256sum']
-        if _installed_hash(dest_dir, object_name) == sha256sum:
-            _LOG.debug('%s already up to date (%s)', path, object_name)
-            return
-
-        url = spec['bucket'] + object_name
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            archive_path = Path(tmp_dir) / object_name
-            with archive_path.open('wb') as archive_file:
-                deps.DownloadUrl(url, archive_file)
-            deps.VerifySHA256(str(archive_path), sha256sum, url)
-            _extract(archive_path, dest_dir)
-        _record_hash(dest_dir, object_name, sha256sum)
-        _LOG.info('Installed %s into %s', object_name, dest_dir)
+        installer = TarballInstaller(dest_dir=_SRC_DIR.parent / path,
+                                     url=spec['bucket'] + obj['object_name'],
+                                     object_name=obj['object_name'],
+                                     sha256sum=obj['sha256sum'],
+                                     owns_dest=not overlayed_on)
+        if installer.install():
+            _LOG.info('Installed %s into %s', obj['object_name'],
+                      installer.dest_dir)
+        else:
+            _LOG.debug('%s already up to date (%s)', path, obj['object_name'])
 
 
 def main() -> int:
@@ -324,7 +388,7 @@ def main() -> int:
         '(e.g. src/third_party/rust-toolchain).')
     args = parser.parse_args()
 
-    ExtraDepsInstaller.from_checkout().install(args.dep, EXTRA_DEPS[args.dep])
+    ExtraDepsRunner.from_checkout().install(args.dep, EXTRA_DEPS[args.dep])
     return 0
 
 
