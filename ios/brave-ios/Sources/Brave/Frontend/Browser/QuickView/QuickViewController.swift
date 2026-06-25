@@ -268,7 +268,7 @@ class QuickViewController: UIViewController {
       browser.tabManager.allTabs.forEach {
         if $0.visibleURL?.baseDomain == currentDomain {
           $0.reload()
-          $0.contentBlocker?.resetSelectorsCache()
+          $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
         }
       }
     }
@@ -276,7 +276,7 @@ class QuickViewController: UIViewController {
     // Update shield status, reload the this tab, reset selectors cache in quickview mode
     refreshShieldStatus(url: currentTab?.visibleURL ?? url)
     currentTab?.reload()
-    currentTab?.contentBlocker?.resetSelectorsCache()
+    currentTab?.cosmeticFilteringTabHelper?.resetSelectorsCache()
   }
 
   private func refreshShieldStatus(url: URL) {

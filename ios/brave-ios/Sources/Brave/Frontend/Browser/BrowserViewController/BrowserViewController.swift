@@ -389,7 +389,7 @@ public class BrowserViewController: UIViewController {
     braveCore.adblockService.registerFilterListChanges { [weak self] _ in
       // Filter lists updated, reset selectors cache(s).
       self?.tabManager.allTabs.forEach {
-        $0.contentBlocker?.resetSelectorsCache()
+        $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
       }
     }
 
@@ -398,7 +398,7 @@ public class BrowserViewController: UIViewController {
       .sink { [weak self] _ in
         // Filter lists selections changed, reset selectors cache(s).
         self?.tabManager.allTabs.forEach {
-          $0.contentBlocker?.resetSelectorsCache()
+          $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
         }
       }
       .store(in: &cancellables)
@@ -2876,7 +2876,7 @@ extension BrowserViewController: PreferencesObserver {
       recordGlobalAdBlockShieldsP3A()
       // Global shield setting changed, reset selectors cache.
       tabManager.allTabs.forEach({
-        $0.contentBlocker?.resetSelectorsCache()
+        $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
       })
     case Preferences.Shields.fingerprintingProtection.key:
       tabManager.reloadSelectedTab()
