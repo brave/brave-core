@@ -50,4 +50,9 @@ export const AccountButtonOptions: AccountButtonOptionsObjectType[] = [
     name: 'braveWalletSwitchToShieldedAccount',
     icon: 'shield-done',
   },
+  {
+    id: 'resetBirthday',
+    name: 'braveWalletResetShieldedAccountBirthday',
+    icon: 'calendar',
+  },
 ]

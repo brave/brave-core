@@ -309,6 +309,7 @@ export const {
   useCopyToClipboardConfidentiallyMutation,
   useLockWalletMutation,
   useMakeAccountShieldedMutation,
+  useResetSyncStateMutation,
   useNewUnapprovedTxAddedMutation,
   useOpenPanelUIMutation,
   usePrefetch,

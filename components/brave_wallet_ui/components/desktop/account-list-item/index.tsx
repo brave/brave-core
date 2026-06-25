@@ -192,7 +192,7 @@ export const AccountListItem = ({
         onRemoveAccount()
         return
       }
-      if (id === 'shield') {
+      if (id === 'shield' || id === 'resetBirthday') {
         setShowShieldAccountModal(true)
         return
       }
@@ -341,6 +341,12 @@ export const AccountListItem = ({
       && !zcashAccountInfo.accountShieldBirthday
     const canToggleHiddenAccount = canHideAccount
 
+    const canResetShieldedAccountBirthday =
+      isZCashShieldedTransactionsEnabled
+      && account.accountId.coin === BraveWallet.CoinType.ZEC
+      && zcashAccountInfo
+      && !!zcashAccountInfo.accountShieldBirthday
+
     let options = [...AccountButtonOptions]
     options = options.map((option) =>
       option.id === 'hide'
@@ -364,6 +370,9 @@ export const AccountListItem = ({
     }
     if (!canToggleHiddenAccount) {
       options = options.filter((option) => option.id !== 'hide')
+    }
+    if (!canResetShieldedAccountBirthday) {
+      options = options.filter((option) => option.id !== 'resetBirthday')
     }
     return options
   }, [
