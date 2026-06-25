@@ -171,6 +171,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
  private:
   friend class AIChatDatabaseTest;
   friend class AIChatDatabaseMigrationTest;
+  // For GetArchiveContentsForConversation(), used to rebuild the local copy
+  // of an entry when restoring fields the remote sender omitted.
+  friend class AIChatSyncBridge;
   FRIEND_TEST_ALL_PREFIXES(AIChatDatabaseTest, ConversationThreadEntries);
 
   sql::Database& GetDB();
