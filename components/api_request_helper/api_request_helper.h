@@ -6,7 +6,6 @@
 #ifndef BRAVE_COMPONENTS_API_REQUEST_HELPER_API_REQUEST_HELPER_H_
 #define BRAVE_COMPONENTS_API_REQUEST_HELPER_API_REQUEST_HELPER_H_
 
-#include <list>
 #include <memory>
 #include <optional>
 #include <string>
@@ -188,8 +187,9 @@ class APIRequestHelper {
     base::WeakPtrFactory<URLLoaderHandler> weak_ptr_factory_{this};
   };
 
-  using URLLoaderHandlerList = std::list<std::unique_ptr<URLLoaderHandler>>;
-  using Ticket = std::list<std::unique_ptr<URLLoaderHandler>>::iterator;
+  using Ticket = uint32_t;
+  using URLLoaderHandlerMap =
+      base::flat_map<Ticket, std::unique_ptr<URLLoaderHandler>>;
 
   APIRequestHelper(
       net::NetworkTrafficAnnotationTag annotation_tag,
@@ -246,7 +246,7 @@ class APIRequestHelper {
   APIRequestHelper(const APIRequestHelper&) = delete;
   APIRequestHelper& operator=(const APIRequestHelper&) = delete;
 
-  APIRequestHelper::Ticket CreateURLLoaderHandler(
+  std::pair<Ticket, URLLoaderHandler*> CreateURLLoaderHandler(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -258,7 +258,7 @@ class APIRequestHelper {
 
   // TODO(petemill): When Download has been removed, we don't need two versions
   // of CreateURLLoaderHandler
-  APIRequestHelper::Ticket CreateRequestURLLoaderHandler(
+  std::pair<Ticket, URLLoaderHandler*> CreateRequestURLLoaderHandler(
       const std::string& method,
       const GURL& url,
       const std::string& payload,
@@ -267,12 +267,13 @@ class APIRequestHelper {
       const base::flat_map<std::string, std::string>& headers,
       ResultCallback result_callback);
 
-  void DeleteAndSendResult(Ticket iter,
+  void DeleteAndSendResult(Ticket ticket,
                            ResultCallback callback,
                            APIRequestResult result);
 
   net::NetworkTrafficAnnotationTag annotation_tag_;
-  URLLoaderHandlerList url_loaders_;
+  Ticket next_ticket_id_ = 0;
+  URLLoaderHandlerMap url_loaders_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
   const scoped_refptr<base::SequencedTaskRunner> task_runner_;
   base::WeakPtrFactory<APIRequestHelper> weak_ptr_factory_{this};
