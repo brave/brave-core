@@ -82,6 +82,22 @@ def merge_release_changelog_section(body, section_title, section_content,
     return assemble_body(preamble, kept)
 
 
+def normalize_tag(raw_tag):
+    """Return (tag, version) from vX.Y.Z or refs/tags/vX.Y.Z."""
+    tag = raw_tag
+    match = re.match(r'^refs/tags/(.*)$', tag)
+    if match:
+        tag = match.group(1)
+
+    match = re.match(r'^v(.*)$', tag)
+    if not match:
+        logging.error("Tag must start with v after refs/tags/ prefix: %s",
+                      raw_tag)
+        sys.exit(1)
+
+    return tag, match.group(1)
+
+
 def main():
     """
     Download the brave-browser/CHANGELOG.md file, parse it and
@@ -111,19 +127,11 @@ def main():
 
     changelog_url = args.url
 
-    tag = args.tag
-
-    if not re.match(r'^refs/tags/', tag) and not re.match(r'^v', tag):
+    if not re.match(r'^refs/tags/', args.tag) and not re.match(r'^v', args.tag):
         logging.error(" Tag prefix must contain %s or %s", "refs/tags/", "v")
         sys.exit(1)
 
-    match = re.match(r'^refs/tags/(.*)$', tag)
-    if match:
-        tag = match.group(1)
-
-    match = re.match(r'^v(.*)$', tag)
-    if match:
-        version = match.group(1)
+    tag, version = normalize_tag(args.tag)
 
     logging.debug("CHANGELOG_URL: %s", changelog_url)
     logging.debug("TAG: %s", tag)
@@ -173,7 +181,7 @@ def debug_requests_on():
 
 
 def debug_requests_off():
-    '''Switches off logging of the requests module, might be side-effects'''
+    '''Switches off logging of the requests module; might have side effects.'''
     HTTPConnection.debuglevel = 0
 
     root_logger = logging.getLogger()
@@ -186,7 +194,7 @@ def debug_requests_off():
 def parse_args():
     desc = ("Parse Brave Browser changelog and add markdown to release notes "
             "for tag\n\nRequires the following ENVIRONMENT VARIABLES be set:"
-            "\n\nGITHUB_TOKEN: Github token to update draft release if not "
+            "\n\nGITHUB_TOKEN: GitHub token to update draft release if not "
             "published yet. ")
 
     parser = argparse.ArgumentParser(
