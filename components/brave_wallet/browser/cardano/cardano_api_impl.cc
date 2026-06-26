@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
+#include <ranges>
 #include <string>
 #include <utility>
 #include <vector>
@@ -646,15 +647,22 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
       return;
     }
 
+    // If signing pubkey already appears in the witness set - skip it as we
+    // don't need to add it again.
+    if (std::ranges::contains(
+            decoded_tx.tx.tx_witness.vkey_witness_set, sign_result->pubkey,
+            &CardanoTxDecoder::SerializableVkeyWitness::public_key)) {
+      continue;
+    }
+
     auto& vkey_witness = witness.vkey_witness_set.emplace_back();
     vkey_witness.signature_bytes = sign_result->signature,
     vkey_witness.public_key = sign_result->pubkey;
   }
 
-  auto signed_tx = CardanoTxDecoder::AddWitnessesToTransaction(
-      decoded_tx.raw_tx_bytes, std::move(witness));
+  auto witness_bytes = CardanoTxDecoder::EncodeWitness(witness);
 
-  if (!signed_tx) {
+  if (!witness_bytes) {
     std::move(callback).Run(
         std::nullopt,
         mojom::CardanoProviderErrorBundle::New(
@@ -662,7 +670,7 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
     return;
   }
 
-  std::move(callback).Run(base::HexEncode(signed_tx.value()), nullptr);
+  std::move(callback).Run(base::HexEncode(witness_bytes.value()), nullptr);
 }
 
 void CardanoApiImpl::SignData(const std::string& address,

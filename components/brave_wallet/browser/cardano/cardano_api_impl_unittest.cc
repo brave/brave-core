@@ -1496,13 +1496,12 @@ TEST_F(CardanoApiImplTest, SignTx) {
               tx_hash)
           .value());
 
-  CardanoTransaction signed_tx = unsigned_tx;
+  CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
-    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
-                                                       sign_result.signature));
+    witness.vkey_witness_set.emplace_back(sign_result.signature,
+                                          sign_result.pubkey);
   }
-  auto signed_tx_bytes =
-      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+  auto witness_bytes = *CardanoTxDecoder::EncodeWitness(witness);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1555,7 +1554,7 @@ TEST_F(CardanoApiImplTest, SignTx) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
 
@@ -1602,14 +1601,12 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
               tx_hash)
           .value());
 
-  CardanoTransaction signed_tx = unsigned_tx;
+  CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
-    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
-                                                       sign_result.signature));
+    witness.vkey_witness_set.emplace_back(sign_result.signature,
+                                          sign_result.pubkey);
   }
-
-  auto signed_tx_bytes =
-      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+  auto witness_bytes = *CardanoTxDecoder::EncodeWitness(witness);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1623,7 +1620,78 @@ TEST_F(CardanoApiImplTest, SignTx_ExistingExternalSignature) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
+  EXPECT_FALSE(error);
+}
+
+TEST_F(CardanoApiImplTest, SignTx_NoDuplicateSignatures) {
+  CreateWallet();
+  auto added_account = AddAccount();
+
+  ON_CALL(*delegate(), GetAllowedAccounts(_, _))
+      .WillByDefault(
+          [&](mojom::CoinType coin, const std::vector<std::string>& accounts) {
+            EXPECT_EQ(coin, mojom::CoinType::ADA);
+            EXPECT_EQ(accounts.size(), 1u);
+            EXPECT_EQ(accounts[0], added_account->account_id->unique_key);
+            return std::vector<std::string>(
+                {added_account->account_id->unique_key});
+          });
+
+  CardanoTransaction unsigned_tx;
+  SetupUnsignedReferenceTransaction(added_account, unsigned_tx);
+  CardanoTransaction::TxWitness external_witness;
+  external_witness.public_key.fill(2);
+  external_witness.signature.fill(1);
+  unsigned_tx.AddWitness(std::move(external_witness));
+
+  auto unsigned_tx_bytes =
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  auto tx_hash = *CardanoTransactionSerializer().GetTxHash(unsigned_tx);
+  std::vector<CardanoSignMessageResult> sign_results;
+  sign_results.emplace_back(
+      brave_wallet_service()
+          ->keyring_service()
+          ->SignMessageByCardanoKeyring(
+              added_account->account_id,
+              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 0),
+              tx_hash)
+          .value());
+  sign_results.emplace_back(
+      brave_wallet_service()
+          ->keyring_service()
+          ->SignMessageByCardanoKeyring(
+              added_account->account_id,
+              mojom::CardanoKeyId::New(mojom::CardanoKeyRole::kExternal, 1),
+              tx_hash)
+          .value());
+
+  // Add first signature to transaction.
+  unsigned_tx.AddWitness(CardanoTransaction::TxWitness(
+      sign_results[0].pubkey, sign_results[0].signature));
+  unsigned_tx_bytes =
+      *CardanoTransactionSerializer().SerializeTransaction(unsigned_tx);
+
+  // Expect only second signature in signTx result.
+  CardanoTxDecoder::SerializableTxWitness witness;
+  witness.vkey_witness_set.emplace_back(sign_results[1].signature,
+                                        sign_results[1].pubkey);
+  auto witness_bytes = *CardanoTxDecoder::EncodeWitness(witness);
+
+  TestFuture<const std::optional<std::string>&,
+             mojom::CardanoProviderErrorBundlePtr>
+      future;
+
+  SignCardanoTransactionRequestWaiter waiter(brave_wallet_service());
+  provider()->SignTx(base::HexEncode(unsigned_tx_bytes), false,
+                     future.GetCallback());
+  waiter.WaitAndProcess(true);
+
+  auto& api_signed_tx = future.Get<0>();
+  auto& error = future.Get<1>();
+
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
 
@@ -1673,14 +1741,12 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
               tx_hash)
           .value());
 
-  CardanoTransaction signed_tx = unsigned_tx;
+  CardanoTxDecoder::SerializableTxWitness witness;
   for (const auto& sign_result : sign_results) {
-    signed_tx.AddWitness(CardanoTransaction::TxWitness(sign_result.pubkey,
-                                                       sign_result.signature));
+    witness.vkey_witness_set.emplace_back(sign_result.signature,
+                                          sign_result.pubkey);
   }
-
-  auto signed_tx_bytes =
-      *CardanoTransactionSerializer().SerializeTransaction(signed_tx);
+  auto witness_bytes = *CardanoTxDecoder::EncodeWitness(witness);
 
   TestFuture<const std::optional<std::string>&,
              mojom::CardanoProviderErrorBundlePtr>
@@ -1748,7 +1814,7 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
-  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(signed_tx_bytes));
+  EXPECT_EQ(api_signed_tx.value(), base::HexEncode(witness_bytes));
   EXPECT_FALSE(error);
 }
 
