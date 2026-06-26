@@ -123,8 +123,9 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
     return;
   }
 
-  current_wallpaper_image_index_++;
-  current_wallpaper_image_index_ %= total_image_count_;
+  // Select a background image at random rather than rotating sequentially.
+  current_wallpaper_image_index_ =
+      base::RandIntInclusive(0, total_image_count_ - 1);
 }
 
 void ViewCounterModel::NextBrandedImage() {

@@ -195,10 +195,12 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
   model.set_total_image_count(kTestImageCount);
 
-  // Loading initial count times.
+  // Loading initial count times. Background images are now selected randomly,
+  // so we only verify the index stays within range.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
-    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    EXPECT_GE(model.current_wallpaper_image_index(), 0);
+    EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
     model.RegisterPageView();
   }
 
@@ -207,10 +209,8 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
 
   // Loading regular-count times.
   for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
-    const int expected_wallpaper_index =
-        (i + (features::kInitialCountToBrandedWallpaper.Get() - 1)) %
-        model.total_image_count_;
-    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    EXPECT_GE(model.current_wallpaper_image_index(), 0);
+    EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
     model.RegisterPageView();
   }
 
@@ -238,11 +238,12 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
   const auto initial_branded_wallpaper_index =
       model.GetCurrentBrandedImageIndex();
 
-  int expected_wallpaper_index;
   constexpr int kTestPageViewCount = 30;
   for (int i = 0; i < kTestPageViewCount; ++i) {
-    expected_wallpaper_index = i % model.total_image_count_;
-    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    // Background images are now selected randomly, so we only verify the index
+    // stays within range.
+    EXPECT_GE(model.current_wallpaper_image_index(), 0);
+    EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
     model.RegisterPageView();
 
     // Check branded wallpaper is not changed.
@@ -272,8 +273,10 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithEmptyCampaignTest) {
 
   constexpr int kTestPageViewCount = 30;
   for (int i = 0; i < kTestPageViewCount; ++i) {
-    EXPECT_EQ(i % model.total_image_count_,
-              model.current_wallpaper_image_index());
+    // Background images are now selected randomly, so we only verify the index
+    // stays within range.
+    EXPECT_GE(model.current_wallpaper_image_index(), 0);
+    EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
     model.RegisterPageView();
   }
 }
@@ -284,15 +287,15 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
   model.set_total_image_count(kTestImageCount);
 
-  // Loading initial count model.
+  // Loading initial count model. Background images are now selected randomly,
+  // so we only verify the index stays within range.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
-    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    EXPECT_GE(model.current_wallpaper_image_index(), 0);
+    EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
     model.RegisterPageView();
   }
   EXPECT_TRUE(model.ShouldShowSponsoredImages());
-  const int initial_wallpaper_image_index =
-      model.current_wallpaper_image_index();
 
   // Simulate that sponsored image ad was frequency capped by ads service.
   // If |count_to_branded_wallpaper_| is zero when RegisterPageView() is called,
@@ -304,17 +307,15 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   model.RotateBackgroundWallpaperImageIndex();
   model.RegisterPageView();
 
-  // Check background index is increased properly.
-  int expected_image_index =
-      (initial_wallpaper_image_index + 1) % model.total_image_count_;
-  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
+  // Check background index stays within range.
+  EXPECT_GE(model.current_wallpaper_image_index(), 0);
+  EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
 
   // Process register page view for sponsored image.
   model.RegisterPageView();
 
-  expected_image_index =
-      (initial_wallpaper_image_index + 2) % model.total_image_count_;
-  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
+  EXPECT_GE(model.current_wallpaper_image_index(), 0);
+  EXPECT_LT(model.current_wallpaper_image_index(), model.total_image_count_);
 }
 
 }  // namespace ntp_background_images
