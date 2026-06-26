@@ -25,7 +25,8 @@ import {
 import GenerateDepfilePlugin from './webpack-plugin-depfile.js'
 import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin.js'
 
-const rootGenDir = process.env.ROOT_GEN_DIR as string
+assert(process.env.ROOT_GEN_DIR, 'ROOT_GEN_DIR env variable is required')
+const rootGenDir = process.env.ROOT_GEN_DIR
 const pathMap = generatePathMap(rootGenDir)
 const buildFlags = JSON.parse(
   fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
@@ -137,7 +138,7 @@ export default async function (env: any, argv: any): Promise<Configuration> {
           depfilePath: process.env.DEPFILE_PATH,
           depfileSourceName: process.env.DEPFILE_SOURCE_NAME,
         }),
-      ...deterministicIdsPlugins(),
+      ...deterministicIdsPlugins(rootGenDir),
       provideNodeGlobals,
       ...chromePrefixReplacers(pathMap),
       !env.sync_wasm && new XHRCompileAsyncWasmPlugin(),

@@ -120,7 +120,7 @@ export default async function (
       outputModule: true,
     },
     plugins: [
-      ...deterministicIdsPlugins(),
+      ...deterministicIdsPlugins(genPath),
       provideNodeGlobals,
       ...chromePrefixReplacers(pathMap),
       new CopyPlugin({

@@ -32,17 +32,17 @@ export const deterministicOptimization: NonNullable<
  * configurations. Webpack's ConcatenatedModule class doesn't use this context
  * configuration for its identifier construction.
  */
-export function deterministicIdsPlugins() {
+export function deterministicIdsPlugins(genPath: string) {
   return [
     new webpack.ids.NamedModuleIdsPlugin({
-      context: process.env.ROOT_GEN_DIR,
+      context: genPath,
     }),
     // NamedChunkIdsPlugin doesn't seem to care if we don't give a common context
     // - it might if the chunk is directly loaded from an output path, so it's
     // being provided anyway. Otherwise, it relies on the IDs of the chunk's
     // included modules.
     new webpack.ids.NamedChunkIdsPlugin({
-      context: process.env.ROOT_GEN_DIR,
+      context: genPath,
     }),
   ]
 }
