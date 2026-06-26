@@ -205,6 +205,13 @@ hooks = [
                'tools/cr/install_extra_deps.py',
                'src/third_party/rust-toolchain']
   },
+  {
+    'name': 'download_node',
+    'pattern': '.',
+    'action': ['vpython3',
+               'tools/cr/install_extra_deps.py',
+               'src/brave/third_party/node']
+  },
 ]
 
 include_rules = [
