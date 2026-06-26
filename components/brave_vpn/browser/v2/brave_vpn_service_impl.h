@@ -6,15 +6,20 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 
+#include <string>
+
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
 #include "build/build_config.h"
+
+class PrefService;
 
 namespace brave_vpn {
 namespace v2 {
 
 class BraveVpnServiceImpl : public BraveVpnService {
  public:
-  BraveVpnServiceImpl();
+  explicit BraveVpnServiceImpl(PrefService* profile_prefs);
   ~BraveVpnServiceImpl() override;
 
   BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
@@ -114,6 +119,7 @@ class BraveVpnServiceImpl : public BraveVpnService {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
  private:
+  const raw_ref<PrefService> profile_prefs_;
   [[maybe_unused]] mojom::ConnectionState connection_state_;
   mojom::PurchasedState purchased_state_;
 };

@@ -5,21 +5,27 @@
 
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
 
+#include "base/check_deref.h"
 #include "base/notimplemented.h"
+#include "base/types/to_address.h"
+#include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/skus/browser/skus_utils.h"
+#include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
 namespace v2 {
 
-BraveVpnServiceImpl::BraveVpnServiceImpl()
-    : connection_state_(mojom::ConnectionState::DISCONNECTED),
-      purchased_state_(mojom::PurchasedState::NOT_PURCHASED) {}
+BraveVpnServiceImpl::BraveVpnServiceImpl(PrefService* profile_prefs)
+    : profile_prefs_(CHECK_DEREF(profile_prefs)),
+      connection_state_(mojom::ConnectionState::DISCONNECTED),
+      purchased_state_(mojom::PurchasedState::NOT_PURCHASED) {
+  DCHECK(IsBraveVPNFeatureEnabled());
+}
 
 BraveVpnServiceImpl::~BraveVpnServiceImpl() = default;
 
 bool BraveVpnServiceImpl::IsBraveVPNEnabled() const {
-  NOTIMPLEMENTED();
-  return false;
+  return ::brave_vpn::IsBraveVPNEnabled(base::to_address(profile_prefs_));
 }
 
 bool BraveVpnServiceImpl::IsPurchased() const {
