@@ -26,10 +26,12 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/page.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 BraveNewsTabHelper::FeedDetails::FeedDetails() = default;
 BraveNewsTabHelper::FeedDetails::~FeedDetails() = default;
@@ -131,8 +133,12 @@ std::string BraveNewsTabHelper::GetTitleForFeedUrl(const GURL& feed_url) {
   // resolves and we extract a title.
   if (!it->requested_feed) {
     const auto url = web_contents()->GetLastCommittedURL();
+    // Use the active tab's origin as the request initiator so the feed request
+    // carries a Sec-Fetch-Site header reflecting its relationship to the page.
+    const auto initiator_origin =
+        web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
     controller_->FindFeeds(
-        feed_url,
+        feed_url, initiator_origin,
         base::BindOnce(&BraveNewsTabHelper::OnFoundFeedData,
                        weak_ptr_factory_.GetWeakPtr(), feed_url, url));
     it->requested_feed = true;

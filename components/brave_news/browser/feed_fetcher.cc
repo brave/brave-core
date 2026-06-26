@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <cstddef>
 #include <iterator>
+#include <optional>
 #include <string>
 #include <tuple>
 #include <unordered_set>
@@ -167,7 +168,8 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
 
   for (const auto& direct_publisher : direct_publishers) {
     direct_feed_fetcher_.DownloadFeed(
-        direct_publisher->feed_source, direct_publisher->publisher_id,
+        direct_publisher->feed_source, std::nullopt,
+        direct_publisher->publisher_id,
         base::BindOnce(
             [](base::RepeatingCallback<void(FeedSourceResult)> cb,
                std::string publisher_id, DirectFeedResponse response) {

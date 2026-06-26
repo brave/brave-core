@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_BRAVE_NEWS_CONTROLLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ptr.h"
@@ -35,6 +36,7 @@
 #include "net/base/network_change_notifier.h"
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "url/origin.h"
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_NEWS));
 
@@ -103,6 +105,13 @@ class BraveNewsController
       GetSuggestedPublisherIdsCallback callback) override;
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  FindFeedsCallback callback) override;
+  // Variant of FindFeeds used by the toolbar action view. |initiator_origin|
+  // (the active tab's origin) is used as the request initiator so that feed
+  // requests carry a Sec-Fetch-Site header reflecting their relationship to the
+  // active tab.
+  void FindFeeds(const GURL& possible_feed_or_site_url,
+                 const std::optional<url::Origin>& initiator_origin,
+                 FindFeedsCallback callback);
   void GetChannels(GetChannelsCallback callback) override;
   void AddChannelsListener(
       mojo::PendingRemote<mojom::ChannelsListener> listener) override;
