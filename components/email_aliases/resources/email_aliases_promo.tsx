@@ -7,22 +7,94 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
+import styled from 'styled-components'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { color, font, spacing } from '@brave/leo/tokens/css/variables'
 import {
-  EmailAliasModal,
-  EmailAliasModalResultType,
-  EmailAliasModalResult,
-} from './content/email_aliases_modal'
-import {
-  EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
   EmailAliasesServiceObserverReceiver,
-  EmailAliasesService,
   EmailAliasesPromoHandlerInterface,
   EmailAliasesPromoHandler,
-  MAX_ALIASES,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
-import { useEmailAliases } from './content/use_email_aliases'
+import Col from './content/styles/Col'
+import Row from './content/styles/Row'
+
+const PromoContainer = styled(Col)`
+  height: 100%;
+  min-height: 0;
+`
+
+const PromoHeader = styled(Row)`
+  width: 100%;
+  justify-content: space-between;
+  padding: ${spacing.m};
+  border-bottom: 1px solid ${color.divider.subtle};
+  box-sizing: border-box;
+  flex-shrink: 0;
+`
+
+const PromoTitle = styled.h4`
+  color: ${color.text.primary};
+  font: ${font.heading.h4};
+  margin: 0;
+`
+
+const PromoContent = styled.div`
+  flex: 1;
+  padding: ${spacing.m};
+  overflow-y: auto;
+  color: ${color.text.primary};
+  font: ${font.default.regular};
+`
+
+const PromoFooter = styled(Row)`
+  justify-content: flex-end;
+  padding: ${spacing.m};
+  border-top: 1px solid ${color.divider.subtle};
+  flex-shrink: 0;
+  & leo-button {
+    flex-grow: 0;
+  }
+`
+
+const EmailAliasesPromo = ({
+  onClose,
+  onGetStarted,
+}: {
+  onClose: () => void
+  onGetStarted: () => void
+}) => {
+  return (
+    <PromoContainer>
+      <PromoHeader>
+        <PromoTitle>Email Aliases</PromoTitle>
+        <Button
+          kind='plain'
+          onClick={onClose}
+        >
+          <Icon name='close' />
+        </Button>
+      </PromoHeader>
+      <PromoContent>
+        <p>
+          Protect your real email address with Brave Email Aliases. Create
+          anonymous email addresses that forward messages to your real inbox —
+          without ever revealing your identity to senders.
+        </p>
+      </PromoContent>
+      <PromoFooter>
+        <Button
+          kind='filled'
+          onClick={onGetStarted}
+        >
+          Get started
+        </Button>
+      </PromoFooter>
+    </PromoContainer>
+  )
+}
 
 export const EmailAliasesPromoConnected = ({
   emailAliasesPromoHandler,
@@ -31,29 +103,10 @@ export const EmailAliasesPromoConnected = ({
   emailAliasesPromoHandler: EmailAliasesPromoHandlerInterface
   bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  const { authState, aliasesUpdate } = useEmailAliases(bindObserver)
-  const aliases = aliasesUpdate.error ? [] : (aliasesUpdate.aliases ?? [])
   return (
-    <EmailAliasModal
-      aliases={aliases}
-      aliasLimit={MAX_ALIASES}
-      onReturnToMain={(action: EmailAliasModalResult) => {
-        switch (action.type) {
-          case EmailAliasModalResultType.Cancelled:
-            emailAliasesPanelHandler.onCancelAliasCreation()
-            break
-          case EmailAliasModalResultType.ShouldManageAliases:
-            emailAliasesPanelHandler.onManageAliases()
-            break
-          case EmailAliasModalResultType.AliasCreated:
-            emailAliasesPanelHandler.onAliasCreated(action.email)
-            break
-        }
-      }}
-      editing={false}
-      mainEmail={authState.email}
-      emailAliasesService={emailAliasesService}
-      bubble
+    <EmailAliasesPromo
+      onClose={() => emailAliasesPromoHandler.onPromoClosed()}
+      onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
     />
   )
 }
@@ -63,7 +116,6 @@ const mount = () => {
   const emailAliasesPromoHandler = EmailAliasesPromoHandler.getRemote()
   const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
     const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
-    const observerRemote = observerReceiver.$.bindNewPipeAndPassRemote()
     return () => observerReceiver.$.close()
   }
   setIconBasePath('//resources/brave-icons')
