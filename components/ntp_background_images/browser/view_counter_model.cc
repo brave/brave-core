@@ -15,7 +15,10 @@
 
 namespace ntp_background_images {
 
-ViewCounterModel::ViewCounterModel(PrefService* prefs) : prefs_(prefs) {
+ViewCounterModel::ViewCounterModel(PrefService* prefs)
+    : prefs_(prefs),
+      rand_int_inclusive_callback_(
+          base::BindRepeating(&base::RandIntInclusive)) {
   CHECK(prefs);
 
   // When browser is restarted we reset to "initial" count. This will also get
@@ -125,7 +128,7 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
 
   // Select a background image at random rather than rotating sequentially.
   current_wallpaper_image_index_ =
-      base::RandIntInclusive(0, total_image_count_ - 1);
+      rand_int_inclusive_callback_.Run(0, total_image_count_ - 1);
 }
 
 void ViewCounterModel::NextBrandedImage() {

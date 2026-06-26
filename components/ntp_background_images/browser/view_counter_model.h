@@ -9,6 +9,7 @@
 #include <tuple>
 #include <vector>
 
+#include "base/functional/callback.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/timer/wall_clock_timer.h"
@@ -47,6 +48,13 @@ class ViewCounterModel {
   void NextBrandedImage();
   void Reset();
   void RotateBackgroundWallpaperImageIndex();
+
+  using RandIntInclusiveCallback =
+      base::RepeatingCallback<int(int min, int max)>;
+  void set_rand_int_inclusive_callback_for_testing(
+      RandIntInclusiveCallback callback) {
+    rand_int_inclusive_callback_ = std::move(callback);
+  }
 
  private:
   friend class ViewCounterServiceTest;
@@ -90,6 +98,10 @@ class ViewCounterModel {
   int current_wallpaper_image_index_ = 0;
   int total_image_count_ = 0;
   bool show_wallpaper_ = true;
+
+  // Random number generator used to pick a background image index. Indirected
+  // through a callback so tests can make the selection deterministic.
+  RandIntInclusiveCallback rand_int_inclusive_callback_;
 };
 
 }  // namespace ntp_background_images
