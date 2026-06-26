@@ -7,8 +7,10 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
+#include "brave/components/brave_wallet/browser/bip39.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_sr25519.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -29,6 +31,10 @@ constexpr uint8_t kSchnorrkelSeed[] = {
     244, 146, 236, 44,  196, 68,  73, 197, 105, 123, 50,
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
+
+inline constexpr char kAssetHubMnemonic[] =
+    "lazy february across turn unique syrup gasp pass pelican achieve cable "
+    "canal";
 
 }  // namespace
 
@@ -546,6 +552,202 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
       "00"    // Address type.
       "52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477c"
       "00"  // Keep-alive false.
+      ;
+
+  EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
+  auto testnet_metadata = MakePaseoAssetHubMetadata();
+
+  // Our extrinsic lives here:
+  // https://assethub-paseo.subscan.io/extrinsic/10464509-2
+
+  // Confirm extrinsic presence with:
+  // curl -H "Content-Type: application/json" -d
+  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x7eee4f792fd223d51591d6963b7e7098f18ac515b74ac3d49f6d3cf4557bf69e"]}'
+  // https://asset-hub-paseo-rpc.n.dwellir.com/
+
+  const char recipient_hex[] =
+      R"(ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e)";
+
+  std::array<uint8_t, 32> recipient = {};
+  ASSERT_TRUE(base::HexStringToSpan(recipient_hex, recipient));
+
+  uint32_t asset_id = 50001010;
+  uint128_t send_amount = 1000000;
+  uint32_t spec_version = 2002002;
+  uint32_t transaction_version = 15;
+
+  uint32_t sender_nonce = 4;
+  uint32_t block_number = 10464506;
+  const char block_hash_encoded[] =
+      R"(0x6998c30ffb64a94ed53b97f4a2a72e667a7c909571c1ff4879cf1acb59142817)";
+
+  const char genesis_hash_encoded[] =
+      R"(0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2)";
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kAssetHubMnemonic);
+  ASSERT_TRUE(seed.has_value());
+
+  auto polkadot_seed = base::span(seed.value()).first<kPolkadotSeedSize>();
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(polkadot_seed);
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e");
+
+  keypair.SetMockRndSeedForTesting();
+
+  const bool transfer_all = false;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_assets_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, asset_id, spec_version, transaction_version, block_number,
+      genesis_hash, block_hash);
+
+  auto signature = keypair.SignMessage(signature_payload);
+
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+  const char expected_signatured[] =
+      R"(908e912c55c81dbbc69e05ae8f22793c2e32042601c6defe6a1e6cdd9cc14d554e579945a51524303d8a9ea95b9194085742aa7a4dd548e7718541fa8e5dba82)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
+  auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+      transfer_all, signature, block_number, sender_nonce, asset_id);
+
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
+
+  std::string_view expected_extrinsic =
+      "5102"  // SCALE-encoded length.
+      "84"    // Signed, extrinsic v4.
+      "00"    // Multi-address type.
+      // Sender.
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "01"  // Signature type (sr25519).
+      // Signature.
+      "908e912c55c81dbbc69e05ae8f22793c2e32042601c6defe6a1e6cdd9cc14d55"
+      "4e579945a51524303d8a9ea95b9194085742aa7a4dd548e7718541fa8e5dba82"
+      "a503"      // Mortal era.
+      "10"        // SCALE-encoded nonce.
+      "00"        // Tip.
+      "00"        // Asset ID for fee payment.
+      "00"        // Mode.
+      "3209"      // Pallet index, call index.
+      "cad1eb0b"  // Scale-encoded asset id.
+      "00"        // Address type
+      // Recipient
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "02093d00"  // SCALE-encoded send amount.
+      ;
+
+  EXPECT_EQ(extrinsic, expected_extrinsic);
+}
+
+TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
+  auto testnet_metadata = MakePaseoAssetHubMetadata();
+
+  // Our extrinsic lives here:
+  // https://assethub-paseo.subscan.io/extrinsic/10545385-2
+
+  // Confirm extrinsic presence with:
+  // curl -H "Content-Type: application/json" -d
+  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x1742561de288726ae2bc266cadd80bb93e11f7fbf93a7cd88fe2da5f1489e621"]}'
+  // https://asset-hub-paseo-rpc.n.dwellir.com/
+
+  const char recipient_hex[] =
+      R"(0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e)";
+
+  std::array<uint8_t, 32> recipient = {};
+  ASSERT_TRUE(base::HexStringToSpan(recipient_hex, recipient));
+
+  uint32_t asset_id = 50001010;
+  uint128_t send_amount = 0;
+  uint32_t spec_version = 2003001;
+  uint32_t transaction_version = 15;
+
+  uint32_t sender_nonce = 0;
+  uint32_t block_number = 10545382;
+  const char block_hash_encoded[] =
+      R"(0xc67460694f5a469493914f72eadf4b688e4c842596db4e65c71198b131eed0be)";
+
+  const char genesis_hash_encoded[] =
+      R"(0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2)";
+
+  auto seed = bip39::MnemonicToEntropyToSeed(kAssetHubMnemonic);
+  ASSERT_TRUE(seed.has_value());
+
+  auto polkadot_seed = base::span(seed.value()).first<kPolkadotSeedSize>();
+
+  auto keypair = HDKeySr25519::GenerateFromSeed(polkadot_seed).DeriveHard(0);
+  EXPECT_EQ(base::HexEncodeLower(keypair.GetPublicKey()),
+            "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e");
+
+  keypair.SetMockRndSeedForTesting();
+
+  const bool transfer_all = true;
+
+  std::array<uint8_t, 16> send_amount_bytes = {};
+  base::span(send_amount_bytes)
+      .copy_from(base::byte_span_from_ref(send_amount));
+
+  std::array<uint8_t, 32> genesis_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(genesis_hash_encoded, genesis_hash));
+
+  std::array<uint8_t, 32> block_hash = {};
+  EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
+
+  auto signature_payload = generate_assets_extrinsic_signature_payload(
+      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+      recipient, asset_id, spec_version, transaction_version, block_number,
+      genesis_hash, block_hash);
+
+  auto signature = keypair.SignMessage(signature_payload);
+
+  EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
+
+  const char expected_signatured[] =
+      R"(8c1e793351d610fcaf6dc13d8f3aea0c337fd0ae8fcfe7abda1ea18dce0a9a5d940dfc351961a3ffa82acd8f08f847b9c1934e2020009a4c72c6fcb4d9dd9c84)";
+  EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
+
+  auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
+      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
+      transfer_all, signature, block_number, sender_nonce, asset_id);
+
+  auto extrinsic = base::HexEncodeLower(signed_extrinsic);
+
+  std::string_view expected_extrinsic =
+      "4502"  // SCALE-encoded length.
+      "84"    // Signed, extrinsic v4.
+      "00"    // Multi-address type.
+      // Sender
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "01"  // Signature type (sr25519).
+      // Signature.
+      "8c1e793351d610fcaf6dc13d8f3aea0c337fd0ae8fcfe7abda1ea18dce0a9a5d"
+      "940dfc351961a3ffa82acd8f08f847b9c1934e2020009a4c72c6fcb4d9dd9c84"
+      "6502"      // Mortal era.
+      "00"        // SCALE-encoded nonce.
+      "00"        // Tip.
+      "00"        // Aset ID for fee payment.
+      "00"        // Mode.
+      "3220"      // Pallet index, call index.
+      "cad1eb0b"  // SCALE-encoded asset id.
+      "00"        // Address type.
+      // Recipient.
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "00"  // transfer_all(KeepAlive) false.
       ;
 
   EXPECT_EQ(extrinsic, expected_extrinsic);
