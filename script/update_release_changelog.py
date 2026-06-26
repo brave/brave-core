@@ -57,24 +57,30 @@ def assemble_body(preamble, sections):
     return '\n\n'.join(parts)
 
 
+def normalize_section_title(title):
+    """Normalize an H1 title for case-insensitive, whitespace-tolerant match."""
+    return title.strip().lower()
+
+
 def merge_release_changelog_section(body, section_title, section_content,
                                     logger):
     """Insert changelog section after removing all prior matching sections."""
-    remove_titles = {section_title.lower()}
+    normalized_title = section_title.strip()
+    remove_titles = {normalize_section_title(section_title)}
     preamble, sections = parse_h1_sections(body)
     kept = []
     insert_index = None
 
     for title, content in sections:
-        if title.lower() in remove_titles:
-            logger.info('Removing existing "%s" section: %s', section_title,
-                        title)
+        if normalize_section_title(title) in remove_titles:
+            logger.info('Removing existing "%s" section: %s', normalized_title,
+                        title.strip())
             if insert_index is None:
                 insert_index = len(kept)
             continue
         kept.append((title, content))
 
-    new_section = (section_title, section_content.rstrip())
+    new_section = (normalized_title, section_content.rstrip())
     if insert_index is None:
         kept.append(new_section)
     else:
@@ -104,11 +110,11 @@ def main():
     convert to markdown, then update the release notes for the
     release specified.
 
-    The changelog excerpt is merged under a markdown heading given by
+    The changelog excerpt is merged under an H1 heading (# <title>) given by
     --section-title (default: "Release Notes"). Before inserting, every
-    existing section with a matching heading (case-insensitive),
-    including repeated copies, is removed. Other sections (install
-    instructions, other platform notes) are kept.
+    existing H1 section with a matching title (case-insensitive, ignoring
+    surrounding whitespace), including repeated copies, is removed. Other
+    sections (install instructions, other platform notes) are kept.
 
     """
 
@@ -212,8 +218,10 @@ def parse_args():
     parser.add_argument('-s',
                         '--section-title',
                         default=DEFAULT_SECTION_TITLE,
-                        help=('Markdown section heading for release notes '
-                              '(default: "%(default)s")'))
+                        help=('H1 section title for the inserted release notes '
+                              '(written as "# <title>"; replaces existing H1 '
+                              'sections with the same title; '
+                              'default: "%(default)s")'))
     return parser.parse_args()
 
 
