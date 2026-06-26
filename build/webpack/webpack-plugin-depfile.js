@@ -38,12 +38,16 @@ class GenerateDepfilePlugin {
       compilation.hooks.finishModules.tap(this.constructor.name, (modules) => {
         // Resolve all symlinks/junctions to real paths. Siso doesn't handle
         // junctions on Windows well, so we need to resolve them here.
-        const absoluteDepsPaths = Array.from(modules)
+        const depsPaths = Array.from(modules)
           .filter((module) => module.resource)
-          .map((module) => fs.realpathSync(module.resource))
+          .map((module) =>
+            path
+              .relative(process.cwd(), fs.realpathSync(module.resource))
+              .replace(/\\/g, '/'),
+          )
         const depfileContent = generateDepfileContent(
           this.options.depfileSourceName,
-          absoluteDepsPaths,
+          depsPaths,
         )
         writeDepfileContentSync(this.options.depfilePath, depfileContent)
       })

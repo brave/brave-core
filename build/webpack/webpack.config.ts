@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { Configuration } from 'webpack'
@@ -22,54 +21,49 @@ import {
   braveUiFullySpecifiedRule,
   htmlAssetRule,
 } from './rules.ts'
+import type { TranspileWebUiCliOptions } from './transpile-web-ui-command.ts'
 import GenerateDepfilePlugin from './webpack-plugin-depfile.js'
 import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin.js'
 
-assert(process.env.ROOT_GEN_DIR, 'ROOT_GEN_DIR env variable is required')
-const rootGenDir = process.env.ROOT_GEN_DIR
-const pathMap = generatePathMap(rootGenDir)
-const buildFlags = JSON.parse(
-  fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
-)
-const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
+export function createWebpackConfig(
+  env: TranspileWebUiCliOptions,
+): Configuration {
+  const rootGenDir = path.resolve(env.root_gen_dir)
+  const pathMap = generatePathMap(rootGenDir)
+  const buildFlags = JSON.parse(
+    fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
+  )
+  const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
 
-export default async function (env: any, argv: any): Promise<Configuration> {
-  const isDevMode = argv.mode === 'development'
+  const isDevMode = env.mode === 'development'
   // webpack-cli no longer allows specifying entry name in cli args, so use
   // a custom env param and parse ourselves.
   const entry: Record<string, string> = {}
-  if (!env.brave_entries) {
-    throw new Error(
-      'Entry point(s) must be provided via env.brave_entries param.',
-    )
-  }
-  const entryInput = env.brave_entries.split(',').sort()
-  for (const entryInputItem of entryInput) {
-    const entryInputItemParts = entryInputItem.split('=')
+  for (const entryInputItem of env.entry) {
+    const entryInputItemParts = entryInputItem.split('=', 2)
     if (entryInputItemParts.length !== 2) {
       throw new Error(
         'Brave Webpack config could not parse entry env param item: '
           + entryInputItem,
       )
     }
-    entry[entryInputItemParts[0]] = entryInputItemParts[1]
+    const [key, value] = entryInputItemParts as [string, string]
+    entry[key] = value
   }
 
   const resolve = baseResolve(pathMap)
 
-  if (env.extra_modules) {
-    const extraModules = env.extra_modules.split(',')
-    resolve.modules = [...extraModules, ...(resolve.modules as string[])]
+  if (env.extra_modules.length > 0) {
+    resolve.modules = [...env.extra_modules, ...resolve.modules!]
   }
 
-  if (env.webpack_aliases) {
-    resolve.aliasFields = env.webpack_aliases.split(',')
+  if (env.webpack_alias.length > 0) {
+    resolve.aliasFields = env.webpack_alias
   }
 
-  assert(process.env.TARGET_GEN_DIR, 'TARGET_GEN_DIR env variable is required')
   const output: NonNullable<Configuration['output']> = {
     iife: !env.no_iife,
-    path: process.env.TARGET_GEN_DIR,
+    path: path.resolve(env.output_dir), // Must be absolute path
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/',
@@ -80,8 +74,8 @@ export default async function (env: any, argv: any): Promise<Configuration> {
     output.iife = false
   }
 
-  if (env.output_public_path) {
-    output.publicPath = env.output_public_path
+  if (env.public_asset_path) {
+    output.publicPath = env.public_asset_path
   }
 
   const experiments: Configuration['experiments'] = {
@@ -126,6 +120,8 @@ export default async function (env: any, argv: any): Promise<Configuration> {
 
   return {
     entry,
+    mode: env.mode,
+    context: path.resolve(env.webpack_context_dir), // Must be absolute path
     devtool: isDevMode ? 'inline-source-map' : false,
     output,
     resolve,
@@ -133,10 +129,10 @@ export default async function (env: any, argv: any): Promise<Configuration> {
     experiments,
     externals: [chromeUrlExternals, reactExternals],
     plugins: [
-      process.env.DEPFILE_SOURCE_NAME
+      env.grd_path
         && new GenerateDepfilePlugin({
-          depfilePath: process.env.DEPFILE_PATH,
-          depfileSourceName: process.env.DEPFILE_SOURCE_NAME,
+          depfilePath: env.depfile_path,
+          depfileSourceName: env.grd_path,
         }),
       ...deterministicIdsPlugins(rootGenDir),
       provideNodeGlobals,
