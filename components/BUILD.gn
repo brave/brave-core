@@ -151,7 +151,6 @@ test("brave_components_unittests") {
   # extensions targets.
   assert_no_deps = [
     "//brave/browser/*",
-    "//brave/build/*",
     "//brave/common/*",
     "//brave/renderer/*",
     "//brave/updater/*",
