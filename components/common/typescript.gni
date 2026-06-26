@@ -44,8 +44,8 @@ brave_common_web_compile_inputs = [
   "$root_gen_dir/brave/components/common/package.json",
 ]
 
-# Runs a frontend compiler for the specified entry point(s) and outputs a GRD file
-# which includes all the generated files.
+# Runs a frontend compiler for the specified entry point(s) and outputs a GRD
+# file which includes all the generated files.
 #
 # Argument:
 #   entry_points
@@ -145,9 +145,10 @@ template("transpile_web_ui") {
     # https://chromium.googlesource.com/chromium/src/build/+/HEAD/docs/writing_gn_templates.md#inputs-and-depfiles
     depfile = "${target_gen_dir}/${target_name}.d"
 
-    # This file contains the webpack import paths which describe the folders and files (indirectly) imported by the entry point
-    # This is important to ensure gn knows about webpacks implicit dependencies.
-    # We write those to json and cross reference them in a later stage to ensure the list is complete
+    # This file contains the webpack import paths which describe the folders and
+    # files (indirectly) imported by the entry point This is important to ensure
+    # gn knows about webpacks implicit dependencies. We write those to json and
+    # cross reference them in a later stage to ensure the list is complete
     import_paths_file = "${target_gen_dir}/${target_name}.data_paths.json"
 
     resource_name = invoker.resource_name

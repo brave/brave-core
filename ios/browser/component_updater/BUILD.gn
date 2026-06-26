@@ -4,7 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 # TODO(sszaloki): https://github.com/brave/brave-browser/issues/46286
-# Try to componentize zxcvbn_data_component_installer.{h,cc}, and upstream the change.
+# Try to componentize zxcvbn_data_component_installer.{h,cc}, and upstream the
+# change.
 source_set("zxcvbn_data_component_installer") {
   sources = [
     "//chrome/browser/component_updater/zxcvbn_data_component_installer.cc",

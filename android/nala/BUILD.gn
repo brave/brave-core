@@ -8,8 +8,9 @@ import("//build/config/android/rules.gni")
 
 nala_base_path = "../../node_modules/@brave/leo/tokens/android"
 
-# Generate one copy() target per icon override and collect their dep labels.
-# To override a Chromium drawable, add an entry to nala_icon_overrides in icons.gni.
+# Generate one copy() target per icon override and collect their dep labels. To
+# override a Chromium drawable, add an entry to nala_icon_overrides in
+# icons.gni.
 _nala_override_deps = []
 foreach(override, nala_icon_overrides) {
   _name = "nala_override_" + string_replace(override.dest, ".xml", "")

@@ -7,8 +7,8 @@ group("lib") {
   public_deps = [ "//third_party/rust/proc_macro2/v1:lib" ]
 }
 
-# This is copied from //third_party/rust/proc_macro2/v1:lib for build dependencies
-# All deps should be changed from lib -> buildrs_support
+# This is copied from //third_party/rust/proc_macro2/v1:lib for build
+# dependencies All deps should be changed from lib -> buildrs_support
 # TODO(bridiver) find a better way to handle this
 import("//build/rust/cargo_crate.gni")
 cargo_crate("buildrs_support") {

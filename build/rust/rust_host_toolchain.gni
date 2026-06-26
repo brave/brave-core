@@ -6,7 +6,8 @@
 # Hermetic host toolchain for cargo invocations (see `build_crate.gni` and
 # `rust_to_wasm.gni`). On macOS, point cargo's host build scripts and linker at
 # the hermetic Clang/SDK instead of letting cc-rs discover the system Xcode via
-# `xcrun`. `rust_host_inputs` and `rust_host_response_file_contents` are empty on
+# `xcrun`. `rust_host_inputs` and `rust_host_response_file_contents` are empty
+# on
 # every other host, so callers can append them unconditionally.
 
 rust_host_inputs = []
@@ -31,8 +32,8 @@ if (host_os == "mac" && current_toolchain == host_toolchain) {
 
     # Route the host link through a wrapper that drives clang with the hermetic
     # `ld64.lld`. This is `_LINKER` rather than a rustflag deliberately: when
-    # cargo cross-compiles (e.g. `rust_to_wasm`), only `_LINKER` reaches the host
-    # build scripts without leaking into the target link. See the wrapper's
+    # cargo cross-compiles (e.g. `rust_to_wasm`), only `_LINKER` reaches the
+    # host build scripts without leaking into the target link. See the wrapper's
     # module docstring for the full rationale.
     "CARGO_TARGET_${_rust_host_triple}_LINKER=" +
         rebase_path("//brave/build/rust/rust_host_linker.py"),
