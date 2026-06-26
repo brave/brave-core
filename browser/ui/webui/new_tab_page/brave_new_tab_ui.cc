@@ -177,8 +177,9 @@ BraveNewTabUI::BraveNewTabUI(
   source->AddLocalizedStrings(webui::kBraveNewsStrings);
 
   // Add a SanitizedImageSource to allow fetching images for Brave News.
-  content::URLDataSource::Add(
-      profile, std::make_unique<BraveSanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile,
+                              std::make_unique<BraveSanitizedImageSource>(
+                                  profile, /*serve_untrusted=*/false));
 
   content::URLDataSource::Add(profile, std::make_unique<ThemeSource>(profile));
 }

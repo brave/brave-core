@@ -300,8 +300,9 @@ void NewTabPageInitializer::AddCustomImageDataSource() {
 
 void NewTabPageInitializer::AddSanitizedImageDataSource() {
   auto* profile = GetProfile();
-  content::URLDataSource::Add(
-      profile, std::make_unique<BraveSanitizedImageSource>(profile));
+  content::URLDataSource::Add(profile,
+                              std::make_unique<BraveSanitizedImageSource>(
+                                  profile, /*serve_untrusted=*/false));
 }
 
 }  // namespace brave_new_tab_page_refresh
