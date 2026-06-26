@@ -209,7 +209,19 @@ export class NemotronStreamSession {
       })
     }
 
-    this.inflight = this.inflight.then(() => this.processAvailable(true))
+    this.inflight = this.inflight
+      .then(() => this.processAvailable(true))
+      .then(() => this.wipe())
+  }
+
+  // Zero every per-session buffer holding audio, acoustic features, or
+  // transcript once the final result has emitted, so the utterance does not
+  // linger in the JS heap until garbage collection. The shared model weights
+  // are untouched.
+  private wipe(): void {
+    this.frontend.wipe()
+    this.hyp.fill(0)
+    this.hyp.length = 0
   }
 
   private async processAvailable(final: boolean): Promise<void> {
