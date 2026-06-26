@@ -187,7 +187,6 @@ const RealEmailRow = styled(Row)`
   border: 1px solid ${color.divider.subtle};
   padding: 8px 14px;
   background: ${color.container.background};
-  width: 100%;
   box-sizing: border-box;
   color: ${color.text.secondary};
   font: ${font.default.regular};
@@ -264,7 +263,7 @@ const EmailAliasesPromo = ({
                     </ArrowWrapper>
 
                     <RealEmailRow>
-                        <Icon name='email' />
+                        <Icon name='email-shield' />
                         youremail@example.com
                     </RealEmailRow>
                 </DemoArea>
