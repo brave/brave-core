@@ -248,12 +248,17 @@ public class OnboardingRestoreWalletFragment extends BaseOnboardingWalletFragmen
                 new ContextThemeWrapper(requireContext(), R.style.BraveWalletEditTextTheme);
         PasteEditText pasteEditText = new PasteEditText(contextThemeWrapper);
         pasteEditText.setListener(this);
-        pasteEditText.setInputType(InputType.TYPE_CLASS_TEXT);
+        // Set no suggestions flag to prevent leakage of sensitive data.
+        pasteEditText.setInputType(
+                InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_FLAG_NO_SUGGESTIONS);
         pasteEditText.setAutofillHints("recoveryPhrase");
-        // Set correct IME option to the last item, so the keyboard will
-        // jump to the next item or hide accordingly.
+        // Set no personalized learning flag and correct IME option to the last item,
+        // so the keyboard will jump to the next item or hide accordingly.
         pasteEditText.setImeOptions(
-                lastItem ? EditorInfo.IME_ACTION_DONE : EditorInfo.IME_ACTION_NEXT);
+                lastItem
+                        ? EditorInfo.IME_ACTION_DONE | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING
+                        : EditorInfo.IME_ACTION_NEXT
+                                | EditorInfo.IME_FLAG_NO_PERSONALIZED_LEARNING);
         pasteEditText.setHint(
                 String.format(
                         getResources().getString(R.string.recovery_phrase_word_hint),
