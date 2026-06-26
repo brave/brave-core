@@ -17,7 +17,8 @@ public class BraveToolbarPositionController {
             boolean isFindInPageShowing,
             boolean isFormFieldFocusedWithKeyboardVisible,
             boolean doesUserPreferTopToolbar,
-            @ControlsPosition int currentPosition) {
+            @ControlsPosition int currentPosition,
+            boolean isScrolledOff) {
         // We want it to be shown on the NTP and tab switcher.
         return ToolbarPositionController.calculateStateTransition(
                 prefStateChanged,
@@ -27,6 +28,7 @@ public class BraveToolbarPositionController {
                 isFindInPageShowing,
                 isFormFieldFocusedWithKeyboardVisible,
                 doesUserPreferTopToolbar,
-                currentPosition);
+                currentPosition,
+                isScrolledOff);
     }
 }
