@@ -138,10 +138,14 @@ const AliasChip = styled.div`
 `
 
 const AliasChipFocused = styled(AliasChip)`
-  padding: 6px 10px;
-  font-size: 13px;
+  padding: ${spacing.m} ${spacing.l};
+  font-size: ${spacing.l};
   text-align: center;
   background: ${color.container.background};
+`
+
+const LabelChipGroup = styled(Col)`
+  gap: ${spacing.s};
 `
 
 const AliasPart = styled.span`
@@ -149,7 +153,7 @@ const AliasPart = styled.span`
 `
 
 const AliasNumber = styled.span`
-  color: #ea580c;
+  color: ${color.systemfeedback.errorText};
 `
 
 // ---------------------------------------------------------------------------
@@ -158,22 +162,22 @@ const AliasNumber = styled.span`
 
 const ArrowWrapper = styled(Col)`
   align-items: center;
-  color: #ea580c;
-  line-height: 1;
+  color: ${color.systemfeedback.errorText};
+  line-height: ${spacing.xs};
 `
 
 const ArrowLine = styled.div`
-  width: 2px;
-  height: 18px;
-  background: #ea580c;
+  width: ${spacing.s};
+  height: ${spacing.xl};
+  background: ${color.systemfeedback.errorText};
 `
 
 const ArrowHead = styled.div`
-  width: 0;
-  height: 0;
-  border-left: 5px solid transparent;
-  border-right: 5px solid transparent;
-  border-top: 7px solid #ea580c;
+  width: ${spacing.none};
+  height: ${spacing.none};
+  border-left: ${spacing.s} solid transparent;
+  border-right: ${spacing.s} solid transparent;
+  border-top: ${spacing.m} solid ${color.systemfeedback.errorText};
 `
 
 // ---------------------------------------------------------------------------
@@ -185,7 +189,7 @@ const RealEmailRow = styled(Row)`
   gap: ${spacing.s};
   border-radius: ${radius.m};
   border: 1px solid ${color.divider.subtle};
-  padding: 8px 14px;
+  padding: ${spacing.m} ${spacing.xl};
   background: ${color.container.background};
   box-sizing: border-box;
   color: ${color.text.secondary};
@@ -236,14 +240,15 @@ const EmailAliasesPromo = ({
 
                         {/* Center — focused NYT card */}
                         <SiteCardFocused>
-                            {/* <NytTitle>The New York Times</NytTitle> */}
                             <img src={NytIcon} alt="The New York Times" />
-                            <ModalLabel>Enter your email to continue</ModalLabel>
-                            <AliasChipFocused>
-                                <AliasPart>cat.mane.</AliasPart>
-                                <AliasNumber>2947</AliasNumber>
-                                <span>@bravealias.com</span>
-                            </AliasChipFocused>
+                            <LabelChipGroup>
+                                <ModalLabel>Enter your email to continue</ModalLabel>
+                                <AliasChipFocused>
+                                    <AliasPart>cat.mane.</AliasPart>
+                                    <AliasNumber>2947</AliasNumber>
+                                    <span>@bravealias.com</span>
+                                </AliasChipFocused>
+                            </LabelChipGroup>
                         </SiteCardFocused>
 
                         {/* Right — faded generic store card */}
