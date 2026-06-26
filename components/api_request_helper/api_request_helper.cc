@@ -41,7 +41,6 @@ bool IsSuccessCode(int response_code) {
   return response_code >= 200 && response_code <= 299;
 }
 
-
 scoped_refptr<base::SequencedTaskRunner> MakeDecoderTaskRunner() {
   return base::ThreadPool::CreateSequencedTaskRunner(
       {base::TaskPriority::USER_VISIBLE,
@@ -158,10 +157,10 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
     const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseConversionCallback conversion_callback) {
-  auto iter = CreateRequestURLLoaderHandler(
+  auto ticket_and_handler = CreateRequestURLLoaderHandler(
       method, url, payload, payload_content_type, request_options, headers,
       std::move(callback));
-  auto* handler = iter->get();
+  auto* handler = ticket_and_handler.second;
 
   if (request_options.max_body_size == -1u) {
     handler->url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
@@ -176,7 +175,7 @@ APIRequestHelper::Ticket APIRequestHelper::Request(
         request_options.max_body_size);
   }
 
-  return iter;
+  return ticket_and_handler.first;
 }
 
 APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
@@ -204,10 +203,10 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
     const base::flat_map<std::string, std::string>& headers,
     const APIRequestOptions& request_options,
     ResponseStartedCallback response_started_callback) {
-  auto iter = CreateRequestURLLoaderHandler(
+  auto ticket_and_handler = CreateRequestURLLoaderHandler(
       method, url, payload, payload_content_type, request_options, headers,
       std::move(result_callback));
-  auto* handler = iter->get();
+  auto* handler = ticket_and_handler.second;
 
   // Set streaming data callback
   handler->data_received_callback_ = std::move(data_received_callback);
@@ -215,13 +214,13 @@ APIRequestHelper::Ticket APIRequestHelper::RequestSSE(
   handler->response_started_callback_ = std::move(response_started_callback);
 
   handler->url_loader_->DownloadAsStream(url_loader_factory_.get(), handler);
-  return iter;
+  return ticket_and_handler.first;
 }
 
-void APIRequestHelper::DeleteAndSendResult(Ticket iter,
+void APIRequestHelper::DeleteAndSendResult(Ticket ticket,
                                            ResultCallback callback,
                                            APIRequestResult result) {
-  Cancel(iter);
+  Cancel(ticket);
   std::move(callback).Run(std::move(result));
 }
 
@@ -233,7 +232,8 @@ void APIRequestHelper::CancelAll() {
   url_loaders_.clear();
 }
 
-APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
+std::pair<APIRequestHelper::Ticket, APIRequestHelper::URLLoaderHandler*>
+APIRequestHelper::CreateURLLoaderHandler(
     const std::string& method,
     const GURL& url,
     const std::string& payload,
@@ -285,13 +285,15 @@ APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
       std::make_unique<URLLoaderHandler>(this, task_runner_);
   loader_wrapper_handler->RegisterURLLoader(std::move(url_loader));
 
-  auto iter = url_loaders_.insert(url_loaders_.begin(),
-                                  std::move(loader_wrapper_handler));
+  auto iter = url_loaders_.insert(
+      url_loaders_.begin(),
+      std::make_pair(next_ticket_id_++, std::move(loader_wrapper_handler)));
 
-  return iter;
+  return std::make_pair(iter->first, iter->second.get());
 }
 
-APIRequestHelper::Ticket APIRequestHelper::CreateRequestURLLoaderHandler(
+std::pair<APIRequestHelper::Ticket, APIRequestHelper::URLLoaderHandler*>
+APIRequestHelper::CreateRequestURLLoaderHandler(
     const std::string& method,
     const GURL& url,
     const std::string& payload,
@@ -299,19 +301,19 @@ APIRequestHelper::Ticket APIRequestHelper::CreateRequestURLLoaderHandler(
     const APIRequestOptions& request_options,
     const base::flat_map<std::string, std::string>& headers,
     ResultCallback result_callback) {
-  auto iter = CreateURLLoaderHandler(
+  auto ticket_and_handler = CreateURLLoaderHandler(
       method, url, payload, payload_content_type,
       request_options.auto_retry_on_network_change,
       request_options.enable_cache, true /* allow_http_error_result*/, headers);
-  auto* handler = iter->get();
+  auto* handler = ticket_and_handler.second;
 
   handler->result_callback_ = base::BindOnce(
       &APIRequestHelper::DeleteAndSendResult, weak_ptr_factory_.GetWeakPtr(),
-      iter, std::move(result_callback));
+      ticket_and_handler.first, std::move(result_callback));
   if (request_options.timeout) {
     handler->url_loader_->SetTimeoutDuration(request_options.timeout.value());
   }
-  return iter;
+  return ticket_and_handler;
 }
 
 APIRequestHelper::URLLoaderHandler::URLLoaderHandler(
@@ -543,7 +545,6 @@ void APIRequestHelper::URLLoaderHandler::MaybeSendResult() {
     std::move(result_callback_).Run(std::move(result));
   }
 }
-
 
 void APIRequestHelper::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
