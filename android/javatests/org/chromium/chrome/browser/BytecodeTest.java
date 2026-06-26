@@ -2309,6 +2309,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate", // presubmit: ignore-long-line
+                        int.class,
                         int.class));
 
         Assert.assertTrue(

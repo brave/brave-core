@@ -20,9 +20,9 @@ public class BraveMediaNotificationControllerDelegate
         extends ChromeMediaNotificationControllerDelegate {
     private static final String TAG = "BraveMediaNotif";
 
-    BraveMediaNotificationControllerDelegate(int id) {
-        super(id);
-        ChromeMediaNotificationControllerDelegate.sMapNotificationIdToOptions.put(
+    BraveMediaNotificationControllerDelegate(int uniqueId, int mediaTypeId) {
+        super(uniqueId, mediaTypeId);
+        ChromeMediaNotificationControllerDelegate.sMapMediaTypeIdToOptions.put(
                 PlaybackListenerMicServiceImpl.NOTIFICATION_ID,
                 new NotificationOptions(
                         BraveMediaNotificationControllerServices.PlaybackListenerMicService.class,
