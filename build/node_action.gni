@@ -24,9 +24,10 @@ if (host_os == "win") {
 #
 # The script is executed with the Chromium-bundled //third_party/node binary.
 #
-# Scripts should live under //brave/build. This directory follows the erasable
-# TypeScript syntax and is type-checked as Node.js code (no web-specific types
-# or features) for direct Node.js execution.
+# For now, scripts should live under //brave/build/commands/ and follow the
+# existing conventions in that directory (ESM entry scripts, shared logic in
+# lib/). This directory follows the erasable TypeScript syntax rules and is
+# type-checked as Node.js code (no web-specific types or features).
 #
 # Usage example:
 #
