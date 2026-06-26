@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="eu">
+<translation id="1000614056227025171">Orri nagusia pertsonalizatzeko promozioaren pantailaren behealdean ainguratutako orria altuera osoan irekita dago</translation>
 <translation id="1006017844123154345">Ireki sarean</translation>
 <translation id="1036348656032585052">Desaktibatu</translation>
 <translation id="1046742265332833834">Gai urdina</translation>
 <translation id="1070329623210597193">Webgune honek ikusi edo edita ditzakeen fitxategiak</translation>
-<translation id="1882093842020941518">Lagun iezaguzu Brave hobetzen: esan iezaguzu zergatik eman duzun hirugarrenen cookieak erabiltzeko baimena. <ph name="BEGIN_LINK"/>Bidali oharrak<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Webguneen ordenagailuetarako bertsioa ikusteko eska dezakezu</translation>
 <translation id="1109482864356262001">Mugimendu- edo argi-sentsoreak behar dituzten eginbideek ez dute funtzionatuko</translation>
 <translation id="6670155282615872564">Gauzatu behean iradokitako ekintzak Brave-ri etekinik handiena ateratzeko</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave-ri buruzko aholkuak</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/> helbidean kapsulatua</translation>
 <translation id="1263609676484797429">Sakatu Aplikazioak &gt; Aplikazio lehenetsiak.</translation>
+<translation id="1264694639515903274">Orain, orri nagusia pertsonaliza dezakezu</translation>
 <translation id="1272079795634619415">Gelditu</translation>
 <translation id="1275718070701477396">Hautatua</translation>
 <translation id="8010562420973777575">Datuak aurrezteko, orri honetako irudiak optimizatu egin ditu Brave-k.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URLa moztuta dago</translation>
 <translation id="1741136041592162279">Eman zure azkenaldiko fitxak gailuarekin partekatzeko aukera Brave-ri, gailuko aplikazioen zerrendan eta bilaketa-emaitzetan ikusi ahal izan ditzazun. Aukera hori aktibatu edo desaktibatzeko, joan Brave-ren ezarpenetara.</translation>
 <translation id="1420688843103859429">Nabigatu atzera eta aurrera ukipen-panelean 2 hatz pasatuta</translation>
-<translation id="1432650420699700107">Sare lokaleko edozein gailutara konektatzeko eska dezakete webguneek</translation>
 <translation id="1442081309487427303">Aktibatu irakurtzeko modurako estekak</translation>
 <translation id="1448064542941920355">Gutxitu zooma</translation>
 <translation id="1464044141348608623">Ez eman gailua noiz erabiltzen ari zaren jakiteko baimena webguneei</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Aktibatuta badago, webguneek pantaila guztietako leihoak kudeatzeko eska dezakete. Desaktibatuta badago, webguneek ezingo dituzte kudeatu pantaila guztietako leihoak.</translation>
 <translation id="1738912554587725807">Pantailaren behealdean ainguratutako orria, fitxa berriaren itxura aldatzeko gaien bildumak dituena</translation>
 <translation id="1743802530341753419">Webguneei gailu batera konektatzeko baimena eman aurretik, eskatu onespena (gomendatua)</translation>
-<translation id="2534291364429593865">Jaso Brave-ri buruzko aholkuen jakinarazpenak</translation>
 <translation id="1777815584158991902">Pantailaren behealdean ainguratutako orria, Discover-en jarioari buruzkoa</translation>
 <translation id="1779089405699405702">Irudi-deskodetzailea</translation>
 <translation id="1781533683087883868">Desaktibatu irakurtzeko modurako estekak</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Amaitu deia</translation>
 <translation id="1919950603503897840">Hautatu kontaktuak</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Pertsonalizatu orri nagusia</translation>
 <translation id="1939059826036755332">Pantaila txiki gainjarri automatikoa</translation>
 <translation id="1954597385941141174">Webguneek USB bidezko gailuetara konektatzea eska dezakete</translation>
 <translation id="1979673356880165407">Handitu edo txikitu testua eta irudiak bisitatzen dituzun webgune guztietan</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Kudeatzailea: <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Laguntza eta iritziak</translation>
 <translation id="2501278716633472235">Egin atzera</translation>
-<translation id="2533138527374486328">Aktibatuta badago, webguneek sare lokaleko edozein gailutara konektatzeko eska dezake. Desaktibatuta badago, webguneak ezin dira konektatu sare lokaleko gailuetara.</translation>
 <translation id="2536779053640817375">Oraingoan baimenduta • Zehatza</translation>
 <translation id="2544997614631598250">Gaiaren kolorea: iluna</translation>
 <translation id="2546283357679194313">Cookieak eta webguneetako datuak</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Abiarazi bizkor arakatzaileko barra</translation>
 <translation id="2789132527330338807">Webguneek zure ingurunearen 3D-ko mapa bat sortzeko edo kameraren posizioaren jarraipena egiteko baimena eska dezakete</translation>
 <translation id="2790501146643349491">Aktibatuta dagoenean, berriki itxitako webguneek datuak bidaltzen eta jasotzen amai dezakete. Desaktibatuta dagoenean, berriki itxitako webguneek ezin dute amaitu datuak bidaltzen eta jasotzen.</translation>
-<translation id="1708222144403389505">Aktibatu Brave-ri etekinik handiena ateratzen laguntzen dizuten aholku erabilgarriak jasotzeko jakinarazpenak</translation>
 <translation id="2795716239552913152">Webguneek kokapena erabili ohi dute eginbide edo informazio egokia eskaintzeko, hala nola tokiko albisteak edo inguruan dauden dendak</translation>
 <translation id="2800760947029405028">Kargatu irudi bat</translation>
 <translation id="2802908157808345702">Ez eman leiho gainerakorrak bidaltzeko eta birbideratzeak erabiltzeko baimena webguneei</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Webguneek soinua erreproduzi dezakete</translation>
 <translation id="3065787901655140044">Babes aurreratua aktibatuta dago</translation>
 <translation id="3069226013421428034">Eman webgune jakin batean saioa hasteko baimena hirugarrenei.</translation>
+<translation id="3084983642903364837">Orri nagusia geroago editatzeko, erabili 3 puntuko menua.</translation>
 <translation id="310297983047869047">Aurreko diapositiba</translation>
 <translation id="3108122610701115301">Ezarri lehenetsi gisa</translation>
 <translation id="310979712355504754">Ezabatu guztiak</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Ez eman USB bidezko gailuetara konektatzeko baimena webguneei</translation>
 <translation id="3965467402665811906">Zuri buruz gordetako informazioa erabiltzeko baimena eska dezakete webguneek</translation>
 <translation id="3967822245660637423">Deskargatzen amaitu da</translation>
-<translation id="3969869202926863008">Sare lokalerako sarbidea</translation>
 <translation id="3981465354637804599">Edukiak edo zerbitzuak erabiltzaileek ezer ordaindu gabe eskaini ahal izateko erakutsi ohi dituzte webguneek iragarkiak. Alabaina, badaude iragarki oztopatzaileak edo iruzurrezkoak erakusten dituzten webguneak ere.</translation>
 <translation id="3987993985790029246">Kopiatu esteka</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Serieko ataka batera konektatuta</translation>
 <translation id="4223404254440398437">Ukatu da mikrofonoa erabiltzeko baimena</translation>
 <translation id="4226663524361240545">Gailua dardararaz dezakete jakinarazpenek</translation>
+<translation id="4227965147357783918">Orri nagusia pertsonalizatzeko promozioaren pantailaren behealdean ainguratutako orria altuera erdian irekita dago</translation>
 <translation id="4259722352634471385"><ph name="URL"/> orrira joateko aukera blokeatuta dago</translation>
 <translation id="4274673989874969668">Webgune batetik irteten zarenean, webguneak sinkronizatzen jarrai dezake zereginak amaitzeko, hala nola argazkiak kargatzeko edo txat-mezuak bidaltzeko</translation>
 <translation id="4278390842282768270">Baimenduta</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Zabaldu</translation>
 <translation id="4310738531374808763">Pertsonalizatu orri nagusia</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Bihar iraungiko da}other{# egun barru iraungiko da}}</translation>
+<translation id="7012676469589811613">Pertsonalizatu Brave gai pertsonalizatu bat aukeratuz</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> domeinuko webgune guztiak</translation>
 <translation id="4340799661701629185">Ez eman jakinarazpenak bidaltzeko baimena webguneei</translation>
 <translation id="4341577178275615435">Testu-kurtsorearen bidez arakatzeko eginbidea aktibatu edo desaktibatzeko, erabili F7 lasterbidea</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Webguneak ez dira bizkortzen Brave-ren V8 motorrarekin, baina erasoen aurrean zertxobait seguruagoa da Brave</translation>
 <translation id="5556459405103347317">Kargatu berriro</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blokeatuta dago</translation>
-<translation id="560980142378233747">Horrek esan nahi du webgunearen eginbideek funtzionatu beharko luketela, baina arakatzean agian babes txikiagoa daukazula. <ph name="BEGIN_LINK"/>Bidali oharrak<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Pantailaren behealdean ainguratutako orria, fitxa berriaren orriaren txartelak dituena</translation>
 <translation id="5621413808884657932">Aktibatuta dagoenean, webguneek gailuko beste aplikazio eta zerbitzu batzuk erabiltzeko baimena eska dezakete. Desaktibatuta dagoenean, webguneek ezin dituzte erabili gailuko beste aplikazio eta zerbitzurik.</translation>
 <translation id="5632485077360054581">Erakutsi nola</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Nire lasterbideak</translation>
 <translation id="656065428026159829">Ikusi gehiago</translation>
 <translation id="6561560012278703671">Erabili mezularitza isilagoa (jakinarazpenak blokeatzen ditu arretarik galaraz ez diezazuten)</translation>
-<translation id="6565144332292237355">Webguneek eginbide hau erabil dezakete zure sare lokaleko edozein gailu bilatzeko eta hartara konektatzeko</translation>
 <translation id="6593061639179217415">Ordenagailuetarako webgunea</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_OWNER"/> domeinuko <ph name="RWS_MEMBERS_COUNT"/> webgunek cookieak erabiltzeko baimena du}other{<ph name="RWS_OWNER"/> domeinuko <ph name="RWS_MEMBERS_COUNT"/> webgunek cookieak erabiltzeko baimena dute}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Jarraitu bertan</translation>
 <translation id="6630443592285535486">Idatzi kolore hamaseitarra hemen</translation>
 <translation id="6635327442719709864">Aktibatuta dagoenean, webguneek serieko atakak erabiltzeko baimena eska dezakete. Desaktibatuta dagoenean, webguneek ezin dituzte erabili serieko atakak.</translation>
-<translation id="6669390930482049506">Jaso jakinarazpenak</translation>
 <translation id="6678072580827808850">Berrikusi segurtasun-egiaztapena</translation>
 <translation id="6682057173375416470">Jaso iradokitako artikuluak Fitxa berria orrian</translation>
 <translation id="6683865262523156564">Egiten dituzun jarduerak ikus ditzakeen talde batean dago webgunea. <ph name="RWS_OWNER"/> domeinuak definitu du taldea.</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Freskatu</translation>
 <translation id="7188508872042490670">Gailuan gordetako webguneetako datuak</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> webgunearen mendeko webgune guztiek edo hari dagokion orri nagusiko aplikazioak gorde dituzten datu eta cookie guztiak ezabatuko dira</translation>
-<translation id="7213166370492037743">Ez eman sare lokaleko ezein gailutara konektatzeko baimenik webguneei</translation>
 <translation id="7219254577985949841">Webguneko datuak ezabatu nahi dituzu?</translation>
 <translation id="723171743924126238">Hautatu irudiak</translation>
 <translation id="7243246278722455312">Fitxa berriaren orria pertsonalizatzeko pantailaren behealdean ainguratutako orria</translation>
@@ -757,7 +753,6 @@ Babes aurreratua programak Brave-ren ezarpen hauek kontrolatzen ditu:</translati
 <translation id="8737426583868847403">Zoom maila pertsonalizatu batekin gordetzen dituzun webguneak hemen agertuko dira</translation>
 <translation id="8748714929822124637">Ez eman sare lokaleko beste gailuak erabiltzeko baimenik webguneei</translation>
 <translation id="8751914237388039244">Hautatu irudi bat</translation>
-<translation id="8775741625735357092">Laster-marken barra aktiba dezakezu Ezarpenak &gt; Itxura atalean</translation>
 <translation id="8800034312320686233">Ez al du funtzionatzen webguneak?</translation>
 <translation id="8801436777607969138">Blokeatu JavaScript webgune zehatz batean.</translation>
 <translation id="2026315747406172223">V8 Brave-ren JavaScript eta WebAssembly motorra da, eta webguneen errendimendua hobetzeko balio du</translation>

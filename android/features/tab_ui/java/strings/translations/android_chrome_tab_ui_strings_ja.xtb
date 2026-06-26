@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> 個のタブをグループ化しました</translation>
 <translation id="1844381456014878100">アクティブでない状態で 7 日経過</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個のタブ}other{<ph name="TABS_COUNT_MANY"/> 個のタブ}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{リーディング リストにタブを追加}other{リーディング リストにタブを追加}}</translation>
 <translation id="1909810060368225529">注: この共有タブグループに加えた変更は、すべてのユーザーに表示されます。共有タブグループは誰でも変更できます</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{タブを固定}other{タブを固定}}</translation>
 <translation id="1982637982196732906">アクティブでないセクションに移動</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{選択した <ph name="TABS_COUNT_ONE"/> 個のタブをブックマークに追加}other{選択した <ph name="TABS_COUNT_MANY"/> 個のタブをブックマークに追加}}</translation>
 <translation id="2055057176188061528">タブグループを選択するか、新しいタブグループを作成します</translation>
 <translation id="2074527029802029717">タブの固定を解除</translation>
+<translation id="2111670510994270194">右隣に新しいタブを開く</translation>
 <translation id="2118649612461486615">ストア情報</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{サイトのミュートを解除}other{サイトのミュートを解除}}</translation>
 <translation id="2162620598375156287">現在の価格は <ph name="SOURCE_WEBSITE"/> で <ph name="CURRENT_PRICE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> が <ph name="PRICE_DROP"/> 値下げ</translation>
 <translation id="3078350928901129212"><ph name="COLOR_NAME"/> のタブグループ カラーアイコン</translation>
 <translation id="311432875115153175">タブグループのリストを閉じました</translation>
+<translation id="3152596030350326139">タブを横方向に表示</translation>
+<translation id="31806439105337256">タブを縦方向に表示</translation>
 <translation id="3194464645767632461">評価</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個のタブをグループに追加}other{<ph name="TABS_COUNT_MANY"/> 個のタブをグループに追加}}</translation>
 <translation id="3328308545011660196">おすすめ: <ph name="NUMBER_OF_TABS"/> 個のタブは関連しているようです。グループ化しますか？</translation>

@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">अधिक…</translation>
 <translation id="71316462802471551">ईमेल अलियासेस</translation>
+<translation id="209130971304928953">टॅब वर्कस्पेस म्हणून जतन करा…</translation>
+<translation id="877984331511007834">वर्कस्पेस उघडा…</translation>
+<translation id="1310182651927031327">टॅब्स वर्कस्पेस म्हणून जतन करा…</translation>
+<translation id="3588277741646479444">वर्कस्पेस उघडा…</translation>
 <translation id="1990886731975529483">गूगल वाइडवाइन इन्स्टॉल करा आणि चालू करा</translation>
 <translation id="8926389886865778422">पुन्हा विचारू नका</translation>
 <translation id="4900351245762303149">Google Widevine इन्स्टॉल करा</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor सह नवीन गुप्त विंडो</translation>
 <translation id="2638041073279639246">Tor सह गुप्त विंडो मध्ये लिंक उघडा</translation>
 <translation id="3425600262621021599">लिंक Brave गुप्त विंडो मध्ये उघडा Tor</translation>
-<translation id="2545072023356206691">1 डिसेंबर 2023 पासून Brave Dev चॅनेलला ब्राउझर अपडेट मिळणार नाहीत. आम्ही वापरकर्त्यांना Nightly, बीटा किंवा रिलीझ आवृत्त्यांमध्ये स्थलांतर करण्याची शिफारस करतो.</translation>
 <translation id="474217410105706308">टॅब निःशब्द करा</translation>
 <translation id="2804710924397009224">Brave रीवॉर्ड्स चिन्ह लपवा</translation>
 <translation id="5029193871181468990">Brave रीवॉर्ड्स चिन्ह लपवा</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">एक खाजगी जाहिरात क्लिक करून Brave शोधाचे समर्थन केल्याबद्दल धन्यवाद. बिग टेकच्या विपरीत, आम्ही तुम्हाला गोपनीयता जपण्यासाठी जाहिरात कार्यक्षमता अज्ञातपणे मोजतो.</translation>
 <translation id="8748471354357836070">अधिक जाणून घ्या / ऑप्ट आउट पर्याय</translation>
 <translation id="5927196110206824867">प्रायोजित पार्श्वभूमी प्रतिमा स्वतंत्र, वापरकर्ताभिमुख वेब तयार करण्याच्या Braveच्या उद्दिष्टास बळ देतात. आम्ही बिग टेकसारखे नाही, आम्ही तुमची गोपनीयता जपण्यासाठी तुमच्या जाहिरात कामगिरीची गणना निनावीपणे करतो.</translation>
-<translation id="4174337572777167894">वेब डिस्कव्हरी प्रकल्प</translation>
-<translation id="8659271182272561965">Brave शोध अधिक शुद्ध करण्यासाठी थोड्या निनावी शोधाच्या आणि &amp; ब्राऊझिंग डेटाच्या स्वरूपात योगदान द्या.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave शोध सुधारण्यासाठी काही निनावी शोध आणि ब्राउझिंग डेटाचे योगदान द्या.</translation>
 <translation id="1516554614404600536">Brave टूलटिप</translation>
 <translation id="4375473250631001683">साइडबार चिन्ह लपवा</translation>
 <translation id="2613033293035359003">साइडबार लपवा</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">कंटेनरमध्ये उघडा</translation>
 <translation id="194205047181722473">कंटेनरमध्ये लिंक उघडा</translation>
 <translation id="8638526693050780542">कंटेनर व्यवस्थापित करा</translation>
+<translation id="2796584247246518451">नवीन तात्पुरता कंटेनर</translation>
 <translation id="2336228925368920074">सर्व टॅब बुकमार्क करा...</translation>
 <translation id="2523967823495420116">उभे टॅब्स वापरा</translation>
 <translation id="5483718923712878759">फोकस मोड</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">कंटेनरमध्ये उघडा</translation>
 <translation id="1185644444415356776">कंटेनरमध्ये लिंक उघडा</translation>
 <translation id="6745991613881384719">कंटेनर व्यवस्थापित करा</translation>
+<translation id="8523788649219117880">नवीन तात्पुरता कंटेनर</translation>
 <translation id="3704707436873245822">प्रतिमा मधून मजकूर कॉपी करा</translation>
 <translation id="5268098808165185458">प्रतिमा मधून मजकूर कॉपी करीत आहे...</translation>
 <translation id="4046485130884276245">प्रतिमा मधून मजकूर कॉपी केला</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">टॅब</translation>
 <translation id="8168435359814927499">आशय</translation>
 <translation id="6017560037265964523">कंटेनर्स</translation>
-<translation id="934893482320683588">कंटेनर्ससह तुमचे ब्राउझिंग व्यवस्थित करा. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">कंटेनर हे रंग-कोडेड browser टॅब्स आहेत जे तुमचा ब्राउझिंग डेटा, जसे की cookies, cache, आणि site storage वेगवेगळ्या संदर्भांमध्ये विलग करतात. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">कंटेनर सक्षम करा</translation>
 <translation id="7773735778926921278">नवीन कंटेनर जोडा</translation>
 <translation id="8900907990448657776">कंटेनर संपादित करा</translation>
 <translation id="7900511996284443779">कंटेनर हटवा</translation>
@@ -807,6 +813,7 @@
 <translation id="5226020406479918122">टॅब फोकस मोड</translation>
 <translation id="3705539672403311123">टॅब शोध पृष्ठामध्ये टॅब्सचे आयोजन सक्षम करा. उघडल्यावर, हे आपोआप सर्व नॉन-प्रायव्हेट टॅबची शीर्षके आणि उत्पत्ती Leo कडे वर्गीकृत करण्यासाठी पाठवेल. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">टॅब फोकससाठीचे डीफॉल्ट मॉडेल</translation>
+<translation id="2161546758719933059">Tab Focus Mode मध्ये तुमचे टॅब्स व्यवस्थित करण्यासाठी वापरलेले मॉडेल. <ph name="BEGIN_LINK"/>अधिक जाणून घ्या<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">संवादात सूचित केलेले प्रॉम्प्ट दाखवा</translation>
 <translation id="5781842473834867765">माझा संभाषण इतिहास जतन करा</translation>
 <translation id="1082960401708055995">गोष्टी साठवण्याचा इतिहास अक्षम केल्याने सर्व आधी जतन केलेल्या संभाषणांचा कायमचा नाश होईल. हे क्रिया पूर्ववत करता येणार नाही.</translation>

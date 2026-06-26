@@ -129,7 +129,6 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="3405580543478883040">Урсгалуудыг авах...</translation>
 <translation id="7461899062138731833">ЭХ СУРВАЛЖУУД</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/> дээр фийд олдсонгүй</translation>
-<translation id="4541978218358617681">Зар</translation>
 <translation id="7823038307453615214">Brave-н Мэдээг харуулах</translation>
 <translation id="6527303717912515753">Хуваалцах</translation>
 <translation id="1654539412343893324">Өөрийн мэдээллийн дэлгэрэнгүйг харах</translation>
@@ -138,7 +137,6 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="2014017248518069982"><ph name="PUBLISHER"/>-ын контентыг хасах</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/>-ын контент идэвхгүй болсон</translation>
 <translation id="1276592121036104130">Шинэ контент ачаалах</translation>
-<translation id="3189348785087463371">Сурталчилсан</translation>
 <translation id="7554145152551782675">Өөр Brave санал</translation>
 <translation id="254100925533869330">Агуулга алга</translation>
 <translation id="7172792761509429092">Brave Шинэ мэдээ харуулах агуулга алга.</translation>
@@ -159,8 +157,8 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="1680858055899097121">Броузер сешнүүдийн хооронд табуудыг хадгалахгүй</translation>
 <translation id="7142548388914389999">Нууцлал хамгаалсан бүтээгдэхүүний дүн шинжилгээг (P3A) зөвшөөрөх</translation>
 <translation id="5254037869598726291">Нууцлалтай П3А мэдээлэл нь Brave-д нийт хэрэглээг үнэлэхэд тусалдаг бөгөөд бид нэр хүндтэй онцлогуудаа сайжруулж байгаа эсэхийг баталгаажуулдаг.</translation>
-<translation id="4174337572777167894">Вэб дэмжих төсөл</translation>
-<translation id="8659271182272561965">Brave хайлтын системийг сайжруулах зорилгоор нэрээ нууцлан хайлтын системийн &amp; мэдээллээ оруулж, хувь нэмэр оруулаарай.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave хайлтын системийг сайжруулахын тулд нэргүй хайлт &amp; вэб хөтлөлтийн зарим өгөгдлийг хувь нэмэр болгон оруулна уу.</translation>
 <translation id="933652931229970927">Алдааны тайланг автоматаар илгээх</translation>
 <translation id="5987838417172370108">Brave браузер унтарч эсвэл гацах үед алдааны мэдээллийг автоматаар илгээснээр Brave-ийн бүтээгдэхүүний тогтвортой байдлыг сайжруулахад тусална уу.</translation>
 <translation id="7977176350719484850">Тооцоолсон. Мэдээлэл\nХэмнэсэн</translation>
@@ -201,7 +199,7 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="8025937231644975408">Аль функцийг хамгийн их ашигладаг болохыг мэдээлнэ үү.</translation>
 <translation id="2888496576732880897">Brave хайлтын системийг хөгжүүлэхэд туслаарай</translation>
 <translation id="7198716519700700181">Урсгал үед сүйтгэлээс сэргийлэх</translation>
-<translation id="7044431516245362795">Вэб дэмжих төсөлд оролцож, индексийг өргөжүүлж, хайлтын үр дүнг сайжруулахад туслах. <ph name="LEARN_MORE_START"/>Дэлгэрэнгүйг харах.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Web Discovery төсөлд нэгдэж индексийг өсгөж, хайлтын үр дүнг сайжруулахад туслаарай. <ph name="LEARN_MORE_START"/>Дэлгэрэнгүй мэдээлэл<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave логотип</translation>
 <translation id="4767173360729868049">Brave хайлтын системийг туслах иллюстрейшн</translation>
 <translation id="8241918461631453498">Сүйтгэлээс сэргийлэх иллюстрейшн</translation>
@@ -441,8 +439,15 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="9140049656798805345">Сайтын өгөгдлийг одоо устгах</translation>
 <translation id="6795622376590884449">Автоматаар устгах</translation>
 <translation id="7961015016161918242">Хэзээ ч</translation>
+<translation id="3200744626782631683">Хөтөчийн түүх хэзээ ч автоматаар устгагддаггүй</translation>
 <translation id="1991004083507807299">Сайтын таб хаагдсан</translation>
+<translation id="2917925984754303958">Браузингийн өгөгдөл тухайн сайт руу нээгдсэн бүх табыг хаахад автоматаар устгагддаг</translation>
 <translation id="5827277414420724690">Програм хаагдсан</translation>
+<translation id="2036389684543586068">Браузингийн өгөгдөл нь Brave аппликейшн хаагдсан эсвэл дахин эхлүүлсэн үед автоматаар устгагддаг</translation>
+<translation id="4279349293084858577">Устгах</translation>
+<translation id="2997451887458851244">Auto Shred-ийг шинэчилж, устгагдах өгөгдлийг тохируулна</translation>
+<translation id="363903976200491771">Хөтөчийн үзэх мэдээллийг автоматаар нунтаглах</translation>
+<translation id="1028873002018537235">Хураан үзсэн түүхийн жагсаалтыг устгах</translation>
 <translation id="1209739344687072997">Эвдрэлтэй сайтыг мэдээлэх</translation>
 <translation id="8510478288840333677">Энэ сайт нь Shields дээр үр дүнтэй ажиллахгүй байгааг Brave-н хөгжүүлэгчдэд мэдэгдээрэй:</translation>
 <translation id="1653405824851871276">Brave-г илүү сайжруулахад тусалсанд баярлалаа. Энэ тайланд зөвхөн энэ сайтыг засахад хэрэгтэй мэдээлэл байх болно. <ph name="LEARN_MORE"/></translation>
@@ -1198,4 +1203,7 @@ Brave Мэдээ нь хувийн, нэргүй зар сурталчилгаа
 <translation id="1079140196216383600">Өөрийн хайлтын системийг устгах</translation>
 <translation id="525276572490219787"><ph name="SEARCH_ENGINE_NAME"/>-г устгахдаа итгэлтэй байна уу? Энэ үйлдлийг буцаах боломжгүй.</translation>
 <translation id="6406506848690869874">Синк хийх</translation>
+<translation id="1850594249589065646">Байршилын нарийвчлал</translation>
+<translation id="2403474027143565107">Нарийвчилсан</translation>
+<translation id="4042597221652780603">Ойролцоо</translation>
 </translationbundle>

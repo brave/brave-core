@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Izvori</translation>
 <translation id="5158129253322921540">Isključi sadržaj autora <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promovisano</translation>
-<translation id="4541978218358617681">Oglas</translation>
 <translation id="1776831331757823105">Sat</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6216996674668969227">Zaradite tokene tako što ćete gledati oglase kojima se poštuje privatnost.</translation>
@@ -737,9 +736,9 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="8251969358165471584">Web3 novčanik</translation>
 <translation id="7160424977552599351">Koristite svoj Web3 novčanik</translation>
 <translation id="6369571967625114920">Brave privatni oglasi još nisu dostupni u vašem regionu.</translation>
-<translation id="5309155375926073606">Da, takođe želim da doprinesem Brave pretrazi i da se pridružim <ph name="LINK_BEGIN"/>projektu istraživanja veba<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Pružite anonimne podatke pretrage i pregledanja veba da biste poboljšali Brave pretragu pomoću projekta istraživanja veba. Potpuno je otvorenog koda.</translation>
-<translation id="4174337572777167894">Projekat istraživanja veba</translation>
+<translation id="5309155375926073606">Da, takođe želim da doprinesem usluzi Brave Search i da se uključim u <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Doprinesite anonimnim podacima o pretrazi i pregledanju kako biste poboljšali Brave Search uz Web Discovery Project. Potpuno je otvorenog koda.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Zajednica</translation>
 <translation id="845020633253356720">Vidi prodavnicu</translation>
 <translation id="7777123407058400802">Basic Attention Token – BAT</translation>
@@ -982,11 +981,11 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="7080614857771109950">Podržava kompatibilna sredstva EVM u lancu blokova Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podržava kompatibilna sredstva SPL u lancu blokova Solana</translation>
 <translation id="4541295941776129088">Sačuvaj sredstvo FIL</translation>
-<translation id="6030958132571544682">Sačuvaj sredstvo FIL koje se nalazi na testnetu</translation>
+<translation id="6030958132571544682">Skladišti FIL Testnet sredstvo</translation>
 <translation id="29759539656432505">Sačuvaj sredstva BTC</translation>
 <translation id="2399555431746923964">Sačuvaj sredstva BTC koja se nalaze na testnetu</translation>
 <translation id="8749751940551938347">Sačuvaj sredstva ZEC</translation>
-<translation id="3451958544919449297">Sačuvaj sredstva ZEC koja se nalaze na testnetu</translation>
+<translation id="3451958544919449297">Skladišti ZEC Testnet sredstva</translation>
 <translation id="8459631690385393533">Sačuvaj sredstva Cardano</translation>
 <translation id="4915057812371523845">Sačuvaj sredstva Cardano Testnet</translation>
 <translation id="5387140102951033657">Podržava Substrate sredstva na Polkadot relej lancu i Substrate parachain-ovima</translation>
@@ -1050,7 +1049,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="7657130382217527063">NAPOMENA: Privatni ključ mora biti obezbeđen kao heksadecimalno šifrovani fajl JSON koji sadrži privatni ključ i informacije o protokolu. <ph name="LINK_START"/>Saznajte više<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NAPOMENA: Podržani su samo prošireni ključevi tipa <ph name="FORMAT"/>.</translation>
 <translation id="6457746820359933716">Uvezite koristeći JSON datoteku izvezenu iz Polkadot.js ili kompatibilnih novčanika. Unesite lozinku koja je korišćena za šifrovanje izvoza.</translation>
-<translation id="9133762451347918196">Testnet nalozi</translation>
 <translation id="42126664696688958">Izvezi</translation>
 <translation id="1366855498335432549">Deponuj</translation>
 <translation id="790104325876206743">Podešavanja naloga</translation>
@@ -1644,7 +1642,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="1353726744456297797">Ako niste pronašli svoje sredstvo na ovoj listi, možete ga dodati ručno pomoću dugmeta u nastavku</translation>
 <translation id="4543171429371680949">Sredstvo nije pronađeno</translation>
 <translation id="1026825928738055872">Želite li sigurno da uklonite „<ph name="ACCOUNT_NAME"/>“?</translation>
-<translation id="3910551537328657217">Zatražite funkciju</translation>
 <translation id="7657322905916621147">Fraza za oporavak mora imati 12, 15, 18, 21 ili 24 reči</translation>
 <translation id="5026874946691314267">Ne prikazuj ovo ponovo</translation>
 <translation id="434502623875309667">Za rešavanje adrese neophodni su mrežni zahtevi van blokčejna. Želite li da nastavite?</translation>
@@ -2161,6 +2158,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="2367972762794486313">Prikaži aplikacije</translation>
 <translation id="3142853026316054951">Uključi/isključi režim fokusa</translation>
 <translation id="3468387898712904997">Novi imejl alijas</translation>
+<translation id="2796584247246518451">Novi privremeni kontejner</translation>
 <translation id="8591883849678260674">Prikaži original</translation>
 <translation id="1969654232209826429">min. čitanja</translation>
 <translation id="4101707289420716287">Isključi brzo čitanje</translation>
@@ -2347,8 +2345,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4592293425457329338">Određen deo konteksta bi mogao da nedostaje u razgovoru. Leo je uspeo da zadrži <ph name="PERCENTAGE"/> sadržaja povezanog sa razgovorom.</translation>
 <translation id="8501106061098623831">Bilo je previše slika sa stranice. Leo je mogao da koristi <ph name="PERCENTAGE"/> raspoloživog vizuelnog sadržaja.</translation>
 <translation id="4370698775470316661">Ovaj razgovor je predugačak i ne može se nastaviti. Možda postoje drugi modeli pomoću kojih Leo može da održi tačnost u dužim razgovorima.</translation>
-<translation id="5719170755629028558">Poboljšavamo odgovor pomoću Brave pretrage...</translation>
-<translation id="5794962229997281366">Odgovor je poboljšan pomoću pretrage: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> više…</translation>
 <translation id="8103700533980268469">Zatvori ovo obaveštenje</translation>
 <translation id="3417835166382867856">Pretraži kartice</translation>
@@ -2419,8 +2415,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="2370739752330685659">Možda kasnije</translation>
 <translation id="983013125018250242">Leo alatke</translation>
 <translation id="7623223587478473368">Prilog</translation>
-<translation id="3777121685517940177">Otpremi fajl...</translation>
-<translation id="6739516910850820220">Otpremanje fajla...</translation>
 <translation id="9088751620363630236">Snimi fotografiju...</translation>
 <translation id="4250229828105606438">Snimak ekrana</translation>
 <translation id="7949596341600215809">Snimak cele stranice</translation>
@@ -2469,7 +2463,6 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4773299976671772492">Zaustavljeno</translation>
 <translation id="6946722113367118030">Razmišlja</translation>
 <translation id="2113810663179257944">Izvršavanje koda</translation>
-<translation id="6338250692384725496">Izvršio kod u sandboxu da bi vam pomogao u vašoj pretrazivanju</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Izlaz:</translation>
 <translation id="5382076391290708074">Premještanje tabova</translation>
@@ -2701,7 +2694,7 @@ other {Zarađujete gledajući <ph name="COUNT_BEGIN"/># oglasa<ph name="COUNT_EN
 <translation id="4117637339509843559">Tamni režim</translation>
 <translation id="6302485303316397682">Želite bolje rezultate pretrage?</translation>
 <translation id="7014699001826714920">Pridružite se pokretu, doprinesite Brave pretrazi</translation>
-<translation id="6821108091726602352">Pomozite nam da ispravimo veb tako što ćete učestvovati u Brave-ovom projektu istraživanja veba. Ako podelite potpuno anonimne signale pretrage, pomoći ćete Brave-u da poveća indeks pretrage.</translation>
+<translation id="6821108091726602352">Pomozite nam da popravimo veb učestvovanjem u Brave-ovom projektu Web Discovery Project. Deljenjem potpuno anonimnih signala pretrage, možete pomoći Brave-u da uveća indeks pretrage.</translation>
 <translation id="6764845498618413165">Saznajte više.</translation>
 <translation id="7818938154803162778">Naravno, pomoći ću</translation>
 <translation id="7207456302801184289">Dobro došli u Brave</translation>
@@ -2852,7 +2845,6 @@ Hajde da vas povežemo!</translation>
 <translation id="6624553071240278643">Kreirajte svoj nalog</translation>
 <translation id="6505120968393722022">Ne možete koristiti @bravealias.com adrese za kreiranje naloga na Brave-u. Probajte ponovo sa drugim domenom.</translation>
 <translation id="8248460961680233459">Kreirajte lozinku</translation>
-<translation id="4917385247580444890">Jaka</translation>
 <translation id="5486261815000869482">Potvrdite lozinku</translation>
 <translation id="7345706641791090287">Potvrdite svoju lozinku</translation>
 <translation id="7114054701490058191">Lozinke se ne poklapaju</translation>

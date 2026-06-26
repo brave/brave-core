@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="cs">
+<translation id="1000614056227025171">Spodní panel s propagačním sdělením o přizpůsobení domovské stránky otevřený na celou výšku</translation>
 <translation id="1006017844123154345">Otevřít online</translation>
 <translation id="1036348656032585052">Vypnout</translation>
 <translation id="1046742265332833834">Modrý motiv</translation>
 <translation id="1070329623210597193">Soubory, které může tento web prohlížet nebo upravovat</translation>
-<translation id="1882093842020941518">Pomozte nám vylepšit Brave tím, že nám sdělíte, proč jste povolili soubory cookie třetích stran. <ph name="BEGIN_LINK"/>Odeslat zpětnou vazbu<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Můžete požádat o zobrazení verze webů pro počítače</translation>
 <translation id="1109482864356262001">Funkce vyžadující senzory pohybu nebo světla nebudou k dispozici</translation>
 <translation id="6670155282615872564">Pokud Brave chcete využít na maximum, proveďte níže uvedené navrhované akce</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Tipy k Chromu</translation>
 <translation id="1242008676835033345">Vloženo do <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Klepněte na Aplikace &gt; Výchozí aplikace</translation>
+<translation id="1264694639515903274">Domovskou stránku si teď můžete přizpůsobit</translation>
 <translation id="1272079795634619415">Zastavit</translation>
 <translation id="1275718070701477396">Vybráno</translation>
 <translation id="8010562420973777575">Brave obrázky na této stránce optimalizoval, abyste ušetřili data.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">Zkrácená adresa URL</translation>
 <translation id="1741136041592162279">Umožněte Chromu sdílet nedávno použité karty se zařízením, abyste je na něm viděli v seznamu aplikací a ve výsledcích vyhledávání. Tuto funkci můžete zapnout nebo vypnout v nastavení Chromu.</translation>
 <translation id="1420688843103859429">Přecházet dopředu a zpět přejížděním dvěma prsty po touchpadu</translation>
-<translation id="1432650420699700107">Weby můžou žádat o připojení k libovolnému zařízení v místní síti</translation>
 <translation id="1442081309487427303">Zapnout odkazy v režimu čtení</translation>
 <translation id="1448064542941920355">Snížit přiblížení</translation>
 <translation id="1464044141348608623">Weby nemohou zjišťovat, kdy aktivně používáte své zařízení</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Když je tato možnost zapnutá, mohou weby žádat o správu oken na všech vašich displejích. Když je vypnutá, weby okna na všech vašich displejích spravovat nemohou.</translation>
 <translation id="1738912554587725807">Spodní panel se sbírkami motivů pro vzhled stránky Nová karta</translation>
 <translation id="1743802530341753419">Pokud se web bude chtít připojit k zařízení, zobrazit dotaz (doporučeno)</translation>
-<translation id="2534291364429593865">Nechte si posílat oznámení s tipy pro Brave</translation>
 <translation id="1777815584158991902">Spodní panel Feed Objevit</translation>
 <translation id="1779089405699405702">Dekodér obrázků</translation>
 <translation id="1781533683087883868">Vypnout odkazy v režimu čtení</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Zavěsit</translation>
 <translation id="1919950603503897840">Vyberte kontakty</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Přizpůsobit domovskou stránku</translation>
 <translation id="1939059826036755332">Automatický obraz v obraze</translation>
 <translation id="1954597385941141174">Weby mohou žádat o připojení k zařízením USB</translation>
 <translation id="1979673356880165407">Zvětšit nebo zmenšit text a obrázky na všech navštívených webech</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Spravováno aplikací <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Nápověda a zpětná vazba</translation>
 <translation id="2501278716633472235">Zpět</translation>
-<translation id="2533138527374486328">Pokud je tato možnost zapnutá, mohou weby požádat o připojení k libovolnému zařízení ve vaší místní síti. Pokud je vypnutá, weby se k zařízením ve vaší místní síti připojit nemohou.</translation>
 <translation id="2536779053640817375">Tentokrát povoleno • Přesná</translation>
 <translation id="2544997614631598250">Tmavý motiv</translation>
 <translation id="2546283357679194313">Soubory cookie a data webů</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Spouštět v omniboxu</translation>
 <translation id="2789132527330338807">Weby můžou žádat o vytvoření 3D mapy okolí nebo sledování polohy kamery</translation>
 <translation id="2790501146643349491">Když je tato možnost zapnutá, nedávno zavřené weby mohou dokončit odesílání a přijímání dat. Když je vypnutá, nedávno zavřené weby nemohou dokončit odesílání nebo přijímání dat.</translation>
-<translation id="1708222144403389505">Zapněte si oznámení s užitečnými tipy, které vám pomůžou využít Brave na maximum</translation>
 <translation id="2795716239552913152">Weby obvykle používají polohu pro související funkce nebo informace, jako jsou místní zprávy nebo obchody v okolí</translation>
 <translation id="2800760947029405028">Nahrát obrázek</translation>
 <translation id="2802908157808345702">Nepovolovat webům zobrazovat vyskakovací okna ani používat přesměrování</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Weby mohou přehrávat zvuk</translation>
 <translation id="3065787901655140044">Pokročilá ochrana je zapnutá</translation>
 <translation id="3069226013421428034">Povolení přihlášení třetích stran na konkrétní web.</translation>
+<translation id="3084983642903364837">Domovskou stránku můžete později upravit pomocí nabídky se třemi tečkami.</translation>
 <translation id="310297983047869047">Předchozí snímek</translation>
 <translation id="3108122610701115301">Výchozí nastavení</translation>
 <translation id="310979712355504754">Smazat vše</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Nepovolovat webům připojení k zařízením USB</translation>
 <translation id="3965467402665811906">Weby mohou žádat o použití informací, které o vás uložily</translation>
 <translation id="3967822245660637423">Stahování bylo dokončeno</translation>
-<translation id="3969869202926863008">Přístup k místní síti</translation>
 <translation id="3981465354637804599">Weby obvykle zobrazují reklamy, aby mohly poskytovat obsah nebo služby bez dalších poplatků. Některé weby ale zobrazují rušivé nebo zavádějící reklamy.</translation>
 <translation id="3987993985790029246">Kopírovat odkaz</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Připojeno k sériovému portu</translation>
 <translation id="4223404254440398437">Mikrofon není povolen</translation>
 <translation id="4226663524361240545">Oznámení mohou aktivovat vibraci</translation>
+<translation id="4227965147357783918">Spodní panel s propagačním sdělením o přizpůsobení domovské stránky otevřený na polovinu výšky</translation>
 <translation id="4259722352634471385">Navigace je blokována: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Po opuštění web může pokračovat v synchronizaci, aby dokončil úkoly, jako je nahrání fotek nebo odeslání chatové zprávy</translation>
 <translation id="4278390842282768270">Povoleno</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Rozbalit</translation>
 <translation id="4310738531374808763">Přizpůsobte si domovskou stránku</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Platnost skončí zítra}few{Platnost skončí za # dny}many{Platnost skončí za # dne}other{Platnost skončí za # dní}}</translation>
+<translation id="7012676469589811613">Přizpůsobte si Brave výběrem vlastního motivu</translation>
 <translation id="4338831206024587507">Všechny weby v doméně <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Nepovolovat webům odesílat oznámení</translation>
 <translation id="4341577178275615435">Procházení pomocí kurzoru zapnete nebo vypnete klávesou F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Nezrychlovat v Chromu weby pomocí modulu V8, a trochu tak zvýšit odolnost Chromu vůči útokům</translation>
 <translation id="5556459405103347317">Načíst znovu</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> – blokováno</translation>
-<translation id="560980142378233747">Funkce webu by tak měly fungovat správně, ale můžete být při procházení méně chráněni. <ph name="BEGIN_LINK"/>Odeslat zpětnou vazbu<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Spodní panel Karty na stránce Nová karta</translation>
 <translation id="5621413808884657932">Když je tato možnost zapnutá, mohou weby žádat o přístup k dalším aplikacím a službám na tomto zařízení. Když je vypnutá, weby nemají přístup k dalším aplikacím a službám na tomto zařízení.</translation>
 <translation id="5632485077360054581">Ukázat postup</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Moje zkratky</translation>
 <translation id="656065428026159829">Zobrazit další</translation>
 <translation id="6561560012278703671">Použít méně rušivou zprávu (blokuje žádosti o zobrazení oznámení)</translation>
-<translation id="6565144332292237355">Weby můžou tuhle funkci použít k vyhledání a připojení k libovolnému zařízení v místní síti</translation>
 <translation id="6593061639179217415">Stránky pro počítač</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Soubory cookie jsou povoleny pro <ph name="RWS_MEMBERS_COUNT"/> web <ph name="RWS_OWNER"/>}few{Soubory cookie jsou povoleny pro <ph name="RWS_MEMBERS_COUNT"/> weby <ph name="RWS_OWNER"/>}many{Soubory cookie jsou povoleny pro <ph name="RWS_MEMBERS_COUNT"/> webu <ph name="RWS_OWNER"/>}other{Soubory cookie jsou povoleny pro <ph name="RWS_MEMBERS_COUNT"/> webů <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Zůstat</translation>
 <translation id="6630443592285535486">Sem zadejte hexadecimální kód</translation>
 <translation id="6635327442719709864">Když je tato možnost zapnutá, mohou weby žádat o použití sériových portů. Když je vypnutá, weby sériové porty používat nemohou.</translation>
-<translation id="6669390930482049506">Chci dostávat oznámení</translation>
 <translation id="6678072580827808850">Provést bezpečnostní kontrolu</translation>
 <translation id="6682057173375416470">Nechte si na stránce Nová karta zobrazovat doporučené články</translation>
 <translation id="6683865262523156564">Tento web je ve skupině, která může sledovat vaši aktivitu. Skupinu definoval vlastník <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Obnovit</translation>
 <translation id="7188508872042490670">Data webu v zařízení</translation>
 <translation id="7201549776650881587">Touto akcí vymažete veškerá data a soubory cookie, které uložily weby v doméně <ph name="ORIGIN"/> nebo její aplikací na ploše</translation>
-<translation id="7213166370492037743">Nepovolovat webům připojení k zařízením v místní síti</translation>
 <translation id="7219254577985949841">Vymazat data webu?</translation>
 <translation id="723171743924126238">Vyberte fotky</translation>
 <translation id="7243246278722455312">Spodní panel Přizpůsobení stránky Nová karta</translation>
@@ -757,7 +753,6 @@ Pokročilá ochrana spravuje tato nastavení Chromu:</translation>
 <translation id="8737426583868847403">Tady se zobrazí weby, pro které uložíte vlastní úroveň přiblížení</translation>
 <translation id="8748714929822124637">Nepovolovat webům přístup k dalším zařízením v místní síti</translation>
 <translation id="8751914237388039244">Vybrat obrázek</translation>
-<translation id="8775741625735357092">Lištu záložek můžete zapnout v Nastavení &gt; Vzhled</translation>
 <translation id="8800034312320686233">Web nefunguje?</translation>
 <translation id="8801436777607969138">Blokovat JavaScript na konkrétním webu.</translation>
 <translation id="2026315747406172223">V8 je modul prohlížeče Brave pro JavaScript a WebAssembly používaný ke zlepšení výkonu webů</translation>

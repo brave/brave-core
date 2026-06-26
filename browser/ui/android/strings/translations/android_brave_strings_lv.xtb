@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Iegūst Feeds...</translation>
 <translation id="7461899062138731833">AVOTI</translation>
 <translation id="6150420917380577651">Nav atrasta neviena plūsma <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Reklāma</translation>
 <translation id="7823038307453615214">Rādīt Brave News</translation>
 <translation id="6527303717912515753">Kopīgot</translation>
 <translation id="1654539412343893324">Uzzināt vairāk par saviem datiem</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Atspējot saturu no <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> atspējots</translation>
 <translation id="1276592121036104130">Ielādēt jaunu saturu</translation>
-<translation id="3189348785087463371">Popularizēts</translation>
 <translation id="7554145152551782675">Vairāk Brave piedāvājumu</translation>
 <translation id="254100925533869330">Nav satura</translation>
 <translation id="7172792761509429092">Brave News nav satura, ko rādīt.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Nesaglabāt cilnes pārlūkošanas sesiju starplaikos</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
 <translation id="5254037869598726291">Anonimizēta P3A informācija palīdz Brave noteikt vispārējo lietošanas apmēru un ļauj uzlabot populāras funkcijas.</translation>
-<translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
-<translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Sniedziet daļu anonīmu meklēšanas un pārlūkošanas datu, lai uzlabotu Brave meklēšanu.</translation>
 <translation id="933652931229970927">Automātiski nosūtīt diagnostikas ziņojumus</translation>
 <translation id="5987838417172370108">Palīdziet uzlabot Brave\u2019s produktu stabilitāti, automātiski nosūtot diagnostikas ziņojumus, kad Brave pārlūks avarē vai pārstāj darboties.</translation>
 <translation id="7977176350719484850">Apr. ietaupītie\ndati</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Paziņojiet mums, kuras funkcijas jums patīk visvairāk.</translation>
 <translation id="2888496576732880897">Atbalstiet Brave meklēšanas izaugsmi</translation>
 <translation id="7198716519700700181">Bloķējiet traucējumus, kad pārraidāt saturu</translation>
-<translation id="7044431516245362795">Pievienojieties Tīmekļa izpētes projektam, lai palīdzētu mums paplašināt indeksu un uzlabot meklēšanas rezultātus. <ph name="LEARN_MORE_START"/>Uzzināt vairāk.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Pievienojieties projektam „Web Discovery“, lai palīdzētu paplašināt indeksu un uzlabot meklēšanas rezultātus. <ph name="LEARN_MORE_START"/>Uzzināt vairāk<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave logotips</translation>
 <translation id="4767173360729868049">Palīgs Brave Search ilustrācijai</translation>
 <translation id="8241918461631453498">Bloķēt traucējumus ilustrācijai</translation>
@@ -440,8 +438,15 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="9140049656798805345">Iznīcināt vietnes datus tūlīt</translation>
 <translation id="6795622376590884449">Auto iznīcināšana</translation>
 <translation id="7961015016161918242">Nekad</translation>
+<translation id="3200744626782631683">Pārlūkošanas dati nekad netiek automātiski izdzēsti</translation>
 <translation id="1991004083507807299">Vietnes cilne aizvērta</translation>
+<translation id="2917925984754303958">Pārlūkošanas dati tiek automātiski izdzēsti, kad tiek aizvērtas visas atvērtās cilnes, kurās ir atvērta konkrētā vietne</translation>
 <translation id="5827277414420724690">Lietotnes aizvēršana</translation>
+<translation id="2036389684543586068">Pārlūkošanas dati tiek automātiski izdzēsti, kad „Brave“ lietotne tiek aizvērta vai pārstartēta</translation>
+<translation id="4279349293084858577">Iznīcināt</translation>
+<translation id="2997451887458851244">Atjauniniet funkciju „Auto Shred“ un norādiet, kādi dati ir jāizdzēš</translation>
+<translation id="363903976200491771">Automātiski izdzēst pārlūkošanas datus</translation>
+<translation id="1028873002018537235">Dzēst pārlūkošanas vēsturi</translation>
 <translation id="1209739344687072997">Ziņot par bojātu vietni</translation>
 <translation id="8510478288840333677">Paziņojiet Brave izstrādātājiem, kad šī vietne ar aizsargiem nedarbojas pareizi:</translation>
 <translation id="1653405824851871276">Paldies, ka palīdzat padarīt Brave labāku. Šajā ziņojumā būs tikai tā informācija, kas nepieciešama, lai mēs šo vietni salabotu.<ph name="LEARN_MORE"/></translation>
@@ -1190,4 +1195,7 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="1079140196216383600">Dzēst pielāgotu meklēšanas programmu</translation>
 <translation id="525276572490219787">Vai esat pārliecināts, ka vēlaties dzēst "<ph name="SEARCH_ENGINE_NAME"/>"? Šo darbību nevar atsaukt.</translation>
 <translation id="6406506848690869874">Sinhronizācija</translation>
+<translation id="1850594249589065646">Atrašanās vietas precizitāte</translation>
+<translation id="2403474027143565107">Precīzs</translation>
+<translation id="4042597221652780603">Aptuveni</translation>
 </translationbundle>

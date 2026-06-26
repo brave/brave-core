@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-HK">
+<translation id="1000614056227025171">自訂首頁宣傳頁底面板宜家顯示喺成個畫面</translation>
 <translation id="1006017844123154345">在線上開啟</translation>
 <translation id="1036348656032585052">停用</translation>
 <translation id="1046742265332833834">藍色主題</translation>
 <translation id="1070329623210597193">此網站可以查看或編輯的檔案</translation>
-<translation id="1882093842020941518">請說明你允許使用第三方 Cookie 的原因，協助我們改善 Brave。<ph name="BEGIN_LINK"/>傳送意見<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">你可要求查看桌面版網站</translation>
 <translation id="1109482864356262001">需要動作或光線感應器的功能將無法運作</translation>
 <translation id="6670155282615872564">完成下列建議操作，充分運用 Brave 的各項功能</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave 提示</translation>
 <translation id="1242008676835033345">嵌入至 <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">輕按 [應用程式] &gt; [預設應用程式]</translation>
+<translation id="1264694639515903274">你現可自訂首頁</translation>
 <translation id="1272079795634619415">停止</translation>
 <translation id="1275718070701477396">已選取</translation>
 <translation id="8010562420973777575">Brave 已優化此網頁的圖片，以節省數據用量。</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">縮短咗網址</translation>
 <translation id="1741136041592162279">讓 Brave 與你的裝置分享最近使用的分頁，並在裝置應用程式清單和搜尋結果中顯示。你可以在 Brave 設定中開啟或關閉此功能。</translation>
 <translation id="1420688843103859429">用兩指在觸控板上滑動，即可瀏覽上一個或下一個頁面</translation>
-<translation id="1432650420699700107">網站可要求連線至區域網絡上的任何裝置</translation>
 <translation id="1442081309487427303">開啟「閱讀模式」連結</translation>
 <translation id="1448064542941920355">縮小</translation>
 <translation id="1464044141348608623">不允許網站偵測您使用裝置的時間</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">開咗之後，網站可以要求管理所有螢幕上面嘅視窗；閂咗之後，網站就管理唔到所有螢幕上面嘅視窗。</translation>
 <translation id="1738912554587725807">新分頁外觀主題集頁底面板</translation>
 <translation id="1743802530341753419">允許網站連接裝置前先詢問您 (建議)</translation>
-<translation id="2534291364429593865">接收 Brave 提示通知</translation>
 <translation id="1777815584158991902">「探索」動態消息頁底面板</translation>
 <translation id="1779089405699405702">圖片解碼器</translation>
 <translation id="1781533683087883868">關閉「閱讀模式」連結</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">結束通話</translation>
 <translation id="1919950603503897840">選取聯絡人</translation>
 <translation id="1923695749281512248">已下載：<ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，總大小：<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">自訂首頁</translation>
 <translation id="1939059826036755332">自動顯示畫中畫</translation>
 <translation id="1954597385941141174">網站可要求連接 USB 裝置</translation>
 <translation id="1979673356880165407">在您瀏覽的所有網站上縮放文字和圖片</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">由 <ph name="APP_NAME"/> 管理</translation>
 <translation id="2498359688066513246">說明和意見反映</translation>
 <translation id="2501278716633472235">返回</translation>
-<translation id="2533138527374486328">開咗之後，網站可以要求連線至區域網絡上嘅任何裝置。閂咗之後，網站就唔可以連線至區域網絡上嘅裝置。</translation>
 <translation id="2536779053640817375">這次允許 • 精確位置</translation>
 <translation id="2544997614631598250">主題顏色深色</translation>
 <translation id="2546283357679194313">Cookie 和網站數據</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">快速開啟網址列</translation>
 <translation id="2789132527330338807">網站可以要求建立你周遭環境的 3D 地圖或追蹤攝錄機位置</translation>
 <translation id="2790501146643349491">開咗之後，最近閂咗嘅網站可以完成傳送同接收資料。閂咗之後，最近閂咗嘅網站唔可以完成傳送同接收資料。</translation>
-<translation id="1708222144403389505">開啟通知，接收有助你充分善用 Brave 的實用貼士</translation>
 <translation id="2795716239552913152">網站通常會使用您的位置以提供相關功能或資料，例如本地新聞或附近商店</translation>
 <translation id="2800760947029405028">上載圖片</translation>
 <translation id="2802908157808345702">不允許網站傳送彈出式視窗和使用重新導向</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">網站可播放音效</translation>
 <translation id="3065787901655140044">已啟用「進階保護功能」</translation>
 <translation id="3069226013421428034">允許特定網站使用第三方登入功能。</translation>
+<translation id="3084983642903364837">你可稍後透過三點選單編輯首頁。</translation>
 <translation id="310297983047869047">上一張投影片</translation>
 <translation id="3108122610701115301">設為預設</translation>
 <translation id="310979712355504754">全部刪除</translation>
@@ -303,7 +302,6 @@
 <translation id="3955321697524543127">不允許網站連接 USB 裝置</translation>
 <translation id="3965467402665811906">網站可要求使用與你相關的既有資料</translation>
 <translation id="3967822245660637423">下載完成</translation>
-<translation id="3969869202926863008">區域網絡存取權</translation>
 <translation id="3981465354637804599">網站通常要顯示廣告，才能免費提供內容或服務。不過，部分網站會顯示滋擾性或誤導廣告。</translation>
 <translation id="3987993985790029246">複製連結</translation>
 <translation id="3991845972263764475">已下載：<ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，總大小：不明</translation>
@@ -328,6 +326,7 @@
 <translation id="4217710972110098902">已連線至序列連接埠</translation>
 <translation id="4223404254440398437">唔批准用咪</translation>
 <translation id="4226663524361240545">裝置會在收到通知時震動</translation>
+<translation id="4227965147357783918">自訂首頁宣傳頁底面板宜家顯示喺畫面下半部</translation>
 <translation id="4259722352634471385">瀏覽網址被封鎖：<ph name="URL"/></translation>
 <translation id="4274673989874969668">在您離開網站後，網站通常會保持同步以完成工作，例如上載相片或傳送即時通訊訊息</translation>
 <translation id="4278390842282768270">已允許</translation>
@@ -336,6 +335,7 @@
 <translation id="42981349822642051">展開</translation>
 <translation id="4310738531374808763">自訂首頁</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{明天到期}other{# 天後到期}}</translation>
+<translation id="7012676469589811613">選擇自訂主題，建立你的專屬 Brave</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> 下的所有網站</translation>
 <translation id="4340799661701629185">不允許網站傳送通知</translation>
 <translation id="4341577178275615435">如要開啟或關閉「鍵盤瀏覽」功能，請使用快速鍵 F7</translation>
@@ -447,7 +447,6 @@
 <translation id="674221630984410403">不使用 Brave 的 V8 引擎加快網站速度，但 Brave 防攻擊的能力會略為上升</translation>
 <translation id="5556459405103347317">重新載入</translation>
 <translation id="5591840828808741583">已封鎖 <ph name="SITE_NAME"/></translation>
-<translation id="560980142378233747">這代表網站功能應可正常運作，但瀏覽保護程度會降低。<ph name="BEGIN_LINK"/>傳送意見<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">新分頁資訊卡頁底面板</translation>
 <translation id="5621413808884657932">開咗之後，網站可以要求存取呢部裝置上嘅其他應用程式同服務。閂咗之後，網站唔可以存取呢部裝置上嘅其他應用程式同服務。</translation>
 <translation id="5632485077360054581">顯示方法</translation>
@@ -548,7 +547,6 @@
 <translation id="6557290421156335491">我的捷徑</translation>
 <translation id="656065428026159829">查看更多</translation>
 <translation id="6561560012278703671">使用靜態訊息功能 (免受通知提示干擾)</translation>
-<translation id="6565144332292237355">網站可使用此功能來搜尋和連線至區域網絡上的任何裝置</translation>
 <translation id="6593061639179217415">桌面版網站</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{已允許 <ph name="RWS_MEMBERS_COUNT"/> 個 <ph name="RWS_OWNER"/> 網站使用 Cookie}other{已允許 <ph name="RWS_MEMBERS_COUNT"/> 個 <ph name="RWS_OWNER"/> 網站使用 Cookie}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -557,7 +555,6 @@
 <translation id="662080504995468778">不離開</translation>
 <translation id="6630443592285535486">在此輸入十六進制值</translation>
 <translation id="6635327442719709864">開咗之後，網站可以要求用序列連接埠。閂咗之後，網站就用唔到序列連接埠。</translation>
-<translation id="6669390930482049506">通知我</translation>
 <translation id="6678072580827808850">查看安全檢查結果</translation>
 <translation id="6682057173375416470">在「新分頁」查看建議文章</translation>
 <translation id="6683865262523156564">此網站所屬的群組可查看你的活動。這是 <ph name="RWS_OWNER"/> 定義的群組</translation>
@@ -604,7 +601,6 @@
 <translation id="7180611975245234373">重新整理</translation>
 <translation id="7188508872042490670">裝置上的網站資料</translation>
 <translation id="7201549776650881587">此操作會刪除 <ph name="ORIGIN"/> 底下所有網站或該網站在主畫面上的應用程式儲存的所有資料和 Cookie</translation>
-<translation id="7213166370492037743">不允許網站連線至區域網絡上的任何裝置</translation>
 <translation id="7219254577985949841">要刪除網站資料嗎？</translation>
 <translation id="723171743924126238">選取圖片</translation>
 <translation id="7243246278722455312">自訂新分頁頁底面板</translation>
@@ -761,7 +757,6 @@
 <translation id="8737426583868847403">已儲存自訂縮放等級的網站會在這裡顯示</translation>
 <translation id="8748714929822124637">不允許網站存取區域網絡上的其他裝置</translation>
 <translation id="8751914237388039244">選取圖片</translation>
-<translation id="8775741625735357092">你可以在 [設定] &gt; [外觀] 中開啟書籤列</translation>
 <translation id="8800034312320686233">網站無法正常運作嗎？</translation>
 <translation id="8801436777607969138">封鎖特定網站執行 JavaScript。</translation>
 <translation id="2026315747406172223">V8 是 Brave 的 JavaScript 和 WebAssembly 引擎，可提升網站效能</translation>

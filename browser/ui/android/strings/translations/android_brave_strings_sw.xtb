@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Inatafuta Mipasho...</translation>
 <translation id="7461899062138731833">VYANZO</translation>
 <translation id="6150420917380577651">Hakuna mipasho iliyopatikana katika <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Tangazo</translation>
 <translation id="7823038307453615214">Onyesha Brave News</translation>
 <translation id="6527303717912515753">Shiriki</translation>
 <translation id="1654539412343893324">Jifunze zaidi kuhusu data yako</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Lemaza maudhui kutoka kwa <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> imelemazwa</translation>
 <translation id="1276592121036104130">Pakia maudhui mapya</translation>
-<translation id="3189348785087463371">Imekuzwa</translation>
 <translation id="7554145152551782675">Ofa Zaidi za Brave</translation>
 <translation id="254100925533869330">Hakuna maudhui</translation>
 <translation id="7172792761509429092">Brave News haina maudhui ya kuonyesha.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Ruhusu changanuzi za bidhaa za kulinda faragha (P3A)</translation>
 <translation id="5254037869598726291">Maelezo ya P3A yasiyotambulisha husaidia Brave kukadiria matumizi ya jumla na kuhakikisha kuwa tunaboresha vipengele maarufu.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Changia utafutaji usiotambulisha na data ya kuvinjari ili kuboresha Brave Search.</translation>
+<translation id="8659271182272561965">Changia baadhi ya data ya utafutaji &amp; kuvinjari bila utambulisho ili kuboresha Brave Search.</translation>
 <translation id="933652931229970927">Tuma ripoti za uchunguzi kiotomatiki</translation>
 <translation id="5987838417172370108">Saidia kuimarisha uthabiti wa bidhaa ya Brave\u2019s kwa kutuma ripoti za uchunguzi kiotomatiki Kivinjari cha Brave kinapoacha kufanya kazi au kukwama.</translation>
 <translation id="7977176350719484850">Data\nIliyookolewa</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Tuambie tunajua vipengele vipi unavyofurahia zaidi.</translation>
 <translation id="2888496576732880897">Saidiya Brave Search ikue</translation>
 <translation id="7198716519700700181">Zuia maadhimisho wakati unakivutia mtandao</translation>
-<translation id="7044431516245362795">Jisajili kwenye Mradi wa Kugundua Wavuti ili kusaidia kukuza orodha na kuboresha matokeo ya utafutaji. <ph name="LEARN_MORE_START"/>Jifunze zaidi.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Jiunge na Mradi wa Ugunduzi wa Wavuti ili kusaidia kukuza faharasa na kuboresha matokeo ya utafutaji. <ph name="LEARN_MORE_START"/>Jifunze zaidi<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Insignia ya Brave</translation>
 <translation id="4767173360729868049">Mchoro wa Kusaidia Brave Search</translation>
 <translation id="8241918461631453498">Mchoro wa Zuia maadhimisho</translation>
@@ -437,8 +435,15 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="9140049656798805345">Futa data za tovuti sasa</translation>
 <translation id="6795622376590884449">Futa kiotomatiki</translation>
 <translation id="7961015016161918242">Katu</translation>
+<translation id="3200744626782631683">Data ya kuvinjari haifutwi kiotomatiki.</translation>
 <translation id="1991004083507807299">Kichupo cha tovuti kifunguka</translation>
+<translation id="2917925984754303958">Data za kuvinjari hufutwa kiotomatiki wakati tabu zote zilizofunguliwa kwenye tovuti zinapofungwa.</translation>
 <translation id="5827277414420724690">Programu ifunguka</translation>
+<translation id="2036389684543586068">Data ya kuvinjari hufutwa kiotomatiki wakati programu ya Brave inafungwa au kuanzishwa upya.</translation>
+<translation id="4279349293084858577">Futa kwa usalama</translation>
+<translation id="2997451887458851244">Sasisha Auto Shred na kurekebisha ni data gani inayosagwa</translation>
+<translation id="363903976200491771">Kutenganisha data za kuvinjari kiotomatiki</translation>
+<translation id="1028873002018537235">Futa historia ya kuvinjari</translation>
 <translation id="1209739344687072997">Ripoti tovuti yenye hitilafu</translation>
 <translation id="8510478288840333677">Wafahamishe wasanidi programu wa Brave kuwa tovuti hii haifanyi kazi vizuri kwa Shields:</translation>
 <translation id="1653405824851871276">Asante kwa usaidizi wako katika kuboresha Brave kwa wote. Ripoti hii itakuwa tu na taarifa zinazohitajika ili kutuwezesha kurekebisha tovuti hii. <ph name="LEARN_MORE"/></translation>
@@ -1182,4 +1187,7 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="1079140196216383600">Futa injini ya utafutaji ya kawaida</translation>
 <translation id="525276572490219787">Una uhakika kwamba unataka kufuta "<ph name="SEARCH_ENGINE_NAME"/>"? Kitendo hiki hakiwezi kutenduliwa.</translation>
 <translation id="6406506848690869874">Oanisha</translation>
+<translation id="1850594249589065646">Uhakika wa eneo</translation>
+<translation id="2403474027143565107">Sahihi</translation>
+<translation id="4042597221652780603">Karibu</translation>
 </translationbundle>

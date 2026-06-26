@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">피드 받는 중...</translation>
 <translation id="7461899062138731833">소스</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/>에서 찾은 피드 없음</translation>
-<translation id="4541978218358617681">광고</translation>
 <translation id="7823038307453615214">Brave News 표시</translation>
 <translation id="6527303717912515753">공유</translation>
 <translation id="1654539412343893324">데이터에 대해 자세히 알아보기</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">출처가 <ph name="PUBLISHER"/>인 콘텐츠 비활성화</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> 비활성화됨</translation>
 <translation id="1276592121036104130">새 콘텐츠 로드하기</translation>
-<translation id="3189348785087463371">촉진됨</translation>
 <translation id="7554145152551782675">Brave 오퍼 더보기</translation>
 <translation id="254100925533869330">콘텐츠 없음</translation>
 <translation id="7172792761509429092">Brave News에 표시할 콘텐츠가 없습니다.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">브라우징 세션 간에 탭을 유지하지 마십시오</translation>
 <translation id="7142548388914389999">프라이버시 보호 제품 분석(P3A) 허용</translation>
 <translation id="5254037869598726291">익명 P3A 정보는 Brave가 총체적인 사용 패턴을 평가하여 인기 기능을 개선하는 데 도움이 됩니다.</translation>
-<translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
-<translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave 검색을 개선하기 위해 익명의 검색 및 브라우징 데이터를 제공하세요.</translation>
 <translation id="933652931229970927">진단 보고서 자동 전송</translation>
 <translation id="5987838417172370108">Brave 브라우저가 작동이 멎거나 프리징이 발생하면 진단 보고서를 자동 전송하여 Brave 제품 안정성 향상에 도움을 주세요.</translation>
 <translation id="7977176350719484850">절약 예상\n데이터량</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">어떤 기능이 가장 마음에 드는지 알려주세요.</translation>
 <translation id="2888496576732880897">Brave 검색 성장 지원</translation>
 <translation id="7198716519700700181">스트리밍 서비스 이용 시 방해 요소 차단</translation>
-<translation id="7044431516245362795">웹 디스커버리 프로젝트에 참여하여 Brave가 인덱스를 확장하고 검색 결과를 향상할 수 있도록 도와주세요. <ph name="LEARN_MORE_START"/>자세히 알아보기.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">웹 디스커버리 프로젝트에 참여하여 색인 확장과 검색 결과 개선을 도와주세요. <ph name="LEARN_MORE_START"/>자세히 알아보기<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave 로고</translation>
 <translation id="4767173360729868049">Brave 검색 지원 일러스트레이션</translation>
 <translation id="8241918461631453498">방해 요소 차단 일러스트레이션</translation>
@@ -440,8 +438,15 @@
 <translation id="9140049656798805345">지금 사이트 데이터 파쇄</translation>
 <translation id="6795622376590884449">자동 파쇄</translation>
 <translation id="7961015016161918242">사용하지 않음</translation>
+<translation id="3200744626782631683">브라우징 데이터는 절대 자동으로 파기되지 않습니다.</translation>
 <translation id="1991004083507807299">사이트 탭이 닫혔을 때</translation>
+<translation id="2917925984754303958">특정 사이트로 열린 모든 탭을 닫으면 해당 사이트의 브라우징 데이터가 자동으로 삭제됩니다.</translation>
 <translation id="5827277414420724690">앱을 닫았을 때</translation>
+<translation id="2036389684543586068">Brave 앱을 종료하거나 다시 시작할 때 브라우징 데이터는 자동으로 삭제됩니다.</translation>
+<translation id="4279349293084858577">파쇄</translation>
+<translation id="2997451887458851244">'자동 파기' 기능을 업데이트하고 파기할 데이터를 조정하세요</translation>
+<translation id="363903976200491771">브라우징 데이터를 자동으로 삭제합니다</translation>
+<translation id="1028873002018537235">브라우징 기록 삭제</translation>
 <translation id="1209739344687072997">작동이 멈춘 사이트 보고</translation>
 <translation id="8510478288840333677">Brave (브레이브) 개발자에게 이 사이트가 Shields (실드)와 함께 제대로 작동하지 않는다는 것을 알리십시오.</translation>
 <translation id="1653405824851871276">모두를 위해 Brave 개선에 도움을 주셔서 감사합니다. 이 신고는 사이트 문제 해결에 필요한 정보만 포함합니다. <ph name="LEARN_MORE"/></translation>
@@ -1185,4 +1190,7 @@
 <translation id="1079140196216383600">맞춤 검색 엔진 삭제</translation>
 <translation id="525276572490219787"><ph name="SEARCH_ENGINE_NAME"/>을(를) 삭제하시겠습니까? 이 작업은 취소할 수 없습니다.</translation>
 <translation id="6406506848690869874">동기화</translation>
+<translation id="1850594249589065646">위치 정확도</translation>
+<translation id="2403474027143565107">정확한</translation>
+<translation id="4042597221652780603">대략</translation>
 </translationbundle>

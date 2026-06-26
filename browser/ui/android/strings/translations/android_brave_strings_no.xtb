@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Henter feeder …</translation>
 <translation id="7461899062138731833">KILDER</translation>
 <translation id="6150420917380577651">Fant ingen feeder på <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Annonse</translation>
 <translation id="7823038307453615214">Vis Brave News</translation>
 <translation id="6527303717912515753">Del</translation>
 <translation id="1654539412343893324">Finn ut mer om dataene dine</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Deaktiver innhold fra <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> deaktivert</translation>
 <translation id="1276592121036104130">Last inn nytt innhold</translation>
-<translation id="3189348785087463371">Anbefalt</translation>
 <translation id="7554145152551782675">Flere tilbud fra Brave</translation>
 <translation id="254100925533869330">Intet innhold</translation>
 <translation id="7172792761509429092">Brave News har ikke noe innhold å vise.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Ikke behold faner på tvers av surfeøkter</translation>
 <translation id="7142548388914389999">Tillat produktanalyse som ivaretar personvern (P3A)</translation>
 <translation id="5254037869598726291">Anonymisert P3A-informasjon hjelper Brave med å anslå den totale bruken, og sikrer at vi forbedrer populære funksjoner.</translation>
-<translation id="4174337572777167894">Web Discovery-prosjektet</translation>
-<translation id="8659271182272561965">Bidra med anonyme søke- og surfedata for å forbedre Brave-søket.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Bidra med anonyme søke- &amp; nettleserdata for å forbedre Brave Search.</translation>
 <translation id="933652931229970927">Send krasjrapporter automatisk</translation>
 <translation id="5987838417172370108">Bidra til å forbedre produktstabiliteten for Brave\u2019s ved å automatisk sende diagnoserapporter hvis Brave-nettleseren krasjer eller slutter å fungere.</translation>
 <translation id="7977176350719484850">Est. data\nlagret</translation>
@@ -198,7 +196,6 @@
 <translation id="8025937231644975408">Fortell oss hvilke funksjoner du liker best.</translation>
 <translation id="2888496576732880897">Gjør Brave Søk bedre</translation>
 <translation id="7198716519700700181">Blokker avbrudd når du streamer</translation>
-<translation id="7044431516245362795">Bli med i Web Discovery Project for å gjøre indeksen større og søkeresultatene bedre. <ph name="LEARN_MORE_START"/>Finn ut mer.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="4767173360729868049">Illustrasjon for Hjælp Brave Søk</translation>
 <translation id="8241918461631453498">Illustrasjon for Blokker avbrudd</translation>
@@ -439,6 +436,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="7961015016161918242">Aldri</translation>
 <translation id="1991004083507807299">Nettstedsfane lukket</translation>
 <translation id="5827277414420724690">Applikasjon lukket</translation>
+<translation id="4279349293084858577">Slett</translation>
 <translation id="1209739344687072997">Rapporter et nettsted som ikke fungerer</translation>
 <translation id="8510478288840333677">Gi utviklerne av Brave beskjed om at dette nettstedet ikke fungerer skikkelig med Shields:</translation>
 <translation id="1653405824851871276">Takk for at du bidrar til med å gjøre Brave bedre for alle. Denne rapporten sender bare informasjonen som kreves for at vi skal kunne fikse dette nettstedet. <ph name="LEARN_MORE"/></translation>

@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="nl">
+<translation id="1000614056227025171">Blad onderaan voor de homepagepromotie aanpassen is op volledige hoogte geopend</translation>
 <translation id="1006017844123154345">Online openen</translation>
 <translation id="1036348656032585052">Uitzetten</translation>
 <translation id="1046742265332833834">Blauw thema</translation>
 <translation id="1070329623210597193">Bestanden die deze site mag bekijken of bewerken</translation>
-<translation id="1882093842020941518">Help ons Brave te verbeteren door ons te vertellen waarom je cookies van derden hebt toegestaan. <ph name="BEGIN_LINK"/>Feedback sturen<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Je kunt vragen om de desktopversie van sites te bekijken</translation>
 <translation id="1109482864356262001">Functies waarvoor bewegings- of lichtsensoren nodig zijn, werken niet</translation>
 <translation id="6670155282615872564">Voer de voorgestelde acties hieronder uit om het maximale uit Brave te halen</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave-tips</translation>
 <translation id="1242008676835033345">Ingesloten in <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Tik op Apps &gt; Standaard-apps</translation>
+<translation id="1264694639515903274">Je kunt nu je homepage aanpassen</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="1275718070701477396">Geselecteerd</translation>
 <translation id="8010562420973777575">De afbeeldingen op deze pagina zijn door Brave geoptimaliseerd om data te besparen.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL afgekapt</translation>
 <translation id="1741136041592162279">Sta toe dat Brave je recente tabbladen deelt met je apparaat zodat je ze kunt zien in de app-lijst en zoekresultaten van je apparaat. Je kunt dit altijd aan- of uitzetten in de Brave-instellingen.</translation>
 <translation id="1420688843103859429">Navigeer heen en weer door met 2 vingers te swipen op de touchpad</translation>
-<translation id="1432650420699700107">Sites kunnen vragen of ze verbinding mogen maken met apparaten in je lokale netwerk</translation>
 <translation id="1442081309487427303">Links voor de leesmodus aanzetten</translation>
 <translation id="1448064542941920355">Zoomniveau verkleinen</translation>
 <translation id="1464044141348608623">Niet toestaan dat sites weten wanneer je je apparaat actief gebruikt</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Als deze optie aanstaat, kunnen sites vragen of ze vensters mogen beheren op al je schermen. Staat de optie uit, dan kunnen sites geen vensters beheren op al je schermen.</translation>
 <translation id="1738912554587725807">Blad onderaan voor themacollecties voor het uiterlijk van de pagina Nieuw tabblad</translation>
 <translation id="1743802530341753419">Vragen of sites verbinding mogen maken met een apparaat (aanbevolen)</translation>
-<translation id="2534291364429593865">Meldingen van Brave-tips krijgen</translation>
 <translation id="1777815584158991902">Blad onderaan voor Discover-feed</translation>
 <translation id="1779089405699405702">Image Decoder</translation>
 <translation id="1781533683087883868">Links voor de leesmodus uitzetten</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Ophangen</translation>
 <translation id="1919950603503897840">Contacten selecteren</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> van <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Mijn homepage aanpassen</translation>
 <translation id="1939059826036755332">Automatisch scherm-in-scherm</translation>
 <translation id="1954597385941141174">Sites kunnen vragen of ze verbinding mogen maken met USB-apparaten</translation>
 <translation id="1979673356880165407">Tekst en afbeeldingen groter of kleiner maken voor alle sites die je bezoekt</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Beheerd door <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Hulp en feedback</translation>
 <translation id="2501278716633472235">Terug</translation>
-<translation id="2533138527374486328">Als deze optie aanstaat, kunnen sites vragen of ze verbinding mogen maken met apparaten in je lokale netwerk. Staat de optie uit, dan kunnen sites geen verbinding maken met apparaten in je lokale netwerk.</translation>
 <translation id="2536779053640817375">Deze keer toegestaan • Exact</translation>
 <translation id="2544997614631598250">Themakleur donker</translation>
 <translation id="2546283357679194313">Cookies en sitegegevens</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Omnibox voor een goede start</translation>
 <translation id="2789132527330338807">Sites kunnen vragen of ze een 3D-kaart van je omgeving mogen maken of de camerapositie mogen volgen</translation>
 <translation id="2790501146643349491">Als deze optie aanstaat, kunnen recent gesloten sites het sturen en ontvangen van gegevens afronden. Staat de optie uit, dan kunnen recent gesloten sites het sturen of ontvangen van gegevens niet afronden.</translation>
-<translation id="1708222144403389505">Zet meldingen aan voor nuttige tips om het beste uit Brave te halen</translation>
 <translation id="2795716239552913152">Sites gebruiken je locatie meestal voor relevante functies of informatie, zoals lokaal nieuws of winkels in de buurt</translation>
 <translation id="2800760947029405028">Een afbeelding uploaden</translation>
 <translation id="2802908157808345702">Niet toestaan dat sites pop-ups sturen en omleidingen gebruiken</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Sites kunnen geluiden afspelen</translation>
 <translation id="3065787901655140044">Geavanceerde beveiliging staat aan</translation>
 <translation id="3069226013421428034">Externe login toestaan voor een specifieke site.</translation>
+<translation id="3084983642903364837">Je kunt je homepage later bewerken via het menu met 3 stippen.</translation>
 <translation id="310297983047869047">Vorige dia</translation>
 <translation id="3108122610701115301">Als standaard instellen</translation>
 <translation id="310979712355504754">Alles verwijderen</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Niet toestaan dat sites verbinding maken met USB-apparaten</translation>
 <translation id="3965467402665811906">Sites kunnen vragen of ze informatie over je mogen gebruiken</translation>
 <translation id="3967822245660637423">Downloaden voltooid</translation>
-<translation id="3969869202926863008">Toegang tot lokaal netwerk</translation>
 <translation id="3981465354637804599">Sites kiezen er vaak voor advertenties te tonen zodat ze hun content en services kosteloos kunnen aanbieden. Het is wel bekend dat bepaalde sites opdringerige of misleidende advertenties tonen.</translation>
 <translation id="3987993985790029246">Link kopiëren</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> van ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Verbonden met een seriële poort</translation>
 <translation id="4223404254440398437">Microfoon niet toegestaan</translation>
 <translation id="4226663524361240545">Het apparaat kan trillen bij meldingen</translation>
+<translation id="4227965147357783918">Blad onderaan voor de promotie voor je homepage aanpassen is op halve hoogte geopend</translation>
 <translation id="4259722352634471385">Navigatie is geblokkeerd: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Nadat je een site verlaat, blijft de synchronisatie meestal doorgaan om taken af te ronden, zoals foto's uploaden of chatberichten sturen</translation>
 <translation id="4278390842282768270">Toegestaan</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Uitvouwen</translation>
 <translation id="4310738531374808763">Je homepage aanpassen</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Verloopt morgen}other{Verloopt over # dagen}}</translation>
+<translation id="7012676469589811613">Personaliseer Brave door een aangepast thema te kiezen</translation>
 <translation id="4338831206024587507">Alle sites onder <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Niet toestaan dat sites meldingen sturen</translation>
 <translation id="4341577178275615435">Gebruik de sneltoets F7 om browsen met navigatietoetsen aan of uit te zetten</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Sites niet versnellen met de V8-engine van Brave en Brave iets beter bestand maken tegen aanvallen</translation>
 <translation id="5556459405103347317">Opnieuw laden</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> geblokkeerd</translation>
-<translation id="560980142378233747">Dit betekent dat sitefuncties werken zoals verwacht, maar dat je browser misschien minder goed beveiligd is. <ph name="BEGIN_LINK"/>Feedback sturen<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Blad onderaan voor kaarten op de pagina Nieuw tabblad</translation>
 <translation id="5621413808884657932">Als deze optie aanstaat, kunnen sites vragen om toegang tot andere apps en services op dit apparaat. Als de optie uitstaat, hebben sites geen toegang tot andere apps en services op dit apparaat.</translation>
 <translation id="5632485077360054581">Laten zien</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Mijn snelkoppelingen</translation>
 <translation id="656065428026159829">Meer bekijken</translation>
 <translation id="6561560012278703671">Stillere berichten gebruiken (zorgt ervoor dat je niet wordt gestoord door meldingprompts)</translation>
-<translation id="6565144332292237355">Sites kunnen deze functie gebruiken om apparaten in je lokale netwerk te zoeken en verbinding ermee te maken</translation>
 <translation id="6593061639179217415">Desktopsite</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookies toegestaan voor <ph name="RWS_MEMBERS_COUNT"/> site van <ph name="RWS_OWNER"/>}other{Cookies toegestaan voor <ph name="RWS_MEMBERS_COUNT"/> sites van <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Blijven</translation>
 <translation id="6630443592285535486">Typ hier de hexadecimale code</translation>
 <translation id="6635327442719709864">Als deze optie aanstaat, kunnen sites vragen of ze seriële poorten mogen gebruiken. Staat de optie uit, dan kunnen sites geen seriële poorten gebruiken.</translation>
-<translation id="6669390930482049506">Melding sturen</translation>
 <translation id="6678072580827808850">Veiligheidscheck controleren</translation>
 <translation id="6682057173375416470">Voorgestelde artikelen krijgen op de pagina Nieuw tabblad</translation>
 <translation id="6683865262523156564">Deze site zit in een groep die je activiteit kan bekijken. De groep wordt gedefinieerd door <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Vernieuwen</translation>
 <translation id="7188508872042490670">Sitegegevens op het apparaat</translation>
 <translation id="7201549776650881587">Met deze actie verwijder je alle gegevens en cookies die zijn opgeslagen door alle sites onder <ph name="ORIGIN"/> of door de bijbehorende app op je startscherm</translation>
-<translation id="7213166370492037743">Niet toestaan dat sites verbinding maken met apparaten in je lokale netwerk</translation>
 <translation id="7219254577985949841">Sitegegevens verwijderen?</translation>
 <translation id="723171743924126238">Afbeeldingen selecteren</translation>
 <translation id="7243246278722455312">Blad onderaan voor De pagina Nieuw tabblad aanpassen</translation>
@@ -757,7 +753,6 @@ Geavanceerde beveiliging beheert deze Brave-instellingen:</translation>
 <translation id="8737426583868847403">Sites waarvoor je een aangepast zoomniveau hebt opgeslagen</translation>
 <translation id="8748714929822124637">Niet toestaan dat sites toegang krijgen tot andere apparaten in je lokale netwerk</translation>
 <translation id="8751914237388039244">Een afbeelding selecteren</translation>
-<translation id="8775741625735357092">Je kunt de bookmarkbalk aanzetten via Instellingen &gt; Vormgeving</translation>
 <translation id="8800034312320686233">Werkt de site niet?</translation>
 <translation id="8801436777607969138">Blokkeer JavaScript voor een specifieke site.</translation>
 <translation id="2026315747406172223">V8 is de JavaScript- en WebAssembly-engine van Brave die wordt gebruikt om de sitesprestaties te verbeteren</translation>

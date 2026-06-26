@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Obteniendo canales...</translation>
 <translation id="7461899062138731833">FUENTES</translation>
 <translation id="6150420917380577651">No se encontraron canales en <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Anuncio</translation>
 <translation id="7823038307453615214">Mostrar Noticias de Brave</translation>
 <translation id="6527303717912515753">Compartir</translation>
 <translation id="1654539412343893324">Obtén más información sobre tus datos</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Inhabilitar contenido de <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> inhabilitado</translation>
 <translation id="1276592121036104130">Cargar contenido nuevo</translation>
-<translation id="3189348785087463371">Promocionado</translation>
 <translation id="7554145152551782675">Más ofertas de Brave</translation>
 <translation id="254100925533869330">No hay contenido</translation>
 <translation id="7172792761509429092">Noticias de Brave no tiene ningún contenido que mostrar.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">No recuperar las pestañas al abrir una nueva sesión de navegación</translation>
 <translation id="7142548388914389999">Permitir análisis de productos que preservan la privacidad (P3A)</translation>
 <translation id="5254037869598726291">La información P3A anonimizada permite a Brave estimar el uso general y seguir mejorando las funciones más populares.</translation>
-<translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
-<translation id="8659271182272561965">Contribuya con algunos datos de búsqueda y navegación anónimos para refinar Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribuye con algunos datos anónimos de búsqueda y navegación para mejorar el Buscador de Brave.</translation>
 <translation id="933652931229970927">Enviar automáticamente informes de diagnóstico</translation>
 <translation id="5987838417172370108">Ayuda a mejorar la estabilidad de Brave enviando automáticamente informes de diagnóstico cuando el navegador falle o se bloquee.</translation>
 <translation id="7977176350719484850">Datos\nahorrados est.</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Cuéntenos qué funciones le resultan más útiles.</translation>
 <translation id="2888496576732880897">Ayuda a que el Buscador de Brave crezca</translation>
 <translation id="7198716519700700181">Bloquea las interrupciones mientras transmitas</translation>
-<translation id="7044431516245362795">Opte por el Proyecto de Descubrimiento Web para ayudar a crecer el índice y mejorar los resultados de búsqueda. <ph name="LEARN_MORE_START"/>Más información.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Únete al Proyecto Web Discovery para ayudar a ampliar el índice y mejorar los resultados de búsqueda. <ph name="LEARN_MORE_START"/>Más información<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logo de Brave</translation>
 <translation id="4767173360729868049">Ilustración del Buscador de Brave</translation>
 <translation id="8241918461631453498">Ilustración de bloqueo de interrupciones</translation>
@@ -437,8 +435,15 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="9140049656798805345">Triturar los datos de este sitio</translation>
 <translation id="6795622376590884449">Trituración automática</translation>
 <translation id="7961015016161918242">Nunca</translation>
+<translation id="3200744626782631683">Los datos de navegación nunca se eliminan automáticamente</translation>
 <translation id="1991004083507807299">Al cerrar las pestañas del sitio</translation>
+<translation id="2917925984754303958">Los datos de navegación se eliminan automáticamente cuando se cierran todas las pestañas abiertas en un sitio web</translation>
 <translation id="5827277414420724690">Cierre de aplicación</translation>
+<translation id="2036389684543586068">Los datos de navegación se eliminan automáticamente al cerrar o reiniciar la aplicación Brave</translation>
+<translation id="4279349293084858577">Triturar</translation>
+<translation id="2997451887458851244">Actualiza la función de eliminación automática y configura qué datos se eliminan</translation>
+<translation id="363903976200491771">Eliminar automáticamente los datos de navegación</translation>
+<translation id="1028873002018537235">Eliminar el historial de navegación</translation>
 <translation id="1209739344687072997">Informar sobre un sitio roto</translation>
 <translation id="8510478288840333677">Informa a los desarrolladores de Brave de que los escudos no funcionan como es debido.</translation>
 <translation id="1653405824851871276">Gracias por tu colaboración para mejorar Brave. Este informe solo nos hará llegar la información estrictamente necesaria para poder arreglar la página. <ph name="LEARN_MORE"/></translation>
@@ -1182,4 +1187,7 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="1079140196216383600">Eliminar motor de búsqueda personalizado</translation>
 <translation id="525276572490219787">¿Estás seguro de que quieres eliminar "<ph name="SEARCH_ENGINE_NAME"/>"? Esta acción no se puede deshacer.</translation>
 <translation id="6406506848690869874">Sincronización</translation>
+<translation id="1850594249589065646">Precisión de la ubicación</translation>
+<translation id="2403474027143565107">Preciso</translation>
+<translation id="4042597221652780603">Aproximado</translation>
 </translationbundle>

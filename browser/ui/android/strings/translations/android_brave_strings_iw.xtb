@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">קבלו פידים</translation>
 <translation id="7461899062138731833">מקורות</translation>
 <translation id="6150420917380577651">לא נמצא פיד עבור <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">פרסומת</translation>
 <translation id="7823038307453615214">הצג את Brave News</translation>
 <translation id="6527303717912515753">שיתוף</translation>
 <translation id="1654539412343893324">מידע נוסף אודות נתוניך</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">השבת תכנים מאת <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> הושבת</translation>
 <translation id="1276592121036104130">טען תוכן חדש</translation>
-<translation id="3189348785087463371">מקודם</translation>
 <translation id="7554145152551782675">עוד מבצעים של Brave</translation>
 <translation id="254100925533869330">אין תוכן</translation>
 <translation id="7172792761509429092">אין ב-Brave News תוכן להציג.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">אל תשמר כרטיסיות בין הפעלות גלישה</translation>
 <translation id="7142548388914389999">אפשר ניתוח מוצרים השומר על פרטיות (P3A)</translation>
 <translation id="5254037869598726291">מידע P3A אנונימי מסייע ל-Brave להעריך את השימוש הכולל, ולוודא שאנחנו’re משפרים את התכונות הפופולריות.</translation>
-<translation id="4174337572777167894">פרויקט Web Discovery</translation>
-<translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">תרמו נתוני חיפוש &amp; גלישה אנונימיים לשיפור חיפוש Brave.</translation>
 <translation id="933652931229970927">שלחו דוחות באופן אוטומטי</translation>
 <translation id="5987838417172370108">עזור לשפר את יציבות המוצר של Brave על ידי שליחת דוחות אבחון אוטומטית כאשר הדפדפן האמיץ קורס או קופא.</translation>
 <translation id="7977176350719484850">הערכת נתונים/n שנשמרו</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">נשמח לשמוע מאילו פיצ׳רים הכי נהנית.</translation>
 <translation id="2888496576732880897">לסייע לחיפוש Brave לצמוח</translation>
 <translation id="7198716519700700181">לחסום הפרעות במהלך הסטרימינג</translation>
-<translation id="7044431516245362795">אפשר להצטרף לפרויקט Web Discovery כדי לעזור להגדיל את האינדקס ולשפר את תוצאות החיפוש. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">הצטרפו לפרויקט Web Discovery כדי לסייע בהרחבת האינדקס ובשיפור תוצאות החיפוש. <ph name="LEARN_MORE_START"/>למידע נוסף<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">לוגו Brave</translation>
 <translation id="4767173360729868049">איור של עזרה לחיפוש Brave</translation>
 <translation id="8241918461631453498">איור של חסימת הפרעות</translation>
@@ -441,8 +439,15 @@
 <translation id="9140049656798805345">גריסת נתוני אתר כעת</translation>
 <translation id="6795622376590884449">גריסה אוטומטית</translation>
 <translation id="7961015016161918242">אף פעם</translation>
+<translation id="3200744626782631683">נתוני הגלישה לעולם אינם נמחקים באופן אוטומטי</translation>
 <translation id="1991004083507807299">כשכרטיסיית האתר סגורה</translation>
+<translation id="2917925984754303958">נתוני הגלישה נמחקים אוטומטית עם סגירת כל הכרטיסיות הפתוחות לאתר</translation>
 <translation id="5827277414420724690">כשהאפליקציה סגורה</translation>
+<translation id="2036389684543586068">נתוני הגלישה נמחקים אוטומטית עם סגירת אפליקציית Brave או עם הפעלתה מחדש</translation>
+<translation id="4279349293084858577">גרוס</translation>
+<translation id="2997451887458851244">עדכן את 'גריסה אוטומטית' והגדר אילו נתונים יגרסו</translation>
+<translation id="363903976200491771">מחיקת נתוני הגלישה באופן אוטומטי</translation>
+<translation id="1028873002018537235">מחיקת היסטוריית הגלישה</translation>
 <translation id="1209739344687072997">דווח/י על אתר לא תקין</translation>
 <translation id="8510478288840333677">הודע/י למפתחים של Brave כי אתר זה אינו עובד בצורה תקינה עם Shields:</translation>
 <translation id="1653405824851871276">תודה שעזרת להפוך את Brave לטוב יותר עבור כולם. הדיווח יכיל רק את המידע הדרוש לנו לתיקון אתר זה.<ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@
 <translation id="1079140196216383600">מחק מנוע חיפוש מותאם אישית</translation>
 <translation id="525276572490219787">האם אתה בטוח שברצונך למחוק את "<ph name="SEARCH_ENGINE_NAME"/>"? פעולה זו אינה ניתנת לביטול.</translation>
 <translation id="6406506848690869874">סנכרון</translation>
+<translation id="1850594249589065646">דיוק המיקום</translation>
+<translation id="2403474027143565107">מדויק</translation>
+<translation id="4042597221652780603">בערך</translation>
 </translationbundle>

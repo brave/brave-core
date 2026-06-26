@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Se obțin fluxuri...</translation>
 <translation id="7461899062138731833">SURSE</translation>
 <translation id="6150420917380577651">Nu s-au găsit fluxuri la <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Reclamă</translation>
 <translation id="7823038307453615214">Afișați Brave News</translation>
 <translation id="6527303717912515753">Trimite</translation>
 <translation id="1654539412343893324">Aflați mai multe despre datele dvs.</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Dezactivați conținutul de la <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> dezactivat</translation>
 <translation id="1276592121036104130">Încărcați conținut nou</translation>
-<translation id="3189348785087463371">Promovat</translation>
 <translation id="7554145152551782675">Mai multe oferte Brave</translation>
 <translation id="254100925533869330">Nu există conținut</translation>
 <translation id="7172792761509429092">Știrile Brave nu are niciun conținut de afișat.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Permiteți datele de analiză referitoare la produs cu menținerea confidențialități (P3A)</translation>
 <translation id="5254037869598726291">Datele analitice anonime despre produs, cu protejarea confidențialității (P3A), ajută Brave să facă estimări privind utilizarea globală și să se asigure că îmbunătățește funcțiile utilizate la scară largă.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Contribuiți cu date anonime privind căutarea și navigarea, pentru a îmbunătăți căutarea Brave.</translation>
+<translation id="8659271182272561965">Contribuiți cu unele date anonime de căutare &amp; navigare pentru a îmbunătăți Brave Search.</translation>
 <translation id="933652931229970927">Trimiteți automat rapoarte de diagnosticare</translation>
 <translation id="5987838417172370108">Contribuiți la îmbunătățirea stabilității Brave prin trimiterea automată de rapoarte de diagnosticare când apar erori ale browserului Brave sau când acesta se blochează.</translation>
 <translation id="7977176350719484850">Date est.\neconomisite</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Spune-ne ce funcționalități apreciezi cel mai mult.</translation>
 <translation id="2888496576732880897">Ajută Brave Search să crească</translation>
 <translation id="7198716519700700181">Blochează întreruperile când faci streaming</translation>
-<translation id="7044431516245362795">Participă la Web Discovery Project pentru a contribui la creșterea indexului și la îmbunătățirea rezultatelor căutărilor. <ph name="LEARN_MORE_START"/>Află mai multe.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Înscrie-te în proiectul Web Discovery pentru a contribui la extinderea indexului și la îmbunătățirea rezultatelor căutării. <ph name="LEARN_MORE_START"/>Află mai multe<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="4767173360729868049">Ilustrație ajutor Brave Search</translation>
 <translation id="8241918461631453498">Ilustrație blocare întreruperi</translation>
@@ -440,8 +438,15 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="9140049656798805345">Distruge datele site-ului acum</translation>
 <translation id="6795622376590884449">Auto distrugere</translation>
 <translation id="7961015016161918242">Niciodată</translation>
+<translation id="3200744626782631683">Datele de navigare nu sunt niciodată șterse automat</translation>
 <translation id="1991004083507807299">La închiderea filei site-ului</translation>
+<translation id="2917925984754303958">Datele de navigare sunt șterse automat atunci când toate filele deschise pe un site sunt închise</translation>
 <translation id="5827277414420724690">La închiderea aplicației</translation>
+<translation id="2036389684543586068">Datele de navigare sunt șterse automat la închiderea sau repornirea aplicației Brave</translation>
+<translation id="4279349293084858577">Distruge</translation>
+<translation id="2997451887458851244">Actualizați funcția „Auto Shred” și setați ce date vor fi șterse</translation>
+<translation id="363903976200491771">Șterge automat datele de navigare</translation>
+<translation id="1028873002018537235">Șterge istoricul de navigare</translation>
 <translation id="1209739344687072997">Raportați un site nefuncțional</translation>
 <translation id="8510478288840333677">Anunțați-i pe dezvoltatorii Brave că acest site nu funcționează corect cu Scuturi:</translation>
 <translation id="1653405824851871276">Vă mulțumim că ne ajutați să facem Brave mai bun pentru toți. Acest raport va conține doar informațiile necesare pentru a repara acest site. <ph name="LEARN_MORE"/></translation>
@@ -1185,4 +1190,7 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="1079140196216383600">Șterge motor de căutare personalizat</translation>
 <translation id="525276572490219787">Ești sigur(ă) că vrei să ștergi „<ph name="SEARCH_ENGINE_NAME"/>"? Această acțiune nu poate fi anulată.</translation>
 <translation id="6406506848690869874">Sincronizare</translation>
+<translation id="1850594249589065646">Precizia localizării</translation>
+<translation id="2403474027143565107">Precis</translation>
+<translation id="4042597221652780603">Aproximativ</translation>
 </translationbundle>

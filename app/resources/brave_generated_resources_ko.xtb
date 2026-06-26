@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">레오 AI</translation>
 <translation id="8275068909952022340">더 보기…</translation>
 <translation id="71316462802471551">이메일 별명</translation>
+<translation id="209130971304928953">탭을 작업 공간으로 저장…</translation>
+<translation id="877984331511007834">작업 공간 열기…</translation>
+<translation id="1310182651927031327">탭을 워크스페이스로 저장…</translation>
+<translation id="3588277741646479444">워크스페이스 열기…</translation>
 <translation id="1990886731975529483">Google Widevine 설치 및 실행</translation>
 <translation id="8926389886865778422">이 메시지 그만 보기</translation>
 <translation id="4900351245762303149">Google Widevine 설치</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor를 이용한 새로운 비공개 윈도우</translation>
 <translation id="2638041073279639246">Tor를 이용해 비공개 윈도우에서 링크 열기</translation>
 <translation id="3425600262621021599">Tor를 이용해 Brave 비공개 윈도우에서 링크 열기</translation>
-<translation id="2545072023356206691">2023년 12월 1일부터 Brave Dev 채널이 더 이상 브라우저 업데이트를 수신하지 않습니다. 기존 이용자는 Brave Nightly, Beta 또는 Release 버전으로 전환하기를 권장합니다.</translation>
 <translation id="474217410105706308">탭 음소거</translation>
 <translation id="2804710924397009224">Brave 리워드 아이콘 숨기기</translation>
 <translation id="5029193871181468990">Brave 리워드 아이콘 숨기기</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">프라이빗 광고를 클릭하여 Brave 검색을 지원해 주셔서 감사합니다. 빅테크 기업들과 달리 당사는 사용자의 개인정보를 보호하기 위해 광고 실적을 익명으로 평가합니다.</translation>
 <translation id="8748471354357836070">자세히 알아보기 / 옵트아웃 옵션</translation>
 <translation id="5927196110206824867">스폰서 배경 이미지는 독립적인 사용자 중심 웹을 구축하려는 Brave의 사명을 뒷받침합니다. 또한 빅 테크와 달리 광고 성과를 익명으로 측정하여 사용자의 개인 정보를 보호합니다.</translation>
-<translation id="4174337572777167894">웹 디스커버리 프로젝트</translation>
-<translation id="8659271182272561965">익명 검색 및 인터넷 사용 기록 데이터 일부를 보내 Brave Search 개선에 도움을 주세요.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave 검색을 개선하기 위해 익명의 검색 및 브라우징 데이터를 제공하세요.</translation>
 <translation id="1516554614404600536">Brave 툴팁</translation>
 <translation id="4375473250631001683">사이드바 아이콘 숨기기</translation>
 <translation id="2613033293035359003">사이드바 숨기기</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">컨테이너에서 열기</translation>
 <translation id="194205047181722473">컨테이너에서 링크 열기</translation>
 <translation id="8638526693050780542">컨테이너 관리</translation>
+<translation id="2796584247246518451">새 임시 컨테이너</translation>
 <translation id="2336228925368920074">모든 탭 북마크...</translation>
 <translation id="2523967823495420116">세로 탭 사용</translation>
 <translation id="5483718923712878759">포커스 모드</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">컨테이너에서 열기</translation>
 <translation id="1185644444415356776">컨테이너에서 링크 열기</translation>
 <translation id="6745991613881384719">컨테이너 관리</translation>
+<translation id="8523788649219117880">새 임시 컨테이너</translation>
 <translation id="3704707436873245822">이미지에서 텍스트 복사</translation>
 <translation id="5268098808165185458">이미지에서 텍스트 복사 중...</translation>
 <translation id="4046485130884276245">이미지에서 텍스트 복사됨</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">탭</translation>
 <translation id="8168435359814927499">콘텐츠</translation>
 <translation id="6017560037265964523">컨테이너</translation>
-<translation id="934893482320683588">방문 이력을 컨테이너로 정리하세요. <ph name="BEGIN_LINK"/>더 알아보기<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">컨테이너는 쿠키, 캐시, 사이트 저장소와 같은 브라우징 데이터를 별도의 컨텍스트로 격리하는 색상으로 구분된 브라우저 탭입니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">컨테이너 활성화</translation>
 <translation id="7773735778926921278">새 컨테이너 추가</translation>
 <translation id="8900907990448657776">컨테이너 편집</translation>
 <translation id="7900511996284443779">컨테이너 삭제</translation>
@@ -808,6 +814,7 @@
 <translation id="5226020406479918122">탭 포커스 모드</translation>
 <translation id="3705539672403311123">탭 검색 페이지의 탭 정리를 활성화합니다. 탭을 열면 비공개가 아닌 모든 탭의 제목과 출처가 자동으로 레오에 전송되어 분류됩니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">탭 포커스의 기본 모델</translation>
+<translation id="2161546758719933059">탭 포커스 모드에서 탭을 정리하는 데 사용되는 모델입니다. <ph name="BEGIN_LINK"/>자세히 알아보기<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">대화 내에 추천 프롬프트 표시</translation>
 <translation id="5781842473834867765">대화 기록 저장</translation>
 <translation id="1082960401708055995">대화 저장을 비활성화하면 이전에 저장된 모든 대화가 영구적으로 삭제됩니다. 이 작업은 번복할 수 없습니다.</translation>

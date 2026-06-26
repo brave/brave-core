@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">S'estan obtenint canals de continguts...</translation>
 <translation id="7461899062138731833">FONTS</translation>
 <translation id="6150420917380577651">No s'han trobat canals de continguts a <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Anunci</translation>
 <translation id="7823038307453615214">Mostra Noticies de Brave</translation>
 <translation id="6527303717912515753">Comparteix</translation>
 <translation id="1654539412343893324">Més informació sobre les teves dades</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Desactiva el contingut de <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> desactivat</translation>
 <translation id="1276592121036104130">Carrega contingut nou</translation>
-<translation id="3189348785087463371">Promocionat</translation>
 <translation id="7554145152551782675">Més ofertes de Brave</translation>
 <translation id="254100925533869330">No hi ha contingut</translation>
 <translation id="7172792761509429092">Notícies de Brave no té contingut per mostrar.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Permet l'anàlisi de productes que preserven la privacitat (P3A)</translation>
 <translation id="5254037869598726291">La informació anonimitzada P3A ajuda a Brave a estimar l'ús general, i assegurar que millorem característiques populars.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Aporta dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
+<translation id="8659271182272561965">Contribuïu amb algunes dades anònimes de cerca i navegació per millorar el Cercador de Brave.</translation>
 <translation id="933652931229970927">Envia informes de diagnòstic automàticament</translation>
 <translation id="5987838417172370108">Ajuda a millorar l'estabilitat del producte de Brave\u2019s enviant automàticament informes de diagnòstic quan el Navegador de Brave falla o es congela.</translation>
 <translation id="7977176350719484850">Data estimada\ndesada</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Feu-nos saber quines funcions us agraden més.</translation>
 <translation id="2888496576732880897">Ajuda al Cercador de Brave a créixer</translation>
 <translation id="7198716519700700181">Bloqueja les interrupcions mentre veus vídeos</translation>
-<translation id="7044431516245362795">Participa en el Web Discovery Project per ajudar a l'índex a créixer i millorar els resultats de cerca. <ph name="LEARN_MORE_START"/>Més informació.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Subscriu-te al Projecte de Descobriment Web per ajudar a fer créixer l'índex i millorar els resultats de cerca. <ph name="LEARN_MORE_START"/>Obteniu més informació<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logotip de Brave</translation>
 <translation id="4767173360729868049">Il·lustració d'ajuda al Cercador de Brave</translation>
 <translation id="8241918461631453498">Il·lustració de bloqueig d'interrupcions</translation>
@@ -437,8 +435,15 @@ Segur que vols continuar?</translation>
 <translation id="9140049656798805345">Dades actuals del lloc shred</translation>
 <translation id="6795622376590884449">Shred automàtic</translation>
 <translation id="7961015016161918242">Mai</translation>
+<translation id="3200744626782631683">Les dades de navegació mai no s'eliminen automàticament.</translation>
 <translation id="1991004083507807299">Pestanyes del lloc tancades</translation>
+<translation id="2917925984754303958">Les dades de navegació s'eliminan automàticament quan es tanquen totes les pestanyes obertes a un lloc.</translation>
 <translation id="5827277414420724690">Tancament de l'app</translation>
+<translation id="2036389684543586068">Les dades de navegació s'eliminen automàticament quan es tanca o es reinicia l'aplicació Brave.</translation>
+<translation id="4279349293084858577">Shred</translation>
+<translation id="2997451887458851244">Actualitzar Auto Shred i ajustar quines dades s'eliminen</translation>
+<translation id="363903976200491771">Esmicolar automàticament les dades de navegació</translation>
+<translation id="1028873002018537235">Esmicolar l'historial de navegació</translation>
 <translation id="1209739344687072997">Informa d'una pàgina web inexistent</translation>
 <translation id="8510478288840333677">Fes saber als desenvolupadors de Brave que aquesta web no funciona de forma adequada amb Escuts:</translation>
 <translation id="1653405824851871276">Gràcies per ajudar a fer Brave millor per a tothom. Aquest informe només contindrà la informació necessària perquè puguem corregir aquest lloc. <ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@ Si no acceptes la sol·licitud, la VPN no es tornarà a connectar i la teva conn
 <translation id="1079140196216383600">Eliminar motor de cerca personalitzat</translation>
 <translation id="525276572490219787">Esteu segur que voleu eliminar "<ph name="SEARCH_ENGINE_NAME"/>"? Aquesta acció no es pot desfer.</translation>
 <translation id="6406506848690869874">Sincronització</translation>
+<translation id="1850594249589065646">Precisió de localització</translation>
+<translation id="2403474027143565107">Precís</translation>
+<translation id="4042597221652780603">Aproximat</translation>
 </translationbundle>

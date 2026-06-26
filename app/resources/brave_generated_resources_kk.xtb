@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Лео AI</translation>
 <translation id="8275068909952022340">Көбірек…</translation>
 <translation id="71316462802471551">Электрондық Пошта Псевдонимдері</translation>
+<translation id="209130971304928953">Қойындыларды жұмыс кеңістігі ретінде сақтау…</translation>
+<translation id="877984331511007834">Жұмыс кеңістігін ашу…</translation>
+<translation id="1310182651927031327">Қойындыларды жұмыс кеңістігі ретінде сақтау…</translation>
+<translation id="3588277741646479444">Жұмыс кеңістігін ашу…</translation>
 <translation id="1990886731975529483">Google Widevine орнатып, іске қосыңыз</translation>
 <translation id="8926389886865778422">Қайта сұрамаңыз</translation>
 <translation id="4900351245762303149">Google Widevine орнатыңыз</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor арқылы жаңа жеке терезе</translation>
 <translation id="2638041073279639246">Tor арқылы жеке терезеде сілтемені ашу</translation>
 <translation id="3425600262621021599">Open link in Brave жеке терезеде Tor-мен ашу</translation>
-<translation id="2545072023356206691">2023 жылғы 1 желтоқсаннан бастап, Brave Dev арнасы браузер жаңартуларын алмайды. Пайдаланушыларға Nightly, Beta немесе Release нұсқаларына көшу ұсынылады.</translation>
 <translation id="474217410105706308">Қойындыны үнсіздендіру</translation>
 <translation id="2804710924397009224">Brave Марапаттары белгішесін жасыру</translation>
 <translation id="5029193871181468990">Brave Марапаттары белгішесін жасыру</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">Жекеменшік жарнама басу арқылы Brave іздеуді қолдағаныңыз үшін рахмет. Үлкен Техникалардан айырмашылығы, біз жарнама өнімділігін анонимді түрде өлшейміз, сіздің құпиялығыңызды сақтау үшін.</translation>
 <translation id="8748471354357836070">Толығырақ білу / бас тарту таңдаулары</translation>
 <translation id="5927196110206824867">Жарнамалық фонда көрсетілетін суреттер Brave's тәуелсіз, қолданушыға басымдық беретін Интернетті құру миссиясын қолдайды. Үлкен Технология сияқты емес, біз жарнама өнімділігін құпияңыздың сақталуын қамтамасыз ету үшін анонимді түрде өлшейміз.</translation>
-<translation id="4174337572777167894">Веб-зерттеу жобасы</translation>
-<translation id="8659271182272561965">Brave Search-ті жетілдіру үшін анонимді іздеу&amp; және шолу деректерін бөлісуге үлес қосыңыз.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave іздеуді жетілдіру үшін кейбір анонимді іздеу &amp; шолу деректерін бөлісіңіз.</translation>
 <translation id="1516554614404600536">Brave кеңес қалқымасы</translation>
 <translation id="4375473250631001683">Шеткі тақта белгішесін жасыр</translation>
 <translation id="2613033293035359003">Шеткі тақтаны жасыру</translation>
@@ -203,6 +206,7 @@
 <translation id="8670218546624422041">Контейнерде ашу</translation>
 <translation id="194205047181722473">Сілтемені контейнерде ашу</translation>
 <translation id="8638526693050780542">Контейнерлерді басқару</translation>
+<translation id="2796584247246518451">Жаңа уақытша контейнер</translation>
 <translation id="2336228925368920074">Барлық қойындыларды бетбелгіге қосу...</translation>
 <translation id="2523967823495420116">Тігінен қойындыларды пайдалану</translation>
 <translation id="5483718923712878759">Фокус режимі</translation>
@@ -216,6 +220,7 @@
 <translation id="1987871867023021397">Контейнерде ашу</translation>
 <translation id="1185644444415356776">Сілтемені контейнерде ашу</translation>
 <translation id="6745991613881384719">Контейнерлерді басқару</translation>
+<translation id="8523788649219117880">Жаңа уақытша контейнер</translation>
 <translation id="3704707436873245822">Суреттен мәтінді көшіру</translation>
 <translation id="5268098808165185458">Суреттен мәтінді көшіру...</translation>
 <translation id="4046485130884276245">Суреттен мәтін көшірілді</translation>
@@ -372,7 +377,8 @@
 <translation id="8076492880354921740">Беттер</translation>
 <translation id="8168435359814927499">Мазмұны</translation>
 <translation id="6017560037265964523">Контейнерлер</translation>
-<translation id="934893482320683588">Сізді шолу контейнерлерімен ұйымдастырыңыз. <ph name="BEGIN_LINK"/>Көбірек біліңіз<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Контейнерлер — шолу деректеріңізді, мысалы cookie файлдарын, кэшті және сайт қоймасын бөлек контексттерге оқшаулайтын түспен кодталған браузер қойындылары. <ph name="BEGIN_LINK"/>Көбірек білу<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Контейнерлерді қосу</translation>
 <translation id="7773735778926921278">Жаңа контейнер қосу</translation>
 <translation id="8900907990448657776">Контейнерді өңдеу</translation>
 <translation id="7900511996284443779">Контейнерді жою</translation>
@@ -806,6 +812,7 @@
 <translation id="5226020406479918122">Қойынды фокус режимі</translation>
 <translation id="3705539672403311123">Қойынды Іздеу бетінде қойынды ұйымдастыруды қосыңыз. Ашылғанда, бұл барлық жекеменшік емес қойындылардың атаулары мен шығу тегін Леоға жіберіп, оларды жіктейді. <ph name="BEGIN_LINK"/>Көбірек біліңіз<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Ғана ба міндеті үшін автоматты модель</translation>
+<translation id="2161546758719933059">Қойындыларды Қойынды фокус режимінде ұйымдастыру үшін қолданылатын модель. <ph name="BEGIN_LINK"/>Көбірек білу<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Сұхбатта ұсынылған дайын жолдарды көрсету</translation>
 <translation id="5781842473834867765">Әңгімелесу нәтижелерімді сақтау</translation>
 <translation id="1082960401708055995">Әңгіме сақтауын ажырату бұрын сақталған барлық әңгімелерді біржола жояды. Бұл әрекетті болдырмау мүмкін емес.</translation>

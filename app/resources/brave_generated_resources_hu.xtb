@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="8275068909952022340">Bővebben…</translation>
 <translation id="71316462802471551">Alternatív e-mail-címek</translation>
+<translation id="209130971304928953">Lapok mentése munkaterületként…</translation>
+<translation id="877984331511007834">Munkaterület megnyitása…</translation>
+<translation id="1310182651927031327">Lapok mentése munkaterületként…</translation>
+<translation id="3588277741646479444">Munkaterület megnyitása…</translation>
 <translation id="1990886731975529483">Google Widevine telepítése és futtatása</translation>
 <translation id="8926389886865778422">Többször ne figyelmeztessen</translation>
 <translation id="4900351245762303149">Google Widevine telepítése</translation>
@@ -69,7 +73,6 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="6313675821927505581">Új privát ablak a Tor böngészővel</translation>
 <translation id="2638041073279639246">Hivatkozás megnyitása privát ablakban a Tor böngészővel</translation>
 <translation id="3425600262621021599">Hivatkozás megnyitása Brave privát ablakban a Tor böngészővel</translation>
-<translation id="2545072023356206691">2023. december 1-től kezdődően a Brave Dev csatorna többé nem kap böngészőfrissítéseket. Javasoljuk a felhasználóknak, hogy térjenek át a Brave Nightly, Beta vagy Release verziójára.</translation>
 <translation id="474217410105706308">Lap némítása</translation>
 <translation id="2804710924397009224">Brave Rewards ikon elrejtése</translation>
 <translation id="5029193871181468990">Brave jutalmak ikon elrejtése</translation>
@@ -140,8 +143,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="5253166205743627564">Köszönjük, hogy támogatja a Brave keresőmotort azzal, hogy rákattint egy privát hirdetésre. A nagy techcégekkel ellentétben mi anonim módon mérjük a hirdetések teljesítményét, hogy megőrizzük az Ön adatainak biztonságát.</translation>
 <translation id="8748471354357836070">További információk / lemondási lehetőségek</translation>
 <translation id="5927196110206824867">A szponzorált háttérképek hozzájárulnak a Brave küldetéséhez, hogy egy független, felhasználó-központú webet alakítson ki. A nagy techcégektől eltérően a hirdetések hatékonyságát anonim módon mérjük, ezáltal biztosítva a felhasználói adatok védelmét és a magánszféra tiszteletben tartását.</translation>
-<translation id="4174337572777167894">Web Discovery projekt</translation>
-<translation id="8659271182272561965">Szolgáltasson névtelen keresési és böngészési adatokat, hogy pontosabbá tegye a Brave Search-öt.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Járulj hozzá némi névtelen keresési &amp; böngészési adattal a Brave keresés finomításához.</translation>
 <translation id="1516554614404600536">Brave elemleírás</translation>
 <translation id="4375473250631001683">Oldalsáv ikon elrejtése</translation>
 <translation id="2613033293035359003">Oldalsáv elrejtése</translation>
@@ -204,6 +207,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8670218546624422041">Megnyitás konténerlapon</translation>
 <translation id="194205047181722473">Hivatkozás megnyitása konténerlapon</translation>
 <translation id="8638526693050780542">Konténerlapok kezelése</translation>
+<translation id="2796584247246518451">Új ideiglenes konténer</translation>
 <translation id="2336228925368920074">Összes lap hozzáadása a könyvjelzőkhöz...</translation>
 <translation id="2523967823495420116">Függőleges lapok használata</translation>
 <translation id="5483718923712878759">Fókusz mód</translation>
@@ -217,6 +221,7 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="1987871867023021397">Megnyitás konténerlapon</translation>
 <translation id="1185644444415356776">Hivatkozás megnyitása konténerlapon</translation>
 <translation id="6745991613881384719">Konténerlapok kezelése</translation>
+<translation id="8523788649219117880">Új ideiglenes konténer</translation>
 <translation id="3704707436873245822">Szöveg másolása képből</translation>
 <translation id="5268098808165185458">Szöveg másolása képből...</translation>
 <translation id="4046485130884276245">Szöveg másolva képből</translation>
@@ -373,7 +378,8 @@ Később is módosíthatja a következő helyen: <ph name="SETTINGS_EXTENIONS_LI
 <translation id="8076492880354921740">Lapok</translation>
 <translation id="8168435359814927499">Tartalom</translation>
 <translation id="6017560037265964523">Konténerlapok</translation>
-<translation id="934893482320683588">Válassza szét a böngészést a konténerlapokkal. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">A konténerek színkóddal ellátott böngészőlapok, amelyek elkülönítik a böngészési adatait, például a cookie-kat, a gyorsítótárat és a webhelytárolót külön kontextusokba. <ph name="BEGIN_LINK"/>Tudjon meg többet<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Konténerek engedélyezése</translation>
 <translation id="7773735778926921278">Új konténerlap hozzáadása</translation>
 <translation id="8900907990448657776">Konténerlap szerkesztése</translation>
 <translation id="7900511996284443779">Konténerlap törlése</translation>
@@ -809,6 +815,7 @@ A szinkronizálás előrehaladása minden védett fióknál el fog veszni. A meg
 <translation id="5226020406479918122">Aktuális lap használata</translation>
 <translation id="3705539672403311123">Böngészőlapok rendezésének engedélyezése a a Böngészőlap keresés oldalon. Az összes nem privát lap nevét és forrását automatikusan elküldi a Leónak kategorizálás céljából. <ph name="BEGIN_LINK"/>Tidjon meg többet<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Alapértelmezett modell a lap fókuszához</translation>
+<translation id="2161546758719933059">A Lapfókusz módban a lapok rendszerezésére használt modell. <ph name="BEGIN_LINK"/>Tudjon meg többet<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Ajánlott kérdések megjelenítése a beszélgetésben</translation>
 <translation id="5781842473834867765">Beszélgetési előzmények tárolása</translation>
 <translation id="1082960401708055995">A beszélgetések tárolásának letiltása véglegesen törli az összes korábban tárolt beszélgetést. Ezt a műveletet nem lehet visszacsinálni.</translation>

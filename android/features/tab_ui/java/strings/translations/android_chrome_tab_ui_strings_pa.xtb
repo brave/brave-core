@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> ਟੈਬ ਗਰੁੱਪਬੱਧ ਕੀਤੀ ਗਈ</translation>
 <translation id="1844381456014878100">7 ਦਿਨ ਅਕਿਰਿਆਸ਼ੀਲ ਰਹਿਣ ਤੋਂ ਬਾਅਦ</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ਟੈਬ}one{<ph name="TABS_COUNT_MANY"/> ਟੈਬ}other{<ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{ਪੜ੍ਹਨ-ਸੂਚੀ ਵਿੱਚ ਟੈਬ ਸ਼ਾਮਲ ਕਰੋ}one{ਪੜ੍ਹਨ-ਸੂਚੀ ਵਿੱਚ ਟੈਬ ਸ਼ਾਮਲ ਕਰੋ}other{ਪੜ੍ਹਨ-ਸੂਚੀ ਵਿੱਚ ਟੈਬਾਂ ਸ਼ਾਮਲ ਕਰੋ}}</translation>
 <translation id="1909810060368225529">ਨੋਟਿਸ: ਸਾਂਝੇ ਕੀਤੇ ਇਸ ਟੈਬ ਗਰੁੱਪ ਵਿੱਚ ਕੀਤੀਆਂ ਜਾਣ ਵਾਲੀਆਂ ਤਬਦੀਲੀਆਂ ਹਰ ਕਿਸੇ ਨੂੰ ਦਿਖਾਈ ਦੇਣਗੀਆਂ। ਹਰ ਕੋਈ ਤੁਹਾਡੇ ਸਾਂਝੇ ਕੀਤੇ ਟੈਬ ਗਰੁੱਪਾਂ ਵਿੱਚ ਤਬਦੀਲੀਆਂ ਕਰ ਸਕਦਾ ਹੈ</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{ਟੈਬ ਪਿੰਨ ਕਰੋ}one{ਟੈਬ ਪਿੰਨ ਕਰੋ}other{ਟੈਬਾਂ ਪਿੰਨ ਕਰੋ}}</translation>
 <translation id="1982637982196732906">ਅਕਿਰਿਆਸ਼ੀਲ ਸੈਕਸ਼ਨ ਵਿੱਚ ਲਿਜਾਓ</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{ਚੁਣੀ ਹੋਈ <ph name="TABS_COUNT_ONE"/> ਟੈਬ ਨੂੰ ਬੁੱਕਮਾਰਕ ਕਰੋ}one{ਚੁਣੀ ਹੋਈ <ph name="TABS_COUNT_MANY"/> ਟੈਬ ਨੂੰ ਬੁੱਕਮਾਰਕ ਕਰੋ}other{ਚੁਣੀਆਂ ਹੋਈਆਂ <ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਨੂੰ ਬੁੱਕਮਾਰਕ ਕਰੋ}}</translation>
 <translation id="2055057176188061528">ਟੈਬ ਗਰੁੱਪ ਚੁਣੋ ਜਾਂ ਨਵਾਂ ਟੈਬ ਗਰੁੱਪ ਬਣਾਓ</translation>
 <translation id="2074527029802029717">ਟੈਬ ਅਨਪਿੰਨ ਕਰੋ</translation>
+<translation id="2111670510994270194">ਸੱਜੇ ਪਾਸੇ ਨਵੀਂ ਟੈਬ</translation>
 <translation id="2118649612461486615">ਸਟੋਰ ਜਾਣਕਾਰੀ</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{ਸਾਈਟ ਅਣਮਿਊਟ ਕਰੋ}one{ਸਾਈਟ ਅਣਮਿਊਟ ਕਰੋ}other{ਸਾਈਟਾਂ ਅਣਮਿਊਟ ਕਰੋ}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> 'ਤੇ ਹੁਣ <ph name="CURRENT_PRICE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> ਨੂੰ <ph name="PRICE_DROP"/> ਕੀਮਤ ਘਟੀ</translation>
 <translation id="3078350928901129212"><ph name="COLOR_NAME"/> ਟੈਬ ਗਰੁੱਪ ਦੇ ਰੰਗ ਦਾ ਪ੍ਰਤੀਕ</translation>
 <translation id="311432875115153175">ਟੈਬ ਗਰੁੱਪ ਸੂਚੀ ਬੰਦ ਹੈ</translation>
+<translation id="3152596030350326139">ਟੈਬਾਂ ਨੂੰ ਲੇਟਵੇਂ ਤੌਰ 'ਤੇ ਦਿਖਾਓ</translation>
+<translation id="31806439105337256">ਟੈਬਾਂ ਨੂੰ ਖੜ੍ਹਵੇਂ ਤੌਰ 'ਤੇ ਦਿਖਾਓ</translation>
 <translation id="3194464645767632461">ਰੇਟਿੰਗ</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ਟੈਬ ਨੂੰ ਗਰੁੱਪ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ}one{<ph name="TABS_COUNT_MANY"/> ਟੈਬ ਨੂੰ ਗਰੁੱਪ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ}other{<ph name="TABS_COUNT_MANY"/> ਟੈਬਾਂ ਨੂੰ ਗਰੁੱਪ ਵਿੱਚ ਸ਼ਾਮਲ ਕਰੋ}}</translation>
 <translation id="3328308545011660196">ਸੁਝਾਅ: <ph name="NUMBER_OF_TABS"/> ਟੈਬਾਂ ਸੰਬੰਧਿਤ ਲੱਗਦੀਆਂ ਹਨ। ਕੀ ਉਹਨਾਂ ਨੂੰ ਗਰੁੱਪਬੱਧ ਕਰਨਾ ਹੈ?</translation>
