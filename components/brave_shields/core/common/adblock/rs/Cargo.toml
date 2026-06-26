@@ -12,7 +12,7 @@ thiserror = "1.0"
 
 [features]
 ios = ["adblock/content-blocking"]
-single_thread_optimizations = ["adblock/unsync-regex-caching"]
+single_thread_optimizations = ["adblock/single-thread"]
 
 [lib]
 name = "adblock_cxx"
