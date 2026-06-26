@@ -141,10 +141,9 @@ def main():
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
-    rn_regex = re.compile(
-        r'^## .*?' + re.escape(version) +
-        r'.*?$\n+(.*?)(?:\n+^##\s|\Z)',
-        flags=re.DOTALL | re.MULTILINE)
+    rn_regex = re.compile(r'^## .*?' + re.escape(version) +
+                          r'.*?$\n+(.*?)(?:\n+^##\s|\Z)',
+                          flags=re.DOTALL | re.MULTILINE)
     match = rn_regex.search(changelog_txt)
     if not match:
         logging.error("Unable to locate release notes!")
@@ -215,13 +214,14 @@ def parse_args():
         '--url',
         help='URL for Brave Browser raw markdown file (required)',
         required=True)
-    parser.add_argument('-s',
-                        '--section-title',
-                        default=DEFAULT_SECTION_TITLE,
-                        help=('H1 section title for the inserted release notes '
-                              '(written as "# <title>"; replaces existing H1 '
-                              'sections with the same title; '
-                              'default: "%(default)s")'))
+    parser.add_argument(
+        '-s',
+        '--section-title',
+        default=DEFAULT_SECTION_TITLE,
+        help=('H1 section title for the inserted release notes '
+              '(written as "# <title>"; replaces existing H1 '
+              'sections with the same title; '
+              'default: "%(default)s")'))
     return parser.parse_args()
 
 
