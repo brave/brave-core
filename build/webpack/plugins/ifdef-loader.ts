@@ -51,7 +51,7 @@ class IfBlock {
   getIfRange(): Range {
     const to =
       this.elifs.length > 0
-        ? this.elifs[0]
+        ? this.elifs[0]!
         : this.lineElse != null
           ? this.lineElse
           : this.lineEndIf
@@ -60,10 +60,10 @@ class IfBlock {
 
   getElifRange(index: number): Range {
     if (this.elifs.length > index) {
-      const from = this.elifs[index]
+      const from = this.elifs[index]!
       const to =
         this.elifs.length > index + 1
-          ? this.elifs[index + 1]
+          ? this.elifs[index + 1]!
           : this.lineElse != null
             ? this.lineElse
             : this.lineEndIf
@@ -86,11 +86,7 @@ class IfBlock {
 
 const IfType = { If: 1, Elif: 2 } as const
 
-export function parse(
-  source: string,
-  defs: OptionObject,
-  filePath?: string,
-): string {
+export function parse(source: string, defs: OptionObject): string {
   // early skip check: do not process file when no 'if expr="..."' are contained
   if (!source.includes('\u003Cif expr="')) return source
 
@@ -98,7 +94,7 @@ export function parse(
 
   const ifBlocks = findIfBlocks(lines)
   for (let ifBlock of ifBlocks) {
-    applyIf(lines, ifBlock, defs, filePath)
+    applyIf(lines, ifBlock, defs)
   }
 
   return lines.join('\n')
@@ -107,7 +103,7 @@ export function parse(
 function findIfBlocks(lines: string[]): IfBlock[] {
   const blocks: IfBlock[] = []
   for (let i = 0; i < lines.length; i++) {
-    if (matchIf(lines[i])) {
+    if (matchIf(lines[i]!)) {
       const ifBlock = parseIfBlock(lines, i)
       blocks.push(ifBlock)
       i = ifBlock.lineEndIf
@@ -127,7 +123,7 @@ function parseIfBlock(lines: string[], ifBlockStart: number): IfBlock {
   let innerIfs: IfBlock[] = []
 
   for (let i = ifBlockStart + 1; i < lines.length; i++) {
-    const curLine = lines[i]
+    const curLine = lines[i]!
 
     const innerIfMatch = matchIf(curLine)
     if (innerIfMatch) {
@@ -184,7 +180,7 @@ function matchIf(
 function parseIf(line: string): string {
   const re = ifRegex()
   const match = re.exec(line)
-  if (match) {
+  if (match && match[2]) {
     return match[2].trim()
   } else {
     throw new Error(`Could not parse \u003Cif expr="...">: '${line}'`)
@@ -204,16 +200,11 @@ function matchElse(line: string): boolean {
 }
 
 /** Includes and excludes relevant lines based on evaluation of the provided IfBlock */
-function applyIf(
-  lines: string[],
-  ifBlock: IfBlock,
-  defs: OptionObject,
-  filePath?: string,
-) {
+function applyIf(lines: string[], ifBlock: IfBlock, defs: OptionObject) {
   let includeRange: Range | null = null
 
   // gets the condition and parses it
-  const ifCond = parseIf(lines[ifBlock.lineIf])
+  const ifCond = parseIf(lines[ifBlock.lineIf]!)
   const ifRes = evaluate(ifCond, defs)
 
   // finds which part of the #if has to be included, all else is excluded
@@ -224,7 +215,7 @@ function applyIf(
   } else {
     // if there are #elif checks if one has to be included
     for (let elifIx = 0; elifIx < ifBlock.elifs.length; elifIx++) {
-      const elifLine = lines[ifBlock.elifs[elifIx]]
+      const elifLine = lines[ifBlock.elifs[elifIx]!]!
       const elifCond = parseIf(elifLine)
       const elifRes = evaluate(elifCond, defs)
       if (elifRes) {
@@ -284,8 +275,9 @@ function evaluate(condition: string, defs: OptionObject): boolean {
 
 function blankCode(lines: string[], start: number, end: number) {
   for (let t = start; t <= end; t++) {
-    const len = lines[t].length
-    const lastChar = lines[t].charAt(len - 1)
+    const line = lines[t]!
+    const len = line.length
+    const lastChar = line.charAt(len - 1)
     const windowsTermination = lastChar === '\r'
     lines[t] = windowsTermination ? '\r' : ''
   }
@@ -299,10 +291,8 @@ export default function (source: string, map) {
 
   const data = { ...originalData }
 
-  let filePath: string | undefined
-
   try {
-    source = parse(source, data, filePath)
+    source = parse(source, data)
     this.callback(null, source, map)
   } catch (err) {
     const errorMessage = `ifdef-loader error: ${err}`
