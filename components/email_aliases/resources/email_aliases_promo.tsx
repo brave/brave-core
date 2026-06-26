@@ -97,7 +97,7 @@ const SiteCard = styled(Col) <{ $faded?: boolean }>`
   border-radius: ${radius.m};
   border: 1px solid ${color.divider.subtle};
   padding: ${spacing.s};
-  gap: 6px;
+  gap: ${spacing.s};
   background: ${color.container.background};
   opacity: ${({ $faded }) => ($faded ? 0.45 : 1)};
   min-width: 0;
@@ -120,7 +120,6 @@ const SiteCardFocused = styled(SiteCard)`
 
 const SiteTitle = styled.span`
   font: ${font.default.semibold};
-  font-size: 13px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -129,8 +128,8 @@ const SiteTitle = styled.span`
 const AliasChip = styled.div`
   border-radius: ${radius.s};
   border: 1px solid ${color.divider.subtle};
-  padding: 4px 6px;
-  font-size: 12px;
+  padding: ${spacing.s} ${spacing.m};
+  font: ${font.small.regular};
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -139,7 +138,6 @@ const AliasChip = styled.div`
 
 const AliasChipFocused = styled(AliasChip)`
   padding: ${spacing.m} ${spacing.l};
-  font-size: ${spacing.l};
   text-align: center;
   background: ${color.container.background};
 `
