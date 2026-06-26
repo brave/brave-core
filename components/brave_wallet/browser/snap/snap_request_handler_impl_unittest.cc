@@ -72,7 +72,15 @@ class SnapRequestHandlerImplTest : public testing::Test {
     data->version = "1.0.0";
     data->manifest = MakeTestSnapManifest(std::move(permissions));
     data->enabled = true;
-    data_provider_->OnSnapInstalled(*data);
+    base::test::TestFuture<void> future;
+    data_provider_->OnSnapInstalled(*data, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
+  void SetSnapEnabled(const std::string& snap_id, bool enabled) {
+    base::test::TestFuture<bool> future;
+    data_provider_->SetSnapEnabled(snap_id, enabled, future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   base::Value StateParams(const std::string& operation,
@@ -110,7 +118,7 @@ TEST_F(SnapRequestHandlerImplTest, UnknownSnapRejected) {
 
 TEST_F(SnapRequestHandlerImplTest, DisabledSnapRejected) {
   InstallSnap(kSnapId, {"snap_dialog"});
-  data_provider_->SetSnapEnabled(kSnapId, false);
+  SetSnapEnabled(kSnapId, false);
 
   ReqFuture future;
   handler_->HandleSnapRequest(

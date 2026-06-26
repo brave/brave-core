@@ -12,8 +12,8 @@
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/functional/callback.h"
-#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
@@ -34,6 +34,48 @@ namespace brave_wallet {
 namespace {
 using InvokeFuture = base::test::TestFuture<std::optional<base::Value>,
                                             std::optional<std::string>>;
+
+void ApproveConnectionRequestAndCaptureSnap(
+    base::test::TestFuture<std::string>* requested_snap_future,
+    url::Origin /*origin*/,
+    std::string snap_id,
+    SnapController::RequestConnectionResultCallback callback) {
+  requested_snap_future->SetValue(std::move(snap_id));
+  std::move(callback).Run(/*approved=*/true);
+}
+
+void RejectConnectionRequest(SnapController::RequestConnectionResultCallback cb) {
+  std::move(cb).Run(/*approved=*/false);
+}
+
+void MarkConnectionDelegateCalledAndApprove(
+    base::test::TestFuture<void>* delegate_called_future,
+    SnapController::RequestConnectionResultCallback cb) {
+  delegate_called_future->SetValue();
+  std::move(cb).Run(/*approved=*/true);
+}
+
+void ApproveInstallRequestAndCapture(
+    base::test::TestFuture<std::pair<std::string, std::string>>*
+        install_future,
+    std::string id,
+    std::string version,
+    SnapController::InstallSnapResultCallback cb) {
+  install_future->SetValue({std::move(id), std::move(version)});
+  std::move(cb).Run(base::ok());
+}
+
+void ApproveInstallRequest(std::string /*id*/,
+                           std::string /*version*/,
+                           SnapController::InstallSnapResultCallback cb) {
+  std::move(cb).Run(base::ok());
+}
+
+void RejectInstallRequest(std::string /*id*/,
+                          std::string /*version*/,
+                          SnapController::InstallSnapResultCallback cb) {
+  std::move(cb).Run(base::unexpected("install failed"));
+}
 }  // namespace
 
 class SnapControllerTest : public testing::Test {
@@ -60,7 +102,15 @@ class SnapControllerTest : public testing::Test {
     data->manifest =
         MakeTestSnapManifest({"snap_dialog"}, allow_dapps, allowed_origins);
     data->enabled = true;
-    data_provider_->OnSnapInstalled(*data);
+    base::test::TestFuture<void> future;
+    data_provider_->OnSnapInstalled(*data, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
+  void SetSnapEnabled(const std::string& snap_id, bool enabled) {
+    base::test::TestFuture<bool> future;
+    data_provider_->SetSnapEnabled(snap_id, enabled, future.GetCallback());
+    ASSERT_TRUE(future.Get());
   }
 
   url::Origin SecureOrigin() {
@@ -106,7 +156,7 @@ TEST_F(SnapControllerTest, InvokeSnapUnknownSnap) {
 
 TEST_F(SnapControllerTest, InvokeSnapDisabled) {
   InstallSnap("npm:test-snap");
-  data_provider_->SetSnapEnabled("npm:test-snap", false);
+  SetSnapEnabled("npm:test-snap", false);
 
   InvokeFuture future;
   controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), std::nullopt,
@@ -184,11 +234,11 @@ TEST_F(SnapControllerTest, InvokeSnapDisconnectFailsPending) {
   InvokeFuture future;
   controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), std::nullopt,
                           future.GetCallback());
-  EXPECT_FALSE(future.IsReady());
+  base::test::TestFuture<mojom::SnapInstallDataPtr> snap_future;
+  data_provider_->GetSnap("npm:test-snap", snap_future.GetCallback());
+  ASSERT_TRUE(snap_future.Get());
 
   bridge_.FireDisconnect();
-
-  ASSERT_TRUE(future.IsReady());
   EXPECT_EQ(future.Get<1>(), "SnapBridge disconnected");
 }
 
@@ -198,19 +248,15 @@ TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalApproveSucceeds) {
   ASSERT_FALSE(
       permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
 
-  std::optional<std::string> requested_snap;
-  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
-      [&](url::Origin /*o*/, std::string id,
-          SnapController::RequestConnectionResultCallback cb) {
-        requested_snap = id;
-        std::move(cb).Run(/*approved=*/true);
-      }));
+  base::test::TestFuture<std::string> requested_snap;
+  controller_->SetRequestConnectionDelegate(base::BindRepeating(
+      &ApproveConnectionRequestAndCaptureSnap, base::Unretained(&requested_snap)));
 
   InvokeFuture future;
   controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
                           future.GetCallback());
 
-  EXPECT_EQ(requested_snap, "npm:test-snap");
+  EXPECT_EQ(requested_snap.Get(), "npm:test-snap");
   ASSERT_TRUE(future.Get<0>());
   EXPECT_EQ(*future.Get<0>(), base::Value("ok"));
   EXPECT_TRUE(permission_controller_->IsSnapConnected(origin, "npm:test-snap"));
@@ -220,10 +266,10 @@ TEST_F(SnapControllerTest, InvokeSnapConnectionApprovalRejectFails) {
   InstallSnap("npm:test-snap", /*allow_dapps=*/true);
   const url::Origin origin = SecureOrigin();
 
-  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
-      [&](url::Origin /*o*/, std::string /*id*/,
-          SnapController::RequestConnectionResultCallback cb) {
-        std::move(cb).Run(/*approved=*/false);
+  controller_->SetRequestConnectionDelegate(base::BindRepeating(
+      [](url::Origin /*o*/, std::string /*id*/,
+         SnapController::RequestConnectionResultCallback cb) {
+        RejectConnectionRequest(std::move(cb));
       }));
 
   InvokeFuture future;
@@ -240,19 +286,20 @@ TEST_F(SnapControllerTest, InvokeSnapAlreadyConnectedSkipsApproval) {
   const url::Origin origin = SecureOrigin();
   permission_controller_->GrantSnapConnection(origin, "npm:test-snap");
 
-  bool delegate_called = false;
-  controller_->SetRequestConnectionDelegate(base::BindLambdaForTesting(
-      [&](url::Origin /*o*/, std::string /*id*/,
-          SnapController::RequestConnectionResultCallback cb) {
-        delegate_called = true;
-        std::move(cb).Run(/*approved=*/true);
-      }));
+  base::test::TestFuture<void> delegate_called;
+  controller_->SetRequestConnectionDelegate(base::BindRepeating(
+      [](base::test::TestFuture<void>* delegate_called_future, url::Origin /*o*/,
+         std::string /*id*/, SnapController::RequestConnectionResultCallback cb) {
+        MarkConnectionDelegateCalledAndApprove(delegate_called_future,
+                                               std::move(cb));
+      },
+      base::Unretained(&delegate_called)));
 
   InvokeFuture future;
   controller_->InvokeSnap("npm:test-snap", "foo", base::Value(), origin,
                           future.GetCallback());
 
-  EXPECT_FALSE(delegate_called);
+  EXPECT_FALSE(delegate_called.IsReady());
   ASSERT_TRUE(future.Get<0>());
   EXPECT_EQ(*future.Get<0>(), base::Value("ok"));
 }
@@ -288,13 +335,16 @@ TEST_F(SnapControllerTest, RequestSnapsAlreadyInstalledGrants) {
 
 TEST_F(SnapControllerTest, RequestSnapsInstallsMissing) {
   const url::Origin origin = SecureOrigin();
-  std::vector<std::pair<std::string, std::string>> installs;
-  controller_->SetInstallSnapDelegate(base::BindLambdaForTesting(
-      [&](std::string id, std::string version,
-          SnapController::InstallSnapResultCallback cb) {
-        installs.emplace_back(id, version);
-        std::move(cb).Run(base::ok());
-      }));
+  base::test::TestFuture<std::pair<std::string, std::string>> install;
+  controller_->SetInstallSnapDelegate(base::BindRepeating(
+      [](base::test::TestFuture<std::pair<std::string, std::string>>*
+             install_future,
+         std::string id, std::string version,
+         SnapController::InstallSnapResultCallback cb) {
+        ApproveInstallRequestAndCapture(install_future, std::move(id),
+                                        std::move(version), std::move(cb));
+      },
+      base::Unretained(&install)));
 
   base::DictValue opts;
   opts.Set("version", "2.0.0");
@@ -306,19 +356,19 @@ TEST_F(SnapControllerTest, RequestSnapsInstallsMissing) {
       future;
   controller_->RequestSnaps(origin, snaps, future.GetCallback());
 
-  ASSERT_EQ(installs.size(), 1u);
-  EXPECT_EQ(installs[0].first, "npm:new-snap");
-  EXPECT_EQ(installs[0].second, "2.0.0");
+  const auto install_data = install.Get();
+  EXPECT_EQ(install_data.first, "npm:new-snap");
+  EXPECT_EQ(install_data.second, "2.0.0");
   ASSERT_TRUE(future.Get<0>());
   EXPECT_TRUE(future.Get<0>()->contains("npm:new-snap"));
   EXPECT_TRUE(permission_controller_->IsSnapConnected(origin, "npm:new-snap"));
 }
 
 TEST_F(SnapControllerTest, RequestSnapsAggregatesMultiple) {
-  controller_->SetInstallSnapDelegate(base::BindLambdaForTesting(
-      [&](std::string id, std::string version,
-          SnapController::InstallSnapResultCallback cb) {
-        std::move(cb).Run(base::ok());
+  controller_->SetInstallSnapDelegate(base::BindRepeating(
+      [](std::string id, std::string version,
+         SnapController::InstallSnapResultCallback cb) {
+        ApproveInstallRequest(std::move(id), std::move(version), std::move(cb));
       }));
 
   base::DictValue snaps;
@@ -337,10 +387,10 @@ TEST_F(SnapControllerTest, RequestSnapsAggregatesMultiple) {
 
 TEST_F(SnapControllerTest, RequestSnapsInstallFailureExcludesSnap) {
   const url::Origin origin = SecureOrigin();
-  controller_->SetInstallSnapDelegate(base::BindLambdaForTesting(
-      [&](std::string id, std::string version,
-          SnapController::InstallSnapResultCallback cb) {
-        std::move(cb).Run(base::unexpected("install failed"));
+  controller_->SetInstallSnapDelegate(base::BindRepeating(
+      [](std::string id, std::string version,
+         SnapController::InstallSnapResultCallback cb) {
+        RejectInstallRequest(std::move(id), std::move(version), std::move(cb));
       }));
 
   base::DictValue snaps;

@@ -124,6 +124,18 @@ class SnapController {
                                 std::optional<url::Origin> caller_origin,
                                 SnapResultCallback callback,
                                 bool approved);
+  void OnInvokeOriginAllowed(std::string snap_id,
+                             std::string method,
+                             base::Value params,
+                             std::optional<url::Origin> caller_origin,
+                             SnapResultCallback callback,
+                             bool allowed);
+  void OnInvokeSnapLoaded(std::string snap_id,
+                          std::string method,
+                          base::Value params,
+                          std::optional<url::Origin> caller_origin,
+                          SnapResultCallback callback,
+                          mojom::SnapInstallDataPtr snap);
 
   void DispatchInvoke(size_t cb_index,
                       std::string snap_id,
@@ -160,6 +172,11 @@ class SnapController {
     RequestSnapsCallback callback;
     url::Origin origin;
   };
+  void OnRequestSnapsLoaded(
+      url::Origin origin,
+      base::DictValue snaps_dict,
+      RequestSnapsCallback callback,
+      std::vector<mojom::SnapInstallDataPtr> installed_snaps);
   void OnSingleSnapInstalled(std::shared_ptr<RequestSnapsState> state,
                              const std::string& snap_id,
                              base::expected<void, std::string> result);
@@ -169,6 +186,14 @@ class SnapController {
   void OnSnapConnectionResolved(std::shared_ptr<RequestSnapsState> state,
                                 const std::string& snap_id,
                                 bool approved);
+  void OnSnapEnabledForHomePage(std::string snap_id,
+                                SnapHomePageCallback callback,
+                                bool enabled);
+  void OnSnapEnabledForUserInput(std::string snap_id,
+                                 std::string interface_id,
+                                 std::string event_json,
+                                 SnapUserInputCallback callback,
+                                 bool enabled);
 
   raw_ref<SnapDataProvider> data_provider_;
   raw_ref<SnapPermissionController> permission_controller_;

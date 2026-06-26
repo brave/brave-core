@@ -1284,11 +1284,10 @@ void EthereumProviderImpl::HandleWalletRequestSnapsMethod(
     return;
   }
 
-  // Raise the panel if any requested snap needs to be installed or connected,
-  // so the user can approve the install / connection.
+  // Raise the panel if any requested snap needs to be connected. Missing snaps
+  // have no connection grant yet, so they take this path too.
   for (const auto [snap_id, opts] : *snaps_dict) {
-    if (!ss->IsSnapAvailable(snap_id) ||
-        !ss->IsSnapConnected(origin_, snap_id)) {
+    if (!ss->IsSnapConnected(origin_, snap_id)) {
       delegate_->ShowPanel(origin_);
       break;
     }
@@ -1305,19 +1304,31 @@ void EthereumProviderImpl::HandleWalletGetSnapsMethod(
     JsonRpcRequest request,
     RequestCallback request_callback) {
   auto* ss = brave_wallet_service_->snaps_service();
-  base::DictValue result =
-      ss ? ss->GetSnapsForOrigin(origin_) : base::DictValue();
-  LOG(ERROR) << "XXXZZZ HandleWalletGetSnapsMethod origin="
-             << origin_.Serialize()
-             << " snaps_service=" << (ss ? "yes" : "null")
-             << " result_count=" << result.size();
-  for (const auto [snap_id, info] : result) {
-    LOG(ERROR) << "XXXZZZ HandleWalletGetSnapsMethod:   snap_id=" << snap_id;
+  if (!ss) {
+    std::move(request_callback)
+        .Run(mojom::EthereumProviderResponse::New(
+            std::move(request.id), base::Value(base::DictValue()), false, "",
+            false));
+    return;
   }
-  std::move(request_callback)
-      .Run(mojom::EthereumProviderResponse::New(std::move(request.id),
-                                                base::Value(std::move(result)),
-                                                false, "", false));
+  ss->GetSnapsForOrigin(
+      origin_,
+      base::BindOnce(
+          [](RequestCallback request_callback, base::Value id,
+             const url::Origin& origin, base::DictValue result) {
+            LOG(ERROR) << "XXXZZZ HandleWalletGetSnapsMethod origin="
+                       << origin.Serialize()
+                       << " result_count=" << result.size();
+            for (const auto [snap_id, info] : result) {
+              LOG(ERROR)
+                  << "XXXZZZ HandleWalletGetSnapsMethod:   snap_id=" << snap_id;
+            }
+            std::move(request_callback)
+                .Run(mojom::EthereumProviderResponse::New(
+                    std::move(id), base::Value(std::move(result)), false, "",
+                    false));
+          },
+          std::move(request_callback), std::move(request.id), origin_));
 }
 
 void EthereumProviderImpl::OnSnapInvokeResult(

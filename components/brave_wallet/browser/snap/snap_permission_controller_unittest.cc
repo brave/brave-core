@@ -6,11 +6,13 @@
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/snap/snap_test_utils.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
@@ -46,7 +48,26 @@ class SnapPermissionControllerTest : public testing::Test {
     data->manifest = MakeTestSnapManifest(std::move(permissions), allow_dapps,
                                           std::move(allowed_origins));
     data->enabled = true;
-    data_provider_->OnSnapInstalled(*data);
+    base::test::TestFuture<void> future;
+    data_provider_->OnSnapInstalled(*data, future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
+  bool IsOriginAllowedByManifest(const url::Origin& origin,
+                                 const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    controller_->IsOriginAllowedByManifest(origin, snap_id,
+                                           future.GetCallback());
+    return future.Get();
+  }
+
+  std::optional<std::string> CheckSnapMethodPermission(
+      const std::string& snap_id,
+      const std::string& method) {
+    base::test::TestFuture<std::optional<std::string>> future;
+    controller_->CheckSnapMethodPermission(snap_id, method,
+                                           future.GetCallback());
+    return future.Get();
   }
 
   url::Origin Origin(const std::string& url) {
@@ -124,22 +145,22 @@ TEST_F(SnapPermissionControllerTest, PurgeConnectionGrantsForSnap) {
 // --- IsOriginAllowedByManifest ----------------------------------------------
 
 TEST_F(SnapPermissionControllerTest, OriginAllowedUnknownSnap) {
-  EXPECT_FALSE(controller_->IsOriginAllowedByManifest(
-      Origin("https://app.example.com"), "npm:unknown"));
+  EXPECT_FALSE(IsOriginAllowedByManifest(Origin("https://app.example.com"),
+                                         "npm:unknown"));
 }
 
 TEST_F(SnapPermissionControllerTest, OriginDeniedWithoutAllowDappsOrAllowlist) {
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false,
               /*allowed_origins=*/{});
-  EXPECT_FALSE(controller_->IsOriginAllowedByManifest(
-      Origin("https://app.example.com"), "npm:test-snap"));
+  EXPECT_FALSE(IsOriginAllowedByManifest(Origin("https://app.example.com"),
+                                         "npm:test-snap"));
 }
 
 TEST_F(SnapPermissionControllerTest, OriginAllowedEmptyListAllowsAny) {
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/true,
               /*allowed_origins=*/{});
-  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
-      Origin("https://anything.example.com"), "npm:test-snap"));
+  EXPECT_TRUE(IsOriginAllowedByManifest(Origin("https://anything.example.com"),
+                                        "npm:test-snap"));
 }
 
 TEST_F(SnapPermissionControllerTest, OriginAllowDappsIgnoresAllowlist) {
@@ -147,10 +168,10 @@ TEST_F(SnapPermissionControllerTest, OriginAllowDappsIgnoresAllowlist) {
   // allowlist.
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/true,
               /*allowed_origins=*/{"https://app.example.com"});
-  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
-      Origin("https://app.example.com"), "npm:test-snap"));
-  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
-      Origin("https://anything.example.com"), "npm:test-snap"));
+  EXPECT_TRUE(IsOriginAllowedByManifest(Origin("https://app.example.com"),
+                                        "npm:test-snap"));
+  EXPECT_TRUE(IsOriginAllowedByManifest(Origin("https://anything.example.com"),
+                                        "npm:test-snap"));
 }
 
 TEST_F(SnapPermissionControllerTest,
@@ -159,31 +180,28 @@ TEST_F(SnapPermissionControllerTest,
   // others are denied.
   InstallSnap("npm:test-snap", {"endowment:rpc"}, /*allow_dapps=*/false,
               /*allowed_origins=*/{"https://app.example.com"});
-  EXPECT_TRUE(controller_->IsOriginAllowedByManifest(
-      Origin("https://app.example.com"), "npm:test-snap"));
-  EXPECT_FALSE(controller_->IsOriginAllowedByManifest(
-      Origin("https://evil.example.com"), "npm:test-snap"));
+  EXPECT_TRUE(IsOriginAllowedByManifest(Origin("https://app.example.com"),
+                                        "npm:test-snap"));
+  EXPECT_FALSE(IsOriginAllowedByManifest(Origin("https://evil.example.com"),
+                                         "npm:test-snap"));
 }
 
 // --- CheckSnapMethodPermission ----------------------------------------------
 
 TEST_F(SnapPermissionControllerTest, CheckMethodUnknownSnap) {
-  auto error =
-      controller_->CheckSnapMethodPermission("npm:unknown", "snap_dialog");
+  auto error = CheckSnapMethodPermission("npm:unknown", "snap_dialog");
   ASSERT_TRUE(error);
   EXPECT_EQ(*error, "Unknown snap: npm:unknown");
 }
 
 TEST_F(SnapPermissionControllerTest, CheckMethodAllowedWhenDeclared) {
   InstallSnap("npm:test-snap", {"snap_dialog"});
-  EXPECT_FALSE(
-      controller_->CheckSnapMethodPermission("npm:test-snap", "snap_dialog"));
+  EXPECT_FALSE(CheckSnapMethodPermission("npm:test-snap", "snap_dialog"));
 }
 
 TEST_F(SnapPermissionControllerTest, CheckMethodRejectedWhenMissing) {
   InstallSnap("npm:test-snap", {"snap_dialog"});
-  auto error = controller_->CheckSnapMethodPermission("npm:test-snap",
-                                                      "snap_manageState");
+  auto error = CheckSnapMethodPermission("npm:test-snap", "snap_manageState");
   ASSERT_TRUE(error);
   EXPECT_THAT(*error, testing::HasSubstr("does not have permission"));
 }
@@ -191,14 +209,12 @@ TEST_F(SnapPermissionControllerTest, CheckMethodRejectedWhenMissing) {
 TEST_F(SnapPermissionControllerTest, CheckMethodConfirmAliasesToDialog) {
   InstallSnap("npm:test-snap", {"snap_dialog"});
   // snap_confirm maps to the snap_dialog permission entry.
-  EXPECT_FALSE(
-      controller_->CheckSnapMethodPermission("npm:test-snap", "snap_confirm"));
+  EXPECT_FALSE(CheckSnapMethodPermission("npm:test-snap", "snap_confirm"));
 }
 
 TEST_F(SnapPermissionControllerTest, CheckMethodConfirmRejectedWithoutDialog) {
   InstallSnap("npm:test-snap", {"snap_notify"});
-  auto error =
-      controller_->CheckSnapMethodPermission("npm:test-snap", "snap_confirm");
+  auto error = CheckSnapMethodPermission("npm:test-snap", "snap_confirm");
   ASSERT_TRUE(error);
   EXPECT_THAT(*error, testing::HasSubstr("does not have permission"));
 }

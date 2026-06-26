@@ -5,6 +5,8 @@
 
 #include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 
+#include <algorithm>
+#include <map>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -16,6 +18,26 @@
 #include "url/url_constants.h"
 
 namespace brave_wallet {
+
+namespace {
+
+bool IsOriginAllowedBySnapManifest(const url::Origin& origin,
+                                   const mojom::SnapInstallDataPtr& snap) {
+  if (!snap || !snap->manifest) {
+    return false;
+  }
+  if (snap->manifest->allow_dapps) {
+    return true;
+  }
+  const std::string serialized = origin.Serialize();
+  return std::ranges::any_of(
+      snap->manifest->allowed_rpc_origins,
+      [&serialized](const std::string& allowed_origin) {
+        return allowed_origin == serialized;
+      });
+}
+
+}  // namespace
 
 SnapController::SnapController(SnapDataProvider& data_provider,
                                SnapPermissionController& permission_controller,
@@ -71,22 +93,40 @@ void SnapController::InvokeSnap(const std::string& snap_id,
       std::move(callback).Run(std::nullopt, "requires a secure web origin");
       return;
     }
-    // A dApp invoking a snap it isn't connected to yet must obtain the user's
-    // approval before the connection is granted.
-    if (permission_controller_->IsOriginAllowedByManifest(origin, snap_id) &&
-        !permission_controller_->IsSnapConnected(origin, snap_id)) {
-      if (request_connection_delegate_) {
-        request_connection_delegate_.Run(
-            origin, snap_id,
-            base::BindOnce(&SnapController::OnInvokeConnectionResult,
-                           weak_ptr_factory_.GetWeakPtr(), snap_id, method,
-                           std::move(params), caller_origin,
-                           std::move(callback)));
-        return;
-      }
-      // No approval delegate wired (e.g. in unit tests): auto-grant.
-      permission_controller_->GrantSnapConnection(origin, snap_id);
+    permission_controller_->IsOriginAllowedByManifest(
+        origin, snap_id,
+        base::BindOnce(&SnapController::OnInvokeOriginAllowed,
+                       weak_ptr_factory_.GetWeakPtr(), snap_id, method,
+                       std::move(params), caller_origin, std::move(callback)));
+    return;
+  }
+
+  ContinueInvokeSnap(snap_id, method, std::move(params),
+                     std::move(caller_origin), std::move(callback));
+}
+
+void SnapController::OnInvokeOriginAllowed(
+    std::string snap_id,
+    std::string method,
+    base::Value params,
+    std::optional<url::Origin> caller_origin,
+    SnapResultCallback callback,
+    bool allowed) {
+  DCHECK(caller_origin.has_value());
+  const url::Origin& origin = *caller_origin;
+  // A dApp invoking a snap it isn't connected to yet must obtain the user's
+  // approval before the connection is granted.
+  if (allowed && !permission_controller_->IsSnapConnected(origin, snap_id)) {
+    if (request_connection_delegate_) {
+      request_connection_delegate_.Run(
+          origin, snap_id,
+          base::BindOnce(&SnapController::OnInvokeConnectionResult,
+                         weak_ptr_factory_.GetWeakPtr(), snap_id, method,
+                         std::move(params), caller_origin, std::move(callback)));
+      return;
     }
+    // No approval delegate wired (e.g. in unit tests): auto-grant.
+    permission_controller_->GrantSnapConnection(origin, snap_id);
   }
 
   ContinueInvokeSnap(snap_id, method, std::move(params),
@@ -117,11 +157,25 @@ void SnapController::ContinueInvokeSnap(
     base::Value params,
     std::optional<url::Origin> caller_origin,
     SnapResultCallback callback) {
-  if (!data_provider_->IsInstalled(snap_id)) {
+  data_provider_->GetSnap(
+      snap_id, base::BindOnce(&SnapController::OnInvokeSnapLoaded,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id, method,
+                              std::move(params), std::move(caller_origin),
+                              std::move(callback)));
+}
+
+void SnapController::OnInvokeSnapLoaded(
+    std::string snap_id,
+    std::string method,
+    base::Value params,
+    std::optional<url::Origin> caller_origin,
+    SnapResultCallback callback,
+    mojom::SnapInstallDataPtr snap) {
+  if (!snap) {
     std::move(callback).Run(std::nullopt, "Unknown snap: " + snap_id);
     return;
   }
-  if (!data_provider_->IsSnapEnabled(snap_id)) {
+  if (!snap->enabled) {
     std::move(callback).Run(std::nullopt, "Snap is disabled: " + snap_id);
     return;
   }
@@ -133,7 +187,7 @@ void SnapController::ContinueInvokeSnap(
                               "Snap is not connected to this origin");
       return;
     }
-    if (!permission_controller_->IsOriginAllowedByManifest(origin, snap_id)) {
+    if (!IsOriginAllowedBySnapManifest(origin, snap)) {
       std::move(callback).Run(std::nullopt,
                               "Origin not permitted by snap manifest");
       return;
@@ -180,11 +234,26 @@ void SnapController::RequestSnaps(const url::Origin& origin,
     return;
   }
 
+  data_provider_->GetAllSnaps(base::BindOnce(
+      &SnapController::OnRequestSnapsLoaded, weak_ptr_factory_.GetWeakPtr(),
+      origin, snaps_dict.Clone(), std::move(callback)));
+}
+
+void SnapController::OnRequestSnapsLoaded(
+    url::Origin origin,
+    base::DictValue snaps_dict,
+    RequestSnapsCallback callback,
+    std::vector<mojom::SnapInstallDataPtr> installed_snaps) {
   struct RequestItem {
     std::string snap_id;
     std::string version;
     bool installed = false;
+    bool enabled = true;
   };
+  std::map<std::string, bool> enabled_by_snap_id;
+  for (const auto& snap : installed_snaps) {
+    enabled_by_snap_id[snap->snap_id] = snap->enabled;
+  }
   std::vector<RequestItem> items;
   for (const auto [snap_id, opts] : snaps_dict) {
     std::string version = "latest";
@@ -193,8 +262,10 @@ void SnapController::RequestSnaps(const url::Origin& origin,
         version = *v;
       }
     }
-    items.push_back(
-        {snap_id, std::move(version), data_provider_->IsInstalled(snap_id)});
+    auto installed_it = enabled_by_snap_id.find(snap_id);
+    const bool installed = installed_it != enabled_by_snap_id.end();
+    items.push_back({snap_id, std::move(version), installed,
+                     installed ? installed_it->second : true});
   }
 
   if (items.empty()) {
@@ -208,7 +279,7 @@ void SnapController::RequestSnaps(const url::Origin& origin,
   state->origin = origin;
 
   for (const auto& item : items) {
-    if (item.installed && !data_provider_->IsSnapEnabled(item.snap_id)) {
+    if (item.installed && !item.enabled) {
       OnSnapConnectionResolved(state, item.snap_id, /*approved=*/false);
       continue;
     }
@@ -267,7 +338,16 @@ void SnapController::OnSnapConnectionResolved(
 
 void SnapController::GetSnapHomePage(const std::string& snap_id,
                                      SnapHomePageCallback callback) {
-  if (!data_provider_->IsSnapEnabled(snap_id)) {
+  data_provider_->IsSnapEnabled(
+      snap_id, base::BindOnce(&SnapController::OnSnapEnabledForHomePage,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id,
+                              std::move(callback)));
+}
+
+void SnapController::OnSnapEnabledForHomePage(std::string snap_id,
+                                              SnapHomePageCallback callback,
+                                              bool enabled) {
+  if (!enabled) {
     std::move(callback).Run(std::nullopt, std::nullopt, "Snap is disabled");
     return;
   }
@@ -309,7 +389,19 @@ void SnapController::SendSnapUserInput(const std::string& snap_id,
                                        const std::string& interface_id,
                                        const std::string& event_json,
                                        SnapUserInputCallback callback) {
-  if (!data_provider_->IsSnapEnabled(snap_id)) {
+  data_provider_->IsSnapEnabled(
+      snap_id, base::BindOnce(&SnapController::OnSnapEnabledForUserInput,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id,
+                              interface_id, event_json, std::move(callback)));
+}
+
+void SnapController::OnSnapEnabledForUserInput(
+    std::string snap_id,
+    std::string interface_id,
+    std::string event_json,
+    SnapUserInputCallback callback,
+    bool enabled) {
+  if (!enabled) {
     std::move(callback).Run(std::nullopt, "Snap is disabled");
     return;
   }

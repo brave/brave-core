@@ -15,6 +15,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
+#include "base/threading/sequence_bound.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 
@@ -38,16 +39,23 @@ class SnapDataProvider {
   SnapDataProvider& operator=(const SnapDataProvider&) = delete;
 
   // ---------------------------------------------------------------------------
-  // Registry queries (in-memory, synchronous)
+  // Registry queries (callbacks are always invoked asynchronously)
   // ---------------------------------------------------------------------------
 
-  bool IsInstalled(const std::string& snap_id) const;
+  using BoolCallback = base::OnceCallback<void(bool)>;
+  using SnapCallback = base::OnceCallback<void(mojom::SnapInstallDataPtr)>;
+  using SnapsCallback =
+      base::OnceCallback<void(std::vector<mojom::SnapInstallDataPtr>)>;
+
+  void IsInstalled(const std::string& snap_id, BoolCallback callback);
   // Returns true when |snap_id| is installed and its enabled flag is set.
-  bool IsSnapEnabled(const std::string& snap_id) const;
+  void IsSnapEnabled(const std::string& snap_id, BoolCallback callback);
   // Returns a clone of the snap's install data, or nullptr if not installed.
-  mojom::SnapInstallDataPtr GetSnap(const std::string& snap_id) const;
-  std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() const;
-  void SetSnapEnabled(const std::string& snap_id, bool enabled);
+  void GetSnap(const std::string& snap_id, SnapCallback callback);
+  void GetAllSnaps(SnapsCallback callback);
+  void SetSnapEnabled(const std::string& snap_id,
+                      bool enabled,
+                      BoolCallback callback);
 
   // ---------------------------------------------------------------------------
   // Bundle I/O (async, thread-pool)
@@ -97,20 +105,27 @@ class SnapDataProvider {
   // Writes snap metadata to PrefService, updates the in-memory registry, and
   // records the install timestamp. Called by SnapInstaller after the bundle
   // file has been successfully saved to disk.
-  void OnSnapInstalled(const mojom::SnapInstallData& install_data);
+  void OnSnapInstalled(const mojom::SnapInstallData& install_data,
+                       base::OnceClosure callback);
 
   // Removes snap metadata from PrefService, clears the in-memory registry
   // entry, evicts the state cache, and deletes the bundle directory.
-  void OnSnapUninstalled(const std::string& snap_id);
+  void OnSnapUninstalled(const std::string& snap_id, base::OnceClosure callback);
 
  private:
+  void PostBoolCallback(BoolCallback callback, bool value);
+  void PostSnapCallback(SnapCallback callback, mojom::SnapInstallDataPtr value);
+  void PostSnapsCallback(
+      SnapsCallback callback,
+      std::vector<mojom::SnapInstallDataPtr> value);
+  void PostClosure(base::OnceClosure callback);
   void OnStateLoaded(std::string snap_id,
                      StateCallback callback,
                      std::optional<std::string> disk_json);
   static void OnStatePersisted(StateWriteCallback on_done, bool success);
   static void OnStateCleared(StateWriteCallback on_done, bool success);
 
-  std::unique_ptr<SnapStorage> snap_storage_;
+  base::SequenceBound<SnapStorage> snap_storage_;
   std::unique_ptr<SnapRegistry> snap_registry_;
 
   // snap_id → raw JSON string (same bytes as state.json on disk).

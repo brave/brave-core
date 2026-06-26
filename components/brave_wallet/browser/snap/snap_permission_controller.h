@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 
 class PrefRegistrySimple;
@@ -66,16 +67,18 @@ class SnapPermissionController {
 
   // Returns true if |origin| is allowed to invoke |snap_id| according to the
   // snap's endowment:rpc manifest config. Does NOT check connection grants.
-  bool IsOriginAllowedByManifest(const url::Origin& origin,
-                                 const std::string& snap_id) const;
+  void IsOriginAllowedByManifest(const url::Origin& origin,
+                                 const std::string& snap_id,
+                                 base::OnceCallback<void(bool)> callback) const;
 
   // Checks whether |snap_id| has declared the permission required to call
   // |method|. Returns std::nullopt if the call is allowed. Returns an error
   // string if the snap is unknown or has not declared the required permission.
   // Handles the snap_confirm → snap_dialog alias internally.
-  std::optional<std::string> CheckSnapMethodPermission(
+  void CheckSnapMethodPermission(
       const std::string& snap_id,
-      const std::string& method) const;
+      const std::string& method,
+      base::OnceCallback<void(std::optional<std::string>)> callback) const;
 
   // Removes all connection grants for |snap_id| across every origin. Called
   // when a snap is uninstalled.

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/snaps_service.h"
 
+#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -33,6 +34,26 @@
 #include "url/url_constants.h"
 
 namespace brave_wallet {
+
+namespace {
+
+bool IsOriginAllowedBySnapManifest(const url::Origin& origin,
+                                   const mojom::SnapInstallDataPtr& snap) {
+  if (!snap || !snap->manifest) {
+    return false;
+  }
+  if (snap->manifest->allow_dapps) {
+    return true;
+  }
+  const std::string serialized = origin.Serialize();
+  return std::ranges::any_of(
+      snap->manifest->allowed_rpc_origins,
+      [&serialized](const std::string& allowed_origin) {
+        return allowed_origin == serialized;
+      });
+}
+
+}  // namespace
 
 SnapsService::SnapsService(
     KeyringService& keyring_service,
@@ -121,8 +142,9 @@ void SnapsService::AddObserver(
 // C++ accessors for EthereumProviderImpl
 // ---------------------------------------------------------------------------
 
-bool SnapsService::IsSnapAvailable(const std::string& snap_id) const {
-  return data_provider_->IsInstalled(snap_id);
+void SnapsService::IsSnapAvailable(const std::string& snap_id,
+                                   BoolCallback callback) {
+  data_provider_->IsInstalled(snap_id, std::move(callback));
 }
 
 bool SnapsService::IsSnapConnected(const url::Origin& origin,
@@ -135,35 +157,48 @@ void SnapsService::GrantSnapConnection(const url::Origin& origin,
   permission_controller_->GrantSnapConnection(origin, snap_id);
 }
 
-bool SnapsService::IsOriginAllowedByManifest(const url::Origin& origin,
-                                             const std::string& snap_id) const {
-  return permission_controller_->IsOriginAllowedByManifest(origin, snap_id);
+void SnapsService::IsOriginAllowedByManifest(const url::Origin& origin,
+                                             const std::string& snap_id,
+                                             BoolCallback callback) const {
+  permission_controller_->IsOriginAllowedByManifest(origin, snap_id,
+                                                   std::move(callback));
 }
 
-std::vector<mojom::SnapInstallDataPtr> SnapsService::GetAllSnaps() const {
-  return data_provider_->GetAllSnaps();
+void SnapsService::GetAllSnaps(SnapsCallback callback) {
+  data_provider_->GetAllSnaps(std::move(callback));
 }
 
-base::DictValue SnapsService::GetSnapsForOrigin(
-    const url::Origin& origin) const {
+void SnapsService::GetSnapsForOrigin(const url::Origin& origin,
+                                     GetSnapsForOriginCallback callback) {
   base::DictValue result;
   if (origin.opaque() || (origin.scheme() != url::kHttpScheme &&
                           origin.scheme() != url::kHttpsScheme)) {
-    return result;
+    std::move(callback).Run(std::move(result));
+    return;
   }
-  for (const auto& snap : data_provider_->GetAllSnaps()) {
+  data_provider_->GetAllSnaps(
+      base::BindOnce(&SnapsService::OnGetSnapsForOrigin,
+                     weak_ptr_factory_.GetWeakPtr(), origin,
+                     std::move(callback)));
+}
+
+void SnapsService::OnGetSnapsForOrigin(
+    url::Origin origin,
+    GetSnapsForOriginCallback callback,
+    std::vector<mojom::SnapInstallDataPtr> snaps) {
+  base::DictValue result;
+  for (const auto& snap : snaps) {
     if (!snap->enabled) {
       continue;
     }
-    if (permission_controller_->IsOriginAllowedByManifest(origin,
-                                                          snap->snap_id)) {
+    if (IsOriginAllowedBySnapManifest(origin, snap)) {
       base::DictValue snap_info;
       snap_info.Set("id", snap->snap_id);
       snap_info.Set("version", snap->version);
       result.Set(snap->snap_id, std::move(snap_info));
     }
   }
-  return result;
+  std::move(callback).Run(std::move(result));
 }
 
 // ---------------------------------------------------------------------------
@@ -220,12 +255,19 @@ void SnapsService::UninstallSnap(const std::string& snap_id,
 }
 
 void SnapsService::GetInstalledSnaps(GetInstalledSnapsCallback callback) {
-  std::move(callback).Run(data_provider_->GetAllSnaps());
+  data_provider_->GetAllSnaps(std::move(callback));
 }
 
 void SnapsService::GetSnapManifest(const std::string& snap_id,
                                    GetSnapManifestCallback callback) {
-  auto snap = data_provider_->GetSnap(snap_id);
+  data_provider_->GetSnap(
+      snap_id, base::BindOnce(&SnapsService::OnGetSnapManifestResult,
+                              weak_ptr_factory_.GetWeakPtr(),
+                              std::move(callback)));
+}
+
+void SnapsService::OnGetSnapManifestResult(GetSnapManifestCallback callback,
+                                           mojom::SnapInstallDataPtr snap) {
   if (!snap) {
     std::move(callback).Run(nullptr);
     return;
@@ -404,10 +446,20 @@ void SnapsService::InstallSnap(std::string snap_id,
                                SnapInstaller::InstallCallback callback) {
   LOG(ERROR) << "XXXZZZ InstallSnap(delegate) snap_id=" << snap_id
              << " version=" << version
-             << " already_installed=" << data_provider_->IsInstalled(snap_id)
              << " queue_size=" << snap_install_queue_.size()
              << " state=" << static_cast<int>(pending_snap_state_);
-  if (data_provider_->IsInstalled(snap_id)) {
+  data_provider_->IsInstalled(
+      snap_id, base::BindOnce(&SnapsService::OnIsInstalledForDelegate,
+                              weak_ptr_factory_.GetWeakPtr(), std::move(snap_id),
+                              std::move(version), std::move(callback)));
+}
+
+void SnapsService::OnIsInstalledForDelegate(
+    std::string snap_id,
+    std::string version,
+    SnapInstaller::InstallCallback callback,
+    bool installed) {
+  if (installed) {
     std::move(callback).Run(base::ok());
     return;
   }
@@ -527,7 +579,18 @@ void SnapsService::GetPendingSnapConnection(
   auto result = mojom::PendingSnapConnection::New();
   result->origin = active_snap_connection_->origin;
   result->snap_id = active_snap_connection_->snap_id;
-  if (auto snap = data_provider_->GetSnap(active_snap_connection_->snap_id)) {
+  data_provider_->GetSnap(
+      active_snap_connection_->snap_id,
+      base::BindOnce(&SnapsService::OnPendingSnapConnectionInfo,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback),
+                     std::move(result)));
+}
+
+void SnapsService::OnPendingSnapConnectionInfo(
+    GetPendingSnapConnectionCallback callback,
+    mojom::PendingSnapConnectionPtr result,
+    mojom::SnapInstallDataPtr snap) {
+  if (snap) {
     result->snap_info = std::move(snap);
   }
   std::move(callback).Run(std::move(result));
@@ -550,12 +613,7 @@ void SnapsService::DisconnectSnapOrigin(const std::string& origin,
 void SnapsService::SetSnapEnabled(const std::string& snap_id,
                                   bool enabled,
                                   SetSnapEnabledCallback callback) {
-  if (!data_provider_->IsInstalled(snap_id)) {
-    std::move(callback).Run(false);
-    return;
-  }
-  data_provider_->SetSnapEnabled(snap_id, enabled);
-  std::move(callback).Run(true);
+  data_provider_->SetSnapEnabled(snap_id, enabled, std::move(callback));
 }
 
 }  // namespace brave_wallet

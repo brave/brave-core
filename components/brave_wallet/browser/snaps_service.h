@@ -75,17 +75,24 @@ class SnapsService : public mojom::SnapsService {
       mojo::PendingReceiver<mojom::SnapRequestHandler> receiver);
 
   // C++ accessors used by EthereumProviderImpl (dApp snap calls).
-  bool IsSnapAvailable(const std::string& snap_id) const;
+  using BoolCallback = base::OnceCallback<void(bool)>;
+  using SnapsCallback =
+      base::OnceCallback<void(std::vector<mojom::SnapInstallDataPtr>)>;
+  using GetSnapsForOriginCallback = base::OnceCallback<void(base::DictValue)>;
+
+  void IsSnapAvailable(const std::string& snap_id, BoolCallback callback);
   bool IsSnapConnected(const url::Origin& origin,
                        const std::string& snap_id) const;
   void GrantSnapConnection(const url::Origin& origin,
                            const std::string& snap_id);
-  bool IsOriginAllowedByManifest(const url::Origin& origin,
-                                 const std::string& snap_id) const;
-  std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() const;
+  void IsOriginAllowedByManifest(const url::Origin& origin,
+                                 const std::string& snap_id,
+                                 BoolCallback callback) const;
+  void GetAllSnaps(SnapsCallback callback);
 
   // Returns all installed snaps visible to |origin| for wallet_getSnaps.
-  base::DictValue GetSnapsForOrigin(const url::Origin& origin) const;
+  void GetSnapsForOrigin(const url::Origin& origin,
+                         GetSnapsForOriginCallback callback);
 
   SnapController* snap_controller() { return snap_controller_.get(); }
   SnapInstaller* snap_installer() { return snap_installer_.get(); }
@@ -160,6 +167,18 @@ class SnapsService : public mojom::SnapsService {
                            base::expected<void, std::string> result);
   void OnGetSnapBundleResult(GetSnapBundleCallback callback,
                              std::optional<std::string> bundle);
+  void OnGetSnapManifestResult(GetSnapManifestCallback callback,
+                               mojom::SnapInstallDataPtr snap);
+  void OnGetSnapsForOrigin(url::Origin origin,
+                           GetSnapsForOriginCallback callback,
+                           std::vector<mojom::SnapInstallDataPtr> snaps);
+  void OnIsInstalledForDelegate(std::string snap_id,
+                                std::string version,
+                                SnapInstaller::InstallCallback callback,
+                                bool installed);
+  void OnPendingSnapConnectionInfo(GetPendingSnapConnectionCallback callback,
+                                   mojom::PendingSnapConnectionPtr result,
+                                   mojom::SnapInstallDataPtr snap);
   void OnPrepareInstallResult(
       base::expected<mojom::SnapInstallDataPtr, std::string> result);
   void OnSnapInstallSuccessTimeout();

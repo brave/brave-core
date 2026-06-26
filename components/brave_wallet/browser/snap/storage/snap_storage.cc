@@ -9,8 +9,7 @@
 
 #include "base/files/file_util.h"
 #include "base/strings/string_util.h"
-#include "base/task/task_traits.h"
-#include "base/task/thread_pool.h"
+#include "base/task/sequenced_task_runner.h"
 
 namespace brave_wallet {
 
@@ -32,27 +31,44 @@ std::string SnapIdToDir(const std::string& snap_id) {
   return result;
 }
 
-// Moves bundle.js and manifest.json from |source_dir| to |dest_dir|, creating
-// |dest_dir| if needed. Runs on a thread-pool worker.
-bool MoveSnapFilesTask(const base::FilePath& source_dir,
-                       const base::FilePath& dest_dir) {
+}  // namespace
+
+SnapStorage::SnapStorage(
+    const base::FilePath& snaps_dir,
+    scoped_refptr<base::SequencedTaskRunner> origin_task_runner)
+    : snaps_dir_(snaps_dir),
+      origin_task_runner_(std::move(origin_task_runner)) {
+  DETACH_FROM_SEQUENCE(sequence_checker_);
+}
+
+SnapStorage::~SnapStorage() = default;
+
+bool SnapStorage::MoveSnapFiles(const std::string& snap_id,
+                                const base::FilePath& unpacked_dir) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath dest_dir = GetSnapDir(snap_id);
   if (!base::CreateDirectory(dest_dir)) {
     return false;
   }
-  if (!base::Move(source_dir.AppendASCII("bundle.js"),
+  if (!base::Move(unpacked_dir.AppendASCII("bundle.js"),
                   dest_dir.Append(kBundleFileName))) {
     return false;
   }
-  if (!base::Move(source_dir.AppendASCII("manifest.json"),
+  if (!base::Move(unpacked_dir.AppendASCII("manifest.json"),
                   dest_dir.Append(kManifestFileName))) {
     return false;
   }
   return true;
 }
 
-// Reads bundle.js from |snap_dir|. Returns std::nullopt on error.
-// Runs on a thread-pool worker.
-std::optional<std::string> ReadBundleFile(const base::FilePath& snap_dir) {
+std::optional<std::string> SnapStorage::ReadBundle(
+    const std::string& snap_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath snap_dir = GetSnapDir(snap_id);
   std::string contents;
   if (!base::ReadFileToString(snap_dir.Append(kBundleFileName), &contents)) {
     return std::nullopt;
@@ -60,23 +76,32 @@ std::optional<std::string> ReadBundleFile(const base::FilePath& snap_dir) {
   return contents;
 }
 
-// Deletes |path| recursively. Runs on a thread-pool worker.
-void DeleteSnapDir(const base::FilePath& path) {
-  base::DeletePathRecursively(path);
+bool SnapStorage::DeleteSnap(const std::string& snap_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath snap_dir = GetSnapDir(snap_id);
+  return base::DeletePathRecursively(snap_dir);
 }
 
-// Writes |json| to state.json under |snap_dir|, creating the directory first.
-// Returns true on success. Runs on a thread-pool worker.
-bool WriteStateFile(const base::FilePath& snap_dir, const std::string& json) {
+bool SnapStorage::WriteState(const std::string& snap_id,
+                             const std::string& json) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath snap_dir = GetSnapDir(snap_id);
   if (!base::CreateDirectory(snap_dir)) {
     return false;
   }
   return base::WriteFile(snap_dir.Append(kStateFileName), json);
 }
 
-// Reads state.json from |snap_dir|. Returns std::nullopt on error or missing
-// file. Runs on a thread-pool worker.
-std::optional<std::string> ReadStateFile(const base::FilePath& snap_dir) {
+std::optional<std::string> SnapStorage::ReadState(
+    const std::string& snap_id) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
+  base::FilePath snap_dir = GetSnapDir(snap_id);
   std::string contents;
   if (!base::ReadFileToString(snap_dir.Append(kStateFileName), &contents)) {
     return std::nullopt;
@@ -84,68 +109,10 @@ std::optional<std::string> ReadStateFile(const base::FilePath& snap_dir) {
   return contents;
 }
 
-}  // namespace
-
-SnapStorage::SnapStorage(const base::FilePath& profile_path)
-    : snaps_dir_(profile_path.Append(FILE_PATH_LITERAL("BraveWallet"))
-                     .Append(FILE_PATH_LITERAL("Snaps"))) {}
-
-SnapStorage::~SnapStorage() = default;
-
-void SnapStorage::MoveSnapFiles(const std::string& snap_id,
-                                const base::FilePath& unpacked_dir,
-                                base::OnceCallback<void(bool)> on_done) {
-  base::FilePath dest_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::BindOnce(&MoveSnapFilesTask, unpacked_dir, dest_dir),
-      std::move(on_done));
-}
-
-void SnapStorage::ReadBundle(
-    const std::string& snap_id,
-    base::OnceCallback<void(std::optional<std::string>)> cb) {
-  base::FilePath snap_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadBundleFile, snap_dir), std::move(cb));
-}
-
-void SnapStorage::DeleteSnap(const std::string& snap_id) {
-  base::FilePath snap_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTask(FROM_HERE,
-                             {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
-                              base::TaskShutdownBehavior::CONTINUE_ON_SHUTDOWN},
-                             base::BindOnce(&DeleteSnapDir, snap_dir));
-}
-
-void SnapStorage::WriteState(const std::string& snap_id,
-                             const std::string& json,
-                             base::OnceCallback<void(bool)> on_done) {
-  base::FilePath snap_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
-      base::BindOnce(&WriteStateFile, snap_dir, json), std::move(on_done));
-}
-
-void SnapStorage::ReadState(
-    const std::string& snap_id,
-    base::OnceCallback<void(std::optional<std::string>)> cb) {
-  base::FilePath snap_dir = GetSnapDir(snap_id);
-  base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
-       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadStateFile, snap_dir), std::move(cb));
-}
-
 bool SnapStorage::HasSnap(const std::string& snap_id) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!origin_task_runner_->RunsTasksInCurrentSequence());
+
   return base::PathExists(GetSnapDir(snap_id).Append(kBundleFileName));
 }
 

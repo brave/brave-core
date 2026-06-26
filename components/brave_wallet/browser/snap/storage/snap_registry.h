@@ -27,8 +27,8 @@ class SnapRegistry {
   // Registers kInstalledSnapsPref. Call once during profile pref registration.
   static void RegisterProfilePrefs(PrefRegistrySimple* registry);
 
-  // Constructs the registry and populates the installed-snaps in-memory map
-  // from the persisted PrefService data.
+  // Constructs the registry. The installed-snaps cache is restored lazily on
+  // reads from the persisted PrefService data.
   explicit SnapRegistry(PrefService& prefs);
   ~SnapRegistry();
 
@@ -47,11 +47,11 @@ class SnapRegistry {
   // Returns clones of all installed snaps.
   std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() const;
 
-  // Writes snap metadata to PrefService and updates the in-memory map.
+  // Writes snap metadata to PrefService and invalidates the in-memory map.
   // Called by SnapDataProvider after a successful install pipeline.
   void RegisterInstalledSnap(const mojom::SnapInstallData& install_data);
 
-  // Removes snap metadata from PrefService and from the in-memory map.
+  // Removes snap metadata from PrefService and invalidates the in-memory map.
   // Called by SnapDataProvider during uninstall.
   void UnregisterSnap(const std::string& snap_id);
 
@@ -60,9 +60,12 @@ class SnapRegistry {
   void SetSnapEnabled(const std::string& snap_id, bool enabled);
 
  private:
-  // In-memory cache keyed by snap_id; populated from PrefService on
-  // construction and kept in sync by Register/UnregisterInstalledSnap.
-  std::map<std::string, mojom::SnapInstallDataPtr> installed_snaps_;
+  void EnsureInstalledSnapsLoaded() const;
+  void ResetInstalledSnaps();
+
+  // In-memory cache keyed by snap_id. Empty means "not loaded"; reads restore
+  // from PrefService before using it.
+  mutable std::map<std::string, mojom::SnapInstallDataPtr> installed_snaps_;
 
   raw_ref<PrefService> prefs_;
 };

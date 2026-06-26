@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -26,6 +27,23 @@ constexpr char kConnectedSnapsPref[] = "brave.wallet.connected_snaps";
 // "snap_dialog" permission entry in the manifest.
 constexpr char kMethodDialog[] = "snap_dialog";
 constexpr char kMethodConfirm[] = "snap_confirm";
+
+bool IsOriginAllowedBySnapManifest(const url::Origin& origin,
+                                   const mojom::SnapInstallDataPtr& snap) {
+  if (!snap || !snap->manifest) {
+    return false;
+  }
+  if (snap->manifest->allow_dapps) {
+    return true;
+  }
+  if (snap->manifest->allowed_rpc_origins.empty()) {
+    return false;
+  }
+  const std::string serialized = origin.Serialize();
+  return std::ranges::any_of(
+      snap->manifest->allowed_rpc_origins,
+      [&serialized](const std::string& o) { return o == serialized; });
+}
 
 }  // namespace
 
@@ -123,42 +141,51 @@ std::vector<std::string> SnapPermissionController::GetOriginsConnectedToSnap(
   return result;
 }
 
-bool SnapPermissionController::IsOriginAllowedByManifest(
+void SnapPermissionController::IsOriginAllowedByManifest(
     const url::Origin& origin,
-    const std::string& snap_id) const {
-  auto snap = data_provider_->GetSnap(snap_id);
-  if (!snap || !snap->manifest) {
-    return false;
-  }
-  if (snap->manifest->allow_dapps) {
-    return true;
-  }
-  if (snap->manifest->allowed_rpc_origins.empty()) {
-    return false;
-  }
-  const std::string serialized = origin.Serialize();
-  return std::ranges::any_of(
-      snap->manifest->allowed_rpc_origins,
-      [&serialized](const std::string& o) { return o == serialized; });
+    const std::string& snap_id,
+    base::OnceCallback<void(bool)> callback) const {
+  data_provider_->GetSnap(
+      snap_id, base::BindOnce(
+                   [](url::Origin origin, base::OnceCallback<void(bool)> cb,
+                      mojom::SnapInstallDataPtr snap) {
+                     std::move(cb).Run(
+                         IsOriginAllowedBySnapManifest(origin, snap));
+                   },
+                   origin, std::move(callback)));
 }
 
-std::optional<std::string> SnapPermissionController::CheckSnapMethodPermission(
+void SnapPermissionController::CheckSnapMethodPermission(
     const std::string& snap_id,
-    const std::string& method) const {
-  auto snap = data_provider_->GetSnap(snap_id);
-  if (!snap || !snap->manifest) {
-    return "Unknown snap: " + snap_id;
-  }
-  // snap_confirm is the legacy alias; the manifest declares "snap_dialog".
-  const std::string& effective =
-      (method == kMethodConfirm) ? kMethodDialog : method;
-  const auto& perms = snap->manifest->permissions;
-  if (!std::ranges::any_of(perms, [&effective](const std::string& p) {
-        return p == effective;
-      })) {
-    return "Snap '" + snap_id + "' does not have permission to call " + method;
-  }
-  return std::nullopt;
+    const std::string& method,
+    base::OnceCallback<void(std::optional<std::string>)> callback) const {
+  data_provider_->GetSnap(
+      snap_id,
+      base::BindOnce(
+          [](std::string snap_id, std::string method,
+             base::OnceCallback<void(std::optional<std::string>)> cb,
+             mojom::SnapInstallDataPtr snap) {
+            if (!snap || !snap->manifest) {
+              std::move(cb).Run("Unknown snap: " + snap_id);
+              return;
+            }
+            // snap_confirm is the legacy alias; the manifest declares
+            // "snap_dialog".
+            const std::string& effective =
+                (method == kMethodConfirm) ? kMethodDialog : method;
+            const auto& perms = snap->manifest->permissions;
+            if (!std::ranges::any_of(
+                    perms,
+                    [&effective](const std::string& p) {
+                      return p == effective;
+                    })) {
+              std::move(cb).Run("Snap '" + snap_id +
+                                "' does not have permission to call " + method);
+              return;
+            }
+            std::move(cb).Run(std::nullopt);
+          },
+          snap_id, method, std::move(callback)));
 }
 
 void SnapPermissionController::PurgeConnectionGrantsForSnap(

@@ -50,12 +50,38 @@ void SnapRequestHandlerImpl::HandleSnapRequest(
     HandleSnapRequestCallback callback) {
   LOG(ERROR) << "XXXZZZ HandleSnapRequest snap_id=" << snap_id
              << " method=" << method;
-  if (!data_provider_->IsSnapEnabled(snap_id)) {
+  data_provider_->IsSnapEnabled(
+      snap_id, base::BindOnce(&SnapRequestHandlerImpl::OnSnapEnabled,
+                              weak_ptr_factory_.GetWeakPtr(), snap_id, method,
+                              std::move(params), std::move(callback)));
+}
+
+void SnapRequestHandlerImpl::OnSnapEnabled(
+    std::string snap_id,
+    std::string method,
+    base::Value params,
+    HandleSnapRequestCallback callback,
+    bool enabled) {
+  if (!enabled) {
     std::move(callback).Run(std::nullopt, "Snap is disabled");
     return;
   }
-  if (auto error =
-          permission_controller_->CheckSnapMethodPermission(snap_id, method)) {
+  const std::string snap_id_for_permission_check = snap_id;
+  const std::string method_for_permission_check = method;
+  permission_controller_->CheckSnapMethodPermission(
+      snap_id_for_permission_check, method_for_permission_check,
+      base::BindOnce(&SnapRequestHandlerImpl::OnPermissionChecked,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(snap_id),
+                     std::move(method), std::move(params), std::move(callback)));
+}
+
+void SnapRequestHandlerImpl::OnPermissionChecked(
+    std::string snap_id,
+    std::string method,
+    base::Value params,
+    HandleSnapRequestCallback callback,
+    std::optional<std::string> error) {
+  if (error) {
     LOG(ERROR) << "XXXZZZ HandleSnapRequest: permission denied: " << *error;
     std::move(callback).Run(std::nullopt, std::move(*error));
     return;

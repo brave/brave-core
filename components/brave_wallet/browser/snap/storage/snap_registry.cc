@@ -108,7 +108,14 @@ void SnapRegistry::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(kInstalledSnapsPref);
 }
 
-SnapRegistry::SnapRegistry(PrefService& prefs) : prefs_(prefs) {
+SnapRegistry::SnapRegistry(PrefService& prefs) : prefs_(prefs) {}
+
+SnapRegistry::~SnapRegistry() = default;
+
+void SnapRegistry::EnsureInstalledSnapsLoaded() const {
+  if (!installed_snaps_.empty()) {
+    return;
+  }
   const base::DictValue& all = prefs_->GetDict(kInstalledSnapsPref);
   for (const auto [snap_id, value] : all) {
     if (value.is_dict()) {
@@ -117,10 +124,13 @@ SnapRegistry::SnapRegistry(PrefService& prefs) : prefs_(prefs) {
   }
 }
 
-SnapRegistry::~SnapRegistry() = default;
+void SnapRegistry::ResetInstalledSnaps() {
+  installed_snaps_.clear();
+}
 
 mojom::SnapInstallDataPtr SnapRegistry::GetSnap(
     const std::string& snap_id) const {
+  EnsureInstalledSnapsLoaded();
   auto it = installed_snaps_.find(snap_id);
   if (it == installed_snaps_.end()) {
     return nullptr;
@@ -129,10 +139,12 @@ mojom::SnapInstallDataPtr SnapRegistry::GetSnap(
 }
 
 bool SnapRegistry::IsKnownSnap(const std::string& snap_id) const {
+  EnsureInstalledSnapsLoaded();
   return installed_snaps_.contains(snap_id);
 }
 
 bool SnapRegistry::IsSnapEnabled(const std::string& snap_id) const {
+  EnsureInstalledSnapsLoaded();
   auto it = installed_snaps_.find(snap_id);
   if (it == installed_snaps_.end()) {
     return true;
@@ -141,6 +153,7 @@ bool SnapRegistry::IsSnapEnabled(const std::string& snap_id) const {
 }
 
 std::vector<mojom::SnapInstallDataPtr> SnapRegistry::GetAllSnaps() const {
+  EnsureInstalledSnapsLoaded();
   std::vector<mojom::SnapInstallDataPtr> result;
   result.reserve(installed_snaps_.size());
   for (const auto& [_, snap] : installed_snaps_) {
@@ -164,28 +177,27 @@ void SnapRegistry::RegisterInstalledSnap(
     snap_info.Set("enabled", enabled);
     update->Set(install_data.snap_id, std::move(snap_info));
   }
-  auto stored = install_data.Clone();
-  stored->enabled = enabled;
-  installed_snaps_[install_data.snap_id] = std::move(stored);
+  ResetInstalledSnaps();
 }
 
 void SnapRegistry::UnregisterSnap(const std::string& snap_id) {
   ScopedDictPrefUpdate update(&*prefs_, kInstalledSnapsPref);
   update->Remove(snap_id);
-  installed_snaps_.erase(snap_id);
+  ResetInstalledSnaps();
 }
 
 void SnapRegistry::SetSnapEnabled(const std::string& snap_id, bool enabled) {
+  EnsureInstalledSnapsLoaded();
   auto it = installed_snaps_.find(snap_id);
   if (it == installed_snaps_.end() || it->second->enabled == enabled) {
     return;
   }
-  it->second->enabled = enabled;
   ScopedDictPrefUpdate update(&*prefs_, kInstalledSnapsPref);
   base::DictValue* snap_dict = update->FindDict(snap_id);
   if (snap_dict) {
     snap_dict->Set("enabled", enabled);
   }
+  ResetInstalledSnaps();
 }
 
 }  // namespace brave_wallet

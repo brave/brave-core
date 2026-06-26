@@ -50,6 +50,31 @@ class SnapDataProviderTest : public testing::Test {
     EXPECT_FALSE(future.Get().has_value()) << *future.Get();
   }
 
+  void InstallSnap(const std::string& snap_id, const std::string& version) {
+    base::test::TestFuture<void> future;
+    provider_->OnSnapInstalled(*MakeTestSnapInstallData(snap_id, version),
+                               future.GetCallback());
+    ASSERT_TRUE(future.Wait());
+  }
+
+  bool IsInstalled(const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    provider_->IsInstalled(snap_id, future.GetCallback());
+    return future.Get();
+  }
+
+  mojom::SnapInstallDataPtr GetSnap(const std::string& snap_id) {
+    base::test::TestFuture<mojom::SnapInstallDataPtr> future;
+    provider_->GetSnap(snap_id, future.GetCallback());
+    return future.Take();
+  }
+
+  std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() {
+    base::test::TestFuture<std::vector<mojom::SnapInstallDataPtr>> future;
+    provider_->GetAllSnaps(future.GetCallback());
+    return future.Take();
+  }
+
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   TestingPrefServiceSimple prefs_;
@@ -58,30 +83,30 @@ class SnapDataProviderTest : public testing::Test {
 
 TEST_F(SnapDataProviderTest, RegistryPassthroughAfterInstall) {
   const std::string snap_id = "npm:@test/snap";
-  EXPECT_FALSE(provider_->IsInstalled(snap_id));
-  EXPECT_FALSE(provider_->GetSnap(snap_id));
-  EXPECT_TRUE(provider_->GetAllSnaps().empty());
+  EXPECT_FALSE(IsInstalled(snap_id));
+  EXPECT_FALSE(GetSnap(snap_id));
+  EXPECT_TRUE(GetAllSnaps().empty());
 
-  provider_->OnSnapInstalled(*MakeTestSnapInstallData(snap_id, "1.2.3"));
+  InstallSnap(snap_id, "1.2.3");
 
-  EXPECT_TRUE(provider_->IsInstalled(snap_id));
-  auto snap = provider_->GetSnap(snap_id);
+  EXPECT_TRUE(IsInstalled(snap_id));
+  auto snap = GetSnap(snap_id);
   ASSERT_TRUE(snap);
   EXPECT_EQ(snap->snap_id, snap_id);
   EXPECT_EQ(snap->version, "1.2.3");
   ASSERT_TRUE(snap->manifest);
-  EXPECT_EQ(provider_->GetAllSnaps().size(), 1u);
+  EXPECT_EQ(GetAllSnaps().size(), 1u);
 }
 
 TEST_F(SnapDataProviderTest, GetSnapReturnsIndependentClone) {
   const std::string snap_id = "npm:@test/snap";
-  provider_->OnSnapInstalled(*MakeTestSnapInstallData(snap_id, "1.0.0"));
+  InstallSnap(snap_id, "1.0.0");
 
-  auto first = provider_->GetSnap(snap_id);
+  auto first = GetSnap(snap_id);
   ASSERT_TRUE(first);
   first->version = "mutated";
 
-  auto second = provider_->GetSnap(snap_id);
+  auto second = GetSnap(snap_id);
   ASSERT_TRUE(second);
   EXPECT_EQ(second->version, "1.0.0");
 }
@@ -181,18 +206,20 @@ TEST_F(SnapDataProviderTest, ClearSnapStateEvictsCache) {
 
 TEST_F(SnapDataProviderTest, OnSnapUninstalledRemovesRegistryStateAndFiles) {
   const std::string snap_id = "npm:@test/snap";
-  provider_->OnSnapInstalled(*MakeTestSnapInstallData(snap_id, "1.0.0"));
+  InstallSnap(snap_id, "1.0.0");
   UpdateState(snap_id, R"({"x":1})");
-  ASSERT_TRUE(provider_->IsInstalled(snap_id));
+  ASSERT_TRUE(IsInstalled(snap_id));
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     ASSERT_TRUE(base::PathExists(SnapStateFile(snap_id)));
   }
 
-  provider_->OnSnapUninstalled(snap_id);
+  base::test::TestFuture<void> uninstall;
+  provider_->OnSnapUninstalled(snap_id, uninstall.GetCallback());
+  ASSERT_TRUE(uninstall.Wait());
 
-  EXPECT_FALSE(provider_->IsInstalled(snap_id));
-  EXPECT_FALSE(provider_->GetSnap(snap_id));
+  EXPECT_FALSE(IsInstalled(snap_id));
+  EXPECT_FALSE(GetSnap(snap_id));
 
   // The bundle directory is deleted asynchronously (fire-and-forget pool task).
   task_environment_.RunUntilIdle();

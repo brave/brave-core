@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "base/files/file_util.h"
+#include "base/functional/callback_helpers.h"
 #include "base/json/json_reader.h"
 #include "base/logging.h"
 #include "base/strings/string_util.h"
@@ -142,7 +143,7 @@ void SnapInstaller::AbortInstall(const std::string& snap_id) {
 }
 
 void SnapInstaller::UninstallSnap(const std::string& snap_id) {
-  data_provider_->OnSnapUninstalled(snap_id);
+  data_provider_->OnSnapUninstalled(snap_id, base::DoNothing());
 }
 
 void SnapInstaller::GetSnapBundle(
@@ -334,8 +335,13 @@ void SnapInstaller::OnBundleSaved(std::unique_ptr<InstallContext> ctx,
   install_data->bundle_size_bytes = ctx->bundle_size_bytes;
   install_data->manifest = ctx->snap_manifest.Clone();
   install_data->enabled = true;
-  data_provider_->OnSnapInstalled(*install_data);
+  data_provider_->OnSnapInstalled(
+      *install_data,
+      base::BindOnce(&SnapInstaller::OnRegistryUpdated,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(ctx)));
+}
 
+void SnapInstaller::OnRegistryUpdated(std::unique_ptr<InstallContext> ctx) {
   std::move(ctx->callback).Run(base::ok());
 }
 

@@ -146,7 +146,7 @@ class SnapsServiceTest : public testing::Test {
     ASSERT_EQ(State(), mojom::SnapInstallState::kPendingApproval);
     NotifyProcessed(true);
     task_environment_.RunUntilIdle();
-    ASSERT_TRUE(service_->IsSnapAvailable(snap_id));
+    ASSERT_TRUE(IsSnapAvailable(snap_id));
   }
 
   std::optional<std::string> GetBundle(const std::string& snap_id) {
@@ -157,6 +157,24 @@ class SnapsServiceTest : public testing::Test {
         snap_id, future.GetCallback<const std::optional<std::string>&,
                                     const std::optional<std::string>&>());
     return future.Get<0>();
+  }
+
+  bool IsSnapAvailable(const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    service_->IsSnapAvailable(snap_id, future.GetCallback());
+    return future.Get();
+  }
+
+  std::vector<mojom::SnapInstallDataPtr> GetAllSnaps() {
+    base::test::TestFuture<std::vector<mojom::SnapInstallDataPtr>> future;
+    service_->GetAllSnaps(future.GetCallback());
+    return future.Take();
+  }
+
+  base::DictValue GetSnapsForOrigin(const url::Origin& origin) {
+    base::test::TestFuture<base::DictValue> future;
+    service_->GetSnapsForOrigin(origin, future.GetCallback());
+    return future.Take();
   }
 
   base::test::TaskEnvironment task_environment_{
@@ -188,7 +206,7 @@ TEST_F(SnapsServiceTest, RequestInstallApproveFlow) {
 
   NotifyProcessed(/*approved=*/true);
   task_environment_.RunUntilIdle();
-  EXPECT_TRUE(service_->IsSnapAvailable("npm:test-snap"));
+  EXPECT_TRUE(IsSnapAvailable("npm:test-snap"));
   EXPECT_EQ(State(), mojom::SnapInstallState::kSuccess);
 
   // kSuccess auto-clears to kIdle after a short delay.
@@ -204,7 +222,7 @@ TEST_F(SnapsServiceTest, RequestInstallRejectFlow) {
 
   NotifyProcessed(/*approved=*/false);
   EXPECT_EQ(State(), mojom::SnapInstallState::kIdle);
-  EXPECT_FALSE(service_->IsSnapAvailable("npm:test-snap"));
+  EXPECT_FALSE(IsSnapAvailable("npm:test-snap"));
 }
 
 TEST_F(SnapsServiceTest, RequestInstallAlreadyPending) {
@@ -250,8 +268,8 @@ TEST_F(SnapsServiceTest, ObserverNotifiedOnStateChange) {
 TEST_F(SnapsServiceTest, AccessorsAfterInstall) {
   InstallFully("npm:test-snap");
 
-  EXPECT_TRUE(service_->IsSnapAvailable("npm:test-snap"));
-  EXPECT_EQ(service_->GetAllSnaps().size(), 1u);
+  EXPECT_TRUE(IsSnapAvailable("npm:test-snap"));
+  EXPECT_EQ(GetAllSnaps().size(), 1u);
 
   base::test::TestFuture<std::vector<mojom::SnapInstallDataPtr>> installed;
   service_->GetInstalledSnaps(installed.GetCallback());
@@ -280,11 +298,11 @@ TEST_F(SnapsServiceTest, GetSnapsForOrigin) {
   const url::Origin origin =
       url::Origin::Create(GURL("https://app.example.com"));
 
-  base::DictValue snaps = service_->GetSnapsForOrigin(origin);
+  base::DictValue snaps = GetSnapsForOrigin(origin);
   EXPECT_TRUE(snaps.contains("npm:test-snap"));
 
   // Opaque / non-web origins see nothing.
-  EXPECT_TRUE(service_->GetSnapsForOrigin(url::Origin()).empty());
+  EXPECT_TRUE(GetSnapsForOrigin(url::Origin()).empty());
 }
 
 TEST_F(SnapsServiceTest, GetSnapsForOriginExcludesDisabled) {
@@ -296,8 +314,8 @@ TEST_F(SnapsServiceTest, GetSnapsForOriginExcludesDisabled) {
   service_->SetSnapEnabled("npm:test-snap", false, set_enabled.GetCallback());
   ASSERT_TRUE(set_enabled.Get());
 
-  EXPECT_FALSE(service_->GetSnapsForOrigin(origin).contains("npm:test-snap"));
-  EXPECT_TRUE(service_->IsSnapAvailable("npm:test-snap"));
+  EXPECT_FALSE(GetSnapsForOrigin(origin).contains("npm:test-snap"));
+  EXPECT_TRUE(IsSnapAvailable("npm:test-snap"));
 }
 
 TEST_F(SnapsServiceTest, SetSnapEnabledUnknownSnapFails) {
@@ -317,7 +335,7 @@ TEST_F(SnapsServiceTest, UninstallSnapRemovesAndPurges) {
   service_->UninstallSnap("npm:test-snap", uninstall.GetCallback());
   ASSERT_TRUE(uninstall.Wait());
 
-  EXPECT_FALSE(service_->IsSnapAvailable("npm:test-snap"));
+  EXPECT_FALSE(IsSnapAvailable("npm:test-snap"));
   EXPECT_FALSE(service_->IsSnapConnected(origin, "npm:test-snap"));
   task_environment_.RunUntilIdle();  // Flush async bundle deletion.
 }

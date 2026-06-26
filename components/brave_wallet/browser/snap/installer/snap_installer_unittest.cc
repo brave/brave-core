@@ -95,6 +95,12 @@ class SnapInstallerTest : public testing::Test {
     return future.Take();
   }
 
+  bool IsInstalled(const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    data_provider_->IsInstalled(snap_id, future.GetCallback());
+    return future.Get();
+  }
+
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   TestingPrefServiceSimple prefs_;
@@ -116,7 +122,7 @@ TEST_F(SnapInstallerTest, PrepareInstallHappyPath) {
   EXPECT_THAT(data->manifest->permissions, testing::ElementsAre("snap_dialog"));
 
   // PrepareInstall does not persist; the registry is still empty.
-  EXPECT_FALSE(data_provider_->IsInstalled("npm:test-snap"));
+  EXPECT_FALSE(IsInstalled("npm:test-snap"));
 }
 
 TEST_F(SnapInstallerTest, FinishInstallPersistsBundleAndRegistry) {
@@ -126,7 +132,7 @@ TEST_F(SnapInstallerTest, FinishInstallPersistsBundleAndRegistry) {
   auto result = Finish("npm:test-snap");
   ASSERT_TRUE(result.has_value()) << result.error();
 
-  EXPECT_TRUE(data_provider_->IsInstalled("npm:test-snap"));
+  EXPECT_TRUE(IsInstalled("npm:test-snap"));
   auto read = ReadBundle("npm:test-snap");
   ASSERT_TRUE(read);
   EXPECT_EQ(*read, bundle);
@@ -247,11 +253,11 @@ TEST_F(SnapInstallerTest, UninstallSnapRemovesFromRegistry) {
   RegisterValidSnap("npm:test-snap", "1.0.0");
   ASSERT_TRUE(Prepare("npm:test-snap", "1.0.0").has_value());
   ASSERT_TRUE(Finish("npm:test-snap").has_value());
-  ASSERT_TRUE(data_provider_->IsInstalled("npm:test-snap"));
+  ASSERT_TRUE(IsInstalled("npm:test-snap"));
 
   installer_->UninstallSnap("npm:test-snap");
 
-  EXPECT_FALSE(data_provider_->IsInstalled("npm:test-snap"));
+  EXPECT_FALSE(IsInstalled("npm:test-snap"));
   task_environment_.RunUntilIdle();  // Flush the async bundle deletion.
 }
 

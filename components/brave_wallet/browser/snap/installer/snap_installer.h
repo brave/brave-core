@@ -137,6 +137,7 @@ class SnapInstaller {
                          std::string computed_shasum,
                          std::string error);
   void OnBundleSaved(std::unique_ptr<InstallContext> ctx, bool success);
+  void OnRegistryUpdated(std::unique_ptr<InstallContext> ctx);
 
   // Completes |ctx|'s pipeline with an error.
   void FailInstall(std::unique_ptr<InstallContext> ctx,

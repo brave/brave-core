@@ -6,8 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNAP_SNAP_REQUEST_HANDLER_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_SNAP_SNAP_REQUEST_HANDLER_IMPL_H_
 
+#include <optional>
 #include <string>
 
+#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/values.h"
@@ -55,6 +57,16 @@ class SnapRequestHandlerImpl : public mojom::SnapRequestHandler {
                          SnapStateOperation operation,
                          std::string new_state_json,
                          HandleSnapRequestCallback callback);
+  void OnSnapEnabled(std::string snap_id,
+                     std::string method,
+                     base::Value params,
+                     HandleSnapRequestCallback callback,
+                     bool enabled);
+  void OnPermissionChecked(std::string snap_id,
+                           std::string method,
+                           base::Value params,
+                           HandleSnapRequestCallback callback,
+                           std::optional<std::string> error);
 
   raw_ref<KeyringService> keyring_service_;
   raw_ref<SnapDataProvider> data_provider_;

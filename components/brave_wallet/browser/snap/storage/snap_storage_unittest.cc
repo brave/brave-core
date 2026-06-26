@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/snap/storage/snap_storage.h"
 
-#include <memory>
 #include <optional>
 #include <string>
 
@@ -13,8 +12,12 @@
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/task_traits.h"
+#include "base/task/thread_pool.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "base/threading/sequence_bound.h"
 #include "base/threading/thread_restrictions.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -24,7 +27,14 @@ class SnapStorageTest : public testing::Test {
  public:
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
-    storage_ = std::make_unique<SnapStorage>(temp_dir_.GetPath());
+    snaps_dir_ = temp_dir_.GetPath()
+                     .Append(FILE_PATH_LITERAL("BraveWallet"))
+                     .Append(FILE_PATH_LITERAL("Snaps"));
+    storage_ = base::SequenceBound<SnapStorage>(
+        base::ThreadPool::CreateSequencedTaskRunner(
+            {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
+             base::TaskShutdownBehavior::BLOCK_SHUTDOWN}),
+        snaps_dir_, base::SequencedTaskRunner::GetCurrentDefault());
   }
 
  protected:
@@ -32,10 +42,7 @@ class SnapStorageTest : public testing::Test {
   base::FilePath SnapDir(const std::string& snap_id) const {
     std::string dir;
     base::ReplaceChars(snap_id, ":/", "_", &dir);
-    return temp_dir_.GetPath()
-        .Append(FILE_PATH_LITERAL("BraveWallet"))
-        .Append(FILE_PATH_LITERAL("Snaps"))
-        .AppendASCII(dir);
+    return snaps_dir_.AppendASCII(dir);
   }
 
   base::FilePath MakeUnpackedDir(const std::string& bundle,
@@ -48,22 +55,68 @@ class SnapStorageTest : public testing::Test {
     return dir;
   }
 
+  bool MoveSnapFiles(const std::string& snap_id,
+                     const base::FilePath& unpacked) {
+    base::test::TestFuture<bool> future;
+    storage_.AsyncCall(&SnapStorage::MoveSnapFiles)
+        .WithArgs(snap_id, unpacked)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
+  std::optional<std::string> ReadBundle(const std::string& snap_id) {
+    base::test::TestFuture<std::optional<std::string>> future;
+    storage_.AsyncCall(&SnapStorage::ReadBundle)
+        .WithArgs(snap_id)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
+  bool WriteState(const std::string& snap_id, const std::string& state) {
+    base::test::TestFuture<bool> future;
+    storage_.AsyncCall(&SnapStorage::WriteState)
+        .WithArgs(snap_id, state)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
+  std::optional<std::string> ReadState(const std::string& snap_id) {
+    base::test::TestFuture<std::optional<std::string>> future;
+    storage_.AsyncCall(&SnapStorage::ReadState)
+        .WithArgs(snap_id)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
+  bool DeleteSnap(const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    storage_.AsyncCall(&SnapStorage::DeleteSnap)
+        .WithArgs(snap_id)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
+  bool HasSnap(const std::string& snap_id) {
+    base::test::TestFuture<bool> future;
+    storage_.AsyncCall(&SnapStorage::HasSnap)
+        .WithArgs(snap_id)
+        .Then(future.GetCallback());
+    return future.Get();
+  }
+
   base::test::TaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
-  std::unique_ptr<SnapStorage> storage_;
+  base::FilePath snaps_dir_;
+  base::SequenceBound<SnapStorage> storage_;
 };
 
 TEST_F(SnapStorageTest, MoveSnapFilesMovesBundleAndManifest) {
   const std::string snap_id = "npm:@test/snap";
   base::FilePath unpacked = MakeUnpackedDir("BUNDLE_JS", "MANIFEST_JSON");
 
-  base::test::TestFuture<bool> move;
-  storage_->MoveSnapFiles(snap_id, unpacked, move.GetCallback());
-  EXPECT_TRUE(move.Get());
+  EXPECT_TRUE(MoveSnapFiles(snap_id, unpacked));
 
-  base::test::TestFuture<std::optional<std::string>> read;
-  storage_->ReadBundle(snap_id, read.GetCallback());
-  auto bundle = read.Get();
+  auto bundle = ReadBundle(snap_id);
   ASSERT_TRUE(bundle);
   EXPECT_EQ(*bundle, "BUNDLE_JS");
 
@@ -77,48 +130,35 @@ TEST_F(SnapStorageTest, MoveSnapFilesMovesBundleAndManifest) {
 TEST_F(SnapStorageTest, MoveSnapFilesMissingSourceReturnsFalse) {
   base::FilePath nonexistent =
       temp_dir_.GetPath().AppendASCII("does_not_exist");
-  base::test::TestFuture<bool> move;
-  storage_->MoveSnapFiles("npm:@test/snap", nonexistent, move.GetCallback());
-  EXPECT_FALSE(move.Get());
+  EXPECT_FALSE(MoveSnapFiles("npm:@test/snap", nonexistent));
 }
 
 TEST_F(SnapStorageTest, ReadBundleMissingReturnsNullopt) {
-  base::test::TestFuture<std::optional<std::string>> read;
-  storage_->ReadBundle("npm:@nope/snap", read.GetCallback());
-  EXPECT_FALSE(read.Get().has_value());
+  EXPECT_FALSE(ReadBundle("npm:@nope/snap").has_value());
 }
 
 TEST_F(SnapStorageTest, WriteStateThenReadState) {
   const std::string snap_id = "npm:@test/snap";
-  base::test::TestFuture<bool> write;
-  storage_->WriteState(snap_id, R"({"counter":1})", write.GetCallback());
-  EXPECT_TRUE(write.Get());
+  EXPECT_TRUE(WriteState(snap_id, R"({"counter":1})"));
 
-  base::test::TestFuture<std::optional<std::string>> read;
-  storage_->ReadState(snap_id, read.GetCallback());
-  auto state = read.Get();
+  auto state = ReadState(snap_id);
   ASSERT_TRUE(state);
   EXPECT_EQ(*state, R"({"counter":1})");
 }
 
 TEST_F(SnapStorageTest, ReadStateMissingReturnsNullopt) {
-  base::test::TestFuture<std::optional<std::string>> read;
-  storage_->ReadState("npm:@nope/snap", read.GetCallback());
-  EXPECT_FALSE(read.Get().has_value());
+  EXPECT_FALSE(ReadState("npm:@nope/snap").has_value());
 }
 
 TEST_F(SnapStorageTest, DeleteSnapRemovesDirectory) {
   const std::string snap_id = "npm:@test/snap";
-  base::test::TestFuture<bool> write;
-  storage_->WriteState(snap_id, "{}", write.GetCallback());
-  EXPECT_TRUE(write.Get());
+  EXPECT_TRUE(WriteState(snap_id, "{}"));
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
     ASSERT_TRUE(base::PathExists(SnapDir(snap_id)));
   }
 
-  storage_->DeleteSnap(snap_id);  // Fire-and-forget BEST_EFFORT pool task.
-  task_environment_.RunUntilIdle();
+  EXPECT_TRUE(DeleteSnap(snap_id));
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   EXPECT_FALSE(base::PathExists(SnapDir(snap_id)));
@@ -128,24 +168,19 @@ TEST_F(SnapStorageTest, HasSnapReflectsBundlePresence) {
   const std::string snap_id = "npm:@test/snap";
   {
     base::ScopedAllowBlockingForTesting allow_blocking;
-    EXPECT_FALSE(storage_->HasSnap(snap_id));
+    EXPECT_FALSE(HasSnap(snap_id));
   }
 
-  base::test::TestFuture<bool> move;
-  storage_->MoveSnapFiles(snap_id, MakeUnpackedDir("B", "M"),
-                          move.GetCallback());
-  EXPECT_TRUE(move.Get());
+  EXPECT_TRUE(MoveSnapFiles(snap_id, MakeUnpackedDir("B", "M")));
 
   base::ScopedAllowBlockingForTesting allow_blocking;
-  EXPECT_TRUE(storage_->HasSnap(snap_id));
+  EXPECT_TRUE(HasSnap(snap_id));
 }
 
 TEST_F(SnapStorageTest, SnapIdCharactersAreSanitized) {
   // ':' and '/' become '_'; other characters (like '-') are preserved.
   const std::string snap_id = "npm:@scope/cool-snap";
-  base::test::TestFuture<bool> write;
-  storage_->WriteState(snap_id, "{}", write.GetCallback());
-  EXPECT_TRUE(write.Get());
+  EXPECT_TRUE(WriteState(snap_id, "{}"));
 
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath snaps_root = temp_dir_.GetPath()
