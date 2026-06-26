@@ -82,20 +82,20 @@ def merge_release_changelog_section(body, section_title, section_content,
     return assemble_body(preamble, kept)
 
 
+TAG_FORMAT_HELP = (
+    'Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
+    '(example: v1.5.45 or refs/tags/v1.5.45)')
+
+
 def normalize_tag(raw_tag):
     """Return (tag, version) from vX.Y.Z or refs/tags/vX.Y.Z."""
-    tag = raw_tag
-    match = re.match(r'^refs/tags/(.*)$', tag)
-    if match:
-        tag = match.group(1)
-
-    match = re.match(r'^v(.*)$', tag)
-    if not match:
-        logging.error("Tag must start with v after refs/tags/ prefix: %s",
-                      raw_tag)
+    match = re.match(r'^(?:refs/tags/)?v(.+)$', raw_tag)
+    if not match or not match.group(1):
+        logging.error('%s: %s', TAG_FORMAT_HELP, raw_tag)
         sys.exit(1)
 
-    return tag, match.group(1)
+    version = match.group(1)
+    return 'v' + version, version
 
 
 def main():
@@ -126,10 +126,6 @@ def main():
         logging.basicConfig(stream=sys.stderr, level=logging.DEBUG)
 
     changelog_url = args.url
-
-    if not re.match(r'^refs/tags/', args.tag) and not re.match(r'^v', args.tag):
-        logging.error(" Tag prefix must contain %s or %s", "refs/tags/", "v")
-        sys.exit(1)
 
     tag, version = normalize_tag(args.tag)
 
@@ -163,7 +159,8 @@ def main():
     release_id = release['id']
     logging.debug("Updating release with id: %s", release_id)
     release = retry_func(
-        lambda run: repo.releases.__call__(f'{release_id}').patch(data=data),
+        lambda _attempt: repo.releases.__call__(f'{release_id}').patch(
+            data=data),
         catch=requests.exceptions.ConnectionError,
         retries=3)
     logging.debug("Release body after update: \n'%s'", release['body'])
@@ -194,8 +191,8 @@ def debug_requests_off():
 def parse_args():
     desc = ("Parse Brave Browser changelog and add markdown to release notes "
             "for tag\n\nRequires the following ENVIRONMENT VARIABLES be set:"
-            "\n\nGITHUB_TOKEN: GitHub token to update draft release if not "
-            "published yet. ")
+            "\n\nGITHUB_TOKEN: GitHub token with permission to update the "
+            "release body (draft or published). ")
 
     parser = argparse.ArgumentParser(
         description=desc, formatter_class=RawTextHelpFormatter)
