@@ -20,6 +20,10 @@ transpile_web_ui("email_aliases_ui") {
       "email_aliases_panel",
       rebase_path("email_aliases_panel.tsx"),
     ],
+    [
+      "email_aliases_promo",
+      rebase_path("email_aliases_promo.tsx"),
+    ],
   ]
 
   imports_from = [

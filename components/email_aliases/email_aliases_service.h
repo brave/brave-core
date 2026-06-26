@@ -85,6 +85,8 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesMetrics& metrics() { return metrics_; }
 
+  bool IsPromoShown() const;
+
  private:
   using TokenResult =
       base::expected<brave_account::mojom::GetServiceTokenResultPtr,

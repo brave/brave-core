@@ -24,6 +24,7 @@
 #include "brave/components/email_aliases/pref_names.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
+#include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -121,6 +122,8 @@ EmailAliasesService::~EmailAliasesService() = default;
 // static
 void EmailAliasesService::RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kEmailAliasesEnabled, true);
+  registry->RegisterBooleanPref(prefs::kPromoShown, false);
+
   EmailAliasesMetrics::RegisterProfilePrefs(registry);
   EmailAliasesNotes::RegisterProfilePrefs(registry);
 }
@@ -137,6 +140,10 @@ void EmailAliasesService::BindInterface(
 
 EmailAliasesAuth* EmailAliasesService::GetAuth() {
   return &auth_.value();
+}
+
+bool EmailAliasesService::IsPromoShown() const {
+    return pref_service_->GetBoolean(prefs::kPromoShown);
 }
 
 std::string EmailAliasesService::GetAuthEmail() const {

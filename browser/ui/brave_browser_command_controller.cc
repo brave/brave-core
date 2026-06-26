@@ -54,6 +54,7 @@
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/base/command_line_switches.h"
+#include "content/public/browser/render_view_host.h"
 #include "content/public/browser/web_contents.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
@@ -775,7 +776,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
     case IDC_SHOW_EMAIL_ALIASES:
       browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage(
-          email_aliases::SettingsPageMethod::kAppMenu);
+          email_aliases::SettingsPageMethod::kAppMenu, browser_->tab_strip_model()->GetActiveWebContents(), /*initiator->GetFocusedFrame()->GetMainFrame()*/ nullptr);
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)

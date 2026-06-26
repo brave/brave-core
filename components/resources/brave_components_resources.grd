@@ -86,6 +86,7 @@
       <!-- Email Aliases -->
       <if expr="enable_email_aliases">
         <include name="IDR_EMAIL_ALIASES_PANEL_HTML" file="../email_aliases/resources/email_aliases_panel.html" type="BINDATA" />
+        <include name="IDR_EMAIL_ALIASES_PROMO_HTML" file="../email_aliases/resources/email_aliases_promo.html" type="BINDATA" />
       </if>
 
       <!-- WebUI Local AI resources -->

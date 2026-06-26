@@ -67,6 +67,7 @@
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/email_aliases/features.h"
 #endif
 
@@ -164,6 +165,7 @@ void RegisterChromeWebUIConfigs() {
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   if (email_aliases::features::IsEmailAliasesEnabled()) {
     map.AddWebUIConfig(std::make_unique<EmailAliasesPanelUIConfig>());
+    map.AddWebUIConfig(std::make_unique<EmailAliasesPromoUIConfig>());
   }
 #endif
 
