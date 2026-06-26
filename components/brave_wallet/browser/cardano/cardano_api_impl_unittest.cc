@@ -474,8 +474,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenNoPermission) {
             return std::vector<std::string>();
           });
 
-  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(0);
-
   {
     base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -605,8 +603,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsError_WhenAccountChanged) {
             return std::vector<std::string>(
                 {GetAccountPermissionIdentifier(new_account)});
           });
-
-  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(0);
 
   {
     base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
@@ -746,8 +742,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
                 {added_account->account_id->unique_key});
           });
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<int32_t, mojom::CardanoProviderErrorBundlePtr>
         future;
     provider()->GetNetworkId(future.GetCallback());
@@ -756,8 +750,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -767,8 +759,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -778,8 +768,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -789,8 +777,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -800,8 +786,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -812,8 +796,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -823,8 +805,6 @@ TEST_F(CardanoApiImplTest, MethodReturnsSuccess_WhenHasPermission) {
   }
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -871,8 +851,6 @@ TEST_F(CardanoApiImplTest, GetBalance) {
                 {added_account->account_id->unique_key});
           });
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -910,8 +888,6 @@ TEST_F(CardanoApiImplTest, GetBalance_Error) {
                 {added_account->account_id->unique_key});
           });
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -939,8 +915,6 @@ TEST_F(CardanoApiImplTest, GetUtxos_Error) {
                 {added_account->account_id->unique_key});
           });
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -992,8 +966,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // No args
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1007,8 +979,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Amount limit
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1025,8 +995,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Amount exceeds
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1042,8 +1010,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Token limit
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1062,8 +1028,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Multiple token limit
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1083,8 +1047,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Token limit exceeds
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1102,8 +1064,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Amount limit with pagination
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1120,8 +1080,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // No amount limit with pagination
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1136,8 +1094,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // No amount limit with pagination
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1152,8 +1108,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Paginate error
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1168,8 +1122,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Paginate error
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1185,8 +1137,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Paginate error - limit is zero
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1200,8 +1150,6 @@ TEST_F(CardanoApiImplTest, GetUtxos) {
 
   // Paginate error - arguments less than 0
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::vector<std::string>>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1260,8 +1208,6 @@ TEST_F(CardanoApiImplTest, SubmitTx_Fails) {
 
   test_rpc_service()->FailNextTransactionSubmission();
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1289,8 +1235,6 @@ TEST_F(CardanoApiImplTest, SubmitTx) {
                 {added_account->account_id->unique_key});
           });
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;
@@ -1318,8 +1262,6 @@ TEST_F(CardanoApiImplTest, SubmitTx_FailsNotHex) {
           });
 
   {
-    EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
-
     base::test::TestFuture<const std::optional<std::string>&,
                            mojom::CardanoProviderErrorBundlePtr>
         future;

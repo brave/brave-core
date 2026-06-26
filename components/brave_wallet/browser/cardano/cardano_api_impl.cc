@@ -206,8 +206,6 @@ void CardanoApiImpl::GetNetworkId(GetNetworkIdCallback callback) {
     return;
   }
 
-  delegate_->WalletInteractionDetected();
-
   std::move(callback).Run(
       IsCardanoMainnetKeyring(selected_account_->keyring_id) ? 1 : 0, nullptr);
 }
@@ -218,8 +216,6 @@ void CardanoApiImpl::GetUsedAddresses(GetUsedAddressesCallback callback) {
     std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   std::vector<std::string> result;
   for (auto& address :
@@ -241,8 +237,6 @@ void CardanoApiImpl::GetUnusedAddresses(GetUnusedAddressesCallback callback) {
     return;
   }
 
-  delegate_->WalletInteractionDetected();
-
   std::vector<std::string> result;
   for (auto& address :
        brave_wallet_service_->GetCardanoWalletService()->GetUnusedAddresses(
@@ -262,8 +256,6 @@ void CardanoApiImpl::GetChangeAddress(GetChangeAddressCallback callback) {
     std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   auto address =
       brave_wallet_service_->GetCardanoWalletService()->GetChangeAddress(
@@ -290,8 +282,6 @@ void CardanoApiImpl::GetRewardAddresses(GetRewardAddressesCallback callback) {
     return;
   }
 
-  delegate_->WalletInteractionDetected();
-
   NOTIMPLEMENTED_LOG_ONCE();
   std::move(callback).Run(
       std::nullopt, mojom::CardanoProviderErrorBundle::New(
@@ -304,8 +294,6 @@ void CardanoApiImpl::GetBalance(GetBalanceCallback callback) {
     std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   brave_wallet_service_->GetCardanoWalletService()->GetUtxos(
       selected_account_.Clone(),
@@ -354,8 +342,6 @@ void CardanoApiImpl::GetUtxos(const std::optional<std::string>& amount_cbor,
     std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   std::optional<cardano_rpc::CoinValue> required_coin_value;
   if (amount_cbor) {
@@ -468,8 +454,6 @@ void CardanoApiImpl::SignTx(const std::string& tx_cbor,
             kAPIErrorInternalError, WalletInternalErrorMessage(), nullptr));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   // Serialized transaction doesn't contain information regarding
   // input address being used, only tx id and input index, so
@@ -682,8 +666,6 @@ void CardanoApiImpl::SignData(const std::string& address,
     return;
   }
 
-  delegate_->WalletInteractionDetected();
-
   // We now support only one address per cardano account.
   auto supported_signing_address =
       brave_wallet_service_->keyring_service()->GetCardanoAddress(
@@ -772,8 +754,6 @@ void CardanoApiImpl::SubmitTx(const std::string& signed_tx_cbor,
     return;
   }
 
-  delegate_->WalletInteractionDetected();
-
   auto* cardano_rpc =
       brave_wallet_service_->GetCardanoWalletService()->GetCardanoRpc(
           GetNetworkForCardanoAccount(selected_account_));
@@ -810,8 +790,6 @@ void CardanoApiImpl::GetCollateral(const std::string& amount,
     std::move(callback).Run(std::nullopt, std::move(error));
     return;
   }
-
-  delegate_->WalletInteractionDetected();
 
   NOTIMPLEMENTED_LOG_ONCE();
   std::move(callback).Run(

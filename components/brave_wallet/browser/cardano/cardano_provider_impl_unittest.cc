@@ -181,6 +181,8 @@ TEST_F(CardanoProviderImplUnitTest, Enable_PermissionApproved) {
 
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
 
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
+
   TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
              mojom::CardanoProviderErrorBundlePtr>
       future;
@@ -373,6 +375,7 @@ TEST_F(CardanoProviderImplUnitTest, Enable_OnWalletUnlock_PermissionApproved) {
 TEST_F(CardanoProviderImplUnitTest, OnBoarding) {
   ON_CALL(*delegate(), IsTabVisible()).WillByDefault([&]() { return true; });
   EXPECT_CALL(*delegate(), ShowWalletOnboarding(testing::_)).Times(1);
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
   base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
                          mojom::CardanoProviderErrorBundlePtr>
@@ -390,6 +393,7 @@ TEST_F(CardanoProviderImplUnitTest, AccCreation) {
   EXPECT_CALL(*delegate(), ShowAccountCreation(
                                testing::Eq(mojom::CoinType::ADA), testing::_))
       .Times(1);
+  EXPECT_CALL(*delegate(), WalletInteractionDetected()).Times(1);
 
   base::test::TestFuture<mojo::PendingRemote<mojom::CardanoApi>,
                          mojom::CardanoProviderErrorBundlePtr>
