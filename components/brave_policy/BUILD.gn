@@ -3,22 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-component("policy_pref_interceptor") {
-  sources = [
-    "policy_pref_interceptor.cc",
-    "policy_pref_interceptor.h",
-    "policy_pref_interceptor_list.cc",
-    "policy_pref_interceptor_list.h",
-  ]
-
-  defines = [ "IS_POLICY_PREF_INTERCEPTOR_IMPL" ]
-
-  deps = [
-    "//base",
-    "//components/prefs",
-  ]
-}
-
 static_library("brave_policy") {
   sources = [
     "brave_browser_policy_provider.cc",
@@ -65,13 +49,11 @@ source_set("unit_tests") {
     "brave_policy_source_unittest.cc",
     "brave_profile_policy_provider_unittest.cc",
     "policy_initialization_waiter_unittest.cc",
-    "policy_pref_interceptor_unittest.cc",
   ]
 
   deps = [
     ":brave_policy",
     ":policy_initialization_waiter",
-    ":policy_pref_interceptor",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_origin",
