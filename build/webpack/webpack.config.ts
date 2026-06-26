@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import fs from 'fs'
-import path from 'path'
+import assert from 'node:assert'
+import fs from 'node:fs'
+import path from 'node:path'
 import type { Configuration } from 'webpack'
 import {
   deterministicOptimization,
@@ -64,7 +65,8 @@ export default async function (env: any, argv: any): Promise<Configuration> {
     resolve.aliasFields = env.webpack_aliases.split(',')
   }
 
-  const output: Configuration['output'] = {
+  assert(process.env.TARGET_GEN_DIR, 'TARGET_GEN_DIR env variable is required')
+  const output: NonNullable<Configuration['output']> = {
     iife: !env.no_iife,
     path: process.env.TARGET_GEN_DIR,
     filename: '[name].bundle.js',
