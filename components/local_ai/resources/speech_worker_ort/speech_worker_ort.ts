@@ -29,38 +29,9 @@ import { installTrustedTypesPolicy } from './ort_env'
 import {
   NemotronStreamSession,
   OrtNemotronModel,
-  parseTokens,
 } from './nemotron_recognizer'
 
-// BigBuffer is a mojo union: either inlined bytes or a shared-memory
-// handle the renderer maps in.
-function readBigBuffer(
-  buffer: {
-    bytes?: number[]
-    sharedMemory?: {
-      bufferHandle: {
-        mapBuffer(o: number, s: number): { buffer: ArrayBuffer | null }
-      }
-      size: number
-    }
-  },
-  name: string,
-): Uint8Array {
-  if (buffer.bytes) {
-    return new Uint8Array(buffer.bytes)
-  }
-  if (buffer.sharedMemory) {
-    const mapped = buffer.sharedMemory.bufferHandle.mapBuffer(
-      0,
-      buffer.sharedMemory.size,
-    )
-    if (!mapped.buffer) {
-      throw new Error(`Failed to map ${name} shared buffer`)
-    }
-    return new Uint8Array(mapped.buffer)
-  }
-  throw new Error(`Invalid ${name} BigBuffer`)
-}
+import { parseTokens, readBigBuffer } from './utils'
 
 // Thin mojo endpoint for one ASR stream: owns the receiver and responder
 // and bridges AsrStreamInput calls to a mojo-free NemotronStreamSession.
