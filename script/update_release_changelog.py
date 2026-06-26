@@ -67,7 +67,8 @@ def merge_release_changelog_section(body, section_title, section_content,
 
     for title, content in sections:
         if title.lower() in remove_titles:
-            logger.info("Removing existing release notes section: %s", title)
+            logger.info('Removing existing "%s" section: %s', section_title,
+                        title)
             if insert_index is None:
                 insert_index = len(kept)
             continue
@@ -82,9 +83,8 @@ def merge_release_changelog_section(body, section_title, section_content,
     return assemble_body(preamble, kept)
 
 
-TAG_FORMAT_HELP = (
-    'Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
-    '(example: v1.5.45 or refs/tags/v1.5.45)')
+TAG_FORMAT_HELP = ('Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
+                   '(example: v1.5.45 or refs/tags/v1.5.45)')
 
 
 def normalize_tag(raw_tag):
@@ -135,9 +135,10 @@ def main():
 
     changelog_txt = download_from_url(args, logging, changelog_url)
 
-    rn_regex = re.compile(r'^## .*?' + version.replace(".", "\\.") +
-                          r'.*?$\n+(.*?)\n+^##\s',
-                          flags=re.DOTALL | re.MULTILINE)
+    rn_regex = re.compile(
+        r'^## .*?' + re.escape(version) +
+        r'.*?$\n+(.*?)(?:\n+^##\s|\Z)',
+        flags=re.DOTALL | re.MULTILINE)
     match = rn_regex.search(changelog_txt)
     if not match:
         logging.error("Unable to locate release notes!")
@@ -158,11 +159,10 @@ def main():
     data = dict(tag_name=tag, name=release['name'], body=new_body)
     release_id = release['id']
     logging.debug("Updating release with id: %s", release_id)
-    release = retry_func(
-        lambda _attempt: repo.releases.__call__(f'{release_id}').patch(
-            data=data),
-        catch=requests.exceptions.ConnectionError,
-        retries=3)
+    release = retry_func(lambda _attempt: repo.releases.__call__(
+        f'{release_id}').patch(data=data),
+                         catch=requests.exceptions.ConnectionError,
+                         retries=3)
     logging.debug("Release body after update: \n'%s'", release['body'])
 
 
