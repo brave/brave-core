@@ -158,6 +158,7 @@ PolkadotChainMetadata MakeWestendMetadata();
 PolkadotChainMetadata MakePolkadotMetadata();
 PolkadotChainMetadata MakeWestendAssetHubMetadata();
 PolkadotChainMetadata MakePolkadotAssetHubMetadata();
+PolkadotChainMetadata MakePaseoAssetHubMetadata();
 
 }  // namespace brave_wallet
 
