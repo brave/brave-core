@@ -1,9 +1,9 @@
 // Copyright (c) 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
+import path from 'node:path'
 import dirName from './dirName.cjs'
 
 const allPrefixes = (path, searchPaths) =>
@@ -50,7 +50,7 @@ export default function (genPath) {
     // More helpful path for local web-components
     // TODO(petemill): Rename 'brave/components/common' dir to
     // 'brave/components/web-common'
-    '$web-common': path.resolve(dirName, '../common'),
+    '$web-common': path.resolve(dirName, '../../components/common'),
     // react-markdown uses this deep in its tree, and the browser variant uses innerHTML, conflicting with WebUIs that requires Trusted Types
     // We redirect to an alternative implementation that uses a lookup table to decode named chars instead of innerHTML
     'decode-named-character-reference': path.resolve(
