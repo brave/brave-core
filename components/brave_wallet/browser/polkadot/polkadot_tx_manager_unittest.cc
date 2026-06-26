@@ -46,11 +46,14 @@ namespace brave_wallet {
 
 namespace {
 
-// Use the BOB account here:
+// BOB's well-known account. The same public key encodes to different ss58
+// strings per network, so `kBob` is the Westend (testnet, prefix 42) form and
+// `kBobSS58` is the Polkadot (mainnet, prefix 0) form.
 // https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
 inline constexpr const char kBob[] =
-    "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
+    "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty";
 
+// https://polkadot.subscan.io/account/14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3
 inline constexpr const char kBobSS58[] =
     "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
 
@@ -319,7 +322,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
+        chain_id, polkadot_mainnet_account_->account_id->Clone(), kBobSS58,
         mojom::uint128::New(0, 1234), false, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
@@ -346,7 +349,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     EXPECT_EQ(*polkadot_tx->FindString("fee"),
               "dc8df1b5030000000000000000000000");
     EXPECT_EQ(*polkadot_tx->FindBool("transfer_all"), false);
-    EXPECT_EQ(polkadot_tx->FindInt("ss58_prefix"), std::nullopt);
+    EXPECT_EQ(*polkadot_tx->FindInt("ss58_prefix"), 0);
 
     uint128_t fee = 0;
     EXPECT_TRUE(base::HexStringToSpan(*polkadot_tx->FindString("fee"),
@@ -399,12 +402,14 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
   }
 
   {
-    // Provide an invalid destination address to the backend.
+    // A raw hex public key is rejected as a recipient even though it encodes
+    // a valid destination.
 
     std::string chain_id = mojom::kPolkadotMainnet;
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
-        chain_id, polkadot_mainnet_account_->account_id->Clone(), "0x1234",
+        chain_id, polkadot_mainnet_account_->account_id->Clone(),
+        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
         mojom::uint128::New(0, 1234), false, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
