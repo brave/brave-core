@@ -5,7 +5,6 @@
 
 group("app") {
   deps = [
-    "//brave/browser/policy:brave_simple_policy_map",
     "//brave/components/update_client:buildflags",
     "//components/dom_distiller/content/browser",
     "//google_apis",
