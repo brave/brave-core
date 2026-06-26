@@ -10,7 +10,9 @@
 import webpack from 'webpack'
 import type { Configuration } from 'webpack'
 
-export const deterministicOptimization: Configuration['optimization'] = {
+export const deterministicOptimization: NonNullable<
+  Configuration['optimization']
+> = {
   // We are providing chunk and module IDs via a plugin instead of a default
   chunkIds: false,
   moduleIds: false,
