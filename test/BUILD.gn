@@ -1027,6 +1027,7 @@ test("brave_browser_tests") {
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
     "//chrome/browser/ui:incognito_allowed_url",
+    "//chrome/browser/ui/views/translate",
   ]
 
   if (enable_session_service) {
