@@ -6,14 +6,14 @@
 import { spawnSync } from 'node:child_process'
 
 // Run the TypeScript compiler.
-run('tsc', ['--project', 'build'])
+run('tsc', ['--project', 'build/commands'])
 
 // Run the ESLint linter. This is required to catch possible runtime errors
 // that might occur because of broken imports.
-run('eslint', ['--quiet', 'build'])
+run('eslint', ['--quiet', 'build/commands'])
 
 // Run the Jest test runner. Pass through any extra arguments to it.
-run('jest', ['build', ...process.argv.slice(2)])
+run('jest', ['build/commands', ...process.argv.slice(2)])
 
 // Run a command and exit on error.
 function run(cmd: string, args: string[]): void {

@@ -3,7 +3,7 @@
   "include": [
     "./components/**/*",
     "./chromium_src/**/*",
-    "./build/**/*",
+    "./build/commands/**/*",
     "./ios/**/*",
     "./*.js",
     "./*.ts",
