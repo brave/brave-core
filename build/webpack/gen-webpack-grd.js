@@ -3,7 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
+import assert from 'node:assert'
+import path from 'node:path'
 import fs from 'mz/fs.js'
 
 /**
@@ -80,6 +81,7 @@ async function getFileListDeep(dirPath) {
       if (stats.isFile()) {
         return itemPath
       }
+      throw new Error(`Unexpected file type: ${itemPath}`)
     }),
   )
   // flatten to single string[]
@@ -104,27 +106,20 @@ async function createDynamicGDR() {
 }
 
 // collect args
+assert(process.env.RESOURCE_NAME, 'RESOURCE_NAME env variable is required')
+assert(process.env.ID_PREFIX, 'ID_PREFIX env variable is required')
+assert(process.env.TARGET_DIR, 'TARGET_DIR env variable is required')
+assert(process.env.GRD_NAME, 'GRD_NAME env variable is required')
+
 const resourceName = process.env.RESOURCE_NAME
 const idPrefix = process.env.ID_PREFIX
 let targetDir = process.env.TARGET_DIR
 const grdName = process.env.GRD_NAME
 const resourcePathPrefix = process.env.RESOURCE_PATH_PREFIX
 
-if (!targetDir) {
-  throw new Error('TARGET_DIR env variable is required!')
-} else if (!targetDir.endsWith(path.sep)) {
+if (!targetDir.endsWith(path.sep)) {
   // normalize path so relative path ignores leading path.sep
   targetDir += path.sep
-}
-
-if (!idPrefix) {
-  throw new Error('ID_PREFIX env variable is required!')
-}
-if (!resourceName) {
-  throw new Error('RESOURCE_NAME env variable is required!')
-}
-if (!grdName) {
-  throw new Error('GRD_NAME env variable is required!')
 }
 
 // main
