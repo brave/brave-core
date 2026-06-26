@@ -19,6 +19,7 @@ import {
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
+import NytIcon from './content/assets/nyt-logo.svg'
 
 // ---------------------------------------------------------------------------
 // Shared modal primitives — mirrors email_aliases_modal.tsx naming
@@ -85,10 +86,10 @@ const DemoArea = styled(Col)`
 `
 
 const CardsRow = styled(Row)`
-  align-items: stretch;
+  align-items: center;
   justify-content: center;
-  gap: ${spacing.s};
   width: 100%;
+  position: relative;
 `
 
 const SiteCard = styled(Col) <{ $faded?: boolean }>`
@@ -106,7 +107,15 @@ const SiteCard = styled(Col) <{ $faded?: boolean }>`
 const SiteCardFocused = styled(SiteCard)`
   flex: 1.4;
   opacity: 1;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  gap: ${spacing.l};
+  z-index: 1;
+  position: relative;
+  /* Pull the side cards underneath the focused card's edges. */
+  margin: 0 calc(-1 * ${spacing['2Xl']});
+  /* Extra vertical padding makes the focused card taller than its
+     neighbors so it stands out in front. */
+  padding: ${spacing['2Xl']} ${spacing['2Xl']};
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
 `
 
 const SiteTitle = styled.span`
@@ -117,14 +126,15 @@ const SiteTitle = styled.span`
   text-overflow: ellipsis;
 `
 
-const NytTitle = styled.div`
-  font-family: 'Times New Roman', Times, serif;
-  font-size: 15px;
-  font-weight: bold;
-  text-align: center;
-  color: ${color.text.primary};
-  white-space: nowrap;
-`
+// const NytTitle = styled.div`
+//   font-family: 'Times New Roman', Times, serif;
+//   font-size: 15px;
+//   font-weight: bold;
+//   text-align: center;
+//   color: ${color.text.primary};
+//   white-space: nowrap;
+//   margin-bottom: ${spacing.xl};
+//`
 
 const AliasChip = styled.div`
   border-radius: ${radius.s};
@@ -236,7 +246,8 @@ const EmailAliasesPromo = ({
 
                         {/* Center — focused NYT card */}
                         <SiteCardFocused>
-                            <NytTitle>The New York Times</NytTitle>
+                            {/* <NytTitle>The New York Times</NytTitle> */}
+                            <img src={NytIcon} alt="The New York Times" />
                             <ModalLabel>Enter your email to continue</ModalLabel>
                             <AliasChipFocused>
                                 <AliasPart>cat.mane.</AliasPart>
