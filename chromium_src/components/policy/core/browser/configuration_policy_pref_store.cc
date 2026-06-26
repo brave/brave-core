@@ -7,7 +7,7 @@
 
 #define ApplyPolicySettings(...)    \
   ApplyPolicySettings(__VA_ARGS__); \
-  pref_interceptor_.InterceptPrefValues(prefs.get())
+  pref_interceptor_.InterceptPrefValues(prefs.get(), IsInitializationComplete())
 
 #include <components/policy/core/browser/configuration_policy_pref_store.cc>
 

@@ -26,31 +26,33 @@ void PolicyPrefInterceptor::DisableCachingForTesting() {
   g_disable_caching_for_testing = true;
 }
 
-void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map) {
+void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map,
+                                                bool policies_initialized) {
   if (!pref_value_map || g_disable_caching_for_testing) {
     return;
   }
 
   for (std::string_view pref_name :
        PolicyPrefInterceptorList::GetInstance()->GetPrefs()) {
-    if (!initial_policies_loaded_) {
-      // First time - cache the initial values.
+    if (!policies_initialized) {
+      // Policies are still loading. Keep refreshing the cache from the map
+      // without touching the map itself, so the cache tracks the latest values
+      // until policies are fully initialized.
       bool value = false;
       if (pref_value_map->GetBoolean(pref_name, &value)) {
         pref_cache_[pref_name] = value;
+      } else {
+        pref_cache_.erase(pref_name);
       }
     } else {
-      // Subsequent calls - use cached values or remove if not cached.
+      // Policies are initialized. Restore cached values, removing any pref not
+      // present in the cache.
       if (const auto* cached_value = base::FindOrNull(pref_cache_, pref_name)) {
         pref_value_map->SetBoolean(pref_name, *cached_value);
       } else {
         pref_value_map->RemoveValue(pref_name);
       }
     }
-  }
-
-  if (!initial_policies_loaded_) {
-    initial_policies_loaded_ = true;
   }
 }
 

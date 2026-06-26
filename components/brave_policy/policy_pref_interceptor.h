@@ -26,18 +26,19 @@ class COMPONENT_EXPORT(POLICY_PREF_INTERCEPTOR) PolicyPrefInterceptor {
   PolicyPrefInterceptor& operator=(const PolicyPrefInterceptor&) = delete;
 
   // Intercepts pref value changes for prefs that should not be dynamically
-  // refreshed. On first call for each pref, caches the initial value. On
-  // subsequent calls, overrides the pref value with the cached value.
-  void InterceptPrefValues(PrefValueMap* pref_value_map);
+  // refreshed. While `policies_initialized` is false, keeps the cache in sync
+  // with the latest values in `pref_value_map` without modifying the map, since
+  // policies may still be loading. Once `policies_initialized` is true,
+  // overrides the map with the cached values, removing any pref that was not
+  // cached.
+  void InterceptPrefValues(PrefValueMap* pref_value_map,
+                           bool policies_initialized);
 
   static void DisableCachingForTesting();
 
  private:
   // Cache of pref values that should remain stable across policy updates.
   base::flat_map<std::string_view, bool> pref_cache_;
-
-  // Tracks whether initial policies have been loaded and cached.
-  bool initial_policies_loaded_ = false;
 };
 
 }  // namespace brave_policy
