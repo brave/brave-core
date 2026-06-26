@@ -301,17 +301,11 @@
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
           Create Your First Space by Clicking the Save Button Below.
         </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with one tab">
-          1 tab
+        <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row when the workspace contains one window">
+          {TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}
         </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with multiple tabs">
-          <ph name="TAB_COUNT">$1<ex>2</ex></ph> Tabs
-        </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and one tab">
-          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows – 1 Tab
-        </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and multiple tabs">
-          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows – <ph name="TAB_COUNT">$2<ex>2</ex></ph> Tabs
+        <message name="IDS_WORKSPACE_ROW_STATS_WINDOWS" desc="Stats label shown on a workspace row when the workspace contains multiple windows">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows
         </message>
       </if>
       <if expr="not use_titlecase">
@@ -360,17 +354,11 @@
         <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
           Create your first space by clicking the Save button below.
         </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with one tab">
-          1 tab
+        <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row when the workspace contains one window">
+          {TAB_COUNT, plural, =1 {1 tab} other {# tabs}}
         </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains one window with multiple tabs">
-          <ph name="TAB_COUNT">$1<ex>2</ex></ph> tabs
-        </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_SINGLE_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and one tab">
-          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows – 1 tab
-        </message>
-        <message name="IDS_WORKSPACE_ROW_STATS_MULTI_WINDOW_MULTI_TAB" desc="Stats label shown on a workspace row when the workspace contains multiple windows and multiple tabs">
-          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows – <ph name="TAB_COUNT">$2<ex>2</ex></ph> tabs
+        <message name="IDS_WORKSPACE_ROW_STATS_WINDOWS" desc="Stats label shown on a workspace row when the workspace contains multiple windows">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows
         </message>
       </if>
       <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">
