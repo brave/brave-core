@@ -195,6 +195,18 @@ export class StreamingMelFrontend {
     this.trimOldBuffers()
   }
 
+  // Zero every buffer holding audio or acoustic features and reset the
+  // frontend to empty. Called at session end so the utterance does not
+  // persist in the JS heap until garbage collection.
+  wipe(): void {
+    this.rawAudio.fill(0)
+    this.rawAudio.length = 0
+    for (const frame of this.melFrames) {
+      frame.fill(0)
+    }
+    this.melFrames.length = 0
+  }
+
   debugState(sampleRateHz: number): StreamingMelFrontendDebugState {
     const stableBacklogFrames = this.nextMelFrame - this.nextChunkFrame
 
@@ -347,6 +359,13 @@ export class StreamingMelFrontend {
     const dropFrames = keepFromFrame - this.melFrameBase
 
     if (dropFrames > 0) {
+      // Zero each dropped mel frame before releasing it. Mel features are a
+      // near complete acoustic representation, so wiping them here bounds the
+      // resident acoustics to the live window rather than leaving dropped
+      // frames in the JS heap until garbage collection.
+      for (let i = 0; i < dropFrames; i++) {
+        this.melFrames[i].fill(0)
+      }
       this.melFrames.splice(0, dropFrames)
       this.melFrameBase = keepFromFrame
     }
