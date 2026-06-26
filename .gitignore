@@ -37,6 +37,7 @@ patches/**/*.patchinfo
 /third_party/cryptography
 /third_party/macholib
 /third_party/libdmg-hfsplus/
+/third_party/node/
 /third_party/opengrep/bin/
 /third_party/wintun/
 *.xcodeproj
