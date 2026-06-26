@@ -12,7 +12,7 @@ deps = {
     "condition": "checkout_win",
   },
   "vendor/sparkle": {
-    "url": "https://github.com/brave/Sparkle.git@8721f93f694244f9ff41fe975a92617ac5f63f9a",
+    "url": "https://github.com/brave/Sparkle.git@6e8b614d26f96cf5a146ba005d3429172500a1d7",
     "condition": "checkout_mac",
   },
   "vendor/bat-native-tweetnacl": "https://github.com/brave-intl/bat-native-tweetnacl.git@8b424ccf29957fe01c88c36076fd32006a357887",
@@ -75,7 +75,7 @@ hooks = [
     'pattern': '.',
     'condition': 'checkout_mac and download_prebuilt_sparkle',
     'action': ['vpython3', 'build/download_dep.py',
-               'sparkle/sparkle-1.24.3.tar.gz',
+               'sparkle/sparkle-1.24.4.tar.gz',
                '//build/mac_files/sparkle_binaries'],
   },
   {
