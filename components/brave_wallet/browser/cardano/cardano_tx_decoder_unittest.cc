@@ -709,7 +709,7 @@ TEST(CardanoTxDecoderTest, EncodeWitness) {
 
   EXPECT_EQ(
       base::HexEncodeLower(CardanoTxDecoder::EncodeWitness(witness).value()),
-      "a100d9010280");
+      "a0");
 
   witness.vkey_witness_set.emplace_back(
       test::HexToArray<64>(kMockCardanoSignature),

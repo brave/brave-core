@@ -649,10 +649,9 @@ void CardanoApiImpl::OnSignTransactionRequestProcessed(
 
     // If signing pubkey already appears in the witness set - skip it as we
     // don't need to add it again.
-    if (std::ranges::find(
+    if (std::ranges::contains(
             decoded_tx.tx.tx_witness.vkey_witness_set, sign_result->pubkey,
-            &CardanoTxDecoder::SerializableVkeyWitness::public_key) !=
-        decoded_tx.tx.tx_witness.vkey_witness_set.end()) {
+            &CardanoTxDecoder::SerializableVkeyWitness::public_key)) {
       continue;
     }
 

@@ -126,6 +126,9 @@ fn decode_nonempty_set(value: &CborValue) -> Result<&Vec<CborValue>, ()> {
         }
         _ => return Err(()),
     };
+    if arr.is_empty() {
+        return Err(());
+    }
     Ok(arr)
 }
 
@@ -544,7 +547,17 @@ fn encode_tx_vkey_witness(witness: &CxxSerializableVkeyWitness) -> CborValue {
     ])
 }
 
-fn encode_tx_vkey_witness_set(vkey_witnesses: &[CxxSerializableVkeyWitness]) -> CborValue {
+// Encode `? 0 : nonempty_set<vkeywitness>`.
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L688
+fn encode_tx_vkey_witness_set(
+    vkey_witnesses: &[CxxSerializableVkeyWitness],
+) -> Option<(CborValue, CborValue)> {
+    // If there is no signatures, return None and don't include VK_WITNESS_KEY in
+    // the map.
+    if vkey_witnesses.is_empty() {
+        return None;
+    }
+
     // Spec does't require any sorting of vkey witnesses, but we sort them to
     // produce same binary form for the same transaction.
     let mut sorted_witnesses: Vec<_> = vkey_witnesses.iter().collect();
@@ -553,19 +566,22 @@ fn encode_tx_vkey_witness_set(vkey_witnesses: &[CxxSerializableVkeyWitness]) -> 
     let witness_cbor: Vec<CborValue> =
         sorted_witnesses.into_iter().map(|witness| encode_tx_vkey_witness(witness)).collect();
 
-    if USE_SET_TAG.load(Ordering::Relaxed) {
+    let encoded_set = if USE_SET_TAG.load(Ordering::Relaxed) {
         CborValue::Tag(SET_TAG, Box::new(CborValue::Array(witness_cbor)))
     } else {
         CborValue::Array(witness_cbor)
-    }
+    };
+
+    Some((CborValue::Integer(VK_WITNESS_KEY.into()), encoded_set))
 }
 
+// Encode transaction_witness_set.
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L687
 fn encode_tx_witness(witness: &CxxSerializableTxWitness) -> CborValue {
     let mut witness_map = Vec::new();
-    witness_map.push((
-        CborValue::Integer(VK_WITNESS_KEY.into()),
-        encode_tx_vkey_witness_set(&witness.vkey_witness_set),
-    ));
+    if let Some(entry) = encode_tx_vkey_witness_set(&witness.vkey_witness_set) {
+        witness_map.push(entry);
+    }
 
     CborValue::Map(witness_map)
 }
