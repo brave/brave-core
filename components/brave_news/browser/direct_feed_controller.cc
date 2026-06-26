@@ -26,8 +26,10 @@ namespace brave_news {
 
 DirectFeedController::FindFeedRequest::FindFeedRequest(
     const GURL& possible_feed_or_site_url,
+    const std::optional<url::Origin>& initiator_origin,
     mojom::BraveNewsController::FindFeedsCallback callback)
     : possible_feed_or_site_url(possible_feed_or_site_url),
+      initiator_origin(initiator_origin),
       callback(std::move(callback)) {}
 
 DirectFeedController::FindFeedRequest::FindFeedRequest(
@@ -47,6 +49,7 @@ DirectFeedController::~DirectFeedController() = default;
 
 void DirectFeedController::FindFeeds(
     const GURL& possible_feed_or_site_url,
+    const std::optional<url::Origin>& initiator_origin,
     mojom::BraveNewsController::FindFeedsCallback callback) {
   CHECK(possible_feed_or_site_url.is_valid() &&
         !possible_feed_or_site_url.is_empty());
@@ -54,34 +57,37 @@ void DirectFeedController::FindFeeds(
   if (ongoing_requests_.count(possible_feed_or_site_url.spec())) {
     DVLOG(2) << "Accumulated: " << possible_feed_or_site_url.spec();
     ongoing_requests_[possible_feed_or_site_url.spec()].push_back(
-        {possible_feed_or_site_url, std::move(callback)});
+        {possible_feed_or_site_url, initiator_origin, std::move(callback)});
     return;
   }
 
   if (ongoing_requests_.size() >= kMaxOngoingRequests) {
     DVLOG(2) << "Queued: " << possible_feed_or_site_url.spec();
-    pending_requests_.push({possible_feed_or_site_url, std::move(callback)});
+    pending_requests_.push(
+        {possible_feed_or_site_url, initiator_origin, std::move(callback)});
     return;
   }
 
   DVLOG(2) << "Kick off: " << possible_feed_or_site_url.spec();
   ongoing_requests_[possible_feed_or_site_url.spec()].push_back(
-      {possible_feed_or_site_url, std::move(callback)});
-  FindFeedsImpl(possible_feed_or_site_url);
+      {possible_feed_or_site_url, initiator_origin, std::move(callback)});
+  FindFeedsImpl(possible_feed_or_site_url, initiator_origin);
 }
 
 void DirectFeedController::FindFeedsImpl(
-    const GURL& possible_feed_or_site_url) {
+    const GURL& possible_feed_or_site_url,
+    const std::optional<url::Origin>& initiator_origin) {
   DVLOG(2) << __FUNCTION__ << " " << possible_feed_or_site_url.spec();
   fetcher_.DownloadFeed(
-      possible_feed_or_site_url, "",
+      possible_feed_or_site_url, initiator_origin, "",
       base::BindOnce(&DirectFeedController::OnFindFeedsImplDownloadedFeed,
-                     weak_ptr_factory_.GetWeakPtr(),
-                     possible_feed_or_site_url));
+                     weak_ptr_factory_.GetWeakPtr(), possible_feed_or_site_url,
+                     initiator_origin));
 }
 
 void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     const GURL& feed_url,
+    const std::optional<url::Origin>& initiator_origin,
     DirectFeedResponse response) {
   if (auto* feed = std::get_if<DirectFeedResult>(&response.result)) {
     std::vector<mojom::FeedSearchResultItemPtr> results;
@@ -126,7 +132,7 @@ void DirectFeedController::OnFindFeedsImplDownloadedFeed(
     auto feed_handler = base::BarrierCallback<DirectFeedResponse>(
         feed_urls.size(), std::move(all_done_handler));
     for (auto& url : feed_urls) {
-      fetcher_.DownloadFeed(url, "", feed_handler);
+      fetcher_.DownloadFeed(url, initiator_origin, "", feed_handler);
     }
     return;
   }
@@ -166,10 +172,11 @@ void DirectFeedController::OnFindFeedsImplResponse(
   pending_requests_.pop();
 
   auto target_url = request.possible_feed_or_site_url;
+  auto initiator_origin = request.initiator_origin;
   auto& requests = ongoing_requests_[target_url.spec()];
   requests.push_back(std::move(request));
   if (requests.size() == 1) {
-    FindFeedsImpl(target_url);
+    FindFeedsImpl(target_url, initiator_origin);
   }
 }
 
@@ -182,7 +189,7 @@ void DirectFeedController::VerifyFeedUrl(const GURL& feed_url,
   // will likely add to their user feed sources. Unless this is already
   // cached via network service?
   fetcher_.DownloadFeed(
-      feed_url, "",
+      feed_url, std::nullopt, "",
       base::BindOnce(
           [](IsValidCallback callback, DirectFeedResponse response) {
             // Handle response
