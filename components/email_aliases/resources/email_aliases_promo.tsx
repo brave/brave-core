@@ -10,12 +10,12 @@ import styled from 'styled-components'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
-import { color, font, spacing, radius } from '@brave/leo/tokens/css/variables'
+import { color, font, spacing, radius, typography } from '@brave/leo/tokens/css/variables'
 import {
-  EmailAliasesServiceObserverInterface,
-  EmailAliasesServiceObserverReceiver,
-  EmailAliasesPromoHandlerInterface,
-  EmailAliasesPromoHandler,
+    EmailAliasesServiceObserverInterface,
+    EmailAliasesServiceObserverReceiver,
+    EmailAliasesPromoHandlerInterface,
+    EmailAliasesPromoHandler,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
@@ -32,14 +32,15 @@ const ModalHeader = styled(Row)`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: ${spacing.m};
   box-sizing: border-box;
   flex-shrink: 0;
 `
 
 const ModalTitle = styled.h4`
-  color: ${color.text.primary};
+  color: ${color.text.secondary};
   font: ${font.heading.h4};
+  font-weight: 600;
+  line-height: ${typography.heading.h4.lineHeight};
   margin: 0;
 `
 export const RightAlignedItem = styled.div`
@@ -49,16 +50,18 @@ export const RightAlignedItem = styled.div`
 
 const ModalDescription = styled.p`
   margin: 0;
-  color: ${color.text.secondary};
+  color: ${color.text.primary};
   font: ${font.default.regular};
+  size: ${typography.default.regular.fontSize};
+  line-height: ${typography.default.regular.lineHeight};
+  letter-spacing: ${typography.letterSpacing.default};
+  list-spacing: ${typography.paragraphSpacing.default};
+  weight: ${typography.default.regular.fontWeight};
+  paragraph-spacing: ${typography.paragraphSpacing.default};
 `
 
 const ModalSectionCol = styled(Col)`
-    row-gap: ${spacing.s};
-//   gap: ${spacing.m};
-//   padding: ${spacing.m};
-//   flex: 1;
-//   overflow-y: auto;
+    row-gap: ${spacing['2Xl']};
 `
 
 const ModalLabel = styled.span`
@@ -70,10 +73,6 @@ const ModalFooter = styled(Col)`
   padding: ${spacing.m};
   flex-shrink: 0;
   gap: ${spacing.s};
-
-  & leo-button {
-    align-self: flex-end;
-  }
 `
 
 // ---------------------------------------------------------------------------
@@ -92,7 +91,7 @@ const CardsRow = styled(Row)`
   width: 100%;
 `
 
-const SiteCard = styled(Col)<{ $faded?: boolean }>`
+const SiteCard = styled(Col) <{ $faded?: boolean }>`
   flex: 1;
   border-radius: ${radius.m};
   border: 1px solid ${color.divider.subtle};
@@ -199,91 +198,89 @@ const RealEmailRow = styled(Row)`
 // ---------------------------------------------------------------------------
 
 const EmailAliasesPromo = ({
-  onClose,
-  onGetStarted,
+    onClose,
+    onGetStarted,
 }: {
-  onClose: () => void
-  onGetStarted: () => void
+    onClose: () => void
+    onGetStarted: () => void
 }) => {
-  return (
-    <ModalCol>
-      <ModalHeader>
-        <ModalTitle>Email aliases</ModalTitle>
-        <RightAlignedItem>
-            <Button fab kind='plain-faint' onClick={onClose}>
-                <Icon name='close' />
-            </Button>
-        </RightAlignedItem>
-      </ModalHeader>
+    return (
+        <ModalCol>
+            <ModalHeader>
+                <ModalTitle>Email aliases</ModalTitle>
+                <RightAlignedItem>
+                    <Button fab kind='plain-faint' onClick={onClose}>
+                        <Icon name='close' />
+                    </Button>
+                </RightAlignedItem>
+            </ModalHeader>
 
-      <ModalSectionCol>
-        <ModalDescription>
-          Create unique, random addresses that forward to your Brave account
-          email and can be deleted at any time. Keep your actual email address
-          from being disclosed or used by advertisers.
-        </ModalDescription>
+            <ModalSectionCol>
+                <ModalDescription>
+                    Create unique, random addresses that forward to your Brave account
+                    email and can be deleted at any time. Keep your actual email address
+                    from being disclosed or used by advertisers.
+                </ModalDescription>
 
-        <DemoArea>
-          <CardsRow>
-            {/* Left — faded Walmart card */}
-            <SiteCard $faded>
-              <SiteTitle style={{ color: '#0071ce' }}>Walmart ✦</SiteTitle>
-              <ModalLabel>Register on Wal…</ModalLabel>
-              <AliasChip>
-                <AliasPart>lion.paw.</AliasPart>
-                <AliasNumber>75</AliasNumber>
-                <span>…</span>
-              </AliasChip>
-            </SiteCard>
+                <DemoArea>
+                    <CardsRow>
+                        {/* Left — faded Walmart card */}
+                        <SiteCard $faded>
+                            <SiteTitle style={{ color: '#0071ce' }}>Walmart ✦</SiteTitle>
+                            <ModalLabel>Register on Wal…</ModalLabel>
+                            <AliasChip>
+                                <AliasPart>lion.paw.</AliasPart>
+                                <AliasNumber>75</AliasNumber>
+                                <span>…</span>
+                            </AliasChip>
+                        </SiteCard>
 
-            {/* Center — focused NYT card */}
-            <SiteCardFocused>
-              <NytTitle>The New York Times</NytTitle>
-              <ModalLabel>Enter your email to continue</ModalLabel>
-              <AliasChipFocused>
-                <AliasPart>cat.mane.</AliasPart>
-                <AliasNumber>2947</AliasNumber>
-                <span>@bravealias.com</span>
-              </AliasChipFocused>
-            </SiteCardFocused>
+                        {/* Center — focused NYT card */}
+                        <SiteCardFocused>
+                            <NytTitle>The New York Times</NytTitle>
+                            <ModalLabel>Enter your email to continue</ModalLabel>
+                            <AliasChipFocused>
+                                <AliasPart>cat.mane.</AliasPart>
+                                <AliasNumber>2947</AliasNumber>
+                                <span>@bravealias.com</span>
+                            </AliasChipFocused>
+                        </SiteCardFocused>
 
-            {/* Right — faded generic store card */}
-            <SiteCard $faded>
-              <SiteTitle style={{ color: color.text.secondary }}>
-                store.com
-              </SiteTitle>
-              <ModalLabel>&nbsp;</ModalLabel>
-              <AliasChip>
-                <span>…ealias.com</span>
-              </AliasChip>
-            </SiteCard>
-          </CardsRow>
+                        {/* Right — faded generic store card */}
+                        <SiteCard $faded>
+                            <SiteTitle style={{ color: color.text.secondary }}>
+                                store.com
+                            </SiteTitle>
+                            <ModalLabel>&nbsp;</ModalLabel>
+                            <AliasChip>
+                                <span>…ealias.com</span>
+                            </AliasChip>
+                        </SiteCard>
+                    </CardsRow>
 
-          <ArrowWrapper>
-            <ArrowLine />
-            <ArrowHead />
-          </ArrowWrapper>
+                    <ArrowWrapper>
+                        <ArrowLine />
+                        <ArrowHead />
+                    </ArrowWrapper>
 
-          <RealEmailRow>
-            <Icon name='email' />
-            youremail@example.com
-          </RealEmailRow>
-        </DemoArea>
-        <ModalDescription>
-          To use Email aliases, you need to be logged in to your Brave account.
-          Get started by clicking the button below.
-        </ModalDescription>
-      </ModalSectionCol>
+                    <RealEmailRow>
+                        <Icon name='email' />
+                        youremail@example.com
+                    </RealEmailRow>
+                </DemoArea>
+                <ModalDescription>
+                    To use Email aliases, you need to be logged in to your Brave account.
+                    Get started by clicking the button below.
+                </ModalDescription>
+            </ModalSectionCol>
 
-      <ModalFooter>
-        <Row style={{ justifyContent: 'flex-end' }}>
-          <Button kind='filled' onClick={onGetStarted}>
-            Get started
-          </Button>
-        </Row>
-      </ModalFooter>
-    </ModalCol>
-  )
+            <ModalFooter>
+                <Button kind='filled' onClick={onGetStarted} style={ 'align-self: flex-end' }>
+                    Get started
+                </Button>
+            </ModalFooter>
+        </ModalCol>
+    )
 }
 
 // ---------------------------------------------------------------------------
@@ -291,18 +288,18 @@ const EmailAliasesPromo = ({
 // ---------------------------------------------------------------------------
 
 export const EmailAliasesPromoConnected = ({
-  emailAliasesPromoHandler,
-  bindObserver,
+    emailAliasesPromoHandler,
+    bindObserver,
 }: {
-  emailAliasesPromoHandler: EmailAliasesPromoHandlerInterface
-  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+    emailAliasesPromoHandler: EmailAliasesPromoHandlerInterface
+    bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-  return (
-    <EmailAliasesPromo
-      onClose={() => emailAliasesPromoHandler.onPromoClosed()}
-      onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
-    />
-  )
+    return (
+        <EmailAliasesPromo
+            onClose={() => emailAliasesPromoHandler.onPromoClosed()}
+            onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
+        />
+    )
 }
 
 // ---------------------------------------------------------------------------
@@ -310,21 +307,21 @@ export const EmailAliasesPromoConnected = ({
 // ---------------------------------------------------------------------------
 
 const mount = () => {
-  const rootElement = document.getElementById('mountPoint')!
-  const emailAliasesPromoHandler = EmailAliasesPromoHandler.getRemote()
-  const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
-    const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
-    return () => observerReceiver.$.close()
-  }
-  setIconBasePath('//resources/brave-icons')
-  createRoot(rootElement).render(
-    <StyleSheetManager>
-      <EmailAliasesPromoConnected
-        emailAliasesPromoHandler={emailAliasesPromoHandler}
-        bindObserver={bindObserver}
-      />
-    </StyleSheetManager>,
-  )
+    const rootElement = document.getElementById('mountPoint')!
+    const emailAliasesPromoHandler = EmailAliasesPromoHandler.getRemote()
+    const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
+        const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
+        return () => observerReceiver.$.close()
+    }
+    setIconBasePath('//resources/brave-icons')
+    createRoot(rootElement).render(
+        <StyleSheetManager>
+            <EmailAliasesPromoConnected
+                emailAliasesPromoHandler={emailAliasesPromoHandler}
+                bindObserver={bindObserver}
+            />
+        </StyleSheetManager>,
+    )
 }
 
 document.addEventListener('DOMContentLoaded', mount)
