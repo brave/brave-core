@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use Brave's avatar toolbar button in ToolbarView::Init().
+
+      Brave subclasses AvatarToolbarButton; swap the concrete type created in
+      the non-WebUI avatar button branch. The Brave header is supplied by the
+      chromium_src override.
+    re_pattern: 'std::make_unique<AvatarToolbarButton>'
+    replace: 'std::make_unique<BraveAvatarToolbarButton>'
+
+  - description: |
+      Use Brave's browser app menu button in ToolbarView::Init().
+
+      Brave subclasses BrowserAppMenuButton; swap the concrete type created for
+      the app menu. The Brave header is supplied by the chromium_src override.
+    re_pattern: 'std::make_unique<BrowserAppMenuButton>'
+    replace: 'std::make_unique<BraveBrowserAppMenuButton>'
+
+  - description: |
+      Declare the location bar as Brave's LocationBarView type.
+
+      The concrete type is selected by the LocationBarViewAlias defined in the
+      chromium_src override, which maps to BraveLocationBarView only when
+      extensions are enabled. This is why the swap cannot be a plaster on the
+      type name directly - the substitution must be gated on a build flag.
+    re_pattern: 'std::unique_ptr<LocationBarView>'
+    replace: 'std::unique_ptr<LocationBarViewAlias>'
+
+  - description: |
+      Construct the location bar as Brave's LocationBarView type.
+
+      Pairs with the std::unique_ptr declaration above. The concrete class comes
+      from the LocationBarViewAlias defined in the chromium_src override, which
+      resolves to BraveLocationBarView only when extensions are enabled.
+    re_pattern: 'std::make_unique<LocationBarView>'
+    replace: 'std::make_unique<LocationBarViewAlias>'
