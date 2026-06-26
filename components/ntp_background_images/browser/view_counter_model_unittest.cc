@@ -6,6 +6,7 @@
 #include "brave/components/ntp_background_images/browser/view_counter_model.h"
 
 #include <cstddef>
+#include <set>
 
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
@@ -223,6 +224,41 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
   // Only |count_to_branded_wallpapaer_| is reset.
   EXPECT_NE(0, model.count_to_branded_wallpaper_);
   EXPECT_EQ(image_index, model.current_wallpaper_image_index());
+}
+
+// Verify the randomized rotation stays in bounds, never repeats the currently
+// displayed image, and eventually surfaces every available image.
+TEST_F(ViewCounterModelTest, NTPBackgroundImagesRandomRotationTest) {
+  ViewCounterModel model(prefs());
+  model.set_total_image_count(kTestImageCount);
+
+  std::set<int> seen_indices;
+  constexpr int kTestRotationCount = 1000;
+  for (int i = 0; i < kTestRotationCount; ++i) {
+    const int previous_index = model.current_wallpaper_image_index();
+    model.RotateBackgroundWallpaperImageIndexRandom();
+    const int current_index = model.current_wallpaper_image_index();
+
+    EXPECT_GE(current_index, 0);
+    EXPECT_LT(current_index, static_cast<int>(kTestImageCount));
+    EXPECT_NE(previous_index, current_index);
+    seen_indices.insert(current_index);
+  }
+
+  // Over many rotations every image index should be selected at least once.
+  EXPECT_EQ(kTestImageCount, seen_indices.size());
+}
+
+// Verify the randomized rotation handles the single-image case by keeping the
+// index at `0` instead of attempting to pick a different image.
+TEST_F(ViewCounterModelTest, NTPBackgroundImagesRandomRotationSingleImageTest) {
+  ViewCounterModel model(prefs());
+  model.set_total_image_count(1);
+
+  for (int i = 0; i < 10; ++i) {
+    model.RotateBackgroundWallpaperImageIndexRandom();
+    EXPECT_EQ(0, model.current_wallpaper_image_index());
+  }
 }
 
 // Test for background images only case (SI option is disabled)

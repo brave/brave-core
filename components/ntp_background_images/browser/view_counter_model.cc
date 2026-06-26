@@ -125,22 +125,31 @@ void ViewCounterModel::RotateBackgroundWallpaperImageIndex() {
   }
 
 #if BUILDFLAG(IS_ANDROID)
-  // On Android, show background images in a random order, avoiding an
-  // immediate repeat of the currently selected image.
+  RotateBackgroundWallpaperImageIndexRandom();
+#else
+  RotateBackgroundWallpaperImageIndexSequential();
+#endif
+}
+
+void ViewCounterModel::RotateBackgroundWallpaperImageIndexRandom() {
+  // Show background images in a random order, avoiding an immediate repeat of
+  // the currently displayed image.
   if (total_image_count_ == 1) {
     current_wallpaper_image_index_ = 0;
     return;
   }
+
   // Choose uniformly among all indices except the current one.
   int next_index = base::RandInt(0, total_image_count_ - 2);
   if (next_index >= current_wallpaper_image_index_) {
     ++next_index;
   }
   current_wallpaper_image_index_ = next_index;
-#else
+}
+
+void ViewCounterModel::RotateBackgroundWallpaperImageIndexSequential() {
   current_wallpaper_image_index_++;
   current_wallpaper_image_index_ %= total_image_count_;
-#endif
 }
 
 void ViewCounterModel::NextBrandedImage() {

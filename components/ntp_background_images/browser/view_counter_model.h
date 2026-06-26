@@ -61,6 +61,10 @@ class ViewCounterModel {
                            NTPSponsoredImagesCountToBrandedWallpaperTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest, NTPBackgroundImagesTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesRandomRotationTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
+                           NTPBackgroundImagesRandomRotationSingleImageTest);
+  FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPBackgroundImagesWithSIDisabledTest);
   FRIEND_TEST_ALL_PREFIXES(ViewCounterModelTest,
                            NTPBackgroundImagesWithEmptyCampaignTest);
@@ -72,6 +76,15 @@ class ViewCounterModel {
   void RegisterPageViewForBrandedImages();
 
   void RegisterPageViewForBackgroundImages();
+
+  // Picks the next background wallpaper index uniformly at random, excluding
+  // the currently displayed index so the same image is never shown twice in a
+  // row.
+  void RotateBackgroundWallpaperImageIndexRandom();
+
+  // Advances the background wallpaper index sequentially, wrapping around to
+  // the start once the last image is reached.
+  void RotateBackgroundWallpaperImageIndexSequential();
 
   void ScheduleNextBrandedWallpaperCountReset();
   void ResetBrandedWallpaperCountAndScheduleNextCountReset();
