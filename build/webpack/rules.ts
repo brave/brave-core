@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
+import path from 'node:path'
 import type { RuleSetRule } from 'webpack'
 import getTsCustomTransformers from './webpack-ts-transformers.js'
 import dirName from './dirName.cjs'
