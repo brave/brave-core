@@ -181,7 +181,9 @@ public struct StoreKitReceiptView: View {
         value: purchase.originalTransactionId
       )
 
-      StoreKitReceiptLineView(title: "Line Item ID", value: "\(purchase.webOrderLineItemId)")
+      if purchase.webOrderLineItemId != 0 {
+        StoreKitReceiptLineView(title: "Line Item ID", value: "\(purchase.webOrderLineItemId)")
+      }
 
       StoreKitReceiptLineView(title: "Quantity", value: "\(purchase.quantity)")
 
