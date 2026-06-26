@@ -11,7 +11,7 @@
 // to React's CJS exports (no ESM boundary in the way), and consumers fetch a
 // single file.
 //
-// Externals in components/webpack/webpack.config.ts map `react` and
+// Externals in //brave/build/webpack/webpack.config.ts map `react` and
 // `react-dom` to the `React` / `ReactDOM` namespace exports below.
 import * as React from 'react'
 import * as ReactDOM from 'react-dom'
