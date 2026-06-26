@@ -13,7 +13,7 @@ class XHRCompileAsyncWasmPlugin {
 
   apply(compiler) {
     const { webpack } = compiler
-    const { RuntimeGlobals, Template, wasm } = webpack
+    const { RuntimeGlobals, wasm } = webpack
     wasm.EnableWasmLoadingPlugin.setEnabled(compiler, this.type)
 
     compiler.hooks.thisCompilation.tap(PLUGIN_NAME, (compilation) => {
