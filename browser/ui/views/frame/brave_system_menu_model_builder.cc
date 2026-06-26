@@ -10,7 +10,7 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
-#include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
+#include "chrome/browser/ui/immersive/immersive_mode_controller.h"
 #include "ui/menus/simple_menu_model.h"
 
 BraveSystemMenuModelBuilder::~BraveSystemMenuModelBuilder() = default;
