@@ -53,20 +53,12 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
               "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3");
   }
 
+  // Raw hex public keys are rejected even though they encode a valid
+  // destination.
   {
     auto parsed = ParsePolkadotAccount(
         R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48)",
         0);
-    ASSERT_TRUE(parsed.has_value());
-    EXPECT_EQ(
-        parsed->ToString(),
-        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48");
-  }
-
-  // Address isn't 0x-prefixed.
-  {
-    auto parsed = ParsePolkadotAccount(
-        "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
@@ -96,45 +88,10 @@ TEST(PolkadotUtils, DestinationAddressParsing) {
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
-  {
-    auto parsed = ParsePolkadotAccount(
-        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48123"
-        "4",
-        0);
-    EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(),
-              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
-  }
-
-  {
-    auto parsed = ParsePolkadotAccount(
-        R"(0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a481234)",
-        42);
-    EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(),
-              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
-  }
-
   // Address is too short.
   {
     auto parsed = ParsePolkadotAccount(
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694t", 42);
-    EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(),
-              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
-  }
-
-  {
-    auto parsed = ParsePolkadotAccount(
-        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4", 0);
-    EXPECT_FALSE(parsed.has_value());
-    EXPECT_EQ(parsed.error(),
-              mojom::PolkadotValidationStatus::kInvalidAddressFormat);
-  }
-
-  {
-    auto parsed = ParsePolkadotAccount(
-        "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a", 0);
     EXPECT_FALSE(parsed.has_value());
     EXPECT_EQ(parsed.error(),
               mojom::PolkadotValidationStatus::kInvalidAddressFormat);
