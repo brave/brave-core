@@ -80,7 +80,7 @@ const ModalFooter = styled(Col)`
 // Demo cards
 // ---------------------------------------------------------------------------
 
-const DemoArea = styled(Col)`
+const IllustrationArea = styled(Col)`
   align-items: center;
   gap: ${spacing.s};
 `
@@ -125,16 +125,6 @@ const SiteTitle = styled.span`
   overflow: hidden;
   text-overflow: ellipsis;
 `
-
-// const NytTitle = styled.div`
-//   font-family: 'Times New Roman', Times, serif;
-//   font-size: 15px;
-//   font-weight: bold;
-//   text-align: center;
-//   color: ${color.text.primary};
-//   white-space: nowrap;
-//   margin-bottom: ${spacing.xl};
-//`
 
 const AliasChip = styled.div`
   border-radius: ${radius.s};
@@ -231,7 +221,7 @@ const EmailAliasesPromo = ({
                     from being disclosed or used by advertisers.
                 </ModalDescription>
 
-                <DemoArea>
+                <IllustrationArea>
                     <CardsRow>
                         {/* Left — faded Walmart card */}
                         <SiteCard $faded>
@@ -277,7 +267,7 @@ const EmailAliasesPromo = ({
                         <Icon name='email-shield' />
                         youremail@example.com
                     </RealEmailRow>
-                </DemoArea>
+                </IllustrationArea>
                 <ModalDescription>
                     To use Email aliases, you need to be logged in to your Brave account.
                     Get started by clicking the button below.
