@@ -675,6 +675,180 @@ TEST_F(PageContentBlocksTest, FlattenContainerNode) {
   EXPECT_NOT_CONTAINS(content, "</container>");
 }
 
+TEST_F(PageContentBlocksTest, ContentOnlyStripsDomIdButKeepsInteraction) {
+  auto button = ContentNodeBuilder()
+                    .AsText("Submit")
+                    .MakeClickable(123)
+                    .WithGeometry(10, 20, 100, 30)
+                    .Build();
+  auto page = CreatePageWithContent(button);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  EXPECT_CONTAINS(content, ">Submit</text>");
+  // dom_id targeting is stripped...
+  EXPECT_NOT_CONTAINS(content, "dom_id");
+  // ...but interaction hints and geometry are kept.
+  EXPECT_CONTAINS(content, "clickable");
+  EXPECT_CONTAINS(content, "x=\"10\" y=\"20\" width=\"100\" height=\"30\"");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsDomIdButKeepsEditable) {
+  auto input = ContentNodeBuilder()
+                   .AsFormControl("email", "", "Enter email")
+                   .MakeEditable(456)
+                   .Build();
+  auto page = CreatePageWithContent(input);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  // Content-bearing form attributes and the editable hint remain.
+  EXPECT_CONTAINS(content, "<input name=\"email\" placeholder=\"Enter email\"");
+  EXPECT_CONTAINS(content, "editable");
+  // dom_id targeting is stripped.
+  EXPECT_NOT_CONTAINS(content, "dom_id");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsScrollMetadata) {
+  auto scrollable_div =
+      ContentNodeBuilder()
+          .AsContainer()
+          .MakeScrollable(789, 2000, 3000, 800, 600, 100, 200)
+          .WithChildren(
+              {ContentNodeBuilder().AsText("Scrollable content").Build()})
+          .Build();
+  auto page = CreatePageWithContent(scrollable_div);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  EXPECT_CONTAINS(content, "<text>Scrollable content</text>");
+  EXPECT_NOT_CONTAINS(content, "scrollable");
+  EXPECT_NOT_CONTAINS(content, "size=");
+  EXPECT_NOT_CONTAINS(content, "visible_area");
+  EXPECT_NOT_CONTAINS(content, "dom_id");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsDocumentIdentifiers) {
+  auto iframe =
+      ContentNodeBuilder()
+          .AsIframe("iframe_doc_123")
+          .WithChildren({ContentNodeBuilder().AsText("Iframe content").Build()})
+          .Build();
+  auto page = CreatePageWithContent(iframe);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  ASSERT_EQ(result.size(), 1u);
+  ASSERT_TRUE(result[0]->is_text_content_block());
+  const std::string& full_text = result[0]->get_text_content_block()->text;
+
+  // The iframe's readable content remains, but both the per-frame and root
+  // document identifiers are dropped.
+  EXPECT_CONTAINS(full_text, "Iframe content");
+  EXPECT_NOT_CONTAINS(full_text, "document_identifier");
+  EXPECT_NOT_CONTAINS(full_text, "PAGE ROOT DOCUMENT IDENTIFIER");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsSvgContent) {
+  auto svg = ContentNodeBuilder().AsSvg("SVG inner text").Build();
+  auto page = CreatePageWithContent(svg);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  // The whole SVG subtree is omitted.
+  EXPECT_NOT_CONTAINS(content, "<svg");
+  EXPECT_NOT_CONTAINS(content, "SVG inner text");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsCanvas) {
+  auto canvas = ContentNodeBuilder().AsCanvas().Build();
+  auto page = CreatePageWithContent(canvas);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  EXPECT_NOT_CONTAINS(content, "<canvas");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyFlattensGenericContainer) {
+  // Multi-child containers are preserved in agentic mode but flattened away in
+  // content-only mode, leaving the children inline.
+  auto container =
+      ContentNodeBuilder()
+          .AsContainer()
+          .WithChildren({ContentNodeBuilder().AsText("First").Build(),
+                         ContentNodeBuilder().AsText("Second").Build()})
+          .Build();
+  auto page = CreatePageWithContent(container);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  EXPECT_NOT_CONTAINS(content, "<container");
+  EXPECT_NOT_CONTAINS(content, "</container>");
+  EXPECT_CONTAINS(content, "<text>First</text>");
+  EXPECT_CONTAINS(content, "<text>Second</text>");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyKeepsContainerWithRole) {
+  // A container carrying a semantic role keeps its wrapper so the role
+  // survives.
+  auto container =
+      ContentNodeBuilder()
+          .AsContainer()
+          .WithRole(optimization_guide::proto::ANNOTATED_ROLE_NAV)
+          .WithChildren({ContentNodeBuilder().AsText("First").Build(),
+                         ContentNodeBuilder().AsText("Second").Build()})
+          .Build();
+  auto page = CreatePageWithContent(container);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  EXPECT_CONTAINS(content, "<container role=\"nav\">");
+  EXPECT_CONTAINS(content, "</container>");
+  EXPECT_CONTAINS(content, "<text>First</text>");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyStripsViewportAndInstructions) {
+  auto page = CreatePageWithViewport(800, 600, 100, 200);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  // Read the full block text (not just the untrusted-content section) so the
+  // trailing instructions are visible too.
+  ASSERT_EQ(result.size(), 1u);
+  ASSERT_TRUE(result[0]->is_text_content_block());
+  const std::string& full_text = result[0]->get_text_content_block()->text;
+
+  EXPECT_NOT_CONTAINS(full_text, "VIEWPORT:");
+  EXPECT_NOT_CONTAINS(full_text, "=== INTERACTION INSTRUCTIONS ===");
+}
+
+TEST_F(PageContentBlocksTest, ContentOnlyKeepsContentSemantics) {
+  auto anchor = ContentNodeBuilder()
+                    .AsAnchor("https://example.com", "Click here")
+                    .MakeClickable(55)
+                    .WithLabel("Homepage link")
+                    .WithRole(optimization_guide::proto::ANNOTATED_ROLE_NAV)
+                    .Build();
+  auto page = CreatePageWithContent(anchor);
+  auto result = ConvertAnnotatedPageContentToBlocks(
+      page, PageContentDetail::kContentOnly);
+  auto content = GetContentText(result);
+
+  // Content-bearing attributes (href, label, role) are preserved.
+  EXPECT_CONTAINS(content, "href=\"https://example.com\"");
+  EXPECT_CONTAINS(content, "label=\"Homepage link\"");
+  EXPECT_CONTAINS(content, "role=\"nav\"");
+  EXPECT_CONTAINS(content, "Click here");
+  // The interaction hint is kept, but dom_id targeting is stripped.
+  EXPECT_CONTAINS(content, "clickable");
+  EXPECT_NOT_CONTAINS(content, "dom_id");
+}
+
 TEST_F(PageContentBlocksTest, FlattenDeeplyNestedStructure) {
   // Create a deeply nested structure
   auto current = ContentNodeBuilder().AsText("Deep content").Build();
