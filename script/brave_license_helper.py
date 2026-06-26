@@ -177,6 +177,9 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'libdmg-hfsplus'),
         os.path.join('brave', 'tools', 'crates', 'vendor'),
 
+        # Node.js for tooling, and not shipped with the browser.
+        os.path.join('brave', 'third_party', 'node'),
+
         # plaster .toml file location should be skipped.
         os.path.join('brave', 'rewrite', 'third_party'),
 
