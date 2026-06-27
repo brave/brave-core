@@ -1,0 +1,183 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# backend.pyl — declarative specs for ast-grep-backed plaster operations.
+#
+# This file is a Python *literal*: it must be readable with
+# `ast.literal_eval` and therefore contains only dict / list / string
+# literals — no imports, function calls, names, or f-strings. The engine that
+# consumes these specs lives elsewhere; this file is data only.
+#
+# Top-level shape:
+#
+#   {
+#     "<category>": {            # groups ops by kind:
+#                                #   "matcher"  - read-only structural queries.
+#                                #   "rewriter" - mutating ops, built on top of
+#                                #               a matcher op.
+#       "<lang>.<op_name>": { ... },   # op id. The `<lang>.` prefix names the
+#                                      # ast-grep language (e.g. "cxx" -> cpp),
+#                                      # resolved in code, so the same op name
+#                                      # can exist per language and no op repeats
+#                                      # a "language" field. Each op is described
+#                                      # by a `#` comment above its entry.
+#     },
+#   }
+#
+# A "matcher" op has:
+#   "args": [ ... ]       ordered names the caller must supply. Each appears as
+#                         a {placeholder} in template.
+#   "template": "..."     an ast-grep YAML *rule body* (the part under `rule:`),
+#                         with {arg} placeholders filled at call time
+#                         (str.format). Block YAML style, so no literal `{`/`}`
+#                         has to be escaped.
+#   "result": {           the shape a successful run yields.
+#     "node": "<kind>"      tree-sitter node kind each match is.
+#   }
+#
+# A "rewriter" op locates nodes through an existing matcher op and edits each:
+#   "matcher": "<lang>.<op_name>"   id of a matcher op (in the "matcher" category)
+#                         that finds the node(s) to rewrite. The caller supplies
+#                         the matcher's args (and any extra args this op's replace
+#                         template needs); the matcher template ignores args it
+#                         does not reference. (Language comes from the op id's
+#                         `<lang>.` prefix, as above.)
+#   "replace": {          how each match is edited: a regex substitution applied
+#                         to the matched node's *source* (mirrors plaster's
+#                         substitution fields). The node's whole span is swapped
+#                         for the substituted text.
+#     "re_pattern": "..."   regex matched against the node text; anchors such as
+#                           ^/$ refer to the node's own bounds, not the file's.
+#     "replace": "..."      replacement string, filled with the op's args via
+#                           str.format (so `{arg}`; literal braces are `{{`/`}}`)
+#                           and then applied by re.sub (so capture groups too).
+#   }
+#   "result": { ... }     as for matcher ops; node is the kind being replaced.
+#
+# An op returns every match it finds, in source order; deciding what a given
+# count means (exactly one expected, none allowed, etc.) is left to the caller
+# (plaster), not encoded here.
+#
+# Note on args: values are substituted verbatim into the rule as ast-grep
+# `regex:` fields, so a caller passing a name with regex metacharacters is
+# responsible for escaping it. Anchors (^...$) are already provided by the
+# templates.
+
+{
+    "matcher": {
+
+        # The full declaration of `class_name::method_name`, including a
+        # multi-line signature and its trailing semicolon. The name is matched
+        # by text, so methods (field_identifier), destructors (destructor_name,
+        # e.g. "~Foo") and constructors (identifier) are all found. Overloads
+        # sharing the name each produce their own match. The result node is a
+        # field_declaration for methods and a declaration for con/destructors.
+        "cxx.find_class_method_decl": {
+            "args": ["class_name", "method_name"],
+            "template": """\
+any:
+  - kind: field_declaration
+  - kind: declaration
+has:
+  kind: function_declarator
+  stopBy: end
+  has:
+    field: declarator
+    regex: ^{method_name}$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The `private` access specifier opening `class_name`'s private section.
+        # The node is the `private` keyword; the `:` that follows is a separate
+        # token immediately after it.
+        "cxx.find_class_private_section": {
+            "args": ["class_name"],
+            "template": """\
+kind: access_specifier
+regex: ^private$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The `final` specifier on `class_name`'s declaration (the
+        # virtual_specifier node holding the `final` keyword). Only the
+        # class-head `final` matches; a method's trailing `final` is nested
+        # under its declaration, not directly inside the class.
+        "cxx.find_class_final": {
+            "args": ["class_name"],
+            "template": """\
+kind: virtual_specifier
+regex: ^final$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+    },
+    "rewriter": {
+
+        # The whole method declaration (multi-line signature and trailing
+        # semicolon included) with `virtual ` prepended.
+        "cxx.virtualise": {
+            "matcher": "cxx.find_class_method_decl",
+            "replace": {
+                "re_pattern": "^",
+                "replace": "virtual ",
+            },
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The class's `private:` section with a `friend` declaration inserted as
+        # its first line.
+        "cxx.friendify": {
+            "matcher": "cxx.find_class_private_section",
+            "replace": {
+                "re_pattern": "$",
+                "replace": ":\\n  friend {friend};",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # `class_name`'s declaration with its `final` specifier removed, so the
+        # class can be subclassed. The unfinalise engine also consumes the
+        # leading space before `final` so no doubled space is left behind.
+        "cxx.unfinalise": {
+            "matcher": "cxx.find_class_final",
+            "replace": {
+                "re_pattern": "^final$",
+                "replace": "",
+            },
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+    },
+}
