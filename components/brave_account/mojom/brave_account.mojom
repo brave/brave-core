@@ -109,6 +109,7 @@ enum RegisterServerErrorCode {
   kVerificationNotFoundOrInvalidIdOrCode              = 13002,
   kMaximumCodeVerificationAttemptsExceeded            = 13010,
   kInvalidVerificationCode                            = 13011,
+  kTokenHasExpired                                    = 14014,
 };
 
 struct RegisterServerError {
