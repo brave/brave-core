@@ -21,6 +21,7 @@
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
 #include "components/sync/protocol/entity_data.h"
 #include "components/sync/protocol/entity_specifics.pb.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -31,6 +32,53 @@ namespace {
 // repetitive, so gzip is guaranteed to shrink it.
 std::string CompressibleString() {
   return std::string(2 * kSyncCompressionThresholdBytes, 'a');
+}
+
+// Sets one of every AIChatCompressibleString the size-budget policy is allowed
+// to omit to a distinct marker, and returns those markers so a test can assert
+// on the whole set at once instead of field by field.
+std::vector<std::string> PopulateOmittableStrings(
+    sync_pb::AIChatConversationSpecifics_Entry* entry) {
+  auto* content = entry->add_associated_content();
+  content->set_uuid("ac-1");
+  content->mutable_last_contents()->set_raw("associated content text");
+
+  auto* file = entry->add_uploaded_files();
+  file->set_filename("doc.pdf");
+  file->mutable_extracted_text()->set_raw("file extracted text");
+
+  entry->add_events()->mutable_inline_search()->mutable_results_json()->set_raw(
+      "inline search results");
+
+  auto* web_sources = entry->add_events()->mutable_web_sources();
+  web_sources->add_sources()->mutable_page_content()->set_raw(
+      "event page content");
+  web_sources->add_rich_results()->set_raw("event rich result");
+
+  auto* tool_use = entry->add_events()->mutable_tool_use();
+  tool_use->mutable_arguments_json()->set_raw("tool arguments");
+  tool_use->add_artifacts()->mutable_content_json()->set_raw(
+      "artifact content");
+  tool_use->add_output()->mutable_text_content_block()->mutable_text()->set_raw(
+      "tool output text");
+  auto* nested = tool_use->add_output()->mutable_web_sources_content_block();
+  nested->add_sources()->mutable_page_content()->set_raw(
+      "tool output page content");
+  nested->add_rich_results()->set_raw("tool output rich result");
+
+  entry->add_events()->mutable_completion()->set_raw("completion");
+
+  return {"associated content text",
+          "file extracted text",
+          "inline search results",
+          "event page content",
+          "event rich result",
+          "tool arguments",
+          "artifact content",
+          "tool output text",
+          "tool output page content",
+          "tool output rich result",
+          "completion"};
 }
 
 }  // namespace
@@ -1129,6 +1177,111 @@ TEST(AIChatSyncConversionsTest, EntryRoundTripWithoutSkillOrNear) {
   ExpectConversationEntryEquals(FROM_HERE, rebuilt, entry);
   EXPECT_FALSE(rebuilt->skill);
   EXPECT_FALSE(rebuilt->near_verification_status);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryNoOpBelowBudget) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.set_entry_text("short");
+
+  ASSERT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  // Nothing should have been touched.
+  EXPECT_EQ(entry.entry_text(), "short");
+}
+
+TEST(AIChatSyncConversionsTest, ForEachOmittableStringVisitsEveryCategory) {
+  // Pins the field set the size-budget policy can reach, which is also the set
+  // the receiver has to be able to restore.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  const std::vector<std::string> expected = PopulateOmittableStrings(&entry);
+
+  std::vector<std::string> visited;
+  ForEachOmittableString(&entry,
+                         [&visited](sync_pb::AIChatCompressibleString& value) {
+                           visited.push_back(value.raw());
+                         });
+  EXPECT_THAT(visited, testing::UnorderedElementsAreArray(expected));
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsFileBytesFirst) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  // Make a single uploaded file that on its own exceeds the budget.
+  auto* file = entry.add_uploaded_files();
+  file->set_filename("big.bin");
+  file->set_filesize(kSyncMaxRecordBytes + 1024);
+  const std::string file_bytes(kSyncMaxRecordBytes + 1024, '\x01');
+  file->set_data(file_bytes);
+
+  // Add an AC with a small last_contents so we can verify it is NOT omitted
+  // when the file alone is enough to bring us under budget.
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  WriteCompressibleString("small page text", ac->mutable_last_contents());
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_FALSE(entry.uploaded_files(0).has_data());
+  // The omitted bytes leave behind a hash of the original content.
+  EXPECT_EQ(entry.uploaded_files(0).omitted_data_hash(),
+            base::PersistentHash(file_bytes));
+  // The AC's last_contents must still be intact.
+  EXPECT_FALSE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryOmitsLowerPriorityFieldsFirst) {
+  // Needs more than one category to go: dropping the file bytes alone leaves
+  // the entry over budget, so the associated content text — the first of the
+  // compressible-string categories — has to go too. The completion is the last
+  // category, so it must survive. Assign raw values rather than going through
+  // WriteCompressibleString so the on-the-wire sizes are deterministic.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  auto* file = entry.add_uploaded_files();
+  file->set_data(std::string(50 * 1024, '\x02'));
+
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  ac->mutable_last_contents()->set_raw(std::string(400 * 1024, 'A'));
+
+  entry.add_events()->mutable_completion()->set_raw(
+      std::string(100 * 1024, 'B'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(FitEntryWithinSyncBudget(&entry));
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  EXPECT_TRUE(
+      entry.associated_content(0).last_contents().has_omitted_content_hash());
+  EXPECT_FALSE(entry.events(0).completion().has_omitted_content_hash());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, FitEntryRefusesEntryOversizedByPlainField) {
+  // selected_text is a plain proto string, so no amount of omission can shrink
+  // this entry. The policy must still drop everything it is able to drop
+  // before giving up, and must report the failure so the caller can refuse to
+  // commit.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("pathological");
+  entry.set_conversation_uuid("c1");
+  PopulateOmittableStrings(&entry);
+  entry.mutable_uploaded_files(0)->set_data("file bytes");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(FitEntryWithinSyncBudget(&entry));
+
+  EXPECT_TRUE(entry.uploaded_files(0).has_omitted_data_hash());
+  ForEachOmittableString(&entry, [](sync_pb::AIChatCompressibleString& value) {
+    EXPECT_TRUE(value.has_omitted_content_hash());
+  });
 }
 
 }  // namespace ai_chat
