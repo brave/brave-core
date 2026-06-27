@@ -36,7 +36,7 @@ VISIT(brave_fields);
       const sync_pb::AIChatConversationSpecifics_Entry& proto) {           \
     VISIT(uuid);                                                           \
     VISIT(conversation_uuid);                                              \
-    VISIT(date_unix_epoch_micros);                                         \
+    VISIT(created_time_windows_epoch_micros);                              \
     VISIT(entry_text);                                                     \
     VISIT(prompt);                                                         \
     VISIT(character_type);                                                 \
@@ -74,7 +74,6 @@ VISIT(brave_fields);
     VISIT(extracted_text);                                                 \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatEntryEventProto& proto) {        \
-    VISIT(event_order);                                                    \
     VISIT(completion);                                                     \
     VISIT(search_queries);                                                 \
     VISIT(web_sources);                                                    \
