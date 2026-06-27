@@ -3,10 +3,6 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-group("registry_controlled_domains_deps") {
-  public_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
-}
-
 source_set("unit_tests") {
   testonly = true
   sources = [

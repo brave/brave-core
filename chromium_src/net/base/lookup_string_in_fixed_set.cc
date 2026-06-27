@@ -7,15 +7,11 @@
 
 #include <string_view>
 
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
-
 #define LookupSuffixInReversedSet LookupSuffixInReversedSet_ChromiumImpl
 #include <net/base/lookup_string_in_fixed_set.cc>
 #undef LookupSuffixInReversedSet
 
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/net/decentralized_dns/constants.h"
-#endif
 
 namespace net {
 
@@ -31,7 +27,6 @@ std::optional<DomainRuleTags> LookupSuffixInReversedSet(
     bool include_private,
     std::string_view host,
     size_t* suffix_length) {
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
   // Recognize .crypto(and other ud suffixes) and .eth as known TLDs for
   // decentralized DNS support. With this, when users type *.crypto or *.eth in
   // omnibox, it will be parsed as OmniboxInputType::URL input type instead of
@@ -54,7 +49,6 @@ std::optional<DomainRuleTags> LookupSuffixInReversedSet(
     *suffix_length = decentralized_dns::kDNSForEthDomain.size() - 1;
     return DomainRuleTags();
   }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
   return LookupSuffixInReversedSet_ChromiumImpl(graph, include_private, host,
                                                 suffix_length);
