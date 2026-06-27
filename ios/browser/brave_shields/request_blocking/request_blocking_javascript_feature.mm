@@ -68,7 +68,7 @@ void RequestBlockingJavaScriptFeature::ScriptMessageReceivedWithReply(
       std::move(callback));
 
   const base::DictValue* script_dict =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!script_dict) {
     std::move(reply_handler).Run(false);
     return;

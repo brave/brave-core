@@ -60,7 +60,7 @@ void BraveTalkLauncherJavaScriptFeature::ScriptMessageReceived(
   }
 
   const base::DictValue* body =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!body) {
     return;
   }
