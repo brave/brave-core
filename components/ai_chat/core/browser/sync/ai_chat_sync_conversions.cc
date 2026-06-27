@@ -100,6 +100,129 @@ std::optional<std::string> ReadCompressibleString(
   return std::nullopt;
 }
 
+bool FitEntryWithinSyncBudget(
+    sync_pb::AIChatConversationSpecifics::Entry* entry) {
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 1: omit raw uploaded file bytes (least re-derivable, but already
+  // unhelpful on the receiver without the local file present).
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_data() && !file.data().empty()) {
+      OmitUploadedFileData(&file);
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 2: associated_content.last_contents — the full page text. Most
+  // re-derivable since the receiver still has the URL.
+  for (auto& ac : *entry->mutable_associated_content()) {
+    if (ac.has_last_contents() &&
+        !ac.last_contents().has_omitted_content_hash()) {
+      OmitCompressibleString(ac.mutable_last_contents());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 3: uploaded_files.extracted_text — derivable from the file bytes
+  // (which may already have been omitted, but that's fine).
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_extracted_text() &&
+        !file.extracted_text().has_omitted_content_hash()) {
+      OmitCompressibleString(file.mutable_extracted_text());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 4: web_sources.page_content (search-result page snippets).
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_web_sources()) {
+      continue;
+    }
+    for (auto& src : *event.mutable_web_sources()->mutable_sources()) {
+      if (src.has_page_content() &&
+          !src.page_content().has_omitted_content_hash()) {
+        OmitCompressibleString(src.mutable_page_content());
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 5: tool_use.output text content block text.
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& block : *event.mutable_tool_use()->mutable_output()) {
+      if (!block.has_text_content_block()) {
+        continue;
+      }
+      auto* text = block.mutable_text_content_block()->mutable_text();
+      if (!text->has_omitted_content_hash()) {
+        OmitCompressibleString(text);
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 6: tool_use.arguments_json.
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_tool_use() && event.tool_use().has_arguments_json() &&
+        !event.tool_use().arguments_json().has_omitted_content_hash()) {
+      OmitCompressibleString(
+          event.mutable_tool_use()->mutable_arguments_json());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 7: web_sources.rich_results (JSON-formatted SERP payloads).
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_web_sources()) {
+      continue;
+    }
+    for (auto& rr : *event.mutable_web_sources()->mutable_rich_results()) {
+      if (!rr.has_omitted_content_hash()) {
+        OmitCompressibleString(&rr);
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 8: completion text.
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_completion() &&
+        !event.completion().has_omitted_content_hash()) {
+      OmitCompressibleString(event.mutable_completion());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Pathological: every omittable field has been omitted and the record is
+  // still over budget. Refuse the commit.
+  DLOG(ERROR) << "AI Chat entry " << entry->uuid()
+              << " exceeds the sync record budget after omitting every "
+              << "omittable field; refusing to commit. Size="
+              << entry->ByteSizeLong();
+  return false;
+}
+
 namespace {
 
 // --- Upload helpers: mojom → sync proto ---
