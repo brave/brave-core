@@ -67,7 +67,6 @@ components/brave_wallet/resources/solana_web3_script.js
 /components/skus/
 /components/tor/
 /components/webcompat_reporter/
-/components/webpack/
 /components/browser_ui/
 /components/decentralized_dns/
 /components/embedder_support/
