@@ -823,6 +823,7 @@ export type AccountModalTypes =
   | 'buy'
   | 'explorer'
   | 'shield'
+  | 'resetBirthday'
 
 export interface AccountButtonOptionsObjectType {
   name: string

@@ -36,4 +36,9 @@ export const AccountDetailsMenuOptions: AccountButtonOptionsObjectType[] = [
     name: 'braveWalletAccountsRemove',
     icon: 'trash',
   },
+  {
+    id: 'resetBirthday',
+    name: 'braveWalletResetShieldedAccountBirthday',
+    icon: 'calendar',
+  },
 ]

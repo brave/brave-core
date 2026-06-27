@@ -10,7 +10,9 @@ import Button from '@brave/leo/react/button'
 // Slices
 import {
   useGetChainTipStatusQuery,
+  useGetZCashAccountInfoQuery,
   useMakeAccountShieldedMutation,
+  useResetSyncStateMutation,
 } from '../../../../common/slices/api.slice'
 
 // Types
@@ -48,17 +50,24 @@ export const ShieldZCashAccountModal = (props: Props) => {
 
   // State
   const [isShielding, setIsShielding] = React.useState<boolean>(false)
+  const [isResettingBirthday, setIsResettingBirthday] =
+    React.useState<boolean>(false)
   const [showAdvanced, setShowAdvanced] = React.useState<boolean>(false)
   const [customBirthdayBlock, setCustomBirthdayBlock] =
     React.useState<string>('')
 
   // Queries
   const { data: chainTipStatus } = useGetChainTipStatusQuery(account.accountId)
+  const { data: zcashAccountInfo } = useGetZCashAccountInfoQuery(
+    account.accountId,
+  )
 
   // Mutations
   const [shieldAccount] = useMakeAccountShieldedMutation()
+  const [resetSyncState] = useResetSyncStateMutation()
 
   // Computed
+  const existingShieldBirthday = zcashAccountInfo?.accountShieldBirthday
   const accountBirthdayBlock =
     customBirthdayBlock !== '' ? Number(customBirthdayBlock) : 0
   const birthdayBlockIsToLow =
@@ -69,6 +78,16 @@ export const ShieldZCashAccountModal = (props: Props) => {
     && chainTipStatus?.chainTip !== undefined
     && accountBirthdayBlock > chainTipStatus.chainTip
   const invalidBirthdayBlock = birthdayBlockIsToLow || birthdayBlockIsToHigh
+  const isBusy = isShielding || isResettingBirthday
+  const birthdayBlockIsDifferent =
+    existingShieldBirthday
+    && existingShieldBirthday.value.toString() !== customBirthdayBlock
+
+  React.useEffect(() => {
+    if (existingShieldBirthday) {
+      setCustomBirthdayBlock(existingShieldBirthday.value.toString())
+    }
+  }, [existingShieldBirthday])
 
   // Methods
   const onShieldAccount = React.useCallback(async () => {
@@ -84,13 +103,36 @@ export const ShieldZCashAccountModal = (props: Props) => {
     onClose()
   }, [shieldAccount, account, onClose, accountBirthdayBlock])
 
+  const onResetShieldAccountBirthday = React.useCallback(async () => {
+    if (!account.accountId || !existingShieldBirthday) {
+      return
+    }
+    setIsResettingBirthday(true)
+    await resetSyncState({
+      accountId: account.accountId,
+      accountBirthdayBlock,
+    })
+    setIsResettingBirthday(false)
+    onClose()
+  }, [
+    resetSyncState,
+    account,
+    accountBirthdayBlock,
+    existingShieldBirthday,
+    onClose,
+  ])
+
   const onToggleShowAdvanced = () => {
     setShowAdvanced((prev) => !prev)
   }
 
   return (
     <PopupModal
-      title={getLocale('braveWalletSwitchToShieldedAccount')}
+      title={
+        existingShieldBirthday
+          ? getLocale('braveWalletResetShieldedAccountBirthday')
+          : getLocale('braveWalletSwitchToShieldedAccount')
+      }
       onClose={onClose}
       width='520px'
       headerPaddingHorizontal='32px'
@@ -137,49 +179,57 @@ export const ShieldZCashAccountModal = (props: Props) => {
           textColor='primary'
           textAlign='left'
         >
-          {getLocale('braveWalletAccountNotShieldedDescription')}
+          {existingShieldBirthday
+            ? getLocale('braveWalletResetShieldedAccountBirthdayDescription')
+            : getLocale('braveWalletAccountNotShieldedDescription')}
         </Text>
-        <Text
-          textSize='14px'
-          isBold={true}
-          textColor='primary'
-          textAlign='left'
-        >
-          {getLocale('braveWalletAccountShieldedDescription')}
-        </Text>
+        {!existingShieldBirthday && (
+          <Text
+            textSize='14px'
+            isBold={true}
+            textColor='primary'
+            textAlign='left'
+          >
+            {getLocale('braveWalletAccountShieldedDescription')}
+          </Text>
+        )}
         <AdvancedSettingsWrapper fullWidth={true}>
-          <AdvancedSettingsButton onClick={onToggleShowAdvanced}>
-            <Row
-              width='unset'
-              gap='4px'
-            >
-              <Icon
-                name='settings'
-                slot='icon'
-              />
-              <Text
-                textColor='primary'
-                textSize='14px'
-                isBold={true}
+          {!existingShieldBirthday && (
+            <AdvancedSettingsButton onClick={onToggleShowAdvanced}>
+              <Row
+                width='unset'
+                gap='4px'
               >
-                {getLocale('braveWalletAdvancedTransactionSettings')}
-              </Text>
-            </Row>
-            <CollapseIcon
-              isCollapsed={!showAdvanced}
-              name='carat-down'
-            />
-          </AdvancedSettingsButton>
-          {showAdvanced && (
+                <Icon
+                  name='settings'
+                  slot='icon'
+                />
+                <Text
+                  textColor='primary'
+                  textSize='14px'
+                  isBold={true}
+                >
+                  {getLocale('braveWalletAdvancedTransactionSettings')}
+                </Text>
+              </Row>
+              <CollapseIcon
+                isCollapsed={!showAdvanced}
+                name='carat-down'
+              />
+            </AdvancedSettingsButton>
+          )}
+          {(existingShieldBirthday || showAdvanced) && (
             <Column fullWidth={true}>
               <Row
-                padding='0px 8px 12px 28px'
+                padding={existingShieldBirthday ? '12px' : '0px 8px 12px 28px'}
                 justifyContent='space-between'
+                gap='8px'
               >
                 <Text
                   textColor='primary'
                   textSize='14px'
                   isBold={false}
+                  textAlign='left'
                 >
                   {getLocale('braveWalletShieldedAccountBirthdayBlock')}
                 </Text>
@@ -228,10 +278,20 @@ export const ShieldZCashAccountModal = (props: Props) => {
           {getLocale('braveWalletButtonCancel')}
         </Button>
         <Button
-          onClick={onShieldAccount}
-          isDisabled={isShielding || invalidBirthdayBlock}
+          onClick={
+            existingShieldBirthday
+              ? onResetShieldAccountBirthday
+              : onShieldAccount
+          }
+          isDisabled={
+            isBusy
+            || invalidBirthdayBlock
+            || (existingShieldBirthday && !birthdayBlockIsDifferent)
+          }
         >
-          {getLocale('braveWalletShieldAccount')}
+          {existingShieldBirthday
+            ? getLocale('braveWalletResetShieldedAccountBirthday')
+            : getLocale('braveWalletShieldAccount')}
         </Button>
       </Row>
     </PopupModal>

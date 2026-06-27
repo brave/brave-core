@@ -251,6 +251,45 @@ export const zcashEndpoints = ({
       },
       invalidatesTags: ['ZCashBalance'],
     }),
+    resetSyncState: mutation<
+      true,
+      { accountId: BraveWallet.AccountId; accountBirthdayBlock: number }
+    >({
+      queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
+        try {
+          const { zcashWalletService } = baseQuery(undefined).data
+          const { errorMessage } = await zcashWalletService.resetSyncState(
+            args.accountId,
+            args.accountBirthdayBlock,
+          )
+
+          if (errorMessage) {
+            return handleEndpointError(
+              endpoint,
+              'Error resetting account sync state: ',
+              errorMessage,
+            )
+          }
+
+          return {
+            data: true,
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Error resetting account sync state: ',
+            error,
+          )
+        }
+      },
+      invalidatesTags: [
+        'ZCashAccountInfo',
+        'IsShieldingAvailable',
+        'ZcashChainTipStatus',
+        'IsSyncInProgress',
+        'TokenBalances',
+      ],
+    }),
     stopShieldSync: mutation<true, BraveWallet.AccountId>({
       queryFn: async (args, { endpoint }, _extraOptions, baseQuery) => {
         try {

@@ -1247,6 +1247,8 @@
   <message name="IDS_BRAVE_WALLET_SYNC_STARTED_MESSAGE" desc="Sync started message on sync dialog.">Please don’t close this window until sync finishes.</message>
   <message name="IDS_BRAVE_WALLET_CONTINUE_USING_WALLET" desc="Continue using wallet button label on sync dialog. ">Continue using wallet in a new tab</message>
   <message name="IDS_BRAVE_WALLET_SHIELDED_ACCOUNT_BIRTHDAY_BLOCK" desc="Shielded account birthday block input label">Shielded account birthday block</message>
+  <message name="IDS_BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY" desc="Reset shielded account birthday button label">Reset account birthday</message>
+  <message name="IDS_BRAVE_WALLET_RESET_SHIELDED_ACCOUNT_BIRTHDAY_DESCRIPTION" desc="Reset shielded account birthday description">Resetting your account birthday will require a full resync. Enter a new birthday block and click "Reset account birthday" to continue.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_LOW" desc="Account birthday to low error">Account birthday must be greater than <ph name="BLOCK_NUMBER">$1<ex>1687104</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_BIRTHDAY_TOO_HIGH" desc="Account birthday to high error">Account birthday must be less than <ph name="BLOCK_NUMBER">$1<ex>7687104</ex></ph></message>
   <message name="IDS_BRAVE_WALLET_BLOCKS_BEHIND" desc="Blocks behind label for Zcash account sync"><ph name="BLOCKS">$1<ex>12,568</ex></ph> blocks behind</message>

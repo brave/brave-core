@@ -108,6 +108,9 @@ import { ShieldAccountAlert } from './shield_account_alert/shield_account_alert'
 import {
   VirtualizedTransactionList, //
 } from '../../virtualized_transaction_list/virtualized_transaction_list'
+import {
+  ShieldZCashAccountModal, //
+} from '../../popup-modals/shield_zcash_account/shield_zcash_account'
 
 // options
 import { AccountDetailsOptions } from '../../../../options/nav-options'
@@ -276,6 +279,8 @@ export const Account = () => {
     React.useState<boolean>(false)
   const [selectedTransaction, setSelectedTransaction] =
     React.useState<SerializableTransactionInfo>()
+  const [showShieldAccountModal, setShowShieldAccountModal] =
+    React.useState<boolean>(false)
 
   // Computed
   const blocksBehind = chainTipStatus
@@ -558,6 +563,10 @@ export const Account = () => {
           'address',
           selectedAccount.accountId.address,
         )()
+        return
+      }
+      if (option === 'resetBirthday') {
+        setShowShieldAccountModal(true)
         return
       }
       dispatch(AccountsTabActions.setShowAccountModal(true))
@@ -869,6 +878,14 @@ export const Account = () => {
         <TransactionDetailsModal
           onClose={() => setSelectedTransaction(undefined)}
           transaction={selectedTransaction}
+        />
+      )}
+      {showShieldAccountModal && (
+        <ShieldZCashAccountModal
+          account={selectedAccount}
+          onClose={() => {
+            setShowShieldAccountModal(false)
+          }}
         />
       )}
     </WalletPageWrapper>
