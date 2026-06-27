@@ -55,6 +55,8 @@ void CardanoProviderImpl::IsEnabled(IsEnabledCallback callback) {
 }
 
 void CardanoProviderImpl::Enable(EnableCallback callback) {
+  delegate_->WalletInteractionDetected();
+
   RequestCardanoPermissions(std::move(callback), origin_);
 }
 
@@ -153,8 +155,6 @@ CardanoProviderImpl::EvaluatePermissionsState(
   if (!delegate_->IsTabVisible()) {
     return PermissionCheckResult::kTabInactive;
   }
-
-  delegate_->WalletInteractionDetected();
 
   if (delegate_->IsPermissionDenied(mojom::CoinType::ADA)) {
     return PermissionCheckResult::kDeniedGlobally;
