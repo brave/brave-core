@@ -81,9 +81,14 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   // Expand vertical tabstrip temporarily. When the returned
   // ScopedCallbackRunner is destroyed, the state will be restored to the
-  // previous state.
+  // previous state. When |snap_to_expanded| is true, the width animation is
+  // stopped and the strip immediately takes its full expanded width, so that
+  // a concurrent tab drag-and-drop session doesn't observe per-frame bounds
+  // changes (which cause flicker when dragging a tab into a previously
+  // collapsed strip from another window).
   using ScopedStateResetter = std::unique_ptr<base::ScopedClosureRunner>;
-  [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging();
+  [[nodiscard]] ScopedStateResetter ExpandTabStripForDragging(
+      bool snap_to_expanded = false);
 
   int GetAvailableWidthForTabContainer();
 
