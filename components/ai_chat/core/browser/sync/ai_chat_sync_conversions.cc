@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "base/logging.h"
 #include "base/strings/strcat.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -65,6 +66,128 @@ std::optional<std::string> ReadCompressibleString(
     return in.raw();
   }
   return std::nullopt;
+}
+
+bool TruncateEntryForSync(sync_pb::AIChatConversationSpecifics::Entry* entry) {
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 1: drop raw uploaded file bytes (least re-derivable, but already
+  // unhelpful on the receiver without the local file present).
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_data() && !file.data().empty()) {
+      file.clear_data();
+      file.set_data_truncated_for_sync(true);
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 2: associated_content.last_contents — the full page text. Most
+  // re-derivable since the receiver still has the URL.
+  for (auto& ac : *entry->mutable_associated_content()) {
+    if (ac.has_last_contents() &&
+        !ac.last_contents().was_truncated_for_sync()) {
+      MarkCompressibleStringTruncated(ac.mutable_last_contents());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 3: uploaded_files.extracted_text — derivable from the file bytes
+  // (which may already have been dropped, but that's fine).
+  for (auto& file : *entry->mutable_uploaded_files()) {
+    if (file.has_extracted_text() &&
+        !file.extracted_text().was_truncated_for_sync()) {
+      MarkCompressibleStringTruncated(file.mutable_extracted_text());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 4: web_sources.page_content (search-result page snippets).
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_web_sources()) {
+      continue;
+    }
+    for (auto& src : *event.mutable_web_sources()->mutable_sources()) {
+      if (src.has_page_content() &&
+          !src.page_content().was_truncated_for_sync()) {
+        MarkCompressibleStringTruncated(src.mutable_page_content());
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 5: tool_use.output text content block text.
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_tool_use()) {
+      continue;
+    }
+    for (auto& block : *event.mutable_tool_use()->mutable_output()) {
+      if (!block.has_text_content_block()) {
+        continue;
+      }
+      auto* text = block.mutable_text_content_block()->mutable_text();
+      if (!text->was_truncated_for_sync()) {
+        MarkCompressibleStringTruncated(text);
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 6: tool_use.arguments_json.
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_tool_use() && event.tool_use().has_arguments_json() &&
+        !event.tool_use().arguments_json().was_truncated_for_sync()) {
+      MarkCompressibleStringTruncated(
+          event.mutable_tool_use()->mutable_arguments_json());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 7: web_sources.rich_results (JSON-formatted SERP payloads).
+  for (auto& event : *entry->mutable_events()) {
+    if (!event.has_web_sources()) {
+      continue;
+    }
+    for (auto& rr : *event.mutable_web_sources()->mutable_rich_results()) {
+      if (!rr.was_truncated_for_sync()) {
+        MarkCompressibleStringTruncated(&rr);
+      }
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Step 8: completion text.
+  for (auto& event : *entry->mutable_events()) {
+    if (event.has_completion() &&
+        !event.completion().was_truncated_for_sync()) {
+      MarkCompressibleStringTruncated(event.mutable_completion());
+    }
+  }
+  if (entry->ByteSizeLong() <= kSyncMaxRecordBytes) {
+    return true;
+  }
+
+  // Pathological: every truncatable field has been dropped and the record
+  // is still over budget. Refuse the commit.
+  DLOG(ERROR) << "AI Chat entry " << entry->uuid()
+              << " exceeds the sync record budget after full truncation; "
+              << "refusing to commit. Size=" << entry->ByteSizeLong();
+  return false;
 }
 
 namespace {

@@ -19,6 +19,7 @@
 namespace sync_pb {
 class AIChatCompressibleString;
 class AIChatConversationSpecifics;
+class AIChatConversationSpecifics_Entry;
 class EntitySpecifics;
 }  // namespace sync_pb
 
@@ -58,6 +59,15 @@ void MarkCompressibleStringTruncated(sync_pb::AIChatCompressibleString* out);
 // string.
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
+
+// Walks a priority-ordered list of long-text and binary fields on |entry|,
+// truncating them (marking the per-field sentinel so the receiver
+// preserves any local value) until the serialized record fits under the
+// per-record size budget. Returns true if the entry now fits (either
+// because no truncation was needed or because it succeeded), and false if
+// the entry remains too large even after every truncatable field has been
+// dropped — callers should refuse to commit such records.
+bool TruncateEntryForSync(sync_pb::AIChatConversationSpecifics_Entry* entry);
 
 // Builds a sync entity containing only conversation metadata.
 sync_pb::AIChatConversationSpecifics ConversationMetadataToSpecifics(

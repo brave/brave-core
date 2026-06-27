@@ -887,4 +887,86 @@ TEST(AIChatSyncConversionsTest, EntryAssociatedContentTextRoundTrip) {
   EXPECT_EQ(rebuilt_texts["ac-1"], std::string(4096, 'P'));
 }
 
+TEST(AIChatSyncConversionsTest, TruncationNoOpBelowThreshold) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  entry.set_entry_text("short");
+
+  ASSERT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(TruncateEntryForSync(&entry));
+  // Nothing should have been touched.
+  EXPECT_EQ(entry.entry_text(), "short");
+}
+
+TEST(AIChatSyncConversionsTest, TruncationDropsFileBytesFirst) {
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+  // Make a single uploaded file that on its own exceeds the budget.
+  auto* file = entry.add_uploaded_files();
+  file->set_filename("big.bin");
+  file->set_filesize(kSyncMaxRecordBytes + 1024);
+  file->set_data(std::string(kSyncMaxRecordBytes + 1024, '\x01'));
+
+  // Add an AC with a small last_contents so we can verify it is NOT
+  // truncated when the file alone is enough to bring us under budget.
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  WriteCompressibleString("small page text", ac->mutable_last_contents());
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(TruncateEntryForSync(&entry));
+  EXPECT_TRUE(entry.uploaded_files(0).data_truncated_for_sync());
+  EXPECT_FALSE(entry.uploaded_files(0).has_data() &&
+               !entry.uploaded_files(0).data().empty());
+  // The AC's last_contents must still be intact.
+  EXPECT_FALSE(
+      entry.associated_content(0).last_contents().was_truncated_for_sync());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, TruncationFallsThroughCategoriesInOrder) {
+  // Build an entry that requires more than one category to be dropped. The
+  // file bytes step (1) alone is not enough; the AC last_contents (2) must
+  // also be dropped. Use raw (non-gzipped) bytes for the AC text so the
+  // serialized size matches the input size.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("e1");
+  entry.set_conversation_uuid("c1");
+
+  // 50 KB of file bytes (truncation step 1).
+  auto* file = entry.add_uploaded_files();
+  file->set_data(std::string(50 * 1024, '\x02'));
+
+  // 400 KB of raw AC last_contents (step 2) — bypass WriteCompressibleString
+  // so we get a deterministic on-the-wire size that survives step 1.
+  auto* ac = entry.add_associated_content();
+  ac->set_uuid("ac-1");
+  ac->mutable_last_contents()->set_raw(std::string(400 * 1024, 'A'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_TRUE(TruncateEntryForSync(&entry));
+  // Step 1: file bytes were dropped.
+  EXPECT_TRUE(entry.uploaded_files(0).data_truncated_for_sync());
+  // Step 2: AC last_contents was dropped (file alone wasn't enough).
+  EXPECT_TRUE(
+      entry.associated_content(0).last_contents().was_truncated_for_sync());
+  EXPECT_LE(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+}
+
+TEST(AIChatSyncConversionsTest, TruncationRefusesPathologicalEntry) {
+  // Pile on a field that's NOT in any truncation step so truncation cannot
+  // shrink it. `selected_text` is currently a plain string and not in the
+  // priority list — exactly what we want to force the refusal path.
+  sync_pb::AIChatConversationSpecifics_Entry entry;
+  entry.set_uuid("pathological");
+  entry.set_conversation_uuid("c1");
+  entry.set_selected_text(std::string(kSyncMaxRecordBytes + 1024, 'Z'));
+
+  ASSERT_GT(entry.ByteSizeLong(), kSyncMaxRecordBytes);
+  EXPECT_FALSE(TruncateEntryForSync(&entry));
+  // No mutations to truncatable fields (there are none on this entry).
+}
+
 }  // namespace ai_chat
