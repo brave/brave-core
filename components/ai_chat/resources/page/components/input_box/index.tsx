@@ -72,6 +72,7 @@ type Props = Pick<
   | 'unassociatedTabs'
   | 'handleSkillClick'
   | 'selectedSkill'
+  | 'focusInput'
 >
   & Pick<
     AIChatContext,
@@ -483,6 +484,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                 isMobile={props.context.isMobile}
                 unassociatedTabs={props.context.unassociatedTabs}
                 setAttachmentsDialog={props.context.setAttachmentsDialog}
+                focusInput={props.context.focusInput}
               />
               {props.context.isAIChatAgentProfileFeatureEnabled
                 && !props.context.isAIChatAgentProfile && (

@@ -57,6 +57,7 @@ const testContext: InputBoxProps['context'] = {
   stopTask: () => {},
   handleSkillClick: () => {},
   selectedSkill: undefined,
+  focusInput: jest.fn(),
   processImageFile: jest.fn(),
   processPdfFile: jest.fn(),
   processTextFile: jest.fn(),
