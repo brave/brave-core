@@ -372,7 +372,6 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 
   if (browser_->is_type_normal()) {
     // Delete these when upstream enables by default.
-    UpdateCommandEnabled(IDC_READING_LIST_MENU, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_ADD_TAB, true);
     UpdateCommandEnabled(IDC_READING_LIST_MENU_SHOW_UI, true);
   }
