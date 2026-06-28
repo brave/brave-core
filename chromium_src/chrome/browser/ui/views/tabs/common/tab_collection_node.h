@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_COLLECTION_NODE_H_
-#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_COLLECTION_NODE_H_
+#ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMMON_TAB_COLLECTION_NODE_H_
+#define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMMON_TAB_COLLECTION_NODE_H_
 
 #include "components/tabs/public/tab_collection.h"
 
@@ -12,7 +12,7 @@
 // tabs::TabCollection::Type enum.
 #define UNPINNED UNPINNED, TREE_NODE
 
-#include <chrome/browser/ui/views/tabs/vertical/tab_collection_node.h>  // IWYU pragma: export
+#include <chrome/browser/ui/views/tabs/common/tab_collection_node.h>  // IWYU pragma: export
 #undef UNPINNED
 
-#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_COLLECTION_NODE_H_
+#endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_COMMON_TAB_COLLECTION_NODE_H_
