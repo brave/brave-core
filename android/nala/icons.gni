@@ -31,8 +31,8 @@ nala_icon_overrides = [
   },
   {
     # Override Chromium's product icon in media notifications with the Brave
-    # shield.
-    source = "ic_brave_icon_monochrome.xml"
+    # outline favicon.
+    source = "ic_social_brave_outline_favicon_fullheight.xml"
     dest = "chrome_product_vd_24.xml"
   },
   {
