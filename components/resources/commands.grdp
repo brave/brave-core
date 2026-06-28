@@ -88,9 +88,6 @@
   <message name="IDS_IDC_MAXIMIZE_WINDOW">
     Maximize window
   </message>
-  <message name="IDS_IDC_ALL_WINDOWS_FRONT">
-    Show all windows
-  </message>
   <message name="IDS_IDC_OPEN_IN_PWA_WINDOW">
     Open in PWA window
   </message>
@@ -264,9 +261,6 @@
   </message>
   <message name="IDS_IDC_TOGGLE_FULLSCREEN_TOOLBAR">
     Toggle fullscreen toolbar
-  </message>
-  <message name="IDS_IDC_CUSTOMIZE_TOUCH_BAR">
-    Customize touch bar
   </message>
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT_APPLE_EVENTS">
     Toggle JavaScript Apple Events

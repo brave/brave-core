@@ -133,7 +133,8 @@ IN_PROC_BROWSER_TEST_F(BraveSpellingOptionsSubMenuObserverTest,
   EXPECT_EQ(1U, menu()->GetMenuSize());
   BraveMockRenderViewContextMenu::MockMenuItem item;
   menu()->GetMenuItem(0, &item);
-  EXPECT_EQ(IDC_SPELLCHECK_MENU, item.command_id);
+  EXPECT_EQ(SpellingOptionsSubMenuObserver::kSubMenuPlaceholder,
+            item.command_id);
   EXPECT_FALSE(item.enabled);
 }
 
