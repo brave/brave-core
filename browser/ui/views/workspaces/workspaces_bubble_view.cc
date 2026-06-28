@@ -16,8 +16,7 @@
 #include "brave/browser/workspaces/workspace_service.h"
 #include "brave/browser/workspaces/workspace_service_factory.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/dialogs/browser_dialogs.h"
+#include "components/constrained_window/constrained_window_views.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/models/dialog_model.h"
@@ -37,10 +36,10 @@ WorkspacesBubbleView::~WorkspacesBubbleView() = default;
 
 WorkspacesBubbleView::WorkspacesBubbleView(
     views::View* anchor_view,
-    Browser* browser,
+    Profile* profile,
     base::RepeatingClosure on_save_workspace)
     : BubbleDialogDelegate(anchor_view, views::BubbleBorder::TOP_LEFT),
-      browser_(*browser),
+      profile_(profile),
       on_save_workspace_(std::move(on_save_workspace)) {
   SetButtons(static_cast<int>(ui::mojom::DialogButton::kNone));
   SetShowCloseButton(false);
@@ -52,7 +51,7 @@ WorkspacesBubbleView::WorkspacesBubbleView(
       /*inside_border_insets=*/gfx::Insets(),
       /*between_child_spacing=*/0));
 
-  auto* service = WorkspaceServiceFactory::GetForProfile(browser->profile());
+  auto* service = WorkspaceServiceFactory::GetForProfile(profile);
   CHECK(service);
 
   std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
@@ -137,14 +136,14 @@ void WorkspacesBubbleView::OnSaveClicked() {
 }
 
 void WorkspacesBubbleView::OnWorkspaceSelected(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
   CHECK(service);
   service->RestoreWorkspace(name);
   GetWidget()->Close();
 }
 
 void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
-  auto* service = WorkspaceServiceFactory::GetForProfile(browser_->profile());
+  auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
   CHECK(service);
 
   // The bubble closes once the modal confirmation appears; binding the
@@ -168,7 +167,8 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
                                    IDS_WORKSPACE_DIALOG_CANCEL_BUTTON)))
           .Build();
 
-  chrome::ShowBrowserModal(base::to_address(browser_), std::move(dialog));
+  constrained_window::ShowBrowserModal(
+      std::move(dialog), GetAnchorView()->GetWidget()->GetNativeWindow());
   GetWidget()->Close();
 }
 

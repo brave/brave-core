@@ -14,7 +14,7 @@
 #include "ui/views/view.h"
 #include "ui/views/window/dialog_delegate.h"
 
-class Browser;
+class Profile;
 
 namespace views {
 class Textfield;
@@ -34,10 +34,10 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
   METADATA_HEADER(SaveWorkspaceDialog, views::View)
 
  public:
-  // |browser| supplies the profile saved to and must outlive this dialog. The
-  // dialog configures its widget as CLIENT_OWNS_WIDGET; the caller owns the
-  // resulting Widget (see WorkspacesBubbleController).
-  explicit SaveWorkspaceDialog(Browser* browser);
+  // |profile| supplies the workspace service saved to and must outlive this
+  // dialog. The dialog configures its widget as CLIENT_OWNS_WIDGET; the caller
+  // owns the resulting Widget (see WorkspacesBubbleController).
+  explicit SaveWorkspaceDialog(Profile* profile);
   ~SaveWorkspaceDialog() override;
 
   SaveWorkspaceDialog(const SaveWorkspaceDialog&) = delete;
@@ -58,7 +58,7 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
   void ContentsChanged(views::Textfield* sender,
                        const std::u16string& new_contents) override;
 
-  raw_ptr<Browser> browser_;
+  raw_ptr<Profile> profile_;
   raw_ptr<views::Textfield> name_field_ = nullptr;
 };
 

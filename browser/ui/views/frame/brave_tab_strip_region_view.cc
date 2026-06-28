@@ -270,6 +270,38 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   tab_scroll_next_button_->SetVisible(false);
 }
 
+void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
+  if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
+    auto* bwi = tab_strip_->GetBrowserWindowInterface();
+    if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+      return;
+    }
+
+    // Insert before the tab strip so the button appears at the left edge of the
+    // tab area, before the first tab.
+    const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
+    CHECK(strip_idx.has_value());
+    workspaces_button_ = AddChildViewAt(
+        std::make_unique<TabStripControlButton>(
+            bwi,
+            base::BindRepeating(
+                &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
+                weak_factory_.GetWeakPtr()),
+            kLeoSpacesIcon),
+        strip_idx.value());
+    workspaces_button_->SetProperty(views::kCrossAxisAlignmentKey,
+                                    views::LayoutAlignment::kCenter);
+    workspaces_button_->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                                 views::MaximumFlexSizeRule::kPreferred));
+    workspaces_button_->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
+    workspaces_button_->GetViewAccessibility().SetName(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+  }
+}
+
 void BraveHorizontalTabStripRegionView::
     OnShowHorizontalTabScrollButtonsChanged() {
   InvalidateLayout();
@@ -336,12 +368,13 @@ void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
   }
   workspaces_bubble_controller_->ShowBubble(
       workspaces_button_,
-      tab_strip_->GetBrowserWindowInterface()->GetBrowserForMigrationOnly());
+      tab_strip_->GetBrowserWindowInterface()->GetProfile());
 }
 
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   views::View::Views order =
       HorizontalTabStripRegionView::GetChildrenInZOrder();
+
   if (HaveScrollButtons()) {
     for (auto& scroll_button :
          {tab_scroll_previous_button_, tab_scroll_next_button_}) {
@@ -359,6 +392,7 @@ views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   if (workspaces_button_) {
     order.push_back(workspaces_button_.get());
   }
+
   return order;
 }
 
@@ -453,11 +487,14 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
     combo_button_->SetVisible(false);
   }
 
-  // in vertical tabs mode, we make tab strip's height is the same with this
-  // view's height to avoid extra gaps.
+  // workspaces not implemented for vertical tabs yet.
+  // see https://github.com/brave/brave-browser/issues/56728
   if (workspaces_button_) {
     workspaces_button_->SetVisible(false);
   }
+
+  // in vertical tabs mode, we make tab strip's height is the same with this
+  // view's height to avoid extra gaps.
   tab_strip_->SetBoundsRect(gfx::Rect(0, 0, width(), height()));
 }
 
@@ -605,32 +642,7 @@ void BraveHorizontalTabStripRegionView::Initialize() {
     tab_search_button_->SetVisible(false);
   }
 
-  if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
-    auto* bwi = tab_strip_->GetBrowserWindowInterface();
-    // Insert before the tab strip so the button appears at the left edge of the
-    // tab area, before the first tab.
-    const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
-    CHECK(strip_idx.has_value());
-    workspaces_button_ = AddChildViewAt(
-        std::make_unique<TabStripControlButton>(
-            bwi,
-            base::BindRepeating(
-                &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
-                weak_factory_.GetWeakPtr()),
-            kLeoSpacesIcon),
-        strip_idx.value());
-    workspaces_button_->SetProperty(views::kCrossAxisAlignmentKey,
-                                    views::LayoutAlignment::kCenter);
-    workspaces_button_->SetProperty(
-        views::kFlexBehaviorKey,
-        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
-                                 views::MaximumFlexSizeRule::kPreferred));
-    workspaces_button_->SetTooltipText(
-        l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
-    workspaces_button_->GetViewAccessibility().SetName(
-        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
-  }
-
+  CreateWorkspaceButtonIfNeeded();
   CreateScrollButtonsIfNeeded();
 
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {

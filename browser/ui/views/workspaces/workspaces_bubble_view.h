@@ -15,7 +15,7 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 #include "ui/views/view.h"
 
-class Browser;
+class Profile;
 
 namespace views {
 class Widget;
@@ -35,11 +35,11 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate,
   METADATA_HEADER(WorkspacesBubbleView, views::View)
 
  public:
-  // |browser| supplies the profile used for service lookups and is the modal
-  // target for the delete confirmation dialog; it must outlive this bubble.
-  // |on_save_workspace| is run when the user activates the Save action.
+  // |profile| supplies the workspace service used for lookups and must outlive
+  // this bubble. |on_save_workspace| is run when the user activates the Save
+  // action.
   WorkspacesBubbleView(views::View* anchor_view,
-                       Browser* browser,
+                       Profile* profile,
                        base::RepeatingClosure on_save_workspace);
   ~WorkspacesBubbleView() override;
 
@@ -56,7 +56,7 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate,
   void OnWorkspaceSelected(const std::string& name);
   void OnDeleteClicked(const std::string& name);
 
-  const raw_ref<Browser> browser_;
+  const raw_ptr<Profile> profile_;
   base::RepeatingClosure on_save_workspace_;
   base::WeakPtrFactory<WorkspacesBubbleView> weak_factory_{this};
 };

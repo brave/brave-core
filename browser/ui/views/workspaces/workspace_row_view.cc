@@ -11,6 +11,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
 #include "brave/browser/workspaces/workspace_metadata.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
@@ -23,7 +24,6 @@
 #include "ui/gfx/font.h"
 #include "ui/gfx/font_list.h"
 #include "ui/views/background.h"
-#include "ui/views/controls/button/button.h"
 #include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/button/image_button_factory.h"
 #include "ui/views/controls/label.h"
@@ -49,54 +49,45 @@ std::u16string FormatStats(const WorkspaceMetadata& info) {
   return windows_format_string + u" - " + tabs_format_string;
 }
 
-// Clickable two-row view: bold workspace name on top, stats below.
-class WorkspaceInfoButton : public views::Button {
-  METADATA_HEADER(WorkspaceInfoButton, views::Button)
- public:
-  WorkspaceInfoButton(PressedCallback callback, const WorkspaceMetadata& info)
-      : Button(std::move(callback)) {
-    auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
-        views::BoxLayout::Orientation::kVertical,
-        /*inside_border_insets=*/gfx::Insets::VH(4, 8),
-        /*between_child_spacing=*/2));
-    layout->set_cross_axis_alignment(
-        views::BoxLayout::CrossAxisAlignment::kStart);
+}  // namespace
 
-    name_label_ = AddChildView(
-        std::make_unique<views::Label>(base::UTF8ToUTF16(info.name)));
-    const gfx::FontList& base_font = name_label_->font_list();
-    name_label_->SetFontList(
-        base_font.Derive(kTitleFontSize - base_font.GetFontSize(),
-                         base_font.GetFontStyle(), gfx::Font::Weight::BOLD));
-    name_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+WorkspaceInfoButton::WorkspaceInfoButton(PressedCallback callback,
+                                         const WorkspaceMetadata& info)
+    : Button(std::move(callback)) {
+  auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical,
+      /*inside_border_insets=*/gfx::Insets::VH(4, 8),
+      /*between_child_spacing=*/2));
+  layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kStart);
 
-    stats_label_ =
-        AddChildView(std::make_unique<views::Label>(FormatStats(info)));
-    stats_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+  name_label_ = AddChildView(
+      std::make_unique<views::Label>(base::UTF8ToUTF16(info.name)));
+  const gfx::FontList& base_font = name_label_->font_list();
+  name_label_->SetFontList(
+      base_font.Derive(kTitleFontSize - base_font.GetFontSize(),
+                       base_font.GetFontStyle(), gfx::Font::Weight::BOLD));
+  name_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+
+  stats_label_ =
+      AddChildView(std::make_unique<views::Label>(FormatStats(info)));
+  stats_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+}
+
+void WorkspaceInfoButton::SetSelected(bool selected) {
+  if (selected_ == selected) {
+    return;
   }
-
-  void SetSelected(bool selected) {
-    if (selected_ == selected) {
-      return;
-    }
-    selected_ = selected;
-    ui::ColorVariant color = selected
-                                 ? ui::ColorVariant(SK_ColorWHITE)
-                                 : ui::ColorVariant(ui::kColorLabelForeground);
-    name_label_->SetEnabledColor(color);
-    stats_label_->SetEnabledColor(color);
-  }
-
- private:
-  bool selected_ = false;
-  raw_ptr<views::Label> name_label_;
-  raw_ptr<views::Label> stats_label_;
-};
+  selected_ = selected;
+  ui::ColorVariant color = selected
+                               ? ui::ColorVariant(SK_ColorWHITE)
+                               : ui::ColorVariant(ui::kColorLabelForeground);
+  name_label_->SetEnabledColor(color);
+  stats_label_->SetEnabledColor(color);
+}
 
 BEGIN_METADATA(WorkspaceInfoButton)
 END_METADATA
-
-}  // namespace
 
 WorkspaceRowView::WorkspaceRowView(const WorkspaceMetadata& info,
                                    RowClickedCallback on_workspace_selected,
@@ -110,9 +101,9 @@ WorkspaceRowView::WorkspaceRowView(const WorkspaceMetadata& info,
   row_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kCenter);
 
-  auto* info_btn_raw = AddChildView(std::make_unique<WorkspaceInfoButton>(
+  info_button_ = AddChildView(std::make_unique<WorkspaceInfoButton>(
       std::move(on_workspace_selected), info));
-  row_layout->SetFlexForView(info_btn_raw, 1);
+  row_layout->SetFlexForView(info_button_, 1);
 
   auto more_btn = views::CreateVectorImageButtonWithNativeTheme(
       base::BindRepeating(&WorkspaceRowView::ShowMoreMenu,
@@ -161,17 +152,12 @@ void WorkspaceRowView::UpdateBackground() {
 }
 
 void WorkspaceRowView::UpdateChildSelectionStyling() {
-  for (views::View* child : children()) {
-    if (auto* info_btn = views::AsViewClass<WorkspaceInfoButton>(child)) {
-      info_btn->SetSelected(selected_);
-    } else if (auto* img_btn = views::AsViewClass<views::ImageButton>(child)) {
-      views::SetImageFromVectorIconWithColor(
-          img_btn, kLeoMoreVerticalIcon,
-          selected_
-              ? views::IconColors(SK_ColorWHITE, SK_ColorWHITE)
-              : views::IconColors(ui::kColorIcon, ui::kColorIconDisabled));
-    }
-  }
+  info_button_->SetSelected(selected_);
+
+  views::SetImageFromVectorIconWithColor(
+      more_button_, kLeoMoreVerticalIcon,
+      selected_ ? views::IconColors(SK_ColorWHITE, SK_ColorWHITE)
+                : views::IconColors(ui::kColorIcon, ui::kColorIconDisabled));
 }
 
 void WorkspaceRowView::ShowMoreMenu() {
@@ -190,6 +176,11 @@ void WorkspaceRowView::ExecuteCommand(int command_id, int event_flags) {
   if (command_id == kDeleteWorkspaceCommandId) {
     on_delete_.Run();
   }
+}
+
+void WorkspaceRowView::MenuClosed(ui::SimpleMenuModel* source) {
+  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
+      FROM_HERE, menu_model_.release());
 }
 
 BEGIN_METADATA(WorkspaceRowView)

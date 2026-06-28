@@ -34,7 +34,6 @@ source_set("workspaces") {
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/components/vector_icons",
-    "//chrome/browser/ui/dialogs:browser_dialogs",
     "//components/constrained_window",
     "//ui/base",
   ]

@@ -14,25 +14,30 @@
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
+#include "ui/views/view.h"
+#include "ui/views/widget/widget.h"
 
 WorkspacesBubbleController::WorkspacesBubbleController() = default;
 
 WorkspacesBubbleController::~WorkspacesBubbleController() = default;
 
 void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
-                                            Browser* browser) {
+                                            Profile* profile) {
   if (bubble_widget_) {
     return;
   }
 
+  // Capture what the save dialog needs: the profile and the browser window
+  // that hosts the anchor (used to parent the modal).
+  profile_ = profile;
+  parent_window_ = anchor_view->GetWidget()->GetNativeWindow();
+
   auto bubble = std::make_unique<WorkspacesBubbleView>(
-      anchor_view, browser,
+      anchor_view, profile,
       base::BindRepeating(&WorkspacesBubbleController::ShowSaveDialog,
-                          weak_factory_.GetWeakPtr(), browser));
+                          weak_factory_.GetWeakPtr()));
 
   // CreateBubble uses CLIENT_OWNS_WIDGET and routes close through |on_close|.
   bubble_widget_ = views::BubbleDialogDelegate::CreateBubble(
@@ -42,17 +47,17 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
   bubble_widget_->Show();
 }
 
-void WorkspacesBubbleController::ShowSaveDialog(Browser* browser) {
+void WorkspacesBubbleController::ShowSaveDialog() {
   if (save_dialog_widget_) {
     return;
   }
 
   // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the returned Widget
   // is therefore owned here.
-  auto dialog = std::make_unique<SaveWorkspaceDialog>(browser);
+  auto dialog = std::make_unique<SaveWorkspaceDialog>(profile_);
   save_dialog_widget_ =
       base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
-          dialog.release(), browser->window()->GetNativeWindow()));
+          dialog.release(), parent_window_));
   save_dialog_widget_->MakeCloseSynchronous(
       base::BindOnce(&WorkspacesBubbleController::OnSaveDialogClosed,
                      weak_factory_.GetWeakPtr()));

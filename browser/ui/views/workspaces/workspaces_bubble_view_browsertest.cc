@@ -89,6 +89,7 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
   WorkspacesBubbleBrowserTest() {
     feature_list_.InitAndEnableFeature(features::kWorkspaces);
   }
+  ~WorkspacesBubbleBrowserTest() override = default;
 
   TabStripControlButton* GetWorkspacesButton() {
     auto* region = GetHorizontalTabStripRegion(browser());
@@ -123,6 +124,8 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
         }));
 
     auto* button = GetWorkspacesButton();
+    // ASSERT_* can't be used here since this helper returns non-void; report a
+    // non-fatal failure and bail so the caller sees a null bubble.
     EXPECT_TRUE(button) << "Workspaces button not found in the tab strip";
     if (!button) {
       return nullptr;
@@ -140,6 +143,7 @@ class WorkspacesFeatureDisabledBrowserTest : public InProcessBrowserTest {
   WorkspacesFeatureDisabledBrowserTest() {
     feature_list_.InitAndDisableFeature(features::kWorkspaces);
   }
+  ~WorkspacesFeatureDisabledBrowserTest() override = default;
 
  private:
   base::test::ScopedFeatureList feature_list_;

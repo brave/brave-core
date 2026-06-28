@@ -60,6 +60,7 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
 
   void Initialize();
   void CreateScrollButtonsIfNeeded();
+  void CreateWorkspaceButtonIfNeeded();
   void UpdateScrollButtonsVisibility();
   void OnShowHorizontalTabScrollButtonsChanged();
   void UpdateTrailingScrollButtonMargin(bool vertical_tabs);

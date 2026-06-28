@@ -10,11 +10,13 @@
 
 #include "base/memory/raw_ptr.h"
 #include "ui/menus/simple_menu_model.h"
+#include "ui/views/controls/button/button.h"
 #include "ui/views/view.h"
 
 struct WorkspaceMetadata;
 
 namespace views {
+class Label;
 class ImageButton;
 class MenuRunner;
 }  // namespace views
@@ -23,6 +25,20 @@ class MenuRunner;
 // size rather than a delta keeps the title consistent regardless of the
 // platform's default UI font size.
 inline constexpr int kTitleFontSize = 14;
+
+// Clickable two-row view: bold workspace name on top, stats below.
+class WorkspaceInfoButton : public views::Button {
+  METADATA_HEADER(WorkspaceInfoButton, views::Button)
+ public:
+  WorkspaceInfoButton(PressedCallback callback, const WorkspaceMetadata& info);
+
+  void SetSelected(bool selected);
+
+ private:
+  bool selected_ = false;
+  raw_ptr<views::Label> name_label_;
+  raw_ptr<views::Label> stats_label_;
+};
 
 // A workspace list row that highlights its background on hover and shows a
 // darker tint when selected.  SetNotifyEnterExitOnChild propagates mouse
@@ -46,6 +62,7 @@ class WorkspaceRowView : public views::View,
 
   // ui::SimpleMenuModel::Delegate:
   void ExecuteCommand(int command_id, int event_flags) override;
+  void MenuClosed(ui::SimpleMenuModel* source) override;
 
  private:
   void UpdateBackground();
@@ -58,6 +75,7 @@ class WorkspaceRowView : public views::View,
   RowClickedCallback on_delete_;
   std::unique_ptr<ui::SimpleMenuModel> menu_model_;
   std::unique_ptr<views::MenuRunner> menu_runner_;
+  raw_ptr<WorkspaceInfoButton> info_button_;
   raw_ptr<views::ImageButton> more_button_;
 };
 
