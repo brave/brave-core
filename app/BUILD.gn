@@ -209,6 +209,7 @@ source_set("unit_tests") {
       "//chrome/browser/ui:accelerator_table",
       "//chrome/browser/ui/tabs:features",
       "//chrome/browser/ui/toasts",
+      "//chrome/browser/ui/views/desktop_capture",
       "//chrome/common:chrome_features",
       "//components/translate/core/common",
       "//extensions/common",
