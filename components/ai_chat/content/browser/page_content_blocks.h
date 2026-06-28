@@ -26,11 +26,12 @@ enum class PageContentDetail {
   kAgentic,
   // Reduced detail for plain content extraction (e.g. AI Chat summarizing or
   // answering questions about a page). Drops the agentic targeting metadata
-  // listed above, as well as SVG/canvas content and generic container wrappers,
-  // none of which can be reliably used in this mode and which only add noise
-  // and
-  // token cost. Interaction hints (`clickable`/`editable`) and element geometry
-  // are kept when present, since the default extraction rarely emits them.
+  // (`dom_id`, scroll state, document identifiers, the viewport/scroll summary,
+  // and the interaction instructions), as well as SVG/canvas content and
+  // generic container wrappers, none of which can be reliably used in this mode
+  // and which only add noise and token cost. Interaction hints
+  // (`clickable`/`editable`) and element geometry are kept when present, since
+  // the default extraction rarely emits them.
   kContentOnly,
 };
 

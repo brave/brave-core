@@ -12,6 +12,7 @@
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/content/browser/ai_page_content_fetcher.h"
 #include "brave/components/ai_chat/content/browser/associated_web_contents_content.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -25,6 +26,7 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ai_chat {
@@ -97,6 +99,14 @@ class AIChatBrowserTest : public InProcessBrowserTest {
     InProcessBrowserTest::SetUp();
   }
 
+  void TearDownOnMainThread() override {
+    // AIPageContentFetcher holds a raw_ptr to the active WebContents, so reset
+    // it before the browser tears the WebContents down to avoid a dangling
+    // raw_ptr.
+    ai_page_content_fetcher_.reset();
+    InProcessBrowserTest::TearDownOnMainThread();
+  }
+
   void SetUpCommandLine(base::CommandLine* command_line) override {
     InProcessBrowserTest::SetUpCommandLine(command_line);
     mock_cert_verifier_.SetUpCommandLine(command_line);
@@ -135,8 +145,30 @@ class AIChatBrowserTest : public InProcessBrowserTest {
     return content;
   }
 
+  // Extracts the page content via AIPageContentFetcher, which goes through
+  // Chromium's optimization_guide::GetAIPageContent and our
+  // ConvertAnnotatedPageContentToBlocks conversion. Unlike FetchPageContent()
+  // above (the renderer IPC path), this exercises the real GetAIPageContent
+  // data, so the test fails if Chromium's extraction output changes.
+  std::string FetchAIPageContent() {
+    std::string content;
+    base::RunLoop run_loop;
+    ai_page_content_fetcher_ = std::make_unique<AIPageContentFetcher>(
+        browser()->tab_strip_model()->GetActiveWebContents());
+    ai_page_content_fetcher_->FetchPageContent(
+        "", base::BindLambdaForTesting(
+                [&run_loop, &content](std::string page_content, bool is_video,
+                                      std::string invalidation_token) {
+                  content = std::move(page_content);
+                  run_loop.Quit();
+                }));
+    run_loop.Run();
+    return content;
+  }
+
  private:
   std::unique_ptr<PageContentFetcher> page_content_fetcher_;
+  std::unique_ptr<AIPageContentFetcher> ai_page_content_fetcher_;
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
 };
@@ -160,6 +192,43 @@ IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, YoutubeNavigations) {
 
   const std::string navigated_content = FetchPageContent();
   EXPECT_EQ("Navigated content", navigated_content);
+}
+
+// Extracts a regular HTML page via the real GetAIPageContent path and verifies
+// the readable content is present while the agentic targeting metadata is
+// stripped (AI Chat uses PageContentDetail::kContentOnly). This is the
+// content-only counterpart to content_agent_tool_provider_browsertest.cc, which
+// loads the same page through the agentic path and asserts the dom_ids ARE
+// present. Together they guard against changes in Chromium's GetAIPageContent
+// output and in our ConvertAnnotatedPageContentToBlocks conversion.
+IN_PROC_BROWSER_TEST_F(AIChatBrowserTest, ExtractsAIPageContent) {
+  ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://example.com/rewrite.html"),
+      WindowOpenDisposition::CURRENT_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP);
+
+  const std::string content = FetchAIPageContent();
+  SCOPED_TRACE(content);
+
+  // The page metadata and readable structure are extracted.
+  EXPECT_THAT(content, testing::HasSubstr("PAGE TITLE: Text Rewrite"));
+  EXPECT_THAT(content, testing::HasSubstr(
+                           "=== PAGE STRUCTURE (XML representation) ==="));
+  // The contenteditable's text and both form control values are extracted
+  // (apostrophes are XML-escaped in the serialized structure).
+  EXPECT_THAT(content, testing::HasSubstr("contenteditable."));
+  EXPECT_THAT(content, testing::HasSubstr("<input"));
+  EXPECT_THAT(content, testing::HasSubstr("value=\"I&#39;m textarea.\""));
+  EXPECT_THAT(content, testing::HasSubstr("value=\"I&#39;m input.\""));
+
+  // ...but the agentic targeting metadata is stripped for content-only
+  // extraction: no dom_ids, document identifiers, viewport summary, or the
+  // interaction instructions that describe them.
+  EXPECT_THAT(content, testing::Not(testing::HasSubstr("dom_id")));
+  EXPECT_THAT(content, testing::Not(testing::HasSubstr("document_identifier")));
+  EXPECT_THAT(content, testing::Not(testing::HasSubstr("VIEWPORT:")));
+  EXPECT_THAT(content,
+              testing::Not(testing::HasSubstr("=== INTERACTION INSTRUCTIONS")));
 }
 
 // Test for https://github.com/brave/brave-browser/issues/47294
