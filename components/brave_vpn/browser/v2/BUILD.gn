@@ -11,6 +11,14 @@ static_library("browser") {
   sources = [
     "brave_vpn_service_impl.cc",
     "brave_vpn_service_impl.h",
+    "credential_store.cc",
+    "credential_store.h",
+    "credential_summary.cc",
+    "credential_summary.h",
+    "purchased_state_manager.cc",
+    "purchased_state_manager.h",
+    "skus_service_client.cc",
+    "skus_service_client.h",
   ]
 
   if (is_android) {
@@ -28,6 +36,33 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_vpn/common",
+    "//brave/components/resources:strings",
     "//components/prefs",
+    "//mojo/public/cpp/bindings",
+    "//net",
+    "//ui/base",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "credential_store_unittest.cc",
+    "credential_summary_unittest.cc",
+    "purchased_state_manager_unittest.cc",
+    "skus_service_client_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/browser:test_support",
+    "//brave/components/skus/common:mojom",
+    "//components/prefs:test_support",
+    "//mojo/public/cpp/bindings",
+    "//testing/gtest",
   ]
 }

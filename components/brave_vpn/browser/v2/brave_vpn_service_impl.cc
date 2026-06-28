@@ -5,24 +5,33 @@
 
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
 
+#include <memory>
+#include <string>
+#include <utility>
+
+#include "base/check.h"
 #include "base/check_deref.h"
 #include "base/notimplemented.h"
-#include "base/types/to_address.h"
+#include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
+#include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
-#include "brave/components/brave_vpn/common/pref_names.h"
-#include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
 
-BraveVpnServiceImpl::BraveVpnServiceImpl(PrefService* local_prefs,
-                                         PrefService* profile_prefs)
-    : local_prefs_(CHECK_DEREF(local_prefs)),
-      profile_prefs_(CHECK_DEREF(profile_prefs)),
-      connection_state_(mojom::ConnectionState::DISCONNECTED),
-      purchased_state_(mojom::PurchasedState::NOT_PURCHASED) {
+BraveVpnServiceImpl::BraveVpnServiceImpl(
+    PrefService* local_prefs,
+    PrefService* profile_prefs,
+    GetSkusServiceCallback skus_service_getter)
+    : profile_prefs_(CHECK_DEREF(profile_prefs)),
+      skus_client_(
+          std::make_unique<SkusServiceClient>(std::move(skus_service_getter))),
+      connection_state_(mojom::ConnectionState::DISCONNECTED) {
   DCHECK(IsBraveVPNFeatureEnabled());
+  purchased_state_manager_ = std::make_unique<PurchasedStateManager>(
+      local_prefs, skus_client_.get(),
+      base::BindRepeating(&BraveVpnServiceImpl::OnPurchasedStateChanged,
+                          base::Unretained(this)));
 }
 
 BraveVpnServiceImpl::~BraveVpnServiceImpl() = default;
@@ -32,27 +41,24 @@ bool BraveVpnServiceImpl::IsBraveVPNEnabled() const {
 }
 
 bool BraveVpnServiceImpl::IsPurchased() const {
-  NOTIMPLEMENTED();
-  return purchased_state_ == mojom::PurchasedState::PURCHASED;
+  return purchased_state_manager_->IsPurchased();
 }
 
 void BraveVpnServiceImpl::ReloadPurchasedState() {
-  NOTIMPLEMENTED();
+  purchased_state_manager_->Reload();
 }
 
 std::string BraveVpnServiceImpl::GetCurrentEnvironment() const {
-  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
+  return purchased_state_manager_->GetCurrentEnvironment();
 }
 
 void BraveVpnServiceImpl::GetPurchasedState(
     GetPurchasedStateCallback callback) {
-  NOTIMPLEMENTED();
-  std::move(callback).Run(
-      mojom::PurchasedInfo::New(purchased_state_, std::nullopt));
+  std::move(callback).Run(purchased_state_manager_->GetInfo().Clone());
 }
 
 void BraveVpnServiceImpl::LoadPurchasedState(const std::string& domain) {
-  NOTIMPLEMENTED();
+  purchased_state_manager_->Load(domain);
 }
 
 void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
@@ -61,8 +67,21 @@ void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
 }
 
 void BraveVpnServiceImpl::Shutdown() {
+  purchased_state_manager_.reset();
+  skus_client_->Reset();
   BraveVpnService::Shutdown();
 }
 
-}  // namespace v2
-}  // namespace brave_vpn
+void BraveVpnServiceImpl::OnPurchasedStateChanged(
+    mojom::PurchasedState state,
+    const std::optional<std::string>& description) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  NotifyPurchasedStateChanged(state, description);
+
+  // TODO: If purchased state changed to PURCHASED on desktop, we can attempt to
+  // install VPN apps, connect to the agent, etc. We also need to make sure
+  // agent gets connected and fetches the region data - BEFORE we actually send
+  // a notification to the UI.
+}
+
+}  // namespace brave_vpn::v2
