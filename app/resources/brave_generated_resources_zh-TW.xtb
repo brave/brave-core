@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">其他…</translation>
 <translation id="71316462802471551">電子郵件別名</translation>
+<translation id="209130971304928953">將分頁儲存為工作區…</translation>
+<translation id="877984331511007834">開啟工作區…</translation>
+<translation id="1310182651927031327">將分頁儲存為工作區…</translation>
+<translation id="3588277741646479444">開啟工作區…</translation>
 <translation id="1990886731975529483">安裝並執行 Google Widevine</translation>
 <translation id="8926389886865778422">不再詢問這個問題</translation>
 <translation id="4900351245762303149">安裝 Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">新的使用 Tor 的視窗</translation>
 <translation id="2638041073279639246">在使用 Tor 的隱私視窗中開啟連結</translation>
 <translation id="3425600262621021599">在使用 Tor 的 Brave 隱私視窗中開啟連結</translation>
-<translation id="2545072023356206691">從 2023 年 12 月 1 日開始，Brave Dev 頻道將不再接收瀏覽器更新。建議使用者改用 Brave Nightly、測試版或正式版。</translation>
 <translation id="474217410105706308">關閉分頁音訊</translation>
 <translation id="2804710924397009224">隱藏 Brave 獎賞圖標</translation>
 <translation id="5029193871181468990">隱藏 Brave 獎勵圖示</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">感謝您點擊私人廣告來支持 Brave Search。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
 <translation id="8748471354357836070">瞭解更多 / 退出選擇</translation>
 <translation id="5927196110206824867">贊助商背景圖片支援 Brave 建立一個獨立、使用者優先網路的使命。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
-<translation id="4174337572777167894">Web 發現專案</translation>
-<translation id="8659271182272561965">貢獻一些匿名搜尋與瀏覽資料來改進 Brave 搜尋。</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">貢獻部分匿名的搜尋與瀏覽資料，以改善 Brave 搜尋。</translation>
 <translation id="1516554614404600536">Brave 工具提示</translation>
 <translation id="4375473250631001683">隱藏側邊欄圖示</translation>
 <translation id="2613033293035359003">隱藏側邊欄</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">在容器中開啟</translation>
 <translation id="194205047181722473">在容器中開啟連結</translation>
 <translation id="8638526693050780542">管理容器</translation>
+<translation id="2796584247246518451">新增臨時容器</translation>
 <translation id="2336228925368920074">將所有分頁加入書籤...</translation>
 <translation id="2523967823495420116">使用垂直分頁</translation>
 <translation id="5483718923712878759">焦點模式</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">在容器中開啟</translation>
 <translation id="1185644444415356776">在容器中開啟連結</translation>
 <translation id="6745991613881384719">管理容器</translation>
+<translation id="8523788649219117880">新增臨時容器</translation>
 <translation id="3704707436873245822">從圖片複製文字</translation>
 <translation id="5268098808165185458">正在從圖片複製文字…</translation>
 <translation id="4046485130884276245">已從圖片複製文字</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">分頁</translation>
 <translation id="8168435359814927499">內容</translation>
 <translation id="6017560037265964523">容器</translation>
-<translation id="934893482320683588">使用容器整理您的瀏覽內容。<ph name="BEGIN_LINK"/>進一步了解<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">容器是以顏色區分的瀏覽器分頁，可將您的瀏覽資料（例如 cookie、快取和網站儲存空間）隔離至各自獨立的環境中。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">啟用容器</translation>
 <translation id="7773735778926921278">新增容器</translation>
 <translation id="8900907990448657776">編輯容器</translation>
 <translation id="7900511996284443779">刪除容器</translation>
@@ -809,6 +815,7 @@
 <translation id="5226020406479918122">標籤頁焦點模式</translation>
 <translation id="3705539672403311123">在「標籤頁搜尋」頁啟用標籤頁組織。開啟後，這會自動將所有非無痕標籤頁的標題和來源傳送至 Leo 進行分類。 <ph name="BEGIN_LINK"/>了解更多<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">標籤頁焦點的預設模式</translation>
+<translation id="2161546758719933059">用於在分頁聚焦模式下整理您分頁的模型。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">在對話中顯示建議的提示語</translation>
 <translation id="5781842473834867765">儲存我的對話紀錄</translation>
 <translation id="1082960401708055995">停用對話儲存功能會永久刪除所有先前儲存的對話。此動作無法復原。</translation>

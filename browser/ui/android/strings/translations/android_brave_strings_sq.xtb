@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Duke marrë Feede...</translation>
 <translation id="7461899062138731833">BURIME</translation>
 <translation id="6150420917380577651">Nuk u gjetën feede te <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Reklamë</translation>
 <translation id="7823038307453615214">Shfaq Lajmet Brave</translation>
 <translation id="6527303717912515753">Ndaj</translation>
 <translation id="1654539412343893324">Mëso më shumë për të dhënat e tua</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Çaktivizo përmbajtjen nga <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> e çaktivizuar</translation>
 <translation id="1276592121036104130">Ngarkoni përmbajtje të re</translation>
-<translation id="3189348785087463371">Promovuar</translation>
 <translation id="7554145152551782675">Më shumë Oferta Brave</translation>
 <translation id="254100925533869330">Pa përmbajtje</translation>
 <translation id="7172792761509429092">Lajmet Brave nuk kanë përmbajtje për të treguar.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Mos mbaj skeda gjatë seancave të shfletimit</translation>
 <translation id="7142548388914389999">Lejo analiza produkti që ruajnë privatësinë (P3A)</translation>
 <translation id="5254037869598726291">Informacioni i anomizuar P3A ndihmon Brave të vlerësojë përdorimin e përgjithshëm dhe të sigurojë që ne po përmirësojmë funksionet popullore.</translation>
-<translation id="4174337572777167894">Projekti i Zbulimit të Internetit</translation>
-<translation id="8659271182272561965">Kontribuo me kërkime anonime &amp; duke shfletuar të dhëna për të përmirësuar Kërkimin Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Kontribuoni disa të dhëna anonime kërkimi &amp; shfletimi për të përmirësuar Kërkimin Brave.</translation>
 <translation id="933652931229970927">Dërgo automatikisht raporte diagnostikimi</translation>
 <translation id="5987838417172370108">Ndihmoni në përmirësimin e stabilitetit të produktit Brave duke dërguar automatikisht raporte diagnostike kur Shfletuesi Brave bie ose ngrihet.</translation>
 <translation id="7977176350719484850">Rreth Internet\nI kursyer</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Na tregoni cilat veçori ju pëlqejnë më shumë.</translation>
 <translation id="2888496576732880897">Ndihmojini Kërkimit Brave të rritet</translation>
 <translation id="7198716519700700181">Blokoni ndërprerjet kur transmetoni</translation>
-<translation id="7044431516245362795">Zgjidh Projektin e Zbulimit të Internetit për të ndihmuar në rritjen e indeksit dhe përmirësimin e rezultateve të kërkimit. <ph name="LEARN_MORE_START"/>Mëso më shumë.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Përfshihuni në Projektin e Zbulimit në Ueb për të ndihmuar në rritjen e indeksit dhe përmirësimin e rezultateve të kërkimit. <ph name="LEARN_MORE_START"/>Mëso më shumë<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logoja e Brave</translation>
 <translation id="4767173360729868049">Ilustrimi i ndihmës për Kërkimin Brave</translation>
 <translation id="8241918461631453498">Ilustrimi i bllokimit të ndërprerjeve</translation>
@@ -439,8 +437,15 @@ Brave i bllokon këto gjëra kështu që ti mund të shfletosh pa u ndjekur kudo
 <translation id="9140049656798805345">Shkatërroj të dhënat e faqes tani</translation>
 <translation id="6795622376590884449">Shkatërroj automatikisht</translation>
 <translation id="7961015016161918242">Asnjëherë</translation>
+<translation id="3200744626782631683">Të dhënat e shfletimit kurrë nuk shkatërrohen automatikisht.</translation>
 <translation id="1991004083507807299">Skeda e faqes mbyllur</translation>
+<translation id="2917925984754303958">Të dhënat e shfletimit fshihen automatikisht kur mbyllen të gjitha skedat e hapura në një faqe.</translation>
 <translation id="5827277414420724690">Mbyllja e aplikacionit</translation>
+<translation id="2036389684543586068">Të dhënat e shfletimit fshihen automatikisht kur aplikacioni Brave mbyllet ose rifilllohet.</translation>
+<translation id="4279349293084858577">Shkatërro</translation>
+<translation id="2997451887458851244">Përditëso Auto Shred dhe rregullo se cilat të dhëna shkatërrohen.</translation>
+<translation id="363903976200491771">Shkatërroni automatikisht të dhënat e shfletimit</translation>
+<translation id="1028873002018537235">Shkatërro historikun e shfletimit</translation>
 <translation id="1209739344687072997">Raporto një sajt të dëmtuar</translation>
 <translation id="8510478288840333677">Bëji me dije programuesit e Brave se kjo faqe interneti nuk punon mirë me Mbrojtje-n:</translation>
 <translation id="1653405824851871276">Faleminderit që ndihmoi për ta bërë Brave më të mirë për të gjithë. Ky raport do të përmbajë vetëm informacionet e nevojshme për ne që të rregullojmë këtë sajt. <ph name="LEARN_MORE"/></translation>
@@ -1185,4 +1190,7 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="1079140196216383600">Fshi motorin e kërkimit të personalizuar</translation>
 <translation id="525276572490219787">Jeni të sigurt që doni të fshini "<ph name="SEARCH_ENGINE_NAME"/>"? Ky veprim nuk mund të zhbëhet.</translation>
 <translation id="6406506848690869874">Njëkohësim</translation>
+<translation id="1850594249589065646">Saktësia e vendndodhjes</translation>
+<translation id="2403474027143565107">Saktë</translation>
+<translation id="4042597221652780603">Afërsisht</translation>
 </translationbundle>

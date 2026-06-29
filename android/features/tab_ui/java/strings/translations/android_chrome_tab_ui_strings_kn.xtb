@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> ಟ್ಯಾಬ್ ಅನ್ನು ಗುಂಪು ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="1844381456014878100">7 ದಿನಗಳ ನಿಷ್ಕ್ರಿಯತೆಯ ನಂತರ</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ಟ್ಯಾಬ್}one{<ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳು}other{<ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳು}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{ಓದುವ ಪಟ್ಟಿಗೆ ಟ್ಯಾಬ್ ಅನ್ನು ಸೇರಿಸಿ}one{ಓದುವ ಪಟ್ಟಿಗೆ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸೇರಿಸಿ}other{ಓದುವ ಪಟ್ಟಿಗೆ ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸೇರಿಸಿ}}</translation>
 <translation id="1909810060368225529">ಗಮನಿಸಿ: ಈ ಹಂಚಿಕೊಳ್ಳಲಾದ ಟ್ಯಾಬ್ ಗುಂಪಿನಲ್ಲಿನ ಬದಲಾವಣೆಗಳು ಎಲ್ಲರಿಗೂ ಗೋಚರಿಸುತ್ತವೆ. ನಿಮ್ಮ ಹಂಚಿಕೊಳ್ಳಲಾದ ಟ್ಯಾಬ್‌ ಗುಂಪುಗಳಿಗೆ ಪ್ರತಿಯೊಬ್ಬರೂ ಬದಲಾವಣೆಗಳನ್ನು ಮಾಡಬಹುದು</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{ಟ್ಯಾಬ್ ಅನ್ನು ಪಿನ್ ಮಾಡಿ}one{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಪಿನ್ ಮಾಡಿ}other{ಟ್ಯಾಬ್‌ಗಳನ್ನು ಪಿನ್ ಮಾಡಿ}}</translation>
 <translation id="1982637982196732906">ನಿಷ್ಕ್ರಿಯ ವಿಭಾಗಕ್ಕೆ ಸರಿಸಿ</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{ಆಯ್ಕೆಮಾಡಿದ <ph name="TABS_COUNT_ONE"/> ಟ್ಯಾಬ್ ಅನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ}one{ಆಯ್ಕೆಮಾಡಿದ <ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ}other{ಆಯ್ಕೆಮಾಡಿದ <ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಬುಕ್‌ಮಾರ್ಕ್ ಮಾಡಿ}}</translation>
 <translation id="2055057176188061528">ಟ್ಯಾಬ್ ಗುಂಪನ್ನು ಆಯ್ಕೆಮಾಡಿ ಅಥವಾ ಹೊಸ ಟ್ಯಾಬ್ ಗುಂಪನ್ನು ರಚಿಸಿ</translation>
 <translation id="2074527029802029717">ಅನ್‌ಪಿನ್ ಟ್ಯಾಬ್</translation>
+<translation id="2111670510994270194">ಬಲಭಾಗದಲ್ಲಿ ಹೊಸ ಟ್ಯಾಬ್ ತೆರೆಯಿರಿ</translation>
 <translation id="2118649612461486615">ಸ್ಟೋರ್‌ನ ಮಾಹಿತಿ</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{ಸೈಟ್‌ ಅನ್ನು ಅನ್‌ಮ್ಯೂಟ್‌ ಮಾಡಿ}one{ಸೈಟ್‌ಗಳನ್ನು ಅನ್‌ಮ್ಯೂಟ್‌ ಮಾಡಿ}other{ಸೈಟ್‌ಗಳನ್ನು ಅನ್‌ಮ್ಯೂಟ್‌ ಮಾಡಿ}}</translation>
 <translation id="2162620598375156287">ಇದೀಗ <ph name="CURRENT_PRICE"/><ph name="SOURCE_WEBSITE"/> ನಲ್ಲಿ</translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> ಉತ್ಪನ್ನದ ಮೇಲೆ <ph name="PRICE_DROP"/> ದರ ಇಳಿಕೆ</translation>
 <translation id="3078350928901129212">ಟ್ಯಾಬ್ ಗುಂಪಿನ ಬಣ್ಣದ ಐಕಾನ್ <ph name="COLOR_NAME"/></translation>
 <translation id="311432875115153175">ಟ್ಯಾಬ್ ಗುಂಪು ಪಟ್ಟಿಯನ್ನು ಮುಚ್ಚಲಾಗಿದೆ</translation>
+<translation id="3152596030350326139">ಟ್ಯಾಬ್‌ಗಳನ್ನು ಅಡ್ಡಲಾಗಿ ತೋರಿಸಿ</translation>
+<translation id="31806439105337256">ಟ್ಯಾಬ್‌ಗಳನ್ನು ವರ್ಟಿಕಲ್ ಆಗಿ ತೋರಿಸಿ</translation>
 <translation id="3194464645767632461">ರೇಟಿಂಗ್</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{ಗುಂಪಿಗೆ <ph name="TABS_COUNT_ONE"/> ಟ್ಯಾಬ್ ಸೇರಿಸಿ}one{ಗುಂಪಿಗೆ <ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸೇರಿಸಿ}other{ಗುಂಪಿಗೆ <ph name="TABS_COUNT_MANY"/> ಟ್ಯಾಬ್‌ಗಳನ್ನು ಸೇರಿಸಿ}}</translation>
 <translation id="3328308545011660196">ಸಲಹೆ: <ph name="NUMBER_OF_TABS"/> ಟ್ಯಾಬ್‌ಗಳು ಸಂಬಂಧಿಸಿರುವ ಹಾಗೆ ಕಾಣುತ್ತಿದೆ. ಅವುಗಳನ್ನು ಗುಂಪು ಮಾಡಬೇಕೆ?</translation>

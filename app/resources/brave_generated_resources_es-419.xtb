@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">IA de Leo</translation>
 <translation id="8275068909952022340">Más…</translation>
 <translation id="71316462802471551">Alias de correo electrónico</translation>
+<translation id="209130971304928953">Guardar pestañas como espacio de trabajo…</translation>
+<translation id="877984331511007834">Abrir espacio de trabajo…</translation>
+<translation id="1310182651927031327">Guardar pestañas como espacio de trabajo…</translation>
+<translation id="3588277741646479444">Abrir espacio de trabajo…</translation>
 <translation id="1990886731975529483">Instalar y ejecutar Google Widevine</translation>
 <translation id="8926389886865778422">No volver a preguntar</translation>
 <translation id="4900351245762303149">Instalar Google Widevine</translation>
@@ -70,7 +74,6 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="6313675821927505581">Nueva ventana privada con Tor</translation>
 <translation id="2638041073279639246">Abrir vínculo en una ventana privada con Tor</translation>
 <translation id="3425600262621021599">Abrir vínculo en una ventana privada de Brave con Tor</translation>
-<translation id="2545072023356206691">A partir del 1 de diciembre de 2023, el canal de Brave Dev dejará de actualizarse. Recomendamos a los usuarios que migren a las versiones Nightly, beta o de lanzamiento de Brave.</translation>
 <translation id="474217410105706308">Silenciar pestaña</translation>
 <translation id="2804710924397009224">Ocultar Icono de Recompensas de Brave</translation>
 <translation id="5029193871181468990">Ocultar icono de Recompensas de Brave</translation>
@@ -141,8 +144,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="5253166205743627564">Gracias por apoyar al Buscador de Brave al hacer clic en un anuncio privado. A diferencia de Big Tech, medimos el rendimiento de los anuncios de forma anónima para preservar tu privacidad.</translation>
 <translation id="8748471354357836070">Más información / Opciones de exclusión</translation>
 <translation id="5927196110206824867">Las imágenes de fondo patrocinadas apoyan la misión de Brave de desarrollar una Web independiente y orientada al usuario. Y a diferencia de Big Tech, medimos el rendimiento de los anuncios de forma anónima para preservar tu privacidad.</translation>
-<translation id="4174337572777167894">Proyecto de descubrimiento web</translation>
-<translation id="8659271182272561965">Contribuya con algunos datos de búsqueda y navegación anónimos para refinar Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribuye con algunos datos anónimos de búsqueda y navegación para mejorar el Buscador de Brave.</translation>
 <translation id="1516554614404600536">Información sobre herramientas de Brave</translation>
 <translation id="4375473250631001683">Ocultar el icono de la barra lateral</translation>
 <translation id="2613033293035359003">Ocultar la barra lateral</translation>
@@ -205,6 +208,7 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="8670218546624422041">Abrir en el contenedor</translation>
 <translation id="194205047181722473">Abrir enlace en el contenedor</translation>
 <translation id="8638526693050780542">Administrar contenedores</translation>
+<translation id="2796584247246518451">Nuevo contenedor temporal</translation>
 <translation id="2336228925368920074">Agregar a favoritos todas las pestañas...</translation>
 <translation id="2523967823495420116">Usar pestañas verticales</translation>
 <translation id="5483718923712878759">Modo de Enfoque</translation>
@@ -218,6 +222,7 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="1987871867023021397">Abrir en Contenedor</translation>
 <translation id="1185644444415356776">Abrir Enlace en Contenedor</translation>
 <translation id="6745991613881384719">Administrar Contenedores</translation>
+<translation id="8523788649219117880">Nuevo Contenedor Temporal</translation>
 <translation id="3704707436873245822">Copiar texto a partir de imagen</translation>
 <translation id="5268098808165185458">Copiando texto a partir de imagen...</translation>
 <translation id="4046485130884276245">Texto copiado a partir de imagen</translation>
@@ -374,7 +379,8 @@ O cambia los permisos más adelante en <ph name="SETTINGS_EXTENIONS_LINK"/></tra
 <translation id="8076492880354921740">Pestañas</translation>
 <translation id="8168435359814927499">Contenido</translation>
 <translation id="6017560037265964523">Contenedores</translation>
-<translation id="934893482320683588">Organiza tu navegación con contenedores. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Los contenedores son pestañas del navegador con códigos de color que aíslan tus datos de navegación, como las cookies, la caché y el almacenamiento del sitio, en contextos separados. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Habilitar Contenedores</translation>
 <translation id="7773735778926921278">Agregar contenedor nuevo</translation>
 <translation id="8900907990448657776">Editar contenedor</translation>
 <translation id="7900511996284443779">Eliminar contenedor</translation>
@@ -809,6 +815,7 @@ volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada 
 <translation id="5226020406479918122">Modo de enfoque de pestaña</translation>
 <translation id="3705539672403311123">Activa la organización de pestañas en la página de búsqueda de pestañas. Cuando se abre, esto enviará automáticamente los títulos y orígenes de todas las pestañas no privadas a Leo para clasificarlas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Modelo predeterminado para el enfoque de pestañas</translation>
+<translation id="2161546758719933059">El modelo utilizado para organizar tus pestañas en el modo de enfoque de pestañas. <ph name="BEGIN_LINK"/>Más información<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar sugerencias en la conversación</translation>
 <translation id="5781842473834867765">Almacenar mi historial de conversaciones</translation>
 <translation id="1082960401708055995">Deshabilitar el almacenamiento de conversaciones borrará permanentemente todas las conversaciones previamente almacenadas. Esta acción no se puede deshacer.</translation>

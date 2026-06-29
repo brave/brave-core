@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">More…</translation>
 <translation id="71316462802471551">Email Aliases</translation>
+<translation id="209130971304928953">Save Tabs as Workspace…</translation>
+<translation id="877984331511007834">Open Workspace…</translation>
+<translation id="1310182651927031327">Save tabs as workspace…</translation>
+<translation id="3588277741646479444">Open workspace…</translation>
 <translation id="1990886731975529483">Install and run Google Widevine</translation>
 <translation id="8926389886865778422">Don't ask again</translation>
 <translation id="4900351245762303149">Install Google Widevine</translation>
@@ -69,7 +73,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6313675821927505581">New private window with Tor</translation>
 <translation id="2638041073279639246">Open link in private window with Tor</translation>
 <translation id="3425600262621021599">Open link in Brave private window with Tor</translation>
-<translation id="2545072023356206691">From 1 December 2023, Brave Dev channel will no longer receive browser updates. We recommend users migrate to the Nightly, Beta or Release versions of Brave.</translation>
 <translation id="474217410105706308">Mute Tab</translation>
 <translation id="2804710924397009224">Hide Brave Rewards icon</translation>
 <translation id="5029193871181468990">Hide Brave Rewards icon</translation>
@@ -204,6 +207,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8670218546624422041">Open in container</translation>
 <translation id="194205047181722473">Open link in container</translation>
 <translation id="8638526693050780542">Manage containers</translation>
+<translation id="2796584247246518451">New temporary container</translation>
 <translation id="2336228925368920074">Bookmark All Tabs...</translation>
 <translation id="2523967823495420116">Use vertical tabs</translation>
 <translation id="5483718923712878759">Focus Mode</translation>
@@ -217,6 +221,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1987871867023021397">Open in Container</translation>
 <translation id="1185644444415356776">Open Link in Container</translation>
 <translation id="6745991613881384719">Manage Containers</translation>
+<translation id="8523788649219117880">New Temporary Container</translation>
 <translation id="3704707436873245822">Copy text from image</translation>
 <translation id="5268098808165185458">Copying text from image ...</translation>
 <translation id="4046485130884276245">Text copied from image</translation>
@@ -373,7 +378,8 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8076492880354921740">Tabs</translation>
 <translation id="8168435359814927499">Content</translation>
 <translation id="6017560037265964523">Containers</translation>
-<translation id="934893482320683588">Organise your browsing with containers. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Containers are colour-coded browser tabs that isolate your browsing data, such as cookies, cache, and site storage into separate contexts. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Enable Containers</translation>
 <translation id="7773735778926921278">Add new container</translation>
 <translation id="8900907990448657776">Edit container</translation>
 <translation id="7900511996284443779">Delete container</translation>
@@ -808,6 +814,7 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5226020406479918122">Tab Focus Mode</translation>
 <translation id="3705539672403311123">Enable tab organization in Tab Search page. When opened, this will automatically send the titles and origins of all non-private tabs to Leo to classify them. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Default model for tab focus</translation>
+<translation id="2161546758719933059">The model used to organise your tabs in Tab Focus Mode. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Show suggested prompts in the conversation</translation>
 <translation id="5781842473834867765">Store my conversation history</translation>
 <translation id="1082960401708055995">Disabling conversation storage will permanently erase all previously stored conversations. This action can't be undone.</translation>

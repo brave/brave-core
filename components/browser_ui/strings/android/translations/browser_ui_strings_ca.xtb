@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ca">
+<translation id="1000614056227025171">El full inferior de promoció Personalitza la pàgina d'inici s'ha obert a alçada completa</translation>
 <translation id="1006017844123154345">Obre en línia</translation>
 <translation id="1036348656032585052">Desactiva</translation>
 <translation id="1046742265332833834">Tema blau</translation>
 <translation id="1070329623210597193">Fitxers que aquest lloc web pot visualitzar o editar</translation>
-<translation id="1882093842020941518">Ajuda'ns a millorar Brave explicant-nos per què has permès les galetes de tercers. <ph name="BEGIN_LINK"/>Envia suggeriments<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Pots sol·licitar que es mostri la versió per a ordinadors dels llocs web</translation>
 <translation id="1109482864356262001">Les funcions que necessitin sensors de moviment o de llum no funcionaran</translation>
 <translation id="6670155282615872564">Completa aquestes accions suggerides per treure el màxim profit de Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Consells de Brave</translation>
 <translation id="1242008676835033345">Incrustada a <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Toca Aplicacions &gt; Aplicacions predeterminades</translation>
+<translation id="1264694639515903274">Ara pots personalitzar la pàgina d'inici</translation>
 <translation id="1272079795634619415">Atura</translation>
 <translation id="1275718070701477396">Seleccionada</translation>
 <translation id="8010562420973777575">Perquè estalviïs dades, Brave ha optimitzat les imatges d'aquesta pàgina.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">L'URL s'ha truncat</translation>
 <translation id="1741136041592162279">Permet que Brave comparteixi les pestanyes recents amb el teu dispositiu per veure-les als resultats de la cerca i a la llista d'aplicacions del dispositiu. Pots activar o desactivar aquesta opció a la configuració de Brave.</translation>
 <translation id="1420688843103859429">Navega endavant i endarrere lliscant amb dos dits al ratolí tàctil</translation>
-<translation id="1432650420699700107">Els llocs web poden demanar permís per connectar-se a qualsevol dispositiu de la teva xarxa local</translation>
 <translation id="1442081309487427303">Activa els enllaços del mode de lectura</translation>
 <translation id="1448064542941920355">Redueix el zoom</translation>
 <translation id="1464044141348608623">No permetis que els llocs web sàpiguen quan estàs utilitzant el dispositiu de manera activa</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Quan aquesta opció està activada, els llocs web poden demanar permís per gestionar finestres en totes les pantalles. Quan aquesta opció està desactivada, els llocs web no poden gestionar finestres en totes les pantalles.</translation>
 <translation id="1738912554587725807">Full inferior de les col·leccions de temes per a l'aparença de la pàgina Pestanya nova</translation>
 <translation id="1743802530341753419">Pregunta abans de permetre que els llocs web es connectin a un dispositiu (opció recomanada)</translation>
-<translation id="2534291364429593865">Rep notificacions de consells de Brave</translation>
 <translation id="1777815584158991902">Full inferior del feed de Discover</translation>
 <translation id="1779089405699405702">Descodificador d'imatges</translation>
 <translation id="1781533683087883868">Desactiva els enllaços del mode de lectura</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Penja</translation>
 <translation id="1919950603503897840">Selecciona contactes</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Personalitza la meva pàgina d'inici</translation>
 <translation id="1939059826036755332">Mode d'imatge sobre imatge automàtic</translation>
 <translation id="1954597385941141174">Els llocs web poden demanar permís per connectar-se a dispositius USB</translation>
 <translation id="1979673356880165407">Amplia o redueix el text i les imatges de tots els llocs web que visitis</translation>
@@ -143,7 +143,7 @@
 <translation id="2403474027143565107">Exacta</translation>
 <translation id="2404630663942400771">{PERMISSIONS_SUMMARY_ALLOWED,plural, =1{S'han permès <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i <ph name="NUM_MORE"/> més}other{S'han permès <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> i <ph name="NUM_MORE"/> més}}</translation>
 <translation id="2404857459073803936">Accés a la ubicació per a aquest lloc web</translation>
-<translation id="2410940059315936967">Els llocs web que visites poden inserir contingut d'altres llocs web, com ara imatges, anuncis i text. Les galetes establertes per aquests altres llocs web s'anomenen "galetes de tercers".</translation>
+<translation id="2410940059315936967">Els llocs web que visites poden incrustar contingut d'altres llocs web, com ara imatges, anuncis i text. Les galetes establertes per aquests altres llocs web s'anomenen "galetes de tercers".</translation>
 <translation id="2411116727035790889">Activa les dreceres</translation>
 <translation id="2433507940547922241">Aparença</translation>
 <translation id="2434158240863470628">S'ha completat la baixada <ph name="SEPARATOR"/> <ph name="BYTES_DOWNLOADED"/></translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Gestionades per <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Ajuda i suggeriments </translation>
 <translation id="2501278716633472235">Torna</translation>
-<translation id="2533138527374486328">Quan aquesta opció està activada, els llocs web poden demanar permís per connectar-se a qualsevol dispositiu de la teva xarxa local. Quan aquesta opció està desactivada, els llocs web no poden connectar-se a dispositius de la teva xarxa local.</translation>
 <translation id="2536779053640817375">Permesa aquesta vegada • Precisa</translation>
 <translation id="2544997614631598250">Color del tema fosc</translation>
 <translation id="2546283357679194313">Dades de llocs web i galetes</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Arrenca omnibox</translation>
 <translation id="2789132527330338807">Els llocs web poden demanar permís per crear un mapa 3D del teu entorn o fer un seguiment de la posició de la càmera</translation>
 <translation id="2790501146643349491">Quan aquesta opció està activada, els llocs web tancats recentment poden acabar d'enviar i de rebre dades. Quan aquesta opció està desactivada, els llocs web tancats recentment no poden acabar d'enviar ni de rebre dades.</translation>
-<translation id="1708222144403389505">Activa les notificacions per rebre consells útils que t'ajudaran a treure el màxim profit de Brave</translation>
 <translation id="2795716239552913152">Els llocs web solen utilitzar la teva ubicació per a funcions o informació rellevants, com ara notícies locals o botigues a prop</translation>
 <translation id="2800760947029405028">Penja una imatge</translation>
 <translation id="2802908157808345702">No permetis que els llocs web enviïn finestres emergents ni que utilitzin redireccions</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Els llocs web poden reproduir so</translation>
 <translation id="3065787901655140044">La Protecció avançada està activada</translation>
 <translation id="3069226013421428034">Permet l'inici de sessió de tercers en un lloc web concret.</translation>
+<translation id="3084983642903364837">Edita la pàgina d'inici més tard mitjançant el menú de tres punts.</translation>
 <translation id="310297983047869047">Diapositiva anterior</translation>
 <translation id="3108122610701115301">Defineix com a predeterminat</translation>
 <translation id="310979712355504754">Suprimeix-ho tot</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">No permetis que els llocs web es connectin a dispositius USB</translation>
 <translation id="3965467402665811906">Els llocs web poden demanar-te permís per utilitzar la informació que han desat sobre tu</translation>
 <translation id="3967822245660637423">S'ha completat la baixada</translation>
-<translation id="3969869202926863008">Accés a la xarxa local</translation>
 <translation id="3981465354637804599">Els llocs web solen mostrar anuncis per proporcionar contingut o serveis sense cost econòmic, tot i que se sap que alguns llocs web mostren anuncis intrusius o enganyosos.</translation>
 <translation id="3987993985790029246">Copia l'enllaç</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Connectat a un port en sèrie</translation>
 <translation id="4223404254440398437">No està permès utilitzar el micròfon</translation>
 <translation id="4226663524361240545">És possible que les notificacions facin vibrar el dispositiu</translation>
+<translation id="4227965147357783918">El full inferior de promoció Personalitza la pàgina d'inici s'ha obert a mitja alçada</translation>
 <translation id="4259722352634471385">S'ha bloquejat la navegació: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Quan surts d'un lloc web, el lloc pot continuar amb la sincronització per finalitzar les taques que estava fent, com ara penjar fotos o enviar un missatge de xat</translation>
 <translation id="4278390842282768270">Permès</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Desplega</translation>
 <translation id="4310738531374808763">Personalitza la pàgina d'inici</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Caduca demà}other{Caduca d'aquí a # dies}}</translation>
+<translation id="7012676469589811613">Fes que Brave s'adapti al teu gust triant un tema personalitzat</translation>
 <translation id="4338831206024587507">Tots els llocs web de <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">No permetis que els llocs web enviïn notificacions</translation>
 <translation id="4341577178275615435">Per activar o desactivar la navegació amb cursor de text, utilitza la drecera F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">No agilitza els llocs web amb el motor V8 de Brave, però fa que Brave sigui una mica més resistent als atacs</translation>
 <translation id="5556459405103347317">Torna a carregar</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloquejat</translation>
-<translation id="560980142378233747">Això significa que les funcions del lloc web haurien de funcionar de la manera prevista, tot i que pot ser que tinguis menys protecció de navegació. <ph name="BEGIN_LINK"/>Envia suggeriments<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Full inferior de les targetes de la pàgina Pestanya nova</translation>
 <translation id="5621413808884657932">Quan aquesta opció està activada, els llocs web poden demanar permís per accedir a altres aplicacions i serveis d'aquest dispositiu. Quan aquesta opció està desactivada, els llocs web no poden accedir a altres aplicacions i serveis d'aquest dispositiu.</translation>
 <translation id="5632485077360054581">Mostra'm com</translation>
@@ -488,7 +487,7 @@
 <translation id="5930707844513754220">Mostra més llistes de configuració</translation>
 <translation id="5939518447894949180">Restableix</translation>
 <translation id="5948139900367969951">Accedeix ràpidament al que t'interessa</translation>
-<translation id="5964247741333118902">Contingut inserit</translation>
+<translation id="5964247741333118902">Contingut incrustat</translation>
 <translation id="5968921426641056619">Introdueix l'adreça web</translation>
 <translation id="5975083100439434680">Redueix</translation>
 <translation id="5976059395673079613"><ph name="PERMISSION"/> - <ph name="WARNING_MESSAGE"/></translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Les meves dreceres</translation>
 <translation id="656065428026159829">Mostra'n més</translation>
 <translation id="6561560012278703671">Utilitza missatges més discrets (bloqueja les sol·licituds de notificacions per evitar interrupcions)</translation>
-<translation id="6565144332292237355">Els llocs web poden utilitzar aquesta funció per cercar qualsevol dispositiu a la teva xarxa local i connectar-s'hi</translation>
 <translation id="6593061639179217415">Lloc web per a ordinador</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Es permeten les galetes per a <ph name="RWS_MEMBERS_COUNT"/> lloc web de <ph name="RWS_OWNER"/>}other{Es permeten les galetes per a <ph name="RWS_MEMBERS_COUNT"/> llocs web de <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">No surtis</translation>
 <translation id="6630443592285535486">Escriu el valor hexadecimal aquí</translation>
 <translation id="6635327442719709864">Quan aquesta opció està activada, els llocs web poden demanar permís per utilitzar els ports en sèrie. Quan aquesta opció està desactivada, els llocs web no poden utilitzar els ports en sèrie.</translation>
-<translation id="6669390930482049506">Vull rebre notificacions</translation>
 <translation id="6678072580827808850">Revisa Comprovació de seguretat</translation>
 <translation id="6682057173375416470">Obtén articles suggerits a la pàgina Pestanya nova</translation>
 <translation id="6683865262523156564">Aquest lloc web forma part d'un grup que pot veure la teva activitat. <ph name="RWS_OWNER"/> defineix el grup.</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Actualitza</translation>
 <translation id="7188508872042490670">Dades dels llocs web al dispositiu</translation>
 <translation id="7201549776650881587">Aquesta acció suprimirà de la pantalla d'inici totes les dades i galetes emmagatzemades per tots els llocs web de <ph name="ORIGIN"/> o per la seva aplicació</translation>
-<translation id="7213166370492037743">No permetis que els llocs web es connectin a cap dispositiu de la teva xarxa local</translation>
 <translation id="7219254577985949841">Vols suprimir les dades del lloc web?</translation>
 <translation id="723171743924126238">Selecciona imatges</translation>
 <translation id="7243246278722455312">Full inferior de personalització de la pàgina Pestanya nova</translation>
@@ -734,7 +730,7 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:</tr
 <translation id="851751545965956758">Impedeix que els llocs web es connectin a dispositius</translation>
 <translation id="8525306231823319788">Pantalla completa</translation>
 <translation id="3275395224965468352">Aquest lloc web obté de Brave els teus temes d'anunci per mostrar-te anuncis més rellevants</translation>
-<translation id="854876774113449365">Els llocs web que visites poden inserir contingut d'altres llocs web, com ara imatges, anuncis i text. Aquests altres llocs web poden demanar permís per utilitzar informació teva que han desat a mesura que navegues pel lloc web. <ph name="BEGIN_LINK"/>Més informació sobre el contingut inserit<ph name="END_LINK"/></translation>
+<translation id="854876774113449365">Els llocs web que visites poden incrustar contingut d'altres llocs web, com ara imatges, anuncis i text. Aquests altres llocs web poden demanar permís per utilitzar informació teva que han desat a mesura que navegues pel lloc web. <ph name="BEGIN_LINK"/>Més informació sobre el contingut incrustat<ph name="END_LINK"/></translation>
 <translation id="8549127125482561383">Com s'han de mostrar les sol·licituds</translation>
 <translation id="4273503381657013953">Ara pots utilitzar Brave cada vegada que naveguis o toquis enllaços en missatges, documents i altres aplicacions.</translation>
 <translation id="857943718398505171">Permès (opció recomanada)</translation>
@@ -757,7 +753,6 @@ La Protecció avançada controla aquestes opcions de configuració de Brave:</tr
 <translation id="8737426583868847403">Els llocs web per als quals desis un nivell de zoom personalitzat es mostraran aquí</translation>
 <translation id="8748714929822124637">No permetis que els llocs web accedeixin a altres dispositius de la teva xarxa local</translation>
 <translation id="8751914237388039244">Selecciona una imatge</translation>
-<translation id="8775741625735357092">Pots activar la barra d'adreces d'interès a Configuració &gt; Aparença</translation>
 <translation id="8800034312320686233">El lloc web no funciona?</translation>
 <translation id="8801436777607969138">Bloqueja JavaScript en un lloc web concret.</translation>
 <translation id="2026315747406172223">V8 és el motor JavaScript i WebAssembly de Brave que s'utilitza per millorar el rendiment dels llocs web</translation>

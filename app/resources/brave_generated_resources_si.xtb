@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">තවත්…</translation>
 <translation id="71316462802471551">ඊමේල් කෙටි නම්</translation>
+<translation id="209130971304928953">ටැබ ක්‍රියාකාරී ස්ථානයක් ලෙස සුරකින්න…</translation>
+<translation id="877984331511007834">ක්‍රියාකාරී ස්ථානයක් විවෘත කරන්න…</translation>
+<translation id="1310182651927031327">ටැබ වැඩබිමක් ලෙස සුරකින්න…</translation>
+<translation id="3588277741646479444">වැඩබිම අරින්න…</translation>
 <translation id="1990886731975529483">ගූගල් වයිඩ්වයින් ස්ථාපනය කර ධාවනය කරන්න</translation>
 <translation id="8926389886865778422">නැවත අසන්න එපා</translation>
 <translation id="4900351245762303149">ගූගල් වයිඩ්වයින් ස්ථාපනය කරන්න</translation>
@@ -68,7 +72,6 @@
 <translation id="6313675821927505581">ටෝර් සහිත නව පෞද්ගලික කවුළුව</translation>
 <translation id="2638041073279639246">ටෝර් සහිත පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
 <translation id="3425600262621021599">ටෝර් සහිත Brave පෞද්ගලික කවුළුවක සබැඳිය අරින්න</translation>
-<translation id="2545072023356206691">2023 දෙසැම්බර් 1 වැනිදා සිට, Brave Dev නාලිකාවට තවදුරටත් බ්‍රවුසර යාවත්කාලීන නොලැබේ. Brave හි Nightly, Beta, හෝ Release versions වෙත සංක්‍රමණය වන ලෙස අපි පරිශීලකයින්ට නිර්දේශ කරමු.</translation>
 <translation id="474217410105706308">පටිත්ත නිහඬ</translation>
 <translation id="2804710924397009224">Brave පාරිතෝෂික නිරූපකය සඟවන්න</translation>
 <translation id="5029193871181468990">Brave පාරිතෝෂික නිරූපකය සඟවන්න</translation>
@@ -139,8 +142,8 @@
 <translation id="5253166205743627564">පෞද්ගලික දැන්වීමක් එබීමෙන් බ්‍රේව් සර්ච් සඳහා සහාය දැක්වීමට ස්තූතියි. දැවැන්ත තාක්ෂණික සමාගම් මෙන් නොව ඔබගේ පෞද්ගලිකත්‍වය ආරක්‍ෂා කරමින් අපි දැන්වීම් කාර්ය සාධනය නිර්නාමිකව මැන බලන්නෙමු.</translation>
 <translation id="8748471354357836070">තව දැනගන්න / තේරීම් ඉවතලන්න</translation>
 <translation id="5927196110206824867">හදාරන ලද පසුබැසීමේ රූප Braveගේ මානය ප්‍රධාන වන්න. විශාලාග්නු තාක්ෂණය පරිසරය වන අතර, ඇඩුනාවන්රාකි පැකට් ගැනෙහිව සකසයි.</translation>
-<translation id="4174337572777167894">වෙබ් ඩිස්කවරි ව්‍යාපෘතිය</translation>
-<translation id="8659271182272561965">බ්‍රේව් සර්ච් ප්‍රසාදනයට නිර්නාමික සෙවීම් සහ පිරික්සුම් දත්ත වලින් දායක වන්න.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Search පිරිපහදු කිරීමට නිර්නාමික සෙවුම් &amp; බ්‍රවුස් කිරීමේ දත්ත සමහරක් දායක කරන්න.</translation>
 <translation id="1516554614404600536">Brave මෙවලම් ඉඟිය</translation>
 <translation id="4375473250631001683">පැති තීරු නිරූපකය සඟවන්න</translation>
 <translation id="2613033293035359003">පැති තීරුව සඟවන්න</translation>
@@ -203,6 +206,7 @@
 <translation id="8670218546624422041">අඩංගුවේ විවෘත කරන්න</translation>
 <translation id="194205047181722473">අඩංගුව තුළ සබැඳිය විවෘත කරන්න</translation>
 <translation id="8638526693050780542">අඩංගු විවෘත කිරීම් කළමනාකරණය</translation>
+<translation id="2796584247246518451">නව තාවකාලික බහාලුම</translation>
 <translation id="2336228925368920074">සියලු පටිති වලට පොත්යොමු තබන්න...</translation>
 <translation id="2523967823495420116">සිරස් පටිති භාවිතා කරන්න</translation>
 <translation id="5483718923712878759">නාභිගත ප්‍රකාරය</translation>
@@ -216,6 +220,7 @@
 <translation id="1987871867023021397">අඩංගුවේ විවෘත කරන්න</translation>
 <translation id="1185644444415356776">අඩංගුව තුළ සබැඳිය විවෘත කරන්න</translation>
 <translation id="6745991613881384719">අඩංගු විවෘත කිරීම් කළමනාකරණය</translation>
+<translation id="8523788649219117880">නව තාවකාලික බහාලුම</translation>
 <translation id="3704707436873245822">රූපයෙන් පෙළ පිටපත් කරන්න</translation>
 <translation id="5268098808165185458">රූපයෙන් පෙළ පිටපත් වෙමින්...</translation>
 <translation id="4046485130884276245">රූපයෙන් පෙළ පිටපත් වී ඇත</translation>
@@ -372,7 +377,8 @@
 <translation id="8076492880354921740">පටිති</translation>
 <translation id="8168435359814927499">අන්තර්ගතය</translation>
 <translation id="6017560037265964523">අඩංගුව</translation>
-<translation id="934893482320683588">අඩංගු වූ බ්‍රව්සිං ගනය. <ph name="BEGIN_LINK"/>වැඩිදුර ඉගෙන ගන්න<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">බහාලුම් යනු ඔබගේ බ්‍රවුස් කිරීමේ දත්ත, එනම් කුකී, කෑෂ්, සහ වෙබ් අඩවි ගබඩාව වැනි දේවල් වෙන වෙන සන්දර්භ වලට හුදකලා කරන වර්ණ-කේතගත කරන ලද බ්‍රවුසර ටැබ වේ. <ph name="BEGIN_LINK"/>තවත් දැනගන්න<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">බහාලුම් සක්‍රීය කරන්න</translation>
 <translation id="7773735778926921278">නව අඩංගු එකතු කරන්න</translation>
 <translation id="8900907990448657776">අඩංගුව සංස්කරණය කරන්න</translation>
 <translation id="7900511996284443779">අඩංගුව මකන්න</translation>
@@ -806,6 +812,7 @@
 <translation id="5226020406479918122">පටිති නාභිගත ප්‍රකාරය</translation>
 <translation id="3705539672403311123">ටැබ් සෙවුම් පිටුවේ ටැබ් සංවිධානය සක්‍රීය කරන්න. විවෘත කළ විට, මෙය සියලුම පුද්ගලික නොවන ටැබ් වල මාතෘකා සහ මූලාරම්භයන් වර්ගීකරණය කිරීම සඳහා ලියෝ වෙත ස්වයංක්‍රීයව යවනු ඇත. <ph name="BEGIN_LINK"/>තව දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ටැබ් ফෝකස සඳහා පෙරනිමි ආදර්ශකය</translation>
+<translation id="2161546758719933059">ටැබ අවධාන ප්‍රකාරයේදී ඔබගේ ටැබ සංවිධානය කිරීමට භාවිතා කරන ආකෘතිය. <ph name="BEGIN_LINK"/>තවත් දැනගන්න<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">සංවාදයේ යෝජිත ප්‍රේරක පෙන්වන්න</translation>
 <translation id="5781842473834867765">මාගේ සංවාද ඉතිහාසය ගබඩා කරන්න</translation>
 <translation id="1082960401708055995">සංවාද ආචයනය අබල කිරීමෙන් කලින් ගබඩා කර ඇති සියලුම සංවාද සදහටම මැකෙනු ඇත. මෙම ක්‍රියාමාර්ගය අප්‍රතිවර්ත්‍යයි.</translation>

@@ -24,6 +24,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="1203500561924088507">Děkujeme za instalaci aplikace <ph name="BUNDLE_NAME"/>. Před jejím použitím je potřeba restartovat prohlížeč.</translation>
 <translation id="1232234696885483911">Když otevřete Vyhledávání obrázků, název stránky, adresa URL a obsah, včetně souborů PDF, se automaticky odešlou na server. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Když jste přihlášeni, můžete v prohlížeči Brave používat hesla a další položky ze svého účtu Brave. Pokud to chcete změnit, přejděte do sekce Váš účet v prohlížeči Brave.</translation>
+<translation id="1631493536097460865">Klávesová zkratka pro výběr části obrazovky v Gemini v Chromiu.</translation>
 <translation id="8799570501820813406">Když tato karta nebyla aktivní, byla uvolněna paměť, aby byl prohlížeč Brave rychlý. Můžete zvolit, že tento web nikdy nemá být považován za neaktivní.</translation>
 <translation id="8767381092474532098">Prohlížeč Brave toto stahování zablokoval, protože soubor je nebezpečný</translation>
 <translation id="3256289531845594061">Když se pomocí účtu <ph name="USER_EMAIL"/> přihlásíte do služeb Brave, jako je Gmail nebo YouTube, můžete se pomocí něj automaticky přihlásit i do prohlížeče Brave</translation>
@@ -33,6 +34,7 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4291722755910963157">Vyzkoušet s Gemini v Chromiu</translation>
 <translation id="878572309106296578">K prozkoumání zařízení Bluetooth potřebuje Brave přístup k rozhraní Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Rozpoznat jazyk</translation>
+<translation id="6204677860546245308">Používat doporučená nastavení prohlížeče Brave</translation>
 <translation id="108284536240904209">Smazat také data z prohlížeče Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Připnuto! Vyhledávání obrázků můžete znovu otevřít pomocí nového tlačítka na panelu nástrojů</translation>
 <translation id="1356661055722410047">Novinka! Můžete překládat text i obrázky na obrazovce</translation>
@@ -57,13 +59,13 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="1680687534629375545">Zeptat se Vyhledávání obrázků na tuto stránku</translation>
 <translation id="509363484780540563">Prohlížeč Brave můžete použít pokaždé, když kliknete na odkazy ve zprávách, dokumentech a dalších aplikacích Bude také připnutý na hlavním panelu.</translation>
 <translation id="1709772298389099340">Poskytuje zvýšená oprávnění prohlížeči <ph name="BROWSER_NAME"/>.</translation>
-<translation id="2913217021115517297">Za účelem zlepšení těchto funkcí odesílá Brave vaše interakce do Googlu. Tato data mohou číst, zpracovávat a opatřovat poznámkami kontroloři.</translation>
 <translation id="8004287232784878841">Brave brzy smaže údaje o prohlížení</translation>
 <translation id="4197839351786449392">Brave se při navigaci bude pokoušet použít protokol HTTPS</translation>
 <translation id="7814200940910057384">Data prohlížeče Brave byla vymazána</translation>
 <translation id="9048361966237194186">Brave se restartuje za <ph name="REMAINING_TIME"/></translation>
 <translation id="5524150602137990006">Když není k dispozici protokol HTTPS, použije prohlížeč Brave nezabezpečené připojení, aniž by vás upozornil</translation>
 <translation id="6797402139308059782">Nechat prohlížeč Brave spuštěný na pozadí</translation>
+<translation id="5994491947936308173">Kliknutím na <ph name="BEGIN_BOLD"/>Ano<ph name="END_BOLD"/> v oznámení systému Windows připněte prohlížeč Brave na hlavní panel, aby byl rychle k dispozici.</translation>
 <translation id="5875673934455379806">Přeinstalovat Brave</translation>
 <translation id="4529028207655448215">Brave se pokouší <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">Až příště na zařízení <ph name="DEVICE_TYPE"/> otevřete Brave, zobrazí se výzva k použití Správce hesel Brave.</translation>
@@ -83,22 +85,17 @@ Některé funkce možná nebudou k dispozici a změny nastavení se neuloží.</
 <translation id="4035053306113201399">Aktualizace se použije po restartování systému ChromeOS.</translation>
 <translation id="9048754176089806686">Prohlížeč Brave toto stahování zablokoval, protože tento typ souboru se běžně nestahuje a může být nebezpečný</translation>
 <translation id="1953553007165777902">Stahování… Počet zbývajících minut: <ph name="MINUTE"/></translation>
-<translation id="2470048290583727811">Tip pro Brave: Ukládání hesel</translation>
 <translation id="1775322105159056176">Brave nemůže určit ani nastavit výchozí prohlížeč</translation>
 <translation id="4372901050442507812">Proč Brave některé soubory blokuje, otevře se na nové kartě</translation>
 <translation id="2703425183860615504">Udržuje software Brave aktuální. V případě zakázání nebo zastavení té služby se software Brave nebude aktualizovat, což znamená, že nebude možné opravit případné chyby zabezpečení a funkce nemusí fungovat. Pokud tuto službu žádný software Brave nepoužívá, sama se odinstaluje.</translation>
 <translation id="9220324636239049437">Z tohoto zařízení bude smazána 1 položka. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Instalace se nezdařila. Zkuste to znovu.</translation>
-<translation id="831418749472885028">Chcete-li zkontrolovat, zda jsou ostatní hesla v bezpečí před porušením zabezpečení údajů a ostatními bezpečnostními hrozbami, <ph name="BEGIN_LINK"/>přihlaste se do prohlížeče Brave<ph name="END_LINK"/>.</translation>
 <translation id="2039417478970545937">Nastavení.</translation>
 <translation id="5499149312981370855">Zvolte, zda pro lépe personalizované prostředí ve službách Brave chcete zahrnout historii prohlížeče Brave</translation>
 <translation id="6959434860418352144">Kliknutím na tlačítko Přizpůsobit Brave na stránce Nová karta můžete dát prohlížeči Brave nový vzhled</translation>
 <translation id="2066690553719545730">Vždy zobrazovat režim AI</translation>
 <translation id="2472891440303445472">Prohlížeč Brave toto stahování zablokoval, protože soubor je klamavý a může ve vašem zařízení provést neočekávané změny</translation>
 <translation id="2054358978145431867">Až příště otevřete Brave pro iOS, zobrazí se výzva k vyzkoušení funkce <ph name="FEATURE_NAME"/>.</translation>
-<translation id="4315579854608498851">Při první návštěvě webu vypíná Brave optimalizaci JavaScriptu.
-
-Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translation>
 <translation id="2726948994393234543">Vaše hesla a další data prohlížeče Brave, která jste si uložili do účtu Brave, budou z tohoto zařízení odstraněna. Pokud je budete chtít v prohlížeči Brave zase použít, znovu se přihlaste.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{Když Brave 1 minutu nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}few{Když Brave # minuty nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}many{Když Brave # minuty nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}other{Když Brave # minut nebudete používat, vaše organizace automaticky vymaže údaje o prohlížení. Může to zahrnovat historii, automatické vyplňování a stažené soubory. Vaše karty zůstanou otevřené.}}</translation>
 <translation id="2126108037660393668">Stažený soubor nelze ověřit.</translation>
@@ -157,8 +154,10 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="2620436844016719705">Systém</translation>
 <translation id="7931230852267968641">Vaše organizace může zobrazit a spravovat údaje o prohlížení (například vaše záložky, historii a hesla). Údaje o prohlížení v ostatních profilech prohlížeče Brave nevidí.</translation>
 <translation id="2257221826278123061">Pokud chcete používat a ukládat data prohlížeče Brave ve svém účtu <ph name="ACCOUNT_EMAIL"/>, ověřte svou totožnost</translation>
+<translation id="7048234400304379082">Opouštět Gemini v Chromiu a vracet se do Gemini v Chromiu klávesovou zkratkou.</translation>
 <translation id="7387051847644272380">Během instalace došlo k chybě operačního systému. Stáhněte prosím Brave znovu.</translation>
 <translation id="2648689842065142443">Pokud zařízení sdílíte s přáteli a členy rodiny, každý může procházet internet samostatně a nastavit si Brave tak, jak potřebuje</translation>
+<translation id="1001521084148238686">Snadný přístup k používání Gemini v Chromiu na zařízení, i když je prohlížeč Brave minimalizovaný.</translation>
 <translation id="6791166902140255175">Karta prohlížeče Brave</translation>
 <translation id="8372880274820509128">V zájmu lepšího zabezpečení bude Brave šifrovat vaše data.</translation>
 <translation id="8752006915531191162">Pokud z prohlížeče Brave chcete odebrat svůj účet Brave, odhlaste se</translation>
@@ -177,11 +176,9 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="2885378588091291677">Správce úloh</translation>
 <translation id="2176825726964012531">O prohlížeči &amp;Brave</translation>
 <translation id="2915996080311180594">Restartovat později</translation>
-<translation id="2928420929544864228">Instalace byla dokončena.</translation>
 <translation id="2481553173340651149">Vaše data se šifrují heslovou frází. Pokud chcete používat a ukládat data prohlížeče Brave ve svém účtu Brave, zadejte ji.</translation>
 <translation id="2945997411976714835">Chyba instalace: Instalační proces se nepodařilo spustit.</translation>
 <translation id="2413255940314578781">Přihlašujte se na weby rychleji pomocí uložených hesel pro Brave v systému iOS</translation>
-<translation id="122765104641632123">Přidejte nový profil prohlížeče Brave, abyste měli záložky, hesla a nastavení oddělené.</translation>
 <translation id="3688936822855019158">Brave spravuje vaše organizace</translation>
 <translation id="8208853227947884571">Brave je aktuální</translation>
 <translation id="5122472867956731189">Pokud se web pokusí odcizit vám heslo nebo když stáhnete škodlivý soubor, může Brave Bezpečnému prohlížení odeslat také adresy URL, včetně částí obsahu stránky</translation>
@@ -189,7 +186,6 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="3003694935412297923">Všechny úkoly</translation>
 <translation id="7611046016537686219">{count,plural, =1{Před uložením některých dat do vašeho účtu Brave k použití na všech vašich zařízeních potřebuje Brave ověřit, že jste to vy. Pokud se teď odhlásíte, tato data (1 položka) se smažou.}few{Před uložením některých dat do vašeho účtu Brave k použití na všech vašich zařízeních potřebuje Brave ověřit, že jste to vy. Pokud se teď odhlásíte, tato data ({count} položky) se smažou.}many{Před uložením některých dat do vašeho účtu Brave k použití na všech vašich zařízeních potřebuje Brave ověřit, že jste to vy. Pokud se teď odhlásíte, tato data ({count} položky) se smažou.}other{Před uložením některých dat do vašeho účtu Brave k použití na všech vašich zařízeních potřebuje Brave ověřit, že jste to vy. Pokud se teď odhlásíte, tato data ({count} položek) se smažou.}}</translation>
 <translation id="4202995875619419215">Otevřít adresu <ph name="URL"/> na nové kartě prohlížeče Brave.</translation>
-<translation id="8755404239607088219">Brave nemůže zkontrolovat hesla. Zkuste to později.</translation>
 <translation id="8880183781256147665">Přidávání do prohlížeče Brave...</translation>
 <translation id="3038232873781883849">Čekání na instalaci…</translation>
 <translation id="3045032126857188731">Přeložený jazyk: <ph name="LANGUAGE"/></translation>
@@ -234,7 +230,6 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="3412460710772753638">Ve Správci hesel na tomto zařízení</translation>
 <translation id="2491221873705777076">Využívejte Vylepšené Bezpečné prohlížení v Chromiu na telefonu</translation>
 <translation id="7304389940068374923">Přizpůsobení Chromia…</translation>
-<translation id="9216183508558772570">Pokud se přihlásíte pomocí prolomeného hesla, Brave vám to oznámí</translation>
 <translation id="5853262807109651878">Z tohoto zařízení bude smazán následující počet položek: <ph name="ITEMS_COUNT"/>. Budete-li chtít své údaje později načíst, přihlaste se do prohlížeče Brave jako <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">Zkratkou <ph name="SHORTCUT"/> lze přepínat mezi profily Brave</translation>
 <translation id="8703492925273919597">Zavřete prosím všechna okna prohlížeče Brave a zkuste to znovu.</translation>
@@ -249,18 +244,15 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="7029305463989165490">Chcete-li poslat číslo z webu <ph name="ORIGIN"/> na svůj telefon Android, v obou zařízeních se přihlaste do prohlížeče Brave.</translation>
 <translation id="3667616615096815454">Aplikaci nelze nainstalovat, protože ji server nezná.</translation>
 <translation id="1128485277465085828">Veškerá data prohlížeče Brave ve vašem účtu Brave šifrovat pomocí vaší <ph name="BEGIN_LINK"/>vlastní heslové fráze<ph name="END_LINK"/>. Platební metody a adresy z Google Pay se šifrovat nebudou. Historie prohlížení v prohlížeči Brave se nebude synchronizovat.</translation>
-<translation id="4304059894777924102">Brave nemůže zkontrolovat hesla. Zkuste zkontrolovat připojení k internetu.</translation>
 <translation id="1807774211756215222">Otevřít odkaz na nové kar&amp;tě prohlížeče Brave</translation>
 <translation id="387105482057676379">Propojte Brave a další služby Brave pro personalizaci a další účely</translation>
 <translation id="3729187154190517324">Prohloubit vyhledávání přidáním několika karet, souborů a nástrojů pomocí tlačítka Přidat kartu a další položky.</translation>
 <translation id="3867175562099983425">Spravovat profily Brave</translation>
 <translation id="308146532933302843">Přečtěte si, proč Brave blokuje některá stahování</translation>
 <translation id="2189149060536531804">Pokud něco bude vyžadovat vaši pozornost, Brave vám dá vědět</translation>
-<translation id="8422094375343667686">Profily prohlížeče Brave vám pomůžou oddělit různé části vašeho života. Přidejte nový profil.</translation>
 <translation id="6324134303015966238">Brave předběžně načítá stránky, které byste pravděpodobně mohli navštívit. Když je navštívíte, načtou se tak rychleji</translation>
 <translation id="3810973564298564668">Spravovat</translation>
 <translation id="4815742196440583661">Pokud chcete používat svá uložená hesla, naskenujte QR kód, stáhněte si Brave pro iOS a přihlaste se ke svému účtu Brave</translation>
-<translation id="6093965249696204223">Tip pro Brave: Vylepšené Bezpečné prohlížení</translation>
 <translation id="3846683726093018685">**Shrň obsah:** V jedné větě do 30 slov popiš hlavní téma a účel obsahu na snímku obrazovky.
 
           **Navrhni otázky:** Vygeneruj seznam 3–5 otázek, které by uživatelé mohli položit s cílem lépe snímku obrazovky porozumět. Alespoň jedna z otázek by se měla týkat konkrétního vizuálního objektu, jeho designu nebo umístění.</translation>
@@ -276,6 +268,7 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="4256965182800026277">Vaše hesla, platební metody a adresy, které jste si uložili do účtu Brave, budou z tohoto zařízení odstraněny. Pokud je budete chtít v prohlížeči Brave zase použít, znovu se přihlaste.</translation>
 <translation id="395904275706073188">Chráněné stránky nelze číst. Zkuste jinou stránku.</translation>
 <translation id="4194619960643453552">Přečtěte si, jak vás Brave chrání</translation>
+<translation id="3967822245660637423">Stahování bylo dokončeno</translation>
 <translation id="1486377520191913768">Když píšete do adresního řádku nebo vyhledávacího pole, Brave za účelem poskytování návrhů zadaný text odesílá do vyhledávacích, AI a agentních nástrojů vaší organizace.</translation>
 <translation id="1311808042904310985">O &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">O systému ChromeOS</translation>
@@ -310,10 +303,9 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="6368144843345980623">Export hesel z prohlížeče Brave</translation>
 <translation id="4304713468139749426">Správce hesel</translation>
 <translation id="4334241893986177674">Vyhledat na tomto snímku obrazovky</translation>
-<translation id="4334294535648607276">Stahování bylo dokončeno.</translation>
 <translation id="242356249838681145">Spustit Brave při spuštění Windows</translation>
 <translation id="4747339441562331861">Nastavte si Brave jako výchozí prohlížeč. Budete tak mít snadno přístup k funkcím, které znáte, máte rádi a kterým důvěřujete. Prohlížeč Brave bude připnutý na hlavní panel, kde bude kdykoli snadno rychle k dispozici.</translation>
-<translation id="1068681683510904753">Doména <ph name="MANAGER"/> vyžaduje, abyste si před použitím tohoto zařízení přečetli následující smluvní podmínky a odsouhlasili je. Tyto smluvní podmínky nerozšiřují, neupravují ani neomezují smluvní podmínky systému ChromeOS.</translation>
+<translation id="4400772909124543403">Nejsou k dispozici žádné aktualizace</translation>
 <translation id="9183662282810237335">Přesto Brave ukončit?</translation>
 <translation id="4413205837991854510">Vždy zobrazovat zástupce vyhledávání obrázků</translation>
 <translation id="4065288863231444640">Nechat Brave běžet na pozadí</translation>
@@ -350,9 +342,8 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="4724676981607797757">Instalace se nezdařila kvůli chybě nepodporovaného protokolu.</translation>
 <translation id="3834935463915107022">Přesto Brave ukončit?</translation>
 <translation id="8668413672647811944">Právě byla nainstalována mimořádná bezpečnostní aktualizace prohlížeče Brave. Restartujte jej, vaše karty budou obnoveny.</translation>
-<translation id="9029438584415578308">Zeptat se Chromia</translation>
 <translation id="4941816441131888792">V poslední době jste nenavštívili. Prohlížeč Brave odebral tato oprávnění: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> a ještě <ph name="COUNT"/>.</translation>
-<translation id="4823369970559443694">Brave nemůže zkontrolovat hesla. Zkuste to znovu zítra, případně <ph name="BEGIN_LINK"/>hesla zkontrolujte v účtu Brave<ph name="END_LINK"/>.</translation>
+<translation id="844451748565342664">Pokud je otevřený Gemini v Chromiu, zůstává při vytváření nových karet boční panel otevřený</translation>
 <translation id="215320507915280336">Tato funkce využívá stejnou službu kontroly pravopisu, jaká se používá ve vyhledávání Brave. Text, který v prohlížeči zadáte, se odešle do Googlu. Toto chování můžete kdykoliv změnit v nastavení.</translation>
 <translation id="2899369907387169108">Použít Brave bez účtu</translation>
 <translation id="1833893255023048385">Pravidlo příchozího provozu pro prohlížeč Brave Origin, které povolí provoz mDNS.</translation>
@@ -365,13 +356,11 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="7406627712452599344">Hosté mohou Brave používat, aniž by po nich zůstaly jakékoliv stopy.</translation>
 <translation id="844471735881341044">Váš účet v prohlížeči Brave</translation>
 <translation id="5952898964075639679">Přidejte do prohlížeče Brave svůj účet</translation>
-<translation id="7995865526174204486">Gemini v Chromiu používá automatické procházení k práci na vašich kartách a plnění zadaných úkolů. <ph name="LINK_BEGIN"/>Další informace<ph name="LINK_END"/></translation>
 <translation id="1204184037023366446">Brave potřebuje oprávnění ke sledování vašich rukou</translation>
 <translation id="5406591571925937375">V poslední době jste nenavštívili. Prohlížeč Brave odebral tato oprávnění: <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> a <ph name="PERMISSION_3"/>.</translation>
 <translation id="5174969993834422967">Obvykle oznámení blokujete. Pokud tomuto webu chcete zobrazování oznámení povolit, klikněte na ikonu oznámení v pravém rohu adresního řádku.</translation>
 <translation id="5174983315706567306">Na disku není dost místa.</translation>
 <translation id="8157129267754368853">Účet v prohlížeči Brave vyžaduje opětovné ověření</translation>
-<translation id="9078804073692109646">Nemáte žádná uložená hesla. Brave může hesla zkontrolovat, pouze když si je uložíte.</translation>
 <translation id="6234515504547364178">Odhlášení z prohlížeče Brave</translation>
 <translation id="5234764350956374838">Zavřít</translation>
 <translation id="5254739261293693943">Zeptat se na toto video</translation>
@@ -381,8 +370,10 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="7264453786974905915">Stáhnout aplikaci Brave</translation>
 <translation id="6944930779012811739">Interní aktualizační služba prohlížeče Brave</translation>
 <translation id="5346389065299425353">Prohlubte své vyhledávání přidáním karet, souborů a nástrojů</translation>
+<translation id="4672413209491548018">Získejte rychlý přehled o tomto dokumentu a pokládejte otázky pomocí Gemini v Chromiu</translation>
 <translation id="7573068992266397941">Prohlížeč Brave našel několik bezpečnostních doporučení, která byste si měli projít</translation>
 <translation id="8174413867995118050">Ostatní profily Brave</translation>
+<translation id="1659922362001329844">ChromeOS nemohl uložit data prohlížeče Brave do vašeho účtu Brave, protože vaše přihlašovací údaje k účtu jsou zastaralé</translation>
 <translation id="7708394612738038097">Přihlašujete se pomocí spravovaného účtu a poskytujete jeho správci kontrolu nad vaším profilem prohlížeče Brave. Vaše údaje prohlížeče Brave, například aplikace, záložky, historie, hesla a jiná nastavení, budou trvale přidružena k účtu <ph name="USER_NAME"/>. Tyto údaje budete moci smazat pomocí Hlavního panelu v Účtech Brave, ale nebudete je moci přidružit k jinému účtu. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra kód: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="2487133103111559902">Pokud chcete získat personalizaci, zahrňte Brave do Aktivity na webu a v aplikacích</translation>
@@ -402,6 +393,10 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="5524890928877629608">levý horní roh oblasti hledání: vlevo <ph name="LEFT"/> %, nahoře <ph name="TOP"/> %</translation>
 <translation id="232381795826373334">Otevírat soubory PDF v Chromiu</translation>
 <translation id="5536164441519929134">Zeptejte se<ph name="LINE_BREAK"/>na tuhle kartu</translation>
+<translation id="3940190010522469883">Z bezpečnostních důvodů Brave při první návštěvě webu vypíná optimalizaci JavaScriptu.
+
+Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translation>
+<translation id="7074160267408082133">Zobrazovat Gemini v Chromiu na liště s nabídkou na Macu a zapnout klávesovou zkratku</translation>
 <translation id="5579324208890605088">Chyba při spuštění: Spusťte instalační program jako běžný uživatel, nikoli jako administrátor.</translation>
 <translation id="3588973534877826647">Používejte prohlížeč Brave jako výchozí a připněte si ho</translation>
 <translation id="5596627076506792578">Další možnosti</translation>
@@ -413,7 +408,6 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Zobrazit Brave v tomto jazyce</translation>
 <translation id="569897634095159764">Nelze se připojit k internetu. Proxy server vyžaduje ověření.</translation>
-<translation id="3364613146104156465">Pomocí profilů prohlížeče Brave si můžete oddělit osobní prohlížení od pracovního. Přidejte nový profil.</translation>
 <translation id="1834213228893578875">Brave uvolňuje paměť obsazenou neaktivními kartami. Aktivní karty a jiné aplikace tak mají k dispozici více výpočetních zdrojů a prohlížeč Brave zůstává rychlý. Když se k neaktivním kartám vrátíte, automaticky se aktivují. <ph name="BEGIN_LINK"/>Další informace o Spořiči paměti<ph name="END_LINK"/></translation>
 <translation id="899523323751802352">Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, <ph name="SETTINGS_LINK"/> data prohlížeče Brave ve svém účtu.</translation>
 <translation id="82926023981336111">Přizpůsobte si prohlížeč Brave a ovládejte ho. Nastavte si Brave jako výchozí prohlížeč.</translation>
@@ -474,7 +468,6 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="5874208157501051620">Rozšíření vyžaduje, abyste se do prohlížeče Brave přihlásili</translation>
 <translation id="3561569806301739367">Soubor <ph name="FILE_NAME"/> může být nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="3205074487970075628">Brave používá vaši kameru.</translation>
-<translation id="6327105987658262776">Nejsou k dispozici žádné aktualizace.</translation>
 <translation id="1819119299840995223">V prohlížeči Brave právě probíhá jiná operace. Zkuste to znovu později.</translation>
 <translation id="8616874628011103667">Používání prohlížeče Brave se spravovaným účtem Brave a sdílenými počítači je teď snazší.</translation>
 <translation id="5213389303624223677">Nastavte si Brave jako výchozí prohlížeč. Budete tak mít snadno přístup k funkcím, které znáte, máte rádi a kterým důvěřujete.</translation>
@@ -486,6 +479,7 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="7920857181125123335">Pokud chcete pokračovat, přihlaste se do prohlížeče Brave jako <ph name="EMAIL"/>. Použijí se tak zásady vaší organizace.</translation>
 <translation id="3256100650978957522">Logo Brave na obrazovce počítače.</translation>
 <translation id="5880764554173582719">Brave Origin je webový prohlížeč, který spouští webové stránky a aplikace rychlostí blesku. Je rychlý a snadno se používá. Prohlížejte web bezpečněji díky ochraně proti malwaru a phishingu integrované v prohlížeči Brave Origin.</translation>
+<translation id="4091049150278654573">Pokud chcete mít vždy možnost používat a ukládat data prohlížeče Brave ve svém účtu Brave, ověřte svou totožnost</translation>
 <translation id="2532326772258858491">Brave běží rychleji a funkce využívající JavaScript by měly fungovat tak, jak byly navrženy</translation>
 <translation id="6436260184216827876">Vyhledávání obrázků není k dispozici. Zkuste to později.</translation>
 <translation id="2139300032719313227">Restartujte ChromeOS</translation>
@@ -516,7 +510,6 @@ Pokud tato stránka nefunguje správně, zkuste optimalizaci povolit.</translati
 <translation id="6676384891291319759">Přístup k internetu</translation>
 <translation id="1363996462118479832">ChromeOS vaše data nemohl synchronizovat, protože při přihlašování došlo k chybě.</translation>
 <translation id="4694512973195649124">Odstranit z prohlížeče Brave data této aplikace</translation>
-<translation id="5324448127277983819">Brave vám dává větší kontrolu nad reklamami, které se vám zobrazují, a omezuje, co se o vás weby mohou dozvědět, když vám zobrazují personalizované reklamy</translation>
 <translation id="1257247502847251159">Brave pro tento web potřebuje přístup k mikrofonu</translation>
 <translation id="6712881677154121168">Chyba stahování: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Nelze použít váš profil, protože byl vytvořen v novější verzi prohlížeče Brave.
@@ -545,13 +538,11 @@ Některé funkce mohou být nedostupné. Zadejte prosím jiný adresář profilu
 
 Nové záložky nebude možné do účtu uložit, dokud některé nesmažete. Pokud se teď odhlásíte, neuložené záložky se smažou.</translation>
 <translation id="6965382102122355670">OK</translation>
-<translation id="6418340404893954563">Slabá hesla lze snadno uhodnout. Brave vám může <ph name="BEGIN_LINK"/>vytvářet a ukládat silná hesla<ph name="END_LINK"/>.</translation>
 <translation id="3453763134178591239">Smluvní podmínky systému ChromeOS</translation>
 <translation id="3335606533094650083">Brave pro tento web potřebuje oprávnění k přístupu k mikrofonu</translation>
 <translation id="6643520655691573653">Pokud chcete používat a ukládat data prohlížeče Brave ve svém účtu <ph name="ACCOUNT_EMAIL"/>, zadejte heslovou frázi</translation>
 <translation id="7011190694940573312">Instalace se nezdařila, protože tato verze operačního systému není podporována.</translation>
 <translation id="7024536598735240744">Chyba rozbalení: <ph name="UNPACK_ERROR"/>.</translation>
-<translation id="7025789849649390912">Instalace byla zastavena.</translation>
 <translation id="280382502853897110">Přizpůsobení prohlížeče Brave</translation>
 <translation id="7047386856539490735">Jsou tyto výsledky užitečné?</translation>
 <translation id="1705567146636171298">Aktualizovat Brave</translation>
@@ -562,11 +553,9 @@ Nové záložky nebude možné do účtu uložit, dokud některé nesmažete. Po
 <translation id="2332301637111071062">Když prohlížeč Brave <ph name="TIMEOUT_DURATION"/> není používán, vaše organizace smaže jeho data. To může zahrnovat historii, automatické vyplňování a stažené soubory.</translation>
 <translation id="1008530050039597147">Brave pro tento web potřebuje přístup k fotoaparátu</translation>
 <translation id="1197672524850678392">Brave nelze spustit. Zkuste to znovu.</translation>
-<translation id="3405035915691517126">Brave nemůže zkontrolovat hesla. Zkuste to znovu za 24 hodin.</translation>
 <translation id="3625983487600668413">Přidejte si prohlížeč Brave do Docku, ať ho máte kdykoli rychle k dispozici</translation>
 <translation id="5755581833598928580">Použít Brave pokaždé, když kliknete na odkazy ve zprávách, dokumentech a dalších aplikacích</translation>
 <translation id="5516268345616100622">Správce úloh – Brave</translation>
-<translation id="713191641919118540">Vaše zájmy podle odhadu Brave</translation>
 <translation id="1871621397473741084">Začněte hned procházet internet: Brave se teď může spouštět při spuštění Windows.</translation>
 <translation id="7274695763216404502">Připnuto! Příště vyhledávání obrázků použijte z lišty</translation>
 <translation id="7288567540154601580">Karty a rozšíření</translation>
@@ -577,7 +566,6 @@ Nové záložky nebude možné do účtu uložit, dokud některé nesmažete. Po
 <translation id="3403365884036456766">Soubor nastavení je poškozený nebo neplatný.
 
 Brave nemůže vaše nastavení obnovit.</translation>
-<translation id="7339898014177206373">Nové okno</translation>
 <translation id="3511996232906761537">Zde jsou k dispozici vaše weby, záložky a další obsah prohlížeče Brave.</translation>
 <translation id="1754899895078387289">Vaše šifrovaná data mohou číst pouze uživatelé, kteří mají vaši heslovou frázi. Heslová fráze se neodesílá do Googlu a není na Googlu uložena. Pokud heslovou frázi zapomenete nebo toto nastavení budete chtít změnit, budete muset <ph name="BEGIN_LINK"/>vymazat data prohlížeče Brave ve svém účtu<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel prohlížeč <ph name="ALTERNATIVE_BROWSER_NAME"/>.</translation>
@@ -585,6 +573,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="6085660187823915017">Pokud chcete v budoucnu dostávat aktualizace prohlížeče Brave, budete potřebovat systém macOS 13 nebo novější. Tento počítač používá systém macOS 12.</translation>
 <translation id="2865744782251083875">V poslední době jste nenavštívili. Prohlížeč Brave odebral tato oprávnění: <ph name="PERMISSION_1"/> a <ph name="PERMISSION_2"/>.</translation>
 <translation id="4631170166710903214">Toto rozšíření už není podporováno. Brave vám doporučuje odstranit ho.</translation>
+<translation id="4104934885375476361">Brave je teď váš výchozí prohlížeč</translation>
 <translation id="7951152294775418909">Pokračujte od stavu, ve kterém jste skončili: Brave při restartech obnovuje karty. Tuto funkci můžete vypnout v</translation>
 <translation id="3191314862567596053">Import hesel do prohlížeče Brave</translation>
 <translation id="284799389314308801">1. Níže klikněte na <ph name="BUTTON_LABEL"/>.
@@ -608,7 +597,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7624307931717240213">Informace používáme ke zlepšování této služby. Prostudujte si zásady ochrany soukromí a smluvní podmínky.</translation>
 <translation id="7649070708921625228">Nápověda</translation>
 <translation id="222435847253721602">Stáhnout aplikaci Brave</translation>
-<translation id="4008841832817149051">Nechte Brave procházet internet za vás</translation>
 <translation id="7658239707568436148">Zrušit</translation>
 <translation id="3343095737966473035">Brave není vaším výchozím prohlížečem</translation>
 <translation id="5477319665405831211">Synchronizujte a upravte si Brave na různých zařízeních</translation>
@@ -630,6 +618,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7963515534397191222">Brave nebylo možné aktualizovat na nejnovější verzi. Nemáte proto k dispozici nové funkce a opravy zabezpečení.</translation>
 <translation id="7872446069773932638">Stahování… Zbývající čas: <ph name="SECONDS"/> s</translation>
 <translation id="5545136190679883344">Pokud si heslovou frázi nepamatujete nebo toto nastavení chcete změnit, <ph name="BEGIN_LINK"/>vymažte data prohlížeče Brave ve svém účtu<ph name="END_LINK"/></translation>
+<translation id="9044562649276955255">Umožňuje kdykoli Gemini v Chromiu rychle otevřít</translation>
 <translation id="7877212753140190672">Zeptat se na tento obrázek</translation>
 <translation id="5687542525349822727">Nastavte si Brave jako výchozí prohlížeč</translation>
 <translation id="6396151137840491551">Pokud je to možné, Brave nezabezpečená připojení automaticky upgraduje na HTTPS</translation>
@@ -650,6 +639,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="8118331347066725040">Zpětná vazba k vyhledávání s funkcí Lens</translation>
 <translation id="5334309298019785904">ChromeOS nemůže synchronizovat data, protože Synchronizace ve vaší doméně není k dispozici.</translation>
 <translation id="813913629614996137">Probíhá inicializace...</translation>
+<translation id="5775051495647233404">Klávesová zkratka k otevření Gemini v Chromiu.</translation>
 <translation id="1081849497974110565">Dodatečné smluvní podmínky prohlížeče Brave</translation>
 <translation id="9067428552314418522">Tento soubor je nebezpečný, proto jej prohlížeč Brave zablokoval.</translation>
 <translation id="8177472873527554730">Na stránce se nepodařilo najít obsah</translation>
@@ -659,13 +649,13 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="1755067029031059271">Toto rozšíření nemusí být bezpečné. Brave nedokáže ověřit, odkud pochází. Odstraňte ho z prohlížeče Brave, aby již nemohlo číst a měnit vaše data (včetně osobních údajů) na webech, které navštěvujete.</translation>
 <translation id="8207657266087451193">Pokud obrázek nemá užitečný popis, Brave se vám jej pokusí poskytnout. Za účelem vytváření popisů jsou obrázky odesílány do Googlu. Tuto funkci můžete kdykoliv vypnout v nastavení.</translation>
 <translation id="7792526144795244436">Přihlásit se do prohlížeče Brave v novém profilu?</translation>
+<translation id="183102473074922918">Zobrazovat Gemini v Chromiu na hlavním panelu systému a zapnout klávesovou zkratku</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave vás varuje<ph name="END_LINK"/> před nebezpečnými weby a soubory ke stažení</translation>
 <translation id="8060549744348950090">V poslední době jste nenavštívili. Prohlížeč Brave odebral toto oprávnění: <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Nakupujte, překládejte a identifikujte různé věci pomocí fotoaparátu v aplikaci Brave pro iOS</translation>
 <translation id="8313851650939857356">Chyba při spuštění: <ph name="STARTUP_ERROR"/>.</translation>
 <translation id="6098476632210317894">Když prohlížeč Brave <ph name="TIMEOUT_DURATION"/> není používán, vaše organizace ho zavře.</translation>
 <translation id="8321888067342493336">Uložit jako obrázek</translation>
-<translation id="3360368475735266712">Po přihlášení si budete moci Brave synchronizovat a upravit na různých zařízeních</translation>
 <translation id="2591326305549412656">Před vámi prohlížeč Brave používal uživatel <ph name="USER_EMAIL_ADDRESS"/></translation>
 <translation id="5592122595094519401">Pokud chcete i nadále používat data prohlížeče Brave ve svém účtu Brave <ph name="ACCOUNT_EMAIL"/>, aktualizujte Brave</translation>
 <translation id="2569754604093464025">Pokud chcete v budoucnu dostávat aktualizace prohlížeče Brave, budete potřebovat systém Windows 10 nebo novější. Tento počítač používá Windows 8.</translation>
@@ -687,12 +677,12 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="2097604701283463988">Prohlížeč Brave je zastaralý</translation>
 <translation id="6080203201796279095">Děkujeme, že jste si Brave vybrali jako výchozí prohlížeč.</translation>
 <translation id="871233388178581868">Brave může hesla zkontrolovat, pouze když si je uložíte</translation>
+<translation id="8525579356836940628">Instalace byla zastavena</translation>
 <translation id="3667461919057407535">Nechte se upozornit, pokud Brave některé z vašich hesel najde ve veřejném seznamu dat prozrazených při porušení zabezpečení údajů</translation>
 <translation id="8555465886620020932">Chyba služby: <ph name="SERVICE_ERROR"/>.</translation>
 <translation id="7998982887712810347">Některé funkce a rozšíření prohlížeče Brave mají zkratky. Můžete je znovu zapnout.</translation>
 <translation id="8556420416730706394">Vyhledávání obrázků si můžete pro snadný přístup připnout. Stačí v horní části postranního panelu kliknout na tlačítko Připnout.</translation>
 <translation id="856656450041460113">Vyhledat v seznamu jazyků</translation>
-<translation id="227028348235968071">Když se přihlásíte pomocí účtu Brave, může vám Brave kontrolovat hesla</translation>
 <translation id="839677568225616901">Brave spravuje několik organizací</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Autoři prohlížeče Brave. Všechna práva vyhrazena.</translation>
 <translation id="8601359445272098721">Novinka! Pomocí tlačítka Přeložit obrazovku můžete přeložit text i obrázky na obrazovce</translation>
@@ -703,7 +693,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="4100716194836114130">Toto je váš prohlížeč Brave</translation>
 <translation id="8712637175834984815">Hotovo</translation>
 <translation id="1419543648228375718">Přihlásit se do prohlížeče Brave?</translation>
-<translation id="4891728458408976811">Mějte všechno v Chromiu</translation>
 <translation id="8747073452963259673">levý dolní roh oblasti hledání: vlevo <ph name="LEFT"/> %, dole <ph name="BOTTOM"/> %</translation>
 <translation id="878572486461146056">Chyba instalace: Správce sítě použil zásady skupiny, které brání instalaci: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Brave pro tento web potřebuje oprávnění k přístupu k fotoaparátu a mikrofonu</translation>
@@ -715,7 +704,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="9084132286318231275">Tento jazyk se používá k zobrazení nabídek, nastavení, upozornění a dalšího textu v prohlížeči Brave</translation>
 <translation id="8862326446509486874">Nemáte práva nutná k provádění instalací na úrovni systému. Zkuste spustit instalační program jako správce.</translation>
 <translation id="7289323009146924152">Přidat profil Brave</translation>
-<translation id="6412037018950369131">Pokud ano, upravte uložené heslo v prohlížeči Brave tak, aby odpovídalo novému heslu.</translation>
+<translation id="2922281028449999368">ChromeOS nemohl uložit data prohlížeče Brave do vašeho účtu Brave, protože při přihlašování došlo k chybě</translation>
 <translation id="1150745254876977823">Vaše organizace vyžaduje, abyste se do prohlížeče Brave přihlásili</translation>
 <translation id="8285294305439559616">Aplikace Brave se pokouší zobrazit hesla. Tato akce vyžaduje zadání hesla systému Windows.</translation>
 <translation id="4684884244620579559">Brave už není vaším výchozím prohlížečem. Nastavit Brave jako výchozí prohlížeč?</translation>
@@ -723,6 +712,8 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="7731184591599776500">Logo Brave Enterprise</translation>
 <translation id="6500340165622970282">Brave nelze spustit, protože při otevírání vašeho profilu došlo k chybě. Zkuste Brave restartovat.</translation>
 <translation id="3424657754843264466">Spravovat profily Brave</translation>
+<translation id="9018218886431812662">Instalace byla dokončena</translation>
+<translation id="82609232232243542">Přihlásit se do prohlížeče Brave</translation>
 <translation id="7055223246119657449">Prohlížeč Brave toto stahování zablokoval, protože tento soubor archivu obsahuje další soubory, které mohou skrývat malware</translation>
 <translation id="8341362078156319636">Mějte hesla, záložky a historii dokonale synchronizované mezi zařízeními. Aktualizujte svůj výchozí prohlížeč na Brave. Budete tak mít snadno přístup k funkcím, které znáte a máte rádi. Prohlížeč Brave bude připnutý na hlavní panel, kde bude kdykoli snadno rychle k dispozici.</translation>
 <translation id="9049928023195059068">Přihlášení do prohlížeče Brave při přihlášení do jiných služeb Brave</translation>
@@ -737,7 +728,6 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="9148058034647219655">Ukončit</translation>
 <translation id="2792073155252170448">Pokračujte od stavu, ve kterém jste skončili: Brave může při každém restartu obnovit karty. Tuto funkci můžete zapnout v</translation>
 <translation id="2444257125841652328">Administrátor systému nakonfiguroval prohlížeč Brave tak, aby pro přístup k adrese <ph name="TARGET_URL_HOSTNAME"/> otevřel alternativní prohlížeč.</translation>
-<translation id="8208548103319284047">Tip pro Brave: Vyhledávejte pomocí Lens</translation>
 <translation id="7902365066753170041">Znovu spustit a aktualizovat &amp;Brave</translation>
 <translation id="538146372587193686">Brave Origin (mDNS-In)</translation>
 <translation id="296137235951584143">Přizpůsobte si Brave</translation>
@@ -760,6 +750,7 @@ Brave nemůže vaše nastavení obnovit.</translation>
 <translation id="1448049584457347995">Aby bylo Brave bezpečnější, deaktivovali jsme některá rozšíření, která nejsou uvedena na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a mohla být přidána bez vašeho vědomí.</translation>
 <translation id="8848045066928358658">Aby byl prohlížeč Brave bezpečnější, deaktivovali jsme následující rozšíření, které není uvedeno na webu <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> a pravděpodobně bylo přidáno bez vašeho vědomí.</translation>
 <translation id="4624945300945265642">Otevřít odkaz v &amp;soukromém okně prohlížeče Brave</translation>
+<translation id="1069969567644851798">Otevřít odkaz v prohlížeči Brave &amp;v anonymním okně</translation>
 <translation id="6554952862405000915">Otevřít odkaz v &amp;soukromém okně prohlížeče Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Je k dispozici nová aktualizace prohlížeče Brave, která bude použita po restartování.}=1{Je k dispozici nová aktualizace prohlížeče Brave, která bude použita po restartování. Soukromé okno se neotevře znovu.}few{Je k dispozici nová aktualizace prohlížeče Brave, která bude použita po restartování. # soukromá okna se neotevřou znovu.}many{Je k dispozici nová aktualizace prohlížeče Brave, která bude použita po restartování. # soukromých okna se neotevře znovu.}other{Je k dispozici nová aktualizace prohlížeče Brave, která bude použita po restartování. # soukromých oken se neotevře znovu.}}</translation>
 <translation id="7347727235538318126">To vám umožní sdílet obsah z Brave do vašich místních zařízení, například televize nebo reproduktoru.</translation>

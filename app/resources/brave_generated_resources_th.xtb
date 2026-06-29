@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">เพิ่มเติม…</translation>
 <translation id="71316462802471551">นามแฝงอีเมล</translation>
+<translation id="209130971304928953">บันทึกแท็บเป็นพื้นที่ทำงาน…</translation>
+<translation id="877984331511007834">เปิดพื้นที่ทำงาน…</translation>
+<translation id="1310182651927031327">บันทึกแท็บเป็นพื้นที่ทำงาน…</translation>
+<translation id="3588277741646479444">เปิดพื้นที่ทำงาน…</translation>
 <translation id="1990886731975529483">ติดตั้งและเรียกใช้ Google Widevine</translation>
 <translation id="8926389886865778422">ไม่ต้องถามอีก</translation>
 <translation id="4900351245762303149">ติดตั้ง Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">หน้าต่างส่วนตัวใหม่ด้วย Tor</translation>
 <translation id="2638041073279639246">เปิดลิงก์ในหน้าต่างส่วนตัวด้วย Tor</translation>
 <translation id="3425600262621021599">เปิดลิงก์ในหน้าต่างส่วนตัวของ Brave ด้วย Tor</translation>
-<translation id="2545072023356206691">ตั้งแต่วันที่ 1 ธันวาคม 2566 เป็นต้นไป ช่องทาง Brave Dev จะไม่ได้รับการอัปเดตอีกต่อไป เราจึงขอแนะนำให้ผู้ใช้เปลี่ยนไปใช้งาน Nightly ในรุ่น Beta หรือตัวเต็มของ Brave</translation>
 <translation id="474217410105706308">ปิดเสียงแท็บ</translation>
 <translation id="2804710924397009224">ซ่อนไอคอน Brave Rewards</translation>
 <translation id="5029193871181468990">ซ่อนไอคอน Brave Rewards</translation>
@@ -141,7 +144,7 @@
 <translation id="8748471354357836070">เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม</translation>
 <translation id="5927196110206824867">ภาพพื้นหลังที่มีสปอนเซอร์ช่วยสนับสนุนภารกิจของ Brave ในการสร้างเว็บที่เป็นอิสระและยึดผู้ใช้เป็นศูนย์กลาง และไม่เหมือนกับบริษัทยักษ์ใหญ่ทางเทคโนโลยี เราวัดประสิทธิภาพของโฆษณาโดยไม่ระบุตัวตน เพื่อคุ้มครองความเป็นส่วนตัวของคุณ</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">ร่วมให้ข้อมูลการค้นหาและการเลือกดูแบบไม่ระบุตัวตน เพื่อช่วยให้ Brave Search ทำงานได้ดีขึ้น</translation>
+<translation id="8659271182272561965">มีส่วนร่วมในการแบ่งปันข้อมูลการค้นหา &amp; การเรียกดูแบบไม่ระบุตัวตนเพื่อปรับปรุง Brave Search ให้ดียิ่งขึ้น</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">ซ่อนไอคอนแถบด้านข้าง</translation>
 <translation id="2613033293035359003">ซ่อนแถบด้านข้าง</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">เปิดในคอนเทนเนอร์</translation>
 <translation id="194205047181722473">เปิดลิงก์ในคอนเทนเนอร์</translation>
 <translation id="8638526693050780542">จัดการคอนเทนเนอร์</translation>
+<translation id="2796584247246518451">คอนเทนเนอร์ชั่วคราวใหม่</translation>
 <translation id="2336228925368920074">บุ๊กมาร์กแท็บทั้งหมด...</translation>
 <translation id="2523967823495420116">ใช้แท็บแนวตั้ง</translation>
 <translation id="5483718923712878759">โหมดโฟกัส</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">เปิดในคอนเทนเนอร์</translation>
 <translation id="1185644444415356776">เปิดลิงก์ในคอนเทนเนอร์</translation>
 <translation id="6745991613881384719">จัดการคอนเทนเนอร์</translation>
+<translation id="8523788649219117880">คอนเทนเนอร์ชั่วคราวใหม่</translation>
 <translation id="3704707436873245822">คัดลอกข้อความจากรูปภาพ</translation>
 <translation id="5268098808165185458">กำลังคัดลอกข้อความจากรูปภาพ...</translation>
 <translation id="4046485130884276245">คัดลอกข้อความจากรูปภาพแล้ว</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">แท็บ</translation>
 <translation id="8168435359814927499">เนื้อหา</translation>
 <translation id="6017560037265964523">คอนเทนเนอร์</translation>
-<translation id="934893482320683588">จัดระเบียบการท่องเว็บของคุณด้วยคอนเทนเนอร์ <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">คอนเทนเนอร์คือแท็บเบราว์เซอร์ที่มีรหัสสีซึ่งแยกข้อมูลการเรียกดูของคุณ เช่น คุกกี้ แคช และ storage ของไซต์ออกเป็นบริบทแยกต่างหาก <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">เปิดใช้งานคอนเทนเนอร์</translation>
 <translation id="7773735778926921278">เพิ่มคอนเทนเนอร์ใหม่</translation>
 <translation id="8900907990448657776">แก้ไขคอนเทนเนอร์</translation>
 <translation id="7900511996284443779">ลบคอนเทนเนอร์</translation>
@@ -810,6 +816,7 @@
 <translation id="5226020406479918122">โหมดโฟกัสแท็บ</translation>
 <translation id="3705539672403311123">เปิดใช้งานการจัดระเบียบแท็บในหน้า Tab Search เมื่อเปิดใช้งาน ระบบจะส่งชื่อเรื่องและแหล่งที่มาของแท็บทั้งหมดที่ไม่ใช่โหมดส่วนตัวไปยัง Leo เพื่อจัดประเภท <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">โมเดลเริ่มต้นสำหรับการโฟกัสแท็บ</translation>
+<translation id="2161546758719933059">โมเดลที่ใช้จัดระเบียบแท็บของคุณในโหมด Tab Focus <ph name="BEGIN_LINK"/>เรียนรู้เพิ่มเติม<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">แสดงข้อความแจ้งเตือนที่แนะนำในการสนทนา</translation>
 <translation id="5781842473834867765">บันทึกประวัติการสนทนาของฉัน</translation>
 <translation id="1082960401708055995">การปิดการบันทึกการสนทนาจะลบประวัติการสนทนาที่บันทึกไว้ทั้งหมดอย่างถาวร การกระทำนี้ไม่สามารถย้อนกลับได้</translation>

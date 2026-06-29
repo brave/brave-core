@@ -22,6 +22,7 @@
 <translation id="1203500561924088507">L'installazione è terminata. Dovrai riavviare il browser per poter utilizzare <ph name="BUNDLE_NAME"/>.</translation>
 <translation id="1232234696885483911">Quando apri la ricerca immagini, il titolo della pagina, l'URL e i contenuti, inclusi i PDF, verranno inviati automaticamente al server. <ph name="LEARN_MORE"/></translation>
 <translation id="1934377710648094656">Se hai eseguito l'accesso, puoi usare le password e altri dati del tuo Account Brave in Brave. Per modificare questa impostazione, vai a "Il tuo account in Brave".</translation>
+<translation id="1631493536097460865">Usa la scorciatoia da tastiera per selezionare una parte dello schermo in Gemini in Brave.</translation>
 <translation id="8799570501820813406">Mentre questa scheda non era attiva, la memoria è stata liberata per mantenere Brave veloce. Puoi scegliere di escludere sempre il sito dall'inattività.</translation>
 <translation id="8767381092474532098">Brave ha bloccato questo download perché il file è pericoloso</translation>
 <translation id="3256289531845594061">Quando accedi a servizi Brave come Gmail o YouTube con <ph name="USER_EMAIL"/>, puoi accedere automaticamente a Brave con lo stesso account</translation>
@@ -31,6 +32,7 @@
 <translation id="4291722755910963157">Prova con Gemini in Brave</translation>
 <translation id="878572309106296578">Brave richiede l'accesso al Bluetooth per individuare i dispositivi Bluetooth. <ph name="IDS_SERIAL_DEVICE_CHOOSER_AUTHORIZE_BLUETOOTH_LINK"/></translation>
 <translation id="1330562121671411446">Rileva lingua</translation>
+<translation id="6204677860546245308">Utilizza le impostazioni del browser consigliate di Brave</translation>
 <translation id="108284536240904209">Elimina i dati anche da Brave (<ph name="URL"/>)</translation>
 <translation id="1345251407431278948">Riquadro fissato. Puoi accedere nuovamente alla ricerca immagini dal nuovo pulsante sulla barra degli strumenti</translation>
 <translation id="1356661055722410047">Novità. Puoi tradurre sia testo che immagini sullo schermo</translation>
@@ -55,13 +57,13 @@
 <translation id="1680687534629375545">Chiedi alla Ricerca immagini informazioni su questa pagina</translation>
 <translation id="509363484780540563">Puoi usare Brave ogni volta che fai clic sui link in messaggi, documenti e altre app. Verrà anche fissato sulla barra delle app.</translation>
 <translation id="1709772298389099340">Fornisce privilegi elevati per <ph name="BROWSER_NAME"/>.</translation>
-<translation id="2913217021115517297">Per contribuire a migliorare queste funzionalità, Brave invia le tue interazioni a Brave. Questi dati potrebbero essere letti, elaborati e annotati da revisori.</translation>
 <translation id="8004287232784878841">A breve Brave eliminerà i dati di navigazione</translation>
 <translation id="4197839351786449392">Brave proverà a fare l'upgrade delle navigazioni a HTTPS</translation>
 <translation id="7814200940910057384">Dati di Brave cancellati</translation>
 <translation id="9048361966237194186">Brave verrà riavviato tra <ph name="REMAINING_TIME"/></translation>
 <translation id="5524150602137990006">Quando HTTPS non è disponibile, Brave utilizza una connessione non sicura senza avvisarti</translation>
 <translation id="6797402139308059782">Lascia Brave in esecuzione in background</translation>
+<translation id="5994491947936308173">Fai clic su <ph name="BEGIN_BOLD"/>Sì<ph name="END_BOLD"/> nella notifica di Windows per fissare Brave alla barra delle app per un accesso rapido.</translation>
 <translation id="5875673934455379806">Reinstalla Brave</translation>
 <translation id="4529028207655448215">Brave sta cercando di <ph name="AUTHENTICATION_PURPOSE"/></translation>
 <translation id="7362761326208547489">La prossima volta che aprirai Brave sul tuo <ph name="DEVICE_TYPE"/>, ti verrà chiesto se vuoi utilizzare Gestore delle password di Brave.</translation>
@@ -81,22 +83,17 @@
 <translation id="4035053306113201399">Per applicare l'aggiornamento è necessario riavviare Chrome OS.</translation>
 <translation id="9048754176089806686">Brave ha bloccato questo download perché il tipo di file non viene scaricato comunemente e potrebbe essere pericoloso</translation>
 <translation id="1953553007165777902">Download in corso… Minuti rimanenti: <ph name="MINUTE"/></translation>
-<translation id="2470048290583727811">Suggerimento per Brave: salva le password</translation>
 <translation id="1775322105159056176">Brave non è in grado di determinare o impostare il browser predefinito</translation>
 <translation id="4372901050442507812">Scopri perché Brave blocca alcuni file (si apre in una nuova scheda)</translation>
 <translation id="2703425183860615504">Mantiene aggiornato il software di Brave. Se questo servizio viene disattivato o interrotto, il software di Brave non verrà aggiornato, il che significa che le vulnerabilità di sicurezza che potrebbero verificarsi non potranno essere corrette e le funzionalità potrebbero non essere eseguite correttamente. Questo servizio si disinstalla autonomamente quando non viene utilizzato da nessun software di Brave.</translation>
 <translation id="9220324636239049437">Verrà eliminato 1 elemento da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="2018879682492276940">Installazione non riuscita. Riprova.</translation>
-<translation id="831418749472885028">Per controllare che le tue altre password siano protette da violazioni dei dati e altri problemi di sicurezza, <ph name="BEGIN_LINK"/>accedi a Brave<ph name="END_LINK"/>.</translation>
 <translation id="2039417478970545937">Impostazioni.</translation>
 <translation id="5499149312981370855">Scegli se includere la cronologia di Brave per esperienze ancora più personalizzate nei servizi Brave</translation>
 <translation id="6959434860418352144">Fai clic sul pulsante Personalizza Brave nella pagina Nuova scheda per dare un nuovo aspetto a Brave</translation>
 <translation id="2066690553719545730">Mostra sempre AI Mode</translation>
 <translation id="2472891440303445472">Brave ha bloccato questo download perché il file è ingannevole e potrebbe apportare modifiche impreviste al tuo dispositivo</translation>
 <translation id="2054358978145431867">La prossima volta che aprirai Brave su iOS, ti verrà chiesto di provare <ph name="FEATURE_NAME"/>.</translation>
-<translation id="4315579854608498851">Brave disattiva l'ottimizzazione di JavaScript quando visiti un sito per la prima volta.
-
-Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione.</translation>
 <translation id="2726948994393234543">Le tue password e altri dati di Brave salvati nel tuo Account Brave verranno rimossi da questo dispositivo. Per usarli di nuovo in Brave, accedi nuovamente.</translation>
 <translation id="4375530476448642348">{COUNT,plural, =1{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per 1 minuto. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}other{La tua organizzazione elimina automaticamente i dati di navigazione quando Brave non viene utilizzato per # minuti. Potrebbero essere inclusi cronologia, compilazione automatica e download. Le schede rimarranno aperte.}}</translation>
 <translation id="2126108037660393668">Il file scaricato non ha superato la verifica.</translation>
@@ -155,8 +152,10 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="2620436844016719705">Sistema</translation>
 <translation id="7931230852267968641">La tua organizzazione può vedere e gestire i dati di navigazione, ad esempio i preferiti, la cronologia e le password. Non può vedere i dati di navigazione in altri profili Brave.</translation>
 <translation id="2257221826278123061">Verifica la tua identità per usare e salvare i dati di Brave nel tuo account, <ph name="ACCOUNT_EMAIL"/></translation>
+<translation id="7048234400304379082">Usa la scorciatoia da tastiera per uscire da Gemini in Brave o tornarci.</translation>
 <translation id="7387051847644272380">Durante l'installazione si è verificato un errore del sistema operativo. Scarica di nuovo Brave.</translation>
 <translation id="2648689842065142443">Se condividi un dispositivo, i tuoi amici e la tua famiglia possono navigare separatamente e configurare Brave in base alle proprie esigenze</translation>
+<translation id="1001521084148238686">Accedi facilmente a Gemini in Brave sul tuo dispositivo, anche se Brave è ridotto a icona.</translation>
 <translation id="6791166902140255175">Scheda Brave</translation>
 <translation id="8372880274820509128">Per maggiore sicurezza, Brave cripterà i tuoi dati.</translation>
 <translation id="8752006915531191162">Esci per rimuovere il tuo Account Brave da Brave</translation>
@@ -175,11 +174,9 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="2885378588091291677">Task Manager</translation>
 <translation id="2176825726964012531">Informazioni su &amp;Brave</translation>
 <translation id="2915996080311180594">Riavvia in seguito</translation>
-<translation id="2928420929544864228">Installazione completata.</translation>
 <translation id="2481553173340651149">I dati sono criptati con la tua passphrase. Inseriscila per utilizzare e salvare i dati di Brave nel tuo Account Brave.</translation>
 <translation id="2945997411976714835">Errore di installazione: impossibile avviare il processo di installazione.</translation>
 <translation id="2413255940314578781">Accedi più rapidamente ai siti utilizzando le password salvate per Brave su iOS</translation>
-<translation id="122765104641632123">Aggiungi un nuovo profilo Brave per tenere separati preferiti, password e impostazioni.</translation>
 <translation id="3688936822855019158">La tua organizzazione gestisce Brave</translation>
 <translation id="8208853227947884571">Brave è aggiornato</translation>
 <translation id="5122472867956731189">Se un sito cerca di rubare la tua password o se scarichi un file dannoso, Brave potrebbe anche inviare gli URL, inclusi frammenti dei contenuti delle pagine, a Navigazione sicura</translation>
@@ -187,7 +184,6 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="3003694935412297923">Tutte le attività</translation>
 <translation id="7611046016537686219">{count,plural, =1{Brave deve verificare la tua identità per poter salvare alcuni dati nel tuo Account Brave e utilizzarli su tutti i tuoi dispositivi. Se esci ora, questi dati (1 elemento) verranno eliminati.}other{Brave deve verificare la tua identità per poter salvare alcuni dati nel tuo Account Brave e utilizzarli su tutti i tuoi dispositivi. Se esci ora, questi dati ({count} elementi) verranno eliminati.}}</translation>
 <translation id="4202995875619419215">Apri <ph name="URL"/> in una nuova scheda in Brave.</translation>
-<translation id="8755404239607088219">Brave non può controllare le tue password. Riprova più tardi.</translation>
 <translation id="8880183781256147665">Aggiunta a Brave in corso...</translation>
 <translation id="3038232873781883849">In attesa dell'installazione…</translation>
 <translation id="3045032126857188731">Lingua di destinazione: <ph name="LANGUAGE"/></translation>
@@ -232,7 +228,6 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="3412460710772753638">In Gestore delle password su questo dispositivo</translation>
 <translation id="2491221873705777076">Estendi la Navigazione sicura avanzata con Brave sul tuo smartphone</translation>
 <translation id="7304389940068374923">Personalizzazione di Brave in corso…</translation>
-<translation id="9216183508558772570">Brave ti invierà una notifica quando accederai con una password compromessa</translation>
 <translation id="5853262807109651878">Verranno eliminati <ph name="ITEMS_COUNT"/> elementi da questo dispositivo. Per recuperare i dati in un secondo momento, accedi a Brave come <ph name="USER_EMAIL"/>.</translation>
 <translation id="2024972335338126423">La scorciatoia <ph name="SHORTCUT"/> consente di passare da un profilo Brave all'altro</translation>
 <translation id="8703492925273919597">Chiudi tutte le finestre di Brave e riprova.</translation>
@@ -247,18 +242,15 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="7029305463989165490">Per inviare un numero da <ph name="ORIGIN"/> al tuo telefono Android, accedi a Brave su entrambi i dispositivi.</translation>
 <translation id="3667616615096815454">Impossibile installare l'applicazione. Applicazione sconosciuta al server.</translation>
 <translation id="1128485277465085828">Usa la <ph name="BEGIN_LINK"/>tua passphrase<ph name="END_LINK"/> per criptare tutti i dati di Brave nel tuo Account Brave. I metodi di pagamento e gli indirizzi memorizzati su Google Pay non verranno criptati. La cronologia di navigazione di Brave non verrà sincronizzata.</translation>
-<translation id="4304059894777924102">Brave non può controllare le tue password. Prova a controllare la connessione a Internet.</translation>
 <translation id="1807774211756215222">Apri link in una nuova &amp;scheda di Brave</translation>
 <translation id="387105482057676379">Collega Brave e altri servizi Brave per la personalizzazione e altri scopi</translation>
 <translation id="3729187154190517324">Approfondisci la ricerca aggiungendo più schede, file e strumenti utilizzando il pulsante "Aggiungi una scheda e altro".</translation>
 <translation id="3867175562099983425">Gestisci i profili Brave</translation>
 <translation id="308146532933302843">Scopri perché Brave blocca alcuni download</translation>
 <translation id="2189149060536531804">Brave ti avviserà qualora fosse necessario un controllo da parte tua</translation>
-<translation id="8422094375343667686">I profili Brave ti aiutano a separare le diverse attività della tua vita quotidiana. Aggiungi subito un nuovo profilo.</translation>
 <translation id="6324134303015966238">Brave precarica le pagine che è probabile che visiterai, in modo che vengano caricate più rapidamente quando lo farai</translation>
 <translation id="3810973564298564668">Gestisci</translation>
 <translation id="4815742196440583661">Per usare le password salvate, segui il codice QR, scarica Brave per iOS e accedi al tuo Account Brave</translation>
-<translation id="6093965249696204223">Suggerimento per Brave: Navigazione sicura avanzata</translation>
 <translation id="3846683726093018685">**Riassumi:** usa una sola frase sotto le 30 parole per descrivere l'argomento e lo scopo principali dei contenuti nello screenshot.
 
           **Suggerisci domande:** genera un elenco puntato di 3-5 domande stimolanti che un utente potrebbe porre per comprendere meglio lo screenshot. Queste domande devono includerne almeno una che riguardi specificamente un oggetto visivo, il suo design o il suo posizionamento.</translation>
@@ -274,6 +266,7 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="4256965182800026277">Le password, i metodi di pagamento e gli indirizzi che hai salvato nel tuo Account Brave verranno rimossi da questo dispositivo. Per usarli di nuovo in Brave, accedi nuovamente.</translation>
 <translation id="395904275706073188">Le pagine protette non possono essere lette. Prova con un'altra pagina.</translation>
 <translation id="4194619960643453552">Scopri in che modo Brave ti protegge</translation>
+<translation id="3967822245660637423">Download completato</translation>
 <translation id="1486377520191913768">Quando digiti nella barra degli indirizzi o nella casella di ricerca, Brave invia ciò che digiti agli strumenti di ricerca, all'AI e all'agente della tua organizzazione per ricevere suggerimenti.</translation>
 <translation id="1311808042904310985">Informazioni su &amp;Brave for Testing</translation>
 <translation id="1152920704813762236">Informazioni su Chrome OS</translation>
@@ -308,10 +301,9 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="6368144843345980623">Esporta password da Brave</translation>
 <translation id="4304713468139749426">Gestore delle password</translation>
 <translation id="4334241893986177674">Cerca questo screenshot</translation>
-<translation id="4334294535648607276">Download completato.</translation>
 <translation id="242356249838681145">Avvia Brave all'avvio di Windows</translation>
 <translation id="4747339441562331861">Accedi facilmente alle funzionalità che conosci, che ami e di cui ti fidi impostando Brave come browser predefinito. Brave verrà fissato sulla barra delle app per un accesso rapido.</translation>
-<translation id="1068681683510904753"><ph name="MANAGER"/> richiede di leggere e accettare i seguenti Termini di servizio prima di utilizzare il dispositivo. Questi termini non ampliano, modificano né limitano i Termini di Chrome OS.</translation>
+<translation id="4400772909124543403">Nessun aggiornamento disponibile</translation>
 <translation id="9183662282810237335">Vuoi uscire comunque da Brave?</translation>
 <translation id="4413205837991854510">Mostra sempre la scorciatoia per la ricerca immagini</translation>
 <translation id="4065288863231444640">Lascia Brave in esecuzione in background</translation>
@@ -348,9 +340,8 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="4724676981607797757">Installazione non riuscita a causa di un errore di protocollo non supportato.</translation>
 <translation id="3834935463915107022">Vuoi chiudere comunque Brave?</translation>
 <translation id="8668413672647811944">È stato appena applicato un aggiornamento di sicurezza speciale per Brave. Riavvia ora e le schede verranno ripristinate.</translation>
-<translation id="9029438584415578308">Chiedi a Brave</translation>
 <translation id="4941816441131888792">Non hai visitato il sito di recente. Brave ha rimosso <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e altre <ph name="COUNT"/> autorizzazioni.</translation>
-<translation id="4823369970559443694">Brave non può controllare le tue password. Riprova tra 24 ore oppure <ph name="BEGIN_LINK"/>controlla le password nel tuo Account Brave<ph name="END_LINK"/>.</translation>
+<translation id="844451748565342664">Se Gemini in Brave è aperto, il riquadro laterale rimane aperto quando crei nuove schede</translation>
 <translation id="215320507915280336">Viene usato lo stesso controllo ortografico utilizzato nella Ricerca Brave. Il testo che digiti nel browser viene inviato a Brave. Puoi modificare questo comportamento in qualsiasi momento nelle impostazioni.</translation>
 <translation id="2899369907387169108">Utilizza Brave senza un account</translation>
 <translation id="1912973375560256099">Regola inbound per consentire il traffico mDNS in Brave.</translation>
@@ -363,13 +354,11 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="7406627712452599344">Gli ospiti possono utilizzare Brave senza lasciare tracce.</translation>
 <translation id="844471735881341044">Il tuo account in Brave</translation>
 <translation id="5952898964075639679">Aggiungiti a Brave</translation>
-<translation id="7995865526174204486">Gemini in Brave utilizza la navigazione automatica per lavorare nelle tue schede e completare le attività che gli assegni. <ph name="LINK_BEGIN"/>Scopri di più<ph name="LINK_END"/></translation>
 <translation id="1204184037023366446">Brave deve avere l'autorizzazione per monitorare le tue mani</translation>
 <translation id="5406591571925937375">Non hai visitato il sito di recente. Brave ha rimosso <ph name="PERMISSION_1"/>, <ph name="PERMISSION_2"/> e <ph name="PERMISSION_3"/>.</translation>
 <translation id="5174969993834422967">Di solito blocchi le notifiche. Per ricevere notifiche da questo sito, fai clic sull'icona delle notifiche nell'angolo destro della barra degli indirizzi.</translation>
 <translation id="5174983315706567306">Spazio su disco insufficiente.</translation>
 <translation id="8157129267754368853">L'account Brave richiede la ri-autenticazione</translation>
-<translation id="9078804073692109646">Nessuna password salvata. Brave può controllare le password quando le salvi.</translation>
 <translation id="6234515504547364178">Uscita da Brave</translation>
 <translation id="5234764350956374838">Ignora</translation>
 <translation id="5254739261293693943">Fai domande sul video</translation>
@@ -379,8 +368,10 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="7264453786974905915">Scarica l'app Brave</translation>
 <translation id="6944930779012811739">Servizio interno di Brave Updater</translation>
 <translation id="5346389065299425353">Approfondisci la ricerca aggiungendo più schede, file e strumenti</translation>
+<translation id="4672413209491548018">Ottieni una rapida panoramica di questo documento e fai domande con Gemini in Brave</translation>
 <translation id="7573068992266397941">Brave ha trovato alcuni consigli per la sicurezza da farti esaminare</translation>
 <translation id="8174413867995118050">Altri profili Brave</translation>
+<translation id="1659922362001329844">ChromeOS non ha potuto salvare i dati di Brave nel tuo Account Brave perché i tuoi dati di accesso non sono aggiornati</translation>
 <translation id="7708394612738038097">Stai per accedere con un account gestito e per dare al relativo amministratore il controllo del tuo profilo Brave. I tuoi dati di Brave, come app, Preferiti, cronologia, password e altre impostazioni, verranno collegati definitivamente a <ph name="USER_NAME"/>. Potrai eliminare questi dati tramite la Dashboard di Brave sync chain, ma non potrai associare questi dati a un altro account. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Codice aggiuntivo: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="2487133103111559902">Per accedere alla personalizzazione, includi Brave in Attività web e app</translation>
@@ -400,6 +391,10 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="5524890928877629608">angolo in alto a sinistra dell'area di ricerca: sinistra <ph name="LEFT"/>%, in alto <ph name="TOP"/>%</translation>
 <translation id="232381795826373334">Apri PDF in Brave</translation>
 <translation id="5536164441519929134">Chiedi<ph name="LINE_BREAK"/>informazioni su questa scheda</translation>
+<translation id="3940190010522469883">Per motivi di sicurezza, Brave disattiva l'ottimizzazione di JavaScript quando visiti un sito per la prima volta.
+
+Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione.</translation>
+<translation id="7074160267408082133">Mostra Gemini in Brave nella barra dei menu del Mac e attiva la scorciatoia da tastiera</translation>
 <translation id="5579324208890605088">Errore di avvio: esegui il programma di installazione come utente normale, non come amministratore.</translation>
 <translation id="3588973534877826647">Usa Brave per impostazione predefinita e fissalo</translation>
 <translation id="5596627076506792578">Altre opzioni</translation>
@@ -411,7 +406,6 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">Visualizza Brave in questa lingua</translation>
 <translation id="569897634095159764">Impossibile connettersi a internet. Il server proxy richiede l'autenticazione.</translation>
-<translation id="3364613146104156465">I profili Brave ti consentono di tenere separata la navigazione personale da quella di lavoro. Aggiungi subito un nuovo profilo.</translation>
 <translation id="1834213228893578875">Brave libera la memoria dalle schede non attive. In questo modo le schede attive e altre app hanno più risorse per il computer e mantengono Brave veloce. Le schede inattive si riattivano automaticamente quando ci torni. <ph name="BEGIN_LINK"/>Scopri di più sulla modalità Risparmio memoria<ph name="END_LINK"/></translation>
 <translation id="899523323751802352">Se dimentichi la passphrase o vuoi modificare questa impostazione, <ph name="SETTINGS_LINK"/> i dati di Brave nel tuo account.</translation>
 <translation id="82926023981336111">Personalizza e controlla Brave. Imposta Brave come browser predefinito.</translation>
@@ -472,7 +466,6 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="5874208157501051620">Un'estensione richiede l'accesso a Brave</translation>
 <translation id="3561569806301739367"><ph name="FILE_NAME"/> potrebbe essere pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="3205074487970075628">Brave sta utilizzando la videocamera.</translation>
-<translation id="6327105987658262776">Nessun aggiornamento disponibile.</translation>
 <translation id="1819119299840995223">C'è un'altra operazione in corso su Brave. Riprova più tardi.</translation>
 <translation id="8616874628011103667">Ora è più facile utilizzare Brave con il tuo Account Brave e sui computer condivisi.</translation>
 <translation id="5213389303624223677">Accedi facilmente alle funzionalità che conosci, che ami e di cui ti fidi impostando Brave come browser predefinito.</translation>
@@ -484,6 +477,7 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="7920857181125123335">Per continuare, accedi a Brave come <ph name="EMAIL"/>. In questo modo, avrai la certezza di rispettare i criteri della tua organizzazione.</translation>
 <translation id="3256100650978957522">Logo di Brave sullo schermo di un computer.</translation>
 <translation id="6373767849825830651">Brave è un browser web che esegue le pagine web e le applicazioni alla velocità della luce. È veloce, stabile e facile da utilizzare. Naviga su Internet in modo più sicuro grazie alla protezione da malware e phishing integrata in Brave.</translation>
+<translation id="4091049150278654573">Per assicurarti di poter usare e salvare sempre i dati di Brave nel tuo Account Brave, verifica la tua identità</translation>
 <translation id="2532326772258858491">Brave funziona più velocemente e le funzionalità che utilizzano JavaScript dovrebbero avere il comportamento previsto</translation>
 <translation id="6436260184216827876">La ricerca immagini non è disponibile. Riprova più tardi.</translation>
 <translation id="2139300032719313227">Riavvia Chrome OS</translation>
@@ -514,7 +508,6 @@ Se questa pagina non funziona come previsto, prova a consentire l'ottimizzazione
 <translation id="6676384891291319759">Accesso a Internet</translation>
 <translation id="1363996462118479832">Impossibile sincronizzare i dati in Chrome OS a causa di un errore durante l'accesso.</translation>
 <translation id="4694512973195649124">Rimuovi i dati di questa app da Brave</translation>
-<translation id="5324448127277983819">Brave ti offre un maggiore controllo sugli annunci che vedi e limita ciò che i siti possono imparare su di te quando ti mostrano annunci personalizzati</translation>
 <translation id="1257247502847251159">Brave deve avere l'autorizzazione di accesso al microfono per questo sito</translation>
 <translation id="6712881677154121168">Errore di download: <ph name="DOWNLOAD_ERROR"/></translation>
 <translation id="1489465648257900784">Impossibile utilizzare il tuo profilo perché proviene da una versione più recente di Brave.
@@ -543,13 +536,11 @@ Alcune funzioni potrebbero non essere disponibili. Specifica un'altra directory 
 
 Non è possibile salvare nuovi preferiti nel tuo account finché non ne elimini alcuni. Se esci ora, i preferiti non salvati verranno eliminati.</translation>
 <translation id="6965382102122355670">Ok</translation>
-<translation id="6418340404893954563">Le password inefficaci sono facili da indovinare. Consenti a Brave di <ph name="BEGIN_LINK"/>creare e memorizzare password efficaci per te<ph name="END_LINK"/>.</translation>
 <translation id="3453763134178591239">Termini di Chrome OS</translation>
 <translation id="3335606533094650083">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere al microfono</translation>
 <translation id="6643520655691573653">Inserisci la tua passphrase per usare e salvare i dati di Brave nel tuo Account Brave, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="7011190694940573312">Installazione non riuscita perché questa versione del sistema operativo non è supportata.</translation>
 <translation id="7024536598735240744">Errore decompressione: <ph name="UNPACK_ERROR"/>.</translation>
-<translation id="7025789849649390912">Installazione interrotta.</translation>
 <translation id="280382502853897110">Personalizza Brave</translation>
 <translation id="7047386856539490735">Questi risultati sono utili?</translation>
 <translation id="1705567146636171298">Aggiorna Brave</translation>
@@ -560,11 +551,9 @@ Non è possibile salvare nuovi preferiti nel tuo account finché non ne elimini 
 <translation id="2332301637111071062">La tua organizzazione elimina i dati di Brave quando non vengono utilizzati per <ph name="TIMEOUT_DURATION"/>. Potrebbero essere inclusi cronologia, compilazione automatica e download.</translation>
 <translation id="1008530050039597147">Brave deve avere l'autorizzazione di accesso alla fotocamera per questo sito</translation>
 <translation id="1197672524850678392">Impossibile avviare Brave. Riprova.</translation>
-<translation id="3405035915691517126">Brave non può controllare le tue password. Riprova tra 24 ore.</translation>
 <translation id="3625983487600668413">Mantieni Brave nel dock per accedervi rapidamente in qualsiasi momento</translation>
 <translation id="5755581833598928580">Usa Brave ogni volta che fai clic sui link in messaggi, documenti e altre app</translation>
 <translation id="5516268345616100622">Task Manager - Brave</translation>
-<translation id="713191641919118540">I tuoi interessi stimati da Brave</translation>
 <translation id="1871621397473741084">Inizia subito a navigare: ora Brave può essere avviato all'avvio di Windows.</translation>
 <translation id="7274695763216404502">Riquadro fissato. Usa di nuovo la ricerca immagini dalla barra degli strumenti</translation>
 <translation id="7288567540154601580">Schede ed estensioni</translation>
@@ -575,7 +564,6 @@ Non è possibile salvare nuovi preferiti nel tuo account finché non ne elimini 
 <translation id="3403365884036456766">Il file delle preferenze è danneggiato o non valido.
 
 Brave non è in grado di recuperare le impostazioni.</translation>
-<translation id="7339898014177206373">Nuova finestra</translation>
 <translation id="3511996232906761537">I tuoi siti web, i tuoi segnalibri e gli altri contenuti Brave sempre disponibili e aggiornati qui.</translation>
 <translation id="1754899895078387289">Solo chi conosce la tua passphrase può leggere i tuoi dati criptati. La passphrase non viene inviata a Brave o memorizzata da Brave. Se dimentichi la passphrase o vuoi modificare questa impostazione, dovrai <ph name="BEGIN_LINK"/>eliminare i dati di Brave nel tuo account<ph name="END_LINK"/>.</translation>
 <translation id="5380963249588143069">L'amministratore di sistema ha configurato Brave per l'apertura di <ph name="ALTERNATIVE_BROWSER_NAME"/> per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
@@ -583,6 +571,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="6085660187823915017">Per ricevere gli aggiornamenti futuri di Brave, devi avere macOS 13 o versioni successive. Su questo computer è installato macOS 12.</translation>
 <translation id="2865744782251083875">Non hai visitato il sito di recente. Brave ha rimosso <ph name="PERMISSION_1"/> e <ph name="PERMISSION_2"/>.</translation>
 <translation id="4631170166710903214">Questa estensione non è più supportata. Brave consiglia di rimuoverla.</translation>
+<translation id="4104934885375476361">Brave è ora il browser predefinito</translation>
 <translation id="7951152294775418909">Continua da dove avevi interrotto: Brave ripristina le schede ogni volta che ricominci. Per disattivare questa opzione, vai a</translation>
 <translation id="3191314862567596053">Importa password in Brave</translation>
 <translation id="284799389314308801">1. Fai clic su <ph name="BUTTON_LABEL"/> qui sotto. Fai clic su <ph name="BUTTON_2"/> nelle impostazioni di Windows
@@ -605,7 +594,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7624307931717240213">Utilizziamo le informazioni per migliorare questo servizio. Consulta le Norme sulla privacy e i Termini di servizio.</translation>
 <translation id="7649070708921625228">Guida</translation>
 <translation id="222435847253721602">Scarica l'app Brave</translation>
-<translation id="4008841832817149051">Lascia che Brave navighi per te</translation>
 <translation id="7658239707568436148">Annulla</translation>
 <translation id="3343095737966473035">Brave non è il browser predefinito</translation>
 <translation id="5477319665405831211">Sincronizza e personalizza Brave sui tuoi dispositivi</translation>
@@ -627,6 +615,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7963515534397191222">Non è stato possibile aggiornare Brave alla versione più recente, quindi non potrai utilizzare le nuove funzioni e gli aggiornamenti di sicurezza.</translation>
 <translation id="7872446069773932638">Download in corso… Secondi rimanenti: <ph name="SECONDS"/></translation>
 <translation id="5545136190679883344">Se dimentichi la passphrase o vuoi modificare questa impostazione, <ph name="BEGIN_LINK"/>elimina i dati di Brave nel tuo account<ph name="END_LINK"/></translation>
+<translation id="9044562649276955255">Apri rapidamente Gemini in Brave quando ti serve</translation>
 <translation id="7877212753140190672">Chiedi informazioni su questa immagine</translation>
 <translation id="5687542525349822727">Imposta Brave come browser predefinito</translation>
 <translation id="6396151137840491551">Quando possibile, Brave esegue automaticamente l'upgrade delle connessioni non sicure a HTTPS</translation>
@@ -647,6 +636,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="8118331347066725040">Invia feedback per la ricerca con Lens</translation>
 <translation id="5334309298019785904">Impossibile sincronizzare i dati in Chrome OS perché la sincronizzazione non è disponibile per il tuo dominio.</translation>
 <translation id="813913629614996137">Inizializzazione...</translation>
+<translation id="5775051495647233404">Apri Gemini in Brave con una scorciatoia da tastiera.</translation>
 <translation id="1081849497974110565">Termini di servizio aggiuntivi di Brave</translation>
 <translation id="9067428552314418522">Questo file è pericoloso, pertanto è stato bloccato da Brave.</translation>
 <translation id="8177472873527554730">Impossibile trovare contenuti nella pagina</translation>
@@ -656,13 +646,13 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1755067029031059271">Brave non può verificare la provenienza dell'estensione. Potrebbe non essere sicura. Rimuovila da Brave in modo che non possa più vedere e modificare i tuoi dati sui siti che visiti, incluse le informazioni personali.</translation>
 <translation id="8207657266087451193">Se un'immagine è senza descrizione utile, Brave proverà a fornirne una. Per la creazione delle descrizioni, le immagini vengono inviate a Brave. Puoi disattivare questa funzionalità in qualsiasi momento nelle Impostazioni.</translation>
 <translation id="7792526144795244436">Accedere a Brave in un nuovo profilo?</translation>
+<translation id="183102473074922918">Mostra Gemini in Brave nella barra delle applicazioni e attiva la scorciatoia da tastiera</translation>
 <translation id="976541154724186511"><ph name="BEGIN_LINK"/>Brave ti avvisa<ph name="END_LINK"/> in caso di siti e download non sicuri</translation>
 <translation id="8060549744348950090">Non hai visitato il sito di recente. Brave ha rimosso <ph name="PERMISSION"/>.</translation>
 <translation id="7402663241490331652">Acquista, traduci e identifica ciò che vedi con la fotocamera sull'app Brave per iOS</translation>
 <translation id="8313851650939857356">Errore di avvio: <ph name="STARTUP_ERROR"/></translation>
 <translation id="6098476632210317894">La tua organizzazione chiude Brave quando non viene utilizzato per <ph name="TIMEOUT_DURATION"/>.</translation>
 <translation id="8321888067342493336">Salva come immagine</translation>
-<translation id="3360368475735266712">Accedi per sincronizzare e personalizzare Brave sui tuoi dispositivi</translation>
 <translation id="2591326305549412656">L'indirizzo <ph name="USER_EMAIL_ADDRESS"/> utilizzava in precedenza Brave</translation>
 <translation id="5592122595094519401">Aggiorna Brave per continuare a usare i dati di Brave nel tuo Account Brave, <ph name="ACCOUNT_EMAIL"/></translation>
 <translation id="2569754604093464025">Per ricevere gli aggiornamenti futuri di Brave, devi avere Windows 10 o versioni successive. Su questo computer è installato Windows 8.</translation>
@@ -684,12 +674,12 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="2097604701283463988">Brave non è aggiornato</translation>
 <translation id="6080203201796279095">Grazie per aver scelto Brave come browser predefinito.</translation>
 <translation id="871233388178581868">Brave può controllare le password quando le salvi</translation>
+<translation id="8525579356836940628">Installazione interrotta</translation>
 <translation id="3667461919057407535">Ricevi un avviso se Brave rileva che una delle tue password è stata compromessa nell'ambito di una violazione dei dati pubblici</translation>
 <translation id="8555465886620020932">Errore del servizio: <ph name="SERVICE_ERROR"/></translation>
 <translation id="7998982887712810347">Alcune funzionalità ed estensioni di Brave sono dotate di scorciatoie. Puoi scegliere di riattivarle.</translation>
 <translation id="8556420416730706394">Puoi bloccare la ricerca immagini per un facile accesso; fai clic sul pulsante Blocca nella parte superiore del riquadro laterale</translation>
 <translation id="856656450041460113">Elenco di ricerca delle lingue</translation>
-<translation id="227028348235968071">Brave può controllare le tue password quando accedi con il tuo Account Brave</translation>
 <translation id="839677568225616901">Più organizzazioni gestiscono Brave</translation>
 <translation id="8121009781989288430">Copyright © <ph name="YEAR"/> Brave Software Inc. Tutti i diritti riservati.</translation>
 <translation id="8601359445272098721">Novità. Puoi tradurre sia testo che immagini sullo schermo selezionando il pulsante "Traduzione schermata"</translation>
@@ -700,7 +690,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="4100716194836114130">Questo è il tuo account Brave</translation>
 <translation id="8712637175834984815">Ok</translation>
 <translation id="1419543648228375718">Accedere a Brave?</translation>
-<translation id="4891728458408976811">Tieni tutte le tue attività in Brave</translation>
 <translation id="8747073452963259673">angolo in basso a sinistra dell'area di ricerca: sinistra <ph name="LEFT"/>%, in basso <ph name="BOTTOM"/>%</translation>
 <translation id="878572486461146056">Errore di installazione: l'amministratore di rete ha applicato una policy di gruppo che impedisce l'installazione: <ph name="INSTALL_ERROR"/></translation>
 <translation id="4831743161813926460">Per questo sito Brave ha bisogno dell'autorizzazione ad accedere alla fotocamera e al microfono</translation>
@@ -712,7 +701,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="9084132286318231275">Questa lingua è utilizzata per visualizzare menu, impostazioni, avvisi e altro testo in Brave</translation>
 <translation id="8862326446509486874">Non disponi dei diritti appropriati per l'installazione a livello di sistema. Prova a eseguire nuovamente il programma di installazione come Amministratore.</translation>
 <translation id="7289323009146924152">Aggiungi profilo Brave</translation>
-<translation id="6412037018950369131">In questo caso, modifica la password salvata su Brave in modo che corrisponda alla nuova password.</translation>
+<translation id="2922281028449999368">ChromeOS non ha potuto salvare i dati di Brave nel tuo Account Brave a causa di un errore di accesso</translation>
 <translation id="1150745254876977823">La tua organizzazione richiede l'accesso a Brave</translation>
 <translation id="8285294305439559616">Brave sta cercando di visualizzare le password. Per consentire la visualizzazione, digita la tua password Windows.</translation>
 <translation id="4684884244620579559">Brave non è più il browser predefinito. Impostare Brave come browser predefinito?</translation>
@@ -720,6 +709,8 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="7731184591599776500">Logo di Brave Enterprise</translation>
 <translation id="6500340165622970282">Impossibile avviare Brave perché si è verificato un problema durante l'apertura del tuo profilo. Prova a riavviare Brave.</translation>
 <translation id="3424657754843264466">Gestisci i profili Brave</translation>
+<translation id="9018218886431812662">Installazione completata</translation>
+<translation id="82609232232243542">Accedi a Brave</translation>
 <translation id="7055223246119657449">Brave ha bloccato questo download perché il file di archivio include altri file che potrebbero nascondere malware</translation>
 <translation id="8341362078156319636">Mantieni password, preferiti e cronologia perfettamente sincronizzati tra i dispositivi. Accedi facilmente alle funzionalità che conosci e che ami aggiornando il browser predefinito su Brave. Brave verrà fissato sulla barra delle app per un accesso rapido.</translation>
 <translation id="9049928023195059068">Accedi a Brave quando accedi ad altri servizi Brave</translation>
@@ -734,7 +725,6 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="9148058034647219655">Esci</translation>
 <translation id="2792073155252170448">Continua da dove avevi interrotto: Brave può ripristinare le schede ogni volta che ricominci. Per attivare questa opzione, vai a</translation>
 <translation id="2444257125841652328">L'amministratore di sistema ha configurato Brave per l'apertura di un browser alternativo per accedere a <ph name="TARGET_URL_HOSTNAME"/>.</translation>
-<translation id="8208548103319284047">Suggerimento per Brave: Cerca con Lens</translation>
 <translation id="7902365066753170041">Riavvia per aggiornare &amp;Brave</translation>
 <translation id="3350544518197210895">Brave (mDNS-In)</translation>
 <translation id="296137235951584143">Personalizza Brave</translation>
@@ -757,6 +747,7 @@ Brave non è in grado di recuperare le impostazioni.</translation>
 <translation id="1448049584457347995">Per rendere Brave più sicuro, abbiamo disattivato alcune estensioni che non sono elencate nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> e potrebbero essere state aggiunte a tua insaputa.</translation>
 <translation id="8848045066928358658">Per rendere Brave più sicuro, abbiamo disattivato la seguente estensione non presente nel <ph name="IDS_EXTENSION_WEB_STORE_TITLE"/> che potrebbe essere stata aggiunta a tua insaputa.</translation>
 <translation id="4624945300945265642">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
+<translation id="1069969567644851798">Apra il link in Brave &amp;in una finestra privata</translation>
 <translation id="6554952862405000915">Apri link in una finestra di navigazione in inco&amp;gnito di Brave</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio.}=1{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. La finestra di navigazione in incognito non verrà riaperta.}other{È disponibile un nuovo aggiornamento di Brave che verrà installato appena eseguirai il riavvio. Le # finestre di navigazione in incognito non verranno riaperte.}}</translation>
 <translation id="7347727235538318126">Questo ti permetterà di condividere contenuti da Brave ai tuoi dispositivi locali, come una TV o un altoparlante.</translation>

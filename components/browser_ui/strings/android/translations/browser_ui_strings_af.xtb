@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="af">
+<translation id="1000614056227025171">Pasmaak Jou Tuisblad se promosionele onderste blad is teen volle hoogte oopgemaak</translation>
 <translation id="1006017844123154345">Maak aanlyn oop</translation>
 <translation id="1036348656032585052">Skakel af</translation>
 <translation id="1046742265332833834">Blou tema</translation>
 <translation id="1070329623210597193">Lêers wat hierdie werf kan bekyk of wysig</translation>
-<translation id="1882093842020941518">Help ons om Brave te verbeter deur ons te vertel hoekom jy derdepartywebkoekies toegelaat het. <ph name="BEGIN_LINK"/>Stuur terugvoer<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Jy kan vra om die rekenaarweergawe van werwe te sien</translation>
 <translation id="1109482864356262001">Kenmerke waarvoor beweging- of ligsensors nodig is, sal nie werk nie</translation>
 <translation id="6670155282615872564">Voltooi die voorgestelde handelinge hier onder om Brave ten beste te benut.</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave-wenke</translation>
 <translation id="1242008676835033345">Ingebed op <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Tik op Apps  &gt; Verstekapps</translation>
+<translation id="1264694639515903274">Jy kan nou jou tuisblad pasmaak</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="1275718070701477396">Gekies</translation>
 <translation id="8010562420973777575">Hierdie bladsy se prente is geoptimeer om vir jou data te bespaar.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL is afgekap</translation>
 <translation id="1741136041592162279">Laat Brave jou onlangse oortjies met jou toestel deel om dit in jou toestel se applys en soekresultate te sien. Jy kan dit in Brave-instellings aan- of afskakel.</translation>
 <translation id="1420688843103859429">Navigeer heen en weer deur met twee vingers op die raakpaneel te swiep</translation>
-<translation id="1432650420699700107">Werwe kan vra om aan enige toestel op jou plaaslike netwerk te koppel</translation>
 <translation id="1442081309487427303">Skakel Leesmodus-skakels aan</translation>
 <translation id="1448064542941920355">Verklein zoem</translation>
 <translation id="1464044141348608623">Moenie werwe toelaat om te weet wanneer jy jou toestel aktief gebruik nie</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Wanneer dit aan is, kan werwe vra om vensters op al jou skerms te bestuur. Wanneer dit af is, kan werwe nie vensters op al jou skerms bestuur nie.</translation>
 <translation id="1738912554587725807">Die voorkoms vir die temaversamelings van die Nuwe Oortjie-bladsy se onderste blad</translation>
 <translation id="1743802530341753419">Vra voordat werwe toegelaat word om aan 'n toestel te koppel (aanbeveel)</translation>
-<translation id="2534291364429593865">Kry kennisgewings vir Brave-wenke</translation>
 <translation id="1777815584158991902">Onderste blad van Ontdek-stroom</translation>
 <translation id="1779089405699405702">Prentdekodeerder</translation>
 <translation id="1781533683087883868">Skakel Leesmodus-skakels af</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Sit neer</translation>
 <translation id="1919950603503897840">Kies kontakte</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> van <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Pasmaak my tuisblad</translation>
 <translation id="1939059826036755332">Outomatiese prent-in-prent</translation>
 <translation id="1954597385941141174">Werwe kan vra om aan USB-toestelle te koppel</translation>
 <translation id="1979673356880165407">Maak teks en prente groter of kleiner vir alle werwe wat jy besoek</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Bestuur deur <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Hulp en terugvoer</translation>
 <translation id="2501278716633472235">Gaan terug</translation>
-<translation id="2533138527374486328">Wanneer dit aan is, kan werwe vra om aan enige toestel op jou plaaslike netwerk te koppel. Wanneer dit af is, kan werwe nie aan toestelle op jou plaaslike netwerk koppel nie.</translation>
 <translation id="2536779053640817375">Hierdie keer toegelaat • Presies</translation>
 <translation id="2544997614631598250">Temakleur donker</translation>
 <translation id="2546283357679194313">Webkoekies en werfdata</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Kitsaktiveer Omnibox</translation>
 <translation id="2789132527330338807">Werwe kan vra om ’n 3D-kaart van jou omgewing te skep of jou kameraposisie na te spoor</translation>
 <translation id="2790501146643349491">Wanneer dit aan is, kan werwe wat onlangs toegemaak is data klaar stuur en ontvang. Wanneer dit af is, kan werwe wat onlangs toegemaak is nie data klaar stuur en ontvang nie.</translation>
-<translation id="1708222144403389505">Skakel kennisgewings aan vir nuttige wenke om jou te help om die beste uit Brave te kry</translation>
 <translation id="2795716239552913152">Werwe gebruik gewoonlik jou ligging vir relevante kenmerke, soos plaaslike nuus of nabygeleë winkels</translation>
 <translation id="2800760947029405028">Laai 'n prent op</translation>
 <translation id="2802908157808345702">Moenie werwe toelaat om opspringers te stuur en herleidings te gebruik nie</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Werwe kan klank speel</translation>
 <translation id="3065787901655140044">Gevorderde Beskerming is aan</translation>
 <translation id="3069226013421428034">Laat aanmelding deur derde partye vir ’n spesifieke werf toe.</translation>
+<translation id="3084983642903364837">Wysig later jou tuisblad via die 3-kolkieslys.</translation>
 <translation id="310297983047869047">Vorige skyfie</translation>
 <translation id="3108122610701115301">Stel verstek</translation>
 <translation id="310979712355504754">Vee almal uit</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Moenie werwe toelaat om aan USB-toestelle te koppel nie</translation>
 <translation id="3965467402665811906">Werwe kan vra om inligting te gebruik wat hulle oor jou gestoor het</translation>
 <translation id="3967822245660637423">Aflaai is voltooi</translation>
-<translation id="3969869202926863008">Plaaslike netwerktoegang</translation>
 <translation id="3981465354637804599">Werwe wys gewoonlik advertensies sodat hulle inhoud of dienste kosteloos kan verskaf. Sommige werwe is egter bekend daarvoor dat hulle indringende of misleidende advertensies wys.</translation>
 <translation id="3987993985790029246">Kopieer skakel</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> van ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Gekoppel aan ’n reekspoort</translation>
 <translation id="4223404254440398437">Mikrofoon nie toegelaat nie</translation>
 <translation id="4226663524361240545">Kennisgewings kan die toestel laat vibreer</translation>
+<translation id="4227965147357783918">Pasmaak Jou Tuisblad se promosionele onderste blad is teen halwe hoogte oopgemaak</translation>
 <translation id="4259722352634471385">Navigasie is geblokkeer: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Nadat jy 'n werf verlaat het, kan dit aanhou sinkroniseer om take soos oplaai van foto's of stuur van kletsboodskappe te voltooi</translation>
 <translation id="4278390842282768270">Toegelaat</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Vou uit</translation>
 <translation id="4310738531374808763">Pasmaak jou tuisblad</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Verval môre}other{Verval oor # dae}}</translation>
+<translation id="7012676469589811613">Maak Brave jou eie deur ’n gepasmaakte tema te kies</translation>
 <translation id="4338831206024587507">Alle werwe onder <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Moenie werwe toelaat om kennisgewings te stuur nie</translation>
 <translation id="4341577178275615435">Gebruik die kortpad F7 om karetblaai aan of af te skakel</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Maak werwe nie vinniger met Brave se V8-enjin nie, maar maak Brave effens meer bestand teen aanvalle</translation>
 <translation id="5556459405103347317">Herlaai</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> geblokkeer</translation>
-<translation id="560980142378233747">Dit beteken dat werfkenmerke soos verwag behoort te werk, maar dat jy dalk minder blaaibeskerming het. <ph name="BEGIN_LINK"/>Stuur terugvoer<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Onderste blad van Nuwe Oortjie-bladsykaarte</translation>
 <translation id="5621413808884657932">Wanneer dit aan is, kan werwe vra om toegang tot ander apps en dienste op hierdie toestel te kry. Wanneer dit af is, kan werwe nie toegang tot ander apps en dienste op hierdie toestel kry nie.</translation>
 <translation id="5632485077360054581">Wys my hoe</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">My kortpaaie</translation>
 <translation id="656065428026159829">Sien meer</translation>
 <translation id="6561560012278703671">Gebruik stiller boodskappe (keer dat kennisgewingporboodskappe jou onderbreek)</translation>
-<translation id="6565144332292237355">Werwe kan hierdie kenmerk gebruik om enige toestel op jou plaaslike netwerk te soek en daaraan te koppel</translation>
 <translation id="6593061639179217415">Werkskermwerf</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Webkoekies word toegelaat vir <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-werf}other{Webkoekies word toegelaat vir <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-werwe}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Bly</translation>
 <translation id="6630443592285535486">Tik hekskode hier</translation>
 <translation id="6635327442719709864">Wanneer dit aan is, kan werwe vra om reekspoorte te gebruik. Wanneer dit af is, kan werwe nie reekspoorte gebruik nie.</translation>
-<translation id="6669390930482049506">Stel my in kennis</translation>
 <translation id="6678072580827808850">Gaan Veiligheidskontrole na</translation>
 <translation id="6682057173375416470">Kry voorgestelde artikels oor die Nuwe Oortjie-bladsy</translation>
 <translation id="6683865262523156564">Hierdie werf is in ’n groep wat jou aktiwiteit kan sien. Die groep word gedefinieer deur <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Herlaai</translation>
 <translation id="7188508872042490670">Werfdata op toestel</translation>
 <translation id="7201549776650881587">Hierdie handeling sal alle data en webkoekies uitvee wat deur alle werwe onder <ph name="ORIGIN"/> of deur sy app op jou Tuisskerm geberg is</translation>
-<translation id="7213166370492037743">Moenie toelaat dat werwe aan enige toestel op jou plaaslike netwerk koppel nie</translation>
 <translation id="7219254577985949841">Vee werfdata uit?</translation>
 <translation id="723171743924126238">Kies prente</translation>
 <translation id="7243246278722455312">Pasmaak die onderste blad van jou Nuwe Oortjie-bladsy</translation>
@@ -757,7 +753,6 @@ Gevorderde Beskerming beheer hierdie Brave-instellings:</translation>
 <translation id="8737426583868847403">Werwe vir wie jy ’n gepasmaakte zoemvlak stoor, sal hier verskyn</translation>
 <translation id="8748714929822124637">Moenie werwe toelaat om toegang tot ander toestelle op jou plaaslike netwerk te kry nie</translation>
 <translation id="8751914237388039244">Kies 'n prent</translation>
-<translation id="8775741625735357092">Jy kan die boekmerkbalk aanskakel in Instellings &gt; Voorkoms</translation>
 <translation id="8800034312320686233">Werk werf nie?</translation>
 <translation id="8801436777607969138">Blokkeer JavaScript vir 'n spesifieke werf.</translation>
 <translation id="2026315747406172223">V8 is Brave se JavaScript- en WebAssembly-enjin wat gebruik word om werf se werkverrigting te verbeter</translation>

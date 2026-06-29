@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">နောက်ထပ်…</translation>
 <translation id="71316462802471551">အီးမေးလ် Alias</translation>
+<translation id="209130971304928953">တဘ်များကို Workspace အဖြစ်သိမ်းမည်…</translation>
+<translation id="877984331511007834">Workspace ဖွင့်မည်…</translation>
+<translation id="1310182651927031327">တဘ်များကို workspace အဖြစ်သိမ်းမည်…</translation>
+<translation id="3588277741646479444">Workspace ဖွင့်မည်…</translation>
 <translation id="1990886731975529483">Google Widevine ကို ထည့်သွင်းသုံးစွဲရန်</translation>
 <translation id="8926389886865778422">ထပ်မပြောပါနဲ့</translation>
 <translation id="4900351245762303149">Google Widevine ကို ထည့်သွင်းရန်</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor နှင့်ပုဂ္ဂိုလ်ရေးသုံးလုပ်ဆောင်ချက်အသစ်</translation>
 <translation id="2638041073279639246">Tor နှင့်ပုဂ္ဂိုလ်ရေးသုံးလုပ်ဆောင်ချက်၌ link ဖွင့်ပါ</translation>
 <translation id="3425600262621021599">Brave တရားဝင် ဖွင့်သည့် ပြိုင်ဘက် တံပိုး ပြည်ထောင်စုသို့ မဖွင့်ခံရမှု Tor</translation>
-<translation id="2545072023356206691">2023.12.1 မှ စတင္၍ Brave Dev လမ်းကြောင်းသည် ဘရိုက်ဇာ ဗားရှင်းများမယူနိင်ဘေးဖြစ်သည်။ သုံးစွဲသူများကို Nightly၊ Beta၊ သို့မဟုတ် ပြကျင်းပါဗားရှင်းများကိုပြောင်းစေနိုင်သည်။</translation>
 <translation id="474217410105706308">တက်ဘ်ကျန်း ကွဲလုံး များ</translation>
 <translation id="2804710924397009224">Brave ဆုလက်ဆောင် အက်ဖ်အိုင်ကို ဖေါ်ပြမည်မဟုတ်ပါ</translation>
 <translation id="5029193871181468990">Brave ဆုလက်ဆောင် အက်ဖ်အိုင်ကို ဖေါ်ပြမည်မဟုတ်ပါ</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">Brave ရှာဖွေရေးကို ကိုယ်ပိုင်ကြော်ငြာနှိပ်ပြီး ကူညီပေးတဲ့အတွက်ကျေးဇူးတင်ပါတယ်။ Big Tech မဟုတ်သလို၊ ယခုကြော်ငြာ၏စွမ်းဆောင်ရည်ကို ကိုယ်ပိုင်သတ်သပ်ချက်မရှိဘဲသယ်ဆောင်သည်။</translation>
 <translation id="8748471354357836070">နောက်ထပ် သိားရန် / မပေးစီစဉ်နိုင်ခြင်းများ</translation>
 <translation id="5927196110206824867">ပံ့ပိုးသော နောက်ခံ ပုံများသည် Brave ၏ အသုံးပြုသူရှေ့ခံအသုံးပြုမှုမည့်လမ်းစဉ်ကို တည်ဆောက်ရန် Brave ၏ ရည်မှန်းချက်ကို ပံ့ပိုးသည်။ ထုံးစံအတိုင်း Big Tech ကြီးများနှင့်မတူပဲ ကျွန်ုပ်တို့သည် သင့် ကိုယ်ရေးကိုယ်တာကို ထိန်းသိမ်းရန် ကြော်ငြာ အောင်မြင်မှုကို မမျှတစွာတိုင်းတာသည်။</translation>
-<translation id="4174337572777167894">ဝက်ဘ်ရှာဖွေစူးစမ်းရေး ပရောဂျက်</translation>
-<translation id="8659271182272561965">Brave ရှာဖွေရေး ပိုကောင်းလာစေရန် အမည်မဖော်သော ရှာဖွေရေး&amp; ဒေတာအချို့ကို ထည့်ဝင်ပံ့ပိုးပေးပါ။</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave ရှာဖွေရေးကို ပိုမိုကောင်းမွန်စေရန် အမည်မဖော်ထားသော ရှာဖွေမှု &amp; ဖွင့်ကြည့်မှု ဒေတာ အချို့ကို ပံ့ပိုးပါ။</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">ဘေးဘောင်သင်္ဘောကို ဖျောက်ပြီးပြပါ</translation>
 <translation id="2613033293035359003">ဘေးဘောင်ကို ဖွဲ့</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">container တွင်ဖွင့်ရန်</translation>
 <translation id="194205047181722473">link ကို container တွင် ဖွင့်ရန်</translation>
 <translation id="8638526693050780542">container များကို စီမံရန်</translation>
+<translation id="2796584247246518451">ယာယီ container အသစ်</translation>
 <translation id="2336228925368920074">ဘွတ်မတ် တက်ဘ်များအားလုံးကို...ခေါင်းစဉ်ရေးပါ။</translation>
 <translation id="2523967823495420116">ရက်တတ်ကြန်းကို သုံးပါ</translation>
 <translation id="5483718923712878759">အာရုံစိုက်မုဒ်</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">container တွင် ဖွင့်ရန်</translation>
 <translation id="1185644444415356776">link ကို container တွင် ဖွင့်ရန်</translation>
 <translation id="6745991613881384719">container များကို စီမံရန်</translation>
+<translation id="8523788649219117880">ယာယီ Container အသစ်</translation>
 <translation id="3704707436873245822">ပုံမှ စာသားကို ကူးမည်</translation>
 <translation id="5268098808165185458">ပုံမှ စာသားကို ကူးနေသည်...</translation>
 <translation id="4046485130884276245">ပုံ မှ စာသားကို ကူးယူပြီးပါပြီ</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">တက်ဘ်များ</translation>
 <translation id="8168435359814927499">အကြောင်းအရာ</translation>
 <translation id="6017560037265964523">container များ</translation>
-<translation id="934893482320683588">container များနှင့် သင့်အသုံးပြုကို ကိုယ်ပိုင်စီအုပ်နှံထားပါ။ <ph name="BEGIN_LINK"/>နှင့်ဆက်စပ်ပါတို့တွင်,<ph name="END_LINK"/>.</translation>
+<translation id="3718176486689879621">Container များသည် သင့်ရဲ့ browsing ဒေတာများဖြစ်သော cookie, cache နှင့် site storage တို့ကို သီးခြားအခြေအနေများအဖြစ် ခွဲထုတ်ထားသော အရောင်ဖြင့်သတ်မှတ်ထားသည့် browser တဘ်များဖြစ်ပါသည်။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Container များ ဖွင့်မည်</translation>
 <translation id="7773735778926921278">ခွဲမှုအသစ် ပေါင်းထည့်ပါ</translation>
 <translation id="8900907990448657776">container ကို ပြင်ဆင်ပါ</translation>
 <translation id="7900511996284443779">container ကို ဖျက်ပါ</translation>
@@ -803,6 +809,7 @@
 <translation id="5226020406479918122">တဘ် အာရုံစိုက်ခ mode</translation>
 <translation id="3705539672403311123">Tab Search စာမျက်နှာတွင် tab စီစဉ်မှုကို ဖွင့်ပါ။ ဖွင့်လိုက်သောအခါ၊ ၎င်းသည် သီးသန့်မဟုတ်သော tab အားလုံး၏ ခေါင်းစဉ်များနှင့် မူလအစများကို Leo ထံ အလိုအလျောက် ပေးပို့ပြီး ၎င်းတို့ကို အမျိုးအစားခွဲခြားပေးပါလိမ့်မည်။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">တဘ ဖိုးကပ်အတွက် ပင်တိုင်သုံး မော်ဒယ်</translation>
+<translation id="2161546758719933059">Tab Focus Mode တွင် သင့်ရဲ့တဘ်များကို စီစဉ်ရန် အသုံးပြုသော မော်ဒယ်။ <ph name="BEGIN_LINK"/>ပိုမိုလေ့လာရန်<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">ဆွေးနွေးချက်တွင် အကြံပြုချက်များကို ပြပါ</translation>
 <translation id="5781842473834867765">စကားဝိုင်းမှတ်တမ်းကို သိမ်းဆည်းရန်</translation>
 <translation id="1082960401708055995">ဆက်သွယ်စာမျက်နှာကိုပယ်ဖျက်ခြင်းသည် ယခင်ကသိမ်းဆည်းထားသော ဓာတ်လုံးများအားလုံးကို အပြီးသတ္တိပြတ်စေနိုင်သည်။ ၎င်းလုပ်ဆောင်ချက်ကိုအပြန်ရှင်းလင်းမူ့မလုပ်နိုင်ပါ။</translation>

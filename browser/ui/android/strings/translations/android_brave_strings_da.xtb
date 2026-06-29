@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Henter feeds ...</translation>
 <translation id="7461899062138731833">KILDER</translation>
 <translation id="6150420917380577651">Ingen feeds fundet på <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Annonce</translation>
 <translation id="7823038307453615214">Vis Brave News</translation>
 <translation id="6527303717912515753">Del</translation>
 <translation id="1654539412343893324">Få mere at vide om dine data</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Deaktivér indhold fra <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> deaktiveret</translation>
 <translation id="1276592121036104130">Indlæs nyt indhold</translation>
-<translation id="3189348785087463371">Promoveret</translation>
 <translation id="7554145152551782675">Flere Brave-tilbud</translation>
 <translation id="254100925533869330">Intet indhold</translation>
 <translation id="7172792761509429092">Brave News har ikke noget indhold at vise dig.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Vedhold ikke faner mellem browsingsessioner</translation>
 <translation id="7142548388914389999">Tillad anonymitetsbeskyttede produktanalyser (også kendt som P3A)</translation>
 <translation id="5254037869598726291">Anonymiseret P3A-information hjælper Brave med at estimere generelt forbrug og sikre, at vi forbedrer populære funktioner.</translation>
-<translation id="4174337572777167894">Web Discovery-projekt</translation>
-<translation id="8659271182272561965">Bidrag med anonym søge- &amp; browsingdata for at forbedre Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Bidrag med nogle anonyme søge- &amp; browsingdata for at forbedre Brave Søgning.</translation>
 <translation id="933652931229970927">sende automatiske diagnosticeringsrapporter</translation>
 <translation id="5987838417172370108">Hjælp med at forbedre Braves produktstabilitet ved automatisk at sende diagnostioceringsrapporter, Brave Browser bryder sammen eller fryser.</translation>
 <translation id="7977176350719484850">Est. datamængde\nsparet</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Fortæl os, hvad du bedst kan lide.</translation>
 <translation id="2888496576732880897">Hjælp Brave Søgning med at vokse</translation>
 <translation id="7198716519700700181">Bloker afbrydelser, når du streamer</translation>
-<translation id="7044431516245362795">Tilmeld dig Web Discovery-projektet for at hjælpe med at udvide indekset og forbedre søgeresultaterne. <ph name="LEARN_MORE_START"/>Få mere at vide.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Tilmeld dig Web Discovery-projektet for at bidrage til at udvide indekset og forbedre søgeresultaterne. <ph name="LEARN_MORE_START"/>Læs mere<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="4767173360729868049">Illustration af Hjælp Brave Søgning</translation>
 <translation id="8241918461631453498">Blokér afbrydelser-illustration</translation>
@@ -437,8 +435,15 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="9140049656798805345">Makulér sidedata nu</translation>
 <translation id="6795622376590884449">Automakulér</translation>
 <translation id="7961015016161918242">Aldrig</translation>
+<translation id="3200744626782631683">Browsingdata slettes aldrig automatisk</translation>
 <translation id="1991004083507807299">Sidefane lukket</translation>
+<translation id="2917925984754303958">Browsingdata slettes automatisk, når alle faner, der er åbne på et websted, lukkes</translation>
 <translation id="5827277414420724690">App lukket</translation>
+<translation id="2036389684543586068">Browsingdata slettes automatisk, når Brave-appen lukkes eller genstartes</translation>
+<translation id="4279349293084858577">Makuler</translation>
+<translation id="2997451887458851244">Opdater »Auto Shred« og angiv, hvilke data der skal slettes</translation>
+<translation id="363903976200491771">Slet browserdata automatisk</translation>
+<translation id="1028873002018537235">Slet browserhistorikken</translation>
 <translation id="1209739344687072997">Rapporter en side der ikke virker</translation>
 <translation id="8510478288840333677">Fortæl Braves udviklere at denne side ikke fungerer ordentligt med Shields</translation>
 <translation id="1653405824851871276">Tak, fordi du hjælper med at gøre Brave bedre for alle. Denne rapport vil kun indeholde de oplysninger, der er nødvendige for, at vi kan reparere dette website.<ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="1079140196216383600">Slet tilpasset søgemaskine</translation>
 <translation id="525276572490219787">Er du sikker på, at du vil slette "<ph name="SEARCH_ENGINE_NAME"/>"? Denne handling kan ikke fortrydes.</translation>
 <translation id="6406506848690869874">Synkroniser</translation>
+<translation id="1850594249589065646">Placeringsnøjagtighed</translation>
+<translation id="2403474027143565107">Præcis</translation>
+<translation id="4042597221652780603">Omtrentligt</translation>
 </translationbundle>
