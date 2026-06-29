@@ -5,49 +5,57 @@
 
 import { TabSearchPageElement } from './tab_search_page-chromium.js'
 
-import type { Tab } from './tab_search.mojom-webui.js'
-import { TabData, SplitViewData } from './tab_data.js'
+import type { TabData, SplitViewData } from './tab_data.js'
 import {
   BraveTabSearchApiProxy,
   BraveTabSearchApiProxyImpl,
 } from './tab_search_api_proxy.js'
+import { setSemanticOpenTabsContext } from './search.js'
 
 // Augments the substring-filtered open-tab list with on-device semantic
 // matches from `searchTabsByContent`. A monotonic token discards stale
 // responses when the user types faster than the on-device ranker completes.
+// Results land via a side channel in our `search()` chromium_src override
+// so no patching of upstream's `updateFilteredTabs_` is needed.
 class BraveTabSearchPageElement extends TabSearchPageElement {
-  private semanticSearchToken_: number = 0
+  static override get is() {
+    return 'brave-tab-search-page'
+  }
 
-  protected override async processFilteredOpenTabs_(
-      tabs: Array<TabData|SplitViewData>):
-      Promise<Array<TabData|SplitViewData>> {
+  private semanticSearchToken_: number = 0
+  private semanticTabIdsByQuery_ = new Map<string, ReadonlySet<number>>()
+
+  constructor() {
+    super()
+    setSemanticOpenTabsContext({
+      getOpenTabsRecords: () => (this as unknown as
+          {openTabs_: ReadonlyArray<TabData|SplitViewData>}).openTabs_,
+      getSemanticTabIds: (query) => this.semanticTabIdsByQuery_.get(query),
+    })
+  }
+
+  override disconnectedCallback() {
+    setSemanticOpenTabsContext(null)
+    super.disconnectedCallback()
+  }
+
+  override onSearchTermInput() {
+    super.onSearchTermInput()
     const searchText = (this as unknown as {searchText_: string}).searchText_
     if (!searchText) {
-      return tabs
+      return
     }
-    const openTabs = (this as unknown as
-        {openTabs_: Array<TabData|SplitViewData>}).openTabs_
     const token = ++this.semanticSearchToken_
-    try {
-      const proxy =
-          BraveTabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
-      const {tabIds} = await proxy.searchTabsByContent(searchText)
+    const proxy =
+        BraveTabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
+    void proxy.searchTabsByContent(searchText).then(({tabIds}) => {
       if (token !== this.semanticSearchToken_) {
-        return tabs
+        return
       }
-      const present = new Set<number>(
-          tabs.filter((d): d is TabData => d instanceof TabData)
-              .map(d => (d.tab as Tab).tabId))
-      const semanticMatches = tabIds
-          .map(id => openTabs.find(
-              (d): d is TabData =>
-                  d instanceof TabData && (d.tab as Tab).tabId === id))
-          .filter((d): d is TabData =>
-              !!d && !present.has((d.tab as Tab).tabId))
-      return tabs.concat(semanticMatches)
-    } catch {
-      return tabs
-    }
+      this.semanticTabIdsByQuery_.set(searchText, new Set(tabIds))
+      ;(this as unknown as {updateFilteredTabs_: () => void})
+          .updateFilteredTabs_()
+    })
   }
 }
 

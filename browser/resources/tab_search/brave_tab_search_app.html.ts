@@ -9,8 +9,8 @@ import type { BraveTabSearchAppElement } from './brave_tab_search_app.js'
 
 export function getHtml(this: BraveTabSearchAppElement) {
   return !this.tabOrganizationEnabled_
-    ? html` <tab-search-page available-height="${this.availableHeight}">
-      </tab-search-page>`
+    ? html` <brave-tab-search-page available-height="${this.availableHeight}">
+      </brave-tab-search-page>`
     : html` <cr-tabs
           .tabNames="${this.tabNames_()}"
           .selected="${this.selectedTabIndex_}"
@@ -19,8 +19,8 @@ export function getHtml(this: BraveTabSearchAppElement) {
         </cr-tabs>
         ${this.selectedTabIndex_ === 0
           ? html`
-              <tab-search-page available-height="${this.availableHeight}">
-              </tab-search-page>
+              <brave-tab-search-page available-height="${this.availableHeight}">
+              </brave-tab-search-page>
             `
           : html`
               <tab-focus-page available-height="${this.availableHeight}">
