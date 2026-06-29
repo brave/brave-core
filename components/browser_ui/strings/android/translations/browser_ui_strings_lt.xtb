@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="lt">
+<translation id="1000614056227025171">Raginimo tinkinti pagrindinį puslapį apatinis lapas atidarytas per visą aukštį</translation>
 <translation id="1006017844123154345">Atidaryti prisijungus</translation>
 <translation id="1036348656032585052">Išjungti</translation>
 <translation id="1046742265332833834">Mėlyna tema</translation>
 <translation id="1070329623210597193">Failai, kuriuos ši svetainė gali peržiūrėti arba redaguoti</translation>
-<translation id="1882093842020941518">Padėkite mums tobulinti „Brave“ nurodydami, kodėl leidote trečiųjų šalių slapukus. <ph name="BEGIN_LINK"/>Išsiųskite atsiliepimą<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Galite prašyti peržiūrėti svetainių versiją staliniams kompiuteriams</translation>
 <translation id="1109482864356262001">Funkcijos, kurioms reikalingi judesio arba šviesos jutikliai, neveiks</translation>
 <translation id="6670155282615872564">Atlikite toliau nurodytus siūlomus veiksmus, kad išnaudotumėte visas „Brave“ galimybes</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">„Brave“ patarimai</translation>
 <translation id="1242008676835033345">Įterpta <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Palieskite „Programos“ &gt; „Numatytosios programos“</translation>
+<translation id="1264694639515903274">Dabar galite tinkinti pagrindinį puslapį</translation>
 <translation id="1272079795634619415">Sustabdyti</translation>
 <translation id="1275718070701477396">Pasirinkta</translation>
 <translation id="8010562420973777575">Siekdama apsaugoti jūsų duomenis, „Brave“ optimizavo šio puslapio vaizdus.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL sutrumpintas</translation>
 <translation id="1741136041592162279">Leiskite „Brave“ bendrinti naujausius skirtukus su įrenginiu, kad juos matytumėte įrenginio programų sąraše ir paieškos rezultatuose. Galite įjungti arba išjungti tai „Brave“ nustatymuose.</translation>
 <translation id="1420688843103859429">Eikite atgal ir pirmyn perbraukdami dviem pirštais jutiklinėje dalyje</translation>
-<translation id="1432650420699700107">Svetainės gali prašyti prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="1442081309487427303">Įjungti Teksto perskaitymo režimo nuorodas</translation>
 <translation id="1448064542941920355">Sumažinti mastelį</translation>
 <translation id="1464044141348608623">Neleisti svetainėms sužinoti, kada aktyviai naudojate įrenginį</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Įjungus svetainėse gali būti prašoma tvarkyti langus visuose ekranuose. Išjungus svetainės negali tvarkyti langų visuose ekranuose.</translation>
 <translation id="1738912554587725807">Naujo skirtuko puslapio išvaizdos temų rinkinių apatinis lapas</translation>
 <translation id="1743802530341753419">Paklausti prieš leidžiant svetainėms prisijungti prie įrenginio (rekomenduojama)</translation>
-<translation id="2534291364429593865">Gaukite „Brave“ patarimų pranešimus</translation>
 <translation id="1777815584158991902">„Discover“ sklaidos kanalo apatinis lapas</translation>
 <translation id="1779089405699405702">Vaizdų dekoderis</translation>
 <translation id="1781533683087883868">Išjungti Teksto perskaitymo režimo nuorodas</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Baigti</translation>
 <translation id="1919950603503897840">Kontaktų pasirinkimas</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> iš <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Tinkinti pagrindinį puslapį</translation>
 <translation id="1939059826036755332">Automatinis vaizdas vaizde</translation>
 <translation id="1954597385941141174">Svetainėse gali būti prašoma prisijungti prie USB įrenginių</translation>
 <translation id="1979673356880165407">Padidinkite arba sumažinkite tekstą ir vaizdus visose svetainėse, kuriose lankotės</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Tvarko „<ph name="APP_NAME"/>“</translation>
 <translation id="2498359688066513246">Pagalba ir atsiliepimai</translation>
 <translation id="2501278716633472235">Grįžti</translation>
-<translation id="2533138527374486328">Įjungus svetainės gali prašyti prisijungti prie bet kurio įrenginio vietiniame tinkle. Išjungus svetainės negali prisijungti prie įrenginių vietiniame tinkle.</translation>
 <translation id="2536779053640817375">Leidžiama šį kartą • Tiksli</translation>
 <translation id="2544997614631598250">Temos spalva: tamsi</translation>
 <translation id="2546283357679194313">Slapukai ir svetainės duomenys</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">„Omnibox“ paleidimas</translation>
 <translation id="2789132527330338807">Svetainės gali prašyti leidimo sukurti aplinkos 3D žemėlapį ir stebėti vaizdo kameros padėtį</translation>
 <translation id="2790501146643349491">Įjungus neseniai uždarytose svetainėse galima baigti siųsti ir gauti duomenis. Išjungus neseniai uždarytose svetainėse negalima baigti siųsti ar gauti duomenų.</translation>
-<translation id="1708222144403389505">Įjunkite pranešimus, kad gautumėte naudingų patarimų, padedančių išnaudoti visas „Brave“ galimybes</translation>
 <translation id="2795716239552913152">Paprastai svetainėse naudojama jūsų vietovės informacija norint vykdyti atitinkamas funkcijas ar gauti informacijos, pvz., sužinoti vietines naujienas ar netoliese esančias parduotuves</translation>
 <translation id="2800760947029405028">Įkelti vaizdą</translation>
 <translation id="2802908157808345702">Neleisti svetainėms siųsti iššokančiųjų langų ir naudoti peradresavimų</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Svetainėse galima leisti garsus</translation>
 <translation id="3065787901655140044">Papildoma apsauga įjungta</translation>
 <translation id="3069226013421428034">Leisti trečiajai šaliai prisijungti prie konkrečios svetainės.</translation>
+<translation id="3084983642903364837">Redaguokite pagrindinį puslapį vėliau naudodamiesi trijų taškų meniu.</translation>
 <translation id="310297983047869047">Ankstesnė skaidrė</translation>
 <translation id="3108122610701115301">Nustatyti numatytuosius nustatymus</translation>
 <translation id="310979712355504754">Ištrinti viską</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Neleisti svetainėms prisijungti prie USB įrenginių</translation>
 <translation id="3965467402665811906">Svetainės gali prašyti naudoti savo išsaugotą informaciją apie jus</translation>
 <translation id="3967822245660637423">Atsisiuntimas baigtas</translation>
-<translation id="3969869202926863008">Vietinio tinklo pasiekiamumas</translation>
 <translation id="3981465354637804599">Paprastai svetainėse rodomi skelbimai, kad būtų galima be piniginio mokėjimo teikti turinį ar paslaugas. Bet žinoma, kad kai kuriose svetainėse rodomi nepageidaujami arba klaidinantys skelbimai.</translation>
 <translation id="3987993985790029246">Kop. nuor.</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> iš ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Prijungta prie nuosekliojo prievado</translation>
 <translation id="4223404254440398437">Mikrofonas neleidžiamas</translation>
 <translation id="4226663524361240545">Gavus pranešimą įrenginys gali vibruoti</translation>
+<translation id="4227965147357783918">Raginimo tinkinti pagrindinį puslapį apatinis lapas atidarytas iki pusės ekrano aukščio</translation>
 <translation id="4259722352634471385">Naršymas užblokuotas: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Išėjus iš svetainės, joje gali būti toliau sinchronizuojama, kad būtų užbaigtos užduotys, pvz., įkeltos nuotraukos arba išsiųstas pokalbio pranešimas</translation>
 <translation id="4278390842282768270">Leidžiama</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Išskleisti</translation>
 <translation id="4310738531374808763">Tinkinkite pagrindinį puslapį</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Galiojimo laikas baigsis rytoj}one{Galiojimo laikas baigsis po # dienos}few{Galiojimo laikas baigsis po # dienų}many{Galiojimo laikas baigsis po # dienos}other{Galiojimo laikas baigsis po # dienų}}</translation>
+<translation id="7012676469589811613">Suasmeninkite „Brave“ pasirinkdami tinkintą temą</translation>
 <translation id="4338831206024587507">Visos svetainės su domenu <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Neleisti svetainėms siųsti pranešimų</translation>
 <translation id="4341577178275615435">Jei norite įjungti arba išjungti „Caret Browsing“, naudokite spartųjį klavišą F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Nespartinti svetainių naudojant „Brave“ V8 variklį, bet padaryti „Brave“ šiek tiek atsparesnę atakoms</translation>
 <translation id="5556459405103347317">Įkelti iš naujo</translation>
 <translation id="5591840828808741583">Užblokuota: <ph name="SITE_NAME"/></translation>
-<translation id="560980142378233747">Tai reiškia, kad svetainės funkcijos turėtų veikti taip, kaip numatyta, bet gali būti teikiama silpnesnė naršymo apsauga. <ph name="BEGIN_LINK"/>Išsiųskite atsiliepimą<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Naujo skirtuko puslapio kortelių apatinis lapas</translation>
 <translation id="5621413808884657932">Įjungus svetainės gali prašyti pasiekti kitas programas ir paslaugas šiame įrenginyje. Išjungus svetainės negali pasiekti kitų programų ir paslaugų šiame įrenginyje.</translation>
 <translation id="5632485077360054581">Peržiūrėti, kaip tai padaryti</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Mano spartieji klavišai</translation>
 <translation id="656065428026159829">Žr. daugiau</translation>
 <translation id="6561560012278703671">Naudoti tylesnio susirašinėjimo funkcijas (blokuojami pranešimų įspėjimai, kad jūsų neblaškytų)</translation>
-<translation id="6565144332292237355">Svetainės gali naudoti šią funkciją, kad galėtų ieškoti ir prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="6593061639179217415">Svetainė kompiuteriams</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėje}one{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėje}few{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainėse}many{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainės}other{Slapukai leidžiami <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> svetainių}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Likti</translation>
 <translation id="6630443592285535486">Čia įveskite šešioliktainį kodą</translation>
 <translation id="6635327442719709864">Įjungus svetainėse gali būti prašoma naudoti nuosekliuosius prievadus. Išjungus svetainėse negalima naudoti nuosekliųjų prievadų.</translation>
-<translation id="6669390930482049506">Pranešti man</translation>
 <translation id="6678072580827808850">Žr. Saugos patikrą</translation>
 <translation id="6682057173375416470">Gaukite siūlomų straipsnių naujo skirtuko puslapyje</translation>
 <translation id="6683865262523156564">Ši svetainė yra grupėje, kuri gali peržiūrėti jūsų veiklą. Grupę nustato <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Atnaujinti</translation>
 <translation id="7188508872042490670">Įrenginyje esantys svetainių duomenys</translation>
 <translation id="7201549776650881587">Atlikus šį veiksmą bus ištrinti visi duomenys ir slapukai, kuriuos visos domeno <ph name="ORIGIN"/> svetainės arba jo programa saugo jūsų pagrindiniame ekrane</translation>
-<translation id="7213166370492037743">Neleisti svetainėms prisijungti prie bet kurio įrenginio vietiniame tinkle</translation>
 <translation id="7219254577985949841">Ištrinti svetainės duomenis?</translation>
 <translation id="723171743924126238">Pasirinkti vaizdus</translation>
 <translation id="7243246278722455312">Naujo skirtuko puslapio tinkinimo apatinis lapas</translation>
@@ -757,7 +753,6 @@ Naudojant Papildomą apsaugą valdomi toliau nurodyti „Brave“ nustatymai.</t
 <translation id="8737426583868847403">Čia bus rodomos svetainės, kurioms išsaugote tinkintą mastelio lygį</translation>
 <translation id="8748714929822124637">Neleisti svetainėms pasiekti kitų įrenginių vietiniame tinkle</translation>
 <translation id="8751914237388039244">Pasirinkti vaizdą</translation>
-<translation id="8775741625735357092">Žymių juostą galite įjungti skiltyje „Nustatymai“ &gt; „Išvaizda“</translation>
 <translation id="8800034312320686233">Neveikia svetainė?</translation>
 <translation id="8801436777607969138">Blokuoti „JavaScript“ konkrečioje svetainėje.</translation>
 <translation id="2026315747406172223">V8 yra „Brave“ „JavaScript“ ir „WebAssembly“ variklis, naudojamas svetainės našumui pagerinti</translation>

@@ -79,14 +79,14 @@
 <translation id="9148058034647219655">退出</translation>
 <translation id="7534079972563542000">不可阻挡的域名</translation>
 <translation id="6486983549008741930">内容过滤</translation>
-<translation id="2398817776566547893">啟用自訂過濾器，封鎖特定區域和語言的追蹤器，以及惱人的內容</translation>
+<translation id="2398817776566547893">启用自定义过滤工具来阻止特定区域和语言的跟踪器和烦人的内容</translation>
 <translation id="8578397014396032341">内容过滤</translation>
 <translation id="4516904298421534459">过滤列表</translation>
 <translation id="4435215931544457255">其他热门社群清单。请注意，启用太多过滤器可能会导致浏览速度变慢。</translation>
 <translation id="2033882091175404255">自定义筛选器列表</translation>
 <translation id="3657456536609186343">自定义筛选器列表</translation>
 <translation id="5086877031935002480">添加自定义筛选器列表</translation>
-<translation id="4180818901996404761">自訂篩選清單網址</translation>
+<translation id="4180818901996404761">自定义筛选列表网址</translation>
 <translation id="7558501402160423480">在这里输入自定义筛选器列表 URL</translation>
 <translation id="8775144690796719618">网址无效</translation>
 <translation id="1841059687646820793">编辑自定义筛选器列表</translation>
@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">正在获取摘要……</translation>
 <translation id="7461899062138731833">来源</translation>
 <translation id="6150420917380577651">找不到来自<ph name="SEARCH_URL"/>的摘要</translation>
-<translation id="4541978218358617681">广告</translation>
 <translation id="7823038307453615214">显示 Brave News</translation>
 <translation id="6527303717912515753">分享</translation>
 <translation id="1654539412343893324">了解有关数据的更多信息</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">禁用来自 <ph name="PUBLISHER"/> 的内容</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> 已禁用</translation>
 <translation id="1276592121036104130">加载新内容</translation>
-<translation id="3189348785087463371">已宣传</translation>
 <translation id="7554145152551782675">更多 Brave 优惠</translation>
 <translation id="254100925533869330">没有内容</translation>
 <translation id="7172792761509429092">Brave News 没有内容可以显示。</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">不要在浏览会话之间保留标签页</translation>
 <translation id="7142548388914389999">允许保留隐私的产品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 信息有助于 Brave 估计总体使用量，并确保我们’在改进受欢迎的功能。</translation>
-<translation id="4174337572777167894">网络发现项目</translation>
-<translation id="8659271182272561965">提供一些匿名搜索和浏览数据来完善 Brave 搜索。</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">贡献一些匿名的搜索和浏览数据，以改进 Brave 搜索。</translation>
 <translation id="933652931229970927">自动发送诊断报告</translation>
 <translation id="5987838417172370108">Brave 浏览器崩溃或无响应时自动发送诊断报告，帮助提高 Brave\u2019s 产品稳定性。</translation>
 <translation id="7977176350719484850">预计\n节省的数据</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">与我们分享您最喜欢的功能。</translation>
 <translation id="2888496576732880897">帮助 Brave 搜索不断进步</translation>
 <translation id="7198716519700700181">防止流媒体广告干扰</translation>
-<translation id="7044431516245362795">选择加入网络发现项目，帮助我们增加索引并优化搜索结果。<ph name="LEARN_MORE_START"/>了解更多。<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">加入“网络探索项目”，帮助扩充索引并改善搜索结果。 <ph name="LEARN_MORE_START"/>了解更多<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave 徽标</translation>
 <translation id="4767173360729868049">帮助 Brave 搜索插图</translation>
 <translation id="8241918461631453498">阻止中断插图</translation>
@@ -440,8 +438,15 @@
 <translation id="9140049656798805345">立即销毁网站数据</translation>
 <translation id="6795622376590884449">自动销毁</translation>
 <translation id="7961015016161918242">一律不</translation>
+<translation id="3200744626782631683">浏览数据绝不会被自动销毁</translation>
 <translation id="1991004083507807299">当网站标签页关闭时</translation>
+<translation id="2917925984754303958">当关闭所有打开该网站的新标签页后，浏览数据将自动被销毁</translation>
 <translation id="5827277414420724690">关闭应用程序时</translation>
+<translation id="2036389684543586068">关闭或重启 Brave 应用时，浏览数据会自动被销毁</translation>
+<translation id="4279349293084858577">销毁</translation>
+<translation id="2997451887458851244">更新“自动粉碎”功能，并调整要粉碎的数据</translation>
+<translation id="363903976200491771">自动清除浏览数据</translation>
+<translation id="1028873002018537235">清除浏览历史记录</translation>
 <translation id="1209739344687072997">报告损坏的网站</translation>
 <translation id="8510478288840333677">让 Brave 的开发人员知道此网站无法与 Shields 一起正常使用：</translation>
 <translation id="1653405824851871276">感谢您帮助我们改善 Brave。本报告仅包含我们修复网站所需的信息。<ph name="LEARN_MORE"/></translation>
@@ -1188,4 +1193,7 @@ Leo AI 的所有对话。此操作无法撤销。</translation>
 <translation id="1079140196216383600">删除自定义搜索引擎</translation>
 <translation id="525276572490219787">您确定要删除“<ph name="SEARCH_ENGINE_NAME"/>”吗？此操作无法撤销。</translation>
 <translation id="6406506848690869874">同步</translation>
+<translation id="1850594249589065646">定位精度</translation>
+<translation id="2403474027143565107">精确</translation>
+<translation id="4042597221652780603">大约</translation>
 </translationbundle>

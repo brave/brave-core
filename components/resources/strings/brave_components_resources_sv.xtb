@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Källor</translation>
 <translation id="5158129253322921540">Inaktivera innehåll från <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Marknadsförd</translation>
-<translation id="4541978218358617681">Reklam</translation>
 <translation id="1776831331757823105">Klocka</translation>
 <translation id="7791543448312431591">Lägg till</translation>
 <translation id="6216996674668969227">Tjäna tokens för att visa annonser som respekterar sekretess.</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3-plånbok</translation>
 <translation id="7160424977552599351">Använd din Web3-plånbok</translation>
 <translation id="6369571967625114920">Brave privata annonser är ännu inte tillgängliga i din region.</translation>
-<translation id="5309155375926073606">Ja, jag vill också bidra till Brave Sök och anmäla mig till <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Bidra med anonym sökning och bläddra bland data för att förfina Brave Sökning med Web Discovery Project. Det är helt öppen källkod.</translation>
-<translation id="4174337572777167894">Web Discovery projekt</translation>
+<translation id="5309155375926073606">Ja, jag vill också bidra till Brave Sök och delta i <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Bidra med anonyma sök- och surfdata för att förbättra Brave Sök med Web Discovery Project. Det är helt öppen källkod.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Community</translation>
 <translation id="845020633253356720">Visa butik</translation>
 <translation id="7777123407058400802">Grundläggande uppmärksamhetsgåva – BAT</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Vald fil</translation>
 <translation id="5891811606602061966">Det gick inte att importera kontot. Vänligen försök igen.</translation>
 <translation id="6566535583781706170">Importera konto</translation>
+<translation id="8079448455682522748">Kopiera den privata nyckeln för det konto som du vill importera från en annan plånbok.</translation>
+<translation id="8475326612689436917">Exportera den privata nyckeln från en annan plånbok till en JSON-fil och ladda upp den här.</translation>
+<translation id="5733063593286221597">Ladda upp JSON-fil</translation>
 <translation id="5051929972046200722">Välj din hårdvaruplånboksenhet</translation>
 <translation id="5745936663807461565">Anslut din <ph name="HARDWARE_DEVICE"/> plånbok direkt till din dator.</translation>
 <translation id="4350216031085285578">Lås upp din enhet och välj <ph name="BLOCKCHAIN_NETWORK"/>-appen.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">Obs! Den privata nyckeln måste anges som hexkrypterad JSON med den privata nyckeln och protokolluppgifter. <ph name="LINK_START"/>Läs mer<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">OBS: Endast <ph name="FORMAT"/> utökade nycklar stöds.</translation>
 <translation id="6457746820359933716">Importera med hjälp av en JSON-fil som exporterats från Polkadot.js eller kompatibla plånböcker. Ange lösenordet som användes för att kryptera exporten.</translation>
-<translation id="9133762451347918196">Testnet-konton</translation>
+<translation id="7285350832506166367">Letar du efter Testnet-konton?</translation>
 <translation id="42126664696688958">Exportera</translation>
 <translation id="1366855498335432549">Deposition</translation>
+<translation id="3852653589653889099">Dölj konto</translation>
 <translation id="790104325876206743">Kontoinställningar</translation>
 <translation id="8856844353253421399">Senast uppdaterad <ph name="TIME_AGO"/> sedan</translation>
 <translation id="6322030314101903925">Inga tillgängliga tillgångar</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Kontonamn</translation>
 <translation id="1213870770696612739">Minsta belopp: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Maximalt belopp: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Kontot har skapats</translation>
+<translation id="7444985841455466546">Kontot har importerats utan problem</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Kontot för hårdvaruplånboken har anslutits}
+      other {{ACCOUNTS} Kontona för hårdvaruplånböckerna har anslutits}
+    }</translation>
 <translation id="8528916244724490964">Alla nätverk</translation>
 <translation id="7721139939763655123">Lågt till högt</translation>
 <translation id="5458608274117818139">Högt till lågt</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Primära nätverk</translation>
 <translation id="8323674164587854512">Ethereum + EVM-kedjor</translation>
 <translation id="1398414935371867469">Solana + SVM-kedjor</translation>
+<translation id="6498449512528552760">Ogiltigt prefix</translation>
 <translation id="7058248670699639973">Nätverkslogotyp</translation>
 <translation id="4378208228955237306">Visa nätverkslogotyp på NFT:er</translation>
 <translation id="5472199803712163015">Skräppost-NFT:er</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Om du inte hittade din tillgång i den här listan kan du lägga till den manuellt med hjälp av knappen nedan</translation>
 <translation id="4543171429371680949">Tillgången hittades inte</translation>
 <translation id="1026825928738055872">Vill du ta bort "<ph name="ACCOUNT_NAME"/>"?</translation>
-<translation id="3910551537328657217">Begär funktion</translation>
+<translation id="2220529011494928058">Rapportera ett problem</translation>
 <translation id="7657322905916621147">Återställningsfrasen måste vara 12, 15, 18, 21 eller 24 ord lång</translation>
 <translation id="5026874946691314267">Visa inte detta igen</translation>
 <translation id="434502623875309667">Adresslösning kräver nätverksbegäranden utanför kedjan. Fortsätta?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Växla för cirkumflexbläddring</translation>
 <translation id="4186334830839439230">Visa prestandainställningar</translation>
 <translation id="1094277301241124207">Visa sidopanel för bokmärken</translation>
+<translation id="5101042277149003567">Öppna alla bokmärken</translation>
 <translation id="8283515796576236471">Bokmärkesfältet: Öppna alla i nytt fönster</translation>
 <translation id="5271773791943587595">Bokmärkesfältet: Öppna alla i privat fönster</translation>
 <translation id="2748975346534113286">Bokmärkesfältet: Öppna alla nya flikgrupper</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Visa appar</translation>
 <translation id="3142853026316054951">Växla fokusläge</translation>
 <translation id="3468387898712904997">Nytt e-postalias</translation>
+<translation id="2796584247246518451">Ny tillfällig behållare</translation>
 <translation id="8591883849678260674">Se original</translation>
 <translation id="1969654232209826429">min. läsning</translation>
 <translation id="4101707289420716287">Inaktivera Speedreader</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Llama 3.1 8B, en modell skapad av Meta för att vara effektiv och mångsidig. Llama arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av Qwen VL 30B, en modell skapad av Alibaba Cloud för att vara effektiv och mångsidig. Qwen arrangeras av Brave genom vår egna säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Hej, jag heter Leo. Jag är en AI-assistent som arrangeras helt av Brave. Jag drivs av GLM-5, en modell skapad av Zhipu AI för att vara effektiv och mångsidig. GLM-5 är värdhostat av NEAR genom deras egen verifierbar privat säker infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Hej, jag heter Leo. Jag är en AI-assistent från Brave. Jag drivs av GLM-5.1, en modell som skapats av Zhipu AI för att vara prestandastark och lämplig för många användningsområden. GLM-5.1 drivs av NEAR via deras egen verifierbart privata och säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hej, jag är Leo. Jag är en AI-assistent från Brave. Jag drivs av Claude Instant, en modell skapad av Anthropic för att hantera konversationer och textbehandling. Claude Instant hostas av Brave via vår egen säkra infrastruktur.<ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Haiku, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Haiku arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hej! Jag heter Leo. Jag är en proxybaserad AI-assistent från Brave. Jag drivs av Claude Sonnet, en modell skapad av Anthropic med förmåga att klara konversations- och textbehandlingsuppgifter. Claude Sonnet arrangeras av Brave genom vår egna säkra infrastruktur. <ph name="LINK_BEFORE"/>Läs mer<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Vissa sammanhang kan saknas i konversationen. Leo lyckades behålla <ph name="PERCENTAGE"/> av konversationens tillhörande innehåll.</translation>
 <translation id="8501106061098623831">Alltför många bilder togs från sidan. Leo kunde använda <ph name="PERCENTAGE"/> av det tillgängliga visuella innehållet.</translation>
 <translation id="4370698775470316661">Den här konversationen är för lång och kan inte fortsätta. Det kan finnas andra modeller som Leo kan använda för att klara längre konversationer.</translation>
-<translation id="5719170755629028558">Förbättra ditt svar med Brave Sök ...</translation>
-<translation id="5794962229997281366">Förbättrat svar söker efter <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Söka på webben</translation>
+<translation id="8548351747582087191">Söker på webben efter <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> mer …</translation>
 <translation id="8103700533980268469">Stäng denna notis</translation>
 <translation id="3417835166382867856">Sök flikar</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Kanske senare</translation>
 <translation id="983013125018250242">Leo-verktyg</translation>
 <translation id="7623223587478473368">Bilaga</translation>
-<translation id="3777121685517940177">Ladda upp fil ...</translation>
-<translation id="6739516910850820220">Laddar upp fil ...</translation>
+<translation id="3728603231003977269">Bifoga fil...</translation>
+<translation id="7899721102369502629">Bifogar fil...</translation>
 <translation id="9088751620363630236">Ta en bild ...</translation>
 <translation id="4250229828105606438">Skärmdump</translation>
 <translation id="7949596341600215809">Helsidig skärmdump</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Pausad</translation>
 <translation id="4773299976671772492">Stoppad</translation>
 <translation id="6946722113367118030">Tänker</translation>
+<translation id="7918928051723770926">Uppgiften är slutförd</translation>
 <translation id="2113810663179257944">Kodkörning</translation>
-<translation id="6338250692384725496">Körde kod i sandbox för att hjälpa till med din fråga</translation>
+<translation id="4838375634693651776">Körning av kod i en sandlåda för att hjälpa dig med din fråga</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Ut:</translation>
+<translation id="6911817209337314910">Att ta fram några alternativ som du kan välja mellan</translation>
 <translation id="5382076391290708074">Flytta dina flikar</translation>
 <translation id="3862123464576147769">Om du tillåter detta skickas <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> och <ph name="TITLE_FORMAT_START"/>Titel<ph name="TITLE_FORMAT_END"/> för alla dina flikar och flikgrupper till Brave AI, och Brave AI kommer att kunna flytta dem. Denna behörighet gäller endast för denna konversation.</translation>
 <translation id="396165714586708444">Djupgående forskning</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">Om du tar bort <ph name="ALIAS"/> som alias kommer du att förlora din möjlighet att ta emot e-post.</translation>
 <translation id="8133100642915054515">Fel vid borttagning av alias. Kontrollera din internetanslutning och försök igen.</translation>
 <translation id="8465742443901727718">Denna åtgärd är oåterkallelig. Är du säker på att du vill fortsätta?</translation>
+<translation id="6402052536605772735">Det uppstod ett fel vid hämtningen av e-postalias från våra servrar. Kontrollera din internetanslutning.</translation>
 <translation id="9162685486229945876">Logga in eller skapa ett Brave-konto</translation>
 <translation id="1335007417599138852">Ett Brave-konto låter dig komma åt vissa Brave-produkter och synkronisera din information på alla dina enheter.</translation>
 <translation id="2133391407495495735">Få inloggningslänk</translation>
@@ -2852,7 +2868,10 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="6624553071240278643">Skapa ditt konto</translation>
 <translation id="6505120968393722022">Du kan inte använda @bravealias.com-adresser för att skapa Brave-konton. Försök igen med en annan domän.</translation>
 <translation id="8248460961680233459">Skapa ett lösenord</translation>
-<translation id="4917385247580444890">Stark</translation>
+<translation id="552339301062636488">För svag för att fortsätta</translation>
+<translation id="8433528931936107676">Att ta sig dit</translation>
+<translation id="4324743471050874155">Tillräckligt stark</translation>
+<translation id="5585552203448068294">Ovanligt stark</translation>
 <translation id="5486261815000869482">Bekräfta lösenord</translation>
 <translation id="7345706641791090287">Bekräfta ditt lösenord</translation>
 <translation id="7114054701490058191">Lösenorden överensstämmer inte</translation>
@@ -2879,7 +2898,9 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="4582421696414628320">Verifieringen har gått ut. Starta registreringsprocessen igen.</translation>
 <translation id="8439543211004394821">För många felaktiga koder angavs. Starta registreringsprocessen igen.</translation>
 <translation id="3229986152760633988">Fel kod, försök igen.</translation>
+<translation id="818783632689113711">Ett konto har redan begärts för den här e-postadressen. Kontrollera din e-post eller försök igen om 30 minuter.</translation>
 <translation id="4178004989875422946">Ett Brave-konto låter dig enkelt komma åt Brave-tjänster.</translation>
+<translation id="4902897635127068510">Menade du <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock är på</translation>
 <translation id="7044608453949401443">Mellanslag är inte tillåtna i början eller slutet av lösenordet.</translation>
 <translation id="2939492377741553693">Bekräftelse-e-post har skickats igen.</translation>
@@ -2890,4 +2911,5 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="528205534230423181">Denna webbplats erbjuder integritetsinställningar som Brave automatiskt kan justera åt dig. Här är vad vi rekommenderar:</translation>
 <translation id="1063227610401477317">Applicera förändringar</translation>
 <translation id="5539769255716491933">Rapportera misslyckade steg</translation>
+<translation id="7562163394445060270">Uppgiften kunde inte slutföras</translation>
 </translationbundle>

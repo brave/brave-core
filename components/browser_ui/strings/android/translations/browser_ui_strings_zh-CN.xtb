@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="zh-CN">
+<translation id="1000614056227025171">自定义首页宣传内容底部动作条已以最大高度打开</translation>
 <translation id="1006017844123154345">在线打开</translation>
 <translation id="1036348656032585052">关闭</translation>
 <translation id="1046742265332833834">蓝色主题</translation>
 <translation id="1070329623210597193">此网站可以查看或修改的文件</translation>
-<translation id="1882093842020941518">请告诉我们您允许使用第三方 Cookie 的原因，以帮助我们改进 Brave<ph name="BEGIN_LINK"/>发送反馈<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">您可以查看桌面版网站</translation>
 <translation id="1109482864356262001">需要使用移动传感器或光传感器的功能将无法正常运行</translation>
 <translation id="6670155282615872564">完成下方操作建议，充分利用 Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave 提示</translation>
 <translation id="1242008676835033345">嵌入来源：<ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">依次点按“应用”&gt;“默认应用”</translation>
+<translation id="1264694639515903274">现在可以自定义主页了</translation>
 <translation id="1272079795634619415">停止</translation>
 <translation id="1275718070701477396">已选择</translation>
 <translation id="8010562420973777575">为节省您的流量，Brave 已优化了此网页中的图片。</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">网址被截断了</translation>
 <translation id="1741136041592162279">允许 Brave 与您的设备分享您近期打开的标签页，以便在设备的应用列表和搜索结果中查看这些标签页。您可以在 Brave 设置中开启或关闭此功能。</translation>
 <translation id="1420688843103859429">在触控板上用两根手指滑动，即可向后/向前导航</translation>
-<translation id="1432650420699700107">网站可以请求连接到本地网络上的任何设备</translation>
 <translation id="1442081309487427303">打开阅读模式下的链接</translation>
 <translation id="1448064542941920355">缩小</translation>
 <translation id="1464044141348608623">不允许网站了解您何时在主动使用自己的设备</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">开启此设置后，网站可以询问能否管理所有显示屏上的窗口。关闭此设置后，网站无法管理所有显示屏上的窗口。</translation>
 <translation id="1738912554587725807">“新标签页”页面外观主题集合底部动作条</translation>
 <translation id="1743802530341753419">需先询问，得到许可后才允许网站连接设备（推荐）</translation>
-<translation id="2534291364429593865">接收 Brave 提示通知</translation>
 <translation id="1777815584158991902">探索信息流底部动作条</translation>
 <translation id="1779089405699405702">图片解码器</translation>
 <translation id="1781533683087883868">关闭阅读模式下的链接</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">挂断</translation>
 <translation id="1919950603503897840">选择联系人</translation>
 <translation id="1923695749281512248">已下载 <ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，共 <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">自定义我的主页</translation>
 <translation id="1939059826036755332">自动进入画中画模式</translation>
 <translation id="1954597385941141174">网站可以请求连接到 USB 设备</translation>
 <translation id="1979673356880165407">在您访问的所有网站上放大或缩小文字和图片</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">由 <ph name="APP_NAME"/> 管理</translation>
 <translation id="2498359688066513246">帮助和反馈</translation>
 <translation id="2501278716633472235">返回</translation>
-<translation id="2533138527374486328">开启后，网站可以请求连接到本地网络上的任何设备。关闭后，网站无法连接到本地网络上的设备。</translation>
 <translation id="2536779053640817375">这次允许使用 • 精确位置</translation>
 <translation id="2544997614631598250">主题颜色：深色</translation>
 <translation id="2546283357679194313">Cookie 和网站数据</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">快速启动多功能框</translation>
 <translation id="2789132527330338807">网站可以请求为您的周边环境创建 3D 地图或跟踪摄像头位置</translation>
 <translation id="2790501146643349491">开启此设置后，最近关闭的网站可以完成数据收发操作。关闭此设置后，最近关闭的网站无法完成数据收发操作。</translation>
-<translation id="1708222144403389505">开启通知，获取实用提示，尽享 Brave 的出色功能</translation>
 <translation id="2795716239552913152">网站通常会使用您的位置信息以实现相关功能或提供相关信息（例如本地新闻或附近的商店）</translation>
 <translation id="2800760947029405028">上传图片</translation>
 <translation id="2802908157808345702">不允许网站显示弹出式窗口和使用重定向</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">网站可以播放声音</translation>
 <translation id="3065787901655140044">高级保护已开启</translation>
 <translation id="3069226013421428034">允许使用第三方账号登录特定网站。</translation>
+<translation id="3084983642903364837">稍后可通过三点状菜单修改首页。</translation>
 <translation id="310297983047869047">上一张幻灯片</translation>
 <translation id="3108122610701115301">设为默认</translation>
 <translation id="310979712355504754">全部删除</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">不允许网站连接到 USB 设备</translation>
 <translation id="3965467402665811906">网站可以请求使用其保存的与您相关的信息</translation>
 <translation id="3967822245660637423">下载完毕</translation>
-<translation id="3969869202926863008">本地网络访问权限</translation>
 <translation id="3981465354637804599">网站通常会显示广告，以便能够免费提供内容或服务。但据我们所知，有些网站会展示侵扰性或误导性广告。</translation>
 <translation id="3987993985790029246">复制链接</translation>
 <translation id="3991845972263764475">已下载 <ph name="BYTES_DOWNLOADED_WITH_UNITS"/>，总大小不明</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">已连接到串行端口</translation>
 <translation id="4223404254440398437">已拒绝授予麦克风使用权限</translation>
 <translation id="4226663524361240545">收到通知时设备会振动</translation>
+<translation id="4227965147357783918">自定义首页宣传内容底部动作条已以一半高度打开</translation>
 <translation id="4259722352634471385">已屏蔽 <ph name="URL"/></translation>
 <translation id="4274673989874969668">当您离开网站后，网站可保持同步以完成各项任务（例如上传照片或发送聊天消息）</translation>
 <translation id="4278390842282768270">允许</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">展开</translation>
 <translation id="4310738531374808763">自定义首页</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{明天过期}other{# 天后过期}}</translation>
+<translation id="7012676469589811613">选择自定义主题，开启专属 Brave 体验</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> 下的所有网站</translation>
 <translation id="4340799661701629185">不允许网站发送通知</translation>
 <translation id="4341577178275615435">如需开启或关闭光标浏览模式，请使用快捷键 F7</translation>
@@ -368,7 +368,7 @@
 <translation id="4663373278480897665">已允许使用摄像头</translation>
 <translation id="4670064810192446073">虚拟现实</translation>
 <translation id="5652778654712411580">点按“浏览器应用”，然后点按“Brave”</translation>
-<translation id="4676059169848868271">若要允许 <ph name="APP_NAME"/> 使用手部跟踪功能，您还需在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中开启手部跟踪功能。</translation>
+<translation id="4676059169848868271">若要允许 <ph name="APP_NAME"/> 使用手部追踪功能，您还需在<ph name="BEGIN_LINK"/>系统设置<ph name="END_LINK"/>中开启手部追踪功能。</translation>
 <translation id="4688045258817337666">管理您的卡</translation>
 <translation id="4722332387043141878">网站通常会使用您设备的移动传感器和光传感器来实现虚拟现实或健身跟踪等功能</translation>
 <translation id="4755971844837804407">开启此设置后，网站可以向您展示任何广告。关闭此设置后，网站无法展示侵扰性或误导性广告。</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">不使用 Brave 的 V8 引擎加速网站，但 Brave 的防攻击能力会略微增强</translation>
 <translation id="5556459405103347317">重新加载</translation>
 <translation id="5591840828808741583">已为 <ph name="SITE_NAME"/> 禁用此权限</translation>
-<translation id="560980142378233747">这意味着，网站功能应该会按预期运行，但您受到的浏览保护级别可能较低。<ph name="BEGIN_LINK"/>发送反馈<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">“新标签页”页面卡片底部动作条</translation>
 <translation id="5621413808884657932">开启此设置后，网站可以请求访问此设备上的其他应用和服务。关闭此设置后，网站无法访问此设备上的其他应用和服务。</translation>
 <translation id="5632485077360054581">操作步骤</translation>
@@ -459,7 +458,7 @@
 <translation id="5740126560802162366">网站可将数据保存在您的设备上</translation>
 <translation id="5743425052258407233">在您的所有设备上同步历史记录，以便您轻松继续未完成的操作</translation>
 <translation id="5749158352074143502">继续使用此标签页</translation>
-<translation id="5750869797196646528">手部跟踪</translation>
+<translation id="5750869797196646528">手部追踪</translation>
 <translation id="5753570386948603678">从下载记录中删除</translation>
 <translation id="5771720122942595109">已禁用“<ph name="PERMISSION_1"/>”权限</translation>
 <translation id="5792627621688759634">使用触控板滑动浏览各个页面</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">我的快捷方式</translation>
 <translation id="656065428026159829">查看更多</translation>
 <translation id="6561560012278703671">改用干扰性更低的提示方式（禁止网站发送通知，以免干扰）</translation>
-<translation id="6565144332292237355">网站可以使用此功能查找并连接到本地网络上的任何设备</translation>
 <translation id="6593061639179217415">桌面版网站</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{允许 <ph name="RWS_MEMBERS_COUNT"/> 个 <ph name="RWS_OWNER"/> 网站使用 Cookie}other{允许 <ph name="RWS_MEMBERS_COUNT"/> 个 <ph name="RWS_OWNER"/> 网站使用 Cookie}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">留下</translation>
 <translation id="6630443592285535486">在此处输入十六进制代码</translation>
 <translation id="6635327442719709864">开启此设置后，网站可以请求使用串行端口。关闭此设置后，网站无法使用串行端口。</translation>
-<translation id="6669390930482049506">通知我</translation>
 <translation id="6678072580827808850">查看安全检查</translation>
 <translation id="6682057173375416470">在“新标签页”页面上获取推荐的文章</translation>
 <translation id="6683865262523156564">此网站属于由 <ph name="RWS_OWNER"/> 定义的群组，因此能查看您的活动记录。</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">刷新</translation>
 <translation id="7188508872042490670">设备端网站数据</translation>
 <translation id="7201549776650881587">此操作会删除 <ph name="ORIGIN"/> 下属所有网站或其在主屏幕中安装的应用存储的全部数据和 Cookie</translation>
-<translation id="7213166370492037743">不允许网站连接到本地网络上的任何设备</translation>
 <translation id="7219254577985949841">删除网站数据？</translation>
 <translation id="723171743924126238">选择图片</translation>
 <translation id="7243246278722455312">自定义新标签页页面底部动作条</translation>
@@ -757,7 +753,6 @@
 <translation id="8737426583868847403">您为其保存了自定义缩放级别的网站将显示在此处</translation>
 <translation id="8748714929822124637">不允许网站访问本地网络中的其他设备</translation>
 <translation id="8751914237388039244">选择图片</translation>
-<translation id="8775741625735357092">您可以在“设置”&gt;“外观”中开启书签栏</translation>
 <translation id="8800034312320686233">网站无法正常运行？</translation>
 <translation id="8801436777607969138">禁止特定网站运行 JavaScript。</translation>
 <translation id="2026315747406172223">V8 是 Brave 的 JavaScript 和 WebAssembly 引擎，用于提升网站性能</translation>

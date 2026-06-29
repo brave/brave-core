@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">మరింత...</translation>
 <translation id="71316462802471551">ఇమెయిల్ అలియాసెస్</translation>
+<translation id="209130971304928953">ట్యాబ్‌లను వర్క్‌స్పేస్‌గా సేవ్ చేయండి…</translation>
+<translation id="877984331511007834">వర్క్‌స్పేస్‌ను తెరవండి…</translation>
+<translation id="1310182651927031327">ట్యాబ్‌లను వర్క్‌స్పేస్‌గా సేవ్ చేయండి…</translation>
+<translation id="3588277741646479444">వర్క్‌స్పేస్ తెరవండి…</translation>
 <translation id="1990886731975529483">Google Widevineని ఇన్‌స్టాల్ చేసి రన్ చేయి</translation>
 <translation id="8926389886865778422">మళ్ళి అడగవద్దు</translation>
 <translation id="4900351245762303149">Google Widevineని ఇన్‌స్టాల్ చేయి</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">టార్ తో కొత్త ప్రైవేట్ విండో</translation>
 <translation id="2638041073279639246">టార్ తో ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
 <translation id="3425600262621021599">టార్ తో Brave ప్రైవేట్ విండోలో లింక్‌ని తెరువు</translation>
-<translation id="2545072023356206691">2023 డిసెంబర్ 1 నుండి, Brave డెవ్ చానెల్ బ్రౌజర్ నవీకరణలను రాలేదు. వినియోగదారులు Nightly, Beta లేదా విడుదల సంచికలకు మార్చాలని సిఫార్సు చేస్తున్నాము.</translation>
 <translation id="474217410105706308">ట్యాబ్‌ని మ్యూట్ చేయండి</translation>
 <translation id="2804710924397009224">Brave Rewards ఐకాన్‌ను దాచు</translation>
 <translation id="5029193871181468990">Brave Rewards ఐకాన్‌ను దాచు</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">Brave సెర్చ్‌ను మద్దతు ఇస్తున్నందుకు ప్రైవేట్ ప్రకటనను క్లిక్ చేయడం ద్వారా ధన్యవాదాలు. Big Tech కంటే భిన్నంగా, మీ గోప్యతను కాపాడాము అని మా ప్రకటన పనితీరును గోప్యతా కోణం నుండి అజ్ఞాతంగా కొలుస్తాము.</translation>
 <translation id="8748471354357836070">మరింత తెలుసుకోండి / ఎంపికలు నుండి అవుట్ చేయండి</translation>
 <translation id="5927196110206824867">ప్రాయోజిత నేపథ్య చిత్రాలు Brave శోధన కోసం స్వతంత్ర, వినియోగదారు-మొట్టమొదటి వెబ్‌ను నిర్మించడానికి Brave అభిప్రాయాలను మద్దతు ఇస్తాయి. పెద్ద టెక్ వంటి అమ్మకాలు అనామకంగా పరిశీలించడం తో మీ గోప్యతను రక్షిస్తున్నాము.</translation>
-<translation id="4174337572777167894">వెబ్ రిస్కవరీ ప్రాజెక్ట్</translation>
-<translation id="8659271182272561965">Brave శోధనను శోథించడానికి కొన్ని అనామక శోధన &amp; బ్రౌజింగ్ డేటాను అందించండి.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Searchను మెరుగుపరచడానికి కొంత అనామక శోధన &amp; బ్రౌజింగ్ డేటాను అందించండి.</translation>
 <translation id="1516554614404600536">Brave టూల్‌టిప్</translation>
 <translation id="4375473250631001683">సైడ్బార్ చిహ్నాన్ని దాచు</translation>
 <translation id="2613033293035359003">సైడ్బార్ ను దాచు</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">కంటైనర్‌లో తెరువు</translation>
 <translation id="194205047181722473">కంటైనర్‌లో లింక్‌ను తెరువు</translation>
 <translation id="8638526693050780542">కంటైనర్‌లను నిర్వహించండి</translation>
+<translation id="2796584247246518451">కొత్త తాత్కాలిక కంటెనర్</translation>
 <translation id="2336228925368920074">అన్ని టాబ్‌లను బుక్‌మార్క్ చెయ్యి...</translation>
 <translation id="2523967823495420116">నిలువు టాబ్స్ ఉపయోగించండి</translation>
 <translation id="5483718923712878759">ఫోకస్ మోడ్</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">కంటైనర్‌లో తెరువు</translation>
 <translation id="1185644444415356776">కంటైనర్‌లో లింక్‌ను తెరువు</translation>
 <translation id="6745991613881384719">కంటెనర్‌లను నిర్వహించండి</translation>
+<translation id="8523788649219117880">కొత్త తాత్కాలిక కంటెనర్</translation>
 <translation id="3704707436873245822">చిత్రం నుండి వచనం కాపీ చేయి</translation>
 <translation id="5268098808165185458">చిత్రం నుండి వచనాన్ని కాపీ చేస్తున్నాము...</translation>
 <translation id="4046485130884276245">చిత్రం నుండి వచనం కాపీ చేయబడింది</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">ట్యాబ్‌లు</translation>
 <translation id="8168435359814927499">కంటెంట్</translation>
 <translation id="6017560037265964523">కంటైనర్లు</translation>
-<translation id="934893482320683588">మీ బ్రౌజింగ్‌ను కంటైనర్‌ల ద్వారా నిర్వహించండి. <ph name="BEGIN_LINK"/>Learn more<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">కంటెనర్‌లు అనేవి కుకీలు, కాష్, మరియు సైట్ స్టోరేజ్ వంటి మీ బ్రౌజింగ్ డేటాను వేర్వేరు సందర్భాలలోకి వేరుచేసే రంగు-కోడెడ్ బ్రౌజర్ ట్యాబ్‌లు. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">కంటెనర్‌లను ప్రారంభించండి</translation>
 <translation id="7773735778926921278">కొత్త కంటైనర్‌ను జోడించండి</translation>
 <translation id="8900907990448657776">కంటైనర్‌ని సవరించండి</translation>
 <translation id="7900511996284443779">కంటైనర్‌ని తొలగించండి</translation>
@@ -807,6 +813,7 @@
 <translation id="5226020406479918122">టాబ్ ఫోకస్ మోడ్</translation>
 <translation id="3705539672403311123">టాబ్ సెర్చ్ పేజీ లో ట్యాబ్ ఆర్గనైజేషన్ ప్రారంభించండి. తెరిచినప్పుడు, అది ఆటోమాటిక్‌గా అన్ని ప్రైవేట్ కాని ట్యాబ్‌ల శీర్షికలు మరియు మూలాలను లియో కు పంపుతుంది వాటిని వర్గీకరించడానికి. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ట్యాబ్ ఫోకస్ కోసం డిఫాల్ట్ మోడల్</translation>
+<translation id="2161546758719933059">ట్యాబ్ ఫోకస్ మోడ్‌లో మీ ట్యాబ్‌లను నిర్వహించడానికి ఉపయోగించే మోడల్. <ph name="BEGIN_LINK"/>మరింత తెలుసుకోండి<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">సంభాషణలో సూచించిన ప్రాంప్ట్‌లను చూపించు</translation>
 <translation id="5781842473834867765">నా సంభాషణల చరిత్రను సేవ్ చేయండి</translation>
 <translation id="1082960401708055995">భారీ సంభాషణ నిల్వను నిలిపివేయడం అనగా అన్ని ఉన్నది లేకుండా వెళ్లిపోవడం. ఈ చర్యని తిరిగి ఏర్పాటు చేయాలంటే అవకాశం లేదు.</translation>

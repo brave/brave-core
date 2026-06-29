@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">ШІ Leo</translation>
 <translation id="8275068909952022340">Більше…</translation>
 <translation id="71316462802471551">Псевдоніми електронної пошти</translation>
+<translation id="209130971304928953">Зберегти вкладки як робочий простір…</translation>
+<translation id="877984331511007834">Відкрити робочий простір…</translation>
+<translation id="1310182651927031327">Зберегти вкладки як робочу область…</translation>
+<translation id="3588277741646479444">Відкрити робочу область…</translation>
 <translation id="1990886731975529483">Встановити й запустити Google Widevine</translation>
 <translation id="8926389886865778422">Не запитувати знову</translation>
 <translation id="4900351245762303149">Встановити Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Нове приватне вікно з Tor</translation>
 <translation id="2638041073279639246">Відкрити посилання у приватному вікні з Tor</translation>
 <translation id="3425600262621021599">Відкрити посилання у приватному вікні Brave з Tor</translation>
-<translation id="2545072023356206691">Починаючи з 1 грудня 2023 року, канал Brave Dev більше не отримуватиме оновлення браузера. Ми рекомендуємо користувачам перейти на Nightly, Beta або Release версію Brave.</translation>
 <translation id="474217410105706308">Вимкнути звук вкладки</translation>
 <translation id="2804710924397009224">Приховати піктограму Винагороди Brave</translation>
 <translation id="5029193871181468990">Приховати піктограму Винагороди Brave</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">Дякуємо, що підтримуєте Пошук Brave і переглядаєте приватну рекламу. На відміну від Big Tech, ми вимірюємо ефективність реклами анонімно, зберігаючи вашу конфіденційність.</translation>
 <translation id="8748471354357836070">Детальніше / змінити вибір</translation>
 <translation id="5927196110206824867">Спонсорські зображення підтримують місію Brave — створювати незалежний інтернет для користувачів. На відміну від Big Tech, ми вимірюємо ефективність реклами анонімно, зберігаючи вашу конфіденційність.</translation>
-<translation id="4174337572777167894">Проєкт з дослідження мережі</translation>
-<translation id="8659271182272561965">Допомагайте вдосконалювати Пошук Brave, надсилаючи анонімні дані щодо своїх пошукових запитів.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Надсилайте анонімні дані про пошук &amp; перегляд, щоб удосконалити Пошук Brave.</translation>
 <translation id="1516554614404600536">Підказка Brave</translation>
 <translation id="4375473250631001683">Приховати піктограму бічної панелі</translation>
 <translation id="2613033293035359003">Приховати бічну панель</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">Відкрити в контейнері</translation>
 <translation id="194205047181722473">Відкрити посилання в контейнері</translation>
 <translation id="8638526693050780542">Керування контейнерами</translation>
+<translation id="2796584247246518451">Новий тимчасовий контейнер</translation>
 <translation id="2336228925368920074">Додати до закладок усі вкладки...</translation>
 <translation id="2523967823495420116">Використовувати вертикальні вкладки</translation>
 <translation id="5483718923712878759">Режим фокусування</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">Відкрити в контейнері</translation>
 <translation id="1185644444415356776">Відкрити посилання в контейнері</translation>
 <translation id="6745991613881384719">Керування контейнерами</translation>
+<translation id="8523788649219117880">Новий тимчасовий контейнер</translation>
 <translation id="3704707436873245822">Копіювати текст із зображення</translation>
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст із зображення скопійовано</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">Вкладки</translation>
 <translation id="8168435359814927499">Контент</translation>
 <translation id="6017560037265964523">Контейнери</translation>
-<translation id="934893482320683588">Організуйте перегляд за допомогою контейнерів. <ph name="BEGIN_LINK"/>Дізнатися більше<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Контейнери — це вкладки браузера з кольоровим кодуванням, які ізолюють ваші дані перегляду, такі як файли cookie, кеш і сховище сайтів, в окремі контексти. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Увімкнути контейнери</translation>
 <translation id="7773735778926921278">Додати новий контейнер</translation>
 <translation id="8900907990448657776">Редагувати контейнер</translation>
 <translation id="7900511996284443779">Видалити контейнер</translation>
@@ -808,6 +814,7 @@
 <translation id="5226020406479918122">Режим фокусування вкладок</translation>
 <translation id="3705539672403311123">Увімкніть впорядкування вкладок на сторінці пошуку. Всі неприватні вкладки буде автоматично надіслано Leo для класифікації. <ph name="BEGIN_LINK"/>Дізнайтеся більше<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Типова модель для фокусування вкладок</translation>
+<translation id="2161546758719933059">Модель, яка використовується для впорядкування ваших вкладок у режимі фокусування на вкладках. <ph name="BEGIN_LINK"/>Докладніше<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Показувати запропоновані підказки під час розмови</translation>
 <translation id="5781842473834867765">Зберігати історію чату</translation>
 <translation id="1082960401708055995">Вимкнення цієї функції повністю видалить історію ваших чатів без можливості відновлення.</translation>

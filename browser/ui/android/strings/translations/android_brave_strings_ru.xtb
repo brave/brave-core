@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Загрузка…</translation>
 <translation id="7461899062138731833">ИСТОЧНИКИ</translation>
 <translation id="6150420917380577651">На сайте <ph name="SEARCH_URL"/> ленты не найдены</translation>
-<translation id="4541978218358617681">Реклама</translation>
 <translation id="7823038307453615214">Показать Brave Новости</translation>
 <translation id="6527303717912515753">Поделиться</translation>
 <translation id="1654539412343893324">Узнайте больше о своих данных</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Не показывать контент от <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/>: отключено</translation>
 <translation id="1276592121036104130">Загрузить новый контент</translation>
-<translation id="3189348785087463371">На правах рекламы</translation>
 <translation id="7554145152551782675">Больше предложений от Brave</translation>
 <translation id="254100925533869330">Контента нет</translation>
 <translation id="7172792761509429092">В Brave Новостях нет контента.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Не сохранять вкладки между сеансами</translation>
 <translation id="7142548388914389999">Разрешить выполнение аналитики продукта, не нарушающей конфиденциальности</translation>
 <translation id="5254037869598726291">Анонимные данные аналитики продукта помогают Brave оценивать информацию об использовании и улучшать популярные функции.</translation>
-<translation id="4174337572777167894">Проект «Веб-поиск»</translation>
-<translation id="8659271182272561965">Анонимно предоставлять Brave Search данные поиска и сведения о действиях в браузере для улучшения работы сервиса</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Передавайте часть анонимных данных о поиске &amp; просмотре, чтобы улучшить Поиск Brave.</translation>
 <translation id="933652931229970927">Автоматически отправлять данные диагностики</translation>
 <translation id="5987838417172370108">Автоматически отправляя данные диагностики при сбое браузера Brave, вы помогаете повышать стабильность его работы.</translation>
 <translation id="7977176350719484850">Данных\nНе скачано</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Какие функции вам нравятся больше всего?</translation>
 <translation id="2888496576732880897">Улучшить поиск Brave</translation>
 <translation id="7198716519700700181">Смотрите видео без рекламы</translation>
-<translation id="7044431516245362795">Примите участие в проекте Web Discovery, чтобы помочь расширить индекс и улучшить результаты поиска. <ph name="LEARN_MORE_START"/>Узнайте больше.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Присоединяйтесь к проекту Web Discovery, чтобы помочь расширить индекс и улучшить результаты поиска. <ph name="LEARN_MORE_START"/>Узнать больше<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Логотип Brave</translation>
 <translation id="4767173360729868049">Иллюстрация Помогите Поиску Brave развиваться</translation>
 <translation id="8241918461631453498">Иллюстрация блокировки прерываний</translation>
@@ -440,8 +438,15 @@
 <translation id="9140049656798805345">Уничтожить</translation>
 <translation id="6795622376590884449">Автоуничтожение данных</translation>
 <translation id="7961015016161918242">Никогда</translation>
+<translation id="3200744626782631683">Данные о просмотрах никогда не удаляются автоматически</translation>
 <translation id="1991004083507807299">При закрытии вкладок</translation>
+<translation id="2917925984754303958">Данные просмотра автоматически удаляются после закрытия всех вкладок, открытых на данном сайте</translation>
 <translation id="5827277414420724690">При закрытии приложения</translation>
+<translation id="2036389684543586068">Данные просмотра автоматически удаляются при закрытии или перезапуске приложения Brave</translation>
+<translation id="4279349293084858577">Удалить</translation>
+<translation id="2997451887458851244">Обновите функцию «Автоматическое уничтожение» и настройте, какие данные подлежат уничтожению</translation>
+<translation id="363903976200491771">Автоматическое удаление данных просмотра</translation>
+<translation id="1028873002018537235">Удалить историю просмотра</translation>
 <translation id="1209739344687072997">Сообщить о неработающем сайте</translation>
 <translation id="8510478288840333677">Сообщите разработчикам Brave, что этот сайт некорректно работает с Защитой:</translation>
 <translation id="1653405824851871276">Спасибо, что помогаете нам улучшать Brave! В отчете будет только информация, необходимая для исправления ошибок на этом сайте. <ph name="LEARN_MORE"/></translation>
@@ -1193,4 +1198,7 @@ Leo ИИ. Это действие нельзя отменить.</translation>
 <translation id="1079140196216383600">Удалить пользовательскую поисковую систему</translation>
 <translation id="525276572490219787">Вы уверены, что хотите удалить «<ph name="SEARCH_ENGINE_NAME"/>»? Это действие нельзя отменить.</translation>
 <translation id="6406506848690869874">Синхронизация</translation>
+<translation id="1850594249589065646">Точность определения местоположения</translation>
+<translation id="2403474027143565107">Точный</translation>
+<translation id="4042597221652780603">Приблизительно</translation>
 </translationbundle>

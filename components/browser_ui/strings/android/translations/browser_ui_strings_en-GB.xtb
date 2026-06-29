@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="en-GB">
+<translation id="1000614056227025171">Customise your homepage promo bottom sheet opened at full height</translation>
 <translation id="1006017844123154345">Open Online</translation>
 <translation id="1036348656032585052">Turn off</translation>
 <translation id="1046742265332833834">Blue theme</translation>
 <translation id="1070329623210597193">Files this site can view or edit</translation>
-<translation id="1882093842020941518">Help us improve Brave by telling us why you allowed third-party cookies. <ph name="BEGIN_LINK"/>Send feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">You can ask to see the desktop version of sites</translation>
 <translation id="1109482864356262001">Features that need motion or light sensors won't work</translation>
 <translation id="6670155282615872564">Complete these suggested actions below to get the most out of Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave tips</translation>
 <translation id="1242008676835033345">Embedded on <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Tap Apps  &gt; Default apps</translation>
+<translation id="1264694639515903274">Now you can customise your homepage</translation>
 <translation id="1272079795634619415">Stop</translation>
 <translation id="1275718070701477396">Selected</translation>
 <translation id="8010562420973777575">To save you data, this page's images have been optimised by Brave.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL truncated</translation>
 <translation id="1741136041592162279">Let Brave share your recent tabs with your device to see them in your device's app list and search results. You can turn this on or off in Brave settings.</translation>
 <translation id="1420688843103859429">Navigate back and forth by swiping with two fingers on the touchpad</translation>
-<translation id="1432650420699700107">Sites can ask to connect to any device on your local network</translation>
 <translation id="1442081309487427303">Turn Reading mode links on</translation>
 <translation id="1448064542941920355">Decrease zoom</translation>
 <translation id="1464044141348608623">Don't allow sites to know when you're actively using your device</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">When on, sites can ask to manage windows on all your displays. When off, sites can't manage windows on all your displays.</translation>
 <translation id="1738912554587725807">New tab page appearance theme collections bottom sheet</translation>
 <translation id="1743802530341753419">Ask before allowing sites to connect to a device (recommended)</translation>
-<translation id="2534291364429593865">Get Brave tips notifications</translation>
 <translation id="1777815584158991902">Discover feed bottom sheet</translation>
 <translation id="1779089405699405702">Image decoder</translation>
 <translation id="1781533683087883868">Turn Reading mode links off</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Hang up</translation>
 <translation id="1919950603503897840">Select contacts</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Customise my homepage</translation>
 <translation id="1939059826036755332">Automatic picture-in-picture</translation>
 <translation id="1954597385941141174">Sites can ask to connect to USB devices</translation>
 <translation id="1979673356880165407">Make text and images larger or smaller for all sites that you visit</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Managed by <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Help and feedback</translation>
 <translation id="2501278716633472235">Go back</translation>
-<translation id="2533138527374486328">When on, sites can ask to connect to any device on your local network. When off, sites can't connect to devices on your local network.</translation>
 <translation id="2536779053640817375">Allowed this time • Precise</translation>
 <translation id="2544997614631598250">Theme colour dark</translation>
 <translation id="2546283357679194313">Cookies and site data</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Jump-start omnibox</translation>
 <translation id="2789132527330338807">Sites can ask to create a 3D map of your surroundings or track camera position</translation>
 <translation id="2790501146643349491">When on, recently closed sites can finish sending and receiving data. When off, recently closed sites can't finish sending or receiving data.</translation>
-<translation id="1708222144403389505">Turn on notifications for useful tips to help you get the best of Brave</translation>
 <translation id="2795716239552913152">Sites usually use your location for relevant features or info, like local news or nearby shops</translation>
 <translation id="2800760947029405028">Upload an image</translation>
 <translation id="2802908157808345702">Don't allow sites to send pop-ups and use redirects</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Sites can play sound</translation>
 <translation id="3065787901655140044">Advanced Protection is on</translation>
 <translation id="3069226013421428034">Allow third-party sign-in for a specific site.</translation>
+<translation id="3084983642903364837">Edit your homepage later via the 3-dots menu.</translation>
 <translation id="310297983047869047">Previous slide</translation>
 <translation id="3108122610701115301">Set default</translation>
 <translation id="310979712355504754">Delete all</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Don't allow sites to connect to USB devices</translation>
 <translation id="3965467402665811906">Sites can ask to use information that they've saved about you</translation>
 <translation id="3967822245660637423">Download complete</translation>
-<translation id="3969869202926863008">Local network access</translation>
 <translation id="3981465354637804599">Sites usually show ads so that they can provide content or services free of charge. But, some sites are known to show intrusive or misleading ads.</translation>
 <translation id="3987993985790029246">Copy link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Connected to a serial port</translation>
 <translation id="4223404254440398437">Microphone not allowed</translation>
 <translation id="4226663524361240545">Notifications may vibrate the device</translation>
+<translation id="4227965147357783918">Customise your homepage promo bottom sheet opened at half height</translation>
 <translation id="4259722352634471385">Navigation is blocked: <ph name="URL"/></translation>
 <translation id="4274673989874969668">After you leave a site, it can keep syncing to finish tasks, like uploading photos or sending a chat message</translation>
 <translation id="4278390842282768270">Allowed</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Expand</translation>
 <translation id="4310738531374808763">Customise your homepage</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Expires tomorrow}other{Expires in # days}}</translation>
+<translation id="7012676469589811613">Make Brave your own by choosing a custom theme</translation>
 <translation id="4338831206024587507">All sites under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Don't allow sites to send notifications</translation>
 <translation id="4341577178275615435">To turn caret browsing on or off, use the shortcut F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Do not speed up sites with Brave's V8 engine but make Brave slightly more resistant to attacks</translation>
 <translation id="5556459405103347317">Reload</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blocked</translation>
-<translation id="560980142378233747">This means site features should work as expected, but you may have less browsing protection. <ph name="BEGIN_LINK"/>Send feedback<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">New tab page cards bottom sheet</translation>
 <translation id="5621413808884657932">When on, sites can ask to access other apps and services on this device. When off, sites can't access other apps and services on this device.</translation>
 <translation id="5632485077360054581">Show me how</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">My shortcuts</translation>
 <translation id="656065428026159829">See more</translation>
 <translation id="6561560012278703671">Use quieter messaging (blocks notification prompts from interrupting you)</translation>
-<translation id="6565144332292237355">Sites can use this feature to look for and connect to any device on your local network</translation>
 <translation id="6593061639179217415">Desktop site</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookies allowed for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> site}other{Cookies allowed for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> sites}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Stay</translation>
 <translation id="6630443592285535486">Type hex here</translation>
 <translation id="6635327442719709864">When on, sites can ask to use serial ports. When off, sites can't use serial ports.</translation>
-<translation id="6669390930482049506">Notify me</translation>
 <translation id="6678072580827808850">Review Safety Check</translation>
 <translation id="6682057173375416470">Get suggested articles on the New tab page</translation>
 <translation id="6683865262523156564">This site is in a group that can see your activity. The group is defined by <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Refresh</translation>
 <translation id="7188508872042490670">On-device site data</translation>
 <translation id="7201549776650881587">This action will clear all data and cookies stored by all sites under <ph name="ORIGIN"/> or by its app on your Home screen</translation>
-<translation id="7213166370492037743">Don't allow sites to connect to any device on your local network</translation>
 <translation id="7219254577985949841">Delete site data?</translation>
 <translation id="723171743924126238">Select images</translation>
 <translation id="7243246278722455312">Customise your new tab page bottom sheet</translation>
@@ -757,7 +753,6 @@ Advanced Protection controls these Brave settings:</translation>
 <translation id="8737426583868847403">Sites that you save a custom zoom level for will appear here</translation>
 <translation id="8748714929822124637">Don't allow sites to access other devices on your local network</translation>
 <translation id="8751914237388039244">Select an image</translation>
-<translation id="8775741625735357092">You can turn on the bookmarks bar in Settings &gt; Appearance</translation>
 <translation id="8800034312320686233">Site not working?</translation>
 <translation id="8801436777607969138">Block JavaScript for a specific site.</translation>
 <translation id="2026315747406172223">V8 is Brave’s JavaScript and WebAssembly engine used to improve site performance</translation>

@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo الذكاء الاصطناعي</translation>
 <translation id="8275068909952022340">المزيد …</translation>
 <translation id="71316462802471551">المعرفات البديلة للبريد الإلكتروني</translation>
+<translation id="209130971304928953">حفظ علامات التبويب كمساحة عمل…</translation>
+<translation id="877984331511007834">فتح مساحة العمل…</translation>
+<translation id="1310182651927031327">حفظ علامات التبويب كمساحة عمل…</translation>
+<translation id="3588277741646479444">فتح مساحة العمل…</translation>
 <translation id="1990886731975529483">قم بتثبيت برنامج Google Widevine وتشغيله</translation>
 <translation id="8926389886865778422">عدم السؤال مرة أخرى</translation>
 <translation id="4900351245762303149">تثبيت برنامج Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">نافذة خاصة جديدة من خلال Tor</translation>
 <translation id="2638041073279639246">افتح الرابط في نافذة خاصة، باستخدام Tor</translation>
 <translation id="3425600262621021599">افتح الرابط في نافذة Brave خاصة، باستخدام Tor</translation>
-<translation id="2545072023356206691">بدءًا من 1 ديسمبر 2023، لن تتلقى قناة Brave Dev تحديثات المتصفح بعد الآن. نوصي المستخدمين بالانتقال إلى إصدارات Nightly أو Beta أو Release من Brave.</translation>
 <translation id="474217410105706308">تجاهل علامة التبويب</translation>
 <translation id="2804710924397009224">إخفاء أيقونة مكافآت Brave</translation>
 <translation id="5029193871181468990">إخفاء أيقونة Brave Rewards</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">شكراً لدعمك Brave Search بالنقر على إعلان خاص. على عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بكل سريّة للحفاظ على خصوصيتك.</translation>
 <translation id="8748471354357836070">معرفة المزيد / خيارات إلغاء الاشتراك</translation>
 <translation id="5927196110206824867">تدعم صور الخلفية المدعومة Brave في مهمتها المتمثلة في بناء شبكة ويب مستقلة ترتكز على المستخدم أولًا. وعلى عكس شركات التكنولوجيا الكبرى، نقيس أداء الإعلانات بشكل مجهول للحفاظ على خصوصيتكم.</translation>
-<translation id="4174337572777167894">مشروع اكتشاف الويب</translation>
-<translation id="8659271182272561965">المساهمة بإجراء بحث مجهول &amp; تصفح البيانات لتحسين مستوى Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">ساهم ببعض بيانات البحث والتصفّح المجهولة لتحسين Brave Search.</translation>
 <translation id="1516554614404600536">تعريف الأدوات الخاصة بشركة Brave</translation>
 <translation id="4375473250631001683">إخفاء أيقونة الشريط الجانبي</translation>
 <translation id="2613033293035359003">إخفاء الشريط الجانبي</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">فتح في حاوية</translation>
 <translation id="194205047181722473">فتح الرابط في حاوية</translation>
 <translation id="8638526693050780542">إدارة الحاويات</translation>
+<translation id="2796584247246518451">حاوية مؤقتة جديدة</translation>
 <translation id="2336228925368920074">وضع إشارة على جميع علامات التبويب...</translation>
 <translation id="2523967823495420116">استخدام علامات تبويب عمودية</translation>
 <translation id="5483718923712878759">وضع التركيز</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">فتح في حاوية</translation>
 <translation id="1185644444415356776">فتح الرابط في حاوية</translation>
 <translation id="6745991613881384719">إدارة الحاويات</translation>
+<translation id="8523788649219117880">حاوية مؤقتة جديدة</translation>
 <translation id="3704707436873245822">نسخ النص من الصورة</translation>
 <translation id="5268098808165185458">جارٍ نسخ النص من الصورة...</translation>
 <translation id="4046485130884276245">تم نسخ النص من الصورة</translation>
@@ -374,7 +379,8 @@
 <translation id="8076492880354921740">علامات التبويب</translation>
 <translation id="8168435359814927499">المحتوى</translation>
 <translation id="6017560037265964523">الحاويات</translation>
-<translation id="934893482320683588">تصفّح بنظام بفضل الحاويات. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">الحاويات هي علامات تبويب متصفح مرمزة بالألوان تعزل بيانات تصفحك، مثل ملفات تعريف الارتباط والذاكرة المؤقتة وتخزين الموقع، في سياقات منفصلة. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">تمكين الحاويات</translation>
 <translation id="7773735778926921278">إضافة حاوية جديدة</translation>
 <translation id="8900907990448657776">تعديل الحاوية</translation>
 <translation id="7900511996284443779">حذف الحاوية</translation>
@@ -809,6 +815,7 @@
 <translation id="5226020406479918122">وضع تركيز علامات التبويب</translation>
 <translation id="3705539672403311123">تمكين تنظيم علامات التبويب في صفحة البحث عن علامات التبويب. عند استخدام هذه الميزة، سيؤدي ذلك تلقائيًا إلى إرسال عناوين وأصول جميع علامات التبويب غير الخاصة إلى Leo لتصنيفها. <ph name="BEGIN_LINK"/>تعرف على المزيد<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">النموذج التلقائي للمحادثات الجديدة</translation>
+<translation id="2161546758719933059">النموذج المستخدم لتنظيم علامات التبويب الخاصة بك في وضع تركيز علامات التبويب. <ph name="BEGIN_LINK"/>معرفة المزيد<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">إظهار المطالبات المقترحة في المحادثة</translation>
 <translation id="5781842473834867765">تخزين سجل محادثاتي</translation>
 <translation id="1082960401708055995">سيؤدي تعطيل تخزين المحادثات إلى مسح جميع المحادثات المخزنة مسبقًا بشكل دائم. لا يمكن التراجع عن هذا الإجراء.</translation>

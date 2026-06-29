@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Fuentes</translation>
 <translation id="5158129253322921540">Desactivar contenido de <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promocionado</translation>
-<translation id="4541978218358617681">Anuncio</translation>
 <translation id="1776831331757823105">Reloj</translation>
 <translation id="7791543448312431591">Agregar</translation>
 <translation id="6216996674668969227">Gana tokens por ver anuncios que respetan la privacidad.</translation>
@@ -737,8 +736,8 @@
 <translation id="8251969358165471584">Billetera de Web3</translation>
 <translation id="7160424977552599351">Usa tu billetera de Web3</translation>
 <translation id="6369571967625114920">Brave Private Ads aún no está disponible en tu región.</translation>
-<translation id="5309155375926073606">Sí, quisiera contribuir a Búsqueda de Brave y participar en el <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Aporta algunos datos anónimos de búsqueda y navegación para perfeccionar el Buscador de Brave con Web Discovery Project. Es completamente de código abierto.</translation>
+<translation id="5309155375926073606">Sí, también me gustaría contribuir al Buscador de Brave y participar en el <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Contribuye con algunos datos anónimos de búsqueda y navegación para perfeccionar el Buscador de Brave con Web Discovery Project. Es completamente de código abierto.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Comunidad</translation>
 <translation id="845020633253356720">Ver la tienda</translation>
@@ -981,11 +980,11 @@
 <translation id="7080614857771109950">Admite activos compatibles con EVM en la cadena de bloques de Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Admite activos compatibles con SPL en la cadena de bloques de Solana</translation>
 <translation id="4541295941776129088">Almacenar activo FIL</translation>
-<translation id="6030958132571544682">Almacenar activos de Testnet FIL</translation>
+<translation id="6030958132571544682">Almacenar activos de FIL Testnet</translation>
 <translation id="29759539656432505">Almacenar activos de BTC</translation>
 <translation id="2399555431746923964">Almacenar activos de Testnet BTC</translation>
 <translation id="8749751940551938347">Almacenar activos de ZEC</translation>
-<translation id="3451958544919449297">Almacenar activos de Testnet ZEC</translation>
+<translation id="3451958544919449297">Almacenar activos de ZEC Testnet</translation>
 <translation id="8459631690385393533">Almacena activos de Cardano</translation>
 <translation id="4915057812371523845">Almacenar activos de Testnet Cardano</translation>
 <translation id="5387140102951033657">Admite activos de Substrate en la cadena de retransmisión de Polkadot y parachains de Substrate</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Archivo seleccionado</translation>
 <translation id="5891811606602061966">No se pudo importar la cuenta. Inténtelo de nuevo.</translation>
 <translation id="6566535583781706170">Importar cuenta</translation>
+<translation id="8079448455682522748">Copia la clave privada de la cuenta que quieras importar desde otra billetera.</translation>
+<translation id="8475326612689436917">Exporta la clave privada de otra billetera a un archivo JSON y súbela aquí.</translation>
+<translation id="5733063593286221597">Subir archivo JSON</translation>
 <translation id="5051929972046200722">Seleccione su dispositivo de billetera de hardware</translation>
 <translation id="5745936663807461565">Conecte su billetera de <ph name="HARDWARE_DEVICE"/> directamente a su computadora.</translation>
 <translation id="4350216031085285578">Desbloquea tu dispositivo y selecciona la aplicación <ph name="BLOCKCHAIN_NETWORK"/>.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">AVISO: la clave privada debe proporcionarse como un archivo JSON con codificación hexadecimal que contiene información de la clave privada y del protocolo. <ph name="LINK_START"/>Más información<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOTA: solamente se admiten <ph name="FORMAT"/> teclas extendidas.</translation>
 <translation id="6457746820359933716">Importar usando un archivo JSON exportado desde Polkadot.js o billeteras compatibles. Ingresa la contraseña utilizada para encriptar la exportación.</translation>
-<translation id="9133762451347918196">Cuentas de prueba</translation>
+<translation id="7285350832506166367">¿Buscas cuentas de Testnet?</translation>
 <translation id="42126664696688958">Exportar</translation>
 <translation id="1366855498335432549">Depósito</translation>
+<translation id="3852653589653889099">Ocultar cuenta</translation>
 <translation id="790104325876206743">Ajustes de la cuenta</translation>
 <translation id="8856844353253421399">Última actualización hace <ph name="TIME_AGO"/></translation>
 <translation id="6322030314101903925">No hay activos disponibles</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Nombre de la cuenta</translation>
 <translation id="1213870770696612739">Cantidad mínima: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Cantidad máxima: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">La cuenta se ha creado correctamente</translation>
+<translation id="7444985841455466546">La cuenta se importó correctamente</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Cuenta de la billetera de hardware conectada con éxito}
+      other {{ACCOUNTS} Cuentas de la billetera de hardware conectadas con éxito}
+    }</translation>
 <translation id="8528916244724490964">Todas las redes</translation>
 <translation id="7721139939763655123">De bajo a alto</translation>
 <translation id="5458608274117818139">De alto a bajo</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Redes primarias</translation>
 <translation id="8323674164587854512">Cadenas de Ethereum + EVM</translation>
 <translation id="1398414935371867469">Cadenas de Solana + SVM</translation>
+<translation id="6498449512528552760">Prefijo no válido</translation>
 <translation id="7058248670699639973">Logotipo de la red</translation>
 <translation id="4378208228955237306">Mostrar logotipo de la red en NFT</translation>
 <translation id="5472199803712163015">NFT no solicitados</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Si no encuentras tu activo en la lista, puedes añadirlo de forma manual utilizando el botón de abajo</translation>
 <translation id="4543171429371680949">Activo no encontrado</translation>
 <translation id="1026825928738055872">¿Seguro que quieres eliminar "<ph name="ACCOUNT_NAME"/>"?</translation>
-<translation id="3910551537328657217">Solicitar función</translation>
+<translation id="2220529011494928058">Informar un problema</translation>
 <translation id="7657322905916621147">La frase de recuperación debe constar de 12, 15, 18, 21 o 24 palabras</translation>
 <translation id="5026874946691314267">No vuelvas a mostrar esto.</translation>
 <translation id="434502623875309667">La resolución de dirección requiere solicitudes de red fuera de cadena. ¿Proceder?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Activar/desactivar navegación mediante el símbolo de intercalación</translation>
 <translation id="4186334830839439230">Mostrar ajustes de rendimiento</translation>
 <translation id="1094277301241124207">Mostrar panel lateral de marcadores</translation>
+<translation id="5101042277149003567">Abrir todos los marcadores</translation>
 <translation id="8283515796576236471">Barra de marcadores: Abrir todo en una ventana nueva</translation>
 <translation id="5271773791943587595">Barra de marcadores: Abrir todo en una ventana de incógnito</translation>
 <translation id="2748975346534113286">Barra de marcadores: Abrir todo en un nuevo grupo de pestañas</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Mostrar aplicaciones</translation>
 <translation id="3142853026316054951">Activar/desactivar modo de enfoque</translation>
 <translation id="3468387898712904997">Nuevo alias de correo electrónico</translation>
+<translation id="2796584247246518451">Nuevo contenedor temporal</translation>
 <translation id="8591883849678260674">Ver original</translation>
 <translation id="1969654232209826429">minutos de lectura</translation>
 <translation id="4101707289420716287">Desactivar Speedreader</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Llama 3.1 8B, un modelo creado por Meta para ser de gran utilidad en multitud de situaciones. Llama se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de Qwen VL 30B, un modelo creado por Alibaba Cloud para ser de gran utilidad en multitud de situaciones. Qwen está alojado en los servidores de Brave a través de nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con tecnología de GLM-5, un modelo creado por Zhipu AI para ser de gran utilidad en multitud de situaciones. GLM-5 está alojado mediante infraestructura segura de NEAR.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Hola, soy Leo. Soy un asistente de IA de Brave. Funciono con GLM-5.1, un modelo creado por Zhipu AI para ofrecer un alto rendimiento y ser aplicable a numerosos casos de uso. GLM-5.1 está alojado en NEAR a través de su propia infraestructura segura y de privacidad verificable.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hola, soy Leo. Soy un asistente de IA de Brave. Estoy impulsado por Claude Instant, un modelo creado por Anthropic para realizar tareas conversacionales y de procesamiento de texto. Claude Instant está alojado por Brave en nuestra propia infraestructura segura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Haiku, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Haiku se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hola, me llamo Leo. Soy un asistente mediante IA de Brave. Funciono con tecnología de Claude Sonnet, un modelo creado por Anthropic para llevar a cabo tareas conversacionales y de procesamiento de texto. Claude Sonnet se aloja en los servidores de Brave mediante nuestra segura infraestructura.<ph name="LINK_BEFORE"/>Más información<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Es posible que falte algo de contexto en la conversación. Leo pudo retener <ph name="PERCENTAGE"/> del contenido asociado de la conversación.</translation>
 <translation id="8501106061098623831">Se capturaron demasiadas imágenes de la página. Leo pudo utilizar <ph name="PERCENTAGE"/> del contenido visual disponible.</translation>
 <translation id="4370698775470316661">Esta conversación es demasiado larga y no puede extenderse más. Es posible que haya disponibles otros modelos que permitan a Leo mantener conversaciones prolongadas sin perder eficacia.</translation>
-<translation id="5719170755629028558">Mejorando la respuesta con Búsqueda de Brave...</translation>
-<translation id="5794962229997281366">Se mejoraron los resultados de la búsqueda de respuestas para <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Buscar en la web</translation>
+<translation id="8548351747582087191">Buscar en la web: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> más…</translation>
 <translation id="8103700533980268469">Cerrar esta notificación</translation>
 <translation id="3417835166382867856">Buscar pestañas</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Quizás más tarde</translation>
 <translation id="983013125018250242">Herramientas de Leo</translation>
 <translation id="7623223587478473368">Adjunto</translation>
-<translation id="3777121685517940177">Subir archivo...</translation>
-<translation id="6739516910850820220">Subiendo archivo…</translation>
+<translation id="3728603231003977269">Adjuntar archivo...</translation>
+<translation id="7899721102369502629">Adjuntando archivo...</translation>
 <translation id="9088751620363630236">Tomar una foto...</translation>
 <translation id="4250229828105606438">Captura de pantalla</translation>
 <translation id="7949596341600215809">Captura de pantalla de página completa</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Pausado</translation>
 <translation id="4773299976671772492">Detenido</translation>
 <translation id="6946722113367118030">Pensando</translation>
+<translation id="7918928051723770926">Tarea completada</translation>
 <translation id="2113810663179257944">Ejecución de código</translation>
-<translation id="6338250692384725496">Se ejecutó código en el sandbox para ayudarte con tu consulta</translation>
+<translation id="4838375634693651776">Ejecutar código en un entorno aislado para ayudarte con tu consulta</translation>
 <translation id="4379566111233326721">Código:</translation>
 <translation id="3542130965673205258">Salida:</translation>
+<translation id="6911817209337314910">Generando algunas opciones para que elijas</translation>
 <translation id="5382076391290708074">Moviendo las pestañas</translation>
 <translation id="3862123464576147769">Permitir esto enviará la <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> y el <ph name="TITLE_FORMAT_START"/>Título<ph name="TITLE_FORMAT_END"/> de todas tus Pestañas y Grupos de Pestañas a Brave AI, y permitirá que Brave AI las mueva. Este permiso se aplica solo a esta conversación.</translation>
 <translation id="396165714586708444">Investigación profunda</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">Si eliminas <ph name="ALIAS"/> como alias perderás tu capacidad para recibir correos electrónicos.</translation>
 <translation id="8133100642915054515">Error al eliminar alias. Comprueba tu conexión a internet e inténtalo de nuevo.</translation>
 <translation id="8465742443901727718">Esta acción es irreversible. ¿Seguro que deseas continuar?</translation>
+<translation id="6402052536605772735">Se produjo un error al recuperar los alias de correo electrónico de nuestros servidores. Por favor, revisa tu conexión a Internet.</translation>
 <translation id="9162685486229945876">Inicia sesión o crea una cuenta de Brave</translation>
 <translation id="1335007417599138852">Una cuenta de Brave te permitirá acceder a ciertos productos de Brave y sincronizar fácilmente tu información en todos tus dispositivos.</translation>
 <translation id="2133391407495495735">Obtener enlace de inicio de sesión</translation>
@@ -2700,7 +2716,7 @@ Se han bloqueado <ph name="NUMBER"/> rastreadores, anuncios y otros elementos</t
 <translation id="4117637339509843559">Modo oscuro</translation>
 <translation id="6302485303316397682">¿Le gustaría obtener mejores resultados de búsqueda?</translation>
 <translation id="7014699001826714920">Únase al movimiento y sea parte activa de Búsqueda de Brave.</translation>
-<translation id="6821108091726602352">Participe en el proyecto "Web Discovery Project" de Brave para ayudarnos en nuestro afán de mejorar el índice de búsqueda y arreglar así internet. Solo necesitamos que comparta señales de búsqueda plenamente anonimizadas para hacer crecer el índice de búsqueda.</translation>
+<translation id="6821108091726602352">Ayúdanos a mejorar la web participando en el Web Discovery Project de Brave. Al compartir señales de búsqueda completamente anónimas, puedes ayudar a que Brave haga crecer su índice de búsqueda.</translation>
 <translation id="6764845498618413165">Obtenga más información.</translation>
 <translation id="7818938154803162778">Sí, quiero ayudar</translation>
 <translation id="7207456302801184289">Te damos la bienvenida a Brave</translation>
@@ -2853,7 +2869,10 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="6624553071240278643">Crea tu cuenta</translation>
 <translation id="6505120968393722022">No puedes usar direcciones @bravealias.com para crear cuentas de Brave. Inténtalo de nuevo con un dominio diferente.</translation>
 <translation id="8248460961680233459">Cree una contraseña</translation>
-<translation id="4917385247580444890">Fuerte</translation>
+<translation id="552339301062636488">Demasiado débil para seguir adelante</translation>
+<translation id="8433528931936107676">Cómo llegar</translation>
+<translation id="4324743471050874155">Lo suficientemente fuerte</translation>
+<translation id="5585552203448068294">Excepcionalmente resistente</translation>
 <translation id="5486261815000869482">Confirmar contraseña</translation>
 <translation id="7345706641791090287">Confirma tu contraseña</translation>
 <translation id="7114054701490058191">Las contraseñas no coinciden</translation>
@@ -2880,7 +2899,9 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="4582421696414628320">La verificación expiró. Comienza el proceso de registro nuevamente.</translation>
 <translation id="8439543211004394821">Se introdujeron demasiados códigos incorrectos. Comienza el proceso de registro nuevamente.</translation>
 <translation id="3229986152760633988">Código incorrecto, inténtalo de nuevo.</translation>
+<translation id="818783632689113711">Ya se ha solicitado una cuenta para esta dirección de correo electrónico. Por favor, revisa tu correo electrónico o vuelve a intentarlo en 30 minutos.</translation>
 <translation id="4178004989875422946">Una cuenta de Brave te permitirá acceder fácilmente a los servicios de Brave.</translation>
+<translation id="4902897635127068510">¿Quizás querías decir <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Bloq Mayús está activado</translation>
 <translation id="7044608453949401443">No se permiten espacios al principio o al final de la contraseña.</translation>
 <translation id="2939492377741553693">Correo de confirmación reenviado.</translation>
@@ -2891,4 +2912,5 @@ Puede revertir los cambios y volver a usar WireGuard en cualquier momento en bra
 <translation id="528205534230423181">Este sitio web ofrece configuraciones de privacidad que Brave puede ajustar automáticamente por ti. Esto es lo que recomendamos:</translation>
 <translation id="1063227610401477317">Aplicar cambios</translation>
 <translation id="5539769255716491933">Reportar pasos fallidos</translation>
+<translation id="7562163394445060270">No se pudo completar la tarea</translation>
 </translationbundle>

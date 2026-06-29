@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Kumukuha ng Mga Feed...</translation>
 <translation id="7461899062138731833">MGA SOURCE</translation>
 <translation id="6150420917380577651">Walang feed na natagpuan sa <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Ad</translation>
 <translation id="7823038307453615214">Ipakita ang Brave News</translation>
 <translation id="6527303717912515753">Ibahagi</translation>
 <translation id="1654539412343893324">Matuto pa tungkol sa iyong data</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">I-disable ang content mula sa <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870">Naka-disable ang <ph name="PUBLISHER"/></translation>
 <translation id="1276592121036104130">Mag-load ng bagong content</translation>
-<translation id="3189348785087463371">Na-promote</translation>
 <translation id="7554145152551782675">Higit pang Alok ng Brave</translation>
 <translation id="254100925533869330">Walang content</translation>
 <translation id="7172792761509429092">Walang content na ipapakita ang Brave News.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Payagan ang privacy-preserving product analytics (P3A)</translation>
 <translation id="5254037869598726291">Nakakatulong ang na-anonymize na impormasyon ng P3A sa Brave na matantya ang pangkalahatang paggamit, at matiyak na napapahusay namin ang mga kilalang feature</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Mag-ambag ng ilang anonymous na paghahanap at data mula sa pag-browse para pahusayin ang Brave Search.</translation>
+<translation id="8659271182272561965">Mag-ambag ng ilang anonymous na data sa paghahanap at pagba-browse upang pinuhin ang Brave Search.</translation>
 <translation id="933652931229970927">Kusang ipadala ang mga ulat ng diagnostic</translation>
 <translation id="5987838417172370108">Tulungang mapabuti ang estabilidad ng produkto ng Brave\u2019s sa pamamagitan ng kusang pagpapadala ng mga ulat ng diagnostic kapag nagkaproblema o tumigil ang Brave Browser.</translation>
 <translation id="7977176350719484850">Tinatantyang Natipid na\nData</translation>
@@ -198,7 +196,6 @@
 <translation id="8025937231644975408">Hayaan kaming malaman kung aling mga feature ang pinakagustong-gusto mo.</translation>
 <translation id="2888496576732880897">Tumulong na palaguin ang Brave Search</translation>
 <translation id="7198716519700700181">Blokhin ang mga interruption kapag nag-stream ka</translation>
-<translation id="7044431516245362795">Mag-opt in sa Web Discovery Project para makatulong sa pagpapalago sa index at mapahusay ang mga resulta ng paghahanap. <ph name="LEARN_MORE_START"/>Alamin ang higit pa.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logo</translation>
 <translation id="4767173360729868049">Help Brave Search illustration</translation>
 <translation id="8241918461631453498">Block interruptions illustration</translation>
@@ -439,6 +436,7 @@ Sigurado ka bang gusto mo itong gawin?</translation>
 <translation id="7961015016161918242">Hindi Kailanman</translation>
 <translation id="1991004083507807299">Site tab closed</translation>
 <translation id="5827277414420724690">App close</translation>
+<translation id="4279349293084858577">Sirain</translation>
 <translation id="1209739344687072997">Mag-ulat ng sirang site</translation>
 <translation id="8510478288840333677">Ipaalam sa mga developer ng Brave na hindi gumagana nang maayos sa Shields ang site na ito:</translation>
 <translation id="1653405824851871276">Salamat sa pagtulong na mas pagandahin ang Brave para sa lahat. Ang impormasyon lang na kailangan namin para ayusin ng site na ito ang makikita sa report na ito. <ph name="LEARN_MORE"/></translation>

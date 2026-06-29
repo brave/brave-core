@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Lähteet</translation>
 <translation id="5158129253322921540">Ota sisältö pois käytöstä julkaisijalta <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Promootio</translation>
-<translation id="4541978218358617681">Mainos</translation>
 <translation id="1776831331757823105">Kello</translation>
 <translation id="7791543448312431591">Lisää</translation>
 <translation id="6216996674668969227">Ansaitse tunnistevälineitä yksityisyyttä kunnioittavien mainosten katselusta.</translation>
@@ -737,8 +736,8 @@
 <translation id="8251969358165471584">Web3-lompakko</translation>
 <translation id="7160424977552599351">Käytä omaa Web3-lompakkoa</translation>
 <translation id="6369571967625114920">Yksityiset Brave-mainokset eivät ole saatavilla alueellasi.</translation>
-<translation id="5309155375926073606">Kyllä, haluan osallistua Brave-hakuun ja <ph name="LINK_BEGIN"/>Web Discovery Projectiin<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Anna nimettömänä haku- ja selaustietoja Brave Searchin kehittämiseksi Web Discovery Projectin avulla. Lähdekoodi on avoin.</translation>
+<translation id="5309155375926073606">Kyllä, haluan myös osallistua Brave-hakuun ja liittyä mukaan <ph name="LINK_BEGIN"/>Web Discovery Projectiin<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Osallistu jakamalla anonyymejä haku- ja selaustietoja Brave-haun parantamiseksi Web Discovery Projectin avulla. Se on täysin avoimen lähdekoodin.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Yhteisö</translation>
 <translation id="845020633253356720">Näytä kauppa</translation>
@@ -981,11 +980,11 @@
 <translation id="7080614857771109950">Tukee EVM-yhteensopivia omaisuuseriä Ethereum-lohkoketjussa (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Tukee SPL-yhteensopivia omaisuuseriä Solana-lohkoketjussa</translation>
 <translation id="4541295941776129088">Tallenna FIL-omaisuuserä</translation>
-<translation id="6030958132571544682">Säilytä FIL Testnetin varat</translation>
+<translation id="6030958132571544682">Säilytä FIL-testiverkon omaisuutta</translation>
 <translation id="29759539656432505">Tallenna BTC-varat</translation>
 <translation id="2399555431746923964">Säilytä BTC Testnetin varat</translation>
 <translation id="8749751940551938347">Tallenna ZEC-varat</translation>
-<translation id="3451958544919449297">Säilytä ZEC Testnetin varat</translation>
+<translation id="3451958544919449297">Säilytä ZEC-testiverkon omaisuutta</translation>
 <translation id="8459631690385393533">Säilytä Cardano-varoja</translation>
 <translation id="4915057812371523845">Säilytä Cardano Testnet -varoja</translation>
 <translation id="5387140102951033657">Tukee Substrate-omaisuuksia Polkadotin reititysketjussa ja Substrate-paraketjuissa</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Valittu tiedosto</translation>
 <translation id="5891811606602061966">Tilin tuonti epäonnistui. Yritä uudelleen.</translation>
 <translation id="6566535583781706170">Tuo tili</translation>
+<translation id="8079448455682522748">Kopioi yksityinen avain tilille, jonka haluat tuoda toisesta lompakosta.</translation>
+<translation id="8475326612689436917">Vie yksityinen avain toisesta lompakosta JSON-tiedostoon ja lataa se tähän.</translation>
+<translation id="5733063593286221597">Lataa JSON-tiedosto</translation>
 <translation id="5051929972046200722">Valitse lompakkosi laite</translation>
 <translation id="5745936663807461565">Liitä <ph name="HARDWARE_DEVICE"/> suoraan tietokoneeseesi.</translation>
 <translation id="4350216031085285578">Avaa laitteesi ja valitse <ph name="BLOCKCHAIN_NETWORK"/>-sovellus.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">HUOMAUTUS: Yksityinen avain täytyy tarjota hex-koodattuna JSON-tiedostona, joka sisältää yksityisen avaimen ja protokollatiedot. <ph name="LINK_START"/>Lue lisää<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">HUOM.: Vain muodon <ph name="FORMAT"/> laajennettuja avaimia tuetaan.</translation>
 <translation id="6457746820359933716">Tuo käyttämällä Polkadot.js-palvelusta tai yhteensopivista lompakoista viedtyä JSON-tiedostoa. Kirjoita salasana, jota käytettiin viennin salaamiseen.</translation>
-<translation id="9133762451347918196">Testnet-tilit</translation>
+<translation id="7285350832506166367">Etsitkö Testnet-tilejä?</translation>
 <translation id="42126664696688958">Vie</translation>
 <translation id="1366855498335432549">Talleta</translation>
+<translation id="3852653589653889099">Piilota tili</translation>
 <translation id="790104325876206743">Tilin asetukset</translation>
 <translation id="8856844353253421399">Viimeksi päivitetty <ph name="TIME_AGO"/> sitten</translation>
 <translation id="6322030314101903925">Ei käytettäviä varoja</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Tilin nimi</translation>
 <translation id="1213870770696612739">Vähimmäismäärä: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Enimmäismäärä: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Tilin luonti onnistui</translation>
+<translation id="7444985841455466546">Tilin tuonti onnistui</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Laitelompakkotili yhdistettiin onnistuneesti}
+      other {{ACCOUNTS} laitelompakkotiliä yhdistettiin onnistuneesti}
+    }</translation>
 <translation id="8528916244724490964">Kaikki verkot</translation>
 <translation id="7721139939763655123">Alhaisesta korkeaan</translation>
 <translation id="5458608274117818139">Korkeasta alhaiseen</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Ensisijaiset verkot</translation>
 <translation id="8323674164587854512">Ethereum + EVM -ketjut</translation>
 <translation id="1398414935371867469">Solana + SVM -ketjut</translation>
+<translation id="6498449512528552760">Virheellinen etuliite</translation>
 <translation id="7058248670699639973">Verkon logo</translation>
 <translation id="4378208228955237306">Näytä verkon logo NFT:issä</translation>
 <translation id="5472199803712163015">Roskapostin NFT:t</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Jos et löytänyt varojasi tästä luettelosta, voit lisätä ne manuaalisesti käyttämällä alla olevaa painiketta</translation>
 <translation id="4543171429371680949">Varoja ei löytynyt</translation>
 <translation id="1026825928738055872">Haluatko varmasti poistaa kohteen <ph name="ACCOUNT_NAME"/>?</translation>
-<translation id="3910551537328657217">Pyydä toimintoa</translation>
+<translation id="2220529011494928058">Ilmoita ongelmasta</translation>
 <translation id="7657322905916621147">Palautuslauseen on oltava 12, 15, 18, 21 tai 24 sanaa pitkä</translation>
 <translation id="5026874946691314267">Älä näytä tätä enää</translation>
 <translation id="434502623875309667">Osoitteen ratkaisu vaatii ketjun ulkopuolisia verkkopyyntöjä. Jatketaanko?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Vaihda näppäimistöselaamista</translation>
 <translation id="4186334830839439230">Näytä suorituskykyasetukset</translation>
 <translation id="1094277301241124207">Näytä kirjanmerkin sivupaneeli</translation>
+<translation id="5101042277149003567">Avaa kaikki kirjanmerkit</translation>
 <translation id="8283515796576236471">Kirjanmerkkipalkki - avaa kaikki uudessa ikkunassa</translation>
 <translation id="5271773791943587595">Kirjanmerkkipalkki - avaa kaikki yksityisessä ikkunassa</translation>
 <translation id="2748975346534113286">Kirjanmerkkipalkki - avaa kaikki uudessa välilehtiryhmässä</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Näytä sovellukset</translation>
 <translation id="3142853026316054951">Vaihda keskittymistilaa</translation>
 <translation id="3468387898712904997">Uusi sähköpostialias</translation>
+<translation id="2796584247246518451">Uusi väliaikainen säilö</translation>
 <translation id="8591883849678260674">Katso alkuperäinen</translation>
 <translation id="1969654232209826429">min. luku</translation>
 <translation id="4101707289420716287">Poista Speedreader käytöstä</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Llama 3.1 8B:hen, Metan luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Llama on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Qwen VL 30B:hen, Alibaba Cloudin luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. Qwen on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM-5:een, Zhipu AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM-5 on NEAR-hostattu heidän varmennetun yksityisen suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu GLM-5.1:een, Zhipu AI:n luomaan malliin, joka on suorituskykyinen ja soveltuu moniin käyttötarkoituksiin. GLM-5.1 on NEAR-hostattu heidän varmennetun yksityisen suojatun infrastruktuurinsa kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Hei, olen Leo. Olen Braven tekoälyavustaja. Käytän Claude Instant -mallia, jonka on kehittänyt Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Instant toimii Braven isännöimänä turvallisessa infrastruktuurissamme.<ph name="LINK_BEFORE"/>Lue lisää<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Haiku -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Haiku on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Hei, olen Leo. Olen Braven AI-avustaja. Toimintani perustuu Claude Sonnet -malliin, jonka on luonut Anthropic keskustelu- ja tekstinkäsittelytehtäviin. Claude Sonnet on Brave-hostattu oman suojatun infrastruktuurimme kautta.<ph name="LINK_BEFORE"/>Lisätietoja<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Keskustelusta saattaa puuttua jokin asiayhteys. Leo pystyi säilyttämään keskusteluun liittyvästä sisällöstä <ph name="PERCENTAGE"/>.</translation>
 <translation id="8501106061098623831">Sivulta kaapattiin liian monta kuvaa. Leo pystyi käyttämään <ph name="PERCENTAGE"/> käytettävissä olevasta visuaalisesta sisällöstä.</translation>
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
-<translation id="5719170755629028558">Vastauksia parannetaan Brave-haulla…</translation>
-<translation id="5794962229997281366">Haun <ph name="SEARCH_TERMS"/> paranneltu vastaus.</translation>
+<translation id="4744144453035015075">Haetaan verkosta</translation>
+<translation id="8548351747582087191">Haetaan verkosta hakusanoilla <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> muuta…</translation>
 <translation id="8103700533980268469">Sulje tämä ilmoitus</translation>
 <translation id="3417835166382867856">Etsi välilehdistä</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Ehkä myöhemmin</translation>
 <translation id="983013125018250242">Leo-työkalut</translation>
 <translation id="7623223587478473368">Liite</translation>
-<translation id="3777121685517940177">Lataa tiedosto...</translation>
-<translation id="6739516910850820220">Ladataan tiedostoa...</translation>
+<translation id="3728603231003977269">Liitä tiedosto...</translation>
+<translation id="7899721102369502629">Liitetään tiedostoa...</translation>
 <translation id="9088751620363630236">Ota kuva...</translation>
 <translation id="4250229828105606438">Kuvakaappaus</translation>
 <translation id="7949596341600215809">Koko sivun ruutukaappaus</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Tauko</translation>
 <translation id="4773299976671772492">Pysäytetty</translation>
 <translation id="6946722113367118030">Ajattelee</translation>
+<translation id="7918928051723770926">Tehtävä valmis</translation>
 <translation id="2113810663179257944">Koodin suoritus</translation>
-<translation id="6338250692384725496">Suoritettu koodi eristysympäristössä kyselysi auttamiseksi</translation>
+<translation id="4838375634693651776">Suoritetaan koodia sandboxissa kyselysi avuksi</translation>
 <translation id="4379566111233326721">Koodi:</translation>
 <translation id="3542130965673205258">Lähtö:</translation>
+<translation id="6911817209337314910">Luodaan sinulle vaihtoehtoja, joista valita</translation>
 <translation id="5382076391290708074">Välilehtiesi järjestäminen</translation>
 <translation id="3862123464576147769">Tämän salliminen lähettää <ph name="URL_FORMAT_START"/>URL-osoitteen<ph name="URL_FORMAT_END"/> ja <ph name="TITLE_FORMAT_START"/>otsikon<ph name="TITLE_FORMAT_END"/> kaikista välilehdistäsi ja välilehtien ryhmistä Brave AI:lle, ja se sallii Brave AI:lle niiden järjestämisen. Tämä oikeus koskee vain tätä keskustelua.</translation>
 <translation id="396165714586708444">Syvä tutkimus</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">Aliaksen <ph name="ALIAS"/> poistaminen johtaa siihen, ettet voi enää vastaanottaa sähköposteja.</translation>
 <translation id="8133100642915054515">Aliaksen poistamisessa tapahtui virhe. Tarkista internet-yhteys ja yritä uudelleen.</translation>
 <translation id="8465742443901727718">Tätä toimintoa ei voi peruuttaa. Haluatko varmasti jatkaa?</translation>
+<translation id="6402052536605772735">Virhe haettaessa sähköpostialiaksia palvelimiltamme. Tarkista internetyhteytesi.</translation>
 <translation id="9162685486229945876">Kirjaudu sisään tai luo Brave-tili</translation>
 <translation id="1335007417599138852">Brave-tili antaa sinulle pääsyn tiettyihin Brave-tuotteisiin ja sallii sinun synkronoida tietosi helposti kaikilla laitteillasi.</translation>
 <translation id="2133391407495495735">Hanki kirjautumislinkki</translation>
@@ -2700,7 +2716,7 @@
 <translation id="4117637339509843559">Tumma tila</translation>
 <translation id="6302485303316397682">Haluatko parempia hakutuloksia?</translation>
 <translation id="7014699001826714920">Liity liikkeeseen, osallistu Brave-hakuun.</translation>
-<translation id="6821108091726602352">Auta meitä korjaamaan verkkoa osallistumalla Braven  Web Discovery Project -projektiin. Jakamalla täysin anonyymit hakusignaalit voit auttaa Bravea kehittämään hakuindeksiä.</translation>
+<translation id="6821108091726602352">Auta meitä korjaamaan verkko osallistumalla Braven Web Discovery Projectiin. Jakamalla täysin anonyymejä hakusignaaleja voit auttaa Bravea kasvattamaan hakuindeksiä.</translation>
 <translation id="6764845498618413165">Lisätietoja.</translation>
 <translation id="7818938154803162778">OK, haluan osallistua</translation>
 <translation id="7207456302801184289">Tervetuloa Braveen</translation>
@@ -2853,7 +2869,10 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="6624553071240278643">Luo tilisi</translation>
 <translation id="6505120968393722022">Et voi käyttää @bravealias.com-osoitteita Brave-tilien luomiseen. Yritä uudelleen toisella verkkotunnuksella.</translation>
 <translation id="8248460961680233459">Luo salasana</translation>
-<translation id="4917385247580444890">Vahva</translation>
+<translation id="552339301062636488">Liian heikko jatkaaksesi</translation>
+<translation id="8433528931936107676">Lähestytään tavoitetta</translation>
+<translation id="4324743471050874155">Riittävän vahva</translation>
+<translation id="5585552203448068294">Poikkeuksellisen vahva</translation>
 <translation id="5486261815000869482">Vahvista salasana</translation>
 <translation id="7345706641791090287">Vahvista salasanasi</translation>
 <translation id="7114054701490058191">Salasanat eivät täsmää</translation>
@@ -2880,7 +2899,9 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="4582421696414628320">Vahvistus on vanhentunut. Aloita rekisteröintiprosessi uudelleen.</translation>
 <translation id="8439543211004394821">Liian monta virheellistä koodia syötettiin. Aloita rekisteröintiprosessi uudelleen.</translation>
 <translation id="3229986152760633988">Väärä koodi, yritä uudelleen.</translation>
+<translation id="818783632689113711">Tälle sähköpostiosoitteelle on jo pyydetty tiliä. Tarkista sähköpostisi tai yritä uudelleen 30 minuutin kuluttua.</translation>
 <translation id="4178004989875422946">Brave-tilin avulla voit käyttää helposti Brave-palveluita.</translation>
+<translation id="4902897635127068510">Tarkoititko <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock on päällä</translation>
 <translation id="7044608453949401443">Välilyönnit eivät ole sallittuja salasanan alussa tai lopussa.</translation>
 <translation id="2939492377741553693">Vahvistussähköposti lähetetty uudelleen.</translation>
@@ -2891,4 +2912,5 @@ Muodostetaan sinulle yhteys!</translation>
 <translation id="528205534230423181">Tämä verkkosivusto tarjoaa yksityisyysasetuksia, jotka Brave voi säätää automaattisesti puolestasi. Tässä on suosituksemme:</translation>
 <translation id="1063227610401477317">Ota muutokset käyttöön</translation>
 <translation id="5539769255716491933">Raportoi epäonnistuneet vaiheet</translation>
+<translation id="7562163394445060270">Tehtävän suorittaminen epäonnistui</translation>
 </translationbundle>

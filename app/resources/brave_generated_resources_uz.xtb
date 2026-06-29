@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Koʻproq</translation>
 <translation id="71316462802471551">Elektron pochta taxalluslari</translation>
+<translation id="209130971304928953">Tablarni ish maydoni sifatida saqlash…</translation>
+<translation id="877984331511007834">Ish maydonini ochish…</translation>
+<translation id="1310182651927031327">Yorliqlarni ish maydoni sifatida saqlash…</translation>
+<translation id="3588277741646479444">Ish maydonini ochish…</translation>
 <translation id="1990886731975529483">Google Widevine oʻrnatish va ishga tushirish</translation>
 <translation id="8926389886865778422">Boshqa soʻralmasin</translation>
 <translation id="4900351245762303149">Google Widevine oʻrnatish</translation>
@@ -69,7 +73,6 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="6313675821927505581">Tor yordamida yangi maxfiy oynani ochish</translation>
 <translation id="2638041073279639246">Havolani Tor bilan maxfiy oynada ochish</translation>
 <translation id="3425600262621021599">Havolani Brave maxfiy oynasida Tor orqali ochish</translation>
-<translation id="2545072023356206691">2023-yil 1-dekabrdan boshlab, Brave Dev kanali endi brauzer yangilanishlarini qabul qilmaydi. Foydalanuvchilarga Nightly, Beta yoki Release versiyalariga o'tishni tavsiya qilamiz.</translation>
 <translation id="474217410105706308">Varaqlarni ovozsizlantirish</translation>
 <translation id="2804710924397009224">Brave Mukofotlar Ikonasini yashirish</translation>
 <translation id="5029193871181468990">Brave Mukofotlar ikonasini yashirish</translation>
@@ -141,7 +144,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8748471354357836070">Batafsil / tanlovlarni bekor qilish</translation>
 <translation id="5927196110206824867">Homiylik qilingan fon tasvirlari Brave'ning mustaqil va foydalanuvchi ustuvor boʻlgan vebni yaratish yo‘lidagi maqsadini dastaklaydi. Yirik texnologik kompaniyalardan farqli oʻlaroq, biz reklama samaradorligini maxfiyligingizni saqlagan holda anonim tarzda oʻlchaymiz.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Qidiruv xizmatini yaxshilash uchun qidiruv va tashriflar haqidagi ayrim anonim maʼlumotlarni taqdim etish.</translation>
+<translation id="8659271182272561965">Brave Qidiruvni yaxshilash uchun anonim qidiruv &amp; kўrib chiqish ma'lumotlarining bir qismini ulashing.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">Yon panel belgisini yashirish</translation>
 <translation id="2613033293035359003">Yon panelni yashirish</translation>
@@ -204,6 +207,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8670218546624422041">Konteynerda oching</translation>
 <translation id="194205047181722473">Havolani konteynerda ochish</translation>
 <translation id="8638526693050780542">Konteynerlarni boshqarish</translation>
+<translation id="2796584247246518451">Yangi vaqtinchalik konteyner</translation>
 <translation id="2336228925368920074">Barcha Varaqlarni Bukmark qilish...</translation>
 <translation id="2523967823495420116">Vertikal Varaqalardan Foydalanish</translation>
 <translation id="5483718923712878759">Diqqat rejimi</translation>
@@ -217,6 +221,7 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="1987871867023021397">Konteynerda ochish</translation>
 <translation id="1185644444415356776">Havolani konteynerda ochish</translation>
 <translation id="6745991613881384719">Konteynerlarni boshqarish</translation>
+<translation id="8523788649219117880">Yangi vaqtinchalik konteyner</translation>
 <translation id="3704707436873245822">Matnni rasmadan nusxalash</translation>
 <translation id="5268098808165185458">Rasmdan matnni nusxalayapti...</translation>
 <translation id="4046485130884276245">Rasmdan matn nusxalandi</translation>
@@ -373,7 +378,8 @@ Yoki so'ng o'zgartirib qo'ying <ph name="SETTINGS_EXTENIONS_LINK"/>.</translatio
 <translation id="8076492880354921740">Varaqlar</translation>
 <translation id="8168435359814927499">Kontent</translation>
 <translation id="6017560037265964523">Konteynerlar</translation>
-<translation id="934893482320683588">Brauzeringizni konteynerlar bilan tartibga soling. <ph name="BEGIN_LINK"/>Batafsil <ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Konteynerlar — bu cookie-fayllar, kesh va sayt xotirasi kabi brauzer ma'lumotlaringizni alohida kontekstlarga ajratuvchi rangli brauzer yorliqlari. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Konteynerlarni yoqish</translation>
 <translation id="7773735778926921278">Yangi konteyner qo‘shish</translation>
 <translation id="8900907990448657776">Konteynerni tahrirlash</translation>
 <translation id="7900511996284443779">Konteynerni oʻchirish</translation>
@@ -807,6 +813,7 @@ Buni amalga oshirishni xohlaysizmi?</translation>
 <translation id="5226020406479918122">Yorliq Fokus Rejimi</translation>
 <translation id="3705539672403311123">Tab qidiruvi sahifasida yorliqlarni tartiblashni yoqing. Ochilganda, bu avtomatik ravishda barcha maxfiy bo'lmagan yorliqlarning sarlavhalari va kelib chiqishini ularni tasniflash uchun Leoga yuboradi. <ph name="BEGIN_LINK"/>Batafsil ma'lumot<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Varaqani fokusga olish uchun odatiy model</translation>
+<translation id="2161546758719933059">Yorliqlarni Yorliq fokus rejimida tartibga solish uchun foydalaniladigan model. <ph name="BEGIN_LINK"/>Batafsil<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Suhbatda tavsiya etilgan xabarlarni ko'rsatish</translation>
 <translation id="5781842473834867765">Suhbatlar tarixini saqlash</translation>
 <translation id="1082960401708055995">Suhbatni saqlashni oʻchirish oldindan saqlangan barcha suxbatlarni doimiy ravishda oʻchirishni ta'minlaydi. Bu amal qaytarib bo'lmaydi.</translation>

@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Източници</translation>
 <translation id="5158129253322921540">Деактивирайте съдържанието от <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Повишен</translation>
-<translation id="4541978218358617681">Реклама</translation>
 <translation id="1776831331757823105">Часовник</translation>
 <translation id="7791543448312431591">Добавяне</translation>
 <translation id="6216996674668969227">Спечелете токени при гледане на реклами, спазващи правилата за поверителност.</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3 портфейл</translation>
 <translation id="7160424977552599351">Използвайте Вашия Web3 портфейл</translation>
 <translation id="6369571967625114920">Brave Private Ads не са достъпни за Вашия регион.</translation>
-<translation id="5309155375926073606">Да, бих искал да допринеса към Brave Търсене и да се включа към <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Помогнете с анонимни данни от търсения и сърфиране, за да се усъвършенства Brave търсенето с проекта Web Discovery. Всичко това е с изцяло отворен код.</translation>
-<translation id="4174337572777167894">Проект за откриване в уеб</translation>
+<translation id="5309155375926073606">Да, бих искал също да допринеса за Brave търсене и да се включа в <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Допринесете с някои анонимни данни за търсене и сърфиране, за да подобрите Brave търсене с Web Discovery Project. Той е изцяло с отворен код.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Общност</translation>
 <translation id="845020633253356720">Вижте магазина</translation>
 <translation id="7777123407058400802">Ваучер за базисно внимание - ВБВ</translation>
@@ -981,11 +980,11 @@
 <translation id="7080614857771109950">Поддържа съвместими активи с EVM в блокчейна на Ethereum (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Поддържа съвместими активи с SPL в блокчейна на Solana</translation>
 <translation id="4541295941776129088">Съхраняване на активи на FIL</translation>
-<translation id="6030958132571544682">Актив на FIL Testnet магазин</translation>
+<translation id="6030958132571544682">Съхранявайте FIL Testnet актив</translation>
 <translation id="29759539656432505">Съхранение на активи BTC</translation>
 <translation id="2399555431746923964">Активи на BTC Testnet магазин</translation>
 <translation id="8749751940551938347">Съхранение на ZEC активи</translation>
-<translation id="3451958544919449297">Активи на ZEC Testnet магазин</translation>
+<translation id="3451958544919449297">Съхранявайте ZEC Testnet активи</translation>
 <translation id="8459631690385393533">Съхранение на активи в Cardano</translation>
 <translation id="4915057812371523845">Съхранение на активи в Cardano Testnet</translation>
 <translation id="5387140102951033657">Поддържа активи на Substrate в релейната верига на Polkadot и Substrate паравериги</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Избран файл</translation>
 <translation id="5891811606602061966">Неуспешно импортиране на акаунта, опитайте отново.</translation>
 <translation id="6566535583781706170">Импортиране на сметка</translation>
+<translation id="8079448455682522748">Копирайте частния ключ за акаунта, който искате да импортирате от друг портфейл.</translation>
+<translation id="8475326612689436917">Експортирайте частния ключ от друг портфейл в JSON файл и го качете тук.</translation>
+<translation id="5733063593286221597">Качване на JSON файл</translation>
 <translation id="5051929972046200722">Избиране на устройство с хардуерен портфейл</translation>
 <translation id="5745936663807461565">Свържете портфейла си в <ph name="HARDWARE_DEVICE"/> директно с компютъра си.</translation>
 <translation id="4350216031085285578">Отключете устройството си и изберете приложението<ph name="BLOCKCHAIN_NETWORK"/>.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">ЗАБЕЛЕЖКА: Частният ключ трябва да бъде предоставен като шестнадесетично кодиран JSON, който съдържа информация за частния ключ и протокола. <ph name="LINK_START"/>Научете повече<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ЗАБЕЛЕЖКА: Поддържат се само <ph name="FORMAT"/> разширени ключове.</translation>
 <translation id="6457746820359933716">Импортирайте с помощта на JSON файл, експортиран от Polkadot.js или съвместими портфейли. Въведете паролата, използвана за криптиране на експорта.</translation>
-<translation id="9133762451347918196">Акаунти за тестовата мрежа</translation>
+<translation id="7285350832506166367">Търсите ли тестови акаунти?</translation>
 <translation id="42126664696688958">Експортиране</translation>
 <translation id="1366855498335432549">Депозиране</translation>
+<translation id="3852653589653889099">Скриване на акаунта</translation>
 <translation id="790104325876206743">Настройки на акаунт</translation>
 <translation id="8856844353253421399">Последно актуализиране: <ph name="TIME_AGO"/> преди</translation>
 <translation id="6322030314101903925">Няма налични активи</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Име на акаунта</translation>
 <translation id="1213870770696612739">Минимална сума: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Максимална сума: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Акаунтът е създаден успешно</translation>
+<translation id="7444985841455466546">Акаунтът е импортиран успешно</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Акаунтът на хардуерния портфейл е свързан успешно}
+      other {{ACCOUNTS} акаунта на хардуерния портфейл са свързани успешно}
+    }</translation>
 <translation id="8528916244724490964">Всички мрежи</translation>
 <translation id="7721139939763655123">Ниско към високо</translation>
 <translation id="5458608274117818139">високо към ниско</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Първични мрежи</translation>
 <translation id="8323674164587854512">Ethereum + EVM вериги</translation>
 <translation id="1398414935371867469">Вериги Solana + SVM</translation>
+<translation id="6498449512528552760">Невалиден префикс</translation>
 <translation id="7058248670699639973">Лого на мрежата</translation>
 <translation id="4378208228955237306">Показване на логото на мрежата на NFT</translation>
 <translation id="5472199803712163015">NFT със спам</translation>
@@ -1643,7 +1653,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="1353726744456297797">Ако не сте намерили своя актив в този списък, можете да го добавите ръчно, като използвате бутона по-долу</translation>
 <translation id="4543171429371680949">Активът не е намерен</translation>
 <translation id="1026825928738055872">Наистина ли искате да премахнете „<ph name="ACCOUNT_NAME"/>“?</translation>
-<translation id="3910551537328657217">Заявяване на функция</translation>
+<translation id="2220529011494928058">Докладване на проблем</translation>
 <translation id="7657322905916621147">Фразата за възстановяване трябва да съдържа 12, 15, 18, 21 или 24 думи</translation>
 <translation id="5026874946691314267">Не показвайте това отново</translation>
 <translation id="434502623875309667">Разделителната способност за адреси изисква мрежови заявки извън веригата. Продължавате ли?</translation>
@@ -2074,6 +2084,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7294510764127771956">Превключване на Caret browsing</translation>
 <translation id="4186334830839439230">Показване на настройките за производителност</translation>
 <translation id="1094277301241124207">Показване на страничния панел с отметките</translation>
+<translation id="5101042277149003567">Отваряне на всички отметки</translation>
 <translation id="8283515796576236471">Отваряне на всички от лентата за отметки в нов прозорец</translation>
 <translation id="5271773791943587595">Отваряне на всички от лентата за отметки в прозорец в режим „инкогнито“</translation>
 <translation id="2748975346534113286">Отваряне на всички от лентата за отметки в нова група раздели</translation>
@@ -2160,6 +2171,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2367972762794486313">Показване на приложенията</translation>
 <translation id="3142853026316054951">Превключване на режима на фокус</translation>
 <translation id="3468387898712904997">Нов имейл псевдоним</translation>
+<translation id="2796584247246518451">Нов временен контейнер</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
 <translation id="4101707289420716287">Изключване на Speedreader</translation>
@@ -2229,6 +2241,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="1238020084128916796">Здравей, аз съм Лио, асистентът на Brave, поддържан изцяло с изкуствен интелект. Задвижен съм от Llama 3.1 8B - модел, създаден от Meta, с цел ефективност и широко приложение. Llama се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижван съм от Qwen VL 30B – модел, създаден от Alibaba Cloud с цел ефективност и широк обхват. Qwen се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-5 – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-5 се хоства от NEAR чрез тяхна проверимо защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Здравей, аз съм Лио, асистентът на Brave с изкуствен интелект. Задвижен съм от GLM-5.1 – модел, създаден от Zhipu AI с цел ефективност и широк обхват. GLM-5.1 се хоства от NEAR чрез тяхна проверимо защитена инфраструктура.<ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Здравей, аз съм Leo. Аз съм AI асистент на Brave. Захранвам се от Claude Instant — модел, създаден от Anthropic за водене на диалог и обработка на текст. Claude Instant се хоства от Brave чрез нашата собствена защитена инфраструктура.<ph name="LINK_BEFORE"/>Научете повече<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Haiku – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Haiku се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Здравей, аз съм Лио. Проксиран съм от Brave и съм задвижван от Claude Sonnet – модел, създаден от Anthropic с цел да захранва разговорни задачи и задачи за обработка на текст. Claude Sonnet се хоства от Brave чрез нашата собствена защитена инфраструктура. <ph name="LINK_BEFORE"/>Научи повече<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4592293425457329338">Възможно е от разговора да липсва някакъв контекст. Лио успя да запази <ph name="PERCENTAGE"/> от свързаното с разговора съдържание.</translation>
 <translation id="8501106061098623831">От страницата са заснети прекалено много изображения. Leo успя да използва <ph name="PERCENTAGE"/> от наличното визуално съдържание.</translation>
 <translation id="4370698775470316661">Този разговор е твърде дълъг и не може да продължи. Възможно е да има и други модели, с които Leo да може да поддържа точност при по-дълги разговори.</translation>
-<translation id="5719170755629028558">Подобряване на вашия отговор с Brave Search…</translation>
-<translation id="5794962229997281366">Подобрено търсене на отговори за<ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Търсене в мрежата</translation>
+<translation id="8548351747582087191">Търсене в мрежата за <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949">Още <ph name="COUNT"/>…</translation>
 <translation id="8103700533980268469">Затваряне на това известие</translation>
 <translation id="3417835166382867856">Раздели за търсене</translation>
@@ -2418,8 +2431,8 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2370739752330685659">Може би по-късно</translation>
 <translation id="983013125018250242">Инструменти на Leo</translation>
 <translation id="7623223587478473368">Прикачен файл</translation>
-<translation id="3777121685517940177">Качване на файл...</translation>
-<translation id="6739516910850820220">Качване на файл...</translation>
+<translation id="3728603231003977269">Прикачване на файл...</translation>
+<translation id="7899721102369502629">Прикачване на файл...</translation>
 <translation id="9088751620363630236">Направи снимка...</translation>
 <translation id="4250229828105606438">Снимка на екрана</translation>
 <translation id="7949596341600215809">Скрийншот на цялата страница</translation>
@@ -2467,10 +2480,12 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7607002721634913082">Пауза</translation>
 <translation id="4773299976671772492">Спряно</translation>
 <translation id="6946722113367118030">Мисли</translation>
+<translation id="7918928051723770926">Задачата е завършена</translation>
 <translation id="2113810663179257944">Изпълнение на код</translation>
-<translation id="6338250692384725496">Изпълнение на код в пясъчница, за да помогна с вашата заявка</translation>
+<translation id="4838375634693651776">Изпълнение на код в пясъчница, за да помогна с вашата заявка</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Изход:</translation>
+<translation id="6911817209337314910">Генериране на няколко опции, от които да изберете</translation>
 <translation id="5382076391290708074">Преместване на раздели</translation>
 <translation id="3862123464576147769">Позволяването на това ще изпрати <ph name="URL_FORMAT_START"/>URL адреса<ph name="URL_FORMAT_END"/> и <ph name="TITLE_FORMAT_START"/>заглавието<ph name="TITLE_FORMAT_END"/> на всички ваши раздели и групи раздели към Brave AI и ще позволи на Brave AI да ги преместит. Това разрешение се отнася само за този разговор.</translation>
 <translation id="396165714586708444">Дълбокото търсене</translation>
@@ -2521,6 +2536,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="646524615209870492">Ако премахнеш <ph name="ALIAS"/> като псевдоним, няма да можеш да получаваш имейли.</translation>
 <translation id="8133100642915054515">Грешка при изтриването на псевдонима. Провери връзката си с интернет и опитай отново.</translation>
 <translation id="8465742443901727718">Това действие е необратимо. Наистина ли искаш продължиш?</translation>
+<translation id="6402052536605772735">Грешка при извличане на имейл псевдонимите от нашите сървъри. Моля, проверете интернет връзката си.</translation>
 <translation id="9162685486229945876">Влез или си направи Brave акаунт</translation>
 <translation id="1335007417599138852">Brave акаунтът ще ви позволи да имате достъп до определени Brave продукти и лесно да синхронизирате информацията си на всички ваши устройства.</translation>
 <translation id="2133391407495495735">Вземи линк за влизане</translation>
@@ -2700,7 +2716,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="4117637339509843559">Тъмен режим</translation>
 <translation id="6302485303316397682">Искате ли по-добри резултати при търсене?</translation>
 <translation id="7014699001826714920">Присъединете се към движението, допринесете за Brave Search.</translation>
-<translation id="6821108091726602352">Помогнете ни да подобрим мрежата, като участвате в Web Discovery Project на Brave. Споделяйки напълно анонимни сигнали от търсения, можете да помогнете на Brave да повиши индекса за търсене.</translation>
+<translation id="6821108091726602352">Помогнете ни да поправим уеб пространството, като участвате в проекта Web Discovery Project на Brave. Чрез споделяне на напълно анонимни сигнали за търсене можете да помогнете на Brave да разшири индекса за търсене.</translation>
 <translation id="6764845498618413165">Научете повече.</translation>
 <translation id="7818938154803162778">Разбира се, ще помогна</translation>
 <translation id="7207456302801184289">Добре дошли в Brave</translation>
@@ -2853,7 +2869,10 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="6624553071240278643">Създайте своя акаунт</translation>
 <translation id="6505120968393722022">Не можете да използвате адреси @bravealias.com за създаване на акаунти в Brave. Моля, опитайте отново с друг домейн.</translation>
 <translation id="8248460961680233459">Създаване на парола</translation>
-<translation id="4917385247580444890">Силен</translation>
+<translation id="552339301062636488">Твърде слаба, за да продължите</translation>
+<translation id="8433528931936107676">Почти стигнахте</translation>
+<translation id="4324743471050874155">Достатъчно силна</translation>
+<translation id="5585552203448068294">Изключително силна</translation>
 <translation id="5486261815000869482">Потвърждение на паролата</translation>
 <translation id="7345706641791090287">Потвърдете паролата си</translation>
 <translation id="7114054701490058191">Паролите не съвпадат</translation>
@@ -2880,7 +2899,9 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="4582421696414628320">Потвърждението изтече. Започнете процеса на регистрация отново.</translation>
 <translation id="8439543211004394821">Въведени са твърде много неправилни кодове. Започнете процеса на регистрация отново.</translation>
 <translation id="3229986152760633988">Грешен код, моля, опитайте отново.</translation>
+<translation id="818783632689113711">Вече е заявен акаунт за този имейл адрес. Моля, проверете имейла си или опитайте отново след 30 минути.</translation>
 <translation id="4178004989875422946">Акаунтът в Brave ще ви позволи лесно да достъпвате услугите на Brave.</translation>
+<translation id="4902897635127068510">Имахте ли предвид <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock е включен</translation>
 <translation id="7044608453949401443">Не са разрешени интервали в началото или края на паролата.</translation>
 <translation id="2939492377741553693">Имейлът за потвърждение е изпратен повторно.</translation>
@@ -2891,4 +2912,5 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="528205534230423181">Този уебсайт предлага настройки за поверителност, които Brave може автоматично да коригира за вас. Ето какво препоръчваме:</translation>
 <translation id="1063227610401477317">Приложете промените</translation>
 <translation id="5539769255716491933">Докладване на неуспешни стъпки</translation>
+<translation id="7562163394445060270">Завършването на задачата е неуспешно</translation>
 </translationbundle>

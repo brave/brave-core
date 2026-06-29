@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Pomoćnik Leo potpomognut umjetnom inteligencijom (AI)</translation>
 <translation id="8275068909952022340">Više…</translation>
 <translation id="71316462802471551">E-mail aliasi</translation>
+<translation id="209130971304928953">Sačuvaj kartice kao radni prostor…</translation>
+<translation id="877984331511007834">Otvori radni prostor…</translation>
+<translation id="1310182651927031327">Sačuvaj kartice kao radni prostor…</translation>
+<translation id="3588277741646479444">Otvori radni prostor…</translation>
 <translation id="1990886731975529483">Instaliraj i pokreni Google Widevine</translation>
 <translation id="8926389886865778422">Više me ne pitaj</translation>
 <translation id="4900351245762303149">Instaliraj Google Widevine</translation>
@@ -140,7 +144,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8748471354357836070">Doznajte više / mogućnosti odjave</translation>
 <translation id="5927196110206824867">Sponzorirane pozadine podržavaju Braveovu misiju da izgradi nezavisni internet koji je prvenstveno usmjeren na korisnike. I za razliku od velikih tehnoloških korporacija mi anonimno mjerimo performanse oglasa kako bismo sačuvali vašu privatnost.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Doprinesite podatke pregledavanja &amp; anonimnih pretraživanja radi poboljšanja pretraživanja preglednika Brave.</translation>
+<translation id="8659271182272561965">Doprinesite s nešto anonimnih podataka o pretrazi i pregledanju kako biste poboljšali Brave Search.</translation>
 <translation id="1516554614404600536">Opis elementa preglednika Brave</translation>
 <translation id="4375473250631001683">Ikona za skrivanje bočne trake</translation>
 <translation id="2613033293035359003">Sakrij bočnu traku</translation>
@@ -203,6 +207,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8670218546624422041">Otvori u kontejneru</translation>
 <translation id="194205047181722473">Otvori poveznicu u spremniku</translation>
 <translation id="8638526693050780542">Upravljaj kontejnerima</translation>
+<translation id="2796584247246518451">Novi privremeni kontejner</translation>
 <translation id="2336228925368920074">Označi sve kartice...</translation>
 <translation id="2523967823495420116">Upotrijebi okomite kartice</translation>
 <translation id="5483718923712878759">Način fokusa</translation>
@@ -216,6 +221,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="1987871867023021397">Otvori u Kontejneru</translation>
 <translation id="1185644444415356776">Otvori poveznicu u spremniku</translation>
 <translation id="6745991613881384719">Upravljaj Kontejnerima</translation>
+<translation id="8523788649219117880">Novi Privremeni Kontejner</translation>
 <translation id="3704707436873245822">Kopiraj tekst sa slike</translation>
 <translation id="5268098808165185458">Kopiranje teksta sa slike...</translation>
 <translation id="4046485130884276245">Tekst kopiran sa slike</translation>
@@ -372,7 +378,8 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="8076492880354921740">Kartice</translation>
 <translation id="8168435359814927499">Sadržaj</translation>
 <translation id="6017560037265964523">Kontejneri</translation>
-<translation id="3718176486689879621">Organizirajte pregledavanje interneta po kontejnerima. <ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Kontejneri su browser kartice označene bojama koje izoliraju vaše podatke o pregledanju, poput cookieja, cachea i storagea sajta, u zasebne kontekste. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Omogući Kontejnere</translation>
 <translation id="7773735778926921278">Dodaj novi kontejner</translation>
 <translation id="8900907990448657776">Uredi kontejner</translation>
 <translation id="7900511996284443779">Izbriši kontejner</translation>
@@ -806,6 +813,7 @@ Ili promijenite kasnije putem <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation
 <translation id="5226020406479918122">Način rada Fokus kartice</translation>
 <translation id="3705539672403311123">Omogućite organizaciju kartica na stranici Pretraživanje kartica. Kad je otvorena, ova funkcionalnost automatski šalje naslove i izvor svih ne-privatnih kartica Leu kako bi ih razvrstao. <ph name="BEGIN_LINK"/>Doznajte više<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Zadani model za tab fokus</translation>
+<translation id="2161546758719933059">Model koji se koristi za organiziranje vaših kartica u Tab Focus Modeu. <ph name="BEGIN_LINK"/>Saznajte više<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Prikaži predložene upite u razgovoru</translation>
 <translation id="5781842473834867765">Spremi povijest mog razgovora</translation>
 <translation id="1082960401708055995">Ako isključite spremanje razgovora trajno će se izbrisati svi prethodno spremljeni razgovori. Ova se radnja ne može opozvati.</translation>

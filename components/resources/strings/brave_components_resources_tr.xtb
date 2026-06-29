@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Kaynaklar</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/>'den içeriği devre dışı bırakın</translation>
 <translation id="3189348785087463371">Tanıtılan</translation>
-<translation id="4541978218358617681">Reklam</translation>
 <translation id="1776831331757823105">Saat</translation>
 <translation id="7791543448312431591">Ekle</translation>
 <translation id="6216996674668969227">Gizliliğe saygılı reklamları izleyerek token kazanın.</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3 Cüzdanı</translation>
 <translation id="7160424977552599351">Web3 cüzdanınızı kullanın</translation>
 <translation id="6369571967625114920">Brave Özel Reklamlar bölgenizde henüz kullanılamıyor.</translation>
-<translation id="5309155375926073606">Evet, Brave Arama'ya da katkıda bulunmak ve <ph name="LINK_BEGIN"/>Web Keşif Projesi<ph name="LINK_END"/>'ne katılmak istiyorum.</translation>
-<translation id="4622826307953794521">Web Discovery Project ile anonim arama ve gezinme verilerinizi paylaşarak Brave Arama'yı geliştirmemize yardımcı olun. Proje tamamen açık kaynaklıdır.</translation>
-<translation id="4174337572777167894">Web Keşif Projesi</translation>
+<translation id="5309155375926073606">Evet, ayrıca Brave Arama'ya katkıda bulunmak ve <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>'e dahil olmak istiyorum.</translation>
+<translation id="4622826307953794521">Web Discovery Project ile Brave Arama'yı iyileştirmek için bazı anonim arama ve gezinme verilerine katkıda bulunun. Tamamen açık kaynaklıdır.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Topluluk</translation>
 <translation id="845020633253356720">Mağazayı Görüntüle</translation>
 <translation id="7777123407058400802">Temel İlgi Tokeni – BAT</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Seçilen dosya</translation>
 <translation id="5891811606602061966">Hesabın içe aktarımı başarısız oldu, lütfen tekrar deneyin.</translation>
 <translation id="6566535583781706170">Hesabı içe aktarın</translation>
+<translation id="8079448455682522748">Başka bir cüzdandan içe aktarmak istediğiniz hesabın özel anahtarını kopyalayın.</translation>
+<translation id="8475326612689436917">Özel anahtarı başka bir cüzdandan bir JSON dosyasına aktarın ve buraya yükleyin.</translation>
+<translation id="5733063593286221597">JSON dosyasını yükle</translation>
 <translation id="5051929972046200722">Donanım cüzdanı cihazınızı seçin</translation>
 <translation id="5745936663807461565"><ph name="HARDWARE_DEVICE"/> cüzdanınızı doğrudan bilgisayarınıza bağlayın.</translation>
 <translation id="4350216031085285578">Cihazınızın kilidini açın ve <ph name="BLOCKCHAIN_NETWORK"/> uygulamasını seçin.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">NOT: Özel anahtar, özel anahtar ve protokol bilgisini içeren onaltılık kodlanmış bir JSON olarak sağlanmalıdır. <ph name="LINK_START"/>Daha fazlasını öğrenin<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">NOT: Sadece <ph name="FORMAT"/> genişletilmiş anahtarlar desteklenmektedir.</translation>
 <translation id="6457746820359933716">Polkadot.js veya uyumlu cüzdanlardan dışa aktarılan bir JSON dosyasını kullanarak içe aktarın. Dışa aktarmayı şifrelemek için kullanılan parolayı girin.</translation>
-<translation id="9133762451347918196">Testnet hesapları</translation>
+<translation id="7285350832506166367">Testnet hesapları mı arıyorsunuz?</translation>
 <translation id="42126664696688958">Dışarı Aktar</translation>
 <translation id="1366855498335432549">Para Yatır</translation>
+<translation id="3852653589653889099">Hesabı gizle</translation>
 <translation id="790104325876206743">Hesap ayarları</translation>
 <translation id="8856844353253421399">Son güncelleme: <ph name="TIME_AGO"/> önce</translation>
 <translation id="6322030314101903925">Kullanılabilir varlık yok</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Hesap adı</translation>
 <translation id="1213870770696612739">Minimum miktar: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Maksimum miktar: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Hesap başarıyla oluşturuldu</translation>
+<translation id="7444985841455466546">Hesap başarıyla içe aktarıldı</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Donanım cüzdanı hesabı başarıyla bağlandı}
+      other {{ACCOUNTS} donanım cüzdanı hesapları başarıyla bağlandı}
+    }</translation>
 <translation id="8528916244724490964">Tüm Ağlar</translation>
 <translation id="7721139939763655123">Düşükten Yükseğe</translation>
 <translation id="5458608274117818139">Yüksekten Düşüğe</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Birincil ağlar</translation>
 <translation id="8323674164587854512">Ethereum + EVM Zincirleri</translation>
 <translation id="1398414935371867469">Solana + SVM Zincirleri</translation>
+<translation id="6498449512528552760">Geçersiz önek</translation>
 <translation id="7058248670699639973">Ağ Logosu</translation>
 <translation id="4378208228955237306">NFT'lerde ağ logosunu göster</translation>
 <translation id="5472199803712163015">Spam NFT'leri</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Varlığınızı bu listede bulamadıysanız aşağıdaki butonu kullanarak manuel şekilde ekleyebilirsiniz</translation>
 <translation id="4543171429371680949">Varlık bulunamadı</translation>
 <translation id="1026825928738055872">"<ph name="ACCOUNT_NAME"/>" öğesini kaldırmak istediğinizden emin misiniz?</translation>
-<translation id="3910551537328657217">Özellik iste</translation>
+<translation id="2220529011494928058">Bir sorunu bildir</translation>
 <translation id="7657322905916621147">Kurtarma cümlesi 12, 15, 18, 21 veya 24 kelime uzunluğunda olmalıdır</translation>
 <translation id="5026874946691314267">Bunu tekrar gösterme</translation>
 <translation id="434502623875309667">Adres çözümleme offchain ağ taleplerini gerektiriyor. Devam edilsin mi?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">İmleçle gezinme aç/kapat</translation>
 <translation id="4186334830839439230">Performans ayarlarını göster</translation>
 <translation id="1094277301241124207">Yer işareti yan panelini göster</translation>
+<translation id="5101042277149003567">Tüm yer imlerini aç</translation>
 <translation id="8283515796576236471">Yer işareti çubuğu, tümünü yeni pencerede aç</translation>
 <translation id="5271773791943587595">Yer işareti çubuğu, tümünü gizli pencerede aç</translation>
 <translation id="2748975346534113286">Yer işareti çubuğu, tümünü yeni sekme grubunda aç</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Uygulamaları göster</translation>
 <translation id="3142853026316054951">Odak modunu aç/kapat</translation>
 <translation id="3468387898712904997">Yeni e-posta takma adı</translation>
+<translation id="2796584247246518451">Yeni geçici konteyner</translation>
 <translation id="8591883849678260674">Orijinal sayfayı görüntüleyin</translation>
 <translation id="1969654232209826429">dk. okundu</translation>
 <translation id="4101707289420716287">Speedreader'ı kapat</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Meta tarafından birçok alanda yüksek performans göstermesi ve uygulanabilir olması için geliştirilen Llama 3.1 8B modeliyle çalışıyorum. Llama, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Alibaba Cloud tarafından birçok kullanım durumuna uygun olacak şekilde tasarlanmış Qwen VL 30B modeliyle çalışıyorum. Qwen, Brave tarafından kendi güvenli altyapımızda barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Merhaba, ben Leo. Brave tarafından geliştirilen bir yapay zeka asistanıyım. Zhipu AI tarafından birçok kullanım durumuna uygun olarak oluşturulan GLM-5 modeliyle çalışıyorum. GLM-5, kendi doğrulanabilir özel güvenli altyapıları aracılığıyla NEAR tarafından barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Merhaba, ben Leo. Brave tarafından geliştirilmiş bir yapay zeka asistanıyım. Zhipu AI tarafından yüksek performans sunmak ve birçok kullanım senaryosuna uyarlanabilmek üzere tasarlanan GLM-5.1 modeli ile çalışıyorum. GLM-5.1, NEAR tarafından kendi doğrulanabilir, gizlilik ve güvenlik özelliklerine sahip altyapısı üzerinden barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi için<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Merhaba, ben Leo. Brave tarafından geliştirilen bir Yapay Zeka asistanıyım. Konuşma ve metin işleme görevleri için Anthropic tarafından eğitilen Claude Instant modeliyle çalışıyorum. Claude Instant modeli, güvenli altyapımız sayesinde Brave tarafından barındırılır.<ph name="LINK_BEFORE"/>Daha fazla bilgi edinin<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Haiku modeliyle çalışıyorum. Claude Haiku, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Merhaba, ben Leo. Brave tarafından tamamen yerel olarak barındırılan bir yapay zeka asistanıyım. Anthropic'in sohbet ve metin işleme görevleri için geliştirdiği Claude Sonnet modeliyle çalışıyorum. Claude Sonnet, Brave'in kendi güvenli altyapısı üzerinde barındırılmaktadır.<ph name="LINK_BEFORE"/>Daha fazla bilgi<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Konuşmanın bazı kısımları eksik olabilir. Leo, konuşmayla ilişkili içeriğin <ph name="PERCENTAGE"/> kadarını koruyabildi.</translation>
 <translation id="8501106061098623831">Sayfadan çok fazla görsel alındı. Leo, mevcut görsel içeriği <ph name="PERCENTAGE"/> oranında kullanabildi.</translation>
 <translation id="4370698775470316661">Bu konuşma çok uzun ve devam edemiyor. Leo'nun daha uzun konuşmalarda tutarlılığı sürdürebileceği başka modeller mevcut olabilir.</translation>
-<translation id="5719170755629028558">Brave Search ile yanıtınız geliştiriliyor...</translation>
-<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/> araması için gelişmiş yanıt.</translation>
+<translation id="4744144453035015075">İnternette arama yapmak</translation>
+<translation id="8548351747582087191">İnternette <ph name="SEARCH_TERMS"/> adreslerini aratmak.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> daha fazla…</translation>
 <translation id="8103700533980268469">Bu bildirimi kapatın</translation>
 <translation id="3417835166382867856">Sekmelerde Ara</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Belki daha sonra</translation>
 <translation id="983013125018250242">Leo araçları</translation>
 <translation id="7623223587478473368">Ekler</translation>
-<translation id="3777121685517940177">Dosya yükle...</translation>
-<translation id="6739516910850820220">Dosya yükleniyor...</translation>
+<translation id="3728603231003977269">Dosyayı ekle...</translation>
+<translation id="7899721102369502629">Dosya ekleniyor...</translation>
 <translation id="9088751620363630236">Bir fotoğraf çek...</translation>
 <translation id="4250229828105606438">Ekran görüntüsü</translation>
 <translation id="7949596341600215809">Tam sayfa ekran görüntüsü</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Duraklatıldı</translation>
 <translation id="4773299976671772492">Durduruldu</translation>
 <translation id="6946722113367118030">Düşünüyor</translation>
+<translation id="7918928051723770926">Görev tamamlandı</translation>
 <translation id="2113810663179257944">Kod Yürütme</translation>
-<translation id="6338250692384725496">Sorununuza yardımcı olması için korumalı alanda kod yürütüldü</translation>
+<translation id="4838375634693651776">Sorunuzu çözmenize yardımcı olmak için sanal ortamda kod çalıştırma</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Çıkış:</translation>
+<translation id="6911817209337314910">Seçim yapabilmeniz için size birkaç seçenek sunmak</translation>
 <translation id="5382076391290708074">Sekme yönetiminizi hareket ettiriyor</translation>
 <translation id="3862123464576147769">Buna izin vermek, tüm sekme ve sekme gruplarınızın <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> ve <ph name="TITLE_FORMAT_START"/>Başlığını<ph name="TITLE_FORMAT_END"/> Brave AI'ye göndereceğini ve Brave AI'nin bunları hareket ettirmesine izin vereceğini. Bu izin yalnızca bu sohbet için geçerlidir.</translation>
 <translation id="396165714586708444">Derin Araştırma</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492"><ph name="ALIAS"/> adresini takma adlardan kaldırsanız e-posta alamayacaksınız.</translation>
 <translation id="8133100642915054515">Takma ad silinirken hata oluştu. İnternet bağlantınızı kontrol edin ve tekrar deneyin.</translation>
 <translation id="8465742443901727718">Bu eylem geri alınamaz. Devam etmek istediğinize emin misiniz?</translation>
+<translation id="6402052536605772735">Sunucularımızdan e-posta takma adlarını alırken hata oluştu. Lütfen internet bağlantınızı kontrol edin.</translation>
 <translation id="9162685486229945876">Giriş yapın veya bir Brave hesabı oluşturun</translation>
 <translation id="1335007417599138852">Bir Brave hesabı, belirli Brave ürünlerine erişmenizi ve bilgilerinizi tüm cihazlarınızda kolayca senkronize etmenizi sağlar.</translation>
 <translation id="2133391407495495735">Giriş bağlantısı al</translation>
@@ -2700,7 +2716,7 @@
 <translation id="4117637339509843559">Gece modu</translation>
 <translation id="6302485303316397682">Daha iyi arama sonuçları mı arıyorsunuz?</translation>
 <translation id="7014699001826714920">Harekete katılın, Brave Arama'ya katkıda bulunun.</translation>
-<translation id="6821108091726602352">Brave'in Web Keşif Projesine katılarak web'i düzeltmemize yardımcı olun. Tamamen anonim arama sinyallerini paylaşarak Brave'in arama dizinini büyütmemize yardım edebilirsiniz.</translation>
+<translation id="6821108091726602352">Brave'in Web Discovery Project'ine katılarak web'i düzeltmemize yardımcı olun. Tamamen anonim arama sinyallerini paylaşarak, Brave'in arama dizinini büyütmesine yardımcı olabilirsiniz.</translation>
 <translation id="6764845498618413165">Daha Fazla Bilgi Edinin.</translation>
 <translation id="7818938154803162778">Tabii, yardım ederim</translation>
 <translation id="7207456302801184289">Brave'e hoş geldiniz</translation>
@@ -2853,7 +2869,10 @@ Hadi sizi bağlayalım!</translation>
 <translation id="6624553071240278643">Hesabınızı oluşturun</translation>
 <translation id="6505120968393722022">Brave hesabı oluşturmak için @bravealias.com adreslerini kullanamazsınız. Lütfen farklı bir alan adıyla tekrar deneyin.</translation>
 <translation id="8248460961680233459">Bir şifre oluşturun</translation>
-<translation id="4917385247580444890">Güçlü</translation>
+<translation id="552339301062636488">Devam edemeyecek kadar güçsüz</translation>
+<translation id="8433528931936107676">Oraya ulaşım</translation>
+<translation id="4324743471050874155">Yeterince sağlam</translation>
+<translation id="5585552203448068294">Olağanüstü sağlam</translation>
 <translation id="5486261815000869482">Parolayı doğrulayın</translation>
 <translation id="7345706641791090287">Parolanızı doğrulayın</translation>
 <translation id="7114054701490058191">Parolalar eşleşmiyor</translation>
@@ -2880,7 +2899,9 @@ Hadi sizi bağlayalım!</translation>
 <translation id="4582421696414628320">Doğrulamanın süresi doldu. Kayıt sürecine yeniden başlayın.</translation>
 <translation id="8439543211004394821">Çok fazla yanlış kod girildi. Kayıt sürecine yeniden başlayın.</translation>
 <translation id="3229986152760633988">Yanlış kod, lütfen tekrar deneyin.</translation>
+<translation id="818783632689113711">Bu e-posta adresi için zaten bir hesap talebi yapılmış. Lütfen e-postanızı kontrol edin veya 30 dakika sonra tekrar deneyin.</translation>
 <translation id="4178004989875422946">Bir Brave hesabı, Brave hizmetlerine kolayca erişmenizi sağlayacaktır.</translation>
+<translation id="4902897635127068510">Şunu mu kastettiniz: <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock açık</translation>
 <translation id="7044608453949401443">Parolanın başında veya sonunda boşluk olmasına izin verilmez.</translation>
 <translation id="2939492377741553693">Doğrulama e-postası yeniden gönderildi.</translation>
@@ -2891,4 +2912,5 @@ Hadi sizi bağlayalım!</translation>
 <translation id="528205534230423181">Bu web sitesi, Brave'in sizin için otomatik olarak ayarlayabileceği gizlilik ayarları sunuyor. İşte önerilerimiz:</translation>
 <translation id="1063227610401477317">Değişiklikleri Uygula</translation>
 <translation id="5539769255716491933">Başarısız Adımları Bildir</translation>
+<translation id="7562163394445060270">Görev tamamlanamadı</translation>
 </translationbundle>

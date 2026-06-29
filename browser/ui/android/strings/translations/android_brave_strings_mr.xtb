@@ -127,7 +127,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="3405580543478883040">फीड मिळवत आहे...</translation>
 <translation id="7461899062138731833">स्रोत</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/> येथे कोणतेही फीड सापडले नाहीत</translation>
-<translation id="4541978218358617681">जाहिरात</translation>
 <translation id="7823038307453615214">ब्रेव्ह न्यूज दाखवा</translation>
 <translation id="6527303717912515753">शेअर करा</translation>
 <translation id="1654539412343893324">तुमच्या माहितीविषयी अधिक जाणून घ्या</translation>
@@ -136,7 +135,6 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="2014017248518069982"><ph name="PUBLISHER"/> मधील सामग्री निष्क्रिय करा</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> निष्क्रिय आहे</translation>
 <translation id="1276592121036104130">नवीन कंटेंट लोड करा</translation>
-<translation id="3189348785087463371">प्रमोटेड</translation>
 <translation id="7554145152551782675">अजून Brave ऑफर्स</translation>
 <translation id="254100925533869330">सामग्री नाही</translation>
 <translation id="7172792761509429092">Brave News ला दाखवण्यासाठी कोणतीही सामग्री नाही.</translation>
@@ -157,8 +155,8 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1680858055899097121">ब्राउझिंग सत्र दरम्यान टॅब टिकवून ठेवू नका</translation>
 <translation id="7142548388914389999">गोपनीयता-जपणाऱ्या-प्रॉडक्ट ॲनालिटिक्सला (P3A) अनुमती द्या</translation>
 <translation id="5254037869598726291">अज्ञात P3A माहिती Brave ला एकूण वापराचा अंदाज लावायला मदत करते आणि लोकप्रिय वैशिष्ट्ये सुधारण्याची खात्री देते.</translation>
-<translation id="4174337572777167894">वेब डिस्कव्हरी प्रकल्प</translation>
-<translation id="8659271182272561965">Brave शोध अधिक शुद्ध करण्यासाठी थोड्या निनावी शोधाच्या आणि &amp; ब्राऊझिंग डेटाच्या स्वरूपात योगदान द्या.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave शोध सुधारण्यासाठी काही निनावी शोध आणि ब्राउझिंग डेटाचे योगदान द्या.</translation>
 <translation id="933652931229970927">आपोआप निदान अहवाल पाठवा</translation>
 <translation id="5987838417172370108">Brave ब्राउझर क्रॅश किंवा फ्रीज होतो तेव्हा ऑटोमॅटिकली निदान अहवाल पाठवून Brave च्या उत्पादन स्थिरतेत सुधारण्यास मदत करा.</translation>
 <translation id="7977176350719484850">अंदाजे डेटा\nबचत</translation>
@@ -199,7 +197,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="8025937231644975408">आपणास कोणती वैशिष्ट्ये सर्वांत आवडतात हे आम्हाला सांगा.</translation>
 <translation id="2888496576732880897">Brave शोध वृद्धि वाढविण्यास मदत करा</translation>
 <translation id="7198716519700700181">स्ट्रीम करताना व्यत्यय अवरोधित करा</translation>
-<translation id="7044431516245362795">अनुक्रमणिका वाढवण्यासाठी आणि शोध परिणाम सुधारण्यासाठी मदत करायला वेब डिस्कव्हरी प्रकल्पात सहभागी व्हा. <ph name="LEARN_MORE_START"/> अधिक जाणून घ्या. <ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">इंडेक्स वाढविण्यात आणि शोध परिणाम सुधारण्यात मदत करण्यासाठी वेब डिस्कव्हरी प्रकल्पात सहभागी व्हा. <ph name="LEARN_MORE_START"/>अधिक जाणून घ्या<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave लोगो</translation>
 <translation id="4767173360729868049">Brave शोध समर्थन चित्र</translation>
 <translation id="8241918461631453498">व्यत्यय अवरोधित करा समर्थन चित्र</translation>
@@ -438,8 +436,15 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="9140049656798805345">साइट डेटा आता नष्ट करा</translation>
 <translation id="6795622376590884449">ऑटो नष्ट</translation>
 <translation id="7961015016161918242">कधीही नाही</translation>
+<translation id="3200744626782631683">ब्राउझिंग डेटा कधीही स्वयंचलितपणे नष्ट केला जात नाही.</translation>
 <translation id="1991004083507807299">साइट टॅब बंद केले</translation>
+<translation id="2917925984754303958">जेव्हा एखाद्या साइटवरील सर्व टॅब्स बंद केल्या जातात, तेव्हा ब्राउझिंग डेटा आपोआप हटवला जातो.</translation>
 <translation id="5827277414420724690">अ‍ॅप बंद</translation>
+<translation id="2036389684543586068">ब्राउझिंग डेटा ब्रेव्ह अॅप बंद किंवा पुन्हा सुरू केल्यावर आपोआप हटवला जातो.</translation>
+<translation id="4279349293084858577">नष्ट करा</translation>
+<translation id="2997451887458851244">ऑटो श्रेड अद्ययावत करा आणि कोणती माहिती श्रेड केली जाईल ते समायोजित करा</translation>
+<translation id="363903976200491771">ब्राउझिंग डेटा आपोआप तुकडे करा</translation>
+<translation id="1028873002018537235">ब्राउझिंग इतिहास तुकडे करून हटवा</translation>
 <translation id="1209739344687072997">बिघडलेल्या साइटची माहिती द्या</translation>
 <translation id="8510478288840333677">शिल्ड्ससह ही साइट योग्यरीत्या कार्य करत नाही हे Brave च्या विकासकांना कळवा:</translation>
 <translation id="1653405824851871276">Brave ला सर्वांसाठी चांगले बनविण्याच्या मदतीबद्दल धन्यवाद. हा अहवाल फक्त या साइटची दुरुस्ती करण्यासाठी आवश्यक असलेली माहिती समाविष्ट करेल. <ph name="LEARN_MORE"/></translation>
@@ -1179,4 +1184,7 @@ Brave News गोपनीय आणि अनामिक जाहिरात
 <translation id="1079140196216383600">कस्टम शोध इंजिन हटवा</translation>
 <translation id="525276572490219787">तुम्हाला "<ph name="SEARCH_ENGINE_NAME"/>" हटवायचे आहे याची तुम्हाला खात्री आहे का? ही क्रिया उलटवता येणार नाही.</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="1850594249589065646">स्थान अचूकता</translation>
+<translation id="2403474027143565107">अचूक</translation>
+<translation id="4042597221652780603">अंदाजे</translation>
 </translationbundle>

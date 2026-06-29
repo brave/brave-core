@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Получаване на канали...</translation>
 <translation id="7461899062138731833">ИЗТОЧНИЦИ</translation>
 <translation id="6150420917380577651">Не са намерени канали в <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Реклама</translation>
 <translation id="7823038307453615214">Показване на Brave Новини</translation>
 <translation id="6527303717912515753">Споделяне</translation>
 <translation id="1654539412343893324">Научете повече за своите данни</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Деактивиране на съдържание от <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> деактивиран</translation>
 <translation id="1276592121036104130">Зареждане на ново съдържание</translation>
-<translation id="3189348785087463371">Повишен</translation>
 <translation id="7554145152551782675">Още оферти на Brave</translation>
 <translation id="254100925533869330">Няма съдържание</translation>
 <translation id="7172792761509429092">Brave News няма съдържание за показване.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Не поддържайте раздели между сесиите за сърфиране</translation>
 <translation id="7142548388914389999">Позволяване на анализи на продукти, предпазващи поверителността (P3A)</translation>
 <translation id="5254037869598726291">Анонимизираната информация за P3A помага на Brave да оцени цялостното използване и да гарантира, че подобряваме популярните функции.</translation>
-<translation id="4174337572777167894">Проект за откриване в уеб</translation>
-<translation id="8659271182272561965">Допринесете анонимно данни за търсене и сърфиране, за да прецизирате търсенето в Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Споделете част от анонимни данни за търсене &amp; сърфиране, за да усъвършенствате Brave търсене.</translation>
 <translation id="933652931229970927">Автоматично изпращане на отчети с диагностика</translation>
 <translation id="5987838417172370108">Помогнете за подобряването на стабилността на продуктите на Brave чрез изпращане на отчети с диагностика, когато браузърът Brave се срине или не отговаря.</translation>
 <translation id="7977176350719484850">Прибл. запазени данни</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Каиж ни кои функции ти харесват най-много.</translation>
 <translation id="2888496576732880897">Помогни на Brave търсенето да расте</translation>
 <translation id="7198716519700700181">Блокирай прекъсванията при потоци на живо</translation>
-<translation id="7044431516245362795">Присъедини се към проекта Web Discovery, за да помогнеш в увеличаване на съдържанието и подобряване на резултатите от търсенето. <ph name="LEARN_MORE_START"/>Научи повече.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Присъединете се към проекта „Web Discovery“, за да помогнете за разширяването на индекса и подобряването на резултатите от търсенето. <ph name="LEARN_MORE_START"/>Научете повече<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Лого на Brave</translation>
 <translation id="4767173360729868049">Илюстрация на помощ на Brave търсене</translation>
 <translation id="8241918461631453498">Илюстрация на блокиране на прекъсвания</translation>
@@ -437,8 +435,15 @@
 <translation id="9140049656798805345">Шредиране на данните от сайта сега</translation>
 <translation id="6795622376590884449">Автоматично шредиране</translation>
 <translation id="7961015016161918242">Никога</translation>
+<translation id="3200744626782631683">Данните за сърфирането никога не се унищожават автоматично</translation>
 <translation id="1991004083507807299">Затваряне на разделите на сайта</translation>
+<translation id="2917925984754303958">Данните за сърфирането се изтриват автоматично, когато всички отворени раздели на даден сайт бъдат затворени</translation>
 <translation id="5827277414420724690">Затваряне на приложението</translation>
+<translation id="2036389684543586068">Данните за сърфирането се изтриват автоматично при затваряне или рестартиране на приложението Brave</translation>
+<translation id="4279349293084858577">Шред</translation>
+<translation id="2997451887458851244">Актуализирайте „Auto Shred“ и настройте кои данни да бъдат унищожени</translation>
+<translation id="363903976200491771">Автоматично изтриване на данните за сърфиране</translation>
+<translation id="1028873002018537235">Изтриване на историята на сърфиране</translation>
 <translation id="1209739344687072997">Докладвайте нефункциониращ сайт</translation>
 <translation id="8510478288840333677">Уведомете разработчиците на Brave, че този сайт не работи правилно с Щитове:</translation>
 <translation id="1653405824851871276">Благодаря Ви, че помогнахте да подобрим Brave за всички. Този доклад ще съдържа единствено необходимата ни информация за подобряване на уебсайта.<ph name="LEARN_MORE"/></translation>
@@ -1182,4 +1187,7 @@
 <translation id="1079140196216383600">Изтриване на потребителска търсачка</translation>
 <translation id="525276572490219787">Сигурни ли си, че искаш да изтриеш "<ph name="SEARCH_ENGINE_NAME"/>"? Това действие не може да бъде отменено.</translation>
 <translation id="6406506848690869874">Синхр</translation>
+<translation id="1850594249589065646">Точност на местоположението</translation>
+<translation id="2403474027143565107">Точен</translation>
+<translation id="4042597221652780603">Приблизително</translation>
 </translationbundle>
