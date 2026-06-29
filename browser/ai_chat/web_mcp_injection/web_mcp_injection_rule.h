@@ -22,7 +22,7 @@ namespace ai_chat {
 // GetWebMcpInjectionRules()) rather than loaded from a runtime config.
 struct WebMcpInjectionRule {
   // Glob matched against the full URL spec via base::MatchPattern ('*' and '?'
-  // wildcards), e.g. "*://mail.google.com/*".
+  // wildcards), e.g. "https://example.com/foo/*".
   std::string_view url_pattern;
 
   // The tool `name` passed to registerTool().
