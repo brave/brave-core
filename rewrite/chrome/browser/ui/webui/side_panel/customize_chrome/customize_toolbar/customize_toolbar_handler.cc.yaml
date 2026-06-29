@@ -59,7 +59,7 @@ substitutions:
     re_flags: [DOTALL]
     replace: |-
       \1
-        if (PinBraveAction(action_id, prefs())) {
+        if (PinBraveAction(action_id, prefs(), pin)) {
           return;
         }
 
@@ -71,3 +71,28 @@ substitutions:
       IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR.
     pattern: IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
     replace: IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
+
+  - description: |
+      Check if Brave specific actions are customized in GetIsCustomized().
+
+      Inserts a call to IsBraveActionCustomized() before upstream logic.
+
+    re_pattern: (void CustomizeToolbarHandler::GetIsCustomized\(.*?{)
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        if (IsBraveActionCustomized(web_contents_.get())) {
+          std::move(callback).Run(true);
+          return;
+        }
+
+  - description: |
+      Reset Brave specific actions to default in ResetToDefault().
+
+      Inserts a call to ResetBraveActionsToDefault() before upstream logic.
+
+    re_pattern: (void CustomizeToolbarHandler::ResetToDefault\(.*?{)
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        ResetBraveActionsToDefault(web_contents_.get());
