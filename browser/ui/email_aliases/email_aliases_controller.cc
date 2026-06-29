@@ -92,8 +92,7 @@ class EmailAliasesDialogDelegate
     return ShowConstrainedWebDialogWithAutoResize(
         initiator->GetBrowserContext(),
         base::WrapUnique(new EmailAliasesDialogDelegate(
-            controller, field_render_frame_host_id,
-            field_renderer_id)),
+            controller, field_render_frame_host_id, field_renderer_id)),
         initiator, kDialogMinSize, kDialogMaxSize);
   }
 

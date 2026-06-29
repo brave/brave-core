@@ -5,17 +5,21 @@
 
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
-import { StyleSheetManager } from 'styled-components'
-import styled from 'styled-components'
-import { setIconBasePath } from '@brave/leo/react/icon'
+import styled, { StyleSheetManager } from 'styled-components'
+import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import Icon from '@brave/leo/react/icon'
-import { color, font, spacing, radius, typography } from '@brave/leo/tokens/css/variables'
 import {
-    EmailAliasesServiceObserverInterface,
-    EmailAliasesServiceObserverReceiver,
-    EmailAliasesPromoHandlerInterface,
-    EmailAliasesPromoHandler,
+  color,
+  font,
+  spacing,
+  radius,
+  typography,
+} from '@brave/leo/tokens/css/variables'
+import {
+  EmailAliasesServiceObserverInterface,
+  EmailAliasesServiceObserverReceiver,
+  EmailAliasesPromoHandlerInterface,
+  EmailAliasesPromoHandler,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
@@ -58,7 +62,7 @@ const Description = styled.p`
 `
 
 const ContentCol = styled(Col)`
-    row-gap: ${spacing['2Xl']};
+  row-gap: ${spacing['2Xl']};
 `
 
 const Label = styled.span`
@@ -86,7 +90,7 @@ const CardsRow = styled(Row)`
   position: relative;
 `
 
-const SiteCard = styled(Col) <{ $faded?: boolean }>`
+const SiteCard = styled(Col)<{ $faded?: boolean }>`
   border-radius: ${radius.m};
   border: ${spacing.xs} solid ${color.divider.subtle};
   padding: ${spacing.s};
@@ -190,88 +194,132 @@ const RealEmailRow = styled(Row)`
 // ---------------------------------------------------------------------------
 
 const EmailAliasesPromo = ({
-    onClose,
-    onGetStarted,
+  onClose,
+  onGetStarted,
 }: {
-    onClose: () => void
-    onGetStarted: () => void
+  onClose: () => void
+  onGetStarted: () => void
 }) => {
-    return (
-        <ModalCol>
-            <Header>
-                <Title>{getLocale(S.EMAIL_ALIASES_PROMO_DLG_TITLE)}</Title>
-                <RightAlignedItem>
-                    <Button fab kind='plain-faint' onClick={onClose}>
-                        <Icon name='close' />
-                    </Button>
-                </RightAlignedItem>
-            </Header>
+  return (
+    <ModalCol>
+      <Header>
+        <Title>{getLocale(S.EMAIL_ALIASES_PROMO_DLG_TITLE)}</Title>
+        <RightAlignedItem>
+          <Button
+            fab
+            kind='plain-faint'
+            onClick={onClose}
+          >
+            <Icon name='close' />
+          </Button>
+        </RightAlignedItem>
+      </Header>
 
-            <ContentCol>
-                <Description>
-                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_TOP_DESCRIPTION)}
-                </Description>
+      <ContentCol>
+        <Description>
+          {getLocale(S.EMAIL_ALIASES_PROMO_DLG_TOP_DESCRIPTION)}
+        </Description>
 
-                <IllustrationArea>
-                    <CardsRow>
-                        {/* Left — faded Walmart card */}
-                        <SiteCard $faded>
-                            <SiteTitle style={{ color: `${color.blue[50]}` }}>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND)}</SiteTitle>
-                            <Label>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL)}</Label>
-                            <AliasChip>
-                                <AliasPart>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</AliasPart>
-                                <AliasNumber>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX)}</AliasNumber>
-                                <span>…</span>
-                            </AliasChip>
-                        </SiteCard>
+        <IllustrationArea>
+          <CardsRow>
+            {/* Left — faded Walmart card */}
+            <SiteCard $faded>
+              <SiteTitle style={{ color: `${color.blue[50]}` }}>
+                {getLocale(
+                  S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND,
+                )}
+              </SiteTitle>
+              <Label>
+                {getLocale(
+                  S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL,
+                )}
+              </Label>
+              <AliasChip>
+                <AliasPart>
+                  {getLocale(
+                    S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                  )}
+                </AliasPart>
+                <AliasNumber>
+                  {getLocale(
+                    S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX,
+                  )}
+                </AliasNumber>
+                <span>…</span>
+              </AliasChip>
+            </SiteCard>
 
-                        {/* Center — focused NYT card */}
-                        <SiteCardFocused>
-                            <img src={NytIcon} alt="The New York Times" />
-                            <LabelChipGroup>
-                                <Label>{getLocale(S.EMAIL_ALIASES_PROMO_EMAIL_LABEL)}</Label>
-                                <AliasChipFocused>
-                                    <AliasPart>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</AliasPart>
-                                    <AliasNumber>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX)}</AliasNumber>
-                                    <span>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END)}</span>
-                                </AliasChipFocused>
-                            </LabelChipGroup>
-                        </SiteCardFocused>
+            {/* Center — focused NYT card */}
+            <SiteCardFocused>
+              <img
+                src={NytIcon}
+                alt='The New York Times'
+              />
+              <LabelChipGroup>
+                <Label>{getLocale(S.EMAIL_ALIASES_PROMO_EMAIL_LABEL)}</Label>
+                <AliasChipFocused>
+                  <AliasPart>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                    )}
+                  </AliasPart>
+                  <AliasNumber>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX,
+                    )}
+                  </AliasNumber>
+                  <span>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END,
+                    )}
+                  </span>
+                </AliasChipFocused>
+              </LabelChipGroup>
+            </SiteCardFocused>
 
-                        {/* Right — faded generic store card */}
-                        <SiteCard $faded>
-                            <SiteTitle style={{ color: color.text.secondary }}>
-                                {getLocale(S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND)}
-                            </SiteTitle>
-                            <Label>&nbsp;</Label>
-                            <AliasChip>
-                                <span>{getLocale(S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</span>
-                            </AliasChip>
-                        </SiteCard>
-                    </CardsRow>
+            {/* Right — faded generic store card */}
+            <SiteCard $faded>
+              <SiteTitle style={{ color: color.text.secondary }}>
+                {getLocale(
+                  S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND,
+                )}
+              </SiteTitle>
+              <Label>&nbsp;</Label>
+              <AliasChip>
+                <span>
+                  {getLocale(
+                    S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                  )}
+                </span>
+              </AliasChip>
+            </SiteCard>
+          </CardsRow>
 
-                    <ArrowWrapper>
-                        <ArrowLine />
-                        <ArrowHead />
-                    </ArrowWrapper>
+          <ArrowWrapper>
+            <ArrowLine />
+            <ArrowHead />
+          </ArrowWrapper>
 
-                    <RealEmailRow>
-                        <Icon name='email-shield' />
-                        {getLocale(S.EMAIL_ALIASES_PROMO_YOUR_EMAIL)}
-                    </RealEmailRow>
-                </IllustrationArea>
-                <Description>
-                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_BOTTOM_DESCRIPTION)}
-                </Description>
-            </ContentCol>
+          <RealEmailRow>
+            <Icon name='email-shield' />
+            {getLocale(S.EMAIL_ALIASES_PROMO_YOUR_EMAIL)}
+          </RealEmailRow>
+        </IllustrationArea>
+        <Description>
+          {getLocale(S.EMAIL_ALIASES_PROMO_DLG_BOTTOM_DESCRIPTION)}
+        </Description>
+      </ContentCol>
 
-            <Col>
-                <GetStartedButton kind='filled' onClick={onGetStarted}>
-                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON)}
-                </GetStartedButton>
-            </Col>
-        </ModalCol>
-    )
+      <Col>
+        <GetStartedButton
+          kind='filled'
+          onClick={onGetStarted}
+        >
+          {getLocale(S.EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON)}
+        </GetStartedButton>
+      </Col>
+    </ModalCol>
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -279,18 +327,18 @@ const EmailAliasesPromo = ({
 // ---------------------------------------------------------------------------
 
 export const EmailAliasesPromoConnected = ({
-    emailAliasesPromoHandler,
-    bindObserver,
+  emailAliasesPromoHandler,
+  bindObserver,
 }: {
-    emailAliasesPromoHandler: EmailAliasesPromoHandlerInterface
-    bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
+  emailAliasesPromoHandler: EmailAliasesPromoHandlerInterface
+  bindObserver: (observer: EmailAliasesServiceObserverInterface) => () => void
 }) => {
-    return (
-        <EmailAliasesPromo
-            onClose={() => emailAliasesPromoHandler.onPromoClosed()}
-            onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
-        />
-    )
+  return (
+    <EmailAliasesPromo
+      onClose={() => emailAliasesPromoHandler.onPromoClosed()}
+      onGetStarted={() => emailAliasesPromoHandler.onPromoClosed()}
+    />
+  )
 }
 
 // ---------------------------------------------------------------------------
@@ -298,21 +346,21 @@ export const EmailAliasesPromoConnected = ({
 // ---------------------------------------------------------------------------
 
 const mount = () => {
-    const rootElement = document.getElementById('mountPoint')!
-    const emailAliasesPromoHandler = EmailAliasesPromoHandler.getRemote()
-    const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
-        const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
-        return () => observerReceiver.$.close()
-    }
-    setIconBasePath('//resources/brave-icons')
-    createRoot(rootElement).render(
-        <StyleSheetManager>
-            <EmailAliasesPromoConnected
-                emailAliasesPromoHandler={emailAliasesPromoHandler}
-                bindObserver={bindObserver}
-            />
-        </StyleSheetManager>,
-    )
+  const rootElement = document.getElementById('mountPoint')!
+  const emailAliasesPromoHandler = EmailAliasesPromoHandler.getRemote()
+  const bindObserver = (observer: EmailAliasesServiceObserverInterface) => {
+    const observerReceiver = new EmailAliasesServiceObserverReceiver(observer)
+    return () => observerReceiver.$.close()
+  }
+  setIconBasePath('//resources/brave-icons')
+  createRoot(rootElement).render(
+    <StyleSheetManager>
+      <EmailAliasesPromoConnected
+        emailAliasesPromoHandler={emailAliasesPromoHandler}
+        bindObserver={bindObserver}
+      />
+    </StyleSheetManager>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', mount)

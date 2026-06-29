@@ -24,8 +24,7 @@ inline constexpr char kClipboardCopyCountStorage[] =
 inline constexpr char kSettingsPageMethodReported[] =
     "brave.email_aliases.settings_page_method_reported";
 
-inline constexpr char kPromoShown[] =
-    "brave.email_aliases.promo_shown";
+inline constexpr char kPromoShown[] = "brave.email_aliases.promo_shown";
 
 }  // namespace email_aliases::prefs
 

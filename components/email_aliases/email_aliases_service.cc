@@ -143,11 +143,11 @@ EmailAliasesAuth* EmailAliasesService::GetAuth() {
 }
 
 bool EmailAliasesService::ShouldShowPromo() const {
-    return !pref_service_->GetBoolean(prefs::kPromoShown);
+  return !pref_service_->GetBoolean(prefs::kPromoShown);
 }
 
 void EmailAliasesService::StopShowPromo() {
-    pref_service_->SetBoolean(prefs::kPromoShown, true);
+  pref_service_->SetBoolean(prefs::kPromoShown, true);
 }
 
 std::string EmailAliasesService::GetAuthEmail() const {
