@@ -10,13 +10,17 @@
 #include "base/notreached.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/list_action_modifiers.h"
+#include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/grit/branded_strings.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/user_prefs/user_prefs.h"
 
 #define ListCategories ListCategories_ChromiumImpl
 #define ListActions ListActions_ChromiumImpl
 #define PinAction PinAction_ChromiumImpl
+#define GetIsCustomized GetIsCustomized_ChromiumImpl
+#define ResetToDefault ResetToDefault_ChromiumImpl
 
 // pref_change_registrar_.Init() in constructor
 #define Init(...)    \
@@ -33,6 +37,8 @@
 
 #undef IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
 
+#undef ResetToDefault
+#undef GetIsCustomized
 #undef Init
 #undef PinAction
 #undef ListActions
@@ -69,8 +75,34 @@ void CustomizeToolbarHandler::PinAction(
   if (const auto* brave_action =
           base::FindPtrOrNull(customize_chrome::kBraveActions, action_id)) {
     // Brave specific actions are handled here.
-    prefs()->SetBoolean(brave_action->pref_name,
-                        !prefs()->GetBoolean(brave_action->pref_name));
+    auto* pref = prefs()->FindPreference(brave_action->pref_name);
+    CHECK(pref);
+
+    bool is_default_value_is_pinned = false;
+    if (pref->IsDefaultValue()) {
+      is_default_value_is_pinned = pref->GetValue()->GetBool();
+    } else {
+      is_default_value_is_pinned = !pref->GetValue()->GetBool();
+    }
+
+    // In order to make it easy to detect if user has set a customized value for
+    // Brave specific actions, we clear the pref when user want the state back
+    // to default, instead of setting the pref with the same value as the
+    // default value. This will help GetIsCustomized() to detect if user has set
+    //  a customized value for Brave specific actions.
+    if (is_default_value_is_pinned) {
+      if (pin) {
+        prefs()->ClearPref(brave_action->pref_name);
+      } else {
+        prefs()->SetBoolean(brave_action->pref_name, false);
+      }
+    } else {
+      if (pin) {
+        prefs()->SetBoolean(brave_action->pref_name, true);
+      } else {
+        prefs()->ClearPref(brave_action->pref_name);
+      }
+    }
     return;
   }
 
@@ -94,4 +126,34 @@ void CustomizeToolbarHandler::OnBraveActionPinnedChanged(
   CHECK(brave_action);
   client_->SetActionPinned(action_id,
                            prefs()->GetBoolean(brave_action->pref_name));
+}
+
+void CustomizeToolbarHandler::GetIsCustomized(
+    GetIsCustomizedCallback callback) {
+  auto brave_actions =
+      customize_chrome::ListBraveSpecificActions(web_contents_.get());
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext());
+  CHECK(prefs) << "Browser context does not have prefs";
+  if (std::ranges::any_of(brave_actions, [prefs](const auto& action) {
+        auto* pref = prefs->FindPreference(action.pref_name);
+        return pref && !pref->IsDefaultValue();
+      })) {
+    std::move(callback).Run(true);
+    return;
+  }
+
+  GetIsCustomized_ChromiumImpl(std::move(callback));
+}
+
+void CustomizeToolbarHandler::ResetToDefault() {
+  ResetToDefault_ChromiumImpl();
+
+  auto brave_actions =
+      customize_chrome::ListBraveSpecificActions(web_contents_.get());
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents_->GetBrowserContext());
+  CHECK(prefs) << "Browser context does not have prefs";
+
+  for (const auto& action : brave_actions) {
+    prefs->ClearPref(action.pref_name);
+  }
 }

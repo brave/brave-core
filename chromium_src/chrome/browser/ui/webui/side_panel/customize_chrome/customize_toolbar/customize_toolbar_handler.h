@@ -6,6 +6,7 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_CUSTOMIZE_TOOLBAR_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_SIDE_PANEL_CUSTOMIZE_CHROME_CUSTOMIZE_TOOLBAR_CUSTOMIZE_TOOLBAR_HANDLER_H_
 
+#include "chrome/browser/ui/toolbar/pinned_toolbar/pinned_toolbar_actions_model.h"
 #include "chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar.mojom.h"
 
 #define ListCategories(...)                 \
@@ -23,8 +24,18 @@
       side_panel::customize_chrome::mojom::ActionId action_id); \
   void PinAction(__VA_ARGS__)
 
+#define GetIsCustomized(...)                 \
+  GetIsCustomized_ChromiumImpl(__VA_ARGS__); \
+  void GetIsCustomized(__VA_ARGS__)
+
+#define ResetToDefault()         \
+  ResetToDefault_ChromiumImpl(); \
+  void ResetToDefault()
+
 #include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.h>  // IWYU pragma: export
 
+#undef ResetToDefault
+#undef GetIsCustomized
 #undef PinAction
 #undef ListActions
 #undef ListCategories

@@ -203,29 +203,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
-  std::vector<BraveAction> brave_actions;
-  brave_actions.push_back(kShowAddBookmarkButton);
-  brave_actions.push_back(kShowSidePanelAction);
-
-  // Followings are dynamic actions: anchor to TabSearchButton and append to
-  // action list in reverse order.
-#if BUILDFLAG(ENABLE_BRAVE_VPN)
-  if (brave_vpn::IsBraveVPNEnabled(web_contents->GetBrowserContext())) {
-    brave_actions.push_back(kShowVPNAction);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  if (ai_chat::IsAIChatEnabled(prefs)) {
-    brave_actions.push_back(kShowAIChatAction);
-  }
-#endif  // BUILDFLAG(ENABLE_AI_CHAT)
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  if (brave_wallet::IsAllowedForContext(web_contents->GetBrowserContext())) {
-    brave_actions.push_back(kShowWalletAction);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+  auto brave_actions = ListBraveSpecificActions(web_contents);
 
   AddActionsForAddressBarCategory(
       Profile::FromBrowserContext(web_contents->GetBrowserContext()),
@@ -252,6 +230,37 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   }
 
   return actions;
+}
+
+std::vector<BraveAction> ListBraveSpecificActions(
+    content::WebContents* web_contents) {
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+  CHECK(prefs) << "Browser context does not have prefs";
+
+  std::vector<BraveAction> brave_actions;
+  brave_actions.push_back(kShowAddBookmarkButton);
+  brave_actions.push_back(kShowSidePanelAction);
+
+  // Followings are dynamic actions: anchor to TabSearchButton and append to
+  // action list in reverse order.
+#if BUILDFLAG(ENABLE_BRAVE_VPN)
+  if (brave_vpn::IsBraveVPNEnabled(web_contents->GetBrowserContext())) {
+    brave_actions.push_back(kShowVPNAction);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (ai_chat::IsAIChatEnabled(prefs)) {
+    brave_actions.push_back(kShowAIChatAction);
+  }
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  if (brave_wallet::IsAllowedForContext(web_contents->GetBrowserContext())) {
+    brave_actions.push_back(kShowWalletAction);
+  }
+#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
+  return brave_actions;
 }
 
 }  // namespace customize_chrome
