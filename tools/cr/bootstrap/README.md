@@ -1,7 +1,13 @@
 # `tools/cr/bootstrap`
 
-Provides shims for `plaster` and `brockit`, selecting them relative to the Brave
-repository in the current directory.
+Provides shims for `plaster`, `brockit`, `node` and `npm`, selecting them
+relative to the Brave repository in the current directory.
+
+`plaster` / `brockit` dispatch to the matching `tools/cr` script. `node` / `npm`
+are a prototype front-end for the node delivered into `third_party/node` by
+`gclient sync` (see [Node delivery](#node-delivery) below): inside a checkout
+that has a downloaded node they run _that_ node, and everywhere else they fall
+back transparently to the system `node` / `npm`.
 
 ## Install
 
@@ -48,15 +54,13 @@ plaster check                     # runs that checkout's plaster.py
 brockit lift --to=1.2.3.4         # runs that checkout's brockit.py
 ```
 
-These shims are resolved relative to `brave-core`, so attempting to call these
-from a directory that is not inside `brave-core` will result in a failure.
+`plaster` / `brockit` are resolved relative to `brave-core`, so calling them
+from a directory that is not inside `brave-core` will fail. `node` / `npm`
+instead fall back to the system tool in that case (see below).
 
-## How it works
-
-- `brockit`, `plaster` (POSIX) and `brockit.bat`, `plaster.bat` (Windows) are
-  thin wrappers that call `launcher.py <tool> <args…>`.
-- `launcher.py` resolves the brave-core root via `git rev-parse --show-toplevel`
-  (validating the root is a `brave` work tree, matching `repository.py`), then
-  execs `vpython3 <root>/tools/cr/<tool>.py <args…>` **without changing the
-  cwd**, so the tool runs relative to your current path.
-- `bootstrap.py` installs/uninstalls this directory on `$PATH`.
+```sh
+cd ~/browser/src/brave
+node --version                    # runs third_party/node's node
+cd /tmp
+node --version                    # falls back to the system node
+```

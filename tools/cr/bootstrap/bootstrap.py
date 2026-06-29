@@ -32,21 +32,13 @@ import shutil
 import subprocess
 import sys
 
-import launcher
-
 # The directory this script lives in — the one we add to `$PATH`.
 BOOTSTRAP_DIR = Path(__file__).resolve().parent
 
-# The shim commands this directory puts on `$PATH`, derived from the launcher's
-# tool registry so new tools only need to be added in one place
-# (`launcher.TOOL_PATHS`). Used to detect an existing install via `shutil.which`
-# (which also resolves the `.bat` variants on Windows through `PATHEXT`).
-SHIM_COMMANDS = tuple(launcher.TOOL_PATHS)
+# The marker in path used to detect an existing boostrap install.
+_INSTALL_MARKER = 'brockit'
 
-# Markers delimiting the block we manage inside POSIX rc files. Fixed strings
-# (independent of the checkout) so re-installing from another checkout simply
-# repoints `$PATH`; the shims dispatch by cwd regardless of which checkout's
-# bootstrap dir is on `$PATH`.
+# Delimiters used to identify the managed block in rc files.
 BEGIN_MARKER = '# >>> brave bootstrap >>>'
 END_MARKER = '# <<< brave bootstrap <<<'
 
@@ -129,6 +121,33 @@ def remove_windows_entry(current: str, bootstrap_dir: Path) -> str:
         if e and _norm_win(e) != _norm_win(bootstrap_dir)
     ]
     return ';'.join(entries)
+
+
+# -- Install detection --------------------------------------------------------
+
+
+def find_existing_bootstrap() -> str | None:
+    """Returns the path of the bootstrap marker shim reachable on `$PATH`.
+
+    Resolves the marker via `shutil.which`, so it reports whatever a
+    freshly-spawned shell would actually run — the signal we use to refuse a
+    second, conflicting install. Returns None when nothing is found.
+    """
+    return shutil.which(_INSTALL_MARKER)
+
+
+def installed_bootstrap_dir() -> Path:
+    """The bootstrap directory that is actually on `$PATH`.
+
+    Derived from the live shim located by `find_existing_bootstrap` (its parent
+    directory), so `uninstall` targets the install that is really in effect —
+    even when run from a different checkout than the one originally installed.
+    Falls back to this script's own directory when no shim is on `$PATH`.
+    """
+    found = find_existing_bootstrap()
+    if found:
+        return Path(found).resolve().parent
+    return BOOTSTRAP_DIR
 
 
 # -- POSIX install / uninstall ------------------------------------------------
@@ -284,34 +303,6 @@ def _uninstall_windows() -> int:
 # -- CLI ----------------------------------------------------------------------
 
 
-def find_existing_bootstrap() -> str | None:
-    """Returns the path of a bootstrap shim already reachable on `$PATH`.
-
-    Resolves the shim command names via `shutil.which`, so it reports whatever
-    a freshly-spawned shell would actually run — the signal we use to refuse a
-    second, conflicting install. Returns None when nothing is found.
-    """
-    for command in SHIM_COMMANDS:
-        found = shutil.which(command)
-        if found:
-            return found
-    return None
-
-
-def installed_bootstrap_dir() -> Path:
-    """The bootstrap directory that is actually on `$PATH`.
-
-    Derived from the live shim located by `find_existing_bootstrap` (its parent
-    directory), so `uninstall` targets the install that is really in effect —
-    even when run from a different checkout than the one originally installed.
-    Falls back to this script's own directory when no shim is on `$PATH`.
-    """
-    found = find_existing_bootstrap()
-    if found:
-        return Path(found).resolve().parent
-    return BOOTSTRAP_DIR
-
-
 def _default_shell() -> str:
     name = Path(os.environ.get('SHELL', '')).name
     return name if name in SHELLS else 'bash'
@@ -324,6 +315,7 @@ def _resolve_shells(selection: str | None) -> list[str]:
 
 
 def main() -> int:
+    """Dispatch the install/uninstall subcommand for the host platform."""
     parser = argparse.ArgumentParser(
         description='Install/uninstall the brave tool shims on $PATH.')
     sub = parser.add_subparsers(dest='command', required=True)
