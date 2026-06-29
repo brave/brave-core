@@ -1841,15 +1841,6 @@
 # kClearCrossSiteCrossBrowsingContextGroupWindowName is set to
 -All/ClearWindowNameForNewBrowsingContextGroupTestP.ClearWindowNameCrossSite/0
 
-# These tests fail because we enable features::kTabstripComboButton and stub
-# features::HasTabSearchToolbarButton() to return true
--HorizontalTabStripRegionViewWithTabstripTabSearchTest.TabSearchPositionLoggedOnConstruction
-
-# These tests fail because we stub features::HasTabSearchToolbarButton() to
-# return true
--TabSearchButtonBrowserTest.ButtonClickCreatesBubble
--TabSearchButtonBrowserUITest.InvokeUi_default
-
 # These tests fail because we default to saving bookmarks in the "Bookmarks"
 # folder, not in "Other bookmarks"
 -BookmarkBrowsertest.BookmarkCurrentTab_WithAccountNodes
@@ -2134,10 +2125,6 @@
 
 # This test fails because we don't show avatar button with a single profile.
 -ProfileMenuViewBrowserTest.ProfileMenuDoubleOpenBeforeBatchUploadResults
-
-# These tests fail because we disable kHorizontalTabStripComboButton, but it's
-# required for the WebUIPinnedToolbarActions
--WebUIToolbarUIBrowserTest.*
 
 # These tests fail because they expect the hardcoded view name BrowserRootView,
 # but instead get BraveBrowserRootView.

@@ -36,10 +36,12 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/profiles/avatar_toolbar_button.h"
+#include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_button.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_divider.h"
@@ -279,6 +281,7 @@ void BraveToolbarView::Init() {
                                    self->UpdateHorizontalPadding();
                                    self->UpdateVerticalTabToggleVisibility();
                                    self->UpdateVerticalTabTogglePlacement();
+                                   self->UpdateComboButtonState();
                                  },
                                  base::Unretained(this)));
     show_title_bar_on_vertical_tabs_.Init(
@@ -320,8 +323,19 @@ void BraveToolbarView::Init() {
         vertical_tabs_collapsed_.GetValue()
             ? kVerticalTabStripToggleCollapsedIcon
             : kLeoWindowTabsVerticalExpandedIcon);
+
+    if (base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton)) {
+      auto target_index = GetIndexOf(vertical_tab_toggle_);
+      combo_button_ = AddChildViewAt(
+          std::make_unique<TabStripComboButton>(
+              browser(), TabStripComboButton::Context::kHorizontalTabStrip),
+          *target_index);
+    }
+
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
+    UpdateVerticalTabToggleState();
+    UpdateComboButtonState();
   }
 
   bookmark_ =
@@ -747,6 +761,14 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
   }
 
   region_view->ToggleState();
+}
+
+void BraveToolbarView::UpdateComboButtonState() {
+  if (!combo_button_) {
+    return;
+  }
+
+  combo_button_->SetVisible(tabs::utils::ShouldShowBraveVerticalTabs(browser_));
 }
 
 BEGIN_METADATA(BraveToolbarView)

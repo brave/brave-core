@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tab_search_bubble_host.cc b/chrome/browser/ui/views/tab_search_bubble_host.cc
+index b332361e984a0ca163559415c2bc59648a43ac27..35f8eef8b7c0de767462481ae2f5e8dc9b88338a 100644
+--- a/chrome/browser/ui/views/tab_search_bubble_host.cc
++++ b/chrome/browser/ui/views/tab_search_bubble_host.cc
+@@ -203,7 +203,7 @@ bool TabSearchBubbleHost::ShowTabSearchBubble(
+       tabs::GetTabSearchPosition(browser_window_interface_);
+   webui_bubble_manager_->ShowBubble(
+       std::nullopt,
+-      (position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip ||
++      (use_brave_vertical_tab_ ||
+        position == tabs::TabSearchPosition::kVerticalTabstrip)
+           ? views::BubbleBorder::TOP_LEFT
+           : views::BubbleBorder::TOP_RIGHT,

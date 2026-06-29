@@ -3,13 +3,24 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "base/test/scoped_feature_list.h"
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/tab_search_feature.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "ui/actions/actions.h"
 
-using BraveBrowserActionsBrowserTest = InProcessBrowserTest;
+class BraveBrowserActionsBrowserTest : public InProcessBrowserTest {
+ public:
+  BraveBrowserActionsBrowserTest() {
+    scoped_feature_list_.InitAndDisableFeature(
+        tabs::kHorizontalTabStripComboButton);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
 
 // Regression test for https://github.com/brave/brave-browser/issues/54449
 //
