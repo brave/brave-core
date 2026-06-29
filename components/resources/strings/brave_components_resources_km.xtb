@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">ប្រភព</translation>
 <translation id="5158129253322921540">បិទមាតិកាដែលមកពី <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">បានផ្សព្វផ្សាយ</translation>
-<translation id="4541978218358617681">Ad</translation>
 <translation id="1776831331757823105">នាឡិកា</translation>
 <translation id="7791543448312431591">បន្ថែម</translation>
 <translation id="6216996674668969227">ទទួលបានសញ្ញាសម្ងាត់សម្រាប់ការមើលការផ្សាយពាណិជ្ជកម្មដែលគោរពភាពឯកជន។</translation>
@@ -729,9 +728,9 @@
 <translation id="8251969358165471584">កាបូប Web3</translation>
 <translation id="7160424977552599351">ប្រើកាបូប Web3 របស់អ្នក</translation>
 <translation id="6369571967625114920">ការផ្សាយពាណិជ្ជកម្មឯកជន Brave នៅមិនទាន់មាននៅក្នុងតំបន់របស់អ្នកនោះទេ។</translation>
-<translation id="5309155375926073606">បាទ/ចាស ខ្ញុំក៏ចង់រួមចំណែកដល់ Brave Search ហើយជ្រើសរើសចូល <ph name="LINK_BEGIN"/>គម្រោងស្វែងរកគេហទំព័រ<ph name="LINK_END"/>។</translation>
-<translation id="4622826307953794521">ចូលរួមចំណែកក្នុងការស្វែងរក និងទិន្នន័យរុករកអនាមិកមួយចំនួន ដើម្បីកែលម្អការស្វែងរកដ៏ក្លាហានជាមួយនឹងគម្រោងស្វែងរកគេហទំព័រ។ វាជាប្រភពបើកចំហទាំងស្រុង។</translation>
-<translation id="4174337572777167894">គម្រោងស្វែងរកគេហទំព័រ</translation>
+<translation id="5309155375926073606">បាទ/ចាស ខ្ញុំក៏ចង់រួមចំណែកដល់ Brave ស្វែងរក និងជ្រើសរើសចូលរួមនៅក្នុង <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/> ផងដែរ។</translation>
+<translation id="4622826307953794521">រួមចំណែកទិន្នន័យស្វែងរក និងការរុករកដែលអនាមិកមួយចំនួន ដើម្បីកែលម្អ Brave ស្វែងរក ជាមួយ Web Discovery Project។ វាជា open-source ទាំងស្រុង។</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">សហគមន៍</translation>
 <translation id="845020633253356720">មើលហាង</translation>
 <translation id="7777123407058400802">ថូខិនផលិតផលមេត្រនិចទឹកចិត្ដ - BAT</translation>
@@ -973,11 +972,11 @@
 <translation id="7080614857771109950">គាំទ្រ សំណង់អត្ថប្រយោជន៍ EVM នៅលើ បន្ថែមEthereum (គូទ(ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">គាំទ្រ សំណង់អត្ថប្រយោជន៍ SPL នៅលើ បន្ថែមSolana</translation>
 <translation id="4541295941776129088">រក្សា FIL asset</translation>
-<translation id="6030958132571544682">រក្សាទុកទ្រព្យសកម្មឆេះ FIL</translation>
+<translation id="6030958132571544682">ផ្ទុកទ្រព្យសកម្ម FIL Testnet</translation>
 <translation id="29759539656432505">រក្សាទុកតុល្យភាព BTC</translation>
 <translation id="2399555431746923964">រក្សាតុល្យភាព BTC សាកល្បង</translation>
 <translation id="8749751940551938347">រក្សាតុល្យភាព ZEC</translation>
-<translation id="3451958544919449297">រក្សាតុល្យភាព ZEC សាកល្បង</translation>
+<translation id="3451958544919449297">ផ្ទុកទ្រព្យសកម្ម ZEC Testnet</translation>
 <translation id="8459631690385393533">រក្សាទុកទ្រព្យសកម្ម Cardano</translation>
 <translation id="4915057812371523845">រក្សាទុកតេស្តទ្រព្យសកម្ម Cardano</translation>
 <translation id="5387140102951033657">គាំទ្រទ្រព្យសម្បត្តិ Substrate នៅលើខ្សែបញ្ជូន Polkadot និង Substrate parachains</translation>
@@ -996,6 +995,9 @@
 <translation id="6720675936326555106">ឯកសារ​ដែល​បាន​ជ្រើស</translation>
 <translation id="5891811606602061966">នាំចូលគណនីមិនបានទេ សូមព្យាយាមម្តងទៀត។</translation>
 <translation id="6566535583781706170">នាំចូលគណនី</translation>
+<translation id="8079448455682522748">ចម្លងសោឯកជនសម្រាប់គណនីដែលអ្នកចង់នាំចូលពីកាបូបផ្សេងទៀត។</translation>
+<translation id="8475326612689436917">នាំចេញសោឯកជនពីកាបូបផ្សេងទៀតទៅឯកសារ JSON ហើយបង្ហោះនៅទីនេះ។</translation>
+<translation id="5733063593286221597">បង្ហោះឯកសារ JSON</translation>
 <translation id="5051929972046200722">ជ្រើសរើសឧបករណ៍នឹងឧបករណ៍ការបើកបង្កាន់ដៃ</translation>
 <translation id="5745936663807461565">ភ្ជាប់កាបូប <ph name="HARDWARE_DEVICE"/> របស់អ្នកដោយផ្ទាល់ទៅកុំព្យូទ័ររបស់អ្នក។</translation>
 <translation id="4350216031085285578">បើកឧបករណ៍របស់អ្នកហើយជ្រើសយកកម្មវិធី <ph name="BLOCKCHAIN_NETWORK"/>។</translation>
@@ -1041,9 +1043,10 @@
 <translation id="7657130382217527063">យោល៖ គន្លឹះឯកជនត្រូវតែផ្ដល់ជាឯកសារ JSON ដែលត្រូវបានបញ្ចូល hex ដែលមានគន្លឹះឯកជន និងព័ត៌មានពិធីការ។ <ph name="LINK_START"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_END"/>។</translation>
 <translation id="4482913669726886926">ចំណាំ៖ មានតែគ្រាប់ចុចដែលបានពង្រីក <ph name="FORMAT"/> ប៉ុណ្ណោះដែលត្រូវបានគាំទ្រ។</translation>
 <translation id="6457746820359933716">នាំចូល​ដោយ​ប្រើ​ឯកសារ JSON ដែល​នាំចេញ​ពី Polkadot.js ឬ​កម្មវិធី​ដាក់ ឥណទាន​ដែល​ឆបគ្នា។ បញ្ចូល​ពាក្យ​សម្ងាត់​ដែល​ប្រើ​ដើម្បី​អ៊ិនគ្រីប​ការ​នាំចេញ។</translation>
-<translation id="9133762451347918196">គណនី Testnet</translation>
+<translation id="7285350832506166367">កំពុងស្វែងរកគណនី Testnet?</translation>
 <translation id="42126664696688958">នាំចេញ</translation>
 <translation id="1366855498335432549">បញ្ញើរប្រាក់</translation>
+<translation id="3852653589653889099">លាក់គណនី</translation>
 <translation id="790104325876206743">ការកំណត់គណនី</translation>
 <translation id="8856844353253421399">ធ្វើបច្ចុប្បន្នភាព​ចុងក្រោយ <ph name="TIME_AGO"/> មុន</translation>
 <translation id="6322030314101903925">មិនមានទ្រព្យសម្បត្តិដែលអាចប្រើបាន</translation>
@@ -1344,6 +1347,12 @@
 <translation id="3067168166931605141">ឈ្មោះគណនី</translation>
 <translation id="1213870770696612739">ចំនួនអប្បបរមា៖ <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">ចំនួនអតិបរមា៖ <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">គណនីត្រូវបានបង្កើតដោយជោគជ័យ</translation>
+<translation id="7444985841455466546">គណនីត្រូវបាននាំចូលដោយជោគជ័យ</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {បានភ្ជាប់គណនីកាបូបផ្នែករឹងដោយជោគជ័យ}
+      other {{ACCOUNTS} គណនីកាបូបផ្នែករឹងបានភ្ជាប់ដោយជោគជ័យ}
+    }</translation>
 <translation id="8528916244724490964">បណ្ដាញទាំងអស់</translation>
 <translation id="7721139939763655123">សម្រាប់តិចទៅច្រើន</translation>
 <translation id="5458608274117818139">សម្រាប់ច្រើនទៅតិច</translation>
@@ -1366,6 +1375,7 @@
 <translation id="1257387162647804035">បណ្ដាញសំខាន់</translation>
 <translation id="8323674164587854512">Ethereum + EVM Chains</translation>
 <translation id="1398414935371867469">Solana + SVM Chains</translation>
+<translation id="6498449512528552760">បុព្វបទមិនត្រឹមត្រូវ</translation>
 <translation id="7058248670699639973">បានបង្ហាញរូបតំណាងបណ្ដាញ</translation>
 <translation id="4378208228955237306">បង្ហាញរូបតំណាងបណ្ដាញនៅ NFTs</translation>
 <translation id="5472199803712163015">Spam NFTs</translation>
@@ -1635,7 +1645,7 @@
 <translation id="1353726744456297797">ប្រសិនបើអ្នករកមិនឃើញទ្រព្យសកម្មរបស់អ្នកក្នុងបញ្ជីនេះទេ អ្នកអាចបន្ថែមវាបានដោយដៃដោយប្រើប៊ូតុងខាងក្រោមនេះ</translation>
 <translation id="4543171429371680949">រកមិនឃើញទ្រព្យសកម្ម</translation>
 <translation id="1026825928738055872">តើអ្នកពិតជាចង់ដក "<ph name="ACCOUNT_NAME"/>" ចេញមែនទេ?</translation>
-<translation id="3910551537328657217">ស្នើសុំមុខងារ</translation>
+<translation id="2220529011494928058">រាយការណ៍បញ្ហា</translation>
 <translation id="7657322905916621147">សម្រង់សម្ងាត់ត្រូវតែមាន 12, 15, 18, 21, ឬ 24 ពាក្យ</translation>
 <translation id="5026874946691314267">កុំបង្ហាញវា​ម្តងទៀត</translation>
 <translation id="434502623875309667">ការតាមដានអាសយដ្ឋានប្រាក់ភាគហ៊ុនត្រូវការ​សំណាងការភ្ជាប់បណ្តាញបញ្ជូន។ បន្តឬ?</translation>
@@ -2063,6 +2073,7 @@
 <translation id="7294510764127771956">បិទ/បើកការស្វែងរកជំរាប</translation>
 <translation id="4186334830839439230">បង្ហាញការកំណត់ប្រសិទ្ធភាព</translation>
 <translation id="1094277301241124207">បង្ហាញផ្ទាល់ខ្លួនចំណាំ</translation>
+<translation id="5101042277149003567">បើកចំណាំទាំងអស់</translation>
 <translation id="8283515796576236471">របារ​ចំណាំ​បើកទាំងអស់​នៅឯ​បង្អួច​ថ្មី</translation>
 <translation id="5271773791943587595">របារ​ចំណាំ​បើកទាំងអស់​នៅឯ​បង្អួចឯកជន</translation>
 <translation id="2748975346534113286">របារ​ចំណាំ​បើកទាំងអស់​នៅឯ​ក្រុមផ្ទាំងថ្មី</translation>
@@ -2149,6 +2160,7 @@
 <translation id="2367972762794486313">បង្ហាញកម្មវិធី</translation>
 <translation id="3142853026316054951">បិទ/បើករបៀបផ្ដោតអារម្មណ៍</translation>
 <translation id="3468387898712904997">ឈ្មោះអ៊ីមែលថ្មី</translation>
+<translation id="2796584247246518451">កុងតឺន័របណ្ដោះអាសន្នថ្មី</translation>
 <translation id="8591883849678260674">មើលប្រភព</translation>
 <translation id="1969654232209826429">នាទីអាន</translation>
 <translation id="4101707289420716287">បិទ Speedreader</translation>
@@ -2218,6 +2230,7 @@
 <translation id="1238020084128916796">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់​បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Llama 3.1 8B ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Meta ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗជា​ច្រើន។ Llama ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង​ពី​ផលិតកម្មគោល​នេះ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Qwen VL 30B ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Alibaba Cloud ដើម្បី​ធ្វើការ​ដោយ​ប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗជា​ច្រើន។ Qwen ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាពផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GLM-5 ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Zhipu AI ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ GLM-5 ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ NEAR តាមរយៈ​យ៉ាង​ទី​សុវត្ថិភាព​របស់​ពួកគេ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល GLM-5.1 ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Zhipu AI ដើម្បី​ធ្វើការ​ដោយប្រសិទ្ធភាព និង​អាច​អនុវត្ត​ក្នុង​ករណី​ផ្សេងៗ​ជា​ច្រើន។ GLM-5.1 ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ NEAR តាមរយៈ​យ៉ាង​ទី​សុវត្ថិភាព​របស់​ពួកគេ។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">សួស្តី ខ្ញុំឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នកជួយប្រើប្រាស់បច្ចេកវិទ្យា AI របស់ Brave។ ខ្ញុំ​ដំណើរការដោយ Claude Instant ដែលជារ៉ូបូតបង្កើតដោយ Anthropic សម្រាប់ជជែកនិងដំណើរការអត្ថបទ។ Claude Instant ត្រូវបានដាក់ឲ្យដំណើរការដោយ Brave តាមរយៈហេដ្ឋារចនាសម្ព័ន្ធសុវត្ថិភាពផ្ទាល់ខ្លួន។<ph name="LINK_BEFORE"/>ស្វែងយល់បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់​បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Claude Haiku ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Anthropic ដើម្បី​បំពេញ​និង​ការ​បំពេញ​តាម​តម្រូវការ​ប្រារព្ធពិធី​និងកិច្ចការ​ការ​ប្រើប្រាស់​ត្រាំ​ដែល​ខ្ញុំ​មាន។ Claude Haiku ត្រូវ​បាន​ដាក់​បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព​ផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">សួស្តី, ខ្ញុំ​ឈ្មោះ Leo។ ខ្ញុំ​ជា​អ្នក​ជំនួយ AI របស់ Brave។ ខ្ញុំ​ចាប់បាច់​ដោយ​កម្មវិធី​ម៉ូដែល Claude Sonnet ដែល​បង្កើត​ដោយ​ក្រុមហ៊ុន Anthropic ដើម្បី​បំពេញ​និង​ការ​បំពេញ​តាម​តម្រូវការ​ប្រារព្ធពិធី​និង​កិច្ចការ​ការ​ប្រើប្រាស់​ត្រាំ​ដែល​ខ្ញុំ​មាន។ Claude Sonnet ត្រូវ​បាន​ដាក់បញ្ចូល​ដោយ Brave តាម​រយៈ​យ៉ាង​ទី​សុវត្ថិភាព​ផ្ទាល់​របស់​យើង។<ph name="LINK_BEFORE"/>ស្វែង​យល់​បន្ថែម<ph name="LINK_AFTER"/></translation>
@@ -2335,8 +2348,8 @@
 <translation id="4592293425457329338">ខ្លឹមសារអាជ្ញាចេញពីការសន្ទនាអាចខ្វះវិញ។ Leo អាចរក្សាលុយបាន <ph name="PERCENTAGE"/> នៃខ្លឹមសារដែលទាក់ទងនឹងការសន្ទនានេះ។</translation>
 <translation id="8501106061098623831">រូបភាពច្រើនពេកត្រូវបានថតចេញពីទំព័រ។ Leo អាចប្រើ <ph name="PERCENTAGE"/> នៃមាតិកាដែលមើលឃើញដែលមាន។</translation>
 <translation id="4370698775470316661">ការសន្ទនានេះវែងពេកហើយមិនអាចបន្ដបាននិងការកែប្រែជាអូនិតញឹងពបករណូដែលផ្ដល់ភាពម៉ានិតសម្រាប់ការសន្ទនាវែងល្អថ្លៃត្រសេញ។</translation>
-<translation id="5719170755629028558">កំពុងធ្វើឱ្យចម្លើយរបស់អ្នកប្រសើរឡើងជាមួយ Brave ស្វែងរក…</translation>
-<translation id="5794962229997281366">ស្វែងរកច្បាស់លាសំរាប់ <ph name="SEARCH_TERMS"/></translation>
+<translation id="4744144453035015075">កំពុងស្វែងរកតាមអ៊ីនធឺណិត</translation>
+<translation id="8548351747582087191">កំពុងស្វែងរកតាមអ៊ីនធឺណិតសម្រាប់ <ph name="SEARCH_TERMS"/>។</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> បន្ថែម...</translation>
 <translation id="8103700533980268469">បិទសេចក្តីជូនដំណឹងនេះ</translation>
 <translation id="3417835166382867856">ស្វែងរកផ្ទាំង</translation>
@@ -2407,8 +2420,8 @@
 <translation id="2370739752330685659">ប្រហែលជាពេលក្រោយ</translation>
 <translation id="983013125018250242">ឧបករណ៍ Leo</translation>
 <translation id="7623223587478473368">ឯកសារ​ភ្ជាប់</translation>
-<translation id="3777121685517940177">បង្ហោះឯកសារ...</translation>
-<translation id="6739516910850820220">កំពុងបង្ហោះសារ...</translation>
+<translation id="3728603231003977269">ភ្ជាប់ឯកសារ...</translation>
+<translation id="7899721102369502629">កំពុងភ្ជាប់ឯកសារ...</translation>
 <translation id="9088751620363630236">ថត​រូប...</translation>
 <translation id="4250229828105606438">រូបថតអេក្រង់</translation>
 <translation id="7949596341600215809">រូបថតអេក្រង់ពេញទំព័រ</translation>
@@ -2456,10 +2469,12 @@
 <translation id="7607002721634913082">បាន​ផ្អាក</translation>
 <translation id="4773299976671772492">បានបញ្ឈប់</translation>
 <translation id="6946722113367118030">កំពុងគិត</translation>
+<translation id="7918928051723770926">កិច្ចការបានបញ្ចប់</translation>
 <translation id="2113810663179257944">ការអនុវត្តកូដ</translation>
-<translation id="6338250692384725496">បានប្រតិបត្តិកូដក្នុងលំនៅដ្ឋានដើម្បីជួយក្នុងសំណួររបស់អ្នក</translation>
+<translation id="4838375634693651776">កំពុងប្រតិបត្តិកូដក្នុងលំនៅដ្ឋានដើម្បីជួយក្នុងសំណួររបស់អ្នក</translation>
 <translation id="4379566111233326721">កូដ៖</translation>
 <translation id="3542130965673205258">ទិន្នផល:</translation>
+<translation id="6911817209337314910">កំពុងបង្កើតជម្រើសមួយចំនួនសម្រាប់អ្នកជ្រើសរើស</translation>
 <translation id="5382076391290708074">ផ្លាស់ប្តូរផ្ទាំងរបស់អ្នក</translation>
 <translation id="3862123464576147769">ការអនុញ្ញាតនេះនឹងផ្ញើ <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> និង <ph name="TITLE_FORMAT_START"/>ចំណងជើង<ph name="TITLE_FORMAT_END"/> នៃផ្ទាំងរបស់អ្នកទាំងអស់ និងក្រុមផ្ទាំងទៅ Brave AI ហើយឱ្យ Brave AI ផ្លាស់ប្តូរពួកវា។ ការអនុញ្ញាតនេះអនុវត្តតែចំពោះការសន្ទនានេះប៉ុណ្ណោះ។</translation>
 <translation id="396165714586708444">ស្វែងរកស៊ីជម្រៅ</translation>
@@ -2510,6 +2525,7 @@
 <translation id="646524615209870492">កំពុងដក <ph name="ALIAS"/> ចេញជាឈ្មោះក្លែងក្លាយនឹងនាំឱ្យបាត់បង់សមត្ថភាពក្នុងការទទួលអ៊ីមែល។</translation>
 <translation id="8133100642915054515">មានបញ្ហាក្នុងការលុបឈ្មោះអ្នកប្រើ។ ពិនិត្យការតភ្ជាប់អ៊ីនធឺណិតរបស់អ្នក ហើយព្យាយាមម្តងទៀត។</translation>
 <translation id="8465742443901727718">សកម្មភាពនេះគឺមិនអាចត្រឡប់វិញបានទេ។ តើអ្នកប្រាកដថាចង់បន្តទេ?</translation>
+<translation id="6402052536605772735">មានកំហុសក្នុងការទាញយកឈ្មោះក្លែងក្លាយអ៊ីមែលពីម៉ាស៊ីនបម្រើរបស់យើង។ សូមពិនិត្យមើលការតភ្ជាប់អ៊ីនធឺណិតរបស់អ្នក។</translation>
 <translation id="9162685486229945876">ចូលឬបង្កើតគណនី Brave</translation>
 <translation id="1335007417599138852">គណនី Brave នឹងអនុញ្ញាតឱ្យអ្នកចូលទៅកាន់ផលិតផល Brave معينบางដែល ហើយងាយស្រួលក្នុងការធ្វើសមកាលកម្មព័ត៌មាននៃអ្នកលើឧបករណ៍ទាំងអស់របស់អ្នក។</translation>
 <translation id="2133391407495495735">ទទួលបានតំណភ្ជាប់ចូល</translation>
@@ -2688,7 +2704,7 @@
 <translation id="4117637339509843559">របៀបងងឹត</translation>
 <translation id="6302485303316397682">ចង់បានលទ្ធផលស្វែងរកប្រសើរជាងមុនទេ?</translation>
 <translation id="7014699001826714920">ចូលរួមចលនា រួមចំណែកដល់ Brave ស្វែងរក។</translation>
-<translation id="6821108091726602352">ជួយយើងជួសជុលគេហទំព័រដោយចូលរួមក្នុងគម្រោងស្វែងរកបណ្តាញរបស់ Brave ។ តាមរយៈការចែករំលែកសញ្ញាស្វែងរកអនាមិកទាំងស្រុង អ្នកអាចជួយ Brave បង្កើនសន្ទស្សន៍ស្វែងរក។</translation>
+<translation id="6821108091726602352">ជួយយើងជួសជុលបណ្ដាញអ៊ីនធឺណិតដោយចូលរួមក្នុង Web Discovery Project របស់ Brave។ ដោយចែករំលែកសញ្ញាស្វែងរកដែលអនាមិកទាំងស្រុង អ្នកអាចជួយ Brave ឲ្យពង្រីកលិបិក្រមនៃការស្វែងរក។</translation>
 <translation id="6764845498618413165">ស្វែងយល់បន្ថែម.</translation>
 <translation id="7818938154803162778">ប្រាកដណាស់ ខ្ញុំនឹងជួយ</translation>
 <translation id="7207456302801184289">ស្វាគមន៍មកកាន់ Brave</translation>
@@ -2828,7 +2844,10 @@
 <translation id="6624553071240278643">បង្កើតគណនីរបស់អ្នក</translation>
 <translation id="6505120968393722022">អ្នកមិនអាចប្រើអាសយដ្ឋាន @bravealias.com ដើម្បីបង្កើតគណនី Brave ទេ។ សូមព្យាយាមម្តងទៀតជាមួយដែនផ្សេង។</translation>
 <translation id="8248460961680233459">បង្កើតពាក្យសម្ងាត់</translation>
-<translation id="4917385247580444890">រឹងមាំ</translation>
+<translation id="552339301062636488">ខ្សោយពេកមិនអាចបន្តបាន</translation>
+<translation id="8433528931936107676">ជិតដល់ហើយ</translation>
+<translation id="4324743471050874155">រឹងមាំគ្រប់គ្រាន់</translation>
+<translation id="5585552203448068294">រឹងមាំខ្លាំងពិសេស</translation>
 <translation id="5486261815000869482">អះអាងពាក្យសម្ងាត់</translation>
 <translation id="7345706641791090287">អះអាងពាក្យសម្ងាត់របស់អ្នក</translation>
 <translation id="7114054701490058191">ពាក្យសម្ងាត់មិនត្រូវគ្នា</translation>
@@ -2855,7 +2874,9 @@
 <translation id="4582421696414628320">ការផ្ទៀងផ្ទាត់បានផុតកំណត់។ សូមចាប់ផ្តើមដំណើរការចុះឈ្មោះម្តងទៀត។</translation>
 <translation id="8439543211004394821">លេខកូដមិនត្រឹមត្រូវត្រូវបានបញ្ចូលច្រើនពេក។ សូមចាប់ផ្តើមដំណើរការចុះឈ្មោះម្តងទៀត។</translation>
 <translation id="3229986152760633988">លេខកូដខុស សូមព្យាយាមម្តងទៀត។</translation>
+<translation id="818783632689113711">គណនីមួយត្រូវបានស្នើសុំរួចហើយសម្រាប់អាសយដ្ឋានអ៊ីមែលនេះ។ សូមពិនិត្យមើលអ៊ីមែលរបស់អ្នក ឬព្យាយាមម្ដងទៀតក្នុងរយៈពេល 30 នាទី។</translation>
 <translation id="4178004989875422946">គណនី Brave នឹងអនុញ្ញាតឱ្យអ្នកចូលដំណើរការសេវាកម្ម Brave បានយ៉ាងងាយស្រួល។</translation>
+<translation id="4902897635127068510">តើអ្នកចង់និយាយ <ph name="SUGGESTION"/> មែនទេ?</translation>
 <translation id="8314772463905284467">Caps Lock កំពុងបើក</translation>
 <translation id="7044608453949401443">មិនអនុញ្ញាតឱ្យមានដកឃ្លានៅដើម ឬចុងបញ្ចប់នៃពាក្យសម្ងាត់ទេ។</translation>
 <translation id="2939492377741553693">អ៊ីមែលបញ្ជាក់ត្រូវបានផ្ញើឡើងវិញ។</translation>
@@ -2866,4 +2887,5 @@
 <translation id="528205534230423181">គេហទំព័រនេះផ្តល់នូវការកំណត់ឯកជនភាពដែល Brave អាចកែសម្រួលដោយស្វ័យប្រវត្តិសម្រាប់អ្នក។ នេះគឺជាអ្វីដែលយើងណែនាំ៖</translation>
 <translation id="1063227610401477317">អនុវត្តការផ្លាស់ប្តូរ</translation>
 <translation id="5539769255716491933">រាយការណ៍ពីជំហានដែលបរាជ័យ</translation>
+<translation id="7562163394445060270">ការបញ្ចប់កិច្ចការបានបរាជ័យ</translation>
 </translationbundle>

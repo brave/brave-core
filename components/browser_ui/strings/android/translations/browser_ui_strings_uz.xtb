@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="uz">
+<translation id="1000614056227025171">Bosh sahifani sozlash tanituvi quyi ekrani toʻliq hajmda ochildi</translation>
 <translation id="1006017844123154345">Onlayn versiyasini ochish</translation>
 <translation id="1036348656032585052">O‘chirib qo‘yish</translation>
 <translation id="1046742265332833834">Koʻk rangli mavzu</translation>
 <translation id="1070329623210597193">Bu sayt ochishi yoki tahrirlashi mumkin fayllar</translation>
-<translation id="1882093842020941518">Tashqi cookie fayllarga nega ruxsat berganingiz sababini yozish orqali Braveni yaxshilashimizga yordam bering. <ph name="BEGIN_LINK"/>Fikr-mulohaza<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Saytlarning kompyuter versiyasini ochishga ruxsat soʻrash mumkin</translation>
 <translation id="1109482864356262001">Harakat va yorugʻlik sensoridan foydalanadigan funksiyalar ishlamaydi</translation>
 <translation id="6670155282615872564">Bravedan maksimal foydalanish uchun quyidagi tavsiya etilgan amallarni bajaring</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave maslahatlari</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/> saytiga joylangan</translation>
 <translation id="1263609676484797429">“Ilovalar  &gt; Birlamchi ilovalar” bandini tanlang</translation>
+<translation id="1264694639515903274">Endi bosh sahifani oʻzingizga moslay olasiz</translation>
 <translation id="1272079795634619415">To‘xtatish</translation>
 <translation id="1275718070701477396">Tanlandi</translation>
 <translation id="8010562420973777575">Trafikni tejash maqsadida sahifadagi rasmlar Brave tomonidan takomillashtirildi.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL manzil qisqartirildi</translation>
 <translation id="1741136041592162279">Qurilmadagi ilovalar roʻyxati va qidiruv natijalarida oxirgi varaqlar chiqishi uchun Brave ularni qurilmaga ulashishiga ruxsat bering. Buni Brave sozlamalarida faolsizlantirish mumkin.</translation>
 <translation id="1420688843103859429">Sensorli panelda ikki barmoq bilan surish orqali orqaga va oldinga qayting</translation>
-<translation id="1432650420699700107">Saytlar mahalliy tarmoqdagi istalgan qurilmaga ulanish uchun ruxsat soʻrashi mumkin</translation>
 <translation id="1442081309487427303">Oʻqish rejimi havolalarini yoqish</translation>
 <translation id="1448064542941920355">Kichiklashtirish</translation>
 <translation id="1464044141348608623">Saytlarning qurilmadan foydalanish axborotidan foydalanishini taqiqlash</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Yoqilsa, saytlar barcha displeylardagi oynalarni boshqarishga ruxsat soʻrashi mumkin. Yoqilmasa, saytlar barcha displeylardagi oynalarni boshqara olmaydi.</translation>
 <translation id="1738912554587725807">Yangi varaq sahifasi koʻrinishining mavzular toʻplami pastki oynasi</translation>
 <translation id="1743802530341753419">Saytlar qurilmaga ulanishiga ruxsat so‘ralsin (tavsiya etiladi)</translation>
-<translation id="2534291364429593865">Brave maslahatlari bildirishnomalarini olish</translation>
 <translation id="1777815584158991902">Tasmani varaqlash quyi ekrani</translation>
 <translation id="1779089405699405702">Tasvir dekoderi</translation>
 <translation id="1781533683087883868">Oʻqish rejimi havolalarini faolsizlantirish</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Tugatish</translation>
 <translation id="1919950603503897840">Kontaktlarni tanlash</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Bosh sahifani moslang</translation>
 <translation id="1939059826036755332">Avtomatik tasvir ustida tasvir</translation>
 <translation id="1954597385941141174">Saytlar USB qurilmalarga ulanishga ruxsat soʻray oladi</translation>
 <translation id="1979673356880165407">Ochilgan barcha saytlar uchun matn va rasmlarni kattalashtiring yoki kichiklashtiring</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/> tomonidan boshqariladi</translation>
 <translation id="2498359688066513246">Yordam/fikr-mulohaza</translation>
 <translation id="2501278716633472235">Ortga qaytish</translation>
-<translation id="2533138527374486328">Yoqilsa, saytlar mahalliy tarmoqdagi istalgan qurilmaga ulanish uchun ruxsat soʻrashi mumkin. Yoqilmasa, saytlar mahalliy tarmoqdagi qurilmalarga ulana olmaydi.</translation>
 <translation id="2536779053640817375">Shu safar ruxsat berildi • Aniq</translation>
 <translation id="2544997614631598250">Mavzu rangi: tungi</translation>
 <translation id="2546283357679194313">Cookie fayllari va sayt ma’lumotlari</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Omniboksdan boshlash</translation>
 <translation id="2789132527330338807">Sites atrofingiz 3D xaritasini yaratish yoki kamera holatini kuzatish uchun ruxsat soʻrashi mumkin</translation>
 <translation id="2790501146643349491">Yoqilsa, yaqinda yopilgan saytlar axborot yuborish va qabul qilishni toʻxtatishi mumkin. Oʻchirilsa, toʻxtata olmaydi.</translation>
-<translation id="1708222144403389505">Bravedan unumli foydalanish uchun foydali maslahatlar bildirishnomalarini yoqing</translation>
 <translation id="2795716239552913152">Saytlar odatda mahalliy yangiliklar yoki atrofdagi doʻkonlar kabi tegishli funksiya yoki axborotlar uchun joylashuvingizdan foydalanadi</translation>
 <translation id="2800760947029405028">Rasm yuklash</translation>
 <translation id="2802908157808345702">Saytlarga qalqib chiquvchi oynalar ochish yoki tashrifni yoʻnaltirish taqiqlansin</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Saytlar ovoz chiqarishi mumkin</translation>
 <translation id="3065787901655140044">Kengaytirilgan himoya yoqildi</translation>
 <translation id="3069226013421428034">Muayyan sayt uchun tashqi xizmatga kirishga ruxsat bering.</translation>
+<translation id="3084983642903364837">Bosh sahifani keyinroq 3 nuqtali menyu orqali tahrirlang.</translation>
 <translation id="310297983047869047">Avvalgi slaydi</translation>
 <translation id="3108122610701115301">Birlamchi qilib belgilash</translation>
 <translation id="310979712355504754">Hammasini oʻchirish</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Saytlarga USB qurilmalarga ulanishni taqiqlash</translation>
 <translation id="3965467402665811906">Saytlar shaxsiy maʼlumotlaringizdan foydalanishga ruxsat soʻrashi mumkin</translation>
 <translation id="3967822245660637423">Yuklab olindi</translation>
-<translation id="3969869202926863008">Mahalliy tarmoqqa ruxsat</translation>
 <translation id="3981465354637804599">Saytlar odatda bepul kontent yoki xizmatlar taqdim qilish maqsadida reklama chiqaradi. Lekin ayrim saytlarda yoqimsiz yoki befoyda reklamalar chiqishi ham mumkin.</translation>
 <translation id="3987993985790029246">Nusxalash</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Seriyali portga ulandi</translation>
 <translation id="4223404254440398437">Mikrofondan foydalanishga ruxsat berilmagan</translation>
 <translation id="4226663524361240545">Bildirishnoma kelganida qurilma tebranishi mumkin</translation>
+<translation id="4227965147357783918">Bosh sahifani sozlash tanituvi quyi ekrani yarim hajmda ochildi</translation>
 <translation id="4259722352634471385">Sahifa bloklandi: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Odatda saytlar yopilganda ular rasmni yuklash yoki chat xabarini yuborish kabi amallarni yakunlash uchun sinxronlashda davom etadi</translation>
 <translation id="4278390842282768270">Berilgan ruxsatnomalar</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Kengaytirish</translation>
 <translation id="4310738531374808763">Bosh sahifani moslang</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Muddati ertaga tugaydi}other{# kundan keyin muddati tugaydi}}</translation>
+<translation id="7012676469589811613">Maxsus mavzusini tanlash orqali Brave'ni oʻzingizga moslang</translation>
 <translation id="4338831206024587507">Barcha saytlar <ph name="DOMAIN"/> ostida</translation>
 <translation id="4340799661701629185">Saytlarga bildirishnoma yuborishni taqiqlash</translation>
 <translation id="4341577178275615435">Faol kursor rejimini yoqish yoki oʻchirish uchun F7 tugmasidan foydalaning</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Brave V8 tizimidagi saytlar ishlashini sekinlatish, Brave brauzerining hujumlardan himoyasini esa oshirish</translation>
 <translation id="5556459405103347317">Qayta yuklash</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloklandi</translation>
-<translation id="560980142378233747">Sayt funksiyasi toʻgʻri ishlaydi, lekin brauzerda koʻrish paytida brauzer himoyasi kuchsiz boʻladi. <ph name="BEGIN_LINK"/>Fikr-mulohaza<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Yangi varaq sahifasi bildirgilari quyi ekrani</translation>
 <translation id="5621413808884657932">Yoqilsa, saytlar ushbu qurilmadagi boshqa ilova va xizmatlarga ruxsat soʻrashi mumkin. Faolsizlantirilsa, saytlar ushbu qurilmadagi boshqa ilova va xizmatlarga ruxsat olmaydi.</translation>
 <translation id="5632485077360054581">Koʻrsatish</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Yorliqlarim</translation>
 <translation id="656065428026159829">Yana</translation>
 <translation id="6561560012278703671">Xabarlar tinchroq kelsin (bezovta qiluvchi bildirishnomalar bloklanadi)</translation>
-<translation id="6565144332292237355">Saytlar bu funksiya yordamida mahalliy tarmoqdagi istalgan qurilmani topishi va unga ulanishi mumkin</translation>
 <translation id="6593061639179217415">Desktop versiya</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_OWNER"/> guruhidagi <ph name="RWS_MEMBERS_COUNT"/> ta sayt uchun cookie fayllarga ruxsat berilgan}other{<ph name="RWS_OWNER"/> guruhidagi <ph name="RWS_MEMBERS_COUNT"/> ta sayt uchun cookie fayllarga ruxsat berilgan}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Qolaman</translation>
 <translation id="6630443592285535486">Hex kodini kiriting</translation>
 <translation id="6635327442719709864">Yoqilsa, saytlar seriyali portlardan foydalanishni soʻrashi mumkin. Yoqilmasa, saytlar seriyali port ishlata olmaydi.</translation>
-<translation id="6669390930482049506">Xabar qilinsin</translation>
 <translation id="6678072580827808850">Xavfsizlik tekshiruvini tekshirish</translation>
 <translation id="6682057173375416470">Tavsiya etilgan maqolalarni Yangi varaq sahifasida oling</translation>
 <translation id="6683865262523156564">Bu sayt guruhga kiradi va u guruhdagi faoliyatni koʻra oladi. Guruh <ph name="RWS_OWNER"/> tomonidan belgilangan</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Yangilash</translation>
 <translation id="7188508872042490670">Qurilmada saqlangan sayt maʼlumotlari</translation>
 <translation id="7201549776650881587"><ph name="ORIGIN"/> saytiga bogʻlangan saytlar yoki ularning bosh ekrandagi ilovasi saqlangan barcha maʼlumotlar va cookie fayllari oʻchirib tashlanadi.</translation>
-<translation id="7213166370492037743">Saytlarga mahalliy tarmoqdagi istalgan qurilmaga ulanishni taqiqlash</translation>
 <translation id="7219254577985949841">Sayt maʼlumotlari oʻchirilsinmi?</translation>
 <translation id="723171743924126238">Tasvirni tanlang</translation>
 <translation id="7243246278722455312">Yangi varaq sahifasini moslash quyi ekrani</translation>
@@ -757,7 +753,6 @@ Kuchaytirilgan himoya boshqaruvida quyidagi Brave sozlamalari mavjud:</translati
 <translation id="8737426583868847403">Bu yerda alohida zum darajasi saqlangan saytlar chiqadi</translation>
 <translation id="8748714929822124637">Saytlar uchun mahalliy tarmoqdagi boshqa qurilmalarga ruxsatni taqiqlash</translation>
 <translation id="8751914237388039244">Rasmni tanlang</translation>
-<translation id="8775741625735357092">Bukmarklar panelini Sozlamalar &gt; Qiyofa sahifasidan yoqish mumkin</translation>
 <translation id="8800034312320686233">Sayt ishlamayaptimi?</translation>
 <translation id="8801436777607969138">Muayyan saytda JavaScript kodini bloklash.</translation>
 <translation id="2026315747406172223">V8 — Braveda saytlar unumdorligini oshiradigan JavaScript va WebAssembly tizimi hisoblanadi</translation>

@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Gaunamas srautas...</translation>
 <translation id="7461899062138731833">ŠALTINIAI</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/> šaltinių nerasta</translation>
-<translation id="4541978218358617681">Reklama</translation>
 <translation id="7823038307453615214">Rodyti „Brave News“</translation>
 <translation id="6527303717912515753">Bendrinti</translation>
 <translation id="1654539412343893324">Sužinokite apie savo duomenis daugiau</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Išjungti <ph name="PUBLISHER"/> turinį</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> išjungta</translation>
 <translation id="1276592121036104130">Įkelti naują turinį</translation>
-<translation id="3189348785087463371">Reklamuojama</translation>
 <translation id="7554145152551782675">Daugiau „Brave“ pasiūlymų</translation>
 <translation id="254100925533869330">Nėra turinio</translation>
 <translation id="7172792761509429092">Nėra jokio „Brave News“ turinio.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Nepalikti skirtukų tarp naršymo seansų</translation>
 <translation id="7142548388914389999">Leisti privatumo nepažeidžiančią produktų analizę (P3A)</translation>
 <translation id="5254037869598726291">Nuasmeninta P3A informacija padeda „Brave“ įvertinti bendrą naudojimą ir užtikrinti, kad mes tobulintume populiarias funkcijas.</translation>
-<translation id="4174337572777167894">Žiniatinklio pažinimo projektas</translation>
-<translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis bei padėkite patikslinti „Brave“ paieškos rezultatus.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Prisidėkite anonimiškais paieškos ir naršymo duomenimis, kad patobulintumėte „Brave Search“.</translation>
 <translation id="933652931229970927">Automatiškai siųsti diagnostikos ataskaitas</translation>
 <translation id="5987838417172370108">Padėkite tobulinti „Brave“ produktų stabilumą, automatiškai siųsdami diagnostikos ataskaitas, kai „Brave“ naršyklė užstringa.</translation>
 <translation id="7977176350719484850">Numatomi sutaupyti\nduomenys</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Pasakykite mums, kurias funkcijas jums labiausiai patinka.</translation>
 <translation id="2888496576732880897">Padėkite „Brave“ paieškai augti</translation>
 <translation id="7198716519700700181">Blokuoti trukdžius transliuojant</translation>
-<translation id="7044431516245362795">Prisijunkite prie „Web Discovery Project“ ir padėkite didinti indeksą bei gerinti paieškos rezultatus. <ph name="LEARN_MORE_START"/>Sužinokite daugiau.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Prisijunkite prie „Web Discovery“ projekto, kad padėtumėte plėsti indeksą ir gerinti paieškos rezultatus. <ph name="LEARN_MORE_START"/>Sužinokite daugiau<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave logotipas</translation>
 <translation id="4767173360729868049">Padėkite „Brave</translation>
 <translation id="8241918461631453498">Blokuoti trukdžius iliustracija</translation>
@@ -444,8 +442,15 @@ Ar tikrai norite tai padaryti?</translation>
 <translation id="9140049656798805345">Sunaikinti svetainės duomenis dabar</translation>
 <translation id="6795622376590884449">Automatinis sunaikinimas</translation>
 <translation id="7961015016161918242">Niekada</translation>
+<translation id="3200744626782631683">Naršymo duomenys niekada nėra automatiškai sunaikinami</translation>
 <translation id="1991004083507807299">Svetainės skirtukas uždarytas</translation>
+<translation id="2917925984754303958">Naršymo duomenys automatiškai sunaikinami, kai uždaromi visi atidaryti svetainės skirtukai</translation>
 <translation id="5827277414420724690">Programos uždarymas</translation>
+<translation id="2036389684543586068">Naršymo duomenys automatiškai sunaikinami, kai „Brave“ programa uždaroma arba paleidžiama iš naujo</translation>
+<translation id="4279349293084858577">Sunaikinti</translation>
+<translation id="2997451887458851244">Atnaujinkite „Auto Shred“ ir nustatykite, kokie duomenys turi būti sunaikinti</translation>
+<translation id="363903976200491771">Automatiškai sunaikinti naršymo duomenis</translation>
+<translation id="1028873002018537235">Ištrinti naršymo istoriją</translation>
 <translation id="1209739344687072997">Pranešti apie neveikiančią svetainę</translation>
 <translation id="8510478288840333677">Praneškite „Brave“ kūrėjams, kad ši svetainė neveikia tinkamai su skydais:</translation>
 <translation id="1653405824851871276">Dėkojame, kad padedate tobulinti „Brave“ visiems. Šioje ataskaitoje bus pateikta tik ta informacija, kuri mums reikalinga interneto svetainei pataisyti. <ph name="LEARN_MORE"/></translation>
@@ -1189,4 +1194,7 @@ Užklausos nepriėmus, prie VPN pakartotinai prisijungta nebus ir interneto ryš
 <translation id="1079140196216383600">Ištrinti pasirinktinę paieškos sistemą</translation>
 <translation id="525276572490219787">Ar tikrai norite ištrinti „<ph name="SEARCH_ENGINE_NAME"/></translation>
 <translation id="6406506848690869874">Sinchronizavimas</translation>
+<translation id="1850594249589065646">Vietos nustatymo tikslumas</translation>
+<translation id="2403474027143565107">Tikslus</translation>
+<translation id="4042597221652780603">Apytikslis</translation>
 </translationbundle>

@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fi">
+<translation id="1000614056227025171">Etusivun räätälöintipromon alapaneeli avattu kokonaan</translation>
 <translation id="1006017844123154345">Avaa verkkoversio</translation>
 <translation id="1036348656032585052">Poista käytöstä</translation>
 <translation id="1046742265332833834">Sininen teema</translation>
 <translation id="1070329623210597193">Tiedostot, jotka sivusto voi katsella tai muokata</translation>
-<translation id="1882093842020941518">Auta meitä parantamaan Bravea kertomalla, miksi sallit kolmannen osapuolen evästeet. <ph name="BEGIN_LINK"/>Lähetä palautetta<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Voit pyytää sivustojen tietokoneversiota</translation>
 <translation id="1109482864356262001">Liike- tai valoantureita edellyttävät ominaisuudet eivät toimi</translation>
 <translation id="6670155282615872564">Näillä ehdotuksilla saat Bravesta mahdollisimman paljon irti</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Vinkkejä Braven käyttöön</translation>
 <translation id="1242008676835033345">Upotettu sivustolle <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Valitse Sovellukset &gt; Oletussovellukset</translation>
+<translation id="1264694639515903274">Voit nyt muokata etusivua</translation>
 <translation id="1272079795634619415">Pysäytä</translation>
 <translation id="1275718070701477396">Valittu</translation>
 <translation id="8010562420973777575">Datan säästämiseksi Brave on optimoinut tämän sivun kuvat.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL näkyy lyhennettynä</translation>
 <translation id="1741136041592162279">Salli Braven jakaa viimeaikaiset välilehdet laitteelle, jotta näet ne laitteen sovelluslistalla ja hakutuloksissa. Voit laittaa tämän päälle tai pois päältä Braven asetuksista.</translation>
 <translation id="1420688843103859429">Siirry taakse- ja eteenpäin pyyhkäisemällä kosketuslevyllä kahdella sormella</translation>
-<translation id="1432650420699700107">Sivustot voivat pyytää lupaa yhdistää paikallisessa verkossa oleviin laitteisiin</translation>
 <translation id="1442081309487427303">Laita lukutilan linkit päälle</translation>
 <translation id="1448064542941920355">Vähennä zoomausta</translation>
 <translation id="1464044141348608623">Älä salli sivustojen tietää, milloin käytät laitetta aktiivisesti</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Kun tämä on päällä, sivustot voivat pyytää lupaa hallinnoida ikkunoita kaikilla näytöillä. Kun tämä on pois päältä, sivustot eivät voi hallinnoida ikkunoita kaikilla näytöillä.</translation>
 <translation id="1738912554587725807">Uusi välilehti ‐sivun ulkoasun teemakokoelmien alapaneeli</translation>
 <translation id="1743802530341753419">Pyydä lupaa, kun sivustot yrittävät yhdistää laitteeseen (suositus)</translation>
-<translation id="2534291364429593865">Brave-vinkki-ilmoitusten vastaanottaminen</translation>
 <translation id="1777815584158991902">Discover-fiidin alapaneeli</translation>
 <translation id="1779089405699405702">Kuvien dekooderi</translation>
 <translation id="1781533683087883868">Laita lukutilan linkit pois päältä</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Katkaise puhelu</translation>
 <translation id="1919950603503897840">Valitse kontaktit</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Muokkaa etusivua</translation>
 <translation id="1939059826036755332">Automaattinen pikkuruutu</translation>
 <translation id="1954597385941141174">Sivustot saavat pyytää lupaa yhdistää USB-laitteisiin</translation>
 <translation id="1979673356880165407">Tee tekstistä ja kuvista suurempia tai pienempiä kaikilla sivustoilla</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Ylläpitäjä: <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Ohjeet ja palaute</translation>
 <translation id="2501278716633472235">Takaisin</translation>
-<translation id="2533138527374486328">Kun tämä on päällä, sivustot voivat pyytää lupaa yhdistää paikallisessa verkossa oleviin laitteisiin. Kun tämä on pois päältä, sivustot eivät voi yhdistää paikallisessa verkossa oleviin laitteisiin.</translation>
 <translation id="2536779053640817375">Sallittu tällä kertaa • Tarkka</translation>
 <translation id="2544997614631598250">Teeman väri: tumma</translation>
 <translation id="2546283357679194313">Evästeet ja sivustotiedot</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Omniboxin pikakäynnistys</translation>
 <translation id="2789132527330338807">Sivustot voivat pyytää lupaa luoda 3D-kartan ympäristöstäsi tai seurata kameran asentoa</translation>
 <translation id="2790501146643349491">Kun tämä on päällä, äskettäin suljetut sivustot voivat viimeistellä datan lähettämistä tai vastaanottamista. Kun tämä ei ole päällä, äskettäin suljetut sivustot eivät voi viimeistellä datan lähettämistä tai vastaanottamista.</translation>
-<translation id="1708222144403389505">Laita ilmoitukset päälle, niin saat hyödyllisiä vinkkejä, joiden avulla saat parhaan hyödyn Bravesta</translation>
 <translation id="2795716239552913152">Sivustot käyttävät yleensä sijaintia tarjotakseen siihen liittyviä ominaisuuksia tai tietoja (esim. paikallisuutisia tai tietoja lähellä olevista kaupoista)</translation>
 <translation id="2800760947029405028">Lähetä kuva</translation>
 <translation id="2802908157808345702">Älä salli sivustojen lähettää ponnahdusikkunoita ja käyttää uudelleenohjauksia</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Sivustot voivat toistaa ääntä</translation>
 <translation id="3065787901655140044">Lisäsuojaus on päällä</translation>
 <translation id="3069226013421428034">Salli kolmannen osapuolen sisäänkirjautuminen tietylle sivustolle.</translation>
+<translation id="3084983642903364837">Voit muokata etusivua myöhemmin kolmen pisteen valikosta.</translation>
 <translation id="310297983047869047">Edellinen dia</translation>
 <translation id="3108122610701115301">Aseta oletukseksi</translation>
 <translation id="310979712355504754">Poista kaikki</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Älä salli sivustojen yhdistää USB-laitteisiin</translation>
 <translation id="3965467402665811906">Sivustot voivat pyytää lupaa sinusta tallennettujen tietojen käytölle</translation>
 <translation id="3967822245660637423">Lataus on valmis</translation>
-<translation id="3969869202926863008">Pääsy lähiverkkoon</translation>
 <translation id="3981465354637804599">Sivustot näyttävät yleensä mainoksia voidakseen tarjota sisältöä tai palveluja maksutta. Joidenkin sivustojen tiedetään näyttävän häiritseviä tai harhaanjohtavia mainoksia.</translation>
 <translation id="3987993985790029246">Kopioi linkki</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Yhdistetty sarjaporttiin</translation>
 <translation id="4223404254440398437">Pääsyä mikrofoniin ei sallittu</translation>
 <translation id="4226663524361240545">Laite voi väristä ilmoitusten yhteydessä.</translation>
+<translation id="4227965147357783918">Etusivun räätälöintipromon alapaneeli avattu puoliksi</translation>
 <translation id="4259722352634471385">Kohde on estetty: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Kun lähdet sivustolta, se voi jatkaa synkronointia viimeistelläkseen asioita, kuten kuvien latauksen tai chat-viestin lähettämisen</translation>
 <translation id="4278390842282768270">Sallittu</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Laajenna</translation>
 <translation id="4310738531374808763">Etusivun räätälöinti</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Vanhenee huomenna}other{Vanhenee # päivän kuluttua}}</translation>
+<translation id="7012676469589811613">Tee Bravesta näköisesi valitsemalla oma teema</translation>
 <translation id="4338831206024587507">Kaikki sivustot, jotka kuuluvat verkkotunnukseen <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Älä salli sivustojen lähettää ilmoituksia</translation>
 <translation id="4341577178275615435">Voit laittaa näppäimistöselaamisen päälle tai pois päältä pikanäppäimellä F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Älä nopeuta sivustoja Braven V8-moottorilla, mutta paranna Braven suojaa hyökkäyksiä vastaan hieman</translation>
 <translation id="5556459405103347317">Lataa uudelleen</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> estetty</translation>
-<translation id="560980142378233747">Tällöin sivuston ominaisuuksien pitäisi toimia odotetulla tavalla, mutta selaussuojaus saattaa olla heikompi. <ph name="BEGIN_LINK"/>Lähetä palautetta<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Uusi välilehti ‐sivun korttien alapaneeli</translation>
 <translation id="5621413808884657932">Kun tämä on päällä, sivustot voivat pyytää pääsyä muihin sovelluksiin ja palveluihin tällä laitteella. Kun tämä on pois päältä, sivustot eivät pääse muihin sovelluksiin ja palveluihin tällä laitteella.</translation>
 <translation id="5632485077360054581">Näytä miten</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Omat pikakuvakkeet</translation>
 <translation id="656065428026159829">Katso lisää</translation>
 <translation id="6561560012278703671">Hiljaisemmat viestit (estää ilmoituksia häiritsemästä sinua)</translation>
-<translation id="6565144332292237355">Sivustot voivat käyttää tätä ominaisuutta etsiäkseen paikallisessa verkossa olevia laitteita ja muodostaakseen niihin yhteyden</translation>
 <translation id="6593061639179217415">Tietokonesivusto</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Evästeet sallittu <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-sivustolla}other{Evästeet sallittu <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-sivustolla}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> Gt</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Jää</translation>
 <translation id="6630443592285535486">Kirjoita heksadesimaali tähän</translation>
 <translation id="6635327442719709864">Kun tämä on päällä, sivustot voivat pyytää lupaa käyttää sarjaportteja. Kun tämä on pois päältä, sivustot eivät voi käyttää sarjaportteja.</translation>
-<translation id="6669390930482049506">Ilmoita minulle</translation>
 <translation id="6678072580827808850">Tarkista turvatarkistus</translation>
 <translation id="6682057173375416470">Saa ehdotettuja artikkeleita Uusi välilehti ‑sivulla</translation>
 <translation id="6683865262523156564">Tämä sivusto kuuluu ryhmään, joka voi nähdä toimintasi. <ph name="RWS_OWNER"/> on määrittänyt ryhmän</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Päivitä</translation>
 <translation id="7188508872042490670">Laitepohjainen sivustodata</translation>
 <translation id="7201549776650881587">Tämä toiminto poistaa kaiken datan ja kaikki evästeet sivuston <ph name="ORIGIN"/> alla olevilta sivustoilta tai sen sovelluksesta aloitusnäytöllä</translation>
-<translation id="7213166370492037743">Älä salli sivustojen yhdistää mihinkään paikallisessa verkossa olevaan laitteeseen</translation>
 <translation id="7219254577985949841">Poistetaanko sivustodata?</translation>
 <translation id="723171743924126238">Valitse kuvat</translation>
 <translation id="7243246278722455312">"Muuta Uusi välilehti ‑sivua" -alapaneeli</translation>
@@ -757,7 +753,6 @@ Lisäsuojaus ohjaa näitä Braven asetuksia:</translation>
 <translation id="8737426583868847403">Tässä näkyvät sivustot, joille olet tallentanut oman zoomaustason</translation>
 <translation id="8748714929822124637">Älä salli sivustojen pääsyä muille paikallisessa verkossa oleville laitteille</translation>
 <translation id="8751914237388039244">Valitse kuva</translation>
-<translation id="8775741625735357092">Voit laittaa kirjanmerkkipalkin päälle kohdasta Asetukset &gt; Ulkoasu</translation>
 <translation id="8800034312320686233">Eikö sivusto toimi?</translation>
 <translation id="8801436777607969138">Estä JavaScript tietyllä sivustolla.</translation>
 <translation id="2026315747406172223">V8 on Braven JavaScript- ja WebAssembly-moottori, jota käytetään sivuston suorituskyvyn parantamiseen</translation>

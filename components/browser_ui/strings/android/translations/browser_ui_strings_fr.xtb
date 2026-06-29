@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="fr">
+<translation id="1000614056227025171">Bottom sheet de la promotion de personnalisation de la page d'accueil ouverte à pleine hauteur</translation>
 <translation id="1006017844123154345">Ouvrir la version en ligne</translation>
 <translation id="1036348656032585052">Désactiver</translation>
 <translation id="1046742265332833834">Thème bleu</translation>
 <translation id="1070329623210597193">Fichiers que ce site peut afficher ou modifier</translation>
-<translation id="1882093842020941518">Aidez-nous à améliorer Brave en nous indiquant pourquoi vous avez autorisé les cookies tiers. <ph name="BEGIN_LINK"/>Envoyer des commentaires<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Vous pouvez demander à voir la version pour ordinateur des sites</translation>
 <translation id="1109482864356262001">Les fonctionnalités qui nécessitent l'accès aux capteurs de mouvement ou de luminosité ne seront pas disponibles</translation>
 <translation id="6670155282615872564">Suivez les suggestions ci-dessous pour profiter pleinement de Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Astuces Brave</translation>
 <translation id="1242008676835033345">Intégration sur <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Appuyez sur Applis &gt; Applis par défaut</translation>
+<translation id="1264694639515903274">Vous pouvez désormais personnaliser votre page d'accueil</translation>
 <translation id="1272079795634619415">Arrêter</translation>
 <translation id="1275718070701477396">Sélectionnée</translation>
 <translation id="8010562420973777575">Pour sauvegarder vos données, les images de cette page ont été optimisées par Brave.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL tronquée</translation>
 <translation id="1741136041592162279">Autorisez Brave à partager vos onglets récents avec votre appareil pour les voir s'afficher dans la liste d'applis et les résultats de recherche de votre appareil. Vous pouvez activer ou désactiver cette option à tout moment dans les paramètres de Brave.</translation>
 <translation id="1420688843103859429">Passez à la page suivante ou précédente en balayant le pavé tactile avec deux doigts</translation>
-<translation id="1432650420699700107">Les sites peuvent demander à se connecter à n'importe quel appareil sur votre réseau local</translation>
 <translation id="1442081309487427303">Activer les liens du mode Lecture</translation>
 <translation id="1448064542941920355">Réduire le zoom</translation>
 <translation id="1464044141348608623">Ne pas autoriser les sites à savoir quand vous utilisez activement votre appareil</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Lorsque cette option est activée, les sites peuvent demander à gérer les fenêtres sur tous vos écrans. Lorsqu'elle est désactivée, les sites ne peuvent pas gérer les fenêtres sur tous vos écrans.</translation>
 <translation id="1738912554587725807">Bottom sheet des collections de thèmes de l'apparence de la page "Nouvel onglet"</translation>
 <translation id="1743802530341753419">Demander avant d'autoriser les sites à se connecter à un appareil (recommandé)</translation>
-<translation id="2534291364429593865">Notifications d'astuces Brave</translation>
 <translation id="1777815584158991902">Bottom sheet du flux Discover</translation>
 <translation id="1779089405699405702">Décodage d'images</translation>
 <translation id="1781533683087883868">Désactiver les liens du mode Lecture</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Raccrocher</translation>
 <translation id="1919950603503897840">Sélectionner des contacts</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Personnaliser ma page d'accueil</translation>
 <translation id="1939059826036755332">Picture-in-picture automatique</translation>
 <translation id="1954597385941141174">Les sites peuvent demander à se connecter à des appareils USB</translation>
 <translation id="1979673356880165407">Agrandir ou réduire la taille du texte et des images sur tous les sites que vous consultez</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Géré par <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Aide et commentaires</translation>
 <translation id="2501278716633472235">Retour</translation>
-<translation id="2533138527374486328">Lorsque cette option est activée, les sites peuvent demander à se connecter à n'importe quel appareil sur votre réseau local. Lorsque cette option est désactivée, les sites ne peuvent pas se connecter aux appareils sur votre réseau local.</translation>
 <translation id="2536779053640817375">Autorisée cette fois-ci • Exacte</translation>
 <translation id="2544997614631598250">Couleur du thème sombre</translation>
 <translation id="2546283357679194313">Cookies et données des sites</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Démarrer l'omnibox directement</translation>
 <translation id="2789132527330338807">Les sites peuvent demander à créer un plan 3D de votre environnement ou à suivre la position de la caméra</translation>
 <translation id="2790501146643349491">Lorsque cette option est activée, les sites fermés récemment peuvent terminer l'envoi et la réception de données. Lorsqu'elle est désactivée, les sites fermés récemment ne peuvent pas terminer l'envoi ni la réception de données.</translation>
-<translation id="1708222144403389505">Activez les notifications pour recevoir des astuces afin de profiter au maximum de Brave</translation>
 <translation id="2795716239552913152">Les sites utilisent généralement votre position pour vous proposer des fonctionnalités ou des informations pertinentes, comme les actualités locales ou les magasins à proximité</translation>
 <translation id="2800760947029405028">Importer une image</translation>
 <translation id="2802908157808345702">Ne pas autoriser les sites à envoyer des pop-ups ni à utiliser des redirections</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Les sites peuvent lire du son</translation>
 <translation id="3065787901655140044">La Protection Avancée est activée</translation>
 <translation id="3069226013421428034">Autorisez la connexion tierce pour un site spécifique.</translation>
+<translation id="3084983642903364837">Modifiez votre page d'accueil plus tard via le menu à trois points.</translation>
 <translation id="310297983047869047">Diapositive précédente</translation>
 <translation id="3108122610701115301">Définir par défaut</translation>
 <translation id="310979712355504754">Tout supprimer</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Ne pas autoriser les sites à se connecter à des appareils USB</translation>
 <translation id="3965467402665811906">Les sites peuvent demander à utiliser les informations qu'ils ont enregistrées vous concernant</translation>
 <translation id="3967822245660637423">Téléchargement terminé</translation>
-<translation id="3969869202926863008">Accès au réseau local</translation>
 <translation id="3981465354637804599">Les sites diffusent généralement des annonces en contrepartie de contenus ou services sans frais. Toutefois, certains sites sont connus pour afficher des annonces intrusives ou trompeuses.</translation>
 <translation id="3987993985790029246">Copier lien</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/ ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Connecté à un port série</translation>
 <translation id="4223404254440398437">Micro non autorisé</translation>
 <translation id="4226663524361240545">L'appareil vibrera en cas de notifications.</translation>
+<translation id="4227965147357783918">Bottom sheet de la promotion de personnalisation de la page d'accueil ouverte à mi-hauteur</translation>
 <translation id="4259722352634471385">La navigation sur <ph name="URL"/> est bloquée.</translation>
 <translation id="4274673989874969668">Lorsque vous quittez un site, la synchronisation de celui-ci peut se poursuivre afin de terminer certaines tâches, comme télécharger des photos ou envoyer un message de chat</translation>
 <translation id="4278390842282768270">Autorisé</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Développer</translation>
 <translation id="4310738531374808763">Personnalisez votre page d'accueil</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Expire demain}one{Expire dans # jour}other{Expire dans # jours}}</translation>
+<translation id="7012676469589811613">Personnalisez Brave en choisissant un thème personnalisé</translation>
 <translation id="4338831206024587507">Tous les sites du domaine <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Ne pas autoriser les sites à envoyer des notifications</translation>
 <translation id="4341577178275615435">Pour activer ou désactiver la navigation au clavier, appuyez sur F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Ne pas accélérer les sites avec le moteur V8 de Brave, mais rendre Brave légèrement plus résistant aux attaques</translation>
 <translation id="5556459405103347317">Actualiser</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> bloquée</translation>
-<translation id="560980142378233747">Cela signifie que les fonctionnalités du site devraient fonctionner comme prévu, mais que votre navigation pourrait être moins sécurisée. <ph name="BEGIN_LINK"/>Envoyer des commentaires<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Bottom sheet des cartes de la page Nouvel onglet</translation>
 <translation id="5621413808884657932">Lorsque cette option est activée, les sites peuvent demander à accéder à d'autres applis et services sur cet appareil. Lorsque cette option est désactivée, les sites ne peuvent pas accéder à d'autres applis ni services sur cet appareil.</translation>
 <translation id="5632485077360054581">Démonstration</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Mes raccourcis</translation>
 <translation id="656065428026159829">Voir plus</translation>
 <translation id="6561560012278703671">Activer les notifications discrètes (empêche les notifications de vous interrompre)</translation>
-<translation id="6565144332292237355">Les sites peuvent utiliser cette fonctionnalité pour rechercher les appareils sur votre réseau local et s'y connecter</translation>
 <translation id="6593061639179217415">Version ordinateur</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookies autorisés pour <ph name="RWS_MEMBERS_COUNT"/> site <ph name="RWS_OWNER"/>}one{Cookies autorisés pour <ph name="RWS_MEMBERS_COUNT"/> site <ph name="RWS_OWNER"/>}other{Cookies autorisés pour <ph name="RWS_MEMBERS_COUNT"/> sites <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> Go</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Rester</translation>
 <translation id="6630443592285535486">Saisissez le code hexadécimal ici</translation>
 <translation id="6635327442719709864">Les sites peuvent demander à utiliser des ports série quand cette option est activée et ne peuvent pas quand elle est désactivée.</translation>
-<translation id="6669390930482049506">M'avertir</translation>
 <translation id="6678072580827808850">Examiner le contrôle de sécurité</translation>
 <translation id="6682057173375416470">Recevoir des articles suggérés sur la page "Nouvel onglet"</translation>
 <translation id="6683865262523156564">Ce site fait partie d'un groupe qui peut voir votre activité. Le groupe est défini par <ph name="RWS_OWNER"/>.</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Actualiser</translation>
 <translation id="7188508872042490670">Données des sites sur l'appareil</translation>
 <translation id="7201549776650881587">L'ensemble des données et cookies stockés par tous les sites dépendant de <ph name="ORIGIN"/> ou par l'appli associée sur votre écran d'accueil seront supprimés</translation>
-<translation id="7213166370492037743">Ne pas autoriser les sites à se connecter aux appareils sur votre réseau local</translation>
 <translation id="7219254577985949841">Supprimer les données du site ?</translation>
 <translation id="723171743924126238">Sélectionner des images</translation>
 <translation id="7243246278722455312">Bottom sheet de personnalisation de la page Nouvel onglet</translation>
@@ -757,7 +753,6 @@ La Protection Avancée contrôle les paramètres Brave suivants :</translation
 <translation id="8737426583868847403">Les sites pour lesquels vous avez enregistré un niveau de zoom personnalisé s'afficheront ici</translation>
 <translation id="8748714929822124637">Ne pas autoriser les sites à accéder à d'autres appareils sur votre réseau local</translation>
 <translation id="8751914237388039244">Sélectionner une image</translation>
-<translation id="8775741625735357092">Vous pouvez activer la barre de favoris dans Paramètres &gt; Apparence</translation>
 <translation id="8800034312320686233">Impossible d'accéder au site ?</translation>
 <translation id="8801436777607969138">Bloquez JavaScript sur un site spécifique.</translation>
 <translation id="2026315747406172223">V8 est le moteur JavaScript et WebAssembly de Brave qui permet d'améliorer les performances des sites</translation>

@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Πηγές</translation>
 <translation id="5158129253322921540">Απενεργοποιήστε το περιεχόμενο από το <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Προωθήθηκε</translation>
-<translation id="4541978218358617681">Διαφήμιση</translation>
 <translation id="1776831331757823105">Ρολόι</translation>
 <translation id="7791543448312431591">Προσθήκη</translation>
 <translation id="6216996674668969227">Κερδίστε token για την προβολή διαφημίσεων με σεβασμό στην ιδιωτικότητα.</translation>
@@ -737,8 +736,8 @@
 <translation id="8251969358165471584">Πορτοφόλι Web3</translation>
 <translation id="7160424977552599351">Χρησιμοποιήστε το Πορτοφόλι Web3 σας</translation>
 <translation id="6369571967625114920">Οι Ιδιωτικές διαφημίσεις Brave δεν είναι ακόμη διαθέσιμες στην περιοχή σας.</translation>
-<translation id="5309155375926073606">Ναι, θα ήθελα επίσης να συνεισφέρω στην Αναζήτηση Brave και να συμμετέχω στο <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Συνεισφέρετε κάποια ανώνυμα δεδομένα αναζήτησης και περιήγησης για να βελτιώσετε την Αναζήτηση Brave με το Web Discovery Project. Πρόκειται για εντελώς ανοικτό κώδικα.</translation>
+<translation id="5309155375926073606">Ναι, θα ήθελα επίσης να συνεισφέρω στην Αναζήτηση Brave και να συμμετάσχω στο <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Συνεισφέρετε ορισμένα ανώνυμα δεδομένα αναζήτησης και περιήγησης για τη βελτίωση της Αναζήτησης Brave με το Web Discovery Project. Είναι εντελώς ανοιχτού κώδικα.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Κοινότητα</translation>
 <translation id="845020633253356720">Προβολή καταστήματος</translation>
@@ -981,11 +980,11 @@
 <translation id="7080614857771109950">Υποστηρίζει στοιχεία συμβατά με EVM στο Ethereum blockchain (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Υποστηρίζει στοιχεία συμβατά με SLP στο Solana blockchain</translation>
 <translation id="4541295941776129088">Αποθήκευση στοιχείου FIL</translation>
-<translation id="6030958132571544682">Αποθήκευση στοιχείου FIL Testnet</translation>
+<translation id="6030958132571544682">Αποθήκευση περιουσιακού στοιχείου FIL Testnet</translation>
 <translation id="29759539656432505">Αποθήκευση στοιχείων BTC</translation>
 <translation id="2399555431746923964">Αποθήκευση στοιχείων BTC Testnet</translation>
 <translation id="8749751940551938347">Αποθήκευση στοιχείων ZEC</translation>
-<translation id="3451958544919449297">Αποθήκευση στοιχείων ZEC Testnet</translation>
+<translation id="3451958544919449297">Αποθήκευση περιουσιακών στοιχείων ZEC Testnet</translation>
 <translation id="8459631690385393533">Αποθήκευση στοιχείων Cardano</translation>
 <translation id="4915057812371523845">Αποθήκευση στοιχείων Cardano Testnet</translation>
 <translation id="5387140102951033657">Υποστηρίζει περιουσιακά στοιχεία Substrate στην κεντρική αλυσίδα Polkadot και σε parachains του Substrate</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Επιλεγμένο αρχείο</translation>
 <translation id="5891811606602061966">Αποτυχία εισαγωγής λογαριασμού, δοκιμάστε ξανά.</translation>
 <translation id="6566535583781706170">Εισαγωγή λογαριασμού</translation>
+<translation id="8079448455682522748">Αντιγράψτε το ιδιωτικό κλειδί για τον λογαριασμό που θέλετε να εισαγάγετε από άλλο πορτοφόλι.</translation>
+<translation id="8475326612689436917">Εξαγάγετε το ιδιωτικό κλειδί από άλλο πορτοφόλι σε ένα αρχείο JSON και ανεβάστε το εδώ.</translation>
+<translation id="5733063593286221597">Ανέβασμα αρχείου JSON</translation>
 <translation id="5051929972046200722">Επιλέξτε συσκευή πορτοφολιού υλικού</translation>
 <translation id="5745936663807461565">Συνδέστε το πορτοφόλι σας <ph name="HARDWARE_DEVICE"/> απευθείας με τον υπολογιστή σας.</translation>
 <translation id="4350216031085285578">Ξεκλειδώστε τη συσκευή σας και επιλέξτε την εφαρμογή <ph name="BLOCKCHAIN_NETWORK"/>.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">ΣΗΜΕΙΩΣΗ: Το ιδιωτικό κλειδί πρέπει να παρέχεται σε δεκαεξαδική μορφή JSON που περιέχει πληροφορίες για το ιδιωτικό κλειδί και το πρωτόκολλο. <ph name="LINK_START"/>Μάθετε περισσότερα<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ΣΗΜΕΙΩΣΗ: Υποστηρίζονται μόνο τα εκτεταμένα κλειδιά <ph name="FORMAT"/>.</translation>
 <translation id="6457746820359933716">Εισαγωγή χρησιμοποιώντας ένα αρχείο JSON που εξαγόταν από το Polkadot.js ή συμβατά πορτοφόλια. Εισαγάγετε τον κωδικό πρόσβασης που χρησιμοποιήθηκε για την κρυπτογράφηση της εξαγωγής.</translation>
-<translation id="9133762451347918196">Λογαριασμοί Testnet</translation>
+<translation id="7285350832506166367">Ψάχνετε για λογαριασμούς Testnet;</translation>
 <translation id="42126664696688958">Εξαγωγή</translation>
 <translation id="1366855498335432549">Κατάθεση</translation>
+<translation id="3852653589653889099">Απόκρυψη λογαριασμού</translation>
 <translation id="790104325876206743">Ρυθμίσεις λογαριασμού</translation>
 <translation id="8856844353253421399">Τελευταία ενημέρωση <ph name="TIME_AGO"/> πριν</translation>
 <translation id="6322030314101903925">Δεν υπάρχουν διαθέσιμα στοιχεία</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Όνομα λογαριασμού</translation>
 <translation id="1213870770696612739">Ελάχιστο ποσό: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Μέγιστο ποσό: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Ο λογαριασμός δημιουργήθηκε με επιτυχία</translation>
+<translation id="7444985841455466546">Ο λογαριασμός εισήχθη με επιτυχία</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Ο λογαριασμός hardware wallet συνδέθηκε με επιτυχία}
+      other {{ACCOUNTS} λογαριασμοί hardware wallet συνδέθηκαν με επιτυχία}
+    }</translation>
 <translation id="8528916244724490964">Όλα τα δίκτυα</translation>
 <translation id="7721139939763655123">Χαμηλό σε υψηλό</translation>
 <translation id="5458608274117818139">Υψηλό προς χαμηλό</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Κύρια δίκτυα</translation>
 <translation id="8323674164587854512">Ethereum + Αλυσίδες EVM</translation>
 <translation id="1398414935371867469">Solana + Αλυσίδες SVM</translation>
+<translation id="6498449512528552760">Μη έγκυρο πρόθεμα</translation>
 <translation id="7058248670699639973">Λογότυπο Δικτύου</translation>
 <translation id="4378208228955237306">Εμφάνιση λογότυπου δικτύου στα NFT</translation>
 <translation id="5472199803712163015">Ανεπιθύμητα NFT</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Αν δεν βρήκατε το περιουσιακό στοιχείο σας στη λίστα, μπορείτε να το προσθέσετε μη αυτόματα, χρησιμοποιώντας το παρακάτω κουμπί.</translation>
 <translation id="4543171429371680949">Το περιουσιακό στοιχείο δεν βρέθηκε</translation>
 <translation id="1026825928738055872">Είστε βέβαιοι ότι θέλετε να καταργήσετε το "<ph name="ACCOUNT_NAME"/>";</translation>
-<translation id="3910551537328657217">Αίτημα λειτουργίας</translation>
+<translation id="2220529011494928058">Αναφορά προβλήματος</translation>
 <translation id="7657322905916621147">Η φράση ανάκτησης πρέπει να έχει έκταση 12, 15, 18, 21 ή 24 λέξεων</translation>
 <translation id="5026874946691314267">Να μην εμφανιστεί αυτό ξανά</translation>
 <translation id="434502623875309667">Η ανάλυση διεύθυνσης απαιτεί αιτήματα δικτύου εκτός αλυσίδας. Συνέχεια;</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Εναλλαγή περιήγησης με δρομέα</translation>
 <translation id="4186334830839439230">Εμφάνιση ρυθμίσεων απόδοσης</translation>
 <translation id="1094277301241124207">Εμφάνιση πλαϊνού πίνακα σελιδοδεικτών</translation>
+<translation id="5101042277149003567">Άνοιγμα όλων των σελιδοδεικτών</translation>
 <translation id="8283515796576236471">Γραμμή σελιδοδεικτών Άνοιγμα όλων σε νέο παράθυρο</translation>
 <translation id="5271773791943587595">Γραμμή σελιδοδεικτών Άνοιγμα όλων σε ιδιωτικό παράθυρο</translation>
 <translation id="2748975346534113286">Γραμμή σελιδοδεικτών Άνοιγμα όλων Νέα ομάδα καρτελών</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Εμφάνιση εφαρμογών</translation>
 <translation id="3142853026316054951">Εναλλαγή λειτουργίας εστίασης</translation>
 <translation id="3468387898712904997">Νέο email alias</translation>
+<translation id="2796584247246518451">Νέος προσωρινός φάκελος</translation>
 <translation id="8591883849678260674">Δείτε το πρωτότυπο</translation>
 <translation id="1969654232209826429">λ. ανάγνωση</translation>
 <translation id="4101707289420716287">Απενεργοποίηση Speedreader</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Llama 3.1 8B, ένα μοντέλο που δημιουργήθηκε από τη Meta για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Llama φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Qwen VL 30B, ένα μοντέλο που δημιουργήθηκε από την Alibaba Cloud για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το Qwen φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-5, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-5 φιλοξενείται από το NEAR μέσω της δικής τους επαληθευόμενης ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το GLM-5.1, ένα μοντέλο που δημιουργήθηκε από τη Zhipu AI για χρήση και εφαρμογή σε πολλαπλά σενάρια. Το GLM-5.1 φιλοξενείται από το NEAR μέσω της δικής τους επαληθευόμενης ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Γεια σου, είμαι ο Leo. Είμαι ο AI βοηθός της Brave. Τροφοδοτούμαι από το Claude Instant, ένα μοντέλο της Anthropic για συνομιλία και επεξεργασία κειμένου. Το Claude Instant φιλοξενείται από την Brave στη δική της ασφαλή υποδομή.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Haiku, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Haiku φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Γεια σας, είμαι ο Leo. Είμαι ένας βοηθός AI από το Brave. Χρησιμοποιώ το Claude Sonnet, ένα μοντέλο που δημιουργήθηκε από την Anthropic για να υποστηρίζει εργασίες συνομιλίας και επεξεργασίας κειμένου. Το Claude Sonnet φιλοξενείται από το Brave μέσω της δικής μας ασφαλούς υποδομής.<ph name="LINK_BEFORE"/>Μάθετε περισσότερα<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Μπορεί να λείπει κάποιο πλαίσιο από τη συζήτηση. Ο Leo κατάφερε να διατηρήσει <ph name="PERCENTAGE"/> του σχετικού περιεχομένου της συνομιλίας.</translation>
 <translation id="8501106061098623831">Έχουν ληφθεί πάρα πολλές εικόνες από τη σελίδα. Ο Leo μπόρεσε να χρησιμοποιήσει <ph name="PERCENTAGE"/> του διαθέσιμου οπτικού περιεχομένου.</translation>
 <translation id="4370698775470316661">Αυτή η συζήτηση είναι πολύ μεγάλη και δεν μπορεί να συνεχιστεί. Μπορεί να υπάρχουν άλλα διαθέσιμα μοντέλα με τα οποία το Leo μπορεί να διατηρήσει την ακρίβεια για μεγαλύτερες συζητήσεις.</translation>
-<translation id="5719170755629028558">Βελτίωση της απάντησής σας με την Αναζήτηση Brave...</translation>
-<translation id="5794962229997281366">Αναζήτηση βελτιωμένης απάντησης για <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Αναζήτηση στο web</translation>
+<translation id="8548351747582087191">Αναζήτηση στο web για <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> περισσότερα...</translation>
 <translation id="8103700533980268469">Κλείσιμο της ειδοποίησης</translation>
 <translation id="3417835166382867856">Καρτέλες αναζήτησης</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Ίσως αργότερα</translation>
 <translation id="983013125018250242">Εργαλεία του Leo</translation>
 <translation id="7623223587478473368">Συνημμένο</translation>
-<translation id="3777121685517940177">Μεταφόρτωση αρχείου...</translation>
-<translation id="6739516910850820220">Ανέβασμα αρχείου...</translation>
+<translation id="3728603231003977269">Επισύναψη αρχείου...</translation>
+<translation id="7899721102369502629">Επισύναψη αρχείου...</translation>
 <translation id="9088751620363630236">Λήψη φωτογραφίας...</translation>
 <translation id="4250229828105606438">Στιγμιότυπο οθόνης</translation>
 <translation id="7949596341600215809">Πλήρες στιγμιότυπο οθόνης</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Παύση</translation>
 <translation id="4773299976671772492">Διακόπηκε</translation>
 <translation id="6946722113367118030">Σκέφτεται</translation>
+<translation id="7918928051723770926">Η εργασία ολοκληρώθηκε</translation>
 <translation id="2113810663179257944">Εκτέλεση κώδικα</translation>
-<translation id="6338250692384725496">Εκτελέστηκε κώδικας σε sandbox για να σας βοηθήσει με το ερώτημά σας</translation>
+<translation id="4838375634693651776">Εκτέλεση κώδικα σε sandbox για να σας βοηθήσει με το ερώτημά σας</translation>
 <translation id="4379566111233326721">Κώδικας:</translation>
 <translation id="3542130965673205258">Έξοδος:</translation>
+<translation id="6911817209337314910">Δημιουργία ορισμένων επιλογών για να επιλέξετε</translation>
 <translation id="5382076391290708074">Μετακίνηση των καρτελών σας</translation>
 <translation id="3862123464576147769">Η ενεργοποίηση θα στείλει τη <ph name="URL_FORMAT_START"/>διεύθυνση URL<ph name="URL_FORMAT_END"/> και τον <ph name="TITLE_FORMAT_START"/>τίτλο<ph name="TITLE_FORMAT_END"/> όλων των καρτελών σας και των ομάδων καρτελών σας στο Brave AI, και θα επιτρέψει στο Brave AI να τις μετακινήσει. Αυτή η άδεια ισχύει μόνο για αυτήν τη συνομιλία.</translation>
 <translation id="396165714586708444">Εκτεταμένη έρευνα</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">Η αφαίρεση του <ph name="ALIAS"/> ως alias θα έχει ως αποτέλεσμα την απώλεια της ικανότητάς σας να λαμβάνετε μηνύματα ηλεκτρονικού ταχυδρομείου.</translation>
 <translation id="8133100642915054515">Σφάλμα διαγραφής alias. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο και δοκιμάστε ξανά.</translation>
 <translation id="8465742443901727718">Η ενέργεια αυτή είναι μη αναστρέψιμη. Σίγουρα θέλετε να συνεχίσετε;</translation>
+<translation id="6402052536605772735">Σφάλμα κατά την ανάκτηση των email aliases από τους server μας. Ελέγξτε τη σύνδεσή σας στο διαδίκτυο.</translation>
 <translation id="9162685486229945876">Συνδεθείτε ή δημιουργήστε έναν λογαριασμό Brave</translation>
 <translation id="1335007417599138852">Ένας λογαριασμός Brave θα σας επιτρέψει να αποκτήσετε πρόσβαση σε συγκεκριμένα προϊόντα Brave και να συγχρονίσετε εύκολα τις πληροφορίες σας σε όλες τις συσκευές σας.</translation>
 <translation id="2133391407495495735">Λάβετε σύνδεσμο σύνδεσης</translation>
@@ -2700,7 +2716,7 @@
 <translation id="4117637339509843559">Σκουρόχρωμη λειτουργία</translation>
 <translation id="6302485303316397682">Θέλετε καλύτερα αποτελέσματα αναζήτησης;</translation>
 <translation id="7014699001826714920">Συμμετάσχετε στην προσπάθεια. Συνεισφέρετε στην Αναζήτηση Brave.</translation>
-<translation id="6821108091726602352">Βοηθήστε μας να βελτιώσουμε τον ιστό, συμμετέχοντας στο Web Discovery Project του Brave. Κοινοποιώντας εντελώς ανώνυμα σήματα αναζήτησης, μπορείτε να βοηθήσετε το Brave στην ανάπτυξη του ευρετηρίου αναζητήσεων.</translation>
+<translation id="6821108091726602352">Βοηθήστε μας να διορθώσουμε τον ιστό συμμετέχοντας στο Web Discovery Project της Brave. Μοιράζοντας εντελώς ανώνυμα σήματα αναζήτησης, μπορείτε να βοηθήσετε την Brave να αναπτύξει το ευρετήριο αναζήτησης.</translation>
 <translation id="6764845498618413165">Μάθετε περισσότερα.</translation>
 <translation id="7818938154803162778">Φυσικά, θα βοηθήσω</translation>
 <translation id="7207456302801184289">Καλώς ήλθατε στο Brave</translation>
@@ -2852,7 +2868,10 @@
 <translation id="6624553071240278643">Δημιουργήστε τον λογαριασμό σας</translation>
 <translation id="6505120968393722022">Δεν μπορείτε να χρησιμοποιήσετε διευθύνσεις @bravealias.com για τη δημιουργία λογαριασμών Brave. Παρακαλώ δοκιμάστε ξανά με διαφορετικό domain.</translation>
 <translation id="8248460961680233459">Δημιουργία κωδικού πρόσβασης</translation>
-<translation id="4917385247580444890">Ισχυρό</translation>
+<translation id="552339301062636488">Πολύ αδύναμο για να συνεχίσετε</translation>
+<translation id="8433528931936107676">Σχεδόν εκεί</translation>
+<translation id="4324743471050874155">Αρκετά ισχυρό</translation>
+<translation id="5585552203448068294">Εξαιρετικά ισχυρό</translation>
 <translation id="5486261815000869482">Επιβεβαίωση κωδικού πρόσβασης</translation>
 <translation id="7345706641791090287">Επιβεβαιώστε τον κωδικό πρόσβασής σας</translation>
 <translation id="7114054701490058191">Οι κωδικοί πρόσβασης δεν ταιριάζουν</translation>
@@ -2879,7 +2898,9 @@
 <translation id="4582421696414628320">Η επαλήθευση έληξε. Ξεκινήστε ξανά τη διαδικασία εγγραφής.</translation>
 <translation id="8439543211004394821">Εισήχθησαν πολλοί λανθασμένοι κωδικοί. Ξεκινήστε ξανά τη διαδικασία εγγραφής.</translation>
 <translation id="3229986152760633988">Λανθασμένος κωδικός, παρακαλώ δοκιμάστε ξανά.</translation>
+<translation id="818783632689113711">Έχει ήδη ζητηθεί λογαριασμός για αυτή τη διεύθυνση email. Ελέγξτε το email σας ή δοκιμάστε ξανά σε 30 λεπτά.</translation>
 <translation id="4178004989875422946">Ένας λογαριασμός Brave θα σας επιτρέψει να έχετε εύκολη πρόσβαση στις υπηρεσίες Brave.</translation>
+<translation id="4902897635127068510">Μήπως εννοούσατε <ph name="SUGGESTION"/>;</translation>
 <translation id="8314772463905284467">Το Caps Lock είναι ενεργοποιημένο</translation>
 <translation id="7044608453949401443">Δεν επιτρέπονται κενά στην αρχή ή στο τέλος του κωδικού πρόσβασης.</translation>
 <translation id="2939492377741553693">Το email επιβεβαίωσης στάλθηκε ξανά.</translation>
@@ -2890,4 +2911,5 @@
 <translation id="528205534230423181">Αυτός ο ιστότοπος προσφέρει ρυθμίσεις απορρήτου που το Brave μπορεί να προσαρμόσει αυτόματα για εσάς. Να τι προτείνουμε:</translation>
 <translation id="1063227610401477317">Εφαρμογή Αλλαγών</translation>
 <translation id="5539769255716491933">Αναφορά Αποτυχημένων Βημάτων</translation>
+<translation id="7562163394445060270">Η ολοκλήρωση της εργασίας απέτυχε</translation>
 </translationbundle>

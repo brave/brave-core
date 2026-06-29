@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">మూలాధారాలు</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> నుండి కంటెంట్ నిలిపివేయండి</translation>
 <translation id="3189348785087463371">ప్రచారం చేయబడినవి</translation>
-<translation id="4541978218358617681">యాడ్</translation>
 <translation id="1776831331757823105">గడియారం</translation>
 <translation id="7791543448312431591">జోడించు</translation>
 <translation id="6216996674668969227">గోప్యతను పరిరక్షించే ప్రకటనలను వీక్షిస్తున్నందుకు టోకెన్లు పొందండి.</translation>
@@ -523,6 +522,16 @@
 <translation id="2584752537998444309">{PUBLISHER_COUNT,plural,=1 {ఈ నెలలో, మీరు Brave Rewards మద్దతు ఇచ్చిన # క్రియేటర్‌ను సందర్శించారు} other {ఈ నెలలో, మీరు Brave Rewards మద్దతు ఇచ్చిన # క్రియేటర్‌లను సందర్శించారు}}</translation>
 <translation id="3264975266761862670">సంపాదించడానికి సిద్ధమా?</translation>
 <translation id="2784412028126205842">ఒక చెల్లింపు ఖాతాను కనెక్ట్ చేయండి</translation>
+<translation id="1789518312567918588">{ADS_VIEWED, plural,
+      =0 {మీరు ఈ నెల <ph name="COUNT_BEGIN"/> # Ads<ph name="COUNT_END"/> చూశారు}
+      =1 {మీరు ఈ నెల చూసిన <ph name="COUNT_BEGIN"/> # Ad<ph name="COUNT_END"/> కోసం మీరు చెల్లింపు పొందవచ్చు.}
+      other {మీరు ఈ నెల చూసిన <ph name="COUNT_BEGIN"/> # Ads<ph name="COUNT_END"/> కోసం మీరు చెల్లింపు పొందవచ్చు.}
+    }</translation>
+<translation id="1100743684843603297">{ADS_VIEWED, plural,
+      =0 {మీరు ఈ నెల <ph name="COUNT_BEGIN"/> # Ads<ph name="COUNT_END"/> చూశారు}
+      =1 {మీరు ఈ నెల <ph name="COUNT_BEGIN"/> # Ad<ph name="COUNT_END"/> చూసినందుకు సంపాదిస్తున్నారు}
+      other {మీరు ఈ నెల <ph name="COUNT_BEGIN"/> # Ads<ph name="COUNT_END"/> చూసినందుకు సంపాదిస్తున్నారు}
+    }</translation>
 <translation id="6067959437127691361">Brave Rewards ఉపయోగించడం కంటెంట్ క్రియేటర్లను సపోర్ట్ చేస్తుంది మరియు మీరు BAT ని సంపాదించేందుకు అనుమతిస్తుంది.</translation>
 <translation id="2359808026110333948">కొనసాగించు</translation>
 <translation id="3863981251715594911">ఇది ఎలా పని చేస్తుంది?</translation>
@@ -724,9 +733,9 @@
 <translation id="8251969358165471584">Web3 వాలెట్</translation>
 <translation id="7160424977552599351">మీ Web3 వాలెట్ ను వాడండి</translation>
 <translation id="6369571967625114920">Brave Private Ads మీ ప్రాంతంలో ఇంకా అందుబాటులో లేవు.</translation>
-<translation id="5309155375926073606">అవును, నేను కూడా వృద్ధి, బాధ్యతను తీసుకోగలనని మరియు<ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Web Discovery Project తో Brave Search ను మెరుగుపరుచడానికి కొంత అజ్ఞాత పరిశోధన మరియు బ్రౌసింగ్ డేటాను ఇవ్వండి. ఇది పూర్తిగా ఓపెన్-సోర్స్.</translation>
-<translation id="4174337572777167894">వెబ్ డిస్కవరీ ప్రాజెక్ట్</translation>
+<translation id="5309155375926073606">అవును, నేను Brave Searchకి సహాయం చేయాలని మరియు <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>కి ఆప్ట్ ఇన్ చేయాలని కూడా అనుకుంటున్నాను.</translation>
+<translation id="4622826307953794521">Web Discovery Projectతో Brave Searchని మెరుగుపరచడానికి కొంత అనామక శోధన మరియు బ్రౌజింగ్ డేటాను అందించండి. ఇది పూర్తిగా ఓపెన్-సోర్స్.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">కమనిటీ</translation>
 <translation id="845020633253356720">స్టోర్ వీక్షించండి</translation>
 <translation id="7777123407058400802">ప్రాథమిక అటెన్షన్ టోకెన - BAT</translation>
@@ -991,6 +1000,9 @@
 <translation id="6720675936326555106">ఎంచుకున్న ఫైల్‌</translation>
 <translation id="5891811606602061966">ఖాతాను దిగుమతి చేయడంలో విఫలమైంది, దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="6566535583781706170">ఖాతా దిగుమతి</translation>
+<translation id="8079448455682522748">మీరు వేరొక వాలెట్ నుండి దిగుమతి చేసుకోవాలనుకుంటున్న ఖాతా యొక్క ప్రైవేట్ కీని కాపీ చేయండి.</translation>
+<translation id="8475326612689436917">మరొక వాలెట్ నుండి ప్రైవేట్ కీని JSON ఫైల్‌గా ఎగుమతి చేసి, ఇక్కడ అప్‌లోడ్ చేయండి.</translation>
+<translation id="5733063593286221597">JSON ఫైల్‌ను అప్‌లోడ్ చేయండి</translation>
 <translation id="5051929972046200722">మీ హార్డ్‌వేర్ వాలెట్ పరికరాన్ని ఎంచుకోండి</translation>
 <translation id="5745936663807461565">మీరు మీ <ph name="HARDWARE_DEVICE"/> వాలెట్‌ను నేరుగా మీ కంప్యూటర్‌కు కనెక్ట్ చేయండి.</translation>
 <translation id="4350216031085285578">మీ పరికరాన్ని అన్‌లాక్ చేయండి మరియు <ph name="BLOCKCHAIN_NETWORK"/> యాప్‌ని ఎంచుకోండి.</translation>
@@ -1036,9 +1048,10 @@
 <translation id="7657130382217527063">గమనిక: ప్రైవేట్ కీ అష్టదికోడ్జన్ సాధించిన JSON లో అందించాలి, ఇందులో ప్రైవేట్ కీ మరియు ప్రోటోకాల్ సమాచారం ఉంటుంది. <ph name="LINK_START"/>మరింత తెలుసుకోండి<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">గమనిక: కేవలం <ph name="FORMAT"/> పొడిగించిన కీలు మాత్రమే మద్దతునిస్తుంది.</translation>
 <translation id="6457746820359933716">Polkadot.js లేదా సారూప్య వాలెట్‌ల నుండి ఎక్స్‌పోర్ట్ చేసిన JSON ఫైల్‌ను ఉపయోగించి ఇంపోర్ట్ చేయండి. ఎక్స్‌పోర్ట్‌ను గుప్తీకరించడానికి ఉపయోగించిన పాస్‌వర్డ్‌ను నమోదు చేయండి.</translation>
-<translation id="9133762451347918196">టెస్ట్‌నెట్ ఖాతాలు</translation>
+<translation id="7285350832506166367">టెస్ట్‌నెట్ ఖాతాల కోసం చూస్తున్నారా?</translation>
 <translation id="42126664696688958">ఎగుమతి</translation>
 <translation id="1366855498335432549">నിക്ഷేపం</translation>
+<translation id="3852653589653889099">ఖాతాను దాచు</translation>
 <translation id="790104325876206743">ఖాతా సమచారం</translation>
 <translation id="8856844353253421399">చివరిసారి <ph name="TIME_AGO"/> క్షణాల క్రితం నవీకరించింది</translation>
 <translation id="6322030314101903925">అందుబాటులో ఆస్తులు లేవు</translation>
@@ -1339,6 +1352,12 @@
 <translation id="3067168166931605141">ఖాతా పేరు</translation>
 <translation id="1213870770696612739">కనీస మొత్తము: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">గరిష్ట మొత్తము: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">ఖాతా విజయవంతంగా సృష్టించబడింది</translation>
+<translation id="7444985841455466546">ఖాతా విజయవంతంగా దిగుమతి చేయబడింది</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {హార్డ్‌వేర్ వాలెట్ ఖాతా విజయవంతంగా కనెక్ట్ చేయబడింది}
+      other {{ACCOUNTS} హార్డ్‌వేర్ వాలెట్ ఖాతాలు విజయవంతంగా కనెక్ట్ చేయబడ్డాయి}
+    }</translation>
 <translation id="8528916244724490964">అన్ని నెట్వర్క్స్</translation>
 <translation id="7721139939763655123">తక్కువ నుండి ఎక్కువకు</translation>
 <translation id="5458608274117818139">అధిక నుండి తక్కువకు</translation>
@@ -1361,6 +1380,7 @@
 <translation id="1257387162647804035">ప్రాథమిక నెట్వర్క్‌లు</translation>
 <translation id="8323674164587854512">ఇథీరియం + EVM చైన్‌లు</translation>
 <translation id="1398414935371867469">సొలానా + SVM చైన్‌లు</translation>
+<translation id="6498449512528552760">అమాన్యమైన ప్రిఫిక్స్</translation>
 <translation id="7058248670699639973">నెట్వర్క్ లోగో</translation>
 <translation id="4378208228955237306">NFTలలో నెట్వర్క్ లోగోను చూపు</translation>
 <translation id="5472199803712163015">స్పామ్ NFTs</translation>
@@ -1627,7 +1647,7 @@
 <translation id="1353726744456297797">మీరు ఈ జాబితాలో మీ ఆస్తి కనుగొనకపోతే, మీరు కింది బటన్ ఉపయోగించి మాన్యువల్ గా జోడించవచ్చు</translation>
 <translation id="4543171429371680949">ఆస్తి కనుగొనబడలేదు</translation>
 <translation id="1026825928738055872"><ph name="ACCOUNT_NAME"/> ను తొలగించాలా?</translation>
-<translation id="3910551537328657217">ఫీచర్ అభ్యర్థించండి</translation>
+<translation id="2220529011494928058">సమస్యను నివేదించండి</translation>
 <translation id="7657322905916621147">పునరుస్థాపన పదబంధం 12, 15, 18, 21, లేదా 24 పదాలు తప్పనిసరి</translation>
 <translation id="5026874946691314267">ఇది మళ్లీ చూపించవద్దు</translation>
 <translation id="434502623875309667">చిరునామా సామర్థ్యం సంఘం నెట్వర్క్ అభ్యర్థనలు అవసరం. కొనసాగించాలా?</translation>
@@ -2058,6 +2078,7 @@
 <translation id="7294510764127771956">క్యారెట్ బ్రౌజింగ్ టోగుల్ చేయి</translation>
 <translation id="4186334830839439230">కార్యతీరు సెట్టింగులను చూపించుము</translation>
 <translation id="1094277301241124207">బుక్‌మార్క్ సైడ్ ప్యానెల్ చూపించు</translation>
+<translation id="5101042277149003567">అన్ని బుక్‌మార్క్‌లను తెరవండి</translation>
 <translation id="8283515796576236471">బుక్‌మార్క్ బార్ రోపంము అన్ని కొత్త విండోలో తెరువు</translation>
 <translation id="5271773791943587595">బుక్‌మార్క్ బార్ ప్రతి విండోను ఐన్కోగ్నిటోలో తెరువు</translation>
 <translation id="2748975346534113286">బుక్‌మార్క్ బార్ అన్ని కొత్త టాబ్ గ్రూప్‌లో తెరువు</translation>
@@ -2144,6 +2165,7 @@
 <translation id="2367972762794486313">అనువర్తనాలను చూపు</translation>
 <translation id="3142853026316054951">ఫోకస్ మోడ్‌ను టోగుల్ చేయండి</translation>
 <translation id="3468387898712904997">కొత్త ఇమెయిల్ అలియాస్</translation>
+<translation id="2796584247246518451">కొత్త తాత్కాలిక కంటెనర్</translation>
 <translation id="8591883849678260674">అసలు పేజీని వీక్షించండి</translation>
 <translation id="1969654232209826429">నిమిషం. చదవండి</translation>
 <translation id="4101707289420716287">స్పీడ్‌రీడర్ ఆఫ్ చేయండి</translation>
@@ -2213,6 +2235,7 @@
 <translation id="1238020084128916796">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Llama 3.1 8B, Meta ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. Llama అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Qwen VL 30B, Alibaba Cloud రూపొందించిన మోడల్ ద్వారా నడుపుతాను. Qwen స్వంత భద్రతా మౌలిక సదుపాయాలపై Brave ద్వారా అవహసించబడుతుంది. <ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను GLM-5, Zhipu AI ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా శక్తితో ఒక సాధనాన్ని నడుపుతాను. GLM-5 అనేది NEAR-హోస్టింగ్ చేయబడిన వారి స్వంత ధృవీకరణీయమైన నిష్క్రియ భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">హాయ్, నేను లెయో. నేను బ్రేవ్ వారి AI సహాయకుడిని. నేను GLM-5.1 ద్వారా ఆధారితమై ఉన్నాను, ఇది అనేక వినియోగ సందర్భాలకు అనుకూలంగా మరియు అధిక పనితీరు కనబరిచేలా జిపు AI చేత సృష్టించబడిన ఒక మోడల్. GLM-5.1 వారి సొంత, ధృవీకరించదగినంత ప్రైవేట్ మరియు సురక్షితమైన మౌలిక సదుపాయాల ద్వారా NEAR-హోస్ట్ చేయబడింది.<ph name="LINK_BEFORE"/>మరింత తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">హాయ్, నేను లియోను. నేను Brave సంస్థచే అందించబడిన AI సహాయకుడు. నేను Anthropic రూపొందించిన Claude Instant మోడల్ ఆధారంగా పనిచేస్తాను. Brave Claude Instant‌ను తెలివిగా మా స్వంత సురక్షిత మౌలిక సదుపాయాల ద్వారా హోస్ట్ చేస్తుంది.<ph name="LINK_BEFORE"/>ఇంకా తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Haiku, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Haiku అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">హాయ్, నేను లియో. నేను బ్రేవ్ అందించే AI సహాయకుడిని. నేను Claude Sonnet, Anthropic ద్వారా రూపొందించబడిన ఒక కృత్రిమ మోడల్ ద్వారా సంభాషణ మరియు టెక్స్ట్ ప్రాసెసింగ్ పనులకు శక్తినిస్తుంది. Claude Sonnet అనేది మా స్వంత భద్రతాపరమైన మౌలిక సదుపాయాల ద్వారా Brave-హోస్టింగ్ చేయబడింది. <ph name="LINK_BEFORE"/>మరియు తెలుసుకోండి<ph name="LINK_AFTER"/></translation>
@@ -2330,8 +2353,8 @@
 <translation id="4592293425457329338">సంభాషణ నుండి కొంత సందర్భం అసానుకూలంగా ఉంటే సర్వరీందే. లియో సమాధాన గురించి ఏదైన నిలుపుకుంటుంటున్న కంటెంట్ లో <ph name="PERCENTAGE"/> మాత్రమే నిలిచింది.</translation>
 <translation id="8501106061098623831">పేజీ నుండి చాలా ఇమేజులు తీసుకోబడ్డాయి. అందుబాటులో ఉన్న విజువల్ కంటెంట్‌లో <ph name="PERCENTAGE"/> లియో ఉపయోగించగలిగాడు.</translation>
 <translation id="4370698775470316661">ఈ సంభాషణ మరీ పొడవుగా ఉంది మరియు కొనసాగించలేము. లో గత మోడళ్ళు ఈ ఎంపికలతో ఉంటే మరియు వివరణకు కొందరికి మంచి వాడుక లేని అనేక ఇతరే.</translation>
-<translation id="5719170755629028558">లియో సమాధానాన్ని మెరుగుపర్చడానికి సోదన చేయబడుతోంది…</translation>
-<translation id="5794962229997281366">గురించి మెరుగుపరచబడిన సమాధానం <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">వెబ్‌లో వెతకడం</translation>
+<translation id="8548351747582087191"><ph name="SEARCH_TERMS"/> కోసం వెబ్‌లో శోధిస్తున్నారు.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> మరిన్ని…</translation>
 <translation id="8103700533980268469">ఈ నోటీస్‌ను మూసివేయండి</translation>
 <translation id="3417835166382867856">ట్యాబ్‌లను అన్వేషించండి</translation>
@@ -2402,8 +2425,8 @@
 <translation id="2370739752330685659">Maybe later</translation>
 <translation id="983013125018250242">Leo టూల్స్</translation>
 <translation id="7623223587478473368">అటాచ్మెంట్</translation>
-<translation id="3777121685517940177">ఫైల్ అప్‌లోడ్ చేయండి...</translation>
-<translation id="6739516910850820220">ఫైల్ ని అప్‌లోడ్ చేస్తోంది...</translation>
+<translation id="3728603231003977269">ఫైల్‌ను జతచేయండి...</translation>
+<translation id="7899721102369502629">ఫైల్ జతచేయబడుతోంది...</translation>
 <translation id="9088751620363630236">ఫోటోను తీసుకోండి...</translation>
 <translation id="4250229828105606438">స్క్రీన్‌షాట్</translation>
 <translation id="7949596341600215809">పూర్తి పేజీ స్క్రీన్‌షాట్</translation>
@@ -2451,10 +2474,12 @@
 <translation id="7607002721634913082">పూజించబడింది</translation>
 <translation id="4773299976671772492">ఆపివేయబడింది</translation>
 <translation id="6946722113367118030">ఆలోచిస్తోంది</translation>
+<translation id="7918928051723770926">పని పూర్తయింది</translation>
 <translation id="2113810663179257944">కోడ్ అమలు</translation>
-<translation id="6338250692384725496">మీ ప్రశ్నకు సహాయం చేయడానికి సాండ్‌బాక్స్‌లో కోడ్ అమలు చేసింది</translation>
+<translation id="4838375634693651776">మీ ప్రశ్నకు సహాయపడటానికి శాండ్‌బాక్స్‌లో కోడ్ అమలు చేస్తున్నాము</translation>
 <translation id="4379566111233326721">కోడ్:</translation>
 <translation id="3542130965673205258">ఔట్పుట్:</translation>
+<translation id="6911817209337314910">మీరు ఎంచుకోవడానికి కొన్ని ఎంపికలను రూపొందిస్తున్నాము</translation>
 <translation id="5382076391290708074">మీ ట్యాబ్‌లను చుట్టూ తరలించడం</translation>
 <translation id="3862123464576147769">దీన్ని అనుమతించడం Brave AI కు మీ అన్ని ట్యాబ్‌లు మరియు ట్యాబ్ గ్రూపుల <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> మరియు <ph name="TITLE_FORMAT_START"/>శీర్షిక<ph name="TITLE_FORMAT_END"/>ను పంపుతుంది, మరియు Brave AI ను వాటిని చుట్టూ తరలించడానికి అనుమతిస్తుంది. ఈ అనుమతి ఈ సంభాషణకు మాత్రమే వర్తిస్తుంది.</translation>
 <translation id="396165714586708444">లోతైన నిర్ధారణ</translation>
@@ -2505,6 +2530,7 @@
 <translation id="646524615209870492">అలియాస్ <ph name="ALIAS"/> ఒక అలియాస్‌గా తీసివేయడం మీ ఇమెయిల్స్‌ని అందుకోవడానికి మీ సామర్ధ్యాన్ని కోల్పోవడానికి కారణమవుతుంది.</translation>
 <translation id="8133100642915054515">అలియాస్ తొలగించే లోపం. మీ ఇంటర్నెట్ కనెక్షన్‌ని తనిఖీ చేసి మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="8465742443901727718">ఈ చర్య రివర్స్ చేయలేను. మీరు కొనసాగించాలా అని మీరు ఖచ్చితంగా నమ్ముతున్నారా?</translation>
+<translation id="6402052536605772735">మా సర్వర్‌ల నుండి ఇమెయిల్ అలియాస్‌లను పొందడంలో దోషం. దయచేసి మీ ఇంటర్నెట్ కనెక్షన్‌ను తనిఖీ చేయండి.</translation>
 <translation id="9162685486229945876">బ్రేవ్ ఖాతా సైన్ ఇన్ చేయండి లేదా సృష్టించండి</translation>
 <translation id="1335007417599138852">బ్రేవ్ ఖాతా మీ సమస్త పరికరాలలో నిర్దిష్ట బ్రేవ్ ఉత్పత్తులు మరియు సులభంగా సమకాలీకరణ సమాచారాన్ని యాక్సెస్ చేయడానికి అనుమతిస్తుంది.</translation>
 <translation id="2133391407495495735">లాగిన్ లింక్ పొందండి</translation>
@@ -2684,7 +2710,7 @@
 <translation id="4117637339509843559">డార్క్ మోడ్</translation>
 <translation id="6302485303316397682">మంచి శోధన ఫలితాలు కావా?</translation>
 <translation id="7014699001826714920">చలనంలో చేరండి, బ్రేవ్ సెర్చ్‌లో తోడ్పడండి.</translation>
-<translation id="6821108091726602352">బ్రేవ్ వెబ్ డిస్కవరీ ప్రోజెక్ట్‌లో పాల్గొనడం ద్వారా వెబ్‌ని సరిపడేలాగా చేయడంలో మాకు సహాయం చేయండి. పూర్తిగా అనామిక శోధన సంకేతాలను పంచుకోవడం ద్వారా, బ్రేవ్ శోధన సూచికను పెంచడంలో మాకు సహాయం చేయవచ్చు.</translation>
+<translation id="6821108091726602352">Brave యొక్క Web Discovery Project లో పాల్గొనడం ద్వారా వెబ్‌ను సరిచేయడంలో మాకు సహాయం చేయండి. పూర్తిగా అనామక శోధన సంకేతాలను భాగస్వామ్యం చేయడం ద్వారా, శోధన సూచిక పెరగడంలో Brave కి మీరు సహాయం చేయవచ్చు.</translation>
 <translation id="6764845498618413165">మరింత తెలుసుకోండి.</translation>
 <translation id="7818938154803162778">సరే, సహాయం చేస్తాను</translation>
 <translation id="7207456302801184289">Braveకు స్వాగతం</translation>
@@ -2837,7 +2863,10 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="6624553071240278643">మీ ఖాతాను సృష్టించండి</translation>
 <translation id="6505120968393722022">Brave ఖాతాలను సృష్టించడానికి మీరు @bravealias.com చిరునామాలను ఉపయోగించలేరు. దయచేసి వేరే డొమైన్‌తో మళ్ళీ ప్రయత్నించండి.</translation>
 <translation id="8248460961680233459">పాస్వర్డ్ సృష్టించండి</translation>
-<translation id="4917385247580444890">బలమైన</translation>
+<translation id="552339301062636488">ముందుకు సాగలేనంత బలహీనంగా</translation>
+<translation id="8433528931936107676">అక్కడికి చేరుకోవడం</translation>
+<translation id="4324743471050874155">తగినంత బలంగా</translation>
+<translation id="5585552203448068294">అసాధారణంగా బలమైన</translation>
 <translation id="5486261815000869482">పాస్‌వర్డ్‌ను నిర్ధారించండి</translation>
 <translation id="7345706641791090287">మీ పాస్‌వర్డ్‌ను నిర్ధారించండి</translation>
 <translation id="7114054701490058191">పాస్‌వర్డ్‌లు సరిపోలడం లేదు</translation>
@@ -2864,7 +2893,9 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="4582421696414628320">ధృవీకరణ గడువు ముగిసింది. నమోదు ప్రక్రియను మళ్ళీ ప్రారంభించండి.</translation>
 <translation id="8439543211004394821">చాలా తప్పు కోడ్‌లు నమోదు చేయబడ్డాయి. నమోదు ప్రక్రియను మళ్ళీ ప్రారంభించండి.</translation>
 <translation id="3229986152760633988">తప్పు కోడ్, దయచేసి మళ్ళీ ప్రయత్నించండి.</translation>
+<translation id="818783632689113711">ఈ ఇమెయిల్ చిరునామా కోసం ఖాతా ఇప్పటికే అభ్యర్థించబడింది. దయచేసి మీ ఇమెయిల్‌ను తనిఖీ చేయండి లేదా 30 నిమిషాల తర్వాత మళ్లీ ప్రయత్నించండి.</translation>
 <translation id="4178004989875422946">Brave ఖాతా మీరు Brave సేవలను సులభంగా యాక్సెస్ చేయడానికి అనుమతిస్తుంది.</translation>
+<translation id="4902897635127068510">మీరు <ph name="SUGGESTION"/> అని అడగాలనుకుంటున్నారా?</translation>
 <translation id="8314772463905284467">క్యాప్స్ లాక్ ఆన్‌లో ఉంది</translation>
 <translation id="7044608453949401443">పాస్‌వర్డ్ ప్రారంభంలో లేదా ముగింపులో స్పేస్‌లు అనుమతించబడవు.</translation>
 <translation id="2939492377741553693">నిర్ధారణ ఇమెయిల్ తిరిగి పంపబడింది.</translation>
@@ -2875,4 +2906,5 @@ Brave ఒక హెల్పర్ సేవను కలిగి ఉంది 
 <translation id="528205534230423181">ఈ వెబ్‌సైట్ Brave మీ కోసం స్వయంచాలకంగా సర్దుబాటు చేయగల గోప్యతా సెట్టింగ్‌లను అందిస్తుంది. మేము సిఫార్సు చేసేది ఇదిగో:</translation>
 <translation id="1063227610401477317">మార్పులను అన్వయించండి</translation>
 <translation id="5539769255716491933">విఫలమైన దశలను నివేదించండి</translation>
+<translation id="7562163394445060270">పని పూర్తి చేయడంలో విఫలమైంది</translation>
 </translationbundle>

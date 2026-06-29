@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> टॅब गटबद्ध केला आहे</translation>
 <translation id="1844381456014878100">७ दिवस इनॅक्टिव्ह राहिल्यानंतर</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> टॅब}other{<ph name="TABS_COUNT_MANY"/> टॅब}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{वाचन सूचीवर टॅब जोडा}other{वाचन सूचीवर टॅब जोडा}}</translation>
 <translation id="1909810060368225529">नोटिस: शेअर केलेल्या या टॅब गट मधील बदल प्रत्येकासाठी दृश्यमान आहेत. सर्वजण तुमच्या शेअर केलेल्या टॅब गटांमध्ये बदल करू शकतात</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{टॅब पिन करा}other{टॅब पिन करा}}</translation>
 <translation id="1982637982196732906">इनॅक्टिव्ह विभागामध्ये हलवा</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{निवडलेला <ph name="TABS_COUNT_ONE"/> टॅब बुकमार्क करा}other{निवडलेले <ph name="TABS_COUNT_MANY"/> टॅब बुकमार्क करा}}</translation>
 <translation id="2055057176188061528">टॅब गट निवडा किंवा नवीन टॅब गट तयार करा</translation>
 <translation id="2074527029802029717">टॅब अनपिन करा</translation>
+<translation id="2111670510994270194">उजवीकडील नवीन टॅब</translation>
 <translation id="2118649612461486615">स्टोअरची माहिती</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{साइट अनम्यूट करा}other{साइट अनम्यूट करा}}</translation>
 <translation id="2162620598375156287">आता <ph name="SOURCE_WEBSITE"/> वर <ph name="CURRENT_PRICE"/> मध्ये आहे</translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> पासून किमतीमध्ये <ph name="PRICE_DROP"/> घसरण</translation>
 <translation id="3078350928901129212"><ph name="COLOR_NAME"/> या टॅब गटाच्या रंगाचा आयकन</translation>
 <translation id="311432875115153175">टॅब गट सूची बंद केली आहे</translation>
+<translation id="3152596030350326139">टॅब आडव्या पद्धतीने दाखवा</translation>
+<translation id="31806439105337256">टॅब उभ्या पद्धतीने दाखवा</translation>
 <translation id="3194464645767632461">रेटिंग</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{गटामध्ये <ph name="TABS_COUNT_ONE"/> टॅब जोडा}other{गटामध्ये <ph name="TABS_COUNT_MANY"/> टॅब जोडा}}</translation>
 <translation id="3328308545011660196">सूचना: <ph name="NUMBER_OF_TABS"/> टॅब संबंधित वाटतात. त्यांचा गट बनवायचा का?</translation>

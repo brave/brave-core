@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Zdroje</translation>
 <translation id="5158129253322921540">Vypnout odběr obsahu od <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Propagované</translation>
-<translation id="4541978218358617681">Reklama</translation>
 <translation id="1776831331757823105">Hodiny</translation>
 <translation id="7791543448312431591">Přidat</translation>
 <translation id="6216996674668969227">Získejte tokeny za prohlížení reklam respektujících soukromí.</translation>
@@ -742,9 +741,9 @@
 <translation id="8251969358165471584">Peněženka Web3</translation>
 <translation id="7160424977552599351">Použijte peněženku Web3</translation>
 <translation id="6369571967625114920">Soukromé reklamy Brave ještě nejsou ve vaší oblasti dostupné.</translation>
-<translation id="5309155375926073606">Ano, chci také přispět k Vyhledávání Brave a přihlásil se k <ph name="LINK_BEGIN"/>projektu Web Discovery<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Přispějte v rámci projektu projektu Web Discovery svými anonymními údaji o vyhledávání a prohlížení ke zdokonalení vyhledávání Brave. Je to kompletně open-source.</translation>
-<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="5309155375926073606">Ano, rád(a) bych také přispěl(a) do Vyhledávače Brave a zapojil(a) se do projektu <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Přispějte anonymními daty o vyhledávání a prohlížení a vylepšete Vyhledávač Brave pomocí projektu Web Discovery Project. Je zcela open-source.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Komunita</translation>
 <translation id="845020633253356720">Zobrazit obchod</translation>
 <translation id="7777123407058400802">Základní token pozornosti – BAT</translation>
@@ -988,11 +987,11 @@
 <translation id="7080614857771109950">Podporuje aktiva kompatibilní s EVM na blockchainu Etherea (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Podporuje aktiva kompatibilní s SLP na blockchainu Solana</translation>
 <translation id="4541295941776129088">Uložit aktivum FIL</translation>
-<translation id="6030958132571544682">Ukládání aktiv FIL Testnet</translation>
+<translation id="6030958132571544682">Uložit prostředek sítě FIL Testnet</translation>
 <translation id="29759539656432505">Uložit aktiva BTC</translation>
 <translation id="2399555431746923964">Ukládání aktiv BTC Testnet</translation>
 <translation id="8749751940551938347">Uložit aktiva ZEC</translation>
-<translation id="3451958544919449297">Ukládání aktiv ZEC Testnet</translation>
+<translation id="3451958544919449297">Uložit prostředky sítě ZEC Testnet</translation>
 <translation id="8459631690385393533">Uložit aktiva Cardano</translation>
 <translation id="4915057812371523845">Uložit aktiva Cardano Testnet</translation>
 <translation id="5387140102951033657">Podporuje aktiva Substrate na posílacím řetězci Polkadot a parachainy Substrate</translation>
@@ -1011,6 +1010,9 @@
 <translation id="6720675936326555106">Vybraný soubor</translation>
 <translation id="5891811606602061966">Účet se nepodařilo importovat, zkuste to znovu.</translation>
 <translation id="6566535583781706170">Importovat účet</translation>
+<translation id="8079448455682522748">Zkopírujte privátní klíč pro účet, který chcete importovat z jiné peněženky.</translation>
+<translation id="8475326612689436917">Exportujte privátní klíč z jiné peněženky do souboru JSON a nahrajte jej sem.</translation>
+<translation id="5733063593286221597">Nahrát soubor JSON</translation>
 <translation id="5051929972046200722">Vyberte zařízení s hardwarovou peněženkou</translation>
 <translation id="5745936663807461565">Připojte <ph name="HARDWARE_DEVICE"/> peněženku přímo k počítači.</translation>
 <translation id="4350216031085285578">Odemkněte své zařízení a vyberte aplikaci<ph name="BLOCKCHAIN_NETWORK"/>.</translation>
@@ -1056,9 +1058,10 @@
 <translation id="7657130382217527063">POZNÁMKA: Soukromý klíč se musí poskytovat jako hexadecimálně kódovaný JSON, který obsahuje informace o soukromém klíči a protokolu. <ph name="LINK_START"/>Více informací<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">POZNÁMKA: Podporovány jsou pouze rozšířené klíče <ph name="FORMAT"/>.</translation>
 <translation id="6457746820359933716">Importujte pomocí souboru JSON exportovaného z Polkadot.js nebo kompatibilních peněženek. Zadejte heslo použité k zašifrování exportu.</translation>
-<translation id="9133762451347918196">Testnet účty</translation>
+<translation id="7285350832506166367">Hledáte účty testnetu?</translation>
 <translation id="42126664696688958">Export</translation>
 <translation id="1366855498335432549">Vklad</translation>
+<translation id="3852653589653889099">Skrýt účet</translation>
 <translation id="790104325876206743">Nastavení účtu</translation>
 <translation id="8856844353253421399">Naposledy aktualizováno <ph name="TIME_AGO"/> ago</translation>
 <translation id="6322030314101903925">Nejsou k dispozici žádná aktiva</translation>
@@ -1359,6 +1362,14 @@
 <translation id="3067168166931605141">Název účtu</translation>
 <translation id="1213870770696612739">Minimální částka: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Maximální částka: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Účet byl úspěšně vytvořen</translation>
+<translation id="7444985841455466546">Účet byl úspěšně importován</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Účet hardwarové peněženky byl úspěšně připojen}
+      few {{ACCOUNTS} účty hardwarové peněženky byly úspěšně připojeny}
+      many {{ACCOUNTS} účtů hardwarové peněženky bylo úspěšně připojeno}
+      other {{ACCOUNTS} účtů hardwarové peněženky bylo úspěšně připojeno}
+    }</translation>
 <translation id="8528916244724490964">Všechny sítě</translation>
 <translation id="7721139939763655123">Od nejnižší k nejvyšší hodnotě</translation>
 <translation id="5458608274117818139">Od nejvyšší k nejnižší hodnotě</translation>
@@ -1381,6 +1392,7 @@
 <translation id="1257387162647804035">Primární sítě</translation>
 <translation id="8323674164587854512">Ethereum + řetězce EVM</translation>
 <translation id="1398414935371867469">Solana + řetězce SVM</translation>
+<translation id="6498449512528552760">Neplatná předpona</translation>
 <translation id="7058248670699639973">Logo sítě</translation>
 <translation id="4378208228955237306">Zobrazit logo sítě na NFT</translation>
 <translation id="5472199803712163015">Spamové NFT</translation>
@@ -1651,7 +1663,7 @@
 <translation id="1353726744456297797">Jestliže jste na seznamu nenašli své aktivum, můžete je přidat ručně pomocí tlačítka níže</translation>
 <translation id="4543171429371680949">Aktivum nenalezeno</translation>
 <translation id="1026825928738055872">Jste si jistí, že chcete „<ph name="ACCOUNT_NAME"/>“ odstranit?</translation>
-<translation id="3910551537328657217">Funkce požadavku</translation>
+<translation id="2220529011494928058">Nahlásit problém</translation>
 <translation id="7657322905916621147">Obnovovací fráze musí být dlouhá 12, 15, 18, 21 nebo 24 slov</translation>
 <translation id="5026874946691314267">Znovu nezobrazovat</translation>
 <translation id="434502623875309667">Rozlišení adres vyžaduje požadavky mimo řetězec sítě. Pokračovat?</translation>
@@ -2083,6 +2095,7 @@ other {# zdrojů}
 <translation id="7294510764127771956">Přepnout procházení pomocí kurzoru</translation>
 <translation id="4186334830839439230">Zobrazit nastavení výkonu</translation>
 <translation id="1094277301241124207">Zobrazit boční panel záložky</translation>
+<translation id="5101042277149003567">Otevřít všechny záložky</translation>
 <translation id="8283515796576236471">Otevřít vše v liště záložek v novém okně</translation>
 <translation id="5271773791943587595">Otevřít vše v liště záložek v soukromém okně</translation>
 <translation id="2748975346534113286">Skupina nové záložky otevřít vše v liště záložek</translation>
@@ -2169,6 +2182,7 @@ other {# zdrojů}
 <translation id="2367972762794486313">Zobrazit aplikace</translation>
 <translation id="3142853026316054951">Přepnout režim zaměření</translation>
 <translation id="3468387898712904997">Nový e-mailový alias</translation>
+<translation id="2796584247246518451">Nový dočasný kontejner</translation>
 <translation id="8591883849678260674">Zobrazit originál</translation>
 <translation id="1969654232209826429">min. čtení</translation>
 <translation id="4101707289420716287">Vypnout Speedreader</translation>
@@ -2242,6 +2256,7 @@ other {# zdrojů}
 <translation id="1238020084128916796">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Llama 3.1 8B, který vytvořila společnost Meta, aby byl výkonný a použitelný v mnoha případech. Model Llama je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Qwen VL 30B, který vytvořila společnost Alibaba Cloud, aby byl výkonný a použitelný v mnoha případech. Model Qwen je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-5, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-5 je hostován na NEAR prostřednictvím jejich ověřitelně soukromé zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model GLM-5.1, který vytvořila společnost Zhipu AI, aby byl výkonný a použitelný v mnoha případech. Model GLM-5.1 je hostován na NEAR prostřednictvím jejich ověřitelně soukromé zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Ahoj, jsem Leo. Jsem AI asistent od Brave. Mě pohání Claude Instant, model vytvořený společností Anthropic pro konverzační a textové úkoly. Claude Instant je hostován Brave na vlastní zabezpečené infrastruktuře.<ph name="LINK_BEFORE"/>Více informací<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Haiku, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Haiku je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Dobrý den, jsem Leo. Jsem AI asistentem od Brave. Využívám model Claude Sonnet, který vytvořila společnost Anthropic ke zpracování úloh konverzace a zpracování textu. Model Claude Sonnet je hostován společností Brave prostřednictvím vlastní zabezpečené infrastruktury.<ph name="LINK_BEFORE"/>Zjistit více<ph name="LINK_AFTER"/></translation>
@@ -2359,8 +2374,8 @@ other {# zdrojů}
 <translation id="4592293425457329338">V rozhovoru mohou chybět některé souvislosti. Leo je schopen zachovat <ph name="PERCENTAGE"/> souvisejícího obsahu konverzace.</translation>
 <translation id="8501106061098623831">Na stránce bylo zachyceno příliš mnoho obrázků. Leo dokázal použít <ph name="PERCENTAGE"/> dostupného vizuálního obsahu.</translation>
 <translation id="4370698775470316661">Tato konverzace je příliš dlouhá a nemůže pokračovat. Mohou být k dispozici jiné modely, se kterými je Leo schopen udržet přesnost u delších konverzací.</translation>
-<translation id="5719170755629028558">Vylepšení vaší odpovědi pomocí Vyhledávání Brave…</translation>
-<translation id="5794962229997281366">Vylepšené vyhledávání odpovědí pro <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Vyhledávání na webu</translation>
+<translation id="8548351747582087191">Vyhledávání na webu pro <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> další(ch)…</translation>
 <translation id="8103700533980268469">Zavřít toto oznámení</translation>
 <translation id="3417835166382867856">Vyhledávat v kartách</translation>
@@ -2431,8 +2446,8 @@ other {# zdrojů}
 <translation id="2370739752330685659">Možná později</translation>
 <translation id="983013125018250242">Nástroje Leo</translation>
 <translation id="7623223587478473368">Příloha</translation>
-<translation id="3777121685517940177">Nahrát soubor...</translation>
-<translation id="6739516910850820220">Nahrávání souboru...</translation>
+<translation id="3728603231003977269">Připojit soubor...</translation>
+<translation id="7899721102369502629">Připojování souboru...</translation>
 <translation id="9088751620363630236">Pořídit fotku...</translation>
 <translation id="4250229828105606438">Snímek obrazovky</translation>
 <translation id="7949596341600215809">Snímek celé stránky</translation>
@@ -2480,10 +2495,12 @@ other {# zdrojů}
 <translation id="7607002721634913082">Pozastaveno</translation>
 <translation id="4773299976671772492">Zastaveno</translation>
 <translation id="6946722113367118030">Přemýšlím</translation>
+<translation id="7918928051723770926">Úkol dokončen</translation>
 <translation id="2113810663179257944">Spuštění kódu</translation>
-<translation id="6338250692384725496">Spuštěn kód v izolovaném prostředí pro pomoc s vaším dotazem</translation>
+<translation id="4838375634693651776">Spouštění kódu v izolovaném prostředí pro pomoc s vaším dotazem</translation>
 <translation id="4379566111233326721">Kód:</translation>
 <translation id="3542130965673205258">Výstup:</translation>
+<translation id="6911817209337314910">Generování několika možností, ze kterých si můžete vybrat</translation>
 <translation id="5382076391290708074">Přesun vašich karet</translation>
 <translation id="3862123464576147769">Povolením se odešlou <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> a <ph name="TITLE_FORMAT_START"/>Název<ph name="TITLE_FORMAT_END"/> všech vašich karet a skupin karet do Brave AI a umožní Brave AI je přesunovat. Toto oprávnění se vztahuje pouze na tuto konverzaci.</translation>
 <translation id="396165714586708444">Hluboký výzkum</translation>
@@ -2534,6 +2551,7 @@ other {# zdrojů}
 <translation id="646524615209870492">Odstraní alis <ph name="ALIAS"/>, což povede ke ztrátě možnosti přijímat e-maily.</translation>
 <translation id="8133100642915054515">Chyba při odstraňování aliasu. Zkontrolujte připojení k internetu a zkuste to znovu.</translation>
 <translation id="8465742443901727718">Tuto akci nelze vrátit zpět. Jste si jisti, že chcete pokračovat?</translation>
+<translation id="6402052536605772735">Chyba při načítání e-mailových aliasů z našich serverů. Zkontrolujte prosím své internetové připojení.</translation>
 <translation id="9162685486229945876">Přihlaste se nebo si vytvořte Brave účet</translation>
 <translation id="1335007417599138852">Brave účet vám umožní přístup k určitým produktům Brave a snadné synchronizaci informací na všech vašich zařízeních.</translation>
 <translation id="2133391407495495735">Získat přihlašovací odkaz</translation>
@@ -2714,7 +2732,7 @@ other {# zdrojů}
 <translation id="4117637339509843559">Tmavý režim</translation>
 <translation id="6302485303316397682">Chcete lepší výsledky vyhledávání?</translation>
 <translation id="7014699001826714920">Přidejte se k hnutí a přispějte do vyhledávání Brave.</translation>
-<translation id="6821108091726602352">Pomozte nám opravit web účastí v projektu Web Discovery společnosti Brave. Sdílením zcela anonymních vyhledávacích signálů můžete Brave pomoci rozšířit index vyhledávání.</translation>
+<translation id="6821108091726602352">Pomozte nám zlepšit web tím, že se zapojíte do programu Web Discovery Project od Brave. Sdílením zcela anonymních vyhledávacích signálů můžete pomoci Brave rozšířit vyhledávací index.</translation>
 <translation id="6764845498618413165">Zjistit více.</translation>
 <translation id="7818938154803162778">Jistě, pomohu vám</translation>
 <translation id="7207456302801184289">Vítá vás Brave</translation>
@@ -2867,7 +2885,10 @@ Pojďme vás připojit!</translation>
 <translation id="6624553071240278643">Vytvořte si účet</translation>
 <translation id="6505120968393722022">Pro vytvoření účtu Brave nemůžete použít adresy @bravealias.com. Zkuste to prosím znovu s jinou doménou.</translation>
 <translation id="8248460961680233459">Vytvořit heslo</translation>
-<translation id="4917385247580444890">Silný</translation>
+<translation id="552339301062636488">Příliš slabé pro pokračování</translation>
+<translation id="8433528931936107676">Už je to skoro</translation>
+<translation id="4324743471050874155">Dostatečně silné</translation>
+<translation id="5585552203448068294">Výjimečně silné</translation>
 <translation id="5486261815000869482">Potvrdit heslo</translation>
 <translation id="7345706641791090287">Potvrďte své heslo</translation>
 <translation id="7114054701490058191">Hesla se neshodují</translation>
@@ -2894,7 +2915,9 @@ Pojďme vás připojit!</translation>
 <translation id="4582421696414628320">Platnost ověření vypršela. Spusťte registrační proces znovu.</translation>
 <translation id="8439543211004394821">Bylo zadáno příliš mnoho nesprávných kódů. Spusťte registrační proces znovu.</translation>
 <translation id="3229986152760633988">Nesprávný kód, zkuste to prosím znovu.</translation>
+<translation id="818783632689113711">Pro tuto e-mailovou adresu už byl požadavek na účet odeslán. Zkontrolujte prosím svůj e-mail nebo to zkuste znovu za 30 minut.</translation>
 <translation id="4178004989875422946">Účet Brave vám umožní snadný přístup ke službám Brave.</translation>
+<translation id="4902897635127068510">Měli jste na mysli <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock je zapnutý</translation>
 <translation id="7044608453949401443">Mezery na začátku nebo konci hesla nejsou povoleny.</translation>
 <translation id="2939492377741553693">Potvrzovací e-mail byl odeslán znovu.</translation>
@@ -2905,4 +2928,5 @@ Pojďme vás připojit!</translation>
 <translation id="528205534230423181">Tento web nabízí nastavení soukromí, která pro vás Brave může automaticky upravit. Zde je naše doporučení:</translation>
 <translation id="1063227610401477317">Použít změny</translation>
 <translation id="5539769255716491933">Nahlásit neúspěšné kroky</translation>
+<translation id="7562163394445060270">Dokončení úkolu se nezdařilo</translation>
 </translationbundle>

@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Allikad</translation>
 <translation id="5158129253322921540">Keela sisu väljaandjalt <ph name="PUBLISHER_NAME"/></translation>
 <translation id="3189348785087463371">Reklaamitud</translation>
-<translation id="4541978218358617681">Reklaam</translation>
 <translation id="1776831331757823105">Kell</translation>
 <translation id="7791543448312431591">Lisa</translation>
 <translation id="6216996674668969227">Teenige tokeneid privaatsust austavate reklaamide vaatamise eest.</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3 rahakott</translation>
 <translation id="7160424977552599351">Kasutage oma Web3 rahakotti</translation>
 <translation id="6369571967625114920">Brave'i Privaatsed Reklaamid ei ole veel teie piirkonnas saadaval.</translation>
-<translation id="5309155375926073606">Jah, ma soovin ka panustada Brave'i Otsingusse ja liituda <ph name="LINK_BEGIN"/>veebiavastusprojektiga<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Anonüümsete otsingu- ja sirvimisandmete panustamine Brave'i otsingu täiustamiseks veebiavastusprojektiga. See on täielikult avatud lähtekoodiga.</translation>
-<translation id="4174337572777167894">Projekt Web Discovery</translation>
+<translation id="5309155375926073606">Jah, soovin samuti panustada Brave otsingusse ja liituda <ph name="LINK_BEGIN"/>Web Discovery Projectiga<ph name="LINK_END"/>.</translation>
+<translation id="4622826307953794521">Panustage anonüümseid otsingu- ja sirvimisandmeid, et täiustada Brave otsingut Web Discovery Projectiga. See on täielikult avatud lähtekoodiga.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Kogukond</translation>
 <translation id="845020633253356720">Vaata poodi</translation>
 <translation id="7777123407058400802">Basic Attention Token - BAT</translation>
@@ -985,7 +984,7 @@
 <translation id="29759539656432505">BTC-varade salvestamine</translation>
 <translation id="2399555431746923964">Salvesta BTC testvõrgu vara</translation>
 <translation id="8749751940551938347">ZEC-varade salvestamine</translation>
-<translation id="3451958544919449297">Salvesta ZEC testvõrgu vara</translation>
+<translation id="3451958544919449297">Salvesta ZEC-i testvõrgu varad</translation>
 <translation id="8459631690385393533">Cardano varade salvestamine</translation>
 <translation id="4915057812371523845">Cardano Testneti varade salvestamine</translation>
 <translation id="5387140102951033657">Toetab Substrate’i varasid Polkadot’i releeahelas ja Substrate’i paraketiahelates</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Valitud fail</translation>
 <translation id="5891811606602061966">Konto importimine nurjus, proovige uuesti.</translation>
 <translation id="6566535583781706170">Impordi konto</translation>
+<translation id="8079448455682522748">Kopeeri selle konto privaatvõti, mille soovid mõnest teisest rahakotist importida.</translation>
+<translation id="8475326612689436917">Ekspordi privaatvõti mõnest teisest rahakotist JSON-faili ja laadi see siia üles.</translation>
+<translation id="5733063593286221597">Laadi JSON-fail üles</translation>
 <translation id="5051929972046200722">Valige oma riistvararahakoti seade</translation>
 <translation id="5745936663807461565">Ühendage oma seadme <ph name="HARDWARE_DEVICE"/> rahakott otse arvutiga.</translation>
 <translation id="4350216031085285578">Avage oma seade ja valige võrgu <ph name="BLOCKCHAIN_NETWORK"/> rakendus.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">MÄRKUS: privaatvõti tuleb anda hex-kodeeritud JSON-failina, mis sisaldab privaatvõtit ja protokolli teavet. <ph name="LINK_START"/>Lisateave<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">MÄRKUS: Toetatakse ainult vormingus <ph name="FORMAT"/> olevaid laiendatud võtmeid.</translation>
 <translation id="6457746820359933716">Importige JSON-fail, mis on eksporditud Polkadot.js-st või ühilduvatest rahakotist. Sisestage salasõna, mida kasutati ekspordi krüpteerimiseks.</translation>
-<translation id="9133762451347918196">Testvõrgu kontod</translation>
+<translation id="7285350832506166367">Kas otsid Testneti kontosid?</translation>
 <translation id="42126664696688958">Ekspordi</translation>
 <translation id="1366855498335432549">Deposiit</translation>
+<translation id="3852653589653889099">Peida konto</translation>
 <translation id="790104325876206743">Konto seaded</translation>
 <translation id="8856844353253421399">Viimati värskendatud <ph name="TIME_AGO"/> aega tagasi</translation>
 <translation id="6322030314101903925">Varasid ei ole saadaval</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Konto nimi</translation>
 <translation id="1213870770696612739">Miinimumsumma: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Maksimumsumma: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Konto loomine õnnestus</translation>
+<translation id="7444985841455466546">Konto importimine õnnestus</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Riistvaralise rahakoti konto edukalt ühendatud}
+      other {{ACCOUNTS} riistvaralise rahakoti kontot edukalt ühendatud}
+    }</translation>
 <translation id="8528916244724490964">Kõik võrgud</translation>
 <translation id="7721139939763655123">Väiksemast suuremani</translation>
 <translation id="5458608274117818139">Suuremast väiksemani</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Esmased võrgud</translation>
 <translation id="8323674164587854512">Ethereum + EVM Chains</translation>
 <translation id="1398414935371867469">Solana + SVM Chains</translation>
+<translation id="6498449512528552760">Sobimatu prefiks</translation>
 <translation id="7058248670699639973">Võrgu logo</translation>
 <translation id="4378208228955237306">Kuva NFT-del võrgu logo</translation>
 <translation id="5472199803712163015">Rämpssisu NFT-d</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Kui te ei leidnud loendist enda vara, saate selle allolevat nuppu kasutades käsitsi lisada</translation>
 <translation id="4543171429371680949">Vara ei leitud</translation>
 <translation id="1026825928738055872">Kas soovite kindlasti eemaldada konto <ph name="ACCOUNT_NAME"/>?</translation>
-<translation id="3910551537328657217">Taotle funktsiooni</translation>
+<translation id="2220529011494928058">Teata probleemist</translation>
 <translation id="7657322905916621147">Taastefraas peab olema 12, 15, 18, 21 või 24 sõna pikkune</translation>
 <translation id="5026874946691314267">Ära seda enam näita</translation>
 <translation id="434502623875309667">Aadressiteisenduseks on vaja ahelaväliseid võrgupäringuid. Kas jätkata?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Careti sirvimise lüliti</translation>
 <translation id="4186334830839439230">Kuva jõudlusseaded</translation>
 <translation id="1094277301241124207">Kuva järjehoidjate külgpaneel</translation>
+<translation id="5101042277149003567">Ava kõik järjehoidjad</translation>
 <translation id="8283515796576236471">Järjehoidjariba: „Ava kõik uues aknas“</translation>
 <translation id="5271773791943587595">Järjehoidjariba: „Ava kõik privaatses aknas“</translation>
 <translation id="2748975346534113286">Järjehoidjariba: „Ava kõik uues vahekaartide rühmas“</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Rakenduste kuvamine</translation>
 <translation id="3142853026316054951">Lülita fookusrežiim sisse/välja</translation>
 <translation id="3468387898712904997">Uus e-posti alias</translation>
+<translation id="2796584247246518451">Uus ajutine ümbris</translation>
 <translation id="8591883849678260674">Kuva originaal</translation>
 <translation id="1969654232209826429">min lugemine</translation>
 <translation id="4101707289420716287">Lülita kiirlugeja välja</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil Llama 3.1 8B. See on Meta loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. Llama on Brave'i poolt majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen Qwen VL 30B mudelil, mille on loonud Alibaba Cloud, sobides erinevate stsenaariumidega. Qwen on Brave'i majutatud meie oma turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GLM-5. See on Zhipu AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. GLM-5 on NEAR majutatud läbi kontrollitavalt privaatse turvalise infrastruktuuri.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Tere, olen Leo. Olen tehisintellektist abiline, täielikult Brave'i majutatud. Põhinen platvormil GLM-5.1. See on Zhipu AI loodud mudel, mis võimaldab toimimist ja kohaldamist paljude kasutusmallide korral. GLM-5.1 on NEAR majutatud läbi kontrollitavalt privaatse turvalise infrastruktuuri.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Tere, mina olen Leo. Olen Brave’i tehisintellekti abiline. Minu mootoriks on Claude Instant – Anthropic'u loodud mudel vestluste ja tekstitöötluse jaoks. Claude Instant töötab Brave'i turvalises taristus.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Tere, ma olen Leo. Olen Brave'i poolt proxy'd ja kasutan Claude Haiku'd, mis on Anthropic'i poolt loodud mudel, mis on loodud vestlus- ja tekstitöötlusülesannete täitmiseks. Claude Haiku on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Tere, ma olen Leo. Olen Brave'i poolt proxy'd ja kasutan Claude Sonnet'i, Anthropicu loodud mudelit, mis on loodud vestlus- ja tekstitöötlusülesannete täitmiseks. Claude Sonnet on Brave'i majutatud meie enda turvalise infrastruktuuri kaudu.<ph name="LINK_BEFORE"/>Lisateave<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Osa kontekstist võib vestlusest puudu olla. Leo suutis säilitada <ph name="PERCENTAGE"/> vestlusega seotud sisust.</translation>
 <translation id="8501106061098623831">Lehelt hõivati liiga palju pilte. Leo suutis olemasolevast visuaalsest sisust kasutada <ph name="PERCENTAGE"/>.</translation>
 <translation id="4370698775470316661">Vestlus on pikk ja seda ei saa jätkata. Saadaval võib olla teisi mudeleid, mille abil saab Leo pikemates vestlustes täpsuse säilitada.</translation>
-<translation id="5719170755629028558">Vastuse täiustamine Brave'i Otsingu abil …</translation>
-<translation id="5794962229997281366">Täiustatud vastus otsingule <ph name="SEARCH_TERMS"/>.</translation>
+<translation id="4744144453035015075">Veebist otsimine</translation>
+<translation id="8548351747582087191">Veebist otsimine: <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> rohkem…</translation>
 <translation id="8103700533980268469">Sulge see teade</translation>
 <translation id="3417835166382867856">Otsingu vahekaardid</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Võib-olla hiljem</translation>
 <translation id="983013125018250242">Leo tööriistad</translation>
 <translation id="7623223587478473368">Lisa</translation>
-<translation id="3777121685517940177">Faili üleslaadimine...</translation>
-<translation id="6739516910850820220">Faili üleslaadimine...</translation>
+<translation id="3728603231003977269">Manusta fail...</translation>
+<translation id="7899721102369502629">Faili manustamine...</translation>
 <translation id="9088751620363630236">Tee pilt...</translation>
 <translation id="4250229828105606438">Ekraanipilt</translation>
 <translation id="7949596341600215809">Täisekraani kuvatõmmis</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Peatatud</translation>
 <translation id="4773299976671772492">Peatatud</translation>
 <translation id="6946722113367118030">Mõtleb</translation>
+<translation id="7918928051723770926">Ülesanne on lõpetatud</translation>
 <translation id="2113810663179257944">Koodi täitmine</translation>
-<translation id="6338250692384725496">Teostati koodi käivitamine liivakastis teie päringule aidates</translation>
+<translation id="4838375634693651776">Koodi käivitamine liivakastis teie päringule aidates</translation>
 <translation id="4379566111233326721">Kood:</translation>
 <translation id="3542130965673205258">Väljund:</translation>
+<translation id="6911817209337314910">Teile valikuks mõne valiku genereerimine</translation>
 <translation id="5382076391290708074">Teie vahelehti liigutamine</translation>
 <translation id="3862123464576147769">Kui lubate seda, saadetakse kõigi teie vahelehede ja vahelehe rühmade <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> ja <ph name="TITLE_FORMAT_START"/>pealkiri<ph name="TITLE_FORMAT_END"/> Brave AI-le ning Brave AI saab neid liigutada. See õigus kehtib ainult selle vestluse jaoks.</translation>
 <translation id="396165714586708444">Sügav uurimine</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">Kui eemaldate <ph name="ALIAS"/> aliase, kaotate oma võime saada e-kirju.</translation>
 <translation id="8133100642915054515">Viga aliase kustutamisel. Kontrollige oma internetiühendust ja proovige uuesti.</translation>
 <translation id="8465742443901727718">See tegevus on pöördumatu. Kas olete kindel, et soovite jätkata?</translation>
+<translation id="6402052536605772735">Tõrge meilialiaste hankimisel meie serveritest. Kontrollige oma internetiühendust.</translation>
 <translation id="9162685486229945876">Logige sisse või looge Brave'i konto</translation>
 <translation id="1335007417599138852">Brave'i konto võimaldab teil pääseda juurde teatud Brave'i toodetele ja sünkroniseerida hõlpsalt oma teavet kõigis oma seadmetes.</translation>
 <translation id="2133391407495495735">Hangi sisselogimislink</translation>
@@ -2700,7 +2716,7 @@
 <translation id="4117637339509843559">Tume režiim</translation>
 <translation id="6302485303316397682">Soovite paremaid otsingutulemusi?</translation>
 <translation id="7014699001826714920">Liituge liikumisega, andke oma panus Brave Searchi arendamisse.</translation>
-<translation id="6821108091726602352">Aidake meil veebi parandada, osaledes Brave'i veebi avastusprojektis. Jagades täiesti anonüümseid otsingusignaale, saate aidata Brave'il kasvatada otsinguindeksit.</translation>
+<translation id="6821108091726602352">Aidake meil veebi parandada, osaledes Brave’i Web Discovery Project’is. Jagades täiesti anonüümseid otsingusignaale, saate aidata Brave’il otsinguindeksit kasvatada.</translation>
 <translation id="6764845498618413165">Lugege edasi.</translation>
 <translation id="7818938154803162778">Muidugi ma aitan</translation>
 <translation id="7207456302801184289">Tere tulemast Brave'i</translation>
@@ -2853,7 +2869,10 @@ olemasoleval vahelehel</translation>
 <translation id="6624553071240278643">Loo oma konto</translation>
 <translation id="6505120968393722022">Brave'i konto loomiseks ei saa kasutada @bravealias.com aadresse. Proovige uuesti teise domeeniga.</translation>
 <translation id="8248460961680233459">Looge parool</translation>
-<translation id="4917385247580444890">Tugev</translation>
+<translation id="552339301062636488">Liiga nõrk jätkamiseks</translation>
+<translation id="8433528931936107676">Peaaegu kohal</translation>
+<translation id="4324743471050874155">Piisavalt tugev</translation>
+<translation id="5585552203448068294">Erakordselt tugev</translation>
 <translation id="5486261815000869482">Kinnita parool</translation>
 <translation id="7345706641791090287">Kinnita oma parool</translation>
 <translation id="7114054701490058191">Paroolid ei kattu</translation>
@@ -2880,7 +2899,9 @@ olemasoleval vahelehel</translation>
 <translation id="4582421696414628320">Kinnitamine aegus. Alustage registreerimisprotsessi uuesti.</translation>
 <translation id="8439543211004394821">Liiga palju valesid koode sisestati. Alustage registreerimisprotsessi uuesti.</translation>
 <translation id="3229986152760633988">Vale kood, palun proovige uuesti.</translation>
+<translation id="818783632689113711">Selle meiliaadressi jaoks on konto juba taotletud. Kontrollige oma meili või proovige 30 minuti pärast uuesti.</translation>
 <translation id="4178004989875422946">Brave'i konto võimaldab teil hõlpsalt Brave'i teenustele ligi pääseda.</translation>
+<translation id="4902897635127068510">Kas mõtlesite <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock on sees</translation>
 <translation id="7044608453949401443">Tühikud ei ole parooli alguses ega lõpus lubatud.</translation>
 <translation id="2939492377741553693">Kinnituse e-kiri saadeti uuesti.</translation>
@@ -2891,4 +2912,5 @@ olemasoleval vahelehel</translation>
 <translation id="528205534230423181">See veebisait pakub privaatsusseadeid, mida Brave saab teie eest automaatselt kohandada. Siin on meie soovitused:</translation>
 <translation id="1063227610401477317">Rakenda muudatused</translation>
 <translation id="5539769255716491933">Teata ebaõnnestunud sammudest</translation>
+<translation id="7562163394445060270">Ülesande lõpetamine nurjus</translation>
 </translationbundle>

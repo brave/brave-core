@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">フィードを取得しています...</translation>
 <translation id="7461899062138731833">ソース</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/>でフィードが見つかりませんでした</translation>
-<translation id="4541978218358617681">広告</translation>
 <translation id="7823038307453615214">Brave Newsを表示</translation>
 <translation id="6527303717912515753">共有</translation>
 <translation id="1654539412343893324">データの詳細について</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982"><ph name="PUBLISHER"/>からのコンテンツを無効化</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/>を無効化しました</translation>
 <translation id="1276592121036104130">新しいコンテンツを読み込む</translation>
-<translation id="3189348785087463371">プロモーション</translation>
 <translation id="7554145152551782675">その他のBraveオファー</translation>
 <translation id="254100925533869330">コンテンツがありません</translation>
 <translation id="7172792761509429092">Brave Newsには表示するコンテンツがありません。</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Searchの改善のために匿名の検索ブラウジングデータを提供します。</translation>
+<translation id="8659271182272561965">Brave Search を改善するために、匿名の検索＆閲覧データを提供します。</translation>
 <translation id="933652931229970927">診断レポートを自動送信する</translation>
 <translation id="5987838417172370108">Braveブラウザのクラッシュやフリーズ時に診断レポートを自動送信し、Brave製品の安定性向上に貢献します。</translation>
 <translation id="7977176350719484850">節約できた\n通信量 (推定)</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">お気に入りの機能についてご意見をお聞かせください</translation>
 <translation id="2888496576732880897">Brave Searchの成長を支えよう</translation>
 <translation id="7198716519700700181">ストリーミング中の広告をブロック</translation>
-<translation id="7044431516245362795">Web Discovery Projectに参加して、検索インデックスの拡大と検索結果の改善にご協力ください。<ph name="LEARN_MORE_START"/>詳細を見る<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">「Web Discovery Project」に参加して、インデックスの拡充と検索結果の改善にご協力ください。 <ph name="LEARN_MORE_START"/>詳細はこちら<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Braveロゴ</translation>
 <translation id="4767173360729868049">Brave Searchのサポートの図</translation>
 <translation id="8241918461631453498">広告をブロック中の図</translation>
@@ -379,11 +377,11 @@
 <translation id="8793108040181436796">ウィジェット</translation>
 <translation id="8643377320501056697">トップサイトを表示</translation>
 <translation id="7275773481201277457">Braveのデータを表示</translation>
-<translation id="7462178177755090262">開始画面</translation>
+<translation id="7462178177755090262">ブラウザ起動時の画面</translation>
 <translation id="5365434987337264071">前回開いていたタブ</translation>
 <translation id="6019856124237323989">{HOURS, plural,
-          =1 {<ph name="HOURS_ONE"/> 非稼働時間後の新しいタブ}
-          other {<ph name="HOURS_MANY"/> 非稼働時間後の新しいタブ}
+          =1 {<ph name="HOURS_ONE"/> 時間未使用の場合、新タブを表示}
+          other {<ph name="HOURS_MANY"/> 時間未使用の場合、新タブを表示}
         }</translation>
 <translation id="5233638681132016545">新しいタブ</translation>
 <translation id="8395271296293035055">最近使っていたタブに戻る</translation>
@@ -440,8 +438,15 @@
 <translation id="9140049656798805345">サイトデータを削除</translation>
 <translation id="6795622376590884449">自動削除</translation>
 <translation id="7961015016161918242">使用しない</translation>
+<translation id="3200744626782631683">閲覧データは決して自動的に破棄されることはありません</translation>
 <translation id="1991004083507807299">サイトタブの終了時</translation>
+<translation id="2917925984754303958">あるサイトを開いているすべてのタブを閉じると、閲覧データは自動的に破棄されます</translation>
 <translation id="5827277414420724690">アプリの終了時</translation>
+<translation id="2036389684543586068">Braveアプリを終了または再起動すると、閲覧データは自動的に削除されます</translation>
+<translation id="4279349293084858577">削除</translation>
+<translation id="2997451887458851244">「自動シュレッダー」を更新し、シュレッダー処理の対象となるデータを調整する</translation>
+<translation id="363903976200491771">閲覧履歴を自動的に削除する</translation>
+<translation id="1028873002018537235">閲覧履歴を削除する</translation>
 <translation id="1209739344687072997">サイト表示の不具合を報告</translation>
 <translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
 <translation id="1653405824851871276">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。<ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@
 <translation id="1079140196216383600">カスタム検索エンジンを削除</translation>
 <translation id="525276572490219787">「<ph name="SEARCH_ENGINE_NAME"/>」を削除してよろしいですか？この操作は取り消せません。</translation>
 <translation id="6406506848690869874">同期</translation>
+<translation id="1850594249589065646">位置の精度</translation>
+<translation id="2403474027143565107">正確な</translation>
+<translation id="4042597221652780603">おおよその</translation>
 </translationbundle>

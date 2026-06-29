@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">詳細…</translation>
 <translation id="71316462802471551">メールエイリアス</translation>
+<translation id="209130971304928953">タブをワークスペースとして保存…</translation>
+<translation id="877984331511007834">ワークスペースを開く…</translation>
+<translation id="1310182651927031327">タブをワークスペースとして保存…</translation>
+<translation id="3588277741646479444">ワークスペースを開く…</translation>
 <translation id="1990886731975529483">Google Widevineをインストールして実行</translation>
 <translation id="8926389886865778422">再表示させない</translation>
 <translation id="4900351245762303149">Google Widevineをインストール</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Torで新しいプライベートウィンドウを開く</translation>
 <translation id="2638041073279639246">Torのプライベートウィンドウでリンクを開きます</translation>
 <translation id="3425600262621021599">Torのプライベートウィンドウで Brave内のリンクを開く</translation>
-<translation id="2545072023356206691">2023年12月1日から、Brave Devチャンネルはブラウザアップデートを受け取らなくなります。Nightly、Beta、またはRelease版のBraveに移行をお勧めします。</translation>
 <translation id="474217410105706308">タブをミュート</translation>
 <translation id="2804710924397009224">Brave Rewards アイコンを非表示にします</translation>
 <translation id="5029193871181468990">Brave Rewardsアイコンを非表示にする</translation>
@@ -141,7 +144,7 @@
 <translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
 <translation id="5927196110206824867">スポンサー画像は、ユーザーファーストの独立したウェブを構築するというBraveのミッションをサポートしています。また、ビッグテックとは異なり、あなたのプライバシーを守るために匿名で広告パフォーマンスを測定します。</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Search の改善のために匿名の検索ブラウジングデータを提供します。</translation>
+<translation id="8659271182272561965">Brave Search を改善するために、匿名の検索＆閲覧データを提供します。</translation>
 <translation id="1516554614404600536">Braveのツールヒント</translation>
 <translation id="4375473250631001683">サイドバーのアイコンを非表示</translation>
 <translation id="2613033293035359003">サイドバーを非表示にします</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">コンテナで開く</translation>
 <translation id="194205047181722473">リンクをコンテナで開く</translation>
 <translation id="8638526693050780542">コンテナの管理</translation>
+<translation id="2796584247246518451">新しい一時コンテナ</translation>
 <translation id="2336228925368920074">すべてのタブをブックマークに追加...</translation>
 <translation id="2523967823495420116">垂直タブを使用</translation>
 <translation id="5483718923712878759">フォーカスモード</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">コンテナで開く</translation>
 <translation id="1185644444415356776">リンクをコンテナで開く</translation>
 <translation id="6745991613881384719">コンテナの管理</translation>
+<translation id="8523788649219117880">新しい一時コンテナ</translation>
 <translation id="3704707436873245822">画像からテキストをコピー</translation>
 <translation id="5268098808165185458">画像からテキストをコピーしています...</translation>
 <translation id="4046485130884276245">画像からテキストをコピーしました</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">タブ</translation>
 <translation id="8168435359814927499">コンテンツ</translation>
 <translation id="6017560037265964523">コンテナ</translation>
-<translation id="934893482320683588">コンテナでブラウジングを整理します。<ph name="BEGIN_LINK"/>詳しく見る<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">コンテナは、Cookie、キャッシュ、サイトストレージなどの閲覧データを別々のコンテキストに分離する、色分けされたブラウザタブです。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">コンテナを有効にする</translation>
 <translation id="7773735778926921278">新しいコンテナを追加</translation>
 <translation id="8900907990448657776">コンテナを編集</translation>
 <translation id="7900511996284443779">コンテナを削除</translation>
@@ -808,6 +814,7 @@
 <translation id="5226020406479918122">タブのグループ化モード</translation>
 <translation id="3705539672403311123">タブ検索ページでタブのグループ化を有効にします。 開くと、プライベート以外のタブのタイトルと発信元が自動的にLeoに送信され、分類されます。 <ph name="BEGIN_LINK"/><ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">タブフォーカス向けデフォルトモデル</translation>
+<translation id="2161546758719933059">タブフォーカスモードでタブを整理するために使用されるモデルです。<ph name="BEGIN_LINK"/>詳細<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">会話でおすすめのプロンプトを表示</translation>
 <translation id="5781842473834867765">会話履歴を保存</translation>
 <translation id="1082960401708055995">会話ストレージを無効にすると、以前に保存された会話はすべて永久に消去されます。この操作を元に戻すことはできません。</translation>

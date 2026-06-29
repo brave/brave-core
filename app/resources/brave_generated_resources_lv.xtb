@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo MI</translation>
 <translation id="8275068909952022340">Vairāk…</translation>
 <translation id="71316462802471551">E-pasta pseidonīmi</translation>
+<translation id="209130971304928953">Saglabāt cilnes kā darbvietu…</translation>
+<translation id="877984331511007834">Atvērt darbvietu…</translation>
+<translation id="1310182651927031327">Saglabāt cilnes kā darbvietu…</translation>
+<translation id="3588277741646479444">Atvērt darbvietu…</translation>
 <translation id="1990886731975529483">Instalēt un palaist Google Widevine</translation>
 <translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="4900351245762303149">Instalēt Google Widevine</translation>
@@ -68,7 +72,6 @@
 <translation id="6313675821927505581">Jauns inkognito logs, izmantojot Tor</translation>
 <translation id="2638041073279639246">Atvērt saiti inkognito logā, izmantojot Tor</translation>
 <translation id="3425600262621021599">Atvērt saiti Brave inkognito logā, izmantojot Tor</translation>
-<translation id="2545072023356206691">No 2023. gada 1. decembra Brave Dev kanāls vairs nesaņems pārlūkprogrammas atjauninājumus. Mēs iesakām lietotājiem pāriet uz Brave Nightly, Beta vai Release versiju.</translation>
 <translation id="474217410105706308">Izslēgt cilnes skaņu</translation>
 <translation id="2804710924397009224">Paslēpt Brave Rewards ikonu</translation>
 <translation id="5029193871181468990">Paslēpt Brave Rewards ikonu</translation>
@@ -139,8 +142,8 @@
 <translation id="5253166205743627564">Paldies, ka atbalstāt Brave meklēšanu, klikšķinot uz privātumu cienošām reklāmām. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs vērtējam reklāmu veiktspēju, saglabājot jūsu anonomitāti.</translation>
 <translation id="8748471354357836070">Uzzināt vairāk/izvēles atteikties</translation>
 <translation id="5927196110206824867">Sponsorētie fona attēli veicina Brave apņemšanos izveidot neatkarīgu, uz lietotāju orientētu tīmekli. Atšķirībā no lielajiem tehnoloģiju uzņēmumiem mēs reklāmas snieguma datus mērām anonimizēti, lai saglabātu jūsu konfidencialitāti.</translation>
-<translation id="4174337572777167894">Tīmekļa atklāšanas projekts</translation>
-<translation id="8659271182272561965">Sniedziet anonīmus meklēšanas un pārlūkošanas datus, lai Brave meklēšana kļūtu labāka.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Sniedziet daļu anonīmu meklēšanas un pārlūkošanas datu, lai uzlabotu Brave meklēšanu.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">Paslēpt sānjoslas ikonu</translation>
 <translation id="2613033293035359003">Paslēpt sānjoslu</translation>
@@ -203,6 +206,7 @@
 <translation id="8670218546624422041">Atvērt konteinerī</translation>
 <translation id="194205047181722473">Atvērt saiti konteinerī</translation>
 <translation id="8638526693050780542">Pārvaldīt konteinerus</translation>
+<translation id="2796584247246518451">Jauns pagaidu konteiners</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2523967823495420116">Lietot cilnes vertikāli</translation>
 <translation id="5483718923712878759">Fokusa Režīms</translation>
@@ -216,6 +220,7 @@
 <translation id="1987871867023021397">Atvērt Konteinerī</translation>
 <translation id="1185644444415356776">Atvērt Saiti Konteinerī</translation>
 <translation id="6745991613881384719">Pārvaldīt Konteinerus</translation>
+<translation id="8523788649219117880">Jauns Pagaidu Konteiners</translation>
 <translation id="3704707436873245822">Kopēt tekstu no attēla</translation>
 <translation id="5268098808165185458">Kopē tekstu no attēla...</translation>
 <translation id="4046485130884276245">Teksts nokopēts no attēla</translation>
@@ -372,7 +377,8 @@
 <translation id="8076492880354921740">Cilnes</translation>
 <translation id="8168435359814927499">Saturs</translation>
 <translation id="6017560037265964523">Konteineri</translation>
-<translation id="934893482320683588">Organizējiet pārlūkošanu, izmantojot konteinerus. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Konteineri ir krāsu kodēti pārlūka cilnes, kas izolē jūsu pārlūkošanas datus, piemēram, sīkdatnes, kešatmiņu un vietņu krātuvi atsevišķos kontekstos. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Iespējot Konteinerus</translation>
 <translation id="7773735778926921278">Pievienot jaunu konteineri</translation>
 <translation id="8900907990448657776">Rediģēt konteineri</translation>
 <translation id="7900511996284443779">Dzēst konteineri</translation>
@@ -807,6 +813,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5226020406479918122">Cilņu pārvaldnieka režīms</translation>
 <translation id="3705539672403311123">Iespējot ciļņu organizēšanu Ciļņu meklēšanas lapā. Atverot parastas cilnes, to nosaukumi un izcelsme tiks automātiski nosūtīti Leo to klasifikācijai. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Nosklusējuma modelis cilnes fokusam</translation>
+<translation id="2161546758719933059">Modelis, ko izmanto, lai organizētu jūsu cilnes Ciļņu fokusa režīmā. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Rādīt sarunā ieteiktos norādījumus</translation>
 <translation id="5781842473834867765">Saglabāt manu sarunu vēsturi</translation>
 <translation id="1082960401708055995">Atspējojot sarunu saglabāšanu, visas iepriekšējās sarunas tiks neatgriezeniski dzēstas. Šo darbību nav iespējams atsaukt.</translation>

@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">የበለጠ…</translation>
 <translation id="71316462802471551">ኢሜል ዳሰሳዎች</translation>
+<translation id="209130971304928953">ትሮችን እንደ የስራ ቦታ አስቀምጥ…</translation>
+<translation id="877984331511007834">የስራ ቦታ ክፈት…</translation>
+<translation id="1310182651927031327">ትሮችን እንደ የስራ ቦታ አስቀምጥ…</translation>
+<translation id="3588277741646479444">የስራ ቦታ ክፈት…</translation>
 <translation id="1990886731975529483">Google Widevine ን ይጫኑት እና ይክፈቱ</translation>
 <translation id="8926389886865778422">ደግመው አይጠይቁ</translation>
 <translation id="4900351245762303149">Google Widevine ን ይጫኑት</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">አዲስ የግል መስኮት በ Brave</translation>
 <translation id="2638041073279639246">Torን በመጠቀም ሊንኩን በግል መስኮት ይክፈቱ።</translation>
 <translation id="3425600262621021599">Torን በመጠቀም ሊንኩን በ Brave የግል መስኮት ይክፈቱ።</translation>
-<translation id="2545072023356206691">ከዲሴምበር 1፣ 2023 ጀምሮ የBrave Dev ቻናል ከእንግዲህ የአሳሽ ዝማኔዎችን አይቀበልም። ተጠቃሚዎች ወደ የሌሊት፣ ቅድመ-ይሁንታ ወይም የBrave ስሪቶች እንዲሰደዱ እንመክራለን።</translation>
 <translation id="474217410105706308">ትር ላይ ድምጸ-ከል አድርግ</translation>
 <translation id="2804710924397009224">የ Brave ሽልማቶችን አዶ ደብቅ</translation>
 <translation id="5029193871181468990">የBrave Rewards አዶን ደብቅ</translation>
@@ -144,7 +147,7 @@
 <translation id="8748471354357836070">ተጨማሪ ያስተማሩ / ከእና ማስቀመጥ ይምረጡ</translation>
 <translation id="5927196110206824867">ምንጭ ቀላል የአሰቡት ምርታት ተገቢ፣ ቤት ጠባቂዎች። እና እንደ Big Tech ብዛትሽ!</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
+<translation id="8659271182272561965">Brave Searchን ለማሻሻል አንዳንድ ስም-አልባ የፍለጋ &amp; የአሰሳ ውሂብ ያበርክቱ።</translation>
 <translation id="1516554614404600536">Brave  መሣሪያ ጠቃሚ ምክር</translation>
 <translation id="4375473250631001683">የጎን አሞሌ አዶን ደብቅ</translation>
 <translation id="2613033293035359003">የጎን አሞሌን ደብቅ</translation>
@@ -207,6 +210,7 @@
 <translation id="8670218546624422041">በመያዣ ውስጥ ክፈት</translation>
 <translation id="194205047181722473">አገናኝን በመያዣ ውስጥ ክፈት</translation>
 <translation id="8638526693050780542">መያዣዎችን ያቀናብሩ</translation>
+<translation id="2796584247246518451">አዲስ ጊዜያዊ መያዣ</translation>
 <translation id="2336228925368920074">ለሁሉም ትሮች ዕልባት አብጅ...</translation>
 <translation id="2523967823495420116">አቀባዊ ትሮችን ተጠቀም</translation>
 <translation id="5483718923712878759">የአመለካከት ሁኔታ</translation>
@@ -220,6 +224,7 @@
 <translation id="1987871867023021397">በመያዣ ውስጥ ክፈት</translation>
 <translation id="1185644444415356776">አገናኝን በመያዣ ውስጥ ክፈት</translation>
 <translation id="6745991613881384719">መያዣዎችን ያቀናብሩ</translation>
+<translation id="8523788649219117880">አዲስ ጊዜያዊ መያዣ</translation>
 <translation id="3704707436873245822">ጽሑፍን ከምስል ቅዳ</translation>
 <translation id="5268098808165185458">ጽሑፍን ከምስል በመቅዳት ላይ...</translation>
 <translation id="4046485130884276245">ጽሑፍ ከምስል ተቀድቷል</translation>
@@ -376,7 +381,8 @@
 <translation id="8076492880354921740">ትሮች</translation>
 <translation id="8168435359814927499">ይዘት</translation>
 <translation id="6017560037265964523">መያዣዎች</translation>
-<translation id="934893482320683588">የማሳሰቢዎቻን ድርጅት ከመያዣዎች ጋር ያቀናብሩ። <ph name="BEGIN_LINK"/>ተጨማሪ ማህበረሰብ ይማሩ<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">መያዣዎች የእርስዎን አሰሳ ውሂብ፣ እንደ ኩኪዎች፣ መሸጎጫ እና የጣቢያ ማከማቻ ወደ ተለያዩ ዐውዶች የሚለዩ በቀለም-የተመደቡ የአሳሽ ትሮች ናቸው። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">መያዣዎችን አንቃ</translation>
 <translation id="7773735778926921278">አዲስ መያዣ ያክሉ</translation>
 <translation id="8900907990448657776">መያዣን ያርትዑ</translation>
 <translation id="7900511996284443779">መያዣን ይሰረዙ</translation>
@@ -808,6 +814,7 @@
 <translation id="5226020406479918122">የትር አመለካከት ሁኔታ</translation>
 <translation id="3705539672403311123">በትር ፍለጋ ገጽ ውስጥ የትር አደረጃጀትን ያንቁ። ሲከፈት፣ ይህ ሁሉንም የግል ያልሆኑ ትሮችን ርዕሶች እና አመጣጥ በራስ-ሰር ወደ ሊዮ ይልካል እና ለመመደብ። <ph name="BEGIN_LINK"/>ተጨማሪ ይወቁ<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ነባሪ ሞዴል ለትሳቢ ትኩረት</translation>
+<translation id="2161546758719933059">በ Tab Focus Mode ውስጥ ትሮችዎን ለማደራጀት ጥቅም ላይ የዋለው ሞዴል። <ph name="BEGIN_LINK"/>የበለጠ ይወቁ<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">በውይይቱ ውስጥ የተጠቆሙ ጥያቄዎችን አሳይ</translation>
 <translation id="5781842473834867765">እንግዲህ የግል ቃል ታሪክ ይኖራል</translation>
 <translation id="1082960401708055995">የቃል ታሪክን መውደቅ በቅድሚያ ያከናውኑትን ተውዋጎች ፍጥረታቸውን ማጥፋት ይኖረታል። ይህ እርምጃ ሊስታርሽት አይችልም።</translation>

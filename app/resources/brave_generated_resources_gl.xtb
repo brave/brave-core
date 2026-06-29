@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">IA de Leo</translation>
 <translation id="8275068909952022340">Máis...</translation>
 <translation id="71316462802471551">Enderezos alternativos</translation>
+<translation id="209130971304928953">Gardar pestanas como espazo de traballo…</translation>
+<translation id="877984331511007834">Abrir espazo de traballo…</translation>
+<translation id="1310182651927031327">Gardar as pestanas como espazo de traballo…</translation>
+<translation id="3588277741646479444">Abrir espazo de traballo…</translation>
 <translation id="1990886731975529483">Instalar e executar Google Widevine</translation>
 <translation id="8926389886865778422">Non preguntar de novo</translation>
 <translation id="4900351245762303149">Instalar Google Widevine</translation>
@@ -69,7 +73,6 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="6313675821927505581">Nova xanela privada con Tor</translation>
 <translation id="2638041073279639246">Abrir ligazón nunha xanela privada con Tor</translation>
 <translation id="3425600262621021599">Abrir ligazón nunha xanela privada de Brave con Tor</translation>
-<translation id="2545072023356206691">A partir do 1 de decembro de 2023, a canle de Brave Dev deixará de recibir actualizacións para o navegador. Recomendamos aos usuarios que migren ás versións Nightly, Beta ou Release de Brave.</translation>
 <translation id="474217410105706308">Pestana Silenciar</translation>
 <translation id="2804710924397009224">Agochar a icona de recompensas de Brave</translation>
 <translation id="5029193871181468990">Agochar a icona de Brave Rewards</translation>
@@ -141,8 +144,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5253166205743627564">Grazas por apoiar a Busca de Brave ao clicar nun anuncio privado. A diferenza das grandes empresas tecnolóxicas, nós medimos o rendemento dos anuncios de forma anónima para protexer a túa privacidade.</translation>
 <translation id="8748471354357836070">Máis información/opcións de exclusión</translation>
 <translation id="5927196110206824867">As imaxes de fondo con patrocinio contribúen á misión de Brave de crear unha web independente e centrada no usuario. E, ao contrario das grandes tecnolóxicas, medimos o rendemento publicitario de xeito anónimo para preservar a túa privacidade.</translation>
-<translation id="4174337572777167894">Proxecto de detección web</translation>
-<translation id="8659271182272561965">Envía datos anónimos sobre buscas e navegación para mellorar Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Contribúe con algúns datos anónimos de busca e navegación para mellorar Brave Search.</translation>
 <translation id="1516554614404600536">Información sobre as ferramentas de Brave</translation>
 <translation id="4375473250631001683">Ocultar icona da barra lateral</translation>
 <translation id="2613033293035359003">Ocultar barra lateral</translation>
@@ -205,6 +208,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8670218546624422041">Abrir no contedor</translation>
 <translation id="194205047181722473">Abrir ligazón nun contedor</translation>
 <translation id="8638526693050780542">Xestionar contedores</translation>
+<translation id="2796584247246518451">Novo contedor temporal</translation>
 <translation id="2336228925368920074">Engadir todas as pestanas a marcadores...</translation>
 <translation id="2523967823495420116">Usar separadores verticais</translation>
 <translation id="5483718923712878759">Modo de enfoque</translation>
@@ -218,6 +222,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="1987871867023021397">Abrir nun contedor</translation>
 <translation id="1185644444415356776">Abrir ligazón nun contedor</translation>
 <translation id="6745991613881384719">Xestionar contedores</translation>
+<translation id="8523788649219117880">Novo contedor temporal</translation>
 <translation id="3704707436873245822">Copiar texto de imaxe</translation>
 <translation id="5268098808165185458">Copiando texto de imaxe…</translation>
 <translation id="4046485130884276245">Texto copiado de imaxe</translation>
@@ -374,7 +379,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="8076492880354921740">Pestanas</translation>
 <translation id="8168435359814927499">Contido</translation>
 <translation id="6017560037265964523">Contedores</translation>
-<translation id="934893482320683588">Organiza a túa navegación con contedores. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Os contedores son pestanas do navegador codificadas por cores que illan os teus datos de navegación, como cookies, caché e almacenamento do sitio en contextos separados. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Activar os contedores</translation>
 <translation id="7773735778926921278">Engadir novo contedor</translation>
 <translation id="8900907990448657776">Editar contedor</translation>
 <translation id="7900511996284443779">Eliminar contedor</translation>
@@ -809,6 +815,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 <translation id="5226020406479918122">Modo de agrupación de separadores</translation>
 <translation id="3705539672403311123">Activa a organización dos separadores na páxina de Busca de separadores. Cando se abra, isto enviará automaticamente os títulos e a orixe de todos os separadores non privados a Leo para clasificalos. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Modelo predeterminado para tab focus</translation>
+<translation id="2161546758719933059">O modelo usado para organizar as túas pestanas no modo de enfoque de pestanas. <ph name="BEGIN_LINK"/>Máis información<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostrar mensaxes emerxentes suxeridas na conversa</translation>
 <translation id="5781842473834867765">Gardar o meu historial de conversas</translation>
 <translation id="1082960401708055995">Ao desactivar o almacenamento das conversas, eliminaranse de forma permanente todas as conversas gardadas. Isto non se pode desfacer.</translation>

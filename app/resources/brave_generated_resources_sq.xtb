@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Më tepër...</translation>
 <translation id="71316462802471551">Adresat Maskuese</translation>
+<translation id="209130971304928953">Ruaj skedat si hapësirë pune…</translation>
+<translation id="877984331511007834">Hap hapësirën e punës…</translation>
+<translation id="1310182651927031327">Ruaj skedat si hapësirë pune…</translation>
+<translation id="3588277741646479444">Hap hapësirën e punës…</translation>
 <translation id="1990886731975529483">Instalo dhe hap Google Widevine</translation>
 <translation id="8926389886865778422">Mos pyet sërish</translation>
 <translation id="4900351245762303149">Instalo Google Widevine</translation>
@@ -69,7 +73,6 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6313675821927505581">Dritare e re private me Tor</translation>
 <translation id="2638041073279639246">Hapeni lidhjen në dritare private me Tor</translation>
 <translation id="3425600262621021599">Hapeni lidhjen në dritare Brave private me Tor</translation>
-<translation id="2545072023356206691">Duke filluar nga 1 dhjetori 2023, kanali Brave Dev nuk do të marrë më përditësime për shfletuesin. Ne rekomandojmë përdoruesit të migrojnë në versionet Nightly, Beta, ose Release të Brave.</translation>
 <translation id="474217410105706308">Me Fshih Skedë</translation>
 <translation id="2804710924397009224">Fshih ikonën e Shpërblimeve të Brave-s</translation>
 <translation id="5029193871181468990">Fshihe ikonën e Shpërblimeve Brave</translation>
@@ -140,8 +143,8 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5253166205743627564">Faleminderit për mbështetjen e Kërkimit Brave duke klikuar në një reklamë private. Ndryshe nga Big Tech, ne masim performancën e reklamave në mënyrë anonime për të ruajtur privatësinë tuaj.</translation>
 <translation id="8748471354357836070">Mësoni më shumë / zgjedhje për tu larguar</translation>
 <translation id="5927196110206824867">Imazhet e sfondit të sponsorizuara mbështesin misionin e Brave për të ndërtuar një Web të pavarur, të orientuar nga përdoruesi. Dhe ndryshe nga Big Tech, ne matim performancën e reklamave anonim për të ruajtur privatësinë tuaj.</translation>
-<translation id="4174337572777167894">Projekti i Zbulimit të Internetit</translation>
-<translation id="8659271182272561965">Kontribuo me kërkime anonime &amp; duke shfletuar të dhëna për të përmirësuar Kërkimin Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Kontribuoni disa të dhëna anonime kërkimi &amp; shfletimi për të përmirësuar Kërkimin Brave.</translation>
 <translation id="1516554614404600536">Tooltip-i Brave</translation>
 <translation id="4375473250631001683">Fshih ikonën e panelit anësor</translation>
 <translation id="2613033293035359003">Fshih panelin anësor</translation>
@@ -204,6 +207,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8670218546624422041">Hapni në kontejner</translation>
 <translation id="194205047181722473">Hape lidhjen në kontenier</translation>
 <translation id="8638526693050780542">Menaxho kontejnerët</translation>
+<translation id="2796584247246518451">Kontejner i përkohshëm i ri</translation>
 <translation id="2336228925368920074">Faqeruajini Krejt Skedat...</translation>
 <translation id="2523967823495420116">Përdor Skeda Vertikale</translation>
 <translation id="5483718923712878759">Modaliteti Fokus</translation>
@@ -217,6 +221,7 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="1987871867023021397">Hap në Kontejner</translation>
 <translation id="1185644444415356776">Hape Lidhjen në Kontenier</translation>
 <translation id="6745991613881384719">Menaxho Kontejnerët</translation>
+<translation id="8523788649219117880">Kontejner i Përkohshëm i Ri</translation>
 <translation id="3704707436873245822">Kopjo Tekstin nga Imazhi</translation>
 <translation id="5268098808165185458">Duke kopjuar tekstin nga imazhi...</translation>
 <translation id="4046485130884276245">Teksti është kopjuar nga imazhi</translation>
@@ -373,7 +378,8 @@ Ose ndryshoje më vonë në <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8076492880354921740">Skedat</translation>
 <translation id="8168435359814927499">Përmbajtja</translation>
 <translation id="6017560037265964523">Kontejnerët</translation>
-<translation id="934893482320683588">Organizo kërkimin tënd me kontejnerë. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Kontejnerët janë skeda të shfletuesit të koduara me ngjyra që izolojnë të dhënat tuaja të shfletimit, si cookies, cache dhe ruajtjen e sajtit në kontekste të veçanta. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Aktivizo Kontejnerët</translation>
 <translation id="7773735778926921278">Shto kontejner të ri</translation>
 <translation id="8900907990448657776">Modifiko kontejnerin</translation>
 <translation id="7900511996284443779">Hiq kontejnerin</translation>
@@ -807,6 +813,7 @@ A jeni i sigurt që doni ta bëni këtë?</translation>
 <translation id="5226020406479918122">Modaliteti i Fokusit të Skedave</translation>
 <translation id="3705539672403311123">Aktivizo organizimin e skedave në faqen e Kërkimit të Skedave. Kur hapet, kjo do të dërgojë automatikisht titujt dhe origjinën e të gjitha skedave jo-private te Leo për t'i klasifikuar. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Model i paracaktuar për fokusimin e skedës</translation>
+<translation id="2161546758719933059">Modeli i përdorur për të organizuar skedat tuaja në Modalitetin e Fokusit të Skedave. <ph name="BEGIN_LINK"/>Mëso më shumë<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Shfaq sugjerime të propozuara në bisedë</translation>
 <translation id="5781842473834867765">Ruaj historinë time të bisedave</translation>
 <translation id="1082960401708055995">Çaktivizimi i ruajtjes së bisedave do të fshijë përgjithmonë të gjitha bisedat e ruajtura më parë. Ky veprim nuk mund të zhbëhet.</translation>

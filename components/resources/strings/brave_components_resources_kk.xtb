@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">Дереккөздері</translation>
 <translation id="5158129253322921540"><ph name="PUBLISHER_NAME"/> мазмұнын өшіру</translation>
 <translation id="3189348785087463371">Жарнамаланған</translation>
-<translation id="4541978218358617681">Жарнама</translation>
 <translation id="1776831331757823105">Сағат</translation>
 <translation id="7791543448312431591">Қосу</translation>
 <translation id="6216996674668969227">Құпиялылықты құрметтейтін жарнамаларды қарап, токендер табыңыз.</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3 Wallet</translation>
 <translation id="7160424977552599351">Web3 әмияныңызды пайдалану</translation>
 <translation id="6369571967625114920">Brave Жеке жарнамалар сіздің аймақта әлі қолжетімді емес.</translation>
-<translation id="5309155375926073606">Иә, мен сондай-ақ Brave Search-ке үлес қосып, <ph name="LINK_BEGIN"/> Веб-зерттеу жобасына қатысқым келеді<ph name="LINK_END"/>.</translation>
-<translation id="4622826307953794521">Brave Search-ті жетілдіру үшін Веб-зерттеу жобасы арқылы анонимді іздеу және шолу деректерін бөлісіңіз. Бұл толықтай ашық жоба.</translation>
-<translation id="4174337572777167894">Веб-зерттеу жобасы</translation>
+<translation id="5309155375926073606">Иә, мен Brave іздеу-ге де үлес қосқым келеді және <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/> жобасына қосылғым келеді.</translation>
+<translation id="4622826307953794521">Web Discovery Project арқылы Brave іздеу-ді жетілдіру үшін кейбір анонимді іздеу және шолу деректерін бөлісіңіз. Ол толығымен ашық бастапқы кодты.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">Қауымдастық</translation>
 <translation id="845020633253356720">Дүкенді көру</translation>
 <translation id="7777123407058400802">Негізгі Назар Аударатын Токен – BAT</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">Таңдалған файл</translation>
 <translation id="5891811606602061966">Аккаунтты импорттау сәтсіз аяқталды, қайтадан қайталап көріңіз.</translation>
 <translation id="6566535583781706170">Тіркелгіні импорттау</translation>
+<translation id="8079448455682522748">Басқа әмияннан импорттағыңыз келетін есептік жазбаның жеке кілтін көшіріңіз.</translation>
+<translation id="8475326612689436917">Басқа әмияннан жеке кілтті JSON файлына экспорттап, осында жүктеңіз.</translation>
+<translation id="5733063593286221597">JSON файлын жүктеу</translation>
 <translation id="5051929972046200722">Аппараттық әмиян құрылғысын таңдаңыз</translation>
 <translation id="5745936663807461565">Өз <ph name="HARDWARE_DEVICE"/> әмияныңызды компьютеріңізге тікелей қосыңыз.</translation>
 <translation id="4350216031085285578">Құрылғыны ашып, <ph name="BLOCKCHAIN_NETWORK"/> қолданбасын таңдаңыз.</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">ЕСКЕРТУ: Жеке кілт жеке кілт пен протокол ақпараты бар он алтылық кодталған JSON ретінде берілген. <ph name="LINK_START"/>Толығырақ<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">ЕСКЕРТУ: Тек <ph name="FORMAT"/> кеңейтілген кілттер қолдау көрсетіледі.</translation>
 <translation id="6457746820359933716">Polkadot.js немесе сәйкес қойынды ящиктерінен экспорттелген JSON файлын пайдаланып импорт жасаңыз. Экспортты шифрлау үшін қолданылған құпия сөзді енгізіңіз.</translation>
-<translation id="9133762451347918196">Тестнет аккаунттары</translation>
+<translation id="7285350832506166367">Testnet есептік жазбаларын іздеудесіз бе?</translation>
 <translation id="42126664696688958">Экспорттау</translation>
 <translation id="1366855498335432549">Депозит</translation>
+<translation id="3852653589653889099">Есептік жазбаны жасыру</translation>
 <translation id="790104325876206743">Аккаунт параметрлері</translation>
 <translation id="8856844353253421399">Соңғы жаңартылған <ph name="TIME_AGO"/> бұрын</translation>
 <translation id="6322030314101903925">Қол жетімді активтер жоқ</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">Тіркелгі атауы</translation>
 <translation id="1213870770696612739">Минималды сома: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">Максималды сома: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">Есептік жазба сәтті жасалды</translation>
+<translation id="7444985841455466546">Есептік жазба сәтті импортталды</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {Аппараттық әмиян аккаунты сәтті қосылды}
+      other {{ACCOUNTS} аппараттық әмиян аккаунттары сәтті қосылды}
+    }</translation>
 <translation id="8528916244724490964">Барлық желілер</translation>
 <translation id="7721139939763655123">Төменнен жоғарыға</translation>
 <translation id="5458608274117818139">Жоғарыдан төменге</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">Басты желілер</translation>
 <translation id="8323674164587854512">Ethereum + EVM Chains</translation>
 <translation id="1398414935371867469">Solana + SVM Chains</translation>
+<translation id="6498449512528552760">Дұрыс емес префикс</translation>
 <translation id="7058248670699639973">Желі логотипі</translation>
 <translation id="4378208228955237306">NFT-де желі логотипін көрсету</translation>
 <translation id="5472199803712163015">Спамдық NFT</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">Егер бұл тізімде активті таппаған болсаңыз, төмендегі батырманы пайдаланып, оны қолмен қоса аласыз</translation>
 <translation id="4543171429371680949">Актив табылған жоқ</translation>
 <translation id="1026825928738055872">"<ph name="ACCOUNT_NAME"/>" жоюға сенімдісіз бе?</translation>
-<translation id="3910551537328657217">Функцияны сұрау</translation>
+<translation id="2220529011494928058">Мәселе туралы хабарлау</translation>
 <translation id="7657322905916621147">Қалпына келтіру тіркесі 12, 15, 18, 21 немесе 24 сөзден тұруы керек</translation>
 <translation id="5026874946691314267">Енді көрсетпеу</translation>
 <translation id="434502623875309667">Мекенжайды шешу офчейн желі сұраныстарын қажет етеді. Жалғастыру?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">Көрсеткішпен шолуды ауыстыру</translation>
 <translation id="4186334830839439230">Орындау параметрлерін көрсету</translation>
 <translation id="1094277301241124207">Бетбелгі бойынша навигацияны көрсету</translation>
+<translation id="5101042277149003567">Барлық бетбелгілерді ашу</translation>
 <translation id="8283515796576236471">Бетбелгі жолағының барлық элементтерін жаңа терезеде ашу</translation>
 <translation id="5271773791943587595">Бетбелгі жолағының барлық элементтерін жеке терезеде ашу</translation>
 <translation id="2748975346534113286">Бетбелгі жолағының барлық элементтерін жаңа қойындылар тобына ашу</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">Қолданбаларды көрсету</translation>
 <translation id="3142853026316054951">Фокус режимін ауыстыру</translation>
 <translation id="3468387898712904997">Жаңа электрондық пошта псевдонимі</translation>
+<translation id="2796584247246518451">Жаңа уақытша контейнер</translation>
 <translation id="8591883849678260674">Түпнұсқаны көру</translation>
 <translation id="1969654232209826429">мин. оқу</translation>
 <translation id="4101707289420716287">Speedreader-ді өшіру</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Meta жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Llama 3.1 8B моделін қолданып жұмыс істеймін. Llama біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен Alibaba Cloud жасаған, түрлі қолдану жағдайларына ыңғайлы болу үшін жасаған Qwen VL 30B моделін қолданып жұмыс істеймін. Qwen біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен GLM-5 моделін қолданып жұмыс істеймін, оны Zhipu AI жасаған орындықты істеуге және көптеген қолдану жағдайларына қолдану үшін құрастырылған. GLM-5 олардың өз жеке әрі қауіпсіз инфрақұрылымында NEAR арқылы орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">Сәлем, мен Лео. Мен Brave жасаған AI көмекшімін. Мен GLM-5.1 моделін қолданып жұмыс істеймін, оны Zhipu AI жасаған орындықты істеуге және көптеген қолдану жағдайларына қолдану үшін құрастырылған. GLM-5.1 олардың өз жеке әрі қауіпсіз инфрақұрылымында NEAR арқылы орналастырылған.<ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">Сәлем, менің атым Лео. Мен Brave жасаған Жасанды Интеллект көмекшісімін. Мен Anthropic компаниясы әзірлеген Claude Instant моделіне негізделемін және Brave-тің жеке қауіпсіз инфрақұрылымы арқылы ұсынылады.<ph name="LINK_BEFORE"/>Қосымша ақпарат алыңыз<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Антропик жасаған Claude Haiku моделін қолданып, әңгімелесу және мәтіндерді өңдеу тапсырмаларын орындауға арналған. Claude Haiku біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">Сәлем, мен Лео. Мен Brave жасаған AI көмекшісімін. Мен Антропик жасаған Claude Sonnet моделін қолданып, әңгімелесу және мәтіндерді өңдеу тапсырмаларын орындауға арналған. Claude Sonnet біздің өз қауіпсіз инфрақұрылымымыз арқылы Brave-да орналастырылған. <ph name="LINK_BEFORE"/>Көбірек біліңіз<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">Әңгімеде кейбір контекст жетіспейтін болуы мүмкін. Лео әңгімеге қатысты мазмұнның <ph name="PERCENTAGE"/> сақтау мүмкін болды.</translation>
 <translation id="8501106061098623831">Беттен тым көп суреттер алынды. Лео қолжетімді визуалдық контенттің <ph name="PERCENTAGE"/> пайдаланды.</translation>
 <translation id="4370698775470316661">Бұл әңгіме тым ұзақ және жалғастыру мүмкін емес. Басқа контекстердегі үлгілері бар болғанда Лео ұзақ әңгімелерді жалғастыру мүмкін.</translation>
-<translation id="5719170755629028558">Жауабыңызды Brave іздеумен жақсартып жатыр...</translation>
-<translation id="5794962229997281366">Іздеу үшін <ph name="SEARCH_TERMS"/> жақсартылған жауап.</translation>
+<translation id="4744144453035015075">Интернетте іздеу</translation>
+<translation id="8548351747582087191"><ph name="SEARCH_TERMS"/> үшін интернетте іздеу.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> тағы…</translation>
 <translation id="8103700533980268469">Осы хабарламаны жабыңыз</translation>
 <translation id="3417835166382867856">Көрсеткіштерден іздеу</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">Мүмкін кейінірек</translation>
 <translation id="983013125018250242">Лео құралдары</translation>
 <translation id="7623223587478473368">Тіркеме</translation>
-<translation id="3777121685517940177">Файлды жүктеу...</translation>
-<translation id="6739516910850820220">Файл жүктелуде...</translation>
+<translation id="3728603231003977269">Файлды тіркеу...</translation>
+<translation id="7899721102369502629">Файл тіркелуде...</translation>
 <translation id="9088751620363630236">Сурет түсіру...</translation>
 <translation id="4250229828105606438">Скриншот</translation>
 <translation id="7949596341600215809">Толық бет скриншоты</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">Тоқтатылды</translation>
 <translation id="4773299976671772492">Тоқтатылды</translation>
 <translation id="6946722113367118030">Ойлануда</translation>
+<translation id="7918928051723770926">Тапсырма аяқталды</translation>
 <translation id="2113810663179257944">Кодты орындау</translation>
-<translation id="6338250692384725496">Сіздің сұрауыңызға көмектесу үшін құм қоршегінде код орындады</translation>
+<translation id="4838375634693651776">Сіздің сұрауыңызға көмектесу үшін құм қоршегінде код орындалуда</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Шығыс:</translation>
+<translation id="6911817209337314910">Сізге таңдау үшін бірнеше нұсқа жасалуда</translation>
 <translation id="5382076391290708074">Сіздің қойындыларын жайғастыру</translation>
 <translation id="3862123464576147769">Осыны ішінара беру Brave AI-ге <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> және <ph name="TITLE_FORMAT_START"/>Атауы<ph name="TITLE_FORMAT_END"/> барлық сіздің Қойындылар және Қойынды Топтарының және Brave AI-ге оларды жайғастыруға рұқсат етеді. Бұл рұқсат бұл әңгімеге ғана қолданылады.</translation>
 <translation id="396165714586708444">Терең ізденіс</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492"><ph name="ALIAS"/> алиас ретінде жою электрондық пошталарды алу мүмкіндігінен айрылуыңызға әкеледі.</translation>
 <translation id="8133100642915054515">Алиас жою қатесі. Интернет байланысын тексеріп, қайтадан қайталап көріңіз.</translation>
 <translation id="8465742443901727718">Бұл әрекет кері қайтарылмайды. Жалғаныңызға сенімдісіз бе?</translation>
+<translation id="6402052536605772735">Біздің серверлерден электрондық пошта бүркеншік аттарын алу кезінде қате орын алды. Интернет байланысыңызды тексеріңіз.</translation>
 <translation id="9162685486229945876">Brave есептік жазбасына кіріңіз немесе жасаңыз</translation>
 <translation id="1335007417599138852">Brave есептік жазбасы сізге Brave өнімдерінің бірнеше түрлеріне қол жеткізуге және ақпаратты барлық құрылғыларыңызда оңай синхрондауға мүмкіндік береді.</translation>
 <translation id="2133391407495495735">Кіру сілтемесін алу</translation>
@@ -2696,7 +2712,7 @@
 <translation id="4117637339509843559">Қараңғы режим</translation>
 <translation id="6302485303316397682">Іздеу нәтижелерінің жақсырақ болғанын қалайсыз ба?</translation>
 <translation id="7014699001826714920">Қатарымызға қосылыңыз, Brave Іздеуге үлесіңізді қосыңыз.</translation>
-<translation id="6821108091726602352">Brave-тің Веб-іздеу жобасына қатысып, интернетті жақсартуға көмектесіңіз. Толығымен анонимді іздеу деректерін бөлісу арқылы Brave-тің іздеу индексін дамытуға үлес қоса аласыз.</translation>
+<translation id="6821108091726602352">Brave-тің Web Discovery Project жобасына қатысу арқылы вебті түзетуге көмектесіңіз. Толық анонимді іздеу сигналдарымен бөлісу арқылы Brave-ке іздеу индексін кеңейтуге көмектесе аласыз.</translation>
 <translation id="6764845498618413165">Толығырақ біліңіз.</translation>
 <translation id="7818938154803162778">Әрине, көмектесемін.</translation>
 <translation id="7207456302801184289">Brave-ге қош келдіңіз</translation>
@@ -2843,7 +2859,10 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="6624553071240278643">Тіркелгіңізді жасаңыз</translation>
 <translation id="6505120968393722022">Brave тіркелгілерін жасау үшін @bravealias.com мекенжайларын пайдалану мүмкін емес. Басқа доменмен қайталап көріңіз.</translation>
 <translation id="8248460961680233459">Құпиясөз жасаңыз</translation>
-<translation id="4917385247580444890">Күшті</translation>
+<translation id="552339301062636488">Жалғастыру үшін тым әлсіз</translation>
+<translation id="8433528931936107676">Жақындап келе жатыр</translation>
+<translation id="4324743471050874155">Жеткілікті берік</translation>
+<translation id="5585552203448068294">Ерекше берік</translation>
 <translation id="5486261815000869482">Құпиясөзді растау</translation>
 <translation id="7345706641791090287">Құпиясөзіңізді растаңыз</translation>
 <translation id="7114054701490058191">Құпиясөздер сәйкес келмейді</translation>
@@ -2870,7 +2889,9 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="4582421696414628320">Растау мерзімі өтті. Тіркеу процесін қайтадан бастаңыз.</translation>
 <translation id="8439543211004394821">Тым көп қате кодтар енгізілді. Тіркеу процесін қайтадан бастаңыз.</translation>
 <translation id="3229986152760633988">Код қате, қайталап көріңіз.</translation>
+<translation id="818783632689113711">Бұл электрондық пошта мекенжайы үшін есептік жазба бұрыннан сұралған. Электрондық поштаңызды тексеріңіз немесе 30 минуттан кейін қайта көріңіз.</translation>
 <translation id="4178004989875422946">Brave тіркелгісі Brave қызметтеріне оңай қол жеткізуге мүмкіндік береді.</translation>
+<translation id="4902897635127068510">Сіз <ph name="SUGGESTION"/> дегенді айтқыңыз келді ме?</translation>
 <translation id="8314772463905284467">Caps Lock қосулы</translation>
 <translation id="7044608453949401443">Құпиясөздің басында немесе соңында бос орындарға рұқсат етілмейді.</translation>
 <translation id="2939492377741553693">Растау хаты қайта жіберілді.</translation>
@@ -2881,4 +2902,5 @@ Brave бұл ақпараттың әшкереленуінен қорғану ү
 <translation id="528205534230423181">Бұл веб-сайт Brave автоматты түрде сіз үшін реттей алатын құпиялылық параметрлерін ұсынады. Біз ұсынатын нәрсе:</translation>
 <translation id="1063227610401477317">Өзгерістерді қолдану</translation>
 <translation id="5539769255716491933">Сәтсіз қадамдар туралы есеп беру</translation>
+<translation id="7562163394445060270">Тапсырманы аяқтау сәтсіз аяқталды</translation>
 </translationbundle>
