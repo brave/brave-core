@@ -22,8 +22,12 @@ import {
   directiveComponents,
   remarkDirectives,
 } from './remark_directives'
-import Checkbox from '@brave/leo/react/checkbox'
 import { remarkColor, ColorChip } from './remark_color'
+import {
+  checkboxRenderer,
+  createLiClickHandler,
+  rehypeTaskCheckboxIndex,
+} from './todo_list'
 
 const CodeBlock = React.lazy(async () => ({
   default: (await import('../code_block')).default.Block,
@@ -271,6 +275,12 @@ interface MarkdownRendererProps {
   shouldShowTextCursor: boolean
   allowedLinks?: string[]
   disableLinkRestrictions?: boolean
+  // Fires when the user toggles a GFM task-list checkbox. `index` is the
+  // zero-based position of the checkbox among task-list checkboxes in
+  // document order — matches findTaskCheckboxBracketOffsets() over the
+  // source string the renderer was given. Omit to make checkboxes
+  // non-interactive (e.g. while streaming).
+  onToggleCheckbox?: (index: number, checked: boolean) => void
 }
 
 // Module-level constant so the array reference is stable across all renders.
@@ -292,6 +302,8 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     mainProps.disableLinkRestrictions,
   )
   disableLinkRestrictionsRef.current = mainProps.disableLinkRestrictions
+  const onToggleCheckboxRef = React.useRef(mainProps.onToggleCheckbox)
+  onToggleCheckboxRef.current = mainProps.onToggleCheckbox
 
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
@@ -327,18 +339,9 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
       li: (props: React.ComponentProps<'li'> & { node?: HastElement }) => (
         <CursorDecorator
           as='li'
-          onClickCapture={(e) => {
-            // Note: Unfortunately we need to handle the checkboxes checking here
-            // as the generated markdown doesn't generate this as the label.
-            // We also need to call `preventDefault` so when the user clicks the checkbox
-            // we don't instantaneously check and uncheck it.
-            e.preventDefault()
-            const checkBox = e.currentTarget?.querySelector<
-              HTMLElement & { checked: boolean }
-            >('leo-checkbox')
-            if (!checkBox) return
-            checkBox.checked = !checkBox.checked
-          }}
+          onClickCapture={createLiClickHandler((index, checked) =>
+            onToggleCheckboxRef.current?.(index, checked),
+          )}
           children={props.children}
           isCursorVisible={props.node === lastElementRef.current}
         />
@@ -366,17 +369,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
           disableLinkRestrictions={disableLinkRestrictionsRef.current}
         />
       ),
-      input: (props: any) => {
-        if (props.type !== 'checkbox') {
-          return null
-        }
-
-        // Note: Checkbox has `checked` marked as a required prop. We don't
-        // want to specify it here, as that will cause the checkbox to reset
-        // when rerendering it.
-        const C: any = Checkbox
-        return <C />
-      },
+      input: checkboxRenderer,
       colorchip: ColorChip,
       ...buildTableRenderer(),
       ...directiveComponents,
@@ -384,13 +377,31 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
     [],
   )
 
+  const rehypePlugins = React.useMemo(
+    () =>
+      mainProps.shouldShowTextCursor
+        ? [rehypeTaskCheckboxIndex, plugin]
+        : [rehypeTaskCheckboxIndex],
+    [mainProps.shouldShowTextCursor, plugin],
+  )
+
+  // The per-block reveal animation only makes sense while content is
+  // streaming in. Once the entry has finished generating, suppress it so
+  // edits (e.g. checkbox toggles via ModifyConversation) don't refire the
+  // animation across every block on re-parse.
+  const containerClassName = mainProps.shouldShowTextCursor
+    ? styles.markdownContainer
+    : `${styles.markdownContainer} ${styles.noAnimation}`
+
   return (
-    <div className={styles.markdownContainer}>
+    <div className={containerClassName}>
       <Markdown
         allowedElements={allowedElements}
-        // We only read the total lines value from AST
-        // if the component is allowed to show the text cursor.
-        rehypePlugins={mainProps.shouldShowTextCursor ? [plugin] : undefined}
+        // The cursor-tracking plugin only runs when the text cursor is
+        // allowed. rehypeTaskCheckboxIndex always runs so that clicking a
+        // task-list checkbox can be mapped back to a position in the
+        // source string.
+        rehypePlugins={rehypePlugins}
         remarkPlugins={REMARK_PLUGINS}
         unwrapDisallowed={true}
         children={mainProps.text}
