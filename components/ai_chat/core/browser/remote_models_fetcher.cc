@@ -246,7 +246,11 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   return model;
 }
 
-std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
+}  // namespace
+
+// static
+std::vector<mojom::ModelPtr> RemoteModelsFetcher::ParseModelsFromJSON(
+    const base::Value& json) {
   const base::ListValue* models_list = nullptr;
 
   if (json.is_dict()) {
@@ -271,8 +275,6 @@ std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
   }
   return models;
 }
-
-}  // namespace
 
 RemoteModelsFetcher::RemoteModelsFetcher(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
@@ -316,7 +318,8 @@ void RemoteModelsFetcher::OnFetchComplete(
     return;
   }
 
-  std::move(callback).Run(ParseModelsFromJSON(result.value_body()));
+  std::move(callback).Run(
+      RemoteModelsFetcher::ParseModelsFromJSON(result.value_body()));
 }
 
 }  // namespace ai_chat
