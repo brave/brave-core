@@ -1207,6 +1207,9 @@
 # locally.
 -BrowsingTopicsInternalsBrowserTest.TopicsState_OverrideStatusMessage
 
+# Occasionally flaky upstream as well (via LUCI). Flaky on our CI and locally.
+-IndigoImageReplacementManagerBrowserTest.HandlesDelayedResponseAfterNewPrimaryIsRegistered
+
 # Known upstream flake: 10.5% flake rate over 30 days per LUCI Analysis.
 # Null pointer dereference in AutoPipSettingView::OnButtonPressed — widget
 # destroyed before test can interact with the bubble view.
