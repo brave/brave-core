@@ -16,6 +16,8 @@ class WebContents;
 
 namespace customize_chrome {
 
+struct BraveAction;
+
 // Append Brave-specific categories to the list of categories.
 //  * We have our own "Address bar" category that contains actions like
 //    `kShowReward`.
@@ -47,6 +49,12 @@ std::vector<side_panel::customize_chrome::mojom::ActionPtr>
 ApplyBraveSpecificModifications(
     content::WebContents* web_contents,
     std::vector<side_panel::customize_chrome::mojom::ActionPtr> actions);
+
+// Returns a list of Brave-specific actions that will be could be added to the
+// toolbar. Use to check if the prefs are touched by user customization or reset
+// them to default.
+std::vector<BraveAction> ListBraveSpecificActions(
+    content::WebContents* web_contents);
 
 }  // namespace customize_chrome
 
