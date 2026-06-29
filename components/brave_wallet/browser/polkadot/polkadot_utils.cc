@@ -234,31 +234,18 @@ std::optional<std::string> EncodePrivateKeyForExport(
 
 base::expected<PolkadotAddress, mojom::PolkadotValidationStatus>
 ParsePolkadotAccount(const std::string& input, uint16_t ss58_prefix) {
+  // Only ss58-encoded addresses are accepted.
   auto ss58_address = Ss58Address::Decode(input);
-  if (ss58_address) {
-    if (ss58_address->prefix != ss58_prefix) {
-      return base::unexpected(mojom::PolkadotValidationStatus::kInvalidPrefix);
-    }
-    return PolkadotAddress{ss58_address->public_key, ss58_prefix};
-  }
-
-  // Note: Avoid using PrefixedHexStringToFixed here because it accepts hex
-  // strings of the form: 0x123 which is undesireable when being used as a
-  // recipient address of funds.
-  std::string_view str = input;
-  str = base::RemovePrefix(str, "0x").value_or({});
-  if (str.empty()) {
+  if (!ss58_address) {
     return base::unexpected(
         mojom::PolkadotValidationStatus::kInvalidAddressFormat);
   }
 
-  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey = {};
-  if (base::HexStringToSpan(str, pubkey)) {
-    return PolkadotAddress{pubkey, std::nullopt};
+  if (ss58_address->prefix != ss58_prefix) {
+    return base::unexpected(mojom::PolkadotValidationStatus::kInvalidPrefix);
   }
 
-  return base::unexpected(
-      mojom::PolkadotValidationStatus::kInvalidAddressFormat);
+  return PolkadotAddress{ss58_address->public_key, ss58_prefix};
 }
 
 std::optional<std::string> PolkadotAddress::ToString() const {
