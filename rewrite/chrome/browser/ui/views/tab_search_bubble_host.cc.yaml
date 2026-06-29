@@ -5,11 +5,9 @@
 
 substitutions:
   - description:
-      'Anchor the tab search bubble to the button with its TOP_LEFT corner only
-      for the vertical tab strip; for horizontal tab strips it stays TOP_RIGHT
-      so the bubble opens to the left of the trailing-edge combo button. Drops
-      the kLeadingHorizontalTabstrip branch, leaving only the kVerticalTabstrip
-      condition.'
-    re_pattern:
-      'position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip \|\|\s+'
-    replace: ''
+      'Replace kLeadingHorizontalTabstrip condition with use_brave_vertical_tab_
+      so the tab search bubble uses TOP_LEFT only for Brave vertical tabs and
+      upstream vertical tabstrip; horizontal tab strip uses TOP_RIGHT so the
+      bubble opens to the left of the trailing-edge combo button.'
+    pattern: 'position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip'
+    replace: 'use_brave_vertical_tab_'

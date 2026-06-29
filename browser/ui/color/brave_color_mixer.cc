@@ -800,8 +800,15 @@ void AddBravifiedTabStripColorMixer(ui::ColorProvider* provider,
                                     const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  mixer[kColorNewTabButtonCRBackgroundFrameActive] = {ui::kColorFrameActive};
-  mixer[kColorNewTabButtonCRBackgroundFrameInactive] = {ui::kColorFrameActive};
+  // TabStripComboButton's bg color should be different per horizontal tab mode.
+  // When horizontal tab, that color should be same with title bar's bg color.
+  // When vertical tab, that color should be toolbar's bg color.
+  // To make TabStripComboButton have same bg color with title bar or toolbar,
+  // simply set its bg color transparent.
+  // If this causes other buttons' bg color regressions, we need to change
+  // combo button's bg color directly.
+  mixer[kColorNewTabButtonCRBackgroundFrameActive] = {SK_ColorTRANSPARENT};
+  mixer[kColorNewTabButtonCRBackgroundFrameInactive] = {SK_ColorTRANSPARENT};
 
   if (key.custom_theme) {
     return;
