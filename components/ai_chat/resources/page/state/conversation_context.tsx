@@ -237,15 +237,25 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     } catch (e) {}
   }, [selectedActionType, aiChat.api])
 
-  const handleActionTypeClick = (actionType: Mojom.ActionType) => {
+  const handleActionTypeClick = (
+    actionType: Mojom.ActionType,
+    label: string,
+  ) => {
+    // Render the action as an inline chip in the input, the same way skills are
+    // rendered. Call makeEdit first before setting the selected action to
+    // prevent a race condition where the input text is not updated before the
+    // action is set.
+    makeEdit(document.querySelector('[data-editor="true"]')!)
+      .selectRangeToTriggerChar('/')
+      .replaceSelectedRange({
+        type: 'action',
+        id: String(actionType),
+        text: `/${label.toLowerCase()}`,
+      })
+
     setSelectedActionType(actionType)
     setSelectedSkill(undefined)
     setIsToolsMenuOpen(false)
-
-    const firstContent = inputText[0]
-    if (typeof firstContent === 'string' && firstContent.startsWith('/')) {
-      setInputText([])
-    }
   }
 
   const handleSkillClick = (skill: Mojom.Skill) => {
@@ -296,8 +306,14 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         pendingMessageFiles,
       )
     } else if (selectedActionType) {
+      // The action's inline chip is a UI affordance only - the prompt is
+      // resolved from the action type on the browser side, so exclude the chip
+      // from the submitted text.
+      const actionInput = inputText.filter(
+        (content) => typeof content === 'string' || content.type !== 'action',
+      )
       api.conversationHandler.submitHumanConversationEntryWithAction(
-        stringifyContent(inputText),
+        stringifyContent(actionInput),
         selectedActionType,
       )
     } else {
@@ -574,13 +590,20 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     focusInput()
   }
 
-  // Since we only allow one skill to be selected at a time if the user clears the input text,
-  // we need to clear the selected skill.
+  // Since we only allow one skill or action to be selected at a time, if the
+  // user clears the input text (e.g. by deleting the inline chip) we need to
+  // clear the selection too.
   React.useEffect(() => {
-    if (selectedSkill && stringifyContent(inputText) === '') {
+    if (stringifyContent(inputText) !== '') {
+      return
+    }
+    if (selectedSkill) {
       setSelectedSkill(undefined)
     }
-  }, [inputText, selectedSkill])
+    if (selectedActionType) {
+      setSelectedActionType(undefined)
+    }
+  }, [inputText, selectedSkill, selectedActionType])
 
   // TODO(https://github.com/brave/brave-browser/issues/52542): Handle this conversation's deletion:
   // Disable everything and show undismissable dialog when

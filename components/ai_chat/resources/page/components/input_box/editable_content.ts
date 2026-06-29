@@ -13,6 +13,11 @@ export type ContentNode =
       text: string
     }
   | {
+      type: 'action'
+      id: string
+      text: string
+    }
+  | {
       type: 'attachment'
       id: string
       text: string
@@ -33,6 +38,7 @@ export const stringifyContent = (content: Content): string => {
     .map((c) => {
       if (typeof c === 'string') return c
       if (c.type === 'skill') return c.text
+      if (c.type === 'action') return c.text
       if (c.type === 'attachment') return `[mention(${c.text})]`
       throw new Error('Unknown content type: ' + JSON.stringify(c))
     })
@@ -78,7 +84,11 @@ const createDOMNodeRepresentation = (node: ContentNode) => {
 
   // Ideally we'd use a leo-label here, but shadowRoot does not play nice with
   // contenteditable.
-  if (node.type === 'skill' || node.type === 'attachment') {
+  if (
+    node.type === 'skill'
+    || node.type === 'action'
+    || node.type === 'attachment'
+  ) {
     const el = document.createElement('span')
     el.contentEditable = 'false'
     el.dataset.text = node.text

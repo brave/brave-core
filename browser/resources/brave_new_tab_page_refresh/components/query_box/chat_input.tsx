@@ -60,7 +60,11 @@ export function ChatInput(props: Props) {
       <div className='chat-tools'>
         <AttachmentsMenu />
         <ToolsMenu
-          isOpen={conversationContext.isToolsMenuOpen}
+          isOpen={
+            !conversationContext.selectedSkill
+            && !conversationContext.selectedActionType
+            && conversationContext.isToolsMenuOpen
+          }
           isMobile={false}
           setIsOpen={conversationContext.setIsToolsMenuOpen}
           query={extractedQuery}
@@ -69,7 +73,10 @@ export function ChatInput(props: Props) {
             if (getIsSkill(entry)) {
               conversationContext.handleSkillClick(entry)
             } else {
-              conversationContext.handleActionTypeClick(entry.details!.type)
+              conversationContext.handleActionTypeClick(
+                entry.details!.type,
+                entry.details!.label,
+              )
             }
           }}
           handleEditClick={conversationContext.handleSkillEdit}

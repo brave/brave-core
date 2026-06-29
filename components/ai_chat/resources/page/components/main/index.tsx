@@ -103,7 +103,10 @@ function Main() {
       if (getIsSkill(value)) {
         conversationContext.handleSkillClick(value)
       } else {
-        conversationContext.handleActionTypeClick(value.details!.type)
+        conversationContext.handleActionTypeClick(
+          value.details!.type,
+          value.details!.label,
+        )
       }
       requestAnimationFrame(() => {
         inputBoxRef.current?.focusInput()
@@ -223,6 +226,7 @@ function Main() {
         <ToolsMenu
           isOpen={
             !conversationContext.selectedSkill
+            && !conversationContext.selectedActionType
             && conversationContext.isToolsMenuOpen
           }
           setIsOpen={conversationContext.setIsToolsMenuOpen}

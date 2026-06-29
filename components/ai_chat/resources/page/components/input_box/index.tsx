@@ -10,7 +10,6 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { Url } from 'gen/url/mojom/url.mojom.m.js'
-import ActionTypeLabel from '../../../common/components/action_type_label'
 import * as Mojom from '../../../common/mojom'
 import { AIChatContext, useAIChat } from '../../state/ai_chat_context'
 import {
@@ -44,8 +43,6 @@ type Props = Pick<
   | 'inputText'
   | 'setInputText'
   | 'submitInputTextToAPI'
-  | 'selectedActionType'
-  | 'resetSelectedActionType'
   | 'isCharLimitApproaching'
   | 'isCharLimitExceeded'
   | 'inputTextCharCountDisplay'
@@ -204,10 +201,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
       if (!node) {
         return
       }
-      if (
-        props.context.selectedActionType
-        || props.maybeShowSoftKeyboard?.(querySubmitted.current)
-      ) {
+      if (props.maybeShowSoftKeyboard?.(querySubmitted.current)) {
         node.focus()
       }
     }
@@ -238,14 +232,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
         }
 
         e.preventDefault()
-      }
-
-      if (
-        e.key === 'Backspace'
-        && stringifyContent(props.context.inputText) === ''
-        && props.context.selectedActionType
-      ) {
-        props.context.resetSelectedActionType()
       }
     }
 
@@ -313,15 +299,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
         className={styles.form}
         onKeyDownCapture={handleOnKeyDown}
       >
-        {props.context.selectedActionType && (
-          <div className={styles.actionsLabelContainer}>
-            <ActionTypeLabel
-              removable={true}
-              actionType={props.context.selectedActionType}
-              onCloseClick={props.context.resetSelectedActionType}
-            />
-          </div>
-        )}
         {props.context.isAIChatAgentProfileFeatureEnabled
           && props.context.isAIChatAgentProfile
           && !props.conversationStarted && (
