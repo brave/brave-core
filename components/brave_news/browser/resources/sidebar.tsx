@@ -43,7 +43,7 @@ export function Sidebar() {
 const root = document.getElementById('root')
 if (root) {
   createRoot(root).render(
-    <BraveNewsContextProvider>
+    <BraveNewsContextProvider openArticlesInNewTab={false}>
       <Sidebar />
     </BraveNewsContextProvider>
   )

@@ -17,7 +17,7 @@ export default {
 
 export const Default = () => (
   <div style={{ background: '#000' }}>
-    <BraveNewsContextProvider>
+    <BraveNewsContextProvider openArticlesInNewTab={false}>
       <Sidebar />
     </BraveNewsContextProvider>
   </div>
