@@ -2,6 +2,7 @@
 <!DOCTYPE translationbundle>
 <translationbundle lang="af">
 <translation id="130631256467250065">Jou veranderinge sal in werking tree wanneer jy jou toestel herbegin.</translation>
+<translation id="2470048290583727811">Brave-wenk: Stoor wagwoorde</translation>
 <translation id="6451924152958941455">Gaan na
           die Brave-kieslys &gt;
           <ph name="SETTINGS_TITLE"/>
@@ -14,6 +15,7 @@
 <translation id="1953231710324290369">Jy bekyk tans 'n veilige Brave-bladsy</translation>
 <translation id="907470742420136113">Brave probeer tans instellings vir die invul van betaalmetodes wysig.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
+<translation id="6093965249696204223">Brave-wenk: Verbeterde Veiligblaai</translation>
 <translation id="336808635693308470">Brave probeer tans om betaalmetodes te wysig.</translation>
 <translation id="7932149101545999102">Brave word moontlik gemaak deur die <ph name="BEGIN_LINK_CHROMIUM"/>Brave<ph name="END_LINK_CHROMIUM"/>-oopbronprojek en ander <ph name="BEGIN_LINK_OSS"/>oopbronsagteware<ph name="END_LINK_OSS"/>.</translation>
 <translation id="303960458633076466">Hierdie bladsy is deur Brave geblokkeer</translation>
@@ -48,4 +50,5 @@
         weer gekies word vir verbeterde werkverrigting.</translation>
 <translation id="4159376633403260073">Jy bekyk tans ’n veilige Brave-toetsweergawe-bladsy</translation>
 <translation id="88187049159266777">Brave het nie reg toegemaak nie.</translation>
+<translation id="8208548103319284047">Brave-wenk: Soek met Lens</translation>
 </translationbundle>

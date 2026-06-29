@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Preuzimanje fidova…</translation>
 <translation id="7461899062138731833">IZVORI</translation>
 <translation id="6150420917380577651">Nisu pronađeni fidovi na: <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Oglas</translation>
 <translation id="7823038307453615214">Prikaži Brave vesti</translation>
 <translation id="6527303717912515753">Podeli</translation>
 <translation id="1654539412343893324">Saznajte više o svojim podacima</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Isključi sadržaj autora <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870">Autor <ph name="PUBLISHER"/></translation>
 <translation id="1276592121036104130">Učitaj novi sadržaj</translation>
-<translation id="3189348785087463371">Promovisano</translation>
 <translation id="7554145152551782675">Još Brave ponuda</translation>
 <translation id="254100925533869330">Nema sadržaja</translation>
 <translation id="7172792761509429092">Nema sadržaja koji bi bio prikazan u Brave vestima.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledanja veba</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimizovane informacije P3A omogućavaju Brave-u da proceni ukupno korišćenje i da obezbedi unapređenje popularnih funkcija.</translation>
-<translation id="4174337572777167894">Projekat istraživanja veba</translation>
-<translation id="8659271182272561965">Priložite anonimne podatke o pretrazi i pregledanju veba da bismo unapredili Brave pretragu.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Doprinesite anonimnim podacima o pretrazi &amp; pregledanju radi poboljšanja Brave Search.</translation>
 <translation id="933652931229970927">Automatski šalji dijagnostičke izveštaje</translation>
 <translation id="5987838417172370108">Doprinesite poboljšanju stabilnosti Brave-ovog proizvoda automatskim slanjem dijagnostičkih izveštaja kada Brave pregledač prekine sa radom ili se zamrzne.</translation>
 <translation id="7977176350719484850">Procenjeni sačuvani podaci</translation>
@@ -198,7 +196,6 @@
 <translation id="8025937231644975408">Recite nam koja svojstva najviše uživaš.</translation>
 <translation id="2888496576732880897">Doprinesi razvoju Brave pretrage</translation>
 <translation id="7198716519700700181">Blokiraj prekide kada streamuješ</translation>
-<translation id="7044431516245362795">Pridružite se projektu istraživanja veba i doprinesite povećanju indeksa i poboljšau rezultata pretrage. <ph name="LEARN_MORE_START"/>Saznajte više.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave logotip</translation>
 <translation id="4767173360729868049">Ilustracija Brave pretraživanja</translation>
 <translation id="8241918461631453498">Ilustracija blokiranja prekida</translation>
@@ -438,6 +435,7 @@ Dobro proverite da li je ove reči koda generisao uređaj koji vi posedujete.
 <translation id="7961015016161918242">Nikad</translation>
 <translation id="1991004083507807299">Kartica sajta zatvorena</translation>
 <translation id="5827277414420724690">Zatvaranje aplikacije</translation>
+<translation id="4279349293084858577">Uništi</translation>
 <translation id="1209739344687072997">Prijavite da sajt ne funkcioniše</translation>
 <translation id="8510478288840333677">Obavestite programere Brave-a da ovaj sajt ne funkcioniše ispravno sa uključenim štitovima:</translation>
 <translation id="1653405824851871276">Hvala što doprinosite tome da Brave bude bolji za sve. Ova prijava će sadržati samo informacije koje su neophodne da bismo ispravili problem na ovom sajtu. <ph name="LEARN_MORE"/></translation>

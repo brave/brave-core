@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">ເພີ່ມເຕີມ...</translation>
 <translation id="71316462802471551">ເມລ໌ຂອງທ່ Background</translation>
+<translation id="209130971304928953">ບັນທຶກແທັບເປັນພື້ນທີ່ເຮັດວຽກ…</translation>
+<translation id="877984331511007834">ເປີດພື້ນທີ່ເຮັດວຽກ…</translation>
+<translation id="1310182651927031327">ບັນທຶກແຖບເປັນພື້ນທີ່ເຮັດວຽກ…</translation>
+<translation id="3588277741646479444">ເປີດພື້ນທີ່ເຮັດວຽກ…</translation>
 <translation id="1990886731975529483">ຕິດຕັ້ງ ແລະ ເອີ້ນໃຊ້ Google Widevine</translation>
 <translation id="8926389886865778422">ບໍ່ຈຳເປັນຕ້ອງຖາມອີກ</translation>
 <translation id="4900351245762303149">ຕິດຕັ້ງ Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">ເປີດໜ້າສ່ວນຕົວໃໝ່ກັບ Tor</translation>
 <translation id="2638041073279639246">ເປີດລິ້ງໃນໜ້າສ່ວນຕົວກັບ Tor</translation>
 <translation id="3425600262621021599">ເປີດລິ້ງໃນຫ້ອງສ່ວນຕົວຂອງ Brave ກັບ Tor</translation>
-<translation id="2545072023356206691">ເລີ່ມ​ຕົ້ນ​ວັນທີ​1 ​ທັນວາ​2023 ​ເຊັນ​ແນວ​ທີ່​Brave Dev ​ຈະ​ບໍ່​ໄດ້​ຮັບ​ການ​ອັບ​ເດດ​ບຣາວ​ເຊີ້.ພວກ​ເຮົາ​ແນະ​ນຳ​ໃຫ້​ຜູ້​ໃຊ້​ຍ້າຍ​ໄປໃຊ້​ເວີຊັ່ນ Nightly, Beta, ຫຼື​ເວີຊັ່ນ​ປ່ອຍ​ອອກ​ຂອງ Brave.</translation>
 <translation id="474217410105706308">ປິດບ້ານ</translation>
 <translation id="2804710924397009224">ເຊື່ອບັນຫາ Brave Rewards Icon</translation>
 <translation id="5029193871181468990">ເຊື່ອບັນຫາ Brave Rewards icon</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">ຂອບ​ໃຈ​ທີ່​ສະ​ໜັບ​ສະ​ນຸນ Brave Search ໂດຍ​ການ​ຄິກ​ໂຄສະນາ​ສ່ວນຕົວ. ບໍ່ ​ເຫມືອນ​ບ໋ອກ ທ່ານ​ໄດ້​ເຫັນ Brave ຈະ​ວັດ​ຜົນ​ໂຄສະນາ​ແບບ​ບໍ່​ລະ​ບຸຕົວ​ຕົນ​ເພື່ອ​ຮັກ​ສາ​ຄວາມ​ເປັນ​ສ່ວນ​ຕົວ​ຂອງ​ທ່ານ.</translation>
 <translation id="8748471354357836070">ຮຽນ​ຮູ້​ເພີ່ມ​ເຕີມ / ການເລືອກຖອຍຫຼັງ</translation>
 <translation id="5927196110206824867">ຮູບໃດທີ່ເປັນສິນ຦ຍານທີ່ດັງຄັ້ງໃຫຍ່</translation>
-<translation id="4174337572777167894">ໂຄງການຄົ້ນຫາເວັບ</translation>
-<translation id="8659271182272561965">ຮ່ວມແບ່ງປັນຂໍ້ມູນການຄົ້ນຫາ &amp; ການເຂົ້າເບິ່ງແບບບໍ່ລະບຸຕົວຕົນເພື່ອປັບປຸງເຄື່ອງມືຄົ້ນຫາໂດຍ Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">ປະກອບສ່ວນຂໍ້ມູນການຄົ້ນຫາ &amp; ການທ່ອງເວັບແບບບໍ່ລະບຸຕົວຕົນເພື່ອປັບປຸງ Brave Search.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">ເປີດໄປຕຳາດັດໃຫ້ຊາຊາຊາງດໍໆ</translation>
 <translation id="2613033293035359003">ເປີດໄປ</translation>
@@ -203,6 +206,7 @@
 <translation id="8670218546624422041">ເປີດໃນເຕິນເອນເນອຍ</translation>
 <translation id="194205047181722473">ເປີດລິ້ງໃນຄອນເທນເນີ</translation>
 <translation id="8638526693050780542">ຈັດການເປີດເຕີນເອນເນອຍ</translation>
+<translation id="2796584247246518451">ກ່ອງເກັບຊົ່ວຄາວໃໝ່</translation>
 <translation id="2336228925368920074">ບຸກມາກທຸກແຖບ...</translation>
 <translation id="2523967823495420116">ໃຊ້ແຖບແນວນອນ</translation>
 <translation id="5483718923712878759">ໂໝດໂຟກັສ</translation>
@@ -216,6 +220,7 @@
 <translation id="1987871867023021397">ເປີດໃນເຕີນເອນເນອຍ</translation>
 <translation id="1185644444415356776">ເປີດລິ້ງໃນຄອນເທນເນີ</translation>
 <translation id="6745991613881384719">ຈັດການເປີດເອນເຕີນເນອຍໄດ້</translation>
+<translation id="8523788649219117880">ກ່ອງເກັບຊົ່ວຄາວໃໝ່</translation>
 <translation id="3704707436873245822">ຄັດລອກຂໍ້ຄວາມຈາກຮູບ</translation>
 <translation id="5268098808165185458">ກຳລັງຄັດລອກຂໍ້ຄວາມຈາກຮູບ...</translation>
 <translation id="4046485130884276245">ຄັດລອກຂໍ້ຄວາມຈາກຮູບ</translation>
@@ -372,7 +377,8 @@
 <translation id="8076492880354921740">ແທັບ</translation>
 <translation id="8168435359814927499">ເນື້ອຫາ</translation>
 <translation id="6017560037265964523">ເຕິນເອນເນອຍ</translation>
-<translation id="934893482320683588">ຈັດຫົວເລື່ອງແມນແບບເຕີນເນທລະເອນສ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">ກ່ອງເກັບແມ່ນແຖບ browser ທີ່ມີລະຫັດສີ ເຊິ່ງແຍກຂໍ້ມູນການທ່ອງເວັບຂອງທ່ານ ເຊັ່ນ: cookie, cache, ແລະ storage ຂອງ site ອອກເປັນບໍລິບົດແຍກກັນ. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">ເປີດໃຊ້ກ່ອງເກັບ</translation>
 <translation id="7773735778926921278">ເພີ່ມເອນເນອຍໃໝ່</translation>
 <translation id="8900907990448657776">ແກ້ໄຂເອນເນອຍ</translation>
 <translation id="7900511996284443779">ລົບເອນເນອຍ</translation>
@@ -802,6 +808,7 @@
 <translation id="5226020406479918122">ໂ່່ນເມືອງໂໝດຟັງເປີ</translation>
 <translation id="3705539672403311123">ເປີດໃຊ້ການຈັດລຽງແທບໃນໜ້າຄົ້ນຫາແທບ. ເມື່ອເປີດ, ລະບົບຈະສົ່ງຊື່ເລື່ອງແລະທີ່ມາຂອງແທບທັງໝົດ (ທີ່ບໍ່ແມ່ນແທບສ່ວນຕົວ) ໃຫ້ກັບ Leo ສໍາລັບຈັດໝວດ. <ph name="BEGIN_LINK"/>ຮຽນຮູ້ເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ໂມເດວເລີ່ມຕົ້ນສຳລັບບຸmaurice ກຸນ້ອມປະເຕັກ</translation>
+<translation id="2161546758719933059">ໂມເດລທີ່ໃຊ້ເພື່ອຈັດລະບຽບແຖບຂອງທ່ານໃນໂໝດ Tab Focus. <ph name="BEGIN_LINK"/>ສຶກສາເພີ່ມເຕີມ<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">ສະແດງການສະແນະນຳໃນການສົນທະນາ</translation>
 <translation id="5781842473834867765">ບັນທຶກປະຫວັດການສົນທະນາຂອງຂ້ອຍ</translation>
 <translation id="1082960401708055995">ການປິດການພັກອາໄັງລາຍການຕ້ອງການລົບການສະຫມຸນຄຸ່ນຂ້າງຫນ້າທີ່ຖືກພັກອາໄັງລາຍການທັງໝົດ. ກອດນີ້ບໍ່ສາມາດກັນຄືນໄດ້.</translation>

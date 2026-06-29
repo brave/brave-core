@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="sv">
+<translation id="1000614056227025171">Arket på nedre delen av skärmen för att anpassa kampanjens startsida har öppnats över hela skärmen</translation>
 <translation id="1006017844123154345">Öppna onlineversionen</translation>
 <translation id="1036348656032585052">Inaktivera</translation>
 <translation id="1046742265332833834">Blått tema</translation>
 <translation id="1070329623210597193">Filer som webbplatsen kan visa eller redigera</translation>
-<translation id="1882093842020941518">Hjälp oss att förbättra Brave genom att berätta varför du har tillåtit cookies från tredje part. <ph name="BEGIN_LINK"/>Skicka feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kan begära att se webbplatsernas datorversion</translation>
 <translation id="1109482864356262001">Funktioner som kräver rörelse- eller ljussensorer kommer inte att fungera</translation>
 <translation id="6670155282615872564">Slutför de rekommenderade åtgärderna nedan så att du får ut mesta möjliga av Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave-tips</translation>
 <translation id="1242008676835033345">Inbäddad på <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Tryck på Appar &gt; Standardappar</translation>
+<translation id="1264694639515903274">Nu kan du anpassa startsidan</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="1275718070701477396">Markerad</translation>
 <translation id="8010562420973777575">Bilderna på den här sidan har optimerats av Brave så att du sparar data.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">Webbadressen har trunkerats</translation>
 <translation id="1741136041592162279">Tillåt att Brave delar dina senaste flikar med enheten så att du kan se dem i enhetens applista och sökresultat. Du kan aktivera eller inaktivera detta i Brave-inställningarna.</translation>
 <translation id="1420688843103859429">Navigera framåt och bakåt genom att svepa med två fingrar på styrplattan</translation>
-<translation id="1432650420699700107">Webbplatser får begära tillstånd att ansluta till enheter i det lokala nätverket</translation>
 <translation id="1442081309487427303">Aktivera länkar i läsläget</translation>
 <translation id="1448064542941920355">Minska zoom</translation>
 <translation id="1464044141348608623">Tillåt inte att webbplatser vet om du använder din enhet aktivt</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">När detta är aktiverat kan webbplatser begära att hantera fönster på alla skärmar. När detta är inaktiverat kan inte webbplatser hantera fönster på alla skärmar.</translation>
 <translation id="1738912554587725807">Ark på nedre delen av skärmen för temasamlingar för utseende på sidan Ny flik</translation>
 <translation id="1743802530341753419">Fråga innan webbplatser tillåts ansluta till en enhet (rekommenderas)</translation>
-<translation id="2534291364429593865">Få aviseringar om Brave-tips</translation>
 <translation id="1777815584158991902">Arket på nedre delen av skärmen för flödet Upptäck</translation>
 <translation id="1779089405699405702">Bildavkodare</translation>
 <translation id="1781533683087883868">Inaktivera länkar i läsläget</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Lägg på</translation>
 <translation id="1919950603503897840">Välj kontakter</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/<ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Anpassa min startsida</translation>
 <translation id="1939059826036755332">Automatisk bild-i-bild</translation>
 <translation id="1954597385941141174">Webbplatser får begära tillstånd att ansluta till USB-enheter</translation>
 <translation id="1979673356880165407">Gör text och bilder större eller mindre för alla webbplatser du besöker</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Hanteras av <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Hjälp och feedback</translation>
 <translation id="2501278716633472235">Föregående</translation>
-<translation id="2533138527374486328">När detta är aktiverat kan webbplatser begära tillstånd att ansluta till enheter i det lokala nätverket. När detta är inaktiverat får webbplatser inte ansluta till enheter i det lokala nätverket.</translation>
 <translation id="2536779053640817375">Tillåts den här gången • Exakt</translation>
 <translation id="2544997614631598250">Temafärg: mörk</translation>
 <translation id="2546283357679194313">Cookies och webbplatsdata</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Snabbstarta adressfältet</translation>
 <translation id="2789132527330338807">Webbplatser får begära tillstånd att skapa en 3D-karta över dina omgivningar eller registrera kamerans position</translation>
 <translation id="2790501146643349491">När detta är aktiverat kan nyligen stängda webbplatser fortsätta att skicka och ta emot data. När detta är inaktiverat får webbplatser som nyligen stängts inte skicka eller ta emot data.</translation>
-<translation id="1708222144403389505">Aktivera aviseringar om användbara tips som hjälper dig att få ut mesta möjliga av Brave</translation>
 <translation id="2795716239552913152">Åtkomst till enhetens plats brukar kunna behövas för relevanta funktioner eller information som lokala nyheter eller affärer i närheten</translation>
 <translation id="2800760947029405028">Ladda upp en bild</translation>
 <translation id="2802908157808345702">Tillåt inte att webbplatser skickar popup-fönster eller omdirigerar dig</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Webbplatser får spela upp ljud</translation>
 <translation id="3065787901655140044">Avancerat skydd är aktiverat</translation>
 <translation id="3069226013421428034">Tillåt tredjepartsinloggning på en viss webbplats.</translation>
+<translation id="3084983642903364837">Redigera startsidan senare via trepunktsmenyn.</translation>
 <translation id="310297983047869047">Föregående bild</translation>
 <translation id="3108122610701115301">Ange standard</translation>
 <translation id="310979712355504754">Ta bort alla</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Tillåt inte att webbplatser ansluter till USB-enheter</translation>
 <translation id="3965467402665811906">Webbplatser får begära tillstånd att använda uppgifter som de har sparat om dig</translation>
 <translation id="3967822245660637423">Nedladdning slutförd</translation>
-<translation id="3969869202926863008">Tillgång till lokalt nätverk</translation>
 <translation id="3981465354637804599">Webbplatser som visar annonser brukar göra det så att de kan tillhandahålla innehåll eller tjänster utan kostnad. Men vissa webbplatser kan visa påträngande eller vilseledande annonser.</translation>
 <translation id="3987993985790029246">Kopiera länk</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/>/?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Ansluten till en serieport</translation>
 <translation id="4223404254440398437">Mikrofon tillåts inte</translation>
 <translation id="4226663524361240545">Aviseringar kan göra att enheten vibrerar</translation>
+<translation id="4227965147357783918">Arket på nedre delen av skärmen för att anpassa kampanjens startsida har öppnats över halva skärmen</translation>
 <translation id="4259722352634471385">Webbadressen har blockerats: <ph name="URL"/></translation>
 <translation id="4274673989874969668">När du har lämnat en webbplats kan den fortsätta med synkroniseringen i syfte att slutföra uppgifter som att ladda upp foton eller skicka ett chattmeddelande</translation>
 <translation id="4278390842282768270">Tillåts</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Expandera</translation>
 <translation id="4310738531374808763">Anpassa din startsida</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Löper ut i morgon}other{Löper ut om # dagar}}</translation>
+<translation id="7012676469589811613">Anpassa Brave genom att välja ett anpassat tema</translation>
 <translation id="4338831206024587507">Alla webbplatser under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Tillåt inte att webbplatser skickar aviseringar</translation>
 <translation id="4341577178275615435">Aktivera eller inaktivera textmarkörläge med kortkommandot F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Öka inte webbplatsernas hastighet med Braves V8-motor men gör Brave något mer motståndskraftigt mot attacker</translation>
 <translation id="5556459405103347317">Hämta igen</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blockeras</translation>
-<translation id="560980142378233747">Detta innebär att webbplatsfunktionerna ska fungera som förväntat, men du kan ha mindre surfskydd. <ph name="BEGIN_LINK"/>Skicka feedback<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Arket på nedre delen av skärmen för kort på sidan Ny flik</translation>
 <translation id="5621413808884657932">När detta är aktiverat kan webbplatser be om att få åtkomst till andra appar och tjänster på den här enheten. När detta är inaktiverat får webbplatser inte komma åt andra appar och tjänster på den här enheten.</translation>
 <translation id="5632485077360054581">Visa hur man gör</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Mina genvägar</translation>
 <translation id="656065428026159829">Visa fler</translation>
 <translation id="6561560012278703671">Få mer diskreta meddelanden (blockera störande aviseringar)</translation>
-<translation id="6565144332292237355">Webbplatser kan använda den här funktionen för att söka efter och ansluta till enheter i det lokala nätverket</translation>
 <translation id="6593061639179217415">Datoranpassad webbplats</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookies tillåts för <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-webbplats}other{Cookies tillåts för <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-webbplatser}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Stanna kvar</translation>
 <translation id="6630443592285535486">Skriv hexadecimalt värde här</translation>
 <translation id="6635327442719709864">När detta är aktiverat kan webbplatser be om att få använda serieportar. När detta är inaktiverat kan inte webbplatser använda serieportar.</translation>
-<translation id="6669390930482049506">Meddela mig</translation>
 <translation id="6678072580827808850">Granska säkerhetskontrollen</translation>
 <translation id="6682057173375416470">Få föreslagna artiklar på sidan Ny flik</translation>
 <translation id="6683865262523156564">Den här webbplatsen ingår i en grupp som kan se din aktivitet. Gruppen har definierats av <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Uppdatera</translation>
 <translation id="7188508872042490670">Webbplatsdata på enheten</translation>
 <translation id="7201549776650881587">När du gör detta raderas all data och alla cookies som lagras av alla underordnade webbplatser för <ph name="ORIGIN"/> eller tillhörande app på startskärmen</translation>
-<translation id="7213166370492037743">Tillåt inte att webbplatser ansluter till enheter i det lokala nätverket</translation>
 <translation id="7219254577985949841">Vill du radera webbplatsdata?</translation>
 <translation id="723171743924126238">Välj bilder</translation>
 <translation id="7243246278722455312">Ark på nedre delen av skärmen för att anpassa sidan ny flik</translation>
@@ -757,7 +753,6 @@ Avancerat skydd styr följande Brave-inställningar:</translation>
 <translation id="8737426583868847403">Webbplatser som du har sparat en anpassad zoomnivå för visas här</translation>
 <translation id="8748714929822124637">Tillåt inte att webbplatser får åtkomst till andra enheter i det lokala nätverket</translation>
 <translation id="8751914237388039244">Välj en bild</translation>
-<translation id="8775741625735357092">Du kan aktivera bokmärkesfältet i Inställningar &gt; Utseende</translation>
 <translation id="8800034312320686233">Fungerar inte webbplatsen?</translation>
 <translation id="8801436777607969138">Blockera JavaScript på en enskild webbplats.</translation>
 <translation id="2026315747406172223">V8 är Braves JavaScript- och WebAssembly-motor som används för att förbättra webbplatsens prestanda</translation>

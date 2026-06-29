@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Feeds ophalen...</translation>
 <translation id="7461899062138731833">BRONNEN</translation>
 <translation id="6150420917380577651">Geen feeds gevonden op <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Advertentie</translation>
 <translation id="7823038307453615214">Brave News tonen</translation>
 <translation id="6527303717912515753">Delen</translation>
 <translation id="1654539412343893324">Meer informatie over je gegevens</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Inhoud van <ph name="PUBLISHER"/> uitschakelen</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> uitgeschakeld</translation>
 <translation id="1276592121036104130">Nieuwe inhoud laden</translation>
-<translation id="3189348785087463371">Gepromote inhoud</translation>
 <translation id="7554145152551782675">Meer Brave-aanbiedingen</translation>
 <translation id="254100925533869330">Geen content</translation>
 <translation id="7172792761509429092">Er is geen content weer te geven voor Brave News.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
 <translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Draag wat anonieme zoek- en browsegegevens bij om Brave Search te verfijnen.</translation>
+<translation id="8659271182272561965">Draag wat anonieme zoek- &amp; browsegegevens bij om Brave Search te verfijnen.</translation>
 <translation id="933652931229970927">Diagnostische rapporten automatisch verzenden</translation>
 <translation id="5987838417172370108">Help de productstabiliteit van Brave te verbeteren door automatisch diagnostische rapporten te verzenden wanneer de Brave-browser crasht of vastloopt.</translation>
 <translation id="7977176350719484850">Geschatte hoeveelheid\ndata bespaard</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Laat ons weten welke functies u het fijnst vindt.</translation>
 <translation id="2888496576732880897">Help Brave Search groeien</translation>
 <translation id="7198716519700700181">Voorkom onderbrekingen wanneer je streamt</translation>
-<translation id="7044431516245362795">Neem deel aan het Web Discovery Project om de index te helpen groeien en de zoekresultaten te verbeteren. <ph name="LEARN_MORE_START"/>Meer informatie.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Meld u aan voor het Web Discovery Project om de index uit te breiden en de zoekresultaten te verbeteren. <ph name="LEARN_MORE_START"/>Meer informatie<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave-logo</translation>
 <translation id="4767173360729868049">Help Brave Search-illustratie</translation>
 <translation id="8241918461631453498">Illustratie voor onderbrekingsvoorkoming</translation>
@@ -437,8 +435,15 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="9140049656798805345">Versnipper sitegegevens nu</translation>
 <translation id="6795622376590884449">Automatische versnippering</translation>
 <translation id="7961015016161918242">Nooit</translation>
+<translation id="3200744626782631683">Browsegegevens worden nooit automatisch vernietigd</translation>
 <translation id="1991004083507807299">Tabbladen van site gesloten</translation>
+<translation id="2917925984754303958">Browsegegevens worden automatisch vernietigd zodra alle tabbladen die naar een website zijn geopend, worden gesloten</translation>
 <translation id="5827277414420724690">App gesloten</translation>
+<translation id="2036389684543586068">Browsegegevens worden automatisch gewist wanneer de Brave-app wordt afgesloten of opnieuw wordt opgestart</translation>
+<translation id="4279349293084858577">Versnipperen</translation>
+<translation id="2997451887458851244">Werk 'Auto Shred' bij en stel in welke gegevens moeten worden vernietigd</translation>
+<translation id="363903976200491771">Browsegegevens automatisch vernietigen</translation>
+<translation id="1028873002018537235">Browsegeschiedenis verwijderen</translation>
 <translation id="1209739344687072997">Meld een gebroken site</translation>
 <translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
 <translation id="1653405824851871276">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen. <ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1079140196216383600">Aangepaste zoekmachine verwijderen</translation>
 <translation id="525276572490219787">Weet je zeker dat je "<ph name="SEARCH_ENGINE_NAME"/>" wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="1850594249589065646">Nauwkeurigheid van de locatiebepaling</translation>
+<translation id="2403474027143565107">Nauwkeurig</translation>
+<translation id="4042597221652780603">Bij benadering</translation>
 </translationbundle>

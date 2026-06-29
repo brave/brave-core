@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">መረጃዎችን በማግኘት ላይ...</translation>
 <translation id="7461899062138731833">ምንጮች</translation>
 <translation id="6150420917380577651">ምንም መረጃዎች በ<ph name="SEARCH_URL"/> ላይ አልተገኙም።</translation>
-<translation id="4541978218358617681">ማስታወቅያ</translation>
 <translation id="7823038307453615214">የ Brave ዜናዎችን አሳይ</translation>
 <translation id="6527303717912515753">አጋራ</translation>
 <translation id="1654539412343893324">ስለ ውሂብዎ የበለጠ ይወቁ</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">ከ<ph name="PUBLISHER"/> ይዘትን አግድ</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> ታግዷል</translation>
 <translation id="1276592121036104130">አዲስ ይዘት ይጫኑ</translation>
-<translation id="3189348785087463371">ከፍ ተደርጓል</translation>
 <translation id="7554145152551782675">ተጨማሪ የBrave አቅርቦቶች</translation>
 <translation id="254100925533869330">ምንም ይዘት የለም</translation>
 <translation id="7172792761509429092">Brave ዜና ምንም የሚያሳየው ይዘት የለውም።</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">የግል ምርት ትንታኔዎች ጠባቂዎች (P3A) ይፍቀዱ።</translation>
 <translation id="5254037869598726291">ስም የለሽ የ P3A መረጃ ጎበዝ አጠቃላይ አጠቃቀምን ለመገመት እና ታዋቂ ባህሪያትን እያሻሻልን መሆኑን ለማረጋገጥ ይረዳል።</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Brave Searchን ለማሻሻል የተወሰነ የስም አልባ የፍለጋ &amp; የአሰሳ ውሂብ አስተዋጾ ያድርጉ።</translation>
+<translation id="8659271182272561965">Brave Searchን ለማሻሻል አንዳንድ ስም-አልባ የፍለጋ &amp; የአሰሳ ውሂብ ያበርክቱ።</translation>
 <translation id="933652931229970927">የምርመራ ሪፖርቶችን በራስ -ሰር ይላኩ</translation>
 <translation id="5987838417172370108">የ Brave አሳሽ ሲበላሽ ወይም ሲቆም የምርመራ ሪፖርቶችን በራስ ሰር በመላክ፣ የ Brave\u2019s ምርት በስርዓት እንዲሰራ ለማስቻል ያግዙ።</translation>
 <translation id="7977176350719484850">Est. ውሂብ\nተቀምጧል</translation>
@@ -198,7 +196,6 @@
 <translation id="8025937231644975408">ከእርስዎ በጣም በምታደስዋቸው ትዕይንቶች ይንገሩን።</translation>
 <translation id="2888496576732880897">እንዲጨመር ያግዙ Brave ፍለጋ</translation>
 <translation id="7198716519700700181">ሲስተም እንዳያቋርጥ ይከላከሉ።</translation>
-<translation id="7044431516245362795">ማኅበረሰብ የመግኛ ፕሮጀክት ውስጥ ገባችሁ የማህበረሰቡን ዝርዝር ለመስፋት እና የፍለጋን ውጤቶች እንዲሻሻል ያግዙ። <ph name="LEARN_MORE_START"/>ተጨማሪ ተማሩ.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave ምልክት</translation>
 <translation id="4767173360729868049">Brave ፍለጋን ይርዱ ምስል</translation>
 <translation id="8241918461631453498">ስርጭትን ይከላከሉ ምስል</translation>
@@ -439,6 +436,7 @@
 <translation id="7961015016161918242">በፍጹም</translation>
 <translation id="1991004083507807299">ጣቢያ ট្រូ بند ተዘግቷል</translation>
 <translation id="5827277414420724690">መተግበሪያ ዝጋ</translation>
+<translation id="4279349293084858577">ማሰስ</translation>
 <translation id="1209739344687072997">የተሰበረ ገጽን ሪፖርት ያድርጉ</translation>
 <translation id="8510478288840333677">ይህ ገጽ ከጋሻዎች ጋር በትክክል እንደማይሰራ የ Brave አዘጋጆች እንዲያውቁት ያድርጉ፡</translation>
 <translation id="1653405824851871276">እንኳን ለ Brave የተሻማትን በማገናኘት እናመሰግናለን። ይህ ሪፖርት የበካል ኢንፎ ብቻ ያካትታል። <ph name="LEARN_MORE"/></translation>

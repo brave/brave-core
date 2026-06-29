@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="id">
+<translation id="1000614056227025171">Panel bawah sesuaikan promo halaman beranda terbuka sepenuhnya</translation>
 <translation id="1006017844123154345">Buka versi Online</translation>
 <translation id="1036348656032585052">Nonaktifkan</translation>
 <translation id="1046742265332833834">Tema biru</translation>
 <translation id="1070329623210597193">File yang dapat dilihat atau diedit oleh situs ini</translation>
-<translation id="1882093842020941518">Bantu kami meningkatkan Brave dengan memberi tahu kami alasan Anda mengizinkan cookie pihak ketiga. <ph name="BEGIN_LINK"/>Kirim masukan<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Anda dapat meminta untuk melihat situs versi desktop</translation>
 <translation id="1109482864356262001">Fitur yang memerlukan sensor gerakan atau cahaya tidak akan berfungsi</translation>
 <translation id="6670155282615872564">Selesaikan tindakan yang disarankan berikut untuk mengoptimalkan Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Tips untuk Brave</translation>
 <translation id="1242008676835033345">Disematkan di <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Ketuk Aplikasi  &gt; Aplikasi default</translation>
+<translation id="1264694639515903274">Anda kini dapat menyesuaikan halaman beranda</translation>
 <translation id="1272079795634619415">Berhenti</translation>
 <translation id="1275718070701477396">Dipilih</translation>
 <translation id="8010562420973777575">Untuk menghemat data Anda, gambar di halaman ini telah dioptimalkan oleh Brave.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL dipotong</translation>
 <translation id="1741136041592162279">Izinkan Brave membagikan tab terbaru ke perangkat Anda agar Anda dapat melihatnya di daftar aplikasi dan hasil penelusuran perangkat. Anda dapat mengaktifkan atau menonaktifkannya di setelan Brave.</translation>
 <translation id="1420688843103859429">Beralih maju atau mundur dengan menggeser dua jari di touchpad</translation>
-<translation id="1432650420699700107">Situs dapat meminta terhubung ke perangkat apa pun di jaringan lokal Anda</translation>
 <translation id="1442081309487427303">Aktifkan link Mode Baca</translation>
 <translation id="1448064542941920355">Kurangi zoom</translation>
 <translation id="1464044141348608623">Jangan izinkan situs mengetahui saat Anda aktif menggunakan perangkat</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Jika diaktifkan, situs dapat meminta untuk mengelola jendela di semua layar Anda. Jika dinonaktifkan, situs tidak dapat mengelola jendela di semua layar Anda.</translation>
 <translation id="1738912554587725807">Panel bawah kumpulan tema tampilan halaman tab baru</translation>
 <translation id="1743802530341753419">Tanya sebelum mengizinkan situs terhubung ke perangkat (disarankan)</translation>
-<translation id="2534291364429593865">Dapatkan notifikasi tips Brave</translation>
 <translation id="1777815584158991902">Panel bawah feed Discover</translation>
 <translation id="1779089405699405702">Pendekode gambar</translation>
 <translation id="1781533683087883868">Nonaktifkan link Mode Baca</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Akhiri</translation>
 <translation id="1919950603503897840">Pilih kontak</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Sesuaikan halaman beranda saya</translation>
 <translation id="1939059826036755332">Picture-in-picture otomatis</translation>
 <translation id="1954597385941141174">Situs dapat meminta untuk terhubung ke perangkat USB</translation>
 <translation id="1979673356880165407">Perbesar atau perkecil teks dan gambar untuk semua situs yang Anda buka</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Dikelola oleh <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Bantuan &amp; masukan</translation>
 <translation id="2501278716633472235">Kembali</translation>
-<translation id="2533138527374486328">Jika diaktifkan, situs dapat meminta untuk terhubung ke perangkat apa pun di jaringan lokal Anda. Jika dinonaktifkan, situs tidak dapat terhubung ke perangkat di jaringan lokal Anda.</translation>
 <translation id="2536779053640817375">Diizinkan kali ini • Presisi</translation>
 <translation id="2544997614631598250">Warna tema gelap</translation>
 <translation id="2546283357679194313">Cookie dan data situs</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Mulai Omnibox</translation>
 <translation id="2789132527330338807">Situs dapat meminta untuk membuat peta 3D untuk area di sekeliling Anda atau melacak posisi kamera</translation>
 <translation id="2790501146643349491">Jika diaktifkan, situs yang baru saja ditutup dapat menyelesaikan pengiriman dan penerimaan data. Jika dinonaktifkan, situs yang baru saja ditutup tidak dapat menyelesaikan pengiriman atau penerimaan data.</translation>
-<translation id="1708222144403389505">Aktifkan notifikasi untuk mendapatkan tips bermanfaat yang membantu Anda mengoptimalkan penggunaan Brave</translation>
 <translation id="2795716239552913152">Situs biasanya menggunakan lokasi Anda untuk fitur atau informasi yang relevan, seperti berita lokal atau toko terdekat</translation>
 <translation id="2800760947029405028">Upload gambar</translation>
 <translation id="2802908157808345702">Jangan izinkan situs mengirim pop-up dan menggunakan pengalihan</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Situs dapat memutar suara</translation>
 <translation id="3065787901655140044">Perlindungan Lanjutan aktif</translation>
 <translation id="3069226013421428034">Izinkan login pihak ketiga untuk situs tertentu.</translation>
+<translation id="3084983642903364837">Edit halaman beranda Anda nanti melalui menu 3 titik.</translation>
 <translation id="310297983047869047">Slide sebelumnya</translation>
 <translation id="3108122610701115301">Jadikan default</translation>
 <translation id="310979712355504754">Hapus semua</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Jangan izinkan situs terhubung ke perangkat USB</translation>
 <translation id="3965467402665811906">Situs dapat meminta untuk menggunakan informasi tentang Anda yang disimpan situs</translation>
 <translation id="3967822245660637423">Download selesai</translation>
-<translation id="3969869202926863008">Akses jaringan lokal</translation>
 <translation id="3981465354637804599">Situs biasanya menampilkan iklan agar dapat menyediakan konten atau layanan tanpa biaya. Namun, beberapa situs dikenal menampilkan iklan yang mengganggu atau menyesatkan.</translation>
 <translation id="3987993985790029246">Salin link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Terhubung ke port serial</translation>
 <translation id="4223404254440398437">Mikrofon tidak diizinkan</translation>
 <translation id="4226663524361240545">Notifikasi dapat membuat perangkat bergetar</translation>
+<translation id="4227965147357783918">Panel bawah sesuaikan promo halaman beranda terbuka setengah</translation>
 <translation id="4259722352634471385">Navigasi diblokir: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Setelah Anda menutupnya, situs dapat terus melakukan sinkronisasi untuk menyelesaikan tugas, seperti mengupload foto atau mengirim pesan chat</translation>
 <translation id="4278390842282768270">Diizinkan</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Luaskan</translation>
 <translation id="4310738531374808763">Menyesuaikan halaman beranda</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Berakhir besok}other{Berakhir dalam # hari}}</translation>
+<translation id="7012676469589811613">Personalisasi Brave Anda dengan memilih tema kustom</translation>
 <translation id="4338831206024587507">Semua situs di bawah <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Jangan izinkan situs mengirim notifikasi</translation>
 <translation id="4341577178275615435">Untuk mengaktifkan atau menonaktifkan penjelajahan dengan keyboard, gunakan pintasan F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Jangan percepat situs dengan mesin V8 Brave, tetapi buat Brave sedikit lebih tahan terhadap serangan</translation>
 <translation id="5556459405103347317">Muat ulang</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> diblokir</translation>
-<translation id="560980142378233747">Hal ini berarti berbagai fitur situs akan berfungsi sebagaimana mestinya, tetapi Anda mungkin memiliki lebih sedikit perlindungan terhadap penjelajahan. <ph name="BEGIN_LINK"/>Kirim masukan<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Panel bawah kartu halaman tab baru</translation>
 <translation id="5621413808884657932">Jika diaktifkan, situs dapat meminta untuk mengakses aplikasi dan layanan lain di perangkat ini. Jika dinonaktifkan, situs tidak dapat mengakses aplikasi dan layanan lain di perangkat ini.</translation>
 <translation id="5632485077360054581">Lihat caranya</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Pintasan saya</translation>
 <translation id="656065428026159829">Lihat lebih banyak</translation>
 <translation id="6561560012278703671">Gunakan notifikasi yang lebih senyap (memblokir pop-up notifikasi agar tidak mengganggu Anda)</translation>
-<translation id="6565144332292237355">Situs dapat menggunakan fitur ini untuk mencari dan terhubung ke perangkat apa pun di jaringan lokal Anda</translation>
 <translation id="6593061639179217415">Situs desktop</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookie diizinkan untuk <ph name="RWS_MEMBERS_COUNT"/> situs di <ph name="RWS_OWNER"/>}other{Cookie diizinkan untuk <ph name="RWS_MEMBERS_COUNT"/> situs di <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Tinggal</translation>
 <translation id="6630443592285535486">Ketik kode hex di sini</translation>
 <translation id="6635327442719709864">Jika diaktifkan, situs dapat meminta untuk menggunakan port serial. Jika dinonaktifkan, situs tidak dapat menggunakan port serial.</translation>
-<translation id="6669390930482049506">Beri tahu saya</translation>
 <translation id="6678072580827808850">Tinjau Pemeriksaan Keamanan</translation>
 <translation id="6682057173375416470">Dapatkan artikel yang disarankan di halaman Tab Baru</translation>
 <translation id="6683865262523156564">Situs ini berada dalam grup yang dapat melihat aktivitas Anda. Grup ditentukan oleh <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Perbarui</translation>
 <translation id="7188508872042490670">Data situs di perangkat</translation>
 <translation id="7201549776650881587">Tindakan ini akan menghapus semua data dan cookie yang disimpan oleh semua situs di bawah <ph name="ORIGIN"/> atau oleh aplikasinya di Layar utama</translation>
-<translation id="7213166370492037743">Jangan izinkan situs terhubung ke perangkat apa pun di jaringan lokal Anda</translation>
 <translation id="7219254577985949841">Hapus data situs?</translation>
 <translation id="723171743924126238">Pilih gambar</translation>
 <translation id="7243246278722455312">Sheet bawah sesuaikan halaman tab baru</translation>
@@ -757,7 +753,6 @@ Perlindungan Lanjutan mengontrol setelan Brave berikut:</translation>
 <translation id="8737426583868847403">Situs yang Anda simpan tingkat zoom khususnya akan muncul di sini</translation>
 <translation id="8748714929822124637">Jangan izinkan situs mengakses perangkat lain di jaringan lokal Anda</translation>
 <translation id="8751914237388039244">Pilih gambar</translation>
-<translation id="8775741625735357092">Anda dapat mengaktifkan kolom bookmark di Setelan &gt; Tampilan</translation>
 <translation id="8800034312320686233">Situs tidak berfungsi?</translation>
 <translation id="8801436777607969138">Blokir JavaScript untuk situs tertentu.</translation>
 <translation id="2026315747406172223">V8 adalah mesin WebAssembly dan JavaScript Brave yang digunakan untuk meningkatkan performa situs</translation>

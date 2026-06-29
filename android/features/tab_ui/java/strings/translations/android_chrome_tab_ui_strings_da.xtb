@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> fane blev grupperet</translation>
 <translation id="1844381456014878100">Efter 7 dages inaktivitet</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> fane}one{<ph name="TABS_COUNT_MANY"/> fane}other{<ph name="TABS_COUNT_MANY"/> faner}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{Føj fane til læseliste}one{Føj fane til læseliste}other{Føj faner til læseliste}}</translation>
 <translation id="1909810060368225529">Bemærk! Ændringer af denne delte fanegruppe er synlige for alle. Alle kan ændre dine delte fanegrupper</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{Fastgør fane}one{Fastgør fane}other{Fastgør faner}}</translation>
 <translation id="1982637982196732906">Flyt til inaktiv sektion</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Gem <ph name="TABS_COUNT_ONE"/> valgt fane som bogmærke}one{Gem <ph name="TABS_COUNT_MANY"/> valgt faner som bogmærke}other{Gem <ph name="TABS_COUNT_MANY"/> valgte faner som bogmærker}}</translation>
 <translation id="2055057176188061528">Vælg fanegruppe, eller opret en ny fanegruppe</translation>
 <translation id="2074527029802029717">Frigør fane</translation>
+<translation id="2111670510994270194">Ny fane til højre</translation>
 <translation id="2118649612461486615">Butiksinfo</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Slå lyden til på website}one{Slå lyden til på website}other{Slå lyden til på websites}}</translation>
 <translation id="2162620598375156287">Fås nu til <ph name="CURRENT_PRICE"/> på <ph name="SOURCE_WEBSITE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138">Prisfald på <ph name="PRICE_DROP"/> på <ph name="PRODUCT_NAME"/></translation>
 <translation id="3078350928901129212">Farveikon for fanegruppen <ph name="COLOR_NAME"/></translation>
 <translation id="311432875115153175">Listen over fanegrupper er lukket</translation>
+<translation id="3152596030350326139">Vis faner vandret</translation>
+<translation id="31806439105337256">Vis faner lodret</translation>
 <translation id="3194464645767632461">bedømmelse</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Føj <ph name="TABS_COUNT_ONE"/> fane til gruppen}one{Føj <ph name="TABS_COUNT_MANY"/> fane til gruppen}other{Føj <ph name="TABS_COUNT_MANY"/> faner til gruppen}}</translation>
 <translation id="3328308545011660196">Forslag: <ph name="NUMBER_OF_TABS"/> faner ser ud til at være relateret. Vil du gruppere dem?</translation>

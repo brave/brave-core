@@ -30,12 +30,14 @@
 <translation id="1828808367831369073">Ομαδοποιήθηκε <ph name="TABS_COUNT_ONE"/> καρτέλα</translation>
 <translation id="1844381456014878100">Μετά από 7 ημέρες αδράνειας</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> καρτέλα}other{<ph name="TABS_COUNT_MANY"/> καρτέλες}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{Προσθήκη καρτέλας στη λίστα ανάγνωσης}other{Προσθήκη καρτελών στη λίστα ανάγνωσης}}</translation>
 <translation id="1909810060368225529">Σημείωση: Οι αλλαγές σε αυτή την κοινόχρηστη ομάδα καρτελών είναι ορατές σε όλους. Όλοι μπορούν να κάνουν αλλαγές στις κοινόχρηστες ομάδες καρτελών</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{Καρφίτσωμα καρτέλας}other{Καρφίτσωμα καρτελών}}</translation>
 <translation id="1982637982196732906">Μετακίνηση στην ενότητα ανενεργών</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Δημιουργία σελιδοδείκτη για <ph name="TABS_COUNT_ONE"/> επιλεγμένη καρτέλα}other{Δημιουργία σελιδοδείκτη για <ph name="TABS_COUNT_MANY"/> επιλεγμένες καρτέλες}}</translation>
 <translation id="2055057176188061528">Επιλέξτε μια ομάδα καρτελών ή δημιουργήστε μια νέα ομάδα καρτελών</translation>
 <translation id="2074527029802029717">Ξεκαρφίτσωμα καρτέλας</translation>
+<translation id="2111670510994270194">Νέα καρτέλα στα δεξιά</translation>
 <translation id="2118649612461486615">Πληροφορίες καταστήματος</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Κατάργηση σίγασης ιστοτόπου}other{Κατάργηση σίγασης ιστοτόπων}}</translation>
 <translation id="2162620598375156287">Τώρα <ph name="CURRENT_PRICE"/> στο <ph name="SOURCE_WEBSITE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138">Πτώση τιμής <ph name="PRICE_DROP"/> για <ph name="PRODUCT_NAME"/></translation>
 <translation id="3078350928901129212">Εικονίδιο χρώματος <ph name="COLOR_NAME"/> ομάδας καρτελών</translation>
 <translation id="311432875115153175">Η λίστα ομάδων καρτελών έκλεισε</translation>
+<translation id="3152596030350326139">Εμφάνιση καρτελών οριζόντια</translation>
+<translation id="31806439105337256">Εμφάνιση καρτελών κατακόρυφα</translation>
 <translation id="3194464645767632461">αξιολόγηση</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Προσθήκη <ph name="TABS_COUNT_ONE"/> καρτέλας σε ομάδα}other{Προσθήκη <ph name="TABS_COUNT_MANY"/> καρτελών σε ομάδα}}</translation>
 <translation id="3328308545011660196">Πρόταση: <ph name="NUMBER_OF_TABS"/> καρτέλες φαίνονται σχετικές. Να γίνει ομαδοποίηση;</translation>

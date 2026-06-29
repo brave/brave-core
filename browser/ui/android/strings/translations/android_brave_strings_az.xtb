@@ -128,7 +128,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="3405580543478883040">Lentlər alınır...</translation>
 <translation id="7461899062138731833">MƏNBƏLƏR</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/> ünvanında heç bir lent tapılmadı</translation>
-<translation id="4541978218358617681">Reklam</translation>
 <translation id="7823038307453615214">Brave Xəbərləri göstər</translation>
 <translation id="6527303717912515753">Paylaş</translation>
 <translation id="1654539412343893324">Verilənləriniz haqqında ətraflı məlumat</translation>
@@ -137,7 +136,6 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="2014017248518069982"><ph name="PUBLISHER"/> məzmununu deaktiv et</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> deaktiv edildi</translation>
 <translation id="1276592121036104130">Yeni məzmunu yüklə</translation>
-<translation id="3189348785087463371">Təqdim olunur</translation>
 <translation id="7554145152551782675">Daha çox Brave Təklifləri</translation>
 <translation id="254100925533869330">Məzmun yoxdur</translation>
 <translation id="7172792761509429092">Brave Xəbərlərdə göstərmək üçün heç bir məzmun yoxdur.</translation>
@@ -158,8 +156,8 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="1680858055899097121">Nişanların hər sirh vaxtını tutmayan</translation>
 <translation id="7142548388914389999">Məxfilik qoruyan məhsul analitiklərinə (P3A) icazə verin</translation>
 <translation id="5254037869598726291">Anonimləşdirilmiş P3A məlumatları Brave-nin ümumi istifadəsini təxmin etməyə kömək edir və populyar funksiyaları yaxşılaşdırdığımızı təmin edir.</translation>
-<translation id="4174337572777167894">Veb Kəşfetmə Layihəsi</translation>
-<translation id="8659271182272561965">Brave Axtarışdan daha təkmil formada istifadə etmək üçün internetdə anonim axtarış &amp; verilənlərinizlə buna dəstək olun.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Axtarışı təkmilləşdirmək üçün bəzi anonim axtarış &amp; naviqasiya məlumatlarını paylaşın.</translation>
 <translation id="933652931229970927">Diaqnostika hesabatlarının avtomatik göndərilməsi</translation>
 <translation id="5987838417172370108">Brave brauzeri çökəndə və ya donanda avtomatik olaraq diaqnostika hesabatları göndərərək Brave-nin məhsul sabitliyinə kömək edin.</translation>
 <translation id="7977176350719484850">Qənaət edilmiş\ntəxmini verilənlər</translation>
@@ -200,7 +198,7 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="8025937231644975408">Hansı funksiyalardan ən çox istifadə etdiyinizi bizə bildirin.</translation>
 <translation id="2888496576732880897">Brave Axtarışı genişləndirməyə kömək edin</translation>
 <translation id="7198716519700700181">Axışda fasilələri bloklayın</translation>
-<translation id="7044431516245362795">İndeksi artırmağa və axtarış nəticələrini təkmilləşdirməyə kömək etmək üçün Veb Kəşfetmə Layihəsində iştirak edin. <ph name="LEARN_MORE_START"/>Ətraflı məlumat.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">İndeksi böyütməyə və axtarış nəticələrini yaxşılaşdırmağa kömək etmək üçün Web Discovery Project-ə qoşulun. <ph name="LEARN_MORE_START"/>Daha çox öyrənin<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave loqosu</translation>
 <translation id="4767173360729868049">Brave Axtarışına kömək illüstrasiyası</translation>
 <translation id="8241918461631453498">Fasilələri bloklama illüstrasiyası</translation>
@@ -435,8 +433,15 @@ Yalnız etibar etdiyiniz varlıqlardan olan siyahılara abunə olun. Brauzeriniz
 <translation id="9140049656798805345">İndi sayt məlumatlarını məhv edək</translation>
 <translation id="6795622376590884449">Avtomatik məhv</translation>
 <translation id="7961015016161918242">Heç vaxt</translation>
+<translation id="3200744626782631683">Gözətləmə məlumatları heç vaxt avtomatik olaraq silinmir</translation>
 <translation id="1991004083507807299">Sayt vərəqəsi bağlandı</translation>
+<translation id="2917925984754303958">Gəzmə məlumatları saytda açıq olan bütün sekmələr bağlananda avtomatik olaraq silinir.</translation>
 <translation id="5827277414420724690">Tətbiq bağlanması</translation>
+<translation id="2036389684543586068">Gözətmə məlumatları Brave tətbiqi bağlananda və ya yenidən başladığında avtomatik olaraq silinir.</translation>
+<translation id="4279349293084858577">Məhv et</translation>
+<translation id="2997451887458851244">Auto Shred-i yenilə və hansı məlumatların silinəcəyini tənzimlə</translation>
+<translation id="363903976200491771">Gözətləmə məlumatlarını avtomatik olaraq parçala</translation>
+<translation id="1028873002018537235">Gözətçini brauzer tarixçəsini məhv et</translation>
 <translation id="1209739344687072997">Nasaz sayt haqqında bildirin</translation>
 <translation id="8510478288840333677">Brave-in programistlərinə bu saytın Təhlükəsizlik Qalxanları ilə düzgün işləmədiyini bildirin:</translation>
 <translation id="1653405824851871276">Brave-i yaxşılaşdırmaqda kömək etdiyiniz üçün təşəkkür edirik. Bu hesabat yalnız bu saytı düzəltmək üçün zəruri məlumatları əhatə edəcək. <ph name="LEARN_MORE"/></translation>
@@ -1184,4 +1189,7 @@ Lütfən, bizimlə bölüşməyə rahat olduğunuz məlumatları seçin.
 <translation id="1079140196216383600">Fərdi axtarış mühərriki sil</translation>
 <translation id="525276572490219787">"<ph name="SEARCH_ENGINE_NAME"/>" silmək istədiyinizə əminsiniz? Bu əməliyyat geri alına bilməz.</translation>
 <translation id="6406506848690869874">Sinxronlaşdırma</translation>
+<translation id="1850594249589065646">Məkan dəqiqliyi</translation>
+<translation id="2403474027143565107">Dəqiq</translation>
+<translation id="4042597221652780603">Təxmini</translation>
 </translationbundle>

@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Hämtar feeds ...</translation>
 <translation id="7461899062138731833">KÄLLOR</translation>
 <translation id="6150420917380577651">Inga feeds hittades på <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Reklam</translation>
 <translation id="7823038307453615214">Visa Brave News</translation>
 <translation id="6527303717912515753">Dela</translation>
 <translation id="1654539412343893324">Mer information om dina data</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Inaktivera innehåll från <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> är inaktiverad</translation>
 <translation id="1276592121036104130">Ladda nytt innehåll</translation>
-<translation id="3189348785087463371">Marknadsförd</translation>
 <translation id="7554145152551782675">Fler Brave-erbjudanden</translation>
 <translation id="254100925533869330">Inget innehåll</translation>
 <translation id="7172792761509429092">Brave News har inget innehåll att visa.</translation>
@@ -157,7 +155,7 @@
 <translation id="7142548388914389999">Tillåt integritetsbevarande produktanalys (P3A)</translation>
 <translation id="5254037869598726291">Anonymiserad P3A-info hjälper Brave att uppskatta den totala användningen och se till att vi förbättrar populära funktioner.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Bidra med anonym sökning &amp; surfdata för att förfina Brave Search.</translation>
+<translation id="8659271182272561965">Bidra med viss anonym sök- &amp; webbläsardata för att förbättra Brave Sök.</translation>
 <translation id="933652931229970927">Skicka diagnostikrapporter automatiskt</translation>
 <translation id="5987838417172370108">Hjälp till att förbättra Braves produktstabilitet genom att automatiskt skicka diagnostikrapporter när Brave Browser kraschar eller fryser.</translation>
 <translation id="7977176350719484850">Uppsk. data\nsparade</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Låt oss veta vilka funktioner du gillar mest.</translation>
 <translation id="2888496576732880897">Hjälp Brave Sök att växa</translation>
 <translation id="7198716519700700181">Blockera avbrott när du streamar</translation>
-<translation id="7044431516245362795">Gå in på Web Discovery Project för att hjälpa till att utöka indexet och förbättra sökresultaten. <ph name="LEARN_MORE_START"/>Läs mer.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Anmäl dig till Web Discovery-projektet för att bidra till att utöka indexet och förbättra sökresultaten. <ph name="LEARN_MORE_START"/>Läs mer<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Brave-logotyp</translation>
 <translation id="4767173360729868049">Illustrationen Hjälp Brave Sök</translation>
 <translation id="8241918461631453498">Illustrationen Blockera avbrott</translation>
@@ -437,8 +435,15 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="9140049656798805345">Ta bort webbplatsdata nu</translation>
 <translation id="6795622376590884449">Ta bort automatiskt</translation>
 <translation id="7961015016161918242">Aldrig</translation>
+<translation id="3200744626782631683">Webbläsardata raderas aldrig automatiskt</translation>
 <translation id="1991004083507807299">Webbplatsflikar stängda</translation>
+<translation id="2917925984754303958">Surfdata raderas automatiskt när alla flikar som är öppna på en webbplats stängs</translation>
 <translation id="5827277414420724690">Appen stängd</translation>
+<translation id="2036389684543586068">Webbläsardata raderas automatiskt när Brave-appen stängs eller startas om</translation>
+<translation id="4279349293084858577">Ta bort</translation>
+<translation id="2997451887458851244">Uppdatera Auto Shred och ange vilka data som ska raderas</translation>
+<translation id="363903976200491771">Radera webbläsaruppgifter automatiskt</translation>
+<translation id="1028873002018537235">Radera webbläsarhistoriken</translation>
 <translation id="1209739344687072997">Rapportera en trasig webbplats</translation>
 <translation id="8510478288840333677">Låt Braves utvecklare veta att denna webbplats inte fungerar korrekt med Shields:</translation>
 <translation id="1653405824851871276">Tack för att du hjälper till att göra Brave bättre för alla. Denna rapport kommer endast att innehålla information som är nödvändig för att vi ska kunna åtgärda webbplatsen. <ph name="LEARN_MORE"/></translation>
@@ -1182,4 +1187,7 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="1079140196216383600">Ta bort anpassad sökmotor</translation>
 <translation id="525276572490219787">Vill du ta bort "<ph name="SEARCH_ENGINE_NAME"/>"? Denna åtgärd kan inte ångras.</translation>
 <translation id="6406506848690869874">Synka</translation>
+<translation id="1850594249589065646">Platsnoggrannhet</translation>
+<translation id="2403474027143565107">Exakt</translation>
+<translation id="4042597221652780603">Ungefärligt</translation>
 </translationbundle>

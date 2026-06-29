@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">વધુ...</translation>
 <translation id="71316462802471551">ઇમેઇલ ઉપનામો</translation>
+<translation id="209130971304928953">ટૅબ્સને વર્કસ્પેસ તરીકે સાચવો…</translation>
+<translation id="877984331511007834">વર્કસ્પેસ ખોલો…</translation>
+<translation id="1310182651927031327">ટૅબ્સને વર્કસ્પેસ તરીકે સાચવો…</translation>
+<translation id="3588277741646479444">વર્કસ્પેસ ખોલો…</translation>
 <translation id="1990886731975529483">Google Widevine ઇન્સ્ટોલ કરો અને ચલાવો</translation>
 <translation id="8926389886865778422">ફરિથી પુછશો નહીં</translation>
 <translation id="4900351245762303149">Google Widevine ઇન્સ્ટોલ કરો</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor સાથે નવી ખાનગી વિંડો</translation>
 <translation id="2638041073279639246">Tor સાથે ખાનગી વિંડોમાં લિંક ખોલો</translation>
 <translation id="3425600262621021599">Brave છુપી વિંડોમાં Tor સાથે લિંક ખોલો</translation>
-<translation id="2545072023356206691">1 ડિસેમ્બર, 2023થી Brave Dev ચેનલ પર બ્રાઉઝર અપડેટ્સ નહીં મળે. અમે યૂઝર્સને Nightly, Beta અથવા Braveના રિલીઝ વર્ઝન પર جانےની ભલામણ કરીએ છીએ.</translation>
 <translation id="474217410105706308">ટૅબ મ્યૂટ કરો</translation>
 <translation id="2804710924397009224">Brave પુરસ્કારો ચિહ્ન છુપાવો</translation>
 <translation id="5029193871181468990">Brave Rewards આઇકન છુપાવો</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">Brave Search ને પોતાના પ્રાઇવેટ એડ પર ક્લિક કરીને સપોર્ટ આપવા બદલ આભાર. Big Tech ના વિપરીત, તમારી ગોપનીયતા જાળવવા માટે આપણે એડ પરફોર્મન્સ અનામી રીતે માપીએ છીએ.</translation>
 <translation id="8748471354357836070">વધુ જાણો / ઓપ્ટ આઉટ પસંગીઓ</translation>
 <translation id="5927196110206824867">પ્રાયોજિત બૅકગ્રાઉન્ડ ઇમેજ Braveના સ્વતંત્ર, વપરાશકર્તા-પ્રથમ વેબ બનાવવાના મિશનને સપોર્ટ કરે છે. અને Big Techથી વિપરીત, અમે તમારી ગોપનીયતા જાળવવા માટે અનામી રીતે જાહેરાત પ્રદર્શનને માપીએ છીએ.</translation>
-<translation id="4174337572777167894">વેબ ડિસ્કવરી પ્રોજેક્ટ</translation>
-<translation id="8659271182272561965">Brave સર્ચને રિફાઇન કરવા માટે થોડા અનામી શોધ અને બ્રાઉઝિંગ ડેટાનું યોગદાન આપો.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave સર્ચને રિફાઇન કરવા માટે કેટલોક અનામિક સર્ચ &amp; બ્રાઉઝિંગ ડેટા આપો.</translation>
 <translation id="1516554614404600536">Brave ટૂલટિપ</translation>
 <translation id="4375473250631001683">સાઇડબાર ચિહ્ન છુપાવો</translation>
 <translation id="2613033293035359003">સાઇડબાર છુપાવો</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">કન્ટેનરમાં ખોલો</translation>
 <translation id="194205047181722473">કન્ટેનરમાં લિંક ખોલો</translation>
 <translation id="8638526693050780542">કન્ટેનર્સ મેનેજ કરો</translation>
+<translation id="2796584247246518451">નવું ટેમ્પરરી કન્ટેનર</translation>
 <translation id="2336228925368920074">બધા ટૅબ્સ બુકમાર્ક  કરો...</translation>
 <translation id="2523967823495420116">વર્ટિકલ ટેબ્સ વાપરો</translation>
 <translation id="5483718923712878759">ફોકસ મોડ</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">કન્ટેનરમાં ખોલો</translation>
 <translation id="1185644444415356776">કન્ટેનરમાં લિંક ખોલો</translation>
 <translation id="6745991613881384719">કન્ટેનર્સ મેનેજ કરો</translation>
+<translation id="8523788649219117880">નવું ટેમ્પરરી કન્ટેનર</translation>
 <translation id="3704707436873245822">છબીમાંથી લખાણ કોપી કરો</translation>
 <translation id="5268098808165185458">લખાણ છબીમાંથી કોપી કરાઈ રહ્યું છે...</translation>
 <translation id="4046485130884276245">છબીમાંથી લખાણ કોપી કર્યું</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">ટૅબ્સ</translation>
 <translation id="8168435359814927499">કન્ટેન્ટ</translation>
 <translation id="6017560037265964523">કન્ટેનર્સ</translation>
-<translation id="934893482320683588">તમારા બ્રાઉઝિંગને કન્ટેનર્સ સાથે ગોઠવો. <ph name="BEGIN_LINK"/>વધુ શીખો<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">કન્ટેનર્સ એ રંગ-કોડેડ બ્રાઉઝર ટૅબ્સ છે જે તમારા બ્રાઉઝિંગ ડેટા, જેમ કે cookies, cache, અને site storage ને અલગ સંદર્ભોમાં અલગ કરે છે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">કન્ટેનર્સ સક્ષમ કરો</translation>
 <translation id="7773735778926921278">નવી કન્ટેનર ઉમેરો</translation>
 <translation id="8900907990448657776">કન્ટેનર સંપાદિત કરો</translation>
 <translation id="7900511996284443779">કન્ટેનર કાઢી નાખો</translation>
@@ -807,6 +813,7 @@
 <translation id="5226020406479918122">ટૅબ ફોકસ મોડ</translation>
 <translation id="3705539672403311123">ટૅબ સર્ચ પેજમાં ટૅબ નિયમન સક્ષમ કરો. ઓપન હોવા પર, આ Leo ને ક્લાસિફાઈ કરવા માટે તમામ નોન-પ્રાઈવેટ ટૅબ્સના શીર્ષકો અને મૂળ આપોઆપ મોકલી દેશે. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ટેબ ફોકસ માટે ડિફોલ્ટ મોડેલ</translation>
+<translation id="2161546758719933059">Tab Focus Mode માં તમારી ટૅબ્સને ગોઠવવા માટે વપરાયેલ મોડેલ. <ph name="BEGIN_LINK"/>વધુ જાણો<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">વાતચીતમાં સૂચિત સૂચનો બતાવો</translation>
 <translation id="5781842473834867765">મારી વાતચીતના ઇતિહાસને સ્ટોર કરો</translation>
 <translation id="1082960401708055995">કૉન્વર્સેશન સ્ટોરેજ અક્ષમ કરવાથી અગાઉ સ્ટોર કરેલી બધી કોલવિચારો કાયમ માટે મિટાવી નાખશે. આ ક્રિયા પૂર્વવત્ થઈ શકતી નથી.</translation>

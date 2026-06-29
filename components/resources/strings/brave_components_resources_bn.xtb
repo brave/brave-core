@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">উৎস</translation>
 <translation id="5158129253322921540">বিষয়বস্তুগুলি ডিসেবলড্ করুন <ph name="PUBLISHER_NAME"/> থেকে</translation>
 <translation id="3189348785087463371">প্রচারিত</translation>
-<translation id="4541978218358617681">বিজ্ঞাপন</translation>
 <translation id="1776831331757823105">ঘড়ি</translation>
 <translation id="7791543448312431591">জুড়ুন</translation>
 <translation id="6216996674668969227">গোপনীয়তা-সম্মানকারী বিজ্ঞাপনগুলি দেখার জন্য টোকেনগুলো অর্জন করুন।</translation>
@@ -737,9 +736,9 @@
 <translation id="8251969358165471584">Web3 ওয়ালেট</translation>
 <translation id="7160424977552599351">আপনার Web3 ওয়ালেট ব্যবহার করুন</translation>
 <translation id="6369571967625114920">আপনার অঞ্চলে Brave প্রাইভেট বিজ্ঞাপন এখনও উপলভ্য নয়।</translation>
-<translation id="5309155375926073606">হ্যাঁ, আমি Brave অনুসন্ধান-এ অবদান রাখতে চাই এবং <ph name="LINK_BEGIN"/>ওয়েব ডিসকভারি প্রোজেক্ট<ph name="LINK_END"/> নির্বাচন করতে চাই।</translation>
-<translation id="4622826307953794521">ওয়েব আবিষ্কার প্রকল্পের সাথে Brave সন্ধান পরিমার্জিত করতে কিছু বেনামী সন্ধান এবং ব্রাউজিং ডেটা শেয়ার করুন। এটি সম্পূর্ণভাবে ওপেন-সোর্স।</translation>
-<translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
+<translation id="5309155375926073606">হ্যাঁ, আমি Brave সার্চ-এ অবদান রাখতে এবং <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>-এ যোগ দিতেও চাই।</translation>
+<translation id="4622826307953794521">Web Discovery Project-এর মাধ্যমে Brave সার্চকে উন্নত করতে কিছু বেনামি সার্চ এবং ব্রাউজিং ডেটা অবদান রাখুন। এটি সম্পূর্ণ ওপেন-সোর্স।</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">কমিউনিটি</translation>
 <translation id="845020633253356720">স্টোর দেখুন</translation>
 <translation id="7777123407058400802">বেসিক অ্যাটেনশন টোকেন (Basic Attention Token) - BAT</translation>
@@ -981,11 +980,11 @@
 <translation id="7080614857771109950">Ethereum ব্লকচেনে EVM এর সাথে সংগতিপূর্ণ সম্পদগুলোকে সমর্থন করে (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">Solana ব্লকচেনে SPL-র সঙ্গে সংগতিপূর্ণ অ্যাসেটগুলিকে সমর্থন করে</translation>
 <translation id="4541295941776129088">FIL সম্পদ সংরক্ষণ করুন</translation>
-<translation id="6030958132571544682">FIL Testnet অ্যাসেট সংরক্ষণ করুন</translation>
+<translation id="6030958132571544682">FIL Testnet সম্পদ সংরক্ষণ করুন</translation>
 <translation id="29759539656432505">BTC অ্যাসেট সংরক্ষণ করুন</translation>
 <translation id="2399555431746923964">BTC Testnet অ্যাসেট সংরক্ষণ করুন</translation>
 <translation id="8749751940551938347">ZEC অ্যাসেট সংরক্ষণ করুন</translation>
-<translation id="3451958544919449297">ZEC Testnet অ্যাসেট সংরক্ষণ করুন</translation>
+<translation id="3451958544919449297">ZEC Testnet সম্পদ সংরক্ষণ করুন</translation>
 <translation id="8459631690385393533">Store Cardano সম্পদসমূহ</translation>
 <translation id="4915057812371523845">Store Cardano Testnet সম্পদসমূহ</translation>
 <translation id="5387140102951033657">Polkadot রিলে চেইন এবং Substrate প্যারাচেইনে Substrate সম্পদ সমর্থন করে</translation>
@@ -1004,6 +1003,9 @@
 <translation id="6720675936326555106">নির্বাচিত ফাইল</translation>
 <translation id="5891811606602061966">অ্যাকাউন্ট আমদানি করতে ব্যর্থ, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
 <translation id="6566535583781706170">অ্যাকাউন্ট ইমপোর্ট করুন</translation>
+<translation id="8079448455682522748">আপনি অন্য ওয়ালেট থেকে যে অ্যাকাউন্টটি ইম্পোর্ট করতে চান তার প্রাইভেট কী কপি করুন।</translation>
+<translation id="8475326612689436917">অন্য ওয়ালেট থেকে প্রাইভেট কী একটি JSON ফাইলে এক্সপোর্ট করুন এবং এখানে আপলোড করুন।</translation>
+<translation id="5733063593286221597">JSON ফাইল আপলোড করুন</translation>
 <translation id="5051929972046200722">আপনার হার্ডওয়্যার ওয়ালেট ডিভাইস নির্বাচন করুন</translation>
 <translation id="5745936663807461565">আপনার <ph name="HARDWARE_DEVICE"/> ওয়ালেটকে সরাসরি আপনার কম্পিউটারের সাথে সংযোগ করুন।</translation>
 <translation id="4350216031085285578">আপনার ডিভাইস আনলক করুন এবং <ph name="BLOCKCHAIN_NETWORK"/> অ্যাপ নির্বাচন করুন।</translation>
@@ -1049,9 +1051,10 @@
 <translation id="7657130382217527063">বিঃদ্রঃ: ব্যক্তিগত কী একটি হেক্স-এনকোডেড JSON হিসাবে প্রদান করা আবশ্যক যাতে ব্যক্তিগত কী এবং প্রোটোকল তথ্য থাকে। <ph name="LINK_START"/>আরও জানুন<ph name="LINK_END"/>।</translation>
 <translation id="4482913669726886926">নোট: শুধুমাত্র <ph name="FORMAT"/> সম্প্রসারিত কীগুলো সমর্থিত।</translation>
 <translation id="6457746820359933716">Polkadot.js বা সামঞ্জস্যপূর্ণ ওয়ালেট থেকে রপ্তানি করা JSON ফাইল ব্যবহার করে আমদানি করুন। রপ্তানি এনক্রিপ্ট করতে ব্যবহৃত পাসওয়ার্ড প্রবেশ করুন।</translation>
-<translation id="9133762451347918196">টেস্টনেট অ্যাকাউন্টসমূহ</translation>
+<translation id="7285350832506166367">Testnet অ্যাকাউন্ট খুঁজছেন?</translation>
 <translation id="42126664696688958">এক্সপোর্ট করুন</translation>
 <translation id="1366855498335432549">জমা</translation>
+<translation id="3852653589653889099">অ্যাকাউন্ট লুকান</translation>
 <translation id="790104325876206743">অ্যাকাউন্টের সেটিংস</translation>
 <translation id="8856844353253421399">শেষ আপডেট <ph name="TIME_AGO"/> আগে</translation>
 <translation id="6322030314101903925">কোনো অ্যাসেট উপলব্ধ নেই</translation>
@@ -1352,6 +1355,12 @@
 <translation id="3067168166931605141">অ্যাকাউন্টের নাম</translation>
 <translation id="1213870770696612739">সর্বনিম্ন পরিমাণ: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">সর্বাধিক পরিমাণ: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">অ্যাকাউন্ট সফলভাবে তৈরি করা হয়েছে</translation>
+<translation id="7444985841455466546">অ্যাকাউন্ট সফলভাবে ইম্পোর্ট করা হয়েছে</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {হার্ডওয়্যার ওয়ালেট অ্যাকাউন্ট সফলভাবে সংযুক্ত হয়েছে}
+      other {{ACCOUNTS}টি হার্ডওয়্যার ওয়ালেট অ্যাকাউন্ট সফলভাবে সংযুক্ত হয়েছে}
+    }</translation>
 <translation id="8528916244724490964">সকল নেটওয়ার্ক</translation>
 <translation id="7721139939763655123">নিম্ন থেকে উচ্চ</translation>
 <translation id="5458608274117818139">উচ্চ থেকে নিম্ন</translation>
@@ -1374,6 +1383,7 @@
 <translation id="1257387162647804035">প্রাথমিক নেটওয়ার্ক</translation>
 <translation id="8323674164587854512">Ethereum + EVM চেইন</translation>
 <translation id="1398414935371867469">Solana + SVM চেইন</translation>
+<translation id="6498449512528552760">অবৈধ উপসর্গ</translation>
 <translation id="7058248670699639973">নেটওয়ার্ক লোগো</translation>
 <translation id="4378208228955237306">NFT এর নেটওয়ার্ক লোগো দেখান</translation>
 <translation id="5472199803712163015">NFT এর স্প্যাম</translation>
@@ -1643,7 +1653,7 @@
 <translation id="1353726744456297797">আপনি যদি এই তালিকায় আপনার অ্যাসেট খুঁজে না পান, তাহলে আপনি নিচের বোতামটি ব্যবহার করে ম্যানুয়ালি এটি যোগ করতে পারেন</translation>
 <translation id="4543171429371680949">অ্যাসেট পাওয়া যায়নি</translation>
 <translation id="1026825928738055872">আপনি কি "<ph name="ACCOUNT_NAME"/>" সরানোর বিষয়ে নিশ্চিত?</translation>
-<translation id="3910551537328657217">অনুরোধ বৈশিষ্ট্য</translation>
+<translation id="2220529011494928058">একটি সমস্যা রিপোর্ট করুন</translation>
 <translation id="7657322905916621147">রিকভারি বাক্যাংশটি 12, 15, 18, 21, বা 24 শব্দের হতে হবে</translation>
 <translation id="5026874946691314267">এটি আবার দেখাবেন না</translation>
 <translation id="434502623875309667">ঠিকানা রেজোলিউশনের অফচেইন নেটওয়ার্কের অনুরোধ প্রয়োজন। এগিয়ে যাবেন?</translation>
@@ -2074,6 +2084,7 @@
 <translation id="7294510764127771956">ক্যারেট ব্রাউজিং টগল</translation>
 <translation id="4186334830839439230">কর্মক্ষমতা সেটিংস দেখান</translation>
 <translation id="1094277301241124207">বুকমার্ক সাইড প্যানেল দেখান</translation>
+<translation id="5101042277149003567">সব বুকমার্ক খুলুন</translation>
 <translation id="8283515796576236471">নতুন উইন্ডোতে সমস্ত বুকমার্ক বার খুলুন</translation>
 <translation id="5271773791943587595">ব্যক্তিগত উইন্ডোতে সমস্ত বুকমার্ক বার খুলুন</translation>
 <translation id="2748975346534113286">সমস্ত নতুন ট্যাব গ্রুপে বুকমার্ক বার খুলুন</translation>
@@ -2160,6 +2171,7 @@
 <translation id="2367972762794486313">অ্যাপ্লিকেশানগুলি দেখান</translation>
 <translation id="3142853026316054951">ফোকাস মোড টগল করুন</translation>
 <translation id="3468387898712904997">নতুন ইমেল উপনাম</translation>
+<translation id="2796584247246518451">নতুন অস্থায়ী কন্টেইনার</translation>
 <translation id="8591883849678260674">আসল দেখুন</translation>
 <translation id="1969654232209826429">ন্যূন. রিড</translation>
 <translation id="4101707289420716287">স্পিডরিডার বন্ধ করুন</translation>
@@ -2229,6 +2241,7 @@
 <translation id="1238020084128916796">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Llama 3.1 8B দ্বারা চালিত, একটি মডেল যা কর্মক্ষম এবং বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগের জন্য Meta তৈরি করেছে। Llama আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Qwen VL 30B দ্বারা চালিত, একটি মডেল যা Alibaba Cloud তৈরি করেছে কর্মক্ষমতা এবং বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগের জন্য। Qwen আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave দ্বারা হোস্ট করা হচ্ছে।<ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি GLM-5 দ্বারা চালিত, একটি মডেল যা Zhipu AI তৈরি করেছে কর্মক্ষম এবং বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগযোগ্য হতে। GLM-5 একটি যাচাইকৃত ব্যক্তিগত নিরাপদ পরিকাঠামোতে তাদের দ্বারা NEAR হোস্ট করা।<ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি GLM-5.1 দ্বারা চালিত, একটি মডেল যা Zhipu AI তৈরি করেছে কর্মক্ষম এবং বিভিন্ন ব্যবহারিক ক্ষেত্রে প্রয়োগযোগ্য হতে। GLM-5.1 একটি যাচাইকৃত ব্যক্তিগত নিরাপদ পরিকাঠামোতে তাদের দ্বারা NEAR হোস্ট করা।<ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">হাই, আমি লিও। আমি Brave-এর একটি AI সহকারী। আমি চালিত Claude Instant দ্বারা, যা একটি মডেল Anthropic তৈরি করেছে কথোপকথন ও টেক্সট প্রসেসিং পরিচালনার জন্য। Claude Instant Brave-এর নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে হোস্ট করা হয়।<ph name="LINK_BEFORE"/>আরও জানুন<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Claude Haiku দ্বারা চালিত, একটি মডেল যা গতানুগতিক এবং টেক্সট প্রক্রিয়াকরণের কাজগুলি চালানোর জন্য Anthropic তৈরি করেছে। Claude Haiku আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">হাই, আমি Leo। আমি সম্পূর্ণভাবে Brave এর পক্ষ থেকে উপস্থাপিত একটি AI সহায়ক। আমি Claude Sonnet দ্বারা চালিত, একটি মডেল যা গতানুগতিক এবং টেক্সট প্রক্রিয়াকরণের কাজগুলি চালানোর জন্য Anthropic তৈরি করেছে। Claude Haiku আমাদের নিজস্ব নিরাপদ পরিকাঠামোর মাধ্যমে Brave এর দ্বারা উপস্থাপিত। <ph name="LINK_BEFORE"/>Learn more<ph name="LINK_AFTER"/></translation>
@@ -2346,8 +2359,8 @@
 <translation id="4592293425457329338">কিছু প্রসঙ্গ কথোপকথন থেকে মিস হয়ে থাকতে পারে। Leo কথোপকথন সংক্রান্ত বিষয়বস্তুর <ph name="PERCENTAGE"/> ধরে রাখতে পেরেছিল।</translation>
 <translation id="8501106061098623831">পৃষ্ঠাটি থেকে অনেক বেশি ছবি ক্যাপচার করা হয়েছে। Leo উপলভ্য দৃশ্যমান কন্টেন্টের থেকে <ph name="PERCENTAGE"/> ব্যবহার করতে পেরেছে।</translation>
 <translation id="4370698775470316661">এই কথোপকথনটি সুদীর্ঘ, তাই চালিয়ে যাওয়া যাবে না। এমন অন্যান্য মডেল থাকতে পারে যা দিয়ে Leo সুদীর্ঘ কথোপকথনগুলির জন্য সঠিকতা বজায় রাখতে সক্ষম।</translation>
-<translation id="5719170755629028558">Brave সার্চ দিয়ে আপনার উত্তর উন্নত হচ্ছে...</translation>
-<translation id="5794962229997281366"><ph name="SEARCH_TERMS"/> এর জন্য উন্নত উত্তর সন্ধান হচ্ছে।</translation>
+<translation id="4744144453035015075">ওয়েবে সার্চ করা হচ্ছে</translation>
+<translation id="8548351747582087191"><ph name="SEARCH_TERMS"/>-এর জন্য ওয়েবে সার্চ করা হচ্ছে।</translation>
 <translation id="7307396647043599949">আরও <ph name="COUNT"/> টি…</translation>
 <translation id="8103700533980268469">এই নোটিসটি বন্ধ করুন</translation>
 <translation id="3417835166382867856">ট্যাবগুলি সন্ধান করুন</translation>
@@ -2418,8 +2431,8 @@
 <translation id="2370739752330685659">সম্ভবত পরে</translation>
 <translation id="983013125018250242">Leo টুল</translation>
 <translation id="7623223587478473368">সংযুক্তি</translation>
-<translation id="3777121685517940177">ফাইল আপলোড করুন...</translation>
-<translation id="6739516910850820220">ফাইল আপলোড হচ্ছে...</translation>
+<translation id="3728603231003977269">ফাইল সংযুক্ত করুন...</translation>
+<translation id="7899721102369502629">ফাইল সংযুক্ত করা হচ্ছে...</translation>
 <translation id="9088751620363630236">একটি ছবি তুলুন...</translation>
 <translation id="4250229828105606438">স্ক্রিনশট</translation>
 <translation id="7949596341600215809">পুরো পৃষ্ঠার স্ক্রিনশট</translation>
@@ -2467,10 +2480,12 @@
 <translation id="7607002721634913082">বিরত রাখা হয়েছে</translation>
 <translation id="4773299976671772492">থামানো হয়েছে</translation>
 <translation id="6946722113367118030">চিন্তা করছে</translation>
+<translation id="7918928051723770926">কাজ সম্পূর্ণ</translation>
 <translation id="2113810663179257944">কোড কার্যকর</translation>
-<translation id="6338250692384725496">আপনার অনুসন্ধান সহায়তা করতে স্যান্ডবক্সে কোড সম্পাদিত করেছে</translation>
+<translation id="4838375634693651776">আপনার অনুসন্ধান সহায়তা করতে স্যান্ডবক্সে কোড সম্পাদন করা হচ্ছে</translation>
 <translation id="4379566111233326721">কোড:</translation>
 <translation id="3542130965673205258">আউটপুট:</translation>
+<translation id="6911817209337314910">আপনার বেছে নেওয়ার জন্য কিছু অপশন তৈরি করা হচ্ছে</translation>
 <translation id="5382076391290708074">আপনার ট্যাবগুলি চারপাশে সরানো</translation>
 <translation id="3862123464576147769">এটি অনুমতি দেওয়া আপনার সমস্ত ট্যাব এবং ট্যাব গ্রুপগুলির <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> এবং <ph name="TITLE_FORMAT_START"/>শিরোনাম<ph name="TITLE_FORMAT_END"/> Brave AI এ পাঠাবে, এবং Brave AI কে সেগুলি চারপাশে সরাতে অনুমতি দেবে। এই অনুমতি শুধুমাত্র এই কথোপকথনে প্রযোজ্য।</translation>
 <translation id="396165714586708444">গভীর গবেষণা</translation>
@@ -2521,6 +2536,7 @@
 <translation id="646524615209870492">একটি উপনাম হিসেবে <ph name="ALIAS"/> সরালে আপনার ইমেলগুলি পাওয়ার ক্ষমতা হারাবেন।</translation>
 <translation id="8133100642915054515">উপনাম মোছার সময় ত্রুটি ঘটেছে। আপনার ইন্টারনেট সংযোগ পরীক্ষা করে আবার চেষ্টা করুন।</translation>
 <translation id="8465742443901727718">এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না। আপনি কি এগিয়ে যাওয়া বিষয়ে নিশ্চিত?</translation>
+<translation id="6402052536605772735">আমাদের সার্ভার থেকে ইমেল অ্যালিয়াস আনতে ত্রুটি হয়েছে। অনুগ্রহ করে আপনার ইন্টারনেট সংযোগ পরীক্ষা করুন।</translation>
 <translation id="9162685486229945876">সাইন ইন করুন বা একটি Brave অ্যাকাউন্ট তৈরি করুন</translation>
 <translation id="1335007417599138852">একটি Brave অ্যাকাউন্ট আপনাকে নির্দিষ্ট Brave পণ্যগুলি অ্যাক্সেস করতে এবং আপনার সমস্ত ডিভাইস জুড়ে আপনার তথ্য সহজে সিঙ্ক করতে দেবে।</translation>
 <translation id="2133391407495495735">লগইন লিঙ্ক পান</translation>
@@ -2700,7 +2716,7 @@
 <translation id="4117637339509843559">ডার্ক মোড</translation>
 <translation id="6302485303316397682">আরও ভালো সার্চ ফলাফল পেতে চান?</translation>
 <translation id="7014699001826714920">মুভমেন্টে যোগ দিন, Brave সার্চে কন্ট্রিবিউট করুন।</translation>
-<translation id="6821108091726602352">Brave-এর ওয়েব ডিসকভারি প্রোজেক্টে অংশ নিয়ে ওয়েবকে আরও ভালো করে তুলুন। সম্পূর্ণভাবে বেনামী সার্চ সিগন্যাল শেয়ার করে আপনি Brave-কে সার্চ ইন্ডেক্স উন্নত করতে সাহায্য করতে পারেন।</translation>
+<translation id="6821108091726602352">Brave-এর ওয়েব ডিসকভারি প্রজেক্টে অংশগ্রহণ করে ওয়েব ঠিক করতে আমাদের সাহায্য করুন। সম্পূর্ণ বেনামি সার্চ সিগন্যাল শেয়ার করে আপনি Brave-কে সার্চ ইনডেক্স বাড়াতে সাহায্য করতে পারেন।</translation>
 <translation id="6764845498618413165">আরও জানুন।</translation>
 <translation id="7818938154803162778">অবশ্যই আমি সাহায্য করব</translation>
 <translation id="7207456302801184289">Brave-এ আপনাকে স্বাগত</translation>
@@ -2853,7 +2869,10 @@ Brave এর একটি সহায়ক পরিষেবা রয়েছে 
 <translation id="6624553071240278643">আপনার অ্যাকাউন্ট তৈরি করুন</translation>
 <translation id="6505120968393722022">Brave অ্যাকাউন্ট তৈরি করার জন্য আপনি @bravealias.com ঠিকানা ব্যবহার করতে পারবেন না। অনুগ্রহ করে একটি ভিন্ন ডোমেন দিয়ে আবার চেষ্টা করুন।</translation>
 <translation id="8248460961680233459">একটি পাসওয়ার্ড তৈরি করুন</translation>
-<translation id="4917385247580444890">জোরালো</translation>
+<translation id="552339301062636488">এগিয়ে যাওয়ার জন্য খুবই দুর্বল</translation>
+<translation id="8433528931936107676">প্রায় হয়ে যাচ্ছে</translation>
+<translation id="4324743471050874155">যথেষ্ট শক্তিশালী</translation>
+<translation id="5585552203448068294">ব্যতিক্রমীভাবে শক্তিশালী</translation>
 <translation id="5486261815000869482">পাসওয়ার্ড নিশ্চিত করুন</translation>
 <translation id="7345706641791090287">আপনার পাসওয়ার্ড নিশ্চিত করুন</translation>
 <translation id="7114054701490058191">পাসওয়ার্ড মেলেনি</translation>
@@ -2880,7 +2899,9 @@ Brave এর একটি সহায়ক পরিষেবা রয়েছে 
 <translation id="4582421696414628320">যাচাইকরণের মেয়াদ শেষ হয়েছে। নিবন্ধন প্রক্রিয়া আবার শুরু করুন।</translation>
 <translation id="8439543211004394821">অনেক বেশি ভুল কোড প্রবেশ করানো হয়েছে। নিবন্ধন প্রক্রিয়া আবার শুরু করুন।</translation>
 <translation id="3229986152760633988">ভুল কোড, অনুগ্রহ করে আবার চেষ্টা করুন।</translation>
+<translation id="818783632689113711">এই ইমেল ঠিকানার জন্য ইতিমধ্যে একটি অ্যাকাউন্টের অনুরোধ করা হয়েছে। অনুগ্রহ করে আপনার ইমেল পরীক্ষা করুন বা ৩০ মিনিট পরে আবার চেষ্টা করুন।</translation>
 <translation id="4178004989875422946">একটি Brave অ্যাকাউন্ট আপনাকে সহজে Brave পরিষেবাগুলিতে অ্যাক্সেস করতে দেবে।</translation>
+<translation id="4902897635127068510">আপনি কি <ph name="SUGGESTION"/> বলতে চেয়েছিলেন?</translation>
 <translation id="8314772463905284467">Caps Lock চালু আছে</translation>
 <translation id="7044608453949401443">পাসওয়ার্ডের শুরুতে বা শেষে স্পেস অনুমোদিত নয়।</translation>
 <translation id="2939492377741553693">নিশ্চিতকরণ ইমেল পুনরায় পাঠানো হয়েছে।</translation>
@@ -2891,4 +2912,5 @@ Brave এর একটি সহায়ক পরিষেবা রয়েছে 
 <translation id="528205534230423181">এই ওয়েবসাইটটি গোপনীয়তা সেটিংস অফার করে যা Brave স্বয়ংক্রিয়ভাবে আপনার জন্য সামঞ্জস্য করতে পারে। আমরা যা সুপারিশ করি তা এখানে:</translation>
 <translation id="1063227610401477317">পরিবর্তনগুলি প্রয়োগ করুন</translation>
 <translation id="5539769255716491933">ব্যর্থ পদক্ষেপগুলি রিপোর্ট করুন</translation>
+<translation id="7562163394445060270">কাজ সম্পূর্ণ ব্যর্থ হয়েছে</translation>
 </translationbundle>

@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="no">
+<translation id="1000614056227025171">Feltet nederst for promotering av tilpasning av startsiden er åpnet i full høyde</translation>
 <translation id="1006017844123154345">Åpne på nettet</translation>
 <translation id="1036348656032585052">Slå av</translation>
 <translation id="1046742265332833834">Blått tema</translation>
 <translation id="1070329623210597193">Filer dette nettstedet kan se eller redigere</translation>
-<translation id="1882093842020941518">Hjelp oss med å forbedre Brave ved å fortelle oss hvorfor du tillot informasjonskapsler fra tredjeparter. <ph name="BEGIN_LINK"/>Send tilbakemelding<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Du kan be om å få datamaskinversjonen av nettsteder</translation>
 <translation id="1109482864356262001">Funksjoner som krever bevegelses- eller lyssensorer, kommer ikke til å virke</translation>
 <translation id="6670155282615872564">Fullfør de foreslåtte handlingene nedenfor for å få mest mulig ut av Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave-tips</translation>
 <translation id="1242008676835033345">Innebygd på <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Trykk på Apper  &gt; Standardapper</translation>
+<translation id="1264694639515903274">Nå kan du tilpasse startsiden</translation>
 <translation id="1272079795634619415">Stopp</translation>
 <translation id="1275718070701477396">Valgt</translation>
 <translation id="8010562420973777575">For å spare data er bildene på denne siden optimalisert av Brave.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">Nettadressen er avkortet</translation>
 <translation id="1741136041592162279">La Brave dele de nylige fanene dine med enheten din, slik at du kan se dem på applisten og i søkeresultater på enheten. Du kan slå dette på eller av i Brave-innstillingene.</translation>
 <translation id="1420688843103859429">Naviger frem og tilbake ved å sveipe med to fingre på styreflaten</translation>
-<translation id="1432650420699700107">Nettsteder kan be om å få koble til enheter på det lokale nettverket ditt</translation>
 <translation id="1442081309487427303">Slå på linker for lesemodus</translation>
 <translation id="1448064542941920355">Zoom ut</translation>
 <translation id="1464044141348608623">Ikke la nettsteder få vite når du bruker enheten aktivt</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Når dette er på, kan nettsteder be om å få administrere vinduer på alle skjermene dine. Når dette er av, kan ikke nettsteder administrere vinduer på alle skjermene dine.</translation>
 <translation id="1738912554587725807">Feltet nederst for temasamlinger for utseende på Ny fane-side</translation>
 <translation id="1743802530341753419">Spør før nettsteder kan koble til en enhet (anbefales)</translation>
-<translation id="2534291364429593865">Få varsler om Brave-tips</translation>
 <translation id="1777815584158991902">Feltet nederst for Discover-feeden</translation>
 <translation id="1779089405699405702">Bildedekoder</translation>
 <translation id="1781533683087883868">Slå av linker for lesemodus</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Legg på</translation>
 <translation id="1919950603503897840">Velg kontakter</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Tilpass startsiden min</translation>
 <translation id="1939059826036755332">Automatisk bilde-i-bilde</translation>
 <translation id="1954597385941141174">Nettsteder kan be om å få koble til USB-enheter</translation>
 <translation id="1979673356880165407">Gjør tekst og bilder større eller mindre for alle nettsteder du besøker</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Administreres av <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Hjelp og tilbakemelding</translation>
 <translation id="2501278716633472235">Gå tilbake</translation>
-<translation id="2533138527374486328">Når dette er på, kan nettsteder be om å få koble til enheter på det lokale nettverket ditt. Når dette er av, kan ikke nettsteder koble til enheter på det lokale nettverket ditt.</translation>
 <translation id="2536779053640817375">Tillatt denne gangen • Nøyaktig</translation>
 <translation id="2544997614631598250">Temafarge – mørk</translation>
 <translation id="2546283357679194313">Informasjonskapsler og data fra nettsteder</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Start multifunksjonsfeltet</translation>
 <translation id="2789132527330338807">Nettsteder kan be om å få lage 3D-kart av omgivelsene dine eller spore kameraposisjonen</translation>
 <translation id="2790501146643349491">Når dette er på, kan nylig lukkede nettsteder fullføre sending og mottak av data. Når dette er av, kan ikke nylig lukkede nettsteder fullføre sending eller mottak av data.</translation>
-<translation id="1708222144403389505">Slå på varsler for å få nyttige tips som hjelper deg med å få mest mulig ut av Brave</translation>
 <translation id="2795716239552913152">Nettsteder bruker vanligvis posisjonen din for å kunne tilby relevante funksjoner eller opplysninger, som lokalnyheter eller butikker i nærheten</translation>
 <translation id="2800760947029405028">Last opp et bilde</translation>
 <translation id="2802908157808345702">Ikke la nettsteder sende forgrunnsvinduer eller bruke viderekoblinger</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Nettsteder kan spille av lyd</translation>
 <translation id="3065787901655140044">Avansert beskyttelse er på</translation>
 <translation id="3069226013421428034">Tillat tredjepartspålogging for et bestemt nettsted.</translation>
+<translation id="3084983642903364837">Du kan endre startsiden senere via menyen med tre prikker.</translation>
 <translation id="310297983047869047">Forrige lysbilde</translation>
 <translation id="3108122610701115301">Angi som standard</translation>
 <translation id="310979712355504754">Slett alle</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Ikke la nettsteder koble til USB-enheter</translation>
 <translation id="3965467402665811906">Nettsteder kan be om å få bruke informasjon de har lagret om deg</translation>
 <translation id="3967822245660637423">Nedlasting fullført</translation>
-<translation id="3969869202926863008">Lokal nettverkstilgang</translation>
 <translation id="3981465354637804599">Nettsteder viser vanligvis annonser for å kunne tilby innhold eller tjenester kostnadsfritt. Men noen nettsteder er kjent for å vise forstyrrende eller villedende annonser.</translation>
 <translation id="3987993985790029246">Kopier link</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Koblet til en seriell port</translation>
 <translation id="4223404254440398437">Mikrofon er ikke tillatt</translation>
 <translation id="4226663524361240545">Varsler kan gjøre at enheten vibrerer</translation>
+<translation id="4227965147357783918">Feltet nederst for promotering av tilpasning av startsiden er åpnet i halv høyde</translation>
 <translation id="4259722352634471385">Nettadressen er blokkert: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Når du forlater nettsteder, kan de fortsette å synkronisere for å fullføre oppgaver, som å laste opp bilder eller sende chatmeldinger</translation>
 <translation id="4278390842282768270">Tillatt</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Vis</translation>
 <translation id="4310738531374808763">Tilpass startsiden din</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Utløper i morgen}other{Utløper om # dager}}</translation>
+<translation id="7012676469589811613">Gjør Brave til din egen ved å velge et egendefinert tema</translation>
 <translation id="4338831206024587507">Alle nettsteder under <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Ikke la nettsteder sende varsler</translation>
 <translation id="4341577178275615435">For å slå markørsurfing på eller av, bruk hurtigtasten F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Ikke gjør nettsteder raskere med V8-motoren i Brave, men gjør Brave litt mer motstandsdyktig mot angrep</translation>
 <translation id="5556459405103347317">Last inn på nytt</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> er blokkert</translation>
-<translation id="560980142378233747">Dette betyr at funksjoner på nettstedet skal fungere som forventet, men det kan hende at surfebeskyttelsen svekkes. <ph name="BEGIN_LINK"/>Send tilbakemelding<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Feltet nederst for kort på Ny fane-siden</translation>
 <translation id="5621413808884657932">Når dette er på, kan nettsteder be om å få bruke andre apper og tjenester på denne enheten. Når dette er av, kan ikke nettsteder bruke andre apper og tjenester på denne enheten.</translation>
 <translation id="5632485077360054581">Vis meg hvordan</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Mine snarveier</translation>
 <translation id="656065428026159829">Se mer</translation>
 <translation id="6561560012278703671">Bruk stillere meldinger (blokkerer varselmeldinger fra å forstyrre deg)</translation>
-<translation id="6565144332292237355">Nettsteder kan bruke denne funksjonen for å se etter og koble til enheter på det lokale nettverket ditt</translation>
 <translation id="6593061639179217415">Side for datamaskiner</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Informasjonskapsler er tillatt for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-nettsted}other{Informasjonskapsler er tillatt for <ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/>-nettsteder}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Bli her</translation>
 <translation id="6630443592285535486">Skriv inn heksadesimalverdien her</translation>
 <translation id="6635327442719709864">Når dette er på, kan nettsteder be om å få bruke serielle porter. Når dette er av, kan ikke nettsteder bruke serieporter.</translation>
-<translation id="6669390930482049506">Varsle meg</translation>
 <translation id="6678072580827808850">Gjennomgå sikkerhetssjekken</translation>
 <translation id="6682057173375416470">Få foreslåtte artikler på Ny fane-siden</translation>
 <translation id="6683865262523156564">Dette nettstedet er med i en gruppe som kan se aktiviteten din. Gruppen er definert av <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Last inn på nytt</translation>
 <translation id="7188508872042490670">Nettstedsdata på enheten</translation>
 <translation id="7201549776650881587">Denne handlingen sletter alle data og informasjonskapsler som er lagret av alle nettstedene under <ph name="ORIGIN"/> eller den tilhørende appen på startskjermen</translation>
-<translation id="7213166370492037743">Ikke la nettsteder koble til enheter på det lokale nettverket</translation>
 <translation id="7219254577985949841">Vil du slette nettstedsdata?</translation>
 <translation id="723171743924126238">Velg bilder</translation>
 <translation id="7243246278722455312">Felt nederst for tilpasning av Ny fane-siden</translation>
@@ -757,7 +753,6 @@ Avansert beskyttelse styrer disse Brave-innstillingene:</translation>
 <translation id="8737426583868847403">Nettsteder du lagrer et egendefinert zoomnivå for, vises her</translation>
 <translation id="8748714929822124637">Ikke la nettsteder bruke andre enheter på det lokale nettverket</translation>
 <translation id="8751914237388039244">Velg et bilde</translation>
-<translation id="8775741625735357092">Du kan slå på bokmerkelinjen i Innstillinger &gt; Utseende</translation>
 <translation id="8800034312320686233">Virker ikke nettstedet?</translation>
 <translation id="8801436777607969138">Blokkér JavaScript for et bestemt nettsted.</translation>
 <translation id="2026315747406172223">V8 er JavaScript- og WebAssembly-motoren som Brave bruker til å forbedre nettstedsytelsen</translation>

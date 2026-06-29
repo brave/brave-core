@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">සංග්‍රහ ගැනෙමින්...</translation>
 <translation id="7461899062138731833">මූලාශ්‍ර</translation>
 <translation id="6150420917380577651"><ph name="SEARCH_URL"/>හි කිසිදු සංග්‍රහයක් හමු නොවිණි</translation>
-<translation id="4541978218358617681">දැන්වීම</translation>
 <translation id="7823038307453615214">Brave පුවත් පෙන්වන්න</translation>
 <translation id="6527303717912515753">බෙදාගන්න</translation>
 <translation id="1654539412343893324">ඔබගේ දත්ත ගැන තව දැනගන්න</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982"><ph name="PUBLISHER"/>වෙතින් අන්තර්ගත අබල කරන්න</translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> අබලයි</translation>
 <translation id="1276592121036104130">නව අන්තර්ගතය පූරණය</translation>
-<translation id="3189348785087463371">ප්‍රවර්ධනය කර ඇත</translation>
 <translation id="7554145152551782675">තවත් බ්‍රේව් දීමනා</translation>
 <translation id="254100925533869330">අන්තර්ගතයක් නැත</translation>
 <translation id="7172792761509429092">Brave පුවත් වල පෙන්වීමට අන්තර්ගතයක් නැත.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">පිරික්සුම් වාර අතර පටිති තබා නොගන්න</translation>
 <translation id="7142548388914389999">රහස්‍යතා ප්‍රරක්ෂණ නිෂ්පාදන විශ්ලේෂණ වලට ඉඩ දෙන්න (P3A)</translation>
 <translation id="5254037869598726291">බ්‍රේව් සමස්ත භාවිතය තක්සේරුවට සහ අපි ජනප්‍රිය විශේෂාංග වැඩිදියුණු කරන බව සහතික කර ගැනීමට නිර්නාමික P3A තොරතුරු උදව් කරයි.</translation>
-<translation id="4174337572777167894">වෙබ් ඩිස්කවරි ව්‍යාපෘතිය</translation>
-<translation id="8659271182272561965">බ්‍රේව් සර්ච් ප්‍රසාදනයට නිර්නාමික සෙවීම් සහ පිරික්සුම් දත්ත වලින් දායක වන්න.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave Search පිරිපහදු කිරීමට නිර්නාමික සෙවුම් &amp; බ්‍රවුස් කිරීමේ දත්ත සමහරක් දායක කරන්න.</translation>
 <translation id="933652931229970927">ස්වයංක්‍රීයව නිර්ණ වාර්තා යවන්න</translation>
 <translation id="5987838417172370108">Brave අතිරික්සුව බිඳ වැටෙන හෝ ඇණහිටින විට ස්වයංක්‍රීයව නිර්ණ වාර්තා යැවීමෙන් Brave\u2019නිෂ්පාදන ස්ථායිතාව වැඩි දියුණුවට උදව් කරන්න.</translation>
 <translation id="7977176350719484850">තක්. දත්ත\nඉතිරියි</translation>
@@ -198,7 +196,6 @@
 <translation id="8025937231644975408">ඔබ වඩාම ප්‍රිය කරන විශේෂාංග මොනවාද යන්න අපට දෙන්න.</translation>
 <translation id="2888496576732880897">බ්‍රේව් සර්ච් දියුණුවට උදව් කරන්න</translation>
 <translation id="7198716519700700181">stream කරන විට බාධා වෙනස් කරන්න</translation>
-<translation id="7044431516245362795">දර්ශකය වර්ධනය කිරීමට සහ සෙවුම් ප්‍රතිඵල වැඩිදියුණු කිරීමට උදව් කිරීමට වෙබ් සොයාගැනීමේ ව්‍යාපෘතියට සම්බන්ධ වන්න. <ph name="LEARN_MORE_START"/>තව දැනගන්න.<ph name="LEARN_MORE_END"/></translation>
 <translation id="4847979153841887006">Brave ලාංඡනය</translation>
 <translation id="4767173360729868049">Brave Search සහයෙන් ඉතිරි කිරීම</translation>
 <translation id="8241918461631453498">බාධා සවුස් කිරීම ඉතිරි කිරීම</translation>
@@ -439,6 +436,7 @@
 <translation id="7961015016161918242">කවදාවත් නැහැ</translation>
 <translation id="1991004083507807299">අඩවි ටැබ් වසා ඇත</translation>
 <translation id="5827277414420724690">යෙදුම වසා ඇත</translation>
+<translation id="4279349293084858577">විනාශ කරන්න</translation>
 <translation id="1209739344687072997">කැඩුණු අඩවියක් වාර්තා කරන්න</translation>
 <translation id="8510478288840333677">මෙම අඩවිය පලිහ සමඟ නිවැරදිව ක්‍රියා නොකරන බව බ්‍රේව් සංවර්ධකයින්ට දන්වන්න:</translation>
 <translation id="1653405824851871276">සැමට Brave යහපත් කිරීමට දක්වන සහායට ස්තූතියි. මෙම වාර්තාවේ අඩංගු වන්නේ මෙම අඩවිය නිවැරදි කිරීමට අපට වුවමනා තොරතුරු පමණි. <ph name="LEARN_MORE"/></translation>
