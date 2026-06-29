@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Đang tải Bảng tin...</translation>
 <translation id="7461899062138731833">NGUỒN</translation>
 <translation id="6150420917380577651">Không tìm thấy bảng tin tại <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Quảng cáo</translation>
 <translation id="7823038307453615214">Hiển thị Brave Tin tức</translation>
 <translation id="6527303717912515753">Chia sẻ</translation>
 <translation id="1654539412343893324">Tìm hiểu thêm về dữ liệu của bạn</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Tắt nội dung từ <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870">Đã tắt <ph name="PUBLISHER"/></translation>
 <translation id="1276592121036104130">Tải nội dung mới</translation>
-<translation id="3189348785087463371">Được quảng bá</translation>
 <translation id="7554145152551782675">Thêm ưu đãi Brave</translation>
 <translation id="254100925533869330">Không có nội dung</translation>
 <translation id="7172792761509429092">Brave Tin tức không có nội dung để hiển thị.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Đừng giữ nguyên các tab giữa các phiên duyệt</translation>
 <translation id="7142548388914389999">Cho phép phân tích sản phẩm bảo toàn quyền riêng tư (P3A)</translation>
 <translation id="5254037869598726291">Thông tin P3A ẩn danh hóa giúp Brave ước tính mức sử dụng tổng thể và bảo đảm rằng chúng tôi đang cải thiện những tính năng phổ biến.</translation>
-<translation id="4174337572777167894">Dự án Khám phá Web</translation>
-<translation id="8659271182272561965">Đóng góp một số dữ liệu tìm kiếm &amp; duyệt web ẩn danh để tinh chỉnh Tìm kiếm Brave.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Đóng góp một số dữ liệu tìm kiếm &amp; duyệt web ẩn danh để tinh chỉnh Brave Tìm kiếm.</translation>
 <translation id="933652931229970927">Tự động gửi báo cáo chẩn đoán</translation>
 <translation id="5987838417172370108">Giúp cải thiện độ ổn định của sản phẩm Brave bằng cách tự động gửi báo cáo chẩn đoán khi Trình duyệt Brave gặp sự cố hoặc đóng băng.</translation>
 <translation id="7977176350719484850">Dữ liệu ước tính\ntiết kiệm được</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Hãy cho chúng tôi biết bạn thích nhất tính năng nào.</translation>
 <translation id="2888496576732880897">Giúp Brave Tìm kiếm phát triển</translation>
 <translation id="7198716519700700181">Chặn Các Yếu Tố Ngắt Quãng Nội Dung Phát Trực Tuyến</translation>
-<translation id="7044431516245362795">Tham gia Dự án Khám phá web để giúp phát triển chỉ mục và cải thiện kết quả tìm kiếm. <ph name="LEARN_MORE_START"/>Tìm hiểu thêm.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Hãy tham gia Dự án Web Discovery để góp phần mở rộng chỉ mục và cải thiện kết quả tìm kiếm. <ph name="LEARN_MORE_START"/>Tìm hiểu thêm<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="4767173360729868049">Minh họa Giúp Brave Tìm kiếm</translation>
 <translation id="8241918461631453498">Minh họa Chặn Các Yếu Tố Ngắt Quãng</translation>
@@ -440,8 +438,15 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="9140049656798805345">Hủy dữ liệu trang ngay</translation>
 <translation id="6795622376590884449">Hủy tự động</translation>
 <translation id="7961015016161918242">Không bao giờ</translation>
+<translation id="3200744626782631683">Dữ liệu duyệt web không bao giờ bị xóa vĩnh viễn một cách tự động</translation>
 <translation id="1991004083507807299">Khi các thẻ đã đóng</translation>
+<translation id="2917925984754303958">Dữ liệu duyệt web sẽ tự động bị xóa khi tất cả các tab đang mở trên một trang web được đóng lại</translation>
 <translation id="5827277414420724690">Khi ứng dụng đã đóng</translation>
+<translation id="2036389684543586068">Dữ liệu duyệt web sẽ tự động bị xóa khi ứng dụng Brave được đóng lại hoặc khởi động lại</translation>
+<translation id="4279349293084858577">Hủy</translation>
+<translation id="2997451887458851244">Cập nhật tính năng Tự động xóa vĩnh viễn và điều chỉnh loại dữ liệu cần xóa vĩnh viễn</translation>
+<translation id="363903976200491771">Tự động xóa dữ liệu duyệt web</translation>
+<translation id="1028873002018537235">Xóa lịch sử duyệt web</translation>
 <translation id="1209739344687072997">Báo cáo trang web bị hỏng</translation>
 <translation id="8510478288840333677">Hãy thông báo cho các nhà phát triển của Brave biết trang web này không hoạt động đúng cách với Shields:</translation>
 <translation id="1653405824851871276">Cảm ơn bạn đã giúp Brave tốt hơn cho tất cả mọi người. Báo cáo này sẽ chỉ chứa thông tin cần thiết để chúng tôi sửa trang web này. <ph name="LEARN_MORE"/></translation>
@@ -1192,4 +1197,7 @@ Leo AI. Hành động này không thể được hoàn tác.</translation>
 <translation id="1079140196216383600">Xóa công cụ tìm kiếm tùy chỉnh</translation>
 <translation id="525276572490219787">Bạn có chắc chắn muốn xóa "<ph name="SEARCH_ENGINE_NAME"/>"? Hành động này không thể hoàn tác.</translation>
 <translation id="6406506848690869874">Đồng bộ</translation>
+<translation id="1850594249589065646">Độ chính xác về vị trí</translation>
+<translation id="2403474027143565107">Chính xác</translation>
+<translation id="4042597221652780603">Xấp xỉ</translation>
 </translationbundle>

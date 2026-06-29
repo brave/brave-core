@@ -126,7 +126,6 @@
 <translation id="3405580543478883040">Mendapatkan Umpan...</translation>
 <translation id="7461899062138731833">SUMBER-SUMBER</translation>
 <translation id="6150420917380577651">Tidak ada umpan yang ditemukan di <ph name="SEARCH_URL"/></translation>
-<translation id="4541978218358617681">Iklan</translation>
 <translation id="7823038307453615214">Tampilkan Brave News</translation>
 <translation id="6527303717912515753">Bagikan</translation>
 <translation id="1654539412343893324">Pelajari lebih lanjut tentang data Anda</translation>
@@ -135,7 +134,6 @@
 <translation id="2014017248518069982">Nonaktifkan konten dari <ph name="PUBLISHER"/></translation>
 <translation id="6332791358521956870"><ph name="PUBLISHER"/> dinonaktifkan</translation>
 <translation id="1276592121036104130">Muat konten baru</translation>
-<translation id="3189348785087463371">Dipromosikan</translation>
 <translation id="7554145152551782675">Penawaran Brave Lainnya</translation>
 <translation id="254100925533869330">Tidak ada konten</translation>
 <translation id="7172792761509429092">Berita Brave tidak memiliki konten untuk ditampilkan.</translation>
@@ -156,8 +154,8 @@
 <translation id="1680858055899097121">Jangan simpan tab antar sesi penjelajahan</translation>
 <translation id="7142548388914389999">Memungkinkan analitik produk yang menjaga privasi (P3A)</translation>
 <translation id="5254037869598726291">Info P3A yang anonim membantu Brave memperkirakan penggunaan keseluruhan, dan memastikan kami meningkatkan fitur yang populer.</translation>
-<translation id="4174337572777167894">Proyek Penemuan Web</translation>
-<translation id="8659271182272561965">Meyumbangkan sejumlah penelusuran anonim &amp; penjelajahan data untuk memperbaiki Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Sumbangkan beberapa data penelusuran &amp; penjelajahan anonim untuk menyempurnakan Brave Penelusuran.</translation>
 <translation id="933652931229970927">Mengirim laporan diagnostik secara otomatis</translation>
 <translation id="5987838417172370108">Membantu meningkatkan stabilitas produk Brave\u2019s dengan secara otomatis mengirim laporan diagnostik ketika Peramban Brave gagal atau macet.</translation>
 <translation id="7977176350719484850">Perkiraan Data\nDihemat</translation>
@@ -198,7 +196,7 @@
 <translation id="8025937231644975408">Beri tahu kami fitur mana yang paling Anda sukai.</translation>
 <translation id="2888496576732880897">Bantu Brave Penelusuran berkembang</translation>
 <translation id="7198716519700700181">Blokir gangguan saat Anda streaming</translation>
-<translation id="7044431516245362795">Ikut serta dalam Web Discovery Project buat bantu mengembangkan indeks dan menyempurnakan hasil pencarian. <ph name="LEARN_MORE_START"/>Pelajari selengkapnya.<ph name="LEARN_MORE_END"/></translation>
+<translation id="7095369065154683007">Bergabunglah dengan Proyek Web Discovery untuk membantu memperluas indeks dan meningkatkan hasil pencarian. <ph name="LEARN_MORE_START"/>Pelajari lebih lanjut<ph name="LEARN_MORE_END"/>.</translation>
 <translation id="4847979153841887006">Logo Brave</translation>
 <translation id="4767173360729868049">Ilustrasi Bantu Brave Penelusuran berkembang</translation>
 <translation id="8241918461631453498">Ilustrasi blokir gangguan</translation>
@@ -437,8 +435,15 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="9140049656798805345">Musnahkan Data Situs Sekarang</translation>
 <translation id="6795622376590884449">Musnahkan Otomatis</translation>
 <translation id="7961015016161918242">Jangan pernah</translation>
+<translation id="3200744626782631683">Data penjelajahan tidak pernah dihapus secara otomatis</translation>
 <translation id="1991004083507807299">Tab Situs Tertutup</translation>
+<translation id="2917925984754303958">Data penjelajahan akan dihapus secara otomatis saat semua tab yang terbuka di situs tersebut ditutup</translation>
 <translation id="5827277414420724690">Penutupan Aplikasi</translation>
+<translation id="2036389684543586068">Data penjelajahan akan dihapus secara otomatis saat aplikasi Brave ditutup atau dijalankan ulang</translation>
+<translation id="4279349293084858577">Hancurkan</translation>
+<translation id="2997451887458851244">Perbarui Auto Shred dan sesuaikan data apa saja yang akan dihapus</translation>
+<translation id="363903976200491771">Menghapus data penjelajahan secara otomatis</translation>
+<translation id="1028873002018537235">Hapus riwayat penelusuran</translation>
 <translation id="1209739344687072997">Laporkan situs rusak</translation>
 <translation id="8510478288840333677">Beri tahu pengembang Brave bahwa situs ini tidak berfungsi dengan baik saat Perisai aktif:</translation>
 <translation id="1653405824851871276">Terima kasih telah membantu menjadikan Brave lebih baik bagi semua. Laporan ini hanya akan berisi informasi yang diperlukan bagi kami untuk memperbaiki situs ini. <ph name="LEARN_MORE"/></translation>
@@ -1186,4 +1191,7 @@ Jika Anda tidak menerima permintaan ini, VPN tidak akan tersambung kembali dan s
 <translation id="1079140196216383600">Hapus mesin penelusuran ubahsuaian</translation>
 <translation id="525276572490219787">Apakah Anda yakin ingin menghapus "<ph name="SEARCH_ENGINE_NAME"/>"? Tindakan ini tidak dapat dibatalkan.</translation>
 <translation id="6406506848690869874">Sync</translation>
+<translation id="1850594249589065646">Ketepatan lokasi</translation>
+<translation id="2403474027143565107">Tepat</translation>
+<translation id="4042597221652780603">Kira-kira</translation>
 </translationbundle>

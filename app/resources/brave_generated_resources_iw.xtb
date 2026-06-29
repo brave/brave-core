@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo המבוסס בינה מלאכותית</translation>
 <translation id="8275068909952022340">עוד…</translation>
 <translation id="71316462802471551">מיילים בדויים</translation>
+<translation id="209130971304928953">שמירת לשוניות כסביבת עבודה…</translation>
+<translation id="877984331511007834">פתיחת סביבת עבודה…</translation>
+<translation id="1310182651927031327">שמור כרטיסיות כסביבת עבודה…</translation>
+<translation id="3588277741646479444">פתח סביבת עבודה…</translation>
 <translation id="1990886731975529483">התקינו והפעילו את Google Widevine</translation>
 <translation id="8926389886865778422">אל תשאל שוב</translation>
 <translation id="4900351245762303149">התקינו את Google Widevine</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">חלון פרטי חדש ב-Tor</translation>
 <translation id="2638041073279639246">פתח קישור בחלון פרטי ב-Tor</translation>
 <translation id="3425600262621021599">פתח קישור בחלון פרטי ב-Tor</translation>
-<translation id="2545072023356206691">החל מ-1 בדצמבר 2023, ערוץ Brave Dev לא יקבל עוד עדכוני דפדפן. אנו ממליצים למשתמשים לעבור לגרסאות Nightly, Beta או Release של Brave.</translation>
 <translation id="474217410105706308">השתק כרטיסייה</translation>
 <translation id="2804710924397009224">הסתר את סמלון Brave Rewards</translation>
 <translation id="5029193871181468990">הסתרת סמל Brave Rewards</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">תודה על תמיכתך בחיפוש Brave באמצעות לחיצה על מודעה פרטית. שלא כמו חברות ביג טק, אנחנו מודדים ביצועי מודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
 <translation id="8748471354357836070">למידע נוסף / אפשרויות ביטול</translation>
 <translation id="5927196110206824867">תמונות רקע ממומנות תומכות במשימה של Brave לבנות רשת אינטרנט עצמאית ששמה את המשתמש בעדיפות ראשונה. ושלא כמו חברות ביג טק, אנחנו מודדים את ביצועי המודעות באופן אנונימי כדי לשמור על הפרטיות שלך.</translation>
-<translation id="4174337572777167894">פרויקט Web Discovery</translation>
-<translation id="8659271182272561965">תרמו קצת לחיפוש אנונימי ונתוני גלישה כדי לשפר את Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">תרמו נתוני חיפוש &amp; גלישה אנונימיים לשיפור חיפוש Brave.</translation>
 <translation id="1516554614404600536">Brave Tooltip</translation>
 <translation id="4375473250631001683">הסתר סמל סרגל צד</translation>
 <translation id="2613033293035359003">הסתר סרגל צידי</translation>
@@ -203,6 +206,7 @@
 <translation id="8670218546624422041">פתיחה בקונטיינר</translation>
 <translation id="194205047181722473">פתיחת קישור במכל</translation>
 <translation id="8638526693050780542">ניהול קונטיינרים</translation>
+<translation id="2796584247246518451">קונטיינר זמני חדש</translation>
 <translation id="2336228925368920074">צור סימניה לכל הכרטיסיות...</translation>
 <translation id="2523967823495420116">השתמשו בכרטיסיות אנכיות</translation>
 <translation id="5483718923712878759">מצב מיקוד</translation>
@@ -216,6 +220,7 @@
 <translation id="1987871867023021397">פתיחה בקונטיינר</translation>
 <translation id="1185644444415356776">פתיחת קישור במכל</translation>
 <translation id="6745991613881384719">ניהול קונטיינרים</translation>
+<translation id="8523788649219117880">קונטיינר זמני חדש</translation>
 <translation id="3704707436873245822">העתקת טקסט מתוך תמונה</translation>
 <translation id="5268098808165185458">מעתיק טקסט מתוך תמונה...</translation>
 <translation id="4046485130884276245">הועתק טקסט מתוך תמונה</translation>
@@ -372,7 +377,8 @@
 <translation id="8076492880354921740">כרטיסיות</translation>
 <translation id="8168435359814927499">תוכן</translation>
 <translation id="6017560037265964523">קונטיינרים</translation>
-<translation id="934893482320683588">לארגן את הגלישה שלך באמצעות קונטיינרים. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">קונטיינרים הם כרטיסיות דפדפן מקודדות בצבע המבודדות את נתוני הגלישה שלכם, כגון עוגיות, מטמון ואחסון אתרים להקשרים נפרדים. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">הפעל קונטיינרים</translation>
 <translation id="7773735778926921278">הוספת קונטיינר חדש</translation>
 <translation id="8900907990448657776">עריכת קונטיינר</translation>
 <translation id="7900511996284443779">מחיקת קונטיינר</translation>
@@ -807,6 +813,7 @@
 <translation id="5226020406479918122">מצב מיקוד כרטיסיות</translation>
 <translation id="3705539672403311123">אפשר להפעיל את ארגון הכרטיסיות בדף ׳חיפוש כרטיסיות׳. כשהוא מופעל, זה ישלח אוטומטית את הכותרות ואת המקור של כל הכרטיסיות הלא-פרטיות אל Leo למטרת סיווג. <ph name="BEGIN_LINK"/>למידע נוסף<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">מודל ברירת מחדל להתמקדות בכרטיסייה</translation>
+<translation id="2161546758719933059">המודל המשמש לארגון הכרטיסיות שלכם במצב מיקוד כרטיסיות. <ph name="BEGIN_LINK"/>מידע נוסף<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">הצג הצעות מוצעות בשיחה</translation>
 <translation id="5781842473834867765">לאחסן את היסטוריית השיחות שלי</translation>
 <translation id="1082960401708055995">השבתת אחסון שיחות ימחק לצמיתות את כל השיחות הקודמות שאוחסנו. הפעולה הזו לא ניתנת לביטול.</translation>

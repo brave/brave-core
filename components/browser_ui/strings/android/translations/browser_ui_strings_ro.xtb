@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="ro">
+<translation id="1000614056227025171">Foaia din partea de jos a promoției Personalizează pagina de pornire este deschisă la înălțime completă</translation>
 <translation id="1006017844123154345">Deschide online</translation>
 <translation id="1036348656032585052">Dezactivează</translation>
 <translation id="1046742265332833834">Temă albastră</translation>
 <translation id="1070329623210597193">Fișierele pe care le poate vedea sau modifica acest site</translation>
-<translation id="1882093842020941518">Ajută-ne să îmbunătățim Brave spunându-ne de ce ai permis cookie-urile terță parte. <ph name="BEGIN_LINK"/>Trimite feedback<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Poți solicita să vezi versiunea pentru computer a site-urilor</translation>
 <translation id="1109482864356262001">Funcțiile care au nevoie de senzori de mișcare sau de lumină nu vor funcționa.</translation>
 <translation id="6670155282615872564">Finalizează mai jos aceste acțiuni sugerate, pentru a profita din plin de Brave</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Sfaturi pentru Brave</translation>
 <translation id="1242008676835033345">Încorporat în <ph name="WEBSITE_URL"/></translation>
 <translation id="1263609676484797429">Atinge Aplicații  &gt; Aplicații prestabilite</translation>
+<translation id="1264694639515903274">Acum poți să-ți personalizezi pagina de pornire</translation>
 <translation id="1272079795634619415">Oprește</translation>
 <translation id="1275718070701477396">Selectat</translation>
 <translation id="8010562420973777575">Pentru a-ți salva datele, Brave a optimizat imaginile din această pagină.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">Adresă URL trunchiată</translation>
 <translation id="1741136041592162279">Permite ca Brave să-ți trimită filele recente pe dispozitiv ca să le vezi în lista de aplicații și în rezultatele căutării pe dispozitiv. Poți să activezi sau să dezactivezi opțiunea din setările Brave.</translation>
 <translation id="1420688843103859429">Navighează înainte și înapoi glisând cu două degete pe touchpad</translation>
-<translation id="1432650420699700107">Site-urile pot solicita permisiunea de a se conecta la orice dispozitiv din rețeaua locală</translation>
 <translation id="1442081309487427303">Activează linkurile în modul de lectură</translation>
 <translation id="1448064542941920355">Micșorează nivelul de zoom</translation>
 <translation id="1464044141348608623">Nu permite site-urilor să afle când folosești activ dispozitivul</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Când opțiunea este activată, site-urile pot solicita permisiunea de a gestiona ferestre pe toate ecranele. Când opțiunea este dezactivată, site-urile nu pot gestiona ferestre pe toate ecranele.</translation>
 <translation id="1738912554587725807">Foaia din partea de jos cu colecțiile de teme pentru aspectul paginii Filă nouă</translation>
 <translation id="1743802530341753419">Întreabă înainte de a permite site-urilor să se conecteze la un dispozitiv (recomandat)</translation>
-<translation id="2534291364429593865">Primește notificări cu sfaturi pentru Brave</translation>
 <translation id="1777815584158991902">Foaia din partea de jos a feedului Discover</translation>
 <translation id="1779089405699405702">Decodor de imagini</translation>
 <translation id="1781533683087883868">Dezactivează linkurile în modul de lectură</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Încheie apelul</translation>
 <translation id="1919950603503897840">Selectează persoane de contact</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Personalizează pagina de pornire</translation>
 <translation id="1939059826036755332">Picture-in-picture automat</translation>
 <translation id="1954597385941141174">Site-urile pot solicita permisiunea de a se conecta la dispozitive USB</translation>
 <translation id="1979673356880165407">Mărește sau micșorează textul și imaginile pentru toate site-urile pe care le accesezi</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678">Gestionate de <ph name="APP_NAME"/></translation>
 <translation id="2498359688066513246">Ajutor și feedback</translation>
 <translation id="2501278716633472235">Înapoi</translation>
-<translation id="2533138527374486328">Când opțiunea este activată, site-urile pot solicita permisiunea de a se conecta la orice dispozitiv din rețeaua locală. Când opțiunea este dezactivată, site-urile nu se pot conecta la dispozitivele din rețeaua locală.</translation>
 <translation id="2536779053640817375">Permisă de data aceasta • Exactă</translation>
 <translation id="2544997614631598250">Culoarea temei închisă</translation>
 <translation id="2546283357679194313">Cookie-uri și date privind site-ul</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Pornește direct în caseta polivalentă</translation>
 <translation id="2789132527330338807">Site-urile pot solicita permisiunea de a crea o hartă 3D a lucrurilor din jur sau de a urmări poziția camerei video</translation>
 <translation id="2790501146643349491">Când opțiunea este activată, site-urile închise recent pot să finalizeze trimiterea și primirea datelor. Când opțiunea este dezactivată, site-urile închise recent nu pot finaliza trimiterea sau primirea datelor.</translation>
-<translation id="1708222144403389505">Activează notificările pentru sfaturi utile care te ajută să profiți din plin de Brave</translation>
 <translation id="2795716239552913152">Site-urile folosesc de obicei locația pentru funcții sau informații relevante, cum ar fi știri locale sau magazine din apropiere</translation>
 <translation id="2800760947029405028">Încarcă o imagine</translation>
 <translation id="2802908157808345702">Nu permite site-urilor să afișeze ferestre pop-up sau să folosească redirecționări</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Site-urile pot reda sunet</translation>
 <translation id="3065787901655140044">Protecția avansată este activată</translation>
 <translation id="3069226013421428034">Permite conectarea terță parte pentru un anumit site.</translation>
+<translation id="3084983642903364837">Editează pagina de pornire mai târziu din meniul cu trei puncte.</translation>
 <translation id="310297983047869047">Slide-ul anterior</translation>
 <translation id="3108122610701115301">Setează ca prestabilit</translation>
 <translation id="310979712355504754">Ștergeți tot</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Nu permite site-urilor să se conecteze la dispozitive USB</translation>
 <translation id="3965467402665811906">Site-urile pot solicita permisiunea de a folosi informațiile pe care le-au salvat despre tine</translation>
 <translation id="3967822245660637423">Descărcare finalizată</translation>
-<translation id="3969869202926863008">Accesul la rețeaua locală</translation>
 <translation id="3981465354637804599">În general, site-urile afișează anunțuri pentru a putea oferi conținut sau servicii fără costuri. Unele site-uri afișează însă anunțuri deranjante sau înșelătoare.</translation>
 <translation id="3987993985790029246">Copiază linkul</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Conectat la un port serial</translation>
 <translation id="4223404254440398437">Folosirea microfonului nu este permisă</translation>
 <translation id="4226663524361240545">Notificările pot face dispozitivul să vibreze</translation>
+<translation id="4227965147357783918">Foaia din partea de jos a promoției Personalizează pagina de pornire este deschisă la jumătate din înălțime</translation>
 <translation id="4259722352634471385">Navigarea este blocată: <ph name="URL"/></translation>
 <translation id="4274673989874969668">După ce ieși de pe un site, acesta poate continua sincronizarea pentru a finaliza activități, cum ar fi încărcarea fotografiilor sau trimiterea unui mesaj de chat</translation>
 <translation id="4278390842282768270">Se permite</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Extinde</translation>
 <translation id="4310738531374808763">Personalizează pagina de pornire</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Expiră mâine}few{Expiră peste # zile}other{Expiră peste # de zile}}</translation>
+<translation id="7012676469589811613">Adaptează Brave alegând o temă personalizată</translation>
 <translation id="4338831206024587507">Toate site-urile din <ph name="DOMAIN"/></translation>
 <translation id="4340799661701629185">Nu permite site-urilor să trimită notificări</translation>
 <translation id="4341577178275615435">Pentru a activa sau a dezactiva navigarea cu tastatura, folosește comanda rapidă F7</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Nu accelera site-urile cu motorul V8 din Brave, dar fă Brave mai rezistent la atacuri</translation>
 <translation id="5556459405103347317">Reîncarcă</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> blocat</translation>
-<translation id="560980142378233747">Aceasta înseamnă că funcțiile site-ului ar trebui să ruleze conform așteptărilor, dar este posibil să ai mai puțină protecție la navigare. <ph name="BEGIN_LINK"/>Trimite feedback<ph name="END_LINK"/></translation>
 <translation id="5617702678271228680">Foaia din partea de jos a cardurilor din pagina Filă nouă</translation>
 <translation id="5621413808884657932">Când opțiunea este activată, site-urile pot solicita permisiunea de a accesa alte aplicații și servicii de pe acest dispozitiv. Când opțiunea este dezactivată, site-urile nu pot accesa alte aplicații și servicii de pe acest dispozitiv.</translation>
 <translation id="5632485077360054581">Arată-mi cum</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Comenzile mele rapide</translation>
 <translation id="656065428026159829">Vezi mai multe</translation>
 <translation id="6561560012278703671">Folosește mesaje discrete (notificările nu te vor întrerupe)</translation>
-<translation id="6565144332292237355">Site-urile pot folosi această funcție pentru a căuta și a se conecta la orice dispozitiv din rețeaua locală</translation>
 <translation id="6593061639179217415">Versiune site desktop</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{Cookie-uri permise pentru <ph name="RWS_MEMBERS_COUNT"/> site <ph name="RWS_OWNER"/>}few{Cookie-uri permise pentru <ph name="RWS_MEMBERS_COUNT"/> site-uri <ph name="RWS_OWNER"/>}other{Cookie-uri permise pentru <ph name="RWS_MEMBERS_COUNT"/> de site-uri <ph name="RWS_OWNER"/>}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Rămâi pe pagină</translation>
 <translation id="6630443592285535486">Introdu codul hexazecimal aici</translation>
 <translation id="6635327442719709864">Când opțiunea este activată, site-urile pot solicita permisiunea de a folosi porturi seriale. Când opțiunea este dezactivată, site-urile nu pot folosi porturi seriale.</translation>
-<translation id="6669390930482049506">Doresc să primesc notificări</translation>
 <translation id="6678072580827808850">Examinează Verificarea de siguranță</translation>
 <translation id="6682057173375416470">Primește articole sugerate în pagina Filă nouă</translation>
 <translation id="6683865262523156564">Site-ul este într-un grup care îți poate vedea activitatea. Grupul este definit de <ph name="RWS_OWNER"/></translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Actualizați</translation>
 <translation id="7188508872042490670">Date privind site-urile pe dispozitiv</translation>
 <translation id="7201549776650881587">Această acțiune va șterge toate datele și cookie-urile stocate de toate site-urile subordonate <ph name="ORIGIN"/> sau de aplicația asociată de pe ecranul de pornire</translation>
-<translation id="7213166370492037743">Nu permite site-urilor să se conecteze la niciun dispozitiv din rețeaua locală</translation>
 <translation id="7219254577985949841">Ștergi datele privind site-ul?</translation>
 <translation id="723171743924126238">Selectează imagini</translation>
 <translation id="7243246278722455312">Foaia de jos a paginii Personalizează Fila nouă</translation>
@@ -757,7 +753,6 @@ Protecția avansată gestionează următoarele setări Brave:</translation>
 <translation id="8737426583868847403">Site-urile pentru care salvezi un nivel de zoom personalizat vor apărea aici</translation>
 <translation id="8748714929822124637">Nu permite site-urilor să acceseze alte dispozitive din rețeaua ta locală.</translation>
 <translation id="8751914237388039244">Selectează o imagine</translation>
-<translation id="8775741625735357092">Poți să activezi bara de marcaje în Setări &gt; Aspect</translation>
 <translation id="8800034312320686233">Site-ul nu funcționează?</translation>
 <translation id="8801436777607969138">Blochează JavaScript pentru un anumit site.</translation>
 <translation id="2026315747406172223">V8 este motorul JavaScript și WebAssembly din Brave, folosit pentru a îmbunătăți performanța site-ului</translation>

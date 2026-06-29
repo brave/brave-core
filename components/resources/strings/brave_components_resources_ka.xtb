@@ -106,7 +106,6 @@
 <translation id="8890516388109605451">წყაროები</translation>
 <translation id="5158129253322921540">დაბლოკოს კონტენტი <ph name="PUBLISHER_NAME"/>-ისგან</translation>
 <translation id="3189348785087463371">რეკლამირებული</translation>
-<translation id="4541978218358617681">რეკლამა</translation>
 <translation id="1776831331757823105">საათი</translation>
 <translation id="7791543448312431591">დამატება</translation>
 <translation id="6216996674668969227">გამოიმუშავეთ ტოკენები რეკლამების ნახვით, რომლებიც იცავენ კონფიდენციალურობას.</translation>
@@ -729,9 +728,9 @@
 <translation id="8251969358165471584">Web3 საფულე</translation>
 <translation id="7160424977552599351">გამოიყენეთ თქვენი Web3 საფულე</translation>
 <translation id="6369571967625114920">თქვენს რეგიონში ჯერ არ არის ხელმისაწვდომი Brave პირადი რეკლამები.</translation>
-<translation id="5309155375926073606">დიახ, მსურს Brave ძებნის მხარდაჭერა და <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>-ში გაწევრიანება;.</translation>
-<translation id="4622826307953794521">შეიტანეთ ანონიმური ძიებისა და ბრაუზინგის მონაცემები, რათა გააუმჯობესოთ Brave ძებნა  Web Discovery Project-თან ერთად. ეს პროექტი სრულიად ღია კოდისაა.</translation>
-<translation id="4174337572777167894">ვებ-ძიების პროექტი</translation>
+<translation id="5309155375926073606">დიახ, ასევე მსურს წვლილი შევიტანო Brave ძებნაში და ჩავერთო <ph name="LINK_BEGIN"/>Web Discovery Project<ph name="LINK_END"/>-ში.</translation>
+<translation id="4622826307953794521">გააზიარეთ ანონიმური ძებნისა და დათვალიერების მონაცემები Brave ძებნის დასახვეწად Web Discovery Project-ის მეშვეობით. ის სრულად ღია კოდისაა.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
 <translation id="9034669711835382440">გრძნობა</translation>
 <translation id="845020633253356720">მაღაზიის ნახვა</translation>
 <translation id="7777123407058400802">ძირითადი ყურადღების ტოკენი – ძირითადი ყურადღების ტოკენი</translation>
@@ -973,11 +972,11 @@
 <translation id="7080614857771109950">მხარდაჭერა EVM-თან თავსებად აქტივებზე Ethereum ბლოკჩეინზე (ERC-20, ERC-721, ERC-1551, ERC-1155)</translation>
 <translation id="6577166808959668729">მხარდაჭერა SPL-თან თავსებად აქტივებზე Solana ბლოკჩეინზე</translation>
 <translation id="4541295941776129088">შეინახეთ FIL აქტივი</translation>
-<translation id="6030958132571544682">შეინახეთ FIL Testnet აქტივები</translation>
+<translation id="6030958132571544682">FIL Testnet-ის აქტივის შენახვა</translation>
 <translation id="29759539656432505">შეინახეთ BTC აქტივები</translation>
 <translation id="2399555431746923964">შეინახეთ BTC Testnet აქტივები</translation>
 <translation id="8749751940551938347">შეინახეთ ZEC აქტივები</translation>
-<translation id="3451958544919449297">შეინახეთ ZEC Testnet აქტივები</translation>
+<translation id="3451958544919449297">ZEC Testnet-ის აქტივების შენახვა</translation>
 <translation id="8459631690385393533">შეინახეთ Cardano აქტივები</translation>
 <translation id="4915057812371523845">შეინახეთ Cardano Testnet აქტივები</translation>
 <translation id="5387140102951033657">გადაცემს Substrate აქტივებს Polkadot-ის რილეი ჯაჭვზე და Substrate-ის პარაჯაჭვებზე</translation>
@@ -996,6 +995,9 @@
 <translation id="6720675936326555106">არჩეული ფაილი</translation>
 <translation id="5891811606602061966">ანგარიშის იმპორტირება ვერ მოხერხდა, სცადეთ ხელახლა.</translation>
 <translation id="6566535583781706170">ანგარიშის იმპორტი</translation>
+<translation id="8079448455682522748">დააკოპირეთ პირადი გასაღები ანგარიშისთვის, რომელიც გსურთ სხვა საფულიდან იმპორტი.</translation>
+<translation id="8475326612689436917">სხვა საფულიდან ექსპორტი პირადი გასაღები JSON ფაილში და ატვირთეთ აქ.</translation>
+<translation id="5733063593286221597">JSON ფაილის ატვირთვა</translation>
 <translation id="5051929972046200722">აირჩიეთ თქვენი ტექნიკური საფულე</translation>
 <translation id="5745936663807461565">დაპატარავეთ თქვენი <ph name="HARDWARE_DEVICE"/> საფულე პირდაპირ თქვენს კომპიუტერს.</translation>
 <translation id="4350216031085285578">გახსენით თქვენი მოწყობილობა და აირჩიეთ <ph name="BLOCKCHAIN_NETWORK"/> აპლიკაცია.</translation>
@@ -1041,9 +1043,10 @@
 <translation id="7657130382217527063">შენიშვნა: პირადი გასაღები უნდა იყოს უზრუნველყოფილი hex კოდირებული JSON ფორმატით, რომელიც შეიცავს პირად გასაღებს და პროტოკოლის ინფორმაციას. <ph name="LINK_START"/>გაეცანით მეტს<ph name="LINK_END"/>.</translation>
 <translation id="4482913669726886926">შენიშვნა: მხოლოდ <ph name="FORMAT"/> გაფართოებული გასაღებები გვაქვს მხარდაჭერილი.</translation>
 <translation id="6457746820359933716">იმპორტი დაამტკიცეთ Polkadot.js-ის ან თავსებადი საფულიდან. შეიყვანეთ პაროლი, რომელიც ზეკიდან დაცეკვის შემთხვევაში გამოიყენება.</translation>
-<translation id="9133762451347918196">ტესტნეტის ანგარიშები</translation>
+<translation id="7285350832506166367">ეძებთ Testnet-ის ანგარიშებს?</translation>
 <translation id="42126664696688958">ექსპორტირება</translation>
 <translation id="1366855498335432549">დეპოზიტი</translation>
+<translation id="3852653589653889099">ანგარიშის დამალვა</translation>
 <translation id="790104325876206743">აქტივის პარამეტრები</translation>
 <translation id="8856844353253421399">ბოლო განახლების თარიღი <ph name="TIME_AGO"/> წინ</translation>
 <translation id="6322030314101903925">ხელმისაწვდომი აქტივები არ არის</translation>
@@ -1344,6 +1347,12 @@
 <translation id="3067168166931605141">ანგარიშის სახელი</translation>
 <translation id="1213870770696612739">მინიმალური რაოდენობა: <ph name="AMOUNT"/></translation>
 <translation id="3041074161036535192">მაქსიმალური რაოდენობა: <ph name="AMOUNT"/></translation>
+<translation id="3419957337495393511">ანგარიში წარმატებით შეიქმნა</translation>
+<translation id="7444985841455466546">ანგარიში წარმატებით დაიმპორტდა</translation>
+<translation id="6775224295382583896">{ACCOUNTS, plural,
+      =1 {აპარატურული საფულის ანგარიში წარმატებით დაუკავშირდა}
+      other {{ACCOUNTS} აპარატურული საფულის ანგარიში წარმატებით დაუკავშირდა}
+    }</translation>
 <translation id="8528916244724490964">ყველა ქსელი</translation>
 <translation id="7721139939763655123">დაბალი ფასიდან მაღალამდე</translation>
 <translation id="5458608274117818139">მაღალი ფასიდან დაბალამდე</translation>
@@ -1366,6 +1375,7 @@
 <translation id="1257387162647804035">საწყისი ქსელები</translation>
 <translation id="8323674164587854512">Ethereum + EVM წკები</translation>
 <translation id="1398414935371867469">Solana + SVM წკები</translation>
+<translation id="6498449512528552760">არასწორი პრეფიქსი</translation>
 <translation id="7058248670699639973">ქსელის ლოგო</translation>
 <translation id="4378208228955237306">ქსელის ლოგოს ჩვენება NFTs-ზე</translation>
 <translation id="5472199803712163015">სპამ NFT-ები</translation>
@@ -1632,7 +1642,7 @@
 <translation id="1353726744456297797">თუ თქვენი აქტივი ამ სიაში ვერ მოიძებნა, შეგიძლიათ დაამატოთ ხელით ქვემოთ მოცემული ღილაკით</translation>
 <translation id="4543171429371680949">აქტივები ვერ მოიძებნა</translation>
 <translation id="1026825928738055872">ნამდვილად გსურთ წაშალოთ „<ph name="ACCOUNT_NAME"/>“?</translation>
-<translation id="3910551537328657217">ფუნქციის მოთხოვნა</translation>
+<translation id="2220529011494928058">პრობლემის შესახებ შეტყობინება</translation>
 <translation id="7657322905916621147">აღდგენადი ფრაზა 12, 15, 18, 21 ან 24 სიტყვისგან უნდა შედგებოდეს</translation>
 <translation id="5026874946691314267">აღარ გაეშვას</translation>
 <translation id="434502623875309667">მისამართების გადაჭრა offchain ქსელის მოთხოვნას საჭიროებს. გავაგრძელოთ?</translation>
@@ -2060,6 +2070,7 @@
 <translation id="7294510764127771956">კარეტის ბრაუზერის გადართვა</translation>
 <translation id="4186334830839439230">ჩვენების შესრულების პარამეტრები</translation>
 <translation id="1094277301241124207">ჩვენების სანიშნების გვერდითი პანელი</translation>
+<translation id="5101042277149003567">ყველა ნიშნულის გახსნა</translation>
 <translation id="8283515796576236471">სანიშნების ზოლის ყველა ფილა ახალი ფანჯარაში</translation>
 <translation id="5271773791943587595">სანიშნების ზოლის ყველა ფილა პაარად ფანჯარაში</translation>
 <translation id="2748975346534113286">სანიშნების ზოლის ყველა ახალი ჩანართის ჯგუფი</translation>
@@ -2146,6 +2157,7 @@
 <translation id="2367972762794486313">აპლიკაციების ჩვენება</translation>
 <translation id="3142853026316054951">ფოკუსირების რეჟიმის გადართვა</translation>
 <translation id="3468387898712904997">ახალი ელფოსტის ზედმეტსახელი</translation>
+<translation id="2796584247246518451">ახალი დროებითი კონტეინერი</translation>
 <translation id="8591883849678260674">ორიგინალის ნახვა</translation>
 <translation id="1969654232209826429">წუთიანი წაკითხვის</translation>
 <translation id="4101707289420716287">Speedreader-ის გამორთვა</translation>
@@ -2215,6 +2227,7 @@
 <translation id="1238020084128916796">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Llama 3.1 8B-ზეა, მოდელი, რომელიც შექმნილია Meta-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. Llama Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3852808100039989429">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Qwen VL 30B-ზეა, მოდელი, რომელიც შექმნილია Alibaba Cloud-ის მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევასთან შესაფერისი. Qwen Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3812564134126884433">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-5-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. GLM-5 NEAR-ის მიერ მასპინძლობს მათ საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
+<translation id="784931275560506522">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა GLM-5.1-ზეა, მოდელი, რომელიც შექმნილია Zhipu AI-ს მიერ, რომ იყოს პერფორმანტული და მრავალი გამოყენების შემთხვევებთან შესაფერისი. GLM-5.1 NEAR-ის მიერ მასპინძლობს მათ საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="8932568551552504373">გამარჯობა, მე ლეო ვარ. ვარ Brave-ის ხელოვნური ინტელექტის ასისტენტი. მუშაობს Claude Instant-ზე — მოდელზე, რომელიც Anthropic-ს მიერაა შექმნილი ტექსტებისა და დიალოგების დასამუშავებლად. Claude Instant Brave-ის ინფრასტრუქტურაზე მუშაობს საიმედოდ და უსაფრთხოდ.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="3789772321824682783">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Haiku-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Haiku Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
 <translation id="1778885220602472158">გამარჯობა, მე ვარ ლეო. მე ვარ Brave-ის AI ასისტენტი. ჩემი ძალა Claude Sonnet-ზეა, მოდელი, რომელიც შექმნილია Anthropic-ის მიერ, რომ ემსახუროს საუბრის და ტექსტის დამუშავების ამოცანებს. Claude Sonnet Brave-ს მიერ მასპინძლობს ჩვენს საკუთარ დაცულ ინფრასტრუქტურაში.<ph name="LINK_BEFORE"/>გაიგეთ მეტი<ph name="LINK_AFTER"/></translation>
@@ -2332,8 +2345,8 @@
 <translation id="4592293425457329338">წარმართვის დროს შესაძლოა რამდენიმე კონტექსტი გამოტოვებული იყოს. Leo-მ მოახერხა მოკლე აქ ნაწილების შენარჩუნება: <ph name="PERCENTAGE"/></translation>
 <translation id="8501106061098623831">გვერდიდან ძალიან ბევრი სურათი იქნა აღებული. ლეოს შეეძლო ხელმისაწვდომი ვიზუალური კონტენტის <ph name="PERCENTAGE"/> გამოყენება.</translation>
 <translation id="4370698775470316661">ეს საუბარი ძალიან ხანგრძლივია და გაგრძელებას ვერ მოხერხდება. სხვა მოდელები შეიძლება იყოს ხელმისაწვდომი, რომლებსაც ლეოს შეუძლია შეინარჩუნოს ზუსტად საუბარი.</translation>
-<translation id="5719170755629028558">პასუხის გაუმჯობესება Brave ძებნით...</translation>
-<translation id="5794962229997281366">გაუმჯობესებული პასუხის ძებნა <ph name="SEARCH_TERMS"/>-ისთვის.</translation>
+<translation id="4744144453035015075">ინტერნეტში ძიება</translation>
+<translation id="8548351747582087191">ინტერნეტში იძებნება <ph name="SEARCH_TERMS"/>.</translation>
 <translation id="7307396647043599949"><ph name="COUNT"/> მეტი…</translation>
 <translation id="8103700533980268469">შეტყობინების დახურვა</translation>
 <translation id="3417835166382867856">ძიების ჩანართები</translation>
@@ -2404,8 +2417,8 @@
 <translation id="2370739752330685659">მოგვიანებით</translation>
 <translation id="983013125018250242">Leo-ს ხელსაწყოები</translation>
 <translation id="7623223587478473368">ფაილის მიმაგრება</translation>
-<translation id="3777121685517940177">ატვირთეთ ფაილი...</translation>
-<translation id="6739516910850820220">ფაილი იტვირთება...</translation>
+<translation id="3728603231003977269">ფაილის მიმაგრება...</translation>
+<translation id="7899721102369502629">ფაილი მიმაგრდება...</translation>
 <translation id="9088751620363630236">სურათის მოპოვება...</translation>
 <translation id="4250229828105606438">სქრინშოთი</translation>
 <translation id="7949596341600215809">გვერდის სრული სქრინშოტი</translation>
@@ -2453,10 +2466,12 @@
 <translation id="7607002721634913082">პაუზა</translation>
 <translation id="4773299976671772492">შეჩერებულია</translation>
 <translation id="6946722113367118030">აზროვნება...</translation>
+<translation id="7918928051723770926">დავალება დასრულდა</translation>
 <translation id="2113810663179257944">კოდის შესრულება</translation>
-<translation id="6338250692384725496">შეასრულა კოდი ქვიშის დინებაში თქვენი მოთხოვნის დასახმარებლად</translation>
+<translation id="4838375634693651776">კოდის შესრულება sandbox-ში თქვენი მოთხოვნის დასახმარებლად</translation>
 <translation id="4379566111233326721">კოდი:</translation>
 <translation id="3542130965673205258">გამოსვლა:</translation>
+<translation id="6911817209337314910">იქმნება ვარიანტები ასარჩევად</translation>
 <translation id="5382076391290708074">თქვენი ჩანართების გადატანა</translation>
 <translation id="3862123464576147769">ამის დაშვება გამოიწვევს <ph name="URL_FORMAT_START"/>URL<ph name="URL_FORMAT_END"/> და <ph name="TITLE_FORMAT_START"/>სათაურის<ph name="TITLE_FORMAT_END"/> გაგზავნას ყველა თქვენი ჩანართის და ჩანართის ჯგუფის Brave AI-ში, და ნებას Brave AI-ს მათი გადატანისთვის. ეს ნებართვა გამოიყენება მხოლოდ ამ საუბრისთვის.</translation>
 <translation id="396165714586708444">ღრმა კვლევა</translation>
@@ -2507,6 +2522,7 @@
 <translation id="646524615209870492"><ph name="ALIAS"/> მისამართის სახელის წაშლა გამოიწვევს იმ ფუნქციის დაკარგვას, რომლითაც შეგიძლიათ ელფოსტის მიღება.</translation>
 <translation id="8133100642915054515">შეცდომაა სახელის წაშლისას. გთხოვთ, შეამოწმეთ ინტერნეტკავშირი და სცადეთ თავიდან.</translation>
 <translation id="8465742443901727718">ეს ქმედება შეუქცევადია. გსურთ გაგრძელება?</translation>
+<translation id="6402052536605772735">ჩვენი სერვერებიდან ელფოსტის ფსევდონიმების მიღების შეცდომა. გთხოვთ, შეამოწმოთ ინტერნეტთან კავშირი.</translation>
 <translation id="9162685486229945876">შედით სისტემაში ან შექმენით Brave-ს ანგარიში</translation>
 <translation id="1335007417599138852">Brave-ს ანგარიში შეგიძლევთ გამოიყენოთ გარკვევილი Brave-ს პროდუქტების წვდომისთვის და მარტივად სინქრონიზაცია გაუკეთოთ თქვენი ინფორმაციას ყველა თქვენი მოწყობილობის გამოყენებით.</translation>
 <translation id="2133391407495495735">შესამოსვლელი ლინკის მიღება</translation>
@@ -2686,7 +2702,7 @@
 <translation id="4117637339509843559">ბნელი რეჟიმი</translation>
 <translation id="6302485303316397682">გსურთ ძიების შედეგების გაუმჯობესება?</translation>
 <translation id="7014699001826714920">გააუმჯობესეთ Brave ძებნა.</translation>
-<translation id="6821108091726602352">დაგვეხმარეთ ვებ-გვერდის გაუმჯობესებაში Brave-ის Web Discovery Project-ში მონაწილეობით. სრულიად ანონიმური ძიების სიგნალების გაზიარებით, შეგიძლიათ ხელი შეუწყოთ Brave ძებნის ინდექსის გაფართოებას.</translation>
+<translation id="6821108091726602352">დაგვეხმარეთ ვებსივრცის გასწორებაში Brave-ის Web Discovery Project-ში მონაწილეობით. სრულიად ანონიმური ძიების სიგნალების გაზიარებით, შეგიძლიათ დაეხმაროთ Brave-ს ძიების ინდექსის ზრდაში.</translation>
 <translation id="6764845498618413165">გაიგეთ მეტი.</translation>
 <translation id="7818938154803162778">რა თქმა უნდა</translation>
 <translation id="7207456302801184289">კეთილი იყოს თქვენი მობრძანება Brave-ში</translation>
@@ -2838,7 +2854,10 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="6624553071240278643">შექმენით თქვენი ანგარიში</translation>
 <translation id="6505120968393722022">Brave ანგარიშის შესაქმნელად ვერ გამოიყენებთ @bravealias.com მისამართებს. გთხოვთ სცადოთ ხელახლა სხვა დომენით.</translation>
 <translation id="8248460961680233459">შექმენით პაროლი</translation>
-<translation id="4917385247580444890">ძლიერი</translation>
+<translation id="552339301062636488">ძალიან სუსტია გასაგრძელებლად</translation>
+<translation id="8433528931936107676">მიდიხართ</translation>
+<translation id="4324743471050874155">საკმარისად ძლიერი</translation>
+<translation id="5585552203448068294">გამორჩეულად ძლიერი</translation>
 <translation id="5486261815000869482">პაროლის დადასტურება</translation>
 <translation id="7345706641791090287">დაადასტურეთ თქვენი პაროლი</translation>
 <translation id="7114054701490058191">პაროლები არ ემთხვევა</translation>
@@ -2865,7 +2884,9 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="4582421696414628320">დადასტურების ვადა გავიდა. დაიწყეთ რეგისტრაციის პროცესი ხელახლა.</translation>
 <translation id="8439543211004394821">შეყვანილია ძალიან ბევრი არასწორი კოდი. დაიწყეთ რეგისტრაციის პროცესი ხელახლა.</translation>
 <translation id="3229986152760633988">არასწორი კოდი, გთხოვთ სცადოთ ხელახლა.</translation>
+<translation id="818783632689113711">ამ ელფოსტის მისამართისთვის ანგარიში უკვე მოთხოვნილია. გთხოვთ, შეამოწმოთ თქვენი ელფოსტა ან სცადოთ 30 წუთში.</translation>
 <translation id="4178004989875422946">Brave ანგარიში საშუალებას მოგცემთ მარტივად მიიღოთ წვდომა Brave სერვისებზე.</translation>
+<translation id="4902897635127068510">იქნებ გულისხმობდით <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock ჩართულია</translation>
 <translation id="7044608453949401443">სივრცეები არ არის დაშვებული პაროლის დასაწყისში ან ბოლოს.</translation>
 <translation id="2939492377741553693">დასტურის მეილი ხელახლა გაიგზავნა.</translation>
@@ -2876,4 +2897,5 @@ Brave-ს აქვს დამხმარე სერვისი, რომ
 <translation id="528205534230423181">ეს საიტი გთავაზობთ კონფიდენციალურობის პარამეტრებს, რომელთა ავტომატურად მორგებაც Brave-ს შეუძლია. აი, რას გირჩევთ:</translation>
 <translation id="1063227610401477317">ცვლილებების გამოყენება</translation>
 <translation id="5539769255716491933">ვერ შესრულებული ნაბიჯების შესახებ შეტყობინება</translation>
+<translation id="7562163394445060270">დავალების დასრულება ვერ მოხერხდა</translation>
 </translationbundle>

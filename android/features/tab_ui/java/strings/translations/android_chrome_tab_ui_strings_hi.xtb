@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> टैब ग्रुप में शामिल किया गया</translation>
 <translation id="1844381456014878100">7 दिनों तक कोई गतिविधि न होने पर</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब}one{<ph name="TABS_COUNT_MANY"/> टैब}other{<ph name="TABS_COUNT_MANY"/> टैब}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{रीडिंग लिस्ट में टैब जोड़ें}one{रीडिंग लिस्ट में टैब जोड़ें}other{रीडिंग लिस्ट में टैब जोड़ें}}</translation>
 <translation id="1909810060368225529">सूचना: शेयर किए गए इस टैब ग्रुप में किए जाने वाले बदलाव, सभी लोगों को दिखेंगे. आपके शेयर किए गए टैब ग्रुप में, सभी लोग बदलाव कर सकते हैं</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{टैब को पिन करें}one{टैब को पिन करें}other{टैब पिन करें}}</translation>
 <translation id="1982637982196732906">इनऐक्टिव सेक्शन में मूव करें</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{चुना गया <ph name="TABS_COUNT_ONE"/> टैब को बुकमार्क करें}one{चुना गया <ph name="TABS_COUNT_MANY"/> टैब को बुकमार्क करें}other{चुने गए <ph name="TABS_COUNT_MANY"/> टैब को बुकमार्क करें}}</translation>
 <translation id="2055057176188061528">कोई टैब ग्रुप चुनें या एक नया टैब ग्रुप बनाएं</translation>
 <translation id="2074527029802029717">टैब बड़ी करें</translation>
+<translation id="2111670510994270194">दाईं ओर नया टैब खोलें</translation>
 <translation id="2118649612461486615">स्टोर की जानकारी</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{साइट अनम्यूट करें}one{साइट अनम्यूट करें}other{साइटें अनम्यूट करें}}</translation>
 <translation id="2162620598375156287">अब <ph name="SOURCE_WEBSITE"/> पर कीमत <ph name="CURRENT_PRICE"/> है</translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> की कीमत <ph name="PRICE_DROP"/> कम हुई है</translation>
 <translation id="3078350928901129212">टैब ग्रुप के कलर आइकॉन का रंग <ph name="COLOR_NAME"/> है</translation>
 <translation id="311432875115153175">टैब ग्रुप की सूची बंद कर दी गई है</translation>
+<translation id="3152596030350326139">टैब को हॉरिज़ॉन्टल तरीके से दिखाएं</translation>
+<translation id="31806439105337256">टैब को वर्टिकल तरीके से दिखाएं</translation>
 <translation id="3194464645767632461">रेटिंग</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> टैब को ग्रुप में जोड़ें}one{<ph name="TABS_COUNT_MANY"/> टैब को ग्रुप में जोड़ें}other{<ph name="TABS_COUNT_MANY"/> टैब, ग्रुप में जोड़ें}}</translation>
 <translation id="3328308545011660196">सुझाव: ऐसा लगता है कि <ph name="NUMBER_OF_TABS"/> टैब एक-दूसरे से मिलते-जुलते हैं. इनका ग्रुप बनाएं?</translation>

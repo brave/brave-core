@@ -30,12 +30,14 @@
 <translation id="1828808367831369073">‫<ph name="TABS_COUNT_ONE"/> زبانه گروه‌بندی شد</translation>
 <translation id="1844381456014878100">پس‌از ۷ روز غیرفعال بودن</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> زبانه}one{<ph name="TABS_COUNT_MANY"/> زبانه}other{<ph name="TABS_COUNT_MANY"/> زبانه}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{افزودن زبانه به فهرست خواندن}one{افزودن زبانه به فهرست خواندن}other{افزودن زبانه‌ها به فهرست خواندن}}</translation>
 <translation id="1909810060368225529">توجه: تغییرات این «گروه زبانه» هم‌رسانی‌شده برای همه نمایان است. همه می‌توانند در گروه‌های زبانه هم‌رسانی‌شده شما تغییراتی ایجاد کنند</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{سنجاق کردن زبانه}one{سنجاق کردن زبانه}other{سنجاق کردن زبانه‌ها}}</translation>
 <translation id="1982637982196732906">منتقل کردن به بخش غیرفعال</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{نشانک‌گذاری <ph name="TABS_COUNT_ONE"/> زبانه انتخاب‌شده}one{نشانک‌گذاری <ph name="TABS_COUNT_MANY"/> زبانه انتخاب‌شده}other{نشانک‌گذاری <ph name="TABS_COUNT_MANY"/> زبانه انتخاب‌شده}}</translation>
 <translation id="2055057176188061528">گروه زبانه انتخاب کنید یا گروه زبانه جدیدی ایجاد کنید</translation>
 <translation id="2074527029802029717">باز کردن برگه</translation>
+<translation id="2111670510994270194">برگه جدید در سمت راست</translation>
 <translation id="2118649612461486615">اطلاعات فروشگاه</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{صدادار کردن سایت}one{صدادار کردن سایت}other{صدادار کردن سایت‌ها}}</translation>
 <translation id="2162620598375156287">اکنون با قیمت <ph name="CURRENT_PRICE"/> در <ph name="SOURCE_WEBSITE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> کاهش قیمت <ph name="PRODUCT_NAME"/></translation>
 <translation id="3078350928901129212">نماد رنگ گروه زبانه <ph name="COLOR_NAME"/></translation>
 <translation id="311432875115153175">فهرست گروه زبانه بسته شد</translation>
+<translation id="3152596030350326139">نمایش افقی زبانه‌ها</translation>
+<translation id="31806439105337256">نمایش عمودی زبانه‌ها</translation>
 <translation id="3194464645767632461">رده‌بندی</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{افزودن <ph name="TABS_COUNT_ONE"/> زبانه به گروه}one{افزودن <ph name="TABS_COUNT_MANY"/> زبانه به گروه}other{افزودن <ph name="TABS_COUNT_MANY"/> زبانه به گروه}}</translation>
 <translation id="3328308545011660196">پیشنهاد: به نظر می‌رسد <ph name="NUMBER_OF_TABS"/> برگه مرتبط باشند. گروه‌بندی شوند؟</translation>

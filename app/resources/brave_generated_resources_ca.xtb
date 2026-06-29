@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">IA Leo</translation>
 <translation id="8275068909952022340">Més…</translation>
 <translation id="71316462802471551">Correus electrònics alternatius</translation>
+<translation id="209130971304928953">Desa les pestanyes com a espai de treball…</translation>
+<translation id="877984331511007834">Obre un espai de treball…</translation>
+<translation id="1310182651927031327">Desa les pestanyes com a espai de treball…</translation>
+<translation id="3588277741646479444">Obre un espai de treball…</translation>
 <translation id="1990886731975529483">Instal·la i executa Google Widevine</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="4900351245762303149">Instal·la Google Widevine</translation>
@@ -69,7 +73,6 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="6313675821927505581">Nova finestra d'incògnit amb Tor</translation>
 <translation id="2638041073279639246">Obre l'enllaç a una finestra d'incògnit amb Tor</translation>
 <translation id="3425600262621021599">Obre l'enllaç a una finestra d'incògnit de Brave amb Tor</translation>
-<translation id="2545072023356206691">A partir de l'1 de desembre de 2023, el canal Brave Dev ja no rebrà actualitzacions del navegador. Recomanem als usuaris migrar a les versions Nightly, Beta o Release de Brave.</translation>
 <translation id="474217410105706308">Silencia la pestanya</translation>
 <translation id="2804710924397009224">Amaga la icona Recompenses de Brave</translation>
 <translation id="5029193871181468990">Amaga la icona Recompenses de Brave</translation>
@@ -141,7 +144,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="8748471354357836070">Més informació / opcions de renúncia</translation>
 <translation id="5927196110206824867">Les imatges de fons patrocinades ajuden a Brave en la seva missió de construir un lloc web independent on els usuaris són la prioritat. I, a diferència de les Big Tech, mesurem el rendiment dels anuncis de manera anònima per garantir la teva privacitat.</translation>
 <translation id="4174337572777167894">Web Discovery Project</translation>
-<translation id="8659271182272561965">Aporta dades de cerca i navegació anònimes per perfeccionar el cercador de Brave.</translation>
+<translation id="8659271182272561965">Contribuïu amb algunes dades anònimes de cerca i navegació per millorar el Cercador de Brave.</translation>
 <translation id="1516554614404600536">Descripció emergent de Brave</translation>
 <translation id="4375473250631001683">Amaga la icona de la barra lateral</translation>
 <translation id="2613033293035359003">Amaga la barra lateral</translation>
@@ -204,6 +207,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="8670218546624422041">Obrir a l'espai de treball</translation>
 <translation id="194205047181722473">Obre l'enllaç al contenidor</translation>
 <translation id="8638526693050780542">Gestionar espais de treball</translation>
+<translation id="2796584247246518451">Nou contenidor temporal</translation>
 <translation id="2336228925368920074">Afegeix totes les pestanyes a les adreces d'interès...</translation>
 <translation id="2523967823495420116">Utilitza pestanyes verticals</translation>
 <translation id="5483718923712878759">Mode de Concentració</translation>
@@ -217,6 +221,7 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="1987871867023021397">Obrir a l'Espai de treball</translation>
 <translation id="1185644444415356776">Obre l'Enllaç al Contenidor</translation>
 <translation id="6745991613881384719">Gestionar Espais de treball</translation>
+<translation id="8523788649219117880">Nou contenidor temporal</translation>
 <translation id="3704707436873245822">Copia text de la imatge</translation>
 <translation id="5268098808165185458">Copiant text de la imatge...</translation>
 <translation id="4046485130884276245">S'ha copiat text de la imatge</translation>
@@ -373,7 +378,8 @@ Pots llegir <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>instruccions de com descar
 <translation id="8076492880354921740">Pestanyes</translation>
 <translation id="8168435359814927499">Contingut</translation>
 <translation id="6017560037265964523">Espais de treball</translation>
-<translation id="934893482320683588">Organitza la teva navegació amb espais de treball. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Els contenidors són pestanyes del navegador amb codis de color que aïllen les vostres dades de navegació, com ara galetes, memòria cau i emmagatzematge del lloc en contextos separats. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Activa els contenidors</translation>
 <translation id="7773735778926921278">Afegir nou espai de treball</translation>
 <translation id="8900907990448657776">Editar espai de treball</translation>
 <translation id="7900511996284443779">Eliminar espai de treball</translation>
@@ -808,6 +814,7 @@ Segur que vols continuar?</translation>
 <translation id="5226020406479918122">Mode Classificació de pestanyes</translation>
 <translation id="3705539672403311123">Activa l'organització de pestanyes a la pàgina de Cerca de pestanyes. En obrir-se, enviarà automàticament els títols i l'origen de totes les pestanyes no privades a Leo perquè pugui classificar-les. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Model predeterminal per a l'enfocament de pestanyes</translation>
+<translation id="2161546758719933059">El model utilitzat per organitzar les vostres pestanyes en el mode d'enfocament de pestanyes. <ph name="BEGIN_LINK"/>Més informació<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Mostra suggeriments de missatges en la conversa</translation>
 <translation id="5781842473834867765">Desar el meu historial de converses</translation>
 <translation id="1082960401708055995">Si desactives l'opció de desar les converses, s'eliminaran totes les converses emmagatzemades prèviament. Aquesta acció no es pot revertir.</translation>

@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">অনেক…</translation>
 <translation id="71316462802471551">ইমেল উপনামগুলি</translation>
+<translation id="209130971304928953">ট্যাবগুলো ওয়ার্কস্পেস হিসেবে সংরক্ষণ করুন…</translation>
+<translation id="877984331511007834">ওয়ার্কস্পেস খুলুন…</translation>
+<translation id="1310182651927031327">ট্যাবগুলো ওয়ার্কস্পেস হিসেবে সংরক্ষণ করুন…</translation>
+<translation id="3588277741646479444">ওয়ার্কস্পেস খুলুন…</translation>
 <translation id="1990886731975529483">Google Widevine ইনস্টল করুন এবং চালান</translation>
 <translation id="8926389886865778422">আর জিজ্ঞাসা করবেন না</translation>
 <translation id="4900351245762303149">Google Widevine ইনস্টল করুন</translation>
@@ -69,7 +73,6 @@
 <translation id="6313675821927505581">Tor এর সাথে নতুন ব্যক্তিগত উইন্ডো</translation>
 <translation id="2638041073279639246">Tor এর সাথে ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
 <translation id="3425600262621021599">Tor এর সাথে Brave ব্যক্তিগত উইন্ডোতে লিঙ্ক খুলুন</translation>
-<translation id="2545072023356206691">1 ডিসেম্বর, 2023 থেকে, Brave Dev চ্যানেল আর ব্রাউজারের আপডেট পাবে না। আমরা ব্যবহারকারীদের Nightly, Beta বা Brave-এর Release ভার্সনে মাইগ্রেট করতে বলি।</translation>
 <translation id="474217410105706308">ট্যাব মিউট করুন</translation>
 <translation id="2804710924397009224">ব্রেভ রিওয়ার্ড আইকন লুকান</translation>
 <translation id="5029193871181468990">Brave রিওয়ার্ড আইকন লুকান</translation>
@@ -140,8 +143,8 @@
 <translation id="5253166205743627564">একটি ব্যক্তিগত বিজ্ঞাপনে ক্লিক করে Brave সন্ধানকে সহায়তা করার জন্য ধন্যবাদ। বড় বড় প্রযুক্তি কোম্পানিগুলির মতো নয় এমনভাবে আপনার গোপনীয়তা রক্ষা করার জন্য আমরা বেনামে বিজ্ঞাপনের পারফরম্যান্স পরিমাপ করি।</translation>
 <translation id="8748471354357836070">আরও জানুন / অপ্ট আউট করার বিকল্পসমূহ</translation>
 <translation id="5927196110206824867">স্পন্সর করা ব্যাকগ্রান্ডের ছবিগুলি Brave এর একটি স্বাধীন, ব্যবহারকারীকে-অগ্রাধিকার দেওয়া ওয়েব গড়ে তোলার মিশনকে সমর্থন করে। এবং বড় প্রযুক্তি সংস্থাগুলির মতো নয়, আপনার গোপনীয়তা রক্ষা করার জন্য আমরা নাম গোপন রেখে বিজ্ঞাপনের পারফরম্যান্স পরিমাপ করি।</translation>
-<translation id="4174337572777167894">ওয়েব আবিষ্কার প্রকল্প</translation>
-<translation id="8659271182272561965">Brave অনুসন্ধান &amp; পরিশোধন করতে কিছু অনামী অনুসন্ধান ব্রাউজিং ডেটায় অবদান রাখুন।</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Brave সার্চ-কে আরও উন্নত করতে কিছু বেনামী সার্চ ও ব্রাউজিং ডেটা প্রদান করুন।</translation>
 <translation id="1516554614404600536">Brave টুলটিপ</translation>
 <translation id="4375473250631001683">সাইডবার আইকন লুকান</translation>
 <translation id="2613033293035359003">সাইডবার লুকান</translation>
@@ -204,6 +207,7 @@
 <translation id="8670218546624422041">কন্টেনারে খুলুন</translation>
 <translation id="194205047181722473">কন্টেনারে লিঙ্কটি খুলুন</translation>
 <translation id="8638526693050780542">কন্টেনারগুলি পরিচালনা করুন</translation>
+<translation id="2796584247246518451">নতুন অস্থায়ী কন্টেইনার</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="5483718923712878759">ফোকাস মোড</translation>
@@ -217,6 +221,7 @@
 <translation id="1987871867023021397">কন্টেনারে খুলুন</translation>
 <translation id="1185644444415356776">কন্টেনারে লিঙ্কটি খুলুন</translation>
 <translation id="6745991613881384719">কন্টেনারগুলি পরিচালনা করুন</translation>
+<translation id="8523788649219117880">নতুন অস্থায়ী কন্টেইনার</translation>
 <translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
 <translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
 <translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
@@ -373,7 +378,8 @@
 <translation id="8076492880354921740">ট্যাবগুলি</translation>
 <translation id="8168435359814927499">সামগ্রী</translation>
 <translation id="6017560037265964523">কন্টেনার</translation>
-<translation id="934893482320683588">কন্টেনারগুলি দিয়ে আপনার ব্রাউজিং সংগঠিত করুন। <ph name="BEGIN_LINK"/>আরো জানুন<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">কন্টেইনার হলো রঙ-কোডেড browser ট্যাব যা আপনার ব্রাউজিং ডেটা, যেমন cookie, cache, এবং site storage আলাদা প্রসঙ্গে বিচ্ছিন্ন করে রাখে। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">কন্টেইনার সক্ষম করুন</translation>
 <translation id="7773735778926921278">নতুন কন্টেনার যোগ করুন</translation>
 <translation id="8900907990448657776">কন্টেনার সম্পাদনা করুন</translation>
 <translation id="7900511996284443779">কন্টেনার মুছুন</translation>
@@ -808,6 +814,7 @@
 <translation id="5226020406479918122">ট্যাব ফোকাস মোড</translation>
 <translation id="3705539672403311123">ট্যাব সন্ধান পৃষ্ঠায় ট্যাব সংগঠন সক্রিয় করে। খোলা থাকাকালীন, এটি সমস্ত অ-ব্যক্তিগত ট্যাবগুলির শ্রেণীবিন্যাস করার জন্য Leo-কে সেগুলির শিরোনাম এবং উৎস স্বয়ংক্রিয়ভাবে পাঠাবে। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">ট্যাব ফোকাসের জন্য ডিফল্ট মডেল</translation>
+<translation id="2161546758719933059">ট্যাব ফোকাস মোডে আপনার ট্যাবগুলো সংগঠিত করতে ব্যবহৃত মডেল। <ph name="BEGIN_LINK"/>আরও জানুন<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">কথোপকথনে প্রস্তাবিত প্রম্পট দেখান</translation>
 <translation id="5781842473834867765">আমার কথোপকথনের ইতিহাস সংরক্ষণ করুন</translation>
 <translation id="1082960401708055995">কথোপকথন সংরক্ষণ নিষ্ক্রিয় করা আগের সংরক্ষণ করা সমস্ত কথোপকথন স্থায়ীভাবে মুছে ফেলবে। এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।</translation>

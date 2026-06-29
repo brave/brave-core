@@ -20,6 +20,10 @@
 <translation id="2361906291514218784">Leo AI</translation>
 <translation id="8275068909952022340">Več…</translation>
 <translation id="71316462802471551">E-poštni vzdevki</translation>
+<translation id="209130971304928953">Shrani zavihke kot delovni prostor …</translation>
+<translation id="877984331511007834">Odpri delovni prostor …</translation>
+<translation id="1310182651927031327">Shrani zavihke kot delovni prostor …</translation>
+<translation id="3588277741646479444">Odpri delovni prostor …</translation>
 <translation id="1990886731975529483">Namesti in zaženi Google Widevine</translation>
 <translation id="8926389886865778422">Ne sprašuj več</translation>
 <translation id="4900351245762303149">Namesti Google Widevine</translation>
@@ -71,7 +75,6 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="6313675821927505581">Novo zasebno okno z uporabo brskalnika Tor</translation>
 <translation id="2638041073279639246">Odpri povezavo v zasebnem oknu z uporabo brskalnika Tor</translation>
 <translation id="3425600262621021599">Odpri povezave v zasebnem oknu Brave z uporabo brskalnika Tor</translation>
-<translation id="2545072023356206691">Od 1. decembra 2023 kanal Brave Dev ne bo več prejemal posodobitev brskalnika. Uporabnikom priporočamo, da se preselijo na Nightly, Beta ali Release različice Brave.</translation>
 <translation id="474217410105706308">Izklop zvoka zavihka</translation>
 <translation id="2804710924397009224">Skrij ikono storitve Brave Rewards</translation>
 <translation id="5029193871181468990">Skrij ikono Brave Rewards</translation>
@@ -142,8 +145,8 @@ To lahko spremenite tudi pozneje na <ph name="SETTINGS_EXTENIONS_LINK"/>.</trans
 <translation id="5253166205743627564">Hvala, ker s klikom na zasebni oglas podpirate Brave Search. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
 <translation id="8748471354357836070">Več informacij/možnosti odjave</translation>
 <translation id="5927196110206824867">Sponzorirane slike v ozadju podpirajo poslanstvo družbe Brave, da gradi neodvisen in uporabniku prijazen splet. V nasprotju z velikimi tehnološkimi podjetji merimo uspešnost oglasov anonimno, da bi ohranili vašo zasebnost.</translation>
-<translation id="4174337572777167894">Projekt Web Discovery</translation>
-<translation id="8659271182272561965">Prispevajte nekaj podatkov anonimnega iskanja in brskanja, da izboljšate iskalnik Brave Search.</translation>
+<translation id="4174337572777167894">Web Discovery Project</translation>
+<translation id="8659271182272561965">Prispevajte nekaj anonimnih podatkov o iskanju &amp; brskanju za izboljšanje Brave Iskanja.</translation>
 <translation id="1516554614404600536">Namig o orodju Brave</translation>
 <translation id="4375473250631001683">Skrij ikono stranske vrstice</translation>
 <translation id="2613033293035359003">Skrij stransko vrstico</translation>
@@ -206,6 +209,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="8670218546624422041">Odpri v vsebniku</translation>
 <translation id="194205047181722473">Odpri povezavo v vsebniku</translation>
 <translation id="8638526693050780542">Upravljaj vsebnike</translation>
+<translation id="2796584247246518451">Nov začasni vsebnik</translation>
 <translation id="2336228925368920074">Dodaj vse zavihke med zaznamke ...</translation>
 <translation id="2523967823495420116">Uporabite navpične zavihke</translation>
 <translation id="5483718923712878759">Način fokusa</translation>
@@ -219,6 +223,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="1987871867023021397">Odpri v vsebniku</translation>
 <translation id="1185644444415356776">Odpri povezavo v vsebniku</translation>
 <translation id="6745991613881384719">Upravljaj vsebnike</translation>
+<translation id="8523788649219117880">Nov začasni vsebnik</translation>
 <translation id="3704707436873245822">Kopiraj besedilo s slike</translation>
 <translation id="5268098808165185458">Kopiranje besedila s slike...</translation>
 <translation id="4046485130884276245">Besedilo kopirano s slike</translation>
@@ -376,7 +381,8 @@ se lahko izteče. Ali ga želite obnoviti?</translation>
 <translation id="8076492880354921740">Zavihki</translation>
 <translation id="8168435359814927499">Vsebina</translation>
 <translation id="6017560037265964523">Vsebniki</translation>
-<translation id="934893482320683588">Organizirajte brskanje z vsebniki. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
+<translation id="3718176486689879621">Vsebniki so barvno označeni zavihki brskalnika, ki vaše podatke o brskanju, kot so piškotki, predpomnilnik in shramba spletnega mesta, izolirajo v ločene kontekste. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
+<translation id="3721778624267551248">Omogoči vsebnike</translation>
 <translation id="7773735778926921278">Dodajte nov vsebnik</translation>
 <translation id="8900907990448657776">Uredite vsebnik</translation>
 <translation id="7900511996284443779">Izbrišite vsebnik</translation>
@@ -811,6 +817,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 <translation id="5226020406479918122">Način fokus zavihka</translation>
 <translation id="3705539672403311123">Omogočite organizacijo zavihkov na strani Iskanje zavihkov. Ko jo odprete, bo Leu samodejno poslala naslove in izvore vseh zavihkov, ki niso zasebni, da jih razvrsti. <ph name="BEGIN_LINK"/>Več informacij<ph name="END_LINK"/></translation>
 <translation id="9049433973274198706">Privzeti model za novo zavihko</translation>
+<translation id="2161546758719933059">Model, ki se uporablja za organizacijo vaših zavihkov v načinu osredotočenosti na zavihke. <ph name="BEGIN_LINK"/>Več o tem<ph name="END_LINK"/></translation>
 <translation id="8172263161008556851">Pokaži predlagane pozive v pogovoru</translation>
 <translation id="5781842473834867765">Shrani mojo zgodovino pogovorov</translation>
 <translation id="1082960401708055995">Če onemogočite shranjevanje pogovorov, se trajno izbrišejo vsi predhodno shranjeni pogovori. Tega dejanja ni mogoče preklicati.</translation>

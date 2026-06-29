@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> ટૅબનું ગ્રૂપ બનાવ્યું</translation>
 <translation id="1844381456014878100">7 દિવસ પછી નિષ્ક્રિય</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ટૅબ}one{<ph name="TABS_COUNT_MANY"/> ટૅબ}other{<ph name="TABS_COUNT_MANY"/> ટૅબ}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{વાંચન સૂચિમાં ટૅબ ઉમેરો}one{વાંચન સૂચિમાં ટૅબ ઉમેરો}other{વાંચન સૂચિમાં ટૅબ ઉમેરો}}</translation>
 <translation id="1909810060368225529">નોટિસ: શેર કરેલા ટૅબના આ ગ્રૂપમાં કરવામાં આવેલા ફેરફારો દરેક વ્યક્તિ જોઈ શકે છે. દરેક વ્યક્તિ તમારા શેર કરેલા ટૅબના ગ્રૂપમાં ફેરફારો કરી શકે છે</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{ટૅબને પિન કરો}one{ટૅબને પિન કરો}other{ટૅબને પિન કરો}}</translation>
 <translation id="1982637982196732906">નિષ્ક્રિય વિભાગમાં ખસેડો</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{પસંદ કરેલા <ph name="TABS_COUNT_ONE"/> ટૅબને બુકમાર્ક કરો}one{પસંદ કરેલા <ph name="TABS_COUNT_MANY"/> ટૅબને બુકમાર્ક કરો}other{પસંદ કરેલા <ph name="TABS_COUNT_MANY"/> ટૅબને બુકમાર્ક કરો}}</translation>
 <translation id="2055057176188061528">ટૅબનું ગ્રૂપ પસંદ કરો અથવા ટૅબનું નવું ગ્રૂપ બનાવો</translation>
 <translation id="2074527029802029717">ટૅબ અનપિન કરો</translation>
+<translation id="2111670510994270194">જમણી બાજુએ નવું ટૅબ</translation>
 <translation id="2118649612461486615">સ્ટોરની માહિતી</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{સાઇટને અનમ્યૂટ કરો}one{સાઇટને અનમ્યૂટ કરો}other{સાઇટને અનમ્યૂટ કરો}}</translation>
 <translation id="2162620598375156287"><ph name="SOURCE_WEBSITE"/> પર હવે <ph name="CURRENT_PRICE"/> કિંમત છે</translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/>ની કિંમતમાં <ph name="PRICE_DROP"/>નો ઘટાડો થયો</translation>
 <translation id="3078350928901129212"><ph name="COLOR_NAME"/> ટૅબના ગ્રૂપના રંગનું આઇકન</translation>
 <translation id="311432875115153175">ટૅબના ગ્રૂપની સૂચિ બંધ કરવામાં આવી</translation>
+<translation id="3152596030350326139">ટૅબને આડી રીતે બતાવો</translation>
+<translation id="31806439105337256">ટૅબને ઊભી રીતે બતાવો</translation>
 <translation id="3194464645767632461">રેટિંગ</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ટૅબ ગ્રૂપમાં ઉમેરો}one{<ph name="TABS_COUNT_MANY"/> ટૅબ ગ્રૂપમાં ઉમેરો}other{<ph name="TABS_COUNT_MANY"/> ટૅબ ગ્રૂપમાં ઉમેરો}}</translation>
 <translation id="3328308545011660196">સૂચન: <ph name="NUMBER_OF_TABS"/> ટૅબ સંબંધિત હોય તેમ જણાય છે. તેમનું ગ્રૂપ બનાવીએ?</translation>

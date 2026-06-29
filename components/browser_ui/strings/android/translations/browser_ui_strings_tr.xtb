@@ -1,11 +1,11 @@
 <?xml version="1.0" ?>
 <!DOCTYPE translationbundle>
 <translationbundle lang="tr">
+<translation id="1000614056227025171">Ana sayfanızı özelleştirin tanıtım alt sayfası tam ekranda açıldı</translation>
 <translation id="1006017844123154345">İnternet'te aç</translation>
 <translation id="1036348656032585052">Kapat</translation>
 <translation id="1046742265332833834">Mavi tema</translation>
 <translation id="1070329623210597193">Bu sitenin görüntüleyebileceği veya düzenleyebileceği dosyalar</translation>
-<translation id="1882093842020941518">Üçüncü taraf çerezlerine neden izin verdiğinizi bize bildirerek Brave'u iyileştirmemize yardımcı olun. <ph name="BEGIN_LINK"/>Geri bildirim gönderin<ph name="END_LINK"/></translation>
 <translation id="1074758928858737435">Sitelerin masaüstü sürümünü görüntülemeyi talep edebilirsiniz</translation>
 <translation id="1109482864356262001">Hareket veya ışık sensörlerinin kullanılmasını gerektiren özellikler çalışmaz</translation>
 <translation id="6670155282615872564">Brave'dan en iyi şekilde yararlanmak için aşağıdaki önerilen işlemleri tamamlayın</translation>
@@ -21,6 +21,7 @@
 <translation id="3251315496493761426">Brave ipuçları</translation>
 <translation id="1242008676835033345"><ph name="WEBSITE_URL"/> adresinde yerleşik</translation>
 <translation id="1263609676484797429">Uygulamalar &gt; Varsayılan uygulamalar'a dokunun.</translation>
+<translation id="1264694639515903274">Artık ana sayfanızı özelleştirebilirsiniz</translation>
 <translation id="1272079795634619415">Durdur</translation>
 <translation id="1275718070701477396">Seçildi</translation>
 <translation id="8010562420973777575">Veri tasarrufu amacıyla bu sayfadaki görseller Brave tarafından optimize edilmiştir.</translation>
@@ -41,7 +42,6 @@
 <translation id="1415402041810619267">URL kısaltıldı</translation>
 <translation id="1741136041592162279">Brave'un son sekmelerinizi cihazınızla paylaşmasına izin verdiğinizde bu sekmeleri cihazınızın uygulama listesinde ve arama sonuçlarında görebilirsiniz. Bu özelliği Brave ayarlarından etkinleştirebilir veya devre dışı bırakabilirsiniz.</translation>
 <translation id="1420688843103859429">Dokunmatik alanda iki parmağınızla kaydırarak ileri ve geri gidin</translation>
-<translation id="1432650420699700107">Siteler, yerel ağınızdaki cihazlara bağlanmak isteyebilir</translation>
 <translation id="1442081309487427303">Okuma Modu bağlantılarını etkinleştir</translation>
 <translation id="1448064542941920355">Yakınlaştırmayı azalt</translation>
 <translation id="1464044141348608623">Cihazımı etkin olarak kullandığımda sitelerin bilmesine izin verme</translation>
@@ -75,7 +75,6 @@
 <translation id="1717996979683942279">Bu özellik açıkken siteler tüm ekranlarınızda pencereleri yönetme izni isteyebilir. Kapalıyken siteler tüm ekranlarınızda pencereleri yönetemez.</translation>
 <translation id="1738912554587725807">Yeni sekme sayfası görünümü tema koleksiyonları alt sayfası</translation>
 <translation id="1743802530341753419">Sitelerin bir cihaza bağlanmasına izin verilmeden önce sor (önerilir)</translation>
-<translation id="2534291364429593865">Brave ipuçları bildirimlerini alın</translation>
 <translation id="1777815584158991902">Keşfet feed'i alt sayfası</translation>
 <translation id="1779089405699405702">Görsel kod çözücüsü</translation>
 <translation id="1781533683087883868">Okuma Modu bağlantılarını devre dışı bırak</translation>
@@ -92,6 +91,7 @@
 <translation id="1915307458270490472">Kapat</translation>
 <translation id="1919950603503897840">Kişi seçin</translation>
 <translation id="1923695749281512248"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / <ph name="FILE_SIZE_WITH_UNITS"/></translation>
+<translation id="192926679114491605">Ana sayfamı özelleştir</translation>
 <translation id="1939059826036755332">Otomatik pencere içinde pencere</translation>
 <translation id="1954597385941141174">Siteler USB cihazlara bağlanmak isteyebilir</translation>
 <translation id="1979673356880165407">Ziyaret ettiğiniz tüm sitelerdeki metin ve resimleri büyütün ya da küçültün</translation>
@@ -156,7 +156,6 @@
 <translation id="2490684707762498678"><ph name="APP_NAME"/> tarafından yönetiliyor</translation>
 <translation id="2498359688066513246">Yardım ve geri bildirim</translation>
 <translation id="2501278716633472235">Geri dön</translation>
-<translation id="2533138527374486328">Bu düğme açıkken siteler yerel ağınızdaki cihazlara bağlanmak isteyebilir. Düğme kapalıyken siteler yerel ağınızdaki cihazlara bağlanamaz.</translation>
 <translation id="2536779053640817375">Şu anda izin veriliyor • Tam</translation>
 <translation id="2544997614631598250">Koyu tema rengi</translation>
 <translation id="2546283357679194313">Çerezler ve site verileri</translation>
@@ -185,7 +184,6 @@
 <translation id="2787357173144933081">Çok amaçlı adres çubuğuna hızlı başlangıç</translation>
 <translation id="2789132527330338807">Siteler, çevrenizin 3D haritasını oluşturmak veya kameranızın konumunu takip etmek isteyebilir</translation>
 <translation id="2790501146643349491">Bu düğme açıkken yeni kapatılan siteler veri gönderip alma işlemini bitirebilir. Düğme kapalıyken yeni kapatılan siteler veri gönderip alma işlemini bitiremez.</translation>
-<translation id="1708222144403389505">Brave'dan en iyi şekilde yararlanmanıza yardımcı olacak faydalı ipuçları için bildirimleri açın</translation>
 <translation id="2795716239552913152">Yerel haberler veya yakındaki mağazalar gibi alakalı özellikleri ya da bilgileri sunmak için siteler genellikle konumunuzu kullanır</translation>
 <translation id="2800760947029405028">Resim yükle</translation>
 <translation id="2802908157808345702">Sitelerin pop-up'lar göndermesine veya yönlendirmeler kullanmasına izin verme</translation>
@@ -209,6 +207,7 @@
 <translation id="3064871050034234884">Siteler ses çalabilir</translation>
 <translation id="3065787901655140044">Gelişmiş Koruma etkin</translation>
 <translation id="3069226013421428034">Belirli bir sitede üçüncü taraf oturum açmaya izin verin.</translation>
+<translation id="3084983642903364837">Ana sayfanızı daha sonra 3 noktalı menüden düzenleyebilirsiniz.</translation>
 <translation id="310297983047869047">Önceki slayt</translation>
 <translation id="3108122610701115301">Varsayılan olarak ayarla</translation>
 <translation id="310979712355504754">Tümünü sil</translation>
@@ -301,7 +300,6 @@
 <translation id="3955321697524543127">Sitelerin USB cihazlara bağlanmasına izin verme</translation>
 <translation id="3965467402665811906">Siteler, hakkınızda kaydettikleri bilgileri kullanmak için izin isteyebilir</translation>
 <translation id="3967822245660637423">İndirme tamamlandı</translation>
-<translation id="3969869202926863008">Yerel ağ erişimi</translation>
 <translation id="3981465354637804599">Siteler genellikle içerik veya hizmetlerini ücretsiz olarak sunabilmek için reklam gösterirler. Ancak araya giren veya yanıltıcı reklamlar gösterdiği bilinen bazı siteler vardır.</translation>
 <translation id="3987993985790029246">Bağlantıyı kopyala</translation>
 <translation id="3991845972263764475"><ph name="BYTES_DOWNLOADED_WITH_UNITS"/> / ?</translation>
@@ -326,6 +324,7 @@
 <translation id="4217710972110098902">Seri bağlantı noktasına bağlandı</translation>
 <translation id="4223404254440398437">Mikrofona izin verilmiyor</translation>
 <translation id="4226663524361240545">Bildirimler cihazı titretebilir</translation>
+<translation id="4227965147357783918">Ana sayfanızı özelleştirin tanıtım alt sayfası, ekranın yarısına kadar açıldı</translation>
 <translation id="4259722352634471385">Gezinme engellendi: <ph name="URL"/></translation>
 <translation id="4274673989874969668">Siz bir siteden çıktıktan sonra o site, fotoğrafları yükleme veya sohbet mesajı gönderme gibi görevleri tamamlamak için senkronizasyona devam edebilir</translation>
 <translation id="4278390842282768270">İzin veriliyor</translation>
@@ -334,6 +333,7 @@
 <translation id="42981349822642051">Genişlet</translation>
 <translation id="4310738531374808763">Ana sayfanızı özelleştirin</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Süresi yarın dolacak}other{Süresi # gün içinde dolacak}}</translation>
+<translation id="7012676469589811613">Özel bir arka plan teması seçerek Brave'u kişiselleştirin</translation>
 <translation id="4338831206024587507"><ph name="DOMAIN"/> altındaki tüm siteler</translation>
 <translation id="4340799661701629185">Sitelerin bildirim göndermesine izin verme</translation>
 <translation id="4341577178275615435">Klavyeyle göz atmayı açmak veya kapatmak için F7 kısayolunu kullanın</translation>
@@ -443,7 +443,6 @@
 <translation id="674221630984410403">Brave'un V8 motoruyla siteleri hızlandırmayın. Ancak bu durumda Brave, saldırılara karşı biraz daha dirençli hale gelir</translation>
 <translation id="5556459405103347317">Yeniden Yükle</translation>
 <translation id="5591840828808741583"><ph name="SITE_NAME"/> engellendi</translation>
-<translation id="560980142378233747">Bu durumda, site özellikleri beklendiği gibi çalışır, ancak internette gezinirken daha az korunursunuz. <ph name="BEGIN_LINK"/>Geri bildirim gönderin<ph name="END_LINK"/>.</translation>
 <translation id="5617702678271228680">Yeni sekme sayfası kartları alt sayfası</translation>
 <translation id="5621413808884657932">Düğme açık olduğunda siteler bu cihazdaki diğer uygulamalara ve hizmetlere erişmek için izin isteyebilir. Düğme kapalı olduğunda siteler bu cihazdaki diğer uygulamalara ve hizmetlere erişemez.</translation>
 <translation id="5632485077360054581">Nasıl yapıldığını göster</translation>
@@ -544,7 +543,6 @@
 <translation id="6557290421156335491">Kısayollarım</translation>
 <translation id="656065428026159829">Daha fazla göster</translation>
 <translation id="6561560012278703671">Bildirim daha sessiz yapılsın (bildirim istemlerinin sizi rahatsız etmesini engeller)</translation>
-<translation id="6565144332292237355">Siteler, yerel ağınızdaki cihazları aramak ve cihazlara bağlanmak için bu özelliği kullanabilir</translation>
 <translation id="6593061639179217415">Masaüstü sitesi</translation>
 <translation id="659938948789980540">{COUNT,plural, =1{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> sitesi için çerezlere izin veriliyor}other{<ph name="RWS_MEMBERS_COUNT"/> <ph name="RWS_OWNER"/> sitesi için çerezlere izin veriliyor}}</translation>
 <translation id="6608650720463149374"><ph name="GIGABYTES"/> GB</translation>
@@ -553,7 +551,6 @@
 <translation id="662080504995468778">Kal</translation>
 <translation id="6630443592285535486">Onaltılık değeri buraya yazın</translation>
 <translation id="6635327442719709864">Bu düğme açıkken siteler seri bağlantı noktalarını kullanmak için izin isteyebilir. Düğme kapalıyken siteler seri bağlantı noktalarını kullanamaz.</translation>
-<translation id="6669390930482049506">Bana haber ver</translation>
 <translation id="6678072580827808850">Güvenlik Kontrolü'nü inceleyin</translation>
 <translation id="6682057173375416470">Yeni Sekme sayfasında önerilen makaleleri göster</translation>
 <translation id="6683865262523156564">Bu site, etkinliğinizi görebilen bir grupta bulunuyor. Grup, <ph name="RWS_OWNER"/> tarafından tanımlanmıştır.</translation>
@@ -600,7 +597,6 @@
 <translation id="7180611975245234373">Yenile</translation>
 <translation id="7188508872042490670">Cihaz üzerindeki site verileri</translation>
 <translation id="7201549776650881587">Bu işlem, <ph name="ORIGIN"/> altındaki tüm siteler veya ana ekranınızdaki uygulaması tarafından depolanan verilerin ve çerezlerin tamamını temizler</translation>
-<translation id="7213166370492037743">Sitelerin yerel ağımdaki cihazlara bağlanmasına izin verme</translation>
 <translation id="7219254577985949841">Site verileri silinsin mi?</translation>
 <translation id="723171743924126238">Resim seç</translation>
 <translation id="7243246278722455312">Yeni sekme sayfanızı özelleştirin alt sayfası</translation>
@@ -757,7 +753,6 @@ Gelişmiş Koruma, şu Brave ayarlarını kontrol eder:</translation>
 <translation id="8737426583868847403">Özel bir yakınlaştırma seviyesi kaydettiğiniz siteler burada görünür</translation>
 <translation id="8748714929822124637">Sitelerin yerel ağınızdaki diğer cihazlara erişmesine izin verme</translation>
 <translation id="8751914237388039244">Resim seçin</translation>
-<translation id="8775741625735357092">Ayarlar &gt; Görünüm bölümünden yer işareti çubuğunu etkinleştirebilirsiniz</translation>
 <translation id="8800034312320686233">Site çalışmıyor mu?</translation>
 <translation id="8801436777607969138">JavaScript'i belirli bir site için engelleyin.</translation>
 <translation id="2026315747406172223">Brave'un JavaScript ve WebAssembly motoru olan V8, site performansını iyileştirmek için kullanılır</translation>

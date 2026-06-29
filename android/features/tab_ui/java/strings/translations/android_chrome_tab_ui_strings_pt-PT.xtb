@@ -30,12 +30,14 @@
 <translation id="1828808367831369073"><ph name="TABS_COUNT_ONE"/> separador agrupado</translation>
 <translation id="1844381456014878100">Após 7 dias de inatividade</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> separador}other{<ph name="TABS_COUNT_MANY"/> separadores}}</translation>
+<translation id="1894429470045525403">{TAB_COUNT,plural, =1{Adicionar separador à Lista de leitura}other{Adicionar separadores à Lista de leitura}}</translation>
 <translation id="1909810060368225529">Aviso: as alterações a este grupo de separadores partilhado são visíveis para todos. Todos podem fazer alterações aos seus grupos de separadores partilhados</translation>
 <translation id="1925363809167540686">{TAB_COUNT,plural, =1{Fixar separador}other{Fixar separadores}}</translation>
 <translation id="1982637982196732906">Mova para a secção inativa</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> separador selecionado aos marcadores}other{Adicionar <ph name="TABS_COUNT_MANY"/> separadores selecionados aos marcadores}}</translation>
 <translation id="2055057176188061528">Selecione um grupo de separadores ou crie um novo grupo de separadores</translation>
 <translation id="2074527029802029717">Desbloquear o separador</translation>
+<translation id="2111670510994270194">Novo separador à direita</translation>
 <translation id="2118649612461486615">Informações da loja</translation>
 <translation id="2153899164605463849">{TAB_COUNT,plural, =1{Reativar o som do site}other{Reativar o som dos sites}}</translation>
 <translation id="2162620598375156287">Agora a <ph name="CURRENT_PRICE"/> em <ph name="SOURCE_WEBSITE"/></translation>
@@ -73,6 +75,8 @@
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/>: descida do preço de <ph name="PRICE_DROP"/></translation>
 <translation id="3078350928901129212">Ícone da cor do grupo de separadores <ph name="COLOR_NAME"/></translation>
 <translation id="311432875115153175">Lista de grupos de separadores fechada</translation>
+<translation id="3152596030350326139">Mostrar separadores na horizontal</translation>
+<translation id="31806439105337256">Mostrar separadores na vertical</translation>
 <translation id="3194464645767632461">classificação</translation>
 <translation id="3269930881809501915">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> separador ao grupo}other{Adicionar <ph name="TABS_COUNT_MANY"/> separadores ao grupo}}</translation>
 <translation id="3328308545011660196">Sugestão: <ph name="NUMBER_OF_TABS"/> separadores parecem estar relacionados. Quer agrupá-los?</translation>
