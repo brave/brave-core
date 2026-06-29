@@ -104,6 +104,7 @@ export default async function RunCommand(filePaths, options) {
     'resources',
   )
   const ffmpegDir = path.join(config.srcDir, 'third_party', 'ffmpeg')
+  const depotToolsDir = path.join(config.srcDir, 'third_party', 'depot_tools')
   const patchDir = path.join(config.braveCoreDir, 'patches')
   const v8PatchDir = path.join(patchDir, 'v8')
   const catapultPatchDir = path.join(patchDir, 'third_party', 'catapult')
@@ -120,6 +121,7 @@ export default async function RunCommand(filePaths, options) {
     'resources',
   )
   const ffmpegPatchDir = path.join(patchDir, 'third_party', 'ffmpeg')
+  const depotToolsPatchDir = path.join(patchDir, 'third_party', 'depot_tools')
 
   // Plaster only applies to sources in Chromium's `src` repo, so the filter is
   // passed to the chromium update only.
@@ -166,6 +168,8 @@ export default async function RunCommand(filePaths, options) {
     updatePatches(searchEngineDataDir, searchEngineDataPatchDir, filePaths),
     // third_party/ffmpeg
     updatePatches(ffmpegDir, ffmpegPatchDir, filePaths),
+    // third_party/depot_tools
+    updatePatches(depotToolsDir, depotToolsPatchDir, filePaths),
   ])
     .then((results) => {
       const outdatedPlasterPaths = results.flat().filter(Boolean)
