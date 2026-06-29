@@ -58,8 +58,8 @@ def assemble_body(preamble, sections):
 
 
 def normalize_section_title(title):
-    """Normalize an H1 title for case-insensitive, whitespace-tolerant match."""
-    return title.strip().lower()
+    """Normalize an H1 title; ignore case and all whitespace when matching."""
+    return re.sub(r'\s+', '', title.strip().lower())
 
 
 def merge_release_changelog_section(body, section_title, section_content,
@@ -95,8 +95,8 @@ TAG_FORMAT_HELP = ('Tag must be "vX.Y.Z" or "refs/tags/vX.Y.Z" '
 
 def normalize_tag(raw_tag):
     """Return (tag, version) from vX.Y.Z or refs/tags/vX.Y.Z."""
-    match = re.match(r'^(?:refs/tags/)?v(.+)$', raw_tag)
-    if not match or not match.group(1):
+    match = re.match(r'^(?:refs/tags/)?v(\d+\.\d+\.\d+)$', raw_tag)
+    if not match:
         logging.error('%s: %s', TAG_FORMAT_HELP, raw_tag)
         sys.exit(1)
 
@@ -104,9 +104,15 @@ def normalize_tag(raw_tag):
     return 'v' + version, version
 
 
+def version_header_pattern(version):
+    """Match version on an H2 header without digit/dot prefix overlap."""
+    return r'(?<![\d.])' + re.escape(version) + r'(?![\d.])'
+
+
 def extract_changelog_section(changelog_txt, version):
     """Return release notes body for version from a CHANGELOG.md excerpt."""
-    header_pattern = r'^## [^\n]*' + re.escape(version) + r'[^\n]*\n+'
+    header_pattern = (r'^## [^\n]*' + version_header_pattern(version) +
+                      r'[^\n]*\n+')
     rn_regex = re.compile(header_pattern + r'(.*?)(?:\n+^##\s|\Z)',
                           flags=re.DOTALL | re.MULTILINE)
     match = rn_regex.search(changelog_txt)
@@ -123,8 +129,8 @@ def main():
 
     The excerpt is inserted under an H1 heading (# <title>) from
     --section-title (default: "Release Notes"). Existing H1 sections with
-    the same title (case-insensitive, whitespace ignored) are replaced rather
-    than duplicated. Other release-body sections are left unchanged.
+    the same title (case-insensitive; all whitespace ignored) are replaced
+    rather than duplicated. Other release-body sections are left unchanged.
 
     """
 
