@@ -1,0 +1,42 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+"""Base class for Brave recipe modules.
+
+Deliberately tiny mirror of `recipe_engine.recipe_api.RecipeApi` from
+chrome-infra's recipes_py. Every recipe module exposes exactly one `RecipeApi`
+subclass (in its `api.py`). After constructing it, the engine attaches the
+module's resolved `DEPS` onto `self.m` -- the "module injection site" -- so a
+module reaches each dependency as `self.m.<dep_name>` (and itself as
+`self.m.<own_name>`).
+"""
+
+from __future__ import annotations
+
+
+class ModuleInjectionSite:
+    """Namespace holding a module's resolved DEPS (and the module itself).
+
+    The engine populates one per module instance: each entry in the module's
+    `DEPS` becomes an attribute named after that dependency module. Attributes
+    are set dynamically by the engine, so the class declares no members itself.
+    """
+
+    def __getattr__(self, name: str):
+        # Dependencies are injected by the engine; a missing one means it was
+        # not declared in DEPS. (Also tells static analysis that attributes are
+        # dynamic, so accessing an injected dep is not flagged as no-member.)
+        raise AttributeError(
+            f'{name!r} is not a declared dependency (add it to DEPS?)')
+
+
+class RecipeApi:
+    """Base class every recipe module's API subclasses."""
+
+    def __init__(self) -> None:
+        # Populated by the engine after construction with this module's DEPS.
+        self.m: ModuleInjectionSite = ModuleInjectionSite()
+
+    def initialize(self) -> None:
+        """Hook run once after DEPS are injected. Override for setup."""
