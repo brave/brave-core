@@ -21,7 +21,20 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
     return SeparatorInfo();
   }
 
+  // Upstream considers the side panel's visibility when calculating the
+  // separator. When the panel is shown, a shadow is drawn around the contents
+  // (including the infobar), which acts as a separator and hides the actual top
+  // separator. However, our UI still requires the top separator when the panel
+  // is open. To bypass the upstream logic, we temporarily simulate an invisible
+  // panel by setting `side_panel_width` to 0 during the calculation, and
+  // restore the original width immediately afterward.
+  const int cached_side_panel_width =
+      layout_data_->horizontal_layout.side_panel_width;
+  layout_data_->horizontal_layout.side_panel_width = 0;
+
   SeparatorInfo info = BrowserViewTabbedLayoutImpl::CalculateSeparatorInfo();
+
+  layout_data_->horizontal_layout.side_panel_width = cached_side_panel_width;
 
   // Brave manages its own rounded-corners shadow around the contents and side
   // panel via BraveContentsViewUtil. Suppress the upstream shadow overlay (and
