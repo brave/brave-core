@@ -20,6 +20,8 @@ import {
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
 import NytIcon from './content/assets/nyt-logo.svg'
+import { getLocale } from '$web-common/locale'
+import './content/strings'
 
 // ---------------------------------------------------------------------------
 // Shared modal primitives — mirrors email_aliases_modal.tsx naming
@@ -29,7 +31,7 @@ const ModalCol = styled(Col)`
   row-gap: ${spacing['2Xl']};
 `
 
-const ModalHeader = styled(Row)`
+const Header = styled(Row)`
   width: 100%;
   justify-content: space-between;
   align-items: center;
@@ -37,47 +39,39 @@ const ModalHeader = styled(Row)`
   flex-shrink: 0;
 `
 
-const ModalTitle = styled.h4`
+const Title = styled.h4`
   color: ${color.text.secondary};
   font: ${font.heading.h4};
-  font-weight: 600;
   line-height: ${typography.heading.h4.lineHeight};
-  margin: 0;
+  margin: ${spacing.none};
 `
 export const RightAlignedItem = styled.div`
   margin-left: auto;
   text-align: right;
 `
 
-const ModalDescription = styled.p`
-  margin: 0;
+const Description = styled.p`
+  margin: ${spacing.none};
   color: ${color.text.primary};
   font: ${font.default.regular};
-  size: ${typography.default.regular.fontSize};
-  line-height: ${typography.default.regular.lineHeight};
   letter-spacing: ${typography.letterSpacing.default};
-  list-spacing: ${typography.paragraphSpacing.default};
-  weight: ${typography.default.regular.fontWeight};
-  paragraph-spacing: ${typography.paragraphSpacing.default};
 `
 
-const ModalSectionCol = styled(Col)`
+const ContentCol = styled(Col)`
     row-gap: ${spacing['2Xl']};
 `
 
-const ModalLabel = styled.span`
+const Label = styled.span`
   font: ${font.small.regular};
   color: ${color.text.tertiary};
 `
 
-const ModalFooter = styled(Col)`
-  padding: ${spacing.m};
-  flex-shrink: 0;
-  gap: ${spacing.s};
+const GetStartedButton = styled(Button)`
+  align-self: flex-end;
 `
 
 // ---------------------------------------------------------------------------
-// Demo cards
+// Illustration cards
 // ---------------------------------------------------------------------------
 
 const IllustrationArea = styled(Col)`
@@ -93,15 +87,12 @@ const CardsRow = styled(Row)`
 `
 
 const SiteCard = styled(Col) <{ $faded?: boolean }>`
-  flex: 1;
   border-radius: ${radius.m};
-  border: 1px solid ${color.divider.subtle};
+  border: ${spacing.xs} solid ${color.divider.subtle};
   padding: ${spacing.s};
   gap: ${spacing.s};
   background: ${color.container.background};
   opacity: ${({ $faded }) => ($faded ? 0.45 : 1)};
-  min-width: 0;
-  overflow: hidden;
 `
 
 const SiteCardFocused = styled(SiteCard)`
@@ -207,28 +198,26 @@ const EmailAliasesPromo = ({
 }) => {
     return (
         <ModalCol>
-            <ModalHeader>
-                <ModalTitle>Email aliases</ModalTitle>
+            <Header>
+                <Title>{getLocale(S.EMAIL_ALIASES_PROMO_DLG_TITLE)}</Title>
                 <RightAlignedItem>
                     <Button fab kind='plain-faint' onClick={onClose}>
                         <Icon name='close' />
                     </Button>
                 </RightAlignedItem>
-            </ModalHeader>
+            </Header>
 
-            <ModalSectionCol>
-                <ModalDescription>
-                    Create unique, random addresses that forward to your Brave account
-                    email and can be deleted at any time. Keep your actual email address
-                    from being disclosed or used by advertisers.
-                </ModalDescription>
+            <ContentCol>
+                <Description>
+                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_TOP_DESCRIPTION)}
+                </Description>
 
                 <IllustrationArea>
                     <CardsRow>
                         {/* Left — faded Walmart card */}
                         <SiteCard $faded>
                             <SiteTitle style={{ color: '#0071ce' }}>Walmart ✦</SiteTitle>
-                            <ModalLabel>Register on Wal…</ModalLabel>
+                            <Label>Register on Wal…</Label>
                             <AliasChip>
                                 <AliasPart>lion.paw.</AliasPart>
                                 <AliasNumber>75</AliasNumber>
@@ -240,7 +229,7 @@ const EmailAliasesPromo = ({
                         <SiteCardFocused>
                             <img src={NytIcon} alt="The New York Times" />
                             <LabelChipGroup>
-                                <ModalLabel>Enter your email to continue</ModalLabel>
+                                <Label>{getLocale(S.EMAIL_ALIASES_PROMO_EMAIL_LABEL)}</Label>
                                 <AliasChipFocused>
                                     <AliasPart>cat.mane.</AliasPart>
                                     <AliasNumber>2947</AliasNumber>
@@ -254,7 +243,7 @@ const EmailAliasesPromo = ({
                             <SiteTitle style={{ color: color.text.secondary }}>
                                 store.com
                             </SiteTitle>
-                            <ModalLabel>&nbsp;</ModalLabel>
+                            <Label>&nbsp;</Label>
                             <AliasChip>
                                 <span>…ealias.com</span>
                             </AliasChip>
@@ -268,20 +257,19 @@ const EmailAliasesPromo = ({
 
                     <RealEmailRow>
                         <Icon name='email-shield' />
-                        youremail@example.com
+                        {getLocale(S.EMAIL_ALIASES_PROMO_YOUR_EMAIL)}
                     </RealEmailRow>
                 </IllustrationArea>
-                <ModalDescription>
-                    To use Email aliases, you need to be logged in to your Brave account.
-                    Get started by clicking the button below.
-                </ModalDescription>
-            </ModalSectionCol>
+                <Description>
+                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_BOTTOM_DESCRIPTION)}
+                </Description>
+            </ContentCol>
 
-            <ModalFooter>
-                <Button kind='filled' onClick={onGetStarted} style={ 'align-self: flex-end' }>
-                    Get started
-                </Button>
-            </ModalFooter>
+            <Col>
+                <GetStartedButton kind='filled' onClick={onGetStarted}>
+                    {getLocale(S.EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON)}
+                </GetStartedButton>
+            </Col>
         </ModalCol>
     )
 }

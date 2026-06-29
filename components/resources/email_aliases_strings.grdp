@@ -165,4 +165,26 @@
   <message name="IDS_EMAIL_ALIASES_ERROR_ALIAS_NOT_AVAILABLE">
     Error: Alias not available
   </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_DLG_TITLE" desc="Dialog title" formatter_data="webui=EmailAliases">
+    Email aliases
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_DLG_TOP_DESCRIPTION" desc="Description at the top of the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    Create unique, random addresses that forward to your Brave account
+    email and can be deleted at any time. Keep your actual email address
+    from being disclosed or used by advertisers.
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_DLG_BOTTOM_DESCRIPTION" desc="Description at the bottom of the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    To use Email aliases, you need to be logged in to your Brave account. Get
+    started by clicking the button below.
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON" desc="Label for the get started button in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    Get started
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_EMAIL_LABEL" desc="Label for the email input field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    Enter your email to continue
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Placeholder for the email input field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    youremail@example.com
+  </message>
+
 </grit-part>

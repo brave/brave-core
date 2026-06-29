@@ -10,6 +10,7 @@
 
 #include "base/check_is_test.h"
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/email_aliases/constants.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -39,10 +40,47 @@ namespace email_aliases {
 
 namespace {
 
+class EmailAliasesDialogDelegateBase : public ui::WebDialogDelegate,
+                                       public content::WebContentsObserver {
+ public:
+  ~EmailAliasesDialogDelegateBase() override = default;
+
+ protected:
+  explicit EmailAliasesDialogDelegateBase(EmailAliasesController& controller,
+                                          const GURL& dialog_content_url)
+      : email_aliases_controller_(controller) {
+    set_delete_on_close(false);
+    set_dialog_content_url(dialog_content_url);
+    set_show_dialog_title(false);
+    set_close_dialog_on_escape(true);
+    set_can_close(true);
+  }
+
+  // content::WebContentsObserver:
+  void PrimaryMainFrameRenderProcessGone(base::TerminationStatus) override {
+    Close();
+  }
+
+  void OnWebContentsLostFocus(
+      content::RenderWidgetHost* render_widget_host) override {
+    if (!g_autoclose_bubble_for_testing) {
+      Close();
+    } else {
+      CHECK_IS_TEST();
+    }
+  }
+
+  void Close() {
+    Observe(nullptr);
+    email_aliases_controller_->CloseBubble();
+  }
+
+  raw_ref<EmailAliasesController> email_aliases_controller_;
+};
+
 class EmailAliasesDialogDelegate
-    : public ui::WebDialogDelegate,
-      email_aliases::mojom::EmailAliasesPanelHandler,
-      content::WebContentsObserver {
+    : public EmailAliasesDialogDelegateBase,
+      email_aliases::mojom::EmailAliasesPanelHandler {
  public:
   ~EmailAliasesDialogDelegate() override = default;
 
@@ -54,33 +92,19 @@ class EmailAliasesDialogDelegate
     return ShowConstrainedWebDialogWithAutoResize(
         initiator->GetBrowserContext(),
         base::WrapUnique(new EmailAliasesDialogDelegate(
-            controller, GURL(kEmailAliasesPanelURL), field_render_frame_host_id, field_renderer_id)),
+            controller, field_render_frame_host_id,
+            field_renderer_id)),
         initiator, kDialogMinSize, kDialogMaxSize);
   }
-  static ConstrainedWebDialogDelegate* ShowPromo(
-      EmailAliasesController& controller,
-      content::WebContents* initiator) {
-    return ShowConstrainedWebDialogWithAutoResize(
-        initiator->GetBrowserContext(),
-        base::WrapUnique(new EmailAliasesDialogDelegate(
-            controller, GURL(kEmailAliasesPromoURL), content::GlobalRenderFrameHostId(), 0)),
-        initiator, kDialogMinSize, kDialogMaxSize);
-  }
+
  private:
   EmailAliasesDialogDelegate(
       EmailAliasesController& controller,
-      const GURL& dialog_content_url,
       content::GlobalRenderFrameHostId field_render_frame_host_id,
       uint64_t field_renderer_id)
-      : email_aliases_controller_(controller),
+      : EmailAliasesDialogDelegateBase(controller, GURL(kEmailAliasesPanelURL)),
         field_render_frame_host_id_(field_render_frame_host_id),
-        field_renderer_id_(field_renderer_id) {
-    set_delete_on_close(false);
-    set_dialog_content_url(dialog_content_url);
-    set_show_dialog_title(false);
-    set_close_dialog_on_escape(true);
-    set_can_close(true);
-  }
+        field_renderer_id_(field_renderer_id) {}
 
   // ui::WebDialogDelegate:
   void OnDialogShown(content::WebUI* webui) override {
@@ -122,28 +146,40 @@ class EmailAliasesDialogDelegate
 
   void OnCancelAliasCreation() override { Close(); }
 
-  // content::WebContentsObserver:
-  void PrimaryMainFrameRenderProcessGone(base::TerminationStatus) override {
-    Close();
-  }
-
-  void OnWebContentsLostFocus(
-      content::RenderWidgetHost* render_widget_host) override {
-    if (!g_autoclose_bubble_for_testing) {
-      Close();
-    } else {
-      CHECK_IS_TEST();
-    }
-  }
-
-  void Close() {
-    Observe(nullptr);
-    email_aliases_controller_->CloseBubble();
-  }
-
-  raw_ref<EmailAliasesController> email_aliases_controller_;
   content::GlobalRenderFrameHostId field_render_frame_host_id_;
   uint64_t field_renderer_id_ = 0;
+};
+
+class EmailAliasesPromoDialogDelegate
+    : public EmailAliasesDialogDelegateBase,
+      email_aliases::mojom::EmailAliasesPromoHandler {
+ public:
+  ~EmailAliasesPromoDialogDelegate() override = default;
+
+  static ConstrainedWebDialogDelegate* ShowPromo(
+      EmailAliasesController& controller,
+      content::WebContents* initiator) {
+    return ShowConstrainedWebDialogWithAutoResize(
+        initiator->GetBrowserContext(),
+        base::WrapUnique(new EmailAliasesPromoDialogDelegate(controller)),
+        initiator, kDialogMinSize, kDialogMaxSize);
+  }
+
+ private:
+  explicit EmailAliasesPromoDialogDelegate(EmailAliasesController& controller)
+      : EmailAliasesDialogDelegateBase(controller,
+                                       GURL(kEmailAliasesPromoURL)) {}
+
+  // email_aliases::mojom::EmailAliasesPromoHandler
+  void OnPromoClosed() override { Close(); }
+
+  // ui::WebDialogDelegate:
+  void OnDialogShown(content::WebUI* webui) override {
+    if (auto* ui = webui->GetController()->GetAs<EmailAliasesPromoUI>()) {
+      ui->SetHandlerDelegate(this);
+      Observe(webui->GetWebContents());
+    }
+  }
 };
 
 }  // namespace
@@ -185,7 +221,10 @@ void EmailAliasesController::ShowBubble(
   CloseBubble();
 
   bubble_ = EmailAliasesDialogDelegate::Show(
-      *this, initiator, render_frame?render_frame->GetGlobalId():content::GlobalRenderFrameHostId(), field_renderer_id);
+      *this, initiator,
+      render_frame ? render_frame->GetGlobalId()
+                   : content::GlobalRenderFrameHostId(),
+      field_renderer_id);
   bubble_->GetWebDialogDelegate()->RegisterOnDialogClosedCallback(
       base::BindOnce(&EmailAliasesController::OnBubbleClosed,
                      weak_factory_.GetWeakPtr()));
@@ -206,16 +245,18 @@ void EmailAliasesController::OpenSettingsPage(
   if (method) {
     email_aliases_service_->metrics().RecordSettingsPageNavigation(*method);
   }
-LOG(INFO) << "[EA] " << "\r\nStack:\r\n" << base::debug::StackTrace();
-LOG(INFO) << "[EA] EmailAliasesController::OpenSettingsPage: IsPromoShown: " << email_aliases_service_->IsPromoShown() << " initiator: " << (initiator ? "true" : "false");
+  LOG(INFO) << "[EA] " << "\r\nStack:\r\n" << base::debug::StackTrace();
+  LOG(INFO) << "[EA] EmailAliasesController::OpenSettingsPage: IsPromoShown: "
+            << email_aliases_service_->ShouldShowPromo()
+            << " initiator: " << (initiator ? "true" : "false");
 
-  if (!email_aliases_service_->IsPromoShown() && initiator) {
-    LOG(INFO) << "[EA] EmailAliasesController::OpenSettingsPage: Show promo dialog";
+  if (email_aliases_service_->ShouldShowPromo() && initiator) {
+    LOG(INFO)
+        << "[EA] EmailAliasesController::OpenSettingsPage: Show promo dialog";
     // TODO Here we have to initiate the showing of the promo dialog and as
     // callback parameter add there opening of the EmailAliases settings page
     ShowPromoBubble(initiator);
 
-    
   } else {
     ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                    GURL(kEmailAliasesSettingsURL));
@@ -242,7 +283,7 @@ void EmailAliasesController::OnBubbleClosed(const std::string&) {
 void EmailAliasesController::ShowPromoBubble(content::WebContents* initiator) {
   CloseBubble();
 
-  bubble_ = EmailAliasesDialogDelegate::ShowPromo(*this, initiator);
+  bubble_ = EmailAliasesPromoDialogDelegate::ShowPromo(*this, initiator);
   bubble_->GetWebDialogDelegate()->RegisterOnDialogClosedCallback(
       base::BindOnce(&EmailAliasesController::OnPromoBubbleClosed,
                      weak_factory_.GetWeakPtr()));
@@ -250,8 +291,9 @@ void EmailAliasesController::ShowPromoBubble(content::WebContents* initiator) {
 
 void EmailAliasesController::OnPromoBubbleClosed(const std::string&) {
   OnBubbleClosed({});
-  // TODO Then just set the promo shown prefs to true
-  //email_aliases_service_->SetPromoShown();
+  email_aliases_service_->StopShowPromo();
+  ShowSingletonTabOverwritingNTP(browser_view_->browser(),
+                                 GURL(kEmailAliasesSettingsURL));
 }
 
 }  // namespace email_aliases

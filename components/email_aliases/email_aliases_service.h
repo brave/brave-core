@@ -85,7 +85,8 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesMetrics& metrics() { return metrics_; }
 
-  bool IsPromoShown() const;
+  bool ShouldShowPromo() const;
+  void StopShowPromo();
 
  private:
   using TokenResult =
