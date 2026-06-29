@@ -7,6 +7,8 @@
 
 #include <cstddef>
 
+#include "base/functional/callback.h"
+#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/ntp_background_images/browser/features.h"
@@ -49,10 +51,27 @@ class ViewCounterModelTest : public testing::Test {
 
   sync_preferences::TestingPrefServiceSyncable* prefs() { return &prefs_; }
 
+  // Installs a deterministic background-image RNG on `model` that returns
+  // `next_background_image_index_` and records the range it is queried with.
+  // This lets tests assert the exact index the model selects rather than only
+  // checking that it stays within range.
+  void InstallDeterministicBackgroundRng(ViewCounterModel* model) {
+    model->set_rand_int_inclusive_callback_for_testing(
+        base::BindLambdaForTesting([this](int min, int max) {
+          last_rand_min_ = min;
+          last_rand_max_ = max;
+          return next_background_image_index_;
+        }));
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   base::test::ScopedFeatureList feature_list_;
+
+  int next_background_image_index_ = 0;
+  int last_rand_min_ = -1;
+  int last_rand_max_ = -1;
 };
 
 TEST_F(ViewCounterModelTest, NTPSponsoredImagesTest) {
@@ -194,12 +213,19 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
 
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
   model.set_total_image_count(kTestImageCount);
+  InstallDeterministicBackgroundRng(&model);
 
-  // Loading initial count times.
+  // Loading initial count times. Each page view selects a background image at
+  // random, so verify the model adopts exactly the index returned by the RNG
+  // and that the RNG is queried for the full image range.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
-    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    next_background_image_index_ = (i + 1) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
+    EXPECT_EQ(0, last_rand_min_);
+    EXPECT_EQ(static_cast<int>(kTestImageCount) - 1, last_rand_max_);
+    EXPECT_EQ(next_background_image_index_,
+              model.current_wallpaper_image_index());
   }
 
   // Skip next sponsored image
@@ -207,11 +233,10 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesTest) {
 
   // Loading regular-count times.
   for (int i = 0; i < features::kCountToBrandedWallpaper.Get() - 1; ++i) {
-    const int expected_wallpaper_index =
-        (i + (features::kInitialCountToBrandedWallpaper.Get() - 1)) %
-        model.total_image_count_;
-    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    next_background_image_index_ = (i + 2) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
+    EXPECT_EQ(next_background_image_index_,
+              model.current_wallpaper_image_index());
   }
 
   // It's time for sponsored image.
@@ -231,6 +256,7 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
 
   model.set_total_image_count(kTestImageCount);
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
+  InstallDeterministicBackgroundRng(&model);
 
   // Check branded wallpaper index is not modified when only background images
   // are used.
@@ -238,12 +264,15 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithSIDisabledTest) {
   const auto initial_branded_wallpaper_index =
       model.GetCurrentBrandedImageIndex();
 
-  int expected_wallpaper_index;
   constexpr int kTestPageViewCount = 30;
   for (int i = 0; i < kTestPageViewCount; ++i) {
-    expected_wallpaper_index = i % model.total_image_count_;
-    EXPECT_EQ(expected_wallpaper_index, model.current_wallpaper_image_index());
+    next_background_image_index_ = i % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
+
+    // Each page view selects a background image at random, so verify the model
+    // adopts exactly the index returned by the RNG.
+    EXPECT_EQ(next_background_image_index_,
+              model.current_wallpaper_image_index());
 
     // Check branded wallpaper is not changed.
     EXPECT_EQ(initial_branded_wallpaper_index,
@@ -269,12 +298,16 @@ TEST_F(ViewCounterModelTest, NTPBackgroundImagesWithEmptyCampaignTest) {
   model.set_total_image_count(kTestImageCount);
   model.set_show_branded_wallpaper(true);
   model.count_to_branded_wallpaper_ = 0;
+  InstallDeterministicBackgroundRng(&model);
 
   constexpr int kTestPageViewCount = 30;
   for (int i = 0; i < kTestPageViewCount; ++i) {
-    EXPECT_EQ(i % model.total_image_count_,
-              model.current_wallpaper_image_index());
+    next_background_image_index_ = i % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
+    // Each page view selects a background image at random, so verify the model
+    // adopts exactly the index returned by the RNG.
+    EXPECT_EQ(next_background_image_index_,
+              model.current_wallpaper_image_index());
   }
 }
 
@@ -283,16 +316,18 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
 
   model.SetCampaignsTotalBrandedImageCount(kTestCampaignsTotalImageCount);
   model.set_total_image_count(kTestImageCount);
+  InstallDeterministicBackgroundRng(&model);
 
-  // Loading initial count model.
+  // Loading initial count model. Each page view selects a background image at
+  // random, so verify the model adopts exactly the index returned by the RNG.
   for (int i = 0; i < features::kInitialCountToBrandedWallpaper.Get() - 1;
        ++i) {
-    EXPECT_EQ(i, model.current_wallpaper_image_index());
+    next_background_image_index_ = (i + 1) % static_cast<int>(kTestImageCount);
     model.RegisterPageView();
+    EXPECT_EQ(next_background_image_index_,
+              model.current_wallpaper_image_index());
   }
   EXPECT_TRUE(model.ShouldShowSponsoredImages());
-  const int initial_wallpaper_image_index =
-      model.current_wallpaper_image_index();
 
   // Simulate that sponsored image ad was frequency capped by ads service.
   // If |count_to_branded_wallpaper_| is zero when RegisterPageView() is called,
@@ -301,20 +336,24 @@ TEST_F(ViewCounterModelTest, NTPFailedToLoadSponsoredImagesTest) {
   // background image explicitely when background image is shown as ads was
   // frequency capped. Client(ViewCounterService) calls this increase method
   // when it's capped.
+  next_background_image_index_ = 2;
   model.RotateBackgroundWallpaperImageIndex();
+
+  // The explicit rotation selects the RNG-provided index over the full range.
+  EXPECT_EQ(0, last_rand_min_);
+  EXPECT_EQ(static_cast<int>(kTestImageCount) - 1, last_rand_max_);
+  EXPECT_EQ(2, model.current_wallpaper_image_index());
+
+  // The next page view shows the sponsored image, so the background index is
+  // left unchanged.
   model.RegisterPageView();
+  EXPECT_EQ(2, model.current_wallpaper_image_index());
 
-  // Check background index is increased properly.
-  int expected_image_index =
-      (initial_wallpaper_image_index + 1) % model.total_image_count_;
-  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
-
-  // Process register page view for sponsored image.
+  // Process register page view for sponsored image. The background image is
+  // selected at random again.
+  next_background_image_index_ = 1;
   model.RegisterPageView();
-
-  expected_image_index =
-      (initial_wallpaper_image_index + 2) % model.total_image_count_;
-  EXPECT_EQ(expected_image_index, model.current_wallpaper_image_index());
+  EXPECT_EQ(1, model.current_wallpaper_image_index());
 }
 
 }  // namespace ntp_background_images
