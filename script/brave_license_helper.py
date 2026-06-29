@@ -270,12 +270,6 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
             "License": "Apache-2.0",
             "License File": ["/brave/third_party/reclient_configs/src/LICENSE"],
         },
-        os.path.join('brave', 'vendor', 'python-patch'): {
-            "Name": "Python Patch",
-            "URL": "https://github.com/brave/python-patch",
-            "License": "MIT",
-            "License File": ["/brave/vendor/python-patch/doc/LICENSE"],
-        },
         os.path.join('brave', 'vendor', 'sparkle'): {
             "Name": "Sparkle",
             "URL": "https://github.com/brave/Sparkle",
