@@ -15,6 +15,7 @@ namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kLocationProviderManager, base::FEATURE_ENABLED_BY_DEFAULT},
+    {kSensorsAllowAskBlockPermissionModel, base::FEATURE_ENABLED_BY_DEFAULT},
 }});
 
 const base::FeatureParam<device::mojom::LocationProviderManagerMode>

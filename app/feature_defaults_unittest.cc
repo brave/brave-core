@@ -299,6 +299,7 @@ TEST(FeatureDefaultsTest, EnabledFeatures) {
       &features::kDesktopPWAsTabStripSettings,
 #if !BUILDFLAG(IS_ANDROID)
       &features::kLocationProviderManager,
+      &features::kSensorsAllowAskBlockPermissionModel,
 #endif
       &history::kHistoryMoreSearchResults,
       &media::kEnableTabMuting,
