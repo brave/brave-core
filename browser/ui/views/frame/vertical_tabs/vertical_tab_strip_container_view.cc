@@ -11,8 +11,8 @@
 
 #include "base/check.h"
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/fill_layout.h"
@@ -97,7 +97,8 @@ void BraveVerticalTabStripContainerView::UpdateVerticalTabBounds() {
   }
 
   const bool on_right =
-      tabs::utils::IsVerticalTabOnRight(browser_view_->browser());
+      VerticalTabController::FromBrowser(browser_view_->browser())
+          ->IsVerticalTabOnRight();
   if (on_right) {
     strip_bounds.set_x(host_bounds.right() - strip_bounds.width());
   }

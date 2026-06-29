@@ -4,10 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_root_view.h"
@@ -98,7 +98,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -133,7 +134,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* tab_strip_model = browser()->tab_strip_model();
   EXPECT_EQ(tab_strip_model->count(), 1);
@@ -177,7 +179,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_ContextMenuInUnobscuredRegion) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* region_view =
       vertical_tab_strip_container_view()->vertical_tab_strip_region_view();
@@ -206,7 +209,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                        MAYBE_CloseBrowserWithContextMenuOpen) {
   ToggleVerticalTabStrip();
 
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* region_view =
       vertical_tab_strip_container_view()->vertical_tab_strip_region_view();
