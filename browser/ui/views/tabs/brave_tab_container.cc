@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/views/tabs/tab_container.h"
 #include "chrome/browser/ui/views/tabs/tab_container_impl.h"
 #include "chrome/browser/ui/views/tabs/tab_group_highlight.h"
+#include "chrome/browser/ui/views/tabs/tab_group_views.h"
 #include "chrome/browser/ui/views/tabs/tab_strip_layout_helper.h"
 #include "chrome/grit/theme_resources.h"
 #include "components/prefs/pref_service.h"
@@ -1455,6 +1456,12 @@ base::CallbackListSubscription
 BraveTabContainer::RegisterHorizontalScrollOffsetChangedCallback(
     base::RepeatingClosure callback) {
   return horizontal_scroll_offset_changed_callbacks_.Add(std::move(callback));
+}
+
+void BraveTabContainer::RefreshGroupHeaderVisuals() {
+  for (auto& [_, group_views] : group_views_) {
+    group_views->OnGroupVisualsChanged();
+  }
 }
 
 std::pair<TabSlotView*, TabSlotView*>
