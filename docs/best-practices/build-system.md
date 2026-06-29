@@ -587,11 +587,23 @@ source_set("unit_tests") {
 
 <a id="BS-034"></a>
 
-## ✅ Place Includes Inside BUILDFLAG Guards When Only Used There
+## ✅ Guard an Include Only When the Header Is Conditionally Available
 
-**When an `#include` is only used inside a `#if BUILDFLAG(...)` block, the
-include must also be inside that guard.** An unconditional include for a
-conditionally-used header breaks builds when the feature is disabled.
+**Move an `#include` inside a `#if BUILDFLAG(...)` block only when the header
+itself is conditionally available** — i.e. its target/sources are gated behind
+the same buildflag in GN, or the header sits behind its own buildflag. In that
+case an unconditional include breaks the build when the feature is disabled,
+because the header does not exist in that configuration.
+
+**Do NOT guard an include just because it is only _used_ inside a
+`#if BUILDFLAG(...)` block.** Most Chromium headers (e.g. `web_contents.h`,
+`tab_interface.h`, `history_service.h`) are always built regardless of any
+feature flag. An unconditional include of an always-available header does not
+break a disabled-feature build — it merely pulls in a header you don't use under
+that config, which is harmless. Wrapping such includes in guards adds churn with
+no benefit. Before suggesting a guard, confirm the header is actually gated in
+GN (check the relevant `BUILD.gn` `sources` lists / buildflag conditions); if it
+is always built, leave the include unconditional.
 
 **IMPORTANT: Only apply this rule when the BUILDFLAG actually exists.** Before
 suggesting that code be wrapped in a `#if BUILDFLAG(...)` guard, verify the
@@ -601,17 +613,28 @@ a feature, do not invent one. Instead, check if the feature uses
 `base::FeatureList` runtime checks or has no compile-time guard at all.
 
 ```cpp
-// ❌ WRONG - unconditional include for conditionally-used header
+// ❌ WRONG - unconditional include of a GN-gated header
+// extension_web_ui.h is only built when ENABLE_EXTENSIONS is set, so this
+// breaks the build when extensions are disabled.
 #include "chrome/browser/extensions/extension_web_ui.h"
 // ...
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   IsChromeURLOverridden(...);  // uses extension_web_ui.h
 #endif
 
-// ✅ CORRECT - include inside the same guard
+// ✅ CORRECT - include inside the same guard, because the header is GN-gated
 #if BUILDFLAG(ENABLE_EXTENSIONS)
 #include "chrome/browser/extensions/extension_web_ui.h"
   IsChromeURLOverridden(...);
+#endif
+
+// ✅ ALSO CORRECT - leave always-built headers unconditional even when only
+// used inside the guard. content/public/browser/web_contents.h is always
+// available, so guarding its include is unnecessary.
+#include "content/public/browser/web_contents.h"
+// ...
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  SearchTabsByContent(...);  // uses web_contents.h
 #endif
 ```
 
