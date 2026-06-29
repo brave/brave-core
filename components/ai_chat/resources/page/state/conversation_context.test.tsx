@@ -369,3 +369,92 @@ describe('useProvideConversationContext default tab attachment', () => {
     expect(associateTab).toHaveBeenCalledWith(tab(20), CONVERSATION_UUID)
   })
 })
+
+describe('useProvideConversationContext focus restoration', () => {
+  let rafSpy: jest.SpyInstance
+
+  beforeEach(() => {
+    clearAllDataForTesting()
+    // focusInput defers with requestAnimationFrame; run it synchronously.
+    rafSpy = jest
+      .spyOn(window, 'requestAnimationFrame')
+      .mockImplementation((cb: FrameRequestCallback) => {
+        cb(performance.now())
+        return 0
+      })
+  })
+
+  let input: HTMLElement
+
+  afterEach(() => {
+    rafSpy.mockRestore()
+    input?.remove()
+  })
+
+  // Renders the hook and adds a stub composer element (matched by the
+  // [data-editor] selector focusInput uses) whose focus() we can assert
+  // against.
+  const setUpWithInput = async () => {
+    const rendered = renderConversation()
+    await act(async () => {
+      await rendered.result.current.conversation.api.getState.fetch()
+    })
+    input = document.createElement('div')
+    input.setAttribute('data-editor', '')
+    document.body.appendChild(input)
+    const focus = jest.spyOn(input, 'focus')
+    return { rendered, focus }
+  }
+
+  it('returns focus to the composer after removing associated content', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.disassociateContent(stagedContent(1))
+    })
+    expect(focus).toHaveBeenCalled()
+  })
+
+  it('returns focus to the composer after removing a file', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.removeFile(0)
+    })
+    expect(focus).toHaveBeenCalled()
+  })
+
+  it('returns focus to the composer after selecting a model', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.setCurrentModel({
+        key: 'test',
+      } as Mojom.Model)
+    })
+    expect(focus).toHaveBeenCalled()
+  })
+
+  it('returns focus to the composer after clearing the selected action', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.resetSelectedActionType()
+    })
+    expect(focus).toHaveBeenCalled()
+  })
+
+  it('returns focus to the composer when the attachments picker closes', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      rendered.result.current.conversation.setAttachmentsDialog(null)
+    })
+    expect(focus).toHaveBeenCalled()
+  })
+
+  it('does not steal focus when opening the attachments picker', async () => {
+    const { rendered, focus } = await setUpWithInput()
+    act(() => {
+      // Bookmarks never auto-close (unlike 'tabs' when no tabs remain), so this
+      // exercises a picker staying open.
+      rendered.result.current.conversation.setAttachmentsDialog('bookmarks')
+    })
+    expect(focus).not.toHaveBeenCalled()
+  })
+})

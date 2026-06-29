@@ -27,6 +27,7 @@ type Props = Pick<
   | 'setAttachmentsDialog'
   | 'associateDefaultContent'
   | 'unassociatedTabs'
+  | 'focusInput'
 >
   & Pick<AIChatContext, 'isMobile'> & {
     conversationStarted: boolean
@@ -79,6 +80,7 @@ export default function AttachmentButtonMenu(props: Props) {
             if (files.length > 0) {
               props.attachFiles(files)
             }
+            props.focusInput()
           }}
         >
           <div className={styles.buttonContent}>
@@ -92,7 +94,10 @@ export default function AttachmentButtonMenu(props: Props) {
         {hasAssociatedContent && (
           <leo-menu-item
             data-testid='screenshot'
-            onClick={() => props.getScreenshots()}
+            onClick={() => {
+              props.getScreenshots()
+              props.focusInput()
+            }}
           >
             <div className={styles.buttonContent}>
               <Icon
@@ -113,6 +118,7 @@ export default function AttachmentButtonMenu(props: Props) {
               if (files.length > 0) {
                 props.attachFiles(files)
               }
+              props.focusInput()
             }}
           >
             <div className={styles.buttonContent}>
@@ -125,7 +131,12 @@ export default function AttachmentButtonMenu(props: Props) {
           </leo-menu-item>
         )}
         {props.associateDefaultContent && (
-          <leo-menu-item onClick={() => props.associateDefaultContent?.()}>
+          <leo-menu-item
+            onClick={() => {
+              props.associateDefaultContent?.()
+              props.focusInput()
+            }}
+          >
             <div className={styles.buttonContent}>
               <Icon
                 className={styles.buttonIcon}

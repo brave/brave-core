@@ -77,6 +77,19 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     Mojom.UploadedFile[]
   >([])
 
+  // Returns focus to the message composer after interactions elsewhere
+  // (removing attachments, selecting a model or tab, etc.) that would otherwise
+  // drop focus to the document, forcing the user to click the input again
+  // before typing.
+  const focusInput = React.useCallback(() => {
+    // Defer until the interaction that triggered this (e.g. a closing Leo menu
+    // or dialog relinquishing focus) has settled, otherwise focus bounces back
+    // to <body>.
+    requestAnimationFrame(() =>
+      document.querySelector<HTMLElement>('[data-editor]')?.focus(),
+    )
+  }, [])
+
   // Drag state handlers
   const [isDragActive, setDragActive] = React.useState(false)
   const [isDragOver, setDragOver] = React.useState(false)
@@ -107,12 +120,15 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
   }, [tabsData, conversationState.associatedContent])
 
-  // If there are no unassociated tabs, hide the attachments picker.
+  // If there are no unassociated tabs, hide the attachments picker. This
+  // happens when the last available tab is attached from the picker, so return
+  // focus to the composer just as closing it manually would.
   React.useEffect(() => {
     if (unassociatedTabs.length === 0 && attachmentsDialog === 'tabs') {
       setAttachmentsDialog(null)
+      focusInput()
     }
-  }, [unassociatedTabs, attachmentsDialog])
+  }, [unassociatedTabs, attachmentsDialog, focusInput])
 
   const [
     hasDismissedLongConversationInfo,
@@ -212,6 +228,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
 
   const resetSelectedActionType = () => {
     setSelectedActionType(undefined)
+    focusInput()
   }
 
   React.useEffect(() => {
@@ -313,6 +330,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     if (matchingRef !== -1) {
       setInputText(inputText.filter((c, i) => i !== matchingRef))
     }
+
+    // Removing an attachment chip shouldn't steal focus from the composer.
+    focusInput()
   }
 
   const setToolsAttached = (
@@ -549,6 +569,9 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       updatedImages.splice(index, 1)
       setPendingMessageFiles(updatedImages)
     }
+
+    // Removing a file chip shouldn't steal focus from the composer.
+    focusInput()
   }
 
   // Since we only allow one skill to be selected at a time if the user clears the input text,
@@ -673,7 +696,16 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     userDefaultModel,
 
     attachmentsDialog,
-    setAttachmentsDialog,
+    setAttachmentsDialog: (dialog: 'tabs' | 'bookmarks' | 'history' | null) => {
+      setAttachmentsDialog(dialog)
+      // When the picker closes (including after selecting a tab) return focus
+      // to the composer so the user can keep typing without an extra click.
+      if (dialog === null) {
+        focusInput()
+      }
+    },
+
+    focusInput,
 
     inputText,
 
@@ -725,8 +757,11 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     handleResetError,
     handleStopGenerating,
     // Experimentally don't cache model key locally, browser should notify of model change quickly
-    setCurrentModel: (model: Mojom.Model) =>
-      api.conversationHandler.changeModel(model.key),
+    setCurrentModel: (model: Mojom.Model) => {
+      api.conversationHandler.changeModel(model.key)
+      // Selecting a model from the menu shouldn't leave the composer unfocused.
+      focusInput()
+    },
 
     resetSelectedActionType,
     handleActionTypeClick,

@@ -25,6 +25,7 @@ const defaultProps = {
   unassociatedTabs: [],
   isMobile: false,
   conversationStarted: false,
+  focusInput: jest.fn(),
 }
 
 // Mirrors the accept constant in the component — must match its preprocessor block exactly.
