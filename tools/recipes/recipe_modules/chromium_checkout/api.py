@@ -6,6 +6,8 @@
 
 from __future__ import annotations
 
+import ast
+from collections.abc import Sequence
 import logging
 import os
 from pathlib import Path
@@ -26,6 +28,26 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
     '2.on.aws/windows-hermetic-toolchain/')
 
 
+def _read_gclient_config(gclient_file: Path) -> dict[str, object]:
+    """Return the top-level literal assignments in a `.gclient` file.
+
+    A `.gclient` is a Python file of plain assignments (`solutions = [...]`,
+    optionally `target_os`, `cache_dir`, ...). Each right-hand side is a literal,
+    so they are read with `ast.literal_eval` rather than executing the file.
+    Assignments whose value is not a literal are skipped.
+    """
+    tree = ast.parse(gclient_file.read_bytes().decode('utf-8'))
+    config: dict[str, object] = {}
+    for node in tree.body:
+        if (isinstance(node, ast.Assign) and len(node.targets) == 1
+                and isinstance(node.targets[0], ast.Name)):
+            try:
+                config[node.targets[0].id] = ast.literal_eval(node.value)
+            except ValueError:
+                continue
+    return config
+
+
 class ChromiumCheckoutApi(RecipeApi):
     """Clones, syncs, and validates a Chromium `src/` checkout.
 
@@ -35,7 +57,8 @@ class ChromiumCheckoutApi(RecipeApi):
 
     def ensure_checkout(self,
                         chromium_src: str | Path,
-                        ref: str | None = None) -> Path:
+                        ref: str | None = None,
+                        target_os: Sequence[str] | None = None) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
         Mirrors the checkout phase of `ToolchainBuilder.run`: validate the git
@@ -45,6 +68,10 @@ class ChromiumCheckoutApi(RecipeApi):
         Args:
             chromium_src: Path to the Chromium `src/` directory.
             ref: Optional git ref (branch, tag, or commit) to check out.
+            target_os: Optional gclient `target_os` list to configure before the
+                sync, so dependencies for those platforms are fetched too (e.g.
+                `('win', 'mac', 'linux', 'android')`). Set when *ref* is given,
+                since the sync that applies it runs as part of the ref checkout.
 
         Returns:
             The resolved absolute `src/` path.
@@ -65,9 +92,54 @@ class ChromiumCheckoutApi(RecipeApi):
                          chromium_src)
             self.clone(chromium_src)
 
+        # Point depot_tools at the hermetic Windows toolchain before any sync if
+        # Windows deps are in play -- host is Windows, or 'win' is a target_os.
+        self.ensure_win_toolchain(target_os)
+
+        # Configure target platforms before the sync, so `checkout_ref`'s
+        # `gclient sync` pulls their deps in one pass.
+        if target_os:
+            self.set_target_os(chromium_src, target_os)
+
         if ref:
             self.checkout_ref(chromium_src, ref)
         return chromium_src
+
+    def set_target_os(self, chromium_src: str | Path,
+                      target_os: Sequence[str]) -> None:
+        """Configure gclient `target_os` so cross-platform deps are synced.
+
+        Args:
+            chromium_src: Path to the Chromium `src/` directory.
+            target_os: gclient OS names to sync, e.g. `('win', 'mac', 'linux')`.
+
+        Raises:
+            RuntimeError: If `.gclient` is missing or declares no solutions.
+        """
+        chromium_src = Path(chromium_src).expanduser().resolve()
+        parent = chromium_src.parent
+        gclient_file = parent / '.gclient'
+        if not gclient_file.is_file():
+            raise RuntimeError(
+                f'.gclient not found at {gclient_file}; the checkout must be '
+                'cloned before target_os can be set')
+
+        config = _read_gclient_config(gclient_file)
+        if 'solutions' not in config:
+            raise RuntimeError(f'no solutions found in {gclient_file}')
+
+        # Preserve every existing assignment (solutions, custom vars, cache_dir,
+        # ...) and just (re)set target_os; emit as a spec gclient can exec.
+        config['target_os'] = list(target_os)
+        spec = '\n'.join(f'{key} = {value!r}' for key, value in config.items())
+
+        # `gclient config` refuses to overwrite an existing .gclient, so remove
+        # it first; the spec we just built carries its contents forward.
+        gclient_file.unlink()
+        self.m.step('gclient config', ['gclient', 'config', '--spec', spec],
+                    cwd=parent)
+        logging.info('Regenerated %s with target_os=%s', gclient_file,
+                     list(target_os))
 
     def validate_git_cache(self) -> str:
         """Require `GIT_CACHE_PATH` to be set and point to a real directory.
@@ -160,15 +232,33 @@ class ChromiumCheckoutApi(RecipeApi):
         self.m.step('fetch chromium', ['fetch', '--nohooks', 'chromium'],
                     cwd=chromium_src.parent)
 
+    def ensure_win_toolchain(self,
+                             target_os: Sequence[str] | None = None) -> None:
+        """Point depot_tools at the hermetic Windows toolchain when needed.
+
+        Windows dependencies are synced whenever the host is Windows or `win` is
+        among *target_os*; in either case gclient needs the hermetic toolchain
+        URL so it can build without a local Visual Studio install. No-op when no
+        Windows deps are in play, when the caller opted out via
+        `DEPOT_TOOLS_WIN_TOOLCHAIN`, or when the URL is already set.
+
+        Args:
+            target_os: gclient target OS list for the sync, if any.
+        """
+        targeting_windows = (sys.platform == 'win32'
+                             or (target_os is not None and 'win' in target_os))
+        if not targeting_windows or 'DEPOT_TOOLS_WIN_TOOLCHAIN' in os.environ:
+            return
+        os.environ.setdefault('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
+                              WIN_HERMETIC_TOOLCHAIN_BASE_URL)
+
     def checkout_ref(self, chromium_src: str | Path, ref: str) -> None:
         """Check out *ref* in *chromium_src* and resync dependencies."""
         chromium_src = Path(chromium_src)
         logging.info('Checking out Chromium ref %s', ref)
-        if (sys.platform == 'win32'
-                and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in os.environ):
-            # Build hermetically without a local VS install.
-            os.environ['DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL'] = (
-                WIN_HERMETIC_TOOLCHAIN_BASE_URL)
+        # Cover direct callers: ensure the Windows toolchain URL is set when the
+        # host is Windows (ensure_checkout also handles the target_os case).
+        self.ensure_win_toolchain()
 
         if re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref):
             # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
@@ -189,4 +279,19 @@ class ChromiumCheckoutApi(RecipeApi):
                     ['git', 'checkout', '--force', 'FETCH_HEAD'],
                     cwd=chromium_src)
         self.m.step('gclient sync', ['gclient', 'sync', '--force', '-D'],
+                    cwd=chromium_src)
+
+    def fetch_tags(self, chromium_src: str | Path) -> None:
+        """Fetch every tag from origin into the *chromium_src* checkout.
+
+        The checkout is backed by the shared git cache, so fetching tags here
+        also lands them in the cache -- which is what the mirror step later reads
+        and publishes to Gerrit. `gclient sync` fetches with `--no-tags`, so tags
+        would otherwise never make it into the cache.
+
+        Args:
+            chromium_src: Path to the Chromium `src/` directory.
+        """
+        chromium_src = Path(chromium_src).expanduser().resolve()
+        self.m.step('fetch tags', ['git', 'fetch', '--tags', 'origin'],
                     cwd=chromium_src)
