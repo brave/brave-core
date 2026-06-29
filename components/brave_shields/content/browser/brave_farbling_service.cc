@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/pref_registry/pref_registry_syncable.h"
 #include "url/gurl.h"
 
@@ -17,6 +18,11 @@ BraveFarblingService::BraveFarblingService(
     HostContentSettingsMap* host_content_settings_map)
     : host_content_settings_map_(host_content_settings_map) {
   DCHECK(host_content_settings_map_);
+
+  // Clear all per-site farbling tokens on startup so new tokens are
+  // generated each browser session.
+  host_content_settings_map_->ClearSettingsForOneType(
+      ContentSettingsType::BRAVE_SHIELDS_METADATA);
 }
 
 BraveFarblingService::~BraveFarblingService() = default;
