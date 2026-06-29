@@ -780,7 +780,9 @@ void BraveToolbarView::UpdateComboButtonState() {
     return;
   }
 
-  combo_button_->SetVisible(tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+  combo_button_->SetVisible(browser_->GetFeatures()
+                                .vertical_tab_controller()
+                                ->ShouldShowBraveVerticalTabs());
 }
 
 BEGIN_METADATA(BraveToolbarView)

@@ -1093,7 +1093,10 @@ void BraveBrowserView::UpdateTabSearchBubbleHost() {
 
   // As we use toolbar's combo button in vertical tab mode, host should be
   // re-initialzed with it.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (browser()
+          ->GetFeatures()
+          .vertical_tab_controller()
+          ->ShouldShowBraveVerticalTabs()) {
     auto* toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar());
     auto* combo_button = toolbar_view->combo_button();
     tab_search_bubble_host_ = std::make_unique<TabSearchBubbleHost>(
