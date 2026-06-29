@@ -140,6 +140,7 @@ source_set("tab_helper") {
     "//brave/components/brave_wallet/common/buildflags",
     "//chrome/browser/content_settings:content_settings_factory",
     "//components/permissions",
+    "//components/tabs:public",
     "//components/user_prefs",
     "//content/public/browser",
   ]
@@ -147,10 +148,7 @@ source_set("tab_helper") {
   public_deps = [ "//brave/components/brave_wallet/common:mojom" ]
 
   if (!is_android) {
-    deps += [
-      "//brave/browser/ui/brave_wallet",
-      "//components/tabs:public",
-    ]
+    deps += [ "//brave/browser/ui/brave_wallet" ]
   }
 }
 
