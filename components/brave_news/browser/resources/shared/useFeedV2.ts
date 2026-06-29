@@ -104,7 +104,7 @@ const maybeLoadFeedView = (feed?: FeedV2): FeedView => {
   if (feed) {
     return feedTypeToFeedView(feed.type)
   }
-  return localStorage.getItem(FEED_TYPE_KEY) as FeedView ?? 'all'
+  return localStorage.getItem(FEED_TYPE_KEY) as FeedView ?? 'following'
 }
 
 const fetchFeed = (feedView: FeedView) => {

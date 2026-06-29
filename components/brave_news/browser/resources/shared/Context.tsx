@@ -53,7 +53,7 @@ interface BraveNewsContext {
 
 export const BraveNewsContext = React.createContext<BraveNewsContext>({
   locale: '',
-  feedView: 'all',
+  feedView: 'following',
   feedV2: undefined,
   feedV2UpdatesAvailable: false,
   refreshFeedV2: () => { },
