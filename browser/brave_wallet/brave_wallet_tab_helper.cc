@@ -31,6 +31,7 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
 #include "brave/browser/ui/brave_wallet/wallet_side_panel_utils.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 namespace brave_wallet {
@@ -42,6 +43,11 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
     content::GlobalRenderFrameHostId host_id) {
   return std::make_unique<BraveWalletProviderDelegateImpl>(web_contents,
                                                            host_id);
+}
+
+bool IsWebContentsActive(content::WebContents& web_contents) {
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(&web_contents);
+  return tab && tab->IsActivated();
 }
 
 }  // namespace

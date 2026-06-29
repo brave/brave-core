@@ -16,12 +16,9 @@ namespace brave_wallet {
 
 // Returns true if the wallet side panel is currently visible in the browser
 // window that owns |web_contents| and successfully navigates it to |url|.
+// |url| is a chrome://wallet-panel/* URL for the active dapp request screen.
 bool TryNavigateWalletSidePanel(content::WebContents* web_contents,
                                 const GURL& url);
-
-// Returns true if |web_contents| is the active tab in the most recently
-// focused browser window.
-bool IsWebContentsActive(content::WebContents& web_contents);
 
 }  // namespace brave_wallet
 

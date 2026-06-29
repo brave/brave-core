@@ -147,7 +147,10 @@ source_set("tab_helper") {
   public_deps = [ "//brave/components/brave_wallet/common:mojom" ]
 
   if (!is_android) {
-    deps += [ "//brave/browser/ui/brave_wallet" ]
+    deps += [
+      "//brave/browser/ui/brave_wallet",
+      "//components/tabs:public",
+    ]
   }
 }
 

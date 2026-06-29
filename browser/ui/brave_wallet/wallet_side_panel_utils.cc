@@ -5,30 +5,21 @@
 
 #include "brave/browser/ui/brave_wallet/wallet_side_panel_utils.h"
 
+#include "base/check.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/tabs/public/tab_interface.h"
 #include "url/gurl.h"
 
 namespace brave_wallet {
 
 bool TryNavigateWalletSidePanel(content::WebContents* web_contents,
                                 const GURL& url) {
-  for (auto* bwi : GetAllBrowserWindowInterfaces()) {
-    if (bwi->GetTabStripModel()->GetIndexOfWebContents(web_contents) !=
-        TabStripModel::kNoTab) {
-      return bwi->GetFeatures().NavigateWalletSidePanelIfActive(url);
-    }
-  }
-  return false;
-}
-
-bool IsWebContentsActive(content::WebContents& web_contents) {
-  if (auto* bwi = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    return bwi->GetTabStripModel()->GetActiveWebContents() == &web_contents;
-  }
-  return false;
+  auto* tab = tabs::TabInterface::GetFromContents(web_contents);
+  CHECK(tab);
+  auto* browser = tab->GetBrowserWindowInterface();
+  CHECK(browser);
+  return browser->GetFeatures().NavigateWalletSidePanelIfActive(url);
 }
 
 }  // namespace brave_wallet
