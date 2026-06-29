@@ -79,7 +79,15 @@ export const BraveNewsContext = React.createContext<BraveNewsContext>({
   shouldRenderImages: false,
 })
 
-export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
+interface BraveNewsContextProviderProps {
+  children: React.ReactNode
+  // When set, overrides the user's `openArticlesInNewTab` preference for this
+  // subtree. Used by surfaces like the sidebar, where articles must always open
+  // in the main browser tab regardless of the configured preference.
+  openArticlesInNewTab?: boolean
+}
+
+export function BraveNewsContextProvider(props: BraveNewsContextProviderProps) {
   const configurationCache = ConfigurationCachingWrapper.getInstance()
   const channelsCache = ChannelsCachingWrapper.getInstance()
   const publishersCache = PublishersCachingWrapper.getInstance()
@@ -206,14 +214,14 @@ export function BraveNewsContextProvider(props: { children: React.ReactNode }) {
     isOptInPrefEnabled: configuration.isOptedIn,
     isShowOnNTPPrefEnabled: configuration.showOnNTP,
     toggleBraveNewsOnNTP,
-    openArticlesInNewTab: configuration.openArticlesInNewTab,
+    openArticlesInNewTab: props.openArticlesInNewTab ?? configuration.openArticlesInNewTab,
     setOpenArticlesInNewTab,
     reportViewCount,
     reportVisit,
     reportSidebarFilterUsage,
     reportSessionStart,
     shouldRenderImages,
-  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
+  }), [customizePage, setFeedView, feedV2, feedV2UpdatesAvailable, channels, publishers, suggestedPublisherIds, filteredPublisherIds, updateSuggestedPublisherIds, configuration, props.openArticlesInNewTab, toggleBraveNewsOnNTP, reportSidebarFilterUsage, reportViewCount, reportVisit, reportSessionStart, shouldRenderImages])
 
   return <BraveNewsContext.Provider value={context}>
     {props.children}

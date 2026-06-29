@@ -26,10 +26,10 @@ const Container = styled(Card)`
 `
 
 export default function HeroArticle({ info, feedDepth }: Props) {
-  const { reportVisit } = useBraveNews()
+  const { reportVisit, openArticlesInNewTab } = useBraveNews()
   return <Container
     onClick={e => {
-      braveNewsCardClickHandler(info.data.url.url)(e)
+      braveNewsCardClickHandler(info.data.url.url, openArticlesInNewTab)(e)
       if (feedDepth !== undefined) {
         reportVisit(feedDepth)
       }
