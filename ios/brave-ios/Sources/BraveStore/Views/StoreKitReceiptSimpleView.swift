@@ -143,10 +143,12 @@ public struct StoreKitReceiptSimpleView: View {
   @ViewBuilder
   private func purchaseView(for purchase: BraveStoreKitPurchase) -> some View {
     VStack {
-      StoreKitReceiptSimpleLineView(
-        title: Strings.ReceiptViewer.receiptOrderIDTitle,
-        value: "\(purchase.webOrderLineItemId)"
-      )
+      if purchase.webOrderLineItemId != 0 {
+        StoreKitReceiptSimpleLineView(
+          title: Strings.ReceiptViewer.receiptOrderIDTitle,
+          value: "\(purchase.webOrderLineItemId)"
+        )
+      }
 
       StoreKitReceiptSimpleLineView(
         title: Strings.ReceiptViewer.receiptTransactionIDTitle,
