@@ -9,8 +9,18 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "components/prefs/pref_service.h"
+
+// static
+VerticalTabController* VerticalTabController::FromBrowser(
+    BrowserWindowInterface* browser) {
+  if (!browser) {
+    return nullptr;
+  }
+  return browser->GetFeatures().vertical_tab_controller();
+}
 
 VerticalTabController::VerticalTabController(BrowserWindowInterface::Type type,
                                              PrefService* prefs)
