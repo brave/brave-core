@@ -1011,7 +1011,6 @@ test("brave_browser_tests") {
     "//brave/browser/test:browser_tests",
     "//brave/browser/themes",
     "//brave/browser/ui:browser_tests",
-    "//brave/browser/ui/email_aliases",
     "//brave/browser/ui/tabs/test:browser_tests",
     "//brave/browser/ui/views/tabs:browser_tests",
     "//brave/browser/ui/webui:browser_tests",
@@ -1024,7 +1023,6 @@ test("brave_browser_tests") {
     "//brave/components/brave_perf_predictor/common",
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
-    "//brave/components/email_aliases:pref_names",
     "//brave/components/email_aliases/buildflags",
   ]
 
@@ -1051,7 +1049,11 @@ test("brave_browser_tests") {
   }
 
   if (enable_email_aliases) {
-    deps += [ "//brave/components/email_aliases:features" ]
+    deps += [
+      "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:pref_names",
+    ]
   }
 
   deps += [
