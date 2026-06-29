@@ -29,7 +29,6 @@ export const style = scoped.css`
     flex-grow: 1;
     display: flex;
     gap: 12px;
-    align-items: center;
   }
 
   .text {
@@ -53,8 +52,8 @@ export const style = scoped.css`
   }
 
   .coin-graphic {
-    height: 62px;
-    width: 62px;
+    height: 64px;
+    width: 64px;
     background-image: url(${rewardsBatCoinURL});
     background-position: left center;
     background-size: contain;
@@ -62,8 +61,8 @@ export const style = scoped.css`
   }
 
   .connect-graphic {
-    height: 62px;
-    width: 71px;
+    height: 64px;
+    width: 64px;
     background-image: url(${rewardsConnectURL});
     background-position: left center;
     background-size: contain;

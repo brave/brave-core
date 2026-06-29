@@ -29,9 +29,7 @@ export const style = scoped.css`
       background-image: url(${newsGraphic});
       background-repeat: no-repeat;
       background-size: contain;
-      background-position: center center;
-      width: 56px;
-      align-self: stretch;
+      width: 64px;
     }
 
     .text {

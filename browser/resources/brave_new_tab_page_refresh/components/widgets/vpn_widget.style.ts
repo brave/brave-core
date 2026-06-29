@@ -84,10 +84,10 @@ export const style = scoped.css`
   }
 
   .connection-graphic {
-    min-width: 62px;
+    min-width: 64px;
 
     img {
-      height: 62px;
+      height: 64px;
       width: auto;
     }
   }
