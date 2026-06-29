@@ -7,7 +7,7 @@ import * as React from 'react'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import ActionTypeLabel from '../../../common/components/action_type_label'
+import { getActionTypeLabel } from '../../../common/components/action_type_label'
 import {
   AttachmentPageItem,
   AttachmentUploadItems,
@@ -20,7 +20,6 @@ import { useUntrustedConversationContext } from '../../untrusted_conversation_co
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
 import ContextMenuHuman from '../context_menu_human'
-import Quote from '../quote'
 import {
   LongPageContentWarning,
   LongTextContentWarning,
@@ -128,6 +127,18 @@ export const highlightRichText = (
         )
       })}
     </>
+  )
+}
+
+// Renders an action (e.g. "Explain") as an inline highlighted chip, matching
+// the way skills are rendered.
+const renderActionLabel = (actionType: Mojom.ActionType) => {
+  const label = getActionTypeLabel(actionType)
+  if (!label) return null
+  return (
+    <span className={styles.richLabel}>
+      <span className={styles.richLabelTitle}>{`/${label.toLowerCase()}`}</span>
+    </span>
   )
 }
 
@@ -455,11 +466,11 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                       />
                     )}
                     {firstEntryEdit.selectedText && (
-                      <div className={styles.selectedTextContext}>
-                        <ActionTypeLabel
-                          actionType={firstEntryEdit.actionType}
-                        />
-                        <Quote text={firstEntryEdit.selectedText} />
+                      <div className={styles.humanMessageBubble}>
+                        <div className={styles.humanTextRow}>
+                          {renderActionLabel(firstEntryEdit.actionType)}{' '}
+                          {firstEntryEdit.selectedText}
+                        </div>
                       </div>
                     )}
                     {showLongPageContentInfo

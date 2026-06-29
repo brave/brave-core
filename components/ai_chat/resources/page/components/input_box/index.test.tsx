@@ -36,8 +36,6 @@ const testContext: InputBoxProps['context'] = {
   getScreenshots: jest.fn(),
   setInputText: () => {},
   submitInputTextToAPI: jest.fn(),
-  selectedActionType: undefined,
-  resetSelectedActionType: () => {},
   isCharLimitApproaching: false,
   isCharLimitExceeded: false,
   inputTextCharCountDisplay: '',
