@@ -43,8 +43,9 @@ class BraveCoreShallowApi(RecipeApi):
 
         Clones brave-core into *dest* (shallow + sparse) when it is not already
         a checkout, then restricts the working tree to *paths*. Re-running is
-        cheap: an existing checkout is reused and only the sparse set is
-        re-applied.
+        cheap: an existing checkout is reused, fetched to *ref*, and only the
+        sparse set is re-applied -- so a checkout left on a different ref by a
+        prior run is brought to the requested one rather than trusted as-is.
 
         Every requested path keeps its brave-core-relative layout beneath the
         returned root (a path `tools/a` lands at `<root>/tools/a`), so scripts
@@ -60,10 +61,12 @@ class BraveCoreShallowApi(RecipeApi):
             paths: A single repo-relative path, or an iterable of them, to
                 materialise (e.g. `'tools/cr/toolchains'`).
             url: Git remote to clone from; defaults to brave-core over SSH.
-            ref: Optional branch or tag to clone. Only applied on the initial
-                clone; an existing checkout is left on its current ref. A
+            ref: Branch or tag to check out. Defaults to the engine-provided
+                brave-core ref (`master`, or the `--brave-core-ref` override).
+                Applied whether the checkout is freshly cloned or reused (an
+                existing checkout is fetched and hard-checked-out to it). A
                 shallow clone cannot target a bare commit SHA.
-            depth: History depth for the shallow clone.
+            depth: History depth for the shallow clone/fetch.
 
         Returns:
             The absolute `Path` to the brave-core checkout root. Requested paths
@@ -79,19 +82,35 @@ class BraveCoreShallowApi(RecipeApi):
         if not rel_paths:
             raise ValueError('deploy() requires at least one path')
 
+        # Fall back to the engine-provided ref when the caller doesn't specify.
+        ref = ref if ref is not None else self._brave_core_ref
+
         dest = Path(dest).expanduser().resolve()
 
         if (dest / '.git').is_dir():
-            logging.info('brave-core checkout already present at %s', dest)
+            # Reuse the existing checkout, but bring it to *ref* -- it may have
+            # been cloned (here or by a prior run) at a different ref that lacks
+            # the requested paths, so fetch and hard-checkout rather than trust
+            # its current state.
+            logging.info('brave-core checkout present at %s; updating to %s',
+                         dest, ref)
+            self.m.step('fetch brave-core ref', [
+                'git', '-C',
+                str(dest), 'fetch', '--depth',
+                str(depth), 'origin', ref
+            ])
+            self.m.step(
+                'checkout brave-core ref',
+                ['git', '-C',
+                 str(dest), 'checkout', '--force', 'FETCH_HEAD'])
         else:
             dest.parent.mkdir(parents=True, exist_ok=True)
             clone_cmd = [
                 'git', 'clone', '--depth',
-                str(depth), '--filter=blob:none', '--sparse'
+                str(depth), '--filter=blob:none', '--sparse', '--branch', ref,
+                url,
+                str(dest)
             ]
-            if ref:
-                clone_cmd += ['--branch', ref]
-            clone_cmd += [url, str(dest)]
             self.m.step('clone brave-core (shallow, sparse)', clone_cmd)
 
         # Extend the sparse working tree with the requested subtrees. `add`

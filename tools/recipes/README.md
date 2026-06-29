@@ -14,11 +14,15 @@ instantiates each _recipe module_, and runs the recipe's `RunSteps`.
 
 ```sh
 python3 tools/recipes/engine.py toolchains/rust/package_rust \
-    --properties '{ "chromium_src": "~/dev/brave-next/src/", "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
+    --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
 ```
 
 The recipe name is a `/`-separated path under `recipes/`. `--properties` is a
-JSON object whose keys match the recipe's `PROPERTIES`.
+JSON object whose keys match the recipe's `PROPERTIES`. On-disk paths are not
+properties: recipes read them from the `path` module (`api.path.chromium_src`,
+`api.path.brave_core`, `api.path.out`), all derived from the job's workspace.
+Only the workspace is configurable, via `--workspace` (default: current
+directory).
 
 To run straight from a pipeline without a checkout, `engine_bootstrap.py`
 shallow-clones the engine from brave-core and forwards to `engine.py`:
@@ -26,5 +30,5 @@ shallow-clones the engine from brave-core and forwards to `engine.py`:
 ```sh
 curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/recipes/engine_bootstrap.py \
     | python3 - toolchains/rust/package_rust \
-        --properties '{ "chromium_src": "~/dev/brave-next/src/", "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
+        --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
 ```

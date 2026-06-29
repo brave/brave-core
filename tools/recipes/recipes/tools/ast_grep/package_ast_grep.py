@@ -15,9 +15,9 @@ DEPS = [
     'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_shallow'
 ]
 
+
 @dataclass(frozen=True)
 class InputProperties:
-    brave_subrevision: int
     chromium_ref: str
     git_cache: str | None = None
 
@@ -32,19 +32,14 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
         api.path.chromium_src, ref=properties.chromium_ref)
 
-    brave_core_root = api.brave_core_shallow.deploy(api.path.brave_core,
-                                                    'tools/cr/toolchains')
+    brave_root = api.brave_core_shallow.deploy(api.path.brave_core,
+                                               'tools/cr/ast_grep')
 
     vpython3 = api.depot_tools.vpython3(chromium_src)
-    api.step('build rust toolchain', [
+    api.step('package ast-grep', [
         vpython3,
-        brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
+        brave_root / 'tools/cr/ast_grep/package_ast_grep.py',
+        '--clean',
         '--out-dir',
         api.path.out,
-        '--chromium-src',
-        chromium_src,
-        '--brave-subrevision',
-        str(properties.brave_subrevision),
-        '--clear',
-        '--no-full-toolchain',
     ])

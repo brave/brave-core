@@ -5,6 +5,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for the self-contained engine bootstrap."""
 
+# White-box tests: they exercise bootstrap internals (`_deploy_recipes`,
+# `_brave_core_dest`, `_run`), so protected-access is intentional.
+# pylint: disable=protected-access
+
 import os
 import sys
 import tempfile

@@ -14,6 +14,8 @@ module reaches each dependency as `self.m.<dep_name>` (and itself as
 
 from __future__ import annotations
 
+from pathlib import Path
+
 
 class ModuleInjectionSite:
     """Namespace holding a module's resolved DEPS (and the module itself).
@@ -37,6 +39,13 @@ class RecipeApi:
     def __init__(self) -> None:
         # Populated by the engine after construction with this module's DEPS.
         self.m: ModuleInjectionSite = ModuleInjectionSite()
+        # The job's workspace root, seeded by the engine after construction.
+        # The `path` module derives the named job paths from it; most modules
+        # ignore it. Defaults to `.` until the engine overrides it.
+        self._workspace: Path = Path()
+        # brave-core ref the checkout modules clone, seeded by the engine.
+        # `brave_core_shallow` uses it; defaults to `master` until overridden.
+        self._brave_core_ref: str = 'master'
 
     def initialize(self) -> None:
         """Hook run once after DEPS are injected. Override for setup."""
