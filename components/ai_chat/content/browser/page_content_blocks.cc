@@ -243,7 +243,7 @@ std::string BuildAttributes(const ContentAttributes& attrs,
 
   // The document identifier is only used to scope element targeting to a frame,
   // so it is only relevant to agentic tools.
-  if (detail == PageContentDetail::kAgentic && attrs.has_iframe_data() &&
+  if (include_agentic_targeting && attrs.has_iframe_data() &&
       attrs.iframe_data().has_frame_data() &&
       attrs.iframe_data().frame_data().has_document_identifier()) {
     base::StrAppend(&attr_result,

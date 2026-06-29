@@ -6,9 +6,9 @@
 #include "base/files/file_util.h"
 #include "base/json/json_reader.h"
 #include "base/path_service.h"
-#include "base/run_loop.h"
 #include "base/strings/strcat.h"
 #include "base/test/bind.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
@@ -130,19 +130,11 @@ class AIChatBrowserTest : public InProcessBrowserTest {
   }
 
   std::string FetchPageContent() {
-    std::string content;
-    base::RunLoop run_loop;
     page_content_fetcher_ = std::make_unique<PageContentFetcher>(
         browser()->tab_strip_model()->GetActiveWebContents());
-    page_content_fetcher_->FetchPageContent(
-        "", base::BindLambdaForTesting(
-                [&run_loop, &content](std::string page_content, bool is_video,
-                                      std::string invalidation_token) {
-                  content = std::move(page_content);
-                  run_loop.Quit();
-                }));
-    run_loop.Run();
-    return content;
+    base::test::TestFuture<std::string, bool, std::string> future;
+    page_content_fetcher_->FetchPageContent("", future.GetCallback());
+    return future.Get<0>();
   }
 
   // Extracts the page content via AIPageContentFetcher, which goes through
@@ -151,19 +143,11 @@ class AIChatBrowserTest : public InProcessBrowserTest {
   // above (the renderer IPC path), this exercises the real GetAIPageContent
   // data, so the test fails if Chromium's extraction output changes.
   std::string FetchAIPageContent() {
-    std::string content;
-    base::RunLoop run_loop;
     ai_page_content_fetcher_ = std::make_unique<AIPageContentFetcher>(
         browser()->tab_strip_model()->GetActiveWebContents());
-    ai_page_content_fetcher_->FetchPageContent(
-        "", base::BindLambdaForTesting(
-                [&run_loop, &content](std::string page_content, bool is_video,
-                                      std::string invalidation_token) {
-                  content = std::move(page_content);
-                  run_loop.Quit();
-                }));
-    run_loop.Run();
-    return content;
+    base::test::TestFuture<std::string, bool, std::string> future;
+    ai_page_content_fetcher_->FetchPageContent("", future.GetCallback());
+    return future.Get<0>();
   }
 
  private:
