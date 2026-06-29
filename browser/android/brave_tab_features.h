@@ -14,6 +14,7 @@ class Profile;
 
 namespace ai_chat {
 class TabDataWebContentsObserver;
+class WebMcpInjector;
 }
 
 namespace content {
@@ -32,6 +33,7 @@ class BraveTabFeatures : public TabFeatures_Chromium {
 
  private:
   std::unique_ptr<ai_chat::TabDataWebContentsObserver> tab_data_observer_;
+  std::unique_ptr<ai_chat::WebMcpInjector> web_mcp_injector_;
 };
 
 }  // namespace tabs

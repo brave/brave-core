@@ -38,6 +38,10 @@ static_library("ai_chat") {
     "tools/code_execution_tool.h",
     "tools/history_search_tool.cc",
     "tools/history_search_tool.h",
+    "web_mcp_injection/web_mcp_injection_rule.cc",
+    "web_mcp_injection/web_mcp_injection_rule.h",
+    "web_mcp_injection/web_mcp_injector.cc",
+    "web_mcp_injection/web_mcp_injector.h",
   ]
 
   if (enable_ai_chat_tab_management_tool) {
@@ -82,6 +86,7 @@ static_library("ai_chat") {
     "//components/user_prefs",
     "//content/public/browser",
     "//services/network/public/cpp",
+    "//third_party/blink/public/common",
   ]
 
   if (is_android) {
