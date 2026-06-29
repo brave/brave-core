@@ -481,7 +481,7 @@ TEST_F(PolkadotSubstrateRpcUnitTest, GetAssetAccountBalances) {
           ->rpc_endpoints.front()
           .spec();
 
-  EXPECT_EQ(testnet_url, "https://polkadot-paseo-asset-hub.wallet.brave.com/");
+  EXPECT_EQ(testnet_url, "https://paseo-asset-hub.wallet.brave.com/");
 
   // https://assethub-paseo.subscan.io/assets/50001010
   constexpr uint32_t kBATCAssetId = 50001010;

@@ -91,7 +91,7 @@ constexpr auto kChainSubdomains =
             // Polkadot testnet chains.
             {mojom::kPolkadotTestnet, "polkadot-westend"},
             {mojom::kPolkadotTestnetAssetHub, "westend-asset-hub"},
-            {mojom::kPolkadotPaseoAssetHub, "polkadot-paseo-asset-hub"},
+            {mojom::kPolkadotPaseoAssetHub, "paseo-asset-hub"},
         },
         CaseInsensitiveCompare());
 
