@@ -46,7 +46,6 @@ const Header = styled(Row)`
 const Title = styled.h4`
   color: ${color.text.secondary};
   font: ${font.heading.h4};
-  line-height: ${typography.heading.h4.lineHeight};
   margin: ${spacing.none};
 `
 export const RightAlignedItem = styled.div`
