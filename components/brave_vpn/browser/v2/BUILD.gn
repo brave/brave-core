@@ -28,5 +28,6 @@ static_library("browser") {
   deps = [
     "//base",
     "//brave/components/brave_vpn/common",
+    "//components/prefs",
   ]
 }

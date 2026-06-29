@@ -52,7 +52,8 @@ namespace {
 std::unique_ptr<KeyedService> BuildVpnService_V2(
     content::BrowserContext* context) {
   // Return stub implementation.
-  return std::make_unique<v2::BraveVpnServiceImpl>();
+  return std::make_unique<v2::BraveVpnServiceImpl>(
+      user_prefs::UserPrefs::Get(context));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2)
