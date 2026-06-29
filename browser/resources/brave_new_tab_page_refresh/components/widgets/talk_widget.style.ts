@@ -23,15 +23,13 @@ export const style = scoped.css`
   .content {
     flex-grow: 1;
     display: flex;
-    align-items: center;
   }
 
   .graphic {
     background-image: url(${talkGraphic});
     background-repeat: no-repeat;
     background-size: contain;
-    background-position: center center;
-    width: 56px;
+    width: 64px;
     align-self: stretch;
   }
 

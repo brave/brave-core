@@ -30,7 +30,7 @@ export const style = scoped.css`
       background-repeat: no-repeat;
       background-size: contain;
       background-position: center center;
-      width: 56px;
+      width: 64px;
       align-self: stretch;
     }
 
