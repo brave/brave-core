@@ -23,6 +23,7 @@
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "brave/components/email_aliases/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
@@ -35,6 +36,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
@@ -132,6 +134,11 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
     https_server_.StartAcceptingConnections();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
+
+    // Skip the promo as it is tested in
+    // BraveBrowserCommandControllerWithEmailAliasesTest.
+    user_prefs::UserPrefs::Get(browser()->profile())
+        ->SetBoolean(prefs::kPromoShown, true);
 
     ON_CALL(GetBraveAccountAuth(),
             GetServiceToken(brave_account::mojom::Service::kEmailAliases,
