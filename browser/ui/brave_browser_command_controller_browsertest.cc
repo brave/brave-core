@@ -723,8 +723,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
   command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL()
-               == chrome::GetSettingsUrl("email-aliases");
+    return browser()
+               ->tab_strip_model()
+               ->GetActiveWebContents()
+               ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
   }));
 }
 
@@ -749,8 +751,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
       false);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
-    return browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL()
-               == chrome::GetSettingsUrl("email-aliases");
+    return browser()
+               ->tab_strip_model()
+               ->GetActiveWebContents()
+               ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
   }));
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)
