@@ -135,10 +135,12 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
     https_server_.StartAcceptingConnections();
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
 
-    // Skip the promo as it is tested in
-    // BraveBrowserCommandControllerWithEmailAliasesTest.
-    user_prefs::UserPrefs::Get(browser()->profile())
-        ->SetBoolean(prefs::kPromoShown, true);
+    if (features::IsEmailAliasesEnabled()) {
+      // Skip the promo as it is tested in
+      // BraveBrowserCommandControllerWithEmailAliasesTest.
+      user_prefs::UserPrefs::Get(browser()->profile())
+          ->SetBoolean(prefs::kPromoShown, true);
+    }
 
     ON_CALL(GetBraveAccountAuth(),
             GetServiceToken(brave_account::mojom::Service::kEmailAliases,
