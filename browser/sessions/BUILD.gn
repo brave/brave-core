@@ -25,8 +25,11 @@ source_set("browser_tests") {
       "//brave/components/tabs",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
+      "//chrome/browser/tab_group_sync:factories",
+      "//chrome/browser/ui/tabs",
       "//chrome/test:test_support_ui",
       "//components/sessions",
+      "//components/split_tabs",
     ]
   }
 }

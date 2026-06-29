@@ -23,19 +23,25 @@
 #include "chrome/browser/sessions/session_service.h"
 #include "chrome/browser/sessions/session_service_factory.h"
 #include "chrome/browser/sessions/tab_restore_service_factory.h"
+#include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/tabs/features.h"
+#include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
+#include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/prefs/pref_service.h"
+#include "components/saved_tab_groups/public/tab_group_sync_service.h"
 #include "components/sessions/core/serialized_navigation_entry.h"
 #include "components/sessions/core/session_types.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/sessions/core/tab_restore_types.h"
+#include "components/split_tabs/split_tab_visual_data.h"
+#include "components/tabs/public/split_tab_collection.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -230,6 +236,61 @@ class BraveTreeTabSessionRestoreBrowserTest : public InProcessBrowserTest {
         brave_tab_strip_model()->GetTabAtIndex(index));
   }
 
+  // Returns the nearest ancestor TreeTabNodeTabCollection for the tab at
+  // |index|, traversing up through group/split parents if needed. Unlike
+  // GetTreeCollectionForTab, this works for tabs inside groups or splits.
+  const tabs::TreeTabNodeTabCollection* GetNearestTreeCollectionForTab(
+      int index) {
+    return tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
+        brave_tab_strip_model()->GetTabAtIndex(index));
+  }
+
+  // Creates a new WebContents for the test browser's profile.
+  std::unique_ptr<content::WebContents> CreateWebContents() {
+    return content::WebContents::Create(
+        content::WebContents::CreateParams(browser()->profile()));
+  }
+
+  // Adds a new tab at the end, optionally sets |opener|, and navigates it.
+  void AddTabWithOptionalOpenerAndNavigate(
+      const GURL& url,
+      tabs::TabInterface* opener = nullptr) {
+    auto tab_model = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), browser()->tab_strip_model());
+    if (opener) {
+      tab_model->set_opener(opener);
+    }
+    brave_tab_strip_model()->AddTab(
+        std::move(tab_model), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+    content::WebContents* web_contents =
+        browser()->tab_strip_model()->GetWebContentsAt(
+            browser()->tab_strip_model()->count() - 1);
+    ASSERT_TRUE(web_contents);
+    ASSERT_TRUE(content::NavigateToURL(web_contents, url));
+  }
+
+  // Initializes the TabGroupSyncService as ready (required before calling
+  // AddToNewGroup or any other tab-group API that checks IsInitialized()).
+  void EnsureTabGroupSyncServiceInitialized(
+      base::Location location = base::Location::Current()) {
+    SCOPED_TRACE(location.ToString());
+    auto* service = tab_groups::TabGroupSyncServiceFactory::GetForProfile(
+        browser()->profile());
+    ASSERT_TRUE(service);
+    service->SetIsInitializedForTesting(true);
+  }
+
+  // Creates a split from the tabs at |index_a| and |index_b| in the model.
+  // Activates |index_a| first, then calls AddToNewSplit with |index_b|.
+  void CreateSplitWithTabs(int index_a, int index_b) {
+    ASSERT_NE(index_a, index_b);
+    brave_tab_strip_model()->ActivateTabAt(index_a);
+    brave_tab_strip_model()->AddToNewSplit(
+        {index_b}, split_tabs::SplitTabVisualData(),
+        split_tabs::SplitTabCreatedSource::kTabContextMenu);
+  }
+
   SessionService* session_service() {
     return SessionServiceFactory::GetForProfile(browser()->profile());
   }
@@ -398,22 +459,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
 
   // Build A (root at 0) -> B (child of A at 1).
   auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
-  {
-    auto tab_b = std::make_unique<tabs::TabModel>(
-        content::WebContents::Create(
-            content::WebContents::CreateParams(browser()->profile())),
-        browser()->tab_strip_model());
-    tab_b->set_opener(tab_a);
-    brave_tab_strip_model()->AddTab(
-        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
-  }
-  content::WebContents* wc_b =
-      browser()->tab_strip_model()->GetWebContentsAt(1);
-  ASSERT_TRUE(wc_b);
-
-  // Navigate B so it has a committed entry and is not filtered out during
-  // session save.
-  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a);
 
   // Reparent B to a root by moving it before A.
   browser()->tab_strip_model()->MoveWebContentsAt(1, 0, false);
@@ -446,19 +492,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
 
   // Build A (root at 0) -> B (child of A at 1). Navigate B so it persists.
   auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
-  {
-    auto tab_b = std::make_unique<tabs::TabModel>(
-        content::WebContents::Create(
-            content::WebContents::CreateParams(browser()->profile())),
-        browser()->tab_strip_model());
-    tab_b->set_opener(tab_a);
-    brave_tab_strip_model()->AddTab(
-        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
-  }
-  content::WebContents* wc_b =
-      browser()->tab_strip_model()->GetWebContentsAt(1);
-  ASSERT_TRUE(wc_b);
-  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a);
 
   // Close B. SessionService::TabClosed() removes B from the session.
   browser()->tab_strip_model()->CloseWebContentsAt(1,
@@ -494,19 +528,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
   // Build A (root at 0) -> B (child of A at 1). Navigate B so it has a
   // committed entry; tabs with no navigation are skipped by TabRestoreService.
   auto* tab_a = browser()->tab_strip_model()->GetTabAtIndex(0);
-  {
-    auto tab_b = std::make_unique<tabs::TabModel>(
-        content::WebContents::Create(
-            content::WebContents::CreateParams(browser()->profile())),
-        browser()->tab_strip_model());
-    tab_b->set_opener(tab_a);
-    brave_tab_strip_model()->AddTab(
-        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
-  }
-  content::WebContents* web_contents_b =
-      browser()->tab_strip_model()->GetWebContentsAt(1);
-  ASSERT_TRUE(web_contents_b);
-  ASSERT_TRUE(content::NavigateToURL(web_contents_b, GURL("about:blank")));
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a);
 
   // Capture the live node ids before closing: B is the tab being closed and A
   // is its parent.
@@ -606,21 +628,9 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
 
   // Build A (root at 0) -> B (child of A at 1).
   auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
-  {
-    auto tab_b = std::make_unique<tabs::TabModel>(
-        content::WebContents::Create(
-            content::WebContents::CreateParams(browser()->profile())),
-        browser()->tab_strip_model());
-    tab_b->set_opener(tab_a_iface);
-    brave_tab_strip_model()->AddTab(
-        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
-  }
   // Navigate B so TabRestoreService records it (tabs with no committed entry
   // are skipped during capture).
-  content::WebContents* wc_b =
-      browser()->tab_strip_model()->GetWebContentsAt(1);
-  ASSERT_TRUE(wc_b);
-  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
 
   // Verify the initial hierarchy before closing.
   const auto* coll_a = GetTreeCollectionForTab(0);
@@ -679,19 +689,7 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
 
   // Build A (root at 0) -> B (child of A at 1).
   auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
-  {
-    auto tab_b = std::make_unique<tabs::TabModel>(
-        content::WebContents::Create(
-            content::WebContents::CreateParams(browser()->profile())),
-        browser()->tab_strip_model());
-    tab_b->set_opener(tab_a_iface);
-    brave_tab_strip_model()->AddTab(
-        std::move(tab_b), -1, ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
-  }
-  content::WebContents* wc_b =
-      browser()->tab_strip_model()->GetWebContentsAt(1);
-  ASSERT_TRUE(wc_b);
-  ASSERT_TRUE(content::NavigateToURL(wc_b, GURL("about:blank")));
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
 
   // Verify initial hierarchy before relaunch.
   const auto* coll_a = GetTreeCollectionForTab(0);
@@ -728,4 +726,350 @@ IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return restored_coll_b->GetParentCollection() == restored_coll_a;
   })) << "Restored B must be nested under A's tree node";
+}
+
+// ── Group / Split hierarchy restoration tests ───────────────────────────────
+//
+// These three PRE_/main pairs verify that MaybeRestoreGroupTreeHierarchy and
+// MaybeRestoreSplitTreeHierarchy correctly reconnect nested tree nodes after a
+// full browser relaunch (the AddRestoredTab path).  Each PRE_ test builds a
+// hierarchy, forces a full session rebuild, and the main test confirms the
+// hierarchy is intact after relaunch.
+
+// Scenario: tab A (root) → tree_node_G [group(tab_b, tab_c)]
+// Tests MaybeRestoreGroupTreeHierarchy: the group's tree node must be re-
+// nested under A's tree node after a browser restart.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+                       PRE_RestoreClosedWindowPreservesGroupInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+  EnsureTabGroupSyncServiceInitialized();
+
+  // Navigate tab A so the session records a committed entry for it.
+  content::WebContents* wc_a =
+      browser()->tab_strip_model()->GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(wc_a, GURL("about:blank")));
+
+  // Build: A (root) → B (child of A) and C (child of A).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
+
+  auto* tab_b_iface = browser()->tab_strip_model()->GetTabAtIndex(1);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_b_iface);
+
+  // Group B and C → tree_node_G wraps group_G, becomes a child of tree_node_A.
+  tab_groups::TabGroupId group_id =
+      brave_tab_strip_model()->AddToNewGroup({1, 2});
+  ASSERT_TRUE(
+      brave_tab_strip_model()->group_model()->ContainsTabGroup(group_id));
+
+  // Verify the initial hierarchy: group's tree_node is a child of tree_node_A.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(coll_a) << "tab_a must be in a tree node";
+  for (int i = 1; i <= 2; ++i) {
+    const tabs::TabCollection* group_coll =
+        brave_tab_strip_model()->GetTabAtIndex(i)->GetParentCollection();
+    ASSERT_EQ(group_coll->type(), tabs::TabCollection::Type::GROUP);
+    const tabs::TabCollection* group_tree_node =
+        group_coll->GetParentCollection();
+    ASSERT_EQ(group_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+    ASSERT_EQ(group_tree_node->GetParentCollection(), coll_a)
+        << "group's tree_node must be a child of tree_node_A before relaunch";
+  }
+
+  session_service()->ResetFromCurrentBrowsers();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+                       RestoreClosedWindowPreservesGroupInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Restored window: tab_a (0), tab_b in group (1), tab_c in group (2),
+  // plus the new-tab that is opened on start.
+  ASSERT_GE(brave_tab_strip_model()->count(), 3)
+      << "Restored window should have at least three tabs";
+
+  const auto* restored_coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(restored_coll_a) << "Tab A must be in a tree node after restore";
+
+  ASSERT_EQ(brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection(),
+            brave_tab_strip_model()->GetTabAtIndex(2)->GetParentCollection());
+
+  // Tab B must still be inside a group.
+  const tabs::TabCollection* restored_group =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(restored_group->type(), tabs::TabCollection::Type::GROUP)
+      << "Tab B must be inside a group after restore";
+
+  // The group's tree_node must be a child of tree_node_A.
+  const tabs::TabCollection* restored_group_tree_node =
+      restored_group->GetParentCollection();
+  ASSERT_EQ(restored_group_tree_node->type(),
+            tabs::TabCollection::Type::TREE_NODE)
+      << "Group must be wrapped in a tree node after restore";
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return restored_group_tree_node->GetParentCollection() == restored_coll_a;
+  })) << "Restored group's tree_node must be nested under A's tree_node";
+}
+
+// Scenario: tab A (root) → tree_node_S [split(tab_b, tab_c)]
+// Tests MaybeRestoreSplitTreeHierarchy: the split's tree node must be re-
+// nested under A's tree node after a browser restart.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+                       PRE_RestoreClosedWindowPreservesSplitInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Navigate tab A.
+  content::WebContents* wc_a =
+      browser()->tab_strip_model()->GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(wc_a, GURL("about:blank")));
+
+  // Build: A (root) → B (child of A) and C (child of A).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
+
+  auto* tab_b_iface = browser()->tab_strip_model()->GetTabAtIndex(1);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_b_iface);
+
+  // Split B and C → tree_node_S wraps split_S, becomes a child of tree_node_A.
+  CreateSplitWithTabs(1, 2);
+
+  // Verify the initial hierarchy: split's tree_node is a child of tree_node_A.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(coll_a) << "tab_a must be in a tree node";
+  for (int i = 1; i <= 2; ++i) {
+    const tabs::TabCollection* split_coll =
+        brave_tab_strip_model()->GetTabAtIndex(i)->GetParentCollection();
+    ASSERT_EQ(split_coll->type(), tabs::TabCollection::Type::SPLIT);
+    const tabs::TabCollection* split_tree_node =
+        split_coll->GetParentCollection();
+    ASSERT_EQ(split_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+    ASSERT_EQ(split_tree_node->GetParentCollection(), coll_a)
+        << "split's tree_node must be a child of tree_node_A before relaunch";
+  }
+
+  session_service()->ResetFromCurrentBrowsers();
+}
+
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+                       RestoreClosedWindowPreservesSplitInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  ASSERT_GE(brave_tab_strip_model()->count(), 3)
+      << "Restored window should have at least three tabs";
+
+  const auto* restored_coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(restored_coll_a) << "Tab A must be in a tree node after restore";
+  ASSERT_EQ(brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection(),
+            brave_tab_strip_model()->GetTabAtIndex(2)->GetParentCollection());
+
+  // Tab B must still be inside a split.
+  const tabs::TabCollection* restored_split =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(restored_split->type(), tabs::TabCollection::Type::SPLIT)
+      << "Tab B must be inside a split after restore";
+
+  // The split's tree_node must be a child of tree_node_A.
+  const tabs::TabCollection* restored_split_tree_node =
+      restored_split->GetParentCollection();
+  ASSERT_EQ(restored_split_tree_node->type(),
+            tabs::TabCollection::Type::TREE_NODE)
+      << "Split must be wrapped in a tree node after restore";
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return restored_split_tree_node->GetParentCollection() == restored_coll_a;
+  })) << "Restored split's tree_node must be nested under A's tree_node";
+}
+
+// Scenario: tab A (root) → tree_node_G [group(split(tab_b, tab_c))]
+// Tests that when a group contains a split, the group's tree node is correctly
+// re-nested under A's tree node after a browser restart.
+IN_PROC_BROWSER_TEST_F(
+    BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+    PRE_RestoreClosedWindowPreservesGroupWithSplitInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+  EnsureTabGroupSyncServiceInitialized();
+
+  // Navigate tab A.
+  content::WebContents* wc_a =
+      browser()->tab_strip_model()->GetWebContentsAt(0);
+  ASSERT_TRUE(content::NavigateToURL(wc_a, GURL("about:blank")));
+
+  // Build: A (root) → B (child of A) and C (child of B).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
+
+  auto* tab_b_iface = browser()->tab_strip_model()->GetTabAtIndex(1);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_b_iface);
+
+  // Group B and C → tree_node_G (child of tree_node_A) wraps group_G.
+  tab_groups::TabGroupId group_id =
+      brave_tab_strip_model()->AddToNewGroup({1, 2});
+  ASSERT_TRUE(
+      brave_tab_strip_model()->group_model()->ContainsTabGroup(group_id));
+
+  // Verify the group's tree_node is a child of tree_node_A.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(coll_a);
+
+  const tabs::TabCollection* group_coll =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(group_coll->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_tree_node =
+      group_coll->GetParentCollection();
+  ASSERT_EQ(group_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(group_tree_node->GetParentCollection(), coll_a);
+
+  // Split B and C inside the group → split_S becomes a direct child of group_G.
+  CreateSplitWithTabs(1, 2);
+
+  // Verify the split is now inside the group.
+  const tabs::TabCollection* split_coll =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(split_coll->type(), tabs::TabCollection::Type::SPLIT);
+  ASSERT_EQ(split_coll->GetParentCollection(), group_coll)
+      << "split must be a direct child of the group";
+
+  // The nearest tree_node for tabs inside the split is still tree_node_G.
+  ASSERT_EQ(GetNearestTreeCollectionForTab(1), group_tree_node);
+  ASSERT_EQ(GetNearestTreeCollectionForTab(2), group_tree_node);
+
+  session_service()->ResetFromCurrentBrowsers();
+}
+
+IN_PROC_BROWSER_TEST_F(
+    BraveTreeTabSessionRestoreOnRelaunchBrowserTest,
+    RestoreClosedWindowPreservesGroupWithSplitInTreeHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  ASSERT_GE(brave_tab_strip_model()->count(), 3)
+      << "Restored window should have at least three tabs";
+
+  const auto* restored_coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(restored_coll_a) << "Tab A must be in a tree node after restore";
+
+  // Tab B must be inside a group (tabs inside a split inside a group are
+  // restored to the group's level; the split may be re-created separately).
+  const tabs::TreeTabNodeTabCollection* nearest_b =
+      GetNearestTreeCollectionForTab(1);
+  ASSERT_TRUE(nearest_b)
+      << "Tab B must be inside a tree node (via group) after restore";
+
+  // The group's tree_node (nearest ancestor of B) must be under tree_node_A.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return nearest_b->GetParentCollection() == restored_coll_a;
+  })) << "Restored group's tree_node must be nested under A's tree_node";
+}
+
+// ── Restore-closed-tab hierarchy tests ──────────────────────────────────────
+//
+// These tests verify the Ctrl+Shift+T (TabRestoreService) path for group and
+// split tabs.  The hierarchy must be preserved when a tab inside a grouped or
+// split tree node is closed and then re-opened.
+
+// Closing one tab from a group that is nested under tree_node_A and then
+// restoring it via chrome::RestoreTab must keep the group's tree_node under A.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       RestoreClosedGroupTabRestoresGroupHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+  EnsureTabGroupSyncServiceInitialized();
+
+  // Build: A (root) → B (child of A) and C (child of B).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
+
+  auto* tab_b_iface = browser()->tab_strip_model()->GetTabAtIndex(1);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_b_iface);
+
+  // Group B and C → tree_node_G child of tree_node_A.
+  tab_groups::TabGroupId group_id =
+      brave_tab_strip_model()->AddToNewGroup({1, 2});
+  ASSERT_TRUE(
+      brave_tab_strip_model()->group_model()->ContainsTabGroup(group_id));
+
+  // Capture the collection pointers before closing.
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  const tabs::TabCollection* group_coll =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(group_coll->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_tree_node =
+      group_coll->GetParentCollection();
+  ASSERT_EQ(group_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(group_tree_node->GetParentCollection(), coll_a)
+      << "group's tree_node must be a child of tree_node_A before close";
+
+  // Close tab B (C remains, so the group and its tree_node survive).
+  browser()->tab_strip_model()->CloseWebContentsAt(
+      1, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Restore tab B via chrome::RestoreTab (Ctrl+Shift+T equivalent).
+  ui_test_utils::TabAddedWaiter tab_added_waiter(browser());
+  chrome::RestoreTab(browser());
+  tab_added_waiter.Wait();
+  ASSERT_EQ(3, browser()->tab_strip_model()->count());
+
+  // After restoration, the group's tree_node must still be under tree_node_A.
+  const tabs::TabCollection* restored_group =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(restored_group->type(), tabs::TabCollection::Type::GROUP)
+      << "Restored tab B must be inside a group";
+  const tabs::TabCollection* restored_group_tree_node =
+      restored_group->GetParentCollection();
+  ASSERT_EQ(restored_group_tree_node->type(),
+            tabs::TabCollection::Type::TREE_NODE)
+      << "Group must be wrapped in a tree node";
+  EXPECT_EQ(restored_group_tree_node->GetParentCollection(), coll_a)
+      << "Restored group's tree_node must remain nested under A's tree_node";
+}
+
+// Closing one tab from a split that is nested under tree_node_A dissolves the
+// split.  After restoring the tab, its new tree node (or the re-created split's
+// tree node) must still be nested under tree_node_A.
+IN_PROC_BROWSER_TEST_F(BraveTreeTabSessionRestoreBrowserTest,
+                       RestoreClosedSplitTabRestoresHierarchy) {
+  ASSERT_TRUE(brave_tab_strip_model()->tree_model());
+
+  // Build: A (root) → B (child of A) and C (child of B).
+  auto* tab_a_iface = browser()->tab_strip_model()->GetTabAtIndex(0);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_a_iface);
+
+  auto* tab_b_iface = browser()->tab_strip_model()->GetTabAtIndex(1);
+  AddTabWithOptionalOpenerAndNavigate(GURL("about:blank"), tab_b_iface);
+
+  // Split B and C → tree_node_S child of tree_node_A.
+  CreateSplitWithTabs(1, 2);
+
+  const auto* coll_a = GetTreeCollectionForTab(0);
+  ASSERT_TRUE(coll_a);
+  const tabs::TabCollection* split_coll =
+      brave_tab_strip_model()->GetTabAtIndex(1)->GetParentCollection();
+  ASSERT_EQ(split_coll->type(), tabs::TabCollection::Type::SPLIT);
+  const tabs::TabCollection* split_tree_node =
+      split_coll->GetParentCollection();
+  ASSERT_EQ(split_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(split_tree_node->GetParentCollection(), coll_a)
+      << "split's tree_node must be a child of tree_node_A before close";
+
+  // Close tab B. Closing one tab of a split dissolves the split; C remains as
+  // a standalone tab wrapped in its own tree node.
+  browser()->tab_strip_model()->CloseWebContentsAt(
+      1, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  ASSERT_EQ(2, browser()->tab_strip_model()->count());
+
+  // Restore tab B.
+  ui_test_utils::TabAddedWaiter tab_added_waiter(browser());
+  chrome::RestoreTab(browser());
+  tab_added_waiter.Wait();
+  ASSERT_EQ(3, browser()->tab_strip_model()->count());
+
+  // The restored tab B's nearest tree node must be under tree_node_A.
+  // B is restored as a standalone tree node (the split was dissolved when B
+  // was closed), so MaybeRestoreTabTreeHierarchy puts it back under A.
+  const tabs::TreeTabNodeTabCollection* restored_nearest_b =
+      GetNearestTreeCollectionForTab(1);
+  ASSERT_TRUE(restored_nearest_b)
+      << "Restored tab B must be inside a tree node";
+  EXPECT_EQ(restored_nearest_b->GetParentCollection(), coll_a)
+      << "Restored tab B's tree node must be nested under A's tree_node";
 }
