@@ -5,11 +5,17 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Tests for the recipe engine's DEPS resolution and property binding."""
 
+# White-box tests: they exercise engine internals (`_Engine`,
+# `_instantiate_module`, `_build_properties`, ...), so protected-access is
+# intentional.
+# pylint: disable=protected-access
+
 import os
 import sys
 import types
 import unittest
 from dataclasses import dataclass
+from pathlib import Path
 from unittest import mock
 
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -99,6 +105,33 @@ class RunRecipeTest(unittest.TestCase):
             with self.assertRaises(RuntimeError):
                 engine.run_recipe('group/sub/my_recipe', {})
         import_module.assert_called_once_with('recipes.group.sub.my_recipe')
+
+
+class WorkspaceTest(unittest.TestCase):
+    """The engine seeds its workspace; the `path` module derives job paths."""
+
+    def test_workspace_seeded_into_path_module(self):
+        eng = engine._Engine(workspace='/tmp/ws')
+        path = eng._instantiate_module('path', [])
+        workspace = Path('/tmp/ws').resolve()
+        self.assertEqual(path.workspace, workspace)
+        self.assertEqual(path.chromium_src, workspace / 'chromium/src')
+        self.assertEqual(path.brave_core, workspace / 'chromium/src/brave')
+        self.assertEqual(path.out, workspace / 'out')
+
+    def test_workspace_defaults_to_cwd(self):
+        path = engine._Engine()._instantiate_module('path', [])
+        self.assertEqual(path.workspace, Path.cwd())
+
+    def test_brave_core_ref_seeded_with_override(self):
+        module = engine._Engine(
+            brave_core_ref='feature/x')._instantiate_module(
+                'brave_core_shallow', [])
+        self.assertEqual(getattr(module, '_brave_core_ref'), 'feature/x')
+
+    def test_brave_core_ref_defaults_to_master(self):
+        module = engine._Engine()._instantiate_module('brave_core_shallow', [])
+        self.assertEqual(getattr(module, '_brave_core_ref'), 'master')
 
 
 if __name__ == '__main__':
