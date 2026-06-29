@@ -20,7 +20,6 @@ class BrowserWindowInterface;
 class Profile;
 class SidePanelRegistry;
 class SidePanelEntryScope;
-class SidePanelWebUIView;
 class WalletSidePanelContentsWrapper;
 
 // Manages the lifecycle and registration of the Wallet side panel entry.
@@ -30,7 +29,7 @@ class WalletSidePanelContentsWrapper;
 class WalletSidePanelCoordinator : public views::ViewObserver,
                                    public TabStripModelObserver {
  public:
-  WalletSidePanelCoordinator(BrowserWindowInterface* browser, Profile* profile);
+  explicit WalletSidePanelCoordinator(BrowserWindowInterface* browser);
   WalletSidePanelCoordinator(const WalletSidePanelCoordinator&) = delete;
   WalletSidePanelCoordinator& operator=(const WalletSidePanelCoordinator&) =
       delete;
@@ -38,12 +37,10 @@ class WalletSidePanelCoordinator : public views::ViewObserver,
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
-  // Navigates the side panel's web contents to the given URL. Used to route
-  // the already-open panel to the correct screen for incoming dapp requests
-  // (connection, switch chain, add chain, add token, sign, etc.).
+  // Navigates the side panel's web contents to the given wallet-panel URL.
+  // Used to route the already-open panel to the correct screen for incoming
+  // dapp requests (connection, switch chain, add chain, add token, sign, etc.).
   void Navigate(const GURL& url);
-
-  SidePanelWebUIView* side_panel_web_view() { return side_panel_web_view_; }
 
   // views::ViewObserver:
   void OnViewIsDeleting(views::View* view) override;
@@ -62,7 +59,6 @@ class WalletSidePanelCoordinator : public views::ViewObserver,
       this};
 
   raw_ptr<SidePanelRegistry> registry_ = nullptr;
-  raw_ptr<SidePanelWebUIView> side_panel_web_view_ = nullptr;
 
   base::WeakPtrFactory<WalletSidePanelCoordinator> weak_ptr_factory_{this};
 };

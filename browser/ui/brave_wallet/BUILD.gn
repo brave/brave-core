@@ -14,7 +14,7 @@ source_set("brave_wallet") {
 
   deps = [
     "//chrome/browser/ui/browser_window",
-    "//chrome/browser/ui/tabs:tab_strip",
+    "//components/tabs:public",
     "//url",
   ]
 }

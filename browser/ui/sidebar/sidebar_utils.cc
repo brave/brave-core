@@ -10,6 +10,7 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/command_line.h"
+#include "base/feature_list.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -44,6 +45,7 @@
 #include "content/public/common/url_constants.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif
 
@@ -293,6 +295,15 @@ std::optional<SidePanelEntryId> GetLastUsedSidePanel(
   PrefService* prefs = browser->GetProfile()->GetPrefs();
   BuiltInItemType type =
       static_cast<BuiltInItemType>(prefs->GetInteger(kLastUsedBuiltInItemType));
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+  // Wallet may be the last-used panel while kBraveWalletSidePanel is off after
+  // relaunch, but the entry is not registered in that state.
+  if (type == BuiltInItemType::kWallet &&
+      !base::FeatureList::IsEnabled(
+          brave_wallet::features::kBraveWalletSidePanel)) {
+    return std::nullopt;
+  }
+#endif
   // If cached type item is not included in current model, return null.
   if (!browser->GetFeatures().sidebar_controller()->model()->GetIndexOf(type)) {
     return std::nullopt;

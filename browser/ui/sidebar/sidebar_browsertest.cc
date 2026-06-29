@@ -274,22 +274,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// Wallet sidebar tests with kBraveWalletSidePanel disabled: wallet item
-// behaves as a web-type item that opens in a tab.
-class SidebarBrowserTestWalletSidePanelDisabled : public SidebarBrowserTest {
- public:
-  SidebarBrowserTestWalletSidePanelDisabled() {
-    wallet_feature_.InitAndDisableFeature(
-        brave_wallet::features::kBraveWalletSidePanel);
-  }
-
- private:
-  base::test::ScopedFeatureList wallet_feature_;
-};
-
-// Category A: web-type wallet item behavior (kBraveWalletSidePanel disabled).
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanelDisabled,
-                       IterateBuiltInWebTypeTest) {
+// Wallet sidebar item opens as a web-type tab by default (flag off).
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
@@ -374,9 +360,6 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
   std::optional<size_t> ActivateWalletPanel() {
     auto index = model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet);
     EXPECT_TRUE(index.has_value());
-    if (!index.has_value()) {
-      return std::nullopt;
-    }
 
     controller()->ActivatePanelItem(SidebarItem::BuiltInItemType::kWallet);
 
@@ -393,17 +376,16 @@ class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {
   base::test::ScopedFeatureList wallet_feature_;
 };
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel, WalletItemIsPanel) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel, WalletSidePanel) {
   const auto items = model()->GetAllSidebarItems();
   const auto wallet_item_iter =
       std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
                         &SidebarItem::built_in_item_type);
   ASSERT_NE(wallet_item_iter, items.cend());
   EXPECT_TRUE(wallet_item_iter->open_in_panel);
-}
 
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
-                       WalletSidePanelOpens) {
+  const int initial_tab_count = tab_model()->count();
+
   ActivateWalletPanel();
 
   auto* panel_ui = browser()->GetFeatures().side_panel_ui();
@@ -411,13 +393,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
   auto current_entry = panel_ui->GetCurrentEntryId();
   ASSERT_TRUE(current_entry.has_value());
   EXPECT_EQ(SidePanelEntryId::kWallet, *current_entry);
-}
-
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
-                       WalletSidePanelDoesNotCreateTab) {
-  const int initial_tab_count = tab_model()->count();
-
-  ActivateWalletPanel();
 
   // Opening wallet as a side panel should not create a new tab.
   EXPECT_EQ(initial_tab_count, tab_model()->count());

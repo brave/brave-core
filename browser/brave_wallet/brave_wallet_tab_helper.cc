@@ -28,15 +28,10 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
-// TODO(https://github.com/brave/brave-browser/issues/55073): Fix nogncheck by
-// splitting this tab helper.
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
 #include "brave/browser/ui/brave_wallet/wallet_side_panel_utils.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"  // nogncheck
-#include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "ui/views/widget/widget.h"
+#include "components/tabs/public/tab_interface.h"
 #endif
 
 namespace brave_wallet {
@@ -50,14 +45,10 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
                                                            host_id);
 }
 
-#if !BUILDFLAG(IS_ANDROID)
 bool IsWebContentsActive(content::WebContents& web_contents) {
-  if (auto* bwi = GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
-    return bwi->GetTabStripModel()->GetActiveWebContents() == &web_contents;
-  }
-  return false;
+  auto* tab = tabs::TabInterface::MaybeGetFromContents(&web_contents);
+  return tab && tab->IsActivated();
 }
-#endif
 
 }  // namespace
 

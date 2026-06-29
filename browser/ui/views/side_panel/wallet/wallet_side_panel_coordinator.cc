@@ -8,9 +8,9 @@
 #include <memory>
 #include <utility>
 
+#include "base/check.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_contents_wrapper.h"
-#include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -19,20 +19,16 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "components/grit/brave_components_strings.h"
-#include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/visibility.h"
-#include "content/public/browser/web_contents.h"
 #include "content/public/common/url_constants.h"
-#include "ui/base/page_transition_types.h"
 
 WalletSidePanelCoordinator::WalletSidePanelCoordinator(
-    BrowserWindowInterface* browser,
-    Profile* profile)
-    : browser_(browser), profile_(profile) {
+    BrowserWindowInterface* browser)
+    : browser_(browser), profile_(browser->GetProfile()) {
   browser_->GetTabStripModel()->AddObserver(this);
 }
 
 WalletSidePanelCoordinator::~WalletSidePanelCoordinator() {
+  browser_->GetTabStripModel()->RemoveObserver(this);
   // Explicitly deregister so the registry doesn't hold a stale callback
   // pointing at this destroyed coordinator.
   if (registry_) {
@@ -58,26 +54,14 @@ void WalletSidePanelCoordinator::CreateAndRegisterEntry(
 }
 
 void WalletSidePanelCoordinator::Navigate(const GURL& url) {
-  if (!contents_wrapper_) {
-    return;
-  }
-  if (!url.SchemeIs(content::kChromeUIScheme) ||
-      url.host() != brave_wallet::kWalletPanelHost) {
-    return;
-  }
-  contents_wrapper_->web_contents()->GetController().LoadURL(
-      url, content::Referrer(), ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
-      std::string());
-  // LoadURL creates a new WebUI instance, so re-bind the embedder so the
-  // new WalletPanelUI can communicate back to its host (e.g. ShowUI/CloseUI).
-  if (auto* controller = contents_wrapper_->GetWebUIController()) {
-    controller->set_embedder(contents_wrapper_->GetWeakPtr());
-  }
+  CHECK(contents_wrapper_);
+  CHECK(url.SchemeIs(content::kChromeUIScheme));
+  CHECK_EQ(url.host(), brave_wallet::kWalletPanelHost);
+  contents_wrapper_->NavigateTo(url);
 }
 
 void WalletSidePanelCoordinator::OnViewIsDeleting(views::View* view) {
   view_observation_.Reset();
-  side_panel_web_view_ = nullptr;
   contents_wrapper_.reset();
 }
 
@@ -85,10 +69,8 @@ void WalletSidePanelCoordinator::WillCloseAllTabs(
     TabStripModel* tab_strip_model) {
   // WalletPanelUI holds a raw_ptr to the active tab's WebContents. Destroy the
   // contents wrapper (and with it WalletPanelUI) before the tabs are closed to
-  // prevent a dangling pointer. Also stop observing the view and clear the
-  // view pointer since the wrapper it references is being destroyed.
+  // prevent a dangling pointer.
   view_observation_.Reset();
-  side_panel_web_view_ = nullptr;
   contents_wrapper_.reset();
 }
 
@@ -96,23 +78,15 @@ std::unique_ptr<views::View> WalletSidePanelCoordinator::CreateWebView(
     SidePanelEntryScope& scope) {
   // Create a fresh contents wrapper each time the panel is shown. The wrapper
   // is destroyed in OnViewIsDeleting when the panel closes.
-  if (!contents_wrapper_) {
-    contents_wrapper_ = std::make_unique<WalletSidePanelContentsWrapper>(
-        GURL(brave_wallet::kWalletPanelURL), profile_,
-        IDS_SIDEBAR_WALLET_ITEM_TITLE,
-        /*esc_closes_ui=*/false);
-    contents_wrapper_->ReloadWebContents();
-  } else {
-    contents_wrapper_->web_contents()->UpdateWebContentsVisibility(
-        content::Visibility::VISIBLE);
-  }
+  contents_wrapper_ = std::make_unique<WalletSidePanelContentsWrapper>(
+      GURL(brave_wallet::kWalletPanelURL), profile_,
+      IDS_SIDEBAR_WALLET_ITEM_TITLE,
+      /*esc_closes_ui=*/false);
+  contents_wrapper_->ReloadWebContents();
 
   auto web_view = std::make_unique<SidePanelWebUIView>(
       scope, /*on_show_cb=*/base::RepeatingClosure(),
       /*close_cb=*/base::DoNothing(), contents_wrapper_.get());
-  side_panel_web_view_ = web_view.get();
-
-  web_view->ShowUI();
 
   view_observation_.Observe(web_view.get());
 

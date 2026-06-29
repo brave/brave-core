@@ -84,10 +84,9 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
     return wallet_side_panel_coordinator_.get();
   }
 
-  // If the wallet side panel is currently visible, navigates it to |url| and
-  // returns true. Returns false if the side panel isn't active or wallet isn't
-  // enabled. Used by the bubble delegate to route dapp requests to an
-  // already-open side panel instead of creating a popup.
+  // Routes |url| to the wallet side panel when it is showing. Lives on
+  // BrowserWindowFeatures to avoid a GN dependency cycle between tab_helper and
+  // the wallet side panel coordinator.
   bool NavigateWalletSidePanelIfActive(const GURL& url);
 #endif
 

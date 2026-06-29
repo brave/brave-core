@@ -74,7 +74,7 @@ source_set("sidebar_impl") {
   ]
 
   if (enable_brave_wallet) {
-    deps += [ "//brave/components/brave_wallet/common:common_constants" ]
+    deps += [ "//brave/components/brave_wallet/common" ]
   }
 }
 
