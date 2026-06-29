@@ -37,11 +37,16 @@ import launcher
 # The directory this script lives in — the one we add to `$PATH`.
 BOOTSTRAP_DIR = Path(__file__).resolve().parent
 
-# The shim commands this directory puts on `$PATH`, derived from the launcher's
-# tool registry so new tools only need to be added in one place
-# (`launcher.TOOL_PATHS`). Used to detect an existing install via `shutil.which`
+# The shim commands used to detect an existing install via `shutil.which`
 # (which also resolves the `.bat` variants on Windows through `PATHEXT`).
-SHIM_COMMANDS = tuple(launcher.TOOL_PATHS)
+# Derived from `launcher.SHIM_TARGETS` so new tools only need to be added in one
+# place. The node/npm shims (the `node-*` / `npm-*` family targets) are
+# deliberately excluded: their names collide with system executables, so a
+# machine-wide `node`/`npm` would falsely look like a prior install. Their shim
+# files still ship in this directory and activate the moment it lands on
+# `$PATH`.
+SHIM_COMMANDS = tuple(name for name in launcher.SHIM_TARGETS
+                      if not name.startswith(launcher.BINARY_FAMILIES))
 
 # Markers delimiting the block we manage inside POSIX rc files. Fixed strings
 # (independent of the checkout) so re-installing from another checkout simply
