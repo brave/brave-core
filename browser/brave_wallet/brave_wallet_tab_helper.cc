@@ -45,10 +45,12 @@ std::unique_ptr<BraveWalletProviderDelegate> CreateDelegate(
                                                            host_id);
 }
 
+#if !BUILDFLAG(IS_ANDROID)
 bool IsWebContentsActive(content::WebContents& web_contents) {
   auto* tab = tabs::TabInterface::MaybeGetFromContents(&web_contents);
   return tab && tab->IsActivated();
 }
+#endif
 
 }  // namespace
 
