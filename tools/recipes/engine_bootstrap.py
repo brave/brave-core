@@ -36,6 +36,7 @@ import argparse
 import json
 import logging
 from pathlib import Path
+import shutil
 import subprocess
 import sys
 
@@ -77,22 +78,22 @@ def _brave_core_dest(properties_json: str) -> str:
 def _deploy_recipes(dest: str | Path) -> Path:
     """Shallow-, sparse-clone brave-core's `tools/recipes/` into *dest*.
 
-    Mirrors the `brave_core_shallow` recipe module (which it cannot import yet,
-    since nothing is checked out): clone when *dest* is not a checkout, then
-    `sparse-checkout add` the engine tree. `add` (not `set`) leaves the recipe
-    free to add its own paths (e.g. `tools/cr/toolchains`) to this checkout.
+    *dest* is always wiped first so every run starts from a clean checkout --
+    no stale sparse state, and no partial clone left by a failed prior run. The
+    recipe then reuses this fresh checkout (the `brave_core_shallow` module
+    `sparse-checkout add`s its own paths, e.g. `tools/cr/toolchains`).
 
     Returns the path to the checked-out `engine.py`.
     """
     dest = Path(dest).expanduser().resolve()
 
-    if (dest / '.git').is_dir():
-        logging.info('brave-core checkout already present at %s', dest)
-    else:
-        dest.parent.mkdir(parents=True, exist_ok=True)
-        _run('git', 'clone', '--depth', '2', '--filter=blob:none', '--sparse',
-             '--branch', BRAVE_CORE_REF, REPO_URL, dest)
+    if dest.exists():
+        logging.info('Removing existing checkout at %s', dest)
+        shutil.rmtree(dest)
 
+    dest.parent.mkdir(parents=True, exist_ok=True)
+    _run('git', 'clone', '--depth', '2', '--filter=blob:none', '--sparse',
+         '--branch', BRAVE_CORE_REF, REPO_URL, dest)
     _run('git', '-C', dest, 'sparse-checkout', 'add', RECIPES_PATH)
 
     engine = dest / RECIPES_PATH / 'engine.py'

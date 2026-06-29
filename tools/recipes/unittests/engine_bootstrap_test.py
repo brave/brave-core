@@ -7,6 +7,7 @@
 
 import os
 import sys
+import tempfile
 import types
 import unittest
 from pathlib import Path
@@ -55,6 +56,25 @@ class MainForwardingTest(unittest.TestCase):
         forwarded = run.call_args[0][0]
         self.assertEqual(forwarded[0], sys.executable)
         self.assertEqual(forwarded[1:], [str(engine_path), *argv])
+
+
+class DeployRecipesTest(unittest.TestCase):
+    """_deploy_recipes wipes the destination before cloning."""
+
+    def test_nukes_existing_dest(self):
+        with tempfile.TemporaryDirectory() as work:
+            dest = Path(work) / 'bc'
+            engine_file = dest / bootstrap.RECIPES_PATH / 'engine.py'
+            engine_file.parent.mkdir(parents=True)
+            engine_file.write_text('', encoding='utf-8', newline='')
+            # rmtree is mocked, so the pre-created engine file survives the
+            # is_file() check; _run is mocked so no real git runs.
+            with mock.patch.object(bootstrap, '_run') as run, \
+                 mock.patch.object(bootstrap.shutil, 'rmtree') as rmtree:
+                result = bootstrap._deploy_recipes(dest)
+        rmtree.assert_called_once_with(dest.resolve())
+        self.assertTrue(run.called)
+        self.assertEqual(result, engine_file.resolve())
 
 
 if __name__ == '__main__':
