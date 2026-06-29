@@ -186,5 +186,31 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Placeholder for the email input field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     youremail@example.com
   </message>
-
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    Walmart ✦
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    lion.paw.
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    75
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    2947
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL" desc="Label for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    Register on Wal…
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    store.com
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    …ealias.com
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    cat.mane.
+  </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="The end part of placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    @bravealias.com
+  </message>
 </grit-part>

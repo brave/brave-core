@@ -138,7 +138,7 @@ const LabelChipGroup = styled(Col)`
 `
 
 const AliasPart = styled.span`
-  color: #7c3aed;
+  color: ${color.purple[50]};
 `
 
 const AliasNumber = styled.span`
@@ -216,11 +216,11 @@ const EmailAliasesPromo = ({
                     <CardsRow>
                         {/* Left — faded Walmart card */}
                         <SiteCard $faded>
-                            <SiteTitle style={{ color: '#0071ce' }}>Walmart ✦</SiteTitle>
-                            <Label>Register on Wal…</Label>
+                            <SiteTitle style={{ color: `${color.blue[50]}` }}>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND)}</SiteTitle>
+                            <Label>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL)}</Label>
                             <AliasChip>
-                                <AliasPart>lion.paw.</AliasPart>
-                                <AliasNumber>75</AliasNumber>
+                                <AliasPart>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</AliasPart>
+                                <AliasNumber>{getLocale(S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX)}</AliasNumber>
                                 <span>…</span>
                             </AliasChip>
                         </SiteCard>
@@ -231,9 +231,9 @@ const EmailAliasesPromo = ({
                             <LabelChipGroup>
                                 <Label>{getLocale(S.EMAIL_ALIASES_PROMO_EMAIL_LABEL)}</Label>
                                 <AliasChipFocused>
-                                    <AliasPart>cat.mane.</AliasPart>
-                                    <AliasNumber>2947</AliasNumber>
-                                    <span>@bravealias.com</span>
+                                    <AliasPart>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</AliasPart>
+                                    <AliasNumber>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX)}</AliasNumber>
+                                    <span>{getLocale(S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END)}</span>
                                 </AliasChipFocused>
                             </LabelChipGroup>
                         </SiteCardFocused>
@@ -241,11 +241,11 @@ const EmailAliasesPromo = ({
                         {/* Right — faded generic store card */}
                         <SiteCard $faded>
                             <SiteTitle style={{ color: color.text.secondary }}>
-                                store.com
+                                {getLocale(S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND)}
                             </SiteTitle>
                             <Label>&nbsp;</Label>
                             <AliasChip>
-                                <span>…ealias.com</span>
+                                <span>{getLocale(S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER)}</span>
                             </AliasChip>
                         </SiteCard>
                     </CardsRow>

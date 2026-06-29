@@ -85,7 +85,9 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesMetrics& metrics() { return metrics_; }
 
+  // Returns true if the promo should be shown to the user.
   bool ShouldShowPromo() const;
+  // Sets the promo as shown to the user.
   void StopShowPromo();
 
  private:

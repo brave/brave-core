@@ -245,18 +245,9 @@ void EmailAliasesController::OpenSettingsPage(
   if (method) {
     email_aliases_service_->metrics().RecordSettingsPageNavigation(*method);
   }
-  LOG(INFO) << "[EA] " << "\r\nStack:\r\n" << base::debug::StackTrace();
-  LOG(INFO) << "[EA] EmailAliasesController::OpenSettingsPage: IsPromoShown: "
-            << email_aliases_service_->ShouldShowPromo()
-            << " initiator: " << (initiator ? "true" : "false");
 
   if (email_aliases_service_->ShouldShowPromo() && initiator) {
-    LOG(INFO)
-        << "[EA] EmailAliasesController::OpenSettingsPage: Show promo dialog";
-    // TODO Here we have to initiate the showing of the promo dialog and as
-    // callback parameter add there opening of the EmailAliases settings page
     ShowPromoBubble(initiator);
-
   } else {
     ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                    GURL(kEmailAliasesSettingsURL));
