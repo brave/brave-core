@@ -16,6 +16,7 @@ source_set("wireguard") {
   deps = [
     "credentials",
     "//base",
+    "//brave/components/brave_vpn/browser:v1_helper",
     "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",

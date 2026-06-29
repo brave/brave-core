@@ -35,6 +35,10 @@ void SetSkusCredential(PrefService* local_prefs,
 void SetSkusCredentialFetchingRetried(PrefService* local_prefs, bool retried);
 bool IsRetriedSkusCredential(PrefService* local_prefs);
 base::Time GetExpirationTimeForSkusCredential(PrefService* local_prefs);
+bool HasValidSubscriberCredential(PrefService* local_prefs);
+std::string GetSubscriberCredential(PrefService* local_prefs);
+bool HasValidSkusCredential(PrefService* local_prefs);
+std::string GetSkusCredential(PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

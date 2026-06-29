@@ -27,19 +27,34 @@ static_library("browser") {
   deps = [ "//brave/components/brave_vpn/common" ]
 }
 
+static_library("v1_helper") {
+  sources = [
+    "brave_vpn_service_helper.cc",
+    "brave_vpn_service_helper.h",
+  ]
+
+  public_deps = [ "//brave/components/brave_vpn/common/mojom" ]
+
+  deps = [
+    "//base",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/browser",
+    "//components/prefs",
+  ]
+}
+
 static_library("v1_utils") {
   sources = [
     "brave_vpn_metrics.cc",
     "brave_vpn_metrics.h",
     "brave_vpn_service_delegate.h",
-    "brave_vpn_service_helper.cc",
-    "brave_vpn_service_helper.h",
     "brave_vpn_service_impl.cc",
     "brave_vpn_service_impl.h",
   ]
 
   public_deps = [
     ":browser",
+    ":v1_helper",
     "api",
     "connection:api",
     "//base",

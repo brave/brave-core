@@ -37,10 +37,6 @@ void MigrateLocalStatePrefs(PrefService* local_prefs);
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 void RegisterAndroidProfilePrefs(PrefRegistrySimple* registry);
 void ClearSubscriberCredential(PrefService* local_prefs);
-bool HasValidSubscriberCredential(PrefService* local_prefs);
-std::string GetSubscriberCredential(PrefService* local_prefs);
-bool HasValidSkusCredential(PrefService* local_prefs);
-std::string GetSkusCredential(PrefService* local_prefs);
 bool IsBraveVPNWireguardEnabled(PrefService* local_state);
 GURL GetManageURLForUIType(mojom::ManageURLType type, const GURL& manage_url);
 
