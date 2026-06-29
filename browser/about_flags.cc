@@ -83,7 +83,7 @@
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "chrome/browser/flags/android/chrome_feature_list.h"
 #else
-#include "brave/browser/ui/views/tabs/switches.h"
+#include "brave/browser/ui/tabs/public/switches.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"

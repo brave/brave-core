@@ -700,7 +700,6 @@ source_set("ui") {
       "//brave/browser/ui/views/frame:frame_impl",
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",
-      "//brave/browser/ui/views/tabs",
       "//brave/browser/ui/views/tabs/accent_color",
       "//chrome/browser:shell_integration",
       "//chrome/browser/devtools",

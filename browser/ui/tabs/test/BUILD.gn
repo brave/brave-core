@@ -63,6 +63,7 @@ source_set("unit_tests") {
     sources += [
       "tab_style_unittest.cc",
       "tree_tab_node_tab_collection_unittest.cc",
+      "vertical_tab_controller_unittest.cc",
     ]
     deps += [
       "//brave/browser/ui/tabs:tabs_public",
