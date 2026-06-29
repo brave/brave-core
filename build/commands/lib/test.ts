@@ -18,12 +18,12 @@ import {
 } from './testUtils.js'
 import { isCI, isTeamcity } from './ciDetect.ts'
 
-const test = async (
-  passthroughArgs,
-  suite,
-  buildConfig = Config.defaultBuildConfig,
-  options = {},
-) => {
+async function test(
+  passthroughArgs: string[],
+  suite: string,
+  buildConfig: string = Config.defaultBuildConfig,
+  options: Record<string, any> = {},
+) {
   Config.buildConfig = buildConfig
   Config.update(options)
 
@@ -81,7 +81,7 @@ const runTests = async (
   // Clear previous results file
   deleteFile(allResultsFilePath)
 
-  let braveArgs = []
+  let braveArgs: string[] = []
 
   if (!isJunitTestSuite) {
     braveArgs.push('--enable-logging=stderr')
@@ -242,7 +242,7 @@ const runTests = async (
       runOptions.stdio = 'inherit'
     }
 
-    let progStatus = undefined
+    let progStatus: number | null = null
 
     if (config.isIOS()) {
       const outputDir = path.join(config.outputDir, `run_${testSuite}_out`)
