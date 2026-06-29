@@ -221,7 +221,9 @@
 -AdNavigationEntryBrowserTest.*
 -AdTaggingBrowserTest.*
 -AdTaggingFencedFrameBrowserTest.*
+-AdsPageLoadMetricsObserverBrowserTest.*
 -AdsPageLoadMetricsObserverResourceBrowserTest.*
+-AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
 -All/AdsPageLoadMetricsObserverRecordedUKMMetricsTest.*
 -BackToAdInterventionDisabledBrowserTest.*
 -Browser/SubresourceFilterDnsAliasFilteringThrottleBrowserTest.*
@@ -439,6 +441,7 @@
 -WebAppNavigationCapturingIntentPickerBrowserTest.*
 
 # These tests fail because kPrerender2 feature is disabled.
+-All/AmpPageLoadMetricsBrowserTest.*
 -All/HTTPCacheSearchPreloadUnifiedBrowserTest.BackwardHitHttpCache/*
 -All/HostedAppTestWithPrerendering.*
 -All/PrerenderPageLoadMetricsBrowserTestWithInitialWebUIParam.PrerenderingDoNotRecordUKM/*
@@ -598,6 +601,13 @@
 -PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.CrossOrigin_Enrolled_Success
 -PrivacySandboxSettingsAttestPrivateAggregationInProtectedAudienceBrowserTest.CrossOrigin_NotEnrolled_Failure
 -PrivacySandboxSettingsAttestProtectedAudienceBrowserTest.Join_RunAdAuction_Enrollment
+
+# These tests fail because they use runAdAuction which is part of the privacy
+# sandbox API (Protected Audience API, formerly FLEDGE).
+-All/DeclarativeNetRequestBrowserTest.BlockRequests_TopDomains/*
+-All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsBlockRedirect/*
+-All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsBlockRequests/*
+-All/DeclarativeNetRequestBrowserTest.ProtectedAudienceNetworkRequestsModifyHeaders/*
 
 # These tests fail because we disable privacy_sandbox::kPrivacySandboxSettings4
 -PrivacySandboxRestrictedNoticeConfirmationTest.RestrictedNoticeTest/*
@@ -964,6 +974,9 @@
 
 # These tests fail because we change the default value for kPromptForDownload to
 # true.
+-All/DownloadFramePolicyBrowserTest_UpdateIframeSandboxFlags.*
+-All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/0
+-All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
 -All/PDFExtensionTest.SandboxedPdfIframeNavigationDownloads/*
 -All/PolicyUILogsPageTest.DownloadLogs/*
 -AutomaticDownloadsPolicyTest.*
@@ -1527,6 +1540,14 @@
 -WallpaperSearchBrowserTest.EnablingWallpaperSearchEnables
 
 # These tests fail because we do not allow most request client hints
+-All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
+-All/ClientHintsBrowserTestForMetaTagTypes.*
+-ClientHintsBrowserTest.*
+-ClientHintsBrowserTestWithEmulatedMedia.*
+-ClientHintsCommandLineSwitchBrowserTest.*
+-ClientHintsUserAgentOverrideDevTools.*
+-ClientHintsWebHoldbackBrowserTest.EffectiveConnectionTypeChangeNotified
+-CriticalClientHintsBrowserTest.CriticalClientHintInRequestHeader
 -QUICClientHintsTest.BasicQUICAlps
 -RedirectUaReductionBrowserTest.NormalRedirectRequest
 -SameOriginUaReductionBrowserTest.IframeRequestUaReduction
@@ -2410,19 +2431,13 @@
 # This test fails because we disable kEnableTabMuting.
 -TabViewTest.AlertIndicatorMuteEnabled
 
-# Tests below this point have not been diagnosed or had issues created yet.
--AdsPageLoadMetricsObserverBrowserTest.*
--AdsPageLoadMetricsObserverSurfaceBrowserTest.DetectedAsAd/*
--All/AmpPageLoadMetricsBrowserTest.*
+# These tests fail because we override ShouldOfferClickToCallForURL to always
+# return false.
 -All/ClickToCallPolicyTest.*
--All/ClientHintsBrowserTestForBlockAcceptClientHintsExperiment.Block/*
--All/ClientHintsBrowserTestForMetaTagTypes.*
--All/DeclarativeNetRequestBrowserTest.*
--All/DeclarativeNetRequestBrowserTest_Packed.BrowserRestart/0
--All/DeclarativeNetRequestGlobalRulesBrowserTest_Packed.GlobalRulesBrowserRestart/0
--All/DownloadFramePolicyBrowserTest_UpdateIframeSandboxFlags.*
--All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/0
--All/DownloadReferrerPolicyTest.DownloadCrossDomainReferrerPolicy/2
+-ClickToCallBrowserTest.*
+
+# Tests below this point have not been diagnosed or had issues created yet.
+-All/DeclarativeNetRequestBrowserTest.RendererCacheCleared/*
 -All/FromGWSNavigationAndKeepAliveRequestBrowserTest.TwoDifferentCategoryRequestAndTwoDifferentCategoryNavigationsFromSRP/*
 -All/GetAuthTokenFunctionEnableGranularPermissionsTest.EnableGranularPermissions/*
 -All/HeadlessModeDumpDomCommandBrowserTestWithSubResourceTimeout.HeadlessDumpDomWithSubResourceTimeout/*
@@ -2459,9 +2474,6 @@
 -AllowlistedUrlDeepScanningBrowserTest.*
 -AnchorElementPreloaderBrowserTest.*
 -AnchorElementPreloaderHoldbackBrowserTest.PreconnectHoldbackTest
--AvatarMenuBrowserTest.AddNewProfile
--AvatarMenuBrowserTest.EditProfile_NotLoaded
--AvatarToolbarButtonBrowserTest.*
 -BackForwardCachePageLoadMetricsObserverBrowserTest.*
 -BackForwardCachePrintBrowserTest.*
 -BackForwardCacheSiteDetailsBrowserTest.*
@@ -2485,8 +2497,8 @@
 -BrowsingDataCounterUtilsBrowserTest.*
 -BrowsingDataHistoryRemoverBrowserTest.*/*
 -BrowsingDataRemoverBrowserTest.*
--CaptivePortalBlockingPageTest.*
--CaptivePortalBrowserTest.*
+-CaptivePortalBrowserTest.Disabled
+-CaptivePortalBrowserTest.GoBackToTimeout
 -ChromeAcceptHeaderTest.Check
 -ChromeBackForwardCacheBrowserTest.*
 -ChromeMainTest.*
@@ -2503,13 +2515,6 @@
 -ChromeSignInWebViewTest.TestWebRequestOnlyDispatchToEmbedder/InnerWebContents
 -ChromeSitePerProcessTest.*
 -Chunked/ChunkedPolicyPrefsTest.PolicyToPrefsMapping/*
--ClickToCallBrowserTest.*
--ClientHintsBrowserTest.*
--ClientHintsBrowserTestWithEmulatedMedia.*
--ClientHintsCommandLineSwitchBrowserTest.*
--ClientHintsUAOverrideBrowserTest.*
--ClientHintsUserAgentOverrideDevTools.*
--ClientHintsWebHoldbackBrowserTest.*
 -ComponentCloudPolicyTest.*
 -ComponentUpdaterPolicyTest.*
 -ConsumerDeepScanningBrowserTest.*
@@ -2526,7 +2531,6 @@
 -CookiePolicyStorageBrowserTest.*
 -CredentialManagerAutofillBrowserTest.*
 -CredentialManagerBrowserTest.*
--CriticalClientHintsBrowserTest.*
 -CrossProfileDebuggerApiTest.GetTargets
 -DNSErrorPageTest.*
 -DataSaverBrowserTest.*
