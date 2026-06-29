@@ -59,7 +59,6 @@ source_set("internal") {
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/browser/ui/tabs:tree_tab_session_manager",
       "//brave/browser/ui/views/page_info",
-      "//brave/browser/ui/views/tabs",
       "//brave/browser/ui/views/workspaces",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
