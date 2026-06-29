@@ -774,6 +774,14 @@
     *** getIconDrawableWithFilter(...);
 }
 
+-keep class org.chromium.chrome.browser.tab_ui.TabListFaviconProvider {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.ui.favicon.BraveTabListFaviconProvider {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.document.ChromeLauncherActivity {
     public <init>(...);
 }

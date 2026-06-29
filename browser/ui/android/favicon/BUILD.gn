@@ -8,13 +8,43 @@ import("//build/config/android/rules.gni")
 android_library("java") {
   sources = [
     "java/src/org/chromium/chrome/browser/ui/favicon/BraveFaviconUtils.java",
+    "java/src/org/chromium/chrome/browser/ui/favicon/BraveTabListFaviconProvider.java",
   ]
 
   deps = [
+    ":java_resources",
     "//base:base_java",
     "//build/android:build_java",
+    "//chrome/browser/tab_ui/android:java",
     "//chrome/browser/ui/android/favicon:java",
     "//components/browser_ui/widget/android:java",
+    "//third_party/androidx:androidx_annotation_annotation_java",
+    "//third_party/androidx:androidx_appcompat_appcompat_resources_java",
+    "//ui/android:ui_java",
     "//url:gurl_java",
+  ]
+
+  resources_package = "org.chromium.chrome.browser.ui.favicon.brave"
+}
+
+android_resources("java_resources") {
+  deps = [ "//brave/android/nala:java_resources" ]
+}
+
+robolectric_library("junit") {
+  testonly = true
+  resources_package = "org.chromium.chrome.browser.ui.favicon.brave"
+
+  sources = [ "junit/src/org/chromium/chrome/browser/ui/favicon/BraveTabListFaviconProviderTest.java" ]
+
+  deps = [
+    ":java",
+    ":java_resources",
+    "//base:base_junit_test_support",
+    "//chrome/android/junit:chrome_junit_tests_helper",
+    "//chrome/browser/tab_ui/android:java",
+    "//chrome/browser/tab_ui/android:java_resources",
+    "//third_party/junit",
+    "//ui/android:ui_java",
   ]
 }
