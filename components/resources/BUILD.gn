@@ -178,8 +178,12 @@ repack("resources") {
     if (enable_brave_news) {
       deps += [
         "//brave/components/brave_news/browser/resources:generated_resources",
+        "//brave/components/brave_news/browser/resources:sidebar_generated_resources",
       ]
-      sources += [ "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak" ]
+      sources += [
+        "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_internals_generated.pak",
+        "$root_gen_dir/brave/components/brave_news/browser/resources/brave_news_sidebar_generated.pak",
+      ]
     }
 
     if (enable_speedreader) {

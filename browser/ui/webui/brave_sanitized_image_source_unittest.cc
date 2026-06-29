@@ -59,7 +59,8 @@ class BraveSanitizedImageSourceTest : public testing::Test {
       : source_(
             &profile_,
             base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                &test_url_loader_factory_)) {
+                &test_url_loader_factory_),
+            /*serve_untrusted=*/false) {
     source_.set_pcdn_domain_for_testing("pcdn.brave.com");
   }
   ~BraveSanitizedImageSourceTest() override = default;

@@ -37,12 +37,17 @@ class SimpleURLLoader;
 // * using different encoding method: PNG FastEncodeBGRASkBitmap.
 // * disabling caching (saving renderer memory);
 // * USER_VISIBLE_PRIORITY.
+//
+// When `serve_untrusted` is true the source is served from
+// chrome-untrusted://brave-image/ instead of chrome://brave-image/, so it can
+// be loaded from chrome-untrusted:// WebUIs (e.g. the Brave News side panel).
 class BraveSanitizedImageSource : public content::URLDataSource {
  public:
-  explicit BraveSanitizedImageSource(Profile* profile);
-  explicit BraveSanitizedImageSource(
+  BraveSanitizedImageSource(Profile* profile, bool serve_untrusted);
+  BraveSanitizedImageSource(
       Profile* profile,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      bool serve_untrusted);
   ~BraveSanitizedImageSource() override;
 
   void set_pcdn_domain_for_testing(std::string pcdn_domain) {
@@ -75,6 +80,7 @@ class BraveSanitizedImageSource : public content::URLDataSource {
   void StartImageDownload(RequestAttributes request_attributes,
                           content::URLDataSource::GotDataCallback callback);
 
+  const bool serve_untrusted_;
   std::string pcdn_domain_;
   data_decoder::DataDecoder data_decoder_;
   const scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
