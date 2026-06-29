@@ -5,7 +5,8 @@
 
 import fs from 'fs-extra'
 import path from 'node:path'
-import Config from './config.ts'
+import config from './config.ts'
+import type { Config } from './config.ts'
 import * as Log from './log.ts'
 import util from './util.js'
 import assert from 'node:assert'
@@ -21,44 +22,44 @@ import { isCI, isTeamcity } from './ciDetect.ts'
 async function test(
   passthroughArgs: string[],
   suite: string,
-  buildConfig: string = Config.defaultBuildConfig,
+  buildConfig: string = config.defaultBuildConfig,
   options: Record<string, any> = {},
 ) {
-  Config.buildConfig = buildConfig
-  Config.update(options)
+  config.buildConfig = buildConfig
+  config.update(options)
 
-  if (Config.isIOS() && Config.targetEnvironment === 'device') {
+  if (config.isIOS() && config.targetEnvironment === 'device') {
     Log.error('Running ios tests on a device is not yet supported')
     process.exit(1)
   }
 
   const testsToRun = options.base
     ? await getAffectedTests({ ...options, suite })
-    : getTestsToRun(Config, suite)
+    : getTestsToRun(config, suite)
 
   if (testsToRun.length === 0 && !options.quiet) {
     console.warn('SKIP: No tests need to run')
     return
   }
 
-  await buildTests(testsToRun, Config)
-  await runTests(passthroughArgs, { suite, testsToRun }, Config, options)
+  await buildTests(testsToRun, config)
+  await runTests(passthroughArgs, { suite, testsToRun }, config, options)
 }
 
-const deleteFile = (filePath) => {
+const deleteFile = (filePath: string) => {
   if (fs.existsSync(filePath)) {
     fs.unlinkSync(filePath)
   }
 }
 
-const buildTests = async (testsToRun, config) => {
+const buildTests = async (testsToRun: string[], config: Config) => {
   config.buildTargets = testsToRun
   util.touchOverriddenFiles()
 
   await util.buildTargets(config.buildTargets, config.defaultOptions)
 }
 
-const defaultTestSuiteArgs = (testSuite) => {
+const defaultTestSuiteArgs = (testSuite: string) => {
   switch (testSuite) {
     case 'brave_network_audit_tests':
       return [
@@ -71,10 +72,10 @@ const defaultTestSuiteArgs = (testSuite) => {
 }
 
 const runTests = async (
-  passthroughArgs,
-  { suite, testsToRun },
-  config,
-  options,
+  passthroughArgs: string[],
+  { suite, testsToRun }: { suite: string; testsToRun: string[] },
+  config: Config,
+  options: Record<string, any>,
 ) => {
   const isJunitTestSuite = suite.endsWith('_junit_tests')
   const allResultsFilePath = path.join(config.srcDir, `${suite}.txt`)
@@ -177,7 +178,7 @@ const runTests = async (
     }
 
     // Filter out upstream tests that are known to fail for Brave
-    const filterFilePaths = getApplicableFilters(Config, testSuite)
+    const filterFilePaths = getApplicableFilters(config, testSuite)
     if (filterFilePaths.length > 0) {
       runArgs.push(`--test-launcher-filter-file=${filterFilePaths.join(';')}`)
     }
@@ -262,7 +263,7 @@ const runTests = async (
           .at(-1)
       }
 
-      runArgs.push('--app', getTestBinary(Config, testSuite))
+      runArgs.push('--app', getTestBinary(config, testSuite))
       runArgs.push('--runtime-cache-prefix', `${outputDir}/Runtime-ios-`)
       runArgs.push('--iossim', `${outputDir}/iossim`)
       runArgs.push('--out-dir', `${outputDir}/output`)
@@ -314,7 +315,7 @@ const runTests = async (
         // this has no effect if project is built without coverage.
         runOptions.env.LLVM_PROFILE_FILE =
           runOptions.env.LLVM_PROFILE_FILE
-          || `${Config.outputDir}/coverage/${testSuite}/%4m.profraw`
+          || `${config.outputDir}/coverage/${testSuite}/%4m.profraw`
         progStatus = util.run(testRunner, runArgs, runOptions).status
       }
     }
@@ -349,7 +350,9 @@ const runTests = async (
   })
 }
 
-const runChromiumTestLauncherTeamcityReporterIntegrationTests = (config) => {
+const runChromiumTestLauncherTeamcityReporterIntegrationTests = (
+  config: Config,
+) => {
   const runnerPath = path.join(
     config.outputDir,
     'teamcity_reporter_integration_test.py',
