@@ -42,9 +42,10 @@ template("rust_to_wasm") {
       wasm_pack_target = invoker.wasm_pack_target
     }
 
-    # A note on --mode no-install: it's needed because we vendor our own wasm-bindgen-cli and wasm-opt.
-    # Without --mode no-install, wasm-pack attempts to download the binaries from the GitHub releases page,
-    # or via `cargo install`, which:
+    # A note on --mode no-install: it's needed because we vendor our own
+    # wasm-bindgen-cli and wasm-opt. Without --mode no-install, wasm-pack
+    # attempts to download the binaries from the GitHub releases page, or via
+    # `cargo install`, which:
     # - causes a race condition between the processes (that action_foreach forks) for wasm-pack's cache directory (if wasm-pack is run for the first time),
     # - makes our approach less self-contained.
     #

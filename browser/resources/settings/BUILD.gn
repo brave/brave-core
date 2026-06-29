@@ -30,8 +30,8 @@ preprocess_folder = "preprocessed"
 
 # grit (and generate the GRD for) brave's own static resources, they don't need
 # to be part of the build_webui.gni compile.
-# TODO(petemill): It is no longer neccessary to make our own grd and pak, we can add to
-# chromium's static_files list.
+# TODO(petemill): It is no longer neccessary to make our own grd and pak, we can
+# add to chromium's static_files list.
 brave_grit("resources") {
   defines = chrome_grit_defines
   defines += [
