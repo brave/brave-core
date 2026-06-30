@@ -74,6 +74,16 @@ class FishDropInTest(unittest.TestCase):
         self.assertNotIn('fish_add_path', content)
         self.assertIn('Managed by', content)
 
+    def test_drop_in_sorts_after_version_managers(self):
+        # fish sources conf.d/*.fish alphabetically; our drop-in must sort
+        # *after* version-manager snippets (e.g. fnm) so it prepends last and
+        # wins. Guard the name against a regression to an earlier-sorting one.
+        name = bootstrap._FISH_DROP_IN.name
+        self.assertGreater(name, 'fnm.fish')
+        self.assertGreater(name, 'nvm.fish')
+        # Upgrades must clean up the old, too-early name.
+        self.assertLess(bootstrap._FISH_DROP_IN_LEGACY.name, 'fnm.fish')
+
 
 class WindowsPathTest(unittest.TestCase):
     """Exercises the Windows PATH add/remove helpers."""

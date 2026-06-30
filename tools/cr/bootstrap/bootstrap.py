@@ -47,7 +47,16 @@ SHELLS = ('bash', 'zsh', 'fish')
 
 # The fish drop-in file is owned entirely by this script: its presence is the
 # managed state, so uninstall just deletes it.
-_FISH_DROP_IN = Path('.config') / 'fish' / 'conf.d' / 'brave-bootstrap.fish'
+#
+# fish sources `conf.d/*.fish` alphabetically, *before* `config.fish`. Node
+# version managers (fnm, nvm, ...) ship their own conf.d snippet that prepends
+# their node to `$PATH`, so to win we must sort *after* them: the `zzz-` prefix
+# puts us last. See `fish_drop_in` for the prepend itself.
+_FISH_CONF_D = Path('.config') / 'fish' / 'conf.d'
+_FISH_DROP_IN = _FISH_CONF_D / 'zzz-brave-bootstrap.fish'
+
+# A legacy name that we used to use.
+_FISH_DROP_IN_LEGACY = _FISH_CONF_D / 'brave-bootstrap.fish'
 
 # -- Pure helpers (unit-tested) ----------------------------------------------
 
@@ -86,10 +95,8 @@ def fish_drop_in(bootstrap_dir: Path) -> str:
 
     Prepends the directory to `$PATH` (highest precedence) on each new shell,
     dropping any pre-existing occurrence first so it lands exactly once at the
-    front. Everything lives in this file: it deliberately avoids
-    `fish_add_path`, which would persist the entry in the *universal*
-    `fish_user_paths` variable and survive deletion of this file (making
-    uninstall ineffective).
+    front. The file name (see `_FISH_DROP_IN`) sorts last in `conf.d` so this
+    runs *after* version-manager snippets like fnm's and wins.
     """
     path = bootstrap_dir.as_posix()
     line = f'set -gx PATH "{path}" (string match --invert -- "{path}" $PATH)'
@@ -178,6 +185,10 @@ def _install_posix(shells: list[str]) -> int:
     for shell in shells:
         path = _profile_path(shell)
         if shell == 'fish':
+            # if the old file is found, we delete it too.
+            legacy = Path.home() / _FISH_DROP_IN_LEGACY
+            if legacy.exists():
+                legacy.unlink()
             _write(path, fish_drop_in(BOOTSTRAP_DIR))
         else:
             _write(path, apply_block(_read(path), BOOTSTRAP_DIR))
@@ -231,10 +242,12 @@ def _uninstall_posix() -> int:
     for shell in SHELLS:
         path = _profile_path(shell)
         if shell == 'fish':
-            if path.exists():
-                path.unlink()
-                print(f'Removed: {path}')
-                removed = True
+            # Remove the current drop-in and any leftover under the old name.
+            for drop_in in (path, Path.home() / _FISH_DROP_IN_LEGACY):
+                if drop_in.exists():
+                    drop_in.unlink()
+                    print(f'Removed: {drop_in}')
+                    removed = True
             if _erase_fish_user_path(target_dir):
                 removed = True
             continue
