@@ -180,40 +180,40 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON" desc="Label for the get started button in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     Get started
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_EMAIL_LABEL" desc="Placeholder text inside the email address input field in the Brave Email Aliases promo dialog, instructing the user to enter their email to proceed" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_EMAIL_LABEL" desc="Placeholder text inside the email address input field in the Brave Email Aliases promo dialog, instructing the user to enter their email to proceed" formatter_data="webui=EmailAliases" translateable="false">
     Enter your email to continue
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Static text for the email field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Static text for the email field in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     youremail@example.com
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     Walmart.com
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     lion.paw.
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     75
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX" desc="Placeholder's suffix part for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     2947
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL" desc="Label for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL" desc="Label for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     Register on Wal…
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     store.com
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     …ealias.com
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     cat.mane.
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="Domain suffix of the example alias email address shown in the center illustration card" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="Domain suffix of the example alias email address shown in the center illustration card" formatter_data="webui=EmailAliases" translateable="false">
     @bravealias.com
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_LABEL" desc="Label for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_LABEL" desc="Label for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases" translateable="false">
     …to continue
   </message>
 </grit-part>

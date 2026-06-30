@@ -161,9 +161,11 @@ const AliasPart = styled.span`
 `
 
 const AliasNumber = styled.span`
-  color: ${color.systemfeedback.errorText};
+  color: ${color.primitive.orange[60]};
 `
-
+const AliasHost = styled.span`
+  color: ${color.primitive.neutral[0]};
+`
 const YourEmailIcon = styled(Icon)`
   width: 20px;
   height: 20px;
@@ -280,11 +282,11 @@ const EmailAliasesPromo = ({
                       S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX,
                     )}
                   </AliasNumber>
-                  <span>
+                  <AliasHost>
                     {getLocale(
                       S.EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END,
                     )}
-                  </span>
+                  </AliasHost>
                 </AliasChipFocused>
               </LabelChipGroup>
             </SiteCardFocused>
