@@ -121,6 +121,7 @@ source_set("browser_tests") {
       "//brave/components/widevine:constants",
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
+      "//chrome/browser/ssl:cert_verifier_test_support",
       "//chrome/browser/ui",
       "//chrome/common:constants",
       "//chrome/test:test_support_ui",
