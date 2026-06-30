@@ -187,21 +187,6 @@ base::Token CreateStableFarblingToken(const GURL& url) {
   return base::Token(high, low);
 }
 
-// This santization helps to ensure URLs with inherited origin like
-// blob:https://a.com/uuid is properly mapped to the origin https://a.com,
-// to then correctly derive the eTLD+1. It's important that such URLs maps to
-// the same eTLD+1 as their inherited origin, because eTLD+1 is used to derive
-// the farbling seed / token. See
-// https://github.com/brave/brave-browser/issues/56048 for more details.
-//
-// For normal case, i.e without any inherited origin consideration like
-// https://sub.example.com/path returns the origin of |url|, i.e. scheme
-// + host + port with *no* path but is enough to derive the correct
-// eTLD+1.
-GURL GetEffectiveUrlFromOrigin(const GURL& url) {
-  return url::Origin::Create(url).GetURL();
-}
-
 }  // namespace
 
 ContentSettingsPattern GetPatternFromURL(const GURL& url) {
@@ -240,16 +225,21 @@ void SetBraveShieldsEnabled(HostContentSettingsMap* map,
                             bool enable,
                             const GURL& url,
                             PrefService* local_state) {
-  if (url.is_valid() && !url.SchemeIsHTTPOrHTTPS()) {
+  // Resolve inherited origins (e.g. blob:https://host/id to https://host/) so
+  // that scheme guards and pattern generation always use the true origin.
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+
+  if (origin_url.is_valid() && !origin_url.SchemeIsHTTPOrHTTPS()) {
     return;
   }
 
-  if (url.is_empty()) {
+  if (origin_url.is_empty()) {
     LOG(ERROR) << "url for shields setting cannot be blank";
     return;
   }
 
-  auto primary_pattern = GetPatternFromURL(url);
+  auto primary_pattern = GetPatternFromURL(origin_url);
 
   if (primary_pattern.MatchesAllHosts()) {
     LOG(ERROR) << "Url for shields setting cannot be blank or result in a "
@@ -295,18 +285,26 @@ bool GetBraveShieldsEnabled(HostContentSettingsMap* map, const GURL& url) {
     return true;
   }
 
-  // By default we keep the shields enabled on invalid URLs as well. Making to
-  // more explicit to capture the intent.
-  if (!url.is_valid()) {
-    return true;
-  }
+  // Resolve inherited origins (e.g. blob:https://host/id → https://host/) so
+  // that the scheme guard and content settings lookup use the true origin.
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
 
-  if (!url.SchemeIsHTTPOrHTTPS()) {
+  // This can be the case for URLs like about:blank, chrome://, brave:// etc.
+  // Note: a truly empty input URL (GURL()) means no specific origin is known
+  // (e.g. service worker requests), so we preserve the old fall-through
+  // behaviour for that case rather than incorrectly treating it as "shields
+  // off".
+  if (!url.is_empty() && origin_url.is_empty()) {
     return false;
   }
 
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
+  if (origin_url.is_valid() && !origin_url.SchemeIsHTTPOrHTTPS()) {
+    return false;
+  }
+
+  ContentSetting setting = map->GetContentSetting(
+      origin_url, GURL(), ContentSettingsType::BRAVE_SHIELDS);
 
   // see EnableBraveShields - allow and default == true
   return setting == CONTENT_SETTING_BLOCK ? false : true;
@@ -318,7 +316,8 @@ void SetAdControlType(HostContentSettingsMap* map,
                       PrefService* local_state) {
   DCHECK_NE(type, ControlType::BLOCK_THIRD_PARTY);
   DCHECK_NE(type, ControlType::DEFAULT);
-  auto primary_pattern = GetPatternFromURL(url);
+  const GURL origin_url = url::Origin::Create(url).GetURL();
+  auto primary_pattern = GetPatternFromURL(origin_url);
 
   if (!primary_pattern.IsValid()) {
     return;
@@ -341,8 +340,9 @@ ControlType GetAdControlType(HostContentSettingsMap* map, const GURL& url) {
       url.SchemeIs(kChromeExtensionScheme)) {
     return ControlType::BLOCK;
   }
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::BRAVE_ADS);
+  const url::Origin origin = url::Origin::Create(url);
+  ContentSetting setting = map->GetContentSetting(
+      origin.GetURL(), GURL(), ContentSettingsType::BRAVE_ADS);
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
@@ -354,17 +354,18 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
                                      PrefService* local_state,
                                      PrefService* profile_state) {
   DCHECK_NE(type, ControlType::DEFAULT);
-  auto primary_pattern = GetPatternFromURL(url);
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+  auto primary_pattern = GetPatternFromURL(origin_url);
 
   if (!primary_pattern.IsValid()) {
     return;
   }
-
   ControlType prev_setting = GetCosmeticFilteringControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL::EmptyGURL(), CosmeticFilteringSetting::kContentSettingsType,
-      &setting_info);
+      origin_url, GURL::EmptyGURL(),
+      CosmeticFilteringSetting::kContentSettingsType, &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts();
 
@@ -376,7 +377,7 @@ void SetCosmeticFilteringControlType(HostContentSettingsMap* map,
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
     RecordShieldsSettingChanged(local_state);
-    if (url.is_empty()) {
+    if (origin_url.is_empty()) {
       // If global setting changed, report global setting and recalulate
       // domain specific setting counts
       RecordShieldsAdsSetting(type);
@@ -398,8 +399,9 @@ ControlType GetCosmeticFilteringControlType(HostContentSettingsMap* map,
       url.SchemeIs(kChromeExtensionScheme)) {
     return ControlType::BLOCK;
   }
+  const url::Origin origin = url::Origin::Create(url);
   const auto setting = CosmeticFilteringSetting::FromValue(
-      map->GetWebsiteSetting(url, GURL::EmptyGURL(),
+      map->GetWebsiteSetting(origin.GetURL(), GURL::EmptyGURL(),
                              CosmeticFilteringSetting::kContentSettingsType));
   return setting;
 }
@@ -495,7 +497,8 @@ void SetCookieControlType(HostContentSettingsMap* map,
                           ControlType type,
                           const GURL& url,
                           PrefService* local_state) {
-  auto patterns = content_settings::CreateShieldsCookiesPatterns(url);
+  const GURL origin_url = url::Origin::Create(url).GetURL();
+  auto patterns = content_settings::CreateShieldsCookiesPatterns(origin_url);
   if (!patterns.host_pattern.IsValid()) {
     return;
   }
@@ -605,7 +608,9 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   const GURL& url,
                                   PrefService* local_state,
                                   PrefService* profile_state) {
-  auto primary_pattern = GetPatternFromURL(url);
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+  auto primary_pattern = GetPatternFromURL(origin_url);
 
   if (!primary_pattern.IsValid()) {
     return;
@@ -614,7 +619,8 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   ControlType prev_setting = GetFingerprintingControlType(map, url);
   content_settings::SettingInfo setting_info;
   base::Value web_setting = map->GetWebsiteSetting(
-      url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2, &setting_info);
+      origin_url, GURL(), ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+      &setting_info);
   bool was_default =
       web_setting.is_none() || setting_info.primary_pattern.MatchesAllHosts() ||
       setting_info.source == content_settings::SettingSource::kRemoteList;
@@ -633,7 +639,7 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
   if (!map->IsOffTheRecord()) {
     // Only report to P3A if not a guest/incognito profile
     RecordShieldsSettingChanged(local_state);
-    if (url.is_empty()) {
+    if (origin_url.is_empty()) {
       // If global setting changed, report global setting and recalulate
       // domain specific setting counts
       RecordShieldsFingerprintSetting(type);
@@ -653,8 +659,9 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
   ContentSettingsForOneType fingerprinting_rules =
       map->GetSettingsForOneType(ContentSettingsType::BRAVE_FINGERPRINTING_V2);
 
+  const GURL origin_url = url::Origin::Create(url).GetURL();
   ContentSetting fp_setting =
-      GetBraveFPContentSettingFromRules(fingerprinting_rules, url);
+      GetBraveFPContentSettingFromRules(fingerprinting_rules, origin_url);
 
   if (fp_setting == CONTENT_SETTING_ASK ||
       fp_setting == CONTENT_SETTING_DEFAULT ||
@@ -672,8 +679,11 @@ bool IsBraveShieldsManaged(PrefService* prefs,
                            GURL url) {
   DCHECK(prefs);
   DCHECK(map);
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
   content_settings::SettingInfo info;
-  map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
+  map->GetWebsiteSetting(origin_url, origin_url,
+                         ContentSettingsType::BRAVE_SHIELDS, &info);
   return info.source == content_settings::SettingSource::kPolicy;
 }
 
@@ -687,11 +697,14 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                 const GURL& url,
                                 PrefService* local_state) {
   DCHECK_NE(type, ControlType::DEFAULT);
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+
+  if (!origin_url.SchemeIsHTTPOrHTTPS() && !origin_url.is_empty()) {
     return;
   }
 
-  auto primary_pattern = GetPatternFromURL(url);
+  auto primary_pattern = GetPatternFromURL(origin_url);
   if (!primary_pattern.IsValid()) {
     return;
   }
@@ -715,10 +728,10 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
       ContentSettingsType::BRAVE_HTTPS_UPGRADE, setting);
 
   // Reset the HTTPS fallback map.
-  if (url.is_empty()) {
+  if (origin_url.is_empty()) {
     map->ClearSettingsForOneType(ContentSettingsType::HTTP_ALLOWED);
   } else {
-    const GURL& secure_url = GURL(base::StrCat({"https://", url.host()}));
+    const GURL secure_url = GURL(base::StrCat({"https://", origin_url.host()}));
     map->SetWebsiteSettingDefaultScope(
         secure_url, GURL(), ContentSettingsType::HTTP_ALLOWED, base::Value());
   }
@@ -729,12 +742,15 @@ void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
 
 ControlType GetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                        const GURL& url) {
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+
+  if (!origin_url.SchemeIsHTTPOrHTTPS() && !origin_url.is_empty()) {
     // No upgrades happen for non-http(s) URLs.
     return ControlType::ALLOW;
   }
   ContentSetting setting = map->GetContentSetting(
-      url, GURL(), ContentSettingsType::BRAVE_HTTPS_UPGRADE);
+      origin_url, GURL(), ContentSettingsType::BRAVE_HTTPS_UPGRADE);
   if (setting == CONTENT_SETTING_ALLOW) {
     // Disabled (allow http)
     return ControlType::ALLOW;
@@ -763,7 +779,9 @@ bool ShouldUpgradeToHttps(
   if (!base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
   }
-  if (!url.SchemeIsHTTPOrHTTPS() && !url.is_empty()) {
+  const GURL origin_url = url::Origin::Create(url).GetURL();
+
+  if (!origin_url.SchemeIsHTTPOrHTTPS() && !origin_url.is_empty()) {
     return false;
   }
   // Don't upgrade if shields are down.
@@ -777,7 +795,7 @@ bool ShouldUpgradeToHttps(
   }
   // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list.
   if (control_type == ControlType::BLOCK_THIRD_PARTY &&
-      https_upgrade_exceptions_service->CanUpgradeToHTTPS(url)) {
+      https_upgrade_exceptions_service->CanUpgradeToHTTPS(origin_url)) {
     return true;
   }
   return false;
@@ -793,7 +811,8 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
                             const GURL& url,
                             PrefService* local_state) {
   DCHECK_NE(type, ControlType::BLOCK_THIRD_PARTY);
-  auto primary_pattern = GetPatternFromURL(url);
+  const GURL origin_url = url::Origin::Create(url).GetURL();
+  auto primary_pattern = GetPatternFromURL(origin_url);
 
   if (!primary_pattern.IsValid()) {
     return;
@@ -809,8 +828,9 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url) {
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT);
+  const url::Origin origin = url::Origin::Create(url);
+  ContentSetting setting = map->GetContentSetting(
+      origin.GetURL(), GURL(), ContentSettingsType::JAVASCRIPT);
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;
@@ -823,12 +843,14 @@ void SetWebcompatEnabled(HostContentSettingsMap* map,
                          PrefService* local_state) {
   DCHECK(map);
 
-  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
-  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+
+  if (!origin_url.SchemeIsHTTPOrHTTPS() && !origin_url.is_empty()) {
     return;
   }
 
-  auto primary_pattern = GetPatternFromURL(effective_url);
+  auto primary_pattern = GetPatternFromURL(origin_url);
   if (!primary_pattern.IsValid()) {
     return;
   }
@@ -846,13 +868,15 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
                         const GURL& url) {
   DCHECK(map);
 
-  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
-  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
+  const url::Origin origin = url::Origin::Create(url);
+  const GURL origin_url = origin.GetURL();
+
+  if (!origin_url.SchemeIsHTTPOrHTTPS() && !origin_url.is_empty()) {
     return false;
   }
 
   ContentSetting setting =
-      map->GetContentSetting(url, url, webcompat_settings_type);
+      map->GetContentSetting(origin_url, origin_url, webcompat_settings_type);
 
   return setting == CONTENT_SETTING_ALLOW;
 }
@@ -886,15 +910,18 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
 base::Token GetFarblingToken(HostContentSettingsMap* map,
                              const GURL& url,
                              base::span<const uint8_t> additional_entropy) {
+  // Use the origin URL so the farbling token is keyed on the true origin
+  // (scheme+host+port). This also resolves inherited origins, e.g.
+  // blob:https://host/id to https://host/, which would otherwise have an
+  // empty host and fail the scheme check below.
+  const GURL origin_url = url::Origin::Create(url).GetURL();
   base::Token token;
-
-  const GURL effective_url = GetEffectiveUrlFromOrigin(url);
-  if (!effective_url.is_valid() || !effective_url.SchemeIsHTTPOrHTTPS()) {
+  if (!origin_url.SchemeIsHTTPOrHTTPS()) {
     return token;
   }
 
   // Get the farbling token from the Shields metadata.
-  auto shields_metadata = GetShieldsMetadata(map, effective_url);
+  auto shields_metadata = GetShieldsMetadata(map, origin_url);
   if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
   }
@@ -904,10 +931,10 @@ base::Token GetFarblingToken(HostContentSettingsMap* map,
     if (!g_stable_farbling_tokens_seed) {
       token = base::Token::CreateRandom();
     } else {
-      token = CreateStableFarblingToken(effective_url);
+      token = CreateStableFarblingToken(origin_url);
     }
     shields_metadata.Set("farbling_token", token.ToString());
-    SetShieldsMetadata(map, effective_url, std::move(shields_metadata));
+    SetShieldsMetadata(map, origin_url, std::move(shields_metadata));
   }
 
   if (additional_entropy.empty()) {
