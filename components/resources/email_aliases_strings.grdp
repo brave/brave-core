@@ -213,4 +213,7 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="The end part of placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     @bravealias.com
   </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_LABEL" desc="Label for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+    …to continue
+  </message>
 </grit-part>

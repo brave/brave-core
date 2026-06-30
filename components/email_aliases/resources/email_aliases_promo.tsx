@@ -87,18 +87,25 @@ const CardsRow = styled(Row)`
   justify-content: center;
   width: 100%;
   position: relative;
+  overflow: hidden;
 `
 
-const SiteCard = styled(Col)<{ $faded?: boolean }>`
+const SiteCard = styled.div`
+  display: inline-flex;
+  padding: ${spacing.xl};
+  flex-direction: column;
+  align-items: flex-start;
+  gap: ${spacing.m};
   border-radius: ${radius.m};
-  border: ${spacing.xs} solid ${color.divider.subtle};
-  padding: ${spacing.s};
-  gap: ${spacing.s};
-  background: ${color.container.background};
-  opacity: ${({ $faded }) => ($faded ? 0.45 : 1)};
+  border: 1px solid ${color.primitive.neutral[70]};
+  background: ${color.primitive.neutral[100]};
+  position: relative;
+  z-index: 0;
+  flex-shrink: 0;
+  opacity: 0.5;
 `
 
-const SiteCardFocused = styled(SiteCard)`
+const SiteCardFocused = styled(Col)`
   display: inline-flex;
   padding: ${spacing['2Xl']};
   flex-direction: column;
@@ -107,6 +114,11 @@ const SiteCardFocused = styled(SiteCard)`
   border-radius: ${radius.xl};
   border: 1px solid ${color.primitive.neutral[70]};
   background: ${color.primitive.neutral[100]};
+  position: relative;
+  z-index: 1;
+  box-shadow: 0px 4px 20px 0px rgba(0, 0, 0, 0.1);
+  margin: 0 calc(-1 * ${spacing['4Xl']});
+  flex-shrink: 0;
 `
 
 const SiteTitle = styled.span`
@@ -117,14 +129,13 @@ const SiteTitle = styled.span`
 `
 
 const AliasChip = styled.div`
+  display: flex;
+  padding: ${spacing.m};
+  align-items: center;
+  align-self: stretch;
   border-radius: ${radius.s};
-  border: 1px solid ${color.divider.subtle};
-  padding: ${spacing.s} ${spacing.m};
-  font: ${font.small.regular};
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  background: ${color.container.highlight};
+  border: 0.75px solid ${color.primitive.neutral[70]};
+  background: ${color.primitive.neutral[100]};
 `
 
 const AliasChipFocused = styled.div`
@@ -137,6 +148,10 @@ const AliasChipFocused = styled.div`
   background: ${color.primitive.neutral[100]};
 `
 
+const AliasLabel = styled(Label)`
+  font: ${font.xSmall.regular};
+`
+
 const LabelChipGroup = styled(Col)`
   gap: ${spacing.none};
 `
@@ -147,6 +162,11 @@ const AliasPart = styled.span`
 
 const AliasNumber = styled.span`
   color: ${color.systemfeedback.errorText};
+`
+
+const YourEmailIcon = styled(Icon)`
+  width: 20px;
+  height: 20px;
 `
 
 // ---------------------------------------------------------------------------
@@ -211,34 +231,36 @@ const EmailAliasesPromo = ({
 
         <IllustrationArea>
           <CardsRow>
-            {/* Left — faded Walmart card */}
-            <SiteCard $faded>
-              <SiteTitle style={{ color: `${color.blue[50]}` }}>
+            {/* Left — card */}
+            <SiteCard>
+              <SiteTitle style={{ color: `${color.primitive.blue[50]}` }}>
                 {getLocale(
                   S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND,
                 )}
               </SiteTitle>
-              <Label>
-                {getLocale(
-                  S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL,
-                )}
-              </Label>
-              <AliasChip>
-                <AliasPart>
+              <LabelChipGroup>
+                <AliasLabel>
                   {getLocale(
-                    S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                    S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND_EMAIL_LABEL,
                   )}
-                </AliasPart>
-                <AliasNumber>
-                  {getLocale(
-                    S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX,
-                  )}
-                </AliasNumber>
-                <span>…</span>
-              </AliasChip>
+                </AliasLabel>
+                <AliasChip>
+                  <AliasPart>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                    )}
+                  </AliasPart>
+                  <AliasNumber>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_SUFFIX,
+                    )}
+                  </AliasNumber>
+                  <span>…</span>
+                </AliasChip>
+              </LabelChipGroup>
             </SiteCard>
 
-            {/* Center — focused NYT card */}
+            {/* Center — focused card */}
             <SiteCardFocused>
               <img
                 src={NytIcon}
@@ -267,28 +289,34 @@ const EmailAliasesPromo = ({
               </LabelChipGroup>
             </SiteCardFocused>
 
-            {/* Right — faded generic store card */}
-            <SiteCard $faded>
+            {/* Right — card */}
+            <SiteCard>
               <SiteTitle style={{ color: color.text.secondary }}>
                 {getLocale(
                   S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_BRAND,
                 )}
               </SiteTitle>
-              <Label>&nbsp;</Label>
-              <AliasChip>
-                <span>
+              <LabelChipGroup>
+                <AliasLabel>
                   {getLocale(
-                    S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                    S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_LABEL,
                   )}
-                </span>
-              </AliasChip>
+                </AliasLabel>
+                <AliasChip>
+                  <span>
+                    {getLocale(
+                      S.EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER,
+                    )}
+                  </span>
+                </AliasChip>
+              </LabelChipGroup>
             </SiteCard>
           </CardsRow>
 
           <ArrowImg src={ArrowIcon} />
 
           <RealEmailRow>
-            <Icon name='email-shield' />
+            <YourEmailIcon name='email-shield' />
             {getLocale(S.EMAIL_ALIASES_PROMO_YOUR_EMAIL)}
           </RealEmailRow>
         </IllustrationArea>
