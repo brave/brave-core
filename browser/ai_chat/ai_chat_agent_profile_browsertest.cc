@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 #include "base/containers/fixed_flat_set.h"
+#include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
@@ -31,6 +32,7 @@
 #include "chrome/browser/ui/profiles/profile_view_utils.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
+#include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -316,6 +318,74 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
       AIChatServiceFactory::GetForBrowserContext(agent_browser->profile()),
       nullptr);
   VerifyAIChatSidePanelShowing(agent_browser);
+}
+
+// Regression test for existing users: an agent profile created before this fix
+// shipped has AI Chat left disabled in its persisted Brave Origin policy.
+// Opening such a profile must repair it (re-enable AI Chat) rather than crash.
+// This pre-seeds the agent profile's stored policy as disabled to simulate that
+// state, since browser tests retain profiles in memory and cannot reload an
+// existing profile within a single test.
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
+                       DisabledAgentProfilePolicyIsRepairedUnderBraveOrigin) {
+  auto* origin_manager = brave_origin::BraveOriginPolicyManager::GetInstance();
+  ASSERT_TRUE(origin_manager->IsInitialized());
+
+  // The source profile has AI Chat enabled.
+  origin_manager->SetPolicyValue(
+      policy::key::kBraveAIChatEnabled, true,
+      brave_origin::GetProfileId(GetProfile()->GetPath()));
+
+  // Simulate an agent profile created before this fix: its persisted Brave
+  // Origin policy has AI Chat explicitly disabled.
+  const base::FilePath agent_path =
+      base::PathService::CheckedGet(chrome::DIR_USER_DATA)
+          .Append(brave::kAIChatAgentProfileDir);
+  origin_manager->SetPolicyValue(policy::key::kBraveAIChatEnabled, false,
+                                 brave_origin::GetProfileId(agent_path));
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    origin_manager->SetPurchased(true);
+    return GetProfile()->GetPrefs()->IsManagedPreference(
+               prefs::kEnabledByPolicy) &&
+           IsAIChatEnabled(GetProfile()->GetPrefs());
+  }));
+
+  // Opening the agent profile must repair the disabled state and not crash.
+  Browser* agent_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  ASSERT_TRUE(agent_browser);
+  ASSERT_TRUE(agent_browser->profile()->IsAIChatAgent());
+  ASSERT_EQ(agent_browser->profile()->GetPath(), agent_path);
+  EXPECT_TRUE(IsAIChatEnabled(agent_browser->profile()->GetPrefs()));
+  VerifyAIChatSidePanelShowing(agent_browser);
+}
+
+// The agent profile manager observes every profile, so guard against it
+// accidentally enabling AI Chat for regular (non-agent) profiles: only the
+// dedicated agent profile should be enabled. A regular profile must keep Brave
+// Origin's default and never have its AI Chat policy written by the manager.
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
+                       RegularProfileNotEnabledForAIChatByAgentManager) {
+  auto* origin_manager = brave_origin::BraveOriginPolicyManager::GetInstance();
+  ASSERT_TRUE(origin_manager->IsInitialized());
+  origin_manager->SetPurchased(true);
+
+  // Create a regular, non-agent profile. The agent profile manager's
+  // OnProfileAdded() observer fires for it during creation.
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile& regular_profile = profiles::testing::CreateProfileSync(
+      profile_manager,
+      profile_manager->user_data_dir().AppendASCII("RegularTestProfile"));
+  ASSERT_FALSE(regular_profile.IsAIChatAgent());
+
+  // The manager must not have written an AI Chat policy value for the regular
+  // profile; it keeps Brave Origin's default (disabled).
+  EXPECT_FALSE(origin_manager
+                   ->GetPolicyValue(
+                       policy::key::kBraveAIChatEnabled,
+                       brave_origin::GetProfileId(regular_profile.GetPath()))
+                   .value_or(false));
 }
 
 // UI Tests for AI Chat Agent Profile features
