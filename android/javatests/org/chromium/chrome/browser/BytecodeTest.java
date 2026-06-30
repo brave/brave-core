@@ -1070,8 +1070,7 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         boolean.class,
-                        int.class,
-                        boolean.class));
+                        int.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/quickactionsearchwidget/QuickActionSearchWidgetProvider", // presubmit: ignore-long-line
