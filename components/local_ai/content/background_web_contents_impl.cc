@@ -12,6 +12,8 @@
 #include "content/public/browser/render_process_host.h"
 #include "content/public/browser/web_contents.h"
 #include "services/network/public/cpp/web_sandbox_flags.h"
+#include "third_party/blink/public/common/renderer_preferences/renderer_preferences.h"
+#include "third_party/blink/public/mojom/peerconnection/webrtc_ip_handling_policy.mojom.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -32,6 +34,16 @@ BackgroundWebContentsImpl::BackgroundWebContentsImpl(
   create_params.starting_sandbox_flags = sandbox_flags;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetOwnerLocationForDebug(FROM_HERE);
+
+  // These background WebContents run untrusted WASM inference and must not be
+  // able to reach the network. fetch/XHR are already denied by the non-network
+  // WebUI URLLoaderFactory and navigation is blocked by the WebUI URL filter,
+  // but WebRTC has no equivalent gate, so neuter it here: with no proxy in the
+  // guest profile, disabling non-proxied UDP leaves WebRTC unable to reach any
+  // STUN/TURN server or peer.
+  web_contents_->GetMutableRendererPrefs()->webrtc_ip_handling_policy =
+      blink::mojom::WebRtcIpHandlingPolicy::kDisableNonProxiedUdp;
+  web_contents_->SyncRendererPrefs();
 
   if (web_contents_created_callback) {
     std::move(web_contents_created_callback).Run(web_contents_.get());
