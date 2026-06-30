@@ -16,16 +16,6 @@
         android:fragment="org.chromium.chrome.browser.tasks.tab_management.TabArchiveSettingsFragment"
         app:allowDividerBelow="true" />
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
-        android:key="share_titles_and_urls_with_os_switch"
-        android:summary="@string/share_titles_and_urls_with_os_setting_text"
-        app:allowDividerBelow="false"
-        app:isPreferenceVisible="false" />
-    <org.chromium.components.browser_ui.settings.TextMessagePreference
-        android:key="share_titles_and_urls_with_os_learn_more"
-        android:summary="@string/share_titles_and_urls_with_os_learn_more_setting_text"
-        app:allowDividerBelow="true"
-        app:isPreferenceVisible="false" />
-    <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="closing_all_tabs_closes_brave"
         android:defaultValue="false"
         android:icon="@drawable/ic_window_tab_close"
@@ -34,7 +24,7 @@
         android:key="show_undo_when_tabs_closed"
         android:icon="@drawable/ic_arrow_undo"
         android:title="@string/show_undo_when_tabs_closed"
-        app:allowDividerBelow="false" />
+        app:allowDividerBelow="true" />
 
     <PreferenceCategory
         android:key="groups_section"

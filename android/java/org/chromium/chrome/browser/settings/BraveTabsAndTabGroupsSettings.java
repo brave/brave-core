@@ -10,7 +10,6 @@ import static org.chromium.build.NullUtil.assertNonNull;
 import android.content.Context;
 import android.content.res.Resources;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
@@ -24,9 +23,6 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.auxiliary_search.AuxiliarySearchConfigManager;
-import org.chromium.chrome.browser.auxiliary_search.AuxiliarySearchControllerFactory;
-import org.chromium.chrome.browser.auxiliary_search.AuxiliarySearchUtils;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -39,14 +35,11 @@ import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtiliti
 import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
-import org.chromium.components.browser_ui.settings.TextMessagePreference;
 import org.chromium.components.browser_ui.settings.search.PreferenceParser;
 import org.chromium.components.browser_ui.settings.search.SearchIndexProvider;
 import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
-import org.chromium.ui.text.ChromeClickableSpan;
-import org.chromium.ui.text.SpanApplier;
 
 import java.util.Map;
 import java.util.Set;
@@ -60,15 +53,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH =
             "auto_open_synced_tab_groups_switch";
-
-    private static final String PREF_SHARE_TITLES_AND_URLS_WITH_OS_SWITCH =
-            "share_titles_and_urls_with_os_switch";
-
-    private static final String PREF_SHARE_TITLES_AND_URLS_WITH_OS_LEARN_MORE =
-            "share_titles_and_urls_with_os_learn_more";
-
-    private static final String LEARN_MORE_URL =
-            "https://support.google.com/chrome/?p=share_titles_urls";
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
     static final String PREF_TAB_GROUPS_BAR_SWITCH = "tab_groups_bar_switch";
@@ -102,7 +86,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         configureOpenLinksInCurrentTabGroupSwitch();
         configureClosingAllTabsClosesBraveSwitch();
         configureShowUndoWhenTabsClosedSwitch();
-        configureShareTitlesAndUrlsWithOsSwitch();
         updateTabGroupDependentPreferences();
     }
 
@@ -214,44 +197,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                 });
     }
 
-    private void configureShareTitlesAndUrlsWithOsSwitch() {
-        ChromeSwitchPreference shareTitlesAndUrlsWithOsSwitch =
-                assertNonNull(findPreference(PREF_SHARE_TITLES_AND_URLS_WITH_OS_SWITCH));
-        TextMessagePreference learnMoreTextMessagePreference =
-                assertNonNull(findPreference(PREF_SHARE_TITLES_AND_URLS_WITH_OS_LEARN_MORE));
-
-        // LINT.IfChange(isShareTitlesAndUrlsEnabled)
-        if (!isShareTitlesAndUrlsEnabled()) {
-            shareTitlesAndUrlsWithOsSwitch.setVisible(false);
-            learnMoreTextMessagePreference.setVisible(false);
-            return;
-        }
-        // LINT.ThenChange(:isShareTitlesAndUrlsEnabledIndex)
-
-        shareTitlesAndUrlsWithOsSwitch.setVisible(true);
-        learnMoreTextMessagePreference.setVisible(true);
-        shareTitlesAndUrlsWithOsSwitch.setChecked(AuxiliarySearchUtils.isShareTabsWithOsEnabled());
-        shareTitlesAndUrlsWithOsSwitch.setOnPreferenceChangeListener(
-                (preference, newValue) -> {
-                    AuxiliarySearchConfigManager.getInstance()
-                            .notifyShareTabsStateChanged((boolean) newValue);
-                    return true;
-                });
-
-        CharSequence summary = learnMoreTextMessagePreference.getSummary();
-        learnMoreTextMessagePreference.setSummary(
-                SpanApplier.applySpans(
-                        assertNonNull(summary).toString(),
-                        new SpanApplier.SpanInfo(
-                                "<link>",
-                                "</link>",
-                                new ChromeClickableSpan(getContext(), this::onLearnMoreClicked))));
-    }
-
-    private void onLearnMoreClicked(View view) {
-        getCustomTabLauncher().openUrlInCct(getContext(), LEARN_MORE_URL);
-    }
-
     private void updateTabGroupDependentPreferences() {
         boolean tabGroupsEnabled = BraveTabUiFeatureUtilities.isTabGroupsEnabled();
         setPreferenceEnabled(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH, tabGroupsEnabled);
@@ -297,10 +242,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
     private static boolean isTabGroupSyncAutoOpenConfigurable(Profile profile) {
         return TabGroupSyncFeatures.isTabGroupSyncEnabled(profile);
-    }
-
-    private static boolean isShareTitlesAndUrlsEnabled() {
-        return AuxiliarySearchControllerFactory.getInstance().isEnabledAndDeviceCompatible();
     }
 
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
@@ -401,17 +342,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                         indexData.removeEntry(getUniqueId(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH));
                     }
                     // LINT.ThenChange(:isTabGroupSyncAutoOpenConfigurable)
-
-                    // LINT.IfChange(isShareTitlesAndUrlsEnabledIndex)
-                    if (!isShareTitlesAndUrlsEnabled()) {
-                        indexData.removeEntry(
-                                getUniqueId(PREF_SHARE_TITLES_AND_URLS_WITH_OS_SWITCH));
-                    }
-
-                    // It's not useful for "Learn more" text pref to be searchable.
-                    indexData.removeEntry(
-                            getUniqueId(PREF_SHARE_TITLES_AND_URLS_WITH_OS_LEARN_MORE));
-                    // LINT.ThenChange(:isShareTitlesAndUrlsEnabled)
                 }
             };
 }
