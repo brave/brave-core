@@ -141,16 +141,16 @@ export class NemotronStreamSession {
 
   // Attention cache.
   private cacheCh = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS *
-      config.NEMO_LEFT_CONTEXT *
-      config.NEMO_HIDDEN_DIM,
+    config.NEMO_NUM_ENCODER_LAYERS
+      * config.NEMO_LEFT_CONTEXT
+      * config.NEMO_HIDDEN_DIM,
   )
 
   // Convolution cache.
   private cacheTime = new Float32Array(
-    config.NEMO_NUM_ENCODER_LAYERS *
-      config.NEMO_HIDDEN_DIM *
-      config.NEMO_CONV_CONTEXT,
+    config.NEMO_NUM_ENCODER_LAYERS
+      * config.NEMO_HIDDEN_DIM
+      * config.NEMO_CONV_CONTEXT,
   )
 
   // Indicates how much of left context at encoder-output level is valid.
@@ -221,9 +221,7 @@ export class NemotronStreamSession {
     this.closed = true
 
     const flush =
-      config.SILENCE_FLUSH_CHUNKS *
-      config.NEMO_CHUNK *
-      config.HOP_LENGTH
+      config.SILENCE_FLUSH_CHUNKS * config.NEMO_CHUNK * config.HOP_LENGTH
 
     this.frontend.appendAudioSamples(new Float32Array(flush))
 
@@ -283,33 +281,21 @@ export class NemotronStreamSession {
             [1],
           ),
 
-          cache_last_channel: new ort.Tensor(
-            'float32',
-            this.cacheCh,
-            [
-              config.NEMO_NUM_ENCODER_LAYERS,
-              1,
-              config.NEMO_LEFT_CONTEXT,
-              config.NEMO_HIDDEN_DIM,
-            ],
-          ),
+          cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
+            config.NEMO_NUM_ENCODER_LAYERS,
+            1,
+            config.NEMO_LEFT_CONTEXT,
+            config.NEMO_HIDDEN_DIM,
+          ]),
 
-          cache_last_time: new ort.Tensor(
-            'float32',
-            this.cacheTime,
-            [
-              config.NEMO_NUM_ENCODER_LAYERS,
-              1,
-              config.NEMO_HIDDEN_DIM,
-              config.NEMO_CONV_CONTEXT,
-            ],
-          ),
+          cache_last_time: new ort.Tensor('float32', this.cacheTime, [
+            config.NEMO_NUM_ENCODER_LAYERS,
+            1,
+            config.NEMO_HIDDEN_DIM,
+            config.NEMO_CONV_CONTEXT,
+          ]),
 
-          cache_last_channel_len: new ort.Tensor(
-            'int64',
-            this.cacheLen,
-            [1],
-          ),
+          cache_last_channel_len: new ort.Tensor('int64', this.cacheLen, [1]),
         },
         ENC_FETCHES,
       )
@@ -329,15 +315,14 @@ export class NemotronStreamSession {
       )
 
       // Update encoder caches.
-      this.cacheCh =
-        (eo.cache_last_channel_next.data as Float32Array).slice()
+      this.cacheCh = (eo.cache_last_channel_next.data as Float32Array).slice()
 
-      this.cacheTime =
-        (eo.cache_last_time_next.data as Float32Array).slice()
+      this.cacheTime = (eo.cache_last_time_next.data as Float32Array).slice()
 
       // Grows until NEMO_LEFT_CONTEXT and then stays there.
-      this.cacheLen =
-        (eo.cache_last_channel_len_next.data as BigInt64Array).slice()
+      this.cacheLen = (
+        eo.cache_last_channel_len_next.data as BigInt64Array
+      ).slice()
 
       disposeOrt([], eo as unknown as Record<string, OrtTensor>)
 
@@ -361,11 +346,11 @@ export class NemotronStreamSession {
         // Decoder processes each time frame, aggregated across all channels.
         while (sym < config.NEMO_MAX_SYM) {
           const dout = await dec.run({
-            encoder_outputs: new ort.Tensor(
-              'float32',
-              frame,
-              [1, config.NEMO_HIDDEN_DIM, 1],
-            ),
+            encoder_outputs: new ort.Tensor('float32', frame, [
+              1,
+              config.NEMO_HIDDEN_DIM,
+              1,
+            ]),
 
             targets: new ort.Tensor(
               'int32',
@@ -373,23 +358,19 @@ export class NemotronStreamSession {
               [1, 1],
             ),
 
-            target_length: new ort.Tensor(
-              'int32',
-              Int32Array.from([1]),
-              [1],
-            ),
+            target_length: new ort.Tensor('int32', Int32Array.from([1]), [1]),
 
-            input_states_1: new ort.Tensor(
-              'float32',
-              this.st1,
-              [2, 1, config.NEMO_DECODER_LSTM_DIM],
-            ),
+            input_states_1: new ort.Tensor('float32', this.st1, [
+              2,
+              1,
+              config.NEMO_DECODER_LSTM_DIM,
+            ]),
 
-            input_states_2: new ort.Tensor(
-              'float32',
-              this.st2,
-              [2, 1, config.NEMO_DECODER_LSTM_DIM],
-            ),
+            input_states_2: new ort.Tensor('float32', this.st2, [
+              2,
+              1,
+              config.NEMO_DECODER_LSTM_DIM,
+            ]),
           })
 
           decoderCalls++
@@ -484,13 +465,11 @@ export class NemotronStreamSession {
     if (!config.DEBUG) {
       return
     }
-  
-    const json = JSON.stringify(
-      details ?? {},
-      (_key, value: unknown) =>
-        typeof value === 'bigint' ? value.toString() : value,
+
+    const json = JSON.stringify(details ?? {}, (_key, value: unknown) =>
+      typeof value === 'bigint' ? value.toString() : value,
     )
-  
+
     console.error(`[NEMO_DEBUG] ${message} ${json}`)
   }
 }

@@ -26,10 +26,7 @@ import {
 } from 'gen/services/on_device_model/public/mojom/on_device_model.mojom.m.js'
 
 import { installTrustedTypesPolicy } from './ort_env'
-import {
-  NemotronStreamSession,
-  OrtNemotronModel,
-} from './nemotron_recognizer'
+import { NemotronStreamSession, OrtNemotronModel } from './nemotron_recognizer'
 
 import { parseTokens, readBigBuffer } from './utils'
 
