@@ -10,10 +10,20 @@ class PrefRegistrySimple;
 
 namespace local_ai::prefs {
 
+// Profile-scoped: per-profile history embeddings on/off. Surfaced as the
+// chrome://history side bar toggle.
 inline constexpr char kBraveHistoryEmbeddingsEnabled[] =
     "brave.history_embeddings_enabled";
 
+// Local-state-scoped: umbrella master switch for all local AI features.
+// Surfaced as the Brave Origin Settings "Local AI" toggle. When false,
+// every local AI surface (history embeddings UI, the brave-history-embeddings
+// chrome://flags entry, the EmbeddingGemma model component install, ...) is
+// dormant regardless of the per-profile toggle.
+inline constexpr char kBraveLocalAIEnabled[] = "brave.local_ai_enabled";
+
 void RegisterProfilePrefs(PrefRegistrySimple* registry);
+void RegisterLocalStatePrefs(PrefRegistrySimple* registry);
 
 }  // namespace local_ai::prefs
 

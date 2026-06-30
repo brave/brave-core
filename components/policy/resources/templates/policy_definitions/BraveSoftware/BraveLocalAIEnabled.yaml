@@ -1,0 +1,34 @@
+caption: Enable Local AI
+default: null
+desc: |-
+  Master switch for Brave's local AI features (history embeddings and any future on-device AI surfaces).
+
+  When this policy is set to true, the local AI feature surfaces (the chrome://history side bar toggle, the brave-history-embeddings chrome://flags entry, the EmbeddingGemma model component install, etc.) become available to the user.
+
+  When this policy is set to false, every local AI surface is hidden and the on-device AI components are not installed.
+
+  If you set this policy, users cannot change or override it.
+
+  If this policy is left unset, local AI is enabled by default.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: false
+  per_profile: false
+items:
+- caption: Enable Local AI
+  value: true
+- caption: Disable Local AI
+  value: false
+- caption: Allow the user to decide
+  value: null
+owners:
+- bbondy@brave.com
+- clifton@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:149-
+tags: []
+type: main

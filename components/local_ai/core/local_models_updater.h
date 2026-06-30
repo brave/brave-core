@@ -25,6 +25,8 @@ template <typename T>
 class NoDestructor;
 }  // namespace base
 
+class PrefService;
+
 namespace component_updater {
 class ComponentUpdateService;
 }  // namespace component_updater
@@ -115,7 +117,8 @@ class LocalModelsUpdaterState {
 };
 
 void ManageLocalModelsComponentRegistration(
-    component_updater::ComponentUpdateService* cus);
+    component_updater::ComponentUpdateService* cus,
+    PrefService* local_state);
 
 }  // namespace local_ai
 

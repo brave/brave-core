@@ -12,6 +12,7 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/brave_wayback_machine/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
@@ -38,6 +39,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/email_aliases/buildflags",
     "//brave/components/global_privacy_control",
     "//brave/components/ipfs/buildflags",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/p3a",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/query_filter/common",
@@ -69,6 +71,10 @@ source_set("brave_simple_policy_map") {
 
   if (enable_brave_wayback_machine) {
     deps += [ "//brave/components/brave_wayback_machine" ]
+  }
+
+  if (enable_local_ai) {
+    deps += [ "//brave/components/local_ai/core" ]
   }
 
   if (deprecate_ipfs) {
