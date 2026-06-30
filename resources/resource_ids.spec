@@ -30,7 +30,7 @@
   },
   # This file is generated during the build.
   "<(SHARED_INTERMEDIATE_DIR)/brave/browser/resources/settings/brave_settings_resources.grd": {
-    "META": {"sizes": {"includes": [20]}},
+    "META": {"sizes": {"includes": [25]}},
     "includes": [53100],
   },
   "brave/app/brave_generated_resources.grd": {
