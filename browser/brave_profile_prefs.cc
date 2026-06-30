@@ -418,6 +418,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // appearance
   registry->RegisterBooleanPref(kShowBookmarksButton, true);
   registry->RegisterBooleanPref(kShowSidePanelButton, true);
+  registry->RegisterBooleanPref(kShowScreenshotButton, true);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
   registry->RegisterBooleanPref(kTabsSearchShow, true);

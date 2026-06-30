@@ -388,6 +388,11 @@ void BraveToolbarView::Init() {
         AddChildViewAt(std::make_unique<ScreenshotButton>(browser()),
                        *GetIndexOf(app_menu_button()) - 1);
     SetBraveButtonFlexBehavior(screenshot_button_);
+    show_screenshot_button_.Init(
+        kShowScreenshotButton, profile->GetPrefs(),
+        base::BindRepeating(&BraveToolbarView::OnShowScreenshotButtonChanged,
+                            base::Unretained(this)));
+    screenshot_button_->SetVisible(show_screenshot_button_.GetValue());
   }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -443,6 +448,11 @@ void BraveToolbarView::OnShowBookmarksButtonChanged() {
   }
 
   UpdateBookmarkVisibility();
+}
+
+void BraveToolbarView::OnShowScreenshotButtonChanged() {
+  CHECK(screenshot_button_);
+  screenshot_button_->SetVisible(show_screenshot_button_.GetValue());
 }
 
 void BraveToolbarView::OnLocationBarIsWideChanged() {

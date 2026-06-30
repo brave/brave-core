@@ -122,6 +122,14 @@ inline constexpr BraveAction kShowBraveNews = {
     .icon = kLeoRssIcon};
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
+inline constexpr BraveAction kShowScreenshotAction = {
+    .id = side_panel::customize_chrome::mojom::ActionId::kShowScreenshot,
+    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SCREENSHOT,
+    .anchor = side_panel::customize_chrome::mojom::ActionId::kTabSearch,
+    .category = side_panel::customize_chrome::mojom::CategoryId::kNavigation,
+    .pref_name = kShowScreenshotButton,
+    .icon = kLeoScreenshotIcon};
+
 inline constexpr BraveAction kShowShareMenuAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowShareMenu,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SHARE_MENU,
@@ -146,6 +154,7 @@ inline constexpr auto kBraveActions =
                            const BraveAction*>({
         {kShowAddBookmarkButton.id, &kShowAddBookmarkButton},
         {kShowSidePanelAction.id, &kShowSidePanelAction},
+        {kShowScreenshotAction.id, &kShowScreenshotAction},
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
         {kShowWalletAction.id, &kShowWalletAction},
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

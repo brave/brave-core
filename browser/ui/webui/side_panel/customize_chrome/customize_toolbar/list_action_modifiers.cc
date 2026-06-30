@@ -11,6 +11,7 @@
 #include "base/check_is_test.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/screenshot/features.h"
 #include "brave/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/brave_action.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
@@ -196,6 +197,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   //   kShowWallet,
   //   kShowAIChat,
   //   kShowVPN,
+  //   kShowScreenshot,
   // Address bar
   //   kShowReward
   //   kShowBraveNews
@@ -209,6 +211,10 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
 
   // Followings are dynamic actions: anchor to TabSearchButton and append to
   // action list in reverse order.
+  if (screenshot::features::IsScreenshotEnabled()) {
+    brave_actions.push_back(kShowScreenshotAction);
+  }
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::IsBraveVPNEnabled(web_contents->GetBrowserContext())) {
     brave_actions.push_back(kShowVPNAction);
