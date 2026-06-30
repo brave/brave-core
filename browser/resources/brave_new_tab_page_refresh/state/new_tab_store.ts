@@ -23,6 +23,7 @@ export interface NewTabState {
   newsFeatureEnabled: boolean
   aiChatInputEnabled: boolean
   centerNttCtaButtonFeatureEnabled: boolean
+  customWidgetsEnabled: boolean
   actions: NewTabActions
 }
 
@@ -40,6 +41,7 @@ export function defaultNewTabStore(): NewTabStore {
     newsFeatureEnabled: false,
     aiChatInputEnabled: false,
     centerNttCtaButtonFeatureEnabled: false,
+    customWidgetsEnabled: false,
     actions: {
       setShowClock(showClock) {},
       setClockFormat(format) {},

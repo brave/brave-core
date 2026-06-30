@@ -35,6 +35,8 @@ source_set("brave_new_tab_page_refresh") {
     "brave_new_tab_page_ui.h",
     "custom_image_chooser.cc",
     "custom_image_chooser.h",
+    "custom_widget_untrusted_ui.cc",
+    "custom_widget_untrusted_ui.h",
     "new_tab_page_handler.cc",
     "new_tab_page_handler.h",
     "new_tab_page_initializer.cc",

@@ -15,13 +15,14 @@ import { TopSites } from './top_sites/top_sites'
 import { Clock } from './common/clock'
 import { LazyNewsFeed } from './news/lazy_news_feed'
 import { WidgetStack } from './widgets/widget_stack'
+import { CustomWidgets } from './widgets/custom_widgets'
 import { useSearchLayoutReady, useWidgetLayoutReady } from './app_layout_ready'
+import { useNewTabState } from '../context/new_tab_context'
 import useMediaQuery from '$web-common/useMediaQuery'
 
 import { style, threeColumnBreakpoint } from './app.style'
 
 // <if expr="enable_ai_chat">
-import { useNewTabState } from '../context/new_tab_context'
 import { LazyQueryBox } from './query_box/lazy_query_box'
 // </if>
 
@@ -30,6 +31,7 @@ const threeColumnQuery = `(width > ${threeColumnBreakpoint})`
 export function App() {
   const searchLayoutReady = useSearchLayoutReady()
   const widgetLayoutReady = useWidgetLayoutReady()
+  const customWidgetsEnabled = useNewTabState((s) => s.customWidgetsEnabled)
 
   const [settingsView, setSettingsView] = React.useState<SettingsView | null>(
     null,
@@ -107,6 +109,7 @@ export function App() {
                 name='right'
                 tabs={['vpn', 'rewards', 'talk']}
               />
+              {customWidgetsEnabled && <CustomWidgets />}
             </>
           )}
         </div>

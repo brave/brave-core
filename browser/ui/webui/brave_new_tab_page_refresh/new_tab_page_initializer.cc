@@ -6,6 +6,7 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/new_tab_page_initializer.h"
 
 #include <memory>
+#include <string>
 #include <utility>
 
 #include "base/check.h"
@@ -172,9 +173,14 @@ void NewTabPageInitializer::AddCSPOverrides() {
       "chrome://background-wallpaper chrome://custom-wallpaper "
       "chrome://branded-wallpaper chrome://favicon2 blob: data: 'self';");
 
+  std::string frame_src =
+      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl});
+  if (base::FeatureList::IsEnabled(features::kBraveNtpCustomWidgets)) {
+    base::StrAppend(&frame_src, {" ", kBraveNTPWidgetsUIURL});
+  }
+  base::StrAppend(&frame_src, {";"});
   source_->OverrideContentSecurityPolicy(
-      network::mojom::CSPDirectiveName::FrameSrc,
-      base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+      network::mojom::CSPDirectiveName::FrameSrc, frame_src);
 }
 
 void NewTabPageInitializer::AddLoadTimeValues() {
@@ -191,6 +197,10 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "ntpSearchFeatureEnabled",
       base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget));
+
+  source_->AddBoolean(
+      "customWidgetsEnabled",
+      base::FeatureList::IsEnabled(features::kBraveNtpCustomWidgets));
 
   source_->AddBoolean(
       "centerNttCtaButtonFeatureEnabled",

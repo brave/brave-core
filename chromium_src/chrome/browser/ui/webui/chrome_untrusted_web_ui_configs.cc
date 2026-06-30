@@ -16,6 +16,11 @@
 #include "components/history_embeddings/core/history_embeddings_features.h"
 #include "content/public/browser/webui_config_map.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/brave_ui_features.h"
+#include "brave/browser/ui/webui/brave_new_tab_page_refresh/custom_widget_untrusted_ui.h"
+#endif  // !BUILDFLAG(IS_ANDROID)
+
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/browser/ui/webui/brave_wallet/ledger/ledger_ui.h"
 #include "brave/browser/ui/webui/brave_wallet/line_chart/line_chart_ui.h"
@@ -61,6 +66,13 @@
 
 void RegisterChromeUntrustedWebUIConfigs() {
   RegisterChromeUntrustedWebUIConfigs_ChromiumImpl();
+#if !BUILDFLAG(IS_ANDROID)
+  if (base::FeatureList::IsEnabled(features::kBraveNtpCustomWidgets)) {
+    content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
+        std::make_unique<
+            brave_new_tab_page_refresh::CustomWidgetUntrustedUIConfig>());
+  }
+#endif  // !BUILDFLAG(IS_ANDROID)
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   content::WebUIConfigMap::GetInstance().AddUntrustedWebUIConfig(
       std::make_unique<market::UntrustedMarketUIConfig>());

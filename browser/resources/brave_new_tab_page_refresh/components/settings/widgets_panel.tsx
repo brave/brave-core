@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Toggle from '@brave/leo/react/toggle'
+import Button from '@brave/leo/react/button'
 
 import { useBraveNews } from '../../../../../components/brave_news/browser/resources/shared/Context'
 
@@ -15,6 +16,12 @@ import {
   useRewardsActions,
 } from '../../context/rewards_context'
 import { useVpnState, useVpnActions } from '../../context/vpn_context'
+import {
+  useCustomWidgets,
+  addCustomWidget,
+  removeCustomWidget,
+} from '../../state/custom_widgets_store'
+import { customWidgetPrompt } from '../../lib/custom_widget_prompt'
 
 import { style } from './widgets_panel.style'
 
@@ -32,6 +39,7 @@ export function WidgetsPanel() {
   const showRewardsWidget = useRewardsState((s) => s.showRewardsWidget)
   const vpnFeatureEnabled = useVpnState((s) => s.vpnFeatureEnabled)
   const showVpnWidget = useVpnState((s) => s.showVpnWidget)
+  const customWidgetsEnabled = useNewTabState((s) => s.customWidgetsEnabled)
 
   return (
     <div data-css-scope={style.scope}>
@@ -100,6 +108,78 @@ export function WidgetsPanel() {
             {getString(S.NEW_TAB_SHOW_NEWS_WIDGET_LABEL)}
           </span>
         </Toggle>
+      )}
+      {customWidgetsEnabled && <CustomWidgetsSettings />}
+    </div>
+  )
+}
+
+function CustomWidgetsSettings() {
+  const widgets = useCustomWidgets()
+  const [name, setName] = React.useState('')
+  const [html, setHtml] = React.useState('')
+
+  function onAdd() {
+    if (!html.trim()) {
+      return
+    }
+    addCustomWidget(name, html)
+    setName('')
+    setHtml('')
+  }
+
+  function onCopyPrompt() {
+    navigator.clipboard.writeText(customWidgetPrompt)
+  }
+
+  return (
+    <div className='custom-widgets'>
+      <div className='custom-widgets-header'>Custom widgets (AI)</div>
+      <div className='custom-widgets-description'>
+        Ask Leo to build a widget, then paste the HTML it returns below.
+      </div>
+      <Button
+        kind='outline'
+        size='small'
+        onClick={onCopyPrompt}
+      >
+        Copy Leo prompt
+      </Button>
+      <input
+        className='custom-widget-name'
+        type='text'
+        placeholder='Widget name (optional)'
+        value={name}
+        onChange={(e) => setName(e.currentTarget.value)}
+      />
+      <textarea
+        className='custom-widget-html'
+        placeholder='Paste the widget HTML from Leo here'
+        value={html}
+        onChange={(e) => setHtml(e.currentTarget.value)}
+      />
+      <Button
+        size='small'
+        isDisabled={!html.trim()}
+        onClick={onAdd}
+      >
+        Add widget
+      </Button>
+      {widgets.length > 0 && (
+        <ul className='custom-widget-list'>
+          {widgets.map((widget) => (
+            <li key={widget.id}>
+              <span className='custom-widget-list-name'>{widget.name}</span>
+              <Button
+                kind='plain-faint'
+                size='tiny'
+                onClick={() => removeCustomWidget(widget.id)}
+              >
+                Remove
+              </Button>
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   )

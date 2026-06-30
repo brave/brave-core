@@ -21,6 +21,7 @@ export function createNewTabStore() {
     centerNttCtaButtonFeatureEnabled: loadTimeData.getBoolean(
       'centerNttCtaButtonFeatureEnabled',
     ),
+    customWidgetsEnabled: loadTimeData.getBoolean('customWidgetsEnabled'),
   })
 
   async function updateClockPrefs() {

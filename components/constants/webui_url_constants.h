@@ -75,6 +75,12 @@ inline constexpr char16_t kTransactionSimulationLearnMoreURL[] =
 inline constexpr char kNTPNewTabTakeoverRichMediaUrl[] =
     "chrome-untrusted://new-tab-takeover/";
 
+// Untrusted host that renders user-added, AI-generated custom NTP widgets in an
+// isolated sandbox. See kBraveNtpCustomWidgets feature flag.
+inline constexpr char kBraveNTPWidgetsUIHost[] = "brave-ntp-widgets";
+inline constexpr char kBraveNTPWidgetsUIURL[] =
+    "chrome-untrusted://brave-ntp-widgets/";
+
 inline constexpr char kBraveUINewTabURL[] = "chrome://newtab/";
 
 inline constexpr char kBraveUINewTabTakeoverURL[] =
