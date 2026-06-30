@@ -23,6 +23,10 @@
 
 namespace brave_wallet {
 
+inline constexpr char kAssetHubMnemonic[] =
+    "lazy february across turn unique syrup gasp pass pelican achieve cable "
+    "canal";
+
 base::DictValue RequestBodyToJsonDict(const network::ResourceRequest& req);
 std::string ReadMetadataFixtureJson(std::string_view file_name);
 std::vector<uint8_t> ReadMetadataFixture(std::string_view file_name);
