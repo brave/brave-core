@@ -5,6 +5,7 @@
 
 #include "base/containers/fixed_flat_set.h"
 #include "base/test/bind.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
@@ -13,6 +14,9 @@
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -31,6 +35,7 @@
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/policy/policy_constants.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -267,6 +272,52 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
   VerifyAIChatSidePanelShowing(third_opened_browser);
 }
 
+// Regression test for a crash seen on Brave Origin installs. Brave Origin
+// manages AI Chat as a profile-scoped policy that defaults to disabled for
+// newly-created profiles. When the source profile has AI Chat enabled but the
+// freshly-created agent profile inherits the default-disabled policy, the agent
+// profile's AIChatService is null, the kChatUI side panel entry is never
+// registered, and showing it used to CHECK-crash. The agent profile must
+// instead inherit the source profile's AI Chat policy value.
+IN_PROC_BROWSER_TEST_F(AIChatAgentProfileBrowserTest,
+                       OpenBrowserWindowInheritsAIChatPolicyUnderBraveOrigin) {
+  auto* origin_manager = brave_origin::BraveOriginPolicyManager::GetInstance();
+  ASSERT_TRUE(origin_manager->IsInitialized());
+
+  // Mark the source profile's AI Chat policy as enabled, like a Brave Origin
+  // user who has kept AI Chat on. New profiles still default to disabled.
+  origin_manager->SetPolicyValue(
+      policy::key::kBraveAIChatEnabled, true,
+      brave_origin::GetProfileId(GetProfile()->GetPath()));
+
+  // Re-assert the purchased state inside the wait loop: the source profile's
+  // BraveOriginService runs a SKU purchase check at startup that can reset it
+  // (there is no real purchase in tests), so keep setting it until the managed
+  // AI Chat policy has propagated to the source profile.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    origin_manager->SetPurchased(true);
+    return GetProfile()->GetPrefs()->IsManagedPreference(
+               prefs::kEnabledByPolicy) &&
+           IsAIChatEnabled(GetProfile()->GetPrefs());
+  }));
+
+  SetUserOptedIn(GetProfile()->GetPrefs(), true);
+
+  // Before the fix this crashes while showing the agent profile's side panel.
+  Browser* agent_browser =
+      CallOpenBrowserWindowForAiChatAgentProfile(GetProfile());
+  ASSERT_TRUE(agent_browser);
+  ASSERT_TRUE(agent_browser->profile()->IsAIChatAgent());
+
+  // The agent profile must have inherited the source profile's enabled AI Chat
+  // policy, so the service is available and the side panel can be shown.
+  EXPECT_TRUE(IsAIChatEnabled(agent_browser->profile()->GetPrefs()));
+  EXPECT_NE(
+      AIChatServiceFactory::GetForBrowserContext(agent_browser->profile()),
+      nullptr);
+  VerifyAIChatSidePanelShowing(agent_browser);
+}
+
 // UI Tests for AI Chat Agent Profile features
 // TODO(https://github.com/brave/brave-browser/issues/48165): This should be
 // converted to an interactive_uitest.
@@ -460,7 +511,7 @@ IN_PROC_BROWSER_TEST_F(AIChatAgentProfileStartupBrowserTest,
   // Since they would have seen the profile picker before, this pref
   // will be true.
   g_browser_process->local_state()->SetBoolean(
-      prefs::kBrowserProfilePickerShown, true);
+      ::prefs::kBrowserProfilePickerShown, true);
 
   // Need to close the browser window manually so that the real test does not
   // treat it as session restore.

@@ -219,6 +219,7 @@ if (enable_brave_ai_chat_agent_profile) {
       "//brave/components/ai_chat/core/common",
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/ai_chat/core/common/mojom",
+      "//brave/components/brave_origin",
       "//chrome/browser:browser_process",
       "//chrome/browser:browser_public_dependencies",
       "//chrome/browser/actor",
@@ -230,6 +231,8 @@ if (enable_brave_ai_chat_agent_profile) {
       "//chrome/browser/ui",
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
+      "//components/policy/core/common:common_constants",
+      "//components/prefs",
     ]
 
     if (!is_android) {
@@ -458,10 +461,13 @@ source_set("browser_tests") {
         ":content_agent_test_support",
         "//brave/browser/ai_chat:ai_chat_agent_profile",
         "//brave/browser/ui/webui/ai_chat",
+        "//brave/components/ai_chat/core/common",
         "//brave/components/ai_chat/core/common:test_support",
+        "//brave/components/brave_origin",
         "//chrome/browser/actor",
         "//chrome/browser/ui",
         "//components/optimization_guide/content/browser",
+        "//components/policy/core/common:common_constants",
       ]
 
       data += [ "//chrome/test/data/actor/" ]
