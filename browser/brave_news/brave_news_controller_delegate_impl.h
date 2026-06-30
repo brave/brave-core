@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_CONTROLLER_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_BRAVE_NEWS_BRAVE_NEWS_CONTROLLER_DELEGATE_IMPL_H_
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 
 class Profile;
@@ -30,7 +30,7 @@ class BraveNewsControllerDelegateImpl : public BraveNewsController::Delegate {
   void OpenSettings() override;
 
  private:
-  raw_ptr<Profile> profile_;
+  const raw_ref<Profile> profile_;
 };
 
 }  // namespace brave_news

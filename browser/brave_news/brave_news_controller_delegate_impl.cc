@@ -5,7 +5,7 @@
 
 #include "brave/browser/brave_news/brave_news_controller_delegate_impl.h"
 
-#include "base/check.h"
+#include "base/check_deref.h"
 #include "base/strings/strcat.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,9 +19,7 @@ namespace brave_news {
 
 BraveNewsControllerDelegateImpl::BraveNewsControllerDelegateImpl(
     Profile* profile)
-    : profile_(profile) {
-  CHECK(profile_);
-}
+    : profile_(CHECK_DEREF(profile)) {}
 
 BraveNewsControllerDelegateImpl::~BraveNewsControllerDelegateImpl() = default;
 
@@ -29,7 +27,7 @@ void BraveNewsControllerDelegateImpl::OpenSettings() {
   // The New Tab Page shows the Brave News customize modal when opened with this
   // query param (see the `openSettings` handling in the New Tab Page).
   NavigateParams params(
-      profile_,
+      &profile_.get(),
       GURL(base::StrCat({kBraveUINewTabURL, "?openSettings=BraveNews"})),
       ui::PAGE_TRANSITION_AUTO_TOPLEVEL);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
