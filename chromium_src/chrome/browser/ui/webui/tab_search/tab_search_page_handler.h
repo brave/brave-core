@@ -6,12 +6,19 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_WEBUI_TAB_SEARCH_TAB_SEARCH_PAGE_HANDLER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+namespace history_embeddings {
+class HistoryEmbeddingsSearch;
+}
 
 class SessionID;
 
@@ -71,6 +78,8 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
 
   void SetTabFocusEnabled() override;
   void GetTabFocusShowFRE(GetTabFocusShowFRECallback callback) override;
+  void SearchTabsByContent(const std::string& query,
+                           SearchTabsByContentCallback callback) override;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void SetOriginalTabsInfoByWindowForTesting(
@@ -79,6 +88,15 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
     original_tabs_info_by_window_ = original_tabs_info_by_window;
   }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // Overrides the `HistoryEmbeddingsSearch` used by `SearchTabsByContent` so
+  // tests can avoid standing up a real `HistoryEmbeddingsService`.
+  void SetEmbeddingsSearchForTesting(
+      history_embeddings::HistoryEmbeddingsSearch* search) {
+    embeddings_search_for_testing_ = search;
+  }
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
  private:
   void OpenURLInNewTab(const GURL& url);
@@ -103,7 +121,21 @@ class TabSearchPageHandler : public TabSearchPageHandler_ChromiumImpl {
   // undo last focus tabs action. This is used to move the focus tabs back to
   // their original positions.
   base::flat_map<SessionID, std::vector<TabInfo>> original_tabs_info_by_window_;
+#endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+ private:
+  // Tracks per-tab HistoryService::QueryURL calls issued by
+  // SearchTabsByContent. Destruction cancels any in-flight resolution so a
+  // stale search can't fire its embeddings query after the handler is gone.
+  base::CancelableTaskTracker query_url_task_tracker_;
+
+  raw_ptr<history_embeddings::HistoryEmbeddingsSearch>
+      embeddings_search_for_testing_ = nullptr;
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+ private:
   base::WeakPtrFactory<TabSearchPageHandler> weak_ptr_factory_{this};
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 };

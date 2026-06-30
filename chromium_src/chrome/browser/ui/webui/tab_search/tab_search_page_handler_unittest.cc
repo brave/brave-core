@@ -9,7 +9,9 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/test_future.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "components/grit/brave_components_strings.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -43,7 +45,7 @@
 
 namespace {
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_LOCAL_AI)
 constexpr char kFooDotComUrl1[] = "https://foo.com/1";
 constexpr char kFooDotComUrl2[] = "https://foo.com/2";
 constexpr char kBarDotComUrl1[] = "https://bar.com/1";
@@ -341,3 +343,35 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
   EXPECT_CALL(page_, TabsRemoved(_)).Times(testing::AnyNumber());
 }
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+// Exercises the early-return paths of `SearchTabsByContent` (empty query,
+// no tabs eligible for the open-tab URL-id filter). The happy path requires
+// a live `HistoryEmbeddingsService` and is covered by
+// `TabSearchPageHandlerBrowserTest.SearchTabsByContent`.
+class SearchTabsByContentEarlyReturnTest : public TabSearchPageHandlerTest {
+ public:
+  std::vector<int32_t> RunSearch(const std::string& query) {
+    base::test::TestFuture<const std::vector<int32_t>&> future;
+    EXPECT_CALL(page_, TabsChanged(_)).Times(testing::AnyNumber());
+    EXPECT_CALL(page_, TabUpdated(_)).Times(testing::AnyNumber());
+    EXPECT_CALL(page_, TabsRemoved(_)).Times(testing::AnyNumber());
+    handler()->SearchTabsByContent(query, future.GetCallback());
+    return future.Take();
+  }
+};
+
+TEST_F(SearchTabsByContentEarlyReturnTest, EmptyQueryReturnsEmpty) {
+  AddTabWithTitle(browser1(), GURL(kFooDotComUrl1), kFooDotComTitle1);
+  EXPECT_TRUE(RunSearch("").empty());
+}
+
+TEST_F(SearchTabsByContentEarlyReturnTest, NoTrackedTabsReturnsEmpty) {
+  // Non-normal window, other profile, incognito profile — none of these
+  // should contribute to the open-tab URL-id filter.
+  AddTabWithTitle(browser5(), GURL(kFooDotComUrl1), kFooDotComTitle1);
+  AddTabWithTitle(browser4(), GURL(kFooDotComUrl2), kFooDotComTitle2);
+  AddTabWithTitle(browser3(), GURL(kBarDotComUrl1), kBarDotComTitle1);
+  EXPECT_TRUE(RunSearch("anything").empty());
+}
+#endif  // BUILDFLAG(ENABLE_LOCAL_AI)
