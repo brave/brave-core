@@ -43,7 +43,10 @@ source_set("browser_process") {
   ]
 
   if (enable_local_ai) {
-    deps += [ "//brave/components/local_ai/core" ]
+    deps += [
+      "//brave/components/local_ai/content",
+      "//brave/components/local_ai/core",
+    ]
   }
 }
 
