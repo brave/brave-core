@@ -24,8 +24,7 @@ export interface StreamingMelFrontendDebugState {
 export function hannWindow(): Float32Array {
   return Float32Array.from(
     { length: config.WIN_LENGTH },
-    (_, i) =>
-      0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (config.WIN_LENGTH - 1)),
+    (_, i) => 0.5 - 0.5 * Math.cos((2 * Math.PI * i) / (config.WIN_LENGTH - 1)),
   )
 }
 
@@ -60,10 +59,7 @@ export function initFftPower(n: FftSize): FftState {
 }
 
 // Compute power spectrum from a real-valued N_FFT frame.
-function fftPower(
-  frame: Float32Array,
-  fft: FftState,
-): Float32Array {
+function fftPower(frame: Float32Array, fft: FftState): Float32Array {
   const n = fft.n
   const real = fft.real
   const imag = fft.imag
@@ -256,8 +252,7 @@ export class StreamingMelFrontend {
     // Match the full-buffer NeMo layout:
     // window is placed at OFF inside an N_FFT-sized frame, and the raw
     // window starts at frameIndex * HOP_LENGTH - PAD + OFF.
-    const rawStart =
-      frameIndex * config.HOP_LENGTH - config.PAD + config.OFF
+    const rawStart = frameIndex * config.HOP_LENGTH - config.PAD + config.OFF
 
     for (let i = 0; i < config.WIN_LENGTH; i++) {
       frame[config.OFF + i] =
@@ -284,7 +279,9 @@ export class StreamingMelFrontend {
 
   private rawSampleAt(absSampleIndex: number): number {
     if (absSampleIndex < 0) {
-      throw new Error(`rawSampleAt called with negative index ${absSampleIndex}`)
+      throw new Error(
+        `rawSampleAt called with negative index ${absSampleIndex}`,
+      )
     }
 
     // Should only happen if the caller intentionally requests samples beyond
@@ -297,8 +294,8 @@ export class StreamingMelFrontend {
 
     if (rel < 0 || rel >= this.rawAudio.length) {
       throw new Error(
-        `Streaming frontend lost raw sample ${absSampleIndex}; ` +
-          `base=${this.rawBaseSample}, len=${this.rawAudio.length}`,
+        `Streaming frontend lost raw sample ${absSampleIndex}; `
+          + `base=${this.rawBaseSample}, len=${this.rawAudio.length}`,
       )
     }
 
@@ -330,8 +327,8 @@ export class StreamingMelFrontend {
 
     if (rel < 0 || rel >= this.melFrames.length) {
       throw new Error(
-        `Streaming frontend lost mel frame ${absFrameIndex}; ` +
-          `base=${this.melFrameBase}, len=${this.melFrames.length}`,
+        `Streaming frontend lost mel frame ${absFrameIndex}; `
+          + `base=${this.melFrameBase}, len=${this.melFrames.length}`,
       )
     }
 
@@ -374,10 +371,7 @@ export class StreamingMelFrontend {
     // previous sample for pre-emphasis continuity.
     const firstRawNeeded = Math.max(
       0,
-      this.nextMelFrame * config.HOP_LENGTH -
-        config.PAD +
-        config.OFF -
-        1,
+      this.nextMelFrame * config.HOP_LENGTH - config.PAD + config.OFF - 1,
     )
 
     const dropSamples = firstRawNeeded - this.rawBaseSample
