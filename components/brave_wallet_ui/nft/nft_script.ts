@@ -29,6 +29,8 @@ const mediaUrl =
 const iconImageUrl = urlParams.get('icon') || undefined
 
 function render() {
+  document.body.dataset.displayMode = displayMode
+
   const imgEl = document.getElementById('nft-image') as HTMLImageElement
 
   // Show placeholder if the image fails to load (e.g., due to size limits)
