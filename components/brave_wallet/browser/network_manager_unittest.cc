@@ -577,7 +577,7 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
     EXPECT_EQ(GURL("https://westend-asset-hub.wallet.brave.com/"),
               network_manager()->GetNetworkURL(mojom::kPolkadotTestnetAssetHub,
                                                mojom::CoinType::DOT));
-    EXPECT_EQ(GURL("https://polkadot-paseo-asset-hub.wallet.brave.com/"),
+    EXPECT_EQ(GURL("https://paseo-asset-hub.wallet.brave.com/"),
               network_manager()->GetNetworkURL(mojom::kPolkadotPaseoAssetHub,
                                                mojom::CoinType::DOT));
   }
@@ -742,8 +742,8 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   mojom::NetworkInfo polkadot_paseo_asset_hub(
       mojom::kPolkadotPaseoAssetHub, "Paseo Asset Hub",
       {"https://assethub-paseo.subscan.io/"}, {}, 0,
-      {GURL("https://polkadot-paseo-asset-hub.wallet.brave.com/")}, "PAS",
-      "Paseo", 10, mojom::CoinType::DOT,
+      {GURL("https://paseo-asset-hub.wallet.brave.com/")}, "PAS", "Paseo", 10,
+      mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotTestnet,
        mojom::KeyringId::kPolkadotImportTestnet});
   EXPECT_FALSE(network_manager()->GetChain("0x123", mojom::CoinType::DOT));
