@@ -177,6 +177,10 @@ def AddBraveCredits(root, prune_paths, special_cases, prune_dirs,
         os.path.join('brave', 'third_party', 'libdmg-hfsplus'),
         os.path.join('brave', 'tools', 'crates', 'vendor'),
 
+        # ast-grep is used only by plaster, and it is not part of the final
+        # binary.
+        os.path.join('brave', 'third_party', 'ast-grep'),
+
         # Node.js for tooling, and not shipped with the browser.
         os.path.join('brave', 'third_party', 'node'),
 
