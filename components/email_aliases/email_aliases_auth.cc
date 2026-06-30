@@ -61,10 +61,8 @@ void EmailAliasesAuth::OnDisconnect() {
 
 void EmailAliasesAuth::OnAccountStateChanged(
     brave_account::mojom::AccountStatePtr state) {
-  if (current_auth_state_ != state) {
-    current_auth_state_ = std::move(state);
-    on_changed_.Run();
-  }
+  current_auth_state_ = std::move(state);
+  on_changed_.Run();
 }
 
 }  // namespace email_aliases
