@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import path from 'path'
+import path from 'node:path'
 import type { ResolveOptions } from 'webpack'
 import { fallback } from './polyfill.ts'
 
@@ -18,7 +18,7 @@ export const baseResolve = (alias: PathMap): ResolveOptions => ({
   symlinks: false, // If symlinks are used, don't use different IDs for them
   alias,
   modules: ['node_modules'],
-  fallback: fallback as ResolveOptions['fallback'],
+  fallback,
 })
 
 /**

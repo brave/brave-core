@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import webpack from 'webpack'
 
 // Re-exported so consumers have a single import site for shared webpack pieces.
@@ -28,7 +28,7 @@ function prefixReplacer(prefix: string, replacements: string | string[]) {
       }
       const match =
         options.find((dir) => fs.existsSync(path.join(dir, subpath)))
-        ?? options[0]
+        ?? options[0]!
       return path.join(match, subpath)
     })
   })
@@ -43,5 +43,5 @@ export function chromePrefixReplacers(
 ) {
   return Object.keys(pathMap)
     .filter((p) => p.startsWith('chrome://'))
-    .map((p) => prefixReplacer(p, pathMap[p]))
+    .map((p) => prefixReplacer(p, pathMap[p]!))
 }

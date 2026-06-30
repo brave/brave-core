@@ -10,7 +10,9 @@
 import webpack from 'webpack'
 import type { Configuration } from 'webpack'
 
-export const deterministicOptimization: Configuration['optimization'] = {
+export const deterministicOptimization: NonNullable<
+  Configuration['optimization']
+> = {
   // We are providing chunk and module IDs via a plugin instead of a default
   chunkIds: false,
   moduleIds: false,
@@ -30,17 +32,17 @@ export const deterministicOptimization: Configuration['optimization'] = {
  * configurations. Webpack's ConcatenatedModule class doesn't use this context
  * configuration for its identifier construction.
  */
-export function deterministicIdsPlugins() {
+export function deterministicIdsPlugins(genPath: string) {
   return [
     new webpack.ids.NamedModuleIdsPlugin({
-      context: process.env.ROOT_GEN_DIR,
+      context: genPath,
     }),
     // NamedChunkIdsPlugin doesn't seem to care if we don't give a common context
     // - it might if the chunk is directly loaded from an output path, so it's
     // being provided anyway. Otherwise, it relies on the IDs of the chunk's
     // included modules.
     new webpack.ids.NamedChunkIdsPlugin({
-      context: process.env.ROOT_GEN_DIR,
+      context: genPath,
     }),
   ]
 }

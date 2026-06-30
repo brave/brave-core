@@ -13,19 +13,22 @@ import { genPath } from '../../../../build/commands/lib/guessConfig.js'
 import {
   deterministicOptimization,
   deterministicIdsPlugins,
-} from '../../../webpack/deterministic-output.ts'
-import generatePathMap from '../../../webpack/path-map.js'
+} from '../../../../build/webpack/deterministic-output.ts'
+import generatePathMap from '../../../../build/webpack/path-map.js'
 import {
   provideNodeGlobals,
   chromePrefixReplacers,
-} from '../../../webpack/plugins.ts'
-import { baseResolve, withMockOverrides } from '../../../webpack/resolve.ts'
+} from '../../../../build/webpack/plugins.ts'
+import {
+  baseResolve,
+  withMockOverrides,
+} from '../../../../build/webpack/resolve.ts'
 import {
   cssRules,
   tsLoaderRule,
   fileLoaderRule,
   htmlAssetRule,
-} from '../../../webpack/rules.ts'
+} from '../../../../build/webpack/rules.ts'
 
 if (!fs.existsSync(genPath)) {
   throw new Error(
@@ -120,7 +123,7 @@ export default async function (
       outputModule: true,
     },
     plugins: [
-      ...deterministicIdsPlugins(),
+      ...deterministicIdsPlugins(genPath),
       provideNodeGlobals,
       ...chromePrefixReplacers(pathMap),
       new CopyPlugin({

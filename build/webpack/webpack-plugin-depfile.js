@@ -8,8 +8,8 @@
 // This can be useful to know which files to monitor for changes
 // to cause a re-build only when neccessary.
 
-import path from 'path'
-import fs from 'fs'
+import path from 'node:path'
+import fs from 'node:fs'
 import mkdirp from 'mkdirp'
 
 function generateDepfileContent(outputName, depPaths) {
