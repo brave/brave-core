@@ -32,10 +32,6 @@ constexpr uint8_t kSchnorrkelSeed[] = {
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
 
-inline constexpr char kAssetHubMnemonic[] =
-    "lazy february across turn unique syrup gasp pass pelican achieve cable "
-    "canal";
-
 }  // namespace
 
 TEST(PolkadotExtrinsics, MortalityEncoding) {
