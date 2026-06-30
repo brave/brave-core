@@ -690,6 +690,13 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
           FEATURE_VALUE_TYPE(                                                  \
               ai_chat::features::kAIChatDetailedPageContentExtraction),        \
+      },                                                                       \
+      {                                                                        \
+          "brave-ai-chat-conversation-share",                                  \
+          "Brave AI Chat Conversation Sharing",                                \
+          "Enables sharing a conversation from the conversation header.",      \
+          kOsWin | kOsMac | kOsLinux | kOsAndroid,                             \
+          FEATURE_VALUE_TYPE(ai_chat::features::kAIChatConversationShare),     \
       })
 #else
 #define BRAVE_AI_CHAT_FEATURE_ENTRIES

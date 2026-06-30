@@ -15,7 +15,7 @@ interface DemoSharedConversationInputProps {
 
 /**
  * A development-only helper that lets you paste a conversation JSON export
- * (produced by the AI Chat page's "Export conversation" action) and render it.
+ * (produced by the AI Chat page's "Share conversation" action) and render it.
  * This is not part of the shipped shared conversation experience - it only
  * exists to exercise displayConversation() with local data.
  */
