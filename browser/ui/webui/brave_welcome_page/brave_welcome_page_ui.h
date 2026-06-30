@@ -6,17 +6,36 @@
 #ifndef BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_BRAVE_WELCOME_PAGE_UI_H_
 #define BRAVE_BROWSER_UI_WEBUI_BRAVE_WELCOME_PAGE_BRAVE_WELCOME_PAGE_UI_H_
 
-#include "content/public/browser/web_ui_controller.h"
+#include <memory>
+
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
+#include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
+#include "ui/webui/mojo_web_ui_controller.h"
+
+namespace brave_welcome_page {
+class WelcomePageHandler;
+}  // namespace brave_welcome_page
 
 // The Web UI controller for the Brave welcome page.
-class BraveWelcomePageUI : public content::WebUIController {
+class BraveWelcomePageUI : public ui::MojoWebUIController {
  public:
   explicit BraveWelcomePageUI(content::WebUI* web_ui);
   ~BraveWelcomePageUI() override;
 
   BraveWelcomePageUI(const BraveWelcomePageUI&) = delete;
   BraveWelcomePageUI& operator=(const BraveWelcomePageUI&) = delete;
+
+  void BindInterface(
+      mojo::PendingReceiver<brave_welcome_page::mojom::WelcomePageHandler>
+          receiver);
+
+ private:
+  std::unique_ptr<brave_welcome_page::WelcomePageHandler> page_handler_;
+
+  WEB_UI_CONTROLLER_TYPE_DECL();
 };
 
 class BraveWelcomePageUIConfig

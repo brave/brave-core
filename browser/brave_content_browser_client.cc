@@ -160,6 +160,8 @@
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page_ui.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
+#include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page_ui.h"
 #include "brave/browser/ui/webui/history/brave_history_ui.h"
 #include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/browser/ui/webui/private_new_tab_page/brave_private_new_tab_ui.h"
@@ -764,6 +766,9 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     ntp_refresh_registration.Add<searchbox::mojom::PageHandlerFactory>();
     ntp_registration.Add<searchbox::mojom::PageHandlerFactory>();
   }
+
+  registry.ForWebUI<BraveWelcomePageUI>()
+      .Add<brave_welcome_page::mojom::WelcomePageHandler>();
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   if (base::FeatureList::IsEnabled(
