@@ -14,16 +14,20 @@
 #include "ui/views/widget/widget.h"
 
 class Profile;
+class SaveWorkspaceDialog;
+class WorkspacesBubbleView;
 
 namespace views {
 class View;
 }  // namespace views
 
-// Owns the workspaces bubble and the "save workspace" dialog widgets. Both use
-// the CLIENT_OWNS_WIDGET ownership model, so the controller holds each
-// Widget's unique_ptr and tears it down when the widget closes. The controller
-// is owned by the tab strip region view that hosts the workspaces button, so
-// it reliably outlives the widgets it manages.
+// Owns the workspaces bubble and the "save workspace" dialog. Both use the
+// CLIENT_OWNS_WIDGET ownership model, and because their delegates are not also
+// Views, the Widget does not delete them. The controller therefore owns both
+// the delegate and its Widget, and tears them down (Widget first, then
+// delegate, since the delegate must outlive the Widget) when the widget closes.
+// The controller instance lives in the browser window features and gets called
+// by the tab strip region view that hosts the workspaces button.
 class WorkspacesBubbleController {
  public:
   WorkspacesBubbleController();
@@ -45,8 +49,9 @@ class WorkspacesBubbleController {
 
   // Close handlers for the two widgets. With CLIENT_OWNS_WIDGET the close path
   // is routed here synchronously and we are responsible for destroying the
-  // Widget. Destruction is deferred because the Widget owns the delegate/view
-  // whose code is still on the stack when this runs.
+  // Widget and its delegate. Destruction is deferred because the delegate
+  // (e.g. a button handler that called Widget::Close()) may still be on the
+  // stack when this runs.
   void OnBubbleClosed(views::Widget::ClosedReason reason);
   void OnSaveDialogClosed(views::Widget::ClosedReason reason);
 
@@ -54,7 +59,12 @@ class WorkspacesBubbleController {
   raw_ptr<Profile> profile_ = nullptr;
   gfx::NativeWindow parent_window_ = gfx::NativeWindow();
 
+  // Each delegate is declared before its Widget so that, if the controller is
+  // destroyed while a widget is open, the Widget is destroyed first (members
+  // are destroyed in reverse declaration order).
+  std::unique_ptr<WorkspacesBubbleView> bubble_;
   std::unique_ptr<views::Widget> bubble_widget_;
+  std::unique_ptr<SaveWorkspaceDialog> save_dialog_;
   std::unique_ptr<views::Widget> save_dialog_widget_;
 
   base::WeakPtrFactory<WorkspacesBubbleController> weak_factory_{this};

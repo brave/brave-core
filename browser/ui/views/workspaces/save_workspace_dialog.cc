@@ -43,11 +43,12 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Profile* profile) : profile_(profile) {
   SetAcceptCallback(
       base::BindOnce(&SaveWorkspaceDialog::OnAccept, base::Unretained(this)));
 
-  SetLayoutManager(std::make_unique<views::BoxLayout>(
+  auto contents = std::make_unique<views::View>();
+  contents->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical, gfx::Insets(kPadding),
       kSpacing));
 
-  AddChildView(std::make_unique<views::Label>(
+  contents->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL)));
 
   auto textfield = std::make_unique<views::Textfield>();
@@ -58,11 +59,13 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Profile* profile) : profile_(profile) {
   textfield->SelectAll(false);
   textfield->SetPreferredSize(gfx::Size(kDialogWidth - kPadding * 2, 40));
   textfield->SetController(this);
-  name_field_ = AddChildView(std::move(textfield));
+  name_field_ = contents->AddChildView(std::move(textfield));
 
   // Reflect the initial (pre-filled, non-empty) name in the OK button state.
   SetButtonEnabled(ui::mojom::DialogButton::kOk,
                    !name_field_->GetText().empty());
+
+  SetContentsView(std::move(contents));
 }
 
 SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
@@ -75,22 +78,7 @@ void SaveWorkspaceDialog::OnAccept() {
   service->SaveWorkspace(name);
 }
 
-views::View* SaveWorkspaceDialog::GetContentsView() {
-  return this;
-}
-
-views::Widget* SaveWorkspaceDialog::GetWidget() {
-  return View::GetWidget();
-}
-
-const views::Widget* SaveWorkspaceDialog::GetWidget() const {
-  return View::GetWidget();
-}
-
 void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
                                           const std::u16string& new_contents) {
   SetButtonEnabled(ui::mojom::DialogButton::kOk, !new_contents.empty());
 }
-
-BEGIN_METADATA(SaveWorkspaceDialog)
-END_METADATA

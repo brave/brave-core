@@ -18,6 +18,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -362,13 +363,10 @@ bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
 }
 
 void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
-  if (!workspaces_bubble_controller_) {
-    workspaces_bubble_controller_ =
-        std::make_unique<WorkspacesBubbleController>();
-  }
-  workspaces_bubble_controller_->ShowBubble(
-      workspaces_button_,
-      tab_strip_->GetBrowserWindowInterface()->GetProfile());
+  auto* bwi = tab_strip_->GetBrowserWindowInterface();
+  auto* controller = bwi->GetFeatures().workspaces_bubble_controller();
+  CHECK(controller);
+  controller->ShowBubble(workspaces_button_, bwi->GetProfile());
 }
 
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {

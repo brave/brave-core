@@ -17,24 +17,21 @@
 
 class Profile;
 
-namespace views {
-class Widget;
-}  // namespace views
-
 // Bubble that lists the saved workspaces ("spaces") for the active profile and
 // exposes actions to restore, delete, or save a new one. The bubble is the
 // primary entry point for the workspaces UI and is anchored to the workspaces
 // button in the tab strip.
 //
-// This combines the bubble delegate and contents view by inheriting from both
-// views::BubbleDialogDelegate and views::View directly, rather than the
-// deprecated views::BubbleDialogDelegateView. Its widget uses the
-// CLIENT_OWNS_WIDGET model and is owned by WorkspacesBubbleController.
-class WorkspacesBubbleView : public views::BubbleDialogDelegate,
-                             public views::View {
-  METADATA_HEADER(WorkspacesBubbleView, views::View)
-
+// Rather than inherit from the deprecated views::BubbleDialogDelegateView
+// (a combined delegate and View), this inherits from
+// views::BubbleDialogDelegate and installs a separate contents view via
+// SetContentsView(). Its widget uses the CLIENT_OWNS_WIDGET model and is owned
+// by WorkspacesBubbleController.
+class WorkspacesBubbleView : public views::BubbleDialogDelegate {
  public:
+  // Internal name set on the bubble's widget; lets tests identify it.
+  static constexpr char kWidgetName[] = "WorkspacesBubbleView";
+
   // |profile| supplies the workspace service used for lookups and must outlive
   // this bubble. |on_save_workspace| is run when the user activates the Save
   // action.
@@ -42,14 +39,6 @@ class WorkspacesBubbleView : public views::BubbleDialogDelegate,
                        Profile* profile,
                        base::RepeatingClosure on_save_workspace);
   ~WorkspacesBubbleView() override;
-
-  // views::BubbleDialogDelegate:
-  views::View* GetContentsView() override;
-
-  // views::View:
-  // Disambiguates the GetWidget() inherited from both base classes.
-  views::Widget* GetWidget() override;
-  const views::Widget* GetWidget() const override;
 
  private:
   void OnSaveClicked();

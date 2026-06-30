@@ -21,6 +21,7 @@
 #include "brave/browser/ui/tabs/tree_tab_session_manager.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -188,6 +189,9 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
   vertical_tab_controller_ = std::make_unique<VerticalTabController>(
       browser_view->browser()->GetType(),
       browser_view->GetProfile()->GetPrefs());
+
+  workspaces_bubble_controller_ =
+      std::make_unique<WorkspacesBubbleController>();
 
   BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
       browser_view);

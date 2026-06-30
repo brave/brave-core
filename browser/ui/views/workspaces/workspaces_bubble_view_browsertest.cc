@@ -7,12 +7,9 @@
 
 #include <string>
 
-#include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/strings/utf_string_conversions.h"
-#include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 #include "brave/browser/ui/views/workspaces/workspace_row_view.h"
@@ -100,28 +97,15 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
     return WorkspaceServiceFactory::GetForProfile(browser()->profile());
   }
 
-  // Clicks the workspaces button and returns the resulting bubble view, or
+  // Clicks the workspaces button and returns the bubble's contents view, or
   // nullptr if no bubble was shown. |location| is the caller's source location
   // so failures in this helper point at the test that called it.
-  WorkspacesBubbleView* OpenBubble(
+  views::View* OpenBubble(
       const base::Location& location = base::Location::Current()) {
     SCOPED_TRACE(location.ToString());
 
-    base::test::TestFuture<WorkspacesBubbleView*> bubble_future;
-    views::AnyWidgetObserver observer(views::test::AnyWidgetTestPasskey{});
-    observer.set_shown_callback(
-        base::BindLambdaForTesting([&](views::Widget* widget) {
-          // widget->GetContentsView() returns the NonClientView wrapper, so go
-          // through the delegate to reach the actual bubble view.
-          auto* delegate = widget->widget_delegate();
-          if (!delegate) {
-            return;
-          }
-          if (auto* b = views::AsViewClass<WorkspacesBubbleView>(
-                  delegate->GetContentsView())) {
-            bubble_future.SetValue(b);
-          }
-        }));
+    views::NamedWidgetShownWaiter waiter(views::test::AnyWidgetTestPasskey{},
+                                         WorkspacesBubbleView::kWidgetName);
 
     auto* button = GetWorkspacesButton();
     // ASSERT_* can't be used here since this helper returns non-void; report a
@@ -131,7 +115,14 @@ class WorkspacesBubbleBrowserTest : public InProcessBrowserTest {
       return nullptr;
     }
     ClickButton(button);
-    return bubble_future.Take();
+
+    views::Widget* widget = waiter.WaitIfNeededAndGet();
+    if (!widget) {
+      return nullptr;
+    }
+    // The bubble delegate is not a View; its contents live in a separate View
+    // installed via SetContentsView().
+    return widget->widget_delegate()->GetContentsView();
   }
 
  private:

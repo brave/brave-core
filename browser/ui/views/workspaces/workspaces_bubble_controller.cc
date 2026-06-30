@@ -34,16 +34,16 @@ void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
   profile_ = profile;
   parent_window_ = anchor_view->GetWidget()->GetNativeWindow();
 
-  auto bubble = std::make_unique<WorkspacesBubbleView>(
+  bubble_ = std::make_unique<WorkspacesBubbleView>(
       anchor_view, profile,
       base::BindRepeating(&WorkspacesBubbleController::ShowSaveDialog,
                           weak_factory_.GetWeakPtr()));
 
-  // CreateBubble uses CLIENT_OWNS_WIDGET and routes close through |on_close|.
+  // The controller keeps ownership of the delegate; CreateBubble uses
+  // CLIENT_OWNS_WIDGET and routes close through |on_close|.
   bubble_widget_ = views::BubbleDialogDelegate::CreateBubble(
-      bubble.release(),
-      base::BindOnce(&WorkspacesBubbleController::OnBubbleClosed,
-                     weak_factory_.GetWeakPtr()));
+      bubble_.get(), base::BindOnce(&WorkspacesBubbleController::OnBubbleClosed,
+                                    weak_factory_.GetWeakPtr()));
   bubble_widget_->Show();
 }
 
@@ -52,12 +52,12 @@ void WorkspacesBubbleController::ShowSaveDialog() {
     return;
   }
 
-  // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the returned Widget
-  // is therefore owned here.
-  auto dialog = std::make_unique<SaveWorkspaceDialog>(profile_);
+  // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller keeps
+  // ownership of the delegate and owns the returned Widget.
+  save_dialog_ = std::make_unique<SaveWorkspaceDialog>(profile_);
   save_dialog_widget_ =
       base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
-          dialog.release(), parent_window_));
+          save_dialog_.get(), parent_window_));
   save_dialog_widget_->MakeCloseSynchronous(
       base::BindOnce(&WorkspacesBubbleController::OnSaveDialogClosed,
                      weak_factory_.GetWeakPtr()));
@@ -65,12 +65,17 @@ void WorkspacesBubbleController::ShowSaveDialog() {
 }
 
 void WorkspacesBubbleController::OnBubbleClosed(views::Widget::ClosedReason) {
-  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
-      FROM_HERE, bubble_widget_.release());
+  // Destroy the Widget before its delegate, and defer both past the current
+  // stack (the delegate that requested the close may still be unwinding). The
+  // two DeleteSoon tasks run in posting order, so the Widget is freed first.
+  auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
+  runner->DeleteSoon(FROM_HERE, bubble_widget_.release());
+  runner->DeleteSoon(FROM_HERE, bubble_.release());
 }
 
 void WorkspacesBubbleController::OnSaveDialogClosed(
     views::Widget::ClosedReason) {
-  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
-      FROM_HERE, save_dialog_widget_.release());
+  auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
+  runner->DeleteSoon(FROM_HERE, save_dialog_widget_.release());
+  runner->DeleteSoon(FROM_HERE, save_dialog_.release());
 }

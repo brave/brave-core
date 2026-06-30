@@ -24,15 +24,13 @@ class Widget;
 // A modal dialog that prompts the user to name a new workspace. On accept, the
 // current state of all open windows for the profile is saved to disk.
 //
-// This combines the dialog delegate and contents view by inheriting from both
-// views::DialogDelegate and views::View directly, rather than the deprecated
-// views::DialogDelegateView. It also serves as the name field's controller so
-// the OK button can be enabled only while a name has been entered.
+// Rather than inherit from the deprecated views::DialogDelegateView (a combined
+// delegate and View), this inherits from views::DialogDelegate and installs a
+// separate contents view via SetContentsView(). It also serves as the name
+// field's controller so the OK button is enabled only while a name has been
+// entered.
 class SaveWorkspaceDialog : public views::DialogDelegate,
-                            public views::View,
                             public views::TextfieldController {
-  METADATA_HEADER(SaveWorkspaceDialog, views::View)
-
  public:
   // |profile| supplies the workspace service saved to and must outlive this
   // dialog. The dialog configures its widget as CLIENT_OWNS_WIDGET; the caller
@@ -45,14 +43,6 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
 
  private:
   void OnAccept();
-
-  // views::DialogDelegate:
-  views::View* GetContentsView() override;
-
-  // views::View:
-  // Disambiguates the GetWidget() inherited from both base classes.
-  views::Widget* GetWidget() override;
-  const views::Widget* GetWidget() const override;
 
   // views::TextfieldController:
   void ContentsChanged(views::Textfield* sender,

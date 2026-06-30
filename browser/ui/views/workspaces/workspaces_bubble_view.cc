@@ -45,8 +45,10 @@ WorkspacesBubbleView::WorkspacesBubbleView(
   SetShowCloseButton(false);
   set_margins(gfx::Insets());
   set_fixed_width(263);
+  set_internal_name(kWidgetName);
 
-  SetLayoutManager(std::make_unique<views::BoxLayout>(
+  auto contents = std::make_unique<views::View>();
+  contents->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical,
       /*inside_border_insets=*/gfx::Insets(),
       /*between_child_spacing=*/0));
@@ -55,7 +57,8 @@ WorkspacesBubbleView::WorkspacesBubbleView(
   CHECK(service);
 
   std::vector<WorkspaceMetadata> workspaces = service->ListWorkspaces();
-  auto* workspaces_container = AddChildView(std::make_unique<views::View>());
+  auto* workspaces_container =
+      contents->AddChildView(std::make_unique<views::View>());
   workspaces_container->SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
   workspaces_container->SetProperty(views::kMarginsKey, gfx::Insets(2));
@@ -87,10 +90,10 @@ WorkspacesBubbleView::WorkspacesBubbleView(
     }
   }
 
-  AddChildView(std::make_unique<views::Separator>());
+  contents->AddChildView(std::make_unique<views::Separator>());
 
   // Bottom action row: Settings + Save.
-  auto* button_row = AddChildView(std::make_unique<views::View>());
+  auto* button_row = contents->AddChildView(std::make_unique<views::View>());
   auto* button_row_layout =
       button_row->SetLayoutManager(std::make_unique<views::BoxLayout>(
           views::BoxLayout::Orientation::kHorizontal,
@@ -114,18 +117,8 @@ WorkspacesBubbleView::WorkspacesBubbleView(
   new_space_button->SetStyle(ui::ButtonStyle::kProminent);
   new_space_button->SetProperty(views::kMarginsKey, gfx::Insets(4));
   button_row_layout->SetFlexForView(new_space_button, 1);
-}
 
-views::View* WorkspacesBubbleView::GetContentsView() {
-  return this;
-}
-
-views::Widget* WorkspacesBubbleView::GetWidget() {
-  return View::GetWidget();
-}
-
-const views::Widget* WorkspacesBubbleView::GetWidget() const {
-  return View::GetWidget();
+  SetContentsView(std::move(contents));
 }
 
 void WorkspacesBubbleView::OnSaveClicked() {
@@ -171,6 +164,3 @@ void WorkspacesBubbleView::OnDeleteClicked(const std::string& name) {
       std::move(dialog), GetAnchorView()->GetWidget()->GetNativeWindow());
   GetWidget()->Close();
 }
-
-BEGIN_METADATA(WorkspacesBubbleView)
-END_METADATA

@@ -74,9 +74,6 @@ class BraveHorizontalTabStripRegionView : public HorizontalTabStripRegionView {
   raw_ptr<TabStripControlButton> tab_scroll_next_button_ = nullptr;
   raw_ptr<TabStripControlButton> workspaces_button_ = nullptr;
 
-  // Owns the workspaces bubble and save-dialog widgets while they are shown.
-  std::unique_ptr<WorkspacesBubbleController> workspaces_bubble_controller_;
-
   base::CallbackListSubscription horizontal_scroll_offset_changed_subscription_;
 
   BooleanPrefMember show_horizontal_tab_scroll_buttons_;
