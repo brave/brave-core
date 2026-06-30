@@ -6,10 +6,7 @@
 import { TabSearchPageElement } from './tab_search_page-chromium.js'
 
 import type { TabData, SplitViewData } from './tab_data.js'
-import {
-  BraveTabSearchApiProxy,
-  BraveTabSearchApiProxyImpl,
-} from './tab_search_api_proxy.js'
+import { BraveTabSearchApiProxyImpl } from './tab_search_api_proxy.js'
 import { setSemanticOpenTabsContext } from './search.js'
 
 // Augments the substring-filtered open-tab list with on-device semantic
@@ -46,8 +43,7 @@ class BraveTabSearchPageElement extends TabSearchPageElement {
       return
     }
     const token = ++this.semanticSearchToken_
-    const proxy =
-        BraveTabSearchApiProxyImpl.getInstance() as BraveTabSearchApiProxy
+    const proxy = BraveTabSearchApiProxyImpl.getInstance()
     void proxy.searchTabsByContent(searchText).then(({tabIds}) => {
       if (token !== this.semanticSearchToken_) {
         return

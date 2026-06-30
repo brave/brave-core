@@ -19,6 +19,13 @@ export interface BraveTabSearchApiProxy extends TabSearchApiProxy {
 }
 
 export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements BraveTabSearchApiProxy {
+  // Shadow the parent's `getInstance` with a `BraveTabSearchApiProxy`-typed
+  // return so callers using the Brave class name get the extended interface
+  // without an `as` cast.
+  static override getInstance(): BraveTabSearchApiProxy {
+    return braveInstance || (braveInstance = new BraveTabSearchApiProxyImpl())
+  }
+
   getSuggestedTopics() {
     return this.handler.getSuggestedTopics()
   }
@@ -52,10 +59,10 @@ export class BraveTabSearchApiProxyImpl extends TabSearchApiProxyImpl implements
   }
 }
 
-TabSearchApiProxyImpl.getInstance = () => {
-  return braveInstance || (braveInstance = new BraveTabSearchApiProxyImpl())
-}
-
 let braveInstance: BraveTabSearchApiProxy | null = null
+
+// Re-point upstream's static `getInstance` so callers that only know the
+// `TabSearchApiProxyImpl` class name also receive the Brave singleton.
+TabSearchApiProxyImpl.getInstance = BraveTabSearchApiProxyImpl.getInstance
 
 export * from './tab_search_api_proxy-chromium.js'
