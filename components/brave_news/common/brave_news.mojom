@@ -310,4 +310,9 @@ interface BraveNewsController {
   OnNewCardsViewed(uint16 card_views);
   OnCardVisited(uint32 depth);
   OnSidebarFilterUsage();
+
+  // Opens the New Tab Page and shows the Brave News customize modal. Used by
+  // surfaces that don't host the customize UI themselves (e.g. the side
+  // panel), which delegate settings to the New Tab Page.
+  OpenSettings();
 };

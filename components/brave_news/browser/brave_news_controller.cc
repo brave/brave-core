@@ -103,7 +103,8 @@ BraveNewsController::BraveNewsController(
         policy_initialization_waiter,
     history::HistoryService* history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate)
+    std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate,
+    std::unique_ptr<Delegate> delegate)
     :
 #if BUILDFLAG(IS_ANDROID)
       private_cdn_request_helper_(GetNetworkTrafficAnnotationTag(),
@@ -112,6 +113,7 @@ BraveNewsController::BraveNewsController(
       history_service_(history_service),
       url_loader_factory_(url_loader_factory),
       direct_feed_fetcher_delegate_(std::move(direct_feed_fetcher_delegate)),
+      delegate_(std::move(delegate)),
       policy_initialization_waiter_(std::move(policy_initialization_waiter)),
       pref_manager_(*prefs),
       news_metrics_(prefs, pref_manager_),
@@ -593,6 +595,13 @@ void BraveNewsController::OnCardVisited(uint32_t depth) {
 void BraveNewsController::OnSidebarFilterUsage() {
   DVLOG(1) << __FUNCTION__;
   news_metrics_.RecordTotalActionCount(p3a::ActionType::kSidebarFilterUsage, 1);
+}
+
+void BraveNewsController::OpenSettings() {
+  DVLOG(1) << __FUNCTION__;
+  if (delegate_) {
+    delegate_->OpenSettings();
+  }
 }
 
 void BraveNewsController::GetVisitedSites(GetVisitedSitesCallback callback) {

@@ -61,14 +61,24 @@ class BraveNewsController
       public net::NetworkChangeNotifier::NetworkChangeObserver,
       public BraveNewsPrefManager::PrefObserver {
  public:
+  // Handles UI actions that components/ cannot perform itself (e.g. opening a
+  // tab). Implemented in the //chrome browser layer.
+  class Delegate {
+   public:
+    virtual ~Delegate() = default;
+
+    // Opens the New Tab Page and shows the Brave News customize modal.
+    virtual void OpenSettings() = 0;
+  };
+
   BraveNewsController(
       PrefService* prefs,
       std::unique_ptr<brave_policy::PolicyInitializationWaiter>
           policy_initialization_waiter,
       history::HistoryService* history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      std::unique_ptr<DirectFeedFetcher::Delegate>
-          direct_feed_fetcher_delegate);
+      std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate,
+      std::unique_ptr<Delegate> delegate);
   ~BraveNewsController() override;
   BraveNewsController(const BraveNewsController&) = delete;
   BraveNewsController& operator=(const BraveNewsController&) = delete;
@@ -132,6 +142,7 @@ class BraveNewsController
   void OnNewCardsViewed(uint16_t card_views) override;
   void OnCardVisited(uint32_t depth) override;
   void OnSidebarFilterUsage() override;
+  void OpenSettings() override;
 
   // mojom::BraveNewsInternals
   void GetVisitedSites(GetVisitedSitesCallback callback) override;
@@ -174,6 +185,7 @@ class BraveNewsController
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
 
   std::unique_ptr<DirectFeedFetcher::Delegate> direct_feed_fetcher_delegate_;
+  std::unique_ptr<Delegate> delegate_;
   std::unique_ptr<brave_policy::PolicyInitializationWaiter>
       policy_initialization_waiter_;
 
