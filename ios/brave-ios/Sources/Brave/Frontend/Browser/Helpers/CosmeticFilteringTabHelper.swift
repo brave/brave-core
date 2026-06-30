@@ -136,20 +136,28 @@ public class CosmeticFilteringTabHelper {
   /// which ids and classes should be hidden for the frame using the Tab's
   /// main-frame shield level.
   /// - returns a tuple containing a `Set<String>` of standard selectors and
-  /// aggressive selectors to hide.
+  /// aggressive selectors to hide, or nil if Shields is disabled or
+  /// unavailable
   @MainActor public func selectorsToHide(
     for frameURL: URL,
     ids: Set<String>,
     classes: Set<String>,
-  ) async -> (Set<String>, Set<String>) {
-    guard let tabPageData = tab?.currentPageData else {
-      return (.init(), .init())
-    }
-    let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
-      isAdBlockEnabled: tab?.braveShieldsHelper?.shieldLevel(
+  ) async -> (Set<String>, Set<String>)? {
+    guard let tab = tab,
+      let tabPageData = tab.currentPageData,
+      let braveShieldsHelper = tab.braveShieldsHelper,
+      // shield level is determined by the main frame
+      case let mainFrameShieldLevel = braveShieldsHelper.shieldLevel(
         for: tabPageData.mainFrameURL,
         considerAllShieldsOption: true
-      ).isEnabled ?? true
+      ),
+      mainFrameShieldLevel.isEnabled,
+      tabPageData.mainFrameURL.isWebPage(includeDataURIs: false)
+    else {
+      return nil
+    }
+    let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
+      isAdBlockEnabled: mainFrameShieldLevel.isEnabled
     )
 
     let selectorArrays = await cachedEngines.asyncCompactMap {
