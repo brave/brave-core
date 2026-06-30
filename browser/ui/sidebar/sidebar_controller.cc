@@ -64,7 +64,7 @@ SidebarController::SidebarController(Browser* browser, Profile* profile)
       profile_(profile),
       browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {
-  sidebar_service_observed_.Observe(GetSidebarService(profile_));
+  sidebar_service_observed_.Observe(::sidebar::GetSidebarService(profile_));
 }
 
 SidebarController::~SidebarController() = default;
@@ -262,7 +262,7 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService(profile_)->AddItem(SidebarItem::Create(
+  ::sidebar::GetSidebarService(profile_)->AddItem(SidebarItem::Create(
       url, title, SidebarItem::Type::kTypeWeb,
       SidebarItem::BuiltInItemType::kNone, IsWebPanelFeatureEnabled()));
 }
@@ -304,6 +304,10 @@ SidebarWebPanelController* SidebarController::GetWebPanelController() {
   }
 
   return web_panel_controller_.get();
+}
+
+SidebarService* SidebarController::GetSidebarService() {
+  return ::sidebar::GetSidebarService(profile_);
 }
 
 }  // namespace sidebar

@@ -24,8 +24,6 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_tabbed_layout_impl.h"
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
-#include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
-#include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
@@ -39,7 +37,6 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/input/native_web_keyboard_event.h"
 #include "content/public/browser/browser_context.h"
@@ -123,13 +120,7 @@ SidebarContainerView::~SidebarContainerView() = default;
 void SidebarContainerView::Init() {
   initialized_ = true;
 
-  show_side_panel_button_.Init(
-      kShowSidePanelButton, browser_->profile()->GetPrefs(),
-      base::BindRepeating(&SidebarContainerView::UpdateToolbarButtonVisibility,
-                          base::Unretained(this)));
-
   AddChildViews();
-  UpdateToolbarButtonVisibility();
   SetSidebarShowOption(
       GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
 }
@@ -200,26 +191,23 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
 
   show_sidebar_option_ = show_option;
 
-    // Toolbar button visibility depends on show options.
-    UpdateToolbarButtonVisibility();
-
-    if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
-      if (!IsSidebarVisible()) {
-        ShowSidebar(AnimationStyle::kImmediate);
-      }
-      return;
-    }
-
-    if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
-      HideSidebar();
-      return;
-    }
-
-    // kShowOnMouseOver
-    if (!IsMouseHovered()) {
-      HideSidebar();
+  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
+    if (!IsSidebarVisible()) {
+      ShowSidebar(AnimationStyle::kImmediate);
     }
     return;
+  }
+
+  if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
+    HideSidebar();
+    return;
+  }
+
+  // kShowOnMouseOver
+  if (!IsMouseHovered()) {
+    HideSidebar();
+  }
+  return;
 }
 
 void SidebarContainerView::UpdateSidebarItemsState() {
@@ -228,8 +216,6 @@ void SidebarContainerView::UpdateSidebarItemsState() {
 }
 
 void SidebarContainerView::UpdateSidebarVisibility() {
-  UpdateToolbarButtonHighlight();
-
   // Pinning is an explicit user gesture, not a hover — snap to visible
   // without animation, mirroring kShowAlways above. Otherwise, fall through
   // and follow the current show option.
@@ -404,38 +390,6 @@ void SidebarContainerView::HideSidebar() {
 
 bool SidebarContainerView::ShouldUseAnimation() {
   return gfx::Animation::ShouldRenderRichAnimation();
-}
-
-void SidebarContainerView::UpdateToolbarButtonVisibility() {
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  // BraveToolbarView and SidebarContainerView are sibling children of
-  // BrowserView; their construction/destruction order is not strictly
-  // coordinated, so the toolbar pointer (or its side_panel_button child) may
-  // be null during early init or window teardown when this is invoked from
-  // pref/observer callbacks.
-  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
-  if (!brave_toolbar) {
-    return;
-  }
-
-  // We hide button when show always as pinning doesn't make sense
-  // when always visible.
-  if (auto* button = brave_toolbar->side_panel_button()) {
-    button->SetVisible(show_side_panel_button_.GetValue() &&
-                       show_sidebar_option_ != ShowSidebarOption::kShowAlways);
-  }
-  UpdateToolbarButtonHighlight();
-}
-
-void SidebarContainerView::UpdateToolbarButtonHighlight() {
-  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser_);
-  // See UpdateToolbarButtonVisibility() for why brave_toolbar /
-  // side_panel_button() may be null here.
-  auto* brave_toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
-  if (brave_toolbar && brave_toolbar->side_panel_button()) {
-    brave_toolbar->side_panel_button()->SetHighlighted(
-        browser_->GetFeatures().sidebar_controller()->sidebar_pinned());
-  }
 }
 
 void SidebarContainerView::StartBrowserWindowEventMonitoring() {
