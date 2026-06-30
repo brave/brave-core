@@ -278,16 +278,21 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         TabArchiveSettings archiveSettings =
                 new TabArchiveSettings(ChromeSharedPreferences.getInstance());
         try {
-            if (archiveSettings.getArchiveEnabled()) {
-                int days = archiveSettings.getArchiveTimeDeltaDays();
-                int summaryId = R.plurals.archive_settings_summary;
-                return resources.getQuantityString(summaryId, days, days);
-            }
-            int neverSummaryId = R.string.archive_settings_time_delta_never;
-            return resources.getString(neverSummaryId);
+            return getTabArchiveSettingsSummary(resources, archiveSettings);
         } finally {
             archiveSettings.destroy();
         }
+    }
+
+    private static String getTabArchiveSettingsSummary(
+            Resources resources, TabArchiveSettings archiveSettings) {
+        if (archiveSettings.getArchiveEnabled()) {
+            int days = archiveSettings.getArchiveTimeDeltaDays();
+            int summaryId = R.plurals.archive_settings_summary;
+            return resources.getQuantityString(summaryId, days, days);
+        }
+        int neverSummaryId = R.string.archive_settings_time_delta_never;
+        return resources.getString(neverSummaryId);
     }
 
     private static boolean isTabGroupSyncAutoOpenConfigurable(Profile profile) {
