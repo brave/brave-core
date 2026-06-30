@@ -24,6 +24,7 @@ import {
 import Col from './content/styles/Col'
 import Row from './content/styles/Row'
 import NytIcon from './content/assets/nyt-logo.svg'
+import ArrowIcon from './content/assets/arrow.svg'
 import { getLocale } from '$web-common/locale'
 import './content/strings'
 
@@ -66,7 +67,7 @@ const ContentCol = styled(Col)`
 
 const Label = styled.span`
   font: ${font.small.regular};
-  color: ${color.text.tertiary};
+  color: ${color.primitive.neutral[0]};
 `
 
 const GetStartedButton = styled(Button)`
@@ -79,7 +80,6 @@ const GetStartedButton = styled(Button)`
 
 const IllustrationArea = styled(Col)`
   align-items: center;
-  gap: ${spacing.s};
 `
 
 const CardsRow = styled(Row)`
@@ -99,17 +99,14 @@ const SiteCard = styled(Col)<{ $faded?: boolean }>`
 `
 
 const SiteCardFocused = styled(SiteCard)`
-  flex: 1.4;
-  opacity: 1;
-  gap: ${spacing.l};
-  z-index: 1;
-  position: relative;
-  /* Pull the side cards underneath the focused card's edges. */
-  margin: 0 calc(-1 * ${spacing['2Xl']});
-  /* Extra vertical padding makes the focused card taller than its
-     neighbors so it stands out in front. */
-  padding: ${spacing['2Xl']} ${spacing['2Xl']};
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  display: inline-flex;
+  padding: ${spacing['2Xl']};
+  flex-direction: column;
+  align-items: center;
+  gap: ${spacing['2Xl']};
+  border-radius: ${radius.xl};
+  border: 1px solid ${color.primitive.neutral[70]};
+  background: ${color.primitive.neutral[100]};
 `
 
 const SiteTitle = styled.span`
@@ -130,14 +127,18 @@ const AliasChip = styled.div`
   background: ${color.container.highlight};
 `
 
-const AliasChipFocused = styled(AliasChip)`
+const AliasChipFocused = styled.div`
+  display: flex;
+  align-items: center;
   padding: ${spacing.m} ${spacing.l};
-  text-align: center;
-  background: ${color.container.background};
+  align-self: stretch;
+  border-radius: ${radius.m};
+  border: 1px solid ${color.primitive.neutral[70]};
+  background: ${color.primitive.neutral[100]};
 `
 
 const LabelChipGroup = styled(Col)`
-  gap: ${spacing.s};
+  gap: ${spacing.none};
 `
 
 const AliasPart = styled.span`
@@ -151,25 +152,11 @@ const AliasNumber = styled.span`
 // ---------------------------------------------------------------------------
 // Arrow
 // ---------------------------------------------------------------------------
-
-const ArrowWrapper = styled(Col)`
-  align-items: center;
-  color: ${color.systemfeedback.errorText};
-  line-height: ${spacing.xs};
-`
-
-const ArrowLine = styled.div`
-  width: ${spacing.s};
-  height: ${spacing.xl};
-  background: ${color.systemfeedback.errorText};
-`
-
-const ArrowHead = styled.div`
-  width: ${spacing.none};
-  height: ${spacing.none};
-  border-left: ${spacing.s} solid transparent;
-  border-right: ${spacing.s} solid transparent;
-  border-top: ${spacing.m} solid ${color.systemfeedback.errorText};
+const ArrowImg = styled.img`
+  align-self: center;
+  position: relative;
+  z-index: 1;
+  margin-top: calc(-1 * (${spacing.m} + ${spacing['2Xl']}));
 `
 
 // ---------------------------------------------------------------------------
@@ -177,15 +164,18 @@ const ArrowHead = styled.div`
 // ---------------------------------------------------------------------------
 
 const RealEmailRow = styled(Row)`
-  align-items: center;
-  gap: ${spacing.s};
-  border-radius: ${radius.m};
-  border: 1px solid ${color.divider.subtle};
+  display: inline-flex;
   padding: ${spacing.m} ${spacing.xl};
-  background: ${color.container.background};
+  justify-content: center;
+  align-items: center;
+  gap: ${spacing.m};
+  border-radius: ${radius.l};
+  border: 1px solid ${color.primitive.neutral[70]};
+  background: ${color.primitive.neutral[100]};
+  padding: ${spacing.m} ${spacing.xl};
   box-sizing: border-box;
-  color: ${color.text.secondary};
-  font: ${font.default.regular};
+  color: ${color.primitive.neutral[0]};
+  font: ${font.default.semibold};
 `
 
 // ---------------------------------------------------------------------------
@@ -253,6 +243,7 @@ const EmailAliasesPromo = ({
               <img
                 src={NytIcon}
                 alt='The New York Times'
+                style={{ alignSelf: 'center' }}
               />
               <LabelChipGroup>
                 <Label>{getLocale(S.EMAIL_ALIASES_PROMO_EMAIL_LABEL)}</Label>
@@ -294,10 +285,7 @@ const EmailAliasesPromo = ({
             </SiteCard>
           </CardsRow>
 
-          <ArrowWrapper>
-            <ArrowLine />
-            <ArrowHead />
-          </ArrowWrapper>
+          <ArrowImg src={ArrowIcon} />
 
           <RealEmailRow>
             <Icon name='email-shield' />
