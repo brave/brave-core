@@ -25,6 +25,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
 #include "build/build_config.h"
+#include "chrome/browser/infobars/confirm_infobar_creator.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
@@ -50,6 +51,9 @@
 #include "chrome/browser/ui/window_feature_controller/window_feature_controller.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/confirm_infobar_delegate.h"
+#include "components/infobars/core/infobar.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
@@ -70,6 +74,31 @@
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
     kRoundedCornersBorderRadiusAtWindowCorner;
+
+namespace {
+class TestInfoBarDelegate : public ConfirmInfoBarDelegate {
+ public:
+  // Helper to construct and inject the infobar
+  static void Create(infobars::ContentInfoBarManager* infobar_manager) {
+    infobar_manager->AddInfoBar(
+        CreateConfirmInfoBar(std::make_unique<TestInfoBarDelegate>()));
+  }
+
+  TestInfoBarDelegate() = default;
+  ~TestInfoBarDelegate() override = default;
+
+  // ConfirmInfoBarDelegate:
+  infobars::InfoBarDelegate::InfoBarIdentifier GetIdentifier() const override {
+    return TEST_INFOBAR;
+  }
+
+  // The main text displayed on the banner
+  std::u16string GetMessageText() const override {
+    return u"This is a test InfoBar injected from a browser test.";
+  }
+};
+
+}  // namespace
 
 class BraveBrowserViewTest : public InProcessBrowserTest {
  public:
@@ -231,6 +260,39 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
                 gfx::Vector2d(0, top_contents_separator_height));
   EXPECT_EQ(vertical_tab_strip_host_view()->bounds().top_right(),
             contents_area_origin());
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, TopSeparatorWithPanelTest) {
+  auto disable_rich_animation =
+      gfx::AnimationTestApi::SetRichAnimationRenderMode(
+          gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
+
+  browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
+  RunScheduledLayouts();
+
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+
+  // Make infobar to make top container separator visible.
+  infobars::ContentInfoBarManager* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(web_contents);
+  TestInfoBarDelegate::Create(infobar_manager);
+  ASSERT_TRUE(base::test::RunUntil(
+      [&]() { return infobar_container()->GetVisible(); }));
+  EXPECT_GE(infobar_manager->infobars().size(), 1u);
+  EXPECT_TRUE(brave_browser_view()
+                  ->top_container_separator_for_testing()
+                  ->GetVisible());
+
+  // Check separator is still visible after panel opens.
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  panel_ui->Toggle();
+  RunScheduledLayouts();
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return panel_ui->IsSidePanelShowing(); }));
+  EXPECT_TRUE(brave_browser_view()
+                  ->top_container_separator_for_testing()
+                  ->GetVisible());
 }
 
 class BraveBrowserViewWithRoundedCornersTest
