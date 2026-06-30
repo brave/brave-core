@@ -175,9 +175,11 @@
 #if BUILDFLAG(ENABLE_LOCAL_AI)
 #include "brave/browser/ui/webui/local_ai/local_ai_ui.h"
 #include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
+#include "brave/components/local_ai/content/no_network_connection_allowlist_throttle.h"
 #include "brave/components/local_ai/core/features.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
+#include "brave/components/local_ai/core/url_constants.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -1175,6 +1177,23 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
   auto result = ChromeContentBrowserClient::CreateURLLoaderThrottles(
       request, browser_context, wc_getter, navigation_ui_data,
       frame_tree_node_id, navigation_id);
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  // The on-device model worker WebUIs must never reach the network. Inject an
+  // enforced, empty Connection-Allowlist into their main-frame navigation
+  // response so Chromium blocks all of their socket connections at the network
+  // service.
+  if (request.resource_type ==
+          static_cast<int>(blink::mojom::ResourceType::kMainFrame) &&
+      request.url.SchemeIs(content::kChromeUIUntrustedScheme) &&
+      (request.url.host() ==
+           local_ai::kOnDeviceSpeechRecognitionWorkerHost ||
+       request.url.host() == local_ai::kUntrustedLocalAIHost)) {
+    result.push_back(
+        std::make_unique<local_ai::NoNetworkConnectionAllowlistThrottle>());
+  }
+#endif
+
   content::WebContents* contents = wc_getter.Run();
 
   if (contents) {
