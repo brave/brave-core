@@ -34,6 +34,7 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.policy.PolicyServiceFactory;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 import org.chromium.chrome.browser.tracing.settings.DeveloperSettings;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.policy.PolicyService;
@@ -124,6 +125,7 @@ public class BraveMainSettingsFragmentTest {
     // with English.
     @Test
     @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
     public void testMainSettingsPrefsOrder() {
         startSettings();
 
@@ -139,6 +141,43 @@ public class BraveMainSettingsFragmentTest {
                     prevPref.getTitle() + " should precede " + pref.getTitle(),
                     pref.getOrder() > prevPref.getOrder());
         }
+    }
+
+    @Test
+    @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testLegacyTabRowsShownWhenTabGroupSettingsFeatureDisabled() {
+        startSettings();
+
+        Preference tabsPreference = mMainSettings.findPreference(MainSettings.PREF_TABS);
+        Preference closingAllTabsClosesBravePreference =
+                mMainSettings
+                        .getPreferenceScreen()
+                        .findPreference(
+                                BraveMainPreferencesBase.PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
+
+        assertNotNull(tabsPreference);
+        assertNotNull(closingAllTabsClosesBravePreference);
+        assertTrue(closingAllTabsClosesBravePreference.isVisible());
+        assertEquals(TabsSettings.class.getName(), tabsPreference.getFragment());
+    }
+
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testLegacyTabRowsHiddenWhenTabGroupSettingsFeatureEnabled() {
+        startSettings();
+
+        Preference tabsPreference = mMainSettings.findPreference(MainSettings.PREF_TABS);
+        Preference closingAllTabsClosesBravePreference =
+                mMainSettings
+                        .getPreferenceScreen()
+                        .findPreference(
+                                BraveMainPreferencesBase.PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
+
+        assertNotNull(tabsPreference);
+        assertNull(closingAllTabsClosesBravePreference);
+        assertEquals(BraveTabsAndTabGroupsSettings.class.getName(), tabsPreference.getFragment());
     }
 
     // Test for BraveOrigin pref when feature is disabled. It should not be shown.

@@ -119,7 +119,8 @@
         android:order="13"
         android:defaultValue="false"
         android:icon="@drawable/ic_window_tab_close"
-        android:title="@string/prefs_closing_all_tabs_closes_brave"/>
+        android:title="@string/prefs_closing_all_tabs_closes_brave"
+        app:isPreferenceVisible="false"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="brave_origin"
         android:order="14"

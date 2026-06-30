@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
@@ -84,8 +85,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     // prefs
     @VisibleForTesting static final String PREF_BRAVE_VPN_CALLOUT = "pref_vpn_callout";
-    private static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE =
-            "closing_all_tabs_closes_brave";
+
+    @VisibleForTesting
+    static final String PREF_CLOSING_ALL_TABS_CLOSES_BRAVE = "closing_all_tabs_closes_brave";
+
     private static final String PREF_PRIVACY = "privacy";
     private static final String PREF_SHIELDS_AND_PRIVACY = "brave_shields_and_privacy";
     private static final String PREF_BRAVE_SEARCH_ENGINES = "brave_search_engines";
@@ -386,7 +389,12 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
-        setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
+        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+            removePreferenceIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
+        } else {
+            setPreferenceVisibleIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, true);
+            setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
+        }
 
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
@@ -537,13 +545,19 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         if (accessibilityPreference != null) {
             accessibilityPreference.setFragment(BraveAccessibilitySettings.class.getName());
         }
+        Preference tabsPreference = findPreference(PREF_TABS);
+        if (tabsPreference != null
+                && BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+            tabsPreference.setFragment(BraveTabsAndTabGroupsSettings.class.getName());
+        }
     }
 
     private void setPreferenceListeners() {
         Preference closingAllTabsClosesBravePreference =
                 findPreference(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
-        assumeNonNull(closingAllTabsClosesBravePreference);
-        closingAllTabsClosesBravePreference.setOnPreferenceChangeListener(this);
+        if (closingAllTabsClosesBravePreference != null) {
+            closingAllTabsClosesBravePreference.setOnPreferenceChangeListener(this);
+        }
 
         Preference braveOriginPreference = findPreference(PREF_BRAVE_ORIGIN);
         if (braveOriginPreference != null) {

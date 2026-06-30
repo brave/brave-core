@@ -706,6 +706,7 @@ android_resources("java_resources") {
     "java/brave-res/xml/brave_shred_preferences.xml",
     "java/brave-res/xml/brave_solana_preferences.xml",
     "java/brave-res/xml/brave_stats_preferences.xml",
+    "java/brave-res/xml/brave_tabs_and_tab_groups_preferences.xml",
     "java/brave-res/xml/brave_vpn_preferences.xml",
     "java/brave-res/xml/brave_wallet_networks_preference.xml",
     "java/brave-res/xml/brave_wallet_preferences.xml",

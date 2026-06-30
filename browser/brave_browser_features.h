@@ -29,6 +29,7 @@ BASE_DECLARE_FEATURE(kBraveV8JitlessMode);
 BASE_DECLARE_FEATURE(kBraveAndroidDynamicColors);
 BASE_DECLARE_FEATURE(kBraveFreshNtpAfterIdleExperiment);
 BASE_DECLARE_FEATURE(kBraveCustomSearchEngines);
+BASE_DECLARE_FEATURE(kBraveAndroidTabGroupsSettings);
 #endif  // BUILDFLAG(IS_ANDROID)
 
 extern const base::FeatureParam<std::string> kBraveDayZeroExperimentVariant;

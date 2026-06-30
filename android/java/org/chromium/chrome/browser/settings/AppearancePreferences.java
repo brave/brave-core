@@ -96,12 +96,27 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
+        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+            removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
+            removePreferenceIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
+        } else {
+            setPreferenceVisibleIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS, true);
+            setPreferenceVisibleIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, true);
+        }
+
         applyOrdering();
     }
 
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) getPreferenceScreen().removePreference(preference);
+    }
+
+    private void setPreferenceVisibleIfPresent(String key, boolean visible) {
+        Preference preference = getPreferenceScreen().findPreference(key);
+        if (preference != null) {
+            preference.setVisible(visible);
+        }
     }
 
     @Override
@@ -459,6 +474,12 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
                         indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
+                    }
+
+                    if (BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+                        indexData.removeEntryForKey(frag, PREF_BRAVE_ENABLE_TAB_GROUPS);
+                        indexData.removeEntryForKey(frag, PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
                     }
 
                     if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(

@@ -1587,6 +1587,7 @@ if (is_android) {
       "//brave/android/javatests/org/chromium/chrome/browser/settings/BackgroundImagesPreferencesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveAppearancePreferencesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveMainSettingsFragmentTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/settings/BraveTabsAndTabGroupsSettingsTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/settings/search/BraveAutofillOptionsSearchIndexTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/sync/BraveManageSyncSettingsTest.java",
     ]

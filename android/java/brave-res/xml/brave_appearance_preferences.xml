@@ -45,7 +45,8 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_enable_tab_groups"
         android:title="@string/enable_tab_groups_title"
-        android:summary="@string/enable_tab_groups_text" />
+        android:summary="@string/enable_tab_groups_text"
+        app:isPreferenceVisible="false" />
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="enable_multi_windows"
@@ -56,5 +57,6 @@
         android:key="show_undo_when_tabs_closed"
         android:title="@string/show_undo_when_tabs_closed"
         android:summaryOn="@string/text_on"
-        android:summaryOff="@string/text_off" />
+        android:summaryOff="@string/text_off"
+        app:isPreferenceVisible="false" />
 </PreferenceScreen>

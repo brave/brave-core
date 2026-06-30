@@ -421,12 +421,21 @@ const char* const kBraveSyncImplLink[1] = {"https://github.com/brave/go-sync"};
       kOsAndroid,                                                          \
       FEATURE_VALUE_TYPE(features::kBraveCustomSearchEngines),             \
   })
+#define BRAVE_ANDROID_TAB_GROUPS_SETTINGS                            \
+  EXPAND_FEATURE_ENTRIES({                                           \
+      "brave-android-tab-groups-settings",                           \
+      "Android tab groups settings",                                 \
+      "Expose Brave's replacement Tabs and tab groups settings UI.", \
+      kOsAndroid,                                                    \
+      FEATURE_VALUE_TYPE(features::kBraveAndroidTabGroupsSettings),  \
+  })
 #else
 #define BRAVE_BACKGROUND_VIDEO_PLAYBACK_ANDROID
 #define BRAVE_SAFE_BROWSING_ANDROID
 #define BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID
 #define BRAVE_ANDROID_DYNAMIC_COLORS
 #define BRAVE_CUSTOM_SEARCH_ENGINES
+#define BRAVE_ANDROID_TAB_GROUPS_SETTINGS
 #endif  // BUILDFLAG(IS_ANDROID)
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -1429,6 +1438,7 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
   BRAVE_SAFE_BROWSING_ANDROID                                                  \
   BRAVE_ADAPTIVE_BUTTON_IN_TOOLBAR_ANDROID                                     \
   BRAVE_ANDROID_DYNAMIC_COLORS                                                 \
+  BRAVE_ANDROID_TAB_GROUPS_SETTINGS                                            \
   BRAVE_CUSTOM_SEARCH_ENGINES                                                  \
   BRAVE_CHANGE_ACTIVE_TAB_ON_SCROLL_EVENT_FEATURE_ENTRIES                      \
   BRAVE_FFMPEG_SOFTWARE_HEVC_DECODER_FEATURE_ENTRIES                           \

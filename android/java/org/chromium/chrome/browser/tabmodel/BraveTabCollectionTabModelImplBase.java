@@ -4,14 +4,13 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.tabmodel;
 
-import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
-import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 
 /** Brave's super class for {@link TabCollectionTabModelImpl} */
 @NullMarked
@@ -28,14 +27,7 @@ public abstract class BraveTabCollectionTabModelImplBase extends TabModelJniBrid
             return false;
         }
         if (linkClicked(tab.getLaunchType())
-                && ChromeSharedPreferences.getInstance()
-                        .readBoolean(
-                                BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED,
-                                ChromeSharedPreferences.getInstance()
-                                        .readBoolean(
-                                                BravePreferenceKeys
-                                                        .BRAVE_TAB_GROUPS_ENABLED_DEFAULT_VALUE,
-                                                true))
+                && BraveTabUiFeatureUtilities.isBraveTabGroupsEnabled()
                 && isTabModelRestoredViaReflection()) {
             return true;
         }

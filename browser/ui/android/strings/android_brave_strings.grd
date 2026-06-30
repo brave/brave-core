@@ -779,6 +779,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_CLOSING_ALL_TABS_CLOSES_BRAVE" desc="Title for closing all tabs closes brave in controls section">
         Closing all tabs closes Brave
       </message>
+      <message name="IDS_BRAVE_TABS_SETTINGS_GROUPS_SECTION_TITLE" desc="Section heading for tab group settings on the Tabs settings page.">
+        Groups
+      </message>
       <message name="IDS_PREFS_BACKGROUND_VIDEO_PLAYBACK_ON" desc="Text for background video playback is on">
         Allows audio to play when you switch to another tab in Brave or another app or your device screen is off.
       </message>
@@ -2628,11 +2631,23 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_BRAVE_WALLET_ALLOW_CHANGE_NETWORK_BUTTON" desc="Change network panel button">
       Switch network
     </message>
+    <message name="IDS_TAB_GROUPS_ENABLE_TITLE" desc="Title for a setting that enables or disables tab groups.">
+      Enable tab groups
+    </message>
+    <message name="IDS_TAB_GROUPS_BAR_TITLE" desc="Title for a setting that enables the tab groups bottom bar.">
+      Tab groups bar
+    </message>
+    <message name="IDS_TAB_GROUPS_BAR_SUMMARY" desc="Summary for a setting that enables the tab groups bottom bar.">
+      Show a bottom bar for quick access to tabs in the currently open tab group
+    </message>
+    <message name="IDS_OPEN_LINKS_IN_CURRENT_TAB_GROUP_TITLE" desc="Title for the setting that opens links in the current tab group.">
+      Open links in current tab group
+    </message>
     <message name="IDS_ENABLE_TAB_GROUPS_TITLE" desc="Menu item for grouping Tabs automatically title.">
       Only open links in current tab group
     </message>
-    <message name="IDS_ENABLE_TAB_GROUPS_TEXT" desc="Menu item for grouping Tabs automatically text.">
-      Automatically opens all links in the current tab group
+    <message name="IDS_ENABLE_TAB_GROUPS_TEXT" desc="Summary for the setting that opens links in the current tab group.">
+      Automatically open all links in the current tab group
     </message>
     <message name="IDS_DAPPS_MENU_LOCK_WALLET" desc="Menu item Lock Wallet on DApps Panel">
       Lock Wallet

@@ -111,7 +111,8 @@
     &ntp_background_images::features::kBraveNTPBrandedWallpaperSurveyPanelist, \
     &brave_shields::features::kBraveShredFeature,                              \
     &brave_origin::features::kBraveOrigin,                                     \
-    &features::kBraveCustomSearchEngines
+    &features::kBraveCustomSearchEngines,                                      \
+    &features::kBraveAndroidTabGroupsSettings
 
 // clang-format on
 
