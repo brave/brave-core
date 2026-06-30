@@ -231,12 +231,15 @@ public:
 // Define this out-of-line to dissuade the C++ compiler from inlining it.
 template <typename T, bool TriviallyCopyable>
 void SmallVectorTemplateBase<T, TriviallyCopyable>::grow(size_t MinSize) {
-  if (MinSize > UINT32_MAX)
+  constexpr size_t MinGrowth = 2;
+  size_t NewCapacity = size_t(NextPowerOf2(this->capacity() + MinGrowth));
+  NewCapacity = static_cast<unsigned>(std::max(NewCapacity, MinSize));
+  // Ensure that NewCapacity did not overflow an unsigned int,
+  // and that the capacity in bytes will not overflow a size_t.
+  if (NewCapacity <= this->capacity() ||
+      NewCapacity < MinSize ||
+      NewCapacity > size_t(-1) / sizeof(T))
     report_bad_alloc_error("SmallVector capacity overflow during allocation");
-
-  // Always grow, even from zero.
-  size_t NewCapacity = size_t(NextPowerOf2(this->capacity() + 2));
-  NewCapacity = std::min(std::max(NewCapacity, MinSize), size_t(UINT32_MAX));
   T *NewElts = static_cast<T*>(llvm::safe_malloc(NewCapacity*sizeof(T)));
 
   // Move the elements over.
