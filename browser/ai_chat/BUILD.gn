@@ -232,7 +232,6 @@ if (enable_brave_ai_chat_agent_profile) {
       "//components/actor/core:task_id",
       "//components/optimization_guide/content/browser",
       "//components/policy/core/common:common_constants",
-      "//components/prefs",
     ]
 
     if (!is_android) {

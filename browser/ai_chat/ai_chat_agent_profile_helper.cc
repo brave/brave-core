@@ -17,16 +17,10 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
-#include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/brave_origin/brave_origin_policy_manager.h"
-#include "brave/components/brave_origin/brave_origin_utils.h"
-#include "brave/components/brave_origin/profile_id.h"
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
-#include "components/policy/policy_constants.h"
-#include "components/prefs/pref_service.h"
 #endif
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_AI_CHAT_AGENT_PROFILE));
@@ -82,24 +76,6 @@ void OpenBrowserWindowForAIChatAgentProfileWithCallback(
   base::FilePath profile_path =
       base::PathService::CheckedGet(chrome::DIR_USER_DATA);
   profile_path = profile_path.Append(brave::kAIChatAgentProfileDir);
-
-  // Brave Origin manages AI Chat as a profile-scoped policy that defaults to
-  // disabled for newly-created profiles. The agent profile is created on behalf
-  // of a user whose source profile has AI Chat enabled (guaranteed by the CHECK
-  // above), so copy the source profile's managed value onto the soon-to-be
-  // created agent profile. Without this the agent profile would inherit Brave
-  // Origin's default-disabled value, which leaves AI Chat - and therefore the
-  // agent profile itself - non-functional (and previously crashed when its
-  // kChatUI side panel was shown for an unregistered entry). This is written
-  // before CreateProfileAsync() so the value is already present when the agent
-  // profile's policies are first loaded. When Brave Origin is not in use this
-  // is a no-op and the agent profile keeps the unmanaged default (enabled).
-  if (brave_origin::IsBraveOriginPurchased()) {
-    brave_origin::BraveOriginPolicyManager::GetInstance()->SetPolicyValue(
-        policy::key::kBraveAIChatEnabled,
-        from_profile.GetPrefs()->GetBoolean(prefs::kEnabledByPolicy),
-        brave_origin::GetProfileId(profile_path));
-  }
 
   g_browser_process->profile_manager()->CreateProfileAsync(
       profile_path,
