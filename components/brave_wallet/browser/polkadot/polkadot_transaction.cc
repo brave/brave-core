@@ -25,6 +25,11 @@ base::DictValue PolkadotTransaction::ToValue() const {
     dict.Set("ss58_prefix", *recipient_.ss58_prefix);
   }
 
+  if (asset_id_.has_value()) {
+    dict.Set("asset_id",
+             base::HexEncodeLower(base::byte_span_from_ref(*asset_id_)));
+  }
+
   if (extrinsic_metadata_) {
     dict.Set("extrinsic_metadata", extrinsic_metadata_->ToValue());
   }
@@ -86,6 +91,16 @@ std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
     return std::nullopt;
   }
 
+  std::optional<uint32_t> asset_id;
+  const auto* asset_id_json = value.FindString("asset_id");
+  if (asset_id_json) {
+    uint32_t id = 0;
+    if (!base::HexStringToSpan(*asset_id_json, base::byte_span_from_ref(id))) {
+      return std::nullopt;
+    }
+    asset_id = id;
+  }
+
   std::optional<PolkadotExtrinsicMetadata> metadata;
 
   const auto* extrinsic_metadata_json = value.FindDict("extrinsic_metadata");
@@ -107,6 +122,7 @@ std::optional<PolkadotTransaction> PolkadotTransaction::FromValue(
   tx.fee_ = fee;
   tx.recipient_ = recipient;
   tx.transfer_all_ = transfer_all;
+  tx.asset_id_ = asset_id;
   tx.extrinsic_metadata_ = std::move(metadata);
 
   return tx;

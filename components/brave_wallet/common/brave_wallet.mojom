@@ -2409,11 +2409,16 @@ struct CardanoTxData {
   array<CardanoTxOutput> outputs;
 };
 
+struct PolkadotAssetId {
+  uint32 id;
+};
+
 struct PolkadotTxdata {
   string to;
   uint128 amount;
   uint128 fee;
   bool sending_max_amount;
+  PolkadotAssetId? asset_id;
 };
 
 union TxDataUnion {

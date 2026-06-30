@@ -36,6 +36,9 @@ struct PolkadotTransaction {
   bool transfer_all() const { return transfer_all_; }
   void set_transfer_all(bool transfer_all) { transfer_all_ = transfer_all; }
 
+  std::optional<uint32_t> asset_id() const { return asset_id_; }
+  void set_asset_id(uint32_t asset_id) { asset_id_ = asset_id; }
+
   const PolkadotExtrinsicMetadata* extrinsic_metadata() const {
     return extrinsic_metadata_.has_value() ? &extrinsic_metadata_.value()
                                            : nullptr;
@@ -50,6 +53,7 @@ struct PolkadotTransaction {
   uint128_t amount_ = uint128_t{0};
   uint128_t fee_ = uint128_t{0};
   bool transfer_all_ = false;
+  std::optional<uint32_t> asset_id_;
 
   std::optional<PolkadotExtrinsicMetadata> extrinsic_metadata_;
 };
