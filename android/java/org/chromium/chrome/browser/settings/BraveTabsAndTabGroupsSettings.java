@@ -14,7 +14,6 @@ import android.os.Bundle;
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.Preference;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.supplier.MonotonicObservableSupplier;
@@ -23,7 +22,6 @@ import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
@@ -103,10 +101,6 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     @Override
     public @Nullable String getMainMenuKey() {
         return "tabs";
-    }
-
-    public static boolean isBraveAndroidTabGroupsSettingsEnabled() {
-        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS);
     }
 
     private void configureEnableTabGroupsSwitch() {
@@ -251,7 +245,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
                 @Override
                 public String getPrefFragmentName() {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         return TabsSettings.SEARCH_INDEX_DATA_PROVIDER.getPrefFragmentName();
                     }
                     return super.getPrefFragmentName();
@@ -259,7 +254,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
                 @Override
                 public int getXmlRes() {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         return TabsSettings.SEARCH_INDEX_DATA_PROVIDER.getXmlRes();
                     }
                     return super.getXmlRes();
@@ -267,7 +263,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
                 @Override
                 public String getUniqueId(String childPrefName) {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         return TabsSettings.SEARCH_INDEX_DATA_PROVIDER.getUniqueId(childPrefName);
                     }
                     return super.getUniqueId(childPrefName);
@@ -279,7 +276,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap,
                         Set<String> processedFragments) {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         TabsSettings.SEARCH_INDEX_DATA_PROVIDER.registerFragmentHeaders(
                                 context, indexData, providerMap, processedFragments);
                         return;
@@ -294,7 +292,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                         Profile profile,
                         SettingsIndexData indexData,
                         Map<String, SearchIndexProvider> providerMap) {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         TabsSettings.SEARCH_INDEX_DATA_PROVIDER.initPreferenceXml(
                                 context, profile, indexData, providerMap);
                         return;
@@ -319,7 +318,8 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                 @Override
                 public void updateDynamicPreferences(
                         Context context, SettingsIndexData indexData, Profile profile) {
-                    if (!isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (!BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         TabsSettings.SEARCH_INDEX_DATA_PROVIDER.updateDynamicPreferences(
                                 context, indexData, profile);
                         return;

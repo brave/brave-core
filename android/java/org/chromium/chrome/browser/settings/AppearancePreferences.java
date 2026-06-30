@@ -96,7 +96,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
 
-        if (BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
             removePreferenceIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
         } else {
@@ -476,7 +476,8 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                         indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
                     }
 
-                    if (BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+                    if (BraveTabUiFeatureUtilities
+                            .isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
                         indexData.removeEntryForKey(frag, PREF_BRAVE_ENABLE_TAB_GROUPS);
                         indexData.removeEntryForKey(frag, PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
                     }

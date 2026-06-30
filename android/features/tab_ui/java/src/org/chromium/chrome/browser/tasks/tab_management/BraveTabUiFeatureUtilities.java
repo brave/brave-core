@@ -5,8 +5,10 @@
 
 package org.chromium.chrome.browser.tasks.tab_management;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 
 @NullMarked
@@ -48,5 +50,9 @@ public class BraveTabUiFeatureUtilities {
     public static void setTabGroupsBarEnabled(boolean enabled) {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_BAR_ENABLED, enabled);
+    }
+
+    public static boolean isBraveAndroidTabGroupsSettingsFeatureEnabled() {
+        return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS);
     }
 }

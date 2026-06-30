@@ -19,6 +19,7 @@ import org.chromium.chrome.browser.download.settings.BraveDownloadSettings;
 import org.chromium.chrome.browser.download.settings.DownloadSettings;
 import org.chromium.chrome.browser.safe_browsing.settings.BraveStandardProtectionSettingsFragment;
 import org.chromium.chrome.browser.safe_browsing.settings.StandardProtectionSettingsFragment;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.tasks.tab_management.TabsSettings;
 
 public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
@@ -69,10 +70,10 @@ public class BraveSettingsLauncherImpl extends SettingsNavigationImpl {
         } else if (fragment.equals(ClearBrowsingDataFragment.class)) {
             return BraveClearBrowsingDataFragment.class;
         } else if (fragment.equals(TabsSettings.class)
-                && BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+                && BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             return BraveTabsAndTabGroupsSettings.class;
         } else if (fragment.equals(BraveTabsAndTabGroupsSettings.class)
-                && !BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+                && !BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             return TabsSettings.class;
         }
         return fragment;

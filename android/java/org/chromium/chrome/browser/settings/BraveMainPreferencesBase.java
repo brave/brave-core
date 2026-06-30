@@ -49,6 +49,7 @@ import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.settings.VpnCalloutPreference;
@@ -388,7 +389,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         setPreferenceOrder(PREF_CONTENT_SETTINGS, ++generalOrder);
         setPreferenceOrder(PREF_DOWNLOADS, ++generalOrder);
-        if (BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             removePreferenceIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE);
         } else {
             setPreferenceVisibleIfPresent(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, true);
@@ -546,7 +547,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         Preference tabsPreference = findPreference(PREF_TABS);
         if (tabsPreference != null
-                && BraveTabsAndTabGroupsSettings.isBraveAndroidTabGroupsSettingsEnabled()) {
+                && BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             tabsPreference.setFragment(BraveTabsAndTabGroupsSettings.class.getName());
         }
     }
