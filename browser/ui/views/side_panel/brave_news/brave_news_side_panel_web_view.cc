@@ -24,6 +24,18 @@ using SidePanelWebUIViewT_BraveNewsUI = SidePanelWebUIViewT<BraveNewsUI>;
 BEGIN_TEMPLATE_METADATA(SidePanelWebUIViewT_BraveNewsUI, SidePanelWebUIViewT)
 END_METADATA
 
+namespace {
+
+// The sidebar requests a new tab either by opening a `_blank` link (which
+// arrives as a new-tab disposition) or via `window.open()`. Everything else
+// (plain link clicks) should navigate the main browser's active tab.
+bool ShouldOpenInNewTab(WindowOpenDisposition disposition) {
+  return disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
+         disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB;
+}
+
+}  // namespace
+
 // static
 std::unique_ptr<views::View> BraveNewsSidePanelWebView::CreateView(
     Profile* profile,
@@ -60,9 +72,14 @@ content::WebContents* BraveNewsSidePanelWebView::AddNewContents(
     return nullptr;
   }
 
-  // Always navigate the main browser's active tab, regardless of disposition.
+  // `window.open()` from the sidebar (opening an article in a new tab, or a
+  // ctrl/middle-click) opens a new tab in the main browser window rather than
+  // spawning a popup attached to the side panel; any other request navigates
+  // the main browser's active tab.
   NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
-  params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  params.disposition = ShouldOpenInNewTab(disposition)
+                           ? WindowOpenDisposition::NEW_FOREGROUND_TAB
+                           : WindowOpenDisposition::CURRENT_TAB;
   params.window_action = NavigateParams::WindowAction::kNoAction;
   params.user_gesture = user_gesture;
   Navigate(&params);
@@ -80,10 +97,13 @@ content::WebContents* BraveNewsSidePanelWebView::OpenURLFromTab(
         source, params, std::move(navigation_handle_callback));
   }
 
-  // Always navigate the main browser's active tab — clicks (including
-  // ctrl/middle-click, window.open, etc.) never spawn new tabs/windows from
-  // the sidebar.
+  // Route the navigation to the main browser window rather than the side
+  // panel's own WebContents. New-tab requests (opening articles in a new tab,
+  // or ctrl/middle-clicking a link) are honored as a new tab in that window;
+  // everything else navigates its active tab.
   content::OpenURLParams new_params(params);
-  new_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  if (!ShouldOpenInNewTab(new_params.disposition)) {
+    new_params.disposition = WindowOpenDisposition::CURRENT_TAB;
+  }
   return browser->OpenURL(new_params, std::move(navigation_handle_callback));
 }
