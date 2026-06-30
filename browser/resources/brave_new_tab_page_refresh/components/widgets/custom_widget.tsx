@@ -56,7 +56,6 @@ export function CustomWidget(props: Props) {
             <Icon name='trash' /> Remove widget
           </leo-menu-item>
         </WidgetMenu>
-        <div className='title'>{name}</div>
         <iframe
           ref={frameRef}
           className='widget-frame'
