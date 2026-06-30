@@ -28,15 +28,19 @@ namespace brave_new_tab_page_refresh {
 namespace {
 
 // Public, no-auth, CORS-friendly endpoints that custom widgets are allowed to
-// fetch from. This list is intentionally small for the PoC; it must be kept in
-// sync with the prompt contract shown to the user in the settings UI.
+// fetch from. This list must be kept in sync with the prompt contract shown to
+// the user in the settings UI (custom_widget_prompt.ts).
 constexpr char kConnectSrc[] =
     "connect-src "
     "https://api.open-meteo.com "
     "https://geocoding-api.open-meteo.com "
     "https://api.coingecko.com "
     "https://api.frankfurter.app "
-    "https://hacker-news.firebaseio.com;";
+    "https://hacker-news.firebaseio.com "
+    "https://query1.finance.yahoo.com "
+    "https://query2.finance.yahoo.com "
+    "https://site.api.espn.com "
+    "https://www.thesportsdb.com;";
 
 // Minimal host document. It only loads host.js; the actual (untrusted) widget
 // markup is injected at runtime into a sandboxed child iframe.
