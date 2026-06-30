@@ -11,6 +11,8 @@ assert(enable_snaps)
 # the manifest parser without creating a dependency cycle.
 source_set("manifest_parser") {
   sources = [
+    "snap_manifest_helpers.cc",
+    "snap_manifest_helpers.h",
     "snap_manifest_parser.cc",
     "snap_manifest_parser.h",
   ]
@@ -19,6 +21,7 @@ source_set("manifest_parser") {
     "//base",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
+    "//url",
   ]
 }
 
@@ -65,6 +68,7 @@ source_set("test_support") {
   ]
 
   deps = [
+    ":manifest_parser",
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_wallet/browser/snap/execution_environment",

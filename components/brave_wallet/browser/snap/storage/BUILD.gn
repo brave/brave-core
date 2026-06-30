@@ -19,6 +19,7 @@ source_set("storage") {
 
   deps = [
     "//base",
+    "//brave/components/brave_wallet/browser/snap:manifest_parser",
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:mojom",
     "//components/prefs",

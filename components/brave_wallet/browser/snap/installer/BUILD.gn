@@ -46,6 +46,7 @@ source_set("unit_tests") {
     ":installer",
     "//base",
     "//base/test:test_support",
+    "//brave/components/brave_wallet/browser/snap:manifest_parser",
     "//brave/components/brave_wallet/browser/snap:test_support",
     "//brave/components/brave_wallet/browser/snap/storage",
     "//brave/components/brave_wallet/common",

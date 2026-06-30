@@ -15,6 +15,7 @@
 
 import { BraveWallet } from '../../constants/types'
 import { getAPIProxy } from '../async/bridge'
+import { getEndowmentPermissionNames } from './snap_manifest_utils'
 import type { Value as MojoValue } from 'chrome://resources/mojo/mojo/public/mojom/base/values.mojom-webui.js'
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore — types resolve after npm install
@@ -43,6 +44,12 @@ const BASE_ENDOWMENTS = [
   'clearInterval',
   'TextEncoder',
   'TextDecoder',
+  'atob',
+  'btoa',
+  'URL',
+  'URLSearchParams',
+  'AbortController',
+  'AbortSignal',
 ]
 
 // Additional endowments keyed by snap initialPermission name.
@@ -54,15 +61,10 @@ const PERMISSION_ENDOWMENTS: Record<string, string[]> = {
     'Request',
     'Headers',
     'Response',
-    'URL',
-    'URLSearchParams',
-    'AbortController',
-    'AbortSignal',
-    'atob',
-    'btoa',
-    'WebSocket',
   ],
-  'endowment:webassembly': ['WebAssembly'],
+  'endowment:webassembly': [
+    'WebAssembly',
+  ],
 }
 
 // Per-snap endowments derived from manifest initialPermissions.
@@ -240,9 +242,7 @@ export class SnapBridge {
       const sourceCode = code as string
 
       const { manifest } = await snapsService.getSnapManifest(snapId)
-      const endowmentPerms = ((manifest?.permissions ?? []) as string[]).filter(
-        (p) => p.startsWith('endowment:'),
-      )
+      const endowmentPerms = getEndowmentPermissionNames(manifest)
       const extras = endowmentPerms.flatMap(
         (p) => PERMISSION_ENDOWMENTS[p] ?? [],
       )

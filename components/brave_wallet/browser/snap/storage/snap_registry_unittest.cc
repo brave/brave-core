@@ -11,6 +11,7 @@
 
 #include "brave/components/brave_wallet/browser/snap/snap_test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/prefs/testing_pref_service.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -115,13 +116,21 @@ TEST_F(SnapRegistryTest, PersistsAcrossReconstruction) {
   data->enabled = false;
   data->manifest->proposed_name = "My Snap";
   data->manifest->description = "A description";
-  data->manifest->permissions = {"snap_dialog", "endowment:rpc"};
-  data->manifest->allow_dapps = true;
-  data->manifest->allow_snaps = true;
-  data->manifest->allowed_rpc_origins = {"https://app.example.com"};
-  data->manifest->name_lookup_chains = {"eip155:1"};
-  data->manifest->name_lookup_tlds = {"crypto", "eth"};
-  data->manifest->name_lookup_schemes = {"farcaster"};
+  data->manifest->dialog = mojom::SnapSimpleConfig::New();
+  auto rpc = mojom::SnapRpcConfig::New();
+  rpc->allow_dapps = true;
+  rpc->allow_snaps = true;
+  rpc->allowed_origins = {"https://app.example.com"};
+  data->manifest->rpc = std::move(rpc);
+  auto name_lookup = mojom::SnapNameLookupConfig::New();
+  name_lookup->chains = {"eip155:1"};
+  auto matchers = mojom::SnapNameLookupMatchers::New();
+  matchers->tlds = {"crypto", "eth"};
+  matchers->schemes = {"farcaster"};
+  name_lookup->matchers = std::move(matchers);
+  data->manifest->name_lookup = std::move(name_lookup);
+  data->description = data->manifest->description;
+  data->install_origin = "https://app.example.com";
   registry_->RegisterInstalledSnap(*data);
 
   // A registry rebuilt from the same prefs reloads the persisted snap.
@@ -134,18 +143,38 @@ TEST_F(SnapRegistryTest, PersistsAcrossReconstruction) {
   ASSERT_TRUE(snap->manifest);
   EXPECT_EQ(snap->manifest->proposed_name, "My Snap");
   EXPECT_EQ(snap->manifest->description, "A description");
-  EXPECT_THAT(snap->manifest->permissions,
-              testing::ElementsAre("snap_dialog", "endowment:rpc"));
-  EXPECT_TRUE(snap->manifest->allow_dapps);
-  EXPECT_TRUE(snap->manifest->allow_snaps);
-  EXPECT_THAT(snap->manifest->allowed_rpc_origins,
+  EXPECT_EQ(snap->description, "A description");
+  EXPECT_EQ(snap->install_origin, "https://app.example.com");
+  EXPECT_TRUE(snap->manifest->dialog);
+  ASSERT_TRUE(snap->manifest->rpc);
+  EXPECT_TRUE(snap->manifest->rpc->allow_dapps);
+  EXPECT_TRUE(snap->manifest->rpc->allow_snaps);
+  EXPECT_THAT(snap->manifest->rpc->allowed_origins,
               testing::ElementsAre("https://app.example.com"));
-  EXPECT_THAT(snap->manifest->name_lookup_chains,
+  ASSERT_TRUE(snap->manifest->name_lookup);
+  EXPECT_THAT(snap->manifest->name_lookup->chains,
               testing::ElementsAre("eip155:1"));
-  EXPECT_THAT(snap->manifest->name_lookup_tlds,
+  ASSERT_TRUE(snap->manifest->name_lookup->matchers);
+  EXPECT_THAT(snap->manifest->name_lookup->matchers->tlds,
               testing::ElementsAre("crypto", "eth"));
-  EXPECT_THAT(snap->manifest->name_lookup_schemes,
+  EXPECT_THAT(snap->manifest->name_lookup->matchers->schemes,
               testing::ElementsAre("farcaster"));
+}
+
+TEST_F(SnapRegistryTest, IncompletePrefEntryIsIgnored) {
+  auto data = MakeTestSnapInstallData("npm:@test/snap", "1.0.0");
+  data->manifest->description = "From manifest only";
+  data->description = data->manifest->description;
+  registry_->RegisterInstalledSnap(*data);
+
+  ScopedDictPrefUpdate update(&prefs_, "brave.wallet.installed_snaps");
+  base::DictValue* snap_dict = update->FindDict("npm:@test/snap");
+  ASSERT_TRUE(snap_dict);
+  snap_dict->Remove("description");
+
+  SnapRegistry reloaded(prefs_);
+  EXPECT_FALSE(reloaded.IsKnownSnap("npm:@test/snap"));
+  EXPECT_FALSE(reloaded.GetSnap("npm:@test/snap"));
 }
 
 }  // namespace brave_wallet

@@ -58,6 +58,7 @@ void MarkConnectionDelegateCalledAndApprove(
 void ApproveInstallRequestAndCapture(
     base::test::TestFuture<std::pair<std::string, std::string>>*
         install_future,
+    url::Origin /*origin*/,
     std::string id,
     std::string version,
     SnapController::InstallSnapResultCallback cb) {
@@ -65,13 +66,15 @@ void ApproveInstallRequestAndCapture(
   std::move(cb).Run(base::ok());
 }
 
-void ApproveInstallRequest(std::string /*id*/,
+void ApproveInstallRequest(url::Origin /*origin*/,
+                           std::string /*id*/,
                            std::string /*version*/,
                            SnapController::InstallSnapResultCallback cb) {
   std::move(cb).Run(base::ok());
 }
 
-void RejectInstallRequest(std::string /*id*/,
+void RejectInstallRequest(url::Origin /*origin*/,
+                          std::string /*id*/,
                           std::string /*version*/,
                           SnapController::InstallSnapResultCallback cb) {
   std::move(cb).Run(base::unexpected("install failed"));
@@ -336,15 +339,19 @@ TEST_F(SnapControllerTest, RequestSnapsAlreadyInstalledGrants) {
 TEST_F(SnapControllerTest, RequestSnapsInstallsMissing) {
   const url::Origin origin = SecureOrigin();
   base::test::TestFuture<std::pair<std::string, std::string>> install;
+  base::test::TestFuture<std::string> install_origin;
   controller_->SetInstallSnapDelegate(base::BindRepeating(
       [](base::test::TestFuture<std::pair<std::string, std::string>>*
              install_future,
-         std::string id, std::string version,
+         base::test::TestFuture<std::string>* install_origin_future,
+         url::Origin origin, std::string id, std::string version,
          SnapController::InstallSnapResultCallback cb) {
-        ApproveInstallRequestAndCapture(install_future, std::move(id),
-                                        std::move(version), std::move(cb));
+        install_origin_future->SetValue(origin.Serialize());
+        ApproveInstallRequestAndCapture(install_future, std::move(origin),
+                                        std::move(id), std::move(version),
+                                        std::move(cb));
       },
-      base::Unretained(&install)));
+      base::Unretained(&install), base::Unretained(&install_origin)));
 
   base::DictValue opts;
   opts.Set("version", "2.0.0");
@@ -359,6 +366,7 @@ TEST_F(SnapControllerTest, RequestSnapsInstallsMissing) {
   const auto install_data = install.Get();
   EXPECT_EQ(install_data.first, "npm:new-snap");
   EXPECT_EQ(install_data.second, "2.0.0");
+  EXPECT_EQ(install_origin.Get(), origin.Serialize());
   ASSERT_TRUE(future.Get<0>());
   EXPECT_TRUE(future.Get<0>()->contains("npm:new-snap"));
   EXPECT_TRUE(permission_controller_->IsSnapConnected(origin, "npm:new-snap"));
@@ -366,9 +374,10 @@ TEST_F(SnapControllerTest, RequestSnapsInstallsMissing) {
 
 TEST_F(SnapControllerTest, RequestSnapsAggregatesMultiple) {
   controller_->SetInstallSnapDelegate(base::BindRepeating(
-      [](std::string id, std::string version,
+      [](url::Origin /*origin*/, std::string id, std::string version,
          SnapController::InstallSnapResultCallback cb) {
-        ApproveInstallRequest(std::move(id), std::move(version), std::move(cb));
+        ApproveInstallRequest(url::Origin(), std::move(id), std::move(version),
+                              std::move(cb));
       }));
 
   base::DictValue snaps;
@@ -388,9 +397,10 @@ TEST_F(SnapControllerTest, RequestSnapsAggregatesMultiple) {
 TEST_F(SnapControllerTest, RequestSnapsInstallFailureExcludesSnap) {
   const url::Origin origin = SecureOrigin();
   controller_->SetInstallSnapDelegate(base::BindRepeating(
-      [](std::string id, std::string version,
+      [](url::Origin /*origin*/, std::string id, std::string version,
          SnapController::InstallSnapResultCallback cb) {
-        RejectInstallRequest(std::move(id), std::move(version), std::move(cb));
+        RejectInstallRequest(url::Origin(), std::move(id), std::move(version),
+                             std::move(cb));
       }));
 
   base::DictValue snaps;

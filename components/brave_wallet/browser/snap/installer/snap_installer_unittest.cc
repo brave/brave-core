@@ -13,6 +13,7 @@
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/types/expected.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "brave/components/brave_wallet/browser/snap/snap_test_utils.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
@@ -23,6 +24,8 @@
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -51,14 +54,19 @@ class SnapInstallerTest : public testing::Test {
                     const std::string& version,
                     const std::string& bundle,
                     const std::string& manifest_json,
-                    const std::string& bundle_file_path = "dist/bundle.js") {
+                    const std::string& bundle_file_path = "dist/bundle.js",
+                    const std::string& resolved_version = "") {
     const std::string package = snap_id.substr(4);  // strip "npm:"
     const std::string metadata_url =
         "https://registry.npmjs.org/" + package + "/" + version;
+    const std::string tarball_version =
+        resolved_version.empty() ? version : resolved_version;
     const std::string tarball_url =
-        "https://registry.npmjs.org/" + package + "/-/pkg-" + version + ".tgz";
-    url_loader_factory_.AddResponse(metadata_url,
-                                    MakeNpmRegistryMetadataJson(tarball_url));
+        "https://registry.npmjs.org/" + package + "/-/pkg-" + tarball_version +
+        ".tgz";
+    url_loader_factory_.AddResponse(
+        metadata_url,
+        MakeNpmRegistryMetadataJson(tarball_url, "", tarball_version));
     url_loader_factory_.AddResponse(
         tarball_url, BuildSnapTarball(manifest_json, bundle, bundle_file_path));
   }
@@ -75,11 +83,13 @@ class SnapInstallerTest : public testing::Test {
 
   base::expected<mojom::SnapInstallDataPtr, std::string> Prepare(
       const std::string& snap_id,
-      const std::string& version) {
+      const std::string& version,
+      const url::Origin& install_origin = url::Origin()) {
     base::test::TestFuture<
         base::expected<mojom::SnapInstallDataPtr, std::string>>
         future;
-    installer_->PrepareInstall(snap_id, version, future.GetCallback());
+    installer_->PrepareInstall(snap_id, version, install_origin,
+                                future.GetCallback());
     return future.Take();
   }
 
@@ -119,10 +129,49 @@ TEST_F(SnapInstallerTest, PrepareInstallHappyPath) {
   EXPECT_EQ(data->version, "1.0.0");
   EXPECT_GT(data->bundle_size_bytes, 0u);
   ASSERT_TRUE(data->manifest);
-  EXPECT_THAT(data->manifest->permissions, testing::ElementsAre("snap_dialog"));
+  EXPECT_THAT(GetSnapPermissionNames(*data->manifest),
+              testing::ElementsAre("snap_dialog"));
 
   // PrepareInstall does not persist; the registry is still empty.
   EXPECT_FALSE(IsInstalled("npm:test-snap"));
+}
+
+TEST_F(SnapInstallerTest, PrepareInstallResolvesLatestTagToSemver) {
+  const std::string resolved_version = "2.1.0";
+  const std::string bundle = "export const onRpcRequest = () => 42;";
+  TestSnapManifestOptions options;
+  options.shasum = ComputeSnapBundleShasum(bundle);
+  RegisterSnap("npm:test-snap", "latest", bundle, MakeSnapManifestJson(options),
+               "dist/bundle.js", resolved_version);
+
+  auto result = Prepare("npm:test-snap", "");
+  ASSERT_TRUE(result.has_value()) << result.error();
+  EXPECT_EQ(result.value()->version, resolved_version);
+}
+
+TEST_F(SnapInstallerTest, PrepareInstallPopulatesDescriptionAndInstallOrigin) {
+  RegisterValidSnap("npm:test-snap", "1.0.0");
+  const url::Origin origin = url::Origin::Create(GURL("https://dapp.example.com"));
+
+  auto result = Prepare("npm:test-snap", "1.0.0", origin);
+  ASSERT_TRUE(result.has_value()) << result.error();
+  const auto& data = result.value();
+  EXPECT_EQ(data->description, "A snap used in tests");
+  EXPECT_EQ(data->install_origin, "https://dapp.example.com");
+}
+
+TEST_F(SnapInstallerTest, FinishInstallPersistsDescriptionAndInstallOrigin) {
+  RegisterValidSnap("npm:test-snap", "1.0.0");
+  const url::Origin origin = url::Origin::Create(GURL("https://dapp.example.com"));
+  ASSERT_TRUE(Prepare("npm:test-snap", "1.0.0", origin).has_value());
+  ASSERT_TRUE(Finish("npm:test-snap").has_value());
+
+  base::test::TestFuture<mojom::SnapInstallDataPtr> future;
+  data_provider_->GetSnap("npm:test-snap", future.GetCallback());
+  auto snap = future.Take();
+  ASSERT_TRUE(snap);
+  EXPECT_EQ(snap->description, "A snap used in tests");
+  EXPECT_EQ(snap->install_origin, "https://dapp.example.com");
 }
 
 TEST_F(SnapInstallerTest, FinishInstallPersistsBundleAndRegistry) {
@@ -193,7 +242,8 @@ TEST_F(SnapInstallerTest, TarballDownloadFailureFails) {
   const std::string tarball_url =
       "https://registry.npmjs.org/test-snap/-/pkg-1.0.0.tgz";
   url_loader_factory_.AddResponse("https://registry.npmjs.org/test-snap/1.0.0",
-                                  MakeNpmRegistryMetadataJson(tarball_url));
+                                  MakeNpmRegistryMetadataJson(tarball_url, "",
+                                                              "1.0.0"));
   url_loader_factory_.AddResponse(tarball_url, "", net::HTTP_NOT_FOUND);
   auto result = Prepare("npm:test-snap", "1.0.0");
   ASSERT_FALSE(result.has_value());
@@ -204,7 +254,8 @@ TEST_F(SnapInstallerTest, CorruptTarballFails) {
   const std::string tarball_url =
       "https://registry.npmjs.org/test-snap/-/pkg-1.0.0.tgz";
   url_loader_factory_.AddResponse("https://registry.npmjs.org/test-snap/1.0.0",
-                                  MakeNpmRegistryMetadataJson(tarball_url));
+                                  MakeNpmRegistryMetadataJson(tarball_url, "",
+                                                              "1.0.0"));
   url_loader_factory_.AddResponse(tarball_url, "not-a-gzip-tarball");
   auto result = Prepare("npm:test-snap", "1.0.0");
   ASSERT_FALSE(result.has_value());

@@ -102,10 +102,12 @@ std::string BuildSnapTarball(
     const std::string& bundle_js,
     const std::string& bundle_file_path = "dist/bundle.js");
 
-// Builds the registry.npmjs.org metadata JSON SnapInstaller fetches; only the
-// "dist.tarball" field is consumed, but "dist.shasum" is included for realism.
+// Builds the registry.npmjs.org metadata JSON SnapInstaller fetches.
+// "dist.tarball" and top-level "version" are consumed; "dist.shasum" is
+// included for realism.
 std::string MakeNpmRegistryMetadataJson(const std::string& tarball_url,
-                                        const std::string& shasum = "");
+                                        const std::string& shasum = "",
+                                        const std::string& version = "");
 
 // ---------------------------------------------------------------------------
 // FakeSnapBridge — implements the mojom::SnapBridge renderer interface

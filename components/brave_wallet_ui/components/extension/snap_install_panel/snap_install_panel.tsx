@@ -7,7 +7,9 @@ import * as React from 'react'
 import ProgressRing from '@brave/leo/react/progressRing'
 
 import { BraveWallet } from '../../../constants/types'
+import { getSnapManifestForDisplay } from '../../../common/snap/snap_manifest_utils'
 import { useNotifySnapInstallRequestProcessedMutation } from '../../../common/slices/api.slice'
+import { SnapManifestJson } from '../snap_manifest_json/snap_manifest_json'
 
 interface Props {
   pending: BraveWallet.PendingSnapInstall
@@ -18,6 +20,17 @@ function formatBytes(bytes: bigint): string {
   if (n < 1024) return `${n} B`
   if (n < 1024 * 1024) return `${(n / 1024).toFixed(1)} KB`
   return `${(n / (1024 * 1024)).toFixed(1)} MB`
+}
+
+function formatSnapVersion(version: string): string {
+  if (!version || version === 'latest') {
+    return 'Latest'
+  }
+  return version.startsWith('v') ? version : `v${version}`
+}
+
+function formatInstallOrigin(installOrigin: string | undefined): string {
+  return installOrigin || 'Brave Wallet'
 }
 
 export const SnapInstallPanel = ({ pending }: Props) => {
@@ -105,13 +118,14 @@ export const SnapInstallPanel = ({ pending }: Props) => {
   }
 
   const { manifest } = installData
+  const manifestDisplay = getSnapManifestForDisplay(manifest)
 
   return (
     <div style={styles.page}>
       <div style={styles.header}>
         <h2 style={styles.snapName}>{manifest.proposedName}</h2>
         <span style={styles.snapId}>{installData.snapId}</span>
-        <span style={styles.version}>v{installData.version}</span>
+        <span style={styles.version}>{formatSnapVersion(installData.version)}</span>
       </div>
 
       {manifest.description && (
@@ -125,19 +139,17 @@ export const SnapInstallPanel = ({ pending }: Props) => {
         </span>
       </div>
 
-      {manifest.permissions.length > 0 && (
+      <div style={styles.section}>
+        <span style={styles.label}>Install origin</span>
+        <span style={styles.originValue}>
+          {formatInstallOrigin(installData.installOrigin)}
+        </span>
+      </div>
+
+      {manifestDisplay && (
         <div style={styles.section}>
           <span style={styles.label}>Permissions</span>
-          <div style={styles.chips}>
-            {manifest.permissions.map((p: string) => (
-              <span
-                key={p}
-                style={styles.chip}
-              >
-                {p}
-              </span>
-            ))}
-          </div>
+          <SnapManifestJson manifest={manifest} />
         </div>
       )}
 
@@ -221,19 +233,11 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '13px',
     color: '#1d1f25',
   },
-  chips: {
-    display: 'flex',
-    flexWrap: 'wrap',
-    gap: '4px',
-  },
-  chip: {
-    padding: '2px 8px',
-    fontSize: '11px',
-    background: '#f3f4f6',
-    border: '1px solid #e0e2e8',
-    borderRadius: '12px',
-    color: '#374151',
+  originValue: {
+    fontSize: '13px',
+    color: '#1d1f25',
     fontFamily: 'monospace',
+    wordBreak: 'break-all',
   },
   actions: {
     display: 'flex',

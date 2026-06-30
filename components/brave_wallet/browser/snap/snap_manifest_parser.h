@@ -13,8 +13,8 @@
 namespace brave_wallet {
 
 // Parses and validates a snap.manifest.json string.
-// All manifest-specific knowledge lives here: the permissions allowlist,
-// endowment:rpc deserialization, and field extraction.
+// All manifest-specific knowledge lives here: the permissions allowlist and
+// field extraction into typed Snap*Config structs on SnapManifest.
 // On success, |manifest| is a populated mojom::SnapManifestPtr.
 // On failure, |error| is non-empty and |manifest| may be null.
 class SnapManifestParser {

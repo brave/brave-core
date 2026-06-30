@@ -12,13 +12,12 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/raw_ref.h"
+#include "base/memory/weak_ptr.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "url/origin.h"
 
 class PrefRegistrySimple;
 class PrefService;
-
-namespace url {
-class Origin;
-}
 
 namespace brave_wallet {
 
@@ -85,8 +84,22 @@ class SnapPermissionController {
   void PurgeConnectionGrantsForSnap(const std::string& snap_id);
 
  private:
+  void OnOriginAllowedByManifestChecked(
+      url::Origin origin,
+      base::OnceCallback<void(bool)> callback,
+      mojom::SnapInstallDataPtr snap);
+
+  void OnCheckSnapMethodPermissionSnapLoaded(
+      std::string snap_id,
+      std::string method,
+      base::OnceCallback<void(std::optional<std::string>)> callback,
+      mojom::SnapInstallDataPtr snap);
+
   raw_ref<PrefService> prefs_;
   raw_ref<SnapDataProvider> data_provider_;
+
+  mutable base::WeakPtrFactory<SnapPermissionController> weak_ptr_factory_{
+      this};
 };
 
 }  // namespace brave_wallet

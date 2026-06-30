@@ -13,11 +13,16 @@ import {
   useDisconnectSnapOriginMutation,
   useSetSnapEnabledMutation,
 } from '../../../common/slices/api.slice'
+import { getSnapManifestForDisplay } from '../../../common/snap/snap_manifest_utils'
 import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { PanelActions } from '../../../panel/actions'
 
 interface Props {
   snapId: string
+}
+
+function formatInstallOrigin(installOrigin: string | undefined): string {
+  return installOrigin || 'Brave Wallet'
 }
 
 const ConnectedOriginsList = ({ snapId }: { snapId: string }) => {
@@ -134,14 +139,21 @@ export const SnapDetailsPanel = ({ snapId }: Props) => {
           />
         </div>
 
+        <div style={styles.infoSection}>
+          <span style={styles.infoLabel}>Install origin</span>
+          <span style={styles.infoValue}>
+            {formatInstallOrigin(snap.installOrigin)}
+          </span>
+        </div>
+
         <pre style={styles.manifest}>
           {JSON.stringify(
             {
-              snap_id: snap.snapId,
+              snapId: snap.snapId,
               version: snap.version,
-              proposed_name: snap.manifest?.proposedName,
-              permissions: snap.manifest?.permissions,
+              installOrigin: formatInstallOrigin(snap.installOrigin),
               enabled: snap.enabled,
+              manifest: getSnapManifestForDisplay(snap.manifest),
             },
             null,
             2,
@@ -244,6 +256,30 @@ const styles: Record<string, React.CSSProperties> = {
     fontSize: '12px',
     fontWeight: 500,
     color: '#374151',
+  },
+  infoSection: {
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '4px',
+    padding: '8px 10px',
+    background: '#f8f9fa',
+    border: '1px solid #e0e2e8',
+    borderRadius: '4px',
+  },
+  infoLabel: {
+    fontSize: '10px',
+    fontWeight: 600,
+    color: '#6b7280',
+    textTransform: 'uppercase',
+    letterSpacing: '0.05em',
+  },
+  infoValue: {
+    fontSize: '11px',
+    color: '#374151',
+    fontFamily: 'monospace',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'nowrap',
   },
   manifest: {
     margin: 0,

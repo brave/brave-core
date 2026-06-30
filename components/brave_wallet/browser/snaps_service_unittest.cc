@@ -95,7 +95,9 @@ class SnapsServiceTest : public testing::Test {
     url_loader_factory_.AddResponse(
         "https://registry.npmjs.org/" + package + "/" + version,
         MakeNpmRegistryMetadataJson("https://registry.npmjs.org/" + package +
-                                    "/-/pkg.tgz"));
+                                        "/-/pkg.tgz",
+                                    "",
+                                    version));
     url_loader_factory_.AddResponse(
         "https://registry.npmjs.org/" + package + "/-/pkg.tgz",
         BuildSnapTarball(MakeSnapManifestJson(options), bundle,

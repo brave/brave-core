@@ -5,13 +5,13 @@
 
 #include "brave/components/brave_wallet/browser/snap/snap_controller.h"
 
-#include <algorithm>
 #include <map>
 #include <utility>
 
 #include "base/functional/bind.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/snap/execution_environment/snap_bridge_controller.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
 #include "url/origin.h"
@@ -26,15 +26,7 @@ bool IsOriginAllowedBySnapManifest(const url::Origin& origin,
   if (!snap || !snap->manifest) {
     return false;
   }
-  if (snap->manifest->allow_dapps) {
-    return true;
-  }
-  const std::string serialized = origin.Serialize();
-  return std::ranges::any_of(
-      snap->manifest->allowed_rpc_origins,
-      [&serialized](const std::string& allowed_origin) {
-        return allowed_origin == serialized;
-      });
+  return SnapManifestAllowsOrigin(*snap->manifest, origin);
 }
 
 }  // namespace
@@ -287,7 +279,7 @@ void SnapController::OnRequestSnapsLoaded(
       // Missing snaps are installed via the install-approval flow, which is the
       // user's consent to the connection.
       install_snap_delegate_.Run(
-          item.snap_id, item.version,
+          origin, item.snap_id, item.version,
           base::BindOnce(&SnapController::OnSingleSnapInstalled,
                          weak_ptr_factory_.GetWeakPtr(), state, item.snap_id));
     } else if (permission_controller_->IsSnapConnected(origin, item.snap_id)) {

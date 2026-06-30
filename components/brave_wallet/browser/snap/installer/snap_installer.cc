@@ -23,6 +23,7 @@
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "url/origin.h"
 
 namespace brave_wallet {
 
@@ -104,6 +105,7 @@ SnapInstaller::~SnapInstaller() = default;
 
 void SnapInstaller::PrepareInstall(const std::string& snap_id,
                                    const std::string& version,
+                                   const url::Origin& install_origin,
                                    PrepareCallback callback) {
   if (prepared_installs_.count(snap_id)) {
     std::move(callback).Run(base::unexpected("already_preparing"));
@@ -113,6 +115,8 @@ void SnapInstaller::PrepareInstall(const std::string& snap_id,
   auto ctx = std::make_unique<InstallContext>();
   ctx->snap_id = snap_id;
   ctx->version = version.empty() ? "latest" : version;
+  ctx->install_origin =
+      install_origin.opaque() ? std::string() : install_origin.Serialize();
   ctx->prepare_callback = std::move(callback);
 
   FetchMetadata(std::move(ctx));
@@ -194,6 +198,12 @@ void SnapInstaller::OnMetadataFetched(std::unique_ptr<InstallContext> ctx,
     LOG(ERROR) << "XXXZZZ OnMetadataFetched: JSON parse FAILED";
     FailInstall(std::move(ctx), "Invalid snap metadata JSON");
     return;
+  }
+
+  if (const std::string* resolved_version =
+          parsed->GetDict().FindString("version");
+      resolved_version && !resolved_version->empty()) {
+    ctx->version = *resolved_version;
   }
 
   const base::DictValue* dist = parsed->GetDict().FindDict("dist");
@@ -302,6 +312,8 @@ void SnapInstaller::OnBundleExtracted(std::unique_ptr<InstallContext> ctx,
     install_data->version = ctx->version;
     install_data->bundle_size_bytes = ctx->bundle_size_bytes;
     install_data->manifest = ctx->snap_manifest.Clone();
+    install_data->description = ctx->snap_manifest->description;
+    install_data->install_origin = ctx->install_origin;
     install_data->enabled = true;
 
     std::string snap_id = ctx->snap_id;
@@ -334,6 +346,8 @@ void SnapInstaller::OnBundleSaved(std::unique_ptr<InstallContext> ctx,
   install_data->version = ctx->version;
   install_data->bundle_size_bytes = ctx->bundle_size_bytes;
   install_data->manifest = ctx->snap_manifest.Clone();
+  install_data->description = ctx->snap_manifest->description;
+  install_data->install_origin = ctx->install_origin;
   install_data->enabled = true;
   data_provider_->OnSnapInstalled(
       *install_data,

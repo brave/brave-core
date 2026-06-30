@@ -11,7 +11,7 @@ import { useAppDispatch } from '../../../common/hooks/use-redux'
 import { PanelActions } from '../../../panel/actions'
 
 const hasPageHomePermission = (snap: BraveWallet.SnapInstallData) =>
-  snap.manifest?.permissions?.includes('endowment:page-home') ?? false
+  snap.manifest?.pageHome != null
 
 export const SnapsListPanel = () => {
   const dispatch = useAppDispatch()

@@ -51,7 +51,8 @@ class SnapController {
   using InstallSnapResultCallback =
       base::OnceCallback<void(base::expected<void, std::string>)>;
   using InstallSnapDelegate =
-      base::RepeatingCallback<void(std::string snap_id,
+      base::RepeatingCallback<void(url::Origin origin,
+                                   std::string snap_id,
                                    std::string version,
                                    InstallSnapResultCallback callback)>;
 

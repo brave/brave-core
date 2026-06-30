@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_wallet/browser/snaps_service.h"
 
-#include <algorithm>
 #include <memory>
 #include <utility>
 
@@ -22,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/snap/execution_environment/wallet_page_snap_bridge_controller.h"
 #include "brave/components/brave_wallet/browser/snap/installer/snap_installer.h"
 #include "brave/components/brave_wallet/browser/snap/snap_controller.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "brave/components/brave_wallet/browser/snap/snap_permission_controller.h"
 #include "brave/components/brave_wallet/browser/snap/snap_request_handler_impl.h"
 #include "brave/components/brave_wallet/browser/snap/storage/snap_data_provider.h"
@@ -42,15 +42,7 @@ bool IsOriginAllowedBySnapManifest(const url::Origin& origin,
   if (!snap || !snap->manifest) {
     return false;
   }
-  if (snap->manifest->allow_dapps) {
-    return true;
-  }
-  const std::string serialized = origin.Serialize();
-  return std::ranges::any_of(
-      snap->manifest->allowed_rpc_origins,
-      [&serialized](const std::string& allowed_origin) {
-        return allowed_origin == serialized;
-      });
+  return SnapManifestAllowsOrigin(*snap->manifest, origin);
 }
 
 }  // namespace
@@ -88,7 +80,8 @@ SnapsService::SnapsService(
           std::make_unique<SnapRequestHandlerImpl>(keyring_service,
                                                    *data_provider_,
                                                    *permission_controller_)) {
-  using InstallSnapFn = void (SnapsService::*)(std::string, std::string,
+  using InstallSnapFn = void (SnapsService::*)(url::Origin, std::string,
+                                               std::string,
                                                SnapInstaller::InstallCallback);
   snap_controller_->SetInstallSnapDelegate(base::BindRepeating(
       static_cast<InstallSnapFn>(&SnapsService::InstallSnap),
@@ -234,7 +227,7 @@ void SnapsService::InstallSnap(const std::string& snap_id,
                                const std::string& version,
                                InstallSnapCallback callback) {
   InstallSnap(
-      snap_id, version,
+      url::Origin(), snap_id, version,
       base::BindOnce(&SnapsService::OnInstallSnapResult,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -336,7 +329,7 @@ void SnapsService::RequestInstallSnap(const std::string& snap_id,
   std::move(callback).Run(true, std::nullopt);
 
   snap_installer_->PrepareInstall(
-      normalized_id, version,
+      normalized_id, version, url::Origin(),
       base::BindOnce(&SnapsService::OnPrepareInstallResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -441,7 +434,8 @@ void SnapsService::OnSnapFinishInstalled(
   ProcessNextSnapInstallation();
 }
 
-void SnapsService::InstallSnap(std::string snap_id,
+void SnapsService::InstallSnap(url::Origin install_origin,
+                               std::string snap_id,
                                std::string version,
                                SnapInstaller::InstallCallback callback) {
   LOG(ERROR) << "XXXZZZ InstallSnap(delegate) snap_id=" << snap_id
@@ -449,12 +443,15 @@ void SnapsService::InstallSnap(std::string snap_id,
              << " queue_size=" << snap_install_queue_.size()
              << " state=" << static_cast<int>(pending_snap_state_);
   data_provider_->IsInstalled(
-      snap_id, base::BindOnce(&SnapsService::OnIsInstalledForDelegate,
-                              weak_ptr_factory_.GetWeakPtr(), std::move(snap_id),
-                              std::move(version), std::move(callback)));
+      snap_id,
+      base::BindOnce(&SnapsService::OnIsInstalledForDelegate,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(install_origin),
+                     std::move(snap_id), std::move(version),
+                     std::move(callback)));
 }
 
 void SnapsService::OnIsInstalledForDelegate(
+    url::Origin install_origin,
     std::string snap_id,
     std::string version,
     SnapInstaller::InstallCallback callback,
@@ -466,6 +463,7 @@ void SnapsService::OnIsInstalledForDelegate(
   PendingSnapInstallItem item;
   item.snap_id = std::move(snap_id);
   item.version = std::move(version);
+  item.install_origin = std::move(install_origin);
   item.callback = std::move(callback);
   snap_install_queue_.push(std::move(item));
   if (pending_snap_state_ == mojom::SnapInstallState::kIdle) {
@@ -489,7 +487,7 @@ void SnapsService::ProcessNextSnapInstallation() {
   pending_install_callback_ = std::move(item.callback);
   SetSnapInstallState(mojom::SnapInstallState::kInstalling, nullptr, "");
   snap_installer_->PrepareInstall(
-      item.snap_id, item.version,
+      item.snap_id, item.version, item.install_origin,
       base::BindOnce(&SnapsService::OnPrepareInstallResult,
                      weak_ptr_factory_.GetWeakPtr()));
 }

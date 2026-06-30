@@ -20,6 +20,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -68,6 +69,7 @@ class SnapInstaller {
   // snap_id. On failure |result.error| is non-empty.
   void PrepareInstall(const std::string& snap_id,
                       const std::string& version,
+                      const url::Origin& install_origin,
                       PrepareCallback callback);
 
   // Phase 2 — persist the prepared bundle to disk and update PrefService via
@@ -110,6 +112,7 @@ class SnapInstaller {
 
     std::string snap_id;
     std::string version;
+    std::string install_origin;
     GURL tarball_url;
     mojom::SnapManifestPtr snap_manifest;  // populated by OnBundleExtracted
     uint64_t bundle_size_bytes = 0;

@@ -14,6 +14,7 @@
 #include "base/check_op.h"
 #include "base/containers/span.h"
 #include "base/json/json_writer.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "crypto/hash.h"
 #include "third_party/zlib/google/compression_utils.h"
 
@@ -136,10 +137,56 @@ mojom::SnapManifestPtr MakeTestSnapManifest(
   auto manifest = mojom::SnapManifest::New();
   manifest->proposed_name = "Test Snap";
   manifest->description = "A snap used in tests";
-  manifest->permissions = std::move(permissions);
-  manifest->allow_dapps = allow_dapps;
-  manifest->allow_snaps = false;
-  manifest->allowed_rpc_origins = std::move(allowed_rpc_origins);
+  for (const auto& perm : permissions) {
+    if (perm == "endowment:rpc") {
+      auto rpc = mojom::SnapRpcConfig::New();
+      rpc->allow_dapps = allow_dapps;
+      rpc->allow_snaps = false;
+      rpc->allowed_origins = std::move(allowed_rpc_origins);
+      manifest->rpc = std::move(rpc);
+    } else if (perm == "snap_dialog" || perm == "snap_confirm") {
+      manifest->dialog = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:network-access") {
+      manifest->network_access = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:ethereum-provider") {
+      manifest->ethereum_provider = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:webassembly") {
+      manifest->webassembly = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:page-home") {
+      manifest->page_home = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:lifecycle-hooks") {
+      manifest->lifecycle_hooks = mojom::SnapSimpleConfig::New();
+    } else if (perm == "endowment:cronjob") {
+      manifest->cronjob = mojom::SnapCronjobConfig::New();
+    } else if (perm == "endowment:transaction-insight") {
+      manifest->transaction_insight = mojom::SnapBoolConfig::New();
+    } else if (perm == "endowment:signature-insight") {
+      manifest->signature_insight = mojom::SnapBoolConfig::New();
+    } else if (perm == "endowment:keyring") {
+      manifest->keyring = mojom::SnapKeyringConfig::New();
+    } else if (perm == "endowment:name-lookup") {
+      manifest->name_lookup = mojom::SnapNameLookupConfig::New();
+    } else if (perm == "snap_getBip44Entropy") {
+      manifest->bip44_entropy = mojom::SnapBip44EntropyConfig::New();
+    } else if (perm == "snap_getBip32Entropy") {
+      manifest->bip32_entropy = mojom::SnapBip32EntropyConfig::New();
+    } else if (perm == "snap_getEntropy") {
+      manifest->get_entropy = mojom::SnapSimpleConfig::New();
+    } else if (perm == "snap_notify") {
+      manifest->notify = mojom::SnapSimpleConfig::New();
+    } else if (perm == "snap_manageState") {
+      manifest->manage_state = mojom::SnapSimpleConfig::New();
+    }
+  }
+  // Test helper compatibility: |allow_dapps| and |allowed_rpc_origins| apply
+  // even when "endowment:rpc" is not explicitly listed in |permissions|.
+  if (!manifest->rpc && (allow_dapps || !allowed_rpc_origins.empty())) {
+    auto rpc = mojom::SnapRpcConfig::New();
+    rpc->allow_dapps = allow_dapps;
+    rpc->allow_snaps = false;
+    rpc->allowed_origins = std::move(allowed_rpc_origins);
+    manifest->rpc = std::move(rpc);
+  }
   return manifest;
 }
 
@@ -151,6 +198,7 @@ mojom::SnapInstallDataPtr MakeTestSnapInstallData(const std::string& snap_id,
   data->bundle_size_bytes = 1024;
   data->icon_svg = "";
   data->manifest = MakeTestSnapManifest();
+  data->description = data->manifest->description;
   data->enabled = true;
   return data;
 }
@@ -212,7 +260,8 @@ std::string BuildSnapTarball(const std::string& manifest_json,
 }
 
 std::string MakeNpmRegistryMetadataJson(const std::string& tarball_url,
-                                        const std::string& shasum) {
+                                        const std::string& shasum,
+                                        const std::string& version) {
   base::DictValue dist;
   dist.Set("tarball", tarball_url);
   if (!shasum.empty()) {
@@ -220,6 +269,9 @@ std::string MakeNpmRegistryMetadataJson(const std::string& tarball_url,
   }
   base::DictValue root;
   root.Set("dist", std::move(dist));
+  if (!version.empty()) {
+    root.Set("version", version);
+  }
   return base::WriteJson(root).value_or("{}");
 }
 

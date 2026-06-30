@@ -177,16 +177,17 @@ TEST_F(SnapRequestHandlerImplTest, NotifyReturnsNoResultNoError) {
 }
 
 TEST_F(SnapRequestHandlerImplTest, UnsupportedMethodRejected) {
-  // The snap declares the permission so the call passes the permission gate but
-  // falls through to the unsupported-method branch.
-  InstallSnap(kSnapId, {"custom_method"});
+  // snap_getBip32Entropy is declared in the manifest but not implemented in the
+  // handler, so the permission gate passes and the unsupported-method branch
+  // runs.
+  InstallSnap(kSnapId, {"snap_getBip32Entropy"});
   ReqFuture future;
   handler_->HandleSnapRequest(
-      kSnapId, "custom_method", base::Value(),
+      kSnapId, "snap_getBip32Entropy", base::Value(),
       future.GetCallback<std::optional<base::Value>,
                          const std::optional<std::string>&>());
   EXPECT_FALSE(future.Get<0>());
-  EXPECT_EQ(future.Get<1>(), "Unsupported snap method: custom_method");
+  EXPECT_EQ(future.Get<1>(), "Unsupported snap method: snap_getBip32Entropy");
 }
 
 TEST_F(SnapRequestHandlerImplTest, GetEntropyParamsMustBeDict) {

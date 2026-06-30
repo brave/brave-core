@@ -7,6 +7,7 @@
 
 #include <string>
 
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "brave/components/brave_wallet/browser/snap/snap_test_utils.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -29,9 +30,8 @@ TEST(SnapManifestParserTest, ParsesValidManifest) {
   EXPECT_EQ(result.manifest->proposed_name, "Test Snap");
   EXPECT_EQ(result.manifest->description, "A snap used in tests");
   EXPECT_EQ(result.expected_shasum, "abc123");
-  EXPECT_THAT(result.manifest->permissions,
-              testing::ElementsAre("snap_dialog"));
-  EXPECT_FALSE(result.manifest->allow_dapps);
+  EXPECT_TRUE(result.manifest->dialog);
+  EXPECT_FALSE(result.manifest->rpc);
 }
 
 TEST(SnapManifestParserTest, ProposedNameFallsBackToSnapId) {
@@ -85,28 +85,43 @@ TEST(SnapManifestParserTest, DisallowedPermissionFails) {
 TEST(SnapManifestParserTest, AllAllowedPermissionsAccepted) {
   TestSnapManifestOptions options;
   options.permissions = {"snap_getBip44Entropy",
-                         "snap_getBip32Entropy",
-                         "snap_getEntropy",
-                         "snap_dialog",
-                         "snap_confirm",
-                         "snap_notify",
-                         "snap_manageState",
-                         "endowment:network-access",
-                         "endowment:rpc",
-                         "endowment:webassembly",
-                         "endowment:page-home",
-                         "endowment:lifecycle-hooks",
-                         "endowment:cronjob",
-                         "endowment:transaction-insight",
-                         "endowment:signature-insight",
-                         "endowment:ethereum-provider",
-                         "endowment:name-lookup"};
-  options.include_rpc_endowment = true;  // Emit the endowment:rpc config block.
+                           "snap_getBip32Entropy",
+                           "snap_getEntropy",
+                           "snap_dialog",
+                           "snap_confirm",
+                           "snap_notify",
+                           "snap_manageState",
+                           "endowment:network-access",
+                           "endowment:rpc",
+                           "endowment:webassembly",
+                           "endowment:page-home",
+                           "endowment:lifecycle-hooks",
+                           "endowment:cronjob",
+                           "endowment:transaction-insight",
+                           "endowment:signature-insight",
+                           "endowment:ethereum-provider",
+                           "endowment:name-lookup"};
+  options.include_rpc_endowment = true;
   auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options),
                                           kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.error.empty());
-  EXPECT_EQ(result.manifest->permissions.size(), 17u);
+  EXPECT_TRUE(result.manifest->bip44_entropy);
+  EXPECT_TRUE(result.manifest->bip32_entropy);
+  EXPECT_TRUE(result.manifest->get_entropy);
+  EXPECT_TRUE(result.manifest->dialog);
+  EXPECT_TRUE(result.manifest->notify);
+  EXPECT_TRUE(result.manifest->manage_state);
+  EXPECT_TRUE(result.manifest->network_access);
+  EXPECT_TRUE(result.manifest->rpc);
+  EXPECT_TRUE(result.manifest->webassembly);
+  EXPECT_TRUE(result.manifest->page_home);
+  EXPECT_TRUE(result.manifest->lifecycle_hooks);
+  EXPECT_TRUE(result.manifest->cronjob);
+  EXPECT_TRUE(result.manifest->transaction_insight);
+  EXPECT_TRUE(result.manifest->signature_insight);
+  EXPECT_TRUE(result.manifest->ethereum_provider);
+  EXPECT_TRUE(result.manifest->name_lookup);
 }
 
 TEST(SnapManifestParserTest, EndowmentNameLookupParsed) {
@@ -125,31 +140,27 @@ TEST(SnapManifestParserTest, EndowmentNameLookupParsed) {
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.error.empty());
-  EXPECT_THAT(result.manifest->permissions,
-              testing::ElementsAre("endowment:name-lookup"));
-  EXPECT_THAT(result.manifest->name_lookup_chains,
+  ASSERT_TRUE(result.manifest->name_lookup);
+  EXPECT_THAT(result.manifest->name_lookup->chains,
               testing::ElementsAre("eip155:1",
                                    "bip122:000000000019d6689c085ae165831e93"));
-  EXPECT_THAT(result.manifest->name_lookup_tlds,
+  ASSERT_TRUE(result.manifest->name_lookup->matchers);
+  EXPECT_THAT(result.manifest->name_lookup->matchers->tlds,
               testing::ElementsAre("crypto", "eth"));
-  EXPECT_THAT(result.manifest->name_lookup_schemes,
+  EXPECT_THAT(result.manifest->name_lookup->matchers->schemes,
               testing::ElementsAre("farcaster"));
 }
 
 TEST(SnapManifestParserTest, EndowmentNameLookupEmptyConfigParsesNoMatchers) {
-  // "endowment:name-lookup": {} grants the endowment with no chain/matcher
-  // filtering: the permission is present but every config list is empty.
   static constexpr char kJson[] = R"({
     "source": {"shasum": "s"},
     "initialPermissions": {"endowment:name-lookup": {}}
   })";
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
-  EXPECT_THAT(result.manifest->permissions,
-              testing::ElementsAre("endowment:name-lookup"));
-  EXPECT_TRUE(result.manifest->name_lookup_chains.empty());
-  EXPECT_TRUE(result.manifest->name_lookup_tlds.empty());
-  EXPECT_TRUE(result.manifest->name_lookup_schemes.empty());
+  ASSERT_TRUE(result.manifest->name_lookup);
+  EXPECT_TRUE(result.manifest->name_lookup->chains.empty());
+  EXPECT_FALSE(result.manifest->name_lookup->matchers);
 }
 
 TEST(SnapManifestParserTest, EndowmentRpcParsed) {
@@ -163,11 +174,12 @@ TEST(SnapManifestParserTest, EndowmentRpcParsed) {
   auto result = SnapManifestParser::Parse(MakeSnapManifestJson(options),
                                           kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
-  EXPECT_TRUE(result.manifest->allow_dapps);
-  EXPECT_TRUE(result.manifest->allow_snaps);
-  EXPECT_THAT(
-      result.manifest->allowed_rpc_origins,
-      testing::ElementsAre("https://a.example.com", "https://b.example.com"));
+  ASSERT_TRUE(result.manifest->rpc);
+  EXPECT_TRUE(result.manifest->rpc->allow_dapps);
+  EXPECT_TRUE(result.manifest->rpc->allow_snaps);
+  EXPECT_THAT(result.manifest->rpc->allowed_origins,
+              testing::ElementsAre("https://a.example.com",
+                                   "https://b.example.com"));
 }
 
 TEST(SnapManifestParserTest, EndowmentRpcMissingFieldsDefault) {
@@ -177,9 +189,10 @@ TEST(SnapManifestParserTest, EndowmentRpcMissingFieldsDefault) {
   })";
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
-  EXPECT_FALSE(result.manifest->allow_dapps);
-  EXPECT_FALSE(result.manifest->allow_snaps);
-  EXPECT_TRUE(result.manifest->allowed_rpc_origins.empty());
+  ASSERT_TRUE(result.manifest->rpc);
+  EXPECT_FALSE(result.manifest->rpc->allow_dapps);
+  EXPECT_FALSE(result.manifest->rpc->allow_snaps);
+  EXPECT_TRUE(result.manifest->rpc->allowed_origins.empty());
 }
 
 TEST(SnapManifestParserTest, EndowmentRpcNonDictIgnored) {
@@ -189,9 +202,46 @@ TEST(SnapManifestParserTest, EndowmentRpcNonDictIgnored) {
   })";
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
-  EXPECT_FALSE(result.manifest->allow_dapps);
-  EXPECT_THAT(result.manifest->permissions,
-              testing::ElementsAre("endowment:rpc"));
+  ASSERT_TRUE(result.manifest->rpc);
+  EXPECT_FALSE(result.manifest->rpc->allow_dapps);
+}
+
+TEST(SnapManifestParserTest, Bip44EntropyParsed) {
+  static constexpr char kJson[] = R"({
+    "source": {"shasum": "s"},
+    "initialPermissions": {
+      "snap_getBip44Entropy": [{ "coinType": 501 }, { "coinType": 0 }]
+    }
+  })";
+  auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
+  ASSERT_TRUE(result.manifest);
+  ASSERT_TRUE(result.manifest->bip44_entropy);
+  ASSERT_EQ(result.manifest->bip44_entropy->entries.size(), 2u);
+  EXPECT_EQ(result.manifest->bip44_entropy->entries[0]->coin_type, 501);
+  EXPECT_EQ(result.manifest->bip44_entropy->entries[1]->coin_type, 0);
+}
+
+TEST(SnapManifestParserTest, MaxRequestTimeParsed) {
+  static constexpr char kJson[] = R"({
+    "source": {"shasum": "s"},
+    "initialPermissions": {
+      "endowment:rpc": {
+        "dapps": true,
+        "maxRequestTime": 120000
+      },
+      "endowment:page-home": {
+        "maxRequestTime": 15000
+      }
+    }
+  })";
+  auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
+  ASSERT_TRUE(result.manifest);
+  ASSERT_TRUE(result.manifest->rpc);
+  ASSERT_TRUE(result.manifest->rpc->max_request_time);
+  EXPECT_EQ(*result.manifest->rpc->max_request_time, 120000);
+  ASSERT_TRUE(result.manifest->page_home);
+  ASSERT_TRUE(result.manifest->page_home->max_request_time);
+  EXPECT_EQ(*result.manifest->page_home->max_request_time, 15000);
 }
 
 TEST(SnapManifestParserTest, EmptyInitialPermissions) {
@@ -201,7 +251,7 @@ TEST(SnapManifestParserTest, EmptyInitialPermissions) {
   })";
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
-  EXPECT_TRUE(result.manifest->permissions.empty());
+  EXPECT_TRUE(GetSnapPermissionNames(*result.manifest).empty());
 }
 
 TEST(SnapManifestParserTest, AbsentInitialPermissions) {
@@ -209,7 +259,7 @@ TEST(SnapManifestParserTest, AbsentInitialPermissions) {
   auto result = SnapManifestParser::Parse(kJson, kSnapId, kVersion);
   ASSERT_TRUE(result.manifest);
   EXPECT_TRUE(result.error.empty());
-  EXPECT_TRUE(result.manifest->permissions.empty());
+  EXPECT_TRUE(GetSnapPermissionNames(*result.manifest).empty());
 }
 
 }  // namespace brave_wallet

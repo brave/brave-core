@@ -27,6 +27,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "url/origin.h"
 
 namespace content {
 class BrowserContext;
@@ -37,10 +38,6 @@ class SharedURLLoaderFactory;
 }
 
 class PrefService;
-
-namespace url {
-class Origin;
-}
 
 namespace brave_wallet {
 
@@ -172,7 +169,8 @@ class SnapsService : public mojom::SnapsService {
   void OnGetSnapsForOrigin(url::Origin origin,
                            GetSnapsForOriginCallback callback,
                            std::vector<mojom::SnapInstallDataPtr> snaps);
-  void OnIsInstalledForDelegate(std::string snap_id,
+  void OnIsInstalledForDelegate(url::Origin install_origin,
+                                std::string snap_id,
                                 std::string version,
                                 SnapInstaller::InstallCallback callback,
                                 bool installed);
@@ -186,7 +184,8 @@ class SnapsService : public mojom::SnapsService {
 
   // Routes through PrepareInstall → kPendingApproval → FinishInstall.
   // Queued when an install is already in flight.
-  void InstallSnap(std::string snap_id,
+  void InstallSnap(url::Origin install_origin,
+                   std::string snap_id,
                    std::string version,
                    SnapInstaller::InstallCallback callback);
   void ProcessNextSnapInstallation();
@@ -234,6 +233,7 @@ class SnapsService : public mojom::SnapsService {
 
     std::string snap_id;
     std::string version;
+    url::Origin install_origin;
     SnapInstaller::InstallCallback callback;
   };
   std::queue<PendingSnapInstallItem> snap_install_queue_;

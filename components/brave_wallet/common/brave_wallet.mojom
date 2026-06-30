@@ -2945,20 +2945,108 @@ struct AddSuggestTokenRequest {
 };
 
 // Parsed content of snap.manifest.json.
+// Each optional field corresponds to one requested permission; non-null means
+// the snap declared that permission in initialPermissions.
+
+// Flag-only permissions: presence is the signal; the only caveat is the
+// optional timeout. Used by endowment:network-access, endowment:ethereum-provider,
+// endowment:webassembly, endowment:lifecycle-hooks, endowment:page-home,
+// snap_getEntropy, snap_dialog (snap_confirm alias), snap_notify, snap_manageState.
+struct SnapSimpleConfig {
+  int32? max_request_time;
+};
+
+// endowment:rpc
+struct SnapRpcConfig {
+  bool allow_dapps;
+  bool allow_snaps;
+  array<string> allowed_origins;
+  int32? max_request_time;
+};
+
+// endowment:name-lookup
+struct SnapNameLookupMatchers {
+  array<string> tlds;
+  array<string> schemes;
+};
+
+struct SnapNameLookupConfig {
+  array<string> chains;
+  SnapNameLookupMatchers? matchers;
+  int32? max_request_time;
+};
+
+// endowment:cronjob
+struct SnapCronjobRequest {
+  string method;
+  mojo_base.mojom.Value? params;
+};
+
+struct SnapCronjob {
+  string expression;
+  SnapCronjobRequest request;
+};
+
+struct SnapCronjobConfig {
+  array<SnapCronjob> jobs;
+  int32? max_request_time;
+};
+
+// endowment:transaction-insight (allowTransactionOrigin) and
+// endowment:signature-insight (allowSignatureOrigin).
+struct SnapBoolConfig {
+  bool value;
+  int32? max_request_time;
+};
+
+// endowment:keyring
+struct SnapKeyringConfig {
+  array<string> allowed_origins;
+  int32? max_request_time;
+};
+
+// snap_getBip44Entropy / snap_getBip32Entropy (manifest value is a JSON array).
+struct SnapBip44Entropy {
+  int32 coin_type;
+};
+
+struct SnapBip32Entropy {
+  array<string> path;
+  string curve;
+};
+
+struct SnapBip44EntropyConfig {
+  array<SnapBip44Entropy> entries;
+};
+
+struct SnapBip32EntropyConfig {
+  array<SnapBip32Entropy> entries;
+};
+
 struct SnapManifest {
   string proposed_name;
   string description;
-  array<string> permissions;
-  bool allow_dapps;
-  bool allow_snaps;
-  array<string> allowed_rpc_origins;
-  // endowment:name-lookup config. Only meaningful when "endowment:name-lookup"
-  // is present in |permissions|. All three are optional: empty |chains| means
-  // the snap resolves on any chain, and empty matcher lists mean the snap is
-  // consulted for any input (no tld/scheme filtering).
-  array<string> name_lookup_chains;  // CAIP-2 chain ids, e.g. "eip155:1".
-  array<string> name_lookup_tlds;  // matchers.tlds, e.g. "crypto".
-  array<string> name_lookup_schemes;  // matchers.schemes, e.g. "farcaster".
+
+  // Endowments (endowment:*).
+  SnapSimpleConfig? network_access;
+  SnapRpcConfig? rpc;
+  SnapSimpleConfig? ethereum_provider;
+  SnapCronjobConfig? cronjob;
+  SnapBoolConfig? transaction_insight;
+  SnapBoolConfig? signature_insight;
+  SnapKeyringConfig? keyring;
+  SnapNameLookupConfig? name_lookup;
+  SnapSimpleConfig? page_home;
+  SnapSimpleConfig? lifecycle_hooks;
+  SnapSimpleConfig? webassembly;
+
+  // Wallet RPC permissions (snap_*).
+  SnapBip44EntropyConfig? bip44_entropy;
+  SnapBip32EntropyConfig? bip32_entropy;
+  SnapSimpleConfig? get_entropy;
+  SnapSimpleConfig? dialog;
+  SnapSimpleConfig? notify;
+  SnapSimpleConfig? manage_state;
 };
 
 // Unified snap metadata: installer-level fields (bundle_size_bytes, icon_svg)
@@ -2971,6 +3059,10 @@ struct SnapInstallData {
   string icon_svg;  // empty when absent
   SnapManifest manifest;
   bool enabled = true;
+  // Mirror of manifest.description for convenience at the install-data level.
+  string description;
+  // Serialized requesting dApp origin; empty for wallet UI / Snaps Store installs.
+  string install_origin;
 };
 
 enum SnapInstallState {

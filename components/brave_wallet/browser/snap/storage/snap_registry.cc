@@ -5,10 +5,9 @@
 
 #include "brave/components/brave_wallet/browser/snap/storage/snap_registry.h"
 
-#include <string_view>
-
 #include "base/time/time.h"
 #include "base/values.h"
+#include "brave/components/brave_wallet/browser/snap/snap_manifest_helpers.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -19,85 +18,36 @@ namespace {
 
 constexpr char kInstalledSnapsPref[] = "brave.wallet.installed_snaps";
 
-base::ListValue StringVectorToList(const std::vector<std::string>& items) {
-  base::ListValue list;
-  for (const auto& item : items) {
-    list.Append(item);
-  }
-  return list;
-}
-
-// Appends the string elements of |list_name| within |dict| to |out|.
-void ReadStringList(const base::DictValue& dict,
-                    std::string_view list_name,
-                    std::vector<std::string>& out) {
-  const base::ListValue* list = dict.FindList(list_name);
-  if (!list) {
-    return;
-  }
-  for (const auto& item : *list) {
-    if (item.is_string()) {
-      out.push_back(item.GetString());
-    }
-  }
-}
-
 // Serializes mojom::SnapManifest fields into a pref sub-dict.
 base::DictValue ManifestToDict(const mojom::SnapManifest& manifest) {
-  base::DictValue dict;
-  dict.Set("proposed_name", manifest.proposed_name);
-  dict.Set("description", manifest.description);
-  dict.Set("permissions", StringVectorToList(manifest.permissions));
-
-  base::DictValue rpc;
-  rpc.Set("dapps", manifest.allow_dapps);
-  rpc.Set("snaps", manifest.allow_snaps);
-  rpc.Set("allowedOrigins", StringVectorToList(manifest.allowed_rpc_origins));
-  dict.Set("rpc", std::move(rpc));
-
-  base::DictValue name_lookup;
-  name_lookup.Set("chains", StringVectorToList(manifest.name_lookup_chains));
-  name_lookup.Set("tlds", StringVectorToList(manifest.name_lookup_tlds));
-  name_lookup.Set("schemes", StringVectorToList(manifest.name_lookup_schemes));
-  dict.Set("nameLookup", std::move(name_lookup));
-  return dict;
+  return SnapManifestToValue(manifest);
 }
 
 // Reads a SnapInstallData from a single snap pref entry (outer dict keyed by
 // snap_id).
 mojom::SnapInstallDataPtr SnapFromPref(const std::string& snap_id,
                                        const base::DictValue& outer) {
+  const std::string* version = outer.FindString("version");
+  const std::optional<double> bundle_size_bytes =
+      outer.FindDouble("bundle_size_bytes");
+  const std::optional<bool> enabled = outer.FindBool("enabled");
+  const std::string* install_origin = outer.FindString("install_origin");
+  const base::DictValue* manifest_dict = outer.FindDict("manifest");
+  const std::string* description = outer.FindString("description");
+  if (!version || !bundle_size_bytes || !enabled || !install_origin ||
+      !manifest_dict || !description) {
+    return nullptr;
+  }
+
   auto install_data = mojom::SnapInstallData::New();
   install_data->snap_id = snap_id;
-  install_data->version = outer.FindString("version")
-                              ? *outer.FindString("version")
-                              : std::string();
+  install_data->version = *version;
   install_data->bundle_size_bytes =
-      static_cast<uint64_t>(outer.FindDouble("bundle_size_bytes").value_or(0));
-  install_data->enabled = outer.FindBool("enabled").value_or(true);
-
-  auto manifest = mojom::SnapManifest::New();
-  const base::DictValue* m = outer.FindDict("manifest");
-  if (m) {
-    if (const std::string* v = m->FindString("proposed_name")) {
-      manifest->proposed_name = *v;
-    }
-    if (const std::string* v = m->FindString("description")) {
-      manifest->description = *v;
-    }
-    ReadStringList(*m, "permissions", manifest->permissions);
-    if (const base::DictValue* rpc = m->FindDict("rpc")) {
-      manifest->allow_dapps = rpc->FindBool("dapps").value_or(false);
-      manifest->allow_snaps = rpc->FindBool("snaps").value_or(false);
-      ReadStringList(*rpc, "allowedOrigins", manifest->allowed_rpc_origins);
-    }
-    if (const base::DictValue* nl = m->FindDict("nameLookup")) {
-      ReadStringList(*nl, "chains", manifest->name_lookup_chains);
-      ReadStringList(*nl, "tlds", manifest->name_lookup_tlds);
-      ReadStringList(*nl, "schemes", manifest->name_lookup_schemes);
-    }
-  }
-  install_data->manifest = std::move(manifest);
+      static_cast<uint64_t>(*bundle_size_bytes);
+  install_data->enabled = *enabled;
+  install_data->install_origin = *install_origin;
+  install_data->manifest = SnapManifestFromValue(*manifest_dict);
+  install_data->description = *description;
   return install_data;
 }
 
@@ -118,8 +68,12 @@ void SnapRegistry::EnsureInstalledSnapsLoaded() const {
   }
   const base::DictValue& all = prefs_->GetDict(kInstalledSnapsPref);
   for (const auto [snap_id, value] : all) {
-    if (value.is_dict()) {
-      installed_snaps_[snap_id] = SnapFromPref(snap_id, value.GetDict());
+    if (!value.is_dict()) {
+      continue;
+    }
+    mojom::SnapInstallDataPtr snap = SnapFromPref(snap_id, value.GetDict());
+    if (snap) {
+      installed_snaps_[snap_id] = std::move(snap);
     }
   }
 }
@@ -173,6 +127,8 @@ void SnapRegistry::RegisterInstalledSnap(
     snap_info.Set("bundle_size_bytes",
                   static_cast<double>(install_data.bundle_size_bytes));
     snap_info.Set("manifest", ManifestToDict(*install_data.manifest));
+    snap_info.Set("description", install_data.description);
+    snap_info.Set("install_origin", install_data.install_origin);
     snap_info.Set("installed_at", base::Time::Now().InSecondsFSinceUnixEpoch());
     snap_info.Set("enabled", enabled);
     update->Set(install_data.snap_id, std::move(snap_info));

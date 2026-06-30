@@ -6,6 +6,7 @@
 import * as React from 'react'
 
 import { BraveWallet } from '../../../constants/types'
+import { getSnapPermissionNames } from '../../../common/snap/snap_manifest_utils'
 import {
   useNotifySnapConnectionRequestProcessedMutation, //
 } from '../../../common/slices/api.slice'
@@ -20,6 +21,7 @@ export const SnapConnectPanel = ({ pending }: Props) => {
   const snapInfo = pending.snapInfo ?? null
   const snapName =
     snapInfo?.manifest?.proposedName || snapInfo?.snapId || pending.snapId
+  const permissionNames = getSnapPermissionNames(snapInfo?.manifest)
 
   const handleApprove = () => {
     notifyProcessed({ approved: true })
@@ -49,11 +51,11 @@ export const SnapConnectPanel = ({ pending }: Props) => {
         <span style={styles.snapId}>{pending.snapId}</span>
       </div>
 
-      {snapInfo && snapInfo.manifest.permissions.length > 0 && (
+      {permissionNames.length > 0 && (
         <div style={styles.section}>
           <span style={styles.label}>This snap can</span>
           <div style={styles.chips}>
-            {snapInfo.manifest.permissions.map((p: string) => (
+            {permissionNames.map((p: string) => (
               <span
                 key={p}
                 style={styles.chip}

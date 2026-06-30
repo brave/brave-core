@@ -13,6 +13,7 @@ import {
   useGetPendingSnapInstallQuery,
 } from '../../../../common/slices/api.slice'
 import { BraveWallet } from '../../../../constants/types'
+import { getSnapPermissionNames } from '../../../../common/snap/snap_manifest_utils'
 import getWalletPageApiProxy from '../../../../page/wallet_page_api_proxy'
 
 export const SnapsStore = () => {
@@ -189,7 +190,8 @@ export const SnapsStore = () => {
                   <td style={styles.td}>{snap.version}</td>
                   <td style={styles.td}>
                     <span style={styles.permList}>
-                      {(snap.manifest?.permissions ?? []).join(', ') || '—'}
+                      {getSnapPermissionNames(snap.manifest).join(', ') ||
+                        '—'}
                     </span>
                   </td>
                   <td style={styles.td}>
