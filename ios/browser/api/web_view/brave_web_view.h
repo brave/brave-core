@@ -28,6 +28,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol LoginsTabHelperBridge;
 @protocol BraveTalkTabHelperBridge;
 @protocol BraveSearchMakeDefaultTabHelperBridge;
+@protocol PlaylistTabHelperBridge;
 @protocol PrintHandler;
 
 typedef void (^ResetConfigurationCallback)(id<ProfileBridge>,
@@ -236,6 +237,21 @@ CWV_EXPORT
 @interface BraveWebView (Print)
 /// A bridge for handling window.print script messages
 - (void)setPrintHandler:(id<PrintHandler>)printHandler;
+@end
+
+CWV_EXPORT
+@interface BraveWebView (Playlist)
+/// A bridge for handling Playlist media detection messages
+- (void)setPlaylistHelper:(id<PlaylistTabHelperBridge>)playlistHelper;
+/// Queries the current playback time, in seconds, of the media element tagged
+/// with `tag`. `completion` receives 0 when no matching element exists.
+- (void)playlistCurrentTimeForTag:(NSString*)tag
+                       completion:(void (^)(double currentTime))completion;
+/// Detects media at the long-pressed `point` and reports it through the
+/// registered playlist helper.
+- (void)playlistLongPressedAtPoint:(CGPoint)point;
+/// Enables playlist compatibility mode for this web view
+- (void)enablePlaylistCompatibilityMode;
 @end
 
 NS_ASSUME_NONNULL_END

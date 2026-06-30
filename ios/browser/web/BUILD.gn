@@ -5,6 +5,7 @@
 
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 
 source_set("web") {
   sources = [
@@ -20,6 +21,7 @@ source_set("web") {
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_user_agent/browser",
     "//brave/components/constants",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/query_filter/browser",
     "//brave/components/query_filter/common",
     "//brave/ios/browser/ai_chat",
@@ -31,6 +33,7 @@ source_set("web") {
     "//brave/ios/browser/brave_shields",
     "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
     "//brave/ios/browser/global_privacy_control",
+    "//brave/ios/browser/playlist",
     "//brave/ios/browser/skus",
     "//brave/ios/browser/ui/web_view:features",
     "//brave/ios/browser/web/de_amp",
@@ -67,6 +70,9 @@ source_set("web") {
   }
   if (enable_brave_wallet) {
     deps += [ "//brave/components/brave_wallet/browser" ]
+  }
+  if (enable_playlist) {
+    deps += [ "//brave/components/playlist/core/common" ]
   }
   frameworks = [ "Foundation.framework" ]
 }
