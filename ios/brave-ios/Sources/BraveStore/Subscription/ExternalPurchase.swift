@@ -26,6 +26,6 @@ public struct ExternalPurchaseLinksSupport {
     return false
     #endif
   }
-  public static var discountCode: String = "BRAVE30"
+  public static var discountCode: String = "BRAVE301"
   public static var discountAmount: Double = 0.3
 }
