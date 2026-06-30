@@ -23,6 +23,8 @@ static_library("content") {
     "//brave/components/local_ai/core",
     "//content/public/browser",
     "//services/network/public/cpp",
+    "//third_party/blink/public/common",
+    "//third_party/blink/public/mojom:mojom_platform",
     "//ui/base",
     "//url",
   ]
