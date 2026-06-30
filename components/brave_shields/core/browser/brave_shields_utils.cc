@@ -887,14 +887,15 @@ mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  const GURL effective_url = GetEffectiveUrlFromOrigin(primary_url);
+  const url::Origin origin = url::Origin::Create(primary_url);
+  const GURL origin_url = origin.GetURL();
 
-  const bool shields_up = GetBraveShieldsEnabled(map, effective_url);
+  const bool shields_up = GetBraveShieldsEnabled(map, origin_url);
   if (!shields_up) {
     return brave_shields::mojom::FarblingLevel::OFF;
   }
 
-  auto fingerprinting_type = GetFingerprintingControlType(map, effective_url);
+  auto fingerprinting_type = GetFingerprintingControlType(map, origin_url);
   switch (fingerprinting_type) {
     case ControlType::ALLOW:
       return brave_shields::mojom::FarblingLevel::OFF;
