@@ -309,7 +309,7 @@ void PrintPreviewExtractorInternal::DidPrepareDocumentForPreview(
   }
 
   client->PrepareToCompositeDocument(
-      document_cookie, render_frame_host,
+      document_cookie, *render_frame_host,
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(
               &PrintPreviewExtractorInternal::OnPrepareForDocumentToPdfDone,
