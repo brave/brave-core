@@ -126,6 +126,7 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
   PolkadotTransaction tx =
       MakePolkadotTx(/*transfer_all=*/false, /*asset_id=*/std::nullopt);
 
+  // Serialize a transaction without an asset id.
   auto meta = MakePolkadotTxMeta(polkadot_account_id.Clone(), std::move(tx));
 
   {
@@ -151,6 +152,7 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
     EXPECT_FALSE(tx_data->asset_id);
   }
 
+  // Serialize a transaction with an asset id.
   meta = MakePolkadotTxMeta(polkadot_account_id->Clone(),
                             MakePolkadotTx(false, 1337));
 
@@ -162,6 +164,8 @@ TEST(PolkadotTxMeta, ToTransactionPtr) {
     EXPECT_FALSE(tx_data->sending_max_amount);
   }
 
+  // Test that when serializing a transaction, we carry the sending_max_amount
+  // information when the PolkadotTransaction is marked as trasnfer_all.
   meta = MakePolkadotTxMeta(polkadot_account_id->Clone(),
                             MakePolkadotTx(true, 1337));
 
