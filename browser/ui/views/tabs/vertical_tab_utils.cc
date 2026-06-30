@@ -10,7 +10,7 @@
 #include "base/command_line.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "brave/browser/ui/views/tabs/switches.h"
+#include "brave/browser/ui/tabs/public/switches.h"
 #include "build/build_config.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/profiles/profile.h"

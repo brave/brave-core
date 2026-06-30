@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_CONTROLLER_H_
-#define BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_CONTROLLER_H_
+#ifndef BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
+#define BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
 
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
@@ -44,4 +44,4 @@ class VerticalTabController {
   raw_ptr<PrefService> prefs_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_TABS_VERTICAL_TAB_CONTROLLER_H_
+#endif  // BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_

@@ -12,11 +12,16 @@ assert(is_win || is_mac || is_linux || is_chromeos || is_android)
 # Note: Target names in this file should match those upstream where possible.
 
 source_set("tabs_public") {
-  sources = [ "public/brave_tab_features.h" ]
+  sources = [
+    "public/brave_tab_features.h",
+    "public/switches.h",
+    "public/vertical_tab_controller.h",
+  ]
 
   public_deps = [
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/psst/buildflags",
+    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
@@ -30,7 +35,10 @@ if (!is_android) {
   source_set("impl") {
     visibility = [ "//chrome/browser" ]
 
-    sources = [ "brave_tab_features.cc" ]
+    sources = [
+      "brave_tab_features.cc",
+      "vertical_tab_controller.cc",
+    ]
 
     deps = [
       ":tabs_public",
@@ -39,6 +47,7 @@ if (!is_android) {
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/tabs",
       "//chrome/browser/ui/tabs:impl",
     ]
 

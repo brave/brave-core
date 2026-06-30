@@ -20,8 +20,8 @@ source_set("vertical_tabs") {
   deps = [
     "//base",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
-    "//brave/browser/ui/views/tabs",
     "//brave/components/constants",
     "//brave/components/vector_icons",
     "//chrome/app:command_ids",
@@ -52,8 +52,8 @@ source_set("browser_tests") {
   deps = [
     ":vertical_tabs",
     "//brave/browser/ui/tabs:tab_menu",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame",
-    "//brave/browser/ui/views/tabs",
     "//chrome/browser",
     "//chrome/browser/tab_group_sync:factories",
     "//chrome/browser/ui",
