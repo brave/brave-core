@@ -73,6 +73,7 @@ if (toolkit_views) {
       "//brave/components/brave_account",
       "//brave/components/brave_account:features",
       "//brave/components/brave_account:test_support",
+      "//brave/components/brave_account/endpoint_client:test_support",
       "//brave/components/brave_account/endpoints",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",
@@ -85,6 +86,9 @@ if (toolkit_views) {
       "//chrome/browser/ui/autofill",
       "//chrome/browser/ui/views/bubble",
       "//chrome/test:test_support",
+      "//components/keyed_service/core",
+      "//components/os_crypt/async/browser:test_support",
+      "//services/network:test_support",
     ]
 
     data = [ "//brave/test/data/email_aliases" ]
