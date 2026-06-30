@@ -180,10 +180,7 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON" desc="Label for the get started button in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     Get started
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_EMAIL_LABEL" desc="Label for the email input field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
-    Enter your email to continue
-  </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Placeholder for the email input field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Static text for the email field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     youremail@example.com
   </message>
   <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
@@ -210,7 +207,7 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     cat.mane.
   </message>
-  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="The end part of placeholder for the center illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
+  <message name="IDS_EMAIL_ALIASES_PROMO_CENTER_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER_END" desc="Domain suffix of the example alias email address shown in the center illustration card" formatter_data="webui=EmailAliases">
     @bravealias.com
   </message>
   <message name="IDS_EMAIL_ALIASES_PROMO_RIGHT_ILLUSTRATION_WINDOW_EMAIL_LABEL" desc="Label for the right illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">

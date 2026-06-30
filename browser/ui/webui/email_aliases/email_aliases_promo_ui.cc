@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 
-#include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/resources/settings/grit/brave_settings_resources.h"
 #include "brave/browser/ui/webui/settings/brave_settings_localized_strings_provider.h"
 #include "chrome/browser/profiles/profile.h"

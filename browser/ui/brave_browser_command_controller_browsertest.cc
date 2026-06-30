@@ -66,6 +66,7 @@
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -737,6 +738,10 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
   // kPromoShown defaults to false, so the command shows the promo dialog first.
   // Prevent it from auto-closing on focus loss during the test.
   email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  absl::Cleanup restore_auto_close = [] {
+    email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(
+        false);
+  };
 
   auto* command_controller = browser()->command_controller();
   ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
@@ -747,8 +752,6 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
 
   // Closing the promo should record it as shown and navigate to settings.
   controller->CloseBubble();
-  email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(
-      false);
 
   ASSERT_TRUE(base::test::RunUntil([&]() {
     return browser()
