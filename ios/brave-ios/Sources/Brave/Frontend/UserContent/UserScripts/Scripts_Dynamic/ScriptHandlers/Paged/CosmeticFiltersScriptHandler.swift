@@ -46,7 +46,9 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(CosmeticFiltersDTO.self, from: data)
 
-      guard let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url else {
+      guard let mainFrameURL = tab.currentPageData?.mainFrameURL,
+        let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url
+      else {
         replyHandler(nil, nil)
         return
       }
@@ -54,7 +56,7 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       Task { @MainActor in
         let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
-            for: frameURL,
+            for: mainFrameURL,
             considerAllShieldsOption: true
           ).isEnabled ?? true
         )
