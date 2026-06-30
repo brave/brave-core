@@ -98,9 +98,11 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 // Drives the YouTube player into fullscreen so the caller can follow up with
 // Picture in Picture. On a cold load the player and its controls hydrate
 // asynchronously, so the fullscreen button may be absent at injection time: the
-// script makes a couple of synchronous attempts, then lets a MutationObserver
-// retry as the subtree hydrates. A find timeout stops the observer outliving a
-// broken page.
+// script makes a couple of synchronous attempts, then retries as the subtree
+// hydrates. Retries prefer a MutationObserver scoped to the player container;
+// only when that container does not exist yet do we fall back to short-interval
+// polling, so we never observe the entire document. A find timeout stops the
+// retries outliving a broken page.
 //
 // Crucially, success is never inferred from the click or API call. A
 // fullscreenchange listener resolves only once the page is actually fullscreen,
@@ -123,24 +125,39 @@ constexpr char16_t kYoutubeFullscreen[] =
     // because a real transition lands almost immediately; this bounds how long
     // the browser keeps a pending Picture in Picture request armed.
     const CONFIRM_TIMEOUT_MS = 2000;
+    // How often to re-query for the player when no specific container exists to
+    // observe. Polling is only used as a fallback so we never watch the whole
+    // document; it stops as soon as a trigger fires or the find timeout
+    // elapses.
+    const POLL_INTERVAL_MS = 100;
 
     let resolved = false;
     let triggered = false;
     let observer = null;
     let findTimeoutId = 0;
     let confirmTimeoutId = 0;
+    let pollIntervalId = 0;
 
     function isFullscreen() {
       const player = document.querySelector(playerSelector);
       return !!document.fullscreenElement || !!player?.isFullscreen?.();
     }
 
-    function cleanup() {
-      document.removeEventListener('fullscreenchange', onFullscreenChange);
+    // Stop looking for something to trigger fullscreen with: tear down the
+    // observer or poll and the find timeout. Leaves the confirm timeout and
+    // fullscreenchange listener in place so success can still be observed.
+    function stopSearching() {
       if (observer) {
         observer.disconnect();
+        observer = null;
       }
+      clearInterval(pollIntervalId);
       clearTimeout(findTimeoutId);
+    }
+
+    function cleanup() {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      stopSearching();
       clearTimeout(confirmTimeoutId);
     }
 
@@ -172,10 +189,7 @@ constexpr char16_t kYoutubeFullscreen[] =
         return;
       }
       triggered = true;
-      if (observer) {
-        observer.disconnect();
-      }
-      clearTimeout(findTimeoutId);
+      stopSearching();
       confirmTimeoutId = setTimeout(
           () => resolveOnce('requestFullscreen_failed'), CONFIRM_TIMEOUT_MS);
     }
@@ -241,13 +255,19 @@ constexpr char16_t kYoutubeFullscreen[] =
       if (attempt()) {
         return;
       }
-      // Watch the player subtree and retry as the button or player hydrates.
-      const root = document.querySelector(playerContainerSelector)
-          || document.body;
-      observer = new MutationObserver(() => {
-        attempt();
-      });
-      observer.observe(root, { childList: true, subtree: true });
+      // Retry as the button or player hydrates. Prefer a MutationObserver
+      // scoped to the player container so we watch a small subtree; if that
+      // container is not in the tree yet, fall back to short-interval polling
+      // rather than observing the entire document.
+      const root = document.querySelector(playerContainerSelector);
+      if (root) {
+        observer = new MutationObserver(() => {
+          attempt();
+        });
+        observer.observe(root, { childList: true, subtree: true });
+      } else {
+        pollIntervalId = setInterval(attempt, POLL_INTERVAL_MS);
+      }
       // Only reached while nothing has been triggered yet: give up if the
       // player never hydrates.
       findTimeoutId = setTimeout(() => resolveOnce('timeout'), FIND_TIMEOUT_MS);
