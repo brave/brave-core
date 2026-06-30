@@ -395,6 +395,10 @@
 # Flaky upstream tests
 -FirstRunTest.CreateSentinelIfNeeded_SkippedIfSuppressed
 
+# These tests are flaky both for us and upstream.
+# https://github.com/brave/brave-browser/issues/56768
+-FullStreamUIPolicyTest.*
+
 # This test fails because we insert our own bookmarks submenu into the app menu
 # model
 -AppMenuModelTest.ModelHasIcons
