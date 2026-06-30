@@ -11,6 +11,7 @@
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
+#include "build/build_config.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -21,6 +22,10 @@
 #include "components/keyed_service/core/service_access_type.h"
 #include "components/policy/core/common/policy_service.h"
 #include "content/public/browser/browser_context.h"
+
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/brave_news/brave_news_controller_delegate_impl.h"
+#endif
 
 namespace brave_news {
 
@@ -86,11 +91,19 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       std::make_unique<brave_policy::PolicyInitializationWaiter>(
           policy_service);
 
+  // The settings delegate opens the New Tab Page, which only exists on desktop;
+  // a null delegate is fine, BraveNewsController::OpenSettings() no-ops then.
+  std::unique_ptr<BraveNewsController::Delegate> delegate;
+#if !BUILDFLAG(IS_ANDROID)
+  delegate = std::make_unique<BraveNewsControllerDelegateImpl>(profile);
+#endif
+
   return std::make_unique<BraveNewsController>(
       profile->GetPrefs(), std::move(policy_initialization_waiter),
       history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
-          host_content_settings_map));
+          host_content_settings_map),
+      std::move(delegate));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {
