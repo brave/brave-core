@@ -75,6 +75,7 @@ if (toolkit_views) {
       "//brave/components/brave_account:test_support",
       "//brave/components/brave_account/endpoint_client:test_support",
       "//brave/components/brave_account/endpoints",
+      "//brave/components/brave_account/mojom",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",
       "//brave/components/email_aliases:pref_names",

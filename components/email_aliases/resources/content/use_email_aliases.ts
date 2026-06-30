@@ -46,6 +46,7 @@ export function useBraveAccountState() {
     const listenerId = router.onAccountStateChanged.addListener(setAccountState)
     return () => {
       router.removeListener(listenerId)
+      router.$.close()
     }
   }, [])
 
