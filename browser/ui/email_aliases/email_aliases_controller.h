@@ -40,8 +40,7 @@ class EmailAliasesController {
                   std::optional<SettingsPageMethod> method = std::nullopt);
   void CloseBubble();
   void OpenSettingsPage(std::optional<SettingsPageMethod> method = std::nullopt,
-                        content::WebContents* initiator = nullptr,
-                        content::RenderFrameHost* render_frame = nullptr);
+                        content::WebContents* initiator = nullptr);
 
   content::WebContents* GetBubbleForTesting();
   static void DisableAutoCloseBubbleForTesting(bool disale_autoclose);

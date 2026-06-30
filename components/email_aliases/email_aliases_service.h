@@ -87,8 +87,8 @@ class EmailAliasesService : public KeyedService,
 
   // Returns true if the promo should be shown to the user.
   bool ShouldShowPromo() const;
-  // Sets the promo as shown to the user.
-  void StopShowPromo();
+  // Marks the promo as shown to the user.
+  void MarkPromoShown();
 
  private:
   using TokenResult =

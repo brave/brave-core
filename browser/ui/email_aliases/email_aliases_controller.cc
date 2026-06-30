@@ -214,7 +214,7 @@ void EmailAliasesController::ShowBubble(
     uint64_t field_renderer_id,
     std::optional<SettingsPageMethod> method) {
   if (!email_aliases_service_->IsAuthenticated()) {
-    return OpenSettingsPage(method, initiator, render_frame);
+    return OpenSettingsPage(method, initiator);
   }
 
   CloseBubble();
@@ -239,8 +239,7 @@ void EmailAliasesController::CloseBubble() {
 
 void EmailAliasesController::OpenSettingsPage(
     std::optional<SettingsPageMethod> method,
-    content::WebContents* initiator,
-    content::RenderFrameHost* render_frame) {
+    content::WebContents* initiator) {
   if (method) {
     email_aliases_service_->metrics().RecordSettingsPageNavigation(*method);
   }
@@ -281,7 +280,7 @@ void EmailAliasesController::ShowPromoBubble(content::WebContents* initiator) {
 
 void EmailAliasesController::OnPromoBubbleClosed(const std::string&) {
   OnBubbleClosed({});
-  email_aliases_service_->StopShowPromo();
+  email_aliases_service_->MarkPromoShown();
   ShowSingletonTabOverwritingNTP(browser_view_->browser(),
                                  GURL(kEmailAliasesSettingsURL));
 }

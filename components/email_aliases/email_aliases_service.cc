@@ -146,7 +146,7 @@ bool EmailAliasesService::ShouldShowPromo() const {
   return !pref_service_->GetBoolean(prefs::kPromoShown);
 }
 
-void EmailAliasesService::StopShowPromo() {
+void EmailAliasesService::MarkPromoShown() {
   pref_service_->SetBoolean(prefs::kPromoShown, true);
 }
 

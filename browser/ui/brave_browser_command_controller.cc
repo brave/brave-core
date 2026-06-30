@@ -777,8 +777,7 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
     case IDC_SHOW_EMAIL_ALIASES:
       browser_->GetFeatures().email_aliases_controller()->OpenSettingsPage(
           email_aliases::SettingsPageMethod::kAppMenu,
-          browser_->tab_strip_model()->GetActiveWebContents(),
-          /*initiator->GetFocusedFrame()->GetMainFrame()*/ nullptr);
+          browser_->tab_strip_model()->GetActiveWebContents());
       break;
 #endif
 #if BUILDFLAG(ENABLE_CONTAINERS)
