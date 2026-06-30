@@ -117,9 +117,18 @@ bool ShouldFlattenContainer(const ContentNode& node) {
 }
 
 std::string BuildAttributes(const ContentAttributes& attrs,
+                            PageContentDetail detail,
                             bool id_only_for_interactive = true) {
   // Helper function to build interaction attributes
   std::string attr_result;
+
+  // DOM ids and scroll state are only useful to agentic tools that target and
+  // scroll elements, and the default (content) extraction still emits them, so
+  // they are stripped for plain content extraction to reduce noise and token
+  // cost. Interaction hints (clickable/editable) and geometry are not gated:
+  // the default extraction rarely emits them, so there is little to strip and
+  // they can help a reader understand the page when present.
+  const bool include_agentic_targeting = detail == PageContentDetail::kAgentic;
 
   // Check if element is interactive
   bool is_interactive = false;
@@ -140,7 +149,8 @@ std::string BuildAttributes(const ContentAttributes& attrs,
   }
 
   // Add DOM node ID if available
-  if ((is_interactive || !id_only_for_interactive) &&
+  if (include_agentic_targeting &&
+      (is_interactive || !id_only_for_interactive) &&
       attrs.has_common_ancestor_dom_node_id()) {
     absl::StrAppendFormat(&attr_result, " dom_id=\"%d\"",
                           attrs.common_ancestor_dom_node_id());
@@ -155,7 +165,7 @@ std::string BuildAttributes(const ContentAttributes& attrs,
     if (IsNodeEditable(interaction)) {
       attr_result.append(" editable");
     }
-    if (interaction.has_scroller_info()) {
+    if (include_agentic_targeting && interaction.has_scroller_info()) {
       const auto& scroller_info = interaction.scroller_info();
       if (scroller_info.user_scrollable_horizontal() ||
           scroller_info.user_scrollable_vertical()) {
@@ -231,7 +241,10 @@ std::string BuildAttributes(const ContentAttributes& attrs,
     }
   }
 
-  if (attrs.has_iframe_data() && attrs.iframe_data().has_frame_data() &&
+  // The document identifier is only used to scope element targeting to a frame,
+  // so it is only relevant to agentic tools.
+  if (include_agentic_targeting && attrs.has_iframe_data() &&
+      attrs.iframe_data().has_frame_data() &&
       attrs.iframe_data().frame_data().has_document_identifier()) {
     base::StrAppend(&attr_result,
                     {" document_identifier=\"",
@@ -254,17 +267,29 @@ std::string BuildAttributes(const ContentAttributes& attrs,
 
 // Generates XML-like structured content representation with interaction
 // attributes
-std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
+std::string GenerateContentStructure(const ContentNode& node,
+                                     PageContentDetail detail,
+                                     int depth = 0) {
   std::string content;
   std::string indent(
       features::kShouldIndentPageContentBlocks.Get() ? depth * 2 : 0, ' ');
 
   const auto& attrs = node.content_attributes();
 
+  // SVG and canvas content cannot be reliably interpreted, so omit the whole
+  // subtree for plain content extraction.
+  if (detail == PageContentDetail::kContentOnly &&
+      (attrs.attribute_type() ==
+           ContentAttributeType::CONTENT_ATTRIBUTE_SVG_ROOT ||
+       attrs.attribute_type() ==
+           ContentAttributeType::CONTENT_ATTRIBUTE_CANVAS)) {
+    return content;
+  }
+
   // Flatten single-child root containers
   if (ShouldFlattenContainer(node)) {
     CHECK_EQ(node.children_nodes_size(), 1);
-    return GenerateContentStructure(node.children_nodes(0), depth);
+    return GenerateContentStructure(node.children_nodes(0), detail, depth);
   }
 
   // Generate the tag name, initial attributes and intrinsic "child" content.
@@ -277,7 +302,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
     case ContentAttributeType::CONTENT_ATTRIBUTE_HEADING:
       if (attrs.has_text_data()) {
         tag_name = "heading";
-        attributes = BuildAttributes(attrs);
+        attributes = BuildAttributes(attrs, detail);
         inner_content =
             XmlEscapeAndSanitizeText(attrs.text_data().text_content());
       }
@@ -285,7 +310,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_PARAGRAPH:
       tag_name = "paragraph";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_TEXT:
@@ -300,7 +325,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
           // NOTE: For space saving, we could consider flattening text nodes
           // to their parents, since they shouldn't be targetable.
           tag_name = "text";
-          attributes = BuildAttributes(attrs);
+          attributes = BuildAttributes(attrs, detail);
           inner_content = XmlEscapeAndSanitizeText(trimmed);
         }
       }
@@ -313,7 +338,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
             &attributes,
             {"href=\"", XmlEscapeAndSanitizeText(attrs.anchor_data().url()),
              "\""});
-        base::StrAppend(&attributes, {BuildAttributes(attrs)});
+        base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       }
       break;
 
@@ -325,7 +350,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
             {"name=\"", XmlEscapeAndSanitizeText(attrs.form_data().form_name()),
              "\""});
       }
-      base::StrAppend(&attributes, {BuildAttributes(attrs)});
+      base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_FORM_CONTROL:
@@ -350,7 +375,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
               {" placeholder=\"",
                XmlEscapeAndSanitizeText(form_data.placeholder()), "\""});
         }
-        base::StrAppend(&attributes, {BuildAttributes(attrs)});
+        base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       }
       break;
 
@@ -362,7 +387,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
             {" alt=\"",
              XmlEscapeAndSanitizeText(attrs.image_data().image_caption()),
              "\""});
-        base::StrAppend(&attributes, {BuildAttributes(attrs)});
+        base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       }
       break;
 
@@ -374,52 +399,60 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
             {" name=\"",
              XmlEscapeAndSanitizeText(attrs.table_data().table_name()), "\""});
       }
-      base::StrAppend(&attributes, {BuildAttributes(attrs)});
+      base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_TABLE_ROW:
       tag_name = "tr";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_TABLE_CELL:
       tag_name = "td";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_ORDERED_LIST:
       tag_name = "ol";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNORDERED_LIST:
       tag_name = "ul";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_LIST_ITEM:
       tag_name = "li";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_ROOT:
       tag_name = "root";
-      attributes = BuildAttributes(attrs, false);
+      attributes = BuildAttributes(attrs, detail, false);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_CONTAINER:
+      // For plain content extraction a generic container is just structural
+      // noise, so drop the wrapper and let its children render inline. Keep the
+      // wrapper when it carries a semantic role (e.g. nav/main/article) that is
+      // still surfaced by BuildAttributes.
+      if (detail == PageContentDetail::kContentOnly &&
+          attrs.annotated_roles_size() == 0) {
+        break;
+      }
       tag_name = "container";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_IFRAME:
       tag_name = "iframe";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_SVG_ROOT:
       tag_name = "svg";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       if (attrs.has_svg_root_data() && attrs.svg_root_data().has_inner_text()) {
         inner_content =
             XmlEscapeAndSanitizeText(attrs.svg_root_data().inner_text());
@@ -428,7 +461,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_CANVAS:
       tag_name = "canvas";
-      attributes = BuildAttributes(attrs);
+      attributes = BuildAttributes(attrs, detail);
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_VIDEO:
@@ -439,7 +472,7 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
             {" src=\"", XmlEscapeAndSanitizeText(attrs.video_data().url()),
              "\""});
       }
-      base::StrAppend(&attributes, {BuildAttributes(attrs)});
+      base::StrAppend(&attributes, {BuildAttributes(attrs, detail)});
       break;
 
     case ContentAttributeType::CONTENT_ATTRIBUTE_UNKNOWN:
@@ -470,7 +503,8 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
   // Process children for elements that don't handle them explicitly above,
   // adding 1x extra depth.
   for (const auto& child : node.children_nodes()) {
-    base::StrAppend(&content, {GenerateContentStructure(child, depth + 1)});
+    base::StrAppend(&content,
+                    {GenerateContentStructure(child, detail, depth + 1)});
   }
 
   // Closing tag if we're not flattening or ignoring this element
@@ -484,7 +518,8 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
 }  // namespace
 
 std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
-    const AnnotatedPageContent& page_content) {
+    const AnnotatedPageContent& page_content,
+    PageContentDetail detail) {
   if (!page_content.has_root_node()) {
     return {};
   }
@@ -506,7 +541,10 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
           &result, {"PAGE URL: ", SanitizeContentText(frame_data.url()), "\n"});
     }
 
-    if (frame_data.has_document_identifier()) {
+    // The document identifier is only needed to scope agentic element
+    // targeting to the root frame.
+    if (detail == PageContentDetail::kAgentic &&
+        frame_data.has_document_identifier()) {
       base::StrAppend(
           &result, {"PAGE ROOT DOCUMENT IDENTIFIER: ",
                     frame_data.document_identifier().serialized_token(), "\n"});
@@ -516,8 +554,10 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
 
   const auto& root_node = page_content.root_node();
 
-  // Add viewport information for coordinate references
-  if (page_content.has_viewport_geometry()) {
+  // Add viewport information for coordinate references. This is only useful to
+  // agentic tools that scroll and target elements by coordinate.
+  if (detail == PageContentDetail::kAgentic &&
+      page_content.has_viewport_geometry()) {
     const auto& viewport = page_content.viewport_geometry();
 
     absl::StrAppendFormat(
@@ -536,7 +576,7 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
     result.append("\n");
   }
 
-  std::string tree_string = GenerateContentStructure(root_node);
+  std::string tree_string = GenerateContentStructure(root_node, detail);
   if (tree_string.length() > kMaxTreeStringLength) {
     // TODO(https://github.com/brave/brave-browser/issues/49262): prioritize
     // viewport elements - the consumer can then scroll to "paginate."
@@ -553,21 +593,24 @@ std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
   base::StrAppend(&result, {tree_string});
   base::StrAppend(&result, {"\n", kBraveUntrustedContentCloseTag, "\n"});
 
-  // Add usage instructions
-  result.append("\n=== INTERACTION INSTRUCTIONS ===\n");
-  result.append(
-      "The page structure represents the entire page and not just the "
-      "viewport. Use scroll if neccessary to interact with an element not "
-      "within the viewport, or to show the user something. "
-      "Use the XML attributes to guide interaction:\n");
-  result.append(
-      "- dom_id: Use for precise element targeting but you must provide the "
-      "document_identifier either from the root or from an iframe.\n");
-  result.append(
-      "- x,y,width,height: Use the position/size only when neccessary or to "
-      "infer hierarchy.\n");
-  result.append("- clickable: Element can be clicked\n");
-  result.append("- editable: Element can receive text input\n");
+  // Add usage instructions describing the actionable metadata, which is only
+  // present (and only relevant) for agentic tools.
+  if (detail == PageContentDetail::kAgentic) {
+    result.append("\n=== INTERACTION INSTRUCTIONS ===\n");
+    result.append(
+        "The page structure represents the entire page and not just the "
+        "viewport. Use scroll if neccessary to interact with an element not "
+        "within the viewport, or to show the user something. "
+        "Use the XML attributes to guide interaction:\n");
+    result.append(
+        "- dom_id: Use for precise element targeting but you must provide the "
+        "document_identifier either from the root or from an iframe.\n");
+    result.append(
+        "- x,y,width,height: Use the position/size only when neccessary or to "
+        "infer hierarchy.\n");
+    result.append("- clickable: Element can be clicked\n");
+    result.append("- editable: Element can receive text input\n");
+  }
 
   // Convert to ContentBlocks using the existing utility
   return CreateContentBlocksForText(result);

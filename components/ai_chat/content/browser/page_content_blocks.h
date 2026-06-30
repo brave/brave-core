@@ -16,6 +16,25 @@ class AnnotatedPageContent;
 
 namespace ai_chat {
 
+// Controls how much detail is serialized when converting page content.
+enum class PageContentDetail {
+  // Full detail for agentic tools that need to target and act on elements.
+  // Includes everything kContentOnly keeps, plus the agentic targeting metadata
+  // that the default extraction still emits: `dom_id`, scroll state
+  // (`scrollable`/`size`/`visible_area`), document identifiers, the
+  // viewport/scroll summary, and the interaction instructions.
+  kAgentic,
+  // Reduced detail for plain content extraction (e.g. AI Chat summarizing or
+  // answering questions about a page). Drops the agentic targeting metadata
+  // (`dom_id`, scroll state, document identifiers, the viewport/scroll summary,
+  // and the interaction instructions), as well as SVG/canvas content and
+  // generic container wrappers, none of which can be reliably used in this mode
+  // and which only add noise and token cost. Interaction hints
+  // (`clickable`/`editable`) and element geometry are kept when present, since
+  // the default extraction rarely emits them.
+  kContentOnly,
+};
+
 // Converts web content (in the form of AnnotatedPageContent) in to LLM-readable
 // content (in the form of ContentBlocks), suitable for AI Tool responses.
 // The conversion creates structured text that helps
@@ -23,13 +42,15 @@ namespace ai_chat {
 // understand the state of the viewport.
 //
 // The output includes:
-// - Summary of interactive elements with DOM IDs and coordinates
 // - Hierarchical content structure
 // - Form data and controls
 // - Accessibility information
-// - Scroll data for viewport and elements
+// And, when `detail` is `kAgentic`:
+// - DOM IDs for targeting elements
+// - Scroll data for the viewport and elements
 std::vector<mojom::ContentBlockPtr> ConvertAnnotatedPageContentToBlocks(
-    const optimization_guide::proto::AnnotatedPageContent& page_content);
+    const optimization_guide::proto::AnnotatedPageContent& page_content,
+    PageContentDetail detail = PageContentDetail::kAgentic);
 
 }  // namespace ai_chat
 

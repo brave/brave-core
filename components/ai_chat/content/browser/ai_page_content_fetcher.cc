@@ -43,9 +43,13 @@ void AIPageContentFetcher::FetchPageContent(std::string_view invalidation_token,
 
 void AIPageContentFetcher::CallGetAIPageContent(
     optimization_guide::OnAIPageContentDone callback) {
+  // This is plain content extraction for AI Chat, so request the default
+  // (non-actionable) page content. The actionable mode would make the renderer
+  // compute geometry, hit-testing and scroller info that ConvertAnnotatedPage-
+  // ContentToBlocks discards in `kContentOnly` mode anyway.
   optimization_guide::GetAIPageContent(
       web_contents_,
-      optimization_guide::ActionableAIPageContentOptions(
+      optimization_guide::DefaultAIPageContentOptions(
           /*on_critical_path=*/false),
       std::move(callback));
 }
@@ -60,8 +64,11 @@ void AIPageContentFetcher::OnAIPageContentReceived(
   }
 
   // ConvertAnnotatedPageContentToBlocks always serializes everything into a
-  // single TextContentBlock, so only index 0 is ever present.
-  auto content_blocks = ConvertAnnotatedPageContentToBlocks(result->proto);
+  // single TextContentBlock, so only index 0 is ever present. This is plain
+  // content extraction (not agentic), so strip actionable element metadata and
+  // SVG content that can't be reliably used here and only adds noise.
+  auto content_blocks = ConvertAnnotatedPageContentToBlocks(
+      result->proto, PageContentDetail::kContentOnly);
   if (content_blocks.empty() || !content_blocks[0]->is_text_content_block()) {
     std::move(callback).Run("", false, "");
     return;
