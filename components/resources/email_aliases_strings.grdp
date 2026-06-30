@@ -180,11 +180,14 @@
   <message name="IDS_EMAIL_ALIASES_PROMO_DLG_GET_STARTED_BUTTON" desc="Label for the get started button in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     Get started
   </message>
+  <message name="IDS_EMAIL_ALIASES_PROMO_EMAIL_LABEL" desc="Placeholder text inside the email address input field in the Brave Email Aliases promo dialog, instructing the user to enter their email to proceed" formatter_data="webui=EmailAliases">
+    Enter your email to continue
+  </message>
   <message name="IDS_EMAIL_ALIASES_PROMO_YOUR_EMAIL" desc="Static text for the email field in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     youremail@example.com
   </message>
   <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_BRAND" desc="Brand name for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
-    Walmart ✦
+    Walmart.com
   </message>
   <message name="IDS_EMAIL_ALIASES_PROMO_LEFT_ILLUSTRATION_WINDOW_EMAIL_PLACEHOLDER" desc="Placeholder for the left illustration in the email aliases promo dialog" formatter_data="webui=EmailAliases">
     lion.paw.
