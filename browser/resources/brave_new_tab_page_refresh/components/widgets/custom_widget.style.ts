@@ -11,19 +11,29 @@ export const style = scoped.css`
     position: relative;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 4px;
+    width: 100%;
     height: 100%;
+    padding: 16px;
+    box-sizing: border-box;
+    /* Keep content clipped to the regular widget height. */
+    overflow: hidden;
   }
 
   .title {
+    flex: 0 0 auto;
     font: ${font.components.buttonSmall};
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding-right: 24px;
   }
 
   .widget-frame {
     border: 0;
     width: 100%;
     flex: 1 1 auto;
-    min-height: 180px;
+    min-height: 0;
     background: transparent;
     color-scheme: dark;
   }

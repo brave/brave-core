@@ -10,19 +10,37 @@ import { useCustomWidgets } from '../../state/custom_widgets_store'
 
 import { style } from './custom_widgets.style'
 
+// Custom widgets are half the width of a regular widget, so we pack two of them
+// into each regular-width grid column. Each column is rendered as a direct child
+// of the `.widget-container` grid, so adding widgets adds columns horizontally
+// and shrinks the regular widgets when space runs out.
 export function CustomWidgets() {
   const widgets = useCustomWidgets()
   if (widgets.length === 0) {
     return null
   }
+
+  const columns: (typeof widgets)[] = []
+  for (let i = 0; i < widgets.length; i += 2) {
+    columns.push(widgets.slice(i, i + 2))
+  }
+
   return (
-    <div data-css-scope={style.scope}>
-      {widgets.map((widget) => (
-        <CustomWidget
-          key={widget.id}
-          widget={widget}
-        />
+    <>
+      {columns.map((column, index) => (
+        <div
+          key={index}
+          className='custom-widget-column'
+          data-css-scope={style.scope}
+        >
+          {column.map((widget) => (
+            <CustomWidget
+              key={widget.id}
+              widget={widget}
+            />
+          ))}
+        </div>
       ))}
-    </div>
+    </>
   )
 }
