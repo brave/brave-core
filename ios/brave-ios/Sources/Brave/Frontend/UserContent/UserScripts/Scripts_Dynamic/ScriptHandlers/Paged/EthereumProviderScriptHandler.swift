@@ -87,8 +87,8 @@ class EthereumProviderScriptHandler: TabContentScript {
       !message.frameInfo.securityOrigin.host.isEmpty,
       message.frameInfo.isMainFrame,  // Fail the request came from 3p origin
       // Guard against race: old page's JS message delivered after navigation commit
-      message.frameInfo.securityOrigin.host == tab.lastCommittedURL?.host,
-      message.frameInfo.securityOrigin.protocol == tab.lastCommittedURL?.scheme,
+      let committedURL = tab.lastCommittedURL,
+      URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin) == committedURL.origin,
       JSONSerialization.isValidJSONObject(message.body),
       let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let body = try? JSONDecoder().decode(MessageBody.self, from: messageData)
