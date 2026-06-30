@@ -11,3 +11,19 @@ source_set("history_embeddings") {
     "//components/page_content_annotations/core",
   ]
 }
+
+source_set("test_support") {
+  testonly = true
+  sources = [
+    "test/fake_history_embeddings_search.cc",
+    "test/fake_history_embeddings_search.h",
+  ]
+  public_deps = [
+    "//components/history/core/browser",
+    "//components/history_embeddings/core",
+  ]
+  deps = [
+    "//base",
+    "//url",
+  ]
+}

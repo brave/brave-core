@@ -42,6 +42,13 @@ interface PageHandler {
   SetTabFocusEnabled();
   // Whether we should show FRE for tab focus.
   GetTabFocusShowFRE() => (bool show_FRE);
+  // On-device semantic search across currently-open tabs (HTTPS/HTTP only).
+  // The query embedding and all per-tab passage content stay on this device;
+  // only the returned tab_ids are surfaced to the caller. Returns tab_ids of
+  // tabs whose indexed passages best match `query`, ordered most-relevant
+  // first. Empty when history embeddings are disabled for this profile or no
+  // open tab has indexed content.
+  SearchTabsByContent(string query) => (array<int32> tab_ids);
 };
 
 [BraveExtend]

@@ -16,9 +16,13 @@
 #include "base/run_loop.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
+#include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
@@ -27,6 +31,9 @@
 #include "brave/components/ai_chat/core/browser/types.h"
 #include "brave/components/ai_chat/core/common/mojom/tab_tracker.mojom.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/history_embeddings/test/fake_history_embeddings_search.h"
+#include "brave/components/local_ai/core/pref_names.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
@@ -39,6 +46,11 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/history/core/browser/history_service.h"
+#include "components/history/core/browser/history_types.h"
+#include "components/history_embeddings/core/history_embeddings_features.h"
+#include "components/keyed_service/core/service_access_type.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -49,6 +61,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -417,4 +430,101 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
   }));
 
   run_loop2.Run();
+}
+
+// End-to-end coverage of `SearchTabsByContent`: open-tab GURLs are resolved
+// to URLIDs through `HistoryService::QueryUrlIds`, the URL-id filter is
+// forwarded to `Search()`, and the scored rows are mapped back to tab
+// handles.
+class TabSearchPageHandlerSearchTabsByContentBrowserTest
+    : public TabSearchPageHandlerBrowserTest {
+ public:
+  TabSearchPageHandlerSearchTabsByContentBrowserTest() {
+    scoped_features_.InitAndEnableFeature(
+        history_embeddings::kHistoryEmbeddings);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerSearchTabsByContentBrowserTest,
+                       SearchTabsByContent) {
+  // `IsHistoryEmbeddingsEnabledForProfile` also requires the Brave-owned pref.
+  profile1()->GetPrefs()->SetBoolean(
+      local_ai::prefs::kBraveHistoryEmbeddingsEnabled, true);
+
+  AppendTabWithTitle(browser(),
+                     https_server()->GetURL("foo.com", "/empty.html"),
+                     kFooDotComTitle1);
+  AppendTabWithTitle(browser(),
+                     https_server()->GetURL("bar.com", "/empty.html"),
+                     kBarDotComTitle1);
+
+  const int foo_tab_id =
+      browser()->tab_strip_model()->GetTabAtIndex(1)->GetHandle().raw_value();
+  const int bar_tab_id =
+      browser()->tab_strip_model()->GetTabAtIndex(2)->GetHandle().raw_value();
+  const GURL foo_url =
+      browser()->tab_strip_model()->GetTabAtIndex(1)->GetContents()->GetURL();
+  const GURL bar_url =
+      browser()->tab_strip_model()->GetTabAtIndex(2)->GetContents()->GetURL();
+
+  // Wait until both URLs are indexed in history so QueryUrlIds returns
+  // non-zero IDs for them. `AppendTabWithTitle` waits for load stop but the
+  // history record is added on a separate task.
+  history::HistoryService* history_service =
+      HistoryServiceFactory::GetForProfile(profile1(),
+                                           ServiceAccessType::EXPLICIT_ACCESS);
+  ASSERT_TRUE(history_service);
+  // Add the navigated URLs to history synchronously so the URLIDs are ready
+  // by the time `SearchTabsByContent` runs `QueryUrlIds`.
+  history_service->AddPage(foo_url, base::Time::Now(), /*context_id=*/0,
+                           /*nav_entry_id=*/0, /*referrer=*/GURL(),
+                           history::RedirectList(), ui::PAGE_TRANSITION_LINK,
+                           history::SOURCE_BROWSED,
+                           history::VisitResponseCodeCategory::kNot404,
+                           /*did_replace_entry=*/false);
+  history_service->AddPage(bar_url, base::Time::Now(), /*context_id=*/0,
+                           /*nav_entry_id=*/0, /*referrer=*/GURL(),
+                           history::RedirectList(), ui::PAGE_TRANSITION_LINK,
+                           history::SOURCE_BROWSED,
+                           history::VisitResponseCodeCategory::kNot404,
+                           /*did_replace_entry=*/false);
+
+  base::CancelableTaskTracker tracker;
+  const auto query_url_id = [&](const GURL& url) -> history::URLID {
+    base::test::TestFuture<history::QueryURLResult> future;
+    history_service->QueryURL(url, future.GetCallback(), &tracker);
+    const auto result = future.Take();
+    return result.success ? result.row.id() : 0;
+  };
+  const history::URLID foo_url_id = query_url_id(foo_url);
+  const history::URLID bar_url_id = query_url_id(bar_url);
+  ASSERT_NE(foo_url_id, 0);
+  ASSERT_NE(bar_url_id, 0);
+
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+  fake.SetScoredRows({
+      ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
+          bar_url_id, bar_url, base::UTF8ToUTF16(std::string(kBarDotComTitle1)),
+          base::Time::Now(), /*score=*/0.9f),
+      ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
+          foo_url_id, foo_url, base::UTF8ToUTF16(std::string(kFooDotComTitle1)),
+          base::Time::Now(), /*score=*/0.7f),
+  });
+  handler()->SetEmbeddingsSearchForTesting(&fake);
+
+  base::test::TestFuture<const std::vector<int32_t>&> future;
+  handler()->SearchTabsByContent("query", future.GetCallback());
+  const std::vector<int32_t> tab_ids = future.Take();
+
+  EXPECT_EQ(fake.last_query(), "query");
+  EXPECT_TRUE(fake.last_skip_answering());
+  EXPECT_THAT(fake.last_url_id_filter(),
+              testing::UnorderedElementsAre(foo_url_id, bar_url_id));
+  // Result order matches the scored-row ordering returned by `Search()`.
+  EXPECT_THAT(tab_ids, testing::ElementsAre(bar_tab_id, foo_tab_id));
+
+  handler()->SetEmbeddingsSearchForTesting(nullptr);
 }

@@ -389,6 +389,7 @@ source_set("browser_tests") {
       "//brave/components/ai_chat/core/common/buildflags",
       "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/constants",
+      "//brave/components/history_embeddings:test_support",
       "//brave/components/l10n/common:test_support",
       "//brave/components/resources:strings_grit",
       "//brave/components/sidebar/browser",
