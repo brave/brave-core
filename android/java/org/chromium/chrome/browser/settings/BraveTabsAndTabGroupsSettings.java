@@ -118,12 +118,10 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
     private void configureAutoOpenSyncedTabGroupsSwitch() {
         ChromeSwitchPreference autoOpenSyncedTabGroupsSwitch =
                 assertNonNull(findPreference(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH));
-        // LINT.IfChange(isTabGroupSyncAutoOpenConfigurable)
         if (!isTabGroupSyncAutoOpenConfigurable(getProfile())) {
             autoOpenSyncedTabGroupsSwitch.setVisible(false);
             return;
         }
-        // LINT.ThenChange(:isTabGroupSyncAutoOpenConfigurableIndex)
 
         autoOpenSyncedTabGroupsSwitch.setVisible(true);
         PrefService prefService = UserPrefs.get(getProfile());
@@ -337,11 +335,9 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
                                         .build());
                     }
 
-                    // LINT.IfChange(isTabGroupSyncAutoOpenConfigurableIndex)
                     if (!isTabGroupSyncAutoOpenConfigurable(profile)) {
                         indexData.removeEntry(getUniqueId(PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH));
                     }
-                    // LINT.ThenChange(:isTabGroupSyncAutoOpenConfigurable)
                 }
             };
 }
