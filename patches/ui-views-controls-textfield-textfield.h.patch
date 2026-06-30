@@ -1,0 +1,25 @@
+diff --git a/ui/views/controls/textfield/textfield.h b/ui/views/controls/textfield/textfield.h
+index 2ddf0e6d6c5631875a597c09a5c058109d67e6d8..55e2572431ed5f6b91d5817dd4bfddac9e53229a 100644
+--- a/ui/views/controls/textfield/textfield.h
++++ b/ui/views/controls/textfield/textfield.h
+@@ -250,6 +250,12 @@ class VIEWS_EXPORT Textfield : public View,
+   std::u16string_view GetPlaceholderText() const;
+   void SetPlaceholderText(std::u16string_view text);
+ 
++  // Gets/Sets the horizontal alignment of the placeholder text
++  int GetPlaceholderTextHorizontalAlignment();
++  void SetPlaceholderTextHorizontalAlignment(int alignmentFlag);
++  
++  void SetPlaceholderTextDrawFlags(int flags);
++
+   void set_placeholder_text_color(SkColor color) {
+     placeholder_text_color_ = color;
+   }
+@@ -991,6 +997,7 @@ VIEW_BUILDER_PROPERTY(gfx::HorizontalAlignment, HorizontalAlignment)
+ VIEW_BUILDER_PROPERTY(bool, Invalid)
+ VIEW_BUILDER_PROPERTY(int, MinimumWidthInChars)
+ VIEW_BUILDER_PROPERTY(std::u16string, PlaceholderText)
++VIEW_BUILDER_PROPERTY(int, PlaceholderTextHorizontalAlignment)
+ VIEW_BUILDER_PROPERTY(bool, ReadOnly)
+ VIEW_BUILDER_PROPERTY(gfx::Range, SelectedRange)
+ VIEW_BUILDER_PROPERTY(SkColor, SelectionBackgroundColor)

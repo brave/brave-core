@@ -1,0 +1,23 @@
+diff --git a/ui/views/controls/textfield/textfield.cc b/ui/views/controls/textfield/textfield.cc
+index 0387f622e0cd3ea6fb3d5967a563f9cf0716a719..db7fbae90fc475266f685761f204834b1c701474 100644
+--- a/ui/views/controls/textfield/textfield.cc
++++ b/ui/views/controls/textfield/textfield.cc
+@@ -531,6 +531,18 @@ void Textfield::SetPlaceholderText(std::u16string_view text) {
+   OnPropertyChanged(&placeholder_text_, PropertyEffects::kPaint);
+ }
+ 
++int Textfield::GetPlaceholderTextHorizontalAlignment() {
++  return placeholder_text_draw_flags_;
++}
++
++void Textfield::SetPlaceholderTextHorizontalAlignment(int alignmentFlag) {
++  set_placeholder_text_draw_flags(alignmentFlag);
++}
++
++void Textfield::SetPlaceholderTextDrawFlags(int flags) {
++  placeholder_text_draw_flags_ = flags;
++}
++
+ gfx::HorizontalAlignment Textfield::GetHorizontalAlignment() const {
+   return GetRenderText()->horizontal_alignment();
+ }

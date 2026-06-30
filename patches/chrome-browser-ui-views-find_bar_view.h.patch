@@ -1,0 +1,205 @@
+diff --git a/chrome/browser/ui/views/find_bar_view.h b/chrome/browser/ui/views/find_bar_view.h
+index c5c7be0bb4cd45edf35578ebdaaa04e89db929d1..36f40313ec93fc40626012830bc844f195fd63b1 100644
+--- a/chrome/browser/ui/views/find_bar_view.h
++++ b/chrome/browser/ui/views/find_bar_view.h
+@@ -12,7 +12,10 @@
+ #include "base/gtest_prod_util.h"
+ #include "base/memory/raw_ptr.h"
+ #include "chrome/browser/ui/views/chrome_views_export.h"
++#include "chrome/browser/ui/views/controls/hover_button.h"
++#include "components/find_in_page/find_notification_details.h"
+ #include "ui/base/interaction/element_identifier.h"
++#include "ui/base/l10n/l10n_util.h"
+ #include "ui/views/controls/button/button.h"
+ #include "ui/views/controls/button/image_button.h"
+ #include "ui/views/controls/textfield/textfield.h"
+@@ -21,7 +24,7 @@
+ #include "ui/views/metadata/view_factory.h"
+ 
+ class FindBarHost;
+-class FindBarMatchCountLabel;
++class FindBarMatchCountControls;
+ 
+ namespace find_in_page {
+ class FindNotificationDetails;
+@@ -35,7 +38,6 @@ namespace views {
+ class Painter;
+ class Separator;
+ class Textfield;
+-class LabelButton;
+ }  // namespace views
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+@@ -53,8 +55,7 @@ class FindBarView : public views::BoxLayoutView,
+   // Element IDs for ui::ElementTracker
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kElementId);
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kTextField);
+-  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kNthMatchTextField);
+-  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kLastMatchTextButton);
++  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kMatchControls);
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kPreviousButtonElementId);
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kNextButtonElementId);
+   DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kCloseButtonElementId);
+@@ -66,6 +67,14 @@ class FindBarView : public views::BoxLayoutView,
+ 
+   ~FindBarView() override;
+ 
++  struct ViewChildStyleProps {
++    const gfx::Insets horizontal_margin;
++    const gfx::Insets toast_control_vertical_margin;
++    const gfx::Insets toast_label_vertical_margin;
++    const gfx::Insets image_button_margins;
++    gfx::Insets textfield_hover_padding;
++  };
++
+   void SetHost(FindBarHost* host);
+ 
+   // Accessors for the text and selection displayed in the text box.
+@@ -80,6 +89,9 @@ class FindBarView : public views::BoxLayoutView,
+   // Gets the match count text displayed in the text box.
+   std::u16string_view GetMatchCountText() const;
+ 
++  // Gets the match ordinal text displayed in the Nth Match textfield.
++  std::u16string_view GetNthMatchTextfieldText() const;
++
+   // Updates the label inside the Find text box that shows the ordinal of the
+   // active item and how many matches were found.
+   void UpdateForResult(const find_in_page::FindNotificationDetails& result,
+@@ -121,6 +133,8 @@ class FindBarView : public views::BoxLayoutView,
+   const views::ViewAccessibility&
+   GetFindBarMatchCountLabelViewAccessibilityForTesting();
+ 
++  friend class FindBarMatchCountControls;
++
+   // Starts finding |search_text|.  If the text is empty, stops finding.
+   void Find(std::u16string_view search_text);
+ 
+@@ -128,6 +142,9 @@ class FindBarView : public views::BoxLayoutView,
+   // next/previous button.
+   void FindNext(bool reverse = false);
+ 
++  // Find the Nth occurrence of search text relative to its peers. N is 1-based.
++  void FindNth(int n);
++
+   // End the current find session and close the find bubble.
+   void EndFindSession();
+ 
+@@ -147,13 +164,14 @@ class FindBarView : public views::BoxLayoutView,
+ 
+   // The controls in the window.
+   raw_ptr<views::Textfield> find_text_;
++  raw_ptr<FindBarMatchCountControls> match_count_controls_;
+   std::unique_ptr<views::Painter> find_text_border_;
+-  raw_ptr<FindBarMatchCountLabel> match_count_text_;
+-    
+   raw_ptr<views::Separator> separator_;
+   raw_ptr<views::ImageButton> find_previous_button_;
+   raw_ptr<views::ImageButton> find_next_button_;
+   raw_ptr<views::ImageButton> close_button_;
++
++  base::WeakPtrFactory<FindBarView> find_bar_view_weak_ptr_factory_{this};
+ };
+ 
+ BEGIN_VIEW_BUILDER(/* no export */, FindBarView, views::BoxLayoutView)
+@@ -162,4 +180,101 @@ END_VIEW_BUILDER
+ 
+ DEFINE_VIEW_BUILDER(/* no export */, FindBarView)
+ 
++///////////////////////////////////////////////////////////////////////////////
++//
++// FindBarMatchCountControls is responsible for handling the
++// states and interactions of the Nth Match Textfield and Last Match Button.
++// It communicates the user's desired match number to the FindBarView by issuing
++// FindNth() commands.
++//
++////////////////////////////////////////////////////////////////////////////////
++class FindBarMatchCountControls : public views::BoxLayoutView,
++                                  public views::TextfieldController {
++  METADATA_HEADER(FindBarMatchCountControls, views::BoxLayoutView)
++
++ public:
++  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kNthMatchTextField);
++  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kMatchesSeparatorLabel);
++  DECLARE_CLASS_ELEMENT_IDENTIFIER_VALUE(kLastMatchTextButton);
++
++  FindBarMatchCountControls();
++
++  explicit FindBarMatchCountControls(
++      base::WeakPtr<FindBarView> find_bar_view,
++      FindBarView::ViewChildStyleProps style_props);
++
++  FindBarMatchCountControls(const FindBarMatchCountControls&) = delete;
++  FindBarMatchCountControls& operator=(const FindBarMatchCountControls&) =
++      delete;
++
++  ~FindBarMatchCountControls() override;
++
++  views::internal::Builder<BoxLayoutView> CreateLayout(
++      gfx::Insets inside_border_insets);
++
++  gfx::Size CalculatePreferredSize(
++      const views::SizeBounds& available_size) const override;
++
++  void UpdateAccessibleName();
++
++  void SetText();
++
++  std::u16string_view GetText();
++
++  std::u16string_view GetNthMatchTextfieldText();
++
++  void UpdateNthMatchTextfieldWidth();
++
++  void SetResult(const find_in_page::FindNotificationDetails& result);
++
++  void ClearResult();
++
++  std::optional<find_in_page::FindNotificationDetails> GetLastResult();
++
++  ////////////////////////////////////////////////////////////////////////////////
++  // FindBarMatchCountControls, FindNth helper methods:
++
++  void SetMaxValue(int max);
++
++  int EnsureNumericValue(std::u16string raw_value);
++
++  int GetBoundedValue(int n);
++
++  void HandleLastMatchBtnClick();
++
++  ////////////////////////////////////////////////////////////////////////////////
++  // FindBarMatchCountControls, TextfieldController implementation:
++
++  bool HandleKeyEvent(views::Textfield* sender,
++                      const ui::KeyEvent& event) override;
++
++  bool HandleMouseEvent(views::Textfield* sender,
++                        const ui::MouseEvent& event) override;
++
++  void OnAfterUserAction(views::Textfield* sender) override;
++
++ private:
++  base::WeakPtr<FindBarView> find_bar_view_;
++  FindBarView::ViewChildStyleProps style_props_;
++  raw_ptr<views::Textfield> nth_match_textfield_;
++  raw_ptr<views::Label> matches_separator_label_;
++  raw_ptr<HoverButton> last_match_button_;
++
++  std::u16string last_n_text_;
++  std::u16string last_composite_text_;
++  int nth_match_textfield_min_ = 1;
++  int nth_match_textfield_max_;
++
++  std::size_t textfield_default_num_chars_ = static_cast<std::size_t>(3);
++  base::Time last_accepted_textfield_scroll_time_;
++  int64_t min_millis_since_last_scroll_ = 80;
++
++  std::optional<find_in_page::FindNotificationDetails> last_result_;
++};
++
++BEGIN_VIEW_BUILDER(/* No Export */, FindBarMatchCountControls, views::BoxLayoutView)
++END_VIEW_BUILDER
++
++DEFINE_VIEW_BUILDER(/* No Export */, FindBarMatchCountControls)
++
+ #endif  // CHROME_BROWSER_UI_VIEWS_FIND_BAR_VIEW_H_

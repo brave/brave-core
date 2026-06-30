@@ -8,6 +8,24 @@
   <message name="IDS_FIND_IN_PAGE_COUNT" desc="How many matches found and what item we are showing">
     <ph name="ACTIVE_MATCH">$1</ph>/<ph name="TOTAL_MATCHCOUNT">$2</ph>
   </message>
+ <message name="IDS_FIND_IN_PAGE_NTH_MATCH_NUM" desc="Of the matches found, what item we are showing">
+    <ph name="NTH_MATCH">$1</ph>
+  </message>
+  <message name="IDS_FIND_IN_PAGE_NTH_MATCH_PLACEHOLDER_TEXT" desc="The text displayed in the Nth match textfield when there's no other valued typed in">
+    N
+  </message>
+  <message name="IDS_FIND_IN_PAGE_NTH_MATCH_TOOLTIP" desc="The tooltip displayed when the Nth match textfield is hovered">
+    Nth Match
+  </message>
+  <message name="IDS_FIND_IN_PAGE_MATCHES_SEPARATOR_TEXT" desc="The separator between the active match number and the total match count">
+    /
+  </message>
+  <message name="IDS_FIND_IN_PAGE_TOTAL_MATCH_COUNT" desc="How many matches found">
+    <ph name="TOTAL_MATCHCOUNT">$1</ph>
+  </message>
+  <message name="IDS_FIND_IN_PAGE_LAST_MATCH_BUTTON_TOOLTIP" desc="The tooltip displayed when the last match button is hovered">
+    Last Match
+  </message>
   <message name="IDS_ACCESSIBLE_FIND_IN_PAGE_COUNT" desc="Accessible text to be spoken when the user is doing a find in page so they know how many results are on the page and which one is active.">
     Result <ph name="RESULT_NUMBER">
       $1<ex>3</ex>

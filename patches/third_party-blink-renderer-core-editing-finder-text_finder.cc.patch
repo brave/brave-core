@@ -1,0 +1,113 @@
+diff --git a/third_party/blink/renderer/core/editing/finder/text_finder.cc b/third_party/blink/renderer/core/editing/finder/text_finder.cc
+index edd24ab6e511a46d4a8aeba29955cce7de4e917d..30d7515c0b6fb7c9646b3710ba210269bf215dc3 100644
+--- a/third_party/blink/renderer/core/editing/finder/text_finder.cc
++++ b/third_party/blink/renderer/core/editing/finder/text_finder.cc
+@@ -252,10 +252,58 @@ bool TextFinder::FindInternal(int identifier,
+                                 .SetWrappingAround(wrap_within_frame)
+                                 .SetStartingInSelection(options.new_session)
+                                 .SetRubySupported(true)
+-  active_match_ = Editor::FindRangeOfString(
+-      *OwnerFrame().GetFrame()->GetDocument(), search_text,
+-      EphemeralRangeInFlatTree(active_match_.Get()), find_options,
+-      &wrapped_around);
++                                .SetMatchOrdinal(options.match_ordinal);
++
++  // IMPORTANT: Read from cache whenever possible to avoid unnecessary work.
++
++  // Validate the active_match_index_ before potentially using it on the cache.
++  // ASIDE: Together, early validation and subsequent cache read address the marker_controller 
++  // race condition in Textfinder::Scroll().
++  if (options.forward && options.match_ordinal <= 0) {
++    ++active_match_index_;
++  } else if (!options.forward && options.match_ordinal <= 0) {
++    --active_match_index_;
++  } else if (options.match_ordinal > 0) {
++    // match_ordinal (N) is 1-based when it arrives from the UI, so decrement to
++    // convert it to 0-based.
++    active_match_index_ = options.match_ordinal - 1;
++  }
++  
++  // Validate one last time to ensure the index falls in-bounds. 
++  // If match_ordinal (N), a user-generated value, was factored into active_match_index_, 
++  // then the index might no longer be in bounds. Correct that here.
++  if (active_match_index_ + 1 > find_task_controller_->CurrentMatchCount() && options.forward) {
++        active_match_index_ = 0;
++  }
++  else if (active_match_index_ < 0) {
++    active_match_index_ = find_task_controller_->CurrentMatchCount() - 1;
++  }
++
++  // DRY helper
++  auto searchForMatchInDOM = [this, search_text, find_options,
++                              &wrapped_around](Range* active_match) {
++    return Editor::FindRangeOfString(
++        *OwnerFrame().GetFrame()->GetDocument(), search_text,
++        EphemeralRangeInFlatTree(active_match_.Get()), find_options,
++        &wrapped_around);
++  };
++
++  // Read from the cache if it's populated.
++  if (find_matches_cache_.size() > 0) {
++    Range* cached_match = GetCachedMatchAtIndex(active_match_index_);
++    if (cached_match) {
++      // Cache HIT. Use the cached match. 
++      active_match_ = *cached_match;
++    } else { 
++      // Cache MISS. Traverse the DOM to find the active match.
++      active_match_ = searchForMatchInDOM(active_match_);
++    } 
++  }
++  else {
++    // Cache EMPTY. Traverse the DOM to find the active match.
++    active_match_ = searchForMatchInDOM(active_match_);
++  }
++  
+ 
+   if (!active_match_) {
+     if (current_active_match_frame_ && options.new_session)
+@@ -310,7 +358,6 @@ bool TextFinder::FindInternal(int identifier,
+         scroll_task_.callback());
+   }
+ 
+-  bool was_active_frame = current_active_match_frame_;
+   current_active_match_frame_ = true;
+ 
+   bool is_active = SetMarkerActive(active_match_.Get(), true);
+@@ -330,28 +377,11 @@ bool TextFinder::FindInternal(int identifier,
+     // we set the flag to ask the scoping effort to find the active rect for
+     // us and report it back to the UI.
+     should_locate_active_rect_ = true;
+-  } else {
+-    if (!was_active_frame) {
+-      if (options.forward)
+-        active_match_index_ = 0;
+-      else
+-        active_match_index_ = find_task_controller_->CurrentMatchCount() - 1;
+-    } else {
+-      if (options.forward)
+-        ++active_match_index_;
+-      else
+-        --active_match_index_;
+-
+-      if (active_match_index_ + 1 > find_task_controller_->CurrentMatchCount())
+-        active_match_index_ = 0;
+-      else if (active_match_index_ < 0)
+-        active_match_index_ = find_task_controller_->CurrentMatchCount() - 1;
+     }
+     gfx::Rect selection_rect = OwnerFrame().GetFrameView()->ConvertToRootFrame(
+         active_match_->BoundingBox());
+     ReportFindInPageSelection(selection_rect, active_match_index_ + 1,
+                               identifier);
+-  }
+ 
+   // We found something, so the result of the previous scoping may be outdated.
+   find_task_controller_->ResetLastFindRequestCompletedWithNoMatches();
+@@ -950,8 +980,6 @@ void TextFinder::Scroll(std::unique_ptr<AsyncScrollContext> context) {
+   if (!context->options.run_synchronously_for_testing &&
+       !marker_controller.FirstMarkerIntersectingEphemeralRange(
+           ephemeral_range, DocumentMarker::MarkerTypes::TextMatch())) {
+-    marker_controller.AddTextMatchMarker(ephemeral_range,
+-                                         TextMatchMarker::MatchStatus::kActive);
+     SetMarkerActive(context->range, true);
+   }
+ }

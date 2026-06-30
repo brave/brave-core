@@ -1,0 +1,13 @@
+diff --git a/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc b/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
+index fc1edfa353e838e47917c273232c18d0ad4031f8..3c3d2b2e15c9aee4b4f9125b7e1ed6503d71dd91 100644
+--- a/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
++++ b/extensions/browser/api/guest_view/web_view/web_view_internal_api.cc
+@@ -862,6 +862,8 @@ ExtensionFunction::ResponseAction WebViewInternalFindFunction::Run() {
+         params->options->backward ? !*params->options->backward : true;
+     options->match_case =
+         params->options->match_case ? *params->options->match_case : false;
++    options->match_ordinal = 
++      params->options->match_ordinal ? *params->options->match_ordinal : 0;
+   }
+ 
+   GetGuest().StartFind(

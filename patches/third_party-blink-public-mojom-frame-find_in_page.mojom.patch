@@ -1,0 +1,14 @@
+diff --git a/third_party/blink/public/mojom/frame/find_in_page.mojom b/third_party/blink/public/mojom/frame/find_in_page.mojom
+index 8cfd8cdab180babdfca7496373b088a20e5bae03..8e7069a94e81ab3348d0e2802a1bcb9486aa5535 100644
+--- a/third_party/blink/public/mojom/frame/find_in_page.mojom
++++ b/third_party/blink/public/mojom/frame/find_in_page.mojom
+@@ -122,4 +122,9 @@ struct FindOptions {
+   // Signifies whether we should force text scoping to happen immediately
+   // or not. Only used for testing purposes.
+   bool run_synchronously_for_testing = false;
++
++  // N, The 1-based index of the desired match relative to its peers.
++  // We default the value to 0 to indicate the common case in which 
++  // the user does not actively provide N.
++  int32 match_ordinal = 0;
+ };

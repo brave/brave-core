@@ -1,0 +1,22 @@
+diff --git a/components/find_in_page/find_tab_helper.cc b/components/find_in_page/find_tab_helper.cc
+index d3482760ad8a5ad31f51cc9493ce3999a638e2a1..1046a447565641300249dca30b4a515d34c51955 100644
+--- a/components/find_in_page/find_tab_helper.cc
++++ b/components/find_in_page/find_tab_helper.cc
+@@ -46,7 +46,8 @@ void FindTabHelper::StartFinding(std::u16string search_string,
+                                  bool forward_direction,
+                                  bool case_sensitive,
+                                  bool find_match,
+-                                 bool run_synchronously_for_testing){
++                                 bool run_synchronously_for_testing,
++                                 int match_ordinal){
+   // Remove the carriage return character, which generally isn't in web content.
+   const char16_t kInvalidChars[] = u"\r";
+   base::RemoveChars(search_string, kInvalidChars, &search_string);
+@@ -88,6 +89,7 @@ void FindTabHelper::StartFinding(std::u16string search_string,
+   options->new_session = new_session;
+   options->find_match = find_match;
+   options->run_synchronously_for_testing = run_synchronously_for_testing;
++  options->match_ordinal = match_ordinal;
+   GetWebContents().Find(current_find_request_id_, find_text_,
+                         std::move(options), /*skip_delay=*/false);
+ }

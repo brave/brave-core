@@ -1,0 +1,15 @@
+diff --git a/components/find_in_page/find_tab_helper.h b/components/find_in_page/find_tab_helper.h
+index 2575c4cc992c90241f46b0f7af8f2254161198f9..be0b3f4739698409671304cf5f8c09bc15580f36 100644
+--- a/components/find_in_page/find_tab_helper.h
++++ b/components/find_in_page/find_tab_helper.h
+@@ -56,7 +56,9 @@ class FindTabHelper : public content::WebContentsUserData<FindTabHelper> {
+                     bool forward_direction,
+                     bool case_sensitive,
+                     bool find_match,
+-                    bool run_synchronously_for_testing = false);
++                    bool run_synchronously_for_testing = false,
++                    int match_ordinal = 0
++                  );
+ 
+   // Stops the current Find operation.
+   void StopFinding(SelectionAction selection_action);

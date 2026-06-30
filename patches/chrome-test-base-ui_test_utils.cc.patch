@@ -1,0 +1,18 @@
+diff --git a/chrome/test/base/ui_test_utils.cc b/chrome/test/base/ui_test_utils.cc
+index 9877c264191f65e8d2bd551a4b69bfe48b467a7c..c1e49a5f0726aa1d920f475c083af92698a986e5 100644
+--- a/chrome/test/base/ui_test_utils.cc
++++ b/chrome/test/base/ui_test_utils.cc
+@@ -504,9 +504,10 @@ int FindInPage(WebContents* tab,
+                gfx::Rect* selection_rect) {
+   find_in_page::FindTabHelper* find_tab_helper =
+       find_in_page::FindTabHelper::FromWebContents(tab);
+-  find_tab_helper->StartFinding(search_string, forward, match_case,
+-                                true, /* find_match */
+-                                true /* run_synchronously_for_testing */);
++      find_tab_helper->StartFinding(search_string, forward, match_case,
++                                    true, /* find_match */
++                                    true, /* run_synchronously_for_testing */
++                                    ordinal ? *ordinal : 0/* match_ordinal (N) */);
+   FindResultWaiter observer(tab);
+   observer.Wait();
+   if (ordinal)

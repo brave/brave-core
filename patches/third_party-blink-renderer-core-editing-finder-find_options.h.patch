@@ -1,0 +1,30 @@
+diff --git a/third_party/blink/renderer/core/editing/finder/find_options.h b/third_party/blink/renderer/core/editing/finder/find_options.h
+index 47ed259aceeb47c560da72fd497b0f892e9704ca..ed7513a10c7b7f2d15fe7211090c05f7aaed5c70 100644
+--- a/third_party/blink/renderer/core/editing/finder/find_options.h
++++ b/third_party/blink/renderer/core/editing/finder/find_options.h
+@@ -82,6 +82,17 @@ class FindOptions {
+     return *this;
+   }
+ 
++  bool IsMatchOrdinalProvided() const { return match_ordinal_ > 0; }
++
++  constexpr FindOptions& SetMatchOrdinal(int n) {
++    match_ordinal_ = n;
++    return *this;
++  }
++
++  constexpr int GetMatchOrdinal() const {
++    return match_ordinal_;
++  }
++
+  private:
+   bool case_insensitive_ : 1 = false;
+   bool backwards_ : 1 = false;
+@@ -90,6 +101,7 @@ class FindOptions {
+   bool whole_word_ : 1 = false;
+   bool find_api_call_ : 1 = false;
+   bool ruby_supported_ : 1 = false;
++  int match_ordinal_ = 0;
+ 
+ };
+ 

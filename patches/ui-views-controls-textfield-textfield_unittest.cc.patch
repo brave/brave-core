@@ -1,0 +1,26 @@
+diff --git a/ui/views/controls/textfield/textfield_unittest.cc b/ui/views/controls/textfield/textfield_unittest.cc
+index 0f809b8772e7b92da96cff11ab7714fc93707b8c..34660b0f7fbb417980f517c9a197b478f4815a9b 100644
+--- a/ui/views/controls/textfield/textfield_unittest.cc
++++ b/ui/views/controls/textfield/textfield_unittest.cc
+@@ -4546,6 +4546,21 @@ TEST_F(TextfieldTest, AccessibleNameFromLabel) {
+             label_data.id);
+ }
+ 
++TEST_F(TextfieldTest, PlaceholderTextAlignmentSetAndGetTest) {
++  InitTextfield();
++
++  textfield_->SetPlaceholderText(u"Some placeholder");
++
++  textfield_->SetPlaceholderTextHorizontalAlignment(gfx::ALIGN_LEFT);
++  EXPECT_EQ(textfield_->GetPlaceholderTextHorizontalAlignment(), gfx::ALIGN_LEFT);
++
++  textfield_->SetPlaceholderTextHorizontalAlignment(gfx::ALIGN_RIGHT);
++  EXPECT_EQ(textfield_->GetPlaceholderTextHorizontalAlignment(), gfx::ALIGN_RIGHT);
++
++  textfield_->SetPlaceholderTextHorizontalAlignment(gfx::ALIGN_CENTER);
++  EXPECT_EQ(textfield_->GetPlaceholderTextHorizontalAlignment(), gfx::ALIGN_CENTER);
++}
++
+ #if BUILDFLAG(IS_CHROMEOS)
+ // Check that when accessibility virtual keyboard is enabled, windows are
+ // shifted up when focused and restored when focus is lost.

@@ -1,0 +1,666 @@
+diff --git a/chrome/browser/ui/views/find_bar_views_interactive_uitest.cc b/chrome/browser/ui/views/find_bar_views_interactive_uitest.cc
+index 3782312a904b96c9de20eff979ea25df0c5ee814..6aebf47ae369f08ce9a968078477cb7208c6f7cb 100644
+--- a/chrome/browser/ui/views/find_bar_views_interactive_uitest.cc
++++ b/chrome/browser/ui/views/find_bar_views_interactive_uitest.cc
+@@ -2,6 +2,7 @@
+ // Use of this source code is governed by a BSD-style license that can be
+ // found in the LICENSE file.
+ 
++#include <string>
+ #include "base/i18n/number_formatting.h"
+ #include "base/strings/string_util.h"
+ #include "base/strings/utf_string_conversions.h"
+@@ -43,6 +44,7 @@
+ #include "content/public/test/browser_test.h"
+ #include "content/public/test/browser_test_utils.h"
+ #include "content/public/test/focus_changed_observer.h"
++#include "find_bar_view.h"
+ #include "net/dns/mock_host_resolver.h"
+ #include "net/test/embedded_test_server/embedded_test_server.h"
+ #include "third_party/blink/public/common/switches.h"
+@@ -72,6 +74,7 @@ using ui_test_utils::IsViewFocused;
+ 
+ namespace {
+ const char kSimplePage[] = "/find_in_page/simple.html";
++const char kLargePage[] = "/find_in_page/largepage.html";
+ 
+ std::unique_ptr<net::test_server::HttpResponse> HandleHttpRequest(
+     const net::test_server::HttpRequest& request) {
+@@ -195,6 +198,57 @@ class LegacyFindInPageTest : public InProcessBrowserTest {
+     view->OnGestureEvent(&event);
+   }
+ 
++  void EnterNumericText(std::u16string number_as_string) {
++     // Type-in a value to the focused element, digit-by-digit.
++  for (const char16_t digit_char : number_as_string) {
++    int digit = std::stoi(base::UTF16ToUTF8(std::u16string(&digit_char)));
++    switch (digit) {
++      case 0: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_0, false,
++                                              false, false, false));
++        break;
++      case 1: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_1, false,
++                                              false, false, false));
++        break;
++      case 2: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_2, false,
++                                              false, false, false));
++        break;
++      case 3: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_3, false,
++                                              false, false, false));
++        break;
++      case 4: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_4, false,
++                                              false, false, false));
++        break;
++      case 5: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_5, false,
++                                              false, false, false));
++        break;
++      case 6: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_6, false,
++                                              false, false, false));
++        break;
++      case 7: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_7, false,
++                                              false, false, false));
++        break;
++      case 8: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_8, false,
++                                              false, false, false));
++        break;
++      case 9: 
++        ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_9, false,
++                                              false, false, false));
++        break;
++      default:
++        break;
++    }
++  }
++  }
++
+   find_in_page::FindNotificationDetails WaitForFindResult() {
+     WebContents* web_contents =
+         browser()->tab_strip_model()->GetActiveWebContents();
+@@ -371,7 +425,9 @@ IN_PROC_BROWSER_TEST_F(FindBarViewsUiTest, NavigationByKeyEvent) {
+               testing::Ne(FindResultState::kInitialActiveMatchOrdinalCount))),
+       // Press the [Tab] key and [Enter], the previous button should still be
+       // focused.
+-      SendKeyPress(ui::VKEY_TAB, false, false),
++      SendKeyPress(ui::VKEY_TAB, false, false), // Tab to Nth Match Textfield 
++      SendKeyPress(ui::VKEY_TAB, false, false), // Tab to Last Match HoverButton
++      SendKeyPress(ui::VKEY_TAB, false, false), // Tab to Previous Match ImageButton 
+       SendKeyPress(ui::VKEY_RETURN, false, false),
+       CheckHasFocus(FindBarView::kPreviousButtonElementId),
+       // Press the [Tab] key and [Enter], the next button should still be
+@@ -457,22 +513,42 @@ IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, ButtonsDoNotAlterFocus) {
+       find_bar_view->GetViewByID(VIEW_ID_FIND_IN_PAGE_NEXT_BUTTON);
+   views::View* previous_button =
+       find_bar_view->GetViewByID(VIEW_ID_FIND_IN_PAGE_PREVIOUS_BUTTON);
++  views::View* last_match_button =
++      find_bar_view->GetViewByID(VIEW_ID_FIND_IN_PAGE_LAST_MATCH_BUTTON);
+ 
+-  // Clicking the next and previous buttons should not alter the focused view.
++  // Clicking the next, previous, and last match buttons should not alter the focused view.
+   ClickOnView(next_button);
+   EXPECT_EQ(2, WaitForFinalFindResult().active_match_ordinal());
+   EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
+   ClickOnView(previous_button);
+   EXPECT_EQ(1, WaitForFinalFindResult().active_match_ordinal());
+   EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++  ClickOnView(last_match_button);
++  EXPECT_EQ(match_count, WaitForFinalFindResult().active_match_ordinal());
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  // Reset the find results to point to the first match.
++  int first_match_ordinal = 1;
++  ui_test_utils::FindInPage(
++    browser()->tab_strip_model()->GetActiveWebContents(), u"e", true, false,
++    &first_match_ordinal, nullptr);
+ 
+-  // Tapping the next and previous buttons should not alter the focused view.
++  // Tapping the next, previous, and last match buttons should not alter the focused view.
+   TapOnView(next_button);
+   EXPECT_EQ(2, WaitForFinalFindResult().active_match_ordinal());
+   EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
+   TapOnView(previous_button);
+   EXPECT_EQ(1, WaitForFinalFindResult().active_match_ordinal());
+   EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++  ClickOnView(last_match_button);
++  EXPECT_EQ(match_count, WaitForFinalFindResult().active_match_ordinal());
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  // Reset the find results to point to the first match.
++  first_match_ordinal = 1;
++  ui_test_utils::FindInPage(
++    browser()->tab_strip_model()->GetActiveWebContents(), u"e", true, false,
++    &first_match_ordinal, nullptr);
+ 
+   // The same should be true even when the previous button is focused.
+   previous_button->RequestFocus();
+@@ -1349,3 +1425,523 @@ IN_PROC_BROWSER_TEST_P(FindBarViewsUiTest, DISABLED_CopyBlockedByPolicy) {
+       WaitForViewProperty(FindBarView::kTextField, views::Textfield, Text,
+                           u"some text"));
+ }
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindNthMatchWhenNthMatchTextChanges) {
++
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++ 
++  // Wait for events to settle.
++  auto last_result = WaitForFinalFindResult();
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++
++  // Assert the number of matches found in the browser is correct.
++  EXPECT_EQ(447, last_result.number_of_matches());
++
++  // Set N in-bounds.
++  int n = 20;
++  std::u16string n_string(base::UTF8ToUTF16(std::to_string(n)));
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++
++  EXPECT_TRUE(
++    IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Type-in the value for N.
++  EnterNumericText(n_string);
++
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();
++
++  // Assert the Nth match textfield displays the correct value.
++  EXPECT_EQ(n_string, find_bar_view->GetNthMatchTextfieldText());
++
++  // Assert the Nth match is active.
++  EXPECT_EQ(n, last_result.active_match_ordinal());
++}
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindPreviousMatchNthMatchTextfieldFocusedUpArrowKeyPressed) {
++
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFinalFindResult();
++
++  std::u16string nth_match_textfield_text(find_bar_view->GetNthMatchTextfieldText());
++  
++  // Assert the first match is highlighted by default.
++  // and the number of matches found in the browser is correct.
++  EXPECT_EQ(1, last_result.active_match_ordinal()); 
++  EXPECT_EQ(447, last_result.number_of_matches());
++  EXPECT_EQ(std::u16string(u"1"), nth_match_textfield_text);
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++  EXPECT_TRUE(
++      IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Press the Up Arrow key.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_UP, false,
++                                              false, false, false));
++
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();
++
++  nth_match_textfield_text = find_bar_view->GetNthMatchTextfieldText();
++  
++  // Assert that pressing the Up Arrow key underflowed N 
++  // and wrapped it back around to the max.
++  EXPECT_EQ(
++    nth_match_textfield_text,
++    base::UTF8ToUTF16(std::to_string(last_result.number_of_matches())));
++
++  // Assert the previous match is the active match.
++  EXPECT_EQ(
++    nth_match_textfield_text, 
++    base::UTF8ToUTF16(std::to_string(last_result.active_match_ordinal())));
++  
++  // -------------- Next round ------------------
++ 
++  int n_before_up_arrow = std::stoi(base::UTF16ToUTF8(nth_match_textfield_text));
++
++  // Press the Up Arrow key.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_UP, false,
++                                              false, false, false));
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();      
++  
++  nth_match_textfield_text = find_bar_view->GetNthMatchTextfieldText();
++
++  // Assert that pressing the Up Arrow key decreased N by 1.
++  EXPECT_EQ(
++    nth_match_textfield_text,
++    base::UTF8ToUTF16(std::to_string(n_before_up_arrow - 1))
++  );
++
++  // Assert the previous match is the active match.
++  EXPECT_EQ(
++    nth_match_textfield_text, 
++    base::UTF8ToUTF16(std::to_string(last_result.active_match_ordinal())));
++}
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindNextMatchNthMatchTextfieldFocusedDownArrowKeyPressed) {
++
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFinalFindResult();
++
++  std::u16string nth_match_textfield_text(find_bar_view->GetNthMatchTextfieldText());
++  
++  // Assert the first match is highlighted,
++  // the number of matches found in the browser is correct,
++  // and the value in the Nth match textfield is correct.
++  EXPECT_EQ(1, last_result.active_match_ordinal()); 
++  EXPECT_EQ(447, last_result.number_of_matches());
++  EXPECT_EQ(std::u16string(u"1"), nth_match_textfield_text);
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++  EXPECT_TRUE(
++      IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Jump to the last match to demonstrate wrap-around.
++  EnterNumericText(base::UTF8ToUTF16(std::to_string(last_result.number_of_matches())));
++
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();
++
++  nth_match_textfield_text = find_bar_view->GetNthMatchTextfieldText();
++
++  // Assert the last match is highlighted,
++  // the number of matches found in the browser is correct,
++  // and the value in the Nth match textfield is correct.
++  EXPECT_EQ(
++    last_result.number_of_matches(), 
++    last_result.active_match_ordinal()); 
++  EXPECT_EQ(447, last_result.number_of_matches());
++  EXPECT_EQ(std::u16string(u"447"), nth_match_textfield_text);
++
++  // Press the Down Arrow key.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_DOWN, false,
++                                              false, false, false));
++
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();
++
++  nth_match_textfield_text = find_bar_view->GetNthMatchTextfieldText();
++  
++  // Assert that pressing the Down Arrow key overflowed N 
++  // and wrapped it back around to the min.
++  EXPECT_EQ(
++    nth_match_textfield_text,
++    base::UTF8ToUTF16(std::to_string(1)));
++
++  // Assert the next match is the active match.
++  EXPECT_EQ(
++    nth_match_textfield_text, 
++    base::UTF8ToUTF16(std::to_string(last_result.active_match_ordinal())));
++
++
++  /* -------------- Next round ------------------ */
++ 
++  int n_before_down_arrow = std::stoi(base::UTF16ToUTF8(nth_match_textfield_text));
++
++  // Press the Down Arrow key.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_DOWN, false,
++                                              false, false, false));
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();      
++  
++  nth_match_textfield_text = find_bar_view->GetNthMatchTextfieldText();
++
++  // Assert that pressing the Down Arrow key increased N by 1.
++  EXPECT_EQ(
++    nth_match_textfield_text,
++    base::UTF8ToUTF16(std::to_string(n_before_down_arrow + 1))
++  );
++
++  // Assert the next match is the active match.
++  EXPECT_EQ(
++    nth_match_textfield_text, 
++    base::UTF8ToUTF16(std::to_string(last_result.active_match_ordinal())));
++}
++
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindFirstMatchWhenNthMatchTextIsNotNumeric) {
++
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false)); 
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFinalFindResult();   
++  
++  // Assert the number of matches found in the browser is correct.
++  EXPECT_EQ(447, last_result.number_of_matches());
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++
++  EXPECT_TRUE(
++      IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Type-in "abc" as N.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_A, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_B, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_C, false,
++                                              false, false, false));
++
++  // Assert the Nth match textfield rejected the alphabetical input and
++  // clamped the display value to the min (1).
++  EXPECT_EQ(std::u16string(u"1"), find_bar_view->GetNthMatchTextfieldText());
++
++  // Assert the 1st match is active.
++  EXPECT_EQ(1, last_result.active_match_ordinal());
++}
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindFirstMatchWhenNthMatchTextUnderflowsMin) {
++  
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFinalFindResult();   
++  
++  // Assert the number of matches found in the browser is correct.
++  EXPECT_EQ(447, last_result.number_of_matches());
++
++  // Set N out-of-bounds to the left.
++  int n = 0;
++  std::u16string n_string(base::UTF8ToUTF16(std::to_string(n)));
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++
++  EXPECT_TRUE(
++      IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Type-in the value for N.
++  EnterNumericText(n_string);
++
++  // Wait for events to settle.
++  last_result = WaitForFinalFindResult();   
++
++  // Assert the Nth match textfield rejected the underflowing input and
++  // clamped the display value to the min (1).
++  EXPECT_EQ(std::u16string(u"1"), find_bar_view->GetNthMatchTextfieldText());
++
++  // Assert the first match is active.
++  EXPECT_EQ(1, last_result.active_match_ordinal());
++}
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindLastMatchWhenNthMatchTextOverflowsMax) {
++
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFindResult();
++
++  // Assert the number of matches found in the browser is correct.
++  EXPECT_EQ(447, last_result.number_of_matches());
++
++  // Set N out-of-bounds to the right.
++  int n = last_result.number_of_matches() + 1;
++  std::u16string n_string(base::UTF8ToUTF16(std::to_string(n)));
++
++  // Press the Tab key to focus the Nth match textfield.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_TAB, false,
++                                              false, false, false));
++
++  EXPECT_TRUE(
++      IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD));
++
++  // Type-in the value for N.
++  EnterNumericText(n_string);
++
++  // Wait for events to settle.
++  last_result = WaitForFindResult();
++
++  // Assert the Nth match textfield rejected the overflowing input and
++  // clamped the display value to the max (number_of_matches).
++  EXPECT_EQ(
++    find_bar_view->GetNthMatchTextfieldText(),
++    base::UTF8ToUTF16(std::to_string(last_result.number_of_matches())));
++
++  // Assert the last match is active.
++  EXPECT_EQ(last_result.active_match_ordinal(), last_result.number_of_matches());
++}
++
++IN_PROC_BROWSER_TEST_F(LegacyFindInPageTest, FindLastMatchWhenLastMatchButtonPressed) {
++  ASSERT_TRUE(embedded_test_server()->Start());
++
++  // Make sure Chrome is in the foreground, otherwise sending input
++  // won't do anything and the test will hang.
++  ASSERT_TRUE(ui_test_utils::BringBrowserWindowToFront(browser()));
++
++  // First we navigate to any page.
++  ASSERT_TRUE(ui_test_utils::NavigateToURL(
++      browser(), embedded_test_server()->GetURL(kLargePage)));
++
++  // Show the Find bar.
++  browser()->GetFeatures().GetFindBarController()->Show();
++  EXPECT_TRUE(IsViewFocused(browser(), VIEW_ID_FIND_IN_PAGE_TEXT_FIELD));
++
++  FindBarView* find_bar_view = GetFindBarView();
++
++  // Enter phrase " the " to start the initial find operation.
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_T, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_H, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_E, false,
++                                              false, false, false));
++  ASSERT_TRUE(ui_test_utils::SendKeyPressSync(browser(), ui::VKEY_SPACE, false,
++                                              false, false, false));
++
++  // Assert the find bar textfield displays the correct value.
++  EXPECT_EQ(GetFindBarText(), base::UTF8ToUTF16(std::string(" the ")));
++
++  // Wait for events to settle.
++  auto last_result = WaitForFindResult();
++
++  // Assert the number of matches found in the browser is correct.
++  EXPECT_EQ(447, last_result.number_of_matches());
++
++  views::View* last_match_button =
++      find_bar_view->GetViewByID(VIEW_ID_FIND_IN_PAGE_LAST_MATCH_BUTTON);
++
++  ClickOnView(last_match_button);
++
++  // Wait for events to settle.
++  last_result = WaitForFindResult();
++
++  // Assert the Nth match textfield displays the last match ordinal
++  // (number_of_matches).
++  EXPECT_EQ(
++    find_bar_view->GetNthMatchTextfieldText(),
++    base::UTF8ToUTF16(std::to_string(last_result.number_of_matches())));
++
++  // Assert the last match is active.
++  EXPECT_EQ(last_result.active_match_ordinal(), last_result.number_of_matches());
++}

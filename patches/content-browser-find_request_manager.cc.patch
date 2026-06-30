@@ -1,0 +1,29 @@
+diff --git a/content/browser/find_request_manager.cc b/content/browser/find_request_manager.cc
+index 5912020d07186f243989e794ce8b46f509d4fdcc..8b2c2a8e2c3546efbdcb48b5eb216db73f4798a6 100644
+--- a/content/browser/find_request_manager.cc
++++ b/content/browser/find_request_manager.cc
+@@ -441,9 +441,15 @@ void FindRequestManager::UpdatedFrameNumberOfMatches(RenderFrameHostImpl* rfh,
+   number_of_matches_ += new_count;
+ 
+   // All matches may have been removed since the last find reply.
+-  if (rfh == active_frame_ && !new_count)
++  if (rfh == active_frame_ && !new_count) {
+     relative_active_match_ordinal_ = 0;
++  }
+ 
++  // Give priority to the calling frame (rfh) if
++  // no frame has claimed the active status yet.
++  if (!active_frame_ && rfh) {
++    active_frame_ = rfh;
++  }
+   // The active match ordinal may need updating since the number of matches
+   // before the active match may have changed.
+   UpdateActiveMatchOrdinal();
+@@ -857,7 +863,6 @@ void FindRequestManager::UpdateActiveMatchOrdinal() {
+   active_match_ordinal_ = 0;
+ 
+   if (!active_frame_ || !relative_active_match_ordinal_) {
+-    DCHECK(!active_frame_ && !relative_active_match_ordinal_);
+     return;
+   }
+ 

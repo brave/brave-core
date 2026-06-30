@@ -1,0 +1,585 @@
+diff --git a/chrome/browser/ui/views/find_bar_view.cc b/chrome/browser/ui/views/find_bar_view.cc
+index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab49548efef45f 100644
+--- a/chrome/browser/ui/views/find_bar_view.cc
++++ b/chrome/browser/ui/views/find_bar_view.cc
+@@ -9,10 +9,12 @@
+ #include <string_view>
+ 
+ #include <utility>
++#include <cwctype>
+ 
+ #include "base/feature_list.h"
+ #include "base/i18n/number_formatting.h"
+ #include "base/strings/string_util.h"
++#include "base/time/time.h"
+ #include "build/build_config.h"
+ #include "chrome/app/vector_icons/vector_icons.h"
+ #include "chrome/browser/enterprise/data_protection/data_protection_clipboard_utils.h"
+@@ -77,94 +79,16 @@ void SetCommonButtonAttributes(views::ImageButton* button) {
+ 
+ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kElementId);
+ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kTextField);
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kMatchControls);
++
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarMatchCountControls, kNthMatchTextField);
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarMatchCountControls, kMatchesSeparatorLabel);
++DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarMatchCountControls, kLastMatchTextButton);
+ 
+ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kPreviousButtonElementId);
+ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kNextButtonElementId);
+ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(FindBarView, kCloseButtonElementId);
+ 
+-class FindBarMatchCountLabel : public views::Label {
+-  METADATA_HEADER(FindBarMatchCountLabel, views::Label)
+-
+- public:
+-  FindBarMatchCountLabel() {
+-    GetViewAccessibility().SetRole(ax::mojom::Role::kStatus);
+-    UpdateAccessibleName();
+-  }
+-
+-  FindBarMatchCountLabel(const FindBarMatchCountLabel&) = delete;
+-  FindBarMatchCountLabel& operator=(const FindBarMatchCountLabel&) = delete;
+-
+-  ~FindBarMatchCountLabel() override = default;
+-
+-  gfx::Size CalculatePreferredSize(
+-      const views::SizeBounds& available_size) const override {
+-    // We need to return at least 1dip so that box layout adds padding on either
+-    // side (otherwise there will be a jump when our size changes between empty
+-    // and non-empty).
+-    gfx::Size size = views::Label::CalculatePreferredSize(available_size);
+-    size.set_width(std::max(1, size.width()));
+-    return size;
+-  }
+-
+-  void UpdateAccessibleName() {
+-    if (!last_result_) {
+-      GetViewAccessibility().SetName(
+-          std::string(), ax::mojom::NameFrom::kAttributeExplicitlyEmpty);
+-    } else if (last_result_->number_of_matches() < 1) {
+-      GetViewAccessibility().SetName(
+-          l10n_util::GetStringUTF16(IDS_ACCESSIBLE_FIND_IN_PAGE_NO_RESULTS));
+-    } else {
+-      GetViewAccessibility().SetName(l10n_util::GetStringFUTF16(
+-          IDS_ACCESSIBLE_FIND_IN_PAGE_COUNT,
+-          base::FormatNumber(last_result_->active_match_ordinal()),
+-          base::FormatNumber(last_result_->number_of_matches())));
+-    }
+-  }
+-
+-  void SetResult(const find_in_page::FindNotificationDetails& result) {
+-    if (last_result_ && result == *last_result_) {
+-      return;
+-    }
+-
+-    last_result_ = result;
+-    // TODO(crbug.com/40939931): Get NO_RESULTS to be announced under Orca and
+-    // ChromeVox.
+-
+-    SetText(l10n_util::GetStringFUTF16(
+-        IDS_FIND_IN_PAGE_COUNT,    
+-        base::FormatNumber(last_result_->active_match_ordinal()),
+-        base::FormatNumber(last_result_->number_of_matches())));
+-    UpdateAccessibleName();
+-
+-    if (last_result_->final_update()) {
+-      GetViewAccessibility().AnnouncePolitely(
+-          GetViewAccessibility().GetCachedName());
+-    }
+-  }
+-
+-  void ClearResult() {
+-    last_result_.reset();
+-    SetText(std::u16string());
+-    UpdateAccessibleName();
+-  }
+-
+-
+-std::optional<find_in_page::FindNotificationDetails> GetLastResult() {
+-  return last_result_;
+-}
+-
+-
+- private:
+-  std::optional<find_in_page::FindNotificationDetails> last_result_;
+-};
+-
+-BEGIN_VIEW_BUILDER(/* No Export */, FindBarMatchCountLabel, views::Label)
+-END_VIEW_BUILDER
+-
+-DEFINE_VIEW_BUILDER(/* No Export */, FindBarMatchCountLabel)
+-
+-BEGIN_METADATA(FindBarMatchCountLabel)
+-END_METADATA
+ 
+ 
+ ////////////////////////////////////////////////////////////////////////////////
+@@ -179,7 +103,6 @@ FindBarView::FindBarView(FindBarHost* host) {
+   // we place views directly adjacent, with horizontal margins on each view
+   // that will add up to the right spacing amounts.
+ 
+-  PLOG(ERROR) << "[CUSTOM LOG] FindBarView::FindBarView(...) START constructor \t";
+ 
+   ChromeLayoutProvider* layout_provider = ChromeLayoutProvider::Get();
+   const auto horizontal_margin =
+@@ -211,12 +134,30 @@ FindBarView::FindBarView(FindBarHost* host) {
+   gfx::Insets textfield_hover_padding = vector_button;
+   textfield_hover_padding.set_top_bottom(0, 0);
+ 
++  const auto toast_label_vertical_margin = gfx::Insets::VH(
++    layout_provider->GetDistanceMetric(DISTANCE_TOAST_LABEL_VERTICAL), 0);
++
++  auto inside_border_insets =
++    gfx::Insets(layout_provider->GetInsetsMetric(INSETS_TOAST) -
++                horizontal_margin);
++
++  // Repurpose the match count widget to be an interactive composite of
++  // nth_match_textfield_, separator_label_, and last_match_button_.
++  match_count_controls_ = raw_ptr<FindBarMatchCountControls>(new FindBarMatchCountControls(
++    find_bar_view_weak_ptr_factory_.GetWeakPtr(),
++    FindBarView::ViewChildStyleProps({
++      horizontal_margin,
++      toast_control_vertical_margin,
++      toast_label_vertical_margin,
++      image_button_margins,
++      textfield_hover_padding
++    }))
++  );
++
+   auto main_container =
+       views::Builder<views::BoxLayoutView>()
+           .SetOrientation(views::BoxLayout::Orientation::kHorizontal)
+-          .SetInsideBorderInsets(
+-              gfx::Insets(layout_provider->GetInsetsMetric(INSETS_TOAST) -
+-                          horizontal_margin))
++          .SetInsideBorderInsets(inside_border_insets)
+           .AddChildren(
+               views::Builder<views::Textfield>()
+                   .CopyAddressTo(&find_text_)
+@@ -232,14 +173,8 @@ FindBarView::FindBarView(FindBarHost* host) {
+                                toast_control_vertical_margin +
+                                    horizontal_margin - textfield_hover_padding)
+                   .SetController(this),
+-              views::Builder<FindBarMatchCountLabel>()
+-                  .CopyAddressTo(&match_count_text_)
+-                  .SetBackgroundColor(kColorFindBarBackground)
+-                  .SetEnabledColor(kColorFindBarMatchCount)
+-                  .SetCanProcessEventsWithinSubtree(false)
+-                  .SetProperty(views::kMarginsKey,
+-                               gfx::Insets(toast_label_vertical_margin +
+-                                           horizontal_margin)),      
++
++              match_count_controls_->CreateLayout(inside_border_insets),
+ 
+               views::Builder<views::Separator>()
+                   .CopyAddressTo(&separator_)
+@@ -382,7 +317,11 @@ std::u16string_view FindBarView::GetFindSelectedText() const {
+ }
+ 
+ std::u16string_view FindBarView::GetMatchCountText() const {
+-  return match_count_text_->GetText();
++  return match_count_controls_->GetText();
++}
++
++std::u16string_view FindBarView::GetNthMatchTextfieldText() const {
++  return match_count_controls_->GetNthMatchTextfieldText();
+ }
+ 
+ void FindBarView::UpdateForResult(
+@@ -412,6 +351,12 @@ void FindBarView::UpdateForResult(
+     return;
+   }
+ 
++  match_count_controls_->SetResult(result);
++
++  // We know the total number of matches now,
++  // so don't allow inputs to the nth match textfield that are greater than the total.
++  match_count_controls_->SetMaxValue(result.number_of_matches());
++
+   UpdateMatchCountAppearance(result.number_of_matches() == 0 &&
+                              result.final_update());
+ 
+@@ -423,7 +368,7 @@ void FindBarView::UpdateForResult(
+ }
+ 
+ void FindBarView::ClearMatchCount() {
+-  match_count_text_->ClearResult();
++  match_count_controls_->ClearResult();
+   UpdateMatchCountAppearance(false);
+   DeprecatedLayoutImmediately();
+   SchedulePaint();
+@@ -456,7 +401,7 @@ bool FindBarView::OnMousePressed(const ui::MouseEvent& event) {
+ 
+ const views::ViewAccessibility&
+ FindBarView::GetFindBarMatchCountLabelViewAccessibilityForTesting() {
+-  return match_count_text_->GetViewAccessibility();
++  return match_count_controls_->GetViewAccessibility();
+ }
+ 
+ gfx::Size FindBarView::CalculatePreferredSize(
+@@ -465,7 +410,7 @@ gfx::Size FindBarView::CalculatePreferredSize(
+   // Ignore the preferred size for the match count label, and just let it take
+   // up part of the space for the input textfield. This prevents the overall
+   // width from changing every time the match count text changes.
+-    size.set_width(size.width() - match_count_text_->GetPreferredSize().width());
++    size.set_width(size.width() - match_count_controls_->GetPreferredSize().width());
+     return size;
+ }
+ 
+@@ -625,6 +570,23 @@ void FindBarView::FindNext(bool reverse) {
+   }
+ }
+ 
++void FindBarView::FindNth(int n) {
++  if (!find_bar_host_) {
++    return;
++  }
++  if (!find_text_->GetText().empty()) {
++    find_in_page::FindTabHelper* find_tab_helper =
++        find_in_page::FindTabHelper::FromWebContents(
++            find_bar_host_->GetFindBarController()->web_contents());
++    find_tab_helper->StartFinding(std::u16string(find_text_->GetText()),
++                                  true, /* forward_direction */
++                                  false,    /* case_sensitive */
++                                  true, /* find_match */
++                                  false, /* run_synchronously_for_testing */
++                                  n /* match_ordinal */);
++  }
++}
++
+ void FindBarView::EndFindSession() {
+   if (!find_bar_host_) {
+     return;
+@@ -641,3 +603,331 @@ void FindBarView::UpdateMatchCountAppearance(bool no_match) {
+ 
+ BEGIN_METADATA(FindBarView)
+ END_METADATA
++
++///////////////////////////////////////////////////////////////////////////////
++// FindBarMatchCountControls, public:
++
++FindBarMatchCountControls::FindBarMatchCountControls(
++    base::WeakPtr<FindBarView> find_bar_view,
++    FindBarView::ViewChildStyleProps style_props
++  ) : find_bar_view_(find_bar_view),
++      style_props_(style_props) {
++    GetViewAccessibility().SetRole(ax::mojom::Role::kStatus);
++    UpdateAccessibleName();
++  }
++
++  FindBarMatchCountControls::~FindBarMatchCountControls() = default;
++
++  views::internal::Builder<views::BoxLayoutView> FindBarMatchCountControls::CreateLayout(gfx::Insets inside_border_insets) {
++    auto match_count_container =
++      views::Builder<views::BoxLayoutView>()
++      .SetOrientation(views::BoxLayout::Orientation::kHorizontal)
++      .SetInsideBorderInsets(gfx::Insets(0))
++      .SetProperty(views::kElementIdentifierKey, FindBarView::kMatchControls)
++      .AddChildren(
++        views::Builder<views::Textfield>()
++                .CopyAddressTo(&nth_match_textfield_)
++                .SetAccessibleName(l10n_util::GetStringUTF16(IDS_ACCNAME_NTH))
++                .SetBorder(views::CreateEmptyBorder(style_props_.textfield_hover_padding))
++                .SetMinimumWidthInChars(1)
++                .SetDefaultWidthInChars(textfield_default_num_chars_)
++                .SetHorizontalAlignment(gfx::ALIGN_CENTER)
++                .SetID(VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD)
++                .SetPlaceholderText(l10n_util::GetStringUTF16(IDS_FIND_IN_PAGE_NTH_MATCH_PLACEHOLDER_TEXT))
++                .SetPlaceholderTextHorizontalAlignment(gfx::Canvas::TEXT_ALIGN_CENTER)
++                .SetProperty(views::kElementIdentifierKey, kNthMatchTextField)
++                .SetProperty(views::kMarginsKey,
++                            style_props_.toast_control_vertical_margin +
++                                style_props_.horizontal_margin - style_props_.textfield_hover_padding)
++                .SetTextInputType(ui::TextInputType::TEXT_INPUT_TYPE_NUMBER)
++                .SetTextInputFlags(ui::TEXT_INPUT_FLAG_AUTOCORRECT_OFF)
++                .SetController(this),
++        views::Builder<views::Label>()
++                  .CopyAddressTo(&matches_separator_label_)
++                  .SetAccessibleName(
++                    l10n_util::GetStringUTF16(IDS_ACCNAME_MATCH_SEPARATOR))
++                  .SetBorder(views::CreateEmptyBorder(style_props_.textfield_hover_padding))
++                  .SetHorizontalAlignment(gfx::ALIGN_CENTER)
++                  .SetID(VIEW_ID_FIND_IN_PAGE_MATCHES_SEPARATOR_TEXT)
++                  .SetProperty(views::kElementIdentifierKey, kMatchesSeparatorLabel)
++                  .SetProperty(views::kMarginsKey,
++                               style_props_.toast_control_vertical_margin +
++                                   style_props_.horizontal_margin - style_props_.textfield_hover_padding)
++                  .SetText(l10n_util::GetStringUTF16(IDS_FIND_IN_PAGE_MATCHES_SEPARATOR_TEXT)),
++        views::Builder<HoverButton>()
++                  .CopyAddressTo(&last_match_button_)
++                  .SetAccessibleName(
++                     l10n_util::GetStringUTF16(IDS_ACCNAME_LAST))
++                  .SetID(VIEW_ID_FIND_IN_PAGE_LAST_MATCH_BUTTON)
++                  .SetProperty(views::kElementIdentifierKey, kLastMatchTextButton)
++                  .SetTooltipText(l10n_util::GetStringUTF16(IDS_FIND_IN_PAGE_LAST_MATCH_BUTTON_TOOLTIP))
++                  .SetCallback(base::BindRepeating(&FindBarMatchCountControls::HandleLastMatchBtnClick, base::Unretained(this)))
++                  .SetProperty(views::kMarginsKey, style_props_.image_button_margins)
++      );
++
++      return match_count_container;
++  }
++
++  gfx::Size FindBarMatchCountControls::CalculatePreferredSize (const views::SizeBounds& available_size) const {
++    // We need to return at least 1dip so that box layout adds padding on either
++    // side (otherwise there will be a jump when our size changes between empty
++    // and non-empty).
++    gfx::Size size = views::BoxLayoutView::CalculatePreferredSize(available_size);
++    size.set_width(std::max(1, size.width()));
++    return size;
++  }
++
++  void FindBarMatchCountControls::UpdateAccessibleName() {
++    if (!last_result_) {
++      GetViewAccessibility().SetName(
++          std::string(), ax::mojom::NameFrom::kAttributeExplicitlyEmpty);
++    } else if (last_result_->number_of_matches() < 1) {
++      GetViewAccessibility().SetName(
++          l10n_util::GetStringUTF16(IDS_ACCESSIBLE_FIND_IN_PAGE_NO_RESULTS));
++    } else {
++      GetViewAccessibility().SetName(l10n_util::GetStringFUTF16(
++          IDS_ACCESSIBLE_FIND_IN_PAGE_COUNT,
++          base::FormatNumber(last_result_->active_match_ordinal()),
++          base::FormatNumber(last_result_->number_of_matches())));
++    }
++  }
++
++  void FindBarMatchCountControls::SetText() {
++    last_composite_text_ =
++      l10n_util::GetStringFUTF16(
++        IDS_FIND_IN_PAGE_COUNT,
++        base::FormatNumber(last_result_->active_match_ordinal()),
++        base::FormatNumber(last_result_->number_of_matches()));
++  }
++
++  std::u16string_view FindBarMatchCountControls::GetText() {
++    return last_composite_text_;
++  }
++
++  std::u16string_view FindBarMatchCountControls::GetNthMatchTextfieldText() { 
++    return nth_match_textfield_->GetText();
++  }
++
++  void FindBarMatchCountControls::UpdateNthMatchTextfieldWidth() {
++    // Update the nth match texfield's width to reflect the width of its value.
++    std::size_t new_text_length = nth_match_textfield_->GetText().length();
++
++    // Adjust for the comma in a value of thousands or tens of thousands.
++    // Add 2 more chars' worth of horizontal padding, 1 char for each side.
++    // new_text_length = new_text_length >= 5 ? new_text_length + static_cast<std::size_t>(2) : new_text_length;
++    new_text_length = new_text_length >= textfield_default_num_chars_ ? new_text_length + static_cast<std::size_t>(2) : new_text_length;
++
++    int num_chars = static_cast<int>(std::max(textfield_default_num_chars_, new_text_length));
++    nth_match_textfield_->SetDefaultWidthInChars(num_chars);
++    nth_match_textfield_->PreferredSizeChanged();
++  }
++
++  void FindBarMatchCountControls::SetResult(const find_in_page::FindNotificationDetails& result) {
++    if (last_result_ && result == *last_result_) {
++      return;
++    }
++
++    last_result_ = result;
++    SetText();
++
++    // TODO(crbug.com/40939931): Get NO_RESULTS to be announced under Orca and
++    // ChromeVox.
++
++    // Update the match controls with values from the new result.
++    nth_match_textfield_->SetText(l10n_util::GetStringFUTF16Int(IDS_FIND_IN_PAGE_NTH_MATCH_NUM, result.active_match_ordinal()));
++    last_match_button_->SetText(l10n_util::GetStringFUTF16Int(IDS_FIND_IN_PAGE_TOTAL_MATCH_COUNT, result.number_of_matches()));
++
++    // Show the match controls
++    nth_match_textfield_->SetVisible(true);
++    matches_separator_label_->SetVisible(true);
++    last_match_button_->SetVisible(true);
++
++    UpdateNthMatchTextfieldWidth();
++    UpdateAccessibleName();
++
++    if (last_result_->final_update()) {
++      GetViewAccessibility().AnnouncePolitely(
++          GetViewAccessibility().GetCachedName());
++    }
++  }
++
++  void FindBarMatchCountControls::ClearResult() {
++    last_result_.reset();
++
++    // Clear text inside controls.
++    nth_match_textfield_->SetText(std::u16string());
++    last_match_button_->SetText(std::u16string());
++
++    // Hide the match controls since they're empty now.
++    nth_match_textfield_->SetVisible(false);
++    matches_separator_label_->SetVisible(false);
++    last_match_button_->SetVisible(false);
++
++    UpdateAccessibleName();
++  }
++
++
++std::optional<find_in_page::FindNotificationDetails> FindBarMatchCountControls::GetLastResult() {
++  return last_result_;
++}
++
++
++////////////////////////////////////////////////////////////////////////////////
++// FindBarMatchCountControls, FindNth helper methods:
++
++void FindBarMatchCountControls::SetMaxValue(int max) {
++  nth_match_textfield_max_ = max;
++}
++
++int FindBarMatchCountControls::EnsureNumericValue(std::u16string raw_value) {
++  if (raw_value.empty()) {
++    return 0;
++  }
++
++  auto isCharAlphabetical = [](char16_t c) {
++    return std::iswalpha(static_cast<wint_t>(c)) != 0;
++  };
++
++  // Default and escape if any non-numerics are found.
++  for (const char16_t c : raw_value) {
++    if (isCharAlphabetical(c)) {
++      return 0;
++    }
++  }
++
++  std::string parsable_value = base::UTF16ToUTF8(raw_value);
++
++  // Remove any commas if the value is thousands or tens of thousands.
++  while (parsable_value.find(",") != std::string::npos) {
++    parsable_value.replace(parsable_value.find(","), 1, "");
++  }
++
++  int num_value = std::stoi(parsable_value);
++
++  return num_value;
++}
++
++int FindBarMatchCountControls::GetBoundedValue(int n) {
++   // Clamp to the min if the user input underflows.
++   if (n < nth_match_textfield_min_) {
++    n = nth_match_textfield_min_;
++  }
++
++  // Clamp to the max if the user input overflows.
++  else if (n > nth_match_textfield_max_) {
++    n = nth_match_textfield_max_;
++  }
++
++  return n;
++}
++
++void FindBarMatchCountControls::HandleLastMatchBtnClick() {
++  int n = GetBoundedValue(last_result_->number_of_matches());
++  std::u16string nth_match_text(base::UTF8ToUTF16(std::to_string(n)));
++  last_n_text_ = nth_match_text;
++
++  // Update the UI to reflect the sanitized/clamped value.
++  nth_match_textfield_->SetText(nth_match_text);
++  find_bar_view_->FindNth(n);
++}
++
++
++////////////////////////////////////////////////////////////////////////////////
++// FindBarMatchCountControls, TextfieldController implementation:
++
++bool FindBarMatchCountControls::HandleKeyEvent(views::Textfield* sender,
++                    const ui::KeyEvent& event) {
++  // Do not try to send a reply if no text has been input.
++  if (!find_bar_view_ || find_bar_view_->find_text_->GetText().empty()) {
++    return false;
++  }
++
++  // Arrow key Handling
++  if (event.type() == ui::EventType::kKeyPressed &&
++      event.key_code() == ui::VKEY_UP) {
++    // Go to previous match.
++    find_bar_view_->FindNext(true);
++    return true;
++  }
++
++  if (event.type() == ui::EventType::kKeyPressed &&
++      event.key_code() == ui::VKEY_DOWN) {
++    // Go to next match.
++    find_bar_view_->FindNext(false);
++    return true;
++  }
++
++  return false;
++}
++
++bool FindBarMatchCountControls::HandleMouseEvent(views::Textfield* sender, const ui::MouseEvent& event) {
++
++  int64_t millis_since_last_scroll = std::abs(last_accepted_textfield_scroll_time_.InMillisecondsSinceUnixEpoch() -
++                                base::Time::NowFromSystemTime().InMillisecondsSinceUnixEpoch());
++
++  if (event.type() == ui::EventType::kMousewheel && 
++      millis_since_last_scroll >= min_millis_since_last_scroll_) {
++        
++    last_accepted_textfield_scroll_time_ = base::Time::NowFromSystemTime();
++
++    std::u16string nth_match_text(sender->GetText());
++    int n_parsed_int = GetBoundedValue(EnsureNumericValue(nth_match_text));
++    last_n_text_ = nth_match_text;
++
++    const ui::MouseWheelEvent* wheel_event = event.AsMouseWheelEvent();
++
++    int x_offset = wheel_event->x_offset();
++    int y_offset = wheel_event->y_offset();
++
++    // User scrolled up/left.
++    // Decrement N to get the previous match.
++    if (y_offset >= 0 || x_offset < 0) {
++      // If N - 1 underflows, then wrap around to the max.
++      if (n_parsed_int - 1 < nth_match_textfield_min_) {
++        n_parsed_int = nth_match_textfield_max_;
++      }
++      else {
++        n_parsed_int--;
++      }
++    }
++
++    // User scrolled down/right.
++    // Increment N to get the next match.
++    else if (y_offset < 0 || x_offset >= 0) {
++      // If N + 1 overflows, then wrap around to the min.
++      if (n_parsed_int + 1 > nth_match_textfield_max_) {
++        n_parsed_int = nth_match_textfield_min_;
++      }
++      else {
++        n_parsed_int++;
++      }
++    }
++
++    nth_match_textfield_->SetText(base::UTF8ToUTF16(std::to_string(n_parsed_int)));
++    find_bar_view_->FindNth(n_parsed_int);
++    return true;
++  }
++
++  return false;
++}
++
++void FindBarMatchCountControls::OnAfterUserAction(views::Textfield* sender) {
++  // The composition text wouldn't be what the user is really looking for.
++  // We delay the search until the user commits the composition text.
++  if (!sender->IsIMEComposing() && !sender->GetText().empty() &&
++      sender->GetText() != last_n_text_)
++  {
++    std::u16string nth_match_text(sender->GetText());
++    int n_parsed_int = GetBoundedValue(EnsureNumericValue(nth_match_text));
++
++    last_n_text_ = nth_match_text;
++
++    // Update the UI to reflect the sanitized/clamped value.
++    nth_match_textfield_->SetText(base::UTF8ToUTF16(std::to_string(n_parsed_int)));
++
++    find_bar_view_->FindNth(n_parsed_int);
++  }
++}
++
++BEGIN_METADATA(FindBarMatchCountControls)
++END_METADATA

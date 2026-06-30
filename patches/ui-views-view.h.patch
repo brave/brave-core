@@ -1,12 +1,28 @@
 diff --git a/ui/views/view.h b/ui/views/view.h
-index 97c8014fadf2231321c05a1f74d91418946bf9fc..acdfcfb7b147b01b5102912091d904441a107a2b 100644
+index 9467392dc31dd71ecf607882304d4d59e7582bad..0d2c815b03c0d3c9821eddc9e933e42434aa0e2f 100644
 --- a/ui/views/view.h
 +++ b/ui/views/view.h
-@@ -325,6 +325,7 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,
-     FRIEND_TEST_ALL_PREFIXES(WebViewUnitTest, CrashedOverlayView);
+@@ -1824,6 +1824,12 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,
  
-     OwnedByClientPassKey() = default;
-+    BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
-   };
+   LifeCycleState life_cycle_state() const { return life_cycle_state_; }
  
-   using PassKey = base::NonCopyablePassKey<View>;
++
++  // Invalidates the layout and calls ChildPreferredSizeChanged() on the parent
++  // if there is one. Be sure to call PreferredSizeChanged() when overriding
++  // such that the layout is properly invalidated.
++  virtual void PreferredSizeChanged();
++
+  protected:
+   // Used to track a drag. RootView passes this into
+   // ProcessMousePressed/Dragged.
+@@ -1863,10 +1869,6 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,
+   // an opportunity to do a fresh layout if that makes sense.
+   virtual void ChildVisibilityChanged(View* child) {}
+ 
+-  // Invalidates the layout and calls ChildPreferredSizeChanged() on the parent
+-  // if there is one. Be sure to call PreferredSizeChanged() when overriding
+-  // such that the layout is properly invalidated.
+-  virtual void PreferredSizeChanged();
+ 
+   // Override returning true when the view needs to be notified when its visible
+   // bounds relative to the root view may have changed. Only used by

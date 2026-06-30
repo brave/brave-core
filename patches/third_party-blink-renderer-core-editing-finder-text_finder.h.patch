@@ -1,0 +1,21 @@
+diff --git a/third_party/blink/renderer/core/editing/finder/text_finder.h b/third_party/blink/renderer/core/editing/finder/text_finder.h
+index b250b59a905916e3c33cad1ffa8651aaeb0d0178..efc66958cff5a51ff2d7453f49b8e9059f7e8c06 100644
+--- a/third_party/blink/renderer/core/editing/finder/text_finder.h
++++ b/third_party/blink/renderer/core/editing/finder/text_finder.h
+@@ -96,6 +96,16 @@ class CORE_EXPORT TextFinder final : public GarbageCollected<TextFinder> {
+   // the local frame has no active match.
+   Range* ActiveMatch() const { return active_match_.Get(); }
+ 
++  int GetMatchesCacheSize() const { return find_matches_cache_.size(); }
++
++  Range* GetCachedMatchAtIndex(int index) const { 
++    int cacheSize = GetMatchesCacheSize();
++    if (cacheSize == 0 || index < 0 || index > cacheSize - 1) {
++      return nullptr;
++    }
++    return find_matches_cache_[index].range_; 
++  }
++
+   void FlushCurrentScoping();
+ 
+   // A match has been found by the current finding effort, so we should

@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/views/controls/hover_button.cc b/chrome/browser/ui/views/controls/hover_button.cc
+index 13c032448cc7bf0fb8cedcd14affdae129604a1d..03845b51176273495f36a14ad0efcf7bea56e5d9 100644
+--- a/chrome/browser/ui/views/controls/hover_button.cc
++++ b/chrome/browser/ui/views/controls/hover_button.cc
+@@ -30,6 +30,7 @@
+ #include "ui/views/focus/focus_manager.h"
+ #include "ui/views/layout/box_layout.h"
+ #include "ui/views/layout/flex_layout.h"
++#include "ui/views/layout/layout_provider.h"
+ #include "ui/views/style/typography.h"
+ #include "ui/views/style/typography_provider.h"
+ #include "ui/views/view_class_properties.h"
+@@ -102,7 +103,10 @@ HoverButton::HoverButton()
+       this,
+       std::make_unique<views::Button::DefaultButtonControllerDelegate>(this)));
+ 
+-  views::InstallRectHighlightPathGenerator(this);
++  auto corner_radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
++      views::ShapeContextTokens::kTextfieldRadius, gfx::Size()
++  );
++  views::InstallRoundRectHighlightPathGenerator(this, gfx::Insets(), corner_radius);
+ 
+   SetInstallFocusRingOnFocus(false);
+   SetFocusBehavior(FocusBehavior::ALWAYS);

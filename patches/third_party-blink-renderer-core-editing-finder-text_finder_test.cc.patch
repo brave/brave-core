@@ -1,0 +1,241 @@
+diff --git a/third_party/blink/renderer/core/editing/finder/text_finder_test.cc b/third_party/blink/renderer/core/editing/finder/text_finder_test.cc
+index 7495327a3bb52854024e244cd98e437e7d8ae6cd..fe4f853be180168eee82a7893bbf1e282f488d1e 100644
+--- a/third_party/blink/renderer/core/editing/finder/text_finder_test.cc
++++ b/third_party/blink/renderer/core/editing/finder/text_finder_test.cc
+@@ -874,4 +874,234 @@ TEST_F(TextFinderTest, CommentAfterDoucmentElement) {
+   EXPECT_FALSE(GetTextFinder().ScopingInProgress());
+ }
+ 
+-}  // namespace blink
++TEST_F(TextFinderTest, FindNthMatchText) {
++  GetDocument().body()->SetInnerHTMLWithoutTrustedTypes(
++      "XXXXFindMeYYYYfindmeZZZZ");
++  GetDocument().UpdateStyleAndLayout(DocumentUpdateReason::kTest);
++  Node* text_node = GetDocument().body()->firstChild();
++
++  int identifier = 0;
++  String search_text("FindMe");
++  auto find_options =
++      mojom::blink::FindOptions::New();  // Default  add testing flag.
++  bool wrap_within_frame = true;
++
++  find_options->run_synchronously_for_testing = true;
++  find_options->match_case = false;
++
++  // Start a new find operation, resetting all relevant state.
++  GetTextFinder().InitNewSession(*find_options);
++  GetTextFinder().StartScopingStringMatches(identifier, search_text,
++    *find_options);
++
++  // Set N.
++  find_options->match_ordinal = 2;
++
++  // Perform the initial find to discover all matches.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++                                   wrap_within_frame));
++
++  int match_count = GetTextFinder().TotalMatchCount();
++  EXPECT_EQ(2, match_count);
++
++  // Assert the highlighted match is the second match in the DOM.
++  Range* active_match = GetTextFinder().ActiveMatch();
++  ASSERT_TRUE(active_match);
++  EXPECT_EQ(text_node, active_match->startContainer());
++  EXPECT_EQ(14u, active_match->startOffset());
++  EXPECT_EQ(text_node, active_match->endContainer());
++  EXPECT_EQ(20u, active_match->endOffset());
++
++  // Assert the highligted match is the (N - 1)th match in the cache.
++  EXPECT_EQ(active_match, GetTextFinder().GetCachedMatchAtIndex(find_options->match_ordinal - 1));
++
++  find_options->new_session = false;
++
++  // Set N again.
++  find_options->match_ordinal = 1;
++
++  // Search again.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++                                   wrap_within_frame));
++
++  // Assert the highlighted match is the first match in the DOM.
++  active_match = GetTextFinder().ActiveMatch();
++  ASSERT_TRUE(active_match);
++  EXPECT_EQ(text_node, active_match->startContainer());
++  EXPECT_EQ(4u, active_match->startOffset());
++  EXPECT_EQ(text_node, active_match->endContainer());
++  EXPECT_EQ(10u, active_match->endOffset());
++
++  // Assert the highligted match is the (N - 1)th match in the cache.
++  EXPECT_EQ(active_match, GetTextFinder().GetCachedMatchAtIndex(find_options->match_ordinal - 1));
++}
++
++TEST_F(TextFinderTest, FindLastMatchText) {
++  GetDocument().body()->SetInnerHTMLWithoutTrustedTypes(
++      "XXXXFindMeYYYYfindmeZZZZFiNdMeΩΩΩ");
++  GetDocument().UpdateStyleAndLayout(DocumentUpdateReason::kTest);
++  Node* text_node = GetDocument().body()->firstChild();
++  int identifier = 0;
++  String search_text("FindMe");
++  auto find_options =
++      mojom::blink::FindOptions::New();  // Default  add testing flag.
++  bool wrap_within_frame = true;
++  find_options->match_case = false;
++  find_options->run_synchronously_for_testing = true;
++
++
++  // Start a new find operation, resetting all relevant state.
++  GetTextFinder().InitNewSession(*find_options);
++  GetTextFinder().StartScopingStringMatches(identifier, search_text,
++    *find_options);
++
++  // Perform the initial find to discover all matches.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++                                  wrap_within_frame));
++  Range* active_match = GetTextFinder().ActiveMatch();
++  ASSERT_TRUE(active_match);
++
++  // Get the last match ordinal.
++  int last_match_ordinal = GetTextFinder().TotalMatchCount();
++  EXPECT_EQ(3, last_match_ordinal);
++
++  // Set N to the last match ordinal.
++  find_options->match_ordinal = last_match_ordinal;
++
++  // Search for the Nth (last) match by its ordinal.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++                                   wrap_within_frame));
++
++  // Assert the highligted match is the last match in the DOM.
++  active_match = GetTextFinder().ActiveMatch();
++  ASSERT_TRUE(active_match);
++  EXPECT_EQ(text_node, active_match->startContainer());
++  EXPECT_EQ(24u, active_match->startOffset());
++  EXPECT_EQ(text_node, active_match->endContainer());
++  EXPECT_EQ(30u, active_match->endOffset());
++
++  // Assert the highligted match is the last match in the cache.
++  EXPECT_EQ(active_match, GetTextFinder().GetCachedMatchAtIndex(last_match_ordinal - 1));
++
++  // Prepare for case-sensitive search.
++  find_options->match_case = true;
++  
++  // Start a new session since a changed match_case constitutes a new find operation.
++  GetTextFinder().InitNewSession(*find_options);
++  GetTextFinder().StartScopingStringMatches(identifier, search_text,
++    *find_options);
++
++  // Search again to get all case-sensitive results.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++    wrap_within_frame));
++
++  // Get the last match ordinal again.
++  last_match_ordinal = GetTextFinder().TotalMatchCount();
++
++  // Assert the first ordinal is the last ordinal,
++  // since the first points to the only case-matching occurrence.
++  EXPECT_EQ(1, last_match_ordinal);
++
++  // Set N to the last_match_ordinal again.
++  find_options->match_ordinal = last_match_ordinal;
++
++  // Search for the last match again.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++      wrap_within_frame));
++  
++  // Assert the first match is highlighted since it's 
++  // the only case-matching occurrence.
++  active_match = GetTextFinder().ActiveMatch();
++  ASSERT_TRUE(active_match);
++  EXPECT_EQ(text_node, active_match->startContainer());
++  EXPECT_EQ(4u, active_match->startOffset());
++  EXPECT_EQ(text_node, active_match->endContainer());
++  EXPECT_EQ(10u, active_match->endOffset());
++
++  // Assert the highligted match is the last match in the cache.
++  EXPECT_EQ(active_match, GetTextFinder().GetCachedMatchAtIndex(last_match_ordinal - 1));
++}
++
++
++TEST_F(TextFinderTest, MatchesCachePopulatedReadOutOfBoundsReturnNull) {
++  GetDocument().body()->SetInnerHTMLWithoutTrustedTypes(
++      "XXXXFindMeYYYYfindmeZZZZ");
++  GetDocument().UpdateStyleAndLayout(DocumentUpdateReason::kTest);
++  
++
++  int identifier = 0;
++  String search_text("FindMe");
++  auto find_options =
++      mojom::blink::FindOptions::New();  // Default  add testing flag.
++  bool wrap_within_frame = true;
++
++  find_options->run_synchronously_for_testing = true;
++  find_options->match_case = false;
++
++  // Start a new find operation, resetting all relevant state.
++  GetTextFinder().InitNewSession(*find_options);
++  GetTextFinder().StartScopingStringMatches(identifier, search_text,
++                                            *find_options);
++
++  // Assert the initial find discovered matches. The cache should be populated now.
++  ASSERT_TRUE(GetTextFinder().Find(identifier, search_text, *find_options,
++                                   wrap_within_frame));
++
++  int match_count = GetTextFinder().TotalMatchCount();
++  EXPECT_EQ(2, match_count);
++
++  // Assert the cache is populated with the correct number of matches.
++  EXPECT_EQ(match_count, GetTextFinder().GetMatchesCacheSize());
++
++  // Set N out-of-bounds to the left.
++  find_options->match_ordinal = 0;
++ 
++  // Assert the cache returns nothing.
++  ASSERT_TRUE(!GetTextFinder().GetCachedMatchAtIndex(find_options->match_ordinal - 1));
++
++  // Set N out-of-bounds to the right.
++  find_options->match_ordinal = match_count + 1;
++
++  // Assert the cache returns nothing.
++  ASSERT_TRUE(!GetTextFinder().GetCachedMatchAtIndex(find_options->match_ordinal - 1));
++}
++
++TEST_F(TextFinderTest, MatchesCacheEmptyReturnNull) {
++  GetDocument().body()->SetInnerHTMLWithoutTrustedTypes(
++      "XXXXFindMeYYYYfindmeZZZZ");
++  GetDocument().UpdateStyleAndLayout(DocumentUpdateReason::kTest);
++  
++
++  int identifier = 0;
++  String search_text("Nowhere"); // Nonexistent in test body.
++  auto find_options =
++      mojom::blink::FindOptions::New();  // Default  add testing flag.
++  bool wrap_within_frame = true;
++
++  find_options->run_synchronously_for_testing = true;
++  find_options->match_case = false;
++
++  // Start a new find operation, resetting all relevant state.
++  GetTextFinder().InitNewSession(*find_options);
++  GetTextFinder().StartScopingStringMatches(identifier, search_text,
++                                            *find_options);
++
++  // Assert that no matches were found for the nonexistent string.
++  ASSERT_TRUE(!GetTextFinder().Find(identifier, search_text, *find_options,
++                                   wrap_within_frame));
++
++  int match_count = GetTextFinder().TotalMatchCount();
++  EXPECT_EQ(0, match_count);
++
++  // Assert the cache is populated with the correct number of matches.
++  EXPECT_EQ(match_count, GetTextFinder().GetMatchesCacheSize());
++
++  // Set N so it's hypothetically inbounds.
++  find_options->match_ordinal = 1;
++ 
++  // Assert the cache still returns nothing.
++  ASSERT_TRUE(!GetTextFinder().GetCachedMatchAtIndex(find_options->match_ordinal - 1));
++
++}
++
++}  // namespace blink
+\ No newline at end of file

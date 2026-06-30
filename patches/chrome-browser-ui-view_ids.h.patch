@@ -1,0 +1,16 @@
+diff --git a/chrome/browser/ui/view_ids.h b/chrome/browser/ui/view_ids.h
+index 7f361e60874f758845776d800a065950375bd95d..cb24a4db8823b4ceeb8c493e36fd0451277aca80 100644
+--- a/chrome/browser/ui/view_ids.h
++++ b/chrome/browser/ui/view_ids.h
+@@ -82,7 +82,10 @@ enum ViewID {
+   VIEW_ID_BOOKMARK_BAR_ELEMENT,
+ 
+   // Find in page.
+-  VIEW_ID_FIND_IN_PAGE_TEXT_FIELD,  
++  VIEW_ID_FIND_IN_PAGE_TEXT_FIELD,
++  VIEW_ID_FIND_IN_PAGE_NTH_MATCH_TEXT_FIELD,
++  VIEW_ID_FIND_IN_PAGE_MATCHES_SEPARATOR_TEXT,
++  VIEW_ID_FIND_IN_PAGE_LAST_MATCH_BUTTON,
+   VIEW_ID_FIND_IN_PAGE_PREVIOUS_BUTTON,
+   VIEW_ID_FIND_IN_PAGE_NEXT_BUTTON,
+   VIEW_ID_FIND_IN_PAGE_CLOSE_BUTTON,

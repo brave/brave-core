@@ -1,0 +1,16 @@
+diff --git a/extensions/common/api/web_view_internal.json b/extensions/common/api/web_view_internal.json
+index a6284e0c17e2a9a1ad30060d44569ebc2c05d60c..7cc05e14e7b44ae262ae0975af45f0481c7edc16 100644
+--- a/extensions/common/api/web_view_internal.json
++++ b/extensions/common/api/web_view_internal.json
+@@ -486,6 +486,11 @@
+                 "type": "boolean",
+                 "description": "Flag to match |searchText| with case-sensitivity.",
+                 "optional": true
++              },
++              "matchOrdinal": {
++                "type": "integer",
++                "description": "1-based index to locate desired match of |searchText| relative to its peer matches.",
++                "optional": true
+               }
+             }
+           }

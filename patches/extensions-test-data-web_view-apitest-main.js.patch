@@ -1,0 +1,86 @@
+diff --git a/extensions/test/data/web_view/apitest/main.js b/extensions/test/data/web_view/apitest/main.js
+index 7747cfae037a1e106a38f3803d3593330a2c0460..cd30f754a90d7d31d17bc91485f61a9218004b42 100644
+--- a/extensions/test/data/web_view/apitest/main.js
++++ b/extensions/test/data/web_view/apitest/main.js
+@@ -839,20 +839,67 @@ function testFindAPI() {
+             webview.find("dog");
+             webview.find("cat");
+ 
+-            // Test find results when looking for something that isn't there.
+-            webview.find("fish", {}, function(results) {
+-              embedder.test.assertEq(results.numberOfMatches, 0);
+-              embedder.test.assertEq(results.activeMatchOrdinal, 0);
+-              embedder.test.assertEq(results.selectionRect.left, 0);
+-              embedder.test.assertEq(results.selectionRect.top, 0);
+-              embedder.test.assertEq(results.selectionRect.width, 0);
+-              embedder.test.assertEq(results.selectionRect.height, 0);
+-
+-              // Test following a link with stopFinding().
+-              webview.removeEventListener('loadstop', loadstopListener1);
+-              webview.addEventListener('loadstop', loadstopListener2);
+-              webview.find("click here!", {}, function() {
+-                webview.stopFinding("activate");
++            // Reset for Nth match.
++            webview.find("dog");
++
++            // Find a match by its ordinal N.
++            webview.find("dog", { matchOrdinal: 20 }, function (results) {
++              embedder.test.assertEq(results.numberOfMatches, 100);
++              embedder.test.assertEq(results.activeMatchOrdinal, 20); // N
++              embedder.test.assertTrue(results.selectionRect.width > 0);
++              embedder.test.assertTrue(results.selectionRect.height > 0);
++
++
++              // Find an earlier match out of order.
++              webview.find("dog", { matchOrdinal: 10 }, function (results) {
++                embedder.test.assertEq(results.numberOfMatches, 100);
++                embedder.test.assertEq(results.activeMatchOrdinal, 10); // N
++                embedder.test.assertTrue(results.selectionRect.width > 0);
++                embedder.test.assertTrue(results.selectionRect.height > 0);
++
++                // ------------------------ Bounds checking---------------------------
++                // Webview client should validate against N being out-of-bounds. 
++                // Here, we document the downstream system's expected behavior 
++                // in the absence of client-side validation.
++
++                // Find a match out-of-bounds to the left.
++                webview.find("dog", { matchOrdinal: -1 }, function (results) {
++                  //// TODO: webview client should reject and clamp the underflowing N to the min.
++                  // N is invalid, so the downstream system interprets N as absent
++                  // and defaults to 'Find Next/Previous' depending on the |'backward'| flag.
++                  embedder.test.assertEq(results.numberOfMatches, 100);
++                  embedder.test.assertEq(results.activeMatchOrdinal, 11); // N
++                  embedder.test.assertTrue(results.selectionRect.width > 0);
++                  embedder.test.assertTrue(results.selectionRect.height > 0);
++
++                  // Find a match out-of-bounds to the right.
++                  webview.find("dog", { matchOrdinal: 101 }, function (results) {
++                    // N exceeds the max, so as expected, 
++                    // the downstream system wraps N back around to the min.
++                    embedder.test.assertEq(results.numberOfMatches, 100);
++                    embedder.test.assertEq(results.activeMatchOrdinal, 1); // N
++                    embedder.test.assertTrue(results.selectionRect.width > 0);
++                    embedder.test.assertTrue(results.selectionRect.height > 0);
++
++
++                    // Test find results when looking for something that isn't there.
++                    webview.find("fish", {}, function(results) {
++                      embedder.test.assertEq(results.numberOfMatches, 0);
++                      embedder.test.assertEq(results.activeMatchOrdinal, 0);
++                      embedder.test.assertEq(results.selectionRect.left, 0);
++                      embedder.test.assertEq(results.selectionRect.top, 0);
++                      embedder.test.assertEq(results.selectionRect.width, 0);
++                      embedder.test.assertEq(results.selectionRect.height, 0);
++
++                      // Test following a link with stopFinding().
++                      webview.removeEventListener('loadstop', loadstopListener1);
++                      webview.addEventListener('loadstop', loadstopListener2);
++                      webview.find("click here!", {}, function() {
++                        webview.stopFinding("activate");
++                      });
++                    });
++                  });
++                });
+               });
+             });
+           });
