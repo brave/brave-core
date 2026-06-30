@@ -70,13 +70,13 @@ export const ConversationHeader = React.forwardRef(function (
     && conversationHistory.length > 0
     && !conversationState.isRequestInProgress
 
-  const handleShareConversation = React.useCallback(() => {
+  const handleShareConversation = () => {
     // The serialized conversation will eventually be sent to the sharing
     // server, which will encrypt it and return a shareable link. For now, copy
     // the serialized string to the clipboard so the flow can be demoed.
     const json = serializeConversationForSharing(conversationHistory)
     navigator.clipboard.writeText(json)
-  }, [conversationHistory])
+  }
 
   const showTitle =
     (!isMainConversation || aiChatContext.isStandalone) && !isMobile

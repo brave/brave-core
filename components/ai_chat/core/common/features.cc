@@ -217,8 +217,4 @@ bool IsBraveSyncAIChatEnabled() {
 
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_DISABLED_BY_DEFAULT);
 
-bool IsAIChatConversationShareEnabled() {
-  return base::FeatureList::IsEnabled(features::kAIChatConversationShare);
-}
-
 }  // namespace ai_chat::features

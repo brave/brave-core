@@ -9,6 +9,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/bookmarks_page_handler.h"
@@ -69,7 +70,8 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
                      ai_chat::features::IsAIChatAgentProfileEnabled());
   source->AddBoolean("isAIChatAgentProfile", false);
   source->AddBoolean("isConversationShareEnabled",
-                     ai_chat::features::IsAIChatConversationShareEnabled());
+                     base::FeatureList::IsEnabled(
+                         ai_chat::features::kAIChatConversationShare));
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,

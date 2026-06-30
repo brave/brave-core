@@ -173,7 +173,6 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 // Enables sharing a conversation from the conversation header.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatConversationShare);
-COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatConversationShareEnabled();
 
 }  // namespace ai_chat::features
 
