@@ -34,9 +34,6 @@ namespace {
 // https://westend.subscan.io/account/5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty
 inline constexpr const char kBob[] =
     "8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48";
-inline constexpr char kAssetHubMnemonic[] =
-    "lazy february across turn unique syrup gasp pass pelican achieve cable "
-    "canal";
 
 void AddValidMetadataResponses(
     network::TestURLLoaderFactory& url_loader_factory,
