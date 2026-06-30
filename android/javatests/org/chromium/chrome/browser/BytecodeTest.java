@@ -130,6 +130,7 @@ import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
 import org.chromium.chrome.browser.tab_ui.TabContentManager;
+import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider;
 import org.chromium.chrome.browser.tabmodel.AsyncTabParamsManager;
 import org.chromium.chrome.browser.tabmodel.IncognitoStateProvider;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
@@ -402,6 +403,9 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/components/cached_flags/CachedFlagUtils"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/logo/LogoMediator"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/favicon/FaviconUtils"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/tab_ui/TabListFaviconProvider"));
+        Assert.assertTrue(
+                classExists("org/chromium/chrome/browser/ui/favicon/BraveTabListFaviconProvider"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/tracing/settings/DeveloperSettings"));
         Assert.assertTrue(
@@ -1935,6 +1939,14 @@ public class BytecodeTest {
                         Callback.class,
                         LogoCoordinator.VisibilityObserver.class,
                         Drawable.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tab_ui/TabListFaviconProvider",
+                        "org/chromium/chrome/browser/ui/favicon/BraveTabListFaviconProvider",
+                        Context.class,
+                        boolean.class,
+                        int.class,
+                        TabListFaviconProvider.TabWebContentsFaviconDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/notifications/permissions/NotificationPermissionRationaleDialogController", // presubmit: ignore-long-line
