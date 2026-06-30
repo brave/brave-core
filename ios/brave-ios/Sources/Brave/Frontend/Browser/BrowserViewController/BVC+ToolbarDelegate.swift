@@ -280,9 +280,9 @@ extension BrowserViewController: TopToolbarDelegate {
     if let translateHelper = tab.legacyTranslateHelper {
       translateHelper.presentUI(on: self)
 
-      if tab.translationState == .active {
+      if translateHelper.translationState == .active {
         translateHelper.revertTranslation()
-      } else if tab.translationState != .active {
+      } else if translateHelper.translationState != .active {
         translateHelper.startTranslation(canShowToast: true)
       }
     }

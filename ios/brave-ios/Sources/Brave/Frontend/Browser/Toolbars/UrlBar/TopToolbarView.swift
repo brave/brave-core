@@ -718,7 +718,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     updateURLBarButtonsVisibility()
   }
 
-  func updateTranslateButtonState(_ state: TranslateURLBarButton.TranslateState) {
+  func updateTranslateButtonState(_ state: TranslationState) {
     locationView.translationState = state
     updateURLBarButtonsVisibility()
   }

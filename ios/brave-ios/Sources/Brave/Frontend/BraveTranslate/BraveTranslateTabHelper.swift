@@ -43,6 +43,12 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   private var translationSession: BraveTranslateSession?
   private var translationTask: (() async throws -> Void)?
   private var canShowToast = false
+  private(set) var translationState: TranslationState = .unavailable {
+    didSet {
+      guard oldValue != translationState, let tab else { return }
+      delegate?.updateTranslateURLBar(tab: tab, state: translationState)
+    }
+  }
 
   var currentLanguageInfo = BraveTranslateLanguageInfo()
 
@@ -97,12 +103,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
   }
 
   func startTranslation(canShowToast: Bool) {
-    guard let tab = tab else {
-      return
-    }
-
     // Translation already in progress
-    if tab.translationState == .pending {
+    if translationState == .pending {
       return
     }
 
@@ -123,8 +125,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         throw BraveTranslateError.invalidLanguage
       }
 
-      let previousState = tab.translationState
-      delegate.updateTranslateURLBar(tab: tab, state: .pending)
+      let previousState = translationState
+      translationState = .pending
 
       // TranslateAgent::TranslateFrame
       try Task.checkCancellation()
@@ -140,7 +142,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         try Task.checkCancellation()
 
         if !(await isTranslateLibAvailable()) {
-          delegate.updateTranslateURLBar(tab: tab, state: previousState)
+          translationState = previousState
           throw BraveTranslateError.otherError
         }
       }
@@ -153,7 +155,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
         let error = await getTranslationErrorCode()
         if error != .noError {
-          delegate.updateTranslateURLBar(tab: tab, state: previousState)
+          translationState = previousState
           delegate.presentTranslateError(tab: tab)
           return
         }
@@ -165,7 +167,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         // This matches Chromium's TranslateAgent::kMaxTranslateInitCheckAttempts
         attempts += 1
         if attempts >= 5 {
-          delegate.updateTranslateURLBar(tab: tab, state: previousState)
+          translationState = previousState
           delegate.presentTranslateError(tab: tab)
           return
         }
@@ -230,10 +232,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         tasks.removeValue(forKey: taskId)
       }
 
-      guard let tab = self.tab,
-        let delegate = delegate,
-        tab.translationState == .active
-      else {
+      guard translationState == .active else {
         return
       }
 
@@ -248,10 +247,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
         return
       }
 
-      await undoTranslate()
+      undoTranslate()
       try Task.checkCancellation()
 
-      delegate.updateTranslateURLBar(tab: tab, state: .available)
+      translationState = .available
     }
 
     tasks[taskId] = task
@@ -266,7 +265,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     if status == .noError {
-      delegate.updateTranslateURLBar(tab: tab, state: .active)
+      translationState = .active
 
       if canShowToast {
         delegate.presentTranslateToast(tab: tab, languageInfo: currentLanguageInfo)
@@ -275,10 +274,10 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     if [.translationError, .translationTimeout].contains(status) {
-      delegate.updateTranslateURLBar(tab: tab, state: .available)
+      translationState = .available
       delegate.presentTranslateError(tab: tab)
     } else {
-      delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
+      translationState = .unavailable
     }
   }
 
@@ -308,14 +307,14 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
     }
 
     guard let pageLanguage = currentLanguageInfo.pageLanguage else {
-      delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
+      translationState = .unavailable
       return
     }
 
     // Check if the page is already translated
     let isTranslatedAlready = await isPageTranslated()
     if isTranslatedAlready {
-      delegate.updateTranslateURLBar(tab: tab, state: .active)
+      translationState = .active
       return
     }
 
@@ -327,10 +326,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
     try Task.checkCancellation()
 
-    delegate.updateTranslateURLBar(
-      tab: tab,
-      state: isTranslationSupported ? .available : .unavailable
-    )
+    translationState = isTranslationSupported ? .available : .unavailable
 
     // Translation is not supported on this page, so do not show onboarding
     // Return immediately
@@ -342,11 +338,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
     // Check if the user can view the translation onboarding
     guard delegate.canShowTranslateOnboarding(tab: tab) else {
-      delegate.updateTranslateURLBar(
-        tab: tab,
-        state: Preferences.Translate.translateEnabled.value ? .available : .unavailable
-      )
-
+      translationState = Preferences.Translate.translateEnabled.value ? .available : .unavailable
       return
     }
 
@@ -359,10 +351,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
     try Task.checkCancellation()
 
-    delegate.updateTranslateURLBar(
-      tab: tab,
-      state: translateEnabled ? .available : .unavailable
-    )
+    translationState = translateEnabled ? .available : .unavailable
 
     // User enabled translation via onboarding
     if translateEnabled {
@@ -429,10 +418,8 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       currentLanguageInfo.currentLanguage = .init(identifier: Locale.current.identifier)
       currentLanguageInfo.pageLanguage = nil
 
-      if let delegate = self.delegate {
-        delegate.updateTranslateURLBar(tab: tab, state: .unavailable)
-        BraveTranslateScriptHandler.checkTranslate(tab: tab)
-      }
+      translationState = .unavailable
+      BraveTranslateScriptHandler.checkTranslate(tab: tab)
     }
   }
 
@@ -490,7 +477,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
 
     while Date().timeIntervalSince(startTime) < TimeInterval(timeout) {
       if await hasTranslationFailed() {
-        delegate.updateTranslateURLBar(tab: tab, state: .available)
+        translationState = .available
         delegate.presentTranslateError(tab: tab)
         throw BraveTranslateError.otherError
       }
@@ -503,12 +490,12 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
           || actualSourceLanguage
             == currentLanguageInfo.currentLanguage.braveTranslateLanguageIdentifier
         {
-          delegate.updateTranslateURLBar(tab: tab, state: .available)
+          translationState = .available
           delegate.presentTranslateError(tab: tab)
           return
         }
 
-        delegate.updateTranslateURLBar(tab: tab, state: .active)
+        translationState = .active
         delegate.presentTranslateToast(tab: tab, languageInfo: currentLanguageInfo)
         return
       }
@@ -517,7 +504,7 @@ class BraveTranslateTabHelper: NSObject, TabObserver {
       try Task.checkCancellation()
     }
 
-    delegate.updateTranslateURLBar(tab: tab, state: .available)
+    translationState = .available
     delegate.presentTranslateError(tab: tab)
 
     throw BraveTranslateError.otherError

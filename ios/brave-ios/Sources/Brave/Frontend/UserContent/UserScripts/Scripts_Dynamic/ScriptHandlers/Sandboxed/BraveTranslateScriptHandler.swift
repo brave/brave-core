@@ -12,7 +12,7 @@ import WebKit
 import os.log
 
 protocol BraveTranslateScriptHandlerDelegate: NSObject {
-  func updateTranslateURLBar(tab: some TabState, state: TranslateURLBarButton.TranslateState)
+  func updateTranslateURLBar(tab: some TabState, state: TranslationState)
   func canShowTranslateOnboarding(tab: some TabState) -> Bool
   func showTranslateOnboarding(
     tab: some TabState,
