@@ -19,7 +19,8 @@ namespace v2 {
 
 class BraveVpnServiceImpl : public BraveVpnService {
  public:
-  explicit BraveVpnServiceImpl(PrefService* profile_prefs);
+  explicit BraveVpnServiceImpl(PrefService* local_prefs,
+                               PrefService* profile_prefs);
   ~BraveVpnServiceImpl() override;
 
   BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
@@ -119,6 +120,7 @@ class BraveVpnServiceImpl : public BraveVpnService {
 #endif  // !BUILDFLAG(IS_ANDROID)
 
  private:
+  const raw_ref<PrefService> local_prefs_;
   const raw_ref<PrefService> profile_prefs_;
   [[maybe_unused]] mojom::ConnectionState connection_state_;
   mojom::PurchasedState purchased_state_;
