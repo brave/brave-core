@@ -134,20 +134,20 @@ export const NFTGridViewItem = ({
   return (
     <>
       <GridItemWrapper>
-        {isTokenSpam && (
-          <JunkMarker>
-            {getLocale('braveWalletNftJunk')}
-            <JunkIcon />
-          </JunkMarker>
-        )}
-        {isWatchOnly && (
-          <WatchOnlyMarker>
-            {
-              getLocale('braveWalletWatchOnly') //
-            }
-          </WatchOnlyMarker>
-        )}
         <IconWrapper>
+          {isTokenSpam && (
+            <JunkMarker>
+              {getLocale('braveWalletNftJunk')}
+              <JunkIcon />
+            </JunkMarker>
+          )}
+          {isWatchOnly && (
+            <WatchOnlyMarker>
+              {
+                getLocale('braveWalletWatchOnly') //
+              }
+            </WatchOnlyMarker>
+          )}
           <DIVForClickableArea onClick={() => onSelectAsset(token)} />
           <DecoratedNftIcon
             icon={tokenImageURL}

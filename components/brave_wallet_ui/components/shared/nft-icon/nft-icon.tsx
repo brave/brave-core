@@ -54,11 +54,11 @@ export const NftIcon = (props: NftIconProps) => {
   // memos
   const nftIframeUrl = React.useMemo(() => {
     const urlParams = new URLSearchParams({
-      displayMode: 'icon',
+      displayMode: responsive ? 'grid' : 'icon',
       icon: remoteImage,
     })
     return `chrome-untrusted://nft-display?${urlParams.toString()}`
-  }, [remoteImage])
+  }, [remoteImage, responsive])
 
   // computed
   /** iframe should re-render when url changes */
