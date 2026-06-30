@@ -52,24 +52,24 @@ SHIM_TARGETS: dict[str, Shim] = {
     'brockit': Shim('src/brave/tools/cr/brockit.py', 'vpython'),
     'plaster': Shim('src/brave/tools/cr/plaster.py', 'vpython'),
     'node-linux': Shim(
-        'src/brave/third_party/node/node-v24.16.0-linux-x64/bin/node'),
+        'src/brave/third_party/node/node-v24.17.0-linux-x64/bin/node'),
     'node-mac': Shim(
-        'src/brave/third_party/node/node-v24.16.0-darwin-x64/bin/node'),
+        'src/brave/third_party/node/node-v24.17.0-darwin-x64/bin/node'),
     'node-mac_arm64': Shim(
-        'src/brave/third_party/node/node-v24.16.0-darwin-arm64/bin/node'),
+        'src/brave/third_party/node/node-v24.17.0-darwin-arm64/bin/node'),
     'node-win': Shim(
-        'src/brave/third_party/node/node-v24.16.0-win-x64/node.exe'),
+        'src/brave/third_party/node/node-v24.17.0-win-x64/node.exe'),
     'npm-linux': Shim(
-        'src/brave/third_party/node/node-v24.16.0-linux-x64/lib/node_modules/npm/bin/npm-cli.js',
+        'src/brave/third_party/node/node-v24.17.0-linux-x64/lib/node_modules/npm/bin/npm-cli.js',
         'node'),
     'npm-mac': Shim(
-        'src/brave/third_party/node/node-v24.16.0-darwin-x64/lib/node_modules/npm/bin/npm-cli.js',
+        'src/brave/third_party/node/node-v24.17.0-darwin-x64/lib/node_modules/npm/bin/npm-cli.js',
         'node'),
     'npm-mac_arm64': Shim(
-        'src/brave/third_party/node/node-v24.16.0-darwin-arm64/lib/node_modules/npm/bin/npm-cli.js',
+        'src/brave/third_party/node/node-v24.17.0-darwin-arm64/lib/node_modules/npm/bin/npm-cli.js',
         'node'),
     'npm-win': Shim(
-        'src/brave/third_party/node/node-v24.16.0-win-x64/node_modules/npm/bin/npm-cli.js',
+        'src/brave/third_party/node/node-v24.17.0-win-x64/node_modules/npm/bin/npm-cli.js',
         'node'),
 }
 

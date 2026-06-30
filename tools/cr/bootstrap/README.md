@@ -21,9 +21,8 @@ On macOS / Linux this configures your current shell (override with
 
 - **bash** → a marked block in `~/.bashrc`
 - **zsh** → a marked block in `~/.zshrc`
-- **fish** → a drop-in at `~/.config/fish/conf.d/brave-bootstrap.fish` that
-  prepends to `$PATH` directly (it avoids `fish_add_path`, which would persist
-  the entry in the universal `fish_user_paths` variable and outlive the file)
+- **fish** → a drop-in at `~/.config/fish/conf.d/zzz-brave-bootstrap.fish` that
+  prepends to `$PATH` directly.
 
 On Windows it adds this directory to the user `Path` under `HKCU\Environment`.
 
