@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-index 4954048e718931075079e74a76ec70cd78239dfd..4c731efe3c35aa57978f9d09b6d3dc65dfca4658 100644
+index 02768e271878570bc81f2baca4e2e99f4ad69ca3..3df72c68b0f272f29a04b1ca059c406a85f56c93 100644
 --- a/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
 +++ b/chrome/browser/renderer_context_menu/spelling_options_submenu_observer.h
-@@ -15,10 +15,12 @@
+@@ -16,10 +16,12 @@
  #include "ui/menus/simple_menu_model.h"
  
  class RenderViewContextMenuProxy;
@@ -13,5 +13,5 @@ index 4954048e718931075079e74a76ec70cd78239dfd..4c731efe3c35aa57978f9d09b6d3dc65
  class SpellingOptionsSubMenuObserver : public RenderViewContextMenuObserver {
 +  friend class BraveSpellingOptionsSubMenuObserver;
   public:
-   SpellingOptionsSubMenuObserver(RenderViewContextMenuProxy* proxy,
-                                  ui::SimpleMenuModel::Delegate* delegate,
+   static constexpr int kSubMenuPlaceholder = kSpellcheckMenuId;
+ 

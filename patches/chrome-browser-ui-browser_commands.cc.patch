@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 6157b951bdd962b41e6b7b57bfea1e8c24056657..5e05668bad5c81be2d321b7359968989e1c0a7a8 100644
+index 294487f7864795d9b004b83adb0880e6da03ac3b..7d781da8ed85ee76020ec2d02a135d69f743f403 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -458,7 +458,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
+@@ -459,7 +459,12 @@ void MoveTabsToWindowImpl(BrowserWindowInterface* source,
      } else if (auto collection =
                     std::get_if<std::unique_ptr<DetachedTabCollection>>(
                         &tab_or_collection)) {
@@ -16,7 +16,7 @@ index 6157b951bdd962b41e6b7b57bfea1e8c24056657..5e05668bad5c81be2d321b7359968989
                collection->get()->collection_)) {
          target_model->InsertDetachedTabGroupAt(std::move(*collection),
                                                 target_model->count());
-@@ -1067,7 +1072,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1068,7 +1073,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -25,15 +25,15 @@ index 6157b951bdd962b41e6b7b57bfea1e8c24056657..5e05668bad5c81be2d321b7359968989
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1367,6 +1372,7 @@ void CloseTab(BrowserWindowInterface* browser) {
-   }
+@@ -1381,6 +1386,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+ #endif
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
 +  toast_controller = nullptr;
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1671,7 +1677,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1685,7 +1691,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
    const GURL new_tab_url = !browser->GetProfile()->IsIncognitoProfile() &&
                                     tab_strip_model->count() > 1
