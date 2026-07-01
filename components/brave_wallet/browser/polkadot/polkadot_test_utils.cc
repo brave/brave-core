@@ -255,6 +255,10 @@ PolkadotChainMetadata MakePolkadotAssetHubMetadata() {
   return PolkadotMetadataFromChainName("Polkadot Asset Hub").value();
 }
 
+PolkadotChainMetadata MakePaseoAssetHubMetadata() {
+  return PolkadotMetadataFromChainName("Paseo Asset Hub").value();
+}
+
 PolkadotMockRpc::PolkadotMockRpc(
     network::TestURLLoaderFactory* url_loader_factory,
     NetworkManager* network_manager)

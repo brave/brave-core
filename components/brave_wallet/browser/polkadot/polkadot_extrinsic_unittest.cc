@@ -781,6 +781,131 @@ TEST(PolkadotExtrinsics, EventsParsing) {
             "5f139909000000000000000000000000");
 }
 
+TEST(PolkadotExtrinsics, EventsParsing_AssetTransferKeepAlive) {
+  // This event comes from:
+  // https://assethub-paseo.subscan.io/extrinsic/10464509-2
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = MakePaseoAssetHubMetadata();
+
+  const uint32_t extrinsic_idx = 2;
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0a08"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "0ec89000000000000000000000000000"
+      "00"
+      // assets(Transferred)
+      "0002000000"
+      "3202"
+      "72f4fa02"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "40420f00000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0a07"
+      "6d6f646c506f745374616b650000000000000000000000000000000000000000"
+      "0ec89000000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "0b00"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "0ec89000000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicSuccess)
+      "0002000000"
+      "0000"
+      "0390e94045d9520000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                       extrinsic_idx, sender, *chain_metadata,
+                                       actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{9488398});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "0ec89000000000000000000000000000");
+}
+
+TEST(PolkadotExtrinsics, EventsParsing_AssetTransferAll) {
+  // This event comes from:
+  // https://assethub-paseo.subscan.io/extrinsic/10545385-2
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender = {};
+  const char sender_hex[] =
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e";
+  ASSERT_TRUE(base::HexStringToSpan(sender_hex, sender));
+
+  auto chain_metadata = MakePaseoAssetHubMetadata();
+
+  const uint32_t extrinsic_idx = 2;
+
+  const char events_hex[] =
+      // balances(Withdraw)
+      "0002000000"
+      "0a08"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "1e7e8e00000000000000000000000000"
+      "00"
+      // assets(Transferred)
+      "0002000000"
+      "3202"
+      "72f4fa02"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "80841e00000000000000000000000000"
+      "00"
+      // balances(Deposit)
+      "0002000000"
+      "0a07"
+      "6d6f646c6461702f627566661c73746167696e67000000000000000000000000"
+      "1e7e8e00000000000000000000000000"
+      "00"
+      // transactionpayment(TransactionFeePaid)
+      "0002000000"
+      "0b00"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "1e7e8e00000000000000000000000000"
+      "00000000000000000000000000000000"
+      "00"
+      // system(ExtrinsicSuccess)
+      "0002000000"
+      "0000"
+      "03705eca483171000000010a026d6f646c6461702f627566661c73746167696e67000000"
+      "0000000000000000006d6f646c6461702f62756666000000000000000000000000000000"
+      "00000000001e7e8e00000000000000000000000000000110021e7e8e0000000000000000"
+      "0000000000"
+      "00";
+
+  std::vector<uint8_t> events;
+  ASSERT_TRUE(base::HexStringToBytes(events_hex, &events));
+
+  std::array<uint8_t, 16> actual_fee_bytes = {};
+
+  EXPECT_TRUE(was_extrinsic_successful(rust::Slice<const uint8_t>(events),
+                                       extrinsic_idx, sender, *chain_metadata,
+                                       actual_fee_bytes));
+
+  EXPECT_EQ(base::bit_cast<uint128_t>(actual_fee_bytes), uint128_t{9338398});
+  EXPECT_EQ(base::HexEncodeLower(actual_fee_bytes),
+            "1e7e8e00000000000000000000000000");
+}
+
 TEST(PolkadotExtrinsics, EventsParsing_WithAccountCreation) {
   // This event comes from:
   // https://polkadot.subscan.io/extrinsic/30123219-2
