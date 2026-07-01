@@ -220,7 +220,7 @@ void BraveShieldsWebContentsObserver::OnJavaScriptAllowedOnce(
     const std::u16string& details) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -233,7 +233,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
     ContentSettingsType webcompat_settings_type) {
 #if !BUILDFLAG(IS_ANDROID)
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
@@ -245,7 +245,7 @@ void BraveShieldsWebContentsObserver::OnWebcompatFeatureInvoked(
 void BraveShieldsWebContentsObserver::OnJavaScriptBlocked(
     const std::u16string& details) {
   WebContents* web_contents =
-      WebContents::FromRenderFrameHost(receivers_.GetCurrentTargetFrame());
+      WebContents::FromRenderFrameHost(&receivers_.CurrentTargetFrame());
   if (!web_contents) {
     return;
   }
