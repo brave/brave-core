@@ -101,13 +101,17 @@ class BravePrefProvider : public PrefProvider, public Observer {
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void MigrateShieldsSettingsV2ToV3();
   void MigrateShieldsSettingsV3ToV4(int start_version);
+  void MigrateShieldsSettingsV4ToV5();
   void MigrateFingerprintingSettings();
   void MigrateFingerprintingSetingsToOriginScoped();
   void MigrateCosmeticFilteringSettings();
   void MigrateBraveRemember1PStorageToAutoShred();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
+  void UpdateJavaScriptRules(ContentSettingsType content_type, bool incognito);
   void OnCookieSettingsChanged(ContentSettingsType content_type);
+  void OnJavaScriptSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<std::unique_ptr<Rule>>& rules,
+                     ContentSettingsType content_type,
                      bool incognito);
   bool SetWebsiteSettingInternal(
       const ContentSettingsPattern& primary_pattern,
@@ -127,6 +131,9 @@ class BravePrefProvider : public PrefProvider, public Observer {
       brave_cookie_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
+  std::map<bool /* is_incognito */, OriginValueMap> javascript_rules_;
+  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
+      brave_javascript_rules_;
 
   bool initialized_;
   bool store_last_modified_;

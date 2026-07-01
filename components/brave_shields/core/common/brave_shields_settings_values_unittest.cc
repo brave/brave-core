@@ -79,6 +79,7 @@ using ControlTypeAllShieldsSettingsValuesChecker =
         ContentSettingsType::BRAVE_HTTP_UPGRADABLE_RESOURCES,
         ContentSettingsType::BRAVE_HTTPS_UPGRADE,
         ContentSettingsType::JAVASCRIPT,
+        ContentSettingsType::BRAVE_JAVASCRIPT,
         ContentSettingsType::BRAVE_FINGERPRINTING_V2,
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_SHIELDS_METADATA,
