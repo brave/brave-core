@@ -244,6 +244,12 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
 
 TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+
+  // about:blank test
+  NavigateTo(GURL("about:blank"));
+  EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
+      profile()->GetTestingPrefService(), map, render_frame_host()));
+
   GURL host2("http://host2.com");
   GURL host1("http://host1.com");
 
