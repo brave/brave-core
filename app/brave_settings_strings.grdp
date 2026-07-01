@@ -953,6 +953,15 @@
   <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_STANDARD_DESC" desc="Description for safe browsing standard protection mode">
     Protects against sites, downloads, and extensions that are known to be dangerous.
   </message>
+  <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_LIMITED" desc="Label for safe browsing limited protection mode">
+    Limited protection
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_LIMITED_DESC" desc="Description for safe browsing limited protection mode">
+    Protects against sites and extensions that are known to be dangerous.
+  </message>
+  <message name="IDS_SETTINGS_BRAVE_SAFEBROWSING_LEARN_MORE" desc="Label for safe browsing learn more link">
+    Learn more about Safe Browsing in Brave
+  </message>
 
   <!-- Settings / Privacy and security / Site and Shields Settings -->
   <message name="IDS_SETTINGS_SITE_AND_SHIELDS_SETTINGS" desc="Label for site and shields settings in clear browsing data dialog">

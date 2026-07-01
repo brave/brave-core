@@ -434,6 +434,7 @@ source_set("ui") {
       "//brave/components/constants",
       "//brave/components/email_aliases/buildflags",
       "//brave/components/misc_metrics",
+      "//brave/components/safebrowsing",
       "//brave/components/sidebar/browser",
       "//brave/components/sidebar/common",
       "//brave/components/speedreader/common/buildflags",
