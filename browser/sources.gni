@@ -478,6 +478,7 @@ if (enable_ai_chat) {
     "//brave/components/ai_chat/content/browser",
     "//brave/components/ai_chat/core/browser",
     "//brave/components/ai_chat/core/common",
+    "//brave/components/web_mcp/core/browser",
   ]
 
   if (!is_android) {

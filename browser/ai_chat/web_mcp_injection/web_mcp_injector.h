@@ -20,21 +20,19 @@ class WebContents;
 
 namespace ai_chat {
 
-// Injects Brave-provided WebMCP tools (see GetWebMcpInjectionRules()) into
-// pages whose URL matches a rule. The injected script calls
+// Injects Brave-provided WebMCP tools into pages whose URL matches a rule. The
+// rules are delivered by the component updater and held in
+// web_mcp::WebMcpRuleRegistry. The injected script calls
 // `navigator.modelContext.registerTool(...)` in the page's main world; the
 // existing ContentTool pipeline then discovers the tool automatically.
 //
 // One instance is scoped to a single tab's WebContents. It is owned by
 // BraveTabFeatures (desktop and Android) and created via MaybeCreate().
-//
-// Proof-of-concept: rules are hardcoded and injected into the main world.
 class WebMcpInjector : public content::WebContentsObserver {
  public:
-  // Creates an injector for `web_contents`, or returns nullptr when WebMCP is
-  // unavailable (the runtime feature is disabled, or there are no rules). The
-  // injected script also guards against a missing navigator.modelContext, so
-  // this is a cheap early-out.
+  // Creates an injector for `web_contents`, or returns nullptr when the WebMCP
+  // runtime feature is disabled. The injected script also guards against a
+  // missing navigator.modelContext, so this is a cheap early-out.
   static std::unique_ptr<WebMcpInjector> MaybeCreate(
       content::WebContents* web_contents);
 
