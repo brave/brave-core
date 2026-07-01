@@ -16,20 +16,20 @@
 #include "ui/views/view_observer.h"
 
 class BrowserView;
-class ViewShadow;
+class ViewOutline;
 
-// Renders a drop shadow around the side panel that never draws outside the
+// Renders an outline around the side panel that never draws outside the
 // browser view.
 //
-// A shadow layer attached to the side panel's own `kBelow` region would ride
+// An outline layer attached to the side panel's own `kBelow` region would ride
 // along with the sliding panel and leak outside the window during the
 // open/close animation. Instead, this view is a sibling of the side panel in
 // BraveBrowserView. It:
 //   * tracks the panel's bounds by observing it,
-//   * paints the shadow into its own layer that is clipped (MasksToBounds) and
+//   * paints the outline into its own layer that is clipped (MasksToBounds) and
 //     clamped to the browser view, so nothing is ever drawn outside it, and
 //   * is stacked just *below* the panel, so the panel covers the inner part of
-//     the shadow - leaving only the outer glow visible.
+//     the outline - leaving only the outer ring visible.
 class BraveSidePanelShadowOverlayView : public views::View,
                                         public views::ViewObserver {
   METADATA_HEADER(BraveSidePanelShadowOverlayView, views::View)
@@ -61,10 +61,10 @@ class BraveSidePanelShadowOverlayView : public views::View,
   const raw_ref<BrowserView> browser_view_;
   base::ScopedObservation<views::View, views::ViewObserver> panel_observation_{
       this};
-  // Transparent child sized exactly to the side panel. `shadow_` renders the
-  // drop shadow around its rounded-rect shape.
+  // Transparent child sized exactly to the side panel. `outline_` renders the
+  // outline around its rounded-rect shape.
   raw_ptr<views::View> panel_shape_ = nullptr;
-  std::unique_ptr<ViewShadow> shadow_;
+  std::unique_ptr<ViewOutline> outline_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_BRAVE_SIDE_PANEL_SHADOW_OVERLAY_VIEW_H_

@@ -10,6 +10,7 @@
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -30,21 +31,22 @@ using views::ShapeContextTokensOverride::
 
 namespace {
 
-constexpr ViewShadow::ShadowParameters kShadow{
-    .offset_x = 0,
-    .offset_y = 0,
-    .blur_radius = kRoundedCornersContentsViewMargin,
-    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
+// Centralized appearance for the contents/panel outline. Change these to tweak
+// the outline for both the web contents area and the side panel at once.
+constexpr int kContentsOutlineWidth = 1;
+constexpr ui::ColorId kContentsOutlineColor = nala::kColorDesktopbrowserToolbarButtonOutline;
+
 }  // namespace
 
-std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
+std::unique_ptr<ViewOutline> BraveContentsViewUtil::CreateOutline(
     views::View* view,
     const gfx::RoundedCornersF& corner_radii) {
   DCHECK(view);
-  auto shadow = std::make_unique<ViewShadow>(view, corner_radii, kShadow);
+  auto outline = std::make_unique<ViewOutline>(
+      view, corner_radii, kContentsOutlineColor, kContentsOutlineWidth);
   view->layer()->SetRoundedCornerRadius(corner_radii);
   view->layer()->SetIsFastRoundedCorner(true);
-  return shadow;
+  return outline;
 }
 
 // static
