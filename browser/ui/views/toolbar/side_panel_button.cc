@@ -7,6 +7,7 @@
 
 #include <memory>
 
+#include "base/check_deref.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/constants/pref_names.h"
@@ -59,7 +60,7 @@ SidePanelButton::SidePanelButton(sidebar::SidebarController* sidebar_controller,
                                  PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&SidePanelButton::ButtonPressed,
                                         base::Unretained(this))),
-      sidebar_controller_(*sidebar_controller) {
+      sidebar_controller_(CHECK_DEREF(sidebar_controller)) {
   sidebar_service_observation_.Observe(
       sidebar_controller_->GetSidebarService());
   SetMenuModel(std::make_unique<SidePanelMenuModel>(prefs));
