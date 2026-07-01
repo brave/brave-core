@@ -14,7 +14,7 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/tabs/brave_split_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
@@ -50,6 +50,8 @@ BraveTabMenuModel::BraveTabMenuModel(
   restore_service_ =
       TabRestoreServiceFactory::GetForProfile(browser_window->GetProfile());
 
+  vertical_tab_controller_ = VerticalTabController::FromBrowser(browser_window);
+
   auto* model = static_cast<BraveTabStripModel*>(tab_strip_model);
   auto indices = model->GetTabIndicesForCommandAt(index);
   all_muted_ = model->GetAllTabsMuted(indices);
@@ -78,7 +80,7 @@ int BraveTabMenuModel::GetRestoreTabCommandStringId() const {
 }
 
 std::u16string BraveTabMenuModel::GetLabelAt(size_t index) const {
-  if (!tab_menu_model_delegate_->ShouldShowBraveVerticalTab()) {
+  if (!vertical_tab_controller_->ShouldShowBraveVerticalTabs()) {
     return TabMenuModel::GetLabelAt(index);
   }
 
@@ -125,7 +127,7 @@ void BraveTabMenuModel::Build(BrowserWindowInterface* browser_window,
 
   AddSeparator(ui::NORMAL_SEPARATOR);
 
-  if (tabs::utils::SupportsBraveVerticalTabs(browser_window)) {
+  if (vertical_tab_controller_->SupportsBraveVerticalTabs()) {
     AddCheckItemWithStringId(TabStripModel::CommandShowVerticalTabs,
                              IDS_TAB_CXMENU_SHOW_VERTICAL_TABS);
   }

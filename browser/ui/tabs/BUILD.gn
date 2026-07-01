@@ -25,10 +25,7 @@ source_set("tabs_public") {
     "//chrome/browser/ui/tabs:tabs_public",
   ]
 
-  deps = [
-    "//brave/browser/ui/views/page_action",
-    "//brave/components/containers/buildflags",
-  ]
+  deps = [ "//brave/components/containers/buildflags" ]
 }
 
 if (!is_android) {
@@ -92,15 +89,13 @@ if (!is_android) {
 
   source_set("tab_menu") {
     sources = [
-      "brave_browser_tab_menu_model_delegate.cc",
-      "brave_browser_tab_menu_model_delegate.h",
       "brave_tab_menu_model_factory.cc",
       "brave_tab_menu_model_factory.h",
-      "tab_menu_model_delegate.cc",
     ]
 
     deps = [
       "//base",
+      "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/containers/buildflags",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/tabs:tab_menu",
