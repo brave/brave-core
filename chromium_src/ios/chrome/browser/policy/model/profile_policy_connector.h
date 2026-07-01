@@ -18,9 +18,13 @@
   ProfilePolicyConnectorMock;                          \
   std::unique_ptr<policy::ConfigurationPolicyProvider> \
       brave_profile_policy_provider_
+#define Shutdown \
+  Shutdown();    \
+  void Shutdown_ChromiumImpl
 
 #include <ios/chrome/browser/policy/model/profile_policy_connector.h>  // IWYU pragma: export
 
+#undef Shutdown
 #undef ProfilePolicyConnectorMock
 #undef UseLocalTestPolicyProvider
 
