@@ -11,7 +11,12 @@
 #include "brave/browser/policy/handlers/brave_https_upgrade_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_referrers_policy_handler.h"
 #include "brave/browser/policy/handlers/brave_remember_1p_storage_policy_handler.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "components/policy/core/browser/configuration_policy_handler.h"
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/policy/handlers/brave_ads_enabled_policy_handler.h"
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 #define BuildHandlerList BuildHandlerList_ChromiumImpl
 #include <chrome/browser/policy/configuration_policy_handler_list_factory.cc>
@@ -29,6 +34,9 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
         entry.policy_name, entry.preference_path, entry.value_type));
   }
 
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  handlers->AddHandler(std::make_unique<BraveAdsEnabledPolicyHandler>());
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
   handlers->AddHandler(std::make_unique<BraveAdblockPolicyHandler>());
   handlers->AddHandler(std::make_unique<BraveFingerprintingV2PolicyHandler>());
   handlers->AddHandler(std::make_unique<BraveHttpsUpgradePolicyHandler>());

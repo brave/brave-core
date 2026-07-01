@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/components/brave_ads/buildflags/buildflags.gni")
+
 static_library("handlers") {
   sources = [
     "brave_adblock_policy_handler.cc",
@@ -25,6 +27,10 @@ static_library("handlers") {
     "//components/policy/core/common:common_constants",
     "//components/prefs",
   ]
+
+  if (enable_brave_ads) {
+    deps += [ "//brave/components/policy/handlers" ]
+  }
 }
 
 source_set("unit_tests") {
