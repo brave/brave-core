@@ -118,6 +118,13 @@ class SelectObjectTest(unittest.TestCase):
         with self.assertRaisesRegex(RuntimeError, 'Multiple objects match'):
             m._select_object(objects, {'host_os': 'linux'})
 
+    def test_object_without_condition_always_matches(self):
+        """A single object with no `condition` selects unconditionally, as our
+        per-platform node deps gate on the dep-level condition instead."""
+        objects = [{'object_name': 'node-linux-x64.tar.gz'}]
+        picked = m._select_object(objects, {'host_os': 'mac'})
+        self.assertEqual(picked['object_name'], 'node-linux-x64.tar.gz')
+
 
 class TarballInstallerTest(unittest.TestCase):
     """Tests for `TarballInstaller` download/extract/sidecar mechanics."""
@@ -575,6 +582,14 @@ class MainTest(unittest.TestCase):
                 'condition': 'True',
             }],
         },
+        'src/path/to/other': {
+            'bucket': 'https://downloads.invalid/',
+            'objects': [{
+                'object_name': 'other.tar.gz',
+                'sha256sum': 'b',
+                'condition': 'True',
+            }],
+        },
     }
 
     def test_dispatches_selected_dep_to_runner(self):
@@ -589,6 +604,22 @@ class MainTest(unittest.TestCase):
                                        ['install_extra_deps', dep]):
                     self.assertEqual(m.main(), 0)
         runner.install.assert_called_once_with(dep, self._FAKE_EXTRA_DEPS[dep])
+
+    def test_dispatches_every_dep_in_order(self):
+        """Multiple dep keys install each entry's spec, in the given order, on
+        the one shared runner (as the per-platform node hook does)."""
+        runner = mock.Mock()
+        deps = ['src/path/to/dep', 'src/path/to/other']
+        with mock.patch.object(m, 'EXTRA_DEPS', self._FAKE_EXTRA_DEPS):
+            with mock.patch.object(m.ExtraDepsRunner,
+                                   'from_checkout',
+                                   return_value=runner):
+                with mock.patch.object(sys, 'argv',
+                                       ['install_extra_deps', *deps]):
+                    self.assertEqual(m.main(), 0)
+        self.assertEqual(
+            runner.install.call_args_list,
+            [mock.call(dep, self._FAKE_EXTRA_DEPS[dep]) for dep in deps])
 
     def test_rejects_unknown_dep(self):
         """An unknown dep key is rejected by argparse before any work runs."""

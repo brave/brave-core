@@ -12,13 +12,16 @@ it deployed more generic, and reusable for other cases.
 
 `EXTRA_DEPS` mirrors the shape of a gclient `gcs` dependency, keyed by the
 checkout-relative destination path. Each object lists an `object_name`, its
-`sha256sum`, a `condition`, and optionally `overlayed_on`, which selects how it
-is installed:
+`sha256sum`, an optional per-object `condition`, and optionally `overlayed_on`,
+which selects how it is installed:
 
   * Overlay (with `overlayed_on`) -- extracted on top of the upstream archive it
     names, which is validated against DEPS so we never overlay a rolled base.
   * Owned (without `overlayed_on`) -- fully owns its destination, which is wiped
     and re-extracted each install so no stale extraction lingers.
+
+An entry with a single object may omit its per-object `condition` and gate on
+the dep-level `condition` alone.
 
 `bucket` is just an HTTPS prefix `object_name` is appended to: one of Brave's
 buckets, or an upstream distribution (e.g. `nodejs.org/dist`) used as one.
@@ -101,29 +104,43 @@ EXTRA_DEPS = {
             },
         ],
     },
-    'src/brave/third_party/node': {
+    'src/brave/third_party/node/linux': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
-        'condition': 'checkout_linux or checkout_mac or checkout_win',
+        'condition': 'host_os == "linux"',
         'objects': [
             {
                 'object_name': 'node-v24.17.0-linux-x64.tar.gz',
                 'sha256sum': 'e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f',
-                'condition': 'host_os == "linux"',
             },
-            {
-                'object_name': 'node-v24.17.0-darwin-arm64.tar.gz',
-                'sha256sum': '4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f',
-                'condition': 'host_os == "mac" and host_cpu == "arm64"',
-            },
+        ],
+    },
+    'src/brave/third_party/node/mac': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
+        'condition': 'host_os == "mac" and host_cpu == "x64"',
+        'objects': [
             {
                 'object_name': 'node-v24.17.0-darwin-x64.tar.gz',
                 'sha256sum': '80da552fe037290cb130e9dea590f5eeeb7aa450636f0c89ab41415511c1ec27',
-                'condition': 'host_os == "mac" and host_cpu == "x64"',
             },
+        ],
+    },
+    'src/brave/third_party/node/mac_arm64': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
+        'condition': 'host_os == "mac" and host_cpu == "arm64"',
+        'objects': [
+            {
+                'object_name': 'node-v24.17.0-darwin-arm64.tar.gz',
+                'sha256sum': '4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f',
+            },
+        ],
+    },
+    'src/brave/third_party/node/win': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
+        'condition': 'host_os == "win"',
+        'objects': [
             {
                 'object_name': 'node-v24.17.0-win-x64.zip',
                 'sha256sum': 'f2aa33b35b75aca5f3f7b85675a6f6423201053e9381911e64961f3bda2528ab',
-                'condition': 'host_os == "win"',
             },
         ],
     },
@@ -139,8 +156,8 @@ def _select_object(objects: list[dict],
     host platform).
     """
     matches = [
-        obj for obj in objects
-        if gclient_eval.EvaluateCondition(obj['condition'], variables)
+        obj for obj in objects if 'condition' not in obj
+        or gclient_eval.EvaluateCondition(obj['condition'], variables)
     ]
     if not matches:
         return None
@@ -404,17 +421,21 @@ def main() -> int:
     _LOG.setLevel(logging.INFO)
 
     parser = argparse.ArgumentParser(
-        description='Download and install the bucket-hosted archive for the '
-        'given EXTRA_DEPS entry.')
+        description='Download and install the bucket-hosted archive(s) for the '
+        'given EXTRA_DEPS entries.')
     parser.add_argument(
-        'dep',
+        'deps',
+        nargs='+',
         choices=sorted(EXTRA_DEPS),
         metavar='DEP_PATH',
-        help='Path key in EXTRA_DEPS identifying the entry to install '
-        '(e.g. src/third_party/rust-toolchain).')
+        help='One or more path keys in EXTRA_DEPS identifying the entries to '
+        'install. Entries whose condition is false on this host are skipped, '
+        'so a single invocation may list every per-platform variant.')
     args = parser.parse_args()
 
-    ExtraDepsRunner.from_checkout().install(args.dep, EXTRA_DEPS[args.dep])
+    runner = ExtraDepsRunner.from_checkout()
+    for dep in args.deps:
+        runner.install(dep, EXTRA_DEPS[dep])
     return 0
 
 
