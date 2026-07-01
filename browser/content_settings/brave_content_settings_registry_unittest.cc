@@ -75,6 +75,39 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
   EXPECT_EQ(
       website_settings_registry()->Get(ContentSettingsType::BRAVE_COOKIES),
       website_settings_info);
+
+  info = registry()->Get(ContentSettingsType::BRAVE_JAVASCRIPT);
+  ASSERT_TRUE(info);
+
+  EXPECT_THAT(info->permission_settings_info()->allowlisted_primary_schemes(),
+              ElementsAre("chrome", "devtools", "chrome-extension",
+                          "chrome-untrusted"));
+
+  EXPECT_FALSE(info->IsSettingValid(CONTENT_SETTING_SESSION_ONLY));
+  EXPECT_FALSE(info->IsSettingValid(CONTENT_SETTING_ASK));
+  EXPECT_EQ(ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+            info->incognito_behavior());
+
+  website_settings_info = info->website_settings_info();
+  EXPECT_EQ("shieldsJavaScriptV1", website_settings_info->name());
+  EXPECT_EQ("profile.content_settings.exceptions.shieldsJavaScriptV1",
+            website_settings_info->pref_name());
+  EXPECT_EQ("profile.default_content_setting_values.shieldsJavaScriptV1",
+            website_settings_info->default_value_pref_name());
+  ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
+  EXPECT_EQ(CONTENT_SETTING_ALLOW,
+            website_settings_info->initial_default_value().GetInt());
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_IOS)
+  EXPECT_EQ(PrefRegistry::NO_REGISTRATION_FLAGS,
+            website_settings_info->GetPrefRegistrationFlags());
+#else
+  EXPECT_EQ(user_prefs::PrefRegistrySyncable::SYNCABLE_PREF,
+            website_settings_info->GetPrefRegistrationFlags());
+#endif
+
+  EXPECT_EQ(
+      website_settings_registry()->Get(ContentSettingsType::BRAVE_JAVASCRIPT),
+      website_settings_info);
 }
 
 // Settings that control access to user data should not be inherited.
@@ -92,6 +125,7 @@ TEST_F(BraveContentSettingsRegistryTest, Inheritance) {
       ContentSettingsType::BRAVE_SHIELDS,
       ContentSettingsType::BRAVE_REFERRERS,
       ContentSettingsType::BRAVE_COOKIES,
+      ContentSettingsType::BRAVE_JAVASCRIPT,
       ContentSettingsType::BRAVE_SPEEDREADER,
       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
       ContentSettingsType::BRAVE_HTTPS_UPGRADE,
@@ -216,6 +250,12 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   //   info = registry()->Get(ContentSettingsType::BRAVE_COOKIES);
   //   EXPECT_EQ(CONTENT_SETTING_DEFAULT, info->GetInitialDefaultSetting());
   // }
+
+  {
+    SCOPED_TRACE("Content setting: BRAVE_JAVASCRIPT");
+    info = registry()->Get(ContentSettingsType::BRAVE_JAVASCRIPT);
+    EXPECT_EQ(CONTENT_SETTING_ALLOW, info->GetInitialDefaultSetting());
+  }
 
   {
     SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
