@@ -4769,7 +4769,7 @@ extension Strings {
         bundle: .module,
         value: "Playlist Data",
         comment:
-          "Text for Playlist Data Toggle for clearing the offline data storage in settings"
+          "Text for Playlist Data Toggle for clearing the cache in settings"
       )
 
     public static let addToPlayListAlertTitle =
