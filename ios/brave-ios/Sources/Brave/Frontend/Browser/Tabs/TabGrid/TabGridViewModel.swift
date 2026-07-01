@@ -269,6 +269,9 @@ class TabGridViewModel {
 
   private func browsingModeDidSwitch(from oldValue: Bool) {
     tabManager.privateBrowsingManager.isPrivateBrowsing = isPrivateBrowsing
+    // Update UserDefaults immediately so a fast relaunch sees the correct mode.
+    // Session/userActivity state is persisted on background from BrowserViewController.
+    BrowserState.persistRememberedBrowsingMode(isPrivate: isPrivateBrowsing)
     if isPrivateTabsLocked {
       tabs = []
       return

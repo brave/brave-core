@@ -250,6 +250,23 @@ extension Preferences {
       key: "privacy.remember-browsing-mode",
       default: false
     )
+    /// Last browsing mode when the app was backgrounded (used to restore private mode on relaunch).
+    public static let lastPrivateBrowsingMode = Option<Bool>(
+      key: "privacy.last-private-browsing-mode",
+      default: false
+    )
+    /// Last selected tab per window (used to restore tab selection on relaunch).
+    public static let lastSelectedTabIdByWindow = Option<[String: String]>(
+      key: "privacy.last-selected-tab-id-by-window",
+      default: [:]
+    )
+    /// Canonical session window id for single-window restore (prevents tab/window id drift).
+    public static let lastSessionWindowId = Option<String?>(
+      key: "privacy.last-session-window-id",
+      default: nil
+    )
+    /// Blocks all cookies and access to local storage
+    static let blockAllCookies = Option<Bool>(key: "privacy.block-all-cookies", default: false)
     /// The toggles states for clear private data screen
     static let clearPrivateDataToggles = Option<[Bool]>(
       key: "privacy.clear-data-toggles",
