@@ -60,7 +60,7 @@ void LoginsJavaScriptFeature::ScriptMessageReceivedWithReply(
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
   const base::DictValue* body =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!body) {
     std::move(callback).Run(nullptr, nil);
     return;

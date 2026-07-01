@@ -1,8 +1,8 @@
 diff --git a/crypto/unexportable_key_software_unsecure.cc b/crypto/unexportable_key_software_unsecure.cc
-index add48146309162f5f003fc3958d9d6afe439f9c6..ad501fc831854742508c26110177852e87016b58 100644
+index bd7153dbbcc50cf7c2e76daf5b7432e46c588e36..8cf1a9de9676a966a6c8538f6fb01eed5759c632 100644
 --- a/crypto/unexportable_key_software_unsecure.cc
 +++ b/crypto/unexportable_key_software_unsecure.cc
-@@ -83,6 +83,7 @@ class SoftwareProvider : public UnexportableKeyProvider {
+@@ -267,6 +267,7 @@ class SoftwareProvider : public UnexportableKeyProvider {
            return algo;
          case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA1:
          case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
@@ -10,7 +10,15 @@ index add48146309162f5f003fc3958d9d6afe439f9c6..ad501fc831854742508c26110177852e
            continue;  // Not supported
        }
      }
-@@ -110,6 +111,7 @@ class SoftwareProvider : public UnexportableKeyProvider {
+@@ -294,6 +295,7 @@ class SoftwareProvider : public UnexportableKeyProvider {
+         }
+         case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA1:
+         case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:
++        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
+           continue;  // Not supported
+       }
+     }
+@@ -336,6 +338,7 @@ class SoftwareProvider : public UnexportableKeyProvider {
          }
          case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA1:
          case SignatureVerifier::SignatureAlgorithm::RSA_PSS_SHA256:

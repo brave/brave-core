@@ -346,6 +346,10 @@ extra_kv = { allow_unsafe = false }
 [crate.derive_more]
 extra_kv = { allow_unsafe = false }
 
+[crate.derive_more-impl]
+extra_input_roots = ['../doc', '../README.md' ]
+extra_kv = { allow_unsafe = false }
+
 [crate.digest]
 extra_kv = { allow_unsafe = false }
 
@@ -478,7 +482,6 @@ license_files = ['../../../../../common/licenses/Apache-2.0']
 extra_kv = { allow_unsafe = false }
 
 [crate.hashbrown]
-license_files = ['../../../../../../third_party/rust/chromium_crates_io/vendor/hashbrown-v0_15/LICENSE-APACHE']
 extra_kv = { allow_unsafe = true }
 
 [crate.hex]

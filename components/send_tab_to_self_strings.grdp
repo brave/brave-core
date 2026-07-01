@@ -14,6 +14,12 @@
   <message name="IDS_SHARING_DEVICE_TYPE_TABLET" desc="The label for a device of type tablet.">
     Tablet
   </message>
+  <message name="IDS_SHARING_DEVICE_TYPE_DESKTOP" desc="The label for a device of type desktop computer.">
+    Desktop
+  </message>
+  <message name="IDS_SHARING_DEVICE_TYPE_LAPTOP" desc="The label for a device of type laptop computer.">
+    Laptop
+  </message>
   <message name="IDS_SEND_TAB_PUSH_NOTIFICATION_TITLE_DEAULT_DEVICE_NAME" desc="Title of the iOS send tab to self push notification when the target device has a default name.">
     Tab sent from your <ph name="DEVICE_NAME">$1<ex>Macbook Pro</ex></ph>
   </message>

@@ -45,6 +45,7 @@ source_set("side_panel_impl") {
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+    "//chrome/browser/ui/views:layout_provider",
     "//chrome/browser/ui/views/side_panel",
     "//chrome/common",
     "//components/prefs",

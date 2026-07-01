@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsConfig.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsConfig.java
-index c8f63334639579a7d919680ab2061a179c502654..2225e0f9157b8231685e7fa72286fdeb9a84eda4 100644
+index 568d3309bc4675989812a510e8f01fe6f5d7a44c..485468b08e80e44d741840b0950840b97741e826 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsConfig.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/SuggestionsConfig.java
 @@ -26,7 +26,7 @@ public final class SuggestionsConfig {

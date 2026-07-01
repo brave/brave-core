@@ -87,4 +87,31 @@ public class BraveSnackbarManager extends SnackbarManager {
             ((BraveSnackbarView) mView).setCustomText(title, pageTitle, url);
         }
     }
+
+    /**
+     * Switches the currently showing snackbar to a layout where the action button sits on its own
+     * line below the message, optionally with a trailing close button (see {@link
+     * BraveSnackbarView#setActionBelowMessage(int, String, Runnable)}). Must be called after {@link
+     * #showSnackbar(Snackbar)}.
+     *
+     * @param closeIconResId Drawable resource for the close button. Ignored when {@code
+     *     onCloseCallback} is null.
+     * @param closeContentDescription Accessibility label for the close button, or null.
+     * @param onCloseCallback Invoked when the close button is tapped; when null no close button is
+     *     added.
+     */
+    public void setActionBelowMessage(
+            int closeIconResId,
+            @Nullable String closeContentDescription,
+            @Nullable Runnable onCloseCallback) {
+        if (!isShowing()) {
+            return;
+        }
+
+        if (mView instanceof BraveSnackbarView) {
+            ((BraveSnackbarView) mView)
+                    .setActionBelowMessage(
+                            closeIconResId, closeContentDescription, onCloseCallback);
+        }
+    }
 }

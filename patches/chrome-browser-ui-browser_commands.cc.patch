@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 98184befe73ccdb129221921717f24a60e1967bc..42e9db730a555c605f3447787dbd881c8c190365 100644
+index 42e787a7cad073d0743f5de219f80a057e88651c..223930b0c9d8498a6e792dab19af3e50233d76d6 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -302,6 +302,9 @@ bool GetTabURLAndTitleToSave(content::WebContents* web_contents,
+@@ -306,6 +306,9 @@ bool GetTabURLAndTitleToSave(content::WebContents* web_contents,
  }
  
  ReadingListModel* GetReadingListModel(BrowserWindowInterface* browser) {
@@ -12,7 +12,7 @@ index 98184befe73ccdb129221921717f24a60e1967bc..42e9db730a555c605f3447787dbd881c
    ReadingListModel* model =
        ReadingListModelFactory::GetForBrowserContext(browser->GetProfile());
    if (!model || !model->loaded()) {
-@@ -1007,7 +1010,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1037,7 +1040,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -21,7 +21,7 @@ index 98184befe73ccdb129221921717f24a60e1967bc..42e9db730a555c605f3447787dbd881c
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1285,6 +1288,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1319,6 +1322,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
@@ -29,7 +29,7 @@ index 98184befe73ccdb129221921717f24a60e1967bc..42e9db730a555c605f3447787dbd881c
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1588,7 +1592,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1621,7 +1625,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
    const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
                                 ? chrome::ChromeUINewTabURLAsGURL()

@@ -16,6 +16,7 @@
 #include "base/memory/raw_ref.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/browser/net/resource_context_data.h"
 #include "brave/browser/net/url_context.h"
 #include "content/public/browser/content_browser_client.h"
@@ -89,7 +90,8 @@ class BraveProxyingWebSocket
                       OnAuthRequiredCallback callback) override;
 
   // network::mojom::TrustedHeaderClient methods:
-  void OnBeforeSendHeaders(const net::HttpRequestHeaders& headers,
+  void OnBeforeSendHeaders(const GURL& request_url,
+                           const net::HttpRequestHeaders& headers,
                            OnBeforeSendHeadersCallback callback) override;
   void OnHeadersReceived(const std::string& headers,
                          const ::net::IPEndPoint& remote_endpoint,
@@ -115,7 +117,8 @@ class BraveProxyingWebSocket
   void ContinueToHeadersReceived();
   void OnBeforeSendHeadersCompleteFromProxy(
       int error_code,
-      const std::optional<net::HttpRequestHeaders>& headers);
+      const std::optional<net::HttpRequestHeaders>& headers,
+      std::optional<base::DictValue> extended_net_log_events = std::nullopt);
   void OnHeadersReceivedCompleteFromProxy(
       int error_code,
       const std::optional<std::string>& headers,

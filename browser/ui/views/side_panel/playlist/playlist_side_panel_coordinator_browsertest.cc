@@ -7,6 +7,7 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/browser/ui/web_applications/web_app_browsertest_base.h"
 #include "chrome/browser/web_applications/test/web_app_test_utils.h"
 #include "chrome/test/base/platform_browser_test.h"
@@ -65,7 +66,7 @@ class PlaylistCoordinatorBrowserTest : public web_app::WebAppBrowserTestBase {
     CHECK(app_browser);
     CHECK(app_browser != browser());
 
-    CHECK(app_browser->app_controller());
+    CHECK(web_app::AppBrowserController::From(app_browser));
     return app_browser;
   }
 

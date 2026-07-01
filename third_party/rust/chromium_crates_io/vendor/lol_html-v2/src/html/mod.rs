@@ -46,11 +46,8 @@ pub(crate) fn escape_body_text(mut content: &str, output_handler: &mut impl FnMu
 }
 
 /// Replace `"` with `&quot;` ONLY, leaving `&` unescaped
-pub(crate) fn escape_double_quotes_only(
-    content: &Bytes<'_>,
-    output_handler: &mut dyn FnMut(&[u8]),
-) {
-    let mut content = &**content;
+pub(crate) fn escape_double_quotes_only(content: Bytes<'_>, output_handler: &mut dyn FnMut(&[u8])) {
+    let mut content = &*content;
     loop {
         if let Some(pos) = memchr(b'"', content) {
             let Some((chunk_before, rest)) = content

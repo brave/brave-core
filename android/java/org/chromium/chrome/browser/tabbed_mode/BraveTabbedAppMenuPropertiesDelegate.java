@@ -34,6 +34,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
+import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
@@ -63,6 +64,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuHandler.AppMenuItemType;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.chrome.browser.vpn.BraveVpnPolicy;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnPrefUtils;
 import org.chromium.chrome.browser.vpn.utils.BraveVpnProfileUtils;
@@ -241,7 +243,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             MonotonicObservableSupplier<ReadAloudController> readAloudControllerSupplier,
             PageZoomManager pageZoomManager,
             OneshotSupplier<HubManager> hubManagerSupplier,
-            @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider) {
+            @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider,
+            Supplier<RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier,
+            Supplier<SideUiStateProvider> sideUiStateProviderSupplier) {
         super(
                 context,
                 activityTabProvider,
@@ -258,7 +262,9 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 readAloudControllerSupplier,
                 pageZoomManager,
                 hubManagerSupplier,
-                openInAppMenuItemProvider);
+                openInAppMenuItemProvider,
+                recentlyClosedEntriesManagerSupplier,
+                sideUiStateProviderSupplier);
 
         mBraveAppMenuDelegate = appMenuDelegate;
         mBraveContext = context;
@@ -753,8 +759,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.id.readaloud_menu_id, R.string.menu_listen_to_this_page, 0)));
 
         // Reader mode
-        if (DomDistillerFeatures.showAlwaysOnEntryPoint()
-                || DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
+        if (DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
@@ -790,13 +795,6 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                     R.string.menu_install_create_shortcut,
                                     0)));
         }
-
-        // RDS
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.reader_mode_prefs_id, R.string.menu_reader_mode_prefs, 0)));
 
         // Auto Dark
         if (ChromeFeatureList.isEnabled(

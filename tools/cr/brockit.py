@@ -272,6 +272,7 @@ from __future__ import annotations
 
 import argparse
 import ast
+import contextlib
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 import json
@@ -327,10 +328,6 @@ _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
 
 # The link to a specific commit in the Chromium source code.
 GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
-
-# A basic url to the rust toolchain that can be used to check for the toolchain
-# availability for a given version.
-RUST_TOOLCHAIN_URL = 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/linux-x64-rust-toolchain-{revision}.tar.xz'
 
 # Brave-side script that pins the hermetic Xcode toolchain. Its
 # `MAC_BINARIES_HASH` (archive SHA-256) and `MAC_SDK_OFFICIAL_VERSION` /
@@ -1605,8 +1602,9 @@ class Upgrade(Versioned):
     def _check_rust_toolchain(self) -> dict | None:
         """Check for Rust toolchain updates.
 
-    This function checks for any updates to the Rust toolchain, including the
-    validity of the rust toolchain URL for syncing.
+    This function checks for any updates to the Rust toolchain, including
+    whether a matching Rust/WASM toolchain has been published to our infra for
+    syncing.
 
     Returns:
         An advisory record if any updates occurred, and there's no toolchain in
@@ -1631,8 +1629,13 @@ class Upgrade(Versioned):
             ])
 
         updated_version = get_rust_clang_revision(self.target_version)
-        rust_toolchain_url = RUST_TOOLCHAIN_URL.format(
-            revision=updated_version)
+
+        # We compose the url to download the rust toolchain from the bucket,
+        # always with brave sub revision 1, as it would make sense we should
+        # have a first toolchain published for it.
+        upstream_stem = f'rust-toolchain-{updated_version}'
+        rust_toolchain_url = (f'{build_rust_toolchain.TOOLCHAIN_BUCKET_URL}/'
+                              f'linux-x64-{upstream_stem}-1.tar.xz')
 
         try:
             logging.debug('Checking rust toolchain URL: %s',
@@ -1651,7 +1654,7 @@ class Upgrade(Versioned):
             'tools/clang/scripts/update.py')
         commit_hash, commit_message = commit_log[:40], commit_log[41:]
 
-        return {
+        advisory = {
             'current': get_rust_clang_revision(self.working_version),
             'target': updated_version,
             'description': 'The rust toolchain has been updated.',
@@ -1662,6 +1665,27 @@ class Upgrade(Versioned):
                 'message': commit_message
             }
         }
+
+        # No toolchain is published yet. Try to close the loop automatically:
+        # trigger the per-platform Jenkins pipelines and watch them, then repin
+        # `install_extra_deps.py` to the freshly published archives. If both
+        # succeed there is nothing for the user to do, so no advisory is
+        # returned. Anything going wrong (no Jenkins credentials, a failed
+        # build, a watch detach, the repin failing) falls back to the advisory
+        # so the user resolves it by hand.
+        target = str(self.target_version)
+        try:
+            if not GenRustToolchain().run_watching(tag=target):
+                return advisory
+            # Driven via `execute` rather than `run`: the outer lift status
+            # spinner is still live here, and `run` would open its own status
+            # spinner (a second `rich` live display) on top of it.
+            UpdateRustWasmToolchain().execute(chromium_ref=target,
+                                              culprit=commit_hash)
+        except (InvalidInputException, BadOutcomeException):
+            return advisory
+
+        return None
 
     def _prerun_checks(self) -> bool:
         """Runs pre-run checks for the upgrade.
@@ -2492,18 +2516,42 @@ class GenRustToolchain(Task):
     def status_message(self):
         return "Triggering Rust toolchain builds..."
 
-    def run_watching(self, tag: str) -> None:
+    @contextlib.contextmanager
+    def _suspended_outer_status(self):
+        """Pause any active Brockit status spinner around the watch display.
+
+        The watch table is a `rich.live.Live`, and rich allows only one live
+        display at a time. Run standalone (`gen-rust-toolchain --watch`) there
+        is no spinner and this is a no-op, but when `_check_rust_toolchain`
+        drives the watch mid-lift the outer `Task.run` status spinner (set up
+        by `terminal.with_status`) is live and would clash with the table. Stop
+        it for the duration of the watch and restore it afterwards.
+        """
+        status = terminal.status
+        if status is not None:
+            status.stop()
+        try:
+            yield
+        finally:
+            if status is not None:
+                status.start()
+
+    def run_watching(self, tag: str) -> bool:
         """Entry point for `--watch` that bypasses `Task.run`.
 
         The watch table is a `rich.live.Live` display, and rich permits only
         one live display at a time. `Task.run` wraps `execute` in the shared
         status spinner -- itself a live display -- so the watch flow cannot go
         through it. This mirrors `run`'s banner framing but drives `execute`
-        directly, without the spinner.
+        directly, with any outer status spinner suspended for the duration.
+
+        Returns whether every triggered pipeline finished successfully.
         """
         console.log(self.start_banner)
-        self.execute(tag=tag, watch=True)
+        with self._suspended_outer_status():
+            all_succeeded = self.execute(tag=tag, watch=True)
         console.log(self.end_banner)
+        return all_succeeded
 
     @staticmethod
     def _load_jenkins_config() -> tuple[str, str, str]:
@@ -2553,7 +2601,7 @@ class GenRustToolchain(Task):
         except (requests.RequestException, KeyError, ValueError):
             return {}
 
-    def execute(self, tag: str, watch: bool = False):
+    def execute(self, tag: str, watch: bool = False) -> bool:
         # Resolve the version first so a bad tag/label fails before we touch
         # any Jenkins state.
         version = _fetch_chromium_tag(tag)
@@ -2598,7 +2646,9 @@ class GenRustToolchain(Task):
                 % '\n'.join(f'    * {job}' for job in failures))
 
         if watch:
-            self._watch(session, base_url, version, watched)
+            return self._watch(session, base_url, version, watched)
+
+        return True
 
     @staticmethod
     def _get_json(session: requests.Session, url: str) -> dict | None:
@@ -2794,10 +2844,13 @@ class GenRustToolchain(Task):
         return table
 
     def _watch(self, session: requests.Session, base_url: str,
-               version: Version, jobs: list[_WatchedJob]) -> None:
+               version: Version, jobs: list[_WatchedJob]) -> bool:
         """Polls the triggered pipelines, updating an in-place table until all
         finish or the user interrupts with Ctrl+C (which detaches and leaves
         the builds running).
+
+        Returns whether every pipeline finished with a SUCCESS state. A Ctrl+C
+        detach counts as not-all-successful.
         """
         terminal.log_task('Watching pipelines — press [bold cyan]Ctrl+C[/] to '
                           'stop watching (builds keep running).')
@@ -2825,6 +2878,9 @@ class GenRustToolchain(Task):
             for job in jobs:
                 console.log(Padding(f'{job.bot}: {job.link(base_url)}',
                                     (0, 4)))
+            return False
+
+        return all(job.state == 'SUCCESS' for job in jobs)
 
 
 # Installer whose `EXTRA_DEPS` rust-toolchain entry is repinned by

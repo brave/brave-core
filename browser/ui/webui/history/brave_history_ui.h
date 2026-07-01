@@ -54,7 +54,7 @@ class BraveHistoryUI
           receiver);
 
   // brave_history_embeddings::mojom::PageHandlerFactory:
-  void CreatePageHandler(
+  void CreateInterfacePageHandler(
       mojo::PendingRemote<brave_history_embeddings::mojom::Page> page,
       mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
           receiver) override;

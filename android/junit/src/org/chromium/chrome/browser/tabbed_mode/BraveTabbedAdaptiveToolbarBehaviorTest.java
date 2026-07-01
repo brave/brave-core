@@ -75,7 +75,9 @@ public class BraveTabbedAdaptiveToolbarBehaviorTest {
                         tabStripVisibilitySupplier,
                         mGlicButtonDelegate,
                         () -> null,
-                        Mockito.mock(BrowserControlsVisibilityManager.class));
+                        Mockito.mock(BrowserControlsVisibilityManager.class),
+                        ObservableSuppliers.alwaysFalse(),
+                        ObservableSuppliers.alwaysFalse());
     }
 
     @After

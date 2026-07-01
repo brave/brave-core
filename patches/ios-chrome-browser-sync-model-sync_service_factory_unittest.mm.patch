@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
-index 6bdbbf9acf2769cd6296a80f3e7390a638d9ea39..584693549aac2032954d8f4e490cb751137588fa 100644
+index 5b4e4cf004fe033a3bf58347455323f22c22d30f..1cb85ab8eca4464c16e15fab2759b33a3ed31df5 100644
 --- a/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
 +++ b/ios/chrome/browser/sync/model/sync_service_factory_unittest.mm
-@@ -55,7 +55,7 @@ class SyncServiceFactoryTest : public PlatformTest {
+@@ -57,7 +57,7 @@ class SyncServiceFactoryTest : public PlatformTest {
   protected:
    // Returns the collection of default datatypes.
    syncer::DataTypeSet DefaultDatatypes() {

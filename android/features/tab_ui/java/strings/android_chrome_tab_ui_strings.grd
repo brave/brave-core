@@ -642,12 +642,7 @@
       <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_ICON_DESCRIPTION" desc="Accessibility string describing what color the current tab group color icon has. Tap this item to change the color.">
         <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> tab group color icon
       </message>
-      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_SELECTED_DESCRIPTION" desc="Accessibility string describing the icon that indicates that this color item is the currently selected one.">
-        <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> Selected
-      </message>
-      <message name="IDS_ACCESSIBILITY_TAB_GROUP_COLOR_PICKER_COLOR_ITEM_NOT_SELECTED_DESCRIPTION" desc="Accessibility string describing that no icon is shown to indicate that this color item is the currently selected one.">
-        <ph name="COLOR_NAME">%1$s<ex>Blue</ex></ph> Not selected
-      </message>
+
       <message name="IDS_ACCESSIBILITY_EXPAND_TAB_GROUP_WITH_COLOR" desc="The accessibility text to read when a card representing a tab group is clicked in grid tab switcher. NUMBER_OF_TABS is the number of tabs within this group. COLOR_NAME is the color of this group.">
         {NUMBER_OF_TABS, plural,
           =1 {Expand tab group with <ph name="TABS_COUNT_ONE">%1$d<ex>1</ex></ph> tab, color <ph name="COLOR_NAME">%2$s<ex>Blue</ex></ph>.}

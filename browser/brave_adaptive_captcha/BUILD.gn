@@ -6,7 +6,7 @@
 import("//brave/components/brave_rewards/core/buildflags/buildflags.gni")
 
 source_set("impl") {
-  visibility = [ "//chrome/browser" ]
+  visibility = [ "//brave/browser:browser_impl" ]
 
   sources = [ "brave_adaptive_captcha_service_factory.cc" ]
 

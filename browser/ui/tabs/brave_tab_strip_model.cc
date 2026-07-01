@@ -21,8 +21,6 @@
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_delegate.h"
@@ -92,8 +90,9 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
   if (mru_cycle_list_.empty()) {
     // Start cycling
 
-    Browser* browser = chrome::FindBrowserWithTab(GetWebContentsAt(0));
-    if (!browser) {
+    BrowserWindow* browser_window =
+        BrowserWindow::FindBrowserWindowWithWebContents(GetWebContentsAt(0));
+    if (!browser_window) {
       return;
     }
 
@@ -109,7 +108,7 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
               });
 
     // Tell the cycling controller that we start cycling to handle tabs keys
-    static_cast<BraveBrowserWindow*>(browser->window())->StartTabCycling();
+    static_cast<BraveBrowserWindow*>(browser_window)->StartTabCycling();
   }
 
   if (direction == TabRelativeDirection::kNext) {

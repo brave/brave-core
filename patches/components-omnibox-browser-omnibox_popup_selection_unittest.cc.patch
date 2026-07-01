@@ -1,8 +1,8 @@
 diff --git a/components/omnibox/browser/omnibox_popup_selection_unittest.cc b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
-index 5e3d551798e75ce06ed1843b6a141e27d7e83e9f..38ef3c51ee9f75a3cb5b3b6116edf9a88b02522f 100644
+index 594d10e514eca53cb197f71b684ff3a36dea40a6..db56833e02adef8c5800940a1c13f9ae5f828452 100644
 --- a/components/omnibox/browser/omnibox_popup_selection_unittest.cc
 +++ b/components/omnibox/browser/omnibox_popup_selection_unittest.cc
-@@ -88,15 +88,15 @@ TEST_F(OmniboxPopupSelectionTest, SelectionWithKeywordMode) {
+@@ -85,15 +85,15 @@ TEST_F(OmniboxPopupSelectionTest, SelectionWithKeywordMode) {
    next = OmniboxPopupSelection(2u).GetNextSelection(
        input, result, client.GetTemplateURLService(), aim_button_visible,
        Direction::kForward, Step::kStateOrLine);

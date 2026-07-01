@@ -18,45 +18,26 @@
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service.h"
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/local_models_updater.h"
-#include "chrome/browser/passage_embeddings/chrome_passage_embeddings_service_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_observer.h"
 #include "components/optimization_guide/core/delivery/model_info.h"
+#include "components/passage_embeddings/core/passage_embeddings_service_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 
 namespace passage_embeddings {
 
-// Brave's subclass of ChromePassageEmbeddingsServiceController. We
-// inherit from the Chrome class (rather than the base directly) so
-// that our chromium_src override of
-// ChromePassageEmbeddingsServiceController::Get() can return the Brave
-// singleton — upstream factories call Get() and pick us up without needing
-// per-factory chromium_src swaps.
+// Runs the passage embeddings model in-process rather than in a sandboxed
+// utility process, because Brave serves embeddings from its own local AI
+// service.
 //
-// Our overrides of MaybeLaunchService() and ResetServiceRemote()
-// construct/tear down an in-process BravePassageEmbeddingsService
-// (bound to the base class's service_remote_) instead of launching a
-// sandboxed utility process as Chrome's defaults do.
+// A single instance is shared across profiles, accessed via Get(), to avoid
+// loading the model more than once.
 //
-// Upstream's SchedulingEmbedder, owned by PassageEmbeddingsServiceController,
-// drives the actual job queue; we just provide the transport.
-//
-// Note on the per-profile PassageEmbedderModelObserver:
-// PassageEmbedderModelObserverFactory creates one observer per profile
-// that registers with OptimizationGuide to receive tflite model
-// updates. Brave doesn't use that model, but letting the observer
-// exist is safe because:
-//  (1) MaybeUpdateModelInfo below is a no-op override — the observer's
-//      notifications become dead callbacks.
-//  (2) IsUserPermittedToFetchFromRemoteOptimizationGuide returns false
-//      in Brave (chromium_src/.../optimization_guide_permissions_util.cc),
-//      so OptimizationGuide never actually downloads the tflite model.
-// That means we no longer need a chromium_src override of
-// PageEmbeddingsServiceFactory to skip the observer — upstream's
-// factory works as-is with Brave routing through
-// ChromePassageEmbeddingsServiceController::Get().
+// Brave does not use the optimization guide tflite model that upstream's
+// embedder relies on, so the model metadata and download paths are overridden
+// to no-ops.
 class BravePassageEmbeddingsServiceController
-    : public ChromePassageEmbeddingsServiceController,
+    : public PassageEmbeddingsServiceController,
       public ProfileObserver,
       public local_ai::LocalModelsUpdaterState::Observer {
  public:
@@ -97,9 +78,13 @@ class BravePassageEmbeddingsServiceController
   bool MaybeUpdateModelInfo(
       base::optional_ref<const optimization_guide::ModelInfo> model_info)
       override;
-  void MaybeLaunchService() override;
-  void ResetServiceRemote() override;
-  bool EmbedderReady() override;
+  // These are not overrides, but they are named similarly to the ones in the
+  // base class. The main difference is that these functions handle the service
+  // in-process.
+  void MaybeLaunchService();
+  void ResetServiceRemote();
+
+  bool IsModelAvailable() override;
   EmbedderMetadata GetEmbedderMetadata() override;
   void GetEmbeddings(std::vector<std::string> passages,
                      PassagePriority priority,
@@ -128,7 +113,7 @@ class BravePassageEmbeddingsServiceController
       updater_state_observation_{this};
 
   // Set true when LocalModelsUpdaterState reports the EmbeddingGemma
-  // component is installed. Required for EmbedderReady() to return
+  // component is installed. Required for IsModelAvailable() to return
   // true.
   bool model_dir_ready_ = false;
 

@@ -82,6 +82,11 @@ class FakeAIPageContentAgent : public blink::mojom::AIPageContentAgent {
     std::move(callback).Run(std::move(response_));
   }
 
+  void GetImageBytes(int32_t dom_node_id,
+                     GetImageBytesCallback callback) override {
+    std::move(callback).Run(/*result=*/nullptr);
+  }
+
   void SetResponse(blink::mojom::AIPageContentPtr response) {
     response_ = std::move(response);
   }

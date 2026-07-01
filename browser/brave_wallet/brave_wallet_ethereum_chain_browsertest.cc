@@ -359,7 +359,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helperA->IsShowingBubble());
 
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   auto* web_contentsB = browser()->tab_strip_model()->GetWebContentsAt(1);
   GURL urlB = GetWalletEthereumChainPageURL("b.com");
   EXPECT_TRUE(content::NavigateToURL(web_contentsB, urlB));
@@ -392,7 +392,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest,
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helperA->IsShowingBubble());
 
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   auto* web_contentsB = browser()->tab_strip_model()->GetWebContentsAt(1);
   GURL urlB = GetWalletEthereumChainPageURL("b.com", "id=0x11");
 
@@ -444,7 +444,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddDifferentChainsSwitch) {
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helperA->IsShowingBubble());
 
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   auto* web_contentsB = browser()->tab_strip_model()->GetWebContentsAt(1);
   GURL urlB = GetWalletEthereumChainPageURL("b.com", "id=0x11");
 
@@ -490,7 +490,7 @@ IN_PROC_BROWSER_TEST_F(BraveWalletEthereumChainTest, AddChainAndCloseTab) {
   base::RunLoop().RunUntilIdle();
   ASSERT_FALSE(tab_helperA->IsShowingBubble());
 
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   auto* web_contentsB = browser()->tab_strip_model()->GetWebContentsAt(1);
   GURL urlB = GetWalletEthereumChainPageURL("b.com", "id=0x11");
 

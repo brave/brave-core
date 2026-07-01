@@ -15,6 +15,7 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/commander/command_source.h"
+#include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/test/base/browser_with_test_window_test.h"
 #include "chrome/test/base/test_browser_window.h"
 #include "chrome/test/base/testing_profile.h"
@@ -39,7 +40,7 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
     Browser::CreateParams params(browser_profile ? browser_profile : profile(),
                                  true);
     auto browser = CreateBrowserWithTestWindowForParams(params);
-    browser->SetWindowUserTitle(title);
+    WindowMetadataController::From(browser.get())->SetWindowUserTitle(title);
     ui_test_utils::DeprecatedFakeActivateBrowser(browser.get());
     return browser;
   }
@@ -47,7 +48,7 @@ class CommanderEntityMatchTest : public BrowserWithTestWindowTest {
 
 TEST_F(CommanderEntityMatchTest, WindowExcludesCurrentBrowser) {
   std::string title("Title");
-  browser()->SetWindowUserTitle(title);
+  WindowMetadataController::From(browser())->SetWindowUserTitle(title);
   auto other_browser = CreateAndActivateBrowser(title);
 
   auto matches =

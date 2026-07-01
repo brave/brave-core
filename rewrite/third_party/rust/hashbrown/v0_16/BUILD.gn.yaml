@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Append Brave-specific deps and features to the hashbrown crate.
+    re_pattern: '(  proc_macro_configs \+= _configs_to_add\n)\}'
+    replace: |-
+      \1
+        deps += [
+          "//brave/third_party/rust/allocator_api2/v0_2:lib",
+          "//brave/third_party/rust/equivalent/v1:lib",
+        ]
+        features += [
+          "allocator-api2",
+          "default",
+          "equivalent",
+          "inline-more",
+        ]
+      }
+
+  - description: 'Allow hashbrown to be used outside of test targets'
+    pattern: 'testonly = true'
+    replace: 'testonly = false'

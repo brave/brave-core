@@ -1,18 +1,18 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index 0d768df5179111fb248625fe03de17916b46e8c8..34cd605a0f0f96ddaa2d741f87e92615e78820c5 100644
+index 92104e936463e5ebef0ac3a1124ec6a8d3e14db8..efe3579ad4aebde0f46b7e8a9b9d07c469b962e4 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
-@@ -85,7 +85,8 @@ DeviceInfo::DeviceInfo(
-     const MobilePromoOnDesktopPromoTypeSet&
+@@ -87,7 +87,8 @@ DeviceInfo::DeviceInfo(
          desktop_to_ios_promo_receiving_types,
      GlicExperimentalTriggeringState glic_experimental_triggering_state,
--    std::optional<int> glic_experimental_triggering_version)
-+    std::optional<int> glic_experimental_triggering_version,
+     std::optional<int> glic_experimental_triggering_version,
+-    std::optional<std::string> android_os_build_fingerprint_prefix)
++    std::optional<std::string> android_os_build_fingerprint_prefix,
 +    SelfDeleteSupport self_delete_support)
      : guid_(guid),
        client_name_(client_name),
        chrome_version_(chrome_version),
-@@ -112,7 +113,8 @@ DeviceInfo::DeviceInfo(
+@@ -117,7 +118,8 @@ DeviceInfo::DeviceInfo(
            desktop_to_ios_promo_receiving_types),
        glic_experimental_triggering_state_(glic_experimental_triggering_state),
        glic_experimental_triggering_version_(

@@ -158,7 +158,7 @@ are declared in tools/grit/grit_args.gni.
           </if>
         </if>
 
-       <if expr="not is_android">
+      <if expr="not is_android">
         <if expr="not use_titlecase">
           <message name="IDS_CONTENT_CONTEXT_OPENLINKOFFTHERECORD" desc="The name of the open a link in Private window command">
             Open link in &amp;private window
@@ -169,6 +169,8 @@ are declared in tools/grit/grit_args.gni.
           <if expr="is_macosx">
             </if>
           <if expr="not is_macosx">
+            </if>
+          <if expr="is_macosx">
             </if>
           </if>
         <if expr="use_titlecase">
@@ -186,6 +188,8 @@ are declared in tools/grit/grit_args.gni.
           <if expr="is_macosx">
             </if>
           <if expr="not is_macosx">
+            </if>
+          <if expr="is_macosx">
             </if>
           </if>
 
@@ -744,6 +748,9 @@ are declared in tools/grit/grit_args.gni.
       <if expr="not is_android">
         </if>
 
+      <if expr="not is_android">
+        </if>
+
       <message name="IDS_ACCESSIBLE_INCOGNITO_WINDOW_TITLE_FORMAT" desc="The format for the accessible title of a Private window">
         <ph name="WINDOW_TITLE">$1</ph> (Private)
       </message>
@@ -1200,8 +1207,6 @@ are declared in tools/grit/grit_args.gni.
     <if expr="is_android">
       </if>
 
-    <if expr="not is_android">
-      </if>
     <if expr="not is_android">
       </if>
     <if expr="not is_android">

@@ -53,6 +53,7 @@ import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.supplier.SettableMonotonicObservableSupplier;
 import org.chromium.base.supplier.SettableNonNullObservableSupplier;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.browser.back_press.BackPressManager;
 import org.chromium.chrome.browser.bookmarks.BookmarkImageFetcher;
@@ -86,7 +87,6 @@ import org.chromium.chrome.browser.glic.GlicButtonDelegate;
 import org.chromium.chrome.browser.homepage.settings.BraveRadioButtonGroupHomepagePreference;
 import org.chromium.chrome.browser.hub.HubShowPaneHelper;
 import org.chromium.chrome.browser.hub.PaneListBuilder;
-import org.chromium.chrome.browser.infobar.InfoBarContainerView;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.logo.LogoCoordinator;
@@ -140,6 +140,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.tasks.HomeSurfaceTracker;
 import org.chromium.chrome.browser.tasks.tab_management.TabGroupCreationUiDelegate;
 import org.chromium.chrome.browser.tasks.tab_management.TabSwitcherPaneCoordinatorFactory;
+import org.chromium.chrome.browser.tasks.tab_management.vertical_tabs.VerticalTabsActionDelegate;
 import org.chromium.chrome.browser.theme.BottomUiThemeColorProvider;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.theme.ToolbarThemeColorProvider;
@@ -298,6 +299,12 @@ public class BytecodeTest {
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/ntp_customization/BraveNtpCustomizationUtils")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/ntp_customization/theme/NtpCustomizationPromoManager")); // presubmit: ignore-long-line
+        Assert.assertTrue(
+                classExists(
+                        "org/chromium/chrome/browser/ntp_customization/theme/BraveNtpCustomizationPromoManager")); // presubmit: ignore-long-line
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ui/appmenu/AppMenu"));
         Assert.assertTrue(
                 classExists(
@@ -511,7 +518,7 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/ntp_customization/NtpCustomizationUtils",
-                        "isInNarrowWindowOnTablet",
+                        "isInNarrowWindowOnLff",
                         MethodModifier.STATIC,
                         boolean.class,
                         boolean.class,
@@ -528,6 +535,15 @@ public class BytecodeTest {
                         "isNtpThemeCustomizationEnabled",
                         MethodModifier.STATIC,
                         boolean.class,
+                        WindowAndroid.class,
+                        boolean.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/ntp_customization/theme/NtpCustomizationPromoManager", // presubmit: ignore-long-line
+                        "canShowCustomizationIph",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        Tab.class,
                         WindowAndroid.class,
                         boolean.class));
 
@@ -1452,7 +1468,9 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         PageZoomManager.class,
                         OneshotSupplier.class,
-                        OpenInAppMenuItemProvider.class));
+                        OpenInAppMenuItemProvider.class,
+                        Supplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",
@@ -1527,7 +1545,8 @@ public class BytecodeTest {
                         OmniboxChipManager.class,
                         BottomBarHostManager.class,
                         ActionRegistry.class,
-                        GlicButtonDelegate.class));
+                        GlicButtonDelegate.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
@@ -1691,7 +1710,9 @@ public class BytecodeTest {
                         DeviceLockActivityLauncher.class,
                         BottomSheetController.class,
                         ModalDialogManager.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        Runnable.class,
+                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/menu_button/MenuButtonCoordinator", // presubmit: ignore-long-line
@@ -1700,7 +1721,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
                         WindowAndroid.class,
-                        MenuButtonCoordinator.SetFocusFunction.class,
+                        Runnable.class,
                         Runnable.class,
                         boolean.class,
                         Supplier.class,
@@ -1822,7 +1843,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListManager", // presubmit: ignore-long-line
                         ModelList.class,
-                        Context.class));
+                        Context.class,
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarCoordinator",
@@ -1891,7 +1913,8 @@ public class BytecodeTest {
                         FuseboxCoordinator.class,
                         LocationBarEmbedder.class,
                         OmniboxChipManager.class,
-                        LocationBarFocusScrimHandler.class));
+                        LocationBarFocusScrimHandler.class,
+                        SettableNullableObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/AppHooks",
@@ -1934,6 +1957,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/logo/LogoMediator",
                         "org/chromium/chrome/browser/logo/BraveLogoMediator",
+                        Context.class,
                         Callback.class,
                         PropertyModel.class,
                         Callback.class,
@@ -2018,7 +2042,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
-                        BottomBarHostManager.class));
+                        BottomBarHostManager.class,
+                        VerticalTabsActionDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
@@ -2181,7 +2206,8 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         BottomSheetController.class,
                         ModalDialogManager.class,
-                        SnackbarManager.class));
+                        SnackbarManager.class,
+                        Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs",
@@ -2282,6 +2308,7 @@ public class BytecodeTest {
                 constructorsMatch(
                         "org/chromium/chrome/browser/media/ui/ChromeMediaNotificationControllerDelegate", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate", // presubmit: ignore-long-line
+                        int.class,
                         int.class));
 
         Assert.assertTrue(
@@ -2306,15 +2333,6 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         boolean.class,
                         MultiWindowModeStateDispatcher.class));
-        Assert.assertTrue(
-                constructorsMatch(
-                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
-                        "org/chromium/chrome/browser/infobar/BraveInfoBarContainerView",
-                        Context.class,
-                        InfoBarContainerView.ContainerViewObserver.class,
-                        BrowserControlsStateProvider.class,
-                        MonotonicObservableSupplier.class,
-                        boolean.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/ToolbarLongPressMenuHandler",
@@ -2362,7 +2380,9 @@ public class BytecodeTest {
                         MonotonicObservableSupplier.class,
                         GlicButtonDelegate.class,
                         Supplier.class,
-                        BrowserControlsVisibilityManager.class));
+                        BrowserControlsVisibilityManager.class,
+                        NonNullObservableSupplier.class,
+                        NonNullObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/SwipeRefreshHandler",
@@ -2828,10 +2848,6 @@ public class BytecodeTest {
                         "mParams"));
         Assert.assertTrue(
                 fieldExists(
-                        "org/chromium/chrome/browser/infobar/InfoBarContainerView",
-                        "mEdgeToEdgeSupplier"));
-        Assert.assertTrue(
-                fieldExists(
                         "org/chromium/chrome/browser/hub/HubManagerImpl", "mEdgeToEdgeSupplier"));
         Assert.assertTrue(
                 fieldExists(
@@ -3197,7 +3213,16 @@ public class BytecodeTest {
 
     private Class getClassForPath(String path) {
         try {
-            Class c = Class.forName(path.replace("/", "."));
+            // Load the class without running its static initializers. This test only
+            // inspects class structure via reflection, and initializing some classes off
+            // the UI thread now trips thread-assertions (e.g. BookmarkBridge eagerly
+            // creates a OneshotSupplierImpl/Promise that asserts it is not constructed on
+            // the instrumentation thread).
+            Class c =
+                    Class.forName(
+                            path.replace("/", "."),
+                            /* initialize= */ false,
+                            getClass().getClassLoader());
             return c;
         } catch (ClassNotFoundException e) {
             return null;

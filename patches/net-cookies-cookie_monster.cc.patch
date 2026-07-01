@@ -1,8 +1,8 @@
 diff --git a/net/cookies/cookie_monster.cc b/net/cookies/cookie_monster.cc
-index d33ce5abb8c2c9c577ec2f2bd9507fb6e4a966ec..53b5440e34c717a753316f0cd7c08f54cce450e2 100644
+index 83db80e1586859eb7eea229e294f25c5c87346a0..289fc95a250a26d3b8bb8ca8b93dce9fa69f9a42 100644
 --- a/net/cookies/cookie_monster.cc
 +++ b/net/cookies/cookie_monster.cc
-@@ -146,7 +146,7 @@ enum CookieType {
+@@ -147,7 +147,7 @@ enum CookieType {
    COOKIE_TYPE_LAST_ENTRY
  };
  
@@ -11,7 +11,7 @@ index d33ce5abb8c2c9c577ec2f2bd9507fb6e4a966ec..53b5440e34c717a753316f0cd7c08f54
                              base::OnceClosure callback) {
    if (cookie_monster && callback)
      std::move(callback).Run();
-@@ -221,7 +221,7 @@ void LogStoredCookieToUMA(const net::CanonicalCookie& cc,
+@@ -222,7 +222,7 @@ void LogStoredCookieToUMA(const net::CanonicalCookie& cc,
  
  }  // namespace
  
@@ -20,7 +20,7 @@ index d33ce5abb8c2c9c577ec2f2bd9507fb6e4a966ec..53b5440e34c717a753316f0cd7c08f54
  
  // See comments at declaration of these variables in cookie_monster.h
  // for details.
-@@ -3012,4 +3012,4 @@ std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
+@@ -3028,4 +3028,4 @@ std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
    });
  }
  

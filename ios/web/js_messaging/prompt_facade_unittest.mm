@@ -54,8 +54,9 @@ class TestPromptFeature : public JavaScriptFeature {
       ScriptMessageReplyCallback callback) override {
     last_web_state_ = web_state;
     last_message_ = std::make_unique<ScriptMessage>(
-        message.body() ? std::make_unique<base::Value>(message.body()->Clone())
-                       : nullptr,
+        message.legacy_body()
+            ? std::make_unique<base::Value>(message.legacy_body()->Clone())
+            : nullptr,
         message.is_user_interacting(), message.is_main_frame(),
         message.request_url(), message.security_origin());
     std::move(callback).Run(reply_value_.get(), /*error=*/nil);
@@ -202,7 +203,7 @@ TEST_F(PromptFacadeTest, ValidPromptDispatchesToFeature) {
   EXPECT_EQ(GURL("https://example.com/foo"),
             *feature_->last_message()->request_url());
 
-  base::Value* body = feature_->last_message()->body();
+  base::Value* body = feature_->last_message()->legacy_body();
   ASSERT_TRUE(body);
   ASSERT_TRUE(body->is_dict());
   const std::string* key_value = body->GetDict().FindString("key");

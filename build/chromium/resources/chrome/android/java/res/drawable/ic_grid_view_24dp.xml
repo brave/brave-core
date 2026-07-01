@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2026 The Brave Authors. All rights reserved.
+      This Source Code Form is subject to the terms of the Mozilla Public
+      License, v. 2.0. If a copy of the MPL was not distributed with this file,
+      You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<!-- Overrides Chromium's grid icon (Tab Groups Hub switcher, recent tabs, etc.)
+     with Brave's Leo grid by aliasing the Nala `ic_grid04` drawable (added to
+     `nala_icons` in //brave/android/nala/icons.gni). Aliasing keeps Leo as the
+     single source of truth so the artwork stays in sync on `npm run
+     bump-nala`. This file overrides the upstream drawable in place (it is a
+     direct `source` of `chrome_app_java_resources`), which is why it lives here
+     rather than in the Nala overlay dependency: an overlay dependency cannot
+     win over the depending target's own `sources`. -->
+<inset xmlns:android="http://schemas.android.com/apk/res/android"
+    android:drawable="@drawable/ic_grid04" />

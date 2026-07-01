@@ -18,11 +18,11 @@ public class BraveNtpCustomizationUtils {
     private static final String TAG = "BraveNtpCustomizationUtils";
 
     /**
-     * Replace NtpCustomizationUtils.isInNarrowWindowOnTablet. Brave returns true for any tablet to
-     * avoid MVT layout misalignment.
+     * Replace NtpCustomizationUtils.isInNarrowWindowOnLff. Brave returns true for any large form
+     * factor (LFF) device to avoid MVT layout misalignment.
      */
-    public static boolean isInNarrowWindowOnTablet(boolean isTablet, UiConfig uiConfig) {
-        return isTablet;
+    public static boolean isInNarrowWindowOnLff(boolean isLff, UiConfig uiConfig) {
+        return isLff;
     }
 
     /**

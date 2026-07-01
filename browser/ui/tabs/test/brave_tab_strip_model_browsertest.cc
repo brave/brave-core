@@ -52,8 +52,8 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, MRUCyclingBasic) {
   TabStripModel* tab_strip_model = browser()->tab_strip_model();
 
   // Open 3 tabs
-  chrome::NewTab(browser());
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   EXPECT_EQ(tab_strip_model->count(), 3);
   EXPECT_EQ(tab_strip_model->active_index(), 2);
 
@@ -94,11 +94,11 @@ IN_PROC_BROWSER_TEST_F(BraveTabStripModelTest, TabClosingWhileMRUCycling) {
   // Open 3 tabs. There's some kind of timing issue or flakiness on MacOS that
   // causes the tabs visibility not to be updated and the last active timestamp
   // doesn't get changed. So we force the visibility here.
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   tab_strip_model->GetWebContentsAt(1)->WasShown();
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   tab_strip_model->GetWebContentsAt(2)->WasShown();
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   tab_strip_model->GetWebContentsAt(3)->WasShown();
   EXPECT_EQ(tab_strip_model->count(), 4);
   EXPECT_EQ(tab_strip_model->active_index(), 3);

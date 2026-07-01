@@ -4,15 +4,22 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Adding code to force show the label if it should be always shown in
-      OnPageActionModelChanged()'
+  - description: |
+      Also show the page action label when it must always be shown.
+
+      Upstream only animates the chip in when it is acting as a suggestion
+      chip. Brave has page actions whose label must remain visible regardless,
+      so we widen the condition to also cover `model.GetAlwaysShowLabel()`.
     re_pattern: 'else if \((model.ShouldShowSuggestionChip\(\))\)'
     replace: 'else if (\1 || model.GetAlwaysShowLabel())'
 
   - description: |
-      Call MaybeOverrideBorder() in UpdateBorder() right before the SetBorder() call
-      in it.
+      Let Brave adjust the border insets before UpdateBorder() applies them.
+
+      UpdateBorder() computes `border_insets` and hands them straight to
+      SetBorder(). Inserting a MaybeOverrideBorder() hook just before that call
+      gives Brave a chance to tweak the insets without duplicating the whole
+      method.
     re_pattern: '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
     re_flags: [DOTALL]
     replace: |-
@@ -20,9 +27,13 @@ substitutions:
         \2
 
   - description: |
-      Add SetProperty(kBravePageActionEventFlagKey, ...) to the ActionInvocationContext
-      builder inside NotifyClick(), right before the .Build() call.
-    re_pattern: '(PageActionEntryPoint::kSuggestionChip\)\)\n)(\s*\.Build\(\)\);)'
+      Propagate the click event flags through the page action invocation.
+
+      Upstream's ActionInvocationContext does not carry the originating event's
+      modifier flags, so Brave action handlers cannot tell e.g. a plain click
+      from a ctrl/shift click. We attach them via `kBravePageActionEventFlagKey`
+      on the builder in NotifyClick() right before `.Build()`.
+    re_pattern: '(void PageActionView::NotifyClick\(.*?\n)(\s*\.Build\(\)\);)'
     re_flags: [DOTALL]
     replace: |-
       \1          .SetProperty(kBravePageActionEventFlagKey,

@@ -16,7 +16,7 @@
 #include "chrome/browser/profiles/profile_attributes_entry.h"
 #include "chrome/browser/profiles/profile_manager.h"
 #include "chrome/browser/profiles/profile_window.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/profiles/profile_colors_util.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/grit/generated_resources.h"
@@ -26,10 +26,13 @@
 
 void BraveProfileMenuView::MaybeBuildCloseBrowsersButton() {
   Profile* profile = browser().profile();
-  int window_count = chrome::GetBrowserCount(profile);
+  int window_count =
+      ProfileBrowserCollection::GetForProfile(profile)->GetSize();
   if (!profile->IsOffTheRecord() && profile->HasPrimaryOTRProfile()) {
-    window_count += chrome::GetBrowserCount(
-        profile->GetPrimaryOTRProfile(/*create_if_needed=*/true));
+    window_count +=
+        ProfileBrowserCollection::GetForProfile(
+            profile->GetPrimaryOTRProfile(/*create_if_needed=*/true))
+            ->GetSize();
   }
 
   int button_title_id = IDS_PROFILE_MENU_CLOSE_PROFILE_X_WINDOWS_BUTTON;

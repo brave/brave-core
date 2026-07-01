@@ -62,7 +62,7 @@ class PageActionViewTest : public ChromeViewsTestBase {
             PageActionViewParams{
                 .icon_size = 16,
                 .icon_label_bubble_delegate = &icon_label_view_delegate_},
-            ui::ElementIdentifier()));
+            PageActionIconType::kLensOverlay, ui::ElementIdentifier()));
 
     page_action_view_->GetSlideAnimationForTesting().SetSlideDuration(
         base::Seconds(0));

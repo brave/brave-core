@@ -1,8 +1,8 @@
 diff --git a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
-index 2fb3122f7fc093f1799137407f48250b7b65a40d..c816d7c9a646458e8798fdd8f946d5d24d7d1268 100644
+index 91f8a250d8e87c4095da35030f9ac536298bc117..468f1628a1596d1b62ed404caa19c9f3fcd15020 100644
 --- a/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
 +++ b/ui/webui/resources/cr_elements/cr_dialog/cr_dialog.ts
-@@ -281,7 +281,7 @@ export class CrDialogElement extends CrLitElement {
+@@ -282,7 +282,7 @@ export class CrDialogElement extends CrLitElement {
      const accept = e.target === this ||
          e.composedPath().some(
              el => (el as HTMLElement).tagName === 'CR-INPUT' &&

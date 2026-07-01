@@ -1,8 +1,16 @@
 diff --git a/ui/webui/resources/tools/bundle_js.gni b/ui/webui/resources/tools/bundle_js.gni
-index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..d35b4bca42d4ea323a8b302d8087f98bb3987c19 100644
+index dc7540cfe05c6e8779814cc432c1dbb8e0460a47..0c2f384c2fe5c98be830733332342d754d669186 100644
 --- a/ui/webui/resources/tools/bundle_js.gni
 +++ b/ui/webui/resources/tools/bundle_js.gni
-@@ -123,6 +123,7 @@ template("bundle_js") {
+@@ -70,6 +70,7 @@ template("bundle_js") {
+       outputs += [ "$out_folder/rollup.config.mjs" ]
+     }
+ 
++    if (true) { brave_excludes = [ "chrome://resources/brave/leo.bundle.js", "//resources/brave/leo.bundle.js", "chrome://resources/brave/opaque_ke.bundle.js", "//resources/brave/opaque_ke.bundle.js", ] if (defined(invoker.excludes)) { brave_excludes += invoker.excludes } args += [ "--exclude" ] + brave_excludes } else
+     if (defined(invoker.excludes)) {
+       args += [ "--exclude" ] + invoker.excludes
+     }
+@@ -123,6 +124,7 @@ template("bundle_js") {
      external_paths += [ "//resources/lit/v3_0/|$lit_path" ]
  
      if (!is_chrome_untrusted) {

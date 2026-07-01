@@ -38,7 +38,6 @@
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_utils.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"

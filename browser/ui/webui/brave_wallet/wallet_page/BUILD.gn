@@ -34,6 +34,7 @@ source_set("wallet_page") {
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/ui/webui",
+    "//chrome/browser/ui/webui:favicon_source",
     "//components/favicon_base",
     "//ui/webui",
   ]
@@ -44,6 +45,7 @@ source_set("wallet_page") {
     sources += [ "wallet_page_handler_desktop.cc" ]
     deps += [
       "//brave/browser/ui/brave_wallet",
+      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
     ]
   }

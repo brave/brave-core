@@ -12,6 +12,7 @@ source_set("unit_tests") {
   deps = [
     "//base",
     "//base/test:test_support",
+    "//chrome/browser/password_manager:test_support",
     "//chrome/test:test_support",
     "//components/password_manager/core/browser/export",
     "//testing/gmock",

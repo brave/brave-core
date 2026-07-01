@@ -1221,11 +1221,12 @@ void BraveContentBrowserClient::CreateChromeWebSocket(
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
         handshake_client,
+    content::ContentBrowserClient::WebSocketOptions options,
     BraveProxyingWebSocket<T>* proxy) {
   if (ChromeContentBrowserClient::WillInterceptWebSocket(frame)) {
     ChromeContentBrowserClient::CreateWebSocket(
         frame, proxy->CreateWebSocketFactory(), url, site_for_cookies,
-        user_agent, std::move(handshake_client));
+        user_agent, std::move(handshake_client), std::move(options));
   } else {
     proxy->Start(std::move(handshake_client));
   }
@@ -1237,7 +1238,8 @@ void BraveContentBrowserClient::CreateWebSocket(
     const net::SiteForCookies& site_for_cookies,
     const std::optional<std::string>& user_agent,
     mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-        handshake_client) {
+        handshake_client,
+    content::ContentBrowserClient::WebSocketOptions options) {
 #if BUILDFLAG(ENABLE_TOR)
   if (frame) {
     content::BrowserContext* browser_context = frame->GetBrowserContext();
@@ -1256,9 +1258,9 @@ void BraveContentBrowserClient::CreateWebSocket(
   if (base::FeatureList::IsEnabled(features::kBraveRequestInfoUniquePtr)) {
     auto* proxy = BraveProxyingWebSocket<base::WeakPtr>::ProxyWebSocket(
         frame, std::move(factory), url, site_for_cookies, user_agent);
-    CreateChromeWebSocket<base::WeakPtr>(frame, url, site_for_cookies,
-                                         user_agent,
-                                         std::move(handshake_client), proxy);
+    CreateChromeWebSocket<base::WeakPtr>(
+        frame, url, site_for_cookies, user_agent, std::move(handshake_client),
+        std::move(options), proxy);
   } else {
     // Ignore shared_ptr presubmit error, this is old code we are trying to
     // convert to unique_ptr/WeakPtr
@@ -1267,7 +1269,7 @@ void BraveContentBrowserClient::CreateWebSocket(
             frame, std::move(factory), url, site_for_cookies, user_agent);
     CreateChromeWebSocket<std::shared_ptr>(  // nocheck
         frame, url, site_for_cookies,        // nocheck
-        user_agent, std::move(handshake_client), proxy);
+        user_agent, std::move(handshake_client), std::move(options), proxy);
   }
 }
 

@@ -437,7 +437,10 @@ IN_PROC_BROWSER_TEST_P(LocalhostAccessBrowserTest, WebSocket) {
   const std::string& ws_open_script =
       content::JsReplace(ws_open_script_template, ws_url);
   ASSERT_EQ("error", EvalJs(contents(), ws_open_script));
-  EXPECT_EQ(1, prompt_factory()->show_count());
+  // URL that we can be determined is an LNA request from just the URL triggers
+  // its own LNA prompt, thus 2 promps here (see
+  // WebSocket::WebSocketEventHandler::OnCreateURLRequest).
+  EXPECT_EQ(2, prompt_factory()->show_count());
   CheckCurrentStatusIs(ContentSetting::CONTENT_SETTING_ASK);
 
   prompt_factory()->set_response_type(

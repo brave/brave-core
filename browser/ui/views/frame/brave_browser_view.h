@@ -247,7 +247,6 @@ class BraveBrowserView : public BrowserView,
   bool IsBraveWebViewRoundedCornersEnabled();
   void UpdateContentsShadowVisibility();
   void StopTabCycling();
-  void UpdateSearchTabsButtonState();
   void OnCompactModePrefChanged();
   void OnPreferenceChanged(const std::string& pref_name);
   void OnWindowClosingConfirmResponse(bool allowed_to_close);

@@ -149,3 +149,10 @@ android_aar_prebuilt("com_google_android_play_integrity_java") {
     "//third_party/android_deps:google_play_services_tasks_java",
   ]
 }
+
+java_prebuilt("com_google_code_gson_gson_java") {
+  jar_path = "libs/com_google_code_gson_gson/gson-2.9.0.jar"
+  output_name = "com_google_code_gson_gson"
+  supports_android = true
+  enable_bytecode_checks = false
+}

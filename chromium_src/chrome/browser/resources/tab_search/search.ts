@@ -11,7 +11,7 @@ import { TabData as TabDataClass } from './tab_data.js'
 export type { OptionKeyObject, SearchOptions } from './search-chromium.js'
 
 // Lets BraveTabSearchPageElement inject semantic matches into the open-tab
-// list synchronously, without patching upstream's `updateFilteredTabs_`.
+// list without patching upstream's `updateFilteredTabs_`.
 // Only calls passing the records that match `getOpenTabsRecords()` are
 // augmented, so the media-tabs and recently-closed `search()` calls are
 // unaffected. Upstream replaces `openTabs_` with a fresh array on each
@@ -29,9 +29,9 @@ export function setSemanticOpenTabsContext(
   context = ctx
 }
 
-export function search<T extends ItemData>(
-    input: string, records: T[], options: SearchOptions): T[] {
-  const result = upstreamSearch(input, records, options)
+export async function search<T extends ItemData>(
+    input: string, records: T[], options: SearchOptions): Promise<T[]> {
+  const result = await upstreamSearch(input, records, options)
   if (!input || !context ||
       (records as ReadonlyArray<unknown>) !== context.getOpenTabsRecords()) {
     return result

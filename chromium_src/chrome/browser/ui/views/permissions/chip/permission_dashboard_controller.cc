@@ -17,6 +17,9 @@ bool IsAutoplay(content_settings::PageSpecificContentSettings* content_settings,
                 ContentSettingImageModel* model) {
   // If upstream adds other types to the dashboard we may need to update this
   // code.
+  if (model->image_type() == ContentSettingImageModel::ImageType::kSensors) {
+    return false;
+  }
   DCHECK(model->image_type() ==
          ContentSettingImageModel::ImageType::kMediaStream);
 
