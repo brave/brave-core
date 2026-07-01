@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index a2a365c291ad5075715e3fa690239e92e7ada92c..71852cab4a8342e504caedd670582da98dc2bcee 100644
+index d2efdf8c0af2e24d4a1600800291658e963ea682..c2ee605f9d850191c46d7d05369d842ae9b4ece3 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -639,6 +639,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -667,6 +667,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(signin_scoped_device_id);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,7 +10,7 @@ index a2a365c291ad5075715e3fa690239e92e7ada92c..71852cab4a8342e504caedd670582da9
    VISIT(sharing_fields);
    VISIT(model);
    VISIT(manufacturer);
-@@ -675,6 +676,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -703,6 +704,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(glic_experimental_triggering_version);
  }
  
@@ -18,20 +18,20 @@ index a2a365c291ad5075715e3fa690239e92e7ada92c..71852cab4a8342e504caedd670582da9
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT_REP(enabled_features);
    VISIT(sender_id_fcm_token_v2);
-@@ -740,7 +742,7 @@ VISIT_PROTO_FIELDS(
+@@ -782,7 +784,7 @@ VISIT_PROTO_FIELDS(
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
--  static_assert(63 == GetNumDataTypes(),
-+  static_assert(63 + 1 == GetNumDataTypes(),
+-  static_assert(66 == GetNumDataTypes(),
++  static_assert(66 + 1 == GetNumDataTypes(),
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);
-@@ -808,6 +810,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+@@ -852,6 +854,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
    VISIT(contextual_task);
    VISIT(skill);
    VISIT(gemini_thread);
 +  VISIT(ai_chat_conversation);
+   VISIT(notebook);
  }
  
- VISIT_PROTO_FIELDS(const sync_pb::ExtensionSettingSpecifics& proto) {

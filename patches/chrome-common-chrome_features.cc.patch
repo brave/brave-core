@@ -1,17 +1,17 @@
 diff --git a/chrome/common/chrome_features.cc b/chrome/common/chrome_features.cc
-index 3c1b7766fb6c55cb4e416a7f9d18991a31b75352..5dc2ad8cb3cf8c4e77213d7514569286ba5e351f 100644
+index 2e3c31bcaf054b978dfd20200c98edabf35f7507..b7c09dc15ee700e6d17b0313cefcf231b9a6ea59 100644
 --- a/chrome/common/chrome_features.cc
 +++ b/chrome/common/chrome_features.cc
-@@ -128,7 +128,7 @@ BASE_FEATURE(kPreinstalledWebAppAlwaysMigrateForTesting,
- #endif
+@@ -190,7 +190,7 @@ bool RemoteActorCredentialSharingEnabled() {
+ }
  
  // Controls the enablement of structured metrics on Windows, Linux, and Mac.
 -BASE_FEATURE(kChromeStructuredMetrics, base::FEATURE_ENABLED_BY_DEFAULT);
 +BASE_FEATURE(kChromeStructuredMetrics, base::FEATURE_DISABLED_BY_DEFAULT);
  
- #if !BUILDFLAG(IS_ANDROID)
- BASE_FEATURE(kContextContainers, base::FEATURE_DISABLED_BY_DEFAULT);
-@@ -154,7 +154,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
+ // Moves the Extensions "puzzle piece" icon from the title bar into the app menu
+ // for web app windows.
+@@ -212,7 +212,7 @@ BASE_FEATURE(kDesktopPWAsPreventClose,
  );
  
  // Adds a user settings that allows PWAs to be opened with a tab strip.
@@ -20,7 +20,7 @@ index 3c1b7766fb6c55cb4e416a7f9d18991a31b75352..5dc2ad8cb3cf8c4e77213d7514569286
  
  // Removes the Window Controls Overlay toggle button from the PWA toolbar
  // and auto-enables WCO when the app developer specifies it in the manifest.
-@@ -319,7 +319,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
+@@ -377,7 +377,7 @@ const char kGlicActorUiDebounceTimerName[] = "glic-actor-ui-debounce-timer";
  
  // Controls whether the task icon in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiTaskIcon{
@@ -29,7 +29,7 @@ index 3c1b7766fb6c55cb4e416a7f9d18991a31b75352..5dc2ad8cb3cf8c4e77213d7514569286
  // Controls whether the Actor Overlay in the actor ui is enabled.
  const base::FeatureParam<bool> kGlicActorUiOverlay{
      &kGlicActorUi, kGlicActorUiOverlayName, true};
-@@ -1198,7 +1198,7 @@ const base::FeatureParam<bool>
+@@ -1269,7 +1269,7 @@ const base::FeatureParam<bool>
  
  // Enables HTTPS-First Mode in a balanced configuration that doesn't warn on
  // HTTP when HTTPS can't be reasonably expected.
@@ -38,7 +38,7 @@ index 3c1b7766fb6c55cb4e416a7f9d18991a31b75352..5dc2ad8cb3cf8c4e77213d7514569286
  
  // Automatically enables HTTPS-First Mode in a balanced configuration when
  // possible.
-@@ -1534,7 +1534,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
+@@ -1607,7 +1607,7 @@ BASE_FEATURE(kSafetyHubTrustSafetySentimentSurvey,
  // Safe Browsing Reporting to perform a k-anonymous query to see if Google knows
  // about an SCT seen in the wild. If it hasn't been seen, then it is considered
  // a security incident and uploaded to Google.
@@ -47,7 +47,7 @@ index 3c1b7766fb6c55cb4e416a7f9d18991a31b75352..5dc2ad8cb3cf8c4e77213d7514569286
  
  // An estimated high bound for the time it takes Google to ingest updates to an
  // SCT log. Chrome will wait for at least this time plus the Log's Maximum Merge
-@@ -1689,7 +1689,7 @@ const base::FeatureParam<base::TimeDelta>
+@@ -1762,7 +1762,7 @@ const base::FeatureParam<base::TimeDelta>
  #if !BUILDFLAG(IS_ANDROID)
  // Enables the second version of the sentiment survey for users of Trust &
  // Safety features, using HaTS.
