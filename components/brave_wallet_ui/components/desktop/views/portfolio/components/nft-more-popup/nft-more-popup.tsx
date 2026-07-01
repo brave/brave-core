@@ -37,7 +37,10 @@ export const NftMorePopup = (props: Props) => {
   } = props
 
   return (
-    <ButtonMenu placement='top-end'>
+    <ButtonMenu
+      placement='top-end'
+      positionStrategy='fixed'
+    >
       {children}
       {/* show hide and edit option if a token is not hidden or not spam */}
       {!isTokenHidden && !isTokenSpam && (

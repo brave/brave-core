@@ -48,7 +48,7 @@ export const NftCollectionGridViewItem = ({
               <NftIcon
                 icon={token?.logo}
                 iconStyles={NftIconStyles}
-                responsive={false}
+                responsive={true}
               />
             </div>
           )

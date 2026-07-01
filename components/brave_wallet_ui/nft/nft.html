@@ -20,11 +20,20 @@
          display: block;
          border: transparent;
          border-radius: 8px;
-         max-height: 100%;
-         position: relative;
-         object-fit: contain;
          width: 100%;
+      }
+      body[data-display-mode="icon"] img {
          height: auto;
+         max-height: 100%;
+         object-fit: contain;
+      }
+      body[data-display-mode="grid"] img {
+         height: 100%;
+         object-fit: cover;
+      }
+      body[data-display-mode="details"] img {
+         height: 100%;
+         object-fit: contain;
       }
    </style>
 </head>
