@@ -18,6 +18,7 @@ inline constexpr char kEnvStaging[] = "staging";
 inline constexpr char kEnvDevelopment[] = "development";
 
 std::string GetDefaultEnvironment();
+std::string GetVpnProductPrefix();
 std::string GetDomain(const std::string& prefix, const std::string& domain);
 std::string GetEnvironmentForDomain(const std::string& domain);
 bool DomainIsForProduct(const std::string& domain, const std::string& product);
