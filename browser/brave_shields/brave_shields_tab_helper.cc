@@ -505,13 +505,12 @@ void BraveShieldsTabHelper::AllowScriptsOnce(
 }
 
 bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
-  PrefService* profile_prefs =
-      Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-          ->GetPrefs();
-
-  return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, &*host_content_settings_map_,
-      web_contents()->GetPrimaryMainFrame());
+  const GURL url =
+      web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin().GetURL();
+  content_settings::SettingInfo info;
+  host_content_settings_map_->GetWebsiteSetting(
+      url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
+  return info.source == content_settings::SettingSource::kPolicy;
 }
 
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,

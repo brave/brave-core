@@ -14,8 +14,6 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "content/public/browser/render_frame_host.h"
-#include "url/origin.h"
 
 namespace https_upgrade_exceptions {
 class HttpsUpgradeExceptionsService;
@@ -94,10 +92,6 @@ void SetFingerprintingControlType(HostContentSettingsMap* map,
                                   PrefService* profile_state = nullptr);
 ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                          const GURL& url);
-
-bool IsBraveShieldsManaged(PrefService* prefs,
-                           HostContentSettingsMap* map,
-                           content::RenderFrameHost* primary_main_frame);
 
 void SetHttpsUpgradeControlType(HostContentSettingsMap* map,
                                 ControlType type,

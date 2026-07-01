@@ -64,7 +64,6 @@ static_library("browser") {
   public_deps = [
     "//base",
     "//brave/components/brave_shields/core/common/adblock",
-    "//content/public/browser",
   ]
 }
 
