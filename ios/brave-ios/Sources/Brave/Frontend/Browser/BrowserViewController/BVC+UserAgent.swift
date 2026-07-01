@@ -4,7 +4,9 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveShared
 import Foundation
+import OSLog
 import Preferences
 import UserAgent
 import Web
@@ -17,6 +19,10 @@ extension BrowserViewController {
     braveUserAgentExceptions: BraveUserAgentExceptionsIOS?
   ) -> String {
     if !Preferences.Debug.userAgentOverride.value.isEmpty {
+      Logger(subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "UserAgent")
+        .info(
+          "userAgent(for:userAgentForType:braveUserAgentExceptions:) - `\(request.mainDocumentURL?.baseDomain ?? "nil", privacy: .public)`, returning override"
+        )
       return Preferences.Debug.userAgentOverride.value
     }
     let isBraveAllowedInUA =
@@ -35,17 +41,24 @@ extension BrowserViewController {
       desktop = UserAgent.desktopMasked
     }
 
-    switch type {
-    case .none, .automatic:
-      let screenWidth = UIScreen.main.bounds.width
-      if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
-        return mobile
+    let userAgent: String = {
+      switch type {
+      case .none, .automatic:
+        let screenWidth = UIScreen.main.bounds.width
+        if traitCollection.horizontalSizeClass == .compact && view.bounds.width < screenWidth / 2 {
+          return mobile
+        }
+        return traitCollection.userInterfaceIdiom == .pad
+          && profileController.defaultHostContentSettings.defaultPageMode == .desktop
+          ? desktop : mobile
+      case .desktop: return desktop
+      case .mobile: return mobile
       }
-      return traitCollection.userInterfaceIdiom == .pad
-        && profileController.defaultHostContentSettings.defaultPageMode == .desktop
-        ? desktop : mobile
-    case .desktop: return desktop
-    case .mobile: return mobile
-    }
+    }()
+    Logger(subsystem: "\(Bundle.main.bundleIdentifier ?? "com.brave.ios")", category: "UserAgent")
+      .info(
+        "userAgent(for:userAgentForType:braveUserAgentExceptions:) - `\(request.mainDocumentURL?.baseDomain ?? "nil", privacy: .public)`, returning \(userAgent, privacy: .public))"
+      )
+    return userAgent
   }
 }

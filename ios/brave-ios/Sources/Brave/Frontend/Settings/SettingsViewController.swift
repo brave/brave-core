@@ -1777,6 +1777,15 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
           cellClass: MultilineValue1Cell.self
         ),
         Row(
+          text: "User Agent Logs",
+          selection: { [unowned self] in
+            let controller = UIHostingController(rootView: UserAgentLogsView())
+            self.navigationController?.pushViewController(controller, animated: true)
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        Row(
           text: "Secure Content State Debug",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
