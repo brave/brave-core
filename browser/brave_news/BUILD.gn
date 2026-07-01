@@ -9,6 +9,7 @@ assert(enable_brave_news)
 
 source_set("brave_news") {
   sources = [
+    "brave_news_controller_delegate_impl.h",
     "brave_news_controller_factory.h",
     "brave_news_tab_helper.h",
     "direct_feed_fetcher_delegate_impl.h",
@@ -65,6 +66,16 @@ source_set("impl") {
     "//services/service_manager/public/cpp",
     "//url",
   ]
+
+  if (!is_android) {
+    # The controller delegate opens the New Tab Page, which requires
+    # //chrome/browser/ui/navigator (desktop only).
+    sources += [ "brave_news_controller_delegate_impl.cc" ]
+    deps += [
+      "//brave/components/constants",
+      "//chrome/browser/ui/navigator",
+    ]
+  }
 
   if (is_android) {
     # brave_news_controller_factory_android.cc includes the generated
