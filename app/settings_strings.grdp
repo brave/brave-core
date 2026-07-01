@@ -398,10 +398,10 @@
      An extension is controlling this setting
    </message>
     <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_WITH_DISABLE_AND_MANAGE_OPTION" desc="Text of the disclaimer that a setting's value is being controlled by an extension. `Disable` link immediately disables the extension. `Manage` link goes to the Details &gt; Extension Options link; either `chrome://extensions/?options=ID ` or `chrome-extension://ID/options.html`">
-      The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension is controlling this setting. To change your default search engine, <ph name="BEGIN_LINK_DISABLE">&lt;a href="#" id="disableLink"&gt;</ph>disable the extension<ph name="END_LINK_DISABLE">&lt;/a&gt;</ph> or <ph name="BEGIN_LINK_MANAGE">&lt;a href="#" id="manageLink"&gt;</ph>manage its settings<ph name="END_LINK_MANAGE">&lt;/a&gt;</ph>.
+      The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension is controlling this setting. To change your default search engine, <ph name="BEGIN_LINK_DISABLE">&lt;a href="#" id="disableLink"&gt;</ph>disable the extension<ph name="END_LINK_DISABLE">&lt;/a&gt;</ph> or <ph name="BEGIN_LINK_MANAGE">&lt;a href="#" id="manageLink" aria-description="$2"&gt;</ph>manage its settings<ph name="END_LINK_MANAGE">&lt;/a&gt;</ph>.
     </message>
     <message name="IDS_SETTINGS_CONTROLLED_BY_EXTENSION_WITH_MANAGE_OPTION" desc="Text of the disclaimer that a setting's value is being controlled by an extension. `See details` link goes to the Details &gt; Extension Options link; either `chrome://extensions/?options=ID ` or `chrome-extension://ID/options.html`">
-      The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension was added by your organization's policy and is controlling this setting. <ph name="BEGIN_LINK">&lt;a href="#" id="manageLink"&gt;</ph>See details<ph name="END_LINK">&lt;/a&gt;</ph>
+      The "<ph name="NAME">$1<ex>Adblocker plusplus</ex></ph>" extension was added by your organization's policy and is controlling this setting. <ph name="BEGIN_LINK">&lt;a href="#" id="manageLink" aria-description="$2"&gt;</ph>See details<ph name="END_LINK">&lt;/a&gt;</ph>
     </message>
     <message name="IDS_SETTINGS_CLEAR" desc="Label used on a menu item or button to delete an item.">
       Delete
@@ -464,6 +464,21 @@
     </message>
     <message name="IDS_TRAVEL_SUBMENU_OPTION" desc="Text label of the Travel item in the Your saved info 3-dot submenu">
       Travel
+    </message>
+    <message name="IDS_SETTINGS_AUTOFILL_AT_MEMORY_TRIGGER_SETTING_LABEL" desc="Title for the enhanced autofill shortcut setting.">
+      Custom shortcut for enhanced autofill
+    </message>
+    <message name="IDS_SETTINGS_AUTOFILL_AT_MEMORY_TRIGGER_SETTING_SECONDARY_LABEL" desc="Subtitle for enhanced autofill shortcut setting.">
+      If the custom shortcut is not set, @@ is used by default
+    </message>
+    <message name="IDS_SETTINGS_AUTOFILL_AT_MEMORY_TRIGGER_SETTING_INPUT_AREA_LABEL" desc="Label of the input area of enhanced autofill shortcut setting.">
+      Enhanced autofill shortcut
+    </message>
+    <message name="IDS_SETTINGS_AUTOFILL_AT_MEMORY_TRIGGER_SETTING_EDIT_BUTTON_LABEL" desc="Label of the edit button of enhanced autofill shortcut setting.">
+      Edit enhanced autofill shortcut
+    </message>
+    <message name="IDS_SETTINGS_AUTOFILL_AT_MEMORY_TRIGGER_SETTING_CLEAR_BUTTON_LABEL" desc="Label of the clear button of enhanced autofill shortcut setting.">
+      Clear enhanced autofill shortcut
     </message>
     <message name="IDS_SETTINGS_YOUR_SAVED_INFO_DESCRIPTION" desc="Description of the 'Your saved info' page.">
       Manage your autofill info for faster browsing — info like passwords, payment methods, addresses, and ID cards
@@ -1885,9 +1900,6 @@
     <message name="IDS_SETTINGS_ENABLE_DO_NOT_TRACK_DIALOG_LEARN_MORE_ACCESSIBILITY_LABEL" desc="The accessibility label for a link to learn more about Do Not Track">
       Learn more about Do Not Track
     </message>
-    <message name="IDS_SETTINGS_PERMISSIONS" desc="Name of the settings page which allows users to manage permissions and site content settings">
-      Permissions and content settings
-    </message>
     <message name="IDS_SETTINGS_PERMISSIONS_DESCRIPTION" desc="Description of the controls available on the permissions and site content settings page">
       Controls what information sites can use and show (location, camera, pop-ups, and more)
     </message>
@@ -2219,15 +2231,6 @@
     </message>
     <message name="IDS_SETTINGS_RESET_SETTINGS_TRIGGER" desc="The label describing the 'reset profile setting' feature">
       Restore settings to their original defaults
-    </message>
-    <message name="IDS_SETTINGS_RESET_AUTOMATED_DIALOG_TITLE" desc="The title of the dialog informing the user that automated resetting of some settings occurred.">
-      Some settings were reset
-    </message>
-    <message name="IDS_SETTINGS_RESET_BANNER_TEXT" desc="The text to show in a banner at the top of the chrome://settings page. The banner is displayed when Brave detects that some settings have been tampered with and were reset to factory defaults.">
-      Brave detected that some of your settings were corrupted by another program and reset them to their original defaults.
-    </message>
-    <message name="IDS_SETTINGS_RESET_BANNER_RESET_BUTTON_TEXT" desc="The text on the reset button in the Automatic Settings Reset Banner suggesting to reset ALL settings after an automatic reset of SOME settings.">
-      Reset all settings
     </message>
     <message name="IDS_SETTINGS_RESET_LEARN_MORE_ACCESSIBILITY_TEXT" desc="Accessibility label for a 'Learn more' link that links out to a help article about resetting settings.">
       Learn more about resetting settings
@@ -3784,9 +3787,16 @@
     <message name="IDS_SETTINGS_ACCOUNT_DATATYPES_HEADING" desc="Heading of the section in the account settings page for managing data types.">
       In your Brave sync chain
     </message>
-    <message name="IDS_SETTINGS_ACCOUNT_BODY" desc="Description of the section in the account settings page for managing data types.">
-      When on, data is saved in your Brave sync chain and can be used on all your devices. When off, data is saved only to this device.
-    </message>
+    <if expr="not is_chromeos">
+      <message name="IDS_SETTINGS_ACCOUNT_BODY" desc="Description of the section in the account settings page for managing data types.">
+        When on, data is saved in your Brave sync chain and can be used on all your devices. When off, data is saved only to this device.
+      </message>
+    </if>
+    <if expr="is_chromeos">
+      <message name="IDS_SETTINGS_ACCOUNT_BODY_CHROMEOS" desc="Description of the section in the account settings page for managing data types on ChromeOS.">
+        When on, data is saved in your Brave sync chain and can be used on all your devices. When off, data is saved only to this device. For ChromeOS sync options, go to <ph name="LINK_BEGIN">&lt;a&gt;</ph>ChromeOS settings<ph name="LINK_END">&lt;/a&gt;</ph>.
+      </message>
+    </if>
     <message name="IDS_SETTINGS_ACCOUNT_SYNC_DISABLED" desc="Section in the account settings page informing the user when the toggles to save a specific data type to the user's Brave sync chain are disabled as per an Enterprise policy.">
       Managed by your organization
     </message>
@@ -4585,5 +4595,27 @@
   </message>
   <message name="IDS_SETTINGS_CPU_PERFORMANCE_TIER_ULTRA" desc="Label for the 'Ultra' CPU performance tier.">
     Tier 4: ULTRA
+  </message>
+  <!-- Skills Settings Page -->
+  <message name="IDS_SETTINGS_SKILLS_SETTING_SUBLABEL" desc="Sublabel for the Skills setting entry point in Settings &gt; AI page.">
+    Skills allow you to easily reuse prompts for repetitive tasks
+  </message>
+  <message name="IDS_SETTINGS_SKILLS_GALLERY_HEADER" desc="Header for the Skills Gallery link section.">
+    Skills Gallery
+  </message>
+  <message name="IDS_SETTINGS_SKILLS_GALLERY_LABEL" desc="Label for the link row that opens the Skills Gallery.">
+    View and manage your skills
+  </message>
+  <message name="IDS_SETTINGS_SYNC_GO_TO_SKILLS_BUTTON" desc="Label for the button on the Sync page that redirects the user to the Skills settings page.">
+    Go to AI Innovations
+  </message>
+  <message name="IDS_SETTINGS_SKILLS_WHEN_ON_BULLET_ONE" desc="First bullet point under the 'When on' column in the Skills settings page.">
+    Build your own or add from the skills library
+  </message>
+  <message name="IDS_SETTINGS_SKILLS_THINGS_TO_CONSIDER_BULLET_ONE" desc="First bullet point under the 'Things to consider' column in the Skills settings page.">
+    Tab titles and URLs are sent to Brave when you use skill
+  </message>
+  <message name="IDS_SETTINGS_SKILLS_THINGS_TO_CONSIDER_BULLET_TWO" desc="Second bullet point under the 'Things to consider' column in the Skills settings page.">
+    Skills are saved to your Brave sync chain
   </message>
 </grit-part>

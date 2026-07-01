@@ -130,6 +130,24 @@
   <message name="IDS_SETTINGS_GLIC_POLICY_DISABLED_MESSAGE" desc="Message shown when Gemini is disabled by enterprise policy.">
     This feature is disabled by your organization
   </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_INLINE_CUE_MENU" desc="Label for the inline cue menu content setting.">
+    Floating menu on selected text
+  </message>
+  <message name="IDS_SITE_SETTINGS_TYPE_INLINE_CUE_MENU_MID_SENTENCE" desc="Label for the inline cue menu content setting when referenced mid-sentence.">
+    floating menu on selected text
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_ALLOWED" desc="Label for the enabled option of the inline cue menu content setting.">
+    Show the floating menu when text is selected
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_BLOCKED" desc="Label for the disabled option of the inline cue menu content setting.">
+    Don't show the floating menu when text is selected
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_DESCRIPTION" desc="Description for the inline cue menu setting page.">
+    Brave can show a floating menu with actions when you select text on a site.
+  </message>
+  <message name="IDS_SETTINGS_SITE_SETTINGS_INLINE_CUE_MENU_BLOCKED_EXCEPTIONS" desc="Header for the list of sites blocked from showing the inline cue menu.">
+    Sites where the floating menu is blocked
+  </message>
   <message name="IDS_SETTINGS_GLIC_PREFERENCES_SECTION" desc="Heading on settings page for basic preferences." formatter_data="android_java">
     Preferences
   </message>
@@ -189,6 +207,12 @@
   </message>
   <message name="IDS_SETTINGS_GLIC_KEEP_SIDEPANEL_OPEN_ON_NEW_TABS" desc="Name of the setting to keep side panel open on new tabs.">
     Keep browsing with Gemini when you open new tabs
+  </message>
+  <message name="IDS_SETTINGS_GLIC_MEDIA_UNDERSTANDING" desc="Name of the media understanding setting.">
+    Turn on media understanding
+  </message>
+  <message name="IDS_SETTINGS_GLIC_MEDIA_UNDERSTANDING_SUBLABEL" desc="Sublabel describing that this setting will enable media understanding for Gemini.">
+    Gemini can answer questions about the video or audio you’ve played on <ph name="LINK_BEGIN">&lt;a&gt;</ph>some websites<ph name="LINK_END">&lt;/a&gt;</ph>.
   </message>
   <message name="IDS_SETTINGS_GLIC_PERMISSIONS_LOCATION_TOGGLE" desc="Name of the location sharing setting." formatter_data="android_java">
     Precise Location
@@ -454,6 +478,9 @@
   </if>
 
   <message name="IDS_GLIC_SUMMARIZE_PAGE_PROMPT" desc="Prompt sent to request page summarization via context menu.">Summarize this page</message>
+  <message name="IDS_GLIC_CONTEXT_MENU_ASK_GEMINI_ABOUT" desc="Text for context menu item to ask Gemini about the selected text.">
+      Ask Gemini about “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
+    </message>
 
   <!-- IPH -->
   <if expr="use_titlecase">
@@ -481,6 +508,9 @@
   <message name="IDS_GLIC_SELECTION_ASK_ABOUT" desc="Label for the nudge asking about the selected text.">
     Ask about <ph name="TEXT">$1<ex>something</ex></ph>
   </message>
+  <message name="IDS_GLIC_SELECTION_MENU_HIDE_FOR_SITE" desc="Label for the menu item to hide the selection widget on the current website.">
+    Hide for this site
+  </message>
 
   <!-- Educational Tip -->
   <message name="IDS_EDUCATIONAL_TIP_GLIC_TITLE" desc="Title for the Glic educational tip card." formatter_data="android_java">
@@ -496,6 +526,20 @@
     No, thanks
   </message>
 
+  <!-- Glic Bottom Sheet Interruption Dialog -->
+  <message name="IDS_GLIC_END_TASK_CONFIRMATION_TITLE" desc="Title for the dialog asking the user to confirm interrupting the current Gemini agent task." formatter_data="android_java">
+    End task to continue
+  </message>
+  <message name="IDS_GLIC_END_TASK_CONFIRMATION_DESCRIPTION" desc="Description for the dialog asking the user to confirm interrupting the current Gemini agent task." formatter_data="android_java">
+    This will end the task that Gemini is currently working on.
+  </message>
+  <message name="IDS_GLIC_END_TASK_CONFIRMATION_CANCEL" desc="Button text to cancel opening the new sheet and keep the current Gemini task running." formatter_data="android_java">
+    Cancel
+  </message>
+  <message name="IDS_GLIC_END_TASK_CONFIRMATION_YES" desc="Button text to confirm interrupting the current Gemini task and open the new sheet." formatter_data="android_java">
+    Yes, end task
+  </message>
+
   <!-- Tab bottom sheet -->
   <message name="IDS_TAB_BOTTOM_SHEET_RESIZING_VIEW_TEXT" desc="Text shown while the web view is resizing." formatter_data="android_java">
     Resizing Gemini...
@@ -504,7 +548,7 @@
     Gemini in Brave isn't available
   </message>
   <message name="IDS_GLIC_LOCATION_MISMATCH_NOTICE" desc="Text of the notice explaining location mismatch for travelers or VPN users.">
-    Gemini in Brave is expanding to different locations but isn't available everywhere.
+    Gemini in Brave is expanding to different locations but isn't available everywhere
   </message>
   <message name="IDS_GLIC_GET_HELP" desc="Link or button label text to open help documentation.">
     Get help
@@ -520,5 +564,14 @@
   </message>
   <message name="IDS_GLIC_TASK_PAUSED_DESCRIPTION" desc="Subtitle description of the snackbar message shown when a Glic task is paused due to window resizing.">
     Increase window size to resume task
+  </message>
+  <message name="IDS_GLIC_BOTTOM_SHEET_CLOSED_A11Y_LABEL" desc="Accessibility announcement when the Gemini Bottom Sheet is closed." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Gemini Bottom Sheet closed.
+  </message>
+  <message name="IDS_GLIC_BOTTOM_SHEET_HALF_HEIGHT_A11Y_LABEL" desc="Accessibility announcement when the Gemini Bottom Sheet is opened to half height." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Gemini Bottom Sheet at half height.
+  </message>
+  <message name="IDS_GLIC_BOTTOM_SHEET_FULL_HEIGHT_A11Y_LABEL" desc="Accessibility announcement when the Gemini Bottom Sheet is opened to full height." formatter_data="android_java" is_accessibility_with_no_ui="true">
+    Gemini Bottom Sheet at full height
   </message>
 </grit-part>

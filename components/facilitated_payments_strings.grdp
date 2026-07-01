@@ -169,6 +169,23 @@
   <message name="IDS_PIX_ACCOUNT_LINKING_PROMPT_SETTINGS_LINK" desc="Text for the settings link in the bottom sheet showing Pix account linking prompt." formatter_data="android_java">
     To turn off Pix code detection, go to <ph name="BEGIN_LINK1">&lt;link1&gt;</ph>Brave settings<ph name="END_LINK1">&lt;/link1&gt;</ph>
   </message>
+
+  <!-- Pix account linking success screen strings -->
+  <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_TITLE" desc="Title for the bottom sheet showing Pix account linking success screen." formatter_data="android_java">
+    Your Pix account is successfully linked to Google Pay
+  </message>
+  <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_VALUE_PROP_MESSAGE_1" desc="First value prop message in the Pix account linking success screen." formatter_data="android_java">
+    Pay with Pix without switching apps in Brave
+  </message>
+  <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_VALUE_PROP_MESSAGE_2" desc="Second value prop message in the Pix account linking success screen." formatter_data="android_java">
+    Send Pix to friends and businesses using Wallet
+  </message>
+  <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_VALUE_PROP_MESSAGE_3" desc="Third value prop message in the Pix account linking success screen." formatter_data="android_java">
+    Enjoy all the convenience and security that you count on from Pix
+  </message>
+  <message name="IDS_PIX_ACCOUNT_LINKING_SUCCESS_SCREEN_GOT_IT" desc="Text for the primary button in the Pix account linking success screen." formatter_data="android_java">
+    Got it
+  </message>
 </if>
 
 </grit-part>

@@ -3,19 +3,19 @@
 <grit-part>
   <!-- IPH prompting users on Smart Tab Sharing the first time they add context to a prompt -->
   <message name="IDS_STS_IPH_PROMPT_FIRST_TIME_ADDING_CONTEXT_HEADER" desc="IPH help bubble header text for smart tab sharing toggle in composebox context menu.">
-    Automatically share open tabs for this thread?
+    Automatically share relevant tabs for this thread?
   </message>
   <message name="IDS_STS_IPH_PROMPT_FIRST_TIME_ADDING_CONTEXT_HEADER_V2" desc="IPH help bubble header text for smart tab sharing toggle in composebox context menu.">
-    Automatically share open tabs for better responses in this thread?
+    Automatically share relevant tabs for better responses in this thread?
   </message>
   <message name="IDS_STS_IPH_PROMPT_FIRST_TIME_ADDING_CONTEXT_MESSAGE_BODY" desc="IPH help bubble body text for smart tab sharing toggle in composebox context menu.">
-    When on, Brave will share all tabs in this window to help you get more relevant responses. You can turn this on for all threads in Settings.
+    When on, Brave will share relevant tabs in this window to help you get more relevant responses.
   </message>
   <message name="IDS_STS_IPH_PROMPT_FIRST_TIME_ADDING_CONTEXT_MESSAGE_BODY_V2" desc="IPH help bubble body text for smart tab sharing toggle in composebox context menu.">
-    Get more tailored responses by automatically sharing open tabs in this window if they’re related to this thread. You can turn this on for all threads in Settings.
+    Get more tailored responses by automatically sharing relevant tabs in this window if they’re related to this thread.
   </message>
   <message name="IDS_STS_IPH_PROMPT_FIRST_TIME_ADDING_CONTEXT_TURN_ON" desc="No implementation or screenshot yet. See http://crbug.com/490510281 for context.">
-    Turn on
+    Share relevant tabs
   </message>
 
   <!-- Settings: Option 1: When On / Things To Consider -->
@@ -59,25 +59,19 @@
 
   <!-- SmartTabSharingTryIt custom IPH promo -->
   <message name="IDS_STS_IPH_TRY_IT_HEADER" desc="Header for the custom IPH promoting smart tab sharing.">
-    Automatically share open tabs for this thread?
+    Automatically share relevant tabs for this thread?
   </message>
   <message name="IDS_STS_IPH_TRY_IT_HEADER_V2" desc="Header for the custom IPH promoting smart tab sharing.">
-    Automatically share open tabs for better responses in this thread?
+    Automatically share relevant tabs for better responses in this thread?
   </message>
   <message name="IDS_STS_IPH_TRY_IT_BODY" desc="Body text before the link for the custom IPH promoting smart tab sharing.">
-    When on, Brave will share all tabs in this window to help you get more relevant responses. You can turn this on for all chats in
+    When on, Brave will share relevant tabs in this window to help you get more relevant responses.
   </message>
   <message name="IDS_STS_IPH_TRY_IT_BODY_V2" desc="Body text before the link for the custom IPH promoting smart tab sharing.">
-    Get more tailored responses by automatically sharing open tabs in this window if they’re related to this thread. You can turn this on for all threads in
-  </message>
-  <message name="IDS_STS_IPH_TRY_IT_LINK" desc="Link text for settings in the custom IPH promoting smart tab sharing.">
-    Settings
-  </message>
-  <message name="IDS_STS_IPH_TRY_IT_BODY_END" desc="Body text after the link for the custom IPH promoting smart tab sharing.">
-    .
+    Get more tailored responses by automatically sharing open tabs in this window if they’re related to this thread.
   </message>
   <message name="IDS_STS_IPH_TRY_IT_TURN_ON" desc="Primary button to turn on tab sharing in the custom IPH promo.">
-    Turn on
+    Share relevant tabs
   </message>
   <message name="IDS_STS_IPH_TRY_IT_NOT_NOW" desc="Secondary button to dismiss the custom IPH promo.">
     Not now
@@ -85,10 +79,10 @@
 
   <!-- SmartTabSharingDefaultOn custom IPH promo -->
   <message name="IDS_STS_IPH_DEFAULT_ON_HEADER" desc="Header for the custom IPH promoting enablement of smart tab sharing by default.">
-    Automatically share open tabs in every thread?
+    Automatically share relevant tabs in every thread?
   </message>
   <message name="IDS_STS_IPH_DEFAULT_ON_HEADER_V2" desc="Header for the custom IPH promoting enablement of smart tab sharing by default.">
-    Always share open tabs for better responses?
+    Always share relevant tabs for better responses?
   </message>
   <message name="IDS_STS_IPH_DEFAULT_ON_BODY" desc="Body text before the link for the custom IPH promoting enablement of smart tab sharing by default.">
     Brave will share relevant open tabs in each new thread to get better responses. Learn more about
