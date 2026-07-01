@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Declare Brave's FeatureList override hooks.
+
+      The *_ChromiumImpl fallbacks and GetCompileTimeFeatureState() used by the
+      base/feature_list.cc override, declared public for external callers.
+    regex:
+      pattern: '~FeatureList();'
+      replace: |-
+        ~FeatureList();
+
+          bool IsFeatureOverridden_ChromiumImpl(std::string_view feature_name) const;
+          static std::optional<bool> GetStateIfOverridden_ChromiumImpl(
+              const Feature& feature);
+          static FeatureState GetCompileTimeFeatureState(const Feature& feature);

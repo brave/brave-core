@@ -131,14 +131,4 @@ FeatureState FeatureList::GetCompileTimeFeatureState(const Feature& feature) {
 
 }  // namespace base
 
-// This replaces |default_state| compare blocks with a modified one that
-// includes the compile time override check.
-#define default_state name&& GetCompileTimeFeatureState(feature)
-#define IsFeatureOverridden IsFeatureOverridden_ChromiumImpl
-#define GetStateIfOverridden GetStateIfOverridden_ChromiumImpl
-
 #include <base/feature_list.cc>
-
-#undef GetStateIfOverridden
-#undef IsFeatureOverridden
-#undef default_state

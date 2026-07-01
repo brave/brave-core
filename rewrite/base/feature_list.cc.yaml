@@ -1,0 +1,33 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Honor compile-time base::Feature default-state overrides.
+
+      Route `feature.default_state` reads through GetCompileTimeFeatureState()
+      so FeatureDefaultStateOverrider overrides apply (see
+      base/feature_override.h). `restricted_feature.default_state` is left as-is
+      (only reached for country-specific state, where no override applies).
+    regex:
+      re_pattern: '\bfeature\.default_state'
+      replace: 'GetCompileTimeFeatureState(feature)'
+    count: 4
+  - description: |-
+      Rename FeatureList::IsFeatureOverridden to *_ChromiumImpl.
+
+      Lets the chromium_src override report FeatureDefaultStateOverrider
+      overrides on top and fall back to this upstream impl. Matches the
+      definition only; `IsFeatureOverriddenFromCommandLine` is a distinct token.
+    regex:
+      re_pattern: 'FeatureList::IsFeatureOverridden\('
+      replace: 'FeatureList::IsFeatureOverridden_ChromiumImpl('
+  - description: |-
+      Rename FeatureList::GetStateIfOverridden to *_ChromiumImpl.
+
+      Same chromium_src layering as IsFeatureOverridden.
+    regex:
+      re_pattern: 'FeatureList::GetStateIfOverridden\('
+      replace: 'FeatureList::GetStateIfOverridden_ChromiumImpl('
