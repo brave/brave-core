@@ -1,5 +1,5 @@
 diff --git a/components/translate/content/renderer/translate_agent.cc b/components/translate/content/renderer/translate_agent.cc
-index c8539862fefc8737fc351eb5ac9bda7b53b83808..b30dfab16b38230a6fb06e8812293f41eb23ec9b 100644
+index f8900ef159da2980e1567ffe8977cff1912df83a..126900c36e7e43b27815e63e698c0aef07bfc553 100644
 --- a/components/translate/content/renderer/translate_agent.cc
 +++ b/components/translate/content/renderer/translate_agent.cc
 @@ -61,7 +61,7 @@ const int kTranslateInitCheckDelayMs = 150;

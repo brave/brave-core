@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index b8bec16f630e5bcf46b5897093016b1e7ae439ab..9c18ca88998a0e13fc9538402de9d3cef606e4a8 100644
+index 0a0eb5d94e971503c5ff6e888ea11857f48845a2..8a0e4aad2b13c860ae89b66341f3d81465f33538 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -511,6 +511,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -515,6 +515,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
                                              ? "webui-refresh-2026"
                                              : "");
  
