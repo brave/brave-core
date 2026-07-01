@@ -29,6 +29,9 @@ class SidePanelButton : public ToolbarButton,
   SidePanelButton& operator=(const SidePanelButton&) = delete;
   ~SidePanelButton() override;
 
+  // ToolbarButton:
+  void OnThemeChanged() override;
+
   // SidebarService::Observer:
   void OnShowSidebarOptionChanged(
       sidebar::SidebarService::ShowSidebarOption option) override;

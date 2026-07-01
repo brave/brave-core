@@ -56,6 +56,8 @@
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
+#include "chrome/browser/themes/theme_service.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_finder.h"
@@ -2367,6 +2369,47 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ToolbarButtonPinning) {
       << "Toolbar button must be hidden again under kShowAlways";
   EXPECT_FALSE(controller()->sidebar_pinned())
       << "Pinned state must remain false after returning to kShowAlways";
+}
+
+// Verifies that pinning the sidebar highlights the toolbar button and that the
+// highlight survives theme changes (regression test for when OnThemeChanged()
+// was clearing the ink-drop highlight state).
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
+                       ButtonHighlightPersistedAfterThemeChange) {
+  auto* service = SidebarServiceFactory::GetForProfile(browser()->profile());
+  auto* theme_service =
+      ThemeServiceFactory::GetForProfile(browser()->profile());
+  auto* button = GetSidePanelToolbarButton();
+  ASSERT_TRUE(button);
+
+  // Set initial theme.
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
+
+  auto button_highlighted = [&]() {
+    return views::InkDrop::Get(button)->GetHighlighted();
+  };
+
+  // Switch to kShowNever so the toolbar button is visible.
+  service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+  ASSERT_TRUE(button->GetVisible());
+
+  // Pin the sidebar — button should become highlighted.
+  button->button_controller()->NotifyClick();
+  ASSERT_TRUE(controller()->sidebar_pinned());
+  ASSERT_TRUE(base::test::RunUntil([&]() { return button_highlighted(); }))
+      << "Button should be highlighted after pinning";
+
+  // Switch to dark theme — this previously cleared the ink-drop highlight.
+  theme_service->SetBrowserColorScheme(ThemeService::BrowserColorScheme::kDark);
+  EXPECT_TRUE(button_highlighted())
+      << "Button highlight should be preserved after switching to dark theme";
+
+  // Switch back to light theme — highlight must survive this change too.
+  theme_service->SetBrowserColorScheme(
+      ThemeService::BrowserColorScheme::kLight);
+  EXPECT_TRUE(button_highlighted())
+      << "Button highlight should be preserved after switching to light theme";
 }
 
 // Exercises the side-panel drop shadow (BraveSidePanelShadowOverlayView):

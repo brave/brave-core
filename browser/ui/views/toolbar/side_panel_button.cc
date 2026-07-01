@@ -85,6 +85,13 @@ SidePanelButton::SidePanelButton(sidebar::SidebarController* sidebar_controller,
 
 SidePanelButton::~SidePanelButton() = default;
 
+void SidePanelButton::OnThemeChanged() {
+  ToolbarButton::OnThemeChanged();
+
+  // Theme change clears button's highlight state.
+  UpdateButtonHighlight();
+}
+
 void SidePanelButton::OnShowSidebarOptionChanged(
     sidebar::SidebarService::ShowSidebarOption option) {
   UpdateButtonVisibility();
