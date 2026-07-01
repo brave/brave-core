@@ -33,9 +33,9 @@ class BraveCoreShallowApi(RecipeApi):
     """
 
     def deploy(self,
-               dest: str | Path,
                paths: str | Path | Iterable[str | Path],
                *,
+               dest: str | Path | None = None,
                url: str = REPO_URL,
                ref: str | None = None,
                depth: int = 2) -> Path:
@@ -56,10 +56,11 @@ class BraveCoreShallowApi(RecipeApi):
         checkout -- coexist rather than being replaced.
 
         Args:
-            dest: Directory the repo lives in (created if missing). This is the
-                brave-core root the returned tree is anchored at.
             paths: A single repo-relative path, or an iterable of them, to
                 materialise (e.g. `'tools/cr/toolchains'`).
+            dest: Directory the repo lives in (created if missing); the
+                brave-core root the returned tree is anchored at. Defaults to
+                the `path` module's `brave_core`, the standard job layout.
             url: Git remote to clone from; defaults to brave-core over SSH.
             ref: Branch or tag to check out. Defaults to the engine-provided
                 brave-core ref (`master`, or the `--brave-core-ref` override).
@@ -77,6 +78,8 @@ class BraveCoreShallowApi(RecipeApi):
             RuntimeError: If a requested path is absent after the checkout
                 (e.g. a typo or a path that does not exist on *ref*).
         """
+        if dest is None:
+            dest = self.m.path.brave_core
         single = isinstance(paths, (str, Path))
         rel_paths = [str(paths)] if single else [str(p) for p in paths]
         if not rel_paths:

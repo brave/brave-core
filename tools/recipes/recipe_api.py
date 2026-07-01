@@ -47,5 +47,5 @@ class RecipeApi:
         # `brave_core_shallow` uses it; defaults to `master` until overridden.
         self._brave_core_ref: str = 'master'
 
-    def initialize(self) -> None:
+    def initialise(self) -> None:
         """Hook run once after DEPS are injected. Override for setup."""
