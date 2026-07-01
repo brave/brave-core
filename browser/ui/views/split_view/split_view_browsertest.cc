@@ -487,42 +487,42 @@ class SplitViewWithRoundedCornersTest : public SplitViewBrowserTest {
 };
 
 IN_PROC_BROWSER_TEST_F(SplitViewWithRoundedCornersTest, ContentsShadowTest) {
-  // Shadow if split tab is not active.
-  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+  // Outline if split tab is not active.
+  EXPECT_TRUE(brave_browser_view()->contents_outline_);
 
   chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
                       split_tabs::SplitTabCreatedSource::kToolbarButton);
 
   auto* tab_strip_model = browser()->tab_strip_model();
 
-  // No shadow if split tab is active.
+  // No outline if split tab is active.
   EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
-  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+  EXPECT_FALSE(brave_browser_view()->contents_outline_);
 
-  // Shadow if split tab is not active.
+  // Outline if split tab is not active.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
-  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+  EXPECT_TRUE(brave_browser_view()->contents_outline_);
 
   // Turn off the rounded corners.
   browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, false);
 
-  // Shadow should be gone.
-  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+  // Outline should be gone.
+  EXPECT_FALSE(brave_browser_view()->contents_outline_);
   browser()->tab_strip_model()->ActivateTabAt(0);
   EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
-  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+  EXPECT_FALSE(brave_browser_view()->contents_outline_);
 
   // Turn on the rounded corners.
   browser()->profile()->GetPrefs()->SetBoolean(kWebViewRoundedCorners, true);
 
-  // Still don't have shadow as split view is active.
-  EXPECT_FALSE(brave_browser_view()->contents_shadow_);
+  // Still don't have outline as split view is active.
+  EXPECT_FALSE(brave_browser_view()->contents_outline_);
 
-  // Have shadow when split view is not active.
+  // Have outline when split view is not active.
   browser()->tab_strip_model()->ActivateTabAt(2);
   EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
-  EXPECT_TRUE(brave_browser_view()->contents_shadow_);
+  EXPECT_TRUE(brave_browser_view()->contents_outline_);
 }
 
 // Test multi contents view's rounded corners with fullscreen state w/o split

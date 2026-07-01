@@ -8,7 +8,7 @@
 
 #include <memory>
 
-#include "brave/browser/ui/views/view_shadow.h"
+#include "brave/browser/ui/views/view_outline.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
 class Browser;
@@ -24,9 +24,10 @@ class View;
 
 class BraveContentsViewUtil {
  public:
-  // Creates a drop shadow matching |corner_radii| (typically from
-  // GetRoundedCornersForContentsView for the main contents container).
-  static std::unique_ptr<ViewShadow> CreateShadow(
+  // Creates a 1px outline matching |corner_radii| (typically from
+  // GetRoundedCornersForContentsView for the main contents container). The
+  // outline appearance (color and width) is centralized in the .cc file.
+  static std::unique_ptr<ViewOutline> CreateOutline(
       views::View* view,
       const gfx::RoundedCornersF& corner_radii);
 
