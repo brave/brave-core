@@ -140,6 +140,7 @@ nala_icons = [
   "ic_launch.xml",
   "ic_link_normal.xml",
   "ic_autofill.xml",
+  "ic_social_leo_favicon_fullheight_color.xml",
   "ic_location_on.xml",
   "ic_star_circle.xml",
   "ic_notification.xml",
