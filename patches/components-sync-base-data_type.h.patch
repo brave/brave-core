@@ -1,22 +1,22 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index 6943010c8d9afabc94e7f1a145ff8f44264d91d8..71b17feec04d12fb6e23519084a72651c908841f 100644
+index e848dbb85a510c524967b315738acb824ea578b8..e7cfdd753624ca1afef640e8200cca68520de4a8 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -202,7 +202,8 @@ enum DataType {
-   // A theme object specifically for Android devices.
-   THEMES_ANDROID,
+@@ -204,7 +204,8 @@ enum DataType {
+   // Encrypted tab context container.
+   ENCRYPTED_TAB_CONTEXT_CONTAINER,
  
--  LAST_USER_DATA_TYPE = THEMES_ANDROID,
+-  LAST_USER_DATA_TYPE = ENCRYPTED_TAB_CONTEXT_CONTAINER,
 +  AI_CHAT_CONVERSATION,
 +  LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -312,7 +313,8 @@ enum class DataTypeForHistograms {
-   kThemesIos = 78,
+@@ -315,7 +316,8 @@ enum class DataTypeForHistograms {
    // kDeprecatedAccessibilityAnnotation = 79,
    kThemesAndroid = 80,
--  kMaxValue = kThemesAndroid,
+   kEncryptedTabContextContainer = 81,
+-  kMaxValue = kEncryptedTabContextContainer,
 +  kAIChatConversation = 81,
 +  kMaxValue = kAIChatConversation,
  };
