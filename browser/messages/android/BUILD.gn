@@ -13,6 +13,7 @@ android_library("java") {
     "//build/android:build_java",
     "//chrome/android:chrome_java",
     "//chrome/browser/android/lifecycle:java",
+    "//chrome/browser/tab:java",
     "//chrome/browser/ui/android/layouts:java",
     "//components/browser_ui/bottomsheet/android:java",
     "//components/messages/android:manager_java",
