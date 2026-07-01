@@ -139,7 +139,7 @@ void BraveDrmTabHelper::DidStartNavigation(
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequest() {
   OnWidevineKeySystemAccessRequestForFrame(
-      brave_drm_receivers_.GetCurrentTargetFrame());
+      &brave_drm_receivers_.CurrentTargetFrame());
 }
 
 void BraveDrmTabHelper::OnWidevineKeySystemAccessRequestForFrame(
