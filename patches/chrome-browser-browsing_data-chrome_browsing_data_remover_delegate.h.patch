@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
-index 08d26d7a25127ded01a4e61f3b8e778e56b9aaf7..ea6d58708815122ad1b553ec33062d9993c7fdaf 100644
+index 8024fdfff0e211bb3b42dd906648f2c157e363e2..65f2b50b374698baa2522ffd7c448a7ec90af46c 100644
 --- a/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 +++ b/chrome/browser/browsing_data/chrome_browsing_data_remover_delegate.h
 @@ -91,6 +91,7 @@ class ChromeBrowsingDataRemoverDelegate
@@ -10,13 +10,13 @@ index 08d26d7a25127ded01a4e61f3b8e778e56b9aaf7..ea6d58708815122ad1b553ec33062d99
   private:
    using WebRtcEventLogManager = webrtc_event_logging::WebRtcEventLogManager;
  
-@@ -146,8 +147,9 @@ class ChromeBrowsingDataRemoverDelegate
-     kMediaDeviceSalts = 45,
+@@ -147,8 +148,9 @@ class ChromeBrowsingDataRemoverDelegate
      // See also kDisableAutoSigninForProfilePasswords.
      kDisableAutoSigninForAccountPasswords = 46,
-+    kIPFSCache = 47,
+     kPrivateVerificationTokens = 47,
++    kIPFSCache = 48,
  
--    kMaxValue = kDisableAutoSigninForAccountPasswords,
+-    kMaxValue = kPrivateVerificationTokens,
 +    kMaxValue = kIPFSCache,
    };
    // LINT.ThenChange(//tools/metrics/histograms/metadata/history/enums.xml:ChromeBrowsingDataRemoverTasks)

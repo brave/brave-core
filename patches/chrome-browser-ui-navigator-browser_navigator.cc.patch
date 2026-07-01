@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/navigator/browser_navigator.cc b/chrome/browser/ui/navigator/browser_navigator.cc
-index 67fde190279e188b4c2200cbbac9771ccbc426ec..7aab910217ae5ddf6286706f1ff7517c81c18eb5 100644
+index a3a2000fe57f7095a85dbbcbbff473d41fdb83b5..ccba4c08e3268825391d78c01d0ab3c60a4be484 100644
 --- a/chrome/browser/ui/navigator/browser_navigator.cc
 +++ b/chrome/browser/ui/navigator/browser_navigator.cc
-@@ -574,6 +574,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
-       return nullptr;
+@@ -615,6 +615,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
      }
    }
+ #endif  // BUILDFLAG(IS_CHROMEOS)
 +  BRAVE_ADJUST_NAVIGATE_PARAMS_FOR_URL
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/40136163): Remove this code after we integrate with intent
-@@ -813,6 +814,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -851,6 +852,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
           params->user_gesture)) {
        tab_to_insert->set_opener(
            tabs::TabInterface::MaybeGetFromContents(params->source_contents));
@@ -18,7 +18,7 @@ index 67fde190279e188b4c2200cbbac9771ccbc426ec..7aab910217ae5ddf6286706f1ff7517c
      }
    }
  
-@@ -830,6 +832,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
+@@ -868,6 +870,7 @@ base::WeakPtr<content::NavigationHandle> NavigateImpl(
             params->user_gesture)) {
          tab_to_insert->set_opener(
              tabs::TabInterface::MaybeGetFromContents(params->source_contents));
