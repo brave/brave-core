@@ -639,11 +639,6 @@ public final class PlayerModel: ObservableObject {
           playerItemToReplace = await Task.detached {
             .init(asset: AVURLAsset(url: url))
           }.value
-          // Cache-first: now that streaming has resolved a fresh, playable URL, kick off a
-          // background download so the item is available locally next time. This runs *after*
-          // resolution on purpose — caching the item's stored `src` up-front can hit a stale or
-          // expired URL (e.g. an old googlevideo link), which both fails the download and disrupts
-          // the live stream that shares that URL. Playback is never blocked on caching.
           startCachingForPlayback(item: newItem)
         }
       } catch {
