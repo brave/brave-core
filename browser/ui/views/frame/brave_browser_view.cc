@@ -1007,30 +1007,30 @@ bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
 }
 
 void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
+  bool show_contents_outline = IsBraveWebViewRoundedCornersEnabled();
 
   // With SideBySide, we use chromium's mini toolbar.
-  // Unfortunately, it's not rendered well with contents shadow.
-  // Fixed by hiding contents shadow when split view is active.
+  // Unfortunately, it's not rendered well with the contents outline.
+  // Fixed by hiding the contents outline when split view is active.
   // As split view has another border around contents, we don't need
-  // contents shadow.
+  // the contents outline.
   if (browser()->tab_strip_model()->IsActiveTabSplit() ||
       (sidebar::IsWebPanelFeatureEnabled() &&
        GetBraveMultiContentsView()->IsWebPanelVisible())) {
-    show_contents_shadow = false;
+    show_contents_outline = false;
   }
 
-  // Toggle shadow.
-  if (show_contents_shadow && !contents_shadow_) {
-    contents_shadow_ = BraveContentsViewUtil::CreateShadow(
+  // Toggle outline.
+  if (show_contents_outline && !contents_outline_) {
+    contents_outline_ = BraveContentsViewUtil::CreateOutline(
         contents_container_,
         BraveContentsViewUtil::GetRoundedCornersForContentsView(browser_,
                                                                 nullptr));
     return;
   }
 
-  if (!show_contents_shadow && contents_shadow_) {
-    contents_shadow_.reset();
+  if (!show_contents_outline && contents_outline_) {
+    contents_outline_.reset();
     contents_container_->DestroyLayer();
   }
 }
@@ -1444,8 +1444,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
     contents_container_->layer()->SetRoundedCornerRadius(corners);
   }
 
-  if (contents_shadow_) {
-    contents_shadow_->SetCornerRadii(corners);
+  if (contents_outline_) {
+    contents_outline_->SetCornerRadii(corners);
   }
 
   if (multi_contents_view_) {

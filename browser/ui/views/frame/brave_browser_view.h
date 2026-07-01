@@ -75,7 +75,7 @@ class SidebarContainerView;
 class SidePanelEntry;
 class TabStripPlacementCoordinator;
 class BraveVerticalTabStripContainerView;
-class ViewShadow;
+class ViewOutline;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 class WalletButton;
@@ -321,7 +321,7 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
-  std::unique_ptr<ViewShadow> contents_shadow_;
+  std::unique_ptr<ViewOutline> contents_outline_;
 
   // Sibling of `side_panel_` that renders the panel's drop shadow without
   // drawing outside the browser view. Tracks the panel by observing it.

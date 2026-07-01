@@ -9,7 +9,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
-#include "brave/browser/ui/views/view_shadow.h"
+#include "brave/browser/ui/views/view_outline.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -21,10 +21,10 @@
 
 namespace {
 
-// Transparent margin added around the panel so the blurred shadow has room to
-// render before being clipped to the browser view. The visible blur extends
-// roughly `2 * blur_radius` px; a slightly larger margin is harmless because it
-// is clipped away by MasksToBounds.
+// Transparent margin added around the panel so the outline has room to render
+// before being clipped to the browser view. The outline extends only a few px
+// beyond the panel edge; a slightly larger margin is harmless because it is
+// clipped away by MasksToBounds.
 constexpr int kShadowMargin = 8;
 
 }  // namespace
@@ -52,9 +52,9 @@ BraveSidePanelShadowOverlayView::BraveSidePanelShadowOverlayView(
 
   const int radius = views::LayoutProvider::Get()->GetCornerRadiusMetric(
       views::ShapeContextTokensOverride::kRoundedCornersBorderRadius);
-  shadow_ = BraveContentsViewUtil::CreateShadow(panel_shape_,
-                                                gfx::RoundedCornersF(radius));
-  shadow_->SetVisible(false);
+  outline_ = BraveContentsViewUtil::CreateOutline(panel_shape_,
+                                                  gfx::RoundedCornersF(radius));
+  outline_->SetVisible(false);
 }
 
 BraveSidePanelShadowOverlayView::~BraveSidePanelShadowOverlayView() = default;
@@ -89,7 +89,7 @@ void BraveSidePanelShadowOverlayView::SyncToSidePanel() {
           browser_view_->browser());
 
   if (!panel || !panel->GetVisible() || !rounded_corners) {
-    shadow_->SetVisible(false);
+    outline_->SetVisible(false);
     SetVisible(false);
     return;
   }
@@ -98,24 +98,24 @@ void BraveSidePanelShadowOverlayView::SyncToSidePanel() {
   // child of the browser view, so they share a coordinate space.
   const gfx::Rect panel_bounds = panel->bounds();
 
-  // Our bounds: the panel plus a margin for the blur, clamped to the browser
-  // view. Clamping + MasksToBounds clips any part of the shadow that would fall
+  // Our bounds: the panel plus a margin for the outline, clamped to the browser
+  // view. Clamping + MasksToBounds clips any part of the outline that would fall
   // outside the browser view (e.g. on the window edge during the slide).
   gfx::Rect overlay_bounds = panel_bounds;
   overlay_bounds.Inset(-kShadowMargin);
   overlay_bounds.Intersect(browser_view_->GetLocalBounds());
   SetBoundsRect(overlay_bounds);
 
-  // Position the shadow shape over the panel's *visible* rounded area, in our
+  // Position the outline shape over the panel's *visible* rounded area, in our
   // local coordinates. SidePanel::UpdateBorder() pads the panel - a bottom and
   // outer-side margin plus a header-height top inset - so the rounded content
   // is smaller than panel->bounds(). Shrink the shape by those same insets so
-  // the shadow hugs the visible edges rather than the raw bounds (otherwise the
+  // the outline hugs the visible edges rather than the raw bounds (otherwise the
   // padded sides look offset/thicker). The top inset is dropped because the
-  // header fills it and shares the panel's rounded top, so the shadow should
+  // header fills it and shares the panel's rounded top, so the outline should
   // still wrap the very top edge.
-  // The blur around the shape may extend past our (clamped) bounds; that
-  // overflow is exactly what MasksToBounds clips so the shadow never leaves the
+  // The outline around the shape may extend past our (clamped) bounds; that
+  // overflow is exactly what MasksToBounds clips so the outline never leaves the
   // browser view.
   gfx::Rect shape_bounds = panel_bounds;
   shape_bounds.Offset(-overlay_bounds.x(), -overlay_bounds.y());
@@ -123,7 +123,7 @@ void BraveSidePanelShadowOverlayView::SyncToSidePanel() {
   panel_shape_->SetBoundsRect(shape_bounds);
 
   SetVisible(true);
-  shadow_->SetVisible(true);
+  outline_->SetVisible(true);
 }
 
 BEGIN_METADATA(BraveSidePanelShadowOverlayView)
