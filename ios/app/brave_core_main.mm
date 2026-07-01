@@ -103,11 +103,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
            selector:@selector(onAppEnterForeground:)
                name:UIApplicationWillEnterForegroundNotification
              object:nil];
-    [[NSNotificationCenter defaultCenter]
-        addObserver:self
-           selector:@selector(onAppWillTerminate:)
-               name:UIApplicationWillTerminateNotification
-             object:nil];
 
     @autoreleasepool {
       ios::RegisterPathProvider();
@@ -183,11 +178,7 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 
 - (void)dealloc {
-  _profileController = nil;
-
-  _webMain.reset();
-  _delegate.reset();
-  _webClient.reset();
+  [self shutDown];
 }
 
 - (void)onAppEnterBackground:(NSNotification*)notification {
@@ -207,20 +198,13 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   }
 }
 
-- (void)onAppWillTerminate:(NSNotification*)notification {
-  // ApplicationContextImpl doesn't get teardown call at the moment because we
-  // cannot dealloc this class yet without crashing.
-  GetApplicationContext()->GetLocalState()->CommitPendingWrite();
+- (void)shutDown {
+  [_profileController shutDown];
+  _profileController = nil;
 
-  ProfileManagerIOS* profile_manager =
-      GetApplicationContext()->GetProfileManager();
-  if (profile_manager) {
-    for (ProfileIOS* profile : profile_manager->GetLoadedProfiles()) {
-      profile->GetPrefs()->CommitPendingWrite();
-    }
-  }
-
-  [[NSNotificationCenter defaultCenter] removeObserver:self];
+  _webMain.reset();
+  _delegate.reset();
+  _webClient.reset();
 }
 
 - (void)setUserAgent:(NSString*)userAgent {

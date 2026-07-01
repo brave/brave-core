@@ -163,6 +163,20 @@
         "identifier" : "PlaylistUITests",
         "name" : "PlaylistUITests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "BraveCoreTests",
+        "name" : "BraveCoreTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:..",
+        "identifier" : "OnboardingTests",
+        "name" : "OnboardingTests"
+      }
     }
   ],
   "version" : 1
