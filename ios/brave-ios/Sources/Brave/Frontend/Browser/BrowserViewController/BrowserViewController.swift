@@ -597,6 +597,15 @@ public class BrowserViewController: UIViewController {
         topToolbar.updateViewsForOverlayModeAndToolbarChanges()
       }
     }
+
+    BraveOriginNavigation.openOriginSettings = { [weak self] in
+      guard let self else { return }
+      // Only present Origin settings if the user activated from the browser. Activating via Origin
+      // IAP paywall will already present Origin settings via settings
+      if presentedViewController == nil {
+        presentBraveOriginDeepLink()
+      }
+    }
   }
 
   private func setupAdsNotificationHandler() {
