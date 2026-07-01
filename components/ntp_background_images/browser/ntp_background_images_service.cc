@@ -140,7 +140,12 @@ void NTPBackgroundImagesService::Init() {
     DVLOG(6)
         << "NTP Sponsored Images test data will be loaded from local path at: "
         << override_sponsored_images_component_path.LossyDisplayName();
-    OnSponsoredComponentReady(override_sponsored_images_component_path);
+    // Local path overrides don't have a component ID assigned and therefore
+    // `RegisterSponsoredImagesComponent` call is skipped. Pass
+    // `std::nullopt` for `component_id` so the stale callback guard in
+    // `OnHandledSponsoredComponentData` passes.
+    OnSponsoredComponentReady(/*component_id=*/std::nullopt,
+                              override_sponsored_images_component_path);
   } else {
     RegisterBackgroundImagesComponent();
 
@@ -231,8 +236,9 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
   if (sponsored_images_component_id_ == sponsored_images_component->id) {
     // Component already loaded. Replay the callback so profiles created after
     // the initial load still receive the sponsored images data.
-    if (!sponsored_images_installed_dir_.empty()) {
-      OnSponsoredComponentReady(sponsored_images_installed_dir_);
+    if (sponsored_images_installed_dir_) {
+      OnSponsoredComponentReady(std::string(sponsored_images_component->id),
+                                *sponsored_images_installed_dir_);
     }
     return;
   }
@@ -241,6 +247,8 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
     // Unregister previous component.
     component_update_service_->UnregisterComponent(
         *sponsored_images_component_id_);
+
+    ResetSponsoredImagesData();
   }
   sponsored_images_component_id_ = sponsored_images_component->id;
 
@@ -254,7 +262,9 @@ void NTPBackgroundImagesService::RegisterSponsoredImagesComponent() {
       absl::StrFormat("NTP Sponsored Images (%s)", variations_country_code),
       base::BindRepeating(
           &NTPBackgroundImagesService::OnSponsoredComponentReady,
-          weak_factory_.GetWeakPtr()));
+          weak_factory_.GetWeakPtr(),
+          std::string(sponsored_images_component->id)));
+
   // SI component checks update more frequently than other components.
   // By default, browser check update status every 5 hours.
   // However, this background interval is too long for SI. Use 15mins interval.
@@ -322,6 +332,14 @@ void NTPBackgroundImagesService::OnComponentReady(
                      weak_factory_.GetWeakPtr()));
 }
 
+void NTPBackgroundImagesService::ResetSponsoredImagesData() {
+  sponsored_images_installed_dir_.reset();
+  sponsored_images_data_.reset();
+  sponsored_images_data_excluding_rich_media_.reset();
+  observers_.Notify(&Observer::OnSponsoredContentDidUpdate, base::DictValue());
+  observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate, nullptr);
+}
+
 void NTPBackgroundImagesService::OnGetComponentJsonData(
     const std::string& json_string) {
   background_images_data_ = std::make_unique<NTPBackgroundImagesData>(
@@ -360,29 +378,35 @@ NTPBackgroundImagesService::HandleSponsoredComponentData(
 }
 
 void NTPBackgroundImagesService::OnSponsoredComponentReady(
+    std::optional<std::string> component_id,
     const base::FilePath& installed_dir) {
-  sponsored_images_installed_dir_ = installed_dir;
-
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
       base::BindOnce(&NTPBackgroundImagesService::HandleSponsoredComponentData,
                      installed_dir, GetCountryCode()),
       base::BindOnce(
           &NTPBackgroundImagesService::OnHandledSponsoredComponentData,
-          weak_factory_.GetWeakPtr()));
+          weak_factory_.GetWeakPtr(), std::move(component_id), installed_dir));
 }
 
 void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
+    std::optional<std::string> component_id,
+    const base::FilePath& installed_dir,
     std::optional<base::DictValue> dict) {
-  if (!dict) {
-    sponsored_images_data_.reset();
-    sponsored_images_data_excluding_rich_media_.reset();
-    observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate, nullptr);
+  // Discard stale callbacks from the previous component after a country change.
+  if (component_id != sponsored_images_component_id_) {
     return;
   }
 
+  if (!dict) {
+    ResetSponsoredImagesData();
+    return;
+  }
+
+  sponsored_images_installed_dir_ = installed_dir;
+
   sponsored_images_data_ = std::make_unique<NTPSponsoredImagesData>(
-      *dict, sponsored_images_installed_dir_);
+      *dict, *sponsored_images_installed_dir_);
 
   sponsored_images_data_excluding_rich_media_ =
       std::make_unique<NTPSponsoredImagesData>(*sponsored_images_data_);

@@ -33,6 +33,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
 #include "build/build_config.h"
+#include "components/component_updater/mock_component_updater_service.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "components/prefs/testing_pref_service.h"
@@ -212,10 +213,13 @@ class ViewCounterServiceTest : public testing::Test {
         &prefs_, /* is_off_the_record=*/false, /*store_last_modified=*/false,
         /*restore_session=*/false, /*should_record_metrics=*/false);
 
+    component_update_service_ =
+        std::make_unique<component_updater::MockComponentUpdateService>();
+
     background_images_service_ =
         std::make_unique<FakeNTPBackgroundImagesService>(
-            /*variations_service=*/nullptr,
-            /*component_updater_service=*/nullptr, &local_state_);
+            /*variations_service=*/nullptr, component_update_service_.get(),
+            &local_state_);
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)
     auto custom_background_service_delegate =
@@ -377,6 +381,8 @@ class ViewCounterServiceTest : public testing::Test {
 
   scoped_refptr<HostContentSettingsMap> host_content_settings_map_;
 
+  std::unique_ptr<component_updater::MockComponentUpdateService>
+      component_update_service_;
   std::unique_ptr<FakeNTPBackgroundImagesService> background_images_service_;
 
 #if BUILDFLAG(ENABLE_CUSTOM_BACKGROUND)

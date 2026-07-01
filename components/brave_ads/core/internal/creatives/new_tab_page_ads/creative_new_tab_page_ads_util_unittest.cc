@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_util.h"
 
 #include <optional>
+#include <string_view>
 #include <utility>
 
 #include "base/test/test_future.h"
@@ -25,145 +26,7 @@ namespace brave_ads {
 
 namespace {
 
-CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
-  CreativeNewTabPageAdList creative_ads;
-
-  {
-    CreativeNewTabPageAdInfo creative_ad;
-    creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
-    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
-    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
-    creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
-    creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
-    creative_ad.daily_cap = 20;
-    creative_ad.priority = 10;
-    creative_ad.pass_through_rate = 1;
-    creative_ad.geo_targets = {"US"};
-    creative_ad.dayparts = {{{"012", 0, 1439}, {"3456", 0, 1439}}};
-    creative_ad.creative_set_id = "34ab06be-c9ed-4104-9ce0-9e639f4ad272";
-    creative_ad.creative_instance_id = "aa0b561e-9eed-4aaa-8999-5627bc6b14fd";
-    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kRichMedia;
-    creative_ad.company_name = "Rich Media NTT Creative 1";
-    creative_ad.alt = "Some rich content 1";
-    creative_ad.target_url = GURL("https://brave.com/1");
-    creative_ad.condition_matchers = {
-        {/*pref_path*/ "uninstall_metrics.installation_date2",
-         /*condition*/ "[T<]:7"},
-        {/*pref_path*/ "[virtual]:operating_system|locale|language",
-         /*condition*/ "en"}};
-    creative_ad.segment = kUntargetedSegment;
-    creative_ad.per_day = 15;
-    creative_ad.per_week = 120;
-    creative_ad.per_month = 580;
-    creative_ad.total_max = 980;
-    creative_ad.value = 0.05;
-    creative_ads.push_back(creative_ad);
-  }
-
-  {
-    CreativeNewTabPageAdInfo creative_ad;
-    creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
-    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
-    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
-    creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
-    creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
-    creative_ad.daily_cap = 20;
-    creative_ad.priority = 10;
-    creative_ad.pass_through_rate = 1;
-    creative_ad.geo_targets = {"US"};
-    creative_ad.dayparts = {{{"012", 0, 1439}, {"3456", 0, 1439}}};
-    creative_ad.creative_set_id = "34ab06be-c9ed-4104-9ce0-9e639f4ad272";
-    creative_ad.creative_instance_id = "143148ee-bd08-41f2-a8e0-fd8516e02975";
-    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kImage;
-    creative_ad.company_name = "Image NTT Creative 1";
-    creative_ad.alt = "Some content 1";
-    creative_ad.target_url = GURL("https://basicattentiontoken.org/1");
-    creative_ad.condition_matchers = {
-        {/*pref_path*/ "[virtual]:browser|version",
-         /*condition*/ R"RE2(^\d+\.\d+\.(?:[0-6]?\d|7[0-7])\.\d+$)RE2"}};
-    creative_ad.segment = kUntargetedSegment;
-    creative_ad.per_day = 15;
-    creative_ad.per_week = 120;
-    creative_ad.per_month = 580;
-    creative_ad.total_max = 980;
-    creative_ad.value = 0.05;
-    creative_ads.push_back(creative_ad);
-  }
-
-  {
-    CreativeNewTabPageAdInfo creative_ad;
-    creative_ad.creative_instance_id = "5c2cf7fa-fc3f-4b1e-939a-7ac9fd2a128a";
-    creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
-    creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
-    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
-    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
-    creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
-    creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
-    creative_ad.daily_cap = 10;
-    creative_ad.priority = 20;
-    creative_ad.pass_through_rate = 0.5;
-    creative_ad.per_day = 20;
-    creative_ad.per_week = 140;
-    creative_ad.per_month = 560;
-    creative_ad.total_max = 1000;
-    creative_ad.value = 0.1;
-    creative_ad.segment = kUntargetedSegment;
-    creative_ad.condition_matchers = {
-        {/*pref_path*/ "uninstall_metrics.installation_date2",
-         /*condition*/ "[T<]:3"},
-        {/*pref_path*/ "[virtual]:operating_system|locale|language",
-         /*condition*/ "fr"}};
-    creative_ad.dayparts = {{{"012", 0, 719}, {"3456", 720, 1439}}};
-    creative_ad.geo_targets = {"KY"};
-    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kRichMedia;
-    creative_ad.company_name = "Rich Media NTT Creative 2";
-    creative_ad.alt = "Some rich content 2";
-    creative_ad.target_url = GURL("https://brave.com/2");
-    creative_ads.push_back(creative_ad);
-  }
-
-  {
-    CreativeNewTabPageAdInfo creative_ad;
-    creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
-    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
-    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
-    creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
-    creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
-    creative_ad.daily_cap = 10;
-    creative_ad.priority = 20;
-    creative_ad.pass_through_rate = 0.5;
-    creative_ad.geo_targets = {"KY"};
-    creative_ad.dayparts = {{{"012", 0, 719}, {"3456", 720, 1439}}};
-    creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
-    creative_ad.creative_instance_id = "ec585946-7755-4ba1-8666-a65be845e1fd";
-    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kImage;
-    creative_ad.company_name = "Image NTT Creative 2";
-    creative_ad.alt = "Some content 2";
-    creative_ad.target_url = GURL("https://basicattentiontoken.org/2");
-    creative_ad.condition_matchers = {
-        {/*pref_path*/ "[virtual]:browser|version",
-         /*condition*/ R"RE2(^\d+\.\d+\.(?:7[8-9]|[89]\d|\d{3,})\.\d+$)RE2"}};
-    creative_ad.segment = kUntargetedSegment;
-    creative_ad.per_day = 20;
-    creative_ad.per_week = 140;
-    creative_ad.per_month = 560;
-    creative_ad.total_max = 1000;
-    creative_ad.value = 0.1;
-    creative_ads.push_back(creative_ad);
-  }
-
-  return creative_ads;
-}
-
-}  // namespace
-
-class BraveAdsCreativeNewTabPageAdsUtilTest : public test::TestBase {};
-
-TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
-  // Arrange
-  AdvanceClockTo(test::TimeFromString("4 July 2025"));
-
-  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+constexpr std::string_view kNewTabPageAdsJson = R"JSON(
       {
         "schemaVersion": 2,
         "campaigns": [
@@ -352,14 +215,156 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
             ]
           }
         ]
-      })JSON");
+      })JSON";
+
+CreativeNewTabPageAdList BuildCreativeNewTabPageAds() {
+  CreativeNewTabPageAdList creative_ads;
+
+  {
+    CreativeNewTabPageAdInfo creative_ad;
+    creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
+    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
+    creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
+    creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
+    creative_ad.daily_cap = 20;
+    creative_ad.priority = 10;
+    creative_ad.pass_through_rate = 1;
+    creative_ad.geo_targets = {"US"};
+    creative_ad.dayparts = {{{"012", 0, 1439}, {"3456", 0, 1439}}};
+    creative_ad.creative_set_id = "34ab06be-c9ed-4104-9ce0-9e639f4ad272";
+    creative_ad.creative_instance_id = "aa0b561e-9eed-4aaa-8999-5627bc6b14fd";
+    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kRichMedia;
+    creative_ad.company_name = "Rich Media NTT Creative 1";
+    creative_ad.alt = "Some rich content 1";
+    creative_ad.target_url = GURL("https://brave.com/1");
+    creative_ad.condition_matchers = {
+        {/*pref_path*/ "uninstall_metrics.installation_date2",
+         /*condition*/ "[T<]:7"},
+        {/*pref_path*/ "[virtual]:operating_system|locale|language",
+         /*condition*/ "en"}};
+    creative_ad.segment = kUntargetedSegment;
+    creative_ad.per_day = 15;
+    creative_ad.per_week = 120;
+    creative_ad.per_month = 580;
+    creative_ad.total_max = 980;
+    creative_ad.value = 0.05;
+    creative_ads.push_back(creative_ad);
+  }
+
+  {
+    CreativeNewTabPageAdInfo creative_ad;
+    creative_ad.campaign_id = "65933e82-6b21-440b-9956-c0f675ca7435";
+    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kConfirmation;
+    creative_ad.start_at = test::TimeFromString("2025-01-01T00:00:00Z");
+    creative_ad.end_at = test::TimeFromString("2025-12-31T23:59:59Z");
+    creative_ad.daily_cap = 20;
+    creative_ad.priority = 10;
+    creative_ad.pass_through_rate = 1;
+    creative_ad.geo_targets = {"US"};
+    creative_ad.dayparts = {{{"012", 0, 1439}, {"3456", 0, 1439}}};
+    creative_ad.creative_set_id = "34ab06be-c9ed-4104-9ce0-9e639f4ad272";
+    creative_ad.creative_instance_id = "143148ee-bd08-41f2-a8e0-fd8516e02975";
+    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kImage;
+    creative_ad.company_name = "Image NTT Creative 1";
+    creative_ad.alt = "Some content 1";
+    creative_ad.target_url = GURL("https://basicattentiontoken.org/1");
+    creative_ad.condition_matchers = {
+        {/*pref_path*/ "[virtual]:browser|version",
+         /*condition*/ R"RE2(^\d+\.\d+\.(?:[0-6]?\d|7[0-7])\.\d+$)RE2"}};
+    creative_ad.segment = kUntargetedSegment;
+    creative_ad.per_day = 15;
+    creative_ad.per_week = 120;
+    creative_ad.per_month = 580;
+    creative_ad.total_max = 980;
+    creative_ad.value = 0.05;
+    creative_ads.push_back(creative_ad);
+  }
+
+  {
+    CreativeNewTabPageAdInfo creative_ad;
+    creative_ad.creative_instance_id = "5c2cf7fa-fc3f-4b1e-939a-7ac9fd2a128a";
+    creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
+    creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
+    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
+    creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
+    creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
+    creative_ad.daily_cap = 10;
+    creative_ad.priority = 20;
+    creative_ad.pass_through_rate = 0.5;
+    creative_ad.per_day = 20;
+    creative_ad.per_week = 140;
+    creative_ad.per_month = 560;
+    creative_ad.total_max = 1000;
+    creative_ad.value = 0.1;
+    creative_ad.segment = kUntargetedSegment;
+    creative_ad.condition_matchers = {
+        {/*pref_path*/ "uninstall_metrics.installation_date2",
+         /*condition*/ "[T<]:3"},
+        {/*pref_path*/ "[virtual]:operating_system|locale|language",
+         /*condition*/ "fr"}};
+    creative_ad.dayparts = {{{"012", 0, 719}, {"3456", 720, 1439}}};
+    creative_ad.geo_targets = {"KY"};
+    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kRichMedia;
+    creative_ad.company_name = "Rich Media NTT Creative 2";
+    creative_ad.alt = "Some rich content 2";
+    creative_ad.target_url = GURL("https://brave.com/2");
+    creative_ads.push_back(creative_ad);
+  }
+
+  {
+    CreativeNewTabPageAdInfo creative_ad;
+    creative_ad.campaign_id = "5a5e9915-128e-41af-9d56-b7c0db1ba6fa";
+    creative_ad.advertiser_id = "496b045a-195e-441f-b439-07bac083450f";
+    creative_ad.metric_type = mojom::NewTabPageAdMetricType::kDisabled;
+    creative_ad.start_at = test::TimeFromString("2025-03-01T00:00:00Z");
+    creative_ad.end_at = test::TimeFromString("2025-09-31T23:59:59Z");
+    creative_ad.daily_cap = 10;
+    creative_ad.priority = 20;
+    creative_ad.pass_through_rate = 0.5;
+    creative_ad.geo_targets = {"KY"};
+    creative_ad.dayparts = {{{"012", 0, 719}, {"3456", 720, 1439}}};
+    creative_ad.creative_set_id = "0c2f239c-1230-43f9-8759-9b17532c2749";
+    creative_ad.creative_instance_id = "ec585946-7755-4ba1-8666-a65be845e1fd";
+    creative_ad.wallpaper_type = CreativeNewTabPageAdWallpaperType::kImage;
+    creative_ad.company_name = "Image NTT Creative 2";
+    creative_ad.alt = "Some content 2";
+    creative_ad.target_url = GURL("https://basicattentiontoken.org/2");
+    creative_ad.condition_matchers = {
+        {/*pref_path*/ "[virtual]:browser|version",
+         /*condition*/ R"RE2(^\d+\.\d+\.(?:7[8-9]|[89]\d|\d{3,})\.\d+$)RE2"}};
+    creative_ad.segment = kUntargetedSegment;
+    creative_ad.per_day = 20;
+    creative_ad.per_week = 140;
+    creative_ad.per_month = 560;
+    creative_ad.total_max = 1000;
+    creative_ad.value = 0.1;
+    creative_ads.push_back(creative_ad);
+  }
+
+  return creative_ads;
+}
+
+bool ParseNewTabPageAdsFromAndSaveToDatabase(const std::string_view json) {
+  base::DictValue dict = base::test::ParseJsonDict(json);
+
+  base::test::TestFuture<bool> test_future;
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
+  return test_future.Get();
+}
+
+}  // namespace
+
+class BraveAdsCreativeNewTabPageAdsUtilTest : public test::TestBase {};
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest, ParseAndSaveAds) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromString("4 July 2025"));
 
   // Act
-  {
-    base::test::TestFuture<bool> test_future;
-    ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
-    ASSERT_TRUE(test_future.Get());
-  }
+  ASSERT_TRUE(ParseNewTabPageAdsFromAndSaveToDatabase(kNewTabPageAdsJson));
 
   // Assert
   base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
@@ -392,10 +397,40 @@ TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
        DoNotParseAndSaveAdsWithInvalidData) {
+  // Arrange
+  base::DictValue dict = base::test::ParseJsonDict(R"JSON(
+    {
+      "unknownKey": "unknownValue"
+    })JSON");
+
   // Act & Assert
   base::test::TestFuture<bool> test_future;
-  ParseAndSaveNewTabPageAds(base::DictValue(), test_future.GetCallback());
+  ParseAndSaveNewTabPageAds(std::move(dict), test_future.GetCallback());
   EXPECT_FALSE(test_future.Get());
+}
+
+TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
+       ParseAndSaveAdsWithEmptyDictClearsExistingAds) {
+  // Arrange
+  AdvanceClockTo(test::TimeFromString("4 July 2025"));
+  ASSERT_TRUE(ParseNewTabPageAdsFromAndSaveToDatabase(kNewTabPageAdsJson));
+
+  // Act
+  base::test::TestFuture<bool> clear_test_future;
+  ParseAndSaveNewTabPageAds(base::DictValue(), clear_test_future.GetCallback());
+  ASSERT_TRUE(clear_test_future.Get());
+
+  // Assert
+  base::test::TestFuture<bool, SegmentList, CreativeNewTabPageAdList>
+      get_test_future;
+  database::table::CreativeNewTabPageAds database_table;
+  database_table.GetForActiveCampaigns(
+      get_test_future
+          .GetCallback<bool, const SegmentList&, CreativeNewTabPageAdList>());
+  const auto [success, segments, creative_ads] = get_test_future.Take();
+  EXPECT_TRUE(success);
+  EXPECT_THAT(segments, ::testing::IsEmpty());
+  EXPECT_THAT(creative_ads, ::testing::IsEmpty());
 }
 
 TEST_F(BraveAdsCreativeNewTabPageAdsUtilTest,
