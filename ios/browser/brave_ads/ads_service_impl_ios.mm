@@ -28,6 +28,8 @@
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/command_line_switches/command_line_switches_util.h"
 #include "brave/components/brave_rewards/core/rewards_util.h"
+#include "brave/ios/browser/api/ads/ads_client_ios.h"
+#include "brave/ios/browser/brave_ads/ads_client_ios_observer.h"
 #include "components/prefs/pref_service.h"
 #include "sql/database.h"
 #include "ui/base/page_transition_types.h"
@@ -439,12 +441,23 @@ void AdsServiceImplIOS::InitializeAdsCallback(ResultCallback callback,
   if (!success) {
     Shutdown();
   } else {
+    ads_->AddObserver(std::make_unique<AdsClientIOSObserver>(
+        base::BindRepeating(&AdsServiceImplIOS::OnSolveCaptchaToServeAds,
+                            weak_ptr_factory_.GetWeakPtr())));
+
     NotifyDidInitializeAdsService();
   }
 
   task_queue_.FlushAndStopQueueing();
 
   std::move(callback).Run(success);
+}
+
+void AdsServiceImplIOS::OnSolveCaptchaToServeAds(
+    const std::string& payment_id,
+    const std::string& captcha_id) {
+  static_cast<AdsClientIOS*>(ads_client_.get())
+      ->ShowScheduledCaptcha(payment_id, captcha_id);
 }
 
 void AdsServiceImplIOS::ShutdownAdsCallback(ResultCallback callback,
