@@ -1,5 +1,5 @@
 <!-- Add brave-browser issue below that this PR will resolve -->
-Resolves
+- Resolves
 
 <!-- CI-related labels that can be applied to this PR:
 * CI/disable-pipeline-step-cache - do not cache build steps between runs for the same commit hash
