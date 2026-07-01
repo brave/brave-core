@@ -45,6 +45,9 @@ patches/**/*.patchinfo
 /third_party/node/*.tar.gz
 /third_party/opengrep/bin/
 /third_party/wintun/
+/third_party/ast-grep-intermediate/
+/third_party/ast-grep-src/
+/third_party/ast-grep/ast-grep-*
 *.xcodeproj
 !/ios/brave-ios/App/*.xcodeproj
 *.swp
