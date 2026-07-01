@@ -34,8 +34,6 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'sparkle_dsa_private_key_file',
   'sparkle_eddsa_private_key',
   'sparkle_eddsa_public_key',
-  'updater_dev_endpoint',
-  'updater_prod_endpoint',
   'use_prebuilt_omaha4',
   'webcompat_report_api_endpoint',
   'use_clang_coverage',
