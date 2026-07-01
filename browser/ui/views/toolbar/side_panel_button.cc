@@ -7,13 +7,11 @@
 
 #include <memory>
 
+#include "base/check_deref.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/grit/brave_generated_resources.h"
-#include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -58,20 +56,26 @@ class SidePanelMenuModel : public ui::SimpleMenuModel,
 
 }  // namespace
 
-SidePanelButton::SidePanelButton(Browser* browser)
+SidePanelButton::SidePanelButton(sidebar::SidebarController* sidebar_controller,
+                                 PrefService* prefs)
     : ToolbarButton(base::BindRepeating(&SidePanelButton::ButtonPressed,
                                         base::Unretained(this))),
-      browser_(*browser) {
-  auto* prefs = browser->profile()->GetOriginalProfile()->GetPrefs();
+      sidebar_controller_(CHECK_DEREF(sidebar_controller)) {
+  sidebar_service_observation_.Observe(
+      sidebar_controller_->GetSidebarService());
   SetMenuModel(std::make_unique<SidePanelMenuModel>(prefs));
 
-  // Visibility is managed by |SideBarContainerView|.
-  SetVisible(false);
   sidebar_alignment_.Init(
       prefs::kSidePanelHorizontalAlignment, prefs,
       base::BindRepeating(&SidePanelButton::UpdateToolbarButtonIcon,
                           base::Unretained(this)));
+  show_side_panel_button_.Init(
+      kShowSidePanelButton, prefs,
+      base::BindRepeating(&SidePanelButton::UpdateButtonVisibility,
+                          base::Unretained(this)));
+
   UpdateToolbarButtonIcon();
+  UpdateButtonVisibility();
   SetTooltipText(l10n_util::GetStringUTF16(IDS_TOOLTIP_SIDEBAR_SHOW));
   set_context_menu_controller(this);
   button_controller()->set_notify_action(
@@ -81,13 +85,34 @@ SidePanelButton::SidePanelButton(Browser* browser)
 
 SidePanelButton::~SidePanelButton() = default;
 
+void SidePanelButton::OnShowSidebarOptionChanged(
+    sidebar::SidebarService::ShowSidebarOption option) {
+  UpdateButtonVisibility();
+  UpdateButtonHighlight();
+}
+
 void SidePanelButton::ButtonPressed() {
-  browser_->GetFeatures().sidebar_controller()->ToggleSidebarPinning();
+  sidebar_controller_->ToggleSidebarPinning();
+  UpdateButtonHighlight();
 }
 
 void SidePanelButton::UpdateToolbarButtonIcon() {
   SetVectorIcon(sidebar_alignment_.GetValue() ? kSidebarToolbarButtonRightIcon
                                               : kSidebarToolbarButtonIcon);
+}
+
+void SidePanelButton::UpdateButtonVisibility() {
+  // We hide button when show always as pinning doesn't make sense
+  // when always visible.
+  const sidebar::SidebarService::ShowSidebarOption show_sidebar_option =
+      sidebar_controller_->GetSidebarService()->GetSidebarShowOption();
+  SetVisible(show_side_panel_button_.GetValue() &&
+             show_sidebar_option !=
+                 sidebar::SidebarService::ShowSidebarOption::kShowAlways);
+}
+
+void SidePanelButton::UpdateButtonHighlight() {
+  SetHighlighted(sidebar_controller_->sidebar_pinned());
 }
 
 BEGIN_METADATA(SidePanelButton)

@@ -92,6 +92,7 @@ class SidebarController : public SidebarService::Observer {
   SidebarModel* model() const { return sidebar_model_.get(); }
 
   SidebarWebPanelController* GetWebPanelController();
+  SidebarService* GetSidebarService();
 
   // SidebarService::Observer overrides:
   void OnShowSidebarOptionChanged(

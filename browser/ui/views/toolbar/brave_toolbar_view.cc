@@ -347,8 +347,11 @@ void BraveToolbarView::Init() {
   bookmark_->UpdateImageAndText();
   SetBraveButtonFlexBehavior(bookmark_);
 
-  side_panel_ = AddChildViewAt(std::make_unique<SidePanelButton>(browser()),
-                               *GetIndexOf(app_menu_button()) - 1);
+  side_panel_ = AddChildViewAt(
+      std::make_unique<SidePanelButton>(
+          browser()->browser_window_features()->sidebar_controller(),
+          profile->GetPrefs()),
+      *GetIndexOf(app_menu_button()) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
