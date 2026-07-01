@@ -95,88 +95,188 @@ constexpr char16_t kYoutubePictureInPictureSupport[] =
 }());
 )";
 
+// Drives the YouTube player into fullscreen so the caller can follow up with
+// Picture in Picture. On a cold load the player and its controls hydrate
+// asynchronously, so the fullscreen button may be absent at injection time: the
+// script makes a couple of synchronous attempts, then retries as the subtree
+// hydrates. Retries prefer a MutationObserver scoped to the player container;
+// only when that container does not exist yet do we fall back to short-interval
+// polling, so we never observe the entire document. A find timeout stops the
+// retries outliving a broken page.
+//
+// Crucially, success is never inferred from the click or API call. A
+// fullscreenchange listener resolves only once the page is actually fullscreen,
+// and a short confirm timeout settles the promise as failed otherwise. This
+// keeps the reported result honest and guarantees the promise always settles,
+// which the browser relies on to clear its pending Picture in Picture request.
 constexpr char16_t kYoutubeFullscreen[] =
     uR"(
 (function() {
   return new Promise((resolve) => {
-    const videoPlaySelector = "video.html5-main-video";
-    const fullscreenSelector = "button.fullscreen-icon";
-    function triggerFullscreen() {
-      // Check if the video is not in fullscreen mode already.
-      if (!document.fullscreenElement) {
-        var fullscreenBtn = document.querySelector(fullscreenSelector);
-        var videoPlayer = document.querySelector(videoPlaySelector);
-        // Check if fullscreen button and video are available.
-        if (fullscreenBtn && videoPlayer) {
-         requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-        } else {
-          // When fullscreen button is not available
-          // clicking the movie player resume the UI.
-          var playerContainer = document.getElementById("player-container-id");
-          if (videoPlayer && playerContainer) {
-            let observerTimeout;
-            // Create a MutationObserver to watch for changes in the DOM.
-            const observer = new MutationObserver(
-            (_mutationsList, observer) => {
-              var fullscreenBtn = document.querySelector(fullscreenSelector);
-              var videoPlayer = document.querySelector(videoPlaySelector);
-              if (fullscreenBtn && videoPlayer) {
-                clearTimeout(observerTimeout);
-                observer.disconnect()
-                requestFullscreen(fullscreenBtn, resolve, videoPlayer);
-              }
-            });
-            // Auto-disconnect the observer after 30 seconds,
-            // a reasonable duration picked after some testing.
-            observerTimeout = setTimeout(() => {
-              observer.disconnect();
-              resolve('timeout');
-            }, 30000);
-            // Start observing the DOM.
-            observer.observe(playerContainer, {
-              childList: true, subtree: true
-            });
-            // Make sure the player is in focus or responsive.
-            videoPlayer.click();
-          } else {
-            // No fullscreen elements found, resolve immediately
-            resolve('no_elements');
-          }
+    const videoSelector = "video.html5-main-video";
+    const fullscreenSelector = "button.fullscreen-icon, "
+        + "button.ytp-fullscreen-button, .ytp-fullscreen-button";
+    const playerSelector = "#movie_player, .html5-video-player";
+    const playerContainerSelector = "#player-container-id, ytm-player, #player";
+    // Wait for the player and its controls to hydrate before giving up on
+    // finding something to trigger fullscreen with.
+    const FIND_TIMEOUT_MS = 30000;
+    // Wait for fullscreen to actually engage once we have triggered it. Short,
+    // because a real transition lands almost immediately; this bounds how long
+    // the browser keeps a pending Picture in Picture request armed.
+    const CONFIRM_TIMEOUT_MS = 2000;
+    // How often to re-query for the player when no specific container exists to
+    // observe. Polling is only used as a fallback so we never watch the whole
+    // document; it stops as soon as a trigger fires or the find timeout
+    // elapses.
+    const POLL_INTERVAL_MS = 100;
+
+    let resolved = false;
+    let triggered = false;
+    let observer = null;
+    let findTimeoutId = 0;
+    let confirmTimeoutId = 0;
+    let pollIntervalId = 0;
+
+    function isFullscreen() {
+      const player = document.querySelector(playerSelector);
+      return !!document.fullscreenElement || !!player?.isFullscreen?.();
+    }
+
+    // Stop looking for something to trigger fullscreen with: tear down the
+    // observer or poll and the find timeout. Leaves the confirm timeout and
+    // fullscreenchange listener in place so success can still be observed.
+    function stopSearching() {
+      if (observer) {
+        observer.disconnect();
+        observer = null;
+      }
+      clearInterval(pollIntervalId);
+      clearTimeout(findTimeoutId);
+    }
+
+    function cleanup() {
+      document.removeEventListener('fullscreenchange', onFullscreenChange);
+      stopSearching();
+      clearTimeout(confirmTimeoutId);
+    }
+
+    function resolveOnce(value) {
+      if (resolved) {
+        return;
+      }
+      resolved = true;
+      cleanup();
+      resolve(value);
+    }
+
+    // Single source of truth for success: report 'fullscreen_triggered' only
+    // once the page has actually entered fullscreen, never on the click or API
+    // call alone.
+    function onFullscreenChange() {
+      if (isFullscreen()) {
+        resolveOnce('fullscreen_triggered');
+      }
+    }
+    document.addEventListener('fullscreenchange', onFullscreenChange);
+
+    // Once a trigger has fired, stop searching and start a short clock: if
+    // fullscreen has not engaged by the time it expires, report failure. This
+    // guarantees the promise always settles, even when an API call silently
+    // does nothing or its promise rejects.
+    function armConfirmTimeout() {
+      if (triggered) {
+        return;
+      }
+      triggered = true;
+      stopSearching();
+      confirmTimeoutId = setTimeout(
+          () => resolveOnce('requestFullscreen_failed'), CONFIRM_TIMEOUT_MS);
+    }
+
+    // Fire a single fullscreen trigger if something is available to act on.
+    // Returns true once a trigger was fired (or we are already fullscreen) so
+    // the caller stops searching. Success is decided by onFullscreenChange, not
+    // by this return value.
+    function attempt() {
+      if (resolved || triggered) {
+        return true;
+      }
+      if (isFullscreen()) {
+        resolveOnce('already_fullscreen');
+        return true;
+      }
+      const btn = document.querySelector(fullscreenSelector);
+      const video = document.querySelector(videoSelector);
+      if (btn && video) {
+        if (video.readyState >= 3) {
+          video.click();
         }
-      } else {
-        // Already in fullscreen, resolve immediately
-        resolve('already_fullscreen');
+        btn.click();
+        armConfirmTimeout();
+        return true;
       }
-    }
-    // Attempts to request fullscreen mode for the given movie player element.
-    // Resolves with 'fullscreen_triggered' if successful, or
-    // 'requestFullscreen_failed' if the request fails.
-    function requestFullscreen(fullscreenBtn, resolve, videoPlayer) {
-      if (videoPlayer.readyState >= 3) {
-        videoPlayer.click();
-        clickFullscreenButton(fullscreenBtn, resolve);
-      } else {
-        videoPlayer.addEventListener("canplay", () => {
-          videoPlayer.click();
-          clickFullscreenButton(fullscreenBtn, resolve);
-        }, { once: true });
+      // Fallbacks when the button is not in the tree: YouTube's own toggle,
+      // then the standard element fullscreen API. Only one fires per run.
+      const player = document.querySelector(playerSelector);
+      if (player?.toggleFullscreen
+          && !player.classList.contains('ytp-fullscreen')) {
+        try {
+          player.toggleFullscreen();
+          armConfirmTimeout();
+          return true;
+        } catch (e) {}
       }
-    }
-    function clickFullscreenButton(fullscreenBtn, resolve) {
-      if (fullscreenBtn && !document.hidden) {
-        fullscreenBtn.click();
-        resolve('fullscreen_triggered');
-      } else {
-        resolve('requestFullscreen_failed');
+      const target = player
+          || document.querySelector(playerContainerSelector)
+          || video;
+      if (target?.requestFullscreen) {
+        try {
+          const request = target.requestFullscreen();
+          // Success is observed via fullscreenchange; a rejection fails fast.
+          if (request?.catch) {
+            request.catch(() => resolveOnce('requestFullscreen_failed'));
+          }
+          armConfirmTimeout();
+          return true;
+        } catch (e) {}
       }
+      return false;
     }
+
+    function start() {
+      if (attempt()) {
+        return;
+      }
+      // Tap to reveal controls that only render on first interaction.
+      (document.querySelector(videoSelector)
+          || document.querySelector(playerSelector)
+          || document.querySelector(playerContainerSelector))?.click();
+      if (attempt()) {
+        return;
+      }
+      // Retry as the button or player hydrates. Prefer a MutationObserver
+      // scoped to the player container so we watch a small subtree; if that
+      // container is not in the tree yet, fall back to short-interval polling
+      // rather than observing the entire document.
+      const root = document.querySelector(playerContainerSelector);
+      if (root) {
+        observer = new MutationObserver(() => {
+          attempt();
+        });
+        observer.observe(root, { childList: true, subtree: true });
+      } else {
+        pollIntervalId = setInterval(attempt, POLL_INTERVAL_MS);
+      }
+      // Only reached while nothing has been triggered yet: give up if the
+      // player never hydrates.
+      findTimeoutId = setTimeout(() => resolveOnce('timeout'), FIND_TIMEOUT_MS);
+    }
+
     if (document.readyState === "loading") {
-      // Loading hasn't finished yet.
-      document.addEventListener("DOMContentLoaded",
-      triggerFullscreen, { once: true });
+      document.addEventListener("DOMContentLoaded", start, { once: true });
     } else {
-      // `DOMContentLoaded` has already fired.
-      triggerFullscreen();
+      start();
     }
   });
 }());
