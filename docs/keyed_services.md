@@ -27,13 +27,15 @@ MyServiceFactory::MyServiceFactory()
 
 If you have more complicated logic then use
 `BrowserContextKeyedServiceFactory::GetBrowserContextToUse` and return nullptr
-if the service is not available for the given `BrowserContext`. The factory
-should only return nullptr for attributes that are fixed for at least the life
-of the browser session (profile, feature flag, etc...) and not for things like
-prefs that change during the session. For a given profile/browser session it
-should either always return nullptr or never return nullptr. This also applies
-to `GetForProfile`, etc... (If there is logic in `GetForProfile` it should move
-to `GetBrowserContextToUse`)
+if the service is not available for the given `BrowserContext`. A factory (or
+its `GetForProfile`/`GetForBrowserContext` accessor, or
+`BuildServiceInstanceForBrowserContext`) should only return nullptr for
+attributes that are fixed for at least the life of the browser session (profile
+type, buildflag, `base::Feature`, etc...) and not for things like prefs that
+change during the session. For a given profile/browser session it should either
+always return nullptr or never return nullptr; otherwise the service will be
+present or absent for the rest of the session regardless of subsequent toggles,
+forcing a browser restart to apply the user's choice.
 
 ```cpp
 content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
@@ -44,13 +46,18 @@ content::BrowserContext* MyServiceFactory::GetBrowserContextToUse(
 }
 ```
 
-Do not explicitly return null from other methods like
-`BuildServiceInstanceForBrowserContext`, `GetForProfile`, etc... If you return
-nullptr from `GetBrowserContextToUse` or configure `ProfileSelections`, the
-service will already be null. Avoid using helper methods like
-`IsAllowedForProfile` to see if a service is available for a particular profile
-as these are often used incorrectly/inconsistently. The preferred method is just
-a null check on the service itself. Prefer dependency injection
+Gate service availability in a single place. Configuring `ProfileSelections` (or
+returning nullptr from `GetBrowserContextToUse`) is the preferred way to make
+the service null for unsupported profiles, and it already covers the
+profile-type case without any extra code in the other methods. Returning nullptr
+from `BuildServiceInstanceForBrowserContext` or from the static
+`GetForProfile`/`GetForBrowserContext` accessor is also acceptable for the same
+session-stable attributes (for example a `BUILDFLAG` or a `base::Feature` that
+`ProfileSelections` cannot express) -- just don't duplicate the same condition
+across multiple methods. Avoid using helper methods like `IsAllowedForProfile`
+to see if a service is available for a particular profile as these are often
+used incorrectly/inconsistently. Callers should just null-check the service
+itself. Prefer dependency injection
 [structure-modularity](https://chromium.googlesource.com/chromium/src/+/main/docs/chrome_browser_design_principles.md#structure_modularity)
 and pass in the services you require instead of calling the factory methods
 internally. This reduces dependencies on the factories and makes unit
