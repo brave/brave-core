@@ -8,6 +8,7 @@
 #include <string>
 
 #include "brave/components/brave_ads/core/internal/common/subdivision/test/subdivision_observer_mock.h"
+#include "brave/components/brave_ads/core/internal/common/subdivision/test/test_subdivision_observer.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/subdivision_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/common/subdivision/url_request/test/subdivision_url_request_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/mock_test_util.h"
@@ -72,10 +73,12 @@ TEST_F(BraveAdsSubdivisionTest, FetchIfUserJoinsBraveRewards) {
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision);
+  TestSubdivisionObserver subdivision_observer(
+      subdivision_.get(), /*expected_subdivision=*/"US-CA");
 
   // Act & Assert
   SetProfileBooleanPref(brave_rewards::prefs::kEnabled, true);
+  EXPECT_TRUE(subdivision_observer.WaitForDidUpdateSubdivision());
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchIfUserHasNotJoinedBraveRewards) {
@@ -104,10 +107,12 @@ TEST_F(BraveAdsSubdivisionTest, FetchWhenOptingInToNotificationAds) {
 
   MockHttpOkUrlResponse(/*country_code=*/"US", /*subdivision_code=*/"CA");
 
-  EXPECT_CALL(subdivision_observer_mock_, OnDidUpdateSubdivision);
+  TestSubdivisionObserver subdivision_observer(
+      subdivision_.get(), /*expected_subdivision=*/"US-CA");
 
   // Act & Assert
   SetProfileBooleanPref(prefs::kOptedInToNotificationAds, true);
+  EXPECT_TRUE(subdivision_observer.WaitForDidUpdateSubdivision());
 }
 
 TEST_F(BraveAdsSubdivisionTest, DoNotFetchWhenOptingOutOfNewTabPageAds) {
