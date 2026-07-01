@@ -12,9 +12,12 @@
 #include "base/check.h"
 #include "base/logging.h"
 #include "brave/browser/importer/brave_external_process_importer_host.h"
+#include "brave/browser/importer/brave_password_importer.h"
 #include "chrome/browser/importer/importer_list.h"
 #include "chrome/browser/importer/profile_writer.h"
 #include "chrome/browser/profiles/profile.h"
+#include "components/user_data_importer/common/importer_data_types.h"
+#include "components/user_data_importer/common/importer_type.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
@@ -96,11 +99,27 @@ void BraveImportDataHandler::StartImportImpl(
 
   FireWebUIListener("import-data-status-changed", base::Value("inProgress"));
 
+  // Passwords from another Brave installation are imported directly in the
+  // browser process so we can use OSCryptAsync to decrypt the source's
+  // `Login Data`. The utility-process ChromeImporter does not carry password
+  // import code, so we strip PASSWORDS from the items it receives.
+  uint16_t utility_items = imported_items;
+  if ((imported_items & user_data_importer::PASSWORDS) &&
+      source_profile.importer_type == user_data_importer::TYPE_BRAVE) {
+    utility_items &= ~user_data_importer::PASSWORDS;
+    password_importers_[source_profile.source_path] =
+        std::make_unique<BravePasswordImporter>();
+    password_importers_[source_profile.source_path]->Start(
+        source_profile.source_path, profile,
+        base::BindOnce(&BraveImportDataHandler::OnPasswordImportFinished,
+                       weak_factory_.GetWeakPtr(), source_profile.source_path));
+  }
+
   // Using weak pointers because it destroys itself when finshed.
   auto* importer_host = new BraveExternalProcessImporterHost();
   import_observers_[source_profile.source_path] =
       std::make_unique<BraveImporterObserver>(
-          importer_host, source_profile, imported_items,
+          importer_host, source_profile, utility_items,
           base::BindRepeating(&BraveImportDataHandler::NotifyImportProgress,
                               weak_factory_.GetWeakPtr()));
 
@@ -108,8 +127,19 @@ void BraveImportDataHandler::StartImportImpl(
       web_ui()->GetWebContents()->GetTopLevelNativeWindow());
   importer_host->set_parent_view(web_ui()->GetWebContents()->GetNativeView());
 
-  importer_host->StartImportSettings(source_profile, profile, imported_items,
+  importer_host->StartImportSettings(source_profile, profile, utility_items,
                                      new ProfileWriter(profile));
+}
+
+void BraveImportDataHandler::OnPasswordImportFinished(
+    base::FilePath source_path,
+    size_t added) {
+  password_importers_.erase(source_path);
+  if (added > 0) {
+    import_did_succeed_ = true;
+  } else {
+    LOG(WARNING) << "Brave password import finished with no credentials added";
+  }
 }
 
 void BraveImportDataHandler::NotifyImportProgress(

@@ -10,6 +10,7 @@
 #include <unordered_map>
 
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/importer/brave_password_importer.h"
 #include "brave/browser/ui/webui/settings/brave_importer_observer.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/webui/settings/import_data_handler.h"
@@ -76,8 +77,12 @@ class BraveImportDataHandler : public ImportDataHandler,
   bool guide_dialog_is_requested_ = false;
 #endif
  private:
+  void OnPasswordImportFinished(base::FilePath source_path, size_t added);
+
   std::unordered_map<base::FilePath, std::unique_ptr<BraveImporterObserver>>
       import_observers_;
+  std::unordered_map<base::FilePath, std::unique_ptr<BravePasswordImporter>>
+      password_importers_;
   base::WeakPtrFactory<BraveImportDataHandler> weak_factory_{this};
 };
 
