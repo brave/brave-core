@@ -1754,3 +1754,51 @@ BraveWalletServiceFactory::BuildServiceInstanceForBrowserContext(
 If a feature must be fully disable-able at runtime, the service should remain
 instantiated and expose an `IsEnabled()` accessor, or callers should observe the
 pref directly.
+
+<a id="ARCH-073"></a>
+
+## ✅ Inject Dependencies at Construction; Don't Reach for Global State or `Browser*`
+
+**Features should take exactly the dependencies they need as constructor
+parameters, rather than reaching out to global state (`g_browser_process`,
+singletons, `NoDestructor` globals) or accepting a `Browser*` and drilling
+through it.** Per the Chromium browser design principles, construction-time
+dependency injection is what makes a feature modular, testable, and free of
+hidden coupling — this is a design default for all features, not just a fix for
+`components/` layering violations (see [ARCH-002](#ARCH-002)).
+
+```cpp
+// ❌ WRONG - god-object Browser* drilled for whatever it needs (untestable,
+// hidden dependencies, makes modularization impossible)
+FooFeature(Browser* browser) : browser_(browser) {}
+void FooFeature::DoStuff() {
+  DoStuffWith(browser_->profile()->GetPrefs());
+}
+
+// ❌ ALSO WRONG - reaching for ambient global state
+void FooFeature::DoStuff() {
+  auto factory = g_browser_process->shared_url_loader_factory();
+}
+
+// ✅ CORRECT - inject exactly what the feature needs at construction
+FooFeature(tabs::TabInterface& tab,
+           page_actions::PageActionController& page_action_controller)
+    : tab_(tab), page_action_controller_(page_action_controller) {}
+```
+
+Why construction-time injection is the default:
+
+- **Testability:** dependencies can be substituted directly in unit tests,
+  reducing flakiness and preventing test behavior from diverging from
+  production.
+- **Exposes circular dependencies:** injecting deps surfaces cycles at
+  construction/BUILD.gn time — a common source of fragility — instead of hiding
+  them behind globals.
+- **Reduces coupling:** avoids "spooky action at a distance" where an innocuous
+  change breaks a seemingly unrelated feature.
+
+`class Browser` is a god-object anti-pattern; depending on it makes
+modularization impossible. Pass the narrow, specific objects a feature actually
+uses (see also [ARCH-003](#ARCH-003) on passing the most specific dependency).
+
+---
