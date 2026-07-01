@@ -75,8 +75,8 @@ character classes, or structural patterns.
 
 ```yaml
 # ✅ CORRECT - simple visibility replacement for a field
-pattern: 'private final @Nullable View mNtpHeader;'
-replace: 'protected final @Nullable View mNtpHeader;'
+re_pattern: 'private (final @Nullable View mNtpHeader;)'
+replace: 'protected \1'
 ```
 
 ```java
@@ -88,8 +88,8 @@ replace: 'protected final @Nullable View mNtpHeader;'
 ```yaml
 # ✅ CORRECT - simple visibility replacement for a method
 # Omit parentheses - upstream may add or change parameters
-pattern: 'private void runMenuItemEnterAnimations'
-replace: 'protected void runMenuItemEnterAnimations'
+re_pattern: 'private (void runMenuItemEnterAnimations)'
+replace: 'protected \1'
 ```
 
 ```java
