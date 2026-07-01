@@ -10,7 +10,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "cc/paint/paint_flags.h"
 #include "third_party/skia/include/core/SkPath.h"
 #include "third_party/skia/include/core/SkPathBuilder.h"
 #include "third_party/skia/include/core/SkPathTypes.h"
