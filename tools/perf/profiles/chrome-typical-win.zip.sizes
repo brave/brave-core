@@ -1,28 +1,28 @@
-Total size 87568K
+Total size 89812K
 
-GROUP chromium [59959K total]
-   705K listdata.json 9.2928.1220 [ActorSafetyLists]
+GROUP chromium [62098K total]
+  2467K listdata.json 9.3249.1600 [ActorSafetyLists]
      2K Amount Extraction Heuristic Regexes 4 [AmountExtractionHeuristicRegexes]
      2K captcha_providers.json 8.5419.4434 [CaptchaProviders]
-  1541K crl-set-1101981377086423007.data 10602 [CertificateRevocation]
+  1586K crl-set-7404647450115680898.data 10620 [CertificateRevocation]
     31K chromeCommerceHeuristics 2023.3.30.1305 [CommerceHeuristics]
-   241K Crowd Deny 2026.6.22.61 [Crowd Deny]
+   319K Crowd Deny 2026.6.29.61 [Crowd Deny]
      9K fileTypePolicies 145.0.7584.0 [FileTypePolicies]
      7K history_search_strings_farmhashed.binarypb 6.7431.9692 [HistorySearch]
      9K MEI Preload 1.1.0.3 [MEIPreload]
   7744K OnDeviceHeadSuggestENUS500000 20251024.824731831.14 [OnDeviceHeadSuggestModel]
-   544K Optimization Hints 694 [OptimizationHints]
+   543K Optimization Hints 701 [OptimizationHints]
      1K Origin Trials Updates 1.0.0.20 [OriginTrials]
-   369K pkiMetadata 1699 [PKIMetadata]
+   372K pkiMetadata 1704 [PKIMetadata]
      4K sslErrorAssistant 7 [SSLErrorAssistant]
    181K safetyTips 3091 [SafetyTips]
    422K Subresource Filtering Rules 9.69.0 [Subresource Filter]
     11K trustToken 2026.3.23.1 [TrustTokenKeyCommitments]
- 22599K WASM TTS Engine 20260611.1 [WasmTtsEngine]
+ 22850K WASM TTS Engine 20260625.1 [WasmTtsEngine]
  22158K WidevineCdm 4.10.3050.0 [WidevineCdm]
   1642K zxcvbnData 3 [ZxcvbnData]
   1728K hyphens-data 120.0.6050.0 [hyphen-data]
 
-GROUP large_files [21321K total]
-  1863K Safe Browsing\ChromeExtMalware.store.32_13426708794934540
- 19458K Safe Browsing\UrlSoceng.store.4_13426708794613580
+GROUP large_files [21403K total]
+  1864K Safe Browsing\ChromeExtMalware.store.32_13427379440410678
+ 19539K Safe Browsing\UrlSoceng.store.4_13427379440086485
