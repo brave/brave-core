@@ -1798,7 +1798,30 @@ Why construction-time injection is the default:
   change breaks a seemingly unrelated feature.
 
 `class Browser` is a god-object anti-pattern; depending on it makes
-modularization impossible. Pass the narrow, specific objects a feature actually
-uses (see also [ARCH-003](#ARCH-003) on passing the most specific dependency).
+modularization impossible. Prefer the narrow, specific objects a feature
+actually uses (see also [ARCH-003](#ARCH-003) on passing the most specific
+dependency).
+
+This applies even when a feature genuinely needs a broad object like `Profile`
+itself: inject it rather than reaching for a global. The point of DI is not only
+to narrow the dependency — the same benefits (testability, exposing circular
+dependencies, decoupling) apply to anything reachable from `Profile`, so inject
+`Profile` (or the thing looked up from it) instead of pulling it from ambient
+global state.
+
+```cpp
+// ❌ WRONG - reaching for the profile via global state
+void FooFeature::DoStuff() {
+  Profile* profile = ProfileManager::GetActiveUserProfile();
+  UseKeyedService(BarServiceFactory::GetForProfile(profile));
+}
+
+// ✅ CORRECT - inject Profile (still preferring the narrowest dependency, but
+// inject it when Profile itself is genuinely required)
+FooFeature(Profile& profile) : profile_(profile) {}
+void FooFeature::DoStuff() {
+  UseKeyedService(BarServiceFactory::GetForProfile(&profile_.get()));
+}
+```
 
 ---
