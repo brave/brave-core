@@ -4,12 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Remove final keyword from DraggingTabsSession to allow subclassing'
-    pattern: 'class DraggingTabsSession final {'
-    replace: 'class DraggingTabsSession {'
+  - description: Drop `final` from DraggingTabsSession to allow subclassing.
+    unfinalise:
+      class_name: DraggingTabsSession
 
   - description:
-      'Remove final keyword from DraggingTabsSession to allow subclassing'
-    pattern: '~DraggingTabsSession();'
-    replace: 'virtual ~DraggingTabsSession();'
+      Make the DraggingTabsSession destructor virtual for subclassing.
+    virtualise:
+      class_name: DraggingTabsSession
+      method_name: '~DraggingTabsSession'

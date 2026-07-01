@@ -92,7 +92,13 @@ contents of a source from `git`, as the source of truth, not from whatever is on
 disk, and then it applies each substitution cumulatively to the contents of the
 target source, updating the upstream source at the end.
 
-Each entry has the following format:
+Each item under `substitutions:` is an **operation**. Every operation accepts a
+`description` and an optional `count` (how many places it must change; `1` is
+the default, `0` disables the check). Operations of different kinds can be
+freely interspersed and are applied in the order listed.
+
+The default operation is a **regex** substitution. Its fields can be written
+directly on the item (as in the example above) or grouped under a `regex:` key:
 
 ```yaml
 substitutions:
@@ -103,6 +109,13 @@ substitutions:
     replace: ''
     re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
     count: 1 # 1 is the default; 0 means no count, not advised.
+
+  - description: 'Equivalent, written as an explicit regex op'
+    count: 1
+    regex:
+      re_pattern: ''
+      replace: ''
+      re_flags: []
 ```
 
 Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
@@ -110,6 +123,37 @@ Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
 Single-quoted YAML strings preserve backslashes literally, which is useful for
 regex patterns (`'\s'` stays as the two characters `\s`, not interpreted by
 YAML).
+
+### Structural operations
+
+Besides regex, _Plaster_ supports a small set of **structural** operations,
+backed by [ast-grep](https://ast-grep.github.io/). Rather than matching text,
+they locate C++ syntax (a method inside a class, a class's `private:` section,
+etc.), so they keep working when surrounding formatting changes. Each takes
+named arguments under its op key:
+
+| Op           | Arguments                   | What it does                                                                                |
+| ------------ | --------------------------- | ------------------------------------------------------------------------------------------- |
+| `regex`      | regex fields (above)        | A regex substitution. The default op; may also be written bare, without the `regex:` key.   |
+| `virtualise` | `class_name`, `method_name` | Prepends `virtual ` to a method, constructor or destructor (`~Foo`) declaration in a class. |
+| `friendify`  | `class_name`, `friend`      | Inserts `friend <friend>;` as the first line of the class's `private:` section.             |
+| `unfinalise` | `class_name`                | Removes the `final` specifier from a class declaration so it can be subclassed.             |
+
+For example, to make a class subclassable — drop its `final` and make its
+destructor `virtual`:
+
+```yaml
+substitutions:
+  - description: Drop `final` from DraggingTabsSession to allow subclassing.
+    unfinalise:
+      class_name: DraggingTabsSession
+
+  - description:
+      Make the DraggingTabsSession destructor virtual for subclassing.
+    virtualise:
+      class_name: DraggingTabsSession
+      method_name: '~DraggingTabsSession' # quote: a leading `~` is YAML null
+```
 
 To apply this plaster file, just run `plaster.py`:
 
