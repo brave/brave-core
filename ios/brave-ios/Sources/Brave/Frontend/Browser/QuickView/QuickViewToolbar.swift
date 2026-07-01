@@ -16,6 +16,9 @@ struct QuickViewToolbarView: View {
   var shieldBackgroundView: InvisibleUIView = .init()
   var shareBackgroundView: InvisibleUIView = .init()
 
+  @ScaledMetric private var baseAddressFontSize: CGFloat = 15
+  @ScaledMetric private var addressFontCollapseDelta: CGFloat = 3
+
   var body: some View {
     VStack(spacing: 0) {
       topRow
@@ -36,6 +39,7 @@ struct QuickViewToolbarView: View {
       }
     }
     .disabled(viewModel.readerModeState == .active)
+    .opacity(1 - viewModel.collapseProgress)
   }
 
   @ViewBuilder
@@ -97,7 +101,11 @@ struct QuickViewToolbarView: View {
 
   private var addressView: some View {
     Text(viewModel.url.host ?? viewModel.url.absoluteString)
-      .font(.subheadline)
+      .font(
+        .system(
+          size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress
+        )
+      )
       .foregroundStyle(Color(braveSystemName: .textTertiary))
       .lineLimit(1)
       .frame(maxWidth: .infinity)
@@ -113,8 +121,11 @@ struct QuickViewToolbarView: View {
 
   private var topRow: some View {
     HStack(alignment: .top, spacing: 8) {
-      shieldButton
-        .background(shieldBackgroundView)
+      if viewModel.collapseProgress < 1 {
+        shieldButton
+          .background(shieldBackgroundView)
+          .opacity(1 - viewModel.collapseProgress)
+      }
 
       VStack(spacing: 12) {
         addressView
@@ -123,7 +134,10 @@ struct QuickViewToolbarView: View {
           .hidden(isHidden: !viewModel.isLoading)
       }
 
-      topRightButtonsView
+      if viewModel.collapseProgress < 1 {
+        topRightButtonsView
+          .opacity(1 - viewModel.collapseProgress)
+      }
     }
     .labelStyle(QuickViewToolbarLabelTopIconStyle())
   }
@@ -202,6 +216,7 @@ struct QuickViewToolbarView: View {
       closeButton
     }
     .labelStyle(QuickViewToolbarLabelBottomIconStyle())
+    .opacity(1 - viewModel.collapseProgress)
   }
 }
 
@@ -223,5 +238,12 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
       .accessibilityRepresentation {
         configuration.title
       }
+  }
+}
+
+extension QuickViewToolbarView {
+  /// Height of the URL-only strip that remains visible when collapsed.
+  static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
+    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
   }
 }
