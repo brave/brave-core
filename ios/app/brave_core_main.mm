@@ -211,6 +211,15 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
   // ApplicationContextImpl doesn't get teardown call at the moment because we
   // cannot dealloc this class yet without crashing.
   GetApplicationContext()->GetLocalState()->CommitPendingWrite();
+
+  ProfileManagerIOS* profile_manager =
+      GetApplicationContext()->GetProfileManager();
+  if (profile_manager) {
+    for (ProfileIOS* profile : profile_manager->GetLoadedProfiles()) {
+      profile->GetPrefs()->CommitPendingWrite();
+    }
+  }
+
   [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
