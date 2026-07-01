@@ -1,0 +1,16 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Use Brave's "unvetted extension" install prompt title.
+    regex:
+      re_pattern:
+        '(std::u16string InstallPromptData::GetDialogTitle\(\) const \{\n)'
+      replace: |
+        \1  if (type_ == INSTALL_PROMPT) {
+            return l10n_util::GetStringUTF16(
+                IDS_UNVETTED_EXTENSION_INSTALL_PROMPT_TITLE);
+          }
