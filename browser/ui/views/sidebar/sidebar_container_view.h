@@ -105,8 +105,6 @@ class SidebarContainerView : public sidebar::Sidebar,
   void HideSidebar();
 
   bool ShouldForceShowSidebar() const;
-  void UpdateToolbarButtonVisibility();
-  void UpdateToolbarButtonHighlight();
 
   // true when fullscreen is initiated by tab. (Ex, fullscreen mode in youtube)
   bool IsFullscreenByTab() const;
@@ -141,7 +139,6 @@ class SidebarContainerView : public sidebar::Sidebar,
   int animation_end_width_ = 0;
   std::unique_ptr<BrowserWindowEventObserver> browser_window_event_observer_;
   std::unique_ptr<views::EventMonitor> browser_window_event_monitor_;
-  BooleanPrefMember show_side_panel_button_;
   base::RepeatingClosure sidebar_control_view_visibility_changed_callback_;
 };
 
