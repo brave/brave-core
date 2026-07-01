@@ -56,8 +56,7 @@ class BraveContentsContainerView :
 #endif
 
  private:
-  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
-                           BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
 
   gfx::RoundedCornersF GetCornerRadius(bool for_border) const;
 

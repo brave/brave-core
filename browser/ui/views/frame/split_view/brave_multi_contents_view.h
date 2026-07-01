@@ -53,10 +53,9 @@ class BraveMultiContentsView : public MultiContentsView {
       content::WebContents* web_contents) const override;
 
  private:
-  friend class SideBySideEnabledBrowserTest;
+  friend class SplitViewBrowserTest;
   friend class SpeedReaderWithSplitViewBrowserTest;
-  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
-                           BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithWebPanelTest,
                            WebPanelTest);
 
