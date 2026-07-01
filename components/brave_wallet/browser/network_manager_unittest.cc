@@ -123,19 +123,6 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
 
   EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotMainnet,
                                                   mojom::CoinType::DOT));
-  EXPECT_FALSE(network_manager()->KnownChainExists(
-      mojom::kPolkadotMainnetAssetHub, mojom::CoinType::DOT));
-  EXPECT_TRUE(network_manager()->KnownChainExists(mojom::kPolkadotTestnet,
-                                                  mojom::CoinType::DOT));
-  EXPECT_FALSE(network_manager()->KnownChainExists(
-      mojom::kPolkadotTestnetAssetHub, mojom::CoinType::DOT));
-  EXPECT_FALSE(network_manager()->KnownChainExists(
-      mojom::kPolkadotPaseoAssetHub, mojom::CoinType::DOT));
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletPolkadotFeature,
-      {{features::kPolkadotParachainsEnabled.name, "true"}});
   EXPECT_TRUE(network_manager()->KnownChainExists(
       mojom::kPolkadotMainnetAssetHub, mojom::CoinType::DOT));
   EXPECT_TRUE(network_manager()->KnownChainExists(
@@ -148,20 +135,9 @@ TEST_F(NetworkManagerUnitTest, KnownChainExists) {
 
 TEST_F(NetworkManagerUnitTest, IsPolkadotChain) {
   EXPECT_TRUE(network_manager()->IsPolkadotChain(mojom::kPolkadotMainnet));
-  EXPECT_FALSE(
-      network_manager()->IsPolkadotChain(mojom::kPolkadotMainnetAssetHub));
-  EXPECT_TRUE(network_manager()->IsPolkadotChain(mojom::kPolkadotTestnet));
-  EXPECT_FALSE(
-      network_manager()->IsPolkadotChain(mojom::kPolkadotTestnetAssetHub));
-  EXPECT_FALSE(
-      network_manager()->IsPolkadotChain(mojom::kPolkadotPaseoAssetHub));
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletPolkadotFeature,
-      {{features::kPolkadotParachainsEnabled.name, "true"}});
   EXPECT_TRUE(
       network_manager()->IsPolkadotChain(mojom::kPolkadotMainnetAssetHub));
+  EXPECT_TRUE(network_manager()->IsPolkadotChain(mojom::kPolkadotTestnet));
   EXPECT_TRUE(
       network_manager()->IsPolkadotChain(mojom::kPolkadotTestnetAssetHub));
   EXPECT_TRUE(
@@ -179,16 +155,6 @@ TEST_F(NetworkManagerUnitTest, IsPolkadotChain) {
 }
 
 TEST_F(NetworkManagerUnitTest, GetAllKnownPolkadotChainsWithParachainsParam) {
-  auto relay_chains = NetworkManager::GetAllKnownChains(mojom::CoinType::DOT);
-  ASSERT_EQ(relay_chains.size(), 2u);
-  EXPECT_EQ(relay_chains[0]->chain_id, mojom::kPolkadotMainnet);
-  EXPECT_EQ(relay_chains[1]->chain_id, mojom::kPolkadotTestnet);
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletPolkadotFeature,
-      {{features::kPolkadotParachainsEnabled.name, "true"}});
-
   auto parachain_chains =
       NetworkManager::GetAllKnownChains(mojom::CoinType::DOT);
   ASSERT_EQ(parachain_chains.size(), 5u);
@@ -292,11 +258,9 @@ TEST_F(NetworkManagerUnitTest, CustomChainsExist) {
 
 TEST_F(NetworkManagerUnitTest, GetAllChainsTest) {
   base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitWithFeaturesAndParameters(
-      {{features::kBraveWalletZCashFeature, {}},
-       {features::kBraveWalletCardanoFeature, {}},
-       {features::kBraveWalletPolkadotFeature,
-        {{features::kPolkadotParachainsEnabled.name, "true"}}}},
+  scoped_feature_list.InitWithFeatures(
+      {features::kBraveWalletZCashFeature, features::kBraveWalletCardanoFeature,
+       features::kBraveWalletPolkadotFeature},
       {});
 
   EXPECT_EQ(network_manager()->GetAllChains().size(), 29u);
@@ -568,9 +532,8 @@ TEST_F(NetworkManagerUnitTest, GetNetworkURLTest) {
                                              mojom::CoinType::DOT));
   {
     base::test::ScopedFeatureList scoped_feature_list;
-    scoped_feature_list.InitAndEnableFeatureWithParameters(
-        features::kBraveWalletPolkadotFeature,
-        {{features::kPolkadotParachainsEnabled.name, "true"}});
+    scoped_feature_list.InitAndEnableFeature(
+        features::kBraveWalletPolkadotFeature);
     EXPECT_EQ(GURL("https://polkadot-asset-hub.wallet.brave.com/"),
               network_manager()->GetNetworkURL(mojom::kPolkadotMainnetAssetHub,
                                                mojom::CoinType::DOT));
@@ -753,17 +716,6 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   EXPECT_EQ(
       network_manager()->GetChain("polkadot_testnet", mojom::CoinType::DOT),
       polkadot_testnet.Clone());
-  EXPECT_FALSE(network_manager()->GetChain(mojom::kPolkadotMainnetAssetHub,
-                                           mojom::CoinType::DOT));
-  EXPECT_FALSE(network_manager()->GetChain(mojom::kPolkadotTestnetAssetHub,
-                                           mojom::CoinType::DOT));
-  EXPECT_FALSE(network_manager()->GetChain(mojom::kPolkadotPaseoAssetHub,
-                                           mojom::CoinType::DOT));
-
-  base::test::ScopedFeatureList scoped_feature_list;
-  scoped_feature_list.InitAndEnableFeatureWithParameters(
-      features::kBraveWalletPolkadotFeature,
-      {{features::kPolkadotParachainsEnabled.name, "true"}});
   EXPECT_EQ(network_manager()->GetChain(mojom::kPolkadotMainnetAssetHub,
                                         mojom::CoinType::DOT),
             polkadot_mainnet_asset_hub.Clone());

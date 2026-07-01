@@ -60,9 +60,8 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
   ~PolkadotWalletServiceUnitTest() override = default;
 
   void SetUp() override {
-    feature_list_.InitAndEnableFeatureWithParameters(
-        brave_wallet::features::kBraveWalletPolkadotFeature,
-        {{brave_wallet::features::kPolkadotParachainsEnabled.name, "true"}});
+    feature_list_.InitAndEnableFeature(
+        brave_wallet::features::kBraveWalletPolkadotFeature);
 
     brave_wallet::RegisterProfilePrefs(prefs_.registry());
     brave_wallet::RegisterLocalStatePrefs(local_state_.registry());

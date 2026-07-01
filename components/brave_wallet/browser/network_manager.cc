@@ -883,15 +883,7 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownCardanoNetworks() {
 
 const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
   static base::NoDestructor<std::vector<const mojom::NetworkInfo*>>
-      relay_networks({
-          // clang-format off
-          GetPolkadotMainnet(),
-          GetPolkadotTestnet(),
-          // clang-format on
-      });
-
-  static base::NoDestructor<std::vector<const mojom::NetworkInfo*>>
-      parachain_networks({
+      polkadot_networks({
           // clang-format off
           GetPolkadotMainnet(),
           GetPolkadotMainnetAssetHub(),
@@ -901,8 +893,7 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownPolkadotNetworks() {
           // clang-format on
       });
 
-  return features::kPolkadotParachainsEnabled.Get() ? *parachain_networks.get()
-                                                    : *relay_networks.get();
+  return *polkadot_networks.get();
 }
 
 std::string GetPrefKeyForCoinType(mojom::CoinType coin) {
