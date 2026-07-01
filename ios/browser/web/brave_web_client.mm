@@ -22,6 +22,7 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
+#include "brave/ios/browser/brave_shields/farbling_javascript_feature.h"
 #include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
 #include "brave/ios/browser/skus/skus_javascript_feature.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -143,6 +144,7 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
         brave_ads::AdsMediaReportingJavaScriptFeature::GetInstance());
     features.push_back(AIChatDistillerJavaScriptFeature::GetInstance());
     features.push_back(BraveNavigatorJavaScriptFeature::GetInstance());
+    features.push_back(brave_shields::FarblingJavaScriptFeature::GetInstance());
     features.push_back(BraveSearchAdResultsJavaScriptFeature::GetInstance());
     features.push_back(BraveSearchMakeDefaultJavaScriptFeature::GetInstance());
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
