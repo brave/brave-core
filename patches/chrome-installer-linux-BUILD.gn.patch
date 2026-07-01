@@ -1,8 +1,8 @@
 diff --git a/chrome/installer/linux/BUILD.gn b/chrome/installer/linux/BUILD.gn
-index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce283ce497f4 100644
+index 14c3ba316b7628dc4475edce6be9457e1c604d51..9e7e474d7a1667682aa8fc41736dfe21f05cb9b2 100644
 --- a/chrome/installer/linux/BUILD.gn
 +++ b/chrome/installer/linux/BUILD.gn
-@@ -19,6 +19,7 @@ import("//third_party/angle/gni/angle.gni")
+@@ -18,6 +18,7 @@ import("//third_party/angle/gni/angle.gni")
  import("//third_party/widevine/cdm/widevine.gni")
  import("//ui/gl/features.gni")
  import("//ui/qt/qt.gni")
@@ -10,7 +10,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  
  if (bundle_widevine_cdm) {
    import("//media/cdm/library_cdm/cdm_paths.gni")
-@@ -95,6 +96,7 @@ if (build_with_internal_optimization_guide) {
+@@ -94,6 +95,7 @@ if (build_with_internal_optimization_guide) {
    }
  }
  
@@ -18,7 +18,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  packaging_files_binaries = packaging_files_executables + packaging_files_shlibs
  
  # TODO(mmoss) Any convenient way to get all the relevant build files?
-@@ -202,6 +204,7 @@ action("merge_rpm_dependencies") {
+@@ -201,6 +203,7 @@ action("merge_rpm_dependencies") {
  strip_binary("strip_chrome_binary") {
    binary_input = "$root_out_dir/chrome"
    deps = [ "//chrome" ]
@@ -26,15 +26,15 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  }
  
  strip_binary("strip_chrome_crashpad_handler") {
-@@ -217,6 +220,7 @@ strip_binary("strip_chrome_management_service") {
+@@ -216,6 +219,7 @@ strip_binary("strip_chrome_management_service") {
  strip_binary("strip_chrome_sandbox") {
    binary_input = "$root_out_dir/chrome_sandbox"
    deps = [ "//sandbox/linux:chrome_sandbox" ]
 +  binary_input = "$root_out_dir/brave_sandbox" symbol_output = "$root_out_dir/brave_sandbox.debug" stripped_binary_output = "$root_out_dir/brave_sandbox.stripped" deps += strip_chrome_sandbox_deps
  }
  
- strip_binary("strip_libEGL_shlib") {
-@@ -366,6 +370,7 @@ copy("common_packaging_files") {
+ # On ChromeOS, system services depend on real ANGLE libraries rather than dummy
+@@ -368,6 +372,7 @@ copy("common_packaging_files") {
    }
  
    outputs = [ "$root_out_dir/installer/common/{{source_file_part}}" ]
@@ -42,7 +42,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  }
  
  copy("deb_packaging_files") {
-@@ -466,6 +471,7 @@ group("installer_deps") {
+@@ -468,6 +473,7 @@ group("installer_deps") {
      "//components/privacy_sandbox/privacy_sandbox_attestations/preload:component",
      "//sandbox/linux:chrome_sandbox",
    ]
@@ -50,7 +50,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
    if (bundle_widevine_cdm) {
      public_deps += [ "//third_party/widevine/cdm" ]
    }
-@@ -533,11 +539,14 @@ group("installer_deps") {
+@@ -535,11 +541,14 @@ group("installer_deps") {
  template("linux_package") {
    assert(defined(invoker.channel))
    channel = invoker.channel
@@ -66,7 +66,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
    }
  
    deb_target_name = "${target_name}_deb"
-@@ -546,7 +555,7 @@ template("linux_package") {
+@@ -548,7 +557,7 @@ template("linux_package") {
      script = "debian/build.py"
  
      inputs = packaging_files
@@ -75,7 +75,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  
      args = [
        "-a",
-@@ -583,7 +592,7 @@ template("linux_package") {
+@@ -585,7 +594,7 @@ template("linux_package") {
        script = "rpm/build.py"
  
        inputs = packaging_files
@@ -84,7 +84,7 @@ index b537b1ac05064342eb08faaf2051dfda3266db88..8611dd11c0cdccf15abc95c715d2ce28
  
        args = [
          "-a",
-@@ -631,3 +640,6 @@ linux_package("unstable") {
+@@ -633,3 +642,6 @@ linux_package("unstable") {
  linux_package("canary") {
    channel = "canary"
  }

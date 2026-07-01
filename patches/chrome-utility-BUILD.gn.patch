@@ -1,10 +1,10 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 2b750852cf3d53686121e9b919cafea1ae6ad43d..153dece8e6df445807dc0bc36ee32ca5f39e8f59 100644
+index 9c036b152ea104bd1c2f96c9636a6b776891fbba..a441900fc453de8ed4fa862fb4379dada6eccb52 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -265,6 +265,7 @@ static_library("utility") {
-       "readaloud/read_aloud_playback_controller.h",
-     ]
+@@ -262,6 +262,7 @@ static_library("utility") {
+   if (is_android) {
+     deps += [ "//chrome/services/readaloud" ]
    }
 +  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
  }
