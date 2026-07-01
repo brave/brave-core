@@ -58,7 +58,7 @@ void TabStripPlacementCoordinator::UpdatePlacement() {
       }
     }
     if (IsFocusModeEnabled(browser)) {
-      auto& placement = placements_[PlacementKind::kTopContainer];
+      auto& placement = placements_[PlacementKind::kFocusMode];
       if (placement.parent) {
         return placement;
       }
