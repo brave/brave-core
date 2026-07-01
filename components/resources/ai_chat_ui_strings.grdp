@@ -123,14 +123,8 @@
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_SONNET" desc="AI Chat intro message for the Claude Sonnet model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Sonnet, a model created by Anthropic to power conversational and text processing tasks. Claude Sonnet is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_LLAMA_4_MAVERICK" desc="AI Chat intro message for the Llama 4 Maverick model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Llama 4 Maverick, a model created by Meta to be performant and applicable to many use cases. Llama 4 Maverick is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_OSS_20B" desc="AI Chat intro message for the GPT OSS 20B model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT OSS 20B, a model created by OpenAI to be performant and applicable to many use cases. GPT OSS 20B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_GPT_OSS_120B" desc="AI Chat intro message for the GPT OSS 120B model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by GPT OSS 120B, a model created by OpenAI to be performant and applicable to many use cases. GPT OSS 120B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_MISTRAL_LARGE" desc="AI Chat intro message for the Mistral Large model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Mistral Large, a model created by Mistral to be performant and applicable to many use cases. Mistral Large is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -140,9 +134,6 @@
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_DEEPSEEK_V3_2" desc="AI Chat intro message for the Deepseek V3.2 model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Deepseek V3.2, a model created by Deepseek to be performant and applicable to many use cases. Deepseek V3.2 is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
-  </message>
-  <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_QWEN_3_CODER_480B" desc="AI Chat intro message for the Qwen 3 Coder 480B model" formatter_data="webui=AiChat">
-    Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Qwen 3 Coder 480B, a model created by Alibaba Cloud to be performant and applicable to many use cases. Qwen 3 Coder 480B is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
   </message>
   <message name="IDS_CHAT_UI_INTRO_MESSAGE_CHAT_CLAUDE_OPUS" desc="AI Chat intro message for the Claude Opus model" formatter_data="webui=AiChat">
     Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by Claude Opus, a model created by Anthropic to power conversational and text processing tasks. Claude Opus is Brave-hosted through our own secure infrastructure.<ph name="LINK_BEFORE">$1</ph>Learn more<ph name="LINK_AFTER">/$1</ph>
@@ -609,14 +600,14 @@
   <message name="IDS_CHAT_UI_CHAT_GLM_4_7_FLASH_SUBTITLE" desc="A description for glm-4-7-flash model" formatter_data="webui=AiChat">
     Fast • Search
   </message>
-  <message name="IDS_CHAT_UI_CHAT_LLAMA_4_MAVERICK_SUBTITLE" desc="A description for llama-4-maverick model" formatter_data="webui=AiChat">
-    Search • Vision
-  </message>
   <message name="IDS_CHAT_UI_CHAT_GPT_OSS_20B_SUBTITLE" desc="A description for gpt-oss-20b model" formatter_data="webui=AiChat">
     Fast • Search
   </message>
-  <message name="IDS_CHAT_UI_CHAT_GPT_OSS_120B_SUBTITLE" desc="A description for gpt-oss-120b model" formatter_data="webui=AiChat">
-    Search
+  <message name="IDS_CHAT_UI_CHAT_GPT_5_4_BEDROCK_SUBTITLE" desc="A description for gpt-5-4-bedrock model" formatter_data="webui=AiChat">
+    Search • Vision • Tools
+  </message>
+  <message name="IDS_CHAT_UI_CHAT_NEMOTRON_NANO_3_30B_SUBTITLE" desc="A description for nemotron-nano-3-30b model" formatter_data="webui=AiChat">
+    Fast • Search • Tools
   </message>
   <message name="IDS_CHAT_UI_CHAT_MISTRAL_LARGE_SUBTITLE" desc="A description for mistral-large model" formatter_data="webui=AiChat">
     Search
@@ -629,9 +620,6 @@
   </message>
   <message name="IDS_CHAT_UI_CHAT_DEEPSEEK_V3_2_SUBTITLE" desc="A description for deepseek-v3-2 model" formatter_data="webui=AiChat">
     Search • Tools
-  </message>
-  <message name="IDS_CHAT_UI_CHAT_QWEN_3_CODER_480B_SUBTITLE" desc="A description for qwen-3-coder-480b model" formatter_data="webui=AiChat">
-    Search
   </message>
   <message name="IDS_CHAT_UI_CHAT_CLAUDE_OPUS_SUBTITLE" desc="A description for claude-opus model" formatter_data="webui=AiChat">
     Search • Vision
