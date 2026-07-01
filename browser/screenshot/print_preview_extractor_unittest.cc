@@ -17,6 +17,7 @@
 #include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/types/expected.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/screenshot/print_preview_extractor_internal.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
@@ -248,24 +249,19 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     NavigateAndCommit(GURL("https://brave.com/"),
                       ui::PageTransition::PAGE_TRANSITION_FIRST);
     printing::PrintCompositeClient::CreateForWebContents(web_contents());
-    pp_extractor_ = std::make_unique<PrintPreviewExtractor>(
-        base::BindRepeating([](content::WebContents* web_contents, bool is_pdf,
-                               PrintPreviewExtractor::CaptureImagesCallback&&
-                                   callback)
-                                -> std::unique_ptr<
-                                    PrintPreviewExtractor::Extractor> {
+    pp_extractor_ = std::make_unique<PrintPreviewExtractor>(base::BindRepeating(
+        [](content::WebContents* web_contents, bool is_pdf,
+           PrintPreviewExtractor::CaptureImagesCallback&& callback)
+            -> std::unique_ptr<PrintPreviewExtractor::Extractor> {
           return std::make_unique<PrintPreviewExtractorInternal>(
               web_contents,
               Profile::FromBrowserContext(web_contents->GetBrowserContext()),
               is_pdf, std::move(callback),
               base::BindRepeating(
-                  []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
-                    return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
-                  }),
-              base::BindRepeating([]() -> base::flat_map<int, int>& {
-                return printing::PrintPreviewUI::
-                    GetPrintPreviewUIRequestIdMap();
-              }));
+                  []() -> base::flat_map<base::UnguessableToken, int>& {
+                    return printing::PrintPreviewUI::
+                        GetPrintPreviewUIRequestIdMap();
+                  }));
         }));
   }
   void TearDown() override {
@@ -280,10 +276,10 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
         ->GetRemoteAssociatedInterfaces();
   }
 
-  std::optional<int32_t> GetPrintPreviewUIId() {
+  base::UnguessableToken GetPrintPreviewUIId() {
     return pp_extractor_->extractor_
                ? pp_extractor_->extractor_->GetPrintPreviewUIIdForTesting()
-               : std::nullopt;
+               : base::UnguessableToken();
   }
 
   // Helper method for common setup and verification
@@ -337,21 +333,21 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
     },
     "scalingType": %d,
     "isFirstRequest": true,
-    "previewUIID": %d,
+    "previewUIID": "%s",
     "requestID": %d,
     "title": "%s",
     "previewModifiable": %s,
     "url": "%s"
     })";
 
-    std::optional<int32_t> print_preview_ui_id;
+    base::UnguessableToken print_preview_ui_id;
     int request_id = -1;
     auto on_complete =
         base::BindLambdaForTesting([&print_preview_ui_id, &request_id, this]() {
           print_preview_ui_id = GetPrintPreviewUIId();
           auto request_id_map =
               printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap();
-          request_id = request_id_map[*print_preview_ui_id];
+          request_id = request_id_map[print_preview_ui_id];
         });
 
     auto print_render_frame = SetupPrintPreviewTest(
@@ -382,7 +378,7 @@ class PrintPreviewExtractorTest : public ChromeRenderViewHostTestHarness {
             static_cast<int>(printing::mojom::DuplexMode::kSimplex),
             static_cast<int>(printing::mojom::PrinterType::kPdf),
             static_cast<int>(printing::ScalingType::DEFAULT),
-            *print_preview_ui_id, request_id,
+            print_preview_ui_id.ToString(), request_id,
             base::UTF16ToUTF8(web_contents()->GetTitle()),
             base::ToString(expect_preview_modifiable),
             web_contents()->GetLastCommittedURL().spec())));
