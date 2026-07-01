@@ -24,7 +24,6 @@
 -All/ThemeColorPickerHandlerSetThemeTest.*
 
 # We modify first dialog run behavior
--FirstRunDialogControllerTest.*
 -FirstRunServiceTest.ShouldOpenFirstRun
 
 # We are incorrectly adding modifiers to accelerators somewhere - need to investigate
@@ -32,8 +31,6 @@
 
 # Still need investigation for failures
 -AcceleratorTableTest.CheckNoDuplicatesGlobalKeyboardShortcutsMac
--All/TabStripRegionViewTest.NewTabButtonRightOfTabs/0
--All/TabStripRegionViewTest.NewTabButtonRightOfTabs/1
 -MacHistorySwiperTest.MagicMouseStateResetsCorrectly
 -MacHistorySwiperTest.SwipeLeft
 -MacHistorySwiperTest.SwipeLeftSmallAmount
@@ -45,18 +42,10 @@
 
 # Still need to investigate for crashes
 -All/IntentPickerBubbleViewLayoutTest.*
--All/NtpBackgroundServiceTest.CollectionRequestWithGM3Enabled/0
--All/NtpBackgroundServiceTest.CollectionRequestWithGM3Enabled/1
 -ApplicationLifetimeTest.AttemptRestart
 -AudioStreamCoordinatorTest.ConnectToAudioCapturerAndReceiveBuses
--BrowserFeaturePromoController2x*
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohort_PreserveMode
--ChromeBrowsingDataRemoverDelegateTpcdMetadataTest.ResetAllCohorts
 -FirstRunServiceTest.ShouldPopulateProfileNameFromPrimaryAccount
 -ProfileColorsUtilTest.GenerateNewProfileColorWithMultipleColoredProfiles
--RecentSessionObserverImplTest.OnRecentSessionsUpdated
--RecentSessionObserverImplTest.SessionCallback
--RecentSessionObserverImplTest.SessionCallbackOnObserve
 -UntrustedSourceTest.OneGoogleBarRequest_DefaultABPAsyncParam
 -VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveFrames
 -VideoStreamCoordinatorTest.ConnectToFrameHandlerAndReceiveNoFrames

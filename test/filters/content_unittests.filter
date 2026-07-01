@@ -118,7 +118,6 @@
 -RenderFrameHostImplTest.*
 -SharedStorageLockManagerTest.*
 -SharedStorageLockManagerTransactionalBatchUpdateDisabledTest.*
--SpeculationHostImplLinkPreviewTest.FencedFrameNetworkCutoffDisablesLinkPreview
 -StoragePartitionImplTest.AttributionManagerCreatedInIncognito
 -WebContentsImplTest.NavigateToViewSourceRendererDebugURL
 -WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/0
