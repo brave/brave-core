@@ -69,6 +69,7 @@ source_set("browser_tests") {
     testonly = true
 
     sources = [
+      "brave_appearance_handler_browsertest.cc",
       "brave_manage_profile_browsertest.cc",
       "settings_secure_dns_handler_browsertest.cc",
     ]
@@ -78,6 +79,7 @@ source_set("browser_tests") {
       "//chrome/browser/ui/webui/settings",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//content/test:test_support",
     ]
 
     if (enable_email_aliases) {
