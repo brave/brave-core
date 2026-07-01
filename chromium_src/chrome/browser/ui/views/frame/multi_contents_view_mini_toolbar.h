@@ -22,7 +22,7 @@ struct VectorIcon;
   static std::unique_ptr<SplitTabMenuModel> CreateBraveSplitTabMenuModel(   \
       TabStripModel* tab_strip_model, SplitTabMenuModel::MenuSource source, \
       int split_tab_index);                                                 \
-  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest, SelectTabTest);    \
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, SelectTabTest);            \
   friend class BraveMultiContentsViewMiniToolbar
 
 // Replace chrome scheme to brave for display.

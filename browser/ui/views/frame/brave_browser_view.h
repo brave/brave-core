@@ -203,19 +203,17 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
-  FRIEND_TEST_ALL_PREFIXES(SideBySideEnabledBrowserTest,
-                           BraveMultiContentsViewTest);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,
                            ShouldBeInvisible);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,
                            ShowVerticalTabOnMouseOverTest);
-  FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
+  FRIEND_TEST_ALL_PREFIXES(SplitViewWithRoundedCornersTest,
                            TabFullscreenStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
                            ContentsBackgroundEventHandleTest);
-  FRIEND_TEST_ALL_PREFIXES(SideBySideWithRoundedCornersTest,
-                           ContentsShadowTest);
+  FRIEND_TEST_ALL_PREFIXES(SplitViewWithRoundedCornersTest, ContentsShadowTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
                            ShowSidebarOnMouseOverTest);
 
