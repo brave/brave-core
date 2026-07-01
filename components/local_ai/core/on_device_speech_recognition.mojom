@@ -48,3 +48,18 @@ interface SpeechRecognitionFactory {
 interface SpeechRecognitionFactoryHost {
   RegisterFactory(pending_remote<SpeechRecognitionFactory> factory);
 };
+
+// Browser-implemented, the engine's entry point. It is 1:1 with one
+// recognition. Brave's on-device speech recognition engine holds this remote
+// for the session's lifetime. The controller queues Start until the worker and
+// model are ready, then forwards to SpeechRecognitionFactory.CreateAsrStream.
+// Afterwards the AsrStream pipe runs between engine and worker directly.
+// Dropping this remote ends the session.
+interface AsrSession {
+  // Start the session. Payload types are reused verbatim from on_device_model.
+  // This mirrors upstream Session.AsrStream.
+  Start(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput> stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder> responder);
+};
