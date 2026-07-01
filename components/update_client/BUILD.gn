@@ -6,8 +6,8 @@
 import("//build/buildflag_header.gni")
 
 declare_args() {
-  updater_dev_endpoint = ""
-  updater_prod_endpoint = ""
+  updater_dev_endpoint = "https://go-updater-dev.bravesoftware.com/extensions"
+  updater_prod_endpoint = "https://go-updater.brave.com/extensions"
 }
 
 if (is_official_build) {
