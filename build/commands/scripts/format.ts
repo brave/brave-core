@@ -100,6 +100,9 @@ async function runFormat(options: {
 
   args.push('--python')
 
+  // Disable clang-formatting .ts/.js files. We use prettier instead.
+  args.push('--no-js')
+
   if (options.full) {
     args.push('--full')
   }
