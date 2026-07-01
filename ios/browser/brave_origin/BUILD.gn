@@ -11,6 +11,9 @@ import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
 source_set("brave_origin") {
   sources = [
+    "brave_origin_navigation_bridge.h",
+    "brave_origin_navigation_bridge_impl.h",
+    "brave_origin_navigation_bridge_impl.mm",
     "brave_origin_service_bridge.h",
     "brave_origin_service_bridge.mm",
     "brave_origin_service_bridge_impl.h",
