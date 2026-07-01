@@ -696,18 +696,10 @@ public final class PlayerModel: ObservableObject {
 
   /// Cache-first: start a background caching task so the item becomes available locally for the next playback.
   /// Playback begins streaming while caching. Call this only with a freshly resolved item (post-streaming), so that the download uses a valid URL.
-  /// On cellular we only cache when the auto-download preference explicitly allows it, to avoid spending cellular data.
-  /// A cache already in progress (or a completed one) is a no-op thanks to.
+  /// A cache already in progress (or a completed one) is a no-op.
   @MainActor private func startCachingForPlayback(item: PlaylistInfo) {
     guard FeatureList.kPlaylistCacheFirstEnabled.enabled else { return }
-    let connectionType = Reachability.shared.status.connectionType
-    guard connectionType != .offline else { return }
-    if connectionType == .cellular {
-      let autoDownloadType = PlayListDownloadType(
-        rawValue: Preferences.Playlist.autoDownloadVideo.value
-      )
-      guard autoDownloadType == .on else { return }
-    }
+    guard Reachability.shared.status.connectionType != .offline else { return }
     PlaylistManager.shared.download(item: item)
   }
 

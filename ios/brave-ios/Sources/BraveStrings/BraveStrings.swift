@@ -5006,7 +5006,7 @@ extension Strings {
         "playlist.playlistResetPlaylistOptionFooterText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This option will remove all videos from Playlist as well as Offline mode storage.",
+        value: "This option will remove all Playlist data.",
         comment: "Footer Text for the Playlist Settings Option for resetting Playlist."
       )
 

@@ -655,6 +655,10 @@ public class PlaylistManager: NSObject {
       return false
     }
 
+    if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+      return true
+    }
+
     let downloadType = PlayListDownloadType(
       rawValue: Preferences.Playlist.autoDownloadVideo.value
     )
