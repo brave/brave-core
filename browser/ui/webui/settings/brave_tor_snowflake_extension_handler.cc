@@ -34,7 +34,7 @@ class SnowflakeWebstoreInstaller final
  private:
   ~SnowflakeWebstoreInstaller() final = default;
 
-  std::unique_ptr<ExtensionInstallPrompt::Prompt> CreateInstallPrompt()
+  std::unique_ptr<extensions::InstallPromptData> CreateInstallPrompt()
       const final {
     return nullptr;
   }
