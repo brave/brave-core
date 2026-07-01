@@ -9,14 +9,17 @@
 #include "base/notimplemented.h"
 #include "base/types/to_address.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_vpn {
 namespace v2 {
 
-BraveVpnServiceImpl::BraveVpnServiceImpl(PrefService* profile_prefs)
-    : profile_prefs_(CHECK_DEREF(profile_prefs)),
+BraveVpnServiceImpl::BraveVpnServiceImpl(PrefService* local_prefs,
+                                         PrefService* profile_prefs)
+    : local_prefs_(CHECK_DEREF(local_prefs)),
+      profile_prefs_(CHECK_DEREF(profile_prefs)),
       connection_state_(mojom::ConnectionState::DISCONNECTED),
       purchased_state_(mojom::PurchasedState::NOT_PURCHASED) {
   DCHECK(IsBraveVPNFeatureEnabled());
@@ -38,8 +41,7 @@ void BraveVpnServiceImpl::ReloadPurchasedState() {
 }
 
 std::string BraveVpnServiceImpl::GetCurrentEnvironment() const {
-  NOTIMPLEMENTED();
-  return skus::kEnvProduction;
+  return local_prefs_->GetString(prefs::kBraveVPNEnvironment);
 }
 
 void BraveVpnServiceImpl::GetPurchasedState(
