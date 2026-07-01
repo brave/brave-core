@@ -1,0 +1,51 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//brave/components/common/typescript.gni")
+import("//brave/components/local_ai/buildflags/buildflags.gni")
+import("//brave/resources/brave_grit.gni")
+
+assert(enable_local_ai)
+
+# Bundles the stock onnxruntime-web distribution (loader bundle, pthread
+# worker glue, threaded WASM) from node_modules into a pak served by the ORT
+# speech worker WebUI under /ort-dist/. Files are taken from
+# node_modules/onnxruntime-web/dist whose version is pinned in
+# brave/package.json.
+brave_grit("ort_dist_generated") {
+  source = "ort_dist_resources.grd"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  outputs = [
+    "grit/ort_dist_generated.h",
+    "grit/ort_dist_generated_map.cc",
+    "grit/ort_dist_generated_map.h",
+    "ort_dist_generated.pak",
+  ]
+}
+
+# Cross-origin-isolated worker that runs the Nemotron 0.6B int4 ONNX model
+# through onnxruntime-web at
+# chrome-untrusted://on-device-speech-recognition-ort-worker/
+transpile_web_ui("on_device_speech_recognition_ort_worker_ui") {
+  entry_points = [ [
+        "speech_worker_ort",
+        rebase_path("speech_worker_ort.ts"),
+      ] ]
+  webpack_aliases = [ "browser" ]
+  resource_name = "on_device_speech_recognition_ort_worker"
+
+  imports_from = [ "//brave/components/local_ai/resources/speech_worker_ort/" ]
+
+  deps = [
+    "//brave/components/local_ai/core:mojom_js",
+    "//services/on_device_model/public/mojom:mojom_js",
+  ]
+}
+
+pack_web_resources("on_device_speech_recognition_ort_worker_generated") {
+  resource_name = "on_device_speech_recognition_ort_worker"
+  output_dir = "$root_gen_dir/brave/components/local_ai/resources"
+  deps = [ ":on_device_speech_recognition_ort_worker_ui" ]
+}
