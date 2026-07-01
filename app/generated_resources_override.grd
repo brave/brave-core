@@ -468,11 +468,6 @@ are declared in tools/grit/grit_args.gni.
       <if expr="enable_extensions_core">
         </if>
 
-      <if expr="use_titlecase">
-        </if>
-      <if expr="not use_titlecase">
-        </if>
-
       <if expr="enable_extensions_core">
         <if expr="is_win">
           </if>
@@ -1209,9 +1204,6 @@ are declared in tools/grit/grit_args.gni.
 
     <if expr="not is_android">
       </if>
-    <if expr="not is_android">
-      </if>
-
     <if expr="not is_android">
       <if expr="use_titlecase">
         </if>

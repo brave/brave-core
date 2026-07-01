@@ -572,9 +572,6 @@
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_TITLE" desc="Label shown on a dialog that allows users to turn off third-party cookie blocking for a specific site.">
         Site not working?
       </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION_TRACKING_PROTECTION" desc="Descriptive text in the Page Info UI explaining the trade-off of temporarily allowing third-party cookies for this site, a change that will automatically expire in the future.">
-        Try temporarily allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
-      </message>
       <message name="IDS_PAGE_INFO_COOKIES_SITE_NOT_WORKING_DESCRIPTION" desc="Descriptive text in the Page Info UI explaining the trade-off of allowing third-party cookies for the current site.">
         Try allowing third-party cookies, which means less browsing protection but site features are more likely to work as expected.
       </message>
@@ -589,9 +586,6 @@
       </message>
       <message name="IDS_PAGE_INFO_TRACKING_PROTECTION_TOGGLE_ALLOWED" desc="Summary text in the Page Info dialog to indicate that third-party cookies are allowed on this site.">
         Allowed
-      </message>
-      <message name="IDS_PAGE_INFO_COOKIES_SUBTITLE_BLOCKED_HIGH_CONFIDENCE" desc="Description text in the Page Info dialog to indicate that third-party cookies are blocked on a site that has a high breakage confidence level.">
-        Site not working? Third-party cookies blocked
       </message>
       <message name="IDS_PAGE_INFO_COOKIES_THIRD_PARTY_COOKIES_LABEL" desc="The label used in the Page Info dialog to label a toggle button that when enabled allows third-party cookies and when disabled blocks third-party cookies.">
         Third-party cookies
