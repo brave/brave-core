@@ -25,6 +25,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
@@ -38,7 +39,6 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
@@ -1071,8 +1071,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ItemActivatedScrollTest) {
   EXPECT_TRUE(NeedScrollForItemAt(*bookmark_item_index, scroll_view));
 
   // Open bookmark panel.
-    browser()->GetFeatures().side_panel_ui()->Show(
-        SidePanelEntryId::kBookmarks);
+  browser()->GetFeatures().side_panel_ui()->Show(SidePanelEntryId::kBookmarks);
 
   // Wait till bookmarks item is visible.
   WaitUntil(base::BindLambdaForTesting([&]() {
@@ -1530,7 +1529,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, SidebarRightSideTest) {
   EXPECT_FALSE(IsSidebarUIOnLeft());
 
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* vertical_tabs_container = GetVerticalTabsContainer();
@@ -1683,9 +1683,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // between the panel and the contents container.
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, false);
   brave::ToggleVerticalTabStrip(browser());
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
   // VT defaults to left (kVerticalTabsOnRight = false).
-  ASSERT_FALSE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_FALSE(
+      VerticalTabController::FromBrowser(browser())->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_TRUE(sidebar->sidebar_on_left());
@@ -1702,7 +1704,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelPositionTest) {
   // --- VT and sidebar on the same right side (VT right, sidebar right).
   prefs->SetBoolean(prefs::kSidePanelHorizontalAlignment, true);
   prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
-  ASSERT_TRUE(tabs::utils::IsVerticalTabOnRight(browser()));
+  ASSERT_TRUE(
+      VerticalTabController::FromBrowser(browser())->IsVerticalTabOnRight());
   RunScheduledLayouts();
 
   ASSERT_FALSE(sidebar->sidebar_on_left());
