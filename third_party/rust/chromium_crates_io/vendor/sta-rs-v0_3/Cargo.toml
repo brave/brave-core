@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "sta-rs"
-version = "0.3.2"
+version = "0.3.3"
 authors = ["Alex Davidson <coela@alxdavids.xyz>"]
 build = false
 autolib = false
@@ -38,6 +38,9 @@ license = "MPL-2.0"
 repository = "https://github.com/brave/sta-rs"
 resolver = "2"
 
+[features]
+star2 = []
+
 [lib]
 name = "sta_rs"
 path = "src/lib.rs"
@@ -55,7 +58,7 @@ harness = false
 version = "0.2.3"
 
 [dependencies.ppoprf]
-version = "0.4.2"
+version = "0.5"
 
 [dependencies.rand]
 version = "0.8.5"
@@ -75,6 +78,3 @@ version = "0.5.1"
 [dev-dependencies.rand]
 version = "0.8.5"
 features = ["std"]
-
-[features]
-star2 = []
