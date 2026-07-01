@@ -195,8 +195,8 @@ public class BraveSettingsSearchTest {
     }
 
     /**
-     * Verifies that key Brave-specific settings entries appear in the Brave Shields & privacy Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the Brave Shields & privacy
+     * Settings search results.
      */
     @Test
     @SmallTest
@@ -230,8 +230,8 @@ public class BraveSettingsSearchTest {
     }
 
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Brave Wallet` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Brave Wallet` Settings
+     * search results.
      */
     @Test
     @SmallTest
@@ -262,16 +262,16 @@ public class BraveSettingsSearchTest {
 
         // Disabled as it fails
         // clearAndTypeIntoSearch("Automatically add NTFs");
-        // assertSearchResult("Automatically add NTFs you own to the Wallet using third party APIs");
+        // assertSearchResult("Automatically add NTFs you own to the Wallet using third party
+        // APIs");
 
         clearAndTypeIntoSearch("Reset and clear wallet data");
         assertSearchResult("Reset and clear wallet data");
     }
 
-
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Brave Firewall + VPN` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Brave Firewall + VPN`
+     * Settings search results.
      */
     @Test
     @SmallTest
@@ -296,7 +296,7 @@ public class BraveSettingsSearchTest {
 
         clearAndTypeIntoSearch("Split tunneling");
         assertSearchResult("Split tunneling");
-        
+
         clearAndTypeIntoSearch("Reset Configuration");
         assertSearchResult("Reset Configuration");
 
@@ -330,7 +330,7 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Default model for new conversations");
 
         // Disabled as it fails
-        // go_premium at brave_leo_preferences.xml is marked as 
+        // go_premium at brave_leo_preferences.xml is marked as
         // app:isPreferenceVisible="false" so  excluded from search results
         // clearAndTypeIntoSearch("Go Premium");
         // assertSearchResult("Go Premium");
@@ -340,8 +340,8 @@ public class BraveSettingsSearchTest {
     }
 
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Search engines` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Search engines` Settings
+     * search results.
      */
     @Test
     @SmallTest
@@ -385,8 +385,8 @@ public class BraveSettingsSearchTest {
     // Sync - no indexed setting
 
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Privacy Report` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Privacy Report` Settings
+     * search results.
      */
     // TODO(AlexeyBarabash): add SEARCH_INDEX_DATA_PROVIDER for BraveStatsPreferences
     // @Test
@@ -408,8 +408,8 @@ public class BraveSettingsSearchTest {
     // Notifications are from System Settings
 
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
+     * search results.
      */
     @Test
     @SmallTest
@@ -432,9 +432,10 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Microphone");
 
         clearAndTypeIntoSearch("notif");
-        org.chromium.base.Log.e("ViewDump", "========================Notifications======================");
+        org.chromium.base.Log.e(
+                "ViewDump", "========================Notifications======================");
         dumpViewHierarchy();
-        // There are notifications both at 
+        // There are notifications both at
         //  - Advanced
         //  - Brave Wallet
         //  - Site settings
@@ -524,11 +525,10 @@ public class BraveSettingsSearchTest {
         assertSearchResult("Automatically remove permissions");
     }
 
-
     // Downloads
     /**
-     * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings search
-     * results.
+     * Verifies that key Brave-specific settings entries appear in the `Site settings` Settings
+     * search results.
      */
     @Test
     @SmallTest
@@ -543,9 +543,7 @@ public class BraveSettingsSearchTest {
 
         clearAndTypeIntoSearch("Location");
         assertSearchResult("Location");
-
     }
-
 
     // ---------------------------------------------------------------------------
     // Category 2 — Chrome settings removed by Brave must NOT appear in search
@@ -578,7 +576,8 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Privacy Guide");
         assertSearchResultEmpty();
 
-        // How to ensure "Third-party cookies" are at `Site settings` and not at `Privacy and security`
+        // How to ensure "Third-party cookies" are at `Site settings` and not at `Privacy and
+        // security`
 
         clearAndTypeIntoSearch("Preload pages");
         assertSearchResultEmpty();
@@ -644,7 +643,7 @@ public class BraveSettingsSearchTest {
         //////////////////////////////////////////
         // Notifications
         // All is equal between Brave and Chrome
-        
+
         ///////////////////////////////////////
         // Appearance
         // All is equal between Brave and Chrome, Brave has additional items
@@ -673,7 +672,7 @@ public class BraveSettingsSearchTest {
         clearAndTypeIntoSearch("Additional Terms of Service");
         assertSearchResultEmpty();
 
-        // // 
+        // //
         // clearAndTypeIntoSearch("Google");
         // assertSearchResultDoesNotContain("Help");
         // assertSearchResultDoesNotContain("Terms of Service");
@@ -705,15 +704,15 @@ public class BraveSettingsSearchTest {
      * Asserts that no preference-title view with the given text appears in the search results.
      *
      * <p>Waits for the RecyclerView to be visible (i.e. results have loaded), then checks
-     * immediately for absence. This avoids false positives where the check races ahead of
-     * async result rendering.
+     * immediately for absence. This avoids false positives where the check races ahead of async
+     * result rendering.
      */
     /**
      * Asserts that the search returns no results at all.
      *
      * <p>Unlike {@link #assertSearchResultDoesNotContain}, this does not wait for the RecyclerView
-     * (which may not be shown when the result set is empty). Instead it waits for the search UI
-     * to be active (search_query_container visible), then confirms no preference-title views exist.
+     * (which may not be shown when the result set is empty). Instead it waits for the search UI to
+     * be active (search_query_container visible), then confirms no preference-title views exist.
      */
     private void assertSearchResultEmpty() {
         onViewWaiting(withId(R.id.search_query_container)).check(matches(isDisplayed()));
@@ -779,16 +778,15 @@ public class BraveSettingsSearchTest {
                                 if (child instanceof android.widget.TextView) {
                                     // Section headers are direct TextView children of the RV.
                                     String text =
-                                            ((android.widget.TextView) child)
-                                                    .getText()
-                                                    .toString();
+                                            ((android.widget.TextView) child).getText().toString();
                                     inTargetSection = text.equalsIgnoreCase(sectionHeader);
                                 } else if (inTargetSection && child instanceof ViewGroup) {
                                     // Preference items are ViewGroup children; find title inside.
                                     android.widget.TextView titleView =
                                             findTitleTextView((ViewGroup) child);
                                     if (titleView != null
-                                            && titleView.getText()
+                                            && titleView
+                                                    .getText()
                                                     .toString()
                                                     .equalsIgnoreCase(title)) {
                                         return; // found
@@ -810,8 +808,7 @@ public class BraveSettingsSearchTest {
             View child = parent.getChildAt(i);
             if (child instanceof android.widget.TextView) {
                 try {
-                    if ("title".equals(
-                            child.getResources().getResourceEntryName(child.getId()))) {
+                    if ("title".equals(child.getResources().getResourceEntryName(child.getId()))) {
                         return (android.widget.TextView) child;
                     }
                 } catch (Exception ignored) {
