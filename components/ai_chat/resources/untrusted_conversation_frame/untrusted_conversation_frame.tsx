@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import '$web-common/defaultTrustedTypesPolicy'
 import Conversation from './components/conversation'
@@ -83,7 +84,11 @@ async function initialize() {
   const boundConversation = await bindUntrustedConversation()
 
   const root = createRoot(document.getElementById('mountPoint')!)
-  root.render(<App boundConversation={boundConversation} />)
+  root.render(
+    <StyledComponentsProvider>
+      <App boundConversation={boundConversation} />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

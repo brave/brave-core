@@ -21,8 +21,8 @@ const SeekerContainer = styled.div`
   flex-direction: column;
 `
 
-const StyledProgress = styled.progress.attrs(
-  (p: { value: number; max: number; thumbVisible: boolean }) => ({
+const StyledProgress = styled.progress.attrs<{ thumbVisible?: boolean }>(
+  (p) => ({
     'style': {
       '--progress-thumb-left': `calc(${
         (p.value && p.max ? +p.value / +p.max : 0) * 100

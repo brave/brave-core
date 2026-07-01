@@ -48,7 +48,7 @@ const Button = styled('button')`
   }
 `
 
-export const LinkButton = styled(Button.withComponent('a'))`
+export const LinkButton = styled(Button).attrs({ as: 'a' })`
   text-decoration: none;
   :hover {
     text-decoration: none;

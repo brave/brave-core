@@ -38,8 +38,8 @@ function getRelativeBoundingRect (from: DOMRect, to: Element) {
 }
 
 function TreeNode (props: TreeNodeProps) {
-  const treeChildrenBoxRef = React.useRef() as React.MutableRefObject<HTMLDivElement>
-  const svgBoxRef = React.useRef() as React.MutableRefObject<HTMLElement>
+  const treeChildrenBoxRef = React.useRef<HTMLDivElement>(null)
+  const svgBoxRef = React.useRef<HTMLElement>(null)
   const [axisLeftHeight, setAxisLeftHeight] = React.useState(0)
   const [tickValues, setTickValues] = React.useState<number[]>([])
   const [isExpanded, setIsExpanded] = React.useState(false)
@@ -50,12 +50,14 @@ function TreeNode (props: TreeNodeProps) {
   let resourcesListElement = null
 
   const measure = () => {
-    if (treeChildrenBoxRef.current && svgBoxRef.current) {
+    const treeChildrenBox = treeChildrenBoxRef.current
+    const svgBox = svgBoxRef.current
+    if (treeChildrenBox && svgBox) {
       requestAnimationFrame(() => {
-        const els = Array.from(treeChildrenBoxRef.current.children)
+        const els = Array.from(treeChildrenBox.children)
 
         // We memoize the rect for SVGBox element as this will never change position
-        const svgBoxRect = svgBoxRef.current.getBoundingClientRect()
+        const svgBoxRect = svgBox.getBoundingClientRect()
 
         // Calculate the vertical center of each element's box. The positions we get from this will be the translate values for our ticks
         const finalValues = els.map((el: HTMLElement) => {
@@ -70,7 +72,7 @@ function TreeNode (props: TreeNodeProps) {
         // We dont let the height of the axis extend to avoid hanging dash
         const height = Math.min(
           finalValues[finalValues.length - 1] + 1, /* pad the value so the position isn't exactly on the edge */
-          Math.round(treeChildrenBoxRef.current.offsetHeight)
+          Math.round(treeChildrenBox.offsetHeight)
         )
 
         setAxisLeftHeight(height)

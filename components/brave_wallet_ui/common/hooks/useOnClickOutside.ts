@@ -31,7 +31,7 @@ export const useModal = () => {
 }
 
 export const useOnClickOutside = <T extends HTMLElement = HTMLElement>(
-  ref: React.RefObject<T>,
+  ref: React.RefObject<T | null>,
   handler: (event: Event) => void,
   startListening: boolean,
   // Include a buttonId if you have a button outside of the click away area

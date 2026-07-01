@@ -5,21 +5,23 @@
 
 import * as React from 'react'
 
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
 import store from './store'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import Player from './components/player'
 import startReceivingAPIRequest from './playerApiSink'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 function initialize () {
-  render(
-    <Provider store={store}>
-      <Player />
-    </Provider>,
-    document.getElementById('root')
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <Provider store={store}>
+        <Player />
+      </Provider>
+    </StyledComponentsProvider>
   )
 }
 

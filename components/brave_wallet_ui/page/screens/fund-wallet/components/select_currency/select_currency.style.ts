@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import styled from 'styled-components'
 import Input from '@brave/leo/react/input'
 import Label from '@brave/leo/react/label'
@@ -13,10 +14,7 @@ import {
   layoutPanelWidth, //
 } from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
-export const SearchInput = styled(Input).attrs({
-  mode: 'filled',
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
-})`
+const StyledSearchInput = styled(Input)`
   margin-top: 2px;
   width: 100%;
   padding-bottom: 8px;
@@ -24,6 +22,15 @@ export const SearchInput = styled(Input).attrs({
     size: small;
   }
 `
+
+// Wrap rather than use styled(Input).attrs(): styled-components v6's .attrs
+// type machinery explodes over leo Input's large prop type (TS2590).
+export const SearchInput = (props: React.ComponentProps<typeof Input>) =>
+  React.createElement(StyledSearchInput, {
+    mode: 'filled',
+    size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
+    ...props,
+  })
 export const Wrapper = styled.div`
   position: fixed;
   top: 0;

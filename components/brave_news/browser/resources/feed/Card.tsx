@@ -55,7 +55,7 @@ const HidableImage = ({
   loading,
   ...rest
 }: HidabeImageProps) => {
-  const ref = React.useRef<HTMLImageElement>()
+  const ref = React.useRef<HTMLImageElement>(null)
 
   const { shouldRenderImages } = useBraveNews()
   const delayLoad = !shouldRenderImages && loading === 'lazy'

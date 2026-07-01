@@ -17,7 +17,7 @@ const PRIVACY_URL = 'https://brave.com/privacy/browser/#brave-leo'
 
 function PrivacyMessage() {
   const context = useAIChat()
-  const buttonRef = React.useRef<HTMLButtonElement>()
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
 
   const handleLinkClick = (e: React.MouseEvent, url: string) => {
     e.preventDefault()
@@ -47,7 +47,7 @@ function PrivacyMessage() {
 
   React.useEffect(() => {
     const button = buttonRef.current
-    if (button === undefined) return
+    if (!button) return
     setTimeout(() => button.focus())
   }, [])
 

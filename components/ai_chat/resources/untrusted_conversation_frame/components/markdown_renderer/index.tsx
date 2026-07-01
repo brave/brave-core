@@ -206,11 +206,9 @@ function extractTextContent(node: React.ReactNode): string {
     return String(node)
   }
   if (React.isValidElement(node)) {
-    if (node.props.children) {
-      return (
-        React.Children.map(node.props.children, extractTextContent)?.join('')
-        || ''
-      )
+    const { children } = node.props as { children?: React.ReactNode }
+    if (children) {
+      return React.Children.map(children, extractTextContent)?.join('') || ''
     }
   }
   return ''
@@ -292,7 +290,7 @@ const REMARK_PLUGINS = [
 ]
 
 export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
-  const lastElementRef = React.useRef<HastElement | undefined>()
+  const lastElementRef = React.useRef<HastElement | undefined>(undefined)
 
   // Store changing props in refs so component functions can read the latest
   // values without being recreated when those props change.

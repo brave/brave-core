@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { NewTabContext } from './context/new_tab_context'
@@ -60,7 +61,9 @@ function AppProvider(props: { children: React.ReactNode }) {
 }
 
 createRoot(document.getElementById('root')!).render(
-  <AppProvider>
-    <App />
-  </AppProvider>,
+  <StyledComponentsProvider>
+    <AppProvider>
+      <App />
+    </AppProvider>
+  </StyledComponentsProvider>,
 )

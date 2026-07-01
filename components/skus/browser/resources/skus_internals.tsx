@@ -6,7 +6,8 @@
 import * as SkusInternalsMojo from 'gen/brave/components/skus/common/skus_internals.mojom.m.js'
 import * as React from 'react'
 import styled from 'styled-components'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { JsonView } from 'react-json-view-lite';
 import 'react-json-view-lite/dist/index.css';
 
@@ -169,5 +170,9 @@ function App() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  render(<App />, document.getElementById('root'))
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>
+  )
 })

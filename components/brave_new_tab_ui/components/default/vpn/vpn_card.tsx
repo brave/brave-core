@@ -32,7 +32,7 @@ const StyledTitle = styled.div`
   gap: 8px;
 `
 
-const WidgetWrapper = styled.div.attrs({ 'data-theme': 'dark' })`
+const WidgetWrapper = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'dark' })`
   display: flex;
   flex-direction: column;
   align-items: flex-start;

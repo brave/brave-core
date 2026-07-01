@@ -1,14 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/. */
+// Copyright (c) 2018 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
 
 // Components
 import App from './components/app'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 // Utils
 import store from './store'
@@ -33,11 +35,12 @@ function initialize() {
   getCustomFilters()
   getRegionalLists()
   getListSubscriptions()
-  render(
-    <Provider store={store}>
-      <App />
-    </Provider>,
-    document.getElementById('root'),
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </StyledComponentsProvider>,
   )
 }
 
