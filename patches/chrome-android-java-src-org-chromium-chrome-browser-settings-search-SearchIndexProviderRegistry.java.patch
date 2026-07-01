@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..79656972304361427d9312cd7a8b34d5bd6a51ba 100644
+index bc0da75a67b10f5ac3019db15bc7097387363943..b3afd29e1a5d38d6d2542dbe9a4d3ab680cca6c8 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -7,9 +7,9 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..79656972304361427d9312cd7a8b34d5
  import org.chromium.chrome.browser.about_settings.AboutChromeSettings;
  import org.chromium.chrome.browser.about_settings.LegalInformationSettings;
 -import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
- import org.chromium.chrome.browser.autofill.options.AutofillOptionsFragment;
- import org.chromium.chrome.browser.autofill.personal_context.AutofillPersonalContextFragment;
  import org.chromium.chrome.browser.autofill.settings.AndroidPaymentAppsFragment;
+ import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
+ import org.chromium.chrome.browser.autofill.settings.AutofillBuyNowPayLaterFragment;
 @@ -28,12 +27,10 @@ import org.chromium.chrome.browser.download.settings.DownloadSettings;
  import org.chromium.chrome.browser.glic.GlicSettings;
  import org.chromium.chrome.browser.homepage.settings.HomepageSettings;
@@ -45,9 +45,9 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..79656972304361427d9312cd7a8b34d5
                      AccountManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AndroidPaymentAppsFragment.SEARCH_INDEX_DATA_PROVIDER,
 -                    AppearanceSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
+                     AutofillAndPasswordsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillBuyNowPayLaterFragment.SEARCH_INDEX_DATA_PROVIDER,
                      AutofillCardBenefitsFragment.SEARCH_INDEX_DATA_PROVIDER,
-                     AutofillIdentityDocsFragment.SEARCH_INDEX_DATA_PROVIDER,
 @@ -145,10 +140,8 @@ public final class SearchIndexProviderRegistry {
                      FinancialAccountsManagementFragment.SEARCH_INDEX_DATA_PROVIDER,
                      GoogleServicesSettings.SEARCH_INDEX_DATA_PROVIDER,

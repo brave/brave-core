@@ -1,11 +1,11 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a242cdae53 100644
+index 7ac130944b70b26d606c3786c5681988825d9485..cfff304f3eafaf1b62d30e74d142743f0df8f2ef 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -262,6 +262,51 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
-     {ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL, nullptr},
+@@ -263,6 +263,51 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
      {ContentSettingsType::SUB_APPS_WITHOUT_PROMPTS, nullptr},
+     {ContentSettingsType::SUSPICIOUS_SITE_WARNING_DATA, nullptr},
 +    {ContentSettingsType::BRAVE_ADS, nullptr},
 +    {ContentSettingsType::BRAVE_COSMETIC_FILTERING, nullptr},
 +    {ContentSettingsType::BRAVE_TRACKERS, nullptr},
@@ -54,7 +54,7 @@ index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a2
  });
  
  static_assert(
-@@ -525,7 +570,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
+@@ -526,7 +571,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
  
  }  // namespace
  
@@ -63,7 +63,7 @@ index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a2
    for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
      if (type == kContentSettingsTypeGroupName.type &&
          kContentSettingsTypeGroupName.name) {
-@@ -536,6 +581,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -537,6 +582,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -73,7 +73,7 @@ index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a2
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -550,6 +598,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -551,6 +599,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -83,7 +83,7 @@ index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a2
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -569,7 +620,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
+@@ -570,7 +621,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
                 << " is not a recognized content settings type.";
  }
  

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d5529860e 100644
+index 8d98ab692e9d7776bc851a00cb42d5f53d6ca164..f9d9356882b5c913bc3d768a2d24e8a92a4e2714 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -1037,7 +1037,7 @@ void Reload(BrowserWindowInterface* browser,
@@ -21,10 +21,10 @@ index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d
      return;
 @@ -1621,7 +1622,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
-   const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
-                                ? chrome::ChromeUINewTabURLAsGURL()
--                               : GURL(chrome::kChromeUISplitViewNewTabPageURL);
-+                               : GURL(chrome::kChromeUINewTabURL);
+   const GURL new_tab_url = !browser->GetProfile()->IsIncognitoProfile() &&
+                                    tab_strip_model->count() > 1
+-                               ? GURL(chrome::kChromeUISplitViewNewTabPageURL)
++                               ? GURL(chrome::kChromeUINewTabURL)
+                                : chrome::ChromeUINewTabURLAsGURL();
    tab_strip_model->delegate()->AddTabAt(
        new_tab_url, active_index + 1, true,
-       tab_strip_model->GetTabGroupForTab(active_index),

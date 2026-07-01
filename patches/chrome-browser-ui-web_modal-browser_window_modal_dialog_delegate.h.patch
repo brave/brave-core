@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h b/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
-index b72d333bb51b47a2e5e1baaaab7659bc2ff7963a..c0413e06da8abcf1ab00ba6dd7c128c7c58cec62 100644
+index 54ff1d613d36187021834e1322dc34b74fc14efe..a91135a75bbf1be9fd6e0ed8d1a235c398d653c3 100644
 --- a/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
 +++ b/chrome/browser/ui/web_modal/browser_window_modal_dialog_delegate.h
-@@ -36,6 +36,8 @@ class BrowserWindowModalDialogDelegate
-   web_modal::WebContentsModalDialogHost* GetWebContentsModalDialogHost(
-       content::WebContents* web_contents) override;
+@@ -38,6 +38,8 @@ class BrowserWindowModalDialogDelegate
+ 
+   void NotifyModalDialogsPositionRequiresUpdate();
  
 +  bool IsWebContentsVisible(content::WebContents* web_contents) override;
 +
