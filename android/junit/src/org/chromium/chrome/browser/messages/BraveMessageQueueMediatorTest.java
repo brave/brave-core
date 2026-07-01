@@ -101,6 +101,36 @@ public class BraveMessageQueueMediatorTest {
     }
 
     /**
+     * When top controls height is zero but there is no active tab, areBrowserControlsReady must
+     * return false.
+     */
+    @Test
+    public void testAreBrowserControlsReadyReturnsFalseWhenTabIsNullWithZeroTopControlsHeight() {
+        mActivityTabProvider.setForTesting(null);
+        when(mBrowserControlsManager.getTopControlsHeight()).thenReturn(0);
+
+        assertFalse(
+                "Should not be ready when there is no active tab",
+                mMediator.areBrowserControlsReady());
+    }
+
+    /**
+     * When top controls height is zero but the active tab is destroyed, areBrowserControlsReady
+     * must return false.
+     */
+    @Test
+    public void
+            testAreBrowserControlsReadyReturnsFalseWhenTabIsDestroyedWithZeroTopControlsHeight() {
+        mActivityTabProvider.setForTesting(mTab);
+        when(mTab.isDestroyed()).thenReturn(true);
+        when(mBrowserControlsManager.getTopControlsHeight()).thenReturn(0);
+
+        assertFalse(
+                "Should not be ready when active tab is destroyed",
+                mMediator.areBrowserControlsReady());
+    }
+
+    /**
      * When top controls height is non-zero, areBrowserControlsReady() must fall back to the parent
      * class logic and return false when controls are not fully visible.
      */

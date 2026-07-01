@@ -8,10 +8,12 @@ package org.chromium.chrome.browser.messages;
 import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.fullscreen.BrowserControlsManager;
 import org.chromium.chrome.browser.layouts.LayoutStateProvider;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 import org.chromium.components.messages.ManagedMessageDispatcher;
 import org.chromium.ui.modaldialog.ModalDialogManager;
@@ -24,12 +26,13 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
  * makes the base {@code areBrowserControlsReady()} permanently return {@code false}, so the message
  * show-runnable is set but never triggered and banners (e.g. save-password) never appear.
  *
- * <p>The fix: if top controls have zero height there are no top controls to wait for, so we return
- * {@code true} immediately (guarded only by the destroyed-state check).
+ * <p>The fix: if top controls have zero height there are no top controls to wait for, so we apply
+ * the same destroyed/tab guards as the parent and return {@code true}.
  */
 @NullMarked
 public class BraveMessageQueueMediator extends ChromeMessageQueueMediator {
     private final BrowserControlsManager mBrowserControlsManager;
+    private final ActivityTabProvider mActivityTabProvider;
 
     public BraveMessageQueueMediator(
             BrowserControlsManager browserControlsManager,
@@ -50,14 +53,17 @@ public class BraveMessageQueueMediator extends ChromeMessageQueueMediator {
                 activityLifecycleDispatcher,
                 messageDispatcher);
         mBrowserControlsManager = browserControlsManager;
+        mActivityTabProvider = activityTabProvider;
     }
 
     @Override
     boolean areBrowserControlsReady() {
         // When top controls have zero height (e.g. bottom address bar), there are
-        // no top controls to wait for, so unblock message display immediately.
+        // no top controls to wait for. Apply the same guards as the parent.
         if (mBrowserControlsManager.getTopControlsHeight() == 0) {
-            return !isDestroyed();
+            if (isDestroyed()) return false;
+            @Nullable Tab tab = mActivityTabProvider.get();
+            return tab != null && !tab.isDestroyed();
         }
         return super.areBrowserControlsReady();
     }
