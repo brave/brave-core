@@ -529,8 +529,16 @@ void BraveBrowserViewTabbedLayoutImpl::InsetContentsContainerBounds(
   }
 
   // If side panel is shown, contents container should have margin
-  // because panel doesn't have margin.
+  // because panel doesn't have margin. The panel-facing side uses a dedicated
+  // gap so the content<->panel spacing is independent of the content<->edge
+  // padding. The panel always sits on the sidebar side (see the layout diagram
+  // in CalculateSideBarLayout()).
   if (delegate().IsContentTypeSidePanelVisible()) {
+    if (IsSidebarLeading()) {
+      contents_margins.set_left(kRoundedCornersContentsSidePanelGap);
+    } else {
+      contents_margins.set_right(kRoundedCornersContentsSidePanelGap);
+    }
     contents_container_bounds.Inset(contents_margins);
     contents_layout->bounds = contents_container_bounds;
     return;
