@@ -68,6 +68,7 @@ class BraveShieldsActionController
   ui::ImageModel GetImageModel(const gfx::Size& preferred_size) const;
   std::u16string GetTooltipText() const;
   void OnButtonPressed();
+  void OnThemeChanged();
   views::Widget* GetBubbleWidget();
 
   // TabStripModelObserver
