@@ -12,8 +12,6 @@ import Col from './styles/Col'
 import styled from 'styled-components'
 import {
   AliasesUpdate,
-  AuthState,
-  AuthenticationStatus,
   EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
@@ -44,26 +42,25 @@ export const SignInPage = () => (
 
 export const ManagePage = ({
   aliasesUpdate,
-  authState,
+  authEmail,
   emailAliasesService,
   metrics,
 }: {
   aliasesUpdate: AliasesUpdate
-  authState: AuthState
+  authEmail: string
   emailAliasesService: EmailAliasesServiceInterface
   metrics?: EmailAliasesMetricsRemote
 }) => (
   <PageCol>
-    {authState.status === AuthenticationStatus.kAuthenticated
-      && (aliasesUpdate.error ? (
-        <Alert type='error'>{aliasesUpdate.error}</Alert>
-      ) : (
-        <AliasList
-          aliases={aliasesUpdate.aliases!}
-          authEmail={authState.email}
-          emailAliasesService={emailAliasesService}
-          metrics={metrics}
-        />
-      ))}
+    {aliasesUpdate.error ? (
+      <Alert type='error'>{aliasesUpdate.error}</Alert>
+    ) : (
+      <AliasList
+        aliases={aliasesUpdate.aliases!}
+        authEmail={authEmail}
+        emailAliasesService={emailAliasesService}
+        metrics={metrics}
+      />
+    )}
   </PageCol>
 )
