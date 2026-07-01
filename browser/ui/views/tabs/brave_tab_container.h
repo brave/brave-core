@@ -79,6 +79,11 @@ class BraveTabContainer : public TabContainerImpl,
   RegisterHorizontalScrollOffsetChangedCallback(
       base::RepeatingClosure callback);
 
+  // Recomputes every group header's chip layout. Group header chip dimensions
+  // depend on layout constants that change with user prefs (e.g. compact mode).
+  // Call this when those constants change.
+  void RefreshGroupHeaderVisuals();
+
   // TabContainerImpl:
   gfx::Size CalculatePreferredSize(
       const views::SizeBounds& available_size) const override;
