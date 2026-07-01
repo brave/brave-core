@@ -21,6 +21,7 @@ inline constexpr char kTrackers[] = "trackers";
 inline constexpr char kHTTPUpgradableResources[] = "httpUpgradableResources";
 inline constexpr char kHTTPSUpgrades[] = "httpsUpgrades";
 inline constexpr char kJavaScript[] = "javascript";
+inline constexpr char kBraveJavaScript[] = "shieldsJavaScriptV1";
 inline constexpr char kFingerprintingV2[] = "fingerprintingV2";
 inline constexpr char kBraveShields[] = "braveShields";
 inline constexpr char kBraveShieldsMetadata[] = "braveShieldsMetadata";
@@ -43,6 +44,7 @@ inline constexpr auto kShieldsContentSettingsTypes =
         ContentSettingsType::BRAVE_SHIELDS,
         ContentSettingsType::BRAVE_REFERRERS,
         ContentSettingsType::BRAVE_COOKIES,
+        ContentSettingsType::BRAVE_JAVASCRIPT,
         ContentSettingsType::BRAVE_AUTO_SHRED,
     });
 
@@ -57,6 +59,7 @@ inline constexpr auto kShieldsContentTypeNames =
          kHTTPUpgradableResources},
         {ContentSettingsType::BRAVE_HTTPS_UPGRADE, kHTTPSUpgrades},
         {ContentSettingsType::JAVASCRIPT, kJavaScript},
+        {ContentSettingsType::BRAVE_JAVASCRIPT, kBraveJavaScript},
         {ContentSettingsType::BRAVE_FINGERPRINTING_V2, kFingerprintingV2},
         {ContentSettingsType::BRAVE_SHIELDS, kBraveShields},
         {ContentSettingsType::BRAVE_SHIELDS_METADATA, kBraveShieldsMetadata},
