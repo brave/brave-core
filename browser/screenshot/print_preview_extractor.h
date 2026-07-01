@@ -12,6 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
+#include "base/unguessable_token.h"
 #include "content/public/browser/web_contents.h"
 #include "printing/buildflags/buildflags.h"
 
@@ -34,7 +35,7 @@ class PrintPreviewExtractor {
    public:
     virtual ~Extractor() = default;
     virtual void CreatePrintPreview() = 0;
-    virtual std::optional<int32_t> GetPrintPreviewUIIdForTesting() = 0;
+    virtual base::UnguessableToken GetPrintPreviewUIIdForTesting() = 0;
   };
 
   using CreateExtractorCallback =
