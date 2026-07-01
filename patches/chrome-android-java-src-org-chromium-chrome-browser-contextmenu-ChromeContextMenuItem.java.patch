@@ -1,40 +1,40 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 8dd0826e96505eab8cb2ba1b58cb281a637c9af2..2223fbf942a5a74fb8e8c2b86054b75745a8304a 100644
+index 2d891730302450a6497ca55dc82729c7ca56a284..f2d5f39ef4ad620d070c5264d5f68226dc1bf12f 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-@@ -84,7 +84,8 @@ class ChromeContextMenuItem {
-         Item.INSPECT_ELEMENT,
+@@ -85,7 +85,8 @@ class ChromeContextMenuItem {
          Item.COPY_VIDEO_FRAME,
          Item.DOWNLOAD_VIDEO_FRAME,
--        Item.READING_MODE
-+        Item.READING_MODE,
+         Item.READING_MODE,
+-        Item.SEND_TAB_TO_SELF
++        Item.SEND_TAB_TO_SELF,
 +        Item.COPY_CLEAN_LINK,
      })
      @Retention(RetentionPolicy.SOURCE)
      public @interface Item {
-@@ -149,8 +150,9 @@ class ChromeContextMenuItem {
-         int COPY_VIDEO_FRAME = 47;
+@@ -151,8 +152,9 @@ class ChromeContextMenuItem {
          int DOWNLOAD_VIDEO_FRAME = 48;
          int READING_MODE = 49;
-+        int COPY_CLEAN_LINK = 50;
+         int SEND_TAB_TO_SELF = 50;
++        int COPY_CLEAN_LINK = 51;
          // ALWAYS UPDATE!
--        int NUM_ENTRIES = 50;
+-        int NUM_ENTRIES = 51;
 +        int NUM_ENTRIES = COPY_CLEAN_LINK + 1;
      }
  
      /** Mapping from {@link Item} to the ID found in the ids.xml. */
-@@ -205,6 +207,7 @@ class ChromeContextMenuItem {
-         R.id.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
+@@ -208,6 +210,7 @@ class ChromeContextMenuItem {
          R.id.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
          R.id.contextmenu_open_in_reading_mode, // Item.READING_MODE
+         R.id.contextmenu_send_tab_to_self, // Item.SEND_TAB_TO_SELF
 +        R.id.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
-@@ -259,6 +262,7 @@ class ChromeContextMenuItem {
-         R.string.contextmenu_copy_video_frame, // Item.COPY_VIDEO_FRAME
+@@ -263,6 +266,7 @@ class ChromeContextMenuItem {
          R.string.contextmenu_download_video_frame, // Item.DOWNLOAD_VIDEO_FRAME
          R.string.contextmenu_open_in_reading_mode, // Item.READING_MODE
+         R.string.sharing_send_tab_to_self, // Item.SEND_TAB_TO_SELF
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
      };
  

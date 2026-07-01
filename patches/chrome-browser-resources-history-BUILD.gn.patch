@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/history/BUILD.gn b/chrome/browser/resources/history/BUILD.gn
-index d4c41286d6ef118ef6731bc90bfb519005755001..c171c2449786654377558d0ee9abdac4c124c9a4 100644
+index 05321acd7f969518a8dc7781b05ce654ae2a7fe8..88de2847f6fbd5de42616358cd101bd4cf2dd608 100644
 --- a/chrome/browser/resources/history/BUILD.gn
 +++ b/chrome/browser/resources/history/BUILD.gn
-@@ -107,4 +107,5 @@ build_webui("build") {
+@@ -113,4 +113,5 @@ build_webui("build") {
      optimize_webui_host = "history"
      optimize_webui_in_files = [ "history.js" ]
    }

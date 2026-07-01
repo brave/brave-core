@@ -1,8 +1,8 @@
 diff --git a/services/network/cors/cors_url_loader.cc b/services/network/cors/cors_url_loader.cc
-index 72fb956efdc55df164f1f8d59dd37264da0111c5..270cfaeebbc4c284c12c45a9dcb0c9940b72f7b9 100644
+index a1bce2abdfbf0b92d2af11c20d8018f498143c32..dbbc2d6fe32d71a00d896f112e6c10ed1221eb48 100644
 --- a/services/network/cors/cors_url_loader.cc
 +++ b/services/network/cors/cors_url_loader.cc
-@@ -971,6 +971,7 @@ void CorsURLLoader::StartRequest() {
+@@ -982,6 +982,7 @@ void CorsURLLoader::StartRequest() {
          cors::ShouldAllowUnsafeHeaders(
              *origin_access_list_, request_.request_initiator, request_.url);
  

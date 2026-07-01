@@ -81,10 +81,9 @@ void CosmeticFiltersTabHelper::AddSiteCosmeticFilter(
     const std::string& filter) {
   // `filter` doesn't have a host, because we don't trust a renderer process.
   // Instead, we calculate and add the host explicitly here.
-  const auto* sender_rfh = receivers_.GetCurrentTargetFrame();
-  CHECK(sender_rfh);
+  const auto& sender_rfh = receivers_.CurrentTargetFrame();
   if (IsValidFilterText(filter)) {
-    const auto host = sender_rfh->GetLastCommittedOrigin().host();
+    const auto host = sender_rfh.GetLastCommittedOrigin().host();
     g_brave_browser_process->ad_block_service()->AddUserCosmeticFilter(
         host + "##" + filter);
   }

@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 33f8517b271fcafe44d96666b2f88d30a04e5590..3e323ecc496136c0efcb35c9182683ddebbaf66c 100644
+index d8c24875fe1e2fb86a2da99d8ed5b043766e104e..1bba8fc0a0680c35c5e1dca0cdd83f8c587acdc9 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
 @@ -118,7 +118,8 @@ fn readme_file_from_package<'a>(
@@ -12,11 +12,10 @@ index 33f8517b271fcafe44d96666b2f88d30a04e5590..3e323ecc496136c0efcb35c9182683dd
  
      let revision = {
          if let Ok(file) = std::fs::File::open(
-@@ -280,6 +281,12 @@ enum LicenseKind {
-     /// https://spdx.org/licenses/IJG.html
-     #[strum(serialize = "IJG")]
-     IJG,
-+
+@@ -284,6 +285,11 @@ enum LicenseKind {
+     /// https://spdx.org/licenses/CC0-1.0.html
+     #[strum(serialize = "CC0-1.0")]
+     CC0_1,
 +    #[strum(serialize = "Unicode-DFS-2016")]
 +    UnicodeDfs2016,
 +

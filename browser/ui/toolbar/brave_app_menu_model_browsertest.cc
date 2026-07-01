@@ -127,9 +127,7 @@ void CheckMoreToolsCommandsAreInOrderInMenuModel(
   model.Init();
   ui::SimpleMenuModel* more_tools_model =
       static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder)
-              .value()));
+          model.GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
   CheckCommandsAreInOrderInMenuModel(more_tools_model,
                                      more_tools_commands_in_order);
 }
@@ -142,9 +140,7 @@ void CheckMoreToolsCommandsAreDisabledInMenuModel(
   model.Init();
   ui::SimpleMenuModel* more_tools_model =
       static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(BraveAppMenuModel::kMoreToolsMenuPlaceholder)
-              .value()));
+          model.GetIndexOfCommandId(IDC_MORE_TOOLS_MENU).value()));
   CheckCommandsAreDisabledInMenuModel(more_tools_model,
                                       more_tools_disabled_commands);
 }
@@ -157,8 +153,7 @@ void CheckHelpCommandsAreInOrderInMenuModel(
   model.Init();
   ui::SimpleMenuModel* help_model =
       static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model.GetIndexOfCommandId(BraveAppMenuModel::kHelpMenuPlaceholder)
-              .value()));
+          model.GetIndexOfCommandId(IDC_HELP_MENU).value()));
   CheckCommandsAreInOrderInMenuModel(help_model, help_commands_in_order);
 }
 
@@ -191,23 +186,23 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if defined(TOOLKIT_VIEWS)
       IDC_SIDEBAR_SHOW_OPTION_MENU,
 #endif
-      BraveAppMenuModel::kRecentTabsMenuPlaceholder,
-      BraveAppMenuModel::kBookmarksMenuPlaceholder,
+      IDC_RECENT_TABS_MENU,
+      IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      BraveAppMenuModel::kExtensionsSubmenuPlaceholder,
+      IDC_EXTENSIONS_SUBMENU,
       IDC_CLEAR_BROWSING_DATA,
-      BraveAppMenuModel::kZoomMenuPlaceholder,
+      IDC_ZOOM_MENU,
       IDC_PRINT,
-      BraveAppMenuModel::kFindAndEditMenuPlaceholder,
-      BraveAppMenuModel::kSaveAndShareMenuPlaceholder,
-      BraveAppMenuModel::kMoreToolsMenuPlaceholder,
-      BraveAppMenuModel::kHelpMenuPlaceholder,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
       IDC_OPTIONS,
   };
 
   std::vector<int> commands_disabled_for_normal_profile = {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
-      BraveAppMenuModel::kSavedTabGroupsMenuPlaceholder,
+      IDC_SAVED_TAB_GROUPS_MENU,
   };
   CheckCommandsAreInOrderInMenuModel(browser(),
                                      commands_in_order_for_normal_profile);
@@ -243,21 +238,21 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if defined(TOOLKIT_VIEWS)
       IDC_SIDEBAR_SHOW_OPTION_MENU,
 #endif
-      BraveAppMenuModel::kBookmarksMenuPlaceholder,
+      IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      BraveAppMenuModel::kExtensionsSubmenuPlaceholder,
-      BraveAppMenuModel::kZoomMenuPlaceholder,
+      IDC_EXTENSIONS_SUBMENU,
+      IDC_ZOOM_MENU,
       IDC_PRINT,
-      BraveAppMenuModel::kFindAndEditMenuPlaceholder,
-      BraveAppMenuModel::kSaveAndShareMenuPlaceholder,
-      BraveAppMenuModel::kMoreToolsMenuPlaceholder,
-      BraveAppMenuModel::kHelpMenuPlaceholder,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
       IDC_OPTIONS,
   };
 
   std::vector<int> commands_disabled_for_private_profile = {
       IDC_NEW_TOR_CONNECTION_FOR_SITE,
-      BraveAppMenuModel::kRecentTabsMenuPlaceholder,
+      IDC_RECENT_TABS_MENU,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
@@ -285,12 +280,12 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
       IDC_NEW_TAB,
       IDC_NEW_WINDOW,
       IDC_SHOW_DOWNLOADS,
-      BraveAppMenuModel::kZoomMenuPlaceholder,
+      IDC_ZOOM_MENU,
       IDC_PRINT,
-      BraveAppMenuModel::kFindAndEditMenuPlaceholder,
-      BraveAppMenuModel::kSaveAndShareMenuPlaceholder,
-      BraveAppMenuModel::kMoreToolsMenuPlaceholder,
-      BraveAppMenuModel::kHelpMenuPlaceholder,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
       IDC_OPTIONS,
   };
 
@@ -308,8 +303,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
 #endif
-      BraveAppMenuModel::kRecentTabsMenuPlaceholder,
-      BraveAppMenuModel::kBookmarksMenuPlaceholder,
+      IDC_RECENT_TABS_MENU,
+      IDC_BOOKMARKS_MENU,
   };
 
   CheckCommandsAreDisabledInMenuModel(guest_browser,
@@ -346,19 +341,19 @@ IN_PROC_BROWSER_TEST_F(BraveAppMenuModelBrowserTest, MenuOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
       IDC_SHOW_BRAVE_WALLET,
 #endif
-      BraveAppMenuModel::kBookmarksMenuPlaceholder,
+      IDC_BOOKMARKS_MENU,
       IDC_SHOW_DOWNLOADS,
-      BraveAppMenuModel::kExtensionsSubmenuPlaceholder,
-      BraveAppMenuModel::kZoomMenuPlaceholder,
+      IDC_EXTENSIONS_SUBMENU,
+      IDC_ZOOM_MENU,
       IDC_PRINT,
-      BraveAppMenuModel::kFindAndEditMenuPlaceholder,
-      BraveAppMenuModel::kSaveAndShareMenuPlaceholder,
-      BraveAppMenuModel::kMoreToolsMenuPlaceholder,
-      BraveAppMenuModel::kHelpMenuPlaceholder,
+      IDC_FIND_AND_EDIT_MENU,
+      IDC_SAVE_AND_SHARE_MENU,
+      IDC_MORE_TOOLS_MENU,
+      IDC_HELP_MENU,
       IDC_OPTIONS,
   };
   std::vector<int> commands_disabled_for_tor_profile = {
-      BraveAppMenuModel::kRecentTabsMenuPlaceholder,
+      IDC_RECENT_TABS_MENU,
       IDC_TOGGLE_AI_CHAT,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       IDC_SHOW_BRAVE_VPN_PANEL,
@@ -466,10 +461,7 @@ IN_PROC_BROWSER_TEST_P(BraveAppMenuModelBrowserTestForEmailAliases,
 
   ui::SimpleMenuModel* autofill_menu_model =
       static_cast<ui::SimpleMenuModel*>(model.GetSubmenuModelAt(
-          model
-              .GetIndexOfCommandId(
-                  BraveAppMenuModel::kPasswordsAndAutofillMenuPlaceholder)
-              .value()));
+          model.GetIndexOfCommandId(IDC_PASSWORDS_AND_AUTOFILL_MENU).value()));
   ASSERT_TRUE(autofill_menu_model);
 
   bool present =

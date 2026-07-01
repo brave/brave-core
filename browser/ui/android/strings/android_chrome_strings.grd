@@ -203,11 +203,6 @@ CHAR_LIMIT guidelines:
     <messages fallback_to_english="true">
       <!-- NOTE: Generic strings used across multiple features belong in //components/browser_ui/strings/android. -->
 
-       <!-- Cookie Controls -->
-      <message name="IDS_COOKIE_CONTROLS_IPH_MESSAGE" desc="In-context Product Help - Appears right under the page info icon to highlight the Cookie Controls entrypoint.">
-        Site not working? Third-party cookies are blocked
-      </message>
-
       <!-- Main Preferences -->
       <message name="IDS_PREFS_SECTION_BASICS" desc="Title of &quot;Basics&quot; section of preferences. [CHAR_LIMIT=32]">
         Basics
@@ -487,6 +482,9 @@ For more settings that use data to improve your Brave experience, go to <ph name
       <!-- Manage search engines and site search -->
       <message name="IDS_MANAGE_SEARCH_ENGINES_AND_SITE_SEARCH" desc="Title shown in the menu item that takes the user to 'Manage search engines and site search' in Settings.">
         Manage search engines and site search
+      </message>
+      <message name="IDS_ALWAYS_SHOW_AI_MODE" desc="Label for the right-click menu item that toggles whether the AI Mode button is always shown.">
+        Always Show AI Mode
       </message>
       <message name="IDS_SITE_SEARCH_KEYBOARD_SHORTCUT_HEADER" desc="Header for the 'Keyboard Shortcut' section.">
         Keyboard shortcut

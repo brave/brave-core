@@ -3895,20 +3895,11 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_TRACKING_PROTECTION_BUBBLE_PERMANENT_ALLOWED_DESCRIPTION" desc="Descriptive text in the tracking protection bubble for permanent exceptions informing the user about having less browsing protection.">
         This means site features should work as expected, but you may have less browsing protection.
       </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_BUTTON_TITLE" desc="A subtitle for a portion of the cookie controls bubble soliciting feedback from users.">
-        Send feedback
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_BUTTON_DESCRIPTION" desc="Text asking the user for feedback on why they allowed third-party cookies for this particular site.">
-        Help us improve Brave by telling us why you allowed third-party cookies
-      </message>
       <message name="IDS_COOKIE_CONTROLS_BUBBLE_RELOADING_LABEL" desc="Descriptive text informing the user that the page is reloading after they toggled third-party cookies in the cookie controls bubble.">
         Reloading <ph name="DOMAIN">$1<ex>example.com</ex></ph>...
       </message>
       <message name="IDS_COOKIE_CONTROLS_BUBBLE_THIRD_PARTY_COOKIES_LABEL" desc="Label in the Page Info bubble for the third-party cookie controls toggle.">
         Third-party cookies
-      </message>
-      <message name="IDS_COOKIE_CONTROLS_BUBBLE_SEND_FEEDBACK_FORM_PLACEHOLDER" desc="In the feedback text box accessible from the cookie controls bubble, this is the default text the user replaces with their feedback.">
-        Tell us why you allowed third-party cookies on this site
       </message>
       <message name="IDS_COOKIE_CONTROLS_PAGE_ACTION_COOKIES_ALLOWED_LABEL" desc="Label in the Page Action (omnibox) icon indicating that cookies are allowed on the current site.">
         Third-party cookies allowed
@@ -4865,29 +4856,8 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_CONFIRM_PERMISSIONS" desc="Titlebar of the extension or app permissions prompt window">
         Confirm Permissions
       </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to install a particular extension or app.">
-        Add "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Asks the user if they want to send installation request for a particular extension or app to their admin.">
-        Send a request to your administrator to install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_PENDING_REQUEST_PROMPT_TITLE" desc="Titlebar of the extension or app request prompt. Tells the user their installation request for a particular extension or app is still pending review.">
-        You already requested "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
-      </message>
       <message name="IDS_EXTENSION_BLOCKED_BY_POLICY_PROMPT_TITLE" desc="Title of the extension or app install blocked prompt. Tells the user they can't install this extension as it's blocked by policy.">
         Your admin has blocked "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" - App ID <ph name="EXTENSION_ID">$2<ex>abacabadabacabaeabacabadabacabaf</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_RE_ENABLE_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to re-enable a particular extension or app.">
-        The newest version of "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has been disabled because it requires more permissions.
-      </message>
-      <message name="IDS_EXTENSION_PERMISSIONS_PROMPT_TITLE" desc="Titlebar of the extension or app permissions prompt. Asks the user if they want to grant the permissions to the particular extension or app.">
-        "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>" has requested additional permissions.
-      </message>
-      <message name="IDS_EXTENSION_REMOTE_INSTALL_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to enable a particular extension or app that was installed remotely.">
-        Enable "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSION_REPAIR_PROMPT_TITLE" desc="Titlebar of the extension or app installation prompt. Asks the user if they want to update the extension/app.">
-        Repair "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"?
       </message>
       <message name="IDS_EXTENSION_ASK_PARENT_PROMPT_TITLE" desc="Titlebar of the extension ask parent prompt. Tells the user they need to ask their parent for approval to install this extension.">
         Ask parent for approval
@@ -4898,31 +4868,6 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_ASK_PARENT_PROMPT_ASK_IN_PERSON_BUTTON" desc="Text for the ask-in-person button on the extension ask parent for approval install prompt.">
         Ask in person
       </message>
-      <message name="IDS_EXTENSION_PARENT_APPROVAL_PROMPT_TITLE" desc="Titlebar of the extension or app permissions prompt. Asks the user if they want to grant the permissions to the particular extension or app.">
-        Install "<ph name="EXTENSION_NAME">$1<ex>Gmail Checker</ex></ph>"
-      </message>
-      <if expr="use_titlecase">
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable Extension
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable App
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="In Title Case: Button on the external install prompt to enable an extension installed by a third party.">
-          Enable Theme
-        </message>
-      </if>
-      <if expr="not use_titlecase">
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable extension
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable app
-        </message>
-        <message name="IDS_EXTENSION_EXTERNAL_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="Button on the external install prompt to enable an extension installed by a third party.">
-          Enable theme
-        </message>
-      </if>
 
       <!-- Extension alerts. -->
       <message name="IDS_EXTENSION_ALERT_TITLE" desc="Titlebar of the extension notification alert for blocklisted extensions">
@@ -4966,30 +4911,12 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_EXTENSION_PROMPT_EXTENSION_CONNECT_FROM_INCOGNITO" desc="Shown when a website tries to connect to an extension from Private mode, prompting the user to allow or deny the request.">
         <ph name="ORIGIN">$1<ex>http://www.google.com</ex></ph> wants to communicate with the extension "<ph name="EXTENSION_NAME">$2<ex>Gmail Checker</ex></ph>"
       </message>
-      <message name="IDS_EXTENSION_PROMPT_WILL_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
-        It can:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WILL_NOW_HAVE_ACCESS_TO" desc="Second line in the content area of the extension or app re-enable prompt. Note that the exact wording is important. This should mean that the extension _can now_ access the listed privileges, but not necessarily that it will or needs to. This message appeared because the user must approve new permissions of the extension or app.">
-        It can now:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_WANTS_ACCESS_TO" desc="Second line in the content area of the extension or app permissions prompt. Note that the exact wording is important. This should mean that the extension _wants to_ access the listed privileges, but not necessarily that it will or needs to. This message appeared because the user must approve new permissions of the extension or app.">
-        It could:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_CAN_ACCESS" desc="Second line in the content area of the extension or app permissions view dialog. Note that the exact wording is important. This should mean that the extension _can now_ access the listed privileges, because it has already been installed. This message appeared because the user must approve new permissions of the extension or app.">
-        It can:
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REQUESTS_PERMISSIONS" desc="Second line in the content area of the extension or app installation prompt. Note that the exact wording is important. This should mean that the extension or app _can_ access the listed privileges, but not necessarily that it will or needs to.">
-        This extension requests the following permissions:
-      </message>
       <message name="IDS_EXTENSION_PROMPT_GRANT_PERMISSIONS_CHECKBOX" desc="Label next to the checkbox in the extension or app installation prompt, which indicates if a user wants to grant access to all requested sites.">
         Grant access to all requested sites.
       </message>
 
       <message name="IDS_EXTENSION_PERMISSION_LINE" desc="Template for item in list of privileges that an extension or app has">
           • <ph name="PERMISSION">$1<ex>Read and change all your data on all websites</ex></ph>
-      </message>
-      <message name="IDS_EXTENSION_RATING_COUNT" desc="Number of ratings an app or extensions has (displayed after star icons)">
-        (<ph name="RATING_COUNT">$1<ex>46</ex></ph>)
       </message>
       <message name="IDS_EXTENSION_PROMPT_RATING_ACCESSIBLE_TEXT" desc="The text read by a screen reader for the ratings section of an extension prompt, indicating to the user what the average rating for an extension is and how many times it has been rated. [ICU Syntax]">
         {1, plural,
@@ -4998,9 +4925,6 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_EXTENSION_PROMPT_NO_RATINGS_ACCESSIBLE_TEXT" desc="The text read by a screen reader for the ratings section of an extension prompt when there haven't been any user ratings for the extension.">
         Not yet rated by any users.
-      </message>
-      <message name="IDS_EXTENSION_USER_COUNT" desc="Number of users an app or extension has">
-        <ph name="USER_COUNT">$1<ex>10,479</ex></ph> users
       </message>
       <message name="IDS_EXTENSION_PROMPT_STORE_LINK" desc="Anchor text for link to Web Store in app or extension installation dialog">
         Open in Web Store
@@ -5795,18 +5719,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_EXTENSION_PROMPT_INSTALL_FRICTION_WARNING_TEXT" desc="The warning text displayed in the install friction dialog">
         This extension is not trusted by Enhanced Safe Browsing. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
       </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_EXTENSION" desc="Text for the install button on the extension install prompt, for an extension (i.e. not app or theme).">
-        Add extension
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_APP" desc="Text for the install button on the extension install prompt, for an app.">
-        Add app
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ACCEPT_BUTTON_THEME" desc="Text for the install button on the extension install prompt, for a theme.">
-        Add theme
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_ASK_A_PARENT_BUTTON" desc="Text for the ask-a-parent button on the extension install prompt.">
-        Ask a parent
-      </message>
       <message name="IDS_EXTENSION_INSTALL_BLOCKED_BY_PARENT_PROMPT_TITLE" desc="Text for the title of the dialog indicating that a parent has blocked installing extensions and apps.">
         Can't add <ph name="EXTENSION_TYPE_PARAMETER">$1<ex>extension</ex></ph>
       </message>
@@ -5824,12 +5736,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_CHILD_WANTS_TO_INSTALL_LABEL" desc="Text for the header section of the parent permission dialog explaining that the child is installing a extension that is requesting permissions.">
         <ph name="CHILD_NAME">$1<ex>Junior</ex></ph> wants to install an <ph name="EXTENSION_TYPE">$2<ex>extension</ex></ph> that can:
-      </message>
-      <message name="IDS_PARENT_PERMISSION_PROMPT_APPROVE_BUTTON" desc="Text for the approve button on the parent permission prompt.">
-        Approve
-      </message>
-      <message name="IDS_PARENT_PERMISSION_PROMPT_CANCEL_BUTTON" desc="Text for the cancel button on the parent permission prompt.">
-        Cancel
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_SELECT_PARENT_LABEL" desc="Text for the label shown above the parent selector.">
         Choose parent account for approval
@@ -5851,9 +5757,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PARENT_PERMISSION_PROMPT_PASSWORD_INCORRECT_LABEL" desc="Text for the label shown when the previously entered password was incorrect.">
         Password incorrect
-      </message>
-      <message name="IDS_EXTENSION_INSTALL_PROMPT_REQUEST_BUTTON" desc="Text for the request button on the extension request prompt.">
-        Send
       </message>
       <message name="IDS_EXTENSION_PROMPT_UNINSTALL_BUTTON" desc="Text for the uninstall button on the extension uninstall prompt">
         Remove
@@ -5881,30 +5784,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSION_PROMPT_UNINSTALL_TRIGGERED_BY_EXTENSION" desc="Text in uninstall-extension dialog that indicates the uninstall was triggered by another extension (the name of the extension being uninstalled is already present in the dialog title).">
         "<ph name="TRIGGERING_EXTENSION_NAME">$1<ex>Extension Manager</ex></ph>" would like to remove this extension.
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_RE_ENABLE_BUTTON" desc="Text for the enable button on the extension re-enable prompt">
-        Re-enable
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_BUTTON" desc="Text for the allow button on the extension permissions prompt">
-        Allow
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_ACCEPT_BUTTON" desc="Text for the accept permissions button on the extension permissions prompt">
-        Accept permissions
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_PERMISSIONS_ABORT_BUTTON" desc="Text for the deny button on the extension permissions prompt">
-        Deny
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REMOTE_INSTALL_BUTTON_EXTENSION" desc="Text for the install button on the extension install prompt for a remotely installed extension">
-        Enable extension
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REMOTE_INSTALL_BUTTON_APP" desc="Text for the install button on the extension install prompt for a remotely installed app">
-        Enable app
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REPAIR_BUTTON_EXTENSION" desc="Text for the install button on the extension reinstall prompt.">
-        Repair extension
-      </message>
-      <message name="IDS_EXTENSION_PROMPT_REPAIR_BUTTON_APP" desc="Text for the install button on the app reinstall prompt.">
-        Repair app
       </message>
       <message name="IDS_EXTENSION_WEB_STORE_TITLE_SHORT" desc="Shortened version of text for the Web Store">
         Web Store
@@ -7213,6 +7092,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_NTP_DRIVE_DISCLAIMER_CONNECT" desc="Label on the button to proceed with connecting Google Drive.">
         Connect
       </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_ERROR" desc="Error message displayed when connecting to Google Drive fails.">
+        Couldn't connect to your Google Drive account
+      </message>
+      <message name="IDS_NTP_DRIVE_DISCLAIMER_TRY_AGAIN" desc="Label on the button to retry connecting to Google Drive.">
+        Try again
+      </message>
       <message name="IDS_GOOGLE_SEARCH_BOX_EMPTY_HINT_MD" desc="The text displayed in the fakebox (on the New Tab page) when it is empty, Brave is the default search engine, and the Material Design UI is enabled.">
         Search Brave or type a URL
       </message>
@@ -8515,6 +8400,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <ph name="BREAK">&lt;br&gt;</ph>
         <ph name="BREAK">&lt;br&gt;</ph>
         You can manage settings from the card menu or see more options in Customize Brave.
+      </message>
+      <message name="IDS_NTP_MODULES_DRIVE_SEE_MORE" desc="A label for the see more button in the Drive module.">
+        See more
       </message>
       <message name="IDS_NTP_MODULES_MICROSOFT_FILES_NAME" desc="Name of the Microsoft files module in sentence case shown in various UIs.">
         SharePoint and OneDrive files
@@ -16823,35 +16711,33 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- HID (Human Interface Device) chooser -->
-    <if expr="not is_android">
-      <message name="IDS_HID_CHOOSER_PROMPT" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup.">
-        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
-      </message>
-      <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the device IDs for a Human Interface Device (HID) without a device name.">
-        Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>)
-      </message>
-      <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
-        Finding devices...
-      </message>
-      <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
-        Finding HID devices...
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a HID device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available">
-        HID device (<ph name="VENDOR_ID">$1<ex>1234</ex></ph>:<ph name="PRODUCT_ID">$2<ex>1234</ex></ph>)
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID" desc="String describing a HID device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
-        HID devices from vendor <ph name="VENDOR_ID">$1<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_AND_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with a single HID usage when only the numeric HID usage value is available.">
-        HID devices with usage <ph name="USAGE">$1<ex>1234</ex></ph> from usage page <ph name="USAGE_PAGE">$2<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with any usage from a HID usage page when only the numeric HID usage page value is available.">
-        HID devices with usages from usage page <ph name="USAGE_PAGE">$1<ex>1234</ex></ph>
-      </message>
-      <message name="IDS_HID_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a HID device permission granted by permission policy to a site for all devices.">
-        Any HID device
-      </message>
-    </if>
+    <message name="IDS_HID_CHOOSER_PROMPT" desc="The label that is used to introduce the Human Interface Device (HID) chooser details to the user in a popup.">
+      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a HID device
+    </message>
+    <message name="IDS_HID_CHOOSER_ITEM_WITHOUT_NAME" desc="User option displaying the device IDs for a Human Interface Device (HID) without a device name.">
+      Unknown Device (<ph name="DEVICE_ID">$1<ex>1234:abcd</ex></ph>)
+    </message>
+    <message name="IDS_HID_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of HID devices.">
+      Finding devices...
+    </message>
+    <message name="IDS_HID_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of HID devices.">
+      Finding HID devices...
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID_AND_PRODUCT_ID" desc="String describing a HID device permission granted by enterprise policy to a site when only the numeric product ID and vendor ID are available">
+      HID device (<ph name="VENDOR_ID">$1<ex>1234</ex></ph>:<ph name="PRODUCT_ID">$2<ex>1234</ex></ph>)
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_VENDOR_ID" desc="String describing a HID device permission granted by enterprise policy to a site for all devices from a single vendor when only the numeric vendor ID is available.">
+      HID devices from vendor <ph name="VENDOR_ID">$1<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_AND_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with a single HID usage when only the numeric HID usage value is available.">
+      HID devices with usage <ph name="USAGE">$1<ex>1234</ex></ph> from usage page <ph name="USAGE_PAGE">$2<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_USAGE_PAGE" desc="String describing a HID device permission granted by permission policy to a site for all devices containing a top-level collection with any usage from a HID usage page when only the numeric HID usage page value is available.">
+      HID devices with usages from usage page <ph name="USAGE_PAGE">$1<ex>1234</ex></ph>
+    </message>
+    <message name="IDS_HID_POLICY_DESCRIPTION_FOR_ANY_DEVICE" desc="String describing a HID device permission granted by permission policy to a site for all devices.">
+      Any HID device
+    </message>
 
     <!-- File Handling launch prompt -->
     <if expr="not is_android">
@@ -18635,6 +18521,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_MULTISTEP_FILTER_CUE_EXPANDABLE_CONTENT_HEADING" desc="Text for the expandable content heading on the contextual cue for multistep filters." translateable="false">
         From your recent search
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_IPH_BODY" desc="Text shown in the IPH bubble for educating users about Multistep Filter." translateable="false">
+        Brave can now suggest your recent filters and search details, helping you pick up where you left off or compare options across sites
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_IPH_BODY_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text shown in the IPH bubble for educating users about Multistep Filter." translateable="false">
+        Brave can now suggest your recent filters and search details, helping you pick up where you left off or compare options across sites
       </message>
       <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
         Link copied

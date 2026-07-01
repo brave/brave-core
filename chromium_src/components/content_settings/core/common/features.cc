@@ -8,13 +8,6 @@
 #include <components/content_settings/core/common/features.cc>
 
 namespace content_settings {
-namespace features {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kUserBypassUI, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-
-}  // namespace features
 
 // Brave implements a strictier policy to not leak blocked permissions into
 // incognito profiles. This feature (when enabled) restores the original

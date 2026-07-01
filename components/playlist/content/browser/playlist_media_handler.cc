@@ -51,10 +51,10 @@ void PlaylistMediaHandler::OnMediaDetected(
   CHECK(!items.empty())
       << "This invariant should be maintained by the renderer!";
 
-  auto* render_frame_host = media_responder_receivers_.GetCurrentTargetFrame();
+  auto& render_frame_host = media_responder_receivers_.CurrentTargetFrame();
 
   auto* web_contents =
-      content::WebContents::FromRenderFrameHost(render_frame_host);
+      content::WebContents::FromRenderFrameHost(&render_frame_host);
   if (!web_contents) {
     return;
   }

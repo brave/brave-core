@@ -133,6 +133,7 @@ void PerfPredictorTabHelper::DidFinishNavigation(
 void PerfPredictorTabHelper::ResourceLoadComplete(
     content::RenderFrameHost* render_frame_host,
     const content::GlobalRequestID& request_id,
+    const GURL& original_url,
     const blink::mojom::ResourceLoadInfo& resource_load_info) {
   if (render_frame_host) {
     bandwidth_predictor_->OnResourceLoadComplete(web_contents()->GetURL(),

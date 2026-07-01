@@ -10,6 +10,7 @@
 #include <string_view>
 #include <utility>
 
+#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/feature_list.h"
@@ -57,9 +58,9 @@ void OnWrite(std::unique_ptr<WriteData> write_data, MojoResult result) {
   }
 
   network::URLLoaderCompletionStatus status(net::OK);
-  status.encoded_data_length = write_data->data.size();
-  status.encoded_body_length = write_data->data.size();
-  status.decoded_body_length = write_data->data.size();
+  status.encoded_data_length = base::ByteSize(write_data->data.size());
+  status.encoded_body_length = base::ByteSize(write_data->data.size());
+  status.decoded_body_length = base::ByteSize(write_data->data.size());
   write_data->client->OnComplete(status);
 }
 

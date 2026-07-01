@@ -36,20 +36,20 @@ constexpr auto kCommandIcons =
         {IDC_TOGGLE_AI_CHAT, &kLeoProductBraveLeoIcon},
 #endif
         {IDC_BRAVE_VPN_MENU, &kLeoProductVpnIcon},
-        {kPasswordsAndAutofillMenuId, &kLeoKeyIcon},
-        {kRecentTabsMenuId, &kLeoHistoryIcon},
-        {kBookmarksMenuId, &kLeoProductBookmarksIcon},
+        {IDC_PASSWORDS_AND_AUTOFILL_MENU, &kLeoKeyIcon},
+        {IDC_RECENT_TABS_MENU, &kLeoHistoryIcon},
+        {IDC_BOOKMARKS_MENU, &kLeoProductBookmarksIcon},
         {IDC_SHOW_DOWNLOADS, &kLeoDownloadIcon},
         {IDC_MANAGE_EXTENSIONS, &kLeoBrowserExtensionsIcon},
         {IDC_EXTENSIONS_SUBMENU_MANAGE_EXTENSIONS, &kLeoBrowserExtensionsIcon},
         {IDC_EXTENSIONS_SUBMENU_VISIT_CHROME_WEB_STORE, &kLeoShoppingBagIcon},
-        {kZoomMenuId, &kLeoSearchZoomInIcon},
+        {IDC_ZOOM_MENU, &kLeoSearchZoomInIcon},
         {IDC_PRINT, &kLeoPrintIcon},
-        {kFindAndEditMenuId, &kLeoFileSearchIcon},
-        {kSaveAndShareMenuId, &kLeoFileDownloadIcon},
-        {kMoreToolsMenuId, &kLeoWindowScrewdriverIcon},
+        {IDC_FIND_AND_EDIT_MENU, &kLeoFileSearchIcon},
+        {IDC_SAVE_AND_SHARE_MENU, &kLeoFileDownloadIcon},
+        {IDC_MORE_TOOLS_MENU, &kLeoWindowScrewdriverIcon},
         {IDC_OPTIONS, &kLeoSettingsIcon},
-        {kHelpMenuId, &kLeoHelpOutlineIcon},
+        {IDC_HELP_MENU, &kLeoHelpOutlineIcon},
         {IDC_EXIT, &kLeoCloseIcon},
 
         // The `VPN` submenu
@@ -67,7 +67,7 @@ constexpr auto kCommandIcons =
         {IDC_SHOW_BOOKMARK_MANAGER, &kLeoWindowBookmarkIcon},
         {IDC_SHOW_BOOKMARK_SIDE_PANEL, &kLeoProductBookmarksIcon},
         {IDC_IMPORT_SETTINGS, &kLeoImportArrowIcon},
-        {kReadingListMenuId, &kLeoReadingListIcon},
+        {IDC_READING_LIST_MENU, &kLeoReadingListIcon},
 
         // The `History submenu
         {IDC_SHOW_HISTORY, &kLeoHistoryIcon},
