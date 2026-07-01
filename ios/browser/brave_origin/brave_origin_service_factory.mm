@@ -179,12 +179,14 @@ BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
   std::string profile_id = GetProfileId(profile->GetStatePath());
+  auto skus_service_getter =
+      base::BindRepeating(&skus::SkusServiceFactory::GetForProfile, profile);
   return std::make_unique<BraveOriginService>(
       GetApplicationContext()->GetLocalState(),
       user_prefs::UserPrefs::Get(profile), profile_id,
       profile->GetPolicyConnector()->GetPolicyService(),
       GetApplicationContext()->GetBrowserPolicyConnector()->GetPolicyService(),
-      std::make_unique<BraveOriginDelegateIOS>(*profile));
+      std::make_unique<BraveOriginDelegateIOS>(std::move(skus_service_getter)));
 }
 
 // static

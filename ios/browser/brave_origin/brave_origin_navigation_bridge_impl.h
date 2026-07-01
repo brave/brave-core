@@ -8,11 +8,10 @@
 
 #import <Foundation/Foundation.h>
 
+#include "base/functional/bind.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_origin/brave_origin_service.h"
 #include "brave/ios/browser/brave_origin/brave_origin_navigation_bridge.h"
-
-class ProfileIOS;
 
 namespace brave_origin {
 
@@ -20,14 +19,18 @@ namespace brave_origin {
 // other calls like OpenOriginSettings through BraveOriginNavigationBridge
 class BraveOriginDelegateIOS : public BraveOriginService::Delegate {
  public:
-  explicit BraveOriginDelegateIOS(ProfileIOS& profile);
+  using SkusServiceGetter =
+      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
+
+  explicit BraveOriginDelegateIOS(SkusServiceGetter skus_service_getter);
+  ~BraveOriginDelegateIOS() override;
 
   // BraveOriginService::Delegate:
   void OpenOriginSettings() override;
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override;
 
  private:
-  const raw_ref<ProfileIOS> profile_;
+  SkusServiceGetter skus_service_getter_;
 };
 
 }  // namespace brave_origin

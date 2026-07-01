@@ -10,8 +10,11 @@
 
 namespace brave_origin {
 
-BraveOriginDelegateIOS::BraveOriginDelegateIOS(ProfileIOS& profile)
-    : profile_(profile) {}
+BraveOriginDelegateIOS::BraveOriginDelegateIOS(
+    SkusServiceGetter skus_service_getter)
+    : skus_service_getter_(std::move(skus_service_getter)) {}
+
+BraveOriginDelegateIOS::~BraveOriginDelegateIOS() = default;
 
 void BraveOriginDelegateIOS::OpenOriginSettings() {
   [BraveOriginNavigationBridge onOpenOriginSettings];
@@ -19,7 +22,7 @@ void BraveOriginDelegateIOS::OpenOriginSettings() {
 
 mojo::PendingRemote<skus::mojom::SkusService>
 BraveOriginDelegateIOS::GetSkusService() {
-  return skus::SkusServiceFactory::GetForProfile(&*profile_);
+  return skus_service_getter_.Run();
 }
 
 }  // namespace brave_origin
