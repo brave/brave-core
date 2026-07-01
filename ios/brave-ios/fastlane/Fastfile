@@ -165,6 +165,7 @@ platform :ios do
       clean: true,
       output_directory: "build",
       derived_data_path: "../../../out/DerivedData",
+      buildlog_path: "../../../out/fastlane_logs/gym",
     }
   end
 
@@ -177,6 +178,7 @@ platform :ios do
       output_types: "junit",
       output_files: "junit.xml",
       derived_data_path: "../../../out/DerivedData",
+      buildlog_path: "../../../out/fastlane_logs/scan",
       number_of_retries: 1,
       output_remove_retry_attempts: true
     }
