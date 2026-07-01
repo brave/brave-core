@@ -14,12 +14,12 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -889,7 +889,8 @@ IN_PROC_BROWSER_TEST_F(
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        ImmersiveModeAndVerticalTabsAtStartup) {
   // Default browser: vertical tabs off at startup.
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->ShouldShowBraveVerticalTabs());
   EXPECT_TRUE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
   ToggleVerticalTabStrip();
@@ -922,13 +923,15 @@ IN_PROC_BROWSER_TEST_F(
     ShouldHideTopUIInTabFullscreenAfterVerticalTabsEnabledAtRuntime) {
   // Verify the precondition that triggers the bug: horizontal tabs at startup
   // means immersive mode is on (and fullscreen_toolbar_controller_ is nil).
-  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->ShouldShowBraveVerticalTabs());
   ASSERT_TRUE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 
   // Switch to vertical tabs at runtime.
   ToggleVerticalTabStrip();
-  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
   ASSERT_FALSE(
       WindowFeatureController::From(browser())->UsesImmersiveFullscreenMode());
 

@@ -26,6 +26,7 @@ source_set("frame") {
 
   deps = [
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/sidebar",
     "//chrome/browser/ui/exclusive_access",
     "//chrome/browser/ui/views/infobars",
@@ -44,6 +45,7 @@ source_set("frame_impl") {
   deps = [
     ":frame",
     "//brave/browser/ui/focus_mode",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
@@ -104,6 +106,7 @@ source_set("browser_tests") {
     "//brave/browser/ui:brave_tab_prefs",
     "//brave/browser/ui/focus_mode",
     "//brave/browser/ui/sidebar:sidebar_impl",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//brave/browser/ui/views/sidebar",
     "//brave/components/brave_origin/buildflags",

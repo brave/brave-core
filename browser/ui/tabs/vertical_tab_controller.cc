@@ -22,6 +22,15 @@ VerticalTabController* VerticalTabController::FromBrowser(
   return browser->GetFeatures().vertical_tab_controller();
 }
 
+// static
+const VerticalTabController* VerticalTabController::FromBrowser(
+    const BrowserWindowInterface* browser) {
+  if (!browser) {
+    return nullptr;
+  }
+  return browser->GetFeatures().vertical_tab_controller();
+}
+
 VerticalTabController::VerticalTabController(BrowserWindowInterface::Type type,
                                              PrefService* prefs)
     : type_(type), prefs_(prefs) {}

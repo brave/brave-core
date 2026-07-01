@@ -30,6 +30,7 @@
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_web_panel_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
@@ -45,7 +46,6 @@
 #include "brave/browser/ui/views/omnibox/brave_omnibox_view_views.h"
 #include "brave/browser/ui/views/side_panel/brave_side_panel_resize_area.h"
 #include "brave/browser/ui/views/sidebar/sidebar_container_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/window_closing_confirm_dialog_view.h"
@@ -393,7 +393,7 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   }
 
   const bool supports_vertical_tabs =
-      tabs::utils::SupportsBraveVerticalTabs(browser_);
+      VerticalTabController::FromBrowser(browser_)->SupportsBraveVerticalTabs();
   if (supports_vertical_tabs) {
     vertical_tab_strip_host_view_ =
         AddChildView(std::make_unique<views::View>());
@@ -475,8 +475,8 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
-  const bool is_vertical_tabs =
-      tabs::utils::ShouldShowBraveVerticalTabs(browser());
+  const bool is_vertical_tabs = VerticalTabController::FromBrowser(browser())
+                                    ->ShouldShowBraveVerticalTabs();
   const bool use_search_button =
       browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
   if (features::HasTabSearchToolbarButton()) {
@@ -580,7 +580,8 @@ gfx::Rect BraveBrowserView::GetShieldsBubbleRect() {
 }
 
 bool BraveBrowserView::GetTabStripVisible() const {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (auto* vtc = VerticalTabController::FromBrowser(browser());
+      vtc->ShouldShowBraveVerticalTabs()) {
     return false;
   }
 
@@ -1047,7 +1048,8 @@ void BraveBrowserView::HideSplitView() {
 }
 
 void BraveBrowserView::ReparentTopContainerForEndOfImmersive() {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
+  if (VerticalTabController::FromBrowser(browser())
+          ->ShouldShowBraveVerticalTabs() ||
       IsFocusModeEnabled(browser())) {
     return;
   }
@@ -1106,7 +1108,8 @@ void BraveBrowserView::UpdateTabSearchBubbleHost() {
 
   // As we use toolbar's combo button in vertical tab mode, host should be
   // re-initialzed with it.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (VerticalTabController::FromBrowser(browser())
+          ->ShouldShowBraveVerticalTabs()) {
     auto* toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar());
     auto* combo_button = toolbar_view->combo_button();
     tab_search_bubble_host_ = std::make_unique<TabSearchBubbleHost>(
@@ -1134,7 +1137,8 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
     return true;
   }
 
-  if (tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
+  if (VerticalTabController::FromBrowser(browser())
+          ->ShouldShowWindowTitleForVerticalTabs()) {
     return true;
   }
 
@@ -1349,7 +1353,8 @@ void BraveBrowserView::HandleBrowserWindowMouseEvent(
   }
 
   if (vertical_tab_strip_container_view_ &&
-      tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+      VerticalTabController::FromBrowser(browser())
+          ->ShouldShowBraveVerticalTabs()) {
     vertical_tab_strip_container_view_->vertical_tab_strip_region_view()
         ->ShowVerticalTabStripOnMouseOver(point_in_screen);
   }
@@ -1372,7 +1377,8 @@ bool BraveBrowserView::IsWebPanelContents(content::WebContents* contents) {
 
 ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
   ClientFrameElementInfo info = BrowserView::GetFrameElementInfo();
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (VerticalTabController::FromBrowser(browser())
+          ->ShouldShowBraveVerticalTabs()) {
     // In case of Brave vertical tabs, we don't want to show the tabstrip.
     info.tabstrip_preferred_height = 0;
 
@@ -1380,7 +1386,8 @@ ClientFrameElementInfo BraveBrowserView::GetFrameElementInfo() const {
     // On Windows, we need to set |toolbar_minimum_height| to calculate
     // the correct caption button container height.
     // See BrowserFrameViewWin::TitlebarMaximizedVisualHeight().
-    if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser())) {
+    if (!VerticalTabController::FromBrowser(browser())
+             ->ShouldShowWindowTitleForVerticalTabs()) {
       info.toolbar_minimum_height = toolbar_->GetMinimumSize().height();
     }
 #endif

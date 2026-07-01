@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/frame/brave_browser_root_view.h"
 
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -32,7 +32,8 @@ bool BraveBrowserRootView::OnMouseWheel(const ui::MouseWheelEvent& event) {
 
   // As vertical tabs are always in a scroll view, we should prefer scrolling
   // to tab cycling.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(browser_)) {
+  if (auto* vtc = VerticalTabController::FromBrowser(browser_);
+      vtc->ShouldShowBraveVerticalTabs()) {
     return RootView::OnMouseWheel(event);
   }
 
