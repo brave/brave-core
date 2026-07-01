@@ -322,8 +322,15 @@ void BraveNewsController::GetSuggestedPublisherIds(
 
 void BraveNewsController::FindFeeds(const GURL& possible_feed_or_site_url,
                                     FindFeedsCallback callback) {
+  FindFeeds(possible_feed_or_site_url, std::nullopt, std::move(callback));
+}
+
+void BraveNewsController::FindFeeds(
+    const GURL& possible_feed_or_site_url,
+    const std::optional<url::Origin>& initiator_origin,
+    FindFeedsCallback callback) {
   DVLOG(1) << __FUNCTION__;
-  direct_feed_controller_.FindFeeds(possible_feed_or_site_url,
+  direct_feed_controller_.FindFeeds(possible_feed_or_site_url, initiator_origin,
                                     std::move(callback));
 }
 
