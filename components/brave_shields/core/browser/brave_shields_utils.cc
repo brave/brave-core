@@ -644,16 +644,6 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
                                              : ControlType::BLOCK;
 }
 
-bool IsBraveShieldsManaged(PrefService* prefs,
-                           HostContentSettingsMap* map,
-                           GURL url) {
-  DCHECK(prefs);
-  DCHECK(map);
-  content_settings::SettingInfo info;
-  map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
-  return info.source == content_settings::SettingSource::kPolicy;
-}
-
 bool IsShowStrictFingerprintingModeEnabled() {
   return base::FeatureList::IsEnabled(
       features::kBraveShowStrictFingerprintingMode);

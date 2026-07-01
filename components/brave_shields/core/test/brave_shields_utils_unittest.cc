@@ -215,47 +215,6 @@ TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_ForOrigin) {
   EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(map, GURL()));
 }
 
-TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
-  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
-  GURL host2("http://host2.com");
-  GURL host1("http://host1.com");
-  EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
-
-  base::ListValue disabled_list;
-  disabled_list.Append("[*.]host2.com");
-  profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
-  // only disabled pref set
-  EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
-
-  EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, GURL("http://host1.com")));
-
-  base::ListValue enabled_list;
-  enabled_list.Append("[*.]host1.com");
-  profile()->GetTestingPrefService()->SetManagedPref(
-      kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
-
-  // both disabled/enabled prefs set
-  EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
-
-  EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host1));
-
-  profile()->GetTestingPrefService()->RemoveManagedPref(
-      kManagedBraveShieldsDisabledForUrls);
-
-  // only enabled prefs set
-  EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
-
-  EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host1));
-}
-
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   auto setting =
