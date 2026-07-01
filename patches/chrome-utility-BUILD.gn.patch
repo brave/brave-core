@@ -1,10 +1,10 @@
 diff --git a/chrome/utility/BUILD.gn b/chrome/utility/BUILD.gn
-index 65a2d58f58109ed77b0fa9a41b63f660168b4a38..6d51895740bf66b8a6fdeca48ec50d8efb4c61af 100644
+index 2b750852cf3d53686121e9b919cafea1ae6ad43d..153dece8e6df445807dc0bc36ee32ca5f39e8f59 100644
 --- a/chrome/utility/BUILD.gn
 +++ b/chrome/utility/BUILD.gn
-@@ -258,6 +258,7 @@ static_library("utility") {
-   if (enable_on_device_translation) {
-     deps += [ "//components/on_device_translation/service:on_device_translation_service" ]
+@@ -265,6 +265,7 @@ static_library("utility") {
+       "readaloud/read_aloud_playback_controller.h",
+     ]
    }
 +  import("//brave/utility/sources.gni") sources += brave_utility_sources deps += brave_utility_deps public_deps += brave_utility_public_deps
  }
