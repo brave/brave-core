@@ -1,13 +1,13 @@
 diff --git a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
-index 8adf4fe4df22c6fe3c356659c2eac09e16de156c..316e80fbab77d9ff0af40a2133bb55e3aca1c81b 100644
+index bf57d9acfc89c26eb3923baf9ddb67fa867f9243..6e3adf38785bf14d56e468aa7b0adfaec7e424d5 100644
 --- a/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
 +++ b/chrome/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/TabSwitcherActionMenuCoordinator.java
-@@ -84,7 +84,7 @@ public class TabSwitcherActionMenuCoordinator {
-             Profile profile,
-             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier) {
+@@ -90,7 +90,7 @@ public class TabSwitcherActionMenuCoordinator {
+             MonotonicObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+             TabWindowManager tabWindowManager) {
          return createOnLongClickListener(
--                new TabSwitcherActionMenuCoordinator(profile, tabModelSelectorSupplier),
-+                new BraveTabSwitcherActionMenuCoordinator(profile, tabModelSelectorSupplier),
+-                new TabSwitcherActionMenuCoordinator(
++                new BraveTabSwitcherActionMenuCoordinator(
+                         profile, tabModelSelectorSupplier, tabWindowManager),
                  profile,
                  onItemClicked);
-     }
