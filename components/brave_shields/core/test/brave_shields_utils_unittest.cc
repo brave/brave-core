@@ -903,6 +903,9 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
 
   /* BLOCK */
   brave_shields::SetNoScriptControlType(map, ControlType::BLOCK, GURL());
+  setting = map->GetContentSetting(GURL(), GURL(),
+                                   ContentSettingsType::BRAVE_JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
@@ -914,6 +917,9 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_Default) {
 
   /* ALLOW */
   brave_shields::SetNoScriptControlType(map, ControlType::ALLOW, GURL());
+  setting = map->GetContentSetting(GURL(), GURL(),
+                                   ContentSettingsType::BRAVE_JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
   setting =
       map->GetContentSetting(GURL(), GURL(), ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(CONTENT_SETTING_ALLOW, setting);
@@ -931,7 +937,12 @@ TEST_F(BraveShieldsUtilTest, SetNoScriptControlType_ForOrigin) {
                                         GURL("http://brave.com"));
   // setting should apply to origin
   auto setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
-                                        ContentSettingsType::JAVASCRIPT);
+                                        ContentSettingsType::BRAVE_JAVASCRIPT);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
+
+  // effective setting should apply to origin while shields are up
+  setting = map->GetContentSetting(GURL("http://brave.com"), GURL(),
+                                   ContentSettingsType::JAVASCRIPT);
   EXPECT_EQ(CONTENT_SETTING_BLOCK, setting);
 
   // setting should also apply to different scheme
@@ -954,14 +965,14 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_Default) {
   /* BLOCK */
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+      ContentSettingsType::BRAVE_JAVASCRIPT, CONTENT_SETTING_BLOCK);
   setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
 
   /* ALLOW */
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_ALLOW);
+      ContentSettingsType::BRAVE_JAVASCRIPT, CONTENT_SETTING_ALLOW);
   setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::ALLOW, setting);
 }
@@ -982,7 +993,7 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
   // set override to block
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_JAVASCRIPT,
       CONTENT_SETTING_BLOCK);
   setting =
       brave_shields::GetNoScriptControlType(map, GURL("http://brave.com/*"));
@@ -999,7 +1010,7 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
   // change default to block
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+      ContentSettingsType::BRAVE_JAVASCRIPT, CONTENT_SETTING_BLOCK);
   setting =
       brave_shields::GetNoScriptControlType(map, GURL("http://brave.com"));
   EXPECT_EQ(ControlType::BLOCK, setting);
@@ -1011,7 +1022,7 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
 
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::FromString("http://brave.com/*"),
-      ContentSettingsPattern::Wildcard(), ContentSettingsType::JAVASCRIPT,
+      ContentSettingsPattern::Wildcard(), ContentSettingsType::BRAVE_JAVASCRIPT,
       CONTENT_SETTING_ALLOW);
   setting =
       brave_shields::GetNoScriptControlType(map, GURL("http://brave.com"));
@@ -1024,6 +1035,30 @@ TEST_F(BraveShieldsUtilTest, GetNoScriptControlType_ForOrigin) {
   // default is unchanged
   setting = brave_shields::GetNoScriptControlType(map, GURL());
   EXPECT_EQ(ControlType::BLOCK, setting);
+}
+
+TEST_F(BraveShieldsUtilTest, EffectiveJavaScriptIgnoresShieldsWhenDisabled) {
+  auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
+  const GURL url("https://brave.com");
+
+  brave_shields::SetNoScriptControlType(map, ControlType::BLOCK, url);
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
+
+  brave_shields::SetBraveShieldsEnabled(map, false, url);
+  EXPECT_EQ(ControlType::BLOCK,
+            brave_shields::GetNoScriptControlType(map, url));
+  EXPECT_EQ(
+      CONTENT_SETTING_ALLOW,
+      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
+
+  map->SetContentSettingCustomScope(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
 }
 
 // Should not do domain blocking if domain blocking feature is disabled
