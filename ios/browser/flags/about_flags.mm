@@ -18,6 +18,7 @@
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/skus/common/features.h"
 #include "brave/ios/browser/api/translate/features.h"
+#include "brave/ios/browser/playlist/features.h"
 #include "brave/ios/browser/ui/quick_view/features.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "build/build_config.h"
@@ -250,14 +251,23 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_PLAYLIST_FEATURE_ENTRIES                   \
-  EXPAND_FEATURE_ENTRIES({                               \
-      "brave-playlist",                                  \
-      "Enable Brave Playlist",                           \
-      "Enables the Brave Playlist feature.",             \
-      flags_ui::kOsIos,                                  \
-      FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
-  })
+#define BRAVE_PLAYLIST_FEATURE_ENTRIES                                        \
+  EXPAND_FEATURE_ENTRIES(                                                     \
+      {                                                                       \
+          "brave-playlist",                                                   \
+          "Enable Brave Playlist",                                            \
+          "Enables the Brave Playlist feature.",                              \
+          flags_ui::kOsIos,                                                   \
+          FEATURE_VALUE_TYPE(playlist::features::kPlaylist),                  \
+      },                                                                      \
+      {                                                                       \
+          "brave-playlist-cache-first",                                       \
+          "Enable Brave Playlist cache-first playback",                       \
+          "Prioritze Playlist item cache for enhanced playback"               \
+          "experience. Each item is cached to guarantee playback.",           \
+          flags_ui::kOsIos,                                                   \
+          FEATURE_VALUE_TYPE(playlist::features::kPlaylistCacheFirstEnabled), \
+      })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM
