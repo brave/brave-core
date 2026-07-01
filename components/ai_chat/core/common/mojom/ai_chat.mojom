@@ -25,6 +25,8 @@ const string kSemanticHistorySearchToolName = "semantic_history_search";
 [EnableIf=enable_ai_chat_tab_management_tool]
 const string kTabManagementToolName = "tab_management";
 
+const string kSemanticTabSearchToolName = "semantic_tab_search";
+
 const string kClickToolName = "click_element";
 const string kDragAndReleaseToolName = "drag_and_release";
 const string kMoveMouseToolName = "move_mouse";
@@ -52,6 +54,11 @@ const string kLineChartArtifactType = "line_chart";
 // the assistant's reply to render those URLs as anchors. Not rendered
 // visually.
 const string kVisitedLinksArtifactType = "visited_links";
+
+// `TabSemanticSearchTool` artifact carrying open-tab references for the chat
+// frontend to render as clickable cards. JSON shape:
+// `{"sources":[{"tab_id":int32,"title":string,"url":string}]}`.
+const string kTabSourcesArtifactType = "tab_sources";
 
 // Maximum length for memory and customization records.
 const int32 kMaxMemoryRecordLength = 512;

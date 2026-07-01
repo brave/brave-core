@@ -49,6 +49,9 @@
 #include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/ollama/ollama_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/ai_chat/tab_activator_factory.h"
+#endif
 #include "brave/components/ai_chat/core/common/features.h"
 #endif
 
@@ -226,6 +229,9 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
     ai_chat::ModelServiceFactory::GetInstance();
     ai_chat::OllamaServiceFactory::GetInstance();
     ai_chat::TabTrackerServiceFactory::GetInstance();
+#if !BUILDFLAG(IS_ANDROID)
+    ai_chat::TabActivatorFactory::GetInstance();
+#endif
   }
 #endif
 
