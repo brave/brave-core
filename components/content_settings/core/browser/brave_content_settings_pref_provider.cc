@@ -88,6 +88,30 @@ bool IsActive(const Rule* cookie_rule,
   return true;
 }
 
+bool IsActiveForTopLevelPattern(
+    const ContentSettingsPattern& top_level_pattern,
+    const std::vector<std::unique_ptr<Rule>>& shield_rules) {
+  for (const auto& shield_rule : shield_rules) {
+    auto primary_compare =
+        shield_rule->primary_pattern.Compare(top_level_pattern);
+    if (primary_compare == ContentSettingsPattern::IDENTITY ||
+        primary_compare == ContentSettingsPattern::SUCCESSOR) {
+      return ValueToContentSetting(shield_rule->value) != CONTENT_SETTING_BLOCK;
+    }
+  }
+
+  return true;
+}
+
+bool IsLegacyShieldsJavaScriptRule(const Rule& rule) {
+  return rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
+         ((rule.primary_pattern == ContentSettingsPattern::Wildcard()) ||
+          (rule.primary_pattern.GetSchemeType() ==
+               ContentSettingsPattern::SCHEME_WILDCARD &&
+           !rule.primary_pattern.MatchesAllHosts() &&
+           !rule.primary_pattern.GetHost().empty()));
+}
+
 }  // namespace
 
 // static
@@ -128,6 +152,7 @@ BravePrefProvider::BravePrefProvider(PrefService* prefs,
   MigrateBraveRemember1PStorageToAutoShred();
 
   OnCookieSettingsChanged(ContentSettingsType::BRAVE_COOKIES);
+  OnJavaScriptSettingsChanged(ContentSettingsType::BRAVE_JAVASCRIPT);
 
   // Enable change notifications after initial setup to avoid notification spam
   initialized_ = true;
@@ -292,6 +317,8 @@ void BravePrefProvider::MigrateShieldsSettings(bool incognito) {
   MigrateShieldsSettingsV2ToV3();
 
   MigrateShieldsSettingsV3ToV4(version);
+
+  MigrateShieldsSettingsV4ToV5();
 }
 
 void BravePrefProvider::EnsureNoWildcardEntries(
@@ -333,14 +360,16 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
         const std::string& resource_identifier(resource_key);
         std::string shields_preference_name;
 
-        // For "ads" and "cookies" we need to adapt the name to the new one,
-        // otherwise it will refer to upstream's "ads" and "cookies" settings.
+        // These obsolete resource names need to adapt to Shields-owned names,
+        // otherwise they would refer to upstream content settings.
         if (resource_identifier == brave_shields::kObsoleteAds) {
           shields_preference_name = brave_shields::kAds;
         } else if (resource_identifier == brave_shields::kObsoleteCookies) {
           shields_preference_name = brave_shields::kObsoleteShieldsCookies;
-        }
-        if (resource_identifier == brave_shields::kObsoleteCosmeticFiltering) {
+        } else if (resource_identifier == brave_shields::kJavaScript) {
+          shields_preference_name = brave_shields::kBraveJavaScript;
+        } else if (resource_identifier ==
+                   brave_shields::kObsoleteCosmeticFiltering) {
           shields_preference_name = resource_identifier;
           // Setup empty value to pass CHECK(HasPrefPath) in
           // MigrateShieldsSettingsFromResourceIdsForOneType.
@@ -349,7 +378,8 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           if (!prefs_->HasPrefPath(pref_path)) {
             prefs_->SetDict(pref_path, base::DictValue());
           }
-        } else {
+        }
+        if (shields_preference_name.empty()) {
           shields_preference_name = resource_identifier;
         }
 
@@ -506,6 +536,40 @@ void BravePrefProvider::MigrateShieldsSettingsV3ToV4(int start_version) {
     MigrateShieldsSettingsV2ToV3();
   }
   prefs_->SetInteger(kBraveShieldsSettingsVersion, 4);
+}
+
+void BravePrefProvider::MigrateShieldsSettingsV4ToV5() {
+  if (prefs_->GetInteger(kBraveShieldsSettingsVersion) != 4) {
+    return;
+  }
+
+  std::vector<std::unique_ptr<Rule>> rules_to_migrate;
+  auto rule_iterator = PrefProvider::GetRuleIterator(
+      ContentSettingsType::JAVASCRIPT, /*off_the_record*/ false);
+  while (rule_iterator && rule_iterator->HasNext()) {
+    auto rule = rule_iterator->Next();
+    if (IsLegacyShieldsJavaScriptRule(*rule)) {
+      rules_to_migrate.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
+    }
+  }
+  rule_iterator.reset();
+
+  for (const auto& rule : rules_to_migrate) {
+    SetWebsiteSettingInternal(rule->primary_pattern, rule->secondary_pattern,
+                              ContentSettingsType::JAVASCRIPT,
+                              ContentSettingToValue(CONTENT_SETTING_DEFAULT),
+                              {});
+
+    ContentSettingConstraints constraints;
+    constraints.set_session_model(rule->metadata.session_model());
+    SetWebsiteSettingInternal(
+        rule->primary_pattern, rule->secondary_pattern,
+        ContentSettingsType::BRAVE_JAVASCRIPT,
+        ContentSettingToValue(ValueToContentSetting(rule->value)),
+        std::move(constraints));
+  }
+
+  prefs_->SetInteger(kBraveShieldsSettingsVersion, 5);
 }
 
 void BravePrefProvider::MigrateShieldsSettingsV1ToV2ForOneType(
@@ -787,6 +851,30 @@ bool BravePrefProvider::SetWebsiteSetting(
     }
   }
 
+  const auto javascript_is_found_in =
+      [&primary_pattern = std::as_const(primary_pattern),
+       &secondary_pattern = std::as_const(secondary_pattern),
+       &in_value = std::as_const(in_value)](
+          const std::vector<std::unique_ptr<Rule>>& rules) {
+        for (const auto& rule : rules) {
+          if (rule->primary_pattern == primary_pattern &&
+              rule->secondary_pattern == secondary_pattern &&
+              rule->value != in_value) {
+            return true;
+          }
+        }
+        return false;
+      };
+
+  if (content_type == ContentSettingsType::JAVASCRIPT &&
+      javascript_is_found_in(brave_javascript_rules_[off_the_record_])) {
+    // Effective JAVASCRIPT rules generated from Shields should be edited in
+    // the Shields-owned setting so the effective value remains derivable.
+    return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
+                                     ContentSettingsType::BRAVE_JAVASCRIPT,
+                                     in_value, constraints);
+  }
+
   return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                    content_type, in_value, constraints);
 }
@@ -859,6 +947,11 @@ std::unique_ptr<RuleIterator> BravePrefProvider::GetRuleIterator(
     return rules.GetRuleIterator(content_type);
   }
 
+  if (content_type == ContentSettingsType::JAVASCRIPT) {
+    const auto& rules = javascript_rules_.at(off_the_record);
+    return rules.GetRuleIterator(content_type);
+  }
+
   return PrefProvider::GetRuleIterator(content_type, off_the_record);
 }
 
@@ -869,6 +962,16 @@ std::unique_ptr<Rule> BravePrefProvider::GetRule(
     bool off_the_record) const {
   if (content_type == ContentSettingsType::COOKIES) {
     const auto& rules = cookie_rules_.at(off_the_record);
+    base::AutoLock auto_lock(rules.GetLock());
+    return rules.GetRule(primary_url, secondary_url, content_type);
+  }
+
+  // Read the effective JAVASCRIPT rule from the materialized map so GetRule and
+  // GetRuleIterator stay consistent and the Shields-scope precedence computed
+  // in UpdateJavaScriptRules remains the single source of truth (mirrors the
+  // COOKIES handling above).
+  if (content_type == ContentSettingsType::JAVASCRIPT) {
+    const auto& rules = javascript_rules_.at(off_the_record);
     base::AutoLock auto_lock(rules.GetLock());
     return rules.GetRule(primary_url, secondary_url, content_type);
   }
@@ -1117,16 +1220,102 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       (content_type == ContentSettingsType::BRAVE_COOKIES ||
        content_type == ContentSettingsType::BRAVE_SHIELDS ||
        content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)) {
-    NotifyChanges(brave_cookie_updates, incognito);
+    NotifyChanges(brave_cookie_updates, ContentSettingsType::COOKIES,
+                  incognito);
+  }
+}
+
+void BravePrefProvider::UpdateJavaScriptRules(ContentSettingsType content_type,
+                                              bool incognito) {
+  std::vector<std::unique_ptr<Rule>> rules;
+  auto old_rules = std::move(brave_javascript_rules_[incognito]);
+  brave_javascript_rules_[incognito].clear();
+
+  {
+    auto chromium_javascript_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::JAVASCRIPT, incognito);
+    while (chromium_javascript_iterator &&
+           chromium_javascript_iterator->HasNext()) {
+      rules.emplace_back(
+          CloneRule(CHECK_DEREF(chromium_javascript_iterator->Next().get())));
+    }
+  }
+
+  std::vector<std::unique_ptr<Rule>> shield_rules;
+  {
+    auto brave_shields_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_SHIELDS, incognito);
+    while (brave_shields_iterator && brave_shields_iterator->HasNext()) {
+      shield_rules.emplace_back(
+          CloneRule(CHECK_DEREF(brave_shields_iterator->Next().get())));
+    }
+  }
+
+  {
+    auto brave_javascript_iterator = PrefProvider::GetRuleIterator(
+        ContentSettingsType::BRAVE_JAVASCRIPT, incognito);
+    while (brave_javascript_iterator && brave_javascript_iterator->HasNext()) {
+      auto rule = brave_javascript_iterator->Next();
+      if (IsActiveForTopLevelPattern(rule->primary_pattern, shield_rules)) {
+        rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
+        brave_javascript_rules_[incognito].emplace_back(
+            CloneRule(CHECK_DEREF(rule.get())));
+      }
+    }
+  }
+
+  std::vector<std::unique_ptr<Rule>> brave_javascript_updates;
+  for (const auto& new_rule : brave_javascript_rules_[incognito]) {
+    auto match =
+        std::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
+          return new_rule->primary_pattern == old_rule->primary_pattern &&
+                 new_rule->secondary_pattern == old_rule->secondary_pattern &&
+                 ValueToContentSetting(new_rule->value) ==
+                     ValueToContentSetting(old_rule->value);
+        });
+    if (match == old_rules.end()) {
+      brave_javascript_updates.emplace_back(
+          CloneRule(CHECK_DEREF(new_rule.get())));
+    }
+  }
+
+  for (const auto& old_rule : old_rules) {
+    auto match = std::ranges::find_if(
+        brave_javascript_rules_[incognito], [&old_rule](const auto& new_rule) {
+          return new_rule->primary_pattern == old_rule->primary_pattern &&
+                 new_rule->secondary_pattern == old_rule->secondary_pattern;
+        });
+    if (match == brave_javascript_rules_[incognito].end()) {
+      brave_javascript_updates.emplace_back(std::make_unique<Rule>(
+          old_rule->primary_pattern, old_rule->secondary_pattern, base::Value(),
+          old_rule->metadata.Clone()));
+    }
+  }
+
+  {
+    base::AutoLock lock(javascript_rules_[incognito].GetLock());
+    javascript_rules_[incognito].clear();
+    for (auto&& r : rules) {
+      javascript_rules_[incognito].SetValue(
+          r->primary_pattern, r->secondary_pattern,
+          ContentSettingsType::JAVASCRIPT, std::move(r->value),
+          std::move(r->metadata));
+    }
+  }
+
+  if (initialized_ && (content_type == ContentSettingsType::BRAVE_JAVASCRIPT ||
+                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
+    NotifyChanges(brave_javascript_updates, ContentSettingsType::JAVASCRIPT,
+                  incognito);
   }
 }
 
 void BravePrefProvider::NotifyChanges(
     const std::vector<std::unique_ptr<Rule>>& rules,
+    ContentSettingsType content_type,
     bool incognito) {
   for (const auto& rule : rules) {
-    Notify(rule->primary_pattern, rule->secondary_pattern,
-           ContentSettingsType::COOKIES);
+    Notify(rule->primary_pattern, rule->secondary_pattern, content_type);
   }
 }
 
@@ -1140,6 +1329,12 @@ void BravePrefProvider::OnCookieSettingsChanged(
   UpdateCookieRules(content_type, false);
 }
 
+void BravePrefProvider::OnJavaScriptSettingsChanged(
+    ContentSettingsType content_type) {
+  UpdateJavaScriptRules(content_type, true);
+  UpdateJavaScriptRules(content_type, false);
+}
+
 void BravePrefProvider::OnContentSettingChanged(
     const ContentSettingsPattern& primary_pattern,
     const ContentSettingsPattern& secondary_pattern,
@@ -1149,6 +1344,12 @@ void BravePrefProvider::OnContentSettingChanged(
       content_type == ContentSettingsType::BRAVE_SHIELDS ||
       content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN) {
     OnCookieSettingsChanged(content_type);
+  }
+
+  if (content_type == ContentSettingsType::JAVASCRIPT ||
+      content_type == ContentSettingsType::BRAVE_JAVASCRIPT ||
+      content_type == ContentSettingsType::BRAVE_SHIELDS) {
+    OnJavaScriptSettingsChanged(content_type);
   }
 }
 
