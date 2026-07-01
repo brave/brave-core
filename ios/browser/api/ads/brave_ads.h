@@ -14,15 +14,13 @@ NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT NSString* const kBraveAdsFirstRunAtPrefName;
 
-@class NotificationAdIOS, NewTabPageAdIOS;
-
 OBJC_EXPORT
 @protocol BraveAdsNotificationHandler
 @required
 /// Returns `true` if notification ads can be shown.
 - (BOOL)canShowNotificationAds;
 /// Show notification `ad`.
-- (void)showNotificationAd:(NotificationAdIOS*)ad;
+- (void)showNotificationAd:(BraveAdsNotificationAdInfo*)ad;
 /// Close the notification ad for the specified `placement_id`.
 - (void)closeNotificationAd:(NSString*)placementId;
 @end
@@ -116,7 +114,7 @@ OBJC_EXPORT
               double estimatedEarnings,
               NSDate* _Nullable nextPaymentDate))completion;
 
-- (void)maybeServeNewTabPageAd:(void (^)(NewTabPageAdIOS* _Nullable))completion;
+- (void)maybeServeNewTabPageAd:(void (^)(BraveAdsNewTabPageAdInfo* _Nullable))completion;
 
 - (void)triggerNewTabPageAdEvent:(NSString*)wallpaperId
               creativeInstanceId:(NSString*)creativeInstanceId
@@ -126,7 +124,7 @@ OBJC_EXPORT
 
 - (void)maybeGetNotificationAd:(NSString*)identifier
                     completion:
-                        (void (^)(NotificationAdIOS* _Nullable))completion;
+                        (void (^)(BraveAdsNotificationAdInfo* _Nullable))completion;
 
 - (void)triggerNotificationAdEvent:(NSString*)placementId
                          eventType:(BraveAdsNotificationAdEventType)eventType

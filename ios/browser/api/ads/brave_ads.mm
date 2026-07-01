@@ -31,8 +31,6 @@
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
 #include "brave/components/brave_ads/core/browser/virtual_pref/virtual_pref_provider.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -51,8 +49,6 @@
 #import "brave/ios/browser/api/ads/ads_client_bridge.h"
 #import "brave/ios/browser/api/ads/ads_client_ios.h"
 #import "brave/ios/browser/api/ads/brave_ads.mojom.objc+private.h"
-#import "brave/ios/browser/api/ads/new_tab_page_ad_ios.h"
-#import "brave/ios/browser/api/ads/notification_ad_ios.h"
 #import "brave/ios/browser/api/common/common_operations.h"
 #include "brave/ios/browser/brave_ads/ads_service_factory_ios.h"
 #include "brave/ios/browser/brave_ads/ads_service_impl_ios.h"
@@ -98,14 +94,24 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 
 }  // namespace
 
-@interface NotificationAdIOS ()
-- (instancetype)initWithNotificationAdInfo:
-    (const brave_ads::NotificationAdInfo&)info;
+@interface BraveAdsNotificationAdInfo (MyFirstAd)
++ (instancetype)customAdWithTitle:(NSString*)title
+                             body:(NSString*)body
+                              url:(NSString*)url
+    NS_SWIFT_NAME(customAd(title:body:url:));
 @end
 
-@interface NewTabPageAdIOS ()
-- (instancetype)initWithNewTabPageAdInfo:
-    (const brave_ads::NewTabPageAdInfo&)info;
+@implementation BraveAdsNotificationAdInfo (MyFirstAd)
++ (instancetype)customAdWithTitle:(NSString*)title
+                             body:(NSString*)body
+                              url:(NSString*)url {
+  BraveAdsNotificationAdInfo* notification =
+      [[BraveAdsNotificationAdInfo alloc] init];
+  notification.title = title;
+  notification.body = body;
+  notification.targetUrl = [NSURL URLWithString:url];
+  return notification;
+}
 @end
 
 @interface BraveAds () <AdsClientBridge> {
@@ -1296,9 +1302,19 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)ad {
-  const auto notificationAd =
-      [[NotificationAdIOS alloc] initWithNotificationAdInfo:ad];
-  [self.notificationsHandler showNotificationAd:notificationAd];
+  brave_ads::mojom::NotificationAdInfo mojom_ad;
+  mojom_ad.placement_id = ad.placement_id;
+  mojom_ad.creative_instance_id = ad.creative_instance_id;
+  mojom_ad.creative_set_id = ad.creative_set_id;
+  mojom_ad.campaign_id = ad.campaign_id;
+  mojom_ad.advertiser_id = ad.advertiser_id;
+  mojom_ad.segment = ad.segment;
+  mojom_ad.target_url = ad.target_url;
+  mojom_ad.title = ad.title;
+  mojom_ad.body = ad.body;
+  const auto notification_ad = [[BraveAdsNotificationAdInfo alloc]
+      initWithNotificationAdInfo:mojom_ad];
+  [self.notificationsHandler showNotificationAd:notification_ad];
 }
 
 - (void)closeNotificationAd:(const std::string&)placement_id {
@@ -1475,7 +1491,7 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)maybeServeNewTabPageAd:
-    (void (^)(NewTabPageAdIOS* _Nullable))completion {
+    (void (^)(BraveAdsNewTabPageAdInfo* _Nullable))completion {
   if (![self isServiceRunning]) {
     return completion(/*newTabPageAd=*/nil);
   }
@@ -1486,13 +1502,8 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
           return completion(/*newTabPageAd=*/nil);
         }
 
-        const auto ad = brave_ads::FromMojom(mojom_ad);
-        if (!ad) {
-          return completion(/*newTabPageAd=*/nil);
-        }
-
-        const auto newTabPageAd =
-            [[NewTabPageAdIOS alloc] initWithNewTabPageAdInfo:*ad];
+        const auto newTabPageAd = [[BraveAdsNewTabPageAdInfo alloc]
+            initWithNewTabPageAdInfo:*mojom_ad];
         completion(newTabPageAd);
       }));
 }
@@ -1519,7 +1530,9 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
 }
 
 - (void)maybeGetNotificationAd:(NSString*)identifier
-                    completion:(void (^)(NotificationAdIOS*))completion {
+                    completion:
+                        (void (^)(BraveAdsNotificationAdInfo* _Nullable))
+                            completion {
   if (![self isServiceRunning]) {
     return completion(/*notificationAd=*/nil);
   }
@@ -1532,8 +1545,18 @@ constexpr NSString* kAdsResourceComponentMetadataVersion = @".v1";
           return completion(/*notificationAd=*/nil);
         }
 
-        const auto notification_ad =
-            [[NotificationAdIOS alloc] initWithNotificationAdInfo:*ad];
+        brave_ads::mojom::NotificationAdInfo mojom_ad;
+        mojom_ad.placement_id = ad->placement_id;
+        mojom_ad.creative_instance_id = ad->creative_instance_id;
+        mojom_ad.creative_set_id = ad->creative_set_id;
+        mojom_ad.campaign_id = ad->campaign_id;
+        mojom_ad.advertiser_id = ad->advertiser_id;
+        mojom_ad.segment = ad->segment;
+        mojom_ad.target_url = ad->target_url;
+        mojom_ad.title = ad->title;
+        mojom_ad.body = ad->body;
+        const auto notification_ad = [[BraveAdsNotificationAdInfo alloc]
+            initWithNotificationAdInfo:mojom_ad];
         completion(notification_ad);
       }));
 }

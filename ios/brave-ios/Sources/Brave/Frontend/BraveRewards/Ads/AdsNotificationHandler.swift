@@ -10,7 +10,7 @@ import UIKit
 
 class AdsNotificationHandler: BraveAdsNotificationHandler {
   /// An ad was tapped and a URL should be opened
-  var actionOccured: ((NotificationAd?, RewardsNotification.Action) -> Void)?
+  var actionOccured: ((BraveAds.NotificationAdInfo?, RewardsNotification.Action) -> Void)?
   /// The ads object
   let ads: BraveAds
   /// Whether or not we should currently show ads currently based on exteranl
@@ -36,7 +36,7 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.ads.notificationsHandler = self
   }
 
-  func showNotificationAd(_ notification: NotificationAd) {
+  func showNotificationAd(_ notification: BraveAds.NotificationAdInfo) {
     guard let presentingController = presentingController else { return }
 
     let rewardsNotification = RewardsNotification(ad: notification) { [weak self] action in
@@ -44,19 +44,19 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
       switch action {
       case .opened:
         self.ads.triggerNotificationAdEvent(
-          notification.placementID,
+          notification.placementId,
           eventType: .clicked,
           completion: { _ in }
         )
       case .dismissed:
         self.ads.triggerNotificationAdEvent(
-          notification.placementID,
+          notification.placementId,
           eventType: .dismissed,
           completion: { _ in }
         )
       case .timedOut:
         self.ads.triggerNotificationAdEvent(
-          notification.placementID,
+          notification.placementId,
           eventType: .timedOut,
           completion: { _ in }
         )
@@ -65,7 +65,7 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     }
 
     ads.triggerNotificationAdEvent(
-      notification.placementID,
+      notification.placementId,
       eventType: .viewedImpression,
       completion: { _ in }
     )
