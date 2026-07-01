@@ -13,10 +13,17 @@ source_set("brave_shields") {
     "brave_shields_settings_service_factory_bridge.mm",
     "cookie_control_javascript_feature.h",
     "cookie_control_javascript_feature.mm",
+    "protection_stats_javascript_feature.h",
+    "protection_stats_javascript_feature.mm",
+    "protection_stats_tab_helper.h",
+    "protection_stats_tab_helper.mm",
+    "protection_stats_tab_helper_bridge.h",
+    "protection_stats_tab_helper_bridge.mm",
   ]
 
   deps = [
     ":cookie_control_js",
+    ":protection_stats_js",
     "//base",
     "//brave/components/brave_shields/core/browser",
     "//brave/components/brave_shields/ios/browser",
@@ -32,6 +39,7 @@ source_set("brave_shields") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/web/public",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider_header",
+    "//net",
     "//url",
   ]
 
@@ -44,4 +52,10 @@ optimize_ts("cookie_control_js") {
   visibility = [ ":brave_shields" ]
   sources = [ "resources/cookie_control.ts" ]
   deps = [ "//ios/web/public/js_messaging:gcrweb" ]
+}
+
+optimize_ts("protection_stats_js") {
+  visibility = [ ":brave_shields" ]
+  sources = [ "resources/protection_stats.ts" ]
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
 }
