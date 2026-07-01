@@ -6,6 +6,8 @@
 #include "brave/components/brave_policy/policy_pref_interceptor.h"
 
 #include "base/containers/map_util.h"
+#include "base/feature_list.h"
+#include "brave/components/brave_policy/features.h"
 #include "brave/components/brave_policy/policy_pref_interceptor_list.h"
 #include "components/prefs/pref_value_map.h"
 
@@ -32,6 +34,12 @@ void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map,
     return;
   }
 
+  // Check the instance first to avoid accessing the feature list before
+  // FeatureList initialization is finalized.
+  const bool feature_enabled =
+      base::FeatureList::GetInstance() &&
+      base::FeatureList::IsEnabled(features::kCacheNonDynamicPolicyPrefs);
+
   for (std::string_view pref_name :
        PolicyPrefInterceptorList::GetInstance()->GetPrefs()) {
     if (!policies_initialized) {
@@ -44,7 +52,7 @@ void PolicyPrefInterceptor::InterceptPrefValues(PrefValueMap* pref_value_map,
       } else {
         pref_cache_.erase(pref_name);
       }
-    } else {
+    } else if (feature_enabled) {
       // Policies are initialized. Restore cached values, removing any pref not
       // present in the cache.
       if (const auto* cached_value = base::FindOrNull(pref_cache_, pref_name)) {
