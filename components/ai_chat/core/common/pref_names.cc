@@ -10,6 +10,7 @@
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_registry_simple.h"
 
 namespace ai_chat::prefs {
@@ -46,7 +47,8 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatUserMemoryEnabled, true);
     registry->RegisterDictionaryPref(kBraveAIChatUserCustomizations);
     registry->RegisterListPref(kBraveAIChatUserMemories);
-    registry->RegisterDictionaryPref(kBraveAIChatSkills);
+    registry->RegisterDictionaryPref(
+        kBraveAIChatSkills, user_prefs::PrefRegistrySyncable::SYNCABLE_PREF);
     registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
     registry->RegisterDictionaryPref(kAIChatObliviousHttpKeyConfigs);
   }
