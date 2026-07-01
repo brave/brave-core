@@ -29,6 +29,9 @@ patches/**/*.patchinfo
 /third_party/brave-vpn-wireguard-nt-dlls/
 /third_party/brave-vpn-wireguard-tunnel-dlls/
 /third_party/bip39wally-core-native/
+/third_party/comby-src/
+/third_party/comby-toolchain-intermediate/
+/third_party/comby-toolchain
 /third_party/ethash/src
 /third_party/bitcoin-core/src
 /third_party/playlist_component/src
