@@ -493,9 +493,9 @@ void ConversationAPIClient::OnQueryCompleted(
     error = mojom::APIError::ConnectionIssue;
   }
 
-  auto details =
-      mojom::APIErrorDetails::New(static_cast<int32_t>(result.response_code()),
-                                  ParseErrorCode(result.value_body()));
+  auto details = mojom::APIErrorDetails::New(
+      static_cast<int32_t>(result.response_code()),
+      ParseErrorCode(result.value_body()), /*inner_status_code=*/0);
 
   std::move(callback).Run(
       base::unexpected(EngineConsumer::Error(error, std::move(details))));

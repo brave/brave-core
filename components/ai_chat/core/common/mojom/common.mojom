@@ -42,6 +42,8 @@ enum APIError {
 struct APIErrorDetails {
   int32 status_code;
   string error_type;
+  // Only applies to Oblivious HTTP requests.
+  int32 inner_status_code;
 };
 
 enum SuggestionGenerationStatus {
