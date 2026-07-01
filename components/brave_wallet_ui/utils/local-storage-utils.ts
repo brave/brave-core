@@ -7,6 +7,7 @@
 import {
   SupportedTestNetworks,
   BraveWallet,
+  MeldCryptoCurrency,
   PanelTypes,
   AssetIdsByCollectionNameRegistry,
 } from '../constants/types'
@@ -233,6 +234,38 @@ export const getPersistedSpotPrices = (): BraveWallet.AssetPrice[] => {
   } catch (error) {
     console.error(error)
     return []
+  }
+}
+
+/** Last successful Meld on-ramp list; replaced in full on each persist (no merge). */
+export const getPersistedMeldCryptoCurrencies = (): MeldCryptoCurrency[] => {
+  try {
+    const raw = window.localStorage.getItem(
+      LOCAL_STORAGE_KEYS.MELD_CRYPTO_CURRENCIES,
+    )
+    if (!raw) {
+      return []
+    }
+    const parsed = JSON.parse(raw) as MeldCryptoCurrency[]
+    return Array.isArray(parsed) ? parsed : []
+  } catch (error) {
+    console.error(error)
+    return []
+  }
+}
+
+/** Overwrites stored list with `tokens` so assets delisted by Meld disappear from cache. */
+export const persistMeldCryptoCurrencies = (tokens: MeldCryptoCurrency[]) => {
+  if (!tokens.length) {
+    return
+  }
+  try {
+    window.localStorage.setItem(
+      LOCAL_STORAGE_KEYS.MELD_CRYPTO_CURRENCIES,
+      JSON.stringify(tokens),
+    )
+  } catch (error) {
+    console.error(error)
   }
 }
 
