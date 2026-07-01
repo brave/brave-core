@@ -12,8 +12,9 @@ import '$web-common/disableDuplicateSvelteTrustedPolicies'
 
 import * as CommandsMojo from 'gen/brave/components/commands/common/commands.mojom.m.js'
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import styled, { StyleSheetManager } from 'styled-components'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import Command from './components/Command'
 import { CommandsCache } from './utils/commandsCache'
 import { match } from './utils/match'
@@ -121,10 +122,11 @@ function App() {
 }
 
 export const mount = (at: HTMLElement) => {
-  render(
-    <StyleSheetManager target={at}>
-      <App />
-    </StyleSheetManager>,
-    at
+  createRoot(at).render(
+    <StyledComponentsProvider>
+      <StyleSheetManager target={at}>
+        <App />
+      </StyleSheetManager>
+    </StyledComponentsProvider>
   )
 }

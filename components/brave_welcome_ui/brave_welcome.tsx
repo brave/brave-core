@@ -6,6 +6,7 @@
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { loadTimeData } from '$web-common/loadTimeData'
 
@@ -27,7 +28,11 @@ function App () {
 function initialize () {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('root')!)
-  root.render(<App />)
+  root.render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

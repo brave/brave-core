@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import styled from 'styled-components'
 import { color, font } from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
@@ -60,9 +61,7 @@ export const ControlText = styled.h3`
   margin: 0;
 `
 
-export const Dialog = styled(LeoDialog).attrs({
-  size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal',
-})`
+const StyledDialog = styled(LeoDialog)`
   --leo-dialog-backdrop-background: rgba(17, 18, 23, 0.35);
   --leo-dialog-backdrop-filter: blur(8px);
   --leo-dialog-padding: 16px;
@@ -71,6 +70,25 @@ export const Dialog = styled(LeoDialog).attrs({
     margin-bottom: 0;
   }
 `
+
+// Wrap rather than use styled(LeoDialog).attrs(): styled-components v6's .attrs
+// type machinery explodes over leo Dialog's large prop type. A minimal prop
+// type is used for the same reason (referencing the full LeoDialog props here
+// also explodes); additional props are forwarded via spread.
+type DialogWrapperProps = React.PropsWithChildren<{
+  isOpen?: boolean
+  onClose?: () => void
+  showClose?: boolean
+  size?: string
+  slot?: string
+  className?: string
+}>
+
+export const Dialog = (props: DialogWrapperProps) =>
+  React.createElement(StyledDialog, {
+    size: window.innerWidth <= layoutPanelWidth ? 'mobile' : 'normal',
+    ...props,
+  })
 
 export const DialogTitle = styled.p`
   font: ${font.heading.h2};
@@ -108,12 +126,18 @@ export const Dropdown = styled(LeoDropdown)`
   min-width: 100%;
 `
 
-export const SearchInput = styled(Input).attrs({
-  mode: 'filled',
-  size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
-})`
+const StyledSearchInput = styled(Input)`
   width: 100%;
 `
+
+// Wrap rather than use styled(Input).attrs(): styled-components v6's .attrs
+// type machinery explodes over leo Input's large prop type (TS2590).
+export const SearchInput = (props: React.ComponentProps<typeof Input>) =>
+  React.createElement(StyledSearchInput, {
+    mode: 'filled',
+    size: window.innerWidth <= layoutPanelWidth ? 'small' : 'normal',
+    ...props,
+  })
 
 export const IconsWrapper = styled.div`
   display: flex;

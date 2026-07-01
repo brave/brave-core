@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 
 import Button from '@brave/leo/react/button'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import styled from 'styled-components'
 import { downloadExport, getExportData } from './export'
 import Variables from './Variables'
@@ -37,4 +38,8 @@ function App() {
 }
 
 createRoot(document.getElementById('root')!)
-  .render(<App />)
+  .render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )

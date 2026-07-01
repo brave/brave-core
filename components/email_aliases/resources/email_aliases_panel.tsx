@@ -6,6 +6,7 @@
 import { createRoot } from 'react-dom/client'
 import * as React from 'react'
 import { StyleSheetManager } from 'styled-components'
+import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
   EmailAliasModal,
@@ -71,7 +72,7 @@ const mount = () => {
   }
   setIconBasePath('//resources/brave-icons')
   createRoot(rootElement).render(
-    <StyleSheetManager>
+    <StyleSheetManager shouldForwardProp={shouldForwardProp}>
       <EmailAliasesPanelConnected
         emailAliasesService={emailAliasesService}
         emailAliasesPanelHandler={emailAliasesPanelHandler}

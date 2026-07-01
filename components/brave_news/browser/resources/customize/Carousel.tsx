@@ -98,7 +98,7 @@ interface Props {
 }
 
 export default function Carousel(props: Props) {
-  const scrollContainerRef = React.useRef<HTMLDivElement>()
+  const scrollContainerRef = React.useRef<HTMLDivElement>(null)
   const [availableDirections, setAvailableDirections] = React.useState<'none' | 'left' | 'right' | 'both'>('right')
   const updateAvailableDirections = React.useCallback(() => {
     if (!scrollContainerRef.current) return

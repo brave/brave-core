@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { AppContext } from './lib/app_context'
@@ -49,12 +50,14 @@ whenDocumentReady().then(() => {
   const root = createRoot(document.getElementById('root')!)
 
   root.render(
-    <TabOpenerContext.Provider value={actions}>
-      <AppContext.Provider value={store}>
-        <ShowHandler>
-          <App />
-        </ShowHandler>
-      </AppContext.Provider>
-    </TabOpenerContext.Provider>,
+    <StyledComponentsProvider>
+      <TabOpenerContext.Provider value={actions}>
+        <AppContext.Provider value={store}>
+          <ShowHandler>
+            <App />
+          </ShowHandler>
+        </AppContext.Provider>
+      </TabOpenerContext.Provider>
+    </StyledComponentsProvider>,
   )
 })

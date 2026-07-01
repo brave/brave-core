@@ -10,6 +10,7 @@ import '../../../../ui/webui/resources/css/reset.css'
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import * as Mojom from '../common/mojom'
 import { parseConversationData } from '../common/conversation_serialization'
@@ -85,10 +86,12 @@ export function renderConversation(
   const root = createRoot(element)
 
   root.render(
-    <div style={{ backgroundColor: 'var(--leo-color-container-background)' }}>
-      <UntrustedConversationContextProvider api={api}>
-        <Conversation />
-      </UntrustedConversationContextProvider>
-    </div>,
+    <StyledComponentsProvider>
+      <div style={{ backgroundColor: 'var(--leo-color-container-background)' }}>
+        <UntrustedConversationContextProvider api={api}>
+          <Conversation />
+        </UntrustedConversationContextProvider>
+      </div>
+    </StyledComponentsProvider>,
   )
 }

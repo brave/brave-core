@@ -4,11 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 
 // Components
 import App from './components/app'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { ThemeProvider } from 'styled-components'
 import Theme from 'brave-ui/theme/brave-default'
 
@@ -25,13 +26,15 @@ import {
 
 function initialize () {
   store.dispatch(getTorGeneralInfo())
-  render(
-    <Provider store={store}>
-      <ThemeProvider theme={Theme}>
-        <App />
-      </ThemeProvider>
-    </Provider>,
-    document.getElementById('root'))
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <Provider store={store}>
+        <ThemeProvider theme={Theme}>
+          <App />
+        </ThemeProvider>
+      </Provider>
+    </StyledComponentsProvider>
+  )
 }
 
 // Expose functions to Page Handlers.

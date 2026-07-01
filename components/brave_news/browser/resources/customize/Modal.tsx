@@ -37,7 +37,7 @@ const Loading = styled.div`
 
 export default function BraveNewsModal() {
   const { customizePage, setCustomizePage } = useBraveNews()
-  const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>()
+  const dialogRef = React.useRef<HTMLDialogElement & { showModal: () => void, close: () => void, open: boolean }>(null)
 
   const shouldRender = !!customizePage
 

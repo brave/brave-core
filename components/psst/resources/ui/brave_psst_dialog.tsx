@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import { createPsstDialogApi } from './api/psst_dialog_api'
 import * as Mojom from 'gen/brave/components/psst/core/common/psst_ui_common.mojom.m.js'
@@ -34,12 +35,14 @@ async function createBrowserPsstApi() {
 async function initialize() {
   const apiData = await createBrowserPsstApi()
   createRoot(document.getElementById('root')!).render(
-    <PsstDialogAPIProvider
-      api={apiData.api}
-      siteData={apiData.siteData}
-    >
-      <PsstProgressModal />
-    </PsstDialogAPIProvider>,
+    <StyledComponentsProvider>
+      <PsstDialogAPIProvider
+        api={apiData.api}
+        siteData={apiData.siteData}
+      >
+        <PsstProgressModal />
+      </PsstDialogAPIProvider>
+    </StyledComponentsProvider>,
   )
 }
 

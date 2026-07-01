@@ -42,7 +42,7 @@ export interface Props {
 
 export const NewPasswordInput = ({
   autoFocus,
-  showToggleButton,
+  showToggleButton = true,
   initialPassword,
   onSubmit,
   onChange,
@@ -185,10 +185,6 @@ export const NewPasswordInput = ({
       </Column>
     </>
   )
-}
-
-NewPasswordInput.defaultProps = {
-  showToggleButton: true,
 }
 
 export default NewPasswordInput

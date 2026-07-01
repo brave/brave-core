@@ -7,6 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
 import '../common/defaultTrustedTypesPolicy'
@@ -26,14 +27,16 @@ function initialize () {
   console.timeStamp('loaded')
   // Get rendering going
   createRoot(document.getElementById('root')!).render(
-    <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}
-      >
-        <App />
-      </BraveCoreThemeProvider>
-    </Provider>)
+    <StyledComponentsProvider>
+      <Provider store={store}>
+        <BraveCoreThemeProvider
+          dark={DarkTheme}
+          light={Theme}
+        >
+          <App />
+        </BraveCoreThemeProvider>
+      </Provider>
+    </StyledComponentsProvider>)
 }
 
 console.timeStamp('JS start')

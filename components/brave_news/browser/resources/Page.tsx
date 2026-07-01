@@ -69,7 +69,7 @@ export default function FeedV2() {
   const isSmall = useMediaQuery(isSmallQuery)
 
   const { feedV2, setCustomizePage, refreshFeedV2, feedV2UpdatesAvailable, reportViewCount, reportSessionStart } = useBraveNews()
-  const ref = React.useRef<HTMLDivElement>()
+  const ref = React.useRef<HTMLDivElement>(null)
 
   // Note: Whenever the feed is updated, if we're viewing the feed, scroll to
   // the top.

@@ -99,14 +99,14 @@ export const Text = styled('div')<{}>`
   margin: 0;
 `
 
-export const Heading = styled(Text.withComponent('h2'))`
+export const Heading = styled(Text).attrs({ as: 'h2' })`
   font-family: ${p => p.theme.fontFamily.heading};
   font-weight: 600;
   font-size: 22px;
   line-height: 32px;
 `
 
-export const Time = styled(Text.withComponent('time'))`
+export const Time = styled(Text).attrs({ as: 'time' })`
   box-sizing: border-box;
   display: block;
   font-family: ${p => p.theme.fontFamily.heading};

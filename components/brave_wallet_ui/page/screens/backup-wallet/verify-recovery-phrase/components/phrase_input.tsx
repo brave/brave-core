@@ -60,10 +60,7 @@ export const PhraseInput = ({
       ></FormInput>
       {showError ? (
         <AlertWrapper>
-          <InfoAlert
-            type='error'
-            kind='simple'
-          >
+          <InfoAlert type='error'>
             {getLocale('braveWalletVerifyError')}
             <div
               slot='content-after'

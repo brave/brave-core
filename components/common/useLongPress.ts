@@ -25,7 +25,7 @@ export interface LongPressProps {
 }
 
 export default function useLongPress(props: LongPressProps) {
-  const touchTimer = React.useRef<NodeJS.Timeout | number>()
+  const touchTimer = React.useRef<NodeJS.Timeout | number>(undefined)
 
   const handleTouchStart = React.useCallback(
     (e: React.TouchEvent) => {

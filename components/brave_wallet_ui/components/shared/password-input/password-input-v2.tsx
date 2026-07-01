@@ -34,7 +34,9 @@ export interface Props
   showToggleButton?: boolean
   name?: string
   children?:
-    | React.ReactChild
+    | React.ReactElement
+    | string
+    | number
     | ((state: PasswordInputState) => React.ReactElement)
   revealValue?: boolean
 }
@@ -125,10 +127,6 @@ export const PasswordInput = (props: Props) => {
         : children}
     </Column>
   )
-}
-
-PasswordInput.defaultProps = {
-  showToggleButton: true,
 }
 
 export default PasswordInput

@@ -4,8 +4,9 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 
@@ -62,10 +63,12 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'),
-  () => {
-    getPanelBrowserAPI().panelHandler.showUI()
-  })
+  createRoot(document.getElementById('mountPoint')!).render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>
+  )
+  getPanelBrowserAPI().panelHandler.showUI()
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
