@@ -38,4 +38,24 @@ bool ShouldFireAdEvent(const NewTabPageAdInfo& ad,
   return true;
 }
 
+mojom::ConfirmationType ToMojomConfirmationType(
+    mojom::NewTabPageAdEventType mojom_ad_event_type) {
+  switch (mojom_ad_event_type) {
+    case mojom::NewTabPageAdEventType::kServedImpression:
+      return mojom::ConfirmationType::kServedImpression;
+    case mojom::NewTabPageAdEventType::kViewedImpression:
+      return mojom::ConfirmationType::kViewedImpression;
+    case mojom::NewTabPageAdEventType::kClicked:
+      return mojom::ConfirmationType::kClicked;
+    case mojom::NewTabPageAdEventType::kInteraction:
+      return mojom::ConfirmationType::kInteraction;
+    case mojom::NewTabPageAdEventType::kMediaPlay:
+      return mojom::ConfirmationType::kMediaPlay;
+    case mojom::NewTabPageAdEventType::kMedia25:
+      return mojom::ConfirmationType::kMedia25;
+    case mojom::NewTabPageAdEventType::kMedia100:
+      return mojom::ConfirmationType::kMedia100;
+  }
+}
+
 }  // namespace brave_ads
