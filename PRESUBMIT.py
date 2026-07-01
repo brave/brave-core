@@ -144,7 +144,7 @@ def CheckPatchFormatted(input_api, output_api):
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
-        brave_node.RunNode(cmd, include_command_in_error=False)
+        brave_node.RunNode(cmd, include_command_in_error=True)
         return []
     except RuntimeError as err:
         return [

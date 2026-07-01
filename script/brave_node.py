@@ -31,7 +31,7 @@ def RunNode(cmd_parts, include_command_in_error=True):
     if returncode != 0:
         err = stderr if len(stderr) > 0 else stdout
         raise RuntimeError(
-            f"Command '{' '.join(['node'] + cmd_parts)}' failed\n{err}"
+            f"Command '{' '.join(['node'] + cmd_parts)}' failed\n{err}\n\nstdout:\n{stdout}"
             if include_command_in_error else err)
 
     return stdout

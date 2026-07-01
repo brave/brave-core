@@ -192,6 +192,13 @@ const runPrettierForFile = async (
     withNodeModules: false,
   })
 
+  console.log(
+    file,
+    'ignored:',
+    fileInfo.ignored,
+    'inferredParser:',
+    fileInfo.inferredParser,
+  )
   if (fileInfo.ignored || !fileInfo.inferredParser) {
     return undefined
   }
@@ -216,6 +223,9 @@ const runPrettier = async (
 ): Promise<string[]> => {
   console.log('run prettier for', files.length, 'files')
   const ignorePath = path.join(config.braveCoreDir, '.prettierignore')
+  console.log('files', files.join('\n'))
+  console.log('config.braveCoreDir', config.braveCoreDir)
+  console.log('ignorePath', ignorePath)
   if (!fs.existsSync(ignorePath)) {
     throw new Error(`${ignorePath} file not found`)
   }
