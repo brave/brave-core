@@ -39,7 +39,6 @@ cargo_crate("lib") {
   features = [
     "alloc",
     "default",
-    "pre-zip-212",
   ]
   rustenv = []
   rustflags = []
