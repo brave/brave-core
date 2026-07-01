@@ -336,8 +336,9 @@ void AdBlockEngineWrapper::MergeResourcesInto(base::DictValue from,
   auto* resources_injected_script = into.FindString("injected_script");
   auto* from_resources_injected_script = from.FindString("injected_script");
   if (resources_injected_script && from_resources_injected_script) {
-    *resources_injected_script = base::StrCat(
-        {*resources_injected_script, "\n", *from_resources_injected_script});
+    *resources_injected_script =
+        base::StrCat({"{\n", *resources_injected_script, "\n}\n{\n",
+                      *from_resources_injected_script, "\n}"});
   }
 
   auto from_resources_generichide = from.FindBool("generichide");
