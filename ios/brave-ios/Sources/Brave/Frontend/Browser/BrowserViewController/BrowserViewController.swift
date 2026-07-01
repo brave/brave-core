@@ -2961,10 +2961,12 @@ extension BrowserViewController: PreferencesObserver {
         screenTimeViewController = nil
       }
     case Preferences.Translate.translateEnabled.key:
-      tabManager.selectedTab?.translationState = .unavailable
-      tabManager.selectedTab?.browserData?.setScripts(scripts: [
-        .braveTranslate: Preferences.Translate.translateEnabled.value != false
-      ])
+      if let tab = tabManager.selectedTab {
+        updateTranslateURLBar(tab: tab, state: .unavailable)
+        tab.browserData?.setScripts(scripts: [
+          .braveTranslate: Preferences.Translate.translateEnabled.value != false
+        ])
+      }
       // Only reload the tab if the setting was changed from the settings controller
       if presentedViewController is SettingsNavigationController {
         tabManager.reloadSelectedTab()

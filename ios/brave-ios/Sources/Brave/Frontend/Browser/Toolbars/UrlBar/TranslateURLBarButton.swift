@@ -79,7 +79,7 @@ class TranslateURLBarButton: UIButton {
     )
   }
 
-  var translateState: TranslateState = .unavailable {
+  var translateState: TranslationState = .unavailable {
     didSet {
       switch translateState {
       case .unavailable:
@@ -117,19 +117,5 @@ class TranslateURLBarButton: UIButton {
       setImage(imageIcon, for: .normal)
       updateIconSize()
     }
-  }
-
-  enum TranslateState {
-    // Page cannot be translated
-    case unavailable
-
-    // Translation is available, the page hasn't been translated yet
-    case available
-
-    // Translation is in progress
-    case pending
-
-    // Translation complete or partially complete
-    case active
   }
 }

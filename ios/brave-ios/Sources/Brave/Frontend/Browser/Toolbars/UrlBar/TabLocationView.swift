@@ -170,7 +170,7 @@ class TabLocationView: UIView {
     }
   }
 
-  var translationState: TranslateURLBarButton.TranslateState {
+  var translationState: TranslationState {
     get {
       return translateButton.translateState
     }
@@ -179,7 +179,7 @@ class TabLocationView: UIView {
       if state != self.translateButton.translateState {
         let wasHidden = leadingItemView == nil
         self.translateButton.translateState = state
-        if wasHidden != (state == TranslateURLBarButton.TranslateState.unavailable) {
+        if wasHidden != (state == .unavailable) {
           UIAccessibility.post(notification: .layoutChanged, argument: nil)
           if !translateButton.isHidden {
             // Delay the Translation Button accessibility announcement briefly to prevent interruptions.
