@@ -43,7 +43,7 @@ public class OriginPaywallViewModel {
     return false
   }
 
-  func restore() async -> Bool {
+  func restore(presentErrorOnFailure: Bool = true) async -> Bool {
     isStoreOperationActive = true
     defer { isStoreOperationActive = false }
 
@@ -60,7 +60,7 @@ public class OriginPaywallViewModel {
       group.cancelAll()
       return result
     }
-    if !success {
+    if !success, presentErrorOnFailure {
       isErrorPresented = true
     }
     return success
