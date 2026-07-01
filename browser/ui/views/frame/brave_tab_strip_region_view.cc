@@ -10,9 +10,9 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -424,8 +424,9 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   UpdateTabStripMargin();
   UpdateScrollButtonsVisibility();
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!VerticalTabController::FromBrowser(
+           tab_strip_->GetBrowserWindowInterface())
+           ->ShouldShowBraveVerticalTabs()) {
     if (workspaces_button_) {
       workspaces_button_->SetVisible(true);
     }
@@ -499,8 +500,11 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   HorizontalTabStripRegionView::UpdateTabStripMargin();
 
-  bool vertical_tabs = tabs::utils::ShouldShowBraveVerticalTabs(
-      tab_strip_->GetBrowserWindowInterface());
+  BrowserWindowInterface* browser_window_interface =
+      tab_strip_->GetBrowserWindowInterface();
+  bool vertical_tabs =
+      VerticalTabController::FromBrowser(browser_window_interface)
+          ->ShouldShowBraveVerticalTabs();
 
   UpdateTrailingScrollButtonMargin(vertical_tabs);
 
@@ -526,8 +530,6 @@ void BraveHorizontalTabStripRegionView::UpdateTabStripMargin() {
   // the frame edge so that the leftmost tab can be selected at the edge of the
   // screen.
   if (tabs::HorizontalTabsUpdateEnabled()) {
-    BrowserWindowInterface* browser_window_interface =
-        tab_strip_->GetBrowserWindowInterface();
     BrowserView* browser_view =
         BrowserView::GetBrowserViewForBrowser(browser_window_interface);
     BrowserFrameView* browser_frame_view =
@@ -595,8 +597,9 @@ void BraveHorizontalTabStripRegionView::UpdateTrailingScrollButtonMargin(
 void BraveHorizontalTabStripRegionView::OnDragEntered(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!VerticalTabController::FromBrowser(
+           tab_strip_->GetBrowserWindowInterface())
+           ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragEntered(event);
   }
 
@@ -613,8 +616,9 @@ void BraveHorizontalTabStripRegionView::OnDragEntered(
 int BraveHorizontalTabStripRegionView::OnDragUpdated(
     const ui::DropTargetEvent& event) {
 #if BUILDFLAG(IS_LINUX)
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(
-          tab_strip_->GetBrowserWindowInterface())) {
+  if (!VerticalTabController::FromBrowser(
+           tab_strip_->GetBrowserWindowInterface())
+           ->ShouldShowBraveVerticalTabs()) {
     return HorizontalTabStripRegionView::OnDragUpdated(event);
   }
 

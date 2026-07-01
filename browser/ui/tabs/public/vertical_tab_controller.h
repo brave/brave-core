@@ -15,6 +15,8 @@ class VerticalTabController {
   // Convenience method to get VerticalTabController from
   // BrowserWindowInterface. Returns nullptr if the browser window is nullptr.
   static VerticalTabController* FromBrowser(BrowserWindowInterface* browser);
+  static const VerticalTabController* FromBrowser(
+      const BrowserWindowInterface* browser);
 
   VerticalTabController(BrowserWindowInterface::Type type, PrefService* prefs);
   VerticalTabController(const VerticalTabController&) = delete;

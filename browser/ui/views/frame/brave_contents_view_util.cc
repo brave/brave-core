@@ -6,10 +6,10 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
 #include "base/check.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -85,8 +85,8 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     return rounded_corners;
   }
 
-  bool show_vertical_tab = tabs::utils::ShouldShowBraveVerticalTabs(
-      browser_window_interface->GetBrowserForMigrationOnly());
+  auto* vtc = VerticalTabController::FromBrowser(browser_window_interface);
+  bool show_vertical_tab = vtc->ShouldShowBraveVerticalTabs();
   auto* vertical_tab_strip_container_view =
       browser_view->vertical_tab_strip_container_view();
 
@@ -96,8 +96,7 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
     auto* vtsr_view =
         vertical_tab_strip_container_view->vertical_tab_strip_region_view();
     CHECK(vtsr_view);
-    if (tabs::utils::ShouldHideVerticalTabsCompletelyWhenCollapsed(
-            browser_window_interface->GetBrowserForMigrationOnly())) {
+    if (vtc->ShouldHideVerticalTabsCompletelyWhenCollapsed()) {
       show_vertical_tab = (vtsr_view->state() ==
                            BraveVerticalTabStripRegionView::State::kExpanded);
     }
@@ -109,8 +108,7 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
   bool has_right_side_ui = false;
 
   if (show_vertical_tab) {
-    if (tabs::utils::IsVerticalTabOnRight(
-            browser_window_interface->GetBrowserForMigrationOnly())) {
+    if (vtc->IsVerticalTabOnRight()) {
       has_right_side_ui = true;
     } else {
       has_left_side_ui = true;
