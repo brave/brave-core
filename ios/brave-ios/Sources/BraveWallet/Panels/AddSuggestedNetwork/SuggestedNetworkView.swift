@@ -216,6 +216,7 @@ struct SuggestedNetworkView: View {
           .frame(maxWidth: .infinity)
       }
       .listRowInsets(.zero)
+      .listRowBackground(Color.clear)
       .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
       .accessibility(hidden: sizeCategory.isAccessibilityCategory)
     }

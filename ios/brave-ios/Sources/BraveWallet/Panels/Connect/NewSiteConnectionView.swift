@@ -96,6 +96,7 @@ public struct NewSiteConnectionView: View {
         Section {
           headerView
         }
+        .listRowBackground(Color.clear)
         Section {
           ForEach(accountInfos) { account in
             Button {
@@ -165,6 +166,7 @@ public struct NewSiteConnectionView: View {
             .hidden()
           )
         }
+        .listRowBackground(Color.clear)
       }
       .listStyle(InsetGroupedListStyle())
       .navigationBarTitleDisplayMode(.inline)
@@ -221,6 +223,7 @@ public struct NewSiteConnectionView: View {
             .foregroundColor(Color(braveSystemName: .textPrimary))
         }
       }
+      .listRowBackground(Color.clear)
       Section {
         HStack(spacing: 12) {
           Image(braveSystemName: "leo.check.circle-filled")
@@ -234,6 +237,7 @@ public struct NewSiteConnectionView: View {
       } footer: {
         cautionFooterView
       }
+      .listRowBackground(Color.clear)
       Section {
         Button {
           let accounts =
@@ -248,6 +252,7 @@ public struct NewSiteConnectionView: View {
         .controlSize(.large)
         .frame(maxWidth: .infinity)
       }
+      .listRowBackground(Color.clear)
     }
     .listStyle(InsetGroupedListStyle())
     .navigationTitle(Strings.Wallet.newSiteConnectScreenTitle)
