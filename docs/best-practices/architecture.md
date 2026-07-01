@@ -1802,26 +1802,29 @@ modularization impossible. Prefer the narrow, specific objects a feature
 actually uses (see also [ARCH-003](#ARCH-003) on passing the most specific
 dependency).
 
-This applies even when a feature genuinely needs a broad object like `Profile`
-itself: inject it rather than reaching for a global. The point of DI is not only
-to narrow the dependency — the same benefits (testability, exposing circular
-dependencies, decoupling) apply to anything reachable from `Profile`, so inject
-`Profile` (or the thing looked up from it) instead of pulling it from ambient
-global state.
+This applies to any "lookup key" object — a broad handle used to fetch a wide
+graph of services, such as `Profile`, `BrowserContext`, `WebContents`,
+`TabInterface`, or `Browser`. Prefer injecting the specific dependencies
+resolved from the key rather than the key itself, since injecting the key still
+lets a feature reach anything reachable from it (undermining testability and
+hiding coupling). When a feature genuinely needs the key, inject the key rather
+than pulling it from a global.
 
 ```cpp
-// ❌ WRONG - reaching for the profile via global state
+// ❌ WRONG - reaching for a lookup key via global state, then resolving from it
 void FooFeature::DoStuff() {
   Profile* profile = ProfileManager::GetActiveUserProfile();
   UseKeyedService(BarServiceFactory::GetForProfile(profile));
 }
 
-// ✅ CORRECT - inject Profile (still preferring the narrowest dependency, but
-// inject it when Profile itself is genuinely required)
+// ✅ BEST - inject the specific dependency resolved from the key
+FooFeature(BarService& bar_service) : bar_service_(bar_service) {}
+void FooFeature::DoStuff() { UseKeyedService(bar_service_); }
+
+// ✅ ACCEPTABLE - inject the key itself when it is genuinely required (e.g. tab
+// features taking TabInterface); still better than reaching for a global, but
+// prefer injecting the resolved dependencies above where practical
 FooFeature(Profile& profile) : profile_(profile) {}
-void FooFeature::DoStuff() {
-  UseKeyedService(BarServiceFactory::GetForProfile(&profile_.get()));
-}
 ```
 
 ---
