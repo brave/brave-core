@@ -248,7 +248,6 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/media/BraveYouTubePictureInPictureController.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaNotificationControllerDelegate.java",
   "../../brave/android/java/org/chromium/chrome/browser/media/ui/BraveMediaSessionTabHelper.java",
-  "../../brave/android/java/org/chromium/chrome/browser/messages/BraveMessageQueueMediator.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/misc_metrics/MiscAndroidMetricsFactory.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiInstanceManagerApi31.java",
