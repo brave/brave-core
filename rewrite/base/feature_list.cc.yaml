@@ -6,10 +6,10 @@
 substitutions:
   - description: |-
       Check for the compile-time override of a feature's default state.
-    count: 2
     regex:
-      pattern: 'feature.default_state == FEATURE_ENABLED_BY_DEFAULT'
+      re_pattern: '\bfeature\.default_state'
       replace: 'GetCompileTimeFeatureState(feature)'
+    count: 4
 
   - description: Extend `IsFeatureOverridden` for Brave-specific values.
     after_function_impl:

@@ -1,8 +1,8 @@
 diff --git a/base/feature_list.h b/base/feature_list.h
-index 883b54a45a7f1e722f361fe1e980503f6a0d1007..de4312eef20ee334b8d85dbdd02ef8c274ea166e 100644
+index b78d8a3cb2cab48e49d3e5cc5f258b6f98d44fac..b93f12dc22d97d00d86434c01db9fdd5b0cc577a 100644
 --- a/base/feature_list.h
 +++ b/base/feature_list.h
-@@ -458,6 +458,8 @@ class BASE_EXPORT FeatureList {
+@@ -528,6 +528,8 @@ class BASE_EXPORT FeatureList {
    static void VisitFeaturesAndParams(FeatureVisitor& visitor,
                                       std::string_view filter_prefix = "");
  
