@@ -129,13 +129,11 @@ void WorkspaceRowView::SetSelected(bool selected) {
 
 void WorkspaceRowView::OnMouseEntered(const ui::MouseEvent& event) {
   views::View::OnMouseEntered(event);
-  hovered_ = true;
   UpdateBackground();
 }
 
 void WorkspaceRowView::OnMouseExited(const ui::MouseEvent& event) {
   views::View::OnMouseExited(event);
-  hovered_ = false;
   UpdateBackground();
 }
 
@@ -143,7 +141,7 @@ void WorkspaceRowView::UpdateBackground() {
   if (selected_) {
     SetBackground(
         views::CreateSolidBackground(ui::kColorSysOnSurfaceSecondary));
-  } else if (hovered_) {
+  } else if (View::IsMouseHovered()) {
     SetBackground(
         views::CreateSolidBackground(ui::kColorSysStateHoverOnSubtle));
   } else {

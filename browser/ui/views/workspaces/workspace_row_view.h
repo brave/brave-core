@@ -69,7 +69,6 @@ class WorkspaceRowView : public views::View,
   void UpdateChildSelectionStyling();
   void ShowMoreMenu();
 
-  bool hovered_ = false;
   bool selected_ = false;
 
   RowClickedCallback on_delete_;
