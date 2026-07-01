@@ -203,6 +203,10 @@ void OpenPsstMenuOnPageActionView(BrowserWindowInterface* browser_window,
                                   int event_flags = ui::EF_NONE);
 #endif
 
+// Shows the location bar temporarily in fullscreen and focuses it.
+// Used when the user triggers Ctrl+L while in fullscreen mode.
+void FocusLocationBarInFullscreen(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_
