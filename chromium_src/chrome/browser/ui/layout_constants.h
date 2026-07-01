@@ -14,8 +14,15 @@
 int GetLayoutConstant(LayoutConstant constant);
 
 // Rounded corners.
-// The distance between main content areas and other UI elements.
+// The padding between the main content area and the window edges (and other
+// surrounding chrome such as vertical tabs and the sidebar control).
 inline constexpr int kRoundedCornersContentsViewMargin = 4;
+
+// The gap between the main content area and the side panel when both are shown
+// with rounded corners. Kept separate from kRoundedCornersContentsViewMargin so
+// the content<->panel spacing can be tuned independently of the content<->edge
+// padding.
+inline constexpr int kRoundedCornersContentsSidePanelGap = 5;
 
 namespace tabs {
 
