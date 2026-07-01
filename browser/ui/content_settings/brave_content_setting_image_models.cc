@@ -14,12 +14,15 @@ using ImageType = ContentSettingImageModel::ImageType;
 
 void BraveGenerateContentSettingImageModels(
     std::vector<std::unique_ptr<ContentSettingImageModel>>* result) {
-  // Remove the cookies and javascript content setting image model
-  // https://github.com/brave/brave-browser/issues/1197
-  // https://github.com/brave/brave-browser/issues/199
+  // Remove the following image models so that their related icons don't appear
+  // in the URL bar:
+  // - Cookies (https://github.com/brave/brave-browser/issues/1197)
+  // - JavaScript (https://github.com/brave/brave-browser/issues/199)
+  // - StorageAccess (https://github.com/brave/brave-browser/issues/56810)
   auto to_remove = std::ranges::remove_if(*result, [](const auto& m) {
     return m->image_type() == ImageType::kCookies ||
-           m->image_type() == ImageType::kJavaScript;
+           m->image_type() == ImageType::kJavaScript ||
+           m->image_type() == ImageType::kStorageAccess;
   });
   result->erase(to_remove.begin(), to_remove.end());
 
