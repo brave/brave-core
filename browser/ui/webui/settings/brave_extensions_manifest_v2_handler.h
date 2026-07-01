@@ -18,8 +18,6 @@
 #include "extensions/browser/extension_registry_observer.h"
 #include "extensions/browser/webstore_install_result.h"
 
-BASE_DECLARE_FEATURE(kExtensionsManifestV2);
-
 namespace extensions_mv2 {
 class ExtensionManifestV2Installer;
 }
