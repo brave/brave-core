@@ -31,11 +31,13 @@ import argparse
 import importlib
 import json
 import logging
+import os
 from pathlib import Path
 import sys
 import types
 
 from recipe_api import RecipeApi
+from recipe_properties import apply_environ
 
 # Root of the recipes tree (this file's directory). Recipe modules live under
 # `recipe_modules/<name>/` and recipes under `recipes/<name>.py`.
@@ -122,7 +124,7 @@ class _Engine:
         # A module can reach itself via `self.m.<own_name>`, as in recipes_py.
         setattr(inst.m, name, inst)
 
-        inst.initialize()
+        inst.initialise()
         self._cache[name] = inst
         return inst
 
@@ -153,11 +155,14 @@ def _build_properties(properties_def: type | None,
     """Build the properties object passed as `RunSteps`' second argument.
 
     If the recipe declares `PROPERTIES` (any callable, e.g. a dataclass), it is
-    constructed from *properties*. Otherwise a plain namespace is returned.
+    constructed from *properties*, with any `Property(from_environ=...)` fields
+    backfilled from the environment when not passed explicitly. Otherwise a
+    plain namespace is returned.
     """
     if properties_def is None:
         return types.SimpleNamespace(**properties)
-    return properties_def(**properties)
+    values = apply_environ(properties_def, properties, os.environ)
+    return properties_def(**values)
 
 
 def run_recipe(recipe_name: str,

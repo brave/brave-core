@@ -34,30 +34,38 @@ class ChromiumCheckoutApi(RecipeApi):
     """
 
     def ensure_checkout(self,
-                        chromium_src: str | Path,
-                        ref: str | None = None) -> Path:
+                        *,
+                        chromium_src: str | Path | None = None,
+                        ref: str | None = None,
+                        git_cache: str | Path | None = None) -> Path:
         """Guarantee a Chromium checkout at *chromium_src*, optionally on *ref*.
 
-        Mirrors the checkout phase of `ToolchainBuilder.run`: validate the git
-        cache, ensure depot_tools is on PATH, clone a fresh checkout when none
-        is found, then check out *ref* if one is given.
+        Mirrors the checkout phase of `ToolchainBuilder.run`: configure and
+        validate the git cache, ensure depot_tools is on PATH, clone a fresh
+        checkout when none is found, then check out *ref* if one is given.
 
         Args:
-            chromium_src: Path to the Chromium `src/` directory.
+            chromium_src: Path to the Chromium `src/` directory. Defaults to the
+                `path` module's `chromium_src`, the standard job layout.
             ref: Optional git ref (branch, tag, or commit) to check out.
+            git_cache: Optional explicit git cache directory. When given it sets
+                `GIT_CACHE_PATH`; otherwise an existing `GIT_CACHE_PATH` in the
+                environment is used as-is.
 
         Returns:
             The resolved absolute `src/` path.
         """
+        if chromium_src is None:
+            chromium_src = self.m.path.chromium_src
         chromium_src = Path(chromium_src).expanduser().resolve()
 
-        # A missing/invalid GIT_CACHE_PATH would silently break the clone/sync
-        # steps below, so fail fast before doing any work.
+        if git_cache is not None:
+            self.set_git_cache(git_cache or None)
         self.validate_git_cache()
 
         # depot_tools provides `fetch`/`gclient`, needed whether we clone or
         # operate on an existing checkout.
-        self.m.depot_tools.ensure_on_path(chromium_src)
+        self.m.depot_tools.ensure_on_path()
 
         # No valid checkout yet -> clone one.
         if not self.has_valid_checkout(chromium_src):

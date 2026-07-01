@@ -14,13 +14,14 @@ import sys
 
 from recipe_api import RecipeApi
 
-# Latest Chromium depot_tools bundle.
+# the urls we clone from
 DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 
-# vpython3 selected by depot_tools from `$PATH`, relative to the Chromium src/
-# root. On Windows the `.bat` shim is used (needed when calling from git bash).
-VPYTHON_PATH = Path('third_party/depot_tools') / (
-    'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
+# vpython3 entry point.
+VPYTHON3 = 'vpython3.bat' if sys.platform == 'win32' else 'vpython3'
+
+# the relative path for depot_tools in the chromium checkout.
+DEPOT_TOOLS_PATH = Path('third_party') / 'depot_tools'
 
 
 class DepotToolsApi(RecipeApi):
@@ -29,24 +30,27 @@ class DepotToolsApi(RecipeApi):
     Extracted from `build_rust_toolchain.py::_bootstrap_depot_tools`.
     """
 
-    def ensure_on_path(self, chromium_src: str | Path) -> None:
-        """Put depot_tools on PATH, cloning it beside src/ if necessary.
+    def __init__(self) -> None:
+        super().__init__()
+        # Resolved depot_tools directory, set by ensure_on_path() and memoised
+        # so repeat calls skip the deploy. None until the first call deploys it.
+        self._depot_tools_path: Path | None = None
 
-        If `gclient` already resolves on PATH, this is a no-op. Otherwise it
-        reuses an existing checkout at `<chromium_src>/../depot_tools` or clones
-        a fresh one there, then prepends it to PATH and verifies `gclient` runs.
-
-        Args:
-            chromium_src: Path to the Chromium `src/` directory; depot_tools is
-                installed as its sibling.
+    def ensure_on_path(self) -> None:
+        """Deploy depot_tools and put it on PATH. Successive calls are no-ops.
         """
-        chromium_src = Path(chromium_src).expanduser().resolve()
+        if self._depot_tools_path is not None:
+            return  # Already deployed this run.
 
         if shutil.which('gclient') is not None:
             logging.debug('depot_tools already on PATH, skipping clone')
+            # Reuse it as-is: depot_tools is the directory holding gclient.
+            self._depot_tools_path = Path(shutil.which('gclient')).parent
             return
 
-        depot_tools_path = chromium_src.parent / 'depot_tools'
+        # No checkout to borrow from: install a standalone clone beside src/.
+        depot_tools_path = (self.m.path.chromium_src.parent /
+                            DEPOT_TOOLS_PATH).resolve()
         if (depot_tools_path / 'gclient').is_file():
             # Already present at the expected install path; just add to PATH.
             logging.info('depot_tools already present at %s, adding to PATH.',
@@ -54,16 +58,20 @@ class DepotToolsApi(RecipeApi):
         else:
             logging.info('Installing depot_tools under %s', depot_tools_path)
             depot_tools_path.parent.mkdir(parents=True, exist_ok=True)
-            self.m.step(
-                'clone depot_tools',
-                ['git', 'clone', DEPOT_TOOLS_URL,
-                 str(depot_tools_path)])
+            self.m.step('clone depot_tools', [
+                'git', 'clone', '--depth', '1', DEPOT_TOOLS_URL,
+                str(depot_tools_path)
+            ])
 
         os.environ['PATH'] = os.pathsep.join(
             [str(depot_tools_path), os.environ['PATH']])
         # Run once so depot_tools bootstraps itself (downloads its own deps).
         self.m.step('verify gclient', ['gclient'])
+        self._depot_tools_path = depot_tools_path
 
-    def vpython3(self, chromium_src: str | Path) -> Path:
-        """Return the path to depot_tools' vpython3 inside *chromium_src*."""
-        return Path(chromium_src).expanduser().resolve() / VPYTHON_PATH
+    def vpython3(self) -> Path:
+        """Return depot_tools' `vpython3`, deploying depot_tools on first use.
+        """
+        self.ensure_on_path()
+        assert self._depot_tools_path is not None
+        return self._depot_tools_path / VPYTHON3
