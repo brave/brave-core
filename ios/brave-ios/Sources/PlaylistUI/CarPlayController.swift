@@ -72,7 +72,7 @@ public class CarPlayController {
   private var currentItemListTemplate: CPListTemplate?
   private var selectedFolderID: PlaylistFolder.ID?
   private var isErrorPresented: Bool = false
-  private var downloadStates: [String: PlaylistDownloadManager.DownloadState] = [:]
+  private var downloadStates: [String: PlaylistDownloadManager.CacheState] = [:]
 
   @MainActor private func updateFoldersList() {
     let folderListTemplate = self.folderListTemplate
@@ -204,7 +204,7 @@ public class CarPlayController {
         guard let itemUUID = item.uuid else { return nil }
         let listItem = item.listItem
         listItem.accessoryType =
-          downloadStates[itemUUID] != .downloaded ? .cloud : .none
+          downloadStates[itemUUID] != .cached ? .cloud : .none
         listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
         listItem.playingIndicatorLocation = .trailing
         listItem.userInfo = ["id": item.id, "uuid": itemUUID]
@@ -293,14 +293,14 @@ public class CarPlayController {
 
     // Fetch each item's download state concurrently so list refresh stays O(1) wall-clock in the number of items.
     let resolvedStates = await withTaskGroup(
-      of: (String, PlaylistDownloadManager.DownloadState).self
+      of: (String, PlaylistDownloadManager.CacheState).self
     ) { group in
       for uuid in uuids {
         group.addTask {
-          (uuid, await PlaylistManager.shared.downloadState(for: uuid))
+          (uuid, await PlaylistManager.shared.cacheState(for: uuid))
         }
       }
-      var result: [String: PlaylistDownloadManager.DownloadState] = [:]
+      var result: [String: PlaylistDownloadManager.CacheState] = [:]
       for await (uuid, state) in group {
         result[uuid] = state
       }

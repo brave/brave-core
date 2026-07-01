@@ -4,6 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import AVKit
+import BraveCore
+import BraveShared
 import BraveStrings
 import Combine
 import Data
@@ -637,6 +639,7 @@ public final class PlayerModel: ObservableObject {
           playerItemToReplace = await Task.detached {
             .init(asset: AVURLAsset(url: url))
           }.value
+          startCachingForPlayback(item: newItem)
         }
       } catch {
         if isPictureInPictureActive {
@@ -684,6 +687,15 @@ public final class PlayerModel: ObservableObject {
         play()
       }
     }
+  }
+
+  /// Cache-first: start a background caching task so the item becomes available locally for the next playback.
+  /// Playback begins streaming while caching. Call this only with a freshly resolved item (post-streaming), so that the download uses a valid URL.
+  /// A cache already in progress (or a completed one) is a no-op.
+  @MainActor private func startCachingForPlayback(item: PlaylistInfo) {
+    guard FeatureList.kPlaylistCacheFirstEnabled.enabled else { return }
+    guard Reachability.shared.status.connectionType != .offline else { return }
+    PlaylistManager.shared.download(item: item)
   }
 
   private func itemDurationForAssetDuration(_ duration: CMTime) -> ItemDuration {
@@ -833,13 +845,13 @@ public final class PlayerModel: ObservableObject {
   /// from an earlier prepare — typically a streaming URL that was resolved because the item's `cachedData` bookmark survived an
   /// eviction of the actual file. In that state, `play()`'s smart recovery doesn't fire (it only triggers when `currentItem == nil`),
   /// so a tap on play just runs `seek+play` against the stale asset and the user sees nothing happen. Replacing `currentItem`
-  /// with one backed by the freshly downloaded file unblocks the next play tap deterministically.
+  /// with one backed by the freshly cached file unblocks the next play tap deterministically.
   ///
   /// Note: The player is not interrupted if it is actively playing a different content
   private func setupPlaylistManagerObservation() {
     PlaylistManager.shared.downloadStateChanged
       .sink { [weak self] event in
-        guard let self, event.state == .downloaded else { return }
+        guard let self, event.state == .cached else { return }
         Task { @MainActor in
           // Skip when an initial prepare is still in flight: it would race ours and could
           // overwrite the local `AVPlayerItem` we install with a streaming one once it
