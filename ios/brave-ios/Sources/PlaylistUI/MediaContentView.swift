@@ -32,7 +32,7 @@ struct MediaContentView: View {
         .zIndex(1)
         .playlistSheetDetentAnchor(id: .mediaPlayer)
         .overlay {
-          if model.isLoadingStreamingURL {
+          if model.isLoadingStreamingURL || model.isCachingAssetForPlayback {
             ProgressView()
               .progressViewStyle(.circular)
               .transition(.opacity.animation(.default))

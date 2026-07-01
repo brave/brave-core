@@ -346,7 +346,9 @@ public class PlaylistManager: NSObject {
   }
 
   public func download(item: PlaylistInfo) {
-    guard FeatureList.kPlaylistOfflineCacheEnabled.enabled,
+    guard
+      FeatureList.kPlaylistOfflineCacheEnabled.enabled
+        || FeatureList.kPlaylistCacheFirstEnabled.enabled,
       downloadManager.downloadTask(for: item.tagId) == nil,
       let assetUrl = URL(string: item.src)
     else { return }
@@ -359,7 +361,11 @@ public class PlaylistManager: NSObject {
       }
 
       let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
-      guard let mimeType = mimeType?.lowercased() else { return }
+      guard let mimeType = mimeType?.lowercased() else {
+        // Could not resolve the asset. Emit an explicit failure so cache-first tap-to-play can surface an error instead of waiting forever.
+        onDownloadStateChanged(id: item.tagId, state: .invalid, displayName: nil, error: nil)
+        return
+      }
 
       if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl")
         || mimeType.contains("mpegurl")
