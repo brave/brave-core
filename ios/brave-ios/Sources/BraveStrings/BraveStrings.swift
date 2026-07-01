@@ -4762,6 +4762,16 @@ extension Strings {
         comment: "Description for load resources error alert"
       )
 
+    public static let playlistOfflineDataToggleOption =
+      NSLocalizedString(
+        "playlist.playlistOfflineDataToggleOption",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Playlist Data",
+        comment:
+          "Text for Playlist Data Toggle for clearing the offline data storage in settings"
+      )
+
     public static let addToPlayListAlertTitle =
       NSLocalizedString(
         "playList.addToPlayListAlertTitle",

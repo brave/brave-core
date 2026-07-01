@@ -345,6 +345,11 @@ public class PlaylistManager: NSObject {
     }
   }
 
+  public static var usesLegacyCaching: Bool {
+    FeatureList.kPlaylistOfflineCacheEnabled.enabled
+      && !FeatureList.kPlaylistCacheFirstEnabled.enabled
+  }
+
   public func download(item: PlaylistInfo) {
     guard
       FeatureList.kPlaylistOfflineCacheEnabled.enabled

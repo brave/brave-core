@@ -44,7 +44,10 @@ struct PlaylistSettingsView: View {
       } footer: {
         Text(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
       }
-      if FeatureList.kPlaylistOfflineCacheEnabled.enabled {
+
+      if FeatureList.kPlaylistOfflineCacheEnabled.enabled
+        || FeatureList.kPlaylistCacheFirstEnabled.enabled
+      {
         Section {
           Picker(
             Strings.PlayList.playlistAutoSaveSettingsTitle,
