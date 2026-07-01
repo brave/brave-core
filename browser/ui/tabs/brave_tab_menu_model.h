@@ -20,6 +20,8 @@
 #include "brave/browser/ui/containers/containers_menu_model.h"
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 
+class VerticalTabController;
+
 namespace sessions {
 class TabRestoreService;
 }  // namespace sessions
@@ -69,6 +71,7 @@ class BraveTabMenuModel : public TabMenuModel {
   }
 
   raw_ptr<sessions::TabRestoreService> restore_service_ = nullptr;
+  raw_ptr<VerticalTabController> vertical_tab_controller_ = nullptr;
   bool all_muted_;
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
