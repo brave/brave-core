@@ -510,7 +510,8 @@ bool BraveShieldsTabHelper::IsBraveShieldsManaged() {
           ->GetPrefs();
 
   return brave_shields::IsBraveShieldsManaged(
-      profile_prefs, &*host_content_settings_map_, GetCurrentSiteURL());
+      profile_prefs, &*host_content_settings_map_,
+      web_contents()->GetPrimaryMainFrame());
 }
 
 void BraveShieldsTabHelper::HandleItemBlocked(const std::string& block_type,

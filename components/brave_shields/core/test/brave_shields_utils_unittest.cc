@@ -30,8 +30,12 @@
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_task_environment.h"
+#include "content/public/test/test_renderer_host.h"
 #include "content/public/test/test_utils.h"
+#include "content/public/test/test_web_contents_factory.h"
+#include "content/public/test/web_contents_tester.h"
 #include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -58,9 +62,15 @@ class BraveShieldsUtilTest : public testing::Test {
     builder.SetPath(temp_dir_.GetPath());
     profile_ = builder.Build();
     g_browser_process->profile_manager()->InitProfileUserPrefs(profile_.get());
+    InitializeRenderFrameHost();
   }
 
   void TearDown() override {
+    render_frame_host_ = nullptr;
+    // To ensure web_contents_ don't dangle after the contents are destroyed.
+    content::WebContents* wc = web_contents_;
+    web_contents_ = nullptr;
+    test_web_contents_factory_.DestroyWebContents(wc);
     profile_.reset();
     TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
     content::RunAllTasksUntilIdle();
@@ -75,6 +85,20 @@ class BraveShieldsUtilTest : public testing::Test {
     EXPECT_EQ(domain_blocking_type, setting);
   }
 
+  void InitializeRenderFrameHost() {
+    web_contents_ =
+        test_web_contents_factory_.CreateWebContents(profile_.get());
+    render_frame_host_ = web_contents_->GetPrimaryMainFrame();
+  }
+
+  void NavigateTo(const GURL& url) {
+    content::WebContentsTester::For(web_contents_)->NavigateAndCommit(url);
+    render_frame_host_ = web_contents_->GetPrimaryMainFrame();
+    ASSERT_EQ(render_frame_host_->GetLastCommittedURL(), url);
+  }
+
+  content::RenderFrameHost* render_frame_host() { return render_frame_host_; }
+
  private:
   std::unique_ptr<BraveProfileManager> CreateProfileManagerForTest() {
     return std::make_unique<BraveProfileManagerWithoutInit>(
@@ -83,7 +107,10 @@ class BraveShieldsUtilTest : public testing::Test {
 
   base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
+  content::TestWebContentsFactory test_web_contents_factory_;
+  raw_ptr<content::WebContents> web_contents_;
   std::unique_ptr<TestingProfile> profile_;
+  raw_ptr<content::RenderFrameHost> render_frame_host_;
 };
 
 class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {
@@ -219,19 +246,23 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   GURL host2("http://host2.com");
   GURL host1("http://host1.com");
+
+  NavigateTo(host2);
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
   base::ListValue disabled_list;
   disabled_list.Append("[*.]host2.com");
   profile()->GetTestingPrefService()->SetManagedPref(
       kManagedBraveShieldsDisabledForUrls, std::move(disabled_list));
   // only disabled pref set
+  NavigateTo(host2);
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
+  NavigateTo(host1);
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, GURL("http://host1.com")));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
   base::ListValue enabled_list;
   enabled_list.Append("[*.]host1.com");
@@ -239,21 +270,25 @@ TEST_F(BraveShieldsUtilTest, IsBraveShieldsManaged) {
       kManagedBraveShieldsEnabledForUrls, std::move(enabled_list));
 
   // both disabled/enabled prefs set
+  NavigateTo(host2);
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
+  NavigateTo(host1);
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host1));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
   profile()->GetTestingPrefService()->RemoveManagedPref(
       kManagedBraveShieldsDisabledForUrls);
 
   // only enabled prefs set
+  NavigateTo(host2);
   EXPECT_FALSE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host2));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 
+  NavigateTo(host1);
   EXPECT_TRUE(brave_shields::IsBraveShieldsManaged(
-      profile()->GetTestingPrefService(), map, host1));
+      profile()->GetTestingPrefService(), map, render_frame_host()));
 }
 
 TEST_F(BraveShieldsUtilTest, SetBraveShieldsEnabled_IsNotHttpHttps) {

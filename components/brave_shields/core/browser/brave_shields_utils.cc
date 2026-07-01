@@ -31,6 +31,7 @@
 #include "components/prefs/pref_service.h"
 #include "net/base/features.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -646,10 +647,11 @@ ControlType GetFingerprintingControlType(HostContentSettingsMap* map,
 
 bool IsBraveShieldsManaged(PrefService* prefs,
                            HostContentSettingsMap* map,
-                           GURL url) {
+                           content::RenderFrameHost* primary_main_frame) {
   DCHECK(prefs);
   DCHECK(map);
   content_settings::SettingInfo info;
+  const GURL url = primary_main_frame->GetLastCommittedOrigin().GetURL();
   map->GetWebsiteSetting(url, url, ContentSettingsType::BRAVE_SHIELDS, &info);
   return info.source == content_settings::SettingSource::kPolicy;
 }
