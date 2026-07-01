@@ -421,14 +421,6 @@ public final class PlayerModel: ObservableObject {
   @MainActor @Published var selectedFolderID: PlaylistFolder.ID = PlaylistFolder.savedFolderUUID
   @MainActor @Published var isLoadingStreamingURL: Bool = false
 
-  /// Whether a cache-first tap-to-play is currently downloading the selected item before playback.
-  @MainActor @Published var isCachingAssetForPlayback: Bool = false
-
-  /// The `uuid` of the item whose download we started for cache-first playback, alongside whether playback should begin automatically once the download finishes.
-  /// Tracked so the download-state observer can resume the exact tap-to-play the user initiated.
-  @MainActor private var pendingPlaybackItemID: String?
-  @MainActor private var pendingPlaybackPlayImmediately: Bool = false
-
   var itemQueue: OrderedSet<PlaylistItem.ID> = []
   var seekToInitialTimestamp: TimeInterval?
 
@@ -586,7 +578,6 @@ public final class PlayerModel: ObservableObject {
   struct PlayerModelError: LocalizedError {
     enum Reason {
       case loadingStreamingURLFailed(PlaylistMediaStreamer.PlaybackError)
-      case cacheForPlaybackFailed(offline: Bool)
       case unknown
     }
     var reason: Reason
@@ -599,8 +590,6 @@ public final class PlayerModel: ObservableObject {
         return Strings.PlayList.expiredAlertTitle
       case .loadingStreamingURLFailed(.cannotLoadMedia):
         return Strings.PlayList.sorryAlertTitle
-      case .cacheForPlaybackFailed:
-        return Strings.PlayList.sorryAlertTitle
       default:
         return Strings.Playlist.somethingWentWrong
       }
@@ -611,8 +600,6 @@ public final class PlayerModel: ObservableObject {
       case .loadingStreamingURLFailed(.expired):
         return Strings.PlayList.expiredAlertDescription
       case .loadingStreamingURLFailed(.cannotLoadMedia):
-        return Strings.PlayList.loadResourcesErrorAlertDescription
-      case .cacheForPlaybackFailed:
         return Strings.PlayList.loadResourcesErrorAlertDescription
       default:
         return nil
@@ -630,10 +617,6 @@ public final class PlayerModel: ObservableObject {
     playImmediately: Bool
   ) async {
     guard let item = selectedItem else { return }
-    // The user has moved on so drop any cache-first download we were waiting on.
-    if let pendingID = pendingPlaybackItemID, pendingID != item.uuid {
-      clearPendingPlayback()
-    }
     duration = .unknown
     var playerItemToReplace: AVPlayerItem?
     if let cachedData = item.cachedData {
@@ -641,11 +624,6 @@ public final class PlayerModel: ObservableObject {
         playerItemToReplace = await Task.detached {
           .init(asset: .init(url: cachedDataURL))
         }.value
-      }
-    }
-    if playerItemToReplace == nil, FeatureList.kPlaylistCacheFirstEnabled.enabled {
-      if await beginCacheFirstPlayback(item: item, playImmediately: playImmediately) {
-        return
       }
     }
     if playerItemToReplace == nil, let mediaStreamer {
@@ -661,6 +639,12 @@ public final class PlayerModel: ObservableObject {
           playerItemToReplace = await Task.detached {
             .init(asset: AVURLAsset(url: url))
           }.value
+          // Cache-first: now that streaming has resolved a fresh, playable URL, kick off a
+          // background download so the item is available locally next time. This runs *after*
+          // resolution on purpose — caching the item's stored `src` up-front can hit a stale or
+          // expired URL (e.g. an old googlevideo link), which both fails the download and disrupts
+          // the live stream that shares that URL. Playback is never blocked on caching.
+          startCachingForPlayback(item: newItem)
         }
       } catch {
         if isPictureInPictureActive {
@@ -710,103 +694,21 @@ public final class PlayerModel: ObservableObject {
     }
   }
 
-  /// Cache-first playback entry point for an item that is not yet cached on disk.
-  ///
-  /// Returns `true` when it takes ownership of playback (download kicked off/queued, or an offline error surfaced) and the caller should stop.
-  /// Returns `false` when the caller should fall through to streaming (cellular without the cache-on-cellular preference).
-  @MainActor private func beginCacheFirstPlayback(
-    item: PlaylistItem,
-    playImmediately: Bool
-  ) async -> Bool {
-    guard let itemID = item.uuid else { return true }
-    let info = PlaylistInfo(item: item)
-
-    // If the asset is already downloading, just wait for the existing task to finish.
-    if await PlaylistManager.shared.downloadState(for: info.tagId) == .inProgress {
-      markPendingPlayback(itemID: itemID, playImmediately: playImmediately)
-      return true
-    }
-
-    let autoDownloadType = PlayListDownloadType(
-      rawValue: Preferences.Playlist.autoDownloadVideo.value
-    )
-    let action = Self.cacheFirstPlaybackAction(
-      connectionType: Reachability.shared.status.connectionType,
-      autoDownloadType: autoDownloadType
-    )
-
-    switch action {
-    case .offlineError:
-      presentCacheForPlaybackError(offline: true)
-      return true
-    case .stream:
-      clearPendingPlayback()
-      return false
-    case .cache:
-      startDownloadForPlayback(item: info, itemID: itemID, playImmediately: playImmediately)
-      return true
-    }
-  }
-
-  /// The action to take when a cache-first tap-to-play targets an item that is not stored locally.
-  enum CacheFirstPlaybackAction: Equatable {
-    case offlineError
-    case stream
-    case cache
-  }
-
-  /// On cellular only download when the auto-download preference permits cellular (`.on`),
-  /// otherwise stream so as not toconsume cellular data caching the full asset.
-  static func cacheFirstPlaybackAction(
-    connectionType: ReachabilityType,
-    autoDownloadType: PlayListDownloadType?
-  ) -> CacheFirstPlaybackAction {
-    if connectionType == .offline {
-      return .offlineError
-    }
+  /// Cache-first: start a background caching task so the item becomes available locally for the next playback.
+  /// Playback begins streaming while caching. Call this only with a freshly resolved item (post-streaming), so that the download uses a valid URL.
+  /// On cellular we only cache when the auto-download preference explicitly allows it, to avoid spending cellular data.
+  /// A cache already in progress (or a completed one) is a no-op thanks to.
+  @MainActor private func startCachingForPlayback(item: PlaylistInfo) {
+    guard FeatureList.kPlaylistCacheFirstEnabled.enabled else { return }
+    let connectionType = Reachability.shared.status.connectionType
+    guard connectionType != .offline else { return }
     if connectionType == .cellular {
-      return autoDownloadType == .on ? .cache : .stream
+      let autoDownloadType = PlayListDownloadType(
+        rawValue: Preferences.Playlist.autoDownloadVideo.value
+      )
+      guard autoDownloadType == .on else { return }
     }
-    return .cache
-  }
-
-  @MainActor private func startDownloadForPlayback(
-    item: PlaylistInfo,
-    itemID: String,
-    playImmediately: Bool
-  ) {
-    if !isPictureInPictureActive {
-      // Clear any stale player item so a subsequent tap doesn't seek+play against the wrong asset.
-      Task { await updateCurrentItem(nil) }
-    }
-    markPendingPlayback(itemID: itemID, playImmediately: playImmediately)
     PlaylistManager.shared.download(item: item)
-  }
-
-  @MainActor private func markPendingPlayback(itemID: String, playImmediately: Bool) {
-    pendingPlaybackItemID = itemID
-    pendingPlaybackPlayImmediately = playImmediately
-    isCachingAssetForPlayback = true
-    isLoadingStreamingURL = true
-  }
-
-  @MainActor private func clearPendingPlayback() {
-    pendingPlaybackItemID = nil
-    pendingPlaybackPlayImmediately = false
-    isCachingAssetForPlayback = false
-    isLoadingStreamingURL = false
-  }
-
-  @MainActor private func presentCacheForPlaybackError(offline: Bool) {
-    clearPendingPlayback()
-    if isPictureInPictureActive {
-      Task { await playNextItem() }
-      return
-    }
-    error = .init(
-      reason: .cacheForPlaybackFailed(offline: offline),
-      handler: nil
-    )
   }
 
   private func itemDurationForAssetDuration(_ duration: CMTime) -> ItemDuration {
@@ -956,48 +858,17 @@ public final class PlayerModel: ObservableObject {
   /// from an earlier prepare — typically a streaming URL that was resolved because the item's `cachedData` bookmark survived an
   /// eviction of the actual file. In that state, `play()`'s smart recovery doesn't fire (it only triggers when `currentItem == nil`),
   /// so a tap on play just runs `seek+play` against the stale asset and the user sees nothing happen. Replacing `currentItem`
-  /// with one backed by the freshly downloaded file unblocks the next play tap deterministically.
+  /// with one backed by the freshly cached file unblocks the next play tap deterministically.
   ///
   /// Note: The player is not interrupted if it is actively playing a different content
   private func setupPlaylistManagerObservation() {
     PlaylistManager.shared.downloadStateChanged
       .sink { [weak self] event in
-        guard let self else { return }
+        guard let self, event.state == .cached else { return }
         Task { @MainActor in
-          let isAwaitingCacheFirstPlayback = event.id == self.pendingPlaybackItemID
-          guard event.state == .downloaded || isAwaitingCacheFirstPlayback else { return }
-          if isAwaitingCacheFirstPlayback {
-            switch event.state {
-            case .downloaded:
-              let playImmediately = self.pendingPlaybackPlayImmediately
-              let stillSelected = event.id == self.selectedItem?.uuid
-              self.clearPendingPlayback()
-              if stillSelected {
-                let resumeOffset = self.currentTime
-                await self.prepareToPlaySelectedItem(
-                  initialOffset: resumeOffset > 0 ? resumeOffset : nil,
-                  playImmediately: playImmediately
-                )
-              }
-            case .invalid:
-              // The download failed before completion; surface the standard load error, but only
-              // if the user is still waiting on this item.
-              let stillSelected = event.id == self.selectedItem?.uuid
-              self.clearPendingPlayback()
-              if stillSelected {
-                self.presentCacheForPlaybackError(offline: false)
-              }
-            case .inProgress:
-              break
-            }
-            return
-          }
-
-          // "Save offline data" path (reached only for `.downloaded` events): when the user makes
-          // the selected item available offline, the player may be holding a stale `AVPlayerItem`.
-          // Rebind it to the freshly downloaded file. Skip when an initial prepare is still in flight
-          // to prevent a data race that would overwrite the local `AVPlayerItem` we install.
-          // The user can tap play once it settles.
+          // Skip when an initial prepare is still in flight: it would race ours and could
+          // overwrite the local `AVPlayerItem` we install with a streaming one once it
+          // finishes resolving. The user can tap play once the original prepare settles.
           guard event.id == self.selectedItem?.uuid,
             !self.isPlaying,
             !self.isLoadingStreamingURL

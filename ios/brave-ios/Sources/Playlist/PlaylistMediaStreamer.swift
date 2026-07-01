@@ -36,11 +36,12 @@ public class PlaylistMediaStreamer {
 
   @MainActor
   public func loadMediaStreamingAsset(_ item: PlaylistInfo) async throws -> PlaylistInfo {
-    // We need to check if the item is cached locally.
-    // If the item is cached (downloaded)
-    // then we can play it directly without having to stream it.
-    let cacheState = await PlaylistManager.shared.downloadState(for: item.tagId)
-    if cacheState != .invalid {
+    // If the item is fully cached we can play it directly without streaming.
+    // A cache that is only *in progress* must NOT short-circuit here because the item's stored `src`
+    // may be stale or not directly playable. So we still resolve a fresh streamable
+    // URL while the cache continues downloading in the background.
+    let cacheState = await PlaylistManager.shared.cacheState(for: item.tagId)
+    if cacheState == .cached {
       return item
     }
 
