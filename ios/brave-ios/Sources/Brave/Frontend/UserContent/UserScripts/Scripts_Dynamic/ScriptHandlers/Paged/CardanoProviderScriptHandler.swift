@@ -164,6 +164,9 @@ class CardanoProviderScriptHandler: TabContentScript {
       // Fail if there is no last committed URL yet
       !message.frameInfo.securityOrigin.host.isEmpty,
       message.frameInfo.isMainFrame,  // Fail the request came from 3p origin
+      // Guard against race: old page's JS message delivered after navigation commit
+      let committedURL = tab.lastCommittedURL,
+      URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin) == committedURL.origin,
       JSONSerialization.isValidJSONObject(message.body),
       let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
       let body = try? JSONDecoder().decode(MessageBody.self, from: messageData)
