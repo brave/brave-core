@@ -52,51 +52,12 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       }
 
       Task { @MainActor in
-        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
-          isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
+        let (standardSelectors, aggressiveSelectors) =
+          await tab.cosmeticFilteringTabHelper?.selectorsToHide(
             for: frameURL,
-            considerAllShieldsOption: true
-          ).isEnabled ?? true
-        )
-
-        let selectorArrays = await cachedEngines.asyncCompactMap {
-          cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
-          do {
-            guard
-              let selectors = try await cachedEngine.selectorsForCosmeticRules(
-                frameURL: frameURL,
-                ids: dto.data.ids,
-                classes: dto.data.classes
-              )
-            else {
-              return nil
-            }
-
-            return await (selectors, cachedEngine.type.isAlwaysAggressive)
-          } catch {
-            Logger.module.error("\(error.localizedDescription)")
-            return nil
-          }
-        }
-
-        var standardSelectors: Set<String> = []
-        var aggressiveSelectors: Set<String> = []
-        for tuple in selectorArrays {
-          if tuple.isAlwaysAggressive {
-            aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
-          } else {
-            standardSelectors = standardSelectors.union(tuple.selectors)
-          }
-        }
-
-        // cache blocked selectors
-        if let url = tab.visibleURL {
-          tab.contentBlocker?.cacheSelectors(
-            for: url,
-            standardSelectors: standardSelectors,
-            aggressiveSelectors: aggressiveSelectors
-          )
-        }
+            ids: Set(dto.data.ids),
+            classes: Set(dto.data.classes)
+          ) ?? (.init(), .init())
 
         replyHandler(
           [

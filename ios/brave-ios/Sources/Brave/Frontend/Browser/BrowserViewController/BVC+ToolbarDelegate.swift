@@ -452,7 +452,7 @@ extension BrowserViewController: TopToolbarDelegate {
         if $0.visibleURL?.baseDomain == currentDomain {
           $0.reload()
           // Domain specific shield setting changed, reset selectors cache.
-          $0.contentBlocker?.resetSelectorsCache()
+          $0.cosmeticFilteringTabHelper?.resetSelectorsCache()
         }
       }
     }
