@@ -1050,7 +1050,11 @@ test("brave_browser_tests") {
   }
 
   if (enable_email_aliases) {
-    deps += [ "//brave/components/email_aliases:features" ]
+    deps += [
+      "//brave/browser/ui/email_aliases",
+      "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:pref_names",
+    ]
   }
 
   deps += [

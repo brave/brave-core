@@ -85,6 +85,11 @@ class EmailAliasesService : public KeyedService,
 
   EmailAliasesMetrics& metrics() { return metrics_; }
 
+  // Returns true if the promo should be shown to the user.
+  bool ShouldShowPromo() const;
+  // Marks the promo as shown to the user.
+  void MarkPromoShown();
+
  private:
   using TokenResult =
       base::expected<brave_account::mojom::GetServiceTokenResultPtr,

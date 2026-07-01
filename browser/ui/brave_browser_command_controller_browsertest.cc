@@ -63,7 +63,10 @@
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
+#include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
+#include "third_party/abseil-cpp/absl/cleanup/cleanup.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -709,14 +712,52 @@ class BraveBrowserCommandControllerWithEmailAliasesTest
 };
 
 // Check that the email aliases settings page opens when the command is
-// executed.
+// executed and the promo has already been shown.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
                        EmailAliasesOpensSettings) {
+  // Mark the promo as already shown so the command navigates directly to
+  // settings instead of showing the promo dialog first.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      email_aliases::prefs::kPromoShown, true);
+
   auto* command_controller = browser()->command_controller();
   ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
   command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
-  EXPECT_EQ(
-      chrome::GetSettingsUrl("email-aliases"),
-      browser()->tab_strip_model()->GetActiveWebContents()->GetVisibleURL());
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser()
+               ->tab_strip_model()
+               ->GetActiveWebContents()
+               ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
+  }));
+}
+
+// Check that closing the promo dialog navigates to the email aliases settings
+// page.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerWithEmailAliasesTest,
+                       EmailAliasesPromoClosedOpensSettings) {
+  // kPromoShown defaults to false, so the command shows the promo dialog first.
+  // Prevent it from auto-closing on focus loss during the test.
+  email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(true);
+  absl::Cleanup restore_auto_close = [] {
+    email_aliases::EmailAliasesController::DisableAutoCloseBubbleForTesting(
+        false);
+  };
+
+  auto* command_controller = browser()->command_controller();
+  ASSERT_TRUE(command_controller->IsCommandEnabled(IDC_SHOW_EMAIL_ALIASES));
+  command_controller->ExecuteCommand(IDC_SHOW_EMAIL_ALIASES);
+
+  auto* controller = browser()->GetFeatures().email_aliases_controller();
+  ASSERT_NE(nullptr, controller->GetBubbleForTesting());
+
+  // Closing the promo should record it as shown and navigate to settings.
+  controller->CloseBubble();
+
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser()
+               ->tab_strip_model()
+               ->GetActiveWebContents()
+               ->GetVisibleURL() == chrome::GetSettingsUrl("email-aliases");
+  }));
 }
 #endif  // BUILDFLAG(ENABLE_EMAIL_ALIASES)

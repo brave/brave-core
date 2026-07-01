@@ -39,14 +39,16 @@ class EmailAliasesController {
                   uint64_t field_renderer_id,
                   std::optional<SettingsPageMethod> method = std::nullopt);
   void CloseBubble();
-  void OpenSettingsPage(
-      std::optional<SettingsPageMethod> method = std::nullopt);
+  void OpenSettingsPage(std::optional<SettingsPageMethod> method = std::nullopt,
+                        content::WebContents* initiator = nullptr);
 
   content::WebContents* GetBubbleForTesting();
   static void DisableAutoCloseBubbleForTesting(bool disale_autoclose);
 
  private:
   void OnBubbleClosed(const std::string&);
+  void ShowPromoBubble(content::WebContents* initiator);
+  void OnPromoBubbleClosed(const std::string&);
 
   raw_ptr<BrowserView> browser_view_ = nullptr;
   raw_ptr<EmailAliasesService> email_aliases_service_ = nullptr;

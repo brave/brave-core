@@ -90,3 +90,10 @@ interface EmailAliasesPanelHandler {
   OnCancelAliasCreation();
 };
 
+// Interface for handling `Email aliases promo` dialog actions
+// on the browser side.
+interface EmailAliasesPromoHandler {
+  // Notify promo closed (the bubble can close). Fire and forget.
+  OnPromoClosed();
+};
+

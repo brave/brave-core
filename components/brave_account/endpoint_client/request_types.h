@@ -9,6 +9,12 @@
 #include "brave/components/brave_account/endpoint_client/is_request_body.h"
 #include "brave/components/brave_account/endpoint_client/request.h"
 
+// The Windows SDK (winnt.h) defines DELETE as a macro for the delete access
+// right constant. Undefine it here to allow using DELETE as an identifier.
+#ifdef DELETE
+#undef DELETE
+#endif
+
 namespace brave_account::endpoint_client {
 
 template <detail::IsRequestBody T>

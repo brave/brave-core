@@ -76,6 +76,7 @@ if (toolkit_views) {
       "//brave/components/brave_account/endpoints",
       "//brave/components/email_aliases:email_aliases_api_types",
       "//brave/components/email_aliases:features",
+      "//brave/components/email_aliases:pref_names",
       "//brave/components/email_aliases:service",
       "//brave/components/email_aliases:test_utils",
       "//brave/components/resources:strings_grit",

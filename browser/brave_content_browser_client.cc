@@ -353,6 +353,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
 #include "brave/browser/ui/webui/email_aliases/email_aliases_panel_ui.h"
+#include "brave/browser/ui/webui/email_aliases/email_aliases_promo_ui.h"
 #include "brave/components/email_aliases/email_aliases.mojom.h"
 #include "brave/components/email_aliases/features.h"
 #endif
@@ -786,6 +787,8 @@ void BraveContentBrowserClient::RegisterTrustedWebUIInterfaceBrokers(
     registry.ForWebUI<EmailAliasesPanelUI>()
         .Add<email_aliases::mojom::EmailAliasesService>()
         .Add<email_aliases::mojom::EmailAliasesPanelHandler>();
+    registry.ForWebUI<EmailAliasesPromoUI>()
+        .Add<email_aliases::mojom::EmailAliasesPromoHandler>();
   }
 #endif
 

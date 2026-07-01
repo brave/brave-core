@@ -11,6 +11,8 @@ source_set("email_aliases") {
   sources = [
     "email_aliases_panel_ui.cc",
     "email_aliases_panel_ui.h",
+    "email_aliases_promo_ui.cc",
+    "email_aliases_promo_ui.h",
   ]
 
   deps = [
