@@ -14,7 +14,7 @@ HatsServiceDesktop::HatsServiceDesktop(Profile* profile)
 
 HatsServiceDesktop::~HatsServiceDesktop() = default;
 
-HatsService::LaunchError HatsServiceDesktop::GetCommonLaunchError(
+HatsService::LaunchError HatsServiceDesktop::RunCommonLaunchChecks(
     const std::string& trigger) const {
   // Brave never shows HaTS surveys. Returning a non-kNone error here aborts the
   // launch path before a dialog is created and makes `CanShowSurvey()` return
