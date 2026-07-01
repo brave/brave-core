@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
-index 735bfb20e66ca3de700cf306ed7942399b996f73..45d4a819220167d12c536fbeade2a9948f75d662 100644
+index 5767efdae958560f142b331a2c41903b2b8d01c3..a95de58a2f2f3e7b7c10c842a1bb1e28f8c81c29 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/contextmenu/ChromeContextMenuItem.java
 @@ -89,7 +89,8 @@ class ChromeContextMenuItem {
@@ -32,7 +32,7 @@ index 735bfb20e66ca3de700cf306ed7942399b996f73..45d4a819220167d12c536fbeade2a994
  
      /** Mapping from {@link Item} to the ID of the string that describes the action of the item. */
 @@ -273,6 +276,7 @@ class ChromeContextMenuItem {
-         R.string.sharing_send_tab_to_self, // Item.SEND_TAB_TO_SELF
+         R.string.menu_send_to_devices, // Item.SEND_TAB_TO_SELF
          R.string.contextmenu_translate, // Item.TRANSLATE
          R.string.contextmenu_create_qr_code, // Item.CREATE_QR_CODE
 +        R.string.contextmenu_copy_clean_link, // Item.COPY_CLEAN_LINK
