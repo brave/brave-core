@@ -1,5 +1,5 @@
 diff --git a/third_party/polymer/v3_0/BUILD.gn b/third_party/polymer/v3_0/BUILD.gn
-index d040a04e2000bee95ee483d6ef04927d6735b635..d5715cec70eeefec50fe7fc4db48ff9a762d7c9c 100644
+index 60b5036186d7fa7010a5b3c754aaa8535427b756..35555e5dd7dac520a8ee8854841432d1071f6fa5 100644
 --- a/third_party/polymer/v3_0/BUILD.gn
 +++ b/third_party/polymer/v3_0/BUILD.gn
 @@ -19,6 +19,7 @@ js_files = [
@@ -10,7 +10,7 @@ index d040a04e2000bee95ee483d6ef04927d6735b635..d5715cec70eeefec50fe7fc4db48ff9a
    js_files += [
      "iron-a11y-announcer/iron-a11y-announcer.js",
      "iron-a11y-keys/iron-a11y-keys.js",
-@@ -136,6 +137,7 @@ ts_library("library") {
+@@ -135,6 +136,7 @@ ts_library("library") {
    ]
  
    if (is_chromeos) {
@@ -18,7 +18,7 @@ index d040a04e2000bee95ee483d6ef04927d6735b635..d5715cec70eeefec50fe7fc4db48ff9a
      visibility += [
        "//ash/webui/*",
        "//chrome/browser/resources/ash/*",
-@@ -207,6 +209,7 @@ ts_library("library") {
+@@ -206,6 +208,7 @@ ts_library("library") {
    ]
  
    if (is_chromeos) {
@@ -26,7 +26,7 @@ index d040a04e2000bee95ee483d6ef04927d6735b635..d5715cec70eeefec50fe7fc4db48ff9a
      definitions += [
        "components-chromium/iron-a11y-announcer/iron-a11y-announcer.d.ts",
        "components-chromium/iron-a11y-keys/iron-a11y-keys.d.ts",
-@@ -250,4 +253,5 @@ ts_library("library") {
+@@ -249,4 +252,5 @@ ts_library("library") {
        "components-chromium/paper-tooltip/paper-tooltip.d.ts",
      ]
    }

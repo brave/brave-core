@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/profiles/profile_avatar_icon_util.cc b/chrome/browser/profiles/profile_avatar_icon_util.cc
-index 4adfe57553904f4aacc33f00c91663e81cb9d217..68445c8a12bec5e1dbf06a4ecc3e1a952b9d9fff 100644
+index 9b11fb9b2963a052e1dbf5f70435ddbd160812ee..f8d84536a66910cd53bb0a4c3564e1a87e138658 100644
 --- a/chrome/browser/profiles/profile_avatar_icon_util.cc
 +++ b/chrome/browser/profiles/profile_avatar_icon_util.cc
-@@ -460,7 +460,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
+@@ -573,7 +573,7 @@ constexpr size_t kDefaultAvatarIconsCount = 1;
  #elif BUILDFLAG(IS_CHROMEOS)
  constexpr size_t kDefaultAvatarIconsCount = 27;
  #else
@@ -11,7 +11,7 @@ index 4adfe57553904f4aacc33f00c91663e81cb9d217..68445c8a12bec5e1dbf06a4ecc3e1a95
  #endif
  
  #if !BUILDFLAG(IS_ANDROID)
-@@ -627,6 +627,7 @@ size_t GetPlaceholderAvatarIndex() {
+@@ -743,6 +743,7 @@ size_t GetPlaceholderAvatarIndex() {
  
  size_t GetModernAvatarIconStartIndex() {
  #if !BUILDFLAG(IS_CHROMEOS) && !BUILDFLAG(IS_ANDROID)
@@ -19,7 +19,7 @@ index 4adfe57553904f4aacc33f00c91663e81cb9d217..68445c8a12bec5e1dbf06a4ecc3e1a95
    return GetPlaceholderAvatarIndex() + 1;
  #else
    // Only use the placeholder avatar on ChromeOS and Android.
-@@ -660,6 +661,7 @@ std::string GetPlaceholderAvatarIconUrl() {
+@@ -776,6 +777,7 @@ std::string GetPlaceholderAvatarIconUrl() {
  
  const IconResourceInfo* GetDefaultAvatarIconResourceInfo(size_t index) {
    CHECK_LT(index, kDefaultAvatarIconsCount);
@@ -27,7 +27,7 @@ index 4adfe57553904f4aacc33f00c91663e81cb9d217..68445c8a12bec5e1dbf06a4ecc3e1a95
    static const std::array<IconResourceInfo, kDefaultAvatarIconsCount>
        resource_info = {{
    // Old avatar icons:
-@@ -986,6 +988,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
+@@ -1102,6 +1104,7 @@ base::ListValue GetIconsAndLabelsForProfileAvatarSelector(
          selected_avatar_idx == GetPlaceholderAvatarIndex());
      avatars.Insert(avatars.begin(),
                     base::Value(std::move(generic_avatar_info)));

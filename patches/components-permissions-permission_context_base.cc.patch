@@ -1,5 +1,5 @@
 diff --git a/components/permissions/permission_context_base.cc b/components/permissions/permission_context_base.cc
-index cdc99a5f1844ba45111a6b0f79fdffb80e18e3cd..03c6200ca03d12eec1ca85c675fbd14ddc93e7a3 100644
+index 171e53dd8d5065254dc252ab6bc5b19b5dd45d9c..dbd103ab11108d09ae96651666560e151da31769 100644
 --- a/components/permissions/permission_context_base.cc
 +++ b/components/permissions/permission_context_base.cc
 @@ -76,7 +76,7 @@
@@ -29,7 +29,7 @@ index cdc99a5f1844ba45111a6b0f79fdffb80e18e3cd..03c6200ca03d12eec1ca85c675fbd14d
               request_data->requesting_origin, request_data->embedding_origin) ||
           request_data->requesting_origin == request_data->embedding_origin ||
           content_settings_type_ == ContentSettingsType::STORAGE_ACCESS);
-@@ -931,4 +931,4 @@ void PermissionContextBase::NotifyObservers(
+@@ -927,4 +927,4 @@ void PermissionContextBase::NotifyObservers(
    }
  }
  

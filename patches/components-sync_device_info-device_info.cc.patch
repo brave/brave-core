@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.cc b/components/sync_device_info/device_info.cc
-index b26391295bc728f6cb0591e7a76962b9da447f72..d9b0d4f9b47ab54b999ac70bea40e4e09981e38c 100644
+index 92104e936463e5ebef0ac3a1124ec6a8d3e14db8..efe3579ad4aebde0f46b7e8a9b9d07c469b962e4 100644
 --- a/components/sync_device_info/device_info.cc
 +++ b/components/sync_device_info/device_info.cc
-@@ -86,7 +86,8 @@ DeviceInfo::DeviceInfo(
+@@ -87,7 +87,8 @@ DeviceInfo::DeviceInfo(
          desktop_to_ios_promo_receiving_types,
      GlicExperimentalTriggeringState glic_experimental_triggering_state,
      std::optional<int> glic_experimental_triggering_version,
@@ -12,7 +12,7 @@ index b26391295bc728f6cb0591e7a76962b9da447f72..d9b0d4f9b47ab54b999ac70bea40e4e0
      : guid_(guid),
        client_name_(client_name),
        chrome_version_(chrome_version),
-@@ -114,7 +115,8 @@ DeviceInfo::DeviceInfo(
+@@ -117,7 +118,8 @@ DeviceInfo::DeviceInfo(
            desktop_to_ios_promo_receiving_types),
        glic_experimental_triggering_state_(glic_experimental_triggering_state),
        glic_experimental_triggering_version_(

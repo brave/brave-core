@@ -1,8 +1,8 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index a6e895712f4a952581ea1c2ce7077a1ab703945f..789999766a5ee04926c1e205d57ac62186824f66 100644
+index fa672a2d9359973b278160e50e52185e8a09a3c7..ae746fc8793af98068ae4d4c2f54b8354280714b 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
-@@ -88,6 +88,7 @@ using BrowserPermissionCallback =
+@@ -89,6 +89,7 @@ using BrowserPermissionCallback =
  // See midi_permission_context.h/cc or push_permission_context.cc/h for some
  // examples.
  
@@ -10,7 +10,7 @@ index a6e895712f4a952581ea1c2ce7077a1ab703945f..789999766a5ee04926c1e205d57ac621
  class PermissionContextBase : public content_settings::Observer {
   public:
    PermissionContextBase(
-@@ -301,6 +302,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -302,6 +303,7 @@ class PermissionContextBase : public content_settings::Observer {
  #endif  // BUILDFLAG(IS_ANDROID)
  
   private:
@@ -18,7 +18,7 @@ index a6e895712f4a952581ea1c2ce7077a1ab703945f..789999766a5ee04926c1e205d57ac621
    friend class PermissionContextBaseTests;
  
    // Called when a request is no longer used so it can be cleaned up.
-@@ -315,7 +317,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -316,7 +318,7 @@ class PermissionContextBase : public content_settings::Observer {
  
    // This is the callback for PermissionRequest and is called once the user
    // allows/blocks/dismisses a permission prompt.
@@ -27,7 +27,7 @@ index a6e895712f4a952581ea1c2ce7077a1ab703945f..789999766a5ee04926c1e205d57ac621
                           const PermissionRequestData& request_data);
  
    raw_ptr<content::BrowserContext> browser_context_;
-@@ -336,6 +338,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -337,6 +339,7 @@ class PermissionContextBase : public content_settings::Observer {
    base::WeakPtrFactory<PermissionContextBase> weak_factory_{this};
  };
  

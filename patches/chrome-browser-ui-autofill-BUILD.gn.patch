@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/autofill/BUILD.gn b/chrome/browser/ui/autofill/BUILD.gn
-index 8670bdf749f28cfd246ec0ea273ba72e90daa9d9..1b5d853bab436e1b7aa11b46046429e8b7ed9d54 100644
+index b024d459678c7a15e0ce6973c1b56a729e99b985..f341b8287d06216a458a6af1e55a370a085c7500 100644
 --- a/chrome/browser/ui/autofill/BUILD.gn
 +++ b/chrome/browser/ui/autofill/BUILD.gn
-@@ -239,6 +239,7 @@ source_set("impl") {
+@@ -249,6 +249,7 @@ source_set("impl") {
      "//components/variations/service",
      "//components/vector_icons",
    ]
@@ -10,7 +10,7 @@ index 8670bdf749f28cfd246ec0ea273ba72e90daa9d9..1b5d853bab436e1b7aa11b46046429e8
  
    if (safe_browsing_mode != 0) {
      deps += [ "//components/safe_browsing/content/browser/password_protection" ]
-@@ -263,6 +264,7 @@ source_set("impl") {
+@@ -274,6 +275,7 @@ source_set("impl") {
        "//components/password_manager/core/browser/features:password_features",
        "//components/plus_addresses/core/browser/resources/strings",
      ]

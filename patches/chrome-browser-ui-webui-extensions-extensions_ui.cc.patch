@@ -1,10 +1,10 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 4937d0a3f4d18547edec8f0b5e3fd92a67bc00ff..1c7410e942d47b9ef1febf6224914593039a238e 100644
+index b8bec16f630e5bcf46b5897093016b1e7ae439ab..9c18ca88998a0e13fc9538402de9d3cef606e4a8 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -513,6 +513,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
-                         ? "webui-refresh-2026"
-                         : "");
+@@ -511,6 +511,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+                                             ? "webui-refresh-2026"
+                                             : "");
  
 +  BRAVE_CREATE_EXTENSIONS_SOURCE
    return source;

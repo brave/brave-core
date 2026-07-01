@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
-index ba2f6852c9abef56d09b844145426a1e81a22816..726aa72ad28bff5446206ca23ff521884a1c6106 100644
+index 7a279936118c6efeb64dc7fb676c2d6000017145..4d47e17578e513dbbfa01a59cc77fccfe3b95460 100644
 --- a/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
 +++ b/chrome/browser/resources/settings_shared/people_page/sync_browser_proxy.ts
 @@ -151,6 +151,9 @@ export interface SyncPrefs {

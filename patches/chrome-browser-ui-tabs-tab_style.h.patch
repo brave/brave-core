@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/tabs/tab_style.h b/chrome/browser/ui/tabs/tab_style.h
-index 4254c53424be54f78476c51d69f98d1df1f3b905..1159657425d8dae57ba3bc9478e4b9a372369761 100644
+index 73b3f34db15e4c61cff656c06f827987b0317b19..ca11f52cd19e99ae6383bfc1ba1a81755f9dbac8 100644
 --- a/chrome/browser/ui/tabs/tab_style.h
 +++ b/chrome/browser/ui/tabs/tab_style.h
-@@ -111,7 +111,7 @@ class TabStyle {
+@@ -108,7 +108,7 @@ class TabStyle {
  
    TabStyle(const TabStyle&) = delete;
    TabStyle& operator=(const TabStyle&) = delete;

@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/browser/page_specific_content_settings.cc b/components/content_settings/browser/page_specific_content_settings.cc
-index f17e6c9d13f980cce8078afd4141202e00b5e6c9..0cf13abcb54d6d433866c0f6b0578c4764802279 100644
+index 94927d72502311f7f82ab965e5802c412c1e40b3..79578ed4a1c48aa3ed5fede995142a1dc4705a5c 100644
 --- a/components/content_settings/browser/page_specific_content_settings.cc
 +++ b/components/content_settings/browser/page_specific_content_settings.cc
-@@ -910,6 +910,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
+@@ -911,6 +911,7 @@ bool PageSpecificContentSettings::IsContentBlocked(
        content_type == ContentSettingsType::ADS ||
        content_type == ContentSettingsType::SOUND ||
        content_type == ContentSettingsType::CLIPBOARD_READ_WRITE ||
@@ -10,7 +10,7 @@ index f17e6c9d13f980cce8078afd4141202e00b5e6c9..0cf13abcb54d6d433866c0f6b0578c47
        content_type == ContentSettingsType::SENSORS ||
        content_type == ContentSettingsType::GEOLOCATION ||
        content_type == ContentSettingsType::GEOLOCATION_WITH_OPTIONS ||
-@@ -940,6 +941,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
+@@ -941,6 +942,7 @@ bool PageSpecificContentSettings::IsContentAllowed(
        content_type != ContentSettingsType::MEDIASTREAM_CAMERA &&
        content_type != ContentSettingsType::MIDI_SYSEX &&
        content_type != ContentSettingsType::CLIPBOARD_READ_WRITE &&

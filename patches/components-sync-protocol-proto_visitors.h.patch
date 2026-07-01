@@ -1,8 +1,8 @@
 diff --git a/components/sync/protocol/proto_visitors.h b/components/sync/protocol/proto_visitors.h
-index 5859ed22889a9f6bbe0e4a49169797d84094719d..9333172c9afa95809621286a825c84d815b29638 100644
+index a2a365c291ad5075715e3fa690239e92e7ada92c..71852cab4a8342e504caedd670582da98dc2bcee 100644
 --- a/components/sync/protocol/proto_visitors.h
 +++ b/components/sync/protocol/proto_visitors.h
-@@ -638,6 +638,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
+@@ -639,6 +639,7 @@ VISIT_PROTO_FIELDS(const sync_pb::DeviceInfoSpecifics& proto) {
    VISIT(signin_scoped_device_id);
    VISIT(last_updated_timestamp);
    VISIT(feature_fields);
@@ -10,7 +10,7 @@ index 5859ed22889a9f6bbe0e4a49169797d84094719d..9333172c9afa95809621286a825c84d8
    VISIT(sharing_fields);
    VISIT(model);
    VISIT(manufacturer);
-@@ -673,6 +674,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
+@@ -675,6 +676,7 @@ VISIT_PROTO_FIELDS(const sync_pb::FeatureSpecificFields& proto) {
    VISIT(glic_experimental_triggering_version);
  }
  
@@ -18,7 +18,7 @@ index 5859ed22889a9f6bbe0e4a49169797d84094719d..9333172c9afa95809621286a825c84d8
  VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
    VISIT_REP(enabled_features);
    VISIT(sender_id_fcm_token_v2);
-@@ -737,7 +739,7 @@ VISIT_PROTO_FIELDS(
+@@ -740,7 +742,7 @@ VISIT_PROTO_FIELDS(
  }
  
  VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
@@ -27,7 +27,7 @@ index 5859ed22889a9f6bbe0e4a49169797d84094719d..9333172c9afa95809621286a825c84d8
                  "When adding a new protocol type, you will likely need to add "
                  "it here as well.");
    VISIT(encrypted);
-@@ -805,6 +807,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
+@@ -808,6 +810,7 @@ VISIT_PROTO_FIELDS(const sync_pb::EntitySpecifics& proto) {
    VISIT(contextual_task);
    VISIT(skill);
    VISIT(gemini_thread);
