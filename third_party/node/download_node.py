@@ -34,12 +34,16 @@ _NODE_DIR = Path(__file__).resolve().parent
 # Verify TLS against the system trust store with hostname checking.
 _TLS_CONTEXT = ssl.create_default_context()
 
-PLATFORMS: dict[str, str] = {
-    f'node-{NODE_VERSION}-linux-x64.tar.gz': f'node-{NODE_VERSION}-linux-x64.tar.gz',
-    f'node-{NODE_VERSION}-darwin-x64.tar.gz': f'node-{NODE_VERSION}-mac-x64.tar.gz',
-    f'node-{NODE_VERSION}-darwin-arm64.tar.gz': f'node-{NODE_VERSION}-mac-arm64.tar.gz',
-    f'node-{NODE_VERSION}-win-x64.zip': f'node-{NODE_VERSION}-win-x64.tar.gz',
-}
+PLATFORMS: frozenset[tuple[str, str, str]] = frozenset({
+    (f'node-{NODE_VERSION}-linux-x64.tar.gz',
+     f'node-{NODE_VERSION}-linux-x64.tar.gz', 'node-linux-x64'),
+    (f'node-{NODE_VERSION}-darwin-x64.tar.gz',
+     f'node-{NODE_VERSION}-mac-x64.tar.gz', 'node-mac-x64'),
+    (f'node-{NODE_VERSION}-darwin-arm64.tar.gz',
+     f'node-{NODE_VERSION}-mac-arm64.tar.gz', 'node-mac-arm64'),
+    (f'node-{NODE_VERSION}-win-x64.zip', f'node-{NODE_VERSION}-win-x64.tar.gz',
+     'node-win-x64'),
+})
 
 
 class _HttpsOnlyRedirectHandler(urllib.request.HTTPRedirectHandler):
@@ -75,15 +79,6 @@ def urlopen(url: str):
 def _strip_archive_ext(name: str) -> str:
     """`name` without its `.tar.gz`/`.zip` archive extension."""
     return name.removesuffix('.tar.gz').removesuffix('.zip')
-
-
-def deployed_dir(tarball: str) -> str:
-    """The version-free directory a tarball packages (and we deploy into).
-
-    Drops the extension and the version, e.g.
-    `node-v24.17.0-mac-x64.tar.gz` -> `node-mac-x64`.
-    """
-    return _strip_archive_ext(tarball).replace(f'-{NODE_VERSION}', '')
 
 
 def fetch_shasums() -> dict[str, str]:
@@ -122,12 +117,12 @@ def extract(archive: Path, dest: Path) -> None:
         tar.extractall(path=dest, filter='data')
 
 
-def deploy(archive: str, tarball: str, shasums: dict[str, str]) -> None:
+def deploy(archive: str, deployed_dir: str, shasums: dict[str, str]) -> None:
     """Download, verify and deploy one platform's Node into its dir.
 
     Any previous deployment is wiped so no stale tree lingers, then the upstream
     archive is extracted and its versioned top-level directory renamed to the
-    version-free directory `tarball` packages.
+    version-free `deployed_dir`.
     """
     expected = shasums.get(archive)
     if expected is None:
@@ -137,7 +132,7 @@ def deploy(archive: str, tarball: str, shasums: dict[str, str]) -> None:
     # The archive's top-level dir is its name without the extension, e.g.
     # node-v24.17.0-darwin-x64; we rename it to the version-free deployed dir.
     versioned = _NODE_DIR / _strip_archive_ext(archive)
-    dest = _NODE_DIR / deployed_dir(tarball)
+    dest = _NODE_DIR / deployed_dir
 
     url = f'{BASE_URL}/{NODE_VERSION}/{archive}'
     print(f'Downloading {url}')
@@ -185,8 +180,8 @@ def main() -> int:
         clear_existing()
 
     shasums = fetch_shasums()
-    for archive, tarball in PLATFORMS.items():
-        deploy(archive, tarball, shasums)
+    for archive, _tarball, deployed_dir in PLATFORMS:
+        deploy(archive, deployed_dir, shasums)
 
     print('\nDone. Run package_node.py to package these for upload.')
     return 0

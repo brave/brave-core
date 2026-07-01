@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`brave_core_shallow` module: sparse-deploy brave-core subpaths."""
 
-DEPS = ['step']
+DEPS = ['path', 'step']
