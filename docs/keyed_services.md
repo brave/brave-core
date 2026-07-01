@@ -76,8 +76,8 @@ On desktop/android you need to return false for
 `ServiceIsNULLWhileTesting`
 
 On iOS you need to either remove `ServiceCreation::kCreateWithProfile` or add
-`TestCreation::kNoServiceForTests` and inject a test factory in tests that need
-the service to exist.
+`TestingCreation::kNoServiceForTests` and inject a test factory in tests that
+need the service to exist.
 
 #### Keyed Services and Mojo
 
