@@ -86,6 +86,10 @@ export function SponsoredRichMediaBackground(props: Props) {
   const iframeRef = React.useRef<HTMLIFrameElement | null>(null)
   const { sponsoredRichMediaBackgroundInfo } = props
 
+  console.log('SponsoredRichMedia: rendering iframe, url=',
+    sponsoredRichMediaBackgroundInfo.url,
+    'richMediaHasLoaded=', props.richMediaHasLoaded)
+
   React.useEffect(() => {
     try {
       const ntpNewTabTakeoverRichMediaUrlOrigin =
@@ -128,7 +132,15 @@ export function SponsoredRichMediaBackground(props: Props) {
       allow={iframeAllow}
       src={sponsoredRichMediaBackgroundInfo.url}
       sandbox='allow-scripts allow-same-origin'
-      onLoad={props.onLoaded}>
+      onLoad={() => {
+        console.log('SponsoredRichMedia: iframe onLoad, src=',
+          sponsoredRichMediaBackgroundInfo.url)
+        props.onLoaded()
+      }}
+      onError={(e) => {
+        console.error('SponsoredRichMedia: iframe onError, src=',
+          sponsoredRichMediaBackgroundInfo.url, e)
+      }}>
     </SponsoredRichMediaBackgroundIframe>
   )
 }

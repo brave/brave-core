@@ -74,6 +74,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.SponsoredTab;
 import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.FetchWallpaperWorkerTask;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPImageUtil;
+import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
@@ -751,6 +752,7 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
         mPreferenceListener = null;
 
         mRecyclerView.clearOnScrollListeners();
+        maybeResetSponsoredRichMediaBackground();
         super.onDetachedFromWindow();
     }
 
@@ -1101,7 +1103,11 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
     private void setupSponsoredBackgroundContent(Wallpaper wallpaper) {
         if (mSponsoredRichMediaWebView == null) {
             mSponsoredRichMediaWebView =
-                    new SponsoredRichMediaWebView(mActivity, mWindowAndroid, mProfile);
+                    new SponsoredRichMediaWebView(
+                            mActivity,
+                            mWindowAndroid,
+                            mProfile,
+                            this::maybeResetSponsoredRichMediaBackground);
 
             mBackgroundSponsoredRichMediaView = findViewById(R.id.bg_sponsored_rich_media_view);
             mBackgroundSponsoredRichMediaView.setVisibility(View.VISIBLE);
@@ -1119,7 +1125,10 @@ public class BraveNewTabPageLayout extends NewTabPageLayout
 
         mBackgroundSponsoredRichMediaView.setVisibility(View.GONE);
         mBackgroundSponsoredRichMediaView.removeAllViews();
+        mSponsoredRichMediaWebView.destroy();
         mSponsoredRichMediaWebView = null;
+
+        setBackgroundImage(SponsoredImageUtil.getBackgroundImage());
     }
 
     private void setBackgroundImage(NTPImage ntpImage) {
