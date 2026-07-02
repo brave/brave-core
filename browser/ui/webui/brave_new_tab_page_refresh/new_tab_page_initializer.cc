@@ -175,6 +175,13 @@ void NewTabPageInitializer::AddCSPOverrides() {
   source_->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::FrameSrc,
       base::StrCat({"frame-src ", kNTPNewTabTakeoverRichMediaUrl, ";"}));
+
+  // Brave News uses a dedicated Trusted Types policy to parse imported OPML
+  // subscription files (see brave_news .../customize/opml.ts). Append it to the
+  // default policy allowlist so the default policies remain intact.
+  source_->OverrideContentSecurityPolicy(
+      network::mojom::CSPDirectiveName::TrustedTypes,
+      base::StrCat({webui::kDefaultTrustedTypesPolicies, " brave-news-opml;"}));
 }
 
 void NewTabPageInitializer::AddLoadTimeValues() {

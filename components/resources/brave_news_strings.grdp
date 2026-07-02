@@ -246,4 +246,18 @@
   <message name="IDS_BRAVE_NEWS_NEW_CONTENT_AVAILABLE" desc="Indicates that new content is available, and prompts the user to load the new data" formatter_data="webui=BraveNews">
     New content available. Reload?
   </message>
+
+  <!-- OPML import / export -->
+  <message name="IDS_BRAVE_NEWS_OPML_IMPORT" desc="Link to import feed subscriptions from an OPML file. OPML is a file format name and should not be translated." formatter_data="webui=BraveNews">
+    Import from OPML
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPML_EXPORT" desc="Link to export feed subscriptions to an OPML file. OPML is a file format name and should not be translated." formatter_data="webui=BraveNews">
+    Export to OPML
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPML_IMPORT_RESULT" desc="Message shown after importing an OPML file, summarizing how many publishers, direct feeds, and channels were added, and how many entries were skipped because they were already subscribed or duplicated." formatter_data="webui=BraveNews">
+    Added <ph name="PUBLISHER_COUNT">$1<ex>3</ex></ph> publishers, <ph name="FEED_COUNT">$2<ex>2</ex></ph> direct feeds and <ph name="CHANNEL_COUNT">$3<ex>1</ex></ph> channels. Skipped <ph name="SKIPPED_COUNT">$4<ex>4</ex></ph> already added.
+  </message>
+  <message name="IDS_BRAVE_NEWS_OPML_IMPORT_ERROR" desc="Error message shown when an OPML file couldn't be imported" formatter_data="webui=BraveNews">
+    Couldn't import that file. Make sure it's a valid OPML file.
+  </message>
 </grit-part>
