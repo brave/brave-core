@@ -256,21 +256,117 @@
 
       <!-- Workspaces -->
       <if expr="use_titlecase">
-        <message name="IDS_SAVE_WORKSPACE" desc="App menu item to save all open tabs and tab groups as a named workspace">
-          Save Tabs as Workspace…
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
+          Save Current Windows and Tabs as Space
         </message>
-        <message name="IDS_OPEN_WORKSPACE" desc="App menu item to open a previously saved workspace">
-          Open Workspace…
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
+          Name
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
+          Enter Your Space Name
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
+          My Space
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
+          Save
+        </message>
+        <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
+          Cancel
+        </message>
+        <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
+          Space Options
+        </message>
+        <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
+          Delete Space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a workspace">
+          Delete Space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
+          Are you sure you want to delete this Space? The saved Space will be permanently removed. This action cannot be undone.
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
+          Delete
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
+          Settings
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_SAVE_BUTTON" desc="Button in the workspaces bubble that saves the current windows and tabs as a new workspace">
+          Save
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_EMPTY_TITLE" desc="Title shown in the workspaces bubble when the user has not yet created any workspaces">
+          No Spaces Created
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
+          Create Your First Space by Clicking the Save Button Below.
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row when the workspace contains one window">
+          {TAB_COUNT, plural, =1 {1 Tab} other {# Tabs}}
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_WINDOWS" desc="Stats label shown on a workspace row when the workspace contains multiple windows">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> Windows
         </message>
       </if>
       <if expr="not use_titlecase">
-        <message name="IDS_SAVE_WORKSPACE" desc="App menu item to save all open tabs and tab groups as a named workspace">
-          Save tabs as workspace…
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_TITLE" desc="Title of the dialog asking the user to name a workspace">
+          Save current windows and tabs as space
         </message>
-        <message name="IDS_OPEN_WORKSPACE" desc="App menu item to open a previously saved workspace">
-          Open workspace…
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL" desc="Label for the workspace name text input in the save dialog">
+          Name
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER" desc="Placeholder text for the workspace name input field">
+          Enter your space name
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME" desc="Default workspace name pre-filled in the save dialog">
+          My Space
+        </message>
+        <message name="IDS_WORKSPACE_SAVE_DIALOG_SAVE_BUTTON" desc="Accept button label in the save workspace dialog">
+          Save
+        </message>
+        <message name="IDS_WORKSPACE_DIALOG_CANCEL_BUTTON" desc="Cancel button label shared by workspace dialogs">
+          Cancel
+        </message>
+        <message name="IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP" desc="Tooltip for the per-row button that opens the workspace's options menu">
+          Space options
+        </message>
+        <message name="IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE" desc="Context menu item that deletes the workspace shown in this row">
+          Delete space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_TITLE" desc="Title of the confirmation dialog shown before deleting a workspace">
+          Delete space
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_BODY" desc="Body text of the confirmation dialog shown before deleting a workspace, warning the user of the consequences">
+          Are you sure you want to delete this space? The saved space will be permanently removed. This action cannot be undone.
+        </message>
+        <message name="IDS_WORKSPACE_DELETE_CONFIRM_DELETE_BUTTON" desc="Button label that confirms deletion in the workspace delete confirmation dialog">
+          Delete
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_SETTINGS_BUTTON" desc="Button in the workspaces bubble that opens workspaces settings">
+          Settings
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_SAVE_BUTTON" desc="Button in the workspaces bubble that saves the current windows and tabs as a new workspace">
+          Save
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_EMPTY_TITLE" desc="Title shown in the workspaces bubble when the user has not yet created any workspaces">
+          No spaces created
+        </message>
+        <message name="IDS_WORKSPACES_BUBBLE_EMPTY_BODY" desc="Explanatory text shown in the workspaces bubble when the user has not yet created any workspaces, telling them how to create one">
+          Create your first space by clicking the Save button below.
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_TABS" desc="Stats label shown on a workspace row when the workspace contains one window">
+          {TAB_COUNT, plural, =1 {1 tab} other {# tabs}}
+        </message>
+        <message name="IDS_WORKSPACE_ROW_STATS_WINDOWS" desc="Stats label shown on a workspace row when the workspace contains multiple windows">
+          <ph name="WINDOW_COUNT">$1<ex>2</ex></ph> windows
         </message>
       </if>
+      <message name="IDS_TOOLTIP_WORKSPACES_BUTTON" desc="The tooltip for the workspaces button in the tab strip">
+        Spaces
+      </message>
+      <message name="IDS_ACCNAME_WORKSPACES_BUTTON" desc="The accessible name for the workspaces button in the tab strip.">
+        Spaces
+      </message>
 
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">

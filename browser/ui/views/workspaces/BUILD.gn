@@ -1,0 +1,65 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+source_set("workspaces") {
+  sources = [
+    "save_workspace_dialog.cc",
+    "save_workspace_dialog.h",
+    "workspace_row_view.cc",
+    "workspace_row_view.h",
+    "workspaces_bubble_controller.cc",
+    "workspaces_bubble_controller.h",
+    "workspaces_bubble_view.cc",
+    "workspaces_bubble_view.h",
+  ]
+
+  # The save dialog is created only through the controller, so it stays
+  # private. The controller is the entry point used by the tab strip region
+  # views; the bubble and row views are referenced by browser tests.
+  public = [
+    "workspace_row_view.h",
+    "workspaces_bubble_controller.h",
+    "workspaces_bubble_view.h",
+  ]
+
+  public_deps = [
+    "//base",
+    "//brave/browser/workspaces",
+    "//ui/menus",
+    "//ui/views",
+  ]
+
+  deps = [
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/vector_icons",
+    "//components/constrained_window",
+    "//ui/base",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "workspaces_bubble_view_browsertest.cc" ]
+
+  deps = [
+    ":workspaces",
+    "//base",
+    "//base/test:test_support",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/browser/ui/views/frame",
+    "//brave/browser/workspaces",
+    "//chrome/browser",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support",
+    "//chrome/test:test_support_ui",
+    "//content/test:test_support",
+    "//testing/gtest",
+    "//ui/base",
+    "//ui/views",
+    "//ui/views:test_support",
+  ]
+}

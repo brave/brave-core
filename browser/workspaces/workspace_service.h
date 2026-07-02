@@ -59,6 +59,11 @@ class WorkspaceService : public KeyedService {
   // Removes the workspace metadata entry from the profile preference.
   void RemoveWorkspaceMetadata(const std::string& name);
 
+  // Removes workspace metadata from prefs and deletes its on-disk directory.
+  // The pref update runs on the UI thread; the directory deletion is posted to
+  // the internal I/O task runner.
+  void DeleteWorkspace(const std::string& name);
+
   // Returns the directory that contains all workspace subdirectories.
   const base::FilePath& GetWorkspacesPath() const { return workspaces_path_; }
 
@@ -73,10 +78,6 @@ class WorkspaceService : public KeyedService {
 
   // Reads the named workspace from disk and opens its windows/tabs.
   void RestoreWorkspace(const std::string& name);
-
-  // Placeholder entry points for the save/open dialogs.
-  void ShowSaveWorkspaceDialog();
-  void ShowOpenWorkspaceDialog();
 
   base::WeakPtr<WorkspaceService> GetWeakPtr();
 

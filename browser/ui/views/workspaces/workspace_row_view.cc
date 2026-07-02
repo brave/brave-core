@@ -1,0 +1,185 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+#include "brave/browser/ui/views/workspaces/workspace_row_view.h"
+
+#include <utility>
+
+#include "base/functional/bind.h"
+#include "base/memory/raw_ptr.h"
+#include "base/strings/string_number_conversions.h"
+#include "base/strings/utf_string_conversions.h"
+#include "base/task/single_thread_task_runner.h"
+#include "brave/browser/workspaces/workspace_metadata.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "brave/grit/brave_generated_resources.h"
+#include "third_party/skia/include/core/SkColor.h"
+#include "ui/base/l10n/l10n_util.h"
+#include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/base/mojom/menu_source_type.mojom.h"
+#include "ui/color/color_id.h"
+#include "ui/gfx/font.h"
+#include "ui/gfx/font_list.h"
+#include "ui/views/background.h"
+#include "ui/views/controls/button/image_button.h"
+#include "ui/views/controls/button/image_button_factory.h"
+#include "ui/views/controls/label.h"
+#include "ui/views/controls/menu/menu_runner.h"
+#include "ui/views/layout/box_layout.h"
+#include "ui/views/view_class_properties.h"
+#include "ui/views/view_utils.h"
+
+namespace {
+
+constexpr int kDeleteWorkspaceCommandId = 1;
+
+std::u16string FormatStats(const WorkspaceMetadata& info) {
+  const int windows = info.number_of_windows;
+  const int tabs = info.number_of_tabs;
+  std::u16string tabs_format_string =
+      l10n_util::GetPluralStringFUTF16(IDS_WORKSPACE_ROW_STATS_TABS, tabs);
+  if (windows == 1) {
+    return tabs_format_string;
+  }
+  std::u16string windows_format_string = l10n_util::GetStringFUTF16(
+      IDS_WORKSPACE_ROW_STATS_WINDOWS, base::NumberToString16(windows));
+  return windows_format_string + u" - " + tabs_format_string;
+}
+
+}  // namespace
+
+WorkspaceInfoButton::WorkspaceInfoButton(PressedCallback callback,
+                                         const WorkspaceMetadata& info)
+    : Button(std::move(callback)) {
+  auto* layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kVertical,
+      /*inside_border_insets=*/gfx::Insets::VH(4, 8),
+      /*between_child_spacing=*/2));
+  layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kStart);
+
+  name_label_ = AddChildView(
+      std::make_unique<views::Label>(base::UTF8ToUTF16(info.name)));
+  const gfx::FontList& base_font = name_label_->font_list();
+  name_label_->SetFontList(
+      base_font.Derive(kTitleFontSize - base_font.GetFontSize(),
+                       base_font.GetFontStyle(), gfx::Font::Weight::BOLD));
+  name_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+
+  stats_label_ =
+      AddChildView(std::make_unique<views::Label>(FormatStats(info)));
+  stats_label_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
+}
+
+void WorkspaceInfoButton::SetSelected(bool selected) {
+  if (selected_ == selected) {
+    return;
+  }
+  selected_ = selected;
+  ui::ColorVariant color = selected
+                               ? ui::ColorVariant(SK_ColorWHITE)
+                               : ui::ColorVariant(ui::kColorLabelForeground);
+  name_label_->SetEnabledColor(color);
+  stats_label_->SetEnabledColor(color);
+}
+
+BEGIN_METADATA(WorkspaceInfoButton)
+END_METADATA
+
+WorkspaceRowView::WorkspaceRowView(const WorkspaceMetadata& info,
+                                   RowClickedCallback on_workspace_selected,
+                                   RowClickedCallback on_delete_clicked)
+    : on_delete_(std::move(on_delete_clicked)) {
+  SetNotifyEnterExitOnChild(true);
+
+  auto* row_layout = SetLayoutManager(std::make_unique<views::BoxLayout>(
+      views::BoxLayout::Orientation::kHorizontal, gfx::Insets(), 0));
+
+  row_layout->set_cross_axis_alignment(
+      views::BoxLayout::CrossAxisAlignment::kCenter);
+
+  info_button_ = AddChildView(std::make_unique<WorkspaceInfoButton>(
+      std::move(on_workspace_selected), info));
+  row_layout->SetFlexForView(info_button_, 1);
+
+  auto more_btn = views::CreateVectorImageButtonWithNativeTheme(
+      base::BindRepeating(&WorkspaceRowView::ShowMoreMenu,
+                          base::Unretained(this)),
+      kLeoMoreVerticalIcon);
+  more_btn->SetPreferredSize(gfx::Size(27, 27));
+  more_btn->SetTooltipText(
+      l10n_util::GetStringUTF16(IDS_WORKSPACE_ROW_MORE_BUTTON_TOOLTIP));
+  more_btn->SetProperty(views::kMarginsKey, gfx::Insets::TLBR(0, 0, 0, 5));
+  more_button_ = AddChildView(std::move(more_btn));
+}
+
+WorkspaceRowView::~WorkspaceRowView() = default;
+
+void WorkspaceRowView::SetSelected(bool selected) {
+  if (selected_ == selected) {
+    return;
+  }
+  selected_ = selected;
+  UpdateBackground();
+  UpdateChildSelectionStyling();
+}
+
+void WorkspaceRowView::OnMouseEntered(const ui::MouseEvent& event) {
+  views::View::OnMouseEntered(event);
+  UpdateBackground();
+}
+
+void WorkspaceRowView::OnMouseExited(const ui::MouseEvent& event) {
+  views::View::OnMouseExited(event);
+  UpdateBackground();
+}
+
+void WorkspaceRowView::UpdateBackground() {
+  if (selected_) {
+    SetBackground(
+        views::CreateSolidBackground(ui::kColorSysOnSurfaceSecondary));
+  } else if (View::IsMouseHovered()) {
+    SetBackground(
+        views::CreateSolidBackground(ui::kColorSysStateHoverOnSubtle));
+  } else {
+    SetBackground(nullptr);
+  }
+}
+
+void WorkspaceRowView::UpdateChildSelectionStyling() {
+  info_button_->SetSelected(selected_);
+
+  views::SetImageFromVectorIconWithColor(
+      more_button_, kLeoMoreVerticalIcon,
+      selected_ ? views::IconColors(SK_ColorWHITE, SK_ColorWHITE)
+                : views::IconColors(ui::kColorIcon, ui::kColorIconDisabled));
+}
+
+void WorkspaceRowView::ShowMoreMenu() {
+  menu_model_ = std::make_unique<ui::SimpleMenuModel>(this);
+  menu_model_->AddItemWithStringId(kDeleteWorkspaceCommandId,
+                                   IDS_WORKSPACE_ROW_MENU_DELETE_WORKSPACE);
+  menu_runner_ = std::make_unique<views::MenuRunner>(
+      menu_model_.get(), views::MenuRunner::HAS_MNEMONICS);
+  menu_runner_->RunMenuAt(GetWidget(), /*button_controller=*/nullptr,
+                          more_button_->GetBoundsInScreen(),
+                          views::MenuAnchorPosition::kTopRight,
+                          ui::mojom::MenuSourceType::kMouse);
+}
+
+void WorkspaceRowView::ExecuteCommand(int command_id, int event_flags) {
+  if (command_id == kDeleteWorkspaceCommandId) {
+    on_delete_.Run();
+  }
+}
+
+void WorkspaceRowView::MenuClosed(ui::SimpleMenuModel* source) {
+  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
+      FROM_HERE, menu_model_.release());
+}
+
+BEGIN_METADATA(WorkspaceRowView)
+END_METADATA

@@ -5,15 +5,20 @@
 
 #include "brave/browser/ui/views/frame/brave_tab_strip_region_view.h"
 
+#include <memory>
+
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -266,6 +271,38 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
   tab_scroll_next_button_->SetVisible(false);
 }
 
+void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
+  if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
+    auto* bwi = tab_strip_->GetBrowserWindowInterface();
+    if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+      return;
+    }
+
+    // Insert before the tab strip so the button appears at the left edge of the
+    // tab area, before the first tab.
+    const std::optional<size_t> strip_idx = GetIndexOf(tab_strip_);
+    CHECK(strip_idx.has_value());
+    workspaces_button_ = AddChildViewAt(
+        std::make_unique<TabStripControlButton>(
+            bwi,
+            base::BindRepeating(
+                &BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed,
+                weak_factory_.GetWeakPtr()),
+            kLeoSpacesIcon),
+        strip_idx.value());
+    workspaces_button_->SetProperty(views::kCrossAxisAlignmentKey,
+                                    views::LayoutAlignment::kCenter);
+    workspaces_button_->SetProperty(
+        views::kFlexBehaviorKey,
+        views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
+                                 views::MaximumFlexSizeRule::kPreferred));
+    workspaces_button_->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
+    workspaces_button_->GetViewAccessibility().SetName(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+  }
+}
+
 void BraveHorizontalTabStripRegionView::
     OnShowHorizontalTabScrollButtonsChanged() {
   InvalidateLayout();
@@ -325,6 +362,13 @@ bool BraveHorizontalTabStripRegionView::ShouldShowHorizontalScrollButton()
          *show_horizontal_tab_scroll_buttons_;
 }
 
+void BraveHorizontalTabStripRegionView::OnWorkspacesButtonPressed() {
+  auto* bwi = tab_strip_->GetBrowserWindowInterface();
+  auto* controller = bwi->GetFeatures().workspaces_bubble_controller();
+  CHECK(controller);
+  controller->ShowBubble(workspaces_button_, bwi->GetProfile());
+}
+
 views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   views::View::Views order =
       HorizontalTabStripRegionView::GetChildrenInZOrder();
@@ -342,6 +386,9 @@ views::View::Views BraveHorizontalTabStripRegionView::GetChildrenInZOrder() {
   if (combo_button_) {
     std::erase(order, combo_button_.get());
     order.push_back(combo_button_.get());
+  }
+  if (workspaces_button_) {
+    order.push_back(workspaces_button_.get());
   }
 
   return order;
@@ -379,6 +426,9 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
 
   if (!tabs::utils::ShouldShowBraveVerticalTabs(
           tab_strip_->GetBrowserWindowInterface())) {
+    if (workspaces_button_) {
+      workspaces_button_->SetVisible(true);
+    }
     LayoutSuperclass<HorizontalTabStripRegionView>(this);
     // After layout, scroll button's visibility may need to be updated based on
     // the overflow state of tab container. In this case, schedule layout.
@@ -433,6 +483,12 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
   // in vertical tabs mode, the combo button is repurposed away, so hide it.
   if (combo_button_) {
     combo_button_->SetVisible(false);
+  }
+
+  // workspaces not implemented for vertical tabs yet.
+  // see https://github.com/brave/brave-browser/issues/56728
+  if (workspaces_button_) {
+    workspaces_button_->SetVisible(false);
   }
 
   // in vertical tabs mode, we make tab strip's height is the same with this
@@ -584,6 +640,7 @@ void BraveHorizontalTabStripRegionView::Initialize() {
     tab_search_button_->SetVisible(false);
   }
 
+  CreateWorkspaceButtonIfNeeded();
   CreateScrollButtonsIfNeeded();
 
   if (base::FeatureList::IsEnabled(tabs::kBraveScrollableTabStrip)) {
