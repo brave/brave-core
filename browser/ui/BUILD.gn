@@ -697,7 +697,6 @@ source_set("ui") {
       "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/side_panel",
       "//brave/browser/ui/views:layout_provider",
-      "//brave/browser/ui/views:view_outline",
       "//brave/browser/ui/views/frame:frame_impl",
       "//brave/browser/ui/views/location_bar",
       "//brave/browser/ui/views/page_action",

@@ -6,7 +6,6 @@
 source_set("frame") {
   sources = [
     "brave_contents_view_util.h",
-    "brave_side_panel_shadow_overlay_view.h",
     "focus_mode_title_bar_view.h",
     "focus_mode_top_overlay.cc",
     "focus_mode_top_overlay.h",
@@ -20,9 +19,6 @@ source_set("frame") {
   public_deps = [
     "//base",
     "//brave/browser/ui/views/frame/edge_reveal",
-
-    # `brave_contents_view_util.h` exposes `ViewOutline` in its API.
-    "//brave/browser/ui/views:view_outline",
     "//components/tabs:public",
     "//ui/views",
   ]
@@ -40,7 +36,6 @@ source_set("frame") {
 source_set("frame_impl") {
   sources = [
     "brave_contents_view_util.cc",
-    "brave_side_panel_shadow_overlay_view.cc",
     "focus_mode_title_bar_view.cc",
     "tab_strip_placement_coordinator.cc",
   ]

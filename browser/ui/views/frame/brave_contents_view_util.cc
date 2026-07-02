@@ -13,6 +13,7 @@
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -20,33 +21,31 @@
 #include "components/prefs/pref_service.h"
 #include "components/split_tabs/split_tab_id.h"
 #include "components/tabs/public/split_tab_data.h"
-#include "ui/compositor/layer.h"
+#include "ui/color/color_provider.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/border.h"
 #include "ui/views/layout/layout_provider.h"
-#include "ui/views/view.h"
 
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
     kRoundedCornersBorderRadiusAtWindowCorner;
 
-namespace {
-
-// Centralized appearance for the contents/panel outline. Change these to tweak
-// the outline for both the web contents area and the side panel at once.
-constexpr int kContentsOutlineWidth = 1;
-constexpr ui::ColorId kContentsOutlineColor = nala::kColorDesktopbrowserToolbarButtonOutline;
-
-}  // namespace
-
-std::unique_ptr<ViewOutline> BraveContentsViewUtil::CreateOutline(
-    views::View* view,
+// static
+std::unique_ptr<views::Border>
+BraveContentsViewUtil::CreateContentsOutlineBorder(
+    const ui::ColorProvider* color_provider,
     const gfx::RoundedCornersF& corner_radii) {
-  DCHECK(view);
-  auto outline = std::make_unique<ViewOutline>(
-      view, corner_radii, kContentsOutlineColor, kContentsOutlineWidth);
-  view->layer()->SetRoundedCornerRadius(corner_radii);
-  view->layer()->SetIsFastRoundedCorner(true);
-  return outline;
+  CHECK(color_provider);
+  return views::CreateBorderPainter(
+      views::Painter::CreateRoundRectWith1PxBorderPainter(
+          color_provider->GetColor(kColorToolbar),
+          color_provider->GetColor(
+              nala::kColorDesktopbrowserToolbarButtonOutline),
+          corner_radii, SkBlendMode::kSrc,
+          /*antialias=*/true,
+          /*should_border_scale=*/true),
+      gfx::Insets(kRoundedCornersContentsOutlineThickness));
 }
 
 // static

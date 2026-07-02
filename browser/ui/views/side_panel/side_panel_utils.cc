@@ -25,7 +25,9 @@ bool ShouldShowSidePanelHeader(SidePanelEntryId id) {
          id == SidePanelEntryId::kBookmarks;
 }
 
-gfx::RoundedCornersF GetPanelContentsRoundedCorners(BrowserView* browser_view) {
+gfx::RoundedCornersF GetPanelContentsRoundedCorners(
+    BrowserView* browser_view,
+    bool flatten_top_for_header) {
   auto* brave_browser_view = BraveBrowserView::From(browser_view);
   CHECK(brave_browser_view);
   auto* prefs = brave_browser_view->GetProfile()->GetPrefs();
@@ -44,7 +46,7 @@ gfx::RoundedCornersF GetPanelContentsRoundedCorners(BrowserView* browser_view) {
 
   // When a Brave header is attached it paints the rounded top, so flatten the
   // content's top corners to avoid double-rounding.
-  if (has_header) {
+  if (has_header && flatten_top_for_header) {
     rounded_corners.set_upper_left(0);
     rounded_corners.set_upper_right(0);
   }

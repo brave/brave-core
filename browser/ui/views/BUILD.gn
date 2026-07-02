@@ -14,26 +14,3 @@ source_set("layout_provider") {
     "//ui/views",
   ]
 }
-
-# Standalone, low-level painter kept out of the large `//brave/browser/ui:ui`
-# target to avoid contributing to its circular-dependency surface.
-source_set("view_outline") {
-  sources = [
-    "view_outline.cc",
-    "view_outline.h",
-  ]
-
-  public_deps = [
-    "//base",
-    "//ui/color:color_headers",
-    "//ui/compositor",
-    "//ui/gfx",
-    "//ui/gfx/geometry",
-    "//ui/views",
-  ]
-
-  deps = [
-    "//skia",
-    "//ui/color",
-  ]
-}

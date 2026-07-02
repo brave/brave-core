@@ -65,7 +65,6 @@ class Widget;
 }  // namespace views
 
 class BraveBrowser;
-class BraveSidePanelShadowOverlayView;
 class BraveShieldsToolbarButton;
 class BraveHelpBubbleHostView;
 class BraveMultiContentsView;
@@ -75,7 +74,6 @@ class SidebarContainerView;
 class SidePanelEntry;
 class TabStripPlacementCoordinator;
 class BraveVerticalTabStripContainerView;
-class ViewOutline;
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 class WalletButton;
@@ -191,8 +189,6 @@ class BraveBrowserView : public BrowserView,
     return top_container_separator_;
   }
 
-  views::View* side_panel_shadow_overlay_for_testing();
-
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Returns the PWA Shields toolbar button, if it exists. Note that this
   // returns valid pointer only when it's web app browser.
@@ -228,7 +224,6 @@ class BraveBrowserView : public BrowserView,
                            TabFullscreenStateTest);
   FRIEND_TEST_ALL_PREFIXES(BraveBrowserViewWithRoundedCornersTest,
                            ContentsBackgroundEventHandleTest);
-  FRIEND_TEST_ALL_PREFIXES(SplitViewWithRoundedCornersTest, ContentsShadowTest);
   FRIEND_TEST_ALL_PREFIXES(sidebar::SidebarBrowserWithSplitViewTest,
                            ShowSidebarOnMouseOverTest);
 
@@ -260,8 +255,6 @@ class BraveBrowserView : public BrowserView,
   void UpdateTabSearchBubbleHost() override;
 
   void HandleBrowserWindowMouseEvent(const ui::MouseEvent& event);
-  bool IsBraveWebViewRoundedCornersEnabled();
-  void UpdateContentsShadowVisibility();
   void StopTabCycling();
   void UpdateSearchTabsButtonState();
   void OnCompactModePrefChanged();
@@ -321,11 +314,6 @@ class BraveBrowserView : public BrowserView,
   std::unique_ptr<TabCyclingEventHandler> tab_cycling_event_handler_;
   std::unique_ptr<BrowserWindowMouseEventHandler>
       browser_window_mouse_event_handler_;
-  std::unique_ptr<ViewOutline> contents_outline_;
-
-  // Sibling of `side_panel_` that renders the panel's drop shadow without
-  // drawing outside the browser view. Tracks the panel by observing it.
-  raw_ptr<BraveSidePanelShadowOverlayView> side_panel_shadow_overlay_ = nullptr;
 
   PrefChangeRegistrar pref_change_registrar_;
   BooleanPrefMember compact_horizontal_tabs_;
