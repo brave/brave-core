@@ -30,6 +30,8 @@ BASE_DECLARE_FEATURE(kBraveTreeTab);
 
 BASE_DECLARE_FEATURE(kBraveScrollableTabStrip);
 
+BASE_DECLARE_FEATURE(kBraveBringAllTabsToThisWindow);
+
 bool HorizontalTabsUpdateEnabled();
 
 }  // namespace tabs
