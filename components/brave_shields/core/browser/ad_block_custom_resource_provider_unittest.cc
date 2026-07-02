@@ -23,12 +23,14 @@ namespace brave_shields {
 
 namespace {
 
-base::Value CreateResource(const std::string& name,
-                           const std::string& content) {
+base::Value CreateResource(
+    const std::string& name,
+    const std::string& content,
+    const std::string& mime = "application/javascript") {
   base::DictValue resource;
   resource.Set("name", name);
   resource.Set("content", base::Base64Encode(content));
-  resource.SetByDottedPath("kind.mime", "application/javascript");
+  resource.SetByDottedPath("kind.mime", mime);
   return base::Value(std::move(resource));
 }
 
@@ -212,6 +214,23 @@ TEST_F(AdBlockCustomResourceProviderTest, AddResource) {
       EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
                 AddResource(base::Value()));
     }
+
+    {
+      // Invalid MIME type.
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+                AddResource(CreateResource("user-3.js", "user-3",
+                                           "image/svg+xml")));
+    }
+
+    {
+      auto resource =
+          CreateResource("user-style.js", "body { color: red; }", "text/css");
+      EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+                AddResource(resource));
+
+      expect.Append(std::move(resource));
+      EXPECT_EQ(expect, GetResources());
+    }
   }
 }
 
@@ -281,9 +300,19 @@ TEST_F(AdBlockCustomResourceProviderTest, UpdateResource) {
     EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
               UpdateResource("user-3.js", CreateResource("user-3-update.js",
                                                          "user-3-update.js")));
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kOk,
+              UpdateResource("user-1-update.js",
+                             CreateResource("user-1-style.js",
+                                            "body { color: red; }",
+                                            "text/css")));
+    EXPECT_EQ(AdBlockCustomResourceProvider::ErrorCode::kInvalid,
+              UpdateResource("user-2-update.js",
+                             CreateResource("user-2-image.svg", "<svg>",
+                                            "image/svg+xml")));
     EXPECT_EQ(
         base::ListValue()
-            .Append(CreateResource("user-1-update.js", "user-1-update.js"))
+            .Append(CreateResource("user-1-style.js", "body { color: red; }",
+                                   "text/css"))
             .Append(CreateResource("user-2-update.js", "user-2-update.js"))
             .Append(CreateResource("user-3-update.js", "user-3-update.js")),
         GetResources());

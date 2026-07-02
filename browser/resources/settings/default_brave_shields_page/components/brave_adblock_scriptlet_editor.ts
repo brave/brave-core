@@ -18,6 +18,7 @@ import { loadTimeData } from '../../i18n_setup.js'
 import {
   Scriptlet,
   BraveAdblockBrowserProxyImpl,
+  DEFAULT_SCRIPTLET_MIME,
   ErrorCode
 } from '../brave_adblock_browser_proxy.js'
 
@@ -28,6 +29,28 @@ interface AdblockScriptletEditor {
 }
 
 const AdblockScriptletEditorBase = I18nMixin(PrefsMixin(PolymerElement))
+
+const DEFAULT_MIME_OPTIONS = [
+  DEFAULT_SCRIPTLET_MIME,
+  'text/css',
+  'text/html',
+  'application/json',
+  'text/plain',
+  'application/octet-stream',
+  'text/xml',
+  'audio/mp3',
+  'video/mp4',
+  'image/gif',
+  'image/png',
+].map((value) => ({ value }))
+
+function getMimeOptions(mime: string) {
+  const options = [...DEFAULT_MIME_OPTIONS]
+  if (mime && !options.some((option) => option.value === mime)) {
+    options.push({ value: mime })
+  }
+  return options
+}
 
 class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   static get is() {
@@ -44,7 +67,14 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       dialogTitle_: String,
       isScriptletValid_: Boolean,
       scriptletErrorMessage_: String,
-      scriptletName_: String
+      scriptletName_: String,
+      scriptletMime_: String,
+      mimeOptions_: {
+        type: Array,
+        value() {
+          return DEFAULT_MIME_OPTIONS
+        }
+      },
     }
   }
 
@@ -53,6 +83,8 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   declare isScriptletValid_: boolean
   declare scriptletErrorMessage_: string
   declare scriptletName_: string
+  declare scriptletMime_: string
+  declare mimeOptions_: typeof DEFAULT_MIME_OPTIONS
 
   originalScriptlet_: Scriptlet
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
@@ -64,7 +96,14 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       window.testing[`adblockScriptletEditor`] = this.shadowRoot;
     }
 
-    this.originalScriptlet_ = { ...this.scriptlet }
+    this.originalScriptlet_ = {
+      ...this.scriptlet,
+      kind: {
+        mime: this.scriptlet.kind?.mime || DEFAULT_SCRIPTLET_MIME
+      },
+    }
+    this.scriptletMime_ = this.originalScriptlet_.kind.mime
+    this.mimeOptions_ = getMimeOptions(this.scriptletMime_)
 
     if (this.originalScriptlet_.name) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')
@@ -147,8 +186,19 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
     }
   }
 
+  mimeEqual_(a: string, b: string) {
+    return a === b
+  }
+
+  onMimeChange_(e: Event) {
+    this.scriptletMime_ = (e.target as HTMLSelectElement).value
+  }
+
   updateScriptletBeforeSave_() {
     this.scriptlet.name = 'user-' + this.scriptletName_ + '.js'
+    this.scriptlet.kind = {
+      mime: this.scriptletMime_ || DEFAULT_SCRIPTLET_MIME
+    }
     this.validateName_()
   }
 }
