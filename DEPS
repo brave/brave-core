@@ -215,6 +215,16 @@ hooks = [
                'src/brave/third_party/node/mac_arm64',
                'src/brave/third_party/node/win']
   },
+  {
+    'name': 'download_ast_grep',
+    'pattern': '.',
+    'action': ['vpython3',
+               'tools/cr/install_extra_deps.py',
+               'src/brave/third_party/ast-grep/ast-grep-linux',
+               'src/brave/third_party/ast-grep/ast-grep-mac',
+               'src/brave/third_party/ast-grep/ast-grep-mac_arm64',
+               'src/brave/third_party/ast-grep/ast-grep-win']
+  },
 ]
 
 include_rules = [
