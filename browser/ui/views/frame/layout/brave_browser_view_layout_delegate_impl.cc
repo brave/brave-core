@@ -5,7 +5,7 @@
 
 #include "brave/browser/ui/views/frame/layout/brave_browser_view_layout_delegate_impl.h"
 
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
@@ -22,8 +22,8 @@ BrowserLayoutParams BraveBrowserViewLayoutDelegateImpl::GetBrowserLayoutParams(
     }
 
     if (ShouldShowVerticalTabs() &&
-        tabs::utils::ShouldShowWindowTitleForVerticalTabs(
-            browser_view().browser()) &&
+        VerticalTabController::FromBrowser(browser_view().browser())
+            ->ShouldShowWindowTitleForVerticalTabs() &&
         !IsFullscreen() &&
         !params.visual_client_area.Contains(browser_view().bounds())) {
       // This could happen if the window is exiting fullscreen mode. The
