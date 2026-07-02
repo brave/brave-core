@@ -83,6 +83,7 @@ test("brave_components_unittests") {
       "//brave/components/ai_chat/core/browser:unit_tests",
       "//brave/components/ai_chat/core/browser/ollama:unit_tests",
       "//brave/components/ai_chat/core/common:unit_tests",
+      "//brave/components/web_mcp/core/browser:unit_tests",
     ]
   }
 
