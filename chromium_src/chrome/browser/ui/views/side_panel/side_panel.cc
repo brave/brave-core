@@ -203,8 +203,8 @@ void SidePanel::UpdateBorder() {
     CHECK(color_provider);
     SetBorder(std::make_unique<SidePanelOutlineBorder>(
         insets, outline_insets,
-        brave::GetPanelContentsRoundedCorners(
-            browser_view_, /*flatten_top_for_header=*/false),
+        brave::GetPanelContentsRoundedCorners(browser_view_,
+                                              /*flatten_top_for_header=*/false),
         color_provider));
     return;
   }
