@@ -158,6 +158,41 @@ bool ClickCustomScriplet(content::WebContents* web_contents,
       .is_ok();
 }
 
+bool WaitForCustomScriptletOrder(content::WebContents* web_contents,
+                                 const std::string& expected_json) {
+  AwaitRoot(web_contents, "adblockScriptletList");
+  constexpr const char kScript[] = R"js(
+    (async () => {
+      const expected = JSON.parse($1);
+      const getOrder = () => {
+        return Array.from(window.testing.adblockScriptletList
+            .querySelectorAll('.scriptlet .label'))
+          .map((element) => element.textContent.trim());
+      };
+      while (JSON.stringify(getOrder()) !== JSON.stringify(expected)) {
+        await new Promise(r => setTimeout(r, 10));
+      }
+      return true;
+    })();
+  )js";
+  return EvalJs(web_contents,
+                content::JsReplace(kScript, expected_json)).ExtractBool();
+}
+
+bool IsCustomScriptletButtonDisabled(content::WebContents* web_contents,
+                                     const std::string& name,
+                                     const std::string& button) {
+  AwaitElement(web_contents, "adblockScriptletList", name);
+  constexpr const char kScript[] = R"js(
+     (function() {
+       const e = window.testing.adblockScriptletList.getElementById($1);
+       return e.querySelector($2).disabled;
+     })();
+  )js";
+  return EvalJs(web_contents, content::JsReplace(kScript, name, "#" + button))
+      .ExtractBool();
+}
+
 }  // namespace
 
 class AdblockCustomResourcesTest : public AdBlockServiceTest {
@@ -263,6 +298,70 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Edit) {
   ASSERT_EQ(1u, custom_resources.GetList().size());
   CheckCustomScriptlet(custom_resources.GetList().front(),
                        "user-Custom-Script-Edited.js", kEditedContent);
+}
+
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_Reorder DISABLED_Reorder
+#else
+#define MAYBE_Reorder Reorder
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Reorder) {
+  EnableDeveloperMode(true);
+
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result_1;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(), CreateResource("user-1.js", "1"),
+                    result_1.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result_1.Get());
+
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result_2;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(), CreateResource("user-2.js", "2"),
+                    result_2.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result_2.Get());
+
+  base::test::TestFuture<
+      brave_shields::AdBlockCustomResourceProvider::ErrorCode>
+      result_3;
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->AddResource(profile()->GetPrefs(), CreateResource("user-3.js", "3"),
+                    result_3.GetCallback());
+  EXPECT_EQ(brave_shields::AdBlockCustomResourceProvider::ErrorCode::kOk,
+            result_3.Get());
+
+  ASSERT_TRUE(WaitForCustomScriptletOrder(
+      web_contents(), R"(["user-1.js","user-2.js","user-3.js"])"));
+  EXPECT_TRUE(IsCustomScriptletButtonDisabled(web_contents(), "user-1.js",
+                                             "move-up"));
+  EXPECT_TRUE(IsCustomScriptletButtonDisabled(web_contents(), "user-3.js",
+                                             "move-down"));
+
+  ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-2.js", "move-up"));
+  ASSERT_TRUE(WaitForCustomScriptletOrder(
+      web_contents(), R"(["user-2.js","user-1.js","user-3.js"])"));
+
+  ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-1.js", "move-down"));
+  ASSERT_TRUE(WaitForCustomScriptletOrder(
+      web_contents(), R"(["user-2.js","user-3.js","user-1.js"])"));
+
+  const auto& custom_resources = GetCustomResources();
+  ASSERT_TRUE(custom_resources.is_list());
+  ASSERT_EQ(3u, custom_resources.GetList().size());
+  CheckCustomScriptlet(custom_resources.GetList()[0], "user-2.js", "2");
+  CheckCustomScriptlet(custom_resources.GetList()[1], "user-3.js", "3");
+  CheckCustomScriptlet(custom_resources.GetList()[2], "user-1.js", "1");
 }
 
 // Renderer crashes with libc++ alignment assertion on win32-x86

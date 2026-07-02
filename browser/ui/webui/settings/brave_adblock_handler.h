@@ -57,6 +57,7 @@ class BraveAdBlockHandler
                              base::Value custom_resources);
   void AddCustomScriptlet(const base::ListValue& args);
   void UpdateCustomScriptlet(const base::ListValue& args);
+  void MoveCustomScriptlet(const base::ListValue& args);
   void RemoveCustomScriptlet(const base::ListValue& args);
   void OnScriptletUpdateStatus(
       const std::string& callback_id,

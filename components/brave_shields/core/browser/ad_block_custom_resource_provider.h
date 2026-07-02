@@ -55,6 +55,10 @@ class AdBlockCustomResourceProvider
                       const std::string& name,
                       const base::Value& resource,
                       StatusCallback on_complete);
+  void MoveResource(PrefService* profile_prefs,
+                    const std::string& resource_name,
+                    int offset,
+                    StatusCallback on_complete);
   void RemoveResource(PrefService* profile_prefs,
                       const std::string& resource_name,
                       StatusCallback on_complete);
@@ -79,6 +83,10 @@ class AdBlockCustomResourceProvider
                               base::Value resource,
                               StatusCallback on_complete,
                               base::Value resources);
+  void MoveResourceInternal(const std::string& name,
+                            int offset,
+                            StatusCallback on_complete,
+                            base::Value resources);
   void RemoveResourceInternal(const std::string& name,
                               StatusCallback on_complete,
                               base::Value resources);
