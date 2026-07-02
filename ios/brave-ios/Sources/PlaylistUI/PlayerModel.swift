@@ -626,6 +626,26 @@ public final class PlayerModel: ObservableObject {
         }.value
       }
     }
+    if playerItemToReplace == nil,
+      Reachability.shared.status.connectionType == .offline
+    {
+      // Completely offline with no local cache to fall back on, so surface error immediately instead
+      // of waiting on a doomed stream resolution.
+      if isPictureInPictureActive {
+        // Can't show any error in PiP, so skip to the next item
+        await playNextItem()
+      } else {
+        self.error = .init(
+          reason: .loadingStreamingURLFailed(.cannotLoadMedia),
+          handler: { [weak self] in
+            Task {
+              await self?.playNextItem()
+            }
+          }
+        )
+      }
+      return
+    }
     if playerItemToReplace == nil, let mediaStreamer {
       if !isPictureInPictureActive {
         // Stop the current video and start loading the streaming video, but only if we're not
