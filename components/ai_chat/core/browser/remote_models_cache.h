@@ -7,12 +7,10 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_REMOTE_MODELS_CACHE_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
-#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -32,8 +30,8 @@ namespace ai_chat {
 class RemoteModelsCache {
  public:
   // Invoked with cached models when the cache exists and is within the TTL
-  // configured by |features::kRemoteModelsCacheTTLMinutes|. Invoked with
-  // std::nullopt if the cache is missing, expired, or corrupt.
+  // supplied via the |ttl| constructor argument. Invoked with std::nullopt if
+  // the cache is missing, expired, or corrupt.
   using LoadCallback =
       base::OnceCallback<void(std::optional<std::vector<mojom::ModelPtr>>)>;
 
@@ -55,13 +53,10 @@ class RemoteModelsCache {
   void Save(std::vector<mojom::ModelPtr> models, base::OnceClosure on_complete);
 
  private:
-  void OnFileRead(LoadCallback callback, std::optional<std::string> content);
-
   base::FilePath path_;
   base::TimeDelta ttl_;
 
   SEQUENCE_CHECKER(sequence_checker_);
-  base::WeakPtrFactory<RemoteModelsCache> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

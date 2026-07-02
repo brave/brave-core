@@ -16,8 +16,10 @@
 #include "base/json/json_writer.h"
 #include "base/location.h"
 #include "base/logging.h"
+#include "base/numerics/safe_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
+#include "base/threading/thread_restrictions.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/remote_models_fetcher.h"
@@ -39,6 +41,7 @@ constexpr char kIsSuggestedModelField[] = "is_suggested_model";
 constexpr char kIsNearModelField[] = "is_near_model";
 constexpr char kOptionsField[] = "options";
 constexpr char kTypeField[] = "type";
+constexpr char kLeoType[] = "leo";
 constexpr char kNameField[] = "name";
 constexpr char kDisplayMakerField[] = "display_maker";
 constexpr char kDescriptionField[] = "description";
@@ -90,18 +93,19 @@ base::DictValue ModelToDict(const mojom::Model& model) {
   if (model.options && model.options->is_leo_model_options()) {
     const auto& leo_opts = model.options->get_leo_model_options();
     base::DictValue options;
-    options.Set(kTypeField, "leo");
+    options.Set(kTypeField, kLeoType);
     options.Set(kNameField, leo_opts->name);
     if (!leo_opts->display_maker.empty()) {
       options.Set(kDisplayMakerField, leo_opts->display_maker);
     }
     options.Set(kDescriptionField, leo_opts->description);
     options.Set(kAccessField, AccessToString(leo_opts->access));
-    options.Set(kMaxAssociatedContentLengthField,
-                static_cast<int>(leo_opts->max_associated_content_length));
     options.Set(
-        kLongConversationWarningCharacterLimitField,
-        static_cast<int>(leo_opts->long_conversation_warning_character_limit));
+        kMaxAssociatedContentLengthField,
+        base::saturated_cast<int>(leo_opts->max_associated_content_length));
+    options.Set(kLongConversationWarningCharacterLimitField,
+                base::saturated_cast<int>(
+                    leo_opts->long_conversation_warning_character_limit));
     dict.Set(kOptionsField, std::move(options));
   }
 
@@ -124,17 +128,46 @@ std::string SerializeCache(const std::vector<mojom::ModelPtr>& models) {
 }
 
 void WriteToFile(const base::FilePath& path, std::string content) {
+  base::AssertBlockingAllowed();
   if (!base::WriteFile(path, content)) {
     DVLOG(1) << "RemoteModelsCache: failed to write " << path;
   }
 }
 
-std::optional<std::string> ReadFromFile(const base::FilePath& path) {
+std::optional<std::vector<mojom::ModelPtr>> ReadAndParseFromFile(
+    const base::FilePath& path,
+    base::TimeDelta ttl) {
+  base::AssertBlockingAllowed();
   std::string content;
   if (!base::ReadFileToString(path, &content)) {
     return std::nullopt;
   }
-  return content;
+
+  auto parsed = base::JSONReader::ReadDict(content, base::JSON_PARSE_RFC);
+  if (!parsed) {
+    DVLOG(1) << "RemoteModelsCache: failed to parse cache JSON";
+    return std::nullopt;
+  }
+
+  std::optional<double> fetched_at = parsed->FindDouble(kFetchedAtKey);
+  if (!fetched_at) {
+    return std::nullopt;
+  }
+
+  if (base::Time::Now() - base::Time::FromSecondsSinceUnixEpoch(*fetched_at) >
+      ttl) {
+    DVLOG(1) << "RemoteModelsCache: cache expired";
+    return std::nullopt;
+  }
+
+  std::vector<mojom::ModelPtr> models =
+      RemoteModelsFetcher::ParseModelsFromJSON(base::Value(std::move(*parsed)));
+  if (models.empty()) {
+    DVLOG(1) << "RemoteModelsCache: cache contained no valid models";
+    return std::nullopt;
+  }
+
+  return models;
 }
 
 }  // namespace
@@ -150,9 +183,7 @@ void RemoteModelsCache::Load(LoadCallback callback) {
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&ReadFromFile, path_),
-      base::BindOnce(&RemoteModelsCache::OnFileRead,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+      base::BindOnce(&ReadAndParseFromFile, path_, ttl_), std::move(callback));
 }
 
 void RemoteModelsCache::Save(std::vector<mojom::ModelPtr> models,
@@ -164,46 +195,6 @@ void RemoteModelsCache::Save(std::vector<mojom::ModelPtr> models,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
       base::BindOnce(&WriteToFile, path_, SerializeCache(models)),
       std::move(on_complete));
-}
-
-void RemoteModelsCache::OnFileRead(LoadCallback callback,
-                                   std::optional<std::string> content) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  if (!content) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  auto parsed = base::JSONReader::ReadDict(*content, base::JSON_PARSE_RFC);
-  if (!parsed) {
-    DVLOG(1) << "RemoteModelsCache: failed to parse cache JSON";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::optional<double> fetched_at = parsed->FindDouble(kFetchedAtKey);
-  if (!fetched_at) {
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  if (base::Time::Now() - base::Time::FromSecondsSinceUnixEpoch(*fetched_at) >
-      ttl_) {
-    DVLOG(1) << "RemoteModelsCache: cache expired";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::vector<mojom::ModelPtr> models =
-      RemoteModelsFetcher::ParseModelsFromJSON(base::Value(std::move(*parsed)));
-  if (models.empty()) {
-    DVLOG(1) << "RemoteModelsCache: cache contained no valid models";
-    std::move(callback).Run(std::nullopt);
-    return;
-  }
-
-  std::move(callback).Run(std::move(models));
 }
 
 }  // namespace ai_chat

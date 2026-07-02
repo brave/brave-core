@@ -12,8 +12,8 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
-#include "base/run_loop.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -60,25 +60,16 @@ class RemoteModelsCacheTest : public testing::Test {
   // Runs Load() and blocks until the callback fires.
   std::optional<std::vector<mojom::ModelPtr>> RunLoad(
       RemoteModelsCache& cache) {
-    std::optional<std::vector<mojom::ModelPtr>> result;
-    base::RunLoop run_loop;
-    cache.Load(base::BindOnce(
-        [](std::optional<std::vector<mojom::ModelPtr>>* out,
-           base::OnceClosure quit,
-           std::optional<std::vector<mojom::ModelPtr>> models) {
-          *out = std::move(models);
-          std::move(quit).Run();
-        },
-        &result, run_loop.QuitClosure()));
-    run_loop.Run();
-    return result;
+    base::test::TestFuture<std::optional<std::vector<mojom::ModelPtr>>> future;
+    cache.Load(future.GetCallback());
+    return future.Take();
   }
 
   void SaveAndWait(RemoteModelsCache& cache,
                    std::vector<mojom::ModelPtr> models) {
-    base::RunLoop run_loop;
-    cache.Save(std::move(models), run_loop.QuitClosure());
-    run_loop.Run();
+    base::test::TestFuture<void> future;
+    cache.Save(std::move(models), future.GetCallback());
+    ASSERT_TRUE(future.Wait());
   }
 
   base::test::TaskEnvironment task_environment_{
