@@ -144,6 +144,46 @@ EXTRA_DEPS = {
             },
         ],
     },
+    'src/brave/third_party/ast-grep/ast-grep-linux': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/ast-grep/',
+        'condition': 'host_os == "linux"',
+        'objects': [
+            {
+                'object_name': 'ast-grep-0.44.0-linux-x64.tar.gz',
+                'sha256sum': 'e5a2d23541d7591fe4ec01190097ca8283a87f4039520271e7cee1ad9998ba5c',
+            },
+        ],
+    },
+    'src/brave/third_party/ast-grep/ast-grep-mac': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/ast-grep/',
+        'condition': 'host_os == "mac" and host_cpu == "x64"',
+        'objects': [
+            {
+                'object_name': 'ast-grep-0.44.0-mac.tar.gz',
+                'sha256sum': 'ad3f3bcae7a91ce070fbe6b934dbfcf35ec9cf004f9c6d7ecb907165669844e2',
+            },
+        ],
+    },
+    'src/brave/third_party/ast-grep/ast-grep-mac_arm64': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/ast-grep/',
+        'condition': 'host_os == "mac" and host_cpu == "arm64"',
+        'objects': [
+            {
+                'object_name': 'ast-grep-0.44.0-mac-arm64.tar.gz',
+                'sha256sum': '5bcb3568679ea6c636298c2b3e1edb44d54a8483f51d5e1ad0778609ef97bea3',
+            },
+        ],
+    },
+    'src/brave/third_party/ast-grep/ast-grep-win': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/ast-grep/',
+        'condition': 'host_os == "win"',
+        'objects': [
+            {
+                'object_name': 'ast-grep-0.44.0-win.tar.gz',
+                'sha256sum': '1a074eaa2c4ba0e6df2b7a505c45ef26b2605a1360d43c8c2ae4d31624013845',
+            },
+        ],
+    },
 }
 
 
