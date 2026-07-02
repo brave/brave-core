@@ -209,6 +209,7 @@ import org.chromium.components.embedder_support.contextmenu.ContextMenuNativeDel
 import org.chromium.components.embedder_support.contextmenu.ContextMenuParams;
 import org.chromium.components.external_intents.ExternalNavigationDelegate;
 import org.chromium.components.feature_engagement.Tracker;
+import org.chromium.components.messages.ManagedMessageDispatcher;
 import org.chromium.components.offline_items_collection.OfflineItem;
 import org.chromium.components.omnibox.AutocompleteMatch;
 import org.chromium.components.omnibox.action.OmniboxActionDelegate;
@@ -2388,6 +2389,19 @@ public class BytecodeTest {
                         SearchActivityClient.class,
                         NonNullObservableSupplier.class,
                         int.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/messages/ChromeMessageQueueMediator",
+                        "org/chromium/chrome/browser/messages/BraveMessageQueueMediator",
+                        BrowserControlsManager.class,
+                        getClassForPath(
+                                "org/chromium/chrome/browser/messages/MessageContainerCoordinator"),
+                        ActivityTabProvider.class,
+                        OneshotSupplier.class,
+                        NonNullObservableSupplier.class,
+                        BottomSheetController.class,
+                        ActivityLifecycleDispatcher.class,
+                        ManagedMessageDispatcher.class));
     }
 
     @Test
