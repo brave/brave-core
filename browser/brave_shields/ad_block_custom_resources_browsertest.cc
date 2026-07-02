@@ -84,18 +84,20 @@ bool ClickAddCustomScriptlet(content::WebContents* web_contents) {
 
 bool SetCustomScriptletValue(content::WebContents* web_contents,
                              const std::string& id,
-                             const std::string& value) {
+                             const std::string& value,
+                             const std::string& event_name = "input") {
   AwaitElement(web_contents, "adblockScriptletEditor", id);
   constexpr const char kSetValue[] = R"js(
      (function() {
        const e = window.testing.adblockScriptletEditor.getElementById($1);
        e.value = $2;
-       const event = new Event('input', {bubbles: true});
+       const event = new Event($3, {bubbles: true});
        event.simulated = true;
        return e.dispatchEvent(event);
      })();
   )js";
-  return EvalJs(web_contents, content::JsReplace(kSetValue, id, value))
+  return EvalJs(web_contents,
+                content::JsReplace(kSetValue, id, value, event_name))
       .ExtractBool();
 }
 
@@ -107,6 +109,12 @@ bool SetCustomScriptletName(content::WebContents* web_contents,
 bool SetCustomScriptletContent(content::WebContents* web_contents,
                                const std::string& content) {
   return SetCustomScriptletValue(web_contents, "scriptlet-content", content);
+}
+
+bool SetCustomScriptletMime(content::WebContents* web_contents,
+                            const std::string& mime) {
+  return SetCustomScriptletValue(web_contents, "scriptlet-mime", mime,
+                                 "change");
 }
 
 std::string GetCustomScriptletValue(content::WebContents* web_contents,
@@ -124,6 +132,10 @@ std::string GetCustomScriptletName(content::WebContents* web_contents) {
 
 std::string GetCustomScriptletContent(content::WebContents* web_contents) {
   return GetCustomScriptletValue(web_contents, "scriptlet-content");
+}
+
+std::string GetCustomScriptletMime(content::WebContents* web_contents) {
+  return GetCustomScriptletValue(web_contents, "scriptlet-mime");
 }
 
 bool ClickSaveCustomScriptlet(content::WebContents* web_contents,
@@ -170,10 +182,14 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 
-  void SaveCustomScriptlet(const std::string& name, const std::string& value) {
+  void SaveCustomScriptlet(
+      const std::string& name,
+      const std::string& value,
+      const std::string& mime = "application/javascript") {
     ASSERT_EQ(GURL("chrome://settings/shields/filters"),
               web_contents()->GetLastCommittedURL());
 
+    ASSERT_TRUE(SetCustomScriptletMime(web_contents(), mime));
     ASSERT_TRUE(SetCustomScriptletContent(web_contents(), value));
     ASSERT_TRUE(SetCustomScriptletName(web_contents(), name));
     ASSERT_TRUE(ClickSaveCustomScriptlet(web_contents(), name));
@@ -181,12 +197,14 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
 
   void CheckCustomScriptlet(const base::Value& custom_scriptlet,
                             const std::string& name,
-                            const std::string& content) {
+                            const std::string& content,
+                            const std::string& mime =
+                                "application/javascript") {
     ASSERT_TRUE(custom_scriptlet.is_dict());
     EXPECT_EQ(name, *custom_scriptlet.GetDict().FindString("name"));
     EXPECT_EQ(base::Base64Encode(content),
               *custom_scriptlet.GetDict().FindString("content"));
-    EXPECT_EQ("application/javascript",
+    EXPECT_EQ(mime,
               *custom_scriptlet.GetDict().FindStringByDottedPath("kind.mime"));
   }
 
@@ -263,6 +281,33 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Edit) {
   ASSERT_EQ(1u, custom_resources.GetList().size());
   CheckCustomScriptlet(custom_resources.GetList().front(),
                        "user-Custom-Script-Edited.js", kEditedContent);
+}
+
+// Renderer crashes with libc++ alignment assertion on win32-x86
+#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+#define MAYBE_MimeType DISABLED_MimeType
+#else
+#define MAYBE_MimeType MimeType
+#endif
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_MimeType) {
+  EnableDeveloperMode(true);
+
+  NavigateToURL(GURL("brave://settings/shields/filters"));
+
+  constexpr const char kContent[] = "body { color: red !important; }";
+
+  ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  SaveCustomScriptlet("custom-css", kContent, "text/css");
+
+  const auto& custom_resources = GetCustomResources();
+  ASSERT_TRUE(custom_resources.is_list());
+  ASSERT_EQ(1u, custom_resources.GetList().size());
+  CheckCustomScriptlet(custom_resources.GetList().front(),
+                       "user-custom-css.js", kContent, "text/css");
+
+  ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-custom-css.js",
+                                  "edit"));
+  EXPECT_EQ("text/css", GetCustomScriptletMime(web_contents()));
 }
 
 // Renderer crashes with libc++ alignment assertion on win32-x86
