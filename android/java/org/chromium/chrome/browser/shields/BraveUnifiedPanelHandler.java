@@ -184,6 +184,8 @@ public class BraveUnifiedPanelHandler {
     private @Nullable ImageView mAdvancedOptionsArrow;
     private @Nullable TextView mResetShieldsButton;
     private @Nullable View mResetShieldsDivider;
+    private @Nullable TextView mClearBlockedElementsButton;
+    private @Nullable View mClearBlockedElementsDivider;
     private boolean mIsAdvancedOptionsExpanded;
 
     // Advanced options switches (no Forget Me in new design)
@@ -341,6 +343,7 @@ public class BraveUnifiedPanelHandler {
         }
 
         updateAdvancedOptionsSwitches(isShieldsUp);
+        updateClearBlockedElementsState();
     }
 
     private @Nullable PopupWindow showPopupMenu(@Nullable View anchorView) {
@@ -570,6 +573,15 @@ public class BraveUnifiedPanelHandler {
             }
         }
 
+        mClearBlockedElementsButton =
+                (TextView) mAdvancedOptionsContent.findViewById(R.id.clear_blocked_elements_button);
+        mClearBlockedElementsDivider =
+                mAdvancedOptionsContent.findViewById(R.id.clear_blocked_elements_divider);
+        if (mClearBlockedElementsButton != null) {
+            mClearBlockedElementsButton.setOnClickListener(v -> clearBlockedElements());
+        }
+        updateClearBlockedElementsState();
+
         mResetShieldsButton =
                 (TextView) mAdvancedOptionsContent.findViewById(R.id.reset_shields_button);
         mResetShieldsDivider = mAdvancedOptionsContent.findViewById(R.id.reset_shields_divider);
@@ -611,6 +623,23 @@ public class BraveUnifiedPanelHandler {
         int visibility = matchesDefaults ? View.GONE : View.VISIBLE;
         mResetShieldsButton.setVisibility(visibility);
         if (mResetShieldsDivider != null) mResetShieldsDivider.setVisibility(visibility);
+    }
+
+    private void clearBlockedElements() {
+        if (mUrl == null) return;
+        BraveShieldsContentSettings.resetCosmeticFilter(mUrl.getSpec());
+        updateClearBlockedElementsState();
+    }
+
+    private void updateClearBlockedElementsState() {
+        if (mClearBlockedElementsButton == null
+                || mClearBlockedElementsDivider == null
+                || mUrl == null) return;
+        boolean hasBlockedElements =
+                BraveShieldsContentSettings.areAnyBlockedElementsPresent(mUrl.getSpec());
+        int visibility = hasBlockedElements ? View.VISIBLE : View.GONE;
+        mClearBlockedElementsButton.setVisibility(visibility);
+        mClearBlockedElementsDivider.setVisibility(visibility);
     }
 
     private void openGlobalShieldsSettings() {

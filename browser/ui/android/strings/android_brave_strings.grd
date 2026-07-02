@@ -1488,6 +1488,9 @@ Are you sure you want to do this?
       <message name="IDS_BRAVE_SHIELDS_BLOCK_ELEMENT_TEXT" desc="Shields block element button label.">
         Block element
       </message>
+      <message name="IDS_SHOW_ALL_BLOCKED_ELEMENTS" desc="Text for show all block elements button.">
+        Clear all blocked elements
+      </message>
       <message name="IDS_BRAVE_SHIELDS_AUTO_SHRED_NEVER_MODE_TEXT" desc="Shields menu auto shred never mode item text.">
         Never
       </message>
