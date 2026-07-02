@@ -56,6 +56,11 @@ struct PlaylistItemList: View {
             isSelected: selectedItemID == item.id,
             isPlaying: isPlaying,
             cacheState: {
+              // Cache-first caches every item automatically, so per-item cache status
+              // the "Preparing" progress and the ready checkmark is visual noise.
+              if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+                return nil
+              }
               guard let uuid = item.uuid, let state = cacheStates[uuid] else {
                 return nil
               }
@@ -81,8 +86,10 @@ struct PlaylistItemList: View {
         .contextMenu {
           // Mirror the badge's source of truth: only offer "Remove offline data" when the cached file
           // actually exists on disk. Otherwise we'd offer to remove a phantom download for an item whose bookmark
-          // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`).
-          if let uuid = item.uuid, cacheStates[uuid] == .cached {
+          // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`). Cache-first manages the cache automatically
+          if let uuid = item.uuid, cacheStates[uuid] == .cached,
+            !FeatureList.kPlaylistCacheFirstEnabled.enabled
+          {
             Button {
               Task { @MainActor in
                 await PlaylistManager.shared.deleteCache(item: .init(item: item))
