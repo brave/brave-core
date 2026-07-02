@@ -40,8 +40,8 @@ import {
 import {
   useAccountFromAddressQuery,
   useAccountsQuery,
-  useReceiveAddressQuery,
 } from '../../../../common/slices/api.slice.extra'
+import { useBuyReceiveAddress } from './useBuyReceiveAddress'
 
 // Constants
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
@@ -263,7 +263,7 @@ export const useBuy = () => {
     )
   }, [quotesSortedByBestReturn, searchTerm])
 
-  const { receiveAddress } = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { receiveAddress } = useBuyReceiveAddress(selectedAccount?.accountId)
 
   // Methods
   const reset = useCallback(() => {

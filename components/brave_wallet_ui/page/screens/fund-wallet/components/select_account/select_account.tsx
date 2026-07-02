@@ -44,6 +44,8 @@ const testnetAccountKeyringIds = [
   BraveWallet.KeyringId.kBitcoinImportTestnet,
   BraveWallet.KeyringId.kFilecoinTestnet,
   BraveWallet.KeyringId.kZCashTestnet,
+  BraveWallet.KeyringId.kPolkadotTestnet,
+  BraveWallet.KeyringId.kPolkadotImportTestnet,
 ]
 
 interface SelectAccountProps extends DialogProps {
