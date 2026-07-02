@@ -377,21 +377,26 @@ void ObliviousHttpAPIClient::OnInnerResponse(
     config_manager_->ClearKeyConfig(request.model_name);
   }
 
-  const bool success = inner_response_code >= 200 && inner_response_code < 300;
-  const int response_code =
-      is_outer_response_code_bad ? outer_response_code : inner_response_code;
-
-  if (response_code == net::HTTP_UNAUTHORIZED) {
-    // Do this to avoid showing the BYOM API key error in the UI
+  if (inner_response_code < 200 || inner_response_code >= 300) {
+    mojom::APIError error = MapResponseCodeToError(
+        is_outer_response_code_bad ? outer_response_code : inner_response_code);
+    // Override the API key error with a connection issue to avoid showing the
+    // BYOM API key error in the UI.
+    if (error == mojom::APIError::InvalidAPIKey) {
+      error = mojom::APIError::ConnectionIssue;
+    }
     std::move(request.completed_callback)
-        .Run(base::unexpected(mojom::APIError::ConnectionIssue));
+        .Run(base::unexpected(EngineConsumer::Error(
+            error, mojom::APIErrorDetails::New(outer_response_code,
+                                               /*error_type=*/"",
+                                               inner_response_code))));
     return;
   }
 
-  OAIAPIClient::HandleCompletion(
-      std::move(request.completed_callback), success, response_code,
-      /*model_key=*/GetModelKey(request.model_name),
-      /*is_near_verified=*/true, std::move(parsed_body));
+  OAIAPIClient::HandleCompletion(std::move(request.completed_callback),
+                                 /*model_key=*/GetModelKey(request.model_name),
+                                 /*is_near_verified=*/true,
+                                 std::move(parsed_body));
 }
 
 // static

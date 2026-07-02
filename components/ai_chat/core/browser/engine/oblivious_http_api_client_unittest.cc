@@ -261,6 +261,12 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
 
   ASSERT_FALSE(result_.has_value());
   EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+  ASSERT_TRUE(result_.error().details);
+  // The outer response code is OK, so status_code reflects that while the bad
+  // inner response code is surfaced via inner_status_code.
+  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
+  EXPECT_EQ(net::HTTP_INTERNAL_SERVER_ERROR,
+            result_.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
@@ -277,6 +283,10 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_Streaming_BadStatusCode) {
 
   ASSERT_FALSE(result_.has_value());
   EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+  ASSERT_TRUE(result_.error().details);
+  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
+  EXPECT_EQ(net::HTTP_INTERNAL_SERVER_ERROR,
+            result_.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -285,7 +295,12 @@ TEST_F(ObliviousHttpAPIClientUnitTest,
   CompleteWithInnerResponse(net::HTTP_UNAUTHORIZED, "");
   run_loop_->Run();
   ASSERT_FALSE(result_.has_value());
+  // An inner 401 is mapped to InvalidAPIKey but overridden to ConnectionIssue
+  // to avoid showing the BYOM API key error in the UI.
   EXPECT_EQ(mojom::APIError::ConnectionIssue, result_.error());
+  ASSERT_TRUE(result_.error().details);
+  EXPECT_EQ(net::HTTP_OK, result_.error().details->status_code);
+  EXPECT_EQ(net::HTTP_UNAUTHORIZED, result_.error().details->inner_status_code);
 }
 
 TEST_F(ObliviousHttpAPIClientUnitTest,
@@ -359,6 +374,10 @@ TEST_F(ObliviousHttpAPIClientUnitTest, PerformRequest_BadOuterResponseCode) {
 
     ASSERT_FALSE(result_.has_value());
     EXPECT_EQ(c.expected_error, result_.error());
+    ASSERT_TRUE(result_.error().details);
+    // For outer errors there is no inner response, so inner_status_code is 0.
+    EXPECT_EQ(c.response_code, result_.error().details->status_code);
+    EXPECT_EQ(0, result_.error().details->inner_status_code);
   }
 }
 

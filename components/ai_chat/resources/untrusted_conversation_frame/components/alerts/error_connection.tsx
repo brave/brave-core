@@ -13,10 +13,11 @@ import styles from './alerts.module.scss'
 interface Props {
   onRetry?: () => void
   errorDetails?: Mojom.APIErrorDetails | null
+  isNearModel?: boolean
 }
 
 function ErrorConnection(props: Props) {
-  const { errorDetails } = props
+  const { errorDetails, isNearModel } = props
 
   let detailsText: string | undefined
   if (errorDetails) {
@@ -24,6 +25,11 @@ function ErrorConnection(props: Props) {
       detailsText = formatLocale(S.CHAT_UI_ERROR_NETWORK_DETAILS, {
         $1: String(errorDetails.statusCode),
         $2: errorDetails.errorType,
+      })
+    } else if (errorDetails.innerStatusCode) {
+      detailsText = formatLocale(S.CHAT_UI_ERROR_NETWORK_INNER_STATUS_CODE, {
+        $1: String(errorDetails.statusCode),
+        $2: String(errorDetails.innerStatusCode),
       })
     } else {
       detailsText = formatLocale(S.CHAT_UI_ERROR_NETWORK_STATUS_CODE, {
@@ -35,7 +41,9 @@ function ErrorConnection(props: Props) {
   return (
     <div className={styles.alert}>
       <Alert type='error'>
-        {getLocale(S.CHAT_UI_ERROR_NETWORK)}
+        {getLocale(
+          isNearModel ? S.CHAT_UI_ERROR_NETWORK_NEAR : S.CHAT_UI_ERROR_NETWORK,
+        )}
         {detailsText && <p className={styles.errorDetails}>{detailsText}</p>}
         <Button
           slot='actions'
