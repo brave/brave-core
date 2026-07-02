@@ -474,12 +474,32 @@
             </LinearLayout>
 
             <View
+                android:id="@+id/clear_blocked_elements_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="?attr/colorSurfaceContainer"/>
+
+            <!-- 8. Clear all blocked elements button -->
+            <TextView
+                android:id="@+id/clear_blocked_elements_button"
+                style="@style/LargeRegular"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/show_all_blocked_elements"
+                android:textColor="@color/systemfeedback_warning_text"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:background="?android:attr/selectableItemBackground"/>
+
+            <View
                 android:id="@+id/reset_shields_divider"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="?attr/colorSurfaceContainer"/>
 
-            <!-- 8. Reset to defaults button -->
+            <!-- 9. Reset to defaults button -->
             <TextView
                 android:id="@+id/reset_shields_button"
                 style="@style/LargeRegular"
