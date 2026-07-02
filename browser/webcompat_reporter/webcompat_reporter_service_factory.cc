@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "base/no_destructor.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/webcompat_reporter/webcompat_reporter_service_delegate.h"
 #include "brave/components/webcompat_reporter/browser/webcompat_reporter_service.h"
 #include "chrome/browser/browser_process.h"
@@ -79,7 +80,7 @@ WebcompatReporterServiceFactory::BuildServiceInstanceForBrowserContext(
           *local_state, g_browser_process->GetApplicationLocale(),
           g_browser_process->component_updater(),
           g_brave_browser_process->ad_block_service(),
-          HostContentSettingsMapFactory::GetForProfile(context),
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile),
           CookieSettingsFactory::GetForProfile(
               Profile::FromBrowserContext(context))),
       std::move(report_uploader));

@@ -7,15 +7,29 @@
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_COMMON_BRAVE_SHIELDS_SETTINGS_VALUES_H_
 
 #include <optional>
+#include <string>
 #include <utility>
 
 #include "base/logging.h"
+#include "base/notreached.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
 
 namespace brave_shields {
+
+// List of possible blocking modes when accessing blocked websites.
+enum class DomainBlockingType {
+  // Don't block a website, open as is.
+  kNone,
+  // Proceed to a website, but use Ephemeral Storage for privacy-sensitive data
+  // (cookies, etc.).
+  k1PES,
+  // Show an interstitial before proceeding to as website.
+  kAggressive,
+};
 
 enum ControlType {
   ALLOW = 0,
@@ -23,6 +37,43 @@ enum ControlType {
   BLOCK_THIRD_PARTY,
   DEFAULT,
 };
+
+inline std::string ControlTypeToString(ControlType type) {
+  switch (type) {
+    case ControlType::ALLOW:
+      return "allow";
+    case ControlType::BLOCK:
+      return "block";
+    case ControlType::BLOCK_THIRD_PARTY:
+      return "block_third_party";
+    case ControlType::DEFAULT:
+      return "default";
+  }
+  NOTREACHED() << "Unexpected value for ControlType: "
+               << std::to_underlying(type);
+}
+
+inline ControlType ControlTypeFromString(const std::string& value) {
+  if (value == "allow") {
+    return ControlType::ALLOW;
+  } else if (value == "block") {
+    return ControlType::BLOCK;
+  } else if (value == "block_third_party") {
+    return ControlType::BLOCK_THIRD_PARTY;
+  } else if (value == "default") {
+    return ControlType::DEFAULT;
+  }
+  NOTREACHED();
+}
+
+inline ContentSetting GetDefaultBlockFromControlType(ControlType type) {
+  if (type == ControlType::DEFAULT) {
+    return CONTENT_SETTING_DEFAULT;
+  }
+
+  return type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
+                                    : CONTENT_SETTING_BLOCK;
+}
 
 namespace traits {
 

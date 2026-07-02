@@ -6,6 +6,7 @@
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 
 #include "base/check.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/pref_registry/pref_registry_syncable.h"
@@ -14,9 +15,9 @@
 namespace brave {
 
 BraveFarblingService::BraveFarblingService(
-    HostContentSettingsMap* host_content_settings_map)
-    : host_content_settings_map_(host_content_settings_map) {
-  DCHECK(host_content_settings_map_);
+    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service)
+    : brave_shields_settings_service_(brave_shields_settings_service) {
+  DCHECK(brave_shields_settings_service_);
 }
 
 BraveFarblingService::~BraveFarblingService() = default;
@@ -25,12 +26,13 @@ bool BraveFarblingService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     base::span<const uint8_t> additional_entropy,
     FarblingPRNG* prng) {
-  if (brave_shields::GetFarblingLevel(host_content_settings_map_, url) ==
+  if (brave_shields_settings_service_->GetFarblingLevel(url) ==
       brave_shields::mojom::FarblingLevel::OFF) {
     return false;
   }
-  const base::Token farbling_token = brave_shields::GetFarblingToken(
-      host_content_settings_map_, url, additional_entropy);
+  const base::Token farbling_token =
+      brave_shields_settings_service_->GetFarblingToken(url,
+                                                        additional_entropy);
   if (farbling_token.is_zero()) {
     return false;
   }

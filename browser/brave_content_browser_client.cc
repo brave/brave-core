@@ -209,8 +209,6 @@
 using blink::web_pref::WebPreferences;
 using brave_shields::BraveShieldsWebContentsObserver;
 using brave_shields::ControlType;
-using brave_shields::GetBraveShieldsEnabled;
-using brave_shields::GetFingerprintingControlType;
 using content::BrowserThread;
 using content::ContentBrowserClient;
 using content::RenderFrameHost;
@@ -864,9 +862,12 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
     const GURL& url,
     content::BrowserContext* browser_context,
     const content::StoragePartitionConfig* storage_partition_config) {
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(browser_context));
+
   const brave_shields::mojom::FarblingLevel farbling_level =
-      brave_shields::GetFarblingLevel(
-          HostContentSettingsMapFactory::GetForProfile(browser_context), url);
+      brave_shields_settings_service->GetFarblingLevel(url);
   std::string additional_entropy;
 #if BUILDFLAG(ENABLE_CONTAINERS)
   if (storage_partition_config &&
@@ -878,8 +879,7 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
 #endif
   const base::Token farbling_token =
       farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                HostContentSettingsMapFactory::GetForProfile(browser_context),
+          ? brave_shields_settings_service->GetFarblingToken(
                 url, base::as_byte_span(additional_entropy))
           : base::Token();
 
@@ -887,7 +887,8 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
 
   return brave_shields::mojom::ShieldsSettings::New(
       farbling_level, farbling_token, std::vector<std::string>(),
-      brave_shields::IsReduceLanguageEnabledForProfile(pref_service),
+      brave_shields_settings_service->IsReduceLanguageEnabledForProfile(
+          pref_service),
       IsJsBlockingEnforced(browser_context, url));
 }
 
@@ -1288,8 +1289,11 @@ void BraveContentBrowserClient::MaybeHideReferrer(
   Profile* profile = Profile::FromBrowserContext(browser_context);
   const bool allow_referrers = brave_shields::AreReferrersAllowed(
       HostContentSettingsMapFactory::GetForProfile(profile), document_url);
-  const bool shields_up = brave_shields::GetBraveShieldsEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile), document_url);
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+
+  const bool shields_up =
+      brave_shields_settings_service->GetBraveShieldsEnabled(document_url);
 
   content::Referrer new_referrer;
   if (brave_shields::MaybeChangeReferrer(allow_referrers, shields_up,
@@ -1408,16 +1412,18 @@ void BraveContentBrowserClient::CreateThrottlesForNavigation(
       registry,
       debounce::DebounceServiceFactory::GetForBrowserContext(context));
 
-  // The HostContentSettingsMap might be null for some irregular profiles, e.g.
-  // the System Profile.
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(context);
-  if (host_content_settings_map) {
+  // The BraveShieldsSettingsService might be null for some irregular profiles,
+  // e.g. the System Profile.
+  auto* brave_shields_settings =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context));
+  if (brave_shields_settings) {
     brave_shields::DomainBlockNavigationThrottle::MaybeCreateAndAdd(
-        registry, g_brave_browser_process->ad_block_service(),
+        registry, brave_shields_settings,
+        g_brave_browser_process->ad_block_service(),
         g_brave_browser_process->ad_block_service()->custom_filters_provider(),
         EphemeralStorageServiceFactory::GetForContext(context),
-        host_content_settings_map, g_browser_process->GetApplicationLocale());
+        g_browser_process->GetApplicationLocale());
   }
 
 #if BUILDFLAG(ENABLE_REQUEST_OTR)
@@ -1474,15 +1480,18 @@ bool PreventDarkModeFingerprinting(WebContents* web_contents,
   // the System Profile.
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(profile);
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+
   if (!host_content_settings_map) {
     return false;
   }
   const GURL url =
       main_frame_site.GetSecurityPrincipal().GetDeprecatedSiteURL();
   const bool shields_up =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map, url);
-  auto fingerprinting_type = brave_shields::GetFingerprintingControlType(
-      host_content_settings_map, url);
+      brave_shields_settings_service->GetBraveShieldsEnabled(url);
+  auto fingerprinting_type =
+      brave_shields_settings_service->GetFingerprintingControlType(url);
   // https://github.com/brave/brave-browser/issues/15265
   // Always use color scheme Light if fingerprinting mode strict
   if (base::FeatureList::IsEnabled(

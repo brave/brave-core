@@ -13,6 +13,7 @@
 #include "base/metrics/histogram_macros.h"
 #include "base/time/time.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
@@ -54,17 +55,18 @@ constexpr size_t kMinDenominatorForFailedHTTPReport = 100;
 
 using HttpsEvent = security_interstitials::https_only_mode::Event;
 
-PageMetrics::PageMetrics(PrefService* local_state,
-                         PrefService* profile_prefs,
-                         HostContentSettingsMap* host_content_settings_map,
-                         history::HistoryService* history_service,
-                         bookmarks::BookmarkModel* bookmark_model,
-                         DefaultBrowserMonitor* default_browser_monitor,
-                         TemplateURLService* template_url_service,
-                         FirstRunTimeCallback first_run_time_callback)
+PageMetrics::PageMetrics(
+    PrefService* local_state,
+    PrefService* profile_prefs,
+    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service,
+    history::HistoryService* history_service,
+    bookmarks::BookmarkModel* bookmark_model,
+    DefaultBrowserMonitor* default_browser_monitor,
+    TemplateURLService* template_url_service,
+    FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
       profile_prefs_(profile_prefs),
-      host_content_settings_map_(host_content_settings_map),
+      brave_shields_settings_service_(brave_shields_settings_service),
       history_service_(history_service),
       first_run_time_callback_(first_run_time_callback),
       default_browser_monitor_(default_browser_monitor),
@@ -272,8 +274,7 @@ void PageMetrics::ReportPagesLoaded() {
 
 void PageMetrics::ReportFailedHTTPSUpgrades() {
   brave_shields::ControlType https_upgrade_settings =
-      brave_shields::GetHttpsUpgradeControlType(host_content_settings_map_,
-                                                GURL());
+      brave_shields_settings_service_->GetHttpsUpgradeControlType(GURL());
   if (https_upgrade_settings == brave_shields::ControlType::ALLOW) {
     if (local_state_->HasPrefPath(
             kMiscMetricsFailedHTTPSUpgradeMetricAddedTime)) {

@@ -35,6 +35,10 @@ class BrowserContext;
 class WebContents;
 }  // namespace content
 
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
+
 namespace ephemeral_storage {
 
 // The EphemeralStorageTabHelper manages ephemeral storage for a WebContents.
@@ -87,6 +91,8 @@ class EphemeralStorageTabHelper
 #endif
 
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  const raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   base::flat_set<scoped_refptr<TLDEphemeralLifetime>>

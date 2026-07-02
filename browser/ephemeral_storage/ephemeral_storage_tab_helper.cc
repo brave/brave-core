@@ -6,7 +6,9 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
@@ -31,7 +33,6 @@ using content::NavigationHandle;
 using content::WebContents;
 
 namespace ephemeral_storage {
-
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -94,6 +95,9 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
       content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents),
       host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
           web_contents->GetBrowserContext())),
+      brave_shields_settings_service_(
+          BraveShieldsSettingsServiceFactory::GetForProfile(
+              Profile::FromBrowserContext(web_contents->GetBrowserContext()))),
       cookie_settings_(CookieSettingsFactory::GetForProfile(
           Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
 #if BUILDFLAG(IS_ANDROID)
@@ -229,15 +233,15 @@ void EphemeralStorageTabHelper::CreateProvisionalTLDEphemeralLifetime(
 }
 
 void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
-  if (!host_content_settings_map_ || !tld_ephemeral_lifetime_) {
+  if (!host_content_settings_map_ || !tld_ephemeral_lifetime_ ||
+      !brave_shields_settings_service_) {
     return;
   }
   const bool shields_enabled =
-      brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
+      brave_shields_settings_service_->GetBraveShieldsEnabled(url);
   const bool cookies_restricted =
-      brave_shields::GetCookieControlType(host_content_settings_map_,
-                                          cookie_settings_.get(), url) !=
-      brave_shields::ControlType::ALLOW;
+      brave_shields_settings_service_->GetCookieControlType(
+          cookie_settings_.get(), url) != brave_shields::ControlType::ALLOW;
   tld_ephemeral_lifetime_->SetShieldsStateOnHost(
       url.host(), shields_enabled && cookies_restricted);
 }

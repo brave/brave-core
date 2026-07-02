@@ -17,7 +17,9 @@
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_farbling_service_factory.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -98,6 +100,10 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   DCHECK(profile);
   HostContentSettingsMap* content_settings =
       HostContentSettingsMapFactory::GetForProfile(profile);
+  brave_shields::BraveShieldsSettingsService* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+
+  DCHECK(brave_shields_settings_service);
   DCHECK(content_settings);
   GURL origin_url(ctx->tab_origin());
   if (origin_url.is_empty()) {
@@ -106,8 +112,7 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   if (origin_url.is_empty()) {
     return net::OK;
   }
-  if (!brave_shields::ShouldDoReduceLanguage(content_settings, origin_url,
-                                             profile->GetPrefs())) {
+  if (!brave_shields_settings_service->ShouldDoReduceLanguage(origin_url)) {
     return net::OK;
   }
   std::string additional_entropy;
@@ -142,8 +147,8 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
   }
 
   std::string accept_language_string;
-  switch (brave_shields::GetFingerprintingControlType(content_settings,
-                                                      origin_url)) {
+  switch (brave_shields_settings_service->GetFingerprintingControlType(
+      origin_url)) {
     case ControlType::BLOCK: {
       // If fingerprint blocking is maximum, set Accept-Language header to
       // static value regardless of other preferences.

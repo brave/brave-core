@@ -25,7 +25,6 @@
 #include "components/history/core/browser/history_types.h"
 #include "components/prefs/pref_change_registrar.h"
 
-class HostContentSettingsMap;
 class PrefRegistrySimple;
 class PrefService;
 class TemplateURLService;
@@ -42,6 +41,10 @@ class BookmarkModel;
 namespace history {
 class HistoryService;
 }  // namespace history
+
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
 
 namespace misc_metrics {
 
@@ -76,7 +79,8 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   PageMetrics(PrefService* local_state,
               PrefService* profile_prefs,
-              HostContentSettingsMap* host_content_settings_map,
+              brave_shields::BraveShieldsSettingsService*
+                  brave_shields_settings_service,
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
               DefaultBrowserMonitor* default_browser_monitor,
@@ -140,7 +144,8 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   raw_ptr<PrefService> local_state_ = nullptr;
   raw_ptr<PrefService> profile_prefs_ = nullptr;
-  raw_ptr<HostContentSettingsMap> host_content_settings_map_ = nullptr;
+  const raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_ = nullptr;
   raw_ptr<history::HistoryService> history_service_ = nullptr;
 
   FirstRunTimeCallback first_run_time_callback_;

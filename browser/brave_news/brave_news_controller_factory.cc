@@ -9,6 +9,7 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_news/direct_feed_fetcher_delegate_impl.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_policy/policy_initialization_waiter.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -75,8 +76,6 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
   }
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
 
   policy::PolicyService* policy_service = nullptr;
   if (auto* policy_connector = profile->GetProfilePolicyConnector()) {
@@ -90,7 +89,7 @@ BraveNewsControllerFactory::BuildServiceInstanceForBrowserContext(
       profile->GetPrefs(), std::move(policy_initialization_waiter),
       history_service, profile->GetURLLoaderFactory(),
       std::make_unique<DirectFeedFetcherDelegateImpl>(
-          host_content_settings_map));
+          BraveShieldsSettingsServiceFactory::GetForProfile(profile)));
 }
 
 bool BraveNewsControllerFactory::ServiceIsNULLWhileTesting() const {

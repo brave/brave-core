@@ -20,6 +20,7 @@ class PrefService;
 
 namespace brave_shields {
 class AdBlockService;
+class BraveShieldsSettingsService;
 }  // namespace brave_shields
 
 namespace webcompat_reporter {
@@ -32,7 +33,8 @@ class WebcompatReporterServiceDelegateImpl
       const std::string& application_locale,
       component_updater::ComponentUpdateService* component_update_service,
       brave_shields::AdBlockService* adblock_service,
-      HostContentSettingsMap* host_content_settings_map,
+      brave_shields::BraveShieldsSettingsService*
+          brave_shields_settings_service,
       scoped_refptr<content_settings::CookieSettings> content_settings);
   WebcompatReporterServiceDelegateImpl(
       const WebcompatReporterServiceDelegateImpl&) = delete;
@@ -53,7 +55,8 @@ class WebcompatReporterServiceDelegateImpl
   const raw_ref<PrefService> local_state_;
   const std::string application_locale_;
   const raw_ptr<brave_shields::AdBlockService> adblock_service_;
-  const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  const raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_;
   scoped_refptr<content_settings::CookieSettings> cookie_settings_;
 };
 

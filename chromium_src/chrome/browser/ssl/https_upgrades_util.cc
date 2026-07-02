@@ -6,6 +6,8 @@
 #include "chrome/browser/ssl/https_upgrades_util.h"
 
 #include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -20,9 +22,9 @@ bool NormalWindowHttpsOnly(const GURL& url, Profile* profile) {
       !base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     return false;
   }
-  HostContentSettingsMap* map =
-      HostContentSettingsMapFactory::GetForProfile(profile);
-  return brave_shields::ShouldForceHttps(map, url);
+
+  return BraveShieldsSettingsServiceFactory::GetForProfile(profile)
+      ->ShouldForceHttps(url);
 }
 
 }  // namespace

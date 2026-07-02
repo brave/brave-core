@@ -185,8 +185,7 @@ void DefaultBraveShieldsHandler::IsAdControlEnabled(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
 
-  ControlType setting = brave_shields::GetAdControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting = brave_shields_settings_->GetAdControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -198,10 +197,8 @@ void DefaultBraveShieldsHandler::SetAdControlType(const base::ListValue& args) {
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetAdControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetAdControlType(
+      value ? ControlType::BLOCK : ControlType::ALLOW, GURL());
 }
 
 void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
@@ -209,8 +206,8 @@ void DefaultBraveShieldsHandler::IsFirstPartyCosmeticFilteringEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  bool enabled = brave_shields::IsFirstPartyCosmeticFilteringEnabled(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  bool enabled =
+      brave_shields_settings_->IsFirstPartyCosmeticFilteringEnabled(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(enabled));
@@ -222,10 +219,8 @@ void DefaultBraveShieldsHandler::SetCosmeticFilteringControlType(
   CHECK(profile_);
   std::string value = args[0].GetString();
 
-  brave_shields::SetCosmeticFilteringControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
-      profile_->GetPrefs());
+  brave_shields_settings_->SetCosmeticFilteringControlType(
+      ControlTypeFromString(value), GURL());
 }
 
 void DefaultBraveShieldsHandler::GetCookieControlType(
@@ -233,8 +228,7 @@ void DefaultBraveShieldsHandler::GetCookieControlType(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  const ControlType setting = brave_shields::GetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
+  const ControlType setting = brave_shields_settings_->GetCookieControlType(
       CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
 
   AllowJavascript();
@@ -245,8 +239,7 @@ void DefaultBraveShieldsHandler::GetHideBlockAllCookieFlag(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  const ControlType setting = brave_shields::GetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
+  const ControlType setting = brave_shields_settings_->GetCookieControlType(
       CookieSettingsFactory::GetForProfile(profile_).get(), GURL());
 
   const bool block_all_cookies_feature_enabled = base::FeatureList::IsEnabled(
@@ -264,10 +257,8 @@ void DefaultBraveShieldsHandler::SetCookieControlType(
   CHECK(profile_);
   std::string value = args[0].GetString();
 
-  brave_shields::SetCookieControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      profile_->GetPrefs(), ControlTypeFromString(value), GURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetCookieControlType(ControlTypeFromString(value),
+                                                GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingControlType(
@@ -275,8 +266,8 @@ void DefaultBraveShieldsHandler::GetFingerprintingControlType(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting =
+      brave_shields_settings_->GetFingerprintingControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -288,10 +279,8 @@ void DefaultBraveShieldsHandler::SetFingerprintingControlType(
   CHECK(profile_);
   std::string value = args[0].GetString();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state(),
-      profile_->GetPrefs());
+  brave_shields_settings_->SetFingerprintingControlType(
+      ControlTypeFromString(value), GURL());
 }
 
 void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
@@ -299,8 +288,8 @@ void DefaultBraveShieldsHandler::GetFingerprintingBlockEnabled(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting =
+      brave_shields_settings_->GetFingerprintingControlType(GURL());
   bool result = setting != ControlType::ALLOW;
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(result));
@@ -312,10 +301,8 @@ void DefaultBraveShieldsHandler::SetFingerprintingBlockEnabled(
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetFingerprintingControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetFingerprintingControlType(
+      value ? ControlType::DEFAULT : ControlType::ALLOW, GURL());
 }
 
 void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
@@ -323,8 +310,8 @@ void DefaultBraveShieldsHandler::GetHttpsUpgradeControlType(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
 
-  ControlType setting = brave_shields::GetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting =
+      brave_shields_settings_->GetHttpsUpgradeControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0], base::Value(ControlTypeToString(setting)));
@@ -335,18 +322,15 @@ void DefaultBraveShieldsHandler::SetHttpsUpgradeControlType(
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
   std::string value = args[0].GetString();
-
-  brave_shields::SetHttpsUpgradeControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      ControlTypeFromString(value), GURL(), g_browser_process->local_state());
+  brave_shields_settings_->SetHttpsUpgradeControlType(
+      ControlTypeFromString(value), GURL());
 }
 
 void DefaultBraveShieldsHandler::GetNoScriptControlType(
     const base::ListValue& args) {
   CHECK_EQ(args.size(), 1U);
   CHECK(profile_);
-  ControlType setting = brave_shields::GetNoScriptControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_), GURL());
+  ControlType setting = brave_shields_settings_->GetNoScriptControlType(GURL());
 
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
@@ -359,10 +343,8 @@ void DefaultBraveShieldsHandler::SetNoScriptControlType(
   CHECK(profile_);
   bool value = args[0].GetBool();
 
-  brave_shields::SetNoScriptControlType(
-      HostContentSettingsMapFactory::GetForProfile(profile_),
-      value ? ControlType::BLOCK : ControlType::ALLOW, GURL(),
-      g_browser_process->local_state());
+  brave_shields_settings_->SetNoScriptControlType(
+      value ? ControlType::BLOCK : ControlType::ALLOW, GURL());
 }
 
 void DefaultBraveShieldsHandler::SetContactInfoSaveFlag(

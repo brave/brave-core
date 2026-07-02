@@ -8,8 +8,10 @@
 #include <memory>
 #include <string>
 
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
@@ -474,17 +476,20 @@ std::unique_ptr<brave::BraveRequestInfo> BraveRequestInfo::MakeCTX(
 
   Profile* profile = Profile::FromBrowserContext(browser_context);
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
   ctx->set_allow_brave_shields(
-      map ? brave_shields::GetBraveShieldsEnabled(map, ctx->tab_origin())
+      map ? brave_shields_settings_service->GetBraveShieldsEnabled(
+                ctx->tab_origin())
           : true);
-  ctx->set_allow_ads(map &&
-                     brave_shields::GetAdControlType(map, ctx->tab_origin()) ==
-                         brave_shields::ControlType::ALLOW);
+  ctx->set_allow_ads(map && brave_shields_settings_service->GetAdControlType(
+                                ctx->tab_origin()) ==
+                                brave_shields::ControlType::ALLOW);
   // Currently, "aggressive" mode is registered as a cosmetic filtering control
   // type, even though it can also affect network blocking.
   ctx->set_aggressive_blocking(
-      map && brave_shields::GetCosmeticFilteringControlType(
-                 map, ctx->tab_origin()) == brave_shields::ControlType::BLOCK);
+      map && brave_shields_settings_service->GetCosmeticFilteringControlType(
+                 ctx->tab_origin()) == brave_shields::ControlType::BLOCK);
 
   // HACK: after we fix multiple creations of BraveRequestInfo we should
   // use only tab_origin. Since we recreate BraveRequestInfo during consequent

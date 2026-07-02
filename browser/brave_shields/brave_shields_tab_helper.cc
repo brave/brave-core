@@ -356,8 +356,9 @@ mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
   auto cookie_settings = CookieSettingsFactory::GetForProfile(
       Profile::FromBrowserContext(web_contents()->GetBrowserContext()));
 
-  const ControlType control_type = brave_shields::GetCookieControlType(
-      &*host_content_settings_map_, cookie_settings.get(), GetCurrentSiteURL());
+  const ControlType control_type =
+      brave_shields_settings_->GetCookieControlType(cookie_settings.get(),
+                                                    GetCurrentSiteURL());
 
   switch (control_type) {
     case ControlType::ALLOW:
@@ -374,8 +375,8 @@ mojom::CookieBlockMode BraveShieldsTabHelper::GetCookieBlockMode() {
 }
 
 mojom::HttpsUpgradeMode BraveShieldsTabHelper::GetHttpsUpgradeMode() {
-  ControlType control_type = brave_shields::GetHttpsUpgradeControlType(
-      &*host_content_settings_map_, GetCurrentSiteURL());
+  ControlType control_type =
+      brave_shields_settings_->GetHttpsUpgradeControlType(GetCurrentSiteURL());
   if (control_type == ControlType::ALLOW) {
     return mojom::HttpsUpgradeMode::DISABLED_MODE;
   } else if (control_type == ControlType::BLOCK) {
@@ -415,8 +416,6 @@ void BraveShieldsTabHelper::SetFingerprintMode(mojom::FingerprintMode mode) {
 }
 
 void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
-  auto* prefs = Profile::FromBrowserContext(web_contents()->GetBrowserContext())
-                    ->GetPrefs();
   ControlType control_type = ControlType::BLOCK;
 
   switch (mode) {
@@ -431,9 +430,8 @@ void BraveShieldsTabHelper::SetCookieBlockMode(mojom::CookieBlockMode mode) {
       break;
   }
 
-  brave_shields::SetCookieControlType(&*host_content_settings_map_, prefs,
-                                      control_type, GetCurrentSiteURL(),
-                                      g_browser_process->local_state());
+  brave_shields_settings_->SetCookieControlType(control_type,
+                                                GetCurrentSiteURL());
 
   ReloadWebContents();
 }
@@ -449,9 +447,8 @@ void BraveShieldsTabHelper::SetHttpsUpgradeMode(mojom::HttpsUpgradeMode mode) {
   } else {
     control_type = ControlType::DEFAULT;
   }
-  brave_shields::SetHttpsUpgradeControlType(&*host_content_settings_map_,
-                                            control_type, GetCurrentSiteURL(),
-                                            g_browser_process->local_state());
+  brave_shields_settings_->SetHttpsUpgradeControlType(control_type,
+                                                      GetCurrentSiteURL());
 
   ReloadWebContents();
 }

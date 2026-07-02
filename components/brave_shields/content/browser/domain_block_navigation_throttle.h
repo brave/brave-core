@@ -10,10 +10,9 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "content/public/browser/navigation_throttle.h"
 
-class HostContentSettingsMap;
 class GURL;
 
 namespace ephemeral_storage {
@@ -23,6 +22,7 @@ class EphemeralStorageService;
 namespace brave_shields {
 
 class AdBlockService;
+class BraveShieldsSettingsService;
 class AdBlockCustomFiltersProvider;
 
 class DomainBlockNavigationThrottle : public content::NavigationThrottle {
@@ -30,10 +30,10 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   struct BlockResult;
   explicit DomainBlockNavigationThrottle(
       content::NavigationThrottleRegistry& registry,
+      BraveShieldsSettingsService* brave_shields_settings_service,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
-      HostContentSettingsMap* content_settings,
       const std::string& locale);
   ~DomainBlockNavigationThrottle() override;
 
@@ -43,10 +43,10 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
 
   static void MaybeCreateAndAdd(
       content::NavigationThrottleRegistry& registry,
+      BraveShieldsSettingsService* brave_shields_settings_service,
       AdBlockService* ad_block_service,
       AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
       ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
-      HostContentSettingsMap* content_settings,
       const std::string& locale);
 
   // content::NavigationThrottle implementation:
@@ -65,12 +65,13 @@ class DomainBlockNavigationThrottle : public content::NavigationThrottle {
   void On1PESState(bool is_1pes_enabled);
   void RestartNavigation(const GURL& url);
 
+  const raw_ptr<BraveShieldsSettingsService> brave_shields_settings_service_ =
+      nullptr;
   const raw_ptr<AdBlockService> ad_block_service_ = nullptr;
   const raw_ptr<AdBlockCustomFiltersProvider>
       ad_block_custom_filters_provider_ = nullptr;
   const raw_ptr<ephemeral_storage::EphemeralStorageService>
       ephemeral_storage_service_ = nullptr;
-  const raw_ptr<HostContentSettingsMap> content_settings_ = nullptr;
   std::string locale_;
 
   base::WeakPtrFactory<DomainBlockNavigationThrottle> weak_ptr_factory_{this};

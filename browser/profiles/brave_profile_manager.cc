@@ -11,6 +11,7 @@
 
 #include "base/check.h"
 #include "base/path_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/perf/brave_perf_features_processor.h"
 #include "brave/browser/profiles/profile_util.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_constants.h"
@@ -83,23 +85,25 @@ void MigrateHttpsUpgradeSettings(Profile* profile) {
   // The HostContentSettingsMap might be null for some irregular profiles, e.g.
   // the System Profile.
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
-  if (!map) {
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (!map || brave_shields_settings_service) {
     return;
   }
   if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {
     // Migrate forwards from HTTPS-Only Mode to HTTPS Upgrade Strict setting.
     if (prefs->GetBoolean(prefs::kHttpsOnlyModeEnabled)) {
-      brave_shields::SetHttpsUpgradeControlType(map, ControlType::BLOCK,
-                                                GURL());
+      brave_shields_settings_service->SetHttpsUpgradeControlType(
+          ControlType::BLOCK, GURL());
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, false);
     }
   } else {
     // Migrate backwards from HTTPS Upgrade Strict setting to HTTPS-Only Mode.
-    if (brave_shields::GetHttpsUpgradeControlType(map, GURL()) ==
+    if (brave_shields_settings_service->GetHttpsUpgradeControlType(GURL()) ==
         ControlType::BLOCK) {
       prefs->SetBoolean(prefs::kHttpsOnlyModeEnabled, true);
-      brave_shields::SetHttpsUpgradeControlType(
-          map, ControlType::BLOCK_THIRD_PARTY, GURL());
+      brave_shields_settings_service->SetHttpsUpgradeControlType(
+          ControlType::BLOCK_THIRD_PARTY, GURL());
     }
   }
 }
@@ -115,10 +119,12 @@ void RecordInitialP3AValues(Profile* profile) {
   ntp_background_images::RecordSponsoredImagesEnabledP3A(profile->GetPrefs());
   if (profile->IsRegularProfile()) {
     auto* map = HostContentSettingsMapFactory::GetForProfile(profile);
+    auto* brave_shields_settings_service =
+        BraveShieldsSettingsServiceFactory::GetForProfile(profile);
     MaybeRecordInitialShieldsSettings(
         g_browser_process->local_state(), profile->GetPrefs(), map,
-        brave_shields::GetCosmeticFilteringControlType(map, GURL()),
-        brave_shields::GetFingerprintingControlType(map, GURL()));
+        brave_shields_settings_service->GetCosmeticFilteringControlType(GURL()),
+        brave_shields_settings_service->GetFingerprintingControlType(GURL()));
   }
 }
 

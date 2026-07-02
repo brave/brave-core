@@ -21,6 +21,7 @@
 #include "brave/components/brave_shields/content/browser/domain_block_controller_client.h"
 #include "brave/components/brave_shields/content/browser/domain_block_page.h"
 #include "brave/components/brave_shields/content/browser/domain_block_tab_storage.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -103,10 +104,10 @@ namespace brave_shields {
 // static
 void DomainBlockNavigationThrottle::MaybeCreateAndAdd(
     content::NavigationThrottleRegistry& registry,
+    BraveShieldsSettingsService* brave_shields_settings_service,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
-    HostContentSettingsMap* content_settings,
     const std::string& locale) {
   if (!ad_block_service || !ad_block_custom_filters_provider) {
     return;
@@ -120,22 +121,22 @@ void DomainBlockNavigationThrottle::MaybeCreateAndAdd(
     return;
   }
   registry.AddThrottle(std::make_unique<DomainBlockNavigationThrottle>(
-      registry, ad_block_service, ad_block_custom_filters_provider,
-      ephemeral_storage_service, content_settings, locale));
+      registry, brave_shields_settings_service, ad_block_service,
+      ad_block_custom_filters_provider, ephemeral_storage_service, locale));
 }
 
 DomainBlockNavigationThrottle::DomainBlockNavigationThrottle(
     content::NavigationThrottleRegistry& registry,
+    BraveShieldsSettingsService* brave_shields_settings_service,
     AdBlockService* ad_block_service,
     AdBlockCustomFiltersProvider* ad_block_custom_filters_provider,
     ephemeral_storage::EphemeralStorageService* ephemeral_storage_service,
-    HostContentSettingsMap* content_settings,
     const std::string& locale)
     : content::NavigationThrottle(registry),
+      brave_shields_settings_service_(brave_shields_settings_service),
       ad_block_service_(ad_block_service),
       ad_block_custom_filters_provider_(ad_block_custom_filters_provider),
       ephemeral_storage_service_(ephemeral_storage_service),
-      content_settings_(content_settings),
       locale_(locale) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 }
@@ -153,7 +154,7 @@ DomainBlockNavigationThrottle::WillStartRequest() {
   GURL request_url = handle->GetURL();
 
   DomainBlockingType domain_blocking_type =
-      brave_shields::GetDomainBlockingType(content_settings_, request_url);
+      brave_shields_settings_service_->GetDomainBlockingType(request_url);
   content::WebContents* web_contents = handle->GetWebContents();
   // Maybe don't block based on Brave Shields settings
   if (domain_blocking_type == DomainBlockingType::kNone) {

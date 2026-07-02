@@ -13,11 +13,13 @@
 
 class GURL;
 
-class HostContentSettingsMap;
-
 namespace user_prefs {
 class PrefRegistrySyncable;
 }
+
+namespace brave_shields {
+class BraveShieldsSettingsService;
+}  // namespace brave_shields
 
 namespace brave {
 
@@ -25,8 +27,8 @@ using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 class BraveFarblingService : public KeyedService {
  public:
-  explicit BraveFarblingService(
-      HostContentSettingsMap* host_content_settings_map);
+  explicit BraveFarblingService(brave_shields::BraveShieldsSettingsService*
+                                    brave_shields_settings_service);
   ~BraveFarblingService() override;
 
   bool MakePseudoRandomGeneratorForURL(
@@ -37,7 +39,8 @@ class BraveFarblingService : public KeyedService {
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  private:
-  const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  const raw_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_;
 };
 
 }  // namespace brave

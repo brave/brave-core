@@ -7,6 +7,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/brave_stats/first_run_util.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/misc_metrics/profile_new_tab_metrics.h"
@@ -73,17 +74,19 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
   auto* profile = Profile::FromBrowserContext(context);
   auto* history_service = HistoryServiceFactory::GetForProfile(
       profile, ServiceAccessType::EXPLICIT_ACCESS);
-  auto* host_content_settings_map =
-      HostContentSettingsMapFactory::GetForProfile(context);
+  auto* brave_shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(context));
   auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
 
   auto* process_misc_metrics = g_brave_browser_process->process_misc_metrics();
   auto* template_url_service =
       TemplateURLServiceFactory::GetForProfile(profile);
-  if (history_service && host_content_settings_map && process_misc_metrics) {
+  if (history_service && brave_shields_settings_service &&
+      process_misc_metrics) {
     page_metrics_ = std::make_unique<PageMetrics>(
-        local_state, profile_prefs_, host_content_settings_map, history_service,
-        bookmark_model,
+        local_state, profile_prefs_, brave_shields_settings_service,
+        history_service, bookmark_model,
         g_brave_browser_process->process_misc_metrics()
             ->default_browser_monitor(),
         template_url_service,

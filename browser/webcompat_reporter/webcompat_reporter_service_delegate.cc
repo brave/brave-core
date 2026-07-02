@@ -13,6 +13,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_locale_utils.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -28,13 +29,13 @@ WebcompatReporterServiceDelegateImpl::WebcompatReporterServiceDelegateImpl(
     const std::string& application_locale,
     component_updater::ComponentUpdateService* component_update_service,
     brave_shields::AdBlockService* adblock_service,
-    HostContentSettingsMap* host_content_settings_map,
+    brave_shields::BraveShieldsSettingsService* brave_shields_settings_service,
     scoped_refptr<content_settings::CookieSettings> content_settings)
     : WebcompatReporterServiceDelegateBase(component_update_service),
       local_state_(local_state),
       application_locale_(application_locale),
       adblock_service_(adblock_service),
-      host_content_settings_map_(host_content_settings_map),
+      brave_shields_settings_service_(brave_shields_settings_service),
       cookie_settings_(content_settings) {}
 
 WebcompatReporterServiceDelegateImpl::~WebcompatReporterServiceDelegateImpl() =
@@ -72,30 +73,29 @@ WebcompatReporterServiceDelegateImpl::GetChannelName() const {
 std::optional<std::string>
 WebcompatReporterServiceDelegateImpl::GetCookiePolicy(
     const std::optional<std::string>& current_url) const {
-  DCHECK(host_content_settings_map_);
+  DCHECK(brave_shields_settings_service_);
   DCHECK(cookie_settings_);
-  if (!host_content_settings_map_ || !cookie_settings_ || !current_url) {
+  if (!brave_shields_settings_service_ || !cookie_settings_ || !current_url) {
     return std::nullopt;
   }
 
-  return brave_shields::ControlTypeToString(brave_shields::GetCookieControlType(
-      host_content_settings_map_, cookie_settings_.get(),
-      GURL(current_url.value())));
+  return brave_shields::ControlTypeToString(
+      brave_shields_settings_service_->GetCookieControlType(
+          cookie_settings_.get(), GURL(current_url.value())));
 }
 
 std::optional<std::string>
 WebcompatReporterServiceDelegateImpl::GetScriptBlockingFlag(
     const std::optional<std::string>& current_url) const {
-  DCHECK(host_content_settings_map_);
+  DCHECK(brave_shields_settings_service_);
   DCHECK(cookie_settings_);
-  if (!host_content_settings_map_ || !cookie_settings_ || !current_url) {
+  if (!brave_shields_settings_service_ || !cookie_settings_ || !current_url) {
     return std::nullopt;
   }
 
-  return BoolToString(
-      brave_shields::GetNoScriptControlType(host_content_settings_map_,
-                                            GURL(current_url.value())) ==
-      brave_shields::ControlType::BLOCK);
+  return BoolToString(brave_shields_settings_service_->GetNoScriptControlType(
+                          GURL(current_url.value())) ==
+                      brave_shields::ControlType::BLOCK);
 }
 
 std::optional<std::string>

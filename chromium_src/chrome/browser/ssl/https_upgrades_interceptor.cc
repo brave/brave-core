@@ -7,6 +7,8 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/brave_browser_process.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "net/base/features.h"
@@ -18,11 +20,12 @@
 #define MaybeCreateLoader(...)                                                \
   MaybeCreateLoader(__VA_ARGS__) {                                            \
     if (base::FeatureList::IsEnabled(net::features::kBraveHttpsByDefault)) {  \
-      HostContentSettingsMap* map =                                           \
-          HostContentSettingsMapFactory::GetForProfile(browser_context);      \
-      if (!map ||                                                             \
-          !brave_shields::ShouldUpgradeToHttps(                               \
-              map, tentative_resource_request.url,                            \
+      auto* brave_shields_settings =                                          \
+          BraveShieldsSettingsServiceFactory::GetForProfile(                  \
+              Profile::FromBrowserContext(browser_context));                  \
+      if (!brave_shields_settings ||                                          \
+          !brave_shields_settings->ShouldUpgradeToHttps(                      \
+              tentative_resource_request.url,                                 \
               g_brave_browser_process->https_upgrade_exceptions_service())) { \
         std::move(callback).Run({});                                          \
         return;                                                               \
