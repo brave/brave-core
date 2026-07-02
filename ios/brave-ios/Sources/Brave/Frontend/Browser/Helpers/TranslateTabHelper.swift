@@ -16,14 +16,23 @@ extension TabDataValues {
     set { self[TranslateTabHelperKey.self] = newValue }
   }
 
-  private struct TranslationStateKey: TabDataKey {
-    static var defaultValue: TranslateURLBarButton.TranslateState = .unavailable
+  var translationState: TranslationState {
+    self.translate?.translationState ?? self.legacyTranslateHelper?.translationState ?? .unavailable
   }
+}
 
-  var translationState: TranslateURLBarButton.TranslateState {
-    get { self[TranslationStateKey.self] }
-    set { self[TranslationStateKey.self] = newValue }
-  }
+enum TranslationState {
+  // Page cannot be translated
+  case unavailable
+
+  // Translation is available, the page hasn't been translated yet
+  case available
+
+  // Translation is in progress
+  case pending
+
+  // Translation complete or partially complete
+  case active
 }
 
 class TranslateTabHelper: TabObserver {
@@ -31,7 +40,7 @@ class TranslateTabHelper: TabObserver {
   weak var delegate: (any BraveTranslateScriptHandlerDelegate)?
   private let translationControllerDelegate: TranslationControllerDelegate = .init()
 
-  private var translationState: TranslateURLBarButton.TranslateState = .unavailable {
+  private(set) var translationState: TranslationState = .unavailable {
     didSet {
       guard oldValue != translationState, let tab else { return }
       delegate?.updateTranslateURLBar(tab: tab, state: translationState)
@@ -99,7 +108,7 @@ class TranslateTabHelper: TabObserver {
   /// nothing if a translation is already running.
   func startTranslation(with languageInfo: BraveTranslateLanguageInfo? = nil) {
     guard let tab, let translationController = BraveWebView.from(tab: tab)?.translationController,
-      tab.translationState != .pending
+      translationState != .pending
     else { return }
 
     var fromLanguage = translationControllerDelegate.pageLanguage
@@ -119,7 +128,7 @@ class TranslateTabHelper: TabObserver {
       return
     }
 
-    tab.translationState = .pending
+    translationState = .pending
     translationController.translatePage(from: fromLanguage, to: toLanguage, userInitiated: true)
   }
 
@@ -127,7 +136,7 @@ class TranslateTabHelper: TabObserver {
   /// not `.active`.
   func revertTranslation() {
     guard let tab, let translationController = BraveWebView.from(tab: tab)?.translationController,
-      tab.translationState == .active
+      translationState == .active
     else { return }
     translationController.revertTranslation()
     translationState = .available
