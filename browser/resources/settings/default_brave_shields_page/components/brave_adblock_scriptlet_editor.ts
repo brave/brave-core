@@ -30,7 +30,7 @@ interface AdblockScriptletEditor {
 
 const AdblockScriptletEditorBase = I18nMixin(PrefsMixin(PolymerElement))
 
-const MIME_OPTIONS = [
+const DEFAULT_MIME_OPTIONS = [
   DEFAULT_SCRIPTLET_MIME,
   'text/css',
   'text/html',
@@ -43,6 +43,14 @@ const MIME_OPTIONS = [
   'image/gif',
   'image/png',
 ].map((value) => ({ value }))
+
+function getMimeOptions(mime: string) {
+  const options = [...DEFAULT_MIME_OPTIONS]
+  if (mime && !options.some((option) => option.value === mime)) {
+    options.push({ value: mime })
+  }
+  return options
+}
 
 class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   static get is() {
@@ -64,7 +72,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       mimeOptions_: {
         type: Array,
         value() {
-          return MIME_OPTIONS
+          return DEFAULT_MIME_OPTIONS
         }
       },
     }
@@ -76,7 +84,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
   declare scriptletErrorMessage_: string
   declare scriptletName_: string
   declare scriptletMime_: string
-  declare mimeOptions_: typeof MIME_OPTIONS
+  declare mimeOptions_: typeof DEFAULT_MIME_OPTIONS
 
   originalScriptlet_: Scriptlet
   browserProxy_ = BraveAdblockBrowserProxyImpl.getInstance()
@@ -95,6 +103,7 @@ class AdblockScriptletEditor extends AdblockScriptletEditorBase {
       },
     }
     this.scriptletMime_ = this.originalScriptlet_.kind.mime
+    this.mimeOptions_ = getMimeOptions(this.scriptletMime_)
 
     if (this.originalScriptlet_.name) {
       this.dialogTitle_ = this.i18n('adblockEditCustomScriptletDialogTitle')

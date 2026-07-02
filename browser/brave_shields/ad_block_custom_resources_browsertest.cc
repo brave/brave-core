@@ -185,11 +185,13 @@ class AdblockCustomResourcesTest : public AdBlockServiceTest {
   void SaveCustomScriptlet(
       const std::string& name,
       const std::string& value,
-      const std::string& mime = "application/javascript") {
+      const std::string& mime = std::string()) {
     ASSERT_EQ(GURL("chrome://settings/shields/filters"),
               web_contents()->GetLastCommittedURL());
 
-    ASSERT_TRUE(SetCustomScriptletMime(web_contents(), mime));
+    if (!mime.empty()) {
+      ASSERT_TRUE(SetCustomScriptletMime(web_contents(), mime));
+    }
     ASSERT_TRUE(SetCustomScriptletContent(web_contents(), value));
     ASSERT_TRUE(SetCustomScriptletName(web_contents(), name));
     ASSERT_TRUE(ClickSaveCustomScriptlet(web_contents(), name));
@@ -234,6 +236,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Add) {
   constexpr const char kContent[] = "window.test = 'custom-script'";
 
   ASSERT_TRUE(ClickAddCustomScriptlet(web_contents()));
+  EXPECT_EQ("application/javascript", GetCustomScriptletMime(web_contents()));
   SaveCustomScriptlet("custom-script", kContent);
 
   const auto& custom_resources = GetCustomResources();
@@ -241,6 +244,10 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Add) {
   ASSERT_EQ(1u, custom_resources.GetList().size());
   CheckCustomScriptlet(custom_resources.GetList().front(),
                        "user-custom-script.js", kContent);
+
+  ASSERT_TRUE(
+      ClickCustomScriplet(web_contents(), "user-custom-script.js", "edit"));
+  EXPECT_EQ("application/javascript", GetCustomScriptletMime(web_contents()));
 }
 
 // Renderer crashes with libc++ alignment assertion on win32-x86
@@ -308,6 +315,32 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_MimeType) {
   ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-custom-css.js",
                                   "edit"));
   EXPECT_EQ("text/css", GetCustomScriptletMime(web_contents()));
+
+  UpdateAdBlockInstanceWithRules(
+      "custom-style.css$stylesheet,redirect=user-custom-css.js");
+
+  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
+  NavigateToURL(tab_url);
+
+  constexpr const char kLoadStylesheet[] = R"js(
+    new Promise((resolve) => {
+      const link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.href = $1;
+      link.onload = () => {
+        requestAnimationFrame(() => {
+          resolve(getComputedStyle(document.body).color);
+        });
+      };
+      link.onerror = () => resolve('error');
+      document.head.appendChild(link);
+    });
+  )js";
+  const GURL css_url =
+      embedded_test_server()->GetURL("a.com", "/custom-style.css");
+  EXPECT_EQ("rgb(255, 0, 0)",
+            EvalJs(web_contents(),
+                   content::JsReplace(kLoadStylesheet, css_url.spec())));
 }
 
 // Renderer crashes with libc++ alignment assertion on win32-x86

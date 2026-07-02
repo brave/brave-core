@@ -12,6 +12,7 @@
 
 #include "base/check.h"
 #include "base/check_is_test.h"
+#include "base/containers/fixed_flat_set.h"
 #include "base/feature_list.h"
 #include "base/json/json_writer.h"
 #include "base/strings/string_util.h"
@@ -36,6 +37,11 @@ constexpr const char kNameField[] = "name";
 constexpr const char kContentField[] = "content";
 constexpr const char kMimeField[] = "kind.mime";
 constexpr const char kAppJs[] = "application/javascript";
+inline constexpr auto kSupportedMimeTypes =
+    base::MakeFixedFlatSet<std::string_view>(
+        {kAppJs, "text/css", "text/html", "application/json", "text/plain",
+         "application/octet-stream", "text/xml", "audio/mp3", "video/mp4",
+         "image/gif", "image/png"});
 
 bool HasName(const base::Value& resource) {
   return resource.is_dict() && !!resource.GetDict().FindString(kNameField);
@@ -60,16 +66,11 @@ bool IsValidResource(const base::Value& resource) {
     return false;
   }
 
-  if (*mime == kAppJs) {
-    // Resource is a scriptlet:
-    if (!name->starts_with("user-") || !name->ends_with(".js")) {
-      return false;
-    }
-  } else {
+  if (!kSupportedMimeTypes.contains(std::string_view(*mime))) {
     return false;
   }
 
-  return true;
+  return name->starts_with("user-") && name->ends_with(".js");
 }
 
 const std::string& GetResourceName(const base::Value& resource) {
