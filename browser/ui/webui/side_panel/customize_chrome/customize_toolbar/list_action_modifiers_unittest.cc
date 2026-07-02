@@ -373,7 +373,9 @@ TEST_F(ListActionModifiersUnitTest,
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ScreenshotNotAddedWhenFeatureDisabled) {
-  // Feature is disabled by default.
+  // Feature is enabled by default.
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndDisableFeature(screenshot::features::kBraveScreenshot);
   ASSERT_FALSE(screenshot::features::IsScreenshotEnabled());
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());
@@ -385,8 +387,6 @@ TEST_F(ListActionModifiersUnitTest,
 
 TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ScreenshotAddedWhenFeatureEnabled) {
-  base::test::ScopedFeatureList feature_list(
-      screenshot::features::kBraveScreenshot);
   ASSERT_TRUE(screenshot::features::IsScreenshotEnabled());
   auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
       web_contents_.get(), GetBasicActions());

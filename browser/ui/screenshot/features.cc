@@ -9,7 +9,7 @@
 
 namespace screenshot::features {
 
-BASE_FEATURE(kBraveScreenshot, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveScreenshot, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsScreenshotEnabled() {
   return base::FeatureList::IsEnabled(kBraveScreenshot);
