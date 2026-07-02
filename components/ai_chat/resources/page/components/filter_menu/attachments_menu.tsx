@@ -70,7 +70,17 @@ export default function TabsMenu() {
 
   const selectAttachment = React.useCallback(
     (attachment: Attachment) => {
-      if ('contentId' in attachment) {
+      const alreadyAttached = conversation.associatedContentInfo.find((c) =>
+        'contentId' in attachment
+          ? c.contentId === attachment.contentId
+          : c.url.url === attachment.url.url,
+      )
+
+      if (alreadyAttached) {
+        // Re-mentioning content that's already attached re-attaches its tools
+        // (the browser only attaches them when the content exposes any).
+        conversation.setToolsAttached(alreadyAttached, true)
+      } else if ('contentId' in attachment) {
         aiChat.api.uiHandler.associateTab(
           attachment,
           conversation.conversationUuid!,
@@ -98,20 +108,24 @@ export default function TabsMenu() {
 
       setIsOpen(false)
     },
-    [aiChat, conversation.conversationUuid, setIsOpen],
+    [
+      aiChat,
+      conversation.conversationUuid,
+      conversation.associatedContentInfo,
+      conversation.setToolsAttached,
+      setIsOpen,
+    ],
   )
 
-  // Filter out content that is already associated with the conversation.
-  const unselectedTabs = React.useMemo(
-    () =>
-      aiChat.tabs.filter(
-        (t) =>
-          !conversation.associatedContentInfo.some(
-            (c) => c.contentId === t.contentId,
-          ),
-      ),
-    [aiChat.tabs, conversation.associatedContentInfo],
-  )
+  // Show all open tabs, including ones already associated with the
+  // conversation. Re-mentioning an attached tab re-runs tool detection on the
+  // browser side, re-attaching its tools when it exposes any. Bookmarks and
+  // history are still de-duplicated below because re-attaching those creates
+  // duplicate content instead of reusing a live tab.
+  //
+  // This is an owned copy of the tabs list: `distinctEntries` appends bookmarks
+  // and history into it, so it must not be the shared `aiChat.tabs` array.
+  const tabs = React.useMemo(() => [...aiChat.tabs], [aiChat.tabs])
 
   const bookmarks = aiChat.api.useGetBookmarksData()
 
@@ -143,8 +157,8 @@ export default function TabsMenu() {
 
   const distinctEntries = React.useMemo(() => {
     // Note: We include all tabs, even if they're duplicated.
-    const result: Attachment[] = unselectedTabs
-    const seen = new Set<string>(unselectedTabs.map((t) => t.url.url))
+    const result: Attachment[] = tabs
+    const seen = new Set<string>(tabs.map((t) => t.url.url))
     for (const item of unselectedBookmarks.concat(unselectedHistory)) {
       if (seen.has(item.url.url)) continue
 
@@ -152,7 +166,7 @@ export default function TabsMenu() {
       seen.add(item.url.url)
     }
     return result
-  }, [unselectedTabs, unselectedBookmarks, unselectedHistory])
+  }, [tabs, unselectedBookmarks, unselectedHistory])
 
   return (
     <FilterMenu

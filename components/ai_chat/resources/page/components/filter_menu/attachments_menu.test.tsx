@@ -67,8 +67,11 @@ describe('TabsMenu', () => {
     expect(container.querySelector('img[src*="test2.com"]')).toBeInTheDocument()
   })
 
-  it('should filter out attached tabs', async () => {
-    const { findByText, queryByText } = await renderOpenedMenu({
+  it('should still show already attached tabs so they can be re-mentioned', async () => {
+    // Re-mentioning an attached tab re-runs tool detection on the browser side,
+    // re-attaching its tools when it exposes any, so attached tabs must remain
+    // selectable in the menu.
+    const { findByText } = await renderOpenedMenu({
       conversationOverrides: { inputText: ['@'] },
       initialState: {
         conversationState: {
@@ -91,7 +94,7 @@ describe('TabsMenu', () => {
           {
             contentId: 1,
             title: 'Test 1',
-            url: { url: 'https://tes1t.com' },
+            url: { url: 'https://test1.com' },
             id: 1,
           },
           {
@@ -104,8 +107,51 @@ describe('TabsMenu', () => {
       },
     })
 
+    expect(await findByText('Test 1')).toBeInTheDocument()
     expect(await findByText('Test 2')).toBeInTheDocument()
-    expect(queryByText('Test 1')).not.toBeInTheDocument()
+  })
+
+  it('re-mentioning an already attached tab attaches its tools instead of re-associating', async () => {
+    const associateTab = jest.fn()
+    const setToolsAttached = jest.fn()
+    const attachedContent = {
+      conversationTurnUuid: undefined,
+      contentId: 1,
+      title: 'Test 1',
+      url: { url: 'https://test1.com' },
+      contentType: ContentType.PageContent,
+      contentUsedPercentage: 0,
+      uuid: 'content-1',
+      toolsAttached: false,
+    }
+    const { findByText } = await renderOpenedMenu({
+      conversationOverrides: { inputText: ['@'] },
+      initialState: {
+        conversationState: {
+          conversationUuid: '1',
+          associatedContent: [attachedContent],
+        },
+        tabs: [
+          {
+            contentId: 1,
+            title: 'Test 1',
+            url: { url: 'https://test1.com' },
+            id: 1,
+          },
+        ],
+      },
+      uiHandler: { associateTab },
+      conversationHandler: { setToolsAttached },
+    })
+
+    const item = await findByText('Test 1')
+    await act(() => item.click())
+
+    expect(setToolsAttached).toHaveBeenCalledWith(
+      expect.objectContaining({ contentId: 1, uuid: 'content-1' }),
+      true,
+    )
+    expect(associateTab).not.toHaveBeenCalled()
   })
 
   it('should be open when query starts with @', async () => {
