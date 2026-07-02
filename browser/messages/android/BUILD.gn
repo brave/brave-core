@@ -1,0 +1,22 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+import("//build/config/android/rules.gni")
+
+android_library("java") {
+  sources = [ "java/src/org/chromium/chrome/browser/messages/BraveMessageQueueMediator.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/android:chrome_java",
+    "//chrome/browser/android/lifecycle:java",
+    "//chrome/browser/tab:java",
+    "//chrome/browser/ui/android/layouts:java",
+    "//components/browser_ui/bottomsheet/android:java",
+    "//components/messages/android:manager_java",
+    "//ui/android:ui_java",
+  ]
+}
