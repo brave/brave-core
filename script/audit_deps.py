@@ -12,6 +12,7 @@ import argparse
 import json
 import os
 import subprocess
+import shutil
 import sys
 import urllib.request
 
@@ -55,6 +56,7 @@ def main():
               f"{', '.join(map(str, IGNORED_CARGO_ADVISORIES))}")
 
     args = parse_args()
+    args.source_root = os.path.normpath(args.source_root)
     errors = 0
 
     if args.input_dir:
@@ -83,6 +85,7 @@ def main():
 
 def audit_path(path, args):
     """Audit the specified path (relative, or absolute)."""
+    errors = 0
 
     full_path = os.path.join(os.path.abspath(path), "")
     if os.path.isfile(os.path.join(path, 'package.json')) and \
@@ -90,9 +93,16 @@ def audit_path(path, args):
        not any(full_path.startswith(os.path.join(args.source_root, p, ""))
                for p in NPM_EXCLUDE_PATHS):
         print(f'Auditing (npm) {path}')
-        return npm_audit_deps(path, args)
+        errors += npm_audit_deps(path, args)
 
-    return 0
+    if os.path.isfile(os.path.join(path, 'package.json')) and \
+       os.path.isfile(os.path.join(path, 'pnpm-lock.yaml')) and \
+       not any(full_path.startswith(os.path.join(args.source_root, p, ""))
+               for p in NPM_EXCLUDE_PATHS):
+        print(f'Auditing (pnpm) {path}')
+        errors += pnpm_audit_deps(path, args)
+
+    return errors
 
 
 def npm_audit_deps(path, args):
@@ -108,6 +118,45 @@ def npm_audit_deps(path, args):
         # correctly identified in package.json
         print('npm audit --production not supported; auditing dev dependencies')
     audit_process = subprocess.Popen(npm_args, stdout=subprocess.PIPE, cwd=path)
+    output, _ = audit_process.communicate()
+
+    try:
+        # results from audit
+        result = json.loads(output.decode('UTF-8'))
+        # npm7 uses a different format from earlier versions
+        assert 'vulnerabilities' in result or 'advisories' in result
+    except (ValueError, AssertionError):
+        # This can happen in the case of an NPM network error
+        print('Audit failed to return valid json')
+        return 1
+
+    resolutions = extract_resolutions(result)
+
+    if len(resolutions) > 0:
+        print('Result: Audit failed due to vulnerabilities')
+        print(json.dumps(resolutions, indent=2))
+        return 1
+
+    print('Result: Audit finished, no vulnerabilities found')
+    return 0
+
+
+def pnpm_audit_deps(path, args):
+    """Run `pnpm audit' in the specified path."""
+
+    pnpm_path = shutil.which('pnpm')
+    if not pnpm_path:
+        print('pnpm not found')
+        return 1
+
+    pnpm_args = [pnpm_path, 'audit', '--json']
+    if not args.audit_dev_deps:
+        # Don't support pnpm audit --prod until dev dependencies are
+        # correctly identified in package.json
+        print('pnpm audit --prod not supported; auditing dev dependencies')
+    audit_process = subprocess.Popen(pnpm_args,
+                                     stdout=subprocess.PIPE,
+                                     cwd=path)
     output, _ = audit_process.communicate()
 
     try:
