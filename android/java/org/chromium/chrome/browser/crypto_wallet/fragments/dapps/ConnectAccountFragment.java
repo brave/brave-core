@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -21,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
 
@@ -69,13 +71,13 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     private WalletModel mWalletModel;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        try {
-            BraveActivity activity = BraveActivity.getBraveActivity();
-            mWalletModel = activity.getWalletModel();
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "onCreate " + e);
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        if (context instanceof WalletFragmentCallback walletFragmentCallback) {
+            mWalletModel = walletFragmentCallback.getWalletModel();
+        } else {
+            throw new IllegalStateException("Host activity must implement WalletFragmentCallback.");
         }
     }
 
@@ -116,23 +118,19 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
         mButtonNewAccount = view.findViewById(R.id.fragment_connect_account_new_account_id);
         mButtonNewAccount.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        BottomSheetDialogFragment sheetDialogFragment =
-                                new CreateAccountBottomSheetFragment();
-                        sheetDialogFragment.show(
-                                getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
-                    }
+                v -> {
+                    BottomSheetDialogFragment sheetDialogFragment =
+                            new CreateAccountBottomSheetFragment();
+                    sheetDialogFragment.show(
+                            getChildFragmentManager(), CreateAccountBottomSheetFragment.TAG);
                 });
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        getBraveWalletService()
+        mWalletModel.getBraveWalletService()
                 .getActiveOrigin(
-                        originInfo -> {
-                            mWebSite.setText(Utils.geteTldSpanned(originInfo));
-                        });
+                        originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
+
         initComponents();
 
         return view;
