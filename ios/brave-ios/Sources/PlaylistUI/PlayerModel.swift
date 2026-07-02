@@ -639,7 +639,6 @@ public final class PlayerModel: ObservableObject {
           playerItemToReplace = await Task.detached {
             .init(asset: AVURLAsset(url: url))
           }.value
-          startCachingForPlayback(item: newItem)
         }
       } catch {
         if isPictureInPictureActive {
@@ -687,15 +686,6 @@ public final class PlayerModel: ObservableObject {
         play()
       }
     }
-  }
-
-  /// Cache-first: start a background caching task so the item becomes available locally for the next playback.
-  /// Playback begins streaming while caching. Call this only with a freshly resolved item (post-streaming), so that the download uses a valid URL.
-  /// A cache already in progress (or a completed one) is a no-op.
-  @MainActor private func startCachingForPlayback(item: PlaylistInfo) {
-    guard FeatureList.kPlaylistCacheFirstEnabled.enabled else { return }
-    guard Reachability.shared.status.connectionType != .offline else { return }
-    PlaylistManager.shared.download(item: item)
   }
 
   private func itemDurationForAssetDuration(_ duration: CMTime) -> ItemDuration {

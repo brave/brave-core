@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import BraveShared
 import Combine
 import Data
@@ -58,6 +59,13 @@ public class PlaylistMediaStreamer {
     // It's possible the URL expired..
     if !isStreamable {
       return try await streamingFallback(item)
+    }
+
+    // Cache-first: the stored URL is still valid, so `streamingFallback` (which would otherwise kick off caching via `autoDownload`)
+    // isn't reached. Start a background cache here so the item is available locally next time. Gated on the kPlaylistCacheFirstEnabled
+    // flag so the kPlaylistOfflineCacheEnabled offline-cache path  is unaffected.
+    if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+      PlaylistManager.shared.autoDownload(item: item)
     }
 
     return item
