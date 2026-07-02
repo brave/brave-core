@@ -8,10 +8,14 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/brave_origin/brave_origin_policy_manager.h"
+#include "brave/components/brave_origin/brave_origin_utils.h"
+#include "brave/components/brave_origin/profile_id.h"
 #include "brave/components/constants/brave_constants.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
+#include "components/policy/policy_constants.h"
 #include "third_party/skia/include/core/SkColor.h"
 
 #if !BUILDFLAG(IS_ANDROID)
@@ -58,28 +62,53 @@ void AIChatAgentProfileManager::OnProfileAdded(
 }
 
 void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
-  if (is_added_profile_new_ai_chat_agent_profile_ && profile->IsAIChatAgent()) {
-    is_added_profile_new_ai_chat_agent_profile_ = false;
-    // Only opt the agent profile in to AI Chat if another (source) profile has
-    // already opted in. Otherwise the user should go through the opt-in flow in
-    // the agent profile itself.
-    if (HasAnyOtherProfileOptedIn(profile)) {
-      ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
-    }
+  if (!profile->IsAIChatAgent()) {
+    return;
+  }
 
-    // Set profile name so that the user can identify the profile
-    // in the various profile list UIs.
-    // TODO(https://github.com/brave/brave-browser/issues/48164): set an avatar
-    profile_manager_->GetProfileAttributesStorage()
-        .GetProfileAttributesWithPath(profile->GetPath())
-        ->SetLocalProfileName(kAIChatAgentProfileName, false);
+  // Brave Origin manages AI Chat as a profile-scoped policy that defaults to
+  // disabled for newly-created profiles. The agent profile is only ever opened
+  // from a source profile that already has AI Chat enabled, so ensure AI Chat
+  // is enabled for the agent profile here. This runs every time the agent
+  // profile is loaded - not only when it is first created - so it also repairs
+  // agent profiles created before this fix shipped with AI Chat left disabled.
+  // Without it the agent profile's AIChatService would be null, its kChatUI
+  // side panel entry would never be registered, and showing it would crash. The
+  // value is persisted per profile id in local state. When Brave Origin is not
+  // in use this is skipped and the agent profile keeps the unmanaged default
+  // (enabled).
+  if (brave_origin::IsBraveOriginPurchased()) {
+    brave_origin::BraveOriginPolicyManager::GetInstance()->SetPolicyValue(
+        policy::key::kBraveAIChatEnabled, /*value=*/true,
+        brave_origin::GetProfileId(profile->GetPath()));
+  }
+
+  // The remaining setup only applies the first time the agent profile is
+  // created.
+  if (!is_added_profile_new_ai_chat_agent_profile_) {
+    return;
+  }
+  is_added_profile_new_ai_chat_agent_profile_ = false;
+
+  // Only opt the agent profile in to AI Chat if another (source) profile has
+  // already opted in. Otherwise the user should go through the opt-in flow in
+  // the agent profile itself.
+  if (HasAnyOtherProfileOptedIn(profile)) {
+    ai_chat::SetUserOptedIn(profile->GetPrefs(), true);
+  }
+
+  // Set profile name so that the user can identify the profile
+  // in the various profile list UIs.
+  // TODO(https://github.com/brave/brave-browser/issues/48164): set an avatar
+  profile_manager_->GetProfileAttributesStorage()
+      .GetProfileAttributesWithPath(profile->GetPath())
+      ->SetLocalProfileName(kAIChatAgentProfileName, false);
 
 #if !BUILDFLAG(IS_ANDROID)
-    // Set theme
-    auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
-    theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
+  // Set theme
+  auto* theme_service = ThemeServiceFactory::GetForProfile(profile);
+  theme_service->SetUserColor(kAIChatAgentProfileThemeColor);
 #endif
-  }
 }
 
 bool AIChatAgentProfileManager::HasAnyOtherProfileOptedIn(
