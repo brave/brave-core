@@ -199,15 +199,13 @@ void SidePanel::UpdateBorder() {
     gfx::Insets outline_insets = insets;
     outline_insets.set_top(kRoundedCornersContentsOutlineThickness);
 
-    if (auto* color_provider = GetColorProvider()) {
-      SetBorder(std::make_unique<SidePanelOutlineBorder>(
-          insets, outline_insets,
-          brave::GetPanelContentsRoundedCorners(
-              browser_view_, /*flatten_top_for_header=*/false),
-          color_provider));
-    } else {
-      SetBorder(views::CreateEmptyBorder(insets));
-    }
+    ui::ColorProvider* color_provider = GetColorProvider();
+    CHECK(color_provider);
+    SetBorder(std::make_unique<SidePanelOutlineBorder>(
+        insets, outline_insets,
+        brave::GetPanelContentsRoundedCorners(
+            browser_view_, /*flatten_top_for_header=*/false),
+        color_provider));
     return;
   }
 
