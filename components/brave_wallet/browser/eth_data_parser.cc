@@ -564,9 +564,8 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   };
 }
 
-// Returns all operator addresses from granting setApprovalForAll calls in
-// `data`, unwrapping multicalls.
-std::vector<std::string> FindAllNestedSetApprovalForAll(
+// Nullopt means `data` failed to parse; fails closed.
+std::optional<std::vector<std::string>> FindAllNestedSetApprovalForAll(
     base::span<const uint8_t> data) {
   std::vector<std::string> result;
   base::queue<std::pair<std::vector<uint8_t>, size_t>> pending;
@@ -577,7 +576,7 @@ std::vector<std::string> FindAllNestedSetApprovalForAll(
     pending.pop();
 
     if (call.size() < 4) {
-      continue;
+      return std::nullopt;
     }
 
     base::span<const uint8_t> call_span(call);
@@ -591,17 +590,18 @@ std::vector<std::string> FindAllNestedSetApprovalForAll(
                       .AddTupleType(eth_abi::Uint(256))
                       .build();
       auto decoded = ABIDecode(type, calldata);
-      // Skip revokes; collect the operator for grants.
-      if (!decoded || decoded->size() < 2 ||
-          decoded.value()[1].GetString() == "0x0") {
-        continue;
+      if (!decoded || decoded->size() < 2) {
+        return std::nullopt;
       }
-      result.push_back(decoded.value()[0].GetString());
+      // Skip revokes; collect the operator for grants.
+      if (decoded.value()[1].GetString() != "0x0") {
+        result.push_back(decoded.value()[0].GetString());
+      }
       continue;
     }
 
     if (depth >= kMaxMulticallDepth) {
-      continue;
+      return std::nullopt;
     }
 
     // Wrapper: unwrap a multicall and enqueue each inner call.
@@ -622,13 +622,13 @@ std::vector<std::string> FindAllNestedSetApprovalForAll(
     auto decoded = ABIDecode(tuple_builder.build(), calldata);
     if (!decoded || decoded->size() <= array_index ||
         !decoded.value()[array_index].is_list()) {
-      continue;
+      return std::nullopt;
     }
 
     for (const auto& inner_call : decoded.value()[array_index].GetList()) {
       auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
       if (!inner_bytes) {
-        continue;
+        return std::nullopt;
       }
       pending.emplace(std::move(*inner_bytes), depth + 1);
     }
@@ -1525,12 +1525,15 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
   } else if (MulticallVariantForSelector(selector)) {
     // Surface a nested setApprovalForAll; multicalls without one stay Other.
     auto operators = FindAllNestedSetApprovalForAll(base::span(data));
-    if (!operators.empty()) {
+    if (!operators) {
+      return std::nullopt;
+    }
+    if (!operators->empty()) {
       return std::make_tuple(
           mojom::TransactionType::ERC721SetApprovalForAll,
           std::vector<std::string>{"address",  // operator
                                    "bool"},    // approved
-          std::vector<std::string>{base::JoinString(operators, ","), "0x1"},
+          std::vector<std::string>{base::JoinString(*operators, ","), "0x1"},
           nullptr);
     }
     return std::make_tuple(mojom::TransactionType::Other,

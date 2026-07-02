@@ -1066,6 +1066,7 @@ void EthTxManager::SpeedupOrCancelTransaction(
       tx->set_data(std::vector<uint8_t>());
     }
 
+    // Also fails closed on malformed multicall data.
     if (!GetTransactionInfoFromData(tx->data())) {
       std::move(callback).Run(
           false, "",
