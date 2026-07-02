@@ -64,6 +64,10 @@ function Conversation(props: ConversationProps) {
 
   const apiHasError = state.currentError !== Mojom.APIError.None
 
+  const currentModel = state.allModels.find(
+    (m) => m.key === state.currentModelKey,
+  )
+
   const shouldShowStorageNotice =
     hasAcceptedAgreement
     && context.isHistoryFeatureEnabled
@@ -77,8 +81,8 @@ function Conversation(props: ConversationProps) {
     && !isPremiumStatusFetching
     && !isPremiumUser
     && state.isLeoModel
-    && state.allModels.find((m) => m.key === state.currentModelKey)?.options
-      .leoModelOptions?.access === Mojom.ModelAccess.PREMIUM
+    && currentModel?.options.leoModelOptions?.access
+      === Mojom.ModelAccess.PREMIUM
 
   // Show premium status suggestion if the user isn't premium and either the
   // service states it's a good time, or the user has attempted to perform a
@@ -105,6 +109,7 @@ function Conversation(props: ConversationProps) {
           <ErrorConnection
             onRetry={() => context.conversationHandler.retryAPIRequest()}
             errorDetails={state.currentErrorDetails}
+            isNearModel={!!currentModel?.isNearModel}
           />
         )
         break
