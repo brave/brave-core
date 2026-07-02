@@ -6,11 +6,11 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
 #include "base/check.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
-#include "brave/browser/ui/color/brave_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -40,8 +40,8 @@ BraveContentsViewUtil::CreateContentsOutlineBorder(
   return views::CreateBorderPainter(
       views::Painter::CreateRoundRectWith1PxBorderPainter(
           color_provider->GetColor(kColorToolbar),
-          color_provider->GetColor(kColorBraveContentsOutline),
-          corner_radii, SkBlendMode::kSrc,
+          color_provider->GetColor(kColorBraveContentsOutline), corner_radii,
+          SkBlendMode::kSrc,
           /*antialias=*/true,
           /*should_border_scale=*/true),
       gfx::Insets(kRoundedCornersContentsOutlineThickness));
