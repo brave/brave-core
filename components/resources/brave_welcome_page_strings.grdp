@@ -1,3 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
+
+  <message name="IDS_WELCOME_PAGE_TITLE" desc="The HTML title of the welcome page" formatter_data="webui=BraveWelcomePage">
+    Welcome to Brave
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_WELCOME_STEP_TITLE" desc="Title for welcome step" formatter_data="webui=BraveWelcomePage">
+    Get ready for the best browsing experience
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_WELCOME_STEP_TEXT" desc="Text on welcome step" formatter_data="webui=BraveWelcomePage">
+    Experience the web without being watched. Brave shields you from trackers, ads, and fingerprinting, all automatically.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_CONTINUE_BUTTON_LABEL" desc="Label for continue-to-next-step button" formatter_data="webui=BraveWelcomePage">
+    Continue
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_MAYBE_LATER_BUTTON_LABEL" desc="Label for button to defer a step until later" formatter_data="webui=BraveWelcomePage">
+    Maybe later
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_SET_AS_DEFAULT_BUTTON_LABEL" desc="Label for button that makes Brave the default browser" formatter_data="webui=BraveWelcomePage">
+    Set Brave as default
+  </message>
+
 </grit-part>

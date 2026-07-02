@@ -1,0 +1,27 @@
+/* Copyright (c) 2026 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+import { WelcomeApi, createWelcomeApi } from './welcome_api'
+
+export function createWelcomeApiMock(): WelcomeApi {
+  const api = createWelcomeApi({
+    welcomePageHandler: {
+      setWelcomePage(page) {},
+    },
+    messages: {
+      async getDefaultBrowserInfo() {
+        return {
+          canBeDefault: true,
+          isDefault: false,
+          isDisabledByPolicy: false,
+          isUnknownError: false,
+        }
+      },
+      setAsDefaultBrowser() {},
+    },
+  })
+
+  return api
+}
