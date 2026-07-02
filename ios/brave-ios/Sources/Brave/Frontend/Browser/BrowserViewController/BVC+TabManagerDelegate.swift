@@ -24,7 +24,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
     if tab.profile.prefs.isPlaylistAvailable {
-      tab.playlist = .init(tab: tab)
+      tab.playlist = .init(tab: tab, delegate: self)
     }
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.youtubeQualityTabHelper = .init(tab: tab)
@@ -108,7 +108,7 @@ extension BrowserViewController: TabManagerDelegate {
       tab.showContent(true)
     }
     tab.readerMode?.onReaderModeToggled = { [weak self] tab in
-      PlaylistScriptHandler.updatePlaylistTab(tab: tab, item: tab.playlistItem)
+      tab.playlist?.processPlaylistInfo(item: tab.playlistItem)
       self?.updateTranslateURLBar(tab: tab, state: tab.translationState)
     }
 
