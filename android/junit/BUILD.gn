@@ -163,9 +163,14 @@ if (is_android) {
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {
+    resources_package = "org.chromium.chrome"
     sources = [ "src/org/chromium/chrome/browser/tasks/BraveReturnToChromeUtilUnitTest.java" ]
 
-    deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/media/android:java",
+      "//services/media_session/public/cpp/android:media_session_java",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.ui") {
