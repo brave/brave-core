@@ -10,8 +10,8 @@ import * as React from 'react'
  * @param scrollContent The content of the scroller
  */
 export function useScrollToBottom(
-  scrollElement: React.RefObject<HTMLDivElement>,
-  scrollContent: React.RefObject<HTMLDivElement>,
+  scrollElement: React.RefObject<HTMLDivElement | null>,
+  scrollContent: React.RefObject<HTMLDivElement | null>,
 ) {
   const [hasScrollableContent, setHasScrollableContent] = React.useState(false)
 

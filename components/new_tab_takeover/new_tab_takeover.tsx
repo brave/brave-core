@@ -5,11 +5,14 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import App from './App'
 
 setIconBasePath('//resources/brave-icons')
 
 createRoot(document.querySelector('#root')!).render(
-  <App />
+  <StyledComponentsProvider>
+    <App />
+  </StyledComponentsProvider>
 )

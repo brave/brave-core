@@ -44,7 +44,8 @@ function normalizeThemeName (name: string) {
 }
 
 export function WithThemeVariables (props: { children: React.ReactNode }) {
-  const styledComponentsTheme = React.useContext(ThemeContext) || {}
+  const styledComponentsTheme: { name?: string } =
+    React.useContext(ThemeContext) || {}
 
   const currentTheme = normalizeThemeName(
     styledComponentsTheme.name || '')

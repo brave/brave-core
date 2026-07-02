@@ -38,7 +38,9 @@ export interface Props
   label?: string
   name?: string
   children?:
-    | React.ReactChild
+    | React.ReactElement
+    | string
+    | number
     | ((state: PasswordInputState) => React.ReactElement)
   revealValue?: boolean
 }
@@ -131,10 +133,6 @@ export function PasswordInput({
         : children}
     </StyledWrapper>
   )
-}
-
-PasswordInput.defaultProps = {
-  showToggleButton: true,
 }
 
 export default PasswordInput

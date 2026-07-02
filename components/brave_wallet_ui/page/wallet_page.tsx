@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { BrowserRouter } from 'react-router-dom'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 // assets
 import faveiconUrl from '../assets/svg-icons/brave-icon.svg'
@@ -67,7 +68,11 @@ function App() {
 function initialize() {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('root')!)
-  root.render(<App />)
+  root.render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )
   store.dispatch(WalletActions.initialize())
 }
 

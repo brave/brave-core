@@ -7,6 +7,7 @@ import { setIconBasePath } from '@brave/leo/react/icon'
 import { spacing } from '@brave/leo/tokens/css/variables'
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import styled from 'styled-components'
 import Feed from './Feed'
 import FeedControls from './FeedControls'
@@ -83,8 +84,10 @@ export function Sidebar() {
 const root = document.getElementById('root')
 if (root) {
   createRoot(root).render(
-    <BraveNewsContextProvider openArticlesInNewTab={false}>
-      <Sidebar />
-    </BraveNewsContextProvider>
+    <StyledComponentsProvider>
+      <BraveNewsContextProvider openArticlesInNewTab={false}>
+        <Sidebar />
+      </BraveNewsContextProvider>
+    </StyledComponentsProvider>
   )
 }

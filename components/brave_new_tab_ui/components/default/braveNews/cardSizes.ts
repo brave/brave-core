@@ -11,15 +11,15 @@ import {
   Time as StandardTime
 } from './default'
 
-export const Large = styled(StandardBlock.withComponent('article'))`
+export const Large = styled(StandardBlock).attrs({ as: 'article' })`
   padding: 0;
 `
 
-export const Medium = styled(StandardBlock.withComponent('article'))`
+export const Medium = styled(StandardBlock).attrs({ as: 'article' })`
   padding: 0;
 `
 
-export const Small = styled(StandardBlock.withComponent('article'))`
+export const Small = styled(StandardBlock).attrs({ as: 'article' })`
   padding: 0;
   width: 100%;
   min-height: 310px;

@@ -10,7 +10,7 @@ import { color, font } from '@brave/leo/tokens/css/variables'
 import { buttonReset } from '../../lib/css_mixins'
 import selfCustodyImage from '../../assets/self_custody_invitation.svg'
 
-export const root = styled.div.attrs({ 'data-theme': 'dark' })`
+export const root = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'dark' })`
   font: ${font.default.regular};
   color: ${color.white};
 
@@ -143,7 +143,7 @@ export const balanceExchange = styled.div`
   font: ${font.small.semibold};
 `
 
-export const pendingRewards = styled.div.attrs({ 'data-theme': 'light' })`
+export const pendingRewards = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'light' })`
   margin-top: 16px;
   color: ${color.text.secondary};
   font-size: 13px;
@@ -234,7 +234,7 @@ export const earningsInfo = styled.span`
   }
 `
 
-export const earningsTooltip = styled.div.attrs({ 'data-theme': 'light' })`
+export const earningsTooltip = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'light' })`
   position: relative;
   padding: 16px;
   background: ${color.white};
@@ -312,7 +312,7 @@ export const publisherCount = styled.div`
   font: ${font.heading.h1};
 `
 
-export const selfCustodyInvite = styled.div.attrs({ 'data-theme': 'light' })`
+export const selfCustodyInvite = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'light' })`
   margin: 0 -12px;
   border-radius: 12px;
   background: no-repeat center 16px/auto 67px url(${selfCustodyImage}),
@@ -358,7 +358,7 @@ export const selfCustodyInviteDismiss = styled.div`
   }
 `
 
-export const tosUpdateNotice = styled.div.attrs({ 'data-theme': 'light' })`
+export const tosUpdateNotice = styled.div.attrs<{ 'data-theme'?: string }>({ 'data-theme': 'light' })`
   margin: 0 -12px;
 
   --tos-update-notice-border-radius: 8px;

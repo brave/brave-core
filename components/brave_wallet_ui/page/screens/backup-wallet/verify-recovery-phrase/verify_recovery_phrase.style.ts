@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import styled from 'styled-components'
 import Input from '@brave/leo/react/input'
 import Alert from '@brave/leo/react/alert'
@@ -32,15 +33,17 @@ export const Bold = styled(FormLabel)`
   font-weight: 600;
 `
 
-export const FormInput = styled(Input).attrs({
-  mode: 'filled',
-})`
+const StyledFormInput = styled(Input)`
   width: 100%;
 `
 
+// Wrap rather than use styled(Input).attrs(): styled-components v6's .attrs
+// type machinery explodes over leo Input's large prop type (TS2590).
+export const FormInput = (props: React.ComponentProps<typeof Input>) =>
+  React.createElement(StyledFormInput, { mode: 'filled', ...props })
+
 export const ErrorAlert = styled(Alert).attrs({
-  kind: 'error',
-  mode: 'simple',
+  type: 'error',
 })`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';

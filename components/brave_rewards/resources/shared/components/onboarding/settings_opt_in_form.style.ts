@@ -22,7 +22,7 @@ export const icon = styled.div`
   }
 `
 
-export const heading = styled.div.attrs({
+export const heading = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   margin: 32px auto 0;
@@ -33,7 +33,7 @@ export const heading = styled.div.attrs({
   color: ${leo.color.text.primary};
 `
 
-export const text = styled.div.attrs({
+export const text = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   margin: 16px auto;
@@ -44,7 +44,7 @@ export const text = styled.div.attrs({
   line-height: 24px;
 `
 
-export const enable = styled.div.attrs({
+export const enable = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
 
@@ -76,7 +76,7 @@ export const enable = styled.div.attrs({
   }
 `
 
-export const learnMore = styled.div.attrs({
+export const learnMore = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   margin: 20px 0 37px;
@@ -92,7 +92,7 @@ export const learnMore = styled.div.attrs({
   }
 `
 
-export const terms = styled.div.attrs({
+export const terms = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   color: ${leo.color.text.tertiary};

@@ -4,9 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { setIconBasePath } from '@brave/leo/react/icon'
 
@@ -22,13 +23,14 @@ import startReceivingPlayerEvents from './playerEventSink'
 import store from './store'
 
 function initialize () {
-  render(
-    <BrowserRouter>
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </BrowserRouter>,
-    document.getElementById('root')
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </StyledComponentsProvider>
   )
 }
 

@@ -66,7 +66,7 @@ export const earningsInfo = styled.div`
   }
 `
 
-export const earningsTooltip = styled.div.attrs({
+export const earningsTooltip = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   position: relative;
@@ -91,7 +91,7 @@ export const earningsTooltip = styled.div.attrs({
   }
 `
 
-export const manageAds = styled.div.attrs({
+export const manageAds = styled.div.attrs<{ 'data-theme'?: string }>({
   'data-theme': 'light'
 })`
   margin-top: 14px;

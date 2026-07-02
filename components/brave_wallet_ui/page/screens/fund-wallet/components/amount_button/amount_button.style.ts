@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import * as React from 'react'
 import styled from 'styled-components'
 import Icon from '@brave/leo/react/icon'
 import { color, font } from '@brave/leo/tokens/css/variables'
@@ -38,9 +39,7 @@ export const CurrencyCode = styled.span`
   text-transform: uppercase;
 `
 
-export const AmountInput = styled(Input).attrs({
-  type: 'number',
-})`
+const StyledAmountInput = styled(Input)`
   font: ${font.heading.h1};
   text-align: right;
   field-sizing: content;
@@ -50,6 +49,11 @@ export const AmountInput = styled(Input).attrs({
     max-width: 140px;
   }
 `
+
+// Wrap rather than use styled(Input).attrs(): styled-components v6's .attrs
+// type machinery explodes over leo Input's large prop type (TS2590).
+export const AmountInput = (props: React.ComponentProps<typeof Input>) =>
+  React.createElement(StyledAmountInput, { type: 'number', ...props })
 
 export const AmountEstimate = styled.span`
   color: ${color.text.interactive};

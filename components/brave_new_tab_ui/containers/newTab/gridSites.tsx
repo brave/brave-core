@@ -75,7 +75,7 @@ function TopSitesList (props: Props) {
   const { gridSites, customLinksEnabled } = props
   const maxGridSize = customLinksEnabled ? MAX_GRID_SIZE : (MAX_GRID_SIZE / 2)
 
-  const gridPagesContainerRef = useRef<HTMLDivElement>()
+  const gridPagesContainerRef = useRef<HTMLDivElement>(null)
 
   const numSites = customLinksEnabled ? gridSites.length + 1 : gridSites.length
   const pageCount = Math.min(MAX_PAGES, Math.ceil(numSites / maxGridSize))
@@ -108,7 +108,7 @@ function TopSitesList (props: Props) {
     gridPagesContainerRef.current?.scrollTo({ left: el.offsetLeft, behavior: 'smooth' })
   }
 
-  const navdotsRef = React.useRef<{ activeDot: number }>()
+  const navdotsRef = React.useRef<{ activeDot: number }>(null)
   React.useEffect(() => {
     if (!gridPagesContainerRef.current) return
 

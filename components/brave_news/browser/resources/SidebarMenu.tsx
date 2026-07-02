@@ -44,7 +44,7 @@ const MenuButton = styled(SettingsButton)`
 `
 
 export default function SidebarMenu() {
-  const dialogRef = React.useRef<HTMLDialogElement>()
+  const dialogRef = React.useRef<HTMLDialogElement>(null)
   return <MenuButton onClick={() => dialogRef.current?.showModal()}>
     <Icon name="hamburger-menu" />
     <Container ref={dialogRef as any} onClick={e => {

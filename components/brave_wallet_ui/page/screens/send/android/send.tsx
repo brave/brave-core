@@ -7,6 +7,7 @@ import * as React from 'react'
 import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { Route, Switch, BrowserRouter } from 'react-router-dom'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { initLocale } from 'brave-ui'
 
@@ -49,7 +50,11 @@ function initialize() {
   initLocale(loadTimeData.data_)
   store.dispatch(WalletActions.initialize())
   const root = createRoot(document.getElementById('root')!)
-  root.render(<AndroidSendApp />)
+  root.render(
+    <StyledComponentsProvider>
+      <AndroidSendApp />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

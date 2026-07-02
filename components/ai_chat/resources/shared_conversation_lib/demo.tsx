@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import Button from '@brave/leo/react/button'
 import { renderConversation } from './render_conversation'
 import styles from './demo.css'
@@ -81,7 +82,11 @@ function handleConversationLoaded(conversation: any) {
 
 function initialize() {
   const root = createRoot(document.getElementById('demo')!)
-  root.render(<DemoSharedConversationInput onLoad={handleConversationLoaded} />)
+  root.render(
+    <StyledComponentsProvider>
+      <DemoSharedConversationInput onLoad={handleConversationLoaded} />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

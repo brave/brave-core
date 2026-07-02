@@ -9,6 +9,7 @@ import { BrowserRouter } from 'react-router-dom'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { loadTimeData } from '../../common/loadTimeData'
 import walletDarkTheme from '../theme/wallet-dark'
@@ -44,7 +45,11 @@ function App() {
 function initialize() {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('mountPoint')!)
-  root.render(<App />)
+  root.render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )
   store.dispatch(WalletActions.initialize())
 }
 

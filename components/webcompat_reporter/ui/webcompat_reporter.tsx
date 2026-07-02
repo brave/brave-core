@@ -4,9 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { bindActionCreators } from 'redux'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import Theme from 'brave-ui/theme/brave-default'
 import DarkTheme from 'brave-ui/theme/brave-dark'
@@ -59,16 +60,17 @@ function initialize () {
 
   setViewPortChangeListener(onViewPortSizeChanged)
 
-  render(
-    <Provider store={store}>
-      <BraveCoreThemeProvider
-        dark={DarkTheme}
-        light={Theme}
-      >
-        <App />
-      </BraveCoreThemeProvider>
-    </Provider>,
-    document.getElementById('root')
+  createRoot(document.getElementById('root')!).render(
+    <StyledComponentsProvider>
+      <Provider store={store}>
+        <BraveCoreThemeProvider
+          dark={DarkTheme}
+          light={Theme}
+        >
+          <App />
+        </BraveCoreThemeProvider>
+      </Provider>
+    </StyledComponentsProvider>
   )
 }
 

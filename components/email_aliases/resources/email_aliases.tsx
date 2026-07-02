@@ -11,6 +11,7 @@ import '$web-common/disableDuplicateSvelteTrustedPolicies'
 import { createRoot } from 'react-dom/client'
 import { SignInPage, ManagePage } from './content/email_aliases_manage_page'
 import { StyleSheetManager } from 'styled-components'
+import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
 import * as React from 'react'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import {
@@ -59,14 +60,20 @@ export const mount = (signInElem: HTMLElement, manageElem: HTMLElement) => {
 
   const signInRoot = createRoot(signInElem)
   signInRoot.render(
-    <StyleSheetManager target={signInElem.getRootNode() as ShadowRoot}>
+    <StyleSheetManager
+      target={signInElem.getRootNode() as ShadowRoot}
+      shouldForwardProp={shouldForwardProp}
+    >
       <SignInPage />
     </StyleSheetManager>,
   )
 
   const manageRoot = createRoot(manageElem)
   manageRoot.render(
-    <StyleSheetManager target={manageElem.getRootNode() as ShadowRoot}>
+    <StyleSheetManager
+      target={manageElem.getRootNode() as ShadowRoot}
+      shouldForwardProp={shouldForwardProp}
+    >
       <ManagePageConnected
         emailAliasesService={emailAliasesService}
         bindObserver={bindObserver}

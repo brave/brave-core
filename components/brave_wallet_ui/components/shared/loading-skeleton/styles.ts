@@ -30,7 +30,9 @@ const loadingAnimation = keyframes`
   }
 `
 
-export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
+export const Skeleton = styled.span.attrs<Partial<LoadingSkeletonStyleProps>>(
+  (p) => ({ width: p.width ?? '100%', height: p.height ?? '100%' }),
+)`
   background-color: ${leo.color.page.background};
   width: ${(p) => (typeof p.width === 'number' ? `${p.width}px` : p.width)};
   height: ${(p) => (typeof p.height === 'number' ? `${p.height}px` : p.height)};
@@ -76,8 +78,3 @@ export const Skeleton = styled.span<Partial<LoadingSkeletonStyleProps>>`
 export const LineBreak = styled.br`
   content: '';
 `
-
-Skeleton.defaultProps = {
-  width: '100%',
-  height: '100%',
-}

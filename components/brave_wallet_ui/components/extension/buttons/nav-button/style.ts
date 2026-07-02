@@ -77,12 +77,12 @@ export const StyledButton = styled.button<StyledButtonProps>`
   ${(p) => StyledButtonCssMixin(p)}
 `
 
-export const StyledLink = styled(Link).withConfig<StyledButtonProps>({
+export const StyledLink = styled(Link).withConfig({
   shouldForwardProp: (prop) => {
     // prevents reactDOM errors (Link does not support these props)
     return prop !== 'minWidth' && prop !== 'maxHeight' && prop !== 'buttonType'
   },
-})`
+})<StyledButtonProps>`
   ${(p) => StyledButtonCssMixin(p)}
 `
 

@@ -168,7 +168,7 @@ export function ModelMenuItem(props: MenuItemProps) {
     <leo-menu-item
       data-key={model.key}
       data-testid={model.key}
-      aria-selected={isCurrent || null}
+      aria-selected={isCurrent ? 'true' : null}
       onClick={onClick}
     >
       <ModelContent

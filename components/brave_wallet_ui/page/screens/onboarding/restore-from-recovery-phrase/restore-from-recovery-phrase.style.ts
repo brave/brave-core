@@ -90,18 +90,14 @@ export const RecoveryTextInput = styled.input`
 `
 
 export const InfoAlert = styled(Alert).attrs({
-  mode: 'simple',
   hasActions: true,
+  type: 'info',
 })<{ padding?: string } & AlertProps>`
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
   width: 100%;
   padding: ${(p) => p.padding || 'unset'};
 `
-
-InfoAlert.defaultProps = {
-  type: 'info',
-}
 
 export const InputLabel = styled(Text)`
   line-height: 18px;

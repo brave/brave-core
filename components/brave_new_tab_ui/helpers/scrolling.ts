@@ -39,7 +39,7 @@ export const useParentScrolled = (element: HTMLElement | null, handler: (e: Even
     }, [handler, element])
 }
 
-export const useMaintainScrollPosition = (localStorageKey: string, elementRef: React.MutableRefObject<HTMLElement | undefined>, bufferRate = 200) => {
+export const useMaintainScrollPosition = <T extends HTMLElement = HTMLElement>(localStorageKey: string, elementRef: React.RefObject<T | null>, bufferRate = 200) => {
     React.useEffect(() => {
         if (!elementRef.current) return
 

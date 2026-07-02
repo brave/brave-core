@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled, { DefaultTheme, ThemedStyledProps } from 'styled-components'
+import styled, { DefaultTheme } from 'styled-components'
 import LeoProgressBar from '@brave/leo/react/progressBar'
 import * as leo from '@brave/leo/tokens/css/variables'
 
@@ -44,14 +44,10 @@ export const BarMessage = styled.p<{ criteria: boolean[] }>`
   text-align: right;
   letter-spacing: 0.01em;
 `
-const getCriteriaPercentColor = (
-  p: ThemedStyledProps<
-    {
-      criteria: boolean[]
-    },
-    DefaultTheme
-  >,
-) => {
+const getCriteriaPercentColor = (p: {
+  criteria: boolean[]
+  theme?: DefaultTheme
+}) => {
   const percentComplete =
     (p.criteria.filter((c) => !!c).length / p.criteria.length) * 100
   return percentComplete === 100
