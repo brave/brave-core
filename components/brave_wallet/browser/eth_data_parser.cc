@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/check_op.h"
+#include "base/containers/queue.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -566,65 +567,71 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
 // Returns all operator addresses from granting setApprovalForAll calls in
 // `data`, unwrapping multicalls.
 std::vector<std::string> FindAllNestedSetApprovalForAll(
-    base::span<const uint8_t> data,
-    size_t depth) {
-  if (data.size() < 4) {
-    return {};
-  }
-
-  auto [selector_span, calldata] = data.split_at<4>();
-  std::string selector = ToHex(selector_span);
-
-  // Leaf: a direct setApprovalForAll. Any non-zero `approved` is a grant.
-  if (selector == kERC721SetApprovalForAllSelector) {
-    auto type = eth_abi::Tuple()
-                    .AddTupleType(eth_abi::Address())
-                    .AddTupleType(eth_abi::Uint(256))
-                    .build();
-    auto decoded = ABIDecode(type, calldata);
-    // Skip revokes (approved == 0); return the operator address for grants.
-    if (!decoded || decoded->size() < 2 ||
-        decoded.value()[1].GetString() == "0x0") {
-      return {};
-    }
-    return {decoded.value()[0].GetString()};
-  }
-
-  if (depth >= kMaxMulticallDepth) {
-    return {};
-  }
-
-  // Wrapper: unwrap a multicall and scan each inner call.
-  auto variant = MulticallVariantForSelector(selector);
-  if (!variant) {
-    return {};
-  }
-
-  auto tuple_builder = eth_abi::Tuple();
-  size_t array_index = 0;
-  if (variant->leading_type) {
-    tuple_builder.AddTupleType(std::move(*variant->leading_type));
-    array_index = 1;
-  }
-  tuple_builder.AddTupleType(
-      eth_abi::Array().SetArrayType(eth_abi::Bytes()).build());
-
-  auto decoded = ABIDecode(tuple_builder.build(), calldata);
-  if (!decoded || decoded->size() <= array_index ||
-      !decoded.value()[array_index].is_list()) {
-    return {};
-  }
-
+    base::span<const uint8_t> data) {
   std::vector<std::string> result;
-  for (const auto& inner_call : decoded.value()[array_index].GetList()) {
-    auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
-    if (!inner_bytes) {
+  base::queue<std::pair<std::vector<uint8_t>, size_t>> pending;
+  pending.emplace(std::vector<uint8_t>(data.begin(), data.end()), 0);
+
+  while (!pending.empty()) {
+    auto [call, depth] = std::move(pending.front());
+    pending.pop();
+
+    if (call.size() < 4) {
       continue;
     }
-    auto found =
-        FindAllNestedSetApprovalForAll(base::span(*inner_bytes), depth + 1);
-    result.insert(result.end(), std::make_move_iterator(found.begin()),
-                  std::make_move_iterator(found.end()));
+
+    base::span<const uint8_t> call_span(call);
+    auto [selector_span, calldata] = call_span.split_at<4>();
+    std::string selector = ToHex(selector_span);
+
+    // Leaf: a direct setApprovalForAll. Any non-zero `approved` is a grant.
+    if (selector == kERC721SetApprovalForAllSelector) {
+      auto type = eth_abi::Tuple()
+                      .AddTupleType(eth_abi::Address())
+                      .AddTupleType(eth_abi::Uint(256))
+                      .build();
+      auto decoded = ABIDecode(type, calldata);
+      // Skip revokes; collect the operator for grants.
+      if (!decoded || decoded->size() < 2 ||
+          decoded.value()[1].GetString() == "0x0") {
+        continue;
+      }
+      result.push_back(decoded.value()[0].GetString());
+      continue;
+    }
+
+    if (depth >= kMaxMulticallDepth) {
+      continue;
+    }
+
+    // Wrapper: unwrap a multicall and enqueue each inner call.
+    auto variant = MulticallVariantForSelector(selector);
+    if (!variant) {
+      continue;
+    }
+
+    auto tuple_builder = eth_abi::Tuple();
+    size_t array_index = 0;
+    if (variant->leading_type) {
+      tuple_builder.AddTupleType(std::move(*variant->leading_type));
+      array_index = 1;
+    }
+    tuple_builder.AddTupleType(
+        eth_abi::Array().SetArrayType(eth_abi::Bytes()).build());
+
+    auto decoded = ABIDecode(tuple_builder.build(), calldata);
+    if (!decoded || decoded->size() <= array_index ||
+        !decoded.value()[array_index].is_list()) {
+      continue;
+    }
+
+    for (const auto& inner_call : decoded.value()[array_index].GetList()) {
+      auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
+      if (!inner_bytes) {
+        continue;
+      }
+      pending.emplace(std::move(*inner_bytes), depth + 1);
+    }
   }
 
   return result;
@@ -1517,8 +1524,7 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         nullptr);
   } else if (MulticallVariantForSelector(selector)) {
     // Surface a nested setApprovalForAll; multicalls without one stay Other.
-    auto operators =
-        FindAllNestedSetApprovalForAll(base::span(data), /*depth=*/0);
+    auto operators = FindAllNestedSetApprovalForAll(base::span(data));
     if (!operators.empty()) {
       return std::make_tuple(
           mojom::TransactionType::ERC721SetApprovalForAll,
