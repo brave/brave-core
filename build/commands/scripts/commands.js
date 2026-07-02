@@ -496,6 +496,34 @@ program
 
 program.command('docs').action(util.launchDocs)
 
+program
+  .command('ios_update_current_link')
+  .description(
+    'Updates the stable ios_current_link output directory symlink for upcoming Xcode builds',
+  )
+  .addOption(
+    new Option('--target_arch <target_arch>', 'target architecture').choices([
+      'arm64',
+      'x64',
+    ]),
+  )
+  .addOption(
+    new Option(
+      '--target_environment <target_environment>',
+      'target environment',
+    ).choices(['device', 'catalyst', 'simulator']),
+  )
+  .addArgument(createBuildConfigArgument())
+  .action((buildConfig, options) => {
+    config.buildConfig = buildConfig || config.defaultBuildConfig
+    config.targetOS = 'ios'
+    config.update(options)
+
+    const currentLink = path.join(config.srcDir, 'out', 'ios_current_link')
+    fs.removeSync(currentLink)
+    fs.symlinkSync(config.outputDir, currentLink, 'junction')
+  })
+
 registerListAffectedTestsCommand(program)
 registerGenerateCoverageReportCommand(program)
 

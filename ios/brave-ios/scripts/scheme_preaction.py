@@ -75,10 +75,8 @@ def BuildOutputDirectory(config, platform_name):
 def UpdateSymlink(config, target_arch, target_environment):
     """Updates the 'ios_current_link' symlink"""
     cmd_args = [
-        'npm', 'run', 'update_symlink', '--', config, '--symlink_dir',
-        os.path.join(src_dir, 'out/ios_current_link'), '--target_os', 'ios',
-        '--target_arch', target_arch, '--target_environment',
-        target_environment
+        'npm', 'run', 'ios_update_current_link', '--', config, '--target_arch',
+        target_arch, '--target_environment', target_environment
     ]
     CallNpm(cmd_args)
 
