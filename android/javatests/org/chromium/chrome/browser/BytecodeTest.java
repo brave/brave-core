@@ -1969,7 +1969,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/tab_ui/TabListFaviconProvider",
                         "org/chromium/chrome/browser/ui/favicon/BraveTabListFaviconProvider",
                         Context.class,
-                        boolean.class,
+                        int.class,
                         int.class,
                         TabListFaviconProvider.TabWebContentsFaviconDelegate.class));
         Assert.assertTrue(
