@@ -47,6 +47,7 @@ source_set("frame_impl") {
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/side_panel",
     "//chrome/common:constants",
