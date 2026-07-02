@@ -101,6 +101,7 @@ if (enable_brave_wallet) {
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
   "//brave/browser/download/internal/android:java",
+  "//brave/browser/messages/android:java",
   "//brave/browser/partnercustomizations:delegate_public_impl_java",
   "//brave/browser/password_entry_edit/android/internal:java",
 ]
