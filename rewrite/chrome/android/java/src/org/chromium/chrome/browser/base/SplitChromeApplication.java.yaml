@@ -1,0 +1,24 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Defer early feature list init on first run for non-Chrome-branded builds.
+
+      Since IS_CHROME_BRANDED = false for Brave, the upstream condition
+      `!IS_CHROME_BRANDED || !shouldFetchSeed()` always short-circuits to true,
+      causing the feature list to be initialized early without the variations seed
+      on first run. This prevents the native VariationsService from applying the
+      seed in the same launch, requiring a restart.
+
+      Replacing IS_CHROME_BRANDED with true makes the short-circuit always false,
+      so Brave behaves identically to Chrome-branded builds: early feature list
+      init is skipped on first run, letting the native VariationsService fetch and
+      apply the seed immediately.
+
+      See https://source.chromium.org/chromium/chromium/src/+/f00d1a3a65153510d612597de0dde2a4365ca130
+    pattern: 'BuildConfig.IS_CHROME_BRANDED'
+    replace: 'true /* BuildConfig.IS_CHROME_BRANDED override for Brave */'
+    count: 1
