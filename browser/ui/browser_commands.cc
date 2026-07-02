@@ -789,6 +789,10 @@ void CloseGroup(Browser* browser) {
 }
 
 bool CanBringAllTabs(Browser* browser) {
+  if (!base::FeatureList::IsEnabled(tabs::kBraveBringAllTabsToThisWindow)) {
+    return false;
+  }
+
   if (!browser) {
     return false;
   }

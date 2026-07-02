@@ -511,6 +511,14 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           "Enables scrolling for horizontal tab strip when tabs overflow",   \
           kOsWin | kOsMac | kOsLinux,                                        \
           FEATURE_VALUE_TYPE(tabs::kBraveScrollableTabStrip),                \
+      },                                                                     \
+      {                                                                      \
+          "brave-bring-all-tabs-to-this-window",                             \
+          "Bring all tabs to this window",                                   \
+          "Enables 'Bringing all tabs from other windows to this window' "   \
+          "from tab context menu",                                           \
+          kOsWin | kOsMac | kOsLinux,                                        \
+          FEATURE_VALUE_TYPE(tabs::kBraveBringAllTabsToThisWindow),          \
       })
 
 #else
