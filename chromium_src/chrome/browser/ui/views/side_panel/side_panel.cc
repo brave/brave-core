@@ -6,8 +6,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 
 #include "base/i18n/rtl.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
-#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "ui/color/color_provider.h"
@@ -123,8 +123,7 @@ class SidePanelOutlineBorder : public views::Border {
     }
     painter_ = views::Painter::CreateRoundRectWith1PxBorderPainter(
         color_provider->GetColor(kColorToolbar),
-        color_provider->GetColor(
-            nala::kColorDesktopbrowserToolbarButtonOutline),
+        color_provider->GetColor(kColorBraveContentsOutline),
         outline_corner_radii_, SkBlendMode::kSrc, /*antialias=*/true,
         /*should_border_scale=*/true);
   }

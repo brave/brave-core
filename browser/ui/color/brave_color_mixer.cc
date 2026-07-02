@@ -559,6 +559,8 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   // Override menu separator color in darker theme from application side.
   postprocessing_mixer[ui::kColorMenuSeparator] = {
       nala::kColorPrimitiveNeutral15};
+  postprocessing_mixer[kColorBraveContentsOutline] = {
+      nala::kColorPrimitiveNeutral15};
 #endif  // defined(TOOLKIT_VIEWS)
 }
 
@@ -599,6 +601,8 @@ void AddBraveThemeColorMixer(ui::ColorProvider* provider,
 #endif
 
   mixer[kColorBraveExtensionMenuIcon] = {nala::kColorIconInteractive};
+  mixer[kColorBraveContentsOutline] = {
+      nala::kColorDesktopbrowserToolbarButtonOutline};
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
