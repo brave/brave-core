@@ -155,6 +155,20 @@ void AdBlockCustomResourceProvider::UpdateResource(PrefService* profile_prefs,
                      std::move(on_complete)));
 }
 
+void AdBlockCustomResourceProvider::MoveResource(
+    PrefService* profile_prefs,
+    const std::string& resource_name,
+    int offset,
+    StatusCallback on_complete) {
+  if (!IsDeveloperModeEnabled(profile_prefs) || (offset != -1 && offset != 1)) {
+    return std::move(on_complete).Run(ErrorCode::kInvalid);
+  }
+  GetCustomResources(base::BindOnce(
+      &AdBlockCustomResourceProvider::MoveResourceInternal,
+      weak_ptr_factory_.GetWeakPtr(), resource_name, offset,
+      std::move(on_complete)));
+}
+
 void AdBlockCustomResourceProvider::RemoveResource(
     PrefService* profile_prefs,
     const std::string& resource_name,
@@ -241,6 +255,31 @@ void AdBlockCustomResourceProvider::UpdateResourceInternal(
   }
 
   *updated_resource = std::move(resource);
+  SaveResources(std::move(resources));
+  ReloadResourcesAndNotify();
+  std::move(on_complete).Run(ErrorCode::kOk);
+}
+
+void AdBlockCustomResourceProvider::MoveResourceInternal(
+    const std::string& name,
+    int offset,
+    StatusCallback on_complete,
+    base::Value resources) {
+  CHECK(resources.is_list());
+  auto& list = resources.GetList();
+  auto resource = FindResource(list, name);
+  if (resource == list.end()) {
+    return std::move(on_complete).Run(ErrorCode::kNotFound);
+  }
+
+  const auto index = static_cast<size_t>(resource - list.begin());
+  if ((offset < 0 && index == 0) ||
+      (offset > 0 && index + 1 >= list.size())) {
+    return std::move(on_complete).Run(ErrorCode::kInvalid);
+  }
+
+  const auto target_index = offset < 0 ? index - 1 : index + 1;
+  std::swap(list[index], list[target_index]);
   SaveResources(std::move(resources));
   ReloadResourcesAndNotify();
   std::move(on_complete).Run(ErrorCode::kOk);

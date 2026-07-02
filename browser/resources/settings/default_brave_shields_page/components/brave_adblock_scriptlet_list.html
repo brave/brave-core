@@ -21,6 +21,11 @@
         border-bottom: none;
     }
 
+    .scriptlet-actions {
+        display: flex;
+        align-items: center;
+    }
+
     cr-icon-button[disabled] {
         pointer-events: none;
     }
@@ -33,7 +38,17 @@
                 <div>
                     <div class="label">[[item.name]]</div>
                 </div>
-                <div>
+                <div class="scriptlet-actions">
+                    <cr-icon-button id="move-up" on-click="handleMoveUp_" class="size-20" iron-icon="arrow-up"
+                        title="$i18n{adblockCustomScriptletMoveUpButton}"
+                        aria-label="$i18n{adblockCustomScriptletMoveUpButton}"
+                        disabled="[[isMoveUpDisabled_(prefs.brave.ad_block.developer_mode.value, index)]]">
+                    </cr-icon-button>
+                    <cr-icon-button id="move-down" on-click="handleMoveDown_" class="size-20" iron-icon="arrow-down"
+                        title="$i18n{adblockCustomScriptletMoveDownButton}"
+                        aria-label="$i18n{adblockCustomScriptletMoveDownButton}"
+                        disabled="[[isMoveDownDisabled_(prefs.brave.ad_block.developer_mode.value, index, customScriptletsList_)]]">
+                    </cr-icon-button>
                     <cr-icon-button id="edit" on-click="handleEdit_" class="size-20" iron-icon="edit-pencil"
                         disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
                     </cr-icon-button>

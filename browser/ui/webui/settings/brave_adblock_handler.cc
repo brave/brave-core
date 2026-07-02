@@ -106,6 +106,11 @@ void BraveAdBlockHandler::RegisterMessages() {
                           base::Unretained(this)));
 
   web_ui()->RegisterMessageCallback(
+      "brave_adblock.moveCustomScriptlet",
+      base::BindRepeating(&BraveAdBlockHandler::MoveCustomScriptlet,
+                          base::Unretained(this)));
+
+  web_ui()->RegisterMessageCallback(
       "brave_adblock.removeCustomScriptlet",
       base::BindRepeating(&BraveAdBlockHandler::RemoveCustomScriptlet,
                           base::Unretained(this)));
@@ -344,6 +349,19 @@ void BraveAdBlockHandler::UpdateCustomScriptlet(const base::ListValue& args) {
       ->UpdateResource(
           Profile::FromWebUI(web_ui())->GetPrefs(), args[1].GetString(),
           args[2],
+          base::BindOnce(&BraveAdBlockHandler::OnScriptletUpdateStatus,
+                         weak_factory_.GetWeakPtr(), args[0].GetString()));
+}
+
+void BraveAdBlockHandler::MoveCustomScriptlet(const base::ListValue& args) {
+  CHECK(args.size() == 3u && args[0].is_string() && args[1].is_string() &&
+        args[2].is_int());
+
+  g_brave_browser_process->ad_block_service()
+      ->custom_resource_provider()
+      ->MoveResource(
+          Profile::FromWebUI(web_ui())->GetPrefs(), args[1].GetString(),
+          args[2].GetInt(),
           base::BindOnce(&BraveAdBlockHandler::OnScriptletUpdateStatus,
                          weak_factory_.GetWeakPtr(), args[0].GetString()));
 }
