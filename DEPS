@@ -210,7 +210,10 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
-               'src/brave/third_party/node']
+               'src/brave/third_party/node/linux',
+               'src/brave/third_party/node/mac',
+               'src/brave/third_party/node/mac_arm64',
+               'src/brave/third_party/node/win']
   },
 ]
 
