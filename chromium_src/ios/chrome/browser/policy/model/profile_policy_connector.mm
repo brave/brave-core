@@ -33,5 +33,7 @@ ProfilePolicyConnector::GetBraveProfilePolicyProvider() {
 
 void ProfilePolicyConnector::Shutdown() {
   ProfilePolicyConnector::Shutdown_ChromiumImpl();
-  brave_profile_policy_provider_->Shutdown();
+  if (brave_profile_policy_provider_) {
+    brave_profile_policy_provider_->Shutdown();
+  }
 }
