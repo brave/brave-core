@@ -5,6 +5,8 @@
 
 #include "brave/browser/ai_chat/ai_chat_agent_profile_manager.h"
 
+#include <string>
+
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -66,21 +68,31 @@ void AIChatAgentProfileManager::OnProfileAdded(Profile* profile) {
     return;
   }
 
-  // Brave Origin manages AI Chat as a profile-scoped policy that defaults to
-  // disabled for newly-created profiles. The agent profile is only ever opened
-  // from a source profile that already has AI Chat enabled, so ensure AI Chat
-  // is enabled for the agent profile here. This runs every time the agent
+  // Brave Origin manages AI Chat as a profile-scoped policy that might default
+  // to disabled for newly-created profiles. The agent profile is only ever
+  // opened from a source profile that already has AI Chat enabled, so ensure AI
+  // Chat is enabled for the agent profile here. This runs every time the agent
   // profile is loaded - not only when it is first created - so it also repairs
   // agent profiles created before this fix shipped with AI Chat left disabled.
-  // Without it the agent profile's AIChatService would be null, its kChatUI
-  // side panel entry would never be registered, and showing it would crash. The
-  // value is persisted per profile id in local state. When Brave Origin is not
-  // in use this is skipped and the agent profile keeps the unmanaged default
-  // (enabled).
+  // Without it the agent profile's AIChatService would be null. The value is
+  // persisted per profile id in local state.
   if (brave_origin::IsBraveOriginPurchased()) {
-    brave_origin::BraveOriginPolicyManager::GetInstance()->SetPolicyValue(
-        policy::key::kBraveAIChatEnabled, /*value=*/true,
-        brave_origin::GetProfileId(profile->GetPath()));
+    auto* policy_manager =
+        brave_origin::BraveOriginPolicyManager::GetInstance();
+    const std::string profile_id =
+        brave_origin::GetProfileId(profile->GetPath());
+    // Only write when it isn't already enabled. OnProfileAdded runs on every
+    // agent profile load, and SetPolicyValue() always notifies observers (which
+    // triggers a policy refresh), so avoid the redundant notification when the
+    // value is unchanged.
+    // optional<bool> return is for unknown policy keys, not for unset values,
+    // so we can safely assume GetPolicyValue will return the set value or the
+    // default value itself.
+    if (policy_manager->GetPolicyValue(policy::key::kBraveAIChatEnabled,
+                                       profile_id) == false) {
+      policy_manager->SetPolicyValue(policy::key::kBraveAIChatEnabled,
+                                     /*value=*/true, profile_id);
+    }
   }
 
   // The remaining setup only applies the first time the agent profile is
