@@ -108,7 +108,7 @@ public class PlaylistMediaStreamer {
         throw PlaybackError.cannotLoadMedia
       }
 
-      var newItem = await webLoader.load(url: url)
+      let newItem = await webLoader.load(url: url)
       webLoader.removeFromSuperview()
       self.webLoader = nil
 
@@ -143,14 +143,17 @@ public class PlaylistMediaStreamer {
     }
   }
 
-  // Would be nice if AVPlayer could detect the mime-type from the URL for my delegate without a head request..
-  // This function only exists because I can't figure out why videos from URLs don't play unless I explicitly specify a mime-type..
+  // Probes whether `url` can be streamed directly. The mime check is an inexpensive reachability
+  // gate; `loadAssetPlayability` is the authoritative check, since a HEAD/mime success can
+  // still occur on expired or bad/poisoned URLs (e.g. an HTML consent page) AVPlayer can't play.
+  // `defaultOptions` sends the same User-Agent as real playback (some hosts gate on it).
   private func canStreamURL(_ url: URL) async -> Bool {
     guard let mimeType = await PlaylistMediaStreamer.getMimeType(url), !mimeType.isEmpty else {
       return false
     }
 
-    return true
+    let asset = AVURLAsset(url: url, options: AVAsset.defaultOptions)
+    return await PlaylistMediaStreamer.loadAssetPlayability(asset: asset)
   }
 
   // MARK: - Static
