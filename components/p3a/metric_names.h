@@ -177,6 +177,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     {"Brave.VerticalTabs.GroupTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.OpenTabs", MetricConfig{.ephemeral = true}},
     {"Brave.VerticalTabs.PinnedTabs", MetricConfig{.ephemeral = true}},
+    {"Brave.Web3.DappVisited", MetricConfig{.ephemeral = true}},
     {"Brave.WebTorrent.UsageWeekly", MetricConfig{.ephemeral = true}},
 });
 

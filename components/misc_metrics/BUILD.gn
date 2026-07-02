@@ -39,6 +39,8 @@ static_library("misc_metrics") {
     "tab_metrics.cc",
     "tab_metrics.h",
     "uptime_monitor.h",
+    "web3_metrics.cc",
+    "web3_metrics.h",
   ]
 
   if (is_android) {
@@ -65,6 +67,7 @@ static_library("misc_metrics") {
     "//components/language/core/common",
     "//components/prefs",
     "//components/search_engines",
+    "//mojo/public/cpp/bindings",
     "//url",
   ]
 

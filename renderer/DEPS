@@ -17,6 +17,7 @@ include_rules += [
   "+brave/components/brave_vpn/common/buildflags/buildflags.h",
   "+brave/components/brave_wallet/common",
   "+brave/components/cosmetic_filters/renderer",
+  "+brave/components/misc_metrics/renderer",
   "+brave/components/playlist/core/common",
   "+brave/components/safe_builtins/renderer/safe_builtins.h",
   "+brave/components/script_injector/renderer",
