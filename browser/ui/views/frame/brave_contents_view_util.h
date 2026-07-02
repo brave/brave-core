@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "brave/browser/ui/views/view_outline.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
 
 class Browser;
@@ -18,17 +17,19 @@ namespace tabs {
 class TabInterface;
 }  // namespace tabs
 
+namespace ui {
+class ColorProvider;
+}  // namespace ui
+
 namespace views {
-class View;
+class Border;
 }  // namespace views
 
 class BraveContentsViewUtil {
  public:
-  // Creates a 1px outline matching |corner_radii| (typically from
-  // GetRoundedCornersForContentsView for the main contents container). The
-  // outline appearance (color and width) is centralized in the .cc file.
-  static std::unique_ptr<ViewOutline> CreateOutline(
-      views::View* view,
+  // Creates a 1px rounded-rect outline border matching |corner_radii|.
+  static std::unique_ptr<views::Border> CreateContentsOutlineBorder(
+      const ui::ColorProvider* color_provider,
       const gfx::RoundedCornersF& corner_radii);
 
   // If rounded corners are enabled, returns the additional margin required to

@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_capture_border_view.h"
@@ -123,6 +124,19 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
   UpdateBorderRoundedCorners();
 
   if (!is_in_split && !for_web_panel_) {
+    // Not in split view: draw a subtle 1px outline instead of the
+    // active/inactive split borders below. GetCornerRadius() returns all-zero
+    // corners whenever rounded corners aren't applicable here (feature
+    // disabled or fullscreen-for-tab), which doubles as the signal for
+    // whether to draw the outline at all.
+    const auto outline_corner_radius(
+        GetCornerRadius(kRoundedCornersContentsOutlineThickness));
+    if (outline_corner_radius.IsEmpty()) {
+      SetBorder(nullptr);
+    } else {
+      SetBorder(BraveContentsViewUtil::CreateContentsOutlineBorder(
+          GetColorProvider(), outline_corner_radius));
+    }
     return;
   }
 
@@ -136,7 +150,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
 
   // Draw active/inactive outlines around the contents areas and updates mini
   // toolbar visibility.
-  const auto border_corner_radius(GetCornerRadius(true));
+  const auto border_corner_radius(GetCornerRadius(kBorderThickness));
   if (is_active) {
     SetBorder(views::CreateBorderPainter(
         views::Painter::CreateSolidRoundRectPainterWithVariableRadius(
@@ -158,7 +172,7 @@ void BraveContentsContainerView::UpdateBorderAndOverlay(bool is_in_split,
 }
 
 void BraveContentsContainerView::UpdateBorderRoundedCorners() {
-  const auto contents_corner_radius(GetCornerRadius(false));
+  const auto contents_corner_radius(GetCornerRadius(/*border_thickness=*/0));
 
   contents_view_->layer()->SetRoundedCornerRadius(contents_corner_radius);
   contents_view_->holder()->SetCornerRadii(contents_corner_radius);
@@ -223,7 +237,7 @@ void BraveContentsContainerView::OnReaderModeToolbarActivate(
 #endif
 
 gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
-    bool for_border) const {
+    int border_thickness) const {
   auto* exclusive_access_manager =
       browser_view_->browser()->GetFeatures().exclusive_access_manager();
   if (exclusive_access_manager &&
@@ -244,11 +258,11 @@ gfx::RoundedCornersF BraveContentsContainerView::GetCornerRadius(
   auto rounded_corners =
       BraveContentsViewUtil::GetRoundedCornersForContentsView(
           browser_view_->browser(), tab);
-  if (for_border) {
-    return {rounded_corners.upper_left() + kBorderThickness,
-            rounded_corners.upper_right() + kBorderThickness,
-            rounded_corners.lower_right() + kBorderThickness,
-            rounded_corners.lower_left() + kBorderThickness};
+  if (border_thickness) {
+    return {rounded_corners.upper_left() + border_thickness,
+            rounded_corners.upper_right() + border_thickness,
+            rounded_corners.lower_right() + border_thickness,
+            rounded_corners.lower_left() + border_thickness};
   }
 
   return rounded_corners;

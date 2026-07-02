@@ -3,12 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at http://mozilla.org/MPL/2.0/.
 
+#include "chrome/browser/ui/views/side_panel/side_panel.h"
+
 #include "base/i18n/rtl.h"
 #include "brave/browser/ui/views/side_panel/side_panel_utils.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "ui/color/color_provider.h"
 #include "ui/compositor/layer.h"
+#include "ui/gfx/geometry/insets.h"
+#include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/border.h"
+#include "ui/views/painter.h"
 
 // Rename upstream methods so we can provide thin wrappers that reapply
 // rounded-corner and border state.
@@ -52,6 +59,65 @@ void UpdateContentWrapperChildCorners(views::View* content_parent_view,
   }
 }
 
+// Paints a 1px rounded outline that wraps the header (if any) and content
+// together.
+class SidePanelOutlineBorder : public views::Border {
+ public:
+  SidePanelOutlineBorder(const gfx::Insets& layout_insets,
+                         const gfx::Insets& outline_insets,
+                         const gfx::RoundedCornersF& shape_corner_radii,
+                         const ui::ColorProvider* color_provider)
+      : layout_insets_(layout_insets),
+        outline_insets_(outline_insets),
+        outline_corner_radii_(shape_corner_radii.upper_left() +
+                                  kRoundedCornersContentsOutlineThickness,
+                              shape_corner_radii.upper_right() +
+                                  kRoundedCornersContentsOutlineThickness,
+                              shape_corner_radii.lower_right() +
+                                  kRoundedCornersContentsOutlineThickness,
+                              shape_corner_radii.lower_left() +
+                                  kRoundedCornersContentsOutlineThickness) {
+    RebuildPainter(color_provider);
+  }
+  SidePanelOutlineBorder(const SidePanelOutlineBorder&) = delete;
+  SidePanelOutlineBorder& operator=(const SidePanelOutlineBorder&) = delete;
+  ~SidePanelOutlineBorder() override = default;
+
+  // views::Border:
+  void Paint(const views::View& view, gfx::Canvas* canvas) override {
+    if (!painter_) {
+      return;
+    }
+    gfx::Rect outline_bounds = view.GetLocalBounds();
+    outline_bounds.Inset(outline_insets_ -
+                         gfx::Insets(kRoundedCornersContentsOutlineThickness));
+    views::Painter::PaintPainterAt(canvas, painter_.get(), outline_bounds);
+  }
+  gfx::Insets GetInsets() const override { return layout_insets_; }
+  gfx::Size GetMinimumSize() const override { return gfx::Size(); }
+  void OnViewThemeChanged(views::View* view) override {
+    RebuildPainter(view->GetColorProvider());
+  }
+
+ private:
+  void RebuildPainter(const ui::ColorProvider* color_provider) {
+    if (!color_provider) {
+      return;
+    }
+    painter_ = views::Painter::CreateRoundRectWith1PxBorderPainter(
+        color_provider->GetColor(kColorToolbar),
+        color_provider->GetColor(
+            nala::kColorDesktopbrowserToolbarButtonOutline),
+        outline_corner_radii_, SkBlendMode::kSrc, /*antialias=*/true,
+        /*should_border_scale=*/true);
+  }
+
+  const gfx::Insets layout_insets_;
+  const gfx::Insets outline_insets_;
+  const gfx::RoundedCornersF outline_corner_radii_;
+  std::unique_ptr<views::Painter> painter_;
+};
+
 }  // namespace
 
 void SidePanel::SetResizeArea(std::unique_ptr<views::View> resize_area) {
@@ -93,13 +159,36 @@ void SidePanel::UpdateBorder() {
   // outer-side gap for visual separation from the window chrome.
   const bool is_sidebar_leading = (IsRightAligned() == base::i18n::IsRTL());
   if (rounded_border_enabled_) {
+    // Reserve an extra |kRoundedCornersContentsOutlineThickness| on the top and
+    // inner-side edges -- where the header/content would otherwise be flush
+    // with the panel edge
+    // -- so the outline painted below this has room to show on all four
+    // sides.
+    insets.set_top(insets.top() + kRoundedCornersContentsOutlineThickness);
     insets.set_bottom(kRoundedCornersContentsViewMargin);
     if (is_sidebar_leading) {
       insets.set_left(kRoundedCornersContentsViewMargin);
+      insets.set_right(kRoundedCornersContentsOutlineThickness);
     } else {
       insets.set_right(kRoundedCornersContentsViewMargin);
+      insets.set_left(kRoundedCornersContentsOutlineThickness);
     }
-    SetBorder(views::CreateEmptyBorder(insets));
+
+    // Unlike |insets| (used for content layout), the outline itself should
+    // wrap the header and content together as one shape, so its top inset
+    // never includes the header's height -- only the slim outline gap.
+    gfx::Insets outline_insets = insets;
+    outline_insets.set_top(kRoundedCornersContentsOutlineThickness);
+
+    if (auto* color_provider = GetColorProvider()) {
+      SetBorder(std::make_unique<SidePanelOutlineBorder>(
+          insets, outline_insets,
+          brave::GetPanelContentsRoundedCorners(
+              browser_view_, /*flatten_top_for_header=*/false),
+          color_provider));
+    } else {
+      SetBorder(views::CreateEmptyBorder(insets));
+    }
     return;
   }
 
