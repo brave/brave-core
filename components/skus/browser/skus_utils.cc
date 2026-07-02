@@ -33,6 +33,10 @@ std::string GetDefaultEnvironment() {
 #endif
 }
 
+std::string GetVpnProductPrefix() {
+  return kProductVPN;
+}
+
 std::string GetDomain(const std::string& prefix,
                       const std::string& environment) {
   DCHECK(prefix == kProductTalk || prefix == kProductVPN);

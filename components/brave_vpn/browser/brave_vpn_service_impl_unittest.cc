@@ -575,7 +575,7 @@ class BraveVpnServiceImplV1Test : public testing::Test {
 
   std::string SetupTestingStoreForEnv(const std::string& env,
                                       bool active_subscription = true) {
-    std::string domain = skus::GetDomain("vpn", env);
+    std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
     auto testing_payload = GenerateTestingCreds(domain, active_subscription);
     base::DictValue state;
     state.Set("skus:" + env, testing_payload);
@@ -631,7 +631,7 @@ TEST_F(BraveVpnServiceImplV1Test, ResponseSanitizingTest) {
 #if !BUILDFLAG(IS_ANDROID)
 TEST_F(BraveVpnServiceImplV1Test, SkusCredentialCacheTest) {
   std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
+  std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
 
   SetPurchasedState(env, PurchasedState::LOADING);
   OnCredentialSummary(
@@ -654,7 +654,7 @@ TEST_F(BraveVpnServiceImplV1Test, SkusCredentialCacheTest) {
 
 TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateSessionExpiredTest) {
   std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
+  std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
 
   // Treat as not purchased when active is false but there is remained
   // credentials. In this situation, user should activate vpn account.
@@ -704,7 +704,7 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateSessionExpiredTest) {
 
 TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateOutOfCredentialsTest) {
   std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
+  std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
 
   // Set an expiry in the future - this would be when the last redeemed
   // credential (whether it was successful  or not) expires.
@@ -720,7 +720,7 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateOutOfCredentialsTest) {
 
 TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateTest) {
   std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
+  std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
   // Service try loading
   SetPurchasedState(env, PurchasedState::LOADING);
   // Treat not purchased When empty credential string received.
@@ -954,7 +954,8 @@ TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateForAnotherEnvFailed) {
 
   observer.ResetStates();
   SetInterceptorResponse("");
-  std::string staging = skus::GetDomain("vpn", skus::kEnvStaging);
+  std::string staging =
+      skus::GetDomain(skus::GetVpnProductPrefix(), skus::kEnvStaging);
   EXPECT_EQ(GetCurrentEnvironment(), skus::GetDefaultEnvironment());
   EXPECT_FALSE(observer.GetPurchasedState().has_value());
   // no order found for staging.
@@ -1092,7 +1093,7 @@ TEST_F(BraveVpnServiceImplV1Test, SetPurchasedState) {
 
 TEST_F(BraveVpnServiceImplV1Test, LoadPurchasedStateNotifications) {
   std::string env = skus::GetDefaultEnvironment();
-  std::string domain = skus::GetDomain("vpn", env);
+  std::string domain = skus::GetDomain(skus::GetVpnProductPrefix(), env);
   TestBraveVpnServiceObserver observer;
   AddObserver(observer.GetReceiver());
   EXPECT_EQ(PurchasedState::NOT_PURCHASED, GetPurchasedInfoSync());
