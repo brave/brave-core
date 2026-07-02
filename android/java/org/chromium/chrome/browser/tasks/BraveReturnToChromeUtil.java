@@ -13,6 +13,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.IntentUtils;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ChromeInactivityTracker;
 import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
@@ -20,6 +21,8 @@ import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tabmodel.TabCreator;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelSelector;
+import org.chromium.components.browser_ui.media.MediaNotificationController;
+import org.chromium.components.browser_ui.media.MediaNotificationManager;
 import org.chromium.url.GURL;
 
 @NullMarked
@@ -116,10 +119,26 @@ public final class BraveReturnToChromeUtil {
                 || inactivityTracker == null) {
             return false;
         }
-        // Check if app has been backgrounded for ≥ threshold
+        // Show the NTP only if the app has been backgrounded for ≥ threshold and no media is
+        // playing in the background — background playback means the user is not truly idle.
         long timeSinceLastBackgroundedMs = inactivityTracker.getTimeSinceLastBackgroundedMs();
 
-        return timeSinceLastBackgroundedMs >= inactivityThresholdMs;
+        return timeSinceLastBackgroundedMs >= inactivityThresholdMs && !isBackgroundMediaPlaying();
+    }
+
+    /**
+     * Returns whether media is actively playing in the background. Used to avoid replacing the
+     * user's current tab with a fresh NTP on return from idle while audio/video is playing, since
+     * background playback means the user is not truly idle.
+     */
+    // Reads MediaNotificationController.mMediaNotificationInfo, which is @VisibleForTesting.
+    @SuppressWarnings("VisibleForTests")
+    private static boolean isBackgroundMediaPlaying() {
+        MediaNotificationController controller =
+                MediaNotificationManager.getController(R.id.media_playback_notification);
+        return controller != null
+                && controller.mMediaNotificationInfo != null
+                && !controller.mMediaNotificationInfo.isPaused;
     }
 
     /**
