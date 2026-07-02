@@ -514,6 +514,119 @@ TEST(EthDataParser, GetTransactionInfoFromDataNestedSetApprovalForAll) {
   EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
 }
 
+TEST(EthDataParser,
+     GetTransactionInfoFromDataNestedSetApprovalForAllMulticallVariants) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+
+  auto append_word = [](std::vector<uint8_t>& out, uint64_t value) {
+    std::vector<uint8_t> word(32, 0);
+    for (int i = 0; i < 8; ++i) {
+      word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+    }
+    out.insert(out.end(), word.begin(), word.end());
+  };
+
+  auto encode_calls_array =
+      [&](const std::vector<std::vector<uint8_t>>& calls) {
+        std::vector<uint8_t> out;
+        append_word(out, calls.size());
+        size_t running = calls.size() * 32;
+        for (const auto& call : calls) {
+          append_word(out, running);
+          running += 32 + ((call.size() + 31) / 32) * 32;
+        }
+        for (const auto& call : calls) {
+          append_word(out, call.size());
+          out.insert(out.end(), call.begin(), call.end());
+          out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(),
+                     0);
+        }
+        return out;
+      };
+
+  // multicall(uint256 deadline, bytes[] data)
+  auto encode_multicall_with_deadline =
+      [&](uint64_t deadline, const std::vector<std::vector<uint8_t>>& calls) {
+        std::vector<uint8_t> out = {0x5a, 0xe4, 0x01, 0xdc};
+        append_word(out, deadline);
+        append_word(out, 0x40);
+        auto arr = encode_calls_array(calls);
+        out.insert(out.end(), arr.begin(), arr.end());
+        return out;
+      };
+
+  // multicall(bytes32 previousBlockhash, bytes[] data)
+  auto encode_multicall_with_previous_block_hash =
+      [&](const std::vector<std::vector<uint8_t>>& calls) {
+        std::vector<uint8_t> out = {0x1f, 0x04, 0x64, 0xd1};
+        out.insert(out.end(), 32, 0xab);
+        append_word(out, 0x40);
+        auto arr = encode_calls_array(calls);
+        out.insert(out.end(), arr.begin(), arr.end());
+        return out;
+      };
+
+  std::vector<uint8_t> grant;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa22cb465"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000001",
+      &grant));
+  std::vector<uint8_t> erc20_transfer;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &erc20_transfer));
+
+  // Grant, deadline variant.
+  auto tx_info = GetTransactionInfoFromData(
+      encode_multicall_with_deadline(0x1234, {grant}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // Grant, previous-blockhash variant.
+  tx_info = GetTransactionInfoFromData(
+      encode_multicall_with_previous_block_hash({grant}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], "0xbfb30a082f650c2a15d0632f0e87be4f8e64460f");
+  EXPECT_EQ(tx_args[1], "0x1");
+
+  // No grant, deadline variant.
+  tx_info = GetTransactionInfoFromData(
+      encode_multicall_with_deadline(0x1234, {erc20_transfer}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+
+  // No grant, previous-blockhash variant.
+  tx_info = GetTransactionInfoFromData(
+      encode_multicall_with_previous_block_hash({erc20_transfer}));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  EXPECT_EQ(tx_type, mojom::TransactionType::Other);
+
+  // Truncated deadline variant fails closed.
+  std::vector<uint8_t> truncated_deadline = {0x5a, 0xe4, 0x01, 0xdc};
+  append_word(truncated_deadline, 0x1234);
+  EXPECT_FALSE(GetTransactionInfoFromData(truncated_deadline));
+
+  // Truncated previous-blockhash variant fails closed.
+  std::vector<uint8_t> truncated_block_hash = {0x1f, 0x04, 0x64, 0xd1};
+  truncated_block_hash.insert(truncated_block_hash.end(), 32, 0xab);
+  EXPECT_FALSE(GetTransactionInfoFromData(truncated_block_hash));
+}
+
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
   std::vector<uint8_t> data;
   ASSERT_TRUE(PrefixedHexStringToBytes(
