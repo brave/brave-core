@@ -82,6 +82,7 @@ android_library("qrreader_java") {
 
 # Brave-specific resources.
 android_resources("java_resources") {
+  resource_overlay = true
   sources = [
     "java/brave-res/anim/fast_fade_in.xml",
     "java/brave-res/anim/slide_in_bottom.xml",
@@ -217,7 +218,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/brave_news_settings_search_bg.xml",
     "java/brave-res/drawable/brave_news_settings_unfollow_bg.xml",
     "java/brave-res/drawable/brave_notification_permission_rationale_dialog_header.xml",
-    "java/brave-res/drawable/brave_privacy_tabs_unlock_image.xml",
     "java/brave-res/drawable/brave_rating_emoji_bg.xml",
     "java/brave-res/drawable/brave_rating_rate_now_bg.xml",
     "java/brave-res/drawable/brave_rewards_circle.xml",
@@ -291,6 +291,7 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_brave_smiley_happy.xml",
     "java/brave-res/drawable/ic_brave_smiley_sad.xml",
     "java/brave-res/drawable/ic_brave_vpn_graphic.xml",
+    "java/brave-res/drawable/ic_brave_wordmark.xml",
     "java/brave-res/drawable/ic_btc_color.xml",
     "java/brave-res/drawable/ic_cancel_filled.xml",
     "java/brave-res/drawable/ic_carat_down.xml",
@@ -576,6 +577,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_add_token.xml",
     "java/brave-res/layout/fragment_backup_wallet.xml",
     "java/brave-res/layout/fragment_brave_bookmark_import_export_dialog.xml",
+    "java/brave-res/layout/fragment_brave_browser_lock_settings.xml",
     "java/brave-res/layout/fragment_brave_location_bar_qr_dialog.xml",
     "java/brave-res/layout/fragment_brave_multiwindow_dialog.xml",
     "java/brave-res/layout/fragment_brave_vpn_always_on_error_dialog.xml",
@@ -616,6 +618,7 @@ android_resources("java_resources") {
     "java/brave-res/layout/fragment_verify_recovery_phrase.xml",
     "java/brave-res/layout/highlight_layout.xml",
     "java/brave-res/layout/icon_row_menu_footer.xml",
+    "java/brave-res/layout/incognito_reauth_view.xml",
     "java/brave-res/layout/item_create_account.xml",
     "java/brave-res/layout/item_custom_filter.xml",
     "java/brave-res/layout/item_filter_list.xml",

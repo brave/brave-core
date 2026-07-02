@@ -37,6 +37,8 @@ import org.chromium.chrome.browser.brave_origin.BraveOriginSubscriptionPrefs;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletPolicy;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.homepage.settings.BraveHomepageSettings;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthManager;
+import org.chromium.chrome.browser.incognito.reauth.IncognitoReauthSettingUtils;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.notifications.permissions.BraveNotificationPermissionRationaleDialog;
@@ -116,6 +118,7 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
     private static final String PREF_RATE_BRAVE = "rate_brave";
     private static final String PREF_BRAVE_STATS = "brave_stats";
     private static final String PREF_DOWNLOADS = "brave_downloads";
+    private static final String PREF_BROWSER_LOCK = "brave_browser_lock";
     private static final String PREF_HOME_SCREEN_WIDGET = "home_screen_widget";
     private static final String PREF_SAFETY_CHECK = "safety_check";
     private static final String PREF_TOOLBAR_SHORTCUT = "toolbar_shortcut";
@@ -396,6 +399,13 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
             setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
         }
 
+        if (IncognitoReauthManager.isIncognitoReauthFeatureAvailable()) {
+            setPreferenceOrder(PREF_BROWSER_LOCK, ++generalOrder);
+        } else {
+            removePreferenceIfPresent(PREF_BROWSER_LOCK);
+        }
+        setPreferenceOrder(PREF_CLOSING_ALL_TABS_CLOSES_BRAVE, ++generalOrder);
+
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ORIGIN)) {
             setPreferenceOrder(PREF_BRAVE_ORIGIN, ++generalOrder);
         } else {
@@ -530,6 +540,28 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
 
     private void updateSummaries() {
         updateSummary(PREF_BRAVE_STATS, BraveStatsPreferences.getPreferenceSummary());
+
+        Preference browserLockPref = findPreference(PREF_BROWSER_LOCK);
+        if (browserLockPref != null && getActivity() != null) {
+            if (!IncognitoReauthSettingUtils.isDeviceScreenLockEnabled()) {
+                // No screen lock: show the upstream "Turn on screen lock in Android settings"
+                // link text as the summary and redirect the tap directly to OS security settings
+                // so the user isn't sent into a useless sub-screen.
+                browserLockPref.setSummary(
+                        IncognitoReauthSettingUtils.getSummaryString(requireActivity()));
+                browserLockPref.setOnPreferenceClickListener(
+                        pref -> {
+                            requireContext()
+                                    .startActivity(
+                                            IncognitoReauthSettingUtils
+                                                    .getSystemSecuritySettingsIntent());
+                            return true;
+                        });
+            } else {
+                browserLockPref.setSummary(R.string.brave_browser_lock_screen_description);
+                browserLockPref.setOnPreferenceClickListener(null);
+            }
+        }
     }
 
     private void overrideChromiumPreferences() {
