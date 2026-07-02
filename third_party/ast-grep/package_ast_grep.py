@@ -3,13 +3,12 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Build ast-grep and package `third_party/ast-grep/` into a versioned tarball.
+"""Build ast-grep and package its per-platform tree into a versioned tarball.
 
-Runs the same build as `build_ast_grep.py`, then archives the *contents* of
-`third_party/ast-grep/` (the built binary tree) into a `.tar.gz` whose name
-carries the ast-grep version and host platform:
+Runs the same build as `build_ast_grep.py`, then archives the contents of this
+host's `third_party/ast-grep/ast-grep-<os>/` tree into a tar.gz named:
 
-    ast-grep-<version>-<platform>.tar.gz
+    ast-grep-<version>-<platform>.tar.gz  (members: bin/ast-grep, ...)
 """
 
 from __future__ import annotations
@@ -41,7 +40,7 @@ def _package_name() -> str:
 
 
 def _create_archive(out_dir: Path) -> Path:
-    """Archive this host's `ast-grep-<os>/` binary tree into *out_dir*.
+    """Archive the *contents* of this host's `ast-grep-<os>/` tree into *out_dir*.
 
     Raises:
         RuntimeError: If the ast-grep build output directory is missing.
@@ -53,9 +52,10 @@ def _create_archive(out_dir: Path) -> Path:
     out_dir.mkdir(parents=True, exist_ok=True)
     archive = out_dir / _package_name()
 
-    logging.info('Packaging %s -> %s', source, archive)
+    logging.info('Packaging contents of %s -> %s', source, archive)
     with tarfile.open(archive, 'w:gz') as tar:
-        tar.add(source, arcname=source.name)
+        for child in sorted(source.iterdir()):
+            tar.add(child, arcname=child.name)
     return archive
 
 

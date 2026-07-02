@@ -8,6 +8,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+from recipe_properties import Property
+
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
@@ -19,23 +21,19 @@ DEPS = [
 class InputProperties:
     brave_subrevision: int
     chromium_ref: str
-    git_cache: str | None = None
+    git_cache: str | None = Property(default=None, from_environ='GIT_CACHE')
 
 
 PROPERTIES = InputProperties
 
 
 def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
-    if properties.git_cache is not None:
-        api.chromium_checkout.set_git_cache(properties.git_cache or None)
-
     chromium_src = api.chromium_checkout.ensure_checkout(
-        api.path.chromium_src, ref=properties.chromium_ref)
+        ref=properties.chromium_ref, git_cache=properties.git_cache)
 
-    brave_core_root = api.brave_core_shallow.deploy(api.path.brave_core,
-                                                    'tools/cr/toolchains')
+    brave_core_root = api.brave_core_shallow.deploy('tools/cr/toolchains')
 
-    vpython3 = api.depot_tools.vpython3(chromium_src)
+    vpython3 = api.depot_tools.vpython3()
     api.step('build rust toolchain', [
         vpython3,
         brave_core_root / 'tools/cr/toolchains/build_rust_toolchain.py',
