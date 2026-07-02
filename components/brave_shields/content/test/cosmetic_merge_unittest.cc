@@ -61,14 +61,14 @@ TEST_F(CosmeticResourceMergeTest, MergeTwoEmptyResources) {
   const std::string a = EMPTY_RESOURCES;
   const std::string b = EMPTY_RESOURCES;
 
-  // Same as EMPTY_RESOURCES, but with an additional newline in the
+  // Same as EMPTY_RESOURCES, but with additional scopes in the
   // injected_script
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
       "\"procedural_actions\": [], "
       "\"exceptions\": [], "
-      "\"injected_script\": \"\n\", "
+      "\"injected_script\": \"{\n\n}\n{\n\n}\", "
       "\"generichide\": false"
       "}";
 
@@ -79,14 +79,14 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyIntoNonEmpty) {
   const std::string a = NONEMPTY_RESOURCES;
   const std::string b = EMPTY_RESOURCES;
 
-  // Same as a, but with an additional newline at the end of the
+  // Same as a, but with additional scopes in the
   // injected_script
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"], "
       "\"procedural_actions\": [\"c\", \"d\"], "
       "\"exceptions\": [\"e\", \"f\"], "
-      "\"injected_script\": \"console.log('g')\n\", "
+      "\"injected_script\": \"{\nconsole.log('g')\n}\n{\n\n}\", "
       "\"generichide\": false"
       "}";
 
@@ -97,14 +97,14 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoEmpty) {
   const std::string a = EMPTY_RESOURCES;
   const std::string b = NONEMPTY_RESOURCES;
 
-  // Same as b, but with an additional newline at the beginning of the
+  // Same as b, but with additional scopes in the
   // injected_script
   const std::string expected =
       "{"
       "\"hide_selectors\": [\"a\", \"b\"],"
       "\"procedural_actions\": [\"c\", \"d\"], "
       "\"exceptions\": [\"e\", \"f\"], "
-      "\"injected_script\": \"\nconsole.log('g')\", "
+      "\"injected_script\": \"{\n\n}\n{\nconsole.log('g')\n}\", "
       "\"generichide\": false"
       "}";
 
@@ -127,7 +127,8 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyIntoNonEmpty) {
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
       "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
-      "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
+      "\"injected_script\": "
+      "\"{\nconsole.log('g')\n}\n{\nconsole.log('n')\n}\", "
       "\"generichide\": false"
       "}";
 
@@ -138,14 +139,14 @@ TEST_F(CosmeticResourceMergeTest, MergeEmptyForceHide) {
   const std::string a = EMPTY_RESOURCES;
   const std::string b = EMPTY_RESOURCES;
 
-  // Same as EMPTY_RESOURCES, but with an additional newline in the
+  // Same as EMPTY_RESOURCES, but with additonal scopes in the
   // injected_script and a new empty `force_hide_selectors` array
   const std::string expected =
       "{"
       "\"hide_selectors\": [], "
       "\"procedural_actions\": [], "
       "\"exceptions\": [], "
-      "\"injected_script\": \"\n\","
+      "\"injected_script\": \"{\n\n}\n{\n\n}\","
       "\"generichide\": false, "
       "\"force_hide_selectors\": []"
       "}";
@@ -169,7 +170,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonEmptyForceHide) {
       "\"hide_selectors\": [\"a\", \"b\"], "
       "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
-      "\"injected_script\": \"console.log('g')\nconsole.log('n')\","
+      "\"injected_script\": \"{\nconsole.log('g')\n}\n{\nconsole.log('n')\n}\","
       "\"generichide\": false, "
       "\"force_hide_selectors\": [\"h\", \"i\"]"
       "}";
@@ -193,7 +194,7 @@ TEST_F(CosmeticResourceMergeTest, MergeNonGenerichideIntoGenerichide) {
       "\"hide_selectors\": [], "
       "\"procedural_actions\": [], "
       "\"exceptions\": [], "
-      "\"injected_script\": \"\n\n\", "
+      "\"injected_script\": \"{\n\n\n}\n{\n\n}\", "
       "\"generichide\": true"
       "}";
 
@@ -216,7 +217,8 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoNonGenerichide) {
       "\"hide_selectors\": [\"a\", \"b\", \"h\", \"i\"], "
       "\"procedural_actions\": [\"c\", \"d\", \"j\", \"k\"], "
       "\"exceptions\": [\"e\", \"f\", \"l\", \"m\"], "
-      "\"injected_script\": \"console.log('g')\nconsole.log('n')\", "
+      "\"injected_script\": "
+      "\"{\nconsole.log('g')\n}\n{\nconsole.log('n')\n}\", "
       "\"generichide\": true"
       "}";
 
@@ -238,7 +240,7 @@ TEST_F(CosmeticResourceMergeTest, MergeGenerichideIntoGenerichide) {
       "\"hide_selectors\": [], "
       "\"procedural_actions\": [], "
       "\"exceptions\": [], "
-      "\"injected_script\": \"\n\", "
+      "\"injected_script\": \"{\n\n}\n{\n\n}\", "
       "\"generichide\": true"
       "}";
 
