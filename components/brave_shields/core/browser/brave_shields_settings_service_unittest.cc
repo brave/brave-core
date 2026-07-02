@@ -71,53 +71,40 @@ class BraveShieldsSettingsServiceTest : public testing::Test {
 TEST_F(BraveShieldsSettingsServiceTest, BraveShieldsEnabled) {
   // verify the initial values
   EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(GetHostContentSettingsMap(),
-                                                    kTestUrl));
 
   brave_shields_settings()->SetBraveShieldsEnabled(false, kTestUrl);
   EXPECT_FALSE(brave_shields_settings()->GetBraveShieldsEnabled(kTestUrl));
-  // verify underlying value GetBraveShieldsEnabled is updated
-  EXPECT_FALSE(brave_shields::GetBraveShieldsEnabled(
-      GetHostContentSettingsMap(), kTestUrl));
 
   // verify other urls unchanged
   EXPECT_TRUE(brave_shields_settings()->GetBraveShieldsEnabled(
       GURL("https://example.com")));
-  EXPECT_TRUE(brave_shields::GetBraveShieldsEnabled(
-      GetHostContentSettingsMap(), GURL("https://example.com")));
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, AdBlockMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetAdBlockMode(kTestUrl),
             AdBlockMode::STANDARD);
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), kTestUrl),
-      brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(kTestUrl),
+            brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(kTestUrl),
             brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields_settings()->SetAdBlockMode(AdBlockMode::AGGRESSIVE, kTestUrl);
   EXPECT_EQ(brave_shields_settings()->GetAdBlockMode(kTestUrl),
             AdBlockMode::AGGRESSIVE);
   // verify underlying AdControlType & CosmeticFilteringControlType is updated
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), kTestUrl),
-      brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(kTestUrl),
+            brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(kTestUrl),
             brave_shields::ControlType::BLOCK);
 
   brave_shields_settings()->SetAdBlockMode(AdBlockMode::ALLOW, kTestUrl);
   EXPECT_EQ(brave_shields_settings()->GetAdBlockMode(kTestUrl),
             AdBlockMode::ALLOW);
   // verify underlying AdControlType & CosmeticFilteringControlType is updated
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), kTestUrl),
-      brave_shields::ControlType::ALLOW);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(kTestUrl),
+            brave_shields::ControlType::ALLOW);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(kTestUrl),
             brave_shields::ControlType::ALLOW);
 
   // verify other urls remain unchanged
@@ -133,44 +120,38 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultAdBlockMode) {
   // verify the initial default values
   EXPECT_EQ(brave_shields_settings()->GetDefaultAdBlockMode(),
             AdBlockMode::STANDARD);
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), GURL()),
-      brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(GURL()),
+            brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(GURL()),
             brave_shields::ControlType::BLOCK_THIRD_PARTY);
 
   brave_shields_settings()->SetDefaultAdBlockMode(AdBlockMode::AGGRESSIVE);
   EXPECT_EQ(brave_shields_settings()->GetDefaultAdBlockMode(),
             AdBlockMode::AGGRESSIVE);
   // verify underlying AdControlType & CosmeticFilteringControlType is updated
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), GURL()),
-      brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(GURL()),
+            brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(GURL()),
             brave_shields::ControlType::BLOCK);
   // verify defaults apply to all
   EXPECT_EQ(
       brave_shields_settings()->GetAdBlockMode(GURL("https://example.com")),
       AdBlockMode::AGGRESSIVE);
   // verify underlying AdControlType & CosmeticFilteringControlType is updated
-  EXPECT_EQ(brave_shields::GetAdControlType(GetHostContentSettingsMap(),
-                                            GURL("https://example.com")),
-            brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), GURL("https://example.com")),
+  EXPECT_EQ(
+      brave_shields_settings()->GetAdControlType(GURL("https://example.com")),
+      brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(
+                GURL("https://example.com")),
             brave_shields::ControlType::BLOCK);
 
   // verify explict set adblock mode is unchanged
   EXPECT_EQ(brave_shields_settings()->GetAdBlockMode(kTestUrl),
             AdBlockMode::STANDARD);
   // verify underlying AdControlType & CosmeticFilteringControlType is unchanged
-  EXPECT_EQ(
-      brave_shields::GetAdControlType(GetHostContentSettingsMap(), kTestUrl),
-      brave_shields::ControlType::BLOCK);
-  EXPECT_EQ(brave_shields::GetCosmeticFilteringControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetAdControlType(kTestUrl),
+            brave_shields::ControlType::BLOCK);
+  EXPECT_EQ(brave_shields_settings()->GetCosmeticFilteringControlType(kTestUrl),
             brave_shields::ControlType::BLOCK_THIRD_PARTY);
 }
 
@@ -178,8 +159,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   // verify the initial values
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 
   brave_shields_settings()->SetFingerprintMode(FingerprintMode::ALLOW_MODE,
@@ -187,8 +167,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::ALLOW_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::ALLOW);
 
   // iOS does not support FingerprintMode::STRICT_MODE
@@ -200,8 +179,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 
   // enable kBraveShowStrictFingerprintingMode flag
@@ -214,8 +192,7 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STRICT_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::BLOCK);
 #endif
 
@@ -224,8 +201,8 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintMode) {
       brave_shields_settings()->GetFingerprintMode(GURL("https://example.com")),
       FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is unchanged
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL("https://example.com")),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(
+                GURL("https://example.com")),
             brave_shields::ControlType::DEFAULT);
 }
 
@@ -237,8 +214,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   // verify the initial default values
   EXPECT_EQ(brave_shields_settings()->GetDefaultFingerprintMode(),
             FingerprintMode::STANDARD_MODE);
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
             brave_shields::ControlType::DEFAULT);
 
   brave_shields_settings()->SetDefaultFingerprintMode(
@@ -246,8 +222,7 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetDefaultFingerprintMode(),
             FingerprintMode::ALLOW_MODE);
   // verify underlying FingerprintingControlType is updated
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(GURL()),
             brave_shields::ControlType::ALLOW);
 
   EXPECT_EQ(
@@ -258,31 +233,28 @@ TEST_F(BraveShieldsSettingsServiceTest, DefaultFingerprintMode) {
   EXPECT_EQ(brave_shields_settings()->GetFingerprintMode(kTestUrl),
             FingerprintMode::STANDARD_MODE);
   // verify underlying FingerprintingControlType is unchanged
-  EXPECT_EQ(brave_shields::GetFingerprintingControlType(
-                GetHostContentSettingsMap(), kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetFingerprintingControlType(kTestUrl),
             brave_shields::ControlType::DEFAULT);
 }
 
 TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabled) {
   // verify the initial values
   EXPECT_FALSE(brave_shields_settings()->IsNoScriptEnabled(kTestUrl));
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(kTestUrl),
             brave_shields::ControlType::ALLOW);
 
   brave_shields_settings()->SetNoScriptEnabled(true, kTestUrl);
   EXPECT_TRUE(brave_shields_settings()->IsNoScriptEnabled(kTestUrl));
   // verify underlying NoScriptControlType is updated
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(kTestUrl),
             brave_shields::ControlType::BLOCK);
 
   // verify other urls remain unchanged
   EXPECT_FALSE(
       brave_shields_settings()->IsNoScriptEnabled(GURL("https://example.com")));
   // verify underlying NoScriptControlType is unchanged
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  GURL("https://example.com")),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(
+                GURL("https://example.com")),
             brave_shields::ControlType::ALLOW);
 }
 
@@ -292,8 +264,7 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
 
   // verify the initial default values
   EXPECT_FALSE(brave_shields_settings()->IsNoScriptEnabledByDefault());
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(GURL()),
             brave_shields::ControlType::ALLOW);
 
   brave_shields_settings()->SetNoScriptEnabledByDefault(true);
@@ -301,15 +272,13 @@ TEST_F(BraveShieldsSettingsServiceTest, NoScriptsEnabledByDefault) {
   EXPECT_TRUE(
       brave_shields_settings()->IsNoScriptEnabled(GURL("https://example.com")));
   // verify underlying NoScriptControlType is updated
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  GURL()),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(GURL()),
             brave_shields::ControlType::BLOCK);
 
   // verify explict set no script enabled setting is unchanged
   EXPECT_FALSE(brave_shields_settings()->IsNoScriptEnabled(kTestUrl));
   // verify underlying NoScriptControlType is unchanged
-  EXPECT_EQ(brave_shields::GetNoScriptControlType(GetHostContentSettingsMap(),
-                                                  kTestUrl),
+  EXPECT_EQ(brave_shields_settings()->GetNoScriptControlType(kTestUrl),
             brave_shields::ControlType::ALLOW);
 }
 

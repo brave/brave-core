@@ -169,9 +169,7 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
     PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {
-  CHECK(profile_prefs_);
-}
+      profile_prefs_(profile_prefs) {}
 
 BraveShieldsSettingsService::~BraveShieldsSettingsService() = default;
 
@@ -388,7 +386,7 @@ bool BraveShieldsSettingsService::IsReduceLanguageEnabledForProfile(
 }
 
 bool BraveShieldsSettingsService::ShouldDoReduceLanguage(const GURL& url) {
-  if (!IsReduceLanguageEnabledForProfile(profile_prefs_)) {
+  if (!profile_prefs_ || !IsReduceLanguageEnabledForProfile(profile_prefs_)) {
     return false;
   }
 
@@ -427,39 +425,45 @@ void BraveShieldsSettingsService::SetCookieControlType(ControlType type,
       case ControlType::ALLOW:
         host_content_settings_map_->SetDefaultContentSetting(
             ContentSettingsType::COOKIES, CONTENT_SETTING_ALLOW);
-        profile_prefs_->SetInteger(
-            ::prefs::kCookieControlsMode,
-            static_cast<int>(content_settings::CookieControlsMode::kOff));
+        if (profile_prefs_) {
+          profile_prefs_->SetInteger(
+              ::prefs::kCookieControlsMode,
+              static_cast<int>(content_settings::CookieControlsMode::kOff));
+        }
         break;
       case ControlType::BLOCK:
         host_content_settings_map_->SetDefaultContentSetting(
             ContentSettingsType::COOKIES, CONTENT_SETTING_BLOCK);
-        // Toggle the state off->on to enforce the pref update event on switch
-        // between BLOCK_THIRD_PARTY->BLOCK so the upstream Third-party cookies
-        // Settings page can be updated correctly. This is a temporary measure
-        // until we figure out a better UI for Cookies Settings page.
-        profile_prefs_->SetInteger(
-            ::prefs::kCookieControlsMode,
-            static_cast<int>(content_settings::CookieControlsMode::kOff));
-        profile_prefs_->SetInteger(
-            ::prefs::kCookieControlsMode,
-            static_cast<int>(
-                content_settings::CookieControlsMode::kBlockThirdParty));
+        if (profile_prefs_) {
+          // Toggle the state off->on to enforce the pref update event on switch
+          // between BLOCK_THIRD_PARTY->BLOCK so the upstream Third-party
+          // cookies Settings page can be updated correctly. This is a temporary
+          // measure until we figure out a better UI for Cookies Settings page.
+          profile_prefs_->SetInteger(
+              ::prefs::kCookieControlsMode,
+              static_cast<int>(content_settings::CookieControlsMode::kOff));
+          profile_prefs_->SetInteger(
+              ::prefs::kCookieControlsMode,
+              static_cast<int>(
+                  content_settings::CookieControlsMode::kBlockThirdParty));
+        }
         break;
       case ControlType::BLOCK_THIRD_PARTY:
         host_content_settings_map_->SetDefaultContentSetting(
             ContentSettingsType::COOKIES, CONTENT_SETTING_ALLOW);
-        // Toggle the state off->on to enforce the pref update event on switch
-        // between BLOCK->BLOCK_THIRD_PARTY so the upstream Third-party cookies
-        // Settings page can be updated correctly. This is a temporary measure
-        // until we figure out a better UI for Cookies Settings page.
-        profile_prefs_->SetInteger(
-            ::prefs::kCookieControlsMode,
-            static_cast<int>(content_settings::CookieControlsMode::kOff));
-        profile_prefs_->SetInteger(
-            ::prefs::kCookieControlsMode,
-            static_cast<int>(
-                content_settings::CookieControlsMode::kBlockThirdParty));
+        if (profile_prefs_) {
+          // Toggle the state off->on to enforce the pref update event on switch
+          // between BLOCK->BLOCK_THIRD_PARTY so the upstream Third-party
+          // cookies Settings page can be updated correctly. This is a temporary
+          // measure until we figure out a better UI for Cookies Settings page.
+          profile_prefs_->SetInteger(
+              ::prefs::kCookieControlsMode,
+              static_cast<int>(content_settings::CookieControlsMode::kOff));
+          profile_prefs_->SetInteger(
+              ::prefs::kCookieControlsMode,
+              static_cast<int>(
+                  content_settings::CookieControlsMode::kBlockThirdParty));
+        }
         break;
       case ControlType::DEFAULT:
         NOTREACHED() << "Invalid ControlType for cookies";
@@ -1019,11 +1023,14 @@ bool BraveShieldsSettingsService::IsShieldsDisabledOnAnyHostMatchingDomainOf(
 }
 
 void BraveShieldsSettingsService::SetShredBrowsingHistory(bool value) {
-  profile_prefs_->SetBoolean(prefs::kShredBrowsingHistoryEnabled, value);
+  if (profile_prefs_) {
+    profile_prefs_->SetBoolean(prefs::kShredBrowsingHistoryEnabled, value);
+  }
 }
 
 bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
-  return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
+  return profile_prefs_ &&
+         profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
 }
 
 }  // namespace brave_shields

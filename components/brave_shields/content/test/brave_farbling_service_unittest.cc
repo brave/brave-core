@@ -11,6 +11,7 @@
 
 #include "base/test/task_environment.h"
 #include "base/token.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -29,8 +30,11 @@ class BraveFarblingServiceTest : public testing::Test {
     settings_map_ = new HostContentSettingsMap(
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
         false /* restore_session */, false /* should_record_metrics */);
-    farbling_service_ =
-        std::make_unique<brave::BraveFarblingService>(settings_map_.get());
+    shields_settings_service_ =
+        std::make_unique<brave_shields::BraveShieldsSettingsService>(
+            *settings_map_);
+    farbling_service_ = std::make_unique<brave::BraveFarblingService>(
+        shields_settings_service_.get());
   }
 
   void TearDown() override { settings_map_->ShutdownOnUIThread(); }
@@ -43,6 +47,8 @@ class BraveFarblingServiceTest : public testing::Test {
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> settings_map_;
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
+      shields_settings_service_;
   std::unique_ptr<brave::BraveFarblingService> farbling_service_;
 };
 
@@ -93,7 +99,7 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
 
 TEST_F(BraveFarblingServiceTest, ShieldsDown) {
   const GURL url("http://a.com");
-  brave_shields::SetBraveShieldsEnabled(settings_map_.get(), false, url);
+  shields_settings_service_->SetBraveShieldsEnabled(false, url);
   brave::FarblingPRNG prng;
   EXPECT_FALSE(
       farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
@@ -101,8 +107,8 @@ TEST_F(BraveFarblingServiceTest, ShieldsDown) {
 
 TEST_F(BraveFarblingServiceTest, FingerprintingAllowed) {
   const GURL url("http://a.com");
-  brave_shields::SetFingerprintingControlType(
-      settings_map_.get(), brave_shields::ControlType::ALLOW, url);
+  shields_settings_service_->SetFingerprintingControlType(
+      brave_shields::ControlType::ALLOW, url);
   brave::FarblingPRNG prng;
   EXPECT_FALSE(
       farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));

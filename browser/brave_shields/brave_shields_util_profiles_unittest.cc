@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -88,10 +89,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetBraveShieldsEnabled) {
   constexpr std::pair<bool, bool> kExpects[] = {{true, true}, {false, false}};
 
   auto set = [this](HostContentSettingsMap* map, bool value) {
-    SetBraveShieldsEnabled(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetBraveShieldsEnabled(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetBraveShieldsEnabled(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetBraveShieldsEnabled(kTestUrl);
   };
 
   RunTest<bool>(kExpects, std::move(set), std::move(get));
@@ -102,10 +105,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetAdControlType) {
                                                               {BLOCK, BLOCK}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetAdControlType(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetAdControlType(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetAdControlType(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetAdControlType(kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -116,10 +121,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetCosmeticFilteringControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetCosmeticFilteringControlType(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetCosmeticFilteringControlType(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetCosmeticFilteringControlType(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetCosmeticFilteringControlType(kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -130,12 +137,14 @@ TEST_F(BraveShieldsUtilProfilesTest, SetCookieControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetCookieControlType(map, regular_profile()->GetPrefs(), value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetCookieControlType(value, kTestUrl);
   };
 
   auto get = [this](HostContentSettingsMap* map) {
-    return GetCookieControlType(
-        map, CookieSettingsFactory::GetForProfile(regular_profile()).get(),
+    BraveShieldsSettingsService service(*map);
+    return service.GetCookieControlType(
+        CookieSettingsFactory::GetForProfile(regular_profile()).get(),
         kTestUrl);
   };
 
@@ -150,10 +159,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetFingerprintingControlType) {
       {DEFAULT, DEFAULT}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetFingerprintingControlType(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetFingerprintingControlType(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetFingerprintingControlType(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetFingerprintingControlType(kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -164,10 +175,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetHttpsUpgradeControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {BLOCK_THIRD_PARTY, BLOCK_THIRD_PARTY}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetHttpsUpgradeControlType(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetHttpsUpgradeControlType(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetHttpsUpgradeControlType(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetHttpsUpgradeControlType(kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));
@@ -178,10 +191,12 @@ TEST_F(BraveShieldsUtilProfilesTest, SetNoScriptControlType) {
       {ALLOW, ALLOW}, {BLOCK, BLOCK}, {DEFAULT, BLOCK}};
 
   auto set = [this](HostContentSettingsMap* map, ControlType value) {
-    SetNoScriptControlType(map, value, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    service.SetNoScriptControlType(value, kTestUrl);
   };
   auto get = [this](HostContentSettingsMap* map) {
-    return GetNoScriptControlType(map, kTestUrl);
+    BraveShieldsSettingsService service(*map);
+    return service.GetNoScriptControlType(kTestUrl);
   };
 
   RunTest<ControlType>(kExpects, std::move(set), std::move(get));

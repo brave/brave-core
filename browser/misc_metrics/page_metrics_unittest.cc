@@ -12,6 +12,7 @@
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -74,11 +75,15 @@ class PageMetricsUnitTest : public testing::Test {
 #endif
     task_environment_.FastForwardBy(base::Minutes(5));
 
+    auto* map = HostContentSettingsMapFactory::GetForProfile(profile_.get());
+    brave_shields_settings_service_ =
+        std::make_unique<brave_shields::BraveShieldsSettingsService>(
+            *map, &local_state_, profile_->GetPrefs());
+
     page_metrics_service_ = std::make_unique<PageMetrics>(
         &local_state_, profile_->GetPrefs(),
-        HostContentSettingsMapFactory::GetForProfile(profile_.get()),
-        history_service_, bookmark_model_, default_browser_monitor_.get(),
-        template_url_service,
+        brave_shields_settings_service_.get(), history_service_,
+        bookmark_model_, default_browser_monitor_.get(), template_url_service,
         base::BindLambdaForTesting([&]() { return first_run_time_; }));
   }
 
@@ -93,6 +98,8 @@ class PageMetricsUnitTest : public testing::Test {
   base::HistogramTester histogram_tester_;
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<DefaultBrowserMonitor> default_browser_monitor_;
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
+      brave_shields_settings_service_;
   std::unique_ptr<PageMetrics> page_metrics_service_;
   raw_ptr<history::HistoryService> history_service_;
   raw_ptr<bookmarks::BookmarkModel> bookmark_model_;

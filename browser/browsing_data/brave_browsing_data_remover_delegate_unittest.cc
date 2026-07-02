@@ -10,6 +10,7 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/test_future.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/psst/buildflags/buildflags.h"
@@ -98,13 +99,15 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsClearTest) {
 }
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsKeepDefaults) {
-  brave_shields::SetAdControlType(map(), brave_shields::ControlType::BLOCK,
-                                  GURL());
-  brave_shields::SetCosmeticFilteringControlType(
-      map(), brave_shields::ControlType::BLOCK, GURL());
+  {
+    brave_shields::BraveShieldsSettingsService service(*map());
+    service.SetAdControlType(brave_shields::ControlType::BLOCK, GURL());
+    service.SetCosmeticFilteringControlType(brave_shields::ControlType::BLOCK,
+                                            GURL());
+    EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
+              service.GetDomainBlockingType(GURL()));
+  }
 
-  EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
-            brave_shields::GetDomainBlockingType(map(), GURL()));
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kPreserve);
   base::test::TestFuture<uint64_t> complete_future;
@@ -117,19 +120,21 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsKeepDefaults) {
       /*origin_type_mask=*/1, complete_future.GetCallback());
   EXPECT_EQ(0u, complete_future.Get());
 
+  brave_shields::BraveShieldsSettingsService service(*map());
   EXPECT_EQ(brave_shields::DomainBlockingType::kAggressive,
-            brave_shields::GetDomainBlockingType(map(), GURL()));
+            service.GetDomainBlockingType(GURL()));
 }
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsCookiesClearing) {
+  brave_shields::BraveShieldsSettingsService service(*map(), nullptr,
+                                                     profile()->GetPrefs());
+
   // Allow all cookies by default.
-  brave_shields::SetCookieControlType(
-      map(), profile()->GetPrefs(), brave_shields::ControlType::ALLOW, GURL());
+  service.SetCookieControlType(brave_shields::ControlType::ALLOW, GURL());
 
   // Block all cookies on example.com
-  brave_shields::SetCookieControlType(map(), profile()->GetPrefs(),
-                                      brave_shields::BLOCK,
-                                      GURL("https://example.com"));
+  service.SetCookieControlType(brave_shields::BLOCK,
+                               GURL("https://example.com"));
 
   auto filter_builder = content::BrowsingDataFilterBuilder::Create(
       content::BrowsingDataFilterBuilder::Mode::kPreserve);
@@ -149,20 +154,18 @@ TEST_F(BraveBrowsingDataRemoverDelegateTest, ShieldsSettingsCookiesClearing) {
 
   // The default is not changed.
   EXPECT_EQ(brave_shields::ControlType::ALLOW,
-            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL()));
+            service.GetCookieControlType(cookie_settings.get(), GURL()));
 
   // Default after clearing on the example.com.
   EXPECT_EQ(brave_shields::ControlType::ALLOW,
-            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL("https://example.com")));
+            service.GetCookieControlType(cookie_settings.get(),
+                                         GURL("https://example.com")));
 
   // Changing the default settings affects example.com
-  brave_shields::SetCookieControlType(map(), profile()->GetPrefs(),
-                                      brave_shields::BLOCK, GURL());
+  service.SetCookieControlType(brave_shields::BLOCK, GURL());
   EXPECT_EQ(brave_shields::ControlType::BLOCK,
-            brave_shields::GetCookieControlType(map(), cookie_settings.get(),
-                                                GURL("https://example.com")));
+            service.GetCookieControlType(cookie_settings.get(),
+                                         GURL("https://example.com")));
 }
 
 TEST_F(BraveBrowsingDataRemoverDelegateTest, FingerpintV2ClearBalancedPattern) {
