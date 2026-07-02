@@ -13,6 +13,7 @@
 #include "base/functional/callback_helpers.h"
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
@@ -204,6 +205,39 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_ExpiryHeight) {
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
 
+TEST_F(ZCashResolveTransactionStatusTaskTest,
+       Expired_ExpiryHeight_TransactionError) {
+  auto tx_meta = CreateZCashTxMeta();
+  tx_meta->tx()->set_expiry_height(15);
+  tx_meta->set_tx_hash("tx_hash");
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        MockZCashRPC::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(20u, std::vector<uint8_t>()));
+      });
+
+  ON_CALL(zcash_rpc(), GetTransaction(_, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& tx_hash,
+                        MockZCashRPC::GetTransactionCallback callback) {
+        EXPECT_EQ(tx_hash, "tx_hash");
+        std::move(callback).Run(base::unexpected("error"));
+      });
+
+  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
+      CreatePassKey(), CreateContext(), zcash_wallet_service(),
+      std::move(tx_meta));
+  base::test::TestFuture<base::expected<
+      ZCashWalletService::ResolveTransactionStatusResult, std::string>>
+      tx_result_future;
+
+  task->Start(tx_result_future.GetCallback());
+
+  EXPECT_EQ(tx_result_future.Get().value(),
+            ZCashWalletService::ResolveTransactionStatusResult::kExpired);
+}
+
 TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time) {
   auto tx_meta = CreateZCashTxMeta();
   tx_meta->set_submitted_time(base::Time::Now());
@@ -242,6 +276,39 @@ TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time) {
   task_environment().RunUntilIdle();
 
   EXPECT_EQ(tx_result.value(),
+            ZCashWalletService::ResolveTransactionStatusResult::kExpired);
+}
+
+TEST_F(ZCashResolveTransactionStatusTaskTest, Expired_Time_TransactionError) {
+  auto tx_meta = CreateZCashTxMeta();
+  tx_meta->set_submitted_time(base::Time::Now());
+  task_environment().AdvanceClock(base::Hours(3));
+  tx_meta->set_tx_hash("tx_hash");
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault([](const std::string& chain_id,
+                        MockZCashRPC::GetLatestBlockCallback callback) {
+        std::move(callback).Run(
+            zcash::mojom::BlockID::New(20u, std::vector<uint8_t>()));
+      });
+
+  ON_CALL(zcash_rpc(), GetTransaction(_, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& tx_hash,
+                        MockZCashRPC::GetTransactionCallback callback) {
+        EXPECT_EQ(tx_hash, "tx_hash");
+        std::move(callback).Run(base::unexpected("error"));
+      });
+
+  auto task = std::make_unique<ZCashResolveTransactionStatusTask>(
+      CreatePassKey(), CreateContext(), zcash_wallet_service(),
+      std::move(tx_meta));
+  base::test::TestFuture<base::expected<
+      ZCashWalletService::ResolveTransactionStatusResult, std::string>>
+      tx_result_future;
+
+  task->Start(tx_result_future.GetCallback());
+
+  EXPECT_EQ(tx_result_future.Get().value(),
             ZCashWalletService::ResolveTransactionStatusResult::kExpired);
 }
 
