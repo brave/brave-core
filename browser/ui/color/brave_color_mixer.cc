@@ -787,36 +787,21 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
-  if (use_accent_tinted_omnibox && is_dark) {
-    postprocessing_mixer[kColorLocationBarBackground] =
-        darker_theme::ApplyDarknessFromColor(ui::kColorRefSecondary15);
-    postprocessing_mixer[kColorLocationBarBackgroundHovered] =
-        darker_theme::ApplyDarknessFromColor(ui::kColorRefSecondary15);
-    postprocessing_mixer[kColorOmniboxResultsBackground] =
-        darker_theme::ApplyDarknessFromColor(ui::kColorRefSecondary20);
-    postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
-        darker_theme::ApplyDarknessFromColor(ui::kColorRefSecondary25);
-    postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
-        darker_theme::ApplyDarknessFromColor(ui::kColorRefSecondary25);
-  } else {
-    postprocessing_mixer[kColorLocationBarBackground] =
-        darker_theme::ApplyDarknessFromColor(
-            nala::kColorDesktopbrowserOmnibarBackgroundDesktop);
-    postprocessing_mixer[kColorLocationBarBackgroundHovered] =
-        darker_theme::ApplyDarknessFromColor(
-            nala::kColorDesktopbrowserOmnibarBackgroundDesktop);
+  // Note: The darker (ultra dark) theme intentionally keeps the original
+  // omnibar tokens regardless of accent color. Accent tinting only applies to
+  // the regular dark mode above.
+  postprocessing_mixer[kColorLocationBarBackground] = {
+      nala::kColorPrimitiveNeutral0};
+  postprocessing_mixer[kColorLocationBarBackgroundHovered] = {
+      nala::kColorPrimitiveNeutral0};
 
-    // Omnibox
-    postprocessing_mixer[kColorOmniboxResultsBackground] =
-        darker_theme::ApplyDarknessFromColor(
-            nala::kColorDesktopbrowserOmnibarBackgroundActive);
-    postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] =
-        darker_theme::ApplyDarknessFromColor(
-            nala::kColorDesktopbrowserOmnibarBackgroundHoverItem);
-    postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] =
-        darker_theme::ApplyDarknessFromColor(
-            nala::kColorDesktopbrowserOmnibarBackgroundSelectedItem);
-  }
+  // Omnibox
+  postprocessing_mixer[kColorOmniboxResultsBackground] = {
+      nala::kColorPrimitiveNeutral0};
+  postprocessing_mixer[kColorOmniboxResultsBackgroundHovered] = {
+      nala::kColorPrimitiveNeutral20};
+  postprocessing_mixer[kColorOmniboxResultsBackgroundSelected] = {
+      nala::kColorPrimitiveNeutral20};
   postprocessing_mixer[kColorBraveOmniboxResultViewSeparator] = {
       nala::kColorPrimitiveNeutral20};
 
