@@ -48,7 +48,7 @@ public abstract class BraveCommandLineInitUtil {
         if (sharedPreferences.getBoolean(PREF_QA_VLOG_REWARDS, false)) {
             qaCommandLine += " --enable-logging=stderr";
             qaCommandLine +=
-                    " --vmodule=*/brave_ads/*=6,*/brave_user_model/*=6,*/bat_ads/*=6,*/brave_rewards/*=6"; // presubmit: ignore-long-line
+                    " --vmodule=*/brave_ads/*=6,*/brave_user_model/*=6,*/bat_ads/*=6,*/brave_rewards/*=6,*/brave_adaptive_captcha/*=6"; // presubmit: ignore-long-line
         }
 
         // For testing we need custom variations server url prior to the first time run, so we try

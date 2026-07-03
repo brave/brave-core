@@ -10,6 +10,10 @@ source_set("brave_adaptive_captcha_unit_tests") {
   testonly = true
   sources = [ "//brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge_unittest.cc" ]
 
+  if (is_android) {
+    sources += [ "//brave/components/brave_adaptive_captcha/android/attest_android_unittest.cc" ]
+  }
+
   deps = [
     "//base/test:test_support",
     "//brave/components/api_request_helper",

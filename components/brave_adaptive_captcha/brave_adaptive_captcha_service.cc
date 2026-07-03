@@ -11,6 +11,7 @@
 #include "base/check.h"
 #include "brave/components/brave_adaptive_captcha/pref_names.h"
 #include "brave/components/brave_adaptive_captcha/server_util.h"
+#include "build/build_config.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -68,7 +69,12 @@ BraveAdaptiveCaptchaService::BraveAdaptiveCaptchaService(
       delegate_(std::move(delegate)),
       api_request_helper_(kAnnotationTag, url_loader_factory),
       get_captcha_challenge_(
-          std::make_unique<GetAdaptiveCaptchaChallenge>(&api_request_helper_)) {
+          std::make_unique<GetAdaptiveCaptchaChallenge>(&api_request_helper_))
+#if BUILDFLAG(IS_ANDROID)
+      ,
+      attest_android_(std::make_unique<AttestAndroid>(url_loader_factory))
+#endif
+{
   DCHECK(prefs);
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   DCHECK(rewards_service);
@@ -154,6 +160,26 @@ void BraveAdaptiveCaptchaService::ClearScheduledCaptcha() {
   prefs_->SetString(prefs::kScheduledCaptchaId, "");
   prefs_->SetBoolean(prefs::kScheduledCaptchaPaused, false);
 }
+
+#if BUILDFLAG(IS_ANDROID)
+void BraveAdaptiveCaptchaService::StartAttestation(
+    const std::string& payment_id,
+    AttestAndroid::OnStartAttestation callback) {
+  attest_android_->StartAttestation(payment_id, std::move(callback));
+}
+
+void BraveAdaptiveCaptchaService::AttestPaymentId(
+    const std::string& payment_id,
+    const std::string& captcha_id,
+    const std::string& integrity_token,
+    const std::string& unique_value,
+    const std::string& package_name,
+    AttestAndroid::OnAttestResult callback) {
+  attest_android_->AttestPaymentId(payment_id, captcha_id, integrity_token,
+                                   unique_value, package_name,
+                                   std::move(callback));
+}
+#endif
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 void BraveAdaptiveCaptchaService::OnCompleteReset(const bool success) {

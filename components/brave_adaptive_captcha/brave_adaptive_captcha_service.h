@@ -14,11 +14,16 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_delegate.h"
 #include "brave/components/brave_adaptive_captcha/get_adaptive_captcha_challenge.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
 #include "brave/components/brave_rewards/content/rewards_service.h"
 #include "brave/components/brave_rewards/content/rewards_service_observer.h"
+#endif
+
+#if BUILDFLAG(IS_ANDROID)
+#include "brave/components/brave_adaptive_captcha/android/attest_android.h"
 #endif
 
 namespace network {
@@ -77,6 +82,19 @@ class BraveAdaptiveCaptchaService : public KeyedService
   // Clears the currently scheduled captcha, if any.
   void ClearScheduledCaptcha();
 
+#if BUILDFLAG(IS_ANDROID)
+  // Android device-attestation captcha flow. The Play Integrity token is
+  // obtained on the Java side between StartAttestation and AttestPaymentId.
+  void StartAttestation(const std::string& payment_id,
+                        AttestAndroid::OnStartAttestation callback);
+  void AttestPaymentId(const std::string& payment_id,
+                       const std::string& captcha_id,
+                       const std::string& integrity_token,
+                       const std::string& unique_value,
+                       const std::string& package_name,
+                       AttestAndroid::OnAttestResult callback);
+#endif
+
  private:
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   // brave_rewards::RewardsServiceObserver:
@@ -91,6 +109,9 @@ class BraveAdaptiveCaptchaService : public KeyedService
   std::unique_ptr<BraveAdaptiveCaptchaDelegate> delegate_;
   api_request_helper::APIRequestHelper api_request_helper_;
   std::unique_ptr<GetAdaptiveCaptchaChallenge> get_captcha_challenge_;
+#if BUILDFLAG(IS_ANDROID)
+  std::unique_ptr<AttestAndroid> attest_android_;
+#endif
 };
 
 }  // namespace brave_adaptive_captcha
