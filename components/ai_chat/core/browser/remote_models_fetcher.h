@@ -14,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 namespace network {
@@ -46,12 +45,6 @@ class RemoteModelsFetcher {
   // result in an empty callback. On network or parse failure, the callback
   // is invoked with an empty vector.
   void FetchModels(const std::string& url, FetchModelsCallback callback);
-
-  // Parses a JSON value (either a dict with a "models" key, or a bare array)
-  // and returns the successfully parsed models. Entries that fail field
-  // validation are silently skipped.
-  static std::vector<mojom::ModelPtr> ParseModelsFromJSON(
-      const base::Value& json);
 
  private:
   void OnFetchComplete(FetchModelsCallback callback,

@@ -136,6 +136,10 @@ inline constexpr char kBraveAIChatUserMemories[] =
 inline constexpr char kBraveAIChatSkills[] = "brave.ai_chat.smart_modes";
 inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
     "brave.ai_chat.ollama_fetch_enabled";
+// Stores the time at which the remote model list was last successfully fetched
+// and cached to disk. Used for TTL checks without reading the cache file.
+inline constexpr char kRemoteModelsCachedAt[] =
+    "brave.ai_chat.remote_models_cached_at";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

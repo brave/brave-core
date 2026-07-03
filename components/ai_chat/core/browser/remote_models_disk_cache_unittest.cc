@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/ai_chat/core/browser/remote_models_cache.h"
+#include "brave/components/ai_chat/core/browser/remote_models_disk_cache.h"
 
 #include <optional>
 #include <string>
@@ -16,6 +16,8 @@
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/pref_names.h"
+#include "components/prefs/testing_pref_service.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace {
@@ -49,23 +51,30 @@ mojom::ModelPtr MakeTestModel(const std::string& key, const std::string& name) {
 
 }  // namespace
 
-class RemoteModelsCacheTest : public testing::Test {
+class RemoteModelsDiskCacheTest : public testing::Test {
  protected:
-  void SetUp() override { ASSERT_TRUE(temp_dir_.CreateUniqueTempDir()); }
+  void SetUp() override {
+    ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
+    prefs::RegisterProfilePrefs(pref_service_.registry());
+  }
 
   base::FilePath CachePath() const {
     return temp_dir_.GetPath().AppendASCII("ai_chat_remote_models.json");
   }
 
+  RemoteModelsDiskCache MakeCache() {
+    return RemoteModelsDiskCache(CachePath(), kDefaultTTL, &pref_service_);
+  }
+
   // Runs Load() and blocks until the callback fires.
   std::optional<std::vector<mojom::ModelPtr>> RunLoad(
-      RemoteModelsCache& cache) {
+      RemoteModelsDiskCache& cache) {
     base::test::TestFuture<std::optional<std::vector<mojom::ModelPtr>>> future;
     cache.Load(future.GetCallback());
     return future.Take();
   }
 
-  void SaveAndWait(RemoteModelsCache& cache,
+  void SaveAndWait(RemoteModelsDiskCache& cache,
                    std::vector<mojom::ModelPtr> models) {
     base::test::TestFuture<void> future;
     cache.Save(std::move(models), future.GetCallback());
@@ -75,27 +84,31 @@ class RemoteModelsCacheTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_dir_;
+  TestingPrefServiceSimple pref_service_;
 };
 
-TEST_F(RemoteModelsCacheTest, LoadMissingFile) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, LoadMissingFile) {
+  auto cache = MakeCache();
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
 
-TEST_F(RemoteModelsCacheTest, LoadCorruptJSON) {
+TEST_F(RemoteModelsDiskCacheTest, LoadCorruptJSON) {
   ASSERT_TRUE(base::WriteFile(CachePath(), "not valid json {{"));
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+  // Write a valid timestamp so the TTL check passes and the file is read.
+  pref_service_.SetTime(prefs::kRemoteModelsCachedAt, base::Time::Now());
+  auto cache = MakeCache();
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
 
-TEST_F(RemoteModelsCacheTest, LoadMissingFetchedAt) {
+TEST_F(RemoteModelsDiskCacheTest, LoadMissingCachedAtPref) {
+  // File exists but no timestamp in prefs — treated as expired.
   ASSERT_TRUE(base::WriteFile(CachePath(), R"({"models": []})"));
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+  auto cache = MakeCache();
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
 
-TEST_F(RemoteModelsCacheTest, SaveAndLoad) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, SaveAndLoad) {
+  auto cache = MakeCache();
 
   std::vector<mojom::ModelPtr> models_to_save;
   models_to_save.push_back(MakeTestModel("model-key-1", "model-name-1"));
@@ -109,8 +122,8 @@ TEST_F(RemoteModelsCacheTest, SaveAndLoad) {
   EXPECT_EQ((*result)[1]->key, "model-key-2");
 }
 
-TEST_F(RemoteModelsCacheTest, CacheWithinTTLIsValid) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, CacheWithinTTLIsValid) {
+  auto cache = MakeCache();
 
   std::vector<mojom::ModelPtr> models;
   models.push_back(MakeTestModel("model-key-1", "model-name-1"));
@@ -124,8 +137,8 @@ TEST_F(RemoteModelsCacheTest, CacheWithinTTLIsValid) {
   EXPECT_EQ(result->size(), 1u);
 }
 
-TEST_F(RemoteModelsCacheTest, ExpiredCacheReturnsNullopt) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, ExpiredCacheReturnsNullopt) {
+  auto cache = MakeCache();
 
   std::vector<mojom::ModelPtr> models;
   models.push_back(MakeTestModel("model-key-1", "model-name-1"));
@@ -137,8 +150,8 @@ TEST_F(RemoteModelsCacheTest, ExpiredCacheReturnsNullopt) {
   EXPECT_FALSE(RunLoad(cache).has_value());
 }
 
-TEST_F(RemoteModelsCacheTest, RoundTripPreservesModelFields) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, RoundTripPreservesModelFields) {
+  auto cache = MakeCache();
 
   auto model = MakeTestModel("chat/claude-3-haiku", "claude-haiku-20240307");
   model->is_suggested_model = true;
@@ -184,8 +197,8 @@ TEST_F(RemoteModelsCacheTest, RoundTripPreservesModelFields) {
   EXPECT_EQ(leo->long_conversation_warning_character_limit, 160000u);
 }
 
-TEST_F(RemoteModelsCacheTest, SaveOverwritesPreviousCache) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, SaveOverwritesPreviousCache) {
+  auto cache = MakeCache();
 
   std::vector<mojom::ModelPtr> first;
   first.push_back(MakeTestModel("old-key", "old-name"));
@@ -203,8 +216,8 @@ TEST_F(RemoteModelsCacheTest, SaveOverwritesPreviousCache) {
   EXPECT_EQ((*result)[1]->key, "new-key-2");
 }
 
-TEST_F(RemoteModelsCacheTest, AllCapabilitiesRoundTrip) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, AllCapabilitiesRoundTrip) {
+  auto cache = MakeCache();
 
   auto model = MakeTestModel("summary-model", "summary-model-v1");
   model->supported_capabilities = {mojom::ConversationCapability::CHAT,
@@ -223,8 +236,8 @@ TEST_F(RemoteModelsCacheTest, AllCapabilitiesRoundTrip) {
   EXPECT_EQ((*result)[0]->supported_capabilities.size(), 5u);
 }
 
-TEST_F(RemoteModelsCacheTest, AllAccessLevelsRoundTrip) {
-  RemoteModelsCache cache(CachePath(), kDefaultTTL);
+TEST_F(RemoteModelsDiskCacheTest, AllAccessLevelsRoundTrip) {
+  auto cache = MakeCache();
 
   std::vector<mojom::ModelPtr> save;
   auto basic = MakeTestModel("basic-key", "basic-name");
