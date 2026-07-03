@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/location_bar/star_view.cc b/chrome/browser/ui/views/location_bar/star_view.cc
+index 0a473d8926b8ee3c69c68337b516cfe8b9beedb5..55a418f5324b3e9567e062ba19c7e91e520881cc 100644
+--- a/chrome/browser/ui/views/location_bar/star_view.cc
++++ b/chrome/browser/ui/views/location_bar/star_view.cc
+@@ -97,6 +97,7 @@ void StarView::OnWidgetDestroyed(views::Widget* widget) {
+ }
+ 
+ void StarView::OnBubbleWidgetChanged(views::Widget* widget) {
++  return;
+   CHECK(GetBubble() && widget);
+   UpdateTooltipText();
+   if (scoped_observation_.IsObserving()) {
+@@ -107,7 +108,7 @@ void StarView::OnBubbleWidgetChanged(views::Widget* widget) {
+ }
+ 
+ void StarView::UpdateImpl() {
+-  bool enabled =
++  bool enabled = false &&
+       browser_defaults::bookmarks_enabled && edit_bookmarks_enabled_.GetValue();
+   SetVisible(enabled && !delegate()->ShouldHidePageActionIcon(this));
+ }

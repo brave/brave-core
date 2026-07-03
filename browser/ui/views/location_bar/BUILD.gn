@@ -21,8 +21,6 @@ source_set("location_bar") {
     "brave_selected_keyword_view_util.h",
     "brave_shields_page_info_controller.cc",
     "brave_shields_page_info_controller.h",
-    "brave_star_view.cc",
-    "brave_star_view.h",
   ]
 
   public_deps = [

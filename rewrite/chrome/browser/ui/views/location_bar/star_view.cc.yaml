@@ -1,0 +1,26 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Cancel StarView::OnBubbleWidgetChanged with an early return.
+
+      Brave keeps the bookmark star hidden, so its bubble is never shown; the
+      early return skips observing the bubble widget (and its CHECK) for a view
+      that should never become active.
+    re_pattern: '(StarView::OnBubbleWidgetChanged\(.+?\) \{\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1  return;
+
+  - description: |
+      Makes sure the view is never shown by calling SetVisible(false).
+
+      Brave removes the bookmark star page action from the location bar, so
+      `enabled` is forced false regardless of the bookmark prefs.
+    re_pattern: '(StarView::UpdateImpl\(\) \{\n  bool enabled =)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1 false &&
