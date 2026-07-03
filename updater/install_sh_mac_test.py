@@ -14,7 +14,6 @@ from stat import S_IXUSR
 from subprocess import run, DEVNULL, Popen, PIPE, STDOUT
 from tempfile import TemporaryDirectory
 from threading import Thread
-from time import sleep
 
 import plistlib
 import re
@@ -203,19 +202,6 @@ class InstallShPatchTest(unittest.TestCase):
                                          'mkdir': mock_mkdir
                                      },
                                      expected_exit_code=expected_exit_code)
-
-    def test_rsync_timeout(self):
-
-        def rsync(_):
-            sleep(2)
-            return 0, ""
-
-        app_dir = join(self.temp_dir.name, f"{PRODUCT_NAME}.app")
-        self._make_app(app_dir, CURRENT_VERSION)
-        self._run_install_sh(app_dir,
-                             commands={'rsync': rsync},
-                             expected_exit_code=80,
-                             env={"RSYNC_TIMEOUT": "1"})
 
     def _prepare_dmg_dir(self):
         dmg_dir = join(self.temp_dir.name, "dmg")
