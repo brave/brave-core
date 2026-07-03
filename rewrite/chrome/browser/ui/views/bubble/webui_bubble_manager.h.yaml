@@ -1,0 +1,17 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make WebUIBubbleManagerImpl's overrides accessible to Brave subclasses.
+
+      Brave subclasses WebUIBubbleManagerImpl and needs to reach
+      CreateWebUIBubbleDialog and GetContentsWrapper, so wrap both overrides in
+      a `protected:` section.
+    re_pattern:
+      '(\n)(  [^\n]*CreateWebUIBubbleDialog\([^;{]*override;\n[^\n]*GetContentsWrapper\(\)[^\n]*override;\n)'
+    replace: |
+      \1 protected:
+      \2 private:
