@@ -9,6 +9,7 @@ import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
 import { Conversation } from '../../../common/mojom'
 import { serializeConversationForSharing } from '../../../common/conversation_serialization'
+import { encryptForSharing } from '../../../common/conversation_share_encryption'
 import useCanStartNewConversation from '../../hooks/useCanStartNewConversation'
 import FeatureButtonMenu, {
   Props as FeatureButtonMenuProps,
@@ -70,12 +71,21 @@ export const ConversationHeader = React.forwardRef(function (
     && conversationHistory.length > 0
     && !conversationState.isRequestInProgress
 
-  const handleShareConversation = () => {
-    // The serialized conversation will eventually be sent to the sharing
-    // server, which will encrypt it and return a shareable link. For now, copy
-    // the serialized string to the clipboard so the flow can be demoed.
+  const handleShareConversation = async () => {
+    // Encrypt the conversation in the client so the sharing server only ever
+    // sees ciphertext. The decryption key stays on the client and is appended
+    // to the returned viewer URL as a fragment, so the shared link is only
+    // usable by whoever the user shares it with.
     const json = serializeConversationForSharing(conversationHistory)
-    navigator.clipboard.writeText(json)
+    const { ciphertext, keyFragment } = await encryptForSharing(json)
+    const { sharedConversationViewer } =
+      await aiChatContext.api.service.shareConversation(ciphertext)
+    if (!sharedConversationViewer) {
+      // Sharing failed on the server; there is nothing to share.
+      return
+    }
+    const shareUrl = `${sharedConversationViewer.url}#${keyFragment}`
+    navigator.clipboard.writeText(shareUrl)
   }
 
   const showTitle =

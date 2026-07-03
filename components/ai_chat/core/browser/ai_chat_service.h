@@ -30,6 +30,7 @@
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/browser/associated_content_delegate.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider_factory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
@@ -200,6 +201,8 @@ class AIChatService : public KeyedService,
                           const std::string& new_name) override;
   void ConversationExists(const std::string& conversation_uuid,
                           ConversationExistsCallback callback) override;
+  void ShareConversation(const std::string& encrypted_contents,
+                         ShareConversationCallback callback) override;
   void BindConversation(
       const std::string& uuid,
       mojo::PendingReceiver<mojom::ConversationHandler> receiver,
@@ -236,6 +239,11 @@ class AIChatService : public KeyedService,
     return credential_manager_.get();
   }
   AIChatFeedbackAPI* GetFeedbackAPIForTesting() { return feedback_api_.get(); }
+
+  void SetConversationShareManagerForTesting(
+      std::unique_ptr<ConversationShareManager> share_manager) {
+    conversation_share_manager_ = std::move(share_manager);
+  }
 
   size_t GetInMemoryConversationCountForTesting();
 
@@ -351,6 +359,7 @@ class AIChatService : public KeyedService,
   PrefChangeRegistrar pref_change_registrar_;
 
   std::unique_ptr<AIChatFeedbackAPI> feedback_api_;
+  std::unique_ptr<ConversationShareManager> conversation_share_manager_;
   std::unique_ptr<AIChatCredentialManager> credential_manager_;
 
   // Factories of ToolProviders from other layers

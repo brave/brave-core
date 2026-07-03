@@ -149,7 +149,9 @@ export default function createAIChatApi(
     actions: {
       service: service as Pick<
         Mojom.ServiceInterface,
-        VoidMethodKeys<Mojom.ServiceInterface> | 'conversationExists'
+        | VoidMethodKeys<Mojom.ServiceInterface>
+        | 'conversationExists'
+        | 'shareConversation'
       >,
       uiHandler: uiHandler as Pick<
         Mojom.AIChatUIHandlerInterface,

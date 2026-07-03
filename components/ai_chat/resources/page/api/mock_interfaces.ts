@@ -167,6 +167,12 @@ export function createMockService(
     deleteConversation: () => {},
     renameConversation: () => {},
     conversationExists: () => Promise.resolve({ exists: true }),
+    shareConversation: () =>
+      Promise.resolve({
+        sharedConversationViewer: {
+          url: 'https://leo-ai.brave.app/sharing/mock-share-id',
+        },
+      }),
     createSkill: () => {},
     updateSkill: () => {},
     deleteSkill: () => {},
