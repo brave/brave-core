@@ -1,0 +1,32 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave's `confirmed_to_close` accessors to `UnloadController`
+
+      Brave's window-closing confirmation flow needs to remember whether the
+      user has already allowed the window to close.
+    regex:
+      re_pattern: '(  ~UnloadController\(\) override;\n)'
+      replace: |
+        \1
+          bool confirmed_to_close() const { return confirmed_to_close_; }
+          void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
+  - description: |
+      Add Brave's `confirmed_to_close_` member to `UnloadController`
+
+      Backs the accessors above. Set to true once the user has allowed the
+      window to close (so the closing-confirm dialog is skipped for that
+      attempt) and reset when a warning or beforeunload handler cancels it.
+    regex:
+      re_pattern:
+        '(\n)(  base::WeakPtrFactory<UnloadController> weak_factory_\{this\};)'
+      replace: |-
+        \1  // Set to true when the user has allowed the browser window to
+          // close before running any warning or beforeunload handlers.
+          bool confirmed_to_close_ = false;
+
+        \2
