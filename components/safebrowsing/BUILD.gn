@@ -7,7 +7,7 @@ import("//build/buildflag_header.gni")
 import("//build/config/features.gni")
 
 declare_args() {
-  safebrowsing_api_endpoint = ""
+  safebrowsing_api_endpoint = "safebrowsing.brave.com"
 }
 
 buildflag_header("buildflags") {
