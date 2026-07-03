@@ -38,6 +38,7 @@
 
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="brave_disable_sharing_hub"
+        android:icon="@drawable/ic_share"
         android:title="@string/sharing_hub_title"
         android:summaryOn="@string/text_on"
         android:summaryOff="@string/text_off" />
