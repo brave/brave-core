@@ -63,6 +63,18 @@ bool IsZCashShieldedTransactionsEnabled() {
 #endif
 }
 
+bool IsZCashIronwoodTransactionEnabled() {
+#if BUILDFLAG(IS_IOS)
+  bool is_zcash_enabled = IsZCashEnabled();
+  bool is_ironwood_tx_enabled =
+      features::kZCashIronwoodTransactionEnabled.Get();
+  bool is_wallet_webui_enabled = IsWalletWebUIEnabled();
+  return is_zcash_enabled && is_ironwood_tx_enabled && is_wallet_webui_enabled;
+#else
+  return IsZCashEnabled() && features::kZCashIronwoodTransactionEnabled.Get();
+#endif
+}
+
 bool IsPolkadotEnabled() {
   return base::FeatureList::IsEnabled(features::kBraveWalletPolkadotFeature);
 }
