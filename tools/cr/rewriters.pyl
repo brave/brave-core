@@ -1,0 +1,142 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# rewriters.pyl — ast-grep op specs for plaster. Data only: a Python literal
+# (ast.literal_eval), so no imports, calls, or names.
+#
+# Two op categories, each keyed by an op id "<lang>.<name>" ("cxx" -> cpp,
+# resolved in code):
+#
+#   "ast.matcher" — a structural query:
+#       args:     arg names the caller supplies; each is a {placeholder}.
+#       template: ast-grep rule body (the part under `rule:`); {arg}s filled.
+#       result:   { node: <tree-sitter kind> } each match is.
+#
+#   "ast.rewriter" — edits each node a matcher finds:
+#       matcher:  id of the "ast.matcher" op locating the node(s).
+#       replace:  { re_pattern, replace }, re.sub'd over each match's source;
+#                 `replace` is {arg}-formatted first (literal braces: {{ }}).
+#       result:   { node: <kind> } being replaced.
+#
+# An op yields every match in source order; the caller (plaster) decides how
+# many it expects. Arg values are injected verbatim into the rule's `regex:`
+# fields, so the caller escapes any regex metacharacters.
+
+{
+    "ast.matcher": {
+
+        # The full declaration of `class_name::method_name`, including a
+        # multi-line signature and its trailing semicolon. The name is matched
+        # by text, so methods (field_identifier), destructors (destructor_name,
+        # e.g. "~Foo") and constructors (identifier) are all found. Overloads
+        # sharing the name each produce their own match. The result node is a
+        # field_declaration for methods and a declaration for con/destructors.
+        "cxx.find_class_method_decl": {
+            "args": ["class_name", "method_name"],
+            "template": """\
+any:
+  - kind: field_declaration
+  - kind: declaration
+has:
+  kind: function_declarator
+  stopBy: end
+  has:
+    field: declarator
+    regex: ^{method_name}$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The `private` access specifier opening `class_name`'s private section.
+        # The node is the `private` keyword; the `:` that follows is a separate
+        # token immediately after it.
+        "cxx.find_class_private_section": {
+            "args": ["class_name"],
+            "template": """\
+kind: access_specifier
+regex: ^private$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The `final` specifier on `class_name`'s declaration (the
+        # virtual_specifier node holding the `final` keyword). Only the
+        # class-head `final` matches; a method's trailing `final` is nested
+        # under its declaration, not directly inside the class.
+        "cxx.find_class_final": {
+            "args": ["class_name"],
+            "template": """\
+kind: virtual_specifier
+regex: ^final$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+    },
+    "ast.rewriter": {
+
+        # The whole method declaration (multi-line signature and trailing
+        # semicolon included) with `virtual ` prepended.
+        "cxx.make_virtual": {
+            "matcher": "cxx.find_class_method_decl",
+            "replace": {
+                "re_pattern": "^",
+                "replace": "virtual ",
+            },
+            "result": {
+                "node": "field_declaration",
+            },
+        },
+
+        # The class's `private:` section with a `friend` declaration inserted as
+        # its first line.
+        "cxx.add_friend": {
+            "matcher": "cxx.find_class_private_section",
+            "replace": {
+                "re_pattern": "$",
+                "replace": ":\\n  friend {friend_type};",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # `class_name`'s declaration with its `final` specifier removed, so the
+        # class can be subclassed. The remove_final engine also consumes the
+        # leading space before `final` so no doubled space is left behind.
+        "cxx.remove_final": {
+            "matcher": "cxx.find_class_final",
+            "replace": {
+                "re_pattern": "^final$",
+                "replace": "",
+            },
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
+    },
+}

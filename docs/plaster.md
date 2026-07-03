@@ -46,7 +46,7 @@ about the following files.
 
 ### Creating a plaster file
 
-A plaster file is a YAML file that lists regex operations to be applied to the
+A plaster file is a YAML file that lists rewrites to be applied to the
 corresponding source, based on its path. The following plaster appends
 Brave-specific values to the upstream `RequestType` enum.
 
@@ -72,19 +72,20 @@ substitutions:
 
       This plaster is generic enough to guarantee that our entries are always last,
       and that they also become the new kMaxValue.
-    re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        kWidevine,
-        kBraveEthereum,
-        kBraveSolana,
-        kBraveOpenAIChat,
-        kBraveGoogleSignInPermission,
-        kBraveCardano,
-        kBraveMinValue = kWidevine,
-        kBraveMaxValue = kBraveCardano,
-        kMaxValue = kBraveCardano
+    regex:
+      re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kWidevine,
+          kBraveEthereum,
+          kBraveSolana,
+          kBraveOpenAIChat,
+          kBraveGoogleSignInPermission,
+          kBraveCardano,
+          kBraveMinValue = kWidevine,
+          kBraveMaxValue = kBraveCardano,
+          kMaxValue = kBraveCardano
 ```
 
 _Plaster_ substitutions are listed under `substitutions:`. _Plaster_ loads the
@@ -92,17 +93,27 @@ contents of a source from `git`, as the source of truth, not from whatever is on
 disk, and then it applies each substitution cumulatively to the contents of the
 target source, updating the upstream source at the end.
 
-Each entry has the following format:
+Each item under `substitutions:` has a type of rewrite (e.g `regex`), and a
+`count` field that enforces the number of rewrites a substitution should have.
+
+> [!NOTE]
+>
+> The default value for `count` is `1` so `count=1` can be omitted, whilst
+> `count=0` mean "at least one or more matches".
+
+The default rewrite is a **regex** substitution, whose fields are grouped under
+a `regex:` key (as in the example above):
 
 ```yaml
 substitutions:
   - description: ''
-    # One of either pattern or re_pattern must be specified.
-    pattern: '' # non-regex pattern (string will be escaped)
-    re_pattern: '' # regex pattern
-    replace: ''
-    re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
-    count: 1 # 1 is the default; 0 means no count, not advised.
+    count: 1 # 1 is the default; 0 means "one or more matches".
+    regex:
+      # One of either pattern or re_pattern must be specified.
+      pattern: '' # non-regex pattern (string will be escaped)
+      re_pattern: '' # regex pattern
+      replace: ''
+      re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
 ```
 
 Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
@@ -111,10 +122,50 @@ Single-quoted YAML strings preserve backslashes literally, which is useful for
 regex patterns (`'\s'` stays as the two characters `\s`, not interpreted by
 YAML).
 
+### Rewriters
+
+Plaster has the concept of rewriters. Regexes are the most commonly used
+rewriter, but there are a few more of them that tend to be more accurate on what
+they do (and more should be added going forward).
+
+| Rewrite        | Arguments                   | What it does                                            |
+| -------------- | --------------------------- | ------------------------------------------------------- |
+| `regex`        | regex fields (above)        | A regex substitution.                                   |
+| `make_virtual` | `class_name`, `method_name` | Prepends `virtual ` to a method in a class.             |
+| `add_friend`   | `class_name`, `friend_type` | Inserts `friend <friend_type>;` in a private section.   |
+| `remove_final` | `class_name`                | Removes the `final` specifier from a class declaration. |
+
+To give an example, the follow substitutions allow a class to be subclassed by
+dropping the `final` qualifier from the declaration, and making the destructor
+`virtual`.
+
+```yaml
+substitutions:
+  - description: Drop `final` from DraggingTabsSession to allow subclassing.
+    remove_final:
+      class_name: DraggingTabsSession
+
+  - description:
+      Make the DraggingTabsSession destructor virtual for subclassing.
+    make_virtual:
+      class_name: DraggingTabsSession
+      method_name: '~DraggingTabsSession' # quote: a leading `~` is YAML null
+```
+
+### Running plaster
+
 To apply this plaster file, just run `plaster.py`:
 
 ```sh
 tools/cr/plaster.py apply
+```
+
+This will run plaster against the recently changed files. If you want to run for
+just one particular file, you can use one of the following formats.
+
+```
+tools/cr/plaster.py apply <.yaml file>
+tools/cr/plaster.py apply <.patch file>
 ```
 
 Running `plaster.py` will cause the substitution to be applied in
