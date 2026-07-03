@@ -134,6 +134,9 @@ public class BraveDappPermissionPromptDialog
                         .with(ModalDialogProperties.CONTROLLER, this)
                         .with(ModalDialogProperties.CUSTOM_VIEW, customView)
                         .with(
+                                ModalDialogProperties.CONTENT_DESCRIPTION,
+                                mContext.getString(R.string.permissions_connect_brave_wallet_title))
+                        .with(
                                 ModalDialogProperties.POSITIVE_BUTTON_TEXT,
                                 mContext.getString(
                                         R.string
