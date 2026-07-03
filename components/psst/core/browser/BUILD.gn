@@ -12,6 +12,7 @@ static_library("browser") {
     "matched_rule.h",
     "pref_names.h",
     "psst_component_installer.h",
+    "psst_reporter_service.h",
     "psst_rule.h",
     "psst_rule_registry.h",
     "psst_settings_service.h",
@@ -23,6 +24,9 @@ static_library("browser") {
     "matched_rule.cc",
     "pref_names.cc",
     "psst_component_installer.cc",
+    "psst_report_uploader.cc",
+    "psst_report_uploader.h",
+    "psst_reporter_service.cc",
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
     "psst_rule_registry_impl.h",
@@ -46,6 +50,7 @@ static_library("browser") {
     "//components/prefs",
     "//crypto",
     "//net",
+    "//services/network/public/cpp",
   ]
 }
 

@@ -22,12 +22,15 @@ namespace psst {
 
 PsstUiDelegateImpl::PsstUiDelegateImpl(
     PsstSettingsService* psst_settings_service,
+    PsstReporterService* psst_reporter_service,
     PrefService* prefs,
     std::unique_ptr<PsstUiPresenter> ui_presenter)
     : ui_presenter_(std::move(ui_presenter)),
       psst_settings_service_(psst_settings_service),
+      psst_reporter_service_(psst_reporter_service),
       prefs_(prefs) {
   CHECK(psst_settings_service_);
+  CHECK(psst_reporter_service_);
   CHECK(ui_presenter_);
   CHECK(prefs_);
   psst_settings_service_->AddObserver(this);
@@ -92,18 +95,8 @@ void PsstUiDelegateImpl::UpdateTasks(
     return;
   }
 
-  // Implementation for setting the current progress.
-  for (Observer& obs : observer_list_) {
-    if (performed_tasks.empty() && progress == 100) {
-      // Update common dialog status
-      obs.OnSetRequestStatus("", "");
-    } else {
-      // Update individual task statuses.
-      for (const PolicyTask& task : performed_tasks) {
-        obs.OnSetRequestStatus(task.uid, task.error_description);
-      }
-    }
-  }
+  RecordFailedTasks(performed_tasks);
+  NotifyObserversOfTaskStatus(progress, performed_tasks);
 }
 
 std::optional<PsstWebsiteSettings> PsstUiDelegateImpl::GetPsstWebsiteSettings(
@@ -154,6 +147,17 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
   if (apply_changes_callback_) {
     std::move(apply_changes_callback_).Run(perform_for_uids);
   }
+
+  // Prepare to collect the failed cases
+  failed_policy_tasks_.emplace();
+}
+
+void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
+  if (!failed_policy_tasks_ || failed_policy_tasks_->empty()) {
+    return;
+  }
+  psst_reporter_service_->SubmitPsstErrorsReport(
+      std::move(failed_policy_tasks_));
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
@@ -205,6 +209,33 @@ void PsstUiDelegateImpl::OnPsstEnableChange(bool new_value) {
   ui_presenter_->SetLocationBarIconStatus(LocationBarIconStatus::kHidden,
                                           base::NullCallback(),
                                           base::NullCallback());
+}
+
+void PsstUiDelegateImpl::RecordFailedTasks(
+    const std::vector<PolicyTask>& performed_tasks) {
+  if (!failed_policy_tasks_) {
+    return;
+  }
+  for (const PolicyTask& task : performed_tasks) {
+    if (task.error_description) {
+      failed_policy_tasks_->insert(task.Clone());
+    }
+  }
+}
+
+void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
+    long progress,
+    const std::vector<PolicyTask>& performed_tasks) {
+  const bool all_complete = performed_tasks.empty() && progress == 100;
+  for (Observer& obs : observer_list_) {
+    if (all_complete) {
+      obs.OnSetRequestStatus("", "");
+      continue;
+    }
+    for (const PolicyTask& task : performed_tasks) {
+      obs.OnSetRequestStatus(task.uid, task.error_description);
+    }
+  }
 }
 
 }  // namespace psst

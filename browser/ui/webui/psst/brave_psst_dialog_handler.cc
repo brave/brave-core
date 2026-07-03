@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
 #include "base/notimplemented.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
@@ -23,7 +24,6 @@
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
 #include "components/constrained_window/constrained_window_views.h"
 #include "content/public/browser/web_contents.h"
-
 namespace psst {
 
 namespace {
@@ -152,12 +152,12 @@ void BravePsstDialogHandler::PerformPrivacyTuning(
 }
 
 void BravePsstDialogHandler::ReportFailedContent() {
+  LOG(INFO) << "[PSST] BravePsstDialogHandler::ReportFailedContent";
   if (!psst_dialog_delegate_) {
     return;
   }
 
-  // Report Submission Implementation
-  NOTIMPLEMENTED();
+  psst_dialog_delegate_->SubmitPsstErrorsReport();
 }
 
 void BravePsstDialogHandler::CloseDialog() {
