@@ -151,16 +151,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             enableBottomToolbar.setOnPreferenceChangeListener(this);
         }
 
-        Preference disableSharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
-        if (disableSharingHub != null) {
-            disableSharingHub.setOnPreferenceChangeListener(this);
-            if (disableSharingHub instanceof ChromeSwitchPreference) {
-                ((ChromeSwitchPreference) disableSharingHub)
-                        .setChecked(
-                                ChromeSharedPreferences.getInstance()
-                                        .readBoolean(
-                                                BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB,
-                                                false));
+        Preference sharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
+        if (sharingHub != null) {
+            sharingHub.setOnPreferenceChangeListener(this);
+            if (sharingHub instanceof ChromeSwitchPreference) {
+                ((ChromeSwitchPreference) sharingHub).setChecked(isSharingHubEnabled());
             }
         }
 
@@ -286,9 +281,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             shouldRelaunch = true;
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(
-                            BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, (boolean) newValue);
+            setSharingHubEnabled((boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
@@ -341,6 +334,17 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     /** Sets the user preference for whether the brave ads in background is enabled. */
     public void setPrefAdsInBackgroundEnabled(boolean enabled) {
         ChromeSharedPreferences.getInstance().writeBoolean(PREF_ADS_SWITCH, enabled);
+    }
+
+    private static boolean isSharingHubEnabled() {
+        return !ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, false);
+    }
+
+    private static void setSharingHubEnabled(boolean enabled) {
+        // The persisted pref predates the positive "Sharing Hub" UI label, so we invert the value.
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, !enabled);
     }
 
     private void updatePreferenceIcon(String preferenceString, int drawable) {

@@ -2367,8 +2367,8 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_GAS_LIMIT" desc="Brave crypto wallet gas limit edit box">
       Gas Limit
     </message>
-    <message name="IDS_DISABLE_SHARING_HUB" desc="Menu item for disabling sharing hub.">
-      Disable Sharing Hub
+    <message name="IDS_SHARING_HUB_TITLE" desc="Title for preference that enables or disables the Chromium sharing hub.">
+      Sharing Hub
     </message>
     <message name="IDS_WALLET_ACCOUNTS_UPDATE" desc="Brave wallet accounts update text">
       Update
