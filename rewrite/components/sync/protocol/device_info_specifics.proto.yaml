@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Import Brave's device info specifics.
+    re_pattern: '(import "components/sync/protocol/sync_enums.proto";\n)'
+    replace: |
+      \1import "brave/components/sync/protocol/brave_device_info_specifics.proto";
+  - description: |
+      Add Brave's fields as the last entry of DeviceInfoSpecifics.
+
+      Anchored on the message and its closing brace (at column 0, so the nested
+      oneof's indented brace is skipped) so the field is always appended last.
+    re_pattern: '(message DeviceInfoSpecifics \{.+?\n)(\})'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  optional BraveSpecificFields brave_fields = 1000;
+      \2
