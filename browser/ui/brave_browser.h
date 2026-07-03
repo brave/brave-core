@@ -34,7 +34,6 @@ class BraveBrowser : public Browser {
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
-  void FinishWarnBeforeClosing(WarnBeforeClosingResult result) override;
   void BeforeUnloadFired(content::WebContents* source,
                          bool proceed,
                          bool* proceed_to_fire_unload) override;
@@ -70,8 +69,6 @@ class BraveBrowser : public Browser {
 
   BraveBrowserWindow* brave_window();
 
-  void set_confirmed_to_close(bool close) { confirmed_to_close_ = close; }
-
   void set_ignore_enable_closing_last_tab_pref() {
     ignore_enable_closing_last_tab_pref_ = true;
   }
@@ -87,10 +84,6 @@ class BraveBrowser : public Browser {
   bool AreAllTabsSharedPinnedTabs();
 
   bool ShouldSuppressDialogs(content::WebContents* source) override;
-
-  // Set true when user allowed to close browser before starting any
-  // warning or onbeforeunload handlers.
-  bool confirmed_to_close_ = false;
 
   // When "kEnableClosingLastTab" is false, browser will try to add new tab in
   // TabStripEmpty() if there is no tab. But, in some cases, we should not add

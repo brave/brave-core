@@ -4,11 +4,6 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Make FinishWarnBeforeClosing virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: FinishWarnBeforeClosing
-
   - description: 'Make ScheduleUIUpdate virtual'
     make_virtual:
       class_name: Browser
