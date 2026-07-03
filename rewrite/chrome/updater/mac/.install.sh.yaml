@@ -29,45 +29,6 @@ substitutions:
       "--perms --recursive --times"; else echo "--no-perms --executability
       --chmod=u=rwX,go=rX --recursive"; fi)"'
 
-  # install_from_archive.mm executes .install.sh with a timeout of 15 minutes.
-  # The versioned-dir rsync normally takes only a few seconds. But there were
-  # several cases where it took 16 minutes. (It seems likely that there was some
-  # interference; either the computer went to sleep or the OS was blocking on a
-  # prompt.) This case bricked the browser because install_from_archive.mm then
-  # interrupted the later rsyncing of the app directory mid-execution.
-  # The following substitution runs rsync under its own, lower timeout. This
-  # gives the script a chance to put the browser back into a usable state when
-  # the parent timeout would have likely been exceeded.
-  - description: 'Cap versioned-dir rsync at 10 minutes, capture status'
-    re_pattern: 'if ! rsync (.*? "\$\{update_versioned_dir\}/" .*?); then'
-    re_flags: [DOTALL]
-    replace: |-
-      rsync \1 &
-          local rsync_pid=$!
-          # Enforce the timeout with an external process that SIGKILLs rsync if
-          # it runs too long. The killer is a single perl process - not a
-          # `( sleep; kill ) &` subshell - so that killing it below leaves no
-          # orphaned `sleep` behind holding our stdout/stderr (and, under test,
-          # the harness') pipe open, which would stall the parent's read-to-EOF
-          # and hang the install. Its stdio is redirected for the same reason.
-          #
-          # Instead of the kill approach chosen here, it is tempting to use a
-          # perl `alarm` wrapper that invokes rsync with a self-imposed timeout.
-          # However, this is unreliable: it depends on SIGALRM's default action,
-          # which is somehow suppressed in the invocation from
-          # install_from_archive.mm. SIGKILL does not have this problem.
-          perl -e 'sleep shift; kill "KILL", shift' "${RSYNC_TIMEOUT:-600}" "${rsync_pid}" > /dev/null 2>&1 &
-          local killer_pid=$!
-          local rsync_status=0
-          wait "${rsync_pid}" || rsync_status=$?
-          # rsync finished; stop and reap the killer so it cannot fire later.
-          kill "${killer_pid}" 2> /dev/null || true
-          wait "${killer_pid}" 2> /dev/null || true
-          if [[ ${rsync_status} -ne 0 ]]; then
-            # Restore PIPESTATUS[0] for the err line below. The leading `!`
-            # keeps `set -e` from terminating the script.
-            ! (exit "${rsync_status}")
-
   - description: |-
       Try various fixes for exit code 12 failures.
 
@@ -81,11 +42,7 @@ substitutions:
       case they add new ones beyond the current maximum 16.
     pattern: 'exit 12'
     replace: |-
-      if [[ ${rsync_status} -eq 137 ]]; then
-            # rsync was SIGKILL'd by the watchdog, i.e. it timed out.
-              exit 80
-            fi
-            # Try various remedies; Report in exit code what would have worked.
+      # Try various remedies; Report in exit code what would have worked.
             local mkdir_stderr
             if ! mkdir_stderr="$(mkdir -p "${new_versioned_dir}" 2>&1 1>/dev/null)"
             then
