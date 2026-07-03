@@ -1,5 +1,5 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 3b9a4e3bd25e8e9625f78f183053d3e62887ba5c..ed390622e0b1678a1213e98432d5178f489f9020 100644
+index 3b9a4e3bd25e8e9625f78f183053d3e62887ba5c..4c17774a8d7cc3e1d5a8c0546ba9be6f2a7b8024 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
 @@ -4027,6 +4027,9 @@ void NavigationRequest::OnRequestRedirected(
@@ -12,14 +12,14 @@ index 3b9a4e3bd25e8e9625f78f183053d3e62887ba5c..ed390622e0b1678a1213e98432d5178f
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -5985,6 +5988,10 @@ void NavigationRequest::OnStartChecksComplete(
-     request_headers_.reset();
-   }
+@@ -5988,6 +5991,10 @@ void NavigationRequest::OnStartChecksComplete(
+   // TODO(clamy): Avoid cloning the navigation params and create the
+   // ResourceRequest directly here.
  
 +  GetContentClient()->browser()->MaybeHideReferrer(
 +      frame_tree_node_->navigator().controller().GetBrowserContext(),
 +      common_params_->url, GetTopDocumentGURL(frame_tree_node_),
 +      &common_params_->referrer);
-   // TODO(clamy): Avoid cloning the navigation params and create the
-   // ResourceRequest directly here.
- 
+   auto loader_type = NavigationURLLoader::LoaderType::kRegular;
+   network::mojom::URLResponseHeadPtr cached_response_head = nullptr;
+   if (IsServedFromBackForwardCache()) {

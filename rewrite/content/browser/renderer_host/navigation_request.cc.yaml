@@ -5,15 +5,7 @@
 
 substitutions:
   - description: |
-      Call `MaybeHideReferrer` on redirect in
-      `NavigationRequest::OnRequestRedirected`, right after the redirect's
-      new referrer is written to `common_params_->referrer->url` and before
-      `Referrer::SanitizeForRequest` runs on it.
-
-      The assignment is unique in this file, so it alone identifies the
-      insertion point. The injected call relies on the `browser_context`
-      local defined earlier in the same function, and on `GetTopDocumentGURL`
-      from the chromium_src shadow file's anonymous namespace.
+      Hide the referrer on redirect in `NavigationRequest::OnRequestRedirected`
     regex:
       re_pattern:
         '(common_params_->referrer->url = GURL\(redirect_info\.new_referrer\);)'
@@ -24,22 +16,13 @@ substitutions:
               GetTopDocumentGURL(frame_tree_node_), &common_params_->referrer);
 
   - description: |
-      Call `MaybeHideReferrer` from
-      `NavigationRequest::OnStartChecksComplete`, after the embedder header
-      merge block closes and before the navigation params are cloned.
-
-      `begin_params_->headers = headers.ToString();` occurs in several
-      functions, so the match is scoped to `OnStartChecksComplete` and then
-      to the closing brace of the merge block — without depending on the
-      block's indentation. `GetTopDocumentGURL` comes from the chromium_src
-      shadow file's anonymous namespace.
+      Hide the referrer in `NavigationRequest::OnStartChecksComplete`
     regex:
       re_pattern:
-        '(NavigationRequest::OnStartChecksComplete\b.*?begin_params_->headers =
-        headers\.ToString\(\);\s*\}\n+)'
-      re_flags: [DOTALL]
-      replace: |
-        \1  GetContentClient()->browser()->MaybeHideReferrer(
+        '(auto loader_type = NavigationURLLoader::LoaderType::kRegular;)'
+      replace: |-
+        GetContentClient()->browser()->MaybeHideReferrer(
               frame_tree_node_->navigator().controller().GetBrowserContext(),
               common_params_->url, GetTopDocumentGURL(frame_tree_node_),
               &common_params_->referrer);
+          \1
