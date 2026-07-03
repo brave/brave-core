@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let BraveAvatarToolbarButton access AvatarToolbarButton's private state.
+
+      Brave subclasses AvatarToolbarButton, so it needs friend access to the
+      private members.
+    re_pattern: '( private:\n)'
+    replace: |
+      \1  friend class BraveAvatarToolbarButton;
