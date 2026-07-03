@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.settings;
 
 import android.content.Context;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -95,6 +96,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         if (!ToolbarPositionController.isToolbarPositionCustomizationEnabled(getContext(), false)) {
             removePreferenceIfPresent(PREF_ADDRESS_BAR);
         }
+
+        setPreferenceVisibleIfPresent(
+                PREF_BRAVE_DISABLE_SHARING_HUB, shouldShowSharingHubPreference());
 
         if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
@@ -347,6 +351,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 .writeBoolean(BravePreferenceKeys.BRAVE_DISABLE_SHARING_HUB, !enabled);
     }
 
+    private static boolean shouldShowSharingHubPreference() {
+        return Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
+    }
+
     private void updatePreferenceIcon(String preferenceString, int drawable) {
         Preference preference = findPreference(preferenceString);
         if (preference != null) {
@@ -478,6 +486,10 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                     if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
                         indexData.removeEntryForKey(frag, PREF_SHOW_BRAVE_REWARDS_ICON);
                         indexData.removeEntryForKey(frag, PREF_ADS_SWITCH);
+                    }
+
+                    if (!shouldShowSharingHubPreference()) {
+                        indexData.removeEntryForKey(frag, PREF_BRAVE_DISABLE_SHARING_HUB);
                     }
 
                     if (BraveTabUiFeatureUtilities
