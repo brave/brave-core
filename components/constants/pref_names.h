@@ -22,7 +22,7 @@ inline constexpr char kAdsBlocked[] = "brave.stats.ads_blocked";
 // added to kAdsBlocked when being displayed.
 inline constexpr char kTrackersBlocked[] = "brave.stats.trackers_blocked";
 inline constexpr char kJavascriptBlocked[] = "brave.stats.javascript_blocked";
-inline constexpr char kHttpsUpgrades[] = "brave.stats.https_upgrades";
+inline constexpr char kHttpsUpgradesStat[] = "brave.stats.https_upgrades";
 inline constexpr char kFingerprintingBlocked[] =
     "brave.stats.fingerprinting_blocked";
 inline constexpr char kLastCheckYMD[] = "brave.stats.last_check_ymd";
