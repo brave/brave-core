@@ -75,7 +75,7 @@ public class BravePermissionAccountsListAdapter
     private AccountInfo mSelectedAccount;
 
     public interface PermissionListener {
-        @NonNull
+        @Nullable
         HashSet<AccountInfo> getAccountsWithPermissions();
 
         @Nullable

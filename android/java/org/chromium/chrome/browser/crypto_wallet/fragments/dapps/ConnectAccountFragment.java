@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import static org.chromium.build.NullUtil.assertNonNull;
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -15,14 +18,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 
-import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.jni_zero.CalledByNative;
 import org.jni_zero.NativeMethods;
 
@@ -31,12 +31,16 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.CoinType;
 import org.chromium.brave_wallet.mojom.PermissionLifetimeOption;
+import org.chromium.build.annotations.MonotonicNonNull;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
 import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
+import org.chromium.chrome.browser.crypto_wallet.fragments.WalletFragmentCallback;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.PermissionListener;
@@ -51,9 +55,9 @@ import org.chromium.content_public.browser.WebContents;
 import org.chromium.url.GURL;
 
 import java.util.HashSet;
-import java.util.Iterator;
 
 /** Fragment used to connect Dapps to the crypto account. */
+@NullMarked
 public class ConnectAccountFragment extends BaseDAppsFragment implements PermissionListener {
     private static final String TAG = "ConnectAccount";
 
@@ -61,14 +65,14 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     private TextView mAccountsConnected;
     private TextView mButtonNewAccount;
     private ImageView mFavicon;
-    private AccountInfo[] mAccountInfos;
-    private HashSet<AccountInfo> mAccountsWithPermissions;
-    private BravePermissionAccountsListAdapter mAccountsListAdapter;
+    private @MonotonicNonNull AccountInfo[] mAccountInfos;
+    private @MonotonicNonNull HashSet<AccountInfo> mAccountsWithPermissions;
+    private @MonotonicNonNull BravePermissionAccountsListAdapter mAccountsListAdapter;
     private RecyclerView mRecyclerView;
-    private AccountInfo mSelectedAccount;
+    private @Nullable AccountInfo mSelectedAccount;
     private FaviconHelper mFaviconHelper;
-    private DefaultFaviconHelper mDefaultFaviconHelper;
-    private WalletModel mWalletModel;
+    private @Nullable DefaultFaviconHelper mDefaultFaviconHelper;
+    private @MonotonicNonNull WalletModel mWalletModel;
 
     @Override
     public void onAttach(Context context) {
@@ -112,8 +116,10 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
 
     @Override
     public View onCreateView(
-            LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
+            LayoutInflater inflater,
+            @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_connect_account, container, false);
         mWebSite = view.findViewById(R.id.fragment_connect_account_website);
         mAccountsConnected = view.findViewById(R.id.fragment_connect_account_accounts_connected);
         mButtonNewAccount = view.findViewById(R.id.fragment_connect_account_new_account_id);
@@ -127,9 +133,9 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         mRecyclerView = view.findViewById(R.id.accounts_list);
         mFavicon = view.findViewById(R.id.favicon);
 
-        mWalletModel.getBraveWalletService()
-                .getActiveOrigin(
-                        originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
+        assumeNonNull(mWalletModel)
+                .getBraveWalletService()
+                .getActiveOrigin(originInfo -> mWebSite.setText(Utils.geteTldSpanned(originInfo)));
 
         initComponents();
 
@@ -148,28 +154,31 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
             mFaviconHelper.getLocalFaviconImageForURL(
                     activity.getCurrentProfile(), pageUrl, 0, true, imageCallback);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "initComponents " + e);
+            Log.e(TAG, "initComponents", e);
         }
-        assert mWalletModel != null;
-        mWalletModel
+        assumeNonNull(mWalletModel)
                 .getKeyringModel()
                 .mAllAccountsInfo
                 .observe(
                         getViewLifecycleOwner(),
                         allAccounts -> {
                             mSelectedAccount = allAccounts.selectedAccount;
-                            mAccountInfos =
-                                    Utils.filterAccountsByCoin(
-                                                    allAccounts.accounts,
-                                                    mSelectedAccount.accountId.coin)
-                                            .toArray(new AccountInfo[0]);
-                            updateAccounts();
+                            if (mSelectedAccount != null) {
+                                mAccountInfos =
+                                        Utils.filterAccountsByCoin(
+                                                        allAccounts.accounts,
+                                                        mSelectedAccount.accountId.coin)
+                                                .toArray(new AccountInfo[0]);
+                                updateAccounts();
+                            }
                         });
     }
 
-    private void onFaviconAvailable(GURL pageUrl, Bitmap favicon) {
+    private void onFaviconAvailable(final GURL pageUrl, Bitmap favicon) {
         if (favicon == null) {
-            if (mDefaultFaviconHelper == null) mDefaultFaviconHelper = new DefaultFaviconHelper();
+            if (mDefaultFaviconHelper == null) {
+                mDefaultFaviconHelper = new DefaultFaviconHelper();
+            }
             favicon =
                     mDefaultFaviconHelper.getDefaultFaviconBitmap(
                             getActivity(), pageUrl, true, false);
@@ -192,7 +201,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     }
 
     @Override
-    @NonNull
+    @Nullable
     public HashSet<AccountInfo> getAccountsWithPermissions() {
         return mAccountsWithPermissions;
     }
@@ -217,14 +226,14 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
         public int permissionLifetimeOption;
     }
 
-    private static ConnectAccountPendingData sConnectAccountPendingData;
+    @Nullable private static ConnectAccountPendingData sConnectAccountPendingData;
 
-    private static void setConnectAccountPendingData(
-            String accountAddress, int permissionLifetimeOption) {
+    private static void setConnectAccountPendingData(final String accountAddress) {
         sConnectAccountPendingData =
-                new ConnectAccountPendingData(accountAddress, permissionLifetimeOption);
+                new ConnectAccountPendingData(accountAddress, PermissionLifetimeOption.FOREVER);
     }
 
+    @Nullable
     public static ConnectAccountPendingData getAndResetConnectAccountPendingData() {
         if (sConnectAccountPendingData == null) {
             return null;
@@ -235,34 +244,32 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     }
 
     @Override
-    public void connectAccount(@NonNull final AccountInfo account) {
+    public void connectAccount(final AccountInfo account) {
         Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
-        if (tab != null) {
-            if (tab.getWebContents() != null) {
-                // Static data for BraveDappPermissionPromptDialog.show
-                setConnectAccountPendingData(account.address, PermissionLifetimeOption.FOREVER);
-                ConnectAccountFragmentJni.get()
-                        .connectAccount(
-                                account.address,
-                                account.accountId.coin,
-                                tab.getWebContents(),
-                                success -> {
-                                    if (!success) {
-                                        return;
-                                    }
-                                    if (CoinType.SOL != account.accountId.coin) {
-                                        getKeyringService()
-                                                .setSelectedAccount(
-                                                        account.accountId, setSuccess -> {});
-                                    }
-                                    updateAccounts();
-                                });
-            }
+        if (tab != null && tab.getWebContents() != null) {
+            // Static data for BraveDappPermissionPromptDialog.show
+            setConnectAccountPendingData(account.address);
+            ConnectAccountFragmentJni.get()
+                    .connectAccount(
+                            account.address,
+                            account.accountId.coin,
+                            tab.getWebContents(),
+                            success -> {
+                                if (!success) {
+                                    return;
+                                }
+                                if (CoinType.SOL != account.accountId.coin) {
+                                    getKeyringService()
+                                            .setSelectedAccount(
+                                                    account.accountId, setSuccess -> {});
+                                }
+                                updateAccounts();
+                            });
         }
     }
 
     @Override
-    public void disconnectAccount(@NonNull final AccountInfo account) {
+    public void disconnectAccount(final AccountInfo account) {
         getBraveWalletService()
                 .resetPermission(
                         account.accountId,
@@ -275,10 +282,8 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
                                 return;
                             }
 
-                            assert mAccountsWithPermissions != null;
-                            Iterator<AccountInfo> it = mAccountsWithPermissions.iterator();
-                            while (it.hasNext()) {
-                                AccountInfo accountInfo = it.next();
+                            for (AccountInfo accountInfo :
+                                    assertNonNull(mAccountsWithPermissions)) {
                                 if (!WalletUtils.accountIdsEqual(accountInfo, account)) {
                                     getKeyringService()
                                             .setSelectedAccount(
@@ -291,7 +296,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment implements Permiss
     }
 
     @Override
-    public void switchAccount(@NonNull final AccountInfo account) {
+    public void switchAccount(final AccountInfo account) {
         getKeyringService()
                 .setSelectedAccount(
                         account.accountId,
