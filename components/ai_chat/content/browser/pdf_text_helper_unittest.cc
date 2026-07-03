@@ -40,6 +40,7 @@ class FakePdfListener : public pdf::mojom::PdfListener {
               (GetMostVisiblePageIndexCallback),
               (override));
   MOCK_METHOD(void, HasMeaningfulText, (HasMeaningfulTextCallback), (override));
+  MOCK_METHOD(void, HasJavaScript, (HasJavaScriptCallback), (override));
   MOCK_METHOD(void,
               GetSaveDataBufferHandlerForDrive,
               (pdf::mojom::SaveRequestType,
