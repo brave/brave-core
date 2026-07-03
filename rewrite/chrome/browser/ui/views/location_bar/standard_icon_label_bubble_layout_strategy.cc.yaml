@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Use preferred size instead of minimum when ShouldAlwaysShowLabel is true.
+
+      Widens the "expand to fit the label" condition so that page actions whose
+      label must always be shown are not clamped to their minimum size.
+    re_pattern:
+      'if (\(host->ShouldShowLabel\(\)
+      &&\s+host->label\(\)->GetElideBehavior\(\) != gfx::NO_ELIDE\)) {'
+    replace: 'if (\1 || host->ShouldAlwaysShowLabel()) {'
+
+  - description: |
+      Force should_use_label_bounds to true when ShouldAlwaysShowLabel is true.
+
+      Forces the image container to use the label bounds whenever the label must
+      always be shown.
+    re_pattern: 'const bool should_use_label_bounds =([\s\S]*?);'
+    replace: |-
+      bool should_use_label_bounds =\1;
+        should_use_label_bounds = should_use_label_bounds || host->ShouldAlwaysShowLabel();
