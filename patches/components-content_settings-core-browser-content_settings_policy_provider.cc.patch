@@ -1,36 +1,53 @@
 diff --git a/components/content_settings/core/browser/content_settings_policy_provider.cc b/components/content_settings/core/browser/content_settings_policy_provider.cc
-index 637e76ba55111213f1175ece3a1a17e7007e48dd..f8ae7b216b945deb4da5223389453d0d5f762e55 100644
+index 637e76ba55111213f1175ece3a1a17e7007e48dd..bae778110f8c9f00710a45cd4f239dfddcd36d70 100644
 --- a/components/content_settings/core/browser/content_settings_policy_provider.cc
 +++ b/components/content_settings/core/browser/content_settings_policy_provider.cc
-@@ -51,6 +51,7 @@ struct PrefsForManagedContentSettingsMapEntry {
+@@ -51,6 +51,10 @@ struct PrefsForManagedContentSettingsMapEntry {
  // verifies this invariant or documents any necessary deviation.
  constexpr PrefsForManagedContentSettingsMapEntry
      kPrefsForManagedContentSettingsMap[] = {
-+        BRAVE_MANAGED_CONTENT_SETTINGS
++        {kManagedBraveShieldsDisabledForUrls,
++         ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_BLOCK},
++        {kManagedBraveShieldsEnabledForUrls,
++         ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_ALLOW},
          {prefs::kManagedAutomaticDownloadsAllowedForUrls,
           ContentSettingsType::AUTOMATIC_DOWNLOADS, CONTENT_SETTING_ALLOW},
          {prefs::kManagedAutomaticDownloadsBlockedForUrls,
-@@ -203,6 +204,7 @@ constexpr PrefsForManagedContentSettingsMapEntry
+@@ -203,6 +207,8 @@ constexpr PrefsForManagedContentSettingsMapEntry
  };
  
  constexpr const char* kManagedPrefs[] = {
-+    BRAVE_MANAGED_PREFS
++    kManagedBraveShieldsDisabledForUrls,
++    kManagedBraveShieldsEnabledForUrls,
      prefs::kManagedAutomaticDownloadsAllowedForUrls,
      prefs::kManagedAutomaticDownloadsBlockedForUrls,
      prefs::kManagedAutomaticFullscreenAllowedForUrls,
-@@ -282,6 +284,7 @@ constexpr const char* kManagedPrefs[] = {
+@@ -282,6 +288,11 @@ constexpr const char* kManagedPrefs[] = {
  // the preference default content settings. If a default content settings type
  // is managed any user defined exceptions (patterns) for this type are ignored.
  constexpr const char* kManagedDefaultPrefs[] = {
-+    BRAVE_MANAGED_DEFAULT_PREFS
++    kManagedDefaultBraveFingerprintingV2,
++    prefs::kManagedDefaultBraveHttpsUpgrade,
++    prefs::kManagedDefaultBraveReferrersSetting,
++    prefs::kManagedDefaultBraveRemember1PStorageSetting,
++    prefs::kManagedDefaultBraveAdblockSetting,
      prefs::kManagedDefaultAdsSetting,
      prefs::kManagedDefaultAutomaticDownloadsSetting,
      prefs::kManagedDefaultClipboardSetting,
-@@ -379,6 +382,7 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
+@@ -379,6 +390,16 @@ struct PolicyProvider::PrefsForManagedDefaultMapEntry {
  // static
  const PolicyProvider::PrefsForManagedDefaultMapEntry
      PolicyProvider::kPrefsForManagedDefault[] = {
-+        BRAVE_MANAGED_DEFAULT
++        {ContentSettingsType::BRAVE_FINGERPRINTING_V2,
++         kManagedDefaultBraveFingerprintingV2},
++        {ContentSettingsType::BRAVE_HTTPS_UPGRADE,
++         prefs::kManagedDefaultBraveHttpsUpgrade},
++        {ContentSettingsType::BRAVE_REFERRERS,
++         prefs::kManagedDefaultBraveReferrersSetting},
++        {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
++         prefs::kManagedDefaultBraveRemember1PStorageSetting},
++        {ContentSettingsType::BRAVE_ADS,
++         prefs::kManagedDefaultBraveAdblockSetting},
          {ContentSettingsType::ADS, prefs::kManagedDefaultAdsSetting},
          {ContentSettingsType::AUTOMATIC_DOWNLOADS,
           prefs::kManagedDefaultAutomaticDownloadsSetting},
