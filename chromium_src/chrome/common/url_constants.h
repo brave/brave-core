@@ -402,6 +402,10 @@ inline constexpr char16_t kAutofillAiLearnMoreURL[] =
 inline constexpr char16_t kCardBenefitsLearnMoreURL[] =
     u"https://support.brave.app";
 
+// "Learn more" URL for the Gmail OTP filling setting.
+inline constexpr char16_t kGmailOtpFillingLearnMoreURL[] =
+    u"https://support.brave.app";
+
 // "Learn more" URL for the performance intervention notification setting.
 inline constexpr char16_t kPerformanceInterventionLearnMoreUrl[] =
     u"https://support.brave.app";
