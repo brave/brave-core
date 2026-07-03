@@ -125,23 +125,6 @@ export const style = scoped.css`
     }
   }
 
-  .allow-background-pointer-events {
-    /* This element will allow pointer events to target the background. */
-    pointer-events: none;
-
-    /* But children will not (unless they explicitly allow it). */
-    > :not(.allow-background-pointer-events) {
-      pointer-events: auto;
-    }
-
-    /* And not when a popover is open. When a popover is open and the background
-       contains an interactive iframe, pointer events on a background iframe
-       will not "light-dismiss" the popover. */
-    :scope:has(:popover-open) & {
-      pointer-events: auto;
-    }
-  }
-
   main {
     container-type: inline-size;
     view-timeline-name: --ntp-main-view-timeline;
@@ -275,6 +258,23 @@ export const style = scoped.css`
 `
 
 style.passthrough.css`
+  .allow-background-pointer-events {
+    /* This element will allow pointer events to target the background. */
+    pointer-events: none;
+
+    /* But children will not (unless they explicitly allow it). */
+    > :not(.allow-background-pointer-events) {
+      pointer-events: auto;
+    }
+
+    /* And not when a popover is open. When a popover is open and the background
+       contains an interactive iframe, pointer events on a background iframe
+       will not "light-dismiss" the popover. */
+    :scope:has(:popover-open) & {
+      pointer-events: auto;
+    }
+  }
+
   & {
     font: ${font.default.regular};
     color: ${color.text.primary};

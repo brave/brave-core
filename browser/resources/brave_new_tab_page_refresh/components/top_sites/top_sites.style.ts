@@ -29,8 +29,9 @@ export const style = scoped.css`
   .top-sites {
     display: flex;
     align-items: flex-start;
-    justify-content: center;
     gap: 8px;
+    width: fit-content;
+    margin: 0 auto;
   }
 
   .top-site-tiles-mask {
@@ -164,6 +165,7 @@ export const style = scoped.css`
     opacity: 0;
     border-radius: 12px;
     visibility: hidden;
+    pointer-events: none;
 
     transition: opacity var(--self-transition-duration);
 
@@ -222,6 +224,7 @@ export const style = scoped.css`
     .menu-button {
       opacity: 1;
       visibility: visible;
+      pointer-events: auto;
     }
   }
 `

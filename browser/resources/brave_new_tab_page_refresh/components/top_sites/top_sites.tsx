@@ -82,11 +82,12 @@ export function TopSites() {
   return (
     <div
       ref={rootRef}
+      className='allow-background-pointer-events'
       data-css-scope={style.scope}
     >
       <div className='top-site-context-menu-anchor' />
       <div className='top-sites'>
-        <div className='left-spacer' />
+        <div className='left-spacer allow-background-pointer-events' />
         <TopSitesGrid
           expanded={expanded}
           canAddSite={showAddButton}
