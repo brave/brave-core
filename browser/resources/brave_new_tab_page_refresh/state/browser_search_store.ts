@@ -227,6 +227,7 @@ export function createSearchStore() {
         event.ctrlKey,
         event.metaKey,
         event.shiftKey,
+        /* via_keyboard= */ false,
       )
     },
 
