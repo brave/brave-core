@@ -15,6 +15,7 @@ import { useBraveNews } from '../shared/Context'
 import { BackArrow } from '../shared/Icons'
 import DisabledPlaceholder from './DisabledPlaceholder'
 import Discover from './Discover'
+import OpmlControls from './OpmlControls'
 import { PopularPage } from './Popular'
 import SourcesList from './SourcesList'
 import { SuggestionsPage } from './Suggestions'
@@ -73,10 +74,24 @@ const Hr = styled.hr`
 
 const Sidebar = styled.div`
   position: relative;
-  overflow: auto;
+  overflow: hidden;
   grid-area: sidebar;
-  padding: 28px 22px 28px 32px;
   background: ${color.page.background};
+
+  display: flex;
+  flex-direction: column;
+`
+
+const SidebarScroll = styled.div`
+  flex: 1;
+  overflow: auto;
+  padding: 28px 22px 28px 32px;
+`
+
+const SidebarFooter = styled.div`
+  flex-shrink: 0;
+  padding: ${spacing.s};
+  border-top: 1px solid ${color.divider.subtle};
 `
 
 // Overlay on top of the sidebar, shown when it is disabled.
@@ -163,7 +178,12 @@ export default function Configure() {
       </Header>
       <Hr />
       <Sidebar>
-        <SourcesList />
+        <SidebarScroll>
+          <SourcesList />
+        </SidebarScroll>
+        {isBraveNewsFullyEnabled && <SidebarFooter>
+          <OpmlControls />
+        </SidebarFooter>}
         {!isBraveNewsFullyEnabled && <SidebarOverlay />}
       </Sidebar>
       <Content>
