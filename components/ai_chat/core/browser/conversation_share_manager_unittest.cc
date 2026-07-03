@@ -117,7 +117,7 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_Success) {
 
   const std::optional<GURL>& result = future.Get();
   ASSERT_TRUE(result.has_value());
-  EXPECT_EQ("https://leo-ai.brave.app/sharing/abc123", result->spec());
+  EXPECT_EQ("https://leo-ai.brave.app/shared/abc123", result->spec());
 }
 
 TEST_F(ConversationShareManagerUnitTest, ShareConversation_ServerError) {
