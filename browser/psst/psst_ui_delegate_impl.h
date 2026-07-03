@@ -12,6 +12,7 @@
 
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_presenter.h"
+#include "brave/components/psst/core/browser/psst_reporter_service.h"
 #include "brave/components/psst/core/browser/psst_settings_service.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "brave/components/psst/core/common/psst_ui_common.mojom-shared.h"
@@ -31,6 +32,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   };
 
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
+                              PsstReporterService* psst_reporter_service,
                               PrefService* prefs,
                               std::unique_ptr<PsstUiPresenter> ui_presenter);
   ~PsstUiDelegateImpl() override;
@@ -59,17 +61,25 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   void OnUserAcceptedPsstSettings(
       const std::vector<std::string>& perform_for_uids);
 
+  void SubmitPsstErrorsReport();
+
  private:
   void OnUserAcceptedInfobar(const bool is_accepted);
   void OnDontShowForThisSite();
   void OnDisablePrivacySettingsTuning();
+  void RecordFailedTasks(const std::vector<PolicyTask>& performed_tasks);
+  void NotifyObserversOfTaskStatus(
+      long progress,
+      const std::vector<PolicyTask>& performed_tasks);
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
   std::optional<url::Origin> origin_;
   std::optional<UserScriptResult> user_script_result_;
+  std::optional<PolicyTasksSet> failed_policy_tasks_;
   PsstTabWebContentsObserver::ConsentCallback apply_changes_callback_;
   raw_ptr<PsstSettingsService> psst_settings_service_ = nullptr;
+  raw_ptr<PsstReporterService> psst_reporter_service_ = nullptr;
   base::ObserverList<Observer> observer_list_;
   raw_ptr<PrefService> prefs_ = nullptr;  // not owned
   base::WeakPtrFactory<PsstUiDelegateImpl> weak_ptr_factory_{this};
