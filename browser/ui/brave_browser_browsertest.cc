@@ -6,6 +6,7 @@
 #include "brave/browser/ui/brave_browser.h"
 
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
@@ -23,6 +24,7 @@
 #include "chrome/browser/ui/startup/startup_browser_creator.h"
 #include "chrome/browser/ui/startup/startup_browser_creator_impl.h"
 #include "chrome/browser/ui/tab_ui_helper.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -339,3 +341,32 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, BookmarkBarOnNTPTestIncognito) {
   EXPECT_EQ(BookmarkBar::SHOW,
             BookmarkBarController::From(incognito)->bookmark_bar_state());
 }
+
+class BraveBrowserBrowserTestWithBringAllTabsFeature
+    : public BraveBrowserBrowserTest,
+      public ::testing::WithParamInterface<bool> {
+ public:
+  BraveBrowserBrowserTestWithBringAllTabsFeature() {
+    if (!GetParam()) {
+      feature_list_.InitAndDisableFeature(tabs::kBraveBringAllTabsToThisWindow);
+    }
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+IN_PROC_BROWSER_TEST_P(BraveBrowserBrowserTestWithBringAllTabsFeature,
+                       CanBringAllTabs) {
+  Browser* new_browser = OpenNewBrowser(browser()->profile());
+  ASSERT_TRUE(new_browser);
+  if (GetParam()) {
+    EXPECT_TRUE(brave::CanBringAllTabs(browser()));
+  } else {
+    EXPECT_FALSE(brave::CanBringAllTabs(browser()));
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(All,
+                         BraveBrowserBrowserTestWithBringAllTabsFeature,
+                         ::testing::Bool());
