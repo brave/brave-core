@@ -10,7 +10,7 @@
 #include <utility>
 
 #include "base/check_op.h"
-#include "base/containers/queue.h"
+#include "base/containers/stack.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
@@ -55,6 +55,10 @@ std::optional<MulticallVariant> MulticallVariantForSelector(
 // 1022 = EVM limit of 1024 frames minus one for the EOA call and one for the
 // leaf.
 constexpr size_t kMaxMulticallDepth = 1022;
+
+constexpr size_t kMulticallWorkBudget = 1'500'000;
+constexpr size_t kCallBaseCost = 100;
+constexpr size_t kCalldataCostPerWord = 1;
 constexpr char kFilForwarderTransferSelector[] =
     "0xd948d468";  // forward(bytes)
 
@@ -564,50 +568,49 @@ std::optional<LiFiBridgeData> LiFiBridgeDataDecode(
   };
 }
 
-// Nullopt means `data` failed to parse; fails closed.
-std::optional<std::vector<std::string>> FindAllNestedSetApprovalForAll(
-    base::span<const uint8_t> data) {
-  std::vector<std::string> result;
-  base::queue<std::pair<std::vector<uint8_t>, size_t>> pending;
-  pending.emplace(std::vector<uint8_t>(data.begin(), data.end()), 0);
+// A `base::stack` of these mirrors the EVM call stack, so only the
+// current root->leaf path is materialized at once.
+struct MulticallFrame {
+  base::ListValue calls;
+  size_t next_index = 0;
+};
 
-  while (!pending.empty()) {
-    auto [call, depth] = std::move(pending.front());
-    pending.pop();
+struct CallClassification {
+  std::optional<std::vector<uint8_t>> matched_calldata;
+  std::optional<base::ListValue> multicall_calls;
+};
 
-    if (call.size() < 4) {
+// Nullopt return means `data` failed to parse, the depth cap was hit, or
+// the work budget ran out. Returns the post-selector calldata of every
+// call in the multicall tree whose selector is `target_selector`.
+std::optional<std::vector<std::vector<uint8_t>>> FindNestedCallsWithSelector(
+    base::span<const uint8_t> data,
+    std::string_view target_selector) {
+  size_t remaining_budget = kMulticallWorkBudget;
+
+  auto classify = [&](base::span<const uint8_t> call_span)
+      -> std::optional<CallClassification> {
+    size_t words = (call_span.size() + 31) / 32;
+    size_t cost = kCallBaseCost + words * kCalldataCostPerWord;
+    if (remaining_budget < cost) {
       return std::nullopt;
     }
+    remaining_budget -= cost;
 
-    base::span<const uint8_t> call_span(call);
+    if (call_span.size() < 4) {
+      return std::nullopt;
+    }
     auto [selector_span, calldata] = call_span.split_at<4>();
     std::string selector = ToHex(selector_span);
 
-    // Leaf: a direct setApprovalForAll. Any non-zero `approved` is a grant.
-    if (selector == kERC721SetApprovalForAllSelector) {
-      auto type = eth_abi::Tuple()
-                      .AddTupleType(eth_abi::Address())
-                      .AddTupleType(eth_abi::Uint(256))
-                      .build();
-      auto decoded = ABIDecode(type, calldata);
-      if (!decoded || decoded->size() < 2) {
-        return std::nullopt;
-      }
-      // Skip revokes; collect the operator for grants.
-      if (decoded.value()[1].GetString() != "0x0") {
-        result.push_back(decoded.value()[0].GetString());
-      }
-      continue;
+    if (selector == target_selector) {
+      return CallClassification{.matched_calldata = std::vector<uint8_t>(
+                                    calldata.begin(), calldata.end())};
     }
 
-    if (depth >= kMaxMulticallDepth) {
-      return std::nullopt;
-    }
-
-    // Wrapper: unwrap a multicall and enqueue each inner call.
     auto variant = MulticallVariantForSelector(selector);
     if (!variant) {
-      continue;
+      return CallClassification();
     }
 
     auto tuple_builder = eth_abi::Tuple();
@@ -625,12 +628,50 @@ std::optional<std::vector<std::string>> FindAllNestedSetApprovalForAll(
       return std::nullopt;
     }
 
-    for (const auto& inner_call : decoded.value()[array_index].GetList()) {
-      auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
-      if (!inner_bytes) {
+    return CallClassification{
+        .multicall_calls = std::move(decoded.value()[array_index].GetList())};
+  };
+
+  std::vector<std::vector<uint8_t>> result;
+
+  auto root = classify(data);
+  if (!root) {
+    return std::nullopt;
+  }
+
+  base::stack<MulticallFrame> frames;
+  if (root->matched_calldata) {
+    result.push_back(std::move(*root->matched_calldata));
+  } else if (root->multicall_calls) {
+    frames.push(MulticallFrame{.calls = std::move(*root->multicall_calls)});
+  }
+
+  while (!frames.empty()) {
+    auto& frame = frames.top();
+    if (frame.next_index >= frame.calls.size()) {
+      frames.pop();
+      continue;
+    }
+
+    const auto& inner_call = frame.calls[frame.next_index++];
+    auto inner_bytes = PrefixedHexStringToBytes(inner_call.GetString());
+    if (!inner_bytes) {
+      return std::nullopt;
+    }
+
+    auto classified = classify(*inner_bytes);
+    if (!classified) {
+      return std::nullopt;
+    }
+
+    if (classified->matched_calldata) {
+      result.push_back(std::move(*classified->matched_calldata));
+    } else if (classified->multicall_calls) {
+      if (frames.size() >= kMaxMulticallDepth) {
         return std::nullopt;
       }
-      pending.emplace(std::move(*inner_bytes), depth + 1);
+      frames.push(
+          MulticallFrame{.calls = std::move(*classified->multicall_calls)});
     }
   }
 
@@ -1524,16 +1565,34 @@ GetTransactionInfoFromData(const std::vector<uint8_t>& data) {
         nullptr);
   } else if (MulticallVariantForSelector(selector)) {
     // Surface a nested setApprovalForAll; multicalls without one stay Other.
-    auto operators = FindAllNestedSetApprovalForAll(base::span(data));
-    if (!operators) {
+    auto matches = FindNestedCallsWithSelector(
+        base::span(data), kERC721SetApprovalForAllSelector);
+    if (!matches) {
       return std::nullopt;
     }
-    if (!operators->empty()) {
+
+    std::vector<std::string> operators;
+    auto type = eth_abi::Tuple()
+                    .AddTupleType(eth_abi::Address())
+                    .AddTupleType(eth_abi::Uint(256))
+                    .build();
+    for (const auto& match : *matches) {
+      auto decoded = ABIDecode(type, match);
+      if (!decoded || decoded->size() < 2) {
+        return std::nullopt;
+      }
+      // Skip revokes; collect the operator for grants.
+      if (decoded.value()[1].GetString() != "0x0") {
+        operators.push_back(decoded.value()[0].GetString());
+      }
+    }
+
+    if (!operators.empty()) {
       return std::make_tuple(
           mojom::TransactionType::ERC721SetApprovalForAll,
           std::vector<std::string>{"address",  // operator
                                    "bool"},    // approved
-          std::vector<std::string>{base::JoinString(*operators, ","), "0x1"},
+          std::vector<std::string>{base::JoinString(operators, ","), "0x1"},
           nullptr);
     }
     return std::make_tuple(mojom::TransactionType::Other,

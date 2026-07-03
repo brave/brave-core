@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -17,6 +18,70 @@
 namespace brave_wallet {
 
 namespace {
+
+void AppendWord(std::vector<uint8_t>& out, uint64_t value) {
+  std::vector<uint8_t> word(32, 0);
+  for (int i = 0; i < 8; ++i) {
+    word[31 - i] = static_cast<uint8_t>((value >> (8 * i)) & 0xff);
+  }
+  out.insert(out.end(), word.begin(), word.end());
+}
+
+std::vector<uint8_t> EncodeMulticall(
+    const std::vector<std::vector<uint8_t>>& calls) {
+  std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};  // multicall(bytes[])
+  AppendWord(out, 0x20);               // Offset to the bytes[] array.
+  AppendWord(out, calls.size());       // Array length.
+  size_t running = calls.size() * 32;  // Offsets start after the offset words.
+  for (const auto& call : calls) {
+    AppendWord(out, running);
+    running += 32 + ((call.size() + 31) / 32) * 32;
+  }
+  for (const auto& call : calls) {
+    AppendWord(out, call.size());
+    out.insert(out.end(), call.begin(), call.end());
+    out.insert(out.end(), (((call.size() + 31) / 32) * 32) - call.size(), 0);
+  }
+  return out;
+}
+
+// Every array element aliases the same `shared_call` offset, so encoded
+// size stays linear while the naively-decoded call tree is exponential.
+std::vector<uint8_t> EncodeAliasedMulticall(
+    const std::vector<uint8_t>& shared_call,
+    size_t copies) {
+  std::vector<uint8_t> out = {0xac, 0x96, 0x50, 0xd8};  // multicall(bytes[])
+  AppendWord(out, 0x20);
+  AppendWord(out, copies);
+  size_t shared_offset = copies * 32;  // Right after the offset words.
+  for (size_t i = 0; i < copies; ++i) {
+    AppendWord(out, shared_offset);
+  }
+  AppendWord(out, shared_call.size());
+  out.insert(out.end(), shared_call.begin(), shared_call.end());
+  out.insert(out.end(),
+             (((shared_call.size() + 31) / 32) * 32) - shared_call.size(), 0);
+  return out;
+}
+
+std::vector<uint8_t> EncodeSetApprovalForAll(
+    const std::vector<uint8_t>& address,
+    bool approved) {
+  std::vector<uint8_t> out = {0xa2, 0x2c, 0xb4, 0x65};  // setApprovalForAll
+  out.insert(out.end(), 12, 0);
+  out.insert(out.end(), address.begin(), address.end());
+  out.insert(out.end(), 31, 0);
+  out.push_back(approved ? 1 : 0);
+  return out;
+}
+
+std::vector<uint8_t> MakeAddress(uint16_t index) {
+  std::vector<uint8_t> address(20, 0);
+  address[18] = static_cast<uint8_t>(index >> 8);
+  address[19] = static_cast<uint8_t>(index & 0xff);
+  return address;
+}
+
 void TestGetTransactionInfoFromData(
     const std::vector<uint8_t>& data,
     mojom::TransactionType expected_tx_type,
@@ -625,6 +690,100 @@ TEST(EthDataParser,
   std::vector<uint8_t> truncated_block_hash = {0x1f, 0x04, 0x64, 0xd1};
   truncated_block_hash.insert(truncated_block_hash.end(), 32, 0xab);
   EXPECT_FALSE(GetTransactionInfoFromData(truncated_block_hash));
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataNestedSetApprovalForAllWideBreadth) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+
+  // Exercises an N-wide multicall of nested multicalls without
+  // materializing the whole N*M frontier at once.
+  constexpr int kWidth = 500;
+  std::vector<std::vector<uint8_t>> outer_calls;
+  std::vector<std::string> expected_operators;
+  for (int i = 0; i < kWidth; ++i) {
+    auto address = MakeAddress(static_cast<uint16_t>(i));
+    outer_calls.push_back(
+        EncodeMulticall({EncodeSetApprovalForAll(address, /*approved=*/true)}));
+    expected_operators.push_back(ToHex(address));
+  }
+
+  auto tx_info = GetTransactionInfoFromData(EncodeMulticall(outer_calls));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0], base::JoinString(expected_operators, ","));
+  EXPECT_EQ(tx_args[1], "0x1");
+}
+
+TEST(
+    EthDataParser,
+    GetTransactionInfoFromDataNestedSetApprovalForAllOrderNestedBeforeSibling) {
+  mojom::TransactionType tx_type;
+  std::vector<std::string> tx_params;
+  std::vector<std::string> tx_args;
+  mojom::SwapInfoPtr swap_info;
+
+  auto address_a = MakeAddress(1);
+  auto address_b = MakeAddress(2);
+  auto address_c = MakeAddress(3);
+
+  // Pre-order DFS must surface A, then B, then C, not reverse sibling order.
+  auto tx_info = GetTransactionInfoFromData(EncodeMulticall({
+      EncodeMulticall({EncodeSetApprovalForAll(address_a, /*approved=*/true)}),
+      EncodeSetApprovalForAll(address_b, /*approved=*/true),
+      EncodeMulticall({EncodeSetApprovalForAll(address_c, /*approved=*/true)}),
+  }));
+  ASSERT_NE(tx_info, std::nullopt);
+  std::tie(tx_type, tx_params, tx_args, swap_info) = std::move(*tx_info);
+  ASSERT_EQ(tx_type, mojom::TransactionType::ERC721SetApprovalForAll);
+  ASSERT_EQ(tx_args.size(), 2UL);
+  EXPECT_EQ(tx_args[0],
+            base::JoinString(
+                std::vector<std::string>{ToHex(address_a), ToHex(address_b),
+                                         ToHex(address_c)},
+                ","));
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataNestedSetApprovalForAllBudgetExhaustion) {
+  // Exceeds the ~15,000-call work budget; must fail closed rather than
+  // decode the whole tree.
+  constexpr int kCallCount = 20000;
+  std::vector<uint8_t> ignored_call;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &ignored_call));
+
+  std::vector<std::vector<uint8_t>> calls(kCallCount, ignored_call);
+  EXPECT_FALSE(GetTransactionInfoFromData(EncodeMulticall(calls)));
+}
+
+TEST(EthDataParser,
+     GetTransactionInfoFromDataNestedSetApprovalForAllAliasedTreeBudgetCutoff) {
+  // Nesting kDepth aliased levels keeps calldata linear while the
+  // naively-decoded tree is O(2^kDepth); the budget must cut this off.
+  constexpr int kDepth = 20;
+  std::vector<uint8_t> ignored_call;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      "0xa9059cbb"
+      "000000000000000000000000BFb30a082f650C2A15D0632f0e87bE4F8e64460f"
+      "0000000000000000000000000000000000000000000000000000000000000064",
+      &ignored_call));
+
+  std::vector<uint8_t> aliased = ignored_call;
+  for (int i = 0; i < kDepth; ++i) {
+    aliased = EncodeAliasedMulticall(aliased, /*copies=*/2);
+  }
+
+  EXPECT_LT(aliased.size(), 10000u);
+  EXPECT_FALSE(GetTransactionInfoFromData(aliased));
 }
 
 TEST(EthDataParser, GetTransactionInfoFromDataERC1155SafeTransferFrom) {
