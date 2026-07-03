@@ -1,0 +1,6 @@
+substitutions:
+  - description:
+      'Add nullptr check for policy_connector_ to prevent crash when using
+      IOSChromeTestWithWebState. '
+    pattern: 'policy_connector_->Shutdown();'
+    replace: 'if (policy_connector_) policy_connector_->Shutdown();'

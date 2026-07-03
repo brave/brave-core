@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/shared/model/profile/test/test_profile_ios.mm b/ios/chrome/browser/shared/model/profile/test/test_profile_ios.mm
+index 0151cd652d9adafbfa5edb3b1663174084990321..01be2224e819b2a4774648329297f1d161f93e5d 100644
+--- a/ios/chrome/browser/shared/model/profile/test/test_profile_ios.mm
++++ b/ios/chrome/browser/shared/model/profile/test/test_profile_ios.mm
+@@ -151,7 +151,7 @@ void AssignTestingFactories(
+   // depend on `policy_connector_` and `user_cloud_policy_manager_`, and (2)
+   // `policy_connector_` depends on `user_cloud_policy_manager_`. The
+   // dependencies have to be shut down backward.
+-  policy_connector_->Shutdown();
++  if (policy_connector_) policy_connector_->Shutdown();
+   if (user_cloud_policy_manager_) {
+     user_cloud_policy_manager_->Shutdown();
+   }
