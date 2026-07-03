@@ -6,19 +6,21 @@
 import webpack, { type Configuration } from 'webpack'
 
 export async function runWebpack(config: Configuration) {
-  await new Promise<void>((resolve, reject) => {
-    webpack(config, (err, stats) => {
-      if (err) {
-        reject(err)
-        return
-      }
+  const { promise, resolve, reject } = Promise.withResolvers<void>()
 
-      if (stats?.hasErrors()) {
-        reject(new Error(stats.toString('errors-only')))
-        return
-      }
+  webpack(config, (err, stats) => {
+    if (err) {
+      reject(err)
+      return
+    }
 
-      resolve()
-    })
+    if (stats?.hasErrors()) {
+      reject(new Error(stats.toString('errors-only')))
+      return
+    }
+
+    resolve()
   })
+
+  return promise
 }
