@@ -31,7 +31,7 @@ class ConversationShareManager {
   // std::nullopt indicates the share failed (network error, unexpected
   // response, or an invalid resulting URL).
   using ShareConversationCallback =
-      base::OnceCallback<void(std::optional<GURL>)>;
+      base::OnceCallback<void(const std::optional<GURL>&)>;
 
   explicit ConversationShareManager(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);

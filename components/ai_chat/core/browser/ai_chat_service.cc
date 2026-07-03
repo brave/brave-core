@@ -46,9 +46,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -726,14 +724,8 @@ void AIChatService::ConversationExists(const std::string& conversation_uuid,
 
 void AIChatService::ShareConversation(const std::string& encrypted_contents,
                                       ShareConversationCallback callback) {
-  conversation_share_manager_->ShareConversation(
-      encrypted_contents,
-      base::BindOnce(
-          [](ShareConversationCallback callback,
-             std::optional<GURL> shared_conversation_viewer_url) {
-            std::move(callback).Run(std::move(shared_conversation_viewer_url));
-          },
-          std::move(callback)));
+  conversation_share_manager_->ShareConversation(encrypted_contents,
+                                                 std::move(callback));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
