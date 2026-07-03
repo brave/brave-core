@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import CarPlay
 import Combine
@@ -204,7 +205,8 @@ public class CarPlayController {
         guard let itemUUID = item.uuid else { return nil }
         let listItem = item.listItem
         listItem.accessoryType =
-          downloadStates[itemUUID] != .cached ? .cloud : .none
+          !FeatureList.kPlaylistCacheFirstEnabled.enabled && downloadStates[itemUUID] != .cached
+          ? .cloud : .none
         listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
         listItem.playingIndicatorLocation = .trailing
         listItem.userInfo = ["id": item.id, "uuid": itemUUID]
