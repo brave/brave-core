@@ -262,7 +262,7 @@ inline constexpr auto kCollectedExpressHistograms =
     {"Brave.NTP.NewTabsCreatedDaily", MetricConfig{.ephemeral = true}},
     {"Brave.PermissionLifetime.24Hours", MetricConfig{.ephemeral = true}},
     {"Brave.Rewards.EnabledInstallationTime", MetricConfig{.ephemeral = true}},
-    {"Brave.Search.BackupResultsFailures", MetricConfig{
+    {"Brave.Search.BackupResultsFailures.2", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kVersion, MetricAttribute::kChannel, MetricAttribute::kPlatform, MetricAttribute::kCountryCode},
     }},
