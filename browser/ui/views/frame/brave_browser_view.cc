@@ -902,13 +902,13 @@ void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
   closing_confirm_dialog_activated_ = false;
 
   auto* browser = GetBraveBrowser();
-  // Set to Browser instance because Browser instance knows about the result
-  // of any warning handlers or beforeunload handlers.
-  browser->set_confirmed_to_close(allowed_to_close);
+  // Record the user's choice on the window-scoped UnloadController, which
+  // tracks the result of any warning or beforeunload handlers.
+  UnloadController::From(browser)->set_confirmed_to_close(allowed_to_close);
   if (allowed_to_close) {
     // Start close window again as user allowed to close it.
     // Confirm dialog will not be launched for this closing request
-    // as we set BraveBrowser::confirmed_to_closed_window_ to true.
+    // as we set UnloadController::confirmed_to_close_ to true.
     // If user cancels this window closing via additional warnings
     // or beforeunload handler, this dialog will be shown again.
     chrome::CloseWindow(browser);
@@ -917,7 +917,7 @@ void BraveBrowserView::OnWindowClosingConfirmResponse(bool allowed_to_close) {
 
 void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
     int download_count,
-    Browser::DownloadCloseType dialog_type,
+    UnloadController::DownloadCloseType dialog_type,
     base::OnceCallback<void(bool)> callback) {
   // Simulate user response.
   if (g_download_confirm_return_allow_for_testing) {

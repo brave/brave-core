@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/browser/ui/webui/new_tab_page/new_tab_page_ui.h"
 #include "chrome/browser/ui/webui/new_tab_page_third_party/new_tab_page_third_party_ui.h"
 #include "chrome/browser/ui/webui/ntp/new_tab_ui.h"
@@ -135,7 +136,8 @@ void BraveBrowser::OnTabClosing(tabs::TabInterface* tab,
                                // In this case, Shared pinned tabs will be moved
                                // to another window, so we don't have to warn
                                // users.
-                               browser->confirmed_to_close_ = true;
+                               UnloadController::From(browser.get())
+                                   ->set_confirmed_to_close(true);
                                chrome::CloseWindow(browser.get());
                              }
                            },
@@ -266,22 +268,13 @@ void BraveBrowser::OnTabStripModelChanged(
   }
 }
 
-void BraveBrowser::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
-  // Clear user's choice because user cancelled window closing by some
-  // warning(ex, download is in-progress).
-  if (result == WarnBeforeClosingResult::kDoNotClose) {
-    confirmed_to_close_ = false;
-  }
-  Browser::FinishWarnBeforeClosing(result);
-}
-
 void BraveBrowser::BeforeUnloadFired(content::WebContents* source,
                                      bool proceed,
                                      bool* proceed_to_fire_unload) {
   // Clear user's choice when user cancelled window closing by beforeunload
   // handler.
   if (!proceed) {
-    confirmed_to_close_ = false;
+    UnloadController::From(this)->set_confirmed_to_close(false);
   }
   Browser::BeforeUnloadFired(source, proceed, proceed_to_fire_unload);
 }
@@ -295,13 +288,13 @@ bool BraveBrowser::TryToCloseWindow(
   // start to close. In this case, we should not ask to users about this
   // closing. So, treats like user confirmed closing. If this try blocked by
   // user, |confirmed_to_close_| is set to false by ResetTryToCloseWindow().
-  confirmed_to_close_ = true;
+  UnloadController::From(this)->set_confirmed_to_close(true);
   return Browser::TryToCloseWindow(skip_beforeunload,
                                    std::move(on_close_confirmed));
 }
 
 void BraveBrowser::ResetTryToCloseWindow() {
-  confirmed_to_close_ = false;
+  UnloadController::From(this)->set_confirmed_to_close(false);
   Browser::ResetTryToCloseWindow();
 }
 
@@ -326,7 +319,7 @@ bool BraveBrowser::ShouldAskForBrowserClosingBeforeHandlers() {
     return false;
   }
 
-  if (confirmed_to_close_) {
+  if (UnloadController::From(this)->confirmed_to_close()) {
     return false;
   }
 

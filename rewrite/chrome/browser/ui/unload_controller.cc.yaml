@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Keep the window open on last-tab close unless closing it is enabled
+
+      `UnloadController::TabStripEmpty()` marks the browser as attempting to
+      close as soon as the tab strip empties. Brave gates that on the
+      `kEnableClosingLastTab` pref so that, when disabled, the window stays
+      open (a fresh tab is added elsewhere) instead of closing.
+
+      `kEnableClosingLastTab` and the `PrefService`/`Profile` accessors are
+      brought into scope by the chromium_src shadow file's includes, keeping
+      this plaster to the in-function guard that cannot be expressed at file
+      scope.
+    re_pattern: '(void UnloadController::TabStripEmpty\(\) \{\n)'
+    replace: |
+      \1  if (!browser_->profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
+          return;
+        }
+  - description: |
+      Reset the cached close confirmation when a warning is declined
+
+      When the user cancels window closing at a warning (e.g. an in-progress
+      download), `confirmed_to_close_` must be reset so the closing-confirm
+      dialog logic runs again on the next attempt.
+      `UnloadController::FinishWarnBeforeClosing()` is where that decision now
+      is made.
+    re_pattern: '(void UnloadController::FinishWarnBeforeClosing\(WarnBeforeClosingResult result\) \{\n)'
+    replace: |
+      \1  if (result == WarnBeforeClosingResult::kDoNotClose) {
+          confirmed_to_close_ = false;
+        }

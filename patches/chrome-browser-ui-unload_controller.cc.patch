@@ -1,0 +1,24 @@
+diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
+index c63573fb9c454f0aaa6cad29871d4fb0a1a5c63d..ef26ec2950f371cd1a8dc9db5ce215e95a7c0b8a 100644
+--- a/chrome/browser/ui/unload_controller.cc
++++ b/chrome/browser/ui/unload_controller.cc
+@@ -480,6 +480,9 @@ void UnloadController::OnTabStripModelChanged(
+ }
+ 
+ void UnloadController::TabStripEmpty() {
++  if (!browser_->profile()->GetPrefs()->GetBoolean(kEnableClosingLastTab)) {
++    return;
++  }
+   // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not
+   // attempt to add tabs to the browser before it closes.
+   is_attempting_to_close_browser_ = true;
+@@ -831,6 +834,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+ }
+ 
+ void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
++  if (result == WarnBeforeClosingResult::kDoNotClose) {
++    confirmed_to_close_ = false;
++  }
+   switch (result) {
+     case WarnBeforeClosingResult::kOkToClose:
+       chrome::CloseWindow(browser_);

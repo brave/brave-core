@@ -45,12 +45,4 @@ index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a29624
  
    // Processes all pending updates to the UI that have been scheduled by
    // ScheduleUIUpdate in scheduled_updates_.
-@@ -1014,7 +1016,7 @@ class Browser : public TabStripModelObserver,
-   // Called when all warnings have completed when attempting to close the
-   // browser directly (e.g. via hotkey, close button, terminate signal, etc.)
-   // Used as a WarnBeforeClosingCallback by HandleBeforeClose().
--  void FinishWarnBeforeClosing(WarnBeforeClosingResult result);
-+  virtual void FinishWarnBeforeClosing(WarnBeforeClosingResult result);
- 
-   // Assorted utility functions ///////////////////////////////////////////////
  
