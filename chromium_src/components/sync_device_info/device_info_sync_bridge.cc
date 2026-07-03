@@ -86,14 +86,12 @@ void DeviceInfoSyncBridge::OnDeviceInfoDeleted(const std::string& client_id,
   }
 }
 
-std::vector<std::unique_ptr<DeviceInfo>>
-DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
+std::vector<DeviceInfo> DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   TRACE_EVENT0("sync", "DeviceInfoSyncBridge::GetAllBraveDeviceInfo");
-  std::vector<std::unique_ptr<DeviceInfo>> list;
+  std::vector<DeviceInfo> list;
   for (const auto& data : all_data_) {
-    list.push_back(std::make_unique<DeviceInfo>(
-        SpecificsToModel(data.second.specifics())));
+    list.push_back(SpecificsToModel(data.second.specifics()));
   }
   return list;
 }
@@ -102,8 +100,7 @@ DeviceInfoSyncBridge::GetAllBraveDeviceInfo() const {
 // translation unit, and the clang plugin wont allow the definition in the
 // header. This function has to provide a dead definition, otherwise there are
 // certain types of breakages that require patching upstream code.
-std::vector<std::unique_ptr<DeviceInfo>>
-DeviceInfoTracker::GetAllBraveDeviceInfo() const {
+std::vector<DeviceInfo> DeviceInfoTracker::GetAllBraveDeviceInfo() const {
   NOTREACHED() << "This function must be overriden";
 }
 

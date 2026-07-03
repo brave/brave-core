@@ -11,8 +11,7 @@
 #define ForcePulseForTest                                                    \
   DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) \
       override;                                                              \
-  std::vector<std::unique_ptr<DeviceInfo>> GetAllBraveDeviceInfo()           \
-      const override;                                                        \
+  std::vector<DeviceInfo> GetAllBraveDeviceInfo() const override;            \
   void ForcePulseForTest
 
 #include <components/sync_device_info/fake_device_info_tracker.h>  // IWYU pragma: export

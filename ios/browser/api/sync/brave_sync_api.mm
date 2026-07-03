@@ -315,14 +315,14 @@ BraveSyncAPIWordsValidationStatus const
   base::ListValue device_list_value;
 
   for (const auto& device : device_list) {
-    auto device_value = device->ToValue();
+    auto device_value = device.ToValue();
     bool is_current_device =
-        local_device_info && local_device_info->guid() == device->guid();
+        local_device_info && local_device_info->guid() == device.guid();
     device_value.Set("isCurrentDevice", is_current_device);
-    device_value.Set("guid", device->guid());
+    device_value.Set("guid", device.guid());
     device_value.Set(
         "supportsSelfDelete",
-        device->self_delete_support() == syncer::SelfDeleteSupport::kSupported);
+        device.self_delete_support() == syncer::SelfDeleteSupport::kSupported);
     device_list_value.Append(base::Value(std::move(device_value)));
   }
 
