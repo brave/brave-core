@@ -85,78 +85,82 @@ group("brave") {
              [ string_replace(rebase_path(exe_path), " ", "\\ ") ])
 }
 
-action("generate_dsa_sig_for_dmg") {
-  script = "generate_sig.py"
+template("generate_dsa_sig_for_dmg") {
+  action(target_name) {
+    script = "generate_sig.py"
 
-  if (build_sparkle) {
-    sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
-  } else {
-    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
-  }
-  output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
+    if (build_sparkle) {
+      sign_update_path = "$root_out_dir/old_dsa_scripts/sign_update"
+    } else {
+      sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
+    }
+    output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
 
-  args = [
-    "--sign-update",
-    rebase_path("$sign_update_path"),
-    "--sign-key-file",
-    "$sparkle_dsa_private_key_file",
-    "--target",
-    rebase_path(dmg_path),
-    "--output",
-    rebase_path("$output_dmg_dsa_path"),
-    "--dsa",
-  ]
+    args = [
+      "--sign-update",
+      rebase_path("$sign_update_path"),
+      "--sign-key-file",
+      "$sparkle_dsa_private_key_file",
+      "--target",
+      rebase_path(dmg_path),
+      "--output",
+      rebase_path("$output_dmg_dsa_path"),
+      "--dsa",
+    ]
 
-  inputs = [
-    script,
-    "$sign_update_path",
-    dmg_path,
-  ]
+    inputs = [
+      script,
+      "$sign_update_path",
+      dmg_path,
+    ]
 
-  outputs = [ "$output_dmg_dsa_path" ]
+    outputs = [ "$output_dmg_dsa_path" ]
 
-  deps = [ ":package" ]
+    deps = [ invoker.package_dep ]
 
-  if (build_sparkle) {
-    deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+    if (build_sparkle) {
+      deps += [ "//brave/vendor/sparkle:copy_old_sign_update" ]
+    }
   }
 }
 
-action("generate_eddsa_sig_for_dmg") {
-  script = "generate_sig.py"
+template("generate_eddsa_sig_for_dmg") {
+  action(target_name) {
+    script = "generate_sig.py"
 
-  if (build_sparkle) {
-    sign_update_path = "$root_out_dir/sign_update"
-  } else {
-    sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
-  }
+    if (build_sparkle) {
+      sign_update_path = "$root_out_dir/sign_update"
+    } else {
+      sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
+    }
 
-  output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
+    output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
 
-  args = [
-    "--sign-update",
-    rebase_path("$sign_update_path"),
-    "--sign-key",
-    "$sparkle_eddsa_private_key",
-    "--target",
-    rebase_path(dmg_path),
-    "--output",
-    rebase_path("$output_dmg_eddsa_path"),
-    "--eddsa",
-  ]
+    args = [
+      "--sign-update",
+      rebase_path("$sign_update_path"),
+      "--sign-key",
+      "$sparkle_eddsa_private_key",
+      "--target",
+      rebase_path(dmg_path),
+      "--output",
+      rebase_path("$output_dmg_eddsa_path"),
+      "--eddsa",
+    ]
 
-  inputs = [
-    script,
-    "$sign_update_path",
-    dmg_path,
-  ]
+    inputs = [
+      script,
+      "$sign_update_path",
+      dmg_path,
+    ]
 
-  outputs = [ "$output_dmg_eddsa_path" ]
+    outputs = [ "$output_dmg_eddsa_path" ]
 
-  deps = [ ":package" ]
+    deps = [ invoker.package_dep ]
 
-  if (build_sparkle) {
-    deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
+    if (build_sparkle) {
+      deps += [ "//brave/vendor/sparkle:build_sparkle_framework" ]
+    }
   }
 }
 
@@ -303,67 +307,82 @@ if (is_official_build && !skip_signing) {
   }
 }
 
-action("package") {
-  outputs = [
-    dmg_path,
-    "$packaged_basename.pkg",
-    zip_path,
-  ]
-  deps = [
-    ":copy_browser_install_script",
-    ":copy_dmg_background_image",
-    ":copy_dmg_icon",
-    ":copy_dmg_preinstall",
-    ":copy_ds_store",
-    ":copy_helper_entitlements",
-    ":copy_postinstall",
-    ":copy_signing_config",
-    ":preinstall",
-    "//chrome:chrome_app",
-    "//chrome/installer/mac",
-  ]
-  script = "$packaging_dir/sign_chrome.py"
-  installer_identity = mac_installer_signing_identifier
-  if (skip_signing && installer_identity == "") {
-    # Prevent an AssertionError in upstream:
-    installer_identity = "stub"
-  }
-  args = [
-    "--input",
-    rebase_path(root_build_dir, root_build_dir),
-    "--output",
-    rebase_path(packaging_out_dir, root_build_dir),
+# Packaging support only (no //chrome:chrome_app unless mac_prebuilt_package).
+packaging_support_deps = [
+  ":copy_browser_install_script",
+  ":copy_dmg_background_image",
+  ":copy_dmg_icon",
+  ":copy_dmg_preinstall",
+  ":copy_ds_store",
+  ":copy_helper_entitlements",
+  ":copy_postinstall",
+  ":copy_signing_config",
+  ":preinstall",
+  "//chrome/installer/mac",
+]
 
-    # sign_chrome.py requires --identity even when signing is skipped.
-    "--identity=$mac_signing_identifier",
-    "--installer-identity=$installer_identity",
-  ]
-  if (!is_official_build) {
-    args += [ "--development" ]
-  }
-  if (skip_signing) {
-    args += [ "--skip_signing" ]
-  } else if (is_official_build) {
-    deps += [ ":copy_provisionprofile" ]
-    args += [ "--provisioning_profile_basename=$provisionprofile_basename" ]
-  }
-  if (notarize) {
-    args += [ "--notarize" ]
-    notary_args = [
-      "--apple-id",
-      notary_user,
-      "--password",
-      notary_password,
-      "--team-id",
-      chrome_mac_team_id,
+# Signs and builds dmg/pkg/zip. invoker.deps should supply the app binary
+# (e.g. //chrome:chrome_app) unless the app is already in the out dir.
+template("mac_package") {
+  action(target_name) {
+    outputs = [
+      dmg_path,
+      "$packaged_basename.pkg",
+      zip_path,
     ]
-    foreach(arg, notary_args) {
-      args += [ "--notary-arg=$arg" ]
+    deps = packaging_support_deps + invoker.deps
+    script = "$packaging_dir/sign_chrome.py"
+    installer_identity = mac_installer_signing_identifier
+    if (skip_signing && installer_identity == "") {
+      # Prevent an AssertionError in upstream:
+      installer_identity = "stub"
+    }
+    args = [
+      "--input",
+      rebase_path(root_build_dir, root_build_dir),
+      "--output",
+      rebase_path(packaging_out_dir, root_build_dir),
+
+      # sign_chrome.py requires --identity even when signing is skipped.
+      "--identity=$mac_signing_identifier",
+      "--installer-identity=$installer_identity",
+    ]
+    if (!is_official_build) {
+      args += [ "--development" ]
+    }
+    if (skip_signing) {
+      args += [ "--skip_signing" ]
+    } else if (is_official_build) {
+      deps += [ ":copy_provisionprofile" ]
+      args += [ "--provisioning_profile_basename=$provisionprofile_basename" ]
+    }
+    if (notarize) {
+      args += [ "--notarize" ]
+      notary_args = [
+        "--apple-id",
+        notary_user,
+        "--password",
+        notary_password,
+        "--team-id",
+        chrome_mac_team_id,
+      ]
+      foreach(arg, notary_args) {
+        args += [ "--notary-arg=$arg" ]
+      }
+    }
+    if (is_universal_binary) {
+      args += [ "--universal" ]
     }
   }
-  if (is_universal_binary) {
-    args += [ "--universal" ]
-    deps += [ ":universalize" ]
+}
+
+mac_package("package") {
+  deps = []
+  if (!mac_prebuilt_package) {
+    deps += [ "//chrome:chrome_app" ]
+    if (is_universal_binary) {
+      deps += [ ":universalize" ]
+    }
   }
 }
 
@@ -427,31 +446,58 @@ copy("copy_helper_entitlements") {
   outputs = [ "$packaging_dir/{{source_file_part}}" ]
 }
 
-group("create_dist_mac") {
-  deps = [ ":package" ]
-  if (!skip_signing) {
-    if (sparkle_dsa_private_key_file != "") {
-      deps += [ ":generate_dsa_sig_for_dmg" ]
-    }
+generate_dsa_sig_for_dmg("generate_dsa_sig_for_dmg") {
+  package_dep = ":package"
+}
 
-    if (sparkle_eddsa_private_key != "") {
-      deps += [ ":generate_eddsa_sig_for_dmg" ]
-    }
+generate_eddsa_sig_for_dmg("generate_eddsa_sig_for_dmg") {
+  package_dep = ":package"
+}
 
-    if (last_chrome_installer != "") {
-      deps += [ ":build_delta_installer" ]
+template("create_dist_mac_group") {
+  group(target_name) {
+    deps = [ invoker.package_dep ]
+    if (!skip_signing) {
+      if (sparkle_dsa_private_key_file != "") {
+        deps += [ invoker.dsa_sig_dep ]
+      }
       if (sparkle_eddsa_private_key != "") {
-        deps += [ ":generate_eddsa_sig_for_delta" ]
+        deps += [ invoker.eddsa_sig_dep ]
+      }
+      if (defined(invoker.include_delta) && invoker.include_delta &&
+          last_chrome_installer != "") {
+        deps += [ ":build_delta_installer" ]
+        if (sparkle_eddsa_private_key != "") {
+          deps += [ ":generate_eddsa_sig_for_delta" ]
+        }
       }
     }
-  }
-  if (dmg_crx_private_key != "") {
-    deps += [ ":crx" ]
+    if (dmg_crx_private_key != "") {
+      deps += [ invoker.crx_dep ]
+    }
   }
 }
 
-if (dmg_crx_private_key != "") {
-  compiled_action("crx") {
+create_dist_mac_group("create_dist_mac") {
+  package_dep = ":package"
+  dsa_sig_dep = ":generate_dsa_sig_for_dmg"
+  eddsa_sig_dep = ":generate_eddsa_sig_for_dmg"
+  crx_dep = ":crx"
+  include_delta = true
+}
+
+# Package an app already present in the out dir (e.g. after manual universalize).
+# Requires mac_prebuilt_package=true at gn gen time.
+create_dist_mac_group("create_dist_mac_prebuilt") {
+  package_dep = ":package"
+  dsa_sig_dep = ":generate_dsa_sig_for_dmg"
+  eddsa_sig_dep = ":generate_eddsa_sig_for_dmg"
+  crx_dep = ":crx"
+  include_delta = false
+}
+
+template("mac_crx") {
+  compiled_action(target_name) {
     tool = "//components/crx_file:crx3_build_action"
     inputs = [ zip_path ]
     crx_path = "$packaged_basename.crx3"
@@ -461,6 +507,12 @@ if (dmg_crx_private_key != "") {
       rebase_path(zip_path, root_build_dir),
       rebase_path(dmg_crx_private_key, root_build_dir),
     ]
-    deps = [ ":package" ]
+    deps = [ invoker.package_dep ]
+  }
+}
+
+if (dmg_crx_private_key != "") {
+  mac_crx("crx") {
+    package_dep = ":package"
   }
 }

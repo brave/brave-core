@@ -22,8 +22,12 @@ def copy_x64(x64_src_path, x64_dest_path):
         shutil.rmtree(x64_dest_path)
 
     # TODO check why brave_resources.pak differs between x64 and arm64
+    # Code signature artifacts are not Mach-O; lipo cannot merge them. The
+    # package step re-signs the universal app.
     shutil.copytree(x64_src_path, x64_dest_path, symlinks=True,
-            ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak'))
+            ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak',
+                                         '_CodeSignature', 'CodeResources',
+                                         '*.sig'))
     # remove conflicting files
     os.remove(os.path.join(x64_dest_path, 'Contents', 'Info.plist'))
 
