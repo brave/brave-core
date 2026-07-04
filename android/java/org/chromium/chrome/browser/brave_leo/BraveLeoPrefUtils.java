@@ -63,6 +63,13 @@ public class BraveLeoPrefUtils {
     }
 
     public static boolean getIsSubscriptionActive(Profile profile) {
+        // The subscription pref is only registered when the AI Chat feature is enabled
+        // (see ai_chat::prefs::RegisterProfilePrefs, gated on IsAIChatEnabled()). Reading an
+        // unregistered pref trips a CHECK in PrefService, so bail out when AI Chat is disabled.
+        // No AI Chat means no Leo subscription anyway, so returning false is correct.
+        if (!ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+            return false;
+        }
         Profile profileToUse = profile == null ? BraveLeoPrefUtils.getProfile() : profile;
         if (profileToUse == null) {
             Log.e(TAG, "BraveLeoPrefUtils.getIsSubscriptionActive profile is null");
