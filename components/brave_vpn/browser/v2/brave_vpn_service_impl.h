@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 
+#include <memory>
+#include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
@@ -14,13 +16,13 @@
 
 class PrefService;
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
+
+class PurchasedStateManager;
 
 class BraveVpnServiceImpl : public BraveVpnService {
  public:
-  explicit BraveVpnServiceImpl(PrefService* local_prefs,
-                               PrefService* profile_prefs);
+  BraveVpnServiceImpl(PrefService* local_prefs, PrefService* profile_prefs);
   ~BraveVpnServiceImpl() override;
 
   BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
@@ -109,6 +111,8 @@ class BraveVpnServiceImpl : public BraveVpnService {
 #endif  // BUILDFLAG(IS_ANDROID)
 
  private:
+  friend class BraveVpnServiceImplTest;
+
   // KeyedService overrides:
   void Shutdown() override;
 
@@ -119,14 +123,14 @@ class BraveVpnServiceImpl : public BraveVpnService {
                                    mojom::PurchasedState state) override;
 #endif  // !BUILDFLAG(IS_ANDROID)
 
- private:
-  const raw_ref<PrefService> local_prefs_;
+  void OnPurchasedStateChanged(mojom::PurchasedState state,
+                               std::optional<std::string> description);
+
   const raw_ref<PrefService> profile_prefs_;
+  std::unique_ptr<PurchasedStateManager> purchased_state_manager_;
   [[maybe_unused]] mojom::ConnectionState connection_state_;
-  mojom::PurchasedState purchased_state_;
 };
 
-}  // namespace v2
-}  // namespace brave_vpn
+}  // namespace brave_vpn::v2
 
 #endif  // BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_

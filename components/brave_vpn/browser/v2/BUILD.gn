@@ -11,6 +11,8 @@ static_library("browser") {
   sources = [
     "brave_vpn_service_impl.cc",
     "brave_vpn_service_impl.h",
+    "purchased_state_manager.cc",
+    "purchased_state_manager.h",
   ]
 
   if (is_android) {
@@ -29,5 +31,25 @@ static_library("browser") {
     "//base",
     "//brave/components/brave_vpn/common",
     "//components/prefs",
+  ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "brave_vpn_service_impl_unittest.cc",
+    "purchased_state_manager_unittest.cc",
+  ]
+
+  deps = [
+    ":browser",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_vpn/common",
+    "//brave/components/skus/common",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
   ]
 }
