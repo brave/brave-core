@@ -249,6 +249,16 @@ if (is_android) {
     ]
   }
 
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.messages") {
+    sources = [ "src/org/chromium/chrome/browser/messages/BraveMessageQueueMediatorTest.java" ]
+
+    deps = [
+      "//brave/browser/messages/android:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.media") {
     sources = [
       "src/org/chromium/chrome/browser/media/BraveFullscreenVideoPictureInPictureControllerTest.java",

@@ -797,6 +797,16 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.messages.MessageContainerCoordinator
+
+-keep class org.chromium.chrome.browser.messages.ChromeMessageQueueMediator {
+    public <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.messages.BraveMessageQueueMediator {
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.tabbed_mode.TabbedRootUiCoordinator {
     public <init>(...);
     *** mAdvancedProtectionCoordinator;
