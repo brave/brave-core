@@ -56,6 +56,8 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
+class AIChatService;
+
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer
 #if !BUILDFLAG(IS_ANDROID)
@@ -155,6 +157,14 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 #endif
 
   void NotifyNewDefaultConversation();
+
+  // Returns the conversation cached for the active tab's content if it exists
+  // and has not been shown yet (no connected client), so the side panel can
+  // adopt a conversation an entry point (e.g. the context menu) created before
+  // the panel opened. Returns nullptr otherwise. Only used on the global and
+  // standalone panel paths, which don't otherwise bind by content_id.
+  ConversationHandler* MaybeGetUnshownConversationForActiveContent(
+      AIChatService* service);
 
   // Shared helper for ProcessTextFile / ProcessPdfFile.
   void ExtractAndProcessFile(

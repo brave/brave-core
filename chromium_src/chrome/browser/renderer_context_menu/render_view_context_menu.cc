@@ -558,7 +558,10 @@ void RenderViewContextMenu::ExecuteAIChatCommand(int command) {
     // current state.
     conversation->MaybeUnlinkAssociatedContent();
 
-    // Active the panel.
+    // Active the panel. In global/standalone panel mode the opening panel binds
+    // the conversation cached for this content (created just above), so the
+    // submitted text below is shown rather than orphaned. See
+    // AIChatUIPageHandler::BindRelatedConversation.
     ai_chat::OpenAIChatForTab(embedder_web_contents_);
     conversation->SubmitSelectedText(selected_text, action_type);
   }

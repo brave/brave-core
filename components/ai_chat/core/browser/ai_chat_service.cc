@@ -351,6 +351,15 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
   return conversation;
 }
 
+ConversationHandler* AIChatService::GetConversationHandlerForContent(
+    int associated_content_id) {
+  auto it = content_conversations_.find(associated_content_id);
+  if (it == content_conversations_.end()) {
+    return nullptr;
+  }
+  return GetConversation(it->second);
+}
+
 ConversationHandler* AIChatService::CreateConversationHandlerForContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {

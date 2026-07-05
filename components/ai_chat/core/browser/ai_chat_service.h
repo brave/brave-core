@@ -151,6 +151,14 @@ class AIChatService : public KeyedService,
       int associated_content_id,
       base::WeakPtr<AssociatedContentDelegate> associated_content);
 
+  // Returns the most recent conversation cached for |associated_content_id|
+  // (see content_conversations_), or nullptr if none exists. Unlike
+  // GetOrCreateConversationHandlerForContent() this never creates a
+  // conversation and never mutates the cache. |associated_content_id| should
+  // not be stored.
+  ConversationHandler* GetConversationHandlerForContent(
+      int associated_content_id);
+
   // Removes all in-memory and persisted data for all conversations
   void DeleteConversations(std::optional<base::Time> begin_time = std::nullopt,
                            std::optional<base::Time> end_time = std::nullopt);

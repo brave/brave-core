@@ -818,6 +818,88 @@ IN_PROC_BROWSER_TEST_F(
          "content when kPageContextEnabledInitially is disabled";
 }
 
+// Enables the global side panel feature so the page handler uses the
+// non-content-associated path — i.e. conversations_are_content_associated_ is
+// false and BindRelatedConversation/NewConversation create (or adopt) a
+// conversation rather than looking one up by content_id.
+class AIChatUIPageHandlerGlobalPanelBrowserTest
+    : public AIChatUIPageHandlerBrowserTest {
+ public:
+  AIChatUIPageHandlerGlobalPanelBrowserTest() {
+    scoped_feature_list_.InitAndEnableFeature(
+        ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+  }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Regression test: when Leo is invoked from the page context menu while the
+// side panel is closed, the menu creates and populates a conversation tied to
+// the tab's content_id, then opens the panel. In global panel mode the panel
+// binds a brand-new conversation instead of looking one up by content_id, so
+// the submitted message would be orphaned in a conversation the user never
+// sees. Verify the panel's first bind adopts the (not-yet-shown) conversation
+// cached for the tab's content, and that once shown, a subsequent "new
+// conversation" is not the adopted one.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerGlobalPanelBrowserTest,
+                       AdoptsUnshownContextMenuConversation) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+  const int content_id = tab_helper->web_contents_content().content_id();
+
+  // Mimic the context-menu closed-panel flow: create a conversation tied to the
+  // tab's content_id. It has no connected client yet (the panel isn't open).
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* pending = service->GetOrCreateConversationHandlerForContent(
+      content_id, tab_helper->web_contents_content().GetWeakPtr());
+  ASSERT_TRUE(pending);
+  const std::string pending_uuid = pending->get_conversation_uuid();
+
+  // Stand up a fresh page handler for the same tab, simulating the side panel
+  // opening in global mode.
+  mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+  auto handler = std::make_unique<AIChatUIPageHandler>(
+      tab_contents, tab_contents,
+      Profile::FromBrowserContext(tab_contents->GetBrowserContext()),
+      std::move(receiver), browser()->tab_strip_model());
+
+  // The panel's first bind must adopt the pending conversation.
+  FakeConversationUI fake_conversation_ui;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver(
+      &fake_conversation_ui);
+  mojo::Remote<mojom::ConversationHandler> conversation;
+  handler->BindRelatedConversation(
+      conversation.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future;
+  conversation->GetConversationUuid(
+      uuid_future.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future.Get(), pending_uuid)
+      << "Global side panel should adopt the conversation the context menu "
+         "created and populated before the panel opened, not a fresh one.";
+
+  // The hand-off is one-shot: a subsequent new conversation must not reuse it.
+  FakeConversationUI fake_conversation_ui2;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver2(
+      &fake_conversation_ui2);
+  mojo::Remote<mojom::ConversationHandler> conversation2;
+  handler->NewConversation(
+      conversation2.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver2.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future2;
+  conversation2->GetConversationUuid(
+      uuid_future2.GetCallback<const std::string&>());
+  EXPECT_NE(uuid_future2.Get(), pending_uuid)
+      << "Pending conversation hand-off must be one-shot; a new conversation "
+         "after adoption should be fresh.";
+}
+
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 }  // namespace ai_chat
