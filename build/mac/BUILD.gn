@@ -86,6 +86,8 @@ group("brave") {
 }
 
 template("generate_dsa_sig_for_dmg") {
+  assert(defined(invoker.package_dep) && invoker.package_dep != "",
+         "generate_dsa_sig_for_dmg requires package_dep in $target_name")
   action(target_name) {
     script = "generate_sig.py"
 
@@ -125,6 +127,8 @@ template("generate_dsa_sig_for_dmg") {
 }
 
 template("generate_eddsa_sig_for_dmg") {
+  assert(defined(invoker.package_dep) && invoker.package_dep != "",
+         "generate_eddsa_sig_for_dmg requires package_dep in $target_name")
   action(target_name) {
     script = "generate_sig.py"
 
@@ -497,6 +501,8 @@ group("create_dist_mac_prebuilt") {
 }
 
 template("mac_crx") {
+  assert(defined(invoker.package_dep) && invoker.package_dep != "",
+         "mac_crx requires package_dep in $target_name")
   compiled_action(target_name) {
     tool = "//components/crx_file:crx3_build_action"
     inputs = [ zip_path ]
