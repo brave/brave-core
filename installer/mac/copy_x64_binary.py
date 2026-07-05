@@ -38,7 +38,7 @@ def main(args):
     parser = argparse.ArgumentParser(
         description='Copy macos x64 binary to arm64 for universalize')
     parser.add_argument('x64_src_path',
-                        help='Root output dir for arm64 build')
+                        help='Source path to the x64 app bundle to copy from.')
     parser.add_argument(
         'x64_dest_path',
         help='Destination path for the x64 app under root_out_dir.')

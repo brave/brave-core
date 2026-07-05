@@ -27,8 +27,8 @@ declare_args() {
   # Path to the private key that is used to sign browser updates.
   dmg_crx_private_key = ""
 
-  # When true, :package expects the app already in the out dir (e.g. after manual
-  # universalize) and skips //chrome:chrome_app and :universalize.
+  # When true, :package expects the app already in the out dir (e.g. after
+  # manual universalize) and skips //chrome:chrome_app and :universalize.
   mac_prebuilt_package = false
 }
 

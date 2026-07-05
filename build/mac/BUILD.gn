@@ -336,7 +336,10 @@ template("mac_package") {
       "$packaged_basename.pkg",
       zip_path,
     ]
-    deps = packaging_support_deps + invoker.deps
+    deps = packaging_support_deps
+    if (defined(invoker.deps)) {
+      deps += invoker.deps
+    }
     script = "$packaging_dir/sign_chrome.py"
     installer_identity = mac_installer_signing_identifier
     if (skip_signing && installer_identity == "") {
@@ -470,13 +473,6 @@ template("create_dist_mac_group") {
       if (sparkle_eddsa_private_key != "") {
         deps += [ invoker.eddsa_sig_dep ]
       }
-      if (defined(invoker.include_delta) && invoker.include_delta &&
-          last_chrome_installer != "") {
-        deps += [ ":build_delta_installer" ]
-        if (sparkle_eddsa_private_key != "") {
-          deps += [ ":generate_eddsa_sig_for_delta" ]
-        }
-      }
     }
     if (dmg_crx_private_key != "") {
       deps += [ invoker.crx_dep ]
@@ -484,22 +480,28 @@ template("create_dist_mac_group") {
   }
 }
 
-create_dist_mac_group("create_dist_mac") {
+create_dist_mac_group("create_dist_mac_common") {
   package_dep = ":package"
   dsa_sig_dep = ":generate_dsa_sig_for_dmg"
   eddsa_sig_dep = ":generate_eddsa_sig_for_dmg"
   crx_dep = ":crx"
-  include_delta = true
 }
 
-# Package an app already present in the out dir (e.g. after manual universalize).
-# Requires mac_prebuilt_package=true at gn gen time.
-create_dist_mac_group("create_dist_mac_prebuilt") {
-  package_dep = ":package"
-  dsa_sig_dep = ":generate_dsa_sig_for_dmg"
-  eddsa_sig_dep = ":generate_eddsa_sig_for_dmg"
-  crx_dep = ":crx"
-  include_delta = false
+group("create_dist_mac") {
+  deps = [ ":create_dist_mac_common" ]
+  if (!skip_signing && last_chrome_installer != "") {
+    deps += [ ":build_delta_installer" ]
+    if (sparkle_eddsa_private_key != "") {
+      deps += [ ":generate_eddsa_sig_for_delta" ]
+    }
+  }
+}
+
+# Package an app already present in the out dir (e.g. after manual
+# universalize). If mac_prebuilt_package=true at gn gen time, :package skips
+# building the app.
+group("create_dist_mac_prebuilt") {
+  deps = [ ":create_dist_mac_common" ]
 }
 
 template("mac_crx") {
