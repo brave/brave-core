@@ -497,9 +497,10 @@ group("create_dist_mac") {
   }
 }
 
-# Package an app already present in the out dir (e.g. after manual
-# universalize). If mac_prebuilt_package=true at gn gen time, :package skips
-# building the app.
+# Like :create_dist_mac but without delta installer deps. Use when the app is
+# already in the out dir (e.g. after manual universalize). Pass
+# mac_prebuilt_package=true at gn gen time so :package skips //chrome:chrome_app
+# and :universalize; the target is always available if that arg is false.
 group("create_dist_mac_prebuilt") {
   deps = [ ":create_dist_mac_common" ]
 }
