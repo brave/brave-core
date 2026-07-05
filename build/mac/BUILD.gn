@@ -463,28 +463,19 @@ generate_eddsa_sig_for_dmg("generate_eddsa_sig_for_dmg") {
   package_dep = ":package"
 }
 
-template("create_dist_mac_group") {
-  group(target_name) {
-    deps = [ invoker.package_dep ]
-    if (!skip_signing) {
-      if (sparkle_dsa_private_key_file != "") {
-        deps += [ invoker.dsa_sig_dep ]
-      }
-      if (sparkle_eddsa_private_key != "") {
-        deps += [ invoker.eddsa_sig_dep ]
-      }
+group("create_dist_mac_common") {
+  deps = [ ":package" ]
+  if (!skip_signing) {
+    if (sparkle_dsa_private_key_file != "") {
+      deps += [ ":generate_dsa_sig_for_dmg" ]
     }
-    if (dmg_crx_private_key != "") {
-      deps += [ invoker.crx_dep ]
+    if (sparkle_eddsa_private_key != "") {
+      deps += [ ":generate_eddsa_sig_for_dmg" ]
     }
   }
-}
-
-create_dist_mac_group("create_dist_mac_common") {
-  package_dep = ":package"
-  dsa_sig_dep = ":generate_dsa_sig_for_dmg"
-  eddsa_sig_dep = ":generate_eddsa_sig_for_dmg"
-  crx_dep = ":crx"
+  if (dmg_crx_private_key != "") {
+    deps += [ ":crx" ]
+  }
 }
 
 group("create_dist_mac") {
