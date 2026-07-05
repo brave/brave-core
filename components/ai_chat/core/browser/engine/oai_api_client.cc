@@ -387,31 +387,32 @@ void OAIAPIClient::PerformRequest(
 void OAIAPIClient::OnQueryCompleted(
     GenerationCompletedCallback callback,
     api_request_helper::APIRequestResult result) {
-  const bool success = result.Is2XXResponseCode();
-  const int response_code = result.response_code();
+  if (!result.Is2XXResponseCode()) {
+    const int status_code = result.IsResponseCodeValid()
+                                ? result.response_code()
+                                : result.error_code();
+    auto details = mojom::APIErrorDetails::New(status_code, /*error_type=*/"",
+                                               /*inner_status_code=*/0);
+    std::move(callback).Run(base::unexpected(EngineConsumer::Error(
+        MapResponseCodeToError(result.response_code()), std::move(details))));
+    return;
+  }
+
   base::Value body = std::move(result).TakeBody();
   std::optional<base::Value> value;
   if (body.is_dict()) {
     value = std::move(body);
   }
-  HandleCompletion(std::move(callback), success, response_code,
+  HandleCompletion(std::move(callback),
                    /*model_key=*/std::nullopt,
                    /*is_near_verified=*/std::nullopt, std::move(value));
 }
 
 // static
 void OAIAPIClient::HandleCompletion(GenerationCompletedCallback callback,
-                                    bool success,
-                                    int response_code,
                                     std::optional<std::string> model_key,
                                     std::optional<bool> is_near_verified,
                                     std::optional<base::Value> value) {
-  if (!success) {
-    std::move(callback).Run(
-        base::unexpected(MapResponseCodeToError(response_code)));
-    return;
-  }
-
   // We're checking for a value body in case for non-streaming API results.
   if (value && value->is_dict()) {
     if (auto result_data =

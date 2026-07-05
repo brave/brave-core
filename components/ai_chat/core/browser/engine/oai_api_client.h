@@ -83,12 +83,10 @@ class OAIAPIClient {
       std::optional<bool> is_near_verified,
       base::expected<base::Value, std::string> result);
 
-  // Dispatches the final completion callback. If |success| is false,
-  // |response_code| is mapped to an error. Otherwise |value| is the parsed
-  // JSON body, or nullopt if parsing failed or the body was empty.
+  // Dispatches the final completion callback for a successful response. |value|
+  // is the parsed JSON body, or nullopt if parsing failed or the body was
+  // empty. Callers are responsible for handling error responses themselves.
   static void HandleCompletion(GenerationCompletedCallback callback,
-                               bool success,
-                               int response_code,
                                std::optional<std::string> model_key,
                                std::optional<bool> is_near_verified,
                                std::optional<base::Value> value);

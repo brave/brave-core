@@ -29,6 +29,7 @@ const args: Args = {
 const MOCK_ERROR_DETAILS: Mojom.APIErrorDetails = {
   statusCode: 429,
   errorType: '42901',
+  innerStatusCode: 0,
 }
 
 export default {
