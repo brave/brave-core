@@ -6,7 +6,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 
 #include "base/auto_reset.h"
-#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -102,7 +101,6 @@ bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
   if (g_enable_autolock_commandline_check) {
     if (base::CommandLine::ForCurrentProcess()->HasSwitch(
             switches::kTestType)) {
-      CHECK_IS_TEST();
       // We don't want autolock happening in most of the tests.
       return false;
     }
