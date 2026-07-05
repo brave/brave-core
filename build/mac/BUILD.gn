@@ -308,6 +308,8 @@ if (is_official_build && !skip_signing) {
 }
 
 # Packaging support only (no //chrome:chrome_app unless mac_prebuilt_package).
+postinstall_dep =
+    install_omaha4_with_pkg ? ":postinstall" : ":copy_postinstall"
 packaging_support_deps = [
   ":copy_browser_install_script",
   ":copy_dmg_background_image",
@@ -315,7 +317,7 @@ packaging_support_deps = [
   ":copy_dmg_preinstall",
   ":copy_ds_store",
   ":copy_helper_entitlements",
-  ":copy_postinstall",
+  postinstall_dep,
   ":copy_signing_config",
   ":preinstall",
   "//chrome/installer/mac",
