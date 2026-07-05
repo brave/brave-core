@@ -24,10 +24,12 @@ def copy_x64(x64_src_path, x64_dest_path):
     # TODO check why brave_resources.pak differs between x64 and arm64
     # Code signature artifacts are not Mach-O; lipo cannot merge them. The
     # package step re-signs the universal app.
-    shutil.copytree(x64_src_path, x64_dest_path, symlinks=True,
-            ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak',
-                                         '_CodeSignature', 'CodeResources',
-                                         '*.sig'))
+    shutil.copytree(x64_src_path,
+                    x64_dest_path,
+                    symlinks=True,
+                    ignore=shutil.ignore_patterns('Sparkle.framework', '*.pak',
+                                                  '_CodeSignature',
+                                                  'CodeResources', '*.sig'))
     # remove conflicting files
     os.remove(os.path.join(x64_dest_path, 'Contents', 'Info.plist'))
 
@@ -37,8 +39,9 @@ def main(args):
         description='Copy macos x64 binary to arm64 for universalize')
     parser.add_argument('x64_src_path',
                         help='Root output dir for arm64 build')
-    parser.add_argument('x64_dest_path',
-                        help='The location to copy the x64 binary to in root_out_dir.')
+    parser.add_argument(
+        'x64_dest_path',
+        help='Destination path for the x64 app under root_out_dir.')
     parsed = parser.parse_args(args)
 
     copy_x64(parsed.x64_src_path, parsed.x64_dest_path)
