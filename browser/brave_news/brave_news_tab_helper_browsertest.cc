@@ -185,7 +185,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
   OptIn();
 
   ASSERT_TRUE(https_server()->Start());
-  GURL rss_page_url = https_server()->GetURL("/page_with_bad_rss.html");
+  GURL rss_page_url =
+      https_server()->GetURL("example.com", "/page_with_bad_rss.html");
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
 
@@ -200,7 +201,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
 
     ASSERT_EQ(1u, result.size());
     feed_url = result[0];
-    EXPECT_EQ(https_server()->GetURL("/rss_feed_which_does_not_exist.xml"),
+    EXPECT_EQ(https_server()->GetURL("example.com",
+                                     "/rss_feed_which_does_not_exist.xml"),
               feed_url);
   }
 
@@ -220,7 +222,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
   OptIn();
 
   ASSERT_TRUE(https_server()->Start());
-  GURL rss_page_url = https_server()->GetURL("/page_with_rss.html");
+  GURL rss_page_url =
+      https_server()->GetURL("example.com", "/page_with_rss.html");
 
   auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
 
@@ -235,7 +238,8 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreFoundWhenTheyExist) {
 
     ASSERT_EQ(1u, result.size());
     feed_url = result[0];
-    EXPECT_EQ(https_server()->GetURL("/page_with_rss.xml"), feed_url);
+    EXPECT_EQ(https_server()->GetURL("example.com", "/page_with_rss.xml"),
+              feed_url);
   }
 
   // At first, we should not have loaded the title (and fallback to the feed
