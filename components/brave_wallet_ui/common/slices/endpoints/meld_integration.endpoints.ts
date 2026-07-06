@@ -16,6 +16,7 @@ import {
   CryptoWidgetCustomerData,
   CryptoBuySessionData,
   MeldCryptoWidget,
+  WalletState,
 } from '../../../constants/types'
 
 // Utils
@@ -104,10 +105,24 @@ export const meldIntegrationEndpoints = ({
       providesTags: ['MeldFiatCurrencies'],
     }),
     getMeldCryptoCurrencies: query<MeldCryptoCurrency[], void>({
-      queryFn: async (_arg, { endpoint }, _extraOptions, baseQuery) => {
+      queryFn: async (
+        _arg,
+        { endpoint, getState },
+        _extraOptions,
+        baseQuery,
+      ) => {
         try {
           const { meldIntegrationService, blockchainRegistry } =
             baseQuery(undefined).data
+
+          const { isPolkadotEnabled } = (getState() as { wallet: WalletState })
+            .wallet
+
+          // Asset Hub Polkadot buys are only available when the Polkadot
+          // feature is enabled.
+          const cryptoChains = isPolkadotEnabled
+            ? [...supportedChains, 'ASSETHUB']
+            : supportedChains
 
           // get all crypto currencies
           const filter: MeldFilter = {
@@ -117,7 +132,7 @@ export const meldIntegrationEndpoints = ({
             serviceProviders: undefined,
             paymentMethodTypes: undefined,
             statuses: undefined,
-            cryptoChains: supportedChains.join(','),
+            cryptoChains: cryptoChains.join(','),
           }
           const { fiatCurrencies: cryptoCurrencies, error } =
             await meldIntegrationService.getCryptoCurrencies(filter)

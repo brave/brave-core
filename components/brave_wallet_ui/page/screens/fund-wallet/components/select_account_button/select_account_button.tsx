@@ -11,8 +11,8 @@ import { BraveWallet } from '../../../../../constants/types'
 
 // Hooks
 import {
-  useReceiveAddressQuery, //
-} from '../../../../../common/slices/api.slice.extra'
+  useBuyReceiveAddress, //
+} from '../../hooks/useBuyReceiveAddress'
 
 // Utils
 import { reduceAddress } from '../../../../../utils/reduce-address'
@@ -38,7 +38,7 @@ export const SelectAccountButton = ({
   selectedAccount,
   onClick,
 }: SelectAccountProps) => {
-  const { receiveAddress } = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { receiveAddress } = useBuyReceiveAddress(selectedAccount?.accountId)
 
   return (
     <Column alignItems='flex-start'>
