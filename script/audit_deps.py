@@ -162,10 +162,9 @@ def pnpm_audit_deps(path, args):
     try:
         # results from audit
         result = json.loads(output.decode('UTF-8'))
-        # npm7 uses a different format from earlier versions
         assert 'vulnerabilities' in result or 'advisories' in result
     except (ValueError, AssertionError):
-        # This can happen in the case of an NPM network error
+        # This can happen in the case of a network error
         print('Audit failed to return valid json')
         return 1
 
