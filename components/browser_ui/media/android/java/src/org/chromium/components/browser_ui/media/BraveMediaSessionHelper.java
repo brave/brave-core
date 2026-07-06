@@ -101,22 +101,17 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
         return false;
     }
 
-    private boolean shouldSuppressMediaNotificationActions() {
-        WebContents webContents =
-                (WebContents)
-                        BraveReflectionUtil.getField(
-                                MediaSessionHelper.class, "mWebContents", this);
-
-        return isBraveTalk(webContents);
+    private @Nullable WebContents getMediaSessionWebContents() {
+        return (WebContents)
+                BraveReflectionUtil.getField(MediaSessionHelper.class, "mWebContents", this);
     }
 
-    private boolean shouldSuppressMediaPause() {
-        // Compute the YouTube classification once and pass it to the
-        // YT-specific predicates instead of having each one re-parse the URL.
-        WebContents webContents =
-                (WebContents)
-                        BraveReflectionUtil.getField(
-                                MediaSessionHelper.class, "mWebContents", this);
+    private boolean shouldSuppressMediaNotificationActions() {
+        return isBraveTalk(getMediaSessionWebContents());
+    }
+
+    @VisibleForTesting
+    boolean shouldSuppressMediaPause(@Nullable WebContents webContents) {
         if (isBraveTalk(webContents)) {
             return true;
         }
@@ -125,6 +120,19 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             return false;
         }
         return isBackgroundVideo() || isYouTubePictureInPicture(webContents);
+    }
+
+    // While the screen is locked, the media session transiently reports itself as not
+    // controllable and paused when the current track ends. If that paused state reaches the
+    // upstream helper, the media notification leaves its playback state and YouTube never
+    // advances to the next track (brave-browser#53077), so Brave Talk and background playback
+    // must report the session as still playing. An active Brave PiP session with background
+    // playback disabled is deliberately excluded: its pause-on-lock flow relies on the real
+    // paused state so SystemUI shows the correct action after unlock.
+    @VisibleForTesting
+    boolean shouldForcePlayingState(@Nullable WebContents webContents) {
+        return isBraveTalk(webContents)
+                || (isBackgroundPlaybackHost(webContents) && isBackgroundVideo());
     }
 
     @VisibleForTesting
@@ -230,11 +238,19 @@ public class BraveMediaSessionHelper implements MediaImageCallback {
             public void mediaSessionStateChanged(boolean isControllable, boolean isPaused) {
                 // Keep the Android media controls alive for Brave Talk, background YouTube audio,
                 // and the active Brave-managed YouTube PiP session when the page transiently
-                // reports itself as not controllable. Preserve the real paused state so SystemUI
-                // shows the correct action and forwards the right command after wake/restore
-                // transitions.
-                if (!isControllable && shouldSuppressMediaPause()) {
-                    isControllable = true;
+                // reports itself as not controllable. For Brave Talk and background playback the
+                // session is also reported as playing so the next track can start while the
+                // screen is locked (see shouldForcePlayingState); the PiP-only case preserves
+                // the real paused state so SystemUI shows the correct action and forwards the
+                // right command after wake/restore transitions.
+                if (!isControllable) {
+                    WebContents webContents = getMediaSessionWebContents();
+                    if (shouldSuppressMediaPause(webContents)) {
+                        isControllable = true;
+                        if (shouldForcePlayingState(webContents)) {
+                            isPaused = false;
+                        }
+                    }
                 }
                 mediaSessionObserver.mediaSessionStateChanged(isControllable, isPaused);
             }
