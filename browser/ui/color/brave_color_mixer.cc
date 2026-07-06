@@ -732,16 +732,16 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
     if (use_accent_tinted_omnibox && is_dark) {
       // Nala omnibox tokens use neutral primitives which do not visibly pick up
-      // accent themes. Fall back to the secondary palette, matching the
-      // previous kColorSysOmniboxContainer behavior in dark mode.
+      // accent themes. Use the secondary ref palette instead, which is
+      // generated from the user's accent color in dark mode.
       mixer[kColorLocationBarBackground] = {ui::kColorRefSecondary15};
       mixer[kColorOmniboxResultsBackground] = {ui::kColorRefSecondary20};
       mixer[kColorOmniboxResultsBackgroundHovered] = {ui::kColorRefSecondary25};
       mixer[kColorOmniboxResultsBackgroundSelected] = {
           ui::kColorRefSecondary25};
     } else if (use_accent_tinted_omnibox) {
-      // Light mode previously used a tinted surface token for the omnibox
-      // container.
+      // Light mode uses a tinted surface token so the omnibox container
+      // reflects the user's accent color.
       mixer[kColorLocationBarBackground] = {ui::kColorSysSurface4};
       mixer[kColorOmniboxResultsBackground] = {
           nala::kColorDesktopbrowserOmnibarBackgroundActive};
@@ -784,7 +784,8 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
   // Location bar
   // Note: The darker (ultra dark) theme intentionally keeps the original
   // omnibar tokens regardless of accent color. Accent tinting only applies to
-  // the regular dark mode above.
+  // the regular dark-mode branch in AddBraveOmniboxColorMixer's
+  // !custom_theme block.
   postprocessing_mixer[kColorLocationBarBackground] = {
       nala::kColorPrimitiveNeutral0};
   postprocessing_mixer[kColorLocationBarBackgroundHovered] = {
