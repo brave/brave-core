@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.settings;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assume.assumeTrue;
 
 import android.os.Looper;
 
@@ -23,12 +24,15 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.BraveFeatureList;
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ThreadUtils;
 import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.preferences.Pref;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
+import org.chromium.components.user_prefs.UserPrefs;
 
 /** Tests for {@link BraveTabsAndTabGroupsSettings}. */
 @RunWith(ChromeJUnit4ClassRunner.class)
@@ -89,7 +93,7 @@ public class BraveTabsAndTabGroupsSettingsTest {
         assertTrue(tabGroupsBarSwitch.isEnabled());
         assertTrue(openLinksInCurrentTabGroupSwitch.isEnabled());
 
-        enableTabGroupsSwitch.onClick();
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
 
         assertFalse(enableTabGroupsSwitch.isChecked());
         if (autoOpenSyncedTabGroupsSwitch.isVisible()) {
@@ -105,7 +109,7 @@ public class BraveTabsAndTabGroupsSettingsTest {
         assertTrue(closingAllTabsClosesBraveSwitch.isEnabled());
         assertTrue(showUndoWhenTabsClosedSwitch.isEnabled());
 
-        enableTabGroupsSwitch.onClick();
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
 
         assertTrue(enableTabGroupsSwitch.isChecked());
         if (autoOpenSyncedTabGroupsSwitch.isVisible()) {
@@ -115,10 +119,71 @@ public class BraveTabsAndTabGroupsSettingsTest {
         assertTrue(openLinksInCurrentTabGroupSwitch.isEnabled());
     }
 
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testAutoOpenSyncedChoiceSavedWhenDisabledAndRestoredWhenEnabled() {
+        startSettings();
+
+        ChromeSwitchPreference enableTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_ENABLE_TAB_GROUPS_SWITCH);
+        ChromeSwitchPreference autoOpenSyncedTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH);
+        assertNotNull(enableTabGroupsSwitch);
+        assertNotNull(autoOpenSyncedTabGroupsSwitch);
+
+        // The save/restore behavior only applies when auto-open is configurable, i.e. tab group
+        // sync is enabled for the profile. Skip the test otherwise.
+        assumeTrue(autoOpenSyncedTabGroupsSwitch.isVisible());
+
+        // Put the user's auto-open choice into a known "on" state while tab groups are enabled.
+        // This is done via the switch so it doesn't depend on the initial native pref value.
+        setSwitchChecked(autoOpenSyncedTabGroupsSwitch, true);
+        assertTrue(autoOpenSyncedTabGroupsSwitch.isChecked());
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+        assertTrue(readNativeAutoOpenSyncedPref());
+
+        // Disabling the master switch saves the user's choice but forces the native pref off.
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
+        assertFalse(enableTabGroupsSwitch.isChecked());
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+        assertFalse(readNativeAutoOpenSyncedPref());
+
+        // Re-enabling the master switch restores the native pref from the saved choice.
+        ThreadUtils.runOnUiThreadBlocking(enableTabGroupsSwitch::onClick);
+        assertTrue(enableTabGroupsSwitch.isChecked());
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+        assertTrue(readNativeAutoOpenSyncedPref());
+    }
+
     private void startSettings() {
         mSettingsActivityTestRule.startSettingsActivity();
         mSettings = mSettingsActivityTestRule.getFragment();
         Assert.assertNotNull("SettingsActivity failed to launch.", mSettings);
+    }
+
+    private static void setSwitchChecked(ChromeSwitchPreference preference, boolean checked) {
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    if (preference.isChecked() != checked) {
+                        preference.onClick();
+                    }
+                });
+    }
+
+    private static boolean readAutoOpenSyncedUserChoicePref() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_AUTO_OPEN_SYNCED_TAB_GROUPS_USER_CHOICE, false);
+    }
+
+    private boolean readNativeAutoOpenSyncedPref() {
+        return ThreadUtils.runOnUiThreadBlocking(
+                () ->
+                        UserPrefs.get(mSettings.getProfile())
+                                .getBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS));
     }
 
     private void resetPrefsToDefaults() {
@@ -130,6 +195,8 @@ public class BraveTabsAndTabGroupsSettingsTest {
                 .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true);
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.SHOW_UNDO_WHEN_TABS_CLOSED, true);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.BRAVE_AUTO_OPEN_SYNCED_TAB_GROUPS_USER_CHOICE);
         CloseBraveManager.setClosingAllTabsClosesBraveEnabled(false);
     }
 }

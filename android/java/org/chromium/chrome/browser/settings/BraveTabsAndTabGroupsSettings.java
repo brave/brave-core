@@ -110,6 +110,9 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
         enableTabGroupsSwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     BraveTabUiFeatureUtilities.setTabGroupsEnabled((boolean) newValue);
+                    // Re-apply the effective auto-open pref so the master switch also gates the
+                    // native "auto open synced tab groups" behavior, not just the UI.
+                    applyAutoOpenSyncedEffectivePref(UserPrefs.get(getProfile()));
                     updateTabGroupDependentPreferences();
                     return true;
                 });
@@ -125,16 +128,54 @@ public class BraveTabsAndTabGroupsSettings extends BravePreferenceFragment {
 
         autoOpenSyncedTabGroupsSwitch.setVisible(true);
         PrefService prefService = UserPrefs.get(getProfile());
-        autoOpenSyncedTabGroupsSwitch.setChecked(
-                prefService.getBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS));
+        // The toggle reflects the user's intended choice rather than the effective native pref, so
+        // it survives the master "Enable tab groups" switch being turned off (which forces the
+        // native pref off). Keep the effective native pref in sync with master && user choice.
+        autoOpenSyncedTabGroupsSwitch.setChecked(getAutoOpenSyncedUserChoice(prefService));
+        applyAutoOpenSyncedEffectivePref(prefService);
         autoOpenSyncedTabGroupsSwitch.setOnPreferenceChangeListener(
                 (preference, newValue) -> {
                     boolean enabled = (boolean) newValue;
-                    prefService.setBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS, enabled);
+                    setAutoOpenSyncedUserChoice(enabled);
+                    applyAutoOpenSyncedEffectivePref(prefService);
                     RecordHistogram.recordBooleanHistogram(
                             "Tabs.AutoOpenSyncedTabGroupsSwitch.ToggledToState", enabled);
                     return true;
                 });
+    }
+
+    /**
+     * Returns the user's intended "auto open synced tab groups" choice, defaulting to the current
+     * native pref value so existing users' choice is preserved on first run of this logic.
+     */
+    private boolean getAutoOpenSyncedUserChoice(PrefService prefService) {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(
+                        BravePreferenceKeys.BRAVE_AUTO_OPEN_SYNCED_TAB_GROUPS_USER_CHOICE,
+                        prefService.getBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS));
+    }
+
+    private void setAutoOpenSyncedUserChoice(boolean enabled) {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(
+                        BravePreferenceKeys.BRAVE_AUTO_OPEN_SYNCED_TAB_GROUPS_USER_CHOICE, enabled);
+    }
+
+    /**
+     * Keeps the native {@link Pref#AUTO_OPEN_SYNCED_TAB_GROUPS} value equal to the master "Enable
+     * tab groups" switch AND the user's intended choice, so disabling tab groups also stops
+     * auto-opening synced tab groups. The user's choice is persisted so it can be restored when tab
+     * groups are re-enabled.
+     */
+    private void applyAutoOpenSyncedEffectivePref(PrefService prefService) {
+        if (!isTabGroupSyncAutoOpenConfigurable(getProfile())) {
+            return;
+        }
+        boolean userChoice = getAutoOpenSyncedUserChoice(prefService);
+        // Persist the resolved choice so it isn't lost once the native pref is forced off.
+        setAutoOpenSyncedUserChoice(userChoice);
+        boolean effective = BraveTabUiFeatureUtilities.isTabGroupsEnabled() && userChoice;
+        prefService.setBoolean(Pref.AUTO_OPEN_SYNCED_TAB_GROUPS, effective);
     }
 
     private void configureTabGroupsBarSwitch() {

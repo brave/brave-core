@@ -44,6 +44,11 @@ public final class BravePreferenceKeys {
     // inverted. Be sure to invert it when reading/writing.
     public static final String BRAVE_DISABLE_SHARING_HUB =
             "org.chromium.chrome.browser.Brave_Disable_Sharing_Hub";
+    // Remembers the user's intended "auto open synced tab groups" choice so it can be restored when
+    // the master "Enable tab groups" switch is turned back on. The effective native pref
+    // (Pref.AUTO_OPEN_SYNCED_TAB_GROUPS) is forced off while tab groups are disabled.
+    public static final String BRAVE_AUTO_OPEN_SYNCED_TAB_GROUPS_USER_CHOICE =
+            "org.chromium.chrome.browser.Brave_Auto_Open_Synced_Tab_Groups_User_Choice";
     public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";
     public static final String BRAVE_NEWS_FEED_HASH = "brave_news_feed_hash";
     public static final String BRAVE_NEWS_PREF_SHOW_NEWS = "kNewTabPageShowToday";
