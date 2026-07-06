@@ -327,10 +327,9 @@ class KeyringService : public mojom::KeyringService {
   SignMessageByPolkadotKeyring(const mojom::AccountIdPtr& account_id,
                                base::span<const uint8_t> message);
 
-  // Sets if autolock timer is enabled.
-  // Typically is set to false or left unset in tests to prevent auto-locking
-  // during tests.
-  // Must not be called more than once.
+  // Enable or disable the auto-lock mechanism. The BraveWalletService currently
+  // invokes this with `true` during construction. Can only disable auto-lock in
+  // tests.
   void SetAutolockEnabled(bool enabled);
 
   void set_wallet_reset_cb(base::RepeatingClosure cb) {
@@ -529,7 +528,7 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<BraveWalletServiceDelegate> delegate_ = nullptr;
   bool request_unlock_pending_ = false;
 
-  std::optional<bool> is_autolock_enabled_;
+  bool is_autolock_enabled_ = false;
 
   base::RepeatingClosure wallet_reset_cb_;
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;

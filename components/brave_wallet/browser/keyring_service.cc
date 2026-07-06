@@ -2723,7 +2723,7 @@ void KeyringService::StopAutoLockTimer() {
 
 void KeyringService::ResetAutoLockTimer() {
   // Autolock is disabled in most of the tests.
-  if (!is_autolock_enabled_.value_or(false)) {
+  if (!is_autolock_enabled_) {
     CHECK_IS_TEST();
     return;
   }
@@ -3867,7 +3867,9 @@ void KeyringService::MaybeFixAccountSelection() {
 }
 
 void KeyringService::SetAutolockEnabled(bool enabled) {
-  CHECK(!is_autolock_enabled_.has_value());
+  if (!enabled) {
+    CHECK_IS_TEST();
+  }
   is_autolock_enabled_ = enabled;
 }
 

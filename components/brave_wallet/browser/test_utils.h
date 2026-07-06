@@ -153,7 +153,6 @@ class TestBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
 
   base::FilePath GetWalletBaseDirectory() override;
   bool IsPrivateWindow() override;
-  bool IsAutolockEnabled() override;
 
   static std::unique_ptr<BraveWalletServiceDelegate> Create();
 

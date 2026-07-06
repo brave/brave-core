@@ -194,6 +194,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
         GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
+    keyring_service_->SetAutolockEnabled(false);
     tx_service_ = wallet_service_->tx_service();
 
     api_request_helper_ =

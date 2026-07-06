@@ -131,6 +131,7 @@ class SolanaProviderImplUnitTest : public testing::Test {
     json_rpc_service_->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
     keyring_service_ = brave_wallet_service_->keyring_service();
+    keyring_service_->SetAutolockEnabled(false);
     profile_.SetPermissionControllerDelegate(
         base::WrapUnique(static_cast<permissions::PermissionManager*>(
             PermissionManagerFactory::GetInstance()

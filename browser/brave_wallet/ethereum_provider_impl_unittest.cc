@@ -212,6 +212,7 @@ class EthereumProviderImplUnitTest : public testing::Test {
         url_loader_factory_.GetSafeWeakWrapper());
 
     ASSERT_TRUE(brave_wallet_service_.get());
+    keyring_service()->SetAutolockEnabled(false);
     json_rpc_service()->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());
     SetNetwork(mojom::kMainnetChainId, std::nullopt);

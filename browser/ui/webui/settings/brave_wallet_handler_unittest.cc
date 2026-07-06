@@ -24,6 +24,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -90,11 +91,12 @@ class TestBraveWalletHandler : public BraveWalletHandler {
 
     test_web_ui_.set_web_contents(web_contents_.get());
     set_web_ui(&test_web_ui_);
-    brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-        profile_.get())
-        ->json_rpc_service()
-        ->SetAPIRequestHelperForTesting(
-            url_loader_factory_.GetSafeWeakWrapper());
+    auto* wallet_service =
+        brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
+            profile_.get());
+    wallet_service->keyring_service()->SetAutolockEnabled(false);
+    wallet_service->json_rpc_service()->SetAPIRequestHelperForTesting(
+        url_loader_factory_.GetSafeWeakWrapper());
   }
 
   ~TestBraveWalletHandler() override {

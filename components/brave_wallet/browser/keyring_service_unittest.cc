@@ -101,7 +101,6 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
               (override));
   MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
   bool IsPrivateWindow() override { return false; }
-  bool IsAutolockEnabled() override { return false; }
 };
 
 struct ImportData {

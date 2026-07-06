@@ -25,7 +25,6 @@
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
@@ -319,7 +318,6 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
               (override));
   MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
   bool IsPrivateWindow() override { return false; }
-  bool IsAutolockEnabled() override { return false; }
 };
 
 class BraveWalletServiceUnitTest : public testing::Test {
@@ -380,6 +378,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     network_manager_ = service_->network_manager();
     json_rpc_service_ = service_->json_rpc_service();
     keyring_service_ = service_->keyring_service();
+    keyring_service_->SetAutolockEnabled(false);
     bitcoin_wallet_service_ = service_->GetBitcoinWalletService();
     bitcoin_wallet_service_->SetUrlLoaderFactoryForTesting(
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
@@ -2905,14 +2904,13 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
-  // Wallet autolock is turned off in tests by default.
+  // This fixture disables autolock on its wallet service (see SetUp), so it
+  // never locks even after fast-forwarding past the autolock interval.
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
 
-  auto scoped_enable_autolock =
-      BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting();
-
+  // A freshly built service keeps autolock enabled, matching production.
   auto another_wallet_service = std::make_unique<BraveWalletService>(
       url_loader_factory_.GetSafeWeakWrapper(),
       BraveWalletServiceDelegate::Create(profile_.get()), profile_->GetPrefs(),

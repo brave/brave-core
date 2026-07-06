@@ -21,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
+#include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -98,10 +99,11 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
     shared_url_loader_factory_ =
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &test_url_loader_factory_);
-    json_rpc_service_ =
+    auto* wallet_service =
         brave_wallet::BraveWalletServiceFactory::GetServiceForContext(
-            browser_context())
-            ->json_rpc_service();
+            browser_context());
+    wallet_service->keyring_service()->SetAutolockEnabled(false);
+    json_rpc_service_ = wallet_service->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         shared_url_loader_factory_);
 

@@ -114,6 +114,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     network_manager_ = wallet_service_->network_manager();
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
+    keyring_service_->SetAutolockEnabled(false);
     tx_service_ = wallet_service_->tx_service();
     simple_hash_client_ = std::make_unique<SimpleHashClient>(
         url_loader_factory_.GetSafeWeakWrapper());
