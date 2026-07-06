@@ -988,6 +988,99 @@ class PlasterTest(unittest.TestCase):
         os.utime(patchinfo_path, (older, older))
         self.assertFalse(plaster_file.needs_apply())
 
+    # A source whose hunk-header function context differs depending on the
+    # userdiff driver git selects: the built-in `objc` driver's xfuncname regex
+    # skips the ObjC++ `Profile::~Profile()` member definition and anchors on
+    # the previous C-style free function, whereas the default/`cpp` driver
+    # reports the enclosing destructor. The change lands deep enough inside the
+    # destructor that the hunk's leading context does not reach its opening
+    # line, forcing git to search backwards for the function name.
+    _DRIVER_SENSITIVE_MM = ('// Copyright.\n'
+                            '#include "thing.h"\n'
+                            '\n'
+                            'void AssignTestingFactories(int a,\n'
+                            '                            int b) {\n'
+                            '  DoSomething();\n'
+                            '}\n'
+                            '\n'
+                            'Profile::~Profile() {\n'
+                            '  // Allows blocking in this scope for testing.\n'
+                            '  ScopedAllowBlocking allow;\n'
+                            '\n'
+                            '  // Notify before destroying anything.\n'
+                            '  NotifyDestroyed();\n'
+                            '\n'
+                            '  // Tear down the incognito profile first.\n'
+                            '  otr_.reset();\n'
+                            '\n'
+                            '  // Shut dependencies down backward.\n'
+                            '  MARKER_LINE;\n'
+                            '  more_cleanup();\n'
+                            '}\n')
+
+    def test_patch_generation_ignores_ambient_git_attributes(self):
+        """Generated patches do not depend on the developer's git attributes.
+
+        The hunk-header function context is produced by whichever userdiff
+        driver git selects for a source, and that selection depends on the
+        ambient environment (a per-user/global `core.attributesFile`, the
+        system gitattributes, git version built-ins). `.mm` files in particular
+        resolve to the `objc` driver on some setups (notably Apple Git), which
+        yields a different hunk header than the default driver and so makes the
+        committed patch bytes differ between machines. `save_patch_if_changed`
+        pins the diff to a dedicated attributes file and disables the system
+        gitattributes so the output is deterministic regardless of environment.
+        """
+        test_file = Path('chrome/browser/profile.mm')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, self._DRIVER_SENSITIVE_MM,
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add profile.mm',
+                                      self.fake_chromium_src.chromium)
+
+        # Simulate a machine whose ambient git configuration routes `.mm` files
+        # through the `objc` driver, e.g. via a per-user `core.attributesFile`.
+        ambient_attributes = (self.fake_chromium_src.base_path /
+                              'ambient_gitattributes')
+        ambient_attributes.write_text('*.mm diff=objc\n')
+        self.fake_chromium_src._run_git_command(
+            ['config', 'core.attributesFile',
+             str(ambient_attributes)], self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Touch the destructor body\n'
+                                "    pattern: 'MARKER_LINE;'\n"
+                                "    replace: 'MARKER_LINE_CHANGED;'\n")
+
+        plaster.PlasterFile(plaster_path).apply()
+
+        patch = plaster.PatchinfoBuilder(plaster_path).patch.path.read_text()
+        hunk_header = next(line for line in patch.splitlines()
+                           if line.startswith('@@'))
+
+        # Sanity check: the ambient `objc` mapping genuinely diverges from the
+        # default driver for this source, so the assertion below is meaningful.
+        # Otherwise a git without a diverging `objc` driver would make this test
+        # pass without exercising anything.
+        objc_diff = self.fake_chromium_src._run_git_command([
+            '-c', f'core.attributesFile={ambient_attributes}', 'diff',
+            str(test_file)
+        ], self.fake_chromium_src.chromium)
+        objc_header = next(line for line in objc_diff.splitlines()
+                           if line.startswith('@@'))
+        self.assertIn(
+            'AssignTestingFactories', objc_header,
+            'ambient objc mapping is expected to anchor the hunk '
+            'header on the free function; git behavior may have '
+            'changed')
+
+        # The generated patch must ignore the ambient `objc` mapping and use the
+        # default driver, which reports the enclosing destructor.
+        self.assertIn('Profile::~Profile()', hunk_header)
+        self.assertNotIn('AssignTestingFactories', hunk_header)
+
 
 class PatchinfoTest(unittest.TestCase):
     """Tests for Patchinfo and Patchinfo.parse."""
