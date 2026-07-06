@@ -25,7 +25,9 @@ interface Props {
 export function SearchBox(props: Props) {
   const inputState = useSearchInputState('search-box')
   const searchFeatureEnabled = useSearchState((s) => s.searchFeatureEnabled)
-  const showSearchBox = useSearchState((s) => s.showSearchBox)
+  const showSearchBox = useSearchState(
+    (s) => s.showSearchBox && !s.searchBoxSuppressed,
+  )
   const [expanded, setExpanded] = React.useState(false)
   const inputRef = React.useRef<HTMLInputElement>(null)
 
