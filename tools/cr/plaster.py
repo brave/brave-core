@@ -30,6 +30,10 @@ PATCHES_PATH = repository.brave.root / 'patches'
 # The plaster file extension.
 PLASTER_EXTENSION = '.yaml'
 
+# A particular gitattributes file that is used to ensure we get deterministic
+# patch output across platforms and git versions.
+PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
+
 
 @dataclass
 class PathChecksumPair:
@@ -307,14 +311,32 @@ class PatchinfoBuilder:
             dry_run:
               Indicates whether the actual write should not be performed.
         """
-        content = repository.chromium.run_git('diff',
-                                              '--src-prefix=a/',
-                                              '--dst-prefix=b/',
-                                              '--default-prefix',
-                                              '--full-index',
-                                              '--ignore-space-at-eol',
-                                              self.source,
-                                              no_trim=True)
+        # The hunk-header function context (the text git appends after
+        # `@@ ... @@`) is computed by the userdiff driver git selects for the
+        # source. That selection depends on the ambient environment (a
+        # per-user/global `core.attributesFile`, the system gitattributes, and
+        # git version built-ins), so the same source can yield different patch
+        # bytes on different machines even though the change is identical. This
+        # git diff peculiarity was causing `.mm` files to produce different
+        # patch files depending in which platform plaster was being run.
+        #
+        # We pin the attibutes when creating a diff (`plaster_gitattributes`),
+        # and ignore the system gitattributes (`GIT_ATTR_NOSYSTEM`), so the
+        # output is deterministic across platforms and git versions.
+        content = repository.chromium.run_git(
+            '-c',
+            f'core.attributesFile={PLASTER_GITATTRIBUTES_PATH}',
+            'diff',
+            '--src-prefix=a/',
+            '--dst-prefix=b/',
+            '--default-prefix',
+            '--full-index',
+            '--ignore-space-at-eol',
+            self.source,
+            no_trim=True,
+            env={
+                **os.environ, 'GIT_ATTR_NOSYSTEM': '1'
+            })
         return self.patch.save_if_changed(new_content=content, dry_run=dry_run)
 
     def save_patchinfo_if_changed(self):
