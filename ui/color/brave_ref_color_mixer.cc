@@ -244,16 +244,16 @@ void AddGenerated(ColorProvider* provider,
 
 }  // namespace
 
+bool ShouldUseAccentTintedPalette(const ColorProviderKey& key) {
+  return key.user_color.has_value() &&
+         key.user_color_source !=
+             ColorProviderKey::UserColorSource::kBaseline &&
+         key.user_color_source != ColorProviderKey::UserColorSource::kGrayscale;
+}
+
 void AddBraveRefColorMixer(ColorProvider* provider,
                            const ColorProviderKey& key) {
-  // Note: The logic for determining whether to use the baseline or generated
-  // color is taken from AddRefMixer in
-  // ui/color/ref_color_mixer.cc
-  if (!key.user_color.has_value() ||
-      key.user_color_source == ColorProviderKey::UserColorSource::kBaseline ||
-      key.user_color_source == ColorProviderKey::UserColorSource::kGrayscale) {
-    AddBaseline(provider);
-  } else {
+  if (ShouldUseAccentTintedPalette(key)) {
     auto variant = key.scheme_variant.value_or(
         ColorProviderKey::SchemeVariant::kTonalSpot);
     SkColor user_color = key.user_color.value();
@@ -262,6 +262,8 @@ void AddBraveRefColorMixer(ColorProvider* provider,
     }
 
     AddGenerated(provider, user_color, variant);
+  } else {
+    AddBaseline(provider);
   }
 }
 

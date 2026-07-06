@@ -12,6 +12,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/ui/color/brave_ref_color_mixer.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -47,12 +48,6 @@ namespace {
 // Can't include //chrome/browser/ui/omnibox in here due to circular deps.
 constexpr float kOmniboxOpacityHovered = 0.10f;
 constexpr float kOmniboxOpacitySelected = 0.16f;
-
-bool HasNonGrayscaleUserColor(const ui::ColorProviderKey& key) {
-  return key.user_color_source !=
-             ui::ColorProviderKey::UserColorSource::kGrayscale &&
-         key.user_color.has_value();
-}
 
 SkColor PickColorContrastingToToolbar(const ui::ColorProviderKey& key,
                                       const ui::ColorMixer& mixer,
@@ -729,7 +724,7 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
                                const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
-  const bool use_accent_tinted_omnibox = HasNonGrayscaleUserColor(key);
+  const bool use_accent_tinted_omnibox = ShouldUseAccentTintedPalette(key);
   const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
 
   if (!key.custom_theme) {
