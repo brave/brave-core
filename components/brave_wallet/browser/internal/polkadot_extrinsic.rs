@@ -311,10 +311,8 @@ fn generate_extrinsic_signature_payload_impl(
     };
 
     buf.extend_from_slice(&[
-        // Write module indicator, M_i.
-        pallet_idx, //
-        // Write function indicator (call index + call parameters).
-        call_idx,
+        pallet_idx, // Write module indicator, M_i.
+        call_idx,   // Write function indicator (call index + call parameters).
     ]);
 
     if let Some(asset_id) = asset_id {
