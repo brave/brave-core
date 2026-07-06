@@ -20,6 +20,7 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.omnibox.DeferredIMEWindowInsetApplicationCallback;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
+import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
@@ -77,7 +78,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             WindowAndroid windowAndroid,
             DeferredIMEWindowInsetApplicationCallback deferredIMEWindowInsetApplicationCallback,
             FuseboxCoordinator fuseboxCoordinator,
-            boolean forcePhoneStyleOmnibox) {
+            LocationBarEmbedderUiOverrides uiOverrides) {
         super(
                 context,
                 delegate,
@@ -96,7 +97,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
                 windowAndroid,
                 deferredIMEWindowInsetApplicationCallback,
                 fuseboxCoordinator,
-                forcePhoneStyleOmnibox);
+                uiOverrides);
 
         mDelegate = delegate;
         mActivityTabSupplier = activityTabSupplier;
