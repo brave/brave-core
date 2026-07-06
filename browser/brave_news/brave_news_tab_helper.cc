@@ -29,6 +29,7 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "net/base/url_util.h"
 #include "url/gurl.h"
 
 BraveNewsTabHelper::FeedDetails::FeedDetails() = default;
@@ -75,6 +76,12 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
 
   for (const auto& rss_feed : rss_page_feeds_) {
     if (seen_feeds.contains(rss_feed.feed_url)) {
+      continue;
+    }
+
+    // Don't include localhost feeds as it would allows sites to trigger
+    // requests to localhost.
+    if (net::IsLocalhost(rss_feed.feed_url)) {
       continue;
     }
 
