@@ -49,6 +49,7 @@ class BravePsstDialogHandler : public psst::mojom::PsstConsentHelper,
 
   void OnSetRequestStatus(const std::string& uid,
                           const std::optional<std::string>& error) override;
+  void OnPsstErrorsReportSent() override;
 
   // TabStripModelObserver
   void OnTabStripModelChanged(

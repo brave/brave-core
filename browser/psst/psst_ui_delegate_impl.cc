@@ -6,6 +6,7 @@
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "brave/components/psst/core/browser/pref_names.h"
@@ -140,7 +141,9 @@ void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
     return;
   }
   psst_reporter_service_->SubmitPsstErrorsReport(
-      std::move(failed_policy_tasks_));
+      std::move(failed_policy_tasks_), dialog_data_->script_version,
+      base::BindOnce(&PsstUiDelegateImpl::NotifyObserversOfPsstErrorsReportSent,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PsstUiDelegateImpl::OnUserAcceptedInfobar(const bool is_accepted) {
@@ -206,6 +209,12 @@ void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
     for (const PolicyTask& task : performed_tasks) {
       obs.OnSetRequestStatus(task.uid, task.error_description);
     }
+  }
+}
+
+void PsstUiDelegateImpl::NotifyObserversOfPsstErrorsReportSent() {
+  for (Observer& obs : observer_list_) {
+    obs.OnPsstErrorsReportSent();
   }
 }
 

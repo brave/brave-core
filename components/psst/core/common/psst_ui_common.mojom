@@ -45,4 +45,7 @@ interface PsstConsentDialog {
     // Informs the dialog about the current status of the tuning process
     // for a given setting.
     OnSetRequestStatus(string uid, string? error);
+
+    // Notifies the dialog that sending the Psst Errors report has completed.
+    OnPsstErrorsReportSent();
 };

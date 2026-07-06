@@ -29,6 +29,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
    public:
     virtual void OnSetRequestStatus(const std::string& uid,
                                     const std::optional<std::string>& error) {}
+    virtual void OnPsstErrorsReportSent() {}
   };
 
   explicit PsstUiDelegateImpl(PsstSettingsService* psst_settings_service,
@@ -71,6 +72,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   void NotifyObserversOfTaskStatus(
       long progress,
       const std::vector<PolicyTask>& performed_tasks);
+  void NotifyObserversOfPsstErrorsReportSent();
 
   std::unique_ptr<PsstUiPresenter> ui_presenter_;
   std::optional<PsstWebsiteSettings> dialog_data_;
