@@ -41,22 +41,29 @@ void NTPSponsoredImageSource::StartDataRequest(
     return DenyAccess(std::move(callback));
   }
 
+  const base::FilePath request_path =
+      base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
+
+  // Try campaign wallpaper images first.
   const NTPSponsoredImagesData* const images_data =
       background_images_service_->GetSponsoredImagesData(
           /*supports_rich_media=*/false);
-  if (!images_data) {
-    return DenyAccess(std::move(callback));
+  if (images_data) {
+    const std::optional<base::FilePath> file_path =
+        MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
+    if (file_path) {
+      return AllowAccess(*file_path, std::move(callback));
+    }
   }
 
-  const base::FilePath request_path =
-      base::FilePath::FromUTF8Unsafe(URLToRequestPath(url));
-  const std::optional<base::FilePath> file_path =
-      MaybeGetFilePathForRequestPath(request_path, images_data->campaigns);
-  if (!file_path) {
-    return DenyAccess(std::move(callback));
+  // Fall back to sponsored site images (e.g. "sponsored-images/amazon.png").
+  const std::optional<base::FilePath> tile_file_path =
+      background_images_service_->GetSponsoredSiteImageFilePath(request_path);
+  if (tile_file_path) {
+    return AllowAccess(*tile_file_path, std::move(callback));
   }
 
-  AllowAccess(*file_path, std::move(callback));
+  DenyAccess(std::move(callback));
 }
 
 std::string NTPSponsoredImageSource::GetMimeType(const GURL& url) {

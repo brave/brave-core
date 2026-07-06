@@ -6,7 +6,11 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
-import { TopSite, TopSitesListKind } from '../../state/top_sites_store'
+import {
+  TopSite,
+  TopSitesListKind,
+  sponsoredSiteLearnMoreURL,
+} from '../../state/top_sites_store'
 import {
   useTopSitesState,
   useTopSitesActions,
@@ -14,7 +18,10 @@ import {
 import { usePersistedJSON } from '$web-common/usePersistedState'
 import { getString } from '../../lib/strings'
 import { RemoveToast } from './remove_toast'
-import { TopSitesGrid } from './top_sites_grid'
+import {
+  TopSitesGrid,
+  topSitesWithoutSponsoredSiteDuplicates,
+} from './top_sites_grid'
 import { TopSiteEditModal } from './top_site_edit_modal'
 import { Popover } from '../common/popover'
 
@@ -39,6 +46,7 @@ export function TopSites() {
   const [contextMenuSite, setContextMenuSite] = React.useState<TopSite | null>(
     null,
   )
+  const [showSponsoredMenu, setShowSponsoredMenu] = React.useState(false)
   const [showRemoveToast, setShowRemoveToast] = React.useState(false)
 
   const rootRef = React.useRef<HTMLDivElement>(null)
@@ -50,9 +58,16 @@ export function TopSites() {
     return () => document.body.classList.remove('ntp-top-sites-wide')
   }, [showTopSites, expanded])
 
+  const sponsoredSites = useTopSitesState((s) =>
+    s.showSponsoredSites ? s.sponsoredSites : [],
+  )
+
   const showAddButton =
     listKind === TopSitesListKind.kCustom && topSites.length < maxCustomTopSites
-  const tileCount = topSites.length + (showAddButton ? 1 : 0)
+  const tileCount =
+    sponsoredSites.length
+    + topSitesWithoutSponsoredSiteDuplicates(topSites, sponsoredSites).length
+    + (showAddButton ? 1 : 0)
 
   function onTopSiteContextMenu(topSite: TopSite, event: React.MouseEvent) {
     setContextMenuSite(topSite)
@@ -61,6 +76,16 @@ export function TopSites() {
       elem.style.setProperty('--self-context-menu-x', event.pageX + 'px')
       elem.style.setProperty('--self-context-menu-y', event.pageY + 'px')
     }
+  }
+
+  function onSponsoredSiteContextMenu(event: React.MouseEvent) {
+    event.preventDefault()
+    const elem = rootRef.current
+    if (elem) {
+      elem.style.setProperty('--self-context-menu-x', event.pageX + 'px')
+      elem.style.setProperty('--self-context-menu-y', event.pageY + 'px')
+    }
+    setShowSponsoredMenu(true)
   }
 
   function topSitesMenuAction(fn: () => void) {
@@ -93,6 +118,8 @@ export function TopSites() {
           canReorderSites={listKind === TopSitesListKind.kCustom}
           onAddTopSite={onAddTopSite}
           onTopSiteContextMenu={onTopSiteContextMenu}
+          onSponsoredSiteContextMenu={onSponsoredSiteContextMenu}
+          suppressSponsoredTooltip={showSponsoredMenu}
         />
         <button
           className='menu-button'
@@ -183,6 +210,33 @@ export function TopSites() {
               <Icon name='trash' />
               {getString(S.NEW_TAB_REMOVE_TOP_SITE_LABEL)}
             </button>
+          </div>
+        </Popover>
+        <Popover
+          isOpen={showSponsoredMenu}
+          className='top-site-context-menu'
+          onClose={() => setShowSponsoredMenu(false)}
+        >
+          <div className='popover-menu'>
+            <button
+              onClick={() => {
+                actions.disableSponsoredSites()
+                setShowSponsoredMenu(false)
+              }}
+            >
+              <Icon name='trash' />
+              {getString(S.NEW_TAB_REMOVE_SPONSORED_SITES_LABEL)}
+            </button>
+            <div className='menu-divider' />
+            <a
+              href={sponsoredSiteLearnMoreURL}
+              target='_blank'
+              rel='noreferrer'
+              onClick={() => setShowSponsoredMenu(false)}
+            >
+              <Icon name='help-outline' />
+              {getString(S.NEW_TAB_ABOUT_SPONSORED_SITES_LABEL)}
+            </a>
           </div>
         </Popover>
         <TopSiteEditModal

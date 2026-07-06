@@ -37,6 +37,13 @@ export const style = scoped.css`
     --self-page-width:
       calc(var(--self-columns-per-page) * var(--self-tile-width));
 
+    /* Do not add transform/filter/backdrop-filter/contain to this rule or
+       any ancestor between it and the root selector above. Any of those
+       properties establishes a new containing block for position:fixed
+       descendants, which would make this element (rather than the root)
+       the sponsored-tile tooltip's containing block, reintroducing the
+       clipping from overflow-y:hidden below that positionStrategy=fixed
+       in sponsored_site_tile.tsx currently escapes. */
     position: relative;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -146,6 +153,25 @@ export const style = scoped.css`
     font: ${font.small.semibold};
     text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.40);
     text-align: center;
+  }
+
+  .top-site-ad-disclosure {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+    align-self: stretch;
+    overflow: hidden;
+    color: ${color.white};
+    text-align: center;
+    text-overflow: ellipsis;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.20);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.08px;
+    opacity: 0.6;
+    margin-top: -6px;
   }
 
   .left-spacer {

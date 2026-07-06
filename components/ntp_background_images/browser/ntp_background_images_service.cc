@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
+#include <algorithm>
 #include <memory>
 
 #include "base/command_line.h"
@@ -24,15 +25,20 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/service/variations_service_utils.h"
+#include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
+#include "url/url_constants.h"
 
 namespace ntp_background_images {
 
@@ -40,6 +46,7 @@ namespace {
 
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSponsoredManifestFile[] = "campaigns.json";
+constexpr char kNTPSponsoredSitesManifestFile[] = "tiles.json";
 
 constexpr char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
@@ -52,17 +59,26 @@ constexpr char kNewTabPageCachedSuperReferralCode[] =
 
 // If registered component is for sponsored content, it has
 // `kNTPSponsoredManifestFile` in |installed_dir|.
+//
+// `is_optional` manifest files (e.g. the sponsored sites manifest) are not
+// present in every component install, so a missing file is not reported as
+// a crash-worthy failure the way an unreadable/corrupt file is.
 std::string HandleComponentData(const base::FilePath& installed_dir,
-                                const std::string& manifest_file) {
+                                const std::string& manifest_file,
+                                bool is_optional) {
   const base::FilePath file_path = installed_dir.AppendASCII(manifest_file);
+
+  const bool path_exists = base::PathExists(file_path);
+  if (is_optional && !path_exists) {
+    return std::string();
+  }
 
   std::string contents;
   const bool success = base::ReadFileToString(file_path, &contents);
   if (!success || contents.empty()) {
     SCOPED_CRASH_KEY_BOOL("Issue50267", "success", success);
     SCOPED_CRASH_KEY_BOOL("Issue50267", "empty_contents", contents.empty());
-    SCOPED_CRASH_KEY_BOOL("Issue50267", "path_exists",
-                          base::PathExists(file_path));
+    SCOPED_CRASH_KEY_BOOL("Issue50267", "path_exists", path_exists);
     SCOPED_CRASH_KEY_STRING64("Issue50267", "filename",
                               file_path.BaseName().AsUTF8Unsafe());
     SCOPED_CRASH_KEY_STRING64("Issue50267", "failure_reason", "Invalid JSON");
@@ -309,6 +325,66 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   return images_data;
 }
 
+NTPSponsoredSitesData* NTPBackgroundImagesService::GetSponsoredSitesData()
+    const {
+  if (!sponsored_sites_data_ || !sponsored_sites_data_->IsValid()) {
+    return nullptr;
+  }
+
+  return sponsored_sites_data_.get();
+}
+
+std::optional<base::FilePath>
+NTPBackgroundImagesService::GetSponsoredSiteImageFilePath(
+    const base::FilePath& request_path) const {
+  if (sponsored_images_installed_dir_.empty()) {
+    return std::nullopt;
+  }
+
+  const NTPSponsoredSitesData* const sites_data = GetSponsoredSitesData();
+  if (!sites_data) {
+    return std::nullopt;
+  }
+
+  // request_path is e.g. "sponsored-images/amazon.png" on all platforms.
+  // Strip the "sponsored-images/" prefix to get the bare filename.
+  const base::FilePath prefix =
+      base::FilePath::FromUTF8Unsafe(kSponsoredImagesPath);
+  base::FilePath relative;
+  if (!prefix.AppendRelativePath(request_path, &relative)) {
+    return std::nullopt;
+  }
+
+  // Reject any path that could escape the component directory.
+  if (relative.ReferencesParent() || relative.IsAbsolute()) {
+    return std::nullopt;
+  }
+
+  // Only serve images that are actually referenced by a currently active
+  // sponsored site; reject requests for any other file that happens to sit
+  // in the component's installed directory (e.g. the manifest files). Compare
+  // full relative paths, not just filenames, since a site's image may live in
+  // a subdirectory of the component (e.g. a per-campaign folder).
+  const bool is_known_site_image = std::ranges::any_of(
+      sites_data->sites, [&prefix, &relative](const NTPSponsoredSite& site) {
+        const GURL image_url(site.relative_image_url_spec);
+        std::string_view path = image_url.path();
+        if (path.size() <= 1) {
+          return false;
+        }
+        const base::FilePath image_path =
+            base::FilePath::FromUTF8Unsafe(path.substr(1));
+        base::FilePath image_relative;
+        return prefix.AppendRelativePath(image_path, &image_relative) &&
+               image_relative == relative;
+      });
+  if (!is_known_site_image) {
+    return std::nullopt;
+  }
+
+  return sponsored_images_installed_dir_.Append(relative);
+}
+
 void NTPBackgroundImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   background_images_installed_dir_ = installed_dir;
@@ -317,7 +393,8 @@ void NTPBackgroundImagesService::OnComponentReady(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
-      base::BindOnce(&HandleComponentData, installed_dir, kNTPManifestFile),
+      base::BindOnce(&HandleComponentData, installed_dir, kNTPManifestFile,
+                     /*is_optional=*/false),
       base::BindOnce(&NTPBackgroundImagesService::OnGetComponentJsonData,
                      weak_factory_.GetWeakPtr()));
 }
@@ -336,8 +413,8 @@ std::optional<base::DictValue>
 NTPBackgroundImagesService::HandleSponsoredComponentData(
     const base::FilePath& installed_dir,
     const std::string& variations_country_code) {
-  const std::string json =
-      HandleComponentData(installed_dir, kNTPSponsoredManifestFile);
+  const std::string json = HandleComponentData(
+      installed_dir, kNTPSponsoredManifestFile, /*is_optional=*/false);
 
   std::optional<base::DictValue> dict =
       base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
@@ -370,6 +447,13 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
       base::BindOnce(
           &NTPBackgroundImagesService::OnHandledSponsoredComponentData,
           weak_factory_.GetWeakPtr()));
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&NTPBackgroundImagesService::HandleSponsoredSitesData,
+                     installed_dir),
+      base::BindOnce(&NTPBackgroundImagesService::OnHandledSponsoredSitesData,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
@@ -399,6 +483,46 @@ void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
   observers_.Notify(&Observer::OnSponsoredContentDidUpdate, *dict);
   observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate,
                     sponsored_images_data_.get());
+}
+
+// static
+std::optional<NTPSponsoredSitesData>
+NTPBackgroundImagesService::HandleSponsoredSitesData(
+    const base::FilePath& installed_dir) {
+  const std::string json = HandleComponentData(
+      installed_dir, kNTPSponsoredSitesManifestFile, /*is_optional=*/true);
+  if (json.empty()) {
+    return std::nullopt;
+  }
+
+  const std::optional<base::DictValue> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  const std::string url_prefix = absl::StrFormat(
+      "%s%s%s/%s", content::kChromeUIScheme, url::kStandardSchemeSeparator,
+      kBrandedWallpaperHost, kSponsoredImagesPath);
+
+  NTPSponsoredSitesData sites_data(*dict, installed_dir, url_prefix);
+  if (!sites_data.IsValid()) {
+    return std::nullopt;
+  }
+
+  return sites_data;
+}
+
+void NTPBackgroundImagesService::OnHandledSponsoredSitesData(
+    std::optional<NTPSponsoredSitesData> sites_data) {
+  if (!sites_data) {
+    sponsored_sites_data_.reset();
+  } else {
+    sponsored_sites_data_ =
+        std::make_unique<NTPSponsoredSitesData>(std::move(*sites_data));
+  }
+
+  observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
 }
 
 }  // namespace ntp_background_images

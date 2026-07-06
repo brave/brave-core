@@ -7,6 +7,7 @@ module brave_new_tab_page_refresh.mojom;
 
 import "brave/components/brave_ads/core/mojom/brave_ads.mojom";
 import "brave/components/brave_vpn/common/mojom/brave_vpn.mojom";
+import "url/mojom/url.mojom";
 
 struct BraveBackground {
   string author;
@@ -40,6 +41,13 @@ struct SponsoredImageBackground {
   string image_url;
   SponsoredImageLogo? logo;
   brave_ads.mojom.NewTabPageAdMetricType metric_type;
+};
+
+struct SponsoredSite {
+  string relative_image_url_spec;
+  string title;
+  string ad_disclosure;
+  url.mojom.Url target_url;
 };
 
 struct SearchEngineInfo {
@@ -80,6 +88,7 @@ interface NewTabPage {
   OnBackgroundsUpdated();
   OnSearchStateUpdated();
   OnTopSitesUpdated();
+  OnSponsoredSitesUpdated();
   OnClockStateUpdated();
   OnShieldsStatsUpdated();
   [EnableIf=enable_brave_talk]
@@ -103,6 +112,10 @@ interface NewTabPageHandler {
   // Gets or sets whether the user has enabled sponsored background images.
   GetSponsoredImagesEnabled() => (bool enabled);
   SetSponsoredImagesEnabled(bool enabled) => ();
+
+  // Gets or sets whether sponsored sites are shown on the NTP.
+  GetShowSponsoredSites() => (bool show_sponsored_sites);
+  SetShowSponsoredSites(bool show_sponsored_sites) => ();
 
   // Returns the current collection of Brave background images.
   GetBraveBackgrounds() => (array<BraveBackground> backgrounds);
@@ -210,6 +223,10 @@ interface NewTabPageHandler {
 
   // Reports a top site tile click for navigation source metrics.
   RecordTopSiteClick() => ();
+
+  // Returns sponsored sites whose advertiser domain the user has visited.
+  // Returns an empty array if sponsored sites are disabled or unavailable.
+  GetSponsoredSites() => (array<SponsoredSite> sites);
 
   // Gets or sets whether the clock is displayed on the new tab page.
   GetShowClock() => (bool show_clock);

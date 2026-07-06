@@ -484,6 +484,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kNewTabPageClockFormat, "");
   registry->RegisterBooleanPref(kNewTabPageShowStats, true);
   registry->RegisterBooleanPref(kNewTabPageShowRewards, true);
+  registry->RegisterBooleanPref(kNewTabPageShowSponsoredSites, true);
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
   registry->RegisterBooleanPref(brave_talk::prefs::kNewTabPageShowBraveTalk,

@@ -23,13 +23,16 @@ export function createTopSitesStore() {
   })
 
   async function updatePrefs() {
-    const [{ showTopSites }, { listKind }] = await Promise.all([
-      handler.getShowTopSites(),
-      handler.getTopSitesListKind(),
-    ])
+    const [{ showTopSites }, { listKind }, { showSponsoredSites }] =
+      await Promise.all([
+        handler.getShowTopSites(),
+        handler.getTopSitesListKind(),
+        handler.getShowSponsoredSites(),
+      ])
 
     store.update({
       showTopSites,
+      showSponsoredSites,
       topSitesListKind: listKind,
     })
   }
@@ -39,8 +42,13 @@ export function createTopSitesStore() {
     store.update({ topSites })
   }
 
+  async function updateSponsoredSites() {
+    const { sites } = await handler.getSponsoredSites()
+    store.update({ sponsoredSites: sites })
+  }
+
   async function loadData() {
-    await Promise.all([updateTopSites(), updatePrefs()])
+    await Promise.all([updateTopSites(), updatePrefs(), updateSponsoredSites()])
 
     store.update({ initialized: true })
   }
@@ -50,7 +58,10 @@ export function createTopSitesStore() {
   }
 
   newTabProxy.addListeners({
-    onTopSitesUpdated: debounce(loadData, 10),
+    onTopSitesUpdated: debounce(async () => {
+      await Promise.all([updateTopSites(), updatePrefs()])
+    }, 10),
+    onSponsoredSitesUpdated: debounce(updateSponsoredSites, 10),
   })
 
   document.addEventListener('visibilitychange', () => {
@@ -64,6 +75,12 @@ export function createTopSitesStore() {
   const actions: TopSitesActions = {
     setShowTopSites(showTopSites) {
       handler.setShowTopSites(showTopSites)
+    },
+
+    setShowSponsoredSites(showSponsoredSites) {
+      handler.setShowSponsoredSites(showSponsoredSites)
+      store.update({ showSponsoredSites })
+      updateSponsoredSites()
     },
 
     setTopSitesListKind(listKind) {
@@ -117,6 +134,10 @@ export function createTopSitesStore() {
 
     recordTopSiteClick() {
       handler.recordTopSiteClick()
+    },
+
+    disableSponsoredSites() {
+      actions.setShowSponsoredSites(false)
     },
   }
 
