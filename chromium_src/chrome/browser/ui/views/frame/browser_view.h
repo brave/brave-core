@@ -26,10 +26,7 @@
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
 #define MaybeUpdateSplitView virtual MaybeUpdateSplitView
 #define GetTabStripVisible virtual GetTabStripVisible
-
-#define GetTabSearchBubbleHost     \
-  GetTabSearchBubbleHost_Unused(); \
-  virtual TabSearchBubbleHost* GetTabSearchBubbleHost
+#define UpdateTabSearchBubbleHost virtual UpdateTabSearchBubbleHost
 
 #if BUILDFLAG(IS_WIN)
 // On Windows <winuser.h> defines LoadAccelerators
@@ -58,7 +55,7 @@
 // #pragma pop_macro("LoadAccelerators")
 #endif
 
-#undef GetTabSearchBubbleHost
+#undef UpdateTabSearchBubbleHost
 #undef GetTabStripVisible
 #undef MaybeUpdateSplitView
 #undef MaybeUpdateDevtools
