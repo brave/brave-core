@@ -910,6 +910,7 @@ source_set("unit_tests") {
     "//brave/components/brave_wallet/browser/internal:orchard_bundle",
     "//brave/components/brave_wallet/browser/internal:test_support",
     "//brave/components/brave_wallet/browser/internal/orchard_storage",
+    "//sql",
   ]
 
   if (use_blink) {

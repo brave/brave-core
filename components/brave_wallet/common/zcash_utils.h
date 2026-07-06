@@ -78,6 +78,14 @@ enum ZCashAddrType : uint8_t {
   kMaxValue = kOrchard
 };
 
+// Distinguishes the Orchard-compatible commitment-tree pools. Both pools reuse
+// the same shard-tree logic but keep independent trees, notes, nullifiers and
+// checkpoints inside OrchardStorage, keyed by this value.
+enum class OrchardPool : uint8_t {
+  kOrchard = 0,
+  kIronwood = 1,
+};
+
 enum class OrchardAddressKind {
   // External kind, can be used in account addresses.
   External,

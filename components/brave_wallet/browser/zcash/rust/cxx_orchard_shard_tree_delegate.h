@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 
 namespace brave_wallet {
@@ -32,8 +33,9 @@ struct CxxShardRootsResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
  public:
-  explicit CxxOrchardShardTreeDelegate(OrchardStorage& storage,
-                                       const mojom::AccountIdPtr& account_id);
+  CxxOrchardShardTreeDelegate(OrchardStorage& storage,
+                              const mojom::AccountIdPtr& account_id,
+                              OrchardPool pool);
   ~CxxOrchardShardTreeDelegate();
 
   ::rust::Box<CxxOrchardShardResultWrapper> LastShard(
@@ -70,6 +72,7 @@ class CxxOrchardShardTreeDelegate {
  private:
   raw_ref<OrchardStorage> storage_;
   ::brave_wallet::mojom::AccountIdPtr account_id_;
+  OrchardPool pool_;
 };
 
 }  // namespace orchard
