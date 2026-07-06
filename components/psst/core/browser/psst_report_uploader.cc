@@ -23,7 +23,11 @@ PsstErrorReportUploader::PsstErrorReportUploader(
     : shared_url_loader_factory_(std::move(factory)) {}
 PsstErrorReportUploader::~PsstErrorReportUploader() = default;
 
-void PsstErrorReportUploader::Upload() {
+void PsstErrorReportUploader::Upload(
+    std::optional<std::string> psst_component_version,
+    const int script_version,
+    base::ListValue failed_tasks,
+    base::OnceCallback<void()> callback) {
   std::string api_key = brave_stats::GetAPIKey();
 
   const GURL upload_url(
@@ -41,7 +45,8 @@ void PsstErrorReportUploader::Upload() {
 void PsstErrorReportUploader::CreateAndStartURLLoader(
     const GURL& upload_url,
     const std::string& content_type,
-    const std::string& post_data) {
+    const std::string& post_data,
+    base::OnceCallback<void()> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto resource_request = std::make_unique<network::ResourceRequest>();
@@ -56,10 +61,13 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
         semantics {
           sender: "Brave PSST Errors Reporting"
           description:
-            "A user-initiated report of a website privacy settings that PSST couldn't apply"
+            "A user-initiated report of a website privacy settings that PSST
+             couldn't apply"
           trigger:
-            "Though the 'Report a Broken PSST rules' option of the PSST consent dialog"
-          data: "Website where PSST failed, what step(s) failed, what the error were"
+            "Though the 'Report a Broken PSST rules' option of the PSST consent
+             dialog"
+          data: "Website where PSST failed, what step(s) failed, what the error
+             were"
           destination: OTHER
           destination_other: "Brave developers"
         }
@@ -73,10 +81,11 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
   simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       shared_url_loader_factory_.get(),
       base::BindOnce(&PsstErrorReportUploader::OnSimpleURLLoaderComplete,
-                     base::Unretained(this)));
+                     base::Unretained(this), std::move(callback)));
 }
 
 void PsstErrorReportUploader::OnSimpleURLLoaderComplete(
+    base::OnceCallback<void()> callback,
     std::optional<std::string> response_body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
@@ -87,6 +96,10 @@ void PsstErrorReportUploader::OnSimpleURLLoaderComplete(
   } else {
     LOG(ERROR) << "Uploading webcompat report failed - please try again later!"
                << std::endl;
+  }
+
+  if (callback) {
+    std::move(callback).Run();
   }
 }
 }  // namespace psst

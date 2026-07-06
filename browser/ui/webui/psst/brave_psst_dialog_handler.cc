@@ -119,6 +119,14 @@ void BravePsstDialogHandler::OnSetRequestStatus(
   client_page_->OnSetRequestStatus(uid, error);
 }
 
+void BravePsstDialogHandler::OnPsstErrorsReportSent() {
+  if (!client_page_ || !client_page_.is_bound() ||
+      !client_page_.is_connected()) {
+    return;
+  }
+  client_page_->OnPsstErrorsReportSent();
+}
+
 void BravePsstDialogHandler::OnTabStripModelChanged(
     TabStripModel* tab_strip_model,
     const TabStripModelChange& change,
@@ -152,7 +160,6 @@ void BravePsstDialogHandler::PerformPrivacyTuning(
 }
 
 void BravePsstDialogHandler::ReportFailedContent() {
-  LOG(INFO) << "[PSST] BravePsstDialogHandler::ReportFailedContent";
   if (!psst_dialog_delegate_) {
     return;
   }

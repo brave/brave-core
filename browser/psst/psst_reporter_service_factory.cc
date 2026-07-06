@@ -8,9 +8,12 @@
 #include <memory>
 
 #include "base/check_deref.h"
+#include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
+#include "brave/browser/psst/psst_reporter_service_delegate.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/psst/core/browser/psst_reporter_service.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
 #include "content/public/browser/browser_context.h"
@@ -46,5 +49,7 @@ PsstReporterServiceFactory::BuildServiceInstanceForBrowserContext(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
 
   return std::make_unique<psst::PsstReporterService>(
+      std::make_unique<psst::PsstReporterServiceDelegate>(
+          g_browser_process->component_updater()),
       std::move(report_uploader));
 }

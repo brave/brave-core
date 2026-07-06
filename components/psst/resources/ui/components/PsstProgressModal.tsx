@@ -141,6 +141,10 @@ export const PsstProgressModal = () => {
     })
   })
 
+  api.useOnPsstErrorsReportSent(() => {
+    api.closeDialog()
+  })
+
   const handleSettingItemCheck = React.useCallback(
     (uid: string, checked: boolean) => {
       updateAllMatchingOptionsStatuses((prevOptionsStatuses) => {

@@ -5,22 +5,59 @@
 
 #include "brave/components/psst/core/browser/psst_reporter_service.h"
 
+#include "base/values.h"
+#include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 
 namespace psst {
 
 PsstReporterService::PsstReporterService(
+    std::unique_ptr<Delegate> service_delegate,
     std::unique_ptr<PsstErrorReportUploader> report_uploader)
-    : report_uploader_(std::move(report_uploader)) {}
+    : service_delegate_(std::move(service_delegate)),
+      report_uploader_(std::move(report_uploader)) {}
 
 PsstReporterService::~PsstReporterService() = default;
 
 void PsstReporterService::SubmitPsstErrorsReport(
-    std::optional<PolicyTasksSet> failed_policy_tasks) {
+    std::optional<PolicyTasksSet> failed_policy_tasks,
+    const int script_version,
+    OnSubmitPsstErrorsReportCallback callback) {
+  if (!failed_policy_tasks || failed_policy_tasks->empty()) {
+    return;
+  }
+
+  std::optional<std::string> psst_component_version;
+  if (service_delegate_) {
+    auto all_components = service_delegate_->GetComponentInfos();
+    auto it =
+        std::find_if(all_components.begin(), all_components.end(),
+                     [](const auto& c) { return c.id == kPsstComponentId; });
+    psst_component_version = (it != all_components.end())
+                                 ? std::optional<std::string>(it->version)
+                                 : std::nullopt;
+  }
+
+  base::ListValue failed_tasks;
+
+  std::string tasks_log;
+  for (auto& ti : failed_policy_tasks.value()) {
+    failed_tasks.Append(ti.ToValue());
+    tasks_log +=
+        "\nuid:" + ti.uid + "\n\turl:" + ti.url +
+        "\n\tdescription:" + ti.description + "\n\terror_description:" +
+        (ti.error_description.has_value() ? ti.error_description.value()
+                                          : "N/A");
+  }
+
   LOG(INFO) << "[PSST] PsstReporterService::SubmitPsstErrorsReport "
-               "failed_policy_tasks.size:"
-            << (failed_policy_tasks.has_value() ? failed_policy_tasks->size()
-                                                : -1);
+               "\npsst_component_version:"
+            << (psst_component_version ? psst_component_version.value() : "n/a")
+            << "\nscript_version:" << script_version
+            << "\nfailed_policy_tasks:" << tasks_log;
+
+  report_uploader_->Upload(std::move(psst_component_version), script_version,
+                           std::move(failed_tasks), std::move(callback));
 }
 
 bool PolicyTaskCompare::operator()(const PolicyTask& lhs,
