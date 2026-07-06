@@ -1,0 +1,14 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Attributes used exclusively by plaster.py when generating patch files.
+#
+# `* diff` forces git's built-in default funcname driver for every path,
+# overriding any language-specific driver git might otherwise select (notably
+# the `objc` driver for `.mm` files was leading to discrepancies).
+#
+# This only ever applies to the single text source being plastered, so forcing
+# textual diff here carries no binary-file risk.
+* diff
