@@ -144,7 +144,7 @@ const jestConfig: Config = {
       '<rootDir>/components/brave_wallet_ui/common/async/__mocks__/bridge.ts',
 
     // TODO(https://github.com/brave/brave-browser/issues/54640): The ordering
-    // here can get problematic for devs who have more than 1 build type at a
+    // here can get proglematic for devs who have more than 1 build type at a
     // time, since if the file exists at the first path, it will be used for
     // Type analysis instead of the second path, even if it's more recent.
     // It can also break if CI or devs perform a build in a directory not known
