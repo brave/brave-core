@@ -336,10 +336,12 @@ import os
       }
     }
 
-    let prefs = self.prefs
+    // PrefService is bound to the main sequence so let's read it here (on the main actor)
+    // and capture the primitive so the @Sendable closure never touches PrefService off-sequence.
+    let blockAllCookiesEnabled = self.prefs.boolean(forPath: kBlockAllCookiesEnabled)
     @Sendable func _toggleFolderAccessForBlockCookies(locked: Bool) async {
       do {
-        if prefs.boolean(forPath: kBlockAllCookiesEnabled),
+        if blockAllCookiesEnabled,
           try await AsyncFileManager.default.isWebDataLocked(atPath: .cookie) != locked
         {
           try await AsyncFileManager.default.setWebDataAccess(atPath: .cookie, lock: locked)
