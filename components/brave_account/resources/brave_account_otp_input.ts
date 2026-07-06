@@ -9,9 +9,6 @@ import { getDeepActiveElement, hasKeyModifiers } from '//resources/js/util.js'
 import { getCss } from './brave_account_otp_input.css.js'
 import { getHtml } from './brave_account_otp_input.html.js'
 
-const BASE32_CHAR_REGEX = /^[A-Z2-7]$/
-const BASE32_SANITIZE_REGEX = /[^A-Z2-7]/g
-
 type LeoInputElement = HTMLElement & {
   value: string
 }
@@ -51,9 +48,7 @@ export class BraveAccountOtpInputElement extends CrLitElement {
       inputs.findIndex((input) => input.shadowRoot?.contains(activeElement)),
     )
 
-    const chars = (e.clipboardData?.getData('text') || '')
-      .toUpperCase()
-      .replace(BASE32_SANITIZE_REGEX, '')
+    const chars = (e.clipboardData?.getData('text') || '').toUpperCase()
     for (const [offset, char] of [...chars].entries()) {
       const input = inputs[startIndex + offset]
       if (!input) {
@@ -66,17 +61,17 @@ export class BraveAccountOtpInputElement extends CrLitElement {
     this.emitCode()
   }
 
-  // Handle direct text input by validating Base32 (A-Z, 2-7) and overwriting
-  // the slot. Done in `beforeinput` to block invalid characters before they
-  // enter the field and to bypass native insertion (caret-dependent), ensuring
-  // consistent single-character behavior.
+  // Handle direct text input by overwriting the slot.
+  // Done in `beforeinput` to bypass native insertion (caret-dependent),
+  // ensuring consistent single-character behavior.
+  // Real validation happens on the backend, so characters are passed as-is.
   protected onBeforeInput(e: InputEvent, index: number) {
     if (e.inputType !== 'insertText') {
       return
     }
 
     const char = e.data?.toUpperCase() ?? ''
-    if (!BASE32_CHAR_REGEX.test(char)) {
+    if (char.length !== 1) {
       e.preventDefault()
       return
     }
@@ -113,10 +108,7 @@ export class BraveAccountOtpInputElement extends CrLitElement {
       return
     }
 
-    input.value = detail.value
-      .toUpperCase()
-      .replace(BASE32_SANITIZE_REGEX, '')
-      .slice(-1)
+    input.value = detail.value.toUpperCase().slice(-1)
 
     this.emitCode()
   }
