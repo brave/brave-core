@@ -10,6 +10,7 @@
 #include <memory>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_shield_sync_service.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -83,6 +84,12 @@ OrchardNote GenerateMockOrchardNote(const mojom::AccountIdPtr& account_id,
 void SortByBlockId(std::vector<OrchardNote>& vec);
 
 std::vector<zcash::mojom::ZCashUtxoPtr> GetZCashUtxo(uint64_t amount);
+
+// Creates a v2 orchard SQLite database at |db_path| with minimal test data for
+// |account_id|. Used by migration tests to verify the v2→v3 schema upgrade.
+void PopulateOrchardV2DatabaseForTesting(  // IN-TEST
+    const base::FilePath& db_path,
+    const mojom::AccountIdPtr& account_id);
 
 }  // namespace brave_wallet
 

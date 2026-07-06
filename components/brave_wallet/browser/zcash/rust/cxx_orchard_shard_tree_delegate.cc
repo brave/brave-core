@@ -105,14 +105,15 @@ CxxOrchardCheckpointBundle ToRust(
 
 CxxOrchardShardTreeDelegate::CxxOrchardShardTreeDelegate(
     OrchardStorage& storage,
-    const mojom::AccountIdPtr& account_id)
-    : storage_(storage), account_id_(account_id.Clone()) {}
+    const mojom::AccountIdPtr& account_id,
+    OrchardPool pool)
+    : storage_(storage), account_id_(account_id.Clone()), pool_(pool) {}
 
 CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 
 ::rust::Box<CxxOrchardShardResultWrapper> CxxOrchardShardTreeDelegate::GetShard(
     const CxxOrchardShardAddress& addr) const {
-  auto shard = storage_->GetShard(account_id_, FromRust(addr));
+  auto shard = storage_->GetShard(pool_, account_id_, FromRust(addr));
   if (!shard.has_value()) {
     return wrap_shard_tree_shard_error();
   } else if (!shard.value()) {
@@ -123,7 +124,7 @@ CxxOrchardShardTreeDelegate::~CxxOrchardShardTreeDelegate() = default;
 
 ::rust::Box<CxxOrchardShardResultWrapper>
 CxxOrchardShardTreeDelegate::LastShard(uint8_t shard_level) const {
-  auto shard = storage_->LastShard(account_id_, shard_level);
+  auto shard = storage_->LastShard(pool_, account_id_, shard_level);
   if (!shard.has_value()) {
     return wrap_shard_tree_shard_error();
   } else if (!shard.value()) {
@@ -134,7 +135,7 @@ CxxOrchardShardTreeDelegate::LastShard(uint8_t shard_level) const {
 
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::PutShard(
     const CxxOrchardShard& tree) const {
-  auto result = storage_->PutShard(account_id_, FromRust(tree));
+  auto result = storage_->PutShard(pool_, account_id_, FromRust(tree));
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -144,7 +145,7 @@ CxxOrchardShardTreeDelegate::LastShard(uint8_t shard_level) const {
 
 ::rust::Box<CxxShardRootsResultWrapper>
 CxxOrchardShardTreeDelegate::GetShardRoots(uint8_t shard_level) const {
-  auto shard = storage_->GetShardRoots(account_id_, shard_level);
+  auto shard = storage_->GetShardRoots(pool_, account_id_, shard_level);
   if (!shard.has_value()) {
     return wrap_shard_tree_roots_error();
   }
@@ -157,7 +158,7 @@ CxxOrchardShardTreeDelegate::GetShardRoots(uint8_t shard_level) const {
 
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::Truncate(
     const CxxOrchardShardAddress& address) const {
-  auto result = storage_->TruncateShards(account_id_, address.index);
+  auto result = storage_->TruncateShards(pool_, account_id_, address.index);
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -166,7 +167,7 @@ CxxOrchardShardTreeDelegate::GetShardRoots(uint8_t shard_level) const {
 
 ::rust::Box<CxxOrchardShardTreeCapResultWrapper>
 CxxOrchardShardTreeDelegate::GetCap() const {
-  auto result = storage_->GetCap(account_id_);
+  auto result = storage_->GetCap(pool_, account_id_);
   if (!result.has_value()) {
     return wrap_shard_tree_cap_error();
   } else if (!result.value()) {
@@ -177,7 +178,7 @@ CxxOrchardShardTreeDelegate::GetCap() const {
 
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::PutCap(
     const CxxOrchardShardTreeCap& tree) const {
-  auto result = storage_->PutCap(account_id_, FromRust(tree));
+  auto result = storage_->PutCap(pool_, account_id_, FromRust(tree));
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -186,7 +187,7 @@ CxxOrchardShardTreeDelegate::GetCap() const {
 
 ::rust::Box<CxxCheckpointIdResultWrapper>
 CxxOrchardShardTreeDelegate::MinCheckpointId() const {
-  auto result = storage_->MinCheckpointId(account_id_);
+  auto result = storage_->MinCheckpointId(pool_, account_id_);
   if (!result.has_value()) {
     return wrap_checkpoint_id_error();
   } else if (!result.value()) {
@@ -197,7 +198,7 @@ CxxOrchardShardTreeDelegate::MinCheckpointId() const {
 
 ::rust::Box<CxxCheckpointIdResultWrapper>
 CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
-  auto result = storage_->MaxCheckpointId(account_id_);
+  auto result = storage_->MaxCheckpointId(pool_, account_id_);
   if (!result.has_value()) {
     return wrap_checkpoint_id_error();
   } else if (!result.value()) {
@@ -209,8 +210,8 @@ CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::AddCheckpoint(
     uint32_t checkpoint_id,
     const CxxOrchardCheckpoint& checkpoint) const {
-  auto result =
-      storage_->AddCheckpoint(account_id_, checkpoint_id, FromRust(checkpoint));
+  auto result = storage_->AddCheckpoint(pool_, account_id_, checkpoint_id,
+                                        FromRust(checkpoint));
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -219,7 +220,7 @@ CxxOrchardShardTreeDelegate::MaxCheckpointId() const {
 
 ::rust::Box<CxxCheckpointCountResultWrapper>
 CxxOrchardShardTreeDelegate::CheckpointCount() const {
-  auto result = storage_->CheckpointCount(account_id_);
+  auto result = storage_->CheckpointCount(pool_, account_id_);
   if (!result.has_value()) {
     return wrap_checkpoint_count_error();
   }
@@ -228,14 +229,15 @@ CxxOrchardShardTreeDelegate::CheckpointCount() const {
 
 ::rust::Box<CxxCheckpointBundleResultWrapper>
 CxxOrchardShardTreeDelegate::CheckpointAtDepth(size_t depth) const {
-  auto checkpoint_id = storage_->GetCheckpointAtDepth(account_id_, depth);
+  auto checkpoint_id =
+      storage_->GetCheckpointAtDepth(pool_, account_id_, depth);
   if (!checkpoint_id.has_value()) {
     return wrap_checkpoint_bundle_error();
   } else if (!checkpoint_id.value()) {
     return wrap_checkpoint_bundle_none();
   }
 
-  auto checkpoint = storage_->GetCheckpoint(account_id_, **checkpoint_id);
+  auto checkpoint = storage_->GetCheckpoint(pool_, account_id_, **checkpoint_id);
   if (!checkpoint.has_value()) {
     return wrap_checkpoint_bundle_error();
   } else if (!checkpoint.value()) {
@@ -246,7 +248,7 @@ CxxOrchardShardTreeDelegate::CheckpointAtDepth(size_t depth) const {
 
 ::rust::Box<CxxCheckpointBundleResultWrapper>
 CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
-  auto checkpoint = storage_->GetCheckpoint(account_id_, checkpoint_id);
+  auto checkpoint = storage_->GetCheckpoint(pool_, account_id_, checkpoint_id);
   if (!checkpoint.has_value()) {
     return wrap_checkpoint_bundle_error();
   } else if (!checkpoint.value()) {
@@ -258,7 +260,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::UpdateCheckpoint(
     uint32_t checkpoint_id,
     const CxxOrchardCheckpoint& checkpoint) const {
-  auto result = storage_->UpdateCheckpoint(account_id_, checkpoint_id,
+  auto result = storage_->UpdateCheckpoint(pool_, account_id_, checkpoint_id,
                                            FromRust(checkpoint));
   if (!result.has_value()) {
     return wrap_bool_error();
@@ -268,7 +270,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
 
 ::rust::Box<CxxBoolResultWrapper> CxxOrchardShardTreeDelegate::RemoveCheckpoint(
     uint32_t checkpoint_id) const {
-  auto result = storage_->RemoveCheckpoint(account_id_, checkpoint_id);
+  auto result = storage_->RemoveCheckpoint(pool_, account_id_, checkpoint_id);
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -277,7 +279,7 @@ CxxOrchardShardTreeDelegate::GetCheckpoint(uint32_t checkpoint_id) const {
 
 ::rust::Box<CxxBoolResultWrapper>
 CxxOrchardShardTreeDelegate::TruncateCheckpoint(uint32_t checkpoint_id) const {
-  auto result = storage_->TruncateCheckpoints(account_id_, checkpoint_id);
+  auto result = storage_->TruncateCheckpoints(pool_, account_id_, checkpoint_id);
   if (!result.has_value()) {
     return wrap_bool_error();
   }
@@ -286,7 +288,7 @@ CxxOrchardShardTreeDelegate::TruncateCheckpoint(uint32_t checkpoint_id) const {
 
 ::rust::Box<CxxCheckpointsResultWrapper>
 CxxOrchardShardTreeDelegate::GetCheckpoints(size_t limit) const {
-  auto checkpoints = storage_->GetCheckpoints(account_id_, limit);
+  auto checkpoints = storage_->GetCheckpoints(pool_, account_id_, limit);
   if (!checkpoints.has_value()) {
     return wrap_checkpoints_error();
   }

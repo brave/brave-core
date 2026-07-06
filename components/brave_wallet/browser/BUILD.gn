@@ -594,6 +594,7 @@ source_set("test_support") {
     "//brave/components/services/brave_wallet/public/mojom",
     "//services/network:test_support",
     "//services/network/public/cpp",
+    "//sql",
     "//testing/gmock",
     "//testing/gtest",
   ]

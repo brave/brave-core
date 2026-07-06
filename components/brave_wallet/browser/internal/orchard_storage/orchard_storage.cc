@@ -33,7 +33,75 @@ namespace {
 #define kCheckpointsMarksRemoved "checkpoints_mark_removed"
 
 constexpr int kEmptyDbVersionNumber = 1;
-constexpr int kCurrentVersionNumber = 2;
+constexpr int kCurrentVersionNumber = 3;
+
+constexpr char kCreateNotesSql[] =
+    "CREATE TABLE " kNotesTable " ("
+    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "account_id TEXT NOT NULL,"
+    "amount INTEGER NOT NULL,"
+    "addr BLOB NOT NULL,"
+    "block_id INTEGER NOT NULL,"
+    "commitment_tree_position INTEGER,"
+    "nullifier BLOB NOT NULL UNIQUE,"
+    "rho BLOB NOT NULL,"
+    "rseed BLOB NOT NULL,"
+    "pool INTEGER NOT NULL);";
+
+constexpr char kCreateSpentNotesSql[] =
+    "CREATE TABLE " kSpentNotesTable " ("
+    "id INTEGER PRIMARY KEY AUTOINCREMENT,"
+    "account_id TEXT NOT NULL,"
+    "spent_block_id INTEGER NOT NULL,"
+    "nullifier BLOB NOT NULL UNIQUE,"
+    "pool INTEGER NOT NULL);";
+
+constexpr char kCreateAccountMetaSql[] =
+    "CREATE TABLE " kAccountMeta " ("
+    "account_id TEXT NOT NULL,"
+    "account_birthday INTEGER NOT NULL,"
+    "latest_scanned_block INTEGER,"
+    "latest_scanned_block_hash TEXT,"
+    "pool INTEGER NOT NULL,"
+    "PRIMARY KEY (account_id, pool));";
+
+constexpr char kCreateShardTreeSql[] =
+    "CREATE TABLE " kShardTree " ("
+    "account_id TEXT NOT NULL,"
+    "shard_index INTEGER NOT NULL,"
+    "subtree_end_height INTEGER,"
+    "root_hash BLOB,"
+    "shard_data BLOB,"
+    "pool INTEGER NOT NULL,"
+    "CONSTRAINT shard_index_unique UNIQUE (pool, shard_index, account_id),"
+    "CONSTRAINT root_unique UNIQUE (pool, root_hash, account_id));";
+
+constexpr char kCreateShardTreeCheckpointsSql[] =
+    "CREATE TABLE " kShardTreeCheckpoints " ("
+    "account_id TEXT NOT NULL,"
+    "checkpoint_id INTEGER NOT NULL,"
+    "position INTEGER,"
+    "pool INTEGER NOT NULL,"
+    "PRIMARY KEY (pool, checkpoint_id));";
+
+constexpr char kCreateCheckpointsMarksRemovedSql[] =
+    "CREATE TABLE " kCheckpointsMarksRemoved " ("
+    "account_id TEXT NOT NULL,"
+    "checkpoint_id INTEGER NOT NULL,"
+    "mark_removed_position INTEGER NOT NULL,"
+    "pool INTEGER NOT NULL,"
+    "FOREIGN KEY (checkpoint_id) REFERENCES "
+    "orchard_tree_checkpoints(checkpoint_id)"
+    "ON DELETE CASCADE,"
+    "CONSTRAINT spend_position_unique UNIQUE "
+    "(pool, checkpoint_id, mark_removed_position, account_id)"
+    ");";
+
+constexpr char kCreateShardTreeCapSql[] =
+    "CREATE TABLE " kShardTreeCap " ("
+    "account_id TEXT NOT NULL,"
+    "cap_data BLOB NOT NULL,"
+    "pool INTEGER NOT NULL);";
 
 template <size_t const T>
 base::expected<std::optional<std::array<uint8_t, T>>, std::string>
@@ -246,70 +314,106 @@ bool OrchardStorage::CreateSchema() {
 
   sql::Transaction transaction(&database_);
   return transaction.Begin() &&
-         database_.Execute("CREATE TABLE " kNotesTable
-                           " ("
-                           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                           "account_id TEXT NOT NULL,"
-                           "amount INTEGER NOT NULL,"
-                           "addr BLOB NOT NULL,"
-                           "block_id INTEGER NOT NULL,"
-                           "commitment_tree_position INTEGER,"
-                           "nullifier BLOB NOT NULL UNIQUE,"
-                           "rho BLOB NOT NULL,"
-                           "rseed BLOB NOT NULL);") &&
-         database_.Execute("CREATE TABLE " kSpentNotesTable
-                           " ("
-                           "id INTEGER PRIMARY KEY AUTOINCREMENT,"
-                           "account_id TEXT NOT NULL,"
-                           "spent_block_id INTEGER NOT NULL,"
-                           "nullifier BLOB NOT NULL UNIQUE);") &&
-         database_.Execute("CREATE TABLE " kAccountMeta
-                           " ("
-                           "account_id TEXT NOT NULL PRIMARY KEY,"
-                           "account_birthday INTEGER NOT NULL,"
-                           "latest_scanned_block INTEGER,"
-                           "latest_scanned_block_hash TEXT);") &&
-         database_.Execute(
-             "CREATE TABLE " kShardTree
-             " ("
-             "account_id TEXT NOT NULL,"
-             "shard_index INTEGER NOT NULL,"
-             "subtree_end_height INTEGER,"
-             "root_hash BLOB,"
-             "shard_data BLOB,"
-             "CONSTRAINT shard_index_unique UNIQUE (shard_index, account_id),"
-             "CONSTRAINT root_unique UNIQUE (root_hash, account_id));") &&
-         database_.Execute("CREATE TABLE " kShardTreeCheckpoints
-                           " ("
-                           "account_id TEXT NOT NULL,"
-                           "checkpoint_id INTEGER PRIMARY KEY,"
-                           "position INTEGER)") &&
-         database_.Execute("CREATE TABLE " kCheckpointsMarksRemoved
-                           " ("
-                           "account_id TEXT NOT NULL,"
-                           "checkpoint_id INTEGER NOT NULL,"
-                           "mark_removed_position INTEGER NOT NULL,"
-                           "FOREIGN KEY (checkpoint_id) REFERENCES "
-                           "orchard_tree_checkpoints(checkpoint_id)"
-                           "ON DELETE CASCADE,"
-                           "CONSTRAINT spend_position_unique UNIQUE "
-                           "(checkpoint_id, mark_removed_position, account_id)"
-                           ")") &&
-         database_.Execute("CREATE TABLE " kShardTreeCap
-                           " ("
-                           "account_id TEXT NOT NULL,"
-                           "cap_data BLOB NOT NULL)") &&
+         database_.Execute(kCreateNotesSql) &&
+         database_.Execute(kCreateSpentNotesSql) &&
+         database_.Execute(kCreateAccountMetaSql) &&
+         database_.Execute(kCreateShardTreeSql) &&
+         database_.Execute(kCreateShardTreeCheckpointsSql) &&
+         database_.Execute(kCreateCheckpointsMarksRemovedSql) &&
+         database_.Execute(kCreateShardTreeCapSql) &&
          transaction.Commit();
-  // TODO(cypt4): Add indexes
 }
 
 bool OrchardStorage::UpdateSchema() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return true;
+  sql::Transaction transaction(&database_);
+  if (!transaction.Begin()) {
+    return false;
+  }
+  bool ok =
+      database_.Execute("ALTER TABLE " kNotesTable
+                        " RENAME TO notes_migration_old;") &&
+      database_.Execute(kCreateNotesSql) &&
+      database_.Execute(
+          "INSERT INTO " kNotesTable
+          " (id, account_id, amount, addr, block_id, "
+          "commitment_tree_position, nullifier, rho, rseed, pool) "
+          "SELECT id, account_id, amount, addr, block_id, "
+          "commitment_tree_position, nullifier, rho, rseed, 0 "
+          "FROM notes_migration_old;") &&
+      database_.Execute("DROP TABLE notes_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kSpentNotesTable
+                        " RENAME TO spent_notes_migration_old;") &&
+      database_.Execute(kCreateSpentNotesSql) &&
+      database_.Execute(
+          "INSERT INTO " kSpentNotesTable
+          " (id, account_id, spent_block_id, nullifier, pool) "
+          "SELECT id, account_id, spent_block_id, nullifier, 0 "
+          "FROM spent_notes_migration_old;") &&
+      database_.Execute("DROP TABLE spent_notes_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kAccountMeta
+                        " RENAME TO account_meta_migration_old;") &&
+      database_.Execute(kCreateAccountMetaSql) &&
+      database_.Execute(
+          "INSERT INTO " kAccountMeta
+          " (account_id, account_birthday, latest_scanned_block, "
+          "latest_scanned_block_hash, pool) "
+          "SELECT account_id, account_birthday, latest_scanned_block, "
+          "latest_scanned_block_hash, 0 "
+          "FROM account_meta_migration_old;") &&
+      database_.Execute("DROP TABLE account_meta_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kShardTree
+                        " RENAME TO shard_tree_migration_old;") &&
+      database_.Execute(kCreateShardTreeSql) &&
+      database_.Execute(
+          "INSERT INTO " kShardTree
+          " (account_id, shard_index, subtree_end_height, root_hash, "
+          "shard_data, pool) "
+          "SELECT account_id, shard_index, subtree_end_height, root_hash, "
+          "shard_data, 0 "
+          "FROM shard_tree_migration_old;") &&
+      database_.Execute("DROP TABLE shard_tree_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kShardTreeCheckpoints
+                        " RENAME TO checkpoints_migration_old;") &&
+      database_.Execute(kCreateShardTreeCheckpointsSql) &&
+      database_.Execute(
+          "INSERT INTO " kShardTreeCheckpoints
+          " (account_id, checkpoint_id, position, pool) "
+          "SELECT account_id, checkpoint_id, position, 0 "
+          "FROM checkpoints_migration_old;") &&
+      database_.Execute("DROP TABLE checkpoints_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kCheckpointsMarksRemoved
+                        " RENAME TO checkpoints_mark_removed_migration_old;") &&
+      database_.Execute(kCreateCheckpointsMarksRemovedSql) &&
+      database_.Execute(
+          "INSERT INTO " kCheckpointsMarksRemoved
+          " (account_id, checkpoint_id, mark_removed_position, pool) "
+          "SELECT account_id, checkpoint_id, mark_removed_position, 0 "
+          "FROM checkpoints_mark_removed_migration_old;") &&
+      database_.Execute(
+          "DROP TABLE checkpoints_mark_removed_migration_old;") &&
+
+      database_.Execute("ALTER TABLE " kShardTreeCap
+                        " RENAME TO shard_tree_cap_migration_old;") &&
+      database_.Execute(kCreateShardTreeCapSql) &&
+      database_.Execute(
+          "INSERT INTO " kShardTreeCap
+          " (account_id, cap_data, pool) "
+          "SELECT account_id, cap_data, 0 "
+          "FROM shard_tree_cap_migration_old;") &&
+      database_.Execute("DROP TABLE shard_tree_cap_migration_old;");
+
+  return ok && transaction.Commit();
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
+OrchardStorage::RegisterAccount(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id,
                                 uint32_t account_birthday_block) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -318,11 +422,12 @@ OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
 
   sql::Statement register_account_statement(database_.GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kAccountMeta " "
-                     "(account_id, account_birthday) "
-                     "VALUES (?, ?)"));
+                     "(account_id, account_birthday, pool) "
+                     "VALUES (?, ?, ?)"));
 
   register_account_statement.BindString(0, account_id->unique_key);
   register_account_statement.BindInt64(1, account_birthday_block);
+  register_account_statement.BindInt(2, static_cast<int>(pool));
 
   if (!register_account_statement.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -334,7 +439,8 @@ OrchardStorage::RegisterAccount(const mojom::AccountIdPtr& account_id,
 
 base::expected<std::optional<OrchardStorage::AccountMeta>,
                OrchardStorage::Error>
-OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::GetAccountMeta(OrchardPool pool,
+                               const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -348,9 +454,11 @@ OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
   sql::Statement resolve_account_statement(database_.GetCachedStatement(
       SQL_FROM_HERE,
       "SELECT account_birthday, latest_scanned_block, "
-      "latest_scanned_block_hash FROM " kAccountMeta " WHERE account_id = ?;"));
+      "latest_scanned_block_hash FROM " kAccountMeta
+      " WHERE account_id = ? AND pool = ?;"));
 
   resolve_account_statement.BindString(0, account_id->unique_key);
+  resolve_account_statement.BindInt(1, static_cast<int>(pool));
 
   if (!resolve_account_statement.Step()) {
     if (!resolve_account_statement.Succeeded()) {
@@ -387,7 +495,8 @@ OrchardStorage::GetAccountMeta(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
+OrchardStorage::HandleChainReorg(OrchardPool pool,
+                                 const mojom::AccountIdPtr& account_id,
                                  uint32_t reorg_block_id,
                                  const std::string& reorg_block_hash) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -402,28 +511,32 @@ OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
 
   sql::Statement remove_from_spent_notes(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kSpentNotesTable " "
-                     "WHERE spent_block_id > ? AND account_id = ?;"));
+                     "WHERE spent_block_id > ? AND account_id = ? "
+                     "AND pool = ?;"));
 
   remove_from_spent_notes.BindInt64(0, reorg_block_id);
   remove_from_spent_notes.BindString(1, account_id->unique_key);
+  remove_from_spent_notes.BindInt(2, static_cast<int>(pool));
 
   sql::Statement remove_from_notes(database_.GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM " kNotesTable " WHERE block_id > ? AND account_id = ?;"));
+      SQL_FROM_HERE, "DELETE FROM " kNotesTable
+                     " WHERE block_id > ? AND account_id = ? AND pool = ?;"));
 
   remove_from_notes.BindInt64(0, reorg_block_id);
   remove_from_notes.BindString(1, account_id->unique_key);
+  remove_from_notes.BindInt(2, static_cast<int>(pool));
 
   sql::Statement update_account_meta(database_.GetCachedStatement(
       SQL_FROM_HERE,
       "UPDATE " kAccountMeta
       " "
       "SET latest_scanned_block = ?, latest_scanned_block_hash = ? "
-      "WHERE account_id = ?;"));
+      "WHERE account_id = ? AND pool = ?;"));
 
   update_account_meta.BindInt64(0, reorg_block_id);
   update_account_meta.BindString(1, reorg_block_hash);
   update_account_meta.BindString(2, account_id->unique_key);
+  update_account_meta.BindInt(3, static_cast<int>(pool));
 
   if (!remove_from_notes.Run() || !remove_from_spent_notes.Run() ||
       !update_account_meta.Run()) {
@@ -436,6 +549,7 @@ OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
 OrchardStorage::ResetAccountSyncState(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id,
     std::optional<uint32_t> account_birthday_block) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -445,29 +559,38 @@ OrchardStorage::ResetAccountSyncState(
 
   // Clear cap.
   sql::Statement clear_cap_statement(database_.GetCachedStatement(
-      SQL_FROM_HERE, "DELETE FROM " kShardTreeCap " WHERE account_id = ?;"));
+      SQL_FROM_HERE,
+      "DELETE FROM " kShardTreeCap " WHERE account_id = ? AND pool = ?;"));
   clear_cap_statement.BindString(0, account_id->unique_key);
+  clear_cap_statement.BindInt(1, static_cast<int>(pool));
 
   // Clear shards.
   sql::Statement clear_shards_statement(database_.GetCachedStatement(
-      SQL_FROM_HERE, "DELETE FROM " kShardTree " WHERE account_id = ?;"));
+      SQL_FROM_HERE,
+      "DELETE FROM " kShardTree " WHERE account_id = ? AND pool = ?;"));
   clear_shards_statement.BindString(0, account_id->unique_key);
+  clear_shards_statement.BindInt(1, static_cast<int>(pool));
 
   // Clear discovered notes.
   sql::Statement clear_discovered_notes(database_.GetCachedStatement(
-      SQL_FROM_HERE, "DELETE FROM " kNotesTable " WHERE account_id = ?;"));
+      SQL_FROM_HERE,
+      "DELETE FROM " kNotesTable " WHERE account_id = ? AND pool = ?;"));
   clear_discovered_notes.BindString(0, account_id->unique_key);
+  clear_discovered_notes.BindInt(1, static_cast<int>(pool));
 
   // Clear spent notes.
   sql::Statement clear_spent_notes(database_.GetCachedStatement(
-      SQL_FROM_HERE, "DELETE FROM " kSpentNotesTable " WHERE account_id = ?;"));
+      SQL_FROM_HERE,
+      "DELETE FROM " kSpentNotesTable " WHERE account_id = ? AND pool = ?;"));
   clear_spent_notes.BindString(0, account_id->unique_key);
+  clear_spent_notes.BindInt(1, static_cast<int>(pool));
 
   // Clear checkpoints.
   sql::Statement clear_checkpoints_statement(database_.GetCachedStatement(
-      SQL_FROM_HERE,
-      "DELETE FROM " kShardTreeCheckpoints " WHERE account_id = ?;"));
+      SQL_FROM_HERE, "DELETE FROM " kShardTreeCheckpoints
+                     " WHERE account_id = ? AND pool = ?;"));
   clear_checkpoints_statement.BindString(0, account_id->unique_key);
+  clear_checkpoints_statement.BindInt(1, static_cast<int>(pool));
 
   // Update account meta.
   if (account_birthday_block) {
@@ -475,9 +598,10 @@ OrchardStorage::ResetAccountSyncState(
         SQL_FROM_HERE, "UPDATE " kAccountMeta
                        " SET latest_scanned_block = NULL, "
                        "latest_scanned_block_hash = NULL, account_birthday = ? "
-                       "WHERE account_id = ?;"));
+                       "WHERE account_id = ? AND pool = ?;"));
     update_account_meta_statement.BindInt64(0, *account_birthday_block);
     update_account_meta_statement.BindString(1, account_id->unique_key);
+    update_account_meta_statement.BindInt(2, static_cast<int>(pool));
     if (!update_account_meta_statement.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
@@ -488,8 +612,9 @@ OrchardStorage::ResetAccountSyncState(
         "UPDATE " kAccountMeta
         " "
         "SET latest_scanned_block = NULL, "
-        "latest_scanned_block_hash = NULL WHERE account_id = ?;"));
+        "latest_scanned_block_hash = NULL WHERE account_id = ? AND pool = ?;"));
     update_account_meta_statement.BindString(0, account_id->unique_key);
+    update_account_meta_statement.BindInt(1, static_cast<int>(pool));
     if (!update_account_meta_statement.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
@@ -507,7 +632,8 @@ OrchardStorage::ResetAccountSyncState(
 }
 
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
-OrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::GetNullifiers(OrchardPool pool,
+                              const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -521,9 +647,11 @@ OrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
   sql::Statement resolve_note_spents(database_.GetCachedStatement(
       SQL_FROM_HERE,
       "SELECT spent_block_id, nullifier "
-      "FROM " kSpentNotesTable " WHERE spent_notes.account_id = ?;"));
+      "FROM " kSpentNotesTable
+      " WHERE spent_notes.account_id = ? AND pool = ?;"));
 
   resolve_note_spents.BindString(0, account_id->unique_key);
+  resolve_note_spents.BindInt(1, static_cast<int>(pool));
 
   std::vector<OrchardNoteSpend> result;
   while (resolve_note_spents.Step()) {
@@ -550,7 +678,8 @@ OrchardStorage::GetNullifiers(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::GetSpendableNotes(OrchardPool pool,
+                                  const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -569,11 +698,14 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
       "notes.nullifier, notes.addr FROM " kNotesTable
       " "
       "LEFT OUTER JOIN spent_notes "
-      "ON notes.nullifier = spent_notes.nullifier AND notes.account_id = "
-      "spent_notes.account_id "
-      "WHERE spent_notes.nullifier IS NULL AND notes.account_id = ?;"));
+      "ON notes.nullifier = spent_notes.nullifier "
+      "AND notes.account_id = spent_notes.account_id "
+      "AND notes.pool = spent_notes.pool "
+      "WHERE spent_notes.nullifier IS NULL "
+      "AND notes.account_id = ? AND notes.pool = ?;"));
 
   resolve_unspent_notes.BindString(0, account_id->unique_key);
+  resolve_unspent_notes.BindInt(1, static_cast<int>(pool));
 
   std::vector<OrchardNote> result;
   while (resolve_unspent_notes.Step()) {
@@ -618,7 +750,8 @@ OrchardStorage::GetSpendableNotes(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
+OrchardStorage::UpdateNotes(OrchardPool pool,
+                            const mojom::AccountIdPtr& account_id,
                             base::span<const OrchardNote> found_notes,
                             base::span<const OrchardNoteSpend> found_nullifiers,
                             const uint32_t latest_scanned_block,
@@ -630,10 +763,11 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
 
   // Insert found notes to the notes table.
   sql::Statement statement_populate_notes(database_.GetCachedStatement(
-      SQL_FROM_HERE, "INSERT INTO " kNotesTable " "
-                     "(account_id, amount, block_id, commitment_tree_position, "
-                     "nullifier, rho, rseed, addr) "
-                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?);"));
+      SQL_FROM_HERE,
+      "INSERT INTO " kNotesTable " "
+      "(account_id, amount, block_id, commitment_tree_position, "
+      "nullifier, rho, rseed, addr, pool) "
+      "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);"));
 
   for (const auto& note : found_notes) {
     statement_populate_notes.Reset(true);
@@ -653,6 +787,7 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
     statement_populate_notes.BindBlob(5, note.rho);
     statement_populate_notes.BindBlob(6, note.seed);
     statement_populate_notes.BindBlob(7, note.addr);
+    statement_populate_notes.BindInt(8, static_cast<int>(pool));
 
     if (!statement_populate_notes.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -663,14 +798,15 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
   // Insert found spent nullifiers to spent notes table.
   sql::Statement statement_populate_spent_notes(database_.GetCachedStatement(
       SQL_FROM_HERE, "INSERT INTO " kSpentNotesTable " "
-                     "(account_id, spent_block_id, nullifier) "
-                     "VALUES (?, ?, ?);"));
+                     "(account_id, spent_block_id, nullifier, pool) "
+                     "VALUES (?, ?, ?, ?);"));
 
   for (const auto& spent : found_nullifiers) {
     statement_populate_spent_notes.Reset(true);
     statement_populate_spent_notes.BindString(0, account_id->unique_key);
     statement_populate_spent_notes.BindInt64(1, spent.block_id);
     statement_populate_spent_notes.BindBlob(2, spent.nullifier);
+    statement_populate_spent_notes.BindInt(3, static_cast<int>(pool));
     if (!statement_populate_spent_notes.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
@@ -683,11 +819,12 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
       "UPDATE " kAccountMeta
       " "
       "SET latest_scanned_block = ?, latest_scanned_block_hash = ? "
-      "WHERE account_id = ?;"));
+      "WHERE account_id = ? AND pool = ?;"));
 
   statement_update_account_meta.BindInt64(0, latest_scanned_block);
   statement_update_account_meta.BindString(1, latest_scanned_block_hash);
   statement_update_account_meta.BindString(2, account_id->unique_key);
+  statement_update_account_meta.BindInt(3, static_cast<int>(pool));
   if (!statement_update_account_meta.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                   database_.GetErrorMessage()});
@@ -697,7 +834,8 @@ OrchardStorage::UpdateNotes(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardStorage::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::GetLatestShardIndex(OrchardPool pool,
+                                    const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -712,9 +850,10 @@ OrchardStorage::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
       database_.GetCachedStatement(SQL_FROM_HERE,
                                    "SELECT "
                                    "MAX(shard_index) FROM " kShardTree " "
-                                   "WHERE account_id = ?;"));
+                                   "WHERE account_id = ? AND pool = ?;"));
 
   resolve_max_shard_id.BindString(0, account_id->unique_key);
+  resolve_max_shard_id.BindInt(1, static_cast<int>(pool));
   if (!resolve_max_shard_id.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                   database_.GetErrorMessage()});
@@ -733,7 +872,8 @@ OrchardStorage::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<std::optional<OrchardShardTreeCap>, OrchardStorage::Error>
-OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::GetCap(OrchardPool pool,
+                       const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -744,12 +884,12 @@ OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  sql::Statement resolve_cap(
-      database_.GetCachedStatement(SQL_FROM_HERE,
-                                   "SELECT "
-                                   "cap_data FROM " kShardTreeCap " "
-                                   "WHERE account_id = ?;"));
+  sql::Statement resolve_cap(database_.GetCachedStatement(
+      SQL_FROM_HERE, "SELECT "
+                     "cap_data FROM " kShardTreeCap " "
+                     "WHERE account_id = ? AND pool = ?;"));
   resolve_cap.BindString(0, account_id->unique_key);
+  resolve_cap.BindInt(1, static_cast<int>(pool));
 
   if (!resolve_cap.Step()) {
     if (!resolve_cap.Succeeded()) {
@@ -763,31 +903,34 @@ OrchardStorage::GetCap(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::PutCap(const mojom::AccountIdPtr& account_id,
+OrchardStorage::PutCap(OrchardPool pool,
+                       const mojom::AccountIdPtr& account_id,
                        const OrchardShardTreeCap& cap) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  auto existing_cap = GetCap(account_id);
+  auto existing_cap = GetCap(pool, account_id);
   RETURN_IF_ERROR(existing_cap);
 
   sql::Statement stmnt;
   if (!existing_cap.value()) {
-    stmnt.Assign(database_.GetCachedStatement(SQL_FROM_HERE,
-                                              "INSERT INTO " kShardTreeCap " "
-                                              "(account_id, cap_data) "
-                                              "VALUES (?, ?);"));
+    stmnt.Assign(database_.GetCachedStatement(
+        SQL_FROM_HERE, "INSERT INTO " kShardTreeCap " "
+                       "(account_id, cap_data, pool) "
+                       "VALUES (?, ?, ?);"));
     stmnt.BindString(0, account_id->unique_key);
     stmnt.BindBlob(1, cap);
+    stmnt.BindInt(2, static_cast<int>(pool));
   } else {
     stmnt.Assign(database_.GetCachedStatement(
         SQL_FROM_HERE, "UPDATE " kShardTreeCap " "
                        "SET "
-                       "cap_data = ? WHERE account_id = ?;"));
+                       "cap_data = ? WHERE account_id = ? AND pool = ?;"));
     stmnt.BindBlob(0, cap);
     stmnt.BindString(1, account_id->unique_key);
+    stmnt.BindInt(2, static_cast<int>(pool));
   }
 
   if (!stmnt.Run()) {
@@ -800,6 +943,7 @@ OrchardStorage::PutCap(const mojom::AccountIdPtr& account_id,
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
 OrchardStorage::UpdateSubtreeRoots(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id,
     uint32_t start_index,
     const std::vector<zcash::mojom::SubtreeRootPtr>& roots) {
@@ -812,10 +956,9 @@ OrchardStorage::UpdateSubtreeRoots(
       SQL_FROM_HERE,
       "INSERT INTO " kShardTree
       " "
-      "(shard_index, subtree_end_height, root_hash, shard_data, account_id) "
-      "VALUES (?, ?, ?, ?, ?);"
-
-      ));
+      "(shard_index, subtree_end_height, root_hash, shard_data, account_id, "
+      "pool) "
+      "VALUES (?, ?, ?, ?, ?, ?);"));
 
   sql::Statement statement_update_roots(database_.GetCachedStatement(
       SQL_FROM_HERE,
@@ -823,7 +966,8 @@ OrchardStorage::UpdateSubtreeRoots(
       " "
       "SET subtree_end_height = :subtree_end_height, root_hash = :root_hash "
       "WHERE "
-      "shard_index = :shard_index and account_id = :account_id;"));
+      "shard_index = :shard_index AND account_id = :account_id "
+      "AND pool = :pool;"));
 
   for (size_t i = 0; i < roots.size(); i++) {
     if (!roots[i] ||
@@ -839,6 +983,7 @@ OrchardStorage::UpdateSubtreeRoots(
     statement_populate_roots.BindNull(
         3);  // TODO(cypt4): Serialize hash as a leaf.
     statement_populate_roots.BindString(4, account_id->unique_key);
+    statement_populate_roots.BindInt(5, static_cast<int>(pool));
     if (!statement_populate_roots.Run()) {
       if (database_.GetErrorCode() == 19 /*SQLITE_CONSTRAINT*/) {
         statement_update_roots.Reset(true);
@@ -846,6 +991,7 @@ OrchardStorage::UpdateSubtreeRoots(
         statement_update_roots.BindBlob(1, roots[i]->complete_block_hash);
         statement_update_roots.BindInt64(2, start_index + i);
         statement_update_roots.BindString(3, account_id->unique_key);
+        statement_update_roots.BindInt(4, static_cast<int>(pool));
         if (!statement_update_roots.Run()) {
           return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                         database_.GetErrorMessage()});
@@ -861,7 +1007,8 @@ OrchardStorage::UpdateSubtreeRoots(
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
+OrchardStorage::TruncateShards(OrchardPool pool,
+                               const mojom::AccountIdPtr& account_id,
                                uint32_t shard_index) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -870,10 +1017,11 @@ OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
 
   sql::Statement remove_shard_by_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kShardTree " "
-                     "WHERE shard_index >= ? AND account_id = ?;"));
+                     "WHERE shard_index >= ? AND account_id = ? AND pool = ?;"));
 
   remove_shard_by_id.BindInt64(0, shard_index);
   remove_shard_by_id.BindString(1, account_id->unique_key);
+  remove_shard_by_id.BindInt(2, static_cast<int>(pool));
 
   if (!remove_shard_by_id.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -884,14 +1032,15 @@ OrchardStorage::TruncateShards(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
+OrchardStorage::PutShard(OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardShard& shard) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  ASSIGN_OR_RETURN(auto existing_shard, GetShard(account_id, shard.address));
+  ASSIGN_OR_RETURN(auto existing_shard, GetShard(pool, account_id, shard.address));
 
   if (existing_shard.has_value()) {
     sql::Statement statement_update_shard(database_.GetCachedStatement(
@@ -899,7 +1048,8 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
         "UPDATE " kShardTree
         " "
         "SET root_hash = :root_hash, shard_data = :shard_data "
-        "WHERE shard_index = :shard_index AND account_id = :account_id;"));
+        "WHERE shard_index = :shard_index AND account_id = :account_id "
+        "AND pool = :pool;"));
 
     if (!shard.root_hash) {
       statement_update_shard.BindNull(0);
@@ -909,6 +1059,7 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
     statement_update_shard.BindBlob(1, shard.shard_data);
     statement_update_shard.BindInt64(2, shard.address.index);
     statement_update_shard.BindString(3, account_id->unique_key);
+    statement_update_shard.BindInt(4, static_cast<int>(pool));
 
     if (!statement_update_shard.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -919,8 +1070,8 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
         SQL_FROM_HERE,
         "INSERT INTO " kShardTree
         " "
-        "(shard_index, root_hash, shard_data, account_id) "
-        "VALUES (:shard_index, :root_hash, :shard_data, :account_id);"));
+        "(shard_index, root_hash, shard_data, account_id, pool) "
+        "VALUES (:shard_index, :root_hash, :shard_data, :account_id, :pool);"));
 
     statement_put_shard.BindInt64(0, shard.address.index);
     if (!shard.root_hash) {
@@ -930,6 +1081,7 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
     }
     statement_put_shard.BindBlob(2, shard.shard_data);
     statement_put_shard.BindString(3, account_id->unique_key);
+    statement_put_shard.BindInt(4, static_cast<int>(pool));
 
     if (!statement_put_shard.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -941,7 +1093,8 @@ OrchardStorage::PutShard(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::optional<OrchardShard>, OrchardStorage::Error>
-OrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetShard(OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardShardAddress& address) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -955,10 +1108,11 @@ OrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
 
   sql::Statement resolve_shard_statement(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT root_hash, shard_data FROM " kShardTree " "
-                     "WHERE account_id = ? AND shard_index = ?;"));
+                     "WHERE account_id = ? AND shard_index = ? AND pool = ?;"));
 
   resolve_shard_statement.BindString(0, account_id->unique_key);
   resolve_shard_statement.BindInt64(1, address.index);
+  resolve_shard_statement.BindInt(2, static_cast<int>(pool));
 
   if (resolve_shard_statement.Step()) {
     auto hash = ReadRootHash(resolve_shard_statement, 0);
@@ -980,26 +1134,28 @@ OrchardStorage::GetShard(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::optional<OrchardShard>, OrchardStorage::Error>
-OrchardStorage::LastShard(const mojom::AccountIdPtr& account_id,
+OrchardStorage::LastShard(OrchardPool pool,
+                          const mojom::AccountIdPtr& account_id,
                           uint8_t shard_height) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  auto shard_index = GetLatestShardIndex(account_id);
+  auto shard_index = GetLatestShardIndex(pool, account_id);
   RETURN_IF_ERROR(shard_index);
 
   if (!shard_index.value()) {
     return base::ok(std::nullopt);
   }
 
-  return GetShard(account_id, OrchardShardAddress{shard_height,
-                                                  shard_index.value().value()});
+  return GetShard(pool, account_id,
+                  OrchardShardAddress{shard_height, shard_index.value().value()});
 }
 
 base::expected<std::vector<OrchardShardAddress>, OrchardStorage::Error>
-OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetShardRoots(OrchardPool pool,
+                              const mojom::AccountIdPtr& account_id,
                               uint8_t shard_level) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1015,9 +1171,10 @@ OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
 
   sql::Statement resolve_shards_statement(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT shard_index FROM " kShardTree
-                     " WHERE account_id = ? ORDER BY shard_index;"));
+                     " WHERE account_id = ? AND pool = ? ORDER BY shard_index;"));
 
   resolve_shards_statement.BindString(0, account_id->unique_key);
+  resolve_shards_statement.BindInt(1, static_cast<int>(pool));
 
   while (resolve_shards_statement.Step()) {
     auto shard_index = ReadUint32(resolve_shards_statement, 0);
@@ -1037,7 +1194,8 @@ OrchardStorage::GetShardRoots(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
+OrchardStorage::AddCheckpoint(OrchardPool pool,
+                              const mojom::AccountIdPtr& account_id,
                               uint32_t checkpoint_id,
                               const OrchardCheckpoint& checkpoint) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -1048,9 +1206,10 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
   sql::Statement extant_tree_state_statement(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT position FROM " kShardTreeCheckpoints " "
                      "WHERE checkpoint_id = ? "
-                     "AND account_id = ?;"));
+                     "AND account_id = ? AND pool = ?;"));
   extant_tree_state_statement.BindInt64(0, checkpoint_id);
   extant_tree_state_statement.BindString(1, account_id->unique_key);
+  extant_tree_state_statement.BindInt(2, static_cast<int>(pool));
 
   std::optional<CheckpointTreeState> extant_tree_state_position;
   if (extant_tree_state_statement.Step()) {
@@ -1065,8 +1224,8 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
   if (!extant_tree_state_position) {
     sql::Statement insert_checkpoint_statement(database_.GetCachedStatement(
         SQL_FROM_HERE, "INSERT INTO " kShardTreeCheckpoints " "
-                       "(account_id, checkpoint_id, position)"
-                       "VALUES (?, ?, ?);"));
+                       "(account_id, checkpoint_id, position, pool)"
+                       "VALUES (?, ?, ?, ?);"));
     insert_checkpoint_statement.BindString(0, account_id->unique_key);
     insert_checkpoint_statement.BindInt64(1, checkpoint_id);
     if (checkpoint.tree_state_position) {
@@ -1075,6 +1234,7 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
     } else {
       insert_checkpoint_statement.BindNull(2);
     }
+    insert_checkpoint_statement.BindInt(3, static_cast<int>(pool));
     if (!insert_checkpoint_statement.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                     database_.GetErrorMessage()});
@@ -1082,13 +1242,15 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
 
     sql::Statement insert_marks_removed_statement(database_.GetCachedStatement(
         SQL_FROM_HERE, "INSERT INTO " kCheckpointsMarksRemoved " "
-                       "(account_id, checkpoint_id, mark_removed_position) "
-                       "VALUES (?, ?, ?);"));
+                       "(account_id, checkpoint_id, mark_removed_position, "
+                       "pool) "
+                       "VALUES (?, ?, ?, ?);"));
     for (const auto& mark : checkpoint.marks_removed) {
       insert_marks_removed_statement.Reset(true);
       insert_marks_removed_statement.BindString(0, account_id->unique_key);
       insert_marks_removed_statement.BindInt64(1, checkpoint_id);
       insert_marks_removed_statement.BindInt64(2, mark);
+      insert_marks_removed_statement.BindInt(3, static_cast<int>(pool));
 
       if (!insert_marks_removed_statement.Run()) {
         return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1101,7 +1263,7 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
       return base::unexpected(
           Error{ErrorCode::kConsistencyError, "Tree state position differs"});
     }
-    auto marks_removed_result = GetMarksRemoved(account_id, checkpoint_id);
+    auto marks_removed_result = GetMarksRemoved(pool, account_id, checkpoint_id);
     RETURN_IF_ERROR(marks_removed_result);
 
     if (marks_removed_result.value() != checkpoint.marks_removed) {
@@ -1114,27 +1276,29 @@ OrchardStorage::AddCheckpoint(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::UpdateCheckpoint(const mojom::AccountIdPtr& account_id,
+OrchardStorage::UpdateCheckpoint(OrchardPool pool,
+                                 const mojom::AccountIdPtr& account_id,
                                  uint32_t checkpoint_id,
                                  const OrchardCheckpoint& checkpoint) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   ASSIGN_OR_RETURN(auto get_checkpoint_result,
-                   GetCheckpoint(account_id, checkpoint_id));
+                   GetCheckpoint(pool, account_id, checkpoint_id));
   if (!get_checkpoint_result.has_value()) {
     return base::ok(Result::kNone);
   }
 
   ASSIGN_OR_RETURN(auto remove_result,
-                   RemoveCheckpoint(account_id, checkpoint_id));
+                   RemoveCheckpoint(pool, account_id, checkpoint_id));
   if (remove_result != Result::kSuccess) {
     return base::ok(Result::kNone);
   }
 
-  return AddCheckpoint(account_id, checkpoint_id, checkpoint);
+  return AddCheckpoint(pool, account_id, checkpoint_id, checkpoint);
 }
 
 base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1147,9 +1311,10 @@ base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
   }
 
   sql::Statement resolve_checkpoints_count(database_.GetCachedStatement(
-      SQL_FROM_HERE,
-      "SELECT COUNT(*) FROM " kShardTreeCheckpoints " WHERE account_id = ?;"));
+      SQL_FROM_HERE, "SELECT COUNT(*) FROM " kShardTreeCheckpoints
+                     " WHERE account_id = ? AND pool = ?;"));
   resolve_checkpoints_count.BindString(0, account_id->unique_key);
+  resolve_checkpoints_count.BindInt(1, static_cast<int>(pool));
   if (!resolve_checkpoints_count.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
                                   database_.GetErrorMessage()});
@@ -1165,7 +1330,8 @@ base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::MinCheckpointId(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1178,9 +1344,10 @@ OrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
 
   sql::Statement resolve_min_checkpoint_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT MIN(checkpoint_id) FROM " kShardTreeCheckpoints
-                     " WHERE account_id = ?;"));
+                     " WHERE account_id = ? AND pool = ?;"));
 
   resolve_min_checkpoint_id.BindString(0, account_id->unique_key);
+  resolve_min_checkpoint_id.BindInt(1, static_cast<int>(pool));
 
   if (!resolve_min_checkpoint_id.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1200,7 +1367,8 @@ OrchardStorage::MinCheckpointId(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
+OrchardStorage::MaxCheckpointId(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -1213,8 +1381,9 @@ OrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
 
   sql::Statement resolve_max_checkpoint_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT MAX(checkpoint_id) FROM " kShardTreeCheckpoints
-                     " WHERE account_id = ?;"));
+                     " WHERE account_id = ? AND pool = ?;"));
   resolve_max_checkpoint_id.BindString(0, account_id->unique_key);
+  resolve_max_checkpoint_id.BindInt(1, static_cast<int>(pool));
 
   if (!resolve_max_checkpoint_id.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1234,7 +1403,8 @@ OrchardStorage::MaxCheckpointId(const mojom::AccountIdPtr& account_id) {
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetCheckpointAtDepth(OrchardPool pool,
+                                     const mojom::AccountIdPtr& account_id,
                                      uint32_t depth) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1250,13 +1420,14 @@ OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
       database_.GetCachedStatement(SQL_FROM_HERE,
                                    "SELECT checkpoint_id "
                                    "FROM " kShardTreeCheckpoints " "
-                                   "WHERE account_id = ? "
+                                   "WHERE account_id = ? AND pool = ? "
                                    "ORDER BY checkpoint_id DESC "
                                    "LIMIT 1 "
                                    "OFFSET ?;"));
 
   get_checkpoint_at_depth_statement.BindString(0, account_id->unique_key);
-  get_checkpoint_at_depth_statement.BindInt64(1, depth);
+  get_checkpoint_at_depth_statement.BindInt(1, static_cast<int>(pool));
+  get_checkpoint_at_depth_statement.BindInt64(2, depth);
 
   if (get_checkpoint_at_depth_statement.Step()) {
     auto value = ReadUint32(get_checkpoint_at_depth_statement, 0);
@@ -1276,7 +1447,8 @@ OrchardStorage::GetCheckpointAtDepth(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::vector<uint32_t>, OrchardStorage::Error>
-OrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetMarksRemoved(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id,
                                 uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1293,9 +1465,10 @@ OrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
                                    "SELECT mark_removed_position "
                                    "FROM " kCheckpointsMarksRemoved " "
                                    "WHERE checkpoint_id = ? AND "
-                                   "account_id = ?;"));
+                                   "account_id = ? AND pool = ?;"));
   get_marks_removed_statement.BindInt64(0, checkpoint_id);
   get_marks_removed_statement.BindString(1, account_id->unique_key);
+  get_marks_removed_statement.BindInt(2, static_cast<int>(pool));
 
   std::vector<uint32_t> result;
   while (get_marks_removed_statement.Step()) {
@@ -1316,7 +1489,8 @@ OrchardStorage::GetMarksRemoved(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::optional<OrchardCheckpointBundle>, OrchardStorage::Error>
-OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetCheckpoint(OrchardPool pool,
+                              const mojom::AccountIdPtr& account_id,
                               uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1333,10 +1507,11 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
       "SELECT position "
       "FROM " kShardTreeCheckpoints
       " "
-      "WHERE checkpoint_id = ? AND account_id = ?;"));
+      "WHERE checkpoint_id = ? AND account_id = ? AND pool = ?;"));
 
   get_checkpoint_statement.BindInt64(0, checkpoint_id);
   get_checkpoint_statement.BindString(1, account_id->unique_key);
+  get_checkpoint_statement.BindInt(2, static_cast<int>(pool));
   if (!get_checkpoint_statement.Step()) {
     if (!get_checkpoint_statement.Succeeded()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1356,10 +1531,11 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
       "SELECT mark_removed_position "
       "FROM " kCheckpointsMarksRemoved
       " "
-      "WHERE checkpoint_id = ? AND account_id = ?;"));
+      "WHERE checkpoint_id = ? AND account_id = ? AND pool = ?;"));
 
   marks_removed_statement.BindInt64(0, checkpoint_id);
   marks_removed_statement.BindString(1, account_id->unique_key);
+  marks_removed_statement.BindInt(2, static_cast<int>(pool));
 
   std::vector<uint32_t> positions;
   while (marks_removed_statement.Step()) {
@@ -1383,7 +1559,8 @@ OrchardStorage::GetCheckpoint(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::vector<OrchardCheckpointBundle>, OrchardStorage::Error>
-OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetCheckpoints(OrchardPool pool,
+                               const mojom::AccountIdPtr& account_id,
                                size_t limit) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1399,12 +1576,13 @@ OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
       database_.GetCachedStatement(SQL_FROM_HERE,
                                    "SELECT checkpoint_id, position "
                                    "FROM " kShardTreeCheckpoints " "
-                                   "WHERE account_id = ? "
+                                   "WHERE account_id = ? AND pool = ? "
                                    "ORDER BY position "
                                    "LIMIT ?"));
 
   get_checkpoints_statement.BindString(0, account_id->unique_key);
-  get_checkpoints_statement.BindInt64(1, limit);
+  get_checkpoints_statement.BindInt(1, static_cast<int>(pool));
+  get_checkpoints_statement.BindInt64(2, limit);
 
   std::vector<OrchardCheckpointBundle> checkpoints;
   while (get_checkpoints_statement.Step()) {
@@ -1420,7 +1598,7 @@ OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
       return base::unexpected(Error{ErrorCode::kConsistencyError,
                                     "Wrong checkpoint position format"});
     }
-    auto found_marks_removed = GetMarksRemoved(account_id, *checkpoint_id);
+    auto found_marks_removed = GetMarksRemoved(pool, account_id, *checkpoint_id);
     RETURN_IF_ERROR(found_marks_removed);
     checkpoints.push_back(OrchardCheckpointBundle{
         *checkpoint_id,
@@ -1437,7 +1615,8 @@ OrchardStorage::GetCheckpoints(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
+OrchardStorage::GetMaxCheckpointedHeight(OrchardPool pool,
+                                         const mojom::AccountIdPtr& account_id,
                                          uint32_t chain_tip_height,
                                          uint32_t min_confirmations) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
@@ -1455,12 +1634,13 @@ OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
   sql::Statement get_max_checkpointed_height(database_.GetCachedStatement(
       SQL_FROM_HERE, "SELECT checkpoint_id FROM " kShardTreeCheckpoints " "
                      "WHERE checkpoint_id <= ? AND "
-                     "account_id = ? "
+                     "account_id = ? AND pool = ? "
                      "ORDER BY checkpoint_id DESC "
                      "LIMIT 1"));
 
   get_max_checkpointed_height.BindInt64(0, max_checkpointed_height);
   get_max_checkpointed_height.BindString(1, account_id->unique_key);
+  get_max_checkpointed_height.BindInt(2, static_cast<int>(pool));
 
   if (get_max_checkpointed_height.Step()) {
     auto value = ReadUint32(get_max_checkpointed_height, 0);
@@ -1480,7 +1660,8 @@ OrchardStorage::GetMaxCheckpointedHeight(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
+OrchardStorage::RemoveCheckpoint(OrchardPool pool,
+                                 const mojom::AccountIdPtr& account_id,
                                  uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1488,7 +1669,7 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
   CHECK(account_id);
 
   ASSIGN_OR_RETURN(auto existing_checkpoint,
-                   GetCheckpoint(account_id, checkpoint_id));
+                   GetCheckpoint(pool, account_id, checkpoint_id));
 
   if (!existing_checkpoint.has_value()) {
     return base::ok(Result::kNone);
@@ -1496,9 +1677,10 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
 
   sql::Statement remove_checkpoint_by_id(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kShardTreeCheckpoints " "
-                     "WHERE checkpoint_id = ? AND account_id= ?;"));
+                     "WHERE checkpoint_id = ? AND account_id = ? AND pool = ?;"));
   remove_checkpoint_by_id.BindInt64(0, checkpoint_id);
   remove_checkpoint_by_id.BindString(1, account_id->unique_key);
+  remove_checkpoint_by_id.BindInt(2, static_cast<int>(pool));
 
   if (!remove_checkpoint_by_id.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1509,7 +1691,8 @@ OrchardStorage::RemoveCheckpoint(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
-OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
+OrchardStorage::TruncateCheckpoints(OrchardPool pool,
+                                    const mojom::AccountIdPtr& account_id,
                                     uint32_t checkpoint_id) {
   base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
                                                 base::BlockingType::WILL_BLOCK);
@@ -1518,10 +1701,11 @@ OrchardStorage::TruncateCheckpoints(const mojom::AccountIdPtr& account_id,
 
   sql::Statement truncate_checkpoints(database_.GetCachedStatement(
       SQL_FROM_HERE, "DELETE FROM " kShardTreeCheckpoints " "
-                     "WHERE checkpoint_id >= ? and account_id = ?;"));
+                     "WHERE checkpoint_id >= ? AND account_id = ? AND pool = ?;"));
 
   truncate_checkpoints.BindInt64(0, checkpoint_id);
   truncate_checkpoints.BindString(1, account_id->unique_key);
+  truncate_checkpoints.BindInt(2, static_cast<int>(pool));
 
   if (!truncate_checkpoints.Run()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,

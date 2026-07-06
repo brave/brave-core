@@ -82,11 +82,14 @@ class OrchardStorage {
   ~OrchardStorage();
 
   base::expected<Result, Error> RegisterAccount(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t account_birthday_block);
   base::expected<std::optional<AccountMeta>, Error> GetAccountMeta(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
   base::expected<Result, Error> ResetAccountSyncState(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       std::optional<uint32_t> account_birthday_block);
 
@@ -94,19 +97,22 @@ class OrchardStorage {
   // Removes spendable notes and nullifiers with block_height > reorg_block
   // Updates account's last scanned block to chain reorg block
   base::expected<Result, Error> HandleChainReorg(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t reorg_block_id,
       const std::string& reorg_block_hash);
   // Calculates a list of discovered spendable notes that don't have nullifiers
   // in the blockchain
   base::expected<std::vector<OrchardNote>, OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id);
+  GetSpendableNotes(OrchardPool pool, const mojom::AccountIdPtr& account_id);
   // Returns a list of discovered nullifiers
   base::expected<std::vector<OrchardNoteSpend>, Error> GetNullifiers(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
   // Updates database with discovered spendable notes and nullifiers
   // Also updates account info with latest scanned block info
   base::expected<Result, Error> UpdateNotes(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       base::span<const OrchardNote> notes_to_add,
       base::span<const OrchardNoteSpend> found_nullifiers,
@@ -116,66 +122,87 @@ class OrchardStorage {
 
   // Shard tree
   base::expected<std::optional<OrchardShardTreeCap>, Error> GetCap(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
-  base::expected<Result, Error> PutCap(const mojom::AccountIdPtr& account_id,
+  base::expected<Result, Error> PutCap(OrchardPool pool,
+                                       const mojom::AccountIdPtr& account_id,
                                        const OrchardShardTreeCap& cap);
 
   base::expected<Result, Error> TruncateShards(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t shard_index);
   base::expected<std::optional<uint32_t>, Error> GetLatestShardIndex(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
-  base::expected<Result, Error> PutShard(const mojom::AccountIdPtr& account_id,
+  base::expected<Result, Error> PutShard(OrchardPool pool,
+                                         const mojom::AccountIdPtr& account_id,
                                          const OrchardShard& shard);
   base::expected<std::optional<OrchardShard>, Error> GetShard(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       const OrchardShardAddress& address);
   base::expected<std::optional<OrchardShard>, Error> LastShard(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint8_t shard_height);
 
   base::expected<size_t, Error> CheckpointCount(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
   base::expected<std::optional<uint32_t>, Error> MinCheckpointId(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
   base::expected<std::optional<uint32_t>, Error> MaxCheckpointId(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id);
   base::expected<std::optional<uint32_t>, Error> GetCheckpointAtDepth(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t depth);
   base::expected<std::optional<uint32_t>, Error> GetMaxCheckpointedHeight(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t chain_tip_height,
       uint32_t min_confirmations);
   base::expected<Result, Error> RemoveCheckpoint(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
   base::expected<Result, Error> TruncateCheckpoints(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
   base::expected<Result, Error> AddCheckpoint(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
       const OrchardCheckpoint& checkpoint);
   base::expected<Result, Error> UpdateCheckpoint(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id,
       const OrchardCheckpoint& checkpoint);
   base::expected<std::vector<OrchardCheckpointBundle>, Error> GetCheckpoints(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       size_t limit);
   base::expected<std::optional<OrchardCheckpointBundle>, Error> GetCheckpoint(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
   base::expected<std::vector<uint32_t>, Error> GetMarksRemoved(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 
   base::expected<Result, Error> UpdateSubtreeRoots(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint32_t start_index,
       const std::vector<zcash::mojom::SubtreeRootPtr>& roots);
   base::expected<std::vector<OrchardShardAddress>, Error> GetShardRoots(
+      OrchardPool pool,
       const mojom::AccountIdPtr& account_id,
       uint8_t shard_level);
 
