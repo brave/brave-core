@@ -5,8 +5,12 @@
 
 export const WORD_SEPARATOR = ' '
 
+export const splitRecoveryPhraseWords = (phrase: string): string[] => {
+  return phrase.trim().split(/\s+/).filter(Boolean)
+}
+
 export const isPhraseLengthValid = (phrase: string) => {
-  const wordsInPhraseValue = phrase.trim().split(/\s+/g).length
+  const wordsInPhraseValue = splitRecoveryPhraseWords(phrase).length
   // valid lengths: 12, 15, 18, 21, or 24
   const isInvalid =
     wordsInPhraseValue < 12

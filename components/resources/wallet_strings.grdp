@@ -969,6 +969,13 @@
   <message name="IDS_BRAVE_WALLET_DISCLOSURES_DESCRIPTION" desc="Description text for Wallet Disclosures page">We require that you acknowledge the items below</message>
   <message name="IDS_BRAVE_WALLET_SELF_CUSTODY_DISCLOSURE_CHECKBOX_TEXT" desc="Self-custody wallet responsibility acknowledgement text">I understand that this is a self-custody wallet, and that I am solely responsible for any associated funds, assets, or accounts, and for taking any appropriate action to secure, protect, and back up my wallet. I understand that Brave cannot access my wallet or reverse transactions on my behalf, and that my recovery phrase is the ONLY way to regain access in the event of a lost password, stolen device, or similar circumstance.</message>
   <message name="IDS_BRAVE_WALLET_TERMS_OF_SERVICE_CHECKBOX_TEXT" desc="Wallet Terms of use acknowledgement text">I have read and agree to the <ph name="LINK_BEFORE">$1</ph>Terms of use<ph name="LINK_AFTER">/$1</ph>.</message>
+  <message name="IDS_BRAVE_WALLET_RECOMMENDED" desc="Recommended label">Recommended</message>
+  <message name="IDS_BRAVE_WALLET_TWELVE_WORDS" desc="12 word recovery phrase option">12 words</message>
+  <message name="IDS_BRAVE_WALLET_TWENTY_FOUR_WORDS" desc="24 word recovery phrase option">24 words</message>
+  <message name="IDS_BRAVE_WALLET_TWELVE_WORDS_DESCRIPTION" desc="12 word recovery phrase option description">Strong security and quicker to write down. Used by most wallets.</message>
+  <message name="IDS_BRAVE_WALLET_TWENTY_FOUR_WORDS_DESCRIPTION" desc="24 word recovery phrase option description">Maximum security margin. Good for use in other wallets (which might require a 24-word phrase).</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_RECOVERY_PHRASE_LENGTH_TITLE" desc="Title to choose your recovery phrase length">Choose your recovery phrase length</message>
+  <message name="IDS_BRAVE_WALLET_SELECT_RECOVERY_PHRASE_LENGTH_DESCRIPTION" desc="Description to choose your recovery phrase length">Your recovery phrase restores wallet access if you forget your password or lose your device. You’ll save it in the next steps.</message>
   <message name="IDS_BRAVE_WALLET_BUY_CRYPTO_BUTTON" desc="Buy crypto button text">Buy crypto</message>
   <message name="IDS_BRAVE_WALLET_DEPOSIT_CRYPTO_BUTTON" desc="Deposit Crypto button text">Deposit</message>
   <message name="IDS_BRAVE_WALLET_CHECKING_INSTALLED_EXTENSIONS" desc="Loading text while checking for installed crypto wallet extensions">Checking for wallet extensions...</message>

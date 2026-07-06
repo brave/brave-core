@@ -7,6 +7,7 @@ import {
   cleanupRecoveryPhraseInput,
   isPhraseLengthValid,
   normalizeRecoveryPhraseInput,
+  splitRecoveryPhraseWords,
 } from './recovery-phrase-utils'
 
 describe('cleanupRecoveryPhraseInput', () => {
@@ -89,5 +90,22 @@ describe('normalizeRecoveryPhraseInput', () => {
     const input = 'word1'
     const expectedOutput = 'word1'
     expect(normalizeRecoveryPhraseInput(input)).toBe(expectedOutput)
+  })
+})
+
+describe('splitRecoveryPhraseWords', () => {
+  it('splits a 12-word phrase', () => {
+    expect(
+      splitRecoveryPhraseWords(
+        'one two three four five six seven eight nine ten eleven twelve',
+      ),
+    ).toHaveLength(12)
+  })
+
+  it('splits a 24-word phrase', () => {
+    const phrase = Array.from({ length: 24 }, (_, i) => `word${i + 1}`).join(
+      '  ',
+    )
+    expect(splitRecoveryPhraseWords(phrase)).toHaveLength(24)
   })
 })

@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../../../common/hooks/use-redux'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
+import { splitRecoveryPhraseWords } from '../../../../utils/recovery-phrase-utils'
 import { PageSelectors } from '../../../selectors'
 import { WalletPageActions } from '../../../actions'
 
@@ -87,7 +88,7 @@ export const BackupRecoveryPhrase = () => {
 
   // memos
   const recoveryPhrase = React.useMemo(() => {
-    return (mnemonic || '').split(' ')
+    return splitRecoveryPhraseWords(mnemonic || '')
   }, [mnemonic])
 
   // render

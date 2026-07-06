@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// Types
+import { RecoveryPhraseLengths } from '../../../../constants/types'
+
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
@@ -35,10 +38,12 @@ import { Column } from '../../../../components/shared/style'
 import { ContinueButton, NextButtonRow } from '../onboarding.style'
 
 interface OnboardingCreatePasswordProps {
+  recoveryPhraseLength?: RecoveryPhraseLengths
   onWalletCreated: () => void
 }
 
 export const OnboardingCreatePassword = ({
+  recoveryPhraseLength,
   onWalletCreated,
 }: OnboardingCreatePasswordProps) => {
   // redux
@@ -63,8 +68,8 @@ export const OnboardingCreatePassword = ({
     }
     // Note: intentionally not using unwrapped value
     // results are returned before other redux actions complete
-    await createWallet({ password }).unwrap()
-  }, [isValid, createWallet, password])
+    await createWallet({ password, recoveryPhraseLength }).unwrap()
+  }, [isValid, createWallet, password, recoveryPhraseLength])
 
   const handlePasswordChange = React.useCallback(
     ({ isValid, password }: NewPasswordValues) => {

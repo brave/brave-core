@@ -426,6 +426,7 @@ export enum WalletRoutes {
   OnboardingNewWalletStart = '/crypto/onboarding/new',
   OnboardingNewWalletTerms = '/crypto/onboarding/new/terms',
   OnboardingNewWalletNetworkSelection = '/crypto/onboarding/new/networks',
+  OnboardingNewWalletSelectRecoveryPhraseLength = '/crypto/onboarding/new/select-recovery-phrase-length',
   OnboardingNewWalletCreatePassword = '/crypto/onboarding/new/create-password',
   OnboardingBackupWallet = '/crypto/onboarding/new/backup-wallet',
   OnboardingExplainRecoveryPhrase = '/crypto/onboarding/new'
@@ -1128,3 +1129,9 @@ export const SupportedBridgeCoinTypes = [
   BraveWallet.CoinType.ZEC,
   BraveWallet.CoinType.ADA,
 ]
+
+/**
+ * Supported recovery phrase word counts during new wallet onboarding.
+ * Used when selecting phrase length and creating a wallet.
+ */
+export type RecoveryPhraseLengths = '12' | '24'

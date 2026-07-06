@@ -28,8 +28,6 @@ interface Props {
   verificationModeEnabled?: boolean
 }
 
-const FAKE_PHRASE_WORDS = new Array(12).fill('Fake')
-
 export const RecoveryPhrase: React.FC<Props> = ({
   recoveryPhrase,
   verificationModeEnabled,
@@ -58,13 +56,16 @@ export const RecoveryPhrase: React.FC<Props> = ({
 
   // render
   if (hidden) {
+    const hiddenPlaceholderWords = new Array(recoveryPhrase.length || 12).fill(
+      'Fake',
+    )
     return (
       <HiddenPhraseContainer onMouseEnter={() => setHidden(false)}>
         <FrostedGlass>
           <EyeOffIcon />
         </FrostedGlass>
-        <RecoveryPhraseContainer phraseLength={FAKE_PHRASE_WORDS.length}>
-          {FAKE_PHRASE_WORDS.map((word, index) => (
+        <RecoveryPhraseContainer phraseLength={hiddenPlaceholderWords.length}>
+          {hiddenPlaceholderWords.map((word, index) => (
             <RecoveryBubble key={index}>
               <span>
                 #{index + 1}. {word}

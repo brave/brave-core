@@ -203,6 +203,19 @@ provideStrings({
   braveWalletTermsOfServiceCheckboxText:
     'I have read and agree to the $1Terms of use$1.',
 
+  // Onboarding - Select Recovery Phrase Length
+  braveWalletSelectRecoveryPhraseLengthTitle:
+    'Choose your recovery phrase length',
+  braveWalletSelectRecoveryPhraseLengthDescription:
+    'Your recovery phrase restores wallet access if you forget your password or lose your device. You’ll save it in the next steps.',
+  braveWalletTwelveWords: '12 words',
+  braveWalletTwentyFourWords: '24 words',
+  braveWalletTwelveWordsDescription:
+    'Strong security and quicker to write down. Used by most wallets.',
+  braveWalletTwentyFourWordsDescription:
+    'Maximum security margin. Good for use in other wallets (which might require a 24-word phrase).',
+  braveWalletRecommended: 'Recommended',
+
   // Onboarding import or restore wallet page
   braveWalletCheckingInstalledExtensions: 'Checking for wallet extensions...',
   braveWalletImportOrRestoreWalletTitle: 'Connect to your existing wallet',

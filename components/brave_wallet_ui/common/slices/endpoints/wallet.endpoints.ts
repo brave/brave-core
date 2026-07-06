@@ -7,7 +7,11 @@ import { EntityId } from '@reduxjs/toolkit'
 
 // types
 import type { BaseQueryCache } from '../../async/base-query-cache'
-import { BraveWallet, WalletState } from '../../../constants/types'
+import {
+  BraveWallet,
+  RecoveryPhraseLengths,
+  WalletState,
+} from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import {
   ImportFromExternalWalletPayloadType,
@@ -143,7 +147,10 @@ export const walletEndpoints = ({
       providesTags: ['ActiveOrigin'],
     }),
 
-    createWallet: mutation<true, { password: string }>({
+    createWallet: mutation<
+      true,
+      { password: string; recoveryPhraseLength?: RecoveryPhraseLengths }
+    >({
       queryFn: async (
         arg,
         { endpoint, dispatch, getState },
@@ -154,31 +161,53 @@ export const walletEndpoints = ({
           const { data: api, cache } = baseQuery(undefined)
           const { keyringService } = api
 
-          const result = await keyringService.createWallet(arg.password)
-          if (!result.mnemonic) {
-            throw new Error('Unable to create wallet')
-          }
+          let mnemonic: string | null = null
+          try {
+            if (arg.recoveryPhraseLength) {
+              const { mnemonic: generatedMnemonic } =
+                await keyringService.generateMnemonic(
+                  Number(arg.recoveryPhraseLength),
+                )
+              if (!generatedMnemonic) {
+                throw new Error('Unable to generate mnemonic')
+              }
+              const { mnemonic: createdMnemonic } =
+                await keyringService.createWalletWithMnemonic(
+                  generatedMnemonic,
+                  arg.password,
+                )
+              mnemonic = createdMnemonic
+            } else {
+              const { mnemonic: createdMnemonic } =
+                await keyringService.createWallet(arg.password)
+              mnemonic = createdMnemonic
+            }
 
-          dispatch(
-            WalletPageActions.walletCreated({ mnemonic: result.mnemonic }),
-          )
+            if (!mnemonic) {
+              throw new Error('Unable to create wallet')
+            }
 
-          const { allowedNewWalletAccountTypeNetworkIds } = (
-            getState() as { wallet: WalletState }
-          ).wallet
+            dispatch(WalletPageActions.walletCreated({ mnemonic }))
 
-          const accounts = await createDefaultAccounts({
-            allowedNewWalletAccountTypeNetworkIds,
-            keyringService,
-            cache,
-          })
+            const { allowedNewWalletAccountTypeNetworkIds } = (
+              getState() as { wallet: WalletState }
+            ).wallet
 
-          if (!accounts) {
-            throw new Error('Unable to create wallet')
-          }
+            const accounts = await createDefaultAccounts({
+              allowedNewWalletAccountTypeNetworkIds,
+              keyringService,
+              cache,
+            })
 
-          return {
-            data: true,
+            if (!accounts) {
+              throw new Error('Unable to create wallet')
+            }
+
+            return {
+              data: true,
+            }
+          } finally {
+            mnemonic = null
           }
         } catch (error) {
           return handleEndpointError(endpoint, 'Unable to create wallet', error)
