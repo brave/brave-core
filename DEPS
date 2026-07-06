@@ -33,6 +33,110 @@ deps = {
     "condition": "checkout_mac",
   },
   "components/brave_wallet/browser/zcash/rust/librustzcash/src": "https://github.com/brave/librustzcash.git@f34cb36d9287b76b52ba1a2ab58e50db96706dc8", # brave-orchard-0.14
+
+  "third_party/node/linux": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/nodejs/",
+    "condition": 'host_os == "linux"',
+    "objects": [
+      {
+        "object_name": "node-v24.17.0-linux-x64.tar.gz",
+        "sha256sum": "e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f",
+        "size_bytes": 57017543,
+      },
+    ],
+  },
+
+  "third_party/node/mac": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/nodejs/",
+    "condition": 'host_os == "mac" and host_cpu == "x64"',
+    "objects": [
+      {
+        "object_name": "node-v24.17.0-darwin-x64.tar.gz",
+        "sha256sum": "80da552fe037290cb130e9dea590f5eeeb7aa450636f0c89ab41415511c1ec27",
+        "size_bytes": 53067264,
+      },
+    ],
+  },
+
+  "third_party/node/mac_arm64": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/nodejs/",
+    "condition": 'host_os == "mac" and host_cpu == "arm64"',
+    "objects": [
+      {
+        "object_name": "node-v24.17.0-darwin-arm64.tar.gz",
+        "sha256sum": "4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f",
+        "size_bytes": 51886390,
+      },
+    ],
+  },
+
+  "third_party/node/win": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/nodejs/",
+    "condition": 'host_os == "win"',
+    "objects": [
+      {
+        "object_name": "node-v24.17.0-win-x64.zip",
+        "sha256sum": "f2aa33b35b75aca5f3f7b85675a6f6423201053e9381911e64961f3bda2528ab",
+        "size_bytes": 36948900,
+      },
+    ],
+  },
+
+  "third_party/ast-grep/ast-grep-linux": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/ast-grep/",
+    "condition": 'host_os == "linux"',
+    "objects": [
+      {
+        "object_name": "ast-grep-0.44.0-linux-x64.tar.gz",
+        "sha256sum": "e5a2d23541d7591fe4ec01190097ca8283a87f4039520271e7cee1ad9998ba5c",
+        "size_bytes": 7921481,
+      },
+    ],
+  },
+
+  "third_party/ast-grep/ast-grep-mac": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/ast-grep/",
+    "condition": 'host_os == "mac" and host_cpu == "x64"',
+    "objects": [
+      {
+        "object_name": "ast-grep-0.44.0-mac.tar.gz",
+        "sha256sum": "ad3f3bcae7a91ce070fbe6b934dbfcf35ec9cf004f9c6d7ecb907165669844e2",
+        "size_bytes": 7762840,
+      },
+    ],
+  },
+
+  "third_party/ast-grep/ast-grep-mac_arm64": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/ast-grep/",
+    "condition": 'host_os == "mac" and host_cpu == "arm64"',
+    "objects": [
+      {
+        "object_name": "ast-grep-0.44.0-mac-arm64.tar.gz",
+        "sha256sum": "5bcb3568679ea6c636298c2b3e1edb44d54a8483f51d5e1ad0778609ef97bea3",
+        "size_bytes": 7782668,
+      },
+    ],
+  },
+
+  "third_party/ast-grep/ast-grep-win": {
+    "dep_type": "aws",
+    "bucket": "https://brave-build-deps-public.s3.brave.com/ast-grep/",
+    "condition": 'host_os == "win"',
+    "objects": [
+      {
+        "object_name": "ast-grep-0.44.0-win.tar.gz",
+        "sha256sum": "1a074eaa2c4ba0e6df2b7a505c45ef26b2605a1360d43c8c2ae4d31624013845",
+        "size_bytes": 7646292,
+      },
+    ],
+  },
 }
 
 recursedeps = [
@@ -203,26 +307,6 @@ hooks = [
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
                'src/third_party/rust-toolchain']
-  },
-  {
-    'name': 'download_node',
-    'pattern': '.',
-    'action': ['vpython3',
-               'tools/cr/install_extra_deps.py',
-               'src/brave/third_party/node/linux',
-               'src/brave/third_party/node/mac',
-               'src/brave/third_party/node/mac_arm64',
-               'src/brave/third_party/node/win']
-  },
-  {
-    'name': 'download_ast_grep',
-    'pattern': '.',
-    'action': ['vpython3',
-               'tools/cr/install_extra_deps.py',
-               'src/brave/third_party/ast-grep/ast-grep-linux',
-               'src/brave/third_party/ast-grep/ast-grep-mac',
-               'src/brave/third_party/ast-grep/ast-grep-mac_arm64',
-               'src/brave/third_party/ast-grep/ast-grep-win']
   },
 ]
 
