@@ -12,6 +12,7 @@
 
 import os
 import sys
+import tempfile
 import types
 import unittest
 from dataclasses import dataclass
@@ -110,14 +111,22 @@ class RunRecipeTest(unittest.TestCase):
 class WorkspaceTest(unittest.TestCase):
     """The engine seeds its workspace; the `path` module derives job paths."""
 
+    def setUp(self):
+        # _Engine chdirs into an explicit workspace; restore cwd afterwards so
+        # it doesn't leak into other tests (some read Path.cwd()).
+        self._prev_cwd = Path.cwd()
+        self.addCleanup(os.chdir, self._prev_cwd)
+
     def test_workspace_seeded_into_path_module(self):
-        eng = engine._Engine(workspace='/tmp/ws')
-        path = eng._instantiate_module('path', [])
-        workspace = Path('/tmp/ws').resolve()
-        self.assertEqual(path.workspace, workspace)
-        self.assertEqual(path.chromium_src, workspace / 'chromium/src')
-        self.assertEqual(path.brave_core, workspace / 'chromium/src/brave')
-        self.assertEqual(path.out, workspace / 'out')
+        with tempfile.TemporaryDirectory() as tmp:
+            eng = engine._Engine(workspace=tmp)
+            path = eng._instantiate_module('path', [])
+            workspace = Path(tmp).resolve()
+            self.assertEqual(path.workspace, workspace)
+            self.assertEqual(path.chromium_src, workspace / 'chromium/src')
+            self.assertEqual(path.brave_core, workspace / 'chromium/src/brave')
+            self.assertEqual(path.out, workspace / 'out')
+            self.assertEqual(Path.cwd(), workspace)
 
     def test_workspace_defaults_to_cwd(self):
         path = engine._Engine()._instantiate_module('path', [])

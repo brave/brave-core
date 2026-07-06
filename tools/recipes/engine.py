@@ -92,8 +92,13 @@ class _Engine:
         _ensure_on_sys_path()
         # Root directory the job runs in. Recipe paths (chromium/src, out, ...)
         # are derived from it by the `path` module. Defaults to the cwd.
-        self._workspace: Path = (Path(workspace).expanduser().resolve()
-                                 if workspace else Path.cwd())
+        if workspace:
+            self._workspace = Path(workspace).expanduser().resolve()
+            # Run from the workspace so every subprocess the recipes launch
+            # inherits it as their cwd.
+            os.chdir(self._workspace)
+        else:
+            self._workspace = Path.cwd()
         # brave-core ref the checkout modules clone. Defaults to `master`;
         # overridable (mainly for testing against a non-master ref).
         self._brave_core_ref: str = brave_core_ref
