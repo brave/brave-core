@@ -3,6 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveShared
+import Shared
+import Strings
 import SwiftUI
 import UIKit
 import Web
@@ -23,7 +27,11 @@ enum QuickViewActionButton {
 
 @Observable
 class QuickViewToolbarModel {
-  var url: URL
+  var url: URL {
+    didSet { updateDisplayInfo() }
+  }
+  var displayURL: String = ""
+  var isURLLeftToRight: Bool = false
   var secureContentState: SecureContentState = .unknown
   var secondaryTopButton: QuickViewActionButton? {
     if readerModeState != .unavailable { return .readerMode }
@@ -48,6 +56,42 @@ class QuickViewToolbarModel {
     self.url = url
     self.isPrivate = isPrivate
     self.onActionButton = onActionButton
+    updateDisplayInfo()
+  }
+
+  private func updateDisplayInfo() {
+    var url = self.url.strippingBlobURLAuth
+
+    if let internalURL = InternalURL(url), internalURL.isBasicAuthURL {
+      displayURL = Strings.PageSecurityView.signIntoWebsiteURLBarTitle
+      isURLLeftToRight = true
+      return
+    }
+
+    if URLOrigin(url: url).url == nil && URIFixup.getURL(url.absoluteString) == nil {
+      if url.scheme == "about" {
+        url = URL(string: "about:blank")!
+      }
+    }
+
+    var urlString = url.absoluteString
+    let isWebPage = url.isWebPage(includeDataURIs: false) || url.scheme == "blob"
+    if isWebPage, let origin = url.origin.url?.absoluteString {
+      urlString = origin
+    }
+
+    displayURL = URLFormatter.formatURL(
+      urlString,
+      formatTypes: [.omitDefaults, .trimAfterHost, .omitHTTPS, .omitTrivialSubdomains],
+      unescapeOptions: .normal
+    )
+
+    let isRenderedLeftToRight = url.isRenderedLeftToRight
+    let isMixedCharset = !url.isUnidirectional
+    var isLTR = isRenderedLeftToRight && !isMixedCharset
+    if isMixedCharset { isLTR = true }
+
+    isURLLeftToRight = !isWebPage || !isLTR
   }
 }
 
