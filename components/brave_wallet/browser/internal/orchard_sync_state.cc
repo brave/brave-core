@@ -183,12 +183,12 @@ OrchardSyncState::ApplyScanResults(
   RETURN_IF_ERROR(existing_notes);
 
   std::vector<OrchardNote> notes_to_add =
-      block_scanner_results.discovered_notes;
+      block_scanner_results.orchard.discovered_notes;
   base::Extend(existing_notes.value(), notes_to_add);
 
   std::vector<OrchardNoteSpend> nf_to_add;
 
-  for (const auto& nf : block_scanner_results.found_spends) {
+  for (const auto& nf : block_scanner_results.orchard.found_spends) {
     if (std::ranges::find_if(existing_notes.value(), [&nf](const auto& v) {
           return v.nullifier == nf.nullifier;
         }) != existing_notes.value().end()) {
@@ -204,16 +204,17 @@ OrchardSyncState::ApplyScanResults(
 
     if (!GetOrCreateShardTree(account_id)
              .ApplyScanResults(
-                 std::move(block_scanner_results.scanned_blocks))) {
+                 std::move(block_scanner_results.orchard.scanned_blocks))) {
       return base::unexpected(
           OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
                                 "Failed to insert commitments"});
     }
 
+    // TODO(ironwood): persist block_scanner_results.ironwood to kIronwood
     auto update_notes_result = storage_.UpdateNotes(
         OrchardPool::kOrchard, account_id, notes_to_add, std::move(nf_to_add),
-        block_scanner_results.latest_scanned_block_id,
-        block_scanner_results.latest_scanned_block_hash);
+        block_scanner_results.orchard.latest_scanned_block_id,
+        block_scanner_results.orchard.latest_scanned_block_hash);
 
     if (!update_notes_result.has_value() ||
         update_notes_result.value() != OrchardStorage::Result::kSuccess) {

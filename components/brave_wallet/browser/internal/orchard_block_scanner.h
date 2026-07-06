@@ -8,6 +8,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <optional>
 #include <string>
 #include <utility>
 #include <vector>
@@ -26,24 +27,25 @@ class OrchardBlockScanner {
  public:
   enum class ErrorCode { kInputError, kDiscoveredNotesError, kDecoderError };
 
-  struct Result {
-    Result();
-    Result(std::vector<OrchardNote> discovered_notes,
-           std::vector<OrchardNoteSpend> spent_notes,
-           std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks,
-           uint32_t latest_scanned_block_id,
-           const std::string& latest_scanned_block_hash);
-    Result(const Result&) = delete;
-    Result& operator=(const Result&) = delete;
-    Result(Result&&);
-    Result& operator=(Result&&);
-    ~Result();
+  struct PoolResult {
+    PoolResult();
+    PoolResult(std::vector<OrchardNote> discovered_notes,
+               std::vector<OrchardNoteSpend> spent_notes,
+               std::unique_ptr<orchard::OrchardDecodedBlocksBundle>
+                   scanned_blocks,
+               uint32_t latest_scanned_block_id,
+               const std::string& latest_scanned_block_hash);
+    PoolResult(const PoolResult&) = delete;
+    PoolResult& operator=(const PoolResult&) = delete;
+    PoolResult(PoolResult&&);
+    PoolResult& operator=(PoolResult&&);
+    ~PoolResult();
 
     // New notes have been discovered.
     std::vector<OrchardNote> discovered_notes;
     // Nullifiers for the previously discovered notes.
     std::vector<OrchardNoteSpend> found_spends;
-    // Decoded blocks bundle to be insterted in the shard tree.
+    // Decoded blocks bundle to be inserted in the shard tree.
     std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks;
     // Latest scanned block height.
     uint32_t latest_scanned_block_id;
@@ -51,14 +53,27 @@ class OrchardBlockScanner {
     std::string latest_scanned_block_hash;
   };
 
+  struct Result {
+    Result();
+    Result(const Result&) = delete;
+    Result& operator=(const Result&) = delete;
+    Result(Result&&);
+    Result& operator=(Result&&);
+    ~Result();
+
+    PoolResult orchard;
+    std::optional<PoolResult> ironwood;
+  };
+
   explicit OrchardBlockScanner(const OrchardFullViewKey& full_view_key);
   virtual ~OrchardBlockScanner();
 
-  // Scans blocks to find incoming notes related to fvk
+  // Scans blocks to find incoming notes related to fvk.
   // Also checks whether existing notes were spent.
   virtual base::expected<Result, OrchardBlockScanner::ErrorCode> ScanBlocks(
-      const OrchardTreeState& tree_state,
-      const std::vector<zcash::mojom::CompactBlockPtr>& blocks);
+      const OrchardTreeState& orchard_tree_state,
+      const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
+      const OrchardTreeState* ironwood_tree_state = nullptr);
 
  private:
   OrchardFullViewKey fvk_;

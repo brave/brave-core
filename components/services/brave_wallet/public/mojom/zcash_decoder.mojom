@@ -51,6 +51,7 @@ struct CompactOrchardAction {
 
 struct ChainMetadata {
   uint32 orchard_commitment_tree_size;
+  uint32 ironwood_commitment_tree_size;
 };
 
 struct CompactTx {
@@ -58,6 +59,7 @@ struct CompactTx {
   array<uint8> hash;
   uint32 fee;
   array<CompactOrchardAction> orchard_actions;
+  array<CompactOrchardAction> ironwood_actions;
 };
 
 struct CompactBlock {

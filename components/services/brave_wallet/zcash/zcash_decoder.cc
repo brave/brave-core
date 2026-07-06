@@ -121,9 +121,16 @@ void ZCashDecoder::ParseCompactBlocks(const std::vector<std::string>& data,
             ToVector(action.nullifier()), ToVector(action.cmx()),
             ToVector(action.ephemeralkey()), ToVector(action.ciphertext())));
       }
-      auto tx =
-          zcash::mojom::CompactTx::New(vtx.index(), ToVector(vtx.hash()),
-                                       vtx.fee(), std::move(orchard_actions));
+      std::vector<zcash::mojom::CompactOrchardActionPtr> ironwood_actions;
+      for (int j = 0; j < vtx.ironwoodactions_size(); j++) {
+        const auto& action = vtx.ironwoodactions(j);
+        ironwood_actions.push_back(zcash::mojom::CompactOrchardAction::New(
+            ToVector(action.nullifier()), ToVector(action.cmx()),
+            ToVector(action.ephemeralkey()), ToVector(action.ciphertext())));
+      }
+      auto tx = zcash::mojom::CompactTx::New(
+          vtx.index(), ToVector(vtx.hash()), vtx.fee(),
+          std::move(orchard_actions), std::move(ironwood_actions));
       transactions.push_back(std::move(tx));
     }
 
@@ -132,7 +139,8 @@ void ZCashDecoder::ParseCompactBlocks(const std::vector<std::string>& data,
         ToVector(result.prevhash()), result.time(), ToVector(result.header()),
         std::move(transactions),
         zcash::mojom::ChainMetadata::New(
-            result.chainmetadata().orchardcommitmenttreesize())));
+            result.chainmetadata().orchardcommitmenttreesize(),
+            result.chainmetadata().ironwoodcommitmenttreesize())));
   }
 
   std::move(callback).Run(std::move(parsed_blocks));

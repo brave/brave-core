@@ -492,8 +492,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 
   OrchardBlockScanner::Result result = CreateResultForTesting(
       OrchardTreeState(), std::vector<OrchardCommitment>(), 50000, "hash50000");
-  result.discovered_notes = std::vector<OrchardNote>({note});
-  result.found_spends = std::vector<OrchardNoteSpend>();
+  result.orchard.discovered_notes = std::vector<OrchardNote>({note});
+  result.orchard.found_spends = std::vector<OrchardNoteSpend>();
 
   zcash_wallet_service_->sync_state()
       .AsyncCall(&OrchardSyncState::ApplyScanResults)

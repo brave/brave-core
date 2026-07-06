@@ -170,45 +170,45 @@ class ZCashScanBlocksTaskTest : public testing::Test {
           for (const auto& block : blocks) {
             // 3 notes in the blockchain found in the first batch
             if (block->height == kNu5BlockUpdate + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 1));
             } else if (block->height == kNu5BlockUpdate + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 2));
             } else if (block->height == kNu5BlockUpdate + 305) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 3));
             }
 
             // First 2 notes are spent in the second batch
             if (block->height == kNu5BlockUpdate + kExpectedBatchSize + 255) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 1)}));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize + 265) {
-              result.found_spends.push_back(OrchardNoteSpend(
+              result.orchard.found_spends.push_back(OrchardNoteSpend(
                   block->height, {GenerateMockNullifier(account_id, 2)}));
             }
 
             // Another 2 additional notes found in the third batch
             if (block->height ==
                 kNu5BlockUpdate + kExpectedBatchSize * 2 + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 4));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize * 2 + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 5));
             }
 
             // Another 2 additional notes found far away from 3 previous batches
             if (block->height ==
                 kNu5BlockUpdate + kExpectedBatchSize * 7 + 105) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 6));
             } else if (block->height ==
                        kNu5BlockUpdate + kExpectedBatchSize * 7 + 205) {
-              result.discovered_notes.push_back(
+              result.orchard.discovered_notes.push_back(
                   GenerateMockOrchardNote(account_id, block->height, 7));
             }
           }
@@ -322,7 +322,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
                 ToHex(blocks[blocks.size() - 1]->hash));
             EXPECT_EQ(blocks.size(), 1u);
             EXPECT_EQ(blocks[0]->height, kNu5BlockUpdate + 1u);
-            result.discovered_notes.push_back(
+            result.orchard.discovered_notes.push_back(
                 GenerateMockOrchardNote(account_id, blocks[0]->height, 1));
             std::move(callback).Run(std::move(result));
           }));

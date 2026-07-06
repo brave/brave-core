@@ -329,7 +329,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
 
     auto result = CreateResultForTesting(OrchardTreeState(),
                                          std::move(commitments), 1049, "1049");
-    result.discovered_notes = notes;
+    result.orchard.discovered_notes = notes;
 
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
@@ -367,7 +367,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
 
     auto result = CreateResultForTesting(OrchardTreeState(),
                                          std::move(commitments), 1049, "1049");
-    result.discovered_notes = notes;
+    result.orchard.discovered_notes = notes;
 
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
@@ -405,7 +405,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
 
     auto result = CreateResultForTesting(OrchardTreeState(),
                                          std::move(commitments), 1049, "1049");
-    result.discovered_notes = notes;
+    result.orchard.discovered_notes = notes;
 
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
@@ -436,7 +436,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
 
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
@@ -550,20 +550,20 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
     {
       OrchardNote note;
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
     {
       OrchardNoteSpend spend;
       spend.block_id = 2;
       spend.nullifier.fill(1);
-      result.found_spends.push_back(spend);
+      result.orchard.found_spends.push_back(spend);
     }
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
@@ -625,7 +625,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
               sync_state()
@@ -690,20 +690,20 @@ TEST_F(OrchardSyncStateTest, Rewind) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
     {
       OrchardNote note;
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
-      result.discovered_notes.push_back(note);
+      result.orchard.discovered_notes.push_back(note);
     }
     {
       OrchardNoteSpend spend;
       spend.block_id = 3;
       spend.nullifier.fill(1);
-      result.found_spends.push_back(spend);
+      result.orchard.found_spends.push_back(spend);
     }
 
     EXPECT_EQ(OrchardStorage::Result::kSuccess,

@@ -8,13 +8,63 @@
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_block_decoder.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/orchard_decoded_blocks_bundle.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 
 namespace brave_wallet {
 
-OrchardBlockScanner::Result::Result() = default;
+namespace {
 
-OrchardBlockScanner::Result::Result(
+std::optional<std::vector<OrchardNoteSpend>> CollectSpends(
+    const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
+    OrchardPool pool) {
+  std::vector<OrchardNoteSpend> found_spends;
+  for (const auto& block : blocks) {
+    for (const auto& tx : block->vtx) {
+      const auto& actions = pool == OrchardPool::kIronwood
+                                ? tx->ironwood_actions
+                                : tx->orchard_actions;
+      for (const auto& action : actions) {
+        if (action->nullifier.size() != kOrchardNullifierSize) {
+          return std::nullopt;
+        }
+        OrchardNoteSpend spend;
+        base::span(spend.nullifier).copy_from(action->nullifier);
+        spend.block_id = block->height;
+        found_spends.push_back(std::move(spend));
+      }
+    }
+  }
+  return found_spends;
+}
+
+base::expected<OrchardBlockScanner::PoolResult, OrchardBlockScanner::ErrorCode>
+BuildPoolResult(
+    std::unique_ptr<orchard::OrchardDecodedBlocksBundle> bundle,
+    const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
+    OrchardPool pool) {
+  if (!bundle) {
+    return base::unexpected(OrchardBlockScanner::ErrorCode::kInputError);
+  }
+  auto notes = bundle->GetDiscoveredNotes();
+  if (!notes) {
+    return base::unexpected(
+        OrchardBlockScanner::ErrorCode::kDiscoveredNotesError);
+  }
+  auto spends = CollectSpends(blocks, pool);
+  if (!spends) {
+    return base::unexpected(OrchardBlockScanner::ErrorCode::kInputError);
+  }
+  return OrchardBlockScanner::PoolResult(
+      std::move(notes.value()), std::move(spends.value()), std::move(bundle),
+      blocks.back()->height, ToHex(blocks.back()->hash));
+}
+
+}  // namespace
+
+OrchardBlockScanner::PoolResult::PoolResult() = default;
+
+OrchardBlockScanner::PoolResult::PoolResult(
     std::vector<OrchardNote> discovered_notes,
     std::vector<OrchardNoteSpend> spent_notes,
     std::unique_ptr<orchard::OrchardDecodedBlocksBundle> scanned_blocks,
@@ -26,10 +76,17 @@ OrchardBlockScanner::Result::Result(
       latest_scanned_block_id(latest_scanned_block_id),
       latest_scanned_block_hash(latest_scanned_block_hash) {}
 
+OrchardBlockScanner::PoolResult::PoolResult(
+    OrchardBlockScanner::PoolResult&&) = default;
+OrchardBlockScanner::PoolResult& OrchardBlockScanner::PoolResult::operator=(
+    OrchardBlockScanner::PoolResult&&) = default;
+
+OrchardBlockScanner::PoolResult::~PoolResult() = default;
+
+OrchardBlockScanner::Result::Result() = default;
 OrchardBlockScanner::Result::Result(OrchardBlockScanner::Result&&) = default;
 OrchardBlockScanner::Result& OrchardBlockScanner::Result::operator=(
     OrchardBlockScanner::Result&&) = default;
-
 OrchardBlockScanner::Result::~Result() = default;
 
 OrchardBlockScanner::OrchardBlockScanner(const OrchardFullViewKey& fvk)
@@ -39,54 +96,40 @@ OrchardBlockScanner::~OrchardBlockScanner() = default;
 
 base::expected<OrchardBlockScanner::Result, OrchardBlockScanner::ErrorCode>
 OrchardBlockScanner::ScanBlocks(
-    const OrchardTreeState& tree_state,
-    const std::vector<zcash::mojom::CompactBlockPtr>& blocks) {
+    const OrchardTreeState& orchard_tree_state,
+    const std::vector<zcash::mojom::CompactBlockPtr>& blocks,
+    const OrchardTreeState* ironwood_tree_state) {
   base::AssertLongCPUWorkAllowed();
-
-  std::unique_ptr<orchard::OrchardDecodedBlocksBundle> result =
-      orchard::OrchardBlockDecoder::DecodeBlocks(fvk_, tree_state, blocks);
-  if (!result) {
-    return base::unexpected(ErrorCode::kInputError);
-  }
-
-  std::optional<std::vector<OrchardNote>> found_notes =
-      result->GetDiscoveredNotes();
-
-  if (!found_notes) {
-    return base::unexpected(ErrorCode::kDiscoveredNotesError);
-  }
-
   if (blocks.empty()) {
     return base::unexpected(ErrorCode::kInputError);
   }
 
-  std::vector<OrchardNoteSpend> found_spends;
+  const bool decode_ironwood =
+      IsZCashIronwoodTransactionEnabled() && ironwood_tree_state != nullptr;
 
-  uint32_t latest_block_id = blocks.back()->height;
-  std::string latest_block_hash = ToHex(blocks.back()->hash);
+  orchard::OrchardBlockDecoder::Result decoded =
+      orchard::OrchardBlockDecoder::DecodeBlocks(
+          fvk_, orchard_tree_state, blocks,
+          decode_ironwood ? ironwood_tree_state : nullptr);
 
-  for (const auto& block : blocks) {
-    for (const auto& tx : block->vtx) {
-      // We only scan orchard actions here
-      for (const auto& orchard_action : tx->orchard_actions) {
-        if (orchard_action->nullifier.size() != kOrchardNullifierSize) {
-          return base::unexpected(ErrorCode::kInputError);
-        }
-
-        // Nullifier is a public information about some note being spent.
-        // Here we are collecting nullifiers from the blocks to check them
-        // later.
-        OrchardNoteSpend spend;
-        base::span(spend.nullifier).copy_from(orchard_action->nullifier);
-        spend.block_id = block->height;
-        found_spends.push_back(std::move(spend));
-      }
-    }
+  auto orchard_result =
+      BuildPoolResult(std::move(decoded.orchard), blocks, OrchardPool::kOrchard);
+  if (!orchard_result.has_value()) {
+    return base::unexpected(orchard_result.error());
   }
 
-  return Result({std::move(found_notes.value()), std::move(found_spends),
-                 std::move(result), latest_block_id,
-                 std::move(latest_block_hash)});
+  Result result;
+  result.orchard = std::move(orchard_result.value());
+
+  if (decode_ironwood) {
+    auto ironwood_result = BuildPoolResult(std::move(decoded.ironwood), blocks,
+                                           OrchardPool::kIronwood);
+    if (!ironwood_result.has_value()) {
+      return base::unexpected(ironwood_result.error());
+    }
+    result.ironwood = std::move(ironwood_result.value());
+  }
+  return result;
 }
 
 }  // namespace brave_wallet
