@@ -78,6 +78,20 @@ mod ffi {
             block_hash: &[u8; 32],
         ) -> Vec<u8>;
 
+        fn generate_assets_extrinsic_signature_payload(
+            chain_metadata: &CxxPolkadotChainMetadata,
+            sender_nonce: u32,
+            send_amount_bytes: &[u8; 16],
+            transfer_all: bool,
+            recipient: &[u8; 32],
+            asset_id: u32,
+            spec_version: u32,
+            transaction_version: u32,
+            block_number: u32,
+            genesis_hash: &[u8; 32],
+            block_hash: &[u8; 32],
+        ) -> Vec<u8>;
+
         fn make_signed_extrinsic(
             chain_metadata: &CxxPolkadotChainMetadata,
             sender_pubkey: &[u8; 32],
@@ -89,6 +103,18 @@ mod ffi {
             sender_nonce: u32,
         ) -> Vec<u8>;
 
+        fn make_signed_asset_transfer_extrinsic(
+            chain_metadata: &CxxPolkadotChainMetadata,
+            sender_pubkey: &[u8; 32],
+            recipient_pubkey: &[u8; 32],
+            send_amount_bytes: &[u8; 16],
+            transfer_all: bool,
+            signature: &[u8; 64],
+            block_number: u32,
+            sender_nonce: u32,
+            asset_id: u32,
+        ) -> Vec<u8>;
+
         fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
 
         fn was_extrinsic_successful(
@@ -98,6 +124,7 @@ mod ffi {
             chain_metadata: &CxxPolkadotChainMetadata,
             actual_fee: &mut [u8; 16],
         ) -> bool;
+
     }
 }
 
@@ -238,38 +265,61 @@ fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
 /// this verification by setting the mode to 0.
 /// See also:
 /// https://github.com/polkadot-fellows/RFCs/blob/85ca3ff275ded2e690c4c175d5333d12b139d863/text/0078-merkleized-metadata.md
-fn generate_extrinsic_signature_payload(
+fn generate_extrinsic_signature_payload_impl(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_nonce: u32,
     send_amount_bytes: &[u8; 16],
     transfer_all: bool,
     recipient: &[u8; 32],
+    asset_id: Option<u32>,
     spec_version: u32,
     transaction_version: u32,
     block_number: u32,
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata {
+    let &CxxPolkadotChainMetadata {
         balances_pallet_index,
         transfer_keep_alive_call_index,
         transfer_all_call_index,
+        has_assets_pallet,
+        assets_pallet_index,
+        assets_transfer_keep_alive_call_index,
+        assets_transfer_all_call_index,
         ..
     } = chain_metadata;
 
     let mut buf = Vec::<u8>::with_capacity(256);
 
-    let call_idx =
-        if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
+    let (pallet_idx, call_idx) = {
+        if asset_id.is_some() {
+            assert!(has_assets_pallet);
+
+            let transfer_call_idx = if transfer_all {
+                assets_transfer_all_call_index
+            } else {
+                assets_transfer_keep_alive_call_index
+            };
+
+            (assets_pallet_index, transfer_call_idx)
+        } else {
+            let transfer_call_idx =
+                if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
+
+            (balances_pallet_index, transfer_call_idx)
+        }
+    };
 
     buf.extend_from_slice(&[
-        /* Write module indicator, M_i. */
-        *balances_pallet_index,
-        /* Write function indicator (call index + call parameters). */
-        *call_idx,
-        MULTIADDRESS_TYPE,
+        pallet_idx, // Write module indicator, M_i.
+        call_idx,   // Write function indicator (call index + call parameters).
     ]);
 
+    if let Some(asset_id) = asset_id {
+        Compact(asset_id).encode_to(&mut buf);
+    }
+
+    buf.extend_from_slice(&[MULTIADDRESS_TYPE]);
     buf.extend_from_slice(recipient);
     if transfer_all {
         TRANSFER_ALL_KEEP_ALIVE.encode_to(&mut buf);
@@ -311,7 +361,62 @@ fn generate_extrinsic_signature_payload(
     buf
 }
 
-fn make_signed_extrinsic(
+fn generate_extrinsic_signature_payload(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_nonce: u32,
+    send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
+    recipient: &[u8; 32],
+    spec_version: u32,
+    transaction_version: u32,
+    block_number: u32,
+    genesis_hash: &[u8; 32],
+    block_hash: &[u8; 32],
+) -> Vec<u8> {
+    generate_extrinsic_signature_payload_impl(
+        chain_metadata,
+        sender_nonce,
+        send_amount_bytes,
+        transfer_all,
+        recipient,
+        None,
+        spec_version,
+        transaction_version,
+        block_number,
+        genesis_hash,
+        block_hash,
+    )
+}
+
+fn generate_assets_extrinsic_signature_payload(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_nonce: u32,
+    send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
+    recipient: &[u8; 32],
+    asset_id: u32,
+    spec_version: u32,
+    transaction_version: u32,
+    block_number: u32,
+    genesis_hash: &[u8; 32],
+    block_hash: &[u8; 32],
+) -> Vec<u8> {
+    generate_extrinsic_signature_payload_impl(
+        chain_metadata,
+        sender_nonce,
+        send_amount_bytes,
+        transfer_all,
+        recipient,
+        Some(asset_id),
+        spec_version,
+        transaction_version,
+        block_number,
+        genesis_hash,
+        block_hash,
+    )
+}
+
+fn make_signed_transfer_extrinsic_impl(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_pubkey: &[u8; 32],
     recipient_pubkey: &[u8; 32],
@@ -320,11 +425,16 @@ fn make_signed_extrinsic(
     signature: &[u8; 64],
     block_number: u32,
     sender_nonce: u32,
+    asset_id: Option<u32>,
 ) -> Vec<u8> {
-    let CxxPolkadotChainMetadata {
+    let &CxxPolkadotChainMetadata {
         balances_pallet_index,
         transfer_keep_alive_call_index,
         transfer_all_call_index,
+        has_assets_pallet,
+        assets_pallet_index,
+        assets_transfer_keep_alive_call_index,
+        assets_transfer_all_call_index,
         ..
     } = chain_metadata;
 
@@ -338,10 +448,31 @@ fn make_signed_extrinsic(
     Compact(sender_nonce).encode_to(&mut buf);
     append_extra(&mut buf, chain_metadata.asset_tx_payment);
 
-    let call_idx =
-        if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
+    let (pallet_idx, call_idx) = {
+        if asset_id.is_some() {
+            assert!(has_assets_pallet);
 
-    buf.extend_from_slice(&[*balances_pallet_index, *call_idx, MULTIADDRESS_TYPE]);
+            let transfer_call_idx = if transfer_all {
+                assets_transfer_all_call_index
+            } else {
+                assets_transfer_keep_alive_call_index
+            };
+
+            (assets_pallet_index, transfer_call_idx)
+        } else {
+            let transfer_call_idx =
+                if transfer_all { transfer_all_call_index } else { transfer_keep_alive_call_index };
+
+            (balances_pallet_index, transfer_call_idx)
+        }
+    };
+
+    buf.extend_from_slice(&[pallet_idx, call_idx]);
+    if let Some(asset_id) = asset_id {
+        Compact(asset_id).encode_to(&mut buf);
+    }
+
+    buf.extend_from_slice(&[MULTIADDRESS_TYPE]);
     buf.extend_from_slice(recipient_pubkey);
 
     if transfer_all {
@@ -355,6 +486,53 @@ fn make_signed_extrinsic(
     });
 
     buf
+}
+
+fn make_signed_extrinsic(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_pubkey: &[u8; 32],
+    recipient_pubkey: &[u8; 32],
+    send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
+    signature: &[u8; 64],
+    block_number: u32,
+    sender_nonce: u32,
+) -> Vec<u8> {
+    make_signed_transfer_extrinsic_impl(
+        chain_metadata,
+        sender_pubkey,
+        recipient_pubkey,
+        send_amount_bytes,
+        transfer_all,
+        signature,
+        block_number,
+        sender_nonce,
+        None,
+    )
+}
+
+fn make_signed_asset_transfer_extrinsic(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_pubkey: &[u8; 32],
+    recipient_pubkey: &[u8; 32],
+    send_amount_bytes: &[u8; 16],
+    transfer_all: bool,
+    signature: &[u8; 64],
+    block_number: u32,
+    sender_nonce: u32,
+    asset_id: u32,
+) -> Vec<u8> {
+    make_signed_transfer_extrinsic_impl(
+        chain_metadata,
+        sender_pubkey,
+        recipient_pubkey,
+        send_amount_bytes,
+        transfer_all,
+        signature,
+        block_number,
+        sender_nonce,
+        Some(asset_id),
+    )
 }
 
 // Definition of the type's binary representation is provided here:
