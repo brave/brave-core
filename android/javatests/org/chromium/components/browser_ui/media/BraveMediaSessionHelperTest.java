@@ -21,6 +21,7 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnit;
 import org.mockito.junit.MockitoRule;
 
+import org.chromium.base.CommandLine;
 import org.chromium.base.test.util.Batch;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.content_public.browser.WebContents;
@@ -36,6 +37,11 @@ import java.lang.ref.WeakReference;
 @Batch(Batch.PER_CLASS)
 @RunWith(ChromeJUnit4ClassRunner.class)
 public class BraveMediaSessionHelperTest {
+    // Java-side mirror of switches::kDisableBackgroundMediaSuspend, set at startup when the
+    // background video playback feature and preference are both enabled.
+    private static final String DISABLE_BACKGROUND_MEDIA_SUSPEND =
+            "disable-background-media-suspend";
+
     @Rule public MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Mock private WebContents mWebContents;
@@ -52,6 +58,7 @@ public class BraveMediaSessionHelperTest {
     @After
     public void tearDown() {
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(null);
+        CommandLine.getInstance().removeSwitch(DISABLE_BACKGROUND_MEDIA_SUSPEND);
     }
 
     @Test
@@ -139,5 +146,62 @@ public class BraveMediaSessionHelperTest {
         BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mOtherWebContents);
 
         assertFalse(mHelper.isYouTubePictureInPicture(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldForcePlayingState_trueForYouTubeWithBackgroundPlayback() {
+        mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+        CommandLine.getInstance().appendSwitch(DISABLE_BACKGROUND_MEDIA_SUSPEND);
+
+        assertTrue(mHelper.shouldForcePlayingState(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldForcePlayingState_falseForYouTubeWithoutBackgroundPlayback() {
+        mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+
+        assertFalse(mHelper.shouldForcePlayingState(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldForcePlayingState_trueForBraveTalk() {
+        mockUrl("https://talk.brave.com/room");
+
+        assertTrue(mHelper.shouldForcePlayingState(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldForcePlayingState_falseForPipSessionWithoutBackgroundPlayback() {
+        mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+        when(mWebContents.getTopLevelNativeWindow()).thenReturn(mWindowAndroid);
+        when(mWindowAndroid.getActivity()).thenReturn(new WeakReference<>(mActivity));
+        when(mActivity.isInPictureInPictureMode()).thenReturn(true);
+        BraveMediaSessionHelper.setYouTubePictureInPictureWebContents(mWebContents);
+
+        // The pause suppression still applies, so the media controls stay alive, but the real
+        // paused state is preserved for the PiP pause-on-lock flow.
+        assertTrue(mHelper.shouldSuppressMediaPause(mWebContents));
+        assertFalse(mHelper.shouldForcePlayingState(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldSuppressMediaPause_trueForYouTubeWithBackgroundPlayback() {
+        mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+        CommandLine.getInstance().appendSwitch(DISABLE_BACKGROUND_MEDIA_SUSPEND);
+
+        assertTrue(mHelper.shouldSuppressMediaPause(mWebContents));
+    }
+
+    @Test
+    @SmallTest
+    public void shouldSuppressMediaPause_falseForYouTubeWithoutBackgroundPlaybackOrPip() {
+        mockUrl("https://m.youtube.com/watch?v=dQw4w9WgXcQ");
+
+        assertFalse(mHelper.shouldSuppressMediaPause(mWebContents));
     }
 }
