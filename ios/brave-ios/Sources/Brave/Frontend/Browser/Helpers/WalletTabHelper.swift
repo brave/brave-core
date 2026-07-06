@@ -10,7 +10,7 @@ import Foundation
 import Growth
 import Preferences
 import Shared
-import Web
+@_spi(ChromiumWebViewAccess) import Web
 import os.log
 
 extension TabDataValues {
@@ -64,6 +64,12 @@ class WalletTabHelper: NSObject, TabObserver {
   }
 
   // MARK: - TabObserver
+
+  func tabDidCreateWebView(_ tab: some TabState) {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.from(tab: tab)?.walletProviderDelegate = self
+    }
+  }
 
   func tabDidCommitNavigation(_ tab: some TabState) {
     clearSolanaConnectedAccounts()
@@ -294,7 +300,9 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
   }
 
   func walletInteractionDetected() {
-    // No usage for iOS
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      isWalletIconVisible = true
+    }
   }
 
   func showWalletBackup() {
