@@ -26,6 +26,7 @@ if (!is_android) {
     "//brave/components/brave_wayback_machine/buildflags",
     "//brave/components/playlist/core/common/buildflags",
     "//brave/components/speedreader/common/buildflags",
+    "//brave/ui/color:brave_color_mixers",
     "//skia",
     "//ui/color",
     "//ui/gfx",

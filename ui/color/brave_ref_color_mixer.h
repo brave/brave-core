@@ -17,6 +17,10 @@ namespace ui {
 void AddBraveRefColorMixer(ColorProvider* provider,
                            const ColorProviderKey& key);
 
+// Returns true if `key` carries a real user/accent color that should drive
+// palette generation (i.e. not baseline and not grayscale).
+bool ShouldUseAccentTintedPalette(const ColorProviderKey& key);
+
 }  // namespace ui
 
 #endif  // BRAVE_UI_COLOR_BRAVE_REF_COLOR_MIXER_H_

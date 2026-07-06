@@ -12,6 +12,7 @@
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/ui/color/brave_ref_color_mixer.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -723,8 +724,41 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
                                const ui::ColorProviderKey& key) {
   ui::ColorMixer& mixer = provider->AddMixer();
 
+  const bool use_accent_tinted_omnibox = ShouldUseAccentTintedPalette(key);
+  const bool is_dark = key.color_mode == ui::ColorProviderKey::ColorMode::kDark;
+
   if (!key.custom_theme) {
     mixer[kColorToolbarContentAreaSeparator] = {nala::kColorDividerSubtle};
+
+    if (use_accent_tinted_omnibox && is_dark) {
+      // Nala omnibox tokens use neutral primitives which do not visibly pick up
+      // accent themes. Use the secondary ref palette instead, which is
+      // generated from the user's accent color in dark mode.
+      mixer[kColorLocationBarBackground] = {ui::kColorRefSecondary15};
+      mixer[kColorOmniboxResultsBackground] = {ui::kColorRefSecondary20};
+      mixer[kColorOmniboxResultsBackgroundHovered] = {ui::kColorRefSecondary25};
+      mixer[kColorOmniboxResultsBackgroundSelected] = {
+          ui::kColorRefSecondary25};
+    } else if (use_accent_tinted_omnibox) {
+      // Light mode uses a tinted surface token so the omnibox container
+      // reflects the user's accent color.
+      mixer[kColorLocationBarBackground] = {ui::kColorSysSurface4};
+      mixer[kColorOmniboxResultsBackground] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundActive};
+      mixer[kColorOmniboxResultsBackgroundHovered] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundHoverItem};
+      mixer[kColorOmniboxResultsBackgroundSelected] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundSelectedItem};
+    } else {
+      mixer[kColorLocationBarBackground] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundDesktop};
+      mixer[kColorOmniboxResultsBackground] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundActive};
+      mixer[kColorOmniboxResultsBackgroundHovered] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundHoverItem};
+      mixer[kColorOmniboxResultsBackgroundSelected] = {
+          nala::kColorDesktopbrowserOmnibarBackgroundSelectedItem};
+    }
   }
   mixer[kColorBraveOmniboxResultViewSeparator] = {
       kColorToolbarContentAreaSeparator};
@@ -748,6 +782,10 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
 
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
+  // Note: The darker (ultra dark) theme intentionally keeps the original
+  // omnibar tokens regardless of accent color. Accent tinting only applies to
+  // the regular dark-mode branch in AddBraveOmniboxColorMixer's
+  // !custom_theme block.
   postprocessing_mixer[kColorLocationBarBackground] = {
       nala::kColorPrimitiveNeutral0};
   postprocessing_mixer[kColorLocationBarBackgroundHovered] = {

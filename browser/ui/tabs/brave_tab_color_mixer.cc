@@ -13,6 +13,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/logging.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/ui/color/brave_ref_color_mixer.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -33,20 +34,12 @@ namespace tabs {
 
 namespace {
 
-bool HasNonGrayscaleUserColor(const ui::ColorProviderKey& key) {
-  // Some platform can have user color with gray scale.
-  // Ex, accent color is always set as user_color on Windows.
-  return (key.user_color_source !=
-          ui::ColorProviderKey::UserColorSource::kGrayscale) &&
-         key.user_color.has_value();
-}
-
 SkColor GetActiveVerticalTabBackgroundColor(const ui::ColorProviderKey& key,
                                             SkColor input,
                                             const ui::ColorMixer& mixer) {
   const auto default_color =
       mixer.GetResultColor(nala::kColorDesktopbrowserTabbarActiveTabVertical);
-  if (!HasNonGrayscaleUserColor(key)) {
+  if (!ShouldUseAccentTintedPalette(key)) {
     return default_color;
   }
 
@@ -69,7 +62,7 @@ SkColor GetHoveredTabBackgroundColor(const ui::ColorProviderKey& key,
         default_color_id == nala::kColorDesktopbrowserTabbarHoverTabHorizontal);
 
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!HasNonGrayscaleUserColor(key)) {
+  if (!ShouldUseAccentTintedPalette(key)) {
     // Defaults to Nala if no user color.
     return default_color;
   }
@@ -106,7 +99,7 @@ SkColor GetSplitViewTileBackgroundColor(const ui::ColorProviderKey& key,
                                         SkColor input,
                                         const ui::ColorMixer& mixer) {
   const auto default_color = mixer.GetResultColor(default_color_id);
-  if (!HasNonGrayscaleUserColor(key)) {
+  if (!ShouldUseAccentTintedPalette(key)) {
     return default_color;
   }
 
