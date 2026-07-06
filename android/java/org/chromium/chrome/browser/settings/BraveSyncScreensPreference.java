@@ -66,9 +66,11 @@ import org.chromium.chrome.browser.sync.SyncServiceFactory;
 import org.chromium.chrome.browser.sync.settings.BraveManageSyncSettings;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.widget.displaystyle.UiConfig;
 import org.chromium.components.sync.SyncService;
 import org.chromium.ui.base.BraveClipboardHelper;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.base.ViewUtils;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -168,6 +170,60 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraManager.handleConfigurationChange();
         }
         adjustImageButtons(newConfig.orientation);
+        correctWideDisplayLayoutAfterRotation();
+    }
+
+    /**
+     * On wide displays (tablets), SettingsActivity attaches a ViewResizer to this fragment's root
+     * view to center the content. Since cr150 the ViewResizer computes the centering padding from
+     * the root's measured width (crrev.com/c/7856821), which is stale during a landscape->portrait
+     * rotation. This leaves oversized horizontal padding on the root and the child views measured
+     * against the wrong width, collapsing the content to a narrow column.
+     *
+     * <p>We correct this after the rotation layout pass settles: apply the padding computed from
+     * screenWidthDp (already updated for the new orientation), force a re-layout, and rebuild the
+     * device list so the dynamically-added rows are re-measured against the correct width. This
+     * runs from a posted runnable (not from within a layout pass) so the forced re-layout is
+     * honored.
+     */
+    private void correctWideDisplayLayoutAfterRotation() {
+        // Post twice so this runs after the framework's rotation layout pass and the ViewResizer
+        // have finished, guaranteeing our padding is the final value and the forced re-layout is
+        // not swallowed by being called during a layout pass.
+        PostTask.postTask(
+                TaskTraits.UI_USER_VISIBLE,
+                () ->
+                        PostTask.postTask(
+                                TaskTraits.UI_USER_VISIBLE,
+                                this::applyWideDisplayLayoutCorrection));
+    }
+
+    private void applyWideDisplayLayoutCorrection() {
+        // PostTask does not track the fragment/view lifecycle (unlike View.post), so guard against
+        // the fragment being torn down between posting and execution.
+        if (getActivity() == null || getView() == null) {
+            return;
+        }
+        View root = getView().findViewById(R.id.brave_sync_layout);
+        if (root == null) {
+            return;
+        }
+        int screenWidthDp = getResources().getConfiguration().screenWidthDp;
+        int padding = 0;
+        if (screenWidthDp >= UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP) {
+            int minWidePadding =
+                    getResources().getDimensionPixelSize(R.dimen.settings_wide_display_min_padding);
+            int excessWidthDp = screenWidthDp - UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP;
+            int paddingPx =
+                    Math.round((excessWidthDp / 2.f) * getResources().getDisplayMetrics().density);
+            padding = Math.max(minWidePadding, paddingPx);
+        }
+        root.setPadding(padding, root.getPaddingTop(), padding, root.getPaddingBottom());
+        ViewUtils.requestLayout(root, "BraveSyncScreensPreference.correctWideDisplayLayout");
+        // Rebuild the device rows so they re-measure against the corrected content width.
+        if (mScrollViewSyncDone != null && View.VISIBLE == mScrollViewSyncDone.getVisibility()) {
+            onDevicesAvailable();
+        }
     }
 
     @Override
@@ -178,7 +234,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         invalidateCodephrase();
 
         mInflater = inflater;
-        // Read which category we should be showing.
         return mInflater.inflate(R.layout.brave_sync_layout, container, false);
     }
 
@@ -259,8 +314,9 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             insertPoint.removeAllViews();
             int index = 0;
             for (BraveSyncDevices.SyncDeviceInfo device : deviceInfos) {
-                View separator = (View) mInflater.inflate(R.layout.menu_separator, null);
-                View listItemView = (View) mInflater.inflate(R.layout.brave_sync_device, null);
+                View separator = mInflater.inflate(R.layout.menu_separator, insertPoint, false);
+                View listItemView =
+                        mInflater.inflate(R.layout.brave_sync_device, insertPoint, false);
                 if (null != listItemView && null != separator && null != insertPoint) {
                     ImageView imageView =
                             (ImageView) listItemView.findViewById(R.id.brave_sync_device_image);
@@ -311,7 +367,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (index > 0) {
                 mBraveSyncTextDevicesTitle.setText(
                         getResources().getString(R.string.brave_sync_devices_title));
-                View separator = (View) mInflater.inflate(R.layout.menu_separator, null);
+                View separator = mInflater.inflate(R.layout.menu_separator, insertPoint, false);
                 if (null != insertPoint && null != separator) {
                     insertPoint.addView(separator, index++);
                 }
@@ -877,7 +933,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                                         getResources()
                                                 .getString(
                                                         R.string
-                                                                .brave_sync_joining_deleted_account));
+                                                                .brave_sync_joining_deleted_account)); // presubmit: ignore-long-line
                                 allowNewQrScan();
                             }
                         });
@@ -1442,14 +1498,16 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void adjustWidth(View view, int orientation) {
+        LayoutParams params = view.getLayoutParams();
         if (orientation != Configuration.ORIENTATION_LANDSCAPE && DeviceFormFactor.isTablet()) {
-            DisplayMetrics metrics = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(metrics);
-            LayoutParams params = view.getLayoutParams();
+            DisplayMetrics metrics = getResources().getDisplayMetrics();
             params.width = metrics.widthPixels * 3 / 5;
             params.height = metrics.heightPixels * 3 / 5;
-            view.setLayoutParams(params);
+        } else {
+            params.width = LayoutParams.MATCH_PARENT;
+            params.height = LayoutParams.MATCH_PARENT;
         }
+        view.setLayoutParams(params);
     }
 
     private void adjustImageButtons(int orientation) {
