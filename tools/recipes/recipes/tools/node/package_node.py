@@ -10,6 +10,8 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+import post_process
+
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
@@ -33,3 +35,28 @@ def RunSteps(api: RecipeScriptApi, _: object) -> None:
         '--output-dir',
         api.path.out,
     ])
+
+
+def GenTests(api):
+    # brave-core is deployed (sparse), then node is downloaded and packaged.
+    # `deployed(...)` seeds the sparse path so the existence check passes.
+    yield api.test(
+        'basic',
+        api.brave_core_shallow.deployed('third_party/node'),
+        api.post_process(post_process.MustRun,
+                         'clone brave-core (shallow, sparse)'),
+        api.post_process(post_process.MustRun, 'download node'),
+        api.post_process(post_process.MustRun, 'package node'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # An existing brave-core checkout is fetched/updated rather than re-cloned.
+    yield api.test(
+        'reuse checkout',
+        api.brave_core_shallow.existing_checkout(),
+        api.brave_core_shallow.deployed('third_party/node'),
+        api.post_process(post_process.MustRun, 'fetch brave-core ref'),
+        api.post_process(post_process.DoesNotRun,
+                         'clone brave-core (shallow, sparse)'),
+        api.post_process(post_process.MustRun, 'package node'),
+        api.post_process(post_process.StatusSuccess),
+    )

@@ -1,0 +1,20 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "win"
+    ],
+    "name": "report platform"
+  },
+  {
+    "cmd": [
+      "echo",
+      "win"
+    ],
+    "name": "windows only"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

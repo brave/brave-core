@@ -20,8 +20,9 @@ properties. `int` and `bool` fields are coerced from their string form.
 
 from __future__ import annotations
 
+from collections.abc import Mapping
 import dataclasses
-from typing import Any, Mapping
+from typing import Any
 
 # Metadata key under which a field stores the env var it may be sourced from.
 _FROM_ENVIRON = 'from_environ'

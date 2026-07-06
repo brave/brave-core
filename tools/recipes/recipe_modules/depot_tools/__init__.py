@@ -4,4 +4,4 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`depot_tools` module: ensure a usable depot_tools install is on PATH."""
 
-DEPS = ['path', 'step']
+DEPS = ['path', 'step', 'env', 'platform']

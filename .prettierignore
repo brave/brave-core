@@ -43,6 +43,9 @@ snapcraft.yaml
 # Ignored minified javascript
 components/brave_wallet/resources/solana_web3_script.js
 
+# Ignore JSON gen tests files for the recipes engine.
+/tools/recipes/**/*.expected/*.json
+
 # Ignore browser/resources sub folders that still need to be formatted
 /browser/resources/settings/
 

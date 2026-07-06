@@ -1,0 +1,20 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "/depot_tools/gclient"
+    ],
+    "name": "resolved gclient"
+  },
+  {
+    "cmd": [
+      "echo",
+      "on"
+    ],
+    "name": "flag set"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

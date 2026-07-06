@@ -1,0 +1,64 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/chromium/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "git",
+      "log",
+      "-1",
+      "--oneline",
+      "chrome/VERSION"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "check chrome/VERSION"
+  },
+  {
+    "cmd": [
+      "git",
+      "fetch",
+      "origin",
+      "main"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "fetch ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "checkout FETCH_HEAD"
+  },
+  {
+    "cmd": [
+      "gclient",
+      "sync",
+      "--force",
+      "-D"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "gclient sync"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

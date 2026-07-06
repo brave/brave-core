@@ -7,8 +7,8 @@
 Deliberately tiny mirror of `recipe_engine.recipe_api.RecipeApi` from
 chrome-infra's recipes_py. Every recipe module exposes exactly one `RecipeApi`
 subclass (in its `api.py`). After constructing it, the engine attaches the
-module's resolved `DEPS` onto `self.m` -- the "module injection site" -- so a
-module reaches each dependency as `self.m.<dep_name>` (and itself as
+module's resolved `DEPS` onto `self.m`, which is the "module injection site",
+so a module reaches each dependency as `self.m.<dep_name>` (and itself as
 `self.m.<own_name>`).
 """
 
@@ -46,6 +46,11 @@ class RecipeApi:
         # brave-core ref the checkout modules clone, seeded by the engine.
         # `brave_core_shallow` uses it; defaults to `master` until overridden.
         self._brave_core_ref: str = 'master'
+        # Simulation context, seeded by the engine only in test mode. `None`
+        # means production: the seam modules (`path`, `env`, `platform`, `step`)
+        # touch the real machine. When set, they read/mutate this instead. Its
+        # presence (`self._test is not None`) is the sole test-mode flag.
+        self._test = None
 
     def initialise(self) -> None:
         """Hook run once after DEPS are injected. Override for setup."""

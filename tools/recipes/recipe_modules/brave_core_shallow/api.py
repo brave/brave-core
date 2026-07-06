@@ -87,9 +87,9 @@ class BraveCoreShallowApi(RecipeApi):
         # Fall back to the engine-provided ref when the caller doesn't specify.
         ref = ref if ref is not None else self._brave_core_ref
 
-        dest = Path(dest).expanduser().resolve()
+        dest = self.m.path.abs(dest)
 
-        if (dest / '.git').is_dir():
+        if self.m.path.is_dir(dest / '.git'):
             # Reuse the existing checkout, but bring it to *ref* -- it may have
             # been cloned (here or by a prior run) at a different ref that lacks
             # the requested paths, so fetch and hard-checkout rather than trust
@@ -106,7 +106,7 @@ class BraveCoreShallowApi(RecipeApi):
                 ['git', '-C',
                  str(dest), 'checkout', '--force', 'FETCH_HEAD'])
         else:
-            dest.parent.mkdir(parents=True, exist_ok=True)
+            self.m.path.mkdir(dest.parent)
             clone_cmd = [
                 'git', 'clone', '--depth',
                 str(depth), '--filter=blob:none', '--sparse', '--branch', ref,
@@ -124,7 +124,7 @@ class BraveCoreShallowApi(RecipeApi):
              str(dest), 'sparse-checkout', 'add', *rel_paths])
 
         for rel in rel_paths:
-            if not (dest / rel).exists():
+            if not self.m.path.exists(dest / rel):
                 raise RuntimeError(
                     f'brave-core path not found after sparse checkout: {rel!r} '
                     f'(looked under {dest})')

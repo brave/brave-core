@@ -1,0 +1,30 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/chromium/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/chromium/third_party/depot_tools/vpython3.bat",
+      "--version"
+    ],
+    "name": "use vpython3"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

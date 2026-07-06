@@ -1,0 +1,41 @@
+[
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "fetch",
+      "--depth",
+      "2",
+      "origin",
+      "master"
+    ],
+    "name": "fetch brave-core ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "name": "checkout brave-core ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "sparse-checkout",
+      "add",
+      "third_party/node"
+    ],
+    "name": "sparse-checkout add"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

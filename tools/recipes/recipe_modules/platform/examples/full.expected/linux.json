@@ -1,0 +1,13 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "linux"
+    ],
+    "name": "report platform"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]
