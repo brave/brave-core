@@ -6,7 +6,6 @@
 source_set("frame") {
   sources = [
     "brave_contents_view_util.h",
-    "brave_side_panel_shadow_overlay_view.h",
     "focus_mode_title_bar_view.h",
     "focus_mode_top_overlay.cc",
     "focus_mode_top_overlay.h",
@@ -37,7 +36,6 @@ source_set("frame") {
 source_set("frame_impl") {
   sources = [
     "brave_contents_view_util.cc",
-    "brave_side_panel_shadow_overlay_view.cc",
     "focus_mode_title_bar_view.cc",
     "tab_strip_placement_coordinator.cc",
   ]
@@ -49,6 +47,7 @@ source_set("frame_impl") {
     "//brave/browser/ui/views/frame/vertical_tabs",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/color:mixers",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/side_panel",
     "//chrome/common:constants",

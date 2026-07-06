@@ -58,7 +58,10 @@ class BraveContentsContainerView :
  private:
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
 
-  gfx::RoundedCornersF GetCornerRadius(bool for_border) const;
+  // |border_thickness| is added to the content corner radii to get the
+  // concentric outer radius for a border of that thickness; pass 0 for the
+  // content's own (unbordered) corner radii.
+  gfx::RoundedCornersF GetCornerRadius(int border_thickness) const;
 
   raw_ref<BrowserView> browser_view_;
 

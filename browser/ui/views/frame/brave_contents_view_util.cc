@@ -6,12 +6,14 @@
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 
 #include "base/check.h"
+#include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
@@ -19,32 +21,30 @@
 #include "components/prefs/pref_service.h"
 #include "components/split_tabs/split_tab_id.h"
 #include "components/tabs/public/split_tab_data.h"
-#include "ui/compositor/layer.h"
+#include "ui/color/color_provider.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rounded_corners_f.h"
+#include "ui/views/border.h"
 #include "ui/views/layout/layout_provider.h"
-#include "ui/views/view.h"
 
 using views::ShapeContextTokensOverride::kRoundedCornersBorderRadius;
 using views::ShapeContextTokensOverride::
     kRoundedCornersBorderRadiusAtWindowCorner;
 
-namespace {
-
-constexpr ViewShadow::ShadowParameters kShadow{
-    .offset_x = 0,
-    .offset_y = 0,
-    .blur_radius = kRoundedCornersContentsViewMargin,
-    .shadow_color = SkColorSetA(SK_ColorBLACK, 0.1 * 255)};
-}  // namespace
-
-std::unique_ptr<ViewShadow> BraveContentsViewUtil::CreateShadow(
-    views::View* view,
+// static
+std::unique_ptr<views::Border>
+BraveContentsViewUtil::CreateContentsOutlineBorder(
+    const ui::ColorProvider* color_provider,
     const gfx::RoundedCornersF& corner_radii) {
-  DCHECK(view);
-  auto shadow = std::make_unique<ViewShadow>(view, corner_radii, kShadow);
-  view->layer()->SetRoundedCornerRadius(corner_radii);
-  view->layer()->SetIsFastRoundedCorner(true);
-  return shadow;
+  CHECK(color_provider);
+  return views::CreateBorderPainter(
+      views::Painter::CreateRoundRectWith1PxBorderPainter(
+          color_provider->GetColor(kColorToolbar),
+          color_provider->GetColor(kColorBraveContentsOutline), corner_radii,
+          SkBlendMode::kSrc,
+          /*antialias=*/true,
+          /*should_border_scale=*/true),
+      gfx::Insets(kRoundedCornersContentsOutlineThickness));
 }
 
 // static

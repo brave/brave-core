@@ -35,7 +35,6 @@
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
-#include "brave/browser/ui/views/frame/brave_side_panel_shadow_overlay_view.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/split_view/brave_contents_container_view.h"
 #include "brave/browser/ui/views/frame/split_view/brave_multi_contents_view.h"
@@ -374,13 +373,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
 
     side_panel_->SetResizeArea(
         std::make_unique<views::BraveSidePanelResizeArea>(side_panel_));
-
-    side_panel_shadow_overlay_ =
-        AddChildView(std::make_unique<BraveSidePanelShadowOverlayView>(*this));
-    // Render the overlay just below `side_panel_` so the panel covers the
-    // inner part of the shadow (a higher child index paints on top).
-    ReorderChildView(side_panel_shadow_overlay_,
-                     GetIndexOf(side_panel_).value());
 
 #if defined(USE_AURA)
     sidebar_host_view_ = AddChildView(std::make_unique<views::View>());
@@ -1001,40 +993,6 @@ void BraveBrowserView::OnWidgetWindowModalVisibilityChanged(
   // parent class to make the scrim view visible
 }
 
-bool BraveBrowserView::IsBraveWebViewRoundedCornersEnabled() {
-  return browser_->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners) &&
-         browser_->is_type_normal();
-}
-
-void BraveBrowserView::UpdateContentsShadowVisibility() {
-  bool show_contents_shadow = IsBraveWebViewRoundedCornersEnabled();
-
-  // With SideBySide, we use chromium's mini toolbar.
-  // Unfortunately, it's not rendered well with contents shadow.
-  // Fixed by hiding contents shadow when split view is active.
-  // As split view has another border around contents, we don't need
-  // contents shadow.
-  if (browser()->tab_strip_model()->IsActiveTabSplit() ||
-      (sidebar::IsWebPanelFeatureEnabled() &&
-       GetBraveMultiContentsView()->IsWebPanelVisible())) {
-    show_contents_shadow = false;
-  }
-
-  // Toggle shadow.
-  if (show_contents_shadow && !contents_shadow_) {
-    contents_shadow_ = BraveContentsViewUtil::CreateShadow(
-        contents_container_,
-        BraveContentsViewUtil::GetRoundedCornersForContentsView(browser_,
-                                                                nullptr));
-    return;
-  }
-
-  if (!show_contents_shadow && contents_shadow_) {
-    contents_shadow_.reset();
-    contents_container_->DestroyLayer();
-  }
-}
-
 void BraveBrowserView::ShowSplitView(bool focus_active_view) {
   BrowserView::ShowSplitView(focus_active_view);
 
@@ -1147,7 +1105,6 @@ bool BraveBrowserView::ShouldShowWindowTitle() const {
 
 void BraveBrowserView::UpdateRoundedCornersUI() {
   // Update various UI that can be affected by rounded corners.
-  UpdateContentsShadowVisibility();
   UpdateWebViewRoundedCorners();
   UpdateVerticalTabStripBorder();
   UpdateSidebarBorder();
@@ -1168,9 +1125,6 @@ void BraveBrowserView::UpdateSidebarBorder() {
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
     side_panel_->UpdateBorder();
   }
-  if (side_panel_shadow_overlay_) {
-    side_panel_shadow_overlay_->UpdateShadowVisibility();
-  }
 
   if (sidebar_container_view_) {
     sidebar_container_view_->UpdateBorder();
@@ -1184,10 +1138,6 @@ void BraveBrowserView::OnSidebarControlViewVisibilityChanged() {
   if (side_panel_) {
     side_panel_->UpdateBorder();
   }
-}
-
-views::View* BraveBrowserView::side_panel_shadow_overlay_for_testing() {
-  return side_panel_shadow_overlay_.get();
 }
 
 // PWA and omnibox Shields share kShieldsActionIcon; the PWA build uses
@@ -1442,10 +1392,6 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   // contents and devtools.
   if (contents_container_->layer()) {
     contents_container_->layer()->SetRoundedCornerRadius(corners);
-  }
-
-  if (contents_shadow_) {
-    contents_shadow_->SetCornerRadii(corners);
   }
 
   if (multi_contents_view_) {
