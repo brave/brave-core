@@ -48,7 +48,7 @@ interface LocalAIService {
 // Companion files plus the model weights for the onnxruntime-web (ORT-Web)
 // Nemotron 0.6B backend. The small graphs, tokens and filterbank
 // along with the two external-weight (.onnx.data) blobs are all delivered in
-// the single LoadModel call; the worker builds its inference sessions directly
+// the single Init call; the worker builds its inference sessions directly
 // from these bytes. Only the .onnx + .onnx.data (external-data) export is
 // supported as it lets ORT-Web reference the weights in place instead of making
 // an extra copy of the model files in WASM memory, so the weight sidecars are
@@ -67,7 +67,7 @@ struct OrtModelFiles {
 interface SpeechRecognitionFactory {
   // Load the graphs, companion files and weights once for the worker's
   // lifetime, building the ORT inference sessions directly from those bytes.
-  LoadModel(OrtModelFiles files) => (bool success);
+  Init(OrtModelFiles files) => (bool success);
 
   // Manufacture one per-utterance ASR stream. The signature matches upstream
   // Session.AsrStream. Payload types are reused verbatim.

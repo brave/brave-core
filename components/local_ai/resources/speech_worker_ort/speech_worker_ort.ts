@@ -113,7 +113,7 @@ class SpeechRecognitionFactoryImpl
     return this.receiver.$.bindNewPipeAndPassRemote()
   }
 
-  async loadModel(files: OrtModelFiles) {
+  async init(files: OrtModelFiles) {
     try {
       this.model = await OrtNemotronModel.buildFromBytes(
         readBigBuffer(files.encoder, 'Encoder'),
@@ -127,7 +127,7 @@ class SpeechRecognitionFactoryImpl
       )
       return { success: true }
     } catch (err) {
-      console.error('[speech-worker-ort] loadModel failed:', err)
+      console.error('[speech-worker-ort] init failed:', err)
       return { success: false }
     }
   }
@@ -138,7 +138,7 @@ class SpeechRecognitionFactoryImpl
     responder: AsrStreamResponderRemote,
   ) {
     if (!this.model) {
-      console.error('[speech-worker-ort] createAsrStream before loadModel')
+      console.error('[speech-worker-ort] createAsrStream before init')
       return
     }
     const adapter = new AsrStreamInputAdapter(
