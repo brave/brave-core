@@ -3,6 +3,8 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
 source_set("brave_wallet") {
   sources = [
     "blockchain_images_source.h",
@@ -11,6 +13,10 @@ source_set("brave_wallet") {
     "brave_wallet_factory_wrappers.mm",
     "brave_wallet_service_factory.h",
     "brave_wallet_service_factory.mm",
+    "ethereum_provider_javascript_feature.h",
+    "ethereum_provider_javascript_feature.mm",
+    "ethereum_provider_tab_helper.h",
+    "ethereum_provider_tab_helper.mm",
     "features.h",
     "features.mm",
     "wallet_data_files_installer_delegate_impl.h",
@@ -19,6 +25,7 @@ source_set("brave_wallet") {
     "wallet_pref_names_bridge.mm",
   ]
   deps = [
+    ":ethereum_provider_js",
     "//base",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
@@ -26,17 +33,36 @@ source_set("brave_wallet") {
     "//brave/components/brave_wallet/common",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
+    "//brave/components/brave_wallet/resources:ethereum_provider_generated_resources",
+    "//brave/ios/browser/api/brave_wallet:provider_delegate",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/keyed_service",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//components/content_settings/core/browser",
     "//components/keyed_service/core",
+    "//ios/chrome/browser/content_settings/model",
     "//ios/chrome/browser/shared/model/application_context",
     "//ios/chrome/browser/shared/model/profile",
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
+    "//ios/components/webui:url_constants",
     "//ios/web/public",
+    "//ios/web/public/js_messaging",
+    "//ios/web/public/security",
     "//ios/web/public/thread",
     "//ios/web/public/webui",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
+  ]
+}
+
+optimize_ts("ethereum_provider_js") {
+  visibility = [ ":brave_wallet" ]
+
+  sources = [ "resources/ethereum_provider.ts" ]
+
+  deps = [
+    "//brave/ios/web/js_messaging:safe_builtins",
+    "//brave/ios/web/js_messaging:util_scripts",
   ]
 }

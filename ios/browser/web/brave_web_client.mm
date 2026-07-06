@@ -14,6 +14,7 @@
 #include "base/notimplemented.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
@@ -73,6 +74,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+#include "brave/ios/browser/brave_wallet/ethereum_provider_javascript_feature.h"
 #endif
 
 BraveWebClient::BraveWebClient() {}
@@ -184,6 +189,12 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
             brave::features::kUseChromiumWebViewsAutofill)) {
       features.push_back(LoginsJavaScriptFeature::GetInstance());
     }
+
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
+    features.push_back(
+        brave_wallet::EthereumProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+#endif
 
     // Some privacy related features need to be injected in a specific order
     // as they may override similar JavaScript APIs
