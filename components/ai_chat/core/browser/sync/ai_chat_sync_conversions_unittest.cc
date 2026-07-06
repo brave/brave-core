@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -104,6 +105,28 @@ TEST(AIChatSyncConversionsTest, ReadCompressibleStringUnsetReturnsNullopt) {
 TEST(AIChatSyncConversionsTest, ReadCompressibleStringBadGzipReturnsNullopt) {
   sync_pb::AIChatCompressibleString in;
   in.set_gzipped("this is not valid gzip data");
+  EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
+}
+
+TEST(AIChatSyncConversionsTest,
+     ReadCompressibleStringRejectsOversizedDecompressedSize) {
+  // A gzip stream's uncompressed-size trailer (ISIZE, the last 4 bytes) is
+  // attacker-controlled; a tiny blob can claim a huge size. Reading must reject
+  // a claim over kSyncCompressionMaxDecompressedBytes without decompressing.
+  sync_pb::AIChatCompressibleString in;
+  WriteCompressibleString(CompressibleString(), &in);
+  ASSERT_TRUE(in.has_gzipped());
+
+  std::string gzipped = in.gzipped();
+  ASSERT_GE(gzipped.size(), 4u);
+  const uint32_t forged_size =
+      static_cast<uint32_t>(kSyncCompressionMaxDecompressedBytes + 1);
+  gzipped[gzipped.size() - 4] = static_cast<char>(forged_size & 0xFF);
+  gzipped[gzipped.size() - 3] = static_cast<char>((forged_size >> 8) & 0xFF);
+  gzipped[gzipped.size() - 2] = static_cast<char>((forged_size >> 16) & 0xFF);
+  gzipped[gzipped.size() - 1] = static_cast<char>((forged_size >> 24) & 0xFF);
+  in.set_gzipped(gzipped);
+
   EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
 }
 
@@ -359,11 +382,6 @@ TEST(AIChatSyncConversionsTest, StorageKeyAndClientTagForEntry) {
   EXPECT_EQ(GetStorageKeyFromSpecifics(specifics), "e:entry-1");
   EXPECT_EQ(GetClientTagFromSpecifics(specifics),
             GetStorageKeyFromSpecifics(specifics));
-}
-
-TEST(AIChatSyncConversionsTest, StorageKeyEmptyForUnsetKind) {
-  sync_pb::AIChatConversationSpecifics specifics;
-  EXPECT_TRUE(GetStorageKeyFromSpecifics(specifics).empty());
 }
 
 TEST(AIChatSyncConversionsTest, GetStorageKeyFromEntitySpecifics) {

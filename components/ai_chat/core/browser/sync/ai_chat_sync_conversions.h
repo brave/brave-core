@@ -42,6 +42,13 @@ inline constexpr size_t kSyncCompressionThresholdBytes = 256;
 // drops bytes from low-priority fields until it fits.
 inline constexpr size_t kSyncMaxRecordBytes = 350 * 1024;
 
+// Hard cap on the decompressed size of a single field. Protection against
+// malicious or corrupted data that might otherwise allocate unbounded memory.
+// Theoretical compression ratio max is approximately 1032:1 but upper limit on
+// practical data with high repetition is under 100:1.
+inline constexpr size_t kSyncCompressionMaxDecompressedBytes =
+    kSyncMaxRecordBytes * 100;
+
 // Writes |value| into |out|. Gzips when the input exceeds the threshold and
 // compression actually shrinks it; otherwise stores the raw string.
 void WriteCompressibleString(std::string_view value,
@@ -52,10 +59,12 @@ void WriteCompressibleString(std::string_view value,
 // it with empty.
 void MarkCompressibleStringTruncated(sync_pb::AIChatCompressibleString* out);
 
-// Reads a value from |in|. Returns std::nullopt when the field was marked
-// truncated for sync (preserve-local signal) or when gzip decompression
-// fails. Returns an empty string when the field was set to an empty raw
-// string.
+// Reads a value from |in|. Returns std::nullopt when there is no usable value
+// to apply, for any of three reasons: the field was marked truncated for sync
+// (preserve-local signal), gzip decompression failed, or no value was set at
+// all. Callers treat all three the same way — leave the target field unset and
+// preserve any existing local value. Returns an empty string (not nullopt) when
+// the field was set to an empty raw string.
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 
