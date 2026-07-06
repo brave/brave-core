@@ -98,7 +98,6 @@ test('AssistantResponse should include expandable sources', async () => {
       <AssistantResponse
         events={testEntry.events!}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />
@@ -136,7 +135,6 @@ test('AssistantResponse should render memory tool events inline', async () => {
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />
@@ -177,7 +175,6 @@ test(
         <AssistantResponse
           events={events}
           isEntryInteractivityAllowed={false}
-          isLeoModel={true}
           isEntryInProgress={false}
           allowedLinks={[]}
         />
@@ -209,7 +206,6 @@ test('AssistantResponse should not render iframe when richResults is null or emp
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />
@@ -252,7 +248,6 @@ test('AssistantResponse should render iframe when richResults has data', () => {
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />
@@ -298,7 +293,6 @@ test('AssistantResponse should aggregate sources from multiple events', async ()
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />
@@ -326,7 +320,6 @@ test('AssistantResponse renders a search summary for a web search tool use event
       <AssistantResponse
         events={events}
         isEntryInteractivityAllowed={false}
-        isLeoModel={true}
         isEntryInProgress={false}
         allowedLinks={[]}
       />

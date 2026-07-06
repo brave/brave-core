@@ -24,11 +24,8 @@ interface Props {
   // the conversation). Informs whether interactivity is allowed.
   isActiveTask: boolean
 
-  // Passes to AssistantResponse
-  isLeoModel: boolean
-
-  // URLs the assistant's reply is allowed to render as anchors. Computed
-  // once per group by the caller so both the AssistantResponse and
+  // Citation URLs passed to AssistantResponse to expand `[n]` references.
+  // Computed once per group by the caller so both the AssistantResponse and
   // AssistantTask render paths see the same list.
   allowedLinks: string[]
 }
@@ -199,7 +196,6 @@ function Progress(props: Props & TabProps) {
             isEntryInteractivityAllowed={false}
             isEntryInProgress={props.isGenerating}
             allowedLinks={props.allowedLinks}
-            isLeoModel={props.isLeoModel}
             toolArtifacts={props.toolArtifacts}
           />
         </div>
@@ -275,7 +271,6 @@ function Steps(props: Props & TabProps) {
           isEntryInteractivityAllowed={isRunnable}
           isEntryInProgress={isActive}
           allowedLinks={props.allowedLinks}
-          isLeoModel={props.isLeoModel}
         />
       </div>
     )

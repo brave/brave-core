@@ -111,7 +111,6 @@ Here's a paragraph that mixes **bold**, *italic*, ~~strikethrough~~, and \`inlin
 3. A list item with an *italic* phrase and ~~deleted text~~
 `}
         shouldShowTextCursor={false}
-        allowedLinks={['https://brave.com', 'https://github.com']}
       />
     </MockContext>
   )
@@ -139,7 +138,6 @@ This is some text about a product followed by a directive.
 
 ::search[Approach shoes]{type=web}`}
           shouldShowTextCursor={false}
-          allowedLinks={[]}
         />
       </AssistantResponseContextProvider>
     </MockContext>
@@ -157,7 +155,6 @@ This has a directive that is not whitelisted. It should just display the text co
 
 ::evil[do the thing]{type=alert}`}
         shouldShowTextCursor={false}
-        allowedLinks={[]}
       />
     </MockContext>
   )

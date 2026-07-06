@@ -28,9 +28,8 @@ interface BaseProps {
   isEntryInProgress: boolean
   // Whether it's possible to interact with the entry's tool use requests
   isEntryInteractivityAllowed: boolean
-  // Only these urls should be rendered as links
+  // Citation URLs, in citation order, used to expand `[n]` references.
   allowedLinks: string[]
-  isLeoModel: boolean
 }
 
 function AssistantEvent(
@@ -40,8 +39,7 @@ function AssistantEvent(
     entryUuid?: string
   },
 ) {
-  const { allowedLinks, event, isEntryInProgress, isLeoModel, entryUuid } =
-    props
+  const { allowedLinks, event, isEntryInProgress, entryUuid } = props
   const context = useUntrustedConversationContext()
 
   if (event.completionEvent) {
@@ -93,7 +91,6 @@ function AssistantEvent(
         shouldShowTextCursor={isEntryInProgress}
         text={fullText}
         allowedLinks={allowedLinks}
-        disableLinkRestrictions={!isLeoModel}
         onToggleCheckbox={onToggleCheckbox}
       />
     )
@@ -162,7 +159,6 @@ export default function AssistantResponse(props: AssistantResponseProps) {
             isEntryInProgress={props.isEntryInProgress}
             isEntryInteractivityAllowed={props.isEntryInteractivityAllowed}
             allowedLinks={props.allowedLinks}
-            isLeoModel={props.isLeoModel}
             entryUuid={props.entryUuid}
           />
         ))}

@@ -8,15 +8,11 @@ import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import remarkDirective from 'remark-directive'
 import type { Root, Element as HastElement } from 'hast'
-import { Url } from 'gen/url/mojom/url.mojom.m.js'
 import Label from '@brave/leo/react/label'
 import { visit } from 'unist-util-visit'
 
 import styles from './style.module.scss'
 import CaretSVG from '../svg/caret'
-import {
-  useUntrustedConversationContext, //
-} from '../../untrusted_conversation_context'
 import {
   ALLOWED_DIRECTIVES,
   directiveComponents,
@@ -112,31 +108,23 @@ function CursorDecorator(props: CursorDecoratorProps) {
 
 interface RenderLinkProps {
   a: React.ComponentProps<'a'>
+  // URLs sourced from the response's citations. Only links whose href matches
+  // one of these render as numbered citation chips.
   allowedLinks?: string[]
-  disableLinkRestrictions?: boolean
 }
 
 export function RenderLink(props: RenderLinkProps) {
-  const { a, allowedLinks, disableLinkRestrictions } = props
+  const { a, allowedLinks } = props
   const { href, children } = a
 
-  // Context
-  const context = useUntrustedConversationContext()
-
-  // Computed
-  const isHttps = href?.toLowerCase().startsWith('https://')
-  const isLinkAllowed =
-    isHttps
-    && (disableLinkRestrictions
-      || (allowedLinks?.some((link) => href?.startsWith(link)) ?? false))
+  // Computed. All HTTPS links are allowed; other schemes (e.g. http) are not.
+  const isLinkAllowed = href?.toLowerCase().startsWith('https://') ?? false
 
   const handleLinkClicked = React.useCallback(() => {
     if (href && isLinkAllowed) {
-      const mojomUrl = new Url()
-      mojomUrl.url = href
-      context.parentUiFrame?.userRequestedOpenGeneratedUrl(mojomUrl)
+      window.open(href, '_blank', 'noopener noreferrer')
     }
-  }, [context, href])
+  }, [href])
 
   if (!isLinkAllowed) {
     // Completely hide relative links.
@@ -146,7 +134,12 @@ export function RenderLink(props: RenderLinkProps) {
     return <span>{children}</span>
   }
 
-  const isCitation = typeof children === 'string' && /^\d+$/.test(children)
+  // Only links pointing at a citation source become numbered citation chips.
+  // Other numeric-text links render as ordinary anchors.
+  const isCitation =
+    typeof children === 'string'
+    && /^\d+$/.test(children)
+    && (allowedLinks?.some((link) => href?.startsWith(link)) ?? false)
 
   if (isCitation) {
     return (
@@ -163,14 +156,11 @@ export function RenderLink(props: RenderLinkProps) {
 
   return (
     <a
-      // While we preventDefault, we still need to pass the href
-      // here so we can continue to show link previews.
+      // Pass the href so link previews continue to work.
       href={href}
       className={styles.conversationLink}
-      onClick={(e) => {
-        e.preventDefault()
-        handleLinkClicked()
-      }}
+      target='_blank'
+      rel='noopener noreferrer'
     >
       {children}
     </a>
@@ -271,8 +261,8 @@ function buildTableRenderer() {
 interface MarkdownRendererProps {
   text: string
   shouldShowTextCursor: boolean
+  // Citation source URLs. Links pointing at these render as citation chips.
   allowedLinks?: string[]
-  disableLinkRestrictions?: boolean
   // Fires when the user toggles a GFM task-list checkbox. `index` is the
   // zero-based position of the checkbox among task-list checkboxes in
   // document order — matches findTaskCheckboxBracketOffsets() over the
@@ -296,10 +286,6 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   // values without being recreated when those props change.
   const allowedLinksRef = React.useRef(mainProps.allowedLinks)
   allowedLinksRef.current = mainProps.allowedLinks
-  const disableLinkRestrictionsRef = React.useRef(
-    mainProps.disableLinkRestrictions,
-  )
-  disableLinkRestrictionsRef.current = mainProps.disableLinkRestrictions
   const onToggleCheckboxRef = React.useRef(mainProps.onToggleCheckbox)
   onToggleCheckboxRef.current = mainProps.onToggleCheckbox
 
@@ -364,7 +350,6 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
         <RenderLink
           a={props}
           allowedLinks={allowedLinksRef.current}
-          disableLinkRestrictions={disableLinkRestrictionsRef.current}
         />
       ),
       input: checkboxRenderer,

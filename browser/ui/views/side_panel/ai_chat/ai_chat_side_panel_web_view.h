@@ -8,6 +8,7 @@
 
 #include <memory>
 
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_contents_wrapper.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 
 namespace blink::mojom {
@@ -20,7 +21,9 @@ class RenderFrameHost;
 }  // namespace content
 
 class AIChatUI;
+class GURL;
 class Profile;
+class StatusBubbleViews;
 
 // A custom web view to set focus correctly when the side panel is shown.
 class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
@@ -34,12 +37,18 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
 
   AIChatSidePanelWebView(
       SidePanelEntryScope& scope,
-      std::unique_ptr<WebUIContentsWrapperT<AIChatUI>> contents_wrapper);
+      std::unique_ptr<AIChatSidePanelContentsWrapper> contents_wrapper);
   ~AIChatSidePanelWebView() override;
 
   // Disable copy and assign.
   AIChatSidePanelWebView(const AIChatSidePanelWebView&) = delete;
   AIChatSidePanelWebView& operator=(const AIChatSidePanelWebView&) = delete;
+
+  // views::View:
+  // Keep the status bubble anchored to the bottom-left of the panel as it
+  // resizes, mirroring how ContentsWebView drives the tab status bubble.
+  bool GetNeedsNotificationWhenVisibleBoundsChange() const override;
+  void OnVisibleBoundsChanged() override;
 
   // WebUIContentsWrapper::Host:
   content::WebContents* AddNewContents(
@@ -67,9 +76,15 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
   // focus is set only once with `should_focus_`.
   void OnShow();
 
+  // Invoked when the hovered link URL changes. Drives the status bubble.
+  void OnTargetURLChanged(const GURL& url);
+
   // Whether focus should be set when the side panel is shown. We only do this
   // for the first time the side panel is shown, and not for subsequent shows.
   bool should_focus_ = true;
+
+  // Shows the hovered link's URL in the bottom-left of the panel, like a tab.
+  std::unique_ptr<StatusBubbleViews> status_bubble_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_

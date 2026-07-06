@@ -10,11 +10,7 @@ import MarkdownRenderer from '.'
 
 // Mock the context to avoid dependency issues
 jest.mock('../../untrusted_conversation_context', () => ({
-  useUntrustedConversationContext: () => ({
-    parentUiFrame: {
-      userRequestedOpenGeneratedUrl: jest.fn(),
-    },
-  }),
+  useUntrustedConversationContext: () => ({}),
 }))
 
 describe('Table Rendering', () => {
@@ -138,7 +134,7 @@ describe('Table Rendering', () => {
 | John | [Brave](https://brave.com) |
       `.trim()
 
-      renderMarkdown(markdown, { allowedLinks: ['https://brave.com'] })
+      renderMarkdown(markdown)
 
       const link = screen.getByText('Brave')
       expect(link).toBeInTheDocument()
