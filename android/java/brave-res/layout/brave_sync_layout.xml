@@ -11,8 +11,6 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
-    android:layout_gravity="center"
-    android:gravity="center"
     android:background="@color/brave_sync_bg_color" >
 
     <ScrollView android:id="@+id/view_sync_initial"
