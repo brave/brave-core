@@ -38,6 +38,7 @@
 #include "net/base/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using brave_shields::ControlType;
 using brave_shields::ControlTypeFromString;
@@ -1133,7 +1134,9 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_BlobUrl_SameTokenAsOriginUrl) {
   // caller reads it back regardless of whether it used the blob or plain URL.
   const auto blob_token = brave_shields::GetFarblingToken(
       map(),
-      GURL("blob:https://example.com/550e8400-e29b-41d4-a716-446655440000"),
+      url::Origin::Create(
+          GURL("blob:https://example.com/550e8400-e29b-41d4-a716-446655440000"))
+          .GetURL(),
       {});
   const auto https_token = brave_shields::GetFarblingToken(
       map(), GURL("https://example.com/some/path"), {});
@@ -1150,7 +1153,10 @@ TEST_F(BraveShieldsUtilTest,
   const auto sub_token = brave_shields::GetFarblingToken(
       map(), GURL("https://sub.example.com"), {});
   const auto blob_sub_token = brave_shields::GetFarblingToken(
-      map(), GURL("blob:https://sub.example.com/some-uuid"), {});
+      map(),
+      url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
+          .GetURL(),
+      {});
   EXPECT_EQ(sub_token, blob_sub_token);
 }
 
@@ -1166,7 +1172,10 @@ TEST_F(BraveShieldsUtilTest,
   const auto root_token =
       brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
   const auto blob_sub_token = brave_shields::GetFarblingToken(
-      map(), GURL("blob:https://sub.example.com/some-uuid"), {});
+      map(),
+      url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
+          .GetURL(),
+      {});
   EXPECT_EQ(root_token, blob_sub_token);
 }
 

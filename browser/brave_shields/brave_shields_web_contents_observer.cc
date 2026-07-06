@@ -38,6 +38,7 @@
 #include "extensions/buildflags/buildflags.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "url/origin.h"
 
 #if BUILDFLAG(ENABLE_CONTAINERS)
 #include "brave/components/containers/content/browser/storage_partition_utils.h"
@@ -318,12 +319,17 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
   DCHECK(navigation_handle);
   RenderFrameHost* rfh = navigation_handle->GetRenderFrameHost();
 
-  const GURL& primary_url =
+  // Relying on url::Origin::Create correctly extracts the embedded origin for
+  // blob: URLs (e.g. blob:https://example.com/uuid to https://example.com) and
+  // works for all other schemes as well. Origin is more secure than working
+  // with last committed URLs.
+  const GURL primary_url =
       navigation_handle->GetParentFrameOrOuterDocument()
           ? navigation_handle->GetParentFrameOrOuterDocument()
                 ->GetOutermostMainFrame()
-                ->GetLastCommittedURL()
-          : navigation_handle->GetURL();
+                ->GetLastCommittedOrigin()
+                .GetURL()
+          : url::Origin::Create(navigation_handle->GetURL()).GetURL();
 
   HostContentSettingsMap* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(rfh->GetBrowserContext());
