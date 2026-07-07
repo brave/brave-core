@@ -2405,8 +2405,8 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     /**
-     * Applies a night-mode theme recreation from the controller while a YouTube PiP session
-     * was active. Exists as a shim because {@code super.onNightModeStateChanged()} is not reachable
+     * Applies a night-mode theme recreation from the controller while a YouTube PiP session was
+     * active. Exists as a shim because {@code super.onNightModeStateChanged()} is not reachable
      * from the controller.
      *
      * @see BraveYouTubePictureInPictureController#maybeDeferNightModeRecreate

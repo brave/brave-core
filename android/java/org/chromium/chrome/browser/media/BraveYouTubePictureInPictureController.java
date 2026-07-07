@@ -275,8 +275,8 @@ public class BraveYouTubePictureInPictureController {
      * recreates the activity; doing so while this session is active destroys the activity backing
      * the PiP window, after which Android drops PiP shortly after the recreated activity resumes
      * full-screen and this controller tears the session down as a normal PiP exit. Defer the
-     * recreation while the session is active; it is re-applied on PiP exit by
-     * {@link #maybeApplyDeferredNightModeRecreate}.
+     * recreation while the session is active; it is re-applied on PiP exit by {@link
+     * #maybeApplyDeferredNightModeRecreate}.
      *
      * @return true if the recreation was deferred and the caller should skip it.
      */
