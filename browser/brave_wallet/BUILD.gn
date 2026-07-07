@@ -186,7 +186,6 @@ source_set("unit_tests") {
   deps = [
     "//base/test:test_support",
     "//brave/browser/brave_wallet",
-    "//brave/browser/brave_wallet:brave_wallet_delegate",
     "//brave/browser/brave_wallet:tab_helper",
     "//brave/common",
     "//brave/components/brave_wallet/browser",

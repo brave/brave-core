@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "base/auto_reset.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
@@ -34,10 +33,6 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
       const BraveWalletServiceDelegateBase&) = delete;
   ~BraveWalletServiceDelegateBase() override;
 
-  // Delegates created in scope of returned object will have wallet autolock
-  // enabled. Autolock is disabled in tests by default.
-  static base::AutoReset<bool> GetScopedEnableAutolockForTesting();
-
   bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,
                      const std::string& account) override;
@@ -51,10 +46,7 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
   void ResetAllPermissions() override;
 
   base::FilePath GetWalletBaseDirectory() override;
-
   bool IsPrivateWindow() override;
-
-  bool IsAutolockEnabled() override;
 
  protected:
   base::FilePath wallet_base_directory_;

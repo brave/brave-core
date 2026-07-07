@@ -296,7 +296,6 @@ BraveWalletService::BraveWalletService(
 
   delegate_->AddObserver(this);
 
-  keyring_service_->SetAutolockEnabled(delegate_->IsAutolockEnabled());
   keyring_service_->set_wallet_reset_cb(base::BindRepeating(
       &BraveWalletService::OnWalletReset, weak_ptr_factory_.GetWeakPtr()));
   keyring_service_->AddObserver(

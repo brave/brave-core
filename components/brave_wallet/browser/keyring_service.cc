@@ -90,9 +90,6 @@ constexpr char kSelectedAccountDeprecated[] = "selected_account";
 constexpr char kPasswordEncryptorNonceDeprecated[] = "password_encryptor_nonce";
 constexpr char kPasswordEncryptorSaltDeprecated[] = "password_encryptor_salt";
 
-// 7 days. Matches settings UI limit.
-constexpr int kMaxAutolockMinutes = 10080;
-
 #if BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
 // Allows auto unlocking wallet password with command line in dev builds.
 inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
@@ -2722,18 +2719,11 @@ void KeyringService::StopAutoLockTimer() {
 }
 
 void KeyringService::ResetAutoLockTimer() {
-  // Autolock is disabled in most of the tests.
-  if (!is_autolock_enabled_.value_or(false)) {
-    CHECK_IS_TEST();
-    return;
-  }
-
   if (auto_lock_timer_->IsRunning()) {
     auto_lock_timer_->Reset();
   } else {
-    int auto_lock_minutes =
-        std::clamp(profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes), 1,
-                   kMaxAutolockMinutes);
+    size_t auto_lock_minutes =
+        (size_t)profile_prefs_->GetInteger(kBraveWalletAutoLockMinutes);
     auto_lock_timer_->Start(FROM_HERE, base::Minutes(auto_lock_minutes), this,
                             &KeyringService::OnAutoLockFired);
   }
@@ -3864,11 +3854,6 @@ void KeyringService::MaybeFixAccountSelection() {
                     : (*first_account_for_coin)->Clone());
     }
   }
-}
-
-void KeyringService::SetAutolockEnabled(bool enabled) {
-  CHECK(!is_autolock_enabled_.has_value());
-  is_autolock_enabled_ = enabled;
 }
 
 void KeyringService::MaybeUnlockWithCommandLine() {
