@@ -4928,7 +4928,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Caching video and audio files use can use a lot of storage on your device as well as use your cellular data",
+          "Caching video and audio files can consume both cellular data and storage space on your device",
         comment:
           "Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi)"
       )

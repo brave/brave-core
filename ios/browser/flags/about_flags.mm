@@ -251,23 +251,14 @@ const flags_ui::FeatureEntry::FeatureVariation
 #define BRAVE_WALLET_FEATURE_ENTRIES
 #endif
 
-#define BRAVE_PLAYLIST_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES(                                                     \
-      {                                                                       \
-          "brave-playlist",                                                   \
-          "Enable Brave Playlist",                                            \
-          "Enables the Brave Playlist feature.",                              \
-          flags_ui::kOsIos,                                                   \
-          FEATURE_VALUE_TYPE(playlist::features::kPlaylist),                  \
-      },                                                                      \
-      {                                                                       \
-          "brave-playlist-cache-first",                                       \
-          "Enable Brave Playlist cache-first playback",                       \
-          "Prioritze Playlist item cache for enhanced playback"               \
-          "experience. Each item is cached to guarantee playback.",           \
-          flags_ui::kOsIos,                                                   \
-          FEATURE_VALUE_TYPE(playlist::features::kPlaylistCacheFirstEnabled), \
-      })
+#define BRAVE_PLAYLIST_FEATURE_ENTRIES                   \
+  EXPAND_FEATURE_ENTRIES({                               \
+      "brave-playlist",                                  \
+      "Enable Brave Playlist",                           \
+      "Enables the Brave Playlist feature.",             \
+      flags_ui::kOsIos,                                  \
+      FEATURE_VALUE_TYPE(playlist::features::kPlaylist), \
+  })
 
 // Keep the last item empty.
 #define LAST_BRAVE_FEATURE_ENTRIES_ITEM

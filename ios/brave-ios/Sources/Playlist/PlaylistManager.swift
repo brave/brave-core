@@ -657,6 +657,7 @@ public class PlaylistManager: NSObject {
 
     if FeatureList.kPlaylistCacheFirstEnabled.enabled {
       return Reachability.shared.status.connectionType == .wifi
+        || Reachability.shared.status.connectionType == .ethernet
     }
 
     let downloadType = PlayListDownloadType(
