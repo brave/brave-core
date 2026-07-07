@@ -1,0 +1,41 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Allow HorizontalTabStripRegionView to be subclassed
+
+      Brave derives BraveHorizontalTabStripRegionView from this view, so the
+      upstream `final` specifier has to be dropped.
+    pattern: 'class HorizontalTabStripRegionView final'
+    replace: 'class HorizontalTabStripRegionView'
+
+  - description: |
+      Expose new_tab_button() to Brave
+    re_pattern: '(  ~HorizontalTabStripRegionView\(\) override;)'
+    replace: |-
+      \1
+        views::Button* new_tab_button() { return new_tab_button_; }
+
+  - description: |
+      Friend the Brave tab strip classes and vertical tab strip test
+
+      Grants the Brave tab strip subclasses and the vertical tab strip browser
+      test access to private members.
+    re_pattern: '( private:)'
+    replace: |-
+      \1
+        friend class BraveVerticalTabStripRegionView;
+        friend class BraveTabStrip;
+        friend class BraveHorizontalTabStripRegionView;
+        FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight);
+
+  - description: |
+      Make UpdateTabStripMargin overridable
+
+      BraveHorizontalTabStripRegionView overrides this method.
+    make_virtual:
+      class_name: HorizontalTabStripRegionView
+      method_name: UpdateTabStripMargin
