@@ -101,7 +101,6 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
               (override));
   MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
   bool IsPrivateWindow() override { return false; }
-  bool IsAutolockEnabled() override { return false; }
 };
 
 struct ImportData {
@@ -4969,14 +4968,12 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   // Setup wallet.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    service.SetAutolockEnabled(true);
     CreateWallet(&service, "some_password");
   }
 
   // Locked on start by default.
   {
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    service.SetAutolockEnabled(true);
     WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
   }
@@ -4985,7 +4982,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   {
     cmdline->AppendSwitchASCII(kSwitchName, "some_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    service.SetAutolockEnabled(true);
     WaitForPostedTask();
 
 #if !BUILDFLAG(ENABLE_BRAVE_WALLET_DEV_CMD_LINE_UNLOCK)
@@ -5012,7 +5008,6 @@ TEST_F(KeyringServiceUnitTest, DevWalletPassword) {
   {
     cmdline->AppendSwitchASCII(kSwitchName, "wrong_password");
     KeyringService service(json_rpc_service(), GetPrefs(), GetLocalState());
-    service.SetAutolockEnabled(true);
     WaitForPostedTask();
     EXPECT_TRUE(service.IsLockedSync());
     cmdline->RemoveSwitch(kSwitchName);
