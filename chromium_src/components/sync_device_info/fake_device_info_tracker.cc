@@ -10,9 +10,8 @@ namespace syncer {
 void FakeDeviceInfoTracker::DeleteDeviceInfo(const std::string& client_id,
                                              base::OnceClosure callback) {}
 
-std::vector<std::unique_ptr<DeviceInfo>>
-FakeDeviceInfoTracker::GetAllBraveDeviceInfo() const {
-  return std::vector<std::unique_ptr<DeviceInfo>>();
+std::vector<DeviceInfo> FakeDeviceInfoTracker::GetAllBraveDeviceInfo() const {
+  return std::vector<DeviceInfo>();
 }
 
 }  // namespace syncer

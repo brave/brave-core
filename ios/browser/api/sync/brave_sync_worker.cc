@@ -121,14 +121,13 @@ const syncer::DeviceInfo* BraveSyncWorker::GetLocalDeviceInfo() {
       ->GetLocalDeviceInfo();
 }
 
-std::vector<std::unique_ptr<syncer::DeviceInfo>>
-BraveSyncWorker::GetDeviceList() {
+std::vector<syncer::DeviceInfo> BraveSyncWorker::GetDeviceList() {
   DCHECK_CURRENTLY_ON(web::WebThread::UI);
   auto* device_info_service =
       DeviceInfoSyncServiceFactory::GetForProfile(profile_);
 
   if (!device_info_service) {
-    return std::vector<std::unique_ptr<syncer::DeviceInfo>>();
+    return std::vector<syncer::DeviceInfo>();
   }
 
   syncer::DeviceInfoTracker* tracker =

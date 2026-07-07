@@ -11,8 +11,7 @@
 #define ForcePulseForTest                                                      \
   DeleteDeviceInfo(const std::string& client_id, base::OnceClosure callback) { \
   }                                                                            \
-  virtual std::vector<std::unique_ptr<DeviceInfo>> GetAllBraveDeviceInfo()     \
-      const;                                                                   \
+  virtual std::vector<DeviceInfo> GetAllBraveDeviceInfo() const;               \
   virtual void ForcePulseForTest
 
 #include <components/sync_device_info/device_info_tracker.h>  // IWYU pragma: export

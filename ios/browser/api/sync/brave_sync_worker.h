@@ -93,7 +93,7 @@ class BraveSyncWorker : public syncer::SyncServiceObserver {
   std::string GetTimeLimitedWordsFromWords(const std::string& words);
   std::string GetHexSeedFromQrCodeJson(const std::string& json);
   const syncer::DeviceInfo* GetLocalDeviceInfo();
-  std::vector<std::unique_ptr<syncer::DeviceInfo>> GetDeviceList();
+  std::vector<syncer::DeviceInfo> GetDeviceList();
   bool CanSyncFeatureStart();
   bool IsSyncFeatureActive();
   bool IsInitialSyncFeatureSetupComplete();
