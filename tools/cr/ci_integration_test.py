@@ -3,23 +3,24 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Integration tests for `brockit.GenRustToolchain` against a fake Jenkins.
+"""Integration tests for `ci.JenkinsCi` against a fake Jenkins.
 
-Where `gen_rust_toolchain_test.py` mocks `requests.Session`, these tests stand
-up a real in-process HTTP server (`FakeJenkins`) that emulates the slice of the
-Jenkins REST API the task talks to:
+Where `ci_test.py` mocks `requests.Session`, these tests stand up a real
+in-process HTTP server (`FakeJenkins`) that emulates the slice of the Jenkins
+REST API the launcher talks to:
 
 * the CSRF crumb issuer (`/crumbIssuer/api/json`),
-* the parameterised trigger (`/job/<job>/buildWithParameters`, answered with a
+* the parameterised trigger (`<job>buildWithParameters`, answered with a
   201 + `Location` header pointing at a transient queue item),
 * the build queue item (`/queue/item/<id>/api/json`), which hands back an
   `executable` build URL once an "executor" picks the job up, and
 * the Pipeline Stage View (`<build>/wfapi/describe`) with a plain build-API
   fallback (`<build>/api/json`).
 
-The task drives genuine `requests` calls over a loopback socket, so basic-auth
-and crumb headers, the `CHROMIUM_TAG` parameter, the `Location`-header handoff,
-and the full queue -> build -> result lifecycle are all exercised end to end.
+The launcher drives genuine `requests` calls over a loopback socket, so
+basic-auth and crumb headers, the `CHROMIUM_TAG` parameter, the
+`Location`-header handoff, and the full queue -> build -> result lifecycle are
+all exercised end to end.
 
 The fake advances each pipeline deterministically by counting polls (no wall
 clock involved): a build stays QUEUED for `queue_polls_before_start` polls,
@@ -30,20 +31,25 @@ from __future__ import annotations
 
 import base64
 import json
-import tempfile
 import threading
 import unittest
 from collections import defaultdict
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
-from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 from unittest.mock import patch
 
-import brockit
+import ci
 
-# A concrete version so `_fetch_chromium_tag` short-circuits to `Version(...)`
-# without touching git or the network.
+# A concrete Chromium tag, passed straight through as the build parameter.
 TAG = '150.0.7850.1'
+
+# Four job names, matching the shape of the Rust toolchain's fan-out.
+JOB_NAMES = (
+    'brave-browser-rust-toolchain-aux-build-linux-x64',
+    'brave-browser-rust-toolchain-aux-build-macos-arm64',
+    'brave-browser-rust-toolchain-aux-build-macos-x64',
+    'brave-browser-rust-toolchain-aux-build-windows-x64',
+)
 
 # Maps the canonical `final_status` onto the equivalent Pipeline Stage View
 # (`wfapi`) status string the fake reports for a finished build.
@@ -79,7 +85,7 @@ def _job_from_build_path(path: str) -> str:
 
 
 class _Handler(BaseHTTPRequestHandler):
-    """Routes the handful of endpoints the task hits to the owning fake."""
+    """Routes the handful of endpoints the launcher hits to the owning fake."""
 
     # Silence the default per-request stderr logging.
     def log_message(self, *args) -> None:
@@ -135,7 +141,7 @@ class _Handler(BaseHTTPRequestHandler):
 
 
 class FakeJenkins:
-    """An in-process HTTP server emulating the Jenkins endpoints the task uses.
+    """An in-process HTTP server emulating the Jenkins endpoints used.
 
     Use as a context manager; `base_url` is populated on entry. Behaviour is
     tuned via the public attributes below before (or during) a run.
@@ -197,15 +203,9 @@ class FakeJenkins:
         self._thread.join()
         return False
 
-    def write_config(self, path: Path) -> None:
-        """Writes a `~/.jenkins.json` pointing at this server."""
-        path.write_text(json.dumps({
-            'url': self.base_url,
-            'username': self.username,
-            'token': self.token,
-        }),
-                        encoding='utf-8',
-                        newline='')
+    def job_urls(self) -> tuple[str, ...]:
+        """The fully-qualified job URLs pointing at this fake server."""
+        return tuple(f'{self.base_url}/job/{job}/' for job in JOB_NAMES)
 
     @staticmethod
     def _decode_auth(handler: _Handler) -> tuple[str, str] | None:
@@ -277,7 +277,7 @@ class FakeJenkins:
 
     def handle_describe(self, handler: _Handler, job: str) -> None:
         if not self.serve_wfapi:
-            # Emulate a controller without the Stage View plugin; the task
+            # Emulate a controller without the Stage View plugin; the launcher
             # falls back to the plain build API.
             handler.send_empty(404)
             return
@@ -328,49 +328,41 @@ class FakeJenkins:
         })
 
 
-class GenRustToolchainIntegrationTest(unittest.TestCase):
-    """Drives `GenRustToolchain.execute` against `FakeJenkins`."""
+class JenkinsCiIntegrationTest(unittest.TestCase):
+    """Drives `JenkinsCi.trigger` against `FakeJenkins`."""
 
-    def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.config_path = Path(tmp.name) / '.jenkins.json'
-        patcher = patch.object(brockit, 'JENKINS_CONFIG_FILE',
-                               self.config_path)
-        patcher.start()
-        self.addCleanup(patcher.stop)
-
-    def _execute(self, fake: FakeJenkins, *, watch: bool = False) -> list:
-        """Runs `execute` against `fake`, returning the watched-job list.
+    def _trigger(self, fake: FakeJenkins, *, watch: bool = False) -> list:
+        """Runs `trigger` against `fake`, returning the watched-job list.
 
         The job list is captured by intercepting `_render_table`; because the
         `_WatchedJob` instances are mutated in place, the captured reference
-        reflects their final state once `execute` returns.
+        reflects their final state once `trigger` returns.
         """
-        fake.write_config(self.config_path)
+        launcher = ci.JenkinsCi(fake.username, fake.token)
         captured: dict[str, list] = {}
 
-        def _record(_self, _version, _base_url, jobs):
+        def _record(_self, _title, jobs):
             captured['jobs'] = jobs
 
         if watch:
-            with patch.object(brockit.GenRustToolchain, '_render_table',
-                              _record), \
-                    patch('brockit.time.sleep'), \
-                    patch('brockit.Live', _NullLive):
-                brockit.GenRustToolchain().execute(tag=TAG, watch=True)
+            with patch.object(ci.JenkinsCi, '_render_table', _record), \
+                    patch('ci.time.sleep'), \
+                    patch('ci.Live', _NullLive):
+                launcher.trigger(fake.job_urls(),
+                                 params={'CHROMIUM_TAG': TAG},
+                                 watch=True,
+                                 title='Rust toolchain')
         else:
-            brockit.GenRustToolchain().execute(tag=TAG)
+            launcher.trigger(fake.job_urls(), params={'CHROMIUM_TAG': TAG})
         return captured.get('jobs', [])
 
     def test_triggers_every_pipeline_with_auth_param_and_crumb(self):
         with FakeJenkins() as fake:
-            self._execute(fake)
+            self._trigger(fake)
 
         self.assertEqual({trigger['job']
-                          for trigger in fake.triggers},
-                         set(brockit.RUST_TOOLCHAIN_JOBS))
-        self.assertEqual(len(fake.triggers), len(brockit.RUST_TOOLCHAIN_JOBS))
+                          for trigger in fake.triggers}, set(JOB_NAMES))
+        self.assertEqual(len(fake.triggers), len(JOB_NAMES))
         for trigger in fake.triggers:
             self.assertEqual(trigger['params'], {'CHROMIUM_TAG': [TAG]})
             self.assertEqual(trigger['auth'], ('alice', 'secret-token'))
@@ -379,18 +371,19 @@ class GenRustToolchainIntegrationTest(unittest.TestCase):
     def test_missing_crumb_issuer_still_triggers_without_header(self):
         with FakeJenkins() as fake:
             fake.crumb = None
-            self._execute(fake)
+            self._trigger(fake)
 
-        self.assertEqual(len(fake.triggers), len(brockit.RUST_TOOLCHAIN_JOBS))
+        self.assertEqual(len(fake.triggers), len(JOB_NAMES))
         for trigger in fake.triggers:
             self.assertIsNone(trigger['crumb_header'])
 
     def test_trigger_failure_raises_bad_outcome(self):
         with FakeJenkins() as fake:
-            fake.trigger_status = {brockit.RUST_TOOLCHAIN_JOBS[0]: 500}
-            fake.write_config(self.config_path)
-            with self.assertRaises(brockit.BadOutcomeException):
-                brockit.GenRustToolchain().execute(tag=TAG)
+            fake.trigger_status = {JOB_NAMES[0]: 500}
+            with self.assertRaises(ci.BadOutcomeException):
+                ci.JenkinsCi(fake.username,
+                             fake.token).trigger(fake.job_urls(),
+                                                 params={'CHROMIUM_TAG': TAG})
 
     def test_watch_runs_full_queue_to_success_lifecycle(self):
         with FakeJenkins() as fake:
@@ -398,43 +391,42 @@ class GenRustToolchainIntegrationTest(unittest.TestCase):
             # queue handoff and the running-state polling are both exercised.
             fake.queue_polls_before_start = 1
             fake.running_polls_before_done = 2
-            jobs = self._execute(fake, watch=True)
+            jobs = self._trigger(fake, watch=True)
 
-        self.assertEqual(len(jobs), len(brockit.RUST_TOOLCHAIN_JOBS))
+        self.assertEqual(len(jobs), len(JOB_NAMES))
         for job in jobs:
             self.assertEqual(job.state, 'SUCCESS')
             self.assertEqual(job.stage, '(done)')
             self.assertEqual(job.elapsed, '1m39s')  # 99000 ms
-            # The build URL was resolved from the queue item's executable.
-            self.assertIn(f'/job/{job.job}/', job.build_url)
+            self.assertIn(f'/job/{job.name}/', job.build_url)
 
     def test_watch_uses_pipeline_display_name_for_bot(self):
         with FakeJenkins() as fake:
             fake.display_names = {
                 job: f'Display of {job}'
-                for job in brockit.RUST_TOOLCHAIN_JOBS
+                for job in JOB_NAMES
             }
-            jobs = self._execute(fake, watch=True)
+            jobs = self._trigger(fake, watch=True)
 
         for job in jobs:
-            self.assertEqual(job.display_name, f'Display of {job.job}')
-            self.assertEqual(job.bot, f'Display of {job.job}')
+            self.assertEqual(job.display_name, f'Display of {job.name}')
+            self.assertEqual(job.bot, f'Display of {job.name}')
 
     def test_watch_bot_falls_back_to_job_name_without_display_name(self):
         with FakeJenkins() as fake:
             # No display names configured: Jenkins echoes the job name as
             # `displayName`, which must be treated as "unset".
-            jobs = self._execute(fake, watch=True)
+            jobs = self._trigger(fake, watch=True)
 
         for job in jobs:
             self.assertIsNone(job.display_name)
-            self.assertEqual(job.bot, job.job)
+            self.assertEqual(job.bot, job.name)
 
     def test_watch_falls_back_to_build_api_and_reports_failure(self):
         with FakeJenkins() as fake:
             fake.serve_wfapi = False
             fake.final_status = 'FAILURE'
-            jobs = self._execute(fake, watch=True)
+            jobs = self._trigger(fake, watch=True)
 
         for job in jobs:
             self.assertEqual(job.state, 'FAILURE')
