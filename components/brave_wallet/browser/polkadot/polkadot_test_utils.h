@@ -58,6 +58,16 @@ struct PolkadotMockRpc {
   void UseInvalidFinalizedBlockHash();
   void RejectExtrinsicSubmission();
   void RejectAccountInfoRequest();
+
+  // Reject an individual step of the signing-payload assembly with a JSON-RPC
+  // error, so the corresponding RPC call fails. Configure exactly one before
+  // calling AddReqResPairs() to exercise a specific failure path.
+  void RejectInitialChainHeader();
+  void RejectParentBlockHeader();
+  void RejectFinalizedHead();
+  void RejectFinalizedBlockHeader();
+  void RejectGenesisBlockHash();
+  void RejectRuntimeVersion();
   void SetSenderPubKey(
       base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey);
   void SetExpectedExtrinsic(std::string extrinsic);
@@ -149,6 +159,12 @@ struct PolkadotMockRpc {
   bool use_invalid_finalized_block_hash_ = false;
   bool reject_extrinsic_submission_ = false;
   bool reject_account_info_request_ = false;
+  bool reject_initial_chain_header_ = false;
+  bool reject_parent_block_header_ = false;
+  bool reject_finalized_head_ = false;
+  bool reject_finalized_block_header_ = false;
+  bool reject_genesis_block_hash_ = false;
+  bool reject_runtime_version_ = false;
 };
 
 // Build metadata from a known relay/parachain name returned by system_chain.
