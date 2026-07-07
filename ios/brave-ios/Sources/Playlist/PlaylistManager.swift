@@ -21,7 +21,7 @@ public class PlaylistManager: NSObject {
   public static let shared = PlaylistManager()
 
   private var assetInformation = [PlaylistAssetFetcher]()
-  private let downloadManager = PlaylistDownloadManager()
+  private let cacheManager = PlaylistDownloadManager()
   private var frc = PlaylistItem.frc()
   private var didRestoreSession = false
 
@@ -59,7 +59,7 @@ public class PlaylistManager: NSObject {
   private let onDownloadStateChanged = PassthroughSubject<
     (
       id: String,
-      state: PlaylistDownloadManager.DownloadState,
+      state: PlaylistDownloadManager.CacheState,
       displayName: String?,
       error: Error?
     ), Never
@@ -70,7 +70,7 @@ public class PlaylistManager: NSObject {
   private override init() {
     super.init()
 
-    downloadManager.delegate = self
+    cacheManager.delegate = self
     frc.delegate = self
 
     let sevenDays =
@@ -137,7 +137,7 @@ public class PlaylistManager: NSObject {
   public var downloadStateChanged:
     AnyPublisher<
       (
-        id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?,
+        id: String, state: PlaylistDownloadManager.CacheState, displayName: String?,
         error: Error?
       ), Never
     >
@@ -240,30 +240,15 @@ public class PlaylistManager: NSObject {
     }
   }
 
-  @available(*, deprecated, renamed: "downloadState(for:)", message: "Use async version")
-  public func state(for itemId: String) -> PlaylistDownloadManager.DownloadState {
-    if downloadManager.downloadTask(for: itemId) != nil {
+  public func cacheState(for itemId: String) async -> PlaylistDownloadManager.CacheState {
+    if cacheManager.downloadTask(for: itemId) != nil {
       return .inProgress
     }
 
-    if let assetUrl = downloadManager.localAssetSynchronous(for: itemId)?.url {
-      if FileManager.default.fileExists(atPath: assetUrl.path) {
-        return .downloaded
-      }
-    }
-
-    return .invalid
-  }
-
-  public func downloadState(for itemId: String) async -> PlaylistDownloadManager.DownloadState {
-    if downloadManager.downloadTask(for: itemId) != nil {
-      return .inProgress
-    }
-
-    if let assetUrl = await downloadManager.localAsset(for: itemId)?.url,
+    if let assetUrl = await cacheManager.localAsset(for: itemId)?.url,
       await AsyncFileManager.default.fileExists(atPath: assetUrl.path)
     {
-      return .downloaded
+      return .cached
     }
 
     return .invalid
@@ -272,7 +257,7 @@ public class PlaylistManager: NSObject {
   @available(iOS, deprecated)
   public func sizeOfDownloadedItemSynchronous(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
-    if let asset = downloadManager.localAssetSynchronous(for: itemId),
+    if let asset = cacheManager.localAssetSynchronous(for: itemId),
       FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory)
     {
 
@@ -323,7 +308,7 @@ public class PlaylistManager: NSObject {
 
   public func restoreSession() {
     if !didRestoreSession {
-      downloadManager.restoreSession { [weak self] in
+      cacheManager.restoreSession { [weak self] in
         self?.reloadData()
       }
     }
@@ -346,14 +331,16 @@ public class PlaylistManager: NSObject {
   }
 
   public func download(item: PlaylistInfo) {
-    guard FeatureList.kPlaylistOfflineCacheEnabled.enabled,
-      downloadManager.downloadTask(for: item.tagId) == nil,
+    guard
+      FeatureList.kPlaylistOfflineCacheEnabled.enabled
+        || FeatureList.kPlaylistCacheFirstEnabled.enabled,
+      cacheManager.downloadTask(for: item.tagId) == nil,
       let assetUrl = URL(string: item.src)
     else { return }
     Task {
       if assetUrl.scheme == "data" {
         DispatchQueue.main.async {
-          self.downloadManager.downloadDataAsset(assetUrl, for: item)
+          self.cacheManager.downloadDataAsset(assetUrl, for: item)
         }
         return
       }
@@ -365,18 +352,18 @@ public class PlaylistManager: NSObject {
         || mimeType.contains("mpegurl")
       {
         DispatchQueue.main.async {
-          self.downloadManager.downloadHLSAsset(assetUrl, for: item)
+          self.cacheManager.downloadHLSAsset(assetUrl, for: item)
         }
       } else {
         DispatchQueue.main.async {
-          self.downloadManager.downloadFileAsset(assetUrl, for: item)
+          self.cacheManager.downloadFileAsset(assetUrl, for: item)
         }
       }
     }
   }
 
   public func cancelDownload(itemId: String) {
-    downloadManager.cancelDownload(itemId: itemId)
+    cacheManager.cancelDownload(itemId: itemId)
   }
 
   @MainActor public func delete(folder: PlaylistFolder) async -> Bool {
@@ -668,6 +655,11 @@ public class PlaylistManager: NSObject {
       return false
     }
 
+    if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+      return Reachability.shared.status.connectionType == .wifi
+        || Reachability.shared.status.connectionType == .ethernet
+    }
+
     let downloadType = PlayListDownloadType(
       rawValue: Preferences.Playlist.autoDownloadVideo.value
     )
@@ -716,7 +708,7 @@ public class PlaylistManager: NSObject {
     return nil
   }
 
-  /// Clears the persisted `cachedData` bookmark for `itemId` and notifies observers that the item is no longer downloaded.
+  /// Clears the persisted `cachedData` bookmark for `itemId` and notifies observers that the item is no longer cached.
   /// Cancels any in-flight download as well so the item ends up in a fully invalid state.
   /// No-op if the item is gone or already has no cached bookmark.
   @MainActor private func invalidateCachedState(for itemId: String) {
@@ -737,11 +729,11 @@ public class PlaylistManager: NSObject {
 extension PlaylistManager {
   @available(*, deprecated, renamed: "asset(for:mediaSrc:)", message: "Use async version")
   private func assetSynchronous(for itemId: String, mediaSrc: String) -> AVURLAsset {
-    if let task = downloadManager.downloadTask(for: itemId) {
+    if let task = cacheManager.downloadTask(for: itemId) {
       return task.asset
     }
 
-    if let asset = downloadManager.localAssetSynchronous(for: itemId) {
+    if let asset = cacheManager.localAssetSynchronous(for: itemId) {
       return asset
     }
 
@@ -749,11 +741,11 @@ extension PlaylistManager {
   }
 
   private func asset(for itemId: String, mediaSrc: String) async -> AVURLAsset {
-    if let task = downloadManager.downloadTask(for: itemId) {
+    if let task = cacheManager.downloadTask(for: itemId) {
       return task.asset
     }
 
-    if let asset = await downloadManager.localAsset(for: itemId) {
+    if let asset = await cacheManager.localAsset(for: itemId) {
       return asset
     }
 
@@ -768,7 +760,7 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
 
   func onDownloadStateChanged(
     id: String,
-    state: PlaylistDownloadManager.DownloadState,
+    state: PlaylistDownloadManager.CacheState,
     displayName: String?,
     error: Error?
   ) {

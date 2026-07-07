@@ -7,7 +7,7 @@ import Foundation
 import Strings
 import SwiftUI
 
-enum ItemDownloadState {
+enum ItemCacheState {
   case downloading(percentComplete: Double)
   case completed
 }
@@ -19,7 +19,7 @@ struct PlaylistItemView: View {
   var duration: PlayerModel.ItemDuration
   var isSelected: Bool
   var isPlaying: Bool
-  var downloadState: ItemDownloadState?
+  var cacheState: ItemCacheState?
 
   @ScaledMetric private var progressViewSize = 16
   // Don't need to scale the guage line width, but it looks better when it does
@@ -66,8 +66,8 @@ struct PlaylistItemView: View {
           case .unknown:
             EmptyView()
           }
-          if let downloadState {
-            switch downloadState {
+          if let cacheState {
+            switch cacheState {
             case .downloading(let percentCompleted):
               Label {
                 Text(Strings.Playlist.itemDownloadStatusPreparing)
@@ -207,7 +207,7 @@ struct LeoPlayingSoundView: View {
         duration: .seconds(3081),
         isSelected: true,
         isPlaying: false,
-        downloadState: .completed
+        cacheState: .completed
       )
     }
     Button {
@@ -217,7 +217,7 @@ struct LeoPlayingSoundView: View {
         duration: .seconds(1641),
         isSelected: false,
         isPlaying: false,
-        downloadState: .downloading(percentComplete: 0.33)
+        cacheState: .downloading(percentComplete: 0.33)
       )
     }
   }

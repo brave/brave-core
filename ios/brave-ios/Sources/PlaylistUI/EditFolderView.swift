@@ -56,7 +56,7 @@ struct EditFolderView: View {
             duration: .init(item.duration),
             isSelected: false,
             isPlaying: false,
-            downloadState: nil
+            cacheState: nil
           )
         }
         .onMove { indexSet, offset in

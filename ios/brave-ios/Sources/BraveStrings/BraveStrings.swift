@@ -4666,7 +4666,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Remove",
-        comment: "Title for removing offline mode storage"
+        comment: "Title for removing cached media from the playlist"
       )
 
     public static let addedToPlaylistMessage =
@@ -4760,6 +4760,16 @@ extension Strings {
         bundle: .module,
         value: "There was a problem loading the resource!",
         comment: "Description for load resources error alert"
+      )
+
+    public static let playlistOfflineDataToggleOption =
+      NSLocalizedString(
+        "playlist.playlistOfflineDataToggleOption",
+        tableName: "BraveShared",
+        bundle: .module,
+        value: "Playlist Data",
+        comment:
+          "Text for Playlist Data Toggle for clearing the cache in settings"
       )
 
     public static let addToPlayListAlertTitle =
@@ -4918,9 +4928,9 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Adding video and audio files for offline use can use a lot of storage on your device as well as use your cellular data",
+          "Caching video and audio files can consume both cellular data and storage space on your device",
         comment:
-          "Description for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi)"
+          "Description for the Playlist Settings Option for Auto Caching media (Off/On/Only Wi-fi)"
       )
 
     public static let playlistAutoSaveSettingsFooterText =
@@ -4931,7 +4941,7 @@ extension Strings {
         value:
           "Once you've opened content in Playlist, this option will keep opened playlist items on your device so you can play them without an internet connection.",
         comment:
-          "Footer Text for the Playlist Settings Option for Auto Save Videos for Offline (Off/On/Only Wi-fi))"
+          "Footer Text for the Playlist Settings Option for media Auto Cache (Off/On/Only Wi-fi))"
       )
 
     public static let playlistStartPlaybackSettingsOptionTitle =
@@ -4969,7 +4979,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value: "Off",
-        comment: "Auto Download turn Off Option"
+        comment: "Auto Cache turn Off Option"
       )
 
     public static let playlistAutoSaveOptionOnlyWifi =
@@ -4988,7 +4998,7 @@ extension Strings {
         bundle: .module,
         value: "Reset",
         comment:
-          "The title for the alert that shows up when removing all videos and their offline mode storage."
+          "The title for the alert that shows up when removing all playlist data."
       )
 
     public static let playlistResetPlaylistOptionFooterText =
@@ -4996,7 +5006,7 @@ extension Strings {
         "playlist.playlistResetPlaylistOptionFooterText",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This option will remove all videos from Playlist as well as Offline mode storage.",
+        value: "This option will remove all Playlist data.",
         comment: "Footer Text for the Playlist Settings Option for resetting Playlist."
       )
 
@@ -5015,7 +5025,7 @@ extension Strings {
         tableName: "BraveShared",
         bundle: .module,
         value:
-          "Your device is low on space. Adding this video to Playlist may fail or affect other downloads.",
+          "Your device is low on space. Adding this video to Playlist may fail or affect other cached videos.",
         comment: "When the user's disk space is almost full"
       )
 
