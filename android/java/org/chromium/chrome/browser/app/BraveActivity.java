@@ -203,6 +203,7 @@ import org.chromium.chrome.browser.tabmodel.TabClosureParams;
 import org.chromium.chrome.browser.tabmodel.TabList;
 import org.chromium.chrome.browser.tabmodel.TabModel;
 import org.chromium.chrome.browser.tabmodel.TabModelUtils;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.BraveToolbarManager;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.chrome.browser.toolbar.top.BraveToolbarLayoutImpl;
@@ -1227,6 +1228,16 @@ public abstract class BraveActivity extends ChromeActivity
         BraveVpnNativeWorker.getInstance().reloadPurchasedState();
 
         BraveHelper.maybeMigrateSettings();
+
+        // Reconcile the effective "auto open synced tab groups" pref at startup so a change to the
+        // "Enable tab groups" master default (or any other input) is reflected for runtime
+        // consumers
+        // without requiring the user to open the tab settings screen. Only applies when Brave's tab
+        // groups settings screen owns the master switch.
+        if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
+            BraveTabUiFeatureUtilities.applyAutoOpenSyncedTabGroupsEffectivePref(
+                    ProfileManager.getLastUsedRegularProfile());
+        }
 
         PrefChangeRegistrar mPrefChangeRegistrar = PrefServiceUtil.createFor(getCurrentProfile());
         mPrefChangeRegistrar.addObserver(BravePref.SCHEDULED_CAPTCHA_ID, this);

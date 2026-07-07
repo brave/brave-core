@@ -30,6 +30,7 @@ import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.preferences.Pref;
+import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -158,10 +159,55 @@ public class BraveTabsAndTabGroupsSettingsTest {
         assertTrue(readNativeAutoOpenSyncedPref());
     }
 
+    @Test
+    @SmallTest
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testAutoOpenSyncedEffectivePrefReconciledWithoutOpeningSettings() {
+        startSettings();
+
+        ChromeSwitchPreference autoOpenSyncedTabGroupsSwitch =
+                mSettings.findPreference(
+                        BraveTabsAndTabGroupsSettings.PREF_AUTO_OPEN_SYNCED_TAB_GROUPS_SWITCH);
+        assertNotNull(autoOpenSyncedTabGroupsSwitch);
+        assumeTrue(autoOpenSyncedTabGroupsSwitch.isVisible());
+
+        // User wants auto-open on while tab groups are enabled -> effective pref on.
+        setSwitchChecked(autoOpenSyncedTabGroupsSwitch, true);
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+        assertTrue(readNativeAutoOpenSyncedPref());
+
+        // Simulate the master becoming disabled WITHOUT going through the settings toggle (e.g. a
+        // change to its default value), then the startup reconcile running. The effective pref must
+        // be forced off while the user's choice is preserved.
+        setMasterEnabledDirectlyAndReconcile(false);
+        assertFalse(readNativeAutoOpenSyncedPref());
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+
+        // Re-enabling the master (again without the settings toggle) restores the effective pref.
+        setMasterEnabledDirectlyAndReconcile(true);
+        assertTrue(readNativeAutoOpenSyncedPref());
+        assertTrue(readAutoOpenSyncedUserChoicePref());
+    }
+
     private void startSettings() {
         mSettingsActivityTestRule.startSettingsActivity();
         mSettings = mSettingsActivityTestRule.getFragment();
         Assert.assertNotNull("SettingsActivity failed to launch.", mSettings);
+    }
+
+    /**
+     * Writes the master pref directly (bypassing the settings toggle) and runs the same
+     * reconciliation the startup path uses.
+     */
+    private void setMasterEnabledDirectlyAndReconcile(boolean enabled) {
+        ThreadUtils.runOnUiThreadBlocking(
+                () -> {
+                    ChromeSharedPreferences.getInstance()
+                            .writeBoolean(
+                                    BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, enabled);
+                    BraveTabUiFeatureUtilities.applyAutoOpenSyncedTabGroupsEffectivePref(
+                            mSettings.getProfile());
+                });
     }
 
     private static void setSwitchChecked(ChromeSwitchPreference preference, boolean checked) {
