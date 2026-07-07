@@ -17,7 +17,7 @@ export interface Props {
 }
 
 export const AssetsFilterDropdown = (props: Props) => {
-  const { options, value, closeOnSelect, onSelectFilter } = props
+  const { options, value, closeOnSelect = true, onSelectFilter } = props
   const [isOpen, setIsOpen] = React.useState(false)
 
   const buttonLabel = React.useMemo(() => {
@@ -62,10 +62,6 @@ export const AssetsFilterDropdown = (props: Props) => {
       )}
     </StyledWrapper>
   )
-}
-
-AssetsFilterDropdown.defaultProps = {
-  closeOnSelect: true,
 }
 
 export default AssetsFilterDropdown

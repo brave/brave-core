@@ -118,8 +118,4 @@ export const Tooltip: React.FC<ToolTipProps> = ({
   )
 }
 
-Tooltip.defaultProps = {
-  isVisible: true,
-}
-
 export default Tooltip

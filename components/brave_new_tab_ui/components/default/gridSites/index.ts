@@ -202,7 +202,7 @@ export const TileMenuItem = styled('button')<{}>`
   }
 `
 
-export const TileAction = styled('button').attrs({ 'data-theme': 'light' })`
+export const TileAction = styled('button').attrs<{ 'data-theme'?: string }>({ 'data-theme': 'light' })`
   -webkit-appearance: none;
   box-sizing: border-box;
   transition: color 0.1s linear;

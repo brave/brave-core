@@ -63,7 +63,7 @@ export function SiteTile (props: { site: NewTab.Site, isMenuShowing?: boolean, c
 function TopSite (props: Props) {
   const { siteData, isSortable } = props
 
-  const tileMenuRef = useRef<any>()
+  const tileMenuRef = useRef<any>(null)
   const sortable = useSortable({ id: siteData.id, disabled: isSortable })
   const [showMenu, setShowMenu] = useState(false)
 

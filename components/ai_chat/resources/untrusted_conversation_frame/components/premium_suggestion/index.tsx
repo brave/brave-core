@@ -43,7 +43,7 @@ const featuresList = [
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
   const context = useUntrustedConversationContext()
-  const buttonRef = React.useRef<HTMLButtonElement>()
+  const buttonRef = React.useRef<HTMLButtonElement>(null)
 
   const pricingInfo = formatLocale(S.CHAT_UI_PREMIUM_PRICING, {
     $1: <data>14.99</data>,
@@ -54,7 +54,7 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
   })
 
   React.useEffect(() => {
-    if (buttonRef.current === undefined) return
+    if (!buttonRef.current) return
     buttonRef.current.scrollIntoView({ behavior: 'smooth' })
   }, [])
 

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { loadTimeData } from '$web-common/loadTimeData'
@@ -47,7 +48,9 @@ function createBrowserShieldsApi() {
 }
 
 createRoot(document.getElementById('root')!).render(
-  <ShieldsApiProvider api={createBrowserShieldsApi()}>
-    <App />
-  </ShieldsApiProvider>,
+  <StyledComponentsProvider>
+    <ShieldsApiProvider api={createBrowserShieldsApi()}>
+      <App />
+    </ShieldsApiProvider>
+  </StyledComponentsProvider>,
 )

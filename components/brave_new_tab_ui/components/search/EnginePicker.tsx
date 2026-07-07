@@ -79,8 +79,8 @@ export default function EnginePicker() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, setOpen: setBoxOpen } = useSearchContext()
   const [open, setOpen] = React.useState(false)
 
-  const buttonRef = React.useRef<HTMLElement>();
-  const menuRef = React.useRef<HTMLElement>();
+  const buttonRef = React.useRef<HTMLElement>(null);
+  const menuRef = React.useRef<HTMLElement>(null);
 
   React.useEffect(() => {
     if (!open) return

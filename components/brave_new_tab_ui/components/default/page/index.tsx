@@ -399,7 +399,7 @@ export const App = styled('div') <AppProps & HasImageProps>`
   opacity: ${p => p.dataIsReady ? 1 : 0};
   ${getPageBackground}
 
-  ${defaultState.featureFlagBraveNewsFeedV2Enabled && css`
+  ${defaultState.featureFlagBraveNewsFeedV2Enabled && css<HasImageProps>`
   &::before {
       /* The FeedV2 has a semi-transparent white overlay. This is done via a
        * linear-gradient to not break any of the FeedV1 features. */

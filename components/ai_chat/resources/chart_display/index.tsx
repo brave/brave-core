@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import LineChart, { ChartData } from './line_chart'
 
 function parseChartData(search: string): ChartData | null {
@@ -33,7 +34,11 @@ export function App({ searchQuery }: { searchQuery?: string }) {
 
 function initialize() {
   const root = createRoot(document.getElementById('root')!)
-  root.render(<App />)
+  root.render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

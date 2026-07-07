@@ -4,9 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render } from 'react-dom'
+import { createRoot } from 'react-dom/client'
 import { initLocale } from 'brave-ui'
 import { ToolbarWrapperStyles } from './style'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import { loadTimeData } from '../../../common/loadTimeData'
 import BraveCoreThemeProvider from '../../../common/BraveCoreThemeProvider'
@@ -28,7 +29,11 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'))
+  createRoot(document.getElementById('mountPoint')!).render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

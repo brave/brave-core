@@ -51,7 +51,7 @@ export default function SearchBox() {
   const placeholderText = searchEngine?.host === braveSearchHost
     ? getLocale('searchBravePlaceholder')
     : getLocale('searchNonBravePlaceholder')
-  const searchInput = React.useRef<HTMLElement>()
+  const searchInput = React.useRef<HTMLElement>(null)
   React.useEffect(() => {
     const listener = (e: KeyboardEvent) => {
       if (e.key === 'Tab' && document.activeElement === document.body) {

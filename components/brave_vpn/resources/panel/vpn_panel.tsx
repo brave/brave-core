@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { initLocale } from 'brave-ui'
 import { setIconBasePath } from '@brave/leo/react/icon'
+import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 
 import './strings'
 
@@ -53,7 +54,11 @@ function App () {
 function initialize () {
   initLocale(loadTimeData.data_)
   const root = createRoot(document.getElementById('mountPoint')!)
-  root.render(<App />)
+  root.render(
+    <StyledComponentsProvider>
+      <App />
+    </StyledComponentsProvider>,
+  )
 }
 
 document.addEventListener('DOMContentLoaded', initialize)

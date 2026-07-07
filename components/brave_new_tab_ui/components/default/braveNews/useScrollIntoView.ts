@@ -19,7 +19,7 @@ export default function useScrollIntoView<T extends HTMLElement = HTMLAnchorElem
   return [cardRef]
 }
 
-type useScrollIntoViewReturn = [React.RefObject<HTMLElement>, () => any]
+type useScrollIntoViewReturn = [React.RefObject<HTMLElement | null>, () => any]
 
 export function userScrollIntoViewAfterImagesLoaded (shouldScrollIntoView: boolean): useScrollIntoViewReturn {
   // If we need to scroll the article in to view after render,

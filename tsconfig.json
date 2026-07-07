@@ -20,6 +20,11 @@
       "esnext",
     ],
     "resolveJsonModule": true,
+    // styled-components v6 (and other packages) ship an ESM `export default`.
+    // Allow synthetic default imports so `import styled from 'styled-components'`
+    // resolves to the real default type instead of `any`. This is type-check
+    // only; webpack handles the actual module interop at bundle time.
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "baseUrl": ".",
     "paths": {
