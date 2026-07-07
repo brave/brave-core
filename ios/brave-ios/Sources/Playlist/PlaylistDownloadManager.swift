@@ -15,7 +15,7 @@ protocol PlaylistDownloadManagerDelegate: AnyObject {
   func onDownloadProgressUpdate(id: String, percentComplete: Double)
   func onDownloadStateChanged(
     id: String,
-    state: PlaylistDownloadManager.DownloadState,
+    state: PlaylistDownloadManager.CacheState,
     displayName: String?,
     error: Error?
   )
@@ -29,7 +29,7 @@ private protocol PlaylistStreamDownloadManagerDelegate: AnyObject {
   func onDownloadStateChanged(
     streamDownloader: Any,
     id: String,
-    state: PlaylistDownloadManager.DownloadState,
+    state: PlaylistDownloadManager.CacheState,
     displayName: String?,
     error: Error?
   )
@@ -70,8 +70,8 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
     }
   }
 
-  public enum DownloadState: String {
-    case downloaded
+  public enum CacheState: String {
+    case cached
     case inProgress
     case invalid
   }
@@ -290,7 +290,7 @@ public class PlaylistDownloadManager: PlaylistStreamDownloadManagerDelegate {
   fileprivate func onDownloadStateChanged(
     streamDownloader: Any,
     id: String,
-    state: PlaylistDownloadManager.DownloadState,
+    state: PlaylistDownloadManager.CacheState,
     displayName: String?,
     error: Error?
   ) {
@@ -527,7 +527,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
       let temporaryUrl = temporaryUrl
     else { return }
 
-    // This method will delete the downloaded file immediately after this delegate method returns
+    // This method will delete the cached file immediately after this delegate method returns
     // so we must synchonously move the file to a temporary directory first before processing it
     // on a different thread since the Task will execute after this method returns
     let assetUrl = FileManager.default.temporaryDirectory
@@ -643,7 +643,7 @@ private class PlaylistHLSDownloadManager: NSObject, AVAssetDownloadDelegate {
               self.delegate?.onDownloadStateChanged(
                 streamDownloader: self,
                 id: asset.id,
-                state: .downloaded,
+                state: .cached,
                 displayName: nil,
                 error: nil
               )
@@ -877,7 +877,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
         }
       } catch {
         Logger.module.error(
-          "Error mapping downloaded playlist file to virtual memory: \(error.localizedDescription)"
+          "Error mapping cached playlist file to virtual memory: \(error.localizedDescription)"
         )
       }
     }
@@ -917,7 +917,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
     if let response = downloadTask.response as? HTTPURLResponse,
       response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299
     {
-      // This method will delete the downloaded file immediately after this delegate method returns
+      // This method will delete the cached file immediately after this delegate method returns
       // so we must synchonously move the file to a temporary directory first before processing it
       // on a different thread since the Task will execute after this method returns
       let temporaryLocation = FileManager.default.temporaryDirectory
@@ -957,7 +957,7 @@ private class PlaylistFileDownloadManager: NSObject, URLSessionDownloadDelegate 
               self.delegate?.onDownloadStateChanged(
                 streamDownloader: self,
                 id: asset.id,
-                state: .downloaded,
+                state: .cached,
                 displayName: nil,
                 error: nil
               )
@@ -1190,7 +1190,7 @@ private class PlaylistDataDownloadManager: NSObject, URLSessionDataDelegate {
             self.delegate?.onDownloadStateChanged(
               streamDownloader: self,
               id: asset.id,
-              state: .downloaded,
+              state: .cached,
               displayName: nil,
               error: nil
             )

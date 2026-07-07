@@ -44,7 +44,13 @@ struct PlaylistSettingsView: View {
       } footer: {
         Text(Strings.PlayList.playlistAutoPlaySettingsOptionFooterText)
       }
-      if FeatureList.kPlaylistOfflineCacheEnabled.enabled {
+
+      // Only surface the cache preference for the opt-in offline-cache path. Cache-first
+      // ignores this preference (it caches every item), so hide it when cache-first is enabled or
+      // when offline caching isn't enabled at all.
+      if FeatureList.kPlaylistOfflineCacheEnabled.enabled
+        && !FeatureList.kPlaylistCacheFirstEnabled.enabled
+      {
         Section {
           Picker(
             Strings.PlayList.playlistAutoSaveSettingsTitle,
