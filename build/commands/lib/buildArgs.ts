@@ -11,7 +11,6 @@ import path from 'node:path'
 
 const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'brave_android_developer_options_code',
-  'brave_google_api_endpoint',
   'brave_google_api_key',
   'brave_safebrowsing_api_key',
   'brave_services_dev_domain',
@@ -20,16 +19,13 @@ const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'brave_services_production_domain',
   'brave_services_staging_domain',
   'brave_stats_api_key',
-  'brave_stats_updater_url',
   'brave_sync_endpoint',
-  'brave_variations_server_url',
   'concurrent_links',
   'dcheck_always_on',
   'enable_updater',
   'google_default_client_id',
   'google_default_client_secret',
   'msan_track_origins',
-  'safebrowsing_api_endpoint',
   'service_key_aichat',
   'service_key_search',
   'service_key_stt',
@@ -332,11 +328,8 @@ export function getBuildArgs(config: Config) {
 
     args.brave_ios_developer_options_code = config.braveIOSDeveloperOptionsCode
 
-    delete args.safebrowsing_api_endpoint
     delete args.enable_hangout_services_extension
-    delete args.brave_google_api_endpoint
     delete args.brave_google_api_key
-    delete args.brave_stats_updater_url
     delete args.use_blink_v8_binding_new_idl_interface
     delete args.v8_enable_verify_heap
     delete args.service_key_stt

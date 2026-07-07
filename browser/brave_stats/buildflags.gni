@@ -6,7 +6,7 @@
 import("//brave/components/brave_origin/buildflags/buildflags.gni")
 
 declare_args() {
-  brave_stats_updater_url = ""
+  brave_stats_updater_url = "https://usage-ping.brave.com"
 
   enable_brave_stats_updater = !is_brave_origin_branded
 }
