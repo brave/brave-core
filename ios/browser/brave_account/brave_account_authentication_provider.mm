@@ -18,6 +18,9 @@
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 
+@implementation BraveAccount
+@end
+
 @implementation BraveAccountAuthenticationProvider
 
 + (id<BraveAccountAuthentication>)authenticationForProfile:

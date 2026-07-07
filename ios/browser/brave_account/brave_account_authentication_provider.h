@@ -14,6 +14,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 OBJC_EXPORT
+@interface BraveAccount : NSObject
+- (instancetype)init NS_UNAVAILABLE;
+@end
+
+OBJC_EXPORT
 NS_SWIFT_NAME(BraveAccount.AuthenticationProvider)
 @interface BraveAccountAuthenticationProvider : NSObject
 - (instancetype)init NS_UNAVAILABLE;

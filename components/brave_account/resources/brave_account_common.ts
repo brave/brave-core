@@ -25,10 +25,12 @@ import {
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
+} from './brave_account.mojom-webui.js'
+import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
   ResetPasswordServerErrorCode,
-} from './brave_account.mojom-webui.js'
+} from './reset_password.mojom-webui.js'
 import { BraveAccountStrings } from './brave_components_webui_strings.js'
 
 // Custom directive that freezes the previously rendered value when `freeze`
