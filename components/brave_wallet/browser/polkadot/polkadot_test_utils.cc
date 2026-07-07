@@ -1130,8 +1130,14 @@ bool PolkadotMockRpc::HandleAuthorSubmitExtrinsic(
           })");
 
       } else {
+        LOG(INFO) << "will I at least see this???";
+
         if (expected_extrinsic_.has_value()) {
+          LOG(INFO) << "omg is it this line?????";
+          LOG(INFO) << *extrinsic;
+          LOG(INFO) << *expected_extrinsic_;
           if (*expected_extrinsic_ != *extrinsic) {
+            LOG(INFO) << "Well, we better not see this...";
             url_loader_factory_->AddResponse(req.url.spec(), R"(
               {
                 "jsonrpc": "2.0",

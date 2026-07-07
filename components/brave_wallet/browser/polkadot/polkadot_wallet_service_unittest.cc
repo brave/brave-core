@@ -147,8 +147,8 @@ class PolkadotWalletServiceUnitTest : public testing::Test {
         test_future;
     polkadot_wallet_service.GenerateSignedTransferExtrinsic(
         mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-        std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
-        test_future.GetCallback());
+        std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+        recipient_pubkey, test_future.GetCallback());
     return test_future.Take();
   }
 
@@ -657,8 +657,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic) {
 
   polkadot_wallet_service->GenerateSignedTransferExtrinsic(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
-      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
-      test_future.GetCallback());
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey, test_future.GetCallback());
 
   auto signed_extrinsic = test_future.Take();
   ASSERT_TRUE(signed_extrinsic.has_value());
@@ -755,8 +755,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction) {
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      std::variant<uint128_t, TransferAll>(uint128_t{4321}), recipient_pubkey,
-      future.GetCallback());
+      std::variant<uint128_t, TransferAll>(uint128_t{4321}), std::nullopt,
+      recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -823,7 +823,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_WestendAssetHub) {
   polkadot_wallet_service->SignAndSendTransaction(
       mojom::kPolkadotTestnetAssetHub, sender->account_id.Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{4000000000000ull}),
-      recipient_pubkey, future.GetCallback());
+      std::nullopt, recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -894,7 +894,174 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
   polkadot_wallet_service->SignAndSendTransaction(
       mojom::kPolkadotPaseoAssetHub, sender->account_id.Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{432100000000ull}),
-      recipient_pubkey, future.GetCallback());
+      std::nullopt, recipient_pubkey, future.GetCallback());
+
+  auto tx_hash = future.Take();
+  ASSERT_TRUE(tx_hash.has_value());
+  EXPECT_EQ(
+      tx_hash->first,
+      "0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb");
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.extrinsic()),
+            kExpectedExtrinsic);
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.block_hash()),
+            "c3da0f76ab484260860d32dab28fb96f6b9a01b7c378587bebe37da88bb7f268");
+  EXPECT_EQ(tx_hash->second.block_num(), 9683370u);
+  EXPECT_EQ(tx_hash->second.mortality_period(), 64u);
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignAndSendTransaction_PaseoAssetHub_AssetId) {
+  keyring_service_->Reset();
+  GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
+
+  auto sender =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
+  auto recipient =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 1);
+  ASSERT_TRUE(sender);
+  ASSERT_TRUE(recipient);
+  SetPolkadotMockRndSeed(mojom::KeyringId::kPolkadotTestnet, 1234);
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(sender->account_id).value();
+  EXPECT_EQ(base::HexEncodeLower(sender_pubkey),
+            "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
+            "881b7e71e");
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  ASSERT_TRUE(base::HexStringToSpan(
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e",
+      recipient_pubkey));
+  EXPECT_EQ(
+      base::HexEncodeLower(
+          keyring_service_->GetPolkadotPubKey(recipient->account_id).value()),
+      base::HexEncodeLower(recipient_pubkey));
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  static constexpr char kExpectedExtrinsic[] =
+      "5902"
+      "84"
+      "00"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "01"
+      "d4d97e26d075a6588dc8a6f1ca670e1e4295df86695c56da9f356e34f6056f0c"
+      "39733a4052a24e605e02d15bcdb46e3018630098209af5ba546cac3274664781"
+      "a502"
+      "08"
+      "00"
+      "00"
+      "00"
+      "3209"
+      "cad1eb0b"  // Scale-encoded asset id.
+      "00"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "0700c12a9b64";
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
+  polkadot_mock_rpc->SetSubmittedExtrinsicHash(
+      "0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb");
+  polkadot_mock_rpc->AddPaseoAssetHubReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  base::test::TestFuture<base::expected<
+      std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
+      future;
+
+  const uint32_t asset_id = 50001010;
+
+  polkadot_wallet_service->SignAndSendTransaction(
+      mojom::kPolkadotPaseoAssetHub, sender->account_id.Clone(),
+      std::variant<uint128_t, TransferAll>(uint128_t{432100000000ull}),
+      asset_id, recipient_pubkey, future.GetCallback());
+
+  auto tx_hash = future.Take();
+  ASSERT_TRUE(tx_hash.has_value());
+  EXPECT_EQ(
+      tx_hash->first,
+      "0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb");
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.extrinsic()),
+            kExpectedExtrinsic);
+  EXPECT_EQ(base::HexEncodeLower(tx_hash->second.block_hash()),
+            "c3da0f76ab484260860d32dab28fb96f6b9a01b7c378587bebe37da88bb7f268");
+  EXPECT_EQ(tx_hash->second.block_num(), 9683370u);
+  EXPECT_EQ(tx_hash->second.mortality_period(), 64u);
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignAndSendTransaction_PaseoAssetHub_AssetId_TransferAll) {
+  keyring_service_->Reset();
+  GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
+
+  auto sender =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 0);
+  auto recipient =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kPolkadotTestnet, 1);
+  ASSERT_TRUE(sender);
+  ASSERT_TRUE(recipient);
+  SetPolkadotMockRndSeed(mojom::KeyringId::kPolkadotTestnet, 1234);
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(sender->account_id).value();
+  EXPECT_EQ(base::HexEncodeLower(sender_pubkey),
+            "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b"
+            "881b7e71e");
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  ASSERT_TRUE(base::HexStringToSpan(
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e",
+      recipient_pubkey));
+  EXPECT_EQ(
+      base::HexEncodeLower(
+          keyring_service_->GetPolkadotPubKey(recipient->account_id).value()),
+      base::HexEncodeLower(recipient_pubkey));
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  static constexpr char kExpectedExtrinsic[] =
+      "4502"
+      "84"
+      "00"
+      "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "01"
+      "a48263fa5ec7de68a8b5aa8773561fb2d9837c6253b1ff2fad652c03bfd0c414"
+      "119eea0d5fd38fc752d3cb40e316d8e25e26a08eafcd52a1b2f4bd06bb9d8e85"
+      "a502"
+      "08"
+      "00"
+      "00"
+      "00"
+      "3220"
+      "cad1eb0b"  // SCALE-encoded asset id.
+      "00"
+      "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
+      "00";
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
+  polkadot_mock_rpc->SetSubmittedExtrinsicHash(
+      "0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb");
+  polkadot_mock_rpc->AddPaseoAssetHubReqResPairs();
+  polkadot_mock_rpc->FinalizeSetup();
+
+  base::test::TestFuture<base::expected<
+      std::pair<std::string, PolkadotExtrinsicMetadata>, std::string>>
+      future;
+
+  const uint32_t asset_id = 50001010;
+
+  polkadot_wallet_service->SignAndSendTransaction(
+      mojom::kPolkadotPaseoAssetHub, sender->account_id.Clone(), TransferAll{},
+      asset_id, recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -965,7 +1132,7 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PolkadotAssetHub) {
   polkadot_wallet_service->SignAndSendTransaction(
       mojom::kPolkadotMainnetAssetHub, sender->account_id.Clone(),
       std::variant<uint128_t, TransferAll>(uint128_t{10000000000ull}),
-      recipient_pubkey, future.GetCallback());
+      std::nullopt, recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -1016,8 +1183,8 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_TransferAll) {
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      std::variant<uint128_t, TransferAll>(TransferAll{}), recipient_pubkey,
-      future.GetCallback());
+      std::variant<uint128_t, TransferAll>(TransferAll{}), std::nullopt,
+      recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_TRUE(tx_hash.has_value());
@@ -1061,8 +1228,8 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
   polkadot_wallet_service->SignAndSendTransaction(
       chain_id, polkadot_mainnet_account_->account_id.Clone(),
-      std::variant<uint128_t, TransferAll>(uint128_t{4321}), recipient_pubkey,
-      future.GetCallback());
+      std::variant<uint128_t, TransferAll>(uint128_t{4321}), std::nullopt,
+      recipient_pubkey, future.GetCallback());
 
   auto tx_hash = future.Take();
   ASSERT_FALSE(tx_hash.has_value());
@@ -1094,7 +1261,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate) {
 
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
-      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_TRUE(partial_fee.has_value());
@@ -1131,7 +1299,8 @@ TEST_F(PolkadotWalletServiceUnitTest, GetFeeEstimate_NetworkFailure) {
 
   polkadot_wallet_service->GetFeeEstimate(
       chain_id, polkadot_testnet_account_->account_id->Clone(),
-      std::variant<uint128_t, TransferAll>(uint128_t{1234}), recipient_pubkey,
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey,
       base::BindLambdaForTesting(
           [=](base::expected<uint128_t, std::string> partial_fee) {
             ASSERT_FALSE(partial_fee.has_value());

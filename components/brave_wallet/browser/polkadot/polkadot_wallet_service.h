@@ -99,6 +99,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::string chain_id,
       mojom::AccountIdPtr account_id,
       std::variant<uint128_t, TransferAll> transfer_amount,
+      std::optional<uint32_t> asset_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
 
@@ -106,6 +107,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::string chain_id,
       mojom::AccountIdPtr account_id,
       std::variant<uint128_t, TransferAll> transfer_amount,
+      std::optional<uint32_t> asset_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       SignAndSendTransactionCallback callback);
 
@@ -118,6 +120,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       std::string chain_id,
       mojom::AccountIdPtr account_id,
       std::variant<uint128_t, TransferAll> transfer_amount,
+      std::optional<uint32_t> asset_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GetFeeEstimateCallback callback);
 
@@ -130,6 +133,7 @@ class PolkadotWalletService : public mojom::PolkadotWalletService,
       mojom::AccountIdPtr account_id,
       bool use_dummy_signature,
       std::variant<uint128_t, TransferAll> transfer_amount,
+      std::optional<uint32_t> asset_id,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
       GenerateSignedTransferExtrinsicCallback callback);
   void OnGenerateSignedTransferExtrinsic(
