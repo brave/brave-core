@@ -621,6 +621,18 @@ public abstract class BraveActivity extends ChromeActivity
     }
 
     @Override
+    public void onNightModeStateChanged() {
+        // A dark/light theme change recreates the activity, which while a Brave-managed YouTube PiP
+        // session is active destroys the activity backing the PiP window. Let the controller decide
+        // whether to defer it; it re-applies the change on PiP exit via
+        // applyDeferredNightModeRecreate().
+        if (getYouTubePictureInPictureController().maybeDeferNightModeRecreate()) {
+            return;
+        }
+        super.onNightModeStateChanged();
+    }
+
+    @Override
     public void onPictureInPictureModeChanged(boolean inPicture, Configuration newConfig) {
         super.onPictureInPictureModeChanged(inPicture, newConfig);
         BraveYouTubePictureInPictureController controller = getYouTubePictureInPictureController();
@@ -2390,6 +2402,17 @@ public abstract class BraveActivity extends ChromeActivity
      */
     public void onYouTubePictureInPictureNewTab() {
         getYouTubePictureInPictureController().onNewTabDuringPictureInPicture();
+    }
+
+    /**
+     * Applies a night-mode theme recreation from the controller while a YouTube PiP session
+     * was active. Exists as a shim because {@code super.onNightModeStateChanged()} is not reachable
+     * from the controller.
+     *
+     * @see BraveYouTubePictureInPictureController#maybeDeferNightModeRecreate
+     */
+    public void applyDeferredNightModeRecreate() {
+        super.onNightModeStateChanged();
     }
 
     /**
