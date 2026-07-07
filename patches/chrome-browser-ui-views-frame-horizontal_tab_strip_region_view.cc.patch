@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987c55531f0 100644
+index 4f1b3ffb432bcbe1596a32ff2d59fa48716b5dbb..8875f52ffe15110e25d429c1eb056743cb817812 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -153,14 +153,14 @@ std::unique_ptr<TabStrip> CreateTabStrip(
+@@ -160,14 +160,14 @@ std::unique_ptr<TabStrip> CreateTabStrip(
              ->GetTabMenuModelFactory();
    }
  
@@ -21,7 +21,7 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
                                                std::move(hover_card_controller));
    return tab_strip;
  }
-@@ -237,7 +237,7 @@ HorizontalTabStripRegionView::HorizontalTabStripRegionView(
+@@ -244,7 +244,7 @@ HorizontalTabStripRegionViewOld::HorizontalTabStripRegionViewOld(
  
    if (ShouldShowNewTabButton(browser)) {
      std::unique_ptr<TabStripControlButton> tab_strip_control_button =
@@ -30,7 +30,7 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
              base::BindRepeating(&TabStrip::NewTabButtonPressed,
                                  base::Unretained(tab_strip_)),
              features::IsRoundedIconsEnabled() ? vector_icons::kAddWeight500Icon
-@@ -494,14 +494,14 @@ void HorizontalTabStripRegionView::InitializeTabStrip() {
+@@ -487,14 +487,14 @@ void HorizontalTabStripRegionViewOld::InitializeTabStrip() {
    }
  
    tab_strip_->Initialize();
@@ -40,14 +40,14 @@ index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987
    tab_strip_set_ = true;
  }
  
- void HorizontalTabStripRegionView::ResetTabStrip() {
+ void HorizontalTabStripRegionViewOld::ResetTabStrip() {
    tab_strip_set_ = false;
 -  static_cast<BrowserTabStripController*>(tab_strip_->controller())->Reset();
 +  static_cast<BraveBrowserTabStripController*>(tab_strip_->controller())->Reset();
    tab_strip_->Reset();
  }
  
-@@ -617,7 +617,7 @@ void HorizontalTabStripRegionView::UpdateButtonBorders() {
+@@ -617,7 +617,7 @@ void HorizontalTabStripRegionViewOld::UpdateButtonBorders() {
    const int extra_vertical_space =
        GetLayoutConstant(LayoutConstant::kTabStripHeight) -
        GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
