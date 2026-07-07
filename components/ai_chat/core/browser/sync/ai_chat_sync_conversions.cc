@@ -20,6 +20,7 @@
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/strings/strcat.h"
+#include "base/strings/string_view_util.h"
 #include "base/system/sys_info.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -55,6 +56,13 @@ void OmitCompressibleString(sync_pb::AIChatCompressibleString* out) {
   const std::string value =
       ReadCompressibleString(*out).value_or(std::string());
   out->set_omitted_content_hash(base::PersistentHash(value));
+}
+
+void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file) {
+  // Replace the raw bytes with a hash of them so the receiver can restore the
+  // file from a local copy with identical content. Setting the hash arm of the
+  // oneof clears |data|. Mirrors OmitCompressibleString for binary attachments.
+  file->set_omitted_data_hash(base::PersistentHash(file->data()));
 }
 
 std::optional<std::string> ReadCompressibleString(
@@ -215,7 +223,7 @@ void WriteUploadedFile(const mojom::UploadedFile& file,
   // Raw bytes are inlined here; the size-budget policy may later omit them
   // and set |omitted_data_hash| if the entry exceeds the size cap.
   if (!file.data.empty()) {
-    proto->set_data(file.data.data(), file.data.size());
+    proto->set_data(base::as_string_view(file.data));
   }
   if (file.extracted_text) {
     WriteCompressibleString(*file.extracted_text,

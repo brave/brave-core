@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/hash/hash.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -82,6 +83,18 @@ TEST(AIChatSyncConversionsTest, OmitCompressibleStringHashesGzippedPlaintext) {
   EXPECT_EQ(out.omitted_content_hash(), base::PersistentHash(value));
 }
 
+TEST(AIChatSyncConversionsTest, OmitUploadedFileDataStoresDataHash) {
+  sync_pb::AIChatUploadedFile file;
+  const std::string bytes = "some raw uploaded file bytes";
+  file.set_data(bytes);
+  OmitUploadedFileData(&file);
+  EXPECT_FALSE(file.has_data());
+  EXPECT_TRUE(file.has_omitted_data_hash());
+  // The hash is over the original bytes so a receiver can match it against a
+  // local copy.
+  EXPECT_EQ(file.omitted_data_hash(), base::PersistentHash(bytes));
+}
+
 TEST(AIChatSyncConversionsTest, ReadCompressibleStringRawRoundTrip) {
   sync_pb::AIChatCompressibleString in;
   in.set_raw("plain");
@@ -135,12 +148,9 @@ TEST(AIChatSyncConversionsTest,
 
   std::string gzipped = in.gzipped();
   ASSERT_GE(gzipped.size(), 4u);
-  const uint32_t forged_size =
-      static_cast<uint32_t>(kSyncCompressionMaxDecompressedBytes + 1);
-  gzipped[gzipped.size() - 4] = static_cast<char>(forged_size & 0xFF);
-  gzipped[gzipped.size() - 3] = static_cast<char>((forged_size >> 8) & 0xFF);
-  gzipped[gzipped.size() - 2] = static_cast<char>((forged_size >> 16) & 0xFF);
-  gzipped[gzipped.size() - 1] = static_cast<char>((forged_size >> 24) & 0xFF);
+  base::as_writable_byte_span(gzipped).last<4u>().copy_from(
+      base::U32ToLittleEndian(
+          static_cast<uint32_t>(kSyncCompressionMaxDecompressedBytes + 1)));
   in.set_gzipped(gzipped);
 
   EXPECT_EQ(ReadCompressibleString(in), std::nullopt);

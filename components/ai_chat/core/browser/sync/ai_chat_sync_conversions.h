@@ -19,6 +19,7 @@
 namespace sync_pb {
 class AIChatCompressibleString;
 class AIChatConversationSpecifics;
+class AIChatUploadedFile;
 class EntitySpecifics;
 }  // namespace sync_pb
 
@@ -38,8 +39,8 @@ inline constexpr size_t kSyncCompressionThresholdBytes = 256;
 
 // Soft cap on the serialized size of a single sync record. Leaves headroom
 // under the 400 KB-per-entity server limit for sync framing and encryption
-// overhead. When an Entry would exceed this size, the truncation policy
-// drops bytes from low-priority fields until it fits.
+// overhead. When an Entry would exceed this size, the size-budget policy omits
+// low-priority fields until it fits.
 inline constexpr size_t kSyncMaxRecordBytes = 350 * 1024;
 
 // Hard cap on the decompressed size of a single field. Protection against
@@ -59,6 +60,12 @@ void WriteCompressibleString(std::string_view value,
 // value from a local copy that hashes identically, or preserves any existing
 // local value.
 void OmitCompressibleString(sync_pb::AIChatCompressibleString* out);
+
+// Omits |file|'s raw bytes, replacing them with a hash of their content (see
+// AIChatUploadedFile::omitted_data_hash). Mirrors OmitCompressibleString for
+// the binary-attachment case; the receiver restores the bytes from a local
+// copy that hashes identically.
+void OmitUploadedFileData(sync_pb::AIChatUploadedFile* file);
 
 // Reads a value from |in|. Returns std::nullopt when there is no usable value
 // to apply, for any of three reasons: the value was omitted for sync
