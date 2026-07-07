@@ -37,11 +37,7 @@ class BraveBrowser : public Browser {
   void BeforeUnloadFired(content::WebContents* source,
                          bool proceed,
                          bool* proceed_to_fire_unload) override;
-  bool TryToCloseWindow(
-      bool skip_beforeunload,
-      const base::RepeatingCallback<void(bool)>& on_close_confirmed) override;
   void UpdateTargetURL(content::WebContents* source, const GURL& url) override;
-  void ResetTryToCloseWindow() override;
   content::WebContents* AddNewContents(
       content::WebContents* source,
       std::unique_ptr<content::WebContents> new_contents,

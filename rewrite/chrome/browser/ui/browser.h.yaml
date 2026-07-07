@@ -9,20 +9,10 @@ substitutions:
       class_name: Browser
       method_name: ScheduleUIUpdate
 
-  - description: 'Make TryToCloseWindow virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: TryToCloseWindow
-
   - description: 'Make OnTabClosing virtual'
     make_virtual:
       class_name: Browser
       method_name: OnTabClosing
-
-  - description: 'Make ResetTryToCloseWindow virtual'
-    make_virtual:
-      class_name: Browser
-      method_name: ResetTryToCloseWindow
 
   - description: 'Friend BraveBrowser and BookmarkPrefsService'
     add_friend:
