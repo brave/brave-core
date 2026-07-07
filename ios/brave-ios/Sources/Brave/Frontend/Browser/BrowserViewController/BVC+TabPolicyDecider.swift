@@ -40,6 +40,7 @@ extension BrowserViewController: TabPolicyDecider {
     {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
+          isPrivateBrowsing: tab.isPrivate,
           isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: pageData.mainFrameURL,
@@ -322,6 +323,7 @@ extension BrowserViewController: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
+            isPrivateBrowsing: tab.isPrivate,
             isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
             isAdBlockEnabled: isAdBlockEnabled,
             isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
