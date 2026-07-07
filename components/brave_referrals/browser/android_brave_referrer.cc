@@ -28,7 +28,12 @@ void BraveReferrer::InitReferrer(InitReferrerCallback init_referrer_callback) {
 }
 
 void BraveReferrer::OnReferrerReady(JNIEnv* env) {
-  std::move(init_referrer_callback_).Run();
+  // The Java InstallReferrerStateListener can signal readiness more than once
+  // (e.g. the referrer setup finishes and then the Play Store service later
+  // disconnects), so only run the callback if it hasn't been consumed yet.
+  if (init_referrer_callback_) {
+    std::move(init_referrer_callback_).Run();
+  }
 }
 
 }  // namespace android_brave_referrer
