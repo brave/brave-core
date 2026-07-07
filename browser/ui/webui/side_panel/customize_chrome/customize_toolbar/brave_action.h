@@ -130,15 +130,6 @@ inline constexpr BraveAction kShowScreenshotAction = {
     .pref_name = kShowScreenshotButton,
     .icon = kLeoScreenshotIcon};
 
-inline constexpr BraveAction kShowShareMenuAction = {
-    .id = side_panel::customize_chrome::mojom::ActionId::kShowShareMenu,
-    .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_SHARE_MENU,
-    .anchor = side_panel::customize_chrome::mojom::ActionId::
-        kShowShareMenu,  // assign id of itself to append to the end of the list
-    .category = side_panel::customize_chrome::mojom::CategoryId::kAddressBar,
-    .pref_name = prefs::kPinShareMenuButton,
-    .icon = omnibox::kShareChromeRefreshOldIcon};
-
 inline constexpr BraveAction kShowPwaInstallAction = {
     .id = side_panel::customize_chrome::mojom::ActionId::kShowPwaInstall,
     .display_name_resource_id = IDS_CUSTOMIZE_TOOLBAR_TOGGLE_PWA_INSTALL,
@@ -170,7 +161,6 @@ inline constexpr auto kBraveActions =
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
         {kShowBraveNews.id, &kShowBraveNews},
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
-        {kShowShareMenuAction.id, &kShowShareMenuAction},
         {kShowPwaInstallAction.id, &kShowPwaInstallAction},
     });
 

@@ -71,10 +71,6 @@ void AddActionsForAddressBarCategory(Profile* profile,
   }
 #endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
-  if (!sharing_hub::SharingIsDisabledByPolicy(profile)) {
-    brave_actions.push_back(kShowShareMenuAction);
-  }
-
   // PWA install button is always available (pref controls visibility)
   brave_actions.push_back(kShowPwaInstallAction);
 }
@@ -201,7 +197,6 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   // Address bar
   //   kShowReward
   //   kShowBraveNews
-  //   kShowShareMenu
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
