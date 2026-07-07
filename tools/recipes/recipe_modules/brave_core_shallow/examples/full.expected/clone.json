@@ -1,0 +1,32 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/chromium/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "sparse-checkout",
+      "add",
+      "third_party/node"
+    ],
+    "name": "sparse-checkout add"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

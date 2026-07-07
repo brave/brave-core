@@ -10,12 +10,12 @@ detection), instantiates each recipe module's `RecipeApi`, wires dependencies
 onto each module's `.m` injection site, and finally calls the recipe's
 `RunSteps(api, properties)`.
 
-This is intentionally minimal -- a starting point modelled on chrome-infra's
-recipes_py that we will grow incrementally. Notable simplifications vs upstream:
+This is intentionally minimal for now as a starting point modelled on
+chrome-infra's recipes_py that we will grow incrementally. Notable
+simplifications vs upstream:
 
   * Single repo only; module names are bare directory names under
     `recipe_modules/` (no `repo/module` qualification).
-  * No TEST_API / GenTests, no expectations, no warnings framework.
   * Properties are a plain object, not a protobuf message.
 
 Run a recipe directly (recipe names are `/`-separated paths under recipes/).
@@ -88,11 +88,21 @@ class _Engine:
 
     def __init__(self,
                  workspace: str | Path | None = None,
-                 brave_core_ref: str = 'master') -> None:
+                 brave_core_ref: str = 'master',
+                 test: object | None = None) -> None:
         _ensure_on_sys_path()
+        # Simulation context, or None in production. When set, the engine runs
+        # in test mode: it seeds this onto every module (so the seam modules
+        # simulate I/O) and does not touch the real cwd.
+        self._test = test
         # Root directory the job runs in. Recipe paths (chromium/src, out, ...)
-        # are derived from it by the `path` module. Defaults to the cwd.
-        if workspace:
+        # are derived from it by the `path` module.
+        if self._test is not None:
+            # Fixed synthetic workspace so module-derived paths are
+            # deterministic; never chdir'd into (nothing runs on disk).
+            from simulation import SIM_WORKSPACE
+            self._workspace = Path(str(SIM_WORKSPACE))
+        elif workspace:
             self._workspace = Path(workspace).expanduser().resolve()
             # Run from the workspace so every subprocess the recipes launch
             # inherits it as their cwd.
@@ -129,6 +139,12 @@ class _Engine:
         # A module can reach itself via `self.m.<own_name>`, as in recipes_py.
         setattr(inst.m, name, inst)
 
+        # Seed the simulation context (test mode only) after DEPS are wired but
+        # before initialise(), so a module's initialise() can already use the
+        # seam modules (e.g. depot_tools reading api.platform.is_win).
+        if self._test is not None:
+            setattr(inst, '_test', self._test)
+
         inst.initialise()
         self._cache[name] = inst
         return inst
@@ -136,12 +152,19 @@ class _Engine:
     def run_recipe(self,
                    recipe_name: str,
                    properties: dict[str, object] | None = None) -> object:
-        # Recipe names are `/`-separated paths under recipes/ (e.g.
-        # `toolchains/rust/package_rust`), mirroring recipes_py; map them to the
-        # dotted module path importlib expects.
-        module_path = recipe_name.replace('/', '.')
-        recipe = importlib.import_module(f'{RECIPES_PKG}.{module_path}')
+        return self.run_loaded_recipe(_import_recipe(recipe_name), recipe_name,
+                                      properties)
 
+    def run_loaded_recipe(
+            self,
+            recipe: types.ModuleType,
+            recipe_name: str,
+            properties: dict[str, object] | None = None) -> object:
+        """Run an already-imported *recipe* module's `RunSteps`.
+
+        Splits the import from the run so the test runner can import a recipe
+        once (from either `recipes/` or a module's `examples/`) and drive it.
+        """
         api = RecipeScriptApi()
         for dep_name in getattr(recipe, 'DEPS', []):
             setattr(api, dep_name, self._instantiate_module(dep_name, []))
@@ -150,13 +173,41 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
+        # In test mode, source `from_environ` properties from the simulated
+        # environment so expectations don't depend on the host's env vars.
+        environ = self._test.env if self._test is not None else os.environ
         props_obj = _build_properties(getattr(recipe, 'PROPERTIES', None),
-                                      properties or {})
+                                      properties or {}, environ)
         return run_steps(api, props_obj)
 
 
+def _module_names() -> set[str]:
+    """Names of the recipe modules under `recipe_modules/`."""
+    modules_dir = RECIPES_ROOT / MODULES_PKG
+    return {
+        entry.name
+        for entry in modules_dir.iterdir()
+        if entry.is_dir() and (entry / '__init__.py').exists()
+    }
+
+
+def _import_recipe(recipe_name: str) -> types.ModuleType:
+    """Import a recipe by its `/`-separated id.
+
+    Ids whose first segment is a recipe module (e.g. `step/examples/full`) load
+    from `recipe_modules/`; all others load from `recipes/` (e.g.
+    `toolchains/rust/package_rust`).
+    """
+    _ensure_on_sys_path()
+    module_path = recipe_name.replace('/', '.')
+    first = recipe_name.split('/', 1)[0]
+    pkg = MODULES_PKG if first in _module_names() else RECIPES_PKG
+    return importlib.import_module(f'{pkg}.{module_path}')
+
+
 def _build_properties(properties_def: type | None,
-                      properties: dict[str, object]) -> object:
+                      properties: dict[str, object],
+                      environ: object | None = None) -> object:
     """Build the properties object passed as `RunSteps`' second argument.
 
     If the recipe declares `PROPERTIES` (any callable, e.g. a dataclass), it is
@@ -166,7 +217,8 @@ def _build_properties(properties_def: type | None,
     """
     if properties_def is None:
         return types.SimpleNamespace(**properties)
-    values = apply_environ(properties_def, properties, os.environ)
+    values = apply_environ(properties_def, properties,
+                           os.environ if environ is None else environ)
     return properties_def(**values)
 
 
@@ -180,6 +232,16 @@ def run_recipe(recipe_name: str,
 
 
 def main(argv: list[str] | None = None) -> int:
+    argv = sys.argv[1:] if argv is None else list(argv)
+    # `engine.py test run|train|list [...]` dispatches to the simulation-test
+    # runner; everything else runs a recipe (the original CLI, unchanged).
+    if argv and argv[0] == 'test':
+        # Imported via importlib (not a plain `import`) so there is no static
+        # engine -> recipe_test_runner import edge: the runner imports engine,
+        # and this keeps that dependency one-directional (no import cycle).
+        runner = importlib.import_module('recipe_test_runner')
+        return runner.main(argv[1:])
+
     parser = argparse.ArgumentParser(description='Run a Brave recipe.')
     parser.add_argument(
         'recipe',

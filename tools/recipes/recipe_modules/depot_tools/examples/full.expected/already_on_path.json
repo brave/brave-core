@@ -1,0 +1,13 @@
+[
+  {
+    "cmd": [
+      "/existing/depot_tools/vpython3",
+      "--version"
+    ],
+    "name": "use vpython3"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

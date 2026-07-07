@@ -1,0 +1,99 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "1",
+      "https://chromium.googlesource.com/chromium/tools/depot_tools",
+      "[WORKSPACE]/chromium/third_party/depot_tools"
+    ],
+    "name": "clone depot_tools"
+  },
+  {
+    "cmd": [
+      "gclient"
+    ],
+    "name": "verify gclient"
+  },
+  {
+    "cmd": [
+      "fetch",
+      "--nohooks",
+      "chromium"
+    ],
+    "cwd": "[WORKSPACE]/chromium",
+    "name": "fetch chromium"
+  },
+  {
+    "cmd": [
+      "git",
+      "fetch",
+      "--no-tags",
+      "origin",
+      "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "fetch tag"
+  },
+  {
+    "cmd": [
+      "git",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "checkout FETCH_HEAD"
+  },
+  {
+    "cmd": [
+      "gclient",
+      "sync",
+      "--force",
+      "-D"
+    ],
+    "cwd": "[WORKSPACE]/chromium/src",
+    "name": "gclient sync"
+  },
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/chromium/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "sparse-checkout",
+      "add",
+      "third_party/ast-grep"
+    ],
+    "name": "sparse-checkout add"
+  },
+  {
+    "cmd": [
+      "[WORKSPACE]/chromium/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/chromium/src/brave/third_party/ast-grep/package_ast_grep.py",
+      "--clean",
+      "--out-dir",
+      "[WORKSPACE]/out"
+    ],
+    "name": "package ast-grep"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

@@ -1,0 +1,13 @@
+[
+  {
+    "cmd": [
+      "echo",
+      "[WORKSPACE]/out"
+    ],
+    "name": "out ready"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]

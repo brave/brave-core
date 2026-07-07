@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+import post_process
 from recipe_properties import Property
 
 if TYPE_CHECKING:
@@ -46,3 +47,29 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
         '--clear',
         '--no-full-toolchain',
     ])
+
+
+def GenTests(api):
+    # Happy path: checkout (with a seeded git cache), deploy the build scripts,
+    # then build. `with_git_cache`/`deployed` seed chromium_checkout's and
+    # brave_core_shallow's preconditions.
+    yield api.test(
+        'linux',
+        api.chromium_checkout.with_git_cache(),
+        api.brave_core_shallow.deployed('tools/cr/toolchains'),
+        api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
+        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'fetch tag'),
+        api.post_process(post_process.MustRun, 'build rust toolchain'),
+        api.post_process(post_process.StepCommandContains,
+                         'build rust toolchain', ['--brave-subrevision', '1']),
+        api.post_process(post_process.StatusSuccess),
+    )
+    # Without a git cache, the checkout refuses to run.
+    yield api.test(
+        'no git cache',
+        api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
+        api.post_process(post_process.StatusException),
+        api.post_process(post_process.DropExpectation),
+        status='EXCEPTION',
+    )

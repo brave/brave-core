@@ -8,6 +8,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
+import post_process
 from recipe_properties import Property
 
 if TYPE_CHECKING:
@@ -41,3 +42,15 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
         '--out-dir',
         api.path.out,
     ])
+
+
+def GenTests(api):
+    yield api.test(
+        'linux',
+        api.chromium_checkout.with_git_cache(),
+        api.brave_core_shallow.deployed('third_party/ast-grep'),
+        api.properties(chromium_ref='151.0.7917.1'),
+        api.post_process(post_process.MustRun, 'fetch chromium'),
+        api.post_process(post_process.MustRun, 'package ast-grep'),
+        api.post_process(post_process.StatusSuccess),
+    )

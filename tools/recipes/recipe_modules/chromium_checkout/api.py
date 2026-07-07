@@ -7,11 +7,9 @@
 from __future__ import annotations
 
 import logging
-import os
 from pathlib import Path
 import re
 import subprocess
-import sys
 
 from recipe_api import RecipeApi
 
@@ -56,7 +54,7 @@ class ChromiumCheckoutApi(RecipeApi):
         """
         if chromium_src is None:
             chromium_src = self.m.path.chromium_src
-        chromium_src = Path(chromium_src).expanduser().resolve()
+        chromium_src = self.m.path.abs(chromium_src)
 
         if git_cache is not None:
             self.set_git_cache(git_cache or None)
@@ -91,13 +89,13 @@ class ChromiumCheckoutApi(RecipeApi):
             RuntimeError: If `GIT_CACHE_PATH` is unset or not a directory. Set
                 it in the environment or via `set_git_cache()` beforehand.
         """
-        git_cache_path = os.environ.get('GIT_CACHE_PATH')
+        git_cache_path = self.m.env.get('GIT_CACHE_PATH')
         if not git_cache_path:
             raise RuntimeError(
                 'GIT_CACHE_PATH is not set; a shared git cache is required. '
                 'Set it in the environment or via set_git_cache() before '
                 'running the checkout.')
-        if not Path(git_cache_path).is_dir():
+        if not self.m.path.is_dir(git_cache_path):
             raise RuntimeError(
                 f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}')
         logging.info('Using GIT_CACHE_PATH=%s', git_cache_path)
@@ -123,22 +121,22 @@ class ChromiumCheckoutApi(RecipeApi):
             RuntimeError: If `GIT_CACHE_PATH` is already set, or the resolved
                 directory does not exist.
         """
-        if 'GIT_CACHE_PATH' in os.environ:
+        if 'GIT_CACHE_PATH' in self.m.env:
             raise RuntimeError('GIT_CACHE_PATH is already set in the '
                                'environment.')
 
         if path:
-            git_cache_path = Path(path).expanduser()
+            git_cache_path = self.m.path.abs(path)
         else:
-            home_var = 'USERPROFILE' if sys.platform == 'win32' else 'HOME'
-            home = os.environ.get(home_var, str(Path.home()))
+            home_var = 'USERPROFILE' if self.m.platform.is_win else 'HOME'
+            home = self.m.env.get(home_var) or self.m.path.home()
             git_cache_path = Path(home) / 'cache'
 
-        if not git_cache_path.is_dir():
+        if not self.m.path.is_dir(git_cache_path):
             raise RuntimeError(
                 f'GIT_CACHE_PATH is not a valid directory: {git_cache_path}')
 
-        os.environ['GIT_CACHE_PATH'] = str(git_cache_path)
+        self.m.env.set('GIT_CACHE_PATH', str(git_cache_path))
         logging.info('Set GIT_CACHE_PATH=%s', git_cache_path)
         return git_cache_path
 
@@ -146,7 +144,7 @@ class ChromiumCheckoutApi(RecipeApi):
         """Return whether *chromium_src* points to a valid Chromium repo."""
         chromium_src = Path(chromium_src)
         # `chrome/VERSION` is an unmistakable trait of a proper checkout.
-        if not (chromium_src / CHROME_VERSION_FILE).exists():
+        if not self.m.path.exists(chromium_src / CHROME_VERSION_FILE):
             return False
 
         logging.info('Checking for valid Chromium repo at %s', chromium_src)
@@ -163,7 +161,7 @@ class ChromiumCheckoutApi(RecipeApi):
     def clone(self, chromium_src: str | Path) -> None:
         """Clone a fresh Chromium checkout at *chromium_src* via `fetch`."""
         chromium_src = Path(chromium_src)
-        chromium_src.parent.mkdir(parents=True, exist_ok=True)
+        self.m.path.mkdir(chromium_src.parent)
         self.m.step('fetch chromium', ['fetch', '--nohooks', 'chromium'],
                     cwd=chromium_src.parent)
 
@@ -171,11 +169,11 @@ class ChromiumCheckoutApi(RecipeApi):
         """Check out *ref* in *chromium_src* and resync dependencies."""
         chromium_src = Path(chromium_src)
         logging.info('Checking out Chromium ref %s', ref)
-        if (sys.platform == 'win32'
-                and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in os.environ):
+        if (self.m.platform.is_win
+                and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in self.m.env):
             # Build hermetically without a local VS install.
-            os.environ['DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL'] = (
-                WIN_HERMETIC_TOOLCHAIN_BASE_URL)
+            self.m.env.set('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL',
+                           WIN_HERMETIC_TOOLCHAIN_BASE_URL)
 
         if re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref):
             # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
