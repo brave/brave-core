@@ -7,8 +7,7 @@
 
 #include "base/notimplemented.h"
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
 
 void BraveVpnServiceImpl::GetPurchaseToken(GetPurchaseTokenCallback callback) {
   NOTIMPLEMENTED();
@@ -92,5 +91,4 @@ void BraveVpnServiceImpl::RecordAndroidBackgroundP3A(
   NOTIMPLEMENTED();
 }
 
-}  // namespace v2
-}  // namespace brave_vpn
+}  // namespace brave_vpn::v2

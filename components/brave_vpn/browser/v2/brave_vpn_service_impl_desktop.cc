@@ -3,13 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <utility>
+
 #include "base/notimplemented.h"
 #include "brave/components/brave_vpn/browser/v2/brave_vpn_service_impl.h"
+#include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 
-namespace brave_vpn {
-namespace v2 {
+namespace brave_vpn::v2 {
 
 bool BraveVpnServiceImpl::IsConnected() const {
   NOTIMPLEMENTED();
@@ -115,9 +117,7 @@ void BraveVpnServiceImpl::SetConnectionStateForTesting(  // IN-TEST
 void BraveVpnServiceImpl::SetPurchasedStateForTesting(  // IN-TEST
     const std::string& env,
     mojom::PurchasedState state) {
-  purchased_state_ = state;
-  NotifyPurchasedStateChanged(state, std::nullopt);
+  purchased_state_manager_->SetPurchasedState(env, state);
 }
 
-}  // namespace v2
-}  // namespace brave_vpn
+}  // namespace brave_vpn::v2
