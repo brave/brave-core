@@ -69,6 +69,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_utils.h"
 #include "chrome/browser/ui/ui_features.h"
+#include "chrome/browser/ui/unload_controller.h"
 #include "chrome/common/channel_info.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/common/pref_names.h"
@@ -147,8 +148,8 @@ namespace {
 
 bool CanTakeTabs(const Browser* from, const Browser* to) {
   return from != to && from->type() == Browser::TYPE_NORMAL &&
-         !from->IsAttemptingToCloseBrowser() && !from->IsDeleteScheduled() &&
-         to->profile() == from->profile();
+         !UnloadController::From(from)->is_attempting_to_close_browser() &&
+         !from->IsDeleteScheduled() && to->profile() == from->profile();
 }
 
 std::vector<int> GetSelectedIndices(Browser* browser) {

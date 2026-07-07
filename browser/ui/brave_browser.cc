@@ -279,25 +279,6 @@ void BraveBrowser::BeforeUnloadFired(content::WebContents* source,
   Browser::BeforeUnloadFired(source, proceed, proceed_to_fire_unload);
 }
 
-bool BraveBrowser::TryToCloseWindow(
-    bool skip_beforeunload,
-    const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
-  // Window closing could be asked directly to browser object by this method.
-  // For example, when user tries to delete profile, this method is called on
-  // all its browser object. After all handlers are done, its all browser window
-  // start to close. In this case, we should not ask to users about this
-  // closing. So, treats like user confirmed closing. If this try blocked by
-  // user, |confirmed_to_close_| is set to false by ResetTryToCloseWindow().
-  UnloadController::From(this)->set_confirmed_to_close(true);
-  return Browser::TryToCloseWindow(skip_beforeunload,
-                                   std::move(on_close_confirmed));
-}
-
-void BraveBrowser::ResetTryToCloseWindow() {
-  UnloadController::From(this)->set_confirmed_to_close(false);
-  Browser::ResetTryToCloseWindow();
-}
-
 void BraveBrowser::UpdateTargetURL(content::WebContents* source,
                                    const GURL& url) {
   GURL target_url = url;

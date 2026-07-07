@@ -6,27 +6,10 @@
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/brave_tab_strip_model_delegate.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
-#include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "chrome/browser/ui/browser_command_controller.h"
-#include "chrome/browser/ui/tabs/features.h"
 
 #define BrowserTabStripModelDelegate BraveTabStripModelDelegate
-#define BRAVE_BROWSER_ON_WINDOW_CLOSING                                   \
-  if (base::FeatureList::IsEnabled(tabs::kBraveSharedPinnedTabs)) {       \
-    auto* shared_pinned_tab_service =                                     \
-        SharedPinnedTabServiceFactory::GetForProfile(profile());          \
-    if (shared_pinned_tab_service) {                                      \
-      /* When there are only pinned tabs, OnWindowClosing() will be */    \
-      /* called agin, after we detach all pinned tabs from the*/          \
-      /* browser from shared_pinned_tab_service->BrowserClosing() */      \
-      if (shared_pinned_tab_service->BrowserClosing(tab_strip_model())) { \
-        return;                                                           \
-      }                                                                   \
-    }                                                                     \
-  }
 
 #include <chrome/browser/ui/browser.cc>
 
 #undef BrowserTabStripModelDelegate
-#undef BRAVE_BROWSER_ON_WINDOW_CLOSING
