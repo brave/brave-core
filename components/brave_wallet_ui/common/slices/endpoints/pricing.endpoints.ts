@@ -54,7 +54,7 @@ interface GetPricesHistoryArg {
       | 'symbol'
       | 'coingeckoId'
       | 'tokenId'
-      | 'isShielded'
+      | 'zcashTokenType'
     >
   >
 

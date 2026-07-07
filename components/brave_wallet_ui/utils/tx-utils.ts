@@ -505,7 +505,7 @@ export function isSolanaSplTransaction(
 export const findTransactionToken = <
   T extends Pick<
     BraveWallet.BlockchainToken,
-    'contractAddress' | 'chainId' | 'coin' | 'isShielded'
+    'contractAddress' | 'chainId' | 'coin' | 'zcashTokenType'
   >,
 >(
   tx: TransactionInfo | undefined,
@@ -528,12 +528,17 @@ export const findTransactionToken = <
     || tx.txDataUnion.btcTxData
     || tx.txDataUnion.zecTxData
   ) {
+    const usesShieldedPool = transactionUsesShieldedPool(tx)
     return tokensList.find(
       (t) =>
         t.contractAddress === ''
         && t.chainId === tx.chainId
         && t.coin === tx.fromAccountId.coin
-        && t.isShielded === transactionUsesShieldedPool(tx),
+        && (usesShieldedPool
+          ? t.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard ||
+            t.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+          : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone ||
+            t.zcashTokenType === BraveWallet.ZCashTokenType.kTransparent),
     )
   }
 

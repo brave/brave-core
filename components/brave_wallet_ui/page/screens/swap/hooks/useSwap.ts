@@ -33,7 +33,10 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import { getLocale } from '$web-common/locale'
 import Amount from '../../../../utils/amount'
 // FIXME(onyb): move makeNetworkAsset to utils/assets-utils
-import { isNativeAsset } from '../../../../utils/asset-utils'
+import {
+  isNativeAsset,
+  isShieldedToken,
+} from '../../../../utils/asset-utils'
 import { makeNetworkAsset } from '../../../../options/asset-options'
 import {
   getPriceRequestsForTokens,
@@ -90,7 +93,7 @@ const getTokenFromParam = (
   contractOrSymbol: string,
   network: BraveWallet.NetworkInfo,
   tokenList: BraveWallet.BlockchainToken[],
-  isShielded: boolean,
+  zcashTokenType: BraveWallet.ZCashTokenType,
 ) => {
   return tokenList.find(
     (token) =>
@@ -98,12 +101,12 @@ const getTokenFromParam = (
         && token.coin === network.coin
         && token.contractAddress.toLowerCase()
           === contractOrSymbol.toLowerCase()
-        && token.isShielded === isShielded)
+        && token.zcashTokenType === zcashTokenType)
       || (token.chainId === network.chainId
         && token.coin === network.coin
         && token.contractAddress === ''
         && token.symbol.toLowerCase() === contractOrSymbol.toLowerCase()
-        && token.isShielded === isShielded),
+        && token.zcashTokenType === zcashTokenType),
   )
 }
 
@@ -294,29 +297,30 @@ export const useSwap = () => {
       return
     }
 
-    const fromIsShielded = query.get('fromIsShielded') === 'true'
+    const fromZcashTokenTypeParam = Number(query.get('fromZcashTokenType') ?? '0') as BraveWallet.ZCashTokenType
     return getTokenFromParam(
       fromContractOrSymbolFromParams,
       fromNetwork,
       fullTokenList,
-      fromIsShielded,
+      fromZcashTokenTypeParam,
     )
   }, [fullTokenList, fromContractOrSymbolFromParams, fromNetwork, query])
 
   const effectiveFromAccountAddress = useMemo(() => {
-    if (fromToken?.isShielded && fromZCashAccountInfo?.orchardAddress) {
+    if (fromToken && isShieldedToken(fromToken) && fromZCashAccountInfo?.orchardAddress) {
       return fromZCashAccountInfo.orchardAddress
     }
     return fromAccountAddress
-  }, [fromToken?.isShielded, fromZCashAccountInfo, fromAccountAddress])
+  }, [fromToken, fromZCashAccountInfo, fromAccountAddress])
 
   const needsShieldedFromAddressResolution = useMemo(() => {
     return (
-      fromToken?.isShielded
+      fromToken
+      && isShieldedToken(fromToken)
       && fromAccount?.accountId.coin === BraveWallet.CoinType.ZEC
       && !fromZCashAccountInfo?.orchardAddress
     )
-  }, [fromToken?.isShielded, fromAccount, fromZCashAccountInfo])
+  }, [fromToken, fromAccount, fromZCashAccountInfo])
 
   const toToken = useMemo(() => {
     const contractOrSymbol = query.get('toToken')
@@ -324,29 +328,30 @@ export const useSwap = () => {
       return
     }
 
-    const toIsShielded = query.get('toIsShielded') === 'true'
+    const toZcashTokenTypeParam = Number(query.get('toZcashTokenType') ?? '0') as BraveWallet.ZCashTokenType
     return getTokenFromParam(
       contractOrSymbol,
       toNetwork,
       fullTokenList,
-      toIsShielded,
+      toZcashTokenTypeParam,
     )
   }, [fullTokenList, query, toNetwork])
 
   const effectiveToAccountAddress = useMemo(() => {
-    if (toToken?.isShielded && toZCashAccountInfo?.orchardAddress) {
+    if (toToken && isShieldedToken(toToken) && toZCashAccountInfo?.orchardAddress) {
       return toZCashAccountInfo.orchardAddress
     }
     return toAccountAddress
-  }, [toToken?.isShielded, toZCashAccountInfo, toAccountAddress])
+  }, [toToken, toZCashAccountInfo, toAccountAddress])
 
   const needsShieldedToAddressResolution = useMemo(() => {
     return (
-      toToken?.isShielded
+      toToken
+      && isShieldedToken(toToken)
       && toAccountId?.coin === BraveWallet.CoinType.ZEC
       && !toZCashAccountInfo?.orchardAddress
     )
-  }, [toToken?.isShielded, toAccountId, toZCashAccountInfo])
+  }, [toToken, toAccountId, toZCashAccountInfo])
 
   const needsAddressResolution = useMemo(() => {
     return (
@@ -372,7 +377,7 @@ export const useSwap = () => {
             network: fromNetwork,
             accounts: [fromAccount],
             tokens:
-              isNativeAsset(fromToken) && !fromToken.isShielded
+              isNativeAsset(fromToken) && !isShieldedToken(fromToken)
                 ? [nativeAsset]
                 : [nativeAsset, fromToken],
           }

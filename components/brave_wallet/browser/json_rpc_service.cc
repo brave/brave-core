@@ -3430,7 +3430,7 @@ void JsonRpcService::GetSPLTokenProgramByMint(
   // balance checks then treat a missing account as 0.
   mojom::BlockchainTokenPtr user_asset =
       GetUserAsset(prefs_, mojom::CoinType::SOL, chain_id, mint_address, "",
-                   false, false, false);
+                   false, false, mojom::ZCashTokenType::kNone);
 
   auto internal_callback =
       base::BindOnce(&JsonRpcService::ContinueGetSPLTokenProgramByMint,

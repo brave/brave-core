@@ -33,6 +33,7 @@ import Amount from '../../../../utils/amount'
 import { getBalance } from '../../../../utils/balance-utils'
 import { isValidFilAddress } from '../../../../utils/address-utils'
 import { makeSendRoute } from '../../../../utils/routes-utils'
+import { isShieldedToken } from '../../../../utils/asset-utils'
 import {
   selectAllVisibleUserAssetsFromQueryResult, //
 } from '../../../../common/slices/entities/blockchain-token.entity'
@@ -193,7 +194,11 @@ export const SendScreen = React.memo(() => {
       ? {
           chainId: networkFromParams.chainId,
           accountId: accountFromParams.accountId,
-          useShieldedPool: query.get('isShielded') === 'true',
+          useShieldedPool:
+            Number(query.get('zcashTokenType') ?? '0') ===
+              BraveWallet.ZCashTokenType.kOrchard ||
+            Number(query.get('zcashTokenType') ?? '0') ===
+              BraveWallet.ZCashTokenType.kIronwood,
           address: toAddressOrUrl,
         }
       : skipToken,
@@ -210,7 +215,7 @@ export const SendScreen = React.memo(() => {
 
     const tokenId = query.get('tokenId')
 
-    const isShielded = query.get('isShielded') === 'true'
+    const zcashTokenType = Number(query.get('zcashTokenType') ?? '0') as BraveWallet.ZCashTokenType
 
     return userVisibleTokensInfo.find((token) =>
       tokenId
@@ -218,7 +223,7 @@ export const SendScreen = React.memo(() => {
           && token.contractAddress.toLowerCase()
             === contractOrSymbolFromParams.toLowerCase()
           && token.tokenId === tokenId
-          && token.isShielded === isShielded
+          && token.zcashTokenType === zcashTokenType
         : (token.chainId === networkFromParams.chainId
             && token.contractAddress.toLowerCase()
               === contractOrSymbolFromParams.toLowerCase())
@@ -226,7 +231,7 @@ export const SendScreen = React.memo(() => {
             && token.contractAddress === ''
             && token.symbol.toLowerCase()
               === contractOrSymbolFromParams.toLowerCase()
-            && token.isShielded === isShielded),
+            && token.zcashTokenType === zcashTokenType),
     )
   }, [
     userVisibleTokensInfo,
@@ -518,7 +523,7 @@ export const SendScreen = React.memo(() => {
           const memoArray =
             memoText !== '' ? new TextEncoder().encode(memoText) : undefined
           await sendZecTransaction({
-            useShieldedPool: tokenFromParams.isShielded,
+            useShieldedPool: isShieldedToken(tokenFromParams),
             network: networkFromParams,
             fromAccount,
             to: toAddress,

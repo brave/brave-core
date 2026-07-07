@@ -142,7 +142,7 @@ TEST_F(OrchardSyncStateTest, InsertWithFrontier) {
   input.note.orchard_commitment_tree_position = 50;
 
   auto witness_result =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 1);
   EXPECT_TRUE(witness_result.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
@@ -186,7 +186,7 @@ TEST_F(OrchardSyncStateTest, Checkpoint_WithMarked) {
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 3;
   auto witness_result =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 1);
   EXPECT_TRUE(witness_result.has_value());
 
   EXPECT_EQ(
@@ -297,7 +297,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoRegisteredAccount) {
   OrchardAddrRawPart internal_addr;
   internal_addr.fill(3);
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_FALSE(get_spendable_notes_result.value().has_value());
 }
@@ -338,7 +338,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 26u);
@@ -376,7 +376,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 40u);
@@ -414,7 +414,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   EXPECT_EQ(get_spendable_notes_result.value()->spendable_notes.size(), 46u);
@@ -446,7 +446,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
   }
 
   auto get_spendable_notes_result =
-      sync_state()->GetSpendableNotes(account_id(), internal_addr);
+      sync_state()->GetSpendableNotes(OrchardPool::kOrchard, account_id(), internal_addr);
   EXPECT_TRUE(get_spendable_notes_result.has_value());
   EXPECT_TRUE(get_spendable_notes_result.value().has_value());
   // Since no checkpoints were added we drop all notes we have.
@@ -482,7 +482,7 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnNonMarked) {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
     auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+        sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 1);
     EXPECT_FALSE(witness_result.has_value());
   }
 }
@@ -515,7 +515,7 @@ TEST_F(OrchardSyncStateTest, NoWitnessOnWrongCheckpoint) {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
     auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
+        sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 2);
     EXPECT_FALSE(witness_result.has_value());
   }
 }
@@ -572,11 +572,11 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   }
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
@@ -584,17 +584,17 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
   auto expected_witness =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 2);
 
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 1, "1").value());
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
@@ -634,22 +634,22 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
   }
 
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[0]
                     .block_id);
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes[1]
                     .block_id);
 
   auto actual_witness =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 2);
   EXPECT_EQ(expected_witness.value()[0].witness.value(),
             actual_witness.value()[0].witness.value());
 }
@@ -713,14 +713,14 @@ TEST_F(OrchardSyncStateTest, Rewind) {
   }
 
   EXPECT_EQ(1u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
   EXPECT_EQ(OrchardStorage::Result::kSuccess,
             sync_state()->Rewind(account_id(), 2, "2").value());
   // Nullifier was deleted so we should have 2 spendable notes now.
   EXPECT_EQ(2u, sync_state()
-                    ->GetSpendableNotes(account_id(), {})
+                    ->GetSpendableNotes(OrchardPool::kOrchard, account_id(), {})
                     .value()
                     ->all_notes.size());
 
@@ -753,7 +753,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
     OrchardInput input;
     input.note.orchard_commitment_tree_position = 2;
     auto witness_result =
-        sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 2);
+        sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 2);
     // Since checkpoint #2 was deleted we shouldn't be able to calc witness
     EXPECT_FALSE(witness_result.has_value());
   }
@@ -761,7 +761,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
   auto witness_result =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 1);
   EXPECT_TRUE(witness_result.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),
@@ -832,7 +832,7 @@ TEST_F(OrchardSyncStateTest, SimpleInsert) {
   OrchardInput input;
   input.note.orchard_commitment_tree_position = 2;
   auto witness_result =
-      sync_state()->CalculateWitnessForCheckpoint(account_id(), {input}, 1);
+      sync_state()->CalculateWitnessForCheckpoint(OrchardPool::kOrchard, account_id(), {input}, 1);
   EXPECT_TRUE(witness_result.has_value());
   EXPECT_EQ(
       witness_result.value()[0].witness.value(),

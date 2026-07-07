@@ -398,7 +398,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token",
       "bat.png", true, true, false, false, mojom::SPLTokenProgram::kUnsupported,
       false, false, "BAT", 18, true, "", "", "0x1", mojom::CoinType::ETH,
-      false);
+      mojom::ZCashTokenType::kNone);
 
   mojom::BlockchainTokenPtr token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -437,7 +437,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "0x06012c8cf97BEaD5deAe237070F9587f8E7A266d", "Crypto Kitties",
       "CryptoKitties-Kitty-13733.svg", false, false, true, false,
       mojom::SPLTokenProgram::kUnsupported, true, true, "CK", 0, true, "", "",
-      "0x1", mojom::CoinType::ETH, false);
+      "0x1", mojom::CoinType::ETH, mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -462,7 +462,8 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "0x28472a58A490c5e09A238847F66A68a47cC76f0f", "ADIDAS", "adidas.png",
       false, false, false, true, mojom::SPLTokenProgram::kUnsupported, true,
-      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH, false);
+      false, "ADIDAS", 0, true, "", "", "0x1", mojom::CoinType::ETH,
+      mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -488,7 +489,7 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
   expected_token = mojom::BlockchainToken::New(
       "addr", "name", "logo", false, false, false, false,
       mojom::SPLTokenProgram::kUnknown, false, false, "TEST", 8, true, "", "",
-      "0x65", mojom::CoinType::SOL, false);
+      "0x65", mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);
@@ -529,13 +530,13 @@ TEST(ValueConversionUtilsUnitTest, ValueToBlockchainToken) {
       "is_spam": false,
       "decimals": 8,
       "visible": true,
-      "is_shielded": true,
+      "zcash_token_type": 2,
   })");
 
   expected_token = mojom::BlockchainToken::New(
       "", "zec", "zec.png", false, false, false, false,
       mojom::SPLTokenProgram::kUnsupported, false, false, "ZEC", 8, true, "",
-      "", "zcash_mainnet", mojom::CoinType::ZEC, true);
+      "", "zcash_mainnet", mojom::CoinType::ZEC, mojom::ZCashTokenType::kOrchard);
 
   token = ValueToBlockchainToken(json_value);
   EXPECT_EQ(token, expected_token);

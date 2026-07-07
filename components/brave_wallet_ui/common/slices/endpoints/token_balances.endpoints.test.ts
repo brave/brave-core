@@ -5,6 +5,9 @@
 
 import { renderHook, waitFor } from '@testing-library/react'
 
+// types
+import { BraveWallet } from '../../../constants/types'
+
 // queries
 import { useGetTokenBalancesRegistryQuery } from '../api.slice'
 
@@ -41,7 +44,7 @@ setBalance({
   contractAddress: mockMoonCatNFT.contractAddress,
   tokenId: mockMoonCatNFT.tokenId,
   tokenBalancesRegistry: mockedTokenBalancesRegistry,
-  isShielded: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
 })
 setBalance({
   accountId: mockSolanaAccount.accountId,
@@ -51,7 +54,7 @@ setBalance({
   contractAddress: mockSplNft.contractAddress,
   tokenId: mockSplNft.tokenId,
   tokenBalancesRegistry: mockedTokenBalancesRegistry,
-  isShielded: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
 })
 
 describe('token balances endpoints', () => {
@@ -103,7 +106,7 @@ describe('token balances endpoints', () => {
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: mockMoonCatNFT.tokenId,
             registry: registry!,
-            isShielded: false,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
           }),
         ).toBe('1')
         expect(
@@ -114,7 +117,7 @@ describe('token balances endpoints', () => {
             contractAddress: mockMoonCatNFT.contractAddress,
             tokenId: '0x1111',
             registry: registry!,
-            isShielded: false,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
           }),
         ).toBe('0')
         expect(
@@ -125,7 +128,7 @@ describe('token balances endpoints', () => {
             contractAddress: mockSplNft.contractAddress,
             tokenId: mockSplNft.tokenId,
             registry: registry!,
-            isShielded: false,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
           }),
         ).toBe('1')
         expect(
@@ -136,7 +139,7 @@ describe('token balances endpoints', () => {
             contractAddress: 'wt1t1111111111111111111',
             tokenId: '',
             registry: registry!,
-            isShielded: false,
+            zcashTokenType: BraveWallet.ZCashTokenType.kNone,
           }),
         ).toBe('0')
       },

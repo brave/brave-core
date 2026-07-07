@@ -11,6 +11,8 @@
 #include "base/check.h"
 #include "base/check_is_test.h"
 #include "base/containers/extend.h"
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "base/types/expected_macros.h"
 #include "brave/components/brave_wallet/common/zcash_utils.h"
@@ -53,14 +55,25 @@ OrchardSyncState::~OrchardSyncState() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
+// static
+std::string OrchardSyncState::ShardTreeKey(
+    OrchardPool pool,
+    const mojom::AccountIdPtr& account_id) {
+  return base::StrCat(
+      {account_id->unique_key, ":",
+       base::NumberToString(static_cast<int>(pool))});
+}
+
 orchard::OrchardShardTree& OrchardSyncState::GetOrCreateShardTree(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id) LIFETIME_BOUND {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  if (shard_trees_.find(account_id->unique_key) == shard_trees_.end()) {
-    shard_trees_[account_id->unique_key] = orchard::OrchardShardTree::Create(
-        storage_, account_id, OrchardPool::kOrchard);
+  auto key = ShardTreeKey(pool, account_id);
+  if (shard_trees_.find(key) == shard_trees_.end()) {
+    shard_trees_[key] =
+        orchard::OrchardShardTree::Create(storage_, account_id, pool);
   }
-  auto* manager = shard_trees_[account_id->unique_key].get();
+  auto* manager = shard_trees_[key].get();
   CHECK(manager);
   return *manager;
 }
@@ -101,7 +114,7 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
     if (!tx.has_value()) {
       return base::unexpected(tx.error());
     }
-    if (!GetOrCreateShardTree(account_id)
+    if (!GetOrCreateShardTree(OrchardPool::kOrchard, account_id)
              .TruncateToCheckpoint(rewind_block_height)) {
       return base::unexpected(
           OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
@@ -120,11 +133,12 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
 
 base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                OrchardStorage::Error>
-OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+OrchardSyncState::GetSpendableNotes(OrchardPool pool,
+                                    const mojom::AccountIdPtr& account_id,
                                     const OrchardAddrRawPart& change_address) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   ASSIGN_OR_RETURN(auto account_meta,
-                   storage_.GetAccountMeta(OrchardPool::kOrchard, account_id));
+                   storage_.GetAccountMeta(pool, account_id));
   if (!account_meta.has_value()) {
     return base::ok(std::nullopt);
   }
@@ -133,10 +147,10 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
     return OrchardSyncState::SpendableNotesBundle();
   }
   ASSIGN_OR_RETURN(auto notes,
-                   storage_.GetSpendableNotes(OrchardPool::kOrchard, account_id));
+                   storage_.GetSpendableNotes(pool, account_id));
   ASSIGN_OR_RETURN(auto anchor,
                    storage_.GetMaxCheckpointedHeight(
-                       OrchardPool::kOrchard, account_id,
+                       pool, account_id,
                        latest_scanned_block_id.value(),
                        kZCashInternalAddressMinConfirmations));
 
@@ -168,9 +182,10 @@ OrchardSyncState::GetSpendableNotes(const mojom::AccountIdPtr& account_id,
 }
 
 base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
-OrchardSyncState::GetNullifiers(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetNullifiers(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetNullifiers(OrchardPool::kOrchard, account_id);
+  return storage_.GetNullifiers(pool, account_id);
 }
 
 base::expected<OrchardStorage::Result, OrchardStorage::Error>
@@ -202,7 +217,7 @@ OrchardSyncState::ApplyScanResults(
       return base::unexpected(tx.error());
     }
 
-    if (!GetOrCreateShardTree(account_id)
+    if (!GetOrCreateShardTree(OrchardPool::kOrchard, account_id)
              .ApplyScanResults(
                  std::move(block_scanner_results.orchard.scanned_blocks))) {
       return base::unexpected(
@@ -248,11 +263,12 @@ OrchardSyncState::ResetAccountSyncState(
 
 base::expected<std::vector<OrchardInput>, OrchardStorage::Error>
 OrchardSyncState::CalculateWitnessForCheckpoint(
+    OrchardPool pool,
     const mojom::AccountIdPtr& account_id,
     const std::vector<OrchardInput>& notes,
     uint32_t checkpoint_position) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto& shard_tree = GetOrCreateShardTree(account_id);
+  auto& shard_tree = GetOrCreateShardTree(pool, account_id);
 
   std::vector<OrchardInput> result;
   result.reserve(notes.size());
@@ -271,15 +287,17 @@ OrchardSyncState::CalculateWitnessForCheckpoint(
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardSyncState::GetLatestShardIndex(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetLatestShardIndex(OrchardPool pool,
+                                      const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.GetLatestShardIndex(OrchardPool::kOrchard, account_id);
+  return storage_.GetLatestShardIndex(pool, account_id);
 }
 
 base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-OrchardSyncState::GetMinCheckpointId(const mojom::AccountIdPtr& account_id) {
+OrchardSyncState::GetMinCheckpointId(OrchardPool pool,
+                                     const mojom::AccountIdPtr& account_id) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  return storage_.MinCheckpointId(OrchardPool::kOrchard, account_id);
+  return storage_.MinCheckpointId(pool, account_id);
 }
 
 void OrchardSyncState::ResetDatabase() {
@@ -291,7 +309,8 @@ void OrchardSyncState::OverrideShardTreeForTesting(  // IN_TEST
     const mojom::AccountIdPtr& account_id,
     std::unique_ptr<orchard::OrchardShardTree> shard_tree) {
   CHECK_IS_TEST();
-  shard_trees_[account_id->unique_key] = std::move(shard_tree);
+  shard_trees_[ShardTreeKey(OrchardPool::kOrchard, account_id)] =
+      std::move(shard_tree);
 }
 
 OrchardStorage& OrchardSyncState::orchard_storage() {

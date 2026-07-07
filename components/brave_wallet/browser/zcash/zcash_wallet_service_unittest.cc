@@ -124,15 +124,17 @@ class MockOrchardSyncState : public OrchardSyncState {
   using OrchardSyncState::OrchardSyncState;
   ~MockOrchardSyncState() override {}
 
-  MOCK_METHOD2(
+  MOCK_METHOD3(
       GetSpendableNotes,
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error>(
+          OrchardPool pool,
           const mojom::AccountIdPtr& account_id,
           const OrchardAddrRawPart& internal_addr));
 
-  MOCK_METHOD3(CalculateWitnessForCheckpoint,
+  MOCK_METHOD4(CalculateWitnessForCheckpoint,
                base::expected<std::vector<OrchardInput>, OrchardStorage::Error>(
+                   OrchardPool pool,
                    const mojom::AccountIdPtr& account_id,
                    const std::vector<OrchardInput>& notes,
                    uint32_t checkpoint_position));
@@ -327,7 +329,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalance) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 50u);
         EXPECT_EQ(balance->transparent_balance, 50u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
 
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
@@ -394,8 +396,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
             std::move(callback).Run(std::move(response));
           });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([](OrchardPool pool,
+                        const mojom::AccountIdPtr& account_id,
                         const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -418,8 +421,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 20u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 10u);
-        EXPECT_EQ(balance->shielded_pending_balance, 20u);
+        EXPECT_EQ(balance->orchard_balance, 10u);
+        EXPECT_EQ(balance->orchard_pending_balance, 20u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
@@ -508,7 +511,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
                     std::optional<std::string> error) {
         EXPECT_EQ(balance->total_balance, 10u);
         EXPECT_EQ(balance->transparent_balance, 10u);
-        EXPECT_EQ(balance->shielded_balance, 0u);
+        EXPECT_EQ(balance->orchard_balance, 0u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
@@ -1786,8 +1789,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
         std::move(callback).Run(std::move(tree_state));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         return spendable_notes_bundle;
@@ -2543,8 +2547,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -2591,8 +2596,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
         return spendable_notes_bundle;
       });
 
-  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const std::vector<OrchardInput>& notes,
                          uint32_t checkpoint_position) {
         std::vector<OrchardInput> notes_with_witness = notes;
@@ -3193,8 +3199,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         std::move(callback).Run(std::move(response));
       });
 
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -3240,8 +3247,9 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
         spendable_notes_bundle.anchor_block_id = 3373024u;
         return spendable_notes_bundle;
       });
-  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), CalculateWitnessForCheckpoint(_, _, _, _))
+      .WillByDefault([&](OrchardPool pool,
+                         const mojom::AccountIdPtr& account_id,
                          const std::vector<OrchardInput>& notes,
                          uint32_t checkpoint_position) {
         std::vector<OrchardInput> notes_with_witness = notes;

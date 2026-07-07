@@ -14,7 +14,10 @@ import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '../../../../common/locale'
 import { unbiasedRandom } from '../../../utils/random-utils'
-import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+import {
+  checkIfTokenNeedsNetworkIcon,
+  isShieldedToken,
+} from '../../../utils/asset-utils'
 import {
   getIsRewardsToken,
   getNormalizedExternalRewardsNetwork,
@@ -250,9 +253,13 @@ export const PortfolioAssetItem = ({
                           isBold={true}
                           textAlign='left'
                         >
-                          {token.isShielded ? 'Zcash' : token.name}
+                          {isShieldedToken(token)
+                            ? token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+                              ? 'Zcash (Ironwood)'
+                              : 'Zcash'
+                            : token.name}
                         </AssetName>
-                        {token.isShielded && <ShieldedLabel />}
+                        {isShieldedToken(token) && <ShieldedLabel />}
                       </Row>
                       <NetworkDescriptionText
                         textSize='12px'

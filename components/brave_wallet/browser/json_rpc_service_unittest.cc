@@ -7084,7 +7084,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTokenInfo) {
       "0x0D8775F648430679A709E98d2b0Cb6250d2887EF", "Basic Attention Token", "",
       false, false, false, false, mojom::SPLTokenProgram::kUnsupported, false,
       false, "BAT", 18, true, "", "basic-attention-token", "0x1",
-      mojom::CoinType::ETH, false);
+      mojom::CoinType::ETH, mojom::ZCashTokenType::kNone);
 
   TestGetEthTokenInfo("0x0D8775F648430679A709E98d2b0Cb6250d2887EF",
                       mojom::kMainnetChainId, bat_token.Clone(),
@@ -7386,14 +7386,14 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
   auto asset = mojom::BlockchainToken::New(
       tsla_mint_addr, "Tesla", "tsla.png", false, false, false, false,
       mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true, "", "",
-      mojom::kSolanaMainnet, mojom::CoinType::SOL, false);
+      mojom::kSolanaMainnet, mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
   ASSERT_TRUE(AddUserAsset(prefs(), asset.Clone()));
 
   auto asset2 = mojom::BlockchainToken::New(
       "So11111111111111111111111111111111111111112", "Wrapped SOL", "sol.png",
       false, false, false, false, mojom::SPLTokenProgram::kUnknown, false,
       false, "WSOL", 8, true, "", "", mojom::kSolanaMainnet,
-      mojom::CoinType::SOL, false);
+      mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
   ASSERT_TRUE(AddUserAsset(prefs(), asset2.Clone()));
 
   std::string json = R"(
@@ -7436,7 +7436,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
   // network and the pref value should be updated based on the result.
   auto user_asset =
       GetUserAsset(prefs(), mojom::CoinType::SOL, mojom::kSolanaMainnet,
-                   asset2->contract_address, "", false, false, false);
+                   asset2->contract_address, "", false, false);
   ASSERT_TRUE(user_asset);
   EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kUnknown);
 
@@ -7450,7 +7450,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSPLTokenProgramByMint) {
 
   user_asset =
       GetUserAsset(prefs(), mojom::CoinType::SOL, mojom::kSolanaMainnet,
-                   asset2->contract_address, "", false, false, false);
+                   asset2->contract_address, "", false, false);
   ASSERT_TRUE(user_asset);
   EXPECT_EQ(user_asset->spl_token_program, mojom::SPLTokenProgram::kToken);
 

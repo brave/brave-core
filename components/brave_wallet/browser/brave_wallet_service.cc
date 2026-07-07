@@ -97,11 +97,11 @@ bool AccountMatchesCoinAndChain(NetworkManager& network_manager,
 bool ContainsNativeToken(const std::vector<mojom::BlockchainTokenPtr>& tokens,
                          mojom::CoinType coin,
                          const std::string& chain_id,
-                         bool is_shielded) {
+                         mojom::ZCashTokenType zcash_token_type) {
   return std::ranges::any_of(
       tokens, [&](const mojom::BlockchainTokenPtr& token) {
         return token->coin == coin && token->chain_id == chain_id &&
-               token->is_shielded == is_shielded &&
+               token->zcash_token_type == zcash_token_type &&
                token->contract_address.empty();
       });
 }
@@ -119,23 +119,33 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
   }
 
   if (coin == mojom::CoinType::BTC && IsBitcoinNetwork(chain_id) &&
-      !ContainsNativeToken(tokens, coin, chain_id, false)) {
+      !ContainsNativeToken(tokens, coin, chain_id,
+                           mojom::ZCashTokenType::kNone)) {
     tokens.push_back(GetBitcoinNativeToken(chain_id));
   }
 
   if (coin == mojom::CoinType::ZEC && IsZCashNetwork(chain_id)) {
-    if (!ContainsNativeToken(tokens, coin, chain_id, false)) {
+    if (!ContainsNativeToken(tokens, coin, chain_id,
+                             mojom::ZCashTokenType::kTransparent)) {
       tokens.push_back(GetZcashNativeToken(chain_id));
     }
     if (IsZCashShieldedTransactionsEnabled()) {
-      if (!ContainsNativeToken(tokens, coin, chain_id, true)) {
+      if (!ContainsNativeToken(tokens, coin, chain_id,
+                               mojom::ZCashTokenType::kOrchard)) {
         tokens.push_back(GetZcashNativeShieldedToken(chain_id));
+      }
+    }
+    if (IsZCashIronwoodTransactionEnabled()) {
+      if (!ContainsNativeToken(tokens, coin, chain_id,
+                               mojom::ZCashTokenType::kIronwood)) {
+        tokens.push_back(GetZcashNativeIronwoodToken(chain_id));
       }
     }
   }
 
   if (coin == mojom::CoinType::ADA && IsCardanoNetwork(chain_id) &&
-      !ContainsNativeToken(tokens, coin, chain_id, false)) {
+      !ContainsNativeToken(tokens, coin, chain_id,
+                           mojom::ZCashTokenType::kNone)) {
     tokens.push_back(GetCardanoNativeToken(chain_id));
   }
 
@@ -143,7 +153,8 @@ std::vector<mojom::BlockchainTokenPtr> EnsureNativeTokens(
     auto polkadot_network =
         network_manager.GetChain(chain_id, mojom::CoinType::DOT);
     if (polkadot_network &&
-        !ContainsNativeToken(tokens, coin, chain_id, false)) {
+        !ContainsNativeToken(tokens, coin, chain_id,
+                             mojom::ZCashTokenType::kNone)) {
       tokens.push_back(GetPolkadotNativeToken(chain_id));
     }
   }

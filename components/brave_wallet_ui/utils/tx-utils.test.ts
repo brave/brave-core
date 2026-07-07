@@ -78,7 +78,7 @@ const mockCardanoMinswapToken = {
   splTokenProgram: BraveWallet.SPLTokenProgram.kUnsupported,
   isNft: false,
   isSpam: false,
-  isShielded: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
   logo: '',
 } as BraveWallet.BlockchainToken
 

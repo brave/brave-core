@@ -13,6 +13,7 @@ import {
   getBalance,
   getPercentAmount,
 } from '../../../../utils/balance-utils'
+import { isShieldedToken } from '../../../../utils/asset-utils'
 import { getLocale } from '../../../../../common/locale'
 import {
   computeFiatAmount,
@@ -241,7 +242,7 @@ export const FromAsset = (props: Props) => {
                   6,
                 )}
               </BalanceText>
-              {token.isShielded && <ShieldedLabel />}
+              {isShieldedToken(token) && <ShieldedLabel />}
               {token.coin === BraveWallet.CoinType.BTC && hasPendingBalance && (
                 <>
                   <BalanceText

@@ -29,7 +29,12 @@ export const useSwapTransactionParser = <
 >(
   transaction: T,
 ): ParsedSwapInfo => {
-  const isShielded = transactionUsesShieldedPool(transaction)
+  const usesShieldedPool = transactionUsesShieldedPool(transaction)
+  // If the transaction uses the shielded pool, the token type is kOrchard
+  // (we do not have per-transaction ironwood info here, so default to kOrchard)
+  const zcashTokenType = usesShieldedPool
+    ? BraveWallet.ZCashTokenType.kOrchard
+    : BraveWallet.ZCashTokenType.kNone
 
   const { tokenInfo: sourceToken } = useGetTokenInfo(
     transaction?.swapInfo
@@ -39,7 +44,7 @@ export const useSwapTransactionParser = <
             !== NATIVE_EVM_ASSET_CONTRACT_ADDRESS
               ? transaction.swapInfo.sourceTokenAddress
               : '',
-          isShielded,
+          zcashTokenType,
           network: {
             chainId: transaction.swapInfo.sourceChainId,
             coin: transaction.swapInfo.sourceCoin,

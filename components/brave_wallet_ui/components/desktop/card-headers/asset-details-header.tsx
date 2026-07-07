@@ -25,7 +25,10 @@ import {
 import {
   externalWalletProviderFromString, //
 } from '../../../../brave_rewards/resources/shared/lib/external_wallet'
-import { checkIfTokenNeedsNetworkIcon } from '../../../utils/asset-utils'
+import {
+  checkIfTokenNeedsNetworkIcon,
+  isShieldedToken,
+} from '../../../utils/asset-utils'
 
 // Queries
 import {
@@ -207,11 +210,13 @@ export const AssetDetailsHeader = (props: Props) => {
                   variant='large.semibold'
                   textAlign='left'
                 >
-                  {selectedAsset.isShielded
-                    ? 'Zcash'
+                  {isShieldedToken(selectedAsset)
+                    ? selectedAsset.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+                      ? 'Zcash (Ironwood)'
+                      : 'Zcash'
                     : (selectedAsset?.name ?? '')}
                 </Text>
-                {selectedAsset.isShielded && <ShieldedLabel />}
+                {isShieldedToken(selectedAsset) && <ShieldedLabel />}
               </Row>
             ) : (
               <Skeleton

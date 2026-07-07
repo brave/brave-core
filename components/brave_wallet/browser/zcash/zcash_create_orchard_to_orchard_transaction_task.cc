@@ -76,7 +76,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::GetSpendableNotes() {
     return;
   }
   context_.sync_state->AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(context_.account_id.Clone(),
+      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
                 context_.account_internal_addr.value())
       .Then(base::BindOnce(
           &ZCashCreateOrchardToOrchardTransactionTask::OnGetSpendableNotes,

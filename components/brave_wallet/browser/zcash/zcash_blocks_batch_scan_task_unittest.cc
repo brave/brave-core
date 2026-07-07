@@ -129,7 +129,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
                        OrchardStorage::Error>>
         result;
     sync_state_.AsyncCall(&OrchardSyncState::GetSpendableNotes)
-        .WithArgs(account_id_.Clone(), OrchardAddrRawPart({}))
+        .WithArgs(OrchardPool::kOrchard, account_id_.Clone(), OrchardAddrRawPart({}))
         .Then(base::BindLambdaForTesting(
             [&](base::expected<
                 std::optional<OrchardSyncState::SpendableNotesBundle>,

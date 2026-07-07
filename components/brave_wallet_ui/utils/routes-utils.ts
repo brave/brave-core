@@ -276,9 +276,11 @@ export const makeSendRoute = (
     : tokenIdQueryParams
 
   const params = new URLSearchParams(
-    asset.isShielded
-      ? { ...recipientQueryParams, isShielded: 'true' }
-      : recipientQueryParams,
+    asset.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
+      ? { ...recipientQueryParams, zcashTokenType: String(BraveWallet.ZCashTokenType.kOrchard) }
+      : asset.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+        ? { ...recipientQueryParams, zcashTokenType: String(BraveWallet.ZCashTokenType.kIronwood) }
+        : recipientQueryParams,
   )
 
   if (isNftTab) {
@@ -328,13 +330,21 @@ export const makeSwapOrBridgeRoute = ({
       }
     : toAccountIdParams
 
-  const fromShieldedParams = fromToken.isShielded
-    ? { ...toTokenParams, fromIsShielded: 'true' }
-    : toTokenParams
+  const fromShieldedParams =
+    fromToken.zcashTokenType !== BraveWallet.ZCashTokenType.kNone
+      ? {
+          ...toTokenParams,
+          fromZcashTokenType: String(fromToken.zcashTokenType),
+        }
+      : toTokenParams
 
-  const allParams = toToken?.isShielded
-    ? { ...fromShieldedParams, toIsShielded: 'true' }
-    : fromShieldedParams
+  const allParams =
+    toToken && toToken.zcashTokenType !== BraveWallet.ZCashTokenType.kNone
+      ? {
+          ...fromShieldedParams,
+          toZcashTokenType: String(toToken.zcashTokenType),
+        }
+      : fromShieldedParams
 
   const params = new URLSearchParams(allParams)
 
