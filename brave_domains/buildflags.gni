@@ -7,7 +7,7 @@ import("//brave/build/config.gni")
 import("//build/config/ui.gni")
 
 declare_args() {
-  brave_services_production_domain = ""
-  brave_services_staging_domain = ""
-  brave_services_dev_domain = ""
+  brave_services_production_domain = "brave.com"
+  brave_services_staging_domain = "bravesoftware.com"
+  brave_services_dev_domain = "brave.software"
 }
