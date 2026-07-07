@@ -33,6 +33,7 @@
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/reload_type.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/security_principal.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
@@ -323,7 +324,10 @@ void BraveShieldsTabHelper::SetBraveShieldsAdBlockOnlyModePromptDismissed() {
 }
 
 GURL BraveShieldsTabHelper::GetCurrentSiteURL() const {
-  return web_contents()->GetLastCommittedURL();
+  return web_contents()
+      ->GetPrimaryMainFrame()
+      ->GetLastCommittedOrigin()
+      .GetURL();
 }
 
 GURL BraveShieldsTabHelper::GetFaviconURL(bool refresh) {

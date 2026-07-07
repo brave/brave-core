@@ -30,5 +30,6 @@ source_set("unit_tests") {
 
   if (!is_android) {
     sources += [ "brave_shields_utils_unittest.cc" ]
+    deps += [ "//brave/components/brave_shields/core/browser:test_support" ]
   }
 }

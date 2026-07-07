@@ -74,7 +74,7 @@ class BraveShieldsDataControllerTest : public testing::Test {
   content::WebContents* web_contents() { return test_web_contents_.get(); }
 
   void SetLastCommittedUrl(const GURL& url) {
-    content::WebContentsTester::For(web_contents())->SetLastCommittedURL(url);
+    content::WebContentsTester::For(web_contents())->NavigateAndCommit(url);
   }
 
   BraveShieldsTabHelper* GetShieldsDataController() {
@@ -316,7 +316,7 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
   auto* ctrl_2 = BraveShieldsTabHelper::FromWebContents(web_contents_2.get());
   ctrl_2->AddObserver(&observer_2);
   content::WebContentsTester::For(web_contents_2.get())
-      ->SetLastCommittedURL(GURL("http://brave.com"));
+      ->NavigateAndCommit(GURL("http://brave.com"));
 
   // Create another web contents for testing whether its
   // OnShieldsEnabledChanged() callback is *not* called when shields enabled is
@@ -331,7 +331,7 @@ TEST_F(BraveShieldsDataControllerTest, Observer_OnShieldsEnabledChangedTest) {
   auto* ctrl_3 = BraveShieldsTabHelper::FromWebContents(web_contents_3.get());
   ctrl_3->AddObserver(&observer_3);
   content::WebContentsTester::For(web_contents_3.get())
-      ->SetLastCommittedURL(GURL("http://github.com"));
+      ->NavigateAndCommit(GURL("http://github.com"));
 
   // Change default web contents' shields enabled setting.
   // And this changes will affect |web_contents_2| as both loaded same url.
