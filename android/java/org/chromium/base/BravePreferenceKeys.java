@@ -40,6 +40,8 @@ public final class BravePreferenceKeys {
             "org.chromium.chrome.browser.Brave_Tab_Groups_Feature_Enabled";
     public static final String BRAVE_TAB_GROUPS_BAR_ENABLED =
             "org.chromium.chrome.browser.Brave_Tab_Groups_Bar_Enabled";
+    // Note: the user-facing preference is labelled "Sharing Hub", but this stored value is
+    // inverted. Be sure to invert it when reading/writing.
     public static final String BRAVE_DISABLE_SHARING_HUB =
             "org.chromium.chrome.browser.Brave_Disable_Sharing_Hub";
     public static final String BRAVE_NEWS_CHANGE_SOURCE = "brave_news_change_source";

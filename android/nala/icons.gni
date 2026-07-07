@@ -154,6 +154,7 @@ nala_icons = [
   "ic_product_translate.xml",
   "ic_product_vpn.xml",
   "ic_search.xml",
+  "ic_share.xml",
   "ic_shred_data.xml",
   "ic_shield_done.xml",
   "ic_smartphone_laptop.xml",
