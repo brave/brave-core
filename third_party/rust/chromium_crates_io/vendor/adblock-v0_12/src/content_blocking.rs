@@ -1,8 +1,8 @@
 //! Transforms filter rules into content blocking syntax used on iOS and MacOS.
 
 use crate::filters::cosmetic::CosmeticFilter;
-use crate::filters::network::{NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper};
-use crate::lists::ParsedFilter;
+use crate::filters::network::{NetworkFilter, NetworkFilterFeaturesMask, NetworkFilterMask};
+use crate::lists::ParsedLine;
 
 use memchr::{memchr as find_char, memmem};
 use regex::Regex;
@@ -229,13 +229,13 @@ pub enum CbRuleCreationFailure {
     ProceduralCosmeticFiltersUnsupported,
 }
 
-impl TryFrom<ParsedFilter> for CbRuleEquivalent {
+impl TryFrom<ParsedLine<'_>> for CbRuleEquivalent {
     type Error = CbRuleCreationFailure;
 
-    fn try_from(v: ParsedFilter) -> Result<Self, Self::Error> {
+    fn try_from(v: ParsedLine) -> Result<Self, Self::Error> {
         match v {
-            ParsedFilter::Network(f) => f.try_into(),
-            ParsedFilter::Cosmetic(f) => Ok(Self::SingleRule(f.try_into()?)),
+            ParsedLine::Network(f) => f.try_into(),
+            ParsedLine::Cosmetic(f) => Ok(Self::SingleRule(f.try_into()?)),
         }
     }
 }
@@ -301,7 +301,7 @@ impl Iterator for CbRuleEquivalentIterator {
     }
 }
 
-impl TryFrom<NetworkFilter> for CbRuleEquivalent {
+impl TryFrom<NetworkFilter<'_>> for CbRuleEquivalent {
     type Error = CbRuleCreationFailure;
 
     fn try_from(v: NetworkFilter) -> Result<Self, Self::Error> {
@@ -311,15 +311,16 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
             LazyLock::new(|| Regex::new(r##"\*"##).unwrap());
         static TRAILING_SEPARATOR: LazyLock<Regex> =
             LazyLock::new(|| Regex::new(r##"\^$"##).unwrap());
-        if let Some(raw_line) = &v.raw_line {
+        if let Some(raw_line) = v.raw_line.as_deref() {
             if v.is_redirect() {
                 return Err(CbRuleCreationFailure::NetworkRedirectUnsupported);
             }
-            if v.mask.contains(NetworkFilterMask::GENERIC_HIDE) {
+            if v.is_generic_hide() {
                 return Err(CbRuleCreationFailure::NetworkGenerichideUnsupported);
             }
             debug_assert!(
-                !v.mask.contains(NetworkFilterMask::BAD_FILTER),
+                !v.features_mask
+                    .contains(NetworkFilterFeaturesMask::BAD_FILTER),
                 "BAD_FILTER should be filtered out"
             );
             if v.is_csp() {
@@ -602,7 +603,7 @@ impl TryFrom<CosmeticFilter> for CbRule {
             return Err(CbRuleCreationFailure::ScriptletInjectionsNotSupported);
         }
 
-        if let Some(raw_line) = &v.raw_line {
+        if let Some(raw_line) = v.raw_line.as_deref() {
             let mut hostnames_vec = vec![];
             let mut not_hostnames_vec = vec![];
 

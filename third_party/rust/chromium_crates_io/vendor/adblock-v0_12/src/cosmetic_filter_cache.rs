@@ -10,8 +10,6 @@
 //! To build `CosmeticFilterCache`, use `CosmeticFilterCacheBuilder`.
 
 use crate::cosmetic_filter_utils::decode_script_with_permission;
-#[cfg(test)]
-use crate::filters::cosmetic::CosmeticFilter;
 use crate::filters::cosmetic::{CosmeticFilterAction, CosmeticFilterOperator};
 use crate::filters::filter_data_context::FilterDataContextRef;
 
@@ -134,13 +132,13 @@ impl CosmeticFilterCache {
     }
 
     #[cfg(test)]
-    pub fn from_rules(rules: Vec<CosmeticFilter>) -> Self {
+    pub fn from_rules(rules: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
         use crate::engine::Engine;
         use crate::FilterSet;
 
-        let mut filter_set = FilterSet::new(true);
-        filter_set.cosmetic_filters = rules;
-        let engine = Engine::from_filter_set(filter_set, true);
+        let mut filter_set = FilterSet::new(false);
+        filter_set.add_filters(rules, Default::default());
+        let engine = Engine::new_with_filter_set(filter_set);
         engine.cosmetic_cache()
     }
 

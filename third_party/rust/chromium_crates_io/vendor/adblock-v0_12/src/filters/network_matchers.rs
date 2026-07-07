@@ -404,17 +404,14 @@ where
 
 #[inline]
 pub fn check_options(mask: NetworkFilterMask, request: &request::Request) -> bool {
-    // Bad filter never matches
-    if mask.is_badfilter() {
-        return false;
-    }
     // We first discard requests based on type, protocol and party. This is really
     // cheap and should be done first.
     if !mask.check_cpt_allowed(&request.request_type)
-        || (request.is_https && !mask.for_https())
-        || (request.is_http && !mask.for_http())
         || (!mask.first_party() && !request.is_third_party)
         || (!mask.third_party() && request.is_third_party)
+        || (request.is_https && !mask.for_https())
+        || (request.is_http && !mask.for_http())
+        || !NetworkFilterMask::check_method_allowed(mask, request.method.as_ref())
     {
         return false;
     }

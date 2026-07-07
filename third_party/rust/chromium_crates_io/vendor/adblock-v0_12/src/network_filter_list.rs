@@ -7,47 +7,44 @@ use flatbuffers::ForwardsUOffset;
 use crate::filters::fb_network::FlatNetworkFilter;
 use crate::filters::filter_data_context::FilterDataContext;
 use crate::filters::flatbuffer_generated::fb;
-use crate::filters::network::{
-    NetworkFilter, NetworkFilterMask, NetworkFilterMaskHelper, NetworkMatchable,
-};
+use crate::filters::network::{NetworkFilterMask, NetworkMatchable};
 use crate::flatbuffers::containers::flat_multimap::FlatMultiMapView;
 use crate::flatbuffers::unsafe_tools::fb_vector_to_slice;
 use crate::regex_manager::RegexManager;
 use crate::request::Request;
 use crate::utils::{to_short_hash, ShortHash};
 
-/// Holds relevant information from a single matchin gnetwork filter rule as a result of querying a
-/// [NetworkFilterList] for a given request.
-pub struct CheckResult {
-    pub filter_mask: NetworkFilterMask,
-    pub modifier_option: Option<String>,
-    pub raw_line: Option<String>,
+pub struct CheckResultDebugData {
+    pub raw_line: String,
+    pub source_index: Option<u32>,
+    pub line_number: Option<u32>,
 }
 
-impl From<&NetworkFilter> for CheckResult {
-    fn from(filter: &NetworkFilter) -> Self {
-        Self {
-            filter_mask: filter.mask,
-            modifier_option: filter.modifier_option.clone(),
-            raw_line: filter.raw_line.clone().map(|v| *v),
-        }
-    }
+/// Holds relevant information from a single matchin gnetwork filter rule as a result of querying a
+/// [NetworkFilterList] for a given request.
+pub(crate) struct CheckResult {
+    pub filter_mask: NetworkFilterMask,
+    pub modifier_option: Option<String>,
+    pub debug_data: Option<CheckResultDebugData>,
 }
 
 impl fmt::Display for CheckResult {
     fn fmt(&self, f: &mut fmt::Formatter) -> Result<(), fmt::Error> {
-        if let Some(ref raw_line) = self.raw_line {
-            write!(f, "{raw_line}")
+        if let Some(ref debug_data) = self.debug_data {
+            if let (Some(source_index), Some(line_number)) =
+                (debug_data.source_index, debug_data.line_number)
+            {
+                write!(
+                    f,
+                    "{}:{}: {}",
+                    source_index, line_number, debug_data.raw_line
+                )
+            } else {
+                write!(f, "x:x: {}", debug_data.raw_line)
+            }
         } else {
             write!(f, "{}", self.filter_mask)
         }
-    }
-}
-
-impl NetworkFilterMaskHelper for CheckResult {
-    #[inline]
-    fn has_flag(&self, v: NetworkFilterMask) -> bool {
-        self.filter_mask.contains(v)
     }
 }
 
@@ -97,10 +94,19 @@ impl NetworkFilterList<'_> {
                     if filter.matches(request, regex_manager)
                         && filter.tag().is_none_or(|t| active_tags.contains(t))
                     {
+                        let debug_data = if self.filter_data_context.debug {
+                            Some(CheckResultDebugData {
+                                raw_line: filter.raw_line(),
+                                source_index: filter.source_index(),
+                                line_number: filter.line_number(),
+                            })
+                        } else {
+                            None
+                        };
                         return Some(CheckResult {
                             filter_mask: filter.mask,
                             modifier_option: filter.modifier_option(),
-                            raw_line: filter.raw_line(),
+                            debug_data,
                         });
                     }
                 }
@@ -139,10 +145,19 @@ impl NetworkFilterList<'_> {
                     if filter.matches(request, regex_manager)
                         && filter.tag().is_none_or(|t| active_tags.contains(t))
                     {
+                        let debug_data = if self.filter_data_context.debug {
+                            Some(CheckResultDebugData {
+                                raw_line: filter.raw_line(),
+                                source_index: filter.source_index(),
+                                line_number: filter.line_number(),
+                            })
+                        } else {
+                            None
+                        };
                         filters.push(CheckResult {
                             filter_mask: filter.mask,
                             modifier_option: filter.modifier_option(),
-                            raw_line: filter.raw_line(),
+                            debug_data,
                         });
                     }
                 }

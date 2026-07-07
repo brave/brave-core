@@ -14,11 +14,6 @@ use crate::regex_manager::{RegexManager, RegexManagerDiscardPolicy};
 use crate::request::Request;
 use crate::resources::ResourceStorage;
 
-/// Options used when constructing a [`Blocker`].
-pub struct BlockerOptions {
-    pub enable_optimizations: bool,
-}
-
 /// Describes how a particular network request should be handled.
 #[derive(Debug, Serialize, Default)]
 pub struct BlockerResult {
@@ -211,7 +206,7 @@ impl Blocker {
             }
             None => None,
             // If matched an important filter, exceptions don't atter
-            Some(f) if f.is_important() => None,
+            Some(f) if f.filter_mask.is_important() => None,
             Some(_) => self
                 .exceptions()
                 .check(request, &self.tags_enabled, &mut regex_manager),
@@ -227,7 +222,7 @@ impl Blocker {
         let redirect_resource = {
             let mut exceptions = vec![];
             for redirect_filter in redirect_filters.iter() {
-                if redirect_filter.is_exception() {
+                if redirect_filter.filter_mask.is_exception() {
                     if let Some(redirect) = redirect_filter.modifier_option.as_ref() {
                         exceptions.push(redirect);
                     }
@@ -235,7 +230,7 @@ impl Blocker {
             }
             let mut resource_and_priority = None;
             for redirect_filter in redirect_filters.iter() {
-                if !redirect_filter.is_exception() {
+                if !redirect_filter.filter_mask.is_exception() {
                     if let Some(redirect) = redirect_filter.modifier_option.as_ref() {
                         if !exceptions.contains(&redirect) {
                             // parse redirect + priority
@@ -278,7 +273,7 @@ impl Blocker {
         let important = filter.is_some()
             && filter
                 .as_ref()
-                .map(|f| f.is_important())
+                .map(|f| f.filter_mask.is_important())
                 .unwrap_or_else(|| false);
 
         let rewritten_url = if important {
@@ -364,7 +359,7 @@ impl Blocker {
                     params
                         .into_iter()
                         .filter(|(_, include)| *include)
-                        .map(|(param, _)| param.to_string()),
+                        .map(|(param, _)| param),
                     "&",
                 );
                 let new_param_str = if p.is_empty() {
@@ -410,17 +405,15 @@ impl Blocker {
         let mut enabled_directives: HashSet<&str> = HashSet::new();
 
         for filter in filters.iter() {
-            if filter.is_exception() {
-                if filter.is_csp() {
-                    if let Some(csp_directive) = &filter.modifier_option {
-                        disabled_directives.insert(csp_directive);
-                    } else {
-                        // Exception filters with empty `csp` options will disable all CSP
-                        // injections for matching pages.
-                        return None;
-                    }
+            if filter.filter_mask.is_exception() {
+                if let Some(csp_directive) = &filter.modifier_option {
+                    disabled_directives.insert(csp_directive);
+                } else {
+                    // Exception filters with empty `csp` options will disable all CSP
+                    // injections for matching pages.
+                    return None;
                 }
-            } else if filter.is_csp() {
+            } else {
                 if let Some(csp_directive) = &filter.modifier_option {
                     enabled_directives.insert(csp_directive);
                 }
@@ -452,16 +445,26 @@ impl Blocker {
     }
 
     #[cfg(test)]
-    pub fn new(
-        network_filters: Vec<crate::filters::network::NetworkFilter>,
-        options: &BlockerOptions,
-    ) -> Self {
-        use crate::engine::Engine;
-        use crate::FilterSet;
+    pub fn new(network_filters: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        let mut filter_set = crate::FilterSet::new(false);
+        filter_set.add_filters(network_filters, Default::default());
+        let engine = crate::engine::Engine::new_with_filter_set(filter_set);
+        Self::from_context(engine.filter_data_context())
+    }
 
-        let mut filter_set = FilterSet::new(true);
-        filter_set.network_filters = network_filters;
-        let engine = Engine::from_filter_set(filter_set, options.enable_optimizations);
+    #[cfg(test)]
+    pub fn new_debug(network_filters: impl IntoIterator<Item = impl AsRef<str>>) -> Self {
+        let mut filter_set = crate::FilterSet::new(true);
+        filter_set.add_filters(network_filters, Default::default());
+        let engine = crate::engine::Engine::new_with_filter_set(filter_set);
+        Self::from_context(engine.filter_data_context())
+    }
+
+    #[cfg(test)]
+    pub fn new_with_list_text(text: String) -> Self {
+        let mut filter_set = crate::FilterSet::new(false);
+        filter_set.add_filter_list(text, Default::default());
+        let engine = crate::engine::Engine::new_with_filter_set(filter_set);
         Self::from_context(engine.filter_data_context())
     }
 
