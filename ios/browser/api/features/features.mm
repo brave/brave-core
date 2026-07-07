@@ -407,4 +407,9 @@
       initWithFeature:&playlist::features::kPlaylistOfflineCacheEnabled];
 }
 
++ (Feature*)kPlaylistCacheFirstEnabled {
+  return [[Feature alloc]
+      initWithFeature:&playlist::features::kPlaylistCacheFirstEnabled];
+}
+
 @end

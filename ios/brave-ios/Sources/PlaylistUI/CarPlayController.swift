@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveStrings
 import CarPlay
 import Combine
@@ -72,6 +73,7 @@ public class CarPlayController {
   private var currentItemListTemplate: CPListTemplate?
   private var selectedFolderID: PlaylistFolder.ID?
   private var isErrorPresented: Bool = false
+  private var downloadStates: [String: PlaylistDownloadManager.CacheState] = [:]
 
   @MainActor private func updateFoldersList() {
     let folderListTemplate = self.folderListTemplate
@@ -198,7 +200,8 @@ public class CarPlayController {
         guard let itemUUID = item.uuid else { return nil }
         let listItem = item.listItem
         listItem.accessoryType =
-          PlaylistManager.shared.state(for: itemUUID) != .downloaded ? .cloud : .none
+          !FeatureList.kPlaylistCacheFirstEnabled.enabled && downloadStates[itemUUID] != .cached
+          ? .cloud : .none
         listItem.isPlaying = player.isPlaying && player.selectedItemID == item.id
         listItem.playingIndicatorLocation = .trailing
         listItem.userInfo = ["id": item.id, "uuid": itemUUID]
@@ -275,6 +278,29 @@ public class CarPlayController {
     )
     template.tabImage = UIImage(braveSystemNamed: "leo.settings")
     return template
+  }
+
+  @MainActor private func refreshDownloadStates(for items: [PlaylistItem]) async {
+    let uuids = items.compactMap(\.uuid)
+
+    // Fetch each item's download state concurrently so list refresh stays O(1) wall-clock in the number of items.
+    let resolvedStates = await withTaskGroup(
+      of: (String, PlaylistDownloadManager.CacheState).self
+    ) { group in
+      for uuid in uuids {
+        group.addTask {
+          (uuid, await PlaylistManager.shared.cacheState(for: uuid))
+        }
+      }
+      var result: [String: PlaylistDownloadManager.CacheState] = [:]
+      for await (uuid, state) in group {
+        result[uuid] = state
+      }
+      return result
+    }
+
+    // Replacing wholesale also drops entries for items that are no longer present.
+    downloadStates = resolvedStates
   }
 }
 

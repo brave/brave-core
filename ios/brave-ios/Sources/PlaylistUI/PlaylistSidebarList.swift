@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import Data
 import DesignSystem
@@ -97,6 +98,11 @@ struct PlaylistSidebarListHeader: View {
   }
 
   @MainActor private func calculateTotalSizeOnDisk(for folder: PlaylistFolder) async {
+    // Cache-first hides the total size in the header, so skip the (potentially expensive) disk scan.
+    if FeatureList.kPlaylistCacheFirstEnabled.enabled {
+      totalSizeOnDisk = .init(value: 0, unit: .bytes)
+      return
+    }
     // Since we're consuming CoreData we need to make sure those accesses happen on main
     let items = selectedFolderItems
     var totalSize: Int = 0
@@ -190,7 +196,8 @@ struct PlaylistSidebarListHeader: View {
           if !items.isEmpty {
             Text(totalDuration, format: .units(width: .narrow, maximumUnitCount: 2))
           }
-          if !totalSize.value.isZero {
+          // Cache-first manages the cache automatically, so the on-disk size isn't surfaced.
+          if !totalSize.value.isZero, !FeatureList.kPlaylistCacheFirstEnabled.enabled {
             Text(totalSizeOnDisk, format: .byteCount(style: .file))
           }
         }

@@ -238,28 +238,6 @@ class PlayListCacheClearable: Clearable {
   }
 }
 
-class PlayListDataClearable: Clearable {
-
-  init() {}
-
-  var label: String {
-    return Strings.PlayList.playlistMediaAndOfflineDataToggleOption
-  }
-
-  func clear() async throws {
-    await PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-
-    // Backup in case there is folder corruption, so we delete the cache anyway
-    if let playlistDirectory = await PlaylistDownloadManager.playlistDirectory {
-      do {
-        try await AsyncFileManager.default.removeItem(at: playlistDirectory)
-      } catch {
-        Logger.module.error("Error Deleting Playlist directory: \(error.localizedDescription)")
-      }
-    }
-  }
-}
-
 class RecentSearchClearable: Clearable {
 
   init() {}

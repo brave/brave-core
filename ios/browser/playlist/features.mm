@@ -10,5 +10,5 @@
 namespace playlist::features {
 
 BASE_FEATURE(kPlaylistOfflineCacheEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
-
+BASE_FEATURE(kPlaylistCacheFirstEnabled, base::FEATURE_DISABLED_BY_DEFAULT);
 }
