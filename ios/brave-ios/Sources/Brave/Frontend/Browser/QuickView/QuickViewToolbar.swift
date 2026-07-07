@@ -253,7 +253,13 @@ struct QuickViewToolbarView: View {
 
       closeButton
     }
-    .labelStyle(QuickViewToolbarLabelBottomIconStyle())
+    .buttonStyle(QuickViewToolbarBottomButtonStyle())
+    .labelStyle(
+      QuickViewToolbarLabelBottomIconStyle(
+        iconDefaultColor: Color(viewModel.browserColors.iconDefault),
+        iconDisabledColor: Color(viewModel.browserColors.iconDisabled)
+      )
+    )
   }
 }
 
@@ -268,12 +274,23 @@ private struct QuickViewToolbarLabelTopIconStyle: LabelStyle {
 }
 
 private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
+  let iconDefaultColor: Color
+  let iconDisabledColor: Color
+  @Environment(\.isEnabled) private var isEnabled
+
   func makeBody(configuration: Configuration) -> some View {
     configuration.icon
       .font(.title2)
-      .tint(Color(braveSystemName: .iconDefault))
+      .foregroundStyle(isEnabled ? iconDefaultColor : iconDisabledColor)
       .accessibilityRepresentation {
         configuration.title
       }
+  }
+}
+
+private struct QuickViewToolbarBottomButtonStyle: ButtonStyle {
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .opacity(configuration.isPressed ? 0.5 : 1.0)
   }
 }

@@ -148,6 +148,7 @@ extension BrowserViewController: TabManagerDelegate {
       guard let self else { return }
       let quickViewController = QuickViewController(
         url: url,
+        profile: tab.profile,
         profileController: profileController,
         onOpenInNewTab: { [weak self] request in
           guard let self else { return }
