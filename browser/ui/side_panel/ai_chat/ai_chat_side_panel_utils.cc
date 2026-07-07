@@ -24,6 +24,10 @@ Browser* GetBrowserForWebContents(content::WebContents* web_contents) {
 void ClosePanel(content::WebContents* web_contents) {
   NOTIMPLEMENTED();
 }
+
+void ClosePanelIfChatActive(content::WebContents* web_contents) {
+  NOTIMPLEMENTED();
+}
 #endif
 
 bool ShouldSidePanelBeGlobal(Profile* profile) {

@@ -18,6 +18,11 @@ namespace ai_chat {
 Browser* GetBrowserForWebContents(content::WebContents* web_contents);
 void ClosePanel(content::WebContents* web_contents);
 
+// Closes the side panel only if the AI Chat entry is the one currently being
+// shown. Used when moving a conversation to a full-page tab, where leaving the
+// now-duplicate AI Chat side panel open would be confusing.
+void ClosePanelIfChatActive(content::WebContents* web_contents);
+
 // Returns true if the side panel should be global for all tabs in a tab strip,
 // or false if it should be per-tab.
 bool ShouldSidePanelBeGlobal(Profile* profile);

@@ -362,6 +362,7 @@ source_set("browser_tests") {
       "ai_chat_conversation_ui_browsertest.cc",
       "ai_chat_conversation_ui_browsertest_base.cc",
       "ai_chat_conversation_ui_browsertest_base.h",
+      "ai_chat_full_page_browsertest.cc",
       "ai_chat_metrics_browsertest.cc",
       "ai_chat_policy_browsertest.cc",
       "ai_chat_profiles_enabled_browsertest.cc",
