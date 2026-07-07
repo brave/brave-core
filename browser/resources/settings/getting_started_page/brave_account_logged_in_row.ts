@@ -9,12 +9,14 @@ import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
   LoggedInState,
   LoggedInVerificationIntent,
   VerificationIntent,
 } from '../brave_account.mojom-webui.js'
+import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+} from '../change_password.mojom-webui.js'
 import { BraveAccountRowBaseElement } from './brave_account_row_base.js'
 import { getCss } from './brave_account_logged_in_row.css.js'
 import { getHtml } from './brave_account_logged_in_row.html.js'

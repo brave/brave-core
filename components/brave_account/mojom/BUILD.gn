@@ -12,6 +12,7 @@ if (is_ios) {
 mojom("mojom") {
   sources = [
     "brave_account.mojom",
+    "change_password.mojom",
     "reset_password.mojom",
   ]
 
@@ -31,6 +32,7 @@ if (is_ios) {
     mojom_target = "//brave/components/brave_account/mojom"
     sources = [
       "brave_account.mojom",
+      "change_password.mojom",
       "reset_password.mojom",
     ]
   }

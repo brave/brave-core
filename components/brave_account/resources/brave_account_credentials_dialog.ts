@@ -12,8 +12,6 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getHtml } from './brave_account_credentials_dialog.html.js'
 import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
   LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
   RegisterClientErrorCode,
@@ -21,6 +19,10 @@ import {
   VerificationIntentFieldTags,
   whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
+import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+} from './change_password.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,

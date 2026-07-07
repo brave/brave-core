@@ -69,6 +69,7 @@ build_webui("build") {
 
   mojo_files = [
     "$root_gen_dir/brave/components/brave_account/mojom/brave_account.mojom-webui.ts",
+    "$root_gen_dir/brave/components/brave_account/mojom/change_password.mojom-webui.ts",
     "$root_gen_dir/brave/components/brave_account/mojom/reset_password.mojom-webui.ts",
     "$root_gen_dir/brave/components/password_strength_meter/password_strength_meter.mojom-webui.ts",
     "$root_gen_dir/components/grit/brave_components_webui_strings.ts",

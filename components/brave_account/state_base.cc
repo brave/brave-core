@@ -15,6 +15,7 @@
 #include "brave/components/brave_account/brave_account_service_constants.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
 #include "brave/components/brave_account/endpoints/verify_delete.h"
+#include "brave/components/brave_account/mojom/change_password.mojom.h"
 #include "brave/components/brave_account/mojom/reset_password.mojom.h"
 #include "brave/components/brave_account/state_internal.h"
 #include "net/http/http_status_code.h"
