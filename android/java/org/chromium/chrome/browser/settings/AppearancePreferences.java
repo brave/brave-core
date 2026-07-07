@@ -53,6 +53,8 @@ import java.util.Map;
 
 public class AppearancePreferences extends AppearanceSettingsFragment
         implements Preference.OnPreferenceChangeListener, BraveRewardsObserver {
+    /* package */ static final String PREF_NAVIGATION_SECTION = "navigation_section";
+    /* package */ static final String PREF_GENERAL_SECTION = "general_section";
     public static final String PREF_SHOW_BRAVE_REWARDS_ICON = "show_brave_rewards_icon";
     public static final String PREF_ADDRESS_BAR = "address_bar";
     /* package */ static final String PREF_ADS_SWITCH = "ads_switch";
@@ -236,9 +238,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             } else {
                 updatePreferenceSummary(
                         BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-                        ((ChromeSwitchPreference) enableBottomToolbar).isChecked()
-                                ? R.string.text_on
-                                : R.string.text_off);
+                        R.string.bottom_toolbar_summary);
             }
             ((ChromeSwitchPreference) enableBottomToolbar)
                     .setEnabled(BottomToolbarConfiguration.isToolbarTopAnchored());
@@ -248,9 +248,8 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
                 R.drawable.ic_browser_customizable_shortcut);
 
-        // Update the UI theme preference icon and clear the summary.
+        // Update the UI theme preference icon.
         updatePreferenceIcon(AppearanceSettingsFragment.PREF_UI_THEME, R.drawable.ic_theme_system);
-        clearPreferenceSummary(AppearanceSettingsFragment.PREF_UI_THEME);
     }
 
     @Override
@@ -269,7 +268,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             Boolean originalStatus = BottomToolbarConfiguration.isBraveBottomControlsEnabled();
             updatePreferenceSummary(
                     BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-                    !originalStatus ? R.string.text_on : R.string.text_off);
+                    R.string.bottom_toolbar_summary);
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(
                             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, !originalStatus);
@@ -376,30 +375,25 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         }
     }
 
-    private void clearPreferenceSummary(String preferenceString) {
-        Preference preference = findPreference(preferenceString);
-        if (preference != null) {
-            preference.setSummary("");
-        }
-    }
-
     // Both XMLs (upstream and brave) independently assign sequential order values starting from 0,
     // causing collisions. Setting all preferences to explicit unique values prevents alphabetical
     // tie-breaking, which would otherwise produce language-dependent ordering.
     private void applyOrdering() {
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 0);
-        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 1);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 2);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 3);
+        setPreferenceOrder(PREF_NAVIGATION_SECTION, 0);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 1);
+        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 2);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 3);
         setPreferenceOrder(PREF_ADDRESS_BAR, 4);
         setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 5);
-        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 6);
-        setPreferenceOrder(PREF_ADS_SWITCH, 7);
+        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 6);
+        setPreferenceOrder(PREF_GENERAL_SECTION, 7);
         setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 8);
         setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 9);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 10);
-        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 11);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 12);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 10);
+        setPreferenceOrder(PREF_ADS_SWITCH, 11);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 12);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 13);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 14);
     }
 
     private void setPreferenceOrder(String key, int order) {
