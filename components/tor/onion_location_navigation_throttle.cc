@@ -16,6 +16,7 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "net/base/url_util.h"
 #include "net/http/http_response_headers.h"
+#include "services/network/public/cpp/header_util.h"
 
 namespace tor {
 
@@ -70,7 +71,8 @@ OnionLocationNavigationThrottle::WillProcessResponse() {
   std::string onion_location;
   // The webpage defining the Onion-Location header must not be an onionsite.
   // https://gitlab.torproject.org/tpo/applications/tor-browser-spec/-/raw/HEAD/proposals/100-onion-location-header.txt
-  if (headers && GetOnionLocation(headers, &onion_location) &&
+  if (headers && network::IsSuccessfulStatus(headers->response_code()) &&
+      GetOnionLocation(headers, &onion_location) &&
       !net::IsOnion(navigation_handle()->GetURL()) &&
       // The webpage defining the Onion-Location header must be served over
       // HTTPS.

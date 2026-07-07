@@ -46,6 +46,7 @@ constexpr char kTestNotOnionURL[] = "https://brave.com";
 constexpr char kTestErrorPage[] = "/errorpage";
 constexpr char kTestAttackerOnionURL[] = "https://attacker.onion";
 constexpr char kDownload[] = "/download";
+constexpr char k404Page[] = "/404";
 
 std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     const net::test_server::HttpRequest& request) {
@@ -86,6 +87,9 @@ std::unique_ptr<net::test_server::HttpResponse> HandleOnionLocation(
     http_response->set_content("Some data");
     http_response->AddCustomHeader("onion-location", kTestAttackerOnionURL);
     http_response->AddCustomHeader("Content-Disposition", "attachment");
+  } else if (request.GetURL().path() == k404Page) {
+    http_response->set_code(net::HTTP_NOT_FOUND);
+    http_response->AddCustomHeader("onion-location", kTestOnionURL);
   }
   return std::move(http_response);
 }
@@ -436,4 +440,17 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, Download) {
   auto* helper = tor::OnionLocationTabHelper::FromWebContents(web_contents);
   EXPECT_TRUE(helper->should_show_icon());
   EXPECT_EQ(helper->onion_location(), GURL(kTestOnionURL));
+}
+
+IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
+                       NotFoundPage) {
+  const GURL url = test_server()->GetURL(k404Page);
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
+  content::WebContents* web_contents =
+      browser()->tab_strip_model()->GetActiveWebContents();
+  tor::OnionLocationTabHelper* helper =
+      tor::OnionLocationTabHelper::FromWebContents(web_contents);
+  EXPECT_FALSE(helper->should_show_icon());
+  EXPECT_TRUE(helper->onion_location().is_empty());
+  EXPECT_FALSE(GetOnionLocationView(browser())->GetVisible());
 }
