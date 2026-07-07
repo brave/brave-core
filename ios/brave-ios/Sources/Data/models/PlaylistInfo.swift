@@ -5,7 +5,6 @@
 
 import Foundation
 import Shared
-import WebKit
 import os.log
 
 public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
@@ -102,14 +101,14 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.isInvisible = try container.decodeIfPresent(Bool.self, forKey: .isInvisible) ?? false
   }
 
-  public static func from(message: WKScriptMessage) -> PlaylistInfo? {
-    if !JSONSerialization.isValidJSONObject(message.body) {
+  public static func from(dictionary: [String: Any]) -> PlaylistInfo? {
+    if !JSONSerialization.isValidJSONObject(dictionary) {
       return nil
     }
 
     do {
       let data = try JSONSerialization.data(
-        withJSONObject: message.body,
+        withJSONObject: dictionary,
         options: [.fragmentsAllowed]
       )
       return try JSONDecoder().decode(PlaylistInfo.self, from: data)

@@ -206,7 +206,8 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         return
       }
 
-      guard let item = PlaylistInfo.from(message: message),
+      guard let body = message.body as? [String: Any],
+        let item = PlaylistInfo.from(dictionary: body),
         item.detected
       else {
         cancelRequest()
