@@ -85,8 +85,9 @@ DEFINE_PROTO_FUZZER(const adblock_fuzzer::EngineMatches& input) {
     std::cout << url << std::endl;
   }
 
+  const std::string method = input.method().empty() ? "GET" : input.method();
   env.engine->matches(url, (input.url().has_host() ? input.url().host() : url),
                       url_proto::Convert(input.tab_host()),
                       ResourceTypeToString(input.resource_type()),
-                      input.is_third_party(), false, false);
+                      input.is_third_party(), method, false, false);
 }

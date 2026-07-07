@@ -108,6 +108,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
     const std::string& tab_host,
+    const std::string& method,
     bool previously_matched_rule,
     bool previously_matched_exception,
     bool previously_matched_important) {
@@ -120,7 +121,7 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
       INCLUDE_PRIVATE_REGISTRIES);
   return ad_block_client_->matches(
       url.spec(), std::string(url.host()), tab_host,
-      ResourceTypeToString(resource_type), is_third_party,
+      ResourceTypeToString(resource_type), is_third_party, method,
       // Checking normal rules is skipped if a normal rule or exception rule was
       // found previously
       previously_matched_rule || previously_matched_exception,
@@ -131,7 +132,8 @@ adblock::BlockerResult AdBlockEngine::ShouldStartRequest(
 std::optional<std::string> AdBlockEngine::GetCspDirectives(
     const GURL& url,
     blink::mojom::ResourceType resource_type,
-    const std::string& tab_host) {
+    const std::string& tab_host,
+    const std::string& method) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // Determine third-party here so the library doesn't need to figure it out.
   // CreateFromNormalizedTuple is needed because SameDomainOrHost needs
@@ -141,7 +143,7 @@ std::optional<std::string> AdBlockEngine::GetCspDirectives(
       INCLUDE_PRIVATE_REGISTRIES);
   auto result = ad_block_client_->get_csp_directives(
       url.spec(), std::string(url.host()), tab_host,
-      ResourceTypeToString(resource_type), is_third_party);
+      ResourceTypeToString(resource_type), is_third_party, method);
 
   if (result.empty()) {
     return std::nullopt;
