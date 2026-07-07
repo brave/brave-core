@@ -619,4 +619,60 @@ public class BraveYouTubePictureInPictureControllerTest {
         verify(mFullscreenManager, never()).exitPersistentFullscreenMode();
         verify(mBraveActivity, never()).exitOverviewModeForYouTubePictureInPicture();
     }
+
+    @Test
+    public void maybeDeferNightModeRecreate_inactive_returnsFalse() {
+        // With no active session there is nothing to protect, so the theme recreate proceeds
+        // normally (the caller runs super.onNightModeStateChanged()).
+        BraveYouTubePictureInPictureController controller =
+                new BraveYouTubePictureInPictureController(mBraveActivity);
+
+        assertFalse(controller.maybeDeferNightModeRecreate());
+    }
+
+    @Test
+    public void maybeDeferNightModeRecreate_reenteredPip_skipsApply() {
+        WebContents observableWebContents =
+                mock(
+                        WebContents.class,
+                        withSettings().extraInterfaces(WebContentsObserver.Observable.class));
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(null).when(controller).getMediaSession(any());
+        controller.onSessionRequested(observableWebContents);
+        controller.maybeDeferNightModeRecreate();
+
+        // The activity is back in a PiP window by the time the posted recreate runs; it must be
+        // skipped so we never recreate the activity backing a live PiP window.
+        when(mBraveActivity.isInPictureInPictureMode()).thenReturn(true);
+
+        controller.onExitPictureInPictureMode();
+        ShadowLooper.idleMainLooper(
+                BraveYouTubePictureInPictureController.DISMISS_CHECK_DELAY_MS,
+                TimeUnit.MILLISECONDS);
+
+        verify(mBraveActivity, never()).applyDeferredNightModeRecreate();
+    }
+
+    @Test
+    public void maybeDeferNightModeRecreate_screenLockExit_notApplied() {
+        BraveYouTubePictureInPictureController controller =
+                spy(new BraveYouTubePictureInPictureController(mBraveActivity));
+        doReturn(null).when(controller).getMediaSession(any());
+        doReturn(false).when(controller).isBackgroundVideoPlaybackEnabled(any());
+        controller.onSessionRequested(mWebContents);
+        controller.maybeDeferNightModeRecreate();
+
+        // Locking the screen parks the session rather than ending it, so the withheld theme
+        // change must wait for a real exit instead of recreating behind the lock.
+        setKeyguardLocked();
+
+        controller.onExitPictureInPictureMode();
+        ShadowLooper.idleMainLooper(
+                BraveYouTubePictureInPictureController.DISMISS_CHECK_DELAY_MS,
+                TimeUnit.MILLISECONDS);
+
+        verify(mBraveActivity, never()).applyDeferredNightModeRecreate();
+        assertTrue(controller.isInterruptedByScreenLockForTesting());
+    }
 }

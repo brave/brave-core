@@ -486,6 +486,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         // to proactively update the shields button state here, otherwise shields
         // might sometimes show as disabled while it is actually enabled.
         updateBraveShieldsButtonState(getToolbarDataProvider().getTab());
+        // After an activity recreation that reparents the current tab (e.g. the theme switch
+        // applied on YouTube PiP exit), the page is preserved without any fresh navigation,
+        // page-load, tab-selection, or tab-shown callback, so nothing would re-evaluate the PiP
+        // icon and it would stay hidden until a manual reload. The tab model is (re)bound here on
+        // every activity start, so proactively evaluate the current tab's icon.
+        final Tab pipCurrentTab = getToolbarDataProvider().getTab();
+        if (pipCurrentTab != null) {
+            showYouTubePipIcon(pipCurrentTab);
+        }
         mTabModelSelectorTabObserver =
                 new TabModelSelectorTabObserver(selector) {
                     @Override
