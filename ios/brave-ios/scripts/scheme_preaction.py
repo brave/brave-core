@@ -9,7 +9,6 @@ Actions to run before every build in the brave-ios Xcode project
 
 import argparse
 import os
-import subprocess
 import platform
 import sys
 import inspect
@@ -63,7 +62,7 @@ def main():
             raise Exception(err)
     else:
         BuildCore(options.configuration, target_arch, target_environment)
-        CallNpm(['npm', 'run', 'ios_pack_js'])
+        PackJavaScript()
     UpdateSymlink(options.configuration, target_arch, target_environment)
 
 
@@ -86,21 +85,23 @@ def UpdateSymlink(config, target_arch, target_environment):
     node.RunNode(cmd_args)
 
 
+def PackJavaScript():
+    """Bundles the iOS user script JavaScript resources via webpack"""
+    webpack_cli = os.path.join(brave_root_dir, 'node_modules', 'webpack-cli',
+                               'bin', 'cli.js')
+    webpack_config = os.path.join(brave_root_dir, 'ios', 'brave-ios',
+                                  'webpack.config.js')
+    node.RunNode([webpack_cli, '--config', webpack_config])
+
+
 def BuildCore(config, target_arch, target_environment):
     """Generates and builds the BraveCore.framework"""
     cmd_args = [
-        'npm', 'run', 'build', '--', config, '--target_os', 'ios',
-        '--target_arch', target_arch, '--target_environment',
-        target_environment
+        os.path.join(scripts_dir, 'commands.js'), 'build', config,
+        '--target_os', 'ios', '--target_arch', target_arch,
+        '--target_environment', target_environment
     ]
-    CallNpm(cmd_args)
-
-
-def CallNpm(cmd):
-    retcode = subprocess.call(cmd, cwd=brave_root_dir, stderr=subprocess.STDOUT)
-    if retcode:
-        raise subprocess.CalledProcessError(retcode, cmd)
-
+    node.RunNode(cmd_args)
 
 if __name__ == '__main__':
     sys.exit(main())

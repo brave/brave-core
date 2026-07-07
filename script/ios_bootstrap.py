@@ -11,11 +11,12 @@ import shutil
 import sys
 
 from distutils.dir_util import copy_tree
-from brave_chromium_utils import wspath
+from brave_chromium_utils import wspath, sys_path
 from lib.config import PLATFORM, enable_verbose_mode, is_verbose_mode
-from lib.util import execute_stdout
 from pathlib import Path
 
+with sys_path("//third_party/node"):
+    import node
 
 def main():
     if PLATFORM != 'darwin':
@@ -42,10 +43,18 @@ def parse_args():
     return parser.parse_args()
 
 
+def pack_javascript():
+    """Bundles the iOS user script JavaScript resources via webpack"""
+    webpack_cli = wspath("//brave/node_modules/webpack-cli/bin/cli.js")
+    webpack_config = wspath("//brave/ios/brave-ios/webpack.config.js")
+    stdout = node.RunNode([webpack_cli, '--config', webpack_config])
+    if is_verbose_mode():
+        print(stdout)
+
 def create_required_spm_resources(force=False):
     # Runs webpack on the JS files that are generated in iOS. This is so that
     # Package.swift/SPM resolves with the resources available
-    execute_stdout(['npm', 'run', 'ios_pack_js'])
+    pack_javascript()
     # Creates the expected out/ios_current_link directory and places placeholder
     # xcframeworks inside to ensure Package.swift/SPM validates the manifest
     # correctly.
