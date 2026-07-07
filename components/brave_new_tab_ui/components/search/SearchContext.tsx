@@ -40,6 +40,10 @@ export const searchEnginesPromise = getNTPBrowserAPI().pageHandler.getSearchEngi
 export const omniboxController: PageHandlerRemote = new PageHandlerRemote();
 (window as any).omnibox = omniboxController;
 
+// Tracks the latest query sent for autocompletion. Used to filter out stale
+// results.
+let activeQueryId = 0;
+
 class SearchPage implements PageInterface {
   private receiver = new PageReceiver(this)
   private result: AutocompleteResult | undefined
@@ -135,7 +139,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(keywordQuery, false, keywordQuery.length);
+      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length);
     } else {
       omniboxController.stopAutocomplete(true)
     }
