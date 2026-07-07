@@ -43,14 +43,17 @@ jobs:
           fi
 
           pr_number="${PR_NUMBER:-"$(gh pr list --search "$COMMIT_HASH" --json number -q '.[].number')"}"
-          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,url)
+          gh_pr_view=$(gh pr view "${pr_number:?}" --json baseRefName,headRefName,headRepository,headRepositoryOwner,id,isCrossRepository,url)
 
           JQ="jq -e -r"
           baseRefName=$($JQ ".baseRefName" <<<"$gh_pr_view")
           headRefName=$($JQ ".headRefName" <<<"$gh_pr_view")
           headRepositoryName=$($JQ ".headRepository.name" <<<"$gh_pr_view")
           headRepositoryOwnerLogin=$($JQ ".headRepositoryOwner.login" <<<"$gh_pr_view")
+          isCrossRepository=$($JQ ".isCrossRepository" <<<"$gh_pr_view")
           url=$($JQ ".url" <<<"$gh_pr_view")
+
+          [[ "$isCrossRepository" = "true" ]] || { echo "PR is not cross repo. Exiting!"; exit 1; }
 
           git remote add contributor "https://github.com/$headRepositoryOwnerLogin/$headRepositoryName.git" || :
           contribHeadRefName="contributor-$headRepositoryOwnerLogin-$headRefName"
