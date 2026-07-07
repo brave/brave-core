@@ -377,6 +377,9 @@ void BraveTabStrip::OnScrollableHorizontalTabStripPrefChanged() {
 }
 
 void BraveTabStrip::OnCompactModePrefChanged() {
+  if (auto* tab_container = GetBraveTabContainer()) {
+    tab_container->RefreshGroupHeaderVisuals();
+  }
   InvalidateTabContainerLayout();
   PreferredSizeChanged();
 }
