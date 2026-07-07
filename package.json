@@ -65,9 +65,17 @@
   "bugs": {
     "url": "https://github.com/brave/brave-browser/issues"
   },
-  "engines": {
-    "node": ">=24.16.0 <25.0.0",
-    "npm": ">=11.13.0"
+  "devEngines": {
+    "runtime": {
+      "name": "node",
+      "version": ">=24.16.0 <25.0.0",
+      "onFail": "error"
+    },
+    "packageManager": {
+      "name": "npm",
+      "version": ">=11.13.0",
+      "onFail": "error"
+    }
   },
   "homepage": "https:/github.com/brave/brave-core#readme",
   "config": {
