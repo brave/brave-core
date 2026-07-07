@@ -14,7 +14,6 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "content/public/browser/web_contents.h"
-#include "printing/buildflags/buildflags.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/models/dialog_model.h"
 #include "ui/base/models/image_model.h"
@@ -91,7 +90,6 @@ std::unique_ptr<views::BubbleDialogModelHost> ShowScreenshotBubble(
       base::Unretained(web_contents), base::Unretained(controller),
       base::Unretained(visible_btn)));
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   auto* full_btn =
       container->AddChildView(std::make_unique<views::MdTextButton>(
           views::Button::PressedCallback(),
@@ -112,7 +110,6 @@ std::unique_ptr<views::BubbleDialogModelHost> ShowScreenshotBubble(
       },
       base::Unretained(web_contents), base::Unretained(controller),
       base::Unretained(full_btn)));
-#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
   auto model =
       ui::DialogModel::Builder()

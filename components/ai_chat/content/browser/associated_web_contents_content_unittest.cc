@@ -16,6 +16,7 @@
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/favicon/core/test/mock_favicon_service.h"
 #include "components/pdf/common/constants.h"
@@ -372,7 +373,7 @@ TEST_P(AssociatedWebContentsContentUnitTest,
        GetPageContent_PrintPreviewTriggeringURL) {
   // A url that triggers print preview extraction - should return empty content
   // to allow autoscreenshots mechanism to handle server-side OCR
-  for (const auto& host : kPrintPreviewRetrievalHosts) {
+  for (const auto& host : screenshot::kPrintPreviewRetrievalHosts) {
     NavigateTo(GURL(base::StrCat({"https://", host})));
     if (is_print_preview_supported_) {
       // PrintPreview returns empty content to trigger autoscreenshots
@@ -562,7 +563,7 @@ TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_RegularHost) {
 
 TEST_P(AssociatedWebContentsContentUnitTest, GetScreenshots_MultipleHosts) {
   // Test all print preview hosts
-  for (const auto& host : kPrintPreviewRetrievalHosts) {
+  for (const auto& host : screenshot::kPrintPreviewRetrievalHosts) {
     SCOPED_TRACE(testing::Message() << "Testing host: " << host);
     NavigateTo(GURL(base::StrCat({"https://", host, "/document"})));
 

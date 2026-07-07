@@ -7,6 +7,8 @@ import("//printing/buildflags/buildflags.gni")
 
 source_set("screenshot") {
   sources = [
+    "devtools_full_page_extractor.cc",
+    "devtools_full_page_extractor.h",
     "features.cc",
     "features.h",
     "screenshot_controller.cc",
@@ -23,9 +25,11 @@ source_set("screenshot") {
   deps = [
     "//base",
     "//brave/app:brave_generated_resources_grit",
+    "//brave/components/screenshot/content",
     "//chrome/app:generated_resources",
     "//chrome/browser/download",
     "//chrome/browser/image_editor",
+    "//components/devtools/simple_devtools_protocol_client",
     "//components/viz/common",
     "//content/public/browser",
     "//ui/base",
@@ -39,7 +43,10 @@ source_set("screenshot") {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "screenshot_controller_unittest.cc" ]
+  sources = [
+    "devtools_full_page_extractor_unittest.cc",
+    "screenshot_controller_unittest.cc",
+  ]
   deps = [
     ":screenshot",
     "//base",

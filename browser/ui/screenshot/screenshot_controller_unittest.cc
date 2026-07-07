@@ -75,6 +75,12 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
     controller_->OnVisibleAreaCopied(std::move(bitmap));
   }
 
+  static std::vector<uint8_t> EncodeBitmapAsPng(const SkBitmap& bitmap) {
+    auto encoded = gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false);
+    CHECK(encoded);
+    return *encoded;
+  }
+
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   // Drives the pipeline from OnFullPageChunks() onward, bypassing
   // CaptureFullPage and the real PrintPreviewExtractor.
@@ -83,12 +89,6 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
       ScreenshotController::ResultCallback cb) {
     controller_->pending_callback_ = std::move(cb);
     controller_->OnFullPageChunks(std::move(chunks));
-  }
-
-  static std::vector<uint8_t> EncodeBitmapAsPng(const SkBitmap& bitmap) {
-    auto encoded = gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, false);
-    CHECK(encoded);
-    return *encoded;
   }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
@@ -102,6 +102,19 @@ class ScreenshotControllerTest : public ChromeRenderViewHostTestHarness {
                            ScreenshotController::ResultCallback cb) {
     controller_->pending_callback_ = std::move(cb);
     controller_->OnRegionCaptured(result);
+  }
+
+  // Drives the pipeline from OnFullPageDevToolsCaptured() onward, bypassing
+  // the real DevToolsFullPageExtractor. Pass nullopt to simulate a failure.
+  void InjectFullPageCapture(std::optional<std::vector<uint8_t>> png_bytes,
+                             ScreenshotController::ResultCallback cb) {
+    controller_->pending_callback_ = std::move(cb);
+    if (png_bytes) {
+      controller_->OnFullPageDevToolsCaptured(base::ok(std::move(*png_bytes)));
+    } else {
+      controller_->OnFullPageDevToolsCaptured(
+          base::unexpected(std::string("test error")));
+    }
   }
 
   static image_editor::ScreenshotCaptureResult MakeSuccessResult(
@@ -340,6 +353,76 @@ TEST_F(ScreenshotControllerTest,
 }
 
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+// ---------------------------------------------------------------------------
+// CaptureSelectedArea / OnRegionCaptured tests
+// ---------------------------------------------------------------------------
+
+// ---------------------------------------------------------------------------
+// CaptureFullPage — early-reject and non-PDF (ScreenshotFlow) pipeline tests
+// ---------------------------------------------------------------------------
+
+TEST_F(ScreenshotControllerTest, CaptureFullPage_NullWebContents_ReturnsNoTab) {
+  base::test::TestFuture<Result> future;
+  controller_->CaptureFullPage(nullptr, future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kNoTab));
+}
+
+TEST_F(ScreenshotControllerTest, CaptureFullPage_AlreadyBusy_ReturnsBusy) {
+  base::test::TestFuture<Result> pending_callback_future;
+  SetPendingCallback(pending_callback_future.GetCallback());
+
+  base::test::TestFuture<Result> future;
+  controller_->CaptureFullPage(web_contents(), future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kBusy));
+}
+
+TEST_F(ScreenshotControllerTest, FullPage_DevToolsError_ReturnsCaptureFailed) {
+  base::test::TestFuture<Result> future;
+  InjectFullPageCapture(std::nullopt, future.GetCallback());
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kCaptureFailed));
+}
+
+TEST_F(ScreenshotControllerTest,
+       FullPage_UserCancelsDialog_ReturnsUserCancelled) {
+  base::test::TestFuture<void> dialog_opened;
+  dialog_factory_->SetOpenCallback(dialog_opened.GetRepeatingCallback());
+
+  base::test::TestFuture<Result> future;
+  InjectFullPageCapture(
+      EncodeBitmapAsPng(MakeSolidBitmap(64, 64, SK_ColorBLUE)),
+      future.GetCallback());
+
+  ASSERT_TRUE(dialog_opened.Wait());
+  ui::FakeSelectFileDialog* dialog = dialog_factory_->GetLastDialog();
+  ASSERT_TRUE(dialog);
+  dialog->CallFileSelectionCanceled();
+
+  EXPECT_EQ(future.Get(), base::unexpected(Error::kUserCancelled));
+}
+
+TEST_F(ScreenshotControllerTest,
+       FullPage_FileSelected_WritesToDiskAndReturnsPath) {
+  base::test::TestFuture<void> dialog_opened;
+  dialog_factory_->SetOpenCallback(dialog_opened.GetRepeatingCallback());
+
+  base::test::TestFuture<Result> future;
+  InjectFullPageCapture(
+      EncodeBitmapAsPng(MakeSolidBitmap(64, 64, SK_ColorGREEN)),
+      future.GetCallback());
+
+  ASSERT_TRUE(dialog_opened.Wait());
+  ui::FakeSelectFileDialog* dialog = dialog_factory_->GetLastDialog();
+  ASSERT_TRUE(dialog);
+
+  base::FilePath save_path = temp_dir_.GetPath().AppendASCII("fullpage.png");
+  ASSERT_TRUE(dialog->CallFileSelected(save_path, "png"));
+
+  Result result = future.Get();
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(), save_path);
+  EXPECT_TRUE(base::PathExists(save_path));
+}
 
 // ---------------------------------------------------------------------------
 // CaptureSelectedArea / OnRegionCaptured tests

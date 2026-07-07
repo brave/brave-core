@@ -33,6 +33,7 @@ class ScreenshotFlow;
 }  // namespace image_editor
 
 namespace screenshot {
+class DevToolsFullPageExtractor;
 class PrintPreviewExtractor;
 
 // Owned by BrowserWindowFeatures (one per Browser). Orchestrates capture of a
@@ -82,9 +83,7 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
   void CaptureSelectedArea(content::WebContents* web_contents,
                            ResultCallback done);
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void CaptureFullPage(content::WebContents* web_contents, ResultCallback done);
-#endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
 
   void set_download_dir_for_testing(const base::FilePath& path) {
     download_dir_for_testing_ = path;
@@ -101,10 +100,12 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
       base::expected<std::vector<std::vector<uint8_t>>, std::string>;
 
   void OnVisibleAreaCopied(SkBitmap bitmap);
+  void OnRegionCaptured(const image_editor::ScreenshotCaptureResult& result);
+  void OnFullPageDevToolsCaptured(
+      base::expected<std::vector<uint8_t>, std::string> result);
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void OnFullPageChunks(ChunkResult result);
 #endif
-  void OnRegionCaptured(const image_editor::ScreenshotCaptureResult& result);
 
   void OnEncoded(std::optional<std::vector<uint8_t>> png);
   void ShowSaveDialog(std::vector<uint8_t> png);
@@ -125,6 +126,9 @@ class ScreenshotController : public ui::SelectFileDialog::Listener {
 #endif
 
   std::optional<base::FilePath> download_dir_for_testing_;
+
+  // Owns the DevTools full-page extractor during CaptureFullPage() for non-PDF.
+  std::unique_ptr<DevToolsFullPageExtractor> devtools_extractor_;
 
   // Owns the interactive region-selection overlay during CaptureSelectedArea().
   // Reset as soon as the selection callback fires.
