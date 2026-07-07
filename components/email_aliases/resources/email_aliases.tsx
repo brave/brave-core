@@ -26,6 +26,7 @@ import {
   getLoggedInEmail,
   isAccountLoggedIn,
 } from './content/use_email_aliases'
+import { shouldForwardProp } from '$web-common/StyledComponentsProvider'
 
 export const ManagePageConnected = ({
   authEmail,
