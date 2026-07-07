@@ -4,7 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 declare_args() {
-  brave_variations_server_url = ""
+  brave_variations_server_url = "https://variations.brave.com/seed"
 }
 
 if (is_official_build) {
