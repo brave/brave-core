@@ -184,6 +184,13 @@ extension ReaderModeTabHelper: TabObserver {
 
   func tabDidFinishNavigation(_ tab: some TabState) {
     Task { @MainActor in
+      if FeatureList.kUseProfileWebViewConfiguration.enabled,
+        let url = tab.visibleURL,
+        url.isInternalURL(for: .readermode)
+      {
+        onReaderModeDisplayed?()
+        return
+      }
       await checkReadability()
     }
   }

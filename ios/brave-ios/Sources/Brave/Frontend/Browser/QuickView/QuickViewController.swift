@@ -352,6 +352,9 @@ extension QuickViewController: TabObserver {
 
   func tabDidUpdateURL(_ tab: some TabState) {
     refreshShieldStatus(url: tab.visibleURL ?? url)
+    if tab.visibleURL?.isInternalURL(for: .readermode) != true {
+      hideReaderModeBar()
+    }
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
