@@ -93,9 +93,6 @@ struct PlaylistItemList: View {
             Button {
               Task { @MainActor in
                 await PlaylistManager.shared.deleteCache(item: .init(item: item))
-                if let uuid = item.uuid {
-                  downloadStates.removeValue(forKey: uuid)
-                }
               }
             } label: {
               Label(Strings.Playlist.removeOfflineData, braveSystemImage: "leo.cloud.off")

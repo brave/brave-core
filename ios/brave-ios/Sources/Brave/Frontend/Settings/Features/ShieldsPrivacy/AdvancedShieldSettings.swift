@@ -264,10 +264,9 @@ import os
     }
 
     if braveCore.profile.prefs.isPlaylistAvailable {
-      clearableSettings += [
-        ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false),
-        ClearableSetting(id: .playlistData, clearable: PlayListDataClearable(), isEnabled: false),
-      ]
+      clearableSettings.append(
+        ClearableSetting(id: .playlistCache, clearable: PlayListCacheClearable(), isEnabled: false)
+      )
     }
 
     clearableSettings.append(contentsOf: [
