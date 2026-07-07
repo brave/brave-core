@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program, Argument, Option } from 'commander'
+import { program, Option } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -27,6 +27,7 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
+import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -47,18 +48,6 @@ function parseInteger(string) {
 }
 
 const parsedArgs = program.parseOptions(process.argv)
-
-function createBuildConfigArgument() {
-  // Build config argument that's valid only if it's not an option.
-  return new Argument('[build_config]', 'build configuration').argParser(
-    (value) => {
-      if (value.startsWith('-')) {
-        return undefined
-      }
-      return value
-    },
-  )
-}
 
 // @ts-ignore
 program.version(process.env.npm_package_version)

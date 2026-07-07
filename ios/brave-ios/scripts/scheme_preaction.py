@@ -18,7 +18,11 @@ this_dir = os.path.dirname(os.path.abspath(__file__))
 brave_root_dir = os.path.join(
     os.path.join(os.path.join(this_dir, os.pardir), os.pardir), os.pardir)
 src_dir = os.path.join(brave_root_dir, os.pardir)
+scripts_dir = os.path.join(brave_root_dir, 'build', 'commands', 'scripts')
 
+sys.path.append(os.path.join(src_dir, 'third_party', 'node'))
+
+import node
 
 def main():
     description = 'Runs actions before each build'
@@ -75,12 +79,11 @@ def BuildOutputDirectory(config, platform_name):
 def UpdateSymlink(config, target_arch, target_environment):
     """Updates the 'ios_current_link' symlink"""
     cmd_args = [
-        'npm', 'run', 'update_symlink', '--', config, '--symlink_dir',
-        os.path.join(src_dir, 'out/ios_current_link'), '--target_os', 'ios',
-        '--target_arch', target_arch, '--target_environment',
+        os.path.join(scripts_dir, 'iosCommands.js'), 'ios_update_current_link',
+        config, '--target_arch', target_arch, '--target_environment',
         target_environment
     ]
-    CallNpm(cmd_args)
+    node.RunNode(cmd_args)
 
 
 def BuildCore(config, target_arch, target_environment):
