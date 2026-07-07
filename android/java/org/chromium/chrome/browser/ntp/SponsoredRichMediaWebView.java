@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ntp;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,12 @@ public class SponsoredRichMediaWebView {
                 windowAndroid,
                 WebContents.createDefaultInternalsHolder());
 
+        final ThinWebViewConstraints constraints = new ThinWebViewConstraints();
+        constraints.backgroundColor = Color.BLACK;
         mWebView =
                 ThinWebViewFactory.create(
                         activity,
-                        new ThinWebViewConstraints(),
+                        constraints,
                         windowAndroid.getIntentRequestTracker(),
                         /* enablePermissionRequests= */ false);
         mWebView.getView()
