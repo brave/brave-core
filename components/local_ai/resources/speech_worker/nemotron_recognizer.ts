@@ -239,7 +239,7 @@ export class NemotronStreamSession {
   }
 
   private async processAvailable(final: boolean): Promise<void> {
-    const { ort, enc, dec, tokens } = this.model
+    const { ort, tokens } = this.model
     let emitted = false
 
     while (this.frontend.hasFullChunk()) {
@@ -257,7 +257,7 @@ export class NemotronStreamSession {
 
       // Fresh input tensors every step. Do not reuse/carry ORT tensors.
       const encoderStarted = performance.now()
-      const eo = await enc.run(
+      const eo = await this.model.runEncoder(
         {
           processed_signal: new ort.Tensor('float32', sig, [
             1,
@@ -348,7 +348,7 @@ export class NemotronStreamSession {
 
         // Decoder processes each time frame, aggregated across all channels.
         while (sym < config.NEMO_MAX_SYM) {
-          const dout = await dec.run({
+          const dout = await this.model.runDecoder({
             encoder_outputs: new ort.Tensor('float32', frame, [
               1,
               config.NEMO_HIDDEN_DIM,
