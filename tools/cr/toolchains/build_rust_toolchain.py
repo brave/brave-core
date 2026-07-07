@@ -14,32 +14,6 @@
 # [VPYTHON:END]
 """Build and package a minimal Rust toolchain subset for Chromium.
 
-Keep this as a *standalone* script that can be invoked directly with a vanilla
-Chromium checkout.
-
-To use this straight from Github just call:
-
-```sh
-curl -sL \
-    https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/tools/cr/toolchains/build_rust_toolchain.py \
-    | vpython3 - \
-        --out-dir=./out/ \
-        --chromium-src=~/dev/chromium/src/ \
-        --brave-subrevision=1
-```
-
-If you do not have a Chromium checkout yet, pass `--clone-chromium` together
-with `--use-ref` to have the script fetch one automatically:
-
-```sh
-vpython3 build_rust_toolchain.py \
-    --out-dir=./out/ \
-    --chromium-src=~/dev/chromium/src/ \
-    --clone-chromium \
-    --use-ref=refs/heads/main \
-    --brave-subrevision=1
-```
-
 By default the builder produces a minimal overlay `.tar.xz` containing only two
 artifacts built against the Chromium-managed LLVM/Clang installation, sitting on
 top of the prebuilt Rust toolchain that gclient already syncs.
@@ -223,6 +197,9 @@ STAGE0_RUSTLIB = Path('stage0-sysroot') / 'lib' / 'rustlib'
 # Only affects `--no-full-toolchain`: the full-toolchain build ships its own
 # freshly built `rustc`, so its wasm std must come from that same build (which
 # already reuses the compiler incrementally rather than rebuilding it).
+#
+# This is the default; override it per-invocation with
+# `--use-prebuilt-rustc` / `--no-use-prebuilt-rustc`.
 USE_PREBUILT_RUSTC_FOR_WASM_STD = True
 
 # vpython3 that is selected by `depot_tools` from `$PATH`.
@@ -230,9 +207,6 @@ USE_PREBUILT_RUSTC_FOR_WASM_STD = True
 # Windows using git bash.
 VPYTHON_PATH = Path('third_party/depot_tools') / (
     'vpython3.bat' if sys.platform == 'win32' else 'vpython3')
-
-# Latest Chromium depot_tools bundle
-DEPOT_TOOLS_URL = 'https://chromium.googlesource.com/chromium/tools/depot_tools'
 
 # This source is used as a token to check if we have a valid Chromium repo as
 # it is one of those reliable files that are always present in any version.
@@ -818,11 +792,7 @@ class ToolchainBuilder:
     def _script_sha256(self) -> str | None:
         """SHA-256 of this script's source bytes, or `None` if unavailable.
 
-        Returns `None` when `__file__` does not point at a real file. This can
-        happen when the script is invoked via `curl ... | vpython3 -`, where
-        `__file__` is the literal string `'<stdin>'`. This is not an issue in CI
-        though because we use `vpython3 build_rust_toolchain.py`, which always
-        creates a temp file.
+        Returns `None` when `__file__` does not point at a real file.
 
         This function normalises the line endings to make sure we don't get
         different results based on platform.
@@ -1251,32 +1221,6 @@ class ToolchainBuilder:
         logging.info('Smoke test passed: the wasm32 toolchain compiles and '
                      'links.')
 
-    def _bootstrap_depot_tools(self):
-        """Ensure `depot_tools` is on PATH if no existing install is found.
-
-        This method checks for `gclient` and, if it is not found, attempts to
-        use or install `depot_tools` alongside `src/`.
-        """
-        if shutil.which('gclient') is not None:
-            logging.debug('depot_tools already on PATH, skipping clone')
-            return
-
-        depot_tools_path = self._chromium_src.parent / 'depot_tools'
-        if (depot_tools_path / 'gclient').is_file():
-            # If `gclient` is already present in the expected install path, we
-            # can skip cloning `depot_tools` and just add it to `PATH`.
-            logging.info('depot_tools already present at %s, adding to PATH.',
-                         depot_tools_path)
-        else:
-            logging.info('Installing depot_tools under %s', depot_tools_path)
-            depot_tools_path.parent.mkdir(parents=True, exist_ok=True)
-            _check_call('git', 'clone', DEPOT_TOOLS_URL, str(depot_tools_path))
-
-        # Add depot_tools to PATH so that gclient can be used.
-        os.environ['PATH'] = os.pathsep.join(
-            [str(depot_tools_path), os.environ['PATH']])
-        _check_call('gclient')
-
     def _has_valid_chromium_path(self) -> bool:
         """Return whether self._chromium_src points to a valid Chromium repo."""
         # We start by checking for the presence of `chrome/VERSION`, as this is
@@ -1298,52 +1242,6 @@ class ToolchainBuilder:
             return False
 
         return True
-
-    def _checkout_chromium_ref(self, ref: str):
-        """Check out a specific Chromium ref and resync dependencies."""
-        logging.info('Checking out Chromium ref %s', ref)
-        if (sys.platform == 'win32'
-                and 'DEPOT_TOOLS_WIN_TOOLCHAIN' not in os.environ):
-            # On Windows, we need the windows toolchain to be able to build the
-            # code without a VS installation. This is desirable as we want
-            # toolchains to be hermetic.
-            os.environ["DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL"] = (
-                'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
-                '2.on.aws/windows-hermetic-toolchain/')
-
-        if re.fullmatch(r'\d+\.\d+\.\d+\.\d+', ref):
-            # Chromium release tag (e.g. `150.0.7850.1`): fetch it as a tag so
-            # it lands at `refs/tags/<ref>` in the local repo.
-            _check_call('git',
-                        'fetch',
-                        '--no-tags',
-                        'origin',
-                        f'refs/tags/{ref}:refs/tags/{ref}',
-                        cwd=self._chromium_src)
-        else:
-            _check_call('git', 'fetch', 'origin', ref, cwd=self._chromium_src)
-
-        # We are doing a `git checkout --force` rather than just using
-        # `gclient sync -r {ref}`, as there is a an gclient bug that lurks
-        # around which is not clear if we are hitting on the window bot, so for
-        # the sake of preventing that to beging with, we do the checkout
-        # manually.
-        #
-        # For details see:
-        #   https://github.com/brave/brave-browser/issues/44921
-        _check_call('git',
-                    'checkout',
-                    '--force',
-                    'FETCH_HEAD',
-                    cwd=self._chromium_src)
-
-        _check_call('gclient', 'sync', '--force', '-D', cwd=self._chromium_src)
-        _check_call('git',
-                    'log',
-                    '-1',
-                    '--oneline',
-                    str(CHROME_VERSION_FILE),
-                    cwd=self._chromium_src)
 
     def _run_git(self,
                  *args,
@@ -1435,20 +1333,11 @@ class ToolchainBuilder:
                          original_head)
             self._run_git('reset', '--hard', original_head)
 
-    def _clone_chromium(self):
-        """Clone a fresh Chromium checkout under `self._chromium_src.parent`."""
-        self._chromium_src.parent.mkdir(parents=True, exist_ok=True)
-        _check_call('fetch',
-                    '--nohooks',
-                    'chromium',
-                    cwd=self._chromium_src.parent)
-
     def run(self,
-            clone_chromium: bool = False,
-            use_ref: str = None,
             clear: bool = False,
             force_overwrite: bool = False,
-            full_toolchain: bool = False):
+            full_toolchain: bool = False,
+            use_prebuilt_rustc: bool = (USE_PREBUILT_RUSTC_FOR_WASM_STD)):
         """Execute the full build-and-package pipeline.
 
         Coordinates the phases in order:
@@ -1475,11 +1364,6 @@ class ToolchainBuilder:
         `config.toml.template` is returned to its original state always.
 
         Args:
-            use_ref: Optional Git reference (branch, tag, or commit) to check
-                out before building. If provided, calls `_checkout_chromium_ref`
-                first.
-            clone_chromium: Whether the builder should operate in a mode that
-                allows cloning Chromium automatically, if necessary.
             clear: If True, delete every entry under `self._out_dir` at the
                 start of the run so the build produces output into a
                 guaranteed-clean directory.
@@ -1491,31 +1375,25 @@ class ToolchainBuilder:
                 `package_rust.py` and overlay the wasm32 sysroot onto it. If
                 False (the default), package only the minimal rust-lld + wasm32
                 subset via `_create_archive`.
+            use_prebuilt_rustc: When True (the default, from
+                `USE_PREBUILT_RUSTC_FOR_WASM_STD`), the `--no-full-toolchain`
+                build compiles the wasm32 std against the prebuilt `rustc`
+                gclient synced instead of building one from scratch. Ignored
+                when `full_toolchain` is True, which always builds its own
+                `rustc`.
         Raises:
-            RuntimeError: If --chromium-src but there is no valid Chromium
-            repo at the path, and --clone-chromium is not provided.
+            RuntimeError: If --chromium-src does not point at a valid Chromium
+            checkout.
             RuntimeError: If tools_rust directory is not found.
             RuntimeError: On Windows, if Git sh.exe is not in path and no
             installation for it can be found with Git.
             subprocess.CalledProcessError: If any subprocess command fails
-                during the build process (from _bootstrap_depot_tools,
-                _clone_chromium, _checkout_chromium_ref, _prepare_run_xpy,
-                or _run_xpy).
+                during the build process (from _prepare_run_xpy or _run_xpy).
         """
         if not self._has_valid_chromium_path():
-            if clone_chromium:
-                self._bootstrap_depot_tools()
-                logging.info('Chromium src not found at %s, cloning...',
-                             self._chromium_src)
-                self._clone_chromium()
-            else:
-                raise RuntimeError(
-                    '--chromium-src must be an existing Chromium src '
-                    f'directory: {self._chromium_src}')
-        else:
-            # We only try to bootstrap depot_tools when we have a Chromium
-            # checkout (this case), or when we are trying to clone Chromium.
-            self._bootstrap_depot_tools()
+            raise RuntimeError(
+                '--chromium-src must point at an existing Chromium src '
+                f'directory: {self._chromium_src}')
 
         if clear:
             logging.info('Clearing contents of %s', self._out_dir)
@@ -1528,12 +1406,6 @@ class ToolchainBuilder:
         if not self._tools_rust.is_dir():
             raise RuntimeError(f'{self._tools_rust} directory not found.')
 
-        if use_ref:
-            self._checkout_chromium_ref(use_ref)
-
-        # Only loading the rust libs now that the desired git ref checkout is
-        # done, otherwise the runtime would already be loaded with whatever rust
-        # version values were in disk.
         tools_rust_str: str = str(self._tools_rust)
         if tools_rust_str not in sys.path:
             sys.path.insert(0, tools_rust_str)
@@ -1578,8 +1450,7 @@ class ToolchainBuilder:
         # prebuilt `rustc` gclient already synced rather than building one from
         # scratch (see USE_PREBUILT_RUSTC_FOR_WASM_STD). The full-toolchain build
         # ships its own `rustc` and so must build the wasm std alongside it.
-        use_prebuilt_rustc = (USE_PREBUILT_RUSTC_FOR_WASM_STD
-                              and not full_toolchain)
+        use_prebuilt_rustc = (use_prebuilt_rustc and not full_toolchain)
 
         # Cherry picks upstream commits (committership reproducibility fix and
         # any others) that the active Chromium ref may predate.
@@ -1627,13 +1498,6 @@ def main():
     parser.add_argument('--out-dir',
                         required=True,
                         help='Output directory for the archive')
-    parser.add_argument('--clone-chromium',
-                        action='store_true',
-                        help='Allow cloning Chromium if needed')
-    parser.add_argument(
-        '--use-ref',
-        help='Git reference (branch, tag, commit) to check out before building'
-        ' the toolchain.')
     parser.add_argument(
         '--brave-subrevision',
         required=True,
@@ -1674,12 +1538,19 @@ def main():
         help='Package only the minimal rust-lld + wasm32 subset '
         'instead of the whole Rust toolchain.')
     parser.add_argument(
-        '--with-git-cache',
-        nargs='?',
-        const='',
-        metavar='PATH',
-        help='Set GIT_CACHE_PATH in environment for the build (used by CI). '
-        'Optionally provide PATH; if omitted, defaults to <home>/cache.')
+        '--use-prebuilt-rustc',
+        dest='use_prebuilt_rustc',
+        action='store_true',
+        default=USE_PREBUILT_RUSTC_FOR_WASM_STD,
+        help='In --no-full-toolchain mode, compile the wasm32 std against the '
+        'prebuilt rustc gclient synced rather than building one from scratch '
+        '(default).')
+    parser.add_argument(
+        '--no-use-prebuilt-rustc',
+        dest='use_prebuilt_rustc',
+        action='store_false',
+        help='In --no-full-toolchain mode, build a stage-1 rustc from scratch '
+        'to compile the wasm32 std instead of reusing the prebuilt one.')
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose (debug) logging')
@@ -1690,46 +1561,16 @@ def main():
     if not args.out_dir:
         parser.error('--out-dir cannot be empty')
 
-    if args.clone_chromium and not args.use_ref:
-        parser.error('--use-ref is required when --clone-chromium is provided')
-
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO)
-
-    if args.with_git_cache is not None:
-        # This mirrors a bit what is being done in our infra, where the cache
-        #  is usually baked under the home directory as `cache/`.
-        if args.with_git_cache:
-            git_cache_path = Path(args.with_git_cache).expanduser()
-        else:
-            if sys.platform == 'win32':
-                git_cache_path = Path(
-                    os.environ.get('USERPROFILE', str(Path.home()))) / 'cache'
-            else:
-                git_cache_path = Path(os.environ.get('HOME', str(
-                    Path.home()))) / 'cache'
-
-        if not git_cache_path.is_dir():
-            raise RuntimeError(f'GIT_CACHE_PATH is not a valid directory: '
-                               f'{git_cache_path}')
-        if 'GIT_CACHE_PATH' in os.environ:
-            raise RuntimeError('GIT_CACHE_PATH is already set in the '
-                               'environment.')
-
-        logging.info('Setting GIT_CACHE_PATH for the build: %s',
-                     git_cache_path)
-        os.environ['GIT_CACHE_PATH'] = str(git_cache_path)
-
-    logging.info('Using GIT_CACHE_PATH=%s', os.environ.get('GIT_CACHE_PATH'))
 
     ToolchainBuilder(args.chromium_src,
                      args.out_dir,
                      brave_subrevision=args.brave_subrevision,
                      no_index_download=args.no_index_download).run(
-                         args.clone_chromium,
-                         args.use_ref,
                          clear=args.clear,
                          force_overwrite=args.force_overwrite,
-                         full_toolchain=args.full_toolchain)
+                         full_toolchain=args.full_toolchain,
+                         use_prebuilt_rustc=(args.use_prebuilt_rustc))
     return 0
 
 

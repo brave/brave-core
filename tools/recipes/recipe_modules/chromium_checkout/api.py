@@ -25,11 +25,7 @@ WIN_HERMETIC_TOOLCHAIN_BASE_URL = (
 
 
 class ChromiumCheckoutApi(RecipeApi):
-    """Clones, syncs, and validates a Chromium `src/` checkout.
-
-    Extracted from the checkout-related helpers in `build_rust_toolchain.py`
-    (`_has_valid_chromium_path`, `_clone_chromium`, `_checkout_chromium_ref`).
-    """
+    """Clones, syncs, and validates a Chromium `src/` checkout."""
 
     def ensure_checkout(self,
                         *,
