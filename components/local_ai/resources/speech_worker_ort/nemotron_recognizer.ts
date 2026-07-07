@@ -9,7 +9,7 @@
 // lives in speech_worker_ort.ts.
 
 import { ensureOrt } from './ort_env'
-import type { Ort, OrtSession, OrtSessionOptions } from './ort_env'
+import type { Ort, OrtSession, OrtSessionOptions, OrtTensor } from './ort_env'
 
 // Parse a tokens.txt ("<token> <id>" per line, id-ordered, ▁ == space) into
 // an id-indexed vocab array.
@@ -44,10 +44,18 @@ function releaseBytes(bytes: Uint8Array): void {
 // decoder sessions plus tokens and the 128-mel filterbank.
 export class OrtNemotronModel {
   readonly ort: Ort
-  readonly enc: OrtSession
-  readonly dec: OrtSession
   readonly tokens: string[]
   readonly fbank: Float32Array
+
+  // The encoder and decoder sessions are private on purpose: every run must go
+  // through runEncoder/runDecoder so it is serialized against other streams.
+  private enc: OrtSession
+  private dec: OrtSession
+
+  // Every run goes through this one queue so runs from different streams never
+  // overlap on the shared sessions. onnxruntime-web keeps a single WASM stack
+  // per module and does not lock run(), so overlapping runs corrupt that stack.
+  private queue: Promise<unknown> = Promise.resolve()
 
   constructor(
     ort: Ort,
@@ -61,6 +69,24 @@ export class OrtNemotronModel {
     this.dec = dec
     this.tokens = tokens
     this.fbank = fbank
+  }
+
+  // Serialized encoder/decoder runs. These are the only way to reach the
+  // shared sessions, so no two streams' runs ever overlap. A failed run is
+  // isolated on the chain so it cannot stall later runs for other streams,
+  // while its rejection still propagates to the caller.
+  runEncoder(feeds: Record<string, OrtTensor>, fetches: readonly string[]) {
+    return this.serialized(() => this.enc.run(feeds, fetches as string[]))
+  }
+
+  runDecoder(feeds: Record<string, OrtTensor>) {
+    return this.serialized(() => this.dec.run(feeds))
+  }
+
+  private serialized<T>(run: () => Promise<T>): Promise<T> {
+    const result = this.queue.then(run)
+    this.queue = result.catch(() => {})
+    return result
   }
 
   // Build the encoder + decoder sessions from mojo BigBuffers. Only the
