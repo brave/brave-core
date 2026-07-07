@@ -15,6 +15,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/containers/map_util.h"
+#include "base/hash/hash.h"
 #include "base/logging.h"
 #include "base/notreached.h"
 #include "base/numerics/safe_conversions.h"
@@ -33,10 +34,9 @@ namespace ai_chat {
 
 void WriteCompressibleString(std::string_view value,
                              sync_pb::AIChatCompressibleString* out) {
-  // Writing a real value supersedes any previous truncation sentinel on
-  // |out| (the merge path reuses an existing AIChatCompressibleString that
-  // may have been marked truncated by the sender).
-  out->clear_was_truncated_for_sync();
+  // Setting a real value supersedes any previous omitted_content_hash on |out|
+  // (they share the same oneof), which matters on the merge path where an
+  // AIChatCompressibleString the sender omitted is being restored.
   if (std::string compressed; value.size() >= kSyncCompressionThresholdBytes &&
                               compression::GzipCompress(value, &compressed) &&
                               compressed.size() < value.size()) {
@@ -46,16 +46,23 @@ void WriteCompressibleString(std::string_view value,
   out->set_raw(value);
 }
 
-void MarkCompressibleStringTruncated(sync_pb::AIChatCompressibleString* out) {
-  out->clear_value();
-  out->set_was_truncated_for_sync(true);
+void OmitCompressibleString(sync_pb::AIChatCompressibleString* out) {
+  // Replace the (possibly large) value with a hash of its content so the
+  // receiver can restore it from a local copy that hashes identically. Reading
+  // the current value handles both raw and gzipped storage; an already-omitted
+  // or empty field hashes the empty string. Setting the hash arm of the oneof
+  // clears any existing value.
+  const std::string value =
+      ReadCompressibleString(*out).value_or(std::string());
+  out->set_omitted_content_hash(base::PersistentHash(value));
 }
 
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in) {
-  if (in.was_truncated_for_sync()) {
-    // The field was truncated by the sender, caller will preserve local value
-    // or use truncated.
+  if (in.has_omitted_content_hash()) {
+    // The sender omitted this field to fit the record budget; the caller
+    // restores it from a local copy with identical content or preserves the
+    // existing local value.
     return std::nullopt;
   }
   if (in.has_gzipped()) {
@@ -205,8 +212,8 @@ void WriteUploadedFile(const mojom::UploadedFile& file,
   proto->set_filename(file.filename);
   proto->set_filesize(file.filesize);
   proto->set_type(std::to_underlying(file.type));
-  // Raw bytes are inlined here; the truncation policy may later drop them
-  // and set |data_truncated_for_sync| if the entry exceeds the size cap.
+  // Raw bytes are inlined here; the size-budget policy may later omit them
+  // and set |omitted_data_hash| if the entry exceeds the size cap.
   if (!file.data.empty()) {
     proto->set_data(file.data.data(), file.data.size());
   }
@@ -262,9 +269,9 @@ void WriteEvent(const mojom::ConversationEntryEvent& event,
 
 void WriteEntryFields(const mojom::ConversationTurn& entry,
                       sync_pb::AIChatConversationSpecifics::Entry* proto) {
-  // Not synced: skill, from_brave_search_SERP and near_verification_status are
-  // local/runtime metadata. edits are not written here; EntryToSpecifics
-  // collapses them into the latest revision before calling this.
+  // Not synced: from_brave_search_SERP is runtime-only (not persisted to the
+  // local store). edits are not written here; EntryToSpecifics collapses them
+  // into the latest revision before calling this.
   if (entry.uuid) {
     proto->set_uuid(*entry.uuid);
   }
@@ -295,6 +302,17 @@ void WriteEntryFields(const mojom::ConversationTurn& entry,
     for (const auto& file : *entry.uploaded_files) {
       WriteUploadedFile(*file, proto->add_uploaded_files());
     }
+  }
+
+  if (entry.skill) {
+    auto* skill_proto = proto->mutable_skill();
+    skill_proto->set_shortcut(entry.skill->shortcut);
+    skill_proto->set_prompt(entry.skill->prompt);
+  }
+
+  if (entry.near_verification_status) {
+    proto->mutable_near_verification_status()->set_verified(
+        entry.near_verification_status->verified);
   }
 }
 

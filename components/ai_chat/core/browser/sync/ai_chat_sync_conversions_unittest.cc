@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+#include "base/hash/hash.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
@@ -36,7 +37,7 @@ TEST(AIChatSyncConversionsTest, WriteCompressibleStringShortStaysRaw) {
   EXPECT_TRUE(out.has_raw());
   EXPECT_FALSE(out.has_gzipped());
   EXPECT_EQ(out.raw(), "hello");
-  EXPECT_FALSE(out.was_truncated_for_sync());
+  EXPECT_FALSE(out.has_omitted_content_hash());
 }
 
 TEST(AIChatSyncConversionsTest, WriteCompressibleStringBelowThresholdStaysRaw) {
@@ -58,13 +59,27 @@ TEST(AIChatSyncConversionsTest, WriteCompressibleStringLongGetsGzipped) {
   EXPECT_LT(out.gzipped().size(), value.size());
 }
 
-TEST(AIChatSyncConversionsTest, MarkCompressibleStringTruncatedSetsSentinel) {
+TEST(AIChatSyncConversionsTest, OmitCompressibleStringStoresContentHash) {
   sync_pb::AIChatCompressibleString out;
   WriteCompressibleString("some value", &out);
-  MarkCompressibleStringTruncated(&out);
-  EXPECT_TRUE(out.was_truncated_for_sync());
+  OmitCompressibleString(&out);
+  EXPECT_TRUE(out.has_omitted_content_hash());
   EXPECT_FALSE(out.has_raw());
   EXPECT_FALSE(out.has_gzipped());
+  // The hash is over the original plaintext so a receiver can match it against
+  // a local copy.
+  EXPECT_EQ(out.omitted_content_hash(), base::PersistentHash("some value"));
+}
+
+TEST(AIChatSyncConversionsTest, OmitCompressibleStringHashesGzippedPlaintext) {
+  // Omitting a value that was stored gzipped must hash the decompressed
+  // plaintext, not the gzip bytes, so it matches the receiver's local copy.
+  const std::string value = CompressibleString();
+  sync_pb::AIChatCompressibleString out;
+  WriteCompressibleString(value, &out);
+  ASSERT_TRUE(out.has_gzipped());
+  OmitCompressibleString(&out);
+  EXPECT_EQ(out.omitted_content_hash(), base::PersistentHash(value));
 }
 
 TEST(AIChatSyncConversionsTest, ReadCompressibleStringRawRoundTrip) {
@@ -91,9 +106,10 @@ TEST(AIChatSyncConversionsTest, ReadCompressibleStringGzippedRoundTrip) {
   EXPECT_EQ(ReadCompressibleString(wire), value);
 }
 
-TEST(AIChatSyncConversionsTest, ReadCompressibleStringTruncatedReturnsNullopt) {
+TEST(AIChatSyncConversionsTest, ReadCompressibleStringOmittedReturnsNullopt) {
   sync_pb::AIChatCompressibleString in;
-  MarkCompressibleStringTruncated(&in);
+  WriteCompressibleString("some value", &in);
+  OmitCompressibleString(&in);
   EXPECT_EQ(ReadCompressibleString(in), std::nullopt);
 }
 
@@ -497,9 +513,43 @@ TEST(AIChatSyncConversionsTest, EntryToSpecificsUploadedFiles) {
   ASSERT_EQ(specifics.entry().uploaded_files_size(), 2);
   EXPECT_EQ(specifics.entry().uploaded_files(0).filename(), "cat.jpg");
   EXPECT_EQ(specifics.entry().uploaded_files(0).data().size(), 5u);
-  EXPECT_FALSE(specifics.entry().uploaded_files(0).data_truncated_for_sync());
+  EXPECT_TRUE(specifics.entry().uploaded_files(0).has_data());
+  EXPECT_FALSE(specifics.entry().uploaded_files(0).has_omitted_data_hash());
   EXPECT_TRUE(
       specifics.entry().uploaded_files(1).extracted_text().has_gzipped());
+}
+
+TEST(AIChatSyncConversionsTest,
+     EntryToSpecificsWritesSkillAndNearVerification) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-skill";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+  entry->skill = mojom::SkillEntry::New("/summarize", "Summarize this page");
+  entry->near_verification_status = mojom::NEARVerificationStatus::New(true);
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  const auto& proto = specifics.entry();
+  ASSERT_TRUE(proto.has_skill());
+  EXPECT_EQ(proto.skill().shortcut(), "/summarize");
+  EXPECT_EQ(proto.skill().prompt(), "Summarize this page");
+  ASSERT_TRUE(proto.has_near_verification_status());
+  EXPECT_TRUE(proto.near_verification_status().verified());
+}
+
+TEST(AIChatSyncConversionsTest, EntryToSpecificsOmitsAbsentSkillAndNear) {
+  auto entry = mojom::ConversationTurn::New();
+  entry->uuid = "entry-plain";
+  entry->created_time = base::Time::Now();
+  entry->character_type = mojom::CharacterType::HUMAN;
+  entry->action_type = mojom::ActionType::QUERY;
+
+  auto specifics = EntryToSpecifics("conv-1", *entry, {});
+  ASSERT_TRUE(specifics.has_entry());
+  EXPECT_FALSE(specifics.entry().has_skill());
+  EXPECT_FALSE(specifics.entry().has_near_verification_status());
 }
 
 }  // namespace ai_chat

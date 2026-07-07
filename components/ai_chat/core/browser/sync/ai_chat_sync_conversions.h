@@ -54,17 +54,18 @@ inline constexpr size_t kSyncCompressionMaxDecompressedBytes =
 void WriteCompressibleString(std::string_view value,
                              sync_pb::AIChatCompressibleString* out);
 
-// Marks |out| as truncated for sync (no value bytes). The receiver MUST
-// preserve any existing local value for this field rather than overwriting
-// it with empty.
-void MarkCompressibleStringTruncated(sync_pb::AIChatCompressibleString* out);
+// Omits |out|'s value, replacing it with a hash of its current content (see
+// AIChatCompressibleString::omitted_content_hash). The receiver restores the
+// value from a local copy that hashes identically, or preserves any existing
+// local value.
+void OmitCompressibleString(sync_pb::AIChatCompressibleString* out);
 
 // Reads a value from |in|. Returns std::nullopt when there is no usable value
-// to apply, for any of three reasons: the field was marked truncated for sync
-// (preserve-local signal), gzip decompression failed, or no value was set at
-// all. Callers treat all three the same way — leave the target field unset and
-// preserve any existing local value. Returns an empty string (not nullopt) when
-// the field was set to an empty raw string.
+// to apply, for any of three reasons: the value was omitted for sync
+// (restore-from-local signal), gzip decompression failed, or no value was set
+// at all. Callers treat all three the same way — leave the target field unset
+// and preserve any existing local value. Returns an empty string (not nullopt)
+// when the field was set to an empty raw string.
 std::optional<std::string> ReadCompressibleString(
     const sync_pb::AIChatCompressibleString& in);
 

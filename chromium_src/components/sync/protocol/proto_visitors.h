@@ -18,7 +18,7 @@ VISIT(brave_fields);
   VISIT_PROTO_FIELDS(const sync_pb::AIChatCompressibleString& proto) {     \
     VISIT(raw);                                                            \
     VISIT_BYTES(gzipped);                                                  \
-    VISIT(was_truncated_for_sync);                                         \
+    VISIT(omitted_content_hash);                                           \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatConversationSpecifics& proto) {  \
     VISIT(conversation);                                                   \
@@ -47,6 +47,15 @@ VISIT(brave_fields);
     VISIT_REP(events);                                                     \
     VISIT_REP(associated_content);                                         \
     VISIT_REP(uploaded_files);                                             \
+    VISIT(skill);                                                          \
+    VISIT(near_verification_status);                                       \
+  }                                                                        \
+  VISIT_PROTO_FIELDS(const sync_pb::AIChatSkillEntry& proto) {             \
+    VISIT(shortcut);                                                       \
+    VISIT(prompt);                                                         \
+  }                                                                        \
+  VISIT_PROTO_FIELDS(const sync_pb::AIChatNEARVerificationStatus& proto) { \
+    VISIT(verified);                                                       \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatAssociatedContentProto& proto) { \
     VISIT(uuid);                                                           \
@@ -61,7 +70,7 @@ VISIT(brave_fields);
     VISIT(filesize);                                                       \
     VISIT(type);                                                           \
     VISIT_BYTES(data);                                                     \
-    VISIT(data_truncated_for_sync);                                        \
+    VISIT(omitted_data_hash);                                              \
     VISIT(extracted_text);                                                 \
   }                                                                        \
   VISIT_PROTO_FIELDS(const sync_pb::AIChatEntryEventProto& proto) {        \
