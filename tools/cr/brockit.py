@@ -194,13 +194,14 @@ Pass `--culprit=<hash>` to provide a specific culprit for the toolchain update.
 If none is provided, `brockit` determines the culprit by looking for the last
 commit that pinned the macOS SDK in `mac_sdk.gni` up to the `--to` ref.
 
-### `brockit.py gen-rust-toolchain`
-This command triggers the Rust/WASM toolchain Jenkins pipelines (one per
-platform) for a given Chromium tag. It reads credentials from `~/.jenkins.json`
-and kicks off a parameterized build for each pipeline.
+### `brockit.py gen-{rust,xcode,windows}-toolchain`
+These commands trigger a toolchain's CI (Jenkins) pipeline(s) for a given
+Chromium tag.
 
 ```sh
 tools/cr/brockit.py gen-rust-toolchain 150.0.7850.1
+tools/cr/brockit.py gen-xcode-toolchain 150.0.7850.1
+tools/cr/brockit.py gen-windows-toolchain 150.0.7850.1
 ```
 
 The `tag` argument also accepts the same `@latest-*` labels (e.g. `@latest-tag`,
@@ -271,7 +272,6 @@ tools/cr/brockit.py drop <commit_hash>
 from __future__ import annotations
 
 import argparse
-import ast
 from dataclasses import dataclass, field, replace
 from datetime import datetime
 import json
@@ -282,18 +282,13 @@ import pickle
 import platform
 import re
 import requests
-from rich.box import Box
-from rich.live import Live
 from rich.markdown import Markdown
 from rich.padding import Padding
-from rich.spinner import Spinner
-from rich.table import Table
-from rich.text import Text
 import subprocess
 import sys
-import textwrap
-import time
 
+from exceptions import (ActionNeededException, BadOutcomeException,
+                        InvalidInputException)
 from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
@@ -304,7 +299,7 @@ import repository
 from repository import Repository
 from terminal import (IncendiaryErrorHandler, Task as BaseTask, console,
                       is_verbose, terminal)
-from toolchains import build_rust_toolchain, build_xcode_toolchain
+import toolchain
 import versioning
 from versioning import Version
 from vpython_utils import VPYTHON3_PATH
@@ -328,87 +323,8 @@ _UPGRADE_COMMIT_WITH_PATCHES_PREFIXES = (
 # The link to a specific commit in the Chromium source code.
 GOOGLESOURCE_COMMIT_LINK = f'{versioning.GOOGLESOURCE_LINK}' '/+/{commit}'
 
-# A basic url to the rust toolchain that can be used to check for the toolchain
-# availability for a given version.
-RUST_TOOLCHAIN_URL = 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/linux-x64-rust-toolchain-{revision}.tar.xz'
-
-# Brave-side script that pins the hermetic Xcode toolchain. Its
-# `MAC_BINARIES_HASH` (archive SHA-256) and `MAC_SDK_OFFICIAL_VERSION` /
-# `MAC_SDK_OFFICIAL_BUILD_VERSION` constants -- plus the human-readable
-# provenance comment above them and the `MAC_MINIMUM_OS_VERSION` block mirrored
-# from `CHROMIUM_MAC_TOOLCHAIN_PY` -- are what `update-xcode-toolchain` edits.
-HERMETIC_XCODE_SCRIPT = 'build/mac/download_hermetic_xcode.py'
-
-# Chromium-side file pinning the macOS SDK that we cross-reference to find the
-# upstream commit that triggered this toolchain bump.
-CHROMIUM_MAC_SDK_GNI = 'build/config/mac/mac_sdk.gni'
-
-# Chromium-side installer whose `MAC_MINIMUM_OS_VERSION` block (the minimum-OS
-# gate plus its explanatory comment) the hermetic downloader mirrors verbatim,
-# so the OS gate tracks upstream as the toolchain moves.
-CHROMIUM_MAC_TOOLCHAIN_PY = 'build/mac_toolchain.py'
-
 # Google dash link used to check the latest version for a given channel
 CHROMIUMDASH_LATEST_RELEASE = 'https://chromiumdash.appspot.com/fetch_releases?channel={channel}&platform={platform}&num=1'
-
-# Configuration file holding the Jenkins credentials used to trigger toolchain
-# pipelines. See `GenRustToolchain` for the expected schema.
-JENKINS_CONFIG_FILE = Path.home() / '.jenkins.json'
-
-# The Jenkins jobs that build and publish the Rust/WASM toolchain, one per
-# platform. Each accepts a single `CHROMIUM_TAG` build parameter.
-RUST_TOOLCHAIN_JOBS = (
-    'brave-browser-rust-toolchain-aux-build-linux-x64',
-    'brave-browser-rust-toolchain-aux-build-macos-arm64',
-    'brave-browser-rust-toolchain-aux-build-macos-x64',
-    'brave-browser-rust-toolchain-aux-build-windows-x64',
-)
-
-# How often `gen-rust-toolchain --watch` polls Jenkins for pipeline progress.
-WATCH_POLL_INTERVAL_SECONDS = 8
-
-# Maps Pipeline Stage View (`wfapi`) statuses onto the canonical states the
-# watch table tracks. Statuses not listed (e.g. NOT_EXECUTED) leave the state
-# unchanged.
-_WFAPI_STATUS_TO_STATE = {
-    'IN_PROGRESS': 'RUNNING',
-    'PAUSED_PENDING_INPUT': 'RUNNING',
-    'SUCCESS': 'SUCCESS',
-    'FAILED': 'FAILURE',
-    'ABORTED': 'ABORTED',
-    'UNSTABLE': 'UNSTABLE',
-}
-
-# States meaning a pipeline has finished and no longer needs polling.
-_TERMINAL_WATCH_STATES = frozenset(
-    {'SUCCESS', 'FAILURE', 'ABORTED', 'UNSTABLE', 'CANCELLED'})
-
-# Minimalist box for the `--watch` table: column dividers plus a single
-# header rule, no outer frame (paired with `show_edge=False`). Each of the
-# eight lines is four chars -- left edge, cell fill, column divider, right
-# edge -- in the order Rich's `Box` expects (top, head, head-rule, mid, row,
-# foot-rule, foot, bottom). Edge/foot lines are placeholders never drawn once
-# the edge is hidden and the table has no footer.
-_WATCH_TABLE_BOX = Box('    \n'  # top
-                       '  │ \n'  # head
-                       ' ── \n'  # head rule
-                       '  │ \n'  # mid
-                       '  │ \n'  # row
-                       ' ── \n'  # foot rule
-                       '  │ \n'  # foot
-                       '    \n')  # bottom
-
-# Icon + rich style for each watch state, used to render the State column.
-_WATCH_STATE_STYLE = {
-    'QUEUED': ('⏳', 'dim'),
-    'RUNNING': ('🔧', 'cyan'),
-    'SUCCESS': ('✔️', 'green'),
-    'FAILURE': ('🚨', 'bold red'),
-    'ABORTED': ('🛑', 'yellow'),
-    'CANCELLED': ('🚫', 'yellow'),
-    'UNSTABLE': ('⚠️', 'yellow'),
-    'UNKNOWN': ('🤔', 'dim'),
-}
 
 # A decorator to be shown for messages that the user should address before
 # continuing.
@@ -428,6 +344,10 @@ MINOR_VERSION_BUMP_ISSUE_TEMPLATE = """### Minor Chromium bump
 
 - No specific code changes in Brave (only line number changes in patches)
 """
+
+# Banners framing every Brockit task run.
+_BROCKIT_START_BANNER = '[italic]🚀 Brockit!'
+_BROCKIT_END_BANNER = '[bold]💥 Done!'
 
 
 def _get_current_branch_upstream_name() -> str | None:
@@ -701,35 +621,6 @@ class ContinuationFile:
             Path(VERSION_UPGRADE_FILE).unlink()
         except FileNotFoundError:
             pass
-
-
-class InvalidInputException(Exception):
-    """Invalid input exceptions to be handled graciously and terminate."""
-
-    def __init__(self, message):
-        super().__init__(message)
-        logging.error(message)
-
-
-class BadOutcomeException(Exception):
-    """A failure along the way that results on task termination."""
-
-    def __init__(self, message):
-        super().__init__(message)
-        logging.warning(message)
-
-
-class ActionNeededException(Exception):
-    """An expected failure along the way that results on task termination."""
-
-    def __init__(self, message: str):
-        super().__init__(message)
-        console.log(message)
-
-
-# Banners framing every Brockit task run, shared with `run_watching`.
-_BROCKIT_START_BANNER = '[italic]🚀 Brockit!'
-_BROCKIT_END_BANNER = '[bold]💥 Done!'
 
 
 class Task(BaseTask):
@@ -1464,205 +1355,6 @@ class Upgrade(Versioned):
 
         return status
 
-    def look_for_diffs(self, *files) -> str:
-        """Return the diffs for the files provided for this upgrade.
-
-    Checks for diffs of the files provided in range of the changes for the
-    current upgrade. Returns an empty string if no diffs are found.
-        """
-        return repository.chromium.run_git('diff', self.working_version,
-                                           self.target_version, '--', *files)
-
-    def get_assigned_value(self,
-                           contents: str,
-                           lookup: str,
-                           added: bool = False,
-                           removed: bool = False) -> str | None:
-        """Uses a basic regex to extract the value being assinged into a key.
-
-    This function is useful to extract the value of a key from a file contents
-    that is being diffed or read in general.
-
-    Args:
-        contents:
-            The contents of the file to look for the key.
-        lookup:
-            The key to look for in the contents.
-        added:
-            If set to True, looks for the key starting with +.
-        removed:
-            If set to True, looks for the key starting with -.
-    Returns:
-        The value assigned to the key, or None if not found
-        """
-        for line in contents.splitlines():
-            # Discad any comment that there may be in the line
-            line = line.split('#', 1)[0].strip()
-
-            if lookup not in line:
-                continue
-            if added and not line.startswith('+'):
-                continue
-            if removed and not line.startswith('-'):
-                continue
-
-            # remove the sign at the beggining of the line, if that's the case
-            # we are looking for.
-            if added or removed:
-                line = line[1:]
-
-            if '=' not in line:
-                continue
-
-            [key, value] = line.split('=', 1)
-            if key.strip().lstrip() == lookup:
-                return value.strip().lstrip().replace('"', '').replace("'", "")
-        return None
-
-    def _check_toolchain(self, file_path: str, key: str) -> dict | None:
-        """ Helper function to check for toolchain updates.
-
-    This helper is used to check for the MacOS SDK, Windows SDK to see if the
-    toolchain for their respective OSes need updateing. It looks for diff of a
-    given file to find if a certain key has been updade in-between the working
-    and target version.
-
-    Args:
-        file_path:
-            The file to look for the key in.
-        key:
-            The key to look for in the file.
-    Returns:
-        A dictionary with a summary of the SDK upgrade.
-        """
-        toolchain_diff = self.look_for_diffs(file_path)
-        if key not in toolchain_diff:
-            return None
-
-        updated_value = self.get_assigned_value(toolchain_diff,
-                                                key,
-                                                added=True)
-        current_value = self.get_assigned_value(toolchain_diff,
-                                                key,
-                                                removed=True)
-        if not updated_value and not current_value:
-            return None
-        commit_log = repository.chromium.run_git(
-            'log', f'{self.working_version}..{self.target_version}', '-S',
-            updated_value, '--pretty=oneline', '-1', file_path)
-        commit_hash, commit_message = commit_log[:40], commit_log[41:]
-
-        return {
-            'current': current_value,
-            'target': updated_value,
-            'commit': {
-                'hash': commit_hash,
-                'message': commit_message
-            }
-        }
-
-    def _check_win_toolchain(self) -> dict | None:
-        """Check for Windows toolchain updates.
-
-    This function returns an advisory record if the Windows SDK has been
-    updated, indicating a new toolchain is required.
-        """
-        result = self._check_toolchain('build/vs_toolchain.py', 'SDK_VERSION')
-        if not result:
-            result = self._check_toolchain('build/vs_toolchain.py',
-                                           'TOOLCHAIN_HASH')
-        if result:
-            result['description'] = (
-                'Windows SDK has been updated. '
-                f'{result["current"]} ➜ {result["target"]}')
-            result['advice'] = (
-                'Contact DevOps regarding the new WinSDK for the hermetic '
-                'toolchain. Update `env.GYP_MSVS_HASH_*` in '
-                'build/commands/lib/config.js with correct hashes.')
-        return result
-
-    def _check_mac_toolchain(self) -> dict | None:
-        """Check for MacOS toolchain updates.
-
-    This function returns an advisory record if the MacoOS SDK has been updated,
-    indicating a new toolchain is required.
-        """
-        result = self._check_toolchain('build/config/mac/mac_sdk.gni',
-                                       'mac_sdk_official_version')
-        if result:
-            result['description'] = (
-                'MacOS SDK has been updated. '
-                f'{result["current"]} ➜ {result["target"]}')
-            result['advice'] = (
-                'Contact DevOps to ask for an updated MacOS toolchain node to '
-                'be used to generate a new toolchain, then generate the new '
-                'toolchain in https://ci.brave.com/view/toolchains/. Once the '
-                'new toolchain is published, call '
-                '`brockit.py update-xcode-toolchain --to=<chromium-ref>` to '
-                'repin it.')
-        return result
-
-    def _check_rust_toolchain(self) -> dict | None:
-        """Check for Rust toolchain updates.
-
-    This function checks for any updates to the Rust toolchain, including the
-    validity of the rust toolchain URL for syncing.
-
-    Returns:
-        An advisory record if any updates occurred, and there's no toolchain in
-        our infra.
-        """
-        toolchain_sources = [
-            'tools/rust/update_rust.py', 'tools/clang/scripts/update.py'
-        ]
-        rust_diff = self.look_for_diffs(*toolchain_sources)
-        if not any(
-                key in rust_diff for key in
-            ['-RUST_REVISION =', '-RUST_SUB_REVISION =', '-CLANG_REVISION =']):
-            return None
-
-        def get_rust_clang_revision(version: str) -> str:
-            rust_sources = repository.chromium.read_file(*toolchain_sources,
-                                                         commit=version)
-            return '-'.join([
-                self.get_assigned_value(rust_sources, "RUST_REVISION"),
-                self.get_assigned_value(rust_sources, "RUST_SUB_REVISION"),
-                self.get_assigned_value(rust_sources, "CLANG_REVISION")
-            ])
-
-        updated_version = get_rust_clang_revision(self.target_version)
-        rust_toolchain_url = RUST_TOOLCHAIN_URL.format(
-            revision=updated_version)
-
-        try:
-            logging.debug('Checking rust toolchain URL: %s',
-                          rust_toolchain_url)
-            response = requests.head(rust_toolchain_url,
-                                     allow_redirects=True,
-                                     timeout=5)
-            if response.status_code == 200:
-                return None
-        except requests.RequestException:
-            pass  # Assume toolchain is not available if request fails
-
-        commit_log = repository.chromium.run_git(
-            'log', f'{self.working_version}..{self.target_version}',
-            '--pretty=oneline', '-1', 'tools/rust/update_rust.py',
-            'tools/clang/scripts/update.py')
-        commit_hash, commit_message = commit_log[:40], commit_log[41:]
-
-        return {
-            'current': get_rust_clang_revision(self.working_version),
-            'target': updated_version,
-            'description': 'The rust toolchain has been updated.',
-            'advice': ('Run the jobs in https://ci.brave.com/view/toolchains/ '
-                       'to generate a new Rust toolchain.'),
-            'commit': {
-                'hash': commit_hash,
-                'message': commit_message
-            }
-        }
-
     def _prerun_checks(self) -> bool:
         """Runs pre-run checks for the upgrade.
 
@@ -1684,13 +1376,18 @@ class Upgrade(Versioned):
         # for certain things that may have changed that require attention
         _ensure_chromium_tags(self.working_version, self.target_version)
 
-        advisories = [
-            check for check in [
-                self._check_win_toolchain(),
-                self._check_mac_toolchain(),
-                self._check_rust_toolchain()
-            ] if check is not None
-        ]
+        toolchains = (toolchain.WindowsToolchain(), toolchain.XcodeToolchain(),
+                      toolchain.RustToolchain())
+        advisories = []
+        for tc in toolchains:
+            advisory = tc.check(self.working_version, self.target_version)
+            if advisory is None:
+                continue
+            # Some toolchain can be recovered before showing the advisory, but
+            # kicking out the CI job and committing the latest toolchain update.
+            if tc.recover(self.target_version, advisory.commit_hash):
+                continue
+            advisories.append(advisory)
 
         if not advisories:
             return True
@@ -1698,14 +1395,14 @@ class Upgrade(Versioned):
         terminal.log_task(
             '[bold]Pre-run advisory ([bold yellow]attention needed[/])')
         for advisory in advisories:
-            console.print(Padding(f'* {advisory["description"]}', (0, 15)))
+            console.print(Padding(f'* {advisory.description}', (0, 15)))
             console.print(
-                Padding(f'CL: [dim]{advisory["commit"]["message"]}', (0, 19)))
+                Padding(f'CL: [dim]{advisory.commit_message}', (0, 19)))
             console.print(
                 Padding(
                     GOOGLESOURCE_COMMIT_LINK.format(
-                        commit=advisory["commit"]["hash"]), (0, 23)))
-            console.print(Padding(f'{advisory["advice"]}', (0, 19)))
+                        commit=advisory.commit_hash), (0, 23)))
+            console.print(Padding(f'{advisory.advice}', (0, 19)))
 
         replace(ContinuationFile.load(target_version=self.target_version),
                 has_shown_advisory=True).save()
@@ -2221,825 +1918,50 @@ class Drop(_MarkChangeTask):
         super().__init__(DROP_COMMIT_MSG_PREFIX)
 
 
-class UpdateXcodeToolchain(Task):
-    """Pins `build/mac/download_hermetic_xcode.py` to a published toolchain.
+class _RepinToolchainTask(Task):
+    """A this wrapper around `toolchain.Toolchain.repin`.
 
-    This class produces a Xcode toolchain update commit, anchored on the
-    Chromium tag pointing at the new toolchain.
+     This class provides access to the toolchains `repin` method, which updates
+     the toolchain version in the repository.
     """
 
-    # Matches the provenance comment above the pinned constants in
-    # `HERMETIC_XCODE_SCRIPT` so it can be regenerated from the freshly resolved
-    # toolchain. Spans the opening line and any contiguous comment lines that
-    # follow, stopping at the first non-comment line (the constants).
-    _PROVENANCE_COMMENT_RE = re.compile(
-        r'^# This contains binaries from Xcode\b.*\n(?:#.*\n)*', re.MULTILINE)
+    def __init__(self, target_toolchain: toolchain.Toolchain):
+        self._toolchain = target_toolchain
 
-    # Matches the `MAC_MINIMUM_OS_VERSION` block -- its leading comment lines
-    # plus the assignment -- in both Chromium's `build/mac_toolchain.py` and the
-    # hermetic downloader. `update-xcode-toolchain` lifts this block from
-    # upstream and drops it into the downloader verbatim. Each block is preceded
-    # by a blank line, so the contiguous comment run never reaches further up.
-    _MIN_OS_VERSION_BLOCK_RE = re.compile(
-        r'(?:^#.*\n)*^MAC_MINIMUM_OS_VERSION = \[[^\]]*\]\n', re.MULTILINE)
-
-    def status_message(self):
-        return "Updating Apple toolchain..."
-
-    @staticmethod
-    def _provenance_comment(sdk_info: build_xcode_toolchain.MacSdkInfo,
-                            index: dict) -> str:
-        """Render the wrapped provenance comment for the resolved toolchain.
-
-        Records, in prose, the Xcode version/build and Metal build the index
-        reports alongside the macOS SDK version/build, so the in-tree
-        downloader keeps documenting exactly what its archive contains now that
-        it no longer carries an `XCODE_VERSION` constant.
-        """
-        metal_build = index.get('metal_build') or 'unknown'
-        sentence = (
-            f"This contains binaries from Xcode {index['xcode_version']} "
-            f"({index['xcode_build']}) along with the macOS "
-            f"{sdk_info.sdk_version} SDK ({sdk_info.product_build_version}) "
-            f"and the Metal toolchain ({metal_build}).")
-        return textwrap.fill(
-            sentence, width=79, initial_indent='# ',
-            subsequent_indent='# ') + '\n'
-
-    def _rewrite_hermetic_xcode_script(
-            self, sdk_info: build_xcode_toolchain.MacSdkInfo, index: dict,
-            mac_toolchain_py: str) -> bool:
-        """Pins the archive hash and SDK constants, refreshes the provenance
-        comment, and mirrors Chromium's `MAC_MINIMUM_OS_VERSION` block.
-
-        `mac_toolchain_py` is the upstream `build/mac_toolchain.py` source the
-        minimum-OS block is lifted from.
-
-        Returns True if the on-disk file actually changed, False when it was
-        already pinned to these exact values (so the caller can skip
-        committing).
-        """
-        script_path = repository.brave.root / HERMETIC_XCODE_SCRIPT
-        original = script_path.read_bytes().decode('utf-8')
-        sdk_version = sdk_info.sdk_version
-        build_version = sdk_info.product_build_version
-
-        content = re.sub(r"MAC_BINARIES_HASH = '[^']*'",
-                         f"MAC_BINARIES_HASH = '{index['sha256sum']}'",
-                         original,
-                         count=1)
-        content = re.sub(r"MAC_SDK_OFFICIAL_VERSION = '[^']*'",
-                         f"MAC_SDK_OFFICIAL_VERSION = '{sdk_version}'",
-                         content,
-                         count=1)
-        content = re.sub(r"MAC_SDK_OFFICIAL_BUILD_VERSION = '[^']*'",
-                         f"MAC_SDK_OFFICIAL_BUILD_VERSION = '{build_version}'",
-                         content,
-                         count=1)
-        content = self._PROVENANCE_COMMENT_RE.sub(
-            lambda _: self._provenance_comment(sdk_info, index),
-            content,
-            count=1)
-
-        # Lift the minimum-OS gate (and its comment) verbatim from upstream.
-        upstream_min_os = self._MIN_OS_VERSION_BLOCK_RE.search(
-            mac_toolchain_py)
-        if upstream_min_os is None:
-            raise InvalidInputException(
-                'Could not find the MAC_MINIMUM_OS_VERSION block in '
-                f'{CHROMIUM_MAC_TOOLCHAIN_PY}.')
-        content = self._MIN_OS_VERSION_BLOCK_RE.sub(
-            lambda _: upstream_min_os.group(0), content, count=1)
-
-        if content == original:
-            return False
-
-        script_path.write_text(content, encoding='utf-8', newline='')
-        return True
-
-    def _resolve_chromium_culprit(self,
-                                  sdk_info: build_xcode_toolchain.MacSdkInfo,
-                                  ref: str) -> str:
-        """Finds the Chromium commit that pinned this macOS SDK.
-
-        Pickaxes `build/config/mac/mac_sdk.gni` up to `ref` for the commit that
-        last set either the SDK version or its build number, mirroring
-        `UpdateRustWasmToolchain._resolve_chromium_culprit`.
-        """
-        _ensure_chromium_tags(ref)
-        version = re.escape(sdk_info.sdk_version)
-        build = re.escape(sdk_info.product_build_version)
-        regex = (f'mac_sdk_official_version = "{version}"'
-                 f'|mac_sdk_official_build_version = "{build}"')
-        commit_hash = repository.chromium.run_git('log', '--extended-regexp',
-                                                  '-G', regex, '--pretty=%H',
-                                                  '-1', ref, '--',
-                                                  CHROMIUM_MAC_SDK_GNI)
-        if not commit_hash:
-            raise InvalidInputException(
-                'Could not find a Chromium commit setting '
-                f'`mac_sdk_official_version = "{sdk_info.sdk_version}"` or '
-                '`mac_sdk_official_build_version = '
-                f'"{sdk_info.product_build_version}"` in '
-                f'{CHROMIUM_MAC_SDK_GNI} at {ref}. Pass '
-                '[bold cyan]--culprit[/] to point at it explicitly.')
-        return commit_hash
+    def status_message(self) -> str:
+        return f'Updating the {self._toolchain.spec.label} toolchain...'
 
     def execute(self, chromium_ref: str, culprit: str | None):
-        status = GitStatus()
-        if status.has_staged_files():
-            raise InvalidInputException(
-                'Staged files detected. Please commit or unstage changes '
-                'before generating a toolchain update:\n%s' %
-                '\n'.join(status.get_all_staged_entries()))
-
-        # Resolve to a concrete Chromium tag (supports the @latest-* labels),
-        # make sure the tag is available locally, then read the SDK pin and the
-        # minimum-OS gate from Chromium at that ref.
         version = _fetch_chromium_tag(chromium_ref)
-        ref = str(version)
-        _ensure_chromium_tags(ref)
-        mac_sdk_gni = repository.chromium.read_file(CHROMIUM_MAC_SDK_GNI,
-                                                    commit=ref)
-        mac_toolchain_py = repository.chromium.read_file(
-            CHROMIUM_MAC_TOOLCHAIN_PY, commit=ref)
-        try:
-            sdk_info = build_xcode_toolchain.MacSdkInfo.from_gni(mac_sdk_gni)
-        except RuntimeError as e:
-            raise BadOutcomeException(str(e)) from e
-
-        try:
-            index = build_xcode_toolchain.fetch_published_index(sdk_info)
-        except RuntimeError as e:
-            raise BadOutcomeException(str(e)) from e
-
-        if not self._rewrite_hermetic_xcode_script(sdk_info, index,
-                                                   mac_toolchain_py):
-            raise InvalidInputException(
-                f'{HERMETIC_XCODE_SCRIPT} is already pinned to these values; '
-                'nothing to commit.')
-
-        commit_hash = culprit or self._resolve_chromium_culprit(sdk_info, ref)
-
-        title = (f'Switch to Xcode {index["xcode_version"]} '
-                 f'{index["xcode_build"]}')
-        repository.brave.run_git('add', HERMETIC_XCODE_SCRIPT)
-        repository.brave.git_commit(title,
-                                    env={
-                                        **os.environ,
-                                        'tags': 'toolchain',
-                                        'culprit': commit_hash,
-                                    })
+        _ensure_chromium_tags(str(version))
+        self._toolchain.repin(version, culprit)
 
 
-@dataclass
-class _WatchedJob:
-    """Mutable per-pipeline state tracked while `--watch` polls Jenkins."""
+class _GenToolchainTask(Task):
+    """Resolves the Chromium tag and triggers a toolchain's CI job(s).
 
-    # The Jenkins job name.
-    job: str
-
-    # The transient queue-item URL from the trigger's `Location` header.
-    queue_url: str
-
-    # The build URL, resolved once an executor dequeues the job.
-    build_url: str | None = None
-
-    # Canonical state: QUEUED / RUNNING / SUCCESS / FAILURE / ABORTED /
-    # UNSTABLE / CANCELLED / UNKNOWN.
-    state: str = 'QUEUED'
-
-    # Human-readable current stage (or the queue reason while QUEUED).
-    stage: str = ''
-
-    # Pre-formatted elapsed build time (e.g. "12m04s"), as of the last poll.
-    # Used as-is for non-running rows; RUNNING rows tick forward from the two
-    # fields below instead (see `_ElapsedClock`).
-    elapsed: str = ''
-
-    # The raw server-reported build duration (ms) at the last poll, and the
-    # monotonic clock read at that same instant. Together they anchor a
-    # RUNNING row's locally-ticking elapsed counter. Both None until a build
-    # is resolved.
-    duration_millis: int | None = None
-    elapsed_anchor: float | None = None
-
-    # The pipeline's configured `display-name`, resolved once when watching
-    # starts. None until resolved, or when the pipeline sets no display name.
-    display_name: str | None = None
-
-    @property
-    def bot(self) -> str:
-        """Label for the table's Bot column.
-
-        The pipeline's configured `display-name` when it has one, otherwise
-        its Jenkins job name.
-        """
-        return self.display_name or self.job
-
-    @property
-    def is_terminal(self) -> bool:
-        """Whether the pipeline has finished and no longer needs polling."""
-        return self.state in _TERMINAL_WATCH_STATES
-
-    def link(self, base_url: str) -> str:
-        """The best link available: the build URL, else the job page."""
-        return self.build_url or f'{base_url}/job/{self.job}/'
-
-
-class _ElapsedClock:
-    """Renderable that advances a RUNNING job's elapsed time between polls.
-
-    Rich re-renders the `Live` tree on every refresh -- the same mechanism
-    that animates the RUNNING spinner -- so recomputing the value here lets
-    the counter tick smoothly at the Live refresh rate instead of jumping once
-    per poll. `base_millis` is the duration the server reported at the last
-    poll and `anchor` is the monotonic clock read at that same instant; the
-    rendered value is `base + (now - anchor)`. Every poll re-anchors both, so
-    the local ticking stays corrected by the authoritative server value and
-    settles on it once the build leaves RUNNING.
+    A thin wrapper to kick out the toolchain's CI jobs.
     """
 
-    def __init__(self, base_millis: int, anchor: float) -> None:
-        self._base_millis = base_millis
-        self._anchor = anchor
+    def __init__(self, target_toolchain: toolchain.Toolchain, **properties):
+        self._toolchain = target_toolchain
+        self._properties = properties
 
-    def __rich__(self) -> Text:
-        elapsed_millis = (self._base_millis +
-                          (time.monotonic() - self._anchor) * 1000)
-        return Text(GenRustToolchain._format_duration(elapsed_millis),
-                    justify='right')
+    def status_message(self) -> str:
+        return f'Triggering {self._toolchain.spec.label} builds...'
 
-
-class GenRustToolchain(Task):
-    """Triggers the Rust/WASM toolchain Jenkins pipelines for a Chromium tag.
-
-    There is one pipeline per platform (see `RUST_TOOLCHAIN_JOBS`), and each
-    takes a single `CHROMIUM_TAG` build parameter. This task resolves the
-    requested version (accepting the same labels as `lift --to`, e.g.
-    `@latest-canary`), reads the Jenkins credentials from `~/.jenkins.json`,
-    and kicks off a parameterized build for every pipeline.
-
-    The expected `~/.jenkins.json` schema is:
-
-        {
-          "url": "https://ci.brave.com",
-          "username": "<ldap-user>",
-          "token": "<jenkins-api-token>"
-        }
-    """
-
-    def status_message(self):
-        return "Triggering Rust toolchain builds..."
+    def execute(self, tag: str):
+        self._toolchain.trigger(_fetch_chromium_tag(tag),
+                                watch=False,
+                                **self._properties)
 
     def run_watching(self, tag: str) -> None:
-        """Entry point for `--watch` that bypasses `Task.run`.
-
-        The watch table is a `rich.live.Live` display, and rich permits only
-        one live display at a time. `Task.run` wraps `execute` in the shared
-        status spinner -- itself a live display -- so the watch flow cannot go
-        through it. This mirrors `run`'s banner framing but drives `execute`
-        directly, without the spinner.
-        """
+        """Entry point for `--watch` that bypasses `Task.run`'s spinner."""
         console.log(self.start_banner)
-        self.execute(tag=tag, watch=True)
+        self._toolchain.trigger(_fetch_chromium_tag(tag),
+                                watch=True,
+                                **self._properties)
         console.log(self.end_banner)
-
-    @staticmethod
-    def _load_jenkins_config() -> tuple[str, str, str]:
-        """Reads the Jenkins base URL and credentials from `~/.jenkins.json`.
-
-        Returns:
-            A `(base_url, username, token)` tuple, with any trailing slash
-            stripped from the base URL.
-        """
-        if not JENKINS_CONFIG_FILE.is_file():
-            raise InvalidInputException(
-                f'Jenkins config not found at {JENKINS_CONFIG_FILE}. Create it '
-                'with [bold cyan]url[/], [bold cyan]username[/], and '
-                '[bold cyan]token[/] fields.')
-
-        try:
-            config = json.loads(
-                JENKINS_CONFIG_FILE.read_bytes().decode('utf-8'))
-        except json.JSONDecodeError as e:
-            raise InvalidInputException(
-                f'Failed to parse {JENKINS_CONFIG_FILE}: {e}') from e
-
-        missing = [
-            key for key in ('url', 'username', 'token') if not config.get(key)
-        ]
-        if missing:
-            raise InvalidInputException(
-                f'{JENKINS_CONFIG_FILE} is missing required field(s): '
-                f'{", ".join(missing)}.')
-
-        return config['url'].rstrip('/'), config['username'], config['token']
-
-    @staticmethod
-    def _get_crumb(session: requests.Session, base_url: str) -> dict[str, str]:
-        """Fetches a Jenkins CSRF crumb as a ready-to-merge header dict.
-
-        Returns an empty dict when the crumb issuer is unavailable. API-token
-        auth is usually crumb-exempt, so a missing issuer is treated as "no
-        crumb needed" rather than a hard failure.
-        """
-        try:
-            response = session.get(f'{base_url}/crumbIssuer/api/json',
-                                   timeout=15)
-            response.raise_for_status()
-            data = response.json()
-            return {data['crumbRequestField']: data['crumb']}
-        except (requests.RequestException, KeyError, ValueError):
-            return {}
-
-    def execute(self, tag: str, watch: bool = False):
-        # Resolve the version first so a bad tag/label fails before we touch
-        # any Jenkins state.
-        version = _fetch_chromium_tag(tag)
-
-        base_url, username, token = self._load_jenkins_config()
-
-        session = requests.Session()
-        session.auth = (username, token)
-        crumb = self._get_crumb(session, base_url)
-
-        terminal.log_task(
-            f'Triggering Rust toolchain pipelines for Chromium {version}:')
-
-        watched: list[_WatchedJob] = []
-        failures: list[str] = []
-        for job in RUST_TOOLCHAIN_JOBS:
-            try:
-                response = session.post(
-                    f'{base_url}/job/{job}/buildWithParameters',
-                    params={'CHROMIUM_TAG': str(version)},
-                    headers=crumb,
-                    timeout=30)
-                response.raise_for_status()
-            except requests.RequestException as e:
-                failures.append(job)
-                console.log(Padding(f'✘ {job}: {e}', (0, 4)))
-                continue
-
-            # Jenkins' 201 Location header points at the transient queue item,
-            # not the build: the build number isn't assigned until an executor
-            # picks the job up, and the queue URL only serves JSON.
-            queue_url = response.headers.get('Location', '')
-            watched.append(_WatchedJob(job=job, queue_url=queue_url))
-            if not watch:
-                # Link the job page, which always resolves and surfaces the
-                # queued/running build.
-                terminal.log_task(f'[bold]✔️ [/]{job} ➜ {base_url}/job/{job}/')
-
-        if failures:
-            raise BadOutcomeException(
-                'Failed to trigger the following Rust toolchain pipelines:\n%s'
-                % '\n'.join(f'    * {job}' for job in failures))
-
-        if watch:
-            self._watch(session, base_url, version, watched)
-
-    @staticmethod
-    def _get_json(session: requests.Session, url: str) -> dict | None:
-        """GETs `url` and returns the parsed JSON, or None on any failure."""
-        try:
-            response = session.get(url, timeout=15)
-            response.raise_for_status()
-            return response.json()
-        except (requests.RequestException, ValueError):
-            return None
-
-    def _resolve_display_name(self, session: requests.Session, base_url: str,
-                              job: _WatchedJob) -> None:
-        """Records a pipeline's `display-name` for the Bot column, if set.
-
-        Jenkins returns the job name as `displayName` when no display name is
-        configured, so a value equal to the job name is treated as "unset" and
-        left as None -- `_WatchedJob.bot` then falls back to the job name.
-        """
-        info = self._get_json(
-            session,
-            f'{base_url}/job/{job.job}/api/json?tree=displayName,name')
-        if info is None:
-            return
-        display_name = info.get('displayName')
-        if display_name and display_name != info.get('name'):
-            job.display_name = display_name
-
-    @staticmethod
-    def _format_duration(millis) -> str:
-        """Formats a Jenkins millisecond duration as e.g. "12m04s"."""
-        if not millis:
-            return ''
-        total_seconds = int(millis) // 1000
-        minutes, seconds = divmod(total_seconds, 60)
-        if minutes:
-            return f'{minutes}m{seconds:02d}s'
-        return f'{seconds}s'
-
-    def _poll_job(self, session: requests.Session, job: _WatchedJob) -> None:
-        """Refreshes one pipeline's state in place.
-
-        Resolves the queue item to a build the first time an executor picks it
-        up, then tracks the running build's stage and result via the Pipeline
-        Stage View API (falling back to the plain build API).
-        """
-        if job.is_terminal:
-            return
-
-        if job.build_url is None:
-            if not job.queue_url:
-                job.state = 'UNKNOWN'
-                job.stage = 'no queue item returned'
-                return
-            item = self._get_json(session, f'{job.queue_url}api/json')
-            if item is None:
-                return  # Transient; retry on the next poll.
-            if item.get('cancelled'):
-                job.state = 'CANCELLED'
-                job.stage = 'queue item cancelled'
-                return
-            executable = item.get('executable')
-            if not executable:
-                # Still queued; surface Jenkins' reason (e.g. "Waiting for
-                # next available executor").
-                job.state = 'QUEUED'
-                job.stage = (item.get('why') or 'waiting').strip()
-                return
-            job.build_url = executable.get('url') or ''
-            job.state = 'RUNNING'
-
-        self._refresh_build_state(session, job)
-
-    def _record_elapsed(self, job: _WatchedJob, millis) -> None:
-        """Anchors a job's elapsed time to the latest server-reported duration.
-
-        Stores the raw duration and a monotonic timestamp so a RUNNING row can
-        tick forward between polls (see `_ElapsedClock`), and keeps the
-        formatted string used to render every non-running row.
-        """
-        job.duration_millis = int(millis) if millis else None
-        job.elapsed_anchor = time.monotonic()
-        job.elapsed = self._format_duration(millis)
-
-    def _refresh_build_state(self, session: requests.Session,
-                             job: _WatchedJob) -> None:
-        """Updates state/stage/elapsed for a job that already has a build."""
-        describe = self._get_json(session, f'{job.build_url}wfapi/describe')
-        if describe is not None:
-            job.state = _WFAPI_STATUS_TO_STATE.get(describe.get('status', ''),
-                                                   job.state)
-            self._record_elapsed(job, describe.get('durationMillis'))
-            stages = describe.get('stages') or []
-            running = [s for s in stages if s.get('status') == 'IN_PROGRESS']
-            if running:
-                # The deepest reported in-progress stage is the most specific.
-                job.stage = running[-1].get('name', '')
-            elif job.is_terminal:
-                job.stage = '(done)'
-            elif stages:
-                job.stage = stages[-1].get('name', '')
-            return
-
-        # Fallback for jobs without the Stage View plugin: the plain build API
-        # gives building/result but no per-stage detail.
-        info = self._get_json(session, f'{job.build_url}api/json')
-        if info is None:
-            return
-        self._record_elapsed(job, info.get('duration'))
-        if info.get('building'):
-            job.state = 'RUNNING'
-            job.stage = 'building'
-        else:
-            job.state = info.get('result') or 'UNKNOWN'
-            job.stage = '(done)'
-
-    @staticmethod
-    def _state_cell(state: str) -> str | Spinner:
-        """Renders the State column.
-
-        RUNNING gets an animated throbber (the `Live` display drives the
-        animation); every other state is a static icon + label.
-        """
-        if state == 'RUNNING':
-            return Spinner('dots', text='RUNNING', style='cyan')
-        icon, style = _WATCH_STATE_STYLE.get(state, ('?', 'dim'))
-        return f'[{style}]{icon} {state}[/]'
-
-    @staticmethod
-    def _elapsed_cell(job: _WatchedJob) -> str | _ElapsedClock:
-        """Renders the Elapsed column.
-
-        A RUNNING build with a resolved duration ticks forward between polls
-        via `_ElapsedClock`; every other state shows the static,
-        server-accurate value captured at the last poll.
-        """
-        if (job.state == 'RUNNING' and job.duration_millis is not None
-                and job.elapsed_anchor is not None):
-            return _ElapsedClock(job.duration_millis, job.elapsed_anchor)
-        return job.elapsed or '—'
-
-    @staticmethod
-    def _link_cell(url: str) -> Text:
-        """Renders a URL as a styled, clickable hyperlink for the Build column.
-
-        Table cells skip the `ReprHighlighter` that `console.log`/`print` run
-        over their output, so a bare URL string renders as plain text. Wrapping
-        it in a `Text` with a `link` style emits the OSC 8 hyperlink escape
-        (clickable in capable terminals) and the blue underline mirrors the
-        look Rich gives auto-detected URLs elsewhere in brockit.
-        """
-        return Text(url, style=f'underline blue link {url}')
-
-    @staticmethod
-    def _dim_cell(renderable: str | Text, dim: bool) -> str | Text:
-        """Dims a non-state cell for finished, non-successful rows.
-
-        Returns the renderable untouched when `dim` is False. Otherwise wraps
-        it in Rich's `dim` style (preserving any existing style, such as the
-        Build column's hyperlink) so the whole row reads as muted -- except the
-        State cell, which the caller leaves coloured so the outcome stands out.
-        """
-        if not dim:
-            return renderable
-        text = renderable if isinstance(renderable, Text) else Text(
-            str(renderable))
-        text.stylize('dim')
-        return text
-
-    def _render_table(self, version: Version, base_url: str,
-                      jobs: list[_WatchedJob]) -> Table:
-        """Builds the per-pipeline progress table rendered in place by Live."""
-        table = Table(title=f'Rust toolchain · Chromium {version}',
-                      title_justify='left',
-                      box=_WATCH_TABLE_BOX,
-                      show_edge=False,
-                      expand=True)
-        table.add_column('Bot', no_wrap=True)
-        table.add_column('State', no_wrap=True)
-        table.add_column('Stage', no_wrap=True)
-        table.add_column('Elapsed', justify='right', no_wrap=True)
-        table.add_column('Build', overflow='fold')
-        for job in jobs:
-            # A job that has finished as anything other than SUCCESS is dimmed
-            # across the row, except its State cell, which keeps its colour so
-            # the failure still stands out.
-            dim = job.is_terminal and job.state != 'SUCCESS'
-            table.add_row(
-                self._dim_cell(job.bot, dim), self._state_cell(job.state),
-                self._dim_cell(job.stage or '—', dim),
-                self._dim_cell(self._elapsed_cell(job), dim),
-                self._dim_cell(self._link_cell(job.link(base_url)), dim))
-        return table
-
-    def _watch(self, session: requests.Session, base_url: str,
-               version: Version, jobs: list[_WatchedJob]) -> None:
-        """Polls the triggered pipelines, updating an in-place table until all
-        finish or the user interrupts with Ctrl+C (which detaches and leaves
-        the builds running).
-        """
-        terminal.log_task('Watching pipelines — press [bold cyan]Ctrl+C[/] to '
-                          'stop watching (builds keep running).')
-        # Resolve each pipeline's display name once up front so the Bot column
-        # shows it from the very first render.
-        for job in jobs:
-            self._resolve_display_name(session, base_url, job)
-        try:
-            # The throbber on RUNNING rows animates off the Live's own refresh
-            # (~12.5fps matches the `dots` spinner cadence); the data itself is
-            # only re-polled every WATCH_POLL_INTERVAL_SECONDS.
-            with Live(self._render_table(version, base_url, jobs),
-                      console=console,
-                      refresh_per_second=12.5) as live:
-                while True:
-                    for job in jobs:
-                        self._poll_job(session, job)
-                    live.update(self._render_table(version, base_url, jobs))
-                    if all(job.is_terminal for job in jobs):
-                        break
-                    time.sleep(WATCH_POLL_INTERVAL_SECONDS)
-        except KeyboardInterrupt:
-            # Detach cleanly: the builds keep running on CI.
-            console.log('[yellow]Stopped watching. Builds continue on CI:[/]')
-            for job in jobs:
-                console.log(Padding(f'{job.bot}: {job.link(base_url)}',
-                                    (0, 4)))
-
-
-# Installer whose `EXTRA_DEPS` rust-toolchain entry is repinned by
-# `update-rust-wasm-toolchain` (relative to repository.brave.root).
-INSTALL_EXTRA_DEPS_FILE = Path('tools/cr/install_extra_deps.py')
-
-# Chromium-side scripts that pin the Rust/Clang revision the toolchain is built
-# from, and the constants in them that identify it. `update-rust-wasm-toolchain`
-# pickaxes these scripts for the commit that introduced the current values to
-# attribute the toolchain update (the same constants `_check_rust_toolchain`
-# reads).
-RUST_REVISION_FILES = ('tools/rust/update_rust.py',
-                       'tools/clang/scripts/update.py')
-RUST_REVISION_KEYS = ('RUST_REVISION', 'RUST_SUB_REVISION', 'CLANG_REVISION')
-
-
-def _render_py_literal(value: object, indent: int = 0) -> str:
-    """Render a str/bool/dict/list literal as multi-line Python source.
-
-    Matches the layout `install_extra_deps.py` already uses -- 4-space
-    indent steps, single-quoted strings, trailing commas -- so re-rendering
-    `EXTRA_DEPS` round-trips through yapf unchanged.
-    """
-    pad = ' ' * indent
-    child = ' ' * (indent + 4)
-    if isinstance(value, dict):
-        if not value:
-            return '{}'
-        items = ''.join(f'{child}{_render_py_literal(key)}: '
-                        f'{_render_py_literal(val, indent + 4)},\n'
-                        for key, val in value.items())
-        return f'{{\n{items}{pad}}}'
-    if isinstance(value, list):
-        if not value:
-            return '[]'
-        items = ''.join(f'{child}{_render_py_literal(item, indent + 4)},\n'
-                        for item in value)
-        return f'[\n{items}{pad}]'
-    if isinstance(value, bool):
-        return 'True' if value else 'False'
-    if isinstance(value, str):
-        # Single-quoted to match the file. Values here never contain a single
-        # quote or backslash; fall back to repr only defensively.
-        if "'" in value or '\\' in value:
-            return repr(value)
-        return f"'{value}'"
-    return repr(value)
-
-
-class UpdateRustWasmToolchain(Task):
-    """Updates the rust WASM entry in `install_extra_deps.py`.
-
-    This task is used to update the Rust/WASM toolchain pins to be used during
-    checkout of Brave. This is a very simple helper, and all it does is take
-    care to retrieve the details for the latest published Rust/WASM toolchain
-    matching the version currently selected in Chromium, and with that it
-    rewrites the `EXTRA_DEPS` details for the rust-toolchain entry in
-    `install_extra_deps.py`.
-
-    After the file for the deps is updated, the tasks also commits a change with
-    a culprit.
-    """
-
-    def status_message(self):
-        return "Updating Rust/WASM toolchain pins..."
-
-    @staticmethod
-    def _load_extra_deps(source: str) -> tuple[ast.Assign, dict]:
-        """Return the `EXTRA_DEPS = {...}` assignment node and its dict value.
-
-        The value is read with `ast.literal_eval`, so the installer is parsed
-        as data rather than imported (importing it pulls in gclient).
-        """
-        for node in ast.parse(source).body:
-            if (isinstance(node, ast.Assign) and len(node.targets) == 1
-                    and isinstance(node.targets[0], ast.Name)
-                    and node.targets[0].id == 'EXTRA_DEPS'):
-                return node, ast.literal_eval(node.value)
-        raise InvalidInputException(
-            f'No EXTRA_DEPS assignment found in {INSTALL_EXTRA_DEPS_FILE}.')
-
-    @staticmethod
-    def _upstream_stem(text: str) -> str:
-        """Build the upstream toolchain package stem from the revision scripts.
-
-        Matches `package_rust.RUST_TOOLCHAIN_PACKAGE_NAME` minus the `.tar.xz`
-        suffix --
-        `rust-toolchain-<RUST_REVISION>-<RUST_SUB_REVISION>-<CLANG_REVISION>` --
-        built from the scripts' source so brockit needn't import `package_rust`
-        (which pulls in gclient). Value patterns mirror
-        `tools/clang/scripts/upload_revision.py`: quoted strings, bare-integer
-        sub-revision.
-        """
-
-        def read(key: str, value: str) -> str:
-            match = re.search(rf'{key} = {value}', text)
-            if not match:
-                raise InvalidInputException(
-                    f'{key} not found in {", ".join(RUST_REVISION_FILES)}.')
-            return match.group(1)
-
-        quoted, integer = r"'([0-9a-z-]+)'", r'([0-9]+)'
-        return ('rust-toolchain-'
-                f'{read("RUST_REVISION", quoted)}-'
-                f'{read("RUST_SUB_REVISION", integer)}-'
-                f'{read("CLANG_REVISION", quoted)}')
-
-    @staticmethod
-    def _resolve_chromium_culprit(text: str, ref: str) -> str:
-        """Finds the commit that updated the Rust toolchain in Chromium.
-
-        This function determines which commit is reponsible for the current
-        rust toolchain versionin in Chromium, using `ref` as a starting point..
-        """
-        _ensure_chromium_tags(ref)
-
-        def assignment_pattern(name: str) -> str:
-            match = re.search(rf'(?m)^{name} = (.+)$', text)
-            if not match:
-                raise InvalidInputException(
-                    f'Could not read {name} from '
-                    f'{", ".join(RUST_REVISION_FILES)}.')
-            value = match.group(1).split('#', 1)[0].strip()
-            return f'{name} = {re.escape(value)}'
-
-        regex = '|'.join(
-            assignment_pattern(name) for name in RUST_REVISION_KEYS)
-        commit_hash = repository.chromium.run_git('log', '--extended-regexp',
-                                                  '-G', regex, '--pretty=%H',
-                                                  '-1', ref, '--',
-                                                  *RUST_REVISION_FILES)
-        if not commit_hash:
-            raise InvalidInputException(
-                'Could not find a Chromium commit pinning the Rust/Clang '
-                f'revision at {ref}. Pass [bold cyan]--culprit[/] to point '
-                'at it explicitly.')
-        return commit_hash
-
-    @staticmethod
-    def _commit_title(new_entry: dict) -> str:
-        """Build a commit subject naming the exact toolchain build being pinned.
-
-        We build the title to show the new toolchain's relevant details, being
-        the rust version, and the clang revision it was built with. The
-        trailing `sub` is the upstream rust sub revision (RUST_SUB_REVISION),
-        not Brave's respin counter. The result is something like this:
-
-          Rust/WASM toolchain (4c4205163abc-5, llvmorg-23-init-10931-g20b6ec77, sub 5)
-
-        The values in the title are extracted form the tarball's name.
-        """
-        object_name = next(iter(
-            new_entry.values()))['objects'][0]['object_name']
-        name = object_name.removesuffix('.tar.xz')
-        match = re.search(
-            r'rust-toolchain-(?P<rust>[0-9a-f]+)-(?P<sub>\d+)-'
-            r'(?P<clang>llvmorg-.+)-(?P<brave>\d+)$', name)
-        if not match:
-            return f'Rust/WASM toolchain {name}'
-        return (f'Rust/WASM toolchain ({match["rust"][:12]}-{match["sub"]}, '
-                f'{match["clang"]}, sub {match["sub"]})')
-
-    def execute(self, chromium_ref: str, culprit: str | None):
-        status = GitStatus()
-        if status.has_staged_files():
-            raise InvalidInputException(
-                'Staged files detected. Please commit or unstage changes '
-                'before generating a toolchain update:\n%s' %
-                '\n'.join(status.get_all_staged_entries()))
-
-        # Resolve to a concrete Chromium tag (supports the @latest-* labels),
-        # make sure the tag is available locally, then read both revision
-        # scripts at that ref in a single `git show`.
-        version = _fetch_chromium_tag(chromium_ref)
-        ref = str(version)
-        _ensure_chromium_tags(ref)
-        revision_text = repository.chromium.read_file(*RUST_REVISION_FILES,
-                                                      commit=ref)
-        upstream_stem = self._upstream_stem(revision_text)
-
-        try:
-            new_entry = build_rust_toolchain.rust_toolchain_extra_dep(
-                upstream_stem)
-        except RuntimeError as e:
-            raise BadOutcomeException(str(e)) from e
-
-        path = repository.brave.root / INSTALL_EXTRA_DEPS_FILE
-        source = path.read_bytes().decode('utf-8')
-        node, extra_deps = self._load_extra_deps(source)
-
-        # Replace the rust-toolchain entry (in place, preserving key order),
-        # then re-render the whole EXTRA_DEPS assignment.
-        extra_deps.update(new_entry)
-        rendered = f'EXTRA_DEPS = {_render_py_literal(extra_deps)}\n'
-        lines = source.splitlines(keepends=True)
-        new_source = (''.join(lines[:node.lineno - 1]) + rendered +
-                      ''.join(lines[node.end_lineno:]))
-
-        if new_source == source:
-            terminal.log_task(
-                f'{INSTALL_EXTRA_DEPS_FILE} is already up to date; '
-                'nothing to commit.')
-            return
-
-        path.write_text(new_source, encoding='utf-8', newline='')
-
-        commit_hash = culprit or self._resolve_chromium_culprit(
-            revision_text, ref)
-        repository.brave.run_git('add', INSTALL_EXTRA_DEPS_FILE)
-        repository.brave.git_commit(self._commit_title(new_entry),
-                                    env={
-                                        **os.environ,
-                                        'tags': 'toolchain',
-                                        'culprit': commit_hash,
-                                    })
 
 
 def fetch_chromium_dash_version(channel: str) -> Version:
@@ -3333,28 +2255,47 @@ def main():
         '--culprit',
         default=None,
         help='Chromium commit hash to reference in the commit body. Defaults '
-        'to auto-detecting the commit that pinned the macOS SDK in '
-        f'{CHROMIUM_MAC_SDK_GNI}.',
+        'to auto-detecting the culprit.',
         dest='culprit')
 
-    gen_rust_parser = subparsers.add_parser(
+    def _add_gen_parser(command: str, description: str):
+        """Adds a `gen-*-toolchain` subparser (a `tag` positional + `--watch`).
+
+        All three toolchains trigger their CI job(s) through the same launcher,
+        so their subparsers share the same shape.
+        """
+        parser_ = subparsers.add_parser(
+            command,
+            parents=[global_parser],
+            formatter_class=argparse.RawTextHelpFormatter,
+            help=description)
+        parser_.add_argument(
+            'tag',
+            help=('The Chromium version to build the toolchain for (e.g.\n'
+                  '150.0.7850.1).'))
+        parser_.add_argument(
+            '--watch',
+            action='store_true',
+            help='After triggering, show a live-updating table of each '
+            'pipeline.')
+        return parser_
+
+    gen_rust_parser = _add_gen_parser(
         'gen-rust-toolchain',
-        parents=[global_parser],
-        formatter_class=argparse.RawTextHelpFormatter,
-        help='Triggers the Rust/WASM toolchain Jenkins pipelines for a '
-        'Chromium tag. Requires credentials in ~/.jenkins.json.')
+        'Triggers the Rust/WASM toolchain Jenkins pipelines.')
     gen_rust_parser.add_argument(
-        'tag',
-        help=('The Chromium version to build the toolchain for (e.g.\n'
-              '150.0.7850.1), or one of the @latest-* labels accepted by\n'
-              '`lift --to` (e.g. @latest-canary, @latest-m150,\n'
-              '@latest-for-branch, @latest-tag).'))
-    gen_rust_parser.add_argument(
-        '--watch',
-        action='store_true',
-        help='After triggering, show a live-updating table of each '
-        "pipeline's\nstage and status until all finish. Press Ctrl+C to stop "
-        'watching;\nthe builds keep running.')
+        '--brave-subrevision',
+        type=int,
+        required=True,
+        dest='brave_subrevision',
+        help=(
+            'The Brave subrevision, if a respin is required for the Rust/WASM'
+            'toolchain.'))
+    _add_gen_parser('gen-xcode-toolchain',
+                    'Triggers the hermetic Xcode toolchain Jenkins pipeline.')
+    _add_gen_parser(
+        'gen-windows-toolchain',
+        'Triggers the hermetic Windows toolchain Jenkins pipeline.')
 
     update_rust_parser = subparsers.add_parser(
         'update-rust-wasm-toolchain',
@@ -3440,19 +2381,28 @@ def main():
         if args.command == 'drop':
             Drop().run(change=args.change)
         if args.command == 'update-xcode-toolchain':
-            UpdateXcodeToolchain().run(chromium_ref=args.to,
-                                       culprit=args.culprit)
-        if args.command == 'gen-rust-toolchain':
-            task = GenRustToolchain()
+            _RepinToolchainTask(toolchain.XcodeToolchain()).run(
+                chromium_ref=args.to, culprit=args.culprit)
+        if args.command == 'update-rust-wasm-toolchain':
+            _RepinToolchainTask(toolchain.RustToolchain()).run(
+                chromium_ref=args.to, culprit=args.culprit)
+        gen_toolchains = {
+            'gen-rust-toolchain': toolchain.RustToolchain,
+            'gen-xcode-toolchain': toolchain.XcodeToolchain,
+            'gen-windows-toolchain': toolchain.WindowsToolchain,
+        }
+        if args.command in gen_toolchains:
+            properties = ({
+                'brave_subrevision': args.brave_subrevision
+            } if args.command == 'gen-rust-toolchain' else {})
+            task = _GenToolchainTask(gen_toolchains[args.command](),
+                                     **properties)
             if args.watch:
-                # `--watch` provdes live updates, therefore it doesn't use the
+                # `--watch` provides live updates, therefore it doesn't use the
                 # spinner provided by `Task.run`.
                 task.run_watching(tag=args.tag)
             else:
                 task.run(tag=args.tag)
-        if args.command == 'update-rust-wasm-toolchain':
-            UpdateRustWasmToolchain().run(chromium_ref=args.to,
-                                          culprit=args.culprit)
         if args.command == 'reference':
             console.print(Markdown(__doc__))
         if args.command == 'show':
