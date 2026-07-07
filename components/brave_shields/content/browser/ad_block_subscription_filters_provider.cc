@@ -30,7 +30,7 @@ void AddDATBufferToFilterSet(
               "AddDATBufferToFilterSet_SubscriptionFiltersProvider", flow);
   auto result = (*filter_set)->add_filter_list(buffer);
   if (result.result_kind == adblock::ResultKind::Success) {
-    std::move(on_metadata).Run(result.value);
+    std::move(on_metadata).Run(result.value.metadata);
   } else {
     VLOG(0) << "Subscription list parsing failed: "
             << result.error_message.c_str();

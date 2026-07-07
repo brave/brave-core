@@ -39,8 +39,11 @@ pub fn new_engine() -> Box<Engine> {
 pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
         let mut filter_set = InnerFilterSet::new(false);
-        filter_set.add_filter_list(std::str::from_utf8(rules.as_slice())?, Default::default());
-        let engine = InnerEngine::from_filter_set(filter_set, true);
+        filter_set.add_filter_list(
+            std::str::from_utf8(rules.as_slice())?.to_string(),
+            Default::default(),
+        );
+        let engine = InnerEngine::new_with_filter_set(filter_set);
         Ok(Box::new(Engine { engine }))
     }()
     .into()
@@ -49,7 +52,7 @@ pub fn engine_with_rules(rules: &CxxVector<u8>) -> BoxEngineResult {
 /// Creates a new engine with rules from a given filter set.
 pub fn engine_from_filter_set(filter_set: Box<FilterSet>) -> BoxEngineResult {
     || -> Result<Box<Engine>, InternalError> {
-        let engine = InnerEngine::from_filter_set(filter_set.0, true);
+        let engine = InnerEngine::new_with_filter_set(filter_set.0);
         Ok(Box::new(Engine { engine }))
     }()
     .into()
@@ -86,7 +89,7 @@ pub fn convert_rules_to_content_blocking(rules: &CxxString) -> ContentBlockingRu
 
         let mut filter_set = InnerFilterSet::new(true);
         filter_set.add_filter_list(
-            rules.to_str()?,
+            rules.to_str()?.to_string(),
             ParseOptions { rule_types: RuleTypes::NetworkOnly, ..Default::default() },
         );
 
@@ -131,6 +134,7 @@ impl Engine {
         source_hostname: &CxxString,
         request_type: &CxxString,
         third_party_request: bool,
+        method: &CxxString,
         previously_matched_rule: bool,
         force_check_exceptions: bool,
     ) -> BlockerResult {
@@ -144,6 +148,7 @@ impl Engine {
                     source_hostname.to_str().unwrap(),
                     request_type.to_str().unwrap(),
                     third_party_request,
+                    method.to_str().unwrap(),
                 ),
                 previously_matched_rule,
                 force_check_exceptions,
@@ -158,6 +163,7 @@ impl Engine {
         source_hostname: &CxxString,
         request_type: &CxxString,
         third_party_request: bool,
+        method: &CxxString,
     ) -> String {
         // The following strings are also UTF-8.
         self.engine
@@ -167,6 +173,7 @@ impl Engine {
                 source_hostname.to_str().unwrap(),
                 request_type.to_str().unwrap(),
                 third_party_request,
+                method.to_str().unwrap(),
             ))
             .unwrap_or_default()
     }

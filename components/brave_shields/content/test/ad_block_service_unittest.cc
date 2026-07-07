@@ -58,8 +58,8 @@ adblock::BlockerResult ShouldStartRequest(AdBlockService* service,
                 ? wrapper->default_engine_for_testing()
                 : wrapper->additional_filters_engine_for_testing();
         out = block_engine.ShouldStartRequest(
-            GURL(url), blink::mojom::ResourceType::kScript, "test.com", false,
-            false, false);
+            GURL(url), blink::mojom::ResourceType::kScript, "test.com", "GET",
+            false, false, false);
         run_loop.Quit();
       }));
   run_loop.Run();

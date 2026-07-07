@@ -66,7 +66,7 @@ ShouldBlockDomainOnTaskRunner(
   bool aggressive_for_engine = true;
   auto result = engine_wrapper->ShouldStartRequest(
       url, blink::mojom::ResourceType::kMainFrame, std::string(url.host()),
-      aggressive_for_engine, false, false, false);
+      "GET", aggressive_for_engine, false, false, false);
 
   block_result.should_block =
       result.important || (result.matched && !result.has_exception);

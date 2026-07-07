@@ -6,12 +6,15 @@
 use std::time::Duration;
 
 use crate::ffi::{
-    BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16, RegexDebugEntry,
-    RegexManagerDiscardPolicy,
+    AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16,
+    RegexDebugEntry, RegexManagerDiscardPolicy,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
 use adblock::engine::EngineDebugInfo as InnerEngineDebugInfo;
-use adblock::lists::{ExpiresInterval, FilterListMetadata as InnerFilterListMetadata};
+use adblock::lists::{
+    AddedFiltersRecord as InnerAddedFiltersRecord, ExpiresInterval,
+    FilterListMetadata as InnerFilterListMetadata,
+};
 
 use adblock::regex_manager::{
     RegexDebugEntry as InnerRegexDebugEntry,
@@ -85,5 +88,11 @@ impl From<InnerFilterListMetadata> for FilterListMetadata {
             ExpiresInterval::Days(days) => days as u16 * 24,
         }));
         Self { homepage: metadata.homepage.into(), title: metadata.title.into(), expires_hours }
+    }
+}
+
+impl From<InnerAddedFiltersRecord> for AddedFiltersRecord {
+    fn from(record: InnerAddedFiltersRecord) -> Self {
+        Self { source_index: record.source_index, metadata: record.metadata.into() }
     }
 }
