@@ -1,8 +1,34 @@
 diff --git a/chrome/browser/ui/unload_controller.cc b/chrome/browser/ui/unload_controller.cc
-index c63573fb9c454f0aaa6cad29871d4fb0a1a5c63d..ef26ec2950f371cd1a8dc9db5ce215e95a7c0b8a 100644
+index 95415e5abb2105d9345c870fe2d8f24d1bb6eaff..b1fe5d94e4481f182e4d7d30264e7c975cf15462 100644
 --- a/chrome/browser/ui/unload_controller.cc
 +++ b/chrome/browser/ui/unload_controller.cc
-@@ -480,6 +480,9 @@ void UnloadController::OnTabStripModelChanged(
+@@ -174,6 +174,9 @@ void UnloadController::OnWindowClosing() {
+     tab_restore_service->BrowserClosing(
+         browser_->GetFeatures().live_tab_context());
+   }
++  if (MaybeHandleSharedPinnedTabsClosing(browser_)) {
++    return;
++  }
+ 
+   if (!browser_->GetTabStripModel()->empty()) {
+     // Closing all the tabs results in eventually calling back to
+@@ -450,6 +453,7 @@ UnloadController::GetBrowserClosingStatus() {
+ bool UnloadController::TryToCloseWindow(
+     bool skip_beforeunload,
+     const base::RepeatingCallback<void(bool)>& on_close_confirmed) {
++  confirmed_to_close_ = true;
+   cancel_download_confirmation_state_ =
+       CancelDownloadConfirmationState::kResponseReceived;
+   // The devtools browser gets its beforeunload events as the results of
+@@ -472,6 +476,7 @@ bool UnloadController::TryToCloseWindow(
+ }
+ 
+ void UnloadController::ResetTryToCloseWindow() {
++  confirmed_to_close_ = false;
+   cancel_download_confirmation_state_ =
+       CancelDownloadConfirmationState::kNotPrompted;
+   if (!is_calling_before_unload_handlers()) {
+@@ -570,6 +575,9 @@ void UnloadController::OnTabStripModelChanged(
  }
  
  void UnloadController::TabStripEmpty() {
@@ -12,7 +38,7 @@ index c63573fb9c454f0aaa6cad29871d4fb0a1a5c63d..ef26ec2950f371cd1a8dc9db5ce215e9
    // Set is_attempting_to_close_browser_ here, so that extensions, etc, do not
    // attempt to add tabs to the browser before it closes.
    is_attempting_to_close_browser_ = true;
-@@ -831,6 +834,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
+@@ -921,6 +929,9 @@ void UnloadController::InProgressDownloadResponse(bool cancel_downloads) {
  }
  
  void UnloadController::FinishWarnBeforeClosing(WarnBeforeClosingResult result) {
