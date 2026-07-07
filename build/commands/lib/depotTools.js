@@ -69,6 +69,29 @@ function removeDepotTools() {
   }
 }
 
+// This method ensures that the checked out depot_tools is pointing at the
+// correct remote repository.
+function ensureDepotToolsOrigin() {
+  // `continueOnFail` so a missing/broken remote yields '' instead of throwing.
+  const originUrl = util.runGit(
+    config.depotToolsDir,
+    ['remote', 'get-url', 'origin'],
+    true,
+  )
+  if (originUrl && originUrl !== config.depotToolsRepo) {
+    Log.status(
+      `Updating depot_tools origin remote from ${originUrl} `
+        + `to ${config.depotToolsRepo}.`,
+    )
+    util.runGit(config.depotToolsDir, [
+      'remote',
+      'set-url',
+      'origin',
+      config.depotToolsRepo,
+    ])
+  }
+}
+
 function installDepotTools(options = config.defaultOptions) {
   options.cwd = config.braveCoreDir
 
@@ -115,6 +138,10 @@ function installDepotTools(options = config.defaultOptions) {
         )
       })
     }
+
+    // Repoint pre-existing checkouts at the configured remote before any fetch
+    // below relies on `origin`.
+    ensureDepotToolsOrigin()
 
     if (enforcedDepotToolsRef !== readEnforcedDepotToolsRef()) {
       // Write the enforced ref to .disable_auto_update or remove the file to
