@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index e0264f1d6cfe2a09645a8f58a8e805a079ebf961..bcca15129f6cc1394456b032e1dae46e407cc954 100644
+index 1d3cce8a2a9b278f9a359301329bc1bb62a2f207..6cbf73528bcc89b32505c6001f4e87d76450ff97 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
 @@ -465,7 +465,7 @@ Browser* Browser::Create(const CreateParams& params) {
@@ -29,11 +29,3 @@ index e0264f1d6cfe2a09645a8f58a8e805a079ebf961..bcca15129f6cc1394456b032e1dae46e
            tab_strip_model_delegate_.get(),
            params.profile,
            // Tab groups are disabled for app browsers.
-@@ -912,6 +912,7 @@ void Browser::OnWindowCloseComplete() {
-     browser_shutdown::OnShutdownStarting(
-         browser_shutdown::ShutdownType::kWindowClose);
-   }
-+  BRAVE_BROWSER_ON_WINDOW_CLOSING
- 
-   // Once a Browser has successfully closed, client code expects control to
-   // return to the run loop before the instance is finally deleted. To

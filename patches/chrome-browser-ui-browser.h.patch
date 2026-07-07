@@ -1,24 +1,8 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a296248d7ffcd2 100644
+index 6f8ebd1d1275b9294684f3abeb2f27c0f509d014..be802289e4e80e8165f522b0c8b5e833fc1377ab 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
-@@ -506,13 +506,13 @@ class Browser : public TabStripModelObserver,
-   // Note that if the browser window has been used before, users should always
-   // have a chance to save their work before the window is closed without
-   // triggering beforeunload event.
--  bool TryToCloseWindow(
-+  virtual bool TryToCloseWindow(
-       bool skip_beforeunload,
-       const base::RepeatingCallback<void(bool)>& on_close_confirmed);
- 
-   // Clears the results of any beforeunload confirmation dialogs triggered by a
-   // TryToCloseWindow call.
--  void ResetTryToCloseWindow();
-+  virtual void ResetTryToCloseWindow();
- 
-   // Browser closing consists of the following phases:
-   //
-@@ -739,6 +739,8 @@ class Browser : public TabStripModelObserver,
+@@ -562,6 +562,8 @@ class Browser : public TabStripModelObserver,
  #endif
  
   private:
@@ -27,7 +11,7 @@ index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a29624
    friend class BrowserTest;
    friend class ExclusiveAccessTest;
    friend class FullscreenControllerInteractiveTest;
-@@ -936,7 +938,7 @@ class Browser : public TabStripModelObserver,
+@@ -758,7 +760,7 @@ class Browser : public TabStripModelObserver,
  
    // Handle changes to tab strip model.
    void OnTabInsertedAt(content::WebContents* contents, int index);
@@ -36,7 +20,7 @@ index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a29624
    void OnTabDetached(tabs::TabInterface* tab,
                       bool was_active,
                       bool had_active_modal_dialog);
-@@ -971,7 +973,7 @@ class Browser : public TabStripModelObserver,
+@@ -793,7 +795,7 @@ class Browser : public TabStripModelObserver,
    //   updates), then scheduled_updates_ is updated for the |source| and update
    //   pair and a task is scheduled (assuming it isn't running already)
    //   that invokes ProcessPendingUIUpdates.
@@ -45,4 +29,3 @@ index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a29624
  
    // Processes all pending updates to the UI that have been scheduled by
    // ScheduleUIUpdate in scheduled_updates_.
- 
