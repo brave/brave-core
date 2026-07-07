@@ -16,14 +16,18 @@ export default function useConversationEventClipboardCopyHandler(
   group: Mojom.ConversationTurn[],
 ) {
   return () => {
-    const entry = group[0]
+    // When a turn has been edited, |text| holds the original text and the last
+    // entry of |edits| holds the most recent text/events shown to the user, so
+    // copy the latest edit rather than the original turn.
+    const editedGroup = group.map((turn) => turn.edits?.at(-1) ?? turn)
+    const entry = editedGroup[0]
     if (entry.characterType === Mojom.CharacterType.ASSISTANT) {
       // Collect completion text from all turns in the group (e.g. tool use
       // turns split the completion across multiple entries) and from all
       // completion events within each turn (an inline-search event between
       // streaming chunks splits the completion stream into multiple events).
-      const allEvents = group.flatMap((turn) => turn.events ?? [])
-      const completionTexts = group.map((turn) =>
+      const allEvents = editedGroup.flatMap((turn) => turn.events ?? [])
+      const completionTexts = editedGroup.map((turn) =>
         (turn.events ?? [])
           .filter((e) => e.completionEvent)
           .map((e) => e.completionEvent!.completion)
