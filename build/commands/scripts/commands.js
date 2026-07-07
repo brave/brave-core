@@ -6,7 +6,7 @@
 // Check environment before doing anything.
 import '../lib/checkEnvironment.js'
 
-import { program, Argument, Option } from 'commander'
+import { program, Option } from 'commander'
 import path from 'node:path'
 import fs from 'fs-extra'
 import config from '../lib/config.ts'
@@ -27,6 +27,7 @@ import genGradle from '../lib/genGradle.js'
 import perfTests from '../lib/perfTests.ts'
 import registerListAffectedTestsCommand from './listAffectedTests.js'
 import registerGenerateCoverageReportCommand from './generateCoverageReport.js'
+import { createBuildConfigArgument } from '../lib/commandsUtils.ts'
 
 const collect = (value, accumulator) => {
   accumulator.push(value)
@@ -47,18 +48,6 @@ function parseInteger(string) {
 }
 
 const parsedArgs = program.parseOptions(process.argv)
-
-function createBuildConfigArgument() {
-  // Build config argument that's valid only if it's not an option.
-  return new Argument('[build_config]', 'build configuration').argParser(
-    (value) => {
-      if (value.startsWith('-')) {
-        return undefined
-      }
-      return value
-    },
-  )
-}
 
 // @ts-ignore
 program.version(process.env.npm_package_version)
@@ -495,34 +484,6 @@ program
   .action(genGradle.bind(null, parsedArgs.unknown))
 
 program.command('docs').action(util.launchDocs)
-
-program
-  .command('ios_update_current_link')
-  .description(
-    'Updates the stable ios_current_link output directory symlink for upcoming Xcode builds',
-  )
-  .addOption(
-    new Option('--target_arch <target_arch>', 'target architecture').choices([
-      'arm64',
-      'x64',
-    ]),
-  )
-  .addOption(
-    new Option(
-      '--target_environment <target_environment>',
-      'target environment',
-    ).choices(['device', 'catalyst', 'simulator']),
-  )
-  .addArgument(createBuildConfigArgument())
-  .action((buildConfig, options) => {
-    config.buildConfig = buildConfig || config.defaultBuildConfig
-    config.targetOS = 'ios'
-    config.update(options)
-
-    const currentLink = path.join(config.srcDir, 'out', 'ios_current_link')
-    fs.removeSync(currentLink)
-    fs.symlinkSync(config.outputDir, currentLink, 'junction')
-  })
 
 registerListAffectedTestsCommand(program)
 registerGenerateCoverageReportCommand(program)
