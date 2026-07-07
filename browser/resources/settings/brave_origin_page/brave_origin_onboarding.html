@@ -14,6 +14,7 @@
   }
 
   #learnMoreLink,
+  #restorePurchaseButton,
   #proceedFreeButton {
     margin-inline-start: var(--leo-spacing-xl);
   }
@@ -37,6 +38,9 @@
   <div class="cr-row">
     <cr-button class="action-button" on-click="onBuyNowClick_">
       $i18n{braveOriginOnboardingBuyNow}
+    </cr-button>
+    <cr-button id="restorePurchaseButton" on-click="onRestorePurchaseClick_">
+      $i18n{braveOriginOnboardingRestorePurchase}
     </cr-button>
     <if expr="is_linux">
       <cr-button id="proceedFreeButton" on-click="onProceedFreeClick_">

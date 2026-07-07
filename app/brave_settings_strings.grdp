@@ -693,6 +693,9 @@
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW" desc="The label for the Buy now button in Brave Origin onboarding">
     Buy now
   </message>
+  <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_RESTORE_PURCHASE" desc="The label for the button to restore a previous Brave Origin purchase">
+    Restore purchase
+  </message>
   <message name="IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE" desc="The label for the Learn more link in Brave Origin onboarding">
     Learn more
   </message>
