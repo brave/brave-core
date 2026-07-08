@@ -640,7 +640,7 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
       auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
     }
 
-    PrefProvider::SetWebsiteSetting(
+    SetWebsiteSettingInternal(
         fp_rule->primary_pattern, fp_rule->secondary_pattern,
         ContentSettingsType::BRAVE_AUTO_SHRED,
         brave_shields::AutoShredSetting::ToValue(auto_shred_mode), {});
@@ -758,6 +758,12 @@ bool BravePrefProvider::SetWebsiteSetting(
     ContentSettingsType content_type,
     const base::Value& in_value,
     const ContentSettingConstraints& constraints) {
+  LOG(INFO) << "[SHRED] BravePrefProvider::SetWebsiteSetting will be false:" << (primary_pattern == ContentSettingsPattern::Wildcard() &&
+      secondary_pattern == ContentSettingsPattern::Wildcard())
+      << " primary_pattern:" << primary_pattern.ToString()
+      << " secondary_pattern:" << secondary_pattern.ToString()
+      << " in_value:" << in_value
+      ;
   const auto cookie_is_found_in =
       [&primary_pattern = std::as_const(primary_pattern),
        &secondary_pattern = std::as_const(secondary_pattern),
@@ -846,6 +852,13 @@ bool BravePrefProvider::SetWebsiteSettingInternal(
           ContentSettingsPattern::FromString("https://balanced/*")) {
     return false;
   }
+
+    LOG(INFO) << "[SHRED] BravePrefProvider::SetWebsiteSettingInternal will be false:" << (primary_pattern == ContentSettingsPattern::Wildcard() &&
+      secondary_pattern == ContentSettingsPattern::Wildcard())
+      << " primary_pattern:" << primary_pattern.ToString()
+      << " secondary_pattern:" << secondary_pattern.ToString()
+      << " in_value:" << in_value
+      ;
 
   return PrefProvider::SetWebsiteSetting(primary_pattern, secondary_pattern,
                                          content_type, in_value, constraints);

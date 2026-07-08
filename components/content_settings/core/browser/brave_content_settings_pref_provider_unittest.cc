@@ -960,8 +960,9 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
 
   remember_1p_storage.AddRule(kAllowPattern, "*", CONTENT_SETTING_ALLOW);
   remember_1p_storage.AddRule(kBlockPattern, "*", CONTENT_SETTING_BLOCK);
+  remember_1p_storage.AddRule("*", "*", CONTENT_SETTING_BLOCK);
 
-  EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
+  EXPECT_EQ(3u, remember_1p_storage.GetRulesCount());
   remember_1p_storage.Write();
 
   testing_profile()->GetPrefs()->ClearPref(
@@ -975,12 +976,15 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
       brave_shields::AutoShredSetting::kContentSettingsType);
 
   // Check that migration happened.
-  EXPECT_EQ(2u, auto_shred_settings.GetRulesCount());
+  EXPECT_EQ(3u, auto_shred_settings.GetRulesCount());
 
   const auto last_tab_closed = brave_shields::AutoShredSetting::ToValue(
       brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED);
   EXPECT_EQ(last_tab_closed,
             auto_shred_settings.GetSettingDirectly(kBlockPattern, "*"));
+
+  EXPECT_EQ(last_tab_closed,
+            auto_shred_settings.GetSettingDirectly("*", "*"));
 
   const auto never = brave_shields::AutoShredSetting::ToValue(
       brave_shields::mojom::AutoShredMode::NEVER);
