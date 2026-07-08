@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/about_flags.cc b/chrome/browser/about_flags.cc
-index 65692f66ab989ec5ac057667e945d753e318923b..2c0db97c912cef3a030563474c0cacf307c00e3a 100644
+index a6671f3460611227c53ec92b684339c5ea96ea1c..71f16ec5a0d9aefe3bf7c8b8e67ee64508bd7cf3 100644
 --- a/chrome/browser/about_flags.cc
 +++ b/chrome/browser/about_flags.cc
-@@ -4695,6 +4695,7 @@ const FeatureEntry::FeatureVariation kCanvasAccessibilityChoices[] = {
+@@ -4705,6 +4705,7 @@ const FeatureEntry::FeatureVariation kToolbarGlowUpVariations[] = {
  //
  // When adding a new choice, add it to the end of the list.
  const FeatureEntry kFeatureEntries[] = {
