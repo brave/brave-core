@@ -24,6 +24,7 @@ void PsstReporterService::SubmitPsstErrorsReport(
     const int script_version,
     OnSubmitPsstErrorsReportCallback callback) {
   if (!failed_policy_tasks || failed_policy_tasks->empty()) {
+    std::move(callback).Run();
     return;
   }
 
@@ -39,22 +40,23 @@ void PsstReporterService::SubmitPsstErrorsReport(
   }
 
   base::ListValue failed_tasks;
+  for (const auto& ti : failed_policy_tasks.value()) {
+    if (ti.error_description) {
+      failed_tasks.Append(ti.ToValue());
+    }
+  }
 
-  std::string tasks_log;
-  for (auto& ti : failed_policy_tasks.value()) {
-    failed_tasks.Append(ti.ToValue());
-    tasks_log +=
-        "\nuid:" + ti.uid + "\n\turl:" + ti.url +
-        "\n\tdescription:" + ti.description + "\n\terror_description:" +
-        (ti.error_description.has_value() ? ti.error_description.value()
-                                          : "N/A");
+  if(failed_tasks.empty()) {
+    // Nothing to report
+    std::move(callback).Run();
+    return;
   }
 
   LOG(INFO) << "[PSST] PsstReporterService::SubmitPsstErrorsReport "
                "\npsst_component_version:"
             << (psst_component_version ? psst_component_version.value() : "n/a")
             << "\nscript_version:" << script_version
-            << "\nfailed_policy_tasks:" << tasks_log;
+            << "\nfailed_policy_tasks:" << failed_tasks.DebugString();
 
   report_uploader_->Upload(std::move(psst_component_version), script_version,
                            std::move(failed_tasks), std::move(callback));
