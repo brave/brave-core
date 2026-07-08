@@ -75,15 +75,15 @@ std::optional<std::string> ReadCompressibleString(
   }
   if (in.has_gzipped()) {
     // Limit maximum decompressed size to allowed maximum, or available memory.
-    if (compression::GetUncompressedSize(in.gzipped()) >
-        std::min(
-            kSyncCompressionMaxDecompressedBytes,
-            base::saturated_cast<size_t>(
-                base::SysInfo::AmountOfAvailablePhysicalMemory().InBytes()))) {
-      DVLOG(1) << "Rejecting uncompressed string of size "
-               << compression::GetUncompressedSize(in.gzipped())
-               << " bytes, exceeds max allowed "
-               << kSyncCompressionMaxDecompressedBytes;
+    const uint32_t uncompressed_size =
+        compression::GetUncompressedSize(in.gzipped());
+    const size_t max_allowed_size = std::min(
+        kSyncCompressionMaxDecompressedBytes,
+        base::saturated_cast<size_t>(
+            base::SysInfo::AmountOfAvailablePhysicalMemory().InBytes()));
+    if (uncompressed_size > max_allowed_size) {
+      DVLOG(1) << "Rejecting uncompressed string of size " << uncompressed_size
+               << " bytes, exceeds max allowed " << max_allowed_size;
       return std::nullopt;
     }
     std::string out;
