@@ -392,5 +392,50 @@ class ResolveInvocationTest(unittest.TestCase):
             launcher.resolve_invocation('bogus', None, True)
 
 
+class ArgumentForwardingTest(unittest.TestCase):
+    """Exercises `launcher.build_parser` argv splitting.
+
+    The launcher must never swallow a tool's own arguments: it parses only its
+    leading options and the TOOL token, forwarding everything from TOOL onward
+    verbatim (regression coverage for `brockit gen-rust-toolchain --help`).
+    """
+
+    def _split(self, argv: list[str]) -> tuple[bool, str, list[str]]:
+        parsed = launcher.build_parser().parse_args(argv)
+        return parsed.allow_fallback, parsed.tool, parsed.tool_args
+
+    def test_forwards_help_to_tool(self):
+        # The bug: `--help` after TOOL was intercepted by the launcher instead
+        # of reaching the tool.
+        self.assertEqual(self._split(['gen-rust-toolchain', '--help']),
+                         (False, 'gen-rust-toolchain', ['--help']))
+        self.assertEqual(self._split(['brockit', '-h']),
+                         (False, 'brockit', ['-h']))
+
+    def test_forwards_tool_flags_verbatim(self):
+        self.assertEqual(self._split(['brockit', 'lift', '--to=1.2.3.4']),
+                         (False, 'brockit', ['lift', '--to=1.2.3.4']))
+
+    def test_leading_allow_fallback_is_consumed(self):
+        # Before TOOL, `--allow-fallback` is the launcher's own flag.
+        self.assertEqual(self._split(['--allow-fallback', 'node', 'build.js']),
+                         (True, 'node', ['build.js']))
+
+    def test_allow_fallback_after_tool_is_forwarded(self):
+        # After TOOL, the identical flag is the tool's — forwarded, not acted on.
+        self.assertEqual(self._split(['brockit', '--allow-fallback', 'foo']),
+                         (False, 'brockit', ['--allow-fallback', 'foo']))
+
+    def test_bare_tool_has_no_args(self):
+        self.assertEqual(self._split(['brockit']), (False, 'brockit', []))
+
+    def test_own_help_renders_without_crashing(self):
+        # argparse expands help strings through `% params`; a bare `%` (the
+        # `%PATH` typo) raised ValueError. The `%%` escape must survive it and
+        # render a literal `%PATH`.
+        help_text = launcher.build_parser().format_help()
+        self.assertIn('%PATH', help_text)
+
+
 if __name__ == '__main__':
     unittest.main()

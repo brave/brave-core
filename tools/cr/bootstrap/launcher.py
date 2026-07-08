@@ -184,8 +184,13 @@ def resolve_invocation(tool: str, checkout: Path | None,
     return invocation
 
 
-def main() -> int:
-    """Resolve the tool from argv and run it, or report why it cannot."""
+def build_parser() -> argparse.ArgumentParser:
+    """The launcher's own argument parser.
+
+    Only the launcher's leading options and the TOOL token are parsed here.
+    Everything from TOOL onward is captured verbatim by the REMAINDER
+    positional and forwarded to the tool.
+    """
     parser = argparse.ArgumentParser(
         prog='launcher.py',
         description='Run a brave tool shim against the checkout in the cwd.',
@@ -194,12 +199,26 @@ def main() -> int:
     parser.add_argument(
         '--allow-fallback',
         action='store_true',
-        help='Allows falling back to a binary in %PATH if outside a checkout.')
+        # The '%%' escapes the literal percent: argparse runs help strings
+        # through '% params' formatting, and a bare '%P' crashes it.
+        help='Allows falling back to a binary in %%PATH if outside a checkout.'
+    )
     parser.add_argument('tool',
                         metavar='TOOL',
                         help='shim to run (e.g. brockit, plaster, node, npm)')
-    parsed, tool_args = parser.parse_known_args()
+    parser.add_argument('tool_args',
+                        metavar='...',
+                        nargs=argparse.REMAINDER,
+                        help='arguments forwarded to TOOL verbatim')
+    return parser
+
+
+def main() -> int:
+    """Resolve the tool from argv and run it, or report why it cannot."""
+    parser = build_parser()
+    parsed = parser.parse_args()
     tool = parsed.tool
+    tool_args = parsed.tool_args
 
     checkout = _find_cwd_checkout()
     try:
