@@ -117,7 +117,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   for (const auto& note : pick_result.value().inputs) {
     OrchardInput orchard_input;
     orchard_input.note = note;
-    zcash_transaction.orchard_part().inputs.push_back(std::move(orchard_input));
+    zcash_transaction.v5_part().orchard.inputs.push_back(std::move(orchard_input));
   }
   zcash_transaction.set_fee(pick_result->fee);
 
@@ -136,14 +136,14 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   // Create shielded change
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
-        zcash_transaction.orchard_part().outputs.emplace_back();
+        zcash_transaction.v5_part().orchard.outputs.emplace_back();
     orchard_output.value = pick_result->change;
     orchard_output.addr = context_.account_internal_addr.value();
   }
 
   // Create shielded output
   OrchardOutput& orchard_output =
-      zcash_transaction.orchard_part().outputs.emplace_back();
+      zcash_transaction.v5_part().orchard.outputs.emplace_back();
   auto value =
       base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
                                zcash_transaction.fee(), pick_result->change);
@@ -156,7 +156,7 @@ void ZCashCreateOrchardToOrchardTransactionTask::CreateTransaction() {
   orchard_output.value = value.ValueOrDie();
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
-  zcash_transaction.orchard_part().anchor_block_height =
+  zcash_transaction.v5_part().orchard.anchor_block_height =
       spendable_notes_->anchor_block_id.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(

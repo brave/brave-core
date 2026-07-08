@@ -174,21 +174,21 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
 
   EXPECT_TRUE(tx_result.has_value());
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 2u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 2u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(), 10u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[0].note.amount, 70000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[1].note.amount, 80000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount, 100000u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].address,
             kTransparentAddress);
 
   // Should have change output
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs[0].value,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 1u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs[0].value,
             50000u - 3 * 5000u);
 }
 
@@ -278,13 +278,13 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
   EXPECT_TRUE(tx_result.has_value());
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 2u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 2u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 0u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(), 10u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[0].note.amount, 70000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[1].note.amount, 80000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
             70000u + 80000u - 3 * 5000u);
@@ -335,13 +335,13 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
   EXPECT_TRUE(tx_result.has_value());
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 2u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 2u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 0u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(), 10u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount, 70000u);
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount, 80000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[0].note.amount, 70000u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[1].note.amount, 80000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,
             70000u + 80000u - 3 * 5000u);
@@ -392,14 +392,14 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
   EXPECT_TRUE(tx_result.has_value());
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs.size(), 2u);
-  EXPECT_EQ(tx_result.value().orchard_part().outputs.size(), 0u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs.size(), 2u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.outputs.size(), 0u);
   EXPECT_EQ(tx_result.value().transparent_part().outputs.size(), 1u);
-  EXPECT_EQ(tx_result.value().orchard_part().anchor_block_height.value(), 10u);
+  EXPECT_EQ(tx_result.value().v5_part().orchard.anchor_block_height.value(), 10u);
 
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[0].note.amount,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[0].note.amount,
             70000000000u);
-  EXPECT_EQ(tx_result.value().orchard_part().inputs[1].note.amount,
+  EXPECT_EQ(tx_result.value().v5_part().orchard.inputs[1].note.amount,
             80000000000u);
 
   EXPECT_EQ(tx_result.value().transparent_part().outputs[0].amount,

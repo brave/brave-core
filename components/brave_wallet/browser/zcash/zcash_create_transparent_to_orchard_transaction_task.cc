@@ -113,7 +113,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
 
   // Create shielded output
   OrchardOutput& orchard_output =
-      zcash_transaction.orchard_part().outputs.emplace_back();
+      zcash_transaction.v5_part().orchard.outputs.emplace_back();
 
   auto value = base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
                                         pick_transparent_inputs_result->fee,
@@ -125,7 +125,7 @@ void ZCashCreateTransparentToOrchardTransactionTask::CreateTransaction() {
   }
   orchard_output.addr = receiver_;
   orchard_output.memo = memo_;
-  zcash_transaction.orchard_part().anchor_block_height =
+  zcash_transaction.v5_part().orchard.anchor_block_height =
       chain_tip_height_.value();
 
   auto orchard_unified_addr = GetOrchardUnifiedAddress(

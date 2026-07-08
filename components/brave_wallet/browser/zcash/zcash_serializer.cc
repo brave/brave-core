@@ -264,7 +264,7 @@ bool ZCashSerializer::SignTransparentPart(
 // static
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
     const ZCashTransaction& zcash_transaction) {
-  return zcash_transaction.v6_part()
+  return zcash_transaction.is_v6()
              ? ZCashV6Serializer::CalculateTxIdDigest(zcash_transaction)
              : ZCashV5Serializer::CalculateTxIdDigest(zcash_transaction);
 }
@@ -273,7 +273,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
     const ZCashTransaction& zcash_transaction,
     const std::optional<ZCashTransaction::TxInput>& input) {
-  return zcash_transaction.v6_part()
+  return zcash_transaction.is_v6()
              ? ZCashV6Serializer::CalculateSignatureDigest(zcash_transaction,
                                                            input)
              : ZCashV5Serializer::CalculateSignatureDigest(zcash_transaction,
@@ -283,7 +283,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
 // static
 std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
     const ZCashTransaction& zcash_transaction) {
-  return zcash_transaction.v6_part()
+  return zcash_transaction.is_v6()
              ? ZCashV6Serializer::SerializeRawTransaction(zcash_transaction)
              : ZCashV5Serializer::SerializeRawTransaction(zcash_transaction);
 }
@@ -292,7 +292,7 @@ std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
 bool ZCashSerializer::SignTransparentPart(KeyringService& keyring_service,
                                           const mojom::AccountIdPtr& account_id,
                                           ZCashTransaction& tx) {
-  return tx.v6_part()
+  return tx.is_v6()
              ? ZCashV6Serializer::SignTransparentPart(keyring_service,
                                                       account_id, tx)
              : ZCashV5Serializer::SignTransparentPart(keyring_service,
