@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/function_ref.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/thread_annotations.h"
@@ -108,6 +109,38 @@ class BravePrefProvider : public PrefProvider, public Observer {
   void MigrateFingerprintingSetingsToOriginScoped();
   void MigrateCosmeticFilteringSettings();
   void MigrateBraveRemember1PStorageToAutoShred();
+  // How a Brave/Shields-derived content setting is folded into an effective
+  // upstream content setting (COOKIES, JAVASCRIPT, ...).
+  struct EffectiveRuleConfig {
+    // The upstream content type whose effective value we produce.
+    ContentSettingsType effective_type;
+    // The upstream content type contributing baseline rules (e.g. COOKIES).
+    ContentSettingsType chromium_type;
+    // The Shields-owned content type contributing per-site overrides.
+    ContentSettingsType brave_type;
+    // Whether the top-level site is identified by the rule's primary pattern
+    // (JavaScript) or its secondary/embedding pattern (cookies).
+    bool top_level_is_primary;
+    // Content types whose changes should trigger a rebuild + notification.
+    std::vector<ContentSettingsType> notify_on_types;
+  };
+
+  // Shared implementation that rebuilds |config.effective_type|'s effective
+  // rules from the Chromium baseline, the Shields-owned overrides, and the
+  // current Shields state. |inject_source_rules| adds any type-specific source
+  // rules (e.g. Google Sign-In cookie exceptions) before the Shields overrides,
+  // and |apply_shields_down| adds type-specific Shields-down overrides after.
+  void UpdateBraveEffectiveRules(
+      const EffectiveRuleConfig& config,
+      bool incognito,
+      ContentSettingsType changed_type,
+      base::FunctionRef<void(std::vector<std::unique_ptr<Rule>>&,
+                             std::vector<std::unique_ptr<Rule>>&)>
+          inject_source_rules,
+      base::FunctionRef<void(const std::vector<std::unique_ptr<Rule>>&,
+                             std::vector<std::unique_ptr<Rule>>&,
+                             std::vector<std::unique_ptr<Rule>>&)>
+          apply_shields_down);
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
   void UpdateJavascriptRules(ContentSettingsType content_type, bool incognito);
   const OriginValueMap* GetBraveEffectiveRules(ContentSettingsType content_type,

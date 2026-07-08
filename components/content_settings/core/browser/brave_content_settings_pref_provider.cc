@@ -13,6 +13,7 @@
 #include "base/check_deref.h"
 #include "base/check_op.h"
 #include "base/functional/bind.h"
+#include "base/functional/function_ref.h"
 #include "base/json/values_util.h"
 #include "base/logging.h"
 #include "base/strings/strcat.h"
@@ -1106,110 +1107,41 @@ BravePrefProvider::CookieType BravePrefProvider::GetCookieType(
   return CookieType::kRegularCookie;
 }
 
-void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
-                                          bool incognito) {
+void BravePrefProvider::UpdateBraveEffectiveRules(
+    const EffectiveRuleConfig& config,
+    bool incognito,
+    ContentSettingsType changed_type,
+    base::FunctionRef<void(std::vector<std::unique_ptr<Rule>>&,
+                           std::vector<std::unique_ptr<Rule>>&)>
+        inject_source_rules,
+    base::FunctionRef<void(const std::vector<std::unique_ptr<Rule>>&,
+                           std::vector<std::unique_ptr<Rule>>&,
+                           std::vector<std::unique_ptr<Rule>>&)>
+        apply_shields_down) {
+  auto& effective_rules =
+      brave_effective_rules_[config.effective_type][incognito];
+  auto& source_rules =
+      brave_effective_source_rules_[config.effective_type][incognito];
+
   std::vector<std::unique_ptr<Rule>> rules;
-  auto old_rules = std::move(
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
-  auto old_shields_down_rules = std::move(brave_shield_down_rules_[incognito]);
-  brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-      .clear();
+  auto old_rules = std::move(source_rules);
+  source_rules.clear();
 
-  const bool google_sign_in_flag_enabled =
-      google_sign_in_permission::IsGoogleSignInFeatureEnabled();
+  // Type-specific source rules that must precede the Shields overrides (e.g.
+  // Google Sign-In cookie exceptions). None for JavaScript.
+  inject_source_rules(rules, source_rules);
 
-  // If Google Sign-In permission feature flag is disabled,
-  // we add 3p cookie exception globally for Google/Firebase auth domains.
-  // TODO(ssahib): Remove this once we no longer need to support the flag.
-  if (!google_sign_in_flag_enabled &&
-      prefs_->FindPreference(kGoogleLoginControlType) &&
-      prefs_->GetBoolean(kGoogleLoginControlType)) {
-    // kGoogleLoginControlType preference adds an exception for
-    // accounts.google.com to access cookies in 3p context to allow login using
-    // google oauth. The exception is added before all overrides to allow google
-    // oauth to work when the user sets custom overrides for a site.
-    // For example: Google OAuth will be allowed if the user allows all cookies
-    // and sets 3p cookie blocking for a site.
-    //
-    // We also create the same exception for firebase apps, since they
-    // are tightly bound to google, and require google auth to work.
-    // See: #5075, #9852, #10367
-    //
-    // PS: kGoogleLoginControlType preference might not be registered for tests.
-    RuleMetaData metadata;
-    metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
-    metadata.set_session_model(content_settings::mojom::SessionModel::DURABLE);
-    const auto google_auth_rule = std::make_unique<Rule>(
-        google_sign_in_permission::GetGoogleAuthPattern(),
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
-    rules.emplace_back(CloneRule(*google_auth_rule));
-    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-        .emplace_back(CloneRule(*google_auth_rule));
-
-    const auto firebase_rule = std::make_unique<Rule>(
-        google_sign_in_permission::GetFirebaseAuthPattern(),
-        ContentSettingsPattern::Wildcard(),
-        ContentSettingToValue(CONTENT_SETTING_ALLOW), std::move(metadata));
-    rules.emplace_back(CloneRule(*firebase_rule));
-    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-        .emplace_back(CloneRule(*firebase_rule));
-  } else if (google_sign_in_flag_enabled) {
-    // Google Sign-In feature:
-    // Add per-site cookie exception for Google/Firebase auth domains.
-    // Get all sites that have BRAVE_GOOGLE_SIGN_IN turned on, and add exception
-    // for them
-    auto google_sign_in_content_setting_it = PrefProvider::GetRuleIterator(
-        ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, incognito);
-    while (google_sign_in_content_setting_it &&
-           google_sign_in_content_setting_it->HasNext()) {
-      const auto google_sign_in_rule =
-          google_sign_in_content_setting_it->Next();
-
-      RuleMetaData metadata;
-      metadata.SetExpirationAndLifetime(
-          google_sign_in_rule->metadata.expiration(), base::TimeDelta());
-      metadata.set_session_model(google_sign_in_rule->metadata.session_model());
-      // The embedding pattern for the cookie rule will be the primary pattern
-      // for the BRAVE_GOOGLE_SIGN_IN permission.
-      // We want to get all subdomains for the cookie rule...
-      auto embedding_pattern = ContentSettingsPattern::ToDomainWildcardPattern(
-          google_sign_in_rule->primary_pattern);
-      // ... but if that doesn't work, fallback to stored pattern.
-      if (!embedding_pattern.IsValid()) {
-        embedding_pattern = google_sign_in_rule->primary_pattern;
-      }
-      const auto google_auth_rule = std::make_unique<Rule>(
-          google_sign_in_permission::GetGoogleAuthPattern(), embedding_pattern,
-          google_sign_in_rule->value.Clone(), metadata.Clone());
-      rules.emplace_back(CloneRule(*google_auth_rule));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-          .emplace_back(CloneRule(*google_auth_rule));
-
-      const auto firebase_rule = std::make_unique<Rule>(
-          google_sign_in_permission::GetFirebaseAuthPattern(),
-          embedding_pattern, google_sign_in_rule->value.Clone(),
-          std::move(metadata));
-      rules.emplace_back(CloneRule(*firebase_rule));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-          .emplace_back(CloneRule(*firebase_rule));
-    }
-  }
-
-  // Non-pref based exceptions should go in the cookie_settings_base.cc
-  // chromium_src override.
-
-  // Add chromium cookies.
+  // Baseline rules from the Chromium content type.
   {
-    auto chromium_cookies_iterator =
-        PrefProvider::GetRuleIterator(ContentSettingsType::COOKIES, incognito);
-    while (chromium_cookies_iterator && chromium_cookies_iterator->HasNext()) {
+    auto chromium_iterator =
+        PrefProvider::GetRuleIterator(config.chromium_type, incognito);
+    while (chromium_iterator && chromium_iterator->HasNext()) {
       rules.emplace_back(
-          CloneRule(CHECK_DEREF(chromium_cookies_iterator->Next().get())));
+          CloneRule(CHECK_DEREF(chromium_iterator->Next().get())));
     }
   }
 
-  // Collect shield rules.
+  // Current Shields state.
   std::vector<std::unique_ptr<Rule>> shield_rules;
   {
     auto brave_shields_iterator = PrefProvider::GetRuleIterator(
@@ -1220,157 +1152,221 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     }
   }
 
-  // Add brave cookies after checking shield status.
+  // Shields-owned per-site overrides, kept only while Shields are up for their
+  // top-level site.
   {
-    auto brave_cookies_iterator = PrefProvider::GetRuleIterator(
-        ContentSettingsType::BRAVE_COOKIES, incognito);
-    // Matching cookie rules against shield rules.
-    while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
-      auto rule = brave_cookies_iterator->Next();
-      // For cookies the top-level site is the secondary (embedding) pattern.
-      if (IsActive(rule.get(), rule->secondary_pattern, shield_rules)) {
+    auto brave_iterator =
+        PrefProvider::GetRuleIterator(config.brave_type, incognito);
+    while (brave_iterator && brave_iterator->HasNext()) {
+      auto rule = brave_iterator->Next();
+      const ContentSettingsPattern& top_level_pattern =
+          config.top_level_is_primary ? rule->primary_pattern
+                                      : rule->secondary_pattern;
+      // A global (wildcard/wildcard) Shields rule sets the effective default
+      // directly. This only matters for JavaScript: cookies derive their
+      // default from the Chromium COOKIES setting, so their wildcard rule is
+      // excluded by IsActive and never reaches here.
+      const bool is_default_rule =
+          rule->primary_pattern == ContentSettingsPattern::Wildcard() &&
+          rule->secondary_pattern == ContentSettingsPattern::Wildcard();
+      if (is_default_rule ||
+          IsActive(rule.get(), top_level_pattern, shield_rules)) {
         rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
-        brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-            .emplace_back(CloneRule(CHECK_DEREF(rule.get())));
+        source_rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
       }
     }
   }
 
-  // Adding shields down rules (they always override cookie rules).
-  for (const auto& shield_rule : shield_rules) {
-    // There is no global shields rule, so if we have one ignore it. It would
-    // get replaced with EnsureNoWildcardEntries().
-    if (shield_rule->primary_pattern.MatchesAllHosts()) {
-      LOG(ERROR) << "Found a wildcard shields rule which matches all hosts.";
-      continue;
-    }
+  // Type-specific Shields-down overrides (cookies only).
+  apply_shields_down(shield_rules, rules, source_rules);
 
-    // Shields down.
-    if (ValueToContentSetting(shield_rule->value) == CONTENT_SETTING_BLOCK) {
-      RuleMetaData metadata;
-      metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
-      metadata.set_session_model(
-          content_settings::mojom::SessionModel::DURABLE);
-
-      rules.emplace_back(std::make_unique<Rule>(
-          ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
-          ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone()));
-      brave_shield_down_rules_[incognito].emplace_back(std::make_unique<Rule>(
-          ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
-          ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone()));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
-          .emplace_back(std::make_unique<Rule>(
-              ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
-              ContentSettingToValue(CONTENT_SETTING_ALLOW),
-              std::move(metadata)));
-    }
-  }
-
-  // Get the list of changes.
-  std::vector<std::unique_ptr<Rule>> brave_cookie_updates = ComputeRuleUpdates(
-      old_rules,
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
+  std::vector<std::unique_ptr<Rule>> updates =
+      ComputeRuleUpdates(old_rules, source_rules);
   {
-    base::AutoLock lock(
-        brave_effective_rules_[ContentSettingsType::COOKIES][incognito]
-            .GetLock());
-    brave_effective_rules_[ContentSettingsType::COOKIES][incognito].clear();
+    base::AutoLock lock(effective_rules.GetLock());
+    effective_rules.clear();
     for (auto&& r : rules) {
-      brave_effective_rules_[ContentSettingsType::COOKIES][incognito].SetValue(
-          r->primary_pattern, r->secondary_pattern,
-          ContentSettingsType::COOKIES, std::move(r->value),
-          std::move(r->metadata));
+      effective_rules.SetValue(r->primary_pattern, r->secondary_pattern,
+                               config.effective_type, std::move(r->value),
+                               std::move(r->metadata));
     }
   }
 
-  // Notify brave cookie changes as ContentSettingsType::COOKIES.
-  if (initialized_ &&
-      (content_type == ContentSettingsType::BRAVE_COOKIES ||
-       content_type == ContentSettingsType::BRAVE_SHIELDS ||
-       content_type == ContentSettingsType::BRAVE_GOOGLE_SIGN_IN)) {
-    NotifyChanges(brave_cookie_updates, ContentSettingsType::COOKIES,
-                  incognito);
+  if (initialized_ && std::ranges::find(config.notify_on_types, changed_type) !=
+                          config.notify_on_types.end()) {
+    NotifyChanges(updates, config.effective_type, incognito);
   }
+}
+
+void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
+                                          bool incognito) {
+  const EffectiveRuleConfig kConfig = {
+      .effective_type = ContentSettingsType::COOKIES,
+      .chromium_type = ContentSettingsType::COOKIES,
+      .brave_type = ContentSettingsType::BRAVE_COOKIES,
+      // For cookies the top-level site is the secondary (embedding) pattern.
+      .top_level_is_primary = false,
+      .notify_on_types = {ContentSettingsType::BRAVE_COOKIES,
+                          ContentSettingsType::BRAVE_SHIELDS,
+                          ContentSettingsType::BRAVE_GOOGLE_SIGN_IN}};
+
+  const auto inject_google_sign_in_rules =
+      [&](std::vector<std::unique_ptr<Rule>>& rules,
+          std::vector<std::unique_ptr<Rule>>& source_rules) {
+        const bool google_sign_in_flag_enabled =
+            google_sign_in_permission::IsGoogleSignInFeatureEnabled();
+
+        // If Google Sign-In permission feature flag is disabled,
+        // we add 3p cookie exception globally for Google/Firebase auth domains.
+        // TODO(ssahib): Remove this once we no longer need to support the flag.
+        if (!google_sign_in_flag_enabled &&
+            prefs_->FindPreference(kGoogleLoginControlType) &&
+            prefs_->GetBoolean(kGoogleLoginControlType)) {
+          // kGoogleLoginControlType preference adds an exception for
+          // accounts.google.com to access cookies in 3p context to allow login
+          // using google oauth. The exception is added before all overrides to
+          // allow google oauth to work when the user sets custom overrides for
+          // a site. For example: Google OAuth will be allowed if the user
+          // allows all cookies and sets 3p cookie blocking for a site.
+          //
+          // We also create the same exception for firebase apps, since they
+          // are tightly bound to google, and require google auth to work.
+          // See: #5075, #9852, #10367
+          //
+          // PS: kGoogleLoginControlType preference might not be registered for
+          // tests.
+          RuleMetaData metadata;
+          metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
+          metadata.set_session_model(
+              content_settings::mojom::SessionModel::DURABLE);
+          const auto google_auth_rule = std::make_unique<Rule>(
+              google_sign_in_permission::GetGoogleAuthPattern(),
+              ContentSettingsPattern::Wildcard(),
+              ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
+          rules.emplace_back(CloneRule(*google_auth_rule));
+          source_rules.emplace_back(CloneRule(*google_auth_rule));
+
+          const auto firebase_rule = std::make_unique<Rule>(
+              google_sign_in_permission::GetFirebaseAuthPattern(),
+              ContentSettingsPattern::Wildcard(),
+              ContentSettingToValue(CONTENT_SETTING_ALLOW),
+              std::move(metadata));
+          rules.emplace_back(CloneRule(*firebase_rule));
+          source_rules.emplace_back(CloneRule(*firebase_rule));
+        } else if (google_sign_in_flag_enabled) {
+          // Google Sign-In feature:
+          // Add per-site cookie exception for Google/Firebase auth domains.
+          // Get all sites that have BRAVE_GOOGLE_SIGN_IN turned on, and add
+          // exception for them
+          auto google_sign_in_content_setting_it =
+              PrefProvider::GetRuleIterator(
+                  ContentSettingsType::BRAVE_GOOGLE_SIGN_IN, incognito);
+          while (google_sign_in_content_setting_it &&
+                 google_sign_in_content_setting_it->HasNext()) {
+            const auto google_sign_in_rule =
+                google_sign_in_content_setting_it->Next();
+
+            RuleMetaData metadata;
+            metadata.SetExpirationAndLifetime(
+                google_sign_in_rule->metadata.expiration(), base::TimeDelta());
+            metadata.set_session_model(
+                google_sign_in_rule->metadata.session_model());
+            // The embedding pattern for the cookie rule will be the primary
+            // pattern for the BRAVE_GOOGLE_SIGN_IN permission.
+            // We want to get all subdomains for the cookie rule...
+            auto embedding_pattern =
+                ContentSettingsPattern::ToDomainWildcardPattern(
+                    google_sign_in_rule->primary_pattern);
+            // ... but if that doesn't work, fallback to stored pattern.
+            if (!embedding_pattern.IsValid()) {
+              embedding_pattern = google_sign_in_rule->primary_pattern;
+            }
+            const auto google_auth_rule = std::make_unique<Rule>(
+                google_sign_in_permission::GetGoogleAuthPattern(),
+                embedding_pattern, google_sign_in_rule->value.Clone(),
+                metadata.Clone());
+            rules.emplace_back(CloneRule(*google_auth_rule));
+            source_rules.emplace_back(CloneRule(*google_auth_rule));
+
+            const auto firebase_rule = std::make_unique<Rule>(
+                google_sign_in_permission::GetFirebaseAuthPattern(),
+                embedding_pattern, google_sign_in_rule->value.Clone(),
+                std::move(metadata));
+            rules.emplace_back(CloneRule(*firebase_rule));
+            source_rules.emplace_back(CloneRule(*firebase_rule));
+          }
+        }
+        // Non-pref based exceptions should go in the cookie_settings_base.cc
+        // chromium_src override.
+      };
+
+  const auto apply_cookie_shields_down =
+      [&](const std::vector<std::unique_ptr<Rule>>& shield_rules,
+          std::vector<std::unique_ptr<Rule>>& rules,
+          std::vector<std::unique_ptr<Rule>>& source_rules) {
+        auto old_shields_down_rules =
+            std::move(brave_shield_down_rules_[incognito]);
+        // Adding shields down rules (they always override cookie rules).
+        for (const auto& shield_rule : shield_rules) {
+          // There is no global shields rule, so if we have one ignore it. It
+          // would get replaced with EnsureNoWildcardEntries().
+          if (shield_rule->primary_pattern.MatchesAllHosts()) {
+            LOG(ERROR)
+                << "Found a wildcard shields rule which matches all hosts.";
+            continue;
+          }
+
+          // Shields down.
+          if (ValueToContentSetting(shield_rule->value) ==
+              CONTENT_SETTING_BLOCK) {
+            RuleMetaData metadata;
+            metadata.SetExpirationAndLifetime(base::Time(), base::TimeDelta());
+            metadata.set_session_model(
+                content_settings::mojom::SessionModel::DURABLE);
+
+            rules.emplace_back(std::make_unique<Rule>(
+                ContentSettingsPattern::Wildcard(),
+                shield_rule->primary_pattern,
+                ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                metadata.Clone()));
+            brave_shield_down_rules_[incognito].emplace_back(
+                std::make_unique<Rule>(
+                    ContentSettingsPattern::Wildcard(),
+                    shield_rule->primary_pattern,
+                    ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                    metadata.Clone()));
+            source_rules.emplace_back(std::make_unique<Rule>(
+                ContentSettingsPattern::Wildcard(),
+                shield_rule->primary_pattern,
+                ContentSettingToValue(CONTENT_SETTING_ALLOW),
+                std::move(metadata)));
+          }
+        }
+      };
+
+  UpdateBraveEffectiveRules(kConfig, incognito, content_type,
+                            inject_google_sign_in_rules,
+                            apply_cookie_shields_down);
 }
 
 void BravePrefProvider::UpdateJavascriptRules(ContentSettingsType content_type,
                                               bool incognito) {
-  std::vector<std::unique_ptr<Rule>> rules;
-  auto old_rules =
-      std::move(brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
-                                             [incognito]);
-  brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito]
-      .clear();
-
-  {
-    auto chromium_javascript_iterator = PrefProvider::GetRuleIterator(
-        ContentSettingsType::JAVASCRIPT, incognito);
-    while (chromium_javascript_iterator &&
-           chromium_javascript_iterator->HasNext()) {
-      rules.emplace_back(
-          CloneRule(CHECK_DEREF(chromium_javascript_iterator->Next().get())));
-    }
-  }
-
-  std::vector<std::unique_ptr<Rule>> shield_rules;
-  {
-    auto brave_shields_iterator = PrefProvider::GetRuleIterator(
-        ContentSettingsType::BRAVE_SHIELDS, incognito);
-    while (brave_shields_iterator && brave_shields_iterator->HasNext()) {
-      shield_rules.emplace_back(
-          CloneRule(CHECK_DEREF(brave_shields_iterator->Next().get())));
-    }
-  }
-
-  {
-    auto brave_javascript_iterator = PrefProvider::GetRuleIterator(
-        ContentSettingsType::BRAVE_JAVASCRIPT, incognito);
-    while (brave_javascript_iterator && brave_javascript_iterator->HasNext()) {
-      auto rule = brave_javascript_iterator->Next();
-      // The global (wildcard) Shields JavaScript rule sets the effective
-      // JAVASCRIPT default directly. Unlike cookies -- whose default is derived
-      // from the Chromium COOKIES setting -- there is no separate source for
-      // the default JavaScript value, so it must flow through here. Per-site
-      // rules only apply while Shields are up for their top-level site.
-      const bool is_default_rule =
-          rule->primary_pattern == ContentSettingsPattern::Wildcard() &&
-          rule->secondary_pattern == ContentSettingsPattern::Wildcard();
+  const EffectiveRuleConfig kConfig = {
+      .effective_type = ContentSettingsType::JAVASCRIPT,
+      .chromium_type = ContentSettingsType::JAVASCRIPT,
+      .brave_type = ContentSettingsType::BRAVE_JAVASCRIPT,
       // For JavaScript the top-level site is the primary pattern.
-      if (is_default_rule ||
-          IsActive(rule.get(), rule->primary_pattern, shield_rules)) {
-        rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
-        brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
-                                     [incognito]
-                                         .emplace_back(CloneRule(
-                                             CHECK_DEREF(rule.get())));
-      }
-    }
-  }
+      .top_level_is_primary = true,
+      .notify_on_types = {ContentSettingsType::BRAVE_JAVASCRIPT,
+                          ContentSettingsType::BRAVE_SHIELDS}};
 
-  std::vector<std::unique_ptr<Rule>> brave_javascript_updates =
-      ComputeRuleUpdates(
-          old_rules,
-          brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
-                                       [incognito]);
-
-  {
-    base::AutoLock lock(
-        brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito]
-            .GetLock());
-    brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito].clear();
-    for (auto&& r : rules) {
-      brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito]
-          .SetValue(r->primary_pattern, r->secondary_pattern,
-                    ContentSettingsType::JAVASCRIPT, std::move(r->value),
-                    std::move(r->metadata));
-    }
-  }
-
-  if (initialized_ && (content_type == ContentSettingsType::BRAVE_JAVASCRIPT ||
-                       content_type == ContentSettingsType::BRAVE_SHIELDS)) {
-    NotifyChanges(brave_javascript_updates, ContentSettingsType::JAVASCRIPT,
-                  incognito);
-  }
+  UpdateBraveEffectiveRules(
+      kConfig, incognito, content_type,
+      [](std::vector<std::unique_ptr<Rule>>&,
+         std::vector<std::unique_ptr<Rule>>&) {},
+      [](const std::vector<std::unique_ptr<Rule>>&,
+         std::vector<std::unique_ptr<Rule>>&,
+         std::vector<std::unique_ptr<Rule>>&) {});
 }
 
 void BravePrefProvider::NotifyChanges(
