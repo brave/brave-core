@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
-index 71c472aa201adcd89bbbdb50984695345cd095b1..7d505e090b9d3256eba8050c08769d3f4cc629c0 100644
+index 71c472aa201adcd89bbbdb50984695345cd095b1..de5cd519ce0b8f21782db1fc9bd09055fa55c638 100644
 --- a/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 +++ b/chrome/browser/extensions/api/developer_private/extension_info_generator.cc
 @@ -716,6 +716,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
@@ -10,3 +10,11 @@ index 71c472aa201adcd89bbbdb50984695345cd095b1..7d505e090b9d3256eba8050c08769d3f
  
    // User Scripts toggle.
    info.user_scripts_access.is_enabled =
+@@ -871,6 +872,7 @@ void ExtensionInfoGenerator::FillExtensionInfo(const Extension& extension,
+   CHECK(mv2_experiment_manager);
+   info.is_affected_by_mv2_deprecation =
+       mv2_experiment_manager->IsExtensionAffected(extension);
++  ProcessKnownMV2Extensions(info);
+   if (info.web_store_url.length() > 0) {
+     info.recommendations_url =
+         extension_urls::GetNewWebstoreItemRecommendationsUrl(extension.id())
