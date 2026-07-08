@@ -102,8 +102,13 @@ substitutions:
     re_pattern: '' # regex pattern
     replace: ''
     re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
-    count: 1 # 1 is the default; 0 means no count, not advised.
+    count: 1 # 1 is the default; 0 means "one or more matches".
 ```
+
+> [!NOTE]
+>
+> The default value for `count` is `1` so `count=1` can be omitted, whilst
+> `count=0` mean "at least one or more matches".
 
 Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
 `description` values — `|` keeps a trailing newline, `|-` strips it.
