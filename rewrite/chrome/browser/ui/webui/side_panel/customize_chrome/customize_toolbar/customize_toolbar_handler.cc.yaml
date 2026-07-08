@@ -1,0 +1,73 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Call ObserveBraveActions() in the constructor of CustomizeToolbarHandler.
+
+      As ObserveBraveActions() is dependant on pref_registrar_, we should anchor
+      the invocation to the pref_registrar_.Init().
+    re_pattern: (CustomizeToolbarHandler::CustomizeToolbarHandler.*?)(^})
+    re_flags: [DOTALL, MULTILINE]
+    replace: |-
+      \1  ObserveBraveActions(&client_, pref_change_registrar_);
+      \2
+
+  - description: |
+      Modify categories in ListCategories() with list_modifiers.h at the end of
+      the function.
+
+      Captures the callback invoked at the end of ListCategories() and wraps it
+      with our modifiers.
+    re_pattern: |-
+      (void CustomizeToolbarHandler::ListCategories\(.*?)(std::move\(callback\)\.Run\(std::move\(categories\)\);)(\n^})
+    re_flags: [DOTALL, MULTILINE]
+    replace: |-
+      \1base::BindOnce(&customize_chrome::AppendBraveSpecificCategories,
+                 web_contents_.get())
+            .Then(std::move(callback))
+            .Run(std::move(categories));\3
+
+  - description: |
+      Modify actions in ListActions() with list_modifiers.h at the end of the
+      function.
+
+      Captures the callback invoked at the end of ListActions() and wraps it
+      with our modifiers.
+
+    re_pattern: |-
+      (void CustomizeToolbarHandler::ListActions\(.*?)(std::move\(callback\)\.Run\(std::move\(actions\)\);)(\n^})
+    re_flags: [DOTALL, MULTILINE]
+    replace: |-
+      \1base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
+            .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
+                                 web_contents_.get()))
+            .Then(std::move(callback))
+            .Run(std::move(actions));\3
+
+  - description: |
+      Handle Brave-specific action pinning/unpinning in PinAction().
+
+      Captures the first line of PinAction() right after the opening bracket,
+      and adds code to pin brave specific actions before calling the original
+      PinAction code.
+
+    re_pattern: |-
+      (void CustomizeToolbarHandler::PinAction\(.*?{)
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+        if (PinBraveAction(action_id, prefs())) {
+          return;
+        }
+
+  - description: |
+      Replace the resource ID for the "Your Chrome" category with "Brave Menu"
+      resource ID.
+
+      IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME will be replaced with
+      IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR.
+    pattern: IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
+    replace: IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
