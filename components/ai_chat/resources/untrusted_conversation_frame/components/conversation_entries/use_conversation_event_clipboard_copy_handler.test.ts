@@ -42,6 +42,40 @@ describe('useConversationEventClipboardCopyHandler', () => {
       useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('')
     })
+
+    it('writes the latest edited text rather than the original', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.HUMAN,
+        text: 'First message',
+        edits: [
+          createConversationTurnWithDefaults({
+            characterType: Mojom.CharacterType.HUMAN,
+            text: 'Second message',
+          }),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith('Second message')
+    })
+
+    it('writes the most recent edit when there are multiple edits', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.HUMAN,
+        text: 'First message',
+        edits: [
+          createConversationTurnWithDefaults({
+            characterType: Mojom.CharacterType.HUMAN,
+            text: 'Second message',
+          }),
+          createConversationTurnWithDefaults({
+            characterType: Mojom.CharacterType.HUMAN,
+            text: 'Third message',
+          }),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith('Third message')
+    })
   })
 
   describe('assistant turns', () => {
@@ -130,6 +164,21 @@ describe('useConversationEventClipboardCopyHandler', () => {
       })
       useConversationEventClipboardCopyHandler([entry])()
       expect(writeText).toHaveBeenCalledWith('Hello from assistant')
+    })
+
+    it('writes completion text from the latest edit', () => {
+      const entry = createConversationTurnWithDefaults({
+        characterType: Mojom.CharacterType.ASSISTANT,
+        events: [getCompletionEvent('Original answer')],
+        edits: [
+          createConversationTurnWithDefaults({
+            characterType: Mojom.CharacterType.ASSISTANT,
+            events: [getCompletionEvent('Edited answer')],
+          }),
+        ],
+      })
+      useConversationEventClipboardCopyHandler([entry])()
+      expect(writeText).toHaveBeenCalledWith('Edited answer')
     })
 
     it('concatenates completion events split by an inline-search event', () => {
