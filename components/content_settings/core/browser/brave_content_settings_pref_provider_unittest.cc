@@ -13,6 +13,7 @@
 #include "base/check.h"
 #include "base/json/values_util.h"
 #include "base/memory/raw_ptr.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -21,6 +22,7 @@
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-data-view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
+#include "brave/components/content_settings/core/common/content_settings_util.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/content_settings/core/browser/content_settings_pref.h"
 #include "components/content_settings/core/browser/content_settings_registry.h"
@@ -276,9 +278,17 @@ class ShieldsScriptSetting : public ShieldsSetting {
 
   void SetPreMigrationSettings(const ContentSettingsPattern& pattern,
                                ContentSetting setting) override {
-    provider_->SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
-                                 ContentSettingsType::JAVASCRIPT,
-                                 ContentSettingToValue(setting), {});
+    // Shields historically wrote per-site JS rules through
+    // SetNoScriptControlType(), which stores a host pattern of the form
+    // "*://host/*" (see content_settings::CreateHostPattern). Model that exact
+    // shape here so the V4->V5 migration recognizes the rule as
+    // Shields-authored; a port/scheme-specific pattern would not migrate.
+    const ContentSettingsPattern shields_pattern =
+        content_settings::CreateHostPattern(
+            GURL(base::StrCat({"https://", pattern.GetHost(), "/"})));
+    provider_->SetWebsiteSetting(
+        shields_pattern, ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::JAVASCRIPT, ContentSettingToValue(setting), {});
   }
 
  private:
@@ -451,11 +461,12 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   httpse_settings.CheckSettingsWouldBlock(url);
   httpse_settings.CheckSettingsAreDefault(GURL("http://brave.com:5555"));
 
-  // Scripts.
+  // Scripts. Shields writes a host-wide JS rule, so every port/scheme of the
+  // host is blocked (unlike the port-specific pre-migration patterns above).
   script_settings.SetPreMigrationSettings(pattern, CONTENT_SETTING_BLOCK);
-  // Check that settings would block brave.com:8080, but not brave.com:5555.
   script_settings.CheckSettingsWouldBlock(url);
-  script_settings.CheckSettingsAreDefault(GURL("http://brave.com:5555"));
+  script_settings.CheckSettingsWouldBlock(GURL("http://brave.com:5555"));
+  script_settings.CheckSettingsAreDefault(GURL("http://brave2.com"));
 
   // Migrate settings.
   // ------------------------------------------------------
@@ -509,12 +520,13 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigration) {
   // Would not block a different domain.
   httpse_settings.CheckSettingsAreDefault(GURL("http://brave2.com"));
 
-  // Scripts.
-  // Check that settings would block brave.com with any protocol and port.
-  script_settings.CheckSettingsWouldBlock(url);
-  script_settings.CheckSettingsWouldBlock(GURL("http://brave.com:5555"));
-  script_settings.CheckSettingsWouldBlock(GURL("https://brave.com"));
-  // Would not block a different domain.
+  // Scripts. Shields were disabled for brave.com above (BRAVE_SHIELDS blocked),
+  // and the effective JavaScript setting now folds in Shields state: with
+  // Shields down the migrated JavaScript block must not apply, so the effective
+  // JAVASCRIPT setting stays at its default for every brave.com URL.
+  script_settings.CheckSettingsAreDefault(url);
+  script_settings.CheckSettingsAreDefault(GURL("http://brave.com:5555"));
+  script_settings.CheckSettingsAreDefault(GURL("https://brave.com"));
   script_settings.CheckSettingsAreDefault(GURL("http://brave2.com"));
 
   provider.ShutdownOnUIThread();

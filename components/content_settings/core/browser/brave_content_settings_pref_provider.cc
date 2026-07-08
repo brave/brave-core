@@ -117,9 +117,8 @@ bool IsShieldsAuthoredJavascriptRule(const Rule& rule) {
   if (host.empty()) {
     return false;
   }
-  return rule.primary_pattern ==
-         content_settings::CreateHostPattern(
-             GURL(base::StrCat({"https://", host, "/"})));
+  return rule.primary_pattern == content_settings::CreateHostPattern(GURL(
+                                     base::StrCat({"https://", host, "/"})));
 }
 
 // Computes the set of change notifications needed to move an effective rule set
@@ -158,8 +157,8 @@ std::vector<std::unique_ptr<Rule>> ComputeRuleUpdates(
         });
     if (match == new_rules.end()) {
       updates.emplace_back(std::make_unique<Rule>(
-          old_rule->primary_pattern, old_rule->secondary_pattern,
-          base::Value(), old_rule->metadata.Clone()));
+          old_rule->primary_pattern, old_rule->secondary_pattern, base::Value(),
+          old_rule->metadata.Clone()));
     }
   }
 
@@ -916,7 +915,9 @@ bool BravePrefProvider::SetWebsiteSetting(
       // rule.
       return true;
     }
-    if (cookie_is_found_in(brave_effective_source_rules_[ContentSettingsType::COOKIES][off_the_record_])) {
+    if (cookie_is_found_in(
+            brave_effective_source_rules_[ContentSettingsType::COOKIES]
+                                         [off_the_record_])) {
       // change to type ContentSettingsType::BRAVE_COOKIES
       return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
                                        ContentSettingsType::BRAVE_COOKIES,
@@ -940,7 +941,9 @@ bool BravePrefProvider::SetWebsiteSetting(
       };
 
   if (content_type == ContentSettingsType::JAVASCRIPT &&
-      javascript_is_found_in(brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][off_the_record_])) {
+      javascript_is_found_in(
+          brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
+                                       [off_the_record_])) {
     // Effective JAVASCRIPT rules generated from Shields should be edited in
     // the Shields-owned setting so the effective value remains derivable.
     return SetWebsiteSettingInternal(primary_pattern, secondary_pattern,
@@ -1106,9 +1109,11 @@ BravePrefProvider::CookieType BravePrefProvider::GetCookieType(
 void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                                           bool incognito) {
   std::vector<std::unique_ptr<Rule>> rules;
-  auto old_rules = std::move(brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
+  auto old_rules = std::move(
+      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
   auto old_shields_down_rules = std::move(brave_shield_down_rules_[incognito]);
-  brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].clear();
+  brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+      .clear();
 
   const bool google_sign_in_flag_enabled =
       google_sign_in_permission::IsGoogleSignInFeatureEnabled();
@@ -1139,14 +1144,16 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
         ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone());
     rules.emplace_back(CloneRule(*google_auth_rule));
-    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(CloneRule(*google_auth_rule));
+    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+        .emplace_back(CloneRule(*google_auth_rule));
 
     const auto firebase_rule = std::make_unique<Rule>(
         google_sign_in_permission::GetFirebaseAuthPattern(),
         ContentSettingsPattern::Wildcard(),
         ContentSettingToValue(CONTENT_SETTING_ALLOW), std::move(metadata));
     rules.emplace_back(CloneRule(*firebase_rule));
-    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(CloneRule(*firebase_rule));
+    brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+        .emplace_back(CloneRule(*firebase_rule));
   } else if (google_sign_in_flag_enabled) {
     // Google Sign-In feature:
     // Add per-site cookie exception for Google/Firebase auth domains.
@@ -1176,14 +1183,16 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
           google_sign_in_permission::GetGoogleAuthPattern(), embedding_pattern,
           google_sign_in_rule->value.Clone(), metadata.Clone());
       rules.emplace_back(CloneRule(*google_auth_rule));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(CloneRule(*google_auth_rule));
+      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+          .emplace_back(CloneRule(*google_auth_rule));
 
       const auto firebase_rule = std::make_unique<Rule>(
           google_sign_in_permission::GetFirebaseAuthPattern(),
           embedding_pattern, google_sign_in_rule->value.Clone(),
           std::move(metadata));
       rules.emplace_back(CloneRule(*firebase_rule));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(CloneRule(*firebase_rule));
+      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+          .emplace_back(CloneRule(*firebase_rule));
     }
   }
 
@@ -1221,8 +1230,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       // For cookies the top-level site is the secondary (embedding) pattern.
       if (IsActive(rule.get(), rule->secondary_pattern, shield_rules)) {
         rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
-        brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(
-            CloneRule(CHECK_DEREF(rule.get())));
+        brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+            .emplace_back(CloneRule(CHECK_DEREF(rule.get())));
       }
     }
   }
@@ -1249,17 +1258,22 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
       brave_shield_down_rules_[incognito].emplace_back(std::make_unique<Rule>(
           ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
           ContentSettingToValue(CONTENT_SETTING_ALLOW), metadata.Clone()));
-      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito].emplace_back(std::make_unique<Rule>(
-          ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
-          ContentSettingToValue(CONTENT_SETTING_ALLOW), std::move(metadata)));
+      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]
+          .emplace_back(std::make_unique<Rule>(
+              ContentSettingsPattern::Wildcard(), shield_rule->primary_pattern,
+              ContentSettingToValue(CONTENT_SETTING_ALLOW),
+              std::move(metadata)));
     }
   }
 
   // Get the list of changes.
-  std::vector<std::unique_ptr<Rule>> brave_cookie_updates =
-      ComputeRuleUpdates(old_rules, brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
+  std::vector<std::unique_ptr<Rule>> brave_cookie_updates = ComputeRuleUpdates(
+      old_rules,
+      brave_effective_source_rules_[ContentSettingsType::COOKIES][incognito]);
   {
-    base::AutoLock lock(brave_effective_rules_[ContentSettingsType::COOKIES][incognito].GetLock());
+    base::AutoLock lock(
+        brave_effective_rules_[ContentSettingsType::COOKIES][incognito]
+            .GetLock());
     brave_effective_rules_[ContentSettingsType::COOKIES][incognito].clear();
     for (auto&& r : rules) {
       brave_effective_rules_[ContentSettingsType::COOKIES][incognito].SetValue(
@@ -1282,8 +1296,11 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
 void BravePrefProvider::UpdateJavascriptRules(ContentSettingsType content_type,
                                               bool incognito) {
   std::vector<std::unique_ptr<Rule>> rules;
-  auto old_rules = std::move(brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito]);
-  brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito].clear();
+  auto old_rules =
+      std::move(brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
+                                             [incognito]);
+  brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito]
+      .clear();
 
   {
     auto chromium_javascript_iterator = PrefProvider::GetRuleIterator(
@@ -1310,26 +1327,42 @@ void BravePrefProvider::UpdateJavascriptRules(ContentSettingsType content_type,
         ContentSettingsType::BRAVE_JAVASCRIPT, incognito);
     while (brave_javascript_iterator && brave_javascript_iterator->HasNext()) {
       auto rule = brave_javascript_iterator->Next();
+      // The global (wildcard) Shields JavaScript rule sets the effective
+      // JAVASCRIPT default directly. Unlike cookies -- whose default is derived
+      // from the Chromium COOKIES setting -- there is no separate source for
+      // the default JavaScript value, so it must flow through here. Per-site
+      // rules only apply while Shields are up for their top-level site.
+      const bool is_default_rule =
+          rule->primary_pattern == ContentSettingsPattern::Wildcard() &&
+          rule->secondary_pattern == ContentSettingsPattern::Wildcard();
       // For JavaScript the top-level site is the primary pattern.
-      if (IsActive(rule.get(), rule->primary_pattern, shield_rules)) {
+      if (is_default_rule ||
+          IsActive(rule.get(), rule->primary_pattern, shield_rules)) {
         rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
-        brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito].emplace_back(
-            CloneRule(CHECK_DEREF(rule.get())));
+        brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
+                                     [incognito]
+                                         .emplace_back(CloneRule(
+                                             CHECK_DEREF(rule.get())));
       }
     }
   }
 
   std::vector<std::unique_ptr<Rule>> brave_javascript_updates =
-      ComputeRuleUpdates(old_rules, brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT][incognito]);
+      ComputeRuleUpdates(
+          old_rules,
+          brave_effective_source_rules_[ContentSettingsType::JAVASCRIPT]
+                                       [incognito]);
 
   {
-    base::AutoLock lock(brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito].GetLock());
+    base::AutoLock lock(
+        brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito]
+            .GetLock());
     brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito].clear();
     for (auto&& r : rules) {
-      brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito].SetValue(
-          r->primary_pattern, r->secondary_pattern,
-          ContentSettingsType::JAVASCRIPT, std::move(r->value),
-          std::move(r->metadata));
+      brave_effective_rules_[ContentSettingsType::JAVASCRIPT][incognito]
+          .SetValue(r->primary_pattern, r->secondary_pattern,
+                    ContentSettingsType::JAVASCRIPT, std::move(r->value),
+                    std::move(r->metadata));
     }
   }
 
