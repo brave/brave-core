@@ -1,7 +1,7 @@
 use core::fmt;
 use core::mem;
 
-use crate::atomic::Shared;
+use crate::atomic::{Pointable, Shared};
 use crate::collector::Collector;
 use crate::deferred::Deferred;
 use crate::internal::Local;
@@ -265,7 +265,7 @@ impl Guard {
     /// }
     /// # unsafe { drop(a.into_owned()); } // avoid leak
     /// ```
-    pub unsafe fn defer_destroy<T>(&self, ptr: Shared<'_, T>) {
+    pub unsafe fn defer_destroy<T: ?Sized + Pointable>(&self, ptr: Shared<'_, T>) {
         self.defer_unchecked(move || ptr.into_owned());
     }
 
@@ -273,7 +273,7 @@ impl Guard {
     /// global cache.
     ///
     /// Call this method after deferring execution of a function if you want to get it executed as
-    /// soon as possible. Flushing will make sure it is residing in in the global cache, so that
+    /// soon as possible. Flushing will make sure it is residing in the global cache, so that
     /// any thread has a chance of taking the function and executing it.
     ///
     /// If this method is called from an [`unprotected`] guard, it is a no-op (nothing happens).

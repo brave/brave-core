@@ -229,6 +229,11 @@ impl Global {
         let global_epoch = self.epoch.load(Ordering::Relaxed);
         atomic::fence(Ordering::SeqCst);
 
+        // For ThreadSanitizer that does not understand fences, we simulate the equivalent effect.
+        // It is unfortunate that allocation is required, but without it, synchronization might
+        // occur in cases where it should not, potentially causing false positives.
+        #[cfg(crossbeam_sanitize_thread)]
+        let mut locals = alloc::vec![];
         // TODO(stjepang): `Local`s are stored in a linked list because linked lists are fairly
         // easy to implement in a lock-free manner. However, traversal can be slow due to cache
         // misses and data dependencies. We should experiment with other data structures as well.
@@ -248,9 +253,17 @@ impl Global {
                     if local_epoch.is_pinned() && local_epoch.unpinned() != global_epoch {
                         return global_epoch;
                     }
+
+                    #[cfg(crossbeam_sanitize_thread)]
+                    locals.push(local);
                 }
             }
         }
+        #[cfg(crossbeam_sanitize_thread)]
+        for local in locals {
+            local.epoch.load(Ordering::Acquire);
+        }
+        #[cfg(not(crossbeam_sanitize_thread))]
         atomic::fence(Ordering::Acquire);
 
         // All pinned participants were pinned in the current global epoch.
@@ -556,7 +569,7 @@ impl IsElement<Self> for Local {
 
 #[cfg(all(test, not(crossbeam_loom)))]
 mod tests {
-    use std::sync::atomic::{AtomicUsize, Ordering};
+    use std::sync::atomic::AtomicUsize;
 
     use super::*;
 

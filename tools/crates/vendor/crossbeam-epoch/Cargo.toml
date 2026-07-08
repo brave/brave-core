@@ -13,7 +13,13 @@
 edition = "2021"
 rust-version = "1.61"
 name = "crossbeam-epoch"
-version = "0.9.18"
+version = "0.9.20"
+build = "build.rs"
+autolib = false
+autobins = false
+autoexamples = false
+autotests = false
+autobenches = false
 description = "Epoch-based garbage collection"
 homepage = "https://github.com/crossbeam-rs/crossbeam/tree/master/crossbeam-epoch"
 readme = "README.md"
@@ -31,13 +37,6 @@ categories = [
 license = "MIT OR Apache-2.0"
 repository = "https://github.com/crossbeam-rs/crossbeam"
 
-[dependencies.crossbeam-utils]
-version = "0.8.18"
-default-features = false
-
-[dev-dependencies.rand]
-version = "0.8"
-
 [features]
 alloc = []
 default = ["std"]
@@ -51,7 +50,54 @@ std = [
     "crossbeam-utils/std",
 ]
 
+[lib]
+name = "crossbeam_epoch"
+path = "src/lib.rs"
+
+[[example]]
+name = "sanitize"
+path = "examples/sanitize.rs"
+
+[[test]]
+name = "loom"
+path = "tests/loom.rs"
+
+[[bench]]
+name = "defer"
+path = "benches/defer.rs"
+
+[[bench]]
+name = "flush"
+path = "benches/flush.rs"
+
+[[bench]]
+name = "pin"
+path = "benches/pin.rs"
+
+[dependencies.crossbeam-utils]
+version = "0.8.18"
+default-features = false
+
+[dev-dependencies.rand]
+version = "0.8"
+
 [target."cfg(crossbeam_loom)".dependencies.loom-crate]
 version = "0.7.1"
 optional = true
 package = "loom"
+
+[lints.clippy.declare_interior_mutable_const]
+level = "allow"
+priority = 1
+
+[lints.clippy.lint_groups_priority]
+level = "allow"
+priority = 1
+
+[lints.rust.unexpected_cfgs]
+level = "warn"
+priority = 0
+check-cfg = [
+    "cfg(crossbeam_loom)",
+    "cfg(crossbeam_sanitize)",
+]
