@@ -367,8 +367,17 @@ void TabSearchPageHandler::SearchTabsByContent(
     return;
   }
 
+  // tab_search only needs the matched tab_ids; drop the rest of the metadata
+  // the util carries for its other consumer.
   history_embeddings::SearchOpenTabsByContent(
-      profile, history_service, embeddings_search, query, std::move(callback),
+      profile, history_service, embeddings_search, query,
+      base::BindOnce(
+          [](SearchTabsByContentCallback callback,
+             std::vector<history_embeddings::OpenTabInfo> tabs) {
+            std::move(callback).Run(
+                base::ToVector(tabs, &history_embeddings::OpenTabInfo::tab_id));
+          },
+          std::move(callback)),
       &query_url_task_tracker_);
 }
 #else   // !BUILDFLAG(ENABLE_LOCAL_AI)
