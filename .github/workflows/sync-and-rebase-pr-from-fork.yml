@@ -77,5 +77,5 @@ jobs:
           **This PR should not be merged.**"
           else
             # Update the branch to new commit ref
-            gh api -X PATCH repos/brave/brave-core/git/refs/heads/$contribHeadRefName -f sha="$COMMIT_HASH" -F force=true
+            # gh api -X PATCH repos/brave/brave-core/git/refs/heads/$contribHeadRefName -f sha="$COMMIT_HASH" -F force=true
           fi
