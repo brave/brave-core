@@ -51,6 +51,7 @@ index 10966001d9410c4f0976b54a03553fdf6dbc943b..cdb29fd9a4090f70d71f7060a6c703a2
 +    {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
 +    {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
 +    {ContentSettingsType::BRAVE_PSST, nullptr},
++    {ContentSettingsType::BRAVE_JAVASCRIPT, nullptr},
  });
  
  static_assert(

@@ -122,18 +122,30 @@ void ContentSettingsRegistry::BraveInit() {
       ContentSettingsInfo::INHERIT_IN_INCOGNITO,
       PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
+  // BRAVE_JAVASCRIPT is the Shields-owned twin of the upstream JAVASCRIPT
+  // content setting: the effective JAVASCRIPT setting is derived from both. To
+  // avoid the two definitions drifting apart, reuse the already-registered
+  // JAVASCRIPT entry's properties (allowlisted schemes, default value, scoping
+  // and incognito behavior) instead of restating them here. Fields without a
+  // public getter (valid settings, sync status, platforms) are kept explicit
+  // and mirror JAVASCRIPT's registration above.
+  const ContentSettingsInfo* javascript_info =
+      Get(ContentSettingsType::JAVASCRIPT);
+  CHECK(javascript_info);
+  const WebsiteSettingsInfo* javascript_website_info =
+      javascript_info->website_settings_info();
   Register(ContentSettingsType::BRAVE_JAVASCRIPT,
-           brave_shields::kBraveJavaScript, CONTENT_SETTING_ALLOW,
+           brave_shields::kBraveJavaScript,
+           javascript_info->GetInitialDefaultSetting(),
            WebsiteSettingsInfo::SYNCABLE,
-           /*allowlisted_schemes=*/
-           {kChromeUIScheme, kChromeDevToolsScheme, kExtensionScheme,
-            kChromeUIUntrustedScheme},
+           javascript_info->permission_settings_info()
+               ->allowlisted_primary_schemes(),
            /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
-           WebsiteSettingsInfo::TOP_ORIGIN_ONLY_SCOPE,
+           javascript_website_info->scoping_type(),
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID |
                WebsiteSettingsRegistry::PLATFORM_IOS,
-           ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+           javascript_info->incognito_behavior(),
            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
