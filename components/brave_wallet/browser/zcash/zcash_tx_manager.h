@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/scoped_observation.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
@@ -62,6 +63,11 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   mojom::CoinType GetCoinType() const override;
   void UpdatePendingTransactions(
       const std::optional<std::string>& chain_id) override;
+
+  void ContinueAddUnapprovedTransactionWithHeight(
+      mojom::NewZCashTransactionParamsPtr params,
+      AddUnapprovedZCashTransactionCallback callback,
+      base::expected<zcash::mojom::BlockIDPtr, std::string> latest_block);
 
   void ContinueAddUnapprovedTransaction(
       const mojom::AccountIdPtr& from,

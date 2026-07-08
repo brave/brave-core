@@ -555,4 +555,15 @@ std::optional<std::vector<uint8_t>> OrchardMemoToVec(
   return std::vector<uint8_t>{memo->begin(), memo->end()};
 }
 
+uint32_t GetIronwoodActivationHeight(const std::string& chain_id) {
+  if (chain_id == mojom::kZCashTestnet) {
+    return kIronwoodActivationHeightTestnet;
+  }
+  return kIronwoodActivationHeightMainnet;
+}
+
+bool IsIronwoodActive(const std::string& chain_id, uint32_t chain_tip_height) {
+  return chain_tip_height >= GetIronwoodActivationHeight(chain_id);
+}
+
 }  // namespace brave_wallet

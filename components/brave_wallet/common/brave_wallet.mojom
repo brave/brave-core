@@ -2558,6 +2558,7 @@ struct NewZCashTransactionParams {
   // Memo field should exist only for shielded output.
   array<uint8>? memo;
   bool use_shielded_pool;
+  ZCashTokenType zcash_token_type;
   SwapInfo? swap_info;
 };
 

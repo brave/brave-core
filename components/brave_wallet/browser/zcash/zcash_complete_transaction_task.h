@@ -6,7 +6,10 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_COMPLETE_TRANSACTION_TASK_H_
 
+#include <array>
+#include <map>
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -49,23 +52,31 @@ class ZCashCompleteTransactionTask {
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
   void CalculateWitness();
-  void CalculateWitnessV6();
   void OnWitnessCalculateResult(
-      base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
-  void OnWitnessCalculateResultV6(
       base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
 
   void GetTreeState();
-  void GetTreeStateV6();
   void OnGetTreeState(
       base::expected<zcash::mojom::TreeStatePtr, std::string> result);
 
   void SignOrchardPart();
-  void SignOrchardPartV6();
   void OnSignOrchardPartComplete(
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
-  void OnSignOrchardPartCompleteV6(
+
+  void CalculateWitnessV6(OrchardPool pool);
+  void OnWitnessCalculateResultV6(
+      OrchardPool pool,
+      base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
+  void GetTreeStateV6(OrchardPool pool);
+  void OnGetTreeStateV6(
+      OrchardPool pool,
+      base::expected<zcash::mojom::TreeStatePtr, std::string> result);
+  void BuildOrchardBundleV6(OrchardPool pool);
+  void SignOrchardBundlesV6();
+  void OnSignOrchardBundleCompleteV6(
+      OrchardPool pool,
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
+  ZCashTransaction::ShieldedPool& PoolRefV6(OrchardPool pool);
 
   void SignTransparentPart();
 
@@ -81,6 +92,18 @@ class ZCashCompleteTransactionTask {
 
   std::optional<std::vector<OrchardInput>> witness_inputs_;
   std::optional<zcash::mojom::TreeStatePtr> anchor_tree_state_;
+
+  struct V6PoolSigningState {
+    V6PoolSigningState();
+    ~V6PoolSigningState();
+    V6PoolSigningState(V6PoolSigningState&&);
+    V6PoolSigningState& operator=(V6PoolSigningState&&);
+    bool witness_done = false;
+    std::optional<zcash::mojom::TreeStatePtr> tree_state;
+    std::unique_ptr<OrchardBundleManager> bundle_manager;
+  };
+  std::map<OrchardPool, V6PoolSigningState> v6_signing_state_;
+  std::optional<std::array<uint8_t, kZCashDigestSize>> v6_sighash_;
 
   base::WeakPtrFactory<ZCashCompleteTransactionTask> weak_ptr_factory_{this};
 };

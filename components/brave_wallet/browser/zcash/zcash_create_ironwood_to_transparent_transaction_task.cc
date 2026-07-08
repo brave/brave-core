@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_wallet/browser/zcash/zcash_create_orchard_to_transparent_transaction_task.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_create_ironwood_to_transparent_transaction_task.h"
 
 #include <utility>
 #include <variant>
@@ -20,11 +20,11 @@
 
 namespace brave_wallet {
 
-ZCashCreateOrchardToTransparentTransactionTask::
-    ZCashCreateOrchardToTransparentTransactionTask(
+ZCashCreateIronwoodToTransparentTransactionTask::
+    ZCashCreateIronwoodToTransparentTransactionTask(
         std::variant<
             base::PassKey<
-                class ZCashCreateOrchardToTransparentTransactionTaskTest>,
+                class ZCashCreateIronwoodToTransparentTransactionTaskTest>,
             base::PassKey<ZCashWalletService>> pass_key,
         ZCashWalletService& zcash_wallet_service,
         ZCashActionContext context,
@@ -35,32 +35,27 @@ ZCashCreateOrchardToTransparentTransactionTask::
       transparent_address_(transparent_address),
       amount_(amount) {}
 
-ZCashCreateOrchardToTransparentTransactionTask::
-    ~ZCashCreateOrchardToTransparentTransactionTask() = default;
+ZCashCreateIronwoodToTransparentTransactionTask::
+    ~ZCashCreateIronwoodToTransparentTransactionTask() = default;
 
-void ZCashCreateOrchardToTransparentTransactionTask::Start(
+void ZCashCreateIronwoodToTransparentTransactionTask::Start(
     CreateTransactionCallback callback) {
   DCHECK(!callback_);
   callback_ = std::move(callback);
   ScheduleWorkOnTask();
 }
 
-void ZCashCreateOrchardToTransparentTransactionTask::ScheduleWorkOnTask() {
+void ZCashCreateIronwoodToTransparentTransactionTask::ScheduleWorkOnTask() {
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(
-          &ZCashCreateOrchardToTransparentTransactionTask::WorkOnTask,
+          &ZCashCreateIronwoodToTransparentTransactionTask::WorkOnTask,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCreateOrchardToTransparentTransactionTask::WorkOnTask() {
+void ZCashCreateIronwoodToTransparentTransactionTask::WorkOnTask() {
   if (error_) {
     std::move(callback_).Run(base::unexpected(error_.value()));
-    return;
-  }
-
-  if (!chain_tip_height_) {
-    GetLatestBlock();
     return;
   }
 
@@ -77,21 +72,21 @@ void ZCashCreateOrchardToTransparentTransactionTask::WorkOnTask() {
   std::move(callback_).Run(std::move(transaction_.value()));
 }
 
-void ZCashCreateOrchardToTransparentTransactionTask::GetSpendableNotes() {
+void ZCashCreateIronwoodToTransparentTransactionTask::GetSpendableNotes() {
   if (!context_.account_internal_addr) {
     error_ = "No internal address provided";
     ScheduleWorkOnTask();
     return;
   }
   context_.sync_state->AsyncCall(&OrchardSyncState::GetSpendableNotes)
-      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
+      .WithArgs(OrchardPool::kIronwood, context_.account_id.Clone(),
                 context_.account_internal_addr.value())
       .Then(base::BindOnce(
-          &ZCashCreateOrchardToTransparentTransactionTask::OnGetSpendableNotes,
+          &ZCashCreateIronwoodToTransparentTransactionTask::OnGetSpendableNotes,
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void ZCashCreateOrchardToTransparentTransactionTask::OnGetSpendableNotes(
+void ZCashCreateIronwoodToTransparentTransactionTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
@@ -117,12 +112,13 @@ void ZCashCreateOrchardToTransparentTransactionTask::OnGetSpendableNotes(
   ScheduleWorkOnTask();
 }
 
-void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
+void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
   CHECK(spendable_notes_);
 
   ZCashTransaction zcash_transaction;
+  zcash_transaction.ConvertToV6();
 
-  // Pick Orchard inputs.
+  // Pick Ironwood inputs.
   auto pick_result =
       PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
                              ZCashTargetOutputType::kTransparent);
@@ -132,16 +128,17 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
     return;
   }
 
-  // Add Orchard inputs to transaction.
+  // Add Ironwood inputs to transaction.
   for (const auto& note : pick_result.value().inputs) {
     OrchardInput orchard_input;
     orchard_input.note = note;
-    zcash_transaction.v5_part().orchard.inputs.push_back(std::move(orchard_input));
+    zcash_transaction.v6_part().ironwood.inputs.push_back(
+        std::move(orchard_input));
   }
   zcash_transaction.set_fee(pick_result->fee);
 
   CHECK(spendable_notes_->anchor_block_id);
-  zcash_transaction.v5_part().orchard.anchor_block_height =
+  zcash_transaction.v6_part().ironwood.anchor_block_height =
       spendable_notes_->anchor_block_id.value();
 
   // Create transparent output for the recipient.
@@ -152,9 +149,6 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   // Change should be 0 when sending full amount.
   CHECK(!(amount_ == kZCashFullAmount) || (pick_result->change == 0));
 
-  // Calculate the amount to send.
-  // ValueOrDie is correct here since PickZCashOrchardInputs already
-  // selects correct inputs and corresponding fee\change.
   uint64_t actual_send_amount =
       base::CheckSub<uint64_t>(zcash_transaction.TotalInputsAmount(),
                                zcash_transaction.fee(), pick_result->change)
@@ -166,44 +160,19 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
           IsZCashTestnetKeyring(context_.account_id->keyring_id))
           .value();
 
-  // Create Orchard change output if needed.
+  // Create Ironwood change output if needed.
   CHECK(context_.account_internal_addr);
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
-        zcash_transaction.v5_part().orchard.outputs.emplace_back();
+        zcash_transaction.v6_part().ironwood.outputs.emplace_back();
     orchard_output.value = pick_result->change;
     orchard_output.addr = context_.account_internal_addr.value();
   }
 
-  // Set transaction metadata.
   zcash_transaction.set_amount(actual_send_amount);
   zcash_transaction.set_to(transparent_address_);
 
   transaction_ = std::move(zcash_transaction);
-  ScheduleWorkOnTask();
-}
-
-void ZCashCreateOrchardToTransparentTransactionTask::GetLatestBlock() {
-  context_.zcash_rpc->GetLatestBlock(
-      context_.chain_id,
-      base::BindOnce(&ZCashCreateOrchardToTransparentTransactionTask::
-                         OnGetLatestBlockHeight,
-                     weak_ptr_factory_.GetWeakPtr()));
-}
-
-void ZCashCreateOrchardToTransparentTransactionTask::OnGetLatestBlockHeight(
-    base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
-  if (!result.has_value()) {
-    error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
-    ScheduleWorkOnTask();
-    return;
-  }
-  chain_tip_height_ = result.value()->height;
-  if (IsIronwoodActive(context_.chain_id, *chain_tip_height_)) {
-    error_ = "Orchard pool is retired after Ironwood activation";
-    ScheduleWorkOnTask();
-    return;
-  }
   ScheduleWorkOnTask();
 }
 

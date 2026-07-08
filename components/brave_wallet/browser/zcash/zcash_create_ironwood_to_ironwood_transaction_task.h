@@ -3,30 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_ORCHARD_TO_ORCHARD_TRANSACTION_TASK_H_
-#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_ORCHARD_TO_ORCHARD_TRANSACTION_TASK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_IRONWOOD_TO_IRONWOOD_TRANSACTION_TASK_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_IRONWOOD_TO_IRONWOOD_TRANSACTION_TASK_H_
 
 #include <string>
 #include <variant>
 
 #include "brave/components/brave_wallet/browser/internal/orchard_sync_state.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_action_context.h"
-#include "brave/components/brave_wallet/browser/zcash/zcash_rpc.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_wallet_service.h"
 
 namespace brave_wallet {
 
-// Creates transaction within Orchard pool.
-// Uses shielded inputs and shielded output.
-class ZCashCreateOrchardToOrchardTransactionTask {
+// Creates a v6 transaction within the Ironwood pool.
+// Uses Ironwood shielded inputs and Ironwood shielded output.
+class ZCashCreateIronwoodToIronwoodTransactionTask {
  public:
   using CreateTransactionCallback =
       ZCashWalletService::CreateTransactionCallback;
 
-  ZCashCreateOrchardToOrchardTransactionTask(
+  ZCashCreateIronwoodToIronwoodTransactionTask(
       std::variant<
-          base::PassKey<class ZCashCreateOrchardToOrchardTransactionTaskTest>,
+          base::PassKey<class ZCashCreateIronwoodToIronwoodTransactionTaskTest>,
           base::PassKey<ZCashWalletService>> pass_key,
       ZCashWalletService& zcash_wallet_service,
       ZCashActionContext context,
@@ -34,17 +33,13 @@ class ZCashCreateOrchardToOrchardTransactionTask {
       std::optional<OrchardMemo> memo,
       uint64_t amount);
 
-  virtual ~ZCashCreateOrchardToOrchardTransactionTask();
+  virtual ~ZCashCreateIronwoodToIronwoodTransactionTask();
 
   void Start(CreateTransactionCallback callback);
 
  private:
   void ScheduleWorkOnTask();
   void WorkOnTask();
-
-  void GetLatestBlock();
-  void OnGetLatestBlockHeight(
-      base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
   void GetSpendableNotes();
   void OnGetSpendableNotes(
@@ -61,17 +56,16 @@ class ZCashCreateOrchardToOrchardTransactionTask {
 
   bool started_ = false;
 
-  std::optional<uint32_t> chain_tip_height_;
   std::optional<std::string> error_;
   std::optional<OrchardSyncState::SpendableNotesBundle> spendable_notes_;
   std::optional<PickOrchardInputsResult> picked_notes_;
   std::optional<OrchardSpendsBundle> spends_bundle_;
   std::optional<ZCashTransaction> transaction_;
 
-  base::WeakPtrFactory<ZCashCreateOrchardToOrchardTransactionTask>
+  base::WeakPtrFactory<ZCashCreateIronwoodToIronwoodTransactionTask>
       weak_ptr_factory_{this};
 };
 
 }  // namespace brave_wallet
 
-#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_ORCHARD_TO_ORCHARD_TRANSACTION_TASK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_ZCASH_ZCASH_CREATE_IRONWOOD_TO_IRONWOOD_TRANSACTION_TASK_H_

@@ -524,6 +524,7 @@ export const SendScreen = React.memo(() => {
             memoText !== '' ? new TextEncoder().encode(memoText) : undefined
           await sendZecTransaction({
             useShieldedPool: isShieldedToken(tokenFromParams),
+            zcashTokenType: tokenFromParams.zcashTokenType,
             network: networkFromParams,
             fromAccount,
             to: toAddress,

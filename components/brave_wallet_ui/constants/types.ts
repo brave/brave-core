@@ -284,6 +284,7 @@ export interface SendZecTransactionParams extends BaseTransactionParams {
   useShieldedPool: boolean
   sendingMaxAmount: boolean
   memo: number[] | undefined
+  zcashTokenType: BraveWallet.ZCashTokenType
 }
 
 export interface SendCardanoTransactionParams extends BaseTransactionParams {
