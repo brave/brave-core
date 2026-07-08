@@ -177,6 +177,20 @@ BraveBrowserViewTabbedLayoutImpl::CalculateProposedLayout(
   ProposedLayout layout =
       BrowserViewTabbedLayoutImpl::CalculateProposedLayout(params);
 
+  if (IsParentedToAndVisible(views().focus_mode_title_bar,
+                             views().browser_view)) {
+    // Place the title bar at the top of the client area. `params` here is the
+    // original client area, so its top is the true frame top. The space below
+    // the title bar is reserved in `DoPreLayoutComputations`, which insets a
+    // copy of the params that upstream uses to lay out the rest of the browser
+    // view.
+    auto& client_area = params.visual_client_area;
+    gfx::Rect title_bar_bounds(
+        client_area.x(), client_area.y(), client_area.width(),
+        views().focus_mode_title_bar->GetPreferredSize().height());
+    layout.AddChild(views().focus_mode_title_bar, title_bar_bounds);
+  }
+
   // Retrieve contents container proposed bounds.
   auto* contents_layout = layout.GetLayoutFor(views().contents_container);
   CHECK(contents_layout);
@@ -268,6 +282,23 @@ gfx::Rect BraveBrowserViewTabbedLayoutImpl::CalculateTopContainerLayout(
   }
 
   return bounds;
+}
+
+void BraveBrowserViewTabbedLayoutImpl::DoPreLayoutComputations(
+    const BrowserLayoutParams& params) {
+  BrowserLayoutParams browser_params = params;
+
+  // In FocusMode, the titlebar appears at the top of the browser view. Reserve
+  // space for it by insetting the top of this params copy, which upstream
+  // stores and uses to lay out the rest of the browser view. The title bar
+  // itself is positioned from the un-inset params in `CalculateProposedLayout`.
+  if (IsParentedToAndVisible(views().focus_mode_title_bar,
+                             views().browser_view)) {
+    browser_params.SetTop(
+        views().focus_mode_title_bar->GetPreferredSize().height());
+  }
+
+  BrowserViewTabbedLayoutImpl::DoPreLayoutComputations(browser_params);
 }
 
 void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
@@ -599,6 +630,10 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
 
   auto contents_at_top_edge = [&]() {
     if (delegate().IsInfobarVisible()) {
+      return false;
+    }
+    if (IsParentedToAndVisible(views().focus_mode_title_bar,
+                               views().browser_view)) {
       return false;
     }
     // In focus mode the top container is reparented out of the browser view, so

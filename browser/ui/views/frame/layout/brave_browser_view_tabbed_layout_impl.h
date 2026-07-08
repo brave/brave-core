@@ -78,6 +78,7 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   void ConfigureTopContainerBackground(
       const BrowserLayoutParams& params,
       CustomCornersBackground* background) override;
+  void DoPreLayoutComputations(const BrowserLayoutParams& params) override;
   void DoPostLayoutVisualAdjustments(
       const BrowserLayoutParams& params) override;
   // SeparatorInfo is the upstream's private nested type. Friend access (added

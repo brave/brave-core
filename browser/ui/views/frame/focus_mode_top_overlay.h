@@ -79,6 +79,10 @@ class FocusModeTopOverlay : public views::View,
   // Returns a value in [0, 1], where 1 indicates fully revealed.
   double GetRevealFraction() const;
 
+  // Returns true when the overlay is completely revealed and no longer
+  // animating.
+  bool is_fully_revealed() const { return GetRevealFraction() == 1.0; }
+
   // Registers `callback` to be invoked whenever the reveal fraction changes.
   // The callback remains registered for the lifetime of the returned
   // subscription.
