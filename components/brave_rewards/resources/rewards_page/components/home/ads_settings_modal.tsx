@@ -45,6 +45,8 @@ export function AdsSettingsModal(props: Props) {
   const showNewTabPageAds =
     !adsInfo.adsManagedByPolicy['new-tab-page']
     || adsInfo.adsEnabled['new-tab-page']
+  const showNotificationAds =
+    !adsInfo.adsManagedByPolicy.notification || adsInfo.adsEnabled.notification
 
   function onToggleChange(adType: AdType) {
     return (detail: { checked: boolean }) => {
@@ -148,47 +150,53 @@ export function AdsSettingsModal(props: Props) {
             <span className='value'>{adsReceivedThisMonth}</span>
           </div>
         </section>
-        <section className='ad-types'>
-          <div className='header'>
-            <span>{getString('adsSettingsAdTypeTitle')}</span>
-            <span>{getString('adsSettingsAdViewsTitle')}</span>
-          </div>
-          {showNewTabPageAds && (
-            <div className='row'>
-              <Toggle
-                checked={adsInfo.adsEnabled['new-tab-page']}
-                onChange={onToggleChange('new-tab-page')}
-              />
-              <span className='name'>{getString('adTypeNewTabPageLabel')}</span>
-              <span>{adsInfo.adTypesReceivedThisMonth['new-tab-page']}</span>
+        {(showNewTabPageAds || showNotificationAds) && (
+          <section className='ad-types'>
+            <div className='header'>
+              <span>{getString('adsSettingsAdTypeTitle')}</span>
+              <span>{getString('adsSettingsAdViewsTitle')}</span>
             </div>
-          )}
-          <div className='row'>
-            <Toggle
-              checked={adsInfo.adsEnabled.notification}
-              onChange={onToggleChange('notification')}
-            />
-            <span className='name'>
-              {getString('adTypeNotificationLabel')}
-              <select
-                value={adsInfo.notificationAdsPerHour}
-                onChange={onNotificationAdsPerHourChange}
-              >
-                {adsPerHourOptions
-                  .filter((n) => n || n === adsInfo.notificationAdsPerHour)
-                  .map((n) => (
-                    <option
-                      key={n}
-                      value={n}
-                    >
-                      {adsPerHourOptionText(n)}
-                    </option>
-                  ))}
-              </select>
-            </span>
-            <span>{adsInfo.adTypesReceivedThisMonth.notification}</span>
-          </div>
-        </section>
+            {showNewTabPageAds && (
+              <div className='row'>
+                <Toggle
+                  checked={adsInfo.adsEnabled['new-tab-page']}
+                  onChange={onToggleChange('new-tab-page')}
+                />
+                <span className='name'>
+                  {getString('adTypeNewTabPageLabel')}
+                </span>
+                <span>{adsInfo.adTypesReceivedThisMonth['new-tab-page']}</span>
+              </div>
+            )}
+            {showNotificationAds && (
+              <div className='row'>
+                <Toggle
+                  checked={adsInfo.adsEnabled.notification}
+                  onChange={onToggleChange('notification')}
+                />
+                <span className='name'>
+                  {getString('adTypeNotificationLabel')}
+                  <select
+                    value={adsInfo.notificationAdsPerHour}
+                    onChange={onNotificationAdsPerHourChange}
+                  >
+                    {adsPerHourOptions
+                      .filter((n) => n || n === adsInfo.notificationAdsPerHour)
+                      .map((n) => (
+                        <option
+                          key={n}
+                          value={n}
+                        >
+                          {adsPerHourOptionText(n)}
+                        </option>
+                      ))}
+                  </select>
+                </span>
+                <span>{adsInfo.adTypesReceivedThisMonth.notification}</span>
+              </div>
+            )}
+          </section>
+        )}
         {renderSubdivisions()}
       </div>
     </Modal>

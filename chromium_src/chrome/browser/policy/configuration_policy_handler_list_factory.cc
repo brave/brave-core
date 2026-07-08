@@ -45,6 +45,9 @@ std::unique_ptr<ConfigurationPolicyHandlerList> BuildHandlerList(
       key::kBraveNewTabPageAdsEnabled,
       ntp_background_images::prefs::
           kNewTabPageShowSponsoredImagesBackgroundImage));
+  handlers->AddHandler(std::make_unique<BooleanDisablingPolicyHandler>(
+      key::kBraveNotificationAdsEnabled,
+      brave_ads::prefs::kOptedInToNotificationAds));
 #endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   handlers->AddHandler(std::make_unique<BraveAdblockPolicyHandler>());
