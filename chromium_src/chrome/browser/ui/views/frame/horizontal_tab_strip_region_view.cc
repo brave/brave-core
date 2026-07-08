@@ -18,24 +18,7 @@
 // `BraveNewTabButton::GetButtonSize` function.
 #define kButtonSize GetButtonSize()
 
-namespace {
-
-// Tab-strip-region-local override of `GetLayoutConstant`. Inside the upstream
-// `UpdateButtonBorders()` body, `kTabstripToolbarOverlap` is consumed as the
-// vertical inset used to center tab-strip control buttons (new tab, combo,
-// tab search). Routing just this translation unit's `GetLayoutConstant` calls
-// through the wrapper avoids patching upstream.
-int GetLayoutConstantForBraveHorizontalTabStripRegion(LayoutConstant constant) {
-  if (constant == LayoutConstant::kTabstripToolbarOverlap) {
-    return tabs::GetHorizontalTabButtonYOffset();
-  }
-  return GetLayoutConstant(constant);
-}
-
-}  // namespace
-
 #define BrowserTabStripController BraveBrowserTabStripController
-#define GetLayoutConstant GetLayoutConstantForBraveHorizontalTabStripRegion
 #define NewTabButton BraveNewTabButton
 #define TabHoverCardController BraveTabHoverCardController
 #define TabSearchButton BraveTabSearchButton
@@ -43,6 +26,5 @@ int GetLayoutConstantForBraveHorizontalTabStripRegion(LayoutConstant constant) {
 #undef TabSearchButton
 #undef TabHoverCardController
 #undef NewTabButton
-#undef GetLayoutConstant
 #undef BrowserTabStripController
 #undef kButtonSize

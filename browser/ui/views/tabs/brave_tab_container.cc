@@ -485,14 +485,9 @@ void BraveTabContainer::PaintBoundingBoxForSplitTab(
 
   if (!is_vertical_tab) {
     // In order to make margin between the bounding box and tab strip.
-    // Need to compensate the amount of overlap because it's hidden by overlap
-    // at bottom.
     int vertical_margin = tab1->data().pinned ? 4 : 2;
-    bounding_rects.Inset(gfx::Insets::TLBR(
-        vertical_margin, tabs::kHorizontalTabInset,
-        vertical_margin +
-            GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap),
-        tabs::kHorizontalTabInset));
+    bounding_rects.Inset(
+        gfx::Insets::VH(vertical_margin, tabs::kHorizontalTabInset));
   }
 
   const float corner_radius =

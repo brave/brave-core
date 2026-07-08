@@ -362,11 +362,6 @@ void BraveHorizontalTabStripRegionView::Layout(PassKey) {
             tab_strip_->bounds().right() +
             GetLayoutConstant(LayoutConstant::kTabStripPadding));
       }
-      // Adjust the vertical positioning in compact mode so that it remains
-      // centered.
-      if (tabs::UseCompactHorizontalTabs()) {
-        new_tab_button_->SetY(tabs::GetHorizontalTabButtonYOffset());
-      }
     }
 
     return;

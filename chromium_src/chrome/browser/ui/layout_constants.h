@@ -31,11 +31,6 @@ int GetHorizontalTabHeight();
 // be occupied by tab group underlines.
 int GetHorizontalTabVerticalSpacing();
 
-// Y-offset applied to buttons aligned with the horizontal tab strip (new tab
-// button, tab strip combo/search buttons, Mac caption buttons) so they sit
-// centered against the tab row.
-int GetHorizontalTabButtonYOffset();
-
 // The amount of space before the first tab view.
 inline constexpr int kHorizontalTabStripLeftMargin = 3;
 
