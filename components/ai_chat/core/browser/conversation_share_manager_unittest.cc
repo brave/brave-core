@@ -24,7 +24,6 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
-using ::testing::_;
 using ResultCallback = api_request_helper::APIRequestHelper::ResultCallback;
 using Ticket = api_request_helper::APIRequestHelper::Ticket;
 using api_request_helper::MockAPIRequestHelper;
@@ -71,7 +70,7 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_Success) {
   MockAPIRequestHelper* mock_request_helper =
       share_manager_->GetMockAPIRequestHelper();
 
-  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+  EXPECT_CALL(*mock_request_helper, Request)
       .WillOnce(
           [&](const std::string& method, const GURL& url,
               const std::string& body, const std::string& content_type,
@@ -102,17 +101,16 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_Success) {
               EXPECT_EQ(kEncryptedContents, *ciphertext);
             }
 
-            auto response = base::test::ParseJsonDict(R"({
-          "share_id": "abc123"
-        })");
             std::move(result_callback)
                 .Run(api_request_helper::APIRequestResult(
-                    net::HTTP_OK, base::Value(std::move(response)), {}, net::OK,
-                    GURL()));
+                    net::HTTP_OK, base::Value(base::test::ParseJsonDict(R"({
+                      "share_id": "abc123"
+                    })")),
+                    {}, net::OK, GURL()));
             return Ticket();
           });
 
-  base::test::TestFuture<std::optional<GURL>> future;
+  base::test::TestFuture<const std::optional<GURL>&> future;
   share_manager_->ShareConversation(kEncryptedContents, future.GetCallback());
 
   const std::optional<GURL>& result = future.Get();
@@ -124,15 +122,17 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_ServerError) {
   MockAPIRequestHelper* mock_request_helper =
       share_manager_->GetMockAPIRequestHelper();
 
-  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+  // The mocked Request both returns a Ticket and hands us the ResultCallback to
+  // invoke, so a lambda is used rather than RunOnceCallback<> (which cannot
+  // move a OnceCallback out of DoAll's const-ref args while still returning the
+  // Ticket).
+  EXPECT_CALL(*mock_request_helper, Request)
       .WillOnce(
-          [&](const std::string& method, const GURL& url,
-              const std::string& body, const std::string& content_type,
-              ResultCallback result_callback,
-              const base::flat_map<std::string, std::string>& headers,
-              const api_request_helper::APIRequestOptions& options,
-              api_request_helper::APIRequestHelper::ResponseConversionCallback
-                  conversion_callback) {
+          [](const std::string&, const GURL&, const std::string&,
+             const std::string&, ResultCallback result_callback,
+             const base::flat_map<std::string, std::string>&,
+             const api_request_helper::APIRequestOptions&,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback) {
             std::move(result_callback)
                 .Run(api_request_helper::APIRequestResult(
                     net::HTTP_INTERNAL_SERVER_ERROR, base::Value(), {}, net::OK,
@@ -140,7 +140,7 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_ServerError) {
             return Ticket();
           });
 
-  base::test::TestFuture<std::optional<GURL>> future;
+  base::test::TestFuture<const std::optional<GURL>&> future;
   share_manager_->ShareConversation(kEncryptedContents, future.GetCallback());
 
   EXPECT_FALSE(future.Get().has_value());
@@ -150,26 +150,23 @@ TEST_F(ConversationShareManagerUnitTest, ShareConversation_MissingShareId) {
   MockAPIRequestHelper* mock_request_helper =
       share_manager_->GetMockAPIRequestHelper();
 
-  EXPECT_CALL(*mock_request_helper, Request(_, _, _, _, _, _, _, _))
+  EXPECT_CALL(*mock_request_helper, Request)
       .WillOnce(
-          [&](const std::string& method, const GURL& url,
-              const std::string& body, const std::string& content_type,
-              ResultCallback result_callback,
-              const base::flat_map<std::string, std::string>& headers,
-              const api_request_helper::APIRequestOptions& options,
-              api_request_helper::APIRequestHelper::ResponseConversionCallback
-                  conversion_callback) {
-            auto response = base::test::ParseJsonDict(R"({
-          "unexpected": "field"
-        })");
+          [](const std::string&, const GURL&, const std::string&,
+             const std::string&, ResultCallback result_callback,
+             const base::flat_map<std::string, std::string>&,
+             const api_request_helper::APIRequestOptions&,
+             api_request_helper::APIRequestHelper::ResponseConversionCallback) {
             std::move(result_callback)
                 .Run(api_request_helper::APIRequestResult(
-                    net::HTTP_OK, base::Value(std::move(response)), {}, net::OK,
-                    GURL()));
+                    net::HTTP_OK, base::Value(base::test::ParseJsonDict(R"({
+                  "unexpected": "field"
+                })")),
+                    {}, net::OK, GURL()));
             return Ticket();
           });
 
-  base::test::TestFuture<std::optional<GURL>> future;
+  base::test::TestFuture<const std::optional<GURL>&> future;
   share_manager_->ShareConversation(kEncryptedContents, future.GetCallback());
 
   EXPECT_FALSE(future.Get().has_value());
