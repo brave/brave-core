@@ -3,9 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { WelcomeApi, createWelcomeApi } from './welcome_api'
+import { WelcomeApi, createWelcomeApi, ImportDataStatus } from './welcome_api'
 
 export function createWelcomeApiMock(): WelcomeApi {
+  let onImportStatusChange: ((status: ImportDataStatus) => void) | null = null
+
   const api = createWelcomeApi({
     welcomePageHandler: {
       setWelcomePage(page) {},
@@ -57,7 +59,20 @@ export function createWelcomeApiMock(): WelcomeApi {
         ]
       },
       setAsDefaultBrowser() {},
-      importData(profileIndex, types) {},
+      importData(profileIndex, types) {
+        if (!onImportStatusChange) {
+          return
+        }
+        onImportStatusChange('in-progress')
+        setTimeout(() => {
+          if (onImportStatusChange) {
+            onImportStatusChange('succeeded')
+          }
+        }, 2000)
+      },
+      addImportStatusListener(fn) {
+        onImportStatusChange = fn
+      },
     },
   })
 
