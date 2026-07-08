@@ -132,6 +132,10 @@ void BraveShieldsActionView::OnThemeChanged() {
   views::InkDrop::Get(this)->SetVisibleOpacity(kOmniboxOpacitySelected);
   views::InkDrop::Get(this)->SetHighlightOpacity(kOmniboxOpacityHovered);
   ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
+
+  // Refresh the icon so any theme-dependent tint (e.g. the Brave Origin icon in
+  // branded builds) is re-rendered with the new colors.
+  Update();
 }
 
 BEGIN_METADATA(BraveShieldsActionView)

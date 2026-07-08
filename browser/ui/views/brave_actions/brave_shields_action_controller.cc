@@ -12,11 +12,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -33,6 +36,8 @@
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
+#include "ui/gfx/paint_vector_icon.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
 #include "url/gurl.h"
@@ -114,16 +119,32 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
 
 gfx::ImageSkia BraveShieldsActionController::GetIconImage(
     bool is_enabled) const {
+  const int icon_size = IconDimensionForLayout();
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // In the Brave Origin standalone build the Shields icon is replaced with the
+  // Brave Origin face icon, tinted to match the other location bar icons.
+  auto* web_contents = tab_strip_model_->GetActiveWebContents();
+  const ui::ColorProvider* color_provider =
+      web_contents
+          ? &web_contents->GetColorProvider()
+          : ui::ColorProviderManager::Get().GetColorProviderFor(
+                ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
+                    nullptr));
+  return gfx::CreateVectorIcon(
+      is_enabled ? kLeoBraveIconOnlyFaceIcon
+                 : kLeoBraveIconOnlyFaceDisabledIcon,
+      icon_size, color_provider->GetColor(kColorOmniboxResultsIcon));
+#else
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   gfx::ImageSkia image;
   const SkBitmap bitmap =
       rb.GetImageNamed(is_enabled ? IDR_BRAVE_SHIELDS_ICON_64
                                   : IDR_BRAVE_SHIELDS_ICON_64_DISABLED)
           .AsBitmap();
-  const int icon_size = IconDimensionForLayout();
   float scale = static_cast<float>(bitmap.width()) / icon_size;
   image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
   return image;
+#endif
 }
 
 std::unique_ptr<IconWithBadgeImageSource>
