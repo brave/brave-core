@@ -401,6 +401,7 @@ test("brave_unit_tests") {
     deps += [
       "//brave/browser/history_embeddings:unit_tests",
       "//brave/browser/local_ai:unit_tests",
+      "//brave/browser/speech:unit_tests",
     ]
   }
 

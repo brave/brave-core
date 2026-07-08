@@ -23,3 +23,24 @@ static_library("speech") {
     "//url",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "on_device_speech_recognition_controller_unittest.cc" ]
+
+  deps = [
+    ":speech",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/core:speech_recognition_mojom",
+    "//chrome/browser/profiles:profile",
+    "//chrome/test:test_support",
+    "//content/test:test_support",
+    "//mojo/public/cpp/bindings",
+    "//services/on_device_model/public/mojom",
+    "//testing/gtest",
+    "//url",
+  ]
+}
