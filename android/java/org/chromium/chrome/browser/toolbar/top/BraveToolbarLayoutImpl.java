@@ -74,8 +74,6 @@ import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.omnibox.BraveLocationBarCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
-import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
-import org.chromium.chrome.browser.onboarding.v2.HighlightView;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl;
 import org.chromium.chrome.browser.playlist.PlaylistServiceObserverImpl.PlaylistServiceObserverImplDelegate;
@@ -921,19 +919,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void checkForTooltip(Tab tab) {
-        // We are disabling this feature for now for bottom address bar, until new design is ready
-        // https://github.com/brave/brave-browser/issues/46252
-        if (BottomToolbarConfiguration.isToolbarBottomAnchored()) return;
         try {
-            if (!BraveShieldsUtils.isTooltipShown
-                    && !BraveActivity.getBraveActivity().mIsDeepLink) {
-                if (!BraveShieldsUtils.hasShieldsTooltipShown(
-                                BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
-                        && mUnifiedPanelHandler.getTrackersBlockedCount(tab.getId())
-                                        + mUnifiedPanelHandler.getAdsBlockedCount(tab.getId())
-                                > 0) {
-                    showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
-                }
+            if (BraveShieldsUtils.isTooltipShown || BraveActivity.getBraveActivity().mIsDeepLink) {
+                return;
+            }
+            if (!BraveShieldsUtils.hasShieldsTooltipShown(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP)
+                    && mUnifiedPanelHandler.getTrackersBlockedCount(tab.getId())
+                                    + mUnifiedPanelHandler.getAdsBlockedCount(tab.getId())
+                            > 0) {
+                showTooltip(BraveShieldsUtils.PREF_SHIELDS_TOOLTIP, tab.getId());
             }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "checkForTooltip " + e);
@@ -941,81 +935,38 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void showTooltip(String tooltipPref, int tabId) {
-        try {
-            HighlightView highlightView = new HighlightView(getContext(), null);
-            highlightView.setColor(ContextCompat.getColor(
-                    getContext(), R.color.onboarding_search_highlight_color));
-            ViewGroup viewGroup =
-                    BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
-                            android.R.id.content);
-            float padding = (float) dpToPx(getContext(), 20);
-            mShieldsPopupWindowTooltip =
-                    new PopupWindowTooltip.Builder(getContext())
-                            .anchorView(mBraveShieldsButton)
-                            .arrowColor(
-                                    ContextCompat.getColor(
-                                            getContext(), R.color.onboarding_arrow_color))
-                            .gravity(Gravity.BOTTOM)
-                            .dismissOnOutsideTouch(true)
-                            .dismissOnInsideTouch(false)
-                            .backgroundDimDisabled(true)
-                            .padding(padding)
-                            .parentPaddingHorizontal(dpToPx(getContext(), 10))
-                            .modal(true)
-                            .onDismissListener(
-                                    tooltip -> {
-                                        if (viewGroup != null && highlightView != null) {
-                                            highlightView.stopAnimation();
-                                            viewGroup.removeView(highlightView);
-                                        }
-                                    })
-                            .contentView(R.layout.brave_shields_tooltip_layout)
-                            .build();
+        int gravity =
+                BottomToolbarConfiguration.isToolbarBottomAnchored() ? Gravity.TOP : Gravity.BOTTOM;
+        mShieldsPopupWindowTooltip =
+                new PopupWindowTooltip.Builder(getContext())
+                        .anchorView(mBraveShieldsButton)
+                        .arrowColor(
+                                ContextCompat.getColor(getContext(), R.color.primitive_primary_35))
+                        .gravity(gravity)
+                        .dismissOnOutsideTouch(true)
+                        .dismissOnInsideTouch(false)
+                        .backgroundDimDisabled(false)
+                        .dimAmount(0.2f)
+                        .padding(0f)
+                        .parentPaddingHorizontal(dpToPx(getContext(), 10))
+                        .modal(true)
+                        .contentView(R.layout.brave_shields_tooltip_layout)
+                        .build();
 
-            int adsTrackersCount =
-                    mUnifiedPanelHandler.getTrackersBlockedCount(tabId)
-                            + mUnifiedPanelHandler.getAdsBlockedCount(tabId);
+        int adsTrackersCount =
+                mUnifiedPanelHandler.getTrackersBlockedCount(tabId)
+                        + mUnifiedPanelHandler.getAdsBlockedCount(tabId);
 
-            String trackerText =
-                    String.format(
-                            getContext().getResources().getString(R.string.shield_tracker_blocked),
-                            String.valueOf(adsTrackersCount));
+        TextView tvBlocked = mShieldsPopupWindowTooltip.findViewById(R.id.tv_blocked);
+        tvBlocked.setText(
+                String.format(
+                        getContext().getResources().getString(R.string.shield_tracker_blocked),
+                        String.valueOf(adsTrackersCount)));
 
-            TextView tvBlocked = mShieldsPopupWindowTooltip.findViewById(R.id.tv_blocked);
-            tvBlocked.setText(trackerText);
-
-            if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
-                viewGroup.addView(highlightView);
-                HighlightItem item = new HighlightItem(mBraveShieldsButton);
-
-                ImageButton braveShieldButton =
-                        new ImageButton(getContext(), null, R.style.ToolbarButton);
-                braveShieldButton.setImageResource(R.drawable.btn_brave);
-                FrameLayout.LayoutParams braveShieldParams =
-                        new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT,
-                                FrameLayout.LayoutParams.WRAP_CONTENT);
-
-                int[] location = new int[2];
-                highlightView.getLocationOnScreen(location);
-                braveShieldParams.leftMargin = item.getScreenLeft() + dpToPx(getContext(), 10);
-                braveShieldParams.topMargin = item.getScreenTop()
-                        + ((item.getScreenBottom() - item.getScreenTop()) / 4) - location[1];
-                braveShieldButton.setLayoutParams(braveShieldParams);
-                highlightView.addView(braveShieldButton);
-
-                highlightView.setShouldShowHighlight(true);
-                highlightView.setHighlightTransparent(true);
-                highlightView.setHighlightItem(item);
-                highlightView.initializeAnimators();
-                highlightView.startAnimation();
-
-                mShieldsPopupWindowTooltip.show();
-                BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
-                BraveShieldsUtils.isTooltipShown = true;
-            }
-
-        } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showTooltip " + e);
+        if (mBraveShieldsButton != null && mBraveShieldsButton.isShown()) {
+            mShieldsPopupWindowTooltip.show();
+            BraveShieldsUtils.setShieldsTooltipShown(tooltipPref, true);
+            BraveShieldsUtils.isTooltipShown = true;
         }
     }
 
