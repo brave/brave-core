@@ -5,9 +5,8 @@
 
 #include "brave/content/browser/screen_orientation/brave_screen_orientation_delegate_android.h"
 
-#include "brave/content/public/browser/fullscreen_page_data.h"
+#include "brave/content/public/browser/navigation_entry_fullscreen.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 
 namespace content {
 
@@ -37,20 +36,11 @@ void BraveScreenOrientationDelegateAndroid::Unlock(WebContents* web_contents) {
 // static
 bool BraveScreenOrientationDelegateAndroid::IsYouTubeFullscreenRequested(
     WebContents* web_contents) {
-  // Check YouTube fullscreen state from NavigationEntry UserData
-  if (!web_contents) {
-    return false;
-  }
-
-  NavigationEntry* entry =
-      web_contents->GetController().GetLastCommittedEntry();
-  if (!entry) {
-    return false;
-  }
-
-  auto* data = static_cast<FullscreenPageData*>(
-      entry->GetUserData(kFullscreenPageDataKey));
-  return data && data->fullscreen_requested();
+  // The pending fullscreen request is tracked on the last committed
+  // NavigationEntry by the browser-layer YouTube PiP tab helper.
+  return web_contents &&
+         IsNavigationEntryFullscreenRequested(
+             web_contents->GetController().GetLastCommittedEntry());
 }
 
 }  // namespace content

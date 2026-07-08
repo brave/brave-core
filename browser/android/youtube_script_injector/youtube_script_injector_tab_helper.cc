@@ -5,16 +5,15 @@
 
 #include "brave/browser/android/youtube_script_injector/youtube_script_injector_tab_helper.h"
 
-#include <memory>
 #include <string>
 
 #include "base/android/android_info.h"
 #include "base/feature_list.h"
-#include "base/supports_user_data.h"
 #include "brave/browser/android/youtube_script_injector/brave_youtube_script_injector_native_helper.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/content/public/browser/navigation_entry_fullscreen.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
@@ -301,12 +300,6 @@ bool IsAndroidPictureInPictureSupported() {
          base::android::android_info::SDK_VERSION_R;
 }
 
-// Only the address of this key identifies the user data; the string value is
-// incidental and never read. This follows the Chromium SupportsUserData key
-// idiom, e.g. kBackgroundSyncUserDataKey in
-// content/browser/background_sync/background_sync_manager.cc.
-const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
-
 // Marks a NavigationEntry as having a pending Picture-in-Picture request. The
 // state is attached to the NavigationEntry rather than the tab helper so its
 // lifetime matches the page the user acted on: same document navigations,
@@ -314,20 +307,21 @@ const char kPictureInPictureRequestKey[] = "PictureInPictureRequest";
 // leak onto a different page. This is what keeps fullscreen and
 // Picture-in-Picture in lockstep across the async gap between injecting the
 // script and the media actually going fullscreen.
-// Callers pass the last committed NavigationEntry, which is contractually
-// non-null in WebContentsObserver callbacks once the FrameTree is initialized.
+//
+// The flag is stored through content's fullscreen NavigationEntry helpers so
+// the content-layer BraveScreenOrientationDelegateAndroid can read the same
+// state (it cannot depend on this browser-layer helper) and suppress the
+// orientation lock/unlock that would otherwise flash the phone into landscape
+// while entering or leaving PiP. Callers pass the last committed
+// NavigationEntry, which is contractually non-null in WebContentsObserver
+// callbacks once the FrameTree is initialized.
 void SetPictureInPictureRequested(content::NavigationEntry& entry,
                                   bool requested) {
-  if (requested) {
-    entry.SetUserData(kPictureInPictureRequestKey,
-                      std::make_unique<base::SupportsUserData::Data>());
-  } else {
-    entry.RemoveUserData(kPictureInPictureRequestKey);
-  }
+  content::SetNavigationEntryFullscreenRequested(&entry, requested);
 }
 
 bool IsPictureInPictureRequested(content::NavigationEntry& entry) {
-  return entry.GetUserData(kPictureInPictureRequestKey);
+  return content::IsNavigationEntryFullscreenRequested(&entry);
 }
 
 }  // namespace
