@@ -1041,11 +1041,19 @@ TEST_F(BraveShieldsUtilTest, EffectiveJavaScriptIgnoresShieldsWhenDisabled) {
   auto* map = HostContentSettingsMapFactory::GetForProfile(profile());
   const GURL url("https://brave.com");
 
+  // Before disabling Shields: a Shields JS block produces an effective
+  // JAVASCRIPT block for the site, while the Shields-owned BRAVE_JAVASCRIPT
+  // rule records the block independently.
   brave_shields::SetNoScriptControlType(map, ControlType::BLOCK, url);
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            map->GetContentSetting(url, GURL(),
+                                   ContentSettingsType::BRAVE_JAVASCRIPT));
   EXPECT_EQ(
       CONTENT_SETTING_BLOCK,
       map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
 
+  // After disabling Shields: the Shields JS control is still BLOCK, but it must
+  // no longer contribute to the effective JAVASCRIPT setting.
   brave_shields::SetBraveShieldsEnabled(map, false, url);
   EXPECT_EQ(ControlType::BLOCK,
             brave_shields::GetNoScriptControlType(map, url));
@@ -1053,6 +1061,14 @@ TEST_F(BraveShieldsUtilTest, EffectiveJavaScriptIgnoresShieldsWhenDisabled) {
       CONTENT_SETTING_ALLOW,
       map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
 
+  // Re-enabling Shields restores the effective JAVASCRIPT block.
+  brave_shields::SetBraveShieldsEnabled(map, true, url);
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT));
+
+  // A user-authored JAVASCRIPT block still applies regardless of Shields state.
+  brave_shields::SetBraveShieldsEnabled(map, false, url);
   map->SetContentSettingCustomScope(
       ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
       ContentSettingsType::JAVASCRIPT, CONTENT_SETTING_BLOCK);

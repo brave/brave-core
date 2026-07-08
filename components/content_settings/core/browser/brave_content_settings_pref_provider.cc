@@ -67,30 +67,22 @@ std::unique_ptr<Rule> CloneRule(const Rule& original_rule) {
       original_rule.value.Clone(), original_rule.metadata.Clone());
 }
 
-bool IsActive(const Rule* cookie_rule,
+// Returns whether |rule| should contribute to the effective setting given the
+// Shields state in |shield_rules|. A Brave rule only applies while Shields are
+// up for its top-level site; |top_level_pattern| is the pattern that identifies
+// that site (the secondary pattern for cookies, the primary pattern for
+// JavaScript). Default (wildcard/wildcard) rules are ignored because they are
+// already mapped to the Chromium setting.
+bool IsActive(const Rule* rule,
+              const ContentSettingsPattern& top_level_pattern,
               const std::vector<std::unique_ptr<Rule>>& shield_rules) {
-  DCHECK(cookie_rule);
+  DCHECK(rule);
   // don't include default rules in the iterator
-  if (cookie_rule->primary_pattern == ContentSettingsPattern::Wildcard() &&
-      cookie_rule->secondary_pattern == ContentSettingsPattern::Wildcard()) {
+  if (rule->primary_pattern == ContentSettingsPattern::Wildcard() &&
+      rule->secondary_pattern == ContentSettingsPattern::Wildcard()) {
     return false;
   }
 
-  for (const auto& shield_rule : shield_rules) {
-    auto primary_compare =
-        shield_rule->primary_pattern.Compare(cookie_rule->secondary_pattern);
-    if (primary_compare == ContentSettingsPattern::IDENTITY ||
-        primary_compare == ContentSettingsPattern::SUCCESSOR) {
-      return ValueToContentSetting(shield_rule->value) != CONTENT_SETTING_BLOCK;
-    }
-  }
-
-  return true;
-}
-
-bool IsActiveForTopLevelPattern(
-    const ContentSettingsPattern& top_level_pattern,
-    const std::vector<std::unique_ptr<Rule>>& shield_rules) {
   for (const auto& shield_rule : shield_rules) {
     auto primary_compare =
         shield_rule->primary_pattern.Compare(top_level_pattern);
@@ -103,13 +95,67 @@ bool IsActiveForTopLevelPattern(
   return true;
 }
 
-bool IsLegacyShieldsJavaScriptRule(const Rule& rule) {
-  return rule.secondary_pattern == ContentSettingsPattern::Wildcard() &&
-         ((rule.primary_pattern == ContentSettingsPattern::Wildcard()) ||
-          (rule.primary_pattern.GetSchemeType() ==
-               ContentSettingsPattern::SCHEME_WILDCARD &&
-           !rule.primary_pattern.MatchesAllHosts() &&
-           !rule.primary_pattern.GetHost().empty()));
+// Returns whether |rule| is a JAVASCRIPT rule that Shields authored, as opposed
+// to one the user created through the Chromium Site Settings UI. Shields wrote
+// its per-site JS rules with a host pattern of the form "*://host/*" (produced
+// by content_settings::CreateHostPattern()) paired with a wildcard secondary
+// pattern; reconstructing that pattern from the rule's host and comparing lets
+// us select only Shields-origin rules during migration.
+bool IsShieldsAuthoredJavaScriptRule(const Rule& rule) {
+  if (rule.secondary_pattern != ContentSettingsPattern::Wildcard()) {
+    return false;
+  }
+  const std::string host = rule.primary_pattern.GetHost();
+  if (host.empty()) {
+    return false;
+  }
+  return rule.primary_pattern ==
+         content_settings::CreateHostPattern(
+             GURL(base::StrCat({"https://", host, "/"})));
+}
+
+// Computes the set of change notifications needed to move an effective rule set
+// from |old_rules| to |new_rules|. A rule is reported as an update when it is
+// added or its value changed (exact pattern + value match), and a removed rule
+// is reported with an empty value so observers clear it. Shared by the cookie
+// and JavaScript effective-rule builders, which differ only in the underlying
+// content type.
+std::vector<std::unique_ptr<Rule>> ComputeRuleUpdates(
+    const std::vector<std::unique_ptr<Rule>>& old_rules,
+    const std::vector<std::unique_ptr<Rule>>& new_rules) {
+  std::vector<std::unique_ptr<Rule>> updates;
+
+  // Added or changed rules. An exact value match is required because any change
+  // to the value is an update.
+  for (const auto& new_rule : new_rules) {
+    auto match =
+        std::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
+          return new_rule->primary_pattern == old_rule->primary_pattern &&
+                 new_rule->secondary_pattern == old_rule->secondary_pattern &&
+                 ValueToContentSetting(new_rule->value) ==
+                     ValueToContentSetting(old_rule->value);
+        });
+    if (match == old_rules.end()) {
+      updates.emplace_back(CloneRule(CHECK_DEREF(new_rule.get())));
+    }
+  }
+
+  // Removed rules. Only the patterns matter here because we are looking for
+  // deleted rules, not changed ones.
+  for (const auto& old_rule : old_rules) {
+    auto match =
+        std::ranges::find_if(new_rules, [&old_rule](const auto& new_rule) {
+          return new_rule->primary_pattern == old_rule->primary_pattern &&
+                 new_rule->secondary_pattern == old_rule->secondary_pattern;
+        });
+    if (match == new_rules.end()) {
+      updates.emplace_back(std::make_unique<Rule>(
+          old_rule->primary_pattern, old_rule->secondary_pattern,
+          base::Value(), old_rule->metadata.Clone()));
+    }
+  }
+
+  return updates;
 }
 
 }  // namespace
@@ -366,8 +412,6 @@ void BravePrefProvider::MigrateShieldsSettingsFromResourceIds() {
           shields_preference_name = brave_shields::kAds;
         } else if (resource_identifier == brave_shields::kObsoleteCookies) {
           shields_preference_name = brave_shields::kObsoleteShieldsCookies;
-        } else if (resource_identifier == brave_shields::kJavaScript) {
-          shields_preference_name = brave_shields::kBraveJavaScript;
         } else if (resource_identifier ==
                    brave_shields::kObsoleteCosmeticFiltering) {
           shields_preference_name = resource_identifier;
@@ -543,12 +587,21 @@ void BravePrefProvider::MigrateShieldsSettingsV4ToV5() {
     return;
   }
 
+  // Only JAVASCRIPT rules that Shields itself created should move to
+  // BRAVE_JAVASCRIPT; JAVASCRIPT exceptions the user added through the Chromium
+  // Site Settings UI must stay put. Shields wrote its per-site JS rules through
+  // SetNoScriptControlType(), which always uses a host pattern of the form
+  // "*://host/*" (scheme-wildcard, specific host, wildcard path) produced by
+  // content_settings::CreateHostPattern(), paired with a wildcard secondary
+  // pattern. The Chromium UI instead writes scheme-specific, port-qualified
+  // patterns (e.g. "https://host:443"), so matching this exact Shields-authored
+  // shape reliably selects only Shields-origin rules.
   std::vector<std::unique_ptr<Rule>> rules_to_migrate;
   auto rule_iterator = PrefProvider::GetRuleIterator(
       ContentSettingsType::JAVASCRIPT, /*off_the_record*/ false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
-    if (IsLegacyShieldsJavaScriptRule(*rule)) {
+    if (IsShieldsAuthoredJavaScriptRule(*rule)) {
       rules_to_migrate.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
     }
   }
@@ -1136,7 +1189,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
     // Matching cookie rules against shield rules.
     while (brave_cookies_iterator && brave_cookies_iterator->HasNext()) {
       auto rule = brave_cookies_iterator->Next();
-      if (IsActive(rule.get(), shield_rules)) {
+      // For cookies the top-level site is the secondary (embedding) pattern.
+      if (IsActive(rule.get(), rule->secondary_pattern, shield_rules)) {
         rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
         brave_cookie_rules_[incognito].emplace_back(
             CloneRule(CHECK_DEREF(rule.get())));
@@ -1173,37 +1227,8 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
   }
 
   // Get the list of changes.
-  std::vector<std::unique_ptr<Rule>> brave_cookie_updates;
-  for (const auto& new_rule : brave_cookie_rules_[incognito]) {
-    auto match =
-        std::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
-          // we want an exact match here because any change to the rule
-          // is an update
-          return new_rule->primary_pattern == old_rule->primary_pattern &&
-                 new_rule->secondary_pattern == old_rule->secondary_pattern &&
-                 ValueToContentSetting(new_rule->value) ==
-                     ValueToContentSetting(old_rule->value);
-        });
-    if (match == old_rules.end()) {
-      brave_cookie_updates.emplace_back(CloneRule(CHECK_DEREF(new_rule.get())));
-    }
-  }
-
-  // Find any removed rules.
-  for (const auto& old_rule : old_rules) {
-    auto match = std::ranges::find_if(
-        brave_cookie_rules_[incognito], [&old_rule](const auto& new_rule) {
-          // We only care about the patterns here because we're looking for
-          // deleted rules, not changed rules.
-          return new_rule->primary_pattern == old_rule->primary_pattern &&
-                 new_rule->secondary_pattern == old_rule->secondary_pattern;
-        });
-    if (match == brave_cookie_rules_[incognito].end()) {
-      brave_cookie_updates.emplace_back(std::make_unique<Rule>(
-          old_rule->primary_pattern, old_rule->secondary_pattern, base::Value(),
-          old_rule->metadata.Clone()));
-    }
-  }
+  std::vector<std::unique_ptr<Rule>> brave_cookie_updates =
+      ComputeRuleUpdates(old_rules, brave_cookie_rules_[incognito]);
   {
     base::AutoLock lock(cookie_rules_[incognito].GetLock());
     cookie_rules_[incognito].clear();
@@ -1256,7 +1281,8 @@ void BravePrefProvider::UpdateJavaScriptRules(ContentSettingsType content_type,
         ContentSettingsType::BRAVE_JAVASCRIPT, incognito);
     while (brave_javascript_iterator && brave_javascript_iterator->HasNext()) {
       auto rule = brave_javascript_iterator->Next();
-      if (IsActiveForTopLevelPattern(rule->primary_pattern, shield_rules)) {
+      // For JavaScript the top-level site is the primary pattern.
+      if (IsActive(rule.get(), rule->primary_pattern, shield_rules)) {
         rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
         brave_javascript_rules_[incognito].emplace_back(
             CloneRule(CHECK_DEREF(rule.get())));
@@ -1264,33 +1290,8 @@ void BravePrefProvider::UpdateJavaScriptRules(ContentSettingsType content_type,
     }
   }
 
-  std::vector<std::unique_ptr<Rule>> brave_javascript_updates;
-  for (const auto& new_rule : brave_javascript_rules_[incognito]) {
-    auto match =
-        std::ranges::find_if(old_rules, [&new_rule](const auto& old_rule) {
-          return new_rule->primary_pattern == old_rule->primary_pattern &&
-                 new_rule->secondary_pattern == old_rule->secondary_pattern &&
-                 ValueToContentSetting(new_rule->value) ==
-                     ValueToContentSetting(old_rule->value);
-        });
-    if (match == old_rules.end()) {
-      brave_javascript_updates.emplace_back(
-          CloneRule(CHECK_DEREF(new_rule.get())));
-    }
-  }
-
-  for (const auto& old_rule : old_rules) {
-    auto match = std::ranges::find_if(
-        brave_javascript_rules_[incognito], [&old_rule](const auto& new_rule) {
-          return new_rule->primary_pattern == old_rule->primary_pattern &&
-                 new_rule->secondary_pattern == old_rule->secondary_pattern;
-        });
-    if (match == brave_javascript_rules_[incognito].end()) {
-      brave_javascript_updates.emplace_back(std::make_unique<Rule>(
-          old_rule->primary_pattern, old_rule->secondary_pattern, base::Value(),
-          old_rule->metadata.Clone()));
-    }
-  }
+  std::vector<std::unique_ptr<Rule>> brave_javascript_updates =
+      ComputeRuleUpdates(old_rules, brave_javascript_rules_[incognito]);
 
   {
     base::AutoLock lock(javascript_rules_[incognito].GetLock());
