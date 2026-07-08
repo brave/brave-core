@@ -3,7 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import assert from 'node:assert'
 import fs from 'node:fs'
 import path from 'node:path'
 import type { Configuration } from 'webpack'
@@ -22,72 +21,65 @@ import {
   braveUiFullySpecifiedRule,
   htmlAssetRule,
 } from './rules.ts'
+import type { TranspileWebUiCliOptions } from './transpile-web-ui-command.ts'
 import GenerateDepfilePlugin from './webpack-plugin-depfile.js'
 import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin.js'
 
-assert(process.env.ROOT_GEN_DIR, 'ROOT_GEN_DIR env variable is required')
-const rootGenDir = process.env.ROOT_GEN_DIR
-const pathMap = generatePathMap(rootGenDir)
-const buildFlags = JSON.parse(
-  fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
-)
-const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
+export function createWebpackConfig(
+  options: TranspileWebUiCliOptions,
+): Configuration {
+  const rootGenDir = path.resolve(options.root_gen_dir)
+  const pathMap = generatePathMap(rootGenDir)
+  const buildFlags = JSON.parse(
+    fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
+  )
+  const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
 
-export default async function (env: any, argv: any): Promise<Configuration> {
-  const isDevMode = argv.mode === 'development'
-  // webpack-cli no longer allows specifying entry name in cli args, so use
-  // a custom env param and parse ourselves.
+  const isDevMode = options.mode === 'development'
   const entry: Record<string, string> = {}
-  if (!env.brave_entries) {
-    throw new Error(
-      'Entry point(s) must be provided via env.brave_entries param.',
-    )
-  }
-  const entryInput = env.brave_entries.split(',').sort()
-  for (const entryInputItem of entryInput) {
-    const entryInputItemParts = entryInputItem.split('=')
+  for (const entryInputItem of options.entry) {
+    const entryInputItemParts = entryInputItem.split('=', 2)
     if (entryInputItemParts.length !== 2) {
       throw new Error(
-        'Brave Webpack config could not parse entry env param item: '
+        'Brave Webpack config could not parse entry options param item: '
           + entryInputItem,
       )
     }
-    entry[entryInputItemParts[0]] = entryInputItemParts[1]
+    const [key, value] = entryInputItemParts as [string, string]
+    entry[key] = value
   }
 
   const resolve = baseResolve(pathMap)
 
-  if (env.extra_modules) {
-    const extraModules = env.extra_modules.split(',')
-    resolve.modules = [...extraModules, ...(resolve.modules as string[])]
+  if (options.extra_modules.length > 0) {
+    resolve.modules = [...options.extra_modules, ...resolve.modules!]
   }
 
-  if (env.webpack_aliases) {
-    resolve.aliasFields = env.webpack_aliases.split(',')
+  if (options.webpack_alias.length > 0) {
+    resolve.aliasFields = options.webpack_alias
   }
 
-  assert(process.env.TARGET_GEN_DIR, 'TARGET_GEN_DIR env variable is required')
   const output: NonNullable<Configuration['output']> = {
-    iife: !env.no_iife,
-    path: process.env.TARGET_GEN_DIR,
+    iife: !options.no_iife,
+    path: path.resolve(options.output_dir), // Must be absolute path
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/',
   }
 
-  if (env.output_module) {
+  if (options.output_module) {
     output.library = { type: 'module' }
     output.iife = false
   }
 
-  if (env.output_public_path) {
-    output.publicPath = env.output_public_path
+  if (options.public_asset_path) {
+    output.publicPath = options.public_asset_path
   }
 
   const experiments: Configuration['experiments'] = {
-    outputModule: Boolean(env.output_module),
+    outputModule: Boolean(options.output_module),
   }
-  if (env.sync_wasm) {
+  if (options.sync_wasm) {
     experiments.syncWebAssembly = true
   } else {
     experiments.asyncWebAssembly = true
@@ -104,7 +96,7 @@ export default async function (env: any, argv: any): Promise<Configuration> {
     callback: (err?: null | Error, result?: string) => void,
   ) {
     if (
-      env.output_module
+      options.output_module
       && request
       && /^chrome(-untrusted)?:\/\//.test(request)
     ) {
@@ -115,7 +107,7 @@ export default async function (env: any, argv: any): Promise<Configuration> {
 
   // Serve common libraries from shared resources
   const reactExternals: Configuration['externals'] =
-    env.output_module && !('no_externals' in env)
+    options.output_module && !options.no_externals
       ? {
           // React and ReactDOM ship in a single bundle (see
           // brave/ui/webui/resources/react/initialize_bundle.ts).
@@ -126,6 +118,8 @@ export default async function (env: any, argv: any): Promise<Configuration> {
 
   return {
     entry,
+    mode: options.mode,
+    context: path.resolve(options.webpack_context_dir), // Must be absolute path
     devtool: isDevMode ? 'inline-source-map' : false,
     output,
     resolve,
@@ -133,15 +127,15 @@ export default async function (env: any, argv: any): Promise<Configuration> {
     experiments,
     externals: [chromeUrlExternals, reactExternals],
     plugins: [
-      process.env.DEPFILE_SOURCE_NAME
+      options.grd_path
         && new GenerateDepfilePlugin({
-          depfilePath: process.env.DEPFILE_PATH,
-          depfileSourceName: process.env.DEPFILE_SOURCE_NAME,
+          depfilePath: options.depfile_path,
+          depfileSourceName: options.grd_path,
         }),
       ...deterministicIdsPlugins(rootGenDir),
       provideNodeGlobals,
       ...chromePrefixReplacers(pathMap),
-      !env.sync_wasm && new XHRCompileAsyncWasmPlugin(),
+      !options.sync_wasm && new XHRCompileAsyncWasmPlugin(),
     ],
     module: {
       rules: [

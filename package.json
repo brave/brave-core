@@ -33,8 +33,6 @@
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "node ./build/commands/scripts/testScripts.ts",
     "eslint": "eslint --quiet .",
-    "web-ui-gen-grd": "node build/webpack/gen-webpack-grd",
-    "web-ui": "webpack --disable-interpret --config build/webpack/webpack.config.ts",
     "build-storybook": "node ./build/commands/scripts/commands.js build --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",

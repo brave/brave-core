@@ -3,6 +3,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//brave/build/node_action.gni")
 import("//brave/resources/brave_grit.gni")
 import("rust_to_wasm.gni")
 
@@ -35,11 +36,14 @@ brave_common_web_compile_inputs = [
   "//brave/build/webpack/deterministic-output.ts",
   "//brave/build/webpack/polyfill.ts",
   "//brave/build/webpack/webpack-ts-transformers.js",
-  "//brave/build/webpack/gen-webpack-grd.js",
+  "//brave/build/webpack/gen-webpack-grd.ts",
   "//brave/build/webpack/path-map.js",
   "//brave/build/webpack/webpack-plugin-depfile.js",
   "//brave/build/webpack/xhr-compile-async-wasm-plugin.js",
   "//brave/build/webpack/plugins/ifdef-loader.ts",
+  "//brave/build/webpack/transpile-web-ui-command.ts",
+  "//brave/build/webpack/verify-webpack-srcs.ts",
+  "//brave/build/webpack/webpack.ts",
 
   # typescript config changes warrant a re-build of all typescript builds
   "//brave/tsconfig.json",
@@ -110,8 +114,8 @@ template("transpile_web_ui") {
     }
   }
 
-  action(target_name) {
-    script = "//brave/script/transpile-web-ui.py"
+  node_action(target_name) {
+    script = "//brave/build/webpack/transpile-web-ui.ts"
 
     # make sure rebuilds when common files change
     inputs = brave_common_web_compile_inputs
@@ -173,8 +177,9 @@ template("transpile_web_ui") {
     if (defined(invoker.generate_grdp) && invoker.generate_grdp) {
       grd_name = "$resource_name.grdp"
     }
+    grd_path = "$gen_output_dir/$grd_name"
 
-    outputs = [ "$gen_output_dir/$grd_name" ]
+    outputs = [ grd_path ]
 
     # Base script arguments:
     #  - resource (compiled) output destination
@@ -182,14 +187,14 @@ template("transpile_web_ui") {
     #  - unique name to stamp in GRD file
     #  - depfile summary of input files destination
     args = [
-      # output_path arg must be relative to root_build_dir so that
-      # depfile header format is correct (see docs above).
-      "--output_path=" + rebase_path(gen_output_dir, root_build_dir),
-      "--root_gen_dir=" + rebase_path(root_gen_dir),
-      "--import_paths_file=" + rebase_path(import_paths_file),
-      "--grd_name=$grd_name",
+      "--webpack_context_dir=" + rebase_path("//brave", root_build_dir),
+      "--root_src_dir=" + rebase_path("//", root_build_dir),
+      "--root_gen_dir=" + rebase_path(root_gen_dir, root_build_dir),
+      "--output_dir=" + rebase_path(gen_output_dir, root_build_dir),
+      "--import_paths_file=" + rebase_path(import_paths_file, root_build_dir),
+      "--grd_path=" + rebase_path(grd_path, root_build_dir),
       "--resource_name=$resource_name",
-      "--depfile_path=" + rebase_path(depfile),
+      "--depfile_path=" + rebase_path(depfile, root_build_dir),
     ]
 
     if (defined(invoker.no_externals) && invoker.no_externals) {
@@ -234,7 +239,9 @@ template("transpile_web_ui") {
     }
 
     if (is_official_build) {
-      args += [ "--production" ]
+      args += [ "--mode=production" ]
+    } else {
+      args += [ "--mode=development" ]
     }
 
     if (defined(invoker.sync_wasm) && invoker.sync_wasm) {
