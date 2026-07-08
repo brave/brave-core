@@ -6,6 +6,7 @@
 from __future__ import annotations
 
 from contextlib import contextmanager
+from pathlib import Path
 import logging
 import platform
 import secrets
@@ -37,6 +38,37 @@ def is_verbose() -> bool:
     time, before any `argparse` parser has had a chance to run.
     """
     return '--verbose' in sys.argv
+
+
+def detect_package_manager() -> str:
+    """Returns 'npm' or 'pnpm' based on the lockfile in the package.json dir."""
+
+    def _find_package_json_dir() -> Path:
+        """Returns the nearest ancestor containing package.json."""
+        directory = Path.cwd().resolve()
+        start_dir = directory
+        while True:
+            if (directory / 'package.json').is_file():
+                return directory
+            if directory.parent == directory:
+                break
+            directory = directory.parent
+        raise RuntimeError(
+            f'No package.json found searching upward from {start_dir}.')
+
+    package_dir = _find_package_json_dir()
+    has_npm_lock = (package_dir / 'package-lock.json').is_file()
+    has_pnpm_lock = (package_dir / 'pnpm-lock.yaml').is_file()
+    if has_npm_lock and has_pnpm_lock:
+        raise RuntimeError(
+            'Both package-lock.json and pnpm-lock.yaml exist in '
+            f'{package_dir}.')
+    if has_pnpm_lock:
+        return 'pnpm'
+    if has_npm_lock:
+        return 'npm'
+    raise RuntimeError('No package-lock.json or pnpm-lock.yaml found in '
+                       f'{package_dir}.')
 
 
 class _PresetLoggingHandler(logging.Handler):
@@ -317,20 +349,28 @@ class Terminal:
         console.log(f'[bold red]*[/] {message}')
 
     def run_npm_command(self, *cmd):
-        """Runs an npm build command.
+        """Runs an npm or pnpm build command.
 
-      This function will run 'npm run' commands appended by any extra arguments
-      are passed into it.
+        This function will run 'npm run' or 'pnpm run' (based on the lockfile in
+        the nearest ancestor directory containing package.json) with any extra
+        arguments passed into it.
 
-      e.g:
-          self.run_npm_command('init')
-      """
-        cmd = ['npm', 'run'] + list(cmd)
+        e.g:
+            self.run_npm_command('init')
+        """
+        package_manager = detect_package_manager()
+        args = list(cmd)
+        if package_manager == 'pnpm':
+            args = [arg for arg in args if arg != '--']
+        cmd = [package_manager, 'run'] + args
         if self.infra_mode and len(cmd) == 3 and cmd[-1] == 'init':
             # Special flag to avoid running into issues in jenkins when running
             # `gclient sync` with `--revision`. For more details see:
             # https://github.com/brave/brave-browser/issues/44921
-            cmd += ['--', '--with_issue_44921']
+            if package_manager == 'pnpm':
+                cmd.append('--with_issue_44921')
+            else:
+                cmd += ['--', '--with_issue_44921']
         return self.run(cmd)
 
 
