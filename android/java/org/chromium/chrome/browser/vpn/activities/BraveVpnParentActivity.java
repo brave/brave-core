@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.vpn.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.util.Pair;
 
@@ -22,6 +23,8 @@ import com.wireguard.crypto.KeyPair;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.task.PostTask;
+import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveLandscapeHelper;
 import org.chromium.chrome.browser.billing.InAppPurchaseWrapper;
@@ -96,6 +99,28 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
         if (hasFocus && shouldApplyLandscapeWindowSizing()) {
             BraveLandscapeHelper.applyLandscapeWindowSizing(this);
         }
+    }
+
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+        if (!shouldApplyLandscapeWindowSizing()) {
+            return;
+        }
+        // Activities such as VpnServerSelectionActivity and VpnServerActivity declare
+        // configChanges in the manifest, so an orientation change does not recreate them and does
+        // not trigger onWindowFocusChanged. Without this, the landscape side padding applied by
+        // BraveLandscapeHelper persists after rotating landscape->portrait, squeezing the content
+        // into a narrow column. Re-apply the sizing for the new orientation. Post it so it runs
+        // after the framework's rotation layout pass, when the display metrics for the new
+        // orientation are final.
+        PostTask.postTask(
+                TaskTraits.UI_USER_VISIBLE,
+                () -> {
+                    if (!isActivityFinishingOrDestroyed()) {
+                        BraveLandscapeHelper.applyLandscapeWindowSizing(this);
+                    }
+                });
     }
 
     // Subclasses that ship a dedicated `layout-land` resource should return
