@@ -6,14 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CONTENT_BROWSER_BRAVE_FARBLING_SERVICE_H_
 
+#include <string>
+
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
+#include "base/token.h"
+#include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
 
 class GURL;
-
-class HostContentSettingsMap;
 
 namespace user_prefs {
 class PrefRegistrySyncable;
@@ -36,8 +39,25 @@ class BraveFarblingService : public KeyedService {
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
+  // Returns the farbling token for |url|, creating and storing one if absent.
+  // |additional_entropy| is XOR-mixed into the returned token (but the stored
+  // base token is unaffected). Equivalent to the free function
+  // brave_shields::GetFarblingToken but operates on the in-memory per-profile
+  // map rather than the HostContentSettingsMap-backed store.
+  base::Token GetFarblingToken(const GURL& url,
+                               base::span<const uint8_t> additional_entropy);
+
+  // This is called when the clear browsing data is invoked on cookies and
+  // history which aggressively resets all the farbling tokens keyed to
+  // websites.
+  void ResetFarblingTokensMap();
+
  private:
   const raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  // In-memory eTLD+1-scoped farbling token store. Keyed by scheme + eTLD+1
+  // pattern string. Cleared automatically when the
+  // service is destroyed (i.e., on browser restart or profile destruction).
+  base::flat_map<std::string, base::Token> farbling_tokens_map_;
 };
 
 }  // namespace brave

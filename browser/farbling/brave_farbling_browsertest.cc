@@ -13,6 +13,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/browser_process.h"
+#include "chrome/browser/browsing_data/chrome_browsing_data_remover_constants.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_manager.h"
@@ -22,6 +23,7 @@
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
+#include "content/public/test/browsing_data_remover_test_util.h"
 #include "net/dns/mock_host_resolver.h"
 
 namespace {
@@ -86,7 +88,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
-                       PRE_FarblingTokenIsKeptAfterRestart) {
+                       PRE_FarblingTokenIsNotKeptAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
   EXPECT_NE(plugins_str, "");
@@ -99,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
-                       FarblingTokenIsKeptAfterRestart) {
+                       FarblingTokenIsNotKeptAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
   EXPECT_NE(plugins_str, "");
@@ -110,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   std::string expected;
   EXPECT_TRUE(base::ReadFileToString(input_file, &expected));
   // Compare the plugins list from the previous launch.
-  EXPECT_EQ(plugins_str, expected);
+  EXPECT_NE(plugins_str, expected);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
@@ -126,8 +128,16 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
             plugins_before_cleanup);
 
   // Clear the website data.
-  content_settings()->ClearSettingsForOneType(
-      ContentSettingsType::BRAVE_SHIELDS_METADATA);
+  content::BrowserContext* browser_context = browser()->profile();
+  content::BrowsingDataRemover* remover =
+      browser_context->GetBrowsingDataRemover();
+  content::BrowsingDataRemoverCompletionObserver completion_observer(remover);
+  remover->RemoveAndReply(
+      base::Time(),       // delete_begin
+      base::Time::Max(),  // delete_end
+      chrome_browsing_data_remover::DATA_TYPE_SITE_DATA,
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB,
+      &completion_observer);
 
   // A new token should be generated.
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
@@ -158,12 +168,10 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   EXPECT_NE(prng, prng_incognito);
 
   // Compare the farbling tokens.
-  const auto farbling_token = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile1), farbling_url(),
-      {});
-  const auto farbling_token_incognito = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(incognito_profile),
-      farbling_url(), {});
+  const auto farbling_token =
+      brave_farbling_service->GetFarblingToken(farbling_url(), {});
+  const auto farbling_token_incognito =
+      brave_farbling_service_incognito->GetFarblingToken(farbling_url(), {});
   EXPECT_FALSE(farbling_token.is_zero());
   EXPECT_FALSE(farbling_token_incognito.is_zero());
   EXPECT_NE(farbling_token, farbling_token_incognito);
@@ -205,12 +213,10 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   EXPECT_NE(prng_1, prng_2);
 
   // Compare the farbling tokens.
-  const auto farbling_token_1 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_1), farbling_url(),
-      {});
-  const auto farbling_token_2 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_2), farbling_url(),
-      {});
+  const auto farbling_token_1 =
+      brave_farbling_service_profile_1->GetFarblingToken(farbling_url(), {});
+  const auto farbling_token_2 =
+      brave_farbling_service_profile_2->GetFarblingToken(farbling_url(), {});
   EXPECT_FALSE(farbling_token_1.is_zero());
   EXPECT_FALSE(farbling_token_2.is_zero());
   EXPECT_NE(farbling_token_1, farbling_token_2);

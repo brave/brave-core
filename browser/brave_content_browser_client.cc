@@ -895,10 +895,13 @@ BraveContentBrowserClient::WorkerGetBraveShieldSettings(
             *storage_partition_config));
   }
 #endif
+  brave::BraveFarblingService* farbling_service =
+      brave::BraveFarblingServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(browser_context));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                HostContentSettingsMapFactory::GetForProfile(browser_context),
+      (farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+       farbling_service)
+          ? farbling_service->GetFarblingToken(
                 url, base::as_byte_span(additional_entropy))
           : base::Token();
 

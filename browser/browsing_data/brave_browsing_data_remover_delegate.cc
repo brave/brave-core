@@ -11,11 +11,13 @@
 #include "base/containers/flat_map.h"
 #include "base/no_destructor.h"
 #include "base/notreached.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/serp_metrics/serp_metrics_service_factory.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_pref_provider.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
@@ -223,13 +225,11 @@ void BraveBrowsingDataRemoverDelegate::RemoveEmbedderData(
 
   if ((remove_mask & content::BrowsingDataRemover::DATA_TYPE_COOKIES) ||
       (remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {
-    HostContentSettingsMap::PatternSourcePredicate website_settings_filter =
-        browsing_data::CreateWebsiteSettingsFilter(filter_builder);
-    HostContentSettingsMap* host_content_settings_map =
-        HostContentSettingsMapFactory::GetForProfile(profile_);
-    host_content_settings_map->ClearSettingsForOneTypeWithPredicate(
-        ContentSettingsType::BRAVE_SHIELDS_METADATA, delete_begin, delete_end,
-        website_settings_filter);
+    brave::BraveFarblingService* farbling_service =
+        brave::BraveFarblingServiceFactory::GetForProfile(profile_);
+    // Aggressively remove all tokens on getting a cbd signal regardless of the
+    // time range.
+    farbling_service->ResetFarblingTokensMap();
   }
 
   if ((remove_mask & chrome_browsing_data_remover::DATA_TYPE_HISTORY)) {

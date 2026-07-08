@@ -13,8 +13,10 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
@@ -342,11 +344,14 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
         navigation_handle->GetWebContents());
   }
 #endif
+  brave::BraveFarblingService* farbling_service =
+      brave::BraveFarblingServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(rfh->GetBrowserContext()));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                host_content_settings_map, primary_url,
-                base::as_byte_span(additional_entropy))
+      (farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+       farbling_service)
+          ? farbling_service->GetFarblingToken(
+                primary_url, base::as_byte_span(additional_entropy))
           : base::Token();
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());

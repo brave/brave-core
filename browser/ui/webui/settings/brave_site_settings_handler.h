@@ -35,8 +35,6 @@ class BraveSiteSettingsHandler : public SiteSettingsHandler {
   bool IsPatternValidForBraveContentType(ContentSettingsType content_type,
                                          const std::string& pattern_string);
 
-  void RemoveNonModelData(const std::vector<url::Origin>& origins) override;
-
   // Exposes the protected WebUIMessageHandler::set_web_ui() to tests.
   void set_web_ui_for_testing(content::WebUI* web_ui) { set_web_ui(web_ui); }
 };

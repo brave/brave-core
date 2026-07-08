@@ -6,7 +6,9 @@
 #include <string>
 #include <string_view>
 
+#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
 #include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
@@ -66,10 +68,13 @@ brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettingsOnUI(
     }
   }
 #endif
+  brave::BraveFarblingService* farbling_service =
+      brave::BraveFarblingServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(browser_context));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                HostContentSettingsMapFactory::GetForProfile(browser_context),
+      (farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+       farbling_service)
+          ? farbling_service->GetFarblingToken(
                 top_frame_url, base::as_byte_span(additional_entropy))
           : base::Token();
   PrefService* pref_service = user_prefs::UserPrefs::Get(browser_context);

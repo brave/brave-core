@@ -8,7 +8,9 @@
 
 #include <string>
 
+#include "base/containers/flat_map.h"
 #include "base/containers/span.h"
+#include "base/token.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-data-view.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -132,7 +134,12 @@ bool IsWebcompatEnabled(HostContentSettingsMap* map,
 
 mojom::FarblingLevel GetFarblingLevel(HostContentSettingsMap* map,
                                       const GURL& primary_url);
-base::Token GetFarblingToken(HostContentSettingsMap* map,
+
+// Reads/writes the farbling token from/to an in-memory map keyed by canonical
+// URL pattern (eTLD+1-scoped). The map must outlive this call; it is typically
+// owned by BraveFarblingService (profile-scoped) and cleared on browser
+// restart.
+base::Token GetFarblingToken(base::flat_map<std::string, base::Token>& tokens,
                              const GURL& url,
                              base::span<const uint8_t> additional_entropy);
 

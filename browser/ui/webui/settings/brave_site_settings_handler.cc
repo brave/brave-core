@@ -69,17 +69,4 @@ void BraveSiteSettingsHandler::HandleIsPatternValidForType(
   SiteSettingsHandler::HandleIsPatternValidForType(args);
 }
 
-void BraveSiteSettingsHandler::RemoveNonModelData(
-    const std::vector<url::Origin>& origins) {
-  SiteSettingsHandler::RemoveNonModelData(origins);
-
-  auto* settings_map = HostContentSettingsMapFactory::GetForProfile(profile_);
-  for (const auto& origin : origins) {
-    const auto& url = origin.GetURL();
-    // base::Value() is a default value which removes the setting internally.
-    settings_map->SetWebsiteSettingDefaultScope(
-        url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA, base::Value());
-  }
-}
-
 }  // namespace settings
