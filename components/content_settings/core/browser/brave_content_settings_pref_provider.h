@@ -134,11 +134,12 @@ class BravePrefProvider : public PrefProvider, public Observer {
   // type (COOKIES, JAVASCRIPT, ...), keyed by that content type and then by
   // incognito. These replace the per-type members so adding another
   // Shields-derived effective setting does not require another parallel pair.
-  std::map<ContentSettingsType, std::map<bool /* is_incognito */, OriginValueMap>>
-      brave_effective_rules_;
   std::map<ContentSettingsType,
-           std::map<bool /* is_incognito */,
-                    std::vector<std::unique_ptr<Rule>>>>
+           std::map<bool /* is_incognito */, OriginValueMap>>
+      brave_effective_rules_;
+  std::map<
+      ContentSettingsType,
+      std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>>
       brave_effective_source_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;

@@ -150,8 +150,7 @@ void ContentSettingsRegistry::BraveInit() {
            javascript_info->GetInitialDefaultSetting(),
            WebsiteSettingsInfo::SYNCABLE,
            javascript_permission_info->allowlisted_primary_schemes(),
-           javascript_valid_settings,
-           javascript_website_info->scoping_type(),
+           javascript_valid_settings, javascript_website_info->scoping_type(),
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID |
                WebsiteSettingsRegistry::PLATFORM_IOS,
