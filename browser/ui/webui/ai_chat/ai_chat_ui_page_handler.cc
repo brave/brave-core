@@ -568,17 +568,32 @@ void AIChatUIPageHandler::NotifyNewDefaultConversation() {
 }
 
 ConversationHandler*
-AIChatUIPageHandler::MaybeGetUnshownConversationForActiveContent(
+AIChatUIPageHandler::AdoptOrCreateConversationForActiveContent(
     AIChatService* service) {
-  if (!active_chat_tab_helper_) {
-    return nullptr;
+  // Adopt the conversation cached for this tab's content if it hasn't been
+  // shown yet (e.g. one the context menu created before the panel opened), so
+  // its message isn't orphaned in a conversation the panel never binds to. A
+  // conversation already on screen has a connected client, so adopting is
+  // limited to one that hasn't been displayed yet: this neither hijacks the
+  // visible conversation nor a "new conversation" request.
+  if (active_chat_tab_helper_) {
+    ConversationHandler* conversation =
+        service->GetConversationHandlerForContent(
+            active_chat_tab_helper_->web_contents_content().content_id());
+    if (conversation && !conversation->IsAnyClientConnected()) {
+      return conversation;
+    }
   }
-  ConversationHandler* conversation = service->GetConversationHandlerForContent(
-      active_chat_tab_helper_->web_contents_content().content_id());
-  // A conversation with a connected client is already being shown, so only a
-  // conversation that hasn't been displayed yet should be adopted here.
-  if (conversation && conversation->IsAnyClientConnected()) {
-    return nullptr;
+
+  ConversationHandler* conversation = service->CreateConversation();
+  // For global panel, associate the current tab's content synchronously so
+  // GetState() on the frontend returns it already populated. Tab switches are
+  // handled by the frontend via AssociateTab/DisassociateContent.
+  if (active_chat_tab_helper_ &&
+      ai_chat::CanAssociateContent(
+          &active_chat_tab_helper_->web_contents_content())) {
+    conversation->associated_content_manager()->AddContent(
+        &active_chat_tab_helper_->web_contents_content());
   }
   return conversation;
 }
@@ -588,23 +603,8 @@ void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
   if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
-    auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
-    // Adopt the conversation cached for this tab's content if it hasn't been
-    // shown yet (e.g. one the context menu created before the panel opened), so
-    // its message isn't orphaned in a conversation the panel never binds to. A
-    // conversation already on screen has a connected client, so this neither
-    // hijacks the visible conversation nor a "new conversation" request.
-    conversation = MaybeGetUnshownConversationForActiveContent(service);
-    if (!conversation) {
-      conversation = service->CreateConversation();
-      // For global panel, associate the current tab's content synchronously so
-      // GetState() on the frontend returns it already populated. Tab switches
-      // are handled by the frontend via AssociateTab/DisassociateContent.
-      if (active_chat_tab_helper_) {
-        conversation->associated_content_manager()->AddContent(
-            &active_chat_tab_helper_->web_contents_content());
-      }
-    }
+    conversation = AdoptOrCreateConversationForActiveContent(
+        AIChatServiceFactory::GetForBrowserContext(profile_));
   } else {
     // GetOrCreateConversationHandlerForContent ensures the side panel binds to
     // the same conversation already tied to this content_id. For example, if we
@@ -676,24 +676,8 @@ void AIChatUIPageHandler::NewConversation(
                 active_chat_tab_helper_->web_contents_content().content_id(),
                 active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   } else {
-    auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
-    // Adopt the conversation cached for this tab's content if it hasn't been
-    // shown yet (e.g. one the context menu created before the panel opened), so
-    // its message isn't orphaned in a conversation the panel never binds to. A
-    // conversation already on screen has a connected client, so this neither
-    // hijacks the visible conversation nor a "new conversation" request.
-    conversation = MaybeGetUnshownConversationForActiveContent(service);
-    if (!conversation) {
-      conversation = service->CreateConversation();
-      // For global panel, associate the current tab's content synchronously so
-      // GetState() on the frontend returns it already populated.
-      if (active_chat_tab_helper_ &&
-          ai_chat::CanAssociateContent(
-              &active_chat_tab_helper_->web_contents_content())) {
-        conversation->associated_content_manager()->AddContent(
-            &active_chat_tab_helper_->web_contents_content());
-      }
-    }
+    conversation = AdoptOrCreateConversationForActiveContent(
+        AIChatServiceFactory::GetForBrowserContext(profile_));
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));

@@ -21,6 +21,7 @@
 #include "base/check.h"
 #include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -332,16 +333,11 @@ void AIChatService::OnConversationDataReceived(
 ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
     int associated_content_id,
     base::WeakPtr<AssociatedContentDelegate> associated_content) {
-  ConversationHandler* conversation = nullptr;
-  auto conversation_uuid_it =
-      content_conversations_.find(associated_content_id);
-  if (conversation_uuid_it != content_conversations_.end()) {
-    auto conversation_uuid = conversation_uuid_it->second;
-    // Load from memory or database, but probably not database as if the
-    // conversation is in the associated content map then it's probably recent
-    // and still in memory.
-    conversation = GetConversation(conversation_uuid);
-  }
+  // Load from memory or database, but probably not database as if the
+  // conversation is in the associated content map then it's probably recent
+  // and still in memory.
+  ConversationHandler* conversation =
+      GetConversationHandlerForContent(associated_content_id);
   if (!conversation) {
     // New conversation needed
     conversation = CreateConversationHandlerForContent(associated_content_id,
@@ -353,11 +349,9 @@ ConversationHandler* AIChatService::GetOrCreateConversationHandlerForContent(
 
 ConversationHandler* AIChatService::GetConversationHandlerForContent(
     int associated_content_id) {
-  auto it = content_conversations_.find(associated_content_id);
-  if (it == content_conversations_.end()) {
-    return nullptr;
-  }
-  return GetConversation(it->second);
+  auto* conversation_uuid =
+      base::FindOrNull(content_conversations_, associated_content_id);
+  return conversation_uuid ? GetConversation(*conversation_uuid) : nullptr;
 }
 
 ConversationHandler* AIChatService::CreateConversationHandlerForContent(
