@@ -12,11 +12,14 @@
 #include "base/memory/weak_ptr.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
@@ -33,6 +36,8 @@
 #include "ui/color/color_provider_manager.h"
 #include "ui/gfx/image/image_skia.h"
 #include "ui/gfx/image/image_skia_rep.h"
+#include "ui/gfx/paint_vector_icon.h"
+#include "ui/native_theme/native_theme.h"
 #include "ui/views/controls/button/label_button.h"
 #include "ui/views/view.h"
 #include "url/gurl.h"
@@ -43,6 +48,17 @@
 
 namespace {
 constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
+
+// Returns the color provider for |web_contents|, falling back to the native UI
+// color provider when there is no active web contents.
+const ui::ColorProvider* GetColorProviderForWebContents(
+    content::WebContents* web_contents) {
+  if (web_contents) {
+    return &web_contents->GetColorProvider();
+  }
+  return ui::ColorProviderManager::Get().GetColorProviderFor(
+      ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(nullptr));
+}
 }  // namespace
 
 BraveShieldsActionController::BraveShieldsActionController(
@@ -114,16 +130,27 @@ void BraveShieldsActionController::RemoveObserverFromWebContents(
 
 gfx::ImageSkia BraveShieldsActionController::GetIconImage(
     bool is_enabled) const {
+  const int icon_size = IconDimensionForLayout();
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  // In the Brave Origin standalone build the Shields icon is replaced with the
+  // Brave Origin face icon, tinted to match the other location bar icons.
+  const ui::ColorProvider* color_provider =
+      GetColorProviderForWebContents(tab_strip_model_->GetActiveWebContents());
+  return gfx::CreateVectorIcon(
+      is_enabled ? kLeoBraveIconOnlyFaceIcon
+                 : kLeoBraveIconOnlyFaceDisabledIcon,
+      icon_size, color_provider->GetColor(kColorOmniboxResultsIcon));
+#else
   ui::ResourceBundle& rb = ui::ResourceBundle::GetSharedInstance();
   gfx::ImageSkia image;
   const SkBitmap bitmap =
       rb.GetImageNamed(is_enabled ? IDR_BRAVE_SHIELDS_ICON_64
                                   : IDR_BRAVE_SHIELDS_ICON_64_DISABLED)
           .AsBitmap();
-  const int icon_size = IconDimensionForLayout();
   float scale = static_cast<float>(bitmap.width()) / icon_size;
   image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
   return image;
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 
 std::unique_ptr<IconWithBadgeImageSource>
@@ -133,13 +160,7 @@ BraveShieldsActionController::GetImageSource(
 
   auto get_color_provider_callback = base::BindRepeating(
       [](base::WeakPtr<content::WebContents> weak_web_contents) {
-        const auto* const color_provider =
-            weak_web_contents
-                ? &weak_web_contents->GetColorProvider()
-                : ui::ColorProviderManager::Get().GetColorProviderFor(
-                      ui::NativeTheme::GetInstanceForNativeUi()
-                          ->GetColorProviderKey(nullptr));
-        return color_provider;
+        return GetColorProviderForWebContents(weak_web_contents.get());
       },
       web_contents ? web_contents->GetWeakPtr()
                    : base::WeakPtr<content::WebContents>());

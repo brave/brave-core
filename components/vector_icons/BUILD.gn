@@ -25,6 +25,7 @@ aggregate_vector_icons("brave_components_vector_icons") {
     "leo_arrow_small_right.icon",
     "leo_brave_icon_monochrome.icon",
     "leo_brave_icon_only_face.icon",
+    "leo_brave_icon_only_face_disabled.icon",
     "leo_browser_add.icon",
     "leo_browser_bookmark_add.icon",
     "leo_browser_bookmark_normal.icon",

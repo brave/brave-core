@@ -24,7 +24,9 @@ source_set("brave_actions") {
   deps = [
     "//brave/app:brave_generated_resources_grit",
     "//brave/browser/brave_shields",
+    "//brave/components/brave_origin/buildflags",
     "//brave/components/resources:strings_grit",
+    "//brave/components/vector_icons",
     "//chrome/browser/ui/extensions",
     "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/views/bubble",
