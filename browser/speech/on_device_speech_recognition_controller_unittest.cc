@@ -437,4 +437,58 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   EXPECT_EQ(nullptr, stale_bwc);
 }
 
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartWithNoModelInstalledDropsSession) {
+  SetInstalled(false);
+  Session s = StartSession();
+  // No worker is spun up just to discover the files are missing.
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  EXPECT_EQ(0, bwc_created_count_);
+  // The session's audio pipe is dropped, surfacing as a failure to the engine.
+  EXPECT_TRUE(base::test::RunUntil([&] { return !s.input.is_connected(); }));
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartAfterReadyForwardsImmediately) {
+  Session s1 = DriveToReady();
+  ASSERT_EQ(1, bwc_created_count_);
+
+  Session s2 = StartSession();
+  EXPECT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.create_count() >= 2; }));
+  // No new worker was needed.
+  EXPECT_EQ(1, bwc_created_count_);
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       IdleTimeoutTearsDownAfterLastSession) {
+  Session s = DriveToReady();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  // Dropping the last AsrSession arms the idle timer. FastForwardBy runs the
+  // (immediate) disconnect task first, arming the timer, then advances past
+  // the 60s kIdleTimeout so it fires.
+  s.session.reset();
+  task_environment_.FastForwardBy(base::Seconds(61));
+  EXPECT_EQ(nullptr, last_bwc_.get());
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest, NewSessionCancelsIdleTimeout) {
+  Session s = DriveToReady();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  // Drop the session and advance a little so the disconnect is processed and
+  // the idle timer arms (it would fire at +60s).
+  s.session.reset();
+  task_environment_.FastForwardBy(base::Seconds(1));
+
+  // A new session before the timeout stops the armed timer.
+  mojo::Remote<local_ai::mojom::AsrSession> reconnect(
+      controller_->GetAsrSession());
+
+  // Advancing past the original timeout does not tear the worker down.
+  task_environment_.FastForwardBy(base::Seconds(61));
+  EXPECT_NE(nullptr, last_bwc_.get());
+}
+
 }  // namespace speech
