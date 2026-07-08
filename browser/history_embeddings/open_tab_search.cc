@@ -82,16 +82,19 @@ std::vector<OpenTabInfo> SnapshotOpenTabs(Profile* profile) {
   return tabs;
 }
 
-// Emits the matched tabs by joining the URLID→tab index against the scored
-// URL rows.
+// Emits the matched tabs by joining the URLID→tabs index against the scored
+// URL rows. Multiple open tabs may share a URL (and therefore a URLID), so
+// each ranked row can produce more than one tab.
 void DispatchRankedTabs(
     RankedOpenTabsCallback& callback,
-    const base::flat_map<history::URLID, OpenTabInfo>& tab_by_url_id,
+    const base::flat_map<history::URLID, std::vector<OpenTabInfo>>&
+        tabs_by_url_id,
     SearchResult result) {
   std::vector<OpenTabInfo> ranked;
   for (const auto& row : result.scored_url_rows) {
-    if (auto* tab = base::FindOrNull(tab_by_url_id, row.scored_url.url_id)) {
-      ranked.push_back(*tab);
+    if (auto* matched =
+            base::FindOrNull(tabs_by_url_id, row.scored_url.url_id)) {
+      ranked.insert(ranked.end(), matched->begin(), matched->end());
     }
   }
   std::move(callback).Run(std::move(ranked));
@@ -109,14 +112,19 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
   }
   CHECK_EQ(tabs.size(), url_ids->size());
   std::vector<history::URLID> url_id_filter;
-  base::flat_map<history::URLID, OpenTabInfo> tab_by_url_id;
+  base::flat_map<history::URLID, std::vector<OpenTabInfo>> tabs_by_url_id;
   url_id_filter.reserve(url_ids->size());
   for (size_t i = 0; i < url_ids->size(); ++i) {
     if ((*url_ids)[i] == 0) {
       continue;
     }
-    url_id_filter.push_back((*url_ids)[i]);
-    tab_by_url_id.emplace((*url_ids)[i], tabs[i]);
+    // Only add each URLID once to the filter; duplicate ids in the SQL
+    // `IN (?, ?, ...)` list are harmless but wasteful.
+    auto& matched = tabs_by_url_id[(*url_ids)[i]];
+    if (matched.empty()) {
+      url_id_filter.push_back((*url_ids)[i]);
+    }
+    matched.push_back(std::move(tabs[i]));
   }
   // None of the open tabs have a corresponding URLID in history yet, so the
   // embeddings search would have nothing to score against.
@@ -131,7 +139,7 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
       /*skip_answering=*/true, std::move(url_id_filter),
       base::BindRepeating(&DispatchRankedTabs,
                           base::OwnedRef(std::move(callback)),
-                          std::move(tab_by_url_id)));
+                          std::move(tabs_by_url_id)));
 }
 
 }  // namespace

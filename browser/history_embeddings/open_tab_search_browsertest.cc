@@ -214,4 +214,38 @@ IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, ExcludesOtherProfileTabs) {
   EXPECT_EQ(ranked[0].url, foo_url);
 }
 
+// Two open tabs pointing at the same URL share a single URLID. The filter
+// forwarded to `Search()` carries that id once, and both tabs come back so
+// the caller can act on either.
+IN_PROC_BROWSER_TEST_F(OpenTabSearchBrowserTest, SameUrlYieldsEveryTab) {
+  const GURL url = GetURL("foo.com", "/empty.html");
+  AppendTab(browser(), url, "Shared Tab A");
+  AppendTab(browser(), url, "Shared Tab B");
+
+  const int tab_id_a = TabIdAt(browser(), 1);
+  const int tab_id_b = TabIdAt(browser(), 2);
+
+  AddToHistory(url);
+  const history::URLID url_id = QueryUrlId(url);
+  ASSERT_NE(url_id, 0);
+
+  ai_chat::FakeHistoryEmbeddingsSearch fake;
+  fake.SetScoredRows({ai_chat::FakeHistoryEmbeddingsSearch::MakeRow(
+      url_id, url, u"Shared", base::Time::Now(), /*score=*/0.9f)});
+
+  base::test::TestFuture<std::vector<OpenTabInfo>> future;
+  SearchOpenTabsByContent(profile(), history_service(), &fake, "query",
+                          future.GetCallback(), &tracker_);
+  const std::vector<OpenTabInfo> ranked = future.Take();
+
+  EXPECT_THAT(fake.last_url_id_filter(), testing::ElementsAre(url_id));
+  ASSERT_EQ(ranked.size(), 2u);
+  std::vector<int32_t> tab_ids;
+  for (const auto& tab : ranked) {
+    EXPECT_EQ(tab.url, url);
+    tab_ids.push_back(tab.tab_id);
+  }
+  EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(tab_id_a, tab_id_b));
+}
+
 }  // namespace history_embeddings
