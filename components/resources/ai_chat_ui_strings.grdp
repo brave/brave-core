@@ -945,6 +945,9 @@
   <message name="IDS_CHAT_UI_TOOL_SEMANTIC_HISTORY_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to search the user's local browsing history. Calls out that the search itself is on-device and only the matched pages flow to Brave AI." formatter_data="webui=AiChat">
     Brave AI wants to search your browsing history. The search runs locally on your device, so your full history isn't sent anywhere. Only the matching pages' titles, URLs, and indexed text passages will be sent to Brave AI as part of this conversation.
   </message>
+  <message name="IDS_CHAT_UI_TOOL_SEMANTIC_TAB_SEARCH_PERMISSION_IMPLICATIONS" desc="Explanation shown in the permission prompt when the assistant wants to semantically search the user's currently-open tabs. Calls out that the search itself is on-device and only the matched tabs flow to Brave AI." formatter_data="webui=AiChat">
+    Brave AI wants to semantically search your currently-open tabs. The search query and the full content of your tabs stay on this device. Only the matched tabs' titles and URLs will be sent to Brave AI as part of this conversation.
+  </message>
   <message name="IDS_CHAT_UI_CODE_EXECUTION_CODE_LABEL" desc="Label for code section in code execution tool" formatter_data="webui=AiChat">
     Code:
   </message>
