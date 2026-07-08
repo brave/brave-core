@@ -48,6 +48,17 @@
 
 namespace {
 constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
+
+// Returns the color provider for |web_contents|, falling back to the native UI
+// color provider when there is no active web contents.
+const ui::ColorProvider* GetColorProviderForWebContents(
+    content::WebContents* web_contents) {
+  if (web_contents) {
+    return &web_contents->GetColorProvider();
+  }
+  return ui::ColorProviderManager::Get().GetColorProviderFor(
+      ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(nullptr));
+}
 }  // namespace
 
 BraveShieldsActionController::BraveShieldsActionController(
@@ -123,13 +134,8 @@ gfx::ImageSkia BraveShieldsActionController::GetIconImage(
 #if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
   // In the Brave Origin standalone build the Shields icon is replaced with the
   // Brave Origin face icon, tinted to match the other location bar icons.
-  auto* web_contents = tab_strip_model_->GetActiveWebContents();
   const ui::ColorProvider* color_provider =
-      web_contents
-          ? &web_contents->GetColorProvider()
-          : ui::ColorProviderManager::Get().GetColorProviderFor(
-                ui::NativeTheme::GetInstanceForNativeUi()->GetColorProviderKey(
-                    nullptr));
+      GetColorProviderForWebContents(tab_strip_model_->GetActiveWebContents());
   return gfx::CreateVectorIcon(
       is_enabled ? kLeoBraveIconOnlyFaceIcon
                  : kLeoBraveIconOnlyFaceDisabledIcon,
@@ -154,13 +160,7 @@ BraveShieldsActionController::GetImageSource(
 
   auto get_color_provider_callback = base::BindRepeating(
       [](base::WeakPtr<content::WebContents> weak_web_contents) {
-        const auto* const color_provider =
-            weak_web_contents
-                ? &weak_web_contents->GetColorProvider()
-                : ui::ColorProviderManager::Get().GetColorProviderFor(
-                      ui::NativeTheme::GetInstanceForNativeUi()
-                          ->GetColorProviderKey(nullptr));
-        return color_provider;
+        return GetColorProviderForWebContents(weak_web_contents.get());
       },
       web_contents ? web_contents->GetWeakPtr()
                    : base::WeakPtr<content::WebContents>());
