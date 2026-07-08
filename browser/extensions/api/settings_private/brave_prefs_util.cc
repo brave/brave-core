@@ -135,6 +135,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   // autofill prefs
   (*s_brave_allowlist)[kBraveAutofillPrivateWindows] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBravePasswordManagerFillEnabled] =
+      settings_api::PrefType::kBoolean;
 
   // appearance prefs
   (*s_brave_allowlist)[kShowBookmarksButton] = settings_api::PrefType::kBoolean;

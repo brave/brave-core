@@ -5,7 +5,10 @@
 
 #include "base/memory/scoped_refptr.h"
 #include "base/test/bind.h"
+#include "brave/components/constants/pref_names.h"
+#include "chrome/browser/password_manager/chrome_password_manager_client.h"
 #include "chrome/browser/password_manager/factories/profile_password_store_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/common/webui_url_constants.h"
@@ -14,6 +17,7 @@
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/password_manager/core/browser/password_form_manager_for_ui.h"
 #include "components/password_manager/core/browser/password_store/password_form_converters.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "url/gurl.h"
@@ -98,4 +102,34 @@ IN_PROC_BROWSER_TEST_F(PasswordManagerTest,
   )"));
 
   EXPECT_TRUE(console_observer.messages().empty());
+}
+
+// Verifies that the Brave "Autofill passwords using Brave" setting
+// (kBravePasswordManagerFillEnabled) gates password filling and saving. When
+// disabled, ChromePasswordManagerClient reports both filling and saving as
+// disabled, which suppresses the autofill dropdown and the save prompt so Brave
+// doesn't compete with a third-party password manager.
+// See https://github.com/brave/brave-browser/issues/19065.
+IN_PROC_BROWSER_TEST_F(PasswordManagerTest, FillEnabledPrefGatesFilling) {
+  const GURL url("https://example.com");
+  content::WebContents* contents =
+      chrome_test_utils::GetActiveWebContents(this);
+  auto* client = ChromePasswordManagerClient::FromWebContents(contents);
+  ASSERT_TRUE(client);
+
+  PrefService* prefs = browser()->profile()->GetPrefs();
+
+  // The pref defaults to true, preserving upstream behavior: filling is
+  // enabled.
+  ASSERT_TRUE(prefs->GetBoolean(kBravePasswordManagerFillEnabled));
+  EXPECT_TRUE(client->IsFillingEnabled(url));
+
+  // Turning the setting off disables both filling and saving.
+  prefs->SetBoolean(kBravePasswordManagerFillEnabled, false);
+  EXPECT_FALSE(client->IsFillingEnabled(url));
+  EXPECT_FALSE(client->IsSavingAndFillingEnabled(url));
+
+  // Turning it back on restores filling.
+  prefs->SetBoolean(kBravePasswordManagerFillEnabled, true);
+  EXPECT_TRUE(client->IsFillingEnabled(url));
 }
