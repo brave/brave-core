@@ -766,9 +766,11 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
       CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "www.brave.com,*", expected_last_modified,
           expected_brave_com_settings_value);
-    } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED) {
-      // BRAVE_AUTO_SHRED was added after the ResourceIdentifier migration
-      // and never existed in that old format, so we can skip validating it.
+    } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED ||
+               content_type == ContentSettingsType::BRAVE_JAVASCRIPT) {
+      // BRAVE_AUTO_SHRED and BRAVE_JAVASCRIPT were added after the
+      // ResourceIdentifier migration and never existed in that old format, so
+      // we can skip validating them.
       EXPECT_TRUE(brave_shields_dict.empty());
     } else {
       // All the other settings we changed them globally and in www.example.com.
