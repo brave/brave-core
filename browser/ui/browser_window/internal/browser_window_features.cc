@@ -181,7 +181,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 
   vertical_tab_controller_ = std::make_unique<VerticalTabController>(
       browser_view->browser()->GetType(),
-      browser_view->GetProfile()->GetPrefs());
+      browser_view->GetProfile()->GetPrefs(), focus_mode_controller_.get());
 
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
