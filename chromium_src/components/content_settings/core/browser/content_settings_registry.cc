@@ -124,29 +124,39 @@ void ContentSettingsRegistry::BraveInit() {
 
   // BRAVE_JAVASCRIPT is the Shields-owned twin of the upstream JAVASCRIPT
   // content setting: the effective JAVASCRIPT setting is derived from both. To
-  // avoid the two definitions drifting apart, reuse the already-registered
-  // JAVASCRIPT entry's properties (allowlisted schemes, default value, scoping
-  // and incognito behavior) instead of restating them here. Fields without a
-  // public getter (valid settings, sync status, platforms) are kept explicit
-  // and mirror JAVASCRIPT's registration above.
+  // avoid the two definitions drifting apart, derive every property that can be
+  // read back from the already-registered JAVASCRIPT entry rather than
+  // restating literals: default value, allowlisted schemes, valid settings,
+  // scoping, incognito behavior and origin restriction. The sync status and
+  // platform set have no public getter, so they remain explicit and mirror
+  // JAVASCRIPT's registration above.
   const ContentSettingsInfo* javascript_info =
       Get(ContentSettingsType::JAVASCRIPT);
   CHECK(javascript_info);
+  const PermissionSettingsInfo* javascript_permission_info =
+      javascript_info->permission_settings_info();
   const WebsiteSettingsInfo* javascript_website_info =
       javascript_info->website_settings_info();
+  std::set<ContentSetting> javascript_valid_settings;
+  for (int i = 0; i < CONTENT_SETTING_NUM_SETTINGS; ++i) {
+    const auto setting = static_cast<ContentSetting>(i);
+    if (setting != CONTENT_SETTING_DEFAULT &&
+        javascript_info->IsSettingValid(setting)) {
+      javascript_valid_settings.insert(setting);
+    }
+  }
   Register(ContentSettingsType::BRAVE_JAVASCRIPT,
            brave_shields::kBraveJavaScript,
            javascript_info->GetInitialDefaultSetting(),
            WebsiteSettingsInfo::SYNCABLE,
-           javascript_info->permission_settings_info()
-               ->allowlisted_primary_schemes(),
-           /*valid_settings=*/{CONTENT_SETTING_ALLOW, CONTENT_SETTING_BLOCK},
+           javascript_permission_info->allowlisted_primary_schemes(),
+           javascript_valid_settings,
            javascript_website_info->scoping_type(),
            WebsiteSettingsRegistry::DESKTOP |
                WebsiteSettingsRegistry::PLATFORM_ANDROID |
                WebsiteSettingsRegistry::PLATFORM_IOS,
            javascript_info->incognito_behavior(),
-           PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
+           javascript_permission_info->origin_restriction());
 
   Register(ContentSettingsType::BRAVE_FINGERPRINTING_V2,
            brave_shields::kFingerprintingV2, CONTENT_SETTING_ASK,
