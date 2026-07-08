@@ -109,7 +109,10 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
     private final IncognitoReauthManager.IncognitoReauthCallback mReauthCallback =
             new IncognitoReauthManager.IncognitoReauthCallback() {
                 @Override
-                public void onIncognitoReauthNotPossible() {}
+                public void onIncognitoReauthNotPossible() {
+                    mLockArmed = false;
+                    hideCoordinatorIfShowing(DialogDismissalCause.ACTION_ON_DIALOG_NOT_POSSIBLE);
+                }
 
                 @Override
                 public void onIncognitoReauthSuccess() {
@@ -122,7 +125,9 @@ public class BraveBrowserLockManager implements ApplicationStatus.ActivityStateL
             };
 
     public static void initialize(Application application) {
-        assert sInstance == null : "BraveBrowserLockManager already initialized";
+        if (sInstance != null) {
+            return;
+        }
         sInstance = new BraveBrowserLockManager();
         application.registerActivityLifecycleCallbacks(sInstance.mAppLifecycleCallbacks);
         ApplicationStatus.registerStateListenerForAllActivities(sInstance);
