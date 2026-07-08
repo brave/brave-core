@@ -128,7 +128,8 @@
         android:icon="@drawable/ic_biometric_login"
         android:title="@string/brave_browser_lock_title"
         android:summary="@string/brave_browser_lock_screen_description"
-        android:persistent="false"/>
+        android:persistent="false"
+	app:isPreferenceVisible="false"/>
     <org.chromium.components.browser_ui.settings.ChromeBasePreference
         android:key="brave_origin"
         android:order="14"
