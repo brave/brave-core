@@ -9,11 +9,11 @@ substitutions:
 
       As ObserveBraveActions() is dependant on pref_registrar_, we should anchor
       the invocation to the pref_registrar_.Init().
-    re_pattern: (CustomizeToolbarHandler::CustomizeToolbarHandler.*?pref_change_registrar_.Init\(prefs\(\)\);)
-    re_flags: [DOTALL]
+    re_pattern: (CustomizeToolbarHandler::CustomizeToolbarHandler.*?)(^})
+    re_flags: [DOTALL, MULTILINE]
     replace: |-
-      \1
-        ObserveBraveActions();
+      \1  ObserveBraveActions(&client_, pref_change_registrar_);
+      \2
 
   - description: |
       Modify categories in ListCategories() with list_modifiers.h at the end of

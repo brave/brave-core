@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-index 70ce4930a1bebfa6b87bb96fc372f82a13e93cad..2578e25e1c9cf916d1e2063839358c954c21d47d 100644
+index 70ce4930a1bebfa6b87bb96fc372f82a13e93cad..2f189dca4b9dab6e464089495986268258d327b8 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-@@ -181,6 +181,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
-           Profile::FromBrowserContext(web_contents_->GetBrowserContext()))) {
-   model_observation_.Observe(model_);
-   pref_change_registrar_.Init(prefs());
-+  ObserveBraveActions();
+@@ -197,6 +197,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
+       base::BindRepeating(&CustomizeToolbarHandler::OnActionPinnedChanged,
+                           base::Unretained(this), kActionSplitTab,
+                           prefs::kPinSplitTabButton));
++  ObserveBraveActions(&client_, pref_change_registrar_);
+ }
  
-   pref_change_registrar_.Add(
-       prefs::kShowHomeButton,
+ CustomizeToolbarHandler::~CustomizeToolbarHandler() = default;
 @@ -371,7 +372,11 @@ void CustomizeToolbarHandler::ListActions(ListActionsCallback callback) {
    add_action(kActionShowChromeLabs,
               side_panel::customize_chrome::mojom::CategoryId::kTools);

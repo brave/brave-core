@@ -29,25 +29,32 @@ bool PinBraveAction(side_panel::customize_chrome::mojom::ActionId action_id,
   return false;
 }
 
-}  // namespace
-
-#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc>
-
-void CustomizeToolbarHandler::ObserveBraveActions() {
-  for (const auto& [id, brave_action] : customize_chrome::kBraveActions) {
-    pref_change_registrar_.Add(
-        brave_action->pref_name,
-        base::BindRepeating(
-            &CustomizeToolbarHandler::OnBraveActionPinnedChanged,
-            base::Unretained(this), id));
-  }
-}
-
-void CustomizeToolbarHandler::OnBraveActionPinnedChanged(
+void OnBraveActionPinnedChanged(
+    mojo::Remote<side_panel::customize_chrome::mojom::CustomizeToolbarClient>*
+        client,
+    PrefService* prefs,
     side_panel::customize_chrome::mojom::ActionId action_id) {
   const auto* brave_action =
       base::FindPtrOrNull(customize_chrome::kBraveActions, action_id);
   CHECK(brave_action);
-  client_->SetActionPinned(action_id,
-                           prefs()->GetBoolean(brave_action->pref_name));
+  (*client)->SetActionPinned(action_id,
+                             prefs->GetBoolean(brave_action->pref_name));
 }
+
+void ObserveBraveActions(
+    mojo::Remote<side_panel::customize_chrome::mojom::CustomizeToolbarClient>*
+        client,
+    PrefChangeRegistrar& registrar) {
+  for (const auto& [id, brave_action] : customize_chrome::kBraveActions) {
+    // It's safe to bind unretained client and PrefService as they out lives
+    // this registrar.
+    registrar.Add(brave_action->pref_name,
+                  base::BindRepeating(&OnBraveActionPinnedChanged,
+                                      base::Unretained(client),
+                                      base::Unretained(registrar.prefs()), id));
+  }
+}
+
+}  // namespace
+
+#include <chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc>
