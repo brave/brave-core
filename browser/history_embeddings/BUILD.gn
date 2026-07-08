@@ -14,7 +14,10 @@ source_set("open_tab_search") {
   public = [ "open_tab_search.h" ]
   sources = [ "open_tab_search.cc" ]
 
-  public_deps = [ "//base" ]
+  public_deps = [
+    "//base",
+    "//url",
+  ]
 
   deps = [
     "//chrome/browser/profiles",
@@ -26,7 +29,6 @@ source_set("open_tab_search") {
     "//components/history_embeddings/core",
     "//components/tabs:public",
     "//content/public/browser",
-    "//url",
   ]
 }
 
