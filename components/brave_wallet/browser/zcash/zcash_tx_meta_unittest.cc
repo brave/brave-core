@@ -44,7 +44,7 @@ TEST(ZCashTxMeta, ToTransactionInfo_TransparentInputs) {
                          0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f, 0x8c, 0x1f, 0xb9,
                          0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d};
   orchard_output.value = 10000u;
-  tx->orchard_part().outputs.push_back(std::move(orchard_output));
+  tx->v5_part().orchard.outputs.push_back(std::move(orchard_output));
 
   ZCashTxMeta meta(zec_account_id, std::move(tx));
   meta.set_chain_id(mojom::kZCashMainnet);
@@ -114,7 +114,7 @@ TEST(ZCashTxMeta, ToTransactionInfo_ShieldedInputs) {
       0xee, 0xff, 0x33, 0x7e, 0x88, 0xe6, 0x91, 0x5f, 0x6c, 0x3e, 0xc1,
       0xb6, 0xea, 0x83, 0x5a, 0x88, 0xd5, 0x66, 0x12, 0xd2, 0xbd};
   orchard_input.note.amount = 25000u;
-  tx->orchard_part().inputs.push_back(std::move(orchard_input));
+  tx->v5_part().orchard.inputs.push_back(std::move(orchard_input));
 
   ZCashTransaction::TxOutput output;
   output.address = "t1MmQ8PGfRygwhSK6qyianhMtb5tixuK8ZS";
@@ -128,7 +128,7 @@ TEST(ZCashTxMeta, ToTransactionInfo_ShieldedInputs) {
                          0x2a, 0xc8, 0x4a, 0x30, 0x37, 0x8f, 0x8c, 0x1f, 0xb9,
                          0x0d, 0xff, 0x71, 0xa6, 0xd5, 0x04, 0x2d};
   orchard_output.value = 10000u;
-  tx->orchard_part().outputs.push_back(std::move(orchard_output));
+  tx->v5_part().orchard.outputs.push_back(std::move(orchard_output));
 
   ZCashTxMeta meta(zec_account_id, std::move(tx));
   meta.set_chain_id(mojom::kZCashMainnet);

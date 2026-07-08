@@ -20,12 +20,11 @@
 namespace brave_wallet {
 
 // Implements algorithms for calculating tx id, tx signature digest
-// https://zips.z.cash/zip-0244 (v5) / ZIP-246 (v6)
-// Dispatch entry points route to ZCashV5Serializer or ZCashV6Serializer
-// depending on whether tx.v6_part() is set.
+// https://zips.z.cash/zip-0244
+// Dispatch entry points route to ZCashV5Serializer.
 class ZCashSerializer {
  public:
-  // Dispatch entry points (route on tx.v6_part().has_value()).
+  // Dispatch entry points.
   static std::array<uint8_t, kZCashDigestSize> CalculateTxIdDigest(
       const ZCashTransaction& zcash_transaction);
   static std::array<uint8_t, kZCashDigestSize> CalculateSignatureDigest(

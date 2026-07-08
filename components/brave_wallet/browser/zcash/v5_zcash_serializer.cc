@@ -57,7 +57,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashV5Serializer::CalculateTxIdDigest(
       ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kSaplingHashPersonalizer));
   std::array<uint8_t, kZCashDigestSize> orchard_hash =
-      tx.orchard_part().digest.value_or(ZCashSerializer::Blake2b256(
+      tx.v5_part().orchard.digest.value_or(ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
 
   BtcLikeSerializerStream stream;
@@ -85,7 +85,7 @@ ZCashV5Serializer::CalculateSignatureDigest(
       ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kSaplingHashPersonalizer));
   std::array<uint8_t, kZCashDigestSize> orchard_hash =
-      tx.orchard_part().digest.value_or(ZCashSerializer::Blake2b256(
+      tx.v5_part().orchard.digest.value_or(ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
 
   BtcLikeSerializerStream stream;
@@ -113,8 +113,8 @@ std::vector<uint8_t> ZCashV5Serializer::SerializeRawTransaction(
   stream.PushCompactSize(0u);
 
   // Orchard
-  if (tx.orchard_part().raw_tx) {
-    stream.PushBytes(*tx.orchard_part().raw_tx);
+  if (tx.v5_part().orchard.raw_tx) {
+    stream.PushBytes(*tx.v5_part().orchard.raw_tx);
   } else {
     stream.PushCompactSize(uint8_t{0});
   }

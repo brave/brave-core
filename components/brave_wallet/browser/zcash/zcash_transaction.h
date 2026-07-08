@@ -98,24 +98,7 @@ class ZCashTransaction {
   using OrchardOutput = ::brave_wallet::OrchardOutput;
   using OrchardInput = ::brave_wallet::OrchardInput;
 
-  struct OrchardPart {
-    OrchardPart();
-    ~OrchardPart();
-    OrchardPart(OrchardPart&& other);
-    OrchardPart(const OrchardPart& other);
-    OrchardPart& operator=(const OrchardPart& other);
-    OrchardPart& operator=(OrchardPart&& other);
-    bool operator==(const OrchardPart& other) const;
-
-    std::vector<OrchardInput> inputs;
-    std::vector<OrchardOutput> outputs;
-    std::optional<uint32_t> anchor_block_height;
-    std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
-    std::optional<std::vector<uint8_t>> raw_tx;
-  };
-
-  // A single shielded pool section serialized as opaque rust bytes, mirroring
-  // OrchardPart. Used for the legacy-orchard and ironwood pools in v6.
+  // A single orchard-format shielded pool serialized as opaque rust bytes.
   struct ShieldedPool {
     ShieldedPool();
     ~ShieldedPool();
@@ -125,6 +108,12 @@ class ZCashTransaction {
     ShieldedPool& operator=(ShieldedPool&& other);
     bool operator==(const ShieldedPool& other) const;
 
+    base::DictValue ToValue() const;
+    static std::optional<ShieldedPool> FromValue(const base::DictValue& value);
+
+    uint64_t TotalInputsAmount() const;
+    uint64_t TotalOutputsAmount() const;
+
     std::vector<OrchardInput> inputs;
     std::vector<OrchardOutput> outputs;
     std::optional<uint32_t> anchor_block_height;
@@ -132,30 +121,25 @@ class ZCashTransaction {
     std::optional<std::vector<uint8_t>> raw_tx;
   };
 
-  // v6-only transaction data. Presence of ZCashTransaction::v6_part() selects
-  // v6 serialization.
-  struct V6Part {
-    V6Part();
-    ~V6Part();
-    V6Part(V6Part&& other);
-    V6Part(const V6Part& other);
-    V6Part& operator=(const V6Part& other);
-    V6Part& operator=(V6Part&& other);
-    bool operator==(const V6Part& other) const;
+  // v5 transaction shielded data: a single orchard pool.
+  struct V5Part {
+    V5Part();
+    ~V5Part();
+    V5Part(V5Part&& other);
+    V5Part(const V5Part& other);
+    V5Part& operator=(const V5Part& other);
+    V5Part& operator=(V5Part&& other);
+    bool operator==(const V5Part& other) const;
 
-    base::DictValue ToValue() const;
-    static std::optional<V6Part> FromValue(const base::DictValue& value);
+    // Backward-compatible top-level v5 JSON (keys: orchard_inputs,
+    // orchard_outputs, anchor_block_height) written directly onto the tx dict.
+    void WriteTopLevel(base::DictValue& tx_dict) const;
+    static std::optional<V5Part> ReadTopLevel(const base::DictValue& tx_dict);
 
-    // ZIP 233: value removed from circulation. On the wire it is a u64 LE;
-    // stored as int64_t to match rust's Zatoshis/ZatBalance i64 domain.
-    int64_t zip233_amount = 0;
+    uint64_t TotalInputsAmount() const;
+    uint64_t TotalOutputsAmount() const;
 
-    ShieldedPool legacy_orchard;  // OrchardPool::kOrchard
-    ShieldedPool ironwood;        // OrchardPool::kIronwood
-
-    // ZIP 231 memo bundle segments (512-byte each). Serialization deferred
-    // (Phase 7). Kept empty for the core v6 path.
-    std::vector<std::array<uint8_t, kOrchardMemoSize>> memo_segments;
+    ShieldedPool orchard;
   };
 
   ZCashTransaction();
@@ -190,11 +174,8 @@ class ZCashTransaction {
   const TransparentPart& transparent_part() const { return transparent_part_; }
   TransparentPart& transparent_part() { return transparent_part_; }
 
-  const OrchardPart& orchard_part() const { return orchard_part_; }
-  OrchardPart& orchard_part() { return orchard_part_; }
-
-  const std::optional<V6Part>& v6_part() const { return v6_part_; }
-  std::optional<V6Part>& v6_part() { return v6_part_; }
+  const V5Part& v5_part() const { return v5_part_; }
+  V5Part& v5_part() { return v5_part_; }
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
@@ -213,8 +194,7 @@ class ZCashTransaction {
 
  private:
   TransparentPart transparent_part_;
-  OrchardPart orchard_part_;
-  std::optional<V6Part> v6_part_;
+  V5Part v5_part_;
 
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;

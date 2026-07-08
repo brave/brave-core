@@ -15,7 +15,6 @@
 #include "base/containers/span.h"
 #include "base/containers/span_writer.h"
 #include "brave/components/brave_wallet/browser/zcash/v5_zcash_serializer.h"
-#include "brave/components/brave_wallet/browser/zcash/v6_zcash_serializer.h"
 
 namespace brave_wallet {
 
@@ -264,39 +263,28 @@ bool ZCashSerializer::SignTransparentPart(
 // static
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateTxIdDigest(
     const ZCashTransaction& zcash_transaction) {
-  return zcash_transaction.v6_part()
-             ? ZCashV6Serializer::CalculateTxIdDigest(zcash_transaction)
-             : ZCashV5Serializer::CalculateTxIdDigest(zcash_transaction);
+  return ZCashV5Serializer::CalculateTxIdDigest(zcash_transaction);
 }
 
 // static
 std::array<uint8_t, kZCashDigestSize> ZCashSerializer::CalculateSignatureDigest(
     const ZCashTransaction& zcash_transaction,
     const std::optional<ZCashTransaction::TxInput>& input) {
-  return zcash_transaction.v6_part()
-             ? ZCashV6Serializer::CalculateSignatureDigest(zcash_transaction,
-                                                           input)
-             : ZCashV5Serializer::CalculateSignatureDigest(zcash_transaction,
-                                                           input);
+  return ZCashV5Serializer::CalculateSignatureDigest(zcash_transaction, input);
 }
 
 // static
 std::vector<uint8_t> ZCashSerializer::SerializeRawTransaction(
     const ZCashTransaction& zcash_transaction) {
-  return zcash_transaction.v6_part()
-             ? ZCashV6Serializer::SerializeRawTransaction(zcash_transaction)
-             : ZCashV5Serializer::SerializeRawTransaction(zcash_transaction);
+  return ZCashV5Serializer::SerializeRawTransaction(zcash_transaction);
 }
 
 // static
 bool ZCashSerializer::SignTransparentPart(KeyringService& keyring_service,
                                           const mojom::AccountIdPtr& account_id,
                                           ZCashTransaction& tx) {
-  return tx.v6_part()
-             ? ZCashV6Serializer::SignTransparentPart(keyring_service,
-                                                      account_id, tx)
-             : ZCashV5Serializer::SignTransparentPart(keyring_service,
-                                                      account_id, tx);
+  return ZCashV5Serializer::SignTransparentPart(keyring_service, account_id,
+                                                tx);
 }
 
 }  // namespace brave_wallet
