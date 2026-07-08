@@ -16,17 +16,19 @@ class NavigationEntry;
 // flight for the page the user acted on. It is set in the browser layer (the
 // YouTube PiP tab helper) and read in the content layer
 // (BraveScreenOrientationDelegateAndroid) to suppress the screen-orientation
-// lock/unlock that would otherwise flash the phone into landscape while entering
-// or leaving Picture-in-Picture.
+// lock/unlock that would otherwise flash the phone into landscape while
+// entering or leaving Picture-in-Picture.
 //
 // The state is exposed as free functions rather than a shared UserData key on
 // purpose: the key stays a single file-local definition, so it has one address
 // and cannot get a distinct per-component address that silently breaks the
 // cross-layer lookup (the failure mode documented at crbug.com/589840). This
 // mirrors how content/public exposes other cross-layer predicates (e.g.
-// IsIsolatedContext) and how internal DocumentUserData accessors hide their key.
-CONTENT_EXPORT void SetNavigationEntryFullscreenRequested(NavigationEntry* entry,
-                                                          bool requested);
+// IsIsolatedContext) and how internal DocumentUserData accessors hide their
+// key.
+CONTENT_EXPORT void SetNavigationEntryFullscreenRequested(
+    NavigationEntry* entry,
+    bool requested);
 CONTENT_EXPORT bool IsNavigationEntryFullscreenRequested(
     const NavigationEntry* entry);
 
