@@ -94,12 +94,10 @@ class FakeBackgroundWebContents : public local_ai::BackgroundWebContents {
 
 }  // namespace
 
-class OnDeviceSpeechRecognitionControllerTestBase : public testing::Test {
+class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
  protected:
-  explicit OnDeviceSpeechRecognitionControllerTestBase(
-      base::test::TaskEnvironment::ThreadPoolExecutionMode thread_pool_mode)
-      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME,
-                          thread_pool_mode) {}
+  OnDeviceSpeechRecognitionControllerTest()
+      : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   // One recognition's worth of pipes, kept alive for the test's duration.
   struct Session {
@@ -122,7 +120,7 @@ class OnDeviceSpeechRecognitionControllerTestBase : public testing::Test {
     next_otr_profile_ = &profile_;
     controller_ = OnDeviceSpeechRecognitionController::CreateForTesting(
         base::BindRepeating(
-            &OnDeviceSpeechRecognitionControllerTestBase::CreateFakeBwc,
+            &OnDeviceSpeechRecognitionControllerTest::CreateFakeBwc,
             base::Unretained(this)));
   }
 
@@ -140,6 +138,13 @@ class OnDeviceSpeechRecognitionControllerTestBase : public testing::Test {
       base::WeakPtr<local_ai::BackgroundWebContents::Delegate> delegate,
       local_ai::BackgroundWebContentsCreatedCallback created) {
     ++bwc_created_count_;
+    if (capture_created_) {
+      // Hold the reply + delegate so a test can deliver a stale reply after a
+      // teardown/restart, without completing this cycle's creation.
+      captured_delegate_ = std::move(delegate);
+      captured_created_ = std::move(created);
+      return;
+    }
     if (bwc_creation_fails_) {
       // Production builds the worker asynchronously (guest profile creation),
       // so the failure is reported on a later turn, not inline. Match that so
@@ -223,21 +228,16 @@ class OnDeviceSpeechRecognitionControllerTestBase : public testing::Test {
   raw_ptr<Profile> next_otr_profile_ = nullptr;
   // When set, the injected factory reports an async creation failure.
   bool bwc_creation_fails_ = false;
+  // When set, CreateFakeBwc captures the reply + delegate instead of completing
+  // creation, so a test can deliver a stale reply after a teardown/restart.
+  bool capture_created_ = false;
+  base::WeakPtr<local_ai::BackgroundWebContents::Delegate> captured_delegate_;
+  local_ai::BackgroundWebContentsCreatedCallback captured_created_;
   int bwc_created_count_ = 0;
   std::vector<std::unique_ptr<
       mojo::Remote<local_ai::mojom::SpeechRecognitionFactoryHost>>>
       factory_hosts_;
   std::unique_ptr<OnDeviceSpeechRecognitionController> controller_;
-};
-
-// Default (ASYNC) thread pool: model-load file reads run as posted, which is
-// fine for behavior tests that just wait for the worker to settle.
-class OnDeviceSpeechRecognitionControllerTest
-    : public OnDeviceSpeechRecognitionControllerTestBase {
- protected:
-  OnDeviceSpeechRecognitionControllerTest()
-      : OnDeviceSpeechRecognitionControllerTestBase(
-            base::test::TaskEnvironment::ThreadPoolExecutionMode::ASYNC) {}
 };
 
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
@@ -306,6 +306,135 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest,
   bwc_creation_fails_ = false;
   Session s2 = StartSession();
   EXPECT_NE(nullptr, last_bwc_.get());
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ReachesReadyAndForwardsPendingSession) {
+  Session s = DriveToReady();
+  EXPECT_EQ(1, fake_factory_.init_count());
+  EXPECT_EQ(1, fake_factory_.create_count());
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest, InitFailureTearsDown) {
+  SetInstalled(true);
+  fake_factory_.set_init_success(false);
+
+  Session s = StartSession();
+  RegisterFactory();
+
+  // A failed load tears the worker down.
+  EXPECT_TRUE(base::test::RunUntil([&] { return last_bwc_.get() == nullptr; }));
+  EXPECT_EQ(0, fake_factory_.create_count());
+
+  // A later Start recreates the worker.
+  Session s2 = StartSession();
+  EXPECT_NE(nullptr, last_bwc_.get());
+  EXPECT_EQ(2, bwc_created_count_);
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest, FactoryDisconnectTearsDown) {
+  Session s = DriveToReady();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  fake_factory_.ResetReceiver();
+  EXPECT_TRUE(base::test::RunUntil([&] { return last_bwc_.get() == nullptr; }));
+
+  // The controller is back to idle and a new Start restarts cleanly.
+  Session s2 = StartSession();
+  EXPECT_NE(nullptr, last_bwc_.get());
+}
+
+TEST_F(OnDeviceSpeechRecognitionControllerTest, ModelFileReadFailureTearsDown) {
+  // Install dir is set (so Start proceeds) but the model files are absent, so
+  // ReadNemotronOrtFiles returns null and OnOrtFilesRead tears the worker down
+  // without Init-ing the factory.
+  local_ai::OnDeviceSpeechModelsState::GetInstance()->SetInstallDir(
+      temp_dir_.GetPath());
+  Session s = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+  RegisterFactory();
+
+  EXPECT_TRUE(base::test::RunUntil([&] { return last_bwc_.get() == nullptr; }));
+  EXPECT_EQ(0, fake_factory_.init_count());
+}
+
+// The worker environment comes up but the worker never registers its factory.
+// The startup timer (kStartupTimeout, 30s) tears it down and drops the queued
+// session so the engine sees a failure instead of hanging.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StartupTimeoutTearsDownWhenFactoryNeverRegisters) {
+  SetInstalled(true);
+  Session s = StartSession();
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  // No RegisterFactory(). Advance past kStartupTimeout so the startup timer
+  // fires.
+  task_environment_.FastForwardBy(base::Seconds(31));
+  EXPECT_EQ(nullptr, last_bwc_.get());
+  // The queued session's audio pipe is dropped, surfacing as a failure.
+  EXPECT_TRUE(base::test::RunUntil([&] { return !s.input.is_connected(); }));
+
+  // Back to idle: a later attempt starts a fresh worker.
+  Session s2 = StartSession();
+  EXPECT_NE(nullptr, last_bwc_.get());
+  EXPECT_EQ(2, bwc_created_count_);
+}
+
+// A worker that reached Ready must survive past kStartupTimeout.
+// RegisterFactory stops the startup timer, and OnStartupTimeout's state guard
+// would ignore a stale fire regardless; this pins the net behavior. Assert the
+// worker is not just alive but still Ready by forwarding a new session to it.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       ReadyWorkerSurvivesStartupTimeout) {
+  Session s = DriveToReady();
+  ASSERT_NE(nullptr, last_bwc_.get());
+  ASSERT_EQ(1, fake_factory_.create_count());
+
+  task_environment_.FastForwardBy(base::Seconds(31));
+  ASSERT_NE(nullptr, last_bwc_.get());
+
+  // Still Ready and serving: a new session forwards to the same live worker,
+  // no new worker created.
+  Session s2 = StartSession();
+  EXPECT_TRUE(
+      base::test::RunUntil([&] { return fake_factory_.create_count() >= 2; }));
+  EXPECT_EQ(1, bwc_created_count_);
+}
+
+// A creation reply from a torn-down cycle must not land in a later cycle and
+// adopt a stale worker. TearDown()'s InvalidateWeakPtrs() drops the reply; the
+// state check alone is insufficient because the later cycle is also
+// kBwcStarting.
+TEST_F(OnDeviceSpeechRecognitionControllerTest,
+       StaleCreationReplyIgnoredAfterRestart) {
+  SetInstalled(true);
+  capture_created_ = true;
+
+  // Cycle 1: capture its (weak-bound) creation reply, then take it aside before
+  // the next cycle overwrites the captured slot.
+  Session s1 = StartSession();
+  auto stale_created = std::move(captured_created_);
+  auto stale_delegate = captured_delegate_;
+
+  // The startup timer tears cycle 1 down, invalidating the captured reply.
+  task_environment_.FastForwardBy(base::Seconds(31));
+
+  // Cycle 2: back in kBwcStarting (its reply is captured, not run).
+  Session s2 = StartSession();
+
+  // Deliver the stale cycle-1 reply. It must be ignored (its weak pointer was
+  // invalidated), so the worker it carries is dropped, not adopted into cycle
+  // 2. Were it adopted, the controller would hold the fake and it would stay
+  // alive.
+  raw_ptr<FakeBackgroundWebContents> stale_bwc = nullptr;
+  auto bwc = std::make_unique<FakeBackgroundWebContents>(
+      stale_delegate.get(),
+      base::BindOnce(
+          [](raw_ptr<FakeBackgroundWebContents>* ref) { *ref = nullptr; },
+          &stale_bwc));
+  stale_bwc = bwc.get();
+  std::move(stale_created).Run(std::move(bwc), next_otr_profile_);
+  EXPECT_EQ(nullptr, stale_bwc);
 }
 
 }  // namespace speech
