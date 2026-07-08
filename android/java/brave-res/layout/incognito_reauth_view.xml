@@ -43,8 +43,7 @@
         android:layout_weight="1"
         android:orientation="vertical"
         android:gravity="center"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp">
+        android:paddingHorizontal="16dp">
 
         <!-- Full Brave brand: Nala release icon + wordmark converted from brave_wordmark.svg -->
         <LinearLayout
