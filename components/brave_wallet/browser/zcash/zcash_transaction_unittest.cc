@@ -484,4 +484,65 @@ TEST(ZCashTransactionUtilsUnitTest, ValidateAmounts) {
   }
 }
 
+// Regression tests for ZCashTransaction::operator==.
+// Guards the fix where the second tuple entry incorrectly compared
+// this->orchard_part_ against itself instead of other.orchard_part_.
+TEST(ZCashTransaction, OperatorEquals_OrchardPart) {
+  ZCashTransaction tx1;
+  ZCashTransaction tx2;
+
+  // Identical transactions must be equal.
+  EXPECT_EQ(tx1, tx2);
+
+  // A difference in orchard_part must be detected.
+  tx1.orchard_part().outputs.emplace_back();  // add one output
+  EXPECT_NE(tx1, tx2);
+
+  // After making tx2 match tx1 they must be equal again.
+  tx2.orchard_part().outputs.emplace_back();
+  EXPECT_EQ(tx1, tx2);
+}
+
+TEST(ZCashTransaction, OperatorEquals_V6Part) {
+  ZCashTransaction tx1;
+  ZCashTransaction tx2;
+
+  // Both without v6_part: equal.
+  EXPECT_EQ(tx1, tx2);
+
+  // Only tx1 has v6_part: not equal.
+  tx1.v6_part() = ZCashTransaction::V6Part{};
+  EXPECT_NE(tx1, tx2);
+
+  // Both have default v6_part: equal.
+  tx2.v6_part() = ZCashTransaction::V6Part{};
+  EXPECT_EQ(tx1, tx2);
+
+  // Differing zip233_amount: not equal.
+  tx1.v6_part()->zip233_amount = 12345;
+  EXPECT_NE(tx1, tx2);
+
+  // Make them match again.
+  tx2.v6_part()->zip233_amount = 12345;
+  EXPECT_EQ(tx1, tx2);
+
+  // Differing legacy_orchard digest: not equal.
+  std::array<uint8_t, kZCashDigestSize> d{};
+  d[0] = 0xAB;
+  tx1.v6_part()->legacy_orchard.digest = d;
+  EXPECT_NE(tx1, tx2);
+
+  tx2.v6_part()->legacy_orchard.digest = d;
+  EXPECT_EQ(tx1, tx2);
+
+  // Differing ironwood digest: not equal.
+  std::array<uint8_t, kZCashDigestSize> d2{};
+  d2[0] = 0xCD;
+  tx1.v6_part()->ironwood.digest = d2;
+  EXPECT_NE(tx1, tx2);
+
+  tx2.v6_part()->ironwood.digest = d2;
+  EXPECT_EQ(tx1, tx2);
+}
+
 }  // namespace brave_wallet
