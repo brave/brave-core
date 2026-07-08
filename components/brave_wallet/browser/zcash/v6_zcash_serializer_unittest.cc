@@ -28,7 +28,7 @@ ZCashTransaction MakeEmptyV6Tx() {
   tx.set_consensus_brach_id(0xc2d6d0b4);
   tx.set_expiry_height(10000);
   tx.set_locktime(1);
-  tx.v6_part() = ZCashTransaction::V6Part{};
+  tx.ConvertToV6();
   return tx;
 }
 
@@ -58,7 +58,7 @@ TEST(ZCashV6SerializerTest, HashHeader) {
 
   // A non-zero zip233_amount must change the header hash.
   auto tx2 = tx;
-  tx2.v6_part()->zip233_amount = 100000;
+  tx2.v6_part().zip233_amount = 100000;
   EXPECT_NE(ZCashV6Serializer::HashHeader(tx),
             ZCashV6Serializer::HashHeader(tx2));
 
@@ -107,7 +107,7 @@ TEST(ZCashV6SerializerTest, SerializeRawTransaction) {
   //   legacy_orchard(2) + ironwood cs(1) = 35 bytes.
   {
     auto tx = MakeEmptyV6Tx();
-    tx.v6_part()->legacy_orchard.raw_tx = std::vector<uint8_t>{0x01, 0x02};
+    tx.v6_part().legacy_orchard.raw_tx = std::vector<uint8_t>{0x01, 0x02};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
     ASSERT_EQ(bytes.size(), 35u);
 
@@ -122,7 +122,7 @@ TEST(ZCashV6SerializerTest, SerializeRawTransaction) {
   //   legacy_orchard cs(1) + ironwood(3) = 36 bytes.
   {
     auto tx = MakeEmptyV6Tx();
-    tx.v6_part()->ironwood.raw_tx =
+    tx.v6_part().ironwood.raw_tx =
         std::vector<uint8_t>{0xAB, 0xCD, 0xEF};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
     ASSERT_EQ(bytes.size(), 36u);
@@ -139,8 +139,8 @@ TEST(ZCashV6SerializerTest, SerializeRawTransaction) {
   //   legacy_orchard(1) + ironwood(1) = 34 bytes.
   {
     auto tx = MakeEmptyV6Tx();
-    tx.v6_part()->legacy_orchard.raw_tx = std::vector<uint8_t>{0x11};
-    tx.v6_part()->ironwood.raw_tx = std::vector<uint8_t>{0x22};
+    tx.v6_part().legacy_orchard.raw_tx = std::vector<uint8_t>{0x11};
+    tx.v6_part().ironwood.raw_tx = std::vector<uint8_t>{0x22};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
     ASSERT_EQ(bytes.size(), 34u);
 
@@ -160,7 +160,7 @@ TEST(ZCashV6SerializerTest, CalculateTxIdDigest) {
 
   // zip233_amount is part of the digest.
   auto tx_nonzero_amount = tx;
-  tx_nonzero_amount.v6_part()->zip233_amount = 1000;
+  tx_nonzero_amount.v6_part().zip233_amount = 1000;
   EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx),
             ZCashV6Serializer::CalculateTxIdDigest(tx_nonzero_amount));
 
@@ -168,13 +168,13 @@ TEST(ZCashV6SerializerTest, CalculateTxIdDigest) {
   auto tx_legacy = tx;
   std::array<uint8_t, kZCashDigestSize> fake_digest{};
   fake_digest[0] = 0xFF;
-  tx_legacy.v6_part()->legacy_orchard.digest = fake_digest;
+  tx_legacy.v6_part().legacy_orchard.digest = fake_digest;
   EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx),
             ZCashV6Serializer::CalculateTxIdDigest(tx_legacy));
 
   // ironwood digest is included independently.
   auto tx_ironwood = tx;
-  tx_ironwood.v6_part()->ironwood.digest = fake_digest;
+  tx_ironwood.v6_part().ironwood.digest = fake_digest;
   EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx),
             ZCashV6Serializer::CalculateTxIdDigest(tx_ironwood));
 
@@ -206,7 +206,7 @@ TEST(ZCashV6SerializerTest, DifferentialV5V6) {
 
   // Build an equivalent v6 transaction (same header fields, zip233_amount=0).
   auto v6_tx = v5_tx;
-  v6_tx.v6_part() = ZCashTransaction::V6Part{};
+  v6_tx.ConvertToV6();
 
   auto v5_bytes = ZCashV5Serializer::SerializeRawTransaction(v5_tx);
   auto v6_bytes = ZCashV6Serializer::SerializeRawTransaction(v6_tx);
@@ -269,8 +269,8 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
     auto txid_implicit = ZCashV6Serializer::CalculateTxIdDigest(tx_implicit);
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part()->legacy_orchard.digest = fallback;
-    tx_explicit.v6_part()->ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = fallback;
+    tx_explicit.v6_part().ironwood.digest = fallback;
     auto txid_explicit = ZCashV6Serializer::CalculateTxIdDigest(tx_explicit);
 
     EXPECT_EQ(txid_implicit, txid_explicit);
@@ -283,8 +283,8 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
         ZCashV6Serializer::CalculateSignatureDigest(tx_implicit, std::nullopt);
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part()->legacy_orchard.digest = fallback;
-    tx_explicit.v6_part()->ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = fallback;
+    tx_explicit.v6_part().ironwood.digest = fallback;
     auto sigdigest_explicit =
         ZCashV6Serializer::CalculateSignatureDigest(tx_explicit, std::nullopt);
 
@@ -296,12 +296,12 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
     auto tx_modified = MakeEmptyV6Tx();
     std::array<uint8_t, kZCashDigestSize> different_digest = fallback;
     different_digest[0] ^= 0xFF;
-    tx_modified.v6_part()->legacy_orchard.digest = different_digest;
-    tx_modified.v6_part()->ironwood.digest = fallback;
+    tx_modified.v6_part().legacy_orchard.digest = different_digest;
+    tx_modified.v6_part().ironwood.digest = fallback;
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part()->legacy_orchard.digest = fallback;
-    tx_explicit.v6_part()->ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = fallback;
+    tx_explicit.v6_part().ironwood.digest = fallback;
 
     EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx_modified),
               ZCashV6Serializer::CalculateTxIdDigest(tx_explicit));

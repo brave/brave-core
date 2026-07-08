@@ -131,12 +131,12 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   for (const auto& note : pick_result.value().inputs) {
     OrchardInput orchard_input;
     orchard_input.note = note;
-    zcash_transaction.orchard_part().inputs.push_back(std::move(orchard_input));
+    zcash_transaction.v5_part().orchard.inputs.push_back(std::move(orchard_input));
   }
   zcash_transaction.set_fee(pick_result->fee);
 
   CHECK(spendable_notes_->anchor_block_id);
-  zcash_transaction.orchard_part().anchor_block_height =
+  zcash_transaction.v5_part().orchard.anchor_block_height =
       spendable_notes_->anchor_block_id.value();
 
   // Create transparent output for the recipient.
@@ -165,7 +165,7 @@ void ZCashCreateOrchardToTransparentTransactionTask::CreateTransaction() {
   CHECK(context_.account_internal_addr);
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =
-        zcash_transaction.orchard_part().outputs.emplace_back();
+        zcash_transaction.v5_part().orchard.outputs.emplace_back();
     orchard_output.value = pick_result->change;
     orchard_output.addr = context_.account_internal_addr.value();
   }

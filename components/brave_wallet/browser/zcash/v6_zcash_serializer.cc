@@ -42,7 +42,7 @@ void ZCashV6Serializer::PushHeader(const ZCashTransaction& tx,
   stream.Push32(tx.expiry_height());
   // ZIP 233: value removed from circulation (u64 LE). NEW vs v5.
   stream.Push64(
-      base::checked_cast<uint64_t>(tx.v6_part()->zip233_amount));
+      base::checked_cast<uint64_t>(tx.v6_part().zip233_amount));
 }
 
 // static
@@ -58,7 +58,7 @@ std::array<uint8_t, kZCashDigestSize> ZCashV6Serializer::HashHeader(
 // ZIP 246 txid digest (mirrors ZIP 244 with extended header + ironwood node).
 std::array<uint8_t, kZCashDigestSize> ZCashV6Serializer::CalculateTxIdDigest(
     const ZCashTransaction& tx) {
-  const auto& v6 = *tx.v6_part();
+  const auto& v6 = tx.v6_part();
 
   std::array<uint8_t, kZCashDigestSize> header_hash = HashHeader(tx);
   std::array<uint8_t, kZCashDigestSize> transparent_hash =
@@ -94,7 +94,7 @@ std::array<uint8_t, kZCashDigestSize>
 ZCashV6Serializer::CalculateSignatureDigest(
     const ZCashTransaction& tx,
     const std::optional<ZCashTransaction::TxInput>& input) {
-  const auto& v6 = *tx.v6_part();
+  const auto& v6 = tx.v6_part();
 
   std::array<uint8_t, kZCashDigestSize> header_hash = HashHeader(tx);
   std::array<uint8_t, kZCashDigestSize> transparent_hash =
@@ -124,7 +124,7 @@ ZCashV6Serializer::CalculateSignatureDigest(
 // Per upstream librustzcash Transaction::write_v6.
 std::vector<uint8_t> ZCashV6Serializer::SerializeRawTransaction(
     const ZCashTransaction& tx) {
-  const auto& v6 = *tx.v6_part();
+  const auto& v6 = tx.v6_part();
 
   BtcLikeSerializerStream stream;
 

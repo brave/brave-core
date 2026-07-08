@@ -17,6 +17,8 @@
 
 namespace brave_wallet {
 namespace {
+// TODO(cypt4): This assumes a v5 transaction. v6 (Ironwood) meta must branch on
+// tx.is_v6() and read v6_part().legacy_orchard / .ironwood.
 mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
                                 ZCashTransaction& tx) {
   std::vector<mojom::ZecTxInputPtr> mojom_inputs;
@@ -24,7 +26,7 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     mojom_inputs.push_back(
         mojom::ZecTxInput::New(input.utxo_address, input.utxo_value));
   }
-  for (auto& input : tx.orchard_part().inputs) {
+  for (auto& input : tx.v5_part().orchard.inputs) {
     auto orchard_unified_addr = GetOrchardUnifiedAddress(
         input.note.addr, chain_id == mojom::kZCashTestnet);
     if (orchard_unified_addr) {
@@ -38,7 +40,7 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     mojom_outputs.push_back(
         mojom::ZecTxOutput::New(output.address, output.amount));
   }
-  for (auto& output : tx.orchard_part().outputs) {
+  for (auto& output : tx.v5_part().orchard.outputs) {
     auto orchard_unified_addr =
         GetOrchardUnifiedAddress(output.addr, chain_id == mojom::kZCashTestnet);
     if (orchard_unified_addr) {
@@ -47,7 +49,7 @@ mojom::ZecTxDataPtr ToZecTxData(const std::string& chain_id,
     }
   }
 
-  bool use_shielded_pool = !tx.orchard_part().inputs.empty();
+  bool use_shielded_pool = !tx.v5_part().orchard.inputs.empty();
   DCHECK(!use_shielded_pool || tx.transparent_part().inputs.empty());
   return mojom::ZecTxData::New(
       use_shielded_pool, tx.to(), false, OrchardMemoToVec(tx.memo()),

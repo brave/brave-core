@@ -252,7 +252,7 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
         input.witness.value(),
         "0x87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a");
 
-    tx.orchard_part().inputs.push_back(std::move(input));
+    tx.v5_part().orchard.inputs.push_back(std::move(input));
   }
 
   // Second input.
@@ -375,10 +375,10 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
         input.witness.value(),
         "0x87d063cd07ee4944222b7762840eb94c688bec743fa8bdf7715c8fe29f104c2a");
 
-    tx.orchard_part().inputs.push_back(std::move(input));
+    tx.v5_part().orchard.inputs.push_back(std::move(input));
   }
 
-  tx.orchard_part().anchor_block_height = 3667180u;
+  tx.v5_part().orchard.anchor_block_height = 3667180u;
 
   // Change.
   {
@@ -388,7 +388,7 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
     output.addr =
         keyring.GetOrchardRawBytes(*(mojom::ZCashKeyId::New(0u, 1u, 0u)))
             .value();
-    tx.orchard_part().outputs.push_back(std::move(output));
+    tx.v5_part().orchard.outputs.push_back(std::move(output));
   }
 
   {
@@ -407,12 +407,12 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
                                             mojom::AccountKind::kDerived, 0);
   spends_bundle.fvk = keyring.GetOrchardFullViewKey(0u).value();
   spends_bundle.sk = keyring.GetOrchardSpendingKey(0u).value();
-  for (const auto& input : tx.orchard_part().inputs) {
+  for (const auto& input : tx.v5_part().orchard.inputs) {
     spends_bundle.inputs.push_back(input);
   }
 
   std::vector<OrchardOutput> outputs;
-  for (const auto& output : tx.orchard_part().outputs) {
+  for (const auto& output : tx.v5_part().orchard.outputs) {
     outputs.push_back(output);
   }
 
@@ -433,7 +433,7 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
       state_tree_bytes.value(), std::move(spends_bundle), std::move(outputs));
   EXPECT_TRUE(orchard_bundle_manager);
 
-  tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
+  tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
 
   auto shielded_sighash =
       ZCashV5Serializer::CalculateSignatureDigest(tx, std::nullopt);
@@ -442,11 +442,11 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
       "0xb7f7080426736db2435919601f9167eada09b626776328fc1613078843588a70",
       ToHex(shielded_sighash));
 
-  auto orchard_raw_part = tx.orchard_part().raw_tx =
+  auto orchard_raw_part = tx.v5_part().orchard.raw_tx =
       orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
-      ToHex(tx.orchard_part().raw_tx.value()),
+      ToHex(tx.v5_part().orchard.raw_tx.value()),
       "0x0256fca85195acfc96859a47b2cff57aeb6eb71c84f60d2c5bdc37243baf8847a2c988"
       "23d9a80fa5b24c1945bef5ccfa6629ef3ef93dc367efa51a9b19269cb00045e6d46d7fde"
       "fd518b0c3b205d09439f044cba4c24aa3e8172ddb7647a0491367988a8f6d8f0b269fd17"
@@ -1003,11 +1003,11 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
                    21,  46,  32,  149, 127, 239, 163, 246, 227, 18,  158,
                    164, 223, 176, 169, 233, 135, 3,   166, 61,  171, 146,
                    149, 137, 214, 220, 81,  201, 112, 249, 53,  179};
-    tx.orchard_part().outputs.push_back(std::move(output));
+    tx.v5_part().orchard.outputs.push_back(std::move(output));
   }
 
   std::vector<OrchardOutput> outputs;
-  for (const auto& output : tx.orchard_part().outputs) {
+  for (const auto& output : tx.v5_part().orchard.outputs) {
     outputs.push_back(OrchardOutput{output.value, output.addr});
   }
 
@@ -1016,11 +1016,11 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       std::vector<uint8_t>() /* Use empty orchard tree */,
       OrchardSpendsBundle(), std::move(outputs));
 
-  tx.orchard_part().digest = orchard_bundle_manager->GetOrchardDigest();
+  tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
 
   EXPECT_EQ(
       "0x10a9b751104fc2ca413fa45efaab70bcf6eaa3bafe865402a97db549456cd1ec",
-      ToHex(tx.orchard_part().digest.value()));
+      ToHex(tx.v5_part().orchard.digest.value()));
 
   auto transparent_signature_digest = ZCashV5Serializer::CalculateSignatureDigest(
       tx, tx.transparent_part().inputs[0]);
@@ -1045,11 +1045,11 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       "0xb74780ff85431f696720b96f122a000a252ca02774c8e2c6c65656814087de20",
       ToHex(shielded_sighash));
 
-  auto orchard_raw_part = tx.orchard_part().raw_tx =
+  auto orchard_raw_part = tx.v5_part().orchard.raw_tx =
       orchard_bundle_manager->ApplySignature(shielded_sighash)->GetRawTxBytes();
 
   EXPECT_EQ(
-      ToHex(tx.orchard_part().raw_tx.value()),
+      ToHex(tx.v5_part().orchard.raw_tx.value()),
       "0x024330112c31d0cbb0db4f77cefc9036ed215ea86ba2aee9a5de08953a8216282f5136"
       "e62a35a7a471c0a68f7a2b09915993244010af0ce69e863a0cdc68042b103dd62d315080"
       "c0bec76397d7c6ad365d84a6354d07049e484d0240410c589389eeb33ccbb564cc383b01"

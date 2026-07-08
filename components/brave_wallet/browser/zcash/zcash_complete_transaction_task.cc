@@ -70,11 +70,11 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (!transaction_.v6_part()) {
+  if (!transaction_.is_v6()) {
     // v5: process legacy Orchard pool.
-    if (!transaction_.orchard_part().inputs.empty() ||
-        !transaction_.orchard_part().outputs.empty()) {
-      if (!transaction_.orchard_part().anchor_block_height.has_value()) {
+    if (!transaction_.v5_part().orchard.inputs.empty() ||
+        !transaction_.v5_part().orchard.outputs.empty()) {
+      if (!transaction_.v5_part().orchard.anchor_block_height.has_value()) {
         error_ = "Anchor not selected";
         ScheduleWorkOnTask();
         return;
@@ -90,7 +90,7 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
         return;
       }
 
-      if (!transaction_.orchard_part().raw_tx) {
+      if (!transaction_.v5_part().orchard.raw_tx) {
         SignOrchardPart();
         return;
       }
@@ -98,7 +98,7 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
   } else {
     // v6: process legacy_orchard pool (ironwood pool support is added when
     // v6 create-transaction tasks populate it).
-    auto& legacy = transaction_.v6_part()->legacy_orchard;
+    auto& legacy = transaction_.v6_part().legacy_orchard;
     if (!legacy.inputs.empty() || !legacy.outputs.empty()) {
       if (!legacy.anchor_block_height.has_value()) {
         error_ = "Anchor not selected";
@@ -193,7 +193,7 @@ void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
 
 // v5 orchard witness calculation.
 void ZCashCompleteTransactionTask::CalculateWitness() {
-  if (transaction_.orchard_part().inputs.empty()) {
+  if (transaction_.v5_part().orchard.inputs.empty()) {
     witness_inputs_ = std::vector<OrchardInput>();
     ScheduleWorkOnTask();
     return;
@@ -201,8 +201,8 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
 
   context_.sync_state
       ->AsyncCall(&OrchardSyncState::CalculateWitnessForCheckpoint)
-      .WithArgs(context_.account_id.Clone(), transaction_.orchard_part().inputs,
-                transaction_.orchard_part().anchor_block_height.value())
+      .WithArgs(context_.account_id.Clone(), transaction_.v5_part().orchard.inputs,
+                transaction_.v5_part().orchard.anchor_block_height.value())
       .Then(base::BindOnce(
           &ZCashCompleteTransactionTask::OnWitnessCalculateResult,
           weak_ptr_factory_.GetWeakPtr()));
@@ -210,7 +210,7 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
 
 // v6 legacy_orchard witness calculation.
 void ZCashCompleteTransactionTask::CalculateWitnessV6() {
-  auto& legacy = transaction_.v6_part()->legacy_orchard;
+  auto& legacy = transaction_.v6_part().legacy_orchard;
   if (legacy.inputs.empty()) {
     witness_inputs_ = std::vector<OrchardInput>();
     ScheduleWorkOnTask();
@@ -219,8 +219,8 @@ void ZCashCompleteTransactionTask::CalculateWitnessV6() {
 
   context_.sync_state
       ->AsyncCall(&OrchardSyncState::CalculateWitnessForCheckpoint)
-      .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
-                legacy.inputs, legacy.anchor_block_height.value())
+      .WithArgs(context_.account_id.Clone(), legacy.inputs,
+                legacy.anchor_block_height.value())
       .Then(base::BindOnce(
           &ZCashCompleteTransactionTask::OnWitnessCalculateResultV6,
           weak_ptr_factory_.GetWeakPtr()));
@@ -235,7 +235,7 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
   }
 
   witness_inputs_ = result.value();
-  transaction_.orchard_part().inputs = result.value();
+  transaction_.v5_part().orchard.inputs = result.value();
   ScheduleWorkOnTask();
 }
 
@@ -248,7 +248,7 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResultV6(
   }
 
   witness_inputs_ = result.value();
-  transaction_.v6_part()->legacy_orchard.inputs = result.value();
+  transaction_.v6_part().legacy_orchard.inputs = result.value();
   ScheduleWorkOnTask();
 }
 
@@ -257,7 +257,7 @@ void ZCashCompleteTransactionTask::GetTreeState() {
   context_.zcash_rpc->GetTreeState(
       context_.chain_id,
       zcash::mojom::BlockID::New(
-          transaction_.orchard_part().anchor_block_height.value(),
+          transaction_.v5_part().orchard.anchor_block_height.value(),
           std::vector<uint8_t>({})),
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -268,7 +268,7 @@ void ZCashCompleteTransactionTask::GetTreeStateV6() {
   context_.zcash_rpc->GetTreeState(
       context_.chain_id,
       zcash::mojom::BlockID::New(
-          transaction_.v6_part()->legacy_orchard.anchor_block_height.value(),
+          transaction_.v6_part().legacy_orchard.anchor_block_height.value(),
           std::vector<uint8_t>({})),
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
@@ -309,9 +309,9 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   OrchardSpendsBundle spends_bundle;
   spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
-  spends_bundle.inputs = transaction_.orchard_part().inputs;
+  spends_bundle.inputs = transaction_.v5_part().orchard.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      *state_tree_bytes, spends_bundle, transaction_.orchard_part().outputs);
+      *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs);
 
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -319,7 +319,7 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
     return;
   }
 
-  transaction_.orchard_part().digest =
+  transaction_.v5_part().orchard.digest =
       orchard_bundle_manager->GetOrchardDigest();
 
   auto sighash =
@@ -353,7 +353,7 @@ void ZCashCompleteTransactionTask::SignOrchardPartV6() {
     return;
   }
 
-  auto& legacy = transaction_.v6_part()->legacy_orchard;
+  auto& legacy = transaction_.v6_part().legacy_orchard;
   OrchardSpendsBundle spends_bundle;
   spends_bundle.sk = *sk;
   spends_bundle.fvk = *fvk;
@@ -388,7 +388,7 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
     return;
   }
 
-  transaction_.orchard_part().raw_tx = orchard_bundle_manager->GetRawTxBytes();
+  transaction_.v5_part().orchard.raw_tx = orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();
 }
 
@@ -400,7 +400,7 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartCompleteV6(
     return;
   }
 
-  transaction_.v6_part()->legacy_orchard.raw_tx =
+  transaction_.v6_part().legacy_orchard.raw_tx =
       orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();
 }
