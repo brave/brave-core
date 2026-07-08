@@ -11,17 +11,12 @@ import path from 'node:path'
 
 const FORWARD_ENV_CONFIG_VARS_TO_GN_ARGS = [
   'brave_android_developer_options_code',
-  'brave_google_api_key',
   'brave_safebrowsing_api_key',
   'brave_services_key_id',
-  'brave_services_key',
-  'brave_stats_api_key',
   'brave_sync_endpoint',
   'concurrent_links',
   'dcheck_always_on',
   'enable_updater',
-  'google_default_client_id',
-  'google_default_client_secret',
   'msan_track_origins',
   'service_key_aichat',
   'service_key_search',
