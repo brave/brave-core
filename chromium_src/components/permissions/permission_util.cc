@@ -6,8 +6,16 @@
 #include "components/permissions/permission_util.h"
 
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
+#include "brave/components/containers/buildflags/buildflags.h"
 #include "components/permissions/permission_uma_util.h"
+#include "content/public/browser/render_process_host.h"
+#include "content/public/browser/storage_partition.h"
 #include "third_party/blink/public/common/permissions/permission_utils.h"
+
+#if BUILDFLAG(ENABLE_CONTAINERS)
+#include "brave/components/containers/content/browser/storage_partition_utils.h"
+#include "brave/components/containers/core/common/features.h"
+#endif
 
 #define PermissionUtil PermissionUtil_ChromiumImpl
 
@@ -197,6 +205,24 @@ GURL PermissionUtil::GetCanonicalOrigin(ContentSettingsType permission,
 
   return PermissionUtil_ChromiumImpl::GetCanonicalOrigin(
       permission, requesting_origin, embedding_origin);
+}
+
+// static
+bool PermissionUtil::IsPermissionBlockedInPartition(
+    ContentSettingsType permission,
+    const GURL& requesting_origin,
+    content::RenderProcessHost* render_process_host) {
+#if BUILDFLAG(ENABLE_CONTAINERS)
+  if (base::FeatureList::IsEnabled(containers::features::kContainers)) {
+    const auto& config =
+        render_process_host->GetStoragePartition()->GetConfig();
+    if (containers::IsContainersStoragePartition(config)) {
+      return false;
+    }
+  }
+#endif
+  return PermissionUtil_ChromiumImpl::IsPermissionBlockedInPartition(
+      permission, requesting_origin, render_process_host);
 }
 
 }  // namespace permissions
