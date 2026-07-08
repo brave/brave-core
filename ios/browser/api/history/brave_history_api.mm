@@ -6,12 +6,14 @@
 #include "brave/ios/browser/api/history/brave_history_api.h"
 
 #include <optional>
+#include <vector>
 
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "brave/ios/browser/api/history/history_driver_ios.h"
 #include "brave/ios/browser/api/history/history_service_listener_ios.h"
@@ -111,7 +113,7 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
                       title:(NSString* _Nullable)title
                   dateAdded:(NSDate* _Nullable)dateAdded {
   if ((self = [super init])) {
-    [self setUrl:url];
+    gurl_ = net::GURLWithNSURL(url);
 
     if (title) {
       [self setTitle:title];
@@ -125,8 +127,15 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
   return self;
 }
 
-- (void)setUrl:(NSURL*)url {
-  gurl_ = net::GURLWithNSURL(url);
+- (instancetype)initWithGURL:(const GURL&)url
+                       title:(const std::u16string&)title
+                   visitTime:(base::Time)visitTime {
+  if ((self = [super init])) {
+    gurl_ = url;
+    title_ = title;
+    date_added_ = visitTime;
+  }
+  return self;
 }
 
 - (NSURL*)url {
@@ -373,10 +382,10 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
           NSMutableArray<IOSHistoryNode*>* historyNodes =
               [[NSMutableArray alloc] init];
           for (const auto& result : results) {
-            IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
-                initWithURL:net::NSURLWithGURL(result.url())
-                      title:base::SysUTF16ToNSString(result.title())
-                  dateAdded:result.visit_time().ToNSDate()];
+            IOSHistoryNode* historyNode =
+                [[IOSHistoryNode alloc] initWithGURL:result.url()
+                                               title:result.title()
+                                           visitTime:result.visit_time()];
             [historyNodes addObject:historyNode];
           }
 

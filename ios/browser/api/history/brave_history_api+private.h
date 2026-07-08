@@ -8,7 +8,11 @@
 
 #import <Foundation/Foundation.h>
 
+#include <string>
+
+#include "base/time/time.h"
 #include "brave/ios/browser/api/history/brave_history_api.h"
+#include "url/gurl.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,6 +20,14 @@ class ProfileIOS;
 
 @interface BraveHistoryAPI (Private)
 - (instancetype)initWithBrowserState:(ProfileIOS*)profile;
+@end
+
+@interface IOSHistoryNode (Private)
+// Builds a node directly from native types, avoiding a round-trip through
+// NSURL (which re-canonicalizes the URL and doubles per-node allocations).
+- (instancetype)initWithGURL:(const GURL&)url
+                       title:(const std::u16string&)title
+                   visitTime:(base::Time)visitTime;
 @end
 
 NS_ASSUME_NONNULL_END
