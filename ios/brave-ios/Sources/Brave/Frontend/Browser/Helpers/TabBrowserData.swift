@@ -5,7 +5,6 @@
 
 import BraveCore
 import BraveUI
-import BraveWallet
 import Data
 import Foundation
 import Preferences
@@ -22,11 +21,6 @@ extension TabDataValues {
     get { self[TabBrowserDataKey.self] }
     set { self[TabBrowserDataKey.self] = newValue }
   }
-}
-
-protocol TabMiscDelegate {
-  func showWalletNotification(_ tab: some TabState, origin: URLOrigin)
-  func updateURLBarWalletButton()
 }
 
 /// A broad container of assorted data that was previously stored in Tab
@@ -69,9 +63,6 @@ class TabBrowserData: NSObject, TabObserver {
     var mojoObjects: [Any?] = [
       _faviconDriver,
       _syncTab,
-      _walletEthProvider,
-      _walletSolProvider,
-      _walletKeyringService,
     ]
 
     DispatchQueue.main.async {
@@ -95,17 +86,9 @@ class TabBrowserData: NSObject, TabObserver {
   var blockAllAlerts: Bool = false
 
   var responses = [URL: URLResponse]()
-  var miscDelegate: TabMiscDelegate?
 
   private var _syncTab: BraveSyncTab?
   private var _faviconDriver: FaviconDriver?
-  private var _walletEthProvider: BraveWalletEthereumProvider?
-  private var _walletSolProvider: BraveWalletSolanaProvider?
-  private var _walletKeyringService: BraveWalletKeyringService? {
-    didSet {
-      _walletKeyringService?.addObserver(self)
-    }
-  }
 
   weak var syncTab: BraveSyncTab? {
     _syncTab
@@ -113,28 +96,6 @@ class TabBrowserData: NSObject, TabObserver {
 
   weak var faviconDriver: FaviconDriver? {
     _faviconDriver
-  }
-
-  weak var walletEthProvider: BraveWalletEthereumProvider? {
-    get { _walletEthProvider }
-    set { _walletEthProvider = newValue }
-  }
-
-  weak var walletSolProvider: BraveWalletSolanaProvider? {
-    get { _walletSolProvider }
-    set { _walletSolProvider = newValue }
-  }
-
-  weak var walletKeyringService: BraveWalletKeyringService? {
-    get { _walletKeyringService }
-    set { _walletKeyringService = newValue }
-  }
-
-  var tabDappStore: TabDappStore = .init()
-  var isWalletIconVisible: Bool = false {
-    didSet {
-      tab?.miscDelegate?.updateURLBarWalletButton()
-    }
   }
 
   var lastTitle: String?

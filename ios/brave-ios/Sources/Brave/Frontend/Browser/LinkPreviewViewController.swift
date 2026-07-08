@@ -41,7 +41,6 @@ class LinkPreviewViewController: UIViewController {
     let tab = TabStateFactory.create(
       with: .init(profile: parentTab.profile, initialConfiguration: initialConfiguration)
     )
-    tab.miscDelegate = browserController
     tab.createWebView()
     tab.addPolicyDecider(browserController)
     let braveShieldsTabHelper: BraveShieldsTabHelper = .init(

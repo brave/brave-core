@@ -1651,16 +1651,16 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           // implement `SolanaProviderImpl::OnContentSettingChanged`
           if let selectedSolAccount = allAccounts.solDappSelectedAccount,
             // currently connected
-            tab.browserData?.isSolanaAccountConnected(selectedSolAccount.address) == true,
-            tab.browserData?.isAccountAllowed(.sol, account: selectedSolAccount.address) == false
+            tab.wallet?.isSolanaAccountConnected(selectedSolAccount.address) == true,
+            tab.wallet?.isAccountAllowed(.sol, account: selectedSolAccount.address) == false
           {  // user revoked access
-            tab.walletSolProvider?.disconnect()
+            tab.wallet?.walletSolProvider?.disconnect()
           }
 
           let ethAccountAddressess = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
           let allowedEthAccountAddresses =
-            tab.browserData?.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
-          tab.browserData?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
+            tab.wallet?.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
+          tab.wallet?.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }
     }

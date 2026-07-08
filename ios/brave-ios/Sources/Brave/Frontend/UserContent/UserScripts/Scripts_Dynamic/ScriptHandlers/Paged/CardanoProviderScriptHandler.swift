@@ -183,7 +183,7 @@ class CardanoProviderScriptHandler: TabContentScript {
     }
 
     // The web page has communicated with `window.cardano`, so we should show the wallet icon
-    tab.isWalletIconVisible = true
+    tab.wallet?.isWalletIconVisible = true
 
     Task { @MainActor in
       switch body.method {

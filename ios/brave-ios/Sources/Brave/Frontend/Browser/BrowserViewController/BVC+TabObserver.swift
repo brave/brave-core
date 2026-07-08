@@ -60,9 +60,9 @@ extension BrowserViewController: TabObserver {
     if let selectedTab = tabManager.selectedTab {
       if selectedTab.visibleURL?.origin != visibleURL?.origin {
         // new site has a different origin, hide wallet icon.
-        tabManager.selectedTab?.isWalletIconVisible = false
+        tabManager.selectedTab?.wallet?.isWalletIconVisible = false
         // new site, reset connected addresses
-        tabManager.selectedTab?.browserData?.clearSolanaConnectedAccounts()
+        tabManager.selectedTab?.wallet?.clearSolanaConnectedAccounts()
         // close wallet panel if it's open
         if let popoverController = self.presentedViewController as? PopoverController,
           popoverController.contentController is WalletPanelHostingController
@@ -79,7 +79,7 @@ extension BrowserViewController: TabObserver {
         // loading wallet webui. show wallet button in url bar if there are
         // 1. pending web requests
         // 2. pending transactions
-        tabManager.selectedTab?.isWalletIconVisible = true
+        tabManager.selectedTab?.wallet?.isWalletIconVisible = true
         updateURLBarWalletButton()
       }
     }
@@ -108,32 +108,32 @@ extension BrowserViewController: TabObserver {
     // `BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame`
     // https://github.com/brave/brave-core/blob/1.52.x/browser/brave_content_browser_client.cc#L608
     if profileController.braveWalletAPI.isAllowed {
-      tab.browserData?.clearSolanaConnectedAccounts()
+      tab.wallet?.clearSolanaConnectedAccounts()
 
-      if let browserData = tab.browserData {
+      if let walletHelper = tab.wallet {
         let committedOrigin = tab.lastCommittedURL?.origin
         if let provider = profileController.braveWalletAPI.ethereumProvider(
-          with: browserData,
+          with: walletHelper,
           origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
           // The Ethereum provider will fetch allowed accounts from it's delegate (the tab)
           // on initialization. Fetching allowed accounts requires the origin; so we need to
           // initialize after `commitedURL` / `url` are updated above
-          tab.walletEthProvider = provider
-          tab.walletEthProvider?.initialize(eventsListener: browserData)
+          walletHelper.walletEthProvider = provider
+          walletHelper.walletEthProvider?.initialize(eventsListener: walletHelper)
         }
         if let provider = profileController.braveWalletAPI.solanaProvider(
-          with: browserData,
+          with: walletHelper,
           origin: committedOrigin,
           isPrivateBrowsing: tab.isPrivate
         ) {
-          tab.walletSolProvider = provider
-          tab.walletSolProvider?.initialize(eventsListener: browserData)
+          walletHelper.walletSolProvider = provider
+          walletHelper.walletSolProvider?.initialize(eventsListener: walletHelper)
         }
         if WalletConstants.isCardanoDAppSupportEnabled,
           let provider = profileController.braveWalletAPI.cardanoProvider(
-            with: browserData,
+            with: walletHelper,
             origin: committedOrigin,
             isPrivateBrowsing: tab.isPrivate
           )
@@ -203,8 +203,8 @@ extension BrowserViewController: TabObserver {
     tab.browserData?.reportPageLoad(to: rewards, redirectChain: tab.redirectChain)
 
     Task {
-      await tab.browserData?.updateEthereumProperties()
-      await tab.browserData?.updateSolanaProperties()
+      await tab.wallet?.updateEthereumProperties()
+      await tab.wallet?.updateSolanaProperties()
     }
 
     if tab.visibleURL?.isLocal == false {
@@ -212,8 +212,8 @@ extension BrowserViewController: TabObserver {
       tab.rewardsXHRLoadURL = tab.visibleURL
     }
 
-    if tab.walletEthProvider != nil {
-      tab.browserData?.emitEthereumEvent(.connect)
+    if tab.wallet?.walletEthProvider != nil {
+      tab.wallet?.emitEthereumEvent(.connect)
     }
 
     if let lastCommittedURL = tab.lastCommittedURL {

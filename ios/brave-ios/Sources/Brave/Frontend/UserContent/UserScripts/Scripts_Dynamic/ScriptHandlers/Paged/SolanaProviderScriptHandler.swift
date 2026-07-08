@@ -83,7 +83,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
 
     guard !tab.isPrivate,
-      let provider = tab.walletSolProvider,
+      let provider = tab.wallet?.walletSolProvider,
       // Fail if there is no last committed URL yet
       !message.frameInfo.securityOrigin.host.isEmpty,
       message.frameInfo.isMainFrame,  // Fail the request came from 3p origin
@@ -106,7 +106,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
 
     // The web page has communicated with `window.solana`, so we should show the wallet icon
-    tab.isWalletIconVisible = true
+    tab.wallet?.isWalletIconVisible = true
 
     Task { @MainActor in
       switch body.method {
@@ -138,7 +138,7 @@ class SolanaProviderScriptHandler: TabContentScript {
         if method == Keys.connect.rawValue, let publicKey = result as? String {
           await emitConnectEvent(tab: tab, publicKey: publicKey)
         } else if method == Keys.disconnect.rawValue {
-          tab.browserData?.emitSolanaEvent(.disconnect)
+          tab.wallet?.emitSolanaEvent(.disconnect)
         }
       case .signTransaction:
         let (result, error) = await signTransaction(tab: tab, args: body.args)
@@ -152,7 +152,7 @@ class SolanaProviderScriptHandler: TabContentScript {
 
   /// Given optional args `{onlyIfTrusted: Bool}`, will return the base 58 encoded public key for success or the error dictionary for failures.
   @MainActor func connect(tab: some TabState, args: String?) async -> (Any?, String?) {
-    guard let provider = tab.walletSolProvider else {
+    guard let provider = tab.wallet?.walletSolProvider else {
       return (
         nil,
         buildErrorJson(status: .internalError, errorMessage: Strings.Wallet.internalErrorMessage)
@@ -167,7 +167,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
-    await tab.browserData?.updateSolanaProperties()
+    await tab.wallet?.updateSolanaProperties()
     return (publicKey, nil)
   }
 
@@ -180,7 +180,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       let arguments = BaseValue(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
-      let provider = tab.walletSolProvider
+      let provider = tab.wallet?.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -210,7 +210,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard let args = args,
       let argsList = BaseValue(jsonString: args)?.listValue,
       let blobMsg = argsList.first?.numberArray,
-      let provider = tab.walletSolProvider
+      let provider = tab.wallet?.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -241,7 +241,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard let args = args,
       var argDict = BaseValue(jsonString: args)?.dictionaryValue,
       let method = argDict[Keys.method.rawValue]?.stringValue,
-      let provider = tab.walletSolProvider
+      let provider = tab.wallet?.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -261,7 +261,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     if method == Keys.connect.rawValue,
       let publicKey = result[Keys.publicKey.rawValue]?.stringValue
     {
-      await tab.browserData?.updateSolanaProperties()
+      await tab.wallet?.updateSolanaProperties()
       return (publicKey, nil)
     } else {
       guard let encodedResult = BaseValue(dictionaryValue: result).jsonObject else {
@@ -281,7 +281,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       let arguments = BaseValue(jsonString: args)?.dictionaryValue,
       let serializedMessage = arguments[Keys.serializedMessage.rawValue],
       let signatures = arguments[Keys.signatures.rawValue],
-      let provider = tab.walletSolProvider
+      let provider = tab.wallet?.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
@@ -311,7 +311,7 @@ class SolanaProviderScriptHandler: TabContentScript {
   @MainActor func signAllTransactions(tab: some TabState, args: String?) async -> (Any?, String?) {
     guard let args = args,
       let transactions = BaseValue(jsonString: args)?.listValue,
-      let provider = tab.walletSolProvider
+      let provider = tab.wallet?.walletSolProvider
     else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
