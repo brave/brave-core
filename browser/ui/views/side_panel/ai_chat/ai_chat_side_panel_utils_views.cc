@@ -42,4 +42,20 @@ void ClosePanel(content::WebContents* web_contents) {
   }
 }
 
+void ClosePanelIfChatActive(content::WebContents* web_contents) {
+  if (!web_contents) {
+    return;
+  }
+
+  Browser* browser = GetBrowserForWebContents(web_contents);
+  if (!browser) {
+    return;
+  }
+
+  SidePanelUI* ui = browser->GetFeatures().side_panel_ui();
+  if (ui && ui->GetCurrentEntryId() == SidePanelEntryId::kChatUI) {
+    ui->Close();
+  }
+}
+
 }  // namespace ai_chat

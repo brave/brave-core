@@ -392,6 +392,11 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
   params.referrer = content::Referrer();
   Navigate(&params);
+
+  // The conversation is now shown in a full-page tab, so close the AI Chat side
+  // panel if it's the one currently open to avoid showing the same conversation
+  // in two places.
+  ai_chat::ClosePanelIfChatActive(owner_web_contents_);
 #endif
 }
 

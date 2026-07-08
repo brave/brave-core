@@ -151,6 +151,7 @@ export const ConversationHeader = React.forwardRef(function (
                 kind='plain-faint'
                 aria-label={openFullPageButtonLabel}
                 title={openFullPageButtonLabel}
+                data-testid='open-full-page-button'
                 onClick={() =>
                   aiChatContext.api.uiHandler.openConversationFullPage(
                     conversationContext.conversationUuid!,
