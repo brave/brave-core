@@ -150,7 +150,7 @@ gfx::ImageSkia BraveShieldsActionController::GetIconImage(
   float scale = static_cast<float>(bitmap.width()) / icon_size;
   image.AddRepresentation(gfx::ImageSkiaRep(bitmap, scale));
   return image;
-#endif
+#endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 }
 
 std::unique_ptr<IconWithBadgeImageSource>
