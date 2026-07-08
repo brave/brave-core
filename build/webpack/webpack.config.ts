@@ -26,24 +26,22 @@ import GenerateDepfilePlugin from './webpack-plugin-depfile.js'
 import XHRCompileAsyncWasmPlugin from './xhr-compile-async-wasm-plugin.js'
 
 export function createWebpackConfig(
-  env: TranspileWebUiCliOptions,
+  options: TranspileWebUiCliOptions,
 ): Configuration {
-  const rootGenDir = path.resolve(env.root_gen_dir)
+  const rootGenDir = path.resolve(options.root_gen_dir)
   const pathMap = generatePathMap(rootGenDir)
   const buildFlags = JSON.parse(
     fs.readFileSync(path.join(rootGenDir, 'brave/build_flags.json'), 'utf8'),
   )
   const tsConfigPath = path.join(rootGenDir, 'tsconfig-webpack.json')
 
-  const isDevMode = env.mode === 'development'
-  // webpack-cli no longer allows specifying entry name in cli args, so use
-  // a custom env param and parse ourselves.
+  const isDevMode = options.mode === 'development'
   const entry: Record<string, string> = {}
-  for (const entryInputItem of env.entry) {
+  for (const entryInputItem of options.entry) {
     const entryInputItemParts = entryInputItem.split('=', 2)
     if (entryInputItemParts.length !== 2) {
       throw new Error(
-        'Brave Webpack config could not parse entry env param item: '
+        'Brave Webpack config could not parse entry options param item: '
           + entryInputItem,
       )
     }
@@ -53,35 +51,35 @@ export function createWebpackConfig(
 
   const resolve = baseResolve(pathMap)
 
-  if (env.extra_modules.length > 0) {
-    resolve.modules = [...env.extra_modules, ...resolve.modules!]
+  if (options.extra_modules.length > 0) {
+    resolve.modules = [...options.extra_modules, ...resolve.modules!]
   }
 
-  if (env.webpack_alias.length > 0) {
-    resolve.aliasFields = env.webpack_alias
+  if (options.webpack_alias.length > 0) {
+    resolve.aliasFields = options.webpack_alias
   }
 
   const output: NonNullable<Configuration['output']> = {
-    iife: !env.no_iife,
-    path: path.resolve(env.output_dir), // Must be absolute path
+    iife: !options.no_iife,
+    path: path.resolve(options.output_dir), // Must be absolute path
     filename: '[name].bundle.js',
     chunkFilename: '[name].chunk.js',
     publicPath: '/',
   }
 
-  if (env.output_module) {
+  if (options.output_module) {
     output.library = { type: 'module' }
     output.iife = false
   }
 
-  if (env.public_asset_path) {
-    output.publicPath = env.public_asset_path
+  if (options.public_asset_path) {
+    output.publicPath = options.public_asset_path
   }
 
   const experiments: Configuration['experiments'] = {
-    outputModule: Boolean(env.output_module),
+    outputModule: Boolean(options.output_module),
   }
-  if (env.sync_wasm) {
+  if (options.sync_wasm) {
     experiments.syncWebAssembly = true
   } else {
     experiments.asyncWebAssembly = true
@@ -98,7 +96,7 @@ export function createWebpackConfig(
     callback: (err?: null | Error, result?: string) => void,
   ) {
     if (
-      env.output_module
+      options.output_module
       && request
       && /^chrome(-untrusted)?:\/\//.test(request)
     ) {
@@ -109,7 +107,7 @@ export function createWebpackConfig(
 
   // Serve common libraries from shared resources
   const reactExternals: Configuration['externals'] =
-    env.output_module && !('no_externals' in env)
+    options.output_module && !options.no_externals
       ? {
           // React and ReactDOM ship in a single bundle (see
           // brave/ui/webui/resources/react/initialize_bundle.ts).
@@ -120,8 +118,8 @@ export function createWebpackConfig(
 
   return {
     entry,
-    mode: env.mode,
-    context: path.resolve(env.webpack_context_dir), // Must be absolute path
+    mode: options.mode,
+    context: path.resolve(options.webpack_context_dir), // Must be absolute path
     devtool: isDevMode ? 'inline-source-map' : false,
     output,
     resolve,
@@ -129,15 +127,15 @@ export function createWebpackConfig(
     experiments,
     externals: [chromeUrlExternals, reactExternals],
     plugins: [
-      env.grd_path
+      options.grd_path
         && new GenerateDepfilePlugin({
-          depfilePath: env.depfile_path,
-          depfileSourceName: env.grd_path,
+          depfilePath: options.depfile_path,
+          depfileSourceName: options.grd_path,
         }),
       ...deterministicIdsPlugins(rootGenDir),
       provideNodeGlobals,
       ...chromePrefixReplacers(pathMap),
-      !env.sync_wasm && new XHRCompileAsyncWasmPlugin(),
+      !options.sync_wasm && new XHRCompileAsyncWasmPlugin(),
     ],
     module: {
       rules: [
