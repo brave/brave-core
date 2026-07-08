@@ -49,15 +49,22 @@ class ZCashCompleteTransactionTask {
       base::expected<zcash::mojom::BlockIDPtr, std::string> result);
 
   void CalculateWitness();
+  void CalculateWitnessV6();
   void OnWitnessCalculateResult(
+      base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
+  void OnWitnessCalculateResultV6(
       base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result);
 
   void GetTreeState();
+  void GetTreeStateV6();
   void OnGetTreeState(
       base::expected<zcash::mojom::TreeStatePtr, std::string> result);
 
   void SignOrchardPart();
+  void SignOrchardPartV6();
   void OnSignOrchardPartComplete(
+      std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
+  void OnSignOrchardPartCompleteV6(
       std::unique_ptr<OrchardBundleManager> orchard_bundle_manager);
 
   void SignTransparentPart();

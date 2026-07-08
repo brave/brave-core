@@ -114,6 +114,50 @@ class ZCashTransaction {
     std::optional<std::vector<uint8_t>> raw_tx;
   };
 
+  // A single shielded pool section serialized as opaque rust bytes, mirroring
+  // OrchardPart. Used for the legacy-orchard and ironwood pools in v6.
+  struct ShieldedPool {
+    ShieldedPool();
+    ~ShieldedPool();
+    ShieldedPool(ShieldedPool&& other);
+    ShieldedPool(const ShieldedPool& other);
+    ShieldedPool& operator=(const ShieldedPool& other);
+    ShieldedPool& operator=(ShieldedPool&& other);
+    bool operator==(const ShieldedPool& other) const;
+
+    std::vector<OrchardInput> inputs;
+    std::vector<OrchardOutput> outputs;
+    std::optional<uint32_t> anchor_block_height;
+    std::optional<std::array<uint8_t, kZCashDigestSize>> digest;
+    std::optional<std::vector<uint8_t>> raw_tx;
+  };
+
+  // v6-only transaction data. Presence of ZCashTransaction::v6_part() selects
+  // v6 serialization.
+  struct V6Part {
+    V6Part();
+    ~V6Part();
+    V6Part(V6Part&& other);
+    V6Part(const V6Part& other);
+    V6Part& operator=(const V6Part& other);
+    V6Part& operator=(V6Part&& other);
+    bool operator==(const V6Part& other) const;
+
+    base::DictValue ToValue() const;
+    static std::optional<V6Part> FromValue(const base::DictValue& value);
+
+    // ZIP 233: value removed from circulation. On the wire it is a u64 LE;
+    // stored as int64_t to match rust's Zatoshis/ZatBalance i64 domain.
+    int64_t zip233_amount = 0;
+
+    ShieldedPool legacy_orchard;  // OrchardPool::kOrchard
+    ShieldedPool ironwood;        // OrchardPool::kIronwood
+
+    // ZIP 231 memo bundle segments (512-byte each). Serialization deferred
+    // (Phase 7). Kept empty for the core v6 path.
+    std::vector<std::array<uint8_t, kOrchardMemoSize>> memo_segments;
+  };
+
   ZCashTransaction();
   ~ZCashTransaction();
   ZCashTransaction(const ZCashTransaction& other);
@@ -149,6 +193,9 @@ class ZCashTransaction {
   const OrchardPart& orchard_part() const { return orchard_part_; }
   OrchardPart& orchard_part() { return orchard_part_; }
 
+  const std::optional<V6Part>& v6_part() const { return v6_part_; }
+  std::optional<V6Part>& v6_part() { return v6_part_; }
+
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
 
@@ -167,6 +214,7 @@ class ZCashTransaction {
  private:
   TransparentPart transparent_part_;
   OrchardPart orchard_part_;
+  std::optional<V6Part> v6_part_;
 
   uint32_t locktime_ = 0;
   uint32_t expiry_height_ = 0;
