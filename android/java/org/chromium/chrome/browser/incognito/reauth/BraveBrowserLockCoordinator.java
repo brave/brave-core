@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.incognito.reauth;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,7 +48,7 @@ public class BraveBrowserLockCoordinator extends IncognitoReauthCoordinatorBase 
         prepareToShow(/* menuButtonDelegate= */ null, /* fullscreen= */ false);
 
         mLockView = getIncognitoReauthView();
-        assert mLockView != null;
+        assumeNonNull(mLockView);
 
         // Override the two text values that differ from the private-tabs defaults.
         TextView statusText =
