@@ -7,6 +7,7 @@ import BraveCore
 import CryptoKit
 import Preferences
 import SnapKit
+import Web
 import WebKit
 import XCTest
 
@@ -270,6 +271,7 @@ final class ScriptExecutionTests: XCTestCase {
     let setup = UserScriptType.ContentCosmeticSetup.makeSetup(
       from: models,
       isAggressive: false,
+      mainFrameURL: siteURL,
       cachedStandardSelectors: initialStandardSelectors.union(invalidSelectors),
       cachedAggressiveSelectors: initialAggressiveSelectors
     )
@@ -560,5 +562,38 @@ final class ScriptExecutionTests: XCTestCase {
     }
     XCTAssertEqual(mainFrameResult, "First party body: 1")
     XCTAssertEqual(localFrameResult, "First local frame body: 1")
+  }
+}
+
+extension UserScriptType.ContentCosmeticSetup {
+  @MainActor public static func makeSetup(
+    from modelTuples: [AdBlockGroupsManager.CosmeticFilterModelTuple],
+    isAggressive: Bool,
+    mainFrameURL: URL,
+    cachedStandardSelectors: Set<String>,
+    cachedAggressiveSelectors: Set<String>
+  ) -> UserScriptType.ContentCosmeticSetup {
+    let tab = FakeTabState()
+    tab.browserData = TabBrowserData(tab: tab)
+    tab.currentPageData = PageData(mainFrameURL: mainFrameURL)
+    let tabHelper = CosmeticFilteringTabHelper(tab: tab)
+    tabHelper.cacheSelectors(
+      for: mainFrameURL,
+      standardSelectors: cachedStandardSelectors,
+      aggressiveSelectors: cachedAggressiveSelectors
+    )
+    let (standardSelectors, aggressiveSelectors) = tabHelper.standardAndAggressiveSelectors(
+      from: modelTuples
+    )
+
+    return UserScriptType.ContentCosmeticSetup(
+      hideFirstPartyContent: isAggressive,
+      genericHide: modelTuples.contains { $0.model.genericHide },
+      firstSelectorsPollingDelayMs: nil,
+      switchToSelectorsPollingThreshold: 1000,
+      fetchNewClassIdRulesThrottlingMs: 100,
+      aggressiveSelectors: aggressiveSelectors,
+      standardSelectors: standardSelectors
+    )
   }
 }

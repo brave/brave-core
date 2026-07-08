@@ -46,59 +46,18 @@ class CosmeticFiltersScriptHandler: TabContentScript {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(CosmeticFiltersDTO.self, from: data)
 
-      guard let mainFrameURL = tab.currentPageData?.mainFrameURL,
-        let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url
-      else {
+      guard let frameURL = URLOrigin(wkSecurityOrigin: message.frameInfo.securityOrigin).url else {
         replyHandler(nil, nil)
         return
       }
 
       Task { @MainActor in
-        let cachedEngines = AdBlockGroupsManager.shared.cachedEngines(
-          isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
-            for: mainFrameURL,
-            considerAllShieldsOption: true
-          ).isEnabled ?? true
-        )
-
-        let selectorArrays = await cachedEngines.asyncCompactMap {
-          cachedEngine -> (selectors: Set<String>, isAlwaysAggressive: Bool)? in
-          do {
-            guard
-              let selectors = try await cachedEngine.selectorsForCosmeticRules(
-                frameURL: frameURL,
-                ids: dto.data.ids,
-                classes: dto.data.classes
-              )
-            else {
-              return nil
-            }
-
-            return await (selectors, cachedEngine.type.isAlwaysAggressive)
-          } catch {
-            Logger.module.error("\(error.localizedDescription)")
-            return nil
-          }
-        }
-
-        var standardSelectors: Set<String> = []
-        var aggressiveSelectors: Set<String> = []
-        for tuple in selectorArrays {
-          if tuple.isAlwaysAggressive {
-            aggressiveSelectors = aggressiveSelectors.union(tuple.selectors)
-          } else {
-            standardSelectors = standardSelectors.union(tuple.selectors)
-          }
-        }
-
-        // cache blocked selectors
-        if let url = tab.visibleURL {
-          tab.contentBlocker?.cacheSelectors(
-            for: url,
-            standardSelectors: standardSelectors,
-            aggressiveSelectors: aggressiveSelectors
-          )
-        }
+        let (standardSelectors, aggressiveSelectors) =
+          await tab.cosmeticFilteringTabHelper?.selectorsToHide(
+            for: frameURL,
+            ids: Set(dto.data.ids),
+            classes: Set(dto.data.classes)
+          ) ?? (.init(), .init())
 
         replyHandler(
           [

@@ -80,10 +80,6 @@ class ContentBlockerHelper: ObservableObject {
 
   var statsDidChange: ((TPPageStats) -> Void)?
   @Published var blockedRequests: OrderedSet<BlockedRequestInfo> = []
-  /// Cached standard selectors. Key is the URL's `baseDomain`.
-  private var hiddenStandardSelectors: [String: Set<String>] = [:]
-  /// Cached aggressive selectors. Key is the URL's `baseDomain`.
-  private var hiddenAggressiveSelectors: [String: Set<String>] = [:]
 
   init(tab: (any TabState)?) {
     self.tab = tab
@@ -120,35 +116,5 @@ class ContentBlockerHelper: ObservableObject {
     ]
 
     ContentBlockerManager.log.debug("Set rule lists:\n\(parts.joined(separator: "\n"))")
-  }
-
-  func resetSelectorsCache() {
-    hiddenStandardSelectors.removeAll()
-    hiddenAggressiveSelectors.removeAll()
-  }
-
-  /// Get the cached selectors for the given URL.
-  func cachedSelectors(for url: URL) -> (standard: Set<String>, aggressive: Set<String>)? {
-    guard let baseDomain = url.baseDomain else {
-      return nil
-    }
-    return (hiddenStandardSelectors[baseDomain] ?? [], hiddenAggressiveSelectors[baseDomain] ?? [])
-  }
-
-  /// Cache the given selectors for the given URL.
-  func cacheSelectors(
-    for url: URL,
-    standardSelectors: Set<String>,
-    aggressiveSelectors: Set<String>
-  ) {
-    guard let baseDomain = url.baseDomain else {
-      return
-    }
-    var cachedStandardSelectors = hiddenStandardSelectors[baseDomain] ?? .init()
-    cachedStandardSelectors.formUnion(standardSelectors)
-    var cachedAggressiveSelectors = hiddenAggressiveSelectors[baseDomain] ?? .init()
-    cachedAggressiveSelectors.formUnion(aggressiveSelectors)
-    hiddenStandardSelectors[baseDomain] = cachedStandardSelectors
-    hiddenAggressiveSelectors[baseDomain] = cachedAggressiveSelectors
   }
 }
