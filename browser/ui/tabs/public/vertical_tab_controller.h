@@ -6,8 +6,10 @@
 #ifndef BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
 #define BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_
 
+#include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 
+class FocusModeController;
 class PrefService;
 
 class VerticalTabController {
@@ -18,7 +20,9 @@ class VerticalTabController {
   static const VerticalTabController* FromBrowser(
       const BrowserWindowInterface* browser);
 
-  VerticalTabController(BrowserWindowInterface::Type type, PrefService* prefs);
+  VerticalTabController(BrowserWindowInterface::Type type,
+                        PrefService* prefs,
+                        FocusModeController* focus_mode_controller);
   VerticalTabController(const VerticalTabController&) = delete;
   VerticalTabController& operator=(const VerticalTabController&) = delete;
   ~VerticalTabController();
@@ -48,6 +52,7 @@ class VerticalTabController {
  private:
   BrowserWindowInterface::Type type_;
   raw_ptr<PrefService> prefs_;
+  raw_ptr<FocusModeController> focus_mode_controller_;
 };
 
 #endif  // BRAVE_BROWSER_UI_TABS_PUBLIC_VERTICAL_TAB_CONTROLLER_H_

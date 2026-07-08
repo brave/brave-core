@@ -6,6 +6,7 @@
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 
 #include "base/command_line.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/public/switches.h"
 #include "build/build_config.h"
@@ -31,9 +32,13 @@ const VerticalTabController* VerticalTabController::FromBrowser(
   return browser->GetFeatures().vertical_tab_controller();
 }
 
-VerticalTabController::VerticalTabController(BrowserWindowInterface::Type type,
-                                             PrefService* prefs)
-    : type_(type), prefs_(prefs) {}
+VerticalTabController::VerticalTabController(
+    BrowserWindowInterface::Type type,
+    PrefService* prefs,
+    FocusModeController* focus_mode_controller)
+    : type_(type),
+      prefs_(prefs),
+      focus_mode_controller_(focus_mode_controller) {}
 
 VerticalTabController::~VerticalTabController() = default;
 
@@ -62,6 +67,10 @@ bool VerticalTabController::ShouldShowBraveVerticalTabs() const {
 
 bool VerticalTabController::ShouldShowWindowTitleForVerticalTabs() const {
   if (!ShouldShowBraveVerticalTabs()) {
+    return false;
+  }
+
+  if (focus_mode_controller_ && focus_mode_controller_->IsEnabled()) {
     return false;
   }
 

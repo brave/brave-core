@@ -66,6 +66,7 @@ source_set("unit_tests") {
       "vertical_tab_controller_unittest.cc",
     ]
     deps += [
+      "//brave/browser/ui/focus_mode",
       "//brave/browser/ui/tabs:tabs_public",
       "//brave/components/tabs",
       "//chrome/browser/ui/tabs:test_support",

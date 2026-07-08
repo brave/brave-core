@@ -8,6 +8,7 @@
 #include <memory>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -23,8 +24,10 @@ class VerticalTabControllerUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<VerticalTabController> MakeController(
-      BrowserWindowInterface::Type type = BrowserWindowInterface::TYPE_NORMAL) {
-    return std::make_unique<VerticalTabController>(type, &pref_service_);
+      BrowserWindowInterface::Type type = BrowserWindowInterface::TYPE_NORMAL,
+      FocusModeController* focus_mode_controller = nullptr) {
+    return std::make_unique<VerticalTabController>(type, &pref_service_,
+                                                   focus_mode_controller);
   }
 
   TestingPrefServiceSimple pref_service_;
@@ -71,6 +74,22 @@ TEST_F(VerticalTabControllerUnitTest,
   pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
   auto controller = MakeController();
   EXPECT_FALSE(controller->ShouldShowWindowTitleForVerticalTabs());
+}
+
+TEST_F(VerticalTabControllerUnitTest, ShouldShowWindowTitleFalseInFocusMode) {
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  pref_service_.SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, true);
+
+  FocusModeController focus_mode_controller;
+  auto controller = MakeController(BrowserWindowInterface::TYPE_NORMAL,
+                                   &focus_mode_controller);
+  EXPECT_TRUE(controller->ShouldShowWindowTitleForVerticalTabs());
+
+  focus_mode_controller.SetEnabled(true);
+  EXPECT_FALSE(controller->ShouldShowWindowTitleForVerticalTabs());
+
+  focus_mode_controller.SetEnabled(false);
+  EXPECT_TRUE(controller->ShouldShowWindowTitleForVerticalTabs());
 }
 
 TEST_F(VerticalTabControllerUnitTest, IsFloatingVerticalTabsEnabledDefault) {
