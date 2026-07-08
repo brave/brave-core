@@ -21,6 +21,7 @@
 #include "brave/components/brave_account/endpoints/verify_complete.h"
 #include "brave/components/brave_account/endpoints/verify_init.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/change_password.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/http/http_status_code.h"

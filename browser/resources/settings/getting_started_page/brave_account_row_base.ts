@@ -12,14 +12,16 @@ import { leoShowAlert } from '//resources/brave/leo.bundle.js'
 import { BraveAccountBrowserProxy } from './brave_account_browser_proxy.js'
 import { BraveAccountSettingsStrings } from '../brave_components_webui_strings.js'
 import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
-  ChangePasswordServerErrorCode,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
   VerificationIntent,
 } from '../brave_account.mojom-webui.js'
+import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+  ChangePasswordServerErrorCode,
+} from '../change_password.mojom-webui.js'
 
 type Error =
   | { kind: 'changePassword'; details: ChangePasswordError }

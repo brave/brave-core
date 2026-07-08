@@ -13,9 +13,6 @@ import {
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
-  ChangePasswordClientErrorCode,
-  ChangePasswordError,
-  ChangePasswordServerErrorCode,
   LoginClientErrorCode,
   LoginError,
   LoginServerErrorCode,
@@ -26,6 +23,11 @@ import {
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
 } from './brave_account.mojom-webui.js'
+import {
+  ChangePasswordClientErrorCode,
+  ChangePasswordError,
+  ChangePasswordServerErrorCode,
+} from './change_password.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
