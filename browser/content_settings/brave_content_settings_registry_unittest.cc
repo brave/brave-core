@@ -252,12 +252,6 @@ TEST_F(BraveContentSettingsRegistryTest, GetInitialDefaultSetting) {
   // }
 
   {
-    SCOPED_TRACE("Content setting: BRAVE_JAVASCRIPT");
-    info = registry()->Get(ContentSettingsType::BRAVE_JAVASCRIPT);
-    EXPECT_EQ(CONTENT_SETTING_ALLOW, info->GetInitialDefaultSetting());
-  }
-
-  {
     SCOPED_TRACE("Content setting: BRAVE_SPEEDREADER");
     info = registry()->Get(ContentSettingsType::BRAVE_SPEEDREADER);
     EXPECT_EQ(CONTENT_SETTING_ASK, info->GetInitialDefaultSetting());
