@@ -51,19 +51,11 @@ export const Content = styled(Column)`
   align-items: center;
   justify-content: flex-start;
   z-index: 3;
-
-  @media screen and (max-width: ${layoutPanelWidth}px) {
-    padding: 0 24px;
-  }
+  padding: 0px 24px;
+  max-width: 812px;
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
     width: 100%;
-    padding-left: 24px;
-    padding-right: 24px;
-  }
-
-  @media (min-width: 1025px) {
-    width: 812px;
   }
 `
 

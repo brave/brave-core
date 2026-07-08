@@ -13,14 +13,10 @@ import { WalletRoutes } from '../../constants/types'
 import { CryptoView } from '../../components/desktop/views/crypto'
 import { WalletPageLayout } from '../../components/desktop/wallet-page-layout'
 import {
-  WalletSubViewLayout, //
-} from '../../components/desktop/wallet-sub-view-layout'
-import {
   BackupWalletRoutes, //
 } from '../screens/backup-wallet/backup-wallet.routes'
 import { DepositFundsScreen } from '../screens/fund-wallet/deposit-funds'
 import { FundWalletScreen } from '../screens/fund-wallet/fund_wallet_v2'
-import { SimplePageWrapper } from '../screens/page-screen.styles'
 import {
   OnboardingSuccess, //
 } from '../screens/onboarding/onboarding_success/onboarding_success'
@@ -39,19 +35,13 @@ export const UnlockedWalletRoutes = ({
         exact
       >
         <WalletPageLayout>
-          <WalletSubViewLayout>
-            <OnboardingSuccess />
-          </WalletSubViewLayout>
+          <OnboardingSuccess />
         </WalletPageLayout>
       </Route>
 
       <Route path={WalletRoutes.Backup}>
         <WalletPageLayout>
-          <WalletSubViewLayout>
-            <SimplePageWrapper>
-              <BackupWalletRoutes />
-            </SimplePageWrapper>
-          </WalletSubViewLayout>
+          <BackupWalletRoutes />
         </WalletPageLayout>
       </Route>
 

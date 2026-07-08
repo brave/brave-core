@@ -45,20 +45,13 @@ import { useLocalStorage } from '../common/hooks/use_local_storage'
 
 // style
 import 'emptykit.css'
-import {
-  FullScreenWrapper,
-  SimplePageWrapper,
-  AlertCenter,
-} from './screens/page-screen.styles'
+import { FullScreenWrapper, AlertCenter } from './screens/page-screen.styles'
 
 // components
 import { LockScreen } from '../components/desktop/lock-screen/index'
 import {
   WalletPageLayout, //
 } from '../components/desktop/wallet-page-layout/index'
-import {
-  WalletSubViewLayout, //
-} from '../components/desktop/wallet-sub-view-layout/index'
 import { OnboardingRoutes } from './screens/onboarding/onboarding.routes'
 import { DevBitcoin } from './screens/dev-bitcoin/dev-bitcoin'
 import { RestoreWallet } from './screens/restore-wallet/restore-wallet'
@@ -221,11 +214,7 @@ export const Container = () => {
           exact={true}
         >
           <WalletPageLayout>
-            <WalletSubViewLayout>
-              <SimplePageWrapper>
-                <RestoreWallet />
-              </SimplePageWrapper>
-            </WalletSubViewLayout>
+            <RestoreWallet />
           </WalletPageLayout>
         </Route>
 
