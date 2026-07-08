@@ -222,13 +222,13 @@ public class BraveBrowserLockManagerTest {
     }
 
     @Test
-    public void reauthNotPossible_keepsLockArmed() {
+    public void reauthNotPossible_clearsLockArmed() {
         ChromeSharedPreferences.getInstance()
                 .writeBoolean(BravePreferenceKeys.BRAVE_BROWSER_LOCK, true);
         BraveBrowserLockManager manager = createManager();
         manager.setLockArmedForTesting(true);
 
         manager.getReauthCallbackForTesting().onIncognitoReauthNotPossible();
-        assertTrue(manager.isLockArmedForTesting());
+        assertFalse(manager.isLockArmedForTesting());
     }
 }
