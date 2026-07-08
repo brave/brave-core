@@ -3,8 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "ios/chrome/browser/policy/model/profile_policy_connector.h"
-
 #include "components/policy/core/common/configuration_policy_provider.h"
 
 namespace brave_policy {
@@ -19,19 +17,12 @@ CreateBraveProfilePolicyProvider();
       brave_policy::CreateBraveProfilePolicyProvider();              \
   policy_providers_.push_back(brave_profile_policy_provider_.get()); \
   brave_profile_policy_provider_->Init(schema_registry);
-#define Shutdown Shutdown_ChromiumImpl
 
 #include <ios/chrome/browser/policy/model/profile_policy_connector.mm>
-
-#undef Shutdown
-#undef BRAVE_PROFILE_POLICY_CONNECTOR_INIT
 
 raw_ptr<policy::ConfigurationPolicyProvider>
 ProfilePolicyConnector::GetBraveProfilePolicyProvider() {
   return brave_profile_policy_provider_.get();
 }
 
-void ProfilePolicyConnector::Shutdown() {
-  ProfilePolicyConnector::Shutdown_ChromiumImpl();
-  brave_profile_policy_provider_->Shutdown();
-}
+#undef BRAVE_PROFILE_POLICY_CONNECTOR_INIT
