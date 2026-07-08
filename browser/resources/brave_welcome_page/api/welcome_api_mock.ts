@@ -19,7 +19,45 @@ export function createWelcomeApiMock(): WelcomeApi {
           isUnknownError: false,
         }
       },
+      async getBrowserProfilesForImport() {
+        return [
+          {
+            index: 0,
+            name: 'Google Chrome Person 1',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+          {
+            index: 1,
+            name: 'Google Chrome Person 2',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+          {
+            index: 2,
+            name: 'Microsoft Edge',
+            profileName: '',
+            autofillFormData: true,
+            extensions: true,
+            favorites: true,
+            history: true,
+            passwords: true,
+            search: true,
+          },
+        ]
+      },
       setAsDefaultBrowser() {},
+      importData(profileIndex, types) {},
     },
   })
 

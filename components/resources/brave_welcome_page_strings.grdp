@@ -17,12 +17,76 @@
     Continue
   </message>
 
+  <message name="IDS_WELCOME_PAGE_BACK_BUTTON_LABEL" desc="Label for back button" formatter_data="webui=BraveWelcomePage">
+    Back
+  </message>
+
   <message name="IDS_WELCOME_PAGE_MAYBE_LATER_BUTTON_LABEL" desc="Label for button to defer a step until later" formatter_data="webui=BraveWelcomePage">
     Maybe later
   </message>
 
   <message name="IDS_WELCOME_PAGE_SET_AS_DEFAULT_BUTTON_LABEL" desc="Label for button that makes Brave the default browser" formatter_data="webui=BraveWelcomePage">
     Set Brave as default
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_SKIP_IMPORT_BUTTON_LABEL" desc="Label for button that skips profile import" formatter_data="webui=BraveWelcomePage">
+    Start from scratch
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_BUTTON_LABEL" desc="Label for import button" formatter_data="webui=BraveWelcomePage">
+    Import
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TEXT1" desc="First paragraph text on import step" formatter_data="webui=BraveWelcomePage">
+    Import everything from your old browser and make the transition seamless.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TEXT2" desc="Second paragraph text on import step" formatter_data="webui=BraveWelcomePage">
+    You can also do this later in Brave's settings.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_STEP_TITLE" desc="Title for import step" formatter_data="webui=BraveWelcomePage">
+    Bring along your old browser content
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_SELECT_BROWSER_TITLE" desc="Title prompting the user to select their previous browser" formatter_data="webui=BraveWelcomePage">
+    Select your previous browser
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPES_TITLE" desc="Title prompting the user to choose which data to import" formatter_data="webui=BraveWelcomePage">
+    What do you want to import?
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_RESULTS_TITLE" desc="Title shown when import has succeeded" formatter_data="webui=BraveWelcomePage">
+    Import results
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_IN_PROGRESS_TITLE" desc="Title shown while content is being imported" formatter_data="webui=BraveWelcomePage">
+    Importing your content
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_AUTOFILL" desc="Name of the autofill form data import type" formatter_data="webui=BraveWelcomePage">
+    Autofill form data
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_EXTENSIONS" desc="Name of the extensions import type" formatter_data="webui=BraveWelcomePage">
+    Extensions
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_FAVORITES" desc="Name of the bookmarks import type" formatter_data="webui=BraveWelcomePage">
+    Bookmarks
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_HISTORY" desc="Name of the history import type" formatter_data="webui=BraveWelcomePage">
+    History
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_PASSWORDS" desc="Name of the saved passwords import type" formatter_data="webui=BraveWelcomePage">
+    Saved passwords
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_IMPORT_DATA_TYPE_SEARCH" desc="Name of the search engines import type" formatter_data="webui=BraveWelcomePage">
+    Search engines
   </message>
 
 </grit-part>

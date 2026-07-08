@@ -3,11 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-export type Step = 'welcome'
+import * as React from 'react'
 
-const baseSteps: Step[] = ['welcome']
+import { useImportableProfiles } from './use_importable_profiles'
+
+const baseSteps = ['welcome', 'import'] as const
+
+export type Step = (typeof baseSteps)[number]
 
 // Returns the current list of visible Welcome steps.
 export function useStepList() {
-  return baseSteps
+  const profiles = useImportableProfiles()
+
+  return React.useMemo(() => {
+    const hidden = new Set<Step>()
+
+    // Hide the import step if there are no importable profiles.
+    if (!profiles?.length) {
+      hidden.add('import')
+    }
+
+    return baseSteps.filter((step) => !hidden.has(step))
+  }, [profiles])
 }
