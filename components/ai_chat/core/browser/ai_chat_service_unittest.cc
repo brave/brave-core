@@ -542,29 +542,32 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
   EXPECT_CALL(*client_, OnConversationListChanged(testing::SizeIs(0)))
       .Times(IsAIChatHistoryEnabled() ? 0 : 1);
 
+  // Connect a client to each conversation as soon as it is created. A
+  // conversation with no connected client may be scheduled for unload as a side
+  // effect of other operations (e.g. listing conversations via
+  // GetConversations), so we keep a client connected to keep the handler alive
+  // rather than holding a raw ConversationHandler pointer across an unload
+  // wait.
   ConversationHandler* conversation_handler1 = CreateConversation();
   conversation_handler1->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto client1 = CreateConversationClient(conversation_handler1);
 
   ConversationHandler* conversation_handler2 = CreateConversation();
   conversation_handler2->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto client2 = CreateConversationClient(conversation_handler2);
 
   ConversationHandler* temporary_conversation = CreateConversation();
   temporary_conversation->SetTemporary(true);
   temporary_conversation->SetChatHistoryForTesting(CreateSampleChatHistory(1u));
+  auto temp_client = CreateConversationClient(temporary_conversation);
 
   ExpectConversationsSize(FROM_HERE, 3u);
 
-  // Make sure nothing is queued to unload.
+  // All conversations have a connected client, so none should be unloaded.
   WaitForConversationUnload();
-
-  // Before connecting any clients to the conversations, none should be deleted
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 3u);
 
-  // Connect a client then disconnect
-  auto client1 = CreateConversationClient(conversation_handler1);
-  auto client2 = CreateConversationClient(conversation_handler2);
-  auto temp_client = CreateConversationClient(temporary_conversation);
-
+  // Disconnect one client at a time and verify only that conversation unloads.
   DisconnectConversationClient(client1.get());
   WaitForConversationUnload();
 
@@ -574,7 +577,6 @@ TEST_P(AIChatServiceUnitTest, ConversationLifecycle_WithMessages) {
 
   ExpectConversationsSize(FROM_HERE, IsAIChatHistoryEnabled() ? 3u : 2u);
 
-  // Connect a client then disconnect
   DisconnectConversationClient(client2.get());
   WaitForConversationUnload();
   EXPECT_EQ(ai_chat_service_->GetInMemoryConversationCountForTesting(), 1u);
