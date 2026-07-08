@@ -983,8 +983,7 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   EXPECT_EQ(last_tab_closed,
             auto_shred_settings.GetSettingDirectly(kBlockPattern, "*"));
 
-  EXPECT_EQ(last_tab_closed,
-            auto_shred_settings.GetSettingDirectly("*", "*"));
+  EXPECT_EQ(last_tab_closed, auto_shred_settings.GetSettingDirectly("*", "*"));
 
   const auto never = brave_shields::AutoShredSetting::ToValue(
       brave_shields::mojom::AutoShredMode::NEVER);
