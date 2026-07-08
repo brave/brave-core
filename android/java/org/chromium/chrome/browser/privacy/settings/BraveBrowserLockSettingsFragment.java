@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.privacy.settings;
 
+import static org.chromium.build.NullUtil.assumeNonNull;
+
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -75,8 +77,8 @@ public class BraveBrowserLockSettingsFragment extends Fragment
         MaterialSwitch switchEntireApp = view.findViewById(R.id.switch_entire_application);
         MaterialSwitch switchPrivateTabs = view.findViewById(R.id.switch_private_tabs);
 
-        assert switchEntireApp != null;
-        assert switchPrivateTabs != null;
+        assumeNonNull(switchEntireApp);
+        assumeNonNull(switchPrivateTabs);
 
         boolean available =
                 IncognitoReauthManager.isIncognitoReauthFeatureAvailable()
@@ -131,6 +133,9 @@ public class BraveBrowserLockSettingsFragment extends Fragment
     }
 
     private void revertToggle(MaterialSwitch toggle, String prefKey, boolean previousValue) {
+        if (!isAdded()) {
+            return;
+        }
         toggle.setOnCheckedChangeListener(null);
         toggle.setChecked(previousValue);
         toggle.setOnCheckedChangeListener(

@@ -727,7 +727,7 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Open normal tabs
       </message>
       <message name="IDS_BRAVE_BROWSER_LOCK_SCREEN_DESCRIPTION" desc="Description at the top of the Browser Lock settings screen.">
-        Lock private tabs or the entire Brave app with your device's screen lock.
+        Lock private tabs or the entire Brave app with your device's screen lock
       </message>
       <message name="IDS_BRAVE_BROWSER_LOCK_WHAT_TO_LOCK" desc="Section header on the Browser Lock settings screen.">
         What to lock
