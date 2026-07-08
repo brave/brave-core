@@ -7,5 +7,5 @@ substitutions:
   - description: |
       Use Brave's observer, which does not auto-open synced tab groups while the
       "Enable tab groups" master switch is off.
-    pattern: 'new TabGroupSyncRemoteObserver('
-    replace: 'new BraveTabGroupSyncRemoteObserver('
+    re_pattern: 'new (TabGroupSyncRemoteObserver\()'
+    replace: 'new Brave\1'

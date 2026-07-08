@@ -6,5 +6,5 @@
 substitutions:
   - description:
       'Allow BraveTabGroupSyncRemoteObserver to subclass this observer.'
-    pattern: 'public final class TabGroupSyncRemoteObserver'
-    replace: 'public class TabGroupSyncRemoteObserver'
+    re_pattern: 'public final (class TabGroupSyncRemoteObserver)'
+    replace: 'public \1'
