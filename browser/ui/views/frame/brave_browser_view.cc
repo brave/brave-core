@@ -1505,6 +1505,13 @@ void BraveBrowserView::UpdateFocusModeState() {
     focus_mode_title_bar_view_->SetTab(
         enabled ? browser()->tab_strip_model()->GetActiveTab() : nullptr);
   }
+
+  // The toolbar is given extra horizontal padding in vertical tabs mode when
+  // it is not hosted in the top overlay. Since the overlay's active state may
+  // have changed, trigger an update of the horizontal padding.
+  if (auto* toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar())) {
+    toolbar_view->UpdateHorizontalPadding();
+  }
 }
 
 bool BraveBrowserView::ShouldDisableFocusModeForActiveTab() const {
