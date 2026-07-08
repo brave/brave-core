@@ -44,6 +44,12 @@ class DisplayURLLabel: UILabel {
     }
   }
 
+  override var textColor: UIColor! {
+    didSet {
+      updateText()
+    }
+  }
+
   override var text: String? {
     didSet {
       clippingFade.isHidden = true
