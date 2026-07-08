@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
+index 3167294cb77d25af93ce09a940c6ea107c855099..b1fd340285d1985188613a2b9b433c23538d7ef8 100644
+--- a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
++++ b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncControllerImpl.java
+@@ -184,7 +184,7 @@ public final class TabGroupSyncControllerImpl
+                         mRemoteMutationHelper,
+                         mNavigationTracker);
+         mRemoteObserver =
+-                new TabGroupSyncRemoteObserver(
++                new BraveTabGroupSyncRemoteObserver(
+                         mTabModel,
+                         mTabGroupSyncService,
+                         mLocalMutationHelper,

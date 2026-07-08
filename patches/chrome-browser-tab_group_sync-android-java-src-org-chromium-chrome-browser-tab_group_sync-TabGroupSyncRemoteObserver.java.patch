@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncRemoteObserver.java b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncRemoteObserver.java
+index 4aa0ac5fc58960d04b83065562d0dba56ed1e745..d5fd56a8e496f4a93cf233cbddb7d18d4cee9970 100644
+--- a/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncRemoteObserver.java
++++ b/chrome/browser/tab_group_sync/android/java/src/org/chromium/chrome/browser/tab_group_sync/TabGroupSyncRemoteObserver.java
+@@ -29,7 +29,7 @@ import java.util.function.Supplier;
+  * updates back to sync. Updates for other windows are ignored.
+  */
+ @NullMarked
+-public final class TabGroupSyncRemoteObserver implements TabGroupSyncService.Observer {
++public class TabGroupSyncRemoteObserver implements TabGroupSyncService.Observer {
+     private static final String TAG = "TG.RemoteObserver";
+     private final TabModel mTabModel;
+     private final TabGroupSyncService mTabGroupSyncService;

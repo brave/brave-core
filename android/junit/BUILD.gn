@@ -289,4 +289,19 @@ if (is_android) {
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
   }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tab_group_sync") {
+    sources = [ "src/org/chromium/chrome/browser/tab_group_sync/BraveTabGroupSyncRemoteObserverUnitTest.java" ]
+
+    deps = [
+      "//base:base_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/preferences:java",
+      "//chrome/browser/tab_group_sync:java",
+      "//chrome/browser/tabmodel:java",
+      "//components/prefs/android:java",
+      "//components/saved_tab_groups/public:java",
+    ]
+  }
 }
