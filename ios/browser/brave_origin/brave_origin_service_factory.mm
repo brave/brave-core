@@ -22,6 +22,7 @@
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/p3a/pref_names.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#include "brave/ios/browser/brave_origin/brave_origin_navigation_bridge_impl.h"
 #include "brave/ios/browser/policy/brave_simple_policy_map_ios.h"
 #include "brave/ios/browser/skus/skus_service_factory.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -54,26 +55,6 @@
 namespace brave_origin {
 
 namespace {
-
-// iOS delegate for BraveOriginService. Provides SKU service access but does
-// not open settings (no equivalent UI surface on iOS).
-class BraveOriginDelegateIOS : public BraveOriginService::Delegate {
- public:
-  using SkusServiceGetter =
-      base::RepeatingCallback<mojo::PendingRemote<skus::mojom::SkusService>()>;
-
-  explicit BraveOriginDelegateIOS(SkusServiceGetter skus_service_getter)
-      : skus_service_getter_(std::move(skus_service_getter)) {}
-
-  void OpenOriginSettings() override { NOTIMPLEMENTED(); }
-
-  mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() override {
-    return skus_service_getter_.Run();
-  }
-
- private:
-  SkusServiceGetter skus_service_getter_;
-};
 
 // Define BraveOrigin-specific metadata for browser-level prefs
 constexpr auto kBraveOriginBrowserMetadata =
@@ -184,10 +165,9 @@ BraveOriginServiceFactory::~BraveOriginServiceFactory() = default;
 
 std::unique_ptr<KeyedService>
 BraveOriginServiceFactory::BuildServiceInstanceFor(ProfileIOS* profile) const {
+  std::string profile_id = GetProfileId(profile->GetStatePath());
   auto skus_service_getter =
       base::BindRepeating(&skus::SkusServiceFactory::GetForProfile, profile);
-
-  std::string profile_id = GetProfileId(profile->GetStatePath());
   return std::make_unique<BraveOriginService>(
       GetApplicationContext()->GetLocalState(),
       user_prefs::UserPrefs::Get(profile), profile_id,
