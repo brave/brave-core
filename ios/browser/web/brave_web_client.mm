@@ -15,6 +15,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/constants/url_constants.h"
+#include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/ios/browser/ai_chat/ai_chat_distiller_javascript_feature.h"
 #include "brave/ios/browser/api/profile/profile_bridge_impl.h"
 #include "brave/ios/browser/api/web_view/brave_web_view_internal.h"
@@ -24,6 +25,8 @@
 #include "brave/ios/browser/brave_shields/cookie_control_javascript_feature.h"
 #include "brave/ios/browser/brave_shields/farbling_javascript_feature.h"
 #include "brave/ios/browser/global_privacy_control/gpc_javascript_feature.h"
+#include "brave/ios/browser/playlist/playlist_compatibility_javascript_feature.h"
+#include "brave/ios/browser/playlist/playlist_javascript_feature.h"
 #include "brave/ios/browser/skus/skus_javascript_feature.h"
 #include "brave/ios/browser/ui/web_view/features.h"
 #include "brave/ios/browser/web/brave_web_main_parts.h"
@@ -64,6 +67,10 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
 #include "brave/ios/browser/brave_talk/brave_talk_launcher_javascript_feature.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PLAYLIST)
+#include "brave/components/playlist/core/common/features.h"
 #endif
 
 BraveWebClient::BraveWebClient() {}
@@ -160,6 +167,13 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
         MediaBackgroundingJavaScriptFeature::FromBrowserState(browser_state));
     features.push_back(NightModeJavaScriptFeature::GetInstance());
     features.push_back(PageMetadataJavaScriptFeature::GetInstance());
+#if BUILDFLAG(ENABLE_PLAYLIST)
+    if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+      features.push_back(playlist::PlaylistJavaScriptFeature::GetInstance());
+      features.push_back(
+          playlist::PlaylistCompatibilityJavaScriptFeature::GetInstance());
+    }
+#endif
     features.push_back(brave::ReaderModeJavaScriptFeature::GetInstance());
     features.push_back(
         skus::SkusJavaScriptFeature::FromBrowserState(browser_state));

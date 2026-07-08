@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
 
 config("config") {
   # For our own public headers to be able to import the official public headers
@@ -33,6 +34,7 @@ source_set("web_view") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/ai_chat/ios/browser",
     "//brave/components/brave_talk/buildflags",
+    "//brave/components/playlist/core/common/buildflags",
     "//brave/components/serp_metrics:features",
     "//brave/ios/browser/ai_chat",
     "//brave/ios/browser/api/profile",
@@ -73,6 +75,9 @@ source_set("web_view") {
   ]
   if (enable_brave_talk) {
     deps += [ "//brave/ios/browser/brave_talk" ]
+  }
+  if (enable_playlist) {
+    deps += [ "//brave/ios/browser/playlist" ]
   }
   frameworks = [
     "Foundation.framework",

@@ -3,22 +3,43 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import("//ios/web/public/js_messaging/optimize_ts.gni")
+
 source_set("playlist") {
   sources = [
+    "playlist_compatibility_flag_data.h",
+    "playlist_compatibility_flag_data.mm",
+    "playlist_compatibility_javascript_feature.h",
+    "playlist_compatibility_javascript_feature.mm",
     "playlist_exclusions_bridge.h",
     "playlist_exclusions_bridge_impl.h",
     "playlist_exclusions_bridge_impl.mm",
     "playlist_exclusions_factory.h",
     "playlist_exclusions_factory.mm",
+    "playlist_javascript_feature.h",
+    "playlist_javascript_feature.mm",
     "playlist_pref_names_bridge.h",
     "playlist_pref_names_bridge.mm",
+    "playlist_tab_helper.h",
+    "playlist_tab_helper.mm",
+    "playlist_tab_helper_bridge.h",
   ]
   deps = [
-    "//base",
+    ":playlist_compatibility_js",
+    ":playlist_event_listeners_js",
+    ":playlist_js",
     "//brave/components/playlist/core/browser",
     "//brave/components/playlist/core/common",
+    "//components/prefs",
+    "//ios/chrome/browser/shared/model/profile",
     "//net",
     "//url",
+  ]
+  public_deps = [
+    "//base",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//ios/web/public",
+    "//ios/web/public/js_messaging",
   ]
   frameworks = [ "Foundation.framework" ]
 }
@@ -29,4 +50,39 @@ source_set("features") {
     "features.mm",
   ]
   public_deps = [ "//base" ]
+}
+
+compile_ts("playlist_utils") {
+  sources = [ "resources/playlist_utils.ts" ]
+  deps = [ "//ios/web/public/js_messaging:util_scripts" ]
+}
+
+optimize_ts("playlist_js") {
+  visibility = [ ":playlist" ]
+
+  sources = [ "resources/playlist.ts" ]
+
+  deps = [
+    ":playlist_utils",
+    "//ios/web/public/js_messaging:gcrweb",
+  ]
+}
+
+optimize_ts("playlist_event_listeners_js") {
+  visibility = [ ":playlist" ]
+
+  sources = [ "resources/playlist_event_listeners.ts" ]
+
+  deps = [
+    ":playlist_utils",
+    "//ios/web/public/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("playlist_compatibility_js") {
+  visibility = [ ":playlist" ]
+
+  sources = [ "resources/playlist_compatibility.ts" ]
+
+  deps = [ "//brave/ios/web/js_messaging:util_scripts" ]
 }
