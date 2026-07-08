@@ -279,6 +279,15 @@ class PolkadotTxManagerUnitTest : public testing::Test {
               kExpectedExtrinsic);
   }
 
+  size_t GetStatusTaskCount() {
+    return GetPolkadotTxManager()->polkadot_transaction_status_tasks_.size();
+  }
+
+  bool HasStatusTaskFor(const std::string& tx_meta_id) {
+    return GetPolkadotTxManager()->polkadot_transaction_status_tasks_.contains(
+        tx_meta_id);
+  }
+
  protected:
   base::test::TaskEnvironment task_environment_;
 
@@ -1122,6 +1131,37 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
 
   GetPolkadotTxManager()->UpdatePendingTransactions(mojom::kPolkadotMainnet);
   EXPECT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+}
+
+TEST_F(PolkadotTxManagerUnitTest,
+       UpdatePendingTransactions_DedupesStatusTasks) {
+  // Calling UpdatePendingTransactions() shouldn't spawn more than one task for
+  // a given transaction.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotTestnet;
+
+  auto tx_meta_id = SetUpUnapprovedTx(chain_id);
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+  auto [success, error, msg] = approved_future.Take();
+  ASSERT_TRUE(success);
+
+  ExpectSubmittedTxState(tx_meta_id);
+  ASSERT_EQ(GetStatusTaskCount(), 1u);
+  ASSERT_TRUE(HasStatusTaskFor(tx_meta_id));
+
+  for (int i = 0; i < 5; ++i) {
+    GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
+    EXPECT_EQ(GetStatusTaskCount(), 1u);
+    EXPECT_TRUE(HasStatusTaskFor(tx_meta_id));
+  }
 }
 
 }  // namespace brave_wallet
