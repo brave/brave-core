@@ -627,10 +627,14 @@ TEST_F(BravePrefProviderTest, MigrateShieldsJavaScriptToBraveJavaScript) {
       testing_profile()->GetPrefs(), ContentSettingsType::JAVASCRIPT);
   DirectAccessContentSettings brave_javascript_settings(
       testing_profile()->GetPrefs(), ContentSettingsType::BRAVE_JAVASCRIPT);
-  EXPECT_TRUE(
-      javascript_settings.GetSettingDirectly("*://brave.com/*").is_none());
-  EXPECT_EQ(base::Value(CONTENT_SETTING_BLOCK),
-            brave_javascript_settings.GetSettingDirectly("*://brave.com/*"));
+  // Patterns are stored under their canonical form; "*://brave.com/*"
+  // canonicalizes to "brave.com".
+  const std::string canonical_shields_pattern = shields_pattern.ToString();
+  EXPECT_TRUE(javascript_settings.GetSettingDirectly(canonical_shields_pattern)
+                  .is_none());
+  EXPECT_EQ(
+      base::Value(CONTENT_SETTING_BLOCK),
+      brave_javascript_settings.GetSettingDirectly(canonical_shields_pattern));
 
   EXPECT_EQ(CONTENT_SETTING_BLOCK,
             TestUtils::GetContentSetting(
