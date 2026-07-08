@@ -26,7 +26,12 @@
 #include "content/public/browser/web_ui.h"
 
 BraveAppearanceHandler::BraveAppearanceHandler() = default;
-BraveAppearanceHandler::~BraveAppearanceHandler() = default;
+
+BraveAppearanceHandler::~BraveAppearanceHandler() {
+  if (command_updater_) {
+    command_updater_->RemoveCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+  }
+}
 
 // TODO(simonhong): Use separate handler for NTP settings.
 void BraveAppearanceHandler::RegisterMessages() {
@@ -64,18 +69,7 @@ void BraveAppearanceHandler::RegisterMessages() {
     command_updater_ = tab->GetBrowserWindowInterface()
                            ->GetFeatures()
                            .browser_command_controller();
-  }
-}
-
-void BraveAppearanceHandler::OnJavascriptAllowed() {
-  if (command_updater_) {
     command_updater_->AddCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
-  }
-}
-
-void BraveAppearanceHandler::OnJavascriptDisallowed() {
-  if (command_updater_) {
-    command_updater_->RemoveCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
   }
 }
 
