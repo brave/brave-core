@@ -6,14 +6,35 @@
 import { Command, Option } from 'commander'
 
 export const command = new Command('transpile-web-ui')
-  .requiredOption('--webpack_context_dir <path>', 'Webpack context directory')
+  .requiredOption(
+    '--webpack_context_dir <path>',
+    'The base directory for resolving entry points and loaders. Usually the path of "//brave"',
+  )
   .requiredOption('--root_src_dir <path>', 'Chromium src root directory')
-  .requiredOption('--root_gen_dir <path>', 'Root gen dir')
-  .requiredOption('--output_dir <path>', 'Output directory')
-  .requiredOption('--depfile_path <path>', 'Depfile path')
-  .requiredOption('--import_paths_file <path>', 'Import paths file')
-  .requiredOption('--grd_path <path>', 'GRD path')
-  .requiredOption('--resource_name <name>', 'Resource name')
+  .requiredOption(
+    '--root_gen_dir <path>',
+    'Root gen directory to locate other output dependencies',
+  )
+  .requiredOption(
+    '--output_dir <path>',
+    'Directory to create build output in (all contents will be deleted first)',
+  )
+  .requiredOption(
+    '--depfile_path <path>',
+    'Path to generate depfile at for use by GN to know which source files were used',
+  )
+  .requiredOption(
+    '--import_paths_file <path>',
+    'JSON file containing the import paths which describe the folders and files that are going to be used by webpack. The command will verify no other locations are used.',
+  )
+  .requiredOption(
+    '--grd_path <path>',
+    'Path to create a GRD or GRDP file with all the output contents',
+  )
+  .requiredOption(
+    '--resource_name <name>',
+    'Forms part of generated grit IDs, C++ file names and variables',
+  )
   .addOption(
     new Option('--mode <mode>', 'Webpack bundle mode')
       .makeOptionMandatory()
@@ -21,23 +42,32 @@ export const command = new Command('transpile-web-ui')
   )
   .requiredOption(
     '--entry <entry>',
-    'Entry points',
+    'Entry points each in the form name=path',
     concatArray,
     [] as string[],
   )
-  .option('--no_externals', 'Disable webpack externals')
-  .option('--public_asset_path <path>', 'Public asset path')
+  .option(
+    '--no_externals',
+    "Don't allow replacing imports with shared externals, e.g. React from chrome://resources",
+  )
+  .option(
+    '--public_asset_path <path>',
+    'Support a different URL path to access generated resources at',
+  )
   .option(
     '--webpack_alias <alias>',
-    'Webpack alias',
+    'Webpack alias list to pass platform hint to libraries, possibly filtering imports',
     concatArray,
     [] as string[],
   )
-  .option('--output_module', 'Output as ES module')
-  .option('--resource_path_prefix <prefix>', 'Resource path prefix')
+  .option('--output_module', 'Output as ES module and prevent IIFE')
+  .option(
+    '--resource_path_prefix <prefix>',
+    'Prefix to "serve" the resources from via GRD',
+  )
   .option(
     '--extra_modules <module>',
-    'Extra module paths',
+    'Tell webpack what extra directories should be searched when resolving modules',
     concatArray,
     [] as string[],
   )
