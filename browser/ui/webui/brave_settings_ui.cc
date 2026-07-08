@@ -326,6 +326,13 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
            brave_domains::GetServicesDomain(
                "account", brave_domains::ServicesEnvironment::STAGING),
            "/?intent=checkout&product=origin&mtm_campaign=browser-settings"}));
+  html_source->AddString(
+      "braveOriginRestoreUrl",
+      base::StrCat(
+          {"https://",
+           brave_domains::GetServicesDomain(
+               "account", brave_domains::ServicesEnvironment::STAGING),
+           "/?intent=recover&product=origin&mtm_campaign=browser-settings"}));
   html_source->AddBoolean("isTreeTabsFlagEnabled",
                           base::FeatureList::IsEnabled(tabs::kBraveTreeTab));
   html_source->AddBoolean(

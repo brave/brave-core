@@ -231,6 +231,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_DESCRIPTION},
       {"braveOriginOnboardingBuyNow",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_BUY_NOW},
+      {"braveOriginOnboardingRestorePurchase",
+       IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_RESTORE_PURCHASE},
       {"braveOriginOnboardingLearnMore",
        IDS_SETTINGS_BRAVE_ORIGIN_ONBOARDING_LEARN_MORE},
 #if BUILDFLAG(IS_LINUX)

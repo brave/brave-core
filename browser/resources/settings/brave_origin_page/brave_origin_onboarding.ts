@@ -40,6 +40,13 @@ export class SettingsBraveOriginOnboardingElement extends
         'noopener');
   }
 
+  private onRestorePurchaseClick_() {
+    window.open(
+        loadTimeData.getString('braveOriginRestoreUrl'),
+        '_blank',
+        'noopener');
+  }
+
   private onLearnMoreClick_() {
     window.open(
         'https://support.brave.app/hc/en-us/articles/38561489788173',
