@@ -28,6 +28,7 @@ void PsstErrorReportUploader::Upload(
     const int script_version,
     base::ListValue failed_tasks,
     base::OnceCallback<void()> callback) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string api_key = brave_stats::GetAPIKey();
 
   const GURL upload_url(
@@ -39,7 +40,7 @@ void PsstErrorReportUploader::Upload(
   base::JSONWriter::Write(report_details_dict, &report_details_json);
 
   PsstErrorReportUploader::CreateAndStartURLLoader(upload_url, kJsonContentType,
-                                                   report_details_json);
+                                                   report_details_json, std::move(callback));
 }
 
 void PsstErrorReportUploader::CreateAndStartURLLoader(
@@ -81,7 +82,7 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
   simple_url_loader_->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
       shared_url_loader_factory_.get(),
       base::BindOnce(&PsstErrorReportUploader::OnSimpleURLLoaderComplete,
-                     base::Unretained(this), std::move(callback)));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
 void PsstErrorReportUploader::OnSimpleURLLoaderComplete(

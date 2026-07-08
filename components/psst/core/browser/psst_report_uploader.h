@@ -19,23 +19,24 @@ class PsstErrorReportUploader {
   PsstErrorReportUploader(const PsstErrorReportUploader&) = delete;
   PsstErrorReportUploader& operator=(const PsstErrorReportUploader&) = delete;
 
-  ~PsstErrorReportUploader();
+  virtual ~PsstErrorReportUploader();
 
-  void Upload(std::optional<std::string> psst_component_version,
-              const int script_version,
-              base::ListValue failed_tasks,
-              base::OnceCallback<void()> callback);
+  virtual void Upload(std::optional<std::string> psst_component_version,
+                      const int script_version,
+                      base::ListValue failed_tasks,
+                      base::OnceCallback<void()> callback);
 
  private:
-  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
-  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   void CreateAndStartURLLoader(const GURL& upload_url,
                                const std::string& content_type,
                                const std::string& post_data,
                                base::OnceCallback<void()> callback);
   void OnSimpleURLLoaderComplete(base::OnceCallback<void()> callback,
                                  std::optional<std::string> response_body);
+  std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<PsstErrorReportUploader> weak_ptr_factory_{this};
 };
 
 }  // namespace psst
