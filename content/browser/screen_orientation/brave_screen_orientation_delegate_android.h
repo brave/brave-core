@@ -6,7 +6,6 @@
 #ifndef BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
 #define BRAVE_CONTENT_BROWSER_SCREEN_ORIENTATION_BRAVE_SCREEN_ORIENTATION_DELEGATE_ANDROID_H_
 
-#include "brave/content/public/browser/fullscreen_page_data.h"
 #include "content/browser/screen_orientation/screen_orientation_delegate_android.h"
 #include "content/common/content_export.h"
 #include "content/public/browser/screen_orientation_delegate.h"
