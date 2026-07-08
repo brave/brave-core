@@ -19,10 +19,7 @@ DEPOT_TOOLS_PATH = Path('third_party') / 'depot_tools'
 
 
 class DepotToolsApi(RecipeApi):
-    """Deploys depot_tools so `gclient`/`fetch` are available on PATH.
-
-    Extracted from `build_rust_toolchain.py::_bootstrap_depot_tools`.
-    """
+    """Deploys depot_tools so `gclient`/`fetch` are available on PATH."""
 
     def __init__(self) -> None:
         super().__init__()

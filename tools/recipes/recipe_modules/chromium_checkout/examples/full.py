@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 import post_process
 
-DEPS = ['chromium_checkout']
+DEPS = ['chromium_checkout', 'env', 'platform', 'step']
 
 
 @dataclass(frozen=True)
@@ -23,6 +23,11 @@ PROPERTIES = InputProperties
 
 def RunSteps(api, properties):
     api.chromium_checkout.ensure_checkout(ref=properties.chromium_ref)
+    # Surface the otherwise-internal hermetic toolchain env as a step so a test
+    # can assert `checkout_ref` set it on Windows.
+    toolchain = api.env.get('DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL')
+    if toolchain:
+        api.step('win toolchain env', ['echo', toolchain])
 
 
 def GenTests(api):
@@ -55,4 +60,19 @@ def GenTests(api):
         api.post_process(post_process.StatusException),
         api.post_process(post_process.DropExpectation),
         status='EXCEPTION',
+    )
+    # On Windows, checkout_ref sets the hermetic toolchain base URL
+    yield api.test(
+        'windows hermetic toolchain',
+        api.platform.name('win'),
+        api.chromium_checkout.with_git_cache(),
+        api.chromium_checkout.existing_checkout(),
+        api.properties(chromium_ref='main'),
+        api.post_process(post_process.MustRun, 'win toolchain env'),
+        api.post_process(
+            post_process.StepCommandContains, 'win toolchain env', [
+                'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-'
+                '2.on.aws/windows-hermetic-toolchain/'
+            ]),
+        api.post_process(post_process.StatusSuccess),
     )
