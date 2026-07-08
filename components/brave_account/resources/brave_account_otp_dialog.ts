@@ -22,12 +22,14 @@ import {
   LoggedOutVerificationIntent,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
-  ResetPasswordClientErrorCode,
-  ResetPasswordError,
   VerificationIntent,
   VerificationIntentFieldTags,
   whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
+import {
+  ResetPasswordClientErrorCode,
+  ResetPasswordError,
+} from './reset_password.mojom-webui.js'
 
 export class BraveAccountOtpDialogElement extends CrLitElement {
   static get is() {

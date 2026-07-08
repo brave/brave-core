@@ -12,7 +12,7 @@ import {
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
-} from './brave_account.mojom-webui.js'
+} from './reset_password.mojom-webui.js'
 import { getCss } from './brave_account_password_reset_dialog.css.js'
 import { getHtml } from './brave_account_password_reset_dialog.html.js'
 import { showError } from './brave_account_common.js'

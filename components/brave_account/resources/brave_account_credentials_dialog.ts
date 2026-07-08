@@ -18,11 +18,13 @@ import {
   LoggedOutVerificationIntent,
   RegisterClientErrorCode,
   RegisterError,
-  ResetPasswordClientErrorCode,
-  ResetPasswordError,
   VerificationIntentFieldTags,
   whichVerificationIntent,
 } from './brave_account.mojom-webui.js'
+import {
+  ResetPasswordClientErrorCode,
+  ResetPasswordError,
+} from './reset_password.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 import { CredentialsVerification } from './brave_account_dialogs.js'
 
