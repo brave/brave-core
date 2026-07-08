@@ -16,6 +16,7 @@
 #include "base/scoped_observation.h"
 #include "base/timer/timer.h"
 #include "base/types/pass_key.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "components/prefs/pref_member.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -41,7 +42,8 @@ class BraveVerticalTabStripRegionView : public views::View,
                                         public views::ResizeAreaDelegate,
                                         public views::AnimationDelegateViews,
                                         public views::WidgetObserver,
-                                        public views::ContextMenuController {
+                                        public views::ContextMenuController,
+                                        public FocusModeController::Observer {
   METADATA_HEADER(BraveVerticalTabStripRegionView, views::View)
  public:
   // We have a state machine which cycles like:
@@ -126,6 +128,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   void OnFullscreenStateChanged();
 
+  // FocusModeController::Observer:
+  void OnFocusModeToggled(bool enabled) override;
+
   // views::ContextMenuController:
   void ShowContextMenuForViewImpl(
       views::View* source,
@@ -166,6 +171,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
+  bool IsFloatingEnabledForBrowserMode() const;
+  void UpdateFloatingStateForBrowserMode();
+
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();
   void OnMouseEntered();
@@ -217,6 +225,7 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   State state_ = State::kExpanded;
   State last_state_ = State::kExpanded;
+  std::optional<State> floating_restore_state_;
 
   BooleanPrefMember sidebar_side_;
   BooleanPrefMember show_vertical_tabs_;
@@ -237,6 +246,9 @@ class BraveVerticalTabStripRegionView : public views::View,
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       widget_observation_{this};
+
+  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
+      focus_mode_observation_{this};
 
 #if BUILDFLAG(IS_MAC)
   BooleanPrefMember show_toolbar_on_fullscreen_pref_;
