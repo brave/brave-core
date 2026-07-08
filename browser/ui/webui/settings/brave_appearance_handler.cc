@@ -64,6 +64,12 @@ void BraveAppearanceHandler::RegisterMessages() {
     command_updater_ = tab->GetBrowserWindowInterface()
                            ->GetFeatures()
                            .browser_command_controller();
+    // `command_updater_` is owned by the browser window's features and is
+    // destroyed during window teardown (e.g. on relaunch), before this WebUI
+    // handler's OnJavascriptDisallowed() runs. Clear the cached pointer while
+    // the controller is still alive so it is never dereferenced after free.
+    tab_will_detach_subscription_ = tab->RegisterWillDetach(base::BindRepeating(
+        &BraveAppearanceHandler::OnTabWillDetach, base::Unretained(this)));
   }
 }
 
@@ -123,4 +129,21 @@ void BraveAppearanceHandler::GetIsVerticalTabsToggleEnabled(
   const bool enabled = !command_updater_ || command_updater_->IsCommandEnabled(
                                                 IDC_TOGGLE_VERTICAL_TABS);
   ResolveJavascriptCallback(args[0], base::Value(enabled));
+}
+
+void BraveAppearanceHandler::OnTabWillDetach(
+    tabs::TabInterface* tab,
+    tabs::TabInterface::DetachReason reason) {
+  if (!command_updater_) {
+    return;
+  }
+  // The command observer is registered only while JavaScript is allowed (see
+  // OnJavascriptAllowed/OnJavascriptDisallowed). Remove it now, while the
+  // controller is still alive, to keep AddCommandObserver/RemoveCommandObserver
+  // balanced and avoid a use-after-free when OnJavascriptDisallowed() runs
+  // later during WebContents teardown.
+  if (IsJavascriptAllowed()) {
+    command_updater_->RemoveCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+  }
+  command_updater_ = nullptr;
 }
