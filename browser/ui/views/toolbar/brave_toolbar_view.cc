@@ -341,7 +341,6 @@ void BraveToolbarView::Init() {
 
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
-    UpdateVerticalTabToggleState();
     UpdateComboButtonState();
   }
 
