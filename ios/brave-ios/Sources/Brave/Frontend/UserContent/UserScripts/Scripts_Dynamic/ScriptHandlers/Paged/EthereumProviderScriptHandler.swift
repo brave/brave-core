@@ -82,7 +82,7 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
 
     guard !tab.isPrivate,
-      let provider = tab.walletEthProvider,
+      let provider = tab.wallet?.walletEthProvider,
       // Fail if there is no last committed URL yet
       !message.frameInfo.securityOrigin.host.isEmpty,
       message.frameInfo.isMainFrame,  // Fail the request came from 3p origin
@@ -105,14 +105,14 @@ class EthereumProviderScriptHandler: TabContentScript {
     }
 
     // The web page has communicated with `window.ethereum`, so we should show the wallet icon
-    tab.isWalletIconVisible = true
+    tab.wallet?.isWalletIconVisible = true
 
     func handleResponse(
       response: BraveWallet.EthereumProviderResponse
     ) {
       Task { @MainActor in
         if response.updateBindJsProperties {
-          await tab.browserData?.updateEthereumProperties()
+          await tab.wallet?.updateEthereumProperties()
         }
 
         if response.reject {

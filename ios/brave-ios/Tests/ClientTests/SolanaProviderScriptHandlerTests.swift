@@ -15,7 +15,7 @@ import XCTest
 
   private func createTestTab() -> some TabState {
     let tab = FakeTabState()
-    tab.browserData = .init(tab: tab)
+    tab.wallet = .init(tab: tab)
     return tab
   }
 
@@ -28,7 +28,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(publicKey)
@@ -52,7 +52,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: nil)
     XCTAssertNil(error)
@@ -78,7 +78,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (publicKey, error) = await solProviderHelper.connect(tab: tab, args: args)
     XCTAssertNil(error)
@@ -109,7 +109,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(result)
@@ -152,7 +152,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
@@ -194,7 +194,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAndSendTransaction(tab: tab, args: args)
     XCTAssertNil(error)
@@ -223,7 +223,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(result)
@@ -263,7 +263,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
@@ -308,7 +308,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signMessage(tab: tab, args: args)
     XCTAssertNil(error)
@@ -349,7 +349,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(result)
@@ -388,7 +388,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
@@ -427,7 +427,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signTransaction(tab: tab, args: args)
     XCTAssertNil(error)
@@ -466,7 +466,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(result)
@@ -510,7 +510,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)
@@ -556,7 +556,7 @@ import XCTest
     }
     let tab = createTestTab()
     let solProviderHelper = SolanaProviderScriptHandler()
-    tab.walletSolProvider = provider
+    tab.wallet?.walletSolProvider = provider
 
     let (result, error) = await solProviderHelper.signAllTransactions(tab: tab, args: args)
     XCTAssertNil(error)

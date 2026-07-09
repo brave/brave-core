@@ -21,7 +21,6 @@ import os.log
 extension BrowserViewController: TabManagerDelegate {
   func attachTabHelpers(to tab: some TabState) {
     tab.browserData = .init(tab: tab, tabGeneratorAPI: profileController.tabGeneratorAPI)
-    tab.browserData?.miscDelegate = self
     tab.pullToRefresh = .init(tab: tab)
     if tab.profile.prefs.isPlaylistAvailable {
       tab.playlist = .init(tab: tab, delegate: self)
@@ -67,6 +66,8 @@ extension BrowserViewController: TabManagerDelegate {
       /// use it's `AIChatWebDelegate` to fetch content from.
       detachedTab.leoTabHelper
     }
+    tab.wallet = .init(tab: tab)
+    tab.wallet?.delegate = self
     tab.walletWebUIHelper = .init(
       tab: tab,
       showApprovePanelUIHandler: { [weak self] tab in
@@ -327,7 +328,9 @@ extension BrowserViewController: TabManagerDelegate {
 
     SnackBarTabHelper.from(tab: tab)?.delegate = self
 
-    tab.walletKeyringService = BraveWallet.KeyringServiceFactory.get(privateMode: tab.isPrivate)
+    tab.wallet?.walletKeyringService = BraveWallet.KeyringServiceFactory.get(
+      privateMode: tab.isPrivate
+    )
     updateTabsBarVisibility()
   }
 

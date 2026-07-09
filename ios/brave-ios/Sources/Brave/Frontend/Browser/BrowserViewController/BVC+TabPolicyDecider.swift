@@ -703,9 +703,7 @@ extension BrowserViewController {
     }
 
     // External dialog should not be shown for non-active tabs #6687 - #7835
-    let isVisibleTab = tab.browserData?.isTabVisible() == true
-
-    if !isVisibleTab {
+    if !tab.isVisible {
       return false
     }
 

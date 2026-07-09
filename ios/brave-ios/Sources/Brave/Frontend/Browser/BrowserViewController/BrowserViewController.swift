@@ -2434,12 +2434,12 @@ extension BrowserViewController: TabsBarViewControllerDelegate {
   }
 }
 
-extension BrowserViewController: TabMiscDelegate {
+extension BrowserViewController: WalletTabHelperDelegate {
   func showWalletNotification(_ tab: some TabState, origin: URLOrigin) {
     // only display notification when BVC is front and center
     guard presentedViewController == nil,
       Preferences.Wallet.displayWeb3Notifications.value,
-      let tabDappStore = tab.tabDappStore
+      let tabDappStore = tab.wallet?.tabDappStore
     else {
       return
     }
@@ -2483,7 +2483,7 @@ extension BrowserViewController: TabMiscDelegate {
   }
 
   func updateURLBarWalletButton() {
-    let shouldShowWalletButton = tabManager.selectedTab?.isWalletIconVisible == true
+    let shouldShowWalletButton = tabManager.selectedTab?.wallet?.isWalletIconVisible == true
     if shouldShowWalletButton {
       Task { @MainActor in
         let isPendingRequestAvailable = await isPendingRequestAvailable()
