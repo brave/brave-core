@@ -9,13 +9,14 @@ use std::{
 
 use orchard::{
     builder::{BuildError as OrchardBuildError, InProgress, Unauthorized, Unproven},
-    bundle::Bundle,
+    bundle::{Bundle, BundleVersion, Flags as OrchardFlags, TxVersion as OrchardTxVersion},
+    circuit::OrchardCircuitVersion,
     keys::SpendAuthorizingKey,
     keys::{
         FullViewingKey as OrchardFVK, PreparedIncomingViewingKey, Scope as OrchardScope,
         SpendingKey,
     },
-    note::{ExtractedNoteCommitment, Nullifier, RandomSeed, Rho},
+    note::{ExtractedNoteCommitment, NoteVersion, Nullifier, RandomSeed, Rho},
     note_encryption::{CompactAction, OrchardDomain},
     tree::{MerkleHashOrchard, MerklePath},
     value::NoteValue,
@@ -851,7 +852,17 @@ fn create_orchard_builder_internal(
         orchard::Anchor::empty_tree()
     };
 
-    let mut builder = orchard::builder::Builder::new(orchard::builder::BundleType::DEFAULT, anchor);
+    let mut builder = match orchard::builder::Builder::new(
+        orchard::builder::BundleType::DEFAULT,
+        BundleVersion::orchard_insecure_v1(),
+        OrchardFlags::ENABLED,
+        anchor,
+    ) {
+        Ok(b) => b,
+        Err(e) => {
+            return Box::new(CxxOrchardUnauthorizedBundleResult::from(Err(Error::from(e))))
+        }
+    };
 
     let mut asks: Vec<SpendAuthorizingKey> = vec![];
 
@@ -910,6 +921,7 @@ fn create_orchard_builder_internal(
             NoteValue::from_raw(spend.value),
             rho.unwrap().clone(),
             rseed.unwrap(),
+            NoteVersion::V2,
         );
 
         if note.is_none().into() {
@@ -999,7 +1011,9 @@ fn create_testing_orchard_bundle(
 
 impl CxxOrchardUnauthorizedBundle {
     fn orchard_digest(self: &CxxOrchardUnauthorizedBundle) -> [u8; 32] {
-        self.0.unauthorized_bundle.commitment().into()
+        self.0.unauthorized_bundle.commitment(OrchardTxVersion::V5)
+            .expect("orchard v5 bundle commitment")
+            .into()
     }
 
     fn complete(
@@ -1013,13 +1027,13 @@ impl CxxOrchardUnauthorizedBundle {
                     .0
                     .unauthorized_bundle
                     .clone()
-                    .create_proof(&orchard::circuit::ProvingKey::build(), &mut rng)
+                    .create_proof(&orchard::circuit::ProvingKey::build(OrchardCircuitVersion::InsecurePreNu6_2), &mut rng)
                     .and_then(|b| b.apply_signatures(&mut rng, sighash, &self.0.asks)),
                 OrchardRandomSource::MockRng(mut rng) => self
                     .0
                     .unauthorized_bundle
                     .clone()
-                    .create_proof(&orchard::circuit::ProvingKey::build(), &mut rng)
+                    .create_proof(&orchard::circuit::ProvingKey::build(OrchardCircuitVersion::InsecurePreNu6_2), &mut rng)
                     .and_then(|b| b.apply_signatures(&mut rng, sighash, &self.0.asks)),
             }
             .map_err(Error::from)
