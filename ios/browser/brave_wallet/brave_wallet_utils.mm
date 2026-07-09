@@ -29,4 +29,8 @@ bool IsDefaultCardanoWalletBrave(PrefService* prefs) {
   return IsDefaultBrave(GetDefaultCardanoWallet(prefs));
 }
 
+bool IsDefaultSolanaWalletBrave(PrefService* prefs) {
+  return IsDefaultBrave(GetDefaultSolanaWallet(prefs));
+}
+
 }  // namespace brave_wallet
