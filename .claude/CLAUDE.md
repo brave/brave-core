@@ -14,6 +14,13 @@ the list at @../docs/README.md
 When working directly on code, consult with only relevant best practices listed
 at @../docs/best_practices.md
 
+## Destructive Operations
+
+- NEVER delete caches, build output directories, or any machine state outside
+  the repo working tree (e.g. `~/.cache/*`, `out/` dirs). This is forbidden even
+  when it looks like the only fix. Always ask first, explain what the deletion
+  costs, and wait for approval.
+
 <!--
   For any further personal preferences, create your own CLAUDE.md in a parent
   directory, e.g. ~/Development/Brave/CLAUDE.md, or ~/.claude/CLAUDE.md (for
