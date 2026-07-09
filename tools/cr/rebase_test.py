@@ -21,6 +21,7 @@ This file is organised in three layers:
 """
 
 import os
+import subprocess
 import tempfile
 import unittest
 from pathlib import Path
@@ -1273,6 +1274,69 @@ class RebaseExecuteTest(unittest.TestCase):
                                      recommit=False,
                                      discard_regen_changes=False,
                                      squash_minor_bumps=False)
+
+    def test_rebase_in_progress_raises(self):
+        """An in-progress rebase is rejected before starting a new one."""
+        scenario = self._seed_bump_branch()
+        brave = self.repo.brave
+        self._commit_with_file('First feature change')
+        self._commit_with_file('Second feature change')
+        # Start an interactive rebase that stops on an `edit` command.
+        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
+                       cwd=brave,
+                       env=env,
+                       capture_output=True,
+                       text=True,
+                       check=True)
+        try:
+            with self.assertRaises(brockit.InvalidInputException):
+                brockit.Rebase().execute(from_ref=scenario['v101'],
+                                         to_ref=scenario['v102'],
+                                         recommit=False,
+                                         discard_regen_changes=False,
+                                         squash_minor_bumps=False)
+        finally:
+            subprocess.run(['git', 'rebase', '--abort'],
+                           cwd=brave,
+                           capture_output=True,
+                           check=False)
+
+    def test_warns_when_rebase_base_differs_from_merge_base(self):
+        """Warns when the rebase base doesn't match `merge`'s merge-base.
+
+        `from_ref=v100` resolves to v100, but the merge-base of the target
+        (v102) and HEAD is v101, so the bases disagree.
+        """
+        scenario = self._seed_bump_branch()
+
+        ctx, _ = self._intercept_rebase()
+        with ctx, patch.object(brockit.logging, 'warning') as warn:
+            brockit.Rebase().execute(from_ref=scenario['v100'],
+                                     to_ref=scenario['v102'],
+                                     recommit=False,
+                                     discard_regen_changes=False,
+                                     squash_minor_bumps=False)
+
+        warn.assert_called_once()
+        self.assertIn('merge-base', warn.call_args[0][0])
+
+    def test_no_warning_when_rebase_base_matches_merge_base(self):
+        """No warning when the rebase base equals `merge`'s merge-base.
+
+        `from_ref=v101` matches the merge-base of the target (v102) and HEAD.
+        """
+        scenario = self._seed_bump_branch()
+
+        ctx, _ = self._intercept_rebase()
+        with ctx, patch.object(brockit.logging, 'warning') as warn:
+            brockit.Rebase().execute(from_ref=scenario['v101'],
+                                     to_ref=scenario['v102'],
+                                     recommit=False,
+                                     discard_regen_changes=False,
+                                     squash_minor_bumps=False)
+
+        warn.assert_not_called()
 
     def test_no_upstream_raises(self):
         """A branch with no `origin/...` upstream cannot use `to_ref=None`."""

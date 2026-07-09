@@ -170,6 +170,30 @@ away all minor bumps in a branch down to a single one. This is useful when
 when running a cr branch, as it is common to have multiple minor daily bumps
 in a branch.
 
+### `brockit.py merge`
+Merges a `cr` branch to the upstream branch, and pushes the result to the
+remote.
+
+```sh
+tools/cr/brockit.py merge
+```
+
+The current branch must have an upstream branch set (e.g. `origin/master`).
+*🚀Brockit!* will fetch the upstream for merging. If the merge hits conflicts,
+it is rolled back and the command fails.
+
+Before merging, *🚀Brockit!* runs a dry-run of `rebase --squash-minor-bumps`
+to make sure the branch is already in its canonical form. If that rebase show
+any pending changes (e.g. there are unsquashed minor bumps or leftover `fixup!
+/`reassign!`/`drop!` markers), and the user should run
+`rebase --squash-minor-bumps` to clean the branch up first.
+
+Pass `--dry-run` to run all of these validations:
+
+```sh
+tools/cr/brockit.py merge --dry-run
+```
+
 ### `brockit.py update-xcode-toolchain`
 The hermetic Xcode toolchain is generated in CI for the macOS SDK that Chromium
 pins in `build/config/mac/mac_sdk.gni`, and published to Brave's download bucket
@@ -274,6 +298,7 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass, field, replace
 from datetime import datetime
+import difflib
 import json
 import logging
 import os
@@ -284,8 +309,11 @@ import re
 import requests
 from rich.markdown import Markdown
 from rich.padding import Padding
+from rich.syntax import Syntax
+import shutil
 import subprocess
 import sys
+import tempfile
 
 from exceptions import (ActionNeededException, BadOutcomeException,
                         InvalidInputException)
@@ -1776,6 +1804,12 @@ class Rebase(Task):
     Returns:
         True if the rebase was successful, and False otherwise.
         """
+        if repository.brave.is_rebase_in_progress():
+            raise InvalidInputException(
+                'A rebase is already in progress. Conclude it, or abort it '
+                '([bold cyan]git rebase --abort[/]), before starting a new '
+                'one.')
+
         to_ref = _solve_brave_ref(to_ref)
 
         if from_ref is None:
@@ -1790,6 +1824,18 @@ class Rebase(Task):
                 from_ref = _solve_brave_ref(from_ref or '@previous')
 
         from_ref = _solve_brave_ref(from_ref)
+
+        # Adding this check to see if `merge-base` differs at all in outcome
+        # from the tree-walking type of resolution we have been doing with
+        # `from_ref`.
+        merge_base = repository.brave.run_git('merge-base', to_ref, 'HEAD')
+        rebase_base = repository.brave.run_git('rev-parse', from_ref)
+        if rebase_base != merge_base:
+            logging.warning(
+                'This rebase starts from %s (resolved from [bold cyan]%s[/]), '
+                'but [italic]🚀Brockit![/] [bold cyan]merge[/] would use the '
+                'merge-base of %s and HEAD (%s). The two bases differ.',
+                rebase_base[:12], from_ref, to_ref, merge_base[:12])
 
         current_branch = repository.brave.current_branch()
         terminal.log_task(
@@ -1851,6 +1897,257 @@ class Rebase(Task):
                 repository.brave.run_git('rebase', '--continue')
         except subprocess.CalledProcessError as e:
             raise InvalidInputException('Rebase failed.') from e
+
+
+class Merge(Task):
+    """Merges the current branch into its upstream branch.
+
+    Any commits that landed on the upstream branch since the last rebase are
+    merged in first, creating a merge commit when the histories have
+    diverged, so that the push to the remote is always a fast-forward.
+    """
+
+    def status_message(self):
+        return "Merging current branch into upstream..."
+
+    def execute(self, dry_run: bool = False):
+        """Merges the current branch into its upstream branch.
+
+        Args:
+            dry_run:
+                When True, runs every validation, but stops short of the
+                actual merge and push.
+        """
+        current_branch = repository.brave.current_branch()
+        if current_branch == 'HEAD':
+            raise InvalidInputException(
+                'Cannot merge: not currently on a branch.')
+
+        # A leftover `MERGE_HEAD` means a merge is in progress. Conflict
+        # resolutions must never be committed onto the branch being pushed.
+        # Reject and tell the user to abort the merge and rebase instead.
+        if repository.brave.is_valid_git_reference('MERGE_HEAD'):
+            raise InvalidInputException(
+                'A merge is already in progress. Do not resolve and commit it: '
+                'abort it ([bold cyan]git merge --abort[/]) and rebase the '
+                'branch onto its upstream instead (e.g. '
+                '[bold cyan]brockit rebase[/]), then rerun '
+                '[italic]🚀Brockit![/] [bold cyan]merge[/].')
+
+        # Likewise, a half-finished rebase leaves the branch in an
+        # intermediate state that must be concluded before merging.
+        if repository.brave.is_rebase_in_progress():
+            raise InvalidInputException(
+                'A rebase is already in progress. Conclude it, or abort it '
+                '([bold cyan]git rebase --abort[/]), before merging.')
+
+        # Merging into a dirty tree risks folding uncommitted work into the
+        # merge, so tracked changes must be committed or stashed first.
+        status = GitStatus()
+        if (status.has_staged_files() or status.unstaged.modified
+                or status.unstaged.deleted):
+            raise InvalidInputException(
+                'Cannot merge: there are uncommitted changes in the working '
+                'tree. Please commit or stash them before merging.')
+
+        upstream = _get_current_branch_upstream_name()
+        if upstream is None:
+            raise InvalidInputException(
+                'Cannot merge: the current branch has no upstream branch set. '
+                '(Maybe set [bold cyan]--set-upstream-to[/] on your branch?)')
+        if '/' not in upstream:
+            raise InvalidInputException(
+                f'Cannot merge: the upstream "{upstream}" does not look like a '
+                'remote-tracking branch (expected the form <remote>/<branch>).'
+            )
+        remote, remote_branch = upstream.split('/', 1)
+
+        terminal.log_task(f'Fetching {remote_branch} from {remote}...')
+        repository.brave.run_git('fetch', remote, remote_branch)
+
+        head_before = repository.brave.run_git('rev-parse', 'HEAD')
+        if head_before == repository.brave.run_git('rev-parse', upstream):
+            raise InvalidInputException(
+                f'Nothing to merge: {current_branch} is already at {upstream}.'
+            )
+
+        # The branch should be clean of dev-cycle commits (unsquashed minor
+        # bumps, `fixup!`/`reassign!`/`drop!` markers, etc.).
+        plans = self._dry_run_rebase_plan_change(current_branch, upstream)
+        if plans is not None:
+            self._log_plan_diff(*plans)
+            raise InvalidInputException(
+                f'{current_branch} is not ready to be merged: a '
+                '[bold cyan]brockit rebase --squash-minor-bumps[/] would still '
+                'collapse, drop, or reorder commits on this branch (see the '
+                'diff above). Run it first, then rerun '
+                '[italic]🚀Brockit![/] [bold cyan]merge[/].')
+
+        if dry_run:
+            terminal.log_task(
+                f'[bold]✔️ [/] {current_branch} is ready to be merged into '
+                f'{upstream}. (dry run: nothing was merged or pushed)')
+            return
+
+        # Merge any new upstream commits into the current branch. When the
+        # histories have not diverged this is a no-op ("Already up to date");
+        # otherwise it produces a merge commit so the push stays a
+        # fast-forward.
+        terminal.log_task(f'Merging {upstream} into {current_branch}...')
+        try:
+            repository.brave.run_git('merge', '--no-edit', upstream)
+        except subprocess.CalledProcessError as e:
+            if repository.brave.is_valid_git_reference('MERGE_HEAD'):
+                # Roll back the conflicted merge so the branch is left exactly
+                # as it was before the command ran.
+                repository.brave.run_git('merge', '--abort')
+                raise BadOutcomeException(
+                    f'Merging {upstream} into {current_branch} hit conflicts; '
+                    'the merge was rolled back and nothing was pushed. Rebase '
+                    f'the branch onto {upstream} to resolve the divergence '
+                    '(e.g. [bold cyan]brockit rebase[/]), then rerun '
+                    '[italic]🚀Brockit![/] [bold cyan]merge[/].') from e
+            raise BadOutcomeException(
+                f'Failed to merge {upstream} into {current_branch}: '
+                f'{e.stderr.strip()}') from e
+
+        terminal.log_task(f'Pushing {current_branch} to {upstream}...')
+        try:
+            repository.brave.run_git('push', remote, f'HEAD:{remote_branch}')
+        except subprocess.CalledProcessError as e:
+            raise BadOutcomeException(
+                f'Failed to push to {upstream}. The upstream branch may have '
+                'advanced since the fetch; rerun '
+                f'[italic]🚀Brockit![/] [bold cyan]merge[/] to try again.\n'
+                f'{e.stderr.strip()}') from e
+
+        terminal.log_task(f'[bold]✔️ [/] Merged {current_branch} '
+                          f'into {upstream}.')
+
+    def _dry_run_rebase_plan_change(
+            self, current_branch: str,
+            upstream: str) -> tuple[list[str], list[str]] | None:
+        """Detects whether a squash-minor-bumps rebase would alter the branch.
+
+        This performs a no-op interactive rebase (`--onto <base> <base>
+        <branch>`, where `<base>` is the merge-base with the upstream) to
+        capture the plan git would run, and compares it against the same plan
+        after brockit's `--squash-minor-bumps` rewrite. Any differences indicate
+        that rebase is needed.
+
+        Returns a `(current_plan, rewritten_plan)` pair of TODO lines when a
+        change is detected, or `None` if the branch is ready to merge.
+        """
+        base = repository.brave.run_git('merge-base', upstream, 'HEAD')
+
+        with tempfile.TemporaryDirectory() as tmp:
+            identity = Path(tmp) / 'identity'
+            squashed = Path(tmp) / 'squashed'
+
+            self._capture_rebase_plan(base,
+                                      current_branch,
+                                      identity,
+                                      autosquash=False)
+            self._capture_rebase_plan(base,
+                                      current_branch,
+                                      squashed,
+                                      autosquash=True)
+
+            # `rewrite_plan` applies the same `--squash-minor-bumps` transform
+            # that `brockit rebase` would run over the captured plan.
+            rebase.rewrite_plan(todo_file=squashed, pinned_squashed=True)
+
+            identity_entries = self._parse_plan(identity)
+            squashed_entries = self._parse_plan(squashed)
+
+        # Comparing the `(command, hash)` sequence catches squashes/fixups (a
+        # command other than `pick`), drops (a missing entry), and reordering
+        # (pinned commits grouped to the top).
+        identity_seq = [(command, commit)
+                        for command, commit, _ in identity_entries]
+        squashed_seq = [(command, commit)
+                        for command, commit, _ in squashed_entries]
+        if identity_seq == squashed_seq:
+            return None
+        return ([out for _, _, out in identity_entries],
+                [out for _, _, out in squashed_entries])
+
+    @staticmethod
+    def _log_plan_diff(current_plan: list[str],
+                       rewritten_plan: list[str]) -> None:
+        """Prints a syntax-highlighted diff between the branch's current rebase
+        plan and the plan a `--squash-minor-bumps` rebase would produce.
+        """
+        diff = '\n'.join(
+            difflib.unified_diff(
+                current_plan,
+                rewritten_plan,
+                fromfile='branch as-is',
+                tofile='after brockit rebase --squash-minor-bumps',
+                lineterm=''))
+        console.print(
+            Padding(
+                Syntax(diff,
+                       'diff',
+                       theme='ansi_dark',
+                       background_color='default'), (0, 4)))
+
+    def _capture_rebase_plan(self, base: str, current_branch: str, dest: Path,
+                             *, autosquash: bool) -> None:
+        """Captures the interactive rebase plan git would produce into `dest`.
+
+        Runs `git rebase --interactive` with a sequence editor that copies the
+        TODO to `dest` and then empties it, so git aborts with "nothing to do"
+        without touching the branch. `autosquash` toggles `--autosquash` /
+        `--no-autosquash` so the caller can capture both the raw plan and the
+        autosquash-arranged one.
+        """
+        editor = [
+            str(VPYTHON3_PATH), __file__, '--internal-rebase-capture-plan',
+            f'--internal-rebase-capture-dest={dest}'
+        ]
+        env = os.environ.copy()
+        env['GIT_SEQUENCE_EDITOR'] = ' '.join(editor)
+        rebase_args = ['rebase', '--interactive']
+        if autosquash:
+            # `--empty=drop` only matters alongside `--autosquash`, matching
+            # what `brockit rebase` runs; the raw baseline plan is captured
+            # without it.
+            rebase_args += ['--autosquash', '--empty=drop']
+        else:
+            rebase_args.append('--no-autosquash')
+        rebase_args += ['--onto', base, base, current_branch]
+        try:
+            repository.brave.run_git(*rebase_args, env=env)
+        except subprocess.CalledProcessError:
+            # Emptying the plan makes git abort with "nothing to do" (exit 1);
+            # that is the expected outcome of this dry run.
+            pass
+        finally:
+            # Safety net in case git left a rebase half-started. Errors when no
+            # rebase is in progress, which is the common case here.
+            try:
+                repository.brave.run_git('rebase', '--abort')
+            except subprocess.CalledProcessError:
+                pass
+
+        if not dest.exists():
+            raise BadOutcomeException(
+                'Failed to capture the rebase plan for the merge pre-check.')
+
+    @staticmethod
+    def _parse_plan(todo_file: Path) -> list[tuple[str, str, str]]:
+        """Parses a captured TODO file into `(command, hash, out)` tuples.
+
+        Blank and comment lines are skipped. `out` preserves the original line
+        for display when reporting a detected plan change.
+        """
+        entries: list[tuple[str, str, str]] = []
+        for line in todo_file.read_bytes().decode('utf-8').splitlines():
+            entry = rebase.EntryLine.parse(line)
+            if entry is not None:
+                entries.append((entry.command, entry.hash, entry.out))
+        return entries
 
 
 class _MarkChangeTask(Task):
@@ -2198,6 +2495,16 @@ def main():
         parents=[global_parser, base_version_parser],
         help='Creates or updates the GitHub issue for the corrent branch.')
 
+    merge_parser = subparsers.add_parser(
+        'merge',
+        parents=[global_parser],
+        help='Merges the current branch into its upstream branch.')
+    merge_parser.add_argument(
+        '--dry-run',
+        action='store_true',
+        help='A dry run to check if the branch is ready to be merged.',
+        dest='dry_run')
+
     show_parser = subparsers.add_parser(
         'show', help='Prints various insights about brave-core.')
     show_parser.add_argument(
@@ -2376,6 +2683,8 @@ def main():
                 resolve_version_with_from_ref_arg()).run(dry_run=args.dry_run)
         if args.command == 'update-version-issue':
             GitHubIssue(resolve_version_with_from_ref_arg()).run()
+        if args.command == 'merge':
+            Merge().run(dry_run=args.dry_run)
         if args.command == 'reassign':
             Reassign().run(change=args.change)
         if args.command == 'drop':
@@ -2419,6 +2728,22 @@ if __name__ == '__main__':
         # during rebase --interactive mode.
         if '--internal-rebase-recommit' in sys.argv:
             Rebase.recommit_in_rebase_plan(Path(sys.argv[-1]))
+
+        if '--internal-rebase-capture-plan' in sys.argv:
+            # This flag copies the TOOD plan into the destination path.
+            _capture_prefix = '--internal-rebase-capture-dest='
+            _capture_dest = next(
+                (arg[len(_capture_prefix):]
+                 for arg in sys.argv if arg.startswith(_capture_prefix)), None)
+            if not _capture_dest:
+                raise NotImplementedError(
+                    'Expected --internal-rebase-capture-dest=<path> in '
+                    'sys.argv but none was found.')
+            _todo_path = Path(sys.argv[-1])
+            shutil.copyfile(_todo_path, _capture_dest)
+            # Truncate the plan so git aborts the dry run. The content is empty,
+            # so no newline translation is involved.
+            _todo_path.write_text('', encoding='utf-8')
 
         def _crash_editor_from_argv(flag_prefix: str) -> str:
             """Pulls a `--<flag_prefix>=<editor>` value out of `sys.argv`.
