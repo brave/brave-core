@@ -67,6 +67,13 @@ std::unique_ptr<Rule> CloneRule(const Rule& original_rule) {
       original_rule.value.Clone(), original_rule.metadata.Clone());
 }
 
+brave_shields::mojom::AutoShredMode Remember1PStorageValueToAutoShredMode(
+    const base::Value& value) {
+  return ValueToContentSetting(value) == CONTENT_SETTING_BLOCK
+             ? brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED
+             : brave_shields::mojom::AutoShredMode::NEVER;
+}
+
 bool IsActive(const Rule* cookie_rule,
               const std::vector<std::unique_ptr<Rule>>& shield_rules) {
   DCHECK(cookie_rule);
@@ -624,8 +631,20 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
     return;
   }
 
+  const auto* default_value_info =
+      WebsiteSettingsRegistry::GetInstance()->Get(
+          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+  const base::Value default_value(
+      prefs_->GetInteger(default_value_info->default_value_pref_name()));
+  SetWebsiteSettingInternal(
+      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+      ContentSettingsType::BRAVE_AUTO_SHRED,
+      brave_shields::AutoShredSetting::ToValue(
+          Remember1PStorageValueToAutoShredMode(default_value)),
+      {});
+
   std::vector<std::unique_ptr<Rule>> rules;
-  auto rule_iterator = PrefProvider::GetRuleIterator(
+  auto rule_iterator = GetRuleIterator(
       ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
@@ -634,16 +653,12 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
   rule_iterator.reset();
 
   for (const auto& fp_rule : rules) {
-    const auto content_settings_value = ValueToContentSetting(fp_rule->value);
-    auto auto_shred_mode = brave_shields::mojom::AutoShredMode::NEVER;
-    if (content_settings_value == CONTENT_SETTING_BLOCK) {
-      auto_shred_mode = brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED;
-    }
-
-    SetWebsiteSettingInternal(
+    PrefProvider::SetWebsiteSetting(
         fp_rule->primary_pattern, fp_rule->secondary_pattern,
         ContentSettingsType::BRAVE_AUTO_SHRED,
-        brave_shields::AutoShredSetting::ToValue(auto_shred_mode), {});
+        brave_shields::AutoShredSetting::ToValue(
+            Remember1PStorageValueToAutoShredMode(fp_rule->value)),
+        {});
   }
   prefs_->SetBoolean(kBraveRemember1PStorageMigration, true);
 }
