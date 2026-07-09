@@ -284,4 +284,15 @@ bool CoseSign1::AcceptPreCertificates() {
   return true;
 }
 
+std::optional<CoseSign1::MTCCosigner> CoseSign1::GetMTCCosigner(
+    bssl::Span<const uint8_t> cosigner_id) {
+  return std::nullopt;
+}
+
+bool CoseSign1::IsCosignatureVerificationResultAcceptable(
+    const bssl::MTCAnchor* mtc_anchor,
+    std::vector<std::vector<uint8_t>> valid_additional_cosigners) {
+  return true;
+}
+
 }  // namespace nitro_utils
