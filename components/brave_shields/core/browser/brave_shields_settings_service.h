@@ -105,11 +105,8 @@ class BraveShieldsSettingsService : public KeyedService {
   raw_ptr<PrefService> profile_prefs_;  // NOT OWNED
 
   // This token is generated when the service is created and stays stable until
-  // the service is destoryed. The token helps to ensure that the underlying
-  // farbling token persisted in the HostContentSettingsMap is different each
-  // time upon browser restarts. See
-  // https://github.com/brave/brave-browser/issues/56288#issuecomment-4903360116
-  // for details.
+  // the service is destoryed. It allows to show different farbled values for a
+  // site across browser restarts.
   base::Token profile_level_farbling_entropy_;
 };
 

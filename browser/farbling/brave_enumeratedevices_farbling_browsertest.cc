@@ -10,6 +10,7 @@
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -42,7 +43,10 @@ constexpr char kEnumerateDevicesScript[] =
 class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveEnumerateDevicesFarblingBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
+    scoped_feature_list_.InitAndDisableFeature(
+        brave_shields::features::kBraveFarblingTokenReset);
+  }
 
   BraveEnumerateDevicesFarblingBrowserTest(
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
@@ -102,6 +106,7 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
+  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Tests results of farbling known values

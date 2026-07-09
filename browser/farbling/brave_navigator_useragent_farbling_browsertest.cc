@@ -145,8 +145,9 @@ void ProgrammaticallyCreateOffscreenDocument(
 class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorUserAgentFarblingBrowserTest() {
-    feature_list_.InitAndEnableFeature(
-        brave_shields::features::kBraveShowStrictFingerprintingMode);
+    feature_list_.InitWithFeatures(
+        {brave_shields::features::kBraveShowStrictFingerprintingMode},
+        {brave_shields::features::kBraveFarblingTokenReset});
   }
 
   void SetUp() override {

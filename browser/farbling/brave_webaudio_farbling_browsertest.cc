@@ -41,7 +41,8 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
         /*enabled_features=*/
         {webcompat::features::kBraveWebcompatExceptionsService,
          brave_shields::features::kBraveShowStrictFingerprintingMode},
-        /*disabled_features=*/{});
+        /*disabled_features=*/{
+            brave_shields::features::kBraveFarblingTokenReset});
   }
 
   void SetUpOnMainThread() override {

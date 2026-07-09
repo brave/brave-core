@@ -69,7 +69,8 @@ class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     feature_list_.InitWithFeatures(
-        {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode}, {});
+        {kBraveReduceLanguage, kBraveShowStrictFingerprintingMode},
+        {brave_shields::features::kBraveFarblingTokenReset});
   }
 
   BraveNavigatorLanguagesFarblingBrowserTest(
