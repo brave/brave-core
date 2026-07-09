@@ -783,9 +783,9 @@ class PlasterTest(unittest.TestCase):
 
     def test_count_zero_replaces_all(self):
         """
-        Test that count=0 replaces all matches and bypasses count validation.
-        Note: All substitutions now behave as count=0 since count=0 is
-        always passed to subn.
+        Test that count=0 replaces all matches (requiring at least one).
+        count=0 rewrites every match but still fails if nothing matched; here
+        there are three matches, so it succeeds.
         """
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_count_zero_all.idl')
@@ -811,7 +811,8 @@ class PlasterTest(unittest.TestCase):
               count: 0
         ''')
 
-        # Should succeed because count=0 means replace all and bypass validation
+        # Should succeed: count=0 replaces all matches, and there is at least
+        # one match here.
         plaster_file = plaster.PlasterFile(plaster_path)
         plaster_file.apply()
 
@@ -819,6 +820,39 @@ class PlasterTest(unittest.TestCase):
                   test_file_chromium).read_text()
         self.assertEqual(result,
                          'Brave content with Brave and more Brave text.')
+
+    def test_count_zero_no_match_fails(self):
+        """
+        Test that count=0 fails when there are no matches.
+
+        count=0 means "one or more matches"; a pattern that matches nothing
+        must fail rather than silently leave the source untouched.
+        """
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_count_zero_no_match.idl')
+
+        # Write and commit a file that lacks the pattern entirely.
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'A Chromium thing.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_count_zero_no_match.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          substitutions:
+            - description: replace a pattern that is absent
+              re_pattern: 'DoesNotAppear'
+              replace: 'X'
+              count: 0
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            plaster_file.apply()
+        self.assertIn('at least one match', str(ctx.exception))
 
     def test_count_explicit_values_work(self):
         """Test that explicit count values work correctly for validation.

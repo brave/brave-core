@@ -375,8 +375,8 @@ class Substitution:
     # Replacement string passed to `re.subn`.
     replace: str
 
-    # Expected number of substitutions. `0` means "replace all matches"
-    # and disables the count check.
+    # Expected number of substitutions. `0` means "one or more matches";
+    # zero matches is still a failure.
     expected_count: int = 1
 
     # Combined bitmask of `re` flags built from the `re_flags` plaster
@@ -615,9 +615,14 @@ class PlasterFile:
                     # expected.
                     count=0)
 
-                # count == 0 means "replace all matches" and bypasses count
-                # validation.
-                if substitution.expected_count not in (0, num_changes):
+                # count == 0 means "one or more matches", but zero matches still
+                # result in a failure.
+                if substitution.expected_count == 0:
+                    if num_changes == 0:
+                        errors.append(
+                            'Expected at least one match but found none in '
+                            f'{self.path}')
+                elif num_changes != substitution.expected_count:
                     errors.append(
                         f'Unexpected number of matches ({num_changes} vs '
                         f'{substitution.expected_count}) in {self.path}')
