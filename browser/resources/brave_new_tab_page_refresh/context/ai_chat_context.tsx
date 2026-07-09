@@ -30,6 +30,9 @@ export default function AIChatContextsProvider(props: {
       createNewConversation: () => {},
       createNewConversationWithWorkspace: () => {},
       isMainConversation: false,
+      openThreadUuid: undefined,
+      openThread: () => {},
+      closeThread: () => {},
     }
   }, [])
 

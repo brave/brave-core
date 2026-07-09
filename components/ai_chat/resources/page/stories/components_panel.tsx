@@ -711,7 +711,7 @@ function StoryContext(
             },
           })
         },
-        getConversationHistory: async () => ({
+        getConversationHistory: async (_threadUuid: string | null) => ({
           conversationHistory: await getConversationHistory(),
         }),
         getContentTools: () => Promise.resolve({ tools: SAMPLE_CONTENT_TOOLS }),
@@ -754,7 +754,7 @@ function StoryContext(
       <ActiveChatContext.Provider value={activeChatContext}>
         <UntrustedMockContext
           conversationHandler={{
-            getConversationHistory: async () => ({
+            getConversationHistory: async (_threadUuid: string | null) => ({
               conversationHistory: await getConversationHistory(),
             }),
           }}

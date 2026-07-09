@@ -136,7 +136,7 @@ function renderAssistant(isSummaryResponse: boolean) {
     <MockContext
       ref={mockRef}
       conversationHandler={{
-        getConversationHistory() {
+        getConversationHistory(_threadUuid: string | null) {
           return Promise.resolve({ conversationHistory })
         },
       }}

@@ -120,6 +120,7 @@ export function createMockUntrustedUIHandler(
     hasMemory: () => Promise.resolve({ exists: false }),
     // Null matches a platform without on-device tab search.
     searchForTabs: () => Promise.resolve({ tabs: null }),
+    getPluralString: () => Promise.resolve({ pluralString: '' }),
 
     // Action methods - fire and forget stubs
     bindConversationHandler: () => {},

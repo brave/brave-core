@@ -75,6 +75,11 @@ export default function createUntrustedConversationApi(
   uiHandler: Mojom.UntrustedUIHandlerInterface,
   parentUIFrame: Closable<Mojom.ParentUIFrameInterface>,
   service: Closable<Mojom.UntrustedServiceInterface>,
+  // The conversation-history scope for this frame: null for the root
+  // conversation, or the thread uuid for a thread frame. Doubles as the
+  // getConversationHistory cache key and the filter used to ignore history
+  // updates belonging to a different scope.
+  threadUuid: string | null = null,
 ) {
   let conversationObserver: Mojom.UntrustedConversationUIInterface
   let uiObserver: Mojom.UntrustedUIInterface
@@ -84,7 +89,9 @@ export default function createUntrustedConversationApi(
     actions: {
       conversationHandler: conversationHandler as Pick<
         Mojom.UntrustedConversationHandlerInterface,
-        VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+        | VoidMethodKeys<Mojom.UntrustedConversationHandlerInterface>
+        // Returns the new thread id; opted in so it can be awaited.
+        | 'createConversationThread'
       >,
       // The browser rejects anything sent here that didn't follow a user
       // gesture, and closes the pipe.
@@ -114,14 +121,27 @@ export default function createUntrustedConversationApi(
         searchForTabs: {
           response: (result) => result.tabs,
         },
+        getPluralString: {
+          response: (result) => result.pluralString,
+        },
       }),
 
       // Conversation data
       ...endpointsFor(conversationHandler, {
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          prefetchWithArgs: [null],
+          // In a thread frame, prefetch the thread's history (which includes
+          // the origin entry); otherwise prefetch the root conversation.
+          prefetchWithArgs: [threadUuid],
           placeholderData: [] as Mojom.ConversationTurn[],
+        },
+
+        // Thread metadata for the conversation. Prefetched so the thread
+        // indicator can be rendered on entries with child threads.
+        getConversationThreads: {
+          response: (result) => result.threads,
+          prefetchWithArgs: [],
+          placeholderData: [] as Mojom.Thread[],
         },
       }),
 
@@ -199,24 +219,45 @@ export default function createUntrustedConversationApi(
         Mojom.UntrustedConversationUIInterface,
         {
           onConversationHistoryUpdate(entry) {
+            // This frame renders a single scope: either the root conversation
+            // (threadUuid === null) or one thread. Ignore updates for
+            // entries that belong to a different scope so, e.g., the root
+            // frame doesn't render thread replies (and vice versa).
+            if (entry && (entry.threadUuid ?? null) !== threadUuid) {
+              return
+            }
             if (!entry) {
-              api.getConversationHistory.invalidate(null)
+              api.getConversationHistory.invalidate(threadUuid)
             } else {
-              api.getConversationHistory.update(null, (old) =>
+              api.getConversationHistory.update(threadUuid, (old) =>
                 updateConversationHistory(old, entry),
               )
             }
           },
 
+          onConversationThreadUpdate(thread) {
+            api.getConversationThreads.update((old) => {
+              const threads = (old ?? []).slice()
+              const index = threads.findIndex((t) => t.uuid === thread.uuid)
+              if (index === -1) {
+                threads.push(thread)
+              } else {
+                threads[index] = thread
+              }
+              return threads
+            })
+          },
+
           onToolUseEventOutput(entryUuid, toolUse) {
-            const currentHistory = api.getConversationHistory.current(null)
+            const currentHistory =
+              api.getConversationHistory.current(threadUuid)
             const updatedHistory = updateToolUseEventInHistory(
               currentHistory,
               entryUuid,
               toolUse,
             )
             if (updatedHistory) {
-              api.getConversationHistory.update(null, updatedHistory)
+              api.getConversationHistory.update(threadUuid, updatedHistory)
             }
           },
 
@@ -262,6 +303,8 @@ export default function createUntrustedConversationApi(
 
   return {
     api,
+
+    threadUuid,
 
     conversationObserver: conversationObserver!,
     uiObserver: uiObserver!,

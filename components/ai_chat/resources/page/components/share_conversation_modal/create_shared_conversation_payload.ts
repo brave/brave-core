@@ -15,7 +15,7 @@ import * as Mojom from '../../../common/mojom'
 export interface ShareableConversationContext {
   api: {
     getConversationHistory: {
-      current: () => Mojom.ConversationTurn[]
+      current: (threadUuid: string | null) => Mojom.ConversationTurn[]
     }
     getState: {
       current: () => Pick<Mojom.ConversationState, 'associatedContent'>
@@ -81,7 +81,7 @@ export async function createSharedConversationPayload(
   )
 
   return {
-    messages: api.getConversationHistory.current(),
+    messages: api.getConversationHistory.current(null),
     associatedContent,
     title: conversationTitle,
   }
