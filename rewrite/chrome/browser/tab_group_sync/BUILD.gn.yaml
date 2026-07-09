@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Add Brave sources to the tab group sync library.'
-    re_pattern: '(android_library\("java"\).*?)\n  \}'
+  - description: |-
+      Add Brave sources to the tab group sync library.
+    re_pattern: |-
+      (android_library\("java"\).*?)\n  \}
     re_flags: [DOTALL]
     replace: |-
       \1

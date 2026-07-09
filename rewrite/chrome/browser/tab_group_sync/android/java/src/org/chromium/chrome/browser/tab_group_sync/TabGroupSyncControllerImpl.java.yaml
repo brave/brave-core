@@ -4,8 +4,10 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: |
+  - description: |-
       Use Brave's observer, which does not auto-open synced tab groups while the
       "Enable tab groups" master switch is off.
-    re_pattern: 'new (TabGroupSyncRemoteObserver\()'
-    replace: 'new Brave\1'
+    re_pattern: |-
+      new (TabGroupSyncRemoteObserver\()
+    replace: |-
+      new Brave\1

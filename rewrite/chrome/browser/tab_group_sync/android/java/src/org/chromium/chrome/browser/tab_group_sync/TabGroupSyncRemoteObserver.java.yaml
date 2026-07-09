@@ -4,7 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Allow BraveTabGroupSyncRemoteObserver to subclass this observer.'
-    re_pattern: 'public final (class TabGroupSyncRemoteObserver)'
-    replace: 'public \1'
+  - description: |-
+      Allow BraveTabGroupSyncRemoteObserver to subclass this observer.
+    re_pattern: |-
+      public final (class TabGroupSyncRemoteObserver)
+    replace: |-
+      public \1
