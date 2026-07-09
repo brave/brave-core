@@ -11,6 +11,8 @@ static_library("browser") {
   sources = [
     "brave_vpn_service_impl.cc",
     "brave_vpn_service_impl.h",
+    "credential_store.cc",
+    "credential_store.h",
     "purchased_state_manager.cc",
     "purchased_state_manager.h",
   ]
@@ -23,6 +25,7 @@ static_library("browser") {
 
   public_deps = [
     "//brave/components/brave_vpn/browser",
+    "//brave/components/brave_vpn/common/mojom",
     "//brave/components/skus/browser",
     "//brave/components/skus/common:mojom",
   ]
@@ -39,6 +42,7 @@ source_set("unit_tests") {
 
   sources = [
     "brave_vpn_service_impl_unittest.cc",
+    "credential_store_unittest.cc",
     "purchased_state_manager_unittest.cc",
   ]
 
@@ -47,6 +51,8 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/brave_vpn/common",
+    "//brave/components/brave_vpn/common/mojom",
+    "//brave/components/skus/browser",
     "//brave/components/skus/common",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",
