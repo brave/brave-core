@@ -323,6 +323,11 @@ void PolkadotTxManager::UpdatePendingTransactions(
 
     new_pending_chain_ids.insert(polkadot_tx->chain_id());
 
+    auto tx_meta_id = polkadot_tx->id();
+    if (polkadot_transaction_status_tasks_.contains(tx_meta_id)) {
+      continue;
+    }
+
     auto task_ptr = PolkadotTransactionStatusTask::Create(
         *polkadot_wallet_service_, keyring_service(),
         polkadot_tx->from()->Clone(), polkadot_tx->chain_id(),
@@ -334,10 +339,11 @@ void PolkadotTxManager::UpdatePendingTransactions(
     }
 
     auto* task = task_ptr.get();
-    polkadot_transaction_status_tasks_.insert(std::move(task_ptr));
+    polkadot_transaction_status_tasks_.emplace(std::move(tx_meta_id),
+                                               std::move(task_ptr));
 
     task->Start(base::BindOnce(&PolkadotTxManager::OnTransactionStatusResolved,
-                               weak_ptr_factory_.GetWeakPtr(), task,
+                               weak_ptr_factory_.GetWeakPtr(),
                                std::move(polkadot_tx)));
   }
 
@@ -345,13 +351,12 @@ void PolkadotTxManager::UpdatePendingTransactions(
 }
 
 void PolkadotTxManager::OnTransactionStatusResolved(
-    PolkadotTransactionStatusTask* task,
     std::unique_ptr<PolkadotTxMeta> polkadot_tx,
     base::expected<
         std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
         std::string> result) {
   CHECK(polkadot_tx->tx());
-  polkadot_transaction_status_tasks_.erase(task);
+  polkadot_transaction_status_tasks_.erase(polkadot_tx->id());
 
   if (!result.has_value()) {
     return;

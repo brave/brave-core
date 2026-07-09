@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_MANAGER_H_
 #define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_POLKADOT_POLKADOT_TX_MANAGER_H_
 
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -16,7 +17,7 @@
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_tx_meta.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
-#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 
 namespace brave_wallet {
 
@@ -94,7 +95,6 @@ class PolkadotTxManager : public TxManager,
                      std::string> tx_hash_metadata_pair);
 
   void OnTransactionStatusResolved(
-      PolkadotTransactionStatusTask* task,
       std::unique_ptr<PolkadotTxMeta> polkadot_tx,
       base::expected<
           std::pair<PolkadotTransactionStatus, std::optional<uint128_t>>,
@@ -108,7 +108,8 @@ class PolkadotTxManager : public TxManager,
 
   raw_ref<PolkadotWalletService> polkadot_wallet_service_;
   raw_ref<NetworkManager> network_manager_;
-  absl::flat_hash_set<std::unique_ptr<PolkadotTransactionStatusTask>>
+  absl::flat_hash_map<std::string,
+                      std::unique_ptr<PolkadotTransactionStatusTask>>
       polkadot_transaction_status_tasks_;
 
   base::WeakPtrFactory<PolkadotTxManager> weak_ptr_factory_{this};
