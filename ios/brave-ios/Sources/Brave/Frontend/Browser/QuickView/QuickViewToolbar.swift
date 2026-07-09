@@ -119,6 +119,7 @@ struct QuickViewToolbarView: View {
       Image(braveSystemName: "leo.info.filled")
         .foregroundColor(Color(braveSystemName: .iconDefault))
         .font(.caption2)
+        .accessibilityLabel(Text(Strings.PageSecurityView.pageUnknownStatusTitle))
     case .invalidCertificate:
       Image(braveSystemName: "leo.warning.triangle-filled")
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
