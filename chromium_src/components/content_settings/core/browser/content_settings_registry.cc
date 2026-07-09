@@ -14,6 +14,7 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings.mojom.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "net/base/features.h"
 
 #if BUILDFLAG(ENABLE_PSST)
@@ -124,12 +125,8 @@ void ContentSettingsRegistry::BraveInit() {
 
   // BRAVE_JAVASCRIPT is the Shields-owned twin of the upstream JAVASCRIPT
   // content setting: the effective JAVASCRIPT setting is derived from both. To
-  // avoid the two definitions drifting apart, derive every property that can be
-  // read back from the already-registered JAVASCRIPT entry rather than
-  // restating literals: default value, allowlisted schemes, valid settings,
-  // scoping, incognito behavior and origin restriction. The sync status and
-  // platform set have no public getter, so they remain explicit and mirror
-  // JAVASCRIPT's registration above.
+  // avoid the two definitions drifting apart, derive every property from the
+  // already-registered JAVASCRIPT entry rather than restating literals.
   const ContentSettingsInfo* javascript_info =
       Get(ContentSettingsType::JAVASCRIPT);
   CHECK(javascript_info);
@@ -145,10 +142,19 @@ void ContentSettingsRegistry::BraveInit() {
       javascript_valid_settings.insert(setting);
     }
   }
+  // The sync status isn't exposed directly, but it is the only input to the
+  // SYNCABLE_PREF registration flag, so recover it from there.
+  const WebsiteSettingsInfo::SyncStatus javascript_sync_status =
+      (javascript_website_info->GetPrefRegistrationFlags() &
+       user_prefs::PrefRegistrySyncable::SYNCABLE_PREF)
+          ? WebsiteSettingsInfo::SYNCABLE
+          : WebsiteSettingsInfo::UNSYNCABLE;
+  // The platform set is consumed by WebsiteSettingsRegistry at registration
+  // time and not retained on the info, so it is the one value that cannot be
+  // read back. Mirror JAVASCRIPT's platforms explicitly.
   Register(ContentSettingsType::BRAVE_JAVASCRIPT,
            brave_shields::kBraveJavaScript,
-           javascript_info->GetInitialDefaultSetting(),
-           WebsiteSettingsInfo::SYNCABLE,
+           javascript_info->GetInitialDefaultSetting(), javascript_sync_status,
            javascript_permission_info->allowlisted_primary_schemes(),
            javascript_valid_settings, javascript_website_info->scoping_type(),
            WebsiteSettingsRegistry::DESKTOP |
