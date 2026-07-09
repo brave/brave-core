@@ -4,7 +4,9 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import os
 from pathlib import Path
+import subprocess
 import unittest
 
 import repository
@@ -311,6 +313,32 @@ class RepositoryTest(unittest.TestCase):
         # Test an invalid reference
         self.assertFalse(
             repository.chromium.is_valid_git_reference("invalid_reference"))
+
+    def test_is_rebase_in_progress(self):
+        """Test is_rebase_in_progress detects a stopped rebase."""
+        chromium = self.fake_chromium_src.chromium
+        for message in ('base', 'A', 'B'):
+            self.fake_chromium_src.commit_empty(message, chromium)
+
+        self.assertFalse(repository.chromium.is_rebase_in_progress())
+
+        # Start an interactive rebase that stops on an `edit` command.
+        env = {**os.environ, 'GIT_SEQUENCE_EDITOR': "sed -i '1s/^pick/edit/'"}
+        subprocess.run(['git', 'rebase', '-i', 'HEAD~2'],
+                       cwd=chromium,
+                       env=env,
+                       capture_output=True,
+                       text=True,
+                       check=True)
+        try:
+            self.assertTrue(repository.chromium.is_rebase_in_progress())
+        finally:
+            subprocess.run(['git', 'rebase', '--abort'],
+                           cwd=chromium,
+                           capture_output=True,
+                           check=False)
+
+        self.assertFalse(repository.chromium.is_rebase_in_progress())
 
     def test_last_changed(self):
         """Test last_changed using the chromium repository."""

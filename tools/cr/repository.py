@@ -254,6 +254,18 @@ class Repository:
         except subprocess.CalledProcessError:
             return False
 
+    def is_rebase_in_progress(self) -> bool:
+        """Returns True when a rebase is currently in progress in this repo.
+
+        Detected by the presence of git's `rebase-merge` / `rebase-apply`
+        state directories, which is how git itself recognises an in-progress
+        rebase. `--absolute-git-dir` resolves the correct location even inside
+        a linked worktree.
+        """
+        git_dir = Path(self.run_git('rev-parse', '--absolute-git-dir'))
+        return ((git_dir / 'rebase-merge').exists()
+                or (git_dir / 'rebase-apply').exists())
+
     def last_changed(self, file: str, from_commit: str | None = None) -> str:
         """Gets the last commit for a file.
         """
