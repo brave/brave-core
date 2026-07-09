@@ -78,6 +78,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 #include "brave/ios/browser/brave_wallet/ethereum_provider_javascript_feature.h"
+#include "brave/ios/browser/brave_wallet/solana_provider_javascript_feature.h"
 #endif
 
 BraveWebClient::BraveWebClient() {}
@@ -193,6 +194,9 @@ std::vector<web::JavaScriptFeature*> BraveWebClient::GetJavaScriptFeatures(
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
     features.push_back(
         brave_wallet::EthereumProviderJavaScriptFeature::FromBrowserState(
+            browser_state));
+    features.push_back(
+        brave_wallet::SolanaProviderJavaScriptFeature::FromBrowserState(
             browser_state));
 #endif
 
