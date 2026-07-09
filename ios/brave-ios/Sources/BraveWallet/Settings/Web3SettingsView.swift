@@ -209,6 +209,7 @@ private struct WalletSettingsView: View {
             destination:
               DappsSettings(
                 coin: coin,
+                settingsStore: settingsStore,
                 siteConnectionStore: settingsStore.manageSiteConnectionsStore(
                   keyringStore: keyringStore
                 )

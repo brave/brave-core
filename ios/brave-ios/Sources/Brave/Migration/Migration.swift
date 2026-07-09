@@ -31,6 +31,7 @@ public class BraveProfileMigrations {
     migrateGPCPreference()
     migrateMediaBackgroundingPreference()
     migrateBlockAllCookiesPreference()
+    migrateDefaultWalletPreferences()
   }
 
   private func migrateDefaultUserAgentPreferences() {
@@ -131,6 +132,28 @@ public class BraveProfileMigrations {
   private func migrateBlockAllCookiesPreference() {
     Preferences.DeprecatedPreferences.blockAllCookies.migrate { value in
       profileController.profile.prefs.set(value, forPath: kBlockAllCookiesEnabled)
+    }
+  }
+
+  private func migrateDefaultWalletPreferences() {
+    guard let walletService = BraveWallet.ServiceFactory.get(profile: profileController.profile)
+    else {
+      return
+    }
+    // iOS only ever exposed `none` and `brave` (`WalletType`) as options, which
+    // map onto the `DefaultWallet` values stored in the `PrefService`.
+    func defaultWallet(from value: Int) -> BraveWallet.DefaultWallet {
+      value == Preferences.DeprecatedPreferences.DeprecatedWalletType.none.rawValue
+        ? .none : .braveWallet
+    }
+    Preferences.DeprecatedPreferences.defaultEthWallet.migrate { value in
+      walletService.setDefaultEthereumWallet(defaultWallet: defaultWallet(from: value))
+    }
+    Preferences.DeprecatedPreferences.defaultSolWallet.migrate { value in
+      walletService.setDefaultSolanaWallet(defaultWallet: defaultWallet(from: value))
+    }
+    Preferences.DeprecatedPreferences.defaultCardanoWallet.migrate { value in
+      walletService.setDefaultCardanoWallet(defaultWallet: defaultWallet(from: value))
     }
   }
 }
@@ -383,6 +406,32 @@ extension Preferences {
     static let blockAllCookies = Option<Bool>(
       key: "privacy.block-all-cookies",
       default: false
+    )
+
+    enum DeprecatedWalletType: Int, CaseIterable {
+      case none
+      case brave
+    }
+
+    /// The default wallet to use for Ethereum to communicate with web3.
+    /// Superseded by `kDefaultEthereumWallet` in the profile `PrefService`.
+    static let defaultEthWallet = Option<Int>(
+      key: "wallet.default-wallet",
+      default: DeprecatedWalletType.brave.rawValue
+    )
+
+    /// The default wallet to use for Solana to communicate with web3.
+    /// Superseded by `kDefaultSolanaWallet` in the profile `PrefService`.
+    static let defaultSolWallet = Option<Int>(
+      key: "wallet.default-sol-wallet",
+      default: DeprecatedWalletType.brave.rawValue
+    )
+
+    /// The default wallet to use for Cardano to communicate with web3.
+    /// Superseded by `kDefaultCardanoWallet` in the profile `PrefService`.
+    static let defaultCardanoWallet = Option<Int>(
+      key: "wallet.default-cardano-wallet",
+      default: DeprecatedWalletType.brave.rawValue
     )
   }
 

@@ -316,7 +316,8 @@ extension WalletTabHelper: BraveWalletProviderDelegate {
 extension WalletTabHelper: BraveWalletEventsListener {
   func emitEthereumEvent(_ event: Web3ProviderEvent) {
     guard let tab, !tab.isPrivate,
-      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+      tab.profile.prefs.integer(forPath: kDefaultEthereumWallet)
+        != BraveWallet.DefaultWallet.none.rawValue,
       tab.isWebViewCreated
     else {
       return
@@ -369,7 +370,8 @@ extension WalletTabHelper: BraveWalletEventsListener {
   func updateEthereumProperties() async {
     guard let tab, !tab.isPrivate,
       let keyringService = BraveWallet.KeyringServiceFactory.get(privateMode: false),
-      Preferences.Wallet.defaultEthWallet.value == Preferences.Wallet.WalletType.brave.rawValue
+      tab.profile.prefs.integer(forPath: kDefaultEthereumWallet)
+        != BraveWallet.DefaultWallet.none.rawValue
     else {
       return
     }
@@ -471,7 +473,8 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
 
   func emitSolanaEvent(_ event: Web3ProviderEvent) {
     guard let tab, tab.isWebViewCreated,
-      Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue
+      tab.profile.prefs.integer(forPath: kDefaultSolanaWallet)
+        != BraveWallet.DefaultWallet.none.rawValue
     else {
       return
     }
@@ -490,7 +493,8 @@ extension WalletTabHelper: BraveWalletSolanaEventsListener {
 
   @MainActor func updateSolanaProperties() async {
     guard let tab,
-      Preferences.Wallet.defaultSolWallet.value == Preferences.Wallet.WalletType.brave.rawValue,
+      tab.profile.prefs.integer(forPath: kDefaultSolanaWallet)
+        != BraveWallet.DefaultWallet.none.rawValue,
       tab.isWebViewCreated,
       let provider = walletSolProvider
     else {

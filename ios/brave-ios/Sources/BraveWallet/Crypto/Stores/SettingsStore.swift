@@ -76,6 +76,30 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     }
   }
 
+  /// The default wallet used to communicate with web3 for Ethereum
+  @Published var defaultEthWallet: BraveWallet.DefaultWallet = .braveWallet {
+    didSet {
+      guard oldValue != defaultEthWallet else { return }
+      walletService.setDefaultEthereumWallet(defaultWallet: defaultEthWallet)
+    }
+  }
+
+  /// The default wallet used to communicate with web3 for Solana
+  @Published var defaultSolWallet: BraveWallet.DefaultWallet = .braveWallet {
+    didSet {
+      guard oldValue != defaultSolWallet else { return }
+      walletService.setDefaultSolanaWallet(defaultWallet: defaultSolWallet)
+    }
+  }
+
+  /// The default wallet used to communicate with web3 for Cardano
+  @Published var defaultCardanoWallet: BraveWallet.DefaultWallet = .braveWallet {
+    didSet {
+      guard oldValue != defaultCardanoWallet else { return }
+      walletService.setDefaultCardanoWallet(defaultWallet: defaultCardanoWallet)
+    }
+  }
+
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
@@ -123,6 +147,15 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
     )
     self.walletServiceObserver = WalletServiceObserver(
       walletService: walletService,
+      _onDefaultEthereumWalletChanged: { [weak self] wallet in
+        self?.defaultEthWallet = wallet
+      },
+      _onDefaultSolanaWalletChanged: { [weak self] wallet in
+        self?.defaultSolWallet = wallet
+      },
+      _onDefaultCardanoWalletChanged: { [weak self] wallet in
+        self?.defaultCardanoWallet = wallet
+      },
       _onDefaultBaseCurrencyChanged: { [weak self] currency in
         self?.currencyCode = CurrencyCode(code: currency)
       }
@@ -144,6 +177,10 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
 
       self.isNFTDiscoveryEnabled = await walletService.nftDiscoveryEnabled()
       self.isBiometricsUnlockEnabled = isPasswordStoredInKeychain && isBiometricsAvailable
+
+      self.defaultEthWallet = await walletService.defaultEthereumWallet()
+      self.defaultSolWallet = await walletService.defaultSolanaWallet()
+      self.defaultCardanoWallet = await walletService.defaultCardanoWallet()
     }
   }
 
@@ -155,6 +192,10 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
       Domain.clearAllWalletPermissions(for: coin)
       Preferences.Wallet.reset(for: coin)
     }
+
+    defaultEthWallet = .braveWallet
+    defaultSolWallet = .braveWallet
+    defaultCardanoWallet = .braveWallet
 
     Preferences.Wallet.displayWeb3Notifications.reset()
     Preferences.Wallet.migrateCoreToWalletUserAssetCompleted.reset()

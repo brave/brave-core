@@ -240,10 +240,16 @@ struct AccountActivityView: View {
           destination: {
             DappsSettings(
               coin: store.account.coin,
+              settingsStore: cryptoStore.settingsStore,
               siteConnectionStore: cryptoStore.settingsStore.manageSiteConnectionsStore(
                 keyringStore: keyringStore
               )
             )
+            .onAppear {
+              // Load the settings values (e.g. default wallet) since this
+              // `SettingsStore` is not otherwise set up outside of Web3 settings.
+              cryptoStore.settingsStore.setup()
+            }
           },
           label: {
             RowView(

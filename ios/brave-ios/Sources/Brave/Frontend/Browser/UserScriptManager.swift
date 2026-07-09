@@ -366,9 +366,18 @@ class UserScriptManager {
       // TODO: Somehow refactor wallet and get rid of this
       // Inject WALLET specific scripts
 
+      // A default wallet other than `none` means the Brave Wallet provider
+      // should be injected to communicate with web3.
+      let prefs = tab.profile.prefs
+      let isEthProviderEnabled =
+        prefs.integer(forPath: kDefaultEthereumWallet) != BraveWallet.DefaultWallet.none.rawValue
+      let isSolProviderEnabled =
+        prefs.integer(forPath: kDefaultSolanaWallet) != BraveWallet.DefaultWallet.none.rawValue
+      let isCardanoProviderEnabled =
+        prefs.integer(forPath: kDefaultCardanoWallet) != BraveWallet.DefaultWallet.none.rawValue
+
       if !tab.isPrivate,
-        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultEthWallet.value)
-          == .brave,
+        isEthProviderEnabled,
         let script = self.dynamicScripts[.ethereumProvider]
       {
 
@@ -382,8 +391,7 @@ class UserScriptManager {
 
       // Inject SolanaWeb3Script.js
       if !tab.isPrivate,
-        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value)
-          == .brave,
+        isSolProviderEnabled,
         let solanaWeb3Script = Preferences.UserScript.solanaProvider.value
           ? self.walletSolanaWeb3Script : nil
       {
@@ -391,8 +399,7 @@ class UserScriptManager {
       }
 
       if !tab.isPrivate,
-        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultSolWallet.value)
-          == .brave,
+        isSolProviderEnabled,
         let script = self.dynamicScripts[.solanaProvider]
       {
 
@@ -414,8 +421,7 @@ class UserScriptManager {
       // Inject Cardano provider script
       if WalletConstants.isCardanoDAppSupportEnabled,
         !tab.isPrivate,
-        Preferences.Wallet.WalletType(rawValue: Preferences.Wallet.defaultCardanoWallet.value)
-          == .brave,
+        isCardanoProviderEnabled,
         let script = self.dynamicScripts[.cardanoProvider]
       {
         scriptController.addUserScript(script)

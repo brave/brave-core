@@ -10,38 +10,6 @@ import struct Shared.Strings
 
 extension Preferences {
   public final class Wallet {
-    public enum WalletType: Int, Identifiable, CaseIterable {
-      case none
-      case brave
-
-      public var id: Int {
-        rawValue
-      }
-
-      public var name: String {
-        switch self {
-        case .none:
-          return Strings.Wallet.walletTypeNone
-        case .brave:
-          return Strings.Wallet.braveWallet
-        }
-      }
-    }
-    /// The default wallet to use for Ethereum to communicate with web3
-    public static let defaultEthWallet = Option<Int>(
-      key: "wallet.default-wallet",
-      default: WalletType.brave.rawValue
-    )
-    /// The default wallet to use for Solana to communicate with web3
-    public static let defaultSolWallet = Option<Int>(
-      key: "wallet.default-sol-wallet",
-      default: WalletType.brave.rawValue
-    )
-    /// The default wallet to use for Cardano to communicate with web3
-    public static let defaultCardanoWallet = Option<Int>(
-      key: "wallet.default-cardano-wallet",
-      default: WalletType.brave.rawValue
-    )
     /// Whether or not webpages can use the Ethereum Provider API to communicate with users Ethereum wallet
     public static let allowEthProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-eth-provider-access",
@@ -113,13 +81,10 @@ extension Preferences {
     public static func reset(for coin: BraveWallet.CoinType) {
       switch coin {
       case .eth:
-        Preferences.Wallet.defaultEthWallet.reset()
         Preferences.Wallet.allowEthProviderAccess.reset()
       case .sol:
-        Preferences.Wallet.defaultSolWallet.reset()
         Preferences.Wallet.allowSolProviderAccess.reset()
       case .ada:
-        Preferences.Wallet.defaultCardanoWallet.reset()
         Preferences.Wallet.allowCardanoProviderAccess.reset()
       case .fil, .btc, .zec, .dot:
         // not supported
