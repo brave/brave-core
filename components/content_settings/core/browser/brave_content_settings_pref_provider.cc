@@ -631,9 +631,8 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
     return;
   }
 
-  const auto* default_value_info =
-      WebsiteSettingsRegistry::GetInstance()->Get(
-          ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
+  const auto* default_value_info = WebsiteSettingsRegistry::GetInstance()->Get(
+      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
   const base::Value default_value(
       prefs_->GetInteger(default_value_info->default_value_pref_name()));
   SetWebsiteSettingInternal(
@@ -644,8 +643,8 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
       {});
 
   std::vector<std::unique_ptr<Rule>> rules;
-  auto rule_iterator = GetRuleIterator(
-      ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, false);
+  auto rule_iterator =
+      GetRuleIterator(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE, false);
   while (rule_iterator && rule_iterator->HasNext()) {
     auto rule = rule_iterator->Next();
     rules.emplace_back(CloneRule(CHECK_DEREF(rule.get())));
