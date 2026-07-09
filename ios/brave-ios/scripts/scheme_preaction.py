@@ -48,6 +48,11 @@ def main():
     target_environment = 'simulator' if (options.platform_name
                                          == 'iphonesimulator') else 'device'
 
+    # Ensure node is executed from the brave root directory, node.RunNode offers
+    # no option for passing in a custom working directory. This is required for
+    # paths in the webpack config to be parsed correctly.
+    os.chdir(brave_root_dir)
+
     if options.only_update_symlink:
         # If we're choosing to only update the symlink we should validate
         # that the resulting symlink will point to a valid folder
