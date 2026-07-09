@@ -89,10 +89,10 @@ TEST_F(BraveContentSettingsRegistryTest, Properties) {
             info->incognito_behavior());
 
   website_settings_info = info->website_settings_info();
-  EXPECT_EQ("shieldsJavaScriptV1", website_settings_info->name());
-  EXPECT_EQ("profile.content_settings.exceptions.shieldsJavaScriptV1",
+  EXPECT_EQ("braveJavascript", website_settings_info->name());
+  EXPECT_EQ("profile.content_settings.exceptions.braveJavascript",
             website_settings_info->pref_name());
-  EXPECT_EQ("profile.default_content_setting_values.shieldsJavaScriptV1",
+  EXPECT_EQ("profile.default_content_setting_values.braveJavascript",
             website_settings_info->default_value_pref_name());
   ASSERT_TRUE(website_settings_info->initial_default_value().is_int());
   EXPECT_EQ(CONTENT_SETTING_ALLOW,
