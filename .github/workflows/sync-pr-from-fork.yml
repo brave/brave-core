@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  sync-and-rebase-pr-from-fork:
+  sync-pr-from-fork:
     runs-on: ubuntu-slim
     steps:
       - name: Checkout repository
@@ -37,7 +37,7 @@ jobs:
         run: |
           set -x
 
-          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then 
+          if ! grep -qix '[0-9a-f]\{40,40\}' <<<"$COMMIT_HASH"; then
             echo "Provide a full commit hash; got: $COMMIT_HASH"
             exit 1
           fi
@@ -61,13 +61,6 @@ jobs:
           # Note we are checking out the provided commit hash instead of the pr-branch to avoid race condition
           # The author could have commited malicious code between the last review and the execution of this workflow
           git checkout "$COMMIT_HASH"
-          
-          # Rebase the branch with the latest targeting branch HEAD
-          git fetch origin "$baseRefName"
-          if ! git rebase FETCH_HEAD; then
-            echo "Rebase conflict detected. Please resolve the conflicts and push the changes to your fork. Exiting!"
-            exit 1
-          fi
           git push -f origin HEAD:"refs/heads/$contribHeadRefName"
 
           existing_prs=$(gh pr list -H "$contribHeadRefName" --json number)
