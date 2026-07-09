@@ -960,10 +960,15 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
 
   remember_1p_storage.AddRule(kAllowPattern, "*", CONTENT_SETTING_ALLOW);
   remember_1p_storage.AddRule(kBlockPattern, "*", CONTENT_SETTING_BLOCK);
-  remember_1p_storage.AddRule("*", "*", CONTENT_SETTING_BLOCK);
 
-  EXPECT_EQ(3u, remember_1p_storage.GetRulesCount());
+  EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
   remember_1p_storage.Write();
+
+  testing_profile()->GetPrefs()->SetInteger(
+      WebsiteSettingsRegistry::GetInstance()
+          ->Get(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE)
+          ->default_value_pref_name(),
+      CONTENT_SETTING_BLOCK);
 
   testing_profile()->GetPrefs()->ClearPref(
       content_settings::kBraveRemember1PStorageMigration);
