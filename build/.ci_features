@@ -11,3 +11,5 @@ cache_dir
 
 # Supports passing extra GN args to the build via .env file.
 env_gn_args
+
+ai_chat_shared_conversation_lib
