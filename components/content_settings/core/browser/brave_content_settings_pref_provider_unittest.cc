@@ -1000,16 +1000,18 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
 }
 
 class BravePrefProviderDisabledShredFeatureTest : public BravePrefProviderTest {
-public:
-BravePrefProviderDisabledShredFeatureTest() {
-  feature_list_.InitAndDisableFeature(
-      brave_shields::features::kBraveShredFeature);
-}
-private:
-base::test::ScopedFeatureList feature_list_;
+ public:
+  BravePrefProviderDisabledShredFeatureTest() {
+    feature_list_.InitAndDisableFeature(
+        brave_shields::features::kBraveShredFeature);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
 };
 
-TEST_F(BravePrefProviderDisabledShredFeatureTest, SkipRemember1pStorageMigration) {
+TEST_F(BravePrefProviderDisabledShredFeatureTest,
+       SkipRemember1pStorageMigration) {
   constexpr char kAllowPattern[] = "brave.allow";
   constexpr char kBlockPattern[] = "brave.block";
 
