@@ -364,6 +364,13 @@ package = "zcash_primitives"
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
 package = "zcash_client_backend"
 
+# TEMPORARY: orchard 0.15.0-pre.2 (not yet published on crates.io); provides
+# IronwoodDomain for Ironwood pool compact note decryption.
+[patch.crates-io.orchard_v0_15]
+git = "https://github.com/zcash/orchard"
+rev = "475ef0ff77d45aebff93cb039d639250d82518a3"
+package = "orchard"
+
 [patch.crates-io.zmij_v1]
 path = "../../../../third_party/rust/chromium_crates_io/vendor/zmij-v1"
 package = "zmij"
