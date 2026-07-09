@@ -40,6 +40,22 @@ public class BraveSnackbarManager extends SnackbarManager {
                 modalDialogManager);
     }
 
+    public BraveSnackbarManager(
+            Activity activity,
+            ViewGroup snackbarParentView,
+            @Nullable WindowAndroid windowAndroid,
+            @Nullable NonNullObservableSupplier<Integer> additionalBottomMarginPxSupplier,
+            @Nullable ModalDialogManager modalDialogManager,
+            NonNullObservableSupplier<Boolean> persistentFullscreenModeSupplier) {
+        super(
+                activity,
+                snackbarParentView,
+                windowAndroid,
+                additionalBottomMarginPxSupplier,
+                modalDialogManager,
+                persistentFullscreenModeSupplier);
+    }
+
     @Override
     public void showSnackbar(Snackbar snackbar) {
         super.showSnackbar(snackbar);
