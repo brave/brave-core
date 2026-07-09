@@ -73,31 +73,25 @@ def parse_response(response):
 
 
 def check_report(vt, file_hash, abort_on_conn_err=True):
-    errstr = None
-
     try:
-        response = vt.info_file(file_hash)
+        return vt.info_file(file_hash)
     except ConnectionError as e:
-        err_str = str(e)
-        LOGGER.error(f"Connection error to VT: {err_str}.")
+        LOGGER.error(f"Connection error to VT: {e}.")
         if abort_on_conn_err:
             sys.exit(SCAN_ERROR)
-        else:
-            return SCAN_ERROR
+        return SCAN_ERROR
     except Exception as e:
         errstr = str(e)
-
-    if errstr:
         try:
             err = json.loads(errstr)
-            if err["error"]["code"] == "NotFoundError":
+            if err.get("error", {}).get("code") == "NotFoundError":
                 return SCAN_NOT_FOUND
-        except Exception as e:
-            _errstr = str(e)
+            LOGGER.error(f"VT API error: {errstr}")
+        except json.JSONDecodeError:
             LOGGER.error(f"Unhandled error: {errstr}")
+        if abort_on_conn_err:
             sys.exit(SCAN_ERROR)
-
-    return response
+        return SCAN_ERROR
 
 
 def main():
