@@ -604,8 +604,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       std::pair<raw_ptr<mojom::ToolUseEvent>, std::optional<std::string>>;
 
   // If |tool_id| is provided, finds the matching tool use event. Otherwise,
-  // finds the latest tool use event (pending or completed) across all
-  // histories.
+  // finds the latest pending tool use event across all histories.
   ToolUseEventAndThreadUUID FindLatestToolUseEvent(
       std::optional<std::string_view> tool_id = std::nullopt);
 

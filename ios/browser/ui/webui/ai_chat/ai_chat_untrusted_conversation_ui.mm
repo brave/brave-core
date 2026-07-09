@@ -50,6 +50,7 @@
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "ui/base/l10n/l10n_util.h"
 #include "url/url_constants.h"
 
 namespace {
@@ -116,6 +117,15 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
   void SearchForTabs(const std::string& query,
                      SearchForTabsCallback callback) override {
     std::move(callback).Run(std::nullopt);
+  }
+
+  void GetPluralString(const std::string& key,
+                       int32_t count,
+                       GetPluralStringCallback callback) override {
+    auto iter = std::ranges::find(webui::kAiChatStrings, key,
+                                  &webui::LocalizedString::name);
+    CHECK(iter != webui::kAiChatStrings.end());
+    std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
   }
 
   // No current thumbnail tracker need or support on iOS

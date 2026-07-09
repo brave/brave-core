@@ -31,6 +31,9 @@ export type UploadedImageData = Mojom.UploadedFile
 // connected to the relevant API endpoints.
 export type ConversationContextProps = SelectedChatDetails & {
   isNTPWidget?: boolean
+  // When set, entries submitted from this context are added to the given
+  // thread rather than the root conversation.
+  threadUuid?: string
 }
 
 //
@@ -76,7 +79,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const aiChat = useAIChat()
 
   const { api } = props
-  const conversationHistory = api.useGetConversationHistoryData()
+  const conversationHistory = api.useGetConversationHistoryData(null)
   const { getStateData: conversationState } = api.useGetState()
 
   const sendFeedbackState = useSendFeedback(api)
@@ -279,12 +282,14 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       aiChat.api.metrics.onSendingPromptWithFullPage()
     }
 
+    const threadUuid = props.threadUuid ?? null
+
     if (selectedSkill) {
       api.conversationHandler.submitHumanConversationEntryWithSkill(
         stringifyContent(inputText),
         selectedSkill.id,
         pendingMessageFiles,
-        null,
+        threadUuid,
       )
     } else if (selectedActionType) {
       // The action's inline chip is a UI affordance only - the prompt is
@@ -296,13 +301,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       api.conversationHandler.submitHumanConversationEntryWithAction(
         stringifyContent(actionInput),
         selectedActionType,
-        null,
+        threadUuid,
       )
     } else {
       api.conversationHandler.submitHumanConversationEntry(
         stringifyContent(inputText),
         pendingMessageFiles,
-        null,
+        threadUuid,
       )
     }
 
@@ -484,7 +489,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // After mutation, any returned promise will be awaited before settling.
     // This won't re-fetch the conversation history, just get the latest
     // version if it's not invalidated.
-    const conversationHistory = await api.getConversationHistory.fetch()
+    const conversationHistory = await api.getConversationHistory.fetch(null)
     // Since we're in an async callback, we need to get the latest version of
     // data.
     setPendingMessageFiles((pendingMessageFiles) => {

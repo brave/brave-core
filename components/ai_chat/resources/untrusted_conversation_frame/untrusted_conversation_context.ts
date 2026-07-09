@@ -12,6 +12,9 @@ import { loadTimeData } from '$web-common/loadTimeData'
 export interface UntrustedConversationContextProps {
   api: UntrustedConversationAPI
   isReadOnly?: boolean
+  // When set, this frame renders a single thread (including its origin entry)
+  // rather than the root conversation. Null for the root conversation.
+  threadUuid: string | null
 }
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
@@ -23,7 +26,7 @@ const IS_HISTORY_FEATURE_ENABLED = loadTimeData.getBoolean('isHistoryEnabled')
 export function useProvideUntrustedConversationContext(
   props: UntrustedConversationContextProps,
 ) {
-  const { api } = props
+  const { api, threadUuid } = props
 
   const [
     showPremiumSuggestionForRegenerate,
@@ -33,7 +36,11 @@ export function useProvideUntrustedConversationContext(
   // Use API hooks for state
   const state = api.useState().data
   const serviceState = api.useServiceState().data
-  const conversationHistory = api.useGetConversationHistoryData(null)
+  // In thread mode, the visible history is the thread's history (which
+  // includes the origin entry). Otherwise it's the root conversation.
+  const conversationHistory = api.useGetConversationHistoryData(threadUuid)
+
+  const threads = api.useGetConversationThreadsData()
 
   const associatedContent = api.useAssociatedContentData()
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
@@ -42,6 +49,9 @@ export function useProvideUntrustedConversationContext(
     api,
 
     isReadOnly: props.isReadOnly ?? false,
+
+    threadUuid,
+    threads,
 
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,

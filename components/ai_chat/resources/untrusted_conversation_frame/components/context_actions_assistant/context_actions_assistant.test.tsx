@@ -132,7 +132,7 @@ function renderAssistant(isSummaryResponse: boolean) {
   return render(
     <MockContext
       conversationHandler={{
-        getConversationHistory() {
+        getConversationHistory(_threadUuid: string | null) {
           return Promise.resolve({ conversationHistory })
         },
       }}
