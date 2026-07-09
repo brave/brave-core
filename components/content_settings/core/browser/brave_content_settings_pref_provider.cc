@@ -1131,10 +1131,11 @@ void BravePrefProvider::UpdateBraveEffectiveRules(
   // Google Sign-In cookie exceptions). None for JavaScript.
   inject_source_rules(rules, source_rules);
 
-  // Baseline rules from the Chromium content type.
+  // Baseline rules from the upstream content type (which shares its type value
+  // with the effective type we produce).
   {
     auto chromium_iterator =
-        PrefProvider::GetRuleIterator(config.chromium_type, incognito);
+        PrefProvider::GetRuleIterator(config.effective_type, incognito);
     while (chromium_iterator && chromium_iterator->HasNext()) {
       rules.emplace_back(
           CloneRule(CHECK_DEREF(chromium_iterator->Next().get())));
@@ -1202,7 +1203,6 @@ void BravePrefProvider::UpdateCookieRules(ContentSettingsType content_type,
                                           bool incognito) {
   const EffectiveRuleConfig kConfig = {
       .effective_type = ContentSettingsType::COOKIES,
-      .chromium_type = ContentSettingsType::COOKIES,
       .brave_type = ContentSettingsType::BRAVE_COOKIES,
       // For cookies the top-level site is the secondary (embedding) pattern.
       .top_level_is_primary = false,
@@ -1353,7 +1353,6 @@ void BravePrefProvider::UpdateJavascriptRules(ContentSettingsType content_type,
                                               bool incognito) {
   const EffectiveRuleConfig kConfig = {
       .effective_type = ContentSettingsType::JAVASCRIPT,
-      .chromium_type = ContentSettingsType::JAVASCRIPT,
       .brave_type = ContentSettingsType::BRAVE_JAVASCRIPT,
       // For JavaScript the top-level site is the primary pattern.
       .top_level_is_primary = true,

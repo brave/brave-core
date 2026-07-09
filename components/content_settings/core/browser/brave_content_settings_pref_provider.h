@@ -112,10 +112,9 @@ class BravePrefProvider : public PrefProvider, public Observer {
   // How a Brave/Shields-derived content setting is folded into an effective
   // upstream content setting (COOKIES, JAVASCRIPT, ...).
   struct EffectiveRuleConfig {
-    // The upstream content type whose effective value we produce.
+    // The upstream content type whose effective value we produce. This is also
+    // the type that contributes the baseline (Chromium) rules.
     ContentSettingsType effective_type;
-    // The upstream content type contributing baseline rules (e.g. COOKIES).
-    ContentSettingsType chromium_type;
     // The Shields-owned content type contributing per-site overrides.
     ContentSettingsType brave_type;
     // Whether the top-level site is identified by the rule's primary pattern
