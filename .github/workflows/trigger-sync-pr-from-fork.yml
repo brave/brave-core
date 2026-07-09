@@ -1,0 +1,73 @@
+name: Trigger sync PR from fork
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  actions: write # Required to trigger other workflows
+
+jobs:
+  verify-membership:
+    if: ${{ !github.event.comment.user.bot && startsWith(github.event.comment.body, '/run-ci') }}
+    runs-on: ubuntu-latest
+    outputs:
+      is_member: ${{ steps.check.outputs.is_member }}
+    steps:
+      - name: Query GitHub API for Membership
+        id: check
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = context.payload.comment.user.login;
+            const orgName = context.repo.owner;
+
+            try {
+              const membership = await github.rest.orgs.checkMembershipForUser({
+                org: orgName,
+                username: commenter,
+              });
+
+              if (membership.status === 204) {
+                core.setOutput('is_member', 'true');
+                return;
+              }
+            } catch (error) {
+              console.log(`User ${commenter} is not in org ${orgName}.`);
+            }
+
+            core.setOutput('is_member', 'false');
+
+  trigger-workflow:
+    needs: verify-membership
+    if: ${{ needs.verify-membership.outputs.is_member == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch Target with Strict Snapshot Data
+        uses: actions/github-script@v7
+        with:
+          script: |
+            if (!context.payload.issue.pull_request) {
+              core.setFailed("Aborting: Comment is not inside a Pull Request thread.");
+              return;
+            }
+
+            const prNumber = context.issue.number;
+            const commitHash = context.payload.comment.commit_id;
+
+            // Strict Validation: If GitHub payload has no locked commit hash, fail immediately
+            if (!commitHash) {
+              core.setFailed("CRITICAL ERROR: Unable to securely resolve the immutable comment.commit_id snapshot. Terminating process to prevent race conditions.");
+              return;
+            }
+
+            await github.rest.actions.createWorkflowDispatch({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              workflow_id: 'sync-pr-from-fork.yml',
+              ref: 'main',
+              inputs: {
+                PR_NUMBER: String(prNumber),
+                COMMIT_HASH: commitHash
+              }
+            });
