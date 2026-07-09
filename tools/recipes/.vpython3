@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# vpython VirtualEnv spec for the Brave recipes engine, modelled on
+# chrome-infra's recipes_py `.vpython3`.
+#
+# `engine_bootstrap.py` (and `engine.py`'s shebang) run the engine under
+# vpython3 with this spec, so the engine and the recipes it runs get a
+# hermetic interpreter with these wheels available -- notably protobuf, which
+# the engine will grow to depend on for typed properties.
+
+python_version: "3.11"
+
+wheel: <
+  name: "infra/python/wheels/protobuf-py3"
+  version: "version:6.32.1"
+>
