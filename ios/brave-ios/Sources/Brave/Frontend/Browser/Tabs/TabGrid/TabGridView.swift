@@ -121,6 +121,10 @@ struct TabGridView: View {
       || editMode == .active
   }
 
+  private var isShredButtonVisible: Bool {
+    !viewModel.tabs.isEmpty && viewModel.isShredMenuVisible
+  }
+
   var body: some View {
     VStack {
       if viewModel.isPrivateBrowsing, viewModel.tabs.isEmpty, !viewModel.isSearching {
@@ -382,94 +386,97 @@ struct TabGridView: View {
 
   var headerBar: some View {
     HStack {
-      if !privateBrowsingOnly.value {
-        PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
-      }
+      moreMenu
       Spacer()
-      HStack(spacing: 20) {
-        if viewModel.isShredMenuVisible {
-          Menu {
-            Button {
-              isShredAlertPresented = true
-              activeShredMode = .selectedTab
-            } label: {
-              Text(Strings.TabGrid.shredSelectedTabButtonTitle)
-            }
-            .disabled(!viewModel.isSelectedTabShredAvailable)
-            Button(role: .destructive) {
-              isShredAlertPresented = true
-              activeShredMode = .allTabs
-            } label: {
-              Text(Strings.TabGrid.shredAllTabsButtonTitle)
-            }
-          } label: {
-            Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
-          }
-        }
-        Button {
-          destinationSheet = .history
-        } label: {
-          Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
-        }
-        Button {
-          destinationSheet = .syncedTabs
-        } label: {
-          Label(
-            Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
-            braveSystemImage: "leo.smartphone.laptop"
-          )
-        }
+      if isShredButtonVisible {
+        shredMenu
       }
-      .font(.callout)
-      .imageScale(.large)
-      .labelStyle(.iconOnly)
     }
     .containerCornerOffset(.leading, sizeToFit: true)
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
+  var moreMenu: some View {
+    Menu {
+      Button {
+        destinationSheet = .history
+      } label: {
+        Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
+      }
+      Button {
+        destinationSheet = .syncedTabs
+      } label: {
+        Label(
+          Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
+          braveSystemImage: "leo.smartphone.laptop"
+        )
+      }
+      if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
+        Section {
+          Button {
+            destinationSheet = .privateTabsSettings
+          } label: {
+            Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
+          }
+        }
+      }
+      Section {
+        if !viewModel.tabs.isEmpty {
+          Button {
+            withAnimation {
+              editMode = .active
+            }
+          } label: {
+            Label(
+              Strings.TabGrid.selectTabsButtonTitle,
+              braveSystemImage: "leo.check.circle-outline"
+            )
+          }
+          Button(role: .destructive) {
+            viewModel.closeAllTabs()
+            dismiss()
+          } label: {
+            Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
+          }
+        }
+      }
+    } label: {
+      Label(Strings.TabGrid.moreMenuButtonTitle, braveSystemImage: "leo.more.horizontal")
+        .labelStyle(.iconOnly)
+        .font(.callout)
+        .imageScale(.large)
+        .padding(4)
+    }
+    .menuOrder(.fixed)
+  }
+
+  var shredMenu: some View {
+    Menu {
+      Button {
+        isShredAlertPresented = true
+        activeShredMode = .selectedTab
+      } label: {
+        Text(Strings.TabGrid.shredSelectedTabButtonTitle)
+      }
+      .disabled(!viewModel.isSelectedTabShredAvailable)
+      Button(role: .destructive) {
+        isShredAlertPresented = true
+        activeShredMode = .allTabs
+      } label: {
+        Text(Strings.TabGrid.shredAllTabsButtonTitle)
+      }
+    } label: {
+      Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
+        .labelStyle(.iconOnly)
+        .font(.callout)
+        .imageScale(.large)
+        .padding(4)
+    }
+  }
+
   var footerBar: some View {
     HStack {
-      Menu {
-        if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
-          Section {
-            Button {
-              destinationSheet = .privateTabsSettings
-            } label: {
-              Label(Strings.TabGrid.privateTabsSettingsTitle, braveSystemImage: "leo.settings")
-            }
-          }
-        }
-        Section {
-          if !viewModel.tabs.isEmpty {
-            Button {
-              withAnimation {
-                editMode = .active
-              }
-            } label: {
-              Label(
-                Strings.TabGrid.selectTabsButtonTitle,
-                braveSystemImage: "leo.check.circle-outline"
-              )
-            }
-            Button(role: .destructive) {
-              viewModel.closeAllTabs()
-              dismiss()
-            } label: {
-              Label(Strings.TabGrid.closeAllTabsButtonTitle, braveSystemImage: "leo.close")
-            }
-          }
-        }
-      } label: {
-        Text(Strings.TabGrid.moreMenuButtonTitle)
-          .padding(4)
-          .lineLimit(1)
-      }
-      .menuOrder(.fixed)
-      .frame(maxWidth: .infinity, alignment: .leading)
-
-      Spacer()
       Button {
         viewModel.addTab()
         // Let the tab show up in the collection view first
@@ -492,7 +499,12 @@ struct TabGridView: View {
       }
       .keyboardShortcut("t", modifiers: [.command])
       .buttonStyle(.plain)
-      Spacer()
+      .frame(maxWidth: .infinity, alignment: .leading)
+
+      if !privateBrowsingOnly.value {
+        PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
+      }
+
       Button {
         if viewModel.tabs.isEmpty {
           viewModel.addTab()
