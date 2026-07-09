@@ -549,6 +549,9 @@ struct ConversationTurn {
   // Populated if owned by a conversation
   string? uuid;
 
+  // The thread this entry belongs to, if any. Null for root entries.
+  string? thread_uuid;
+
   CharacterType character_type;
   ActionType action_type;
 
@@ -595,6 +598,29 @@ struct ConversationTurn {
 
   // NEAR attestation verification status associated with this turn.
   NEARVerificationStatus? near_verification_status;
+
+  // Threads that originate from this entry.
+  array<Thread> child_threads;
+};
+
+// A thread is a sub-conversation that branches off a conversation entry.
+struct Thread {
+  string uuid;
+  string conversation_uuid;
+  // The conversation entry this thread originates from.
+  string origin_conversation_entry_uuid;
+
+  // TODO(djandries): currently unused, add title generation for threads
+  string title;
+
+  uint64 total_tokens;
+  uint64 trimmed_tokens;
+  
+  // TODO(djandries): currently unused, port entry edits over to threads
+  bool is_edit = false;
+
+  uint32 entry_count;
+  mojo_base.mojom.Time last_entry_time;
 };
 
 // State of the tool loop task execution. A Task represents a loop of tool

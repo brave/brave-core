@@ -269,6 +269,19 @@ ConversationHandler* AIChatService::GetConversation(
   return conversation_handler_it->second.get();
 }
 
+void AIChatService::GetConversationThreadEntries(
+    std::string thread_uuid,
+    base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+        callback) {
+  if (!ai_chat_db_) {
+    std::move(callback).Run({});
+    return;
+  }
+  ai_chat_db_.AsyncCall(&AIChatDatabase::GetConversationThreadEntries)
+      .WithArgs(thread_uuid)
+      .Then(std::move(callback));
+}
+
 void AIChatService::GetConversation(
     std::string_view conversation_uuid,
     base::OnceCallback<void(ConversationHandler*)> callback) {

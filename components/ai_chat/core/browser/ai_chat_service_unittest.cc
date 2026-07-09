@@ -239,6 +239,11 @@ class MockAIChatDatabase : public AIChatDatabase {
               GetConversationData,
               (std::string_view),
               (override));
+
+  MOCK_METHOD(std::vector<mojom::ConversationTurnPtr>,
+              GetConversationThreadEntries,
+              (std::string_view),
+              (override));
 };
 
 }  // namespace

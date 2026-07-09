@@ -117,10 +117,12 @@ TEST_F(AssociatedContentManagerUnitTest,
   conversation_handler_->associated_content_manager()->AddContent(&content);
 
   auto turn = mojom::ConversationTurn::New(
-      "test-turn-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Test human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Initially, GetAssociatedContent should not have conversation_turn_uuid set
   auto initial_content = conversation_handler_->associated_content_manager()
@@ -163,10 +165,12 @@ TEST_F(AssociatedContentManagerUnitTest,
       &second_content);
 
   auto turn = mojom::ConversationTurn::New(
-      "test-turn-uuid", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "test-turn-uuid", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Test human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Associate content with turn
   conversation_handler_->associated_content_manager()
@@ -206,16 +210,18 @@ TEST_F(AssociatedContentManagerUnitTest,
       &first_content);
 
   auto turn1 = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message 1", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message 1", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   auto turn2 = mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message 2", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message 2", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Associate the first content with turn 1
   conversation_handler_->associated_content_manager()
@@ -264,16 +270,20 @@ TEST_F(AssociatedContentManagerUnitTest,
   conversation_handler_->associated_content_manager()->AddContent(&content);
 
   auto turn1 = mojom::ConversationTurn::New(
-      "test-turn-uuid-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "test-turn-uuid-1", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "First human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   auto turn2 = mojom::ConversationTurn::New(
-      "test-turn-uuid-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+      "test-turn-uuid-2", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
       "Second human message", std::nullopt, std::nullopt, std::nullopt,
       base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Associate content with first turn
   conversation_handler_->associated_content_manager()
@@ -303,10 +313,11 @@ TEST_F(AssociatedContentManagerUnitTest,
        AssociateUnsentContentWithTurn_RequiresUuid) {
   // Create turn without UUID - should crash
   auto turn_without_uuid = mojom::ConversationTurn::New(
-      std::nullopt, mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      std::nullopt, std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   EXPECT_DEATH_IF_SUPPORTED(
       conversation_handler_->associated_content_manager()
@@ -348,10 +359,11 @@ TEST_F(AssociatedContentManagerUnitTest, GetCachedContentsMap_MultipleContent) {
   conversation_handler_->associated_content_manager()->AddContent(&content2);
 
   auto turn = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   conversation_handler_->associated_content_manager()
       ->AssociateUnsentContentWithTurn(turn);
@@ -376,10 +388,11 @@ TEST_F(AssociatedContentManagerUnitTest,
 
   // Associate content 1 & 2 with turn 1
   auto turn1 = mojom::ConversationTurn::New(
-      "turn-1", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "turn-1", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   conversation_handler_->associated_content_manager()
       ->AssociateUnsentContentWithTurn(turn1);
@@ -389,10 +402,11 @@ TEST_F(AssociatedContentManagerUnitTest,
   conversation_handler_->associated_content_manager()->AddContent(&content3);
 
   auto turn2 = mojom::ConversationTurn::New(
-      "turn-2", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Test human message", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+      mojom::ActionType::QUERY, "Test human message", std::nullopt,
+      std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
+      nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Associate content 3 with turn 2
   conversation_handler_->associated_content_manager()
@@ -425,10 +439,11 @@ TEST_F(AssociatedContentManagerUnitTest,
       &content_to_remove);
 
   auto turn = mojom::ConversationTurn::New(
-      "removal-turn", mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-      "Removal test", std::nullopt, std::nullopt, std::nullopt,
-      base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */, false,
-      std::nullopt, nullptr);
+      "removal-turn", std::nullopt /* thread_uuid */,
+      mojom::CharacterType::HUMAN, mojom::ActionType::QUERY, "Removal test",
+      std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
+      std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
+      std::vector<mojom::ThreadPtr>{} /* child_threads */);
 
   // Associate both content items with the turn
   conversation_handler_->associated_content_manager()

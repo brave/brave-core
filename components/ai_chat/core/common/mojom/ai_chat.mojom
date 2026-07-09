@@ -326,11 +326,17 @@ interface ConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
+  // Get all entries belonging to the thread with the provided uuid.
+  GetConversationThreadHistory(string thread_uuid) =>
+      (array<ConversationTurn> entries);
+
   SubmitHumanConversationEntry(
-      string input, array<UploadedFile>? uploaded_files);
-  SubmitHumanConversationEntryWithAction(string input, ActionType action_type);
+      string input, array<UploadedFile>? uploaded_files, string? thread_uuid);
+  SubmitHumanConversationEntryWithAction(
+      string input, ActionType action_type, string? thread_uuid);
   SubmitHumanConversationEntryWithSkill(
-      string input, string skill_id, array<UploadedFile>? uploaded_files);
+      string input, string skill_id, array<UploadedFile>? uploaded_files,
+      string? thread_uuid);
 
   // Get associated page information. If there is none then |associated_content|
   // will be empty.

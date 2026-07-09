@@ -304,6 +304,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
         stringifyContent(inputText),
         selectedSkill.id,
         pendingMessageFiles,
+        null,
       )
     } else if (selectedActionType) {
       // The action's inline chip is a UI affordance only - the prompt is
@@ -315,11 +316,13 @@ export function useProvideConversationContext(props: ConversationContextProps) {
       api.conversationHandler.submitHumanConversationEntryWithAction(
         stringifyContent(actionInput),
         selectedActionType,
+        null,
       )
     } else {
       api.conversationHandler.submitHumanConversationEntry(
         stringifyContent(inputText),
         pendingMessageFiles,
+        null,
       )
     }
 

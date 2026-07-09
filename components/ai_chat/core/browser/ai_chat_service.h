@@ -137,6 +137,11 @@ class AIChatService : public KeyedService,
   void GetConversation(std::string_view conversation_uuid,
                        base::OnceCallback<void(ConversationHandler*)>);
 
+  void GetConversationThreadEntries(
+      std::string thread_uuid,
+      base::OnceCallback<void(std::vector<mojom::ConversationTurnPtr>)>
+          callback);
+
   // Creates and owns a ConversationHandler if one hasn't been made for the
   // associated_content_id yet. |associated_content_id| should not be stored. It
   // is an ephemeral identifier for active browser content.

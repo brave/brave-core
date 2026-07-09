@@ -162,12 +162,14 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
     }
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
+        std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+        mojom::ActionType::QUERY,
         base::StrCat({"query", base::NumberToString(i)}),
         std::nullopt /* prompt */, std::nullopt, std::nullopt,
         now + base::Seconds(i * 60) + base::Hours(future_hours), std::nullopt,
         std::move(uploaded_files), nullptr /* skill */, false,
-        std::nullopt /* model_key */, nullptr /* near_verification_status */));
+        std::nullopt /* model_key */, nullptr /* near_verification_status */,
+        std::vector<mojom::ThreadPtr>{} /* child_threads */));
     // response
     std::vector<mojom::ConversationEntryEventPtr> events;
     events.emplace_back(mojom::ConversationEntryEvent::NewCompletionEvent(
@@ -182,11 +184,12 @@ std::vector<mojom::ConversationTurnPtr> CreateSampleChatHistory(
             base::StrCat({"Another search query", base::NumberToString(i)})})));
     history.push_back(mojom::ConversationTurn::New(
         base::Uuid::GenerateRandomV4().AsLowercaseString(),
-        mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "",
-        std::nullopt /* prompt */, std::nullopt, std::move(events),
+        std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
+        mojom::ActionType::RESPONSE, "", std::nullopt /* prompt */,
+        std::nullopt, std::move(events),
         now + base::Seconds((i * 60) + 30) + base::Hours(future_hours),
         std::nullopt, std::nullopt, nullptr /* skill */, false, "chat-basic",
-        nullptr));
+        nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
   }
   return history;
 }

@@ -210,10 +210,11 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       last_query->edits = std::vector<mojom::ConversationTurnPtr>{};
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
-          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          "edited query 1", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(121), std::nullopt, std::nullopt,
-          nullptr /* skill */, false, std::nullopt, nullptr));
+          std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+          mojom::ActionType::QUERY, "edited query 1", std::nullopt,
+          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(121),
+          std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
+          nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -227,10 +228,11 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
       auto& last_query = result_4->entries.back();
       last_query->edits->emplace_back(mojom::ConversationTurn::New(
           base::Uuid::GenerateRandomV4().AsLowercaseString(),
-          mojom::CharacterType::HUMAN, mojom::ActionType::QUERY,
-          "edited query 2", std::nullopt, std::nullopt, std::nullopt,
-          base::Time::Now() + base::Minutes(122), std::nullopt, std::nullopt,
-          nullptr /* skill */, false, std::nullopt, nullptr));
+          std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
+          mojom::ActionType::QUERY, "edited query 2", std::nullopt,
+          std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(122),
+          std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
+          nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -262,6 +264,36 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
   EXPECT_TRUE(db_->DeleteConversation("first"));
   conversations = db_->GetAllConversations();
   EXPECT_EQ(conversations.size(), 0u);
+}
+
+TEST_P(AIChatDatabaseTest, ConversationThreadEntries) {
+  // Verify a new entry can be persisted with a thread_uuid, that it's
+  // excluded from the root conversation entries, and that it can be
+  // retrieved via GetConversationThreadEntries.
+  const std::string uuid = "thread_test";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "thread test", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  auto history = CreateSampleChatHistory(2u);
+  EXPECT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[1]->Clone()));
+
+  const std::string thread_uuid = "thread_1";
+  history[2]->thread_uuid = thread_uuid;
+  EXPECT_TRUE(db_->AddConversationEntry(uuid, history[2]->Clone()));
+
+  auto conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  EXPECT_EQ(conversation_data->entries.size(), 2u);
+  for (const auto& entry : conversation_data->entries) {
+    EXPECT_NE(entry->uuid, history[2]->uuid);
+  }
+
+  auto thread_entries = db_->GetConversationThreadEntries(thread_uuid);
+  ASSERT_EQ(thread_entries.size(), 1u);
+  EXPECT_EQ(thread_entries[0]->uuid, history[2]->uuid);
+  EXPECT_EQ(thread_entries[0]->thread_uuid, thread_uuid);
 }
 
 TEST_P(AIChatDatabaseTest, WebSourcesEvent) {
@@ -1634,6 +1666,20 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_EQ(*entry->uploaded_files->at(0)->extracted_text,
               "Extracted PDF text content");
     EXPECT_FALSE(entry->uploaded_files->at(1)->extracted_text.has_value());
+  }
+
+  // V11 Specific Migration checks
+  {
+    // Verify existing entries have thread_uuid as nullopt after migration.
+    if (version() <= 10) {
+      auto conversation_data =
+          db_->GetConversationData("1ae484fe-ab33-4f42-8813-14080e4addc1");
+      ASSERT_TRUE(conversation_data);
+      ASSERT_GT(conversation_data->entries.size(), 0u);
+      for (const auto& entry : conversation_data->entries) {
+        EXPECT_FALSE(entry->thread_uuid.has_value());
+      }
+    }
   }
 }
 

@@ -20,6 +20,10 @@
 #include "sql/database.h"
 #include "sql/init_status.h"
 
+namespace sql {
+class Statement;
+}  // namespace sql
+
 namespace syncer {
 class MetadataBatch;
 }  // namespace syncer
@@ -50,6 +54,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // Gets all data needed to rehydrate a conversation
   virtual mojom::ConversationArchivePtr GetConversationData(
       std::string_view conversation_uuid);
+
+  // Gets all conversation entries belonging to the thread with the provided
+  // uuid.
+  virtual std::vector<mojom::ConversationTurnPtr> GetConversationThreadEntries(
+      std::string_view thread_uuid);
 
   // Returns new ID for the provided entry and any provided associated content
   virtual bool AddConversation(mojom::ConversationPtr conversation,
@@ -129,7 +138,9 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   sql::InitStatus InitInternal();
 
   std::vector<mojom::ConversationTurnPtr> GetConversationEntries(
-      std::string_view conversation_id);
+      sql::Statement& statement);
+  std::vector<mojom::ThreadPtr> GetConversationThreads(
+      std::string_view conversation_uuid);
   std::vector<mojom::ContentArchivePtr> GetArchiveContentsForConversation(
       std::string_view conversation_uuid);
 
