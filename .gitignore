@@ -7,7 +7,7 @@ vendor/web-discovery-project
 vendor/depot_tools
 vendor/omaha/
 .DS_Store
-.brave_gclient_*
+.brave_gclient*
 .gclient_*
 .tags*
 .cipd

@@ -63,10 +63,33 @@ function writeGclientConfig(
       // actually get used.
       url: 'https://github.com/brave/brave-core.git',
     })
+
+    const braveGclientConfig = {
+      solutions: [
+        {
+          managed: false,
+          name: '.',
+          url: 'https://github.com/brave/brave-core.git',
+        },
+      ],
+      cache_dir: config.gitCachePath,
+      target_os: targetOSList,
+      target_cpu: targetArchList,
+      ...config.gclientGlobalVars,
+    }
+
+    writeGclientConfigFile(
+      braveGclientConfig,
+      path.join(config.braveCoreDir, '.brave_gclient'),
+      '# Auto-updated on each sync.\n\n',
+    )
   }
 
   // Generate the gclient config file.
-  let out = `# Auto-updated on each sync.
+  writeGclientConfigFile(
+    gclientConfig,
+    config.gclientFile,
+    `# Auto-updated on each sync.
 #
 # Customize via brave/.env:
 #   - projects_chrome_custom_deps: Override chromium solution's custom_deps
@@ -88,7 +111,12 @@ function writeGclientConfig(
 #
 # Note: target_os and target_cpu persist unless set via CLI.
 
-`
+`,
+  )
+}
+
+function writeGclientConfigFile(gclientConfig, filePath, header) {
+  let out = header
   for (const [key, value] of Object.entries(gclientConfig)) {
     const singleLineValue = toGClientConfigItem(key, value, false)
     if (singleLineValue.length > 80) {
@@ -98,8 +126,8 @@ function writeGclientConfig(
     }
   }
 
-  if (util.writeFileIfModified(config.gclientFile, out)) {
-    Log.status(`${config.gclientFile} has been updated`)
+  if (util.writeFileIfModified(filePath, out)) {
+    Log.status(`${filePath} has been updated`)
   }
 }
 
