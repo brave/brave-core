@@ -776,6 +776,15 @@ brave_chrome_browser_ui_allow_circular_includes_from = [ "//brave/browser/ui" ]
 brave_chrome_browser_ui_allow_circular_includes_from +=
     brave_ui_allow_circular_includes_from
 
+brave_chrome_browser_ui_deps =
+    [ "//brave/components/brave_wallet/common/buildflags" ]
+if (enable_brave_wallet) {
+  brave_chrome_browser_ui_deps += [
+    "//brave/browser/brave_wallet",
+    "//brave/browser/brave_wallet:tab_helper",
+  ]
+}
+
 brave_chrome_browser_allow_circular_includes_from += [
   "//brave/browser/brave_shields:brave_shields_impl",
   "//brave/browser/ui",
