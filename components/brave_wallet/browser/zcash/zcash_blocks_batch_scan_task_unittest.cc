@@ -85,7 +85,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
                           ZCashRpc::GetTreeStateCallback callback) {
           // Valid tree state
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb", 0, "", "");
+              chain_id, block->height, "aabb", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
         });
 
@@ -142,6 +142,7 @@ class ZCashBlocksBatchScanTest : public testing::Test {
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
         [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
            std::vector<zcash::mojom::CompactBlockPtr> blocks,
            base::OnceCallback<void(
                base::expected<OrchardBlockScanner::Result,
@@ -200,6 +201,7 @@ TEST_F(ZCashBlocksBatchScanTest, SingleBlockDecoded) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](std::vector<uint32_t>* decoded_blocks, OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -239,6 +241,7 @@ TEST_F(ZCashBlocksBatchScanTest, AllBlocksDecoded) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](std::vector<uint32_t>* decoded_blocks, OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -327,6 +330,7 @@ TEST_F(ZCashBlocksBatchScanTest, Error_PartialDecoding) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -431,6 +435,7 @@ TEST_F(ZCashBlocksBatchScanTest, DecodingError) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,

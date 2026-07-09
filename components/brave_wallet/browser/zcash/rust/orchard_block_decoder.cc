@@ -10,6 +10,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/logging.h"
 #include "base/memory/ptr_util.h"
 #include "base/threading/thread_restrictions.h"
 #include "brave/components/brave_wallet/browser/zcash/rust/lib.rs.h"
@@ -33,6 +34,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
     const ::brave_wallet::OrchardTreeState& tree_state,
     const std::vector<::brave_wallet::zcash::mojom::CompactBlockPtr>& blocks,
     ::brave_wallet::OrchardPool pool) {
+  const char* pool_name =
+      pool == ::brave_wallet::OrchardPool::kIronwood ? "ironwood" : "orchard";
   ::rust::Vec<orchard::CxxOrchardCompactAction> compact_actions;
   for (const auto& block : blocks) {
     bool block_has_action = false;
@@ -45,6 +48,12 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
             action->cmx.size() != kOrchardCmxSize ||
             action->ephemeral_key.size() != kOrchardEphemeralKeySize ||
             action->ciphertext.size() != kOrchardCipherTextSize) {
+          LOG(ERROR) << "XXXZZ DecodePool pool=" << pool_name
+                     << " invalid action sizes at block " << block->height
+                     << " nullifier=" << action->nullifier.size()
+                     << " cmx=" << action->cmx.size()
+                     << " ephemeral_key=" << action->ephemeral_key.size()
+                     << " ciphertext=" << action->ciphertext.size();
           return nullptr;
         }
         block_has_action = true;
@@ -63,6 +72,13 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
     }
   }
 
+  LOG(ERROR) << "XXXZZ DecodePool pool=" << pool_name
+             << " blocks=" << blocks.size()
+             << " collected_actions=" << compact_actions.size()
+             << " tree_state.block_height=" << tree_state.block_height
+             << " tree_state.tree_size=" << tree_state.tree_size
+             << " tree_state.frontier_size=" << tree_state.frontier.size();
+
   CxxOrchardShardTreeState prior_tree_state;
   prior_tree_state.block_height = tree_state.block_height;
   prior_tree_state.tree_size = tree_state.tree_size;
@@ -75,6 +91,8 @@ std::unique_ptr<OrchardDecodedBlocksBundle> OrchardBlockDecoder::DecodePool(
     return std::make_unique<OrchardDecodedBlocksBundleImpl>(
         base::PassKey<class OrchardBlockDecoder>(), decode_result->unwrap());
   }
+  LOG(ERROR) << "XXXZZ DecodePool pool=" << pool_name
+             << " batch_decode failed (rust returned error)";
   return nullptr;
 }
 
@@ -91,6 +109,9 @@ OrchardBlockDecoder::Result OrchardBlockDecoder::DecodeBlocks(
   if (ironwood_tree_state) {
     result.ironwood =
         DecodePool(fvk, *ironwood_tree_state, blocks, OrchardPool::kIronwood);
+  } else {
+    LOG(ERROR) << "XXXZZ DecodeBlocks: no ironwood_tree_state, ironwood pool "
+                  "not decoded";
   }
   return result;
 }

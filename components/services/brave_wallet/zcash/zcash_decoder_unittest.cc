@@ -390,13 +390,14 @@ TEST_F(ZCashDecoderUnitTest, ParseTreeState) {
   response.set_time(1);
   response.set_orchardtree("orchard_tree");
   response.set_saplingtree("sapling_tree");
+  response.set_ironwoodtree("ironwood_tree");
 
   // Correct input
   {
     base::MockCallback<ZCashDecoder::ParseTreeStateCallback> callback;
-    EXPECT_CALL(callback,
-                Run(EqualsMojo(zcash::mojom::TreeState::New(
-                    "network", 2, "hash", 1, "sapling_tree", "orchard_tree"))));
+    EXPECT_CALL(callback, Run(EqualsMojo(zcash::mojom::TreeState::New(
+                              "network", 2, "hash", 1, "sapling_tree",
+                              "orchard_tree", "ironwood_tree"))));
     decoder()->ParseTreeState(GetPrefixedProtobuf(response.SerializeAsString()),
                               callback.Get());
   }

@@ -162,6 +162,7 @@ class ZCashShieldSyncServiceTest : public testing::Test {
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
         [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
            std::vector<zcash::mojom::CompactBlockPtr> blocks,
            base::OnceCallback<void(
                base::expected<OrchardBlockScanner::Result,
@@ -245,7 +246,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
         EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         // Valid tree state
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabb", 0, "", "");
+                                                       "aabb", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -293,6 +294,7 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -369,13 +371,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
         // Hash of the latest scanned block
         // Tree state has been changed
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabbccdd", 0, "", "");
+                                                       "aabbccdd", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -435,13 +438,14 @@ TEST_F(ZCashShieldSyncServiceTest, ScanBlocks) {
         EXPECT_EQ(chain_id, mojom::kZCashMainnet);
         // Hash of the latest scanned block differs
         auto tree_state = zcash::mojom::TreeState::New(chain_id, block->height,
-                                                       "aabbccddee", 0, "", "");
+                                                       "aabbccddee", 0, "", "", "");
         std::move(callback).Run(std::move(tree_state));
       });
 
   sync_service()->SetOrchardBlockScannerProxyForTesting(
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,

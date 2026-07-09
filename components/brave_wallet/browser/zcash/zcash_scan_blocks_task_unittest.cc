@@ -103,7 +103,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
           EXPECT_EQ(chain_id, mojom::kZCashMainnet);
           // Valid tree state
           auto tree_state = zcash::mojom::TreeState::New(
-              chain_id, block->height, "aabb", 0, "", "");
+              chain_id, block->height, "aabb", 0, "", "", "");
           std::move(callback).Run(std::move(tree_state));
         });
 
@@ -156,6 +156,7 @@ class ZCashScanBlocksTaskTest : public testing::Test {
   CreateMockOrchardBlockScannerProxy() {
     return std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
         [](OrchardTreeState tree_state,
+           std::optional<OrchardTreeState> ironwood_tree_state,
            std::vector<zcash::mojom::CompactBlockPtr> blocks,
            base::OnceCallback<void(
                base::expected<OrchardBlockScanner::Result,
@@ -229,6 +230,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanRanges) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -309,6 +311,7 @@ TEST_F(ZCashScanBlocksTaskTest, ScanSingle) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
@@ -663,6 +666,7 @@ TEST_F(ZCashScanBlocksTaskTest, DecodingError) {
   auto block_scanner =
       std::make_unique<MockOrchardBlockScannerProxy>(base::BindRepeating(
           [](OrchardTreeState tree_state,
+             std::optional<OrchardTreeState> ironwood_tree_state,
              std::vector<zcash::mojom::CompactBlockPtr> blocks,
              base::OnceCallback<void(
                  base::expected<OrchardBlockScanner::Result,
