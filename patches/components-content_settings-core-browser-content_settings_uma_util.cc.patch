@@ -1,12 +1,13 @@
 diff --git a/components/content_settings/core/browser/content_settings_uma_util.cc b/components/content_settings/core/browser/content_settings_uma_util.cc
-index 9336b8d35d9e5d83c696237efd009807578bd11b..d33b803a3704a14b0554e1bfb92a8d6f2039ff11 100644
+index a7351217e246b6ec28e0631762468a4575c06760..5398530df31b31d7ba7424a21d89fd2d3828a568 100644
 --- a/components/content_settings/core/browser/content_settings_uma_util.cc
 +++ b/components/content_settings/core/browser/content_settings_uma_util.cc
-@@ -170,6 +170,7 @@ constexpr auto kHistogramValue = base::MakeFixedFlatMap<ContentSettingsType,
+@@ -20,6 +20,8 @@ std::string GetProviderNameForHistograms(
+   using ProviderType = content_settings::ProviderType;
  
-     // As mentioned at the top, please don't forget to update ContentType in
-     // enums.xml when you add entries here!
-+    BRAVE_HISTOGRAM_VALUE_LIST
- });
- // LINT.ThenChange(//tools/metrics/histograms/enums.xml:ContentType)
- 
+   switch (provider_type) {
++    case ProviderType::kRemoteListProvider:
++      return "RemoteListProvider";
+     // Update the `ContentAllProviderTypes` variants in
+     // https://chromium.googlesource.com/chromium/src.git/+/HEAD/tools/metrics/histograms/metadata/content/histograms.xml
+     // when new providers are added.
