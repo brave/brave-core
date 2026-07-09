@@ -608,7 +608,7 @@ ui::ImageModel SidebarItemsContentsView::GetImageForBuiltInItems(
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     case sidebar::SidebarItem::BuiltInItemType::kBraveNews:
-      return get_image_model(kLeoRssIcon, state);
+      return get_image_model(kLeoProductBraveNewsIcon, state);
 #endif
     default:
       break;
