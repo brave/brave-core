@@ -1515,6 +1515,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         OpenInAppMenuItemProvider.class,
                         Supplier.class,
+                        Supplier.class,
                         Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
