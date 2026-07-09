@@ -12,6 +12,7 @@
 #include "extensions/common/extension_features.h"
 #include "extensions/common/extension_id.h"
 #include "extensions/common/hashed_extension_id.h"
+#include "extensions/common/manifest.h"
 
 namespace {
 
@@ -35,6 +36,11 @@ std::string BuildBraveMV2ExceptionList() {
       BuildBraveMV2ExceptionList();                    \
   extensions_features::kExtensionManifestV2ExceptionListParam
 
+// We want to extend support for all MV2 extensions until August 31, 2026.
+// This forces IsExtensionAffected(...) to return false.
+#define IsComponentLocation(...) IsComponentLocation(__VA_ARGS__) || true
+
 #include <extensions/browser/mv2_deprecation_impact_checker.cc>
 
 #undef kExtensionManifestV2ExceptionListParam
+#undef IsComponentLocation
