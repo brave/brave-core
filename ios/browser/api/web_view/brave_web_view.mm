@@ -38,6 +38,7 @@
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_wallet/cardano_provider_tab_helper.h"
 #include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
+#include "brave/ios/browser/brave_wallet/solana_provider_tab_helper.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
 #include "brave/ios/browser/serp_metrics/serp_metrics_tab_helper.h"
 #include "brave/ios/browser/ui/web_view/features.h"
@@ -448,6 +449,12 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
     tabHelper->SetBridge(self.walletProviderDelegate);
   }
 
+  brave_wallet::SolanaProviderTabHelper::MaybeCreateForWebState(self.webState);
+  if (auto* tabHelper =
+          brave_wallet::SolanaProviderTabHelper::FromWebState(self.webState)) {
+    tabHelper->SetBridge(self.walletProviderDelegate);
+  }
+
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 
   if (base::FeatureList::IsEnabled(
@@ -706,6 +713,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   }
   if (auto* tabHelper =
           brave_wallet::CardanoProviderTabHelper::FromWebState(self.webState)) {
+    tabHelper->SetBridge(_walletProviderDelegate);
+  }
+  if (auto* tabHelper =
+          brave_wallet::SolanaProviderTabHelper::FromWebState(self.webState)) {
     tabHelper->SetBridge(_walletProviderDelegate);
   }
 }
