@@ -37,8 +37,12 @@ std::string BuildBraveMV2ExceptionList() {
   extensions_features::kExtensionManifestV2ExceptionListParam
 
 // We want to extend support for all MV2 extensions until August 31, 2026.
-// This forces IsExtensionAffected(...) to return false.
-#define IsComponentLocation(...) IsComponentLocation(__VA_ARGS__) || true
+// This forces IsExtensionAffected(...) to return false for all extensions
+// excluding those that have a Brave-hosted version.
+// Tracking: https://github.com/brave/brave-browser/issues/57050
+#define IsComponentLocation(...)      \
+  IsComponentLocation(__VA_ARGS__) || \
+      !extensions_mv2::IsKnownWebStoreHostedExtension(extension_id)
 
 #include <extensions/browser/mv2_deprecation_impact_checker.cc>
 
