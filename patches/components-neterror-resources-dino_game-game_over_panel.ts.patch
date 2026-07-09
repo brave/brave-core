@@ -1,0 +1,16 @@
+diff --git a/components/neterror/resources/dino_game/game_over_panel.ts b/components/neterror/resources/dino_game/game_over_panel.ts
+index 28ff5d7dcc380dc6a9e1ea01a9576442dbc12c17..268df6829f8696300a777c400bc8105d88f3f621 100644
+--- a/components/neterror/resources/dino_game/game_over_panel.ts
++++ b/components/neterror/resources/dino_game/game_over_panel.ts
+@@ -20,8 +20,8 @@ const FLASH_ITERATIONS: number = 5;
+ const animConfig: {
+   frames: number[],
+   msPerFrame: number,
+ } = {
+-  frames: [0, 36, 72, 108, 144, 180, 216, 252],
+-  msPerFrame: RESTART_ANIM_DURATION / 8,
++  frames: [72, 108, 144, 180, 216, 252],
++  msPerFrame: RESTART_ANIM_DURATION / 6,
+ };
+ 
+ interface BaseGameOverPanelDimensions {
