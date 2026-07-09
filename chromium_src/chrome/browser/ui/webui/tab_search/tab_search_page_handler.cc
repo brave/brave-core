@@ -6,7 +6,6 @@
 #include "chrome/browser/ui/webui/tab_search/tab_search_page_handler.h"
 
 #include <memory>
-#include <numeric>
 
 #include "base/check.h"
 #include "base/containers/flat_map.h"
@@ -51,69 +50,7 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-namespace {
-
-struct PendingTab {
-  int32_t tab_id;
-  GURL url;
-};
-
-// Maps the embeddings `Search()` result rows back to open-tab IDs via the
-// URL-id index established in `OnUrlIdsResolved()` and forwards the ranked
-// tab IDs to the SearchTabsByContent caller.
-void DispatchTabIdsForScoredUrls(
-    TabSearchPageHandler::SearchTabsByContentCallback& callback,
-    const base::flat_map<history::URLID, int32_t>& tab_id_by_url_id,
-    history_embeddings::SearchResult result) {
-  std::vector<int32_t> tab_ids;
-  for (const auto& row : result.scored_url_rows) {
-    if (auto* tab_id =
-            base::FindOrNull(tab_id_by_url_id, row.scored_url.url_id)) {
-      tab_ids.push_back(*tab_id);
-    }
-  }
-  std::move(callback).Run(std::move(tab_ids));
-}
-
-void OnUrlIdsResolved(
-    std::vector<PendingTab> tabs,
-    std::string query,
-    history_embeddings::HistoryEmbeddingsSearch* embeddings_search,
-    TabSearchPageHandler::SearchTabsByContentCallback callback,
-    std::optional<std::vector<history::URLID>> url_ids) {
-  // HistoryService returned no result (e.g. shutdown / cancellation).
-  if (!url_ids) {
-    std::move(callback).Run({});
-    return;
-  }
-  CHECK_EQ(tabs.size(), url_ids->size());
-  std::vector<history::URLID> url_id_filter;
-  base::flat_map<history::URLID, int32_t> tab_id_by_url_id;
-  url_id_filter.reserve(url_ids->size());
-  for (size_t i = 0; i < url_ids->size(); ++i) {
-    if ((*url_ids)[i] == 0) {
-      continue;
-    }
-    url_id_filter.push_back((*url_ids)[i]);
-    tab_id_by_url_id.emplace((*url_ids)[i], tabs[i].tab_id);
-  }
-  // None of the open tabs have a corresponding URLID in history yet, so the
-  // embeddings search would have nothing to score against.
-  if (url_id_filter.empty()) {
-    std::move(callback).Run({});
-    return;
-  }
-  const size_t count = url_id_filter.size();
-  embeddings_search->Search(
-      /*previous_search_result=*/nullptr, query,
-      /*time_range_start=*/std::nullopt, count,
-      /*skip_answering=*/true, std::move(url_id_filter),
-      base::BindRepeating(&DispatchTabIdsForScoredUrls,
-                          base::OwnedRef(std::move(callback)),
-                          std::move(tab_id_by_url_id)));
-}
-
-}  // namespace
+#include "brave/browser/history_embeddings/open_tab_search.h"
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
 
 #define TabSearchPageHandler TabSearchPageHandler_ChromiumImpl
@@ -431,53 +368,8 @@ void TabSearchPageHandler::SearchTabsByContent(
     return;
   }
 
-  std::vector<PendingTab> tabs;
-  GlobalBrowserCollection::GetInstance()->ForEach(
-      [this, &tabs](BrowserWindowInterface* browser_window) {
-        Browser* browser = browser_window->GetBrowserForMigrationOnly();
-        if (!browser || !ShouldTrackBrowser(profile_, browser)) {
-          return true;
-        }
-        TabStripModel* tab_strip_model = browser->tab_strip_model();
-        if (!tab_strip_model) {
-          return true;
-        }
-        std::vector<int> indices(tab_strip_model->count());
-        std::iota(indices.begin(), indices.end(), 0);
-        for (tabs::TabInterface* tab :
-             tab_strip_model->GetTabsAtIndices(indices)) {
-          if (!tab) {
-            continue;
-          }
-          content::WebContents* contents = tab->GetContents();
-          if (!contents) {
-            continue;
-          }
-          GURL url = contents->GetLastCommittedURL();
-          if (!url.SchemeIsHTTPOrHTTPS()) {
-            continue;
-          }
-          tabs.push_back({tab->GetHandle().raw_value(), std::move(url)});
-        }
-        return true;
-      });
-
-  // No tracked tabs to rank against — the ForEach loop only keeps
-  // tracked-browser HTTP/HTTPS tabs, so non-normal windows, other profiles
-  // and incognito don't reach here.
-  if (tabs.empty()) {
-    std::move(callback).Run({});
-    return;
-  }
-
-  // Sequence the read-from-`tabs` (for URLs) before the move-of-`tabs` into the
-  // callback bind. Inlining the projection as a sibling argument leaves the
-  // order of evaluation unspecified and lets the move win on some toolchains.
-  const std::vector<GURL> urls = base::ToVector(tabs, &PendingTab::url);
-  history_service->QueryUrlIds(
-      urls,
-      base::BindOnce(&OnUrlIdsResolved, std::move(tabs), query,
-                     embeddings_search, std::move(callback)),
+  history_embeddings::SearchOpenTabsByContent(
+      profile, history_service, embeddings_search, query, std::move(callback),
       &query_url_task_tracker_);
 }
 #else   // !BUILDFLAG(ENABLE_LOCAL_AI)

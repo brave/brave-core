@@ -778,6 +778,10 @@ brave_chrome_browser_ui_allow_circular_includes_from +=
 
 brave_chrome_browser_ui_deps =
     [ "//brave/components/brave_wallet/common/buildflags" ]
+if (enable_local_ai) {
+  brave_chrome_browser_ui_deps +=
+      [ "//brave/browser/history_embeddings:open_tab_search" ]
+}
 if (enable_brave_wallet) {
   brave_chrome_browser_ui_deps += [
     "//brave/browser/brave_wallet",
