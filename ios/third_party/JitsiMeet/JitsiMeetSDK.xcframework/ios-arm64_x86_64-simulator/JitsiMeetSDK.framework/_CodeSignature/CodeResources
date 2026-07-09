@@ -62,7 +62,7 @@
 		</data>
 		<key>Info.plist</key>
 		<data>
-		cTtvgWhx5yuwAQJDzWNA3U/v3q0=
+		UaIXODxlYe588cjhpvBKGDRdQP8=
 		</data>
 		<key>Modules/JitsiMeetSDK.swiftmodule/arm64-apple-ios-simulator.abi.json</key>
 		<data>
@@ -110,7 +110,7 @@
 		</data>
 		<key>RCT-Folly_privacy.bundle/Info.plist</key>
 		<data>
-		3V4jUmPJRwad0ZV5PwUW7kqwtUA=
+		AKUnpTF6gu1rucX0GH+YaeBCUqA=
 		</data>
 		<key>README.md</key>
 		<data>
@@ -118,7 +118,7 @@
 		</data>
 		<key>RNCAsyncStorage_resources.bundle/Info.plist</key>
 		<data>
-		eoJSBgvITdhwTZKgTg9jSyQHkqA=
+		sf9NnNTCjveRwSUIU5HmraqSqHw=
 		</data>
 		<key>RNCAsyncStorage_resources.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -126,7 +126,7 @@
 		</data>
 		<key>RNDeviceInfoPrivacyInfo.bundle/Info.plist</key>
 		<data>
-		+WVYmS4x2rMuWaKzycwoDSAIkfY=
+		L20F+EC0lTsRGUdVhPEfN8Luf3E=
 		</data>
 		<key>RNDeviceInfoPrivacyInfo.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -134,7 +134,7 @@
 		</data>
 		<key>RNSVGFilters.bundle/Info.plist</key>
 		<data>
-		GDuKONrDDqVWHJCy54fYuTeeIBA=
+		WFA7HtGf65kYI354tJ7+0vAka8o=
 		</data>
 		<key>RNSVGFilters.bundle/RNSVGArithmeticFilter.iphoneos.metallib</key>
 		<data>
@@ -146,7 +146,7 @@
 		</data>
 		<key>React-Core_privacy.bundle/Info.plist</key>
 		<data>
-		9IYVuo8UJ2snQT+DBuJQ1S0MKn4=
+		owaYBtMMlwwDUiRiTtIusY9FB3o=
 		</data>
 		<key>React-Core_privacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -154,7 +154,7 @@
 		</data>
 		<key>React-cxxreact_privacy.bundle/Info.plist</key>
 		<data>
-		j5FbiSHN3780LVU9J0hf4mQdDoc=
+		jr+hpfXH2xQ0/LMong/yoGqr4bk=
 		</data>
 		<key>React-cxxreact_privacy.bundle/PrivacyInfo.xcprivacy</key>
 		<data>
@@ -222,7 +222,7 @@
 		</data>
 		<key>boost_privacy.bundle/Info.plist</key>
 		<data>
-		YMuWhMxuaVdxwkEzLSL901eHTG0=
+		jXB1IwpVG+G65lz4XiNDJ34iySQ=
 		</data>
 		<key>e2eeOff.mp3</key>
 		<data>
@@ -274,7 +274,7 @@
 		</data>
 		<key>glog_privacy.bundle/Info.plist</key>
 		<data>
-		Eh1xonOjpyjAlrsZbBDf2mH8uX4=
+		Qnd+PaeVQ+KpQaiulwTCNJXkm9Q=
 		</data>
 		<key>image-resize@2x.png</key>
 		<data>
@@ -378,7 +378,7 @@
 		</data>
 		<key>main.jsbundle</key>
 		<data>
-		VnkPF/dXYau/laAjO6m/7Gl6u/c=
+		2bj53fJfNU+pSt1hfkk6wNI+s70=
 		</data>
 		<key>noAudioSignal.mp3</key>
 		<data>
@@ -842,7 +842,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			9ITLMi/ZWfTR1f5fblNUUH89ghPBYTnO0GfQLVsAn0Q=
+			DJK0vZwyYZqnLLi2qajnYLt+ZHdaISTvlGACB96aevA=
 			</data>
 		</dict>
 		<key>README.md</key>
@@ -856,7 +856,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			W8Ae8xEXqFJl9m3N2Qrc2tDkUnTa6yN9OWw3TgBm7ZM=
+			WPENpQnCEhzIKjc9hglqzVlCHp4+Hq/eTashr/DkT2I=
 			</data>
 		</dict>
 		<key>RNCAsyncStorage_resources.bundle/PrivacyInfo.xcprivacy</key>
@@ -870,7 +870,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Pr48UuGkJsQC4rL8pemiNkIuvzzBl3Bo5Z1IWJMSq6o=
+			6nbd6l05ko/rIbrW/8FcIjeCrOlsffvMZpOX7rzM8XI=
 			</data>
 		</dict>
 		<key>RNDeviceInfoPrivacyInfo.bundle/PrivacyInfo.xcprivacy</key>
@@ -884,7 +884,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			rd+gzLmM6sHJswtw6Q7Bp2wGkCPKC8/5S6kSqGAJwyU=
+			WA5pAnmjnNetPo/4VkYAdoTE32ksTpncTZCaldOT2Iw=
 			</data>
 		</dict>
 		<key>RNSVGFilters.bundle/RNSVGArithmeticFilter.iphoneos.metallib</key>
@@ -905,7 +905,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			8R3tP2TsPmGkvoimi9eWmk1adnD//DXgw/QNstRk31Q=
+			sAxnvOnDn9VZrRfhmdbzJysmC1OMqpZiOs9uuw8TtYw=
 			</data>
 		</dict>
 		<key>React-Core_privacy.bundle/PrivacyInfo.xcprivacy</key>
@@ -919,7 +919,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IrJxnwOnNAw7TErasqPzcsPRWmq9wUGyheZunv6JVoI=
+			mYfPBWok57G0f9bLjrsot9hUiF+JqhY1Av08HXuwhIU=
 			</data>
 		</dict>
 		<key>React-cxxreact_privacy.bundle/PrivacyInfo.xcprivacy</key>
@@ -1038,7 +1038,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			7pPl70JY7YzyhKZHTGHd0zmbLC8pv0O87Zd6tWR5J+k=
+			MK2x9X+jhZ03iSj3zjNgmw+ZNIwbzy2G6C0nJx5wKvU=
 			</data>
 		</dict>
 		<key>e2eeOff.mp3</key>
@@ -1129,7 +1129,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			WZoMGhTkNcxInhdEJVimUgNOkCxAdVCS5fd6IZPtNqI=
+			pO/PmgAbd8vO/RpGvL68QdbZ+dpKYBqUAY7ZHWjSGUQ=
 			</data>
 		</dict>
 		<key>image-resize@2x.png</key>
@@ -1311,7 +1311,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			L485JGcDa3Agz5/72IlrrhmY8c9t7MVjn2WmCscFTTA=
+			oY0DhdkNmNwxwYs/rDJ8/dJTk/lgOQZsKaR4IebV/9M=
 			</data>
 		</dict>
 		<key>noAudioSignal.mp3</key>
