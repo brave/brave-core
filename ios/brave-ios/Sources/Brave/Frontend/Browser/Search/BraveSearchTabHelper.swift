@@ -110,7 +110,7 @@ class BraveSearchTabHelper: TabObserver, TabPolicyDecider, BraveSearchMakeDefaul
     if FeatureList.kUseProfileWebViewConfiguration.enabled,
       let webView = BraveWebView.from(tab: tab),
       let url = tab.lastCommittedURL,
-      DomainUserScript(for: url) == .braveSearchHelper
+      DomainUserScript(for: url, isPrivateBrowsing: tab.isPrivate) == .braveSearchHelper
     {
       webView.fetchSearchAdCreatives { [weak self] creativesJSON in
         guard let self, let creativesJSON else { return }

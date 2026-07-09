@@ -378,6 +378,7 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
         )
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
+            isPrivateBrowsing: tab.isPrivate,
             isDeAmpEnabled: false,
             isAdBlockEnabled: true,  // enabled for playlist
             isBlockFingerprintingEnabled: true,
