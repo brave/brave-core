@@ -22,6 +22,7 @@
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_settings_values.h"
 #include "brave/components/brave_shields/core/common/features.h"
+#include "brave/components/brave_shields/core/common/shields_settings.mojom-shared.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/content_settings/core/browser/brave_content_settings_utils.h"
 #include "brave/components/content_settings/core/common/content_settings_util.h"
@@ -635,12 +636,17 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
       ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE);
   const base::Value default_value(
       prefs_->GetInteger(default_value_info->default_value_pref_name()));
-  SetWebsiteSettingInternal(
-      ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::BRAVE_AUTO_SHRED,
-      brave_shields::AutoShredSetting::ToValue(
-          Remember1PStorageValueToAutoShredMode(default_value)),
-      {});
+  const auto auto_shread_mode =
+      Remember1PStorageValueToAutoShredMode(default_value);
+  // We should migrate only if AutoShreadMode if not default
+  if (auto_shread_mode != brave_shields::mojom::AutoShredMode::NEVER) {
+    SetWebsiteSettingInternal(
+        ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
+        ContentSettingsType::BRAVE_AUTO_SHRED,
+        brave_shields::AutoShredSetting::ToValue(
+            Remember1PStorageValueToAutoShredMode(default_value)),
+        {});
+  }
 
   std::vector<std::unique_ptr<Rule>> rules;
   auto rule_iterator =

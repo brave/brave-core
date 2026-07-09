@@ -999,11 +999,17 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, SkipRemember1pStorageMigration) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
+class BravePrefProviderDisabledShredFeatureTest : public BravePrefProviderTest {
+public:
+BravePrefProviderDisabledShredFeatureTest() {
+  feature_list_.InitAndDisableFeature(
       brave_shields::features::kBraveShredFeature);
+}
+private:
+base::test::ScopedFeatureList feature_list_;
+};
 
+TEST_F(BravePrefProviderDisabledShredFeatureTest, SkipRemember1pStorageMigration) {
   constexpr char kAllowPattern[] = "brave.allow";
   constexpr char kBlockPattern[] = "brave.block";
 
