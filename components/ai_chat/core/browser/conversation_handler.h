@@ -42,6 +42,7 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #include "mojo/public/cpp/bindings/remote_set.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_map.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class AIChatUIBrowserTest;
@@ -176,6 +177,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void GetConversationThreadHistory(
+      const std::string& thread_uuid,
+      GetConversationThreadHistoryCallback callback) override;
   void SetTemporary(bool temporary) override;
   void PauseTask() override;
   void ResumeTask() override;
@@ -196,17 +200,18 @@ class ConversationHandler : public mojom::ConversationHandler,
   void GetIsRequestInProgress(GetIsRequestInProgressCallback callback) override;
   void SubmitHumanConversationEntry(
       const std::string& input,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntry(mojom::ConversationTurnPtr turn);
   void SubmitHumanConversationEntryWithAction(
       const std::string& input,
-      mojom::ActionType action_type) override;
+      mojom::ActionType action_type,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void SubmitHumanConversationEntryWithSkill(
       const std::string& input,
       const std::string& skill_id,
-      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files)
-      override;
+      std::optional<std::vector<mojom::UploadedFilePtr>> uploaded_files,
+      const std::optional<std::string>& thread_uuid = std::nullopt) override;
   void ModifyConversation(
       const std::string& entry_uuid,
       const std::string& new_text,
@@ -375,6 +380,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   FRIEND_TEST_ALL_PREFIXES(
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
+  FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
   void InitEngine();
 
   void BuildCapabilitiesSet();
@@ -419,6 +425,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void CompleteGeneration(bool success);
   void OnSuggestedQuestionsResponse(
       EngineConsumer::SuggestedQuestionResult result);
+  void OnConversationThreadHistoryReceived(
+      std::string thread_uuid,
+      GetConversationThreadHistoryCallback callback,
+      std::vector<mojom::ConversationTurnPtr> entries);
 
   void OnModelDataChanged();
   void OnConversationDeleted();
@@ -467,6 +477,12 @@ class ConversationHandler : public mojom::ConversationHandler,
   // Chat conversation entries
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
+
+  // Map of thread uuid to its lazily-loaded entries. A thread's uuid is only
+  // present once its entries have been requested via
+  // GetConversationThreadHistory.
+  absl::flat_hash_map<std::string, std::vector<mojom::ConversationTurnPtr>>
+      thread_entries_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
 

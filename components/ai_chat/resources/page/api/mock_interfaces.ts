@@ -71,6 +71,7 @@ export const defaultConversationState: Mojom.ConversationState & {
 
 const emptyTurn: Mojom.ConversationTurn = {
   uuid: '',
+  threadUuid: undefined,
   text: '',
   characterType: Mojom.CharacterType.HUMAN,
   actionType: Mojom.ActionType.UNSPECIFIED,
@@ -84,6 +85,7 @@ const emptyTurn: Mojom.ConversationTurn = {
   skill: undefined,
   modelKey: '',
   nearVerificationStatus: undefined,
+  childThreads: [],
 }
 
 /**
@@ -106,6 +108,7 @@ export function createMockConversationHandler(
         },
       }),
     getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
+    getConversationThreadHistory: () => Promise.resolve({ entries: [] }),
     getConversationUuid: () => Promise.resolve({ conversationUuid: '' }),
     getModels: () =>
       Promise.resolve({

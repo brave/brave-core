@@ -41,14 +41,16 @@
   ai_chat::ConversationHandler* handler = service->CreateConversation();
   ai_chat::mojom::ConversationTurnPtr turn =
       ai_chat::mojom::ConversationTurn::New(
-          std::nullopt, ai_chat::mojom::CharacterType::HUMAN,
+          std::nullopt, std::nullopt /* thread_uuid */,
+          ai_chat::mojom::CharacterType::HUMAN,
           ai_chat::mojom::ActionType::QUERY,
           base::SysNSStringToUTF8(query) /* text */, std::nullopt /* prompt */,
           std::nullopt /* selected_text */, std::nullopt /* events */,
           base::Time::Now(), std::nullopt /* edits */,
           std::nullopt /* uploaded images */, nullptr /* skill */,
           false /* from_brave_search_SERP */, std::nullopt /* model_key */,
-          nullptr /* near_verification_status */);
+          nullptr /* near_verification_status */,
+          std::vector<ai_chat::mojom::ThreadPtr>{} /* child_threads */);
   handler->SubmitHumanConversationEntry(std::move(turn));
   return net::NSURLWithGURL(
       ai_chat::ConversationUrl(handler->get_conversation_uuid()));
