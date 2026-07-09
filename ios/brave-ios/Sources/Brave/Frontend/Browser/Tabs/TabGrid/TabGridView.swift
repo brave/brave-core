@@ -506,7 +506,10 @@ struct TabGridView: View {
       .frame(maxWidth: .infinity, alignment: .leading)
 
       if !privateBrowsingOnly.value {
-        PrivateBrowsingPicker(isPrivateBrowsing: $viewModel.isPrivateBrowsing)
+        TabGridModeSwitcher(
+          isPrivateBrowsing: $viewModel.isPrivateBrowsing,
+          regularTabCount: viewModel.regularTabCount
+        )
       }
 
       Button {
@@ -663,62 +666,67 @@ struct TabGridView: View {
 }
 
 // We must use a UISegmentedControl directly as you cannot change the height of a PickerView using
-// a segmented picker style
-private struct PrivateBrowsingPicker: UIViewRepresentable {
+// a segmented picker style.
+private struct TabGridModeSwitcher: UIViewRepresentable {
   @Binding var isPrivateBrowsing: Bool
+  var regularTabCount: Int
 
   func makeUIView(context: Context) -> UISegmentedControl {
     let uiView = UISegmentedControl(
-      frame: .zero,
-      actions: [
-        .init(
-          title: Strings.TabGrid.regularBrowsingModeAccessibilityLabel,
-          image: UIImage(braveSystemNamed: "leo.browser.mobile-tabs"),
-          handler: { _ in }
-        ),
-        .init(
-          title: Strings.TabGrid.privateBrowsingModeAccessibilityLabel,
-          image: UIImage(braveSystemNamed: "leo.product.private-window"),
-          handler: { _ in }
-        ),
+      items: [
+        Strings.TabGrid.tabsCountFormat(regularTabCount),
+        Strings.TabGrid.privateBrowsingModeTitle,
       ]
     )
     uiView.addAction(
       .init(handler: { [unowned uiView] _ in
-        let isPrivate = uiView.selectedSegmentIndex == 1
-        self.isPrivateBrowsing = isPrivate
+        isPrivateBrowsing = uiView.selectedSegmentIndex == 1
       }),
       for: .valueChanged
     )
+    configureAppearance(uiView)
     return uiView
   }
-  func updateUIView(_ uiView: UIViewType, context: Context) {
+
+  func updateUIView(_ uiView: UISegmentedControl, context: Context) {
+    uiView.setTitle(Strings.TabGrid.tabsCountFormat(regularTabCount), forSegmentAt: 0)
+    uiView.setTitle(Strings.TabGrid.privateBrowsingModeTitle, forSegmentAt: 1)
     uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
-    uiView.backgroundColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
-    )
-    uiView.selectedSegmentTintColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow30 : .containerBackground
-    )
-    uiView.setTitleTextAttributes(
-      [
-        .foregroundColor: UIColor(
-          braveSystemName: isPrivateBrowsing ? .iconInteractive : .iconDefault
-        )
-      ],
-      for: .selected
-    )
-    uiView.setTitleTextAttributes(
-      [.foregroundColor: UIColor(braveSystemName: .iconDefault)],
-      for: .normal
-    )
+    configureAppearance(uiView)
   }
+
   func sizeThatFits(
     _ proposal: ProposedViewSize,
     uiView: UISegmentedControl,
     context: Context
   ) -> CGSize? {
     return .init(width: uiView.intrinsicContentSize.width + 44, height: 40)
+  }
+
+  private func configureAppearance(_ uiView: UISegmentedControl) {
+    uiView.backgroundColor = UIColor(
+      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
+    )
+    uiView.selectedSegmentTintColor = UIColor(
+      braveSystemName: isPrivateBrowsing ? .privateWindow30 : .containerBackground
+    )
+    let titleFont = UIFont.preferredFont(forTextStyle: .subheadline)
+    uiView.setTitleTextAttributes(
+      [
+        .font: titleFont,
+        .foregroundColor: UIColor(
+          braveSystemName: isPrivateBrowsing ? .iconInteractive : .iconDefault
+        ),
+      ],
+      for: .selected
+    )
+    uiView.setTitleTextAttributes(
+      [
+        .font: titleFont,
+        .foregroundColor: UIColor(braveSystemName: .iconDefault),
+      ],
+      for: .normal
+    )
   }
 }
 
