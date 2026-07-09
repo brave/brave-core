@@ -26,7 +26,6 @@ source_set("brave_wallet") {
   ]
   deps = [
     ":ethereum_provider_js",
-    "//base",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/browser:pref_names",
@@ -37,7 +36,6 @@ source_set("brave_wallet") {
     "//brave/ios/browser/api/brave_wallet:provider_delegate",
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/keyed_service",
-    "//brave/ios/web/js_messaging:message_handler_token",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
     "//ios/chrome/browser/content_settings/model",
@@ -46,13 +44,18 @@ source_set("brave_wallet") {
     "//ios/chrome/browser/shared/model/profile:profile_keyed_service_factory",
     "//ios/components/webui:url_constants",
     "//ios/web/public",
-    "//ios/web/public/js_messaging",
     "//ios/web/public/security",
     "//ios/web/public/thread",
     "//ios/web/public/webui",
     "//ios/web/web_state/ui:wk_web_view_configuration_provider",
     "//mojo/public/cpp/bindings",
     "//services/network/public/cpp",
+  ]
+  public_deps = [
+    "//base",
+    "//brave/ios/web/js_messaging:message_handler_token",
+    "//components/prefs",
+    "//ios/web/public/js_messaging",
   ]
 }
 

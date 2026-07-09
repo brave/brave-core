@@ -49,7 +49,7 @@ if (window.isSecureContext) {
       writable: true, // writable so `UpdateEthereumProperties()` can update.
     },
     selectedAddress: {
-      value: true,
+      value: undefined,
       writable: true, // writable so `UpdateEthereumProperties()` can update.
     },
     isBraveWallet: {

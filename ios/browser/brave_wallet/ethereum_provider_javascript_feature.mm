@@ -20,6 +20,7 @@
 #include "base/strings/sys_string_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
 #include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
@@ -31,6 +32,7 @@
 #include "ios/web/public/navigation/navigation_manager.h"
 #include "ios/web/public/security/ssl_status.h"
 #include "ios/web/public/web_state.h"
+#include "ios/web/web_state/ui/wk_web_view_configuration_provider.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/resource/resource_bundle.h"
 #include "url/gurl.h"
@@ -130,6 +132,14 @@ std::string LoadDataResource(int id) {
   return std::string(resource_bundle.GetRawDataResource(id));
 }
 
+bool IsDefaultWalletBrave(PrefService* prefs) {
+  mojom::DefaultWallet eth_wallet = GetDefaultEthereumWallet(prefs);
+  // iOS does not have a separate extension so we consider Brave the default
+  // wallet for either state.
+  return eth_wallet == mojom::DefaultWallet::BraveWallet ||
+         eth_wallet == mojom::DefaultWallet::BraveWalletPreferExtension;
+}
+
 }  // namespace
 
 EthereumProviderJavaScriptFeature::EthereumProviderJavaScriptFeature(
@@ -138,7 +148,14 @@ EthereumProviderJavaScriptFeature::EthereumProviderJavaScriptFeature(
                         /*feature_scripts=*/{}),
       profile_(profile),
       provider_bundle_js_(LoadDataResource(
-          IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)) {}
+          IDR_BRAVE_WALLET_SCRIPT_ETHEREUM_PROVIDER_SCRIPT_BUNDLE_JS)) {
+  pref_change_registrar_.Init(profile->GetPrefs());
+  pref_change_registrar_.Add(
+      kDefaultEthereumWallet,
+      base::BindRepeating(
+          &EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged,
+          base::Unretained(this)));
+}
 
 EthereumProviderJavaScriptFeature::~EthereumProviderJavaScriptFeature() =
     default;
@@ -161,10 +178,19 @@ EthereumProviderJavaScriptFeature::FromBrowserState(
   return feature;
 }
 
+void EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged() {
+  // Feature scripts must be explicitly updated after this pref changes.
+  web::WKWebViewConfigurationProvider& config_provider =
+      web::WKWebViewConfigurationProvider::FromBrowserState(profile_);
+  config_provider.UpdateScripts();
+}
+
 std::vector<web::JavaScriptFeature::FeatureScript>
 EthereumProviderJavaScriptFeature::GetScripts() const {
-  if (!IsAllowed(profile_->GetPrefs())) {
-    // Dont inject wallet scripts if wallet is not enabled for this profile
+  PrefService* prefs = profile_->GetPrefs();
+  if (!IsAllowed(prefs) || !IsDefaultWalletBrave(prefs)) {
+    // Dont inject wallet scripts if wallet is not enabled for this profile or
+    // Brave is not set as the default ethereum wallet provider
     return {};
   }
   return {
