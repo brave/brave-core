@@ -32,6 +32,7 @@ if (!is_android) {
     "//brave/components/p3a",
     "//chrome/app:branded_strings",
     "//chrome/browser/ui",
+    "//chrome/browser/ui:chrome_pages",
     "//components/infobars/content",
     "//components/infobars/core",
     "//components/prefs",

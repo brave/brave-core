@@ -94,7 +94,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
 
   void OnContainerSelected(
       const containers::mojom::ContainerPtr& container) override {
-    auto* browser = GetBrowserToOpenSettings();
+    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::OpenUrlInContainer(base::to_address(browser_window_interface_),
                               browser->GetNewTabURL(), container,
@@ -102,7 +102,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
   }
 
   void OnNoContainerSelected() override {
-    auto* browser = GetBrowserToOpenSettings();
+    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::OpenUrlWithoutContainer(base::to_address(browser_window_interface_),
                                    browser->GetNewTabURL(),
@@ -110,7 +110,7 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
   }
 
   void OnNewTemporaryContainerSelected() override {
-    auto* browser = GetBrowserToOpenSettings();
+    auto* browser = GetBrowserToOpenSettings()->GetBrowserForMigrationOnly();
     CHECK(browser);
     brave::CreateTemporaryContainerAndOpenUrl(
         base::to_address(browser_window_interface_), browser->GetNewTabURL(),
@@ -121,8 +121,8 @@ class BraveNewTabButton::NewTabButtonContainersMenuDelegate
   // specific container, so no menu items should appear as "current".
   base::flat_set<std::string> GetCurrentContainerIds() override { return {}; }
 
-  Browser* GetBrowserToOpenSettings() override {
-    return browser_window_interface_->GetBrowserForMigrationOnly();
+  BrowserWindowInterface* GetBrowserToOpenSettings() override {
+    return base::to_address(browser_window_interface_);
   }
 
   float GetScaleFactor() override {

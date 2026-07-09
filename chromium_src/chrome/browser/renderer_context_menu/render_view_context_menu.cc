@@ -680,8 +680,8 @@ void RenderViewContextMenu::BuildContainersMenu() {
   }
 }
 
-Browser* RenderViewContextMenu::GetBrowserToOpenSettings() {
-  return GetBrowser()->GetBrowserForMigrationOnly();
+BrowserWindowInterface* RenderViewContextMenu::GetBrowserToOpenSettings() {
+  return GetBrowser();
 }
 
 float RenderViewContextMenu::GetScaleFactor() {
