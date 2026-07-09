@@ -176,30 +176,32 @@ class StateBase : public mojom::Authentication {
 
  private:
   // Flow helpers, each owned by one state and implementing that state's
-  // password-flow overrides on its owner's behalf: `ResetPassword` owned by
-  // `LoggedOutState` (the `ResetPassword*` overrides), `ChangePassword` owned
-  // by `LoggedInState` (the `ChangePassword*` overrides). They are friended on
-  // `StateBase` (not on the owning state) because the plumbing they borrow
-  // through their back-reference - request lifetime (`in_flight_`,
-  // `SendStateOwnedRequest()`), crypto, and `account_state_prefs_` - is bound
-  // to `StateBase` and can't move out.
+  // flow overrides on its owner's behalf: `Register` and `ResetPassword` owned
+  // by `LoggedOutState` (the `Register*` and `ResetPassword*` overrides),
+  // `ChangePassword` owned by `LoggedInState` (the `ChangePassword*`
+  // overrides). They are friended on `StateBase` (not on the owning state)
+  // because the plumbing they borrow through their back-reference - request
+  // lifetime (`in_flight_`, `SendStateOwnedRequest()`), crypto, and
+  // `account_state_prefs_` - is bound to `StateBase` and can't move out.
   friend class ChangePassword;
+  friend class Register;
   friend class ResetPassword;
 
   void AddObserver(
       mojo::PendingRemote<mojom::AuthenticationObserver> observer) final;
 
-  void RegisterInitialize(mojom::Service initiating_service,
-                          const std::string& email,
-                          const std::string& blinded_message,
-                          RegisterInitializeCallback callback) override;
+  void RegisterPasswordInit(mojom::Service initiating_service,
+                            const std::string& email,
+                            const std::string& blinded_message,
+                            RegisterPasswordInitCallback callback) override;
 
-  void RegisterFinalize(const std::string& encrypted_verification_token,
-                        const std::string& serialized_record,
-                        RegisterFinalizeCallback callback) override;
+  void RegisterPasswordFinalize(
+      const std::string& encrypted_verification_token,
+      const std::string& serialized_record,
+      RegisterPasswordFinalizeCallback callback) override;
 
-  void RegisterVerify(const std::string& code,
-                      RegisterVerifyCallback callback) override;
+  void RegisterVerifyComplete(const std::string& code,
+                              RegisterVerifyCompleteCallback callback) override;
 
   void ResendVerificationEmail(
       mojom::VerificationIntentPtr intent,

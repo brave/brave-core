@@ -72,9 +72,9 @@ struct GetServiceTokenTestCase;
 struct LoginFinalizeTestCase;
 struct LoginInitializeTestCase;
 struct LogOutTestCase;
-struct RegisterFinalizeTestCase;
-struct RegisterInitializeTestCase;
-struct RegisterVerifyTestCase;
+struct RegisterPasswordFinalizeTestCase;
+struct RegisterPasswordInitTestCase;
+struct RegisterVerifyCompleteTestCase;
 struct ResendVerificationEmailTestCase;
 struct ResetPasswordPasswordFinalizeTestCase;
 struct ResetPasswordPasswordInitTestCase;
@@ -128,9 +128,9 @@ class BraveAccountServiceTest : public testing::TestWithParam<const TestCase*> {
         std::is_same_v<TestCase, GetServiceTokenTestCase> ||
         std::is_same_v<TestCase, LoginFinalizeTestCase> ||
         std::is_same_v<TestCase, LoginInitializeTestCase> ||
-        std::is_same_v<TestCase, RegisterFinalizeTestCase> ||
-        std::is_same_v<TestCase, RegisterInitializeTestCase> ||
-        std::is_same_v<TestCase, RegisterVerifyTestCase> ||
+        std::is_same_v<TestCase, RegisterPasswordFinalizeTestCase> ||
+        std::is_same_v<TestCase, RegisterPasswordInitTestCase> ||
+        std::is_same_v<TestCase, RegisterVerifyCompleteTestCase> ||
         std::is_same_v<TestCase, ResendVerificationEmailTestCase> ||
         std::is_same_v<TestCase, ResetPasswordPasswordFinalizeTestCase> ||
         std::is_same_v<TestCase, ResetPasswordPasswordInitTestCase> ||

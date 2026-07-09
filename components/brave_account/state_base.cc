@@ -69,21 +69,23 @@ void StateBase::AddObserver(
   add_observer_.Run(std::move(observer));
 }
 
-void StateBase::RegisterInitialize(mojom::Service,
-                                   const std::string&,
-                                   const std::string&,
-                                   RegisterInitializeCallback callback) {
+void StateBase::RegisterPasswordInit(mojom::Service initiating_service,
+                                     const std::string& email,
+                                     const std::string& blinded_message,
+                                     RegisterPasswordInitCallback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterFinalize(const std::string&,
-                                 const std::string&,
-                                 RegisterFinalizeCallback callback) {
+void StateBase::RegisterPasswordFinalize(
+    const std::string& encrypted_verification_token,
+    const std::string& serialized_record,
+    RegisterPasswordFinalizeCallback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
-void StateBase::RegisterVerify(const std::string&,
-                               RegisterVerifyCallback callback) {
+void StateBase::RegisterVerifyComplete(
+    const std::string& code,
+    RegisterVerifyCompleteCallback callback) {
   std::move(callback).Run(MakeCalledInWrongStateError<mojom::RegisterError>());
 }
 
