@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/tab_group_sync/BUILD.gn b/chrome/browser/tab_group_sync/BUILD.gn
+index bdc114823fa5344d8ea826072455d614d8e9a4d3..efb8f1b19c5e08d7954ac03b365fd347619dac4a 100644
+--- a/chrome/browser/tab_group_sync/BUILD.gn
++++ b/chrome/browser/tab_group_sync/BUILD.gn
+@@ -204,6 +204,8 @@ if (is_android) {
+       "//url:gurl_java",
+       "//url:url_java",
+     ]
++    import("//brave/browser/tab_group_sync/android/sources.gni")
++    sources += brave_browser_tab_group_sync_java_sources
+   }
+ 
+   android_library("features_java") {

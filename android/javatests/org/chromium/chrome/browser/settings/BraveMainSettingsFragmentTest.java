@@ -254,6 +254,14 @@ public class BraveMainSettingsFragmentTest {
                                                 && !p.getKey().equals("pref_vpn_callout"))
                         .count();
 
+        // "closing_all_tabs_closes_brave" moves into the Brave "Tabs and tab groups" settings
+        // screen when kBraveAndroidTabGroupsSettings is enabled, so it is removed from the main
+        // settings screen in that case.
+        int expectedCount =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+                        ? 32
+                        : 33;
+
         assertEquals(
                 "Number of preferences has changed, please check and update preferenceCount"
                     + " expectation here or modify BraveMainPreferencesBase.updateBravePreferences"
@@ -262,7 +270,7 @@ public class BraveMainSettingsFragmentTest {
                         // check
                         + "INDEX_DATA_PROVIDER.updateDynamicPreferences"
                         + " to exclude new from indexing.",
-                33,
+                expectedCount,
                 nonVpnCount);
     }
 
