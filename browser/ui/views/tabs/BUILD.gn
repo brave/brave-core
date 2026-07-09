@@ -61,6 +61,8 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/browser/ui:brave_tab_prefs",
+    "//brave/browser/ui/focus_mode",
+    "//brave/browser/ui/tabs:tabs_public",
     "//brave/common",
     "//brave/components/tabs",
     "//brave/components/vector_icons",

@@ -16,6 +16,7 @@
 #include "base/feature_list.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_service_factory.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
@@ -27,7 +28,6 @@
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_container.h"
 #include "brave/browser/ui/views/tabs/brave_tab_hover_card_controller.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_service.h"
@@ -256,7 +256,9 @@ void BraveTabStrip::AddedToWidget() {
   // When Chromium's upstream vertical tabs feature is active,
   // TabStrip::Initialize() is never called so tab_container_ remains null.
   // Skip UpdateOrientation() to avoid crashing when accessing it.
-  if (!tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface())) {
+  if (auto* vtc =
+          VerticalTabController::FromBrowser(GetBrowserWindowInterface());
+      !vtc || !vtc->SupportsBraveVerticalTabs()) {
     return;
   }
 
@@ -323,7 +325,8 @@ bool BraveTabStrip::ShouldShowPinnedTabsInGrid() const {
 void BraveTabStrip::UpdateOrientation() {
   // Callers must guard against unsupported configurations (e.g. upstream
   // vertical tabs where tab_container_ is null).
-  CHECK(tabs::utils::SupportsBraveVerticalTabs(GetBrowserWindowInterface()));
+  auto* vtc = VerticalTabController::FromBrowser(GetBrowserWindowInterface());
+  CHECK(vtc && vtc->SupportsBraveVerticalTabs());
 
   const bool using_vertical_tabs = ShouldShowVerticalTabs();
   auto* browser = GetBrowserWindowInterface();
@@ -357,7 +360,8 @@ void BraveTabStrip::UpdateOrientation() {
 }
 
 bool BraveTabStrip::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(GetBrowserWindowInterface());
+  auto* vtc = VerticalTabController::FromBrowser(GetBrowserWindowInterface());
+  return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
 
 void BraveTabStrip::OnAlwaysHideCloseButtonPrefChanged() {

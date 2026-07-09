@@ -8,11 +8,15 @@
 #include <algorithm>
 
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
 #include "brave/components/tabs/public/tree_tab_node.h"
 #include "brave/components/tabs/public/tree_tab_node_id.h"
 #include "brave/components/tabs/public/tree_tab_node_tab_collection.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -57,6 +61,24 @@ class MockTabSlotController : public FakeTabSlotController {
               GetTreeTabNode,
               (const tree_tab::TreeTabNodeId& id),
               (const, override));
+};
+
+class MockBrowserWindowInterfaceWithVerticalTabController
+    : public MockBrowserWindowInterface {
+ public:
+  explicit MockBrowserWindowInterfaceWithVerticalTabController(
+      PrefService* prefs) {
+    features_.SetVerticalTabControllerForTesting(
+        std::make_unique<VerticalTabController>(
+            BrowserWindowInterface::TYPE_NORMAL, prefs,
+            &focus_mode_controller_));
+    ON_CALL(*this, GetFeatures()).WillByDefault(testing::ReturnRef(features_));
+  }
+  ~MockBrowserWindowInterfaceWithVerticalTabController() override = default;
+
+ private:
+  FocusModeController focus_mode_controller_;
+  BrowserWindowFeatures features_;
 };
 
 class BraveTabTest : public ChromeViewsTestBase {
@@ -312,7 +334,8 @@ TEST_F(BraveTabTest,
   profile.GetPrefs()->SetBoolean(
       brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed, true);
 
-  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
   EXPECT_CALL(mock_browser_window, GetProfile())
       .WillRepeatedly(testing::Return(&profile));
   EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
@@ -397,7 +420,8 @@ TEST_F(BraveTabTest, IconVisibilityWhenVerticalTabsAnimating) {
   profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
 
   // Set up mock browser window interface
-  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
   // Mock both const and non-const overloads of GetProfile()
   EXPECT_CALL(mock_browser_window, GetProfile())
       .WillRepeatedly(testing::Return(&profile));
@@ -637,7 +661,8 @@ TEST_F(BraveTabTest,
 TEST_F(BraveTabTest, GetAnchorPositionReflectsTabOrientation) {
   TestingProfile profile;
 
-  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
   EXPECT_CALL(mock_browser_window, GetProfile())
       .WillRepeatedly(testing::Return(&profile));
   EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())

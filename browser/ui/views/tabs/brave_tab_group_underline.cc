@@ -7,8 +7,8 @@
 
 #include <algorithm>
 
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_group_header.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
@@ -109,8 +109,9 @@ void BraveTabGroupUnderline::OnPaint(gfx::Canvas* canvas) {
 }
 
 bool BraveTabGroupUnderline::ShouldShowBraveVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(
+  auto* vtc = VerticalTabController::FromBrowser(
       tab_group_views_->GetBrowserWindowInterface());
+  return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
 
 // static

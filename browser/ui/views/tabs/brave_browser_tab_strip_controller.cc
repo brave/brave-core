@@ -11,6 +11,7 @@
 #include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/tabs/tree_tab_model.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
@@ -176,7 +177,8 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
 bool BraveBrowserTabStripController::IsContextMenuCommandChecked(
     TabStripModel::ContextMenuCommand command_id) {
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
-    return tabs::utils::ShouldShowBraveVerticalTabs(browser());
+    return VerticalTabController::FromBrowser(browser())
+        ->ShouldShowBraveVerticalTabs();
   }
 
   return BrowserTabStripController::IsContextMenuCommandChecked(command_id);
@@ -330,7 +332,8 @@ bool BraveBrowserTabStripController::ShouldShowTreeTabs() {
     return false;
   }
 
-  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+  if (!VerticalTabController::FromBrowser(browser())
+           ->ShouldShowBraveVerticalTabs()) {
     return false;
   }
 

@@ -9,6 +9,7 @@
 #include "base/check.h"
 #include "base/dcheck_is_on.h"
 #include "base/logging.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -569,8 +570,9 @@ void BraveVerticalTabStyle::PaintTabAccentIcon(gfx::Canvas* canvas) const {
 }
 
 bool BraveVerticalTabStyle::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(
+  auto* vtc = VerticalTabController::FromBrowser(
       tab()->controller()->GetBrowserWindowInterface());
+  return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
 
 bool BraveVerticalTabStyle::IsSplitTab(const Tab* tab) const {
