@@ -8,6 +8,7 @@
 package org.chromium.chrome.browser.vpn.activities;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Handler;
 import android.util.Pair;
 
@@ -94,6 +95,20 @@ public abstract class BraveVpnParentActivity extends AsyncInitializationActivity
     public void onWindowFocusChanged(boolean hasFocus) {
         super.onWindowFocusChanged(hasFocus);
         if (hasFocus && shouldApplyLandscapeWindowSizing()) {
+            BraveLandscapeHelper.applyLandscapeWindowSizing(this);
+        }
+    }
+
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+        // Activities such as VpnServerSelectionActivity and VpnServerActivity declare
+        // configChanges in the manifest, so an orientation change does not recreate them and does
+        // not trigger onWindowFocusChanged. Without this, the landscape side padding applied by
+        // BraveLandscapeHelper persists after rotating landscape->portrait, squeezing the content
+        // into a narrow column. Re-apply the sizing for the new orientation; the display metrics
+        // are already updated for it by the time performOnConfigurationChanged runs.
+        if (shouldApplyLandscapeWindowSizing()) {
             BraveLandscapeHelper.applyLandscapeWindowSizing(this);
         }
     }
