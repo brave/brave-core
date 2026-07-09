@@ -290,7 +290,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         /* openInAppMenuItemProvider= */ null,
                         /* recentlyClosedEntriesManagerSupplier= */ () ->
                                 mRecentlyClosedEntriesManager,
-                        () -> mSideUiStateProvider);
+                        () -> mSideUiStateProvider,
+                        /* isXrFullSpaceModeSupplier= */ () -> false);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
