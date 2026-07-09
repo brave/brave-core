@@ -84,11 +84,19 @@ class BraveShieldsSettingsService : public KeyedService {
 
   // Returns the underlying farbling token stored for |url|. For containers
   // which runs in an isolated storage an |additional_entropy| is applied on top
-  // to the token. Lastly, an additional |farbling_token_profile_seed_| maybe
+  // to the token. Lastly, an additional |profile_level_farbling_entropy| maybe
   // applied on top again, if brave_shields::features::kBraveFarblingTokenReset
   // is enabled.
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
+
+  // Test only method. |profile_level_farbling_entropy| is set in the
+  // constructor in production.
+  void set_profile_level_farbling_entropy_for_testing(
+      const base::Token profile_level_farbling_entropy) {
+    CHECK_IS_TEST();
+    profile_level_farbling_entropy_ = profile_level_farbling_entropy;
+  }
 
  private:
   const raw_ref<HostContentSettingsMap>
@@ -102,7 +110,7 @@ class BraveShieldsSettingsService : public KeyedService {
   // time upon browser restarts. See
   // https://github.com/brave/brave-browser/issues/56288#issuecomment-4903360116
   // for details.
-  const base::Token farbling_token_profile_seed_;
+  base::Token profile_level_farbling_entropy_;
 };
 
 }  // namespace brave_shields

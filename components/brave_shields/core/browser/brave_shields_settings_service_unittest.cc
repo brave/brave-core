@@ -43,7 +43,12 @@ class BraveShieldsSettingsServiceTest : public testing::Test {
             *GetHostContentSettingsMap(), GetLocalState(), &profile_prefs_);
   }
 
-  void TearDown() override { host_content_settings_map_->ShutdownOnUIThread(); }
+  void TearDown() override {
+    host_content_settings_map_->ShutdownOnUIThread();
+    // Reset the profile token.
+    brave_shields_settings_->set_profile_level_farbling_entropy_for_testing(
+        base::Token());
+  }
 
   TestingPrefServiceSimple* GetLocalState() { return &local_state_; }
   HostContentSettingsMap* GetHostContentSettingsMap() {
@@ -702,9 +707,40 @@ TEST_F(BraveShieldsSettingsServiceTest, FingerprintingAllowed) {
 
 // Farbling token related tests.
 
+class BraveShieldsSettingsFarblingTest
+    : public BraveShieldsSettingsServiceTest,
+      public testing::WithParamInterface<bool> {
+ public:
+  BraveShieldsSettingsFarblingTest() {
+    if (GetParam()) {
+      scoped_feature_list_.InitWithFeatures(
+          {brave_shields::features::kBraveFarblingTokenReset}, {});
+    } else {
+      scoped_feature_list_.InitWithFeatures(
+          {}, {brave_shields::features::kBraveFarblingTokenReset});
+    }
+  }
+
+  bool IsFarblingTokenResetEnabled() const { return GetParam(); }
+
+ private:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    BraveShieldsSettingsFarblingTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param
+                 ? "BraveShieldsSettingsFarblingTest_FarblingTokenResetEnabled"
+                 : "BraveShieldsSettingsFarblingTest_"
+                   "FarblingTokenResetDisabled";
+    });
+
 // Unsupported schemes (chrome://, about:blank, data:, invalid URL) must return
 // the zero token because shields are not active there.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_UnsupportedScheme_ReturnsZeroToken) {
   const base::Token zero;
   EXPECT_EQ(zero, brave_shields_settings()->GetFarblingToken(
@@ -719,7 +755,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 }
 
 // HTTP and HTTPS URLs must produce a non-zero token.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_HttpAndHttps_ReturnNonZeroToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   EXPECT_FALSE(brave_shields_settings()
@@ -732,7 +768,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // Two URLs with the same origin but different paths must share the same token,
 // because the path is stripped when deriving the effective URL.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_SameOrigin_DifferentPaths_SameToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   const auto t1 = brave_shields_settings()->GetFarblingToken(
@@ -745,7 +781,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 // A blob URL whose inner origin is https://example.com must yield the same
 // token as a plain https://example.com URL, because both resolve to the same
 // effective origin (https://example.com/).
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_BlobUrl_SameTokenAsOriginUrl) {
   // Use a random seed (0 = random) to exercise the storage path: the first
   // caller writes a random token keyed under https://example.com/; the second
@@ -764,9 +800,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 // as a plain HTTPS URL for that subdomain (the subdomain itself shares a token
 // with the root via schemeful-site scoping — see
 // FarblingToken_SubdomainAndRoot_ShareToken).
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_BlobSubdomainUrl_SameTokenAsSubdomainUrl) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   const auto sub_token = brave_shields_settings()->GetFarblingToken(
       GURL("https://sub.example.com"), {});
   const auto blob_sub_token = brave_shields_settings()->GetFarblingToken(
@@ -782,9 +821,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 // schemeful site (eTLD+1 + scheme). https://example.com and
 // https://sub.example.com resolve to the same schemeful site, so they always
 // share one token.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_BlobSubdomainUrl_SameTokenAsRootDomain) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   const auto root_token = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), {});
   const auto blob_sub_token = brave_shields_settings()->GetFarblingToken(
@@ -795,9 +837,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 }
 
 // Two completely different origins must get different tokens.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_DifferentOrigins_DifferentTokens) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   const auto t1 = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), {});
   const auto t2 =
@@ -807,9 +852,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // A subdomain and its root domain share the same token as they map to same
 // schemeful site (eTLD+1 + scheme).
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_SubdomainAndRoot_ShareToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   const auto root = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), {});
   const auto sub = brave_shields_settings()->GetFarblingToken(
@@ -820,7 +868,7 @@ TEST_F(BraveShieldsSettingsServiceTest,
 // Calling GetFarblingToken twice for the same URL must return the same token.
 // This verifies that the token is persisted in HostContentSettingsMap and not
 // regenerated on every call.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_IsStableAcrossMultipleCalls) {
   const auto t1 = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), {});
@@ -832,9 +880,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // Providing additional_entropy must produce a token different from the base
 // token for the same URL.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_AdditionalEntropy_ChangesToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   const auto base_token = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), {});
   constexpr std::array<uint8_t, 4> entropy = {0x01, 0x02, 0x03, 0x04};
@@ -845,9 +896,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // Two calls with the same URL and the same additional_entropy must produce the
 // same derived token (the XOR derivation is deterministic given a stable base).
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_SameEntropy_ProducesSameDerivedToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   constexpr std::array<uint8_t, 4> entropy = {0x05, 0x06, 0x07, 0x08};
   const auto t1 = brave_shields_settings()->GetFarblingToken(
       GURL("https://example.com"), entropy);
@@ -858,9 +912,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // Two calls with the same URL but different additional_entropy values must
 // produce different derived tokens.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_DifferentEntropy_ProducesDifferentDerivedTokens) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   constexpr std::array<uint8_t, 4> entropy_a = {0xAA, 0xBB, 0xCC, 0xDD};
   constexpr std::array<uint8_t, 4> entropy_b = {0x11, 0x22, 0x33, 0x44};
   const auto t1 = brave_shields_settings()->GetFarblingToken(
@@ -872,9 +929,12 @@ TEST_F(BraveShieldsSettingsServiceTest,
 
 // The base token (no entropy) is unaffected by what another origin's derived
 // token looks like: each origin owns its own stored base token.
-TEST_F(BraveShieldsSettingsServiceTest,
+TEST_P(BraveShieldsSettingsFarblingTest,
        FarblingToken_PerOrigin_TokensAreIndependent) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
   constexpr std::array<uint8_t, 4> entropy = {0x01, 0x02, 0x03, 0x04};
   const auto derived_a = brave_shields_settings()->GetFarblingToken(
       GURL("https://a.com"), entropy);
@@ -883,4 +943,54 @@ TEST_F(BraveShieldsSettingsServiceTest,
   // Different origins → different base tokens → different derived tokens even
   // with identical entropy.
   EXPECT_NE(derived_a, derived_b);
+}
+
+TEST_P(BraveShieldsSettingsFarblingTest, FarblingToken_ProfileToken_Behaviour) {
+  brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+  const auto derived_a =
+      brave_shields_settings()->GetFarblingToken(GURL("https://a.com"), {});
+
+  // Simulating a different profile.
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 2));
+  const auto derived_a_new =
+      brave_shields_settings()->GetFarblingToken(GURL("https://a.com"), {});
+
+  if (IsFarblingTokenResetEnabled()) {
+    // Different profiles should produce different tokens.
+    EXPECT_NE(derived_a, derived_a_new);
+  } else {
+    EXPECT_EQ(derived_a, derived_a_new);
+  }
+}
+
+TEST_P(BraveShieldsSettingsFarblingTest,
+       FarblingToken_ProfileToken_WithAdditionalEntropy_Behaviour) {
+  brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 1));
+
+  constexpr std::array<uint8_t, 4> entropy = {0x01, 0x02, 0x03, 0x04};
+  const auto derived_a = brave_shields_settings()->GetFarblingToken(
+      GURL("https://a.com"), {entropy});
+
+  // Simulating a different profile.
+  brave_shields_settings()->set_profile_level_farbling_entropy_for_testing(
+      base::Token(0, 2));
+  // Re-using the same entropy here, so as to fix the seed and entropy value to
+  // check profile token changes, affects the farbling token when the feature
+  // flag is enabled. Even though this case is very unlikely i.e 2 differnet
+  // profiles sharing the same additional entropy, we are testing here the core
+  // function so we should be ignorant about that.
+  const auto derived_a_new = brave_shields_settings()->GetFarblingToken(
+      GURL("https://a.com"), {entropy});
+
+  if (IsFarblingTokenResetEnabled()) {
+    // Different profiles should produce different tokens.
+    EXPECT_NE(derived_a, derived_a_new);
+  } else {
+    EXPECT_EQ(derived_a, derived_a_new);
+  }
 }

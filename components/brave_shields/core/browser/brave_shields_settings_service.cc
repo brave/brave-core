@@ -54,6 +54,7 @@ uint64_t PersistentHashU64(base::span<const uint8_t> data) {
          base::PersistentHash(base::byte_span_from_ref(hash));
 }
 
+// IN-TEST
 base::Token CreateStableFarblingTokenForTesting(const GURL& url) {
   const uint32_t high =
       base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
@@ -70,7 +71,7 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
       profile_prefs_(profile_prefs),
-      farbling_token_profile_seed_(base::Token::CreateRandom()) {
+      profile_level_farbling_entropy_(base::Token::CreateRandom()) {
   CHECK(profile_prefs_);
 }
 
@@ -393,13 +394,6 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
       brave_shields::GetShieldsMetadata(&*host_content_settings_map_, url);
   if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
-    // This will ensure that the token is not the same across browser restarts
-    // but still stable for |url| across the same browser session.
-    if (base::FeatureList::IsEnabled(
-            brave_shields::features::kBraveFarblingTokenReset)) {
-      token = base::Token(token.high() ^ farbling_token_profile_seed_.high(),
-                          token.low() ^ farbling_token_profile_seed_.low());
-    }
   }
 
   // If the farbling token is not set or failed to parse, generate a new one.
@@ -407,21 +401,33 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
     if (!g_stable_farbling_tokens_seed) {
       token = base::Token::CreateRandom();
     } else {
-      token = CreateStableFarblingTokenForTesting(url);
+      CHECK_IS_TEST();
+      token = CreateStableFarblingTokenForTesting(url);  // IN-TEST
     }
     shields_metadata.Set("farbling_token", token.ToString());
     SetShieldsMetadata(&*host_content_settings_map_, url,
                        std::move(shields_metadata));
   }
 
-  if (additional_entropy.empty()) {
-    return token;
+  // Apply additional entropy for containers if needed.
+  if (!additional_entropy.empty()) {
+    const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
+    const uint64_t low =
+        token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
+    token = base::Token(high, low);
   }
 
-  const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
-  const uint64_t low =
-      token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
-  return base::Token(high, low);
+  // Apply more entropy for profile bound seesion if needed.
+  if (base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveFarblingTokenReset)) {
+    DCHECK(!profile_level_farbling_entropy_.is_zero());
+    // This will ensure that the token is not the same across browser restarts
+    // but still stable for |url| across the same browser session.
+    token = base::Token(token.high() ^ profile_level_farbling_entropy_.high(),
+                        token.low() ^ profile_level_farbling_entropy_.low());
+  }
+
+  return token;
 }
 
 }  // namespace brave_shields

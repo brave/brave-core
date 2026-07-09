@@ -10,6 +10,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
 #include "chrome/browser/browser_process.h"
@@ -32,11 +33,20 @@ inline constexpr char kNavigatorPluginsFilename[] = "navigator_plugins.txt";
 
 }  // namespace
 
-class BraveFarblingBrowserTest : public InProcessBrowserTest {
+class BraveFarblingBrowserTest : public InProcessBrowserTest,
+                                 public testing::WithParamInterface<bool> {
  public:
   BraveFarblingBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        webcompat::features::kBraveWebcompatExceptionsService);
+    if (GetParam()) {
+      scoped_feature_list_.InitWithFeatures(
+          {webcompat::features::kBraveWebcompatExceptionsService,
+           brave_shields::features::kBraveFarblingTokenReset},
+          {});
+    } else {
+      scoped_feature_list_.InitWithFeatures(
+          {webcompat::features::kBraveWebcompatExceptionsService},
+          {brave_shields::features::kBraveFarblingTokenReset});
+    }
   }
 
   void SetUpOnMainThread() override {
@@ -55,7 +65,20 @@ class BraveFarblingBrowserTest : public InProcessBrowserTest {
     farbling_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
   }
 
+  void TearDownOnMainThread() override {
+    // Reset the profile token.
+    auto* brave_settings_service =
+        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
+        base::Token());
+  }
+
   const GURL& farbling_url() { return farbling_url_; }
+
+  // A convinient function to return the underlying feature flag value to avoid
+  // writing GetParam from within the test body which adds an extra layer of
+  // parsing for readers
+  bool IsFarblingTokenResetEnabled() const { return GetParam(); }
 
   HostContentSettingsMap* content_settings() {
     return HostContentSettingsMapFactory::GetForProfile(browser()->profile());
@@ -75,18 +98,42 @@ class BraveFarblingBrowserTest : public InProcessBrowserTest {
   GURL farbling_url_;
 };
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    BraveFarblingBrowserTest,
+    testing::Bool(),
+    [](const testing::TestParamInfo<bool>& info) {
+      return info.param ? "BraveFarblingBrowserTest_FarblingTokenResetEnabled"
+                        : "BraveFarblingBrowserTest_FarblingTokenResetDisabled";
+    });
+
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
+  // Control the base level token for testing.
   brave_shields::ScopedStableFarblingTokensForTesting
-      scoped_stable_farbling_tokens{1};
+      scoped_random_farbling_tokens{1};
+  // Control the profile level token for testing when feature gets enabled.
+  base::Token profile_token_for_test = base::Token(0, 1);
+  auto* brave_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+  brave_settings_service->set_profile_level_farbling_entropy_for_testing(
+      profile_token_for_test);
+
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
-  EXPECT_EQ(plugins_str,
-            "4cOuf2jw,Microsoft Edge PDF Viewer,Chromium PDF Viewer,PDF "
-            "Viewer,HqVxgvf,Online PDF Viewer,WebKit built-in PDF");
+  if (IsFarblingTokenResetEnabled()) {
+    EXPECT_EQ(
+        plugins_str,
+        "Microsoft Edge PDF Viewer,yhQIMlx3,Online com.adobe.pdf "
+        "plug-in,Chromium PDF Viewer,WebKit built-in PDF,PDF Viewer,FKNGi47");
+  } else {
+    EXPECT_EQ(plugins_str,
+              "4cOuf2jw,Microsoft Edge PDF Viewer,Chromium PDF Viewer,PDF "
+              "Viewer,HqVxgvf,Online PDF Viewer,WebKit built-in PDF");
+  }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
-                       PRE_FarblingTokenIsKeptAfterRestart) {
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
+                       PRE_FarblingTokenBehaviourAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
   EXPECT_NE(plugins_str, "");
@@ -98,8 +145,8 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   base::WriteFile(output_file, result);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
-                       FarblingTokenIsKeptAfterRestart) {
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
+                       FarblingTokenBehaviourAfterRestart) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
   EXPECT_NE(plugins_str, "");
@@ -107,13 +154,17 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   base::ScopedAllowBlockingForTesting allow_blocking;
   base::FilePath temp_dir = browser()->profile()->GetPath();
   base::FilePath input_file = temp_dir.AppendASCII(kNavigatorPluginsFilename);
-  std::string expected;
-  EXPECT_TRUE(base::ReadFileToString(input_file, &expected));
+  std::string previous_value;
+  EXPECT_TRUE(base::ReadFileToString(input_file, &previous_value));
   // Compare the plugins list from the previous launch.
-  EXPECT_EQ(plugins_str, expected);
+  if (IsFarblingTokenResetEnabled()) {
+    EXPECT_NE(plugins_str, previous_value);
+  } else {
+    EXPECT_EQ(plugins_str, previous_value);
+  }
 }
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
                        FarblingTokenIsClearedAfterWebsiteClear) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   const std::string plugins_before_cleanup =
@@ -135,7 +186,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
             plugins_before_cleanup);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest,
                        CheckBetweenNormalAndIncognitoProfile) {
   auto* profile1 = browser()->profile();
   auto* incognito_profile = CreateIncognitoBrowser(profile1)->profile();
@@ -170,7 +221,7 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   EXPECT_NE(farbling_token, farbling_token_incognito);
 }
 
-IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
+IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   auto* profile_1 = browser()->profile();
   ASSERT_TRUE(profile_1);
 
