@@ -12,6 +12,7 @@
 #include "base/check.h"
 #include "base/check_deref.h"
 #include "base/check_op.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
@@ -26,10 +27,14 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
+#include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/vector_icons/vector_icons.h"
+#include "brave/grit/brave_generated_resources.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/defaults.h"
@@ -338,6 +343,8 @@ void BraveToolbarView::Init() {
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
     UpdateComboButtonState();
+
+    CreateWorkspaceButtonIfNeeded();
   }
 
   bookmark_ =
@@ -705,8 +712,11 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
     return;
   }
 
-  vertical_tab_toggle_->SetVisible(
-      tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+  const bool visible = tabs::utils::ShouldShowBraveVerticalTabs(browser_);
+  vertical_tab_toggle_->SetVisible(visible);
+  if (workspaces_button_) {
+    workspaces_button_->SetVisible(visible);
+  }
 }
 
 void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
@@ -747,6 +757,17 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
   }
 
   ReorderChildView(vertical_tab_toggle_, target_idx);
+  if (workspaces_button_) {
+    const auto workspace_idx = GetIndexOf(workspaces_button_);
+    CHECK(workspace_idx.has_value());
+    // ReorderChildView removes the view before inserting, so the post-removal
+    // index of toggle shifts by 1 if workspaces was before it. Compensate so
+    // workspaces always lands immediately after the toggle in the final order.
+    // target_idx is toggle's final position (post-removal insertion index).
+    const size_t x =
+        (*workspace_idx < target_idx) ? target_idx : target_idx + 1;
+    ReorderChildView(workspaces_button_, x);
+  }
 }
 
 void BraveToolbarView::UpdateVerticalTabToggleState() {
@@ -783,6 +804,33 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
   }
 
   region_view->ToggleState();
+}
+
+void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
+  if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    auto toggle_idx = GetIndexOf(vertical_tab_toggle_);
+    CHECK(toggle_idx.has_value());
+    workspaces_button_ =
+        AddChildViewAt(std::make_unique<ToolbarButton>(base::BindRepeating(
+                           &BraveToolbarView::OnWorkspacesButtonPressed,
+                           base::Unretained(this))),
+                       *toggle_idx + 1);
+    workspaces_button_->SetVectorIcon(kLeoSpacesIcon);
+    workspaces_button_->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_TOOLTIP_WORKSPACES_BUTTON));
+    workspaces_button_->GetViewAccessibility().SetName(
+        l10n_util::GetStringUTF16(IDS_ACCNAME_WORKSPACES_BUTTON));
+    workspaces_button_->SetVisible(
+        tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+  }
+}
+
+void BraveToolbarView::OnWorkspacesButtonPressed() {
+  auto* controller =
+      browser_->browser_window_features()->workspaces_bubble_controller();
+  CHECK(controller);
+  controller->ShowBubble(workspaces_button_, browser_->profile());
 }
 
 void BraveToolbarView::UpdateComboButtonState() {
