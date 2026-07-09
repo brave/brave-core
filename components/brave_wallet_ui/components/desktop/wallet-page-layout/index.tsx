@@ -3,21 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
-import { StyledWrapper, StyledContent } from './style'
+import { StyledWrapper } from './style'
 
 export interface Props {
-  maintainWidth?: boolean
   children?: React.ReactNode
 }
 
 export class WalletPageLayout extends React.PureComponent<Props, {}> {
   render() {
-    const { children, maintainWidth } = this.props
-    return (
-      <StyledWrapper maintainWidth={maintainWidth}>
-        <StyledContent maintainWidth={maintainWidth}>{children}</StyledContent>
-      </StyledWrapper>
-    )
+    const { children } = this.props
+    return <StyledWrapper>{children}</StyledWrapper>
   }
 }
 

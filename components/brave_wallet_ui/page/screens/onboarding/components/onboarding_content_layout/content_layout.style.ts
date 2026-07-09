@@ -8,12 +8,15 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
 
 export const StyledWrapper = styled.div`
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
   width: 100%;
-
-  @media (min-width: 768px) {
-    overflow-x: hidden;
-  }
+  height: 100%;
+  padding: 80px 24px 24px 24px;
+  overflow-x: hidden;
+  position: relative;
 `
 
 export const HeaderWrapper = styled.div`
@@ -32,28 +35,15 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  position: relative;
-
   border-radius: ${leo.spacing['2Xl']};
   opacity: 1;
   background: ${leo.color.container.background};
   backdrop-filter: blur(400px);
   width: 100%;
   z-index: 2;
-  margin: 100px auto 50px;
   padding: ${leo.spacing['2Xl']};
-
-  @media (max-width: 767px) {
-    width: 100%;
-    padding-left: 12px;
-    padding-right: 12px;
-    margin: 50px 12px 0 12px;
-  }
-
-  @media (min-width: 768px) {
-    width: 754px;
-    min-height: 652px;
-  }
+  max-width: 812px;
+  min-height: 500px;
 `
 
 export const Content = styled.div<{

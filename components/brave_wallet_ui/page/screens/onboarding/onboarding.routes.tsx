@@ -24,9 +24,6 @@ import {
   WalletPageLayout, //
 } from '../../../components/desktop/wallet-page-layout'
 import {
-  WalletSubViewLayout, //
-} from '../../../components/desktop/wallet-sub-view-layout'
-import {
   ProtectedRoute, //
 } from '../../../components/shared/protected-routing/protected-route'
 import { OnboardingSuccess } from './onboarding_success/onboarding_success'
@@ -44,7 +41,6 @@ export const OnboardingRoutes = () => {
   // redux
   const dispatch = useAppDispatch()
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
-  const isMobile = useSafeUISelector(UISelectors.isMobile)
   const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   // On iOS, when wallet is created (from native onboarding), complete setup and navigate to portfolio
@@ -57,47 +53,45 @@ export const OnboardingRoutes = () => {
 
   // render
   return (
-    <WalletPageLayout maintainWidth={isMobile}>
-      <WalletSubViewLayout noPadding={isMobile}>
-        <Switch>
-          <ProtectedRoute
-            path={WalletRoutes.OnboardingWelcome}
-            requirement={!isWalletCreated}
-            redirectRoute={WalletRoutes.OnboardingComplete}
-          >
-            <OnboardingWelcome />
-          </ProtectedRoute>
+    <WalletPageLayout>
+      <Switch>
+        <ProtectedRoute
+          path={WalletRoutes.OnboardingWelcome}
+          requirement={!isWalletCreated}
+          redirectRoute={WalletRoutes.OnboardingComplete}
+        >
+          <OnboardingWelcome />
+        </ProtectedRoute>
 
-          <Route path={WalletRoutes.OnboardingNewWalletStart}>
-            <OnboardingNewWalletRoutes />
-          </Route>
+        <Route path={WalletRoutes.OnboardingNewWalletStart}>
+          <OnboardingNewWalletRoutes />
+        </Route>
 
-          <Route path={WalletRoutes.OnboardingImportStart}>
-            <OnboardingImportWalletRoutes />
-          </Route>
+        <Route path={WalletRoutes.OnboardingImportStart}>
+          <OnboardingImportWalletRoutes />
+        </Route>
 
-          <Route path={WalletRoutes.OnboardingHardwareWalletStart}>
-            <OnboardingHardwareWalletRoutes />
-          </Route>
+        <Route path={WalletRoutes.OnboardingHardwareWalletStart}>
+          <OnboardingHardwareWalletRoutes />
+        </Route>
 
-          <ProtectedRoute
-            path={WalletRoutes.OnboardingComplete}
-            exact
-            requirement={isWalletCreated}
-            redirectRoute={WalletRoutes.OnboardingWelcome}
-          >
-            <OnboardingSuccess />
-          </ProtectedRoute>
+        <ProtectedRoute
+          path={WalletRoutes.OnboardingComplete}
+          exact
+          requirement={isWalletCreated}
+          redirectRoute={WalletRoutes.OnboardingWelcome}
+        >
+          <OnboardingSuccess />
+        </ProtectedRoute>
 
-          <Redirect
-            to={
-              isWalletCreated
-                ? WalletRoutes.OnboardingComplete
-                : WalletRoutes.OnboardingWelcome
-            }
-          />
-        </Switch>
-      </WalletSubViewLayout>
+        <Redirect
+          to={
+            isWalletCreated
+              ? WalletRoutes.OnboardingComplete
+              : WalletRoutes.OnboardingWelcome
+          }
+        />
+      </Switch>
     </WalletPageLayout>
   )
 }

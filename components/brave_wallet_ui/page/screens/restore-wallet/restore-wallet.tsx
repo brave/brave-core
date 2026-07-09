@@ -35,6 +35,7 @@ import {
   InputColumn,
   FormText,
 } from './restore-wallet.style'
+import { Column } from '../../../components/shared/style'
 
 // hooks
 import { usePasswordStrength } from '../../../common/hooks/use-password-strength'
@@ -181,7 +182,12 @@ export const RestoreWallet = () => {
 
   // render
   return (
-    <>
+    <Column
+      padding='24px'
+      justifyContent='flex-start'
+      alignItems='flex-start'
+      fullWidth
+    >
       <BackButton onSubmit={onBack} />
 
       <StyledWrapper>
@@ -280,7 +286,7 @@ export const RestoreWallet = () => {
           onSubmit={onSubmitRestore}
         />
       </StyledWrapper>
-    </>
+    </Column>
   )
 }
 
