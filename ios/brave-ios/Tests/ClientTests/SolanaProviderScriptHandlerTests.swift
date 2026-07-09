@@ -15,7 +15,7 @@ import XCTest
 
   private func createTestTab() -> some TabState {
     let tab = FakeTabState()
-    tab.wallet = .init(tab: tab)
+    tab.wallet = .init(tab: tab, braveWalletAPI: nil)
     return tab
   }
 
