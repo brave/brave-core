@@ -86,6 +86,8 @@ class BravePrefProvider : public PrefProvider, public Observer {
                            TestShieldsSettingsMigrationFromUnknownSettings);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, EnsureNoWildcardEntries);
   FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest, MigrateFPShieldsSettings);
+  FRIEND_TEST_ALL_PREFIXES(BravePrefProviderTest,
+                           MigrateShieldsJavaScriptToBraveJavaScript);
   void DiscardObsoletePreferences();
   void MigrateShieldsSettings(bool incognito);
   void EnsureNoWildcardEntries(ContentSettingsType content_type);
@@ -101,13 +103,19 @@ class BravePrefProvider : public PrefProvider, public Observer {
   void MigrateShieldsSettingsV1ToV2ForOneType(ContentSettingsType content_type);
   void MigrateShieldsSettingsV2ToV3();
   void MigrateShieldsSettingsV3ToV4(int start_version);
+  void MigrateShieldsSettingsV4ToV5();
   void MigrateFingerprintingSettings();
   void MigrateFingerprintingSetingsToOriginScoped();
   void MigrateCosmeticFilteringSettings();
   void MigrateBraveRemember1PStorageToAutoShred();
   void UpdateCookieRules(ContentSettingsType content_type, bool incognito);
+  void UpdateJavascriptRules(ContentSettingsType content_type, bool incognito);
+  const OriginValueMap* GetBraveEffectiveRules(ContentSettingsType content_type,
+                                               bool off_the_record) const;
   void OnCookieSettingsChanged(ContentSettingsType content_type);
+  void OnJavascriptSettingsChanged(ContentSettingsType content_type);
   void NotifyChanges(const std::vector<std::unique_ptr<Rule>>& rules,
+                     ContentSettingsType content_type,
                      bool incognito);
   bool SetWebsiteSettingInternal(
       const ContentSettingsPattern& primary_pattern,
@@ -122,9 +130,16 @@ class BravePrefProvider : public PrefProvider, public Observer {
                                ContentSettingsType content_type) override;
   void OnCookiePrefsChanged(const std::string& pref);
 
-  std::map<bool /* is_incognito */, OriginValueMap> cookie_rules_;
-  std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
-      brave_cookie_rules_;
+  // Materialized effective rules that Brave exposes for an upstream content
+  // type (COOKIES, JAVASCRIPT, ...), keyed by that content type and then by
+  // incognito. These replace the per-type members so adding another
+  // Shields-derived effective setting does not require another parallel pair.
+  std::map<ContentSettingsType, std::map<bool /* is_incognito */, OriginValueMap>>
+      brave_effective_rules_;
+  std::map<ContentSettingsType,
+           std::map<bool /* is_incognito */,
+                    std::vector<std::unique_ptr<Rule>>>>
+      brave_effective_source_rules_;
   std::map<bool /* is_incognito */, std::vector<std::unique_ptr<Rule>>>
       brave_shield_down_rules_;
 

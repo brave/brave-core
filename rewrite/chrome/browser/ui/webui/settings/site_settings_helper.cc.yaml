@@ -90,7 +90,8 @@ substitutions:
           {ContentSettingsType::BRAVE_WEBCOMPAT_WEB_SOCKETS_POOL, nullptr},
           {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
           {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
-          {ContentSettingsType::BRAVE_PSST, nullptr},\2
+          {ContentSettingsType::BRAVE_PSST, nullptr},
+          {ContentSettingsType::BRAVE_JAVASCRIPT, nullptr},\2
 
   - description:
       'Map "autoplay" group name to AUTOPLAY in

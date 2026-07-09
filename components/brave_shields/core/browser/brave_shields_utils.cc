@@ -778,7 +778,7 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
   map->SetContentSettingCustomScope(
       primary_pattern, ContentSettingsPattern::Wildcard(),
-      ContentSettingsType::JAVASCRIPT,
+      ContentSettingsType::BRAVE_JAVASCRIPT,
       type == ControlType::ALLOW ? CONTENT_SETTING_ALLOW
                                  : CONTENT_SETTING_BLOCK);
   RecordShieldsSettingChanged(local_state);
@@ -786,8 +786,8 @@ void SetNoScriptControlType(HostContentSettingsMap* map,
 
 ControlType GetNoScriptControlType(HostContentSettingsMap* map,
                                    const GURL& url) {
-  ContentSetting setting =
-      map->GetContentSetting(url, GURL(), ContentSettingsType::JAVASCRIPT);
+  ContentSetting setting = map->GetContentSetting(
+      url, GURL(), ContentSettingsType::BRAVE_JAVASCRIPT);
 
   return setting == CONTENT_SETTING_ALLOW ? ControlType::ALLOW
                                           : ControlType::BLOCK;

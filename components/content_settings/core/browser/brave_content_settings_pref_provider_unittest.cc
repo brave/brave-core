@@ -89,6 +89,7 @@ void InitializeAllShieldSettingsInDictionary(
   per_resource_dict->Set(brave_shields::kObsoleteCosmeticFiltering, value);
   per_resource_dict->Set(brave_shields::kFingerprintingV2, value);
   per_resource_dict->Set(brave_shields::kHTTPUpgradableResources, value);
+  per_resource_dict->Set(brave_shields::kJavaScript, value);
   per_resource_dict->Set(brave_shields::kReferrers, value);
   per_resource_dict->Set(brave_shields::kTrackers, value);
 }
@@ -526,17 +527,123 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationVersion) {
                              false /* restore_session */);
 
   // Should have migrated when constructed (with profile).
-  EXPECT_EQ(4, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(5, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Reset and check that migration runs.
   prefs->SetInteger(kBraveShieldsSettingsVersion, 1);
   provider.MigrateShieldsSettings(/*incognito*/ false);
-  EXPECT_EQ(4, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(5, prefs->GetInteger(kBraveShieldsSettingsVersion));
 
   // Test that migration doesn't run for another version.
-  prefs->SetInteger(kBraveShieldsSettingsVersion, 5);
+  prefs->SetInteger(kBraveShieldsSettingsVersion, 6);
   provider.MigrateShieldsSettings(/*incognito*/ false);
-  EXPECT_EQ(5, prefs->GetInteger(kBraveShieldsSettingsVersion));
+  EXPECT_EQ(6, prefs->GetInteger(kBraveShieldsSettingsVersion));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, EffectiveJavaScriptHonorsShieldsState) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  const GURL url("https://brave.com");
+  const auto pattern = ContentSettingsPattern::FromString("*://brave.com/*");
+
+  provider.SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::BRAVE_JAVASCRIPT,
+                             ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, TestUtils::GetContentSetting(
+                                       &provider, url, GURL(),
+                                       ContentSettingsType::JAVASCRIPT, false));
+
+  provider.SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::BRAVE_SHIELDS,
+                             ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+  EXPECT_EQ(
+      CONTENT_SETTING_DEFAULT,
+      TestUtils::GetContentSetting(&provider, url, GURL(),
+                                   ContentSettingsType::JAVASCRIPT, false));
+
+  // Ordinary JAVASCRIPT settings still apply through normal provider priority
+  // when Shields is down.
+  provider.SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::JAVASCRIPT,
+                             ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+  EXPECT_EQ(CONTENT_SETTING_BLOCK, TestUtils::GetContentSetting(
+                                       &provider, url, GURL(),
+                                       ContentSettingsType::JAVASCRIPT, false));
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            TestUtils::GetContentSetting(&provider, url, GURL(),
+                                         ContentSettingsType::BRAVE_JAVASCRIPT,
+                                         false));
+
+  provider.SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::BRAVE_SHIELDS,
+                             ContentSettingToValue(CONTENT_SETTING_ALLOW), {});
+  provider.SetWebsiteSetting(pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::BRAVE_JAVASCRIPT,
+                             ContentSettingToValue(CONTENT_SETTING_ALLOW), {});
+  EXPECT_EQ(CONTENT_SETTING_ALLOW, TestUtils::GetContentSetting(
+                                       &provider, url, GURL(),
+                                       ContentSettingsType::JAVASCRIPT, false));
+
+  provider.ShutdownOnUIThread();
+}
+
+TEST_F(BravePrefProviderTest, MigrateShieldsJavaScriptToBraveJavaScript) {
+  BravePrefProvider provider(
+      testing_profile()->GetPrefs(), false /* incognito */,
+      true /* store_last_modified */, false /* restore_session */);
+
+  const auto shields_pattern =
+      ContentSettingsPattern::FromString("*://brave.com/*");
+  const auto user_pattern =
+      ContentSettingsPattern::FromString("https://user.brave.com/*");
+
+  provider.SetWebsiteSetting(shields_pattern,
+                             ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::JAVASCRIPT,
+                             ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+  provider.SetWebsiteSetting(user_pattern, ContentSettingsPattern::Wildcard(),
+                             ContentSettingsType::JAVASCRIPT,
+                             ContentSettingToValue(CONTENT_SETTING_BLOCK), {});
+
+  testing_profile()->GetPrefs()->SetInteger(kBraveShieldsSettingsVersion, 4);
+  provider.MigrateShieldsSettings(/*incognito*/ false);
+
+  EXPECT_EQ(5, testing_profile()->GetPrefs()->GetInteger(
+                   kBraveShieldsSettingsVersion));
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            TestUtils::GetContentSetting(
+                &provider, GURL("https://brave.com"), GURL(),
+                ContentSettingsType::BRAVE_JAVASCRIPT, false));
+  EXPECT_EQ(
+      CONTENT_SETTING_BLOCK,
+      TestUtils::GetContentSetting(&provider, GURL("https://brave.com"), GURL(),
+                                   ContentSettingsType::JAVASCRIPT, false));
+
+  DirectAccessContentSettings javascript_settings(
+      testing_profile()->GetPrefs(), ContentSettingsType::JAVASCRIPT);
+  DirectAccessContentSettings brave_javascript_settings(
+      testing_profile()->GetPrefs(), ContentSettingsType::BRAVE_JAVASCRIPT);
+  // Patterns are stored under their canonical form; "*://brave.com/*"
+  // canonicalizes to "brave.com".
+  const std::string canonical_shields_pattern = shields_pattern.ToString();
+  EXPECT_TRUE(javascript_settings.GetSettingDirectly(canonical_shields_pattern)
+                  .is_none());
+  EXPECT_EQ(
+      base::Value(CONTENT_SETTING_BLOCK),
+      brave_javascript_settings.GetSettingDirectly(canonical_shields_pattern));
+
+  EXPECT_EQ(CONTENT_SETTING_BLOCK,
+            TestUtils::GetContentSetting(
+                &provider, GURL("https://user.brave.com"), GURL(),
+                ContentSettingsType::JAVASCRIPT, false));
+  EXPECT_EQ(CONTENT_SETTING_DEFAULT,
+            TestUtils::GetContentSetting(
+                &provider, GURL("https://user.brave.com"), GURL(),
+                ContentSettingsType::BRAVE_JAVASCRIPT, false));
 
   provider.ShutdownOnUIThread();
 }
@@ -663,9 +770,11 @@ TEST_F(BravePrefProviderTest, TestShieldsSettingsMigrationFromResourceIDs) {
       CheckMigrationFromResourceIdentifierForDictionary(
           brave_shields_dict, "www.brave.com,*", expected_last_modified,
           expected_brave_com_settings_value);
-    } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED) {
-      // BRAVE_AUTO_SHRED was added after the ResourceIdentifier migration
-      // and never existed in that old format, so we can skip validating it.
+    } else if (content_type == ContentSettingsType::BRAVE_AUTO_SHRED ||
+               content_type == ContentSettingsType::BRAVE_JAVASCRIPT) {
+      // BRAVE_AUTO_SHRED and BRAVE_JAVASCRIPT were added after the
+      // ResourceIdentifier migration and never existed in that old format, so
+      // we can skip validating them.
       EXPECT_TRUE(brave_shields_dict.empty());
     } else {
       // All the other settings we changed them globally and in www.example.com.
