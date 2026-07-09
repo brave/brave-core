@@ -5,8 +5,10 @@
 
 package org.chromium.chrome.browser.settings;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import android.os.Build;
 import android.os.Looper;
 
 import androidx.annotation.Nullable;
@@ -25,6 +27,7 @@ import org.chromium.base.test.util.DoNotBatch;
 import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.browser.appearance.settings.AppearanceSettingsFragment;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.test.ChromeJUnit4ClassRunner;
 
 /** Test for {@link AppearancePreferences}. */
@@ -61,6 +64,7 @@ public class BraveAppearancePreferencesTest {
         final String[] sortedPrefKeys = {
             AppearancePreferences.PREF_NAVIGATION_SECTION,
             AppearanceSettingsFragment.PREF_UI_THEME,
+            BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED,
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
             AppearancePreferences.PREF_ADDRESS_BAR,
@@ -89,6 +93,36 @@ public class BraveAppearancePreferencesTest {
                     pref.getOrder() > prevPref.getOrder());
             prevPref = pref;
         }
+    }
+
+    @Test
+    @SmallTest
+    @DisableFeatures(BraveFeatureList.BRAVE_ANDROID_TAB_GROUPS_SETTINGS)
+    public void testDynamicColorsPreferenceCount() {
+        startSettings();
+
+        int dynamicColorsPreferenceCount = 0;
+        for (int index = 0;
+                index < mAppearancePreferences.getPreferenceScreen().getPreferenceCount();
+                index++) {
+            Preference preference =
+                    mAppearancePreferences.getPreferenceScreen().getPreference(index);
+            if (BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED.equals(
+                    preference.getKey())) {
+                dynamicColorsPreferenceCount++;
+            }
+        }
+
+        // Dynamic colors are only available when the feature is enabled on Android 12 or later.
+        int expectedDynamicColorsPreferenceCount =
+                ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
+                                && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
+                        ? 1
+                        : 0;
+        assertEquals(
+                "Unexpected number of Dynamic Colors preferences in Appearance settings.",
+                expectedDynamicColorsPreferenceCount,
+                dynamicColorsPreferenceCount);
     }
 
     @Test

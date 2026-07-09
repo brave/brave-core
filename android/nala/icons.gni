@@ -163,6 +163,7 @@ nala_icons = [
   "ic_social_brave_outline_favicon_fullheight.xml",
   "ic_social_brave_release_favicon_fullheight_color.xml",
   "ic_theme_dark.xml",
+  "ic_themes.xml",
   "ic_trash.xml",
   "ic_tune.xml",
   "ic_widget_generic.xml",

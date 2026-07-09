@@ -6,12 +6,15 @@
 package org.chromium.chrome.browser.util;
 
 import android.app.Activity;
+import android.os.Build;
 
 import com.google.android.material.color.DynamicColors;
 import com.google.android.material.color.DynamicColorsOptions;
 
 import org.chromium.base.BraveFeatureList;
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.flags.ChromeFeatureMap;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.cached_flags.CachedFlag;
 
 public class BraveDynamicColors {
@@ -24,6 +27,15 @@ public class BraveDynamicColors {
                     ChromeFeatureMap.getInstance(),
                     BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
                     false);
+
+    public static boolean isDynamicColorsAvailable() {
+        return sDynamicColorsEnabled.isEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
+    public static boolean isDynamicColorsUserEnabled() {
+        return ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
+    }
 
     public static void applyToActivityIfAvailable(Activity activity) {
         if (!sDynamicColorsEnabled.isEnabled()) {
