@@ -821,6 +821,12 @@ Brave is unable to recover your settings.
         <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT" desc="Text of the In Product Help message shown for the button to summarize PDF.">
           Get a quick overview of this document and ask questions with Gemini in Brave
         </message>
+        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW" desc="Text of the In Product Help message shown for the button to summarize PDF." translateable="false">
+          Share this document with Gemini in Brave to get a quick overview and ask follow-up questions
+        </message>
+        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW_SCREENREADER" desc="The screenreader text of the In Product Help message shown for the button to summarize PDF." translateable="false" is_accessibility_with_no_ui="true">
+          Click the Summarize button to share this document with Gemini in Brave to get a quick overview and ask follow-up questions
+        </message>
       </if>
       <!-- Download Bubble Items -->
       <message name="IDS_DOWNLOAD_BUBBLE_SUBPAGE_SUMMARY_UNKNOWN_SOURCE" desc="Summary of dangerous warning for a file (like an extension) from an unknown source.">
