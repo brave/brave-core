@@ -1665,6 +1665,22 @@ class LiftPlasterTest(LiftTestCase):
             [FOO_PATCH])
         self.assertEqual(record.plaster_fixed_patches, [])
 
+    def test_continue_with_an_unfixed_plaster_is_reported(self):
+        """Continuing without having fixed the plaster is reported as a
+        regular failure, rather than a raw plaster exception escaping the
+        lift."""
+        self.env.add_plaster_for_foo()
+        self._release_reworking_the_patched_line(
+            f'  {self.RENAMED_SYMBOL} thing;  // upstream rework')
+        self.env.run_lift(f'--to={MAJOR_TARGET}')
+
+        run = self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
+
+        self.assert_failed(
+            run, 'Plaster file has not been fixed and re-applied: '
+            f'{self.env.brave_path(FOO_PLASTER)}',
+            'Unexpected number of matches (0 vs 1)')
+
     def test_continue_with_the_plaster_deleted_but_the_patch_kept(self):
         """Dropping the plaster file means dropping the patch it owns; keeping
         one without the other is refused."""
@@ -2084,19 +2100,6 @@ class LiftRoughEdgesTest(LiftTestCase):
             self.env.git(
                 'show', f'{self.env.commit_for("Conflict-resolved")}:'
                 f'{FOO_PATCH}'))
-
-    def test_continue_with_an_unfixed_plaster_raises(self):
-        """A plaster that still does not apply comes back as a plaster error
-        rather than as a message telling the user what to do about it."""
-        self.env.add_plaster_for_foo()
-        with self.env.upstream_release(MAJOR_TARGET) as upstream:
-            upstream.edit(FOO,
-                          line=PATCHED_LINE,
-                          text='  RenamedThing thing;  // upstream rework')
-        self.env.run_lift(f'--to={MAJOR_TARGET}')
-
-        with self.assertRaises(plaster.PlasterApplyError):
-            self.env.run_lift(f'--to={MAJOR_TARGET}', '--continue')
 
     def test_init_failing_during_a_continuation_is_not_handled(self):
         """The `init` run that closes a continuation is not guarded, so a
