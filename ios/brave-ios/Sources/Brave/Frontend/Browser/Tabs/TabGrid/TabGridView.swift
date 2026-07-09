@@ -399,19 +399,22 @@ struct TabGridView: View {
 
   var moreMenu: some View {
     Menu {
-      Button {
-        destinationSheet = .history
-      } label: {
-        Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
+      ControlGroup {
+        Button {
+          destinationSheet = .history
+        } label: {
+          Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
+        }
+        Button {
+          destinationSheet = .syncedTabs
+        } label: {
+          Label(
+            Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
+            braveSystemImage: "leo.smartphone.laptop"
+          )
+        }
       }
-      Button {
-        destinationSheet = .syncedTabs
-      } label: {
-        Label(
-          Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
-          braveSystemImage: "leo.smartphone.laptop"
-        )
-      }
+      .controlGroupStyle(.menu)
       if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
         Section {
           Button {
@@ -421,8 +424,8 @@ struct TabGridView: View {
           }
         }
       }
-      Section {
-        if !viewModel.tabs.isEmpty {
+      if !viewModel.tabs.isEmpty {
+        Section {
           Button {
             withAnimation {
               editMode = .active
@@ -449,6 +452,7 @@ struct TabGridView: View {
         .padding(4)
     }
     .menuOrder(.fixed)
+    .accessibilityLabel(Strings.TabGrid.moreMenuButtonTitle)
   }
 
   var shredMenu: some View {

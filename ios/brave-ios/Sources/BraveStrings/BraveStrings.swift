@@ -1172,14 +1172,14 @@ extension Strings {
       "tabGrid.viewHistoryAccessibilityLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "View History",
+      value: "History",
       comment: "Accessibility label for a button that when tapped presents the users history & recently closed tabs"
     )
     public static let viewSyncedTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewSyncedTabsAccessibilityLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "View Synced Tabs",
+      value: "Sync",
       comment: "Accessibility label for a button that when tapped presents the users synced tabs"
     )
     public static let regularBrowsingModeAccessibilityLabel = NSLocalizedString(
