@@ -117,14 +117,6 @@ BraveTabContainer::BraveTabContainer(
       brave_tabs::kVerticalTabsEnabled, prefs,
       base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
                           base::Unretained(this)));
-  vertical_tabs_floating_mode_enabled_.Init(
-      brave_tabs::kVerticalTabsFloatingEnabled, prefs,
-      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
-                          base::Unretained(this)));
-  vertical_tabs_collapsed_.Init(
-      brave_tabs::kVerticalTabsCollapsed, prefs,
-      base::BindRepeating(&BraveTabContainer::UpdateLayoutOrientation,
-                          base::Unretained(this)));
   if (base::FeatureList::IsEnabled(tabs::kBraveTreeTab)) {
     tree_tabs_enabled_.Init(
         brave_tabs::kTreeTabsEnabled, prefs,

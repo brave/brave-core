@@ -311,8 +311,6 @@ class BraveTabContainer : public TabContainerImpl,
   raw_ptr<views::ScrollBar> scroll_bar_;
 
   BooleanPrefMember show_vertical_tabs_;
-  BooleanPrefMember vertical_tabs_floating_mode_enabled_;
-  BooleanPrefMember vertical_tabs_collapsed_;
   BooleanPrefMember tree_tabs_enabled_;
   BooleanPrefMember should_show_scroll_bar_;
   BooleanPrefMember scrollable_horizontal_tab_strip_;
