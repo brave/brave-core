@@ -812,14 +812,20 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_PREFS_APPEARANCE" desc="Title of Appearance settings, which allows the user to change display settings. [CHAR-LIMIT=32]">
         Appearance
       </message>
+      <message name="IDS_APPEARANCE_NAVIGATION_SECTION_TITLE" desc="Section heading for navigation settings on the Appearance settings page.">
+        Navigation
+      </message>
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_TITLE" desc="Title for preference that hides or shows Brave Rewards icon.">
         Brave Rewards icon
       </message>
       <message name="IDS_SHOW_BRAVE_REWARDS_ICON_SUMMARY" desc="Summary for preference that hides or shows Brave Rewards icon.">
         Show Brave Rewards icon in address bar
       </message>
-      <message name="IDS_BOTTOM_TOOLBAR_TITLE" desc="Menu item for enabling the bottom navigation toolbar.">
-        Enable bottom navigation toolbar
+      <message name="IDS_BOTTOM_TOOLBAR_TITLE" desc="Title for the bottom navigation toolbar setting.">
+        Bottom navigation toolbar
+      </message>
+      <message name="IDS_BOTTOM_TOOLBAR_SUMMARY" desc="Summary for preference that enables the bottom navigation toolbar.">
+        Show a bottom bar for quick access to home, bookmarks, and search
       </message>
       <message name="IDS_BRAVE_BOTTOM_NAVIGATION_TOOLBAR_DISABLED_SUMMARY" desc="Summary for disabled state of the bottom navigation toolbar.">
         This setting is disabled when the bottom address bar position is selected
@@ -1678,7 +1684,10 @@ Are you sure you want to do this?
         Privacy reports data has been cleared.
       </message>
       <message name="IDS_NIGHT_MODE_ENABLE" desc="Menu item for enabling dark mode for webcontent.">
-        Enable "Night Mode" (Experimental)
+        Night Mode
+      </message>
+      <message name="IDS_NIGHT_MODE_SUMMARY" desc="Summary for Night Mode, which forces web content into dark mode.">
+        Force dark mode for web content
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SEARCH_ACCELERATOR" desc="Content description for the search accelerator button">
         Search
@@ -3614,7 +3623,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <!-- End of Secure DNS Settings -->
     <message name="IDS_ENABLE_MULTI_WINDOWS_TITLE" desc="Title for preference that enables or disables multiple windows.">
-      Enable multiple windows
+      Multiple windows
     </message>
     <message name="IDS_ENABLE_MULTI_WINDOWS_SUMMARY" desc="Summary for preference that enables or disables multiple windows.">
       Open up to 5 windows at a time and move tabs from one window to another

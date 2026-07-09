@@ -59,18 +59,20 @@ public class BraveAppearancePreferencesTest {
         // toolbar is disabled, show_brave_rewards_icon when Rewards is unsupported) are skipped in
         // the comparison when null.
         final String[] sortedPrefKeys = {
+            AppearancePreferences.PREF_NAVIGATION_SECTION,
             AppearanceSettingsFragment.PREF_UI_THEME,
             AppearancePreferences.PREF_BRAVE_CUSTOMIZE_MENU,
             AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT,
-            AppearanceSettingsFragment.PREF_BOOKMARK_BAR,
             AppearancePreferences.PREF_ADDRESS_BAR,
             BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY,
-            AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
-            AppearancePreferences.PREF_ADS_SWITCH,
+            AppearancePreferences.PREF_ENABLE_MULTI_WINDOWS,
+            AppearancePreferences.PREF_GENERAL_SECTION,
             AppearancePreferences.PREF_BRAVE_NIGHT_MODE_ENABLED,
             AppearancePreferences.PREF_BRAVE_DISABLE_SHARING_HUB,
+            AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON,
+            AppearancePreferences.PREF_ADS_SWITCH,
+            AppearanceSettingsFragment.PREF_BOOKMARK_BAR,
             AppearancePreferences.PREF_BRAVE_ENABLE_TAB_GROUPS,
-            AppearancePreferences.PREF_ENABLE_MULTI_WINDOWS,
             AppearancePreferences.PREF_SHOW_UNDO_WHEN_TABS_CLOSED,
         };
 
