@@ -150,6 +150,35 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
 
+    def test_checksum_hashes_raw_bytes_without_newline_normalization(self):
+        # The checksum must be over the file's raw bytes so it matches
+        # build/commands/lib/calculateFileChecksum.js, which apply_patches uses
+        # to validate .patchinfo entries. A text-mode read would fold CRLF into
+        # LF and diverge for files with Windows line endings.
+        temp_file = plaster.PLASTER_FILES_PATH / 'temp_crlf_checksum.txt'
+        content = b'line one\r\nline two\r\n'
+        temp_file.write_bytes(content)
+        try:
+            pair = plaster.PathChecksumPair(temp_file)
+            self.assertEqual(pair.checksum,
+                             hashlib.sha256(content).hexdigest())
+            # An LF-normalized digest (what a text-mode read produced) must not
+            # match, confirming the CRLF bytes are preserved.
+            self.assertNotEqual(
+                pair.checksum,
+                hashlib.sha256(content.replace(b'\r\n', b'\n')).hexdigest())
+        finally:
+            temp_file.unlink()
+
+    def test_checksum_of_empty_file(self):
+        temp_file = plaster.PLASTER_FILES_PATH / 'temp_empty_checksum.txt'
+        temp_file.write_bytes(b'')
+        try:
+            pair = plaster.PathChecksumPair(temp_file)
+            self.assertEqual(pair.checksum, hashlib.sha256(b'').hexdigest())
+        finally:
+            temp_file.unlink()
+
     def test_yaml_plaster_applies(self):
         """A .yaml plaster applies its substitutions and emits patch files."""
         test_file_chromium = Path(

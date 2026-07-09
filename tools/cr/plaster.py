@@ -10,6 +10,7 @@ import argparse
 from dataclasses import dataclass, field
 import hashlib
 import logging
+import mmap
 from pathlib import Path, PurePath
 import json
 import os
@@ -55,13 +56,17 @@ class PathChecksumPair:
         self.checksum = self.calculate_file_checksum()
 
     def calculate_file_checksum(self) -> str | None:
-        """Calculate the SHA-256 checksum of the file's current content."""
+        """Calculate the SHA-256 checksum of the file's raw bytes.
+        """
         if not self.path.exists():
             return None
         checksum_generator = hashlib.sha256()
-        with self.path.open('r', encoding='utf-8') as file:
-            for chunk in iter(lambda: file.read(4096), ""):
-                checksum_generator.update(chunk.encode())
+        with self.path.open('rb') as file:
+            if os.fstat(file.fileno()).st_size == 0:
+                return checksum_generator.hexdigest()
+            with mmap.mmap(file.fileno(), 0,
+                           access=mmap.ACCESS_READ) as mapped:
+                checksum_generator.update(mapped)
         return checksum_generator.hexdigest()
 
     def save_if_changed(self, new_content: str, dry_run: bool = False) -> bool:
