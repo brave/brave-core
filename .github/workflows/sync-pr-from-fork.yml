@@ -15,7 +15,7 @@ permissions:
   pull-requests: write
 
 jobs:
-  sync-and-rebase-pr-from-fork:
+  sync-pr-from-fork:
     runs-on: ubuntu-slim
     steps:
       - name: Checkout repository
