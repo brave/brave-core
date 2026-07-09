@@ -1787,7 +1787,13 @@ class PlasterFile:
                             f'only supported for C++ sources (in {self.path})')
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
-        contents = repository.chromium.read_file(info.source)
+        try:
+            contents = repository.chromium.read_file(info.source)
+        except subprocess.CalledProcessError as e:
+            raise OrphanedPlasterError(
+                f'Failed to read the source targeted by {self.path} from '
+                f'git: {info.source}. The upstream file may have been moved '
+                'or deleted') from e
         errors = []
 
         try:
@@ -1823,6 +1829,14 @@ class PlasterError(Exception):
 
 class PlasterFileNeedsRegen(PlasterError):
     pass
+
+
+class OrphanedPlasterError(PlasterError):
+    """Raised when a plaster's target source cannot be read from git.
+
+    Typically this means the upstream file was moved or deleted, so the plaster
+    now points at a path that no longer exists in HEAD.
+    """
 
 
 class PlasterApplyError(PlasterError):
