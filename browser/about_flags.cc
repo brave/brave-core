@@ -1137,6 +1137,15 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
           FEATURE_VALUE_TYPE(brave_shields::features::kBraveFarbling),         \
       },                                                                       \
       {                                                                        \
+          "brave-farbling-token-reset",                                        \
+          "Enable Brave Farbling token reset",                                 \
+          "Enables resetting of the brave farbling token across browser "      \
+          "restarts.",                                                         \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(                                                  \
+              brave_shields::features::kBraveFarblingTokenReset),              \
+      },                                                                       \
+      {                                                                        \
           "brave-provisional-tld-ephemeral-lifetime",                          \
           "Enable Provisional TLDEphemeralLifetime",                           \
           "Cleanup third party cookies set during redirects",                  \

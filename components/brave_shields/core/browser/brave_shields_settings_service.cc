@@ -54,7 +54,7 @@ uint64_t PersistentHashU64(base::span<const uint8_t> data) {
          base::PersistentHash(base::byte_span_from_ref(hash));
 }
 
-base::Token CreateStableFarblingToken(const GURL& url) {
+base::Token CreateStableFarblingTokenForTesting(const GURL& url) {
   const uint32_t high =
       base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
   const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
@@ -69,7 +69,8 @@ BraveShieldsSettingsService::BraveShieldsSettingsService(
     PrefService* profile_prefs)
     : host_content_settings_map_(host_content_settings_map),
       local_state_(local_state),
-      profile_prefs_(profile_prefs) {
+      profile_prefs_(profile_prefs),
+      farbling_token_profile_seed_(base::Token::CreateRandom()) {
   CHECK(profile_prefs_);
 }
 
@@ -388,9 +389,17 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   }
 
   // Get the farbling token from the Shields metadata.
-  auto shields_metadata = GetShieldsMetadata(&*host_content_settings_map_, url);
+  auto shields_metadata =
+      brave_shields::GetShieldsMetadata(&*host_content_settings_map_, url);
   if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
+    // This will ensure that the token is not the same across browser restarts
+    // but still stable for |url| across the same browser session.
+    if (base::FeatureList::IsEnabled(
+            brave_shields::features::kBraveFarblingTokenReset)) {
+      token = base::Token(token.high() ^ farbling_token_profile_seed_.high(),
+                          token.low() ^ farbling_token_profile_seed_.low());
+    }
   }
 
   // If the farbling token is not set or failed to parse, generate a new one.
@@ -398,7 +407,7 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
     if (!g_stable_farbling_tokens_seed) {
       token = base::Token::CreateRandom();
     } else {
-      token = CreateStableFarblingToken(url);
+      token = CreateStableFarblingTokenForTesting(url);
     }
     shields_metadata.Set("farbling_token", token.ToString());
     SetShieldsMetadata(&*host_content_settings_map_, url,
