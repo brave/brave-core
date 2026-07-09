@@ -4,11 +4,14 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
 source_set("ai_chat") {
   sources = [
+    "ai_chat_movable_side_panel_web_view.cc",
+    "ai_chat_movable_side_panel_web_view.h",
     "ai_chat_side_panel_utils_views.cc",
     "ai_chat_side_panel_web_view.cc",
     "ai_chat_side_panel_web_view.h",
@@ -27,8 +30,16 @@ source_set("ai_chat") {
     "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/web_modal",
+    "//content/public/browser",
+    "//extensions/buildflags",
     "//ui/base",
     "//ui/views",
     "//url",
   ]
+
+  if (enable_extensions_core) {
+    deps += [ "//extensions/browser" ]
+  }
 }

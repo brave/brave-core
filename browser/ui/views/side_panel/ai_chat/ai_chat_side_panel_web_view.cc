@@ -6,7 +6,9 @@
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 
 #include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -57,6 +59,17 @@ std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
     bool is_tab_associated,
     SidePanelEntryScope& scope) {
   CHECK(profile);
+
+  // When enabled, serve AI Chat from a plain WebView that owns its WebContents,
+  // so the live conversation can be moved between a tab and the side panel. The
+  // WebUI-wrapper based view below remains the default and is a true no-op when
+  // the feature is off (it keeps top-chrome preload + content-readiness
+  // gating).
+  if (base::FeatureList::IsEnabled(
+          ai_chat::features::kAIChatMoveFullPageToSidePanel)) {
+    return AIChatMovableSidePanelWebView::CreateView(profile, is_tab_associated,
+                                                     scope);
+  }
 
   auto web_view = std::make_unique<AIChatSidePanelWebView>(
       scope, std::make_unique<WebUIContentsWrapperT<AIChatUI>>(
