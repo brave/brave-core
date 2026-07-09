@@ -27,8 +27,9 @@ declare_args() {
   # Path to the private key that is used to sign browser updates.
   dmg_crx_private_key = ""
 
-  # When true, :package expects the app already in the out dir (e.g. after
-  # manual universalize) and skips //chrome:chrome_app and :universalize.
+  # When true, :package uses per-arch prebuilt app bundles (via :copy_arm64 and
+  # :copy_x64) instead of //chrome:chrome_app, and still runs :universalize.
+  # Skips delta installer deps in create_dist.
   mac_prebuilt_package = false
 }
 
