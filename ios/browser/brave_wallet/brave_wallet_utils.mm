@@ -10,12 +10,23 @@
 
 namespace brave_wallet {
 
-bool IsDefaultEthereumWalletBrave(PrefService* prefs) {
-  mojom::DefaultWallet eth_wallet = GetDefaultEthereumWallet(prefs);
+namespace {
+
+bool IsDefaultBrave(mojom::DefaultWallet wallet) {
   // iOS does not have a separate extension so we consider Brave the default
   // wallet for either state.
-  return eth_wallet == mojom::DefaultWallet::BraveWallet ||
-         eth_wallet == mojom::DefaultWallet::BraveWalletPreferExtension;
+  return wallet == mojom::DefaultWallet::BraveWallet ||
+         wallet == mojom::DefaultWallet::BraveWalletPreferExtension;
+}
+
+}  // namespace
+
+bool IsDefaultEthereumWalletBrave(PrefService* prefs) {
+  return IsDefaultBrave(GetDefaultEthereumWallet(prefs));
+}
+
+bool IsDefaultCardanoWalletBrave(PrefService* prefs) {
+  return IsDefaultBrave(GetDefaultCardanoWallet(prefs));
 }
 
 }  // namespace brave_wallet
