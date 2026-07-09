@@ -81,7 +81,7 @@ class RenderViewContextMenu : public RenderViewContextMenu_Chromium
   void OnNoContainerSelected() override;
   void OnNewTemporaryContainerSelected() override;
   base::flat_set<std::string> GetCurrentContainerIds() override;
-  Browser* GetBrowserToOpenSettings() override;
+  BrowserWindowInterface* GetBrowserToOpenSettings() override;
   float GetScaleFactor() override;
 #endif  // BUILDFLAG(ENABLE_CONTAINERS)
 

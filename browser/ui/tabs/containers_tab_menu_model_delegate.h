@@ -30,7 +30,7 @@ class ContainersTabMenuModelDelegate
 
   base::flat_set<std::string> GetCurrentContainerIds() override;
 
-  Browser* GetBrowserToOpenSettings() override;
+  BrowserWindowInterface* GetBrowserToOpenSettings() override;
 
   float GetScaleFactor() override;
 
