@@ -911,6 +911,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
 
 TEST_F(PolkadotWalletServiceUnitTest,
        SignAndSendTransaction_PaseoAssetHub_AssetId) {
+  // Recycle the same test for:
+  // https://assethub-paseo.subscan.io/extrinsic/0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb
+  // but this time pass an asset id and make sure it populates in the extrinsic
+  // we submit.
+
   keyring_service_->Reset();
   GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
 
@@ -957,7 +962,7 @@ TEST_F(PolkadotWalletServiceUnitTest,
       "00"
       "00"
       "3209"
-      "cad1eb0b"  // Scale-encoded asset id.
+      "cad1eb0b"  // SCALE-encoded asset id.
       "00"
       "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
       "0700c12a9b64";
@@ -995,6 +1000,11 @@ TEST_F(PolkadotWalletServiceUnitTest,
 
 TEST_F(PolkadotWalletServiceUnitTest,
        SignAndSendTransaction_PaseoAssetHub_AssetId_TransferAll) {
+  // Recycle the same test for:
+  // https://assethub-paseo.subscan.io/extrinsic/0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb
+  // but this time pass an asset id and use transfer_all and make sure it
+  // populates in the extrinsic we submit.
+
   keyring_service_->Reset();
   GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
 
