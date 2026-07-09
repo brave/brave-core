@@ -638,7 +638,7 @@ void BravePrefProvider::MigrateBraveRemember1PStorageToAutoShred() {
       prefs_->GetInteger(default_value_info->default_value_pref_name()));
   const auto auto_shread_mode =
       Remember1PStorageValueToAutoShredMode(default_value);
-  // We should migrate only if AutoShreadMode if not default
+  // We should only migrate if AutoShredMode is not the default
   if (auto_shread_mode != brave_shields::mojom::AutoShredMode::NEVER) {
     SetWebsiteSettingInternal(
         ContentSettingsPattern::Wildcard(), ContentSettingsPattern::Wildcard(),
