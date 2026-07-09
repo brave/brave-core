@@ -6,12 +6,14 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 #define BRAVE_COMPONENTS_BRAVE_VPN_BROWSER_V2_BRAVE_VPN_SERVICE_IMPL_H_
 
+#include <cstdint>
 #include <memory>
 #include <optional>
 #include <string>
 
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_vpn/browser/brave_vpn_service.h"
+#include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "build/build_config.h"
 
 class PrefService;
@@ -22,7 +24,9 @@ class PurchasedStateManager;
 
 class BraveVpnServiceImpl : public BraveVpnService {
  public:
-  BraveVpnServiceImpl(PrefService* local_prefs, PrefService* profile_prefs);
+  BraveVpnServiceImpl(PrefService* local_prefs,
+                      PrefService* profile_prefs,
+                      GetSkusServiceCallback skus_service_getter);
   ~BraveVpnServiceImpl() override;
 
   BraveVpnServiceImpl(const BraveVpnServiceImpl&) = delete;
@@ -127,6 +131,7 @@ class BraveVpnServiceImpl : public BraveVpnService {
                                std::optional<std::string> description);
 
   const raw_ref<PrefService> profile_prefs_;
+  std::unique_ptr<SkusServiceClient> skus_client_;
   std::unique_ptr<PurchasedStateManager> purchased_state_manager_;
   [[maybe_unused]] mojom::ConnectionState connection_state_;
 };

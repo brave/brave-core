@@ -29,6 +29,10 @@ class FakeSkusService : public skus::mojom::SkusService {
   // times (resets the previous binding).
   mojo::PendingRemote<skus::mojom::SkusService> MakeRemote();
 
+  // Closes the bound pipe without handing out a new one, simulating the
+  // service disconnecting. A subsequent MakeRemote() rebinds.
+  void CloseConnection();
+
   // Sets the JSON string that CredentialSummary will return.
   void SetCredentialSummaryResponse(const std::string& response);
 

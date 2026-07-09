@@ -17,19 +17,26 @@
 #include "base/logging.h"
 #include "base/notimplemented.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
+#include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
 #include "brave/components/skus/common/skus_sdk.mojom.h"
+#include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_service.h"
+#include "ui/base/l10n/l10n_util.h"
 
 namespace brave_vpn::v2 {
 
 PurchasedStateManager::PurchasedStateManager(
     PrefService* local_prefs,
+    SkusServiceClient* skus_client,
     PurchasedStateChangedCallback callback)
     : local_prefs_(CHECK_DEREF(local_prefs)),
+      skus_client_(CHECK_DEREF(skus_client)),
       purchased_state_changed_callback_(std::move(callback)),
       credential_store_(std::make_unique<CredentialStore>(local_prefs)) {
   CHECK(purchased_state_changed_callback_);
@@ -92,8 +99,9 @@ void PurchasedStateManager::Load(const std::string& domain) {
   // This cancels any in-flight load.
   BeginLoad(request_environment);
 
-  // The SKUS client is not wired up yet, so this is a no-op for now; the
-  // purchased state will remain LOADING and |loading_environment_| kept.
+  // The response arrives at OnCredentialSummary; its handling is not
+  // implemented yet, so until then the load settles via the timeout started in
+  // BeginLoad().
   VLOG(2) << "Requesting credential summary from SKUS";
   RequestCredentialSummary(domain);
 }
@@ -165,26 +173,35 @@ void PurchasedStateManager::CheckInitialState() {
   }
 }
 
-void PurchasedStateManager::BeginLoad(const std::string& env) {
+void PurchasedStateManager::BeginLoad(std::string env) {
   // Cancels any in-flight load: bumping the loading sequence orphans its
   // response callbacks.
   ++loading_sequence_;
-  loading_environment_ = env;
+  loading_environment_ = std::move(env);
   // New resolution cycle: reset the exchange retry flag.
   credential_store_->SetExchangeRetried(false);
+
+  // Start a backstop timer to prevent a load from hanging indefinitely.
+  load_timeout_timer_.Start(
+      FROM_HERE, kLoadTimeout,
+      base::BindOnce(&PurchasedStateManager::OnLoadTimeout,
+                     base::Unretained(this)));
 
   // Only a load for the current environment is visible; a load for a different
   // environment runs silently and commits nothing until it obtains a valid SKUS
   // credential for that environment.
-  if (env == GetCurrentEnvironment()) {
-    SetPurchasedState(env, mojom::PurchasedState::LOADING);
+  if (loading_environment_ == GetCurrentEnvironment()) {
+    SetPurchasedState(loading_environment_, mojom::PurchasedState::LOADING);
   }
 }
 
-void PurchasedStateManager::FinishLoad(const std::string& env,
+void PurchasedStateManager::FinishLoad(std::string env,
                                        mojom::PurchasedState state,
                                        std::optional<std::string> description) {
+  // A terminal outcome invalidates any response still in flight for this load.
+  ++loading_sequence_;
   loading_environment_.clear();
+  load_timeout_timer_.Stop();
   SetPurchasedState(env, state, std::move(description));
 
   // A silent (non-current-environment) load ended without committing. If it
@@ -202,13 +219,26 @@ void PurchasedStateManager::CancelPendingLoad() {
   if (!loading_environment_.empty()) {
     ++loading_sequence_;
     loading_environment_.clear();
+    load_timeout_timer_.Stop();
   }
+}
+
+void PurchasedStateManager::OnLoadTimeout() {
+  DCHECK(!loading_environment_.empty());
+  VLOG(1) << "Purchased state load timed out for environment "
+          << loading_environment_;
+  FinishLoad(loading_environment_, mojom::PurchasedState::FAILED,
+             l10n_util::GetStringUTF8(
+                 IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
 }
 
 void PurchasedStateManager::RequestCredentialSummary(
     const std::string& domain) {
   // Call SKUS to get a credential summary for the domain.
-  NOTIMPLEMENTED();
+  skus_client_->GetCredentialSummary(
+      domain,
+      base::BindOnce(&PurchasedStateManager::OnCredentialSummary,
+                     weak_factory_.GetWeakPtr(), loading_sequence_, domain));
 }
 
 void PurchasedStateManager::OnCredentialSummary(
@@ -224,11 +254,12 @@ void PurchasedStateManager::OnCredentialSummary(
     return;
   }
 
-  // NOTE: when implemented, every terminal outcome must route through
-  // FinishLoad() so |loading_environment_| is released and a stranded visible
-  // LOADING is reloaded. It must also explicitly Clear() the credential store
-  // if the outcome is non-purchased, so that stale credentials won't resurrect
-  // via CheckInitialState on next launch.
+  // NOTE: when implemented, (1) every terminal outcome must go through
+  // FinishLoad(); (2) non-purchased outcomes must Clear() the credential
+  // store, or stale credentials resurrect via CheckInitialState() on next
+  // launch; (3) transport errors (the synthesized disconnect result) settle
+  // as FAILED with no immediate Reload() - that would retry-storm a dead
+  // service.
   NOTIMPLEMENTED();
 }
 

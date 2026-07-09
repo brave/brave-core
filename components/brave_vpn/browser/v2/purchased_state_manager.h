@@ -14,6 +14,8 @@
 #include "base/functional/callback.h"
 #include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
+#include "base/time/time.h"
+#include "base/timer/timer.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/skus/common/skus_sdk.mojom-forward.h"
 
@@ -22,6 +24,7 @@ class PrefService;
 namespace brave_vpn::v2 {
 
 class CredentialStore;
+class SkusServiceClient;
 
 // PurchasedStateManager owns the purchased-state value and the current
 // environment, and runs the credential chain that produces that state.
@@ -42,13 +45,21 @@ class CredentialStore;
 //  4. A silent load that terminates without committing will not strand the
 //  visible state: if it was left unsettled (LOADING), the current environment
 //  is reloaded.
+//  5. Every load terminates. SkusServiceClient guarantees each response
+//  callback runs exactly once (a dropped pipe synthesizes an error), and as a
+//  backstop against a hung service - live pipe, no response - a load that has
+//  not reached a terminal outcome within a timeout is finished as FAILED.
 class PurchasedStateManager final {
  public:
   using PurchasedStateChangedCallback =
       base::RepeatingCallback<void(mojom::PurchasedState,
                                    std::optional<std::string>)>;
 
+  // Backstop for a load whose request never resolves.
+  static constexpr base::TimeDelta kLoadTimeout = base::Seconds(30);
+
   PurchasedStateManager(PrefService* local_prefs,
+                        SkusServiceClient* skus_client,
                         PurchasedStateChangedCallback callback);
   ~PurchasedStateManager();
 
@@ -70,11 +81,12 @@ class PurchasedStateManager final {
 
   void CheckInitialState();
 
-  void BeginLoad(const std::string& env);
-  void FinishLoad(const std::string& env,
+  void BeginLoad(std::string env);
+  void FinishLoad(std::string env,
                   mojom::PurchasedState state,
                   std::optional<std::string> description);
   void CancelPendingLoad();
+  void OnLoadTimeout();
 
   void RequestCredentialSummary(const std::string& domain);
   void OnCredentialSummary(uint64_t sequence,
@@ -85,11 +97,13 @@ class PurchasedStateManager final {
   void ScheduleSubscriberCredentialRefresh();
 
   const raw_ref<PrefService> local_prefs_;
+  const raw_ref<SkusServiceClient> skus_client_;
   PurchasedStateChangedCallback purchased_state_changed_callback_;
   std::unique_ptr<CredentialStore> credential_store_;
   std::optional<mojom::PurchasedInfo> purchased_state_;
   std::string loading_environment_;
   uint64_t loading_sequence_ = 0;
+  base::OneShotTimer load_timeout_timer_;
   base::WeakPtrFactory<PurchasedStateManager> weak_factory_{this};
 };
 
