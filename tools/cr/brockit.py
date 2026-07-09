@@ -328,7 +328,7 @@ from gh_cli import GhCli
 from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
-from plaster import PlasterFile, PlasterFileNeedsRegen
+from plaster import PlasterError, PlasterFile
 import rebase
 from rebase import DROP_COMMIT_MSG_PREFIX, REASSIGN_COMMIT_MSG_PREFIX
 import repository
@@ -537,10 +537,10 @@ class ApplyPatchesRecord:
             if patchfile.plaster.exists():
                 try:
                     PlasterFile(patchfile.plaster).apply(dry_run=True)
-                except PlasterFileNeedsRegen as e:
+                except PlasterError as e:
                     raise InvalidInputException(
                         'Plaster file has not been fixed and re-applied: '
-                        f'{patchfile.plaster}') from e
+                        f'{patchfile.plaster}\n{e}') from e
             else:
                 if (repository.brave.root / patchfile.path).exists():
                     raise InvalidInputException(
