@@ -723,6 +723,80 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeaders) {
   testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
 }
 
+TEST_F(ConversationAPIClientUnitTest, PerformRequest_PremiumHeadersWithOrderId) {
+  // When the fetched premium credential carries a known order id, it should
+  // be appended to the Cookie header as a second "id" pair.
+  std::string expected_credential = "test-premium-credential";
+  std::string expected_order_id = "test-order-id";
+  auto [messages, expected_messages_json] =
+      GetMockMessagesAndExpectedMessagesJson();
+  std::string expected_system_language = "en_KY";
+  const brave_l10n::test::ScopedDefaultLocale scoped_default_locale(
+      expected_system_language);
+
+  MockAPIRequestHelper* mock_request_helper =
+      client_->GetMockAPIRequestHelper();
+  testing::StrictMock<MockCallbacks> mock_callbacks;
+  base::RunLoop run_loop;
+
+  // Intercept credential fetch and provide premium credentials with a known
+  // order id.
+  credential_ = CredentialCacheEntry{expected_credential,
+                                     base::Time::Now() + base::Hours(1),
+                                     expected_order_id};
+
+  EXPECT_CALL(*mock_request_helper, RequestSSE(_, _, _, _, _, _, _, _))
+      .WillOnce([&](const std::string& method, const GURL& url,
+                    const std::string& body, const std::string& content_type,
+                    DataReceivedCallback data_received_callback,
+                    ResultCallback result_callback,
+                    const base::flat_map<std::string, std::string>& headers,
+                    const api_request_helper::APIRequestOptions& options) {
+        // Verify premium Cookie header includes both the credential and the
+        // order id.
+        EXPECT_TRUE(headers.contains("Cookie"));
+        const auto& cookie = headers.at("Cookie");
+        EXPECT_EQ(cookie, "__Secure-sku#brave-leo-premium=" +
+                              expected_credential + "; id=" +
+                              expected_order_id);
+
+        // Simulate completion
+        auto completion_dict = base::test::ParseJsonDict(R"({
+          "model": "chat-claude-sonnet",
+          "choices": [{
+            "message": {"content": "premium response"}
+          }]
+        })");
+        std::move(result_callback)
+            .Run(api_request_helper::APIRequestResult(
+                200, base::Value(std::move(completion_dict)), {}, net::OK,
+                GURL()));
+
+        run_loop.Quit();
+        return Ticket();
+      });
+
+  EXPECT_CALL(mock_callbacks, OnCompleted(_))
+      .WillOnce([&](EngineConsumer::GenerationResult result) {
+        ASSERT_TRUE(result.has_value());
+      });
+
+  // Begin request
+  client_->PerformRequest(
+      std::move(messages), std::nullopt,
+      /* oai_tool_definitions */ std::nullopt, /* preferred_tool_name */
+      {mojom::ConversationCapability::CHAT},
+      base::BindRepeating(&MockCallbacks::OnDataReceived,
+                          base::Unretained(&mock_callbacks)),
+      base::BindOnce(&MockCallbacks::OnCompleted,
+                     base::Unretained(&mock_callbacks)));
+
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(client_.get());
+  testing::Mock::VerifyAndClearExpectations(mock_request_helper);
+  testing::Mock::VerifyAndClearExpectations(credential_manager_.get());
+}
+
 TEST_F(ConversationAPIClientUnitTest, PerformRequest_NonPremium) {
   // Performs the same test as Premium, verifying that nothing else changes
   // apart from request headers (and request url).

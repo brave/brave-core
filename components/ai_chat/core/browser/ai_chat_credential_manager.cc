@@ -152,6 +152,15 @@ void AIChatCredentialManager::OnCredentialSummary(
     return;
   }
 
+  // Persist the order id separately from the rest of the summary so it can
+  // be attached to premium requests even when a cached credential is reused
+  // without re-fetching the credential summary.
+  if (const auto* order_dict = records->FindDict("order")) {
+    if (const std::string* order_id = order_dict->FindString("id")) {
+      prefs_service_->SetString(prefs::kBraveChatPremiumOrderId, *order_id);
+    }
+  }
+
   premium_info->remaining_credential_count +=
       records->FindInt("remaining_credential_count").value_or(0);
   const std::string* next_active_at = records->FindString("next_active_at");
@@ -226,6 +235,7 @@ void AIChatCredentialManager::FetchPremiumCredential(
 
   // Use credential from the cache if it existed.
   if (found_valid_credential) {
+    valid_credential.order_id = GetCachedOrderId();
     std::move(callback).Run(valid_credential);
     return;
   }
@@ -306,6 +316,7 @@ void AIChatCredentialManager::OnPrepareCredentialsPresentation(
   CredentialCacheEntry entry;
   entry.credential = credential;
   entry.expires_at = time;
+  entry.order_id = GetCachedOrderId();
   std::move(callback).Run(entry);
 }
 
@@ -379,6 +390,18 @@ void AIChatCredentialManager::RefreshOrder(
   skus_service_->RefreshOrder(leo_sku_domain, order_id, std::move(callback));
 }
 #endif
+
+std::optional<std::string> AIChatCredentialManager::GetCachedOrderId() const {
+  if (!prefs_service_) {
+    return std::nullopt;
+  }
+  const std::string& order_id =
+      prefs_service_->GetString(prefs::kBraveChatPremiumOrderId);
+  if (order_id.empty()) {
+    return std::nullopt;
+  }
+  return order_id;
+}
 
 bool AIChatCredentialManager::EnsureMojoConnected() {
   // Bind if not bound yet

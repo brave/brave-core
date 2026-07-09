@@ -32,6 +32,7 @@ namespace ai_chat {
 struct CredentialCacheEntry {
   std::string credential;
   base::Time expires_at;
+  std::optional<std::string> order_id;
 };
 
 // Interfaces with the SKUs SDK to provide APIs to check and fetch Leo
@@ -73,6 +74,8 @@ class AIChatCredentialManager {
   bool EnsureMojoConnected();
 
   void OnMojoConnectionError();
+
+  std::optional<std::string> GetCachedOrderId() const;
 
   void OnCredentialSummary(mojom::Service::GetPremiumStatusCallback callback,
                            const std::string& domain,

@@ -254,8 +254,12 @@ base::flat_map<std::string, std::string> GetBraveHeaders(
     std::optional<CredentialCacheEntry> credential) {
   base::flat_map<std::string, std::string> headers;
   if (credential) {
-    headers.emplace("Cookie", base::StrCat({"__Secure-sku#brave-leo-premium=",
-                                            credential->credential}));
+    std::string cookie = base::StrCat(
+        {"__Secure-sku#brave-leo-premium=", credential->credential});
+    if (credential->order_id && !credential->order_id->empty()) {
+      base::StrAppend(&cookie, {"; id=", *credential->order_id});
+    }
+    headers.emplace("Cookie", std::move(cookie));
   }
   headers.emplace("x-brave-key", BUILDFLAG(BRAVE_SERVICES_KEY));
   return headers;

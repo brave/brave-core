@@ -426,4 +426,58 @@ TEST_F(AIChatCredentialManagerUnitTest, FetchPremiumCredential) {
   EXPECT_EQ(cached_creds_list4.size(), 0u);
 }
 
+TEST_F(AIChatCredentialManagerUnitTest, GetPremiumStatusPersistsOrderId) {
+  EXPECT_TRUE(prefs()->GetString(prefs::kBraveChatPremiumOrderId).empty());
+
+  base::Time start_time = base::Time::Now();
+  base::Time::Exploded exploded;
+  start_time.UTCExplode(&exploded);
+  exploded.millisecond = 0;  // Trim off milliseconds because they are not
+                             // included in the skusState.
+  ASSERT_TRUE(base::Time::FromUTCExploded(exploded, &start_time));
+  SetSkusState(formatSkusStateValue(start_time));
+
+  base::RunLoop run_loop;
+  ai_chat_credential_manager_->GetPremiumStatus(base::BindLambdaForTesting(
+      [&](mojom::PremiumStatus status, mojom::PremiumInfoPtr info) {
+        EXPECT_EQ(status, mojom::PremiumStatus::Active);
+        run_loop.Quit();
+      }));
+  run_loop.Run();
+
+  EXPECT_EQ(prefs()->GetString(prefs::kBraveChatPremiumOrderId),
+           "e24787ab-7bc3-46b9-bc05-65befb361111");
+}
+
+TEST_F(AIChatCredentialManagerUnitTest,
+      FetchPremiumCredentialAttachesKnownOrderId) {
+  CredentialCacheEntry entry;
+  entry.credential = "credential";
+  entry.expires_at = base::Time::Now() + base::Hours(1);
+
+  ai_chat_credential_manager_->PutCredentialInCache(entry);
+  base::RunLoop run_loop1;
+  ai_chat_credential_manager_->FetchPremiumCredential(
+      base::BindLambdaForTesting(
+          [&](std::optional<CredentialCacheEntry> credential) {
+            ASSERT_TRUE(credential);
+            EXPECT_FALSE(credential->order_id.has_value());
+            run_loop1.Quit();
+          }));
+  run_loop1.Run();
+
+  prefs()->SetString(prefs::kBraveChatPremiumOrderId, "test-order-id");
+  ai_chat_credential_manager_->PutCredentialInCache(entry);
+  base::RunLoop run_loop2;
+  ai_chat_credential_manager_->FetchPremiumCredential(
+      base::BindLambdaForTesting(
+          [&](std::optional<CredentialCacheEntry> credential) {
+            ASSERT_TRUE(credential);
+            ASSERT_TRUE(credential->order_id.has_value());
+            EXPECT_EQ(*credential->order_id, "test-order-id");
+            run_loop2.Quit();
+          }));
+  run_loop2.Run();
+}
+
 }  // namespace ai_chat

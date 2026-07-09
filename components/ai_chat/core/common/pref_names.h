@@ -43,6 +43,8 @@ inline constexpr char kBraveChatP3ASkillsUsedStorage[] =
 // SKU SDK but were not used because the chat server was unavailable.
 inline constexpr char kBraveChatPremiumCredentialCache[] =
     "brave.ai_chat.premium_credential_cache";
+inline constexpr char kBraveChatPremiumOrderId[] =
+    "brave.ai_chat.premium_order_id";
 // Per-model OHTTP key config cache. Dict keyed by model name.
 inline constexpr char kAIChatObliviousHttpKeyConfigs[] =
     "brave.ai_chat.oblivious_http_key_configs";

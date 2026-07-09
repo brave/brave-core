@@ -54,7 +54,8 @@ EngineConsumer::GenerationDataCallback BindParseRewriteReceivedData(
 GURL GetEndpointUrl(bool premium, const std::string& path);
 
 // Builds the standard Brave AI Chat relay request headers: the Leo premium SKU
-// Cookie header (when |credential| is provided) and the x-brave-key header.
+// Cookie header (when |credential| is provided, including the order id as an
+// "id" cookie pair when known) and the x-brave-key header.
 base::flat_map<std::string, std::string> GetBraveHeaders(
     std::optional<CredentialCacheEntry> credential);
 

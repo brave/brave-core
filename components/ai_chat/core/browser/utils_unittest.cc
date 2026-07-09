@@ -5,8 +5,11 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 
+#include <optional>
 #include <string_view>
 
+#include "base/time/time.h"
+#include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -27,6 +30,49 @@ TEST_F(AIChatUtilsUnitTest, IsBraveSearchSERP) {
   EXPECT_FALSE(IsBraveSearchSERP(GURL("http://search.brave.com/search?q=foo")));
   // Wrong host.
   EXPECT_FALSE(IsBraveSearchSERP(GURL("https://brave.com/search?q=foo")));
+}
+
+TEST_F(AIChatUtilsUnitTest, GetBraveHeadersNoCredential) {
+  auto headers = GetBraveHeaders(std::nullopt);
+  EXPECT_FALSE(headers.contains("Cookie"));
+  EXPECT_TRUE(headers.contains("x-brave-key"));
+}
+
+TEST_F(AIChatUtilsUnitTest, GetBraveHeadersWithCredentialNoOrderId) {
+  CredentialCacheEntry credential;
+  credential.credential = "test-credential";
+  credential.expires_at = base::Time::Now() + base::Hours(1);
+
+  auto headers = GetBraveHeaders(credential);
+  ASSERT_TRUE(headers.contains("Cookie"));
+  EXPECT_EQ(headers.at("Cookie"),
+           "__Secure-sku#brave-leo-premium=test-credential");
+  EXPECT_TRUE(headers.contains("x-brave-key"));
+}
+
+TEST_F(AIChatUtilsUnitTest, GetBraveHeadersWithCredentialAndOrderId) {
+  CredentialCacheEntry credential;
+  credential.credential = "test-credential";
+  credential.expires_at = base::Time::Now() + base::Hours(1);
+  credential.order_id = "test-order-id";
+
+  auto headers = GetBraveHeaders(credential);
+  ASSERT_TRUE(headers.contains("Cookie"));
+  EXPECT_EQ(
+      headers.at("Cookie"),
+      "__Secure-sku#brave-leo-premium=test-credential; id=test-order-id");
+}
+
+TEST_F(AIChatUtilsUnitTest, GetBraveHeadersWithEmptyOrderIdOmitsIdPair) {
+  CredentialCacheEntry credential;
+  credential.credential = "test-credential";
+  credential.expires_at = base::Time::Now() + base::Hours(1);
+  credential.order_id = "";
+
+  auto headers = GetBraveHeaders(credential);
+  ASSERT_TRUE(headers.contains("Cookie"));
+  EXPECT_EQ(headers.at("Cookie"),
+           "__Secure-sku#brave-leo-premium=test-credential");
 }
 
 }  // namespace ai_chat

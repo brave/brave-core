@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/common/pref_names.h"
 
+#include <string>
 #include <string_view>
 
 #include "base/time/time.h"
@@ -63,6 +64,8 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
 void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   // Added 11/2023
   registry->RegisterDictionaryPref(kBraveChatPremiumCredentialCache);
+  // Added 07/2026
+  registry->RegisterStringPref(kBraveChatPremiumOrderId, std::string());
 }
 
 }  // namespace ai_chat::prefs
