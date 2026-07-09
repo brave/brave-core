@@ -9,7 +9,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/scoped_observation.h"
-#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile_attributes_storage.h"
@@ -33,8 +32,7 @@ class ToolbarButton;
 class WalletButton;
 
 class BraveToolbarView : public ToolbarView,
-                         public ProfileAttributesStorage::Observer,
-                         public FocusModeController::Observer {
+                         public ProfileAttributesStorage::Observer {
   METADATA_HEADER(BraveToolbarView, ToolbarView)
  public:
   class LayoutGuard;
@@ -86,14 +84,12 @@ class BraveToolbarView : public ToolbarView,
   void OnVerticalTabTogglePressed();
   void OnCompactModePrefChanged();
   void UpdateComboButtonState();
+  bool IsFocusModeOverlayActive() const;
 
   // ProfileAttributesStorage::Observer:
   void OnProfileAdded(const base::FilePath& profile_path) override;
   void OnProfileWasRemoved(const base::FilePath& profile_path,
                            const std::u16string& profile_name) override;
-
-  // FocusModeController::Observer:
-  void OnFocusModeToggled(bool enabled) override;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   void UpdateAIChatButtonVisibility();
@@ -150,8 +146,6 @@ class BraveToolbarView : public ToolbarView,
   base::ScopedObservation<ProfileAttributesStorage,
                           ProfileAttributesStorage::Observer>
       profile_observer_{this};
-  base::ScopedObservation<FocusModeController, FocusModeController::Observer>
-      focus_mode_observation_{this};
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TOOLBAR_BRAVE_TOOLBAR_VIEW_H_

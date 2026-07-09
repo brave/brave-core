@@ -10,12 +10,16 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_features.h"
+#include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/browser_widget.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
@@ -23,14 +27,17 @@
 #include "chrome/test/base/chrome_test_utils.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/prefs/pref_service.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/embedded_test_server.h"
+#include "ui/gfx/geometry/insets.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/scoped_animation_duration_scale_mode.h"
+#include "ui/views/border.h"
 #include "ui/views/focus/focus_manager.h"
 #include "ui/views/view.h"
 #include "url/gurl.h"
@@ -261,6 +268,55 @@ IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
   ASSERT_TRUE(active_web_contents()->GetLastCommittedURL().SchemeIsBlob());
   EXPECT_TRUE(WaitForOverlayActive(false));
   EXPECT_EQ(top_container->parent(), browser_view());
+}
+
+IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,
+                       ToolbarBorderTracksOverlayActivation) {
+  // The caption-button border only applies with vertical tabs enabled and the
+  // window title hidden.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowTitleOnWindow, false);
+
+  auto* overlay = browser_view()->focus_mode_top_overlay();
+  ASSERT_TRUE(overlay);
+  auto* toolbar = browser_view()->toolbar();
+  ASSERT_TRUE(toolbar);
+
+  // Reads the toolbar's border insets, treating a null border (left when the
+  // insets would be zero) as empty. This keeps the assertions meaningful even
+  // where the frame reports zero-width caption exclusions.
+  auto border_insets = [toolbar]() {
+    const auto* border = toolbar->GetBorder();
+    return border ? border->GetInsets() : gfx::Insets();
+  };
+
+  focus_mode_controller()->SetEnabled(true);
+
+  // Secure page: the overlay hosts the top container, which upstream lays out
+  // with caption exclusions applied, so no border is set here.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  EXPECT_FALSE(toolbar->GetBorder());
+
+  // Suppressed (insecure page): the top container returns to the browser view
+  // and shares its row with the caption buttons, so the border is applied.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(),
+      embedded_test_server()->GetURL("insecure.test", "/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(false));
+  const auto [expected_left, expected_right] =
+      tabs::utils::GetLeadingTrailingCaptionButtonWidth(
+          browser_view()->browser_widget());
+  EXPECT_EQ(border_insets().left(), expected_left);
+  EXPECT_EQ(border_insets().right(), expected_right);
+
+  // Returning to a secure page re-activates the overlay and clears the border.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), https_server_.GetURL("/empty.html")));
+  ASSERT_TRUE(WaitForOverlayActive(true));
+  EXPECT_FALSE(toolbar->GetBorder());
 }
 
 IN_PROC_BROWSER_TEST_F(FocusModeTopOverlayBrowserTest,

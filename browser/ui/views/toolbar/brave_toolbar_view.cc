@@ -16,10 +16,10 @@
 #include "base/i18n/rtl.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
-#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
+#include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/location_bar/brave_location_bar_view.h"
@@ -231,10 +231,6 @@ void BraveToolbarView::Init() {
   if (IsAvatarButtonHideable(profile)) {
     profile_observer_.Observe(
         &g_browser_process->profile_manager()->GetProfileAttributesStorage());
-  }
-
-  if (auto* controller = browser_->GetFeatures().focus_mode_controller()) {
-    focus_mode_observation_.Observe(controller);
   }
 
   // track changes in bookmarks enabled setting
@@ -502,10 +498,6 @@ void BraveToolbarView::OnProfileWasRemoved(const base::FilePath& profile_path,
   Update(nullptr);
 }
 
-void BraveToolbarView::OnFocusModeToggled(bool enabled) {
-  UpdateHorizontalPadding();
-}
-
 void BraveToolbarView::LoadImages() {
   ToolbarView::LoadImages();
   if (bookmark_) {
@@ -552,9 +544,15 @@ void BraveToolbarView::UpdateHorizontalPadding() {
     return;
   }
 
+  // In vertical tabs mode the toolbar rises into the row occupied by the OS
+  // caption buttons, so a border insets the toolbar's contents by the caption
+  // button widths. The border is not needed when the vertical tabs title bar is
+  // shown, or when the top container is hosted in the Focus Mode top overlay.
+  // In the latter case, upstream's "top container reparented" layout branch
+  // takes care of the insets.
   if (!tabs::utils::ShouldShowBraveVerticalTabs(browser()) ||
       tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()) ||
-      IsFocusModeEnabled(browser())) {
+      IsFocusModeOverlayActive()) {
     SetBorder(nullptr);
     return;
   }
@@ -793,6 +791,15 @@ void BraveToolbarView::UpdateComboButtonState() {
   }
 
   combo_button_->SetVisible(tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+}
+
+bool BraveToolbarView::IsFocusModeOverlayActive() const {
+  auto* brave_browser_view = BraveBrowserView::From(browser_view_);
+  if (!brave_browser_view) {
+    return false;
+  }
+  auto* overlay = brave_browser_view->focus_mode_top_overlay();
+  return overlay && overlay->active();
 }
 
 BEGIN_METADATA(BraveToolbarView)
