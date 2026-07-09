@@ -16,6 +16,9 @@ bool IsDefaultEthereumWalletBrave(PrefService* prefs);
 // Whether or not the default cardano wallet is handled by Brave
 bool IsDefaultCardanoWalletBrave(PrefService* prefs);
 
+// Whether or not the default solana wallet is handled by Brave
+bool IsDefaultSolanaWalletBrave(PrefService* prefs);
+
 }  // namespace brave_wallet
 
 #endif  // BRAVE_IOS_BROWSER_BRAVE_WALLET_BRAVE_WALLET_UTILS_H_
