@@ -1,0 +1,18 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Handle `kRemoteListProvider` in `GetProviderNameForHistograms`
+
+      Brave adds the `kRemoteListProvider` provider type, so the switch must
+      name it to stay exhaustive.
+    regex:
+      re_pattern: '(GetProviderNameForHistograms.+?switch \(provider_type\) \{)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case ProviderType::kRemoteListProvider:
+              return "RemoteListProvider";
