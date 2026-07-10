@@ -451,8 +451,8 @@ struct TabGridView: View {
         .labelStyle(.iconOnly)
         .font(.callout)
         .imageScale(.large)
-        .padding(4)
     }
+    .tabGridChromeButtonStyle()
     .menuOrder(.fixed)
     .accessibilityLabel(Strings.TabGrid.moreMenuButtonTitle)
   }
@@ -477,8 +477,8 @@ struct TabGridView: View {
         .labelStyle(.iconOnly)
         .font(.callout)
         .imageScale(.large)
-        .padding(4)
     }
+    .tabGridChromeButtonStyle()
   }
 
   var footerBar: some View {
@@ -495,16 +495,9 @@ struct TabGridView: View {
           .labelStyle(.iconOnly)
           .font(.callout)
           .imageScale(.large)
-          .foregroundStyle(Color(braveSystemName: .iconDefault))
-          .padding(.horizontal, 22)
-          .padding(.vertical, 8)
-          .background(
-            Color(uiColor: browserColors.tabSwitcherForeground),
-            in: .rect(cornerRadius: 12, style: .continuous)
-          )
       }
+      .tabGridChromeButtonStyle()
       .keyboardShortcut("t", modifiers: [.command])
-      .buttonStyle(.plain)
       .frame(maxWidth: .infinity, alignment: .leading)
 
       if !privateBrowsingOnly.value {
@@ -520,10 +513,12 @@ struct TabGridView: View {
         }
         dismiss()
       } label: {
-        Text(Strings.done)
-          .padding(4)
-          .lineLimit(1)
+        Label(Strings.done, braveSystemImage: "leo.check.normal")
+          .labelStyle(.iconOnly)
+          .font(.callout)
+          .imageScale(.large)
       }
+      .tabGridChromeButtonStyle(isDone: true)
       .keyboardShortcut(.defaultAction)
       .frame(maxWidth: .infinity, alignment: .trailing)
     }
@@ -664,6 +659,27 @@ struct TabGridView: View {
       selectAndShred,
       closeTabs,
     ])
+  }
+}
+
+extension View {
+  /// Since Tab tray chrome lives in custom overlays, not `.toolbar`,  iOS 26 does not apply liquid glass automatically.
+  /// Use glass button styles on 26+ and circle-shaped filled/plain styles on earlier releases.
+  @ViewBuilder
+  func tabGridChromeButtonStyle(isDone: Bool = false) -> some View {
+    if isDone {
+      if #available(iOS 26.0, *) {
+        buttonStyle(.glassFilledCircle)
+      } else {
+        buttonStyle(.filledCircle)
+      }
+    } else {
+      if #available(iOS 26.0, *) {
+        buttonStyle(.plainGlassCircle)
+      } else {
+        buttonStyle(.plainBorderedCircle)
+      }
+    }
   }
 }
 
