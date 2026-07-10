@@ -11,6 +11,7 @@ static_library("common") {
     "brave_shield_utils.cc",
     "brave_shield_utils.h",
     "brave_shields_settings_values.h",
+    "farbling_prng.h",
     "features.cc",
     "features.h",
     "pref_names.h",

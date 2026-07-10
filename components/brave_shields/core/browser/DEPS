@@ -2,6 +2,7 @@ include_rules = [
   "+components/component_updater",
   "+components/content_settings/core",
   "+components/keyed_service/core/keyed_service.h",
+  "+components/pref_registry",
   "+components/prefs",
   "+components/value_store",
   "+components/sync_preferences",
@@ -14,5 +15,5 @@ specific_include_rules = {
   ],
   "ad_block_filters_provider_manager\.h": [
     "+third_party/rust/cxx/v1/cxx.h",
-  ]
+  ],
 }

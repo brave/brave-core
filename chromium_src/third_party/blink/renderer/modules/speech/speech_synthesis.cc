@@ -8,6 +8,7 @@
 #include <array>
 
 #include "base/compiler_specific.h"
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
@@ -42,8 +43,9 @@ void SpeechSynthesis::OnSetVoiceList(
       if (ExecutionContext* context = GetExecutionContext()) {
         fake_voice = mojom_voice.Clone();
         fake_voice->is_default = false;
-        brave::FarblingPRNG prng = brave::BraveSessionCache::From(*context)
-                                       .MakePseudoRandomGenerator();
+        brave_shields::FarblingPRNG prng =
+            brave::BraveSessionCache::From(*context)
+                .MakePseudoRandomGenerator();
         auto kFakeNames = std::to_array<const char*>(
             {"Hubert", "Vernon", "Rudolph", "Clayton", "Irving", "Wilson",
              "Alva", "Harley", "Beauregard", "Cleveland", "Cecil", "Reuben",

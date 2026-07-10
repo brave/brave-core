@@ -100,6 +100,8 @@ const blink::BlinkStorageKey* GetStorageKey(blink::ExecutionContext* context) {
 
 namespace brave {
 
+using brave_shields::FarblingPRNG;
+
 constexpr char BraveSessionCache::kSupplementName[] = "BraveSessionCache";
 
 blink::WebContentSettingsClient* GetContentSettingsClientFor(
@@ -441,7 +443,8 @@ bool BraveSessionCache::AllowFontFamily(
   NOTREACHED();
 }
 
-FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(FarbleKey key) {
+brave_shields::FarblingPRNG BraveSessionCache::MakePseudoRandomGenerator(
+    FarbleKey key) {
   uint64_t seed = default_shields_settings_->farbling_token.high() ^
                   default_shields_settings_->farbling_token.low() ^
                   static_cast<uint64_t>(key);

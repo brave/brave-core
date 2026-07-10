@@ -16,8 +16,8 @@
 #include "base/notreached.h"
 #include "base/strings/string_split.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -74,12 +74,12 @@ std::string FarbleAcceptLanguageHeader(
     accept_language_string += "," + tokens[0];
   }
   // Add a fake q value after the language code.
-  brave::FarblingPRNG prng;
+  brave_shields::FarblingPRNG prng;
 
-  auto* brave_farbling_service =
-      BraveFarblingServiceFactory::GetForProfile(profile);
-  if (brave_farbling_service &&
-      brave_farbling_service->MakePseudoRandomGeneratorForURL(
+  auto* shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile);
+  if (shields_settings_service &&
+      shields_settings_service->MakePseudoRandomGeneratorForURL(
           origin_url, additional_entropy, &prng)) {
     accept_language_string += kFakeQValues[prng() % kFakeQValues.size()];
   }

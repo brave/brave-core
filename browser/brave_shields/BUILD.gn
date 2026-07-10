@@ -10,7 +10,6 @@ source_set("brave_shields") {
   sources = [
     "ad_block_pref_service_factory.h",
     "ad_block_subscription_download_manager_getter.h",
-    "brave_farbling_service_factory.h",
     "brave_shields_settings_service_factory.h",
     "brave_shields_tab_helper.h",
     "brave_shields_web_contents_observer.h",
@@ -39,7 +38,6 @@ source_set("brave_shields_impl") {
   sources = [
     "ad_block_pref_service_factory.cc",
     "ad_block_subscription_download_manager_getter.cc",
-    "brave_farbling_service_factory.cc",
     "brave_shields_settings_service_factory.cc",
     "brave_shields_tab_helper.cc",
     "brave_shields_web_contents_observer.cc",
