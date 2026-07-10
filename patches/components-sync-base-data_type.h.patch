@@ -1,23 +1,23 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index e848dbb85a510c524967b315738acb824ea578b8..e7cfdd753624ca1afef640e8200cca68520de4a8 100644
+index 9ccf04f79f6d10a790f6fbf3e6ef79ab67ddde26..73c3789e7325f43501b14b76c8190447e82cdc75 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
-@@ -204,7 +204,8 @@ enum DataType {
-   // Encrypted tab context container.
-   ENCRYPTED_TAB_CONTEXT_CONTAINER,
+@@ -210,7 +210,8 @@ enum DataType {
+   // Information about a notebook.
+   NOTEBOOK,
  
--  LAST_USER_DATA_TYPE = ENCRYPTED_TAB_CONTEXT_CONTAINER,
+-  LAST_USER_DATA_TYPE = NOTEBOOK,
 +  AI_CHAT_CONVERSATION,
 +  LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,
  
    // ---- Control Types ----
    // An object representing a set of Nigori keys.
-@@ -315,7 +316,8 @@ enum class DataTypeForHistograms {
-   // kDeprecatedAccessibilityAnnotation = 79,
-   kThemesAndroid = 80,
+@@ -323,7 +324,8 @@ enum class DataTypeForHistograms {
    kEncryptedTabContextContainer = 81,
--  kMaxValue = kEncryptedTabContextContainer,
-+  kAIChatConversation = 81,
+   kEncryptedTabContextItem = 82,
+   kNotebook = 83,
+-  kMaxValue = kNotebook,
++  kAIChatConversation = 83 + 1,
 +  kMaxValue = kAIChatConversation,
  };
  // LINT.ThenChange(/tools/metrics/histograms/metadata/sync/enums.xml:SyncDataTypes)
