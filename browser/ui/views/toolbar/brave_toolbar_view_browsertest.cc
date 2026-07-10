@@ -233,8 +233,7 @@ class BraveToolbarViewTest_AIChatDisabled : public BraveToolbarViewTest {
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_VPNEnabled, VPNButtonVisibility) {
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
   auto* toolbar = static_cast<BraveToolbarView*>(browser_view->toolbar());
   auto* prefs = browser()->profile()->GetPrefs();
 
