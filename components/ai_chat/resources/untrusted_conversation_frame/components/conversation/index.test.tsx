@@ -8,16 +8,17 @@ import { act, render, waitFor } from '@testing-library/react'
 import MockContext, {
   MockContextRef,
 } from '../../mock_untrusted_conversation_context'
+import { createConversationTurnWithDefaults } from '../../../common/test_data_utils'
 import Conversation from '.'
 
 jest.mock('../conversation_entries', () => ({
   __esModule: true,
-  default: () => null,
+  default: () => <div data-testid='conversation-entries' />,
 }))
 
 jest.mock('../model_intro', () => ({
   __esModule: true,
-  default: () => null,
+  default: () => <div data-testid='model-intro' />,
 }))
 
 jest.mock('./useScrollToBottom', () => ({
@@ -31,6 +32,37 @@ const withSuggestionsState = {
   serviceState: { hasAcceptedAgreement: true },
   conversationEntriesState: { suggestedQuestions: ['Test question'] },
 }
+
+describe('Conversation ModelIntro placement', () => {
+  it('renders before conversation entries when the conversation has not started', () => {
+    const { getByTestId } = render(
+      <MockContext>
+        <Conversation />
+      </MockContext>,
+    )
+
+    const modelIntro = getByTestId('model-intro')
+    const conversationEntries = getByTestId('conversation-entries')
+    expect(
+      modelIntro.compareDocumentPosition(conversationEntries)
+        & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+
+  it('does not render at the conversation level when the conversation has started', () => {
+    const { queryByTestId } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [createConversationTurnWithDefaults({})],
+        }}
+      >
+        <Conversation />
+      </MockContext>,
+    )
+
+    expect(queryByTestId('model-intro')).not.toBeInTheDocument()
+  })
+})
 
 describe('Conversation --notices-height CSS variable', () => {
   let resizeObserverCallbacks: ResizeObserverCallback[]
