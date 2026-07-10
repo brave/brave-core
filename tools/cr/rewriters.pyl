@@ -1,0 +1,32 @@
+# Copyright (c) 2025 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+#
+# rewriters.pyl — ast-grep op specs for plaster. Data only: a Python literal
+# (ast.literal_eval), so no imports, calls, or names.
+#
+# Two op categories, each keyed by an op id "<lang>.<name>" ("cxx" -> cpp,
+# resolved in code):
+#
+#   "ast.matcher" — a structural query:
+#       args:     arg names the caller supplies; each is a {placeholder}.
+#       template: ast-grep rule body (the part under `rule:`); {arg}s filled.
+#       result:   { node: <tree-sitter kind> } each match is.
+#
+#   "ast.rewriter" — edits each node a matcher finds:
+#       matcher:  id of the "ast.matcher" op locating the node(s).
+#       replace:  { re_pattern, replace }, re.sub'd over each match's source;
+#                 `replace` is {arg}-formatted first (literal braces: {{ }}).
+#       result:   { node: <kind> } being replaced.
+#
+# An op yields every match in source order; the caller (plaster) decides how
+# many it expects. Arg values are injected verbatim into the rule's `regex:`
+# fields, so the caller escapes any regex metacharacters.
+
+{
+    "ast.matcher": {
+    },
+    "ast.rewriter": {
+    },
+}
