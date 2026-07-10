@@ -38,21 +38,17 @@ describe('ModelIntro', () => {
     },
   }
 
-  const defaultModelKey = 'default-model'
-
-  it('should render model intro when current model differs from default', () => {
+  it('should render model intro for the provided model key', () => {
     const { container } = render(
       <MockContext
         initialState={{
           conversationEntriesState: {
             allModels: [currentModel],
-            currentModelKey: currentModel.key,
-            defaultModelKey,
             isLeoModel: true,
           },
         }}
       >
-        <ModelIntro />
+        <ModelIntro modelKey={currentModel.key} />
       </MockContext>,
     )
     expect(container).toBeInTheDocument()
@@ -71,19 +67,17 @@ describe('ModelIntro', () => {
     expect(tooltip).toBeInTheDocument()
   })
 
-  it('should not render when current model matches default', () => {
+  it('should not render when the model key is unknown', () => {
     const { container } = render(
       <MockContext
         initialState={{
           conversationEntriesState: {
             allModels: [currentModel],
-            currentModelKey: currentModel.key,
-            defaultModelKey: currentModel.key,
             isLeoModel: true,
           },
         }}
       >
-        <ModelIntro />
+        <ModelIntro modelKey='missing-model' />
       </MockContext>,
     )
 
@@ -97,13 +91,11 @@ describe('ModelIntro', () => {
         initialState={{
           conversationEntriesState: {
             allModels: [currentModel],
-            currentModelKey: currentModel.key,
-            defaultModelKey,
             isLeoModel: true,
           },
         }}
       >
-        <ModelIntro />
+        <ModelIntro modelKey={currentModel.key} />
       </MockContext>,
     )
     const tooltip = container.querySelector<HTMLDivElement>('leo-tooltip')

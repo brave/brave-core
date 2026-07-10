@@ -32,7 +32,7 @@ import {
   getGroupAllowedLinks,
   getReasoningText,
   getToolArtifacts,
-  groupConversationEntries,
+  getPairedConversationGroups,
   isAssistantGroupTask,
 } from './conversation_entries_utils'
 import useConversationEventClipboardCopyHandler from './use_conversation_event_clipboard_copy_handler'
@@ -176,42 +176,10 @@ const makeEditContent = (
  */
 function usePairedConversationGroups() {
   const conversationContext = useUntrustedConversationContext()
-  const groupedEntries = React.useMemo<Mojom.ConversationTurn[][]>(
-    () => groupConversationEntries(conversationContext.conversationHistory),
+  return React.useMemo(
+    () => getPairedConversationGroups(conversationContext.conversationHistory),
     [conversationContext.conversationHistory],
   )
-
-  // This pairs a human turn with the following (potentially grouped) assistant turn.
-  const pairedEntries = React.useMemo(() => {
-    const result: Mojom.ConversationTurn[][][] = []
-    for (let i = 0; i < groupedEntries.length; i++) {
-      const entry = groupedEntries[i][0]
-
-      // Free hanging assistant turn - just leave it be.
-      if (entry.characterType !== Mojom.CharacterType.HUMAN) {
-        result.push([groupedEntries[i]])
-        continue
-      }
-
-      const nextEntry = groupedEntries[i + 1]?.[0]
-      // Free hanging or last human turn - just leave it be.
-      if (
-        !nextEntry
-        || nextEntry.characterType !== Mojom.CharacterType.ASSISTANT
-      ) {
-        result.push([groupedEntries[i]])
-        continue
-      }
-
-      // Pair the human turn with the grouped assistant turns.
-      result.push([groupedEntries[i], groupedEntries[i + 1]])
-      // we've already processed the next entry, so skip it.
-      i++
-    }
-    return result
-  }, [groupedEntries])
-
-  return pairedEntries
 }
 
 function ConversationEntries(props: { scrollToBottom: () => void }) {
@@ -580,7 +548,14 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               </React.Fragment>
             ))}
           </ProgressBubbleContextProvider>
-          {pairIndex === entryPairs.length - 1 && <ModelIntro />}
+          {conversationContext.modelIntroMarkers
+            .filter((marker) => marker.afterPairIndex === pairIndex)
+            .map((marker) => (
+              <ModelIntro
+                key={marker.id}
+                modelKey={marker.modelKey}
+              />
+            ))}
         </div>
       ))}
     </div>

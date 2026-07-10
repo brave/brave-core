@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { act, fireEvent, render, screen } from '@testing-library/react'
+import { act, fireEvent, render, screen, waitFor } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
@@ -41,15 +41,29 @@ jest.mock('../assistant_task/assistant_task', () => ({
 
 jest.mock('../model_intro', () => ({
   __esModule: true,
-  default: () => <div data-testid='model-intro' />,
+  default: ({ modelKey }: { modelKey: string }) => (
+    <div
+      data-testid='model-intro'
+      data-model-key={modelKey}
+    />
+  ),
 }))
 
 import styles from './style.module.scss'
 
 describe('ConversationEntries ModelIntro placement', () => {
-  it('renders after the latest reply inside the last entry pair', () => {
+  it('renders inline markers after the anchored entry pair', () => {
     const { container, getByTestId } = render(
       <MockContext
+        overrides={{
+          modelIntroMarkers: [
+            {
+              id: 'marker-1',
+              modelKey: 'test-model',
+              afterPairIndex: 0,
+            },
+          ],
+        }}
         initialState={{
           conversationHistory: [
             createConversationTurnWithDefaults({
@@ -65,10 +79,11 @@ describe('ConversationEntries ModelIntro placement', () => {
 
     const modelIntro = getByTestId('model-intro')
     const entryPairs = container.querySelectorAll(`.${styles.entryPair}`)
-    const lastEntryPair = entryPairs[entryPairs.length - 1]
-    expect(lastEntryPair).toContainElement(modelIntro)
+    const anchoredEntryPair = entryPairs[0]
+    expect(anchoredEntryPair).toContainElement(modelIntro)
+    expect(modelIntro).toHaveAttribute('data-model-key', 'test-model')
 
-    const assistantTurn = lastEntryPair.querySelector(
+    const assistantTurn = anchoredEntryPair.querySelector(
       '[data-testid="assistant-turn"]',
     )
     expect(assistantTurn).toBeTruthy()
@@ -76,6 +91,70 @@ describe('ConversationEntries ModelIntro placement', () => {
       assistantTurn!.compareDocumentPosition(modelIntro)
         & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
+  })
+
+  it('creates a new inline marker when the model changes during a conversation', async () => {
+    const mockRef = React.createRef<MockContextRef>()
+    const conversationHistory = [
+      createConversationTurnWithDefaults({
+        uuid: 'turn-1',
+        characterType: Mojom.CharacterType.ASSISTANT,
+        text: 'Latest reply',
+      }),
+    ]
+    const { getAllByTestId } = render(
+      <MockContext
+        ref={mockRef}
+        conversationHandler={{
+          getConversationHistory() {
+            return Promise.resolve({ conversationHistory })
+          },
+        }}
+        initialState={{
+          conversationEntriesState: {
+            currentModelKey: 'default-model',
+            defaultModelKey: 'default-model',
+          },
+          conversationHistory,
+        }}
+      >
+        <ConversationEntries scrollToBottom={jest.fn()} />
+      </MockContext>,
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'first-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(getAllByTestId('model-intro')).toHaveLength(1)
+    })
+    expect(getAllByTestId('model-intro')[0]).toHaveAttribute(
+      'data-model-key',
+      'first-model',
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'second-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(getAllByTestId('model-intro')).toHaveLength(2)
+    })
+    expect(getAllByTestId('model-intro')[0]).toHaveAttribute(
+      'data-model-key',
+      'first-model',
+    )
+    expect(getAllByTestId('model-intro')[1]).toHaveAttribute(
+      'data-model-key',
+      'second-model',
+    )
   })
 })
 
