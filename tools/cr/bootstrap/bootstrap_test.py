@@ -301,6 +301,13 @@ class FindShimTargetTest(unittest.TestCase):
         self.assertEqual(launcher.find_shim_target('brockit'),
                          launcher.SHIM_TARGETS['brockit'])
 
+    def test_git_cr_token_resolves_to_cmd(self):
+        # git resolves `git cr` to the `git-cr` shim, which passes `git-cr`
+        # verbatim; it must map to the git_cr command entry point.
+        target = launcher.find_shim_target('git-cr')
+        self.assertEqual(target, launcher.SHIM_TARGETS['git-cr'])
+        self.assertTrue(target.path.endswith('alias/cmd.py'))
+
     def test_bare_family_gets_host_suffix(self):
         # A POSIX shim passes the bare family; the launcher appends the host.
         key = launcher.host_platform_key()
@@ -366,6 +373,18 @@ class ResolveInvocationTest(unittest.TestCase):
             # brockit is launched as: <vpython3> <brockit.py>.
             self.assertEqual(len(invocation), 2)
             self.assertTrue(invocation[1].endswith('brockit.py'))
+
+    def test_git_cr_runs_through_vpython3(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            self._make_target(root, 'git-cr')
+            invocation = launcher.resolve_invocation('git-cr',
+                                                     self._checkout(root),
+                                                     False)
+            self.assertIsNotNone(invocation)
+            # git-cr is launched as: <vpython3> <cmd.py>.
+            self.assertEqual(len(invocation), 2)
+            self.assertTrue(invocation[1].endswith('cmd.py'))
 
     def test_falls_back_to_system_when_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:

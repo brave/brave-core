@@ -1,24 +1,35 @@
-# `git cr` alias for Chromium rebasing tooling
+# `git cr` for Chromium rebasing tooling
 
-This alias is maintained by the Chromium Rebase team to simplify many of the
-rebase tasks. This directory provides the `git cr` git alias and the supporting
-commit-msg hook used when committing to `brave-core`.
+The `git cr` command is maintained by the Chromium Rebase team to simplify many
+of the rebase tasks. This directory provides the `git cr` implementation and the
+supporting commit-msg hook used when committing to `brave-core`.
 
 ## Quick start
 
-From the `brave-core` repository root, install this alias with:
+The recommended way to get `git cr` is the bootstrap shims, which put a `git-cr`
+executable on your `$PATH`:
 
 ```sh
-python3 tools/cr/alias/cmd.py setup-alias
+vpython3 tools/cr/bootstrap/bootstrap.py install
 git cr install-hook
 ```
 
-- `setup-alias` writes a `cr` entry to `.git/config`. After this, `git cr` works
-  in this repository.
+See [`../bootstrap/README.md`](../bootstrap/README.md) for details. Open a new
+shell for the `$PATH` change to take effect.
+
 - `install-hook` installs `commit-msg.py` as the repository's `commit-msg` hook.
-  This is necessary to use `git cr commit`
+  This is necessary to use `git cr commit`.
 
 Once installed, run `git cr` to see the available commands.
+
+### Alternative: a per-repository alias
+
+If you would rather not modify your `$PATH`, register a `git cr` alias in the
+current repository's `.git/config` instead:
+
+```sh
+vpython3 tools/cr/alias/cmd.py setup-alias
+```
 
 ## Subcommands
 

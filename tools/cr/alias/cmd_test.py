@@ -47,6 +47,22 @@ _GIT_ENV_OVERRIDES: dict[str, str] = {
 # ---------------------------------------------------------------------------
 
 
+def _path_without_git_cr_shim() -> str:
+    """`$PATH` with every directory holding a `git-cr` executable removed.
+
+    git resolves `git cr` to a `git-cr` on `$PATH` *before* consulting the
+    `.git/config` alias, so a bootstrap shim installed on the developer's
+    machine would shadow the alias this test is exercising. Dropping those
+    directories keeps `git` itself resolvable while isolating the alias path.
+    """
+    entries = os.environ.get('PATH', '').split(os.pathsep)
+    kept = [
+        entry for entry in entries if entry and not any(
+            (Path(entry) / name).exists() for name in ('git-cr', 'git-cr.bat'))
+    ]
+    return os.pathsep.join(kept)
+
+
 def _git(cwd: Path, *args: str) -> subprocess.CompletedProcess:
     """Run a git command in cwd; raise on failure."""
     return subprocess.run(
@@ -334,7 +350,11 @@ class TestSetupAlias(unittest.TestCase):
             check=False,
             env={
                 **os.environ,
-                **_GIT_ENV_OVERRIDES
+                **_GIT_ENV_OVERRIDES,
+                # Isolate the alias under test from any bootstrap `git-cr`
+                # shim installed on this machine, which git would otherwise
+                # prefer over the .git/config alias.
+                'PATH': _path_without_git_cr_shim(),
             },
         )
         self.assertEqual(result.returncode, 0, msg=f'stderr: {result.stderr}')
