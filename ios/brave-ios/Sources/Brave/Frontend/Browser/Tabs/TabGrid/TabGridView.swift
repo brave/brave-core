@@ -692,10 +692,19 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   @Binding var isPrivateBrowsing: Bool
   var regularTabCount: Int
 
+  private var tabCount: String {
+    String.localizedStringWithFormat(
+      regularTabCount == 1
+        ? Strings.TabGrid.tabsCountSingularFormatString
+        : Strings.TabGrid.tabsCountPluralFormatString,
+      regularTabCount
+    )
+  }
+
   func makeUIView(context: Context) -> UISegmentedControl {
     let uiView = UISegmentedControl(
       items: [
-        Strings.TabGrid.tabsCountFormat(regularTabCount),
+        tabCount,
         Strings.TabGrid.privateBrowsingModeTitle,
       ]
     )
@@ -710,7 +719,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   }
 
   func updateUIView(_ uiView: UISegmentedControl, context: Context) {
-    uiView.setTitle(Strings.TabGrid.tabsCountFormat(regularTabCount), forSegmentAt: 0)
+    uiView.setTitle(tabCount, forSegmentAt: 0)
     uiView.setTitle(Strings.TabGrid.privateBrowsingModeTitle, forSegmentAt: 1)
     uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
     configureAppearance(uiView)
@@ -745,17 +754,6 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
         .foregroundColor: UIColor(braveSystemName: .iconDefault),
       ],
       for: .normal
-    )
-  }
-}
-
-extension Strings.TabGrid {
-  fileprivate static func tabsCountFormat(_ count: Int) -> String {
-    String.localizedStringWithFormat(
-      count == 1
-        ? Strings.TabGrid.tabsCountSingularFormatString
-        : Strings.TabGrid.tabsCountPluralFormatString,
-      count
     )
   }
 }
