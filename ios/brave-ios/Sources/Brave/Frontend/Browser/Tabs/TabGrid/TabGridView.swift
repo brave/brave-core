@@ -746,6 +746,17 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
   }
 }
 
+extension Strings.TabGrid {
+  fileprivate static func tabsCountFormat(_ count: Int) -> String {
+    String.localizedStringWithFormat(
+      count == 1
+        ? Strings.TabGrid.tabsCountSingularFormatString
+        : Strings.TabGrid.tabsCountPluralFormatString,
+      count
+    )
+  }
+}
+
 private struct PrivateModeInfoView: View {
   var body: some View {
     VStack(spacing: 48) {

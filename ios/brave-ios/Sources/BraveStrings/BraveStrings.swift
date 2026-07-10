@@ -1196,12 +1196,19 @@ extension Strings {
       value: "Private Browsing",
       comment: "Accessibility label for the regular browsing option in the browsing mode picker"
     )
-    public static let tabsCountFormatString = NSLocalizedString(
-      "tabGrid.tabsCountFormat",
+    public static let tabsCountSingularFormatString = NSLocalizedString(
+      "tabGrid.tabsCountFormatSingular",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "%lld Tab",
+      comment: "A label in the tab tray mode switcher shown when there is 1 regular tab open e.g. '1 Tab'"
+    )
+    public static let tabsCountPluralFormatString = NSLocalizedString(
+      "tabGrid.tabsCountFormatPlural",
       tableName: "BraveShared",
       bundle: .module,
       value: "%lld Tabs",
-      comment: "A label in the tab tray mode switcher showing how many regular tabs are open e.g. '129 Tabs'"
+      comment: "A label in the tab tray mode switcher shown when there are 0 or more than 1 regular tabs open e.g. '129 Tabs'"
     )
     public static let privateBrowsingModeTitle = NSLocalizedString(
       "tabGrid.privateBrowsingModeTitle",
@@ -1210,9 +1217,6 @@ extension Strings {
       value: "Private",
       comment: "A label in the tab tray mode switcher for private browsing mode"
     )
-    public static func tabsCountFormat(_ count: Int) -> String {
-      String(format: tabsCountFormatString, Int64(count))
-    }
     public static let privateBrowsingInfoTitle = NSLocalizedString(
       "tabGrid.privateBrowsingInfoTitle",
       tableName: "BraveShared",
