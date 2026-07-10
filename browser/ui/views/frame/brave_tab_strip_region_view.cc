@@ -272,9 +272,12 @@ void BraveHorizontalTabStripRegionView::CreateScrollButtonsIfNeeded() {
 }
 
 void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
+  // Only show the spaces button if the feature is enabled and this is a regular
+  // browser window (not private, not PWA/popup/PIP/etc).
   if (base::FeatureList::IsEnabled(features::kWorkspaces)) {
     auto* bwi = tab_strip_->GetBrowserWindowInterface();
-    if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+    if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+        bwi->GetProfile()->IsIncognitoProfile()) {
       return;
     }
 
