@@ -46,6 +46,7 @@
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/location_bar/location_bar_view.h"
+#include "chrome/browser/ui/views/tabs/groups/tab_group_editor_bubble_view.h"
 #include "chrome/browser/ui/views/tabs/new_tab_button.h"
 #include "chrome/browser/ui/views/tabs/tab/tab_context_menu_controller.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
@@ -62,9 +63,12 @@
 #include "ui/events/event.h"
 #include "ui/gfx/animation/animation_test_api.h"
 #include "ui/gfx/geometry/skia_conversions.h"
+#include "ui/views/interaction/element_tracker_views.h"
 #include "ui/views/layout/flex_layout.h"
 #include "ui/views/layout/layout_manager.h"
 #include "ui/views/test/views_test_utils.h"
+#include "ui/views/test/widget_test.h"
+#include "ui/views/view_utils.h"
 
 #if BUILDFLAG(IS_WIN)
 #include "chrome/browser/ui/view_ids.h"
@@ -262,6 +266,25 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   HorizontalTabStripRegionView* tab_strip_region_view() {
     return views::AsViewClass<HorizontalTabStripRegionView>(
         BrowserView::GetBrowserViewForBrowser(browser())->tab_strip_view());
+  }
+
+  TabGroupEditorBubbleView* OpenTabGroupEditorBubble(
+      tab_groups::TabGroupId group) {
+    browser()->tab_strip_model()->OpenTabGroupEditor(group);
+    const auto bubble_views =
+        views::ElementTrackerViews::GetInstance()
+            ->GetAllMatchingViewsInAnyContext(
+                TabGroupEditorBubbleView::kTabGroupEditorBubbleViewId);
+    if (bubble_views.empty()) {
+      return nullptr;
+    }
+
+    auto* bubble_view =
+        views::AsViewClass<TabGroupEditorBubbleView>(bubble_views[0]);
+    if (bubble_view) {
+      views::test::WidgetVisibleWaiter(bubble_view->GetWidget()).Wait();
+    }
+    return bubble_view;
   }
 
  private:
@@ -1874,6 +1897,53 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
   EXPECT_EQ(brave_tab_container->FindVisibleUnpinnedSlotViews()
                 .second->GetTabSlotViewType(),
             TabSlotView::ViewType::kTabGroupHeader);
+}
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       GroupEditorBubbleAnchorsTowardWebContentsOnBothSides) {
+  browser_view()->Maximize();
+  ASSERT_TRUE(ui_test_utils::WaitForMaximized(browser()));
+  ToggleVerticalTabStrip();
+
+  const tab_groups::TabGroupId group = AddTabToNewGroup(browser(), 0);
+  auto* prefs = browser()->profile()->GetPrefs();
+  const gfx::Rect browser_bounds =
+      browser_view()->GetWidget()->GetWindowBoundsInScreen();
+
+  auto expect_bubble_inside_browser = [&](TabGroupEditorBubbleView* bubble,
+                                          bool opens_to_right) {
+    const gfx::Rect bubble_bounds =
+        bubble->GetWidget()->GetWindowBoundsInScreen();
+    EXPECT_TRUE(browser_bounds.Contains(bubble_bounds));
+
+    ASSERT_TRUE(bubble->GetAnchorView());
+    const gfx::Rect anchor_bounds =
+        bubble->GetAnchorView()->GetBoundsInScreen();
+    if (opens_to_right) {
+      EXPECT_GT(bubble_bounds.CenterPoint().x(),
+                anchor_bounds.CenterPoint().x());
+    } else {
+      EXPECT_LT(bubble_bounds.CenterPoint().x(),
+                anchor_bounds.CenterPoint().x());
+    }
+  };
+
+  TabGroupEditorBubbleView* left_bubble = OpenTabGroupEditorBubble(group);
+  ASSERT_TRUE(left_bubble);
+  EXPECT_EQ(views::BubbleBorder::Arrow::LEFT_TOP, left_bubble->arrow())
+      << "A left-side vertical tab group editor should open to the right";
+  expect_bubble_inside_browser(left_bubble, /*opens_to_right=*/true);
+  left_bubble->GetWidget()->CloseNow();
+
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  browser_non_client_frame_view()->DeprecatedLayoutImmediately();
+
+  TabGroupEditorBubbleView* right_bubble = OpenTabGroupEditorBubble(group);
+  ASSERT_TRUE(right_bubble);
+  EXPECT_EQ(views::BubbleBorder::Arrow::RIGHT_TOP, right_bubble->arrow())
+      << "A right-side vertical tab group editor should open to the left";
+  expect_bubble_inside_browser(right_bubble, /*opens_to_right=*/false);
+  right_bubble->GetWidget()->CloseNow();
 }
 
 // * Non-type argument of 'float' or 'double' for template is unsupported

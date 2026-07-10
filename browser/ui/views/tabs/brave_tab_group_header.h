@@ -24,8 +24,14 @@ class BraveTabGroupHeader : public TabGroupHeader {
   using TabGroupHeader::TabGroupHeader;
   ~BraveTabGroupHeader() override;
 
+  // Returns the inward editor arrow while preserving Chromium's vertical
+  // alignment choice.
+  views::BubbleBorder::Arrow GetEditorBubbleArrow(
+      views::BubbleBorder::Arrow chromium_arrow) const;
+
   // TabGroupHeader:
   void AddedToWidget() override;
+  views::BubbleBorder::Arrow GetAnchorPosition() const override;
   void VisualsChanged() override;
   int GetDesiredWidth() const override;
   void Layout(PassKey) override;

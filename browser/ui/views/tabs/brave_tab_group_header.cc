@@ -8,6 +8,7 @@
 #include <optional>
 
 #include "base/check.h"
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/vector_icons/vector_icons.h"
@@ -47,6 +48,35 @@ void BraveTabGroupHeader::AddedToWidget() {
     // the anchor widget.
     bubble_delegate->SetAnchorView(this);
   }
+}
+
+views::BubbleBorder::Arrow BraveTabGroupHeader::GetAnchorPosition() const {
+  const BrowserWindowInterface* browser =
+      tab_slot_controller_->GetBrowserWindowInterface();
+  if (!tabs::utils::ShouldShowBraveVerticalTabs(browser)) {
+    return TabGroupHeader::GetAnchorPosition();
+  }
+
+  const auto arrow = tabs::utils::IsVerticalTabOnRight(browser)
+                         ? views::BubbleBorder::Arrow::RIGHT_TOP
+                         : views::BubbleBorder::Arrow::LEFT_TOP;
+  // BubbleDialogDelegate mirrors arrows for RTL layouts. Vertical tab side
+  // preferences are physical, so compensate here to keep the bubble opening
+  // toward the web contents.
+  return base::i18n::IsRTL() ? views::BubbleBorder::horizontal_mirror(arrow)
+                             : arrow;
+}
+
+views::BubbleBorder::Arrow BraveTabGroupHeader::GetEditorBubbleArrow(
+    views::BubbleBorder::Arrow chromium_arrow) const {
+  auto arrow = GetAnchorPosition();
+  // Preserve Chromium's near-bottom fallback on Wayland, where automatic
+  // offscreen adjustment is unavailable.
+  if (chromium_arrow == views::BubbleBorder::Arrow::BOTTOM_LEFT ||
+      chromium_arrow == views::BubbleBorder::Arrow::BOTTOM_RIGHT) {
+    arrow = views::BubbleBorder::vertical_mirror(arrow);
+  }
+  return arrow;
 }
 
 void BraveTabGroupHeader::VisualsChanged() {

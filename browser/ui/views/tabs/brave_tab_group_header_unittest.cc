@@ -8,6 +8,7 @@
 #include <memory>
 #include <utility>
 
+#include "base/i18n/rtl.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -94,6 +95,58 @@ class BraveTabGroupHeaderTest : public ChromeViewsTestBase {
   tab_groups::TabGroupId id_ = tab_groups::TabGroupId::GenerateNew();
   std::unique_ptr<TabGroupViews> group_views_;
 };
+
+TEST_F(BraveTabGroupHeaderTest,
+       EditorBubbleAnchorsTowardContentForBothVerticalTabPositions) {
+  TestingProfile profile;
+  auto* header = static_cast<BraveTabGroupHeader*>(group_views_->header());
+
+  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  EXPECT_CALL(mock_browser_window, GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
+      .WillRepeatedly(testing::Return(&profile));
+  EXPECT_CALL(mock_browser_window, GetType())
+      .WillRepeatedly(testing::Return(BrowserWindowInterface::TYPE_NORMAL));
+  EXPECT_CALL(*tab_slot_controller_, GetBrowserWindowInterface())
+      .WillRepeatedly(testing::Return(&mock_browser_window));
+
+  EXPECT_EQ(views::BubbleBorder::Arrow::TOP_LEFT, header->GetAnchorPosition())
+      << "Horizontal tab group editors should keep Chromium's anchor";
+
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::LEFT_TOP, header->GetAnchorPosition())
+      << "A left-side vertical tab group editor should open to the right";
+  EXPECT_EQ(
+      views::BubbleBorder::Arrow::LEFT_BOTTOM,
+      header->GetEditorBubbleArrow(views::BubbleBorder::Arrow::BOTTOM_LEFT))
+      << "A left-side editor should retain Wayland's bottom alignment";
+
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::RIGHT_TOP, header->GetAnchorPosition())
+      << "A right-side vertical tab group editor should open to the left";
+  EXPECT_EQ(
+      views::BubbleBorder::Arrow::RIGHT_BOTTOM,
+      header->GetEditorBubbleArrow(views::BubbleBorder::Arrow::BOTTOM_LEFT))
+      << "A right-side editor should retain Wayland's bottom alignment";
+
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
+  base::i18n::ScopedRTLForTesting scoped_rtl(/*rtl=*/true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::RIGHT_TOP, header->GetAnchorPosition())
+      << "Views should mirror a left-side RTL arrow back toward the content";
+  EXPECT_EQ(
+      views::BubbleBorder::Arrow::RIGHT_BOTTOM,
+      header->GetEditorBubbleArrow(views::BubbleBorder::Arrow::BOTTOM_RIGHT))
+      << "An RTL left-side editor should retain bottom alignment";
+
+  profile.GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  EXPECT_EQ(views::BubbleBorder::Arrow::LEFT_TOP, header->GetAnchorPosition())
+      << "Views should mirror a right-side RTL arrow back toward the content";
+  EXPECT_EQ(
+      views::BubbleBorder::Arrow::LEFT_BOTTOM,
+      header->GetEditorBubbleArrow(views::BubbleBorder::Arrow::BOTTOM_RIGHT))
+      << "An RTL right-side editor should retain bottom alignment";
+}
 
 // Regression test: TabGroupHeader::VisualsChanged() sets |title_chip_|'s clip
 // path based on the (narrower) bounds computed for horizontal tabs, before
