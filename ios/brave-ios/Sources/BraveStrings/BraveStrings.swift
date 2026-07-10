@@ -1176,7 +1176,7 @@ extension Strings {
       comment: "Label for history menu item button that when tapped presents the users history & recently closed tabs"
     )
     public static let viewSyncedTabsMenuItemLabel = NSLocalizedString(
-      "tabGrid.viewSyncedTabsAccessibilityLabel",
+      "tabGrid.viewSyncedTabsMenuItemLabel",
       tableName: "BraveShared",
       bundle: .module,
       value: "Sync",
