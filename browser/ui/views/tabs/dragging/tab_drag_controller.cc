@@ -94,8 +94,8 @@ void BraveTabDragController::DetachAndAttachToNewContext(
   }
 
   auto get_region_view = [this] {
-    auto* browser_view = static_cast<BraveBrowserView*>(
-        BrowserView::GetBrowserViewForNativeWindow(
+    auto* browser_view =
+        BraveBrowserView::From(BrowserView::GetBrowserViewForNativeWindow(
             GetAttachedBrowserWidget()->GetNativeWindow()));
     DCHECK(browser_view);
 

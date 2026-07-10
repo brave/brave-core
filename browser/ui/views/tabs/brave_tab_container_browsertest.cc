@@ -49,8 +49,7 @@ class HorizontalScrollableTabStripBrowserTest : public InProcessBrowserTest {
   }
 
   BraveBrowserView* browser_view() {
-    return static_cast<BraveBrowserView*>(
-        BrowserWindow::FromBrowser(browser()));
+    return BraveBrowserView::GetBrowserViewForBrowser(browser());
   }
 
   void AppendTab() { chrome::AddTabAt(browser(), GURL(), -1, true); }

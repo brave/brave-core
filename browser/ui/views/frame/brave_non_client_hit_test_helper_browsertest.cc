@@ -58,12 +58,11 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest,
                        VerticalTabStripRegionView) {
   brave::ToggleVerticalTabStrip(browser());
 
-  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
   auto* frame_view = browser_view->browser_widget()->GetFrameView();
   frame_view->DeprecatedLayoutImmediately();
 
-  auto* region_view = BraveBrowserView::From(browser_view)
-                          ->vertical_tab_strip_container_view()
+  auto* region_view = browser_view->vertical_tab_strip_container_view()
                           ->vertical_tab_strip_region_view();
   ASSERT_TRUE(region_view);
   ASSERT_TRUE(region_view->GetVisible());

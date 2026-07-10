@@ -90,8 +90,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
@@ -122,8 +122,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
@@ -185,8 +185,8 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
 
-  BraveBrowserView* browser_view = static_cast<BraveBrowserView*>(
-      BraveBrowserView::GetBrowserViewForBrowser(browser()));
+  BraveBrowserView* browser_view =
+      BraveBrowserView::GetBrowserViewForBrowser(browser());
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   EXPECT_FALSE(omnibox_view->IsSelectAll());
   EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());

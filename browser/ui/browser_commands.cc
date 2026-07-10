@@ -342,15 +342,13 @@ void ToggleAIChat(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser))
-      ->CreateWalletBubble();
+  BraveBrowserView::GetBrowserViewForBrowser(browser)->CreateWalletBubble();
 #endif
 }
 
 void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser))
-      ->CloseWalletBubble();
+  BraveBrowserView::GetBrowserViewForBrowser(browser)->CloseWalletBubble();
 #endif
 }
 #endif
@@ -438,8 +436,7 @@ void ToggleVerticalTabStripExpanded(Browser* browser) {
     return;
   }
   // Otherwise, retrieve current vertical tab strip region view
-  auto* browser_view =
-      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser);
   if (!browser_view) {
     return;
   }

@@ -24,7 +24,8 @@ using State = BraveVerticalTabStripRegionView::State;
 class VerticalTabStripInteractiveUITest : public InteractiveBrowserTest {
  public:
   BraveBrowserView* browser_view() {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return static_cast<BraveBrowserView*>(
+        BrowserWindow::FromBrowser(browser()));
   }
 
   void ToggleVerticalTabStrip() { brave::ToggleVerticalTabStrip(browser()); }
