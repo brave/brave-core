@@ -322,6 +322,8 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
+  CHECK(multi_contents_view_);
+
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
       base::PassKey<BraveBrowserView>(), browser,
       horizontal_tab_strip_region_view_);
@@ -468,8 +470,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
-  if (multi_contents_view_ &&
-      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
     GetBraveMultiContentsView()->SetWebPanelOnLeft(on_left);
   }
 
@@ -504,8 +505,7 @@ sidebar::Sidebar* BraveBrowserView::InitSidebar() {
   sidebar_container_view_->Init();
 
   // Ask BraveMultiContentsView for preparing web panel feature.
-  if (multi_contents_view_ &&
-      base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
+  if (base::FeatureList::IsEnabled(sidebar::features::kSidebarWebPanel)) {
     GetBraveMultiContentsView()->SetWebPanelWidth(
         SidePanelEntry::kSidePanelDefaultContentWidth);
     GetBraveMultiContentsView()->UseContentsContainerViewForWebPanel();
@@ -974,10 +974,6 @@ bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
 
 bool BraveBrowserView::MaybeUpdateSplitView(
     content::WebContents* web_contents) {
-  if (!multi_contents_view_) {
-    return BrowserView::MaybeUpdateSplitView(web_contents);
-  }
-
   // Don't need to update split view state if |web_contents| is web panel.
   // In BrowserView::MaybeUpdateSplitView(), there is assumption that
   // split tab is active when MultiContentsView shows split view now.
@@ -1146,7 +1142,6 @@ void BraveBrowserView::UpdateSidebarBorder() {
   if (side_panel_) {
     side_panel_->SetRoundedBorderEnabled(
         ShouldUseBraveWebViewRoundedCornersForContents(browser_));
-    side_panel_->UpdateBorder();
   }
 
   if (sidebar_container_view_) {
@@ -1417,65 +1412,7 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
     contents_container_->layer()->SetRoundedCornerRadius(corners);
   }
 
-  if (multi_contents_view_) {
-    GetBraveMultiContentsView()->UpdateCornerRadius();
-    return;
-  }
-
-  auto update_corner_radius =
-      [](views::WebView* contents, views::WebView* devtools,
-         ContentsContainerView::DevToolsDockedPlacement devtools_placement,
-         gfx::RoundedCornersF corners) {
-        // In addition to giving the contents container rounded corners, we also
-        // need to round the corners of the native view holder that displays the
-        // web contents.
-
-        // Devtools lies underneath the contents webview. Round all four
-        // corners.
-        if (devtools && devtools->holder()) {
-          devtools->holder()->SetCornerRadii(corners);
-        }
-
-        // In order to make the contents web view and devtools appear to be
-        // contained within a single rounded-corner view, square the contents
-        // webview corners that are adjacent to devtools.
-        // TODO(sko) We need to override
-        // BrowserView::GetDevToolsDockedPlacement(). It depends on coordinate
-        // of it but in split view mode, the calculation is not correct.
-        switch (devtools_placement) {
-          case ContentsContainerView::DevToolsDockedPlacement::kLeft:
-            corners.set_upper_left(0);
-            corners.set_lower_left(0);
-            break;
-          case ContentsContainerView::DevToolsDockedPlacement::kRight:
-            corners.set_upper_right(0);
-            corners.set_lower_right(0);
-            break;
-          case ContentsContainerView::DevToolsDockedPlacement::kBottom:
-            corners.set_lower_left(0);
-            corners.set_lower_right(0);
-            break;
-          case ContentsContainerView::DevToolsDockedPlacement::kNone:
-            break;
-          case ContentsContainerView::DevToolsDockedPlacement::kUnknown:
-            break;
-        }
-
-        if (contents && contents->holder()) {
-          // Upstream uses layer for its background.
-          CHECK(contents->layer());
-          contents->layer()->SetRoundedCornerRadius(corners);
-          contents->holder()->SetCornerRadii(corners);
-        }
-      };
-
-  auto* contents_container_view = GetActiveContentsContainerView();
-  if (contents_container_view) {
-    update_corner_radius(contents_container_view->contents_view(),
-                         contents_container_view->devtools_web_view(),
-                         contents_container_view->devtools_docked_placement(),
-                         corners);
-  }
+  GetBraveMultiContentsView()->UpdateCornerRadius();
 }
 
 void BraveBrowserView::UpdateFocusModeState() {
