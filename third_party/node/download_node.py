@@ -23,7 +23,7 @@ from pathlib import Path
 
 # The Node version to download. Bump this to roll Node, then re-run this script
 # followed by `package_node.py`. It is the single source of truth for both.
-NODE_VERSION = 'v24.17.0'
+NODE_VERSION = 'v24.18.0'
 
 # Where the official archives and their checksums are published.
 BASE_URL = 'https://nodejs.org/dist'
