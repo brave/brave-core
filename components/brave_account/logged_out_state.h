@@ -13,10 +13,8 @@
 #include "brave/components/brave_account/brave_account_state_prefs.h"
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
-#include "brave/components/brave_account/endpoints/password_finalize.h"
-#include "brave/components/brave_account/endpoints/password_init.h"
-#include "brave/components/brave_account/endpoints/verify_complete.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/register.h"
 #include "brave/components/brave_account/reset_password.h"
 #include "brave/components/brave_account/state_base.h"
 #include "components/os_crypt/async/common/encryptor.h"
@@ -28,9 +26,9 @@ class SharedURLLoaderFactory;
 namespace brave_account {
 
 // `mojom::Authentication` surface available before login:
-// `RegisterInitialize()`, `RegisterFinalize()`, `RegisterVerify()`,
-// `LoginInitialize()`, and `LoginFinalize()`, plus the password-reset steps,
-// which are delegated to the `reset_password_` helper.
+// `LoginInitialize()` and `LoginFinalize()`,
+// plus the registration and password-reset steps,
+// which are delegated to the `register_` and `reset_password_` helpers.
 // `ResendVerificationEmail()` and `CancelVerification()` are fully
 // handled by `StateBase` for both states.
 // All other methods inherit `StateBase`'s wrong-state default.
@@ -48,17 +46,18 @@ class LoggedOutState : public StateBase {
   ~LoggedOutState() override;
 
  private:
-  void RegisterInitialize(mojom::Service initiating_service,
-                          const std::string& email,
-                          const std::string& blinded_message,
-                          RegisterInitializeCallback callback) override;
+  void RegisterPasswordInit(mojom::Service initiating_service,
+                            const std::string& email,
+                            const std::string& blinded_message,
+                            RegisterPasswordInitCallback callback) override;
 
-  void RegisterFinalize(const std::string& encrypted_verification_token,
-                        const std::string& serialized_record,
-                        RegisterFinalizeCallback callback) override;
+  void RegisterPasswordFinalize(
+      const std::string& encrypted_verification_token,
+      const std::string& serialized_record,
+      RegisterPasswordFinalizeCallback callback) override;
 
-  void RegisterVerify(const std::string& code,
-                      RegisterVerifyCallback callback) override;
+  void RegisterVerifyComplete(const std::string& code,
+                              RegisterVerifyCompleteCallback callback) override;
 
   void ResetPasswordVerifyInit(
       const std::string& email,
@@ -86,22 +85,13 @@ class LoggedOutState : public StateBase {
                      const std::string& client_mac,
                      LoginFinalizeCallback callback) override;
 
-  void OnRegisterInitialize(RegisterInitializeCallback callback,
-                            endpoints::PasswordInit::Response response);
-
-  void OnRegisterFinalize(RegisterFinalizeCallback callback,
-                          const std::string& encrypted_verification_token,
-                          endpoints::PasswordFinalize::Response response);
-
-  void OnRegisterVerify(RegisterVerifyCallback callback,
-                        endpoints::VerifyComplete::Response response);
-
   void OnLoginInitialize(LoginInitializeCallback callback,
                          endpoints::LoginInit::Response response);
 
   void OnLoginFinalize(LoginFinalizeCallback callback,
                        endpoints::LoginFinalize::Response response);
 
+  Register register_{*this};
   ResetPassword reset_password_{*this};
 
   base::WeakPtrFactory<LoggedOutState> weak_factory_{this};
