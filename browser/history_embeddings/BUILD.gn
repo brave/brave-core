@@ -30,6 +30,34 @@ source_set("open_tab_search") {
   ]
 }
 
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "open_tab_search_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    ":open_tab_search",
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/history_embeddings:test_support",
+    "//chrome/browser/history",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/test:test_support",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [

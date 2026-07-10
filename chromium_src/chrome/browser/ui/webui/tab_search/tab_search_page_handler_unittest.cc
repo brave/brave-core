@@ -345,10 +345,10 @@ TEST_F(TabSearchPageHandlerTest, UndoFocusTabs) {
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if BUILDFLAG(ENABLE_LOCAL_AI)
-// Exercises the early-return paths of `SearchTabsByContent` (empty query,
-// no tabs eligible for the open-tab URL-id filter). The happy path requires
-// a live `HistoryEmbeddingsService` and is covered by
-// `TabSearchPageHandlerBrowserTest.SearchTabsByContent`.
+// Exercises the page-handler's own empty-query guard for `SearchTabsByContent`.
+// The rest of the pipeline (tracking filter, URL-id resolution, ranking) lives
+// in `open_tab_search` and is covered by its browser test; the enabled happy
+// path is covered by `TabSearchPageHandlerBrowserTest.SearchTabsByContent`.
 class SearchTabsByContentEarlyReturnTest : public TabSearchPageHandlerTest {
  public:
   std::vector<int32_t> RunSearch(const std::string& query) {
@@ -364,14 +364,5 @@ class SearchTabsByContentEarlyReturnTest : public TabSearchPageHandlerTest {
 TEST_F(SearchTabsByContentEarlyReturnTest, EmptyQueryReturnsEmpty) {
   AddTabWithTitle(browser1(), GURL(kFooDotComUrl1), kFooDotComTitle1);
   EXPECT_TRUE(RunSearch("").empty());
-}
-
-TEST_F(SearchTabsByContentEarlyReturnTest, NoTrackedTabsReturnsEmpty) {
-  // Non-normal window, other profile, incognito profile — none of these
-  // should contribute to the open-tab URL-id filter.
-  AddTabWithTitle(browser5(), GURL(kFooDotComUrl1), kFooDotComTitle1);
-  AddTabWithTitle(browser4(), GURL(kFooDotComUrl2), kFooDotComTitle2);
-  AddTabWithTitle(browser3(), GURL(kBarDotComUrl1), kBarDotComTitle1);
-  EXPECT_TRUE(RunSearch("anything").empty());
 }
 #endif  // BUILDFLAG(ENABLE_LOCAL_AI)
