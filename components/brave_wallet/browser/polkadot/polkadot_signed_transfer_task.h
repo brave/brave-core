@@ -83,7 +83,8 @@ struct PolkadotSignedTransferTask {
       bool use_dummy_signature,
       std::variant<uint128_t, TransferAll> transfer_amount,
       base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> sender,
-      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient);
+      base::span<const uint8_t, kPolkadotSubstrateAccountIdSize> recipient,
+      std::optional<uint32_t> asset_id);
 
   ~PolkadotSignedTransferTask();
 
@@ -175,6 +176,7 @@ struct PolkadotSignedTransferTask {
   std::variant<uint128_t, TransferAll> transfer_amount_;
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> sender_ = {};
   std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_ = {};
+  std::optional<uint32_t> asset_id_;
   GenerateSignedTransferExtrinsicCallback callback_;
 
   std::optional<PolkadotChainMetadata> chain_metadata_;

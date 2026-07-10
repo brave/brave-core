@@ -33,6 +33,12 @@ constexpr std::string_view kDefaultSubmittedExtrinsicHash =
     "0x028a2de5ca3f7fd3f00a75500cc626c12ffe4347e97a00e252ac0e46a4"
     "23968d";
 
+// Generic JSON-RPC error body used to reject an individual RPC call. The
+// missing "message" field maps to WalletInternalErrorMessage() in the RPC
+// layer.
+constexpr std::string_view kRpcErrorResponse =
+    R"({"jsonrpc":"2.0","id":1,"error":{"code":1234}})";
+
 constexpr std::string_view kDefaultAccountInfoResponse = R"(
   {
     "jsonrpc":"2.0",
@@ -288,6 +294,30 @@ void PolkadotMockRpc::RejectAccountInfoRequest() {
   reject_account_info_request_ = true;
 }
 
+void PolkadotMockRpc::RejectInitialChainHeader() {
+  reject_initial_chain_header_ = true;
+}
+
+void PolkadotMockRpc::RejectParentBlockHeader() {
+  reject_parent_block_header_ = true;
+}
+
+void PolkadotMockRpc::RejectFinalizedHead() {
+  reject_finalized_head_ = true;
+}
+
+void PolkadotMockRpc::RejectFinalizedBlockHeader() {
+  reject_finalized_block_header_ = true;
+}
+
+void PolkadotMockRpc::RejectGenesisBlockHash() {
+  reject_genesis_block_hash_ = true;
+}
+
+void PolkadotMockRpc::RejectRuntimeVersion() {
+  reject_runtime_version_ = true;
+}
+
 void PolkadotMockRpc::SetSenderPubKey(
     base::span<uint8_t, kPolkadotSubstrateAccountIdSize> pubkey) {
   base::span(sender_pubkey_).copy_from_nonoverlapping(pubkey);
@@ -381,6 +411,14 @@ void PolkadotMockRpc::AddGetParentBlockHeader() {
 void PolkadotMockRpc::AddGetFinalizedBlockHash() {
   // Our initial call to get the hash of the last finalized block in the canon
   // chain.
+  if (reject_finalized_head_) {
+    req_res_pairs_.emplace(
+        base::test::ParseJsonDict(
+            R"({"id":1,"jsonrpc":"2.0","method":"chain_getFinalizedHead","params":[]})"),
+        std::string(kRpcErrorResponse));
+    return;
+  }
+
   if (use_invalid_finalized_block_hash_) {
     req_res_pairs_.emplace(
         base::test::ParseJsonDict(
@@ -410,6 +448,14 @@ void PolkadotMockRpc::AddGetSigningBlockHash() {
 void PolkadotMockRpc::AddGetRuntimeInfo() {
   // Grab the runtime version of whichever block we're going to use for
   // signing.
+  if (reject_runtime_version_) {
+    req_res_pairs_.emplace(
+        base::test::ParseJsonDict(
+            R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":["cf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4"]})"),
+        std::string(kRpcErrorResponse));
+    return;
+  }
+
   req_res_pairs_.emplace(
       base::test::ParseJsonDict(
           R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":["cf424e463b14b26905d4e2aaff455a3c149c3ccff5a1fc62203c0c07b711e3f4"]})"),
@@ -440,6 +486,14 @@ void PolkadotMockRpc::AddGetRuntimeInfo() {
 
 void PolkadotMockRpc::AddGetGenesisBlockHash() {
   // We need to grab the genesis block hash.
+  if (reject_genesis_block_hash_) {
+    req_res_pairs_.emplace(
+        base::test::ParseJsonDict(
+            R"({"id":1,"jsonrpc":"2.0","method":"chain_getBlockHash","params":["00000000"]})"),
+        std::string(kRpcErrorResponse));
+    return;
+  }
+
   req_res_pairs_.emplace(
       base::test::ParseJsonDict(
           R"({"id":1,"jsonrpc":"2.0","method":"chain_getBlockHash","params":["00000000"]})"),
@@ -1001,6 +1055,13 @@ bool PolkadotMockRpc::HandleGetFinalizedBlockHeader(
   if (IsCommand(req_body, "chain_getHeader")) {
     if (const auto* params = FindParamsOrNull(req_body)) {
       if (params->empty()) {
+        // The current chain head (chain_getHeader with no params).
+        if (reject_initial_chain_header_) {
+          url_loader_factory_->AddResponse(req.url.spec(),
+                                           std::string(kRpcErrorResponse));
+          return true;
+        }
+
         if (const auto* header = base::FindOrNull(block_header_map_, "")) {
           url_loader_factory_->AddResponse(req.url.spec(), *header);
           return true;
@@ -1023,9 +1084,25 @@ bool PolkadotMockRpc::HandleGetFinalizedBlockHeader(
 
       if (const auto* hash = (*params)[0].GetIfString();
           hash && *hash == finalized_block_hash_) {
+        // The header for the finalized head.
+        if (reject_finalized_block_header_) {
+          url_loader_factory_->AddResponse(req.url.spec(),
+                                           std::string(kRpcErrorResponse));
+          return true;
+        }
+
         url_loader_factory_->AddResponse(req.url.spec(),
                                          finalized_block_header_json_);
 
+        return true;
+      }
+
+      // Any other chain_getHeader with a specific block hash is the current
+      // head's parent lookup. The relay-chain req/res pairs serve this
+      // normally; short-circuit with an error when rejecting.
+      if (reject_parent_block_header_) {
+        url_loader_factory_->AddResponse(req.url.spec(),
+                                         std::string(kRpcErrorResponse));
         return true;
       }
     }

@@ -93,6 +93,7 @@ void PolkadotTxManager::ApproveTransaction(
   const auto& chain_id = tx_meta->chain_id();
   auto transfer_all = tx_meta->tx()->transfer_all();
   auto send_amount = tx_meta->tx()->amount();
+  auto asset_id = tx_meta->tx()->asset_id();
   auto recipient = tx_meta->tx()->recipient().pubkey;
 
   std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
@@ -101,7 +102,8 @@ void PolkadotTxManager::ApproveTransaction(
   }
 
   polkadot_wallet_service_->SignAndSendTransaction(
-      chain_id, account_id->Clone(), std::move(transfer_amount), recipient,
+      chain_id, account_id->Clone(), std::move(transfer_amount), asset_id,
+      recipient,
       base::BindOnce(&PolkadotTxManager::OnApprovePolkadotTransaction,
                      weak_ptr_factory_.GetWeakPtr(), std::move(tx_meta),
                      std::move(callback)));
@@ -196,6 +198,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
   auto account_id = params->from.Clone();
   auto transfer_all = params->sending_max_amount;
   auto send_amount = MojomToUint128(params->amount);
+  std::optional<uint32_t> asset_id = std::nullopt;
 
   std::variant<uint128_t, TransferAll> transfer_amount = send_amount;
   if (transfer_all) {
@@ -204,7 +207,7 @@ void PolkadotTxManager::OnGetChainMetadataForUnapproved(
 
   polkadot_wallet_service_->GetFeeEstimate(
       std::move(chain_id), std::move(account_id), std::move(transfer_amount),
-      recipient->pubkey,
+      asset_id, recipient->pubkey,
       base::BindOnce(&PolkadotTxManager::OnGetFeeForUnapproved,
                      weak_ptr_factory_.GetWeakPtr(),
                      std::move(chain_metadata.value()), std::move(params),
