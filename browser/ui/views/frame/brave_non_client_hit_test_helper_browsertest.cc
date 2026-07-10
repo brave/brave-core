@@ -5,6 +5,10 @@
 
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/views/frame/brave_browser_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
+#include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/reload_button.h"
@@ -12,6 +16,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "content/public/test/browser_test.h"
 #include "ui/base/hit_test.h"
+#include "ui/views/view.h"
 
 using BraveNonClientHitTestHelperBrowserTest = InProcessBrowserTest;
 
@@ -46,4 +51,53 @@ IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
   point = gfx::Point();
   views::View::ConvertPointToWidget(toolbar->reload_button(), &point);
   EXPECT_NE(HTCAPTION, frame_view->NonClientHitTest(point));
+}
+
+IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest,
+                       VerticalTabStripRegionView) {
+  brave::ToggleVerticalTabStrip(browser());
+
+  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* frame_view = browser_view->browser_widget()->GetFrameView();
+  frame_view->DeprecatedLayoutImmediately();
+
+  auto* region_view = BraveBrowserView::From(browser_view)
+                          ->vertical_tab_strip_container_view()
+                          ->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_TRUE(region_view->GetVisible());
+
+  // Hide all children so the region view's own surface is exposed.
+  for (views::View* child : region_view->GetChildrenInZOrder()) {
+    child->SetVisible(false);
+  }
+
+  gfx::Point point = region_view->GetLocalBounds().CenterPoint();
+  views::View::ConvertPointToWidget(region_view, &point);
+
+  // Dragging a window by the empty vertical tab strip region should work.
+  EXPECT_EQ(HTCAPTION, frame_view->NonClientHitTest(point));
+
+  // Restore children. A point covered by a direct child view should not be
+  // HTCAPTION so that users can interact with the child elements.
+  for (views::View* child : region_view->GetChildrenInZOrder()) {
+    child->SetVisible(true);
+  }
+
+  // The region view only occupies a small portion of the available height
+  // (e.g. one tab-height per tab), so the center of the full region view is
+  // typically empty space with no child underneath. Find a child with non-zero
+  // bounds and verify its center returns non-HTCAPTION. Children's bounds are
+  // preserved from the layout run before hiding, so no extra layout step is
+  // needed.
+  for (views::View* child : region_view->GetChildrenInZOrder()) {
+    if (child->bounds().IsEmpty()) {
+      continue;
+    }
+    // Child bounds are in region_view's local coordinate space.
+    gfx::Point child_center = child->bounds().CenterPoint();
+    views::View::ConvertPointToWidget(region_view, &child_center);
+    EXPECT_NE(HTCAPTION, frame_view->NonClientHitTest(child_center));
+    break;
+  }
 }
