@@ -230,6 +230,7 @@ TEST_F(AdBlockCustomResourceProviderTest, AddResource) {
 
       expect.Append(std::move(resource));
       EXPECT_EQ(expect, GetResources());
+      EXPECT_TRUE(HasResource("user-style.js"));
     }
   }
 }

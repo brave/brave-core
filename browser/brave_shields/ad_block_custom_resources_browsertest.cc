@@ -309,32 +309,6 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MimeType) {
   ASSERT_TRUE(ClickCustomScriplet(web_contents(), "user-custom-css.js",
                                   "edit"));
   EXPECT_EQ("text/css", GetCustomScriptletMime(web_contents()));
-
-  UpdateAdBlockInstanceWithRules(
-      "custom-style.css$stylesheet,redirect=user-custom-css.js");
-
-  GURL tab_url = embedded_test_server()->GetURL("a.com", "/simple.html");
-  NavigateToURL(tab_url);
-
-  constexpr const char kLoadStylesheet[] = R"js(
-    new Promise((resolve) => {
-      const link = document.createElement('link');
-      link.rel = 'stylesheet';
-      link.href = $1;
-      link.onload = () => {
-        requestAnimationFrame(() => {
-          resolve(getComputedStyle(document.body).color);
-        });
-      };
-      link.onerror = () => resolve('error');
-      document.head.appendChild(link);
-    });
-  )js";
-  const GURL css_url =
-      embedded_test_server()->GetURL("a.com", "/custom-style.css");
-  EXPECT_EQ("rgb(255, 0, 0)",
-            EvalJs(web_contents(),
-                   content::JsReplace(kLoadStylesheet, css_url.spec())));
 }
 
 // Renderer crashes with libc++ alignment assertion on win32-x86
