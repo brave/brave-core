@@ -42,8 +42,9 @@ void SpeechSynthesis::OnSetVoiceList(
       if (ExecutionContext* context = GetExecutionContext()) {
         fake_voice = mojom_voice.Clone();
         fake_voice->is_default = false;
-        brave::FarblingPRNG prng = brave::BraveSessionCache::From(*context)
-                                       .MakePseudoRandomGenerator();
+        brave_shields::FarblingPRNG prng =
+            brave::BraveSessionCache::From(*context)
+                .MakePseudoRandomGenerator();
         auto kFakeNames = std::to_array<const char*>(
             {"Hubert", "Vernon", "Rudolph", "Clayton", "Irving", "Wilson",
              "Alva", "Harley", "Beauregard", "Cleveland", "Cecil", "Reuben",

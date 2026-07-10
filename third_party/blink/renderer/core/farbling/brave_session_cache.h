@@ -11,11 +11,11 @@
 #include <string_view>
 
 #include "base/containers/span.h"
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/third_party/blink/renderer/bindings/core/webgl/webgl_farbled_extension_handler.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "third_party/abseil-cpp/absl/random/random.h"
 #include "third_party/blink/renderer/core/core_export.h"
 #include "third_party/blink/renderer/core/execution_context/execution_context.h"
 #include "third_party/blink/renderer/core/frame/dom_window.h"
@@ -44,8 +44,6 @@ enum FarbleKey : uint64_t {
   kPointerScreenY,
   kKeyCount
 };
-
-using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     ExecutionContext* context);
@@ -95,7 +93,8 @@ class CORE_EXPORT BraveSessionCache final
                      int max_random_offset);
   bool AllowFontFamily(blink::WebContentSettingsClient* settings,
                        const blink::AtomicString& family_name);
-  FarblingPRNG MakePseudoRandomGenerator(FarbleKey key = FarbleKey::kNone);
+  brave_shields::FarblingPRNG MakePseudoRandomGenerator(
+      FarbleKey key = FarbleKey::kNone);
   std::optional<blink::BraveAudioFarblingHelper> GetAudioFarblingHelper();
   // Returns a non owning reference to |webgl_farbled_extension_handler_|.
   // Callers must not delete it. If a prior call to create this was already made

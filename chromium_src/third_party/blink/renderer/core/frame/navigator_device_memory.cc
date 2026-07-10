@@ -13,6 +13,8 @@
 
 namespace brave {
 
+using brave_shields::FarblingPRNG;
+
 float FarbleDeviceMemory(blink::ExecutionContext* context) {
   float true_value =
       blink::ApproximatedDeviceMemory::GetApproximatedDeviceMemory();

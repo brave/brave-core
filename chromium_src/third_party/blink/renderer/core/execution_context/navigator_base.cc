@@ -41,7 +41,7 @@ void ApplyBraveHardwareConcurrencyOverride(blink::ExecutionContext* context,
       [[fallthrough]];
     }
     case BraveFarblingLevel::BALANCED: {
-      brave::FarblingPRNG prng =
+      brave_shields::FarblingPRNG prng =
           brave::BraveSessionCache::From(*context).MakePseudoRandomGenerator();
       farbled_value =
           kFakeMinProcessors + (prng() % (true_value + 1 - kFakeMinProcessors));

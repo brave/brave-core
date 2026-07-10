@@ -34,6 +34,8 @@ using blink::StringBuilder;
 
 namespace brave {
 
+using brave_shields::FarblingPRNG;
+
 String PluginReplacementName(FarblingPRNG* prng) {
   std::vector<String> chrome{"Chrome ", "Chromium ",   "Brave ",
                              "Web ",    "Browser ",    "OpenSource ",

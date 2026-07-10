@@ -12,6 +12,8 @@ using blink::MediaDeviceInfoVector;
 
 namespace brave {
 
+using brave_shields::FarblingPRNG;
+
 void FarbleMediaDevices(ExecutionContext* context,
                         MediaDeviceInfoVector* media_devices) {
   // |media_devices| is guaranteed not to be null here.

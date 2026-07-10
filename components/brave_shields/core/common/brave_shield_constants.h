@@ -10,12 +10,10 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/containers/map_util.h"
 #include "base/files/file_path.h"
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "components/content_settings/core/common/content_settings_types.h"
-#include "third_party/abseil-cpp/absl/random/random.h"
 
 namespace brave_shields {
-
-using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 // Content/Web settings:
 inline constexpr char kAds[] = "shieldsAds";
