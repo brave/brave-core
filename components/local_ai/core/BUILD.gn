@@ -18,6 +18,18 @@ mojom_component("mojom") {
 
   sources = [ "local_ai.mojom" ]
 
+  public_deps = [ "//mojo/public/mojom/base" ]
+}
+
+mojom_component("speech_recognition_mojom") {
+  output_prefix = "on_device_speech_recognition_mojom"
+  macro_prefix = "ON_DEVICE_SPEECH_RECOGNITION_MOJOM"
+
+  generate_legacy_js_bindings = true
+  webui_module_path = "/"
+
+  sources = [ "on_device_speech_recognition.mojom" ]
+
   public_deps = [
     "//mojo/public/mojom/base",
     "//services/on_device_model/public/mojom",

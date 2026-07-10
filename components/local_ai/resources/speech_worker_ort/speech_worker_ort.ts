@@ -15,7 +15,7 @@ import {
   SpeechRecognitionFactoryHost,
   SpeechRecognitionFactoryInterface,
   SpeechRecognitionFactoryReceiver,
-} from 'gen/brave/components/local_ai/core/local_ai.mojom.m.js'
+} from 'gen/brave/components/local_ai/core/on_device_speech_recognition.mojom.m.js'
 import {
   AsrStreamInputInterface,
   AsrStreamInputPendingReceiver,
