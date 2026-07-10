@@ -405,16 +405,18 @@ struct TabGridView: View {
         Button {
           destinationSheet = .history
         } label: {
-          Label(Strings.TabGrid.viewHistoryAccessibilityLabel, braveSystemImage: "leo.history")
+          Label(Strings.TabGrid.viewHistoryMenuItemLabel, braveSystemImage: "leo.history")
         }
+        .accessibilityLabel(Strings.TabGrid.viewHistoryAccessibilityLabel)
         Button {
           destinationSheet = .syncedTabs
         } label: {
           Label(
-            Strings.TabGrid.viewSyncedTabsAccessibilityLabel,
+            Strings.TabGrid.viewSyncedTabsMenuItemLabel,
             braveSystemImage: "leo.smartphone.laptop"
           )
         }
+        .accessibilityLabel(Strings.TabGrid.viewSyncedTabsAccessibilityLabel)
       }
       .controlGroupStyle(.menu)
       if viewModel.isPrivateBrowsing && !privateBrowsingOnly.value {
@@ -684,7 +686,7 @@ extension View {
 }
 
 // We must use a UISegmentedControl directly as you cannot change the height of a PickerView using
-// a segmented picker style.
+// a segmented picker style
 private struct TabGridModeSwitcher: UIViewRepresentable {
   @Binding var isPrivateBrowsing: Bool
   var regularTabCount: Int

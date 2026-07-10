@@ -1168,18 +1168,32 @@ extension Strings {
       value: "Shred All Tabs",
       comment: "A button title that when tapped allows users to shred all of their tabs"
     )
+    public static let viewHistoryMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewHistoryMenuItemLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "History",
+      comment: "Label for history menu item button that when tapped presents the users history & recently closed tabs"
+    )
+    public static let viewSyncedTabsMenuItemLabel = NSLocalizedString(
+      "tabGrid.viewSyncedTabsAccessibilityLabel",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Sync",
+      comment: "Label for synced tabs menu item that when tapped presents the users synced tabs"
+    )
     public static let viewHistoryAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewHistoryAccessibilityLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "History",
+      value: "View History",
       comment: "Accessibility label for a button that when tapped presents the users history & recently closed tabs"
     )
     public static let viewSyncedTabsAccessibilityLabel = NSLocalizedString(
       "tabGrid.viewSyncedTabsAccessibilityLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "Sync",
+      value: "View Sync",
       comment: "Accessibility label for a button that when tapped presents the users synced tabs"
     )
     public static let regularBrowsingModeAccessibilityLabel = NSLocalizedString(
