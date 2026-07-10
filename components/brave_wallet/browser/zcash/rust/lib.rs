@@ -17,7 +17,7 @@ use orchard::{
         SpendingKey,
     },
     note::{ExtractedNoteCommitment, NoteVersion, Nullifier, RandomSeed, Rho},
-    note_encryption::{CompactAction, OrchardDomain},
+    note_encryption::{CompactAction, IronwoodDomain, OrchardDomain},
     tree::{MerkleHashOrchard, MerklePath},
     value::NoteValue,
     zip32::{
@@ -40,7 +40,7 @@ use rand::{rngs::OsRng, CryptoRng, Error as OtherError, RngCore};
 
 use brave_wallet::impl_error;
 use std::sync::Arc;
-use zcash_note_encryption::{batch, Domain, ShieldedOutput, COMPACT_NOTE_SIZE};
+use zcash_note_encryption::{batch, BatchDomain, Domain, ShieldedOutput, COMPACT_NOTE_SIZE};
 
 use shardtree::{
     store::{Checkpoint, ShardStore, TreeState},
@@ -379,6 +379,15 @@ mod ffi {
 
         fn batch_decode(
             fvk_bytes: &[u8; 96], // Array size should match kOrchardFullViewKeySize
+            prior_tree_state: CxxOrchardShardTreeState,
+            actions: Vec<CxxOrchardCompactAction>,
+        ) -> Box<CxxOrchardDecodedBlocksBundleResult>;
+
+        // Same as batch_decode but trial-decrypts the actions under the Ironwood
+        // (v3 note plaintext) domain. The resulting bundle feeds a separate
+        // Ironwood commitment tree. fvk array size should match kOrchardFullViewKeySize.
+        fn batch_decode_ironwood(
+            fvk_bytes: &[u8; 96],
             prior_tree_state: CxxOrchardShardTreeState,
             actions: Vec<CxxOrchardCompactAction>,
         ) -> Box<CxxOrchardDecodedBlocksBundleResult>;
@@ -1060,11 +1069,40 @@ impl ShieldedOutput<OrchardDomain, COMPACT_NOTE_SIZE> for CxxOrchardCompactActio
     }
 }
 
-fn batch_decode(
+// Ironwood compact actions share the exact wire layout of Orchard actions; the
+// only difference is the note-encryption domain (v3 vs v2 plaintext) used to
+// trial-decrypt them. The accessor bodies are therefore identical.
+impl ShieldedOutput<IronwoodDomain, COMPACT_NOTE_SIZE> for CxxOrchardCompactAction {
+    fn ephemeral_key(&self) -> EphemeralKeyBytes {
+        EphemeralKeyBytes(self.ephemeral_key)
+    }
+
+    fn cmstar_bytes(&self) -> [u8; 32] {
+        self.cmx
+    }
+
+    fn enc_ciphertext(&self) -> &[u8; COMPACT_NOTE_SIZE] {
+        &self.enc_cipher_text
+    }
+}
+
+// Decrypts a range of Orchard-shaped compact actions under a single note-encryption
+// domain `D` (either `OrchardDomain` for v2 notes or `IronwoodDomain` for v3 notes).
+// The account's Orchard incoming viewing keys are used for both domains; only the
+// accepted note-plaintext version differs. Every action's cmx is added to the returned
+// commitment list (so the caller's commitment tree stays position-correct), while only
+// actions that trial-decrypt under `D` become discovered notes.
+fn decode_actions<D>(
     fvk_bytes: &[u8; 96],
     prior_tree_state: CxxOrchardShardTreeState,
     actions: Vec<CxxOrchardCompactAction>,
-) -> Box<CxxOrchardDecodedBlocksBundleResult> {
+    for_action: impl Fn(&CompactAction) -> D,
+) -> Box<CxxOrchardDecodedBlocksBundleResult>
+where
+    D: BatchDomain
+        + Domain<Note = orchard::note::Note, IncomingViewingKey = PreparedIncomingViewingKey>,
+    CxxOrchardCompactAction: ShieldedOutput<D, COMPACT_NOTE_SIZE>,
+{
     let fvk = match OrchardFVK::from_bytes(fvk_bytes) {
         Some(fvk) => fvk,
         None => return Box::new(CxxOrchardDecodedBlocksBundleResult::from(Err(Error::FvkError))),
@@ -1075,7 +1113,7 @@ fn batch_decode(
         PreparedIncomingViewingKey::new(&fvk.to_ivk(OrchardScope::Internal)),
     ];
 
-    let input_actions: Result<Vec<(OrchardDomain, CxxOrchardCompactAction)>, Error> = actions
+    let input_actions: Result<Vec<(D, CxxOrchardCompactAction)>, Error> = actions
         .into_iter()
         .map(|v| {
             let nullifier_ctopt = Nullifier::from_bytes(&v.nullifier);
@@ -1097,9 +1135,9 @@ fn batch_decode(
 
             let compact_action =
                 CompactAction::from_parts(nullifier, cmx, ephemeral_key, enc_cipher_text);
-            let orchard_domain = OrchardDomain::for_compact_action(&compact_action);
+            let domain = for_action(&compact_action);
 
-            Ok((orchard_domain, v))
+            Ok((domain, v))
         })
         .collect();
 
@@ -1165,6 +1203,27 @@ fn batch_decode(
         commitments: note_commitments,
         prior_tree_state: prior_tree_state,
     })))
+}
+
+// Scans Orchard (v2) compact actions. Behaviour is unchanged from before the
+// Ironwood refactor.
+fn batch_decode(
+    fvk_bytes: &[u8; 96],
+    prior_tree_state: CxxOrchardShardTreeState,
+    actions: Vec<CxxOrchardCompactAction>,
+) -> Box<CxxOrchardDecodedBlocksBundleResult> {
+    decode_actions(fvk_bytes, prior_tree_state, actions, OrchardDomain::for_compact_action)
+}
+
+// Scans Ironwood (v3) compact actions with the account's Orchard viewing keys.
+// The returned bundle is meant to feed a SEPARATE Ironwood commitment tree; callers
+// must pass only Ironwood actions and the Ironwood prior tree state here.
+fn batch_decode_ironwood(
+    fvk_bytes: &[u8; 96],
+    prior_tree_state: CxxOrchardShardTreeState,
+    actions: Vec<CxxOrchardCompactAction>,
+) -> Box<CxxOrchardDecodedBlocksBundleResult> {
+    decode_actions(fvk_bytes, prior_tree_state, actions, IronwoodDomain::for_compact_action)
 }
 
 impl CxxOrchardDecodedBlocksBundle {

@@ -93,6 +93,12 @@ OrchardSyncState::RegisterAccount(const mojom::AccountIdPtr& account_id,
         register_account_result.value() != OrchardStorage::Result::kSuccess) {
       return register_account_result;
     }
+    auto register_ironwood_result = storage_.RegisterAccount(
+        OrchardPool::kIronwood, account_id, account_birthday_block);
+    if (!register_ironwood_result.has_value() ||
+        register_ironwood_result.value() != OrchardStorage::Result::kSuccess) {
+      return register_ironwood_result;
+    }
     return tx->Commit();
   }
 }
@@ -118,7 +124,7 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
              .TruncateToCheckpoint(rewind_block_height)) {
       return base::unexpected(
           OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
-                                "Failed to truncate tree"});
+                                "Failed to truncate orchard tree"});
     }
     auto chain_reorg_result = storage_.HandleChainReorg(
         OrchardPool::kOrchard, account_id, rewind_block_height,
@@ -126,6 +132,19 @@ OrchardSyncState::Rewind(const mojom::AccountIdPtr& account_id,
     if (!chain_reorg_result.has_value() ||
         chain_reorg_result.value() != OrchardStorage::Result::kSuccess) {
       return chain_reorg_result;
+    }
+    if (!GetOrCreateShardTree(OrchardPool::kIronwood, account_id)
+             .TruncateToCheckpoint(rewind_block_height)) {
+      return base::unexpected(
+          OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
+                                "Failed to truncate ironwood tree"});
+    }
+    auto ironwood_chain_reorg_result = storage_.HandleChainReorg(
+        OrchardPool::kIronwood, account_id, rewind_block_height,
+        rewind_block_hash);
+    if (!ironwood_chain_reorg_result.has_value() ||
+        ironwood_chain_reorg_result.value() != OrchardStorage::Result::kSuccess) {
+      return ironwood_chain_reorg_result;
     }
     return tx->Commit();
   }
@@ -225,7 +244,6 @@ OrchardSyncState::ApplyScanResults(
                                 "Failed to insert commitments"});
     }
 
-    // TODO(ironwood): persist block_scanner_results.ironwood to kIronwood
     auto update_notes_result = storage_.UpdateNotes(
         OrchardPool::kOrchard, account_id, notes_to_add, std::move(nf_to_add),
         block_scanner_results.orchard.latest_scanned_block_id,
@@ -234,6 +252,45 @@ OrchardSyncState::ApplyScanResults(
     if (!update_notes_result.has_value() ||
         update_notes_result.value() != OrchardStorage::Result::kSuccess) {
       return update_notes_result;
+    }
+
+    if (block_scanner_results.ironwood.has_value()) {
+      auto& ironwood = block_scanner_results.ironwood.value();
+
+      auto existing_ironwood_notes =
+          storage_.GetSpendableNotes(OrchardPool::kIronwood, account_id);
+      RETURN_IF_ERROR(existing_ironwood_notes);
+
+      std::vector<OrchardNote> ironwood_notes_to_add =
+          ironwood.discovered_notes;
+      base::Extend(existing_ironwood_notes.value(), ironwood_notes_to_add);
+
+      std::vector<OrchardNoteSpend> ironwood_nf_to_add;
+      for (const auto& nf : ironwood.found_spends) {
+        if (std::ranges::find_if(existing_ironwood_notes.value(),
+                                 [&nf](const auto& v) {
+                                   return v.nullifier == nf.nullifier;
+                                 }) != existing_ironwood_notes.value().end()) {
+          ironwood_nf_to_add.push_back(nf);
+        }
+      }
+
+      if (!GetOrCreateShardTree(OrchardPool::kIronwood, account_id)
+               .ApplyScanResults(std::move(ironwood.scanned_blocks))) {
+        return base::unexpected(
+            OrchardStorage::Error{OrchardStorage::ErrorCode::kInternalError,
+                                  "Failed to insert ironwood commitments"});
+      }
+
+      auto update_ironwood_result = storage_.UpdateNotes(
+          OrchardPool::kIronwood, account_id, ironwood_notes_to_add,
+          std::move(ironwood_nf_to_add), ironwood.latest_scanned_block_id,
+          ironwood.latest_scanned_block_hash);
+
+      if (!update_ironwood_result.has_value() ||
+          update_ironwood_result.value() != OrchardStorage::Result::kSuccess) {
+        return update_ironwood_result;
+      }
     }
 
     return tx->Commit();
@@ -256,6 +313,13 @@ OrchardSyncState::ResetAccountSyncState(
         reset_account_sync_state_result.value() !=
             OrchardStorage::Result::kSuccess) {
       return base::unexpected(reset_account_sync_state_result.error());
+    }
+    auto reset_ironwood_sync_state_result = storage_.ResetAccountSyncState(
+        OrchardPool::kIronwood, account_id, account_birthday_block);
+    if (!reset_ironwood_sync_state_result.has_value() ||
+        reset_ironwood_sync_state_result.value() !=
+            OrchardStorage::Result::kSuccess) {
+      return base::unexpected(reset_ironwood_sync_state_result.error());
     }
     return tx->Commit();
   }
