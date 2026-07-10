@@ -88,7 +88,8 @@ public class BraveReturnToChromeUtilUnitTest {
     @EnableFeatures(BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT)
     public void testShouldShowNtpAfterInactivityWhenNoMediaPlaying() {
         setUpInactivityVariant();
-        MediaNotificationManager.clear(R.id.media_playback_notification);
+        MediaNotificationManager.hideForAllTabs(R.id.media_playback_notification);
+        MediaNotificationManager.setService(R.id.media_playback_notification, null);
 
         assertTrue(
                 BraveReturnToChromeUtil.shouldShowNtpAsHomeSurfaceAtStartup(
