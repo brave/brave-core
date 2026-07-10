@@ -104,43 +104,43 @@ EXTRA_DEPS = {
             },
         ],
     },
-    'src/brave/third_party/node/linux': {
+    'src/brave/third_party/node/node-linux-x64': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
         'condition': 'host_os == "linux"',
         'objects': [
             {
-                'object_name': 'node-v24.17.0-linux-x64.tar.gz',
-                'sha256sum': 'e0472427aa791ad80bdc426ff7cc73cdd28ed0f616d1ff9689a23a7f47f1265f',
+                'object_name': 'node-v24.18.0-linux-x64.tar.gz',
+                'sha256sum': '2e8e150bf8ca55cc7b1d89c9d71138d57a1b7900c5687b3fb1e03d5e6ba1231c',
             },
         ],
     },
-    'src/brave/third_party/node/mac': {
+    'src/brave/third_party/node/node-mac-x64': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
         'condition': 'host_os == "mac" and host_cpu == "x64"',
         'objects': [
             {
-                'object_name': 'node-v24.17.0-darwin-x64.tar.gz',
-                'sha256sum': '80da552fe037290cb130e9dea590f5eeeb7aa450636f0c89ab41415511c1ec27',
+                'object_name': 'node-v24.18.0-mac-x64.tar.gz',
+                'sha256sum': 'c33ce3dfc0fb84dd6b54ebd6fdc5646ae4358e164f11a80af3abf09d40954871',
             },
         ],
     },
-    'src/brave/third_party/node/mac_arm64': {
+    'src/brave/third_party/node/node-mac-arm64': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
         'condition': 'host_os == "mac" and host_cpu == "arm64"',
         'objects': [
             {
-                'object_name': 'node-v24.17.0-darwin-arm64.tar.gz',
-                'sha256sum': '4fc3266a3702eebc39cc37661cf4eeceeade307e242ab64e4d7ce7949197e11f',
+                'object_name': 'node-v24.18.0-mac-arm64.tar.gz',
+                'sha256sum': '96c7a5b4c9d096084137333fa5a964514d593f859d0328a574f4509d4e3d6522',
             },
         ],
     },
-    'src/brave/third_party/node/win': {
+    'src/brave/third_party/node/node-win-x64': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
         'condition': 'host_os == "win"',
         'objects': [
             {
-                'object_name': 'node-v24.17.0-win-x64.zip',
-                'sha256sum': 'f2aa33b35b75aca5f3f7b85675a6f6423201053e9381911e64961f3bda2528ab',
+                'object_name': 'node-v24.18.0-win-x64.tar.gz',
+                'sha256sum': 'c0a0e3b9fe5cadfedc4c6e82943a3c1201460716449c8e4cd188256751cca386',
             },
         ],
     },
