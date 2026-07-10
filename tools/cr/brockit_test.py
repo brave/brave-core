@@ -1382,6 +1382,92 @@ class MergeTest(unittest.TestCase):
 
         self.assertEqual(self._remote_master(), master_before)
 
+    def test_merge_blocks_on_orphaned_fixup(self):
+        """An orphaned `fixup!` (no matching target) blocks the merge.
+
+        Git's autosquash leaves it as a `pick`, so only the orphan filter
+        catches it -- unlike an attached fixup, whose `fixup` command already
+        differs from the identity plan.
+        """
+        self._setup_upstream()
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self.fake_chromium_src.commit_empty(
+            'fixup! [cr149] A commit that is not on this branch', self.brave)
+        master_before = self._remote_master()
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Merge().execute()
+
+        self.assertEqual(self._remote_master(), master_before)
+
+    def _assert_tag_blocks_merge(self, subject: str) -> None:
+        """Asserts a commit with `subject` blocks the merge without pushing."""
+        self._setup_upstream()
+        self.fake_chromium_src.commit_empty('[cr149] Feature A', self.brave)
+        self.fake_chromium_src.commit_empty(subject, self.brave)
+        master_before = self._remote_master()
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Merge().execute()
+
+        self.assertEqual(self._remote_master(), master_before)
+
+    def test_merge_blocks_on_wip_commit_lowercase(self):
+        """A `[wip]` commit blocks the merge and is never pushed."""
+        self._assert_tag_blocks_merge('[wip] Not done yet')
+
+    def test_merge_blocks_on_wip_commit_uppercase(self):
+        """A `[WIP]` commit blocks the merge and is never pushed."""
+        self._assert_tag_blocks_merge('[WIP] Not done yet')
+
+    def test_merge_blocks_on_do_not_merge_tag(self):
+        """A `[DO NOT MERGE]` commit blocks the merge and is never pushed."""
+        self._assert_tag_blocks_merge('[DO NOT MERGE] keep this local')
+
+    def test_merge_blocks_on_do_not_tag_case_insensitive(self):
+        """`[DO NOT ...]` matching is case-insensitive and tag-agnostic."""
+        self._assert_tag_blocks_merge('[Do Not Land] experimental change')
+
+    def test_never_merge_tag_regex_only_matches_bracketed_tags(self):
+        """The tag regex matches only bracketed `[wip]` / `[DO NOT ...]` tags,
+        never a plain "WIP" / "do not" word elsewhere in the subject."""
+        regex = brockit.Merge._NEVER_MERGE_TAG_RE
+        matches = [
+            '[wip]',
+            '[WIP]',
+            '[Wip]',
+            '[DO NOT MERGE]',
+            '[do not land]',
+            '[Do Not Submit] foo',
+            'pick abc # [wip] subject # empty',
+        ]
+        for subject in matches:
+            with self.subTest(subject=subject):
+                self.assertIsNotNone(regex.search(subject))
+
+        non_matches = [
+            'Rework the WIP handling logic',
+            'wip cleanup without brackets',
+            'do not remove this comment',
+            'DO NOT panic',
+            '[cr149] WIP feature',
+            '[cr149] refactor: do not inline',
+        ]
+        for subject in non_matches:
+            with self.subTest(subject=subject):
+                self.assertIsNone(regex.search(subject))
+
+    def test_merge_allows_wip_word_outside_tag(self):
+        """A plain "WIP" word (no `[wip]` tag) does not block the merge."""
+        self._setup_upstream()
+        self.fake_chromium_src.commit_empty('[cr149] Rework WIP handling',
+                                            self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        brockit.Merge().execute()
+
+        self.assertEqual(self._remote_master(), head)
+
     def test_merge_allows_canonical_branch(self):
         """A single, correctly-placed pinned commit is merge-ready."""
         self._setup_upstream()

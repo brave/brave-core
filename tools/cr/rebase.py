@@ -86,6 +86,9 @@ _CR_TAG_RE = re.compile(r'^(?:\[cr\d+\](?:\[[^\]]+\])*\s+)?')
 # regardless of how many autosquash levels deep the user has gone.
 _AUTOSQUASH_PREFIX_RE = re.compile(r'^(?:(?:fixup|amend|squash)!\s+)+')
 
+# Git-naitve subcommands that brockit treats as autosquash markers.
+_AUTOSQUASH_SUBCOMMANDS = frozenset({'fixup', 'amend', 'reword', 'squash'})
+
 # Chromium version shape: exactly four dot-separated numeric segments
 # (e.g. 149.0.7827.5).
 _CR_VERSION = r'\d+\.\d+\.\d+\.\d+'
@@ -390,6 +393,16 @@ class EntryLine:
     @property
     def is_drop(self) -> bool:
         return self._entry_type is EntryType.DROP
+
+    @property
+    def is_orphan(self) -> bool:
+        """ True when a autosquash marker is orphaned, False otherwise.
+
+        An autosquash marker is orphaned when git could not reattach it to a
+        target commit during the rebase, which leaves it still on a `pick`.
+        """
+        return (self._command == 'pick' and self._subcommand is not None
+                and self._subcommand[0] in _AUTOSQUASH_SUBCOMMANDS)
 
     @property
     def reassign_target_hash(self) -> str | None:
