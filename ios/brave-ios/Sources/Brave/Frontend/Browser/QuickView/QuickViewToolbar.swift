@@ -15,6 +15,7 @@ struct QuickViewToolbarView: View {
   /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
   var shieldBackgroundView: InvisibleUIView = .init()
   var shareBackgroundView: InvisibleUIView = .init()
+  var sslStatusBackgroundView: InvisibleUIView = .init()
 
   var body: some View {
     VStack(spacing: 0) {
@@ -100,7 +101,6 @@ struct QuickViewToolbarView: View {
       .font(.subheadline)
       .foregroundStyle(Color(braveSystemName: .textTertiary))
       .lineLimit(1)
-      .frame(maxWidth: .infinity)
       .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
   }
 
@@ -111,13 +111,65 @@ struct QuickViewToolbarView: View {
     }
   }
 
+  @ViewBuilder private var warningIcon: some View {
+    switch viewModel.secureContentState {
+    case .secure, .localhost:
+      EmptyView()
+    case .unknown:
+      Image(braveSystemName: "leo.info.filled")
+        .foregroundColor(Color(braveSystemName: .iconDefault))
+        .font(.caption2)
+        .accessibilityLabel(Text(Strings.PageSecurityView.pageUnknownStatusTitle))
+    case .invalidCertificate:
+      Image(braveSystemName: "leo.warning.triangle-filled")
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorIcon))
+        .font(.footnote)
+    case .missingSSL, .mixedContent:
+      Image(braveSystemName: "leo.warning.triangle-filled")
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+        .font(.footnote)
+    }
+  }
+
+  @ViewBuilder private var warningTitle: some View {
+    switch viewModel.secureContentState {
+    case .secure, .localhost, .unknown:
+      EmptyView()
+    case .invalidCertificate:
+      Text(Strings.tabToolbarNotSecureTitle)
+        .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
+        .font(.footnote)
+    case .missingSSL, .mixedContent:
+      Text(Strings.tabToolbarNotSecureTitle)
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+        .font(.footnote)
+    }
+  }
+
+  private var sslStatusButton: some View {
+    Button {
+      viewModel.onActionButton?(.sslStatus)
+    } label: {
+      HStack(spacing: 4) {
+        warningIcon
+        warningTitle
+      }
+    }
+  }
+
   private var topRow: some View {
     HStack(alignment: .top, spacing: 8) {
       shieldButton
         .background(shieldBackgroundView)
 
       VStack(spacing: 12) {
-        addressView
+        HStack(spacing: 8) {
+          if viewModel.secureContentState.shouldDisplayWarning {
+            sslStatusButton
+              .background(sslStatusBackgroundView)
+          }
+          addressView
+        }
         progressBar
           .padding(.horizontal, 16)
           .hidden(isHidden: !viewModel.isLoading)

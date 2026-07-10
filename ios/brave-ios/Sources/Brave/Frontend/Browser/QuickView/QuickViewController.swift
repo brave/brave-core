@@ -6,6 +6,7 @@
 import BraveCore
 import BraveShields
 import BraveUI
+import CertificateUtilities
 import Data
 import Preferences
 import Shared
@@ -139,6 +140,8 @@ class QuickViewController: UIViewController {
             }
           )
         )
+      case .sslStatus:
+        self?.presentSSLStatusView()
       case .playlist, .translate:
         break
       }
@@ -222,6 +225,65 @@ class QuickViewController: UIViewController {
       from: toolbarHostingController.rootView.shieldBackgroundView.uiView,
       on: self
     )
+  }
+
+  private func presentSSLStatusView() {
+    guard let tab = currentTab else { return }
+    let hasCertificate = tab.serverTrust != nil
+    let pageSecurityView = PageSecurityView(
+      displayURL: toolbarViewModel.url.absoluteDisplayString,
+      secureState: tab.visibleSecureContentState,
+      hasCertificate: hasCertificate,
+      presentCertificateViewer: { [weak self] in
+        self?.dismiss(animated: true)
+        self?.displayPageCertificateInfo()
+      }
+    )
+    let popoverController = PopoverController(content: pageSecurityView)
+    popoverController.present(
+      from: toolbarHostingController.rootView.sslStatusBackgroundView.uiView,
+      on: self
+    )
+  }
+
+  private func displayPageCertificateInfo() {
+    guard let tab = currentTab, let trust = tab.serverTrust else { return }
+    let host = tab.visibleURL?.host
+
+    Task.detached {
+      let serverCertificates: [SecCertificate] =
+        SecTrustCopyCertificateChain(trust) as? [SecCertificate] ?? []
+
+      if let serverCertificate = serverCertificates.first,
+        let certificate = BraveCertificateModel(certificate: serverCertificate)
+      {
+
+        var errorDescription: String?
+
+        do {
+          try await BraveCertificateUtils.evaluateTrust(trust, for: host)
+        } catch {
+          errorDescription = error.localizedDescription
+          if let range = errorDescription?.range(of: "“\(certificate.subjectName.commonName)” ")
+            ?? errorDescription?.range(of: "\"\(certificate.subjectName.commonName)\" ")
+          {
+            errorDescription =
+              errorDescription?.replacingCharacters(in: range, with: "").capitalizeFirstLetter
+          }
+        }
+
+        await MainActor.run { [errorDescription] in
+          tab.dismissFindInteraction()
+          let certificateViewController = CertificateViewController(
+            certificate: certificate,
+            evaluationError: errorDescription
+          )
+          certificateViewController.modalPresentationStyle = .pageSheet
+          certificateViewController.sheetPresentationController?.detents = [.medium(), .large()]
+          self.present(certificateViewController, animated: true)
+        }
+      }
+    }
   }
 
   private func showSubmitReportView(for url: URL) {

@@ -18,11 +18,13 @@ enum QuickViewActionButton {
   case forward
   case share
   case openTab
+  case sslStatus
 }
 
 @Observable
 class QuickViewToolbarModel {
   var url: URL
+  var secureContentState: SecureContentState = .unknown
   var secondaryTopButton: QuickViewActionButton? {
     if readerModeState != .unavailable { return .readerMode }
     return nil
@@ -49,6 +51,7 @@ class QuickViewToolbarModel {
 extension QuickViewToolbarModel: TabObserver {
   func tabDidUpdateURL(_ tab: some TabState) {
     self.url = tab.visibleURL?.displayURL ?? tab.visibleURL ?? url
+    secureContentState = tab.visibleSecureContentState
   }
 
   func tabDidStartLoading(_ tab: some TabState) {
@@ -72,5 +75,9 @@ extension QuickViewToolbarModel: TabObserver {
 
   func tabWillBeDestroyed(_ tab: some TabState) {
     tab.removeObserver(self)
+  }
+
+  func tabDidChangeVisibleSecurityState(_ tab: some TabState) {
+    secureContentState = tab.visibleSecureContentState
   }
 }
