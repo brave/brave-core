@@ -314,6 +314,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+from typing import ClassVar
 
 from exceptions import (ActionNeededException, BadOutcomeException,
                         InvalidInputException)
@@ -1907,6 +1908,10 @@ class Merge(Task):
     diverged, so that the push to the remote is always a fast-forward.
     """
 
+    # A few of the tags we want to reject during merge.
+    _NEVER_MERGE_TAG_RE: ClassVar[re.Pattern[str]] = re.compile(
+        r'\[wip\]|\[do not[^\]]*\]', re.IGNORECASE)
+
     def status_message(self):
         return "Merging current branch into upstream..."
 
@@ -1962,7 +1967,6 @@ class Merge(Task):
             )
         remote, remote_branch = upstream.split('/', 1)
 
-        terminal.log_task(f'Fetching {remote_branch} from {remote}...')
         repository.brave.run_git('fetch', remote, remote_branch)
 
         head_before = repository.brave.run_git('rev-parse', 'HEAD')
@@ -1977,11 +1981,7 @@ class Merge(Task):
         if plans is not None:
             self._log_plan_diff(*plans)
             raise InvalidInputException(
-                f'{current_branch} is not ready to be merged: a '
-                '[bold cyan]brockit rebase --squash-minor-bumps[/] would still '
-                'collapse, drop, or reorder commits on this branch (see the '
-                'diff above). Run it first, then rerun '
-                '[italic]🚀Brockit![/] [bold cyan]merge[/].')
+                f'{current_branch} is not ready to be merged.')
 
         if dry_run:
             terminal.log_task(
@@ -2032,8 +2032,8 @@ class Merge(Task):
         This performs a no-op interactive rebase (`--onto <base> <base>
         <branch>`, where `<base>` is the merge-base with the upstream) to
         capture the plan git would run, and compares it against the same plan
-        after brockit's `--squash-minor-bumps` rewrite. Any differences indicate
-        that rebase is needed.
+        after brockit's `--squash-minor-bumps`. We also check for the presence
+        or WIPs and orphaned fixups, etc.
 
         Returns a `(current_plan, rewritten_plan)` pair of TODO lines when a
         change is detected, or `None` if the branch is ready to merge.
@@ -2060,17 +2060,25 @@ class Merge(Task):
             identity_entries = self._parse_plan(identity)
             squashed_entries = self._parse_plan(squashed)
 
+        # Dropping never-merge-tagged commits (`[wip]`, `[DO NOT ...]`) and
+        # orphaned fixups so that also fails validation.
+        squashed_entries = [
+            entry for entry in squashed_entries
+            if not self._NEVER_MERGE_TAG_RE.search(entry.out)
+            and not entry.is_orphan
+        ]
+
         # Comparing the `(command, hash)` sequence catches squashes/fixups (a
         # command other than `pick`), drops (a missing entry), and reordering
         # (pinned commits grouped to the top).
-        identity_seq = [(command, commit)
-                        for command, commit, _ in identity_entries]
-        squashed_seq = [(command, commit)
-                        for command, commit, _ in squashed_entries]
+        identity_seq = [(entry.command, entry.hash)
+                        for entry in identity_entries]
+        squashed_seq = [(entry.command, entry.hash)
+                        for entry in squashed_entries]
         if identity_seq == squashed_seq:
             return None
-        return ([out for _, _, out in identity_entries],
-                [out for _, _, out in squashed_entries])
+        return ([entry.out for entry in identity_entries],
+                [entry.out for entry in squashed_entries])
 
     @staticmethod
     def _log_plan_diff(current_plan: list[str],
@@ -2079,12 +2087,11 @@ class Merge(Task):
         plan and the plan a `--squash-minor-bumps` rebase would produce.
         """
         diff = '\n'.join(
-            difflib.unified_diff(
-                current_plan,
-                rewritten_plan,
-                fromfile='branch as-is',
-                tofile='after brockit rebase --squash-minor-bumps',
-                lineterm=''))
+            difflib.unified_diff(current_plan,
+                                 rewritten_plan,
+                                 fromfile='current',
+                                 tofile='expected',
+                                 lineterm=''))
         console.print(
             Padding(
                 Syntax(diff,
@@ -2136,17 +2143,16 @@ class Merge(Task):
                 'Failed to capture the rebase plan for the merge pre-check.')
 
     @staticmethod
-    def _parse_plan(todo_file: Path) -> list[tuple[str, str, str]]:
-        """Parses a captured TODO file into `(command, hash, out)` tuples.
+    def _parse_plan(todo_file: Path) -> list[rebase.EntryLine]:
+        """Parses a captured TODO file into `EntryLine`s.
 
-        Blank and comment lines are skipped. `out` preserves the original line
-        for display when reporting a detected plan change.
+        Blank and comment lines are skipped.
         """
-        entries: list[tuple[str, str, str]] = []
+        entries: list[rebase.EntryLine] = []
         for line in todo_file.read_bytes().decode('utf-8').splitlines():
             entry = rebase.EntryLine.parse(line)
             if entry is not None:
-                entries.append((entry.command, entry.hash, entry.out))
+                entries.append(entry)
         return entries
 
 

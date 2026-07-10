@@ -85,6 +85,43 @@ class EntryLineParseTest(unittest.TestCase):
         self.assertEqual(entry_line.message, '[cr148] Feature B')
         self.assertEqual(entry_line.subcommand, ['reassign', 'bbb'])
 
+    def test_is_orphan_true_for_pick_autosquash_markers(self):
+        """A `pick` line still carrying an autosquash prefix is orphaned."""
+        orphans = [
+            'pick c8350895147 # fixup! [iOS] Dont inject Brave SKUs javascript '
+            'handlers in private tabs (#37860) # empty',
+            'pick aaa # amend! [cr149] Some subject',
+            'pick bbb # squash! [cr149] Some subject',
+            'pick ccc # reword! [cr149] Some subject',
+        ]
+        for line in orphans:
+            with self.subTest(line=line):
+                self.assertTrue(rebase.EntryLine.parse(line).is_orphan)
+
+    def test_is_orphan_false_for_attached_autosquash_markers(self):
+        """Once git reattaches the marker the command is no longer `pick`."""
+        attached = [
+            'fixup 19e7d36a927 # fixup! [cr151] immersive_mode_controller.h '
+            'moved to new directory',
+            'squash aaa # squash! [cr149] Some subject',
+            'fixup -C 2c334294014 # amend! [cr149] Permit cross-host',
+        ]
+        for line in attached:
+            with self.subTest(line=line):
+                self.assertFalse(rebase.EntryLine.parse(line).is_orphan)
+
+    def test_is_orphan_false_for_non_autosquash_lines(self):
+        """Plain picks and brockit `reassign!`/`drop!` markers aren't
+        orphans."""
+        non_orphans = [
+            'pick aaa # [cr148] Feature A',
+            'pick bbb # reassign!c080270dd7e! [cr149] Fix bookmark bar.',
+            'pick ccc # drop!c080270dd7e! [cr149] Fix bookmark bar.',
+        ]
+        for line in non_orphans:
+            with self.subTest(line=line):
+                self.assertFalse(rebase.EntryLine.parse(line).is_orphan)
+
     def test_parse_blank_line_returns_none(self):
         self.assertIsNone(rebase.EntryLine.parse('\n'))
         self.assertIsNone(rebase.EntryLine.parse('   \n'))
