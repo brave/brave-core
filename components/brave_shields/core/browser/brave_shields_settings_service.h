@@ -9,11 +9,11 @@
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
-#include "third_party/abseil-cpp/absl/random/random.h"
 
 class GURL;
 class HostContentSettingsMap;
@@ -24,8 +24,6 @@ class PrefRegistrySyncable;
 }
 
 namespace brave_shields {
-
-using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 class BraveShieldsSettingsService : public KeyedService {
  public:

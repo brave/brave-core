@@ -3,3 +3,9 @@ include_rules = [
   "+components/grit/brave_components_strings.h",
   "+ui/base",
 ]
+
+specific_include_rules = {
+  "brave_shield_constants\.h": [
+    "+third_party/abseil-cpp/absl/random/random.h",
+  ],
+}
