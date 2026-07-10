@@ -7,18 +7,10 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Tooltip from '@brave/leo/react/tooltip'
 import Button from '@brave/leo/react/button'
-import { getLocale, formatLocale } from '$web-common/locale'
+import { formatLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
-import { getKeysForMojomEnum } from '$web-common/mojomUtils'
-
-function getCategoryName(category: Mojom.ModelCategory) {
-  // To avoid problems when order of enum values change, we base the key
-  // on the enum name rather than the number value, e.g. "CHAT" vs 0
-  const categoryKey = getKeysForMojomEnum(Mojom.ModelCategory)[category]
-  return getLocale('CHAT_UI_MODEL_CATEGORY_' + categoryKey)
-}
 
 function getIntroMessageKey(model: Mojom.Model) {
   return `CHAT_UI_INTRO_MESSAGE_${model.key.toUpperCase().replaceAll('-', '_')}`
@@ -34,7 +26,7 @@ export default function ModelIntro() {
   // </if>
 
   const model = state.allModels.find((m) => m.key === state.currentModelKey)
-  if (!model) {
+  if (!model || state.currentModelKey === state.defaultModelKey) {
     return <></>
   }
 
@@ -42,15 +34,7 @@ export default function ModelIntro() {
 
   return (
     <div className={styles.modelInfo}>
-      <div className={styles.modelIcon}>
-        <Icon name='product-brave-leo' />
-      </div>
       <div className={styles.meta}>
-        <h4 className={styles.category}>
-          {isLeoModel
-            ? getCategoryName(model.options.leoModelOptions!.category)
-            : model.displayName}
-        </h4>
         <h3 className={styles.name}>
           {isLeoModel
             ? model.displayName

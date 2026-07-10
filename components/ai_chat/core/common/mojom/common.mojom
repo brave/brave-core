@@ -699,6 +699,8 @@ struct ConversationEntriesState {
   bool is_leo_model;
   array<Model> all_models;
   string current_model_key;
+  // The user's default model key, used to detect a non-default selection.
+  string default_model_key;
   // How much of the content has been used by the AI engine, percentage,or null
   // if no content is associated.
   uint32? content_used_percentage;
