@@ -9,10 +9,9 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
+#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -37,7 +36,7 @@ constexpr char kHardwareConcurrencyScript[] = "navigator.hardwareConcurrency;";
 constexpr char kTitleScript[] = "document.title;";
 
 class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
-    : public InProcessBrowserTest {
+    : public BraveBaseFarblingBrowserTest {
  public:
   BraveNavigatorHardwareConcurrencyFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
@@ -47,12 +46,7 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-
-    auto* brave_settings_service =
-        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
-    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
-        base::Token());
+    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());

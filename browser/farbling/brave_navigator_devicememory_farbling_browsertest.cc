@@ -7,10 +7,9 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
-#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
+#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -35,7 +34,8 @@ using brave_shields::ControlType;
 
 constexpr char kDeviceMemoryScript[] = "navigator.deviceMemory * 1024";
 
-class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
+class BraveDeviceMemoryFarblingBrowserTest
+    : public BraveBaseFarblingBrowserTest {
  public:
   BraveDeviceMemoryFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
@@ -63,12 +63,7 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-
-    auto* brave_settings_service =
-        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
-    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
-        base::Token());
+    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
@@ -79,7 +74,6 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
 
   HostContentSettingsMap* content_settings() {

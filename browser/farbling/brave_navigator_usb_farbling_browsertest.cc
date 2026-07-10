@@ -11,8 +11,7 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
+#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -164,7 +163,8 @@ class TestContentBrowserClient : public BraveContentBrowserClient {
   std::unique_ptr<TestUsbDelegate> usb_delegate_;
 };
 
-class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
+class BraveNavigatorUsbFarblingBrowserTest
+    : public BraveBaseFarblingBrowserTest {
  public:
   BraveNavigatorUsbFarblingBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -172,12 +172,7 @@ class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
   }
 
   void SetUpOnMainThread() override {
-    InProcessBrowserTest::SetUpOnMainThread();
-
-    auto* brave_settings_service =
-        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
-    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
-        base::Token());
+    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
 
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());

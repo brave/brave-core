@@ -110,7 +110,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
   // Control the base level token for testing.
   brave_shields::ScopedStableFarblingTokensForTesting
-      scoped_random_farbling_tokens{1};
+      scoped_stable_farbling_tokens{1};
   // Control the profile level token for testing when feature gets enabled.
   base::Token profile_token_for_test = base::Token(0, 1);
   auto* brave_settings_service =
