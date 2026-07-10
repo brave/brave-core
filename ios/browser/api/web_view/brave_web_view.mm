@@ -31,6 +31,8 @@
 #include "brave/ios/browser/brave_search/brave_search_ad_results_javascript_feature.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper.h"
 #include "brave/ios/browser/brave_search/brave_search_make_default_tab_helper_bridge.h"
+#include "brave/ios/browser/brave_shields/protection_stats_tab_helper.h"
+#include "brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h"
 #include "brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper.h"
 #include "brave/ios/browser/brave_talk/brave_talk_tab_helper_bridge.h"
 #include "brave/ios/browser/favicon/brave_ios_web_favicon_driver.h"
@@ -278,6 +280,8 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
 #endif
 @property(nonatomic, weak) id<BraveSearchMakeDefaultTabHelperBridge>
     braveSearchHelper;
+@property(nonatomic, weak) id<ProtectionStatsTabHelperBridge>
+    protectionStatsHelper;
 @property(nonatomic, weak) id<PrintHandler> printHandler;
 @property(nonatomic, weak) id<RequestBlockingTabHelperBridge>
     requestBlockingTabHelperBridge;
@@ -419,6 +423,10 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   BraveSearchMakeDefaultTabHelper::CreateForWebState(self.webState);
   BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)
       ->SetBridge(self.braveSearchHelper);
+
+  brave_shields::ProtectionStatsTabHelper::CreateForWebState(self.webState);
+  brave_shields::ProtectionStatsTabHelper::FromWebState(self.webState)
+      ->SetBridge(self.protectionStatsHelper);
 
   LoginsTabHelper::MaybeCreateForWebState(self.webState, _loginsHelper);
 
@@ -839,6 +847,20 @@ class FaviconDriverObserver : public favicon::FaviconDriverObserver {
   if (BraveSearchMakeDefaultTabHelper* tab_helper =
           BraveSearchMakeDefaultTabHelper::FromWebState(self.webState)) {
     tab_helper->SetBridge(braveSearchHelper);
+  }
+}
+
+@end
+
+@implementation BraveWebView (ProtectionStats)
+
+- (void)setProtectionStatsHelper:
+    (id<ProtectionStatsTabHelperBridge>)protectionStatsHelper {
+  _protectionStatsHelper = protectionStatsHelper;
+  if (brave_shields::ProtectionStatsTabHelper* tab_helper =
+          brave_shields::ProtectionStatsTabHelper::FromWebState(
+              self.webState)) {
+    tab_helper->SetBridge(protectionStatsHelper);
   }
 }
 
