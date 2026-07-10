@@ -420,9 +420,10 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   // Apply more entropy for profile bound seesion if needed.
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveFarblingTokenReset)) {
-    DCHECK(!profile_level_farbling_entropy_.is_zero());
     // This will ensure that the token is not the same across browser restarts
     // but still stable for |url| across the same browser session.
+    // Note: profile_level_farbling_entropy_ may be zero in tests (via
+    // set_profile_level_farbling_entropy_for_testing), which is a no-op XOR.
     token = base::Token(token.high() ^ profile_level_farbling_entropy_.high(),
                         token.low() ^ profile_level_farbling_entropy_.low());
   }

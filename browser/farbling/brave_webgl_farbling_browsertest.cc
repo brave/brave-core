@@ -11,6 +11,8 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/test/scoped_feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -89,15 +91,18 @@ class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveWebGLFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
-        {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
-            webcompat::features::kBraveWebcompatExceptionsService,
-        },
-        {brave_shields::features::kBraveFarblingTokenReset});
+        {brave_shields::features::kBraveShowStrictFingerprintingMode,
+         webcompat::features::kBraveWebcompatExceptionsService},
+        {});
   }
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    auto* brave_settings_service =
+        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
+        base::Token());
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());

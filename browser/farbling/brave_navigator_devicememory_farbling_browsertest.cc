@@ -7,8 +7,10 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -38,11 +40,9 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
   BraveDeviceMemoryFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
     scoped_feature_list_.InitWithFeatures(
-        {
-            brave_shields::features::kBraveShowStrictFingerprintingMode,
-            webcompat::features::kBraveWebcompatExceptionsService,
-        },
-        {brave_shields::features::kBraveFarblingTokenReset});
+        {brave_shields::features::kBraveShowStrictFingerprintingMode,
+         webcompat::features::kBraveWebcompatExceptionsService},
+        {});
   }
 
   BraveDeviceMemoryFarblingBrowserTest(
@@ -64,6 +64,12 @@ class BraveDeviceMemoryFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    auto* brave_settings_service =
+        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
+        base::Token());
+
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);

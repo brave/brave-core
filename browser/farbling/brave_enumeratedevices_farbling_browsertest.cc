@@ -7,10 +7,11 @@
 
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
-#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -43,10 +44,7 @@ constexpr char kEnumerateDevicesScript[] =
 class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveEnumerateDevicesFarblingBrowserTest()
-      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
-    scoped_feature_list_.InitAndDisableFeature(
-        brave_shields::features::kBraveFarblingTokenReset);
-  }
+      : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
 
   BraveEnumerateDevicesFarblingBrowserTest(
       const BraveEnumerateDevicesFarblingBrowserTest&) = delete;
@@ -57,6 +55,12 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    auto* brave_settings_service =
+        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
+    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
+        base::Token());
+
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -68,7 +72,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
 
   const GURL& farbling_url() { return farbling_url_; }
@@ -106,7 +109,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  private:
   GURL top_level_page_url_;
   GURL farbling_url_;
-  base::test::ScopedFeatureList scoped_feature_list_;
 };
 
 // Tests results of farbling known values
