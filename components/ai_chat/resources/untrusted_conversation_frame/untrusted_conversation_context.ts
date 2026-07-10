@@ -123,11 +123,7 @@ export function useProvideUntrustedConversationContext(
         createModelIntroMarker(currentModelKey, afterPairIndex),
       ]
     })
-  }, [
-    conversationHistory.length,
-    state.currentModelKey,
-    state.defaultModelKey,
-  ])
+  }, [conversationHistory.length, state.currentModelKey, state.defaultModelKey])
 
   return {
     api,
