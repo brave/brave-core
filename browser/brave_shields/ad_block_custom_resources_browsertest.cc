@@ -290,13 +290,7 @@ IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_Edit) {
                        "user-Custom-Script-Edited.js", kEditedContent);
 }
 
-// Renderer crashes with libc++ alignment assertion on win32-x86
-#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
-#define MAYBE_MimeType DISABLED_MimeType
-#else
-#define MAYBE_MimeType MimeType
-#endif
-IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MAYBE_MimeType) {
+IN_PROC_BROWSER_TEST_F(AdblockCustomResourcesTest, MimeType) {
   EnableDeveloperMode(true);
 
   NavigateToURL(GURL("brave://settings/shields/filters"));
