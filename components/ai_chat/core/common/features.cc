@@ -217,4 +217,8 @@ bool IsBraveSyncAIChatEnabled() {
 
 BASE_FEATURE(kAIChatConversationShare, base::FEATURE_DISABLED_BY_DEFAULT);
 
+const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl{
+    &kAIChatConversationShare, "viewer_base_url",
+    "https://leo-ai.brave.app/shared/"};
+
 }  // namespace ai_chat::features

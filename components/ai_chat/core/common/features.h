@@ -174,6 +174,13 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsBraveSyncAIChatEnabled();
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatConversationShare);
 
+// Base URL of the hosted viewer that renders a shared conversation. The share
+// id returned by the sharing server is appended to this to form the URL that is
+// returned to the client. The client then appends the decryption key as a URL
+// fragment.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kAIChatConversationShareBaseUrl;
+
 }  // namespace ai_chat::features
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_FEATURES_H_

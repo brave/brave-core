@@ -38,6 +38,7 @@
 #include "brave/components/ai_chat/core/browser/associated_content_manager.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/conversation_handler.h"
+#include "brave/components/ai_chat/core/browser/conversation_share_manager.h"
 #include "brave/components/ai_chat/core/browser/conversation_tools.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
@@ -45,9 +46,7 @@
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
-#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/prefs.h"
@@ -124,6 +123,8 @@ AIChatService::AIChatService(
       feedback_api_(
           std::make_unique<AIChatFeedbackAPI>(url_loader_factory_,
                                               std::string(channel_string))),
+      conversation_share_manager_(
+          std::make_unique<ConversationShareManager>(url_loader_factory_)),
       credential_manager_(std::move(ai_chat_credential_manager)),
       tool_provider_factories_(std::move(tool_provider_factories)),
       profile_path_(profile_path) {
@@ -719,6 +720,12 @@ void AIChatService::RenameConversation(const std::string& id,
 void AIChatService::ConversationExists(const std::string& conversation_uuid,
                                        ConversationExistsCallback callback) {
   std::move(callback).Run(conversations_.contains(conversation_uuid));
+}
+
+void AIChatService::ShareConversation(const std::string& encrypted_contents,
+                                      ShareConversationCallback callback) {
+  conversation_share_manager_->ShareConversation(encrypted_contents,
+                                                 std::move(callback));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,
