@@ -111,4 +111,8 @@ xcuserdata
 .claude/skills/
 .agents/
 
+# Skill-eval harness scratch (harvested results, python caches).
+agents/testing/.last_run/
+agents/**/__pycache__/
+
 /.ignore/
