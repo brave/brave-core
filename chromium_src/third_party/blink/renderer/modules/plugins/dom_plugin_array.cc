@@ -10,6 +10,7 @@
 #include "base/check_op.h"
 #include "base/compiler_specific.h"
 #include "base/notreached.h"
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/core/frame/local_dom_window.h"
 #include "third_party/blink/renderer/core/frame/local_frame.h"

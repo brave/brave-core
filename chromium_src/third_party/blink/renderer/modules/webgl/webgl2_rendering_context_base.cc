@@ -8,6 +8,7 @@
 #include <algorithm>
 
 #include "base/notreached.h"
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/bindings/modules/v8/webgl_any.h"
 

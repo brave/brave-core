@@ -7,6 +7,7 @@
 
 #include <algorithm>
 
+#include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/common/device_memory/approximated_device_memory.h"
