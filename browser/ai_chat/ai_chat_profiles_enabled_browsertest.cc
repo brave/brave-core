@@ -130,7 +130,7 @@ IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, SidebarCheck) {
 }
 
 IN_PROC_BROWSER_TEST_P(AIChatProfilesEnabledTest, Autocomplete) {
-  auto* autocomplete_controller = browser_->window()
+  auto* autocomplete_controller = BrowserWindow::FromBrowser(browser_)
                                       ->GetLocationBar()
                                       ->GetOmniboxController()
                                       ->autocomplete_controller();

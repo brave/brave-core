@@ -55,7 +55,9 @@ class CommanderServiceBrowserTest : public InProcessBrowserTest {
   }
 
   OmniboxView* omnibox() {
-    return browser()->window()->GetLocationBar()->GetOmniboxView();
+    return BrowserWindow::FromBrowser(browser())
+        ->GetLocationBar()
+        ->GetOmniboxView();
   }
 
   void WaitUntil(base::RepeatingCallback<bool()> condition) {

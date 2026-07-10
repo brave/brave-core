@@ -76,7 +76,7 @@ void OpenSettingPage() {
 void CrashReportPermissionAskDialogView::Show(Browser* browser) {
   constrained_window::CreateBrowserModalDialogViews(
       new CrashReportPermissionAskDialogView(browser),
-      browser->window()->GetNativeWindow())
+      BrowserWindow::FromBrowser(browser)->GetNativeWindow())
       ->Show();
 }
 

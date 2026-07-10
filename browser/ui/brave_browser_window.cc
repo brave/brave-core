@@ -29,6 +29,12 @@ BraveBrowserWindow* BraveBrowserWindow::From(BrowserWindow* window) {
   return static_cast<BraveBrowserWindow*>(window);
 }
 
+// static
+BraveBrowserWindow* BraveBrowserWindow::FromBrowser(
+    BrowserWindowInterface* browser) {
+  return From(BrowserWindow::FromBrowser(browser));
+}
+
 #if defined(TOOLKIT_VIEWS)
 sidebar::Sidebar* BraveBrowserWindow::InitSidebar() {
   return nullptr;

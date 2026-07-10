@@ -25,7 +25,7 @@ namespace {
 
 BraveTabStrip* GetBraveTabStrip(Browser* browser) {
   return views::AsViewClass<BraveTabStrip>(
-      static_cast<BraveBrowserView*>(browser->window())
+      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser))
           ->horizontal_tab_strip_for_testing());
 }
 

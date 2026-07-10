@@ -70,7 +70,8 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
     // ready yet. BraveBrowserView is instantiated by the ctor of Browser.
     // So, initializing sidebar controller/model here and then ask to initialize
     // sidebar UI. After that, UI will be updated for model's change.
-    sidebar_controller->SetSidebar(brave_window()->InitSidebar());
+    sidebar_controller->SetSidebar(
+        BraveBrowserWindow::FromBrowser(this)->InitSidebar());
   }
 
   if (webui_browser::IsWebUIBrowserEnabled() && is_type_normal()) {
@@ -83,7 +84,7 @@ BraveBrowser::BraveBrowser(const CreateParams& params) : Browser(params) {
   // is ready, it's difficult to know when browsr window can listen.
   // Notify exact timing to do it.
   CHECK(GetFeatures().exclusive_access_manager());
-  brave_window()->ReadyToListenFullscreenChanges();
+  BraveBrowserWindow::FromBrowser(this)->ReadyToListenFullscreenChanges();
 }
 
 BraveBrowser::~BraveBrowser() = default;
@@ -329,10 +330,6 @@ bool BraveBrowser::AreAllTabsSharedPinnedTabs() {
   return tab_strip_model()->count() > 0 &&
          tab_strip_model()->count() ==
              tab_strip_model()->IndexOfFirstNonPinnedTab();
-}
-
-BraveBrowserWindow* BraveBrowser::brave_window() {
-  return static_cast<BraveBrowserWindow*>(window_.get());
 }
 
 void BraveBrowser::SetTabsToIgnoreBeforeUnloadHandlers(

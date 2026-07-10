@@ -55,6 +55,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -223,8 +224,8 @@ class BookmarksExportListener : public ui::SelectFileDialog::Listener {
         ui::SelectFileDialog::SELECT_SAVEAS_FILE,
         l10n_util::GetStringUTF16(IDS_BOOKMARK_MANAGER_MENU_EXPORT),
         GetDefaultFilepathForBookmarkExport(), &file_types, 1,
-        FILE_PATH_LITERAL("html"), browser->window()->GetNativeWindow(),
-        nullptr);
+        FILE_PATH_LITERAL("html"),
+        BrowserWindow::FromBrowser(browser)->GetNativeWindow(), nullptr);
   }
 
  private:
@@ -341,13 +342,15 @@ void ToggleAIChat(Browser* browser) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
 void ShowWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(browser->window())->CreateWalletBubble();
+  static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser))
+      ->CreateWalletBubble();
 #endif
 }
 
 void CloseWalletBubble(Browser* browser) {
 #if defined(TOOLKIT_VIEWS)
-  static_cast<BraveBrowserView*>(browser->window())->CloseWalletBubble();
+  static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser))
+      ->CloseWalletBubble();
 #endif
 }
 #endif
@@ -435,7 +438,8 @@ void ToggleVerticalTabStripExpanded(Browser* browser) {
     return;
   }
   // Otherwise, retrieve current vertical tab strip region view
-  auto* browser_view = static_cast<BraveBrowserView*>(browser->window());
+  auto* browser_view =
+      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser));
   if (!browser_view) {
     return;
   }
@@ -470,8 +474,7 @@ void ToggleSidebar(Browser* browser) {
     return;
   }
 
-  if (auto* brave_browser_window =
-          BraveBrowserWindow::From(browser->window())) {
+  if (auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser)) {
     brave_browser_window->ToggleSidebar();
   }
 }
@@ -480,7 +483,7 @@ bool HasSelectedURL(Browser* browser) {
   if (!browser) {
     return false;
   }
-  auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
+  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
   return brave_browser_window && brave_browser_window->HasSelectedURL();
 }
 
@@ -488,7 +491,7 @@ void CleanAndCopySelectedURL(Browser* browser) {
   if (!browser) {
     return;
   }
-  auto* brave_browser_window = BraveBrowserWindow::From(browser->window());
+  auto* brave_browser_window = BraveBrowserWindow::FromBrowser(browser);
   if (brave_browser_window) {
     brave_browser_window->CleanAndCopySelectedURL();
   }
@@ -548,13 +551,13 @@ void ToggleCommander(Browser* browser) {
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 void ShowPlaylistBubble(Browser* browser) {
-  BraveBrowserWindow::From(browser->window())->ShowPlaylistBubble();
+  BraveBrowserWindow::FromBrowser(browser)->ShowPlaylistBubble();
 }
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
 void ShowWaybackMachineBubble(Browser* browser) {
-  BraveBrowserWindow::From(browser->window())->ShowWaybackMachineBubble();
+  BraveBrowserWindow::FromBrowser(browser)->ShowWaybackMachineBubble();
 }
 #endif
 
@@ -882,8 +885,9 @@ void BringAllTabs(Browser* browser) {
   }
 
   if (shared_pinned_tab_enabled) {
-    std::ranges::for_each(browsers_to_close,
-                          [](auto* other) { other->window()->Close(); });
+    std::ranges::for_each(browsers_to_close, [](auto* other) {
+      BrowserWindow::FromBrowser(other)->Close();
+    });
   }
 }
 

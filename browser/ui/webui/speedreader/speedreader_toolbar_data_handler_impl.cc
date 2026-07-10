@@ -130,7 +130,8 @@ void SpeedreaderToolbarDataHandlerImpl::SetTtsSettings(
 void SpeedreaderToolbarDataHandlerImpl::ObserveThemeChange() {
   theme_observation_.Observe(
       ThemeServiceFactory::GetForProfile(browser_->profile()));
-  native_theme_observation_.Observe(browser_->window()->GetNativeTheme());
+  native_theme_observation_.Observe(
+      BrowserWindow::FromBrowser(browser_)->GetNativeTheme());
   OnThemeChanged();
 }
 
@@ -304,7 +305,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnNativeThemeUpdated(
   // There are two types of theme update. a) The observed theme change. e.g.
   // switch between light/dark mode. b) A different theme is enabled. e.g.
   // switch between GTK and classic theme on Linux. Reset observer in case b).
-  ui::NativeTheme* current_theme = browser_->window()->GetNativeTheme();
+  ui::NativeTheme* current_theme =
+      BrowserWindow::FromBrowser(browser_)->GetNativeTheme();
   if (observed_theme != current_theme) {
     native_theme_observation_.Reset();
     native_theme_observation_.Observe(current_theme);
@@ -323,7 +325,8 @@ void SpeedreaderToolbarDataHandlerImpl::OnContentsReady() {
 }
 
 void SpeedreaderToolbarDataHandlerImpl::UpdateToolbarTheme() {
-  const auto* color_provider = browser_->window()->GetColorProvider();
+  const auto* color_provider =
+      BrowserWindow::FromBrowser(browser_)->GetColorProvider();
   if (!color_provider) {
     return;
   }

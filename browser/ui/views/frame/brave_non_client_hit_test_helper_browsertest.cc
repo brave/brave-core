@@ -23,7 +23,8 @@ using BraveNonClientHitTestHelperBrowserTest = InProcessBrowserTest;
 // TODO(sko) It might be good to have resizable area tests. But testing it
 // is pretty flaky depending on platforms.
 IN_PROC_BROWSER_TEST_F(BraveNonClientHitTestHelperBrowserTest, Toolbar) {
-  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* browser_view =
+      static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser()));
   auto* toolbar = browser_view->toolbar();
   auto* frame_view = browser_view->browser_widget()->GetFrameView();
 
