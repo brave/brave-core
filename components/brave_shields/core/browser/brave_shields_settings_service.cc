@@ -356,7 +356,6 @@ bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
   return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
 }
 
-<<<<<<< HEAD
 bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     base::span<const uint8_t> additional_entropy,
@@ -365,8 +364,7 @@ bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
       brave_shields::mojom::FarblingLevel::OFF) {
     return false;
   }
-  const base::Token farbling_token = brave_shields::GetFarblingToken(
-      &*host_content_settings_map_, url, additional_entropy);
+  const base::Token farbling_token = GetFarblingToken(url, additional_entropy);
   if (farbling_token.is_zero()) {
     return false;
   }
@@ -379,7 +377,8 @@ void BraveShieldsSettingsService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
                                 true);
-=======
+}
+
 base::Token BraveShieldsSettingsService::GetFarblingToken(
     const GURL& url,
     base::span<const uint8_t> additional_entropy) {
@@ -414,7 +413,6 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   const uint64_t low =
       token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
   return base::Token(high, low);
->>>>>>> e4134c0e687 (initial update.)
 }
 
 }  // namespace brave_shields
