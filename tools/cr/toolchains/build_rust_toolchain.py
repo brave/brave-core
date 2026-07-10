@@ -95,7 +95,6 @@ from __future__ import annotations
 import argparse
 import contextlib
 from datetime import datetime, timezone
-import hashlib
 import importlib
 import logging
 import lzma
@@ -115,6 +114,11 @@ import urllib.error
 import urllib.request
 
 import yaml
+
+# This is necessary because these scripts are used by brockit too.
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+
+from upload import sha256_file  # pylint: disable=wrong-import-position
 
 # Executable suffix for host tools on the current platform.
 EXE_SUFFIX = '.exe' if sys.platform == 'win32' else ''
@@ -335,18 +339,6 @@ def _check_call(*command,
                           check=check,
                           capture_output=capture_output,
                           text=True)
-
-
-def _sha256_file(path: Path) -> str:
-    """Return the hex SHA-256 of *path*'s bytes, computed in 64 KiB chunks.
-
-    Streaming keeps a multi-hundred-megabyte tarball off the heap.
-    """
-    digest = hashlib.sha256()
-    with path.open('rb') as f:
-        for chunk in iter(lambda: f.read(65536), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
 
 
 def _latest_index_object(index_url: str,
@@ -773,10 +765,11 @@ class ToolchainBuilder:
 
         Returns the version as `MAJOR.MINOR.BUILD.PATCH`.
         """
-        raw = subprocess.check_output(
-            ['git', 'show', f'HEAD:{CHROME_VERSION_FILE.as_posix()}'],
-            cwd=self._chromium_src,
-            text=True)
+        raw = _check_call('git',
+                          'show',
+                          f'HEAD:{CHROME_VERSION_FILE.as_posix()}',
+                          cwd=self._chromium_src,
+                          capture_output=True).stdout
         parts: dict[str, str] = {}
         for line in raw.splitlines():
             key, _, value = line.strip().partition('=')
@@ -785,27 +778,24 @@ class ToolchainBuilder:
 
     def _chromium_commit(self) -> str:
         "Return the Chromium HEAD commit SHA (40-char hex)."
-        return subprocess.check_output(['git', 'rev-parse', 'HEAD'],
-                                       cwd=self._chromium_src,
-                                       text=True).strip()
+        return _check_call('git',
+                           'rev-parse',
+                           'HEAD',
+                           cwd=self._chromium_src,
+                           capture_output=True).stdout.strip()
 
-    def _script_sha256(self) -> str | None:
-        """SHA-256 of this script's source bytes, or `None` if unavailable.
+    def _brave_core_commit(self) -> str:
+        """Return the brave-core HEAD commit this builder was run from.
 
-        Returns `None` when `__file__` does not point at a real file.
-
-        This function normalises the line endings to make sure we don't get
-        different results based on platform.
+        The builder lives in brave-core, so its repository HEAD identifies the
+        exact version of this script that produced the archive — recorded in the
+        index for provenance and reproducibility.
         """
-        file_str = globals().get('__file__')
-        if not file_str:
-            return None
-        path = Path(file_str)
-        if not path.is_file():
-            return None
-        # `encoding='utf-8'` causes CRLF/CR to be translated to LF on read
-        return hashlib.sha256(
-            path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+        return _check_call('git',
+                           'rev-parse',
+                           'HEAD',
+                           cwd=Path(__file__).resolve().parent,
+                           capture_output=True).stdout.strip()
 
     @staticmethod
     def _command_line() -> str:
@@ -909,7 +899,7 @@ class ToolchainBuilder:
           * `chromium_commit`  — HEAD commit hash in the Chromium checkout.
           * `command_line`     — shell-quoted command line this script was
                                  invoked with (from `sys.argv`).
-          * `script_sha256sum` — SHA-256 of this script's contents.
+          * `brave_core_commit` — brave-core HEAD commit this builder ran from.
 
         This function accepts `force_overwrite` for when we want to suspend
         certain rules, but the normal and preferred use of it will enforce these
@@ -980,7 +970,7 @@ class ToolchainBuilder:
                 logging.info('No existing index at %s; starting fresh',
                              index_url)
 
-        archive_sha256 = _sha256_file(archive_path)
+        archive_sha256 = sha256_file(archive_path)
         sha_match = next(
             (e for e in entries if e.get('sha256sum') == archive_sha256), None)
         url_match = next((e for e in entries if e.get('url') == archive_url),
@@ -1020,9 +1010,7 @@ class ToolchainBuilder:
             'chromium_commit': self._chromium_commit(),
             'command_line': self._command_line(),
         }
-        script_sha = self._script_sha256()
-        if script_sha is not None:
-            entry['script_sha256sum'] = script_sha
+        entry['brave_core_commit'] = self._brave_core_commit()
         entries.append(entry)
 
         index_yaml = yaml.safe_dump(entries,
