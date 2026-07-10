@@ -13,6 +13,8 @@ source_set("brave_wallet") {
     "brave_wallet_factory_wrappers.mm",
     "brave_wallet_service_factory.h",
     "brave_wallet_service_factory.mm",
+    "brave_wallet_utils.h",
+    "brave_wallet_utils.mm",
     "ethereum_provider_javascript_feature.h",
     "ethereum_provider_javascript_feature.mm",
     "ethereum_provider_tab_helper.h",

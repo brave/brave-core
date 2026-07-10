@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/resources/grit/brave_wallet_script_generated.h"
+#include "brave/ios/browser/brave_wallet/brave_wallet_utils.h"
 #include "brave/ios/browser/brave_wallet/ethereum_provider_tab_helper.h"
 #include "brave/ios/web/js_messaging/message_handler_token.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -132,14 +133,6 @@ std::string LoadDataResource(int id) {
   return std::string(resource_bundle.GetRawDataResource(id));
 }
 
-bool IsDefaultWalletBrave(PrefService* prefs) {
-  mojom::DefaultWallet eth_wallet = GetDefaultEthereumWallet(prefs);
-  // iOS does not have a separate extension so we consider Brave the default
-  // wallet for either state.
-  return eth_wallet == mojom::DefaultWallet::BraveWallet ||
-         eth_wallet == mojom::DefaultWallet::BraveWalletPreferExtension;
-}
-
 }  // namespace
 
 EthereumProviderJavaScriptFeature::EthereumProviderJavaScriptFeature(
@@ -188,7 +181,7 @@ void EthereumProviderJavaScriptFeature::OnDefaultEthereumWalletChanged() {
 std::vector<web::JavaScriptFeature::FeatureScript>
 EthereumProviderJavaScriptFeature::GetScripts() const {
   PrefService* prefs = profile_->GetPrefs();
-  if (!IsAllowed(prefs) || !IsDefaultWalletBrave(prefs)) {
+  if (!IsAllowed(prefs) || !IsDefaultEthereumWalletBrave(prefs)) {
     // Dont inject wallet scripts if wallet is not enabled for this profile or
     // Brave is not set as the default ethereum wallet provider
     return {};

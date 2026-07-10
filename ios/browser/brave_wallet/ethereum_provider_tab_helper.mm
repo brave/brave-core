@@ -25,6 +25,7 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/ios/browser/brave_wallet/brave_wallet_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
@@ -44,7 +45,10 @@ namespace brave_wallet {
 namespace {
 
 void ExecuteJavaScript(web::WebState* web_state, const std::u16string& script) {
-  if (!web_state) {
+  if (!web_state ||
+      !IsDefaultEthereumWalletBrave(
+          ProfileIOS::FromBrowserState(web_state->GetBrowserState())
+              ->GetPrefs())) {
     return;
   }
   web::WebFramesManager* frames_manager =
@@ -63,6 +67,12 @@ void ExecuteJavaScript(web::WebState* web_state, const std::u16string& script) {
 void EmitEthereumEvent(web::WebState* web_state,
                        std::string_view event_name,
                        std::optional<base::Value> arguments) {
+  if (!web_state ||
+      !IsDefaultEthereumWalletBrave(
+          ProfileIOS::FromBrowserState(web_state->GetBrowserState())
+              ->GetPrefs())) {
+    return;
+  }
   std::string name_json;
   base::JSONWriter::Write(base::Value(event_name), &name_json);
 
