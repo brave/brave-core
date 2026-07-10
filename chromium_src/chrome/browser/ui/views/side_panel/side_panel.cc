@@ -175,14 +175,8 @@ void SidePanel::UpdateBorder() {
   // outer-side gap for visual separation from the window chrome.
   const bool is_sidebar_leading = (IsRightAligned() == base::i18n::IsRTL());
   if (rounded_border_enabled_) {
-    // The window-facing edges (bottom and outer side) must line up with the
-    // main content area. There, the web contents sits at the margin plus the
-    // outline thickness from the window edge: the margin positions the outline
-    // (the contents container's outer edge) and CreateContentsOutlineBorder()
-    // insets the contents a further outline-thickness inside it. This panel
-    // instead applies the inset directly to its contents, so it must add the
-    // outline thickness here too -- otherwise the panel would sit 1px closer to
-    // the window edge than the main content.
+    // Include outline thickness on window-facing edges to align with main
+    // content.
     constexpr int kWindowEdgeMargin = kRoundedCornersContentsViewMargin +
                                       kRoundedCornersContentsOutlineThickness;
 
