@@ -15,7 +15,9 @@ substitutions:
 
   - description: |-
       Append the AI Chat histogram value and make it the new kMaxValue. Anchored
-      on kMaxValue value-agnostically.
+      on kMaxValue value-agnostically. Also, grab the numeric value of the
+      enrtry prior to kMaxValue and assign that value + 1 to AI Chat entry.
     regex:
-      re_pattern: '(\n[ \t]*)kMaxValue = \w+,'
-      replace: '\1kAIChatConversation = 81,\1kMaxValue = kAIChatConversation,'
+      re_pattern: '(=\s+([0-9]+),)(\n[ \t]*)kMaxValue = \w+,'
+      replace:
+        '\1\3kAIChatConversation = \2 + 1,\3kMaxValue = kAIChatConversation,'
