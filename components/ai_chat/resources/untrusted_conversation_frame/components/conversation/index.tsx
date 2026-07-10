@@ -61,7 +61,6 @@ function Conversation(props: ConversationProps) {
   const isPremiumUserDisconnected = premiumStatus.data.isPremiumUserDisconnected
 
   const showTemporaryChatInfo = state.isTemporary
-  const hasConversationStarted = context.conversationHistory.length > 0
 
   const apiHasError = state.currentError !== Mojom.APIError.None
 
@@ -205,7 +204,14 @@ function Conversation(props: ConversationProps) {
         className={styles.conversationContent}
         ref={contentRef}
       >
-        {!hasConversationStarted && <ModelIntro />}
+        {context.modelIntroMarkers
+          .filter((marker) => marker.afterPairIndex === null)
+          .map((marker) => (
+            <ModelIntro
+              key={marker.id}
+              modelKey={marker.modelKey}
+            />
+          ))}
 
         {showTemporaryChatInfo && (
           <div className={styles.promptContainer}>

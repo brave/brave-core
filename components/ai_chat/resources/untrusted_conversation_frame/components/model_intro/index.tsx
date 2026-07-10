@@ -17,7 +17,12 @@ function getIntroMessageKey(model: Mojom.Model) {
   return `CHAT_UI_INTRO_MESSAGE_${model.key.toUpperCase().replaceAll('-', '_')}`
 }
 
-export default function ModelIntro() {
+interface ModelIntroProps {
+  modelKey: string
+}
+
+export default function ModelIntro(props: ModelIntroProps) {
+  const { modelKey } = props
   const context = useUntrustedConversationContext()
   const state = context.api.useState().data
 
@@ -26,12 +31,12 @@ export default function ModelIntro() {
   const [isTooltipVisible, setIsTooltipVisible] = React.useState(false)
   // </if>
 
-  const model = state.allModels.find((m) => m.key === state.currentModelKey)
-  if (!model || state.currentModelKey === state.defaultModelKey) {
+  const model = state.allModels.find((m) => m.key === modelKey)
+  if (!model) {
     return <></>
   }
 
-  const isLeoModel = state.isLeoModel
+  const isLeoModel = !!model.options.leoModelOptions
   const modelName = isLeoModel
     ? model.displayName
     : model.options.customModelOptions?.modelRequestName
