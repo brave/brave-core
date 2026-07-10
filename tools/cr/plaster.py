@@ -6,6 +6,7 @@
 
 from __future__ import annotations
 
+import abc
 import argparse
 from dataclasses import dataclass, field
 import hashlib
@@ -16,7 +17,11 @@ import json
 import os
 import re
 import sys
+import textwrap
+from types import MappingProxyType
+from typing import ClassVar, Final
 
+from rich.markdown import Markdown
 import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
@@ -361,38 +366,63 @@ class PatchinfoBuilder:
         self.patchinfo.save_if_changed(content)
 
 
-@dataclass(frozen=True)
-class Substitution:
-    """A single substitution entry parsed from a plaster file.
+class Rewriter(abc.ABC):
+    """A single transformation applied to a plaster's target file.
 
-    `from_yaml` instantiates all the substitutions from a YAML plaster
-    file.
+    Each rewriter knows how to parse and validate them from its YAML body via
+    `parse`.
     """
 
-    # Human-readable description, used as a prefix in error messages.
+    # Static, per-subclass metadata. Declared `ClassVar` so they are shared by
+    # the class (never per-instance); each concrete rewriter overrides them
+    # with `Final` constants (see `Regex`).
+
+    # The `<name>:` key that selects this rewriter in a `substitutions:` entry.
+    NAME: ClassVar[str] = ''
+
+    # One-line summary shown in the `Rewriters` help index.
+    SUMMARY: ClassVar[str] = ''
+
+    # Full Markdown help shown by `plaster --help <NAME>`. Falls back to the
+    # docstring.
+    HELP: ClassVar[str] = ''
+
+    @abc.abstractmethod
+    def apply(self, contents: str) -> tuple[str, int]:
+        """Transform `contents`, returning (new_contents, num_changes)."""
+
+    @classmethod
+    @abc.abstractmethod
+    def parse(cls, body: object, *, description: str) -> Rewriter:
+        """Build a rewriter from its YAML body, validating its fields."""
+
+    @classmethod
+    def help_text(cls) -> str:
+        """The full, user-facing help for this rewriter as dedented Markdown."""
+        return textwrap.dedent(cls.HELP or cls.__doc__ or '').strip('\n')
+
+
+@dataclass(frozen=True)
+class Substitution:
+    """One `substitutions:` entry: a shared envelope composing a `Rewriter`.
+
+    The envelope carries `description` and `expected_count` and owns the YAML
+    dispatch in `from_yaml`, which picks the `Rewriter` per item and hands it
+    its body to parse. `apply` simply delegates to the composed rewriter.
+    """
+
+    # Human-readable label, used as a prefix in error messages.
     description: str
 
-    # Regex pattern passed verbatim to `re.subn`. When the plaster entry
-    # uses the literal `pattern` form, this field holds its `re.escape`'d
-    # form.
-    re_pattern: str
+    # Expected number of changes; `0` means "one or more matches".
+    expected_count: int
 
-    # Replacement string passed to `re.subn`.
-    replace: str
+    # The rewriter this entry composes; `apply` delegates to it.
+    rewriter: Rewriter
 
-    # Expected number of substitutions. `0` means "one or more matches";
-    # zero matches is still a failure.
-    expected_count: int = 1
-
-    # Combined bitmask of `re` flags built from the `re_flags` plaster
-    # field.
-    re_flags: int = 0
-
-    # Every key accepted on a substitution mapping. Anything else is
-    # rejected by `_from_dict` so typos surface immediately instead of
-    # being silently ignored.
-    _ALLOWED_KEYS = frozenset(('description', 'pattern', 're_pattern',
-                               'replace', 'count', 're_flags'))
+    def apply(self, contents: str) -> tuple[str, int]:
+        """Apply the composed rewriter, returning (new_contents, changes)."""
+        return self.rewriter.apply(contents)
 
     class _NoDupSafeLoader(yaml.SafeLoader):
         """`yaml.SafeLoader` that rejects duplicate mapping keys.
@@ -447,34 +477,164 @@ class Substitution:
             raise ValueError(
                 'Plaster YAML `substitutions:` must contain at least one entry'
             )
-        return [Substitution._from_dict(entry) for entry in raw]
+        return [Substitution._from_item(entry) for entry in raw]
 
     @staticmethod
-    def _from_dict(data: object) -> Substitution:
-        """Validate a single substitution mapping and build a Substitution.
+    def _from_item(data: object) -> Substitution:
+        """Validate one `substitutions:` entry and build its rewriter.
 
-        `from_yaml` dispatches through this helper after parsing produces a
-        Python `dict` for each entry.
+        An entry names a rewriter when it carries one of `_REWRITERS` as a key.
+        `description` and the optional `count` are item-level for every form.
 
         Raises:
-            ValueError: if required fields are missing, a field has the
-                wrong type, or `pattern` and `re_pattern` are both set.
+            ValueError: on a malformed entry (missing/typo'd keys, mixed
+                forms, or invalid rewriter-specific fields).
         """
         if not isinstance(data, dict):
             raise ValueError(f'substitution entry must be a mapping, got '
                              f'{type(data).__name__}')
-
-        unknown = sorted(set(data.keys()) - Substitution._ALLOWED_KEYS)
-        if unknown:
-            raise ValueError('Unrecognised substitution key(s): '
-                             f'{", ".join(repr(k) for k in unknown)}')
+        keys = set(data)
 
         description = data.get('description')
         if not isinstance(description, str):
             raise ValueError('No description specified for substitution entry')
 
-        pattern = data.get('pattern')
-        re_pattern = data.get('re_pattern')
+        expected_count = Substitution._parse_count(data, description)
+
+        rewriter_keys = sorted(keys & _REWRITERS.keys())
+        if len(rewriter_keys) > 1:
+            raise ValueError(
+                f'Only one rewriter allowed per entry, got '
+                f'{", ".join(rewriter_keys)} (in "{description}")')
+        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
+        # directly on the item, without a `regex:` key) is deprecated. Once all
+        # plasters are migrated, delete this mixing check -- with no bare form
+        # there is nothing to mix.
+        if rewriter_keys and (keys & Regex._FIELD_KEYS):
+            raise ValueError(f'Cannot mix the "{rewriter_keys[0]}" rewriter '
+                             f'with bare regex fields (in "{description}")')
+
+        if rewriter_keys:
+            name = rewriter_keys[0]
+            unknown = sorted(keys - {'description', 'count', name})
+            if unknown:
+                raise ValueError(f'Unrecognised key(s) for the "{name}" '
+                                 f'rewriter: '
+                                 f'{", ".join(repr(k) for k in unknown)} '
+                                 f'(in "{description}")')
+            rewriter = _REWRITERS[name].parse(data[name],
+                                              description=description)
+            return Substitution(description=description,
+                                expected_count=expected_count,
+                                rewriter=rewriter)
+
+        # No rewriter key: tolerated bare regex (the legacy form).
+        #
+        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
+        # directly on the item, without a `regex:` key) is deprecated. Once all
+        # plasters are migrated, delete this whole block and require a rewriter
+        # key above, so an entry with no rewriter key becomes an error.
+        unknown = sorted(keys - ({'description', 'count'} | Regex._FIELD_KEYS))
+        if unknown:
+            # Every rewriter body is a mapping, so an unknown key carrying one
+            # is almost certainly an attempt to use a rewriter that is not
+            # registered -- point the user at the ones that are.
+            bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
+            if bad_rewriters:
+                available = ', '.join(sorted(_REWRITERS)) or '(none)'
+                raise ValueError(
+                    f'Unknown rewriter(s): '
+                    f'{", ".join(repr(k) for k in bad_rewriters)}; available '
+                    f'rewriters: {available} (in "{description}")')
+            raise ValueError('Unrecognised substitution key(s): '
+                             f'{", ".join(repr(k) for k in unknown)}')
+        # Compose a `regex:` body from the bare fields and hand it to Regex.
+        fields = {k: data[k] for k in keys & Regex._FIELD_KEYS}
+        rewriter = Regex.parse(fields, description=description)
+        return Substitution(description=description,
+                            expected_count=expected_count,
+                            rewriter=rewriter)
+
+    @staticmethod
+    def _parse_count(data: dict[str, object], description: str) -> int:
+        expected_count = data.get('count', 1)
+        # bool is a subclass of int; reject it explicitly.
+        if (not isinstance(expected_count, int)
+                or isinstance(expected_count, bool)):
+            raise ValueError(f'count must be an integer (in "{description}")')
+        return expected_count
+
+
+class Regex(Rewriter):
+    """A regex substitution applied with `re.subn` (the native rewriter).
+    """
+
+    NAME: Final = 'regex'
+    SUMMARY: Final = 'A Python `re.subn` substitution (the default rewriter).'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Applies a Python `re.subn` substitution to the target source. This is
+        the default rewriter, and the most flexible one.
+
+        Fields (nested under the `regex:` key):
+
+        - `pattern` — a literal string to match; it is regex-escaped for you.
+          Mutually exclusive with `re_pattern`.
+        - `re_pattern` — a regular expression to match. Mutually exclusive with
+          `pattern`.
+        - `replace` — the replacement string. Backreferences such as `\1` refer
+          to capture groups in the pattern.
+        - `re_flags` — a list of Python `re` flag names, e.g. `[DOTALL]`.
+
+        The item-level `count` field asserts how many matches are expected
+        (default 1; 0 means "one or more").
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Zero the split-view inset.
+            regex:
+              re_pattern: 'kSplitViewContentInset = 8;'
+              replace: 'kSplitViewContentInset = 0;'
+        ```
+    """
+
+    # The pattern/replacement fields, valid either bare on the item or nested
+    # under a `regex:` op key.
+    #
+    # TODO(brave.dev/bug/56854): the bare placement is deprecated; this set
+    # stays for the `regex:` form, but once all plasters are migrated its bare
+    # use in `Substitution._from_item` should go.
+    _FIELD_KEYS = frozenset(('pattern', 're_pattern', 'replace', 're_flags'))
+
+    def __init__(self, *, re_pattern: str, replace: str, re_flags: int = 0):
+        self._re_pattern = re_pattern
+        self._replace = replace
+        self._re_flags = re_flags
+
+    def apply(self, contents: str) -> tuple[str, int]:
+        # `count=0` is provided here so all substitutions are applied, and then
+        # the number of them gets validated by the callers.
+        return re.subn(self._re_pattern,
+                       self._replace,
+                       contents,
+                       flags=self._re_flags,
+                       count=0)
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> Regex:
+        """Build from a regex field mapping (a `regex:` body or bare keys)."""
+        if not isinstance(body, dict):
+            raise ValueError(f'"regex" must be a mapping (in "{description}")')
+        unknown = sorted(set(body) - cls._FIELD_KEYS)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised regex field(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+
+        pattern = body.get('pattern')
+        re_pattern = body.get('re_pattern')
         if pattern is not None and re_pattern is not None:
             raise ValueError(
                 f'Please specify either pattern or re_pattern, not both '
@@ -490,18 +650,18 @@ class Substitution:
             raise ValueError(
                 f're_pattern must be a string (in "{description}")')
 
-        replace = data.get('replace')
+        replace = body.get('replace')
         if not isinstance(replace, str):
             raise ValueError(
                 f'No replace value specified (in "{description}")')
 
-        expected_count = data.get('count', 1)
-        # bool is a subclass of int; reject it explicitly.
-        if (not isinstance(expected_count, int)
-                or isinstance(expected_count, bool)):
-            raise ValueError(f'count must be an integer (in "{description}")')
+        return cls(re_pattern=re_pattern,
+                   replace=replace,
+                   re_flags=cls._parse_flags(body.get('re_flags', []),
+                                             description))
 
-        flags_raw = data.get('re_flags', [])
+    @staticmethod
+    def _parse_flags(flags_raw: object, description: str) -> int:
         if not isinstance(flags_raw, list):
             raise ValueError(
                 f're_flags must be a list of strings (in "{description}")')
@@ -513,14 +673,13 @@ class Substitution:
             if not (flag.isupper() and hasattr(re, flag)):
                 raise ValueError(f'Invalid re flag specified: {flag}')
             re_flags |= getattr(re, flag)
+        return re_flags
 
-        return Substitution(
-            description=description,
-            re_pattern=re_pattern,
-            replace=replace,
-            expected_count=expected_count,
-            re_flags=re_flags,
-        )
+
+# A set with all the rewriters available in plaster.
+_REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType(
+    {rewriter.NAME: rewriter
+     for rewriter in (Regex, )})
 
 
 @dataclass
@@ -609,16 +768,7 @@ class PlasterFile:
 
         try:
             for substitution in substitutions:
-                contents, num_changes = re.subn(
-                    substitution.re_pattern,
-                    substitution.replace,
-                    contents,
-                    flags=substitution.re_flags,
-                    # We don't want to explicitly limit the number of matches
-                    # here, we want to control what matches using the match
-                    # pattern and then ensure the output matches only what we
-                    # expected.
-                    count=0)
+                contents, num_changes = substitution.apply(contents)
 
                 # count == 0 means "one or more matches", but zero matches still
                 # result in a failure.
@@ -738,10 +888,157 @@ def check(args):
     return 0
 
 
+# The tool's one-line description, shared by the argparse parser and the
+# `plaster --help` overview.
+_TOOL_DESCRIPTION = (
+    '🩹 A tool to generate patches into Chromium using plaster files.')
+
+# A command registry: command name -> (its argparse parser, one-line summary).
+_CommandRegistry = dict[str, tuple[argparse.ArgumentParser, str]]
+
+
+class Help(argparse.Action):
+    """`plaster --help [topic]`, implemented as the `--help` action.
+    """
+
+    # The colour to be used to highlight each command/rewriter.
+    _TOPIC_STYLE = 'bold green'
+
+    def __init__(self, option_strings: list[str], dest: str,
+                 commands: _CommandRegistry, **kwargs):
+        super().__init__(option_strings,
+                         dest,
+                         nargs='?',
+                         default=argparse.SUPPRESS,
+                         metavar='TOPIC',
+                         help='Print help, optionally for a command or '
+                         'rewriter topic.',
+                         **kwargs)
+        self._commands = commands
+
+        # Set from the parser argparse hands to `__call__`.
+        self._parser: argparse.ArgumentParser | None = None
+
+    def __call__(self,
+                 parser: argparse.ArgumentParser,
+                 namespace: argparse.Namespace,
+                 values: str | None,
+                 option_string: str | None = None) -> None:
+        del namespace, option_string
+        self._parser = parser
+        parser.exit(self.render(values))
+
+    def render(self, topic: str | None) -> int:
+        """Print the overview, a single category, or a topic's docs.
+
+        With no topic, prints an overview. When called for a specific rewriters
+        or command, it prints that topic's own docs. Returns the process exit
+        code.
+        """
+        if topic is None:
+            self._print_overview()
+            return 0
+        if topic == 'commands':
+            self._print_commands()
+            return 0
+        if topic == 'rewriters':
+            self._print_rewriters()
+            return 0
+        if topic in self._commands:
+            self._commands[topic][0].print_help()
+            return 0
+        if topic in _REWRITERS:
+            self._print_rewriter_help(topic)
+            return 0
+        console.print(f'[red]Unknown help topic:[/] {topic}', highlight=False)
+        console.print('Run "plaster --help" to list commands and rewriters.')
+        return 1
+
+    def _print_overview(self) -> None:
+        """Print the full overview: usage, description, categories, options."""
+        console.print(self._parser.format_usage().rstrip(), highlight=False)
+        console.print()
+        console.print(_TOOL_DESCRIPTION, highlight=False)
+        console.print()
+        self._print_commands()
+        console.print()
+        self._print_rewriters()
+        options = self._option_entries()
+        if options:
+            console.print()
+            self._print_option_index(options)
+
+    def _print_commands(self) -> None:
+        """Print the `Commands` category from the command registry."""
+        entries = [(name, summary)
+                   for name, (_, summary) in self._commands.items()]
+        self._print_topic_index('Commands', 'command', entries)
+
+    def _print_rewriters(self) -> None:
+        """Print the `Rewriters` category from the rewriter registry."""
+        entries = [(name, rewriter.SUMMARY)
+                   for name, rewriter in _REWRITERS.items()]
+        self._print_topic_index('Rewriters', 'rewriter', entries)
+
+    def _print_topic_index(self, title: str, kind: str,
+                           entries: list[tuple[str, str]]) -> None:
+        """Print one help category: a header plus colourised `name summary`
+        rows.
+
+        `kind` is the noun used in the "type ... for more details" hint (e.g.
+        "command"). `entries` are `(name, summary)` pairs listed in order.
+        """
+        console.print(
+            f'{title} [dim](type "plaster --help <{kind}>" for more '
+            f'details)[/]:',
+            highlight=False)
+        width = max((len(name) for name, _ in entries), default=0)
+        for name, summary in entries:
+            console.print(
+                f'  [{self._TOPIC_STYLE}]{name:<{width}}[/]  {summary}',
+                highlight=False)
+
+    @staticmethod
+    def _print_option_index(entries: list[tuple[str, str]]) -> None:
+        """Print the global `Options` block: `flags summary` rows.
+        """
+        console.print('Options:', highlight=False)
+        width = max((len(flags) for flags, _ in entries), default=0)
+        for flags, summary in entries:
+            console.print(f'  {flags:<{width}}  {summary}', highlight=False)
+
+    def _print_rewriter_help(self, name: str) -> None:
+        """Print the full docs for the rewriter registered under `name`."""
+        rewriter = _REWRITERS[name]
+        console.print(f'[{self._TOPIC_STYLE}]{name}[/] — {rewriter.SUMMARY}',
+                      highlight=False)
+        console.print()
+        # Rewriter help is authored in Markdown; render it with rich so inline
+        # code and the YAML example code block display nicely.
+        console.print(Markdown(rewriter.help_text()))
+
+    def _option_entries(self) -> list[tuple[str, str]]:
+        """`(flags, help)` rows for the active parser's global optionals.
+
+        Reads the parser's own actions so the list stays in step with whatever
+        `main` registers.
+        """
+        entries = []
+        for action in self._parser._actions:  # pylint: disable=protected-access
+            if not action.option_strings or action.help == argparse.SUPPRESS:
+                continue
+            flags = ', '.join(action.option_strings)
+            if action.metavar:
+                flags += f' {action.metavar}'
+            entries.append((flags, action.help or ''))
+        return entries
+
+
 def main():
-    parser = argparse.ArgumentParser(
-        description=
-        '🩹 A tool to generate patches into Chromium using plaster files.')
+    # `add_help=False`: we install our own `--help` below so it can take an
+    # optional topic (`plaster --help regex`).
+    parser = argparse.ArgumentParser(description=_TOOL_DESCRIPTION,
+                                     add_help=False)
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable verbose logging')
@@ -750,9 +1047,17 @@ def main():
                         help='Enable infra mode')
     subparsers = parser.add_subparsers(dest='command', required=True)
 
+    commands: dict[str, tuple[argparse.ArgumentParser, str]] = {}
+
+    def add_command(name: str, summary: str,
+                    **kwargs) -> argparse.ArgumentParser:
+        command_parser = subparsers.add_parser(name, help=summary, **kwargs)
+        commands[name] = (command_parser, summary)
+        return command_parser
+
     # Add the 'apply' subparser
-    apply_parser = subparsers.add_parser(
-        'apply', help='Apply all plaster files to the sources in brave-core')
+    apply_parser = add_command(
+        'apply', 'Apply all plaster files to the sources in brave-core.')
     apply_parser.add_argument(
         '--all',
         action='store_true',
@@ -764,12 +1069,15 @@ def main():
     apply_parser.set_defaults(func=apply)
 
     # Add the 'check' subparser
-    check_parser = subparsers.add_parser(
-        'check', help='Check that plaster files are applied to sources.')
+    check_parser = add_command(
+        'check', 'Check that plaster files are applied to sources.')
     check_parser.add_argument('filepaths',
                               nargs='*',
                               help='Filepaths to check')
     check_parser.set_defaults(func=check)
+
+    # Our custom `--help` renderer.
+    parser.add_argument('-h', '--help', action=Help, commands=commands)
 
     args = parser.parse_args()
 
