@@ -154,7 +154,7 @@ bool ClickCustomScriplet(content::WebContents* web_contents,
        b.click();
      })();
   )js";
-  return EvalJs(web_contents, content::JsReplace(kClick, name, "#" + button))
+  return EvalJs(web_contents, content::JsReplace(kClick, name, "." + button))
       .is_ok();
 }
 
@@ -169,7 +169,11 @@ bool WaitForCustomScriptletOrder(content::WebContents* web_contents,
             .querySelectorAll('.scriptlet .label'))
           .map((element) => element.textContent.trim());
       };
+      const deadline = Date.now() + 5000;
       while (JSON.stringify(getOrder()) !== JSON.stringify(expected)) {
+        if (Date.now() >= deadline) {
+          return false;
+        }
         await new Promise(r => setTimeout(r, 10));
       }
       return true;
@@ -189,7 +193,7 @@ bool IsCustomScriptletButtonDisabled(content::WebContents* web_contents,
        return e.querySelector($2).disabled;
      })();
   )js";
-  return EvalJs(web_contents, content::JsReplace(kScript, name, "#" + button))
+  return EvalJs(web_contents, content::JsReplace(kScript, name, "." + button))
       .ExtractBool();
 }
 
