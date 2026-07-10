@@ -57,8 +57,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
 
         // Dark theme doesn't have the regression, apply adjustment to light one only.
         // Skip when dynamic colors are enabled — the themed surface color should be used instead.
-        if (!ColorUtils.inNightMode(activity)
-                && !BraveDynamicColors.sDynamicColorsEnabled.isEnabled()) {
+        if (!ColorUtils.inNightMode(activity) && !BraveDynamicColors.isDynamicColorsEnabled()) {
             mBackgroundColorForNtp = Color.WHITE;
         }
     }

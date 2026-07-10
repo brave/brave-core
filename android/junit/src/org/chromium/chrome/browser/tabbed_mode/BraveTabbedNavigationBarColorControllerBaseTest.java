@@ -10,6 +10,7 @@ import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.when;
 
 import android.content.Context;
+import android.os.Build;
 import android.view.ContextThemeWrapper;
 
 import androidx.test.core.app.ApplicationProvider;
@@ -107,6 +108,8 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_SET_KEY);
         ChromeSharedPreferences.getInstance()
                 .removeKey(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
+        ChromeSharedPreferences.getInstance()
+                .removeKey(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
         ChromeSharedPreferences.getInstance().removeKey(ChromePreferenceKeys.TOOLBAR_TOP_ANCHORED);
     }
 
@@ -128,12 +131,34 @@ public class BraveTabbedNavigationBarColorControllerBaseTest {
 
     @Test
     @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
+    @Config(sdk = Build.VERSION_CODES.S)
     public void testGetNavigationBarColor_dynamicColorsEnabled_delegatesToUpstream() {
         // When dynamic colors is enabled, the Brave-specific block is skipped and the
         // upstream TabbedNavigationBarColorController logic runs, returning the semantic
         // bottom system nav color rather than Brave's hardcoded colors.
         assertEquals(
                 SemanticColorUtils.getBottomSystemNavColor(mContext),
+                mBase.getNavigationBarColor(false));
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
+    public void testGetNavigationBarColor_dynamicColorsBelowAndroidS_usesBraveColor() {
+        when(mTabModelSelector.isIncognitoSelected()).thenReturn(false);
+        assertEquals(
+                mContext.getColor(R.color.default_bg_color_baseline),
+                mBase.getNavigationBarColor(false));
+    }
+
+    @Test
+    @EnableFeatures(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)
+    @Config(sdk = Build.VERSION_CODES.S)
+    public void testGetNavigationBarColor_dynamicColorsUserDisabled_usesBraveColor() {
+        ChromeSharedPreferences.getInstance()
+                .writeBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, false);
+        when(mTabModelSelector.isIncognitoSelected()).thenReturn(false);
+        assertEquals(
+                mContext.getColor(R.color.default_bg_color_baseline),
                 mBase.getNavigationBarColor(false));
     }
 

@@ -17,29 +17,58 @@ import org.chromium.chrome.browser.flags.ChromeFeatureMap;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.components.cached_flags.CachedFlag;
 
-public class BraveDynamicColors {
-    // Declared here (not in BraveCachedFlags) to avoid circular class-initialization:
-    // BraveCachedFlags extends ChromeCachedFlags whose <clinit> creates a BraveCachedFlags
-    // instance before BraveCachedFlags static fields are ready. Accessing this field early
-    // only triggers BraveDynamicColors class-init, which has no such circular dependency.
-    public static final CachedFlag sDynamicColorsEnabled =
-            new CachedFlag(
-                    ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
-                    false);
-
-    public static boolean isDynamicColorsAvailable() {
-        return sDynamicColorsEnabled.isEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+public final class BraveDynamicColors {
+    private static final class LazyHolder {
+        // BraveCachedFlags extends ChromeCachedFlags. ChromeCachedFlags.<clinit> creates a
+        // singleton whose constructor is bytecode-redirected to BraveCachedFlags. This can run
+        // before BraveCachedFlags static fields are ready, so this CachedFlag must not live
+        // directly in BraveCachedFlags. It is obtained from this separately initialized holder.
+        private static final CachedFlag sDynamicColorsFlag =
+                new CachedFlag(
+                        ChromeFeatureMap.getInstance(),
+                        BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS,
+                        true);
     }
 
-    public static boolean isDynamicColorsUserEnabled() {
+    private BraveDynamicColors() {}
+
+    /**
+     * Returns the lazily initialized feature flag used for cached-flag registration and
+     * early-startup reads.
+     */
+    public static CachedFlag getCachedFlag() {
+        return LazyHolder.sDynamicColorsFlag;
+    }
+
+    /**
+     * Returns whether dynamic colors are available for this app session.
+     *
+     * <p>Availability requires the cached feature flag to be enabled and Android 12 or later. It
+     * does not include the user's preference; {@link #isDynamicColorsEnabled()} is the preferred
+     * method for runtime behavior checks.
+     */
+    public static boolean isDynamicColorsAvailable() {
+        return getCachedFlag().isEnabled() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S;
+    }
+
+    /**
+     * Returns whether dynamic colors should be used at runtime.
+     *
+     * <p>This requires dynamic colors to be available and the user preference to be enabled. The
+     * preference defaults to enabled when it has not been set.
+     */
+    public static boolean isDynamicColorsEnabled() {
+        return isDynamicColorsAvailable() && isDynamicColorsUserEnabled();
+    }
+
+    /** Returns the persisted user preference, which defaults to enabled when unset. */
+    private static boolean isDynamicColorsUserEnabled() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
     }
 
     public static void applyToActivityIfAvailable(Activity activity) {
-        if (!sDynamicColorsEnabled.isEnabled()) {
-            // We disable dynamic colors as it causes styling issues with Brave theme.
+        if (!isDynamicColorsEnabled()) {
             return;
         }
 
@@ -48,8 +77,7 @@ public class BraveDynamicColors {
 
     public static void applyToActivityIfAvailable(
             Activity activity, DynamicColorsOptions dynamicColorsOptions) {
-        if (!sDynamicColorsEnabled.isEnabled()) {
-            // We disable dynamic colors as it causes styling issues with Brave theme.
+        if (!isDynamicColorsEnabled()) {
             return;
         }
 

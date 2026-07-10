@@ -50,7 +50,7 @@ class BraveTabbedNavigationBarColorControllerBase {
     public int getNavigationBarColor(boolean forceDarkNavigationBar) {
         // Adjust navigation bar color to match the bottom toolbar color when it is visible,
         // unless dynamic colors are enabled (in which case we let upstream handle it).
-        if (!BraveDynamicColors.sDynamicColorsEnabled.isEnabled()) {
+        if (!BraveDynamicColors.isDynamicColorsEnabled()) {
             if (BottomToolbarConfiguration.isBraveBottomControlsEnabled()
                     && BraveMenuButtonCoordinator.isMenuFromBottom()
                     && mContext != null

@@ -169,7 +169,7 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 (ChromeSwitchPreference)
                         findPreference(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
         if (dynamicColorsPref != null) {
-            dynamicColorsPref.setChecked(BraveDynamicColors.isDynamicColorsUserEnabled());
+            dynamicColorsPref.setChecked(BraveDynamicColors.isDynamicColorsEnabled());
             dynamicColorsPref.setOnPreferenceChangeListener(this);
         }
 
