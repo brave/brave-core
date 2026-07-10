@@ -30,8 +30,8 @@
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/brave_shields/content/browser/ad_block_pref_service.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
@@ -578,7 +578,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   // kEnableMediaRouterOnRestart is used to remember the user's choice.
   registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
 
-  BraveFarblingService::RegisterProfilePrefs(registry);
+  brave_shields::BraveShieldsSettingsService::RegisterProfilePrefs(registry);
 
   RegisterProfilePrefsForMigration(registry);
 

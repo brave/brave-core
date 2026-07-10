@@ -15,6 +15,7 @@
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_pattern.h"
 #include "components/content_settings/core/common/content_settings_types.h"
+#include "components/pref_registry/pref_registry_syncable.h"
 #include "components/prefs/pref_service.h"
 #include "net/base/url_util.h"
 #include "url/gurl.h"
@@ -312,6 +313,30 @@ void BraveShieldsSettingsService::SetShredBrowsingHistory(bool value) {
 
 bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
   return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
+}
+
+bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
+    const GURL& url,
+    base::span<const uint8_t> additional_entropy,
+    FarblingPRNG* prng) {
+  if (brave_shields::GetFarblingLevel(&*host_content_settings_map_, url) ==
+      brave_shields::mojom::FarblingLevel::OFF) {
+    return false;
+  }
+  const base::Token farbling_token = brave_shields::GetFarblingToken(
+      &*host_content_settings_map_, url, additional_entropy);
+  if (farbling_token.is_zero()) {
+    return false;
+  }
+  *prng = FarblingPRNG(farbling_token.high() ^ farbling_token.low());
+  return true;
+}
+
+// static
+void BraveShieldsSettingsService::RegisterProfilePrefs(
+    user_prefs::PrefRegistrySyncable* registry) {
+  registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
+                                true);
 }
 
 }  // namespace brave_shields

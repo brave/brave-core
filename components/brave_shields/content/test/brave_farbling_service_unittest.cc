@@ -3,20 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
-
 #include <array>
 #include <memory>
 #include <tuple>
 
 #include "base/test/task_environment.h"
 #include "base/token.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
+// TODO(https://github.com/brave/brave-browser/issues/56839): Move these tests
+// to brave_shields_settings_service_unittest.cc
 class BraveFarblingServiceTest : public testing::Test {
  public:
   BraveFarblingServiceTest() = default;
@@ -29,21 +30,23 @@ class BraveFarblingServiceTest : public testing::Test {
     settings_map_ = new HostContentSettingsMap(
         &prefs_, false /* is_off_the_record */, false /* store_last_modified */,
         false /* restore_session */, false /* should_record_metrics */);
-    farbling_service_ =
-        std::make_unique<brave::BraveFarblingService>(settings_map_.get());
+    shields_settings_service_ =
+        std::make_unique<brave_shields::BraveShieldsSettingsService>(
+            *settings_map_, nullptr, &prefs_);
   }
 
   void TearDown() override { settings_map_->ShutdownOnUIThread(); }
 
-  brave::BraveFarblingService* farbling_service() {
-    return farbling_service_.get();
+  brave_shields::BraveShieldsSettingsService* farbling_service() {
+    return shields_settings_service_.get();
   }
 
  protected:
   base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   scoped_refptr<HostContentSettingsMap> settings_map_;
-  std::unique_ptr<brave::BraveFarblingService> farbling_service_;
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService>
+      shields_settings_service_;
 };
 
 TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
@@ -52,7 +55,7 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValues) {
       std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
-    brave::FarblingPRNG prng;
+    brave_shields::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), {}, &prng));
     EXPECT_EQ(prng(), std::get<1>(c));
@@ -65,7 +68,7 @@ TEST_F(BraveFarblingServiceTest, PRNGKnownValuesDifferentSeeds) {
       std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
   };
   for (const auto& c : test_cases) {
-    brave::FarblingPRNG prng;
+    brave_shields::FarblingPRNG prng;
     ASSERT_TRUE(farbling_service()->MakePseudoRandomGeneratorForURL(
         std::get<0>(c), {}, &prng));
     EXPECT_EQ(prng(), std::get<1>(c));
@@ -83,7 +86,7 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
       GURL(""),
   };
   for (const auto& url : test_cases) {
-    brave::FarblingPRNG prng;
+    brave_shields::FarblingPRNG prng;
     EXPECT_FALSE(
         farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
     EXPECT_FALSE(
@@ -94,7 +97,7 @@ TEST_F(BraveFarblingServiceTest, InvalidDomains) {
 TEST_F(BraveFarblingServiceTest, ShieldsDown) {
   const GURL url("http://a.com");
   brave_shields::SetBraveShieldsEnabled(settings_map_.get(), false, url);
-  brave::FarblingPRNG prng;
+  brave_shields::FarblingPRNG prng;
   EXPECT_FALSE(
       farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
 }
@@ -103,7 +106,7 @@ TEST_F(BraveFarblingServiceTest, FingerprintingAllowed) {
   const GURL url("http://a.com");
   brave_shields::SetFingerprintingControlType(
       settings_map_.get(), brave_shields::ControlType::ALLOW, url);
-  brave::FarblingPRNG prng;
+  brave_shields::FarblingPRNG prng;
   EXPECT_FALSE(
       farbling_service()->MakePseudoRandomGeneratorForURL(url, {}, &prng));
 }

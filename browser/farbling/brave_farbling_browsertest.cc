@@ -6,8 +6,8 @@
 #include "base/files/file_util.h"
 #include "base/path_service.h"
 #include "base/threading/thread_restrictions.h"
-#include "brave/browser/brave_shields/brave_farbling_service_factory.h"
-#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/browser/brave_shields/brave_shields_settings_service_factory.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -140,21 +140,22 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   auto* profile1 = browser()->profile();
   auto* incognito_profile = CreateIncognitoBrowser(profile1)->profile();
 
-  auto* brave_farbling_service =
-      brave::BraveFarblingServiceFactory::GetForProfile(profile1);
-  ASSERT_TRUE(brave_farbling_service);
+  auto* shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile1);
+  ASSERT_TRUE(shields_settings_service);
 
-  auto* brave_farbling_service_incognito =
-      brave::BraveFarblingServiceFactory::GetForProfile(incognito_profile);
-  ASSERT_TRUE(brave_farbling_service_incognito);
+  auto* shields_settings_service_incognito =
+      BraveShieldsSettingsServiceFactory::GetForProfile(incognito_profile);
+  ASSERT_TRUE(shields_settings_service_incognito);
 
   // Compare the state of the PRNGs.
-  brave::FarblingPRNG prng;
-  brave::FarblingPRNG prng_incognito;
-  EXPECT_TRUE(brave_farbling_service->MakePseudoRandomGeneratorForURL(
+  brave_shields::FarblingPRNG prng;
+  brave_shields::FarblingPRNG prng_incognito;
+  EXPECT_TRUE(shields_settings_service->MakePseudoRandomGeneratorForURL(
       farbling_url(), {}, &prng));
-  EXPECT_TRUE(brave_farbling_service_incognito->MakePseudoRandomGeneratorForURL(
-      farbling_url(), {}, &prng_incognito));
+  EXPECT_TRUE(
+      shields_settings_service_incognito->MakePseudoRandomGeneratorForURL(
+          farbling_url(), {}, &prng_incognito));
   EXPECT_NE(prng, prng_incognito);
 
   // Compare the farbling tokens.
@@ -187,21 +188,23 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   auto* browser_2 = CreateBrowser(profile_2);
   ASSERT_TRUE(browser_2);
 
-  auto* brave_farbling_service_profile_1 =
-      brave::BraveFarblingServiceFactory::GetForProfile(profile_1);
-  ASSERT_TRUE(brave_farbling_service_profile_1);
+  auto* shields_settings_service_profile_1 =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_1);
+  ASSERT_TRUE(shields_settings_service_profile_1);
 
-  auto* brave_farbling_service_profile_2 =
-      brave::BraveFarblingServiceFactory::GetForProfile(profile_2);
-  ASSERT_TRUE(brave_farbling_service_profile_2);
+  auto* shields_settings_service_profile_2 =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_2);
+  ASSERT_TRUE(shields_settings_service_profile_2);
 
   // Compare the state of the PRNGs.
-  brave::FarblingPRNG prng_1;
-  brave::FarblingPRNG prng_2;
-  EXPECT_TRUE(brave_farbling_service_profile_1->MakePseudoRandomGeneratorForURL(
-      farbling_url(), {}, &prng_1));
-  EXPECT_TRUE(brave_farbling_service_profile_2->MakePseudoRandomGeneratorForURL(
-      farbling_url(), {}, &prng_2));
+  brave_shields::FarblingPRNG prng_1;
+  brave_shields::FarblingPRNG prng_2;
+  EXPECT_TRUE(
+      shields_settings_service_profile_1->MakePseudoRandomGeneratorForURL(
+          farbling_url(), {}, &prng_1));
+  EXPECT_TRUE(
+      shields_settings_service_profile_2->MakePseudoRandomGeneratorForURL(
+          farbling_url(), {}, &prng_2));
   EXPECT_NE(prng_1, prng_2);
 
   // Compare the farbling tokens.

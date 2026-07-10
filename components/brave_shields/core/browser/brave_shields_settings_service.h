@@ -6,18 +6,26 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_SHIELDS_CORE_BROWSER_BRAVE_SHIELDS_SETTINGS_SERVICE_H_
 
+#include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/keyed_service/core/keyed_service.h"
+#include "third_party/abseil-cpp/absl/random/random.h"
 
 class GURL;
 class HostContentSettingsMap;
 class PrefService;
 
+namespace user_prefs {
+class PrefRegistrySyncable;
+}
+
 namespace brave_shields {
+
+using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 class BraveShieldsSettingsService : public KeyedService {
  public:
@@ -67,6 +75,13 @@ class BraveShieldsSettingsService : public KeyedService {
 
   void SetShredBrowsingHistory(bool value);
   bool IsShredBrowsingHistoryEnabled();
+
+  bool MakePseudoRandomGeneratorForURL(
+      const GURL& url,
+      base::span<const uint8_t> additional_entropy,
+      FarblingPRNG* prng);
+
+  static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
 
  private:
   const raw_ref<HostContentSettingsMap>

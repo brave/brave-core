@@ -24,7 +24,8 @@ namespace {
 // Seeded pseudo-random generator used to deterministically derive farbling
 // values for a given origin. This is the same generator that the rest of
 // Brave's farbling code uses (see `BraveSessionCache` and
-// `BraveFarblingService`), seeded from the origin's persistent farbling token.
+// `BraveShieldsSettingsService`), seeded from the origin's persistent farbling
+// token.
 using FarblingPRNG = absl::random_internal::randen_engine<uint64_t>;
 
 constexpr double kMaxUInt64AsDouble = static_cast<double>(UINT64_MAX);
