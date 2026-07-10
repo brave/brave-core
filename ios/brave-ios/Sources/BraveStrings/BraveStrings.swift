@@ -1193,7 +1193,7 @@ extension Strings {
       "tabGrid.viewSyncedTabsAccessibilityLabel",
       tableName: "BraveShared",
       bundle: .module,
-      value: "View Sync",
+      value: "View Synced Tabs",
       comment: "Accessibility label for a button that when tapped presents the users synced tabs"
     )
     public static let regularBrowsingModeAccessibilityLabel = NSLocalizedString(
