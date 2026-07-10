@@ -159,12 +159,12 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest,
   EXPECT_NE(prng, prng_incognito);
 
   // Compare the farbling tokens.
-  const auto farbling_token = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile1), farbling_url(),
-      {});
-  const auto farbling_token_incognito = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(incognito_profile),
-      farbling_url(), {});
+  const auto farbling_token =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile1)
+          ->GetFarblingToken(farbling_url(), {});
+  const auto farbling_token_incognito =
+      BraveShieldsSettingsServiceFactory::GetForProfile(incognito_profile)
+          ->GetFarblingToken(farbling_url(), {});
   EXPECT_FALSE(farbling_token.is_zero());
   EXPECT_FALSE(farbling_token_incognito.is_zero());
   EXPECT_NE(farbling_token, farbling_token_incognito);
@@ -208,12 +208,12 @@ IN_PROC_BROWSER_TEST_F(BraveFarblingBrowserTest, CheckBetweenTwoProfiles) {
   EXPECT_NE(prng_1, prng_2);
 
   // Compare the farbling tokens.
-  const auto farbling_token_1 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_1), farbling_url(),
-      {});
-  const auto farbling_token_2 = brave_shields::GetFarblingToken(
-      HostContentSettingsMapFactory::GetForProfile(profile_2), farbling_url(),
-      {});
+  const auto farbling_token_1 =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_1)
+          ->GetFarblingToken(farbling_url(), {});
+  const auto farbling_token_2 =
+      BraveShieldsSettingsServiceFactory::GetForProfile(profile_2)
+          ->GetFarblingToken(farbling_url(), {});
   EXPECT_FALSE(farbling_token_1.is_zero());
   EXPECT_FALSE(farbling_token_2.is_zero());
   EXPECT_NE(farbling_token_1, farbling_token_2);

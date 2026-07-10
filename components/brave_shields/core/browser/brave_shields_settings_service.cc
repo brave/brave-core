@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
+#include "base/hash/hash.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
@@ -21,6 +22,46 @@
 #include "url/gurl.h"
 
 namespace brave_shields {
+
+// Used for stable farbling token generation in tests when is set to non-zero.
+// Non-anonymous to be accesible from ":test_support" target.
+uint32_t g_stable_farbling_tokens_seed = 0;
+
+namespace {
+
+base::DictValue GetShieldsMetadata(HostContentSettingsMap* map,
+                                   const GURL& url) {
+  auto shields_metadata_value = map->GetWebsiteSetting(
+      url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA);
+  if (auto* shields_metadata_dict = shields_metadata_value.GetIfDict()) {
+    return std::move(*shields_metadata_dict);
+  }
+  return base::DictValue();
+}
+
+void SetShieldsMetadata(HostContentSettingsMap* map,
+                        const GURL& url,
+                        base::DictValue shields_metadata) {
+  map->SetWebsiteSettingDefaultScope(
+      url, url, ContentSettingsType::BRAVE_SHIELDS_METADATA,
+      base::Value(std::move(shields_metadata)));
+}
+
+// Returns a 64-bit persistent hash of |data| (two rounds of PersistentHash).
+uint64_t PersistentHashU64(base::span<const uint8_t> data) {
+  const uint32_t hash = base::PersistentHash(data);
+  return (static_cast<uint64_t>(hash) << 32) |
+         base::PersistentHash(base::byte_span_from_ref(hash));
+}
+
+base::Token CreateStableFarblingToken(const GURL& url) {
+  const uint32_t high =
+      base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
+  const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
+  return base::Token(high, low);
+}
+
+}  // namespace
 
 BraveShieldsSettingsService::BraveShieldsSettingsService(
     HostContentSettingsMap& host_content_settings_map,
@@ -315,6 +356,7 @@ bool BraveShieldsSettingsService::IsShredBrowsingHistoryEnabled() {
   return profile_prefs_->GetBoolean(prefs::kShredBrowsingHistoryEnabled);
 }
 
+<<<<<<< HEAD
 bool BraveShieldsSettingsService::MakePseudoRandomGeneratorForURL(
     const GURL& url,
     base::span<const uint8_t> additional_entropy,
@@ -337,6 +379,42 @@ void BraveShieldsSettingsService::RegisterProfilePrefs(
     user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(brave_shields::prefs::kReduceLanguageEnabled,
                                 true);
+=======
+base::Token BraveShieldsSettingsService::GetFarblingToken(
+    const GURL& url,
+    base::span<const uint8_t> additional_entropy) {
+  base::Token token;
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return token;
+  }
+
+  // Get the farbling token from the Shields metadata.
+  auto shields_metadata = GetShieldsMetadata(&*host_content_settings_map_, url);
+  if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
+    token = base::Token::FromString(*farbling_token).value_or(base::Token());
+  }
+
+  // If the farbling token is not set or failed to parse, generate a new one.
+  if (token.is_zero()) {
+    if (!g_stable_farbling_tokens_seed) {
+      token = base::Token::CreateRandom();
+    } else {
+      token = CreateStableFarblingToken(url);
+    }
+    shields_metadata.Set("farbling_token", token.ToString());
+    SetShieldsMetadata(&*host_content_settings_map_, url,
+                       std::move(shields_metadata));
+  }
+
+  if (additional_entropy.empty()) {
+    return token;
+  }
+
+  const uint64_t high = token.high() ^ PersistentHashU64(additional_entropy);
+  const uint64_t low =
+      token.low() ^ PersistentHashU64(base::byte_span_from_ref(high));
+  return base::Token(high, low);
+>>>>>>> e4134c0e687 (initial update.)
 }
 
 }  // namespace brave_shields

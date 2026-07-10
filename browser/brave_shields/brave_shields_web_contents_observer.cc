@@ -342,11 +342,14 @@ void BraveShieldsWebContentsObserver::SendShieldsSettings(
         navigation_handle->GetWebContents());
   }
 #endif
+  auto* shields_settings_service =
+      BraveShieldsSettingsServiceFactory::GetForProfile(
+          Profile::FromBrowserContext(rfh->GetBrowserContext()));
   const base::Token farbling_token =
-      farbling_level != brave_shields::mojom::FarblingLevel::OFF
-          ? brave_shields::GetFarblingToken(
-                host_content_settings_map, primary_url,
-                base::as_byte_span(additional_entropy))
+      farbling_level != brave_shields::mojom::FarblingLevel::OFF &&
+              shields_settings_service
+          ? shields_settings_service->GetFarblingToken(
+                primary_url, base::as_byte_span(additional_entropy))
           : base::Token();
   PrefService* pref_service =
       user_prefs::UserPrefs::Get(rfh->GetBrowserContext());

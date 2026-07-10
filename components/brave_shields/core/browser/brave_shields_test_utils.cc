@@ -7,7 +7,7 @@
 
 namespace brave_shields {
 
-// Declared in brave_shields_utils.cc.
+// Declared in brave_shields_settings_service.cc.
 extern uint32_t g_stable_farbling_tokens_seed;
 
 ScopedStableFarblingTokensForTesting::ScopedStableFarblingTokensForTesting(

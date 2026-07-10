@@ -12,12 +12,9 @@
 #include "base/token.h"
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
-#include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
 #include "brave/ios/browser/brave_shields/brave_shields_settings_service_factory.h"
 #include "brave/ios/browser/brave_shields/farbling_args.h"
-#include "components/content_settings/core/browser/host_content_settings_map.h"
-#include "ios/chrome/browser/content_settings/model/host_content_settings_map_factory.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/js_messaging/script_message.h"
 #include "ios/web/public/web_state.h"
@@ -93,10 +90,8 @@ void FarblingJavaScriptFeature::ScriptMessageReceivedWithReply(
   if (is_farbling_enabled) {
     // Seed the farbling args from the origin's persistent farbling token, the
     // same seed source used by the rest of Brave's farbling code.
-    HostContentSettingsMap* map =
-        ios::HostContentSettingsMapFactory::GetForProfile(profile);
-    const base::Token farbling_token = brave_shields::GetFarblingToken(
-        map, security_origin_url, /*additional_entropy=*/{});
+    const base::Token farbling_token = service->GetFarblingToken(
+        security_origin_url, /*additional_entropy=*/{});
     value.Set("args", MakeFarblingArgs(farbling_token));
   } else {
     value.Set("args", base::Value());

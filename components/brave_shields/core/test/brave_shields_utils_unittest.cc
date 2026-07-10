@@ -14,6 +14,7 @@
 #include "base/token.h"
 #include "brave/browser/profiles/brave_profile_manager.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -65,6 +66,7 @@ class BraveShieldsUtilTest : public testing::Test {
   }
 
   void TearDown() override {
+    shields_service_.reset();
     profile_.reset();
     TestingBrowserProcess::GetGlobal()->SetProfileManager(nullptr);
     content::RunAllTasksUntilIdle();
@@ -74,6 +76,15 @@ class BraveShieldsUtilTest : public testing::Test {
 
   HostContentSettingsMap* map() {
     return HostContentSettingsMapFactory::GetForProfile(profile());
+  }
+
+  brave_shields::BraveShieldsSettingsService* shields_service() {
+    if (!shields_service_) {
+      shields_service_ =
+          std::make_unique<brave_shields::BraveShieldsSettingsService>(
+              *map(), nullptr, profile()->GetPrefs());
+    }
+    return shields_service_.get();
   }
 
   void ExpectDomainBlockingType(const GURL& url,
@@ -92,6 +103,7 @@ class BraveShieldsUtilTest : public testing::Test {
   base::ScopedTempDir temp_dir_;
   content::BrowserTaskEnvironment task_environment_;
   std::unique_ptr<TestingProfile> profile_;
+  std::unique_ptr<brave_shields::BraveShieldsSettingsService> shields_service_;
 };
 
 class BraveShieldsUtilDomainBlockFeatureTest : public BraveShieldsUtilTest {
@@ -1086,31 +1098,32 @@ TEST_F(BraveShieldsUtilTest, GetDomainBlockingType) {
 }
 
 // Farbling token related tests.
+// TODO(https://github.com/brave/brave-browser/issues/56839): Move these tests
+// to brave_shields_settings_service_unittest.cc
 
 // Unsupported schemes (chrome://, about:blank, data:, invalid URL) must return
 // the zero token because shields are not active there.
 TEST_F(BraveShieldsUtilTest, FarblingToken_UnsupportedScheme_ReturnsZeroToken) {
   const base::Token zero;
-  EXPECT_EQ(zero, brave_shields::GetFarblingToken(
-                      map(), GURL("chrome://settings"), {}));
   EXPECT_EQ(zero,
-            brave_shields::GetFarblingToken(map(), GURL("about:blank"), {}));
-  EXPECT_EQ(zero, brave_shields::GetFarblingToken(
-                      map(), GURL("data:text/html,<h1>hello</h1>"), {}));
-  EXPECT_EQ(zero, brave_shields::GetFarblingToken(
-                      map(), GURL("file:///etc/hosts"), {}));
-  EXPECT_EQ(zero, brave_shields::GetFarblingToken(map(), GURL(), {}));
+            shields_service()->GetFarblingToken(GURL("chrome://settings"), {}));
+  EXPECT_EQ(zero, shields_service()->GetFarblingToken(GURL("about:blank"), {}));
+  EXPECT_EQ(zero, shields_service()->GetFarblingToken(
+                      GURL("data:text/html,<h1>hello</h1>"), {}));
+  EXPECT_EQ(zero,
+            shields_service()->GetFarblingToken(GURL("file:///etc/hosts"), {}));
+  EXPECT_EQ(zero, shields_service()->GetFarblingToken(GURL(), {}));
 }
 
 // HTTP and HTTPS URLs must produce a non-zero token.
 TEST_F(BraveShieldsUtilTest, FarblingToken_HttpAndHttps_ReturnNonZeroToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
-  EXPECT_FALSE(
-      brave_shields::GetFarblingToken(map(), GURL("http://example.com"), {})
-          .is_zero());
-  EXPECT_FALSE(
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {})
-          .is_zero());
+  EXPECT_FALSE(shields_service()
+                   ->GetFarblingToken(GURL("http://example.com"), {})
+                   .is_zero());
+  EXPECT_FALSE(shields_service()
+                   ->GetFarblingToken(GURL("https://example.com"), {})
+                   .is_zero());
 }
 
 // Two URLs with the same origin but different paths must share the same token,
@@ -1118,10 +1131,10 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_HttpAndHttps_ReturnNonZeroToken) {
 TEST_F(BraveShieldsUtilTest,
        FarblingToken_SameOrigin_DifferentPaths_SameToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
-  const auto t1 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com/page1"), {});
-  const auto t2 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com/page2?q=1#anchor"), {});
+  const auto t1 = shields_service()->GetFarblingToken(
+      GURL("https://example.com/page1"), {});
+  const auto t2 = shields_service()->GetFarblingToken(
+      GURL("https://example.com/page2?q=1#anchor"), {});
   EXPECT_EQ(t1, t2);
 }
 
@@ -1132,14 +1145,13 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_BlobUrl_SameTokenAsOriginUrl) {
   // Use a random seed (0 = random) to exercise the storage path: the first
   // caller writes a random token keyed under https://example.com/; the second
   // caller reads it back regardless of whether it used the blob or plain URL.
-  const auto blob_token = brave_shields::GetFarblingToken(
-      map(),
+  const auto blob_token = shields_service()->GetFarblingToken(
       url::Origin::Create(
           GURL("blob:https://example.com/550e8400-e29b-41d4-a716-446655440000"))
           .GetURL(),
       {});
-  const auto https_token = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com/some/path"), {});
+  const auto https_token = shields_service()->GetFarblingToken(
+      GURL("https://example.com/some/path"), {});
   EXPECT_EQ(blob_token, https_token);
 }
 
@@ -1150,10 +1162,9 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_BlobUrl_SameTokenAsOriginUrl) {
 TEST_F(BraveShieldsUtilTest,
        FarblingToken_BlobSubdomainUrl_SameTokenAsSubdomainUrl) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
-  const auto sub_token = brave_shields::GetFarblingToken(
-      map(), GURL("https://sub.example.com"), {});
-  const auto blob_sub_token = brave_shields::GetFarblingToken(
-      map(),
+  const auto sub_token =
+      shields_service()->GetFarblingToken(GURL("https://sub.example.com"), {});
+  const auto blob_sub_token = shields_service()->GetFarblingToken(
       url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
           .GetURL(),
       {});
@@ -1170,9 +1181,8 @@ TEST_F(BraveShieldsUtilTest,
        FarblingToken_BlobSubdomainUrl_SameTokenAsRootDomain) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   const auto root_token =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
-  const auto blob_sub_token = brave_shields::GetFarblingToken(
-      map(),
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
+  const auto blob_sub_token = shields_service()->GetFarblingToken(
       url::Origin::Create(GURL("blob:https://sub.example.com/some-uuid"))
           .GetURL(),
       {});
@@ -1183,9 +1193,9 @@ TEST_F(BraveShieldsUtilTest,
 TEST_F(BraveShieldsUtilTest, FarblingToken_DifferentOrigins_DifferentTokens) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   const auto t1 =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
   const auto t2 =
-      brave_shields::GetFarblingToken(map(), GURL("https://other.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://other.com"), {});
   EXPECT_NE(t1, t2);
 }
 
@@ -1194,9 +1204,9 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_DifferentOrigins_DifferentTokens) {
 TEST_F(BraveShieldsUtilTest, FarblingToken_SubdomainAndRoot_ShareToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   const auto root =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
-  const auto sub = brave_shields::GetFarblingToken(
-      map(), GURL("https://sub.example.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
+  const auto sub =
+      shields_service()->GetFarblingToken(GURL("https://sub.example.com"), {});
   EXPECT_EQ(root, sub);
 }
 
@@ -1205,9 +1215,9 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_SubdomainAndRoot_ShareToken) {
 // regenerated on every call.
 TEST_F(BraveShieldsUtilTest, FarblingToken_IsStableAcrossMultipleCalls) {
   const auto t1 =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
   const auto t2 =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
   EXPECT_EQ(t1, t2);
   EXPECT_FALSE(t1.is_zero());
 }
@@ -1217,10 +1227,10 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_IsStableAcrossMultipleCalls) {
 TEST_F(BraveShieldsUtilTest, FarblingToken_AdditionalEntropy_ChangesToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   const auto base_token =
-      brave_shields::GetFarblingToken(map(), GURL("https://example.com"), {});
+      shields_service()->GetFarblingToken(GURL("https://example.com"), {});
   constexpr std::array<uint8_t, 4> entropy = {0x01, 0x02, 0x03, 0x04};
-  const auto derived_token = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com"), entropy);
+  const auto derived_token =
+      shields_service()->GetFarblingToken(GURL("https://example.com"), entropy);
   EXPECT_NE(base_token, derived_token);
 }
 
@@ -1230,10 +1240,10 @@ TEST_F(BraveShieldsUtilTest,
        FarblingToken_SameEntropy_ProducesSameDerivedToken) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   constexpr std::array<uint8_t, 4> entropy = {0x05, 0x06, 0x07, 0x08};
-  const auto t1 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com"), entropy);
-  const auto t2 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com"), entropy);
+  const auto t1 =
+      shields_service()->GetFarblingToken(GURL("https://example.com"), entropy);
+  const auto t2 =
+      shields_service()->GetFarblingToken(GURL("https://example.com"), entropy);
   EXPECT_EQ(t1, t2);
 }
 
@@ -1244,10 +1254,10 @@ TEST_F(BraveShieldsUtilTest,
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   constexpr std::array<uint8_t, 4> entropy_a = {0xAA, 0xBB, 0xCC, 0xDD};
   constexpr std::array<uint8_t, 4> entropy_b = {0x11, 0x22, 0x33, 0x44};
-  const auto t1 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com"), entropy_a);
-  const auto t2 = brave_shields::GetFarblingToken(
-      map(), GURL("https://example.com"), entropy_b);
+  const auto t1 = shields_service()->GetFarblingToken(
+      GURL("https://example.com"), entropy_a);
+  const auto t2 = shields_service()->GetFarblingToken(
+      GURL("https://example.com"), entropy_b);
   EXPECT_NE(t1, t2);
 }
 
@@ -1257,9 +1267,9 @@ TEST_F(BraveShieldsUtilTest, FarblingToken_PerOrigin_TokensAreIndependent) {
   brave_shields::ScopedStableFarblingTokensForTesting scoped_seed(1);
   constexpr std::array<uint8_t, 4> entropy = {0x01, 0x02, 0x03, 0x04};
   const auto derived_a =
-      brave_shields::GetFarblingToken(map(), GURL("https://a.com"), entropy);
+      shields_service()->GetFarblingToken(GURL("https://a.com"), entropy);
   const auto derived_b =
-      brave_shields::GetFarblingToken(map(), GURL("https://b.com"), entropy);
+      shields_service()->GetFarblingToken(GURL("https://b.com"), entropy);
   // Different origins → different base tokens → different derived tokens even
   // with identical entropy.
   EXPECT_NE(derived_a, derived_b);
