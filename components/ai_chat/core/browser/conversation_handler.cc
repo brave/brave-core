@@ -2120,6 +2120,7 @@ ConversationHandler::GetStateForConversationEntries() {
   entries_state->is_leo_model = is_leo_model;
   entries_state->all_models = std::move(models_copy);
   entries_state->current_model_key = model.key;
+  entries_state->default_model_key = model_service_->GetDefaultModelKey();
   entries_state->total_tokens = metadata_->total_tokens;
   entries_state->trimmed_tokens = metadata_->trimmed_tokens;
   entries_state->content_used_percentage =
