@@ -39,6 +39,46 @@ jest.mock('../assistant_task/assistant_task', () => ({
   default: () => <div data-testid='assistant-task' />,
 }))
 
+jest.mock('../model_intro', () => ({
+  __esModule: true,
+  default: () => <div data-testid='model-intro' />,
+}))
+
+import styles from './style.module.scss'
+
+describe('ConversationEntries ModelIntro placement', () => {
+  it('renders after the latest reply inside the last entry pair', () => {
+    const { container, getByTestId } = render(
+      <MockContext
+        initialState={{
+          conversationHistory: [
+            createConversationTurnWithDefaults({
+              characterType: Mojom.CharacterType.ASSISTANT,
+              text: 'Latest reply',
+            }),
+          ],
+        }}
+      >
+        <ConversationEntries />
+      </MockContext>,
+    )
+
+    const modelIntro = getByTestId('model-intro')
+    const entryPairs = container.querySelectorAll(`.${styles.entryPair}`)
+    const lastEntryPair = entryPairs[entryPairs.length - 1]
+    expect(lastEntryPair).toContainElement(modelIntro)
+
+    const assistantTurn = lastEntryPair.querySelector(
+      '[data-testid="assistant-turn"]',
+    )
+    expect(assistantTurn).toBeTruthy()
+    expect(
+      assistantTurn!.compareDocumentPosition(modelIntro)
+        & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy()
+  })
+})
+
 describe('ConversationEntries allowedLinks per response', () => {
   const assistantTurn1 = {
     characterType: Mojom.CharacterType.ASSISTANT,

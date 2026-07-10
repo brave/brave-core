@@ -41,6 +41,7 @@ import AssistantTask from '../assistant_task/assistant_task'
 import ProgressBubble, {
   ProgressBubbleContextProvider,
 } from '../progress_bubble/progress_bubble'
+import ModelIntro from '../model_intro'
 
 const escape = (text: string): string => (RegExp as any).escape(text)
 
@@ -579,6 +580,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               </React.Fragment>
             ))}
           </ProgressBubbleContextProvider>
+          {pairIndex === entryPairs.length - 1 && <ModelIntro />}
         </div>
       ))}
     </div>
