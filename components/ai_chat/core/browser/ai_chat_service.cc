@@ -25,7 +25,9 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/numerics/clamped_math.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
@@ -56,6 +58,9 @@
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "ui/base/clipboard/clipboard_buffer.h"
+#include "ui/base/clipboard/scoped_clipboard_writer.h"
+#include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace ai_chat {
@@ -94,6 +99,15 @@ std::vector<mojom::AssociatedContentPtr> CloneAssociatedContent(
     cloned_content.push_back(content->Clone());
   }
   return cloned_content;
+}
+
+// Writes |text| (UTF-8) to the system clipboard, marking the entry as
+// confidential so it is excluded from clipboard history and other
+// data-leak-prevention surfaces.
+void CopyTextToClipboardAsConfidential(std::string_view text) {
+  ui::ScopedClipboardWriter scw(ui::ClipboardBuffer::kCopyPaste);
+  scw.WriteText(base::UTF8ToUTF16(text));
+  scw.MarkAsConfidential();
 }
 
 }  // namespace
@@ -723,9 +737,43 @@ void AIChatService::ConversationExists(const std::string& conversation_uuid,
 }
 
 void AIChatService::ShareConversation(const std::string& encrypted_contents,
+                                      const std::string& key_fragment,
+                                      bool copy_to_clipboard,
                                       ShareConversationCallback callback) {
-  conversation_share_manager_->ShareConversation(encrypted_contents,
-                                                 std::move(callback));
+  // Only the ciphertext is handed to the share manager (which talks to the
+  // server). The decryption key fragment stays here and is combined with the
+  // returned viewer URL in OnShareConversationComplete, so it never reaches the
+  // network layer or the server.
+  conversation_share_manager_->ShareConversation(
+      encrypted_contents,
+      base::BindOnce(&AIChatService::OnShareConversationComplete,
+                     weak_ptr_factory_.GetWeakPtr(), key_fragment,
+                     copy_to_clipboard, std::move(callback)));
+}
+
+void AIChatService::OnShareConversationComplete(
+    std::string key_fragment,
+    bool copy_to_clipboard,
+    ShareConversationCallback callback,
+    const std::optional<GURL>& shared_conversation_viewer_url) {
+  if (!shared_conversation_viewer_url) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  // Append the decryption key as a URL fragment to build the full shareable
+  // link. |key_fragment| is URL-safe base64, so it needs no further encoding.
+  GURL shared_conversation_url(base::StrCat(
+      {shared_conversation_viewer_url->spec(), "#", key_fragment}));
+  if (!shared_conversation_url.is_valid()) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+
+  if (copy_to_clipboard) {
+    CopyTextToClipboardAsConfidential(shared_conversation_url.spec());
+  }
+  std::move(callback).Run(std::move(shared_conversation_url));
 }
 
 void AIChatService::OnPremiumStatusReceived(GetPremiumStatusCallback callback,

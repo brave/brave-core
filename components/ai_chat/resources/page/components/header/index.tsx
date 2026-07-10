@@ -78,14 +78,17 @@ export const ConversationHeader = React.forwardRef(function (
     // usable by whoever the user shares it with.
     const json = serializeConversationForSharing(conversationHistory)
     const { ciphertext, keyFragment } = await encryptForSharing(json)
-    const { sharedConversationViewer } =
-      await aiChatContext.api.service.shareConversation(ciphertext)
-    if (!sharedConversationViewer) {
-      // Sharing failed on the server; there is nothing to share.
-      return
-    }
-    const shareUrl = `${sharedConversationViewer.url}#${keyFragment}`
-    navigator.clipboard.writeText(shareUrl)
+    // The browser process combines the key fragment with the server's viewer
+    // URL and copies the resulting shareable link to the clipboard, marked as
+    // confidential (excluded from clipboard history and other
+    // data-leak-prevention surfaces) - something the renderer cannot do. The
+    // key fragment is not sent to the sharing server. Failure (a null result)
+    // is a no-op: nothing is copied, so there is nothing more to do here.
+    await aiChatContext.api.service.shareConversation(
+      ciphertext,
+      keyFragment,
+      /*copyToClipboard=*/ true,
+    )
   }
 
   const showTitle =
