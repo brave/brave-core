@@ -835,9 +835,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Toolbar) {
   NavigateToPageSynchronously(kTestPageReadable);
 
   auto* page = ActiveWebContents();
-  auto* toolbar_view =
-      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser()))
-          ->reader_mode_toolbar();
+  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
   WaitElement(toolbar, "appearance");
 
@@ -910,9 +909,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarLangs) {
   EnableSpeedreaderAllowedForAllSites();
   NavigateToPageSynchronously(kTestPageReadable);
 
-  auto* toolbar_view =
-      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser()))
-          ->reader_mode_toolbar();
+  auto* toolbar_view = BraveBrowserView::GetBrowserViewForBrowser(browser())
+                           ->reader_mode_toolbar();
   auto* toolbar = toolbar_view->GetWebContentsForTesting();
 
   static constexpr char kGetLang[] = R"js( navigator.languages.toString() )js";
@@ -1102,8 +1100,7 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ToolbarWithRoundedCorners) {
   const bool rounded_contents =
       browser()->profile()->GetPrefs()->GetBoolean(kWebViewRoundedCorners);
 
-  auto* browser_view =
-      static_cast<BraveBrowserView*>(BrowserWindow::FromBrowser(browser()));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
   EXPECT_EQ(browser_view->reader_mode_toolbar()->rounded_corners_.IsEmpty(),
             !rounded_contents);
   chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
@@ -1261,8 +1258,7 @@ class SpeedReaderWithSplitViewBrowserTest : public SpeedReaderBrowserTest {
   }
 
   BraveBrowserView* brave_browser_view() {
-    return static_cast<BraveBrowserView*>(
-        BrowserWindow::FromBrowser(browser()));
+    return BraveBrowserView::GetBrowserViewForBrowser(browser());
   }
 
   // Don't cache as it changes whenever active tab changes.

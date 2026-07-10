@@ -312,6 +312,12 @@ const BraveBrowserView* BraveBrowserView::From(const BrowserView* view) {
   return views::AsViewClass<const BraveBrowserView>(view);
 }
 
+// static
+BraveBrowserView* BraveBrowserView::GetBrowserViewForBrowser(
+    const BrowserWindowInterface* browser) {
+  return From(BrowserView::GetBrowserViewForBrowser(browser));
+}
+
 bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
     const BrowserWindowInterface* browser) {
   if (browser->GetType() != BrowserWindowInterface::TYPE_NORMAL) {

@@ -1596,8 +1596,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   auto animation_resetter = gfx::AnimationTestApi::SetRichAnimationRenderMode(
       gfx::Animation::RichAnimationRenderMode::FORCE_DISABLED);
   auto* tab_strip_model = browser()->tab_strip_model();
-  auto* tab_strip =
-      browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  auto* tab_strip = BrowserView::GetBrowserViewForBrowser(browser())
+                        ->horizontal_tab_strip_for_testing();
 
   // Add a tab in a container
   const GURL url("https://a.test/simple.html");

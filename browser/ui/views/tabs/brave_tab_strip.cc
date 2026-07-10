@@ -115,8 +115,7 @@ BraveVerticalTabStripRegionView* BraveTabStrip::GetVerticalTabStripRegionView()
 
   auto* browser = GetBrowserWindowInterface();
   DCHECK(browser);
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser);
   if (!browser_view) {
     // Could be null during the start-up.
     return nullptr;
@@ -340,8 +339,7 @@ void BraveTabStrip::UpdateOrientation() {
   DCHECK(browser);
 
   if (using_vertical_tabs) {
-    auto* browser_view = static_cast<BraveBrowserView*>(
-        BrowserView::GetBrowserViewForBrowser(browser));
+    auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser);
     DCHECK(browser_view);
     auto* vertical_region_view =
         browser_view->vertical_tab_strip_container_view()

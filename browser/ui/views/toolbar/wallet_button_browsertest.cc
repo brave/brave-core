@@ -34,7 +34,7 @@ class WalletButtonButtonBrowserTest : public InProcessBrowserTest {
   }
 
   WalletButton* wallet_button() {
-    return static_cast<BraveBrowserView*>(browser_view())->GetWalletButton();
+    return BraveBrowserView::From(browser_view())->GetWalletButton();
   }
 };
 
@@ -108,8 +108,7 @@ class WalletButtonBrowserUITest : public DialogBrowserTest {
  public:
   // DialogBrowserTest:
   void ShowUi(const std::string& name) override {
-    auto* wallet_button = static_cast<BraveBrowserView*>(
-                              BrowserView::GetBrowserViewForBrowser(browser()))
+    auto* wallet_button = BraveBrowserView::GetBrowserViewForBrowser(browser())
                               ->GetWalletButton();
     views::test::ButtonTestApi(wallet_button).NotifyClick(GetDummyEvent());
   }
