@@ -121,10 +121,6 @@ struct TabGridView: View {
       || editMode == .active
   }
 
-  private var isShredButtonVisible: Bool {
-    !viewModel.tabs.isEmpty && viewModel.isShredMenuVisible
-  }
-
   var body: some View {
     VStack {
       if viewModel.isPrivateBrowsing, viewModel.tabs.isEmpty, !viewModel.isSearching {
@@ -390,7 +386,7 @@ struct TabGridView: View {
       } else if !viewModel.isSearching {
         Spacer()
       }
-      if !viewModel.isSearching, isShredButtonVisible {
+      if !viewModel.isSearching, !viewModel.tabs.isEmpty, viewModel.isShredMenuVisible {
         shredMenu
       }
     }
@@ -454,7 +450,7 @@ struct TabGridView: View {
         .font(.callout)
         .imageScale(.large)
     }
-    .tabGridChromeButtonStyle()
+    .plainToolbarIconButtonStyle()
     .menuOrder(.fixed)
     .accessibilityLabel(Strings.TabGrid.moreMenuButtonTitle)
   }
@@ -480,7 +476,7 @@ struct TabGridView: View {
         .font(.callout)
         .imageScale(.large)
     }
-    .tabGridChromeButtonStyle()
+    .plainToolbarIconButtonStyle()
   }
 
   var footerBar: some View {
@@ -498,7 +494,7 @@ struct TabGridView: View {
           .font(.callout)
           .imageScale(.large)
       }
-      .tabGridChromeButtonStyle()
+      .plainToolbarIconButtonStyle()
       .keyboardShortcut("t", modifiers: [.command])
       .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -520,7 +516,7 @@ struct TabGridView: View {
           .font(.callout)
           .imageScale(.large)
       }
-      .tabGridChromeButtonStyle(isDone: true)
+      .filledToolbarIconButtonStyle()
       .keyboardShortcut(.defaultAction)
       .frame(maxWidth: .infinity, alignment: .trailing)
     }
@@ -666,21 +662,25 @@ struct TabGridView: View {
 
 extension View {
   @ViewBuilder
-  func tabGridChromeButtonStyle(isDone: Bool = false) -> some View {
+  func plainToolbarIconButtonStyle() -> some View {
     aspectRatio(1, contentMode: .fit)
       .osAvailabilityModifiers { content in
-        if isDone {
-          if #available(iOS 26.0, *) {
-            content.buttonStyle(.glassFilled)
-          } else {
-            content.buttonStyle(.filled)
-          }
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
         } else {
-          if #available(iOS 26.0, *) {
-            content.buttonStyle(.plainGlass)
-          } else {
-            content.buttonStyle(.plainBordered)
-          }
+          content.buttonStyle(.plainBordered)
+        }
+      }
+  }
+
+  @ViewBuilder
+  func filledToolbarIconButtonStyle() -> some View {
+    aspectRatio(1, contentMode: .fit)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.glassFilled)
+        } else {
+          content.buttonStyle(.filled)
         }
       }
   }
@@ -714,15 +714,15 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
       }),
       for: .valueChanged
     )
-    configureAppearance(uiView)
+    configureStaticAppearance(uiView)
+    updatePrivateBrowsingAppearance(uiView)
     return uiView
   }
 
   func updateUIView(_ uiView: UISegmentedControl, context: Context) {
     uiView.setTitle(tabCount, forSegmentAt: 0)
-    uiView.setTitle(Strings.TabGrid.privateBrowsingModeTitle, forSegmentAt: 1)
     uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
-    configureAppearance(uiView)
+    updatePrivateBrowsingAppearance(uiView)
   }
 
   func sizeThatFits(
@@ -730,23 +730,14 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     uiView: UISegmentedControl,
     context: Context
   ) -> CGSize? {
-    return .init(width: uiView.intrinsicContentSize.width + 44, height: 40)
+    return .init(width: uiView.intrinsicContentSize.width + 44, height: 44)
   }
 
-  private func configureAppearance(_ uiView: UISegmentedControl) {
-    uiView.backgroundColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
-    )
+  private func configureStaticAppearance(_ uiView: UISegmentedControl) {
     uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
-    let titleFont = UIFont.preferredFont(forTextStyle: .subheadline)
-    uiView.setTitleTextAttributes(
-      [
-        .font: titleFont,
-        .foregroundColor: UIColor(
-          braveSystemName: isPrivateBrowsing ? .iconInteractive : .iconDefault
-        ),
-      ],
-      for: .selected
+    let titleFont = UIFont.systemFont(
+      ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize,
+      weight: .medium
     )
     uiView.setTitleTextAttributes(
       [
@@ -754,6 +745,24 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
         .foregroundColor: UIColor(braveSystemName: .iconDefault),
       ],
       for: .normal
+    )
+  }
+
+  private func updatePrivateBrowsingAppearance(_ uiView: UISegmentedControl) {
+    uiView.backgroundColor = UIColor(
+      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
+    )
+    let titleFont = UIFont.systemFont(
+      ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize,
+      weight: .medium
+    )
+    uiView.setTitleTextAttributes(
+      [
+        .font: titleFont,
+        .foregroundColor: isPrivateBrowsing
+          ? UIColor.white : UIColor(braveSystemName: .iconDefault),
+      ],
+      for: .selected
     )
   }
 }
