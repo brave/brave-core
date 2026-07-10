@@ -93,6 +93,9 @@ class EthereumProviderTabHelper
   // web::WebStateObserver:
   void DidFinishNavigation(web::WebState* web_state,
                            web::NavigationContext* navigation_context) override;
+  void PageLoaded(
+      web::WebState* web_state,
+      web::PageLoadCompletionStatus load_completion_status) override;
   void WebStateDestroyed(web::WebState* web_state) override;
 
   raw_ptr<web::WebState> web_state_;

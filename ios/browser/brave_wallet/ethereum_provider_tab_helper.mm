@@ -278,6 +278,12 @@ void EthereumProviderTabHelper::DidFinishNavigation(
   CreateProvider();
 }
 
+void EthereumProviderTabHelper::PageLoaded(
+    web::WebState* web_state,
+    web::PageLoadCompletionStatus load_completion_status) {
+  EmitEthereumEvent(web_state, "connect", std::nullopt);
+}
+
 void EthereumProviderTabHelper::WebStateDestroyed(web::WebState* web_state) {
   provider_.reset();
   web_state_->RemoveObserver(this);
