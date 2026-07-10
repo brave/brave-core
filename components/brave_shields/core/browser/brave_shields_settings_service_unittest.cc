@@ -5,9 +5,13 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
+#include <array>
+#include <tuple>
+
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
+#include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -60,6 +64,11 @@ class BraveShieldsSettingsServiceTest : public testing::Test {
   }
 
  private:
+  // These tests are part of the "brave_components_unittests" target and the
+  // test runner inherits from base::TestSuite rather than ChromeTestSuite.
+  // The latter is the one that automatically adds this seed for tests.
+  // See chrome_test_suite.h for the equivalent seed.
+  brave_shields::ScopedStableFarblingTokensForTesting stable_farbling_seed_{1};
   base::test::TaskEnvironment task_environment_;
   TestingPrefServiceSimple local_state_;
   sync_preferences::TestingPrefServiceSyncable profile_prefs_;
@@ -626,4 +635,67 @@ TEST_F(BraveShieldsSettingsServiceTest,
   EXPECT_FALSE(
       brave_shields_settings()->IsShieldsDisabledOnAnyHostMatchingDomainOf(
           GURL("https://other.com")));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, PRNGKnownValues) {
+  const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
+  };
+  for (const auto& c : test_cases) {
+    brave_shields::FarblingPRNG prng;
+    ASSERT_TRUE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+        std::get<0>(c), {}, &prng));
+    EXPECT_EQ(prng(), std::get<1>(c));
+  }
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, PRNGKnownValuesDifferentSeeds) {
+  const std::array<std::tuple<GURL, uint64_t>, 2> test_cases = {
+      std::make_tuple<>(GURL("http://a.com"), 10450951993123491723UL),
+      std::make_tuple<>(GURL("http://b.com"), 2581208260237394178UL),
+  };
+  for (const auto& c : test_cases) {
+    brave_shields::FarblingPRNG prng;
+    ASSERT_TRUE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+        std::get<0>(c), {}, &prng));
+    EXPECT_EQ(prng(), std::get<1>(c));
+  }
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, InvalidDomains) {
+  const std::array<GURL, 8> test_cases = {
+      GURL("about:blank"),
+      GURL("brave://settings"),
+      GURL("chrome://version"),
+      GURL("file:///etc/passwd"),
+      GURL("javascript:alert(1)"),
+      GURL("data:text/plain;base64,"),
+      GURL(""),
+  };
+  for (const auto& url : test_cases) {
+    brave_shields::FarblingPRNG prng;
+    EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+        url, {}, &prng));
+    EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+        url, {}, &prng));
+  }
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, ShieldsDown) {
+  const GURL url("http://a.com");
+  brave_shields::SetBraveShieldsEnabled(GetHostContentSettingsMap(), false,
+                                        url);
+  brave_shields::FarblingPRNG prng;
+  EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+      url, {}, &prng));
+}
+
+TEST_F(BraveShieldsSettingsServiceTest, FingerprintingAllowed) {
+  const GURL url("http://a.com");
+  brave_shields::SetFingerprintingControlType(
+      GetHostContentSettingsMap(), brave_shields::ControlType::ALLOW, url);
+  brave_shields::FarblingPRNG prng;
+  EXPECT_FALSE(brave_shields_settings()->MakePseudoRandomGeneratorForURL(
+      url, {}, &prng));
 }
