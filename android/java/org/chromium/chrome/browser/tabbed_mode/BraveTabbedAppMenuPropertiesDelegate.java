@@ -36,6 +36,7 @@ import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.BraveRewardsPolicy;
 import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuIconRowFooter;
+import org.chromium.chrome.browser.app.appmenu.AppMenuItemUtils;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
 import org.chromium.chrome.browser.brave_news.BraveNewsPolicy;
@@ -553,17 +554,25 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.new_tab_menu_id, R.string.menu_new_tab, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.new_tab_menu_id,
+                                R.string.menu_new_tab,
+                                0,
+                                isMenuIconAtStart())));
 
         // New Incognito Tab
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
                                 R.id.new_incognito_tab_menu_id,
                                 R.string.menu_new_incognito_tab,
-                                0)));
+                                0,
+                                isMenuIconAtStart())));
 
         // Add to Group - omitted from the Customize menu when the "Enable tab groups" master
         // switch is off, so it is not offered as a customizable item.
@@ -573,7 +582,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
                             buildModelForStandardMenuItem(
-                                    R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.add_to_group_menu_id,
+                                    R.string.menu_add_tab_to_group,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // New Window
@@ -581,8 +595,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.new_window_menu_id, R.string.menu_new_window, 0)));
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.new_window_menu_id,
+                                    R.string.menu_new_window,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // New Incognito Window
@@ -590,10 +609,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
                                     R.id.new_incognito_window_menu_id,
                                     R.string.menu_new_incognito_window,
-                                    0)));
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Move to other window
@@ -601,10 +623,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
                                     R.id.move_to_other_window_menu_id,
                                     R.string.menu_move_to_other_window,
-                                    0)));
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Manage windows
@@ -617,7 +642,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildBaseModelForTextItem(R.id.manage_all_windows_menu_id)
+                        AppMenuItemUtils.buildBaseModelForTextItem(
+                                        mAppMenuItemTheme,
+                                        R.id.manage_all_windows_menu_id,
+                                        isMenuIconAtStart())
                                 .with(AppMenuItemProperties.TITLE, manageWindows)
                                 .build()));
 
@@ -625,29 +653,49 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.open_history_menu_id, R.string.menu_history, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.open_history_menu_id,
+                                R.string.menu_history,
+                                0,
+                                isMenuIconAtStart())));
 
         // Downloads
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.downloads_menu_id, R.string.menu_downloads, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.downloads_menu_id,
+                                R.string.menu_downloads,
+                                0,
+                                isMenuIconAtStart())));
 
         // Bookmarks
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.all_bookmarks_menu_id, R.string.menu_bookmarks, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.all_bookmarks_menu_id,
+                                R.string.menu_bookmarks,
+                                0,
+                                isMenuIconAtStart())));
 
         // Recent Tabs
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.recent_tabs_menu_id, R.string.menu_recent_tabs, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.recent_tabs_menu_id,
+                                R.string.menu_recent_tabs,
+                                0,
+                                isMenuIconAtStart())));
 
         // Add Brave specific items (Wallet is handled by policy-controlled mechanism).
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)) {
@@ -692,93 +740,150 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.page_zoom_id, R.string.page_zoom_menu_title, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.page_zoom_id,
+                                R.string.page_zoom_menu_title,
+                                0,
+                                isMenuIconAtStart())));
         // Share
         if (mIsTablet) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.share_menu_id, R.string.menu_share_page, 0)));
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.share_menu_id,
+                                    R.string.menu_share_page,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Download Page
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.download_page_id, R.string.menu_download_page, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.download_page_id,
+                                R.string.menu_download_page,
+                                0,
+                                isMenuIconAtStart())));
 
         // Print
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(R.id.print_id, R.string.menu_print, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.print_id,
+                                R.string.menu_print,
+                                0,
+                                isMenuIconAtStart())));
 
         // Price Tracking enable
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
                                 R.id.enable_price_tracking_menu_id,
                                 R.string.enable_price_tracking_menu_item,
-                                0)));
+                                0,
+                                isMenuIconAtStart())));
 
         // Price Tracking disable
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
                                 R.id.disable_price_tracking_menu_id,
                                 R.string.disable_price_tracking_menu_item,
-                                0)));
+                                0,
+                                isMenuIconAtStart())));
 
         // Find in page
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.find_in_page_id, R.string.menu_find_in_page, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.find_in_page_id,
+                                R.string.menu_find_in_page,
+                                0,
+                                isMenuIconAtStart())));
 
         // Translate
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.translate_id, R.string.menu_translate, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.translate_id,
+                                R.string.menu_translate,
+                                0,
+                                isMenuIconAtStart())));
 
         // Shred
         if (ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SHRED)) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.brave_shred_id, R.string.brave_menu_shred_text, 0)));
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.brave_shred_id,
+                                    R.string.brave_menu_shred_text,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Read aloud
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.readaloud_menu_id, R.string.menu_listen_to_this_page, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.readaloud_menu_id,
+                                R.string.menu_listen_to_this_page,
+                                0,
+                                isMenuIconAtStart())));
 
         // Reader mode
         if (DomDistillerFeatures.sReaderModeDistillInApp.isEnabled()) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.reader_mode_menu_id, R.string.show_reading_mode_text, 0)));
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.reader_mode_menu_id,
+                                    R.string.show_reading_mode_text,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Open with…
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.open_with_id, R.string.menu_open_with, 0)));
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
+                                R.id.open_with_id,
+                                R.string.menu_open_with,
+                                0,
+                                isMenuIconAtStart())));
 
         // Universal Install / Open Web APK
         if (WebappsUtils.isAddToHomeIntentSupported()) {
@@ -787,7 +892,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
-                            buildBaseModelForTextItem(R.id.open_webapk_id)
+                            AppMenuItemUtils.buildBaseModelForTextItem(
+                                            mAppMenuItemTheme,
+                                            R.id.open_webapk_id,
+                                            isMenuIconAtStart())
                                     .with(
                                             AppMenuItemProperties.TITLE,
                                             mContext.getString(R.string.menu_open_webapk, appName))
@@ -796,10 +904,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
                                     R.id.universal_install,
                                     R.string.menu_install_create_shortcut,
-                                    0)));
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Auto Dark
@@ -808,10 +919,13 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
                                     R.id.auto_dark_web_contents_id,
                                     R.string.menu_auto_dark_web_contents,
-                                    0)));
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Paint Preview
@@ -819,28 +933,39 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
                                     R.id.paint_preview_show_id,
                                     R.string.menu_paint_preview_show,
-                                    0)));
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         // Get Image Descriptions
         modelList.add(
                 new MVCListAdapter.ListItem(
                         AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
+                        AppMenuItemUtils.buildModelForStandardMenuItem(
+                                mContext,
+                                mAppMenuItemTheme,
                                 R.id.get_image_descriptions_id,
                                 R.string.menu_get_image_descriptions,
-                                0)));
+                                0,
+                                isMenuIconAtStart())));
 
         // Listen to the Feed
         if (ChromeFeatureList.isEnabled(ChromeFeatureList.FEED_AUDIO_OVERVIEWS)) {
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
-                                    R.id.listen_to_feed_id, R.string.menu_listen_to_feed, 0)));
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
+                                    mContext,
+                                    mAppMenuItemTheme,
+                                    R.id.listen_to_feed_id,
+                                    R.string.menu_listen_to_feed,
+                                    0,
+                                    isMenuIconAtStart())));
         }
 
         return modelList;
@@ -987,105 +1112,138 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     private MVCListAdapter.ListItem buildSetDefaultBrowserItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.set_default_browser,
                         R.string.menu_set_default_browser,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_set_as_default : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_set_as_default : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildCustomMenuItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         CustomizeBraveMenu.BRAVE_CUSTOMIZE_ITEM_ID,
                         R.string.customize_menu_title,
                         shouldShowIconBeforeItem()
                                 ? org.chromium.brave.browser.customize_menu.R.drawable
                                         .ic_window_screwdriver
-                                : 0));
+                                : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildExitItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.exit_id,
                         R.string.menu_exit,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_exit : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_exit : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveRewardsItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_rewards_id,
                         R.string.menu_brave_rewards,
-                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_rewards : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.brave_menu_rewards : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveWalletItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_wallet_id,
                         R.string.menu_brave_wallet,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_wallet : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_wallet : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBravePlaylistItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_playlist_id,
                         R.string.brave_playlist,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_open_playlist : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_open_playlist : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveAddToPlaylistItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.add_to_playlist_id,
                         R.string.playlist_add_to_playlist,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_baseline_add_24 : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_baseline_add_24 : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveNewsItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_news_id,
                         R.string.brave_news_title,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_news : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_news : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveLeoItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_leo_id,
                         R.string.menu_brave_leo,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_leo : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_product_brave_leo : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveShredItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuHandler.AppMenuItemType.STANDARD,
-                buildModelForStandardMenuItem(
+                AppMenuItemUtils.buildModelForStandardMenuItem(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.brave_shred_id,
                         R.string.brave_menu_shred_text,
-                        shouldShowIconBeforeItem() ? R.drawable.ic_brave_shred : 0));
+                        shouldShowIconBeforeItem() ? R.drawable.ic_brave_shred : 0,
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveVpnItem() {
         return new MVCListAdapter.ListItem(
                 AppMenuItemType.TITLE_BUTTON,
-                buildModelForMenuItemWithCheckbox(
+                AppMenuItemUtils.buildModelForMenuItemWithCheckbox(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.request_brave_vpn_id,
                         R.string.brave_vpn,
                         shouldShowIconBeforeItem() ? R.drawable.ic_product_vpn : 0,
                         R.id.request_brave_vpn_check_id,
-                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mBraveContext)));
+                        BraveVpnProfileUtils.getInstance().isBraveVPNConnected(mBraveContext),
+                        isMenuIconAtStart()));
     }
 
     private MVCListAdapter.ListItem buildBraveVpnLocationIconItem() {
@@ -1102,13 +1260,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 secondaryActionIcon,
                 ContextCompat.getColor(mBraveContext, R.color.vpn_timer_icon_color));
         PropertyModel model =
-                buildModelForMenuItemWithSecondaryButton(
+                AppMenuItemUtils.buildModelForMenuItemWithSecondaryButton(
+                        mContext,
+                        mAppMenuItemTheme,
                         R.id.request_vpn_location_id,
                         R.string.change_location,
                         0 /* iconResId */,
                         R.id.request_vpn_location_icon_id,
                         "" /* secondaryActionTitle */,
-                        secondaryActionIcon);
+                        secondaryActionIcon,
+                        isMenuIconAtStart());
         model.set(
                 AppMenuItemProperties.TITLE,
                 String.format(
@@ -1123,8 +1284,12 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
     protected PropertyModel buildPageInfoModel(@Nullable Tab currentTab) {
         // Instead of the info button, we show the share button in Brave.
         PropertyModel shareButton =
-                buildModelForIcon(
-                        R.id.info_menu_id, R.string.share, R.string.share, R.drawable.share_icon);
+                AppMenuItemUtils.buildModelForIcon(
+                        mContext,
+                        R.id.info_menu_id,
+                        R.string.share,
+                        R.string.share,
+                        R.drawable.share_icon);
         shareButton.set(
                 AppMenuItemProperties.ENABLED,
                 (currentTab != null && !UrlUtilities.isNtpUrl(currentTab.getUrl().getSpec())));
