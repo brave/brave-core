@@ -9,6 +9,7 @@
 #include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
+#include "base/token.h"
 #include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 #include "brave/components/brave_shields/core/common/farbling_prng.h"
 #include "brave/components/brave_shields/core/common/shields_settings.mojom.h"
@@ -80,6 +81,8 @@ class BraveShieldsSettingsService : public KeyedService {
       FarblingPRNG* prng);
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+  base::Token GetFarblingToken(const GURL& url,
+                               base::span<const uint8_t> additional_entropy);
 
  private:
   const raw_ref<HostContentSettingsMap>
