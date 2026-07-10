@@ -1086,7 +1086,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest, TabTooltipShowsContainerName) {
   ASSERT_TRUE(web_contents);
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
-  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* browser_view =
+      static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser()));
   TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
   ASSERT_TRUE(tab_strip);
   auto* brave_tab = views::AsViewClass<BraveTab>(
@@ -1107,7 +1108,8 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   const GURL url("https://a.test/simple.html");
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
 
-  auto* browser_view = static_cast<BrowserView*>(browser()->window());
+  auto* browser_view =
+      static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser()));
   TabStrip* tab_strip = browser_view->horizontal_tab_strip_for_testing();
   ASSERT_TRUE(tab_strip);
   auto* brave_tab = views::AsViewClass<BraveTab>(
@@ -1566,24 +1568,25 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
       tab_in_container->small_accent_icon_view_for_test();
   ASSERT_TRUE(small_accent_view);
   EXPECT_TRUE(small_accent_view->GetVisible());
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
   ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return browser()->window()->IsFullscreen(); }));
+      [&]() { return BrowserWindow::FromBrowser(browser())->IsFullscreen(); }));
   RunScheduledLayouts();
 
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_FALSE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsFullscreen(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserWindow::FromBrowser(browser())->IsFullscreen();
+  }));
   RunScheduledLayouts();
 
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_TRUE(small_accent_view->layer());
 }

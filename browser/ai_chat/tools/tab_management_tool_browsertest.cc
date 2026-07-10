@@ -478,7 +478,7 @@ IN_PROC_BROWSER_TEST_F(TabManagementToolBrowserTest, TabManagementToolTest) {
   // Moving tab to a group in a different window
   {
     int tab_to_move = AddTabAndGetHandle(b2, GURL("https://move-window.test/"));
-    b2->window()->Activate();
+    BrowserWindow::FromBrowser(b2)->Activate();
     ASSERT_TRUE(b2->IsActive());
     b2->tab_strip_model()->ActivateTabAt(b2->GetTabStripModel()->GetIndexOfTab(
         tabs::TabHandle(tab_to_move).Get()));

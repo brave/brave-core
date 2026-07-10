@@ -96,7 +96,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -128,7 +128,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
   omnibox_view->SetFocus(true);
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
-  EXPECT_TRUE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_TRUE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
@@ -154,7 +154,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
 IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
   EXPECT_EQ(1u, GlobalBrowserCollection::GetInstance()->GetSize());
   OmniboxView* omnibox_view =
-      browser()->window()->GetLocationBar()->GetOmniboxView();
+      BrowserWindow::FromBrowser(browser())->GetLocationBar()->GetOmniboxView();
   omnibox_view->SetUserText(u"any text");
   omnibox_view->SelectAll(false);
   EXPECT_TRUE(omnibox_view->IsSelectAll());
@@ -189,7 +189,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       BraveBrowserView::GetBrowserViewForBrowser(browser()));
   OmniboxView* omnibox_view = browser_view->GetLocationBar()->GetOmniboxView();
   EXPECT_FALSE(omnibox_view->IsSelectAll());
-  EXPECT_FALSE(BraveBrowserWindow::From(browser()->window())->HasSelectedURL());
+  EXPECT_FALSE(BraveBrowserWindow::FromBrowser(browser())->HasSelectedURL());
 
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);

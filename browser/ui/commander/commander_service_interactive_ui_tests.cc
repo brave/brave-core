@@ -11,6 +11,7 @@
 #include "brave/components/commander/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
 #include "chrome/browser/ui/omnibox/omnibox_view.h"
 #include "chrome/test/interaction/interactive_browser_test.h"
@@ -36,7 +37,9 @@ class CommanderServiceInteractiveUITest : public InteractiveBrowserTest {
   }
 
   OmniboxView* omnibox() {
-    return browser()->window()->GetLocationBar()->GetOmniboxView();
+    return BrowserWindow::FromBrowser(browser())
+        ->GetLocationBar()
+        ->GetOmniboxView();
   }
 
   auto WaitForShowing() {

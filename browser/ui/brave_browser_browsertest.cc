@@ -137,7 +137,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserBrowserTest, OpenNewTabWhenTabStripIsEmpty) {
   ASSERT_EQ(3, tab_strip->count());
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 2u);
   // Close the browser window.
-  new_browser->window()->Close();
+  BrowserWindow::FromBrowser(new_browser)->Close();
   base::RunLoop().RunUntilIdle();
   EXPECT_EQ(GlobalBrowserCollection::GetInstance()->GetSize(), 1u);
 }
