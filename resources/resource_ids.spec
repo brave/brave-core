@@ -267,11 +267,11 @@
     "META": {"sizes": {"includes": [10]}},
     "includes": [54150],
   },
-  "brave/components/local_ai/resources/speech_worker_ort/ort_dist_resources.grd": {
+  "brave/components/local_ai/resources/speech_worker/ort_dist_resources.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54160],
   },
-  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_ort_worker/on_device_speech_recognition_ort_worker.grd": {
+  "<(SHARED_INTERMEDIATE_DIR)/brave/web-ui-on_device_speech_recognition_worker/on_device_speech_recognition_worker.grd": {
     "META": {"sizes": {"includes": [5]}},
     "includes": [54165],
   },

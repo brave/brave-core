@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_ort_worker_ui.h"
+#include "brave/browser/ui/webui/local_ai/on_device_speech_recognition_worker_ui.h"
 
 #include <memory>
 
 #include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/url_constants.h"
-#include "brave/components/local_ai/resources/grit/on_device_speech_recognition_ort_worker_generated.h"
-#include "brave/components/local_ai/resources/grit/on_device_speech_recognition_ort_worker_generated_map.h"
+#include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated.h"
+#include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated_map.h"
 #include "brave/components/local_ai/resources/grit/ort_dist_generated.h"
 #include "brave/components/local_ai/resources/grit/ort_dist_generated_map.h"
 #include "components/grit/brave_components_resources.h"
@@ -23,20 +23,19 @@
 
 namespace local_ai {
 
-UntrustedOnDeviceSpeechRecognitionOrtWorkerUI::
-    UntrustedOnDeviceSpeechRecognitionOrtWorkerUI(content::WebUI* web_ui)
+UntrustedOnDeviceSpeechRecognitionWorkerUI::
+    UntrustedOnDeviceSpeechRecognitionWorkerUI(content::WebUI* web_ui)
     : ui::MojoWebUIController(web_ui) {
   content::WebUIDataSource* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(),
-      kOnDeviceSpeechRecognitionOrtWorkerURL);
+      kOnDeviceSpeechRecognitionWorkerURL);
 
-  webui::SetupWebUIDataSource(source,
-                              kOnDeviceSpeechRecognitionOrtWorkerGenerated,
-                              IDR_ON_DEVICE_SPEECH_RECOGNITION_ORT_WORKER_HTML);
+  webui::SetupWebUIDataSource(source, kOnDeviceSpeechRecognitionWorkerGenerated,
+                              IDR_ON_DEVICE_SPEECH_RECOGNITION_WORKER_HTML);
 
   // Serve the bundled onnxruntime-web distribution (loader, pthread worker
   // glue, threaded WASM) under /ort-dist/ from the pak built by
-  // components/local_ai/resources/speech_worker_ort:ort_dist_generated.
+  // components/local_ai/resources/speech_worker:ort_dist_generated.
   source->AddResourcePaths(kOrtDistGenerated);
 
   // Make the page cross-origin isolated so onnxruntime-web can use the
@@ -55,7 +54,7 @@ UntrustedOnDeviceSpeechRecognitionOrtWorkerUI::
   //   needs 'wasm-unsafe-eval'.
   // worker-src: onnxruntime-web spawns its thread pool as Web Workers; we pin
   //   those to a same-origin served script (ort.env.wasm.wasmPaths.mjs in
-  //   speech_worker_ort.ts) rather than ORT's default inlined blob: worker, so
+  //   speech_worker.ts) rather than ORT's default inlined blob: worker, so
   //   'self' (no blob:) is sufficient and blocks any blob-URL worker.
   // connect-src: ORT fetches the runtime .wasm from this origin. Model weights
   //   arrive as mojo BigBuffers, never fetched, so same-origin is the only
@@ -86,7 +85,7 @@ UntrustedOnDeviceSpeechRecognitionOrtWorkerUI::
   // unconditionally by SetupWebUIDataSource above and is not disabled here.
   // onnxruntime-web spawns its thread pool via `new Worker(<url string>)`,
   // which that enforcement routes through the `default` policy
-  // (installed in speech_worker_ort.ts, accepting solely our own same-origin
+  // (installed in speech_worker.ts, accepting solely our own same-origin
   // ort-dist worker script). This line only narrows the broad policy
   // allowlist SetupWebUIDataSource sets down to what this page uses; the
   // `default` policy name it relies on is appended automatically by Brave's
@@ -95,24 +94,23 @@ UntrustedOnDeviceSpeechRecognitionOrtWorkerUI::
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types;");
 }
 
-UntrustedOnDeviceSpeechRecognitionOrtWorkerUI::
-    ~UntrustedOnDeviceSpeechRecognitionOrtWorkerUI() = default;
+UntrustedOnDeviceSpeechRecognitionWorkerUI::
+    ~UntrustedOnDeviceSpeechRecognitionWorkerUI() = default;
 
-WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedOnDeviceSpeechRecognitionOrtWorkerUI)
+WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedOnDeviceSpeechRecognitionWorkerUI)
 
 ///////////////////////////////////////////////////////////////////////////////
 
-UntrustedOnDeviceSpeechRecognitionOrtWorkerUIConfig::
-    UntrustedOnDeviceSpeechRecognitionOrtWorkerUIConfig()
+UntrustedOnDeviceSpeechRecognitionWorkerUIConfig::
+    UntrustedOnDeviceSpeechRecognitionWorkerUIConfig()
     : content::WebUIConfig(content::kChromeUIUntrustedScheme,
-                           kOnDeviceSpeechRecognitionOrtWorkerHost) {}
+                           kOnDeviceSpeechRecognitionWorkerHost) {}
 
 std::unique_ptr<content::WebUIController>
-UntrustedOnDeviceSpeechRecognitionOrtWorkerUIConfig::CreateWebUIController(
+UntrustedOnDeviceSpeechRecognitionWorkerUIConfig::CreateWebUIController(
     content::WebUI* web_ui,
     const GURL& url) {
-  return std::make_unique<UntrustedOnDeviceSpeechRecognitionOrtWorkerUI>(
-      web_ui);
+  return std::make_unique<UntrustedOnDeviceSpeechRecognitionWorkerUI>(web_ui);
 }
 
 }  // namespace local_ai

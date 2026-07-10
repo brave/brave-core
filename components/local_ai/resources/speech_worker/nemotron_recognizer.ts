@@ -6,7 +6,7 @@
 // Nemotron 0.6B streaming RNN-T over onnxruntime-web. Mojo-free: model
 // loading from raw bytes plus a per-utterance streaming session that emits
 // transcripts through a callback. The mojo transport glue that drives this
-// lives in speech_worker_ort.ts.
+// lives in speech_worker.ts.
 
 import { ensureOrt } from './ort_env'
 import type { Ort, OrtSession, OrtSessionOptions, OrtTensor } from './ort_env'

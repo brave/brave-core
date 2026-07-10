@@ -74,7 +74,7 @@ export async function ensureOrt(): Promise<Ort> {
     ort = await import(
       // @ts-expect-error — absolute WebUI URL resolved at runtime, not by
       // webpack (externalized by components/webpack/webpack.config.js).
-      'chrome-untrusted://on-device-speech-recognition-ort-worker/ort-dist/ort.wasm.bundle.min.js'
+      'chrome-untrusted://on-device-speech-recognition-worker/ort-dist/ort.wasm.bundle.min.js'
     )
     ortLoaded = true
   }

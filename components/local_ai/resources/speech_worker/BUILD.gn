@@ -27,16 +27,16 @@ brave_grit("ort_dist_generated") {
 
 # Cross-origin-isolated worker that runs the Nemotron 0.6B int4 ONNX model
 # through onnxruntime-web at
-# chrome-untrusted://on-device-speech-recognition-ort-worker/
-transpile_web_ui("on_device_speech_recognition_ort_worker_ui") {
+# chrome-untrusted://on-device-speech-recognition-worker/
+transpile_web_ui("on_device_speech_recognition_worker_ui") {
   entry_points = [ [
-        "speech_worker_ort",
-        rebase_path("speech_worker_ort.ts"),
+        "speech_worker",
+        rebase_path("speech_worker.ts"),
       ] ]
   webpack_aliases = [ "browser" ]
-  resource_name = "on_device_speech_recognition_ort_worker"
+  resource_name = "on_device_speech_recognition_worker"
 
-  imports_from = [ "//brave/components/local_ai/resources/speech_worker_ort/" ]
+  imports_from = [ "//brave/components/local_ai/resources/speech_worker/" ]
 
   deps = [
     "//brave/components/local_ai/core:speech_recognition_mojom_js",
@@ -44,8 +44,8 @@ transpile_web_ui("on_device_speech_recognition_ort_worker_ui") {
   ]
 }
 
-pack_web_resources("on_device_speech_recognition_ort_worker_generated") {
-  resource_name = "on_device_speech_recognition_ort_worker"
+pack_web_resources("on_device_speech_recognition_worker_generated") {
+  resource_name = "on_device_speech_recognition_worker"
   output_dir = "$root_gen_dir/brave/components/local_ai/resources"
-  deps = [ ":on_device_speech_recognition_ort_worker_ui" ]
+  deps = [ ":on_device_speech_recognition_worker_ui" ]
 }

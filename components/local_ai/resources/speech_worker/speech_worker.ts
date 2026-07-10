@@ -127,7 +127,7 @@ class SpeechRecognitionFactoryImpl
       )
       return { success: true }
     } catch (err) {
-      console.error('[speech-worker-ort] init failed:', err)
+      console.error('[speech-worker] init failed:', err)
       return { success: false }
     }
   }
@@ -138,7 +138,7 @@ class SpeechRecognitionFactoryImpl
     responder: AsrStreamResponderRemote,
   ) {
     if (!this.model) {
-      console.error('[speech-worker-ort] createAsrStream before init')
+      console.error('[speech-worker] createAsrStream before init')
       return
     }
     const adapter = new AsrStreamInputAdapter(
