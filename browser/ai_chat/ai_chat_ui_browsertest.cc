@@ -115,7 +115,7 @@ class AIChatUIBrowserTest : public InProcessBrowserTest {
     https_server_.StartAcceptingConnections();
 
     // Set a smaller window size so we can have test data with more pages.
-    browser()->window()->SetContentsSize(gfx::Size(800, 600));
+    BrowserWindow::FromBrowser(browser())->SetContentsSize(gfx::Size(800, 600));
 
     chat_tab_helper_ =
         ai_chat::AIChatTabHelper::FromWebContents(GetActiveWebContents());

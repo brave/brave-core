@@ -33,6 +33,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -640,18 +641,18 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
 // it's not compatible with vertical tab now.
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        VerticalTabToggleEnabledState) {
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
   // Enter browser fullscreen.
   chrome::ToggleFullscreenMode(browser());
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   browser()->command_controller()->FullscreenStateChanged();
   EXPECT_FALSE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 
   // Exit fullscreen.
   chrome::ToggleFullscreenMode(browser());
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   browser()->command_controller()->FullscreenStateChanged();
   EXPECT_TRUE(tabs::utils::IsVerticalTabToggleEnabled(browser()));
 }
@@ -768,7 +769,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerFocusModeTest,
   Browser* popup = Browser::Create(
       Browser::CreateParams(Browser::TYPE_POPUP, browser()->profile(), true));
   chrome::AddTabAt(popup, GURL("about:blank"), -1, true);
-  popup->window()->Show();
+  BrowserWindow::FromBrowser(popup)->Show();
   EXPECT_FALSE(
       popup->command_controller()->IsCommandEnabled(IDC_TOGGLE_FOCUS_MODE));
 }
