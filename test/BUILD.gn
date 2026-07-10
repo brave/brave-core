@@ -1595,6 +1595,12 @@ if (is_android) {
     variables += [
       "manifest_package=$brave_public_test_manifest_package",
       "min_sdk_version=19",
+
+      # Mirrors upstream's test manifest, which passes library_name for the
+      # unconditional android:zygotePreloadNativeLib reference in
+      # //chrome/android/java/AndroidManifest.xml. See
+      # chrome_public_apk_tmpl.gni's `library_name=chromefortest`.
+      "library_name=chromefortest",
     ]
   }
 
