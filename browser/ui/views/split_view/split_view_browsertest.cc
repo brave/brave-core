@@ -749,7 +749,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewBrowserTest, BookmarksBarVisibilityTest) {
 // See the comment of SideBySideBrowserTest at browser_browsertest.cc.
 #if !BUILDFLAG(IS_MAC)
   ui_test_utils::ToggleFullscreenModeAndWait(browser());
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
 
   // Same reason with above for having different result with SideBySide
   // enabled state.

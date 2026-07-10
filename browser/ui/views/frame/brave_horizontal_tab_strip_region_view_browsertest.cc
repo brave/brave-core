@@ -27,7 +27,8 @@ class BraveHorizontalTabStripRegionViewBrowserTest
     : public InProcessBrowserTest {
  public:
   BraveBrowserView* browser_view() {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return static_cast<BraveBrowserView*>(
+        BrowserWindow::FromBrowser(browser()));
   }
 
   BraveToolbarView* toolbar_view() {

@@ -1436,24 +1436,25 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
       tab_in_container->small_accent_icon_view_for_test();
   ASSERT_TRUE(small_accent_view);
   EXPECT_TRUE(small_accent_view->GetVisible());
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
   ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return browser()->window()->IsFullscreen(); }));
+      [&]() { return BrowserWindow::FromBrowser(browser())->IsFullscreen(); }));
   RunScheduledLayouts();
 
-  EXPECT_TRUE(browser()->window()->IsFullscreen());
+  EXPECT_TRUE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_FALSE(small_accent_view->layer());
 
   chrome::ToggleFullscreenMode(browser());
-  ASSERT_TRUE(base::test::RunUntil(
-      [&]() { return !browser()->window()->IsFullscreen(); }));
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return !BrowserWindow::FromBrowser(browser())->IsFullscreen();
+  }));
   RunScheduledLayouts();
 
-  EXPECT_FALSE(browser()->window()->IsFullscreen());
+  EXPECT_FALSE(BrowserWindow::FromBrowser(browser())->IsFullscreen());
   EXPECT_TRUE(small_accent_view->GetVisible());
   EXPECT_TRUE(small_accent_view->layer());
 }

@@ -37,6 +37,7 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -92,10 +93,12 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
   ~VerticalTabStripBrowserTest() override = default;
 
   const BraveBrowserView* browser_view() const {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return static_cast<BraveBrowserView*>(
+        BrowserWindow::FromBrowser(browser()));
   }
   BraveBrowserView* browser_view() {
-    return static_cast<BraveBrowserView*>(browser()->window());
+    return static_cast<BraveBrowserView*>(
+        BrowserWindow::FromBrowser(browser()));
   }
   BrowserFrameView* browser_non_client_frame_view() {
     return browser_view()->browser_widget()->GetFrameView();
@@ -986,8 +989,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   // it affects all browsers.
   auto* region_view_2 =
       static_cast<BraveBrowserView*>(
-          Browser::Create(Browser::CreateParams(browser()->profile(), true))
-              ->window())
+          BrowserWindow::FromBrowser(Browser::Create(
+              Browser::CreateParams(browser()->profile(), true))))
           ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_2->state());
@@ -1016,8 +1019,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedState) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
   auto* region_view_3 =
       static_cast<BraveBrowserView*>(
-          Browser::Create(Browser::CreateParams(browser()->profile(), true))
-              ->window())
+          BrowserWindow::FromBrowser(Browser::Create(
+              Browser::CreateParams(browser()->profile(), true))))
           ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(State::kCollapsed, region_view_3->state());
@@ -1044,8 +1047,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
   // it affects all browsers.
   auto* region_view_2 =
       static_cast<BraveBrowserView*>(
-          Browser::Create(Browser::CreateParams(browser()->profile(), true))
-              ->window())
+          BrowserWindow::FromBrowser(Browser::Create(
+              Browser::CreateParams(browser()->profile(), true))))
           ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(100, region_view_2->expanded_width_);
@@ -1065,8 +1068,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ExpandedWidth) {
   prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
   auto* region_view_3 =
       static_cast<BraveBrowserView*>(
-          Browser::Create(Browser::CreateParams(browser()->profile(), true))
-              ->window())
+          BrowserWindow::FromBrowser(Browser::Create(
+              Browser::CreateParams(browser()->profile(), true))))
           ->vertical_tab_strip_container_view_
           ->vertical_tab_strip_region_view();
   EXPECT_EQ(200, region_view_3->expanded_width_);
@@ -1263,9 +1266,9 @@ class VerticalTabStripDragAndDropBrowserTest
 #if BUILDFLAG(IS_WIN)
     // Sometimes, the window is not activated and it causes flakiness. In order
     // to make sure the window is the front, do these.
-    browser()->window()->Minimize();
-    browser()->window()->Restore();
-    browser()->window()->Activate();
+    BrowserWindow::FromBrowser(browser())->Minimize();
+    BrowserWindow::FromBrowser(browser())->Restore();
+    BrowserWindow::FromBrowser(browser())->Activate();
 #endif
   }
 };

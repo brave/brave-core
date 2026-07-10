@@ -226,6 +226,6 @@ void RestoreBrowserSessionCommandsForWorkspace(
     if (active < tsm->count()) {
       tsm->ActivateTabAt(active);
     }
-    browser->window()->Show();
+    BrowserWindow::FromBrowser(browser)->Show();
   }
 }

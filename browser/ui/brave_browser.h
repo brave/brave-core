@@ -13,8 +13,6 @@
 #include "base/memory/weak_ptr.h"
 #include "chrome/browser/ui/browser.h"
 
-class BraveBrowserWindow;
-
 namespace content {
 class WebContents;
 }  // namespace content
@@ -62,8 +60,6 @@ class BraveBrowser : public Browser {
   // Allows ignoring onbeforeunload handlers when closing selected tabs.
   void SetTabsToIgnoreBeforeUnloadHandlers(
       const base::flat_set<tabs::TabHandle>& for_contents);
-
-  BraveBrowserWindow* brave_window();
 
   void set_ignore_enable_closing_last_tab_pref() {
     ignore_enable_closing_last_tab_pref_ = true;
