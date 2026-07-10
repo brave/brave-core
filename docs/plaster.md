@@ -46,7 +46,7 @@ about the following files.
 
 ### Creating a plaster file
 
-A plaster file is a YAML file that lists regex operations to be applied to the
+A plaster file is a YAML file that lists substitutions to be applied to the
 corresponding source, based on its path. The following plaster appends
 Brave-specific values to the upstream `RequestType` enum.
 
@@ -72,19 +72,20 @@ substitutions:
 
       This plaster is generic enough to guarantee that our entries are always last,
       and that they also become the new kMaxValue.
-    re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        kWidevine,
-        kBraveEthereum,
-        kBraveSolana,
-        kBraveOpenAIChat,
-        kBraveGoogleSignInPermission,
-        kBraveCardano,
-        kBraveMinValue = kWidevine,
-        kBraveMaxValue = kBraveCardano,
-        kMaxValue = kBraveCardano
+    regex:
+      re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kWidevine,
+          kBraveEthereum,
+          kBraveSolana,
+          kBraveOpenAIChat,
+          kBraveGoogleSignInPermission,
+          kBraveCardano,
+          kBraveMinValue = kWidevine,
+          kBraveMaxValue = kBraveCardano,
+          kMaxValue = kBraveCardano
 ```
 
 _Plaster_ substitutions are listed under `substitutions:`. _Plaster_ loads the
@@ -92,29 +93,64 @@ contents of a source from `git`, as the source of truth, not from whatever is on
 disk, and then it applies each substitution cumulatively to the contents of the
 target source, updating the upstream source at the end.
 
-Each entry has the following format:
-
-```yaml
-substitutions:
-  - description: ''
-    # One of either pattern or re_pattern must be specified.
-    pattern: '' # non-regex pattern (string will be escaped)
-    re_pattern: '' # regex pattern
-    replace: ''
-    re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
-    count: 1 # 1 is the default; 0 means "one or more matches".
-```
+Each item under `substitutions:` carries a rewrite (grouped under a key naming
+its type, e.g. `regex:`) plus an optional `count` that enforces the number of
+rewrites the item is expected to make.
 
 > [!NOTE]
 >
 > The default value for `count` is `1` so `count=1` can be omitted, whilst
 > `count=0` mean "at least one or more matches".
 
+The default rewrite is a **regex** substitution, whose fields are grouped under
+a `regex:` key (as in the example above):
+
+```yaml
+substitutions:
+  - description: ''
+    count: 1 # 1 is the default; 0 means "one or more matches".
+    regex:
+      # One of either pattern or re_pattern must be specified.
+      pattern: '' # non-regex pattern (string will be escaped)
+      re_pattern: '' # regex pattern
+      replace: ''
+      re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
+```
+
+For backward compatibility, the `regex` fields may also be placed bare directly
+on the item, without the `regex:` key:
+
+```yaml
+substitutions:
+  - description: ''
+    re_pattern: '' # or `pattern:` for a literal, escaped match
+    replace: ''
+```
+
+> [!WARNING]
+>
+> This bare form is deprecated (`TODO(brave.dev/bug/56854)`) and will be removed
+> once all plasters are migrated. Prefer the `regex:` form above for all new
+> plasters.
+
 Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
 `description` values — `|` keeps a trailing newline, `|-` strips it.
 Single-quoted YAML strings preserve backslashes literally, which is useful for
 regex patterns (`'\s'` stays as the two characters `\s`, not interpreted by
 YAML).
+
+### Rewriters
+
+The keyed rewrite (`regex:` above) is a **rewriter**. `regex` is the default and
+most flexible one, and more will be added over time. To discover the available
+rewriters use `plaster --help`:
+
+```sh
+tools/cr/plaster.py --help         # overview of commands and rewriters
+tools/cr/plaster.py --help regex   # full docs for a specific rewriter
+```
+
+### Applying a plaster
 
 To apply this plaster file, just run `plaster.py`:
 
@@ -157,16 +193,7 @@ index 00000000000..bec88027991
 So at the end, you get a regular patch, and everything works as usual with how
 our Brave machinery handles patch files.
 
-### Checking if files are up-to-date
-
-You can verify if all plaster files are applied, with Chromium sources updated
-and patch files checked under `path` with the following command:
-
-```sh
-tools/cr/plaster.py check
-```
-
-This is the equivalent of a dry run of `plaster.py apply`.
+There is also `plaster check`, which is a dry-run mode of `plaster apply`.
 
 ### Best practices
 

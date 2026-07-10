@@ -6,7 +6,10 @@
 
 import unittest
 from pathlib import Path
+import argparse
+import contextlib
 import hashlib
+import io
 import json
 import os
 import time
@@ -1143,6 +1146,216 @@ class PlasterTest(unittest.TestCase):
         # default driver, which reports the enclosing destructor.
         self.assertIn('Profile::~Profile()', hunk_header)
         self.assertNotIn('AssignTestingFactories', hunk_header)
+
+
+class RewriterFormsTest(unittest.TestCase):
+    """End-to-end tests for the substitution envelope and the `regex` rewriter.
+
+    Rewriters apply through `PlasterFile` against a fake Chromium repo, just
+    like real usage. Only the `regex` rewriter exists for now; further
+    rewriters attach to the same envelope later.
+    """
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _apply(self, name: str, source: str, yaml_body: str) -> str:
+        """Write `source`+plaster, apply, and return the rewritten source."""
+        src = Path('chrome/common/extensions/api') / name
+        self.fake_chromium_src.write_and_stage_file(
+            src, source, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(src) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text(yaml_body)
+        plaster.PlasterFile(plaster_path).apply()
+        return (self.fake_chromium_src.chromium / src).read_text()
+
+    def _expect_value_error(self, yaml_body: str, substr: str):
+        with self.assertRaises(ValueError) as ctx:
+            self._apply('validation.idl', 'dummy', yaml_body)
+        self.assertIn(substr, str(ctx.exception))
+
+    # -- regex op (explicit form of the legacy bare regex) ------------------
+
+    def test_regex_op_matches_bare_form(self):
+        result = self._apply(
+            'regex_op.idl', 'A Chromium thing.', 'substitutions:\n'
+            '  - description: explicit regex op\n'
+            '    regex:\n'
+            "      re_pattern: 'Chromium'\n"
+            "      replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.')
+
+    def test_regex_op_honours_flags(self):
+        result = self._apply(
+            'regex_flags.idl', 'foo\nBAR\n', 'substitutions:\n'
+            '  - description: nested regex with flags\n'
+            '    regex:\n'
+            "      re_pattern: '^bar$'\n"
+            "      replace: 'baz'\n"
+            '      re_flags: [IGNORECASE, MULTILINE]\n')
+        self.assertEqual(result, 'foo\nbaz\n')
+
+    def test_bare_regex_still_applies(self):
+        result = self._apply(
+            'bare.idl', 'A Chromium thing.', 'substitutions:\n'
+            '  - description: legacy bare regex\n'
+            "    re_pattern: 'Chromium'\n"
+            "    replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.')
+
+    # -- validation ---------------------------------------------------------
+
+    def test_cannot_mix_op_and_bare_regex(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: mixed\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            "    re_pattern: 'z'\n", 'Cannot mix')
+
+    def test_unknown_regex_field_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bad regex field\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            "      bogus: 'z'\n", 'Unrecognised regex field')
+
+    def test_regex_op_must_be_a_mapping(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: scalar regex body\n'
+            "    regex: 'nope'\n", '"regex" must be a mapping')
+
+    def test_unknown_rewriter_is_rejected(self):
+        # A rewriter-shaped key (mapping body) that is not registered names an
+        # unknown rewriter; the error lists the available ones.
+        with self.assertRaises(ValueError) as ctx:
+            self._apply(
+                'unknown_rw.h', 'class C {};\n', 'substitutions:\n'
+                '  - description: not a real rewriter\n'
+                '    make_virtual:\n'
+                '      class_name: C\n'
+                '      method_name: Foo\n')
+        message = str(ctx.exception)
+        self.assertIn('Unknown rewriter', message)
+        self.assertIn("'make_virtual'", message)
+        self.assertIn('regex', message)
+
+    def test_stray_scalar_key_is_unrecognised(self):
+        # A non-mapping stray key is a bare-field typo, not a rewriter attempt,
+        # so it keeps the generic "Unrecognised substitution key" error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo bare field\n'
+            "    re_pattern: 'x'\n"
+            "    replace: 'y'\n"
+            '    re_flag: [DOTALL]\n', 'Unrecognised substitution key')
+
+
+class RewriterRegistryTest(unittest.TestCase):
+    """The `_REWRITERS` registry drives both YAML dispatch and help."""
+
+    def test_regex_is_registered_under_its_name(self):
+        self.assertIs(plaster._REWRITERS['regex'], plaster.Regex)
+
+    def test_registry_is_read_only(self):
+        with self.assertRaises(TypeError):
+            plaster._REWRITERS['regex'] = plaster.Regex
+
+    def test_every_rewriter_is_self_describing(self):
+        # Each rewriter must be keyed by its own NAME and carry the metadata the
+        # help system relies on, so a new rewriter can never show up blank.
+        for name, cls in plaster._REWRITERS.items():
+            self.assertEqual(cls.NAME, name)
+            self.assertTrue(cls.SUMMARY, f'{name} is missing a SUMMARY')
+            self.assertTrue(cls.help_text(), f'{name} is missing help text')
+
+
+class HelpTest(unittest.TestCase):
+    """gn-style `plaster --help [topic]` overview, categories and topic docs.
+
+    Every case drives the real `Help` action through a parser wired like `main`
+    (`--help [topic]`), so parsing and rendering are exercised together.
+    """
+
+    def _parse(self, *topic: str) -> tuple[int, str]:
+        """Parse `--help [topic]`, returning its exit code and stdout.
+
+        The parser is wired with the global options and the `Help` action the
+        same way `main` does, plus a fake command registry.
+        """
+        apply_parser = argparse.ArgumentParser(prog='plaster apply')
+        apply_parser.add_argument('--all', action='store_true')
+        commands = {
+            'apply': (apply_parser, 'Apply all plaster files.'),
+            'check': (argparse.ArgumentParser(prog='plaster check'), 'Check.'),
+        }
+        parser = argparse.ArgumentParser(add_help=False)
+        parser.add_argument('--verbose',
+                            action='store_true',
+                            help='Enable verbose logging')
+        parser.add_argument('-h',
+                            '--help',
+                            action=plaster.Help,
+                            commands=commands)
+
+        buf = io.StringIO()
+        # `Help` prints via rich `console` and, for command topics, via
+        # `argparse.print_help()`; both land on stdout. It always exits.
+        with contextlib.redirect_stdout(buf):
+            with self.assertRaises(SystemExit) as ctx:
+                parser.parse_args(['--help', *topic])
+        return ctx.exception.code, buf.getvalue()
+
+    def test_overview_lists_usage_categories_and_options(self):
+        code, out = self._parse()
+        self.assertEqual(code, 0)
+        self.assertIn('usage:', out)
+        self.assertIn('Commands', out)
+        self.assertIn('apply', out)
+        self.assertIn('Rewriters', out)
+        self.assertIn('regex', out)
+        # The global options block must survive our custom overview.
+        self.assertIn('Options', out)
+        self.assertIn('--verbose', out)
+        self.assertIn('--help', out)
+
+    def test_commands_category_prints_only_commands(self):
+        code, out = self._parse('commands')
+        self.assertEqual(code, 0)
+        self.assertIn('apply', out)
+        self.assertNotIn('Rewriters', out)
+
+    def test_rewriters_category_prints_only_rewriters(self):
+        code, out = self._parse('rewriters')
+        self.assertEqual(code, 0)
+        self.assertIn('regex', out)
+        self.assertNotIn('Commands', out)
+
+    def test_rewriter_topic_prints_its_docs(self):
+        code, out = self._parse('regex')
+        self.assertEqual(code, 0)
+        self.assertIn('re.subn', out)
+        self.assertIn('re_flags', out)
+
+    def test_command_topic_prints_argparse_help(self):
+        code, out = self._parse('apply')
+        self.assertEqual(code, 0)
+        self.assertIn('usage', out)
+        self.assertIn('--all', out)
+
+    def test_unknown_topic_is_an_error(self):
+        code, out = self._parse('does-not-exist')
+        self.assertEqual(code, 1)
+        self.assertIn('Unknown help topic', out)
 
 
 class PatchinfoTest(unittest.TestCase):
