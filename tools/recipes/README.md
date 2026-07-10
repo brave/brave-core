@@ -13,16 +13,12 @@ instantiates each _recipe module_, and runs the recipe's `RunSteps`.
 ## Usage
 
 ```sh
-python3 tools/recipes/engine.py toolchains/rust/package_rust \
+vpython3 tools/recipes/engine.py toolchains/rust/package_rust \
     --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
 ```
 
 The recipe name is a `/`-separated path under `recipes/`. `--properties` is a
-JSON object whose keys match the recipe's `PROPERTIES`. On-disk paths are not
-properties: recipes read them from the `path` module (`api.path.chromium_src`,
-`api.path.brave_core`, `api.path.out`), all derived from the job's workspace.
-Only the workspace is configurable, via `--workspace` (default: current
-directory).
+JSON object whose keys match the recipe's `PROPERTIES`.
 
 To run straight from a pipeline without a checkout, `engine_bootstrap.py`
 shallow-clones the engine from brave-core and forwards to `engine.py`:
@@ -33,6 +29,9 @@ curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/to
         --properties '{ "brave_subrevision": 2, "chromium_ref": "151.0.7917.1" }'
 ```
 
+The engine requires `vpython3` and the bootsrap will take care of these
+requirements.
+
 ## Testing
 
 Recipes and recipe modules are tested by _simulation_: a recipe declares
@@ -41,10 +40,10 @@ side effect mocked (no subprocess, no real filesystem or environment), and the
 recorded step stream is checked against a committed JSON _expectation_.
 
 ```sh
-python3 tools/recipes/engine.py test run      # compare against expectations
-python3 tools/recipes/engine.py test train    # (re)write expectations
-python3 tools/recipes/engine.py test list     # list all test case ids
-python3 tools/recipes/engine.py test run --filter package_rust
+vpython3 tools/recipes/engine.py test run      # compare against expectations
+vpython3 tools/recipes/engine.py test train    # (re)write expectations
+vpython3 tools/recipes/engine.py test list     # list all test case ids
+vpython3 tools/recipes/engine.py test run --filter package_rust
 ```
 
 Simulation is possible because the seam modules, such as `step`, `path`, `env`,
