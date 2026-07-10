@@ -196,8 +196,13 @@ fn parse_filter_options(raw_options: &str) -> Result<Vec<NetworkFilterOption>, N
             ("first-party", negated) | ("1p", negated) => NetworkFilterOption::FirstParty(!negated),
             ("tag", true) => return Err(NetworkFilterError::NegatedTag),
             ("tag", false) => NetworkFilterOption::Tag(String::from(value)),
-            ("redirect", true) => return Err(NetworkFilterError::NegatedRedirection),
-            ("redirect", false) => {
+            // `rewrite` is the ABP-syntax alias for `redirect`. The `abp-resource:`-prefixed
+            // values it uses are shipped by uBO as aliases of the corresponding redirect
+            // resources, so no further translation is needed here.
+            ("redirect", true) | ("rewrite", true) => {
+                return Err(NetworkFilterError::NegatedRedirection)
+            }
+            ("redirect", false) | ("rewrite", false) => {
                 // Ignore this filter if no redirection resource is specified
                 if value.is_empty() {
                     return Err(NetworkFilterError::EmptyRedirection);

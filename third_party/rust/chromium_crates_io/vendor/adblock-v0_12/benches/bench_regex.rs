@@ -17,7 +17,7 @@ fn bench_simple_regexes(c: &mut Criterion) {
     group.bench_function("list", move |b| {
         b.iter(|| {
             for rule in rules.iter() {
-                criterion::black_box(rule.is_match(pattern));
+                std::hint::black_box(rule.is_match(pattern));
             }
         })
     });
