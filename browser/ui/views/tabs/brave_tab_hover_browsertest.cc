@@ -57,7 +57,8 @@ class BraveTabHoverTest : public InProcessBrowserTest {
   }
 
   TabStrip* horizontal_tab_strip_for_testing() {
-    auto* browser_view = static_cast<BrowserView*>(browser()->window());
+    auto* browser_view =
+        static_cast<BrowserView*>(BrowserWindow::FromBrowser(browser()));
     return browser_view->horizontal_tab_strip_for_testing();
   }
 
