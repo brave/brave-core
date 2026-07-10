@@ -725,9 +725,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     uiView.backgroundColor = UIColor(
       braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
     )
-    uiView.selectedSegmentTintColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow30 : .containerBackground
-    )
+    uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
     let titleFont = UIFont.preferredFont(forTextStyle: .subheadline)
     uiView.setTitleTextAttributes(
       [
