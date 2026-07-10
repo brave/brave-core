@@ -16,6 +16,9 @@ struct QuickViewToolbarView: View {
   var shieldBackgroundView: InvisibleUIView = .init()
   var shareBackgroundView: InvisibleUIView = .init()
   var sslStatusBackgroundView: InvisibleUIView = .init()
+  var browserColors: any BrowserColors {
+    viewModel.isPrivate ? .privateMode : .standard
+  }
 
   var body: some View {
     VStack(spacing: 0) {
@@ -256,8 +259,8 @@ struct QuickViewToolbarView: View {
     .buttonStyle(QuickViewToolbarBottomButtonStyle())
     .labelStyle(
       QuickViewToolbarLabelBottomIconStyle(
-        iconDefaultColor: Color(viewModel.browserColors.iconDefault),
-        iconDisabledColor: Color(viewModel.browserColors.iconDisabled)
+        iconDefaultColor: Color(browserColors.iconDefault),
+        iconDisabledColor: Color(browserColors.iconDisabled)
       )
     )
   }

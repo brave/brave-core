@@ -45,7 +45,7 @@ class QuickViewController: UIViewController {
     self.profile = profile
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
-      browserColors: profile.isOffTheRecord ? .privateMode : .standard
+      isPrivate: profile.isOffTheRecord
     )
     self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
