@@ -1,34 +1,66 @@
 .modelInfo {
-  margin-top: var(--leo-spacing-2xl);
+  margin-top: var(--leo-spacing-l);
   display: flex;
-  flex-direction: column;
-  gap: var(--leo-spacing-m);
-  align-items: start;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: var(--leo-spacing-l);
+  background: var(--leo-color-page-background);
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-l);
 }
 
-.meta {
-  .name {
-    margin: 0;
-    font: var(--leo-font-small-regular);
-    color: var(--leo-color-text-tertiary);
-    display: flex;
-    align-items: center;
-    gap: 4px;
+.modelRow {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  min-width: 0;
+}
+
+.modelIcon {
+  --leo-icon-size: 20px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  border-radius: var(--leo-radius-m);
+  border: 1px solid var(--leo-color-divider-subtle);
+  background: var(--leo-color-container-background);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+
+  &[data-key='chat-automatic'] {
+    --leo-icon-color: white;
+    background: var(--leo-gradient-icons-active);
+    border: none;
   }
+}
+
+.name {
+  margin: 0;
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tooltipButton {
   --leo-button-padding: 0;
+  flex-shrink: 0;
 
   leo-icon {
-    --leo-icon-size: 14px;
-    --leo-icon-color: var(--leo-color-text-tertiary);
+    --leo-icon-size: 20px;
+    --leo-icon-color: var(--leo-color-icon-secondary);
   }
 }
 
 .tooltip {
   --leo-tooltip-padding: var(--leo-spacing-xl);
-  height: 14px;
+  height: 20px;
 }
 
 .tooltipContent {

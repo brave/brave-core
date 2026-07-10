@@ -10,6 +10,7 @@ import * as Mojom from '../../../common/mojom'
 import MockContext from '../../mock_untrusted_conversation_context'
 import { clearAllDataForTesting } from '$web-common/api'
 import ModelIntro from '.'
+import styles from './style.module.scss'
 
 describe('ModelIntro', () => {
   beforeEach(() => {
@@ -56,9 +57,15 @@ describe('ModelIntro', () => {
     )
     expect(container).toBeInTheDocument()
 
-    const modelText = container.querySelector<HTMLHeadingElement>('h3')
+    const modelText = container.querySelector<HTMLSpanElement>(
+      `.${styles.name}`,
+    )
     expect(modelText).toBeInTheDocument()
     expect(modelText).toHaveTextContent('Test Model')
+
+    const modelIntroIcon = container.querySelector<HTMLDivElement>('leo-icon')
+    expect(modelIntroIcon).toBeInTheDocument()
+    expect(modelIntroIcon).toHaveAttribute('name', 'product-brave-leo')
 
     const tooltip = container.querySelector<HTMLDivElement>('leo-tooltip')
     expect(tooltip).toBeInTheDocument()
@@ -80,7 +87,7 @@ describe('ModelIntro', () => {
       </MockContext>,
     )
 
-    expect(container.querySelector('h3')).not.toBeInTheDocument()
+    expect(container.querySelector(`.${styles.name}`)).not.toBeInTheDocument()
     expect(container.querySelector('leo-tooltip')).not.toBeInTheDocument()
   })
 
