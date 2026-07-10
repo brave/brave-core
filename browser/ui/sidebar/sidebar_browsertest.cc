@@ -475,8 +475,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // To put sidebar right position after changing show option.
   browser_view()->DeprecatedLayoutImmediately();
 
-  auto* browser_view = static_cast<BraveBrowserView*>(
-      BrowserView::GetBrowserViewForBrowser(browser()));
+  auto* browser_view = BraveBrowserView::GetBrowserViewForBrowser(browser());
 
   auto* prefs = browser()->profile()->GetPrefs();
   auto* sidebar_container = GetSidebarContainerView();
