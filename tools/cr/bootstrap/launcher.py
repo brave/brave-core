@@ -51,6 +51,7 @@ class Shim:
 SHIM_TARGETS: dict[str, Shim] = {
     'brockit': Shim('src/brave/tools/cr/brockit.py', 'vpython'),
     'plaster': Shim('src/brave/tools/cr/plaster.py', 'vpython'),
+    'git-cr': Shim('src/brave/tools/cr/alias/cmd.py', 'vpython'),
     'node-linux': Shim(
         'src/brave/third_party/node/linux/node-v24.17.0-linux-x64/bin/node'),
     'node-mac': Shim(
