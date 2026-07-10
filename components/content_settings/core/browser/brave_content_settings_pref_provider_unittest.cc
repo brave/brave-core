@@ -964,6 +964,12 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   EXPECT_EQ(2u, remember_1p_storage.GetRulesCount());
   remember_1p_storage.Write();
 
+  testing_profile()->GetPrefs()->SetInteger(
+      WebsiteSettingsRegistry::GetInstance()
+          ->Get(ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE)
+          ->default_value_pref_name(),
+      CONTENT_SETTING_BLOCK);
+
   testing_profile()->GetPrefs()->ClearPref(
       content_settings::kBraveRemember1PStorageMigration);
   BravePrefProvider provider(
@@ -975,12 +981,14 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
       brave_shields::AutoShredSetting::kContentSettingsType);
 
   // Check that migration happened.
-  EXPECT_EQ(2u, auto_shred_settings.GetRulesCount());
+  EXPECT_EQ(3u, auto_shred_settings.GetRulesCount());
 
   const auto last_tab_closed = brave_shields::AutoShredSetting::ToValue(
       brave_shields::mojom::AutoShredMode::LAST_TAB_CLOSED);
   EXPECT_EQ(last_tab_closed,
             auto_shred_settings.GetSettingDirectly(kBlockPattern, "*"));
+
+  EXPECT_EQ(last_tab_closed, auto_shred_settings.GetSettingDirectly("*", "*"));
 
   const auto never = brave_shields::AutoShredSetting::ToValue(
       brave_shields::mojom::AutoShredMode::NEVER);
@@ -991,11 +999,19 @@ TEST_F(BravePrefProviderTest, Remember1pStorageMigration) {
   provider.ShutdownOnUIThread();
 }
 
-TEST_F(BravePrefProviderTest, SkipRemember1pStorageMigration) {
-  base::test::ScopedFeatureList feature_list;
-  feature_list.InitAndDisableFeature(
-      brave_shields::features::kBraveShredFeature);
+class BravePrefProviderDisabledShredFeatureTest : public BravePrefProviderTest {
+ public:
+  BravePrefProviderDisabledShredFeatureTest() {
+    feature_list_.InitAndDisableFeature(
+        brave_shields::features::kBraveShredFeature);
+  }
 
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+TEST_F(BravePrefProviderDisabledShredFeatureTest,
+       SkipRemember1pStorageMigration) {
   constexpr char kAllowPattern[] = "brave.allow";
   constexpr char kBlockPattern[] = "brave.block";
 
