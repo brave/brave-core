@@ -25,14 +25,14 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
 
   private let deAmpPrefs: DeAmpPrefs
 
-  convenience init?(tab: some TabState, profileController: BraveProfileController) {
+  convenience init?(tab: some TabState, deAmpPrefs: DeAmpPrefs) {
     guard
       let shieldSettings = BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
     else { return nil }
     self.init(
       tab: tab,
       shieldsSettings: shieldSettings,
-      deAmpPrefs: profileController.deAmpPrefs
+      deAmpPrefs: deAmpPrefs
     )
   }
 

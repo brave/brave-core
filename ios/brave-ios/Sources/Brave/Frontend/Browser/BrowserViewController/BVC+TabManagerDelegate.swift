@@ -49,7 +49,7 @@ extension BrowserViewController: TabManagerDelegate {
     tab.aiChatWebUIHelper?.attachPrivacySensitiveTabHelpers = { [unowned self] detachedTab, _ in
       detachedTab.detachedPrivacyHelper = .init(
         tab: detachedTab,
-        profileController: profileController
+        deAmpPrefs: profileController.deAmpPrefs
       )
     }
     tab.aiChatWebUIHelper?.handler = { [weak self] tab, action in
@@ -149,7 +149,9 @@ extension BrowserViewController: TabManagerDelegate {
       let quickViewController = QuickViewController(
         url: url,
         profile: tab.profile,
-        profileController: profileController,
+        syncAPI: profileController.syncAPI,
+        sendTabAPI: profileController.sendTabAPI,
+        deAmpPrefs: profileController.deAmpPrefs,
         onOpenInNewTab: { [weak self] request in
           guard let self else { return }
           self.tabManager.addTabAndSelect(
