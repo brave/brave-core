@@ -180,29 +180,20 @@ struct TabGridView: View {
     .background(Color(uiColor: browserColors.tabSwitcherBackground))
     .overlay(alignment: .top) {
       VStack(spacing: 12) {
-        if !viewModel.isSearching {
-          let isHeaderDisabled = editMode == .active
-          headerBar
-            .transition(.blurReplace().animation(.default))
-            .animation(
-              .default,
-              body: { content in
-                content
-                  .opacity(isHeaderDisabled ? 0.5 : 1)
-                  .disabled(isHeaderDisabled)
-              }
-            )
-        }
+        let isHeaderDisabled = editMode == .active && !viewModel.isSearching
+        headerBar
+          .transition(.blurReplace().animation(.default))
+          .animation(
+            .default,
+            body: { content in
+              content
+                .opacity(isHeaderDisabled ? 0.5 : 1)
+                .disabled(isHeaderDisabled)
+            }
+          )
         if editMode == .active {
           editModeHeaderBar
             .transition(.blurReplace())
-        } else if !isSearchBarHidden {
-          TabGridSearchBar(
-            text: $viewModel.searchQuery,
-            isFocused: $viewModel.isSearching,
-            scrollView: containerView.collectionView
-          )
-          .containerCornerOffset(.leading, sizeToFit: true)
         }
       }
       .padding(.horizontal, 16)
@@ -385,10 +376,21 @@ struct TabGridView: View {
   }
 
   var headerBar: some View {
-    HStack {
-      moreMenu
-      Spacer()
-      if isShredButtonVisible {
+    HStack(spacing: 12) {
+      if !viewModel.isSearching {
+        moreMenu
+      }
+      if !isSearchBarHidden {
+        TabGridSearchBar(
+          text: $viewModel.searchQuery,
+          isFocused: $viewModel.isSearching,
+          scrollView: containerView.collectionView
+        )
+        .frame(maxWidth: .infinity)
+      } else if !viewModel.isSearching {
+        Spacer()
+      }
+      if !viewModel.isSearching, isShredButtonVisible {
         shredMenu
       }
     }
