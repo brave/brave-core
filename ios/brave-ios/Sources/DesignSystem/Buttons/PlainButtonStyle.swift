@@ -10,15 +10,10 @@ import SwiftUI
 /// In Nala, this matches the "Plain" button component
 public struct PlainBorderedButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  private let shape: BraveButtonShape
-
-  public init(shape: BraveButtonShape = .capsule) {
-    self.shape = shape
-  }
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .braveButtonLabel(shape: shape)
+      .modifier(ButtonLabelModifier())
       .foregroundStyle(Color(braveSystemName: isEnabled ? .textInteractive : .textDisabled))
       .background {
         if isEnabled {
@@ -34,7 +29,8 @@ public struct PlainBorderedButtonStyle: ButtonStyle {
           Color(braveSystemName: .iconDefault).opacity(0.07)
         }
       }
-      .braveButtonClipShape(shape)
+      .clipShape(.capsule)
+      .contentShape(.capsule)
       .hoverEffect()
       .animation(.linear(duration: 0.15), value: isEnabled)
   }
@@ -44,29 +40,22 @@ public struct PlainBorderedButtonStyle: ButtonStyle {
 @available(iOS 26.0, *)
 public struct PlainGlassButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  private let shape: BraveButtonShape
-
-  public init(shape: BraveButtonShape = .capsule) {
-    self.shape = shape
-  }
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .braveButtonLabel(shape: shape)
+      .modifier(ButtonLabelModifier())
       // Glass buttons use a specific set of colours because text color adjusts dynamically based
       // on content behind the button and disabled status matches Apple
       .foregroundStyle(isEnabled ? .primary : .tertiary)
-      .braveGlassEffect(.regular.interactive(isEnabled), shape: shape)
+      .glassEffect(.regular.interactive(isEnabled), in: .capsule)
   }
 }
 
 extension ButtonStyle where Self == PlainBorderedButtonStyle {
   public static var plainBordered: Self { .init() }
-  public static var plainBorderedCircle: Self { .init(shape: .circle) }
 }
 
 @available(iOS 26.0, *)
 extension ButtonStyle where Self == PlainGlassButtonStyle {
   public static var plainGlass: Self { .init() }
-  public static var plainGlassCircle: Self { .init(shape: .circle) }
 }

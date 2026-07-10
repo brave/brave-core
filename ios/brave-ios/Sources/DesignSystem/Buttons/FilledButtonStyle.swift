@@ -10,15 +10,10 @@ import SwiftUI
 /// In Nala, this matches the "Filled" button component
 public struct FilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  private let shape: BraveButtonShape
-
-  public init(shape: BraveButtonShape = .capsule) {
-    self.shape = shape
-  }
 
   public func makeBody(configuration: Configuration) -> some View {
     configuration.label
-      .braveButtonLabel(shape: shape)
+      .modifier(ButtonLabelModifier())
       .foregroundStyle(Color(braveSystemName: isEnabled ? .schemesOnPrimary : .textDisabled))
       .background {
         if isEnabled {
@@ -31,7 +26,8 @@ public struct FilledButtonStyle: ButtonStyle {
           Color(braveSystemName: .buttonDisabled)
         }
       }
-      .braveButtonClipShape(shape)
+      .clipShape(.capsule)
+      .contentShape(.capsule)
       .hoverEffect()
       .animation(.linear(duration: 0.15), value: isEnabled)
   }
@@ -41,36 +37,30 @@ public struct FilledButtonStyle: ButtonStyle {
 @available(iOS 26.0, *)
 public struct GlassFilledButtonStyle: ButtonStyle {
   @Environment(\.isEnabled) private var isEnabled
-  private let shape: BraveButtonShape
-
-  public init(shape: BraveButtonShape = .capsule) {
-    self.shape = shape
-  }
 
   public func makeBody(configuration: Configuration) -> some View {
-    let effect = Glass.regular
-      .tint(
-        isEnabled
-          ? Color(braveSystemName: .primitivePrimary40) : Color(uiColor: .tertiarySystemFill)
-      )
-      .interactive(isEnabled)
-
-    return configuration.label
-      .braveButtonLabel(shape: shape)
+    configuration.label
+      .modifier(ButtonLabelModifier())
       // Glass buttons use a specific set of colours because text color adjusts dynamically based
       // on content behind the button and disabled status matches Apple
       .foregroundStyle(isEnabled ? AnyShapeStyle(.white) : AnyShapeStyle(.tertiary))
-      .braveGlassEffect(effect, shape: shape)
+      .glassEffect(
+        .regular
+          .tint(
+            isEnabled
+              ? Color(braveSystemName: .primitivePrimary40) : Color(uiColor: .tertiarySystemFill)
+          )
+          .interactive(isEnabled),
+        in: .capsule
+      )
   }
 }
 
 extension ButtonStyle where Self == FilledButtonStyle {
   public static var filled: Self { .init() }
-  public static var filledCircle: Self { .init(shape: .circle) }
 }
 
 @available(iOS 26.0, *)
 extension ButtonStyle where Self == GlassFilledButtonStyle {
   public static var glassFilled: Self { .init() }
-  public static var glassFilledCircle: Self { .init(shape: .circle) }
 }

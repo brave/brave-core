@@ -665,23 +665,24 @@ struct TabGridView: View {
 }
 
 extension View {
-  /// Since Tab tray chrome lives in custom overlays, not `.toolbar`,  iOS 26 does not apply liquid glass automatically.
-  /// Use glass button styles on 26+ and circle-shaped filled/plain styles on earlier releases.
   @ViewBuilder
   func tabGridChromeButtonStyle(isDone: Bool = false) -> some View {
-    if isDone {
-      if #available(iOS 26.0, *) {
-        buttonStyle(.glassFilledCircle)
-      } else {
-        buttonStyle(.filledCircle)
+    aspectRatio(1, contentMode: .fit)
+      .osAvailabilityModifiers { content in
+        if isDone {
+          if #available(iOS 26.0, *) {
+            content.buttonStyle(.glassFilled)
+          } else {
+            content.buttonStyle(.filled)
+          }
+        } else {
+          if #available(iOS 26.0, *) {
+            content.buttonStyle(.plainGlass)
+          } else {
+            content.buttonStyle(.plainBordered)
+          }
+        }
       }
-    } else {
-      if #available(iOS 26.0, *) {
-        buttonStyle(.plainGlassCircle)
-      } else {
-        buttonStyle(.plainBorderedCircle)
-      }
-    }
   }
 }
 
