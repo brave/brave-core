@@ -15,12 +15,17 @@ Subcommands:
                     tools/cr/alias/commit-msg.py.
   - setup-alias     Register the `git cr` alias in the local .git/config.
 
-Installing the alias
---------------------
+Getting `git cr`
+----------------
+  The recommended way is the bootstrap shims, which put a `git-cr` executable
+  on $PATH so git resolves the `git cr` subcommand to it in every checkout:
+    vpython3 tools/cr/bootstrap/bootstrap.py install
+
+Installing the alias (alternative)
+----------------------------------
+  If you would rather not modify $PATH, register a per-repository alias.
   From inside the brave-core repository, run once:
     vpython3 tools/cr/alias/cmd.py setup-alias
-  This writes a 'cr' entry to .git/config so that 'git cr' works immediately
-  in the current repository without modifying any shell config files.
 
 Installing the hook
 -------------------
