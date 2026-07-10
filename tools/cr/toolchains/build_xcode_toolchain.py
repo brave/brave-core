@@ -51,8 +51,8 @@ The sibling index shares the archive's name stem (e.g.
 Brave MPL license notice and records the archive `url`/`sha256sum`, the
 `xcode_xip_source_url` (the Apple `.xip` URL from xcodereleases.com the
 toolchain was built from) and its `xcode_xip_sha1sum`, the
-`xcode_version`/`xcode_build`, the `metal_build`, the `chromium_tag`, and (when
-run from a file) this script's `script_sha256sum`.
+`xcode_version`/`xcode_build`, the `metal_build`, the `chromium_tag`, and the
+`brave_core_commit` this script was run from.
 
 The full download URL is logged at the end of a successful run:
 `<PACKAGE_DOWNLOAD_URL_BASE>/<archive-filename>`.
@@ -63,7 +63,6 @@ from __future__ import annotations
 import argparse
 import base64
 import gzip
-import hashlib
 import logging
 import os
 import re
@@ -84,8 +83,8 @@ from rich.progress import (BarColumn, DownloadColumn, Progress,
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    HTTP_FETCH_TIMEOUT_SECS, XIP_IO_CHUNK_BYTES, EphemeralXcode, MacSdkInfo,
-    _check_call)
+    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo, _check_call)
+from upload import sha256_file  # pylint: disable=wrong-import-position
 
 # Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
 # Chromium tag.
@@ -168,29 +167,17 @@ def _fetch_gitiles_raw(url: str) -> str:
     raise RuntimeError(f'_fetch_gitiles_raw fell through retry loop: {url}')
 
 
-def _sha256_of_file(path: Path) -> str:
-    """Return the hex SHA-256 digest of *path*, read in chunks.
+def _brave_core_commit() -> str:
+    """Return the brave-core HEAD commit this script was run from.
 
-    Used to fingerprint the output toolchain archive in the sibling index.
+    This script lives in brave-core, so its repository HEAD identifies the exact
+    version that produced the archive — recorded in the index for provenance.
     """
-    digest = hashlib.sha256()
-    with path.open('rb') as file:
-        for chunk in iter(lambda: file.read(XIP_IO_CHUNK_BYTES), b''):
-            digest.update(chunk)
-    return digest.hexdigest()
-
-
-def _script_sha256() -> str | None:
-    """Hex SHA-256 of this script's own source, or `None` if unavailable.
-    """
-    file_str = globals().get('__file__')
-    if not file_str:
-        return None
-    path = Path(file_str)
-    if not path.is_file():
-        return None
-    return hashlib.sha256(
-        path.read_text(encoding='utf-8').encode('utf-8')).hexdigest()
+    return _check_call('git',
+                       'rev-parse',
+                       'HEAD',
+                       cwd=Path(__file__).resolve().parent,
+                       capture_stdout=True).strip()
 
 
 def _remote_url_exists(url: str) -> bool:
@@ -614,9 +601,7 @@ class ToolchainBuilder:
           * `metal_build`      — Metal toolchain build, e.g. `17E188` (`null`
                                  if it could not be determined).
           * `chromium_tag`     — `--chromium-tag` the SDK pin was read from.
-          * `script_sha256sum` — SHA-256 of this script's source, included only
-                                 when run from a file on disk (see
-                                 `_script_sha256`).
+          * `brave_core_commit` — brave-core HEAD commit this script ran from.
 
         The "already published" guard lives in `_precheck_publishable`, which
         `run()` calls early. If we got here, and we are overwriting the previous
@@ -630,7 +615,7 @@ class ToolchainBuilder:
 
         index = {
             'url': PACKAGE_DOWNLOAD_URL_BASE + archive_path.name,
-            'sha256sum': _sha256_of_file(archive_path),
+            'sha256sum': sha256_file(archive_path),
             'xcode_xip_source_url': xcode_release.download_url,
             'xcode_xip_sha1sum': xcode_release.sha1,
             'xcode_version': xcode_release.version,
@@ -638,9 +623,7 @@ class ToolchainBuilder:
             'metal_build': self._metal_build,
             'chromium_tag': self._chromium_tag,
         }
-        script_sha256 = _script_sha256()
-        if script_sha256 is not None:
-            index['script_sha256sum'] = script_sha256
+        index['brave_core_commit'] = _brave_core_commit()
         index_yaml = yaml.safe_dump(index,
                                     sort_keys=False,
                                     default_flow_style=False)
