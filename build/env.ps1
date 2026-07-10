@@ -20,7 +20,7 @@ function Set-BraveEnv() {
   # Get script dir.
   $scriptDir = Split-Path -LiteralPath $scriptPath
   # Get environment variables to update.
-  $genEnvOutput = npm run --silent --prefix "$scriptDir\.." gen_env
+  $genEnvOutput = node "$scriptDir\..\build\commands\scripts\genEnv.js"
 
   # Set/unset environment variables. Vars to unset use `var=` syntax.
   foreach ($line in $genEnvOutput) {

@@ -41,7 +41,6 @@
     "build_fuzzer": "node ./build/commands/scripts/commands.js build_fuzzer",
     "fuzzer": "node ./build/commands/scripts/commands.js run_fuzzer",
     "perf_tests": "node ./build/commands/scripts/commands.js run_perf_tests",
-    "gen_env": "node ./build/commands/scripts/genEnv.js",
     "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
     "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap",
     "update_brave_tools_crates": "node ./build/commands/scripts/updateBraveToolsCrates.js",
