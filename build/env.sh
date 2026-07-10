@@ -38,7 +38,7 @@ brave_env::set_brave_env() {
   # Get script dir. Supports bash and zsh syntax.
   local script_dir=$(dirname "${BASH_SOURCE[0]:-${(%):-%x}}")
   # Get environment variables to update.
-  local gen_env_output=$(npm run --silent --prefix "$script_dir/.." gen_env)
+  local gen_env_output=$(node "$script_dir/../build/commands/scripts/genEnv.js")
 
   # Set/unset environment variables. Vars to unset use `var=` syntax.
   while IFS=$'\n' read -r line; do
