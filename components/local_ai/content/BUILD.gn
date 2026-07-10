@@ -35,6 +35,7 @@ source_set("unit_tests") {
   deps = [
     ":content",
     "//base/test:test_support",
+    "//content/public/browser",
     "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
