@@ -32,5 +32,5 @@ void BraveVPNController::OpenVPNAccountPage(
 }
 
 BraveBrowserView* BraveVPNController::GetBraveBrowserView() {
-  return static_cast<BraveBrowserView*>(browser_view_);
+  return BraveBrowserView::From(browser_view_);
 }

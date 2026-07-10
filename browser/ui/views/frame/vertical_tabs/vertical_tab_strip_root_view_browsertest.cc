@@ -58,7 +58,7 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
   }
 
   BraveVerticalTabStripContainerView* vertical_tab_strip_container_view() {
-    return static_cast<BraveBrowserView*>(browser_view())
+    return BraveBrowserView::From(browser_view())
         ->vertical_tab_strip_container_view();
   }
 

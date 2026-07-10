@@ -94,6 +94,11 @@ class BraveBrowserView : public BrowserView,
   static BraveBrowserView* From(BrowserView* view);
   static const BraveBrowserView* From(const BrowserView* view);
 
+  // Same as BrowserView::GetBrowserViewForBrowser(), but returning our
+  // overrides.
+  static BraveBrowserView* GetBrowserViewForBrowser(
+      const BrowserWindowInterface* browser);
+
   // We use rounded corners even rounded corners setting is disabled.
   // Call this when we want to know
   static bool ShouldUseBraveWebViewRoundedCornersForContents(
