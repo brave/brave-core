@@ -191,6 +191,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     private final SettableMonotonicObservableSupplier<ReadAloudController>
             mReadAloudControllerSupplier = ObservableSuppliers.createMonotonic();
     private final ActivityTabProvider mActivityTabProvider = new ActivityTabProvider();
+    private SaveAndShareItemBuilder mSaveAndShareItemBuilder;
 
     private BraveTabbedAppMenuPropertiesDelegate mTabbedAppMenuPropertiesDelegate;
 
@@ -295,6 +296,11 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
+        mSaveAndShareItemBuilder =
+                Mockito.spy(
+                        mTabbedAppMenuPropertiesDelegate.getSaveAndShareItemBuilderForTesting());
+        mTabbedAppMenuPropertiesDelegate.setSaveAndShareItemBuilderForTesting(
+                mSaveAndShareItemBuilder);
 
         MultiWindowTestUtils.resetInstanceInfo();
 
@@ -677,8 +683,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowMoveToOtherWindow();
         doReturn(options.showPaintPreview())
-                .when(mTabbedAppMenuPropertiesDelegate)
+                .when(mSaveAndShareItemBuilder)
                 .shouldShowPaintPreview(anyBoolean(), any(Tab.class));
+
         when(mWebsitePreferenceBridgeJniMock.getContentSetting(any(), anyInt(), any(), any()))
                 .thenReturn(
                         options.isAutoDarkEnabled()
