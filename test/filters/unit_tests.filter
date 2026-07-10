@@ -733,6 +733,15 @@
 -TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Pinned
 -TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Unpinned
 
+# These tests are related to MV2 extension deprecation, which is disabled until 
+# MV2 extensions are removed from the Web Store.
+-ManifestV2ExperimentManagerDisableWithReEnableAndPolicyUnitTest.*
+-ExtensionInstallStatusTestWithMV2Deprecation.*
+-ManifestV2ExperimentManagerUnsupportedUnitTest.*
+-MV2DeprecationImpactCheckerUnitTest.*
+-ManifestV2ExperimentManagerDisableWithReEnableUnitTest.*
+-MV2DeprecationImpactCheckerUnitTestWithAllowlist.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*
 -AboutFlagsTest.EveryFlagHasMetadata
