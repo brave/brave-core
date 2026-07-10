@@ -735,10 +735,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
 
   private func configureStaticAppearance(_ uiView: UISegmentedControl) {
     uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
-    let titleFont = UIFont.systemFont(
-      ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize,
-      weight: .medium
-    )
+    let titleFont = UIFont.preferredFont(for: .subheadline, weight: .medium)
     uiView.setTitleTextAttributes(
       [
         .font: titleFont,
@@ -752,10 +749,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     uiView.backgroundColor = UIColor(
       braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
     )
-    let titleFont = UIFont.systemFont(
-      ofSize: UIFont.preferredFont(forTextStyle: .subheadline).pointSize,
-      weight: .medium
-    )
+    let titleFont = UIFont.preferredFont(for: .subheadline, weight: .medium)
     uiView.setTitleTextAttributes(
       [
         .font: titleFont,
