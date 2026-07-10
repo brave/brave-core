@@ -117,7 +117,9 @@
     "@types/chrome": "0.0.241",
     "@types/diff": "7.0.1",
     "@types/dom-navigation": "1.0.3",
+    "@types/hast": "3.0.5",
     "@types/jest": "30.0.0",
+    "@types/mdast": "4.0.4",
     "@types/node": "25.0.3",
     "@types/qr-image": "3.2.5",
     "@types/react": "19.2.17",
@@ -127,6 +129,7 @@
     "@types/react-virtualized-auto-sizer": "1.0.4",
     "@types/react-window": "1.8.5",
     "@types/redux-logger": "3.0.9",
+    "@types/unist": "3.0.3",
     "acorn": "8.0.5",
     "browserify-zlib": "0.2.0",
     "buffer": "6.0.3",
@@ -240,6 +243,7 @@
     "remark-directive": "4.0.0",
     "remark-gfm": "4.0.1",
     "throttleit": "1.0.0",
+    "unist-util-visit": "5.1.0",
     "webext-redux": "2.1.9"
   },
   "overrides": {
