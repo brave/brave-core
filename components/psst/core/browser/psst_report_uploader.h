@@ -6,6 +6,8 @@
 #ifndef BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_REPORT_UPLOADER_H_
 #define BRAVE_COMPONENTS_PSST_CORE_BROWSER_PSST_REPORT_UPLOADER_H_
 
+#include <string>
+
 #include "base/values.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -23,6 +25,8 @@ class PsstErrorReportUploader {
 
   virtual void Upload(std::optional<std::string> psst_component_version,
                       const int script_version,
+                      const std::string& brave_version,
+                      std::optional<std::string> channel,
                       base::ListValue failed_tasks,
                       base::OnceCallback<void()> callback);
 

@@ -6,6 +6,7 @@
 #include "brave/browser/psst/psst_reporter_service_delegate.h"
 
 #include "base/strings/utf_string_conversions.h"
+#include "brave/common/brave_channel_info.h"
 
 namespace psst {
 
@@ -29,6 +30,10 @@ PsstReporterServiceDelegate::GetComponentInfos() const {
   }
 
   return result;
+}
+
+std::string PsstReporterServiceDelegate::GetChannelName() const {
+  return brave::GetChannelName();
 }
 
 }  // namespace psst
