@@ -8,12 +8,7 @@
 The file is split into layers, from pure units to a full checkout integration:
 
 * `SelectObjectTest` covers the pure `_select_object` condition picker.
-
-* `TarballInstallerTest` drives a single `TarballInstaller` against real
-  on-disk archives (built in-memory). `deps.DownloadUrl` is faked so no network
-  is touched, but the real `deps.VerifySHA256` and the real tar/zip extraction
-  run, exercising download verification, the owned-vs-overlay wipe behaviour,
-  idempotency, and the gclient-equivalent sidecar bookkeeping.
+  (`TarballInstaller` itself is tested in `tarball_installer_test.py`.)
 
 * `ValidateOverlayTargetTest` and `InstallTest` exercise `ExtraDepsRunner`
   without the gclient machinery by pre-seeding its resolved-scope cache, so the
@@ -33,13 +28,11 @@ from __future__ import annotations
 import contextlib
 import hashlib
 import io
-import json
 import logging
 import sys
 import tarfile
 import tempfile
 import unittest
-import zipfile
 from pathlib import Path
 from unittest import mock
 
@@ -48,6 +41,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import install_extra_deps as m
+import tarball_installer
 from test.fake_chromium_repo import FakeChromiumRepo
 
 
@@ -65,15 +59,6 @@ def _make_tar(members: list[tuple[str, bytes]],
             info = tarfile.TarInfo(name)
             info.size = len(content)
             tar.addfile(info, io.BytesIO(content))
-    return buf.getvalue()
-
-
-def _make_zip(members: list[tuple[str, bytes]]) -> bytes:
-    """Build a zip archive from `(name, content)` members."""
-    buf = io.BytesIO()
-    with zipfile.ZipFile(buf, 'w') as archive:
-        for name, content in members:
-            archive.writestr(name, content)
     return buf.getvalue()
 
 
@@ -124,131 +109,6 @@ class SelectObjectTest(unittest.TestCase):
         objects = [{'object_name': 'node-linux-x64.tar.gz'}]
         picked = m._select_object(objects, {'host_os': 'mac'})
         self.assertEqual(picked['object_name'], 'node-linux-x64.tar.gz')
-
-
-class TarballInstallerTest(unittest.TestCase):
-    """Tests for `TarballInstaller` download/extract/sidecar mechanics."""
-
-    def setUp(self):
-        tmp = tempfile.TemporaryDirectory()
-        self.addCleanup(tmp.cleanup)
-        self.root = Path(tmp.name)
-        self.dest = self.root / 'dest'
-
-    def _installer(self,
-                   data: bytes,
-                   *,
-                   object_name: str = 'pkg.tar.gz',
-                   sha256sum: str | None = None,
-                   owns_dest: bool = True) -> m.TarballInstaller:
-        """A `TarballInstaller` for `data`, defaulting to its true sha256."""
-        return m.TarballInstaller(
-            dest_dir=self.dest,
-            url=f'https://downloads.invalid/{object_name}',
-            object_name=object_name,
-            sha256sum=_sha256(data) if sha256sum is None else sha256sum,
-            owns_dest=owns_dest)
-
-    def _faked_download(self, data: bytes) -> mock._patch:
-        """Patch `deps.DownloadUrl` to write `data` into the output file."""
-
-        def _write(_url, output_file):
-            output_file.write(data)
-
-        return mock.patch.object(m.deps, 'DownloadUrl', side_effect=_write)
-
-    def test_install_extracts_tarball_and_writes_sidecars(self):
-        """A fresh install extracts the tar members and records the sidecars."""
-        data = _make_tar([('bin/node', b'node'), ('README.md', b'hi')])
-        installer = self._installer(data)
-        with self._faked_download(data):
-            self.assertTrue(installer.install())
-        self.assertEqual((self.dest / 'bin/node').read_bytes(), b'node')
-        self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
-        self.assertTrue(installer.is_installed())
-
-    def test_install_extracts_zip(self):
-        """Zip archives take the `ZipFile` branch and extract the same way."""
-        data = _make_zip([('node.exe', b'MZ'), ('LICENSE', b'mpl')])
-        installer = self._installer(data, object_name='node.zip')
-        with self._faked_download(data):
-            self.assertTrue(installer.install())
-        self.assertEqual((self.dest / 'node.exe').read_bytes(), b'MZ')
-        self.assertEqual((self.dest / 'LICENSE').read_bytes(), b'mpl')
-
-    def test_install_is_idempotent(self):
-        """A second install is a no-op: it returns False and re-downloads
-        nothing once the `_hash` sidecar already records the sha."""
-        data = _make_tar([('f', b'x')])
-        installer = self._installer(data)
-        with self._faked_download(data) as download:
-            self.assertTrue(installer.install())
-            self.assertFalse(installer.install())
-            download.assert_called_once()
-
-    def test_is_installed_is_false_without_sidecar(self):
-        """With no `_hash` sidecar present nothing is considered installed."""
-        self.assertFalse(
-            self._installer(_make_tar([('f', b'x')])).is_installed())
-
-    def test_owned_dest_is_wiped_before_extract(self):
-        """An owned dep wipes its destination first, so stale files are gone."""
-        self.dest.mkdir()
-        (self.dest / 'stale.txt').write_text('old')
-        data = _make_tar([('fresh.txt', b'new')])
-        installer = self._installer(data, owns_dest=True)
-        with self._faked_download(data):
-            installer.install()
-        self.assertFalse((self.dest / 'stale.txt').exists())
-        self.assertTrue((self.dest / 'fresh.txt').exists())
-
-    def test_overlay_keeps_existing_tree(self):
-        """An overlay (owns_dest=False) extracts on top, preserving the base."""
-        self.dest.mkdir()
-        (self.dest / 'base.txt').write_text('upstream')
-        data = _make_tar([('overlay.txt', b'brave')])
-        installer = self._installer(data, owns_dest=False)
-        with self._faked_download(data):
-            installer.install()
-        self.assertEqual((self.dest / 'base.txt').read_text(), 'upstream')
-        self.assertTrue((self.dest / 'overlay.txt').exists())
-
-    def test_sha256_mismatch_raises_and_installs_nothing(self):
-        """A hash mismatch surfaces from the real `VerifySHA256` and leaves the
-        destination untouched (no extraction, no sidecars)."""
-        data = _make_tar([('f', b'x')])
-        installer = self._installer(data, sha256sum='0' * 64)
-        with self._faked_download(data):
-            with self.assertRaises(ValueError):
-                installer.install()
-        self.assertFalse(self.dest.exists())
-        self.assertFalse(installer.is_installed())
-
-    def test_sidecar_contents(self):
-        """The written sidecars mirror gclient's set: the sha256 and the JSON
-        list of archive members, each `.stamp`."""
-        members = [('a', b'1'), ('b/c', b'2')]
-        data = _make_tar(members)
-        installer = self._installer(data, object_name='pkg.tar.gz')
-        with self._faked_download(data):
-            installer.install()
-        prefix = '.pkg_tar_gz'
-        hash_file = self.dest / f'{prefix}_hash.stamp'
-        names_file = self.dest / f'{prefix}_content_names.stamp'
-        self.assertTrue(hash_file.is_file())
-        self.assertEqual(hash_file.read_text().strip(), _sha256(data))
-        self.assertEqual(json.loads(names_file.read_text()), ['a', 'b/c'])
-        # The first-class-gcs migration toggle is deliberately not written.
-        self.assertFalse(
-            (self.dest / f'{prefix}_is_first_class_gcs.stamp').exists())
-
-    def test_sidecar_name_maps_dots_and_slashes(self):
-        """The sidecar prefix maps every `/` and `.` in the object name to `_`
-        (matching gclient's keying) and carries the `.stamp` tail."""
-        installer = self._installer(b'', object_name='Linux_x64/pkg.tar.gz')
-        self.assertEqual(
-            installer._sidecar('_hash').name,
-            '.Linux_x64_pkg_tar_gz_hash.stamp')
 
 
 class ValidateOverlayTargetTest(unittest.TestCase):
@@ -338,10 +198,13 @@ class InstallTest(unittest.TestCase):
 
     def _faked_download(self, data: bytes) -> mock._patch:
 
-        def _write(_url, output_file):
+        def _write(_self, _url, output_file):
             output_file.write(data)
 
-        return mock.patch.object(m.deps, 'DownloadUrl', side_effect=_write)
+        return mock.patch.object(tarball_installer.TarballInstaller,
+                                 '_download',
+                                 autospec=True,
+                                 side_effect=_write)
 
     def test_skips_when_dep_condition_is_false(self):
         """A false dep-level condition skips entirely; nothing downloads."""
@@ -476,10 +339,13 @@ class FromCheckoutIntegrationTest(unittest.TestCase):
 
     def _faked_download(self, data: bytes) -> mock._patch:
 
-        def _write(_url, output_file):
+        def _write(_self, _url, output_file):
             output_file.write(data)
 
-        return mock.patch.object(m.deps, 'DownloadUrl', side_effect=_write)
+        return mock.patch.object(tarball_installer.TarballInstaller,
+                                 '_download',
+                                 autospec=True,
+                                 side_effect=_write)
 
     def test_resolves_solution_vars_and_caches(self):
         """`from_checkout` loads the config and resolves the solution's vars,

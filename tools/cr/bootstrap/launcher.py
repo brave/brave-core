@@ -20,6 +20,7 @@ from __future__ import annotations
 
 import argparse
 from dataclasses import dataclass
+import importlib.util
 import os
 from pathlib import Path
 import platform
@@ -44,6 +45,10 @@ class Shim:
     #   None      — `path` is itself the executable (node)
     runtime: str | None = None
 
+    # The `EXTRA_DEPS` entry to verify the freshness of the underlying target
+    # for a particular shim, so we can self-update at shim use.
+    self_update_extra_dep_entry: str | None = None
+
 
 # SHIM_TARGETS maps the shims we have with their desired targets. The keys are
 # the names of the shims. Platform-specific suffixes are used for shims that
@@ -52,23 +57,38 @@ SHIM_TARGETS: dict[str, Shim] = {
     'brockit': Shim('src/brave/tools/cr/brockit.py', 'vpython'),
     'plaster': Shim('src/brave/tools/cr/plaster.py', 'vpython'),
     'git-cr': Shim('src/brave/tools/cr/alias/cmd.py', 'vpython'),
-    'node-linux': Shim('src/brave/third_party/node/node-linux-x64/bin/node'),
-    'node-mac': Shim('src/brave/third_party/node/node-mac-x64/bin/node'),
+    'node-linux': Shim(
+        'src/brave/third_party/node/node-linux-x64/bin/node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-linux-x64'
+    ),
+    'node-mac': Shim(
+        'src/brave/third_party/node/node-mac-x64/bin/node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-mac-x64'),
     'node-mac_arm64': Shim(
-        'src/brave/third_party/node/node-mac-arm64/bin/node'),
-    'node-win': Shim('src/brave/third_party/node/node-win-x64/node.exe'),
+        'src/brave/third_party/node/node-mac-arm64/bin/node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-mac-arm64'
+    ),
+    'node-win': Shim(
+        'src/brave/third_party/node/node-win-x64/node.exe',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-win-x64'),
     'npm-linux': Shim(
         'src/brave/third_party/node/node-linux-x64/lib/node_modules/npm/bin/npm-cli.js',
-        'node'),
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-linux-x64'
+    ),
     'npm-mac': Shim(
         'src/brave/third_party/node/node-mac-x64/lib/node_modules/npm/bin/npm-cli.js',
-        'node'),
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-mac-x64'),
     'npm-mac_arm64': Shim(
         'src/brave/third_party/node/node-mac-arm64/lib/node_modules/npm/bin/npm-cli.js',
-        'node'),
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-mac-arm64'
+    ),
     'npm-win': Shim(
         'src/brave/third_party/node/node-win-x64/node_modules/npm/bin/npm-cli.js',
-        'node'),
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node-win-x64'),
 }
 
 
@@ -146,6 +166,82 @@ def _resolve_system_binary(tool: str,
     return shutil.which(tool, path=os.pathsep.join(entries))
 
 
+@dataclass(frozen=True)
+class SelfUpdater:
+    """Self-updates a shim's vendored `EXTRA_DEPS` target within a checkout.
+
+    Runs cheap checks to check if a certain shim target is deployed and fresh,
+    and if not, runs `tarball_installer.py` to fetch and deploy the pinned
+    version.
+
+    This class uses python files in the target checkout, loading and launching
+    them as needed.
+    """
+
+    # The `brave-core` checkout governing the current directory.
+    checkout: Path
+
+    # The single-object `EXTRA_DEPS` key this updater checks and deploys.
+    entry: str
+
+    def needs_update(self) -> bool:
+        """Whether `entry` is not deployed at the pinned version, per the
+        checkout's own `extra_deps`.
+
+        A cheap sidecar check. Returns False when the entry is up-to-date, when
+        the `extra_deps` module is missing, as that indicates we have an old
+        checkout of brave as a target.
+        """
+        module = self._load_extra_deps()
+        if module is None:
+            return False
+        try:
+            return not module.check_extra_deps_installed(
+                self.checkout.parent.parent, self.entry)
+        except (AttributeError, KeyError, ValueError, OSError):
+            return False
+
+    def deploy(self) -> None:
+        """Deploy the single-object `EXTRA_DEPS` `entry` into the checkout.
+
+        Runs `tarball_installer.py` with the same runtime the launcher is
+        using, assuming a bare, stdlib-only environment.
+        """
+        installer = self.checkout / 'tools' / 'cr' / 'tarball_installer.py'
+        if not installer.is_file():
+            return
+        try:
+            subprocess.call([sys.executable, str(installer), self.entry])
+        except OSError as error:
+            sys.stderr.write(
+                f'launcher.py: could not run tarball_installer.py: {error}\n')
+
+    def _load_extra_deps(self):
+        """Import the checkout's stdlib-only `extra_deps` module, or None.
+
+        This function loads `EXTRA_DEPS` and its module, so a check can be done
+        for the freshness of the install.
+        """
+        module_path = self.checkout / 'tools' / 'cr' / 'extra_deps.py'
+        if not module_path.is_file():
+            return None
+        spec = importlib.util.spec_from_file_location('brave_extra_deps',
+                                                      module_path)
+        if spec is None or spec.loader is None:
+            return None
+        module = importlib.util.module_from_spec(spec)
+        # Registered only for `exec` (definitions may consult `sys.modules`),
+        # then popped so no shared key lingers across checkouts.
+        sys.modules[spec.name] = module
+        try:
+            spec.loader.exec_module(module)
+        except (OSError, SyntaxError, ValueError):
+            return None
+        finally:
+            sys.modules.pop(spec.name, None)
+        return module
+
+
 def resolve_invocation(tool: str, checkout: Path | None,
                        allow_fallback: bool) -> list[str] | None:
     """The argv prefix to run `tool` from `checkout`.
@@ -159,6 +255,12 @@ def resolve_invocation(tool: str, checkout: Path | None,
     invocation = None
     if checkout is not None:
         target = checkout.parent.parent / shim.path
+        # Any target with `self_update_extra_dep_entry` is self-updatable.
+        entry = shim.self_update_extra_dep_entry
+        if entry is not None:
+            updater = SelfUpdater(checkout, entry)
+            if updater.needs_update():
+                updater.deploy()
         if target.is_file():
             if shim.runtime == 'vpython':
                 invocation = [
