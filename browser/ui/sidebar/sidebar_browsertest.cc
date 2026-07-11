@@ -2023,9 +2023,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
       EXPECT_EQ(1, side_panel->GetInsets().left())
           << "rounded: 1px gap on the content-facing side, reserved for the "
              "outline (the content view otherwise owns its margin)";
-      EXPECT_EQ(kRoundedCornersContentsViewMargin,
+      EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                    kRoundedCornersContentsOutlineThickness,
                 side_panel->GetInsets().right())
-          << "rounded: outer-side gap for visual separation from window chrome";
+          << "rounded: outer-side gap matches main content (margin + outline "
+             "thickness)";
     } else {
       EXPECT_EQ(1, side_panel->GetInsets().left())
           << "plain: 1px separator on the content-facing side";
@@ -2105,8 +2107,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelBorderInsetsFollowAlignment) {
       EXPECT_EQ(1, content_side)
           << "rounded: 1px gap on the content-facing side, reserved for the "
              "outline (the content view otherwise owns its margin)";
-      EXPECT_EQ(kRoundedCornersContentsViewMargin, outer_side)
-          << "rounded: outer-side gap for visual separation from window chrome";
+      EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                    kRoundedCornersContentsOutlineThickness,
+                outer_side)
+          << "rounded: outer-side gap matches main content (margin + outline "
+             "thickness)";
     } else {
       EXPECT_EQ(1, content_side)
           << "plain: 1px separator on the content-facing side";
@@ -2457,9 +2462,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PanelRoundedOutline) {
         << "rounded corners: 1px top gap reserved for the outline";
     EXPECT_EQ(kOutlineThickness, insets.left())
         << "rounded corners: 1px content-facing gap reserved for the outline";
-    EXPECT_EQ(kRoundedCornersContentsViewMargin, insets.right())
-        << "rounded corners: outer-side gap for visual separation from window "
-           "chrome";
+    EXPECT_EQ(kRoundedCornersContentsViewMargin +
+                  kRoundedCornersContentsOutlineThickness,
+              insets.right())
+        << "rounded corners: outer-side gap matches main content (margin + "
+           "outline thickness)";
   }
 
   // Disabling rounded corners drops the extra top/inner gap again.

@@ -175,18 +175,23 @@ void SidePanel::UpdateBorder() {
   // outer-side gap for visual separation from the window chrome.
   const bool is_sidebar_leading = (IsRightAligned() == base::i18n::IsRTL());
   if (rounded_border_enabled_) {
+    // Include outline thickness on window-facing edges to align with main
+    // content.
+    constexpr int kWindowEdgeMargin = kRoundedCornersContentsViewMargin +
+                                      kRoundedCornersContentsOutlineThickness;
+
     // Reserve an extra |kRoundedCornersContentsOutlineThickness| on the top and
     // inner-side edges -- where the header/content would otherwise be flush
     // with the panel edge
     // -- so the outline painted below this has room to show on all four
     // sides.
     insets.set_top(insets.top() + kRoundedCornersContentsOutlineThickness);
-    insets.set_bottom(kRoundedCornersContentsViewMargin);
+    insets.set_bottom(kWindowEdgeMargin);
     if (is_sidebar_leading) {
-      insets.set_left(kRoundedCornersContentsViewMargin);
+      insets.set_left(kWindowEdgeMargin);
       insets.set_right(kRoundedCornersContentsOutlineThickness);
     } else {
-      insets.set_right(kRoundedCornersContentsViewMargin);
+      insets.set_right(kWindowEdgeMargin);
       insets.set_left(kRoundedCornersContentsOutlineThickness);
     }
 
