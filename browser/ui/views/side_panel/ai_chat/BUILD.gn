@@ -17,6 +17,14 @@ source_set("ai_chat") {
     "ai_chat_side_panel_web_view.h",
   ]
 
+  # Header-visible dependencies: `ai_chat_movable_side_panel_web_view.h` derives
+  # from `views::WebView` (//ui/views) and
+  # `web_modal::WebContentsModalDialogManagerDelegate` (//components/web_modal).
+  public_deps = [
+    "//components/web_modal",
+    "//ui/views",
+  ]
+
   deps = [
     "//base",
     "//brave/browser/ai_chat",
@@ -24,6 +32,7 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
+    "//chrome/browser:file_select_helper",
     "//chrome/browser/profiles",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
@@ -31,11 +40,10 @@ source_set("ai_chat") {
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
     "//chrome/browser/ui/webui:webui_util",
-    "//components/web_modal",
+    "//components/tabs:public",
     "//content/public/browser",
     "//extensions/buildflags",
     "//ui/base",
-    "//ui/views",
     "//url",
   ]
 

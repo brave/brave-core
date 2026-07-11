@@ -12,8 +12,8 @@
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
@@ -22,9 +22,9 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/file_select_listener.h"
 #include "content/public/browser/navigation_controller.h"
@@ -34,7 +34,6 @@
 #include "ui/base/page_transition_types.h"
 #include "ui/base/window_open_disposition.h"
 #include "ui/compositor/layer.h"
-#include "ui/views/widget/widget.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_EXTENSIONS_CORE)
@@ -158,26 +157,26 @@ content::WebContents* AIChatMovableSidePanelWebView::AddNewContents(
     const blink::mojom::WindowFeatures& window_features,
     bool user_gesture,
     bool* was_blocked) {
-  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
-      GetWidget()->GetNativeWindow());
-  auto* browser = browser_view->browser();
+  BrowserWindowInterface* browser = webui::GetBrowserWindowInterface(source);
+  if (!browser) {
+    return nullptr;
+  }
 
   // If AI Chat is not open in the side panel, don't open the tab.
-  if (browser->browser_window_features()
-          ->side_panel_ui()
-          ->GetCurrentEntryId() != SidePanelEntryId::kChatUI) {
+  if (browser->GetFeatures().side_panel_ui()->GetCurrentEntryId() !=
+      SidePanelEntryId::kChatUI) {
     return nullptr;
   }
 
   // Rather than opening a new tab from the side panel we navigate the active
   // tab next to the sidepanel.
-  auto* active_tab = browser->tab_strip_model()->GetActiveWebContents();
+  tabs::TabInterface* active_tab = browser->GetActiveTabInterface();
   NavigateParams params(browser, target_url, ui::PAGE_TRANSITION_LINK);
 
   // If the global side panel is enabled, open the url in the current active
   // tab. Otherwise open in a new tab.
   if (ai_chat::features::IsAIChatGlobalSidePanelEverywhereEnabled()) {
-    params.source_contents = active_tab;
+    params.source_contents = active_tab ? active_tab->GetContents() : nullptr;
     params.disposition = WindowOpenDisposition::CURRENT_TAB;
   } else {
     // We open in a new foreground tab so we don't start a new conversation.
@@ -212,14 +211,8 @@ void AIChatMovableSidePanelWebView::RunFileChooser(
     content::RenderFrameHost* render_frame_host,
     scoped_refptr<content::FileSelectListener> listener,
     const blink::mojom::FileChooserParams& params) {
-  auto* browser_view = BrowserView::GetBrowserViewForNativeWindow(
-      GetWidget()->GetNativeWindow());
-  if (browser_view) {
-    static_cast<content::WebContentsDelegate*>(browser_view->browser())
-        ->RunFileChooser(render_frame_host, std::move(listener), params);
-  } else {
-    listener->FileSelectionCanceled();
-  }
+  FileSelectHelper::RunFileChooser(render_frame_host, std::move(listener),
+                                   params);
 }
 
 bool AIChatMovableSidePanelWebView::HandleKeyboardEvent(
