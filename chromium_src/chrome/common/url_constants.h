@@ -338,6 +338,9 @@ inline constexpr char kGlicActivityUrl[] = "https://support.brave.app/";
 inline constexpr char16_t kMyActivityAiModeUrl[] =
     u"https://support.brave.app/";
 
+inline constexpr char16_t kMyActivitySearchServicesAppsUrl[] =
+    u"https://support.brave.app/";
+
 // Help URL for the Omnibox setting.
 inline constexpr char16_t kOmniboxLearnMoreURL[] =
     u"https://support.brave.app/hc/en-us/articles/"
