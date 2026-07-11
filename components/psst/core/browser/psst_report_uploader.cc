@@ -7,14 +7,21 @@
 
 #include "base/json/json_writer.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
-#include "brave/components/webcompat_reporter/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
 
 namespace {
 constexpr char kJsonContentType[] = "application/json";
+inline constexpr char kChannelField[] = "channel";
+inline constexpr char kVersionField[] = "version";
+inline constexpr char kPsstCrxComponentVersionField[] =
+    "psst_crx_component_version";
+inline constexpr char kPsstScriptVersionField[] = "psst_script_version";
+inline constexpr char kFailedTasksField[] = "failed_tasks";
 
-}
+inline constexpr char kNotAvailable[] = "n/a";
+}  // namespace
 
 namespace psst {
 
@@ -26,21 +33,30 @@ PsstErrorReportUploader::~PsstErrorReportUploader() = default;
 void PsstErrorReportUploader::Upload(
     std::optional<std::string> psst_component_version,
     const int script_version,
+    const std::string& brave_version,
+    std::optional<std::string> channel,
     base::ListValue failed_tasks,
     base::OnceCallback<void()> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   std::string api_key = brave_stats::GetAPIKey();
 
-  const GURL upload_url(
-      BUILDFLAG(WEBCOMPAT_REPORT_ENDPOINT));  // TODO change it to the PSST
-                                              // report endpoint
+  const GURL upload_url(BUILDFLAG(PSST_REPORT_ENDPOINT));
 
   base::DictValue report_details_dict;
+
+  report_details_dict.Set(kVersionField, brave_version);
+  report_details_dict.Set(kChannelField, channel.value_or(kNotAvailable));
+  report_details_dict.Set(kPsstCrxComponentVersionField,
+                          psst_component_version.value_or(kNotAvailable));
+  report_details_dict.Set(kPsstScriptVersionField, script_version);
+  report_details_dict.Set(kFailedTasksField,
+                          base::Value(std::move(failed_tasks)));
+
   std::string report_details_json;
   base::JSONWriter::Write(report_details_dict, &report_details_json);
 
-  PsstErrorReportUploader::CreateAndStartURLLoader(upload_url, kJsonContentType,
-                                                   report_details_json, std::move(callback));
+  PsstErrorReportUploader::CreateAndStartURLLoader(
+      upload_url, kJsonContentType, report_details_json, std::move(callback));
 }
 
 void PsstErrorReportUploader::CreateAndStartURLLoader(
@@ -90,12 +106,10 @@ void PsstErrorReportUploader::OnSimpleURLLoaderComplete(
     std::optional<std::string> response_body) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  bool success = !!response_body;
+  const bool success = !!response_body;
 
-  if (success) {
-    LOG(INFO) << "Successfully uploaded webcompat report. Thanks!" << std::endl;
-  } else {
-    LOG(ERROR) << "Uploading webcompat report failed - please try again later!"
+  if (!success) {
+    LOG(ERROR) << "Uploading psst report failed - please try again later!"
                << std::endl;
   }
 

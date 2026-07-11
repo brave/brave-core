@@ -22,6 +22,7 @@ class PsstReporterServiceDelegate : public PsstReporterService::Delegate {
 
   std::vector<psst::PsstReporterService::PsstComponentInfo> GetComponentInfos()
       const override;
+  std::string GetChannelName() const override;
 
  private:
   const raw_ptr<component_updater::ComponentUpdateService>

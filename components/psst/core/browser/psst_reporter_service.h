@@ -36,6 +36,7 @@ class PsstReporterService : public KeyedService {
     virtual ~Delegate() = default;
 
     virtual std::vector<ComponentInfo> GetComponentInfos() const = 0;
+    virtual std::string GetChannelName() const = 0;
   };
   using PsstComponentInfo = Delegate::ComponentInfo;
 

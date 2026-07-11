@@ -8,6 +8,7 @@
 #include "base/values.h"
 #include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
+#include "brave/components/version_info/version_info.h"
 
 namespace psst {
 
@@ -28,6 +29,10 @@ void PsstReporterService::SubmitPsstErrorsReport(
     return;
   }
 
+  auto brave_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
+
+  std::optional<std::string> channel;
   std::optional<std::string> psst_component_version;
   if (service_delegate_) {
     auto all_components = service_delegate_->GetComponentInfos();
@@ -37,6 +42,7 @@ void PsstReporterService::SubmitPsstErrorsReport(
     psst_component_version = (it != all_components.end())
                                  ? std::optional<std::string>(it->version)
                                  : std::nullopt;
+    channel = service_delegate_->GetChannelName();
   }
 
   base::ListValue failed_tasks;
@@ -46,19 +52,14 @@ void PsstReporterService::SubmitPsstErrorsReport(
     }
   }
 
-  if(failed_tasks.empty()) {
+  if (failed_tasks.empty()) {
     // Nothing to report
     std::move(callback).Run();
     return;
   }
 
-  LOG(INFO) << "[PSST] PsstReporterService::SubmitPsstErrorsReport "
-               "\npsst_component_version:"
-            << (psst_component_version ? psst_component_version.value() : "n/a")
-            << "\nscript_version:" << script_version
-            << "\nfailed_policy_tasks:" << failed_tasks.DebugString();
-
   report_uploader_->Upload(std::move(psst_component_version), script_version,
+                           brave_version, std::move(channel),
                            std::move(failed_tasks), std::move(callback));
 }
 
