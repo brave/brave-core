@@ -43,6 +43,11 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               (override));
 
   MOCK_METHOD(void,
+              OnNewConversationThread,
+              (ConversationHandler*, const mojom::Thread&),
+              (override));
+
+  MOCK_METHOD(void,
               OnToolUseEventOutput,
               (ConversationHandler*,
                const std::string& entry_uuid,

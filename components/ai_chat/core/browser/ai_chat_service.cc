@@ -22,6 +22,7 @@
 #include "base/check_deref.h"
 #include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
+#include "base/containers/map_util.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -1083,6 +1084,18 @@ void AIChatService::OnRequestInProgressChanged(ConversationHandler* handler,
   // again when that changes.
   if (!in_progress) {
     QueueMaybeUnloadConversation(handler);
+  }
+}
+
+void AIChatService::OnNewConversationThread(ConversationHandler* handler,
+                                            const mojom::Thread& thread) {
+  auto* conversation =
+      base::FindPtrOrNull(conversations_, handler->get_conversation_uuid());
+  CHECK(conversation);
+
+  if (ai_chat_db_ && !conversation->temporary) {
+    ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationThread))
+        .WithArgs(thread.Clone());
   }
 }
 

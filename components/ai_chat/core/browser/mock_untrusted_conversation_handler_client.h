@@ -30,6 +30,10 @@ class MockUntrustedConversationHandlerClient
               (mojom::ConversationTurnPtr),
               (override));
   MOCK_METHOD(void,
+              OnConversationThreadUpdate,
+              (mojom::ThreadPtr),
+              (override));
+  MOCK_METHOD(void,
               OnToolUseEventOutput,
               (const std::string&, mojom::ToolUseEventPtr),
               (override));

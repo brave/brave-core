@@ -194,6 +194,8 @@ export default function createUntrustedConversationApi(
             }
           },
 
+          onConversationThreadUpdate(_thread) {},
+
           onToolUseEventOutput(entryUuid, toolUse) {
             const currentHistory = api.getConversationHistory.current()
             const updatedHistory = updateToolUseEventInHistory(
