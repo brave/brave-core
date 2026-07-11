@@ -43,3 +43,17 @@ substitutions:
     regex:
       pattern: 'std::make_unique<TabHoverCardController>'
       replace: 'std::make_unique<BraveTabHoverCardController>'
+
+  - description: |
+      Guard FrameGrabHandle::Layout() against a null `dialog_anchor_`
+
+      `dialog_anchor_` is created in AddedToWidget() and reset in
+      RemovedFromWidget(). Brave's vertical tab strip reparents the horizontal
+      tab strip region view (which owns this FrameGrabHandle) into a
+      not-yet-widgeted container and then forces an immediate layout during
+      BraveVerticalTabStripRegionView construction. As a result Layout() can run
+      while this view is detached from its widget, before the anchor has been
+      (re)created, causing a null dereference in MaybeUpdateAnchor().
+    regex:
+      re_pattern: '( +)(int x = width\(\) \* 0\.4;)'
+      replace: '\1if (!dialog_anchor_) { return; }\n\1\2'
