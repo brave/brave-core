@@ -91,6 +91,10 @@ interface UntrustedConversationHandler {
 
   // Retry the last failed API request.
   RetryAPIRequest();
+
+  // Creates a new thread originating from the conversation entry with the
+  // given uuid. Does not persist anything until a turn is submitted to the thread.
+  CreateConversationThread(string origin_entry_uuid) => (string thread_id);
 };
 
 // Untrusted-UI-side handler for a Conversation, responsible for displaying
@@ -99,6 +103,9 @@ interface UntrustedConversationUI {
   OnConversationHistoryUpdate(ConversationTurn? entry);
   OnToolUseEventOutput(string entry_uuid, ToolUseEvent tool_use);
   OnEntriesUIStateChanged(ConversationEntriesState state);
+
+  // Called when a thread's metadata is created or updated.
+  OnConversationThreadUpdate(Thread thread);
 
   // Called when the associated content is changed - called when the untrusted
   // conversation frame is attached and when the content is changed.

@@ -77,6 +77,10 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
       mojom::ConversationTurnPtr entry,
       std::optional<std::string> editing_id = std::nullopt);
 
+  // Adds a new thread's metadata to the database. A no-op if the thread's
+  // uuid already exists.
+  virtual bool AddConversationThread(mojom::ThreadPtr thread);
+
   virtual bool UpdateToolUseEvent(std::string_view entry_uuid,
                                   size_t event_order,
                                   mojom::ToolUseEventPtr tool_use_event);

@@ -1309,6 +1309,62 @@ bool AIChatDatabase::AddConversationEntry(
   return true;
 }
 
+bool AIChatDatabase::AddConversationThread(mojom::ThreadPtr thread) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(!thread->uuid.empty());
+  CHECK(!thread->conversation_uuid.empty());
+  CHECK(!thread->origin_conversation_entry_uuid.empty());
+  if (!LazyInit()) {
+    return false;
+  }
+
+  // Verify the conversation and the origin conversation entry both exist
+  // (and that the entry belongs to the conversation), in a single query.
+  // We don't want to add orphan threads otherwise.
+  static constexpr char kGetConversationAndEntryQuery[] =
+      "SELECT conversation_entry.uuid FROM conversation_entry"
+      " JOIN conversation ON conversation.uuid ="
+      " conversation_entry.conversation_uuid"
+      " WHERE conversation_entry.uuid=? AND conversation.uuid=?";
+  sql::Statement get_conversation_and_entry_statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE,
+                                  kGetConversationAndEntryQuery));
+  CHECK(get_conversation_and_entry_statement.is_valid());
+  get_conversation_and_entry_statement.BindString(
+      0, thread->origin_conversation_entry_uuid);
+  get_conversation_and_entry_statement.BindString(1,
+                                                   thread->conversation_uuid);
+  if (!get_conversation_and_entry_statement.Step()) {
+    DVLOG(0) << "Conversation or conversation entry not found";
+    return false;
+  }
+
+  static constexpr char kInsertThreadQuery[] =
+      "INSERT OR IGNORE INTO thread(uuid, conversation_uuid,"
+      " origin_conversation_entry_uuid, title, total_tokens, trimmed_tokens,"
+      " is_edit)"
+      " VALUES(?, ?, ?, ?, ?, ?, ?)";
+  sql::Statement statement(GetDB().GetUniqueStatement(kInsertThreadQuery));
+  CHECK(statement.is_valid());
+
+  int index = 0;
+  statement.BindString(index++, thread->uuid);
+  statement.BindString(index++, thread->conversation_uuid);
+  statement.BindString(index++, thread->origin_conversation_entry_uuid);
+  BindAndEncryptOptionalString(statement, index++, thread->title);
+  statement.BindInt64(index++, thread->total_tokens);
+  statement.BindInt64(index++, thread->trimmed_tokens);
+  statement.BindBool(index++, thread->is_edit);
+
+  if (!statement.Run()) {
+    DVLOG(0) << "Failed to execute 'thread' insert statement: "
+             << db_.GetErrorMessage();
+    return false;
+  }
+
+  return true;
+}
+
 bool AIChatDatabase::UpdateToolUseEvent(std::string_view entry_uuid,
                                         size_t event_order,
                                         mojom::ToolUseEventPtr tool_use_event) {
