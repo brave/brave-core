@@ -254,6 +254,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &private_ai::kPrivateAi,
 #endif  // !BUILDFLAG(IS_ANDROID)
       &private_insights::kPrivateInsightsFeature,
+      &safe_browsing::kAntivirusTelemetryForDownloads,
       &safe_browsing::kClientSideDetectionClipboardCopyApi,
       &safe_browsing::kGooglePlayProtectInApkTelemetry,
       &safe_browsing::kNotificationTelemetry,
