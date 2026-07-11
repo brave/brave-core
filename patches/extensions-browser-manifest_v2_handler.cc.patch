@@ -1,30 +1,12 @@
 diff --git a/extensions/browser/manifest_v2_handler.cc b/extensions/browser/manifest_v2_handler.cc
-index 9f7c55596044bccbb7e50237a9b46dd7047c1302..8a08c93f58c3ec15cd798fb3d7fbbc769760c61f 100644
+index 9f7c55596044bccbb7e50237a9b46dd7047c1302..85a370360cfd9eac8a1829771d7ab063b753dd01 100644
 --- a/extensions/browser/manifest_v2_handler.cc
 +++ b/extensions/browser/manifest_v2_handler.cc
-@@ -149,6 +149,7 @@ bool ManifestV2Handler::IsExtensionAffected(const Extension& extension) {
- }
+@@ -108,6 +108,7 @@ bool ManifestV2HandlerFactory::ServiceIsCreatedWithBrowserContext() const {
  
- bool ManifestV2Handler::ShouldBlockExtensionInstallation(
-+    const ExtensionId& extension_id,
-     int manifest_version,
-     Manifest::Type manifest_type,
-     mojom::ManifestLocation manifest_location) {
-@@ -158,7 +159,8 @@ bool ManifestV2Handler::ShouldBlockExtensionInstallation(
- 
-   // Otherwise, if the extension is affected by the deprecation, it should be
-   // blocked.
--  return impact_checker_.IsExtensionAffected(manifest_version, manifest_type,
-+  return impact_checker_.IsExtensionAffected(extension_id,
-+                                             manifest_version, manifest_type,
-                                              manifest_location);
- }
- 
-@@ -168,6 +170,7 @@ bool ManifestV2Handler::ShouldBlockExtensionEnable(const Extension& extension) {
-   }
- 
-   return impact_checker_.IsExtensionAffected(
-+      extension.id(),
-       extension.manifest_version(), extension.GetType(), extension.location());
- }
- 
+ // Returns true if legacy extensions should be disabled.
+ bool ShouldDisableLegacyExtensions() {
++  BRAVE_SHOULD_DISABLE_LEGACY_EXTENSIONS
+   if (g_allow_mv2_for_testing) {
+     // We allow legacy MV2 extensions for testing purposes.
+     return false;
