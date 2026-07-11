@@ -1,13 +1,12 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 09ee626a41d12db0adb1364130faea0a058a9e4f..3121185f21dfa1ddbeb8953485c789e3f23ec4bf 100644
+index 09ee626a41d12db0adb1364130faea0a058a9e4f..3d36380908bdef142736177a3073bfe9e31cf751 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -761,7 +761,16 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -761,6 +761,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
    // TODO(446953331): It's error-prone to keep the above if's up to date. When
    //   omnibox input and popup views are replaced with webUI, matches and
    //   actions can store an icon enum instead of `VectorIcon`.
--  DUMP_WILL_BE_NOTREACHED()
-+  DUMP_WILL_BE_if (icon.name == kLeoWindowTabNewIcon.name) {
++  if (icon.name == kLeoWindowTabNewIcon.name) {
 +    return kLeoWindowTabNewIconResourceName;
 +  } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
 +    return kLeoMessageBubbleAskIconResourceName;
@@ -16,10 +15,9 @@ index 09ee626a41d12db0adb1364130faea0a058a9e4f..3121185f21dfa1ddbeb8953485c789e3
 +  // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
 +  // here and use the default icon instead.
 +  if ((true)) return "";
-+  NOTREACHED()
+   DUMP_WILL_BE_NOTREACHED()
        << "Every autocomplete icon must have an equivalent SVG "
           "resource for the NTP Realbox. icon.name: '"
-       << icon.name << "'";
 @@ -1136,8 +1145,8 @@ void SearchboxHandler::QueryAutocompleteWithSuggestInventory(
    autocomplete_input.set_prevent_inline_autocomplete(
        prevent_inline_autocomplete);
