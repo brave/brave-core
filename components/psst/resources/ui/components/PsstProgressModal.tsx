@@ -141,7 +141,15 @@ export const PsstProgressModal = () => {
     })
   })
 
+  const [reportingAction, setReportingAction] = React.useState<boolean>(false)
+
+  const handlePsstErrorsReportSend = React.useCallback(() => {
+    api.reportFailedContent()
+    setReportingAction(true)
+  }, [api])
+
   api.useOnPsstErrorsReportSent(() => {
+    setReportingAction(false)
     api.closeDialog()
   })
 
@@ -250,9 +258,9 @@ export const PsstProgressModal = () => {
           <PsstDlgButton
             kind='outline'
             size='medium'
-            isDisabled={isInProgress}
-            isLoading={isInProgress}
-            onClick={api.reportFailedContent}
+            isDisabled={reportingAction}
+            isLoading={reportingAction}
+            onClick={handlePsstErrorsReportSend}
           >
             {getLocale(S.PSST_COMPLETE_CONSENT_DIALOG_REPORT_FAILED)}
           </PsstDlgButton>
