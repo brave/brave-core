@@ -5,6 +5,7 @@
 
 static_library("psst") {
   public = [
+    "psst_reporter_service_factory.h",
     "psst_settings_service_factory.h",
     "psst_tab_web_contents_observer.h",
     "psst_ui_delegate_impl.h",
@@ -18,7 +19,6 @@ static_library("psst") {
     "psst_reporter_service_delegate.cc",
     "psst_reporter_service_delegate.h",
     "psst_reporter_service_factory.cc",
-    "psst_reporter_service_factory.h",
     "psst_settings_service_factory.cc",
     "psst_tab_web_contents_observer.cc",
     "psst_ui_delegate_impl.cc",
@@ -35,6 +35,7 @@ static_library("psst") {
     "//brave/components/psst/core/browser",
     "//brave/components/psst/core/common",
     "//brave/components/script_injector/common/mojom",
+    "//chrome/browser:browser_process",
     "//chrome/browser/content_settings:content_settings_factory",
     "//chrome/browser/infobars",
     "//chrome/browser/profiles",

@@ -12,6 +12,7 @@ static_library("browser") {
     "matched_rule.h",
     "pref_names.h",
     "psst_component_installer.h",
+    "psst_report_uploader.h",
     "psst_reporter_service.h",
     "psst_rule.h",
     "psst_rule_registry.h",
@@ -25,7 +26,6 @@ static_library("browser") {
     "pref_names.cc",
     "psst_component_installer.cc",
     "psst_report_uploader.cc",
-    "psst_report_uploader.h",
     "psst_reporter_service.cc",
     "psst_rule.cc",
     "psst_rule_registry_impl.cc",
@@ -42,7 +42,10 @@ static_library("browser") {
 
   deps = [
     "//brave/components/brave_component_updater/browser:public",
+    "//brave/components/brave_stats/browser",
+    "//brave/components/psst/buildflags",
     "//brave/components/psst/core/common",
+    "//brave/components/version_info",
     "//components/component_updater",
     "//components/content_settings/core/browser",
     "//components/keyed_service/core",
