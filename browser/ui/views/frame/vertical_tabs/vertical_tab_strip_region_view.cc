@@ -34,7 +34,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/themes/theme_properties.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -133,12 +132,10 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
  public:
   VerticalTabNewTabButton(PressedCallback callback,
                           const std::u16string& shortcut_text,
-                          Browser* browser,
                           BrowserWindowInterface* browser_window_interface)
       : BraveNewTabButton(std::move(callback),
                           kLeoPlusAddIcon,
-                          browser_window_interface),
-        browser_(browser) {
+                          browser_window_interface) {
     // Turn off inkdrop to have same bg color with tab's.
     views::InkDrop::Get(this)->SetMode(views::InkDropHost::InkDropMode::OFF);
 
@@ -213,10 +210,9 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
   ~VerticalTabNewTabButton() override = default;
 
   void OnMouseEvent(ui::MouseEvent* event) override {
-    if (event->IsOnlyMiddleMouseButton()) {
-      if (event->type() == ui::EventType::kMousePressed) {
-        chrome::NewTabFromClipboardURL(browser_);
-      }
+    if (event->IsOnlyMiddleMouseButton() &&
+        event->type() == ui::EventType::kMousePressed) {
+      NotifyClick(*event);
       event->SetHandled();
       return;
     }
@@ -257,7 +253,6 @@ class VerticalTabNewTabButton : public BraveNewTabButton {
 
   raw_ptr<views::ImageView> plus_icon_ = nullptr;
   raw_ptr<views::Label> text_ = nullptr;
-  raw_ptr<Browser> browser_ = nullptr;
 };
 
 BEGIN_METADATA(VerticalTabNewTabButton)
@@ -333,7 +328,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
   new_tab_button_ = AddChildView(std::make_unique<VerticalTabNewTabButton>(
       base::BindRepeating(&TabStrip::NewTabButtonPressed,
                           base::Unretained(original_region_view_->tab_strip_)),
-      GetShortcutTextForNewTabButton(browser_view), browser_, browser_));
+      GetShortcutTextForNewTabButton(browser_view), browser_));
 
   resize_area_ = AddChildView(std::make_unique<ResettableResizeArea>(this));
   SetBackground(views::CreateSolidBackground(kColorToolbar));
