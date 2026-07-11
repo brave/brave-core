@@ -6,9 +6,14 @@
 #include "brave/components/local_ai/content/background_web_contents_impl.h"
 
 #include <memory>
+#include <optional>
 
+#include "base/functional/callback_helpers.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
 #include "content/public/test/navigation_simulator.h"
 #include "content/public/test/test_renderer_host.h"
+#include "services/network/public/mojom/web_sandbox_flags.mojom-shared.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
@@ -31,10 +36,22 @@ class BackgroundWebContentsImplTest
     content::RenderViewHostTestHarness::TearDown();
   }
 
-  void CreateContents(const base::Location& location = FROM_HERE) {
+  void CreateContents(std::optional<network::mojom::WebSandboxFlags>
+                          sandbox_flags = std::nullopt,
+                      const base::Location& location = FROM_HERE) {
     SCOPED_TRACE(testing::Message() << location.ToString());
     background_contents_ = std::make_unique<BackgroundWebContentsImpl>(
-        browser_context(), GURL("chrome-untrusted://test/"), &delegate_);
+        browser_context(), GURL("chrome-untrusted://test/"), &delegate_,
+        base::NullCallback(), sandbox_flags);
+  }
+
+  // Commits the worker's navigation so its starting sandbox flags become the
+  // main frame's effective flags, then returns that frame.
+  content::RenderFrameHost* CommitAndGetMainFrame() {
+    content::WebContents* web_contents = background_contents_->web_contents();
+    content::NavigationSimulator::NavigateAndCommitFromBrowser(
+        web_contents, GURL("chrome-untrusted://test/"));
+    return web_contents->GetPrimaryMainFrame();
   }
 
   testing::NiceMock<MockDelegate> delegate_;
@@ -75,6 +92,28 @@ TEST_F(BackgroundWebContentsImplTest, DestructorDoesNotFireDelegateCallbacks) {
   CreateContents();
   // Destroying should not crash or fire delegate callbacks.
   background_contents_.reset();
+}
+
+TEST_F(BackgroundWebContentsImplTest, DefaultSandboxFlags) {
+  // With nullopt the worker keeps the default background sandbox: everything
+  // sandboxed except scripts (JS/WASM) and origin (Mojo WebUI bridge).
+  CreateContents(/*sandbox_flags=*/std::nullopt);
+  content::RenderFrameHost* rfh = CommitAndGetMainFrame();
+
+  EXPECT_TRUE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kPopups));
+  EXPECT_FALSE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kScripts));
+  EXPECT_FALSE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kOrigin));
+}
+
+TEST_F(BackgroundWebContentsImplTest, OverriddenSandboxFlags) {
+  // Passing kNone fully unsandboxes the worker, as required for a
+  // cross-origin-isolated (COOP/COEP) worker.
+  CreateContents(network::mojom::WebSandboxFlags::kNone);
+  content::RenderFrameHost* rfh = CommitAndGetMainFrame();
+
+  EXPECT_FALSE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kPopups));
+  EXPECT_FALSE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kScripts));
+  EXPECT_FALSE(rfh->IsSandboxed(network::mojom::WebSandboxFlags::kOrigin));
 }
 
 }  // namespace local_ai

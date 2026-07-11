@@ -7,37 +7,42 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
-static_library("content") {
+source_set("local_ai") {
   sources = [
-    "background_web_contents_impl.cc",
-    "background_web_contents_impl.h",
+    "background_web_contents_factory.cc",
+    "background_web_contents_factory.h",
   ]
 
   public_deps = [
     "//base",
-    "//brave/components/restricted_web_contents_delegate",
+    "//brave/components/local_ai/core",
     "//services/network/public/mojom",
   ]
 
   deps = [
-    "//brave/components/local_ai/core",
+    "//brave/components/local_ai/content",
+    "//chrome/browser:browser_process",
+    "//chrome/browser/profiles",
+    "//chrome/browser/task_manager",
     "//content/public/browser",
-    "//services/network/public/cpp",
-    "//ui/base",
     "//url",
   ]
 }
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "background_web_contents_impl_unittest.cc" ]
+  sources = [ "background_web_contents_factory_unittest.cc" ]
 
   deps = [
-    ":content",
+    ":local_ai",
+    "//base",
     "//base/test:test_support",
+    "//brave/app:brave_generated_resources_grit",
+    "//brave/components/local_ai/core",
+    "//chrome/browser/profiles",
+    "//chrome/test:test_support",
     "//content/public/browser",
     "//content/test:test_support",
-    "//testing/gmock",
     "//testing/gtest",
     "//url",
   ]
