@@ -14,8 +14,6 @@ import { BraveAccountStrings } from './brave_components_webui_strings.js'
 import { showError, showSuccess } from './brave_account_common.js'
 import { getHtml } from './brave_account_otp_dialog.html.js'
 import {
-  RegisterClientErrorCode,
-  RegisterError,
   LoggedInVerificationIntent,
   LoggedOutVerificationIntent,
   ResendConfirmationEmailClientErrorCode,
@@ -28,6 +26,10 @@ import {
   ChangePasswordClientErrorCode,
   ChangePasswordError,
 } from './change_password.mojom-webui.js'
+import {
+  RegisterClientErrorCode,
+  RegisterError,
+} from './register.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,

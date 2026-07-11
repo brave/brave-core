@@ -16,9 +16,6 @@ import {
   LoginClientErrorCode,
   LoginError,
   LoginServerErrorCode,
-  RegisterClientErrorCode,
-  RegisterError,
-  RegisterServerErrorCode,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
@@ -28,6 +25,11 @@ import {
   ChangePasswordError,
   ChangePasswordServerErrorCode,
 } from './change_password.mojom-webui.js'
+import {
+  RegisterClientErrorCode,
+  RegisterError,
+  RegisterServerErrorCode,
+} from './register.mojom-webui.js'
 import {
   ResetPasswordClientErrorCode,
   ResetPasswordError,
