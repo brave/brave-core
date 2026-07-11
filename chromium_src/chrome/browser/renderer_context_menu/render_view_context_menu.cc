@@ -457,7 +457,7 @@ void RenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
       if (auto* email_aliases = GetEmailAliasesController(GetBrowser())) {
         email_aliases->ShowBubble(
             source_web_contents_, GetRenderFrameHost(),
-            params_.field_renderer_id,
+            params_.field_renderer_id.value(),
             email_aliases::SettingsPageMethod::kContextMenu);
       }
       break;
