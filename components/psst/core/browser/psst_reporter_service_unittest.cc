@@ -16,6 +16,7 @@
 #include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
+#include "brave/components/version_info/version_info.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -34,6 +35,8 @@ class MockPsstErrorReportUploader : public PsstErrorReportUploader {
               Upload,
               (std::optional<std::string> psst_component_version,
                const int script_version,
+               const std::string& brave_version,
+               std::optional<std::string> channel,
                base::ListValue failed_tasks,
                base::OnceCallback<void()> callback),
               (override));
@@ -48,6 +51,7 @@ class MockPsstReporterServiceDelegate : public PsstReporterService::Delegate {
               GetComponentInfos,
               (),
               (const, override));
+  MOCK_METHOD(std::string, GetChannelName, (), (const, override));
 };
 
 PolicyTask MakePolicyTask(
@@ -64,7 +68,9 @@ PolicyTask MakePolicyTask(
 }
 
 void RunUploadCallback(std::optional<std::string>,
-                       int,
+                       const int,
+                       const std::string&,
+                       std::optional<std::string>,
                        base::ListValue,
                        base::OnceCallback<void()> callback) {
   std::move(callback).Run();
@@ -115,30 +121,37 @@ TEST_F(PsstReporterServiceUnitTest,
 TEST_F(PsstReporterServiceUnitTest,
        FailedTasksUploadMatchedComponentVersionAndSortedTasks) {
   auto delegate = std::make_unique<MockPsstReporterServiceDelegate>();
+  std::optional<std::string> expected_channel_name("channel_name");
+  const auto expected_brave_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
   const std::vector<PsstReporterService::PsstComponentInfo> components{
       {"other-id", "other-name", "0.0.1"},
       {kPsstComponentId, "psst", "9.8.7"},
   };
   EXPECT_CALL(*delegate, GetComponentInfos)
       .WillOnce(testing::Return(components));
+  EXPECT_CALL(*delegate, GetChannelName)
+      .WillOnce(testing::Return(expected_channel_name.value()));
 
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
   PsstReporterService service(std::move(delegate), std::move(uploader));
 
+  auto failed_task =
+      MakePolicyTask("uid-a", "https://a.example", "task a", "boom");
   PolicyTasksSet tasks;
   tasks.insert(MakePolicyTask("uid-b", "https://b.example", "task b"));
-  tasks.insert(MakePolicyTask("uid-a", "https://a.example", "task a", "boom"));
+  tasks.insert(failed_task.Clone());
 
   // Only failed tasks must be passed to uploader
   base::ListValue expected_tasks;
-  expected_tasks.Append(
-      MakePolicyTask("uid-a", "https://a.example", "task a", "boom").ToValue());
+  expected_tasks.Append(failed_task.ToValue());
 
   EXPECT_CALL(*uploader_ptr,
-              Upload(std::optional<std::string>("9.8.7"), 42, _, _))
-      .WillOnce([&](std::optional<std::string>, int,
-                    base::ListValue failed_tasks,
+              Upload(std::optional<std::string>("9.8.7"), 42,
+                     expected_brave_version, expected_channel_name, _, _))
+      .WillOnce([&](std::optional<std::string>, const int, const std::string&,
+                    std::optional<std::string>, base::ListValue failed_tasks,
                     base::OnceCallback<void()> callback) {
         EXPECT_EQ(failed_tasks, expected_tasks);
         std::move(callback).Run();
@@ -152,11 +165,14 @@ TEST_F(PsstReporterServiceUnitTest,
 TEST_F(PsstReporterServiceUnitTest,
        SkipsUploadWhenNoTasksHaveErrorDescription) {
   auto delegate = std::make_unique<MockPsstReporterServiceDelegate>();
+  std::optional<std::string> expected_channel_name("channel_name");
   const std::vector<PsstReporterService::PsstComponentInfo> components{
       {"other-id", "other-name", "0.0.1"},
   };
   EXPECT_CALL(*delegate, GetComponentInfos)
       .WillOnce(testing::Return(components));
+  EXPECT_CALL(*delegate, GetChannelName)
+      .WillOnce(testing::Return(expected_channel_name.value()));
 
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
@@ -165,7 +181,8 @@ TEST_F(PsstReporterServiceUnitTest,
   PolicyTasksSet tasks;
   tasks.insert(MakePolicyTask("uid-a", "https://a.example", "task a"));
 
-  EXPECT_CALL(*uploader_ptr, Upload(std::optional<std::string>(), 1, _, _))
+  EXPECT_CALL(*uploader_ptr, Upload(std::optional<std::string>(std::nullopt), _,
+                                    _, expected_channel_name, _, _))
       .Times(0);
 
   base::test::TestFuture<void> future;
@@ -180,10 +197,21 @@ TEST_F(PsstReporterServiceUnitTest,
   PsstReporterService service(/*service_delegate=*/nullptr,
                               std::move(uploader));
 
+  auto failed_task =
+      MakePolicyTask("uid-a", "https://a.example", "task a", "boom");
   PolicyTasksSet tasks;
-  tasks.insert(MakePolicyTask("uid-a", "https://a.example", "task a", "boom"));
+  tasks.insert(failed_task.Clone());
 
-  EXPECT_CALL(*uploader_ptr, Upload(std::optional<std::string>(), 3, _, _))
+  base::ListValue expected_tasks;
+  expected_tasks.Append(failed_task.ToValue());
+
+  EXPECT_CALL(
+      *uploader_ptr,
+      Upload(_, _, _, _,
+             testing::Truly([&expected_tasks](const base::ListValue& actual) {
+               return actual == expected_tasks;
+             }),
+             _))
       .Times(1)
       .WillOnce(&RunUploadCallback);
 
