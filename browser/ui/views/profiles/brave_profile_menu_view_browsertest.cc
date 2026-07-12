@@ -6,6 +6,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "base/test/run_until.h"
 #include "build/build_config.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -81,6 +82,11 @@ class BraveProfileMenuViewTest : public InProcessBrowserTest {
     views::test::WidgetVisibleWaiter(avatar_toolbar_button->GetWidget()).Wait();
     ASSERT_TRUE(avatar_toolbar_button);
     ClickAvatarToolbarButton(avatar_toolbar_button);
+    // `ProfileMenuCoordinator::Show()` may compute avatar button promo info
+    // asynchronously before creating the bubble, so it can still be null right
+    // after the click.
+    ASSERT_TRUE(base::test::RunUntil(
+        [&]() { return profile_menu_view(browser) != nullptr; }));
     ASSERT_NO_FATAL_FAILURE(WaitForMenuToBeActive(profile_menu_view(browser)));
     auto* coordinator = browser->GetFeatures().profile_menu_coordinator();
     EXPECT_TRUE(coordinator->IsShowing());
