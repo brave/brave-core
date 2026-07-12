@@ -15,6 +15,7 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/logging.h"
+#include "base/no_destructor.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/app/command_utils.h"
 #include "chrome/app/chrome_command_ids.h"
@@ -184,26 +185,21 @@ void AccumulateAcceleratorsRecursively(
     return;
   }
 
-  for (NSMenuItem* item in [menu itemArray]) {
+  ForEachMenuItem(menu, [&accelerators](NSMenuItem* item) {
     if (auto mapping = ToAcceleratorMapping(item)) {
       (*accelerators)[static_cast<int>(item.tag)].push_back(*mapping);
     }
-
-    if (NSMenu* submenu = [item submenu];
-        submenu && submenu != [NSApp servicesMenu]) {
-      AccumulateAcceleratorsRecursively(accelerators, submenu);
-    }
-  }
+  });
 }
 
-}  // namespace
-
-std::vector<AcceleratorMapping> GetGlobalAccelerators() {
+MacGlobalAccelerators BuildGlobalAccelerators() {
   base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
-      accelerator_map;
+      menu_backed_map;
+  base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
+      not_in_menu_map;
 
   // Get dynamic items from main menu.
-  AccumulateAcceleratorsRecursively(&accelerator_map, [NSApp mainMenu]);
+  AccumulateAcceleratorsRecursively(&menu_backed_map, [NSApp mainMenu]);
 
   // Get items that are not displayed but global.
   for (const auto& shortcut_data : GetShortcutsNotPresentInMainMenu()) {
@@ -213,32 +209,98 @@ std::vector<AcceleratorMapping> GetGlobalAccelerators() {
     }
 
     DVLOG(2) << "IN COMMANDS : " << shortcut_data.chrome_command;
-    accelerator_map[shortcut_data.chrome_command].push_back(
+    not_in_menu_map[shortcut_data.chrome_command].push_back(
         ToAcceleratorMapping(shortcut_data));
   }
 
-  // Add missing accelerators from static table.
-  // e.g. IDC_CLOSE_TAB is missing because it's dynamically added.
+  // Add missing accelerators from the static table, e.g. IDC_CLOSE_TAB is
+  // missing because its menu item is dynamically added. There's no NSMenuItem
+  // to keep in sync with customizations for these, so they are unmodifiable.
+  base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
+      static_table_map;
   for (const auto& [command_id, accelerator] :
        *AcceleratorsCocoa::GetInstance()) {
-    if (accelerator_map.contains(command_id) ||
+    if (menu_backed_map.contains(command_id) ||
+        not_in_menu_map.contains(command_id) ||
         !CanConvertToAcceleratorMapping(command_id)) {
       continue;
     }
 
-    accelerator_map[command_id].push_back(
+    static_table_map[command_id].push_back(
         ToAcceleratorMapping(command_id, accelerator));
   }
 
-  std::vector<AcceleratorMapping> result;
-  for (auto& [command_id, accelerator_mappings] : accelerator_map) {
-    DCHECK_NE(command_id, 0);
-    for (auto& accelerator_mapping : accelerator_mappings) {
-      DCHECK(accelerator_mapping.modifiers);
-      result.push_back(std::move(accelerator_mapping));
+  MacGlobalAccelerators result;
+  auto accumulate =
+      [&result](const base::flat_map<int, std::vector<AcceleratorMapping>>&
+                    accelerator_map,
+                std::vector<AcceleratorMapping>* category,
+                bool unmodifiable) {
+        for (const auto& [command_id, accelerator_mappings] : accelerator_map) {
+          DCHECK_NE(command_id, 0);
+          for (const auto& accelerator_mapping : accelerator_mappings) {
+            DCHECK(accelerator_mapping.modifiers);
+            result.all.push_back(accelerator_mapping);
+            if (category) {
+              category->push_back(accelerator_mapping);
+            }
+            if (unmodifiable || IsUnmodifiableCommand(command_id)) {
+              result.unmodifiable.push_back(accelerator_mapping);
+            }
+          }
+        }
+      };
+  accumulate(menu_backed_map, &result.menu_backed, /*unmodifiable=*/false);
+  accumulate(not_in_menu_map, nullptr, /*unmodifiable=*/false);
+  accumulate(static_table_map, nullptr, /*unmodifiable=*/true);
+  return result;
+}
+
+}  // namespace
+
+bool IsUnmodifiableCommand(int command_id) {
+  // "Close Tab" and "Close Window" key equivalents are hard-coded and
+  // dynamically swapped based on context by upstream's app_controller_mac.mm,
+  // so user customizations can't be applied to them.
+  return command_id == IDC_CLOSE_TAB || command_id == IDC_CLOSE_WINDOW;
+}
+
+void ForEachMenuItem(NSMenu* menu,
+                     base::FunctionRef<void(NSMenuItem*)> visitor) {
+  for (NSMenuItem* item in [menu itemArray]) {
+    visitor(item);
+
+    if (NSMenu* submenu = [item submenu];
+        submenu && submenu != [NSApp servicesMenu]) {
+      ForEachMenuItem(submenu, visitor);
     }
   }
-  return result;
+}
+
+std::optional<ui::Accelerator> GetAcceleratorFromMenuItem(NSMenuItem* item) {
+  auto mapping = ToAcceleratorMapping(item);
+  if (!mapping) {
+    return std::nullopt;
+  }
+  return ui::Accelerator(mapping->keycode, mapping->modifiers);
+}
+
+MacGlobalAccelerators::MacGlobalAccelerators() = default;
+MacGlobalAccelerators::~MacGlobalAccelerators() = default;
+MacGlobalAccelerators::MacGlobalAccelerators(MacGlobalAccelerators&&) =
+    default;
+MacGlobalAccelerators& MacGlobalAccelerators::operator=(
+    MacGlobalAccelerators&&) = default;
+
+const MacGlobalAccelerators& GetGlobalAccelerators() {
+  // Cached: the live menu's key equivalents are mutated later to reflect user
+  // customizations (see AcceleratorMenuCoordinatorMac), so the pristine
+  // defaults must only be read once, before any mutation. The first call
+  // happens while constructing the first profile's AcceleratorService, which
+  // precedes any menu sync since syncing is driven by service observation.
+  static base::NoDestructor<MacGlobalAccelerators> cached(
+      BuildGlobalAccelerators());
+  return *cached;
 }
 
 }  // namespace commands
