@@ -90,16 +90,6 @@ class BraveShieldsSettingsService : public KeyedService {
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
-  // Test only method. This is only respected if |g_stable_farbling_tokens_seed|
-  // is NOT set. If it's set then the |profile_level_farbling_entropy| shall be
-  // ignored. To not ignore it, you must allowlist a list of test tokens via
-  // ScopedAllowlistedProfileTokensForTesting.
-  void set_profile_level_farbling_entropy_for_testing(
-      const base::Token profile_level_farbling_entropy) {
-    CHECK_IS_TEST();
-    profile_level_farbling_entropy_ = profile_level_farbling_entropy;
-  }
-
  private:
   const raw_ref<HostContentSettingsMap>
       host_content_settings_map_;       // NOT OWNED
@@ -109,7 +99,7 @@ class BraveShieldsSettingsService : public KeyedService {
   // This token is generated when the service is created and stays stable until
   // the service is destoryed. It allows to show different farbled values for a
   // site across browser restarts.
-  base::Token profile_level_farbling_entropy_;
+  const base::Token profile_level_farbling_entropy_;
 };
 
 }  // namespace brave_shields

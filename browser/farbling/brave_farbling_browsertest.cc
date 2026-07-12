@@ -105,10 +105,8 @@ IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
       scoped_stable_farbling_tokens{1};
   // Add controlled noise from profile.
   constexpr base::Token test_profile_token(base::Token(0, 1));
-  brave_shields::ScopedAllowlistedProfileTokensForTesting
+  brave_shields::ScopedAllowlistedProfileTokenForTesting
       scoped_allowlisted_tokens{{test_profile_token}};
-  BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile())
-      ->set_profile_level_farbling_entropy_for_testing(test_profile_token);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);
