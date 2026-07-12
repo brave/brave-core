@@ -29,6 +29,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -1107,6 +1108,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_SHIELDS_TOOLTIP_TEXT},
       {"cookieControlledByGoogleSigninTooltip",
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_GOOGLE_SIGN_IN_TOOLTIP_TEXT},
+#if BUILDFLAG(ENABLE_PSST)
+      {"psstSettingsToggleLabel", IDS_SETTINGS_PSST_LABEL},
+      {"psstSettingsToggleSubLabel", IDS_SETTINGS_PSST_SUB_LABEL},
+#endif  // BUILDFLAG(ENABLE_PSST)
   };
 
   html_source->AddLocalizedStrings(localized_strings);

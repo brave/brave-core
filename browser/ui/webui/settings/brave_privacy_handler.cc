@@ -17,6 +17,7 @@
 #include "brave/components/debounce/core/common/features.h"
 #include "brave/components/google_sign_in_permission/google_sign_in_permission_util.h"
 #include "brave/components/p3a/pref_names.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -41,6 +42,10 @@
 
 #if BUILDFLAG(IS_WIN)
 #include "brave/components/windows_recall/windows_recall.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/common/features.h"
 #endif
 
 BravePrivacyHandler::BravePrivacyHandler() {
@@ -124,6 +129,11 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
   data_source->AddBoolean(
       "isRequestOTRFeatureEnabled",
       base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTRTab));
+#endif
+#if BUILDFLAG(ENABLE_PSST)
+  data_source->AddBoolean(
+      "isPsstFeatureEnabled",
+      base::FeatureList::IsEnabled(psst::features::kEnablePsst));
 #endif
   data_source->AddBoolean(
       "isGoogleSignInFeatureEnabled",
