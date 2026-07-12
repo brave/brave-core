@@ -107,6 +107,7 @@ class ConversationHandler : public mojom::ConversationHandler,
         const std::string& title) {}
     virtual void OnConversationTokenInfoChanged(
         const std::string& conversation_uuid,
+        std::optional<std::string_view> thread_uuid,
         uint64_t total_tokens,
         uint64_t trimmed_tokens) {}
     virtual void OnAssociatedContentUpdated(ConversationHandler* handler) {}
@@ -403,10 +404,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   // conversation, if |thread_uuid| is nullopt) should be read from/appended
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetChatHistory(
-      const std::optional<std::string>& thread_uuid);
+      std::optional<std::string_view> thread_uuid);
   // Finds the Thread metadata with the given uuid amongst the child_threads
   // of the root conversation's entries.
-  mojom::Thread* FindThreadMetadata(const std::string& thread_uuid);
+  mojom::Thread* FindThreadMetadata(std::string_view thread_uuid);
   void PerformAssistantGenerationWithPossibleContent(
       const std::optional<std::string>& thread_uuid);
 
@@ -441,9 +442,8 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnEngineCompletionDataReceived(
       const std::optional<std::string>& thread_uuid,
       EngineConsumer::GenerationResultData result);
-  void OnEngineCompletionComplete(
-      const std::optional<std::string>& thread_uuid,
-      EngineConsumer::GenerationResult result);
+  void OnEngineCompletionComplete(const std::optional<std::string>& thread_uuid,
+                                  EngineConsumer::GenerationResult result);
   void OnTitleGenerated(EngineConsumer::GenerationResult result);
   void CompleteGeneration(const std::optional<std::string>& thread_uuid,
                           bool success);
@@ -465,8 +465,10 @@ class ConversationHandler : public mojom::ConversationHandler,
   void OnSuggestedQuestionsChanged();
   void OnClientConnectionChanged();
   void OnConversationTitleChanged(std::string_view title);
-  void OnConversationTokenInfoChanged(uint64_t total_tokens,
-                                      uint64_t trimmed_tokens);
+  void OnConversationTokenInfoChanged(
+      std::optional<std::string_view> thread_uuid,
+      uint64_t total_tokens,
+      uint64_t trimmed_tokens);
   void OnConversationUIConnectionChanged(mojo::RemoteSetElementId id);
   void OnAPIRequestInProgressChanged();
   void OnToolUseTaskStateChanged();

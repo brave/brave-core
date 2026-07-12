@@ -1094,7 +1094,8 @@ void AIChatService::OnNewConversationThread(ConversationHandler* handler,
   CHECK(conversation);
 
   if (ai_chat_db_ && !conversation->temporary) {
-    ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationThread))
+    ai_chat_db_
+        .AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversationThread))
         .WithArgs(thread.Clone());
   }
 }
@@ -1301,6 +1302,7 @@ void AIChatService::OnConversationTitleChanged(
 
 void AIChatService::OnConversationTokenInfoChanged(
     const std::string& conversation_uuid,
+    std::optional<std::string_view> thread_uuid,
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
   auto conversation_it = conversations_.find(conversation_uuid);
@@ -1310,6 +1312,17 @@ void AIChatService::OnConversationTokenInfoChanged(
   }
 
   auto& conversation_metadata = conversation_it->second;
+
+  if (thread_uuid.has_value()) {
+    // Persist the thread token info
+    if (ai_chat_db_ && !conversation_metadata->temporary) {
+      ai_chat_db_
+          .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateThreadTokenInfo))
+          .WithArgs(thread_uuid.value(), total_tokens, trimmed_tokens);
+    }
+    return;
+  }
+
   conversation_metadata->total_tokens = total_tokens;
   conversation_metadata->trimmed_tokens = trimmed_tokens;
 

@@ -225,6 +225,11 @@ class MockAIChatDatabase : public AIChatDatabase {
               (std::string_view, uint64_t, uint64_t),
               (override));
 
+  MOCK_METHOD(bool,
+              UpdateThreadTokenInfo,
+              (std::string_view, uint64_t, uint64_t),
+              (override));
+
   MOCK_METHOD(bool, DeleteConversationEntry, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteConversation, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteAllData, (), (override));
@@ -1502,6 +1507,7 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTitle(_, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationModelKey).Times(0);
   EXPECT_CALL(*mock_db_ptr, UpdateConversationTokenInfo(_, _, _)).Times(0);
+  EXPECT_CALL(*mock_db_ptr, UpdateThreadTokenInfo(_, _, _)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversationEntry(_)).Times(0);
   EXPECT_CALL(*mock_db_ptr, DeleteConversation(_)).Times(0);
 
@@ -1522,7 +1528,7 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   ai_chat_service_->OnConversationTitleChanged(uuid, "New Title");
 
   // Test token info change
-  ai_chat_service_->OnConversationTokenInfoChanged(uuid, 100, 50);
+  ai_chat_service_->OnConversationTokenInfoChanged(uuid, std::nullopt, 100, 50);
 
   // Test removing a message
   ai_chat_service_->OnConversationEntryRemoved(conversation, "uuid");
