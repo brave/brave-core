@@ -11,7 +11,6 @@
 #include "base/notreached.h"
 #include "base/path_service.h"
 #include "brave/browser/brave_content_browser_client.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/webcompat/core/common/features.h"
@@ -163,8 +162,7 @@ class TestContentBrowserClient : public BraveContentBrowserClient {
   std::unique_ptr<TestUsbDelegate> usb_delegate_;
 };
 
-class BraveNavigatorUsbFarblingBrowserTest
-    : public BraveBaseFarblingBrowserTest {
+class BraveNavigatorUsbFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorUsbFarblingBrowserTest() {
     scoped_feature_list_.InitAndEnableFeature(
@@ -172,7 +170,7 @@ class BraveNavigatorUsbFarblingBrowserTest
   }
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     browser_content_client_ = std::make_unique<TestContentBrowserClient>();
     content::SetBrowserClientForTesting(browser_content_client_.get());

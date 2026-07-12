@@ -5,10 +5,18 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_test_utils.h"
 
+#include <vector>
+
+#include "base/containers/flat_set.h"
+#include "base/no_destructor.h"
+#include "base/token.h"
+
 namespace brave_shields {
 
 // Declared in brave_shields_settings_service.cc.
 extern uint32_t g_stable_farbling_tokens_seed;
+extern base::NoDestructor<std::optional<base::flat_set<base::Token>>>
+    g_allowlisted_profile_tokens;
 
 ScopedStableFarblingTokensForTesting::ScopedStableFarblingTokensForTesting(
     uint32_t seed)
@@ -17,5 +25,14 @@ ScopedStableFarblingTokensForTesting::ScopedStableFarblingTokensForTesting(
 
 ScopedStableFarblingTokensForTesting::~ScopedStableFarblingTokensForTesting() =
     default;
+
+ScopedAllowlistedProfileTokensForTesting::
+    ScopedAllowlistedProfileTokensForTesting(std::vector<base::Token> tokens)
+    : profile_tokens_(
+          &*g_allowlisted_profile_tokens,
+          base::flat_set<base::Token>(tokens.begin(), tokens.end())) {}
+
+ScopedAllowlistedProfileTokensForTesting::
+    ~ScopedAllowlistedProfileTokensForTesting() = default;
 
 }  // namespace brave_shields

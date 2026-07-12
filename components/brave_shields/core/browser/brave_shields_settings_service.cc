@@ -5,7 +5,9 @@
 
 #include "brave/components/brave_shields/core/browser/brave_shields_settings_service.h"
 
+#include "base/containers/flat_set.h"
 #include "base/hash/hash.h"
+#include "base/no_destructor.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/brave_shield_utils.h"
@@ -27,8 +29,12 @@ namespace brave_shields {
 // Non-anonymous to be accesible from ":test_support" target.
 uint32_t g_stable_farbling_tokens_seed = 0;
 
-namespace {
+// Used with ScopedAllowlistedProfileTokensForTesting. Don't rely on
+// it directly.
+base::NoDestructor<std::optional<base::flat_set<base::Token>>>
+    g_allowlisted_profile_tokens;
 
+namespace {
 base::DictValue GetShieldsMetadata(HostContentSettingsMap* map,
                                    const GURL& url) {
   auto shields_metadata_value = map->GetWebsiteSetting(
@@ -56,6 +62,7 @@ uint64_t PersistentHashU64(base::span<const uint8_t> data) {
 
 // IN-TEST
 base::Token CreateStableFarblingTokenForTesting(const GURL& url) {
+  CHECK_IS_TEST();
   const uint32_t high =
       base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
   const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
@@ -420,10 +427,30 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   // Apply more entropy for profile bound seesion if needed.
   if (base::FeatureList::IsEnabled(
           brave_shields::features::kBraveFarblingTokenReset)) {
+    // Test related condition.
+    // The browser tests which wants stability across the result sets
+    // |g_stable_farbling_tokens_seed| to 1 which gets "removed" in
+    // CreateStableFarblingTokenForTesting, this effectively means tokens for
+    // such tests are minted based solely on the URL. Therefore, to avoid
+    // |profile_level_farbling_entropy_| to add unwanted additional noise
+    // to these tests we ignore it if:
+    // 1. g_stable_farbling_tokens_seed was set (indicating stability of tests
+    // required).
+    // 2. The current |profile_level_farbling_entropy_|, is not part of
+    // allowlisted |g_allowlisted_profile_tokens| tokens.
+    // |g_allowlisted_profile_tokens| allows to explictly add noise from profile
+    // token.
+    if (g_stable_farbling_tokens_seed) {
+      CHECK_IS_TEST();
+      if (!g_allowlisted_profile_tokens->has_value() ||
+          !g_allowlisted_profile_tokens->value().contains(
+              profile_level_farbling_entropy_)) {
+        return token;
+      }
+    }
+
     // This will ensure that the token is not the same across browser restarts
     // but still stable for |url| across the same browser session.
-    // Note: profile_level_farbling_entropy_ may be zero in tests (via
-    // set_profile_level_farbling_entropy_for_testing), which is a no-op XOR.
     token = base::Token(token.high() ^ profile_level_farbling_entropy_.high(),
                         token.low() ^ profile_level_farbling_entropy_.low());
   }

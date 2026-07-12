@@ -12,7 +12,6 @@
 #include "base/path_service.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -65,8 +64,7 @@ std::optional<size_t> GetHeaderPosition(const std::string& all_headers,
 }
 }  // namespace
 
-class BraveNavigatorLanguagesFarblingBrowserTest
-    : public BraveBaseFarblingBrowserTest {
+class BraveNavigatorLanguagesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorLanguagesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {
@@ -92,7 +90,7 @@ class BraveNavigatorLanguagesFarblingBrowserTest
   }
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

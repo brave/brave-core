@@ -11,7 +11,6 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "base/test/scoped_feature_list.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/constants/brave_paths.h"
@@ -86,7 +85,7 @@ void VerifyBalancedFarblingExtensions(const std::string& actual_off,
 
 }  // namespace
 
-class BraveWebGLFarblingBrowserTest : public BraveBaseFarblingBrowserTest {
+class BraveWebGLFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveWebGLFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
@@ -96,7 +95,7 @@ class BraveWebGLFarblingBrowserTest : public BraveBaseFarblingBrowserTest {
   }
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());

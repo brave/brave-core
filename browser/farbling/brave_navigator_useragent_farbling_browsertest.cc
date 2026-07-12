@@ -12,7 +12,6 @@
 #include "base/test/thread_test_helper.h"
 #include "base/version.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -143,8 +142,7 @@ void ProgrammaticallyCreateOffscreenDocument(
 
 }  // namespace
 
-class BraveNavigatorUserAgentFarblingBrowserTest
-    : public BraveBaseFarblingBrowserTest {
+class BraveNavigatorUserAgentFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorUserAgentFarblingBrowserTest() {
     feature_list_.InitAndEnableFeature(
@@ -159,7 +157,7 @@ class BraveNavigatorUserAgentFarblingBrowserTest
   }
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     mock_cert_verifier_.mock_cert_verifier()->set_default_result(net::OK);
     host_resolver()->AddRule("*", "127.0.0.1");

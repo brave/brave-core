@@ -65,14 +65,6 @@ class BraveFarblingBrowserTest : public InProcessBrowserTest,
     farbling_url_ = embedded_test_server()->GetURL("a.com", "/simple.html");
   }
 
-  void TearDownOnMainThread() override {
-    // Reset the profile token.
-    auto* brave_settings_service =
-        BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
-    brave_settings_service->set_profile_level_farbling_entropy_for_testing(
-        base::Token());
-  }
-
   const GURL& farbling_url() { return farbling_url_; }
 
   // A convinient function to return the underlying feature flag value to avoid
@@ -108,15 +100,15 @@ INSTANTIATE_TEST_SUITE_P(
     });
 
 IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
-  // Control the base level token for testing.
+  // This removes the random noise added from the global seed.
   brave_shields::ScopedStableFarblingTokensForTesting
       scoped_stable_farbling_tokens{1};
-  // Control the profile level token for testing when feature gets enabled.
-  base::Token profile_token_for_test = base::Token(0, 1);
-  auto* brave_settings_service =
-      BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile());
-  brave_settings_service->set_profile_level_farbling_entropy_for_testing(
-      profile_token_for_test);
+  // Add controlled noise from profile.
+  constexpr base::Token test_profile_token(base::Token(0, 1));
+  brave_shields::ScopedAllowlistedProfileTokensForTesting
+      scoped_allowlisted_tokens{{test_profile_token}};
+  BraveShieldsSettingsServiceFactory::GetForProfile(browser()->profile())
+      ->set_profile_level_farbling_entropy_for_testing(test_profile_token);
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);

@@ -8,7 +8,6 @@
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -45,8 +44,7 @@ constexpr char kExpectedPluginsNamesBalanced[] =
 
 }  // namespace
 
-class BraveNavigatorPluginsFarblingBrowserTest
-    : public BraveBaseFarblingBrowserTest {
+class BraveNavigatorPluginsFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveNavigatorPluginsFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
@@ -56,7 +54,7 @@ class BraveNavigatorPluginsFarblingBrowserTest
   }
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     host_resolver()->AddRule("*", "127.0.0.1");
     content::SetupCrossSiteRedirector(embedded_test_server());

@@ -8,7 +8,6 @@
 #include "base/path_service.h"
 #include "base/test/thread_test_helper.h"
 #include "brave/browser/extensions/brave_base_local_data_files_browsertest.h"
-#include "brave/browser/farbling/brave_base_farbling_browsertest.h"
 #include "brave/components/brave_component_updater/browser/local_data_files_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/constants/brave_paths.h"
@@ -40,8 +39,7 @@ constexpr char kEnumerateDevicesScript[] =
     "  return devicekinds;"
     "})";
 
-class BraveEnumerateDevicesFarblingBrowserTest
-    : public BraveBaseFarblingBrowserTest {
+class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveEnumerateDevicesFarblingBrowserTest()
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
@@ -54,7 +52,7 @@ class BraveEnumerateDevicesFarblingBrowserTest
   ~BraveEnumerateDevicesFarblingBrowserTest() override = default;
 
   void SetUpOnMainThread() override {
-    BraveBaseFarblingBrowserTest::SetUpOnMainThread();
+    InProcessBrowserTest::SetUpOnMainThread();
 
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);

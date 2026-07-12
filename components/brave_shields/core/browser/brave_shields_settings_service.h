@@ -90,8 +90,10 @@ class BraveShieldsSettingsService : public KeyedService {
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
-  // Test only method. |profile_level_farbling_entropy| is set in the
-  // constructor in production.
+  // Test only method. This is only respected if |g_stable_farbling_tokens_seed|
+  // is NOT set. If it's set then the |profile_level_farbling_entropy| shall be
+  // ignored. To not ignore it, you must allowlist a list of test tokens via
+  // ScopedAllowlistedProfileTokensForTesting.
   void set_profile_level_farbling_entropy_for_testing(
       const base::Token profile_level_farbling_entropy) {
     CHECK_IS_TEST();

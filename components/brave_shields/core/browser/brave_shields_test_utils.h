@@ -8,7 +8,11 @@
 
 #include <stdint.h>
 
+#include <vector>
+
 #include "base/auto_reset.h"
+#include "base/containers/flat_set.h"
+#include "base/token.h"
 
 namespace brave_shields {
 
@@ -22,6 +26,31 @@ class ScopedStableFarblingTokensForTesting {
 
  private:
   base::AutoReset<uint32_t> scoped_stable_farbling_token_seed_;
+};
+
+// RAII guard that sets a list of allowlisted profile tokens for the duration of
+// a test and resets the global back to std::nullopt on destruction, preventing
+// test-state leakage.
+class ScopedAllowlistedProfileTokensForTesting {
+ public:
+  // An allowlist of profile tokens which is checked with
+  // BraveShieldsSettingsService |profile_level_farbling_entropy_| to then
+  // selectively allow adding noise from the token if it's present. This
+  // is useful when the farbling tests are controlled, but we still need to add
+  // profile level noise. See BraveShieldsSettingsService
+  // set_profile_level_farbling_entropy_for_testing for more details on
+  // controlled farbling tests.
+  explicit ScopedAllowlistedProfileTokensForTesting(
+      std::vector<base::Token> tokens);
+  ~ScopedAllowlistedProfileTokensForTesting();
+
+  ScopedAllowlistedProfileTokensForTesting(
+      const ScopedAllowlistedProfileTokensForTesting&) = delete;
+  ScopedAllowlistedProfileTokensForTesting& operator=(
+      const ScopedAllowlistedProfileTokensForTesting&) = delete;
+
+ private:
+  base::AutoReset<std::optional<base::flat_set<base::Token>>> profile_tokens_;
 };
 
 }  // namespace brave_shields
