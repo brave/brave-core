@@ -20,7 +20,7 @@ class QuickViewController: UIViewController {
   private let url: URL
   private var currentTab: (any TabState)?
   private var profileController: BraveProfileController
-  private var profile: any Profile { profileController.profile }
+  private let profile: any Profile
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -36,12 +36,17 @@ class QuickViewController: UIViewController {
 
   init(
     url: URL,
+    profile: any Profile,
     profileController: BraveProfileController,
     onOpenInNewTab: ((URLRequest) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?
   ) {
     self.url = url
-    self.toolbarViewModel = QuickViewToolbarModel(url: url)
+    self.profile = profile
+    self.toolbarViewModel = QuickViewToolbarModel(
+      url: url,
+      isPrivate: profile.isOffTheRecord
+    )
     self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
     self.onAttachTab = onAttachTab
@@ -152,8 +157,7 @@ class QuickViewController: UIViewController {
     guard let currentTab = currentTab else {
       return
     }
-
-    let colors: any BrowserColors = profile.isOffTheRecord ? .privateMode : .standard
+    let colors: BrowserColors = profile.isOffTheRecord ? .privateMode : .standard
     view.backgroundColor = colors.chromeBackground
     view.addSubview(currentTab.view)
 

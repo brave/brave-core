@@ -29,6 +29,7 @@ class QuickViewToolbarModel {
     if readerModeState != .unavailable { return .readerMode }
     return nil
   }
+  var isPrivate: Bool = false
   var canGoBack: Bool = false
   var canGoForward: Bool = false
   var isShieldEnabled: Bool = true
@@ -41,9 +42,11 @@ class QuickViewToolbarModel {
 
   init(
     url: URL,
+    isPrivate: Bool,
     onActionButton: ((QuickViewActionButton) -> Void)? = nil
   ) {
     self.url = url
+    self.isPrivate = isPrivate
     self.onActionButton = onActionButton
   }
 }
