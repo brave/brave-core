@@ -196,6 +196,11 @@ ui::DropTargetEvent ConvertRootLocation(views::View* view,
 
 }  // namespace
 
+std::unique_ptr<TabStripRegionView> CreateBraveHorizontalTabStripRegionView(
+    BrowserView* browser_view) {
+  return std::make_unique<BraveHorizontalTabStripRegionView>(browser_view);
+}
+
 BraveHorizontalTabStripRegionView::~BraveHorizontalTabStripRegionView() =
     default;
 
