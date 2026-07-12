@@ -74,6 +74,7 @@ source_set("unit_tests") {
     ":browser",
     "//base/test:test_support",
     "//brave/components/psst/core/common",
+    "//brave/components/version_info",
     "//testing/gmock",
     "//testing/gtest",
   ]
