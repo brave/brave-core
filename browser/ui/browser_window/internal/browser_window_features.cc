@@ -114,6 +114,16 @@ void BrowserWindowFeatures::Init(BrowserWindowInterface* browser) {
     tree_tab_session_manager_ = std::make_unique<TreeTabSessionManager>(
         profile, browser->GetTabStripModel(), browser->GetSessionID());
   }
+
+  if (BrowserSupportsFocusMode(browser)) {
+    focus_mode_controller_ = std::make_unique<FocusModeController>();
+  }
+
+  // VerticalTabController should be constructed in Init() instead of
+  // InitPostBrowserViewConstruction() because it would be referenced by many
+  // views.
+  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
+      browser->GetType(), profile->GetPrefs(), focus_mode_controller_.get());
 }
 
 void BrowserWindowFeatures::InitPostBrowserViewConstruction(
@@ -142,10 +152,6 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
     }
   }
 #endif
-
-  if (BrowserSupportsFocusMode(browser_view->browser())) {
-    focus_mode_controller_ = std::make_unique<FocusModeController>();
-  }
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_ = std::make_unique<BraveVPNController>(browser_view);
@@ -179,10 +185,6 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
                                       browser_view));
 #endif
 
-  vertical_tab_controller_ = std::make_unique<VerticalTabController>(
-      browser_view->browser()->GetType(),
-      browser_view->GetProfile()->GetPrefs(), focus_mode_controller_.get());
-
   if (base::FeatureList::IsEnabled(features::kWorkspaces) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
     workspaces_bubble_controller_ =
@@ -210,4 +212,9 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
     playlist_side_panel_coordinator_.reset();
 #endif
   }
+}
+
+void BrowserWindowFeatures::SetVerticalTabControllerForTesting(
+    std::unique_ptr<VerticalTabController> vertical_tab_controller) {
+  vertical_tab_controller_ = std::move(vertical_tab_controller);
 }

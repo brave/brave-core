@@ -9,7 +9,7 @@
 
 #include "base/check.h"
 #include "brave/browser/ui/color/brave_color_id.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -106,8 +106,9 @@ void BraveTabGroupHeader::Layout(PassKey) {
 }
 
 bool BraveTabGroupHeader::ShouldShowVerticalTabs() const {
-  return tabs::utils::ShouldShowBraveVerticalTabs(
+  auto* vtc = VerticalTabController::FromBrowser(
       tab_slot_controller_->GetBrowserWindowInterface());
+  return vtc && vtc->ShouldShowBraveVerticalTabs();
 }
 
 void BraveTabGroupHeader::LayoutTitleChipForVerticalTabs() {
