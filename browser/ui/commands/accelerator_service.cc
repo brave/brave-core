@@ -139,11 +139,13 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
 AcceleratorService::AcceleratorService(
     PrefService* pref_service,
     AcceleratorPrefManager::Accelerators default_accelerators,
-    base::flat_set<ui::Accelerator> system_managed)
+    base::flat_set<ui::Accelerator> system_managed,
+    AcceleratorPrefManager::Accelerators menu_dispatched)
     : pref_service_(pref_service),
       pref_manager_(pref_service, commands::GetCommands()),
       default_accelerators_(std::move(default_accelerators)),
-      system_managed_(std::move(system_managed)) {
+      system_managed_(std::move(system_managed)),
+      menu_dispatched_(std::move(menu_dispatched)) {
   Initialize();
 }
 
@@ -309,23 +311,36 @@ void AcceleratorService::AddCommandsListener(
 void AcceleratorService::AddObserver(Observer* observer) {
   AcceleratorPrefManager::Accelerators changed;
   observers_.AddObserver(observer);
-  const auto& system_managed = system_managed_;
   for (const auto& [command_id, accelerators] : accelerators_) {
     // Skip commands that are disabled by policy
     if (IsCommandDisabledByPolicy(command_id)) {
       continue;
     }
 
-    std::ranges::copy_if(accelerators, std::back_inserter(changed[command_id]),
-                         [&system_managed](const ui::Accelerator& accelerator) {
-                           return !system_managed.contains(accelerator);
-                         });
+    std::ranges::copy_if(
+        accelerators, std::back_inserter(changed[command_id]),
+        [this, command_id = command_id](const ui::Accelerator& accelerator) {
+          return !IsOsDispatched(command_id, accelerator);
+        });
   }
   observer->OnAcceleratorsChanged(changed);
 }
 
 void AcceleratorService::RemoveObserver(Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+std::vector<ui::Accelerator> AcceleratorService::GetAcceleratorsForCommand(
+    int command_id) const {
+  const auto* accelerators = base::FindOrNull(accelerators_, command_id);
+  return accelerators ? *accelerators : std::vector<ui::Accelerator>();
+}
+
+std::vector<ui::Accelerator>
+AcceleratorService::GetDefaultAcceleratorsForCommand(int command_id) const {
+  const auto* accelerators =
+      base::FindOrNull(default_accelerators_, command_id);
+  return accelerators ? *accelerators : std::vector<ui::Accelerator>();
 }
 
 const AcceleratorPrefManager::Accelerators&
@@ -387,7 +402,6 @@ void AcceleratorService::NotifyCommandsChanged(
     const std::vector<int>& modified_ids) {
   AcceleratorPrefManager::Accelerators changed;
   auto event = mojom::CommandsEvent::New();
-  const auto& system_managed = system_managed_;
 
   for (const auto& command_id : modified_ids) {
     // Skip commands that are disabled by policy
@@ -404,13 +418,13 @@ void AcceleratorService::NotifyCommandsChanged(
                                            : std::vector<ui::Accelerator>(),
                       system_managed_);
 
-    // Make sure system managed commands aren't registered with the Browser - as
+    // Make sure OS dispatched commands aren't registered with the Browser - as
     // that might break these commands being triggered from the system.
-    std::ranges::copy_if(changed_command,
-                         std::back_inserter(changed[command_id]),
-                         [&system_managed](const ui::Accelerator& accelerator) {
-                           return !system_managed.contains(accelerator);
-                         });
+    std::ranges::copy_if(
+        changed_command, std::back_inserter(changed[command_id]),
+        [this, command_id = command_id](const ui::Accelerator& accelerator) {
+          return !IsOsDispatched(command_id, accelerator);
+        });
   }
 
   for (const auto& listener : mojo_listeners_) {
@@ -420,6 +434,21 @@ void AcceleratorService::NotifyCommandsChanged(
   for (auto& listener : observers_) {
     listener.OnAcceleratorsChanged(changed);
   }
+}
+
+bool AcceleratorService::IsOsDispatched(
+    int command_id,
+    const ui::Accelerator& accelerator) const {
+  if (system_managed_.contains(accelerator)) {
+    return true;
+  }
+
+  // Menu dispatched accelerators are only handled by the OS while they remain
+  // assigned to their default command - reassigned to another command they are
+  // registered with the browser like any custom accelerator.
+  const auto* menu_dispatched = base::FindOrNull(menu_dispatched_, command_id);
+  return menu_dispatched &&
+         std::ranges::contains(*menu_dispatched, accelerator);
 }
 
 bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {

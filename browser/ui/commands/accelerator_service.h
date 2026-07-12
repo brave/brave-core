@@ -35,7 +35,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
 
   AcceleratorService(PrefService* pref_service,
                      AcceleratorPrefManager::Accelerators default_accelerators,
-                     base::flat_set<ui::Accelerator> system_managed);
+                     base::flat_set<ui::Accelerator> system_managed,
+                     AcceleratorPrefManager::Accelerators menu_dispatched = {});
   AcceleratorService(const AcceleratorService&) = delete;
   AcceleratorService& operator=(const AcceleratorService&) = delete;
   ~AcceleratorService() override;
@@ -58,6 +59,13 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
       mojo::PendingRemote<mojom::CommandsListener> listener) override;
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
+
+  // Returns the accelerators currently assigned to |command_id|, unfiltered
+  // (observer notifications exclude OS-dispatched accelerators, these don't).
+  std::vector<ui::Accelerator> GetAcceleratorsForCommand(int command_id) const;
+  // Returns the default accelerators for |command_id|.
+  std::vector<ui::Accelerator> GetDefaultAcceleratorsForCommand(
+      int command_id) const;
 
   const AcceleratorPrefManager::Accelerators& GetAcceleratorsForTesting();
   mojom::CommandPtr GetCommandForTesting(int command_id);
@@ -85,6 +93,11 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   AcceleratorPrefManager::Accelerators FilterCommandsByPolicy(
       const AcceleratorPrefManager::Accelerators& commands) const;
 
+  // Whether |accelerator|, when assigned to |command_id|, is dispatched by the
+  // OS rather than by the browser's FocusManager. Such accelerators must not
+  // be registered with the browser, as that could result in double handling.
+  bool IsOsDispatched(int command_id, const ui::Accelerator& accelerator) const;
+
   raw_ptr<PrefService> pref_service_;
   AcceleratorPrefManager pref_manager_;
   AcceleratorPrefManager::Accelerators accelerators_;
@@ -94,6 +107,13 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   // register these (which can result in double handling) or allow them to be
   // modified.
   base::flat_set<ui::Accelerator> system_managed_;
+
+  // macOS only (empty elsewhere): default accelerators dispatched via a main
+  // menu NSMenuItem key equivalent. Unlike |system_managed_| these can be
+  // modified or removed - AcceleratorMenuCoordinatorMac syncs the menu items
+  // with customizations - but while assigned to their default command they are
+  // dispatched by the menu, so they must not be registered with the browser.
+  AcceleratorPrefManager::Accelerators menu_dispatched_;
 
   mojo::ReceiverSet<CommandsService> receivers_;
   mojo::RemoteSet<mojom::CommandsListener> mojo_listeners_;

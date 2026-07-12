@@ -1205,7 +1205,10 @@ test("brave_browser_tests") {
   ]
 
   if (is_mac) {
-    sources += [ "//brave/browser/brave_app_controller_mac_browsertest.mm" ]
+    sources += [
+      "//brave/browser/brave_app_controller_mac_browsertest.mm",
+      "//brave/browser/ui/commands/accelerator_menu_coordinator_mac_browsertest.mm",
+    ]
   }
 
   if (is_win) {
