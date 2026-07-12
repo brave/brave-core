@@ -299,6 +299,130 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
   }
 }
 
+namespace {
+
+class TestAcceleratorsObserver : public AcceleratorService::Observer {
+ public:
+  ~TestAcceleratorsObserver() override = default;
+
+  void OnAcceleratorsChanged(
+      const AcceleratorPrefManager::Accelerators& changed) override {
+    for (const auto& [command_id, accelerators] : changed) {
+      changed_[command_id] = accelerators;
+    }
+  }
+
+  const AcceleratorPrefManager::Accelerators& changed() const {
+    return changed_;
+  }
+
+ private:
+  AcceleratorPrefManager::Accelerators changed_;
+};
+
+}  // namespace
+
+TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreNotRegistered) {
+  commands::AcceleratorService service(
+      profile().GetPrefs(),
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {},
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
+
+  TestAcceleratorsObserver observer;
+  service.AddObserver(&observer);
+
+  // The menu dispatched default must not be sent to observers (it would be
+  // registered with the browser, double handling the OS menu dispatch).
+  ASSERT_TRUE(observer.changed().contains(IDC_NEW_TAB));
+  EXPECT_TRUE(observer.changed().at(IDC_NEW_TAB).empty());
+
+  // A custom accelerator on the same command is sent to observers.
+  service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
+  ASSERT_EQ(1u, observer.changed().at(IDC_NEW_TAB).size());
+  EXPECT_EQ("Control+KeyK",
+            commands::ToCodesString(observer.changed().at(IDC_NEW_TAB)[0]));
+
+  // A menu dispatched accelerator reassigned to a different command is sent to
+  // observers for that command - the menu no longer dispatches it there.
+  service.AssignAcceleratorToCommand(IDC_NEW_WINDOW, "Control+KeyT");
+  ASSERT_EQ(1u, observer.changed().at(IDC_NEW_WINDOW).size());
+  EXPECT_EQ("Control+KeyT",
+            commands::ToCodesString(observer.changed().at(IDC_NEW_WINDOW)[0]));
+
+  // Once it's assigned back to its original command, it's excluded again.
+  // Note the reset also removes the custom Control+KeyK accelerator, so the
+  // command's registered accelerator list ends up empty.
+  service.ResetAcceleratorsForCommand(IDC_NEW_TAB);
+  ASSERT_TRUE(observer.changed().contains(IDC_NEW_WINDOW));
+  EXPECT_TRUE(observer.changed().at(IDC_NEW_WINDOW).empty());
+  ASSERT_TRUE(observer.changed().contains(IDC_NEW_TAB));
+  EXPECT_TRUE(observer.changed().at(IDC_NEW_TAB).empty());
+  const auto new_tab_accelerators =
+      service.GetAcceleratorsForCommand(IDC_NEW_TAB);
+  ASSERT_EQ(1u, new_tab_accelerators.size());
+  EXPECT_EQ("Control+KeyT",
+            commands::ToCodesString(new_tab_accelerators[0]));
+
+  service.RemoveObserver(&observer);
+}
+
+TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
+  const commands::AcceleratorPrefManager::Accelerators defaults = {
+      {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}};
+
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), defaults, {},
+                                         defaults);
+
+    // Unlike system managed accelerators, menu dispatched ones are modifiable,
+    // so the frontend offers to remove them.
+    auto command = service.GetCommandForTesting(IDC_NEW_TAB);
+    ASSERT_EQ(1u, command->accelerators.size());
+    EXPECT_FALSE(command->accelerators[0]->unmodifiable);
+
+    service.UnassignAcceleratorFromCommand(IDC_NEW_TAB, "Control+KeyT");
+    EXPECT_TRUE(service.GetAcceleratorsForCommand(IDC_NEW_TAB).empty());
+  }
+
+  // Unlike system managed accelerators, the removal survives a restart (menu
+  // dispatched defaults are not forcibly re-added).
+  {
+    commands::AcceleratorService service(profile().GetPrefs(), defaults, {},
+                                         defaults);
+    EXPECT_TRUE(service.GetAcceleratorsForCommand(IDC_NEW_TAB).empty());
+
+    auto command = service.GetCommandForTesting(IDC_NEW_TAB);
+    EXPECT_TRUE(command->modified);
+
+    // Resetting restores the default.
+    service.ResetAcceleratorsForCommand(IDC_NEW_TAB);
+    const auto accelerators = service.GetAcceleratorsForCommand(IDC_NEW_TAB);
+    ASSERT_EQ(1u, accelerators.size());
+    EXPECT_EQ("Control+KeyT", commands::ToCodesString(accelerators[0]));
+  }
+}
+
+TEST_F(AcceleratorServiceUnitTest, AcceleratorsForCommandAccessors) {
+  commands::AcceleratorService service(
+      profile().GetPrefs(),
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
+
+  service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
+
+  auto current = service.GetAcceleratorsForCommand(IDC_NEW_TAB);
+  ASSERT_EQ(2u, current.size());
+  EXPECT_EQ("Control+KeyT", commands::ToCodesString(current[0]));
+  EXPECT_EQ("Control+KeyK", commands::ToCodesString(current[1]));
+
+  auto defaults = service.GetDefaultAcceleratorsForCommand(IDC_NEW_TAB);
+  ASSERT_EQ(1u, defaults.size());
+  EXPECT_EQ("Control+KeyT", commands::ToCodesString(defaults[0]));
+
+  // Unknown commands return empty lists.
+  EXPECT_TRUE(service.GetAcceleratorsForCommand(99999).empty());
+  EXPECT_TRUE(service.GetDefaultAcceleratorsForCommand(99999).empty());
+}
+
 TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   commands::AcceleratorService service(profile().GetPrefs(), {}, {});
 
