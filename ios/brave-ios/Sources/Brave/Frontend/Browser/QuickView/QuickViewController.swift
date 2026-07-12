@@ -19,8 +19,10 @@ import WebKit
 class QuickViewController: UIViewController {
   private let url: URL
   private var currentTab: (any TabState)?
-  private var profileController: BraveProfileController
   private let profile: any Profile
+  private let syncAPI: BraveSyncAPI
+  private let sendTabAPI: BraveSendTabAPI
+  private let deAmpPrefs: DeAmpPrefs
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -37,17 +39,21 @@ class QuickViewController: UIViewController {
   init(
     url: URL,
     profile: any Profile,
-    profileController: BraveProfileController,
+    syncAPI: BraveSyncAPI,
+    sendTabAPI: BraveSendTabAPI,
+    deAmpPrefs: DeAmpPrefs,
     onOpenInNewTab: ((URLRequest) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?
   ) {
     self.url = url
     self.profile = profile
+    self.syncAPI = syncAPI
+    self.sendTabAPI = sendTabAPI
+    self.deAmpPrefs = deAmpPrefs
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
     )
-    self.profileController = profileController
     self.onOpenInNewTab = onOpenInNewTab
     self.onAttachTab = onAttachTab
     super.init(nibName: nil, bundle: nil)
@@ -127,8 +133,8 @@ class QuickViewController: UIViewController {
         self.presentShareActivity(
           url: visibleURL,
           tab: currentTab,
-          syncAPI: profileController.syncAPI,
-          sendTabAPI: profileController.sendTabAPI,
+          syncAPI: syncAPI,
+          sendTabAPI: sendTabAPI,
           feedDataSource: nil,
           isBraveNewsAvailable: false,
           source: .init(
@@ -410,7 +416,7 @@ extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
     if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
       tab: tab,
-      profileController: profileController
+      deAmpPrefs: deAmpPrefs
     ) {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }
