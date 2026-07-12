@@ -57,3 +57,26 @@ substitutions:
     regex:
       re_pattern: '( +)(int x = width\(\) \* 0\.4;)'
       replace: '\1if (!dialog_anchor_) { return; }\n\1\2'
+
+  - description: |
+      Move BEGIN_METADATA/END_METADATA block to avoid parsing errors
+
+      CreateHorizontalTabStripRegionView is the only function declared just
+      after the BEGIN_METADATA/END_METADATA block, which causes ast-grep to
+      choke, so we move this block to the end of the file.
+    regex:
+      re_pattern: '(BEGIN_METADATA\(HorizontalTabStripRegionViewNew\).*?END_METADATA)\n\n(.*)'
+      replace: '\2\n\1\n'
+      re_flags: ['DOTALL']
+
+  - description: |
+      BraveHorizontalTabStripRegionView not supported with unified tab strip.
+
+      If the unified tab strip feature is enabled, construct the upstream
+      HorizontalTabStripRegionView instead of BraveHorizontalTabStripRegionView.
+    preempt_function_impl:
+      function_name: CreateHorizontalTabStripRegionView
+      code: |-
+        if (!base::FeatureList::IsEnabled(tabs::kTabStripUnification)) {
+          return std::make_unique<BraveHorizontalTabStripRegionView>(browser_view);
+        }
