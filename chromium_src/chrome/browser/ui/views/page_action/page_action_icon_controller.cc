@@ -74,11 +74,12 @@
     break;
 #endif
 
-// Circumvent creation of CookieControlsIconView in
-// PageActionIconController::Init's switch statement by injecting a case
-// with a non-existent value created above.
-#define kCookieControls                              \
-  kCookieControls:                                   \
+// Inject our extra page action cases into PageActionIconController::Init's
+// switch statement by hijacking the `kFederation` case, since its migration has
+// already launched. We just need any existing, harmless case to anchor the
+// injection to.
+#define kFederation                                  \
+  kFederation:                                       \
   break;                                             \
   BRAVE_PAGE_ACTION_ICON_CONTROLLER_PLAYLIST_CASE    \
   BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE             \
@@ -99,7 +100,7 @@
 
 #include <chrome/browser/ui/views/page_action/page_action_icon_controller.cc>
 #undef kShown
-#undef kCookieControls
+#undef kFederation
 #undef BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE
 #undef BRAVE_PAGE_ACTION_ICON_CONTROLLER_SPEEDREADER_CASE
 #undef BRAVE_PAGE_ACTION_ICON_CONTROLLER_PLAYLIST_CASE
