@@ -53,7 +53,6 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
 
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
-
     base::FilePath test_data_dir;
     base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
     https_server_.SetSSLConfig(net::EmbeddedTestServer::CERT_TEST_NAMES);
@@ -65,6 +64,7 @@ class BraveEnumerateDevicesFarblingBrowserTest : public InProcessBrowserTest {
   }
 
  protected:
+  base::test::ScopedFeatureList feature_list_;
   net::EmbeddedTestServer https_server_;
 
   const GURL& farbling_url() { return farbling_url_; }

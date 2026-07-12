@@ -39,8 +39,10 @@ class BraveNavigatorHardwareConcurrencyFarblingBrowserTest
  public:
   BraveNavigatorHardwareConcurrencyFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
-        {brave_shields::features::kBraveShowStrictFingerprintingMode,
-         webcompat::features::kBraveWebcompatExceptionsService},
+        {
+            brave_shields::features::kBraveShowStrictFingerprintingMode,
+            webcompat::features::kBraveWebcompatExceptionsService,
+        },
         {});
   }
 

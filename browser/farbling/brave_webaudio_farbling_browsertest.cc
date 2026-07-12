@@ -38,9 +38,10 @@ class BraveWebAudioFarblingBrowserTest : public InProcessBrowserTest {
  public:
   BraveWebAudioFarblingBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
+        /*enabled_features=*/
         {webcompat::features::kBraveWebcompatExceptionsService,
          brave_shields::features::kBraveShowStrictFingerprintingMode},
-        {});
+        /*disabled_features=*/{});
   }
 
   void SetUpOnMainThread() override {
