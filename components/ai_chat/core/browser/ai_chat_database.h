@@ -98,6 +98,11 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
                                            uint64_t total_tokens,
                                            uint64_t trimmed_tokens);
 
+  // Updates the token information of the thread with the provided UUID
+  virtual bool UpdateThreadTokenInfo(std::string_view thread_uuid,
+                                     uint64_t total_tokens,
+                                     uint64_t trimmed_tokens);
+
   // Deletes the conversation with the provided UUID
   virtual bool DeleteConversation(std::string_view conversation_uuid);
 

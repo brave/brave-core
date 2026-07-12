@@ -1324,7 +1324,7 @@ void ConversationHandler::CreateConversationThread(
     const std::string& origin_entry_uuid,
     CreateConversationThreadCallback callback) {
   auto entry_it = std::ranges::find(chat_history_, origin_entry_uuid,
-                                     &mojom::ConversationTurn::uuid);
+                                    &mojom::ConversationTurn::uuid);
   if (entry_it == chat_history_.end()) {
     DLOG(ERROR) << "Cannot create thread for unknown entry: "
                 << origin_entry_uuid;
@@ -1379,9 +1379,8 @@ void ConversationHandler::AddToConversationHistory(
   OnConversationEntryAdded(history.back());
 }
 
-std::vector<mojom::ConversationTurnPtr>&
-ConversationHandler::GetChatHistory(
-    const std::optional<std::string>& thread_uuid) {
+std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
+    std::optional<std::string_view> thread_uuid) {
   if (thread_uuid.has_value()) {
     return thread_entries_[thread_uuid.value()];
   }
@@ -1389,7 +1388,7 @@ ConversationHandler::GetChatHistory(
 }
 
 mojom::Thread* ConversationHandler::FindThreadMetadata(
-    const std::string& thread_uuid) {
+    std::string_view thread_uuid) {
   for (auto& entry : chat_history_) {
     for (auto& thread : entry->child_threads) {
       if (thread->uuid == thread_uuid) {
@@ -1638,7 +1637,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
 
     if (event->is_content_receipt_event()) {
       OnConversationTokenInfoChanged(
-          event->get_content_receipt_event()->total_tokens,
+          thread_uuid, event->get_content_receipt_event()->total_tokens,
           event->get_content_receipt_event()->trimmed_tokens);
       // Don't add this event to history
       return;
@@ -2313,11 +2312,19 @@ void ConversationHandler::OnConversationTitleChanged(std::string_view title) {
 }
 
 void ConversationHandler::OnConversationTokenInfoChanged(
+    std::optional<std::string_view> thread_uuid,
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
+  if (thread_uuid.has_value()) {
+    if (mojom::Thread* thread = FindThreadMetadata(thread_uuid.value())) {
+      thread->total_tokens = total_tokens;
+      thread->trimmed_tokens = trimmed_tokens;
+      OnConversationThreadUpdate(*thread);
+    }
+  }
   for (auto& observer : observers_) {
-    observer.OnConversationTokenInfoChanged(metadata_->uuid, total_tokens,
-                                            trimmed_tokens);
+    observer.OnConversationTokenInfoChanged(metadata_->uuid, thread_uuid,
+                                            total_tokens, trimmed_tokens);
   }
 }
 
@@ -2409,7 +2416,7 @@ ConversationHandler::FindLatestToolUseEvent(
       }
       auto& tool_use_event = event->get_tool_use_event();
       if (tool_id.has_value() ? tool_use_event->id != *tool_id
-                               : tool_use_event->output.has_value()) {
+                              : tool_use_event->output.has_value()) {
         continue;
       }
       if (!result_event || last_entry->created_time > latest_time) {

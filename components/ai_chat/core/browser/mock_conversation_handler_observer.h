@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MOCK_CONVERSATION_HANDLER_OBSERVER_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_MOCK_CONVERSATION_HANDLER_OBSERVER_H_
 
+#include <optional>
 #include <string>
 #include <string_view>
 
@@ -65,10 +66,11 @@ class MockConversationHandlerObserver : public ConversationHandler::Observer {
               (const std::string&, const std::string&),
               (override));
 
-  MOCK_METHOD(void,
-              OnConversationTokenInfoChanged,
-              (const std::string&, uint64_t, uint64_t),
-              (override));
+  MOCK_METHOD(
+      void,
+      OnConversationTokenInfoChanged,
+      (const std::string&, std::optional<std::string_view>, uint64_t, uint64_t),
+      (override));
 
   MOCK_METHOD(void,
               OnAssociatedContentUpdated,

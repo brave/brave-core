@@ -900,6 +900,50 @@ TEST_P(AIChatDatabaseTest, UpdateConversationTokenInfo) {
   EXPECT_EQ(conversation->trimmed_tokens, updated_trimmed_tokens);
 }
 
+TEST_P(AIChatDatabaseTest, UpdateThreadTokenInfo) {
+  const std::string uuid = "for_thread_token_info";
+  mojom::ConversationPtr metadata = mojom::Conversation::New(
+      uuid, "title", base::Time::Now(), true, std::nullopt, 0, 0, false,
+      std::vector<mojom::AssociatedContentPtr>());
+
+  const auto history = CreateSampleChatHistory(1u);
+  ASSERT_TRUE(db_->AddConversation(metadata->Clone(), {}, history[0]->Clone()));
+
+  const std::string thread_uuid = "thread_token_info_1";
+  uint64_t initial_total_tokens = 4000;
+  uint64_t initial_trimmed_tokens = 800;
+  auto thread = mojom::Thread::New(
+      thread_uuid, uuid, history[0]->uuid.value(), "thread title",
+      initial_total_tokens, initial_trimmed_tokens, false, 0, base::Time());
+  ASSERT_TRUE(db_->AddConversationThread(thread->Clone()));
+
+  // Verify initial token info
+  auto conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  ASSERT_EQ(conversation_data->entries.size(), 1u);
+  ASSERT_EQ(conversation_data->entries[0]->child_threads.size(), 1u);
+  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->total_tokens,
+            initial_total_tokens);
+  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->trimmed_tokens,
+            initial_trimmed_tokens);
+
+  // Update token info
+  uint64_t updated_total_tokens = 5000;
+  uint64_t updated_trimmed_tokens = 1200;
+  EXPECT_TRUE(db_->UpdateThreadTokenInfo(thread_uuid, updated_total_tokens,
+                                         updated_trimmed_tokens));
+
+  // Verify updated token info
+  conversation_data = db_->GetConversationData(uuid);
+  ASSERT_TRUE(conversation_data);
+  ASSERT_EQ(conversation_data->entries.size(), 1u);
+  ASSERT_EQ(conversation_data->entries[0]->child_threads.size(), 1u);
+  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->total_tokens,
+            updated_total_tokens);
+  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->trimmed_tokens,
+            updated_trimmed_tokens);
+}
+
 TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent) {
   const std::string uuid = "for_associated_content";
   const std::string content_uuid = "content_uuid";

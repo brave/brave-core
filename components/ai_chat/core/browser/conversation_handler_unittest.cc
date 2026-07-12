@@ -2864,6 +2864,7 @@ TEST_F(ConversationHandlerUnitTest_NoAssociatedContent, ContentReceipt) {
   // OnConversationTokenInfoChanged should be called
   EXPECT_CALL(observer, OnConversationTokenInfoChanged(
                             conversation_handler_->metadata_->uuid,
+                            std::optional<std::string_view>{},
                             expected_total_tokens, expected_trimmed_tokens))
       .Times(1);
 

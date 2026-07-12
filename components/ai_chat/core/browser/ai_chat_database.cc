@@ -1327,13 +1327,11 @@ bool AIChatDatabase::AddConversationThread(mojom::ThreadPtr thread) {
       " conversation_entry.conversation_uuid"
       " WHERE conversation_entry.uuid=? AND conversation.uuid=?";
   sql::Statement get_conversation_and_entry_statement(
-      GetDB().GetCachedStatement(SQL_FROM_HERE,
-                                  kGetConversationAndEntryQuery));
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kGetConversationAndEntryQuery));
   CHECK(get_conversation_and_entry_statement.is_valid());
   get_conversation_and_entry_statement.BindString(
       0, thread->origin_conversation_entry_uuid);
-  get_conversation_and_entry_statement.BindString(1,
-                                                   thread->conversation_uuid);
+  get_conversation_and_entry_statement.BindString(1, thread->conversation_uuid);
   if (!get_conversation_and_entry_statement.Step()) {
     DVLOG(0) << "Conversation or conversation entry not found";
     return false;
@@ -1466,6 +1464,29 @@ bool AIChatDatabase::UpdateConversationTokenInfo(
   statement.BindInt64(0, total_tokens);
   statement.BindInt64(1, trimmed_tokens);
   statement.BindString(2, conversation_uuid);
+
+  return statement.Run();
+}
+
+bool AIChatDatabase::UpdateThreadTokenInfo(std::string_view thread_uuid,
+                                           uint64_t total_tokens,
+                                           uint64_t trimmed_tokens) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DVLOG(4) << __func__ << " for " << thread_uuid << " with total_tokens "
+           << total_tokens << " and trimed_tokens " << trimmed_tokens;
+  if (!LazyInit()) {
+    return false;
+  }
+
+  static constexpr char kUpdateThreadTokenInfoQuery[] =
+      "UPDATE thread SET total_tokens=?, trimmed_tokens=? WHERE uuid=?";
+  sql::Statement statement(
+      GetDB().GetCachedStatement(SQL_FROM_HERE, kUpdateThreadTokenInfoQuery));
+  CHECK(statement.is_valid());
+
+  statement.BindInt64(0, total_tokens);
+  statement.BindInt64(1, trimmed_tokens);
+  statement.BindString(2, thread_uuid);
 
   return statement.Run();
 }
