@@ -76,6 +76,12 @@ action("boringtun") {
       "--cc-sysroot",
       rebase_path(visual_studio_path, root_build_dir),
     ]
+    if (windows_sdk_path != "") {
+      args += [
+        "--win-sdk-dir",
+        rebase_path(windows_sdk_path, root_build_dir),
+      ]
+    }
   } else if (is_mac) {
     args += [
       "--mac-min-version",
