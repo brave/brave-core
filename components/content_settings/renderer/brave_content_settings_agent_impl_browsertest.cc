@@ -107,7 +107,7 @@ class BraveContentSettingsAgentImplBrowserTest : public InProcessBrowserTest {
             brave_shields::features::kBraveShowStrictFingerprintingMode,
             webcompat::features::kBraveWebcompatExceptionsService,
         },
-        {brave_shields::features::kBraveFarblingTokenReset});
+        {});
   }
 
   void SetUpOnMainThread() override {

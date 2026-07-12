@@ -34,9 +34,7 @@ class ScopedAllowlistedProfileTokenForTesting {
   // BraveShieldsSettingsService |profile_level_farbling_entropy_| to then
   // selectively allow adding noise from the token if it's present. This
   // is useful where the farbling tests are controlled, but we still need to add
-  // profile level noise. See BraveShieldsSettingsService
-  // set_profile_level_farbling_entropy_for_testing for more details on
-  // controlled farbling tests.
+  // profile level noise.
   explicit ScopedAllowlistedProfileTokenForTesting(base::Token tokens);
   ~ScopedAllowlistedProfileTokenForTesting();
 
