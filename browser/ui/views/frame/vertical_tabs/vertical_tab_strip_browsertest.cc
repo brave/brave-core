@@ -1708,6 +1708,48 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ScrollOffset) {
             brave_tab_container->GetMaxScrollOffset());
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       ScrollOffsetKeptWhenTogglingExpandedState) {
+  // https://github.com/brave/brave-browser/issues/52270
+  ToggleVerticalTabStrip();
+
+  auto* brave_tab_container = views::AsViewClass<BraveTabContainer>(
+      views::AsViewClass<BraveTabStrip>(
+          browser_view()->horizontal_tab_strip_for_testing())
+          ->GetTabContainerForTesting());
+  ASSERT_TRUE(brave_tab_container);
+
+  // Add tabs until the tab strip overflows enough to scroll by a few tabs.
+  while (brave_tab_container->GetMaxScrollOffsetForTesting() <
+         2 * tabs::kVerticalTabHeight) {
+    AppendTab(browser());
+    browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+    InvalidateAndRunLayoutForVerticalTabStrip();
+  }
+
+  // Scroll to the middle of the tab strip.
+  const int scroll_offset =
+      brave_tab_container->GetMaxScrollOffsetForTesting() / 2;
+  ASSERT_GT(scroll_offset, 0);
+  brave_tab_container->SetScrollOffsetForTesting(scroll_offset);
+  ASSERT_EQ(scroll_offset, brave_tab_container->GetScrollOffsetForTesting());
+
+  // Collapsing the tab strip shouldn't reset the scroll offset. Note that
+  // collapsing only changes the tab strip width, so the max scroll offset
+  // stays the same and no clamping should happen.
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, true);
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  EXPECT_EQ(scroll_offset, brave_tab_container->GetScrollOffsetForTesting());
+
+  // Expanding the tab strip shouldn't reset the scroll offset either.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsCollapsed, false);
+  browser_view()->horizontal_tab_strip_for_testing()->StopAnimating();
+  InvalidateAndRunLayoutForVerticalTabStrip();
+  EXPECT_EQ(scroll_offset, brave_tab_container->GetScrollOffsetForTesting());
+}
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, ClipPathOnScrollOffset) {
   // https://github.com/brave/brave-browser/issues/51734
   ToggleVerticalTabStrip();
