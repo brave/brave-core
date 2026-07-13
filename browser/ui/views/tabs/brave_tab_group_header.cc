@@ -19,6 +19,7 @@
 #include "chrome/browser/ui/views/tabs/tab_group_style.h"
 #include "chrome/browser/ui/views/tabs/tab_group_underline.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
+#include "third_party/skia/include/core/SkPath.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/color_utils.h"
 #include "ui/views/background.h"
@@ -75,6 +76,12 @@ void BraveTabGroupHeader::VisualsChanged() {
 
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
+
+    // TabGroupHeader::VisualsChanged() sets |title_chip_|'s clip path based on
+    // its bounds at that time, which are narrower than the bounds
+    // LayoutTitleChipForVerticalTabs() just applied. Just clear clip path as
+    // it's not necessary in vertical tab.
+    title_chip_->SetClipPath(SkPath());
   }
 
   if (ShouldShowHeaderIcon()) {
