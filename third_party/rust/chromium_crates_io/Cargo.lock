@@ -1103,7 +1103,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 [[package]]
 name = "hashbrown"
 version = "0.16.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "allocator-api2",
  "equivalent",
@@ -2635,7 +2634,3 @@ dependencies = [
 [[package]]
 name = "zmij"
 version = "1.0.21"
-
-[[patch.unused]]
-name = "hashbrown"
-version = "0.15.5"

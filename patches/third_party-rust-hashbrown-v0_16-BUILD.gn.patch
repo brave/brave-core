@@ -1,0 +1,12 @@
+diff --git a/third_party/rust/hashbrown/v0_16/BUILD.gn b/third_party/rust/hashbrown/v0_16/BUILD.gn
+index ffd452121f7d811c9382942fc5b3c865dc3525a2..eb9a8ed98960b7b58e89af37e5ad3c6d632175c8 100644
+--- a/third_party/rust/hashbrown/v0_16/BUILD.gn
++++ b/third_party/rust/hashbrown/v0_16/BUILD.gn
+@@ -70,7 +70,6 @@ cargo_crate("lib") {
+   # //third_party/rust/chromium_crates_io/Cargo.toml to use
+   # it from first-party code.
+   visibility = [ "//third_party/rust/*" ]
+-  testonly = true
+ 
+   #####################################################################
+   # Tweaking which GN `config`s apply to this target.
