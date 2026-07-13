@@ -54,7 +54,8 @@ public class BraveVpnProfileUtils {
                                 && capabilities.hasTransport(NetworkCapabilities.TRANSPORT_VPN);
             } else {
                 NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-                isVpnConnected = activeNetwork.getType() == ConnectivityManager.TYPE_VPN;
+                isVpnConnected = activeNetwork != null
+                        && activeNetwork.getType() == ConnectivityManager.TYPE_VPN;
             }
         }
         return isVpnConnected;
