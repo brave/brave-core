@@ -29,6 +29,7 @@ import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
 import LongConversationInfo from '../alerts/long_conversation_info'
 import styles from './style.module.scss'
+import { useModelIntroMarkers } from './useModelIntroMarkers'
 import { useScrollToBottom } from './useScrollToBottom'
 
 export interface ConversationProps {
@@ -147,6 +148,8 @@ function Conversation(props: ConversationProps) {
   // Total and trimmed tokens for long conversation info
   const shouldShowLongConversationInfo = state.trimmedTokens > BigInt(0)
 
+  const modelIntroMarkers = useModelIntroMarkers()
+
   // Scroll tracking
   const { scrollToBottomContinuously, hasScrollableContent } =
     useScrollToBottom(scrollElementRef, contentRef)
@@ -204,7 +207,7 @@ function Conversation(props: ConversationProps) {
         className={styles.conversationContent}
         ref={contentRef}
       >
-        {context.modelIntroMarkers
+        {modelIntroMarkers
           .filter((marker) => marker.afterPairIndex === null)
           .map((marker) => (
             <ModelIntro
@@ -219,7 +222,10 @@ function Conversation(props: ConversationProps) {
           </div>
         )}
 
-        <ConversationEntries scrollToBottom={scrollToBottom} />
+        <ConversationEntries
+          modelIntroMarkers={modelIntroMarkers}
+          scrollToBottom={scrollToBottom}
+        />
 
         <div ref={noticesRef}>
           {showSuggestions && (

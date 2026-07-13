@@ -7,35 +7,14 @@ import * as React from 'react'
 import generateReactContext from '$web-common/api/react_api'
 import { UntrustedConversationAPI } from './api/untrusted_conversation_api'
 import { loadTimeData } from '$web-common/loadTimeData'
-import { getPairedConversationGroups } from './components/conversation_entries/conversation_entries_utils'
 
 // Props required to provide the context
 export interface UntrustedConversationContextProps {
   api: UntrustedConversationAPI
 }
 
-export type ModelIntroMarker = {
-  id: string
-  modelKey: string
-  afterPairIndex: number | null
-}
-
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
 const IS_HISTORY_FEATURE_ENABLED = loadTimeData.getBoolean('isHistoryEnabled')
-
-let modelIntroMarkerCounter = 0
-
-function createModelIntroMarker(
-  modelKey: string,
-  afterPairIndex: number | null,
-): ModelIntroMarker {
-  modelIntroMarkerCounter += 1
-  return {
-    id: `model-intro-${modelIntroMarkerCounter}`,
-    modelKey,
-    afterPairIndex,
-  }
-}
 
 /**
  * Provides the untrusted conversation context with API hooks
@@ -49,12 +28,6 @@ export function useProvideUntrustedConversationContext(
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,
   ] = React.useState(false)
-  const [modelIntroMarkers, setModelIntroMarkers] = React.useState<
-    ModelIntroMarker[]
-  >([])
-
-  const prevModelKeyRef = React.useRef<string | undefined>(undefined)
-  const conversationIdentityRef = React.useRef<string | null>(null)
 
   // Use API hooks for state
   const state = api.useState().data
@@ -64,73 +37,11 @@ export function useProvideUntrustedConversationContext(
   const associatedContent = api.useCurrentAssociatedContentChanged().data?.[0]
   const contentTaskTabId = api.useCurrentContentTaskStarted().data?.[0]
 
-  React.useEffect(() => {
-    if (conversationHistory.length === 0) {
-      setModelIntroMarkers([])
-      conversationIdentityRef.current = null
-      prevModelKeyRef.current = undefined
-      return
-    }
-
-    const firstUuid = conversationHistory[0]?.uuid
-    if (!firstUuid) {
-      return
-    }
-
-    if (conversationIdentityRef.current === null) {
-      conversationIdentityRef.current = firstUuid
-      return
-    }
-
-    if (conversationIdentityRef.current !== firstUuid) {
-      conversationIdentityRef.current = firstUuid
-      setModelIntroMarkers([])
-      prevModelKeyRef.current = undefined
-    }
-  }, [conversationHistory.length, conversationHistory[0]?.uuid])
-
-  React.useEffect(() => {
-    const { currentModelKey, defaultModelKey } = state
-
-    if (prevModelKeyRef.current === undefined) {
-      prevModelKeyRef.current = currentModelKey
-      return
-    }
-
-    if (prevModelKeyRef.current === currentModelKey) {
-      return
-    }
-
-    prevModelKeyRef.current = currentModelKey
-
-    if (currentModelKey === defaultModelKey) {
-      return
-    }
-
-    setModelIntroMarkers((previousMarkers) => {
-      const lastMarker = previousMarkers.at(-1)
-      if (lastMarker?.modelKey === currentModelKey) {
-        return previousMarkers
-      }
-
-      const pairedGroups = getPairedConversationGroups(conversationHistory)
-      const afterPairIndex =
-        conversationHistory.length === 0 ? null : pairedGroups.length - 1
-
-      return [
-        ...previousMarkers,
-        createModelIntroMarker(currentModelKey, afterPairIndex),
-      ]
-    })
-  }, [conversationHistory.length, state.currentModelKey, state.defaultModelKey])
-
   return {
     api,
 
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,
-
-    modelIntroMarkers,
 
     // Expose state properties directly for backwards compatibility
     // These are marked as deprecated - components should use api.useState() instead

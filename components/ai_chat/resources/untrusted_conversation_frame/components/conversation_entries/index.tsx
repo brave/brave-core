@@ -17,6 +17,7 @@ import {
   stringifyContent,
 } from '../../../page/components/input_box/editable_content'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
+import type { ModelIntroMarker } from '../conversation/useModelIntroMarkers'
 import AssistantReasoning from '../assistant_reasoning'
 import ContextActionsAssistant from '../context_actions_assistant'
 import ContextMenuHuman from '../context_menu_human'
@@ -182,7 +183,11 @@ function usePairedConversationGroups() {
   )
 }
 
-function ConversationEntries(props: { scrollToBottom: () => void }) {
+function ConversationEntries(props: {
+  modelIntroMarkers?: ModelIntroMarker[]
+  scrollToBottom?: () => void
+}) {
+  const { modelIntroMarkers = [], scrollToBottom } = props
   const conversationContext = useUntrustedConversationContext()
 
   const [hoverMenuButtonId, setHoverMenuButtonId] = React.useState<number>()
@@ -526,7 +531,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
           className={styles.entryPair}
           ref={
             pairIndex === entryPairs.length - 1 && hasGenerated.current
-              ? props.scrollToBottom
+              ? scrollToBottom
               : undefined
           }
         >
@@ -548,7 +553,7 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               </React.Fragment>
             ))}
           </ProgressBubbleContextProvider>
-          {conversationContext.modelIntroMarkers
+          {modelIntroMarkers
             .filter((marker) => marker.afterPairIndex === pairIndex)
             .map((marker) => (
               <ModelIntro
