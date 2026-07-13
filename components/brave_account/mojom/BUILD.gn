@@ -13,6 +13,7 @@ mojom("mojom") {
   sources = [
     "brave_account.mojom",
     "change_password.mojom",
+    "register.mojom",
     "reset_password.mojom",
   ]
 
@@ -33,6 +34,7 @@ if (is_ios) {
     sources = [
       "brave_account.mojom",
       "change_password.mojom",
+      "register.mojom",
       "reset_password.mojom",
     ]
   }

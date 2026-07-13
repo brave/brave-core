@@ -13,6 +13,7 @@
 #include "base/types/expected.h"
 #include "brave/components/brave_account/brave_account_utils.h"
 #include "brave/components/brave_account/endpoint_client/with_headers.h"
+#include "brave/components/brave_account/mojom/register.mojom.h"
 #include "brave/components/brave_account/state_base.h"
 #include "brave/components/brave_account/state_internal.h"
 
