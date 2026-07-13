@@ -288,7 +288,8 @@ BraveSessionCache::CreateWebGLFarbledExtensionHandler(
       : level == BraveFarblingLevel::BALANCED
           ? blink::WebGLFarbledExtensionHandler::CreateBalancedHandler(
                 supported_extensions,
-                default_shields_settings_->farbling_token.low())
+                static_cast<size_t>(
+                    default_shields_settings_->farbling_token.low()))
           : blink::WebGLFarbledExtensionHandler::CreateMaximumHandler(
                 supported_extensions);
 
@@ -357,7 +358,7 @@ void BraveSessionCache::PerturbPixelsInternal(base::span<uint8_t> data) {
       }
       // choose which channel (R, G, or B) to perturb
       uint8_t channel = v % 3;
-      uint64_t pixel_index = 4 * (v % pixel_count) + channel;
+      size_t pixel_index = 4 * (v % pixel_count) + channel;
       data[pixel_index] = data[pixel_index] ^ (bit & 0x1);
       bit = bit >> 1;
       // find next pixel to perturb
