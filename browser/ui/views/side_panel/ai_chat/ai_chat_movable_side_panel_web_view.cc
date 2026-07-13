@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/check.h"
@@ -16,7 +17,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"
 #include "chrome/browser/ui/navigator/browser_navigator.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -41,21 +41,6 @@
 #endif
 
 namespace {
-
-BrowserWindowInterface* FindNormalBrowser(
-    const content::BrowserContext* context) {
-  BrowserWindowInterface* normal_browser = nullptr;
-  ForEachCurrentBrowserWindowInterfaceOrderedByActivation(
-      [&](BrowserWindowInterface* browser) {
-        if (browser->GetType() == BrowserWindowInterface::TYPE_NORMAL &&
-            browser->GetProfile() == context) {
-          normal_browser = browser;
-          return false;  // stop iterating
-        }
-        return true;  // continue iterating
-      });
-  return normal_browser;
-}
 
 // Creates a fresh AI Chat `WebContents` for the side panel, wiring up the WebUI
 // embedding context from `scope` (mirrors `SidePanelWebUIView`) so links, modal
@@ -196,7 +181,7 @@ content::WebContents* AIChatMovableSidePanelWebView::OpenURLFromTab(
     const content::OpenURLParams& params,
     base::OnceCallback<void(content::NavigationHandle&)>
         navigation_handle_callback) {
-  auto* browser = FindNormalBrowser(source->GetBrowserContext());
+  BrowserWindowInterface* browser = webui::GetBrowserWindowInterface(source);
   if (browser &&
       (params.disposition == WindowOpenDisposition::NEW_FOREGROUND_TAB ||
        params.disposition == WindowOpenDisposition::NEW_BACKGROUND_TAB ||

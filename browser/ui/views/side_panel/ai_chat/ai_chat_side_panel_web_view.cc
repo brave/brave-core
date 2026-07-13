@@ -61,10 +61,9 @@ std::unique_ptr<views::View> AIChatSidePanelWebView::CreateView(
   CHECK(profile);
 
   // When enabled, serve AI Chat from a plain WebView that owns its WebContents,
-  // so the live conversation can be moved between a tab and the side panel. The
-  // WebUI-wrapper based view below remains the default and is a true no-op when
-  // the feature is off (it keeps top-chrome preload + content-readiness
-  // gating).
+  // so the live conversation can be moved between a tab and the side panel. If
+  // this feature flag becomes the default, we can remove this
+  // AIChatSidePanelWebView class, or rename the movable version to this name.
   if (base::FeatureList::IsEnabled(
           ai_chat::features::kAIChatMoveFullPageToSidePanel)) {
     return AIChatMovableSidePanelWebView::CreateView(profile, is_tab_associated,
