@@ -26,7 +26,50 @@
 
 {
     "ast.matcher": {
+
+        # The full declaration of `class_name::method_name`, including a
+        # multi-line signature and its trailing semicolon. The name is matched
+        # by text, so methods (field_identifier), destructors (destructor_name,
+        # e.g. "~Foo") and constructors (identifier) are all found. Overloads
+        # sharing the name each produce their own match. The result node is a
+        # field_declaration for methods and a declaration for con/destructors.
+        "cxx.find_class_method_decl": {
+            "args": ["class_name", "method_name"],
+            "template": """\
+any:
+  - kind: field_declaration
+  - kind: declaration
+has:
+  kind: function_declarator
+  stopBy: end
+  has:
+    field: declarator
+    regex: ^{method_name}$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration",
+            },
+        },
     },
     "ast.rewriter": {
+
+        # The whole method declaration (multi-line signature and trailing
+        # semicolon included) with `virtual ` prepended.
+        "cxx.make_virtual": {
+            "matcher": "cxx.find_class_method_decl",
+            "replace": {
+                "re_pattern": "^",
+                "replace": "virtual ",
+            },
+            "result": {
+                "node": "field_declaration",
+            },
+        },
     },
 }
