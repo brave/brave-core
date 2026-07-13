@@ -14,6 +14,17 @@ TEST(UrlUtilTest, IsOnionOrigin) {
   EXPECT_TRUE(IsOnion(url::Origin::Create(GURL("https://foo.bar.onion/"))));
   EXPECT_FALSE(IsOnion(url::Origin::Create(GURL("https://foo.onion.com/"))));
   EXPECT_FALSE(IsOnion(url::Origin::Create(GURL("https://foo.com/b.onion"))));
+
+  // Opaque origins (e.g. a page sandboxed via `Content-Security-Policy:
+  // sandbox`) must be recognized as .onion via their precursor tuple.
+  EXPECT_TRUE(IsOnion(url::Origin::Create(GURL("https://foo.onion/"))
+                          .DeriveNewOpaqueOrigin()));
+  EXPECT_TRUE(IsOnion(url::Origin::Create(GURL("http://foo.bar.onion/"))
+                          .DeriveNewOpaqueOrigin()));
+  EXPECT_FALSE(IsOnion(url::Origin::Create(GURL("https://foo.com/"))
+                           .DeriveNewOpaqueOrigin()));
+  // A fully opaque origin with no precursor tuple is not .onion.
+  EXPECT_FALSE(IsOnion(url::Origin()));
 }
 
 TEST(UrlUtilTest, IsOnionUrlSchemes) {

@@ -37,7 +37,13 @@ bool IsOnion(const GURL& url) {
 }
 
 bool IsOnion(const url::Origin& origin) {
-  return origin.DomainIs(kOnionDomain);
+  // Recognize opaque origins (e.g. an .onion page sandboxed via
+  // `Content-Security-Policy: sandbox`) via their precursor tuple, since
+  // url::Origin::DomainIs() returns false for opaque origins. Without this,
+  // sandboxed .onion pages are not treated as .onion, so insecure form
+  // submissions and mixed autofill are not caught.
+  return origin.DomainIs(kOnionDomain) ||
+         IsOnion(origin.GetTupleOrPrecursorTupleIfOpaque().GetURL());
 }
 
 bool IsLocalhostOrOnion(const GURL& url) {
