@@ -19,8 +19,9 @@ substitutions:
   - description: |
       Make CreateModel virtual so the brave PageActionControllerImpl override can
       replace model construction with the brave PageActionModel.
-    pattern: 'std::unique_ptr<PageActionModelInterface> CreateModel('
-    replace: 'virtual std::unique_ptr<PageActionModelInterface> CreateModel('
+    make_virtual:
+      class_name: PageActionControllerImpl
+      method_name: CreateModel
 
   - description: |
       Friend the brave page_actions::PageActionControllerImpl so it can reach the

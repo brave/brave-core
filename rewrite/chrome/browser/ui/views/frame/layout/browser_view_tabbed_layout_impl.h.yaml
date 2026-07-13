@@ -9,8 +9,9 @@ substitutions:
 
       Brave overrides this hook to tuck the first tab against the
       caption-button cluster in compact horizontal tabs mode.
-    re_pattern: '(\s+)(int GetHorizontalTabStripLeadingMargin\()'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: BrowserViewTabbedLayoutImpl
+      method_name: GetHorizontalTabStripLeadingMargin
 
   - description: |
       Make `CalculateSeparatorInfo` virtual.
@@ -21,8 +22,9 @@ substitutions:
       override's body lives in
       chromium_src/.../browser_view_tabbed_layout_impl.cc, which
       `#include`s the upstream .cc and therefore sees the full type.
-    re_pattern: '(\s+)(SeparatorInfo CalculateSeparatorInfo\(\) const;)'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: BrowserViewTabbedLayoutImpl
+      method_name: CalculateSeparatorInfo
 
   - description: |
       Friend `BraveBrowserViewTabbedLayoutImpl` from the base class.

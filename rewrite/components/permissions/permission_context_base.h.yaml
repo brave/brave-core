@@ -25,8 +25,9 @@ substitutions:
 
   - description:
       'Make PermissionDecided virtual to allow Brave override in derived class'
-    pattern: 'void PermissionDecided('
-    replace: 'virtual void PermissionDecided('
+    make_virtual:
+      class_name: PermissionContextBase
+      method_name: PermissionDecided
 
   - description:
       'Add Brave PermissionContextBase as friend of
