@@ -41,7 +41,7 @@ extension BrowserViewController: TabPolicyDecider {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
           isPrivateBrowsing: tab.isPrivate,
-          isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+          isDeAmpEnabled: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: pageData.mainFrameURL,
             considerAllShieldsOption: true
@@ -297,7 +297,7 @@ extension BrowserViewController: TabPolicyDecider {
         tab.browserData?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: profileController.deAmpPrefs.isDeAmpEnabled,
+          .deAmp: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -324,7 +324,7 @@ extension BrowserViewController: TabPolicyDecider {
         let scriptTypes =
           await tab.currentPageData?.makeUserScriptTypes(
             isPrivateBrowsing: tab.isPrivate,
-            isDeAmpEnabled: profileController.deAmpPrefs.isDeAmpEnabled,
+            isDeAmpEnabled: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
             isAdBlockEnabled: isAdBlockEnabled,
             isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
             isGPCEnabled: profileController.profile.prefs.boolean(

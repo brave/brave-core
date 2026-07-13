@@ -24,7 +24,6 @@ import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
 import("//brave/ios/browser/api/content_settings/headers.gni")
 import("//brave/ios/browser/api/credential_provider/headers.gni")
-import("//brave/ios/browser/api/de_amp/headers.gni")
 import("//brave/ios/browser/api/developer_options_code/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
 import("//brave/ios/browser/api/features/headers.gni")
@@ -139,6 +138,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/brave_shields/protection_stats_tab_helper_bridge.h",
   "//ios/chrome/browser/web/model/print/print_handler.h",
   "//brave/ios/browser/youtube/youtube_pref_names_bridge.h",
+  "//brave/ios/browser/web/de_amp/de_amp_pref_names_bridge.h",
   "//brave/ios/browser/global_privacy_control/gpc_pref_names_bridge.h",
   "//brave/ios/browser/shared/prefs/shared_pref_names_bridge.h",
   "//brave/ios/browser/brave_shields/request_blocking/request_blocking_tab_helper_bridge.h",
@@ -154,7 +154,6 @@ brave_core_public_headers += brave_user_agent_component_public_headers
 brave_core_public_headers += content_settings_component_public_headers
 brave_core_public_headers += url_sanitizer_component_public_headers
 brave_core_public_headers += browser_url_sanitizer_public_headers
-brave_core_public_headers += browser_api_de_amp_public_headers
 brave_core_public_headers += debounce_component_public_headers
 brave_core_public_headers +=
     browser_api_https_upgrade_exceptions_service_public_headers

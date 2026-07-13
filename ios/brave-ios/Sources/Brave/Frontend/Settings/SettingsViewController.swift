@@ -72,7 +72,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
   private let p3aUtilities: BraveP3AUtils
-  private let deAmpPrefs: DeAmpPrefs
   private let localState: any PrefService
   private let attributionManager: AttributionManager
   private let keyringStore: KeyringStore?
@@ -130,7 +129,6 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
     self.syncAPI = braveCore.syncAPI
     self.syncProfileServices = braveCore.syncProfileService
     self.p3aUtilities = p3aUtils
-    self.deAmpPrefs = braveCore.deAmpPrefs
     self.attributionManager = attributionManager
     self.keyringStore = keyringStore
     self.cryptoStore = cryptoStore

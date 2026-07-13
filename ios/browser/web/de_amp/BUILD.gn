@@ -9,6 +9,8 @@ source_set("de_amp") {
   sources = [
     "de_amp_javascript_feature.h",
     "de_amp_javascript_feature.mm",
+    "de_amp_pref_names_bridge.h",
+    "de_amp_pref_names_bridge.mm",
   ]
   deps = [
     ":de_amp_js",

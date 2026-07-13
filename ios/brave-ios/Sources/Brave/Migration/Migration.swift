@@ -49,7 +49,7 @@ public class BraveProfileMigrations {
     guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
       return
     }
-    profileController.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    profileController.profile.prefs.set(isDeAmpEnabled, forPath: kDeAmpEnabled)
     Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
   }
 
