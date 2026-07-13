@@ -130,7 +130,11 @@
 
 # This tests fails because we disable safe browsing enhanced protection and
 # patch safe_browsing::IsEnhancedProtectionEnabled to return false
--ClientSideDetectionServiceBaseTest.AtPhishingReportLimitESB
+-All/ClientSideDetectionServiceBaseLimitTest.AtPhishingReportLimitESB/*
+-All/ClientSideDetectionServiceBaseLimitTest.GetNumReportTestESB/*
+-All/ClientSideDetectionServiceBaseOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-All/ClientSideDetectionServiceOnlyESBTest.TestReceivingImageClassifierUpdatesAfterResubscription/*
+-ClientSideDetectionServiceBaseTest.TestReceivingImageEmbedderUpdatesAfterResubscription
 -GetUserPopulationTest.PopulatesPopulation_WithoutSBERDeprecation
 -RealTimeUrlLookupServiceTest.TestCanSendRTSampleRequest_FeatureEnabled
 -RealTimeUrlLookupServiceTest.TestFillLlamaForcedTriggerCapability
@@ -182,6 +186,19 @@
 -HistoryURLProviderTest.PromoteShorterURLs
 -InMemoryURLIndexTest.TitleSearch
 -URLDatabaseTest.EnumeratorForSignificant
+
+# These fail because we disable kPersonalContext feature, which prevents
+# PersonalContextService from being created and ContextHubService which depends
+# on PersonalContextService.
+-PersonalContextFetcherTest.*
+
+# This test fails because brave.omnibox.history_suggestions_enabled is not
+# registered.
+-SearchboxUtilsTest.CanPasteAndGo
+
+# This test fails because its message is hardcoded to look for "Google Search"
+# instead of "Brave Search"
+-AiModeButtonServiceTest.ConfigWithGoogleDse
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
