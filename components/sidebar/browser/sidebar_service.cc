@@ -60,6 +60,7 @@
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
 #include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 namespace sidebar {
@@ -142,9 +143,10 @@ SidebarService::SidebarService(
       base::BindRepeating(&SidebarService::OnPreferenceChanged,
                           base::Unretained(this)));
 
-  // Watch for policy pref changes that affect built-in item visibility.
-#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_TALK) || \
-    BUILDFLAG(ENABLE_BRAVE_WALLET) || BUILDFLAG(ENABLE_PLAYLIST)
+  // Watch for pref changes that affect built-in item visibility.
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_TALK) ||    \
+    BUILDFLAG(ENABLE_BRAVE_WALLET) || BUILDFLAG(ENABLE_PLAYLIST) || \
+    BUILDFLAG(ENABLE_BRAVE_NEWS)
   auto cb = base::BindRepeating(&SidebarService::OnBuiltInItemPolicyChanged,
                                 base::Unretained(this));
 #endif
@@ -159,6 +161,10 @@ SidebarService::SidebarService(
 #endif
 #if BUILDFLAG(ENABLE_PLAYLIST)
   pref_change_registrar_.Add(playlist::kPlaylistEnabledPref, cb);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Show/hide the Brave News item as the user opts in or out.
+  pref_change_registrar_.Add(brave_news::prefs::kBraveNewsOptedIn, cb);
 #endif
 }
 
@@ -740,8 +746,11 @@ SidebarItem SidebarService::GetBuiltInItemForType(
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
     case SidebarItem::BuiltInItemType::kBraveNews: {
+      // Only offer the Brave News item once the user has opted in, mirroring
+      // the toolbar Brave News button which is also gated on this pref.
       if (base::FeatureList::IsEnabled(
-              brave_news::features::kBraveNewsSidebar)) {
+              brave_news::features::kBraveNewsSidebar) &&
+          prefs_->GetBoolean(brave_news::prefs::kBraveNewsOptedIn)) {
         return SidebarItem::Create(
             GURL(kBraveNewsURL),
             l10n_util::GetStringUTF16(IDS_BRAVE_NEWS_TITLE),
