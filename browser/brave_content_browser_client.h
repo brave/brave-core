@@ -199,6 +199,13 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   bool AllowSignedExchange(content::BrowserContext* context) override;
 
+#if BUILDFLAG(IS_ANDROID)
+  void GetAdditionalMappedFilesForChildProcess(
+      const base::CommandLine& command_line,
+      int child_process_id,
+      content::PosixFileDescriptorInfo* mappings) override;
+#endif
+
 #if !BUILDFLAG(IS_ANDROID)
   content::HidDelegate* GetHidDelegate() override;
 #endif
