@@ -1893,6 +1893,7 @@
 -OmniboxContextMenuControllerBrowserTest.AddRecentTabsToMenu
 -OmniboxContextMenuControllerBrowserTest.ExecuteCommand
 -OmniboxContextMenuControllerPecBrowserTest.ExecuteCommand*
+-OmniboxContextMenuControllerPecBrowserTestWithFlagsDisabled.VerifyModelPickerCheckmark_FlagOff
 
 # This test fails because we add our own item to omnibox contextual search
 -OmniboxRowGroupedViewBrowserTest.AnimationAndGrouping
