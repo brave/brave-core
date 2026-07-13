@@ -491,7 +491,7 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
 
   auto entries = GetConversationEntries(statement);
 
-  // Attach threads to their originating conversation entries.
+  // Attach thread UUIDs to their originating conversation entries.
   auto threads = GetConversationThreads(conversation_uuid);
   for (auto& thread : threads) {
     auto entry_it =
@@ -500,11 +500,12 @@ mojom::ConversationArchivePtr AIChatDatabase::GetConversationData(
     if (entry_it == entries.end()) {
       continue;
     }
-    (*entry_it)->child_threads.emplace_back(std::move(thread));
+    (*entry_it)->child_thread_uuids.emplace_back(thread->uuid);
   }
 
   return mojom::ConversationArchive::New(
-      std::move(entries), GetArchiveContentsForConversation(conversation_uuid));
+      std::move(entries), std::move(threads),
+      GetArchiveContentsForConversation(conversation_uuid));
 }
 
 std::vector<mojom::ConversationTurnPtr>
@@ -569,7 +570,7 @@ std::vector<mojom::ConversationTurnPtr> AIChatDatabase::GetConversationEntries(
         entry_uuid, thread_uuid, character_type, action_type, text, prompt,
         selected_text, std::nullopt, date, std::nullopt, std::nullopt,
         std::move(skill), false, model_key, std::move(near_verification_status),
-        std::vector<mojom::ThreadPtr>{} /* child_threads */);
+        std::vector<std::string>{} /* child_thread_uuids */);
 
     // events
     struct Event {

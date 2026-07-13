@@ -29,7 +29,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   std::vector<mojom::ConversationEntryEventPtr> events;
   auto search_event = mojom::ConversationEntryEvent::NewSearchStatusEvent(
@@ -50,7 +50,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::move(modified_events), base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       kChatAutomaticModelKey, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   std::vector<mojom::ConversationTurnPtr> edits;
   edits.push_back(std::move(edit));
   history.push_back(mojom::ConversationTurn::New(
@@ -59,7 +59,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* selected_text*/, std::move(events), base::Time::Now(),
       std::move(edits), std::nullopt /* uploaded_images */, nullptr /* skill */,
       false, kChatAutomaticModelKey, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-3", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
       mojom::ActionType::QUERY, "Is it related to a broader series?",
@@ -67,8 +67,7 @@ std::vector<mojom::ConversationTurnPtr> GetHistoryWithModifiedReply() {
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       kChatAutomaticModelKey, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
->>>>>>> 2244684cfea (Conversation thread mojom + database, handler thread reading)
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   return history;
 }

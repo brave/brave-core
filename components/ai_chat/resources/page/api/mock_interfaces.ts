@@ -85,7 +85,7 @@ const emptyTurn: Mojom.ConversationTurn = {
   skill: undefined,
   modelKey: '',
   nearVerificationStatus: undefined,
-  childThreads: [],
+  childThreadUuids: [],
 }
 
 /**
