@@ -1149,7 +1149,7 @@ version = "0.35.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "log",
- "markup5ever 0.35.0",
+ "markup5ever",
  "match_token",
 ]
 
@@ -1327,19 +1327,6 @@ dependencies = [
 name = "mac"
 version = "0.1.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-
-[[package]]
-name = "markup5ever"
-version = "0.14.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "log",
- "phf",
- "phf_codegen",
- "string_cache",
- "string_cache_codegen",
- "tendril",
-]
 
 [[package]]
 name = "markup5ever"
@@ -2099,7 +2086,7 @@ dependencies = [
  "lazy_static",
  "lifeguard",
  "lol_html",
- "markup5ever 0.14.1",
+ "markup5ever",
  "readability",
  "regex",
  "serde_json",
