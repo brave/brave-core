@@ -24,12 +24,6 @@ namespace ai_chat {
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 std::vector<mojom::ActionGroupPtr> GetActionMenuList();
 
-inline constexpr auto kPrintPreviewRetrievalHosts =
-    base::MakeFixedFlatSet<std::string_view>({
-        "docs.google.com",
-        "watermark.silverchair.com",
-    });
-
 inline constexpr auto kCapabilityStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>(
         {{mojom::ConversationCapability::CHAT, "chat"},

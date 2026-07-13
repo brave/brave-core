@@ -18,6 +18,8 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/types/expected.h"
+#include "brave/browser/ui/screenshot/devtools_full_page_extractor.h"
+#include "brave/components/screenshot/content/pdf_utils.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "chrome/browser/download/download_prefs.h"
 #include "chrome/browser/image_editor/screenshot_flow.h"
@@ -247,7 +249,6 @@ void ScreenshotController::OnRegionCaptured(
                      weak_factory_.GetWeakPtr()));
 }
 
-#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 void ScreenshotController::CaptureFullPage(content::WebContents* web_contents,
                                            ResultCallback done) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -258,11 +259,34 @@ void ScreenshotController::CaptureFullPage(content::WebContents* web_contents,
 
   pending_callback_ = std::move(done);
 
-  auto on_chunks = base::BindOnce(&ScreenshotController::OnFullPageChunks,
-                                  weak_factory_.GetWeakPtr());
-  print_preview_extractor_->CaptureImages(web_contents, std::move(on_chunks));
-}
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  if (IsPdf(web_contents) || kPrintPreviewRetrievalHosts.contains(
+                                 web_contents->GetLastCommittedURL().host())) {
+    auto on_chunks = base::BindOnce(&ScreenshotController::OnFullPageChunks,
+                                    weak_factory_.GetWeakPtr());
+    print_preview_extractor_->CaptureImages(web_contents, std::move(on_chunks));
+    return;
+  }
 #endif  // BUILDFLAG(ENABLE_PRINT_PREVIEW)
+
+  devtools_extractor_ = std::make_unique<DevToolsFullPageExtractor>();
+  devtools_extractor_->CaptureFullPage(
+      web_contents,
+      base::BindOnce(&ScreenshotController::OnFullPageDevToolsCaptured,
+                     weak_factory_.GetWeakPtr()));
+}
+
+void ScreenshotController::OnFullPageDevToolsCaptured(
+    base::expected<std::vector<uint8_t>, std::string> result) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  devtools_extractor_.reset();
+  if (!result.has_value()) {
+    DVLOG(1) << "DevTools full-page capture failed: " << result.error();
+    FinishWithError(Error::kCaptureFailed);
+    return;
+  }
+  ShowSaveDialog(std::move(result.value()));
+}
 
 void ScreenshotController::OnVisibleAreaCopied(SkBitmap bitmap) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
@@ -401,6 +425,7 @@ void ScreenshotController::Reset() {
     select_dialog_->ListenerDestroyed();
     select_dialog_.reset();
   }
+  devtools_extractor_.reset();
   screenshot_flow_.reset();
 }
 

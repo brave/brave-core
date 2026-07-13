@@ -6,11 +6,21 @@
 #ifndef BRAVE_COMPONENTS_SCREENSHOT_CONTENT_PDF_UTILS_H_
 #define BRAVE_COMPONENTS_SCREENSHOT_CONTENT_PDF_UTILS_H_
 
+#include <string_view>
+
+#include "base/containers/fixed_flat_set.h"
+
 namespace content {
 class WebContents;
 }  // namespace content
 
 namespace screenshot {
+
+inline constexpr auto kPrintPreviewRetrievalHosts =
+    base::MakeFixedFlatSet<std::string_view>({
+        "docs.google.com",
+        "watermark.silverchair.com",
+    });
 
 bool IsPdf(content::WebContents* web_contents);
 

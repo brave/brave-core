@@ -181,7 +181,7 @@ void AssociatedWebContentsContent::GetPageContent(
     return;
   }
   if (print_preview_extraction_delegate_ &&
-      kPrintPreviewRetrievalHosts.contains(
+      screenshot::kPrintPreviewRetrievalHosts.contains(
           web_contents()->GetLastCommittedURL().host())) {
     // Get content using print preview image capture for server-side OCR
     DVLOG(1) << __func__ << " print preview url";
@@ -399,7 +399,7 @@ void AssociatedWebContentsContent::GetScreenshots(
     mojom::ConversationHandler::GetScreenshotsCallback callback) {
   if (print_preview_extraction_delegate_ &&
       (screenshot::IsPdf(web_contents()) ||
-       kPrintPreviewRetrievalHosts.contains(
+       screenshot::kPrintPreviewRetrievalHosts.contains(
            web_contents()->GetLastCommittedURL().host()))) {
     // Use print preview extraction for PDFs and print preview hosts
     // when delegate is available
