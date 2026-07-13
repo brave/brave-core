@@ -14,7 +14,7 @@ namespace ai_chat {
 
 // A single WebMCP tool that Brave injects into pages whose URL matches
 // `url_pattern`. The injected tool is registered on the page via
-// `navigator.modelContext.registerTool(...)` and is then discovered by the
+// `document.modelContext.registerTool(...)` and is then discovered by the
 // existing ContentTool / AssociatedWebContentsContent pipeline, so Brave's AI
 // Chat can use it like any page-registered tool.
 //

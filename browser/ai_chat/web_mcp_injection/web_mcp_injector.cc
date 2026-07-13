@@ -27,14 +27,14 @@ namespace ai_chat {
 
 namespace {
 
-// Main world. navigator.modelContext must be registered on the page's own
-// world so the document's ModelContext supplement (read by the AI page content
+// Main world. document.modelContext must be registered on the page's own world
+// so the document's ModelContext supplement (read by the AI page content
 // pipeline) sees the tool.
 constexpr int32_t kMainWorldId = 0;
 
 // Builds a self-contained script that registers `rule` as a WebMCP tool. The
 // script is a no-op when the WebMCP runtime feature is not enabled on the page
-// (navigator.modelContext is then undefined).
+// (document.modelContext is then undefined).
 std::string BuildRegisterToolScript(const WebMcpInjectionRule& rule) {
   // base::WriteJson produces a safely-escaped JS/JSON string literal.
   const std::string name_literal =
@@ -44,10 +44,10 @@ std::string BuildRegisterToolScript(const WebMcpInjectionRule& rule) {
 
   return base::StrCat({
       "(function () {",
-      "  if (!navigator.modelContext || !navigator.modelContext.registerTool)",
+      "  if (!document.modelContext || !document.modelContext.registerTool)",
       "    return;",
       "  try {",
-      "    navigator.modelContext.registerTool({",
+      "    document.modelContext.registerTool({",
       "      name: ",
       name_literal,
       ",",
