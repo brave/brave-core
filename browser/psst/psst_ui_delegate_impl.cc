@@ -138,6 +138,7 @@ void PsstUiDelegateImpl::OnUserAcceptedPsstSettings(
 
 void PsstUiDelegateImpl::SubmitPsstErrorsReport() {
   if (!failed_policy_tasks_ || failed_policy_tasks_->empty()) {
+    NotifyObserversOfPsstErrorsReportSent();
     return;
   }
   psst_reporter_service_->SubmitPsstErrorsReport(
