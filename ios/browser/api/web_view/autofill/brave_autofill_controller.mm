@@ -162,7 +162,7 @@ using UserDecision = autofill::AutofillClient::AddressPromptUserDecision;
                    completionHandler:std::move(completionHandler)];
 }
 
-- (void)notifyFormsSeen:(const std::vector<autofill::FormData>&)updatedForms
+- (void)notifyFormsSeen:(std::vector<autofill::FormData>)updatedForms
                 inFrame:(web::WebFrame*)frame {
   [_autofillAgent notifyFormsSeen:updatedForms inFrame:frame];
 }
