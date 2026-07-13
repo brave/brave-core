@@ -99,7 +99,7 @@ class BraveShieldsSettingsService : public KeyedService {
   // This token is generated when the service is created and stays stable until
   // the service is destoryed. It allows to show different farbled values for a
   // site across browser restarts.
-  const base::Token profile_level_farbling_entropy_;
+  base::Token profile_level_farbling_entropy_;
 };
 
 }  // namespace brave_shields

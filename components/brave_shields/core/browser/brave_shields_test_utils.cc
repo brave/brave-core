@@ -21,11 +21,9 @@ ScopedStableFarblingTokensForTesting::ScopedStableFarblingTokensForTesting(
 ScopedStableFarblingTokensForTesting::~ScopedStableFarblingTokensForTesting() =
     default;
 
-ScopedAllowlistedProfileTokenForTesting::
-    ScopedAllowlistedProfileTokenForTesting(base::Token token)
+ScopedProfileTokenForTesting::ScopedProfileTokenForTesting(base::Token token)
     : profile_token_(&g_profile_token_allowed_for_testing, token) {}
 
-ScopedAllowlistedProfileTokenForTesting::
-    ~ScopedAllowlistedProfileTokenForTesting() = default;
+ScopedProfileTokenForTesting::~ScopedProfileTokenForTesting() = default;
 
 }  // namespace brave_shields

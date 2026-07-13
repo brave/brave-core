@@ -25,23 +25,22 @@ class ScopedStableFarblingTokensForTesting {
   base::AutoReset<uint32_t> scoped_stable_farbling_token_seed_;
 };
 
-// Set an allowlisted profile token for the duration of
+// Set a profile token for the duration of
 // a test and resets the global |g_profile_token_allowed_for_testing| back to
 // std::nullopt on destruction, preventing test-state leakage.
-class ScopedAllowlistedProfileTokenForTesting {
+class ScopedProfileTokenForTesting {
  public:
-  // An allowlisted profile token which is checked with
+  // A profile token which is checked with
   // BraveShieldsSettingsService |profile_level_farbling_entropy_| to then
   // selectively allow adding noise from the token if it's present. This
   // is useful where the farbling tests are controlled, but we still need to add
   // profile level noise.
-  explicit ScopedAllowlistedProfileTokenForTesting(base::Token tokens);
-  ~ScopedAllowlistedProfileTokenForTesting();
+  explicit ScopedProfileTokenForTesting(base::Token token);
+  ~ScopedProfileTokenForTesting();
 
-  ScopedAllowlistedProfileTokenForTesting(
-      const ScopedAllowlistedProfileTokenForTesting&) = delete;
-  ScopedAllowlistedProfileTokenForTesting& operator=(
-      const ScopedAllowlistedProfileTokenForTesting&) = delete;
+  ScopedProfileTokenForTesting(const ScopedProfileTokenForTesting&) = delete;
+  ScopedProfileTokenForTesting& operator=(const ScopedProfileTokenForTesting&) =
+      delete;
 
  private:
   base::AutoReset<std::optional<base::Token>> profile_token_;
