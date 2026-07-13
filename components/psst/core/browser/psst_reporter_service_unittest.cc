@@ -80,9 +80,11 @@ std::unique_ptr<PsstReporterService> CreateServicePredefinedCallbacks(
     const std::string& channel_name,
     std::unique_ptr<MockPsstErrorReportUploader> uploader) {
   auto cv_callback = base::BindLambdaForTesting(
-      [&]() -> std::optional<std::string> { return component_version; });
-  auto cn_callback =
-      base::BindLambdaForTesting([&]() -> std::string { return channel_name; });
+      [component_version]() -> std::optional<std::string> {
+        return component_version;
+      });
+  auto cn_callback = base::BindLambdaForTesting(
+      [channel_name]() -> std::string { return channel_name; });
 
   return CreateService(std::move(cn_callback), std::move(cv_callback),
                        std::move(uploader));
