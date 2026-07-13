@@ -22,7 +22,6 @@ class QuickViewController: UIViewController {
   private let profile: any Profile
   private let syncAPI: BraveSyncAPI
   private let sendTabAPI: BraveSendTabAPI
-  private let deAmpPrefs: DeAmpPrefs
   private let toolbarViewModel: QuickViewToolbarModel
   private lazy var toolbarHostingController = UIHostingController(
     rootView: QuickViewToolbarView(viewModel: toolbarViewModel)
@@ -41,7 +40,6 @@ class QuickViewController: UIViewController {
     profile: any Profile,
     syncAPI: BraveSyncAPI,
     sendTabAPI: BraveSendTabAPI,
-    deAmpPrefs: DeAmpPrefs,
     onOpenInNewTab: ((URLRequest) -> Void)?,
     onAttachTab: ((any TabState) -> Void)?
   ) {
@@ -49,7 +47,6 @@ class QuickViewController: UIViewController {
     self.profile = profile
     self.syncAPI = syncAPI
     self.sendTabAPI = sendTabAPI
-    self.deAmpPrefs = deAmpPrefs
     self.toolbarViewModel = QuickViewToolbarModel(
       url: url,
       isPrivate: profile.isOffTheRecord
@@ -416,8 +413,7 @@ extension QuickViewController: TabDelegate {
 extension QuickViewController: TabObserver {
   func tabDidCreateWebView(_ tab: some TabState) {
     if let detachedTabPrivacyHelper = DetachedTabPrivacyHelper(
-      tab: tab,
-      deAmpPrefs: deAmpPrefs
+      tab: tab
     ) {
       tab.detachedPrivacyHelper = detachedTabPrivacyHelper
     }

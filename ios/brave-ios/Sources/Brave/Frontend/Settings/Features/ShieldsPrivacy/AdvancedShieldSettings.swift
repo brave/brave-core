@@ -53,7 +53,7 @@ import os
   }
   @Published var isDeAmpEnabled: Bool {
     didSet {
-      deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+      prefs.set(isDeAmpEnabled, forPath: kDeAmpEnabled)
     }
   }
   @Published var isDebounceEnabled: Bool {
@@ -166,7 +166,6 @@ import os
   private var subscriptions: [AnyCancellable] = []
   private let prefs: any PrefService
   private let p3aUtilities: BraveP3AUtils
-  private let deAmpPrefs: DeAmpPrefs
   private let debounceService: (any DebounceService)?
   private let braveShieldsSettings: (any BraveShieldsSettings)?
   private let rewards: BraveRewards?
@@ -189,7 +188,6 @@ import os
     clearDataCallback: @escaping ClearDataCallback
   ) {
     self.p3aUtilities = p3aUtils
-    self.deAmpPrefs = braveCore.deAmpPrefs
     self.debounceService = debounceService
     self.braveShieldsSettings = braveShieldsSettings
     self.tabManager = tabManager
@@ -213,7 +211,7 @@ import os
       self.shredLevel = Preferences.Shields.shredLevel
     }
     self.httpsUpgradeLevel = Preferences.Shields.httpsUpgradeLevel
-    self.isDeAmpEnabled = deAmpPrefs.isDeAmpEnabled
+    self.isDeAmpEnabled = prefs.boolean(forPath: kDeAmpEnabled)
     self.isGPCEnabled = prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
     self.isBlockAllCookiesEnabled = prefs.boolean(forPath: kBlockAllCookiesEnabled)
     self.isDebounceEnabled = debounceService?.isEnabled ?? false

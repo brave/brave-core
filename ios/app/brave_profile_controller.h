@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 @class BraveBookmarksAPI, BraveHistoryAPI, BravePasswordAPI, BraveOpenTabsAPI,
-    BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS, DeAmpPrefs,
+    BraveSendTabAPI, BraveSyncAPI, BraveSyncProfileServiceIOS,
     BraveTabGeneratorAPI, BraveWalletAPI, BraveStats, AIChat,
     DefaultHostContentSettings, CWVWebViewConfiguration, WebImageDownloader,
     NTPBackgroundImagesService, BraveWebViewConfiguration;
@@ -31,7 +31,6 @@ OBJC_EXPORT
 @property(readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 @property(readonly) BraveWalletAPI* braveWalletAPI;
 @property(readonly) BraveStats* braveStats;
-@property(readonly) DeAmpPrefs* deAmpPrefs;
 @property(readonly) id<IpfsAPI> ipfsAPI;
 - (AIChat*)aiChatAPIWithDelegate:(id<AIChatDelegate>)delegate;
 /// The default content settings for regular browsing windows

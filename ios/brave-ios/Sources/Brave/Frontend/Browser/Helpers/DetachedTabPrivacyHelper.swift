@@ -23,26 +23,21 @@ extension TabDataValues {
 class DetachedTabPrivacyHelper: TabPolicyDecider {
   weak var tab: (any TabState)?
 
-  private let deAmpPrefs: DeAmpPrefs
-
-  convenience init?(tab: some TabState, deAmpPrefs: DeAmpPrefs) {
+  convenience init?(tab: some TabState) {
     guard
       let shieldSettings = BraveShieldsSettingsServiceFactory.get(profile: tab.profile)
     else { return nil }
     self.init(
       tab: tab,
-      shieldsSettings: shieldSettings,
-      deAmpPrefs: deAmpPrefs
+      shieldsSettings: shieldSettings
     )
   }
 
   init(
     tab: some TabState,
-    shieldsSettings: any BraveShieldsSettings,
-    deAmpPrefs: DeAmpPrefs
+    shieldsSettings: any BraveShieldsSettings
   ) {
     self.tab = tab
-    self.deAmpPrefs = deAmpPrefs
 
     tab.addPolicyDecider(self)
 
@@ -100,7 +95,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       tab.browserData?.setScripts(scripts: [
         // Add de-amp script
         // The user script manager will take care to not reload scripts if this value doesn't change
-        .deAmp: deAmpPrefs.isDeAmpEnabled,
+        .deAmp: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
 
         // Add request blocking script
         // This script will block certian `xhr` and `window.fetch()` requests
@@ -117,7 +112,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     let scriptTypes =
       await tab.currentPageData?.makeUserScriptTypes(
         isPrivateBrowsing: tab.isPrivate,
-        isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
+        isDeAmpEnabled: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
         isAdBlockEnabled: isAdBlockEnabled,
         isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
         isGPCEnabled: tab.profile.prefs.boolean(forPath: kGlobalPrivacyControlEnabled)
@@ -133,7 +128,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
           isPrivateBrowsing: tab.isPrivate,
-          isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
+          isDeAmpEnabled: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
           isAdBlockEnabled: isAdBlockEnabled,
           isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
           isGPCEnabled: tab.profile.prefs.boolean(
@@ -162,7 +157,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
           isPrivateBrowsing: tab.isPrivate,
-          isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
+          isDeAmpEnabled: tab.profile.prefs.boolean(forPath: kDeAmpEnabled),
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: pageData.mainFrameURL,
             considerAllShieldsOption: true
