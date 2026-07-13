@@ -16,7 +16,7 @@ jobs:
     # private membership, and cannot be spoofed by the PR author.
     if: >-
       ${{ !github.event.review.user.bot
-      && startsWith(github.event.review.body, '/run-ci')
+      && contains(github.event.review.body, '/run-ci')
       && contains(fromJSON('["OWNER", "MEMBER"]'), github.event.review.author_association) }}
     runs-on: ubuntu-slim
     steps:
