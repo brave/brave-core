@@ -171,6 +171,18 @@ ConversationHandler::Suggestion& ConversationHandler::Suggestion::operator=(
     Suggestion&&) = default;
 ConversationHandler::Suggestion::~Suggestion() = default;
 
+ConversationHandler::ThreadContainer::ThreadContainer() = default;
+ConversationHandler::ThreadContainer::~ThreadContainer() = default;
+
+ConversationHandler::ThreadContainer::ThreadContainer(mojom::ThreadPtr thread)
+    : thread(std::move(thread)) {}
+
+ConversationHandler::ThreadContainer::ThreadContainer(ThreadContainer&&) =
+    default;
+
+ConversationHandler::ThreadContainer&
+ConversationHandler::ThreadContainer::operator=(ThreadContainer&&) = default;
+
 void ConversationHandler::BuildCapabilitiesSet() {
   conversation_capabilities_.clear();
   // Set conversation capability based on profile-global state.
@@ -266,6 +278,9 @@ ConversationHandler::ConversationHandler(
              << metadata_->uuid << " with "
              << conversation_data->entries.size();
     chat_history_ = std::move(conversation_data->entries);
+    for (auto& thread : conversation_data->threads) {
+      threads_.try_emplace(thread->uuid, std::move(thread));
+    }
   }
 
   MaybeSeedOrClearSuggestions();
@@ -466,14 +481,24 @@ void ConversationHandler::GetConversationHistory(
   std::move(callback).Run(std::move(history));
 }
 
+void ConversationHandler::GetConversationThreads(
+    GetConversationThreadsCallback callback) {
+  std::vector<mojom::ThreadPtr> threads;
+  threads.reserve(threads_.size());
+  for (const auto& [_uuid, container] : threads_) {
+    threads.emplace_back(container.thread->Clone());
+  }
+  std::move(callback).Run(std::move(threads));
+}
+
 void ConversationHandler::GetConversationThreadHistory(
     const std::string& thread_uuid,
     GetConversationThreadHistoryCallback callback) {
-  if (auto* cached_entries = base::FindOrNull(thread_entries_, thread_uuid)) {
-    // Cached; return clones.
+  auto* container = base::FindOrNull(threads_, thread_uuid);
+  if (container && !container->entries.empty()) {
     std::vector<mojom::ConversationTurnPtr> entries;
-    entries.reserve(cached_entries->size());
-    for (const auto& entry : *cached_entries) {
+    entries.reserve(container->entries.size());
+    for (const auto& entry : container->entries) {
       entries.emplace_back(entry->Clone());
     }
     std::move(callback).Run(std::move(entries));
@@ -496,7 +521,7 @@ void ConversationHandler::OnConversationThreadHistoryReceived(
   for (const auto& entry : entries) {
     result.emplace_back(entry->Clone());
   }
-  thread_entries_[thread_uuid] = std::move(entries);
+  threads_[thread_uuid].entries = std::move(entries);
   std::move(callback).Run(std::move(result));
 }
 
@@ -675,7 +700,7 @@ void ConversationHandler::SubmitHumanConversationEntry(
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::move(uploaded_files), nullptr /* skill */, false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -800,7 +825,7 @@ void ConversationHandler::SubmitHumanConversationEntryWithSkill(
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::move(uploaded_files), std::move(skill_entry), false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -856,7 +881,7 @@ void ConversationHandler::ModifyConversation(
         std::move(events), base::Time::Now(), std::nullopt /* edits */,
         std::nullopt, nullptr /* skill */, false, turn->model_key,
         nullptr /* near_verification_status */,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */);
+        std::vector<std::string>{} /* child_thread_uuids */);
     edited_turn->events->at(*completion_event_index)
         ->get_completion_event()
         ->completion = trimmed_input;
@@ -900,7 +925,7 @@ void ConversationHandler::ModifyConversation(
       std::nullopt /* events */, base::Time::Now(), std::nullopt /* edits */,
       std::nullopt, std::move(skill_entry), false, turn->model_key,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   if (!turn->edits) {
     turn->edits.emplace();
   }
@@ -979,7 +1004,7 @@ void ConversationHandler::SubmitSummarizationRequest() {
       base::Time::Now(), std::nullopt /* edits */,
       std::nullopt /* uploaded_images */, nullptr /* skill */, false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 }
 
@@ -1008,7 +1033,7 @@ void ConversationHandler::SubmitSuggestion(
       base::Time::Now(), std::nullopt /* edits */, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   SubmitHumanConversationEntry(std::move(turn));
 
   // Remove the suggestion from the list, assume the list has been modified
@@ -1162,7 +1187,7 @@ void ConversationHandler::SubmitSelectedTextWithQuestion(
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
 
   SubmitHumanConversationEntry(std::move(turn));
 }
@@ -1204,7 +1229,7 @@ void ConversationHandler::AddSubmitSelectedTextError(
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */);
+      std::vector<std::string>{} /* child_thread_uuids */);
   AddToConversationHistory(std::move(turn));
   SetAPIError(error);
 }
@@ -1340,9 +1365,9 @@ void ConversationHandler::CreateConversationThread(
       0 /* total_tokens */, 0 /* trimmed_tokens */, false /* is_edit */,
       0 /* entry_count */);
   OnConversationThreadUpdate(*thread);
-  (*entry_it)->child_threads.emplace_back(std::move(thread));
+  (*entry_it)->child_thread_uuids.emplace_back(thread_id);
 
-  thread_entries_.try_emplace(thread_id);
+  threads_.try_emplace(thread_id, std::move(thread));
 
   std::move(callback).Run(thread_id);
 }
@@ -1361,7 +1386,8 @@ void ConversationHandler::AddToConversationHistory(
 
   if (turn->thread_uuid.has_value()) {
     const std::string& thread_uuid = turn->thread_uuid.value();
-    if (mojom::Thread* thread = FindThreadMetadata(thread_uuid)) {
+    if (auto* container = base::FindOrNull(threads_, thread_uuid)) {
+      mojom::Thread* thread = container->thread.get();
       thread->entry_count++;
       if (history.empty()) {
         // This is the first entry for this thread. Notify observers of the
@@ -1381,21 +1407,9 @@ void ConversationHandler::AddToConversationHistory(
 std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
     std::optional<std::string_view> thread_uuid) {
   if (thread_uuid.has_value()) {
-    return thread_entries_[thread_uuid.value()];
+    return threads_[thread_uuid.value()].entries;
   }
   return chat_history_;
-}
-
-mojom::Thread* ConversationHandler::FindThreadMetadata(
-    std::string_view thread_uuid) {
-  for (auto& entry : chat_history_) {
-    for (auto& thread : entry->child_threads) {
-      if (thread->uuid == thread_uuid) {
-        return thread.get();
-      }
-    }
-  }
-  return nullptr;
 }
 
 void ConversationHandler::InitToolsForNewGenerationLoop(
@@ -1498,7 +1512,7 @@ void ConversationHandler::UpdateOrCreateLastAssistantEntry(
         std::vector<mojom::ConversationEntryEventPtr>{}, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false,
         result.model_key, nullptr /* near_verification_status */,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */);
+        std::vector<std::string>{} /* child_thread_uuids */);
     history.push_back(std::move(entry));
   }
 
@@ -1794,7 +1808,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
         std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
         nullptr /* near_verification_status */,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
     OnConversationEntryAdded(chat_history_.back());
 
     std::vector<mojom::ConversationEntryEventPtr> events;
@@ -1807,7 +1821,7 @@ void ConversationHandler::OnGetStagedEntriesFromContent(
         std::nullopt, std::move(events), base::Time::Now(), std::nullopt,
         std::nullopt, nullptr /* skill */, true, std::nullopt /* model_key */,
         nullptr /* near_verification_status */,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
     OnConversationEntryAdded(chat_history_.back());
   }
 }
@@ -2315,7 +2329,8 @@ void ConversationHandler::OnConversationTokenInfoChanged(
     uint64_t total_tokens,
     uint64_t trimmed_tokens) {
   if (thread_uuid.has_value()) {
-    if (mojom::Thread* thread = FindThreadMetadata(thread_uuid.value())) {
+    if (auto* container = base::FindOrNull(threads_, thread_uuid.value())) {
+      mojom::Thread* thread = container->thread.get();
       thread->total_tokens = total_tokens;
       thread->trimmed_tokens = trimmed_tokens;
       OnConversationThreadUpdate(*thread);
@@ -2428,8 +2443,8 @@ ConversationHandler::FindLatestToolUseEvent(
   };
 
   consider(chat_history_);
-  for (auto& entry : thread_entries_) {
-    consider(entry.second);
+  for (auto& entry : threads_) {
+    consider(entry.second.entries);
   }
 
   return {result_event, result_thread_uuid};

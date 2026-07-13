@@ -64,6 +64,9 @@ interface UntrustedConversationHandler {
   // Get all visible history entries, including in-progress responses
   GetConversationHistory() => (array<ConversationTurn> conversation_history);
 
+  // Returns thread metadata for this conversation. Entries are not loaded.
+  GetConversationThreads() => (array<Thread> threads);
+
   // If the current model is premium or freemium, switch to a free model to
   // e.g. reduce rate limiting.
   SwitchToNonPremiumModel();

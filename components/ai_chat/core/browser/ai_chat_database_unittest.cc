@@ -214,7 +214,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::ActionType::QUERY, "edited query 1", std::nullopt,
           std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(121),
           std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-          nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
+          nullptr, std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -232,7 +232,7 @@ TEST_P(AIChatDatabaseTest, AddAndGetConversationAndEntries) {
           mojom::ActionType::QUERY, "edited query 2", std::nullopt,
           std::nullopt, std::nullopt, base::Time::Now() + base::Minutes(122),
           std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-          nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
+          nullptr, std::vector<std::string>{} /* child_thread_uuids */));
       EXPECT_TRUE(db_->DeleteConversationEntry(last_query->uuid.value()));
       EXPECT_TRUE(db_->AddConversationEntry(uuid, last_query->Clone()));
     }
@@ -912,19 +912,18 @@ TEST_P(AIChatDatabaseTest, UpdateThreadTokenInfo) {
   const std::string thread_uuid = "thread_token_info_1";
   uint64_t initial_total_tokens = 4000;
   uint64_t initial_trimmed_tokens = 800;
-  auto thread = mojom::Thread::New(
-      thread_uuid, uuid, history[0]->uuid.value(), "thread title",
-      initial_total_tokens, initial_trimmed_tokens, false, 0, base::Time());
+  auto thread = mojom::Thread::New(thread_uuid, uuid, history[0]->uuid.value(),
+                                   "thread title", initial_total_tokens,
+                                   initial_trimmed_tokens, false, 0);
   ASSERT_TRUE(db_->AddConversationThread(thread->Clone()));
 
   // Verify initial token info
   auto conversation_data = db_->GetConversationData(uuid);
   ASSERT_TRUE(conversation_data);
   ASSERT_EQ(conversation_data->entries.size(), 1u);
-  ASSERT_EQ(conversation_data->entries[0]->child_threads.size(), 1u);
-  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->total_tokens,
-            initial_total_tokens);
-  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->trimmed_tokens,
+  ASSERT_EQ(conversation_data->threads.size(), 1u);
+  EXPECT_EQ(conversation_data->threads[0]->total_tokens, initial_total_tokens);
+  EXPECT_EQ(conversation_data->threads[0]->trimmed_tokens,
             initial_trimmed_tokens);
 
   // Update token info
@@ -937,10 +936,9 @@ TEST_P(AIChatDatabaseTest, UpdateThreadTokenInfo) {
   conversation_data = db_->GetConversationData(uuid);
   ASSERT_TRUE(conversation_data);
   ASSERT_EQ(conversation_data->entries.size(), 1u);
-  ASSERT_EQ(conversation_data->entries[0]->child_threads.size(), 1u);
-  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->total_tokens,
-            updated_total_tokens);
-  EXPECT_EQ(conversation_data->entries[0]->child_threads[0]->trimmed_tokens,
+  ASSERT_EQ(conversation_data->threads.size(), 1u);
+  EXPECT_EQ(conversation_data->threads[0]->total_tokens, updated_total_tokens);
+  EXPECT_EQ(conversation_data->threads[0]->trimmed_tokens,
             updated_trimmed_tokens);
 }
 

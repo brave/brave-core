@@ -183,6 +183,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void GetConversationThreads(GetConversationThreadsCallback callback) override;
   void GetConversationThreadHistory(
       const std::string& thread_uuid,
       GetConversationThreadHistoryCallback callback) override;
@@ -390,6 +391,20 @@ class ConversationHandler : public mojom::ConversationHandler,
       ConversationHandlerUnitTest,
       GetTools_MemoryToolFilteredForTemporaryConversations);
   FRIEND_TEST_ALL_PREFIXES(ConversationHandlerUnitTest, ThreadHistory);
+
+  struct ThreadContainer {
+    ThreadContainer();
+    explicit ThreadContainer(mojom::ThreadPtr thread);
+    ThreadContainer(ThreadContainer&&);
+    ThreadContainer& operator=(ThreadContainer&&);
+    ThreadContainer(const ThreadContainer&) = delete;
+    ThreadContainer& operator=(const ThreadContainer&) = delete;
+    ~ThreadContainer();
+
+    mojom::ThreadPtr thread;
+    std::vector<mojom::ConversationTurnPtr> entries;
+  };
+
   void InitEngine();
 
   void BuildCapabilitiesSet();
@@ -405,9 +420,6 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetChatHistory(
       std::optional<std::string_view> thread_uuid);
-  // Finds the Thread metadata with the given uuid amongst the child_threads
-  // of the root conversation's entries.
-  mojom::Thread* FindThreadMetadata(std::string_view thread_uuid);
   void PerformAssistantGenerationWithPossibleContent(
       const std::optional<std::string>& thread_uuid);
 
@@ -512,11 +524,9 @@ class ConversationHandler : public mojom::ConversationHandler,
   std::vector<mojom::ConversationTurnPtr> chat_history_;
   mojom::ConversationTurnPtr pending_conversation_entry_;
 
-  // Map of thread uuid to its lazily-loaded entries. A thread's uuid is only
-  // present once its entries have been requested via
-  // GetConversationThreadHistory.
-  absl::flat_hash_map<std::string, std::vector<mojom::ConversationTurnPtr>>
-      thread_entries_;
+  // Thread metadata map. Entries within each container are lazily loaded
+  // by GetConversationThreadHistory.
+  absl::flat_hash_map<std::string, ThreadContainer> threads_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;
 

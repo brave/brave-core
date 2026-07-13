@@ -456,7 +456,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       false,                           // Not from Brave SERP
       std::nullopt,                    // No model_key
       nullptr,                         // near_verification_status
-      std::vector<mojom::ThreadPtr>{}  // No child_threads
+      std::vector<std::string>{}       // No child_thread_uuids
       ));
 
   // Prepare to capture API client request
@@ -548,7 +548,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::UNSPECIFIED, "Hello?", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt, nullptr,
       false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -597,7 +597,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt /* prompt */, selected_text, std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false,
       std::nullopt /* model_key */, nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
@@ -605,7 +605,7 @@ TEST_F(EngineConsumerOAIUnitTest,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt /* model_key */,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   auto* client = GetClient();
   auto run_loop = std::make_unique<base::RunLoop>();
@@ -1015,7 +1015,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE,
@@ -1023,7 +1023,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_Success) {
       "intelligence.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1111,13 +1111,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::QUERY, "Analyze these pages", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Analysis completed.", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1192,14 +1192,14 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithSelectedText) {
       mojom::ActionType::QUERY, "Explain this concept", std::nullopt,
       "Machine learning is a subset of AI", std::nullopt, base::Time::Now(),
       std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-      nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      nullptr, std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE,
       "Machine learning allows computers to learn patterns from data.",
       std::nullopt, std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::nullopt, nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1260,7 +1260,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt,
       std::move(uploaded_files), nullptr /* skill */, false, std::nullopt,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE,
@@ -1268,7 +1268,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_WithUploadedFiles) {
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt,
       nullptr /* near_verification_status */,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1337,7 +1337,7 @@ TEST_F(EngineConsumerOAIUnitTest,
         mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -1356,20 +1356,20 @@ TEST_F(EngineConsumerOAIUnitTest,
         mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", std::nullopt /* thread_uuid */,
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
         "Hi there!", std::nullopt, std::nullopt, std::nullopt,
         base::Time::Now(), std::nullopt, std::nullopt, nullptr /* skill */,
         false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-3", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
         mojom::ActionType::QUERY, "How are you?", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -1393,13 +1393,13 @@ TEST_F(EngineConsumerOAIUnitTest,
         mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
         mojom::ActionType::QUERY, "How are you?", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -1418,13 +1418,13 @@ TEST_F(EngineConsumerOAIUnitTest,
         mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE, "Hello",
         std::nullopt, std::nullopt, std::nullopt, base::Time::Now(),
         std::nullopt, std::nullopt, nullptr /* skill */, false, std::nullopt,
-        nullptr, std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        nullptr, std::vector<std::string>{} /* child_thread_uuids */));
     history.push_back(mojom::ConversationTurn::New(
         "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::HUMAN,
         mojom::ActionType::QUERY, "Hi there!", std::nullopt, std::nullopt,
         std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
         nullptr /* skill */, false, std::nullopt, nullptr,
-        std::vector<mojom::ThreadPtr>{} /* child_threads */));
+        std::vector<std::string>{} /* child_thread_uuids */));
 
     base::test::TestFuture<EngineConsumer::GenerationResult> future;
     engine_->GenerateConversationTitle(page_contents, history,
@@ -1446,13 +1446,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_APIError) {
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1485,13 +1485,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_TitleTooLong) {
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1528,13 +1528,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_EmptyResponse) {
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1572,13 +1572,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1618,13 +1618,13 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateConversationTitle_NullEvent) {
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -1660,13 +1660,13 @@ TEST_F(EngineConsumerOAIUnitTest,
       mojom::ActionType::QUERY, "Hello", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
   history.push_back(mojom::ConversationTurn::New(
       "turn-2", std::nullopt /* thread_uuid */, mojom::CharacterType::ASSISTANT,
       mojom::ActionType::RESPONSE, "Hi there!", std::nullopt, std::nullopt,
       std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr /* skill */, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   base::test::TestFuture<EngineConsumer::GenerationResult> future;
 
@@ -2163,7 +2163,7 @@ TEST_F(EngineConsumerOAIUnitTest, GenerateAssistantResponse_WithTools) {
       mojom::ActionType::UNSPECIFIED, "Test message", std::nullopt,
       std::nullopt, std::nullopt, base::Time::Now(), std::nullopt, std::nullopt,
       nullptr, false, std::nullopt, nullptr,
-      std::vector<mojom::ThreadPtr>{} /* child_threads */));
+      std::vector<std::string>{} /* child_thread_uuids */));
 
   engine_->GenerateAssistantResponse(
       {}, history, false, {mock_tool->GetWeakPtr()}, std::nullopt,

@@ -599,8 +599,8 @@ struct ConversationTurn {
   // NEAR attestation verification status associated with this turn.
   NEARVerificationStatus? near_verification_status;
 
-  // Threads that originate from this entry.
-  array<Thread> child_threads;
+  // UUIDs of threads that originate from this entry.
+  array<string> child_thread_uuids;
 };
 
 // A thread is a sub-conversation that branches off a conversation entry.

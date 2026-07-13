@@ -122,7 +122,7 @@ void ChromeAutocompleteProviderClient::OpenLeo(const std::u16string& query) {
           std::nullopt /* uploaded images */, nullptr /* skill */,
           false /* from_brave_search_SERP */, std::nullopt /* model_key */,
           nullptr /* near_verification_status */,
-          std::vector<ai_chat::mojom::ThreadPtr>{} /* child_threads */);
+          std::vector<std::string>{} /* child_thread_uuids */);
 
   auto* profile_metrics =
       misc_metrics::ProfileMiscMetricsServiceFactory::GetServiceForContext(
