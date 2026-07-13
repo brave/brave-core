@@ -12,7 +12,7 @@
 [package]
 edition = "2018"
 name = "kuchikiki"
-version = "0.8.8-speedreader"
+version = "0.8.9-speedreader"
 authors = [
     "Brave Authors",
     "Ralph Giles <rgiles@brave.com>",
@@ -48,7 +48,7 @@ version = "0.35"
 version = "0.35"
 
 [dependencies.indexmap]
-version = "2.6.0"
+version = "2.14"
 
 [dependencies.precomputed-hash]
 version = "0.1"

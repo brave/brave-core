@@ -1255,8 +1255,8 @@ dependencies = [
 
 [[package]]
 name = "kuchikiki"
-version = "0.8.8-speedreader"
-source = "git+https://github.com/atuchin-m/kuchikiki?branch=update-some-crates-speedreader#1d5e8188dd5f0559dfc90243723a7499c85418cd"
+version = "0.8.9-speedreader"
+source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cssparser",
  "html5ever",

@@ -7,10 +7,10 @@ use html5ever::{LocalName, Namespace};
 use precomputed_hash::PrecomputedHash;
 use selectors::attr::{AttrSelectorOperation, CaseSensitivity, NamespaceConstraint};
 use selectors::context::{MatchingForInvalidation, NeedsSelectorFlags, QuirksMode, SelectorCaches};
-use selectors::parser::{ParseRelative, SelectorParseErrorKind};
 use selectors::parser::{
     NonTSPseudoClass, Parser, Selector as GenericSelector, SelectorImpl, SelectorList,
 };
+use selectors::parser::{ParseRelative, SelectorParseErrorKind};
 use selectors::{self, matching, OpaqueElement};
 use std::fmt;
 
