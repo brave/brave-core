@@ -7,9 +7,12 @@
 
 from __future__ import annotations
 
+import contextlib
+import io
 import os
 from pathlib import Path
 import platform
+import shutil
 import stat
 import tempfile
 import unittest
@@ -409,6 +412,271 @@ class ResolveInvocationTest(unittest.TestCase):
             launcher.resolve_invocation('bogus', None, False)
         with self.assertRaises(launcher.UnknownShimError):
             launcher.resolve_invocation('bogus', None, True)
+
+    def _make_installer(self, checkout: Path) -> None:
+        """Create an empty tarball_installer.py so the bootstrap is attempted."""
+        installer = checkout / 'tools' / 'cr' / 'tarball_installer.py'
+        installer.parent.mkdir(parents=True, exist_ok=True)
+        installer.write_text('', encoding='utf-8', newline='')
+
+    def test_bootstraps_missing_node_then_resolves(self):
+        # A missing node target with a known self_update_extra_dep_entry triggers a download
+        # (install_extra_deps.py), after which the vendored node resolves.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+
+            def _fake_download(_argv):
+                # Simulate the installer deploying the node target.
+                self._make_target(root, f'node-{key}')
+                return 0
+
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=self._fake_extra_deps(
+                                       dep, deployed=False)):
+                with mock.patch.object(launcher.subprocess,
+                                       'call',
+                                       side_effect=_fake_download) as call:
+                    with contextlib.redirect_stderr(io.StringIO()):
+                        invocation = launcher.resolve_invocation(
+                            f'node-{key}', checkout, False)
+            call.assert_called_once()
+            self.assertEqual(
+                invocation,
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+
+    def test_missing_node_falls_back_when_download_deploys_nothing(self):
+        # The bootstrap is attempted but deploys no node; with fallback allowed
+        # the system node is used instead.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=self._fake_extra_deps(
+                                       dep, deployed=False)):
+                with mock.patch.object(launcher.subprocess,
+                                       'call',
+                                       return_value=1) as call:
+                    with mock.patch.object(launcher.shutil,
+                                           'which',
+                                           return_value='/usr/bin/node'):
+                        with contextlib.redirect_stderr(io.StringIO()):
+                            invocation = launcher.resolve_invocation(
+                                'node', checkout, True)
+            call.assert_called_once()
+            self.assertEqual(invocation, ['/usr/bin/node'])
+
+    def test_no_bootstrap_without_installer(self):
+        # With no install_extra_deps.py present the bootstrap is a no-op, and
+        # with no fallback the result is None.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            with mock.patch.object(launcher.subprocess, 'call') as call:
+                self.assertIsNone(
+                    launcher.resolve_invocation(f'node-{key}',
+                                                self._checkout(root), False))
+            call.assert_not_called()
+
+    def test_no_bootstrap_when_checkout_lacks_extra_deps(self):
+        # An older/divergent checkout whose install_extra_deps.py predates
+        # `extra_deps.py` must NOT be handed this shim's baked-in key (its
+        # installer may use different EXTRA_DEPS keys): no bootstrap is tried,
+        # and with fallback allowed the system tool is used.
+        if launcher.host_platform_key() is None:
+            self.skipTest('no node shim on this host')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checkout = self._checkout(root)
+            self._make_installer(checkout)  # installer present, extra_deps not
+            with mock.patch.object(launcher.subprocess, 'call') as call:
+                with mock.patch.object(launcher.shutil,
+                                       'which',
+                                       return_value='/usr/bin/node'):
+                    invocation = launcher.resolve_invocation(
+                        'node', checkout, True)
+            call.assert_not_called()
+            self.assertEqual(invocation, ['/usr/bin/node'])
+
+    def test_vpython_tool_not_bootstrapped(self):
+        # Only node/npm carry an self_update_extra_dep_entry; a missing vpython tool is never
+        # bootstrapped (it ships in the repo, it is not downloaded).
+        with tempfile.TemporaryDirectory() as tmp:
+            with mock.patch.object(launcher.subprocess, 'call') as call:
+                launcher.resolve_invocation('brockit',
+                                            self._checkout(Path(tmp)), False)
+            call.assert_not_called()
+
+    def _fake_extra_deps(self, dep: str, deployed: bool) -> mock.Mock:
+        """A stand-in `extra_deps` module reporting `deployed` for `dep`."""
+        module = mock.Mock()
+        module.EXTRA_DEPS = {dep: {'objects': [{}]}}
+        module.check_extra_deps_installed.return_value = deployed
+        return module
+
+    def test_stale_version_triggers_bootstrap_even_when_present(self):
+        # The node binary exists, but the sidecar/version check says it is not
+        # the pinned version -> bootstrap runs anyway (a bare is_file() would
+        # wrongly skip it).
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            self._make_target(root, f'node-{key}')  # present but "stale"
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+            module = self._fake_extra_deps(dep, deployed=False)
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=module):
+                with mock.patch.object(launcher.subprocess,
+                                       'call',
+                                       return_value=0) as call:
+                    with contextlib.redirect_stderr(io.StringIO()):
+                        invocation = launcher.resolve_invocation(
+                            f'node-{key}', checkout, False)
+            call.assert_called_once()
+            self.assertEqual(
+                invocation,
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+
+    def test_pinned_version_deployed_skips_bootstrap(self):
+        # The version check says the pinned node is deployed -> no bootstrap.
+        with tempfile.TemporaryDirectory() as tmp:
+            root, key = Path(tmp), self._key()
+            checkout = self._checkout(root)
+            self._make_installer(checkout)
+            self._make_target(root, f'node-{key}')
+            dep = launcher.SHIM_TARGETS[
+                f'node-{key}'].self_update_extra_dep_entry
+            module = self._fake_extra_deps(dep, deployed=True)
+            with mock.patch.object(launcher.SelfUpdater,
+                                   '_load_extra_deps',
+                                   return_value=module):
+                with mock.patch.object(launcher.subprocess, 'call') as call:
+                    invocation = launcher.resolve_invocation(
+                        f'node-{key}', checkout, False)
+            call.assert_not_called()
+            self.assertEqual(
+                invocation,
+                [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
+
+    def test_load_extra_deps_reads_checkout_module(self):
+        # `SelfUpdater._load_extra_deps` loads the module by path from the
+        # governing checkout (not the launcher's own), stdlib-only.
+        with tempfile.TemporaryDirectory() as tmp:
+            checkout = self._checkout(Path(tmp))
+            module_path = checkout / 'tools' / 'cr' / 'extra_deps.py'
+            module_path.parent.mkdir(parents=True, exist_ok=True)
+            module_path.write_text(
+                'EXTRA_DEPS = {"x": 1}\n'
+                'def check_extra_deps_installed(root, path):\n'
+                '    return True\n',
+                encoding='utf-8',
+                newline='')
+            module = launcher.SelfUpdater(checkout, 'src/x')._load_extra_deps()
+            self.assertIsNotNone(module)
+            self.assertEqual(module.EXTRA_DEPS, {'x': 1})
+
+    def test_load_extra_deps_missing_returns_none(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            updater = launcher.SelfUpdater(self._checkout(Path(tmp)), 'src/x')
+            self.assertIsNone(updater._load_extra_deps())
+
+    def test_needs_update_false_when_entry_absent_from_table(self):
+        # An entry the checkout's EXTRA_DEPS does not pin raises KeyError from
+        # check_extra_deps_installed; needs_update() swallows it and self-update
+        # is not attempted.
+        updater = launcher.SelfUpdater(Path('/ws/src/brave'), 'src/absent')
+        module = mock.Mock()
+        module.check_extra_deps_installed.side_effect = KeyError('src/absent')
+        with mock.patch.object(launcher.SelfUpdater,
+                               '_load_extra_deps',
+                               return_value=module):
+            self.assertFalse(updater.needs_update())
+
+
+class MultiRepoSelfUpdaterTest(unittest.TestCase):
+    """`SelfUpdater` resolves the `extra_deps` table, the sidecar tree, and the
+    installer in the *target* checkout it is given -- never in the checkout
+    `launcher.py` itself lives in. One installed shim serves many checkouts, so
+    it must always talk to the tree governing the current directory.
+    """
+
+    NODE = 'src/brave/third_party/node/node-linux-x64'
+
+    # `tools/cr` of the checkout launcher.py lives in (its "own" checkout).
+    _OWN_CR = Path(launcher.__file__).resolve().parents[1]
+
+    def _target_cr(self, root: Path) -> Path:
+        cr = root / 'src' / 'brave' / 'tools' / 'cr'
+        cr.mkdir(parents=True, exist_ok=True)
+        return cr
+
+    def test_load_extra_deps_reads_the_target_checkout(self):
+        # The target pins a made-up table; the loaded module must be that one,
+        # not the launcher's own (which pins the real node entries).
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (self._target_cr(root) / 'extra_deps.py').write_text(
+                'EXTRA_DEPS = {"src/only/in/target": 1}\n',
+                encoding='utf-8',
+                newline='')
+            checkout = root / 'src' / 'brave'
+            module = launcher.SelfUpdater(checkout, 'x')._load_extra_deps()
+            self.assertEqual(module.EXTRA_DEPS, {'src/only/in/target': 1})
+            self.assertNotIn(self.NODE, module.EXTRA_DEPS)
+
+    def test_deploy_runs_the_target_checkout_installer(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (self._target_cr(root) / 'tarball_installer.py').write_text(
+                '', encoding='utf-8', newline='')
+            checkout = root / 'src' / 'brave'
+            with mock.patch.object(launcher.subprocess, 'call',
+                                   return_value=0) as call:
+                launcher.SelfUpdater(checkout, 'src/dep').deploy()
+            argv = call.call_args.args[0]
+            self.assertEqual(
+                Path(argv[1]),
+                checkout / 'tools' / 'cr' / 'tarball_installer.py')
+            self.assertEqual(argv[2], 'src/dep')
+            # Emphatically not the launcher's own installer.
+            self.assertNotEqual(Path(argv[1]),
+                                self._OWN_CR / 'tarball_installer.py')
+
+    def test_needs_update_reads_the_target_sidecar_tree(self):
+        # Copy the real `extra_deps` into a target checkout with node NOT
+        # deployed: needs_update() is True even though the launcher's own
+        # checkout has node deployed -- so the sidecar lookup is rooted at the
+        # target's workspace root, not the launcher's.
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            checkout = root / 'src' / 'brave'
+            # `extra_deps.py` loads the sibling `EXTRA_DEPS` data file, so the
+            # target checkout needs both.
+            shutil.copy(self._OWN_CR / 'extra_deps.py',
+                        self._target_cr(root) / 'extra_deps.py')
+            shutil.copy(self._OWN_CR.parent.parent / 'EXTRA_DEPS',
+                        checkout / 'EXTRA_DEPS')
+            updater = launcher.SelfUpdater(checkout, self.NODE)
+            self.assertTrue(updater.needs_update())
+
+            # Seed the target's sidecar for the pinned object -> now deployed.
+            module = updater._load_extra_deps()
+            obj = module.EXTRA_DEPS[self.NODE]['objects'][0]
+            dest = root / self.NODE
+            dest.mkdir(parents=True, exist_ok=True)
+            module.sidecar_path(dest, obj['object_name'],
+                                '_hash').write_text(obj['sha256sum'] + '\n')
+            self.assertFalse(updater.needs_update())
 
 
 class ArgumentForwardingTest(unittest.TestCase):

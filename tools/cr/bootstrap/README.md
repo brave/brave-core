@@ -58,3 +58,11 @@ node --version                    # runs third_party/node's node
 cd /tmp
 node --version                    # falls back to the system node
 ```
+
+## The chicken-and-egg `node` problem
+
+The shims for `node`/`npm` run cheap checks for the tarball installations, to
+determine if a new file needs to be downloaded. This is done through the
+`EXTRA_DEPS` mechanism itself, which makes this a lightweight sync check. For
+repos with no mechanism for self-updating, the path resolution degrades back to
+whatever is the system underlying binaries.

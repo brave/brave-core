@@ -71,7 +71,7 @@ NEW_ENTRY = {
 SAMPLE_INSTALLER = """\
 # Installer module.
 
-EXTRA_DEPS = {
+extra_deps = {
     'src/other-dep': {
         'bucket': 'https://example.invalid/other/',
         'objects': [
@@ -179,7 +179,7 @@ class LoadExtraDepsTest(unittest.TestCase):
     def test_returns_node_and_value(self):
         node, value = toolchain.RustToolchain._load_extra_deps(
             SAMPLE_INSTALLER)
-        self.assertEqual(node.targets[0].id, 'EXTRA_DEPS')
+        self.assertEqual(node.targets[0].id, 'extra_deps')
         self.assertIn('src/third_party/rust-toolchain', value)
         self.assertIn('src/other-dep', value)
 
@@ -327,7 +327,7 @@ class _FakeRepoTest(unittest.TestCase):
 class RustRepinTest(_FakeRepoTest):
     """End-to-end `RustToolchain.repin` against a `FakeChromiumRepo`."""
 
-    INSTALLER = 'tools/cr/install_extra_deps.py'
+    INSTALLER = 'EXTRA_DEPS'
 
     def setUp(self):
         super().setUp()
