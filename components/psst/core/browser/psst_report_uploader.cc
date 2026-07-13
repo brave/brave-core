@@ -75,7 +75,7 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
   net::NetworkTrafficAnnotationTag traffic_annotation =
       net::DefineNetworkTrafficAnnotation("psst_report_uploader", R"(
         semantics {
-          sender: "Brave PSST Errors Reporting"
+          sender: "Privacy Settings Selection for Sites Tool"
           description:
             "A user-initiated report of a website privacy settings that PSST
              couldn't apply"
@@ -96,6 +96,9 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
             "Not implemented. This request is only sent when a user explicitly
             triggers it via the PSST consent dialog's 'Report a Broken PSST
             rules' option."
+          setting:
+            "You can enable or disable this feature via feature flag:
+            `brave://flags/#enable-psst`"
         })");
 
   simple_url_loader_ = network::SimpleURLLoader::Create(
