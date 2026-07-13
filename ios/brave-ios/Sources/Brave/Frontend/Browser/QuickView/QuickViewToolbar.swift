@@ -100,11 +100,18 @@ struct QuickViewToolbarView: View {
   }
 
   private var addressView: some View {
-    Text(viewModel.url.host ?? viewModel.url.absoluteString)
-      .font(.subheadline)
-      .foregroundStyle(Color(braveSystemName: .textTertiary))
-      .lineLimit(1)
-      .accessibilityLabel(viewModel.url.host ?? viewModel.url.absoluteString)
+    URLDisplayLabel(
+      formattedURL: viewModel.displayURL,
+      isLeftToRight: viewModel.isURLLeftToRight,
+      textFont: UIFont.preferredFont(forTextStyle: .body),
+      textColor: UIColor(braveSystemName: .textTertiary),
+      gradientColors: [
+        browserColors.chromeBackground.cgColor,
+        browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
+      ]
+    )
+    .frame(maxWidth: .infinity)
+    .accessibilityLabel(viewModel.displayURL)
   }
 
   private var topRightButtonsView: some View {
@@ -174,9 +181,9 @@ struct QuickViewToolbarView: View {
           addressView
         }
         progressBar
-          .padding(.horizontal, 16)
           .hidden(isHidden: !viewModel.isLoading)
       }
+      .padding(.horizontal, 16)
 
       topRightButtonsView
     }
