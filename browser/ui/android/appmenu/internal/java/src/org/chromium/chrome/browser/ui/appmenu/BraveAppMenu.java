@@ -52,7 +52,8 @@ public class BraveAppMenu extends BraveAppMenuDummySuper {
             View anchorView,
             int popupWidth,
             int popupHeight,
-            int viewLayoutDirection) {
+            int viewLayoutDirection,
+            boolean positionBelowAnchor) {
         int[] position =
                 AppMenu.getPopupPosition(
                         tempLocation,
@@ -65,7 +66,8 @@ public class BraveAppMenu extends BraveAppMenuDummySuper {
                         anchorView,
                         popupWidth,
                         popupHeight,
-                        viewLayoutDirection);
+                        viewLayoutDirection,
+                        positionBelowAnchor);
         if (isMenuFromBottom()) {
             anchorView.getLocationOnScreen(tempLocation);
             int anchorViewLocationOnScreenY = tempLocation[1];
