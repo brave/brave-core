@@ -7,7 +7,9 @@ import * as React from 'react'
 import { act, renderHook, waitFor } from '@testing-library/react'
 import * as Mojom from '../../../common/mojom'
 import { createConversationTurnWithDefaults } from '../../../common/test_data_utils'
-import MockContext, { MockContextRef } from '../../mock_untrusted_conversation_context'
+import MockContext, {
+  MockContextRef,
+} from '../../mock_untrusted_conversation_context'
 import { useModelIntroMarkers } from './useModelIntroMarkers'
 
 describe('useModelIntroMarkers', () => {
