@@ -57,7 +57,10 @@ impl Attributes {
     }
 
     /// Like IndexMap::entry
-    pub fn entry<A: Into<LocalName>>(&mut self, local_name: A) -> Entry<ExpandedName, Attribute> {
+    pub fn entry<A: Into<LocalName>>(
+        &mut self,
+        local_name: A,
+    ) -> Entry<'_, ExpandedName, Attribute> {
         self.map.entry(ExpandedName::new(ns!(), local_name))
     }
 
