@@ -120,12 +120,16 @@ class DownloadToast: Toast {
 
   func updatePercent() {
     DispatchQueue.main.async {
-      guard let combinedTotalBytesExpected = self.combinedTotalBytesExpected else {
+      guard let combinedTotalBytesExpected = self.combinedTotalBytesExpected,
+        combinedTotalBytesExpected > 0
+      else {
         self.percent = 0.0
         return
       }
 
-      self.percent = CGFloat(self.combinedBytesDownloaded) / CGFloat(combinedTotalBytesExpected)
+      let percent =
+        CGFloat(self.combinedBytesDownloaded) / CGFloat(combinedTotalBytesExpected)
+      self.percent = min(max(percent, 0.0), 1.0)
     }
   }
 
