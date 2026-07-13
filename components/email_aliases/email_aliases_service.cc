@@ -238,7 +238,7 @@ void EmailAliasesService::OnEditAliasResponse(
 
 void EmailAliasesService::RefreshAliases() {
   CHECK(auth_);
-  if (observers_.empty() || !auth_->IsAuthenticated()) {
+  if (observers_.empty()) {
     return;
   }
   auth_->GetServiceToken(

@@ -27,15 +27,11 @@ EmailAliasesAuth::EmailAliasesAuth(
 EmailAliasesAuth::~EmailAliasesAuth() = default;
 
 bool EmailAliasesAuth::IsAuthenticated() const {
-  return brave_account_auth_ && current_auth_state_ &&
-         current_auth_state_->is_logged_in();
+  return !auth_email_.empty();
 }
 
 std::string EmailAliasesAuth::GetAuthEmail() const {
-  if (!IsAuthenticated()) {
-    return {};
-  }
-  return current_auth_state_->get_logged_in()->email;
+  return auth_email_;
 }
 
 void EmailAliasesAuth::GetServiceToken(
@@ -55,13 +51,17 @@ void EmailAliasesAuth::GetServiceToken(
 
 void EmailAliasesAuth::OnDisconnect() {
   brave_account_auth_.reset();
-  current_auth_state_.reset();
+  auth_email_.clear();
   on_changed_.Run();
 }
 
 void EmailAliasesAuth::OnAccountStateChanged(
     brave_account::mojom::AccountStatePtr state) {
-  current_auth_state_ = std::move(state);
+  if (state->is_logged_in()) {
+    auth_email_ = state->get_logged_in()->email;
+  } else {
+    auth_email_.clear();
+  }
   on_changed_.Run();
 }
 

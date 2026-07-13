@@ -41,7 +41,7 @@ class EmailAliasesAuth : public brave_account::mojom::AuthenticationObserver {
 
   OnChangedCallback on_changed_;
 
-  brave_account::mojom::AccountStatePtr current_auth_state_;
+  std::string auth_email_;
 
   mojo::Receiver<brave_account::mojom::AuthenticationObserver> receiver_{this};
 };
