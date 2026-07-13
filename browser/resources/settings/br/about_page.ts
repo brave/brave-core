@@ -14,6 +14,10 @@ RegisterStyleOverride(
   'settings-about-page',
   html`
     <style>
+      .product-title {
+        font-weight: 600;
+      }
+
       #release-notes {
         display: block;
         margin-inline-start: unset;
