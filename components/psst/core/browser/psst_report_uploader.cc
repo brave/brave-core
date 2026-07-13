@@ -73,22 +73,29 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
       net::LOAD_BYPASS_CACHE | net::LOAD_DISABLE_CACHE;
 
   net::NetworkTrafficAnnotationTag traffic_annotation =
-      net::DefineNetworkTrafficAnnotation("background_performance_tracer", R"(
+      net::DefineNetworkTrafficAnnotation("psst_report_uploader", R"(
         semantics {
           sender: "Brave PSST Errors Reporting"
           description:
             "A user-initiated report of a website privacy settings that PSST
              couldn't apply"
           trigger:
-            "Though the 'Report a Broken PSST rules' option of the PSST consent
+            "Through the 'Report a Broken PSST rules' option of the PSST consent
              dialog"
-          data: "Website where PSST failed, what step(s) failed, what the error
-             were"
+          data: "Website where PSST failed, what step(s) failed, what the
+            error(s) were"
           destination: OTHER
-          destination_other: "Brave developers"
+          destination_other: "Brave PSST Component Developers"
+          user_data {
+            type: SENSITIVE_URL
+          }
         }
         policy {
           cookies_allowed: NO
+          policy_exception_justification:
+            "Not implemented. This request is only sent when a user explicitly
+            triggers it via the PSST consent dialog's 'Report a Broken PSST
+            rules' option."
         })");
 
   simple_url_loader_ = network::SimpleURLLoader::Create(
