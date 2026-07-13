@@ -19,7 +19,7 @@ inline constexpr char kPsstCrxComponentVersionField[] =
     "psst_crx_component_version";
 inline constexpr char kPsstScriptVersionField[] = "psst_script_version";
 inline constexpr char kFailedTasksField[] = "failed_tasks";
-
+inline constexpr char kApiKeyField[] = "api_key";
 inline constexpr char kNotAvailable[] = "n/a";
 }  // namespace
 
@@ -43,6 +43,8 @@ void PsstErrorReportUploader::Upload(
   const GURL upload_url(BUILDFLAG(PSST_REPORT_ENDPOINT));
 
   base::DictValue report_details_dict;
+
+  report_details_dict.Set(kApiKeyField, base::Value(brave_stats::GetAPIKey()));
 
   report_details_dict.Set(kVersionField, brave_version);
   report_details_dict.Set(kChannelField, channel.value_or(kNotAvailable));
