@@ -8,16 +8,24 @@
 
 #include <string>
 
+#include "base/functional/callback_forward.h"
+#include "base/memory/scoped_refptr.h"
+#include "base/memory/weak_ptr.h"
+#include "base/sequence_checker.h"
 #include "base/values.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "services/network/public/cpp/simple_url_loader.h"
+#include "url/gurl.h"
+
+namespace network {
+class SharedURLLoaderFactory;
+class SimpleURLLoader;
+}  // namespace network
 
 namespace psst {
 
 class PsstErrorReportUploader {
  public:
   explicit PsstErrorReportUploader(
-      scoped_refptr<network::SharedURLLoaderFactory>);
+      scoped_refptr<network::SharedURLLoaderFactory> factory);
   PsstErrorReportUploader(const PsstErrorReportUploader&) = delete;
   PsstErrorReportUploader& operator=(const PsstErrorReportUploader&) = delete;
 

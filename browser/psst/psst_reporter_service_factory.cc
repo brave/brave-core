@@ -32,9 +32,8 @@ std::optional<std::string> GetPsstComponentVersion(
   }
 
   auto components(component_update_service->GetComponents());
-  auto it = std::find_if(
-      components.begin(), components.end(),
-      [](const auto& c) { return c.id == psst::kPsstComponentId; });
+  auto it = std::ranges::find_if(
+      components, [](const auto& c) { return c.id == psst::kPsstComponentId; });
 
   if (it == components.end()) {
     return std::nullopt;
