@@ -557,12 +557,16 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                                 R.string.menu_new_incognito_tab,
                                 0)));
 
-        // Add to Group
-        modelList.add(
-                new MVCListAdapter.ListItem(
-                        AppMenuHandler.AppMenuItemType.STANDARD,
-                        buildModelForStandardMenuItem(
-                                R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
+        // Add to Group - omitted from the Customize menu when the "Enable tab groups" master
+        // switch is off, so it is not offered as a customizable item.
+        if (ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true)) {
+            modelList.add(
+                    new MVCListAdapter.ListItem(
+                            AppMenuHandler.AppMenuItemType.STANDARD,
+                            buildModelForStandardMenuItem(
+                                    R.id.add_to_group_menu_id, R.string.menu_add_tab_to_group, 0)));
+        }
 
         // New Window
         if (!DeviceInfo.isAutomotive()) {
@@ -854,6 +858,18 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             // Check policies and update menu dynamically for all configured policy-controlled items
             updateMenuItemsBasedOnPolicy(modelList);
         }
+
+        // When the "Enable tab groups" master switch is off, remove every tab group creation entry
+        // point from the app menu (both the page menu and the tab switcher overview menu).
+        if (!ChromeSharedPreferences.getInstance()
+                .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_FEATURE_ENABLED, true)) {
+            maybeRemoveMenuItems(
+                    modelList,
+                    R.id.add_to_group_menu_id,
+                    R.id.tab_groups_parent_menu_id,
+                    R.id.new_tab_group_menu_id);
+        }
+
         // Apply Brave icons.
         maybeReplaceIcons(modelList);
 

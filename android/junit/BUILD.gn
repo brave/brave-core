@@ -304,4 +304,22 @@ if (is_android) {
       "//components/saved_tab_groups/public:java",
     ]
   }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.tasks.tab_management") {
+    resources_package = "org.chromium.chrome.browser.tasks.tab_management"
+    sources = [
+      "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabGridContextMenuCoordinatorTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/BraveTabUiFeatureUtilitiesUnitTest.java",
+      "src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/BravePinnedTabStripItemContextMenuCoordinatorTest.java",
+    ]
+
+    deps = [
+      "//base:base_java",
+      "//base:base_junit_test_support",
+      "//chrome/android:chrome_java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//chrome/browser/preferences:java",
+    ]
+  }
 }

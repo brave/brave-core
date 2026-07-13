@@ -466,6 +466,73 @@ def CheckNalaIconOverridesExistUpstream(input_api, output_api):
     return []
 
 
+# Every upstream context menu that adds a tab group creation item
+# (R.id.add_to_new_tab_group / R.id.add_to_tab_group). Brave hides these items
+# when the "Enable tab groups" master switch is off via a Brave subclass that
+# strips them in buildMenuActionItems (BraveTabUiFeatureUtilities.removeMenuItems).
+# A NEW file here means a menu that offers tab group creation without being
+# gated - add a Brave subclass for it, then add the file below.
+_TAB_GROUP_CREATION_MENUS = {
+    'chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/TabGridContextMenuCoordinator.java',
+    'chrome/android/features/tab_ui/java/src/org/chromium/chrome/browser/tasks/tab_management/pinned_tabs_strip/PinnedTabStripItemContextMenuCoordinator.java',
+    'chrome/android/java/src/org/chromium/chrome/browser/compositor/overlays/strip/TabContextMenuCoordinator.java',
+}
+
+
+def CheckTabGroupCreationMenusAreGated(input_api, output_api):
+    """Ensures every menu offering tab group creation is gated by Brave.
+
+    Brave removes the "Add to (new) group" context menu items when the "Enable
+    tab groups" master switch is off. A newly added upstream menu that offers
+    tab group creation would bypass that. This check runs unconditionally
+    (scanning the upstream tree) so a new menu surfaces as a presubmit failure -
+    most likely during a Chromium roll - prompting review: add a Brave subclass
+    that strips the item, then add the file to _TAB_GROUP_CREATION_MENUS.
+    """
+    src_dir = brave_chromium_utils.get_src_dir()
+    cmd = [
+        'git',
+        '-C',
+        src_dir,
+        'grep',
+        '--name-only',
+        '--extended-regexp',
+        '-e',
+        r'withMenuId\(R\.id\.add_to_new_tab_group\)',
+        '-e',
+        r'withMenuId\(R\.id\.add_to_tab_group\)',
+        '--',
+        'chrome/android/*.java',
+    ]
+    try:
+        out = input_api.subprocess.check_output(cmd, encoding='utf-8')
+    except Exception:  # pylint: disable=broad-except
+        # Upstream tree unavailable as a git repo (e.g. some CI envs); skip
+        # rather than fail the build.
+        return []
+
+    found = {
+        line
+        for line in out.splitlines() if line.endswith('.java')
+        and 'Test' not in line and '/junit/' not in line
+    }
+
+    unexpected = sorted(found - _TAB_GROUP_CREATION_MENUS)
+    if unexpected:
+        return [
+            output_api.PresubmitError(
+                'Ungated tab group creation menu(s) found upstream',
+                items=unexpected,
+                long_text='These menus add a tab group creation item '
+                '(add_to_new_tab_group / add_to_tab_group) but are not gated '
+                'behind the Brave "Enable tab groups" master switch. Add a '
+                'Brave subclass that strips the item in buildMenuActionItems '
+                '(see BraveTabGridContextMenuCoordinator), then add the file to '
+                '_TAB_GROUP_CREATION_MENUS in brave/PRESUBMIT.py.')
+        ]
+    return []
+
+
 def CheckNalaRasterOverridesMatchUpstream(input_api, output_api):
     """Verifies each Nala raster override still matches its upstream icon.
 

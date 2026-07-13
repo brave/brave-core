@@ -104,6 +104,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationData.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/overlays/strip/BraveTabContextMenuCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator.java",
   "../../brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter.java",
