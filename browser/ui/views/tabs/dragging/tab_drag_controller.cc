@@ -122,7 +122,13 @@ void BraveTabDragController::DetachAndAttachToNewContext(
 
   auto* region_view = get_region_view();
 
-  vertical_tab_state_resetter_ = region_view->ExpandTabStripForDragging();
+  // Snap the newly attached strip to its expanded width so the upcoming
+  // ForceLayout() (and subsequent drag positioning) sees the final bounds
+  // immediately. If we let the width animation run, OnBoundsChanged would
+  // fire each frame and re-layout the tab container under the active drag,
+  // producing visible flicker in the destination window.
+  vertical_tab_state_resetter_ =
+      region_view->ExpandTabStripForDragging(/*snap_to_expanded=*/true);
   // Relayout tabs with expanded bounds.
   attached_context_->GetPositioningDelegate()->ForceLayout();
 }
