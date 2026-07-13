@@ -9,11 +9,6 @@ permissions:
 
 jobs:
   trigger-workflow:
-    # Gate on the webhook-provided author_association rather than an org
-    # membership API call: the default GITHUB_TOKEN is not an org member and
-    # cannot see private membership, so checkMembershipForUser would wrongly
-    # reject private members. author_association is computed by GitHub, sees
-    # private membership, and cannot be spoofed by the PR author.
     if: >-
       ${{ !github.event.review.user.bot
       && contains(github.event.review.body, '/run-ci')
