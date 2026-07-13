@@ -44,6 +44,10 @@
     font-size: 13px;
     line-height: 1.5;
   }
+
+  .save-button {
+    margin-bottom: 8px;
+  }
 </style>
 
 <div>
@@ -58,6 +62,7 @@
     </textarea>
   </div>
   <cr-button
+    class="save-button"
     on-click="handleSave_"
     disabled="[[!prefs.brave.ad_block.developer_mode.value]]">
     $i18n{adblockSaveChangesButtonLabel}
