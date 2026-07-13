@@ -298,10 +298,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument(
         '--allow-fallback',
         action='store_true',
-        # The '%%' escapes the literal percent: argparse runs help strings
-        # through '% params' formatting, and a bare '%P' crashes it.
-        help='Allows falling back to a binary in %%PATH if outside a checkout.'
-    )
+        help='Allow falling back to a binary on $PATH if outside a checkout.')
     parser.add_argument('tool',
                         metavar='TOOL',
                         help='shim to run (e.g. brockit, plaster, node, npm)')
