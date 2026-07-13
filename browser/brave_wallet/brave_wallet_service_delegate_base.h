@@ -35,8 +35,8 @@ class BraveWalletServiceDelegateBase : public BraveWalletServiceDelegate {
   ~BraveWalletServiceDelegateBase() override;
 
   // Delegates created in scope of returned object will have wallet autolock
-  // enabled. Autolock is disabled in tests by default.
-  static base::AutoReset<bool> GetScopedEnableAutolockForTesting();
+  // disabled.
+  static base::AutoReset<bool> GetScopedDisableAutolockForTesting();
 
   bool HasPermission(mojom::CoinType coin,
                      const url::Origin& origin,

@@ -529,7 +529,7 @@ class KeyringService : public mojom::KeyringService {
   raw_ptr<BraveWalletServiceDelegate> delegate_ = nullptr;
   bool request_unlock_pending_ = false;
 
-  std::optional<bool> is_autolock_enabled_;
+  bool is_autolock_enabled_ = false;
 
   base::RepeatingClosure wallet_reset_cb_;
   mojo::RemoteSet<mojom::KeyringServiceObserver> observers_;

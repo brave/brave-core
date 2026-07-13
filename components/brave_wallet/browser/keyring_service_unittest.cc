@@ -90,7 +90,7 @@ namespace {
 constexpr char kPasswordBrave[] = "brave";
 constexpr char kPasswordBrave123[] = "brave123";
 
-class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
+class MockBraveWalletServiceDelegate : public TestBraveWalletServiceDelegate {
  public:
   MockBraveWalletServiceDelegate() = default;
   ~MockBraveWalletServiceDelegate() override = default;
@@ -99,9 +99,6 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
               ResetPermissionsForAccount,
               (mojom::CoinType coin, const std::string& account),
               (override));
-  MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
-  bool IsPrivateWindow() override { return false; }
-  bool IsAutolockEnabled() override { return false; }
 };
 
 struct ImportData {

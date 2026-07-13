@@ -305,7 +305,7 @@ class TestBraveWalletServiceObserver
       observer_receiver_{this};
 };
 
-class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
+class MockBraveWalletServiceDelegate : public TestBraveWalletServiceDelegate {
  public:
   MockBraveWalletServiceDelegate() = default;
   ~MockBraveWalletServiceDelegate() override = default;
@@ -317,9 +317,6 @@ class MockBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
                const std::string& tx_id,
                const GURL& tx_url),
               (override));
-  MOCK_METHOD(base::FilePath, GetWalletBaseDirectory, (), (override));
-  bool IsPrivateWindow() override { return false; }
-  bool IsAutolockEnabled() override { return false; }
 };
 
 class BraveWalletServiceUnitTest : public testing::Test {
@@ -358,6 +355,8 @@ class BraveWalletServiceUnitTest : public testing::Test {
         std::make_unique<sync_preferences::TestingPrefServiceSyncable>();
     RegisterUserProfilePrefs(prefs->registry());
     builder.SetPrefService(std::move(prefs));
+    auto scoped_disable_autolock =
+        BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting();
     builder.AddTestingFactory(
         brave_wallet::BraveWalletServiceFactory::GetInstance(),
         base::BindRepeating(
@@ -2905,21 +2904,20 @@ TEST_F(BraveWalletServiceUnitTest, DisplayTxNotification) {
 }
 
 TEST_F(BraveWalletServiceUnitTest, AutolockIsDisabledInTests) {
-  // Wallet autolock is turned off in tests by default.
+  // Wallet autolock was turned off for `service_`.
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_FALSE(service_->keyring_service()->IsLockedSync());
 
-  auto scoped_enable_autolock =
-      BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting();
-
+  // Setup wallet service with autolock enabled.
+  auto delegate = std::make_unique<TestBraveWalletServiceDelegate>();
+  delegate->set_enable_autolock(true);
   auto another_wallet_service = std::make_unique<BraveWalletService>(
-      url_loader_factory_.GetSafeWeakWrapper(),
-      BraveWalletServiceDelegate::Create(profile_.get()), profile_->GetPrefs(),
-      &local_state_);
+      url_loader_factory_.GetSafeWeakWrapper(), std::move(delegate),
+      profile_->GetPrefs(), &local_state_);
   SetupWallet(another_wallet_service->keyring_service());
 
-  // Wallet is locked after some period which matches production behavior.
+  // Wallet is locked after some period.
   EXPECT_FALSE(another_wallet_service->keyring_service()->IsLockedSync());
   task_environment_.FastForwardBy(base::Minutes(20));
   EXPECT_TRUE(another_wallet_service->keyring_service()->IsLockedSync());

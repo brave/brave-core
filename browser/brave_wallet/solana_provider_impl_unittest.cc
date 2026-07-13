@@ -125,8 +125,8 @@ class SolanaProviderImplUnitTest : public testing::Test {
 
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
-        BraveWalletServiceDelegate::Create(browser_context()),
-        profile_.GetPrefs(), &local_state_);
+        TestBraveWalletServiceDelegate::Create(), profile_.GetPrefs(),
+        &local_state_);
     json_rpc_service_ = brave_wallet_service_->json_rpc_service();
     json_rpc_service_->SetAPIRequestHelperForTesting(
         url_loader_factory_.GetSafeWeakWrapper());

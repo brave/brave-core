@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/brave_vpn/common/buildflags/buildflags.gni")
+import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 
 brave_chromium_src_chrome_test_test_support_sources = [
@@ -34,4 +35,9 @@ if (enable_brave_vpn_v1) {
 
 if (enable_tor) {
   brave_chromium_src_chrome_test_test_support_deps += [ "//brave/browser/tor" ]
+}
+
+if (enable_brave_wallet) {
+  brave_chromium_src_chrome_test_test_support_deps +=
+      [ "//brave/browser/brave_wallet" ]
 }

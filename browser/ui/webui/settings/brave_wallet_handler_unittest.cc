@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
@@ -80,7 +81,7 @@ class TestBraveWalletHandler : public BraveWalletHandler {
                                        -> std::unique_ptr<KeyedService> {
           return std::make_unique<brave_wallet::BraveWalletService>(
               url_loader_factory_.GetSafeWeakWrapper(),
-              brave_wallet::BraveWalletServiceDelegate::Create(context),
+              brave_wallet::TestBraveWalletServiceDelegate::Create(),
               user_prefs::UserPrefs::Get(context),
               g_browser_process->local_state());
         }));
