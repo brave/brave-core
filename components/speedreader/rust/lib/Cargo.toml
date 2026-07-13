@@ -19,7 +19,7 @@ include = [
 
 [dependencies]
 html5ever = "0.35.0"
-kuchikiki = { version = "0.8.8-speedreader", git = "https://github.com/atuchin-m/kuchikiki", branch = "update-some-crates-speedreader" }
+kuchikiki = "0.8.8-speedreader"
 lol_html = "2.7.0"
 regex = "1"
 serde_json = "1.0.70"
