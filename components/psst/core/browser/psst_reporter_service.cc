@@ -5,17 +5,20 @@
 
 #include "brave/components/psst/core/browser/psst_reporter_service.h"
 
+#include <utility>
+
 #include "base/values.h"
-#include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/version_info/version_info.h"
 
 namespace psst {
 
 PsstReporterService::PsstReporterService(
-    std::unique_ptr<Delegate> service_delegate,
+    ChannelNameCallback channel_name_callback,
+    ComponentVersionCallback component_version_callback,
     std::unique_ptr<PsstErrorReportUploader> report_uploader)
-    : service_delegate_(std::move(service_delegate)),
+    : channel_name_callback_(std::move(channel_name_callback)),
+      component_version_callback_(std::move(component_version_callback)),
       report_uploader_(std::move(report_uploader)) {}
 
 PsstReporterService::~PsstReporterService() = default;
@@ -33,16 +36,13 @@ void PsstReporterService::SubmitPsstErrorsReport(
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   std::optional<std::string> channel;
+  if (!channel_name_callback_.is_null()) {
+    channel = channel_name_callback_.Run();
+  }
+
   std::optional<std::string> psst_component_version;
-  if (service_delegate_) {
-    auto all_components = service_delegate_->GetComponentInfos();
-    auto it =
-        std::find_if(all_components.begin(), all_components.end(),
-                     [](const auto& c) { return c.id == kPsstComponentId; });
-    psst_component_version = (it != all_components.end())
-                                 ? std::optional<std::string>(it->version)
-                                 : std::nullopt;
-    channel = service_delegate_->GetChannelName();
+  if (!component_version_callback_.is_null()) {
+    psst_component_version = component_version_callback_.Run();
   }
 
   base::ListValue failed_tasks;

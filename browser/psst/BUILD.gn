@@ -16,8 +16,6 @@ static_library("psst") {
   sources = [
     "psst_infobar_delegate.cc",
     "psst_infobar_delegate.h",
-    "psst_reporter_service_delegate.cc",
-    "psst_reporter_service_delegate.h",
     "psst_reporter_service_factory.cc",
     "psst_settings_service_factory.cc",
     "psst_tab_web_contents_observer.cc",

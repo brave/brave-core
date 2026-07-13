@@ -9,8 +9,7 @@
 #include <memory>
 
 #include "base/containers/flat_set.h"
-#include "base/functional/callback_forward.h"
-#include "base/memory/raw_ptr.h"
+#include "base/functional/callback.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "components/keyed_service/core/keyed_service.h"
 
@@ -24,24 +23,18 @@ struct PolicyTaskCompare {
 using PolicyTasksSet = base::flat_set<PolicyTask, PolicyTaskCompare>;
 using OnSubmitPsstErrorsReportCallback = base::OnceCallback<void()>;
 
+// Returns the installed PSST component version, or nullopt if not found.
+using ComponentVersionCallback =
+    base::RepeatingCallback<std::optional<std::string>()>;
+
+// Returns the current release channel name (e.g. "stable", "beta").
+using ChannelNameCallback = base::RepeatingCallback<std::string()>;
+
 class PsstReporterService : public KeyedService {
  public:
-  class Delegate {
-   public:
-    struct ComponentInfo {
-      std::string id;
-      std::string name;
-      std::string version;
-    };
-    virtual ~Delegate() = default;
-
-    virtual std::vector<ComponentInfo> GetComponentInfos() const = 0;
-    virtual std::string GetChannelName() const = 0;
-  };
-  using PsstComponentInfo = Delegate::ComponentInfo;
-
   explicit PsstReporterService(
-      std::unique_ptr<Delegate> service_delegate,
+      ChannelNameCallback channel_name_callback,
+      ComponentVersionCallback component_version_callback,
       std::unique_ptr<PsstErrorReportUploader> report_uploader);
   ~PsstReporterService() override;
 
@@ -50,7 +43,8 @@ class PsstReporterService : public KeyedService {
                               OnSubmitPsstErrorsReportCallback callback);
 
  private:
-  std::unique_ptr<Delegate> service_delegate_;
+  ChannelNameCallback channel_name_callback_;
+  ComponentVersionCallback component_version_callback_;
   std::unique_ptr<PsstErrorReportUploader> report_uploader_;
 };
 

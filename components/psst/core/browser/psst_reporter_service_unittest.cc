@@ -11,6 +11,8 @@
 #include <utility>
 #include <vector>
 
+#include "base/functional/callback_helpers.h"
+#include "base/test/bind.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/psst/core/browser/psst_component_installer.h"
@@ -42,18 +44,6 @@ class MockPsstErrorReportUploader : public PsstErrorReportUploader {
               (override));
 };
 
-class MockPsstReporterServiceDelegate : public PsstReporterService::Delegate {
- public:
-  MockPsstReporterServiceDelegate() = default;
-  ~MockPsstReporterServiceDelegate() override = default;
-
-  MOCK_METHOD(std::vector<ComponentInfo>,
-              GetComponentInfos,
-              (),
-              (const, override));
-  MOCK_METHOD(std::string, GetChannelName, (), (const, override));
-};
-
 PolicyTask MakePolicyTask(
     std::string uid,
     std::string url,
@@ -76,6 +66,28 @@ void RunUploadCallback(std::optional<std::string>,
   std::move(callback).Run();
 }
 
+std::unique_ptr<PsstReporterService> CreateService(
+    ChannelNameCallback channel_name_callback,
+    ComponentVersionCallback component_version_callback,
+    std::unique_ptr<MockPsstErrorReportUploader> uploader) {
+  return std::make_unique<PsstReporterService>(
+      std::move(channel_name_callback), std::move(component_version_callback),
+      std::move(uploader));
+}
+
+std::unique_ptr<PsstReporterService> CreateServicePredefinedCallbacks(
+    std::optional<std::string> component_version,
+    const std::string& channel_name,
+    std::unique_ptr<MockPsstErrorReportUploader> uploader) {
+  auto cv_callback = base::BindLambdaForTesting(
+      [&]() -> std::optional<std::string> { return component_version; });
+  auto cn_callback =
+      base::BindLambdaForTesting([&]() -> std::string { return channel_name; });
+
+  return CreateService(std::move(cn_callback), std::move(cv_callback),
+                       std::move(uploader));
+}
+
 }  // namespace
 
 class PsstReporterServiceUnitTest : public testing::Test {
@@ -88,54 +100,48 @@ class PsstReporterServiceUnitTest : public testing::Test {
 };
 
 TEST_F(PsstReporterServiceUnitTest, NoFailedTasksSkipsUploadAndRunsCallback) {
-  auto delegate =
-      std::make_unique<testing::NiceMock<MockPsstReporterServiceDelegate>>();
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
-  PsstReporterService service(std::move(delegate), std::move(uploader));
+
+  auto service =
+      CreateServicePredefinedCallbacks("1", "test", std::move(uploader));
 
   EXPECT_CALL(*uploader_ptr, Upload).Times(0);
 
   base::test::TestFuture<void> future;
-  service.SubmitPsstErrorsReport(std::nullopt, /*script_version=*/1,
-                                 future.GetCallback());
+  service->SubmitPsstErrorsReport(std::nullopt, /*script_version=*/1,
+                                  future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
 TEST_F(PsstReporterServiceUnitTest,
        EmptyFailedTasksSkipsUploadAndRunsCallback) {
-  auto delegate =
-      std::make_unique<testing::NiceMock<MockPsstReporterServiceDelegate>>();
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
-  PsstReporterService service(std::move(delegate), std::move(uploader));
+
+  auto service =
+      CreateServicePredefinedCallbacks("1", "test", std::move(uploader));
 
   EXPECT_CALL(*uploader_ptr, Upload).Times(0);
 
   base::test::TestFuture<void> future;
-  service.SubmitPsstErrorsReport(PolicyTasksSet(), /*script_version=*/1,
-                                 future.GetCallback());
+  service->SubmitPsstErrorsReport(PolicyTasksSet(), /*script_version=*/1,
+                                  future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
 TEST_F(PsstReporterServiceUnitTest,
        FailedTasksUploadMatchedComponentVersionAndSortedTasks) {
-  auto delegate = std::make_unique<MockPsstReporterServiceDelegate>();
-  std::optional<std::string> expected_channel_name("channel_name");
+  const std::string expected_channel_name("channel_name");
   const auto expected_brave_version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
-  const std::vector<PsstReporterService::PsstComponentInfo> components{
-      {"other-id", "other-name", "0.0.1"},
-      {kPsstComponentId, "psst", "9.8.7"},
-  };
-  EXPECT_CALL(*delegate, GetComponentInfos)
-      .WillOnce(testing::Return(components));
-  EXPECT_CALL(*delegate, GetChannelName)
-      .WillOnce(testing::Return(expected_channel_name.value()));
 
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
-  PsstReporterService service(std::move(delegate), std::move(uploader));
+
+  std::optional<std::string> component_version = "1";
+  auto service = CreateServicePredefinedCallbacks(
+      component_version, expected_channel_name, std::move(uploader));
 
   auto failed_task =
       MakePolicyTask("uid-a", "https://a.example", "task a", "boom");
@@ -148,8 +154,8 @@ TEST_F(PsstReporterServiceUnitTest,
   expected_tasks.Append(failed_task.ToValue());
 
   EXPECT_CALL(*uploader_ptr,
-              Upload(std::optional<std::string>("9.8.7"), 42,
-                     expected_brave_version, expected_channel_name, _, _))
+              Upload(component_version, 42, expected_brave_version,
+                     std::optional<std::string>(expected_channel_name), _, _))
       .WillOnce([&](std::optional<std::string>, const int, const std::string&,
                     std::optional<std::string>, base::ListValue failed_tasks,
                     base::OnceCallback<void()> callback) {
@@ -158,45 +164,45 @@ TEST_F(PsstReporterServiceUnitTest,
       });
 
   base::test::TestFuture<void> future;
-  service.SubmitPsstErrorsReport(std::move(tasks), 42, future.GetCallback());
+  service->SubmitPsstErrorsReport(std::move(tasks), 42, future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
 TEST_F(PsstReporterServiceUnitTest,
        SkipsUploadWhenNoTasksHaveErrorDescription) {
-  auto delegate = std::make_unique<MockPsstReporterServiceDelegate>();
-  std::optional<std::string> expected_channel_name("channel_name");
-  const std::vector<PsstReporterService::PsstComponentInfo> components{
-      {"other-id", "other-name", "0.0.1"},
-  };
-  EXPECT_CALL(*delegate, GetComponentInfos)
-      .WillOnce(testing::Return(components));
-  EXPECT_CALL(*delegate, GetChannelName)
-      .WillOnce(testing::Return(expected_channel_name.value()));
+  const std::string expected_channel_name("channel_name");
+  const auto expected_brave_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
-  PsstReporterService service(std::move(delegate), std::move(uploader));
+
+  std::optional<std::string> component_version = "1";
+  auto service = CreateServicePredefinedCallbacks(
+      component_version, expected_channel_name, std::move(uploader));
 
   PolicyTasksSet tasks;
   tasks.insert(MakePolicyTask("uid-a", "https://a.example", "task a"));
 
-  EXPECT_CALL(*uploader_ptr, Upload(std::optional<std::string>(std::nullopt), _,
-                                    _, expected_channel_name, _, _))
+  EXPECT_CALL(*uploader_ptr,
+              Upload(std::optional<std::string>(std::nullopt), _,
+                     expected_brave_version,
+                     std::optional<std::string>(expected_channel_name), _, _))
       .Times(0);
 
   base::test::TestFuture<void> future;
-  service.SubmitPsstErrorsReport(std::move(tasks), 1, future.GetCallback());
+  service->SubmitPsstErrorsReport(std::move(tasks), 1, future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
-TEST_F(PsstReporterServiceUnitTest,
-       FailedTasksUploadWithoutDelegateSkipsComponentVersionLookup) {
+TEST_F(PsstReporterServiceUnitTest, FailedTasksUploadWithNullServiceCallbacks) {
+  const auto expected_brave_version =
+      version_info::GetBraveVersionWithoutChromiumMajorVersion();
   auto uploader = std::make_unique<MockPsstErrorReportUploader>();
   auto* uploader_ptr = uploader.get();
-  PsstReporterService service(/*service_delegate=*/nullptr,
-                              std::move(uploader));
 
+  auto service = CreateService(base::NullCallback(), base::NullCallback(),
+                               std::move(uploader));
   auto failed_task =
       MakePolicyTask("uid-a", "https://a.example", "task a", "boom");
   PolicyTasksSet tasks;
@@ -207,7 +213,8 @@ TEST_F(PsstReporterServiceUnitTest,
 
   EXPECT_CALL(
       *uploader_ptr,
-      Upload(_, _, _, _,
+      Upload(std::optional<std::string>(std::nullopt), 3,
+             expected_brave_version, std::optional<std::string>(std::nullopt),
              testing::Truly([&expected_tasks](const base::ListValue& actual) {
                return actual == expected_tasks;
              }),
@@ -216,7 +223,7 @@ TEST_F(PsstReporterServiceUnitTest,
       .WillOnce(&RunUploadCallback);
 
   base::test::TestFuture<void> future;
-  service.SubmitPsstErrorsReport(std::move(tasks), 3, future.GetCallback());
+  service->SubmitPsstErrorsReport(std::move(tasks), 3, future.GetCallback());
   EXPECT_TRUE(future.Wait());
 }
 
