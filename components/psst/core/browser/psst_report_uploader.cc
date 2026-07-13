@@ -10,6 +10,8 @@
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "net/base/load_flags.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/simple_url_loader.h"
 
 namespace {
 constexpr char kJsonContentType[] = "application/json";
@@ -118,8 +120,8 @@ void PsstErrorReportUploader::OnSimpleURLLoaderComplete(
   const bool success = !!response_body;
 
   if (!success) {
-    LOG(ERROR) << "Uploading psst report failed - please try again later!"
-               << std::endl;
+    LOG(WARNING) << "Uploading psst report failed - please try again later!"
+                 << std::endl;
   }
 
   if (callback) {
