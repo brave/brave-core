@@ -18,6 +18,7 @@ import MockContext, {
 import { UntrustedConversationContext } from '../../untrusted_conversation_context'
 import type { AssistantResponseProps } from '../assistant_response'
 import ConversationEntries, { highlightRichText } from '.'
+import styles from './style.module.scss'
 
 const assistantResponseMock = jest.fn((props: AssistantResponseProps) => (
   <div />
@@ -48,8 +49,6 @@ jest.mock('../model_intro', () => ({
     />
   ),
 }))
-
-import styles from './style.module.scss'
 
 describe('ConversationEntries ModelIntro placement', () => {
   it('renders inline markers after the anchored entry pair', () => {
