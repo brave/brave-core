@@ -19,6 +19,7 @@
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/psst/core/common/psst_script_responses.h"
 #include "brave/components/version_info/version_info.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
