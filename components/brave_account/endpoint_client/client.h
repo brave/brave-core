@@ -75,7 +75,8 @@ class Client {
     }
 
     auto resource_request = std::make_unique<network::ResourceRequest>();
-    resource_request->url = Endpoint::URL();
+    resource_request->url = request.url_replacements.Apply(Endpoint::URL());
+    CHECK(resource_request->url.is_valid());
     resource_request->method = Request::Method();
     resource_request->load_flags = net::LOAD_BYPASS_CACHE |
                                    net::LOAD_DISABLE_CACHE |
@@ -95,6 +96,8 @@ class Client {
       simple_url_loader->AttachStringForUpload(std::move(*upload_data),
                                                Request::ContentType());
     }
+    simple_url_loader->SetRetryOptions(request.retry_options.max_retries,
+                                       request.retry_options.retry_mode);
     simple_url_loader->SetTimeoutDuration(request.timeout_duration);
     simple_url_loader->DownloadToStringOfUnboundedSizeUntilCrashAndDie(
         url_loader_factory.get(),
