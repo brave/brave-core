@@ -11,6 +11,7 @@
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/brave_welcome_page/brave_welcome_page.mojom.h"
 #include "brave/browser/ui/webui/brave_welcome_page/welcome_page_handler.h"
+#include "brave/browser/ui/webui/settings/brave_import_bulk_data_handler.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/settings/settings_default_browser_handler.h"
@@ -40,6 +41,8 @@ BraveWelcomePageUI::BraveWelcomePageUI(content::WebUI* web_ui)
 
   AddBackgroundColorToSource(source, web_ui->GetWebContents());
 
+  web_ui->AddMessageHandler(
+      std::make_unique<settings::BraveImportBulkDataHandler>());
   web_ui->AddMessageHandler(
       std::make_unique<settings::DefaultBrowserHandler>());
 

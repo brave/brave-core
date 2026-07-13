@@ -8,6 +8,7 @@ import * as React from 'react'
 import { useStepList } from './use_step_list'
 import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
+import { ImportStep } from './import_step'
 
 import { style } from './app.style'
 
@@ -57,6 +58,13 @@ export function App() {
       case 'welcome':
         return (
           <WelcomeStep
+            onNext={stepForward}
+            onBack={stepBack}
+          />
+        )
+      case 'import':
+        return (
+          <ImportStep
             onNext={stepForward}
             onBack={stepBack}
           />
