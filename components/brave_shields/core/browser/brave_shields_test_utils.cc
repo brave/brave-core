@@ -11,19 +11,15 @@ namespace brave_shields {
 
 // Declared in brave_shields_settings_service.cc.
 extern uint32_t g_stable_farbling_tokens_seed;
-extern std::optional<base::Token> g_profile_token_allowed_for_testing;
+extern std::optional<base::Token> g_profile_token_for_testing;
 
 ScopedStableFarblingTokensForTesting::ScopedStableFarblingTokensForTesting(
-    uint32_t seed)
-    : scoped_stable_farbling_token_seed_(&g_stable_farbling_tokens_seed, seed) {
-}
+    uint32_t seed,
+    base::Token profile_token)
+    : scoped_stable_farbling_token_seed_(&g_stable_farbling_tokens_seed, seed),
+      profile_token_(&g_profile_token_for_testing, profile_token) {}
 
 ScopedStableFarblingTokensForTesting::~ScopedStableFarblingTokensForTesting() =
     default;
-
-ScopedProfileTokenForTesting::ScopedProfileTokenForTesting(base::Token token)
-    : profile_token_(&g_profile_token_allowed_for_testing, token) {}
-
-ScopedProfileTokenForTesting::~ScopedProfileTokenForTesting() = default;
 
 }  // namespace brave_shields

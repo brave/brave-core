@@ -25,11 +25,10 @@ namespace brave_shields {
 
 // Used for stable farbling token generation in tests when is set to non-zero.
 // Non-anonymous to be accesible from ":test_support" target.
-uint32_t g_stable_farbling_tokens_seed = 0;
-
 // Don't rely on it directly for tests. Use it via
-// ScopedAllowlistedProfileTokenForTesting
-std::optional<base::Token> g_profile_token_allowed_for_testing;
+// ScopedStableFarblingTokensForTesting
+uint32_t g_stable_farbling_tokens_seed = 0;
+std::optional<base::Token> g_profile_token_for_testing;
 
 namespace {
 base::DictValue GetShieldsMetadata(HostContentSettingsMap* map,
@@ -57,25 +56,26 @@ uint64_t PersistentHashU64(base::span<const uint8_t> data) {
          base::PersistentHash(base::byte_span_from_ref(hash));
 }
 
-static base::Token CreateFarblingToken(const GURL& url) {
+base::Token CreateFarblingToken(const GURL& url) {
   if (!g_stable_farbling_tokens_seed) {
     return base::Token::CreateRandom();
-  } else {
-    CHECK_IS_TEST();
-    const uint32_t high =
-        base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
-    const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
-    return base::Token(high, low);
   }
+
+  CHECK_IS_TEST();
+  const uint32_t high =
+      base::PersistentHash(url.host()) + g_stable_farbling_tokens_seed - 1;
+  const uint32_t low = base::PersistentHash(base::byte_span_from_ref(high));
+  return base::Token(high, low);
 }
 
-static base::Token CreateProfileLevelFarblingToken() {
+base::Token CreateProfileLevelFarblingToken() {
   if (!g_stable_farbling_tokens_seed) {
     return base::Token::CreateRandom();
   }
 
-  return g_profile_token_allowed_for_testing.has_value()
-             ? g_profile_token_allowed_for_testing.value()
+  CHECK_IS_TEST();
+  return g_profile_token_for_testing.has_value()
+             ? g_profile_token_for_testing.value()
              : base::Token::CreateRandom();
 }
 
@@ -406,8 +406,7 @@ base::Token BraveShieldsSettingsService::GetFarblingToken(
   }
 
   // Get the farbling token from the Shields metadata.
-  auto shields_metadata =
-      brave_shields::GetShieldsMetadata(&*host_content_settings_map_, url);
+  auto shields_metadata = GetShieldsMetadata(&*host_content_settings_map_, url);
   if (auto* farbling_token = shields_metadata.FindString("farbling_token")) {
     token = base::Token::FromString(*farbling_token).value_or(base::Token());
   }

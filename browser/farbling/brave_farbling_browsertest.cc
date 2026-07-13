@@ -84,7 +84,7 @@ class BraveFarblingBrowserTest : public InProcessBrowserTest,
   // By default farbling tokens are stable in tests. Passing 0 makes farbling
   // tokens be random even in tests.
   brave_shields::ScopedStableFarblingTokensForTesting
-      scoped_random_farbling_tokens_{0};
+      scoped_random_farbling_tokens_{0, base::Token()};
   base::test::ScopedFeatureList scoped_feature_list_;
   GURL top_level_page_url_;
   GURL farbling_url_;
@@ -102,10 +102,7 @@ INSTANTIATE_TEST_SUITE_P(
 IN_PROC_BROWSER_TEST_P(BraveFarblingBrowserTest, NavigatorPluginsAreFarbled) {
   // This removes the random noise added from the global seed.
   brave_shields::ScopedStableFarblingTokensForTesting
-      scoped_stable_farbling_tokens{1};
-  // Add controlled noise from profile.
-  brave_shields::ScopedProfileTokenForTesting scoped_profile_token{
-      base::Token(0, 1)};
+      scoped_stable_farbling_tokens{1, base::Token(0, 1)};
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   auto plugins_str = content::EvalJs(contents(), kGetPluginsAsStringScript);

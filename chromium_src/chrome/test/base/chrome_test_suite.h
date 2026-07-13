@@ -24,9 +24,7 @@ class ChromeTestSuite : public ChromeTestSuite_ChromiumImpl {
  private:
   // Use stable farbling both in Brave and Chromium tests.
   brave_shields::ScopedStableFarblingTokensForTesting
-      scoped_stable_farbling_tokens_{1};
-  brave_shields::ScopedProfileTokenForTesting scoped_stable_profile_token_{
-      base::Token()};
+      scoped_stable_farbling_tokens_{1, base::Token()};
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_TEST_BASE_CHROME_TEST_SUITE_H_
