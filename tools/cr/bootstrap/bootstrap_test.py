@@ -717,11 +717,9 @@ class ArgumentForwardingTest(unittest.TestCase):
         self.assertEqual(self._split(['brockit']), (False, 'brockit', []))
 
     def test_own_help_renders_without_crashing(self):
-        # argparse expands help strings through `% params`; a bare `%` (the
-        # `%PATH` typo) raised ValueError. The `%%` escape must survive it and
-        # render a literal `%PATH`.
         help_text = launcher.build_parser().format_help()
-        self.assertIn('%PATH', help_text)
+        self.assertIn('$PATH', help_text)
+        self.assertNotIn('%', help_text)
 
 
 if __name__ == '__main__':
