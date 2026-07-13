@@ -9,10 +9,10 @@ import org.objectweb.asm.ClassVisitor;
 
 public class BraveAutofillOptionsFragmentBaseClassAdapter extends BraveClassVisitor {
     static String sAutofillOptionsFragmentClassName =
-            "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment";
+            "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment";
 
     static String sBraveAutofillOptionsFragmentBaseClassName =
-            "org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase";
+            "org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentBase"; // presubmit: ignore-long-line
 
     public BraveAutofillOptionsFragmentBaseClassAdapter(ClassVisitor visitor) {
         super(visitor);

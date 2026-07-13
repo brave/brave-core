@@ -388,10 +388,10 @@ public class BytecodeTest {
                 classExists("org/chromium/chrome/browser/autofill/AutofillClientProviderUtils"));
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment"));
+                        "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
-                        "org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 classExists(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder")); // presubmit: ignore-long-line
@@ -634,7 +634,8 @@ public class BytecodeTest {
                         View.class,
                         int.class,
                         int.class,
-                        int.class));
+                        int.class,
+                        boolean.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -744,14 +745,14 @@ public class BytecodeTest {
                         PrefService.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment",
+                        "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment", // presubmit: ignore-long-line
                         "createRequiredArgs",
                         MethodModifier.STATIC,
                         Bundle.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment",
+                        "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment", // presubmit: ignore-long-line
                         "onCreate",
                         MethodModifier.REGULAR,
                         void.class,
@@ -3030,8 +3031,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/autofill/options/AutofillOptionsFragment",
-                        "org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentBase")); // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/autofill/settings/options/AutofillOptionsFragment", // presubmit: ignore-long-line
+                        "org/chromium/chrome/browser/autofill/settings/options/BraveAutofillOptionsFragmentBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
                         "org/chromium/chrome/browser/omnibox/LocationBarPhone",
