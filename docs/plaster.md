@@ -144,10 +144,12 @@ YAML).
 The keyed rewrite (`regex:` above) is a **rewriter**. There is on-going work to
 introduce more rewriters. These are the ones we have supported for now.
 
-| Rewriter       | Kind | Description                                      |
-| -------------- | ---- | ------------------------------------------------ |
-| `regex`        | text | A Python `re.subn` substitution (the default).   |
-| `make_virtual` | AST  | Prepends `virtual ` to a C++ method declaration. |
+| Rewriter       | Kind | Description                                       |
+| -------------- | ---- | ------------------------------------------------- |
+| `regex`        | text | A Python `re.subn` substitution (the default).    |
+| `make_virtual` | AST  | Prepends `virtual ` to a C++ method declaration.  |
+| `add_friend`   | AST  | Adds a `friend` declaration to a private section. |
+| `drop_final`   | AST  | Removes `final` from a C++ class declaration.     |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
