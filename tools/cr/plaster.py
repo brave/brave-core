@@ -16,8 +16,10 @@ import mmap
 from pathlib import Path, PurePath
 import json
 import os
+import platform
 import re
 import string
+import subprocess
 import sys
 import textwrap
 from types import MappingProxyType
@@ -1032,6 +1034,171 @@ class RewritersEval:
                     f'{self._source}: rewriter {op_id!r} result node '
                     f'{spec["result"]["node"]!r} does not match matcher '
                     f'{ref!r} node {matcher_node!r}')
+
+
+def _ast_grep_platform_dir() -> str:
+    """Host-OS token in ast-grep's per-platform dir name (`ast-grep-<os>`).
+
+    Mirrors `_platform_dir()` in third_party/ast-grep/build_ast_grep.py.
+    """
+    if sys.platform == 'darwin':
+        return 'mac_arm64' if platform.machine() == 'arm64' else 'mac'
+    if sys.platform == 'win32':
+        return 'win'
+    return 'linux'
+
+
+# Path to the ast-grep binary provisioned under brave/third_party/ast-grep.
+_AST_GREP_EXE = '.exe' if sys.platform == 'win32' else ''
+AST_GREP_BIN = (Path(__file__).resolve().parents[2] / 'third_party' /
+                'ast-grep' / f'ast-grep-{_ast_grep_platform_dir()}' / 'bin' /
+                f'ast-grep{_AST_GREP_EXE}')
+
+
+class AstGrepError(PlasterError):
+    """Raised when the ast-grep binary fails to run a rule."""
+
+
+@dataclass(frozen=True)
+class AstMatch:
+    """The byte range of a single ast-grep match within the scanned source.
+
+    `start` is the match's byte offset and `length` its size in bytes; `end`
+    is the exclusive offset one past it. The matched text is not stored -- read
+    it back from the source (`source[start:end]`) so the bytes have a single
+    source of truth, regardless of multi-byte content upstream.
+    """
+
+    start: int
+    length: int
+
+    @property
+    def end(self) -> int:
+        """Exclusive byte offset one past the match (`start + length`)."""
+        return self.start + self.length
+
+
+def _indent_yaml(text: str, spaces: int = 2) -> str:
+    """Indent every non-blank line of `text` by `spaces`, for nesting YAML."""
+    pad = ' ' * spaces
+    return '\n'.join(pad + line if line.strip() else line
+                     for line in text.splitlines())
+
+
+def run_ast_grep(*, language: str, rule_body: str,
+                 source: str) -> list[AstMatch]:
+    """Run an ast-grep rule against in-memory source and return its matches.
+
+    This function is the main entrypoint for the ast-grep binary invocation.
+
+    `rule_body` is an ast-grep YAML rule body (the part under `rule:`). Source
+    is fed over stdin with an explicit `--lang`. The reported offsets are into
+    `source`'s UTF-8 bytes, regardless of how stdin is encoded.
+    """
+    doc = (f'id: plaster\nlanguage: {language}\nrule:\n' +
+           _indent_yaml(rule_body))
+    # Route through terminal.run for consistent logging / infra keep-alive,
+    # like the rest of plaster's subprocess use. It runs with check=True, so a
+    # non-zero exit (e.g. a bad rule) raises CalledProcessError.
+    try:
+        result = terminal.run([
+            AST_GREP_BIN, 'scan', '--stdin', '--inline-rules', doc,
+            '--json=stream'
+        ],
+                              stdin=source)
+    except subprocess.CalledProcessError as e:
+        raise AstGrepError(f'ast-grep failed ({e.returncode}): '
+                           f'{(e.stderr or "").strip()}') from e
+
+    matches = []
+    for line in result.stdout.splitlines():
+        if not line.strip():
+            continue
+        obj = json.loads(line)
+        span = obj['range']['byteOffset']
+        matches.append(
+            AstMatch(start=span['start'], length=span['end'] - span['start']))
+    return matches
+
+
+class AstRewriter:
+    """Applies ast-grep rewriter ops to the contents of a single file.
+
+    Constructed with an already-parsed `RewritersEval` and the target file's
+    contents. `apply` runs one rewriter op (by id) over the current contents,
+    mutating them in place and returning how many places changed; call it
+    repeatedly to accumulate edits. Op-specific conveniences (which op id and
+    which adjacent tokens to consume) belong with the `Rewriter` classes that
+    drive this engine, not here.
+    """
+
+    def __init__(self, rewriters: RewritersEval, content: str):
+        self._rewriters = rewriters
+        self._content = content
+
+    @property
+    def content(self) -> str:
+        """The current file contents, reflecting every applied rewrite."""
+        return self._content
+
+    def apply(self,
+              op_id: str,
+              args: dict[str, str],
+              *,
+              consume_before: str = '',
+              consume_after: str = '') -> int:
+        """Run rewriter `op_id` with `args`, mutate content, return count.
+
+        Locates nodes via the op's matcher template, applies the op's `replace`
+        regex substitution (with `args` filled into the replacement template)
+        to each matched node, and splices the results back into the held
+        contents from the end so earlier byte offsets stay valid. Returns the
+        total number of substitutions made.
+
+        `consume_before` / `consume_after` are literals the op assumes
+        immediately precede / follow each matched node. They are folded into the
+        rewritten span used when the node kind stops short of an adjacent
+        token (e.g. the `:` after an access_specifier, or the space before a
+        `final` specifier). They are engine details, not part of the rewriters
+        spec.
+        """
+        rewriter = self._rewriters.rewriter(op_id)
+        matcher = self._rewriters.matcher(rewriter['matcher'])
+        language = self._rewriters.language_of(op_id)
+        rule_body = matcher['template'].format(**args)
+
+        matches = run_ast_grep(language=language,
+                               rule_body=rule_body,
+                               source=self._content)
+
+        pattern = rewriter['replace']['re_pattern']
+        replacement = rewriter['replace']['replace'].format(**args)
+        before = consume_before.encode('utf-8')
+        after = consume_after.encode('utf-8')
+
+        source = self._content.encode('utf-8')
+        edits = []
+        total = 0
+        for match in matches:
+            start = match.start - len(before)
+            end = match.end + len(after)
+            if (before and source[start:match.start]
+                    != before) or (after and source[match.end:end] != after):
+                # An assumed adjacent token isn't there; skip rather than
+                # corrupt. The caller's count check will flag the shortfall.
+                continue
+            text = source[match.start:match.end].decode('utf-8')
+            new_text, changes = re.subn(pattern, replacement, text)
+            if changes:
+                edits.append((start, end, new_text))
+                total += changes
+
+        # Match offsets are into the source's UTF-8 bytes, so splice on bytes.
+        # Apply from the end so each splice leaves earlier offsets unchanged.
+        for start, end, new_text in sorted(edits, reverse=True):
+            source = source[:start] + new_text.encode('utf-8') + source[end:]
+        self._content = source.decode('utf-8')
+        return total
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
