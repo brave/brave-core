@@ -1492,6 +1492,265 @@ class RewritersEvalTest(unittest.TestCase):
                 {'append': '!'}), 'Wrong keys')
 
 
+# ast-grep matcher templates used to build synthetic RewritersEval specs for
+# the engine tests below. The shipped rewriters.pyl is empty until the ops that
+# consume these land; these mirror the specs plaster will ship then, so the
+# engine can be exercised end-to-end against the real binary in the meantime.
+_METHOD_DECL_RULE = ('any:\n'
+                     '  - kind: field_declaration\n'
+                     '  - kind: declaration\n'
+                     'has:\n'
+                     '  kind: function_declarator\n'
+                     '  stopBy: end\n'
+                     '  has:\n'
+                     '    field: declarator\n'
+                     '    regex: ^{method_name}$\n'
+                     'inside:\n'
+                     '  kind: class_specifier\n'
+                     '  stopBy: end\n'
+                     '  has:\n'
+                     '    field: name\n'
+                     '    regex: ^{class_name}$\n')
+
+_PRIVATE_SECTION_RULE = ('kind: access_specifier\n'
+                         'regex: ^private$\n'
+                         'inside:\n'
+                         '  kind: class_specifier\n'
+                         '  stopBy: end\n'
+                         '  has:\n'
+                         '    field: name\n'
+                         '    regex: ^{class_name}$\n')
+
+_FINAL_RULE = ('kind: virtual_specifier\n'
+               'regex: ^final$\n'
+               'inside:\n'
+               '  kind: class_specifier\n'
+               '  has:\n'
+               '    field: name\n'
+               '    regex: ^{class_name}$\n')
+
+_SYNTHETIC_SPEC = {
+    'ast.matcher': {
+        'cxx.find_class_method_decl': {
+            'args': ['class_name', 'method_name'],
+            'template': _METHOD_DECL_RULE,
+            'result': {
+                'node': 'field_declaration'
+            },
+        },
+        'cxx.find_class_private_section': {
+            'args': ['class_name'],
+            'template': _PRIVATE_SECTION_RULE,
+            'result': {
+                'node': 'access_specifier'
+            },
+        },
+        'cxx.find_class_final': {
+            'args': ['class_name'],
+            'template': _FINAL_RULE,
+            'result': {
+                'node': 'virtual_specifier'
+            },
+        },
+    },
+    'ast.rewriter': {
+        'cxx.make_virtual': {
+            'matcher': 'cxx.find_class_method_decl',
+            'replace': {
+                're_pattern': '^',
+                'replace': 'virtual '
+            },
+            'result': {
+                'node': 'field_declaration'
+            },
+        },
+        'cxx.add_friend': {
+            'matcher': 'cxx.find_class_private_section',
+            'replace': {
+                're_pattern': '$',
+                'replace': ':\\n  friend {friend_type};'
+            },
+            'result': {
+                'node': 'access_specifier'
+            },
+        },
+        'cxx.remove_final': {
+            'matcher': 'cxx.find_class_final',
+            'replace': {
+                're_pattern': '^final$',
+                'replace': ''
+            },
+            'result': {
+                'node': 'virtual_specifier'
+            },
+        },
+    },
+}
+
+
+class RunAstGrepTest(unittest.TestCase):
+    """Integration tests for plaster.run_ast_grep (real ast-grep binary)."""
+
+    # A small C++ source. ASCII-only, so byte offsets equal character indices.
+    _SRC = 'class C {\n  void Foo();\n  void Bar();\n};\n'
+
+    def _find(self, method_name: str, source: str) -> list[plaster.AstMatch]:
+        body = _METHOD_DECL_RULE.format(class_name='C',
+                                        method_name=method_name)
+        return plaster.run_ast_grep(language='cpp',
+                                    rule_body=body,
+                                    source=source)
+
+    def test_finds_match_with_byte_offsets(self):
+        matches = self._find('Foo', self._SRC)
+        self.assertEqual(len(matches), 1)
+        # AstMatch is a byte range; the text is read back from the source.
+        raw = self._SRC.encode('utf-8')
+        m = matches[0]
+        self.assertEqual(raw[m.start:m.end], b'void Foo();')
+        self.assertEqual(m.length, len(b'void Foo();'))
+        self.assertEqual(m.end, m.start + m.length)
+
+    def test_no_match_returns_empty(self):
+        self.assertEqual(self._find('Nope', self._SRC), [])
+
+    def test_overloads_each_match(self):
+        source = 'class C {\n  void Foo();\n  void Foo(int x);\n};\n'
+        raw = source.encode('utf-8')
+        matches = self._find('Foo', source)
+        self.assertEqual([raw[m.start:m.end].decode() for m in matches],
+                         ['void Foo();', 'void Foo(int x);'])
+
+    def test_raises_on_bad_rule(self):
+        with self.assertRaises(plaster.AstGrepError):
+            plaster.run_ast_grep(language='cpp',
+                                 rule_body='kind: not_a_real_kind',
+                                 source='int x;\n')
+
+
+class AstRewriterTest(unittest.TestCase):
+    """Integration tests for plaster.AstRewriter (real ast-grep binary).
+
+    Driven with a synthetic RewritersEval built from `_SYNTHETIC_SPEC`, since
+    the shipped rewriters.pyl carries no ops yet.
+    """
+
+    _SRC = 'class C {\n  void Foo();\n  void Bar();\n};\n'
+
+    def _rewriter(self, source: str = _SRC) -> plaster.AstRewriter:
+        return plaster.AstRewriter(
+            plaster.RewritersEval(repr(_SYNTHETIC_SPEC)), source)
+
+    def test_make_virtual_single(self):
+        rewriter = self._rewriter()
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        self.assertEqual(count, 1)
+        self.assertEqual(
+            rewriter.content,
+            'class C {\n  virtual void Foo();\n  void Bar();\n};\n')
+
+    def test_make_virtual_destructor(self):
+        # Destructors parse as `declaration` with a `destructor_name`, not the
+        # `field_declaration`/`field_identifier` of a regular method.
+        rewriter = self._rewriter('class C {\n public:\n  ~C();\n};\n')
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': '~C'
+        })
+        self.assertEqual(count, 1)
+        self.assertEqual(rewriter.content,
+                         'class C {\n public:\n  virtual ~C();\n};\n')
+
+    def test_make_virtual_overloads_count_each(self):
+        rewriter = self._rewriter(
+            'class C {\n  void Foo();\n  void Foo(int x);\n};\n')
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        self.assertEqual(count, 2)
+        # Splicing from the end keeps the earlier overload's offset valid.
+        self.assertEqual(
+            rewriter.content, 'class C {\n  virtual void Foo();\n'
+            '  virtual void Foo(int x);\n};\n')
+
+    def test_no_match_leaves_content_unchanged(self):
+        rewriter = self._rewriter()
+        self.assertEqual(
+            rewriter.apply('cxx.make_virtual', {
+                'class_name': 'C',
+                'method_name': 'Nope'
+            }), 0)
+        self.assertEqual(rewriter.content, self._SRC)
+
+    def test_content_accumulates_across_calls(self):
+        rewriter = self._rewriter()
+        rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Bar'
+        })
+        self.assertEqual(
+            rewriter.content,
+            'class C {\n  virtual void Foo();\n  virtual void Bar();\n};\n')
+
+    def test_add_friend_inserts_after_private_colon(self):
+        rewriter = self._rewriter(
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n')
+        count = rewriter.apply('cxx.add_friend', {
+            'class_name': 'C',
+            'friend_type': 'class BraveC'
+        },
+                               consume_after=':')
+        self.assertEqual(count, 1)
+        # The friend lands as the first private line; the `:` is not duplicated.
+        self.assertEqual(
+            rewriter.content, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n};\n')
+
+    def test_add_friend_no_private_section(self):
+        rewriter = self._rewriter('class C {\n public:\n  void Foo();\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.add_friend', {
+                'class_name': 'C',
+                'friend_type': 'class BraveC'
+            },
+                           consume_after=':'), 0)
+        self.assertEqual(rewriter.content,
+                         'class C {\n public:\n  void Foo();\n};\n')
+
+    def test_remove_final_with_base(self):
+        # The class `final` is dropped (and the space before it); a method's
+        # trailing `final` is left untouched.
+        rewriter = self._rewriter(
+            'class C final : public Base {\n  void f() final;\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+                           consume_before=' '), 1)
+        self.assertEqual(rewriter.content,
+                         'class C : public Base {\n  void f() final;\n};\n')
+
+    def test_remove_final_no_base(self):
+        rewriter = self._rewriter('class C final {\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+                           consume_before=' '), 1)
+        self.assertEqual(rewriter.content, 'class C {\n};\n')
+
+    def test_remove_final_absent(self):
+        rewriter = self._rewriter('class C {\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+                           consume_before=' '), 0)
+        self.assertEqual(rewriter.content, 'class C {\n};\n')
+
+
 class HelpTest(unittest.TestCase):
     """gn-style `plaster --help [topic]` overview, categories and topic docs.
 
