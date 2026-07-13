@@ -6,18 +6,44 @@
 #include "brave/browser/psst/psst_reporter_service_factory.h"
 
 #include <memory>
+#include <optional>
 
 #include "base/check_deref.h"
+#include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/no_destructor.h"
-#include "brave/browser/psst/psst_reporter_service_delegate.h"
+#include "brave/common/brave_channel_info.h"
+#include "brave/components/psst/core/browser/psst_component_installer.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/psst/core/browser/psst_reporter_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/profiles/profile_selections.h"
+#include "components/component_updater/component_updater_service.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/storage_partition.h"
+
+namespace {
+
+std::optional<std::string> GetPsstComponentVersion(
+    component_updater::ComponentUpdateService* component_update_service) {
+  if (!component_update_service) {
+    return std::nullopt;
+  }
+
+  auto components(component_update_service->GetComponents());
+  auto it = std::find_if(
+      components.begin(), components.end(),
+      [](const auto& c) { return c.id == psst::kPsstComponentId; });
+
+  if (it == components.end()) {
+    return std::nullopt;
+  }
+
+  return it->version.GetString();
+}
+
+}  // namespace
 
 // static
 PsstReporterServiceFactory* PsstReporterServiceFactory::GetInstance() {
@@ -47,9 +73,11 @@ PsstReporterServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* default_storage_partition = context->GetDefaultStoragePartition();
   auto report_uploader = std::make_unique<psst::PsstErrorReportUploader>(
       default_storage_partition->GetURLLoaderFactoryForBrowserProcess());
+  auto cv_callback = base::BindRepeating(
+      &GetPsstComponentVersion, g_browser_process->component_updater());
+  auto cn_callback = base::BindRepeating(&brave::GetChannelName);
 
   return std::make_unique<psst::PsstReporterService>(
-      std::make_unique<psst::PsstReporterServiceDelegate>(
-          g_browser_process->component_updater()),
+      std::move(cn_callback), std::move(cv_callback),
       std::move(report_uploader));
 }
