@@ -38,14 +38,11 @@ void PsstErrorReportUploader::Upload(
     base::ListValue failed_tasks,
     base::OnceCallback<void()> callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  std::string api_key = brave_stats::GetAPIKey();
 
   const GURL upload_url(BUILDFLAG(PSST_REPORT_ENDPOINT));
-
   base::DictValue report_details_dict;
 
   report_details_dict.Set(kApiKeyField, base::Value(brave_stats::GetAPIKey()));
-
   report_details_dict.Set(kVersionField, brave_version);
   report_details_dict.Set(kChannelField, channel.value_or(kNotAvailable));
   report_details_dict.Set(kPsstCrxComponentVersionField,
