@@ -9,7 +9,8 @@
 #include <utility>
 
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
-#include "chrome/browser/ui/browser_window/test/mock_browser_window_interface.h"
+#include "brave/browser/ui/views/tabs/mock_browser_window_interface_with_vertical_tab_controller.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/test_tab_strip_model_delegate.h"
 #include "chrome/browser/ui/views/tabs/fake_base_tab_strip_controller.h"
@@ -112,7 +113,8 @@ TEST_F(BraveTabGroupHeaderTest, TitleChipClipPathClearedInVerticalTabs) {
   TestTabStripModelDelegate tab_strip_model_delegate;
   TabStripModel tab_strip_model(&tab_strip_model_delegate, &profile);
 
-  testing::NiceMock<MockBrowserWindowInterface> mock_browser_window;
+  testing::NiceMock<MockBrowserWindowInterfaceWithVerticalTabController>
+      mock_browser_window(profile.GetPrefs());
   EXPECT_CALL(mock_browser_window, GetProfile())
       .WillRepeatedly(testing::Return(&profile));
   EXPECT_CALL(testing::Const(mock_browser_window), GetProfile())
