@@ -213,10 +213,11 @@ const PrepopulatedEngine brave_search = MakeBravePrepopulatedEngine(
     "IDR_SEARCH_ENGINE_BRAVE",
     "https://search.brave.com/search?q={searchTerms}&source="
 #if BUILDFLAG(IS_ANDROID)
-    "android",
+    "android"
 #else
-    "desktop",
+    "desktop"
 #endif
+    "&country={brave:country}",
     "UTF-8",
     "https://search.brave.com/api/"
     "suggest?q={searchTerms}&rich=true&source="
