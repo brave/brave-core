@@ -54,7 +54,8 @@ void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     const web::ScriptMessage& message) {
   const base::ListValue* body =
       message.body() ? message.body()->GetIfList() : nullptr;
-  if (!body) {
+  url::Origin security_origin = message.security_origin();
+  if (!body || security_origin.opaque()) {
     return;
   }
 
@@ -81,8 +82,7 @@ void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     return;
   }
 
-  tab_helper->HandleBlockedResources(resources,
-                                     message.security_origin().GetURL());
+  tab_helper->HandleBlockedResources(resources, security_origin.GetURL());
 }
 
 }  // namespace brave_shields
