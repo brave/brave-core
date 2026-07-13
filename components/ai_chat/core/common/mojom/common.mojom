@@ -620,7 +620,6 @@ struct Thread {
   bool is_edit = false;
 
   uint32 entry_count;
-  mojo_base.mojom.Time last_entry_time;
 };
 
 // State of the tool loop task execution. A Task represents a loop of tool

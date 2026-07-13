@@ -1338,7 +1338,7 @@ void ConversationHandler::CreateConversationThread(
   mojom::ThreadPtr thread = mojom::Thread::New(
       thread_id, metadata_->uuid, origin_entry_uuid, "" /* title */,
       0 /* total_tokens */, 0 /* trimmed_tokens */, false /* is_edit */,
-      0 /* entry_count */, base::Time() /* last_entry_time */);
+      0 /* entry_count */);
   OnConversationThreadUpdate(*thread);
   (*entry_it)->child_threads.emplace_back(std::move(thread));
 
@@ -1363,7 +1363,6 @@ void ConversationHandler::AddToConversationHistory(
     const std::string& thread_uuid = turn->thread_uuid.value();
     if (mojom::Thread* thread = FindThreadMetadata(thread_uuid)) {
       thread->entry_count++;
-      thread->last_entry_time = turn->created_time;
       if (history.empty()) {
         // This is the first entry for this thread. Notify observers of the
         // thread's metadata before the entry itself, so that the thread is

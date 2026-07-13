@@ -784,13 +784,11 @@ std::vector<mojom::ThreadPtr> AIChatDatabase::GetConversationThreads(
       " thread.total_tokens,"
       " thread.trimmed_tokens,"
       " thread.is_edit,"
-      " COALESCE(entry_stats.entry_count, 0),"
-      " entry_stats.last_entry_time"
+      " COALESCE(entry_stats.entry_count, 0)"
       " FROM thread"
       " LEFT JOIN ("
       "  SELECT thread_uuid,"
-      "   COUNT(*) AS entry_count,"
-      "   MAX(date) AS last_entry_time"
+      "   COUNT(*) AS entry_count"
       "  FROM conversation_entry"
       "  WHERE conversation_uuid=? AND thread_uuid IS NOT NULL"
       "  GROUP BY thread_uuid) AS entry_stats"
@@ -814,7 +812,6 @@ std::vector<mojom::ThreadPtr> AIChatDatabase::GetConversationThreads(
     thread->trimmed_tokens = statement.ColumnInt64(index++);
     thread->is_edit = statement.ColumnBool(index++);
     thread->entry_count = static_cast<uint32_t>(statement.ColumnInt(index++));
-    thread->last_entry_time = statement.ColumnTime(index++);
     threads.emplace_back(std::move(thread));
   }
 
