@@ -104,11 +104,18 @@ extension QuickViewToolbarModel: TabObserver {
   }
 
   func tabDidStartLoading(_ tab: some TabState) {
+    loadingCompletionTask?.cancel()
+    loadingCompletionTask = nil
     isLoading = true
   }
 
   func tabDidStopLoading(_ tab: some TabState) {
-    isLoading = false
+    loadingCompletionTask = Task { @MainActor in
+      self.loadingProgress = 1.0
+      try? await Task.sleep(for: .milliseconds(300))
+      guard !Task.isCancelled else { return }
+      self.isLoading = false
+    }
   }
 
   func tabDidChangeLoadProgress(_ tab: some TabState) {

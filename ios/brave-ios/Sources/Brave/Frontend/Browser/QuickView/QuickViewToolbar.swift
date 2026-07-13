@@ -34,7 +34,7 @@ struct QuickViewToolbarView: View {
       }
     }
     .padding(.horizontal, 16)
-    .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+    .frame(maxWidth: .infinity, alignment: .top)
   }
 
   private var shieldButton: some View {
@@ -119,7 +119,8 @@ struct QuickViewToolbarView: View {
       gradientColors: [
         browserColors.chromeBackground.cgColor,
         browserColors.chromeBackground.withAlphaComponent(0.1).cgColor,
-      ]
+      ],
+      isShrinkWrapped: viewModel.secureContentState.shouldDisplayWarning
     )
     .accessibilityLabel(viewModel.displayURL)
   }
@@ -158,11 +159,15 @@ struct QuickViewToolbarView: View {
     case .invalidCertificate:
       Text(Strings.tabToolbarNotSecureTitle)
         .foregroundColor(Color(braveSystemName: .systemfeedbackErrorText))
-        .font(.footnote)
+        .font(
+          .system(size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress)
+        )
     case .missingSSL, .mixedContent:
       Text(Strings.tabToolbarNotSecureTitle)
         .foregroundColor(Color(braveSystemName: .textTertiary))
-        .font(.footnote)
+        .font(
+          .system(size: baseAddressFontSize - addressFontCollapseDelta * viewModel.collapseProgress)
+        )
     }
   }
 
@@ -188,11 +193,14 @@ struct QuickViewToolbarView: View {
       VStack(spacing: 12) {
         HStack(spacing: 8) {
           if viewModel.secureContentState.shouldDisplayWarning {
-            sslStatusButton
-              .background(sslStatusBackgroundView)
+            sslStatusButton.background(sslStatusBackgroundView)
           }
           addressView
         }
+        .frame(
+          maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil,
+          alignment: .center
+        )
         progressBar
           .hidden(isHidden: !viewModel.isLoading)
       }
@@ -315,16 +323,16 @@ private struct QuickViewToolbarLabelBottomIconStyle: LabelStyle {
   }
 }
 
-extension QuickViewToolbarView {
-  /// Height of the URL-only strip that remains visible when collapsed.
-  static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
-    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
-  }
-}
-
 private struct QuickViewToolbarBottomButtonStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .opacity(configuration.isPressed ? 0.5 : 1.0)
+  }
+}
+
+extension QuickViewToolbarView {
+  /// Height of the URL-only strip that remains visible when collapsed.
+  static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
+    UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
   }
 }
