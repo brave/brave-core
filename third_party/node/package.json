@@ -1,0 +1,9 @@
+{
+  "name": "brave-node-modules",
+  "version": "1.0.0",
+  "author": "cdesouza@brave.com",
+  "private": true,
+  "dependencies": {
+    "pnpm": "11.9.0"
+  }
+}

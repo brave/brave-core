@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env vpython3
 # Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+import mmap
+import os
 import sys
 import tarfile
 from pathlib import Path
@@ -57,13 +59,14 @@ def package(tarball_name: str, deployed_dir: str,
 
 def sha256_and_size(path: Path) -> tuple[str, int]:
     """Return the (sha256, byte size) of `path`."""
-    digest = hashlib.sha256()
-    size = 0
     with path.open('rb') as file:
-        while chunk := file.read(1 << 16):
-            digest.update(chunk)
-            size += len(chunk)
-    return digest.hexdigest(), size
+        size = os.fstat(file.fileno()).st_size
+        # Our tarballs are never empty; a zero-length file means packaging
+        # produced nothing, and mmap cannot map it either.
+        if size == 0:
+            raise RuntimeError(f'refusing to hash empty file: {path}')
+        with mmap.mmap(file.fileno(), 0, access=mmap.ACCESS_READ) as mapped:
+            return hashlib.sha256(mapped).hexdigest(), size
 
 
 def main() -> int:
