@@ -55,15 +55,6 @@ describe('ConversationEntries ModelIntro placement', () => {
   it('renders inline markers after the anchored entry pair', () => {
     const { container, getByTestId } = render(
       <MockContext
-        overrides={{
-          modelIntroMarkers: [
-            {
-              id: 'marker-1',
-              modelKey: 'test-model',
-              afterPairIndex: 0,
-            },
-          ],
-        }}
         initialState={{
           conversationHistory: [
             createConversationTurnWithDefaults({
@@ -73,7 +64,15 @@ describe('ConversationEntries ModelIntro placement', () => {
           ],
         }}
       >
-        <ConversationEntries />
+        <ConversationEntries
+          modelIntroMarkers={[
+            {
+              id: 'marker-1',
+              modelKey: 'test-model',
+              afterPairIndex: 0,
+            },
+          ]}
+        />
       </MockContext>,
     )
 
@@ -91,70 +90,6 @@ describe('ConversationEntries ModelIntro placement', () => {
       assistantTurn!.compareDocumentPosition(modelIntro)
         & Node.DOCUMENT_POSITION_FOLLOWING,
     ).toBeTruthy()
-  })
-
-  it('creates a new inline marker when the model changes during a conversation', async () => {
-    const mockRef = React.createRef<MockContextRef>()
-    const conversationHistory = [
-      createConversationTurnWithDefaults({
-        uuid: 'turn-1',
-        characterType: Mojom.CharacterType.ASSISTANT,
-        text: 'Latest reply',
-      }),
-    ]
-    const { getAllByTestId } = render(
-      <MockContext
-        ref={mockRef}
-        conversationHandler={{
-          getConversationHistory() {
-            return Promise.resolve({ conversationHistory })
-          },
-        }}
-        initialState={{
-          conversationEntriesState: {
-            currentModelKey: 'default-model',
-            defaultModelKey: 'default-model',
-          },
-          conversationHistory,
-        }}
-      >
-        <ConversationEntries scrollToBottom={jest.fn()} />
-      </MockContext>,
-    )
-
-    await act(async () => {
-      mockRef.current!.api.state.update({
-        currentModelKey: 'first-model',
-        defaultModelKey: 'default-model',
-      })
-    })
-
-    await waitFor(() => {
-      expect(getAllByTestId('model-intro')).toHaveLength(1)
-    })
-    expect(getAllByTestId('model-intro')[0]).toHaveAttribute(
-      'data-model-key',
-      'first-model',
-    )
-
-    await act(async () => {
-      mockRef.current!.api.state.update({
-        currentModelKey: 'second-model',
-        defaultModelKey: 'default-model',
-      })
-    })
-
-    await waitFor(() => {
-      expect(getAllByTestId('model-intro')).toHaveLength(2)
-    })
-    expect(getAllByTestId('model-intro')[0]).toHaveAttribute(
-      'data-model-key',
-      'first-model',
-    )
-    expect(getAllByTestId('model-intro')[1]).toHaveAttribute(
-      'data-model-key',
-      'second-model',
-    )
   })
 })
 
