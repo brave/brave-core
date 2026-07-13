@@ -5,5 +5,6 @@
 
 substitutions:
   - description: 'Add virtual keyword to OnReparented()'
-    re_pattern: '(void OnReparented\(TabCollection\* new_parent\);)'
-    replace: 'virtual \1'
+    make_virtual:
+      class_name: TabCollection
+      method_name: OnReparented

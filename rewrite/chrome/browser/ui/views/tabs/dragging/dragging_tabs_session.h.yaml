@@ -10,6 +10,7 @@ substitutions:
     replace: 'class DraggingTabsSession {'
 
   - description:
-      'Remove final keyword from DraggingTabsSession to allow subclassing'
-    pattern: '~DraggingTabsSession();'
-    replace: 'virtual ~DraggingTabsSession();'
+      'Make the DraggingTabsSession destructor virtual to allow subclassing'
+    make_virtual:
+      class_name: DraggingTabsSession
+      method_name: '~DraggingTabsSession'

@@ -19,25 +19,27 @@ substitutions:
 
       `BraveMultiContentsView` overrides this hook to return the
       web-panel container when a web panel is active.
-    re_pattern:
-      '(\s+)(ContentsContainerView\* GetActiveContentsContainerView\(\) const;)'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: GetActiveContentsContainerView
 
   - description: |
       Make `GetContentsContainerViewFor` virtual.
 
       `BraveMultiContentsView` overrides this hook to return the
       web-panel container for the web-panel `WebContents`.
-    re_pattern: '(\s+)(ContentsContainerView\* GetContentsContainerViewFor\()'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: GetContentsContainerViewFor
 
   - description: |
       Make `GetActiveContentsView` virtual.
 
       `BraveMultiContentsView` overrides this hook to return the
       web-panel's contents view when a web panel is active.
-    re_pattern: '(\s+)(ContentsWebView\* GetActiveContentsView\(\) const;)'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: GetActiveContentsView
 
   - description: |
       Declare `ResetResizeArea` as a virtual no-op hook.
@@ -54,24 +56,27 @@ substitutions:
 
       `BraveMultiContentsView` overrides this hook to include the
       web-panel contents view when iterating visible contents.
-    re_pattern: '(\s+)(void ExecuteOnEachVisibleContentsView\()'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: ExecuteOnEachVisibleContentsView
 
   - description: |
       Make `OnWebContentsFocused` virtual.
 
       `BraveMultiContentsView` overrides this hook to intercept focus on
       the web-panel contents.
-    re_pattern: '(\s+)(void OnWebContentsFocused\(views::WebView\*\);)'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: OnWebContentsFocused
 
   - description: |
       Make `UpdateContentsBorderAndOverlay` virtual.
 
       `BraveMultiContentsView` overrides this hook to adjust the borders
       and overlays for the web-panel layout.
-    re_pattern: '(\s+)(void UpdateContentsBorderAndOverlay\(\);)'
-    replace: '\1virtual \2'
+    make_virtual:
+      class_name: MultiContentsView
+      method_name: UpdateContentsBorderAndOverlay
 
   - description: |
       Friend `BraveMultiContentsView` from the base class.
