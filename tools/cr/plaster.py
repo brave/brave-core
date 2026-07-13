@@ -694,10 +694,84 @@ class Regex(Rewriter):
         return re_flags
 
 
+class MakeVirtual(Rewriter):
+    """Make a C++ method declaration `virtual`, via the ast-grep rewriters.
+
+    Resolves to the rewriters spec's `cxx.make_virtual` rewriter (the only
+    language for now); a future generic ast-op subtype would pull its op id and
+    arg names from `RewritersEval` instead of hard-coding them here.
+    """
+
+    NAME: Final = 'make_virtual'
+    SUMMARY: Final = 'Prepend `virtual ` to a class method declaration.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Prepends `virtual ` to a C++ method declaration.
+
+        Fields:
+
+        - `class_name` — the class declaring the method.
+        - `method_name` — the method's name. Quote a destructor
+          (`'~Foo'`), since a leading `~` is YAML null.
+
+        Each overload sharing the name is one change, so an overloaded method
+        needs a matching `count`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Make the destructor virtual for subclassing.
+            make_virtual:
+              class_name: DraggingTabsSession
+              method_name: '~DraggingTabsSession'
+        ```
+    """
+
+    # The arguments the `make_virtual:` op body must supply.
+    _ARG_KEYS = frozenset(('class_name', 'method_name'))
+
+    def __init__(self, *, class_name: str, method_name: str):
+        self._class_name = class_name
+        self._method_name = method_name
+
+    def apply(self, contents: str) -> tuple[str, int]:
+        rewriter = AstRewriter(RewritersEval.load(), contents)
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': self._class_name,
+            'method_name': self._method_name,
+        })
+        return rewriter.content, count
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> MakeVirtual:
+        """Build from a `make_virtual:` body: `class_name` and `method_name`."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"make_virtual" must be a mapping (in "{description}")')
+        unknown = sorted(set(body) - cls._ARG_KEYS)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised make_virtual arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(cls._ARG_KEYS - set(body))
+        if missing:
+            raise ValueError(f'make_virtual requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        if not isinstance(body['class_name'], str):
+            raise ValueError('make_virtual `class_name` must be a string '
+                             f'(in "{description}")')
+        if not isinstance(body['method_name'], str):
+            raise ValueError('make_virtual `method_name` must be a string '
+                             f'(in "{description}")')
+        return cls(class_name=body['class_name'],
+                   method_name=body['method_name'])
+
+
 # A set with all the rewriters available in plaster.
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType(
     {rewriter.NAME: rewriter
-     for rewriter in (Regex, )})
+     for rewriter in (Regex, MakeVirtual)})
 
 
 @dataclass

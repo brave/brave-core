@@ -1149,10 +1149,10 @@ class PlasterTest(unittest.TestCase):
 
 
 class RewriterFormsTest(unittest.TestCase):
-    """End-to-end tests for the substitution envelope and the `regex` rewriter.
+    """End-to-end tests for the substitution envelope and its rewriters.
 
     Rewriters apply through `PlasterFile` against a fake Chromium repo, just
-    like real usage. Only the `regex` rewriter exists for now; further
+    like real usage; `make_virtual` runs the real ast-grep binary. Further
     rewriters attach to the same envelope later.
     """
 
@@ -1208,7 +1208,77 @@ class RewriterFormsTest(unittest.TestCase):
             "    replace: 'Brave'\n")
         self.assertEqual(result, 'A Brave thing.')
 
+    # -- make_virtual op (real ast-grep binary) -----------------------------
+
+    def test_make_virtual_op(self):
+        result = self._apply(
+            'virt.h', 'class C {\n  void Foo();\n};\n', 'substitutions:\n'
+            '  - description: make Foo virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(result, 'class C {\n  virtual void Foo();\n};\n')
+
+    def test_make_virtual_destructor_quoted(self):
+        result = self._apply(
+            'dtor.h', 'class C {\n public:\n  ~C();\n};\n', 'substitutions:\n'
+            '  - description: make the destructor virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            "      method_name: '~C'\n")
+        self.assertEqual(result, 'class C {\n public:\n  virtual ~C();\n};\n')
+
+    def test_make_virtual_overloads_need_count(self):
+        result = self._apply(
+            'ovl.h', 'class C {\n  void Foo();\n  void Foo(int x);\n};\n',
+            'substitutions:\n'
+            '  - description: make both overloads virtual\n'
+            '    count: 2\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class C {\n  virtual void Foo();\n'
+            '  virtual void Foo(int x);\n};\n')
+
+    def test_make_virtual_count_mismatch_fails(self):
+        # Two overloads match, but the default count is 1.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'ovl2.h', 'class C {\n  void Foo();\n  void Foo(int x);\n};\n',
+                'substitutions:\n'
+                '  - description: forgot the count\n'
+                '    make_virtual:\n'
+                '      class_name: C\n'
+                '      method_name: Foo\n')
+
+    def test_make_virtual_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_nam: Foo\n', 'Unrecognised make_virtual arg')
+
+    def test_make_virtual_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    make_virtual:\n'
+            '      class_name: C\n', 'make_virtual requires arg')
+
     # -- validation ---------------------------------------------------------
+
+    def test_two_op_keys_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: two ops\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n', 'Only one rewriter')
 
     def test_cannot_mix_op_and_bare_regex(self):
         self._expect_value_error(
@@ -1241,13 +1311,12 @@ class RewriterFormsTest(unittest.TestCase):
             self._apply(
                 'unknown_rw.h', 'class C {};\n', 'substitutions:\n'
                 '  - description: not a real rewriter\n'
-                '    make_virtual:\n'
-                '      class_name: C\n'
-                '      method_name: Foo\n')
+                '    make_final:\n'
+                '      class_name: C\n')
         message = str(ctx.exception)
         self.assertIn('Unknown rewriter', message)
-        self.assertIn("'make_virtual'", message)
-        self.assertIn('regex', message)
+        self.assertIn("'make_final'", message)
+        self.assertIn('make_virtual', message)
 
     def test_stray_scalar_key_is_unrecognised(self):
         # A non-mapping stray key is a bare-field typo, not a rewriter attempt,
@@ -1334,14 +1403,10 @@ class RewritersEvalTest(unittest.TestCase):
     # -- the real on-disk spec ---------------------------------------------
 
     def test_load_real_rewriters_file(self):
-        """The shipped rewriters.pyl validates and loads.
-
-        It ships empty for now (ops are added when they are wired in), so this
-        just asserts a clean load and empty, read-only op mappings.
-        """
+        """The shipped rewriters.pyl validates and exposes its ops."""
         rewriters = plaster.RewritersEval.load()
-        self.assertEqual(dict(rewriters.matchers), {})
-        self.assertEqual(dict(rewriters.rewriters), {})
+        self.assertIn('cxx.find_class_method_decl', rewriters.matchers)
+        self.assertIn('cxx.make_virtual', rewriters.rewriters)
 
     def test_load_is_a_singleton(self):
         """load() reads the file once and returns the same instance."""
