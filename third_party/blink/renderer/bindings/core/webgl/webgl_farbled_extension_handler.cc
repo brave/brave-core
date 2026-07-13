@@ -70,12 +70,13 @@ WebGLFarbledExtensionHandler::~WebGLFarbledExtensionHandler() = default;
 
 // static
 std::unique_ptr<WebGLFarbledExtensionHandler>
-WebGLFarbledExtensionHandler::CreateHandler(const size_t seed) {
+WebGLFarbledExtensionHandler::CreateHandler(const uint64_t seed) {
   DCHECK(base::FeatureList::IsEnabled(
       blink::features::kWebGLBalancedFingerprintingProtection));
 
   const auto& fake_extension_list = GetFakeSupportedExtensions();
-  const size_t fake_index = seed % fake_extension_list.size();
+  const size_t fake_index =
+      static_cast<size_t>(seed % fake_extension_list.size());
 
   // The fake_extension_name is now stable until the lifetime of the handler.
   return std::unique_ptr<WebGLFarbledExtensionHandler>(

@@ -8,6 +8,7 @@
 
 #include <base/containers/span.h>
 
+#include <cstdint>
 #include <memory>
 
 #include "third_party/blink/renderer/core/core_export.h"
@@ -33,7 +34,7 @@ class CORE_EXPORT WebGLFarbledExtensionHandler {
   // Returns a handler with default fingerprinting protections.
   // |seed| is derived from the current brave::FarblingToken for the session.
   static std::unique_ptr<WebGLFarbledExtensionHandler> CreateHandler(
-      const size_t seed);
+      const uint64_t seed);
 
   ~WebGLFarbledExtensionHandler();
 
