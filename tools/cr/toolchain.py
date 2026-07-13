@@ -118,7 +118,7 @@ TOOLCHAINS = {
                     'linux-x64-rust-toolchain-{revision}-1.tar.xz'),
         },
         'repin': {
-            'installer': 'tools/cr/install_extra_deps.py',
+            'installer': 'EXTRA_DEPS',
         },
         'advice': ('Run the jobs in https://ci.brave.com/view/toolchains/ to '
                    'generate a new Rust toolchain (or use '
@@ -481,7 +481,7 @@ class ToolchainAdvisory:
 
 
 class RustToolchain(Toolchain):
-    """The Rust/WASM toolchain, pinned in `install_extra_deps.py`."""
+    """The Rust/WASM toolchain, pinned in `EXTRA_DEPS`."""
 
     # A recovery is the first build for a revision, so it triggers (and probes,
     # via the `publish` URL) brave sub-revision 1.
@@ -522,18 +522,18 @@ class RustToolchain(Toolchain):
 
     @staticmethod
     def _load_extra_deps(source: str) -> tuple[ast.Assign, dict]:
-        """Return the `EXTRA_DEPS = {...}` assignment node and its dict value.
+        """Return the `extra_deps = {...}` assignment node and its dict value.
 
-        The value is read with `ast.literal_eval`, so the installer is parsed
-        as data rather than imported (importing it pulls in gclient).
+        The value is read with `ast.literal_eval`, so the file is parsed as
+        data rather than imported.
         """
         for node in ast.parse(source).body:
             if (isinstance(node, ast.Assign) and len(node.targets) == 1
                     and isinstance(node.targets[0], ast.Name)
-                    and node.targets[0].id == 'EXTRA_DEPS'):
+                    and node.targets[0].id == 'extra_deps'):
                 return node, ast.literal_eval(node.value)
         raise InvalidInputException(
-            'No EXTRA_DEPS assignment found in the Rust installer.')
+            'No extra_deps assignment found in the EXTRA_DEPS file.')
 
     @staticmethod
     def _upstream_stem(text: str) -> str:
@@ -606,9 +606,9 @@ class RustToolchain(Toolchain):
         node, extra_deps = self._load_extra_deps(source)
 
         # Replace the rust-toolchain entry (in place, preserving key order),
-        # then re-render the whole EXTRA_DEPS assignment.
+        # then re-render the whole extra_deps assignment.
         extra_deps.update(new_entry)
-        rendered = f'EXTRA_DEPS = {_render_py_literal(extra_deps)}\n'
+        rendered = f'extra_deps = {_render_py_literal(extra_deps)}\n'
         lines = source.splitlines(keepends=True)
         new_source = (''.join(lines[:node.lineno - 1]) + rendered +
                       ''.join(lines[node.end_lineno:]))
@@ -776,9 +776,9 @@ class WindowsToolchain(Toolchain):
 def _render_py_literal(value: object, indent: int = 0) -> str:
     """Render a str/bool/dict/list literal as multi-line Python source.
 
-    Matches the layout `install_extra_deps.py` already uses -- 4-space
-    indent steps, single-quoted strings, trailing commas -- so re-rendering
-    `EXTRA_DEPS` round-trips through yapf unchanged.
+    Used to re-render the `extra_deps` assignment when repinning. Matches the
+    committed `EXTRA_DEPS` file's layout (4-space indent steps, single-quoted
+    strings, trailing commas) so a repin is a minimal diff.
     """
     pad = ' ' * indent
     child = ' ' * (indent + 4)
