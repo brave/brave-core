@@ -1279,6 +1279,219 @@ class RewriterRegistryTest(unittest.TestCase):
             self.assertTrue(cls.help_text(), f'{name} is missing help text')
 
 
+class RewritersEvalTest(unittest.TestCase):
+    """Schema evaluation and access tests for plaster.RewritersEval."""
+
+    def setUp(self):
+        # load() memoises a process-wide instance; clear it so tests that
+        # exercise the singleton start from a clean slate.
+        plaster.RewritersEval._instance = None
+        self.addCleanup(setattr, plaster.RewritersEval, '_instance', None)
+
+    @staticmethod
+    def _valid_spec() -> dict:
+        """A minimal, schema-valid rewriters spec as a Python dict."""
+        return {
+            'ast.matcher': {
+                'cxx.find_class_method_decl': {
+                    'args': ['class_name', 'method_name'],
+                    'template': ('kind: field_declaration\n'
+                                 'has:\n'
+                                 '  regex: ^{method_name}$\n'
+                                 'inside:\n'
+                                 '  regex: ^{class_name}$\n'),
+                    'result': {
+                        'node': 'field_declaration',
+                    },
+                },
+            },
+            'ast.rewriter': {
+                'cxx.make_virtual': {
+                    'matcher': 'cxx.find_class_method_decl',
+                    'replace': {
+                        're_pattern': '^',
+                        'replace': 'virtual '
+                    },
+                    'result': {
+                        'node': 'field_declaration',
+                    },
+                },
+            },
+        }
+
+    def _eval_valid(self) -> plaster.RewritersEval:
+        return plaster.RewritersEval(repr(self._valid_spec()))
+
+    def _assert_invalid(self, mutate, expected_substr=None):
+        """Apply `mutate` to a valid spec and assert it fails validation."""
+        spec = self._valid_spec()
+        mutate(spec)
+        with self.assertRaises(plaster.RewritersSchemaError) as cm:
+            plaster.RewritersEval(repr(spec))
+        if expected_substr is not None:
+            self.assertIn(expected_substr, str(cm.exception))
+
+    # -- the real on-disk spec ---------------------------------------------
+
+    def test_load_real_rewriters_file(self):
+        """The shipped rewriters.pyl validates and loads.
+
+        It ships empty for now (ops are added when they are wired in), so this
+        just asserts a clean load and empty, read-only op mappings.
+        """
+        rewriters = plaster.RewritersEval.load()
+        self.assertEqual(dict(rewriters.matchers), {})
+        self.assertEqual(dict(rewriters.rewriters), {})
+
+    def test_load_is_a_singleton(self):
+        """load() reads the file once and returns the same instance."""
+        first = plaster.RewritersEval.load()
+        second = plaster.RewritersEval.load()
+        self.assertIs(first, second)
+
+    # -- access -------------------------------------------------------------
+
+    def test_accessors_return_specs(self):
+        rewriters = self._eval_valid()
+        self.assertEqual(
+            rewriters.matcher('cxx.find_class_method_decl')['args'],
+            ['class_name', 'method_name'])
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['matcher'],
+            'cxx.find_class_method_decl')
+
+    def test_unknown_op_access_raises(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(plaster.RewritersSchemaError):
+            rewriters.matcher('cxx.nope')
+        with self.assertRaises(plaster.RewritersSchemaError):
+            rewriters.rewriter('cxx.nope')
+
+    def test_language_of(self):
+        self.assertEqual(
+            plaster.RewritersEval.language_of('cxx.find_class_method_decl'),
+            'cpp')
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval.language_of('py.find_class_method_decl')
+
+    def test_exposed_mappings_are_read_only(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(TypeError):
+            rewriters.matchers['x'] = {}
+        with self.assertRaises(TypeError):
+            rewriters.rewriters['x'] = {}
+
+    def test_valid_spec_round_trips(self):
+        rewriters = self._eval_valid()
+        self.assertEqual(list(rewriters.matchers),
+                         ['cxx.find_class_method_decl'])
+        self.assertEqual(list(rewriters.rewriters), ['cxx.make_virtual'])
+
+    # -- top-level / parsing failures --------------------------------------
+
+    def test_not_a_literal(self):
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval('this is not a literal (((')
+
+    def test_top_level_not_a_dict(self):
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval('[1, 2, 3]')
+
+    def test_present_but_empty_groups_are_valid(self):
+        # A group may be present with no ops yet (as the shipped file is).
+        rewriters = plaster.RewritersEval(
+            "{'ast.matcher': {}, 'ast.rewriter': {}}")
+        self.assertEqual(dict(rewriters.matchers), {})
+        self.assertEqual(dict(rewriters.rewriters), {})
+
+    def test_unknown_category(self):
+        # schema rejects keys outside the top-level matcher/rewriter set.
+        self._assert_invalid(lambda s: s.update({'mangler': {}}), 'Wrong keys')
+
+    def test_category_not_a_mapping(self):
+        self._assert_invalid(lambda s: s.__setitem__('ast.matcher', []),
+                             "should be instance of 'dict'")
+
+    # -- op id --------------------------------------------------------------
+
+    def test_op_id_without_prefix(self):
+        # An id that does not match the _OP_ID key schema is an unexpected key.
+        def mutate(s):
+            s['ast.matcher']['nodothere'] = s['ast.matcher'].pop(
+                'cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'Wrong keys')
+
+    def test_op_id_unknown_prefix(self):
+
+        def mutate(s):
+            s['ast.matcher']['py.find_class_method_decl'] = s[
+                'ast.matcher'].pop('cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'Wrong keys')
+
+    # -- matcher schema ------------------------------------------------------
+
+    def test_matcher_missing_required_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].pop(
+                'template'), 'Missing keys')
+
+    def test_matcher_unknown_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].update(
+                {'language': 'cpp'}), 'Wrong keys')
+
+    def test_matcher_args_not_list_of_strings(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].
+            __setitem__('args', 'class_name'), "should be instance of 'list'")
+
+    def test_matcher_undeclared_placeholder(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']
+            ['cxx.find_class_method_decl'].__setitem__(
+                'template', 'regex: ^{class_name}$ ^{method_name}$ ^{bogus}$'),
+            'undeclared placeholder')
+
+    def test_matcher_unused_arg(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl']['args'].
+            append('unused'), 'never used')
+
+    def test_matcher_bad_result(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl']['result'].
+            pop('node'), 'Missing keys')
+
+    # -- rewriter schema ----------------------------------------------------
+
+    def test_rewriter_unknown_matcher_reference(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual'].__setitem__(
+                'matcher', 'cxx.ghost'), 'unknown matcher')
+
+    def test_rewriter_replace_missing_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['replace'].pop(
+                're_pattern'), 'Missing keys')
+
+    def test_rewriter_invalid_replace_regex(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['replace'].
+            __setitem__('re_pattern', '(unclosed'), 'valid regular expression')
+
+    def test_rewriter_result_node_mismatch(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['result'].
+            __setitem__('node', 'declaration'), 'does not match matcher')
+
+    def test_rewriter_unknown_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual'].update(
+                {'append': '!'}), 'Wrong keys')
+
+
 class HelpTest(unittest.TestCase):
     """gn-style `plaster --help [topic]` overview, categories and topic docs.
 

@@ -8,6 +8,7 @@ from __future__ import annotations
 
 import abc
 import argparse
+import ast
 from dataclasses import dataclass, field
 import hashlib
 import logging
@@ -16,6 +17,7 @@ from pathlib import Path, PurePath
 import json
 import os
 import re
+import string
 import sys
 import textwrap
 from types import MappingProxyType
@@ -26,6 +28,16 @@ import yaml
 
 from terminal import IncendiaryErrorHandler, console, is_verbose, terminal
 import repository
+
+# A round-about import for https://github.com/keleshev/schema, vendored under
+# depot_tools. It could be helpful to deploy this under our own third_party in
+# the future.
+sys.path.insert(
+    0,
+    str(
+        Path(__file__).resolve().parents[3] / 'third_party' / 'depot_tools' /
+        'third_party'))
+import schema  # pylint: disable=wrong-import-position,import-error
 
 # The path to the directory containing plaster files in brave-core.
 PLASTER_FILES_PATH = repository.brave.root / 'rewrite'
@@ -39,6 +51,10 @@ PLASTER_EXTENSION = '.yaml'
 # A particular gitattributes file that is used to ensure we get deterministic
 # patch output across platforms and git versions.
 PLASTER_GITATTRIBUTES_PATH = Path(__file__).parent / 'plaster_gitattributes'
+
+# The declarative ast-grep rewriters spec, loaded and validated by
+# `RewritersEval`.
+REWRITERS_FILE = Path(__file__).parent / 'rewriters.pyl'
 
 
 @dataclass
@@ -815,6 +831,207 @@ class PlasterApplyError(PlasterError):
         super().__init__(
             'There were errors attempting to apply the patches:\n' +
             '\n'.join(errors))
+
+
+class RewritersSchemaError(PlasterError):
+    """Raised when `rewriters.pyl` does not conform to the expected schema."""
+
+
+# Namespace mapping for ast-grep rewriter types. This list will grow as more
+# rewriters are added for other languages.
+_LANGUAGE_BY_PREFIX = MappingProxyType({'cxx': 'cpp'})
+
+
+def _is_regex(pattern: str) -> bool:
+    """schema predicate: True if `pattern` compiles as a regular expression."""
+    try:
+        re.compile(pattern)
+        return True
+    except re.error:
+        return False
+
+
+def _is_op_id(op_id: str) -> bool:
+    """schema predicate: True if `op_id` is `<known-lang>.<name>`."""
+    prefix, _, name = op_id.partition('.')
+    return bool(name) and prefix in _LANGUAGE_BY_PREFIX
+
+
+def _template_args_match(spec: dict) -> dict:
+    """schema validator: a matcher's template uses exactly its declared args.
+
+    Returns the spec unchanged on success or raises schema.SchemaError if the
+    template references a placeholder that is not a declared arg, or declares
+    an arg the template never uses, catching any typos.
+    """
+    placeholders = {
+        name
+        for _, name, _, _ in string.Formatter().parse(spec['template']) if name
+    }
+    declared = set(spec['args'])
+    undeclared = sorted(placeholders - declared)
+    if undeclared:
+        raise schema.SchemaError(
+            f'template uses undeclared placeholder(s): {", ".join(undeclared)}'
+        )
+    unused = sorted(declared - placeholders)
+    if unused:
+        raise schema.SchemaError(
+            f'declared arg(s) never used in template: {", ".join(unused)}')
+    return spec
+
+
+# Reusable leaf schemas.
+_NON_EMPTY_STR = schema.And(str, len, error='must be a non-empty string')
+_REGEX_STR = schema.And(str,
+                        _is_regex,
+                        error='must be a valid regular expression')
+_OP_ID = schema.And(str,
+                    _is_op_id,
+                    error='op id must be "<lang>.<name>" with a known '
+                    'language prefix')
+
+# The "result" block shared by matcher and rewriter ops.
+_RESULT_SCHEMA = {
+    'node': _NON_EMPTY_STR,
+}
+
+# A matcher op: a templated ast-grep query plus its result shape.
+_MATCHER_SCHEMA = schema.And(
+    {
+        'args': [str],
+        'template': _NON_EMPTY_STR,
+        'result': _RESULT_SCHEMA,
+    }, _template_args_match)
+
+# A rewriter op: locates nodes through a matcher op and edits each via a regex
+# substitution.
+_REWRITER_SCHEMA = {
+    'matcher': _NON_EMPTY_STR,
+    'replace': {
+        're_pattern': _REGEX_STR,
+        'replace': str,
+    },
+    'result': _RESULT_SCHEMA,
+}
+
+# Top-level schema for rewriters.pyl.
+_REWRITERS_SCHEMA = schema.Schema({
+    schema.Optional('ast.matcher'): {
+        schema.Optional(_OP_ID): _MATCHER_SCHEMA
+    },
+    schema.Optional('ast.rewriter'): {
+        schema.Optional(_OP_ID): _REWRITER_SCHEMA
+    },
+})
+
+
+class RewritersEval:
+    """Loads and schema-validates `rewriters.pyl`.
+
+    The main function of this class is to make sure the file is valid, and to
+    provide access to the loaded content. Note the distinction from the
+    `Rewriter` op classes above: `Rewriter`/`Regex` are the `substitutions:`
+    transforms, while this loads the declarative ast-grep matcher/rewriter
+    *specs* those transforms will drive.
+    """
+
+    # Process-wide singleton, loaded once from REWRITERS_FILE by load().
+    _instance: RewritersEval | None = None
+
+    def __init__(self, content: str, *, source: str = str(REWRITERS_FILE)):
+        """Parse and validate `content` (the text of a rewriters.pyl file).
+
+        Raises RewritersSchemaError if the content is not a valid literal or
+        does not satisfy the schema. `source` is only used in error messages.
+        """
+        self._source = source
+        data = self._parse(content, source)
+        try:
+            data = _REWRITERS_SCHEMA.validate(data)
+        except schema.SchemaError as e:
+            raise RewritersSchemaError(f'{source}: {e}') from e
+        self._matchers = data.get('ast.matcher', {})
+        self._rewriters = data.get('ast.rewriter', {})
+        self._check_cross_references()
+
+    @classmethod
+    def load(cls) -> RewritersEval:
+        """Return the process-wide RewritersEval, reading rewriters.pyl once."""
+        if cls._instance is None:
+            cls._instance = cls(REWRITERS_FILE.read_bytes().decode('utf-8'),
+                                source=str(REWRITERS_FILE))
+        return cls._instance
+
+    # -- access -------------------------------------------------------------
+
+    @property
+    def matchers(self) -> MappingProxyType[str, dict]:
+        """Read-only mapping of matcher op id -> validated matcher spec."""
+        return MappingProxyType(self._matchers)
+
+    @property
+    def rewriters(self) -> MappingProxyType[str, dict]:
+        """Read-only mapping of rewriter op id -> validated rewriter spec."""
+        return MappingProxyType(self._rewriters)
+
+    def matcher(self, op_id: str) -> dict:
+        """Return the matcher spec for `op_id`, or raise if it is unknown."""
+        try:
+            return self._matchers[op_id]
+        except KeyError:
+            raise RewritersSchemaError(
+                f'unknown matcher op: {op_id!r}') from None
+
+    def rewriter(self, op_id: str) -> dict:
+        """Return the rewriter spec for `op_id`, or raise if it is unknown."""
+        try:
+            return self._rewriters[op_id]
+        except KeyError:
+            raise RewritersSchemaError(
+                f'unknown rewriter op: {op_id!r}') from None
+
+    @classmethod
+    def language_of(cls, op_id: str) -> str:
+        """Return the ast-grep language id derived from `op_id`'s prefix."""
+        prefix = op_id.split('.', 1)[0]
+        try:
+            return _LANGUAGE_BY_PREFIX[prefix]
+        except KeyError:
+            raise RewritersSchemaError(
+                f'op {op_id!r} has unknown language prefix {prefix!r}; '
+                f'known prefixes: {sorted(_LANGUAGE_BY_PREFIX)}') from None
+
+    # -- validation ---------------------------------------------------------
+
+    @staticmethod
+    def _parse(content: str, source: str) -> object:
+        """Evaluate `content` as a Python literal (shape is checked later)."""
+        try:
+            return ast.literal_eval(content)
+        except (ValueError, SyntaxError, TypeError) as e:
+            raise RewritersSchemaError(
+                f'{source}: not a valid Python literal: {e}') from e
+
+    def _check_cross_references(self) -> None:
+        """Validate rules that span records, which schema cannot express.
+
+        Each rewriter must reference a matcher that exists, and must declare the
+        same result node as that matcher (it replaces the node the matcher
+        locates, so the two must agree).
+        """
+        for op_id, spec in self._rewriters.items():
+            ref = spec['matcher']
+            if ref not in self._matchers:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} references unknown '
+                    f'matcher {ref!r}')
+            matcher_node = self._matchers[ref]['result']['node']
+            if spec['result']['node'] != matcher_node:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} result node '
+                    f'{spec["result"]["node"]!r} does not match matcher '
+                    f'{ref!r} node {matcher_node!r}')
 
 
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
