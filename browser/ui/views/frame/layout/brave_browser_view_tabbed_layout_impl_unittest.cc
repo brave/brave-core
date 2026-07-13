@@ -8,6 +8,7 @@
 #include <memory>
 #include <optional>
 
+#include "build/build_config.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -76,12 +77,19 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsFullscreen() const override { return false; }
 };
 
-// Only the two visibility hooks matter for the CalculateSeparatorInfo() "no
-// top UI" early return; gmock makes the test spell that out with EXPECT_CALL.
+// Mocks the CalculateSeparatorInfo() inputs exercised by the tests below:
+// IsToolbarVisible/IsBookmarkBarVisible drive the "no top UI" early return,
+// IsInfobarVisible and ShouldUseBraveWebViewRoundedCornersForContents drive
+// the mac fullscreen separator-suppression branch.
 class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
  public:
   MOCK_METHOD(bool, IsToolbarVisible, (), (const, override));
   MOCK_METHOD(bool, IsBookmarkBarVisible, (), (const, override));
+  MOCK_METHOD(bool, IsInfobarVisible, (), (const, override));
+  MOCK_METHOD(bool,
+              ShouldUseBraveWebViewRoundedCornersForContents,
+              (),
+              (const, override));
 };
 
 }  // namespace
@@ -303,3 +311,99 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   EXPECT_FALSE(layout->GetMultiContentsSeparatorForTesting());
   EXPECT_FALSE(layout->GetShadowBoxForTesting());
 }
+
+#if BUILDFLAG(IS_MAC)
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateSeparatorInfoMacFullscreenRoundedNoInfobarHidesSeparator) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, IsToolbarVisible())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+  layout->SetWindowStateForTesting(
+      BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
+
+  // Upstream would set top_container_separator=true here (no side panel, no
+  // split view, so `would_have_separator` wins). Brave's mac-only branch
+  // overrides that to false: the rounded contents corners already provide the
+  // visual divider, so the separator would double up with it.
+  EXPECT_FALSE(layout->GetTopContainerSeparatorForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateSeparatorInfoMacFullscreenNotRoundedKeepsSeparator) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, IsToolbarVisible())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(false));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+  layout->SetWindowStateForTesting(
+      BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
+
+  // Without rounded corners there's no shape to double up with, so the
+  // mac-only branch must not fire and the separator stays visible.
+  EXPECT_TRUE(layout->GetTopContainerSeparatorForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateSeparatorInfoMacFullscreenRoundedWithInfobarKeepsSeparator) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, IsToolbarVisible())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+  layout->SetWindowStateForTesting(
+      BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar);
+
+  // With an infobar showing, the separator is still needed to divide it from
+  // the toolbar above, so the mac-only branch must not suppress it.
+  EXPECT_TRUE(layout->GetTopContainerSeparatorForTesting());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     CalculateSeparatorInfoRegularFullscreenRoundedNotAffected) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, IsToolbarVisible())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+  // Plain kFullscreen (toolbar auto-hidden), not kFullscreenWithToolbar.
+  layout->SetWindowStateForTesting(
+      BrowserViewLayoutDelegate::WindowState::kFullscreen);
+
+  // The mac-only branch is scoped to kFullscreenWithToolbar; plain kFullscreen
+  // must keep upstream's separator (true here, since IsToolbarVisible() is
+  // mocked true).
+  EXPECT_TRUE(layout->GetTopContainerSeparatorForTesting());
+}
+
+#endif  // BUILDFLAG(IS_MAC)

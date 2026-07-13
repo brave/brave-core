@@ -41,17 +41,25 @@ BraveBrowserViewTabbedLayoutImpl::CalculateSeparatorInfo() const {
   // its accompanying main-area padding) so it doesn't double up.
   info.shadow_box = false;
 
+  const bool rounded =
+      delegate().ShouldUseBraveWebViewRoundedCornersForContents();
+
   // When the upstream choice is "no top-container separator" (either nothing
   // at all, or only a multi-contents separator), Brave promotes that to a
   // full-width top-container separator unless the rounded-corners contents
   // view is in use - in which case the rounded shape provides the visual
   // divider and no separator is wanted.
   if (!info.top_container_separator) {
-    const bool rounded =
-        delegate().ShouldUseBraveWebViewRoundedCornersForContents();
     info.top_container_separator = !rounded;
     info.multi_contents_separator = false;
   }
+
+#if BUILDFLAG(IS_MAC)
+  if (layout_data_->window_state == WindowState::kFullscreenWithToolbar &&
+      rounded && !delegate().IsInfobarVisible()) {
+    info.top_container_separator = false;
+  }
+#endif
 
   return info;
 }
@@ -68,4 +76,10 @@ bool BraveBrowserViewTabbedLayoutImpl::GetMultiContentsSeparatorForTesting()
 
 bool BraveBrowserViewTabbedLayoutImpl::GetShadowBoxForTesting() const {
   return CalculateSeparatorInfo().shadow_box;
+}
+
+void BraveBrowserViewTabbedLayoutImpl::SetWindowStateForTesting(
+    BrowserViewLayoutDelegate::WindowState window_state) {
+  layout_data_ = std::make_unique<TransientLayoutData>(BrowserLayoutParams());
+  layout_data_->window_state = window_state;
 }
