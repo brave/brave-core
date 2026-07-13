@@ -33,7 +33,7 @@ class QuickViewController: UIViewController {
     manager.isPrivateBrowsing = profile.isOffTheRecord
     return manager
   }()
-  var toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 110)
+  let toolbarVisibilityViewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 110)
   private var toolbarVisibilityCancellable: AnyCancellable?
   private var toolbarBottomConstraint: Constraint?
   private let onOpenInNewTab: ((URLRequest) -> Void)?
@@ -69,8 +69,8 @@ class QuickViewController: UIViewController {
   @available(*, unavailable)
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
-  override func viewDidLayoutSubviews() {
-    super.viewDidLayoutSubviews()
+  override func viewDidAppear(_ animated: Bool) {
+    super.viewDidAppear(animated)
     // only want to measure toolbar height once and when keyboard is not visible
     guard !isKeyboardVisible, toolbarFullHeight == 0 else { return }
     let toolbarHeight = toolbarHostingController.view.intrinsicContentSize.height
@@ -132,7 +132,6 @@ class QuickViewController: UIViewController {
   }
 
   private func updateViewModel() {
-    let colors: any BrowserColors = profile.isOffTheRecord ? .privateMode : .standard
     // update shield button status
     refreshShieldStatus(url: currentTab?.visibleURL ?? url)
     // update action buttons
@@ -572,10 +571,11 @@ extension QuickViewController: KeyboardHelperDelegate {
     toolbarVisibilityViewModel.isEnabled = false
     toolbarViewModel.collapseProgress = 1
 
-    let offset =
-      view.safeAreaInsets.bottom - keyboardHeight + toolbarVisibilityViewModel.transitionDistance
+    let collapsedHeight = QuickViewToolbarView.collapsedHeight(compatibleWith: traitCollection)
+    let offset = view.safeAreaInsets.bottom - keyboardHeight
     UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
       self.toolbarBottomConstraint?.update(offset: offset)
+      self.toolbarHeightConstraint?.update(offset: collapsedHeight)
       self.view.layoutIfNeeded()
     }.startAnimation()
   }
@@ -602,6 +602,7 @@ extension QuickViewController: KeyboardHelperDelegate {
       curve: state.animationCurve
     ) {
       self.toolbarBottomConstraint?.update(offset: restoredOffset)
+      self.toolbarHeightConstraint?.update(offset: self.toolbarFullHeight)
       self.view.layoutIfNeeded()
     }
     animator.addCompletion { _ in
