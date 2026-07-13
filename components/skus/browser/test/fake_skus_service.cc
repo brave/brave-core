@@ -19,6 +19,10 @@ mojo::PendingRemote<skus::mojom::SkusService> FakeSkusService::MakeRemote() {
   return remote;
 }
 
+void FakeSkusService::CloseConnection() {
+  receiver_.reset();
+}
+
 void FakeSkusService::SetCredentialSummaryResponse(
     const std::string& response) {
   credential_summary_response_ = response;

@@ -55,8 +55,13 @@ std::unique_ptr<KeyedService> BuildVpnService_V2(
   auto* profile_prefs = user_prefs::UserPrefs::Get(context);
   brave_vpn::MigrateVPNSettings(profile_prefs, local_state);
 
-  // Return stub implementation.
-  return std::make_unique<v2::BraveVpnServiceImpl>(local_state, profile_prefs);
+  return std::make_unique<v2::BraveVpnServiceImpl>(
+      local_state, profile_prefs,
+      base::BindRepeating(
+          [](content::BrowserContext* context) {
+            return skus::SkusServiceFactory::GetForContext(context);
+          },
+          context));
 }
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN_V2)
