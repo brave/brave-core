@@ -3,13 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import glob from "glob";
+import { globSync } from "fs";
 import path from "path";
 import { fileURLToPath } from "url";
 import TerserPlugin from 'terser-webpack-plugin';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+
+const glob = {
+  sync: (pattern) => globSync(pattern).map((file) => file.startsWith("./") ? file : `./${file}`),
+}
 
 const __firefox__ = glob.sync("./ios/brave-ios/Sources/Brave/Frontend/UserContent/UserScripts/__firefox__.js")[0];
 
