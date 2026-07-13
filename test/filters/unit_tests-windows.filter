@@ -27,6 +27,19 @@
 # https://github.com/brave/brave-browser/issues/54960
 -PasswordStatusCheckServiceBaseTest.PrefInitialized
 
+# Upstream flake introduced by Chromium commit 56d90776362b5 ("Implement
+# platform-agnostic system media permission caching", 2026-07-23), which removed
+# the cached IAppCapability COM objects that SystemMediaSourceWin used to hold
+# and replaced them with a fresh live query (CreateAppCapability + CheckAccess)
+# on every call. The test asserts that two consecutive SystemPermissionStatus()
+# calls on the same object return equal values, but nothing caches the result
+# anymore, so on CI bots the live WinRT AppCapability check can return a
+# different AppCapabilityAccessStatus between the two calls. 0% flaky before
+# 2026-07-24, ~0.26% since, per LUCI Analysis (60-day lookback) -- confirms this
+# is an upstream regression, not a Brave-specific issue (no chromium_src
+# overrides or patches touch this file).
+-SystemMediaSourceWinTest.ConstructionDoesNotCrash
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -EnterpriseReportingPrivateGetContextInfoOSFirewallTest.*
 -EnterpriseReportingPrivateGetPersistentSecretFunctionTest.GetSecret
