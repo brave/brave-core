@@ -14,28 +14,16 @@ checkout is required, only a shallow deploy of the build script itself.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import post_process
-from recipe_properties import Property
+from PB.recipes.brave.toolchains.xcode.build_xcode_toolchain import (
+    InputProperties)
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
 
 DEPS = ['path', 'step', 'platform', 'depot_tools', 'brave_core_shallow']
-
-
-@dataclass(frozen=True)
-class InputProperties:
-    # Chromium release tag (e.g. `150.0.7841.1`) whose pinned macOS SDK the
-    # toolchain is built for. Must be a tag: the builder reads it via gitiles'
-    # `refs/tags/{tag}` endpoint.
-    chromium_tag: str
-    # Rebuild and replace an already-published index instead of refusing. Off
-    # by default so a run never clobbers a toolchain already in use in the wild.
-    force_overwrite: bool = Property(default=False)
-
 
 PROPERTIES = InputProperties
 

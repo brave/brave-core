@@ -11,7 +11,7 @@ import post_process
 DEPS = ['platform', 'step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     api.step('report platform', ['echo', api.platform.name])
     if api.platform.is_win:
         api.step('windows only', ['echo', 'win'])

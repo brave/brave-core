@@ -11,7 +11,7 @@ import post_process
 DEPS = ['path', 'step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     # Probe a seeded file, then create and re-probe a directory: the created
     # directory must "exist" for the rest of the run.
     if api.path.exists(api.path.chromium_src / 'chrome/VERSION'):

@@ -18,7 +18,8 @@ vpython3 tools/recipes/engine.py toolchains/rust/package_rust \
 ```
 
 The recipe name is a `/`-separated path under `recipes/`. `--properties` is a
-JSON object whose keys match the recipe's `PROPERTIES`.
+JSON object decoded into the recipe's `PROPERTIES` message (see
+[Properties](#properties)).
 
 To run straight from a pipeline without a checkout, `engine_bootstrap.py`
 shallow-clones the engine from brave-core and forwards to `engine.py`:
@@ -31,6 +32,79 @@ curl -sL https://raw.githubusercontent.com/brave/brave-core/refs/heads/master/to
 
 The engine requires `vpython3` and the bootsrap will take care of these
 requirements.
+
+## Properties
+
+A recipe observes its input by defining protobuf messages and setting them as
+its `PROPERTIES` and (optionally) `ENV_PROPERTIES`. Declare the messages in a
+sibling `.proto` file:
+
+```proto
+// recipes/toolchains/rust/package_rust.proto
+syntax = "proto3";
+package recipes.brave.toolchains.rust.package_rust;
+
+message InputProperties {
+  int32 brave_subrevision = 1;
+  string chromium_ref = 2;
+}
+
+message EnvProperties {
+  string GIT_CACHE = 1;  // All envvar keys must be capitalized.
+}
+```
+
+Then import the generated messages from the `PB` namespace and assign them:
+
+```python
+# recipes/toolchains/rust/package_rust.py
+from PB.recipes.brave.toolchains.rust.package_rust import (EnvProperties,
+                                                           InputProperties)
+
+PROPERTIES = InputProperties
+ENV_PROPERTIES = EnvProperties
+
+def RunSteps(api, properties, env_properties):
+    # properties and env_properties are instances of their respective proto
+    # messages.
+    api.chromium_checkout.ensure_checkout(
+        ref=properties.chromium_ref,
+        git_cache=env_properties.GIT_CACHE or None)
+```
+
+`RunSteps` takes `api` followed by whichever of the two messages the recipe
+declares:
+
+```python
+def RunSteps(api):                               # neither declared
+def RunSteps(api, properties):                   # PROPERTIES only
+def RunSteps(api, properties, env_properties):   # PROPERTIES and ENV_PROPERTIES
+def RunSteps(api, env_properties):               # ENV_PROPERTIES only
+```
+
+`PROPERTIES` is populated by taking the input property JSON object (from
+`--properties`), removing all keys beginning with `$`, and decoding the rest as
+JSONPB into the `PROPERTIES` message. Keys beginning with `$` are reserved by
+the engine.
+
+`ENV_PROPERTIES` is populated by taking the current environment variables,
+capitalizing all keys (`key.upper()`), and decoding that into the
+`ENV_PROPERTIES` message. Both decodes ignore unknown fields.
+
+Properties are set in tests via the same messages (see [Testing](#testing)):
+
+```python
+def GenTests(api):
+    yield api.test(
+        'example',
+        api.properties(InputProperties(chromium_ref='151.0.7917.1',
+                                       brave_subrevision=1)),
+        api.properties.environ(EnvProperties(GIT_CACHE='/b/cache')),
+    )
+```
+
+`api.properties` also accepts top-level keyword arguments as a shorthand, e.g.
+`api.properties(chromium_ref='151.0.7917.1', brave_subrevision=1)`.
 
 ## Testing
 
@@ -98,7 +172,4 @@ considered for cases where there are too many permutations.
 Modules are tested via small example recipes under
 `recipe_modules/<module>/examples/`, run through this same machinery.
 Expectation files sit next to each recipe in a `<recipe>.expected/` directory
-and are committed. The `unittests/` suite
-(`python3 -m unittest discover -s tools/recipes/unittests -p '*_test.py'`)
-covers the machinery itself and, via `recipes_test.py`, fails presubmit if any
-expectation is stale.
+and are committed.

@@ -1,0 +1,21 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.toolchains.rust.package_rust;
+
+message InputProperties {
+  // Brave's monotonic sub-revision within a given Chromium ref, used to
+  // distinguish repackages of the same Chromium tag.
+  int32 brave_subrevision = 1;
+  // Chromium ref (tag or branch) whose Rust toolchain is packaged.
+  string chromium_ref = 2;
+}
+
+message EnvProperties {
+  // Optional git cache directory to speed up the Chromium checkout.
+  string GIT_CACHE = 1;
+}

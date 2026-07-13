@@ -6,17 +6,11 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
-
 import post_process
+from PB.recipe_modules.brave.chromium_checkout.examples.full import (
+    InputProperties)
 
 DEPS = ['chromium_checkout', 'env', 'platform', 'step']
-
-
-@dataclass(frozen=True)
-class InputProperties:
-    chromium_ref: str = 'main'
-
 
 PROPERTIES = InputProperties
 

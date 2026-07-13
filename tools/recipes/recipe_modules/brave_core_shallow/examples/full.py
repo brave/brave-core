@@ -11,7 +11,7 @@ import post_process
 DEPS = ['brave_core_shallow', 'path', 'step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     api.brave_core_shallow.deploy('third_party/node')
 
 

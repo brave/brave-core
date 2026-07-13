@@ -18,7 +18,7 @@ if TYPE_CHECKING:
 DEPS = ['path', 'step', 'depot_tools', 'brave_core_shallow']
 
 
-def RunSteps(api: RecipeScriptApi, _: object) -> None:
+def RunSteps(api: RecipeScriptApi) -> None:
     brave_root = api.brave_core_shallow.deploy('third_party/node')
 
     vpython3 = api.depot_tools.vpython3()

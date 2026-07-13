@@ -23,6 +23,7 @@ vendor/omaha/
 /out/
 node_modules/
 patches/**/*.patchinfo
+/tools/recipes/.recipe_deps/
 /third_party/argon2/src
 /third_party/boringtun/.cargo-home/
 /third_party/boringtun/target/

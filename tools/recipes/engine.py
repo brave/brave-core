@@ -10,14 +10,6 @@ detection), instantiates each recipe module's `RecipeApi`, wires dependencies
 onto each module's `.m` injection site, and finally calls the recipe's
 `RunSteps(api, properties)`.
 
-This is intentionally minimal for now as a starting point modelled on
-chrome-infra's recipes_py that we will grow incrementally. Notable
-simplifications vs upstream:
-
-  * Single repo only; module names are bare directory names under
-    `recipe_modules/` (no `repo/module` qualification).
-  * Properties are a plain object, not a protobuf message.
-
 Run a recipe directly (recipe names are `/`-separated paths under recipes/).
 `--workspace` sets the root the job runs in; recipe paths are derived from it:
 
@@ -28,6 +20,7 @@ Run a recipe directly (recipe names are `/`-separated paths under recipes/).
 from __future__ import annotations
 
 import argparse
+from collections.abc import Mapping
 import importlib
 import json
 import logging
@@ -36,8 +29,10 @@ from pathlib import Path
 import sys
 import types
 
+from google.protobuf import json_format as jsonpb
+
+import proto_support
 from recipe_api import RecipeApi
-from recipe_properties import apply_environ
 
 # Root of the recipes tree (this file's directory). Recipe modules live under
 # `recipe_modules/<name>/` and recipes under `recipes/<name>.py`.
@@ -66,6 +61,25 @@ def _ensure_on_sys_path() -> None:
     root = str(RECIPES_ROOT)
     if root not in sys.path:
         sys.path.insert(0, root)
+
+
+# Set once the `PB` proto package has been compiled and put on `sys.path`.
+_protos_ready = False
+
+
+def _ensure_protos() -> None:
+    """Compile the repo's `.proto` files and make the `PB` package importable.
+
+    Recipes import their typed `PROPERTIES`/`ENV_PROPERTIES` messages from `PB`
+    (e.g. `from PB.recipes.brave... import InputProperties`), so this must run
+    before any recipe is imported. Idempotent: the compile is a no-op fast path
+    when nothing changed, and `PB` is added to `sys.path` exactly once.
+    """
+    global _protos_ready
+    if _protos_ready:
+        return
+    proto_support.append_to_syspath(proto_support.ensure_compiled())
+    _protos_ready = True
 
 
 def _find_api_class(api_module: types.ModuleType,
@@ -173,12 +187,12 @@ class _Engine:
         if run_steps is None:
             raise RuntimeError(f"recipe '{recipe_name}' is missing RunSteps")
 
-        # In test mode, source `from_environ` properties from the simulated
-        # environment so expectations don't depend on the host's env vars.
+        # In test mode, source ENV_PROPERTIES from the simulated environment so
+        # expectations don't depend on the host's env vars.
         environ = self._test.env if self._test is not None else os.environ
-        props_obj = _build_properties(getattr(recipe, 'PROPERTIES', None),
-                                      properties or {}, environ)
-        return run_steps(api, props_obj)
+        return _run_steps(run_steps, api, properties or {}, environ,
+                          getattr(recipe, 'PROPERTIES', None),
+                          getattr(recipe, 'ENV_PROPERTIES', None))
 
 
 def _module_names() -> set[str]:
@@ -199,27 +213,57 @@ def _import_recipe(recipe_name: str) -> types.ModuleType:
     `toolchains/rust/package_rust`).
     """
     _ensure_on_sys_path()
+    # Recipes import their PROPERTIES/ENV_PROPERTIES messages from `PB`, so the
+    # proto package must exist before the recipe module is imported.
+    _ensure_protos()
     module_path = recipe_name.replace('/', '.')
     first = recipe_name.split('/', 1)[0]
     pkg = MODULES_PKG if first in _module_names() else RECIPES_PKG
     return importlib.import_module(f'{pkg}.{module_path}')
 
 
-def _build_properties(properties_def: type | None,
-                      properties: dict[str, object],
-                      environ: object | None = None) -> object:
-    """Build the properties object passed as `RunSteps`' second argument.
+def _run_steps(run_steps: object, api: object, properties: dict[str, object],
+               environ: Mapping[str, str], properties_def: type | None,
+               env_properties_def: type | None) -> object:
+    """Bind input into typed messages and invoke a recipe's `RunSteps`.
 
-    If the recipe declares `PROPERTIES` (any callable, e.g. a dataclass), it is
-    constructed from *properties*, with any `Property(from_environ=...)` fields
-    backfilled from the environment when not passed explicitly. Otherwise a
-    plain namespace is returned.
+    `PROPERTIES` and `ENV_PROPERTIES` are protobuf message classes, and the
+    arguments passed after `api` are determined by which are declared:
+
+        neither                 -> RunSteps(api)
+        PROPERTIES              -> RunSteps(api, properties)
+        PROPERTIES + ENV_PROPS  -> RunSteps(api, properties, env_properties)
+        ENV_PROPERTIES          -> RunSteps(api, env_properties)
+
+    `PROPERTIES` is decoded from the input property JSON with reserved
+    (`$`-prefixed) keys removed; `ENV_PROPERTIES` is decoded from the
+    environment with keys upper-cased. Both use JSONPB with unknown fields
+    ignored, so extra input (e.g. every unrelated env var) is dropped.
     """
-    if properties_def is None:
-        return types.SimpleNamespace(**properties)
-    values = apply_environ(properties_def, properties,
-                           os.environ if environ is None else environ)
-    return properties_def(**values)
+    if properties_def is not None and not proto_support.is_message_class(
+            properties_def):
+        raise TypeError('PROPERTIES must be a protobuf message class; got '
+                        f'{properties_def!r}')
+
+    args = [api]
+    if proto_support.is_message_class(properties_def):
+        properties_without_reserved = {
+            k: v
+            for k, v in properties.items() if not k.startswith('$')
+        }
+        args.append(
+            jsonpb.ParseDict(properties_without_reserved,
+                             properties_def(),
+                             ignore_unknown_fields=True))
+    if env_properties_def is not None:
+        args.append(
+            jsonpb.ParseDict({
+                k.upper(): v
+                for k, v in environ.items()
+            },
+                             env_properties_def(),
+                             ignore_unknown_fields=True))
+    return run_steps(*args)
 
 
 def run_recipe(recipe_name: str,

@@ -11,7 +11,7 @@ import post_process
 DEPS = ['depot_tools', 'env', 'platform', 'step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     vpython3 = api.depot_tools.vpython3()
     api.step('use vpython3', [vpython3, '--version'])
 
