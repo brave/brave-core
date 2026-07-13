@@ -4,14 +4,25 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
+import("//extensions/buildflags/buildflags.gni")
 
 assert(enable_ai_chat)
 
 source_set("ai_chat") {
   sources = [
+    "ai_chat_movable_side_panel_web_view.cc",
+    "ai_chat_movable_side_panel_web_view.h",
     "ai_chat_side_panel_utils_views.cc",
     "ai_chat_side_panel_web_view.cc",
     "ai_chat_side_panel_web_view.h",
+  ]
+
+  # Header-visible dependencies: `ai_chat_movable_side_panel_web_view.h` derives
+  # from `views::WebView` (//ui/views) and
+  # `web_modal::WebContentsModalDialogManagerDelegate` (//components/web_modal).
+  public_deps = [
+    "//components/web_modal",
+    "//ui/views",
   ]
 
   deps = [
@@ -21,14 +32,22 @@ source_set("ai_chat") {
     "//brave/components/ai_chat/core/common",
     "//brave/components/constants",
     "//brave/components/resources:strings_grit",
+    "//chrome/browser:file_select_helper",
     "//chrome/browser/profiles",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/side_panel",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
+    "//chrome/browser/ui/webui:webui_util",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//extensions/buildflags",
     "//ui/base",
-    "//ui/views",
     "//url",
   ]
+
+  if (enable_extensions_core) {
+    deps += [ "//extensions/browser" ]
+  }
 }

@@ -633,6 +633,17 @@ constexpr flags_ui::FeatureEntry::Choice kVerticalTabCollapseDelayChoices[] = {
               ai_chat::features::kAIChatGlobalSidePanelEverywhere),            \
       },                                                                       \
       {                                                                        \
+          "brave-ai-chat-move-full-page-to-side-panel",                        \
+          "Brave AI Chat Move Full Page To Side Panel",                        \
+          "Moves the full-page AI Chat conversation into the side panel when " \
+          "an in-conversation link is clicked, and back to a tab when "        \
+          "opening "                                                           \
+          "full-page, preserving the live conversation state",                 \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(                                                  \
+              ai_chat::features::kAIChatMoveFullPageToSidePanel),              \
+      },                                                                       \
+      {                                                                        \
           "brave-ai-chat-rich-search-widgets",                                 \
           "Brave AI Chat Rich Search Widgets",                                 \
           "Enables AI Chat Rich Search Widgets",                               \

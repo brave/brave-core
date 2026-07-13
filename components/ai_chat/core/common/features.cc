@@ -96,6 +96,8 @@ bool IsAIChatGlobalSidePanelEverywhereEnabled() {
       features::kAIChatGlobalSidePanelEverywhere);
 }
 
+BASE_FEATURE(kAIChatMoveFullPageToSidePanel, base::FEATURE_DISABLED_BY_DEFAULT);
+
 BASE_FEATURE(kCustomSiteDistillerScripts, base::FEATURE_ENABLED_BY_DEFAULT);
 
 bool IsCustomSiteDistillerScriptsEnabled() {

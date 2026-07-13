@@ -3,9 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+#include <tuple>
+
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
@@ -19,6 +22,8 @@
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_ui.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "printing/buildflags/buildflags.h"
@@ -30,22 +35,21 @@
 // Tests sidepanel behavior for AI Chat scenarios
 class AIChatGlobalSidePanelBrowserTest
     : public InProcessBrowserTest,
-      public testing::WithParamInterface<bool> {
+      public testing::WithParamInterface<std::tuple<bool, bool>> {
  public:
   AIChatGlobalSidePanelBrowserTest() {
     std::vector<base::test::FeatureRef> enabled_features = {
         ai_chat::features::kAIChatAgentProfile};
     std::vector<base::test::FeatureRef> disabled_features = {};
 
-    bool global_flag_enabled = GetParam();
-
-    if (global_flag_enabled) {
-      enabled_features.push_back(
-          ai_chat::features::kAIChatGlobalSidePanelEverywhere);
-    } else {
-      disabled_features.push_back(
-          ai_chat::features::kAIChatGlobalSidePanelEverywhere);
-    }
+    // The global side panel and the move-full-page-to-side-panel features are
+    // parameterized independently so the same assertions run against both the
+    // wrapper-based side panel view (move feature off) and the movable plain
+    // WebView (move feature on).
+    (IsGlobalFlagEnabled() ? enabled_features : disabled_features)
+        .push_back(ai_chat::features::kAIChatGlobalSidePanelEverywhere);
+    (IsMoveToSidePanelEnabled() ? enabled_features : disabled_features)
+        .push_back(ai_chat::features::kAIChatMoveFullPageToSidePanel);
 
     scoped_feature_list_.InitWithFeatures(enabled_features, disabled_features);
   }
@@ -58,7 +62,8 @@ class AIChatGlobalSidePanelBrowserTest
 
   ~AIChatGlobalSidePanelBrowserTest() override = default;
 
-  bool IsGlobalFlagEnabled() const { return GetParam(); }
+  bool IsGlobalFlagEnabled() const { return std::get<0>(GetParam()); }
+  bool IsMoveToSidePanelEnabled() const { return std::get<1>(GetParam()); }
 
  protected:
   void OpenSidePanelAndVerify(Browser* browser) {
@@ -196,12 +201,37 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   }
 }
 
+// The kChatUI side panel hosts and loads the AI Chat WebUI regardless of which
+// view backs it: the wrapper-based `AIChatSidePanelWebView` when the move
+// feature is off, or the movable plain `AIChatMovableSidePanelWebView` when it
+// is on. This verifies the conversation UI still opens and is reachable through
+// the standard side panel lookups for the movable view.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       SidePanelHostsAndLoadsAIChatUI) {
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(side_panel_coordinator);
+
+  side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
+  EXPECT_TRUE(IsSidePanelOpen(browser()));
+
+  auto* side_panel_web_contents = side_panel_coordinator->GetWebContentsForTest(
+      SidePanelEntry::Id::kChatUI);
+  ASSERT_TRUE(side_panel_web_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(side_panel_web_contents));
+
+  auto* web_ui = side_panel_web_contents->GetWebUI();
+  ASSERT_TRUE(web_ui);
+  EXPECT_TRUE(web_ui->GetController()->GetAs<AIChatUI>());
+}
+
 INSTANTIATE_TEST_SUITE_P(
     ,
     AIChatGlobalSidePanelBrowserTest,
-    testing::Bool(),
+    testing::Combine(testing::Bool(), testing::Bool()),
     [](const testing::TestParamInfo<
         AIChatGlobalSidePanelBrowserTest::ParamType>& info) {
-      return absl::StrFormat("GlobalSidePanelFeature_%s",
-                             info.param ? "Enabled" : "NotEnabled");
+      return absl::StrFormat(
+          "GlobalSidePanel_%s_MoveToSidePanel_%s",
+          std::get<0>(info.param) ? "Enabled" : "NotEnabled",
+          std::get<1>(info.param) ? "Enabled" : "NotEnabled");
     });
