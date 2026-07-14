@@ -52,6 +52,8 @@ source_set("browser_tests") {
     "//chrome/browser/browsing_data:constants",
     "//chrome/browser/ui/zoom",
     "//chrome/test:test_support",
+    "//components/permissions",
+    "//components/permissions:test_support",
     "//content/public/browser",
     "//content/test:test_support",
     "//third_party/blink/public:blink_headers",
@@ -63,7 +65,10 @@ source_set("browser_tests") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "containers_service_delegate_unittest.cc" ]
+  sources = [
+    "containers_service_delegate_unittest.cc",
+    "permission_util_containers_unittest.cc",
+  ]
 
   deps = [
     ":containers",
@@ -74,7 +79,9 @@ source_set("unit_tests") {
     "//brave/components/containers/core/mojom",
     "//chrome/browser",
     "//chrome/test:test_support",
+    "//components/permissions",
     "//components/sessions:test_support",
+    "//content/test:test_support",
     "//testing/gmock",
     "//testing/gtest",
   ]
