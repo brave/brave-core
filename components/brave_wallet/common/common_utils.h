@@ -30,7 +30,7 @@ bool IsPolkadotEnabled();
 bool IsCardanoEnabled();
 bool IsCardanoDAppSupportEnabled();
 bool IsZCashShieldedTransactionsEnabled();
-bool IsZCashIronwoodTransactionEnabled();
+bool IsZCashIronwoodEnabled();
 bool IsAnkrBalancesEnabled();
 bool IsTransactionSimulationsEnabled();
 bool IsAccountHidingEnabled();

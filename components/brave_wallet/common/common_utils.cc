@@ -63,15 +63,14 @@ bool IsZCashShieldedTransactionsEnabled() {
 #endif
 }
 
-bool IsZCashIronwoodTransactionEnabled() {
+bool IsZCashIronwoodEnabled() {
 #if BUILDFLAG(IS_IOS)
   bool is_zcash_enabled = IsZCashEnabled();
-  bool is_ironwood_tx_enabled =
-      features::kZCashIronwoodTransactionEnabled.Get();
+  bool is_ironwood_enabled = features::kZCashIronwoodEnabled.Get();
   bool is_wallet_webui_enabled = IsWalletWebUIEnabled();
-  return is_zcash_enabled && is_ironwood_tx_enabled && is_wallet_webui_enabled;
+  return is_zcash_enabled && is_ironwood_enabled && is_wallet_webui_enabled;
 #else
-  return IsZCashEnabled() && features::kZCashIronwoodTransactionEnabled.Get();
+  return IsZCashEnabled() && features::kZCashIronwoodEnabled.Get();
 #endif
 }
 
