@@ -259,8 +259,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   const int initial_tab_count = tab_strip->count();
   const GURL link_url("chrome://version/");
 
-  const bool handled =
-      ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents, link_url);
+  const bool handled = ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents);
 
   if (!IsMoveToSidePanelEnabled()) {
     // Feature off: no transfer. AI Chat stays a full tab and no tab is opened
@@ -303,8 +302,7 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   const int initial_tab_count = browser()->tab_strip_model()->count();
 
-  EXPECT_FALSE(ai_chat::MaybeMoveFullPageChatToSidePanel(
-      side_panel_contents, GURL("chrome://version/")));
+  EXPECT_FALSE(ai_chat::MaybeMoveFullPageChatToSidePanel(side_panel_contents));
   EXPECT_EQ(browser()->tab_strip_model()->count(), initial_tab_count);
   EXPECT_TRUE(IsSidePanelOpen(browser()));
 }

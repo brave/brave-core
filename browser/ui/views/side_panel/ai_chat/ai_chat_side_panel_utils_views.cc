@@ -69,8 +69,7 @@ void ClosePanelIfChatActive(content::WebContents* web_contents) {
 }
 
 bool MaybeMoveFullPageChatToSidePanel(
-    content::WebContents* ai_chat_web_contents,
-    const GURL& link_url) {
+    content::WebContents* ai_chat_web_contents) {
   if (!base::FeatureList::IsEnabled(features::kAIChatMoveFullPageToSidePanel)) {
     return false;
   }
@@ -102,11 +101,6 @@ bool MaybeMoveFullPageChatToSidePanel(
   }
 
   const tabs::TabHandle ai_chat_handle = ai_chat_tab->GetHandle();
-  const int index = tab_list->GetIndexOfTab(ai_chat_handle);
-
-  // Open the clicked link in a tab at AI Chat's current position. AI Chat
-  // shifts one slot to the right; its handle remains valid.
-  tab_list->OpenTab(link_url, index, /*foreground=*/true);
 
   // Detach AI Chat's live contents (not destroyed, not reloaded) and hand it to
   // the controller, which shows it in the side panel.

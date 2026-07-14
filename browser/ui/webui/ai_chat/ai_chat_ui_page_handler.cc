@@ -413,16 +413,12 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
-#if !BUILDFLAG(IS_ANDROID)
   // A frontend link was clicked inside the conversation. If AI Chat is a full
   // browser tab, move the live conversation into the side panel and open the
   // link in a tab in its place. No-op unless the feature is enabled and AI
   // Chat is a full tab; internal chrome/UI links use OpenURLInNewTab directly
   // and never reach here.
-  if (ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_, url)) {
-    return;
-  }
-#endif  // !BUILDFLAG(IS_ANDROID)
+  ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
 
   OpenURLInNewTab(url);
 }

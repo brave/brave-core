@@ -26,8 +26,7 @@ void ClosePanel(content::WebContents* web_contents);
 // way (the caller must then NOT open `link_url` itself). Desktop only; the
 // definition lives in the toolkit_views translation unit.
 bool MaybeMoveFullPageChatToSidePanel(
-    content::WebContents* ai_chat_web_contents,
-    const GURL& link_url);
+    content::WebContents* ai_chat_web_contents);
 
 // Closes the side panel only if the AI Chat entry is the one currently being
 // shown. Used when moving a conversation to a full-page tab, where leaving the
