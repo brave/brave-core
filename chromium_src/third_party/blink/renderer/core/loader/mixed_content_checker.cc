@@ -68,7 +68,7 @@ std::optional<bool> MixedContentChecker::IsMixedContentForOnion(
     const KURL& resource_url) {
   // Use the precursor origin so that opaque origins (e.g. an .onion page
   // sandboxed via `Content-Security-Policy: sandbox`) are still recognized as
-  // .onion. This matches how the frame-context check above and upstream's
+  // .onion. This matches how the frame-context check and upstream's
   // IsMixedContent() use GetOriginOrPrecursorOriginIfOpaque(). Reading the
   // opaque origin's Host()/Protocol() directly returns empty strings, which
   // would let mixed content (e.g. insecure form submissions) through.
