@@ -170,6 +170,33 @@ const MODELS: Mojom.Model[] = [
       },
     },
   },
+  {
+    key: 'chat-near-glm-5',
+    displayName: 'GLM-5',
+    visionSupport: false,
+    audioSupport: false,
+    videoSupport: false,
+    supportsTools: false,
+    supportedCapabilities: [
+      Mojom.ConversationCapability.CHAT,
+      Mojom.ConversationCapability.DEEP_RESEARCH,
+    ],
+    isSuggestedModel: true,
+    isNearModel: true,
+    supportsPrivateInference: false,
+    options: {
+      leoModelOptions: {
+        name: 'near-glm-5',
+        displayMaker: 'Z.ai',
+        description: '',
+        category: Mojom.ModelCategory.CHAT,
+        access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+        maxAssociatedContentLength: 128000,
+        longConversationWarningCharacterLimit: 128000,
+      },
+      customModelOptions: undefined,
+    },
+  },
 ]
 
 const SAMPLE_QUESTIONS = [
