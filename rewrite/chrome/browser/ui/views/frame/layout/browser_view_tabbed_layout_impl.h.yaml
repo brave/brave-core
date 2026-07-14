@@ -31,7 +31,6 @@ substitutions:
 
       The override needs access to the private nested `SeparatorInfo`
       type and to the (still private) virtuals above.
-    re_pattern: '(class BrowserViewTabbedLayoutImpl\b.*?\n private:\n)'
-    re_flags: [DOTALL]
-    replace: |
-      \1  friend class BraveBrowserViewTabbedLayoutImpl;
+    add_friend:
+      class_name: BrowserViewTabbedLayoutImpl
+      friend_type: class BraveBrowserViewTabbedLayoutImpl

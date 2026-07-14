@@ -85,7 +85,6 @@ substitutions:
       (`ResetResizeArea`, `UpdateContentsBorderAndOverlay`,
       `OnWebContentsFocused`, `ExecuteOnEachVisibleContentsView`) and
       reads private members such as `contents_container_views_`.
-    re_pattern: '(class MultiContentsView\b.*?\n private:\n)'
-    re_flags: [DOTALL]
-    replace: |
-      \1  friend class BraveMultiContentsView;
+    add_friend:
+      class_name: MultiContentsView
+      friend_type: class BraveMultiContentsView

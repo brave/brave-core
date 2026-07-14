@@ -32,5 +32,6 @@ substitutions:
   - description:
       'Add Brave PermissionContextBase as friend of
       chromium_impl::PermissionContextBase'
-    re_pattern: '(\bprivate:)'
-    replace: '\1\n  friend class ::permissions::PermissionContextBase;'
+    add_friend:
+      class_name: PermissionContextBase
+      friend_type: class ::permissions::PermissionContextBase
