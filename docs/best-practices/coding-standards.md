@@ -1320,3 +1320,18 @@ This is a mojom-specific application of [CS-014](#CS-014). The
 target produces it.
 
 ---
+
+<a id="CS-071"></a>
+
+## ✅ Use Origins (Not URLs) for Security Decisions
+
+**When making a security or permission decision about a site, use `url::Origin`
+— or its serialized form `GetLastCommittedOrigin().GetURL()` — rather than a
+full URL.** Full URLs carry path, query, and misleading identity for
+`about:blank`, sandboxed frames, and `blob:` URLs. See also the
+[Chromium origin-vs-url guide](https://chromium.googlesource.com/chromium/src/+/HEAD/docs/security/origin-vs-url.md).
+This is the canonical upstream pattern:
+[PermissionUtil::GetLastCommittedOriginAsURL()](https://source.chromium.org/chromium/chromium/src/+/main:components/permissions/permission_util.cc;l=454)
+which relies on `rfh->GetLastCommittedOrigin().GetURL()`.
+
+---
