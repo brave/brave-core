@@ -34,7 +34,7 @@ export function createPsstDialogApi(
       ...eventsFor(
         Mojom.PsstConsentDialogInterface,
         {
-          onSetRequestStatus(url: string, error: string) {},
+          onSetRequestStatus(uid: string, error: string) {},
           onPsstErrorsReportSent() {},
         },
         (observer) => {
