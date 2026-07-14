@@ -33,7 +33,7 @@
     "list_affected_tests": "node ./build/commands/scripts/commands.js list_affected_tests",
     "test:scripts": "node ./build/commands/scripts/testScripts.ts",
     "eslint": "eslint --quiet .",
-    "build-storybook": "node ./build/commands/scripts/commands.js build --target=brave:storybook && storybook build -c .storybook -o .storybook-out",
+    "build-storybook": "node ./build/commands/scripts/commands.js build --target=brave:storybook && node --max-old-space-size=8192 ./node_modules/storybook/bin/index.cjs build -c .storybook -o .storybook-out",
     "storybook": "storybook dev",
     "test-unit": "jest",
     "test-unit:wallet": "jest --coverage=false components/brave_wallet_ui",

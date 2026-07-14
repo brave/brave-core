@@ -9,6 +9,7 @@ import { withKnobs, boolean } from '@storybook/addon-knobs'
 import { setIconBasePath } from '@brave/leo/react/icon'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/BraveCoreThemeProvider'
+import StyledComponentsProvider from '../components/common/StyledComponentsProvider'
 
 // Fonts
 import '../ui/webui/resources/fonts/poppins.css'
@@ -59,6 +60,13 @@ global.chrome.extension = {
 
 export default {
   decorators: [
+    // Mirror production: restore styled-components v5 DOM prop filtering so
+    // custom style-only props don't leak onto DOM nodes as invalid attributes.
+    (Story: () => JSX.Element) => (
+      <StyledComponentsProvider>
+        <Story />
+      </StyledComponentsProvider>
+    ),
     (Story: () => JSX.Element) => (
       <div dir={boolean('rtl?', false) ? 'rtl' : ''}>
         <Story />
