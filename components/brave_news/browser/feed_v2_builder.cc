@@ -962,10 +962,9 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
               if (builder->subscribed_count_ == 0 && !publishers.empty()) {
                 feed->error = mojom::FeedV2Error::NoFeeds;
                 // If fetching Brave's feed failed because we couldn't reach the
-                // server, the user is likely offline. Note: a failing direct
-                // (custom RSS) feed does not set this, so a single broken
-                // custom feed no longer surfaces as a whole-feed connection
-                // error.
+                // server, the user is likely offline. A failing direct (custom
+                // RSS) feed does not set this, so a single broken custom feed
+                // does not put the whole feed into a connection-error state.
               } else if (builder->feed_connection_error_) {
                 feed->error = mojom::FeedV2Error::ConnectionError;
                 // Otherwise, we reached our sources but there are no articles

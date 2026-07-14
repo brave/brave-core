@@ -55,49 +55,69 @@ class FeedFetcherTest : public testing::Test {
   }
 };
 
-// A source that failed to reach Brave's feed server (and nothing else
-// succeeded) is a genuine connection error.
-TEST_F(FeedFetcherTest, ServerConnectionFailureReportsConnectionError) {
+// One source's inputs for a connection-error test case. Kept copyable (unlike
+// the move-only FeedSourceResult) so cases can live in a static table.
+struct SourceSpec {
+  bool success;
+  bool connection_error;
+  std::vector<std::string> article_urls;
+};
+
+struct ConnectionErrorTestCase {
+  std::string test_name;
+  std::vector<SourceSpec> sources;
+  bool expected_connection_error;
+};
+
+class FeedFetcherConnectionErrorTest
+    : public FeedFetcherTest,
+      public testing::WithParamInterface<ConnectionErrorTestCase> {};
+
+TEST_P(FeedFetcherConnectionErrorTest, ReportsConnectionError) {
+  const ConnectionErrorTestCase& test_case = GetParam();
+  SCOPED_TRACE(test_case.test_name);
   std::vector<FeedSourceResult> results;
-  results.push_back(MakeResult(/*success=*/false, /*connection_error=*/true,
-                               /*article_urls=*/{}));
-  EXPECT_TRUE(CombineHasConnectionError(std::move(results)));
+  for (const auto& source : test_case.sources) {
+    results.push_back(MakeResult(source.success, source.connection_error,
+                                 source.article_urls));
+  }
+  EXPECT_EQ(test_case.expected_connection_error,
+            CombineHasConnectionError(std::move(results)));
 }
 
-// The core of the bug: a direct (custom RSS) feed that fails to load must not
-// be reported as a whole-feed connection error, even when it is the only
-// source.
-TEST_F(FeedFetcherTest, DirectFeedFailureAloneIsNotConnectionError) {
-  std::vector<FeedSourceResult> results;
-  // A failing direct feed never sets |connection_error|.
-  results.push_back(MakeResult(/*success=*/false, /*connection_error=*/false,
-                               /*article_urls=*/{}));
-  EXPECT_FALSE(CombineHasConnectionError(std::move(results)));
-}
-
-// If any source loaded (proving we're online) we don't report a connection
-// error, even if another source hit a network failure.
-TEST_F(FeedFetcherTest, ConnectionFailureIgnoredWhenAnotherSourceSucceeds) {
-  std::vector<FeedSourceResult> results;
-  results.push_back(MakeResult(/*success=*/false, /*connection_error=*/true,
-                               /*article_urls=*/{}));
-  results.push_back(MakeResult(/*success=*/true, /*connection_error=*/false,
-                               /*article_urls=*/{}));
-  EXPECT_FALSE(CombineHasConnectionError(std::move(results)));
-}
-
-// A successful fetch is never a connection error.
-TEST_F(FeedFetcherTest, SuccessfulFetchIsNotConnectionError) {
-  std::vector<FeedSourceResult> results;
-  results.push_back(MakeResult(/*success=*/true, /*connection_error=*/false,
-                               /*article_urls=*/{"https://example.com/a"}));
-  EXPECT_FALSE(CombineHasConnectionError(std::move(results)));
-}
-
-// With no sources at all there's nothing to blame on the connection.
-TEST_F(FeedFetcherTest, NoSourcesIsNotConnectionError) {
-  EXPECT_FALSE(CombineHasConnectionError({}));
-}
+INSTANTIATE_TEST_SUITE_P(
+    ,
+    FeedFetcherConnectionErrorTest,
+    testing::ValuesIn(std::vector<ConnectionErrorTestCase>{
+        // A source that failed to reach Brave's feed server (and nothing else
+        // succeeded) is a genuine connection error.
+        {"ServerConnectionFailure",
+         {{/*success=*/false, /*connection_error=*/true, /*article_urls=*/{}}},
+         /*expected_connection_error=*/true},
+        // The core of the bug: a direct (custom RSS) feed that fails to load
+        // must not be reported as a whole-feed connection error, even when it
+        // is the only source. A failing direct feed never sets
+        // |connection_error|.
+        {"DirectFeedFailureAlone",
+         {{/*success=*/false, /*connection_error=*/false, /*article_urls=*/{}}},
+         /*expected_connection_error=*/false},
+        // If any source loaded (proving we're online) we don't report a
+        // connection error, even if another source hit a network failure.
+        {"ConnectionFailureIgnoredWhenAnotherSourceSucceeds",
+         {{/*success=*/false, /*connection_error=*/true, /*article_urls=*/{}},
+          {/*success=*/true, /*connection_error=*/false, /*article_urls=*/{}}},
+         /*expected_connection_error=*/false},
+        // A successful fetch is never a connection error.
+        {"SuccessfulFetch",
+         {{/*success=*/true, /*connection_error=*/false,
+           /*article_urls=*/{"https://example.com/a"}}},
+         /*expected_connection_error=*/false},
+        // With no sources at all there's nothing to blame on the connection.
+        {"NoSources", {}, /*expected_connection_error=*/false},
+    }),
+    [](const testing::TestParamInfo<ConnectionErrorTestCase>& info) {
+      return info.param.test_name;
+    });
 
 // Combining still drops articles with invalid URLs while keeping valid ones,
 // so a feed with one bad entry and one good entry yields the good article.
