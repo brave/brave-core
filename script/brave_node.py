@@ -21,7 +21,7 @@ def RunNodeRaw(cmd_parts):
     if sys.platform == 'win32':
         # On Windows, locate the shim file otherwise opening the subprocess
         # will fail.
-        node_executable = shutil.which('node') or 'node'
+        node_executable = shutil.which('node')
 
     cmd = [node_executable] + cmd_parts
     process = subprocess.Popen(cmd,
