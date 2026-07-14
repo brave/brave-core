@@ -477,7 +477,10 @@ extension BrowserViewController {
     // Only redirect for main frames
     guard let requestURL = request.url, isMainFrame else { return nil }
 
-    if FeatureList.kShouldCancelRequestsForUserAgentChange.enabled,
+    // WebKit bug resolved on iOS 27+
+    // https://bugs.webkit.org/show_bug.cgi?id=313542
+    if #unavailable(iOS 27.0),
+      FeatureList.kShouldCancelRequestsForUserAgentChange.enabled,
       let headerUserAgent = request.allHTTPHeaderFields?["User-Agent"],
       case let userAgentForType = userAgent(
         for: request,
