@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
-index d7dbafa23db7043deca475d63ea82dab960555b1..5825382b165728f94782e673b4f612647481b710 100644
+index d7dbafa23db7043deca475d63ea82dab960555b1..3e8a8ec7c564d81142bb0326cc26f0e2baa390c1 100644
 --- a/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 +++ b/chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h
 @@ -135,7 +135,7 @@ class TabDragController : public views::WidgetObserver,
@@ -11,3 +11,29 @@ index d7dbafa23db7043deca475d63ea82dab960555b1..5825382b165728f94782e673b4f61264
                                TabSlotView* source_view,
                                const std::vector<TabSlotView*>& dragging_views,
                                const gfx::Point& offset_from_source_view,
+@@ -228,6 +228,7 @@ class TabDragController : public views::WidgetObserver,
+   const TabDragContext* GetAttachedContext() const override;
+ 
+  private:
++  friend class BraveTabDragController;
+   friend class TabDragControllerTest;
+ 
+   class SourceTabStripEmptinessTracker;
+@@ -423,7 +424,7 @@ class TabDragController : public views::WidgetObserver,
+   // See Detach/Attach for parameter documentation. Transfers ownership of
+   // `this` from `attached_context_` (which must own `this`) to
+   // `target_context`.
+-  void DetachAndAttachToNewContext(ReleaseCapture release_capture,
++  virtual void DetachAndAttachToNewContext(ReleaseCapture release_capture,
+                                    TabDragContext* target_context);
+ 
+   // Detaches the tabs being dragged, creates a new Browser to contain them and
+@@ -550,7 +551,7 @@ class TabDragController : public views::WidgetObserver,
+ 
+   // Initializes `dragging_tabs_session_`, and performs a first MoveAttached
+   // within `attached_context_`.
+-  void StartDraggingTabsSession(bool initial_move,
++  virtual void StartDraggingTabsSession(bool initial_move,
+                                 gfx::Point start_point_in_screen);
+ 
+   // Calls `SetSelectionFromModel` in the `tab_strip_model`. This centralizes

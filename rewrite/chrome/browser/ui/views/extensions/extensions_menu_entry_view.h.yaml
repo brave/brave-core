@@ -1,0 +1,15 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make UpdateContextMenuButton virtual'
+    make_virtual:
+      class_name: ExtensionsMenuEntryView
+      method_name: UpdateContextMenuButton
+
+  - description: 'Friend BraveExtensionsMenuEntryView'
+    add_friend:
+      class_name: ExtensionsMenuEntryView
+      friend_type: class BraveExtensionsMenuEntryView

@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make AnnouncePageOpened virtual
+
+      This lets subclasses hook into page switch events to update the view
+      hierarchy after a new page or subpage is shown.
+    make_virtual:
+      class_name: PageInfoBubbleView
+      method_name: AnnouncePageOpened
+
+  - description: 'Friend BravePageInfoBubbleView'
+    add_friend:
+      class_name: PageInfoBubbleView
+      friend_type: class BravePageInfoBubbleView
