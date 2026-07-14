@@ -97,12 +97,6 @@
 
 .optionsMenu {
   line-height: 0;
-
-  leo-menu-item {
-    padding: var(--leo-spacing-m);
-    min-width: 180px;
-    gap: var(--leo-spacing-m);
-  }
 }
 
 .moreButton {
@@ -124,13 +118,20 @@
   }
 }
 
-.optionsMenuItem {
-  --leo-icon-size: 16px;
+// Nala Dropdown list-item layout for Pin / Set as default.
+// See: https://nala.bravesoftware.com/?path=/story/components-dropdown--both-icons
+.leoDropdownItem {
+  --leo-icon-size: 18px;
   --leo-icon-color: var(--leo-color-icon-default);
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--leo-spacing-m);
+  gap: var(--leo-spacing-xl);
+  min-width: 180px;
+}
+
+.leoDropdownItemLabel {
+  flex: 1;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
 }

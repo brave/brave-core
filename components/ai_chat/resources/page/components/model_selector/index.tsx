@@ -293,7 +293,10 @@ export function ModelSelector() {
                     showDetails={true}
                     showCapabilitySubtitle={true}
                     isMobile={aiChatContext.isMobile}
-                    onClick={() => conversationContext.setCurrentModel(model)}
+                    onClick={() => {
+                      conversationContext.setCurrentModel(model)
+                      handleClose()
+                    }}
                     onClickLearnMore={onClickLearnMore}
                     onSetAsDefault={() =>
                       aiChatContext.setDefaultModelKey(model.key)
