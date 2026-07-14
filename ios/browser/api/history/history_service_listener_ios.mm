@@ -7,22 +7,14 @@
 
 #include "base/check.h"
 #include "base/memory/raw_ptr.h"
-#include "base/strings/sys_string_conversions.h"
-#include "brave/ios/browser/api/history/brave_history_api.h"
+#include "brave/ios/browser/api/history/brave_history_api+private.h"
 #include "brave/ios/browser/api/history/brave_history_observer.h"
 #include "components/history/core/browser/history_service.h"
 #include "components/history/core/browser/history_service_observer.h"
-#include "net/base/apple/url_conversions.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
 #endif
-
-@interface IOSHistoryNode (Private)
-- (instancetype)initWithURL:(NSURL*)url
-                      title:(NSString* _Nullable)title
-                  dateAdded:(NSDate* _Nullable)dateAdded;
-@end
 
 namespace brave {
 namespace ios {
@@ -59,9 +51,9 @@ void HistoryServiceListenerIOS::OnURLVisited(
     history::HistoryService* history_service,
     const history::VisitedURLInfo& visited_url_info) {
   IOSHistoryNode* historyNode = [[IOSHistoryNode alloc]
-      initWithURL:net::NSURLWithGURL(visited_url_info.url_row.url())
-            title:base::SysUTF16ToNSString(visited_url_info.url_row.title())
-        dateAdded:visited_url_info.visit_row.visit_time.ToNSDate()];
+      initWithGURL:visited_url_info.url_row.url()
+             title:visited_url_info.url_row.title()
+         visitTime:visited_url_info.visit_row.visit_time];
 
   if ([observer_ respondsToSelector:@selector(historyNodeVisited:)]) {
     [observer_ historyNodeVisited:historyNode];
@@ -73,10 +65,10 @@ void HistoryServiceListenerIOS::OnURLsModified(
     const history::URLRows& changed_urls) {
   NSMutableArray<IOSHistoryNode*>* nodes = [[NSMutableArray alloc] init];
   for (const history::URLRow& row : changed_urls) {
-    IOSHistoryNode* node = [[IOSHistoryNode alloc]
-        initWithURL:net::NSURLWithGURL(row.url())
-              title:base::SysUTF16ToNSString(row.title())
-          dateAdded:row.last_visit().ToNSDate()];
+    IOSHistoryNode* node =
+        [[IOSHistoryNode alloc] initWithGURL:row.url()
+                                       title:row.title()
+                                   visitTime:row.last_visit()];
     [nodes addObject:node];
   }
 
@@ -95,10 +87,10 @@ void HistoryServiceListenerIOS::OnHistoryDeletions(
     isAllHistory = true;
   } else {
     for (const history::URLRow& row : deletion_info.deleted_rows()) {
-      IOSHistoryNode* node = [[IOSHistoryNode alloc]
-          initWithURL:net::NSURLWithGURL(row.url())
-                title:base::SysUTF16ToNSString(row.title())
-            dateAdded:row.last_visit().ToNSDate()];
+      IOSHistoryNode* node =
+          [[IOSHistoryNode alloc] initWithGURL:row.url()
+                                         title:row.title()
+                                     visitTime:row.last_visit()];
       [nodes addObject:node];
     }
   }
