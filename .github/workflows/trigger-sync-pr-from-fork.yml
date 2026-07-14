@@ -10,7 +10,7 @@ permissions:
 jobs:
   trigger-workflow:
     if: >-
-      ${{ !github.event.review.user.bot
+      ${{ github.event.review.user.type != 'Bot'
       && contains(github.event.review.body, '/run-ci')
       && contains(fromJSON('["OWNER", "MEMBER"]'), github.event.review.author_association) }}
     runs-on: ubuntu-slim
