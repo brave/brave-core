@@ -7,4 +7,7 @@ specific_include_rules = {
     "+base/strings/string_number_conversions.h",
     "+crypto/hmac.h",
   ],
+  "media_stream_audio_track_underlying_source\.cc": [
+    "+base/feature_override.h",
+  ],
 }
