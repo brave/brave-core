@@ -108,6 +108,22 @@ class UploadResult:
     signature: ArtifactSignature | None
 
 
+# The fields of `UploadResult` that we want to be summarised.
+_PUBLIC_FIELDS = ('bucket', 'key', 'url', 'sha256', 'size_bytes', 'version_id',
+                  'etag')
+
+
+def summarise(result: UploadResult) -> str:
+    """Return a human-readable, publicly-safe summary of *result*.
+
+    A user friendly summary of the upload result, suitable for printing in CI.
+    """
+    width = max(len(name) for name in _PUBLIC_FIELDS) + 1
+    return '\n'.join(f'{name + ":":<{width}} {getattr(result, name)}'
+                     for name in _PUBLIC_FIELDS
+                     if getattr(result, name) is not None)
+
+
 def sha256_file(path: Path) -> str:
     """Return the hex SHA-256 of *path*.
 

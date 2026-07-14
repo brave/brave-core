@@ -16,6 +16,8 @@ the digest-based KMS signing that must mirror `signing.createSignatureKms`.
 Layers:
 
 * `Sha256FileTest` runs the real (module-level) hasher over real on-disk files.
+* `SummariseTest` checks the public summary carries the location/integrity
+  fields and never the KMS signature envelope.
 * `KmsVerifyTest` covers the module-level download-side verify helper.
 * `SignTest` covers `S3Uploader.sign` argv and the base64-digest encoding.
 * `PutObjectTest` covers `S3Uploader._put_object` — the conditional-write and
@@ -146,6 +148,48 @@ class Sha256FileTest(unittest.TestCase):
         with _tempfile(data) as path:
             self.assertEqual(m.sha256_file(path),
                              hashlib.sha256(data).hexdigest())
+
+
+class SummariseTest(unittest.TestCase):
+    """`summarise` emits the public envelope and never the signing material."""
+
+    @staticmethod
+    def _result(**overrides):
+        base = dict(bucket='brave-build-deps-public',
+                    key='nodejs/node_modules.tar.gz',
+                    url='https://brave-build-deps-public.s3.brave.com/'
+                    'nodejs/node_modules.tar.gz',
+                    sha256='abc123',
+                    size_bytes=4574694,
+                    version_id='v-1',
+                    etag='"e-tag"',
+                    signature=m.ArtifactSignature(
+                        key_id='arn:aws:kms:us-west-2:123456789012:key/abcd',
+                        signature='c2lnbmF0dXJlLWJ5dGVz'))
+        base.update(overrides)
+        return m.UploadResult(**base)
+
+    def test_includes_public_fields(self):
+        summary = self._result()
+        rendered = m.summarise(summary)
+        for expected in (summary.bucket, summary.key, summary.url,
+                         summary.sha256, str(summary.size_bytes),
+                         summary.version_id, summary.etag):
+            self.assertIn(expected, rendered)
+
+    def test_omits_signature_envelope(self):
+        rendered = m.summarise(self._result())
+        self.assertNotIn('c2lnbmF0dXJlLWJ5dGVz', rendered)
+        self.assertNotIn('123456789012', rendered)
+        self.assertNotIn('key/abcd', rendered)
+        self.assertNotIn('signature', rendered.lower())
+
+    def test_skips_none_fields(self):
+        rendered = m.summarise(self._result(version_id=None, etag=None))
+        self.assertNotIn('version_id', rendered)
+        self.assertNotIn('etag', rendered)
+        # A required field is still rendered.
+        self.assertIn('sha256', rendered)
 
 
 class SignTest(unittest.TestCase):
