@@ -329,9 +329,9 @@ describe('ModelSelector', () => {
         document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
       )
       expect(modelItems.length).toBeGreaterThanOrEqual(1)
-      expect(
-        modelItems.every((i) => i.textContent?.includes('Premium')),
-      ).toBe(true)
+      expect(modelItems.every((i) => i.textContent?.includes('Premium'))).toBe(
+        true,
+      )
     })
   })
 
@@ -398,86 +398,84 @@ describe('ModelSelector', () => {
     expect(mockSetCurrentModel).toHaveBeenCalledWith(mockModels[1].key)
   })
 
-  it('should call setModelPinned when pin is chosen from options menu',
-    async () => {
-      const setModelPinned = jest.fn()
-      renderModelSelector({
-        service: {
-          setModelPinned,
+  it('should call setModelPinned when pin is chosen from options menu', async () => {
+    const setModelPinned = jest.fn()
+    renderModelSelector({
+      service: {
+        setModelPinned,
+      },
+      initialState: {
+        conversationState: {
+          allModels: mockModels,
+          currentModelKey: 'chat-basic',
         },
-        initialState: {
-          conversationState: {
-            allModels: mockModels,
-            currentModelKey: 'chat-basic',
-          },
-          serviceState: {
-            pinnedModelKeys: ['chat-basic'],
-          },
+        serviceState: {
+          pinnedModelKeys: ['chat-basic'],
         },
-      })
-
-      await openMenu()
-
-      const optionsButton = document.querySelector<HTMLElement>(
-        '[data-testid="model-options-chat-basic"]',
-      )
-      expect(optionsButton).toBeInTheDocument()
-      await act(async () => {
-        optionsButton?.click()
-      })
-
-      const pinItem = document.querySelector<HTMLElement>(
-        '[data-testid="pin-chat-basic"]',
-      )
-      expect(pinItem).toBeInTheDocument()
-      await act(async () => {
-        pinItem?.click()
-      })
-
-      expect(setModelPinned).toHaveBeenCalledWith('chat-basic', false)
+      },
     })
 
-  it('should call setDefaultModelKey when set as default is chosen',
-    async () => {
-      const setDefaultModelKey = jest.fn()
-      renderModelSelector({
-        service: {
-          setDefaultModelKey,
-        },
-        initialState: {
-          conversationState: {
-            allModels: mockModels,
-            currentModelKey: 'chat-basic',
-            defaultModelKey: 'chat-basic',
-          },
-          serviceState: {
-            // Keep premium in the default pinned view so its options
-            // control is in the DOM without switching vendors.
-            pinnedModelKeys: ['chat-basic', 'chat-premium'],
-          },
-        },
-      })
+    await openMenu()
 
-      await openMenu()
-
-      const optionsButton = document.querySelector<HTMLElement>(
-        '[data-testid="model-options-chat-premium"]',
-      )
-      expect(optionsButton).toBeInTheDocument()
-      await act(async () => {
-        optionsButton?.click()
-      })
-
-      const setDefaultItem = document.querySelector<HTMLElement>(
-        '[data-testid="set-default-chat-premium"]',
-      )
-      expect(setDefaultItem).toBeInTheDocument()
-      await act(async () => {
-        setDefaultItem?.click()
-      })
-
-      expect(setDefaultModelKey).toHaveBeenCalledWith('chat-premium')
+    const optionsButton = document.querySelector<HTMLElement>(
+      '[data-testid="model-options-chat-basic"]',
+    )
+    expect(optionsButton).toBeInTheDocument()
+    await act(async () => {
+      optionsButton?.click()
     })
+
+    const pinItem = document.querySelector<HTMLElement>(
+      '[data-testid="pin-chat-basic"]',
+    )
+    expect(pinItem).toBeInTheDocument()
+    await act(async () => {
+      pinItem?.click()
+    })
+
+    expect(setModelPinned).toHaveBeenCalledWith('chat-basic', false)
+  })
+
+  it('should call setDefaultModelKey when set as default is chosen', async () => {
+    const setDefaultModelKey = jest.fn()
+    renderModelSelector({
+      service: {
+        setDefaultModelKey,
+      },
+      initialState: {
+        conversationState: {
+          allModels: mockModels,
+          currentModelKey: 'chat-basic',
+          defaultModelKey: 'chat-basic',
+        },
+        serviceState: {
+          // Keep premium in the default pinned view so its options
+          // control is in the DOM without switching vendors.
+          pinnedModelKeys: ['chat-basic', 'chat-premium'],
+        },
+      },
+    })
+
+    await openMenu()
+
+    const optionsButton = document.querySelector<HTMLElement>(
+      '[data-testid="model-options-chat-premium"]',
+    )
+    expect(optionsButton).toBeInTheDocument()
+    await act(async () => {
+      optionsButton?.click()
+    })
+
+    const setDefaultItem = document.querySelector<HTMLElement>(
+      '[data-testid="set-default-chat-premium"]',
+    )
+    expect(setDefaultItem).toBeInTheDocument()
+    await act(async () => {
+      setDefaultItem?.click()
+    })
+
+    expect(setDefaultModelKey).toHaveBeenCalledWith('chat-premium')
+  })
 
   it(
     'should only show compatible models in the model selector if in'
