@@ -17,6 +17,7 @@ import("//brave/components/containers/buildflags/buildflags.gni")
 import("//brave/components/email_aliases/buildflags/buildflags.gni")
 import("//brave/components/local_ai/buildflags/buildflags.gni")
 import("//brave/components/playlist/core/common/buildflags/buildflags.gni")
+import("//brave/components/psst/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/components/web_discovery/buildflags/buildflags.gni")
@@ -112,6 +113,7 @@ preprocess_if_expr("preprocess") {
     "enable_local_ai=$enable_local_ai",
     "enable_pin_shortcut=$enable_pin_shortcut",
     "enable_playlist=$enable_playlist",
+    "enable_psst=$enable_psst",
     "enable_speedreader=$enable_speedreader",
     "enable_web_discovery=$enable_web_discovery",
     "enable_web_discovery_native=$enable_web_discovery_native",
