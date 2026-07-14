@@ -56,7 +56,6 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
-class AIChatService;
 
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer
@@ -165,8 +164,7 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   // created before the panel opened — otherwise creates a new conversation and
   // synchronously associates the active tab's content so the frontend's
   // GetState() returns it already populated.
-  ConversationHandler* AdoptOrCreateConversationForActiveContent(
-      AIChatService* service);
+  ConversationHandler* AdoptOrCreateConversationForActiveContent();
 
   // Shared helper for ProcessTextFile / ProcessPdfFile.
   void ExtractAndProcessFile(

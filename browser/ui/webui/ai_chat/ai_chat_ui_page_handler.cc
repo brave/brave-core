@@ -568,8 +568,8 @@ void AIChatUIPageHandler::NotifyNewDefaultConversation() {
 }
 
 ConversationHandler*
-AIChatUIPageHandler::AdoptOrCreateConversationForActiveContent(
-    AIChatService* service) {
+AIChatUIPageHandler::AdoptOrCreateConversationForActiveContent() {
+  auto* service = AIChatServiceFactory::GetForBrowserContext(profile_);
   // Adopt the conversation cached for this tab's content if it hasn't been
   // shown yet (e.g. one the context menu created before the panel opened), so
   // its message isn't orphaned in a conversation the panel never binds to. A
@@ -603,8 +603,7 @@ void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
   ConversationHandler* conversation;
   if (!active_chat_tab_helper_ || !conversations_are_content_associated_) {
-    conversation = AdoptOrCreateConversationForActiveContent(
-        AIChatServiceFactory::GetForBrowserContext(profile_));
+    conversation = AdoptOrCreateConversationForActiveContent();
   } else {
     // GetOrCreateConversationHandlerForContent ensures the side panel binds to
     // the same conversation already tied to this content_id. For example, if we
@@ -676,8 +675,7 @@ void AIChatUIPageHandler::NewConversation(
                 active_chat_tab_helper_->web_contents_content().content_id(),
                 active_chat_tab_helper_->web_contents_content().GetWeakPtr());
   } else {
-    conversation = AdoptOrCreateConversationForActiveContent(
-        AIChatServiceFactory::GetForBrowserContext(profile_));
+    conversation = AdoptOrCreateConversationForActiveContent();
   }
 
   conversation->Bind(std::move(receiver), std::move(conversation_ui_handler));
