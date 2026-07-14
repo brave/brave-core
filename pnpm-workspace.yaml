@@ -1,0 +1,93 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# See https://pnpm.io/settings for documentation on the settings below.
+
+# Packages allowed to run install/build lifecycle scripts.
+allowBuilds:
+  '@brave/leo-sf-symbols@https://codeload.github.com/brave/leo-sf-symbols/tar.gz/f601277fdcd837c3e6b7239b73537603c7539119': true
+  '@brave/leo@https://codeload.github.com/brave/leo/tar.gz/a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a': true
+  '@parcel/watcher': true
+  blake-hash: true
+  bufferutil: true
+  core-js: true
+  esbuild: true
+  keccak: true
+  protobufjs: true
+  secp256k1: true
+  svelte-preprocess: true
+  tiny-secp256k1: true
+  unrs-resolver: true
+  usb: true
+  utf-8-validate: true
+
+# Minimum age (minutes) a published dependency version must have.
+minimumReleaseAge: 5040
+
+# Use isolated node_modules layout (no package hoisting).
+nodeLinker: isolated
+
+# Force specific versions for dependencies across the graph.
+overrides:
+  # Security-related enforcements.
+  'axios': '1.16.0'
+  'elliptic': '6.6.1'
+  'esbuild': '0.28.1'
+  'http-proxy-middleware': '2.0.10'
+  'prismjs': '1.30.0'
+  'protobufjs': '7.6.3'
+  'tiny-secp256k1': '1.1.7'
+  'uuid': '14.0.0'
+
+  # React enforcement.
+  'react': '19.2.7'
+  'react-dom': '19.2.7'
+  '@types/react': '19.2.17'
+  '@types/react-dom': '19.2.3'
+  '@brave/brave-ui>styled-components': '6.4.3'
+
+# Relax peer dependency version checks for listed packages.
+peerDependencyRules:
+  allowedVersions:
+    utf-8-validate: '6'
+
+# Disable pnpm version management.
+pmOnFail: ignore
+
+# Hoist listed packages to the root node_modules.
+#
+# !!! Do not add new packages to this list without a real reason. By default,
+# you should add a dependency to package.json. If you need to hoist a package,
+# explain why it's necessary.
+publicHoistPattern:
+  ### Patterns to fix by moving them to package.json ###
+  # Some @dnd-kit sub-packages are used without explicit dependencies.
+  - '@dnd-kit/*'
+  # Some @glif/filecoin sub-packages are used without explicit dependencies.
+  - '@glif/filecoin-*'
+  # Some @ledgerhq sub-packages are used without explicit dependencies.
+  - '@ledgerhq/*'
+  # Some @testing-library sub-packages are used without explicit dependencies.
+  - '@testing-library/*'
+
+  ### OK to hoist permanently ###
+  # ESLint sub-packages are not imported directly in the codebase, but are
+  # required for eslint to work.
+  - '@eslint/*'
+  # Storybook sub-packages are required for storybook to work.
+  - '@storybook/*'
+  # decode-named-character-reference can't be found correctly by some packages
+  # in isolated mode. Hoist it to the root to fix the issue.
+  - 'decode-named-character-reference'
+
+# Store exact versions.
+savePrefix: ''
+
+# Do not show pnpm update notifications.
+updateNotifier: false
+
+# Skip verifying that installed dependencies match the lockfile before scripts
+# run. The check takes some time, we can't run it on each build/test command.
+verifyDepsBeforeRun: false

@@ -38,6 +38,7 @@ browser/brave_vpn/win/brave_vpn_wireguard_service/README.md
 .clang-tidy
 chromium_presubmit_config.json5
 jest.config.js
+pnpm-lock.yaml
 snapcraft.yaml
 
 # Ignored minified javascript
