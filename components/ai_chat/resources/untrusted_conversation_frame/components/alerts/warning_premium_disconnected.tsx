@@ -12,6 +12,11 @@ import styles from './alerts.module.scss'
 
 export default function WarningPremiumDisconnected() {
   const context = useUntrustedConversationContext()
+  const [dismissed, setDismissed] = React.useState(false)
+
+  if (dismissed) {
+    return null
+  }
 
   return (
     <div className={styles.alert}>
@@ -23,6 +28,13 @@ export default function WarningPremiumDisconnected() {
           onClick={() => context.uiHandler.refreshPremiumSession()}
         >
           {getLocale(S.CHAT_UI_PREMIUM_REFRESH_WARNING_ACTION)}
+        </Button>
+        <Button
+          slot='actions'
+          kind='plain-faint'
+          onClick={() => setDismissed(true)}
+        >
+          {getLocale(S.CHAT_UI_DISMISS_BUTTON_LABEL)}
         </Button>
       </Alert>
     </div>
