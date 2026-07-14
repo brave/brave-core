@@ -113,7 +113,8 @@ IN_PROC_BROWSER_TEST_F(BraveNavigatorHardwareConcurrencyFarblingBrowserTest,
 
   // Farbling level: balanced (default)
   // navigator.hardwareConcurrency should be greater than or equal to 4
-  // (or equal to real_value if real_value < 4) and less than or equal to the real value
+  // (or equal to real_value if real_value < 4) and less than or equal to the
+  // real value
   SetFingerprintingDefault();
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), farbling_url()));
   int fake_value =
