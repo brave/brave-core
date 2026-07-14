@@ -626,14 +626,14 @@ bool CosmeticFiltersJSHandler::ProcessURL(
       render_frame_->GetBlinkPreferences().page_in_reader_mode;
   if (page_in_reader_mode ||
       (!force_cosmetic_filtering &&
-       !content_settings->IsCosmeticFilteringEnabled(url_))) {
+       !content_settings->IsCosmeticFilteringEnabled())) {
     return false;
   }
 
   enabled_1st_party_cf_ =
       force_cosmetic_filtering ||
       render_frame_->GetWebFrame()->IsCrossOriginToOutermostMainFrame() ||
-      content_settings->IsFirstPartyCosmeticFilteringEnabled(url_) ||
+      content_settings->IsFirstPartyCosmeticFilteringEnabled() ||
       net::registry_controlled_domains::SameDomainOrHost(
           url_,
           url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
