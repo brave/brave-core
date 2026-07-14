@@ -158,6 +158,11 @@ class BraveBrowserView : public BrowserView,
   }
   bool ShowBraveHelpBubbleView(const std::string& text) override;
 
+  // Temporarily shows/hides the toolbar while in fullscreen (e.g. Ctrl+L).
+  // When visible, the toolbar area is shown on top of the content and
+  // collapses again when the caller decides (e.g. omnibox loses focus).
+  void SetToolbarTemporarilyVisibleInFullscreen(bool visible);
+
   // commands::AcceleratorService:
   void OnAcceleratorsChanged(
       const commands::AcceleratorPrefManager::Accelerators& changed) override;
@@ -330,6 +335,7 @@ class BraveBrowserView : public BrowserView,
   base::ScopedObservation<FocusModeController, FocusModeController::Observer>
       focus_mode_observation_{this};
 
+  bool is_toolbar_temporarily_visible_in_fullscreen_ = false;
   base::WeakPtrFactory<BraveBrowserView> weak_ptr_{this};
 };
 
