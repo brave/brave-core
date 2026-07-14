@@ -27,11 +27,9 @@
   friend class BraveTabStripModel
 
 #define DraggingTabsSession DraggingTabsSessionChromium
-#define IsReadLaterSupportedForAny virtual IsReadLaterSupportedForAny
 
 #include <chrome/browser/ui/tabs/tab_strip_model.h>  // IWYU pragma: export
 
-#undef IsReadLaterSupportedForAny
 #undef DraggingTabsSession
 #undef SelectRelativeTab
 #undef CommandLast

@@ -20,9 +20,6 @@
 #define BrowserWindow BraveBrowserWindow
 #define BookmarkBarView BraveBookmarkBarView
 
-#define MaybeShowReadingListInSidePanelIPH \
-  virtual MaybeShowReadingListInSidePanelIPH
-
 #define MaybeUpdateDevtools virtual MaybeUpdateDevtools
 #define MaybeUpdateSplitView virtual MaybeUpdateSplitView
 #define GetTabStripVisible virtual GetTabStripVisible
@@ -59,7 +56,6 @@
 #undef GetTabStripVisible
 #undef MaybeUpdateSplitView
 #undef MaybeUpdateDevtools
-#undef MaybeShowReadingListInSidePanelIPH
 #undef BookmarkBarView
 #undef BrowserWindow
 #undef BrowserViewLayoutDelegateImplOld

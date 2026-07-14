@@ -948,10 +948,6 @@ void BraveBrowserView::ConfirmBrowserCloseWithPendingDownloads(
       download_count, dialog_type, std::move(callback));
 }
 
-void BraveBrowserView::MaybeShowReadingListInSidePanelIPH() {
-  // Do nothing.
-}
-
 bool BraveBrowserView::MaybeUpdateDevtools(content::WebContents* web_contents) {
   CHECK(!web_contents || web_contents == GetActiveWebContents())
       << "This method is supposed to be called only for the active web "

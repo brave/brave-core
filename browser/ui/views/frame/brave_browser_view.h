@@ -248,7 +248,6 @@ class BraveBrowserView : public BrowserView,
       int download_count,
       Browser::DownloadCloseType dialog_type,
       base::OnceCallback<void(bool)> callback) override;
-  void MaybeShowReadingListInSidePanelIPH() override;
   bool MaybeUpdateDevtools(content::WebContents* web_contents) override;
   bool MaybeUpdateSplitView(content::WebContents* web_contents) override;
   void OnWidgetActivationChanged(views::Widget* widget, bool active) override;
