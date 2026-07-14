@@ -1267,6 +1267,64 @@ class RewriterFormsTest(unittest.TestCase):
             '    make_virtual:\n'
             '      class_name: C\n', 'make_virtual requires arg')
 
+    # -- add_friend op (real ast-grep binary) -------------------------------
+
+    def test_add_friend_op(self):
+        result = self._apply(
+            'friend.h',
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: friend the Brave subclass\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type: class BraveC\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n};\n')
+
+    def test_add_friend_no_private_section_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'nofriend.h', 'class C {\n public:\n  void Foo();\n};\n',
+                'substitutions:\n'
+                '  - description: no private section to insert into\n'
+                '    add_friend:\n'
+                '      class_name: C\n'
+                '      friend_type: class BraveC\n')
+
+    def test_add_friend_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      freind: class BraveC\n', 'Unrecognised add_friend arg')
+
+    # -- drop_final op (real ast-grep binary) -----------------------------
+
+    def test_drop_final_op(self):
+        result = self._apply(
+            'final.h', 'class C final : public Base {\n};\n',
+            'substitutions:\n'
+            '  - description: drop final so Brave can subclass\n'
+            '    drop_final:\n'
+            '      class_name: C\n')
+        self.assertEqual(result, 'class C : public Base {\n};\n')
+
+    def test_drop_final_absent_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'nofinal.h', 'class C {\n};\n', 'substitutions:\n'
+                '  - description: nothing to remove\n'
+                '    drop_final:\n'
+                '      class_name: C\n')
+
+    def test_drop_final_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    drop_final: {}\n', 'drop_final requires arg')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -1406,7 +1464,8 @@ class RewritersEvalTest(unittest.TestCase):
         """The shipped rewriters.pyl validates and exposes its ops."""
         rewriters = plaster.RewritersEval.load()
         self.assertIn('cxx.find_class_method_decl', rewriters.matchers)
-        self.assertIn('cxx.make_virtual', rewriters.rewriters)
+        for op in ('cxx.make_virtual', 'cxx.add_friend', 'cxx.drop_final'):
+            self.assertIn(op, rewriters.rewriters)
 
     def test_load_is_a_singleton(self):
         """load() reads the file once and returns the same instance."""
@@ -1639,7 +1698,7 @@ _SYNTHETIC_SPEC = {
                 'node': 'access_specifier'
             },
         },
-        'cxx.remove_final': {
+        'cxx.drop_final': {
             'matcher': 'cxx.find_class_final',
             'replace': {
                 're_pattern': '^final$',
@@ -1790,28 +1849,28 @@ class AstRewriterTest(unittest.TestCase):
         self.assertEqual(rewriter.content,
                          'class C {\n public:\n  void Foo();\n};\n')
 
-    def test_remove_final_with_base(self):
+    def test_drop_final_with_base(self):
         # The class `final` is dropped (and the space before it); a method's
         # trailing `final` is left untouched.
         rewriter = self._rewriter(
             'class C final : public Base {\n  void f() final;\n};\n')
         self.assertEqual(
-            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
                            consume_before=' '), 1)
         self.assertEqual(rewriter.content,
                          'class C : public Base {\n  void f() final;\n};\n')
 
-    def test_remove_final_no_base(self):
+    def test_drop_final_no_base(self):
         rewriter = self._rewriter('class C final {\n};\n')
         self.assertEqual(
-            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
                            consume_before=' '), 1)
         self.assertEqual(rewriter.content, 'class C {\n};\n')
 
-    def test_remove_final_absent(self):
+    def test_drop_final_absent(self):
         rewriter = self._rewriter('class C {\n};\n')
         self.assertEqual(
-            rewriter.apply('cxx.remove_final', {'class_name': 'C'},
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
                            consume_before=' '), 0)
         self.assertEqual(rewriter.content, 'class C {\n};\n')
 
