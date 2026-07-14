@@ -85,6 +85,7 @@ extension BrowserViewController {
                 isPrivate: privateBrowsingManager.isPrivateBrowsing,
                 isPrivileged: url.scheme == InternalURL.scheme
               )
+              dismiss(animated: true)
               return .handled
             }
           )
