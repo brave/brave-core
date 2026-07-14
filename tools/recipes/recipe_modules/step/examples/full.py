@@ -11,7 +11,7 @@ import post_process
 DEPS = ['step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     api.step('first', ['echo', 'hello'])
     # A checked step that fails aborts the recipe: 'after' won't run.
     api.step('might fail', ['do-thing'])

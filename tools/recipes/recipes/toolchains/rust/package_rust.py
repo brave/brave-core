@@ -5,11 +5,11 @@
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import TYPE_CHECKING
 
 import post_process
-from recipe_properties import Property
+from PB.recipes.brave.toolchains.rust.package_rust import (EnvProperties,
+                                                           InputProperties)
 
 if TYPE_CHECKING:
     from engine import RecipeScriptApi
@@ -18,19 +18,15 @@ DEPS = [
     'path', 'step', 'depot_tools', 'chromium_checkout', 'brave_core_shallow'
 ]
 
-@dataclass(frozen=True)
-class InputProperties:
-    brave_subrevision: int
-    chromium_ref: str
-    git_cache: str | None = Property(default=None, from_environ='GIT_CACHE')
-
-
 PROPERTIES = InputProperties
+ENV_PROPERTIES = EnvProperties
 
 
-def RunSteps(api: RecipeScriptApi, properties: InputProperties) -> None:
+def RunSteps(api: RecipeScriptApi, properties: InputProperties,
+             env_properties: EnvProperties) -> None:
     chromium_src = api.chromium_checkout.ensure_checkout(
-        ref=properties.chromium_ref, git_cache=properties.git_cache)
+        ref=properties.chromium_ref,
+        git_cache=env_properties.GIT_CACHE or None)
 
     brave_core_root = api.brave_core_shallow.deploy('tools/cr/toolchains')
 

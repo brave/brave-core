@@ -6,7 +6,7 @@
 """Tests for the recipe engine's DEPS resolution and property binding."""
 
 # White-box tests: they exercise engine internals (`_Engine`,
-# `_instantiate_module`, `_build_properties`, ...), so protected-access is
+# `_instantiate_module`, `_run_steps`, ...), so protected-access is
 # intentional.
 # pylint: disable=protected-access
 
@@ -15,7 +15,6 @@ import sys
 import tempfile
 import types
 import unittest
-from dataclasses import dataclass
 from pathlib import Path
 from unittest import mock
 
@@ -77,22 +76,60 @@ class FindApiClassTest(unittest.TestCase):
             engine._find_api_class(module, 'fake')
 
 
-class BuildPropertiesTest(unittest.TestCase):
-    """_build_properties maps a dict onto PROPERTIES (or a namespace)."""
+class RunStepsBindingTest(unittest.TestCase):
+    """_run_steps decodes input into typed PROPERTIES/ENV_PROPERTIES messages.
 
-    def test_no_properties_def_returns_namespace(self):
-        obj = engine._build_properties(None, {'a': 1, 'b': 'x'})
-        self.assertEqual((obj.a, obj.b), (1, 'x'))
+    Uses a recipe's real compiled proto messages, so it also exercises that the
+    `PB` package builds and imports.
+    """
 
-    def test_dataclass_def_applies_defaults(self):
+    @classmethod
+    def setUpClass(cls):
+        engine._ensure_protos()
+        # pylint: disable=import-outside-toplevel,import-error
+        from PB.recipes.brave.toolchains.rust.package_rust import (
+            EnvProperties, InputProperties)
+        cls.InputProperties = InputProperties
+        cls.EnvProperties = EnvProperties
 
-        @dataclass
-        class Props:
-            a: int
-            b: str = 'default'
+    def _bind(self, properties, environ, props_def, env_def):
+        """Return the positional args _run_steps would pass to RunSteps."""
+        captured = []
+        engine._run_steps(lambda *args: captured.extend(args), 'API',
+                          properties, environ, props_def, env_def)
+        return captured
 
-        obj = engine._build_properties(Props, {'a': 5})
-        self.assertEqual((obj.a, obj.b), (5, 'default'))
+    def test_no_defs_passes_only_api(self):
+        self.assertEqual(self._bind({}, {}, None, None), ['API'])
+
+    def test_properties_decoded_and_reserved_keys_stripped(self):
+        args = self._bind(
+            {
+                'chromium_ref': 'main',
+                'brave_subrevision': 3,
+                '$hidden': 'ignored',
+            }, {}, self.InputProperties, None)
+        self.assertEqual(args[0], 'API')
+        self.assertEqual(args[1].chromium_ref, 'main')
+        self.assertEqual(args[1].brave_subrevision, 3)
+
+    def test_env_properties_uppercased_and_unknown_ignored(self):
+        args = self._bind({}, {
+            'git_cache': '/c',
+            'PATH': '/bin'
+        }, None, self.EnvProperties)
+        self.assertEqual(args[1].GIT_CACHE, '/c')
+
+    def test_both_defs_pass_properties_then_env(self):
+        args = self._bind({'chromium_ref': 'x'}, {'GIT_CACHE': '/c'},
+                          self.InputProperties, self.EnvProperties)
+        self.assertEqual(len(args), 3)
+        self.assertEqual(args[1].chromium_ref, 'x')
+        self.assertEqual(args[2].GIT_CACHE, '/c')
+
+    def test_non_message_properties_def_raises(self):
+        with self.assertRaises(TypeError):
+            self._bind({}, {}, dict, None)
 
 
 class RunRecipeTest(unittest.TestCase):

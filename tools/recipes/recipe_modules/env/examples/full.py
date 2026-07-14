@@ -11,7 +11,7 @@ import post_process
 DEPS = ['env', 'step']
 
 
-def RunSteps(api, _properties):
+def RunSteps(api):
     gclient = api.env.which('gclient')
     if gclient:
         api.step('resolved gclient', ['echo', gclient])

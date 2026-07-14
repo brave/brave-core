@@ -1,0 +1,18 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.tools.ast_grep.package_ast_grep;
+
+message InputProperties {
+  // Chromium ref (tag or branch) whose checkout the tool is packaged against.
+  string chromium_ref = 1;
+}
+
+message EnvProperties {
+  // Optional git cache directory to speed up the Chromium checkout.
+  string GIT_CACHE = 1;
+}

@@ -22,9 +22,8 @@ injected as `api.<module>`, so a recipe writes, e.g.:
 Each `api.*` call returns a `TestData` *fragment*; `api.test(name, *fragments)`
 folds them together (via `TestData.__add__`) into the case the engine runs.
 
-Notable simplifications vs upstream: plain dicts instead of protobuf messages,
-no output placeholders, and a simple `check(cond, hint)` collector rather than
-the AST-introspecting `Checker`.
+Notable simplifications vs upstream: no output placeholders, and a simple
+`check(cond, hint)` collector rather than the AST-introspecting `Checker`.
 """
 
 from __future__ import annotations
@@ -32,6 +31,9 @@ from __future__ import annotations
 from collections.abc import Callable
 import inspect
 from typing import Any, NamedTuple
+
+from google.protobuf import json_format as jsonpb
+from google.protobuf.message import Message as PBMessage
 
 from recipe_api import ModuleInjectionSite
 
@@ -92,6 +94,10 @@ class TestData:
         self.name = name
         # Recipe PROPERTIES payload (keys match the recipe's PROPERTIES fields).
         self.properties: dict[str, Any] = {}
+        # ENV_PROPERTIES payload: env var name -> string value. Set via
+        # `api.properties.environ(...)`; folded into the run's environment so
+        # the engine can decode it into the recipe's ENV_PROPERTIES message.
+        self.environ: dict[str, str] = {}
         # Per-step simulated results, keyed by step name.
         self.step_data: dict[str, StepTestData] = {}
         # Per-module seed values consumed to build the run's TestContext
@@ -115,6 +121,7 @@ class TestData:
         """
         merged = TestData(self.name or other.name)
         merged.properties = {**self.properties, **other.properties}
+        merged.environ = {**self.environ, **other.environ}
         merged.mod_data = _merge_mod_data(self.mod_data, other.mod_data)
         merged.step_data = dict(self.step_data)
         for step_name, data in other.step_data.items():
@@ -155,6 +162,64 @@ def _merge_mod_data(a: dict[str, dict], b: dict[str, dict]) -> dict[str, dict]:
     return out
 
 
+class _PropertiesTestApi:
+    """Builds PROPERTIES / ENV_PROPERTIES fragments for a test case.
+
+    Exposed as `api.properties`. `api.properties(...)` sets the recipe's
+    PROPERTIES payload and `api.properties.environ(...)` sets its ENV_PROPERTIES
+    payload. Accepts protobuf message instances (merged via their JSONPB
+    representation) and/or explicit key/value pairs.
+    """
+
+    def __call__(self, *proto_msgs: PBMessage, **kwargs: Any) -> TestData:
+        """A fragment supplying the recipe's PROPERTIES payload.
+
+        Positional args must be protobuf messages; their JSONPB representations
+        are merged together with `dict.update`. Keyword args are merged into the
+        properties at the top level.
+        """
+        data = TestData()
+        for msg in proto_msgs:
+            if not isinstance(msg, PBMessage):
+                raise ValueError(
+                    'Positional arguments for api.properties must be protobuf '
+                    f'messages. Got: {msg!r} (type {type(msg)!r})')
+            data.properties.update(
+                jsonpb.MessageToDict(msg, preserving_proto_field_name=True))
+        for key, value in kwargs.items():
+            if isinstance(value, PBMessage):
+                value = jsonpb.MessageToDict(value,
+                                             preserving_proto_field_name=True)
+            data.properties[key] = value
+        return data
+
+    def environ(self, *proto_msgs: PBMessage, **kwargs: Any) -> TestData:
+        """A fragment supplying the recipe's ENV_PROPERTIES payload.
+
+        Values (from message fields or kwargs) are stringified, since the
+        engine decodes ENV_PROPERTIES from the environment.
+        """
+        data = TestData()
+        to_apply = []
+        for msg in proto_msgs:
+            if not isinstance(msg, PBMessage):
+                raise ValueError(
+                    'Positional arguments for api.properties.environ must be '
+                    f'protobuf messages. Got: {msg!r} (type {type(msg)!r})')
+            to_apply.append(
+                jsonpb.MessageToDict(msg, preserving_proto_field_name=True))
+        to_apply.append(kwargs)
+
+        for dictionary in to_apply:
+            for key, value in dictionary.items():
+                if not isinstance(value, (int, float, str)):
+                    raise ValueError(
+                        'Environment values must be int, float or string. '
+                        f'Got: {key!r}={value!r} (type {type(value)!r})')
+                data.environ[key] = str(value)
+        return data
+
+
 class RecipeTestApi:
     """Root test API (passed to `GenTests`) and base for module `TEST_API`s.
 
@@ -180,6 +245,10 @@ class RecipeTestApi:
 
     # -- Fragment builders available on the root api (and inherited by modules).
 
+    # `api.properties(...)` / `api.properties.environ(...)`. A shared, stateless
+    # builder (mirrors recipes_py's `properties` module TEST_API).
+    properties = _PropertiesTestApi()
+
     @staticmethod
     def test(name: str,
              *test_data: TestData,
@@ -191,13 +260,6 @@ class RecipeTestApi:
         for fragment in test_data:
             base = base + fragment
         return base
-
-    @staticmethod
-    def properties(**kwargs: Any) -> TestData:
-        """A fragment supplying the recipe's PROPERTIES payload."""
-        data = TestData()
-        data.properties = dict(kwargs)
-        return data
 
     @staticmethod
     def step_data(name: str,

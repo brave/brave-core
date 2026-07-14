@@ -1,0 +1,18 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+syntax = "proto3";
+
+package recipes.brave.toolchains.xcode.build_xcode_toolchain;
+
+message InputProperties {
+  // Chromium release tag (e.g. `150.0.7841.1`) whose pinned macOS SDK the
+  // toolchain is built for. Must be a tag: the builder reads it via gitiles'
+  // `refs/tags/{tag}` endpoint.
+  string chromium_tag = 1;
+  // Rebuild and replace an already-published index instead of refusing. Off
+  // by default so a run never clobbers a toolchain already in use in the wild.
+  bool force_overwrite = 2;
+}

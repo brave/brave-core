@@ -190,7 +190,12 @@ class TestContext:
         path_seed = mod.get('path', {})
         return cls(
             platform=platform,
-            env=dict(env_seed.get('vars', {})),
+            # `api.env.set(...)` vars plus any `api.properties.environ(...)`
+            # values; the latter is what the engine decodes into ENV_PROPERTIES.
+            env={
+                **env_seed.get('vars', {}),
+                **test_data.environ
+            },
             which_map=dict(env_seed.get('which', {})),
             files=[_resolve_seed(p) for p in path_seed.get('files', [])],
             dirs=[_resolve_seed(p) for p in path_seed.get('dirs', [])],
