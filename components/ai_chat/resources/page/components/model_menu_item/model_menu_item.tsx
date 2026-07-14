@@ -116,7 +116,7 @@ const ModelContent = (props: ModelContentProps) => {
       if (
         model.key === AUTOMATIC_MODEL_KEY
         || model.isNearModel
-        || !(model.capabilities?.length)
+        || !model.capabilities?.length
       ) {
         return getLocale(
           `CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`,
@@ -375,28 +375,29 @@ export function ModelMenuItem(props: MenuItemProps) {
 
   // Touch/context handlers live on an inner wrapper — Leo's leo-menu-item
   // typings only expose onClick, not React touch event props.
-  const longPressHandlers = isMobile && showOptions
-    ? {
-        onTouchStart: () => {
-          didLongPress.current = false
-          clearLongPressTimer()
-          longPressTimer.current = window.setTimeout(() => {
+  const longPressHandlers =
+    isMobile && showOptions
+      ? {
+          onTouchStart: () => {
+            didLongPress.current = false
+            clearLongPressTimer()
+            longPressTimer.current = window.setTimeout(() => {
+              didLongPress.current = true
+              setOptionsOpen(true)
+            }, LONG_PRESS_MS)
+          },
+          onTouchEnd: clearLongPressTimer,
+          onTouchMove: clearLongPressTimer,
+          onTouchCancel: clearLongPressTimer,
+          onContextMenu: (e: React.MouseEvent) => {
+            e.preventDefault()
+            e.stopPropagation()
+            clearLongPressTimer()
             didLongPress.current = true
             setOptionsOpen(true)
-          }, LONG_PRESS_MS)
-        },
-        onTouchEnd: clearLongPressTimer,
-        onTouchMove: clearLongPressTimer,
-        onTouchCancel: clearLongPressTimer,
-        onContextMenu: (e: React.MouseEvent) => {
-          e.preventDefault()
-          e.stopPropagation()
-          clearLongPressTimer()
-          didLongPress.current = true
-          setOptionsOpen(true)
-        },
-      }
-    : undefined
+          },
+        }
+      : undefined
 
   return (
     <leo-menu-item

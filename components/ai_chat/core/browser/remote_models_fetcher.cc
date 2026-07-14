@@ -155,8 +155,7 @@ std::vector<mojom::ModelCapability> ParseModelCapabilities(
     if (!capability_value.is_string()) {
       continue;
     }
-    if (auto capability =
-            ParseModelCapability(capability_value.GetString())) {
+    if (auto capability = ParseModelCapability(capability_value.GetString())) {
       capabilities.push_back(*capability);
     }
   }

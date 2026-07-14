@@ -365,10 +365,7 @@ export function ModelSelector() {
                               return
                             }
 
-                            aiChatContext.setModelPinned(
-                              model.key,
-                              !isPinned,
-                            )
+                            aiChatContext.setModelPinned(model.key, !isPinned)
                           }
                     }
                   />

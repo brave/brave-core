@@ -6,10 +6,7 @@
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../common/mojom'
-import {
-  LOCAL_VENDOR_KEY,
-  PINNED_VENDOR_KEY,
-} from '../common/vendor_icon_map'
+import { LOCAL_VENDOR_KEY, PINNED_VENDOR_KEY } from '../common/vendor_icon_map'
 import { AUTOMATIC_MODEL_KEY } from '../common/constants'
 
 export function isLeoModel(model: Mojom.Model) {
@@ -62,9 +59,7 @@ export type VendorRailEntry = {
  * then Local if any custom models exist (always include Local so empty state
  * can be shown).
  */
-export function getVendorRailEntries(
-  models: Mojom.Model[],
-): VendorRailEntry[] {
+export function getVendorRailEntries(models: Mojom.Model[]): VendorRailEntry[] {
   const makers = new Set<string>()
   let hasCustom = false
   for (const model of models) {
