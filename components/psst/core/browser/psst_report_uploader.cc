@@ -6,6 +6,7 @@
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 
 #include "base/json/json_writer.h"
+#include "base/logging.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "net/base/load_flags.h"
@@ -56,8 +57,8 @@ void PsstErrorReportUploader::Upload(
   std::string report_details_json;
   base::JSONWriter::Write(report_details_dict, &report_details_json);
 
-  PsstErrorReportUploader::CreateAndStartURLLoader(
-      upload_url, kJsonContentType, report_details_json, std::move(callback));
+  CreateAndStartURLLoader(upload_url, kJsonContentType, report_details_json,
+                          std::move(callback));
 }
 
 void PsstErrorReportUploader::CreateAndStartURLLoader(
