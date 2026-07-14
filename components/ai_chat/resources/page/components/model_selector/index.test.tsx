@@ -5,7 +5,7 @@
 
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
-import { render, act, waitFor, fireEvent } from '@testing-library/react'
+import { render, act, waitFor } from '@testing-library/react'
 import { ModelSelector } from '.'
 import '@testing-library/jest-dom'
 import { MockContext } from '../../state/mock_context'
@@ -314,12 +314,14 @@ describe('ModelSelector', () => {
     renderModelSelector()
     await openMenu()
 
-    const search = document.querySelector<HTMLInputElement>(
-      '[data-testid="model-search-input"]',
-    )
+    const search = document.querySelector('leo-input') as HTMLElement & {
+      onInput?: (detail: { value: string }) => void
+    }
     expect(search).toBeInTheDocument()
     await act(async () => {
-      fireEvent.change(search!, { target: { value: 'Premium' } })
+      // Leo CE exposes onInput as a property; set it through that path so the
+      // Svelte forward() handler receives InputEventDetail.
+      search.onInput?.({ value: 'Premium' })
     })
 
     await waitFor(() => {

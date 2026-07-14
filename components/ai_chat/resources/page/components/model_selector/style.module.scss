@@ -134,35 +134,15 @@
   border-bottom: 1px solid var(--leo-color-divider-subtle);
 }
 
-.searchField {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--leo-spacing-s);
-  flex: 1;
-  min-width: 0;
-  padding: var(--leo-spacing-s) var(--leo-spacing-m);
-  border-radius: var(--leo-radius-m);
-  background: var(--leo-color-container-background);
-}
-
-.searchIcon {
-  --leo-icon-size: 18px;
-  --leo-icon-color: var(--leo-color-icon-default);
-  flex-shrink: 0;
-}
-
 .searchInput {
   flex: 1;
   min-width: 0;
-  border: none;
-  outline: none;
-  background: transparent;
-  font: var(--leo-font-small-regular);
-  color: var(--leo-color-text-primary);
 
-  &::placeholder {
-    color: var(--leo-color-text-tertiary);
+  leo-input {
+    width: 100%;
+    // Compact search field inside the model selector toolbar.
+    --leo-control-padding: var(--leo-spacing-s) var(--leo-spacing-m);
+    --leo-control-radius: var(--leo-radius-m);
   }
 }
 
@@ -179,23 +159,21 @@
   margin-inline-start: var(--leo-spacing-s);
 }
 
-.capabilityFilterMenu {
-  leo-menu-item {
-    max-width: 220px;
-  }
-}
-
-.capabilityFilterItem {
+.leoDropdownItem {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: var(--leo-spacing-m);
+  gap: var(--leo-spacing-xl);
   width: 100%;
-  --leo-icon-size: 18px;
+  min-width: 154px;
+}
 
-  span {
-    flex: 1;
-  }
+.leoDropdownItemLabel {
+  flex: 1;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
 }
 
 .modelList {

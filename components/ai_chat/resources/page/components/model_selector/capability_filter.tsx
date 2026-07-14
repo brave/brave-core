@@ -39,7 +39,6 @@ export function CapabilityFilter(props: Props) {
       isOpen={isOpen}
       onClose={() => setIsOpen(false)}
       positionStrategy='fixed'
-      className={styles.capabilityFilterMenu}
     >
       <Button
         slot='anchor-content'
@@ -76,18 +75,20 @@ export function CapabilityFilter(props: Props) {
         return (
           <leo-menu-item
             key={capability}
+            class={styles.leoDropdownItem}
             data-testid={`capability-filter-${capability}`}
+            data-is-interactive='true'
             aria-selected={isSelected ? 'true' : null}
             onClick={(e) => {
               e.stopPropagation()
               toggle(capability)
             }}
           >
-            <div className={styles.capabilityFilterItem}>
-              <Icon name={getModelCapabilityIcon(capability)} />
-              <span>{getModelCapabilityLabel(capability)}</span>
-              {isSelected && <Icon name='check-normal' />}
-            </div>
+            <Icon name={getModelCapabilityIcon(capability)} />
+            <span className={styles.leoDropdownItemLabel}>
+              {getModelCapabilityLabel(capability)}
+            </span>
+            {isSelected && <Icon name='check-normal' />}
           </leo-menu-item>
         )
       })}

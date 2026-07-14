@@ -255,6 +255,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
         </Button>
         {canPin && (
           <leo-menu-item
+            class={styles.leoDropdownItem}
             data-testid={`pin-${modelKey}`}
             onClick={(e) => {
               e.stopPropagation()
@@ -262,18 +263,17 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
               onOpenChange(false)
             }}
           >
-            <div className={styles.optionsMenuItem}>
-              <Icon name='pin' />
-              <span>
-                {getLocale(
-                  isPinned ? S.CHAT_UI_UNPIN_LABEL : S.CHAT_UI_PIN_LABEL,
-                )}
-              </span>
-            </div>
+            <Icon name='pin' />
+            <span className={styles.leoDropdownItemLabel}>
+              {getLocale(
+                isPinned ? S.CHAT_UI_UNPIN_LABEL : S.CHAT_UI_PIN_LABEL,
+              )}
+            </span>
           </leo-menu-item>
         )}
         {canSetDefault && (
           <leo-menu-item
+            class={styles.leoDropdownItem}
             data-testid={`set-default-${modelKey}`}
             aria-disabled={isDefault ? 'true' : null}
             onClick={(e) => {
@@ -286,10 +286,10 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
               onOpenChange(false)
             }}
           >
-            <div className={styles.optionsMenuItem}>
-              <Icon name='check-circle-outline' />
-              <span>{getLocale(S.CHAT_UI_SET_AS_DEFAULT_MODEL)}</span>
-            </div>
+            <Icon name='check-circle-outline' />
+            <span className={styles.leoDropdownItemLabel}>
+              {getLocale(S.CHAT_UI_SET_AS_DEFAULT_MODEL)}
+            </span>
           </leo-menu-item>
         )}
       </ButtonMenu>

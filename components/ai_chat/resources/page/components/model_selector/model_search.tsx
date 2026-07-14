@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Input from '@brave/leo/react/input'
 import { getLocale } from '$web-common/locale'
 import styles from './style.module.scss'
 
@@ -15,21 +16,25 @@ interface Props {
 
 export function ModelSearch(props: Props) {
   return (
-    <div className={styles.searchField}>
-      <Icon
-        name='search'
-        className={styles.searchIcon}
-      />
-      <input
+    <div
+      className={styles.searchInput}
+      onClick={(e) => e.stopPropagation()}
+      onKeyDown={(e) => e.stopPropagation()}
+    >
+      <Input
         type='search'
-        className={styles.searchInput}
+        size='small'
+        mode='filled'
         placeholder={getLocale(S.CHAT_UI_SEARCH_MODELS_PLACEHOLDER)}
         value={props.value}
         data-testid='model-search-input'
-        onClick={(e) => e.stopPropagation()}
-        onKeyDown={(e) => e.stopPropagation()}
-        onChange={(e) => props.onChange(e.target.value)}
-      />
+        onInput={(detail) => props.onChange(detail.value)}
+      >
+        <Icon
+          name='search'
+          slot='left-icon'
+        />
+      </Input>
     </div>
   )
 }
