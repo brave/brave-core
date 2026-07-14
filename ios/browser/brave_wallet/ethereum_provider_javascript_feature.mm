@@ -214,14 +214,15 @@ void EthereumProviderJavaScriptFeature::ScriptMessageReceivedWithReply(
     const web::ScriptMessage& message,
     ScriptMessageReplyCallback callback) {
   const url::Origin security_origin = message.security_origin();
+  const web::NavigationItem* visible_item =
+      web_state->GetNavigationManager()->GetVisibleItem();
 
-  if (!message.is_main_frame() || security_origin.opaque()) {
+  if (!message.is_main_frame() || security_origin.opaque() || !visible_item) {
     std::move(callback).Run(nullptr, nil);
     return;
   }
 
-  const web::SSLStatus ssl =
-      web_state->GetNavigationManager()->GetVisibleItem()->GetSSL();
+  const web::SSLStatus ssl = visible_item->GetSSL();
   bool displayed_mixed_content =
       (ssl.content_status & web::SSLStatus::DISPLAYED_INSECURE_CONTENT) ? true
                                                                         : false;
