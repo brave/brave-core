@@ -86,7 +86,8 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
             button explicitly labeled to send a report,
             and (b) completes a subsequent re-confirmation gesture."
           data: "Website where Privacy Settings Selection for Sites Tool
-            failed, what step(s) failed, what the error(s) were"
+            failed, what step(s) failed, what the error(s) were.
+            No additional user identifiers are sent."
           destination: OTHER
           destination_other: "Brave Privacy Settings Selection for Sites
             Tool Component Developers"
