@@ -73,7 +73,10 @@ source_set("web") {
     deps += [ "//brave/components/brave_wallet/browser" ]
   }
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/core/common" ]
+    deps += [
+      "//brave/components/playlist/core/browser",
+      "//brave/components/playlist/core/common",
+    ]
   }
   frameworks = [ "Foundation.framework" ]
 }
