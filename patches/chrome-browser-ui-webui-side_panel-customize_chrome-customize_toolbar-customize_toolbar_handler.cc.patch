@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
-index 70ce4930a1bebfa6b87bb96fc372f82a13e93cad..2f189dca4b9dab6e464089495986268258d327b8 100644
+index 70ce4930a1bebfa6b87bb96fc372f82a13e93cad..677caf9ea64f20f931b51800ef76552b21f530cf 100644
 --- a/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 +++ b/chrome/browser/ui/webui/side_panel/customize_chrome/customize_toolbar/customize_toolbar_handler.cc
 @@ -197,6 +197,7 @@ CustomizeToolbarHandler::CustomizeToolbarHandler(
@@ -44,9 +44,25 @@ index 70ce4930a1bebfa6b87bb96fc372f82a13e93cad..2f189dca4b9dab6e4640894959862682
  void CustomizeToolbarHandler::PinAction(
      side_panel::customize_chrome::mojom::ActionId action_id,
      bool pin) {
-+  if (PinBraveAction(action_id, prefs())) {
++  if (PinBraveAction(action_id, prefs(), pin)) {
 +    return;
 +  }
    const std::optional<actions::ActionId> chrome_action =
        ChromeActionForMojoAction(action_id);
    if (!chrome_action.has_value()) {
+@@ -428,10 +439,15 @@ void CustomizeToolbarHandler::PinAction(
+ 
+ void CustomizeToolbarHandler::GetIsCustomized(
+     GetIsCustomizedCallback callback) {
++  if (IsBraveActionCustomized(web_contents_.get())) {
++    std::move(callback).Run(true);
++    return;
++  }
+   std::move(callback).Run(!model_->IsDefault());
+ }
+ 
+ void CustomizeToolbarHandler::ResetToDefault() {
++  ResetBraveActionsToDefault(web_contents_.get());
+   model_->ResetToDefault();
+ }
+ 

@@ -205,6 +205,36 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
   auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
   CHECK(prefs) << "Browser context does not have prefs";
 
+  auto brave_actions = ListBraveSpecificActions(web_contents);
+
+  for (const auto& brave_action : brave_actions) {
+    // Find the anchor action. If anchor action is not found, just append to the
+    // end of the list.
+    auto anchor_it =
+        std::ranges::find(actions, brave_action.anchor, get_action_id);
+
+    // Create the new action.
+    auto new_action = Action::New(
+        brave_action.id,
+        base::UTF16ToUTF8(
+            l10n_util::GetStringUTF16(brave_action.display_name_resource_id)),
+        /*pinned=*/prefs->GetBoolean(brave_action.pref_name),
+        /*has_enterprise_controlled_pinned_state=*/false, brave_action.category,
+        get_icon_url(brave_action.icon));
+
+    // Insert the new action after the anchor or end of the list.
+    actions.insert(anchor_it == actions.end() ? actions.end() : anchor_it + 1,
+                   std::move(new_action));
+  }
+
+  return actions;
+}
+
+std::vector<BraveAction> ListBraveSpecificActions(
+    content::WebContents* web_contents) {
+  auto* prefs = user_prefs::UserPrefs::Get(web_contents->GetBrowserContext());
+  CHECK(prefs) << "Browser context does not have prefs";
+
   std::vector<BraveAction> brave_actions;
   brave_actions.push_back(kShowAddBookmarkButton);
   brave_actions.push_back(kShowSidePanelAction);
@@ -237,27 +267,7 @@ std::vector<ActionPtr> ApplyBraveSpecificModifications(
       Profile::FromBrowserContext(web_contents->GetBrowserContext()),
       brave_actions);
 
-  for (const auto& brave_action : brave_actions) {
-    // Find the anchor action. If anchor action is not found, just append to the
-    // end of the list.
-    auto anchor_it =
-        std::ranges::find(actions, brave_action.anchor, get_action_id);
-
-    // Create the new action.
-    auto new_action = Action::New(
-        brave_action.id,
-        base::UTF16ToUTF8(
-            l10n_util::GetStringUTF16(brave_action.display_name_resource_id)),
-        /*pinned=*/prefs->GetBoolean(brave_action.pref_name),
-        /*has_enterprise_controlled_pinned_state=*/false, brave_action.category,
-        get_icon_url(brave_action.icon));
-
-    // Insert the new action after the anchor or end of the list.
-    actions.insert(anchor_it == actions.end() ? actions.end() : anchor_it + 1,
-                   std::move(new_action));
-  }
-
-  return actions;
+  return brave_actions;
 }
 
 }  // namespace customize_chrome
