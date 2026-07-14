@@ -233,6 +233,30 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
             contents_area_origin());
 }
 
+// Regression test: BraveBrowserView's constructor unconditionally hides the
+// window icon for normal browser windows (SetShowIcon(false)), because brave
+// supports Browser::WindowFeature::kFeatureTitleBar (unlike upstream), which
+// would otherwise make ShouldShowWindowIcon() return true whenever vertical
+// tabs are enabled. The PRE_ test persists the pref so the following test's
+// browser() is actually launched with vertical tabs already on.
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       PRE_ShouldNotShowWindowIconWithVerticalTabTest) {
+  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
+
+  browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
+                                               true);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
+                       ShouldNotShowWindowIconWithVerticalTabTest) {
+  // Browser is launched with vertical tab mode already on.
+  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->ShouldShowBraveVerticalTabs());
+  EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
+}
+
 class BraveBrowserViewWithRoundedCornersTest
     : public BraveBrowserViewTest,
       public testing::WithParamInterface<bool> {
