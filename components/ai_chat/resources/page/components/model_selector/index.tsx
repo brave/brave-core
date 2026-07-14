@@ -179,13 +179,28 @@ export function ModelSelector() {
     }
 
     if (capabilityFilters.length > 0) {
-      list = list.filter((model) =>
-        modelHasAllCapabilities(model, capabilityFilters),
+      // Keep Automatic visible on the pinned tab even when it has no
+      // matching capability tags.
+      list = list.filter(
+        (model) =>
+          (selectedVendorKey === PINNED_VENDOR_KEY
+            && !query
+            && model.key === AUTOMATIC_MODEL_KEY)
+          || modelHasAllCapabilities(model, capabilityFilters),
       )
     }
 
     if (query) {
       list = list.filter((model) => matchesModelQuery(query, model))
+    }
+
+    // Automatic is always first whenever it appears in the list.
+    const automaticIndex = list.findIndex(
+      (model) => model.key === AUTOMATIC_MODEL_KEY,
+    )
+    if (automaticIndex > 0) {
+      const [automaticModel] = list.splice(automaticIndex, 1)
+      list.unshift(automaticModel)
     }
 
     return list
@@ -353,15 +368,26 @@ export function ModelSelector() {
                               // recommended-list seed — materialize that set
                               // into the pref before/while applying this pin
                               // change so other defaults aren't lost.
-                              const next = new Set(pinnedModelKeys)
-                              if (isPinned) {
-                                next.delete(model.key)
-                              } else {
-                                next.add(model.key)
+                              // setModelPinned prepends, so walk the seed
+                              // reverse and pin the toggled model last so it
+                              // ends up first when pinning.
+                              const seedWithout = pinnedModelKeys.filter(
+                                (key) => key !== model.key,
+                              )
+                              for (
+                                let i = seedWithout.length - 1;
+                                i >= 0;
+                                i--
+                              ) {
+                                aiChatContext.setModelPinned(
+                                  seedWithout[i],
+                                  true,
+                                )
                               }
-                              for (const key of next) {
-                                aiChatContext.setModelPinned(key, true)
-                              }
+                              aiChatContext.setModelPinned(
+                                model.key,
+                                !isPinned,
+                              )
                               return
                             }
 
