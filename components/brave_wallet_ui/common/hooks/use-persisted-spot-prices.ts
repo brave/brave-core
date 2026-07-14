@@ -5,6 +5,7 @@
 
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
+import { BraveWallet } from '../../constants/types'
 import { useGetTokenSpotPricesQuery } from '../slices/api.slice'
 
 // Utils
@@ -13,6 +14,10 @@ import {
 } from '../../utils/local-storage-utils'
 
 type SpotPricesQueryArgs = Parameters<typeof useGetTokenSpotPricesQuery>
+
+// Module-level empty array so selectFromResult returns a stable reference
+// when there is no query data and no persisted fallback.
+const EMPTY_SPOT_PRICES: BraveWallet.AssetPrice[] = []
 
 /**
  * Wraps useGetTokenSpotPricesQuery with a localStorage fallback so that
@@ -29,7 +34,7 @@ export const usePersistedTokenSpotPricesQuery = (
       // Only read from localStorage when the query has no data yet
       // (skipped, loading, or uninitialized).
       const persisted = res.data ? undefined : getPersistedSpotPrices()
-      const data = res.data ?? persisted ?? []
+      const data = res.data ?? persisted ?? EMPTY_SPOT_PRICES
       // Suppress loading state when we have persisted prices to show,
       // so consumers render stale prices instead of skeletons.
       const hasFallbackData = !!persisted?.length
