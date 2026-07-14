@@ -214,9 +214,7 @@ void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
 }
 
 void PsstUiDelegateImpl::NotifyObserversOfPsstErrorsReportSent() {
-  for (Observer& obs : observer_list_) {
-    obs.OnPsstErrorsReportSent();
-  }
+  observer_list_.Notify(&Observer::OnPsstErrorsReportSent);
 }
 
 }  // namespace psst

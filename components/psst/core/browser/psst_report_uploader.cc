@@ -79,15 +79,17 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
         semantics {
           sender: "Privacy Settings Selection for Sites Tool"
           description:
-            "A user-initiated report of a website privacy settings that PSST
-             couldn't apply"
+            "A user-initiated report of a website privacy settings that
+            Privacy Settings Selection for Sites Tool couldn't apply"
           trigger:
-            "Through the 'Report a Broken PSST rules' option of the PSST consent
-             dialog"
-          data: "Website where PSST failed, what step(s) failed, what the
-            error(s) were"
+            "The request is only triggered after the user (a) clicks a
+            button explicitly labeled to send a report,
+            and (b) completes a subsequent re-confirmation gesture."
+          data: "Website where Privacy Settings Selection for Sites Tool
+            failed, what step(s) failed, what the error(s) were"
           destination: OTHER
-          destination_other: "Brave PSST Component Developers"
+          destination_other: "Brave Privacy Settings Selection for Sites
+            Tool Component Developers"
           user_data {
             type: SENSITIVE_URL
           }
@@ -96,8 +98,8 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
           cookies_allowed: NO
           policy_exception_justification:
             "Not implemented. This request is only sent when a user explicitly
-            triggers it via the PSST consent dialog's 'Report a Broken PSST
-            rules' option."
+            triggers it via the Privacy Settings Selection for Sites Tool
+            consent dialog's 'Report a Broken PSST rules' option."
           setting:
             "You can enable or disable this feature via feature flag:
             `brave://flags/#enable-psst`"
