@@ -5,10 +5,12 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "brave/components/playlist/core/browser/playlist_exclusions.h"
 #include "brave/components/playlist/core/common/constants.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
@@ -19,7 +21,10 @@ class PlaylistExclusionsUnitTest : public testing::Test {
   PlaylistExclusionsUnitTest() = default;
 
  protected:
-  void SetUp() override { ResetExclusions(PlaylistExclusions::GetInstance()); }
+  void SetUp() override {
+    feature_list_.InitAndEnableFeature(features::kPlaylist);
+    ResetExclusions(PlaylistExclusions::GetInstance());
+  }
 
   void ResetExclusions(PlaylistExclusions* exclusions) {
     exclusions->weak_factory_.InvalidateWeakPtrs();
@@ -35,6 +40,7 @@ class PlaylistExclusionsUnitTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::MainThreadType::UI};
+  base::test::ScopedFeatureList feature_list_;
 };
 
 TEST_F(PlaylistExclusionsUnitTest, NotReadyIsPermissive) {

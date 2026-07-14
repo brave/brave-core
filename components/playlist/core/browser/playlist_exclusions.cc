@@ -9,12 +9,15 @@
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
+#include "base/feature_list.h"
 #include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
@@ -158,7 +161,9 @@ bool PlaylistExclusions::CanResolvePageSrcLater(const GURL& url) const {
   return true;
 }
 
-PlaylistExclusions::PlaylistExclusions() = default;
+PlaylistExclusions::PlaylistExclusions() {
+  CHECK(base::FeatureList::IsEnabled(features::kPlaylist));
+}
 
 void PlaylistExclusions::OnPlaylistExclusionsLoaded(
     base::OnceClosure on_complete,
@@ -166,9 +171,7 @@ void PlaylistExclusions::OnPlaylistExclusionsLoaded(
   if (rules) {
     rules_ = std::move(*rules);
   }
-  if (!on_complete.is_null()) {
-    std::move(on_complete).Run();
-  }
+  std::move(on_complete).Run();
 }
 
 }  // namespace playlist

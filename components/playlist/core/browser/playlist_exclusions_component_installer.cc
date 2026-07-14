@@ -12,10 +12,12 @@
 #include <string>
 #include <vector>
 
+#include "base/check.h"
 #include "base/feature_list.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/playlist/core/browser/playlist_exclusions.h"
 #include "brave/components/playlist/core/common/constants.h"
@@ -66,7 +68,9 @@ class PlaylistExclusionsComponentInstallerPolicy
 };
 
 PlaylistExclusionsComponentInstallerPolicy::
-    PlaylistExclusionsComponentInstallerPolicy() = default;
+    PlaylistExclusionsComponentInstallerPolicy() {
+  CHECK(base::FeatureList::IsEnabled(features::kPlaylist));
+}
 
 PlaylistExclusionsComponentInstallerPolicy::
     ~PlaylistExclusionsComponentInstallerPolicy() = default;
@@ -95,7 +99,7 @@ void PlaylistExclusionsComponentInstallerPolicy::ComponentReady(
     const base::FilePath& path,
     base::DictValue manifest) {
   PlaylistExclusions::GetInstance()->LoadPlaylistExclusions(
-      path.AppendASCII(kPlaylistExclusionsJsonFile));
+      path.AppendASCII(kPlaylistExclusionsJsonFile), base::DoNothing());
 }
 
 bool PlaylistExclusionsComponentInstallerPolicy::VerifyInstallation(

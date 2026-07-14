@@ -71,7 +71,7 @@ class PlaylistExclusions {
   // `playlist_exclusions.json` file. `on_complete` runs on the calling sequence
   // after the load attempt finishes.
   void LoadPlaylistExclusions(const base::FilePath& exclusions_file_path,
-                              base::OnceClosure on_complete = {});
+                              base::OnceClosure on_complete);
 
   // Returns true when `url` may be used for LivePlaylist-style reload /
   // re-resolution. Before the first successful load, returns true for all URLs
