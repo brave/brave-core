@@ -1,0 +1,15 @@
+diff --git a/chrome/browser/printing/print_view_manager.h b/chrome/browser/printing/print_view_manager.h
+index 324f2d4002545fd624505995043cdad2b08b800b..8cbf9b9d3a890268bd840e5ba7b2f0eaf1b8f3a0 100644
+--- a/chrome/browser/printing/print_view_manager.h
++++ b/chrome/browser/printing/print_view_manager.h
+@@ -33,6 +33,10 @@ class PrintViewManager : public PrintViewManagerBase,
+ 
+   ~PrintViewManager() override;
+ 
++  void SetPrintPreviewRenderFrameHostForExtraction(
++      content::RenderFrameHost* rfh);
++  void ClearPrintPreviewRenderFrameHostForExtraction();
++
+   static void BindPrintManagerHost(
+       mojo::PendingAssociatedReceiver<mojom::PrintManagerHost> receiver,
+       content::RenderFrameHost* rfh);
