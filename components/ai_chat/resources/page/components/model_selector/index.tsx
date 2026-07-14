@@ -143,6 +143,24 @@ export function ModelSelector() {
     [selectableModels],
   )
 
+  // Count models shown on the pinned tab; drives the fixed menu height so
+  // the panel grows with pins up to the max without resizing on vendor change.
+  const pinnedItemCount = React.useMemo(() => {
+    let count = 0
+    if (selectableModels.some((model) => model.key === AUTOMATIC_MODEL_KEY)) {
+      count++
+    }
+    for (const key of pinnedModelKeys) {
+      if (key === AUTOMATIC_MODEL_KEY) {
+        continue
+      }
+      if (selectableModels.some((model) => model.key === key)) {
+        count++
+      }
+    }
+    return count
+  }, [selectableModels, pinnedModelKeys])
+
   const models = React.useMemo(() => {
     const query = searchQuery.trim()
 
@@ -288,7 +306,15 @@ export function ModelSelector() {
           </Alert>
         )}
 
-      <div className={styles.menuBody}>
+      <div
+        className={styles.menuBody}
+        style={
+          {
+            '--vendor-rail-count': vendorEntries.length,
+            '--pinned-item-count': pinnedItemCount,
+          } as React.CSSProperties
+        }
+      >
         <VendorRail
           entries={vendorEntries}
           selectedKey={selectedVendorKey}

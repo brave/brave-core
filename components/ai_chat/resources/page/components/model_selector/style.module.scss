@@ -43,7 +43,28 @@
 }
 
 .menuBody {
-  --menu-body-height: min(472px, calc(100svh - 160px));
+  --menu-body-max-height: min(472px, calc(100svh - 160px));
+  --vendor-button-size: 32px;
+  // Detailed model row: 32px icon / 40px name+subtitle + item padding.
+  --model-row-height: 48px;
+  // Search + filter toolbar: padding + tiny control + bottom border.
+  --search-filters-height: calc(2 * var(--leo-spacing-s) + 28px + 1px);
+  --vendor-rail-height: calc(
+    2 * var(--leo-spacing-s) + var(--vendor-rail-count, 0) *
+      var(--vendor-button-size) + max(0, var(--vendor-rail-count, 0) - 1) *
+      var(--leo-spacing-s)
+  );
+  --pinned-list-height: calc(
+    var(--search-filters-height) + 2 * var(--leo-spacing-s) +
+      var(--pinned-item-count, 0) * var(--model-row-height) +
+      max(0, var(--pinned-item-count, 0) - 1) * var(--leo-spacing-s)
+  );
+  // Grow with the pinned list (and never shorter than the vendor rail),
+  // capped at the menu max so switching vendors / filters doesn't resize.
+  --menu-body-height: min(
+    max(var(--vendor-rail-height), var(--pinned-list-height)),
+    var(--menu-body-max-height)
+  );
 
   display: flex;
   flex-direction: row;
@@ -52,7 +73,6 @@
   width: 320px;
   min-width: 320px;
   max-width: 320px;
-  // Fixed height so switching vendors / filters doesn't resize the panel.
   height: var(--menu-body-height);
   min-height: var(--menu-body-height);
   max-height: var(--menu-body-height);
