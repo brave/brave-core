@@ -782,8 +782,10 @@ void FeedV2Builder::FetchFeed() {
   // refresh).
   if (!raw_feed_items_.empty()) {
     // Note: This isn't ideal because we double move the raw_feed_items and
-    // etags, but it makes the algorithm easier to follow.
-    OnFetchedFeed(std::move(raw_feed_items_), std::move(feed_etags_));
+    // etags, but it makes the algorithm easier to follow. We have items, so
+    // there was no connection error.
+    OnFetchedFeed(std::move(raw_feed_items_), std::move(feed_etags_),
+                  /*connection_error=*/false);
     return;
   }
 
@@ -795,11 +797,14 @@ void FeedV2Builder::FetchFeed() {
                      base::Unretained(this)));
 }
 
-void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
+void FeedV2Builder::OnFetchedFeed(FeedItems items,
+                                  ETags tags,
+                                  bool connection_error) {
   DVLOG(1) << __FUNCTION__;
 
   raw_feed_items_ = std::move(items);
   feed_etags_ = std::move(tags);
+  feed_connection_error_ = connection_error;
 
   CalculateSignals();
 }
@@ -956,12 +961,15 @@ void FeedV2Builder::GenerateFeed(const SubscriptionsSnapshot& subscriptions,
               // any feeds.
               if (builder->subscribed_count_ == 0 && !publishers.empty()) {
                 feed->error = mojom::FeedV2Error::NoFeeds;
-                // If we don't have any raw feed items (and we're
-                // subscribed to some feeds) then fetching must
-                // have failed.
-              } else if (builder->raw_feed_items_.size() == 0) {
+                // If fetching Brave's feed failed because we couldn't reach the
+                // server, the user is likely offline. Note: a failing direct
+                // (custom RSS) feed does not set this, so a single broken
+                // custom feed no longer surfaces as a whole-feed connection
+                // error.
+              } else if (builder->feed_connection_error_) {
                 feed->error = mojom::FeedV2Error::ConnectionError;
-                // Otherwise, this feed must have no articles.
+                // Otherwise, we reached our sources but there are no articles
+                // to show (e.g. an empty or unparseable custom feed).
               } else {
                 feed->error = mojom::FeedV2Error::NoArticles;
               }
