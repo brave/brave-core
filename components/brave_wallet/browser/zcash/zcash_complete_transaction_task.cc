@@ -11,6 +11,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -105,6 +106,8 @@ void ZCashCompleteTransactionTask::WorkOnTask() {
         continue;
       }
       if (!shielded.anchor_block_height.has_value()) {
+        LOG(ERROR) << "XXXZZZ WorkOnTask v6 anchor not selected for pool="
+                   << static_cast<int>(pool);
         error_ = "Anchor not selected";
         ScheduleWorkOnTask();
         return;
@@ -159,6 +162,8 @@ void ZCashCompleteTransactionTask::GetLightdInfo() {
 void ZCashCompleteTransactionTask::OnGetLightdInfo(
     base::expected<zcash::mojom::LightdInfoPtr, std::string> result) {
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetLightdInfo GetLightdInfo failed: "
+               << result.error();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -167,6 +172,8 @@ void ZCashCompleteTransactionTask::OnGetLightdInfo(
   uint32_t consensus_branch_id;
   if (!base::HexStringToUInt(result.value()->consensusBranchId,
                              &consensus_branch_id)) {
+    LOG(ERROR) << "XXXZZZ OnGetLightdInfo bad consensusBranchId: "
+               << result.value()->consensusBranchId;
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -187,6 +194,8 @@ void ZCashCompleteTransactionTask::GetLatestBlock() {
 void ZCashCompleteTransactionTask::OnGetLatestBlockHeight(
     base::expected<zcash::mojom::BlockIDPtr, std::string> result) {
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetLatestBlockHeight GetLatestBlock failed: "
+               << result.error();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -218,7 +227,6 @@ void ZCashCompleteTransactionTask::CalculateWitness() {
           weak_ptr_factory_.GetWeakPtr()));
 }
 
-
 void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
     base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
@@ -232,7 +240,6 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResult(
   ScheduleWorkOnTask();
 }
 
-
 // v5 tree state fetch.
 void ZCashCompleteTransactionTask::GetTreeState() {
   context_.zcash_rpc->GetTreeState(
@@ -243,7 +250,6 @@ void ZCashCompleteTransactionTask::GetTreeState() {
       base::BindOnce(&ZCashCompleteTransactionTask::OnGetTreeState,
                      weak_ptr_factory_.GetWeakPtr()));
 }
-
 
 void ZCashCompleteTransactionTask::OnGetTreeState(
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
@@ -282,7 +288,8 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = transaction_.v5_part().orchard.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs);
+      *state_tree_bytes, spends_bundle, transaction_.v5_part().orchard.outputs,
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
 
   if (!orchard_bundle_manager) {
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
@@ -304,7 +311,6 @@ void ZCashCompleteTransactionTask::SignOrchardPart() {
                      weak_ptr_factory_.GetWeakPtr()));
 }
 
-
 void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
   if (!orchard_bundle_manager) {
@@ -313,10 +319,10 @@ void ZCashCompleteTransactionTask::OnSignOrchardPartComplete(
     return;
   }
 
-  transaction_.v5_part().orchard.raw_tx = orchard_bundle_manager->GetRawTxBytes();
+  transaction_.v5_part().orchard.raw_tx =
+      orchard_bundle_manager->GetRawTxBytes();
   ScheduleWorkOnTask();
 }
-
 
 ZCashCompleteTransactionTask::V6PoolSigningState::V6PoolSigningState() =
     default;
@@ -355,6 +361,9 @@ void ZCashCompleteTransactionTask::OnWitnessCalculateResultV6(
     OrchardPool pool,
     base::expected<std::vector<OrchardInput>, OrchardStorage::Error> result) {
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnWitnessCalculateResultV6 failed for pool="
+               << static_cast<int>(pool)
+               << " error=" << result.error().message;
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -377,6 +386,8 @@ void ZCashCompleteTransactionTask::OnGetTreeStateV6(
     OrchardPool pool,
     base::expected<zcash::mojom::TreeStatePtr, std::string> result) {
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetTreeStateV6 GetTreeState failed for pool="
+               << static_cast<int>(pool) << " error=" << result.error();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -389,9 +400,14 @@ void ZCashCompleteTransactionTask::BuildOrchardBundleV6(OrchardPool pool) {
   auto& state = v6_signing_state_[pool];
   auto& shielded = PoolRefV6(pool);
 
-  auto state_tree_bytes = PrefixedHexStringToBytes(
-      base::StrCat({"0x", state.tree_state.value()->orchardTree}));
+  const std::string& tree_hex = (pool == OrchardPool::kIronwood)
+                                    ? state.tree_state.value()->ironwoodTree
+                                    : state.tree_state.value()->orchardTree;
+  auto state_tree_bytes =
+      PrefixedHexStringToBytes(base::StrCat({"0x", tree_hex}));
   if (!state_tree_bytes) {
+    LOG(ERROR) << "XXXZZZ BuildOrchardBundleV6 bad tree state hex for pool="
+               << static_cast<int>(pool) << " tree_hex_len=" << tree_hex.size();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -401,6 +417,9 @@ void ZCashCompleteTransactionTask::BuildOrchardBundleV6(OrchardPool pool) {
   auto sk = zcash_wallet_service_->keyring_service_->GetOrchardSpendingKey(
       context_.account_id);
   if (!fvk || !sk) {
+    LOG(ERROR) << "XXXZZZ BuildOrchardBundleV6 missing fvk/sk for pool="
+               << static_cast<int>(pool) << " fvk=" << !!fvk
+               << " sk=" << !!sk;
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -410,8 +429,14 @@ void ZCashCompleteTransactionTask::BuildOrchardBundleV6(OrchardPool pool) {
   spends_bundle.fvk = *fvk;
   spends_bundle.inputs = shielded.inputs;
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      *state_tree_bytes, spends_bundle, shielded.outputs);
+      *state_tree_bytes, spends_bundle, shielded.outputs, pool,
+      /*is_v6_transaction=*/true);
   if (!orchard_bundle_manager) {
+    LOG(ERROR) << "XXXZZZ BuildOrchardBundleV6 OrchardBundleManager::Create "
+                  "failed for pool="
+               << static_cast<int>(pool)
+               << " inputs=" << shielded.inputs.size()
+               << " outputs=" << shielded.outputs.size();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -449,6 +474,9 @@ void ZCashCompleteTransactionTask::OnSignOrchardBundleCompleteV6(
     OrchardPool pool,
     std::unique_ptr<OrchardBundleManager> orchard_bundle_manager) {
   if (!orchard_bundle_manager) {
+    LOG(ERROR) << "XXXZZZ OnSignOrchardBundleCompleteV6 ApplySignature "
+                  "failed for pool="
+               << static_cast<int>(pool);
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;
@@ -461,6 +489,9 @@ void ZCashCompleteTransactionTask::SignTransparentPart() {
   // Sign transparent part
   if (!ZCashSerializer::SignTransparentPart(
           keyring_service_.get(), context_.account_id, transaction_)) {
+    LOG(ERROR) << "XXXZZZ SignTransparentPart SignTransparentPart failed, "
+                  "inputs="
+               << transaction_.transparent_part().inputs.size();
     error_ = l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR);
     ScheduleWorkOnTask();
     return;

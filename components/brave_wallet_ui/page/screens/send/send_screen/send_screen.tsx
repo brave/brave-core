@@ -194,11 +194,9 @@ export const SendScreen = React.memo(() => {
       ? {
           chainId: networkFromParams.chainId,
           accountId: accountFromParams.accountId,
-          useShieldedPool:
-            Number(query.get('zcashTokenType') ?? '0') ===
-              BraveWallet.ZCashTokenType.kOrchard ||
-            Number(query.get('zcashTokenType') ?? '0') ===
-              BraveWallet.ZCashTokenType.kIronwood,
+          fromTokenType: Number(
+            query.get('zcashTokenType') ?? '0',
+          ) as BraveWallet.ZCashTokenType,
           address: toAddressOrUrl,
         }
       : skipToken,
@@ -256,14 +254,18 @@ export const SendScreen = React.memo(() => {
     tokenFromParams
     && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && getZCashTransactionTypeResult.txType
+    && (getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kShielding
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kTransparentToIronwood)
   const isUnshieldingFunds =
     tokenFromParams
     && toAddressOrUrl !== ''
     && tokenFromParams.coin === BraveWallet.CoinType.ZEC
-    && getZCashTransactionTypeResult.txType
+    && (getZCashTransactionTypeResult.txType
       === BraveWallet.ZCashTxType.kUnshielding
+      || getZCashTransactionTypeResult.txType
+        === BraveWallet.ZCashTxType.kIronwoodToTransparent)
   // memos & computed
   const sendAmountValidationError: SendAmountValidationErrorType | undefined =
     React.useMemo(() => {
@@ -759,7 +761,13 @@ export const SendScreen = React.memo(() => {
                   && (getZCashTransactionTypeResult.txType
                     === BraveWallet.ZCashTxType.kTransparentToOrchard
                     || getZCashTransactionTypeResult.txType
-                      === BraveWallet.ZCashTxType.kOrchardToOrchard) && (
+                      === BraveWallet.ZCashTxType.kOrchardToOrchard
+                    || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kTransparentToIronwood
+                    || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kOrchardToIronwood
+                    || getZCashTransactionTypeResult.txType
+                      === BraveWallet.ZCashTxType.kIronwoodToIronwood) && (
                     <AddMemo
                       memoText={memoText}
                       onUpdateMemoText={setMemoText}

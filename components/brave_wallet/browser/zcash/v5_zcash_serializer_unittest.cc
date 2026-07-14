@@ -430,7 +430,8 @@ TEST(ZCashV5SerializerTest, OrchardToTransparentBundle) {
       "06160f378267efb70b580a0125934a8c8cde7b4ba7e51d78f2321c7e286d140811a192f6"
       "92f29d3f0ecce510000000000000000000000000000000");
   auto orchard_bundle_manager = OrchardBundleManager::Create(
-      state_tree_bytes.value(), std::move(spends_bundle), std::move(outputs));
+      state_tree_bytes.value(), std::move(spends_bundle), std::move(outputs),
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
   EXPECT_TRUE(orchard_bundle_manager);
 
   tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
@@ -1014,7 +1015,8 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
   OrchardBundleManager::OverrideRandomSeedForTesting(0);
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       std::vector<uint8_t>() /* Use empty orchard tree */,
-      OrchardSpendsBundle(), std::move(outputs));
+      OrchardSpendsBundle(), std::move(outputs), OrchardPool::kOrchard,
+      /*is_v6_transaction=*/false);
 
   tx.v5_part().orchard.digest = orchard_bundle_manager->GetOrchardDigest();
 
@@ -1022,8 +1024,9 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       "0x10a9b751104fc2ca413fa45efaab70bcf6eaa3bafe865402a97db549456cd1ec",
       ToHex(tx.v5_part().orchard.digest.value()));
 
-  auto transparent_signature_digest = ZCashV5Serializer::CalculateSignatureDigest(
-      tx, tx.transparent_part().inputs[0]);
+  auto transparent_signature_digest =
+      ZCashV5Serializer::CalculateSignatureDigest(
+          tx, tx.transparent_part().inputs[0]);
   EXPECT_EQ(
       "0x37df59fbf0244263fe9eae69d44b54f7eda9f6cc6cdb1b72b044e478628fc61a",
       ToHex(transparent_signature_digest));
@@ -1567,6 +1570,5 @@ TEST(ZCashV5SerializerTest, OrchardBundle) {
       "46a5b2ab8f5209df22e6eb3cdc41b63ab1f7ce4b8726e8922e",
       ToHex(ZCashV5Serializer::SerializeRawTransaction(tx)));
 }
-
 
 }  // namespace brave_wallet

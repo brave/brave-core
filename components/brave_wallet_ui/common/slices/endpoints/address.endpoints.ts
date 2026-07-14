@@ -30,6 +30,19 @@ type GetZCashTransactionTypeResult = {
   error: BraveWallet.ZCashAddressError
 }
 
+// Mirrors kIronwoodActivationHeightMainnet / kIronwoodActivationHeightTestnet
+// in components/brave_wallet/common/zcash_utils.h
+const kIronwoodActivationHeightMainnet = 0xffffffff
+const kIronwoodActivationHeightTestnet = 4134000
+
+function isIronwoodActive(chainId: string, chainTip: number) {
+  const activationHeight =
+    chainId === BraveWallet.Z_CASH_TESTNET
+      ? kIronwoodActivationHeightTestnet
+      : kIronwoodActivationHeightMainnet
+  return chainTip >= activationHeight
+}
+
 export const addressEndpoints = ({
   mutation,
   query,
@@ -105,17 +118,23 @@ export const addressEndpoints = ({
       {
         chainId: string
         accountId: BraveWallet.AccountId
-        useShieldedPool: boolean
+        fromTokenType: BraveWallet.ZCashTokenType
         address: string
       }
     >({
       queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
         try {
           const { data: api } = baseQuery(undefined)
+          const { status: chainTipStatus } =
+            await api.zcashWalletService.getChainTipStatus(arg.accountId)
+          const ironwoodActive = chainTipStatus
+            ? isIronwoodActive(arg.chainId, chainTipStatus.chainTip)
+            : false
           const { txType, error } =
             await api.zcashWalletService.getTransactionType(
               arg.accountId,
-              arg.useShieldedPool,
+              arg.fromTokenType,
+              ironwoodActive,
               arg.address,
             )
           return {

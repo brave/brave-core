@@ -9,6 +9,7 @@
 #include <variant>
 
 #include "base/check.h"
+#include "base/logging.h"
 #include "base/numerics/checked_math.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
@@ -74,6 +75,7 @@ void ZCashCreateIronwoodToTransparentTransactionTask::WorkOnTask() {
 
 void ZCashCreateIronwoodToTransparentTransactionTask::GetSpendableNotes() {
   if (!context_.account_internal_addr) {
+    LOG(ERROR) << "XXXZZZ GetSpendableNotes no internal address provided";
     error_ = "No internal address provided";
     ScheduleWorkOnTask();
     return;
@@ -90,12 +92,15 @@ void ZCashCreateIronwoodToTransparentTransactionTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
+    LOG(ERROR) << "XXXZZZ OnGetSpendableNotes GetSpendableNotes failed: "
+               << result.error().message;
     error_ = result.error().message;
     ScheduleWorkOnTask();
     return;
   }
 
   if (!result.value()) {
+    LOG(ERROR) << "XXXZZZ OnGetSpendableNotes no spendable notes";
     error_ = "No spendable notes";
     ScheduleWorkOnTask();
     return;
@@ -104,6 +109,9 @@ void ZCashCreateIronwoodToTransparentTransactionTask::OnGetSpendableNotes(
   spendable_notes_ = std::move(*result.value());
 
   if (!spendable_notes_->anchor_block_id) {
+    LOG(ERROR) << "XXXZZZ OnGetSpendableNotes failed to select anchor, "
+                  "spendable_notes="
+               << spendable_notes_->spendable_notes.size();
     error_ = "Failed to select anchor";
     ScheduleWorkOnTask();
     return;
@@ -113,6 +121,8 @@ void ZCashCreateIronwoodToTransparentTransactionTask::OnGetSpendableNotes(
 }
 
 void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
+  LOG(ERROR) << "XXXZZZ CreateTransaction start amount=" << amount_
+             << " spendable_notes_=" << !!spendable_notes_;
   CHECK(spendable_notes_);
 
   ZCashTransaction zcash_transaction;
@@ -123,6 +133,9 @@ void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
       PickZCashOrchardInputs(spendable_notes_->spendable_notes, amount_,
                              ZCashTargetOutputType::kTransparent);
   if (!pick_result) {
+    LOG(ERROR) << "XXXZZZ CreateTransaction can't pick inputs, amount="
+               << amount_
+               << " spendable_notes=" << spendable_notes_->spendable_notes.size();
     error_ = "Can't pick inputs";
     ScheduleWorkOnTask();
     return;
@@ -137,6 +150,11 @@ void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
   }
   zcash_transaction.set_fee(pick_result->fee);
 
+  LOG(ERROR) << "XXXZZZ CreateTransaction anchor_block_id="
+             << !!spendable_notes_->anchor_block_id
+             << " picked_inputs=" << pick_result->inputs.size()
+             << " fee=" << pick_result->fee
+             << " change=" << pick_result->change;
   CHECK(spendable_notes_->anchor_block_id);
   zcash_transaction.v6_part().ironwood.anchor_block_height =
       spendable_notes_->anchor_block_id.value();
@@ -147,6 +165,9 @@ void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
   transparent_output.address = transparent_address_;
 
   // Change should be 0 when sending full amount.
+  LOG(ERROR) << "XXXZZZ CreateTransaction full_amount="
+             << (amount_ == kZCashFullAmount)
+             << " change=" << pick_result->change;
   CHECK(!(amount_ == kZCashFullAmount) || (pick_result->change == 0));
 
   uint64_t actual_send_amount =
@@ -161,6 +182,8 @@ void ZCashCreateIronwoodToTransparentTransactionTask::CreateTransaction() {
           .value();
 
   // Create Ironwood change output if needed.
+  LOG(ERROR) << "XXXZZZ CreateTransaction account_internal_addr="
+             << !!context_.account_internal_addr;
   CHECK(context_.account_internal_addr);
   if (pick_result->change != 0) {
     OrchardOutput& orchard_output =

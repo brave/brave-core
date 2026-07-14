@@ -29,7 +29,10 @@ std::unique_ptr<OrchardUnauthorizedBundle> OrchardUnauthorizedBundle::Create(
     base::span<const uint8_t> tree_state,
     const ::brave_wallet::OrchardSpendsBundle& orchard_spends,
     const std::vector<::brave_wallet::OrchardOutput>& orchard_outputs,
-    std::optional<size_t> random_seed_for_testing) {
+    std::optional<size_t> random_seed_for_testing,
+    ::brave_wallet::OrchardPool pool,
+    bool is_v6_transaction) {
+  const bool ironwood = pool == ::brave_wallet::OrchardPool::kIronwood;
   ::rust::Vec<orchard::CxxOrchardSpend> spends;
   for (const auto& input : orchard_spends.inputs) {
     if (!input.witness) {
@@ -58,7 +61,8 @@ std::unique_ptr<OrchardUnauthorizedBundle> OrchardUnauthorizedBundle::Create(
     CHECK_IS_TEST();
     auto bundle_result = create_testing_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        std::move(spends), std::move(outputs), random_seed_for_testing.value());
+        std::move(spends), std::move(outputs), random_seed_for_testing.value(),
+        ironwood, is_v6_transaction);
     if (!bundle_result->is_ok()) {
       return nullptr;
     }
@@ -68,7 +72,7 @@ std::unique_ptr<OrchardUnauthorizedBundle> OrchardUnauthorizedBundle::Create(
   } else {
     auto bundle_result = create_orchard_bundle(
         ::rust::Slice<const uint8_t>{tree_state.data(), tree_state.size()},
-        std::move(spends), std::move(outputs));
+        std::move(spends), std::move(outputs), ironwood, is_v6_transaction);
     if (!bundle_result->is_ok()) {
       return nullptr;
     }

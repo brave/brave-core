@@ -326,7 +326,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         ? {
             chainId: selectedNetwork.chainId,
             accountId: fromAccountId,
-            useShieldedPool: !!(selectedAsset && isShieldedToken(selectedAsset)),
+            fromTokenType:
+              selectedAsset?.zcashTokenType ?? BraveWallet.ZCashTokenType.kNone,
             address: trimmedSearchValue,
           }
         : skipToken,

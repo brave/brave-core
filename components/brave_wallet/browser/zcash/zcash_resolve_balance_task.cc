@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/check.h"
-#include "base/logging.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -70,7 +69,6 @@ void ZCashResolveBalanceTask::WorkOnTask() {
   }
 
   if (IsZCashIronwoodTransactionEnabled() && !ironwood_notes_result_) {
-    LOG(ERROR) << "XXXZZ ironwood_notes_result_ resolve";
     zcash_wallet_service_->sync_state()
         .AsyncCall(&OrchardSyncState::GetSpendableNotes)
         .WithArgs(OrchardPool::kIronwood, context_.account_id.Clone(),
@@ -94,26 +92,15 @@ void ZCashResolveBalanceTask::OnGetSpendableNotes(
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
-    LOG(ERROR) << "XXXZZ OnGetSpendableNotes error=" << result.error().message;
     error_ = result.error().message;
     ScheduleWorkOnTask();
     return;
   }
-  const char* pool_name =
-      pool == OrchardPool::kIronwood ? "ironwood" : "orchard";
   auto& bundle = result.value();
-  LOG(ERROR) << "XXXZZ OnGetSpendableNotes pool=" << pool_name
-             << " has_bundle=" << bundle.has_value()
-             << " spendable_notes="
-             << (bundle ? bundle->spendable_notes.size() : 0u)
-             << " all_notes=" << (bundle ? bundle->all_notes.size() : 0u);
   auto& target = (pool == OrchardPool::kIronwood) ? ironwood_notes_result_
                                                   : orchard_notes_result_;
   target = bundle ? std::move(bundle.value())
                   : OrchardSyncState::SpendableNotesBundle();
-  LOG(ERROR) << "XXXZZ OnGetSpendableNotes stored pool=" << pool_name
-             << " spendable_notes=" << target->spendable_notes.size()
-             << " all_notes=" << target->all_notes.size();
   ScheduleWorkOnTask();
 }
 
@@ -135,9 +122,8 @@ void ZCashResolveBalanceTask::CreateBalance() {
   }
   result->total_balance = result->transparent_balance;
 
-  auto accumulate =
-      [](const OrchardSyncState::SpendableNotesBundle& bundle,
-         uint64_t& spendable_out, uint64_t& pending_out) -> bool {
+  auto accumulate = [](const OrchardSyncState::SpendableNotesBundle& bundle,
+                       uint64_t& spendable_out, uint64_t& pending_out) -> bool {
     uint64_t spendable = 0, pending = 0;
     for (const auto& note : bundle.all_notes) {
       pending += note.amount;
@@ -169,12 +155,6 @@ void ZCashResolveBalanceTask::CreateBalance() {
       ScheduleWorkOnTask();
       return;
     }
-    LOG(ERROR) << "XXXZZ ironwood_balance=" << result->ironwood_balance
-               << " ironwood_pending_balance="
-               << result->ironwood_pending_balance
-               << " spendable_notes="
-               << ironwood_notes_result_->spendable_notes.size()
-               << " all_notes=" << ironwood_notes_result_->all_notes.size();
     result->total_balance += result->ironwood_balance;
   }
 

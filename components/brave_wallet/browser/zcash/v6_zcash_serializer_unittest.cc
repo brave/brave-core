@@ -34,16 +34,17 @@ ZCashTransaction MakeEmptyV6Tx() {
 
 }  // namespace
 
-// PushHeader (private, accessible via FRIEND_TEST) must emit exactly 28 bytes:
-// 4 (version) + 4 (group id) + 4 (branch id) + 4 (locktime) + 4 (expiry) +
-// 8 (zip233_amount).  Changing zip233_amount must change the header hash.
+// PushHeader (private, accessible via FRIEND_TEST) must emit exactly 20 bytes:
+// 4 (version) + 4 (group id) + 4 (branch id) + 4 (locktime) + 4 (expiry).
+// Per ZIP 229 the v6 header ends at expiryHeight; there is NO zip233Amount
+// field (that only existed in the withdrawn ZIP 230).
 TEST(ZCashV6SerializerTest, HashHeader) {
   auto tx = MakeEmptyV6Tx();
 
   // Inspect raw header bytes via FRIEND_TEST access to the private PushHeader.
   BtcLikeSerializerStream stream;
   ZCashV6Serializer::PushHeader(tx, stream);
-  ASSERT_EQ(stream.data().size(), 28u);
+  ASSERT_EQ(stream.data().size(), 20u);
 
   // v6 version constant (0x80000006) in little-endian.
   EXPECT_EQ(stream.data()[0], 0x06u);
@@ -51,39 +52,28 @@ TEST(ZCashV6SerializerTest, HashHeader) {
   EXPECT_EQ(stream.data()[2], 0x00u);
   EXPECT_EQ(stream.data()[3], 0x80u);
 
-  // zip233_amount = 0 occupies bytes 20-27 (all zero).
-  for (size_t i = 20; i < 28; ++i) {
-    EXPECT_EQ(stream.data()[i], 0x00u) << "zip233_amount byte " << i;
-  }
+  // v6 version group id (0xD884B698) in LE at bytes 4-7.
+  EXPECT_EQ(stream.data()[4], 0x98u);
+  EXPECT_EQ(stream.data()[5], 0xB6u);
+  EXPECT_EQ(stream.data()[6], 0x84u);
+  EXPECT_EQ(stream.data()[7], 0xD8u);
 
-  // A non-zero zip233_amount must change the header hash.
-  auto tx2 = tx;
-  tx2.v6_part().zip233_amount = 100000;
-  EXPECT_NE(ZCashV6Serializer::HashHeader(tx),
-            ZCashV6Serializer::HashHeader(tx2));
-
-  // Header bytes differ at exactly the zip233_amount position.
-  BtcLikeSerializerStream stream2;
-  ZCashV6Serializer::PushHeader(tx2, stream2);
-  // Bytes 0-19 are identical.
-  for (size_t i = 0; i < 20; ++i) {
-    EXPECT_EQ(stream.data()[i], stream2.data()[i]) << "byte " << i;
-  }
-  // Bytes 20-27 differ (zip233_amount = 100000 = 0x00000000000186A0).
-  EXPECT_NE(stream.data().at(20), stream2.data().at(20));
+  // The header hash is deterministic for identical header fields.
+  EXPECT_EQ(ZCashV6Serializer::HashHeader(tx),
+            ZCashV6Serializer::HashHeader(tx));
 }
 
 // SerializeRawTransaction must emit the correct wire format for four cases:
 // transparent-only, legacy-orchard only, ironwood only, and both pools.
 TEST(ZCashV6SerializerTest, SerializeRawTransaction) {
-  // Case 1: transparent-only (zip233_amount = 0, no shielded pools).
+  // Case 1: transparent-only (no shielded pools).
   // Expected layout:
-  //   header (28) + inputs cs(1) + outputs cs(1) + sapling(2) +
-  //   legacy_orchard cs(1) + ironwood cs(1) = 34 bytes.
+  //   header (20) + inputs cs(1) + outputs cs(1) + sapling(2) +
+  //   legacy_orchard cs(1) + ironwood cs(1) = 26 bytes.
   {
     auto tx = MakeEmptyV6Tx();
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
-    ASSERT_EQ(bytes.size(), 34u);
+    ASSERT_EQ(bytes.size(), 26u);
 
     // v6 version group id (0xD884B698) in LE at bytes 4-7.
     EXPECT_EQ(bytes[4], 0x98u);
@@ -91,78 +81,72 @@ TEST(ZCashV6SerializerTest, SerializeRawTransaction) {
     EXPECT_EQ(bytes[6], 0x84u);
     EXPECT_EQ(bytes[7], 0xD8u);
 
-    // zip233_amount = 0 at bytes 20-27.
-    for (size_t i = 20; i < 28; ++i) {
-      EXPECT_EQ(bytes[i], 0x00u) << "zip233_amount byte " << i;
+    // The header ends at byte 19; the transparent/sapling counts follow
+    // immediately (no zip233Amount). All zero for an empty tx.
+    for (size_t i = 20; i < 24; ++i) {
+      EXPECT_EQ(bytes[i], 0x00u) << "empty count byte " << i;
     }
 
     // Both bundle slots are empty (compact-size 0x00).
-    EXPECT_EQ(bytes[32], 0x00u);  // legacy_orchard empty
-    EXPECT_EQ(bytes[33], 0x00u);  // ironwood empty
+    EXPECT_EQ(bytes[24], 0x00u);  // legacy_orchard empty
+    EXPECT_EQ(bytes[25], 0x00u);  // ironwood empty
   }
 
   // Case 2: legacy_orchard.raw_tx set, ironwood empty.
   // Expected layout:
-  //   header(28) + inputs cs(1) + outputs cs(1) + sapling(2) +
-  //   legacy_orchard(2) + ironwood cs(1) = 35 bytes.
+  //   header(20) + inputs cs(1) + outputs cs(1) + sapling(2) +
+  //   legacy_orchard(2) + ironwood cs(1) = 27 bytes.
   {
     auto tx = MakeEmptyV6Tx();
     tx.v6_part().legacy_orchard.raw_tx = std::vector<uint8_t>{0x01, 0x02};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
-    ASSERT_EQ(bytes.size(), 35u);
+    ASSERT_EQ(bytes.size(), 27u);
 
-    EXPECT_EQ(bytes[32], 0x01u);  // legacy_orchard[0]
-    EXPECT_EQ(bytes[33], 0x02u);  // legacy_orchard[1]
-    EXPECT_EQ(bytes[34], 0x00u);  // ironwood empty
+    EXPECT_EQ(bytes[24], 0x01u);  // legacy_orchard[0]
+    EXPECT_EQ(bytes[25], 0x02u);  // legacy_orchard[1]
+    EXPECT_EQ(bytes[26], 0x00u);  // ironwood empty
   }
 
   // Case 3: ironwood.raw_tx set, legacy_orchard empty.
   // Expected layout:
-  //   header(28) + inputs cs(1) + outputs cs(1) + sapling(2) +
-  //   legacy_orchard cs(1) + ironwood(3) = 36 bytes.
+  //   header(20) + inputs cs(1) + outputs cs(1) + sapling(2) +
+  //   legacy_orchard cs(1) + ironwood(3) = 28 bytes.
   {
     auto tx = MakeEmptyV6Tx();
     tx.v6_part().ironwood.raw_tx =
         std::vector<uint8_t>{0xAB, 0xCD, 0xEF};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
-    ASSERT_EQ(bytes.size(), 36u);
+    ASSERT_EQ(bytes.size(), 28u);
 
-    EXPECT_EQ(bytes[32], 0x00u);  // legacy_orchard empty
-    EXPECT_EQ(bytes[33], 0xABu);  // ironwood[0]
-    EXPECT_EQ(bytes[34], 0xCDu);  // ironwood[1]
-    EXPECT_EQ(bytes[35], 0xEFu);  // ironwood[2]
+    EXPECT_EQ(bytes[24], 0x00u);  // legacy_orchard empty
+    EXPECT_EQ(bytes[25], 0xABu);  // ironwood[0]
+    EXPECT_EQ(bytes[26], 0xCDu);  // ironwood[1]
+    EXPECT_EQ(bytes[27], 0xEFu);  // ironwood[2]
   }
 
   // Case 4: both pools have raw_tx set (one byte each).
   // Expected layout:
-  //   header(28) + inputs cs(1) + outputs cs(1) + sapling(2) +
-  //   legacy_orchard(1) + ironwood(1) = 34 bytes.
+  //   header(20) + inputs cs(1) + outputs cs(1) + sapling(2) +
+  //   legacy_orchard(1) + ironwood(1) = 26 bytes.
   {
     auto tx = MakeEmptyV6Tx();
     tx.v6_part().legacy_orchard.raw_tx = std::vector<uint8_t>{0x11};
     tx.v6_part().ironwood.raw_tx = std::vector<uint8_t>{0x22};
     auto bytes = ZCashV6Serializer::SerializeRawTransaction(tx);
-    ASSERT_EQ(bytes.size(), 34u);
+    ASSERT_EQ(bytes.size(), 26u);
 
-    EXPECT_EQ(bytes[32], 0x11u);  // legacy_orchard[0]
-    EXPECT_EQ(bytes[33], 0x22u);  // ironwood[0]
+    EXPECT_EQ(bytes[24], 0x11u);  // legacy_orchard[0]
+    EXPECT_EQ(bytes[25], 0x22u);  // ironwood[0]
   }
 }
 
-// CalculateTxIdDigest must be deterministic and sensitive to pool digests and
-// zip233_amount.
+// CalculateTxIdDigest must be deterministic and sensitive to pool digests.
 TEST(ZCashV6SerializerTest, CalculateTxIdDigest) {
   auto tx = MakeEmptyV6Tx();
 
   // Determinism.
   EXPECT_EQ(ZCashV6Serializer::CalculateTxIdDigest(tx),
             ZCashV6Serializer::CalculateTxIdDigest(tx));
-
-  // zip233_amount is part of the digest.
-  auto tx_nonzero_amount = tx;
-  tx_nonzero_amount.v6_part().zip233_amount = 1000;
-  EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx),
-            ZCashV6Serializer::CalculateTxIdDigest(tx_nonzero_amount));
 
   // legacy_orchard digest is included independently.
   auto tx_legacy = tx;
@@ -191,12 +175,13 @@ TEST(ZCashV6SerializerTest, CalculateTxIdDigest) {
       ZCashV6Serializer::CalculateSignatureDigest(tx_ironwood, std::nullopt));
 }
 
-// Exact byte-level differences between a v5 and equivalent v6 serialization:
+// Exact byte-level differences between a v5 and equivalent v6 serialization.
+// Both headers are 20 bytes (no zip233Amount in v6 per ZIP 229), so v6 differs
+// from v5 only by:
 //   - byte 0: 0x05 (v5) vs 0x06 (v6)
 //   - bytes 4-7: group id 0x26A7270A vs 0xD884B698
-//   - bytes 20-27 (v6 only): zip233_amount (8 bytes)
 //   - trailing: v5 has one orchard slot; v6 has two (legacy_orchard + ironwood)
-//   - v6.size() == v5.size() + 9
+//   - v6.size() == v5.size() + 1
 TEST(ZCashV6SerializerTest, DifferentialV5V6) {
   // Build a minimal transparent-only v5 transaction.
   ZCashTransaction v5_tx;
@@ -204,17 +189,17 @@ TEST(ZCashV6SerializerTest, DifferentialV5V6) {
   v5_tx.set_expiry_height(10000);
   v5_tx.set_locktime(1);
 
-  // Build an equivalent v6 transaction (same header fields, zip233_amount=0).
+  // Build an equivalent v6 transaction (same header fields).
   auto v6_tx = v5_tx;
   v6_tx.ConvertToV6();
 
   auto v5_bytes = ZCashV5Serializer::SerializeRawTransaction(v5_tx);
   auto v6_bytes = ZCashV6Serializer::SerializeRawTransaction(v6_tx);
 
-  // v6 is exactly 9 bytes longer (8 for zip233_amount + 1 for ironwood slot).
-  ASSERT_EQ(v6_bytes.size(), v5_bytes.size() + 9);
+  // v6 is exactly 1 byte longer (the extra empty ironwood bundle slot).
+  ASSERT_EQ(v6_bytes.size(), v5_bytes.size() + 1);
   ASSERT_EQ(v5_bytes.size(), 25u);
-  ASSERT_EQ(v6_bytes.size(), 34u);
+  ASSERT_EQ(v6_bytes.size(), 26u);
 
   // Version byte: v5 = 0x05, v6 = 0x06.
   EXPECT_EQ(v5_bytes[0], 0x05u);
@@ -237,31 +222,31 @@ TEST(ZCashV6SerializerTest, DifferentialV5V6) {
     EXPECT_EQ(v5_bytes[i], v6_bytes[i]) << "common header byte " << i;
   }
 
-  // v6 bytes 20-27: zip233_amount = 0 (all zero).
-  for (size_t i = 20; i < 28; ++i) {
-    EXPECT_EQ(v6_bytes[i], 0x00u) << "zip233_amount byte " << i;
-  }
-
-  // After the header, trailing fields (inputs cs, outputs cs, sapling) match.
-  // v5: starts at 20, v6: starts at 28. First 4 bytes are identical.
-  for (size_t i = 0; i < 4; ++i) {
-    EXPECT_EQ(v5_bytes[20 + i], v6_bytes[28 + i])
-        << "trailing field byte " << i;
+  // Both headers end at byte 19; the transparent/sapling counts (4 bytes) then
+  // match one-to-one at the same offsets.
+  for (size_t i = 20; i < 24; ++i) {
+    EXPECT_EQ(v5_bytes[i], v6_bytes[i]) << "trailing field byte " << i;
   }
   // v5 has one bundle slot (orchard = 0x00 at byte 24).
   EXPECT_EQ(v5_bytes[24], 0x00u);
-  // v6 has two bundle slots (legacy_orchard = 0x00 at byte 32, ironwood at 33).
-  EXPECT_EQ(v6_bytes[32], 0x00u);
-  EXPECT_EQ(v6_bytes[33], 0x00u);
+  // v6 has two bundle slots (legacy_orchard = 0x00 at byte 24, ironwood at 25).
+  EXPECT_EQ(v6_bytes[24], 0x00u);
+  EXPECT_EQ(v6_bytes[25], 0x00u);
 }
 
-// When no pool digest is set, the serializer implicitly uses
-// Blake2b256({}, "ZTxIdOrchardHash") for both legacy_orchard and ironwood.
-// Explicitly setting both digests to that same value must produce identical
-// txid and signature digests.
+// When no pool digest is set, the serializer implicitly uses the pool-specific
+// v6 empty-bundle personalizer: "ZTxIdOrchardH_v6" for legacy_orchard and the
+// distinct "ZTxIdIronwd_H_v6" for ironwood (matching orchard commitments.rs).
+// Explicitly setting each pool's digest to its own fallback value must produce
+// identical txid and signature digests.
 TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
-  auto fallback = ZCashSerializer::Blake2b256(
-      {}, base::byte_span_from_cstring("ZTxIdOrchardHash"));
+  auto orchard_fallback = ZCashSerializer::Blake2b256(
+      {}, base::byte_span_from_cstring("ZTxIdOrchardH_v6"));
+  auto ironwood_fallback = ZCashSerializer::Blake2b256(
+      {}, base::byte_span_from_cstring("ZTxIdIronwd_H_v6"));
+
+  // The two pools must use DISTINCT personalizers, so their empty digests differ.
+  EXPECT_NE(orchard_fallback, ironwood_fallback);
 
   // TxId digest.
   {
@@ -269,8 +254,8 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
     auto txid_implicit = ZCashV6Serializer::CalculateTxIdDigest(tx_implicit);
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part().legacy_orchard.digest = fallback;
-    tx_explicit.v6_part().ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = orchard_fallback;
+    tx_explicit.v6_part().ironwood.digest = ironwood_fallback;
     auto txid_explicit = ZCashV6Serializer::CalculateTxIdDigest(tx_explicit);
 
     EXPECT_EQ(txid_implicit, txid_explicit);
@@ -283,8 +268,8 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
         ZCashV6Serializer::CalculateSignatureDigest(tx_implicit, std::nullopt);
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part().legacy_orchard.digest = fallback;
-    tx_explicit.v6_part().ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = orchard_fallback;
+    tx_explicit.v6_part().ironwood.digest = ironwood_fallback;
     auto sigdigest_explicit =
         ZCashV6Serializer::CalculateSignatureDigest(tx_explicit, std::nullopt);
 
@@ -294,14 +279,14 @@ TEST(ZCashV6SerializerTest, EmptyFallbackInvariant) {
   // Changing one pool's digest to a non-fallback value must break the invariant.
   {
     auto tx_modified = MakeEmptyV6Tx();
-    std::array<uint8_t, kZCashDigestSize> different_digest = fallback;
+    std::array<uint8_t, kZCashDigestSize> different_digest = orchard_fallback;
     different_digest[0] ^= 0xFF;
     tx_modified.v6_part().legacy_orchard.digest = different_digest;
-    tx_modified.v6_part().ironwood.digest = fallback;
+    tx_modified.v6_part().ironwood.digest = ironwood_fallback;
 
     auto tx_explicit = MakeEmptyV6Tx();
-    tx_explicit.v6_part().legacy_orchard.digest = fallback;
-    tx_explicit.v6_part().ironwood.digest = fallback;
+    tx_explicit.v6_part().legacy_orchard.digest = orchard_fallback;
+    tx_explicit.v6_part().ironwood.digest = ironwood_fallback;
 
     EXPECT_NE(ZCashV6Serializer::CalculateTxIdDigest(tx_modified),
               ZCashV6Serializer::CalculateTxIdDigest(tx_explicit));

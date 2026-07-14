@@ -22,6 +22,8 @@ import {
   mockMoonCatNFT,
   mockSolToken,
   mockSplBat,
+  mockZecIronwoodToken,
+  mockZecOrchardToken,
   mockZecToken,
 } from '../stories/mock-data/mock-asset-options'
 import {
@@ -798,6 +800,82 @@ describe('findTransactionToken', () => {
         findTransactionToken(mockZecSendTransaction, [mockZecToken])?.symbol,
       ).toBe('ZEC')
     })
+
+    it(
+      'should detect the Ironwood token for a shielded ZCash transaction '
+        + 'whose inputs are spent from the Ironwood pool, even when the '
+        + 'Orchard token is listed first',
+      () => {
+        const tx: SerializableTransactionInfo = {
+          ...mockZecSendTransaction,
+          txDataUnion: {
+            zecTxData: {
+              ...mockZecSendTransaction.txDataUnion.zecTxData,
+              useShieldedPool: true,
+              inputs: [
+                {
+                  address: mockZecSendTransaction.fromAccountId.address,
+                  value: BigInt(10000000000000),
+                  pool: BraveWallet.ZCashTokenType.kIronwood,
+                },
+              ],
+            },
+          },
+        }
+        expect(
+          findTransactionToken(tx, [mockZecOrchardToken, mockZecIronwoodToken])
+            ?.zcashTokenType,
+        ).toBe(BraveWallet.ZCashTokenType.kIronwood)
+      },
+    )
+
+    it(
+      'should detect the Orchard token for a shielded ZCash transaction '
+        + 'whose inputs are spent from the Orchard pool',
+      () => {
+        const tx: SerializableTransactionInfo = {
+          ...mockZecSendTransaction,
+          txDataUnion: {
+            zecTxData: {
+              ...mockZecSendTransaction.txDataUnion.zecTxData,
+              useShieldedPool: true,
+              inputs: [
+                {
+                  address: mockZecSendTransaction.fromAccountId.address,
+                  value: BigInt(10000000000000),
+                  pool: BraveWallet.ZCashTokenType.kOrchard,
+                },
+              ],
+            },
+          },
+        }
+        expect(
+          findTransactionToken(tx, [mockZecOrchardToken, mockZecIronwoodToken])
+            ?.zcashTokenType,
+        ).toBe(BraveWallet.ZCashTokenType.kOrchard)
+      },
+    )
+
+    it(
+      'should fall back to matching any shielded token when the pool '
+        + 'cannot be determined from the transaction inputs',
+      () => {
+        const tx: SerializableTransactionInfo = {
+          ...mockZecSendTransaction,
+          txDataUnion: {
+            zecTxData: {
+              ...mockZecSendTransaction.txDataUnion.zecTxData,
+              useShieldedPool: true,
+              inputs: [],
+            },
+          },
+        }
+        expect(
+          findTransactionToken(tx, [mockZecOrchardToken, mockZecIronwoodToken])
+            ?.zcashTokenType,
+        ).toBe(BraveWallet.ZCashTokenType.kOrchard)
+      },
+    )
   })
 
   describe('Token Transfers', () => {

@@ -598,6 +598,65 @@ TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
       )"));
 }
 
+TEST(BraveWalletUtilsUnitTest, ZcashNativeIronwoodAsset) {
+  EXPECT_EQ(BlockchainTokenToValue(
+                GetZcashNativeIronwoodToken(mojom::kZCashMainnet)),
+            ParseJsonDict(R"json(
+      {
+        "address": "",
+        "chain_id": "zcash_mainnet",
+        "coin": 133,
+        "coingecko_id": "zec",
+        "decimals": 8,
+        "is_compressed": false,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "spl_token_program": 1,
+        "is_nft": false,
+        "zcash_token_type": 3,
+        "is_spam": false,
+        "logo": "zec.png",
+        "name": "Zcash(Ironwood)",
+        "symbol": "ZEC",
+        "token_id": "",
+        "visible": true
+      }
+      )json"));
+
+  EXPECT_EQ(BlockchainTokenToValue(
+                GetZcashNativeIronwoodToken(mojom::kZCashTestnet)),
+            ParseJsonDict(R"json(
+      {
+        "address": "",
+        "chain_id": "zcash_testnet",
+        "coin": 133,
+        "coingecko_id": "zec",
+        "decimals": 8,
+        "is_compressed": false,
+        "is_erc1155": false,
+        "is_erc20": false,
+        "is_erc721": false,
+        "spl_token_program": 1,
+        "is_nft": false,
+        "zcash_token_type": 3,
+        "is_spam": false,
+        "logo": "zec.png",
+        "name": "Zcash(Ironwood)",
+        "symbol": "ZEC",
+        "token_id": "",
+        "visible": true
+      }
+      )json"));
+}
+
+TEST(BraveWalletUtilsUnitTest, IsShieldedTokenType) {
+  EXPECT_TRUE(IsShieldedTokenType(mojom::ZCashTokenType::kOrchard));
+  EXPECT_TRUE(IsShieldedTokenType(mojom::ZCashTokenType::kIronwood));
+  EXPECT_FALSE(IsShieldedTokenType(mojom::ZCashTokenType::kNone));
+  EXPECT_FALSE(IsShieldedTokenType(mojom::ZCashTokenType::kTransparent));
+}
+
 TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(

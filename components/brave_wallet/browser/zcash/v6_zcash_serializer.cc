@@ -10,7 +10,6 @@
 #include <vector>
 
 #include "base/containers/span.h"
-#include "base/numerics/safe_conversions.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_serializer.h"
 
 namespace brave_wallet {
@@ -27,7 +26,15 @@ constexpr uint32_t kV6VersionGroupId = 0xD884B698;
 // NU7 consensus branch id (placeholder; comes from tx.consensus_brach_id()).
 // Only reachable behind IsZCashIronwoodTransactionEnabled().
 
-constexpr char kOrchardHashPersonalizer[] = "ZTxIdOrchardHash";
+// v6 digest personalizers differ from v5. Per ZIP 229 / ZIP 246 and confirmed
+// against the orchard crate the FFI uses
+// (orchard-v0_15/src/bundle/commitments.rs): the v6 Orchard-pool bundle digest
+// is personalized with "ZTxIdOrchardH_v6" (NOT the v5 "ZTxIdOrchardHash"), and
+// the Ironwood pool uses its own distinct "ZTxIdIronwd_H_v6". These strings
+// MUST byte-match what the FFI emits for non-empty bundles, otherwise the
+// empty-pool fallback digest won't line up with a non-empty one on the wire.
+constexpr char kOrchardV6HashPersonalizer[] = "ZTxIdOrchardH_v6";
+constexpr char kIronwoodV6HashPersonalizer[] = "ZTxIdIronwd_H_v6";
 constexpr char kSaplingHashPersonalizer[] = "ZTxIdSaplingHash";
 
 }  // namespace
@@ -40,9 +47,13 @@ void ZCashV6Serializer::PushHeader(const ZCashTransaction& tx,
   stream.Push32(tx.consensus_brach_id());
   stream.Push32(tx.locktime());
   stream.Push32(tx.expiry_height());
-  // ZIP 233: value removed from circulation (u64 LE). NEW vs v5.
-  stream.Push64(
-      base::checked_cast<uint64_t>(tx.v6_part().zip233_amount));
+  // NOTE: The v6 header ends at expiryHeight. Per ZIP 229 ("Version 6
+  // Transaction Format", Non-requirements) the v6 format does NOT carry the
+  // `zip233Amount` field (it appeared only in the withdrawn ZIP 230). There
+  // are no bytes between nExpiryHeight and tx_in_count. Writing an extra u64
+  // here shifts the whole transaction by 8 bytes and makes the node parse a
+  // completely empty tx (all count fields read as 0), which it rejects with
+  // "must have at least one input". Do not add fields after expiryHeight.
 }
 
 // static
@@ -67,14 +78,15 @@ std::array<uint8_t, kZCashDigestSize> ZCashV6Serializer::CalculateTxIdDigest(
       ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kSaplingHashPersonalizer));
   // Legacy-orchard digest: from FFI if populated, else empty-bundle hash.
+  // v6 uses "ZTxIdOrchardH_v6" (not v5's "ZTxIdOrchardHash").
   std::array<uint8_t, kZCashDigestSize> legacy_orchard_hash =
       v6.legacy_orchard.digest.value_or(ZCashSerializer::Blake2b256(
-          {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
-  // Ironwood digest: same personalizer as legacy-orchard — verified against
-  // orchard-v0_14 crate (see i-want-you-to-jazzy-shamir.md Context).
+          {}, base::byte_span_from_cstring(kOrchardV6HashPersonalizer)));
+  // Ironwood digest: DISTINCT v6 personalizer "ZTxIdIronwd_H_v6" — the Ironwood
+  // pool is domain-separated from Orchard (see orchard commitments.rs).
   std::array<uint8_t, kZCashDigestSize> ironwood_hash =
       v6.ironwood.digest.value_or(ZCashSerializer::Blake2b256(
-          {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
+          {}, base::byte_span_from_cstring(kIronwoodV6HashPersonalizer)));
 
   BtcLikeSerializerStream stream;
   stream.PushBytes(header_hash);
@@ -102,12 +114,13 @@ ZCashV6Serializer::CalculateSignatureDigest(
   std::array<uint8_t, kZCashDigestSize> sapling_hash =
       ZCashSerializer::Blake2b256(
           {}, base::byte_span_from_cstring(kSaplingHashPersonalizer));
+  // Empty-pool fallbacks use the v6 personalizers (see CalculateTxIdDigest).
   std::array<uint8_t, kZCashDigestSize> legacy_orchard_hash =
       v6.legacy_orchard.digest.value_or(ZCashSerializer::Blake2b256(
-          {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
+          {}, base::byte_span_from_cstring(kOrchardV6HashPersonalizer)));
   std::array<uint8_t, kZCashDigestSize> ironwood_hash =
       v6.ironwood.digest.value_or(ZCashSerializer::Blake2b256(
-          {}, base::byte_span_from_cstring(kOrchardHashPersonalizer)));
+          {}, base::byte_span_from_cstring(kIronwoodV6HashPersonalizer)));
 
   BtcLikeSerializerStream stream;
   stream.PushBytes(header_hash);

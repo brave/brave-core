@@ -12,6 +12,7 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "base/logging.h"
 #include "base/notimplemented.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_block_tracker.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_transaction.h"
@@ -72,12 +73,11 @@ void ZCashTxManager::ContinueAddUnapprovedTransactionWithHeight(
 
   auto from = params->from.Clone();
   auto tx_result = zcash_wallet_service_->GetTransactionType(
-      from, params->use_shielded_pool, params->to);
+      from, params->zcash_token_type, ironwood_active, params->to);
   if (!tx_result.has_value()) {
     std::move(callback).Run(false, "", "");
     return;
   }
-  const auto token = params->zcash_token_type;
   uint64_t amount =
       params->sending_max_amount ? kZCashFullAmount : params->amount;
 
@@ -92,56 +92,43 @@ void ZCashTxManager::ContinueAddUnapprovedTransactionWithHeight(
     switch (tx_result.value()) {
       case mojom::ZCashTxType::kTransparentToOrchard:
       case mojom::ZCashTxType::kShielding:
-        if (ironwood_active) {
-          zcash_wallet_service_->CreateTransparentToIronwoodTransaction(
-              from->Clone(), params->to, amount, memo,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        } else {
-          zcash_wallet_service_->CreateTransparentToOrchardTransaction(
-              from->Clone(), params->to, amount, memo,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        }
+        zcash_wallet_service_->CreateTransparentToOrchardTransaction(
+            from->Clone(), params->to, amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
+        return;
+      case mojom::ZCashTxType::kTransparentToIronwood:
+        zcash_wallet_service_->CreateTransparentToIronwoodTransaction(
+            from->Clone(), params->to, amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
         return;
       case mojom::ZCashTxType::kOrchardToOrchard:
-        if (token == mojom::ZCashTokenType::kIronwood) {
-          zcash_wallet_service_->CreateIronwoodToIronwoodTransaction(
-              from->Clone(), params->to, amount, memo,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        } else if (ironwood_active) {
-          zcash_wallet_service_->CreateOrchardToIronwoodTransaction(
-              from->Clone(), params->to, amount, memo,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        } else {
-          zcash_wallet_service_->CreateOrchardToOrchardTransaction(
-              from->Clone(), params->to, amount, memo,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        }
+        zcash_wallet_service_->CreateOrchardToOrchardTransaction(
+            from->Clone(), params->to, amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
+        return;
+      case mojom::ZCashTxType::kOrchardToIronwood:
+        zcash_wallet_service_->CreateOrchardToIronwoodTransaction(
+            from->Clone(), params->to, amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
+        return;
+      case mojom::ZCashTxType::kIronwoodToIronwood:
+        zcash_wallet_service_->CreateIronwoodToIronwoodTransaction(
+            from->Clone(), params->to, amount, memo,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
         return;
       case mojom::ZCashTxType::kOrchardToTransparent:
       case mojom::ZCashTxType::kUnshielding:
-        if (token == mojom::ZCashTokenType::kIronwood) {
-          zcash_wallet_service_->CreateIronwoodToTransparentTransaction(
-              from->Clone(), params->to, amount,
-              base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
-                             weak_factory_.GetWeakPtr(), from.Clone(), origin,
-                             std::move(params->swap_info),
-                             std::move(callback)));
-        } else if (ironwood_active) {
+        if (ironwood_active) {
           std::move(callback).Run(
               false, "", "Orchard pool is retired after Ironwood activation");
         } else {
@@ -152,6 +139,13 @@ void ZCashTxManager::ContinueAddUnapprovedTransactionWithHeight(
                              std::move(params->swap_info),
                              std::move(callback)));
         }
+        return;
+      case mojom::ZCashTxType::kIronwoodToTransparent:
+        zcash_wallet_service_->CreateIronwoodToTransparentTransaction(
+            from->Clone(), params->to, amount,
+            base::BindOnce(&ZCashTxManager::ContinueAddUnapprovedTransaction,
+                           weak_factory_.GetWeakPtr(), from.Clone(), origin,
+                           std::move(params->swap_info), std::move(callback)));
         return;
       default:
         break;
@@ -175,6 +169,8 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
     AddUnapprovedZCashTransactionCallback callback,
     base::expected<ZCashTransaction, std::string> zcash_transaction) {
   if (!zcash_transaction.has_value()) {
+    LOG(ERROR) << "XXXZZZ ContinueAddUnapprovedTransaction task failed: "
+               << zcash_transaction.error();
     std::move(callback).Run(false, "", zcash_transaction.error());
     return;
   }
@@ -189,6 +185,9 @@ void ZCashTxManager::ContinueAddUnapprovedTransaction(
   meta.set_chain_id(GetNetworkForZCashAccount(from));
   meta.set_swap_info(std::move(swap_info));
   if (!tx_state_manager().AddOrUpdateTx(meta)) {
+    LOG(ERROR) << "XXXZZZ ContinueAddUnapprovedTransaction "
+                  "AddOrUpdateTx failed, meta.id="
+               << meta.id();
     std::move(callback).Run(
         false, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
     return;

@@ -131,11 +131,13 @@ class ZCashWalletService : public mojom::ZCashWalletService,
 
   base::expected<mojom::ZCashTxType, mojom::ZCashAddressError>
   GetTransactionType(const mojom::AccountIdPtr& account_id,
-                     bool use_shielded_pool,
+                     mojom::ZCashTokenType from_token_type,
+                     bool ironwood_active,
                      const std::string& addr);
 
   void GetTransactionType(mojom::AccountIdPtr account_id,
-                          bool use_shielded_pool,
+                          mojom::ZCashTokenType from_token_type,
+                          bool ironwood_active,
                           const std::string& addr,
                           GetTransactionTypeCallback callback) override;
 
@@ -145,47 +147,49 @@ class ZCashWalletService : public mojom::ZCashWalletService,
   virtual void GetUtxos(const mojom::AccountIdPtr& account_id,
                         GetUtxosCallback);
 
-  void CreateFullyTransparentTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         CreateTransactionCallback callback);
-
-  void CreateOrchardToOrchardTransaction(mojom::AccountIdPtr account_id,
-                                         const std::string& address_to,
-                                         uint64_t amount,
-                                         std::optional<OrchardMemo> memo,
-                                         CreateTransactionCallback callback);
-  void CreateTransparentToOrchardTransaction(
-      mojom::AccountIdPtr account_id,
-      const std::string& address_to,
-      uint64_t amount,
-      std::optional<OrchardMemo> memo,
-      CreateTransactionCallback callback);
-  void CreateOrchardToTransparentTransaction(
+  virtual void CreateFullyTransparentTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       CreateTransactionCallback callback);
 
-  void CreateTransparentToIronwoodTransaction(
+  virtual void CreateOrchardToOrchardTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       std::optional<OrchardMemo> memo,
       CreateTransactionCallback callback);
-  void CreateIronwoodToIronwoodTransaction(
+  virtual void CreateTransparentToOrchardTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       std::optional<OrchardMemo> memo,
       CreateTransactionCallback callback);
-  void CreateOrchardToIronwoodTransaction(
+  virtual void CreateOrchardToTransparentTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      CreateTransactionCallback callback);
+
+  virtual void CreateTransparentToIronwoodTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,
       std::optional<OrchardMemo> memo,
       CreateTransactionCallback callback);
-  void CreateIronwoodToTransparentTransaction(
+  virtual void CreateIronwoodToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateOrchardToIronwoodTransaction(
+      mojom::AccountIdPtr account_id,
+      const std::string& address_to,
+      uint64_t amount,
+      std::optional<OrchardMemo> memo,
+      CreateTransactionCallback callback);
+  virtual void CreateIronwoodToTransparentTransaction(
       mojom::AccountIdPtr account_id,
       const std::string& address_to,
       uint64_t amount,

@@ -341,7 +341,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kBraveWalletZCashFeature,
-      {{"zcash_shielded_transactions_enabled", "true"}});
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_transaction_enabled", "true"}});
   keyring_service()->Reset();
   keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
                                    false, base::DoNothing());
@@ -397,10 +398,23 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
           });
 
   ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
-      .WillByDefault([](OrchardPool pool,
-                        const mojom::AccountIdPtr& account_id,
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
                         const OrchardAddrRawPart& internal_addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        if (pool == OrchardPool::kIronwood) {
+          {
+            OrchardNote note;
+            note.amount = 5u;
+            spendable_notes_bundle.all_notes.push_back(note);
+            spendable_notes_bundle.spendable_notes.push_back(note);
+          }
+          {
+            OrchardNote note;
+            note.amount = 15u;
+            spendable_notes_bundle.all_notes.push_back(note);
+          }
+          return spendable_notes_bundle;
+        }
         {
           OrchardNote note;
           note.amount = 10u;
@@ -419,10 +433,106 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
   EXPECT_CALL(balance_callback, Run(_, _))
       .WillOnce([&](mojom::ZCashBalancePtr balance,
                     std::optional<std::string> error) {
-        EXPECT_EQ(balance->total_balance, 20u);
+        EXPECT_EQ(balance->total_balance, 25u);
         EXPECT_EQ(balance->transparent_balance, 10u);
         EXPECT_EQ(balance->orchard_balance, 10u);
         EXPECT_EQ(balance->orchard_pending_balance, 20u);
+        EXPECT_EQ(balance->ironwood_balance, 5u);
+        EXPECT_EQ(balance->ironwood_pending_balance, 15u);
+      });
+  zcash_wallet_service_->GetBalance(account->account_id.Clone(),
+                                    balance_callback.Get());
+  task_environment_.RunUntilIdle();
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
+       GetBalanceWithShielded_IronwoodFeatureDisabled) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_transaction_enabled", "false"}});
+  keyring_service()->Reset();
+  keyring_service()->RestoreWallet(kMnemonicDivideCruise, kTestWalletPassword,
+                                   false, base::DoNothing());
+
+  auto account =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 1);
+  keyring_service()->UpdateNextUnusedAddressForZCashAccount(account->account_id,
+                                                            1, 0);
+
+  ON_CALL(zcash_rpc(), GetLatestBlock(_, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id,
+              ZCashRpc::GetLatestBlockCallback callback) {
+            auto response = zcash::mojom::BlockID::New(
+                2625446u,
+                *PrefixedHexStringToBytes("0x0000000001a01b5fd794e4b071443974c8"
+                                          "35b3e0ff8f96bf3600e07afdbf89c5"));
+            std::move(callback).Run(std::move(response));
+          });
+
+  ON_CALL(zcash_rpc(), IsKnownAddress(_, _, _, _, _))
+      .WillByDefault([](const std::string& chain_id, const std::string& addr,
+                        uint64_t block_start, uint64_t block_end,
+                        ZCashRpc::IsKnownAddressCallback callback) {
+        if (addr == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+          std::move(callback).Run(true);
+          return;
+        }
+        std::move(callback).Run(false);
+      });
+
+  ON_CALL(zcash_rpc(), GetUtxoList(_, _, _))
+      .WillByDefault(  //
+          [&](const std::string& chain_id, const std::string& address,
+              ZCashRpc::GetUtxoListCallback callback) {
+            std::vector<zcash::mojom::ZCashUtxoPtr> utxos;
+            if (address == "t1ShtibD2UJkYTeGPxeLrMf3jvE11S4Lpwj") {
+              auto utxo = zcash::mojom::ZCashUtxo::New(
+                  "t1aFpD4qebqwbSAZLF4E8ZGmrTk36b1cocZ" /* address */,
+                  *PrefixedHexStringToBytes(
+                      "0x1b7a7109cec77ae38e57f4f0ec53a4046b08361abb92c62d9567ac"
+                      "e684f633ab") /* tx id */,
+                  0u /* index */,
+                  *PrefixedHexStringToBytes("0x76a914b3b55981e7bf53e10fe51aa4f4"
+                                            "5fdef06dec783d88ac") /*script*/,
+                  10u /* amount */, 2468320u /* block */);
+              utxos.push_back(std::move(utxo));
+            }
+            auto response =
+                zcash::mojom::GetAddressUtxosResponse::New(std::move(utxos));
+            std::move(callback).Run(std::move(response));
+          });
+
+  // The mock would return non-zero Ironwood notes if queried, so if the
+  // balance ends up excluding them it proves the pool is properly gated
+  // behind IsZCashIronwoodTransactionEnabled(). It must not even be queried
+  // for the Ironwood pool while the feature is disabled.
+  EXPECT_CALL(mock_orchard_sync_state(),
+              GetSpendableNotes(OrchardPool::kIronwood, _, _))
+      .Times(0);
+  ON_CALL(mock_orchard_sync_state(),
+          GetSpendableNotes(OrchardPool::kOrchard, _, _))
+      .WillByDefault([](OrchardPool pool, const mojom::AccountIdPtr& account_id,
+                        const OrchardAddrRawPart& internal_addr) {
+        OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
+        OrchardNote note;
+        note.amount = 10u;
+        spendable_notes_bundle.all_notes.push_back(note);
+        spendable_notes_bundle.spendable_notes.push_back(note);
+        return spendable_notes_bundle;
+      });
+
+  base::MockCallback<ZCashWalletService::GetBalanceCallback> balance_callback;
+  EXPECT_CALL(balance_callback, Run(_, _))
+      .WillOnce([&](mojom::ZCashBalancePtr balance,
+                    std::optional<std::string> error) {
+        EXPECT_EQ(balance->total_balance, 20u);
+        EXPECT_EQ(balance->transparent_balance, 10u);
+        EXPECT_EQ(balance->orchard_balance, 10u);
+        EXPECT_EQ(balance->ironwood_balance, 0u);
+        EXPECT_EQ(balance->ironwood_pending_balance, 0u);
       });
   zcash_wallet_service_->GetBalance(account->account_id.Clone(),
                                     balance_callback.Get());
@@ -809,8 +919,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kUnknown),
                               Eq(mojom::ZCashAddressError::kNotZCashAccount)));
     zcash_wallet_service_->GetTransactionType(
-        btc_account_id_1.Clone(), false, "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ",
-        callback.Get());
+        btc_account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", callback.Get());
   }
 
   // Normal transparent address - mainnet.
@@ -819,8 +929,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", callback.Get());
   }
 
   // Testnet address with mainnet account (network mismatch).
@@ -831,8 +941,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         Run(Eq(mojom::ZCashTxType::kUnknown),
             Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", callback.Get());
   }
 
   // Wrong transparent address.
@@ -841,8 +951,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false,
-                                              "t1xxx", callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "t1xxx", callback.Get());
   }
 
   // Malformed transparent address.
@@ -852,8 +963,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3Ev0",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3Ev0", callback.Get());
   }
 
   // Eth address.
@@ -863,7 +974,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
@@ -874,7 +985,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidUnifiedAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
@@ -884,7 +995,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         // Address contains transparent part
         "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
         "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
@@ -900,7 +1011,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingTransparentPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
         "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
         "1",
@@ -915,7 +1026,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingOrchardPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
         "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
         "1",
@@ -930,7 +1041,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingOrchardPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "u187vrwl4ampyxd5m6aj38n4ndkmj8v6gs97hkt23aps3sn5k89a0gk2smluexgdprcrtm"
         "5"
         "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
@@ -945,7 +1056,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingOrchardPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "u187vrwl4ampyxd5m6aj38n4ndkmj8v6gs97hkt23aps3sn5k89a0gk2smluexgdprcrtm"
         "5"
         "6ezc5c7tjwlrnnl79tjtrxmqd42c5mpyz7g",
@@ -960,7 +1071,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
         Run(Eq(mojom::ZCashTxType::kUnknown),
             Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
         "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
         "956j3",
@@ -974,8 +1085,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingTransparentPart)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false,
-                                              "u1xx", callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "u1xx", callback.Get());
   }
 
   // Shielded addresses disabled
@@ -990,7 +1102,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "u19hwdcqxhkapje2p0744gq96parewuffyeg0kg3q3taq040zwqh2wxjwyxzs6l9dulzua"
         "p43ya7mq7q3mu2hjafzlwylvystjlc6n294emxww9xm8qn6tcldqkq4k9ccsqzmjeqk9yp"
         "kss572ut324nmxke666jm8lhkpt85gzq58d50rfnd7wufke8jjhc3lhswxrdr57ah42xck"
@@ -1004,8 +1116,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false, "",
-                                              callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false, "",
+        callback.Get());
   }
 
   // Empty address, shielded pool.
@@ -1014,8 +1127,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Mainnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidUnifiedAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
-                                              callback.Get());
+    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(),
+                                              mojom::ZCashTokenType::kOrchard,
+                                              false, "", callback.Get());
   }
 }
 
@@ -1030,8 +1144,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpTE", callback.Get());
   }
 
   // Malformed transparent address - testnet.
@@ -1041,8 +1155,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpT0",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "tmP3uLtGx5GPddkq8a6ddmXhqJJ3vy6tpT0", callback.Get());
   }
 
   // Mainnet address with testnet account (network mismatch).
@@ -1053,8 +1167,8 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         Run(Eq(mojom::ZCashTxType::kUnknown),
             Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false, "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "t1JP7PHu72xHztsZiwH6cye4yvC9Prb3EvQ", callback.Get());
   }
 
   // Wrong transparent address.
@@ -1063,8 +1177,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false,
-                                              "tmxxx", callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "tmxxx", callback.Get());
   }
 
   // Eth address.
@@ -1074,7 +1189,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
@@ -1085,7 +1200,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidUnifiedAddress)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "0xA4bE3C94e8c1B7D2F9e6Bf3E1D9A2cC45B6F9A12", callback.Get());
   }
 
@@ -1095,7 +1210,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToTransparent),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
         "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
         "956j3",
@@ -1110,7 +1225,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingTransparentPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
         "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
         "956j0",
@@ -1125,7 +1240,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingOrchardPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         "utest1vergg5jkp4xy8sqfasw6s5zkdpnxvfxlxh35uuc3me7dp596y2r05t6dv9htwe3p"
         "f8ksrfr8ksca2lskzjanqtl8uqp5vln3zyy246ejtx86vqftp73j7jg9099jxafyjhfm6u"
         "956j0",
@@ -1140,7 +1255,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
         Run(Eq(mojom::ZCashTxType::kUnknown),
             Eq(mojom::ZCashAddressError::kInvalidAddressNetworkMismatch)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "u1lmy8anuylj33arxh3sx7ysq54tuw7zehsv6pdeeaqlrhkjhm3uvl9egqxqfd7hcsp3ms"
         "zp6jxxx0gsw0ldp5wyu95r4mfzlueh8h5xhrjqgz7xtxp3hvw45dn4gfrz5j54ryg6reyf"
         "0",
@@ -1154,8 +1269,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingTransparentPart)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false,
-                                              "utest1xx", callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
+        "utest1xx", callback.Get());
   }
 
   // Empty address.
@@ -1164,8 +1280,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidTransparentAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), false, "",
-                                              callback.Get());
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false, "",
+        callback.Get());
   }
 
   // Empty address, shielded pool.
@@ -1174,8 +1291,9 @@ TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_Testnet) {
     EXPECT_CALL(callback,
                 Run(Eq(mojom::ZCashTxType::kUnknown),
                     Eq(mojom::ZCashAddressError::kInvalidUnifiedAddress)));
-    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(), true, "",
-                                              callback.Get());
+    zcash_wallet_service_->GetTransactionType(account_id_1.Clone(),
+                                              mojom::ZCashTokenType::kOrchard,
+                                              false, "", callback.Get());
   }
 }
 
@@ -1287,7 +1405,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         account_info->orchard_internal_address.value(), callback.Get());
   }
 
@@ -1305,7 +1423,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateShielding) {
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         account_info->orchard_internal_address.value(), callback.Get());
   }
 }
@@ -1328,7 +1446,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
                     Eq(mojom::ZCashAddressError::kInvalidSenderType)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         account_info->next_transparent_receive_address->address_string,
         callback.Get());
   }
@@ -1345,7 +1463,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         account_info->next_transparent_receive_address->address_string,
         callback.Get());
   }
@@ -1365,7 +1483,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
         account_info->next_transparent_receive_address->address_string,
         callback.Get());
   }
@@ -1385,8 +1503,8 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateUnshielding) {
                               Eq(mojom::ZCashAddressError::kNoError)));
     auto account_info = keyring_service_->GetZCashAccountInfo(account_id_2);
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true, "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT",
-        callback.Get());
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
+        "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT", callback.Get());
   }
 }
 
@@ -1408,7 +1526,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
                     Eq(mojom::ZCashAddressError::
                            kInvalidUnifiedAddressMissingTransparentPart)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
         "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
         "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
@@ -1427,7 +1545,7 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToOrchard),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), false,
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent, false,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
         "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
         "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
@@ -1446,7 +1564,151 @@ TEST_F(ZCashWalletServiceUnitTest, ValidateOrchardUnifiedAddress) {
     EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kOrchardToOrchard),
                               Eq(mojom::ZCashAddressError::kNoError)));
     zcash_wallet_service_->GetTransactionType(
-        account_id_1.Clone(), true,
+        account_id_1.Clone(), mojom::ZCashTokenType::kOrchard, false,
+        "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
+        "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
+        "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
+        "yq49efl2c4xydc0gszg660q9p",
+        callback.Get());
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest, GetTransactionType_FromIronwood) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
+
+  static constexpr char kOrchardUnifiedAddress[] =
+      "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
+      "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
+      "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
+      "yq49efl2c4xydc0gszg660q9p";
+  static constexpr char kOtherTransparentAddress[] =
+      "t1WTZNzKCvU2GeM1ZWRyF7EvhMHhr7magiT";
+
+  for (bool ironwood_active : {false, true}) {
+    SCOPED_TRACE(testing::Message() << "ironwood_active=" << ironwood_active);
+
+    base::test::ScopedFeatureList feature_list;
+    feature_list.InitAndEnableFeatureWithParameters(
+        features::kBraveWalletZCashFeature,
+        {{"zcash_shielded_transactions_enabled", "true"}});
+
+    // Ironwood -> Orchard-unified address recipient: always
+    // kIronwoodToIronwood, regardless of ironwood_active.
+    {
+      base::MockCallback<ZCashWalletService::GetTransactionTypeCallback>
+          callback;
+      EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kIronwoodToIronwood),
+                                Eq(mojom::ZCashAddressError::kNoError)));
+      zcash_wallet_service_->GetTransactionType(
+          account_id_1.Clone(), mojom::ZCashTokenType::kIronwood,
+          ironwood_active, kOrchardUnifiedAddress, callback.Get());
+    }
+
+    // Ironwood -> own next_transparent_receive_address: kIronwoodToTransparent.
+    {
+      auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+      base::MockCallback<ZCashWalletService::GetTransactionTypeCallback>
+          callback;
+      EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kIronwoodToTransparent),
+                                Eq(mojom::ZCashAddressError::kNoError)));
+      zcash_wallet_service_->GetTransactionType(
+          account_id_1.Clone(), mojom::ZCashTokenType::kIronwood,
+          ironwood_active,
+          account_info->next_transparent_receive_address->address_string,
+          callback.Get());
+    }
+
+    // Ironwood -> another account's next_transparent_receive_address:
+    // kIronwoodToTransparent.
+    {
+      auto account_2 =
+          GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+      auto account_info =
+          keyring_service_->GetZCashAccountInfo(account_2->account_id);
+      base::MockCallback<ZCashWalletService::GetTransactionTypeCallback>
+          callback;
+      EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kIronwoodToTransparent),
+                                Eq(mojom::ZCashAddressError::kNoError)));
+      zcash_wallet_service_->GetTransactionType(
+          account_id_1.Clone(), mojom::ZCashTokenType::kIronwood,
+          ironwood_active,
+          account_info->next_transparent_receive_address->address_string,
+          callback.Get());
+    }
+
+    // Ironwood -> plain (non-own) transparent address:
+    // kIronwoodToTransparent.
+    {
+      base::MockCallback<ZCashWalletService::GetTransactionTypeCallback>
+          callback;
+      EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kIronwoodToTransparent),
+                                Eq(mojom::ZCashAddressError::kNoError)));
+      zcash_wallet_service_->GetTransactionType(
+          account_id_1.Clone(), mojom::ZCashTokenType::kIronwood,
+          ironwood_active, kOtherTransparentAddress, callback.Get());
+    }
+  }
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
+       GetTransactionType_FromOrchard_IronwoodActive) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+  EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kOrchardToIronwood),
+                            Eq(mojom::ZCashAddressError::kNoError)));
+  zcash_wallet_service_->GetTransactionType(
+      account_id_1.Clone(), mojom::ZCashTokenType::kOrchard,
+      /*ironwood_active=*/true,
+      "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
+      "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
+      "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
+      "yq49efl2c4xydc0gszg660q9p",
+      callback.Get());
+}
+
+TEST_F(ZCashWalletServiceUnitTest,
+       GetTransactionType_FromTransparent_IronwoodActive) {
+  auto account_1 =
+      GetAccountUtils().EnsureAccount(mojom::KeyringId::kZCashMainnet, 0);
+  auto account_id_1 = account_1->account_id.Clone();
+
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"}});
+
+  // Sending to the account's own orchard_internal_address with ironwood
+  // active collapses to kTransparentToIronwood (instead of kShielding).
+  {
+    auto account_info = keyring_service_->GetZCashAccountInfo(account_id_1);
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToIronwood),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent,
+        /*ironwood_active=*/true,
+        account_info->orchard_internal_address.value(), callback.Get());
+  }
+
+  // Sending to another (non-own) Orchard address with ironwood active also
+  // collapses to kTransparentToIronwood (instead of kTransparentToOrchard).
+  {
+    base::MockCallback<ZCashWalletService::GetTransactionTypeCallback> callback;
+    EXPECT_CALL(callback, Run(Eq(mojom::ZCashTxType::kTransparentToIronwood),
+                              Eq(mojom::ZCashAddressError::kNoError)));
+    zcash_wallet_service_->GetTransactionType(
+        account_id_1.Clone(), mojom::ZCashTokenType::kTransparent,
+        /*ironwood_active=*/true,
         "u1ay3aawlldjrmxqnjf5medr5ma6p3acnet464ht8lmwplq5cd3"
         "ugytcmlf96rrmtgwldc75x94qn4n8pgen36y8tywlq6yjk7lkf3"
         "fa8wzjrav8z2xpxqnrnmjxh8tmz6jhfh425t7f3vy6p4pd3zmqa"
@@ -1785,7 +2047,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldFunds) {
             "0aa1e9e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82"
             "e538002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190cdd"
             "ecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88"
-            "e065c669e526bb8815ee1b000000000000" /* orchard tree */, "");
+            "e065c669e526bb8815ee1b000000000000" /* orchard tree */,
+            "");
         std::move(callback).Run(std::move(tree_state));
       });
 
@@ -2203,7 +2466,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_ShieldAllFunds) {
                 "0810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e538002bd144"
                 "2978402c01daf63debf5b40df902dae98dadc029f281474d190cddecef1b10"
                 "653248a234150001e2bca6a8d987d668defba89dc082196a922634ed88e065"
-                "c669e526bb8815ee1b000000000000" /* orchard tree */, "");
+                "c669e526bb8815ee1b000000000000" /* orchard tree */,
+                "");
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -2873,7 +3137,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                 "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
                 "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
                 "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-                "34ed88e065c669e526bb8815ee1b000000000000", "");
+                "34ed88e065c669e526bb8815ee1b000000000000",
+                "");
             std::move(callback).Run(std::move(tree_state));
           });
 
@@ -3518,7 +3783,8 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
             "e1598d35470810012dcc4273c8a0ed2337ecf7879380a07e7d427c7f9d82e5"
             "38002bd1442978402c01daf63debf5b40df902dae98dadc029f281474d190c"
             "ddecef1b10653248a234150001e2bca6a8d987d668defba89dc082196a9226"
-            "34ed88e065c669e526bb8815ee1b000000000000", "");
+            "34ed88e065c669e526bb8815ee1b000000000000",
+            "");
         std::move(callback).Run(std::move(tree_state));
       });
 

@@ -529,14 +529,33 @@ export const findTransactionToken = <
     || tx.txDataUnion.zecTxData
   ) {
     const usesShieldedPool = transactionUsesShieldedPool(tx)
+    // A ZEC transaction's inputs may span the transparent, Orchard, and
+    // Ironwood pools at once, but a shielded send only ever draws its
+    // inputs from a single shielded pool. Prefer that specific pool over
+    // matching "any shielded pool" so the correct token/balance is used
+    // (e.g. Ironwood funds shouldn't be checked against Orchard balance).
+    const shieldedInputPools = new Set(
+      (tx.txDataUnion.zecTxData?.inputs ?? [])
+        .map((input) => input.pool)
+        .filter(
+          (pool) =>
+            pool === BraveWallet.ZCashTokenType.kOrchard
+            || pool === BraveWallet.ZCashTokenType.kIronwood,
+        ),
+    )
+    const shieldedPool =
+      shieldedInputPools.size === 1 ? [...shieldedInputPools][0] : undefined
+
     return tokensList.find(
       (t) =>
         t.contractAddress === ''
         && t.chainId === tx.chainId
         && t.coin === tx.fromAccountId.coin
         && (usesShieldedPool
-          ? t.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard ||
-            t.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+          ? shieldedPool
+            ? t.zcashTokenType === shieldedPool
+            : t.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard ||
+              t.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
           : t.zcashTokenType === BraveWallet.ZCashTokenType.kNone ||
             t.zcashTokenType === BraveWallet.ZCashTokenType.kTransparent),
     )

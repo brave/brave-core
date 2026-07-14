@@ -108,6 +108,19 @@ function CardanoTransactionDetails({
   )
 }
 
+function getZecPoolName(pool: BraveWallet.ZCashTokenType) {
+  switch (pool) {
+    case BraveWallet.ZCashTokenType.kTransparent:
+      return 'Transparent'
+    case BraveWallet.ZCashTokenType.kOrchard:
+      return 'Orchard'
+    case BraveWallet.ZCashTokenType.kIronwood:
+      return 'Ironwood'
+    default:
+      return ''
+  }
+}
+
 function ZecTransactionDetails({
   zecTxData,
 }: {
@@ -119,14 +132,18 @@ function ZecTransactionDetails({
         {zecTxData.inputs?.map((input, index) => (
           <CodeDetailLine
             key={index}
-          >{`input-${input.value}-${input.address}`}</CodeDetailLine>
+          >{`input-${getZecPoolName(input.pool)}-${input.value}-${
+            input.address
+          }`}</CodeDetailLine>
         ))}
       </DetailColumn>
       <DetailColumn>
         {zecTxData.outputs?.map((output, index) => (
           <CodeDetailLine
             key={index}
-          >{`output-${output.value}-${output.address}`}</CodeDetailLine>
+          >{`output-${getZecPoolName(output.pool)}-${output.value}-${
+            output.address
+          }`}</CodeDetailLine>
         ))}
       </DetailColumn>
     </>

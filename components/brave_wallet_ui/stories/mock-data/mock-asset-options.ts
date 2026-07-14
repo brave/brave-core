@@ -78,6 +78,16 @@ export const mockZecToken = {
   zcashTokenType: BraveWallet.ZCashTokenType.kNone,
 } as BraveWallet.BlockchainToken
 
+export const mockZecOrchardToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kOrchard,
+} as BraveWallet.BlockchainToken
+
+export const mockZecIronwoodToken = {
+  ...mockZecToken,
+  zcashTokenType: BraveWallet.ZCashTokenType.kIronwood,
+} as BraveWallet.BlockchainToken
+
 export const mockSolToken = {
   contractAddress: '',
   name: 'Solana',

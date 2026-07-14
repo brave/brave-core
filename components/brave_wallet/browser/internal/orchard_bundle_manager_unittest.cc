@@ -36,7 +36,8 @@ TEST(OrchardBundleManagerTest, SingleOutput) {
 
   OrchardSpendsBundle orchard_spends_bundle;
   auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs));
+      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -328,7 +329,8 @@ TEST(OrchardBundleManagerTest, MultiplyOutputs) {
 
   OrchardSpendsBundle orchard_spends_bundle;
   auto unauthorized_state = OrchardBundleManager::Create(
-      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs));
+      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
+      OrchardPool::kOrchard, /*is_v6_transaction=*/false);
   EXPECT_TRUE(unauthorized_state);
   // Unauthorized state doesn't have raw tx bytes
   EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
@@ -751,7 +753,8 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
       "000000");
   auto orchard_bundle_manager = OrchardBundleManager::Create(
       state_tree_bytes.value(), std::move(spends_bundle),
-      std::vector<OrchardOutput>());
+      std::vector<OrchardOutput>(), OrchardPool::kOrchard,
+      /*is_v6_transaction=*/false);
   EXPECT_TRUE(orchard_bundle_manager);
 
   std::array<uint8_t, 32> sighash;
@@ -1018,6 +1021,37 @@ TEST(OrchardBundleManagerTest, NoOutputs) {
       "f8bc097eb886a0b4e298a3f42b638a9855e46a7ccba5467c85c418fc813faa628f77cec6"
       "dd5a000867134159333d18133d93e6409f8644332e412838c326cc8523854d7bbe7adba7"
       "740f3af45d38566f7fcfb6d34b3d9a594d8a647b51657a2b91cedd7f30a54acf882b");
+}
+
+// Minimal Ironwood (v3 note) bundle: shielded outputs only, no shielded
+// inputs. Like NoOutputs/SingleOutput above, an output-only bundle doesn't
+// need a real committed anchor tree, so this can be exercised deterministically
+// without real spendable V3 notes/fvk/sk (see
+// zcash_complete_transaction_task_unittest.cc for the spend-side gap this
+// leaves — that requires real Ironwood commitment tree + note fixtures).
+TEST(OrchardBundleManagerTest, IronwoodOutputOnly) {
+  OrchardBundleManager::OverrideRandomSeedForTesting(0);
+
+  std::vector<OrchardOutput> outputs;
+  outputs.push_back(OrchardOutput{
+      100000,
+      {212, 113, 78,  231, 97,  209, 174, 130, 59,  105, 114, 21,  46,  32, 149,
+       127, 239, 163, 246, 227, 18,  158, 164, 223, 176, 169, 233, 135, 3,  166,
+       61,  171, 146, 149, 137, 214, 220, 81,  201, 112, 249, 53,  179}});
+
+  OrchardSpendsBundle orchard_spends_bundle;
+  auto unauthorized_state = OrchardBundleManager::Create(
+      std::vector<uint8_t>(), orchard_spends_bundle, std::move(outputs),
+      OrchardPool::kIronwood, /*is_v6_transaction=*/true);
+  EXPECT_TRUE(unauthorized_state);
+  // Unauthorized state doesn't have raw tx bytes.
+  EXPECT_FALSE(unauthorized_state->GetRawTxBytes());
+  // Building the Ironwood (V3 note) unauthorized bundle against an empty
+  // anchor tree succeeds for an output-only bundle, same as the Orchard/V2
+  // cases above. Ironwood bundles only exist in v6 transactions, so the
+  // commitment must be computed with is_v6_transaction=true (V5 is rejected
+  // by the orchard crate for the Ironwood pool).
+  EXPECT_TRUE(unauthorized_state->GetOrchardDigest().has_value());
 }
 
 }  // namespace brave_wallet
