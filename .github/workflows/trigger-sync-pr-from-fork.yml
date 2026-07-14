@@ -3,24 +3,47 @@ name: Trigger sync PR from fork
 on:
   pull_request_review:
     types: [submitted]
+  # Manual entrypoint for testing: supply the PR number / commit hash directly
+  # instead of resolving them from a pull_request_review payload.
+  workflow_dispatch:
+    inputs:
+      PR_NUMBER:
+        description: "Fork PR number"
+        required: true
+      COMMIT_HASH:
+        description: "Full 40-char commit SHA to run CI for"
+        required: true
+      REF:
+        description: "Branch/ref of sync-pr-from-fork.yml to dispatch"
+        required: false
+        default: master
 
 permissions:
   actions: write # Required to trigger other workflows
 
 jobs:
   trigger-workflow:
+    # workflow_dispatch bypasses the review gate (it's a manual, member-only
+    # action already); pull_request_review still has to pass the gate.
     if: >-
-      ${{ github.event.review.user.type != 'Bot'
+      ${{ github.event_name == 'workflow_dispatch'
+      || (github.event.review.user.type != 'Bot'
       && contains(github.event.review.body, '/run-ci')
-      && contains(fromJSON('["OWNER", "MEMBER"]'), github.event.review.author_association) }}
+      && contains(fromJSON('["OWNER", "MEMBER"]'), github.event.review.author_association)) }}
     runs-on: ubuntu-slim
     steps:
       - name: Dispatch Target with Strict Snapshot Data
         uses: actions/github-script@f28e40c7f34bde8b3046d885e986cb6290c5673b # v7.1.0
         with:
           script: |
-            const prNumber = context.payload.pull_request.number;
-            const commitHash = context.payload.review.commit_id;
+            const isManual = context.eventName === 'workflow_dispatch';
+            const prNumber = isManual
+              ? context.payload.inputs.PR_NUMBER
+              : context.payload.pull_request.number;
+            const commitHash = isManual
+              ? context.payload.inputs.COMMIT_HASH
+              : context.payload.review.commit_id;
+            const ref = context.payload.inputs?.REF || 'master';
 
             // Strict Validation: If GitHub payload has no locked commit hash, fail immediately
             if (!commitHash) {
@@ -32,7 +55,7 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               workflow_id: 'sync-pr-from-fork.yml',
-              ref: 'main',
+              ref: ref,
               inputs: {
                 PR_NUMBER: String(prNumber),
                 COMMIT_HASH: commitHash
