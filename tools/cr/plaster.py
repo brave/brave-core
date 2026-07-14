@@ -694,16 +694,67 @@ class Regex(Rewriter):
         return re_flags
 
 
-class MakeVirtual(Rewriter):
-    """Make a C++ method declaration `virtual`, via the ast-grep rewriters.
+class _AstGrepRewriter(Rewriter):
+    """Base for rewriters backed by an ast-grep op declared in `rewriters.pyl`.
 
-    Resolves to the rewriters spec's `cxx.make_virtual` rewriter (the only
-    language for now); a future generic ast-op subtype would pull its op id and
-    arg names from `RewritersEval` instead of hard-coding them here.
+    A concrete subclass sets the usual `NAME`/`SUMMARY`/`HELP` metadata plus the
+    `OP_ID` it resolves to, the string arguments its body accepts (`_ARG_KEYS`),
+    and any adjacent tokens the op consumes (`_CONSUME_BEFORE`/`_CONSUME_AFTER`,
+    engine details -- see `AstRewriter.apply`). `parse` validates the body as a
+    mapping of exactly those string args and `apply` runs the op, so subclasses
+    are pure declarations.
     """
 
+    # The `rewriters.pyl` op id this resolves to (e.g. `cxx.make_virtual`).
+    OP_ID: ClassVar[str] = ''
+
+    # The string argument names the op body must supply.
+    _ARG_KEYS: ClassVar[frozenset[str]] = frozenset()
+
+    # Literals the op assumes sit immediately before / after each matched node.
+    _CONSUME_BEFORE: ClassVar[str] = ''
+    _CONSUME_AFTER: ClassVar[str] = ''
+
+    def __init__(self, args: dict[str, str]):
+        self._args = args
+
+    def apply(self, contents: str) -> tuple[str, int]:
+        rewriter = AstRewriter(RewritersEval.load(), contents)
+        count = rewriter.apply(self.OP_ID,
+                               self._args,
+                               consume_before=self._CONSUME_BEFORE,
+                               consume_after=self._CONSUME_AFTER)
+        return rewriter.content, count
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> _AstGrepRewriter:
+        """Validate a `<NAME>:` body of string args and build the rewriter."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        unknown = sorted(set(body) - cls._ARG_KEYS)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(cls._ARG_KEYS - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(cls._ARG_KEYS):
+            if not isinstance(body[key], str):
+                raise ValueError(f'{cls.NAME} `{key}` must be a string '
+                                 f'(in "{description}")')
+        return cls({key: body[key] for key in cls._ARG_KEYS})
+
+
+class MakeVirtual(_AstGrepRewriter):
+    """Make a C++ method declaration `virtual`, via the ast-grep rewriters."""
+
     NAME: Final = 'make_virtual'
+    OP_ID: Final = 'cxx.make_virtual'
     SUMMARY: Final = 'Prepend `virtual ` to a class method declaration.'
+    _ARG_KEYS: Final = frozenset(('class_name', 'method_name'))
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Prepends `virtual ` to a C++ method declaration.
@@ -728,50 +779,78 @@ class MakeVirtual(Rewriter):
         ```
     """
 
-    # The arguments the `make_virtual:` op body must supply.
-    _ARG_KEYS = frozenset(('class_name', 'method_name'))
 
-    def __init__(self, *, class_name: str, method_name: str):
-        self._class_name = class_name
-        self._method_name = method_name
+class AddFriend(_AstGrepRewriter):
+    """Add a `friend` declaration to a C++ class's private section, via the
+    ast-grep rewriters."""
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        rewriter = AstRewriter(RewritersEval.load(), contents)
-        count = rewriter.apply('cxx.make_virtual', {
-            'class_name': self._class_name,
-            'method_name': self._method_name,
-        })
-        return rewriter.content, count
+    NAME: Final = 'add_friend'
+    OP_ID: Final = 'cxx.add_friend'
+    SUMMARY: Final = 'Add a `friend` declaration to a class private section.'
+    _ARG_KEYS: Final = frozenset(('class_name', 'friend_type'))
+    # The matcher stops at the `private` keyword; the op re-emits the `:` that
+    # follows, so consume the original one.
+    _CONSUME_AFTER: Final = ':'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Inserts a `friend` declaration as the first line of a class's private
+        section. The class must have a `private:` section.
 
-    @classmethod
-    def parse(cls, body: object, *, description: str) -> MakeVirtual:
-        """Build from a `make_virtual:` body: `class_name` and `method_name`."""
-        if not isinstance(body, dict):
-            raise ValueError(
-                f'"make_virtual" must be a mapping (in "{description}")')
-        unknown = sorted(set(body) - cls._ARG_KEYS)
-        if unknown:
-            raise ValueError(
-                f'Unrecognised make_virtual arg(s): '
-                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        missing = sorted(cls._ARG_KEYS - set(body))
-        if missing:
-            raise ValueError(f'make_virtual requires arg(s): '
-                             f'{", ".join(missing)} (in "{description}")')
-        if not isinstance(body['class_name'], str):
-            raise ValueError('make_virtual `class_name` must be a string '
-                             f'(in "{description}")')
-        if not isinstance(body['method_name'], str):
-            raise ValueError('make_virtual `method_name` must be a string '
-                             f'(in "{description}")')
-        return cls(class_name=body['class_name'],
-                   method_name=body['method_name'])
+        Fields:
+
+        - `class_name` — the class to befriend from.
+        - `friend_type` — the friend's declaration body, e.g. `class BraveFoo`
+          becomes `friend class BraveFoo;`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Let the Brave subclass reach private members.
+            add_friend:
+              class_name: MultiContentsView
+              friend_type: class BraveMultiContentsView
+        ```
+    """
+
+
+class DropFinal(_AstGrepRewriter):
+    """Remove the `final` specifier from a C++ class declaration, via the
+    ast-grep rewriters, so the class can be subclassed."""
+
+    NAME: Final = 'drop_final'
+    OP_ID: Final = 'cxx.drop_final'
+    SUMMARY: Final = 'Remove the `final` specifier from a class declaration.'
+    _ARG_KEYS: Final = frozenset(('class_name', ))
+    # The matcher stops at the `final` keyword; consume the space before it so
+    # dropping `final` leaves no doubled space.
+    _CONSUME_BEFORE: Final = ' '
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Removes the `final` specifier from a C++ class declaration, so the class
+        can be subclassed. Only the class-head `final` is removed; a method's
+        trailing `final` is left untouched.
+
+        Fields:
+
+        - `class_name` — the class to drop `final` from.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Drop `final` so Brave can subclass.
+            drop_final:
+              class_name: DraggingTabsSession
+        ```
+    """
 
 
 # A set with all the rewriters available in plaster.
-_REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType(
-    {rewriter.NAME: rewriter
-     for rewriter in (Regex, MakeVirtual)})
+_REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
+    rewriter.NAME: rewriter
+    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal)
+})
 
 
 @dataclass

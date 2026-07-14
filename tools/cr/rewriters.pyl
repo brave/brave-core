@@ -56,6 +56,46 @@ inside:
                 "node": "field_declaration",
             },
         },
+
+        # The `private` access specifier opening `class_name`'s private section.
+        # The node is the `private` keyword; the `:` that follows is a separate
+        # token immediately after it.
+        "cxx.find_class_private_section": {
+            "args": ["class_name"],
+            "template": """\
+kind: access_specifier
+regex: ^private$
+inside:
+  kind: class_specifier
+  stopBy: end
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The `final` specifier on `class_name`'s declaration (the
+        # virtual_specifier node holding the `final` keyword). Only the
+        # class-head `final` matches; a method's trailing `final` is nested
+        # under its declaration, not directly inside the class.
+        "cxx.find_class_final": {
+            "args": ["class_name"],
+            "template": """\
+kind: virtual_specifier
+regex: ^final$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "virtual_specifier",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -69,6 +109,33 @@ inside:
             },
             "result": {
                 "node": "field_declaration",
+            },
+        },
+
+        # The class's `private:` section with a `friend` declaration inserted as
+        # its first line.
+        "cxx.add_friend": {
+            "matcher": "cxx.find_class_private_section",
+            "replace": {
+                "re_pattern": "$",
+                "replace": ":\\n  friend {friend_type};",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # `class_name`'s declaration with its `final` specifier removed, so the
+        # class can be subclassed. The drop_final engine also consumes the
+        # leading space before `final` so no doubled space is left behind.
+        "cxx.drop_final": {
+            "matcher": "cxx.find_class_final",
+            "replace": {
+                "re_pattern": "^final$",
+                "replace": "",
+            },
+            "result": {
+                "node": "virtual_specifier",
             },
         },
     },
