@@ -257,12 +257,13 @@ void EthereumProviderTabHelper::CreateProvider() {
   provider_.reset();
   events_receiver_.reset();
 
-  if (!brave_wallet_service_ || !host_content_settings_map_) {
-    return;
-  }
-
   ProfileIOS* profile =
       ProfileIOS::FromBrowserState(web_state_->GetBrowserState());
+
+  if (!brave_wallet_service_ || !host_content_settings_map_ ||
+      !IsDefaultEthereumWalletBrave(profile->GetPrefs())) {
+    return;
+  }
 
   provider_ = std::make_unique<EthereumProviderImpl>(
       host_content_settings_map_, brave_wallet_service_,
@@ -279,7 +280,8 @@ void EthereumProviderTabHelper::CreateProvider() {
 void EthereumProviderTabHelper::DidFinishNavigation(
     web::WebState* web_state,
     web::NavigationContext* navigation_context) {
-  if (!navigation_context->HasCommitted()) {
+  if (!navigation_context->HasCommitted() ||
+      navigation_context->IsSameDocument()) {
     return;
   }
 
@@ -291,7 +293,9 @@ void EthereumProviderTabHelper::DidFinishNavigation(
 void EthereumProviderTabHelper::PageLoaded(
     web::WebState* web_state,
     web::PageLoadCompletionStatus load_completion_status) {
-  EmitEthereumEvent(web_state, "connect", std::nullopt);
+  if (load_completion_status == web::PageLoadCompletionStatus::SUCCESS) {
+    EmitEthereumEvent(web_state, "connect", std::nullopt);
+  }
 }
 
 void EthereumProviderTabHelper::WebStateDestroyed(web::WebState* web_state) {
