@@ -7,15 +7,16 @@ import * as React from 'react'
 import { Meta } from '@storybook/react'
 import { MockContext } from '../../state/mock_context'
 import FeedbackForm from './'
-import styles from '../../stories/style.module.scss'
 
 export const _FeedbackForm = {
   render: () => {
     return (
-      <MockContext>
-        <div className={styles.container}>
-          <FeedbackForm />
-        </div>
+      <MockContext
+        conversationOverrides={{
+          isFeedbackFormVisible: true,
+        }}
+      >
+        <FeedbackForm />
       </MockContext>
     )
   },

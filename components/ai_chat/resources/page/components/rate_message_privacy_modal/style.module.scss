@@ -19,13 +19,18 @@
   color: var(--leo-color-text-secondary);
 }
 
-.actionsRow {
+.footer {
+  display: flex;
   justify-content: flex-end;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  width: 100%;
 }
 
-.buttonsWrapper {
-  display: flex;
-  gap: var(--leo-spacing-m);
+.footerButton {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  max-width: max-content;
 }
 
 .learnMoreLink {

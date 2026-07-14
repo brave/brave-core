@@ -102,6 +102,7 @@ export default function useSendFeedback(
           {
             type: 'info',
             content: getLocale(S.CHAT_UI_ANSWER_DISLIKED),
+            isInlineActions: true,
             actions: [
               {
                 text: getLocale(S.CHAT_UI_ADD_FEEDBACK_BUTTON_LABEL),
