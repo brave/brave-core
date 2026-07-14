@@ -17,10 +17,14 @@ def PathInNodeModules(*args):
 
 def RunNodeRaw(cmd_parts):
     cmd = ['node'] + cmd_parts
+    # On Windows, if we only locate node via the shim then running with
+    # `shell=False` will cause Python to not be able to find the shim, which
+    # will result in things such as `npm run presubmit` failing to run.
     process = subprocess.Popen(cmd,
                                cwd=os.getcwd(),
                                stdout=subprocess.PIPE,
                                stderr=subprocess.PIPE,
+                               shell=sys.platform == 'win32',
                                universal_newlines=True)
     stdout, stderr = process.communicate()
     return process.returncode, stdout, stderr
