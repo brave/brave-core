@@ -98,4 +98,165 @@ return 'ok';
 )"));
 }
 
+TEST(WebMcpInjectionRuleTest, RejectsMalformedFences) {
+  // Opening fence but no closing fence.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==WebMCP==
+// @name tool
+// @match https://example.com/*
+// @description d.
+return 'ok';
+)"));
+
+  // Closing fence but no opening fence.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// @name tool
+// @match https://example.com/*
+// ==/WebMCP==
+return 'ok';
+)"));
+
+  // Fences in the wrong order (close before open).
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==/WebMCP==
+// @name tool
+// @match https://example.com/*
+// ==WebMCP==
+return 'ok';
+)"));
+
+  // Trailing text on the fence line means it is not recognized as a fence
+  // (the stripped line must equal the marker exactly).
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==WebMCP== v2
+// @name tool
+// @match https://example.com/*
+// ==/WebMCP==
+return 'ok';
+)"));
+
+  // Fence markers are case-sensitive.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==webmcp==
+// @name tool
+// @match https://example.com/*
+// ==/webmcp==
+return 'ok';
+)"));
+
+  // Well-formed fences but an empty metadata block.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==WebMCP==
+// ==/WebMCP==
+return 'ok';
+)"));
+}
+
+TEST(WebMcpInjectionRuleTest, RejectsMetadataKeyWithNoValue) {
+  // `@name` with no value (or a value that is only whitespace, which is trimmed
+  // away) leaves the name unset, so the rule is rejected even though the key is
+  // present.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==WebMCP==
+// @name
+// @match https://example.com/*
+// @description d.
+// ==/WebMCP==
+return 'ok';
+)"));
+
+  // `@match` with no value leaves the pattern list empty.
+  EXPECT_FALSE(WebMcpInjectionRule::ParseScript(R"(// ==WebMCP==
+// @name tool
+// @match
+// @description d.
+// ==/WebMCP==
+return 'ok';
+)"));
+}
+
+TEST(WebMcpInjectionRuleTest, IgnoresUnknownKeysAndNonMetadataLines) {
+  constexpr char kScript[] = R"(// ==WebMCP==
+// Free-form comment describing the tool.
+// @name tool
+// @match https://example.com/*
+// @description d.
+// @unknown whatever
+// @run-at document-end
+// not an @ line either
+// ==/WebMCP==
+return 'ok';
+)";
+
+  auto rule = WebMcpInjectionRule::ParseScript(kScript);
+  ASSERT_TRUE(rule);
+  EXPECT_EQ(rule->tool_name, "tool");
+  ASSERT_EQ(rule->url_patterns.size(), 1u);
+}
+
+TEST(WebMcpInjectionRuleTest, LastValueWinsForSingleValueKeys) {
+  constexpr char kScript[] = R"(// ==WebMCP==
+// @name first
+// @name second
+// @match https://example.com/*
+// @description d.
+// @schema {"type":"object","properties":{"a":{}}}
+// @schema {"type":"object","properties":{"b":{}}}
+// ==/WebMCP==
+return 'ok';
+)";
+
+  auto rule = WebMcpInjectionRule::ParseScript(kScript);
+  ASSERT_TRUE(rule);
+  EXPECT_EQ(rule->tool_name, "second");
+  EXPECT_EQ(rule->input_schema,
+            R"({"type":"object","properties":{"b":{}}})");
+}
+
+TEST(WebMcpInjectionRuleTest, DoesNotValidateSchemaJson) {
+  // ParseScript stores `@schema` verbatim and does not check that it is valid
+  // JSON. A malformed schema is accepted as-is (validation, if any, happens
+  // downstream). This test documents that behavior so a future change that
+  // adds validation is a deliberate one.
+  constexpr char kScript[] = R"(// ==WebMCP==
+// @name tool
+// @match https://example.com/*
+// @description d.
+// @schema this-is-not-json
+// ==/WebMCP==
+return 'ok';
+)";
+
+  auto rule = WebMcpInjectionRule::ParseScript(kScript);
+  ASSERT_TRUE(rule);
+  EXPECT_EQ(rule->input_schema, "this-is-not-json");
+}
+
+TEST(WebMcpInjectionRuleTest, ToleratesIndentationAndMissingCommentMarkers) {
+  // Leading whitespace before the `//` and fence lines without a `//` marker
+  // are both tolerated (the marker is stripped and the line trimmed before the
+  // fence comparison).
+  constexpr char kScript[] = R"(  // ==WebMCP==
+  // @name tool
+  // @match https://example.com/*
+  // @description d.
+==/WebMCP==
+return 'ok';
+)";
+
+  auto rule = WebMcpInjectionRule::ParseScript(kScript);
+  ASSERT_TRUE(rule);
+  EXPECT_EQ(rule->tool_name, "tool");
+}
+
+TEST(WebMcpInjectionRuleTest, ToleratesTabSeparatedEntriesAndCrlf) {
+  // Tab between `@key` and value, and Windows CRLF line endings.
+  constexpr char kScript[] =
+      "// ==WebMCP==\r\n"
+      "// @name\ttool\r\n"
+      "// @match\thttps://example.com/*\r\n"
+      "// @description\td.\r\n"
+      "// ==/WebMCP==\r\n"
+      "return 'ok';\r\n";
+
+  auto rule = WebMcpInjectionRule::ParseScript(kScript);
+  ASSERT_TRUE(rule);
+  EXPECT_EQ(rule->tool_name, "tool");
+  ASSERT_EQ(rule->url_patterns.size(), 1u);
+  EXPECT_EQ(rule->url_patterns[0], "https://example.com/*");
+}
+
 }  // namespace web_mcp
