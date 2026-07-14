@@ -598,26 +598,10 @@ AIChatUIPageHandler::AdoptOrCreateConversationForActiveContent() {
   return conversation;
 }
 
-// Binds the conversation the UI should show on open. This never
-// unconditionally creates a fresh conversation: the goal is to resume whatever
-// conversation logically belongs to the current context so re-opening the panel
-// doesn't discard in-progress work. There are two cases:
-//
-//  1. Content-associated side panel (the default tab-scoped side panel, where
-//     `conversations_are_content_associated_` is true and a tab is active):
-//     bind to the conversation tied to the active tab's content_id, creating
-//     one only if none exists yet. This is what makes a conversation started
-//     via an entry point like the context menu show up when the panel is
-//     subsequently opened on that tab.
-//
-//  2. Standalone mode (Chat in its own tab), the global side panel, or the AI
-//     Chat agent profile (`conversations_are_content_associated_` is false, or
-//     there is no active tab): conversations aren't keyed by content_id, so
-//     defer to AdoptOrCreateConversationForActiveContent(), which adopts an
-//     unshown conversation cached for the active tab's content if one exists
-//     and otherwise creates a new one. This is the path that lets a re-opened
-//     side panel resume the previous conversation rather than always starting
-//     empty.
+// See AIChatUIHandler::BindRelatedConversation in ai_chat.mojom for the
+// contract. Implementation note: the content-associated case resumes (or
+// creates) the conversation keyed to the active tab's content_id; every other
+// case defers to AdoptOrCreateConversationForActiveContent().
 void AIChatUIPageHandler::BindRelatedConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
@@ -680,26 +664,11 @@ void AIChatUIPageHandler::DisassociateContent(
   service->DisassociateContent(content, conversation_uuid);
 }
 
-// Provides the conversation that the frontend's "new conversation" action
-// should bind to. Despite the name, this does not always allocate a brand new
-// conversation - what it does depends on the mode:
-//
-//  1. Content-associated side panel (`conversations_are_content_associated_`
-//     is true and a tab is active): always create a fresh conversation and key
-//     it to the active tab's content_id via CreateConversationHandlerFor
-//     Content(). Because it is content-keyed, this new conversation becomes the
-//     one BindRelatedConversation() resumes for this tab afterwards. This is
-//     the only path that unconditionally creates a new conversation, which is
-//     what the user expects when explicitly starting a new chat on a tab.
-//
-//  2. Standalone mode, the global side panel, or the AI Chat agent profile
-//     (`conversations_are_content_associated_` is false, or there is no active
-//     tab): defer to AdoptOrCreateConversationForActiveContent(). Here we may
-//     adopt an existing, not-yet-shown conversation cached for the active tab's
-//     content (e.g. one created by the context menu before the panel opened)
-//     rather than create a new one, so that pending work isn't orphaned in a
-//     conversation the panel would never bind to. See that method for the exact
-//     adopt-vs-create rule.
+// See AIChatUIHandler::NewConversation in ai_chat.mojom for the contract.
+// Implementation note: the content-associated case unconditionally creates a
+// fresh conversation keyed to the active tab's content_id (which
+// BindRelatedConversation() then resumes); every other case defers to
+// AdoptOrCreateConversationForActiveContent().
 void AIChatUIPageHandler::NewConversation(
     mojo::PendingReceiver<mojom::ConversationHandler> receiver,
     mojo::PendingRemote<mojom::ConversationUI> conversation_ui_handler) {
