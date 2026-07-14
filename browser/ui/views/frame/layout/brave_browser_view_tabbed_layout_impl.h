@@ -97,6 +97,13 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   bool GetMultiContentsSeparatorForTesting() const;
   bool GetShadowBoxForTesting() const;
 
+  // Populates `layout_data_` with the given window state (and a zero side
+  // panel width) so `CalculateSeparatorInfo()` can be exercised without
+  // running a full layout pass. Implemented alongside CalculateSeparatorInfo()
+  // in the chromium_src shadow.
+  void SetWindowStateForTesting(
+      BrowserViewLayoutDelegate::WindowState window_state);
+
  private:
   void CalculateBraveVerticalTabStripLayout(
       ProposedLayout& layout,
