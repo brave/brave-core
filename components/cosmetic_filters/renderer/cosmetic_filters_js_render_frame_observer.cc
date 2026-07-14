@@ -82,9 +82,11 @@ void CosmeticFiltersJsRenderFrameObserver::ReadyToCommitNavigation(
 
   // There could be empty, invalid and "about:blank" URLs,
   // they should fallback to the main frame rules
-  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank")
+  if (url_.is_empty() || !url_.is_valid() || url_.spec() == "about:blank" ||
+      url_.spec() == "about:srcdoc") {
     url_ = url::Origin(render_frame()->GetWebFrame()->GetSecurityOrigin())
                .GetURL();
+  }
 
   if (!url_.SchemeIsHTTPOrHTTPS())
     return;
