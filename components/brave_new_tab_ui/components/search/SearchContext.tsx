@@ -140,7 +140,7 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   React.useEffect(() => {
     if (query) {
       const keywordQuery = `${searchEngine?.keyword} ${query}`
-      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length);
+      omniboxController.queryAutocomplete(activeQueryId++, keywordQuery, false, keywordQuery.length, false);
     } else {
       omniboxController.stopAutocomplete(true)
     }
