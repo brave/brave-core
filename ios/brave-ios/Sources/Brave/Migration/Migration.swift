@@ -136,10 +136,6 @@ public class BraveProfileMigrations {
   }
 
   private func migrateDefaultWalletPreferences() {
-    guard let walletService = BraveWallet.ServiceFactory.get(profile: profileController.profile)
-    else {
-      return
-    }
     // iOS only ever exposed `none` and `brave` (`WalletType`) as options, which
     // map onto the `DefaultWallet` values stored in the `PrefService`.
     func defaultWallet(from value: Int) -> BraveWallet.DefaultWallet {
@@ -147,13 +143,22 @@ public class BraveProfileMigrations {
         ? .none : .braveWallet
     }
     Preferences.DeprecatedPreferences.defaultEthWallet.migrate { value in
-      walletService.setDefaultEthereumWallet(defaultWallet: defaultWallet(from: value))
+      profileController.profile.prefs.set(
+        defaultWallet(from: value).rawValue,
+        forPath: kDefaultEthereumWallet
+      )
     }
     Preferences.DeprecatedPreferences.defaultSolWallet.migrate { value in
-      walletService.setDefaultSolanaWallet(defaultWallet: defaultWallet(from: value))
+      profileController.profile.prefs.set(
+        defaultWallet(from: value).rawValue,
+        forPath: kDefaultSolanaWallet
+      )
     }
     Preferences.DeprecatedPreferences.defaultCardanoWallet.migrate { value in
-      walletService.setDefaultCardanoWallet(defaultWallet: defaultWallet(from: value))
+      profileController.profile.prefs.set(
+        defaultWallet(from: value).rawValue,
+        forPath: kDefaultCardanoWallet
+      )
     }
   }
 }
