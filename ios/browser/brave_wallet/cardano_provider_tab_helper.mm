@@ -14,6 +14,7 @@
 #include "brave/components/brave_wallet/browser/cardano/cardano_provider_impl.h"
 #include "brave/ios/browser/api/brave_wallet/brave_wallet_provider_delegate_ios+private.h"
 #include "brave/ios/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/ios/browser/brave_wallet/brave_wallet_utils.h"
 #include "ios/chrome/browser/shared/model/profile/profile_ios.h"
 #include "ios/web/public/navigation/navigation_context.h"
 #include "ios/web/public/web_state.h"
@@ -82,7 +83,10 @@ void CardanoProviderTabHelper::CreateProvider() {
   provider_.reset();
   cardano_api_.reset();
 
-  if (!brave_wallet_service_) {
+  PrefService* prefs =
+      ProfileIOS::FromBrowserState(web_state_->GetBrowserState())->GetPrefs();
+
+  if (!brave_wallet_service_ || !IsDefaultCardanoWalletBrave(prefs)) {
     return;
   }
 
@@ -100,7 +104,8 @@ void CardanoProviderTabHelper::CreateProvider() {
 void CardanoProviderTabHelper::DidFinishNavigation(
     web::WebState* web_state,
     web::NavigationContext* navigation_context) {
-  if (!navigation_context->HasCommitted()) {
+  if (!navigation_context->HasCommitted() ||
+      navigation_context->IsSameDocument()) {
     return;
   }
 
