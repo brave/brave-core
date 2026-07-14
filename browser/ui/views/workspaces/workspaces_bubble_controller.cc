@@ -10,7 +10,6 @@
 
 #include "base/functional/bind.h"
 #include "base/location.h"
-#include "base/memory/ptr_util.h"
 #include "base/task/single_thread_task_runner.h"
 #include "brave/browser/ui/views/workspaces/save_workspace_dialog.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_view.h"
@@ -21,7 +20,19 @@
 
 WorkspacesBubbleController::WorkspacesBubbleController() = default;
 
-WorkspacesBubbleController::~WorkspacesBubbleController() = default;
+WorkspacesBubbleController::~WorkspacesBubbleController() {
+  if (save_dialog_widget_) {
+    // Remove the observer before CloseNow() so OnWidgetDestroyed() does not
+    // fire during destruction and try to access members being torn down. Null
+    // the member first because CloseNow() synchronously deletes the widget
+    // (NATIVE_WIDGET_OWNS_WIDGET), which would leave a dangling raw_ptr.
+    auto* widget = save_dialog_widget_.get();
+    save_dialog_widget_ = nullptr;
+    widget->RemoveObserver(this);
+    widget->CloseNow();
+    // save_dialog_ is cleaned up by its unique_ptr member destructor.
+  }
+}
 
 void WorkspacesBubbleController::ShowBubble(views::View* anchor_view,
                                             Profile* profile) {
@@ -52,15 +63,14 @@ void WorkspacesBubbleController::ShowSaveDialog() {
     return;
   }
 
-  // SaveWorkspaceDialog sets CLIENT_OWNS_WIDGET on itself; the controller keeps
-  // ownership of the delegate and owns the returned Widget.
+  // NATIVE_WIDGET_OWNS_WIDGET (default): when the user dismisses the dialog the
+  // normal native-window close sequence runs, re-enabling the browser window.
+  // The widget then auto-deletes; OnWidgetDestroyed() clears the raw_ptr and
+  // defers deletion of the delegate.
   save_dialog_ = std::make_unique<SaveWorkspaceDialog>(profile_);
-  save_dialog_widget_ =
-      base::WrapUnique(constrained_window::CreateBrowserModalDialogViews(
-          save_dialog_.get(), parent_window_));
-  save_dialog_widget_->MakeCloseSynchronous(
-      base::BindOnce(&WorkspacesBubbleController::OnSaveDialogClosed,
-                     weak_factory_.GetWeakPtr()));
+  save_dialog_widget_ = constrained_window::CreateBrowserModalDialogViews(
+      save_dialog_.get(), parent_window_);
+  save_dialog_widget_->AddObserver(this);
   save_dialog_widget_->Show();
 }
 
@@ -73,9 +83,12 @@ void WorkspacesBubbleController::OnBubbleClosed(views::Widget::ClosedReason) {
   runner->DeleteSoon(FROM_HERE, bubble_.release());
 }
 
-void WorkspacesBubbleController::OnSaveDialogClosed(
-    views::Widget::ClosedReason) {
-  auto runner = base::SingleThreadTaskRunner::GetCurrentDefault();
-  runner->DeleteSoon(FROM_HERE, save_dialog_widget_.release());
-  runner->DeleteSoon(FROM_HERE, save_dialog_.release());
+void WorkspacesBubbleController::OnWidgetDestroyed(views::Widget* widget) {
+  DCHECK_EQ(widget, save_dialog_widget_);
+  widget->RemoveObserver(this);
+  save_dialog_widget_ = nullptr;
+  // Defer delegate deletion: the widget may still access widget_delegate_ after
+  // this callback returns (e.g. in Widget::~Widget()'s cleanup path).
+  base::SingleThreadTaskRunner::GetCurrentDefault()->DeleteSoon(
+      FROM_HERE, save_dialog_.release());
 }
