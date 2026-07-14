@@ -218,8 +218,34 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
     onSetAsDefault,
   } = props
 
+  const wrapRef = React.useRef<HTMLDivElement>(null)
+
+  // Closing returns focus to the more button; that leaves the parent
+  // leo-menu-item matching :focus-within, which keeps our hover styles on.
+  const setOpen = React.useCallback(
+    (open: boolean) => {
+      onOpenChange(open)
+      if (open) {
+        return
+      }
+      queueMicrotask(() => {
+        const wrap = wrapRef.current
+        const active = document.activeElement
+        if (
+          wrap
+          && active instanceof HTMLElement
+          && (wrap === active || wrap.contains(active))
+        ) {
+          active.blur()
+        }
+      })
+    },
+    [onOpenChange],
+  )
+
   return (
     <div
+      ref={wrapRef}
       className={classnames({
         [styles.optionsWrap]: true,
         [styles.optionsWrapOpen]: isOpen,
@@ -233,7 +259,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
       <ButtonMenu
         className={styles.optionsMenu}
         isOpen={isOpen}
-        onChange={(e) => onOpenChange(e.isOpen)}
+        onChange={(e) => setOpen(e.isOpen)}
         positionStrategy='fixed'
         placement='bottom-end'
       >
@@ -251,7 +277,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
             // click handler on this nested ButtonMenu.
             e.preventDefault()
             e.stopPropagation()
-            onOpenChange(!isOpen)
+            setOpen(!isOpen)
           }}
         >
           <Icon name='more-vertical' />
@@ -263,7 +289,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
             onClick={(e) => {
               e.stopPropagation()
               onTogglePin?.()
-              onOpenChange(false)
+              setOpen(false)
             }}
           >
             <Icon name='pin' />
@@ -282,11 +308,11 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
             onClick={(e) => {
               e.stopPropagation()
               if (isDefault) {
-                onOpenChange(false)
+                setOpen(false)
                 return
               }
               onSetAsDefault?.()
-              onOpenChange(false)
+              setOpen(false)
             }}
           >
             <Icon name='check-circle-outline' />
