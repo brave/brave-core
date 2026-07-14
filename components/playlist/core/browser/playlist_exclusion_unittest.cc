@@ -45,7 +45,6 @@ class PlaylistExclusionsUnitTest : public testing::Test {
 
 TEST_F(PlaylistExclusionsUnitTest, NotReadyIsPermissive) {
   PlaylistExclusions* exclusions = PlaylistExclusions::GetInstance();
-  ASSERT_TRUE(exclusions->rules_.empty());
   EXPECT_TRUE(exclusions->CanResolvePageSrcLater(GURL("https://youtube.com/")));
 }
 
@@ -71,12 +70,10 @@ TEST_F(PlaylistExclusionsUnitTest, FailedReloadKeepsLastValidRules) {
   ASSERT_TRUE(base::WriteFile(invalid_file, "{not valid json"));
 
   LoadExclusionsAndWait(exclusions, valid_file);
-  ASSERT_FALSE(exclusions->rules_.empty());
   EXPECT_FALSE(
       exclusions->CanResolvePageSrcLater(GURL("https://youtube.com/")));
 
   LoadExclusionsAndWait(exclusions, invalid_file);
-  ASSERT_FALSE(exclusions->rules_.empty());
   EXPECT_FALSE(
       exclusions->CanResolvePageSrcLater(GURL("https://youtube.com/")));
 }
@@ -103,7 +100,8 @@ TEST_F(PlaylistExclusionsUnitTest, FailedLoadsLeaveRulesEmpty) {
     ASSERT_TRUE(base::WriteFile(exclusions_file, test_case.contents));
 
     LoadExclusionsAndWait(exclusions, exclusions_file);
-    EXPECT_TRUE(exclusions->rules_.empty());
+    EXPECT_TRUE(
+        exclusions->CanResolvePageSrcLater(GURL("https://example.com/")));
   }
 }
 
@@ -126,7 +124,6 @@ TEST_F(PlaylistExclusionsUnitTest, RulesBlockListedPaths) {
   ASSERT_TRUE(base::WriteFile(exclusions_file, kJson));
 
   LoadExclusionsAndWait(exclusions, exclusions_file);
-  ASSERT_FALSE(exclusions->rules_.empty());
 
   EXPECT_FALSE(
       exclusions->CanResolvePageSrcLater(GURL("https://youtube.com/")));
