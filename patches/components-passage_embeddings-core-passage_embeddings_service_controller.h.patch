@@ -1,0 +1,37 @@
+diff --git a/components/passage_embeddings/core/passage_embeddings_service_controller.h b/components/passage_embeddings/core/passage_embeddings_service_controller.h
+index d8ef6e1164bd801491aca4b3fbfd3b7c66458744..e9e49932d46afca61beae7d6cd6d3c0cda208247 100644
+--- a/components/passage_embeddings/core/passage_embeddings_service_controller.h
++++ b/components/passage_embeddings/core/passage_embeddings_service_controller.h
+@@ -43,7 +43,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+       base::optional_ref<const optimization_guide::ModelInfo> model_info);
+ 
+   // Returns true if the model is available.
+-  bool IsModelAvailable();
++  virtual bool IsModelAvailable();
+ 
+   bool EmbedderRunning();
+ 
+@@ -55,6 +55,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+   void RemoveObserver(EmbedderMetadataObserver* observer) override;
+ 
+  private:
++  friend class BravePassageEmbeddingsServiceController;
+   // Computes embeddings for each entry in `passages`. Will invoke `callback`
+   // when done. If successful, it is guaranteed that `results` will have the
+   // same number of passages and embeddings and in the same order as
+@@ -66,13 +67,13 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+       base::RepeatingCallback<void(std::vector<std::string> passages,
+                                    PassagePriority priority,
+                                    GetEmbeddingsResultCallback callback)>;
+-  void GetEmbeddings(std::vector<std::string> passages,
++  virtual void GetEmbeddings(std::vector<std::string> passages,
+                      PassagePriority priority,
+                      GetEmbeddingsResultCallback callback);
+ 
+   // Returns the metadata about the embeddings model. This is only valid when
+   // IsModelAvailable() returns true.
+-  EmbedderMetadata GetEmbedderMetadata();
++  virtual EmbedderMetadata GetEmbedderMetadata();
+ 
+   // Launches the passage embeddings service. Does nothing if the service is
+   // already launched.

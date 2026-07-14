@@ -1,0 +1,37 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# NOTE: The `FORWARD_DECLARE_TEST` declarations for the Brave test fixtures stay
+# in the chromium_src wrapper (they must precede this header's inclusion in the
+# `syncer` namespace). This plaster makes `OnCommitResponse` virtual and adds the
+# friend declarations.
+substitutions:
+  - description: 'Make OnCommitResponse virtual'
+    make_virtual:
+      class_name: DataTypeWorker
+      method_name: OnCommitResponse
+
+  # add_friend inserts each friend as the first line of the private section, so
+  # these two are ordered to yield `BraveDataTypeWorker` then
+  # `BraveDataTypeWorkerTest`, with the FRIEND_TEST_ALL_PREFIXES anchored on the
+  # latter.
+  - description: 'Friend BraveDataTypeWorkerTest'
+    add_friend:
+      class_name: DataTypeWorker
+      friend_type: class BraveDataTypeWorkerTest
+
+  - description: 'Friend BraveDataTypeWorker'
+    add_friend:
+      class_name: DataTypeWorker
+      friend_type: class BraveDataTypeWorker
+
+  - description: 'Friend the BraveDataTypeWorker tests'
+    regex:
+      re_pattern: '(friend class BraveDataTypeWorkerTest;)'
+      replace: |-
+        \1
+          FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest, ResetProgressMarker);
+          FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest,
+                                   ResetProgressMarkerMaxPeriod);

@@ -1,0 +1,30 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make IsModelAvailable virtual so Brave can override it'
+    make_virtual:
+      class_name: PassageEmbeddingsServiceController
+      method_name: IsModelAvailable
+
+  - description: 'Make GetEmbedderMetadata virtual so Brave can override it'
+    make_virtual:
+      class_name: PassageEmbeddingsServiceController
+      method_name: GetEmbedderMetadata
+
+  - description: 'Make GetEmbeddings virtual so Brave can override it'
+    make_virtual:
+      class_name: PassageEmbeddingsServiceController
+      method_name: GetEmbeddings
+
+  - description: |
+      Befriend the Brave subclass so it can reach private members
+
+      BravePassageEmbeddingsServiceController needs access to private members
+      (observer_list_, embedder_remote_) without going through the upstream
+      optimization_guide model-info path.
+    add_friend:
+      class_name: PassageEmbeddingsServiceController
+      friend_type: class BravePassageEmbeddingsServiceController

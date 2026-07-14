@@ -1,12 +1,25 @@
 diff --git a/components/sync/engine/data_type_worker.h b/components/sync/engine/data_type_worker.h
-index 043fdf87dc0f98145260da2404307eec0f006125..83a47bbc30b547faf69c140bc5a3410f40749fe0 100644
+index 043fdf87dc0f98145260da2404307eec0f006125..98c54b21c3e57e1bb870a57604f41984b1bfc2da 100644
 --- a/components/sync/engine/data_type_worker.h
 +++ b/components/sync/engine/data_type_worker.h
-@@ -216,6 +216,7 @@ class DataTypeWorker : public UpdateHandler,
- 
+@@ -217,6 +217,11 @@ class DataTypeWorker : public UpdateHandler,
    static constexpr size_t kMaxPendingInvalidations = 10u;
  
-+ BRAVE_MODEL_TYPE_WORKER_H_
   private:
++  friend class BraveDataTypeWorker;
++  friend class BraveDataTypeWorkerTest;
++  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest, ResetProgressMarker);
++  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest,
++                           ResetProgressMarkerMaxPeriod);
    struct UnknownEncryptionKeyInfo {
      // Not increased if the cryptographer knows it's in a pending state
+     // (cf. Cryptographer::CanEncrypt()).
+@@ -288,7 +293,7 @@ class DataTypeWorker : public UpdateHandler,
+   void DeduplicatePendingUpdatesBasedOnOriginatorClientItemId();
+ 
+   // Callback for when our contribution gets a response.
+-  void OnCommitResponse(
++  virtual void OnCommitResponse(
+       const CommitResponseDataList& committed_response_list,
+       const FailedCommitResponseDataList& error_response_list);
+ 
