@@ -22,6 +22,7 @@ import {
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
 import {
+  getAvailableModelCapabilities,
   getVendorRailEntries,
   isSelectableModel,
   modelHasAllCapabilities,
@@ -68,6 +69,21 @@ export function ModelSelector() {
     () => conversationContext.allModels.filter(isSelectableModel),
     [conversationContext.allModels],
   )
+
+  const availableCapabilities = React.useMemo(
+    () => getAvailableModelCapabilities(selectableModels),
+    [selectableModels],
+  )
+
+  // Drop selections for capabilities that no longer appear on any model.
+  React.useEffect(() => {
+    setCapabilityFilters((prev) => {
+      const next = prev.filter((capability) =>
+        availableCapabilities.includes(capability),
+      )
+      return next.length === prev.length ? prev : next
+    })
+  }, [availableCapabilities])
 
   const pinnedModelKeys = React.useMemo(() => {
     const keys = aiChatContext.pinnedModelKeys ?? []
@@ -270,6 +286,7 @@ export function ModelSelector() {
               onChange={setSearchQuery}
             />
             <CapabilityFilter
+              available={availableCapabilities}
               selected={capabilityFilters}
               onChange={setCapabilityFilters}
               isOpen={openPopover?.kind === 'filter'}

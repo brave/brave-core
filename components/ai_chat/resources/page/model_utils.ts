@@ -122,6 +122,19 @@ export const ALL_MODEL_CAPABILITIES: Mojom.ModelCapability[] = [
   Mojom.ModelCapability.VIDEO,
 ]
 
+/** Capabilities present on at least one model, in ALL_MODEL_CAPABILITIES order. */
+export function getAvailableModelCapabilities(
+  models: Mojom.Model[],
+): Mojom.ModelCapability[] {
+  const present = new Set<Mojom.ModelCapability>()
+  for (const model of models) {
+    for (const capability of model.capabilities ?? []) {
+      present.add(capability)
+    }
+  }
+  return ALL_MODEL_CAPABILITIES.filter((capability) => present.has(capability))
+}
+
 export function getModelCapabilityLabel(
   capability: Mojom.ModelCapability,
 ): string {
