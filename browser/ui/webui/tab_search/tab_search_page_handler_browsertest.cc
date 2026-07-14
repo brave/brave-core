@@ -519,12 +519,10 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerSearchTabsByContentBrowserTest,
   handler()->SearchTabsByContent("query", future.GetCallback());
   const std::vector<int32_t> tab_ids = future.Take();
 
-  EXPECT_EQ(fake.last_query(), "query");
-  EXPECT_TRUE(fake.last_skip_answering());
-  EXPECT_THAT(fake.last_url_id_filter(),
-              testing::UnorderedElementsAre(foo_url_id, bar_url_id));
-  // Result order matches the scored-row ordering returned by `Search()`.
-  EXPECT_THAT(tab_ids, testing::ElementsAre(bar_tab_id, foo_tab_id));
+  // The page handler forwards to `open_tab_search` and returns the matched
+  // open-tab ids; ranking order and the URL-id filter it builds are covered
+  // by open_tab_search's own browser test.
+  EXPECT_THAT(tab_ids, testing::UnorderedElementsAre(foo_tab_id, bar_tab_id));
 
   handler()->SetEmbeddingsSearchForTesting(nullptr);
 }

@@ -1493,6 +1493,10 @@ test("brave_browser_tests") {
     deps += [ "//brave/browser/ntp_background:browser_tests" ]
   }
 
+  if (enable_local_ai) {
+    deps += [ "//brave/browser/history_embeddings:browser_tests" ]
+  }
+
   if (enable_ai_chat) {
     deps += [ "//brave/browser/ai_chat:browser_tests" ]
 

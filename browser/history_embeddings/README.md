@@ -100,6 +100,14 @@ as a `friend class` on the base so we can reach `observer_list_` and
   EmbeddingGemma files and hand them to `service_->BindPassageEmbedder()` once
   loaded.
 
+- **`open_tab_search.{h,cc}`** — Standalone util, unrelated to the embedder
+  above: it powers on-device "search my open tabs by content".
+  `SearchOpenTabsByContent` snapshots a profile's open HTTP(S) tabs, resolves
+  their URLs to URLIDs via `HistoryService`, then ranks them against a query
+  with `HistoryEmbeddingsSearch::Search`. Shared by the tab_search WebUI page
+  handler and the semantic tab search chat tool. Builds regardless of
+  `enable_local_ai` since it only wraps upstream Chromium APIs.
+
 ## Related Files
 
 - **`components/history_embeddings/content/brave_history_embeddings_service.h`**

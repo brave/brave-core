@@ -5,16 +5,6 @@
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
 
-# Deps for chrome/browser/ui
-brave_chrome_browser_ui_deps =
-    [ "//brave/components/brave_wallet/common/buildflags" ]
-if (enable_brave_wallet) {
-  brave_chrome_browser_ui_deps += [
-    "//brave/browser/brave_wallet",
-    "//brave/browser/brave_wallet:tab_helper",
-  ]
-}
-
 # Deps for chrome/browser/ui/hid
 brave_hid_deps = [ "//brave/components/brave_wallet/common/buildflags" ]
 if (enable_brave_wallet) {

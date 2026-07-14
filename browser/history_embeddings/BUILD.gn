@@ -7,6 +7,57 @@ import("//brave/components/local_ai/buildflags/buildflags.gni")
 
 assert(enable_local_ai)
 
+# Resolves open-tab URLs to URLIDs via HistoryService and ranks them with
+# HistoryEmbeddingsSearch. Shared by the tab_search WebUI page handler and the
+# semantic tab search chat tool.
+source_set("open_tab_search") {
+  public = [ "open_tab_search.h" ]
+  sources = [ "open_tab_search.cc" ]
+
+  public_deps = [ "//base" ]
+
+  deps = [
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui/browser_window",
+    "//chrome/browser/ui/tabs:tab_strip",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//components/history/core/browser",
+    "//components/history_embeddings/content",
+    "//components/history_embeddings/core",
+    "//components/tabs:public",
+    "//content/public/browser",
+    "//url",
+  ]
+}
+
+source_set("browser_tests") {
+  testonly = true
+  sources = [ "open_tab_search_browsertest.cc" ]
+
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  deps = [
+    ":open_tab_search",
+    "//base",
+    "//brave/components/constants",
+    "//brave/components/history_embeddings:test_support",
+    "//chrome/browser/history",
+    "//chrome/browser/profiles",
+    "//chrome/browser/ui",
+    "//chrome/browser/ui/tabs:tabs_public",
+    "//chrome/test:test_support",
+    "//components/history/core/browser",
+    "//components/keyed_service/core",
+    "//content/public/browser",
+    "//content/test:test_support",
+    "//net:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+    "//ui/base",
+    "//url",
+  ]
+}
+
 source_set("unit_tests") {
   testonly = true
   sources = [
