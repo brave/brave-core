@@ -29,8 +29,10 @@ class PsstErrorReportUploader {
   PsstErrorReportUploader(const PsstErrorReportUploader&) = delete;
   PsstErrorReportUploader& operator=(const PsstErrorReportUploader&) = delete;
 
+  // Virtual for testing.
   virtual ~PsstErrorReportUploader();
 
+  // Virtual for testing.
   virtual void Upload(std::optional<std::string> psst_component_version,
                       const int script_version,
                       const std::string& brave_version,

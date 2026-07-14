@@ -6,9 +6,7 @@
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
 #include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "brave/components/psst/core/browser/pref_names.h"
 #include "brave/components/psst/core/common/psst_metadata_schema.h"
 #include "components/prefs/pref_service.h"
@@ -201,15 +199,14 @@ void PsstUiDelegateImpl::RecordFailedTasks(
 void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
     long progress,
     const std::vector<PolicyTask>& performed_tasks) {
-  const bool all_complete = performed_tasks.empty() && progress == 100;
-  for (Observer& obs : observer_list_) {
-    if (all_complete) {
-      obs.OnSetRequestStatus("", "");
-      continue;
-    }
-    for (const PolicyTask& task : performed_tasks) {
-      obs.OnSetRequestStatus(task.uid, task.error_description);
-    }
+  if (performed_tasks.empty() && progress == 100) {
+    observer_list_.Notify(&Observer::OnSetRequestStatus, std::string(),
+                          std::optional<std::string>(""));
+    return;
+  }
+  for (const PolicyTask& task : performed_tasks) {
+    observer_list_.Notify(&Observer::OnSetRequestStatus, task.uid,
+                          task.error_description);
   }
 }
 

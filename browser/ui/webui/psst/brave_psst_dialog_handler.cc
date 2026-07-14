@@ -10,9 +10,7 @@
 #include <utility>
 #include <vector>
 
-#include "base/logging.h"
 #include "base/memory/weak_ptr.h"
-#include "base/notimplemented.h"
 #include "brave/browser/psst/psst_tab_web_contents_observer.h"
 #include "brave/browser/psst/psst_ui_delegate_impl.h"
 #include "brave/browser/ui/tabs/public/brave_tab_features.h"

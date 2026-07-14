@@ -14,6 +14,11 @@
 
 namespace psst {
 
+bool PolicyTaskCompare::operator()(const PolicyTask& lhs,
+                                   const PolicyTask& rhs) const {
+  return lhs.uid < rhs.uid;
+}
+
 PsstReporterService::PsstReporterService(
     ChannelNameCallback channel_name_callback,
     ComponentVersionCallback component_version_callback,
@@ -63,11 +68,6 @@ void PsstReporterService::SubmitPsstErrorsReport(
   report_uploader_->Upload(std::move(psst_component_version), script_version,
                            brave_version, std::move(channel),
                            std::move(failed_tasks), std::move(callback));
-}
-
-bool PolicyTaskCompare::operator()(const PolicyTask& lhs,
-                                   const PolicyTask& rhs) const {
-  return lhs.uid < rhs.uid;
 }
 
 }  // namespace psst
