@@ -8,7 +8,7 @@ import("//extensions/buildflags/buildflags.gni")
 
 source_set("misc_metrics") {
   sources = [
-    "//brave/browser/misc_metrics/media_session_metrics.h",
+    "//brave/browser/misc_metrics/media_session_metrics_impl.h",
     "//brave/browser/misc_metrics/process_misc_metrics.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service.h",
     "//brave/browser/misc_metrics/profile_misc_metrics_service_factory.h",
@@ -36,7 +36,7 @@ static_library("misc_metrics_impl") {
   sources = [
     "//brave/browser/misc_metrics/doh_metrics.cc",
     "//brave/browser/misc_metrics/doh_metrics.h",
-    "//brave/browser/misc_metrics/media_session_metrics.cc",
+    "//brave/browser/misc_metrics/media_session_metrics_impl.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.cc",
     "//brave/browser/misc_metrics/page_metrics_tab_helper.h",
     "//brave/browser/misc_metrics/process_misc_metrics.cc",
@@ -130,7 +130,7 @@ source_set("unit_tests") {
 
   sources = [
     "doh_metrics_unittest.cc",
-    "media_session_metrics_unittest.cc",
+    "media_session_metrics_impl_unittest.cc",
     "page_metrics_unittest.cc",
     "uptime_monitor_impl_unittest.cc",
   ]

@@ -7,7 +7,7 @@
 
 #include "base/metrics/histogram_macros.h"
 #include "brave/browser/misc_metrics/doh_metrics.h"
-#include "brave/browser/misc_metrics/media_session_metrics.h"
+#include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 #include "brave/browser/misc_metrics/uptime_monitor_impl.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
@@ -50,8 +50,8 @@ ProcessMiscMetrics::ProcessMiscMetrics(PrefService* local_state)
 #endif
   doh_metrics_ = std::make_unique<DohMetrics>(local_state);
   uptime_monitor_ = std::make_unique<UptimeMonitorImpl>(local_state);
-  media_session_metrics_ =
-      std::make_unique<MediaSessionMetrics>(local_state, uptime_monitor_.get());
+  media_session_metrics_ = std::make_unique<MediaSessionMetricsImpl>(
+      local_state, uptime_monitor_.get());
 
   ReportSimpleMetrics();
 }
@@ -92,7 +92,7 @@ UptimeMonitorImpl* ProcessMiscMetrics::uptime_monitor() {
   return uptime_monitor_.get();
 }
 
-MediaSessionMetrics* ProcessMiscMetrics::media_session_metrics() {
+MediaSessionMetricsImpl* ProcessMiscMetrics::media_session_metrics() {
   return media_session_metrics_.get();
 }
 
@@ -116,7 +116,7 @@ void ProcessMiscMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   TabMetrics::RegisterPrefs(registry);
 #endif
   DohMetrics::RegisterPrefs(registry);
-  MediaSessionMetrics::RegisterPrefs(registry);
+  MediaSessionMetricsImpl::RegisterPrefs(registry);
   UptimeMonitorImpl::RegisterPrefs(registry);
 }
 

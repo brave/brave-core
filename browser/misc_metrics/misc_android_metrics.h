@@ -20,8 +20,7 @@ class TemplateURLService;
 
 namespace misc_metrics {
 
-class BraveSearchMetrics;
-class NavigationSourceMetrics;
+class PageMetrics;
 class ProcessMiscMetrics;
 class QuickSearchMetrics;
 
@@ -31,8 +30,7 @@ class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
                      ProcessMiscMetrics* misc_metrics,
                      SearchEngineTracker* search_engine_tracker,
                      TemplateURLService* template_url_service,
-                     BraveSearchMetrics* brave_search_metrics,
-                     NavigationSourceMetrics* navigation_source_metrics);
+                     PageMetrics* page_metrics);
   ~MiscAndroidMetrics() override;
 
   MiscAndroidMetrics(const MiscAndroidMetrics&) = delete;
@@ -62,8 +60,7 @@ class MiscAndroidMetrics : public mojom::MiscAndroidMetrics {
  private:
   raw_ptr<ProcessMiscMetrics> misc_metrics_;
   raw_ptr<SearchEngineTracker> search_engine_tracker_;
-  raw_ptr<BraveSearchMetrics> brave_search_metrics_;
-  raw_ptr<NavigationSourceMetrics> navigation_source_metrics_;
+  raw_ptr<PageMetrics> page_metrics_;
 
   std::unique_ptr<QuickSearchMetrics> quick_search_metrics_;
   mojo::ReceiverSet<mojom::MiscAndroidMetrics> receivers_;

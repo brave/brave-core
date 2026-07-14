@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/media_session_metrics.h"
+#include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 
 #include <array>
 #include <utility>
@@ -34,16 +34,16 @@ constexpr std::array<std::string_view, 4> kMediaSessionUsageAttributeValues = {
 
 }  // namespace
 
-MediaSessionMetrics::Session::Session(
+MediaSessionMetricsImpl::Session::Session(
     content::MediaSession* media_session,
     PlaybackStateChangedCallback on_playback_state_changed)
     : on_playback_state_changed_(std::move(on_playback_state_changed)) {
   media_session->AddObserver(observer_receiver_.BindNewPipeAndPassRemote());
 }
 
-MediaSessionMetrics::Session::~Session() = default;
+MediaSessionMetricsImpl::Session::~Session() = default;
 
-void MediaSessionMetrics::Session::MediaSessionInfoChanged(
+void MediaSessionMetricsImpl::Session::MediaSessionInfoChanged(
     media_session::mojom::MediaSessionInfoPtr info) {
   bool is_playing =
       info && info->playback_state ==
@@ -51,8 +51,8 @@ void MediaSessionMetrics::Session::MediaSessionInfoChanged(
   on_playback_state_changed_.Run(is_playing);
 }
 
-MediaSessionMetrics::MediaSessionMetrics(PrefService* local_state,
-                                         UptimeMonitor* uptime_monitor)
+MediaSessionMetricsImpl::MediaSessionMetricsImpl(PrefService* local_state,
+                                                 UptimeMonitor* uptime_monitor)
     : local_state_(local_state), uptime_monitor_(uptime_monitor) {
   frame_start_time_ =
       local_state_->GetTime(kMiscMetricsMediaSessionFrameStartTime);
@@ -62,15 +62,15 @@ MediaSessionMetrics::MediaSessionMetrics(PrefService* local_state,
 
   tick_timer_.Start(
       FROM_HERE, base::Time::Now() + kTickInterval,
-      base::BindOnce(&MediaSessionMetrics::OnTick, base::Unretained(this)));
+      base::BindOnce(&MediaSessionMetricsImpl::OnTick, base::Unretained(this)));
 
   ReportMetric();
 }
 
-MediaSessionMetrics::~MediaSessionMetrics() = default;
+MediaSessionMetricsImpl::~MediaSessionMetricsImpl() = default;
 
 // static
-void MediaSessionMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
+void MediaSessionMetricsImpl::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimeDeltaPref(kMiscMetricsMediaSessionPlayingTime, {});
   registry->RegisterTimeDeltaPref(kMiscMetricsMediaSessionActiveProcessTime,
                                   {});
@@ -78,25 +78,34 @@ void MediaSessionMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
                              base::Time());
 }
 
-void MediaSessionMetrics::OnMediaSessionCreated(
+void MediaSessionMetricsImpl::OnMediaSessionCreated(
     content::MediaSession* media_session) {
   if (sessions_.contains(media_session)) {
     return;
   }
-  sessions_.emplace(media_session,
-                    std::make_unique<Session>(
-                        media_session,
-                        base::BindRepeating(
-                            &MediaSessionMetrics::OnSessionPlaybackStateChanged,
-                            base::Unretained(this), media_session)));
+  sessions_.emplace(
+      media_session,
+      std::make_unique<Session>(
+          media_session,
+          base::BindRepeating(
+              &MediaSessionMetricsImpl::OnSessionPlaybackStateChanged,
+              base::Unretained(this), media_session)));
 }
 
-void MediaSessionMetrics::OnMediaSessionDestroyed(
+void MediaSessionMetricsImpl::OnMediaSessionDestroyed(
     content::MediaSession* media_session) {
   RemoveSession(media_session);
 }
 
-void MediaSessionMetrics::ResetFrame() {
+void MediaSessionMetricsImpl::AddObserver(Observer* observer) {
+  observers_.AddObserver(observer);
+}
+
+void MediaSessionMetricsImpl::RemoveObserver(Observer* observer) {
+  observers_.RemoveObserver(observer);
+}
+
+void MediaSessionMetricsImpl::ResetFrame() {
   frame_start_time_ = base::Time::Now();
   local_state_->SetTime(kMiscMetricsMediaSessionFrameStartTime,
                         frame_start_time_);
@@ -104,7 +113,7 @@ void MediaSessionMetrics::ResetFrame() {
   local_state_->SetTimeDelta(kMiscMetricsMediaSessionActiveProcessTime, {});
 }
 
-void MediaSessionMetrics::OnSessionPlaybackStateChanged(
+void MediaSessionMetricsImpl::OnSessionPlaybackStateChanged(
     content::MediaSession* media_session,
     bool is_playing) {
   bool was_playing = playing_sessions_.contains(media_session);
@@ -118,12 +127,13 @@ void MediaSessionMetrics::OnSessionPlaybackStateChanged(
   }
 }
 
-void MediaSessionMetrics::RemoveSession(content::MediaSession* media_session) {
+void MediaSessionMetricsImpl::RemoveSession(
+    content::MediaSession* media_session) {
   sessions_.erase(media_session);
   playing_sessions_.erase(media_session);
 }
 
-void MediaSessionMetrics::OnTick() {
+void MediaSessionMetricsImpl::OnTick() {
   bool is_playing = !playing_sessions_.empty();
   if (is_playing || uptime_monitor_->IsInUse()) {
     local_state_->SetTimeDelta(
@@ -136,15 +146,16 @@ void MediaSessionMetrics::OnTick() {
         kMiscMetricsMediaSessionPlayingTime,
         local_state_->GetTimeDelta(kMiscMetricsMediaSessionPlayingTime) +
             kTickInterval);
+    observers_.Notify(&Observer::OnMediaPlaybackTick, kTickInterval);
   }
   tick_timer_.Start(
       FROM_HERE, base::Time::Now() + kTickInterval,
-      base::BindOnce(&MediaSessionMetrics::OnTick, base::Unretained(this)));
+      base::BindOnce(&MediaSessionMetricsImpl::OnTick, base::Unretained(this)));
 }
 
-void MediaSessionMetrics::ReportMetric() {
+void MediaSessionMetricsImpl::ReportMetric() {
   report_timer_.Start(FROM_HERE, base::Time::Now() + kReportInterval,
-                      base::BindOnce(&MediaSessionMetrics::ReportMetric,
+                      base::BindOnce(&MediaSessionMetricsImpl::ReportMetric,
                                      base::Unretained(this)));
 
   if ((base::Time::Now() - frame_start_time_) < kFrameDuration) {

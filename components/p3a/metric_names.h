@@ -224,6 +224,11 @@ inline constexpr auto kCollectedExpressHistograms =
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},
     }},
+    {"Brave.Core.CombinedSearchStudy", MetricConfig{
+      .ephemeral = true,
+      .attributes = MetricAttributes{MetricAttribute::kAnswerIndex, MetricAttribute::kIsBrowserDefault, MetricAttribute::kCustomAttribute, MetricAttribute::kCustomAttribute, MetricAttribute::kCustomAttribute, MetricAttribute::kCustomAttribute, MetricAttribute::kCountryCode, MetricAttribute::kPlatform},
+      .custom_attributes = {"search_query", "media_usage_min", "unique_pages", "search_default"},
+    }},
     {"Brave.Core.CustomTopSitesSourcePercent", MetricConfig{
       .ephemeral = true,
       .attributes = MetricAttributes{MetricAttribute::kIsBrowserDefault, MetricAttribute::kAnswerIndex, MetricAttribute::kCountryCode, MetricAttribute::kPlatform, MetricAttribute::kYoi},

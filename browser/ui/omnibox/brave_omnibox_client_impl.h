@@ -26,8 +26,7 @@ class EmailAliasesMetrics;
 }  // namespace email_aliases
 
 namespace misc_metrics {
-class BraveSearchMetrics;
-class NavigationSourceMetrics;
+class PageMetrics;
 }  // namespace misc_metrics
 
 class BraveOmniboxClientImpl : public ChromeOmniboxClient {
@@ -64,9 +63,7 @@ class BraveOmniboxClientImpl : public ChromeOmniboxClient {
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<SearchEngineTracker> search_engine_tracker_ = nullptr;
   raw_ptr<ai_chat::AIChatMetrics> ai_chat_metrics_ = nullptr;
-  raw_ptr<misc_metrics::BraveSearchMetrics> brave_search_metrics_ = nullptr;
-  raw_ptr<misc_metrics::NavigationSourceMetrics> navigation_source_metrics_ =
-      nullptr;
+  raw_ptr<misc_metrics::PageMetrics> page_metrics_ = nullptr;
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   raw_ptr<email_aliases::EmailAliasesMetrics> email_aliases_metrics_ = nullptr;
 #endif
