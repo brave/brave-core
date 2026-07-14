@@ -100,7 +100,10 @@ extension BrowserViewController: TabDownloadDelegate {
       }
 
       // FIXME: I dont think DownloadQueue even works atm
-      downloadQueue.enqueue(download)
+      // Don't enqueue VCard downloads - they're handled separately via contact modal
+      if !MIMEType.isVCard(download.mimeType) {
+        downloadQueue.enqueue(download)
+      }
 
       download.startDownloadToLocalFileAtPath(url.path)
     }
@@ -147,7 +150,6 @@ extension BrowserViewController: TabDownloadDelegate {
 
     // Handle VCard files - display in contact modal instead of downloading to Files
     if MIMEType.isVCard(download.mimeType) {
-      downloadQueue.download(download, didFinishDownloadingTo: destinationURL)
       Task {
         do {
           let vcardData = try Data(contentsOf: destinationURL)
