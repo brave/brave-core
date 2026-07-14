@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/brave_wallet/common/buildflags/buildflags.gni")
+import("//brave/components/containers/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 brave_components_permissions_sources = [
@@ -46,6 +47,7 @@ brave_components_permissions_deps = [
   "//brave/brave_domains",
   "//brave/components/brave_wallet/common/buildflags",
   "//brave/components/constants",
+  "//brave/components/containers/buildflags",
   "//brave/components/resources:strings_grit",
   "//components/content_settings/core/browser",
   "//components/content_settings/core/common",
@@ -62,6 +64,13 @@ if (enable_brave_wallet) {
   brave_components_permissions_deps += [
     "//brave/components/brave_wallet/browser:permission_utils",
     "//brave/components/brave_wallet/common:mojom",
+  ]
+}
+
+if (enable_containers) {
+  brave_components_permissions_deps += [
+    "//brave/components/containers/content/browser",
+    "//brave/components/containers/core/common",
   ]
 }
 
