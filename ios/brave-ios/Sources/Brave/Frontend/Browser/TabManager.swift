@@ -760,7 +760,7 @@ class TabManager: NSObject {
             options: HistorySearchOptions(
               maxCount: 0,
               hostOnly: false,
-              duplicateHandling: .keepAll,
+              duplicateHandling: .removeAll,
               begin: nil,
               end: nil
             )
