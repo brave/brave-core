@@ -16,6 +16,7 @@ import {
   mockBtcMainnetNetwork,
   mockZecMainnetNetwork,
   mockZecTestnetNetwork,
+  mockPolkadotMainnetNetwork,
 } from '../common/constants/mocks'
 
 const ethereumTransactionId =
@@ -30,6 +31,9 @@ const bitcoinAddress = 'bc1qlcqtaqx8qnacsgv4z3uv0dhlvrl066lh8secet'
 const zcashTransactionId =
   '3bc513afc84befb9774f667eb4e63266a7229ab1fdb43476dd7c3a33d16b3101'
 const zcashAddress = 't1UYsZVJkLPeMjxEtACvSxfWuNmddpWaqK7'
+const polkadotAddress = '15oF4uVJwmo4TdGW7VfQxNLavjCXviqxT9S1MgbjMNHr6Sp5'
+const polkadotExtrinsicId =
+  '0x5f9f8e3b0a7c6d5e4f3a2b1c0d9e8f7a6b5c4d3e2f1a0b9c8d7e6f5a4b3c2d1e'
 
 it('ethereum explorer url', () => {
   const assertion = buildExplorerUrl(
@@ -168,5 +172,29 @@ it('zec testnet explorer url for address', () => {
   )
   expect(assertion).toEqual(
     `https://blockexplorer.one/zcash/testnet/address/${zcashAddress}`,
+  )
+})
+
+it('polkadot explorer url for address', () => {
+  const assertion = buildExplorerUrl(
+    mockPolkadotMainnetNetwork,
+    'address',
+    polkadotAddress,
+    undefined,
+  )
+  expect(assertion).toEqual(
+    `https://polkadot.subscan.io/account/${polkadotAddress}`,
+  )
+})
+
+it('polkadot explorer url for tx', () => {
+  const assertion = buildExplorerUrl(
+    mockPolkadotMainnetNetwork,
+    'tx',
+    polkadotExtrinsicId,
+    undefined,
+  )
+  expect(assertion).toEqual(
+    `https://polkadot.subscan.io/extrinsic/${polkadotExtrinsicId}`,
   )
 })

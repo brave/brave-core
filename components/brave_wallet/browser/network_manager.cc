@@ -763,7 +763,7 @@ const mojom::NetworkInfo* GetPolkadotMainnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Polkadot Mainnet",
-       {"https://polkadot.subscan.io/"},
+       {"https://polkadot.subscan.io"},
        {},
        0,
        {PolkadotMainnetRpcUrl()},
@@ -782,7 +782,7 @@ const mojom::NetworkInfo* GetPolkadotMainnetAssetHub() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Polkadot Asset Hub",
-       {"https://assethub-polkadot.subscan.io/"},
+       {"https://assethub-polkadot.subscan.io"},
        {},
        0,
        {PolkadotMainnetAssetHubRpcUrl()},
@@ -801,7 +801,7 @@ const mojom::NetworkInfo* GetPolkadotTestnet() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Polkadot Westend",
-       {"https://westend.subscan.io/"},
+       {"https://westend.subscan.io"},
        {},
        0,
        {PolkadotTestnetRpcUrl()},
@@ -820,7 +820,7 @@ const mojom::NetworkInfo* GetPolkadotTestnetAssetHub() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Westend Asset Hub",
-       {"https://assethub-westend.subscan.io/"},
+       {"https://assethub-westend.subscan.io"},
        {},
        0,
        {PolkadotTestnetAssetHubRpcUrl()},
@@ -839,7 +839,7 @@ const mojom::NetworkInfo* GetPolkadotPaseoAssetHub() {
   static base::NoDestructor<mojom::NetworkInfo> network_info(
       {chain_id,
        "Paseo Asset Hub",
-       {"https://assethub-paseo.subscan.io/"},
+       {"https://assethub-paseo.subscan.io"},
        {},
        0,
        {PolkadotPaseoAssetHubRpcUrl()},
