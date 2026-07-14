@@ -58,19 +58,21 @@ export const Input = styled.input`
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   background-color: transparent;
+  /* Hide number input spin buttons */
+  appearance: textfield;
+  -moz-appearance: textfield;
   ::placeholder {
     color: ${leo.color.text.tertiary};
   }
   :focus {
     outline: none;
   }
-  ::-webkit-inner-spin-button {
+  &::-webkit-inner-spin-button,
+  &::-webkit-outer-spin-button {
     -webkit-appearance: none;
+    appearance: none;
     margin: 0;
-  }
-  ::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+    display: none;
   }
 `
 
