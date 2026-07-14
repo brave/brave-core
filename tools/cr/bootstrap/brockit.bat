@@ -6,4 +6,11 @@
 ::
 :: Dispatches to tools/cr/brockit.py for the brave-core checkout the current
 :: directory is in. See launcher.py for the resolution logic.
-python3 "%~dp0launcher.py" brockit %*
+::
+:: `%~dp0` can expand to the current directory when the shim is invoked as a
+:: bare name by another process; if launcher.py is not there, resolve our own
+:: name on %PATH% (`%~dp$PATH:0`) to find it beside the shim.
+setlocal
+set "_dir=%~dp0"
+if not exist "%_dir%launcher.py" set "_dir=%~dp$PATH:0"
+python3 "%_dir%launcher.py" brockit %*

@@ -7,4 +7,12 @@
 :: Runs the npm delivered into third_party/node for the brave-core checkout the
 :: current directory is in, falling back to the system npm when there is none.
 :: See launcher.py for the resolution logic.
-python3 "%~dp0launcher.py" --allow-fallback npm-win %*
+::
+:: `%~dp0` is normally this script's directory, but when the shim is invoked as
+:: a bare `npm` by another process (e.g. npm running a package's scripts) cmd
+:: can expand it to the current directory instead. If launcher.py is not there,
+:: resolve our own name on %PATH% (`%~dp$PATH:0`) to find it beside the shim.
+setlocal
+set "_dir=%~dp0"
+if not exist "%_dir%launcher.py" set "_dir=%~dp$PATH:0"
+python3 "%_dir%launcher.py" --allow-fallback npm-win %*

@@ -9,4 +9,11 @@
 ::
 :: Named `git-cr` so that git resolves `git cr` to this shim via %PATH%, making
 :: the `git cr` subcommand work without registering a per-repository alias.
-python3 "%~dp0launcher.py" git-cr %*
+::
+:: `%~dp0` can expand to the current directory when the shim is invoked as a
+:: bare name by another process; if launcher.py is not there, resolve our own
+:: name on %PATH% (`%~dp$PATH:0`) to find it beside the shim.
+setlocal
+set "_dir=%~dp0"
+if not exist "%_dir%launcher.py" set "_dir=%~dp$PATH:0"
+python3 "%_dir%launcher.py" git-cr %*
