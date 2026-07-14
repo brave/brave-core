@@ -148,7 +148,7 @@ impl Engine {
                     source_hostname.to_str().unwrap(),
                     request_type.to_str().unwrap(),
                     third_party_request,
-                    method.to_str().unwrap(),
+                    method.to_str().unwrap_or_default(),
                 ),
                 previously_matched_rule,
                 force_check_exceptions,
@@ -173,7 +173,7 @@ impl Engine {
                 source_hostname.to_str().unwrap(),
                 request_type.to_str().unwrap(),
                 third_party_request,
-                method.to_str().unwrap(),
+                method.to_str().unwrap_or_default(),
             ))
             .unwrap_or_default()
     }
