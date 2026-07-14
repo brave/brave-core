@@ -113,6 +113,19 @@ enum ModelAccess {
   PREMIUM,
 };
 
+// User-facing capability tags shown in the model selector and used for
+// filtering. Distinct from ConversationCapability (which gates which models
+// are available for different conversation types).
+enum ModelCapability {
+  FAST,
+  THINKING,
+  SEARCH,
+  VISION,
+  TOOLS,
+  AUDIO,
+  VIDEO,
+};
+
 // Type of content that is extracted
 enum ContentType {
   PageContent,
@@ -133,6 +146,8 @@ struct ServiceState {
   bool is_storage_pref_enabled;
   bool is_storage_notice_dismissed;
   bool can_show_premium_prompt;
+  // Keys of models the user has pinned in the model selector.
+  array<string> pinned_model_keys;
 };
 
 // Represents the content that is associated with a conversation.
@@ -679,6 +694,8 @@ struct Model {
   // CHAT. Models approved for agentic contexts (content agent, agent profile)
   // should include CONTENT_AGENT, which should be approved by security team.
   array<ConversationCapability> supported_capabilities;
+  // User-facing capability tags for the model selector (Fast, Vision, etc.).
+  array<ModelCapability> capabilities;
   // Is a suggested model
   bool is_suggested_model;
   // Is a Near model

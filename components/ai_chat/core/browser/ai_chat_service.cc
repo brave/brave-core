@@ -33,6 +33,7 @@
 #include "base/time/time.h"
 #include "base/types/strong_alias.h"
 #include "base/uuid.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -57,6 +58,7 @@
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "components/sync/model/client_tag_based_data_type_processor.h"
 #include "components/sync/model/data_type_controller_delegate.h"
 #include "components/sync/model/proxy_data_type_controller_delegate.h"
@@ -772,6 +774,30 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
+void AIChatService::SetModelPinned(const std::string& model_key, bool pinned) {
+  // Automatic is always available in the pinned list and cannot be changed.
+  if (model_key.empty() || model_key == kChatAutomaticModelKey) {
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, prefs::kPinnedModelKeys);
+  base::ListValue& pinned_keys = update.Get();
+
+  auto it = std::ranges::find_if(pinned_keys, [&](const base::Value& value) {
+    return value.is_string() && value.GetString() == model_key;
+  });
+
+  if (pinned) {
+    if (it == pinned_keys.end()) {
+      pinned_keys.Append(model_key);
+      OnStateChanged();
+    }
+  } else if (it != pinned_keys.end()) {
+    pinned_keys.erase(it);
+    OnStateChanged();
+  }
+}
+
 void AIChatService::GetSkills(GetSkillsCallback callback) {
   auto skills = prefs::GetSkillsFromPrefs(*profile_prefs_);
   std::move(callback).Run(std::move(skills));
@@ -1037,6 +1063,14 @@ mojom::ServiceStatePtr AIChatService::BuildState() {
   state->is_storage_pref_enabled = is_storage_enabled;
   state->is_storage_notice_dismissed = has_user_dismissed_storage_notice;
   state->can_show_premium_prompt = can_show_premium_prompt;
+
+  for (const base::Value& value :
+       profile_prefs_->GetList(prefs::kPinnedModelKeys)) {
+    if (value.is_string()) {
+      state->pinned_model_keys.push_back(value.GetString());
+    }
+  }
+
   return state;
 }
 

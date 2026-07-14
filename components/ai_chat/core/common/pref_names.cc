@@ -50,6 +50,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
     registry->RegisterBooleanPref(kBraveAIChatOllamaFetchEnabled, false);
     registry->RegisterDictionaryPref(kAIChatObliviousHttpKeyConfigs);
     registry->RegisterTimePref(kRemoteModelsCachedAt, {});
+    registry->RegisterListPref(kPinnedModelKeys);
   }
   registry->RegisterBooleanPref(kEnabledByPolicy, true);
 }

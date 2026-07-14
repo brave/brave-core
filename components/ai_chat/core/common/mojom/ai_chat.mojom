@@ -146,6 +146,10 @@ interface Service {
   DismissStorageNotice();
   DismissPremiumPrompt();
 
+  // Pin or unpin a model in the model selector. Persists in profile prefs and
+  // notifies observers via OnStateChanged.
+  SetModelPinned(string model_key, bool pinned);
+
   // Skill management
   GetSkills() => (array<Skill> skills);
   CreateSkill(string shortcut, string prompt, string? model);

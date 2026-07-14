@@ -20,6 +20,9 @@ namespace ai_chat {
 inline constexpr char kKeyField[] = "key";
 inline constexpr char kDisplayNameField[] = "display_name";
 inline constexpr char kCapabilitiesField[] = "capabilities";
+// User-facing selector tags (Fast, Vision, etc.), distinct from conversation
+// capabilities above.
+inline constexpr char kModelCapabilitiesField[] = "model_capabilities";
 inline constexpr char kIsSuggestedModelField[] = "is_suggested_model";
 inline constexpr char kIsNearModelField[] = "is_near_model";
 inline constexpr char kOptionsField[] = "options";

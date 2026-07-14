@@ -140,6 +140,8 @@ inline constexpr char kBraveAIChatOllamaFetchEnabled[] =
 // and cached to disk. Used for TTL checks without reading the cache file.
 inline constexpr char kRemoteModelsCachedAt[] =
     "brave.ai_chat.remote_models_cached_at";
+// Keys of models the user has pinned in the model selector.
+inline constexpr char kPinnedModelKeys[] = "brave.ai_chat.pinned_model_keys";
 
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 void RegisterProfilePrefs(PrefRegistrySimple* registry);

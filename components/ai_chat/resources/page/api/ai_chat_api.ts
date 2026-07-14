@@ -135,6 +135,7 @@ export default function createAIChatApi(
         isStoragePrefEnabled: false,
         isStorageNoticeDismissed: false,
         canShowPremiumPrompt: false,
+        pinnedModelKeys: [],
       }),
 
       // no intial data so we know when the value has been received

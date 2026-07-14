@@ -33,6 +33,7 @@ export const defaultServiceState: Mojom.ServiceState = {
   isStoragePrefEnabled: false,
   isStorageNoticeDismissed: false,
   canShowPremiumPrompt: false,
+  pinnedModelKeys: [],
 }
 
 export const defaultConversationState: Mojom.ConversationState & {
@@ -163,6 +164,7 @@ export function createMockService(
     enableStoragePref: () => {},
     dismissStorageNotice: () => {},
     dismissPremiumPrompt: () => {},
+    setModelPinned: () => {},
     bindConversation: () => {},
     deleteConversation: () => {},
     renameConversation: () => {},

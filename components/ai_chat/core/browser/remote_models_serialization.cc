@@ -33,6 +33,14 @@ constexpr char kDeepResearchCapability[] = "deep_research";
 constexpr char kFilesCapability[] = "files";
 constexpr char kSummaryCapability[] = "summary";
 
+constexpr char kFastModelCapability[] = "fast";
+constexpr char kThinkingModelCapability[] = "thinking";
+constexpr char kSearchModelCapability[] = "search";
+constexpr char kVisionModelCapability[] = "vision";
+constexpr char kToolsModelCapability[] = "tools";
+constexpr char kAudioModelCapability[] = "audio";
+constexpr char kVideoModelCapability[] = "video";
+
 constexpr auto kStringToAccessMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
         {kBasicAccess, mojom::ModelAccess::BASIC},
@@ -63,6 +71,28 @@ constexpr auto kCapabilityToStringMap =
         {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
         {mojom::ConversationCapability::FILES, kFilesCapability},
         {mojom::ConversationCapability::SUMMARY, kSummaryCapability},
+    });
+
+constexpr auto kStringToModelCapabilityMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ModelCapability>({
+        {kFastModelCapability, mojom::ModelCapability::FAST},
+        {kThinkingModelCapability, mojom::ModelCapability::THINKING},
+        {kSearchModelCapability, mojom::ModelCapability::SEARCH},
+        {kVisionModelCapability, mojom::ModelCapability::VISION},
+        {kToolsModelCapability, mojom::ModelCapability::TOOLS},
+        {kAudioModelCapability, mojom::ModelCapability::AUDIO},
+        {kVideoModelCapability, mojom::ModelCapability::VIDEO},
+    });
+
+constexpr auto kModelCapabilityToStringMap =
+    base::MakeFixedFlatMap<mojom::ModelCapability, std::string_view>({
+        {mojom::ModelCapability::FAST, kFastModelCapability},
+        {mojom::ModelCapability::THINKING, kThinkingModelCapability},
+        {mojom::ModelCapability::SEARCH, kSearchModelCapability},
+        {mojom::ModelCapability::VISION, kVisionModelCapability},
+        {mojom::ModelCapability::TOOLS, kToolsModelCapability},
+        {mojom::ModelCapability::AUDIO, kAudioModelCapability},
+        {mojom::ModelCapability::VIDEO, kVideoModelCapability},
     });
 
 struct ParsedCapabilities {
@@ -104,6 +134,26 @@ std::optional<ParsedCapabilities> ParseCapabilities(
     }
   }
   return std::nullopt;
+}
+
+std::vector<mojom::ModelCapability> ParseModelCapabilities(
+    const base::DictValue& model_dict) {
+  std::vector<mojom::ModelCapability> capabilities;
+  const base::ListValue* capabilities_list =
+      model_dict.FindList(kModelCapabilitiesField);
+  if (!capabilities_list) {
+    return capabilities;
+  }
+  for (const auto& capability_value : *capabilities_list) {
+    if (!capability_value.is_string()) {
+      continue;
+    }
+    if (const auto* capability = base::FindOrNull(
+            kStringToModelCapabilityMap, capability_value.GetString())) {
+      capabilities.push_back(*capability);
+    }
+  }
+  return capabilities;
 }
 
 mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
@@ -158,6 +208,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
       model_dict.FindBool(kIsSuggestedModelField).value_or(false);
   model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
   model->supported_capabilities = std::move(parsed_capabilities->capabilities);
+  model->capabilities = ParseModelCapabilities(model_dict);
 
   auto leo_opts = mojom::LeoModelOptions::New();
   leo_opts->name = *name;
@@ -196,6 +247,12 @@ std::string_view CapabilityToString(mojom::ConversationCapability capability) {
   return it->second;
 }
 
+std::string_view ModelCapabilityToString(mojom::ModelCapability capability) {
+  auto it = kModelCapabilityToStringMap.find(capability);
+  CHECK(it != kModelCapabilityToStringMap.end());
+  return it->second;
+}
+
 base::DictValue ModelToDict(const mojom::Model& model) {
   base::DictValue dict;
   dict.Set(kKeyField, model.key);
@@ -208,6 +265,14 @@ base::DictValue ModelToDict(const mojom::Model& model) {
     capabilities.Append(CapabilityToString(capability));
   }
   dict.Set(kCapabilitiesField, std::move(capabilities));
+
+  if (!model.capabilities.empty()) {
+    base::ListValue model_capabilities;
+    for (auto capability : model.capabilities) {
+      model_capabilities.Append(ModelCapabilityToString(capability));
+    }
+    dict.Set(kModelCapabilitiesField, std::move(model_capabilities));
+  }
 
   CHECK(model.options && model.options->is_leo_model_options());
   const auto& leo_opts = model.options->get_leo_model_options();
