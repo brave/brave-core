@@ -66,6 +66,7 @@ import org.chromium.components.browser_ui.site_settings.BraveSiteSettingsPrefere
 import org.chromium.components.browser_ui.site_settings.SiteSettings;
 import org.chromium.components.policy.PolicyService;
 import org.chromium.ui.base.DeviceFormFactor;
+import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -765,6 +766,26 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
         }
         mFeaturePolicyService = null;
         mFeaturePolicyServiceObserver = null;
+    }
+
+    // Handles Settings-search results that have no android:fragment and therefore reach
+    // MainSettings.openSearchResult(). Bytecode redirects that call here (see
+    // BraveMainPreferenceBaseClassAdapter) so Brave-only keys can be handled before delegating the
+    // rest back to the upstream implementation.
+    public static boolean openSearchResult(
+            Context context,
+            Profile profile,
+            String key,
+            Bundle extras,
+            ModalDialogManager modalDialogManager) {
+        if (PREF_HOME_SCREEN_WIDGET.equals(key)) {
+            // The Home screen widget entry has no sub-screen to open; it triggers a system
+            // "pin widget" request. Keep the search state as is, like the other external-activity
+            // results handled upstream.
+            BraveSearchWidgetUtils.requestPinAppWidget();
+            return false;
+        }
+        return MainSettings.openSearchResult(context, profile, key, extras, modalDialogManager);
     }
 
     // Wraps MainSettings.SEARCH_INDEX_DATA_PROVIDER and additionally removes upstream preferences
