@@ -165,6 +165,7 @@ export function createMockService(
     dismissStorageNotice: () => {},
     dismissPremiumPrompt: () => {},
     setModelPinned: () => {},
+    setDefaultModelKey: () => {},
     bindConversation: () => {},
     deleteConversation: () => {},
     renameConversation: () => {},

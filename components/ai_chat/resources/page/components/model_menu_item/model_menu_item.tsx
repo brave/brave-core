@@ -4,6 +4,8 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
+import Button from '@brave/leo/react/button'
+import ButtonMenu from '@brave/leo/react/buttonMenu'
 import Icon from '@brave/leo/react/icon'
 import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
@@ -18,6 +20,8 @@ import { formatModelCapabilitiesSubtitle } from '../../model_utils'
 import { NearIcon } from '../near_label/near_label'
 import styles from './model_menu_item_style.module.scss'
 
+const LONG_PRESS_MS = 500
+
 interface ModelContentProps {
   model: Mojom.Model
   isCurrent: boolean
@@ -28,7 +32,7 @@ interface ModelContentProps {
   isDefault?: boolean
   showCapabilitySubtitle?: boolean
   onClickLearnMore?: () => void
-  onTogglePin?: () => void
+  trailingContent?: React.ReactNode
 }
 
 const ModelContent = (props: ModelContentProps) => {
@@ -38,18 +42,16 @@ const ModelContent = (props: ModelContentProps) => {
     showDetails,
     showPremiumLabel,
     isDisabled,
-    isPinned,
     isDefault,
     showCapabilitySubtitle,
     onClickLearnMore,
-    onTogglePin,
+    trailingContent,
   } = props
 
   const isCustomModel = model.options.customModelOptions
   const isOllamaModel = !!(
     model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
   )
-  const canPin = !!onTogglePin && model.key !== AUTOMATIC_MODEL_KEY
 
   const label = React.useMemo(() => {
     if (isCurrent) {
@@ -162,30 +164,9 @@ const ModelContent = (props: ModelContentProps) => {
               </Label>
             )}
           </div>
-          <div className={styles.labelAndPin}>
+          <div className={styles.labelAndActions}>
             {label}
-            {canPin && (
-              <button
-                type='button'
-                className={classnames({
-                  [styles.pinButton]: true,
-                  [styles.pinButtonPinned]: isPinned,
-                })}
-                aria-label={getLocale(
-                  isPinned
-                    ? S.CHAT_UI_UNPIN_MODEL_BUTTON
-                    : S.CHAT_UI_PIN_MODEL_BUTTON,
-                )}
-                data-testid={`pin-${model.key}`}
-                onClick={(e) => {
-                  e.preventDefault()
-                  e.stopPropagation()
-                  onTogglePin?.()
-                }}
-              >
-                <Icon name='pin' />
-              </button>
-            )}
+            {trailingContent}
           </div>
         </div>
         {showDetails && (
@@ -213,8 +194,114 @@ const ModelContent = (props: ModelContentProps) => {
   )
 }
 
+interface ModelOptionsMenuProps {
+  modelKey: string
+  isPinned?: boolean
+  isDefault?: boolean
+  isOpen: boolean
+  canPin: boolean
+  canSetDefault: boolean
+  onOpenChange: (open: boolean) => void
+  onTogglePin?: () => void
+  onSetAsDefault?: () => void
+}
+
+function ModelOptionsMenu(props: ModelOptionsMenuProps) {
+  const {
+    modelKey,
+    isPinned,
+    isDefault,
+    isOpen,
+    canPin,
+    canSetDefault,
+    onOpenChange,
+    onTogglePin,
+    onSetAsDefault,
+  } = props
+
+  return (
+    <div
+      className={styles.optionsWrap}
+      onClick={(e) => {
+        e.preventDefault()
+        e.stopPropagation()
+      }}
+      onMouseDown={(e) => e.stopPropagation()}
+    >
+      <ButtonMenu
+        className={styles.optionsMenu}
+        isOpen={isOpen}
+        onClose={() => onOpenChange(false)}
+        positionStrategy='fixed'
+        placement='bottom-end'
+      >
+        <Button
+          slot='anchor-content'
+          fab
+          kind='plain-faint'
+          size='tiny'
+          className={classnames({
+            [styles.moreButton]: true,
+            [styles.moreButtonOpen]: isOpen,
+          })}
+          aria-label={getLocale(S.CHAT_UI_MODEL_MORE_OPTIONS)}
+          data-testid={`model-options-${modelKey}`}
+          onClick={(e) => {
+            e.stopPropagation()
+            onOpenChange(!isOpen)
+          }}
+        >
+          <Icon name='more-vertical' />
+        </Button>
+        {canPin && (
+          <leo-menu-item
+            data-testid={`pin-${modelKey}`}
+            onClick={(e) => {
+              e.stopPropagation()
+              onTogglePin?.()
+              onOpenChange(false)
+            }}
+          >
+            <div className={styles.optionsMenuItem}>
+              <Icon name='pin' />
+              <span>
+                {getLocale(
+                  isPinned ? S.CHAT_UI_UNPIN_LABEL : S.CHAT_UI_PIN_LABEL,
+                )}
+              </span>
+            </div>
+          </leo-menu-item>
+        )}
+        {canSetDefault && (
+          <leo-menu-item
+            data-testid={`set-default-${modelKey}`}
+            aria-disabled={isDefault ? 'true' : null}
+            onClick={(e) => {
+              e.stopPropagation()
+              if (isDefault) {
+                onOpenChange(false)
+                return
+              }
+              onSetAsDefault?.()
+              onOpenChange(false)
+            }}
+          >
+            <div className={styles.optionsMenuItem}>
+              <Icon name='check-circle-outline' />
+              <span>{getLocale(S.CHAT_UI_SET_AS_DEFAULT_MODEL)}</span>
+            </div>
+          </leo-menu-item>
+        )}
+      </ButtonMenu>
+    </div>
+  )
+}
+
 interface MenuItemProps extends ModelContentProps {
   onClick: () => void
+  isMobile?: boolean
+  onTogglePin?: () => void
+  onSetAsDefault?: () => void
 }
 
 export function ModelMenuItem(props: MenuItemProps) {
@@ -227,29 +314,102 @@ export function ModelMenuItem(props: MenuItemProps) {
     isPinned,
     isDefault,
     showCapabilitySubtitle,
+    isMobile,
     onClick,
     onClickLearnMore,
     onTogglePin,
+    onSetAsDefault,
   } = props
+
+  const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
+  const longPressTimer = React.useRef<number | undefined>(undefined)
+  const didLongPress = React.useRef(false)
+
+  // Automatic cannot be pinned; other models with a pin handler can.
+  const canPin = !!onTogglePin && model.key !== AUTOMATIC_MODEL_KEY
+  const canSetDefault = !!onSetAsDefault
+  const showOptions = canPin || canSetDefault
+
+  const clearLongPressTimer = React.useCallback(() => {
+    if (longPressTimer.current !== undefined) {
+      window.clearTimeout(longPressTimer.current)
+      longPressTimer.current = undefined
+    }
+  }, [])
+
+  React.useEffect(() => clearLongPressTimer, [clearLongPressTimer])
+
+  // Touch/context handlers live on an inner wrapper — Leo's leo-menu-item
+  // typings only expose onClick, not React touch event props.
+  const longPressHandlers = isMobile && showOptions
+    ? {
+        onTouchStart: () => {
+          didLongPress.current = false
+          clearLongPressTimer()
+          longPressTimer.current = window.setTimeout(() => {
+            didLongPress.current = true
+            setIsOptionsOpen(true)
+          }, LONG_PRESS_MS)
+        },
+        onTouchEnd: clearLongPressTimer,
+        onTouchMove: clearLongPressTimer,
+        onTouchCancel: clearLongPressTimer,
+        onContextMenu: (e: React.MouseEvent) => {
+          e.preventDefault()
+          e.stopPropagation()
+          clearLongPressTimer()
+          didLongPress.current = true
+          setIsOptionsOpen(true)
+        },
+      }
+    : undefined
+
   return (
     <leo-menu-item
       data-key={model.key}
       data-testid={model.key}
       aria-selected={isCurrent ? 'true' : null}
-      onClick={onClick}
+      onClick={(e) => {
+        if (didLongPress.current) {
+          e.preventDefault()
+          e.stopPropagation()
+          didLongPress.current = false
+          return
+        }
+        onClick()
+      }}
     >
-      <ModelContent
-        model={model}
-        isCurrent={isCurrent}
-        showPremiumLabel={showPremiumLabel}
-        showDetails={showDetails}
-        isDisabled={isDisabled}
-        isPinned={isPinned}
-        isDefault={isDefault}
-        showCapabilitySubtitle={showCapabilitySubtitle}
-        onClickLearnMore={onClickLearnMore}
-        onTogglePin={onTogglePin}
-      />
+      <div
+        className={styles.menuItemHitArea}
+        {...longPressHandlers}
+      >
+        <ModelContent
+          model={model}
+          isCurrent={isCurrent}
+          showPremiumLabel={showPremiumLabel}
+          showDetails={showDetails}
+          isDisabled={isDisabled}
+          isPinned={isPinned}
+          isDefault={isDefault}
+          showCapabilitySubtitle={showCapabilitySubtitle}
+          onClickLearnMore={onClickLearnMore}
+          trailingContent={
+            showOptions ? (
+              <ModelOptionsMenu
+                modelKey={model.key}
+                isPinned={isPinned}
+                isDefault={isDefault}
+                isOpen={isOptionsOpen}
+                canPin={canPin}
+                canSetDefault={canSetDefault}
+                onOpenChange={setIsOptionsOpen}
+                onTogglePin={onTogglePin}
+                onSetAsDefault={onSetAsDefault}
+              />
+            ) : undefined
+          }
+        />
+      </div>
     </leo-menu-item>
   )
 }

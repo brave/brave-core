@@ -150,6 +150,10 @@ interface Service {
   // notifies observers via OnStateChanged.
   SetModelPinned(string model_key, bool pinned);
 
+  // Sets the user's default model for new conversations. Persists in profile
+  // prefs; conversations observe the change via OnModelDataChanged.
+  SetDefaultModelKey(string model_key);
+
   // Skill management
   GetSkills() => (array<Skill> skills);
   CreateSkill(string shortcut, string prompt, string? model);

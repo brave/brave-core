@@ -292,8 +292,12 @@ export function ModelSelector() {
                     showPremiumLabel={!aiChatContext.isPremiumUser}
                     showDetails={true}
                     showCapabilitySubtitle={true}
+                    isMobile={aiChatContext.isMobile}
                     onClick={() => conversationContext.setCurrentModel(model)}
                     onClickLearnMore={onClickLearnMore}
+                    onSetAsDefault={() =>
+                      aiChatContext.setDefaultModelKey(model.key)
+                    }
                     onTogglePin={
                       // Automatic is always in the pinned list and cannot be
                       // pinned/unpinned by the user.

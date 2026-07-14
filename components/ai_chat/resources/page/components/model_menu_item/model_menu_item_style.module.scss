@@ -3,6 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+.menuItemHitArea {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  min-width: 0;
+  width: 100%;
+}
+
 .modelIcon {
   --leo-icon-size: 20px;
   --leo-icon-color: var(--leo-color-icon-default);
@@ -36,6 +45,7 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .modelName {
@@ -68,7 +78,7 @@
   display: flex;
 }
 
-.labelAndPin {
+.labelAndActions {
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -80,33 +90,49 @@
   margin-inline-start: var(--leo-spacing-s);
 }
 
-.pinButton {
-  --leo-icon-size: 16px;
-  --leo-icon-color: var(--leo-color-icon-default);
-  display: none;
+.optionsWrap {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  width: 24px;
-  height: 24px;
-  border: none;
-  border-radius: var(--leo-radius-s);
-  background: transparent;
-  cursor: pointer;
-  padding: 0;
+}
 
-  &:hover {
-    background: var(--leo-color-container-interactive);
+.optionsMenu {
+  line-height: 0;
+
+  leo-menu-item {
+    padding: var(--leo-spacing-m);
+    min-width: 180px;
+    gap: var(--leo-spacing-m);
   }
 }
 
-.pinButtonPinned {
-  display: flex;
-  --leo-icon-color: var(--leo-color-icon-interactive);
+.moreButton {
+  --leo-icon-size: 18px;
+  --leo-button-padding: 4px;
+  color: var(--leo-color-icon-default);
+  // Hidden until hover/focus, or while the options menu is open.
+  display: none;
 }
 
-:global(leo-menu-item:hover) .pinButton,
-:global(leo-menu-item:focus-within) .pinButton {
+.moreButtonOpen {
   display: flex;
+}
+
+@media (hover: hover) {
+  :global(leo-menu-item:hover) .moreButton,
+  :global(leo-menu-item:focus-within) .moreButton {
+    display: flex;
+  }
+}
+
+.optionsMenuItem {
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
 }
 
 .learnMoreLink {
