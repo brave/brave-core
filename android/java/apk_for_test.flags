@@ -117,6 +117,10 @@
     *** initCommandLine(...);
 }
 
+-keep class org.chromium.chrome.browser.settings.MainSettings {
+    *** openSearchResult(...);
+}
+
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
     *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
