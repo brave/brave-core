@@ -293,7 +293,7 @@ class AIChatService : public KeyedService,
   // URL: appends |key_fragment| to build the full shareable link, optionally
   // copies it to the clipboard as confidential, and returns it via |callback|.
   void OnShareConversationComplete(
-      std::string key_fragment,
+      const std::string& key_fragment,
       bool copy_to_clipboard,
       ShareConversationCallback callback,
       const std::optional<GURL>& shared_conversation_viewer_url);

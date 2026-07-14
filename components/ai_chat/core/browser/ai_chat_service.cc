@@ -25,7 +25,6 @@
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/numerics/clamped_math.h"
-#include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/task_traits.h"
@@ -752,7 +751,7 @@ void AIChatService::ShareConversation(const std::string& encrypted_contents,
 }
 
 void AIChatService::OnShareConversationComplete(
-    std::string key_fragment,
+    const std::string& key_fragment,
     bool copy_to_clipboard,
     ShareConversationCallback callback,
     const std::optional<GURL>& shared_conversation_viewer_url) {
@@ -761,10 +760,12 @@ void AIChatService::OnShareConversationComplete(
     return;
   }
 
-  // Append the decryption key as a URL fragment to build the full shareable
+  // Set the decryption key as the URL fragment to build the full shareable
   // link. |key_fragment| is URL-safe base64, so it needs no further encoding.
-  GURL shared_conversation_url(base::StrCat(
-      {shared_conversation_viewer_url->spec(), "#", key_fragment}));
+  GURL::Replacements replacements;
+  replacements.SetRefStr(key_fragment);
+  GURL shared_conversation_url =
+      shared_conversation_viewer_url->ReplaceComponents(replacements);
   if (!shared_conversation_url.is_valid()) {
     std::move(callback).Run(std::nullopt);
     return;

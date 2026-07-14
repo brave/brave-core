@@ -207,4 +207,34 @@ TEST_F(AIChatServiceShareConversationTest,
       "https://leo-ai.brave.app/sharing/test-share-id#url-safe-key-fragment");
 }
 
+TEST_F(AIChatServiceShareConversationTest,
+       DoesNotCopyToClipboardWhenNotRequested) {
+  auto fake_share_manager = std::make_unique<FakeConversationShareManager>();
+  fake_share_manager->viewer_url =
+      GURL("https://leo-ai.brave.app/sharing/test-share-id");
+  ai_chat_service_->SetConversationShareManagerForTesting(
+      std::move(fake_share_manager));
+
+  ui::TestClipboard* clipboard = ui::TestClipboard::CreateForCurrentThread();
+
+  base::test::TestFuture<const std::optional<GURL>&> future;
+  ai_chat_service_->ShareConversation(
+      "ciphertext-blob", "url-safe-key-fragment",
+      /*copy_to_clipboard=*/false, future.GetCallback());
+  std::optional<GURL> result = future.Get();
+
+  base::test::TestFuture<std::u16string> clipboard_future;
+  clipboard->ReadText(ui::ClipboardBuffer::kCopyPaste,
+                      /*data_dst=*/std::nullopt,
+                      clipboard_future.GetCallback());
+  std::u16string clipboard_text = clipboard_future.Get();
+
+  ui::Clipboard::DestroyClipboardForCurrentThread();
+
+  // The URL is still returned, but nothing is written to the clipboard when the
+  // caller does not request it.
+  ASSERT_TRUE(result.has_value());
+  EXPECT_TRUE(clipboard_text.empty());
+}
+
 }  // namespace ai_chat
