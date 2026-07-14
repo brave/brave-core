@@ -216,6 +216,7 @@ export function createSearchStore() {
         query,
         false,
         query.length,
+        query.length === 0,
       )
     },
 
