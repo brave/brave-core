@@ -741,6 +741,84 @@ IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
          "tab's content_id (e.g. created by the context menu), not a new one.";
 }
 
+// In tab-associated (non-global) side panel mode, NewConversation always
+// creates a fresh conversation keyed to the active tab's content_id, even when
+// a conversation is already bound to that tab. The freshly created conversation
+// then becomes the tab's content-bound conversation, so a subsequent
+// BindRelatedConversation resumes it — matching the documented "new chat on a
+// tab" behavior.
+IN_PROC_BROWSER_TEST_F(AIChatUIPageHandlerTabPanelBrowserTest,
+                       NewConversation_CreatesFreshContentBoundConversation) {
+  OpenNewTab();
+  auto* tab_contents = web_contents();
+  ASSERT_TRUE(tab_contents);
+  auto* tab_helper = AIChatTabHelper::FromWebContents(tab_contents);
+  ASSERT_TRUE(tab_helper);
+  const int content_id = tab_helper->web_contents_content().content_id();
+
+  mojo::PendingReceiver<mojom::AIChatUIHandler> receiver;
+  auto handler = std::make_unique<AIChatUIPageHandler>(
+      tab_contents, tab_contents,
+      Profile::FromBrowserContext(tab_contents->GetBrowserContext()),
+      std::move(receiver), browser()->tab_strip_model());
+
+  // Bind the tab's related conversation first — the default the panel shows.
+  FakeConversationUI fake_conversation_ui1;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver1(
+      &fake_conversation_ui1);
+  mojo::Remote<mojom::ConversationHandler> conversation1;
+  handler->BindRelatedConversation(
+      conversation1.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver1.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future1;
+  conversation1->GetConversationUuid(
+      uuid_future1.GetCallback<const std::string&>());
+  const std::string first_uuid = uuid_future1.Get();
+  ASSERT_FALSE(first_uuid.empty());
+
+  // Starting a new conversation must produce a different conversation.
+  FakeConversationUI fake_conversation_ui2;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver2(
+      &fake_conversation_ui2);
+  mojo::Remote<mojom::ConversationHandler> conversation2;
+  handler->NewConversation(
+      conversation2.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver2.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future2;
+  conversation2->GetConversationUuid(
+      uuid_future2.GetCallback<const std::string&>());
+  const std::string new_uuid = uuid_future2.Get();
+  EXPECT_NE(new_uuid, first_uuid)
+      << "NewConversation in tab-panel mode should always create a fresh "
+         "conversation.";
+
+  // The new conversation becomes the tab's content-bound conversation.
+  auto* service = AIChatServiceFactory::GetForBrowserContext(GetProfile());
+  auto* content_bound = service->GetConversationHandlerForContent(content_id);
+  ASSERT_TRUE(content_bound);
+  EXPECT_EQ(content_bound->get_conversation_uuid(), new_uuid)
+      << "The freshly created conversation should replace the tab's "
+         "content-bound conversation.";
+
+  // A subsequent related-bind resumes the new conversation, not the first.
+  FakeConversationUI fake_conversation_ui3;
+  mojo::Receiver<mojom::ConversationUI> conversation_ui_receiver3(
+      &fake_conversation_ui3);
+  mojo::Remote<mojom::ConversationHandler> conversation3;
+  handler->BindRelatedConversation(
+      conversation3.BindNewPipeAndPassReceiver(),
+      conversation_ui_receiver3.BindNewPipeAndPassRemote());
+
+  base::test::TestFuture<std::string> uuid_future3;
+  conversation3->GetConversationUuid(
+      uuid_future3.GetCallback<const std::string&>());
+  EXPECT_EQ(uuid_future3.Get(), new_uuid)
+      << "Reopening the related conversation should resume the newly created "
+         "conversation.";
+}
+
 IN_PROC_BROWSER_TEST_F(
     AIChatUIPageHandlerTabPanelPageContextDisabledBrowserTest,
     BindRelatedConversation_DoesNotAddContentWhenFlagDisabled) {

@@ -247,9 +247,15 @@ interface AIChatUIHandler {
   // initial constant state
   SetChatUI(pending_remote<ChatUI> chat_ui) => (bool is_standalone);
 
-  // Bind 2-way communication to the conversation related to the open page in
-  // the current browser window. No binding will occur if this isn't a
-  // tab-related UI, e.g. sidebar or popup.
+  // Binds the conversation the UI should show when it opens. This resumes the
+  // conversation that belongs to the current context rather than always
+  // starting a fresh one, so re-opening the panel doesn't discard in-progress
+  // work:
+  //  - Content-associated side panel: binds to the conversation tied to the
+  //    active tab's content, creating one only if none exists yet.
+  //  - Standalone / global side panel / agent profile: adopts an existing,
+  //    not-yet-shown conversation for the active tab's content if there is one,
+  //    otherwise creates a new conversation.
   BindRelatedConversation(
       pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
@@ -263,8 +269,15 @@ interface AIChatUIHandler {
   // Disassociates attached content from a conversation.
   DisassociateContent(AssociatedContent content, string conversation_uuid);
 
-  // Make a completely new conversation, which may
-  // be bound to the associated conversation, if this UI has a target
+  // Provides the conversation for the frontend's "new conversation" action.
+  // Despite the name it does not always allocate a brand new conversation:
+  //  - Content-associated side panel: always creates a new conversation keyed
+  //    to the active tab's content (so BindRelatedConversation resumes it
+  //    afterwards).
+  //  - Standalone / global side panel / agent profile: may adopt an existing,
+  //    not-yet-shown conversation for the active tab's content (e.g. one
+  //    created by the context menu before the panel opened) instead of
+  //    creating a new one, otherwise creates a new conversation.
   NewConversation(pending_receiver<ConversationHandler> conversation,
       pending_remote<ConversationUI> conversation_ui);
 };
