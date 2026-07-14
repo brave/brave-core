@@ -580,7 +580,7 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
 std::optional<std::vector<OAIMessage>>
 BuildOAIGenerateConversationTitleMessages(
     const PageContentsMap& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
   // Validate we have the expected conversation structure

@@ -50,7 +50,7 @@ class MockEngineConsumer : public EngineConsumer {
   MOCK_METHOD(void,
               GenerateConversationTitle,
               (const PageContentsMap& page_contents,
-               const ConversationHistory& conversation_history,
+               const ConversationHistoryView& conversation_history,
                GenerationCompletedCallback completed_callback),
               (override));
 

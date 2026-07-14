@@ -1412,6 +1412,38 @@ std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
   return chat_history_;
 }
 
+EngineConsumer::ConversationHistoryView
+ConversationHandler::BuildConversationHistoryViewForRequest(
+    const std::optional<std::string>& thread_uuid) {
+  if (!thread_uuid.has_value()) {
+    return EngineConsumer::ToHistoryView(chat_history_);
+  }
+
+  auto* container = base::FindOrNull(threads_, *thread_uuid);
+  CHECK(container);
+
+  std::vector<const mojom::ConversationTurn*> history;
+
+  // Prepend the root conversation entries up to and including the entry this
+  // thread branched off from, so the engine has the context that led to the
+  // branch.
+  const std::string& origin_uuid =
+      container->thread->origin_conversation_entry_uuid;
+  for (const auto& entry : chat_history_) {
+    history.push_back(entry.get());
+    if (entry->uuid == origin_uuid) {
+      break;
+    }
+  }
+
+  // Then append the thread's own entries.
+  for (const auto& entry : container->entries) {
+    history.push_back(entry.get());
+  }
+
+  return history;
+}
+
 void ConversationHandler::InitToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   // Remove state from any previous task
@@ -1451,7 +1483,7 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent(
 
 void ConversationHandler::PerformAssistantGeneration(
     const std::optional<std::string>& thread_uuid) {
-  auto& history = GetChatHistory(thread_uuid);
+  auto history = BuildConversationHistoryViewForRequest(thread_uuid);
   if (history.empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
@@ -1464,9 +1496,9 @@ void ConversationHandler::PerformAssistantGeneration(
   needs_new_entry_ = true;
 
   engine_->GenerateAssistantResponse(
-      associated_content_manager_->GetCachedContentsMap(),
-      EngineConsumer::ToHistoryView(history), IsTemporaryChat(), GetTools(),
-      std::nullopt /* preferred_tool_name */, conversation_capabilities_,
+      associated_content_manager_->GetCachedContentsMap(), history,
+      IsTemporaryChat(), GetTools(), std::nullopt /* preferred_tool_name */,
+      conversation_capabilities_,
       base::BindRepeating(&ConversationHandler::OnEngineCompletionDataReceived,
                           weak_ptr_factory_.GetWeakPtr(), thread_uuid),
       base::BindOnce(&ConversationHandler::OnEngineCompletionComplete,
@@ -1966,7 +1998,8 @@ void ConversationHandler::CompleteGeneration(
     if (engine_->RequiresClientSideTitleGeneration() &&
         chat_history_.size() == 2) {
       engine_->GenerateConversationTitle(
-          associated_content_manager_->GetCachedContentsMap(), chat_history_,
+          associated_content_manager_->GetCachedContentsMap(),
+          EngineConsumer::ToHistoryView(chat_history_),
           base::BindOnce(&ConversationHandler::OnTitleGenerated,
                          weak_ptr_factory_.GetWeakPtr()));
     }

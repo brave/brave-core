@@ -893,7 +893,8 @@ TEST_F(OAIMessageUtilsTest, BuildOAIGenerateConversationTitleMessages_Basic) {
   auto history = CreateSampleChatHistory(1);
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      PageContentsMap(), history, 10000, [](std::string&) {});
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+      [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -922,7 +923,8 @@ TEST_F(OAIMessageUtilsTest,
   page_contents_map[*history[0]->uuid] = {std::cref(page_content)};
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      std::move(page_contents_map), history, 10000, [](std::string&) {});
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      10000, [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -959,7 +961,8 @@ TEST_F(OAIMessageUtilsTest,
   history[1]->text = "The image shows a sunset over mountains.";
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      std::move(page_contents_map), history, 10000, [](std::string&) {});
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      10000, [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -984,7 +987,8 @@ TEST_F(
   history[1]->text = "I'll search for that.";
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      PageContentsMap(), history, 10000, [](std::string&) {});
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+      [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -1005,7 +1009,8 @@ TEST_F(
   history[1]->text = "";  // tool-only first response
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      PageContentsMap(), history, 10000, [](std::string&) {});
+      PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+      [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -1027,7 +1032,8 @@ TEST_F(
     history[1]->text = "";
 
     auto messages = BuildOAIGenerateConversationTitleMessages(
-        PageContentsMap(), history, 10000, [](std::string&) {});
+        PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+        [](std::string&) {});
     EXPECT_FALSE(messages);
   }
 
@@ -1042,7 +1048,8 @@ TEST_F(
     history[1]->text = "";
 
     auto messages = BuildOAIGenerateConversationTitleMessages(
-        PageContentsMap(), history, 10000, [](std::string&) {});
+        PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+        [](std::string&) {});
     EXPECT_FALSE(messages);
   }
 }
@@ -1068,7 +1075,8 @@ TEST_F(OAIMessageUtilsTest,
       std::cref(content4)};
 
   auto messages = BuildOAIGenerateConversationTitleMessages(
-      std::move(page_contents_map), history, 1800, [](std::string&) {});
+      std::move(page_contents_map), EngineConsumer::ToHistoryView(history),
+      1800, [](std::string&) {});
 
   ASSERT_TRUE(messages);
   ASSERT_EQ(messages->size(), 1u);
@@ -1104,7 +1112,8 @@ TEST_F(OAIMessageUtilsTest,
     history.pop_back();  // Remove assistant turn
 
     auto messages = BuildOAIGenerateConversationTitleMessages(
-        PageContentsMap(), history, 10000, [](std::string&) {});
+        PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+        [](std::string&) {});
 
     EXPECT_FALSE(messages);
   }
@@ -1121,7 +1130,8 @@ TEST_F(OAIMessageUtilsTest,
     history.push_back(std::move(turn3));
 
     auto messages = BuildOAIGenerateConversationTitleMessages(
-        PageContentsMap(), history, 10000, [](std::string&) {});
+        PageContentsMap(), EngineConsumer::ToHistoryView(history), 10000,
+        [](std::string&) {});
 
     EXPECT_FALSE(messages);
   }
