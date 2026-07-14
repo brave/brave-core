@@ -97,6 +97,7 @@ brave_core_public_headers = [
   "//brave/ios/browser/brave_news/brave_news_pref_names_bridge.h",
   "//brave/ios/browser/brave_vpn/brave_vpn_pref_names_bridge.h",
   "//brave/ios/browser/brave_wallet/brave_wallet_factory_wrappers.h",
+  "//brave/ios/browser/brave_wallet/wallet_pref_names_bridge.h",
   "//brave/ios/browser/skus/skus_sdk_factory_wrappers.h",
   "//brave/ios/browser/playlist/playlist_exclusions_bridge.h",
   "//brave/ios/browser/playlist/playlist_exclusions_factory.h",

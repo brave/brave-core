@@ -503,6 +503,12 @@ public class BrowserViewController: UIViewController {
         tabManager.reloadSelectedTab()
       }
     }
+    prefsChangeRegistrar.addObserver(forPath: kDefaultEthereumWallet) { [weak self] _ in
+      self?.defaultWalletChanged(for: .eth)
+    }
+    prefsChangeRegistrar.addObserver(forPath: kDefaultSolanaWallet) { [weak self] _ in
+      self?.defaultWalletChanged(for: .sol)
+    }
 
     disconnectVPNIfDisabledByPolicy()
 
@@ -531,8 +537,6 @@ public class BrowserViewController: UIViewController {
     }
     Preferences.PrivacyReports.captureShieldsData.observe(from: self)
     Preferences.PrivacyReports.captureVPNAlerts.observe(from: self)
-    Preferences.Wallet.defaultEthWallet.observe(from: self)
-    Preferences.Wallet.defaultSolWallet.observe(from: self)
 
     if rewards.rewardsAPI != nil {
       // Ledger was started immediately due to user having ads enabled
@@ -2466,6 +2470,25 @@ extension BrowserViewController: WalletTabHelperDelegate {
     notificationsPresenter.removeNotification(with: WalletNotification.Constant.id)
   }
 
+  /// Responds to a change in the default wallet used to communicate with web3
+  /// for the given `coin`, cancelling any pending web3 requests and refreshing
+  /// the injected provider scripts.
+  private func defaultWalletChanged(for coin: BraveWallet.CoinType) {
+    tabManager.reset()
+    tabManager.reloadSelectedTab()
+    removeWalletNotificationAndClearOrigin()
+    WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [coin])
+    WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [coin])
+    let privateMode = privateBrowsingManager.isPrivateBrowsing
+    if let cryptoStore = CryptoStore.from(
+      ipfsApi: profileController.ipfsAPI,
+      privateMode: privateMode
+    ) {
+      cryptoStore.rejectAllPendingWebpageRequests()
+    }
+    updateURLBarWalletButton()
+  }
+
   /// Dismisses the wallet notification if it was shown for a different origin than the committed one (e.g. after redirect).
   func dismissWalletNotificationIfOriginDiffers(from committedOrigin: URLOrigin) {
     guard
@@ -2925,34 +2948,6 @@ extension BrowserViewController: PreferencesObserver {
       }
     case Preferences.PrivacyReports.captureVPNAlerts.key:
       PrivacyReportsManager.scheduleVPNAlertsTask()
-    case Preferences.Wallet.defaultEthWallet.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
-      removeWalletNotificationAndClearOrigin()
-      WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.eth])
-      WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.eth])
-      let privateMode = privateBrowsingManager.isPrivateBrowsing
-      if let cryptoStore = CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        privateMode: privateMode
-      ) {
-        cryptoStore.rejectAllPendingWebpageRequests()
-      }
-      updateURLBarWalletButton()
-    case Preferences.Wallet.defaultSolWallet.key:
-      tabManager.reset()
-      tabManager.reloadSelectedTab()
-      removeWalletNotificationAndClearOrigin()
-      WalletProviderPermissionRequestsManager.shared.cancelAllPendingRequests(for: [.sol])
-      WalletProviderAccountCreationRequestManager.shared.cancelAllPendingRequests(coins: [.sol])
-      let privateMode = privateBrowsingManager.isPrivateBrowsing
-      if let cryptoStore = CryptoStore.from(
-        ipfsApi: profileController.ipfsAPI,
-        privateMode: privateMode
-      ) {
-        cryptoStore.rejectAllPendingWebpageRequests()
-      }
-      updateURLBarWalletButton()
     case Preferences.NewTabPage.backgroundMediaTypeRaw.key:
       recordAdsUsageType()
     case Preferences.Privacy.screenTimeEnabled.key:

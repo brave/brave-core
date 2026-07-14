@@ -10,33 +10,69 @@ import SwiftUI
 
 struct DappsSettings: View {
   var coin: BraveWallet.CoinType
+  @ObservedObject var settingsStore: SettingsStore
   @ObservedObject var siteConnectionStore: ManageSiteConnectionsStore
-  @ObservedObject var defaultWallet: Preferences.Option<Int>
   @ObservedObject var allowProviderAccess: Preferences.Option<Bool>
   @State private var filterText: String = ""
   @State private var isShowingConfirmAlert: Bool = false
 
   init(
     coin: BraveWallet.CoinType,
+    settingsStore: SettingsStore,
     siteConnectionStore: ManageSiteConnectionsStore
   ) {
     self.coin = coin
+    self.settingsStore = settingsStore
     self.siteConnectionStore = siteConnectionStore
     switch coin {
     case .eth:
-      self.defaultWallet = Preferences.Wallet.defaultEthWallet
       self.allowProviderAccess = Preferences.Wallet.allowEthProviderAccess
     case .sol:
-      self.defaultWallet = Preferences.Wallet.defaultSolWallet
       self.allowProviderAccess = Preferences.Wallet.allowSolProviderAccess
     case .ada:
-      self.defaultWallet = Preferences.Wallet.defaultCardanoWallet
       self.allowProviderAccess = Preferences.Wallet.allowCardanoProviderAccess
     default:
       assertionFailure("Not supported coin type.")
-      self.defaultWallet = Preferences.Wallet.defaultEthWallet
       self.allowProviderAccess = Preferences.Wallet.allowEthProviderAccess
     }
+  }
+
+  private var defaultWallet: BraveWallet.DefaultWallet {
+    switch coin {
+    case .eth:
+      return settingsStore.defaultEthWallet
+    case .sol:
+      return settingsStore.defaultSolWallet
+    case .ada:
+      return settingsStore.defaultCardanoWallet
+    default:
+      return .braveWallet
+    }
+  }
+
+  /// Bridges the picker to the `DefaultWallet` value held by the `SettingsStore`.
+  /// iOS only exposes `none` and `brave` as options.
+  private var defaultWalletBinding: Binding<BraveWallet.DefaultWallet> {
+    Binding(
+      get: {
+        if defaultWallet == .braveWalletPreferExtension {
+          return .braveWallet
+        }
+        return defaultWallet
+      },
+      set: { newValue in
+        switch coin {
+        case .eth:
+          settingsStore.defaultEthWallet = newValue
+        case .sol:
+          settingsStore.defaultSolWallet = newValue
+        case .ada:
+          settingsStore.defaultCardanoWallet = newValue
+        default:
+          break
+        }
+      }
+    )
   }
 
   private var defaultWalletTitle: String {
@@ -75,29 +111,19 @@ struct DappsSettings: View {
         header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
           .foregroundColor(Color(braveSystemName: .textSecondary))
       ) {
-        Group {
-          HStack {
-            Text(defaultWalletTitle)
-              .foregroundColor(Color(braveSystemName: .textPrimary))
-            Spacer()
-            Menu {
-              Picker("", selection: $defaultWallet.value) {
-                ForEach(Preferences.Wallet.WalletType.allCases) { walletType in
-                  Text(walletType.name)
-                    .tag(walletType)
-                }
-              }
-              .pickerStyle(.inline)
-            } label: {
-              let wallet = Preferences.Wallet.WalletType(rawValue: defaultWallet.value) ?? .none
-              Text(wallet.name)
-                .foregroundColor(Color(braveSystemName: .textInteractive))
-            }
-          }
-          Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
+        Picker(selection: defaultWalletBinding) {
+          Text(Strings.Wallet.walletTypeNone)
+            .tag(BraveWallet.DefaultWallet.none)
+          Text(Strings.Wallet.braveWallet)
+            .tag(BraveWallet.DefaultWallet.braveWallet)
+        } label: {
+          Text(defaultWalletTitle)
             .foregroundColor(Color(braveSystemName: .textPrimary))
-            .tint(Color(braveSystemName: .primitivePrimary40))
         }
+        .pickerStyle(.menu)
+        Toggle(allowProviderAccessTitle, isOn: $allowProviderAccess.value)
+          .foregroundColor(Color(braveSystemName: .textPrimary))
+          .tint(Color(braveSystemName: .primitivePrimary40))
       }
       Section(
         header: Text(Strings.Wallet.dappsSettingsConnectedSitesSectionTitle)

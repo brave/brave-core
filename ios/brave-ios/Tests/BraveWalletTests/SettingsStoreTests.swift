@@ -36,6 +36,12 @@ class SettingsStoreTests: XCTestCase {
     walletService._setDefaultBaseCurrency = { _ in }
     walletService._defaultBaseCurrency = { $0(CurrencyCode.usd.code) }  // default is USD
     walletService._nftDiscoveryEnabled = { _ in }
+    walletService._defaultEthereumWallet = { $0(.braveWallet) }
+    walletService._setDefaultEthereumWallet = { _ in }
+    walletService._defaultSolanaWallet = { $0(.braveWallet) }
+    walletService._setDefaultSolanaWallet = { _ in }
+    walletService._defaultCardanoWallet = { $0(.braveWallet) }
+    walletService._setDefaultCardanoWallet = { _ in }
 
     let rpcService = MockJsonRpcService()
     rpcService._ensResolveMethod = { $0(.ask) }
@@ -164,17 +170,12 @@ class SettingsStoreTests: XCTestCase {
       walletServiceResetCalled = true
     }
 
-    assert(
-      Preferences.Wallet.WalletType.none.rawValue
-        != Preferences.Wallet.defaultEthWallet.defaultValue,
-      "Test assumes default wallet for eth value is not `none`"
-    )
-    Preferences.Wallet.defaultEthWallet.value = Preferences.Wallet.WalletType.none.rawValue
-    XCTAssertEqual(
-      Preferences.Wallet.defaultEthWallet.value,
-      Preferences.Wallet.WalletType.none.rawValue,
-      "Failed to update default wallet for eth"
-    )
+    // Capture the default wallet values set on the wallet service during reset.
+    var defaultEthereumWallet: BraveWallet.DefaultWallet?
+    walletService._setDefaultEthereumWallet = { defaultEthereumWallet = $0 }
+    var defaultSolanaWallet: BraveWallet.DefaultWallet?
+    walletService._setDefaultSolanaWallet = { defaultSolanaWallet = $0 }
+
     Preferences.Wallet.allowEthProviderAccess.value = !Preferences.Wallet.allowEthProviderAccess
       .defaultValue
     XCTAssertEqual(
@@ -183,17 +184,6 @@ class SettingsStoreTests: XCTestCase {
       "Failed to update allow ethereum requests"
     )
 
-    assert(
-      Preferences.Wallet.WalletType.none.rawValue
-        != Preferences.Wallet.defaultSolWallet.defaultValue,
-      "Test assumes default wallet for sol value is not `none`"
-    )
-    Preferences.Wallet.defaultSolWallet.value = Preferences.Wallet.WalletType.none.rawValue
-    XCTAssertEqual(
-      Preferences.Wallet.defaultSolWallet.value,
-      Preferences.Wallet.WalletType.none.rawValue,
-      "Failed to update default wallet for sol"
-    )
     Preferences.Wallet.allowSolProviderAccess.value = !Preferences.Wallet.allowSolProviderAccess
       .defaultValue
     XCTAssertEqual(
@@ -221,6 +211,10 @@ class SettingsStoreTests: XCTestCase {
 
     sut.autoLockInterval = .minute
     sut.currencyCode = .cad
+    // Update the default wallets away from Brave Wallet so reset has to restore
+    // them.
+    sut.defaultEthWallet = .none
+    sut.defaultSolWallet = .none
 
     // reset internally in services, mock reset here.
     keyringServiceAutolockMinutes = 5
@@ -240,9 +234,9 @@ class SettingsStoreTests: XCTestCase {
       "WalletService reset() not called"
     )
     XCTAssertEqual(
-      Preferences.Wallet.defaultEthWallet.value,
-      Preferences.Wallet.defaultEthWallet.defaultValue,
-      "Default Wallet for eth was not reset to default"
+      defaultEthereumWallet,
+      .braveWallet,
+      "Default Wallet for eth was not reset to Brave Wallet"
     )
     XCTAssertEqual(
       Preferences.Wallet.allowEthProviderAccess.value,
@@ -250,9 +244,9 @@ class SettingsStoreTests: XCTestCase {
       "Allow ethereum requests was not reset to default"
     )
     XCTAssertEqual(
-      Preferences.Wallet.defaultSolWallet.value,
-      Preferences.Wallet.defaultSolWallet.defaultValue,
-      "Default Wallet for sol was not reset to default"
+      defaultSolanaWallet,
+      .braveWallet,
+      "Default Wallet for sol was not reset to Brave Wallet"
     )
     XCTAssertEqual(
       Preferences.Wallet.allowSolProviderAccess.value,
