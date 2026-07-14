@@ -80,12 +80,11 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
         semantics {
           sender: "Privacy Settings Selection for Sites Tool"
           description:
-            "A user-initiated report of a website privacy settings that
-            Privacy Settings Selection for Sites Tool couldn't apply"
+            "A user-initiated report of a website's privacy settings that
+            the Privacy Settings Selection for Sites Tool couldn't apply"
           trigger:
-            "The request is only triggered after the user (a) clicks a
-            button explicitly labeled to send a report,
-            and (b) completes a subsequent re-confirmation gesture."
+            "The request is only triggered after the user clicks a
+            button explicitly labeled to send a report."
           data: "Website where Privacy Settings Selection for Sites Tool
             failed, what step(s) failed, what the error(s) were.
             No additional user identifiers are sent."
