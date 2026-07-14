@@ -17,6 +17,7 @@
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/sync/protocol/ai_chat_specifics.pb.h"
+#include "components/sync/base/deletion_origin.h"
 #include "components/sync/model/data_type_local_change_processor.h"
 #include "components/sync/model/metadata_batch.h"
 #include "components/sync/model/model_error.h"
@@ -322,6 +323,115 @@ void AIChatSyncBridge::ApplyDisableSyncChanges(
   }
   database_->ClearAllEntityMetadata();
   database_->ClearDataTypeState(syncer::AI_CHAT_CONVERSATION);
+}
+
+void AIChatSyncBridge::OnConversationAdded(const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!this->change_processor()->IsTrackingMetadata()) {
+    return;
+  }
+  PutConversationMetadata(uuid);
+}
+
+void AIChatSyncBridge::OnConversationModified(const std::string& uuid) {
+  OnConversationAdded(uuid);
+}
+
+void AIChatSyncBridge::OnConversationDeleted(const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!database_ || !this->change_processor()->IsTrackingMetadata()) {
+    return;
+  }
+  auto metadata_change_list = CreateMetadataChangeList();
+
+  // Emit a Delete for every entry of the conversation BEFORE deleting the
+  // conversation itself. This must run while the entries still exist in the
+  // database.
+  if (auto archive = database_->GetConversationData(uuid)) {
+    for (const auto& entry : archive->entries) {
+      if (!entry->uuid) {
+        continue;
+      }
+      this->change_processor()->Delete(
+          base::StrCat({kEntryStorageKeyPrefix, *entry->uuid}),
+          syncer::DeletionOrigin::Unspecified(), metadata_change_list.get());
+    }
+  }
+
+  this->change_processor()->Delete(
+      base::StrCat({kConversationStorageKeyPrefix, uuid}),
+      syncer::DeletionOrigin::Unspecified(), metadata_change_list.get());
+}
+
+void AIChatSyncBridge::OnConversationEntryAdded(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!this->change_processor()->IsTrackingMetadata()) {
+    return;
+  }
+  PutEntry(conversation_uuid, entry_uuid);
+}
+
+void AIChatSyncBridge::OnConversationEntryModified(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid) {
+  OnConversationEntryAdded(conversation_uuid, entry_uuid);
+}
+
+void AIChatSyncBridge::OnConversationEntryDeleted(
+    const std::string& entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!this->change_processor()->IsTrackingMetadata()) {
+    return;
+  }
+  auto metadata_change_list = CreateMetadataChangeList();
+  this->change_processor()->Delete(
+      base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
+      syncer::DeletionOrigin::Unspecified(), metadata_change_list.get());
+}
+
+void AIChatSyncBridge::PutConversationMetadata(const std::string& uuid) {
+  if (!database_) {
+    return;
+  }
+  auto conversation = FindSyncableConversation(*database_, uuid);
+  if (!conversation) {
+    return;
+  }
+  auto specifics = ConversationMetadataToSpecifics(*conversation);
+  auto metadata_change_list = CreateMetadataChangeList();
+  this->change_processor()->Put(
+      base::StrCat({kConversationStorageKeyPrefix, uuid}),
+      CreateEntityDataFromSpecifics(specifics), metadata_change_list.get());
+}
+
+void AIChatSyncBridge::PutEntry(const std::string& conversation_uuid,
+                                const std::string& entry_uuid) {
+  if (!database_) {
+    return;
+  }
+  auto conversation = FindSyncableConversation(*database_, conversation_uuid);
+  if (!conversation) {
+    return;
+  }
+  auto archive = database_->GetConversationData(conversation_uuid);
+  if (!archive) {
+    return;
+  }
+  auto it = std::ranges::find_if(
+      archive->entries, [&](const mojom::ConversationTurnPtr& entry) {
+        return entry->uuid && *entry->uuid == entry_uuid;
+      });
+  if (it == archive->entries.end()) {
+    return;
+  }
+  auto specifics = EntryToSpecifics(conversation_uuid, **it,
+                                    conversation->associated_content);
+  auto metadata_change_list = CreateMetadataChangeList();
+  this->change_processor()->Put(
+      base::StrCat({kEntryStorageKeyPrefix, entry_uuid}),
+      CreateEntityDataFromSpecifics(specifics), metadata_change_list.get());
 }
 
 }  // namespace ai_chat

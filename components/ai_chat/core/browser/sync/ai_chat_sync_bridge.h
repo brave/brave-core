@@ -77,6 +77,22 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   void ApplyDisableSyncChanges(std::unique_ptr<syncer::MetadataChangeList>
                                    delete_metadata_change_list) override;
 
+  // Conversation-metadata notifications. Called on this sequence by the
+  // service when the conversation row changes (title, model, tokens, ...).
+  void OnConversationAdded(const std::string& uuid);
+  void OnConversationModified(const std::string& uuid);
+  // Must be invoked while entries are still readable from the database, so
+  // the bridge can emit a Delete for every Entry storage key before the
+  // conversation row and its child rows are removed.
+  void OnConversationDeleted(const std::string& uuid);
+
+  // Entry-level notifications. |conversation_uuid| is the parent.
+  void OnConversationEntryAdded(const std::string& conversation_uuid,
+                                const std::string& entry_uuid);
+  void OnConversationEntryModified(const std::string& conversation_uuid,
+                                   const std::string& entry_uuid);
+  void OnConversationEntryDeleted(const std::string& entry_uuid);
+
   base::WeakPtr<AIChatSyncBridge> GetWeakPtr() {
     return weak_ptr_factory_.GetWeakPtr();
   }
@@ -92,6 +108,14 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
       base::FunctionRef<bool(const std::string&)> should_include,
       base::FunctionRef<void(std::string, std::unique_ptr<syncer::EntityData>)>
           emit);
+
+  // Emits a Put for the conversation metadata of |uuid|. No-op for temporary
+  // or unknown conversations.
+  void PutConversationMetadata(const std::string& uuid);
+  // Emits a Put for the single entry |entry_uuid| belonging to
+  // |conversation_uuid|. No-op when the conversation is temporary or unknown.
+  void PutEntry(const std::string& conversation_uuid,
+                const std::string& entry_uuid);
 
   // Attached via SetDatabase()/ClearDatabase(); null before the first attach
   // and whenever on-disk storage is disabled.
