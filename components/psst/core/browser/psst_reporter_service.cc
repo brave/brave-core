@@ -61,7 +61,8 @@ void PsstReporterService::SubmitPsstErrorsReport(
 
   if (failed_tasks.empty()) {
     // Nothing to report
-    std::move(callback).Run();
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback)));
     return;
   }
 
