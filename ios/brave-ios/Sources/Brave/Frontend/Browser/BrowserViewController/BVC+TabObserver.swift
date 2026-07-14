@@ -407,7 +407,6 @@ extension BrowserViewController {
       FaviconScriptHandler(),
       YoutubeQualityScriptHandler(),
       BraveLeoScriptHandler(),
-      BraveSkusScriptHandler(),
       RequestBlockingContentScriptHandler(),
     ]
 
@@ -429,11 +428,12 @@ extension BrowserViewController {
       injectedScripts.append(Web3NameServiceScriptHandler())
     }
 
-    // Only add the logins handler and wallet provider if the tab is NOT a private browsing tab
+    // Only add the logins handler, wallet provider and skus if the tab is NOT a private tab
     if !tab.isPrivate {
       injectedScripts += [
         LoginsScriptHandler(passwordAPI: profileController.passwordAPI),
         BraveSearchResultAdScriptHandler(),
+        BraveSkusScriptHandler(),
       ]
       if profileController.braveWalletAPI.isAllowed {
         injectedScripts += [

@@ -44,6 +44,7 @@ final class PageDataTests: XCTestCase {
       // When
       // We get the script types for the main frame
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,
@@ -62,6 +63,7 @@ final class PageDataTests: XCTestCase {
       // When
       // Nothing has changed
       let unchangedScriptTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,
@@ -81,6 +83,7 @@ final class PageDataTests: XCTestCase {
       // NOTE: This is because we have no engines on AdBlockStats.
       // If we were to add some engines we might see additional types
       let addedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,
@@ -103,6 +106,7 @@ final class PageDataTests: XCTestCase {
       // We get the same result as before
       XCTAssertTrue(isUpgradedMainFrame)
       let upgradedMainFrameRequestTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,
@@ -121,6 +125,7 @@ final class PageDataTests: XCTestCase {
       // We get the same result as before
       XCTAssertTrue(isUpgradedSubFrame)
       let upgradedSubFrameFrameRequestTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,
@@ -156,6 +161,7 @@ final class PageDataTests: XCTestCase {
 
     Task { @MainActor in
       let mainFrameRequestTypes = await pageData.makeUserScriptTypes(
+        isPrivateBrowsing: false,
         isDeAmpEnabled: false,
         isAdBlockEnabled: true,
         isBlockFingerprintingEnabled: true,

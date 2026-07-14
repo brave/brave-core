@@ -116,6 +116,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
 
     let scriptTypes =
       await tab.currentPageData?.makeUserScriptTypes(
+        isPrivateBrowsing: tab.isPrivate,
         isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
         isAdBlockEnabled: isAdBlockEnabled,
         isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
@@ -131,6 +132,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
       )
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
+          isPrivateBrowsing: tab.isPrivate,
           isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
           isAdBlockEnabled: isAdBlockEnabled,
           isBlockFingerprintingEnabled: isBlockFingerprintingEnabled,
@@ -159,6 +161,7 @@ class DetachedTabPrivacyHelper: TabPolicyDecider {
     {
       let scriptTypes =
         await tab.currentPageData?.makeUserScriptTypes(
+          isPrivateBrowsing: tab.isPrivate,
           isDeAmpEnabled: deAmpPrefs.isDeAmpEnabled,
           isAdBlockEnabled: tab.braveShieldsHelper?.shieldLevel(
             for: pageData.mainFrameURL,
