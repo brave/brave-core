@@ -19,6 +19,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
@@ -206,6 +208,10 @@ class SidebarBrowserTest : public InProcessBrowserTest {
                 panel_ui->IsSidePanelShowing());
       }));
     }
+  }
+
+  void HandleBrowserWindowMouseEvent() {
+    browser_view()->HandleBrowserWindowMouseEvent(GetDummyEvent());
   }
 
   SidebarControlView* GetSidebarControlView() const {
@@ -715,7 +721,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   gfx::Point mouse_position = contents_area_view_rect.top_right();
   mouse_position.Offset(-2, 2);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  HandleBrowserWindowMouseEvent();
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Check when sidebar on left.
@@ -730,7 +736,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position = contents_area_view_rect.origin();
   mouse_position.Offset(2, 2);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  HandleBrowserWindowMouseEvent();
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -742,7 +748,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   // When mouse moves into that space, sidebar should be visible.
   mouse_position = contents_area_view_rect.origin();
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  HandleBrowserWindowMouseEvent();
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -767,7 +773,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position.Offset(2, 2);
   views::View::ConvertPointToScreen(left_split_view, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  HandleBrowserWindowMouseEvent();
   EXPECT_TRUE(sidebar_container->IsSidebarVisible());
 
   // Hide sidebar.
@@ -779,7 +785,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserWithSplitViewTest,
   mouse_position.Offset(2, 2);
   views::View::ConvertPointToScreen(right_split_view, &mouse_position);
   screen->SetCursorScreenPointForTesting(mouse_position);
-  browser_view->HandleBrowserWindowMouseEvent(GetDummyEvent());
+  HandleBrowserWindowMouseEvent();
   EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 }
 
@@ -2582,6 +2588,80 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, ControlViewBorderOverlapGap) {
               control_view->GetPreferredSize().width())
         << "rounded corners on: preferred width narrows by the overlap margin";
   }
+}
+
+class SidebarBrowserTestWithFocusMode : public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithFocusMode() {
+    feature_list_.InitAndEnableFeature(::features::kBraveFocusMode);
+  }
+  ~SidebarBrowserTestWithFocusMode() override = default;
+
+  FocusModeController* focus_mode_controller() {
+    return browser()->GetFeatures().focus_mode_controller();
+  }
+
+  void SetSidebarShowOption(SidebarService::ShowSidebarOption option) {
+    SidebarServiceFactory::GetForProfile(browser()->profile())
+        ->SetSidebarShowOption(option);
+  }
+
+  // Moves the cursor into the sidebar's hot corner and dispatches a mouse move,
+  // mirroring the mechanism used by ShowSidebarOnMouseOverTest.
+  void MoveMouseToSidebarHotCorner() {
+    browser_view()->DeprecatedLayoutImmediately();
+    browser()->profile()->GetPrefs()->SetBoolean(
+        prefs::kSidePanelHorizontalAlignment, false);
+
+    gfx::Point hot_corner =
+        browser_view()->GetBoundingBoxInScreenForMouseOverHandling().origin();
+    hot_corner.Offset(2, 2);
+    display::Screen::Get()->SetCursorScreenPointForTesting(hot_corner);
+    HandleBrowserWindowMouseEvent();
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+  display::test::TestScreen screen_{/*create_display=*/true,
+                                    /*register_screen=*/true};
+};
+
+// While Focus Mode is active, an always-shown sidebar switches to hover-driven
+// auto-hide, then returns to always-shown when Focus Mode is disabled.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithFocusMode,
+                       AlwaysShownSidebarAutoHidesInFocusMode) {
+  SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
+
+  auto* sidebar_container = GetSidebarContainerView();
+  ASSERT_TRUE(focus_mode_controller());
+  ASSERT_TRUE(sidebar_container->IsSidebarVisible());
+
+  // Enabling Focus Mode auto-hides the always-shown sidebar.
+  focus_mode_controller()->SetEnabled(true);
+  EXPECT_FALSE(sidebar_container->IsSidebarVisible());
+
+  // The sidebar is now hover-driven: moving into the hot corner reveals it.
+  MoveMouseToSidebarHotCorner();
+  EXPECT_TRUE(sidebar_container->IsSidebarVisible());
+
+  // Disabling Focus Mode restores the always-shown behavior.
+  focus_mode_controller()->SetEnabled(false);
+  EXPECT_TRUE(sidebar_container->IsSidebarVisible());
+}
+
+// Focus Mode must not reveal a sidebar the user has chosen to never show.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWithFocusMode,
+                       NeverShownSidebarStaysHiddenInFocusMode) {
+  SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowNever);
+
+  auto* sidebar_container = GetSidebarContainerView();
+  ASSERT_FALSE(sidebar_container->IsSidebarVisible());
+
+  focus_mode_controller()->SetEnabled(true);
+  EXPECT_FALSE(sidebar_container->IsSidebarVisible());
+
+  focus_mode_controller()->SetEnabled(false);
+  EXPECT_FALSE(sidebar_container->IsSidebarVisible());
 }
 
 }  // namespace sidebar

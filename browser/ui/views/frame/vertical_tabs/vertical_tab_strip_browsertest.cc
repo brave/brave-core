@@ -13,6 +13,8 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_browser_features.h"
 #include "brave/browser/ui/browser_commands.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_features.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model.h"
 #include "brave/browser/ui/tabs/brave_tab_menu_model_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
@@ -513,6 +515,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
   ASSERT_TRUE(browser_view()
                   ->vertical_tab_strip_host_view_->GetPreferredSize()
                   .width());
+
+  auto* region_view = browser_view()
+                          ->vertical_tab_strip_container_view()
+                          ->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+
   auto* fullscreen_controller = browser_view()
                                     ->browser()
                                     ->GetFeatures()
@@ -538,6 +548,15 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, MAYBE_Fullscreen) {
   }
   ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
   ASSERT_FALSE(browser_view()->IsFullscreen());
+
+  // Exiting browser fullscreen restores the pre-fullscreen expanded state and
+  // makes the strip visible again.
+  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+  EXPECT_TRUE(region_view->GetVisible());
+  EXPECT_TRUE(browser_view()
+                  ->vertical_tab_strip_host_view_->GetPreferredSize()
+                  .width());
 
   {
     auto observer = FullscreenNotificationObserver(browser());
@@ -2283,4 +2302,78 @@ IN_PROC_BROWSER_TEST_F(UpstreamVerticalTabsCrashTest, NoCrashOnStartup) {
   Browser* new_browser = CreateBrowser(browser()->profile());
   ASSERT_TRUE(new_browser);
   EXPECT_EQ(1, new_browser->tab_strip_model()->count());
+}
+
+class VerticalTabStripFocusModeTest : public VerticalTabStripBrowserTest {
+ public:
+  VerticalTabStripFocusModeTest() : feature_list_(features::kBraveFocusMode) {}
+  ~VerticalTabStripFocusModeTest() override = default;
+
+  FocusModeController* focus_mode_controller() {
+    return browser()->GetFeatures().focus_mode_controller();
+  }
+
+  BraveVerticalTabStripRegionView* GetRegionView() {
+    return browser_view()
+        ->vertical_tab_strip_container_view()
+        ->vertical_tab_strip_region_view();
+  }
+
+  void SetCollapsedPref(bool collapsed) {
+    browser()->profile()->GetOriginalProfile()->GetPrefs()->SetBoolean(
+        brave_tabs::kVerticalTabsCollapsed, collapsed);
+  }
+
+ private:
+  base::test::ScopedFeatureList feature_list_;
+};
+
+// Enabling Focus Mode auto-hides the vertical tab strip into floating mode, and
+// disabling it restores the previous expanded state.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripFocusModeTest,
+                       EntersFloatingAndRestoresExpandedState) {
+  ToggleVerticalTabStrip();
+  using State = BraveVerticalTabStripRegionView::State;
+
+  ASSERT_TRUE(focus_mode_controller());
+  auto* region_view = GetRegionView();
+  ASSERT_TRUE(region_view);
+
+  // Pre-condition: expanded and visible.
+  ASSERT_EQ(State::kExpanded, region_view->state());
+  ASSERT_TRUE(region_view->GetVisible());
+
+  // Enabling Focus Mode enters floating mode: the strip collapses and hides.
+  focus_mode_controller()->SetEnabled(true);
+  EXPECT_EQ(State::kCollapsed, region_view->state());
+  EXPECT_FALSE(region_view->GetVisible());
+
+  // Disabling Focus Mode restores the previous expanded, visible state.
+  focus_mode_controller()->SetEnabled(false);
+  EXPECT_EQ(State::kExpanded, region_view->state());
+  EXPECT_TRUE(region_view->GetVisible());
+}
+
+// The state saved when entering floating mode is round-tripped: a strip that
+// was collapsed before Focus Mode is restored to collapsed, not expanded.
+IN_PROC_BROWSER_TEST_F(VerticalTabStripFocusModeTest, RestoresCollapsedState) {
+  ToggleVerticalTabStrip();
+  using State = BraveVerticalTabStripRegionView::State;
+
+  auto* region_view = GetRegionView();
+  ASSERT_TRUE(region_view);
+
+  // Pre-condition: collapsed (but still visible) before Focus Mode.
+  SetCollapsedPref(true);
+  ASSERT_EQ(State::kCollapsed, region_view->state());
+  ASSERT_TRUE(region_view->GetVisible());
+
+  focus_mode_controller()->SetEnabled(true);
+  EXPECT_EQ(State::kCollapsed, region_view->state());
+  EXPECT_FALSE(region_view->GetVisible());
+
+  // Disabling Focus Mode restores the collapsed state and makes it visible.
+  focus_mode_controller()->SetEnabled(false);
+  EXPECT_EQ(State::kCollapsed, region_view->state());
+  EXPECT_TRUE(region_view->GetVisible());
 }

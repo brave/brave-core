@@ -17,6 +17,9 @@ source_set("vertical_tabs") {
   if (is_mac) {
     sources += [ "vertical_tab_strip_region_view_mac.mm" ]
   }
+
+  public_deps = [ "//brave/browser/ui/focus_mode" ]
+
   deps = [
     "//base",
     "//brave/browser/ui:brave_tab_prefs",

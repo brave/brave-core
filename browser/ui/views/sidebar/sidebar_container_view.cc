@@ -11,12 +11,15 @@
 #include <utility>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/browser/ui/focus_mode/focus_mode_controller.h"
+#include "brave/browser/ui/focus_mode/focus_mode_utils.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
@@ -120,6 +123,11 @@ SidebarContainerView::~SidebarContainerView() = default;
 void SidebarContainerView::Init() {
   initialized_ = true;
 
+  if (auto* focus_mode_controller =
+          browser_->GetFeatures().focus_mode_controller()) {
+    focus_mode_observation_.Observe(focus_mode_controller);
+  }
+
   AddChildViews();
   SetSidebarShowOption(
       GetSidebarService(GetBraveBrowser())->GetSidebarShowOption());
@@ -160,7 +168,7 @@ void SidebarContainerView::ShowSidebarOnMouseOver(
     return;
   }
 
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (!ShouldShowOnHover()) {
     return;
   }
 
@@ -190,24 +198,7 @@ void SidebarContainerView::SetSidebarShowOption(ShowSidebarOption show_option) {
   DVLOG(2) << __func__;
 
   show_sidebar_option_ = show_option;
-
-  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
-    if (!IsSidebarVisible()) {
-      ShowSidebar(AnimationStyle::kImmediate);
-    }
-    return;
-  }
-
-  if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
-    HideSidebar();
-    return;
-  }
-
-  // kShowOnMouseOver
-  if (!IsMouseHovered()) {
-    HideSidebar();
-  }
-  return;
+  ApplyShowOption();
 }
 
 void SidebarContainerView::UpdateSidebarItemsState() {
@@ -232,7 +223,7 @@ void SidebarContainerView::MenuClosed() {
   DVLOG(1) << __func__;
 
   // Don't need to to auto hide sidebar UI for other options.
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (!ShouldShowOnHover()) {
     return;
   }
 
@@ -293,7 +284,7 @@ bool SidebarContainerView::ShouldForceShowSidebar() const {
 }
 
 void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (!ShouldShowOnHover()) {
     return;
   }
 
@@ -302,7 +293,7 @@ void SidebarContainerView::OnMouseEntered(const ui::MouseEvent& event) {
 }
 
 void SidebarContainerView::OnMouseExited(const ui::MouseEvent& event) {
-  if (show_sidebar_option_ != ShowSidebarOption::kShowOnMouseOver) {
+  if (!ShouldShowOnHover()) {
     return;
   }
 
@@ -335,6 +326,37 @@ void SidebarContainerView::AnimationEnded(const gfx::Animation* animation) {
       sidebar_control_view_->SetVisible(false);
     }
     PreferredSizeChanged();
+}
+
+void SidebarContainerView::OnFocusModeToggled(bool enabled) {
+  ApplyShowOption();
+}
+
+void SidebarContainerView::ApplyShowOption() {
+  if (ShouldShowOnHover()) {
+    if (!IsMouseHovered()) {
+      HideSidebar();
+    }
+    return;
+  }
+
+  if (show_sidebar_option_ == ShowSidebarOption::kShowAlways) {
+    if (!IsSidebarVisible()) {
+      ShowSidebar(AnimationStyle::kImmediate);
+    }
+    return;
+  }
+
+  CHECK(show_sidebar_option_ == ShowSidebarOption::kShowNever);
+  HideSidebar();
+}
+
+bool SidebarContainerView::ShouldShowOnHover() const {
+  if (show_sidebar_option_ == ShowSidebarOption::kShowNever) {
+    return false;
+  }
+  return IsFocusModeEnabled(browser_) ||
+         show_sidebar_option_ == ShowSidebarOption::kShowOnMouseOver;
 }
 
 void SidebarContainerView::ShowSidebar(AnimationStyle animation) {
