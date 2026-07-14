@@ -1616,4 +1616,36 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
   EXPECT_TRUE(all_skills.empty());
 }
 
+TEST_P(AIChatServiceUnitTest, SetModelPinned) {
+  constexpr char kModelKey[] = "chat-claude-sonnet";
+
+  MockServiceClient mock_client(ai_chat_service_.get());
+  base::RunLoop run_loop;
+  EXPECT_CALL(mock_client, OnStateChanged(_))
+      .WillOnce([&](mojom::ServiceStatePtr state) {
+        ASSERT_EQ(state->pinned_model_keys.size(), 1u);
+        EXPECT_EQ(state->pinned_model_keys[0], kModelKey);
+        run_loop.Quit();
+      });
+
+  ai_chat_service_->SetModelPinned(kModelKey, true);
+  run_loop.Run();
+
+  const auto& pinned_keys = prefs_.GetList(prefs::kPinnedModelKeys);
+  ASSERT_EQ(pinned_keys.size(), 1u);
+  EXPECT_EQ(pinned_keys[0].GetString(), kModelKey);
+
+  base::RunLoop unpin_run_loop;
+  EXPECT_CALL(mock_client, OnStateChanged(_))
+      .WillOnce([&](mojom::ServiceStatePtr state) {
+        EXPECT_TRUE(state->pinned_model_keys.empty());
+        unpin_run_loop.Quit();
+      });
+
+  ai_chat_service_->SetModelPinned(kModelKey, false);
+  unpin_run_loop.Run();
+
+  EXPECT_TRUE(prefs_.GetList(prefs::kPinnedModelKeys).empty());
+}
+
 }  // namespace ai_chat

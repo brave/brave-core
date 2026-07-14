@@ -183,6 +183,7 @@ class AIChatService : public KeyedService,
   void EnableStoragePref() override;
   void DismissStorageNotice() override;
   void DismissPremiumPrompt() override;
+  void SetModelPinned(const std::string& model_key, bool pinned) override;
   void GetSkills(GetSkillsCallback callback) override;
   void CreateSkill(const std::string& shortcut,
                    const std::string& prompt,

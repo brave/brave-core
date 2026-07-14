@@ -180,6 +180,54 @@
   <message name="IDS_CHAT_UI_SHOW_ALL_MODELS_BUTTON" desc="Button label to show all models" formatter_data="webui=AiChat">
     Show all models
   </message>
+  <message name="IDS_CHAT_UI_PINNED_MODELS_LABEL" desc="Label for the pinned models section in the model selector" formatter_data="webui=AiChat">
+    Pinned
+  </message>
+  <message name="IDS_CHAT_UI_LOCAL_MODELS_RAIL_LABEL" desc="Label for the local models section in the model selector vendor rail" formatter_data="webui=AiChat">
+    Local
+  </message>
+  <message name="IDS_CHAT_UI_SEARCH_MODELS_PLACEHOLDER" desc="Placeholder text for the model search input" formatter_data="webui=AiChat">
+    Search models
+  </message>
+  <message name="IDS_CHAT_UI_FILTER_MODELS_BUTTON" desc="Button label to open the model capability filter menu" formatter_data="webui=AiChat">
+    Filter
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_FAST" desc="Model capability filter label for fast models" formatter_data="webui=AiChat">
+    Fast
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_THINKING" desc="Model capability filter label for thinking models" formatter_data="webui=AiChat">
+    Thinking
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_SEARCH" desc="Model capability filter label for models with search" formatter_data="webui=AiChat">
+    Search
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_VISION" desc="Model capability filter label for models with vision" formatter_data="webui=AiChat">
+    Vision
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_TOOLS" desc="Model capability filter label for models with tools" formatter_data="webui=AiChat">
+    Tools
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_AUDIO" desc="Model capability filter label for models with audio" formatter_data="webui=AiChat">
+    Audio
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_CAPABILITY_VIDEO" desc="Model capability filter label for models with video" formatter_data="webui=AiChat">
+    Video
+  </message>
+  <message name="IDS_CHAT_UI_NO_MODELS_FOUND" desc="Empty state when model search or filters match no models" formatter_data="webui=AiChat">
+    No models found
+  </message>
+  <message name="IDS_CHAT_UI_LOCAL_MODELS_EMPTY" desc="Empty state when the user has no local models configured" formatter_data="webui=AiChat">
+    No local models yet. Add a model in Leo settings or connect Ollama to use models on your device.
+  </message>
+  <message name="IDS_CHAT_UI_PIN_MODEL_BUTTON" desc="Accessible label for pinning a model" formatter_data="webui=AiChat">
+    Pin model
+  </message>
+  <message name="IDS_CHAT_UI_UNPIN_MODEL_BUTTON" desc="Accessible label for unpinning a model" formatter_data="webui=AiChat">
+    Unpin model
+  </message>
+  <message name="IDS_CHAT_UI_DEFAULT_MODEL_LABEL" desc="Label indicating the user's default model" formatter_data="webui=AiChat">
+    Default
+  </message>
   <message name="IDS_CHAT_UI_MODEL_CATEGORY_CHAT" desc="Category name for Chat" formatter_data="webui=AiChat">
     Chat
   </message>

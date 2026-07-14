@@ -16,6 +16,7 @@ const mockModels = [
     visionSupport: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    capabilities: [],
     isSuggestedModel: false,
     isNearModel: false,
     options: {
@@ -36,6 +37,10 @@ const mockModels = [
     visionSupport: true,
     supportsTools: true,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    capabilities: [
+      Mojom.ModelCapability.VISION,
+      Mojom.ModelCapability.TOOLS,
+    ],
     isSuggestedModel: false,
     isNearModel: false,
     options: {

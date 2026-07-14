@@ -9,7 +9,12 @@ import Label from '@brave/leo/react/label'
 import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
-import { getModelIcon, NEAR_AI_LEARN_MORE_URL } from '../../../common/constants'
+import {
+  AUTOMATIC_MODEL_KEY,
+  getModelIcon,
+  NEAR_AI_LEARN_MORE_URL,
+} from '../../../common/constants'
+import { formatModelCapabilitiesSubtitle } from '../../model_utils'
 import { NearIcon } from '../near_label/near_label'
 import styles from './model_menu_item_style.module.scss'
 
@@ -19,7 +24,11 @@ interface ModelContentProps {
   showDetails?: boolean
   showPremiumLabel?: boolean
   isDisabled?: boolean
+  isPinned?: boolean
+  isDefault?: boolean
+  showCapabilitySubtitle?: boolean
   onClickLearnMore?: () => void
+  onTogglePin?: () => void
 }
 
 const ModelContent = (props: ModelContentProps) => {
@@ -29,13 +38,18 @@ const ModelContent = (props: ModelContentProps) => {
     showDetails,
     showPremiumLabel,
     isDisabled,
+    isPinned,
+    isDefault,
+    showCapabilitySubtitle,
     onClickLearnMore,
+    onTogglePin,
   } = props
 
   const isCustomModel = model.options.customModelOptions
   const isOllamaModel = !!(
     model.options.customModelOptions?.endpoint.url === Mojom.OLLAMA_ENDPOINT
   )
+  const canPin = !!onTogglePin && model.key !== AUTOMATIC_MODEL_KEY
 
   const label = React.useMemo(() => {
     if (isCurrent) {
@@ -92,6 +106,30 @@ const ModelContent = (props: ModelContentProps) => {
     return null
   }, [isCurrent, showPremiumLabel, isCustomModel, isOllamaModel, model])
 
+  const subtitle = React.useMemo(() => {
+    if (isCustomModel) {
+      return model.options.customModelOptions?.modelRequestName ?? ''
+    }
+
+    if (showCapabilitySubtitle) {
+      // Auto and Near models keep their descriptive localized subtitle.
+      if (
+        model.key === AUTOMATIC_MODEL_KEY
+        || model.isNearModel
+        || !(model.capabilities?.length)
+      ) {
+        return getLocale(
+          `CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`,
+        )
+      }
+      return formatModelCapabilitiesSubtitle(model.capabilities)
+    }
+
+    return getLocale(
+      `CHAT_UI_${model.key.toUpperCase().replaceAll('-', '_')}_SUBTITLE`,
+    )
+  }, [isCustomModel, model, showCapabilitySubtitle])
+
   return (
     <>
       <div
@@ -114,20 +152,45 @@ const ModelContent = (props: ModelContentProps) => {
           >
             {model.displayName}
             {model.isNearModel && <NearIcon />}
+            {isDefault && !isCurrent && (
+              <Label
+                mode='default'
+                color='neutral'
+                className={styles.defaultLabel}
+              >
+                {getLocale(S.CHAT_UI_DEFAULT_MODEL_LABEL)}
+              </Label>
+            )}
           </div>
-          {label}
+          <div className={styles.labelAndPin}>
+            {label}
+            {canPin && (
+              <button
+                type='button'
+                className={classnames({
+                  [styles.pinButton]: true,
+                  [styles.pinButtonPinned]: isPinned,
+                })}
+                aria-label={getLocale(
+                  isPinned
+                    ? S.CHAT_UI_UNPIN_MODEL_BUTTON
+                    : S.CHAT_UI_PIN_MODEL_BUTTON,
+                )}
+                data-testid={`pin-${model.key}`}
+                onClick={(e) => {
+                  e.preventDefault()
+                  e.stopPropagation()
+                  onTogglePin?.()
+                }}
+              >
+                <Icon name='pin' />
+              </button>
+            )}
+          </div>
         </div>
         {showDetails && (
           <>
-            <p className={styles.modelSubtitle}>
-              {isCustomModel
-                ? model.options.customModelOptions?.modelRequestName
-                : getLocale(
-                    `CHAT_UI_${model.key
-                      .toUpperCase()
-                      .replaceAll('-', '_')}_SUBTITLE`,
-                  )}
-            </p>
+            <p className={styles.modelSubtitle}>{subtitle}</p>
             {onClickLearnMore && model.isNearModel && (
               <a
                 // While we preventDefault, we still need to pass the href
@@ -161,8 +224,12 @@ export function ModelMenuItem(props: MenuItemProps) {
     showDetails,
     showPremiumLabel,
     isDisabled,
+    isPinned,
+    isDefault,
+    showCapabilitySubtitle,
     onClick,
     onClickLearnMore,
+    onTogglePin,
   } = props
   return (
     <leo-menu-item
@@ -177,14 +244,27 @@ export function ModelMenuItem(props: MenuItemProps) {
         showPremiumLabel={showPremiumLabel}
         showDetails={showDetails}
         isDisabled={isDisabled}
+        isPinned={isPinned}
+        isDefault={isDefault}
+        showCapabilitySubtitle={showCapabilitySubtitle}
         onClickLearnMore={onClickLearnMore}
+        onTogglePin={onTogglePin}
       />
     </leo-menu-item>
   )
 }
 
 export function ModelOption(props: ModelContentProps) {
-  const { model, isCurrent, showDetails, showPremiumLabel, isDisabled } = props
+  const {
+    model,
+    isCurrent,
+    showDetails,
+    showPremiumLabel,
+    isDisabled,
+    isPinned,
+    isDefault,
+    showCapabilitySubtitle,
+  } = props
 
   const content = (
     <ModelContent
@@ -193,6 +273,9 @@ export function ModelOption(props: ModelContentProps) {
       showPremiumLabel={showPremiumLabel}
       showDetails={showDetails}
       isDisabled={isDisabled}
+      isPinned={isPinned}
+      isDefault={isDefault}
+      showCapabilitySubtitle={showCapabilitySubtitle}
     />
   )
 

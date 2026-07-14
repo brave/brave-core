@@ -132,6 +132,12 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
     dismissPremiumPrompt: () => api.service.dismissPremiumPrompt(),
 
     /**
+     * @deprecated use api.service.setModelPinned directly instead
+     */
+    setModelPinned: (modelKey: string, pinned: boolean) =>
+      api.service.setModelPinned(modelKey, pinned),
+
+    /**
      * @deprecated use api.[action] directly instead
      */
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),

@@ -33,6 +33,7 @@ constexpr char kValidModelsJSON[] = R"({
       "is_suggested_model": true,
       "is_near_model": false,
       "capabilities": ["chat", "files"],
+      "model_capabilities": ["fast", "vision"],
       "options": {
         "type": "leo",
         "name": "test-model-1-api",
@@ -282,6 +283,11 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
             fetched_models[0]->supported_capabilities[0]);
   EXPECT_EQ(mojom::ConversationCapability::FILES,
             fetched_models[0]->supported_capabilities[1]);
+  ASSERT_EQ(2u, fetched_models[0]->capabilities.size());
+  EXPECT_EQ(mojom::ModelCapability::FAST,
+            fetched_models[0]->capabilities[0]);
+  EXPECT_EQ(mojom::ModelCapability::VISION,
+            fetched_models[0]->capabilities[1]);
 
   EXPECT_EQ("test-model-2", fetched_models[1]->key);
   EXPECT_EQ("Test Model 2", fetched_models[1]->display_name);

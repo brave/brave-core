@@ -68,6 +68,47 @@
   display: flex;
 }
 
+.labelAndPin {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  flex-shrink: 0;
+}
+
+.defaultLabel {
+  margin-inline-start: var(--leo-spacing-s);
+}
+
+.pinButton {
+  --leo-icon-size: 16px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: var(--leo-radius-s);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+
+  &:hover {
+    background: var(--leo-color-container-interactive);
+  }
+}
+
+.pinButtonPinned {
+  display: flex;
+  --leo-icon-color: var(--leo-color-icon-interactive);
+}
+
+:global(leo-menu-item:hover) .pinButton,
+:global(leo-menu-item:focus-within) .pinButton {
+  display: flex;
+}
+
 .learnMoreLink {
   align-self: start;
   font: var(--leo-font-small-regular);
