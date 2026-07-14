@@ -1648,4 +1648,16 @@ TEST_P(AIChatServiceUnitTest, SetModelPinned) {
   EXPECT_TRUE(prefs_.GetList(prefs::kPinnedModelKeys).empty());
 }
 
+TEST_P(AIChatServiceUnitTest, SetDefaultModelKey) {
+  constexpr char kModelKey[] = "chat-claude-sonnet";
+
+  EXPECT_NE(model_service_->GetDefaultModelKey(), kModelKey);
+  ai_chat_service_->SetDefaultModelKey(kModelKey);
+  EXPECT_EQ(model_service_->GetDefaultModelKey(), kModelKey);
+
+  // Empty keys are ignored.
+  ai_chat_service_->SetDefaultModelKey("");
+  EXPECT_EQ(model_service_->GetDefaultModelKey(), kModelKey);
+}
+
 }  // namespace ai_chat

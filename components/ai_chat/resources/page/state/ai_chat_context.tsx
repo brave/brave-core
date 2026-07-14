@@ -138,6 +138,12 @@ export default function useProvideAIChatContext(props: AIChatContextProps) {
       api.service.setModelPinned(modelKey, pinned),
 
     /**
+     * @deprecated use api.service.setDefaultModelKey directly instead
+     */
+    setDefaultModelKey: (modelKey: string) =>
+      api.service.setDefaultModelKey(modelKey),
+
+    /**
      * @deprecated use api.[action] directly instead
      */
     userRefreshPremiumSession: () => api.uiHandler.refreshPremiumSession(),

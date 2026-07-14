@@ -670,6 +670,13 @@ void AIChatService::SetModelPinned(const std::string& model_key, bool pinned) {
   }
 }
 
+void AIChatService::SetDefaultModelKey(const std::string& model_key) {
+  if (model_key.empty() || !model_service_) {
+    return;
+  }
+  model_service_->SetDefaultModelKey(model_key);
+}
+
 void AIChatService::GetSkills(GetSkillsCallback callback) {
   auto skills = prefs::GetSkillsFromPrefs(*profile_prefs_);
   std::move(callback).Run(std::move(skills));

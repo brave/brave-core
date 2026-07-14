@@ -225,6 +225,18 @@
   <message name="IDS_CHAT_UI_UNPIN_MODEL_BUTTON" desc="Accessible label for unpinning a model" formatter_data="webui=AiChat">
     Unpin model
   </message>
+  <message name="IDS_CHAT_UI_PIN_LABEL" desc="Menu item label to pin a model" formatter_data="webui=AiChat">
+    Pin
+  </message>
+  <message name="IDS_CHAT_UI_UNPIN_LABEL" desc="Menu item label to unpin a model" formatter_data="webui=AiChat">
+    Unpin
+  </message>
+  <message name="IDS_CHAT_UI_SET_AS_DEFAULT_MODEL" desc="Menu item to set a model as the default for new conversations" formatter_data="webui=AiChat">
+    Set as default
+  </message>
+  <message name="IDS_CHAT_UI_MODEL_MORE_OPTIONS" desc="Accessible label for the model options menu button" formatter_data="webui=AiChat">
+    More options
+  </message>
   <message name="IDS_CHAT_UI_DEFAULT_MODEL_LABEL" desc="Label indicating the user's default model" formatter_data="webui=AiChat">
     Default
   </message>
