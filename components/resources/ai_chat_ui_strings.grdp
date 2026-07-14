@@ -223,10 +223,10 @@
     You've reached the rate limit for Leo. Unlock a higher response rate by subscribing to Premium, or try again soon.
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_1" desc="A premium feature: access to state-of-the-art LLMs" formatter_data="webui=AiChat">
-    Access state-of-the-art LLMs from Anthropic, OpenAI, Deepseek, &amp; more
+    Access state-of-the-art LLMs from Anthropic, OpenAI, DeepSeek, &amp; more
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_2" desc="A premium feature: task-specific models" formatter_data="webui=AiChat">
-    Find task-specific models for coding, content generation, &amp; more
+    Find task-specific models for coding, content generation, and beyond
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3" desc="A premium feature: higher rate limits" formatter_data="webui=AiChat">
     Higher rate limits
