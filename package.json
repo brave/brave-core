@@ -5,10 +5,11 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
+    "pnpm:devPreinstall": "node ./build/commands/scripts/devPreinstall.ts",
     "help": "node ./build/commands/scripts/commands.js --help",
     "audit_deps": "node ./build/commands/scripts/audit.js -- --audit_dev_deps",
-    "init": "npm install --no-save --no-fund --no-audit && node ./build/commands/scripts/sync.js --init",
-    "sync": "npm install --no-save --no-fund --no-audit && node ./build/commands/scripts/sync.js",
+    "init": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js --init",
+    "sync": "pnpm install --frozen-lockfile && node ./build/commands/scripts/sync.js",
     "delete_string_translations": "node ./build/commands/scripts/commands.js delete_string_translations",
     "create_dist": "node ./build/commands/scripts/commands.js build --target=create_dist",
     "gclient": "node ./build/commands/scripts/gclient.js",
@@ -68,8 +69,8 @@
       "onFail": "error"
     },
     "packageManager": {
-      "name": "npm",
-      "version": ">=11.13.0",
+      "name": "pnpm",
+      "version": ">=11.9.0",
       "onFail": "error"
     }
   },
@@ -257,22 +258,5 @@
     "unified": "11.0.5",
     "unist-util-visit": "5.1.0",
     "webext-redux": "2.1.9"
-  },
-  "overrides": {
-    "axios": "1.16.0",
-    "elliptic": "6.6.1",
-    "esbuild": "0.28.1",
-    "prismjs": "1.30.0",
-    "protobufjs": "7.6.3",
-    "tiny-secp256k1": "1.1.7",
-    "uuid": "14.0.0",
-    "http-proxy-middleware": "2.0.10",
-    "react": "$react",
-    "react-dom": "$react-dom",
-    "@types/react": "$@types/react",
-    "@types/react-dom": "$@types/react-dom",
-    "@brave/brave-ui": {
-      "styled-components": "$styled-components"
-    }
   }
 }
