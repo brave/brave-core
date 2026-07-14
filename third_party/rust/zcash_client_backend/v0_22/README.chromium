@@ -1,9 +1,0 @@
-Name: zcash_client_backend
-URL: https://crates.io/crates/zcash_client_backend
-Version: 0.22.0
-License: Apache-2.0
-License File:
-Shipped: yes
-Security Critical: yes
-
-Description: APIs for creating shielded Zcash light clients

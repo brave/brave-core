@@ -9,29 +9,41 @@
 import("//build/rust/cargo_crate.gni")
 
 cargo_crate("lib") {
-  crate_name = "either"
-  epoch = "1"
+  crate_name = "shardtree"
+  epoch = "0.7"
   crate_type = "rlib"
-  crate_root =
-      "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/lib.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/serde_untagged.rs",
-    "//brave/third_party/rust/chromium_crates_io/vendor/either-v1/src/serde_untagged_optional.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/batch.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/error.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/legacy.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/prunable.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/store.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/store/caching.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/store/memory.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/testing.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/src/tree.rs",
   ]
   inputs = []
 
   build_native_rust_unit_tests = false
-  edition = "2018"
-  cargo_pkg_authors = "bluss"
-  cargo_pkg_name = "either"
-  cargo_pkg_description = "The enum `Either` with variants `Left` and `Right` is a general purpose sum type with two cases."
-  cargo_pkg_repository = "https://github.com/bluss/either"
-  cargo_pkg_version = "1.8.1"
+  edition = "2021"
+  cargo_pkg_authors = "Kris Nuttycombe <kris@nutty.land>"
+  cargo_pkg_name = "shardtree"
+  cargo_pkg_description = "A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration."
+  cargo_pkg_repository = "https://github.com/zcash/incrementalmerkletree"
+  cargo_pkg_version = "0.7.0"
 
-  allow_unsafe = true
+  allow_unsafe = false
 
-  features = [ "use_std" ]
+  deps = [
+    "//brave/third_party/rust/bitflags/v2:lib",
+    "//brave/third_party/rust/either/v1:lib",
+    "//brave/third_party/rust/incrementalmerkletree/v0_8:lib",
+    "//brave/third_party/rust/tracing/v0_1:lib",
+  ]
+  features = [ "legacy-api" ]
   rustenv = []
   rustflags = []
 

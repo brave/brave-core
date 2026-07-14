@@ -1464,7 +1464,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "orchard"
-version = "0.14.0"
+version = "0.15.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "aes",
@@ -1995,7 +1995,7 @@ dependencies = [
 
 [[package]]
 name = "shardtree"
-version = "0.6.2"
+version = "0.7.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "bitflags 2.13.0",
@@ -2509,7 +2509,7 @@ dependencies = [
 
 [[package]]
 name = "zcash_client_backend"
-version = "0.22.0"
+version = "0.24.0-rc.1"
 dependencies = [
  "byteorder",
  "shardtree",
@@ -2540,9 +2540,10 @@ dependencies = [
 
 [[package]]
 name = "zcash_primitives"
-version = "0.28.0"
+version = "0.29.0"
 dependencies = [
- "byteorder",
+ "blake2b_simd",
+ "corez",
  "incrementalmerkletree",
  "memuse",
  "nonempty",
@@ -2554,7 +2555,7 @@ dependencies = [
 
 [[package]]
 name = "zcash_protocol"
-version = "0.9.0"
+version = "0.10.0"
 dependencies = [
  "corez",
  "hex",

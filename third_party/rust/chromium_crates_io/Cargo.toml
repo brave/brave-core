@@ -337,7 +337,7 @@ package = "windows-targets"
 path = "../../../components/brave_wallet/browser/zcash/rust"
 package = "zcash"
 
-# Shared with the upstream Chromium tree (pulled in by orchard 0.14's getset /
+# Shared with the upstream Chromium tree (pulled in by orchard 0.15's getset /
 # visibility proc-macro deps). Patch to Chromium's vendored copy so Brave does
 # not generate a duplicate proc-macro target (avoids a GN output collision).
 [patch.crates-io.proc_macro_error2_v2]
@@ -348,7 +348,7 @@ package = "proc-macro-error2"
 path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro-error-attr2-v2"
 package = "proc-macro-error-attr2"
 
-[patch.crates-io.zcash_protocol_v0_9]
+[patch.crates-io.zcash_protocol_v0_10]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_protocol"
 package = "zcash_protocol"
 
@@ -356,11 +356,11 @@ package = "zcash_protocol"
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/components/zcash_encoding"
 package = "zcash_encoding"
 
-[patch.crates-io.zcash_primitives_v0_28]
+[patch.crates-io.zcash_primitives_v0_29]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_primitives"
 package = "zcash_primitives"
 
-[patch.crates-io.zcash_client_backend_v0_22]
+[patch.crates-io.zcash_client_backend_v0_24]
 path = "../../../components/brave_wallet/browser/zcash/rust/librustzcash/src/zcash_client_backend"
 package = "zcash_client_backend"
 
