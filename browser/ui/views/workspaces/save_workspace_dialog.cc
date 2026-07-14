@@ -51,6 +51,11 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Profile* profile) : profile_(profile) {
   contents->AddChildView(std::make_unique<views::Label>(
       l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_NAME_LABEL)));
 
+  // Cache the initial name so OnAccept() does not need to read it from the
+  // Textfield (which is destroyed before the delegate when the dialog closes).
+  workspace_name_ = base::UTF16ToUTF8(
+      l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_DEFAULT_NAME));
+
   auto textfield = std::make_unique<views::Textfield>();
   textfield->SetPlaceholderText(
       l10n_util::GetStringUTF16(IDS_WORKSPACE_SAVE_DIALOG_NAME_PLACEHOLDER));
@@ -59,11 +64,10 @@ SaveWorkspaceDialog::SaveWorkspaceDialog(Profile* profile) : profile_(profile) {
   textfield->SelectAll(false);
   textfield->SetPreferredSize(gfx::Size(kDialogWidth - kPadding * 2, 40));
   textfield->SetController(this);
-  name_field_ = contents->AddChildView(std::move(textfield));
+  contents->AddChildView(std::move(textfield));
 
   // Reflect the initial (pre-filled, non-empty) name in the OK button state.
-  SetButtonEnabled(ui::mojom::DialogButton::kOk,
-                   !name_field_->GetText().empty());
+  SetButtonEnabled(ui::mojom::DialogButton::kOk, !workspace_name_.empty());
 
   SetContentsView(std::move(contents));
 }
@@ -72,13 +76,13 @@ SaveWorkspaceDialog::~SaveWorkspaceDialog() = default;
 
 void SaveWorkspaceDialog::OnAccept() {
   // The OK button is disabled while the name is empty, so this is non-empty.
-  std::string name = base::UTF16ToUTF8(name_field_->GetText());
   auto* service = WorkspaceServiceFactory::GetForProfile(profile_);
   CHECK(service);
-  service->SaveWorkspace(name);
+  service->SaveWorkspace(workspace_name_);
 }
 
 void SaveWorkspaceDialog::ContentsChanged(views::Textfield* sender,
                                           const std::u16string& new_contents) {
+  workspace_name_ = base::UTF16ToUTF8(new_contents);
   SetButtonEnabled(ui::mojom::DialogButton::kOk, !new_contents.empty());
 }

@@ -49,7 +49,11 @@ class SaveWorkspaceDialog : public views::DialogDelegate,
                        const std::u16string& new_contents) override;
 
   raw_ptr<Profile> profile_;
-  raw_ptr<views::Textfield> name_field_ = nullptr;
+  // Cached text value updated by ContentsChanged(). Storing a string rather
+  // than a raw_ptr<Textfield> avoids a dangling pointer: the Textfield is
+  // owned by the widget's view hierarchy, which is destroyed before the
+  // delegate (SaveWorkspaceDialog) is deleted.
+  std::string workspace_name_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_WORKSPACES_SAVE_WORKSPACE_DIALOG_H_
