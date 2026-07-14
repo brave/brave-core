@@ -133,12 +133,14 @@
 }
 
 .alertCenter {
-  --leo-alert-center-width: calc(100% - 32px);
-  /* remove scrollbar space */
-  position: absolute;
-  left: 0;
+  /* Nala AlertCenter default max is 540px; keep panel padding on narrow layouts */
+  --leo-alert-center-width: min(540px, calc(100% - 32px));
+  --leo-alert-center-position: absolute;
   z-index: 5;
-  width: 100%;
+
+  leo-button {
+    flex-grow: 0;
+  }
 }
 
 .toggleContainer {

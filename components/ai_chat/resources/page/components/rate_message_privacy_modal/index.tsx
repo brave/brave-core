@@ -70,13 +70,9 @@ export default function RateMessagePrivacyModal() {
             ),
           })}
         </span>
-      </div>
-      <div
-        slot='actions'
-        className={styles.actionsRow}
-      >
-        <div className={styles.buttonsWrapper}>
+        <div className={styles.footer}>
           <Button
+            className={styles.footerButton}
             kind='plain-faint'
             size='medium'
             onClick={() =>
@@ -86,6 +82,7 @@ export default function RateMessagePrivacyModal() {
             {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
+            className={styles.footerButton}
             kind='filled'
             size='medium'
             onClick={onClickSend}

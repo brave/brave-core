@@ -4,9 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import * as React from 'react'
-import DropDown from '@brave/leo/react/dropdown'
 import Button from '@brave/leo/react/button'
 import Checkbox from '@brave/leo/react/checkbox'
+import Dialog from '@brave/leo/react/dialog'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
@@ -28,7 +28,6 @@ const getHostName = (url: string) => {
 }
 
 function FeedbackForm() {
-  const ref = React.useRef<HTMLDivElement>(null)
   const [category, setCategory] = React.useState('')
   const [feedbackText, setFeedbackText] = React.useState('')
   const aiChatContext = useAIChat()
@@ -45,10 +44,6 @@ function FeedbackForm() {
     )
   }
 
-  const handleSelectOnChange = ({ value }: { value: string }) => {
-    setCategory(value)
-  }
-
   const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setFeedbackText(e.target.value)
   }
@@ -57,100 +52,106 @@ function FeedbackForm() {
     setShouldSendUrl(checked)
   }
 
+  // Reset form state when the dialog closes so the next open is clean.
   React.useEffect(() => {
-    ref.current?.scrollIntoView()
-  }, [])
-
-  // TODO(petemill): allow submission and show error on Dropdown if nothing
-  // is selected when user attempts to Submit.
+    if (!conversationContext.isFeedbackFormVisible) {
+      setCategory('')
+      setFeedbackText('')
+      setShouldSendUrl(true)
+    }
+  }, [conversationContext.isFeedbackFormVisible])
 
   return (
-    <div
-      ref={ref}
-      className={styles.form}
+    <Dialog
+      isOpen={conversationContext.isFeedbackFormVisible}
+      showClose
+      onClose={conversationContext.handleFeedbackFormCancel}
+      className={styles.dialog}
     >
-      <h4>{getLocale(S.CHAT_UI_PROVIDE_FEEDBACK_TITLE)}</h4>
-      <form>
-        <fieldset>
-          <DropDown
-            positionStrategy='fixed'
-            className={styles.dropdown}
-            placeholder={getLocale(S.CHAT_UI_SELECT_FEEDBACK_TOPIC)}
-            onChange={handleSelectOnChange}
-            required={true}
-            value={CATEGORY_OPTIONS.get(category)}
-          >
-            <div slot='label'>
-              {getLocale(S.CHAT_UI_FEEDBACK_CATEGORY_LABEL)}
-            </div>
-            {[...CATEGORY_OPTIONS.keys()].map((key) => {
-              return (
-                <leo-option
-                  key={key}
-                  value={key}
-                >
-                  {CATEGORY_OPTIONS.get(key)}
-                </leo-option>
-              )
-            })}
-          </DropDown>
-        </fieldset>
-        <fieldset>
-          <label>
-            {getLocale(S.CHAT_UI_FEEDBACK_DESCRIPTION_LABEL)}
-            <textarea
-              onChange={handleInputChange}
-              placeholder={getLocale(S.CHAT_UI_FEEDBACK_DESCRIPTION_LABEL)}
-            />
-          </label>
-        </fieldset>
+      <div
+        slot='title'
+        className={styles.dialogTitle}
+      >
+        {getLocale(S.CHAT_UI_PROVIDE_FEEDBACK_TITLE)}
+      </div>
+      <div className={styles.body}>
+        <div className={styles.categorySection}>
+          <div className={styles.categoryLabel}>
+            {getLocale(S.CHAT_UI_FEEDBACK_CATEGORY_LABEL)}
+          </div>
+          <div className={styles.reasons}>
+            {[...CATEGORY_OPTIONS.keys()].map((key) => (
+              <Button
+                key={key}
+                kind={category === key ? 'filled' : 'outline'}
+                onClick={() => setCategory(key)}
+              >
+                {CATEGORY_OPTIONS.get(key)}
+              </Button>
+            ))}
+          </div>
+        </div>
+        <label className={styles.detailsLabel}>
+          {getLocale(S.CHAT_UI_FEEDBACK_DESCRIPTION_LABEL)}
+          <textarea
+            value={feedbackText}
+            onChange={handleInputChange}
+            placeholder={getLocale(S.CHAT_UI_FEEDBACK_DESCRIPTION_LABEL)}
+          />
+        </label>
         {conversationContext.associatedContentInfo.length > 0 && (
-          <fieldset>
-            <Checkbox
-              checked={shouldSendUrl}
-              onChange={handleCheckboxChange}
-            >
-              <label>
-                {formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
-                  $1: conversationContext.associatedContentInfo
-                    .map((c) => getHostName(c.url.url))
-                    .join(', '),
-                })}
-              </label>
-            </Checkbox>
-          </fieldset>
+          <Checkbox
+            checked={shouldSendUrl}
+            onChange={handleCheckboxChange}
+          >
+            <span>
+              {formatLocale(S.CHAT_UI_SEND_SITE_HOSTNAME_LABEL, {
+                $1: conversationContext.associatedContentInfo
+                  .map((c) => getHostName(c.url.url))
+                  .join(', '),
+              })}
+            </span>
+          </Checkbox>
         )}
         {!aiChatContext.isPremiumUser && (
           <div className={styles.premiumNote}>
             {formatLocale(S.CHAT_UI_FEEDBACK_PREMIUM_NOTE, {
               $1: (linkText) => (
-                <Button
-                  kind='plain'
-                  size='medium'
-                  onClick={aiChatContext.goPremium}
+                <a
+                  href='#'
+                  className={styles.learnMoreLink}
+                  onClick={(e) => {
+                    e.preventDefault()
+                    aiChatContext.goPremium()
+                  }}
                 >
                   {linkText}
-                </Button>
+                </a>
               ),
             })}
           </div>
         )}
-        <fieldset className={styles.actions}>
+        <div className={styles.footer}>
           <Button
-            onClick={conversationContext.handleFeedbackFormCancel}
+            className={styles.footerButton}
             kind='plain-faint'
+            size='medium'
+            onClick={conversationContext.handleFeedbackFormCancel}
           >
             {getLocale(S.CHAT_UI_CANCEL_BUTTON_LABEL)}
           </Button>
           <Button
+            className={styles.footerButton}
+            kind='filled'
+            size='medium'
             isDisabled={!canSubmit}
             onClick={handleSubmit}
           >
             {getLocale(S.CHAT_UI_SUBMIT_BUTTON_LABEL)}
           </Button>
-        </fieldset>
-      </form>
-    </div>
+        </div>
+      </div>
+    </Dialog>
   )
 }
 

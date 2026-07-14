@@ -184,7 +184,7 @@ function Main() {
         setIsConversationsListOpen={setIsConversationsListOpen}
       />
       <AlertCenter
-        position='top-left'
+        position='top-center'
         className={styles.alertCenter}
       />
       {!aiChatContext.hasAcceptedAgreement && !hasConversationStarted ? (
@@ -198,16 +198,6 @@ function Main() {
         </div>
       ) : (
         <>
-          {conversationContext.isFeedbackFormVisible && (
-            <Dialog
-              isOpen
-              onClose={conversationContext.handleFeedbackFormCancel}
-              className={styles.attachmentsDialog}
-            >
-              <FeedbackForm />
-            </Dialog>
-          )}
-
           <aiChatContext.conversationEntriesComponent
             className={styles.conversationContainer}
           />
@@ -249,6 +239,7 @@ function Main() {
       <DeleteConversationModal />
       <OpenExternalLinkModal />
       <RateMessagePrivacyModal />
+      <FeedbackForm />
       {aiChatContext.skillDialog && <SkillModal />}
     </main>
   )
