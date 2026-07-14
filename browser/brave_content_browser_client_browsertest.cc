@@ -335,6 +335,27 @@ IN_PROC_BROWSER_TEST_F(BraveContentBrowserClientTest, MixedContentForOnion) {
     ASSERT_TRUE(content::ExecJs(contents, kFetchScript));
     ASSERT_TRUE(console_observer.Wait());
   }
+  {
+    // Regression test: an .onion page sandboxed via `Content-Security-Policy:
+    // sandbox` has an opaque origin whose precursor is the .onion origin. It
+    // must still be treated as secure, so insecure http subresources are
+    // blocked as mixed content instead of being allowed through.
+    const GURL sandboxed_onion_url =
+        embedded_test_server()->GetURL("test.onion", "/onion_sandboxed.html");
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, sandboxed_onion_url));
+
+    content::WebContentsConsoleObserver console_observer(contents);
+    console_observer.SetPattern(
+        "Mixed Content: The page at 'http://test.onion*/onion_sandboxed.html' "
+        "was loaded over HTTPS, but requested an insecure resource "
+        "'http://example.com*'. This request has been blocked; the content "
+        "must be served over HTTPS.");
+    const GURL resource_url =
+        embedded_test_server()->GetURL("example.com", "/logo-referrer.png");
+    const std::string kFetchScript = fetch(resource_url.spec());
+    ASSERT_FALSE(content::ExecJs(contents, kFetchScript));
+    ASSERT_TRUE(console_observer.Wait());
+  }
 }
 #endif
 

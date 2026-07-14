@@ -66,7 +66,13 @@ namespace blink {
 std::optional<bool> MixedContentChecker::IsMixedContentForOnion(
     const SecurityOrigin* security_origin,
     const KURL& resource_url) {
-  if (!IsOnion(*security_origin)) {
+  // Use the precursor origin so that opaque origins (e.g. an .onion page
+  // sandboxed via `Content-Security-Policy: sandbox`) are still recognized as
+  // .onion. This matches how the frame-context check and upstream's
+  // IsMixedContent() use GetOriginOrPrecursorOriginIfOpaque(). Reading the
+  // opaque origin's Host()/Protocol() directly returns empty strings, which
+  // would let mixed content (e.g. insecure form submissions) through.
+  if (!IsOnion(*security_origin->GetOriginOrPrecursorOriginIfOpaque())) {
     return std::nullopt;
   }
   if (IsOnion(resource_url)) {
