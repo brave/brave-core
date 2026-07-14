@@ -406,9 +406,6 @@
   </message>
 
   <!-- For Discounts -->
-  <message name="IDS_DISCOUNT_CODE_COPY_BUTTON_TEXT" desc="The copy button text. User uses this button to copy the discount code, so that they can paste the code during checkout." formatter_data="android_java" translateable="false">
-      Copy
-  </message>
   <if expr="use_titlecase">
     <message name="IDS_DISCOUNT_ICON_EXPANDED_TEXT" desc="The text to use when the icon is expanded in the location bar, indicating discount has been found for the viewing product." formatter_data="android_java">
       Discount Found
@@ -421,11 +418,20 @@
   </if> <!-- not use_titlecase -->
     <!-- Discounts Android only -->
   <if expr="is_android">
+    <then>
+      <message name="IDS_DISCOUNT_CODE_COPY_BUTTON_TEXT" desc="The copy button text. User uses this button to copy the discount code, so that they can paste the code during checkout." formatter_data="android_java" translateable="false">
+        Copy code
+      </message>
+    </then>
+    <else>
+      <message name="IDS_DISCOUNT_CODE_COPY_BUTTON_TEXT" desc="The copy button text. User uses this button to copy the discount code, so that they can paste the code during checkout." formatter_data="android_java" translateable="false">
+        Copy
+      </message>
+    </else>
+  </if>
+  <if expr="is_android">
     <message name="IDS_DISCOUNT_CODE_COPIED_BUTTON_TEXT" desc="The copy button text. User uses this button to copy the discount code, so that they can paste the code during checkout. This text will show on the button after user has clicked on the copy button to indicate that the discount code has been copied." formatter_data="android_java">
       Copied
-    </message>
-    <message name="IDS_DISCOUNT_COPY_BUTTON_ACTION_DESCRIPTION" desc="Accessibility string that describes the copy button action to copy discount code." formatter_data="android_java" translateable="false">
-      Copy discount code
     </message>
     <message name="IDS_DISCOUNT_CONTAINER_TITLE" desc="The title of the discount container, indicating the discount section in the commerce bottom sheet." formatter_data="android_java" translateable="false">
       Discounts

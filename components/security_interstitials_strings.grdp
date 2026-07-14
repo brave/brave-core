@@ -562,9 +562,16 @@
   <message name="IDS_ABH_PROMPT_INCOGNITO_PRIMARY_PARAGRAPH" desc="Main paragrpah of the Ask-before-HTTP warning dialog. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user is seeing this warning because they are browsing in Private mode.">
     You are seeing this warning because this site does not support HTTPS and you are in Private mode. <ph name="LEARN_MORE">$1<ex>Learn more about this warning</ex></ph>
   </message>
-  <message name="IDS_ABH_PROMPT_ADVANCED_PROTECTION_PRIMARY_PARAGRAPH" desc="Main paragraph of the Ask-before-HTTP warning dialog. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user also has Advanced Protection enabled.">
-    This site will remain blocked because you are under Brave’s Advanced Protection Program. <ph name="LEARN_MORE">$1<ex>Learn more about this warning</ex></ph>
-  </message>
+  <if expr="not is_android">
+    <message name="IDS_ABH_PROMPT_ADVANCED_PROTECTION_PRIMARY_PARAGRAPH" desc="Main paragraph of the Ask-before-HTTP warning dialog. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user also has Advanced Protection enabled.">
+      You are seeing this warning because this site does not support HTTPS and you are under Brave’s Advanced Protection Program. <ph name="LEARN_MORE">$1<ex>Learn more about this warning</ex></ph>
+    </message>
+  </if>
+  <if expr="is_android">
+    <message name="IDS_ABH_PROMPT_ADVANCED_PROTECTION_PRIMARY_PARAGRAPH_ANDROID" desc="Main paragraph of the Ask-before-HTTP warning dialog. This warning is shown when the browser tries to upgrade a navigation to a site to HTTPS but the site does not support HTTPS. The user also has Advanced Protection enabled.">
+      You are seeing this warning because this site does not support HTTPS and you have Advanced Protection turned on in Android settings. <ph name="LEARN_MORE">$1<ex>Learn more about this warning</ex></ph>
+    </message>
+  </if>
 
   <!-- WebView Content Restriction Interstitial -->
   <message name="IDS_WEBVIEW_CONTENT_RESTRICTION_BLOCKED_MESSAGE" desc="Message to inform the user that the content is blocked by admin policy">
