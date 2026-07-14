@@ -811,6 +811,8 @@
   <message name="IDS_BRAVE_WALLET_OUTPUT" desc="Transaction Details Output Label">Output</message>
   <message name="IDS_BRAVE_WALLET_INPUTS" desc="Transaction Details Inputs Label">Inputs</message>
   <message name="IDS_BRAVE_WALLET_OUTPUTS" desc="Transaction Details Outputs Label">Outputs</message>
+  <message name="IDS_BRAVE_WALLET_MINT" desc="Transaction Details Mint Label">Mint</message>
+  <message name="IDS_BRAVE_WALLET_WITHDRAWALS" desc="Transaction Details Withdrawals Label">Withdrawals</message>
   <message name="IDS_BRAVE_WALLET_VALUE" desc="Transaction Details Value Label">Value</message>
   <message name="IDS_BRAVE_WALLET_TOKEN" desc="Transaction Details Token Label">Token</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary networks</message>

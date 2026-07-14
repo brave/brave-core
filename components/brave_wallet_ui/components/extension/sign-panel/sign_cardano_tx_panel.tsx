@@ -76,6 +76,145 @@ const onClickLearnMore = () => {
 
 type TabName = 'rawTransaction' | 'details'
 
+function renderCardanoTxInputs(inputs: BraveWallet.CardanoTxInput[]) {
+  if (inputs.length === 0) {
+    return null
+  }
+
+  return (
+    <>
+      <MessageHeaderSection>
+        {getLocale('braveWalletInputs')}
+      </MessageHeaderSection>
+      {inputs.map((input, index) => {
+        return (
+          <DetailColumn
+            gap='4px'
+            key={'input' + index}
+          >
+            <LabelText>{getLocale('braveWalletInput')}:</LabelText>
+            <DetailText>{`${input.outpointTxid}:${input.outpointIndex}`}</DetailText>
+            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+            <DetailText>{`${input.value ? input.value : 'N/A'}`}</DetailText>
+            {input.tokens.map((token) => {
+              return (
+                <DetailColumn key={token.tokenIdHex}>
+                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <DetailText>
+                    {token.tokenIdHex}:{`${token.value}`}
+                  </DetailText>
+                </DetailColumn>
+              )
+            })}
+            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+            <DetailText>{`${input.address ? input.address : 'N/A'}`}</DetailText>
+            <DividerLine />
+          </DetailColumn>
+        )
+      })}
+      <VerticalDivider />
+    </>
+  )
+}
+
+function renderCardanoTxOutputs(outputs: BraveWallet.CardanoTxOutput[]) {
+  if (outputs.length === 0) {
+    return null
+  }
+
+  return (
+    <>
+      <MessageHeaderSection>
+        {getLocale('braveWalletOutputs')}
+      </MessageHeaderSection>
+      {outputs.map((output, index) => {
+        return (
+          <DetailColumn
+            gap='4px'
+            key={'output-external' + index}
+          >
+            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+            <DetailText>{`${output.address}`}</DetailText>
+            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+            <DetailText>{`${output.value}`}</DetailText>
+            {output.tokens.map((token) => {
+              return (
+                <DetailColumn key={token.tokenIdHex}>
+                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+                  <DetailText>
+                    {token.tokenIdHex}:{`${token.value}`}
+                  </DetailText>
+                </DetailColumn>
+              )
+            })}
+          </DetailColumn>
+        )
+      })}
+      <VerticalDivider />
+    </>
+  )
+}
+
+function renderCardanoTxMint(mint: BraveWallet.CardanoTxMintToken[]) {
+  if (mint.length === 0) {
+    return null
+  }
+
+  return (
+    <>
+      <MessageHeaderSection>
+        {getLocale('braveWalletMint')}
+      </MessageHeaderSection>
+      {mint.map((token, index) => {
+        return (
+          <DetailColumn
+            gap='4px'
+            key={'mint' + index}
+          >
+            <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+            <DetailText>{token.tokenIdHex}</DetailText>
+            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+            <DetailText>{`${token.amount}`}</DetailText>
+            <DividerLine />
+          </DetailColumn>
+        )
+      })}
+      <VerticalDivider />
+    </>
+  )
+}
+
+function renderCardanoTxWithdrawals(
+  withdrawals: BraveWallet.CardanoTxWithdrawal[],
+) {
+  if (withdrawals.length === 0) {
+    return null
+  }
+
+  return (
+    <>
+      <MessageHeaderSection>
+        {getLocale('braveWalletWithdrawals')}
+      </MessageHeaderSection>
+      {withdrawals.map((withdrawal, index) => {
+        return (
+          <DetailColumn
+            gap='4px'
+            key={'withdrawal' + index}
+          >
+            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+            <DetailText>{withdrawal.rewardAccount}</DetailText>
+            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+            <DetailText>{`${withdrawal.coin}`}</DetailText>
+            <DividerLine />
+          </DetailColumn>
+        )
+      })}
+      <VerticalDivider />
+    </>
+  )
+}
+
 export const SignCardanoTxPanel = ({
   selectedRequest,
   isSigningDisabled,
@@ -195,66 +334,10 @@ export const SignCardanoTxPanel = ({
             </MessageBox>
           ) : (
             <MessageBox width='100%'>
-              <MessageHeaderSection>
-                {getLocale('braveWalletInputs')}
-              </MessageHeaderSection>
-              {selectedRequest.inputs?.map((input, index) => {
-                return (
-                  <DetailColumn
-                    gap='4px'
-                    key={'input' + index}
-                  >
-                    <LabelText>{getLocale('braveWalletInput')}:</LabelText>
-                    <DetailText>{`${input.outpointTxid}:${input.outpointIndex}`}</DetailText>
-                    <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-                    <DetailText>{`${input.value ? input.value : 'N/A'}`}</DetailText>
-                    {input.tokens.map((token) => {
-                      return (
-                        <DetailColumn key={token.tokenIdHex}>
-                          <LabelText>
-                            {getLocale('braveWalletToken')}:
-                          </LabelText>
-                          <DetailText>
-                            {token.tokenIdHex}:{`${token.value}`}
-                          </DetailText>
-                        </DetailColumn>
-                      )
-                    })}
-                    <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
-                    <DetailText>{`${input.address ? input.address : 'N/A'}`}</DetailText>
-                    <DividerLine />
-                  </DetailColumn>
-                )
-              })}
-              <VerticalDivider></VerticalDivider>
-              <MessageHeaderSection>
-                {getLocale('braveWalletOutputs')}
-              </MessageHeaderSection>
-              {selectedRequest.outputs?.map((output, index) => {
-                return (
-                  <DetailColumn
-                    gap='4px'
-                    key={'output-external' + index}
-                  >
-                    <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
-                    <DetailText>{`${output.address}`}</DetailText>
-                    <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-                    <DetailText>{`${output.value}`}</DetailText>
-                    {output.tokens.map((token) => {
-                      return (
-                        <DetailColumn key={token.tokenIdHex}>
-                          <LabelText>
-                            {getLocale('braveWalletToken')}:
-                          </LabelText>
-                          <DetailText>
-                            {token.tokenIdHex}:{`${token.value}`}
-                          </DetailText>
-                        </DetailColumn>
-                      )
-                    })}
-                  </DetailColumn>
-                )
-              })}
+              {renderCardanoTxInputs(selectedRequest.inputs)}
+              {renderCardanoTxOutputs(selectedRequest.outputs)}
+              {renderCardanoTxMint(selectedRequest.mint)}
+              {renderCardanoTxWithdrawals(selectedRequest.withdrawals)}
             </MessageBox>
           )}
         </>

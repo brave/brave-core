@@ -5991,6 +5991,22 @@ extension Strings {
       comment:
         "The label displayed in details for Sign Cardano Transaction Request details panel beside/above the Address index."
     )
+    public static let signCardanoTxRequestDetailsMintLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsMintLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Mint",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes mint tokens."
+    )
+    public static let signCardanoTxRequestDetailsWithdrawalsLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsWithdrawalsLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Withdrawals",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals."
+    )
     public static let onboardingNetworkSelectionTitle = NSLocalizedString(
       "wallet.onboardingNetworkSelectionTitle",
       tableName: "BraveWallet",

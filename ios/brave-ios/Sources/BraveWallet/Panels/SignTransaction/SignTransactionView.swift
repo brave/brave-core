@@ -137,12 +137,44 @@ struct SignTransactionView: View {
         }
         .joined(separator: "\n\n====\n\n")  // separator between each output
 
+      let mintDetails = signCardanoTransactionRequest.mint
+        .map { token in
+          var details: [String] = []
+          details.append(
+            "\(Strings.Wallet.signCardanoTxRequestDetailsTokenLabel):\n\(token.tokenIdHex)"
+          )
+          details.append("\(Strings.Wallet.valueLabel):\n\(token.amount)")
+          return details.joined(separator: "\n\n")
+        }
+        .joined(separator: "\n\n====\n\n")
+
+      let withdrawalDetails = signCardanoTransactionRequest.withdrawals
+        .map { withdrawal in
+          var details: [String] = []
+          details.append(
+            "\(Strings.Wallet.signCardanoTxRequestDetailsAddressLabel):\n\(withdrawal.rewardAccount)"
+          )
+          details.append("\(Strings.Wallet.valueLabel):\n\(withdrawal.coin)")
+          return details.joined(separator: "\n\n")
+        }
+        .joined(separator: "\n\n====\n\n")
+
       var sections: [String] = []
       if !inputDetails.isEmpty {
         sections.append("==\(Strings.Wallet.inputLabel)==\n\n\(inputDetails)")
       }
       if !outputDetails.isEmpty {
         sections.append("==\(Strings.Wallet.outputLabel)==\n\n\(outputDetails)")
+      }
+      if !mintDetails.isEmpty {
+        sections.append(
+          "==\(Strings.Wallet.signCardanoTxRequestDetailsMintLabel)==\n\n\(mintDetails)"
+        )
+      }
+      if !withdrawalDetails.isEmpty {
+        sections.append(
+          "==\(Strings.Wallet.signCardanoTxRequestDetailsWithdrawalsLabel)==\n\n\(withdrawalDetails)"
+        )
       }
       return sections.joined(separator: "\n\n\n\n")
     }

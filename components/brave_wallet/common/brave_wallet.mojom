@@ -2939,6 +2939,16 @@ struct SignSolTransactionsRequest {
   ChainId chain_id;
 };
 
+struct CardanoTxMintToken {
+  string token_id_hex;
+  int64 amount;
+};
+
+struct CardanoTxWithdrawal {
+  string reward_account;
+  uint64 coin;
+};
+
 struct SignCardanoTransactionRequest {
   int32 id;
 
@@ -2953,6 +2963,10 @@ struct SignCardanoTransactionRequest {
   array<CardanoTxInput> inputs;
   // Transaction outputs.
   array<CardanoTxOutput> outputs;
+  // Transaction mint tokens.
+  array<CardanoTxMintToken> mint;
+  // Transaction withdrawals.
+  array<CardanoTxWithdrawal> withdrawals;
 };
 
 enum ExternalWalletType {
