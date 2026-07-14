@@ -1,0 +1,21 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make RemoveNonModelData virtual'
+    make_virtual:
+      class_name: SiteSettingsHandler
+      method_name: RemoveNonModelData
+
+  # TODO(brave.dev/b/57129): Switch to add_friend once it can be used here.
+  # SiteSettingsHandler contains a nested class with its own private: section, so
+  # class_name: SiteSettingsHandler matches two private sections. Until that is
+  # sorted, anchor on the unique existing friend declaration instead.
+  - description: 'Friend BraveSiteSettingsHandler'
+    regex:
+      re_pattern: '(friend class SiteSettingsHandlerBaseTest;)'
+      replace: |-
+        \1
+          friend class BraveSiteSettingsHandler;

@@ -1,0 +1,13 @@
+diff --git a/ios/chrome/browser/application_context/model/application_context_impl.h b/ios/chrome/browser/application_context/model/application_context_impl.h
+index 5fbf72104d293390079036f05ec7fa0962dca158..88d71f8899447e197d7c988b59be764ab0f8bd44 100644
+--- a/ios/chrome/browser/application_context/model/application_context_impl.h
++++ b/ios/chrome/browser/application_context/model/application_context_impl.h
+@@ -58,7 +58,7 @@ class ApplicationContextImpl : public ApplicationContext {
+   // Called after the threads have been created but before the message loops
+   // starts running. Allows the ApplicationContext to do any initialization
+   // that requres all threads running.
+-  void PreMainMessageLoopRun();
++  virtual void PreMainMessageLoopRun();
+ 
+   // Most cleanup is done by these functions, driven from IOSChromeMainParts
+   // rather than in the destructor, so that we can interleave cleanup with

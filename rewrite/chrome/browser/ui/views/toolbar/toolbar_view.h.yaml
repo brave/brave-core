@@ -1,0 +1,38 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make Init virtual'
+    make_virtual:
+      class_name: ToolbarView
+      method_name: Init
+
+  - description: 'Make Update virtual'
+    make_virtual:
+      class_name: ToolbarView
+      method_name: Update
+
+  - description: 'Make ShowBookmarkBubble virtual'
+    make_virtual:
+      class_name: ToolbarView
+      method_name: ShowBookmarkBubble
+
+  - description: 'Make LoadImages virtual'
+    make_virtual:
+      class_name: ToolbarView
+      method_name: LoadImages
+
+  - description: 'Friend BraveToolbarView'
+    add_friend:
+      class_name: ToolbarView
+      friend_type: class BraveToolbarView
+
+  - description: 'Friend the BraveToolbarView tests'
+    regex:
+      re_pattern: '(friend class BraveToolbarView;)'
+      replace: |-
+        \1
+          FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
+          FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);

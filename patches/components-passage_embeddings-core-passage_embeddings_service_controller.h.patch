@@ -1,0 +1,32 @@
+diff --git a/components/passage_embeddings/core/passage_embeddings_service_controller.h b/components/passage_embeddings/core/passage_embeddings_service_controller.h
+index 3f12ef02f96a674f48faceebf6f46b99b257b524..9040800c35130d2f4b7fd179408262a53b1e5744 100644
+--- a/components/passage_embeddings/core/passage_embeddings_service_controller.h
++++ b/components/passage_embeddings/core/passage_embeddings_service_controller.h
+@@ -54,16 +54,16 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+       base::RepeatingCallback<void(std::vector<std::string> passages,
+                                    PassagePriority priority,
+                                    GetEmbeddingsResultCallback callback)>;
+-  void GetEmbeddings(std::vector<std::string> passages,
++  virtual void GetEmbeddings(std::vector<std::string> passages,
+                      PassagePriority priority,
+                      GetEmbeddingsResultCallback callback);
+ 
+   // Returns true if this service controller is ready for embeddings generation.
+-  bool EmbedderReady();
++  virtual bool EmbedderReady();
+ 
+   // Returns the metadata about the embeddings model. This is only valid when
+   // EmbedderReady() returns true.
+-  EmbedderMetadata GetEmbedderMetadata();
++  virtual EmbedderMetadata GetEmbedderMetadata();
+ 
+   // Launches the passage embeddings service and binds `cpu_logger_` to the
+   // service process. Does nothing if the service is already launched.
+@@ -80,6 +80,7 @@ class PassageEmbeddingsServiceController : public EmbedderMetadataProvider {
+   mojo::Remote<mojom::PassageEmbeddingsService> service_remote_;
+ 
+  private:
++  friend class BravePassageEmbeddingsServiceController;
+   // uint64_t is large enough to never overflow.
+   using RequestId = uint64_t;
+   RequestId next_request_id_ = 0;

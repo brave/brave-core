@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/frame/opaque_browser_frame_view.h b/chrome/browser/ui/views/frame/opaque_browser_frame_view.h
+index cd6fa39dad05f2297f45703989fc2063dab5e2a3..0dfbd318f7726e28c1885c4dd58a77f8c1a23dae 100644
+--- a/chrome/browser/ui/views/frame/opaque_browser_frame_view.h
++++ b/chrome/browser/ui/views/frame/opaque_browser_frame_view.h
+@@ -131,12 +131,13 @@ class OpaqueBrowserFrameView : public BrowserFrameView,
+   // and titlebar background are a contiguous component.
+   virtual void PaintRestoredFrameBorder(gfx::Canvas* canvas) const;
+   void PaintMaximizedFrameBorder(gfx::Canvas* canvas) const;
+-  void PaintClientEdge(gfx::Canvas* canvas) const;
++  virtual void PaintClientEdge(gfx::Canvas* canvas) const;
+ 
+   // Adds the app icon bounds to `params` if the icon is present.
+   void MaybeAddAppIconToLayoutParams(BrowserLayoutParams& params) const;
+ 
+  private:
++  friend class BraveOpaqueBrowserFrameView;
+   friend class WebAppOpaqueBrowserFrameViewTest;
+   friend class WebAppOpaqueBrowserFrameViewWindowControlsOverlayTest;
+ 
+@@ -199,7 +200,7 @@ class OpaqueBrowserFrameView : public BrowserFrameView,
+   // Returns true if the view should draw its own custom title bar.
+   bool GetShowWindowTitleBar() const;
+ 
+-  void UpdateCaptionButtonPlaceholderContainerBackground();
++  virtual void UpdateCaptionButtonPlaceholderContainerBackground();
+ 
+ #if BUILDFLAG(IS_WIN)
+   // Sets caption button's accessible name as its tooltip when it's in a PWA

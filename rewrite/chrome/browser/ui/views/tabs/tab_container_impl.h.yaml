@@ -1,0 +1,40 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make UpdateClosingModeOnRemovedTab virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: UpdateClosingModeOnRemovedTab
+
+  - description: 'Make GetTargetBoundsForClosingTab virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: GetTargetBoundsForClosingTab
+
+  - description: 'Make StartInsertTabAnimation virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: StartInsertTabAnimation
+
+  - description: 'Make ShouldTabBeVisible virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: ShouldTabBeVisible
+
+  - description: 'Make IsPointInTab virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: IsPointInTab
+
+  - description: 'Make UpdateIdealBounds virtual'
+    make_virtual:
+      class_name: TabContainerImpl
+      method_name: UpdateIdealBounds
+
+  - description: 'Friend BraveTabContainer'
+    add_friend:
+      class_name: TabContainerImpl
+      friend_type: class BraveTabContainer

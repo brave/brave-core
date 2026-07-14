@@ -1,0 +1,28 @@
+diff --git a/chrome/browser/ui/views/toolbar/browser_app_menu_button.h b/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
+index a4d0ef35b0c7f716f237e101646e7e098f2b916a..f9b38fa51b2fb327aae7c88247fbc6a2db23d212 100644
+--- a/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
++++ b/chrome/browser/ui/views/toolbar/browser_app_menu_button.h
+@@ -67,6 +67,7 @@ class BrowserAppMenuButton : public AppMenuButton {
+   gfx::Size GetMinimumSize() const override;
+ 
+  private:
++  friend class BraveBrowserAppMenuButton;
+   void OnTouchUiChanged();
+ 
+   void ButtonPressed(const ui::Event& event);
+@@ -75,13 +76,13 @@ class BrowserAppMenuButton : public AppMenuButton {
+ 
+   bool ShouldPaintBorder() const override;
+   std::optional<SkColor> GetHighlightTextColor() const override;
+-  std::optional<SkColor> GetHighlightColor() const;
++  virtual std::optional<SkColor> GetHighlightColor() const;
+ 
+   SkColor GetForegroundColor(ButtonState state) const override;
+   void SetHasInProductHelpPromo(bool has_in_product_help_promo);
+ 
+   // Sets the padding values depending on whether label is visible.
+-  void UpdateLayoutInsets();
++  virtual void UpdateLayoutInsets();
+ 
+   AppMenuIconController::TypeAndSeverity type_and_severity_{
+       AppMenuIconController::IconType::kNone,

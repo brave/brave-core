@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/ui/views/frame/contents_container_view.h b/chrome/browser/ui/views/frame/contents_container_view.h
+index 7a293cc1d55ee66cc1f49482a7546d03e2680d83..af06e3e39bb54f17d232f8d2e4a96578867c37e1 100644
+--- a/chrome/browser/ui/views/frame/contents_container_view.h
++++ b/chrome/browser/ui/views/frame/contents_container_view.h
+@@ -118,7 +118,7 @@ class ContentsContainerView : public views::View,
+                               SkColor outline_color,
+                               int font_size);
+ 
+-  void UpdateBorderAndOverlay(bool is_in_split,
++  virtual void UpdateBorderAndOverlay(bool is_in_split,
+                               bool is_active,
+                               bool is_highlighted);
+ 
+@@ -139,6 +139,7 @@ class ContentsContainerView : public views::View,
+       std::optional<gfx::Outsets> target_contents_bounds);
+ 
+  private:
++  friend class BraveContentsContainerView;
+   void UpdateContentsClip();
+ 
+   // Updates the DevTools docked placement. It infers the docked placement from
+@@ -146,7 +147,7 @@ class ContentsContainerView : public views::View,
+   // container that holds both contents_webview and devtools_webview.
+   void UpdateDevToolsDockedPlacement();
+ 
+-  void UpdateBorderRoundedCorners();
++  virtual void UpdateBorderRoundedCorners();
+   void ClearBorderRoundedCorners();
+ 
+   // views::View:

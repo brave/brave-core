@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: 'Make UpdateBorderAndOverlay virtual'
+    make_virtual:
+      class_name: ContentsContainerView
+      method_name: UpdateBorderAndOverlay
+
+  - description: 'Make UpdateBorderRoundedCorners virtual'
+    make_virtual:
+      class_name: ContentsContainerView
+      method_name: UpdateBorderRoundedCorners
+
+  - description: 'Friend BraveContentsContainerView'
+    add_friend:
+      class_name: ContentsContainerView
+      friend_type: class BraveContentsContainerView

@@ -1,0 +1,14 @@
+diff --git a/chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h b/chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h
+index a5f03f1c03af00cc78ca5502d9fd9ea3ee0513bf..ac4cced901fbaf7e92ff8fc50b853bf2dda2f4a0 100644
+--- a/chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h
++++ b/chrome/browser/ui/webui/cr_components/customize_color_scheme_mode/customize_color_scheme_mode_handler.h
+@@ -38,7 +38,8 @@ class CustomizeColorSchemeModeHandler
+   void OnThemeChanged() override;
+ 
+  private:
+-  void UpdateColorSchemeMode();
++  friend class BraveCustomizeColorSchemeModeHandler;
++  virtual void UpdateColorSchemeMode();
+ 
+   mojo::Remote<
+       customize_color_scheme_mode::mojom::CustomizeColorSchemeModeClient>

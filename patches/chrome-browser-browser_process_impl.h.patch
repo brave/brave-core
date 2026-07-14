@@ -1,7 +1,35 @@
 diff --git a/chrome/browser/browser_process_impl.h b/chrome/browser/browser_process_impl.h
-index f97c57ba0e03e5fd97ef1ea6d1a0b1c011030fa3..a8f8fc3585eb48157a88c6676b7f47dbac6d717d 100644
+index f97c57ba0e03e5fd97ef1ea6d1a0b1c011030fa3..09d859386fe94180d200e98e90454edd97bf5048 100644
 --- a/chrome/browser/browser_process_impl.h
 +++ b/chrome/browser/browser_process_impl.h
+@@ -121,7 +121,7 @@ class BrowserProcessImpl : public BrowserProcess,
+   const ui::UnownedUserDataHost& GetUnownedUserDataHost() const override;
+ 
+   // Called to complete initialization.
+-  void Init();
++  virtual void Init();
+ 
+ #if !BUILDFLAG(IS_ANDROID)
+   // Sets a closure to be run to break out of a run loop on browser shutdown
+@@ -146,15 +146,15 @@ class BrowserProcessImpl : public BrowserProcess,
+   // Called after the threads have been created but before the message loops
+   // starts running. Allows the browser process to do any initialization that
+   // requires all threads running.
+-  void PreMainMessageLoopRun();
++  virtual void PreMainMessageLoopRun();
+ 
+   // Most cleanup is done by these functions, driven from
+   // ChromeBrowserMain based on notifications from the content
+   // framework, rather than in the destructor, so that we can
+   // interleave cleanup with threads being stopped.
+ #if !BUILDFLAG(IS_ANDROID)
+-  void StartTearDown();
+-  void PostDestroyThreads();
++  virtual void StartTearDown();
++  virtual void PostDestroyThreads();
+ #endif
+ 
+   // Sets |metrics_services_manager_| and |metrics_services_manager_client_|
 @@ -257,6 +257,7 @@ class BrowserProcessImpl : public BrowserProcess,
    GlobalFeatures* GetFeatures() override;
  

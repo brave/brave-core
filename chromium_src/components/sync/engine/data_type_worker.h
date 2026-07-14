@@ -8,6 +8,10 @@
 
 #include "base/gtest_prod_util.h"
 
+// These forward declarations for the Brave test fixtures must precede the
+// upstream header so its (plaster-inserted) FRIEND_TEST_ALL_PREFIXES entries
+// resolve. The `virtual` and `friend` changes themselves live in the plaster
+// at brave/rewrite/components/sync/engine/data_type_worker.h.yaml.
 namespace syncer {
 
 FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest, ResetProgressMarker);
@@ -15,19 +19,6 @@ FORWARD_DECLARE_TEST(BraveDataTypeWorkerTest, ResetProgressMarkerMaxPeriod);
 
 }  // namespace syncer
 
-#define BRAVE_MODEL_TYPE_WORKER_H_                                        \
- private:                                                                 \
-  friend class BraveDataTypeWorker;                                       \
-  friend class BraveDataTypeWorkerTest;                                   \
-  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest, ResetProgressMarker); \
-  FRIEND_TEST_ALL_PREFIXES(BraveDataTypeWorkerTest,                       \
-                           ResetProgressMarkerMaxPeriod);
-
-#define OnCommitResponse virtual OnCommitResponse
-
 #include <components/sync/engine/data_type_worker.h>  // IWYU pragma: export
-
-#undef OnCommitResponse
-#undef BRAVE_MODEL_TYPE_WORKER_H_
 
 #endif  // BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_ENGINE_DATA_TYPE_WORKER_H_

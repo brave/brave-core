@@ -1,0 +1,63 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_container_impl.h b/chrome/browser/ui/views/tabs/tab_container_impl.h
+index 601cf56eefaf90aaf82064e64751d58593b29893..3371dcc6e23888f4ced7cd6aa1802de2acc521fb 100644
+--- a/chrome/browser/ui/views/tabs/tab_container_impl.h
++++ b/chrome/browser/ui/views/tabs/tab_container_impl.h
+@@ -171,6 +171,7 @@ class TabContainerImpl : public TabContainer,
+   void UpdateZOrderCacheForTesting();
+ 
+  private:
++  friend class BraveTabContainer;
+   class RemoveTabDelegate;
+   views::ViewModelT<Tab>* GetTabsViewModel();
+ 
+@@ -189,7 +190,7 @@ class TabContainerImpl : public TabContainer,
+   // Generates and sets the ideal bounds for each of the tabs. Note: Does not
+   // animate the tabs to those bounds so callers can use this information for
+   // other purposes - see AnimateToIdealBounds.
+-  void UpdateIdealBounds();
++  virtual void UpdateIdealBounds();
+ 
+   // Teleports the tabs to their ideal bounds.
+   // NOTE: this does *not* invoke UpdateIdealBounds, it uses the bounds
+@@ -202,12 +203,12 @@ class TabContainerImpl : public TabContainer,
+   int CalculateAvailableWidthForTabs() const;
+ 
+   // Invoked from `AddTab` after the newly created tab has been inserted.
+-  void StartInsertTabAnimation(int model_index);
++  virtual void StartInsertTabAnimation(int model_index);
+ 
+   void StartRemoveTabAnimation(Tab* tab, int former_model_index);
+ 
+   // Computes the bounds that `tab` should animate towards as it closes.
+-  gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
++  virtual gfx::Rect GetTargetBoundsForClosingTab(Tab* tab,
+                                          int former_model_index) const;
+ 
+   // Returns the largest x-value this TabContainer should contain, based on the
+@@ -225,7 +226,7 @@ class TabContainerImpl : public TabContainer,
+ 
+   // Updates `override_available_width_for_tabs_`, if necessary, to account for
+   // the removal of the tab at `model_index`.
+-  void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
++  virtual void UpdateClosingModeOnRemovedTab(int model_index, bool was_active);
+ 
+   // Perform an animated resize-relayout of the TabContainer immediately.
+   void ResizeLayoutTabs();
+@@ -251,7 +252,7 @@ class TabContainerImpl : public TabContainer,
+ 
+   // Returns true if the specified point in TabStrip coords is within the
+   // hit-test region of the specified Tab.
+-  bool IsPointInTab(Tab* tab, const gfx::Point& point_in_tabstrip_coords);
++  virtual bool IsPointInTab(Tab* tab, const gfx::Point& point_in_tabstrip_coords);
+ 
+   // For a given point, finds a tab that is hit by the point. If the point hits
+   // an area on which two tabs are overlapping, the tab is selected as follows:
+@@ -265,7 +266,7 @@ class TabContainerImpl : public TabContainer,
+   // (for example, if currently the strip has the last tab selected, and
+   // changing that to the first tab would cause `tab` to be pushed over enough
+   // to clip).
+-  bool ShouldTabBeVisible(const Tab* tab) const;
++  virtual bool ShouldTabBeVisible(const Tab* tab) const;
+ 
+   // Returns true iff `tab` is a member of a collapsed group and the collapse
+   // animation is finished.
