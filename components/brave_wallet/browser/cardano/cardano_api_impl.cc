@@ -517,8 +517,6 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
     const CardanoTxDecoder::DecodedTx& decoded_tx,
     const cardano_rpc::UnspentOutputs& utxos) {
   std::vector<mojom::CardanoTxInputPtr> inputs;
-  std::vector<mojom::CardanoTxOutputPtr> outputs;
-
   // Fill destination address and value of known inputs.
   for (const auto& input : decoded_tx.tx.tx_body.inputs) {
     auto& inserted = inputs.emplace_back(mojom::CardanoTxInput::New(
@@ -535,6 +533,7 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
     }
   }
 
+  std::vector<mojom::CardanoTxOutputPtr> outputs;
   for (const auto& output : decoded_tx.tx.tx_body.outputs) {
     auto cardano_address = CardanoAddress::FromCborBytes(output.address_bytes);
     if (!cardano_address) {
@@ -549,12 +548,30 @@ CardanoApiImpl::MakeSignCardanoTransactionRequest(
     }
   }
 
+  std::vector<mojom::CardanoTxMintTokenPtr> mint;
+  for (const auto& mint_item : decoded_tx.tx.tx_body.mint) {
+    mint.push_back(mojom::CardanoTxMintToken::New(
+        base::HexEncodeLower(mint_item.token_id), mint_item.amount));
+  }
+
+  std::vector<mojom::CardanoTxWithdrawalPtr> withdrawals;
+  for (const auto& withdrawal_item : decoded_tx.tx.tx_body.withdrawals) {
+    auto cardano_address =
+        CardanoAddress::FromCborBytes(withdrawal_item.reward_account);
+    if (!cardano_address) {
+      return nullptr;
+    }
+
+    withdrawals.push_back(mojom::CardanoTxWithdrawal::New(
+        cardano_address->ToString(), withdrawal_item.coin));
+  }
+
   return mojom::SignCardanoTransactionRequest::New(
       -1, selected_account_.Clone(), MakeOriginInfo(origin_),
       mojom::ChainId::New(mojom::CoinType::ADA,
                           GetNetworkForCardanoAccount(selected_account_)),
       base::HexEncode(decoded_tx.raw_tx_bytes), std::move(inputs),
-      std::move(outputs));
+      std::move(outputs), std::move(mint), std::move(withdrawals));
 }
 
 base::flat_set<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(

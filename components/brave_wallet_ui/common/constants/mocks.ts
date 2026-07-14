@@ -751,6 +751,30 @@ BraveWallet.SignCardanoTransactionRequest = {
       tokens: [],
     },
   ],
+  mint: [
+    {
+      tokenIdHex:
+        'abcd1234ef567890ff00ee11dd22cc33bb44aa55cc66ee77aabb998877665544',
+      amount: BigInt(500000),
+    },
+    {
+      tokenIdHex:
+        'deadbeef00112233445566778899aabbccddeeff11223344556677889900aabb',
+      amount: BigInt(250000),
+    },
+  ],
+  withdrawals: [
+    {
+      rewardAccount:
+        'stake1uyv2kce7pqq4nwjrc4pu95sv6cw3zrj6s8v6gs7z4grr0xqff5uxt',
+      coin: BigInt(1000000),
+    },
+    {
+      rewardAccount:
+        'stake1u9tarkvlqk4hgdxg0n9qg9r3kc0m9ckwavv8vapx623apfsc0vwjq',
+      coin: BigInt(500000),
+    },
+  ],
 }
 
 //

@@ -787,6 +787,8 @@ provideStrings({
   braveWalletOutput: 'Output',
   braveWalletInputs: 'Inputs',
   braveWalletOutputs: 'Outputs',
+  braveWalletMint: 'Mint',
+  braveWalletWithdrawals: 'Withdrawals',
   braveWalletValue: 'Value',
 
   // Encryption Key Panel

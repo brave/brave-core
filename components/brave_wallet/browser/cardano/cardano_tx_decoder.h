@@ -55,6 +55,32 @@ class CardanoTxDecoder {
     cardano_rpc::CoinValue coin_value;
   };
 
+  struct SerializableWithdrawal {
+    SerializableWithdrawal();
+    SerializableWithdrawal(std::vector<uint8_t> reward_account, uint64_t coin);
+    SerializableWithdrawal(const SerializableWithdrawal&);
+    SerializableWithdrawal& operator=(const SerializableWithdrawal&);
+    SerializableWithdrawal(SerializableWithdrawal&&);
+    SerializableWithdrawal& operator=(SerializableWithdrawal&&);
+    ~SerializableWithdrawal();
+
+    std::vector<uint8_t> reward_account;
+    uint64_t coin = 0;
+  };
+
+  struct SerializableMintToken {
+    SerializableMintToken();
+    SerializableMintToken(std::vector<uint8_t> token_id, int64_t amount);
+    SerializableMintToken(const SerializableMintToken&);
+    SerializableMintToken& operator=(const SerializableMintToken&);
+    SerializableMintToken(SerializableMintToken&&);
+    SerializableMintToken& operator=(SerializableMintToken&&);
+    ~SerializableMintToken();
+
+    cardano_rpc::TokenId token_id;
+    int64_t amount = 0;
+  };
+
   struct SerializableTxBody {
     SerializableTxBody();
     ~SerializableTxBody();
@@ -67,6 +93,8 @@ class CardanoTxDecoder {
     std::vector<SerializableTxOutput> outputs;
     uint64_t fee = 0u;
     std::optional<base::StrictNumeric<uint64_t>> ttl;
+    std::vector<SerializableWithdrawal> withdrawals;
+    std::vector<SerializableMintToken> mint;
   };
 
   struct SerializableVkeyWitness {

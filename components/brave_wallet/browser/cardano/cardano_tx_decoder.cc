@@ -100,6 +100,38 @@ CardanoTxDecoder::SerializableTxOutput FromRust(
   return result;
 }
 
+CxxSerializableWithdrawal ToRust(
+    const CardanoTxDecoder::SerializableWithdrawal& withdrawal) {
+  CxxSerializableWithdrawal result;
+  result.reward_account = ToRust(withdrawal.reward_account);
+  result.coin = withdrawal.coin;
+  return result;
+}
+
+CardanoTxDecoder::SerializableWithdrawal FromRust(
+    const CxxSerializableWithdrawal& withdrawal) {
+  CardanoTxDecoder::SerializableWithdrawal result;
+  result.reward_account = FromRust(withdrawal.reward_account);
+  result.coin = withdrawal.coin;
+  return result;
+}
+
+CxxSerializableMintToken ToRust(
+    const CardanoTxDecoder::SerializableMintToken& mint_token) {
+  CxxSerializableMintToken result;
+  result.token_id = ToRust(mint_token.token_id);
+  result.amount = mint_token.amount;
+  return result;
+}
+
+CardanoTxDecoder::SerializableMintToken FromRust(
+    const CxxSerializableMintToken& mint_token) {
+  CardanoTxDecoder::SerializableMintToken result;
+  result.token_id = FromRust(mint_token.token_id);
+  result.amount = mint_token.amount;
+  return result;
+}
+
 CxxSerializableTxBody ToRust(const CardanoTxDecoder::SerializableTxBody& body) {
   CxxSerializableTxBody result;
 
@@ -116,6 +148,16 @@ CxxSerializableTxBody ToRust(const CardanoTxDecoder::SerializableTxBody& body) {
   result.fee = body.fee;
   result.ttl = body.ttl.value_or(0u);
   result.has_ttl = body.ttl.has_value();
+
+  result.withdrawals.reserve(body.withdrawals.size());
+  for (const auto& withdrawal : body.withdrawals) {
+    result.withdrawals.push_back(ToRust(withdrawal));
+  }
+
+  result.mint.reserve(body.mint.size());
+  for (const auto& mint_token : body.mint) {
+    result.mint.push_back(ToRust(mint_token));
+  }
 
   return result;
 }
@@ -138,6 +180,17 @@ CardanoTxDecoder::SerializableTxBody FromRust(
   result.ttl = body.has_ttl
                    ? std::make_optional(base::StrictNumeric<uint64_t>(body.ttl))
                    : std::nullopt;
+
+  result.withdrawals.reserve(body.withdrawals.size());
+  for (const auto& withdrawal : body.withdrawals) {
+    result.withdrawals.push_back(FromRust(withdrawal));
+  }
+
+  result.mint.reserve(body.mint.size());
+  for (const auto& mint_token : body.mint) {
+    result.mint.push_back(FromRust(mint_token));
+  }
+
   return result;
 }
 
@@ -238,6 +291,40 @@ CardanoTxDecoder::SerializableTxOutput::SerializableTxOutput(
 CardanoTxDecoder::SerializableTxOutput&
 CardanoTxDecoder::SerializableTxOutput::operator=(
     CardanoTxDecoder::SerializableTxOutput&&) = default;
+
+CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal() = default;
+CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal(
+    std::vector<uint8_t> reward_account,
+    uint64_t coin)
+    : reward_account(std::move(reward_account)), coin(coin) {}
+CardanoTxDecoder::SerializableWithdrawal::~SerializableWithdrawal() = default;
+CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal(
+    const SerializableWithdrawal&) = default;
+CardanoTxDecoder::SerializableWithdrawal&
+CardanoTxDecoder::SerializableWithdrawal::operator=(
+    const SerializableWithdrawal&) = default;
+CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal(
+    SerializableWithdrawal&&) = default;
+CardanoTxDecoder::SerializableWithdrawal&
+CardanoTxDecoder::SerializableWithdrawal::operator=(SerializableWithdrawal&&) =
+    default;
+
+CardanoTxDecoder::SerializableMintToken::SerializableMintToken() = default;
+CardanoTxDecoder::SerializableMintToken::SerializableMintToken(
+    std::vector<uint8_t> token_id,
+    int64_t amount)
+    : token_id(std::move(token_id)), amount(amount) {}
+CardanoTxDecoder::SerializableMintToken::~SerializableMintToken() = default;
+CardanoTxDecoder::SerializableMintToken::SerializableMintToken(
+    const SerializableMintToken&) = default;
+CardanoTxDecoder::SerializableMintToken&
+CardanoTxDecoder::SerializableMintToken::operator=(
+    const SerializableMintToken&) = default;
+CardanoTxDecoder::SerializableMintToken::SerializableMintToken(
+    SerializableMintToken&&) = default;
+CardanoTxDecoder::SerializableMintToken&
+CardanoTxDecoder::SerializableMintToken::operator=(SerializableMintToken&&) =
+    default;
 
 CardanoTxDecoder::SerializableTxBody::SerializableTxBody() = default;
 CardanoTxDecoder::SerializableTxBody::~SerializableTxBody() = default;

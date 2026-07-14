@@ -22,6 +22,8 @@ use ciborium::{de::from_reader, Value as CborValue};
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableCoinValue;
 #[allow(unused_imports)]
+use crate::ffi::CxxSerializableMintToken;
+#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTx;
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxBody;
@@ -35,6 +37,8 @@ use crate::ffi::CxxSerializableTxOutputToken;
 use crate::ffi::CxxSerializableTxWitness;
 #[allow(unused_imports)]
 use crate::ffi::CxxSerializableVkeyWitness;
+#[allow(unused_imports)]
+use crate::ffi::CxxSerializableWithdrawal;
 
 // Constants definitions come from
 // https://github.com/IntersectMBO/cardano-ledger/blob/30d293d7166561d47bccf56b7e1473cdab84714d/eras/conway/impl/cddl/data/conway.cddl
@@ -48,6 +52,9 @@ const INPUTS_KEY: u8 = 0;
 const OUTPUTS_KEY: u8 = 1;
 const FEE_KEY: u8 = 2;
 const TTL_KEY: u8 = 3;
+const CERTIFICATES_KEY: u8 = 4;
+const WITHDRAWALS_KEY: u8 = 5;
+const MINT_KEY: u8 = 9;
 const VK_WITNESS_KEY: u8 = 0;
 const BABBAGE_OUTPUT_ADDRESS_KEY: u8 = 0;
 const BABBAGE_OUTPUT_VALUE_KEY: u8 = 1;
@@ -89,6 +96,23 @@ fn decode_u64(value: &CborValue) -> Result<u64, ()> {
         CborValue::Integer(i) => (*i).try_into().map_err(|_| ()),
         _ => Err(()),
     }
+}
+
+fn decode_i64(value: &CborValue) -> Result<i64, ()> {
+    match value {
+        CborValue::Integer(i) => (*i).try_into().map_err(|_| ()),
+        _ => Err(()),
+    }
+}
+
+/// nonzero_int64 = negative_int64 / positive_int64 (zero is invalid).
+/// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L473
+fn decode_nonzero_i64(value: &CborValue) -> Result<i64, ()> {
+    let amount = decode_i64(value)?;
+    if amount == 0 {
+        return Err(());
+    }
+    Ok(amount)
 }
 
 fn decode_bytes_array<const N: usize>(value: &CborValue) -> Result<[u8; N], ()> {
@@ -169,12 +193,26 @@ mod ffi {
     }
 
     #[derive(Clone)]
+    struct CxxSerializableWithdrawal {
+        reward_account: Vec<u8>,
+        coin: u64,
+    }
+
+    #[derive(Clone)]
+    struct CxxSerializableMintToken {
+        token_id: Vec<u8>,
+        amount: i64,
+    }
+
+    #[derive(Clone)]
     struct CxxSerializableTxBody {
         inputs: Vec<CxxSerializableTxInput>,
         outputs: Vec<CxxSerializableTxOutput>,
         fee: u64,
         has_ttl: bool,
         ttl: u64,
+        withdrawals: Vec<CxxSerializableWithdrawal>,
+        mint: Vec<CxxSerializableMintToken>,
     }
 
     #[derive(Clone)]
@@ -630,11 +668,23 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
         None => (false, 0),
     };
 
+    // Certificates are not supported. Reject any transaction that carries them
+    // so we never sign a body whose staking/delegation effects we don't decode.
+    if find_map_value(body_map, CERTIFICATES_KEY).is_some() {
+        return Err(());
+    }
+
+    // Extract withdrawals (optional).
+    let withdrawals = decode_withdrawals(body_map)?;
+
+    // Extract mint (optional).
+    let mint = decode_mint(body_map)?;
+
     // Serialize the body for raw bytes
     let mut raw_body = Vec::new();
     ciborium::ser::into_writer(body_value, &mut raw_body).map_err(|_| ())?;
 
-    Ok((CxxSerializableTxBody { inputs, outputs, fee, has_ttl, ttl }, raw_body))
+    Ok((CxxSerializableTxBody { inputs, outputs, fee, has_ttl, ttl, withdrawals, mint }, raw_body))
 }
 
 // https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L699
@@ -797,6 +847,73 @@ fn decode_outputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializ
     }
 
     Ok(outputs)
+}
+
+// withdrawals = {+ reward_account => coin}
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L467
+fn decode_withdrawals(
+    body_map: &[(CborValue, CborValue)],
+) -> Result<Vec<CxxSerializableWithdrawal>, ()> {
+    let Some(withdrawals_value) = find_map_value(body_map, WITHDRAWALS_KEY) else {
+        return Ok(Vec::new());
+    };
+
+    let CborValue::Map(withdrawals_map) = withdrawals_value else {
+        return Err(());
+    };
+
+    // CDDL `{+ ...}` requires a non-empty map when the field is present.
+    if withdrawals_map.is_empty() {
+        return Err(());
+    }
+
+    withdrawals_map
+        .iter()
+        .map(|(reward_account_val, coin_val)| {
+            let reward_account = decode_bytes_vector(reward_account_val)?;
+            let coin = decode_u64(coin_val)?;
+            Ok(CxxSerializableWithdrawal { reward_account, coin })
+        })
+        .collect()
+}
+
+// mint = {+ policy_id => {+ asset_name => nonzero_int64}}
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L471
+fn decode_mint(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializableMintToken>, ()> {
+    let Some(mint_value) = find_map_value(body_map, MINT_KEY) else {
+        return Ok(Vec::new());
+    };
+
+    let CborValue::Map(mint_map) = mint_value else {
+        return Err(());
+    };
+
+    // CDDL `{+ ...}` requires a non-empty map when the field is present.
+    if mint_map.is_empty() {
+        return Err(());
+    }
+
+    let mut mint_tokens: Vec<CxxSerializableMintToken> = Vec::new();
+
+    for (policy_id_val, asset_map_val) in mint_map {
+        let policy_id: [u8; CARDANO_SCRIPT_HASH_SIZE] = decode_bytes_array(policy_id_val)?;
+        let CborValue::Map(asset_map) = asset_map_val else {
+            return Err(());
+        };
+        if asset_map.is_empty() {
+            return Err(());
+        }
+        for (asset_name_val, amount_val) in asset_map {
+            let asset_name = decode_bytes_vector(asset_name_val)?;
+            let amount = decode_nonzero_i64(amount_val)?;
+            mint_tokens.push(CxxSerializableMintToken {
+                token_id: [policy_id.as_slice(), asset_name.as_slice()].concat(),
+                amount,
+            });
+        }
+    }
+
+    Ok(mint_tokens)
 }
 
 pub fn decode_cardano_transaction(bytes: &[u8]) -> Box<CxxDecodedCardanoTransactionResult> {
