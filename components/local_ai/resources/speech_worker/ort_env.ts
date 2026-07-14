@@ -4,15 +4,17 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Owns loading and configuring the onnxruntime-web environment for this
-// worker. ORT is loaded at runtime as a served ES module rather than
-// bundled by webpack: webpack rewrites ORT's internal worker/wasm URLs,
-// which breaks multi-threaded pthread worker creation. `import type` keeps
-// the types without emitting a runtime import. The absolute
-// chrome-untrusted:// URL is externalized by Brave's webpack config (any
-// chrome(-untrusted):// import is left as a runtime `import`), so webpack
-// never touches ORT.
-let ort!: typeof import('onnxruntime-web')
-let ortLoaded = false
+// worker. The loader is bundled into this worker's script by webpack, and its
+// pthread worker glue and threaded .wasm are emitted as webpack assets served
+// from this origin.
+import * as ort from 'onnxruntime-web/wasm'
+
+// The threaded .wasm is located by ORT only through ort.env.wasm.wasmPaths at
+// runtime, a string webpack cannot trace, so it is not emitted on its own.
+// Import it explicitly so webpack emits it and returns its URL for wasmPaths.
+import wasmUrl from 'onnxruntime-web/ort-wasm-simd-threaded.wasm'
+
+let ortConfigured = false
 
 export type Ort = typeof import('onnxruntime-web')
 export type OrtTensor = import('onnxruntime-web').Tensor
@@ -20,27 +22,19 @@ export type OrtSession = import('onnxruntime-web').InferenceSession
 export type OrtSessionOptions =
   import('onnxruntime-web').InferenceSession.SessionOptions
 
-// The ORT distribution files are bundled into the worker's pak (built by
-// the ort_dist_generated target in this folder's BUILD.gn) and served
-// from this origin under /ort-dist/.
-const ORT_DIST_PATH = '/ort-dist/'
-
-// The single worker-glue script ORT instantiates as a pthread Worker
-// (ort.env.wasm.wasmPaths.mjs below). It is the ONLY URL that should ever
-// reach the Trusted Types createScriptURL hook — the main bundle is loaded
-// via dynamic import() (governed by CSP script-src, not Trusted Types) and
-// the .wasm is fetched, not run as a worker. So the policy pins to this
-// exact path rather than allowing the whole ort-dist directory.
-// Served as .js (not its source .mjs name): WebUIDataSource's GetMimeType has
-// no .mjs case and would fall back to text/html, which blocks the module.
-const ORT_WORKER_SCRIPT = ORT_DIST_PATH + 'ort-wasm-simd-threaded.js'
+// The webpack-emitted worker glue ORT starts as a pthread Worker, named
+// ort.wasm.bundle.min.<contenthash>.js. It is the only URL that should reach
+// the Trusted Types createScriptURL hook, pinned by prefix and suffix since
+// the content hash varies per build.
+const ORT_WORKER_SCRIPT_PREFIX = '/ort.wasm.bundle.min.'
+const ORT_WORKER_SCRIPT_SUFFIX = '.js'
 
 const NUM_THREADS = Math.min(4, self.navigator.hardwareConcurrency || 4)
 
 // Trusted Types default policy: onnxruntime-web creates its thread-pool
 // workers via `new Worker(<url string>)`, which Trusted Types routes
-// through the default policy. Allow ONLY our own same-origin ort-dist
-// worker scripts; reject everything else.
+// through the default policy. Allow ONLY our own same-origin worker glue and
+// reject everything else.
 export function installTrustedTypesPolicy() {
   const tt = (
     self as unknown as {
@@ -55,10 +49,15 @@ export function installTrustedTypesPolicy() {
   tt.createPolicy('default', {
     createScriptURL: (url: string) => {
       const u = new URL(url, location.href)
-      // Pin to the one same-origin worker script. search/hash are ignored
-      // so a cache-busting query can't change the decision; everything
-      // else (other files, cross-origin, blob: URLs) is rejected.
-      if (u.origin === location.origin && u.pathname === ORT_WORKER_SCRIPT) {
+      // Pin to the same-origin webpack-emitted worker glue
+      // (ort.wasm.bundle.min.<contenthash>.js). search and hash are ignored so
+      // a cache-busting query cannot change the decision. Everything else
+      // (other files, cross-origin, blob: URLs) is rejected.
+      if (
+        u.origin === location.origin
+        && u.pathname.startsWith(ORT_WORKER_SCRIPT_PREFIX)
+        && u.pathname.endsWith(ORT_WORKER_SCRIPT_SUFFIX)
+      ) {
         return url
       }
       throw new TypeError('Trusted Types: blocked script URL ' + url)
@@ -66,23 +65,14 @@ export function installTrustedTypesPolicy() {
   })
 }
 
-// Load ORT (runtime ES module), configure the threaded WASM backend, and
-// return the loaded namespace.
+// Configure the threaded WASM backend once and return the bundled ORT
+// namespace. wasmPaths.wasm points ORT at the webpack-emitted .wasm asset.
 export async function ensureOrt(): Promise<Ort> {
-  const ortBase = location.origin + ORT_DIST_PATH
-  if (!ortLoaded) {
-    ort = await import(
-      // @ts-expect-error — absolute WebUI URL resolved at runtime, not by
-      // webpack (externalized by components/webpack/webpack.config.js).
-      'chrome-untrusted://on-device-speech-recognition-worker/ort-dist/ort.wasm.bundle.min.js'
-    )
-    ortLoaded = true
-  }
-  ort.env.wasm.numThreads = NUM_THREADS
-  ort.env.wasm.simd = true
-  ort.env.wasm.wasmPaths = {
-    wasm: ortBase + 'ort-wasm-simd-threaded.wasm',
-    mjs: location.origin + ORT_WORKER_SCRIPT,
+  if (!ortConfigured) {
+    ort.env.wasm.numThreads = NUM_THREADS
+    ort.env.wasm.simd = true
+    ort.env.wasm.wasmPaths = { wasm: wasmUrl }
+    ortConfigured = true
   }
   return ort
 }

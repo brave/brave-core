@@ -11,8 +11,6 @@
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated_map.h"
-#include "brave/components/local_ai/resources/grit/ort_dist_generated.h"
-#include "brave/components/local_ai/resources/grit/ort_dist_generated_map.h"
 #include "components/grit/brave_components_resources.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
@@ -33,11 +31,6 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
   webui::SetupWebUIDataSource(source, kOnDeviceSpeechRecognitionWorkerGenerated,
                               IDR_ON_DEVICE_SPEECH_RECOGNITION_WORKER_HTML);
 
-  // Serve the bundled onnxruntime-web distribution (loader, pthread worker
-  // glue, threaded WASM) under /ort-dist/ from the pak built by
-  // components/local_ai/resources/speech_worker:ort_dist_generated.
-  source->AddResourcePaths(kOrtDistGenerated);
-
   // Make the page cross-origin isolated so onnxruntime-web can use the
   // multi-threaded WASM backend (SharedArrayBuffer).
   source->OverrideCrossOriginOpenerPolicy("same-origin");
@@ -50,12 +43,11 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
   // Explicit grants for what the page actually uses.
-  // script-src: dynamic import() of the ORT bundle plus WASM compile, which
-  //   needs 'wasm-unsafe-eval'.
-  // worker-src: onnxruntime-web spawns its thread pool as Web Workers; we pin
-  //   those to a same-origin served script (ort.env.wasm.wasmPaths.mjs in
-  //   speech_worker.ts) rather than ORT's default inlined blob: worker, so
-  //   'self' (no blob:) is sufficient and blocks any blob-URL worker.
+  // script-src: the worker script plus WASM compile, which needs
+  //   'wasm-unsafe-eval'.
+  // worker-src: onnxruntime-web spawns its thread pool as Web Workers from the
+  //   same-origin worker glue rather than ORT's default inlined blob: worker,
+  //   so 'self' (no blob:) is sufficient and blocks any blob-URL worker.
   // connect-src: ORT fetches the runtime .wasm from this origin. Model weights
   //   arrive as mojo BigBuffers, never fetched, so same-origin is the only
   //   connection the page needs.
@@ -86,7 +78,7 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
   // onnxruntime-web spawns its thread pool via `new Worker(<url string>)`,
   // which that enforcement routes through the `default` policy
   // (installed in speech_worker.ts, accepting solely our own same-origin
-  // ort-dist worker script). This line only narrows the broad policy
+  // worker glue). This line only narrows the broad policy
   // allowlist SetupWebUIDataSource sets down to what this page uses; the
   // `default` policy name it relies on is appended automatically by Brave's
   // chromium_src override of WebUIDataSourceImpl.
