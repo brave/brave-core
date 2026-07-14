@@ -273,7 +273,14 @@ export function ModelSelector() {
           </Alert>
         )}
 
-      <div className={styles.menuBody}>
+      <div
+        className={styles.menuBody}
+        style={
+          {
+            '--vendor-rail-count': vendorEntries.length,
+          } as React.CSSProperties
+        }
+      >
         <VendorRail
           entries={vendorEntries}
           selectedKey={selectedVendorKey}

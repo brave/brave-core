@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
+import Tooltip from '@brave/leo/react/tooltip'
 import classnames from '$web-common/classnames'
 import { getVendorIcon } from '../../../common/vendor_icon_map'
 import { VendorRailEntry } from '../../model_utils'
@@ -26,27 +27,34 @@ export function VendorRail(props: Props) {
       {props.entries.map((entry) => {
         const isSelected = entry.key === props.selectedKey
         return (
-          <button
+          <Tooltip
             key={entry.key}
-            type='button'
-            role='tab'
-            aria-selected={isSelected}
-            aria-label={entry.label}
-            title={entry.label}
-            data-testid={`vendor-rail-${entry.key}`}
-            className={classnames({
-              [styles.vendorRailButton]: true,
-              [styles.vendorRailButtonSelected]: isSelected,
-            })}
-            onClick={() => {
-              props.onSelect(entry.key)
-            }}
+            mode='mini'
+            text={entry.label}
+            placement='top'
+            positionStrategy='fixed'
+            mouseenterDelay={1000}
           >
-            <Icon
-              name={getVendorIcon(entry.key)}
-              className={styles.vendorRailIcon}
-            />
-          </button>
+            <button
+              type='button'
+              role='tab'
+              aria-selected={isSelected}
+              aria-label={entry.label}
+              data-testid={`vendor-rail-${entry.key}`}
+              className={classnames({
+                [styles.vendorRailButton]: true,
+                [styles.vendorRailButtonSelected]: isSelected,
+              })}
+              onClick={() => {
+                props.onSelect(entry.key)
+              }}
+            >
+              <Icon
+                name={getVendorIcon(entry.key)}
+                className={styles.vendorRailIcon}
+              />
+            </button>
+          </Tooltip>
         )
       })}
     </div>
