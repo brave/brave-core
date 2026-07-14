@@ -56,7 +56,7 @@ pub fn parse_fragment_with_options(
         tokenizer: opts.tokenizer,
         tree_builder: opts.tree_builder,
     };
-    html5ever::parse_fragment(sink, html5opts, ctx_name, ctx_attr)
+    html5ever::parse_fragment(sink, html5opts, ctx_name, ctx_attr, false)
 }
 
 /// Receives new tree nodes during parsing.

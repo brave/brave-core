@@ -18,5 +18,5 @@ rust_static_library("document_extractor") {
 
   cxx_bindings = [ "lib.rs" ]
 
-  deps = [ "//brave/third_party/rust/scraper/v0_22:lib" ]
+  deps = [ "//brave/third_party/rust/scraper/v0_24:lib" ]
 }

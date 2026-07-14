@@ -364,7 +364,7 @@ impl Blocker {
                     params
                         .into_iter()
                         .filter(|(_, include)| *include)
-                        .map(|(param, _)| param.to_string()),
+                        .map(|(param, _)| param),
                     "&",
                 );
                 let new_param_str = if p.is_empty() {
