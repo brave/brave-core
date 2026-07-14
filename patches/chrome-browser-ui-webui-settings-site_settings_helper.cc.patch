@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a813dd17c4c 100644
+index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..80514929e2bf7ccc7771a3c82aa8db3f6ecb99d3 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -260,6 +260,51 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
+@@ -260,6 +260,52 @@ constexpr auto kContentSettingsTypeGroupNames = std::to_array<
      {ContentSettingsType::SUSPICIOUS_NOTIFICATION_SHOW_ORIGINAL, nullptr},
      {ContentSettingsType::LOCAL_NETWORK_ACCESS, nullptr},
      {ContentSettingsType::SUB_APPS_WITHOUT_PROMPTS, nullptr},
@@ -51,10 +51,11 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
 +    {ContentSettingsType::BRAVE_WEBCOMPAT_ALL, nullptr},
 +    {ContentSettingsType::BRAVE_SHIELDS_METADATA, nullptr},
 +    {ContentSettingsType::BRAVE_PSST, nullptr},
++    {ContentSettingsType::BRAVE_JAVASCRIPT, nullptr},
  });
  
  static_assert(
-@@ -523,7 +568,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
+@@ -523,7 +569,7 @@ constexpr UrlIdentity::TypeSet kUrlIdentityAllowedTypes = {
  
  }  // namespace
  
@@ -63,7 +64,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
    for (auto kContentSettingsTypeGroupName : kContentSettingsTypeGroupNames) {
      if (type == kContentSettingsTypeGroupName.type &&
          kContentSettingsTypeGroupName.name) {
-@@ -534,6 +579,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+@@ -534,6 +580,9 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
@@ -73,7 +74,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      // Content setting types that aren't represented in the settings UI
      // will have `nullptr` as their `name`. However, converting `nullptr`
-@@ -548,6 +596,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
+@@ -548,6 +597,9 @@ ContentSettingsType ContentSettingsTypeFromGroupName(std::string_view name) {
  }
  
  std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
@@ -83,7 +84,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
    for (const auto& entry : kContentSettingsTypeGroupNames) {
      if (type == entry.type) {
        // Content setting types that aren't represented in the settings UI
-@@ -567,7 +618,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
+@@ -567,7 +619,7 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
                 << " is not a recognized content settings type.";
  }
  
@@ -92,7 +93,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
      const std::string& origin,
      Profile* profile) {
    // First build the list of permissions that will be shown regardless of
-@@ -709,6 +760,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -709,6 +761,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
        return "policy";
      case SiteSettingSource::kPreference:
        return "preference";
@@ -101,7 +102,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
      case SiteSettingSource::kNumSources:
        NOTREACHED();
    }
-@@ -717,6 +770,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
+@@ -717,6 +771,8 @@ std::string SiteSettingSourceToString(const SiteSettingSource source) {
  SiteSettingSource ProviderTypeToSiteSettingsSource(
      const ProviderType provider_type) {
    switch (provider_type) {
@@ -110,7 +111,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
      case ProviderType::kWebuiAllowlistProvider:
      case ProviderType::kComponentExtensionProvider:
        return SiteSettingSource::kAllowlist;
-@@ -746,6 +801,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
+@@ -746,6 +802,8 @@ SiteSettingSource ProviderTypeToSiteSettingsSource(
  std::string_view ProviderToDefaultSettingSourceString(
      const ProviderType provider) {
    switch (provider) {
@@ -119,7 +120,7 @@ index 219562a892e5959f0ab88dad1e3f2ecf2994b30b..5b4aa9bf7dbab4d496f22afba71e6a81
      case ProviderType::kPolicyProvider:
        return "policy";
      case ProviderType::kSupervisedProvider:
-@@ -837,7 +894,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
+@@ -837,7 +895,7 @@ std::u16string GetExpirationDescription(const base::Time& expiration) {
  
  // Create a base::DictValue that will act as a data source for a single row
  // in a HostContentSettingsMap-controlled exceptions table (e.g., cookies).
