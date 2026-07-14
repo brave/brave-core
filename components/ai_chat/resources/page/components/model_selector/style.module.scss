@@ -245,6 +245,10 @@
 }
 
 .emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: var(--leo-spacing-xl) var(--leo-spacing-m);
   text-align: center;
   font: var(--leo-font-small-regular);
