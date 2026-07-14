@@ -12,13 +12,13 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import * as Mojom from '../../../common/mojom'
 import {
-  ALL_MODEL_CAPABILITIES,
   getModelCapabilityIcon,
   getModelCapabilityLabel,
 } from '../../model_utils'
 import styles from './style.module.scss'
 
 interface Props {
+  available: Mojom.ModelCapability[]
   selected: Mojom.ModelCapability[]
   onChange: (capabilities: Mojom.ModelCapability[]) => void
   isOpen: boolean
@@ -26,6 +26,10 @@ interface Props {
 }
 
 export function CapabilityFilter(props: Props) {
+  if (props.available.length === 0) {
+    return null
+  }
+
   const toggle = (capability: Mojom.ModelCapability) => {
     if (props.selected.includes(capability)) {
       props.onChange(props.selected.filter((c) => c !== capability))
@@ -67,7 +71,7 @@ export function CapabilityFilter(props: Props) {
         )}
       </Button>
 
-      {ALL_MODEL_CAPABILITIES.map((capability) => {
+      {props.available.map((capability) => {
         const isSelected = props.selected.includes(capability)
         return (
           <leo-menu-item
