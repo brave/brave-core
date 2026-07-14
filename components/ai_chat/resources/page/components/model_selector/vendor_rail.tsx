@@ -43,7 +43,10 @@ export function VendorRail(props: Props) {
               props.onSelect(entry.key)
             }}
           >
-            <Icon name={getVendorIcon(entry.key)} />
+            <Icon
+              name={getVendorIcon(entry.key)}
+              className={styles.vendorRailIcon}
+            />
           </button>
         )
       })}

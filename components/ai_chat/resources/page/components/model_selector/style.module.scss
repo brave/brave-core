@@ -73,8 +73,6 @@
 }
 
 .vendorRailButton {
-  --leo-icon-size: 18px;
-  --leo-icon-color: var(--leo-color-icon-default);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -89,15 +87,33 @@
 
   &:hover {
     background: var(--leo-color-container-interactive);
+
+    .vendorRailIcon {
+      filter: none;
+      --leo-icon-color: var(--leo-color-icon-interactive);
+    }
   }
 }
 
+.vendorRailIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  // Brand SVGs are multicolor; grayscale keeps them monochrome until
+  // hover/selected. Monochrome icons (pin, local) are unaffected in practice.
+  filter: grayscale(1);
+  transition: filter 0.15s ease;
+}
+
 .vendorRailButtonSelected {
-  --leo-icon-color: var(--leo-color-icon-interactive);
   background: var(--leo-color-primary-20);
 
   &:hover {
     background: var(--leo-color-primary-20);
+  }
+
+  .vendorRailIcon {
+    filter: none;
+    --leo-icon-color: var(--leo-color-icon-interactive);
   }
 }
 

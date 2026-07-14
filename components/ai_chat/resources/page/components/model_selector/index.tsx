@@ -124,9 +124,14 @@ export function ModelSelector() {
   )
 
   const models = React.useMemo(() => {
-    let list: Mojom.Model[] = []
+    const query = searchQuery.trim()
 
-    if (selectedVendorKey === PINNED_VENDOR_KEY) {
+    // Search is global across all models; vendor rail only scopes the list
+    // when the search box is empty.
+    let list: Mojom.Model[] = []
+    if (query) {
+      list = selectableModels.slice()
+    } else if (selectedVendorKey === PINNED_VENDOR_KEY) {
       const autoModel = selectableModels.find(
         (model) => model.key === AUTOMATIC_MODEL_KEY,
       )
@@ -159,8 +164,7 @@ export function ModelSelector() {
       )
     }
 
-    if (searchQuery.trim()) {
-      const query = searchQuery.trim()
+    if (query) {
       list = list.filter((model) => matchesModelQuery(query, model))
     }
 
