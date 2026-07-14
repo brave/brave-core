@@ -9,6 +9,7 @@
 #include <stdint.h>
 
 #include "base/auto_reset.h"
+#include "base/token.h"
 
 namespace brave_shields {
 
@@ -17,11 +18,15 @@ class ScopedStableFarblingTokensForTesting {
   // The seed value determines whether the farbling is random or deterministic.
   // If the seed is 0, the farbling is random (production mode). If the seed is
   // non-zero, the farbling is deterministic.
-  explicit ScopedStableFarblingTokensForTesting(uint32_t seed);
+  // |profile_token| set to an empty base::Token() removes the randomness
+  // introduced by the additonal profile level entropy.
+  explicit ScopedStableFarblingTokensForTesting(uint32_t seed,
+                                                base::Token profile_token);
   ~ScopedStableFarblingTokensForTesting();
 
  private:
   base::AutoReset<uint32_t> scoped_stable_farbling_token_seed_;
+  base::AutoReset<std::optional<base::Token>> profile_token_;
 };
 
 }  // namespace brave_shields

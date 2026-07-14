@@ -81,6 +81,12 @@ class BraveShieldsSettingsService : public KeyedService {
       FarblingPRNG* prng);
 
   static void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry);
+
+  // Returns the underlying farbling token stored for |url|. For containers
+  // which runs in an isolated storage an |additional_entropy| is applied on top
+  // to the token. Lastly, an additional |profile_level_farbling_entropy| maybe
+  // applied on top again, if brave_shields::features::kBraveFarblingTokenReset
+  // is enabled.
   base::Token GetFarblingToken(const GURL& url,
                                base::span<const uint8_t> additional_entropy);
 
@@ -89,6 +95,11 @@ class BraveShieldsSettingsService : public KeyedService {
       host_content_settings_map_;       // NOT OWNED
   raw_ptr<PrefService> local_state_;    // NOT OWNED
   raw_ptr<PrefService> profile_prefs_;  // NOT OWNED
+
+  // This token is generated when the service is created and stays stable until
+  // the service is destoryed. It allows to show different farbled values for a
+  // site across browser restarts.
+  base::Token profile_level_farbling_entropy_;
 };
 
 }  // namespace brave_shields
