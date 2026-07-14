@@ -54,7 +54,7 @@ const gfx::ShadowValues& GetCachedShadowValues(
 ViewShadow::ViewShadow(views::View* view,
                        const gfx::RoundedCornersF& corner_radii,
                        const ShadowParameters& params)
-    : layer_owner_(std::make_unique<ui::Layer>()),
+    : layer_owner_(std::make_unique<ui::LayerTextured>()),
       view_(view),
       corner_radii_(corner_radii),
       shadow_values_(GetCachedShadowValues(params)) {
