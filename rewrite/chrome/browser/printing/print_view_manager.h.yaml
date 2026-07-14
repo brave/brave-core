@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Expose print preview render frame host accessors for extraction
+
+      `GetPrintPreviewParams()` now requires `print_preview_rfh_` to match the
+      requesting frame. Our screenshot print preview extractor drives print
+      preview directly, without going through the PrintPreviewNow() /
+      PrintPreviewDone() dialog flow that normally sets `print_preview_rfh_`, so
+      expose a narrow pair of public accessors it can use to satisfy that
+      requirement.
+    regex:
+      re_pattern: '(  ~PrintViewManager\(\) override;)'
+      replace: |-
+        \1
+
+          void SetPrintPreviewRenderFrameHostForExtraction(
+              content::RenderFrameHost* rfh);
+          void ClearPrintPreviewRenderFrameHostForExtraction();
