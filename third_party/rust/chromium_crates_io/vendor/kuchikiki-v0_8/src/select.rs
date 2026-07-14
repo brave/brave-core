@@ -4,12 +4,13 @@ use crate::node_data_ref::NodeDataRef;
 use crate::tree::{ElementData, Node, NodeData, NodeRef};
 use cssparser::{self, CowRcStr, ParseError, SourceLocation, ToCss};
 use html5ever::{LocalName, Namespace};
+use precomputed_hash::PrecomputedHash;
 use selectors::attr::{AttrSelectorOperation, CaseSensitivity, NamespaceConstraint};
-use selectors::context::QuirksMode;
-use selectors::parser::SelectorParseErrorKind;
+use selectors::context::{MatchingForInvalidation, NeedsSelectorFlags, QuirksMode, SelectorCaches};
 use selectors::parser::{
     NonTSPseudoClass, Parser, Selector as GenericSelector, SelectorImpl, SelectorList,
 };
+use selectors::parser::{ParseRelative, SelectorParseErrorKind};
 use selectors::{self, matching, OpaqueElement};
 use std::fmt;
 
@@ -45,6 +46,12 @@ impl AsRef<str> for CssLocalName {
     }
 }
 
+impl PrecomputedHash for CssLocalName {
+    fn precomputed_hash(&self) -> u32 {
+        self.0.precomputed_hash()
+    }
+}
+
 impl SelectorImpl for KuchikiSelectors {
     type AttrValue = CssLocalName;
     type Identifier = CssLocalName;
@@ -57,7 +64,7 @@ impl SelectorImpl for KuchikiSelectors {
     type NonTSPseudoClass = PseudoClass;
     type PseudoElement = PseudoElement;
 
-    type ExtraMatchingData = ();
+    type ExtraMatchingData<'a> = ();
 }
 
 struct KuchikiParser;
@@ -317,15 +324,11 @@ impl selectors::Element for NodeDataRef<ElementData> {
         match *pseudo {}
     }
 
-    fn match_non_ts_pseudo_class<F>(
+    fn match_non_ts_pseudo_class(
         &self,
         pseudo: &PseudoClass,
         _context: &mut matching::MatchingContext<KuchikiSelectors>,
-        _flags_setter: &mut F,
-    ) -> bool
-    where
-        F: FnMut(&Self, matching::ElementSelectorFlags),
-    {
+    ) -> bool {
         use self::PseudoClass::*;
         match *pseudo {
             Active | Focus | Hover | Enabled | Disabled | Checked | Indeterminate | Visited => {
@@ -340,6 +343,22 @@ impl selectors::Element for NodeDataRef<ElementData> {
                     && self.attributes.borrow().contains(local_name!("href"))
             }
         }
+    }
+
+    fn first_element_child(&self) -> Option<Self> {
+        self.as_node()
+            .first_child()
+            .and_then(NodeRef::into_element_ref)
+    }
+
+    fn apply_selector_flags(&self, _flags: matching::ElementSelectorFlags) {}
+
+    fn has_custom_state(&self, _name: &<Self::Impl as SelectorImpl>::Identifier) -> bool {
+        false
+    }
+
+    fn add_element_unique_hashes(&self, _filter: &mut selectors::bloom::BloomFilter) -> bool {
+        false
     }
 }
 
@@ -363,8 +382,14 @@ impl Selectors {
     #[inline]
     pub fn compile(s: &str) -> Result<Selectors, ()> {
         let mut input = cssparser::ParserInput::new(s);
-        match SelectorList::parse(&KuchikiParser, &mut cssparser::Parser::new(&mut input)) {
-            Ok(list) => Ok(Selectors(list.0.into_iter().map(Selector).collect())),
+        match SelectorList::parse(
+            &KuchikiParser,
+            &mut cssparser::Parser::new(&mut input),
+            ParseRelative::No,
+        ) {
+            Ok(list) => Ok(Selectors(
+                list.slice().iter().cloned().map(Selector).collect(),
+            )),
             Err(_) => Err(()),
         }
     }
@@ -392,13 +417,16 @@ impl Selector {
     /// Returns whether the given element matches this selector.
     #[inline]
     pub fn matches(&self, element: &NodeDataRef<ElementData>) -> bool {
+        let mut selector_cache = SelectorCaches::default();
         let mut context = matching::MatchingContext::new(
             matching::MatchingMode::Normal,
             None,
-            None,
+            &mut selector_cache,
             QuirksMode::NoQuirks,
+            NeedsSelectorFlags::No,
+            MatchingForInvalidation::No,
         );
-        matching::matches_selector(&self.0, 0, None, element, &mut context, &mut |_, _| {})
+        matching::matches_selector(&self.0, 0, None, element, &mut context)
     }
 
     /// Return the specificity of this selector.

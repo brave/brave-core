@@ -276,6 +276,62 @@ impl CosmeticFilter {
         })
     }
 
+    /// Turns a string of the format `.selector { background: red }` into
+    /// `Some((".selector", "background: red"))`.
+    fn split_abp_brace_suffix(s: &str) -> Option<(&str, &str)> {
+        if !s.ends_with('}') {
+            return None;
+        }
+        let open = s.rfind('{')?;
+        if open == 0 {
+            return None;
+        }
+        let selector = s[..open].trim_end();
+        let body = s[open + 1..s.len() - 1].trim();
+        if selector.is_empty() {
+            return None;
+        }
+        Some((selector, body))
+    }
+
+    /// Returns `Some(true)` for ` remove: true; ` with optional whitespace and semicolon,
+    /// `Some(false)` for the corresponding false construction, or `None` otherwise.
+    fn parse_abp_remove_body(body: &str) -> Option<bool> {
+        let (key, mut val) = body.split_once(":")?;
+        if key.trim() != "remove" {
+            return None;
+        }
+        val = val.trim();
+        if let Some(stripped_val) = val.strip_suffix(';') {
+            val = stripped_val;
+        }
+        match val {
+            "true" => Some(true),
+            "false" => Some(false),
+            _ => None,
+        }
+    }
+
+    /// Parses ABP curly-bracketed style injections and `remove:` directives into corresponding
+    /// `CosmeticFilterAction`s.
+    fn parse_abp_style_injection(
+        after_sharp: &str,
+    ) -> Option<Result<(&str, Option<CosmeticFilterAction>), CosmeticFilterError>> {
+        let (selector, body) = match Self::split_abp_brace_suffix(after_sharp) {
+            Some(parts) => parts,
+            None if after_sharp.ends_with('}') => {
+                return Some(Err(CosmeticFilterError::InvalidActionSpecifier));
+            }
+            None => return None,
+        };
+
+        Some(match Self::parse_abp_remove_body(body) {
+            Some(true) => Ok((selector, Some(CosmeticFilterAction::Remove))),
+            Some(false) => Err(CosmeticFilterError::InvalidActionSpecifier),
+            None => CosmeticFilterAction::new_style(body).map(|action| (selector, Some(action))),
+        })
+    }
+
     /// Parses the contents of a cosmetic filter rule following the `##` or `#@#` separator.
     ///
     /// On success, returns `selector` and `style` according to the rule.
@@ -288,6 +344,10 @@ impl CosmeticFilter {
     ) -> Result<(&str, Option<CosmeticFilterAction>), CosmeticFilterError> {
         if after_sharp.starts_with('^') {
             return Err(CosmeticFilterError::HtmlFilteringUnsupported);
+        }
+
+        if let Some(result) = Self::parse_abp_style_injection(after_sharp) {
+            return result;
         }
 
         const STYLE_TOKEN: &[u8] = b":style(";
