@@ -58,10 +58,29 @@ inline constexpr const char kBobSS58[] =
     "14E5nqKAp3oAJcmzgZhUD2RcptBeUBScxKHgJKU4HPNcKVf3";
 
 inline constexpr char kExpectedExtrinsic[] =
-    R"(3502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e011a847b30e2d9a658d52234e673056933258552bb107e533788a072663624d002ba2e25b63be097d31acd35eb49a09994f09a4450e94559f380ea7f787e30d98255014400000403008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913)";
+    "3502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "1a847b30e2d9a658d52234e673056933258552bb107e533788a072663624d002ba2e25b63b"
+    "e097d31acd35eb49a09994f09a4450e94559f380ea7f787e30d98255014400000403008eaf"
+    "04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913";
 
 inline constexpr char kExpectedTransferAllExtrinsic[] =
-    R"(3102840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01f2d65eab394c3e92d3c670bd9b745dbb70dfb6985ebf6b510bdf2783adbd3f5c51c953efc75b02aa3e3d80d632fb5e924d817699b2af139c89ac59cf9f092b8c55014400000404008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800)";
+    "3102840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "f2d65eab394c3e92d3c670bd9b745dbb70dfb6985ebf6b510bdf2783adbd3f5c51c953efc7"
+    "5b02aa3e3d80d632fb5e924d817699b2af139c89ac59cf9f092b8c55014400000404008eaf"
+    "04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800";
+
+inline constexpr char kExpectedAssetIdExtrinsic[] =
+    "4902840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "e6302fc131a08e926057efc3a94180c852949056e0dab67f4e8d28b8ddca9e6c6cd8390c53"
+    "1d8fa20eec81ba2749949ef38527138314789677f29cde65cf63815501440000003209cad1"
+    "eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48491"
+    "3";
+
+inline constexpr char kExpectedTransferAllAssetIdExtrinsic[] =
+    "4502840014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e01"
+    "4e3a629c15cd6f02e88f302799eb0bb9fe263180cbfebe395f84cce0e341071fd102eba8e0"
+    "c79c65642b35c931b77b9448127e1ea8a0fe55d09a200a2de481845501440000003220cad1"
+    "eb0b008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a4800";
 
 class MockTxStateManagerObserver : public TxStateManager::Observer {
  public:
@@ -115,9 +134,13 @@ void SetUpMockRpcForFoundExtrinsic(PolkadotMockRpc* polkadot_mock_rpc,
         R"(054241424501016a387fefdcb284dae1726dbe937c8d869d68cabbda431d91ad78297c2ea06e0675b899c27604f5fe312e248ab5dad601b17fcb584a82bba8b8ad908f6937678b)",
         &block.header.encoded_logs));
 
-    block.extrinsics = {R"(0x1234)", R"(0xabcd)",
-                        base::StrCat({"0x", kExpectedExtrinsic}),
-                        base::StrCat({"0x", kExpectedTransferAllExtrinsic})};
+    block.extrinsics = {
+        R"(0x1234)",
+        R"(0xabcd)",
+        base::StrCat({"0x", kExpectedExtrinsic}),
+        base::StrCat({"0x", kExpectedTransferAllExtrinsic}),
+        base::StrCat({"0x", kExpectedAssetIdExtrinsic}),
+        base::StrCat({"0x", kExpectedTransferAllAssetIdExtrinsic})};
 
     base::flat_map<std::string, PolkadotBlock> block_map;
     block_map.emplace(
@@ -131,8 +154,11 @@ void SetUpMockRpcForFoundExtrinsic(PolkadotMockRpc* polkadot_mock_rpc,
   if (was_successful && !use_invalid_events) {
     events_map.emplace(
         "24eb72acd6d597132debd29d2212abf4f635fcce5d4490fe72137b88ae6f42b1",
-        R"(0b080000000e000000000001000000000007d41643ad0b99700200000002000000040814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000002000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000020000001a0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000)"
-        R"(0200000003000000040814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e2a6502a4030000000000000000000000000003000000000414bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e000003000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477ce8e50ea520040000000000000000000000000300000004076d6f646c6461702f7361746c00000000000000000000000000000000000000002a6502a40300000000000000000000000000030000001a0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e2a6502a403000000000000000000000000000000000000000000000000000000000003000000000022c15a916da8000000)");
+        R"(0b080000000e000000000001000000000007d41643ad0b9970020000)"
+        R"(0002000000040814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000002000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000200000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000020000001a0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000000000000000000000000000000000000020000000000823798916da8000000020000)"
+        R"(0003000000040814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e2a6502a4030000000000000000000000000003000000000414bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e000003000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e52707850d9298f5dfb0a3e5b23fcca39ea286c6def2db5716c996fb39db6477ce8e50ea520040000000000000000000000000300000004076d6f646c6461702f7361746c00000000000000000000000000000000000000002a6502a40300000000000000000000000000030000001a0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e2a6502a403000000000000000000000000000000000000000000000000000000000003000000000022c15a916da8000000)"
+        R"(00040000000a0814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000004000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000400000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000040000000b0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000000000000000000000000000000000000040000000000823798916da8000000020000)"
+        R"(00050000000a0814bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000005000000040214bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48a866140000000000000000000000000000000500000004076d6f646c6461702f7361746c0000000000000000000000000000000000000000dc8df1b51300000000000000000000000000050000000b0014bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71edc8df1b5130000000000000000000000000000000000000000000000000000000000050000000000823798916da8000000020000)");
 
   } else if (!use_invalid_events) {
     events_map.emplace(
@@ -248,7 +274,7 @@ class PolkadotTxManagerUnitTest : public testing::Test {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -332,7 +358,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBobSS58,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -375,7 +401,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBobSS58,
         mojom::uint128::New(0xffffffffffffffff, 0xffffffffffffffff), false,
-        nullptr);
+        nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -419,7 +445,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(),
         "0x8eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a48",
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -440,7 +466,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(),
         "5FHneW46xGXgs5mUiveU4sbTyGBzmstUspZC92UhjJM694ty",
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -460,7 +486,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_mainnet_account_->account_id->Clone(), kBob,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -483,7 +509,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
 
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, std::move(account_id), kBob, mojom::uint128::New(0, 1234),
-        false, nullptr);
+        false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -502,7 +528,7 @@ TEST_F(PolkadotTxManagerUnitTest, AddUnapprovedPolkadotTransaction) {
     std::string chain_id = mojom::kPolkadotMainnet;
     auto transaction_params = mojom::NewPolkadotTransactionParams::New(
         chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-        mojom::uint128::New(0, 1234), false, nullptr);
+        mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
     base::test::TestFuture<bool, const std::string&, const std::string&>
         unapproved_future;
@@ -529,7 +555,7 @@ TEST_F(PolkadotTxManagerUnitTest,
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_mainnet_account_->account_id.Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
+      mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -595,6 +621,209 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Confirmed) {
   ASSERT_TRUE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
   GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
   EXPECT_FALSE(GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotTestnet));
+}
+
+TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_AssetId_Confirmed) {
+  // Prove that our ideal happy flow works for approving transactions, this time
+  // with an asset id.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotPaseoAssetHub;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "14bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e");
+
+  const uint32_t asset_id = 50001010;
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBobSS58,
+      mojom::uint128::New(0, 1234), false, nullptr,
+      mojom::PolkadotAssetId::New(asset_id));
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  ASSERT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  ASSERT_TRUE(success2);
+
+  {
+    const auto& txs = tx_storage_ptr_->GetTxs();
+    const auto* tx = txs.FindDict(tx_meta_id);
+    ASSERT_TRUE(tx);
+
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
+
+    auto recipient = polkadot_tx->tx()->recipient().ToString().value();
+    EXPECT_EQ(recipient, kBobSS58);
+    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
+    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
+    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
+    ASSERT_TRUE(polkadot_tx->tx()->asset_id().has_value());
+    EXPECT_EQ(polkadot_tx->tx()->asset_id().value(), asset_id);
+    EXPECT_EQ(base::HexEncodeLower(
+                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
+              kExpectedAssetIdExtrinsic);
+  }
+
+  MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
+  EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
+      .Times(1)
+      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+
+  task_environment_.RunUntilQuit();
+
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Confirmed);
+    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBobSS58);
+    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+    // Note, our events blob manually changes the fee for the sake of testing.
+    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{84656885212ull});
+    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), false);
+    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
+    ASSERT_TRUE(polkadot_tx->tx()->asset_id().has_value());
+    EXPECT_EQ(polkadot_tx->tx()->asset_id().value(), asset_id);
+    EXPECT_EQ(base::HexEncodeLower(
+                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
+              kExpectedAssetIdExtrinsic);
+  }
+
+  ASSERT_TRUE(
+      GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotPaseoAssetHub));
+  GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
+  EXPECT_FALSE(
+      GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotPaseoAssetHub));
+}
+
+TEST_F(PolkadotTxManagerUnitTest,
+       ApproveTransactionTransferAll_AssetId_Confirmed) {
+  // Prove that our ideal happy flow works for approving transactions, this time
+  // with an asset id and a transfer_all extrinsic.
+
+  SetUpMockRpcForFoundExtrinsic(polkadot_mock_rpc_.get(), true, false);
+
+  polkadot_mock_rpc_->AddReqResPairs();
+  polkadot_mock_rpc_->FinalizeSetup();
+
+  std::string chain_id = mojom::kPolkadotPaseoAssetHub;
+
+  auto pubkey = base::HexEncodeLower(
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value());
+
+  EXPECT_EQ(pubkey,
+            "14bccfbad15c6327408e833d162271f93a51fa3a6bc67d3eacc384bb9704d71e");
+
+  const uint32_t asset_id = 50001010;
+
+  auto transaction_params = mojom::NewPolkadotTransactionParams::New(
+      chain_id, polkadot_testnet_account_->account_id->Clone(), kBobSS58,
+      mojom::uint128::New(0, 1234), true, nullptr,
+      mojom::PolkadotAssetId::New(asset_id));
+
+  base::test::TestFuture<bool, const std::string&, const std::string&>
+      unapproved_future;
+
+  GetPolkadotTxManager()->AddUnapprovedPolkadotTransaction(
+      std::move(transaction_params), unapproved_future.GetCallback());
+
+  auto [success, tx_meta_id, err_str] = unapproved_future.Take();
+  ASSERT_TRUE(success);
+  EXPECT_FALSE(tx_meta_id.empty());
+  EXPECT_EQ(err_str, "");
+
+  base::test::TestFuture<bool, mojom::ProviderErrorUnionPtr, const std::string&>
+      approved_future;
+
+  GetPolkadotTxManager()->ApproveTransaction(tx_meta_id,
+                                             approved_future.GetCallback());
+
+  auto [success2, error, msg] = approved_future.Take();
+  ASSERT_TRUE(success2);
+
+  {
+    const auto& txs = tx_storage_ptr_->GetTxs();
+    const auto* tx = txs.FindDict(tx_meta_id);
+    ASSERT_TRUE(tx);
+
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Submitted);
+
+    auto recipient = polkadot_tx->tx()->recipient().ToString().value();
+    EXPECT_EQ(recipient, kBobSS58);
+    // Note that the send amount is unadajusted here, because we pay fees using
+    // the native coin.
+    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{15937408476ull});
+    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), true);
+    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
+    ASSERT_TRUE(polkadot_tx->tx()->asset_id().has_value());
+    EXPECT_EQ(polkadot_tx->tx()->asset_id().value(), asset_id);
+    EXPECT_EQ(base::HexEncodeLower(
+                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
+              kExpectedTransferAllAssetIdExtrinsic);
+  }
+
+  MockTxStateManagerObserver observer(*GetPolkadotTxStateManager());
+  EXPECT_CALL(observer, OnTransactionStatusChanged(testing::_))
+      .Times(1)
+      .WillOnce(base::test::RunOnceClosure(task_environment_.QuitClosure()));
+
+  task_environment_.RunUntilQuit();
+
+  {
+    auto polkadot_tx = GetPolkadotTxManager()->GetPolkadotTx(tx_meta_id);
+    ASSERT_TRUE(polkadot_tx);
+
+    EXPECT_EQ(polkadot_tx->status(), mojom::TransactionStatus::Confirmed);
+    EXPECT_EQ(polkadot_tx->tx()->recipient().ToString().value(), kBobSS58);
+    // Note that the send amount is unadajusted here, because we pay fees using
+    // the native coin.
+    EXPECT_EQ(polkadot_tx->tx()->amount(), uint128_t{1234});
+    // Note, our events blob manually changes the fee for the sake of testing.
+    EXPECT_EQ(polkadot_tx->tx()->fee(), uint128_t{84656885212ull});
+    EXPECT_EQ(polkadot_tx->tx()->transfer_all(), true);
+    EXPECT_EQ(polkadot_tx->tx()->extrinsic_metadata()->block_num(), 29385557u);
+    ASSERT_TRUE(polkadot_tx->tx()->asset_id().has_value());
+    EXPECT_EQ(polkadot_tx->tx()->asset_id().value(), asset_id);
+    EXPECT_EQ(base::HexEncodeLower(
+                  polkadot_tx->tx()->extrinsic_metadata()->extrinsic()),
+              kExpectedTransferAllAssetIdExtrinsic);
+  }
+
+  ASSERT_TRUE(
+      GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotPaseoAssetHub));
+  GetPolkadotTxManager()->UpdatePendingTransactions(chain_id);
+  EXPECT_FALSE(
+      GetPolkadotBlockTracker()->IsRunning(mojom::kPolkadotPaseoAssetHub));
 }
 
 TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_Failed) {
@@ -724,7 +953,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NotFound) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
+      mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -832,7 +1061,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_TransferAll) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      Uint128ToMojom(amount), true, nullptr);
+      Uint128ToMojom(amount), true, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -911,7 +1140,7 @@ TEST_F(PolkadotTxManagerUnitTest, TransferAll_InsufficientAmount) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), true, nullptr);
+      mojom::uint128::New(0, 1234), true, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -962,7 +1191,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_RejectedExtrinsic) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
+      mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -1016,7 +1245,7 @@ TEST_F(PolkadotTxManagerUnitTest, ApproveTransaction_NetworkFailure) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       chain_id, polkadot_testnet_account_->account_id->Clone(), kBob,
-      mojom::uint128::New(0, 1234), false, nullptr);
+      mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -1082,7 +1311,7 @@ TEST_F(PolkadotTxManagerUnitTest, RestrictedFromAddress) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       mojom::kPolkadotMainnet, polkadot_mainnet_account_->account_id->Clone(),
-      kBobSS58, mojom::uint128::New(0, 1234), false, nullptr);
+      kBobSS58, mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;
@@ -1107,7 +1336,7 @@ TEST_F(PolkadotTxManagerUnitTest, UpdatePendingTransactions_BlockTracker) {
 
   auto transaction_params = mojom::NewPolkadotTransactionParams::New(
       mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id->Clone(),
-      kBob, mojom::uint128::New(0, 1234), false, nullptr);
+      kBob, mojom::uint128::New(0, 1234), false, nullptr, nullptr);
 
   base::test::TestFuture<bool, const std::string&, const std::string&>
       unapproved_future;

@@ -767,6 +767,7 @@ export const transactionEndpoints = ({
             amount: bigIntToUint128(BigInt(payload.value)),
             sendingMaxAmount: payload.sendingMaxAmount,
             swapInfo: payload.swapInfo,
+            assetId: undefined,
           }
 
           const { errorMessage, success } =
