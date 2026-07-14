@@ -12,6 +12,7 @@ import { useAppDispatch } from '../../../../common/hooks/use-redux'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import { getWordIndicesToVerify } from '../../../../utils/ordinal-utils'
+import { splitRecoveryPhraseWords } from '../../../../utils/recovery-phrase-utils'
 import { useCompleteWalletBackupMutation } from '../../../../common/slices/api.slice'
 
 // selectors
@@ -85,7 +86,10 @@ export const VerifyRecoveryPhrase = () => {
   const onContinue = () => {
     if (showError) setShowError(false)
     // check if the word matches
-    if (enteredPhrase === verificationWord) {
+    if (
+      enteredPhrase.trim().toLowerCase()
+      === (verificationWord || '').trim().toLowerCase()
+    ) {
       setEnteredPhrase('')
 
       if (currentStep === numberOfVerificationSteps - 1) {
@@ -107,7 +111,7 @@ export const VerifyRecoveryPhrase = () => {
 
   // memos
   const recoveryPhrase = React.useMemo(() => {
-    return (mnemonic || '').split(' ')
+    return splitRecoveryPhraseWords(mnemonic || '')
   }, [mnemonic])
 
   const verificationIndices = React.useMemo(

@@ -64,5 +64,5 @@ export const getWordIndicesToVerify = (_wordsLength: number): number[] => {
     indicesSet.add(nextIndex)
   }
 
-  return Array.from(indicesSet).sort((a, b) => a - b) // verify in order
+  return Array.from(indicesSet)
 }

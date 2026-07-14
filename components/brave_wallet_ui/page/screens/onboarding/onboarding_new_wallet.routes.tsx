@@ -7,7 +7,7 @@ import * as React from 'react'
 import { Redirect, Switch, useHistory } from 'react-router'
 
 // types
-import { WalletRoutes } from '../../../constants/types'
+import { RecoveryPhraseLengths, WalletRoutes } from '../../../constants/types'
 
 // selectors
 import {
@@ -37,10 +37,14 @@ import {
 import {
   OnboardingNetworkSelection, //
 } from './network_selection/onboarding_network_selection'
+import { SelectRecoveryPhraseLength } from './select_recovery_phrase_length/select_recovery_phrase_length'
 
 export const OnboardingNewWalletRoutes = () => {
   // routing
   const history = useHistory()
+
+  const [selectedRecoveryPhraseLength, setSelectedRecoveryPhraseLength] =
+    React.useState<RecoveryPhraseLengths>()
 
   // redux
   const isWalletCreated = useSafeWalletSelector(WalletSelectors.isWalletCreated)
@@ -73,12 +77,27 @@ export const OnboardingNewWalletRoutes = () => {
       </ProtectedRoute>
 
       <ProtectedRoute
+        path={WalletRoutes.OnboardingNewWalletSelectRecoveryPhraseLength}
+        exact
+        requirement={termsAcknowledged && !isWalletCreated}
+        redirectRoute={WalletRoutes.OnboardingNewWalletNetworkSelection}
+      >
+        <SelectRecoveryPhraseLength
+          selectedLength={selectedRecoveryPhraseLength}
+          onSelectedLengthChange={setSelectedRecoveryPhraseLength}
+        />
+      </ProtectedRoute>
+
+      <ProtectedRoute
         path={WalletRoutes.OnboardingNewWalletCreatePassword}
         exact
-        requirement={termsAcknowledged}
-        redirectRoute={WalletRoutes.OnboardingNewWalletTerms}
+        requirement={termsAcknowledged && !!selectedRecoveryPhraseLength}
+        redirectRoute={
+          WalletRoutes.OnboardingNewWalletSelectRecoveryPhraseLength
+        }
       >
         <OnboardingCreatePassword
+          recoveryPhraseLength={selectedRecoveryPhraseLength}
           onWalletCreated={() =>
             history.push(WalletRoutes.OnboardingExplainRecoveryPhrase)
           }

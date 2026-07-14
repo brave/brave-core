@@ -8,12 +8,28 @@ import * as React from 'react'
 import {
   WalletPageStory, //
 } from '../../../../stories/wrappers/wallet-page-story-wrapper'
+import { mockRecoveryPhrase } from '../../../../stories/mock-data/user-accounts'
 import { VerifyRecoveryPhrase } from './verify_recovery_phrase'
+
+const mocked24WordMnemonic = [
+  ...mockRecoveryPhrase,
+  ...mockRecoveryPhrase,
+].join(' ')
 
 export const _VerifyRecoveryPhrase = {
   render: () => {
     return (
       <WalletPageStory>
+        <VerifyRecoveryPhrase />
+      </WalletPageStory>
+    )
+  },
+}
+
+export const _Verify24WordRecoveryPhrase = {
+  render: () => {
+    return (
+      <WalletPageStory pageStateOverride={{ mnemonic: mocked24WordMnemonic }}>
         <VerifyRecoveryPhrase />
       </WalletPageStory>
     )

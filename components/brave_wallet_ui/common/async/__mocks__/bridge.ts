@@ -736,6 +736,25 @@ export class MockedWalletApiProxy {
     unlock: async (password) => {
       return { success: password === 'password' }
     },
+    generateMnemonic: async (wordCount: number) => {
+      if (wordCount !== 12 && wordCount !== 24) {
+        return { mnemonic: null }
+      }
+      const words = mockedMnemonic.split(' ')
+      return {
+        mnemonic:
+          wordCount === 24 ? [...words, ...words].join(' ') : mockedMnemonic,
+      }
+    },
+    createWalletWithMnemonic: async (mnemonic: string) => {
+      return { mnemonic }
+    },
+    createWallet: async () => {
+      return { mnemonic: mockedMnemonic }
+    },
+    createDefaultAccountsForSelectedNetworks: async () => {
+      return { accountInfos: this.accountInfos }
+    },
   }
 
   ethTxManagerProxy: Partial<
@@ -785,6 +804,12 @@ export class MockedWalletApiProxy {
   jsonRpcService: Partial<
     InstanceType<typeof BraveWallet.JsonRpcServiceInterface>
   > = {
+    addHiddenNetwork: async (coin, chainId) => {
+      return { success: true }
+    },
+    removeHiddenNetwork: async (coin, chainId) => {
+      return { success: true }
+    },
     getAllNetworks: async () => {
       return { networks: this.networks }
     },
