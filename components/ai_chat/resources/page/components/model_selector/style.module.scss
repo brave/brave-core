@@ -40,15 +40,20 @@
 
 .buttonMenu {
   --leo-menu-max-height: calc(100svh - 136px);
-  --leo-menu-width: 320px;
 }
 
 .menuBody {
   display: flex;
   flex-direction: row;
+  box-sizing: border-box;
   width: 320px;
+  min-width: 320px;
+  max-width: 320px;
   max-height: min(472px, calc(100svh - 160px));
   overflow: hidden;
+  // Leo's popup sizes to its content. Without containment, a row's
+  // min-content (e.g. after the "Default" label appears) can widen it.
+  contain: inline-size;
 }
 
 .vendorRail {

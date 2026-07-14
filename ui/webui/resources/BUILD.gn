@@ -387,6 +387,7 @@ leo_icons_sources = [
   "phantom-color.svg",
   "picture-in-picture.svg",
   "pie-chart-2.svg",
+  "pin-disable.svg",
   "pin.svg",
   "play-circle.svg",
   "play-filled.svg",
