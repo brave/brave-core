@@ -21,8 +21,7 @@ bool MixedContentChecker::DoesOriginSchemeRestrictMixedContent(
   const url::SchemeHostPort& tuple = origin.GetTupleOrPrecursorTupleIfOpaque();
   if (tuple.host().ends_with(".onion") &&
       (tuple.scheme() == url::kHttpsScheme ||
-       tuple.scheme() == url::kHttpScheme ||
-       tuple.scheme() == url::kWsScheme ||
+       tuple.scheme() == url::kHttpScheme || tuple.scheme() == url::kWsScheme ||
        tuple.scheme() == url::kWssScheme)) {
     return true;
   }
