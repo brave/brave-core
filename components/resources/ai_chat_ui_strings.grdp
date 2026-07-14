@@ -426,8 +426,17 @@
   <message name="IDS_CHAT_UI_NEW_CONVERSATION_BUTTON_LABEL" desc="A label for the button which starts a new conversation" formatter_data="webui=AiChat">
     Start a new conversation
   </message>
-  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_BUTTON_LABEL" desc="A label for the button which shares the current conversation" formatter_data="webui=AiChat">
-    Share conversation
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_LABEL" desc="Label for sharing the current conversation" formatter_data="webui=AiChat">
+    Share this conversation
+  </message>
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_DESCRIPTION" desc="Explanatory text in the share conversation dialog describing how the conversation is encrypted before being uploaded and when the shared link expires" formatter_data="webui=AiChat">
+    Your conversation will be uploaded encrypted and can only be decrypted with the generated link. Brave will not be able to view your conversation. Only you and the people you share this link with can decrypt your shared conversation. All shared conversations will expire after 7 days.
+  </message>
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_GENERATE_LINK_BUTTON_LABEL" desc="A label for the button which generates and copies a shareable link for the current conversation" formatter_data="webui=AiChat">
+    Generate link
+  </message>
+  <message name="IDS_CHAT_UI_SHARE_CONVERSATION_DIALOG_LINK_COPIED_BUTTON_LABEL" desc="A label shown on the share button after the shareable link has been copied to the clipboard" formatter_data="webui=AiChat">
+    Link copied to clipboard
   </message>
   <message name="IDS_CHAT_UI_MENU_RENAME_CONVERSATION" desc="Menu entry for renaming a conversation" formatter_data="webui=AiChat">
     Rename conversation

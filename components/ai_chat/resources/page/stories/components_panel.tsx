@@ -655,6 +655,7 @@ function StoryContext(
         isAIChatAgentProfile: args.isAIChatAgentProfile,
         isMobile: args.isMobile,
         isHistoryFeatureEnabled: args.isHistoryEnabled,
+        isConversationShareEnabled: true,
         skillDialog: args.skillDialog,
       }}
       conversationOverrides={{

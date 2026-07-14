@@ -1,0 +1,50 @@
+// Copyright (c) 2025 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: var(--leo-spacing-2xl);
+}
+
+.title {
+  font: var(--leo-font-heading-h3);
+  color: var(--leo-color-text-primary);
+}
+
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xl);
+}
+
+.conversationName {
+  width: 100%;
+  padding: var(--leo-spacing-xl);
+  border-radius: var(--leo-radius-xl);
+  border: 1px solid var(--leo-color-divider-subtle);
+  font: var(--leo-font-heading-h4);
+  color: var(--leo-color-text-primary);
+  word-break: break-word;
+}
+
+.description {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.button,
+.buttonCopied {
+  width: 100%;
+}
+
+.buttonCopied {
+  // Recolor the filled button to the success color. We override the base
+  // --leo-color-button-background token rather than --leo-button-color because
+  // setting --leo-button-color forces the button text to white, which is wrong
+  // for the light-green success background in dark mode. Overriding the base
+  // token keeps the button's paired success text/icon color instead.
+  // TODO(https://github.com/brave/leo/issues/1422): Fix in Nala
+  --leo-color-button-background: var(--leo-color-button-success-background);
+  --leo-color-schemes-on-primary: var(--leo-color-button-success-text);
+}
