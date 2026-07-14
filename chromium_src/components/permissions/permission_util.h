@@ -25,6 +25,11 @@ class PermissionUtil : public PermissionUtil_ChromiumImpl {
   static GURL GetCanonicalOrigin(ContentSettingsType permission,
                                  const GURL& requesting_origin,
                                  const GURL& embedding_origin);
+
+  static bool IsPermissionBlockedInPartition(
+      ContentSettingsType permission,
+      const GURL& requesting_origin,
+      content::RenderProcessHost* render_process_host);
 };
 
 }  // namespace permissions

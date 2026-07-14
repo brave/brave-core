@@ -46,6 +46,9 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
+#include "components/permissions/permission_request_manager.h"
+#include "components/permissions/request_type.h"
+#include "components/permissions/test/mock_permission_prompt_factory.h"
 #include "components/sessions/core/tab_restore_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/browsing_data_remover.h"
@@ -2468,6 +2471,37 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_TRUE(cookies.is_ok());
   EXPECT_NE(std::string::npos,
             cookies.ExtractString().find("pinned_cookie=pinned_value"));
+}
+
+IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
+                       NotificationPermissionNotSilentlyDeniedInContainerTab) {
+  const GURL url = https_server_.GetURL("a.test", "/simple.html");
+  content::WebContents* web_contents =
+      OpenUrlInContainerTab(url, kTestContainerId);
+  ASSERT_TRUE(web_contents);
+
+  content::RenderFrameHost* main_frame = web_contents->GetPrimaryMainFrame();
+  ASSERT_TRUE(main_frame);
+
+  EXPECT_TRUE(containers::IsContainersStoragePartition(
+      main_frame->GetStoragePartition()->GetConfig()));
+
+  // Partition guard used to map this to DENIED ("denied"); expect ASK
+  // ("default").
+  EXPECT_EQ("default", content::EvalJs(main_frame, "Notification.permission"));
+
+  permissions::PermissionRequestManager* manager =
+      permissions::PermissionRequestManager::FromWebContents(web_contents);
+  ASSERT_TRUE(manager);
+  auto prompt_factory =
+      std::make_unique<permissions::MockPermissionPromptFactory>(manager);
+  prompt_factory->set_response_type(
+      permissions::PermissionRequestManager::ACCEPT_ALL);
+
+  EXPECT_EQ("granted",
+            content::EvalJs(main_frame, "Notification.requestPermission()"));
+  EXPECT_TRUE(prompt_factory->RequestTypeSeen(
+      permissions::RequestType::kNotifications));
 }
 
 class ContainersCommandLineContainerBrowserTest : public ContainersBrowserTest {
