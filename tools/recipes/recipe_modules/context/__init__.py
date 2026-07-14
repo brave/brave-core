@@ -2,6 +2,6 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Core `step` module: run a subprocess as a named build step."""
+"""`context` module: scoped ambient step settings (cwd + environment)."""
 
-DEPS = ['context']
+DEPS = []

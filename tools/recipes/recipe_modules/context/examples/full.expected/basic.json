@@ -1,0 +1,45 @@
+[
+  {
+    "cmd": [
+      "node",
+      "--version"
+    ],
+    "env": {
+      "CI": "brave"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/node/bin"
+      ]
+    },
+    "name": "inside context"
+  },
+  {
+    "cmd": [
+      "node",
+      "build.js"
+    ],
+    "cwd": "[WORKSPACE]/out",
+    "env": {
+      "CI": "brave"
+    },
+    "env_prefixes": {
+      "PATH": [
+        "/opt/extra",
+        "[WORKSPACE]/node/bin"
+      ]
+    },
+    "name": "nested context"
+  },
+  {
+    "cmd": [
+      "node",
+      "--version"
+    ],
+    "name": "outside context"
+  },
+  {
+    "name": "$result",
+    "status": "SUCCESS"
+  }
+]
