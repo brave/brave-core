@@ -29,7 +29,6 @@ interface ModelContentProps {
   showPremiumLabel?: boolean
   isDisabled?: boolean
   isPinned?: boolean
-  isDefault?: boolean
   showCapabilitySubtitle?: boolean
   onClickLearnMore?: () => void
   trailingContent?: React.ReactNode
@@ -42,7 +41,6 @@ const ModelContent = (props: ModelContentProps) => {
     showDetails,
     showPremiumLabel,
     isDisabled,
-    isDefault,
     showCapabilitySubtitle,
     onClickLearnMore,
     trailingContent,
@@ -152,17 +150,8 @@ const ModelContent = (props: ModelContentProps) => {
               [styles.disabled]: isDisabled,
             })}
           >
-            {model.displayName}
+            <span className={styles.modelNameText}>{model.displayName}</span>
             {model.isNearModel && <NearIcon />}
-            {isDefault && !isCurrent && (
-              <Label
-                mode='default'
-                color='neutral'
-                className={styles.defaultLabel}
-              >
-                {getLocale(S.CHAT_UI_DEFAULT_MODEL_LABEL)}
-              </Label>
-            )}
           </div>
           <div className={styles.labelAndActions}>{label}</div>
         </div>
@@ -292,7 +281,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
               setOpen(false)
             }}
           >
-            <Icon name='pin' />
+            <Icon name={isPinned ? 'pin-disable' : 'pin'} />
             <span className={styles.leoDropdownItemLabel}>
               {getLocale(
                 isPinned ? S.CHAT_UI_UNPIN_LABEL : S.CHAT_UI_PIN_LABEL,
@@ -302,9 +291,12 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
         )}
         {canSetDefault && (
           <leo-menu-item
-            class={styles.leoDropdownItem}
+            class={classnames({
+              [styles.leoDropdownItem]: true,
+              [styles.leoDropdownItemSelected]: isDefault,
+            })}
             data-testid={`set-default-${modelKey}`}
-            aria-disabled={isDefault ? 'true' : null}
+            aria-selected={isDefault ? 'true' : null}
             onClick={(e) => {
               e.stopPropagation()
               if (isDefault) {
@@ -315,7 +307,9 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
               setOpen(false)
             }}
           >
-            <Icon name='check-circle-outline' />
+            <Icon
+              name={isDefault ? 'check-circle-filled' : 'check-circle-outline'}
+            />
             <span className={styles.leoDropdownItemLabel}>
               {getLocale(S.CHAT_UI_SET_AS_DEFAULT_MODEL)}
             </span>
@@ -327,6 +321,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
 }
 
 interface MenuItemProps extends ModelContentProps {
+  isDefault?: boolean
   onClick: () => void
   isMobile?: boolean
   isOptionsOpen?: boolean
@@ -405,6 +400,7 @@ export function ModelMenuItem(props: MenuItemProps) {
 
   return (
     <leo-menu-item
+      class={isOptionsOpen ? styles.menuItemOptionsOpen : undefined}
       data-key={model.key}
       data-testid={model.key}
       aria-selected={isCurrent ? 'true' : null}
@@ -429,7 +425,6 @@ export function ModelMenuItem(props: MenuItemProps) {
           showDetails={showDetails}
           isDisabled={isDisabled}
           isPinned={isPinned}
-          isDefault={isDefault}
           showCapabilitySubtitle={showCapabilitySubtitle}
           onClickLearnMore={onClickLearnMore}
           trailingContent={
@@ -461,7 +456,6 @@ export function ModelOption(props: ModelContentProps) {
     showPremiumLabel,
     isDisabled,
     isPinned,
-    isDefault,
     showCapabilitySubtitle,
   } = props
 
@@ -473,7 +467,6 @@ export function ModelOption(props: ModelContentProps) {
       showDetails={showDetails}
       isDisabled={isDisabled}
       isPinned={isPinned}
-      isDefault={isDefault}
       showCapabilitySubtitle={showCapabilitySubtitle}
     />
   )

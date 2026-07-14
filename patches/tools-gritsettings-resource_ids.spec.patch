@@ -74,7 +74,7 @@ index e1f3030f0c0cc1b870cbe75395539d37ca1451dd..fad7644b815d1505ca7131861134a702
    },
    "<(SHARED_INTERMEDIATE_DIR)/ui/webui/resources/webui_resources.grd": {
 -    "META": {"sizes": {"includes": [1100]}},
-+    "META": {"sizes": {"includes": [1310]}},
++    "META": {"sizes": {"includes": [1315]}},
      "includes": [10000],
    },
  
