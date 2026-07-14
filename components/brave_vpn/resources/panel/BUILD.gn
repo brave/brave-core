@@ -21,6 +21,7 @@ transpile_web_ui("brave_vpn_panel_ui") {
   deps = [
     "//brave/components/brave_vpn/common/mojom:mojom_js",
     "//brave/components/brave_vpn/common/mojom:preprocess_mojo",
+    "//brave/components/resources:strings",
   ]
 }
 
