@@ -26,9 +26,6 @@ substitutions:
   - description: |
       Friend the brave page_actions::PageActionControllerImpl so it can reach the
       private members it relies on (FindPageActionModel, page_action_model_factory_).
-      The lazy match anchors on the first `private:` inside PageActionControllerImpl.
-    re_pattern: '(class PageActionControllerImpl.*?\bprivate:)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        friend class ::page_actions::PageActionControllerImpl;
+    add_friend:
+      class_name: PageActionControllerImpl
+      friend_type: class ::page_actions::PageActionControllerImpl

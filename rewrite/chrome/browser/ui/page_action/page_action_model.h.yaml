@@ -67,8 +67,6 @@ substitutions:
   - description: |
       Friend the brave page_actions::PageActionModel so it can call NotifyChange and
       use the private Property enum from its base.
-    re_pattern: '(class PageActionModel\b.*?\bprivate:)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        friend class ::page_actions::PageActionModel;
+    add_friend:
+      class_name: PageActionModel
+      friend_type: class ::page_actions::PageActionModel
