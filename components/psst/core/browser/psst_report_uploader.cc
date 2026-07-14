@@ -91,6 +91,7 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
           destination: OTHER
           destination_other: "Brave Privacy Settings Selection for Sites
             Tool Component Developers"
+          last_reviewed: "2026-07-14"
           user_data {
             type: SENSITIVE_URL
           }
@@ -102,8 +103,10 @@ void PsstErrorReportUploader::CreateAndStartURLLoader(
             triggers it via the Privacy Settings Selection for Sites Tool
             consent dialog's 'Report a Broken PSST rules' option."
           setting:
-            "You can enable or disable this feature via feature flag:
-            `brave://flags/#enable-psst`"
+            "Users can choose not to make this request by not sending
+            the report via the tool. There's no explicit setting in the
+            browser to stop this request once after the user has
+            explicitly confirmed to send the failed report."
         })");
 
   simple_url_loader_ = network::SimpleURLLoader::Create(
