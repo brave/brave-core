@@ -41,15 +41,6 @@
 .buttonMenu {
   --leo-menu-max-height: calc(100svh - 136px);
   --leo-menu-width: 320px;
-
-  leo-menu-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--leo-spacing-l);
-    padding: var(--leo-spacing-s) var(--leo-spacing-m);
-    max-width: 100%;
-  }
 }
 
 .menuBody {
@@ -141,6 +132,7 @@
   leo-input {
     width: 100%;
     // Compact search field inside the model selector toolbar.
+    --leo-control-color: transparent;
     --leo-control-padding: var(--leo-spacing-s) var(--leo-spacing-m);
     --leo-control-radius: var(--leo-radius-m);
   }
@@ -159,6 +151,15 @@
   margin-inline-start: var(--leo-spacing-s);
 }
 
+.capabilityFilterMenu {
+  // Let the popover hug the widest row (leading icon + longest label +
+  // status check). Item classes below keep every row that same width.
+  :global(.leo-menu-popup) {
+    width: max-content;
+    min-width: max-content;
+  }
+}
+
 .leoDropdownItem {
   --leo-icon-size: 18px;
   --leo-icon-color: var(--leo-color-icon-default);
@@ -166,14 +167,33 @@
   flex-direction: row;
   align-items: center;
   gap: var(--leo-spacing-xl);
-  width: 100%;
-  min-width: 154px;
 }
 
 .leoDropdownItemLabel {
   flex: 1;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
+}
+
+.leoDropdownItemSelected {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  color: var(--leo-color-text-interactive);
+
+  .leoDropdownItemLabel {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
+.statusCheck {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  flex-shrink: 0;
+}
+
+// Reserve status-icon space on every row so width stays fixed when
+// selecting / deselecting.
+.statusCheckHidden {
+  visibility: hidden;
 }
 
 .modelList {
@@ -184,6 +204,31 @@
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+
+  // Scope to the model list only so nested menus (filter / item options)
+  // keep Nala's default menu-item sizing.
+  // Leo's built-in item hover only targets direct/slotted children of
+  // .leo-menu-popup (or items in leo-menu-section) — our rows are nested
+  // under .menuBody, so restore the Nala hover highlight here.
+  leo-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-l);
+    padding: var(--leo-spacing-s) var(--leo-spacing-m);
+    max-width: 100%;
+    border-radius: var(--leo-radius-m);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--leo-color-container-highlight);
+    }
+
+    &[aria-selected]:not(:hover) {
+      background: var(--leo-color-container-interactive);
+      color: var(--leo-color-text-interactive);
+    }
+  }
 }
 
 .emptyState {

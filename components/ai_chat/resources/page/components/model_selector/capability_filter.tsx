@@ -21,11 +21,11 @@ import styles from './style.module.scss'
 interface Props {
   selected: Mojom.ModelCapability[]
   onChange: (capabilities: Mojom.ModelCapability[]) => void
+  isOpen: boolean
+  onOpenChange: (open: boolean) => void
 }
 
 export function CapabilityFilter(props: Props) {
-  const [isOpen, setIsOpen] = React.useState(false)
-
   const toggle = (capability: Mojom.ModelCapability) => {
     if (props.selected.includes(capability)) {
       props.onChange(props.selected.filter((c) => c !== capability))
@@ -36,9 +36,10 @@ export function CapabilityFilter(props: Props) {
 
   return (
     <ButtonMenu
-      isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      isOpen={props.isOpen}
+      onChange={(e) => props.onOpenChange(e.isOpen)}
       positionStrategy='fixed'
+      className={styles.capabilityFilterMenu}
     >
       <Button
         slot='anchor-content'
@@ -48,10 +49,6 @@ export function CapabilityFilter(props: Props) {
           [styles.filterButton]: true,
           [styles.filterButtonActive]: props.selected.length > 0,
         })}
-        onClick={(e) => {
-          e.stopPropagation()
-          setIsOpen(!isOpen)
-        }}
         data-testid='capability-filter-button'
       >
         <Icon
@@ -75,7 +72,10 @@ export function CapabilityFilter(props: Props) {
         return (
           <leo-menu-item
             key={capability}
-            class={styles.leoDropdownItem}
+            class={classnames({
+              [styles.leoDropdownItem]: true,
+              [styles.leoDropdownItemSelected]: isSelected,
+            })}
             data-testid={`capability-filter-${capability}`}
             data-is-interactive='true'
             aria-selected={isSelected ? 'true' : null}
@@ -88,7 +88,13 @@ export function CapabilityFilter(props: Props) {
             <span className={styles.leoDropdownItemLabel}>
               {getModelCapabilityLabel(capability)}
             </span>
-            {isSelected && <Icon name='check-normal' />}
+            <Icon
+              name='check-circle-filled'
+              className={classnames({
+                [styles.statusCheck]: true,
+                [styles.statusCheckHidden]: !isSelected,
+              })}
+            />
           </leo-menu-item>
         )
       })}

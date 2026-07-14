@@ -10,7 +10,7 @@ export const LOCAL_VENDOR_KEY = '__local__'
 /** Maps Leo `display_maker` (and rail sentinels) to Leo icon names. */
 export const vendorIcons: Record<string, string> = {
   [PINNED_VENDOR_KEY]: 'pin',
-  [LOCAL_VENDOR_KEY]: 'leo-local',
+  [LOCAL_VENDOR_KEY]: 'laptop',
   Anthropic: 'anthropic-color',
   OpenAI: 'openai',
   Meta: 'meta-color',

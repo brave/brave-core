@@ -38,8 +38,7 @@ export function VendorRail(props: Props) {
               [styles.vendorRailButton]: true,
               [styles.vendorRailButtonSelected]: isSelected,
             })}
-            onClick={(e) => {
-              e.stopPropagation()
+            onClick={() => {
               props.onSelect(entry.key)
             }}
           >

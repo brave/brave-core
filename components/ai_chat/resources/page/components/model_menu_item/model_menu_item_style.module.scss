@@ -4,12 +4,14 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .menuItemHitArea {
+  position: relative;
   display: flex;
   flex: 1;
   align-items: center;
   gap: var(--leo-spacing-l);
   min-width: 0;
   width: 100%;
+  align-self: stretch;
 }
 
 .modelIcon {
@@ -90,32 +92,59 @@
   margin-inline-start: var(--leo-spacing-s);
 }
 
+// Absolutely overlays the trailing label (e.g. Premium) with a fade into the
+// row hover background so content softens under the more control.
 .optionsWrap {
-  display: flex;
+  --options-fade-color: var(--leo-color-container-highlight);
+
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  z-index: 1;
+  display: none;
   align-items: center;
+  justify-content: flex-end;
+  // Wide enough that the Premium badge meaningfully fades before the icon.
+  padding-inline-start: 40px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--options-fade-color) 55%,
+    var(--options-fade-color) 100%
+  );
+}
+
+:global([dir='rtl']) .optionsWrap {
+  background: linear-gradient(
+    to left,
+    transparent 0%,
+    var(--options-fade-color) 55%,
+    var(--options-fade-color) 100%
+  );
+}
+
+.optionsWrapOpen {
+  display: flex;
+}
+
+@media (hover: hover) {
+  :global(leo-menu-item:hover) .optionsWrap,
+  :global(leo-menu-item:focus-within) .optionsWrap {
+    display: flex;
+  }
 }
 
 .optionsMenu {
   line-height: 0;
+  pointer-events: auto;
 }
 
 .moreButton {
   --leo-icon-size: 18px;
   --leo-button-padding: 4px;
   color: var(--leo-color-icon-default);
-  // Hidden until hover/focus, or while the options menu is open.
-  display: none;
-}
-
-.moreButtonOpen {
-  display: flex;
-}
-
-@media (hover: hover) {
-  :global(leo-menu-item:hover) .moreButton,
-  :global(leo-menu-item:focus-within) .moreButton {
-    display: flex;
-  }
+  pointer-events: auto;
 }
 
 // Nala Dropdown list-item layout for Pin / Set as default.

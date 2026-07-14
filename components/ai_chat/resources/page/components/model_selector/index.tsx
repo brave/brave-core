@@ -59,6 +59,10 @@ export function ModelSelector() {
   const [capabilityFilters, setCapabilityFilters] = React.useState<
     Mojom.ModelCapability[]
   >([])
+  // Only one nested popover (filter or a model's options) can be open.
+  const [openPopover, setOpenPopover] = React.useState<
+    null | { kind: 'filter' } | { kind: 'model-options'; modelKey: string }
+  >(null)
 
   const selectableModels = React.useMemo(
     () => conversationContext.allModels.filter(isSelectableModel),
@@ -188,6 +192,7 @@ export function ModelSelector() {
     setSearchQuery('')
     setCapabilityFilters([])
     setSelectedVendorKey(PINNED_VENDOR_KEY)
+    setOpenPopover(null)
   }, [])
 
   const emptyMessage = React.useMemo(() => {
@@ -201,14 +206,19 @@ export function ModelSelector() {
     <ButtonMenu
       className={styles.buttonMenu}
       isOpen={isOpen}
-      onClose={handleClose}
+      onChange={(e) => {
+        if (e.isOpen) {
+          setIsOpen(true)
+        } else {
+          handleClose()
+        }
+      }}
       positionStrategy='fixed'
     >
       <Button
         slot='anchor-content'
         kind='plain-faint'
         size='tiny'
-        onClick={() => setIsOpen(!isOpen)}
         className={classnames({
           [styles.anchorButton]: true,
           [styles.anchorButtonOpen]: isOpen,
@@ -247,10 +257,7 @@ export function ModelSelector() {
           </Alert>
         )}
 
-      <div
-        className={styles.menuBody}
-        onClick={(e) => e.stopPropagation()}
-      >
+      <div className={styles.menuBody}>
         <VendorRail
           entries={vendorEntries}
           selectedKey={selectedVendorKey}
@@ -265,6 +272,10 @@ export function ModelSelector() {
             <CapabilityFilter
               selected={capabilityFilters}
               onChange={setCapabilityFilters}
+              isOpen={openPopover?.kind === 'filter'}
+              onOpenChange={(open) =>
+                setOpenPopover(open ? { kind: 'filter' } : null)
+              }
             />
           </div>
           <div className={styles.modelList}>
@@ -293,6 +304,17 @@ export function ModelSelector() {
                     showDetails={true}
                     showCapabilitySubtitle={true}
                     isMobile={aiChatContext.isMobile}
+                    isOptionsOpen={
+                      openPopover?.kind === 'model-options'
+                      && openPopover.modelKey === model.key
+                    }
+                    onOptionsOpenChange={(open) =>
+                      setOpenPopover(
+                        open
+                          ? { kind: 'model-options', modelKey: model.key }
+                          : null,
+                      )
+                    }
                     onClick={() => {
                       conversationContext.setCurrentModel(model)
                       handleClose()

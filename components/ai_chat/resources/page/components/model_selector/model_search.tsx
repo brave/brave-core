@@ -16,15 +16,10 @@ interface Props {
 
 export function ModelSearch(props: Props) {
   return (
-    <div
-      className={styles.searchInput}
-      onClick={(e) => e.stopPropagation()}
-      onKeyDown={(e) => e.stopPropagation()}
-    >
+    <div className={styles.searchInput}>
       <Input
         type='search'
         size='small'
-        mode='filled'
         placeholder={getLocale(S.CHAT_UI_SEARCH_MODELS_PLACEHOLDER)}
         value={props.value}
         data-testid='model-search-input'

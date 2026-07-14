@@ -312,6 +312,7 @@ leo_icons_sources = [
   "kimi-color.svg",
   "launch-off.svg",
   "launch.svg",
+  "laptop.svg",
   "leo-cursor-filled.svg",
   "leo-cursor.svg",
   "leo-local.svg",
