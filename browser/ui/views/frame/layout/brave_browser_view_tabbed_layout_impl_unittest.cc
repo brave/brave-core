@@ -9,6 +9,7 @@
 #include <optional>
 
 #include "build/build_config.h"
+#include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/views/frame/layout/browser_view_layout_delegate.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -77,10 +78,13 @@ class FakeBrowserViewLayoutDelegate : public BrowserViewLayoutDelegate {
   bool IsFullscreen() const override { return false; }
 };
 
-// Mocks the CalculateSeparatorInfo() inputs exercised by the tests below:
-// IsToolbarVisible/IsBookmarkBarVisible drive the "no top UI" early return,
-// IsInfobarVisible and ShouldUseBraveWebViewRoundedCornersForContents drive
-// the mac fullscreen separator-suppression branch.
+// Mocks the CalculateSeparatorInfo() and GetContentsMargins() inputs
+// exercised by the tests below: IsToolbarVisible/IsBookmarkBarVisible drive
+// the "no top UI" early return, IsInfobarVisible and
+// ShouldUseBraveWebViewRoundedCornersForContents drive the mac fullscreen
+// separator-suppression branch, and GetBrowserWindowState additionally drives
+// the mac fullscreen-with-toolbar top-padding-suppression branch in
+// GetContentsMargins().
 class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
  public:
   MOCK_METHOD(bool, IsToolbarVisible, (), (const, override));
@@ -90,6 +94,7 @@ class MockBrowserViewLayoutDelegate : public FakeBrowserViewLayoutDelegate {
               ShouldUseBraveWebViewRoundedCornersForContents,
               (),
               (const, override));
+  MOCK_METHOD(WindowState, GetBrowserWindowState, (), (const, override));
 };
 
 }  // namespace
@@ -404,6 +409,57 @@ TEST(BraveBrowserViewTabbedLayoutImplTest,
   // must keep upstream's separator (true here, since IsToolbarVisible() is
   // mocked true).
   EXPECT_TRUE(layout->GetTopContainerSeparatorForTesting());
+}
+
+// On macOS, when the window is in kFullscreenWithToolbar state, the top
+// container lives in an overlay widget positioned above the contents, so
+// the rounded-corners contents view no longer needs a top margin.
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetContentsMarginsMacFullscreenWithToolbarHidesTopPadding) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  EXPECT_CALL(*mock, GetBrowserWindowState())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::WindowState::kFullscreenWithToolbar));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+
+  // The top margin is suppressed, but the other sides still reserve room for
+  // the rounded-corners shadow.
+  gfx::Insets margins = layout->GetContentsMarginsForTesting();
+  EXPECT_EQ(0, margins.top());
+  EXPECT_EQ(kRoundedCornersContentsViewMargin, margins.left());
+  EXPECT_EQ(kRoundedCornersContentsViewMargin, margins.right());
+  EXPECT_EQ(kRoundedCornersContentsViewMargin, margins.bottom());
+}
+
+TEST(BraveBrowserViewTabbedLayoutImplTest,
+     GetContentsMarginsMacRegularFullscreenKeepsTopPadding) {
+  auto mock =
+      std::make_unique<testing::NiceMock<MockBrowserViewLayoutDelegate>>();
+  EXPECT_CALL(*mock, ShouldUseBraveWebViewRoundedCornersForContents())
+      .WillRepeatedly(::testing::Return(true));
+  EXPECT_CALL(*mock, IsInfobarVisible())
+      .WillRepeatedly(::testing::Return(false));
+  // Plain kFullscreen (toolbar auto-hidden), not kFullscreenWithToolbar.
+  EXPECT_CALL(*mock, GetBrowserWindowState())
+      .WillRepeatedly(::testing::Return(
+          BrowserViewLayoutDelegate::WindowState::kFullscreen));
+
+  BrowserViewLayoutViews views;
+  auto layout = std::make_unique<BraveBrowserViewTabbedLayoutImpl>(
+      std::move(mock), nullptr, std::move(views));
+
+  // The mac-only branch is scoped to kFullscreenWithToolbar; plain kFullscreen
+  // must keep the top margin.
+  gfx::Insets margins = layout->GetContentsMarginsForTesting();
+  EXPECT_EQ(kRoundedCornersContentsViewMargin, margins.top());
 }
 
 #endif  // BUILDFLAG(IS_MAC)
