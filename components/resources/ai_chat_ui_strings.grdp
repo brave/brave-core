@@ -229,7 +229,7 @@
     Find task-specific models for coding, content generation, and beyond
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_FEATURE_3" desc="A premium feature: higher rate limits" formatter_data="webui=AiChat">
-    Higher rate limits
+    Higher rate limits for your conversations
   </message>
   <message name="IDS_CHAT_UI_PREMIUM_LABEL" translateable="false" desc="A label for Brave premium products" formatter_data="webui=AiChat">
      Leo Premium
