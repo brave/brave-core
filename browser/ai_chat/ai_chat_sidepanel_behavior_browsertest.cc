@@ -5,12 +5,15 @@
 
 #include <tuple>
 
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -88,6 +91,21 @@ class AIChatGlobalSidePanelBrowserTest
     return side_panel_coordinator->IsSidePanelShowing() &&
            side_panel_coordinator->GetCurrentEntryId() ==
                SidePanelEntry::Id::kChatUI;
+  }
+
+  // Returns the WebContents of the side panel view currently attached to the
+  // browser window (as opposed to `GetWebContentsForTest`, which re-runs the
+  // entry factory and returns a fresh, unattached contents). Null if the side
+  // panel is not hosting an AI Chat view.
+  content::WebContents* GetAttachedSidePanelWebContents(Browser* browser) {
+    auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+    if (!browser_view || !browser_view->side_panel()) {
+      return nullptr;
+    }
+    auto* view =
+        browser_view->side_panel()->GetContentParentView()->GetViewByID(
+            SidePanelWebUIView::kSidePanelWebViewId);
+    return view ? static_cast<views::WebView*>(view)->web_contents() : nullptr;
   }
 
   bool IsGlobalSidePanel(Browser* browser) {
@@ -221,6 +239,74 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   auto* web_ui = side_panel_web_contents->GetWebUI();
   ASSERT_TRUE(web_ui);
   EXPECT_TRUE(web_ui->GetController()->GetAs<AIChatUI>());
+}
+
+// Clicking an in-conversation link in a full-page AI Chat moves the live
+// conversation WebContents into the side panel (preserving state) and opens the
+// link in a tab in AI Chat's place. When the move feature is disabled, the
+// helper is a no-op and AI Chat stays a full tab.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       ForwardMovesFullPageChatToSidePanel) {
+  // Open the full-page AI Chat conversation in the active tab.
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kAIChatUIURL)));
+
+  auto* tab_strip = browser()->tab_strip_model();
+  content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(leo_contents);
+  ASSERT_TRUE(content::WaitForLoadStop(leo_contents));
+
+  const int leo_index = tab_strip->GetIndexOfWebContents(leo_contents);
+  const int initial_tab_count = tab_strip->count();
+  const GURL link_url("chrome://version/");
+
+  const bool handled =
+      ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents, link_url);
+
+  if (!IsMoveToSidePanelEnabled()) {
+    // Feature off: no transfer. AI Chat stays a full tab and no tab is opened
+    // for the link by the helper (the caller handles that).
+    EXPECT_FALSE(handled);
+    EXPECT_EQ(tab_strip->GetIndexOfWebContents(leo_contents), leo_index);
+    EXPECT_EQ(tab_strip->count(), initial_tab_count);
+    return;
+  }
+
+  EXPECT_TRUE(handled);
+
+  // The link opened in a tab at AI Chat's former position and AI Chat left the
+  // tab strip; the total tab count is unchanged.
+  EXPECT_EQ(tab_strip->count(), initial_tab_count);
+  EXPECT_EQ(tab_strip->GetIndexOfWebContents(leo_contents),
+            TabStripModel::kNoTab);
+  content::WebContents* link_contents = tab_strip->GetWebContentsAt(leo_index);
+  ASSERT_TRUE(link_contents);
+  EXPECT_EQ(link_contents->GetVisibleURL(), link_url);
+
+  // The AI Chat side panel now shows and hosts the *same* live WebContents (no
+  // reload / no fresh contents).
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return IsSidePanelOpen(browser()); }));
+  EXPECT_EQ(GetAttachedSidePanelWebContents(browser()), leo_contents);
+}
+
+// The forward move only applies to a full-page AI Chat. When AI Chat is already
+// hosted in the side panel, its contents is not a tab, so the helper is a
+// no-op.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       ForwardMoveIsNoOpWhenChatAlreadyInSidePanel) {
+  OpenSidePanelAndVerify(browser());
+  ASSERT_TRUE(IsSidePanelOpen(browser()));
+
+  content::WebContents* side_panel_contents =
+      GetAttachedSidePanelWebContents(browser());
+  ASSERT_TRUE(side_panel_contents);
+
+  const int initial_tab_count = browser()->tab_strip_model()->count();
+
+  EXPECT_FALSE(ai_chat::MaybeMoveFullPageChatToSidePanel(
+      side_panel_contents, GURL("chrome://version/")));
+  EXPECT_EQ(browser()->tab_strip_model()->count(), initial_tab_count);
+  EXPECT_TRUE(IsSidePanelOpen(browser()));
 }
 
 INSTANTIATE_TEST_SUITE_P(

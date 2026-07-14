@@ -269,8 +269,18 @@ class UIHandler : public ai_chat::mojom::UntrustedUIHandler {
       return;
     }
 #if !BUILDFLAG(IS_ANDROID)
+    // If AI Chat is a full browser tab, move the live conversation into the
+    // side panel and open the link in a tab in its place. No-op unless the
+    // feature is enabled and AI Chat is a full tab.
+    if (ai_chat::MaybeMoveFullPageChatToSidePanel(web_ui_->GetWebContents(),
+                                                  url)) {
+      return;
+    }
     Browser* browser =
         ai_chat::GetBrowserForWebContents(web_ui_->GetWebContents());
+    if (!browser) {
+      return;
+    }
     browser->OpenURL(
         {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
          ui::PAGE_TRANSITION_LINK, false},

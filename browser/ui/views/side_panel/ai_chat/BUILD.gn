@@ -12,6 +12,8 @@ source_set("ai_chat") {
   sources = [
     "ai_chat_movable_side_panel_web_view.cc",
     "ai_chat_movable_side_panel_web_view.h",
+    "ai_chat_side_panel_tab_transfer_controller.cc",
+    "ai_chat_side_panel_tab_transfer_controller.h",
     "ai_chat_side_panel_utils_views.cc",
     "ai_chat_side_panel_web_view.cc",
     "ai_chat_side_panel_web_view.h",
@@ -34,6 +36,7 @@ source_set("ai_chat") {
     "//brave/components/resources:strings_grit",
     "//chrome/browser:file_select_helper",
     "//chrome/browser/profiles",
+    "//chrome/browser/tab_list",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/side_panel",
