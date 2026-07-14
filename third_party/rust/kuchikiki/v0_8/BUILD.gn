@@ -33,15 +33,16 @@ cargo_crate("lib") {
   cargo_pkg_name = "kuchikiki"
   cargo_pkg_description = "(口利き) HTML tree manipulation library"
   cargo_pkg_repository = "https://github.com/brave/kuchikiki"
-  cargo_pkg_version = "0.8.8-speedreader"
+  cargo_pkg_version = "0.8.9-speedreader"
 
   allow_unsafe = true
 
   deps = [
-    "//brave/third_party/rust/cssparser/v0_29:lib",
-    "//brave/third_party/rust/html5ever/v0_29:lib",
+    "//brave/third_party/rust/cssparser/v0_35:lib",
+    "//brave/third_party/rust/html5ever/v0_35:lib",
     "//brave/third_party/rust/indexmap/v2:lib",
-    "//brave/third_party/rust/selectors/v0_24:lib",
+    "//brave/third_party/rust/precomputed_hash/v0_1:lib",
+    "//brave/third_party/rust/selectors/v0_32:lib",
   ]
   rustenv = []
   rustflags = []

@@ -4,14 +4,12 @@ mod rewrite_controller;
 #[macro_use]
 pub(crate) mod settings;
 
-use self::handlers_dispatcher::ContentHandlersDispatcher;
 use self::rewrite_controller::{ElementDescriptor, HtmlRewriteController};
 pub use self::settings::*;
 use crate::base::SharedEncoding;
 use crate::memory::{MemoryLimitExceededError, SharedMemoryLimiter};
 use crate::parser::ParsingAmbiguityError;
 use crate::rewritable_units::Element;
-use crate::selectors_vm::{self, SelectorMatchingVm};
 use crate::transform_stream::*;
 use encoding_rs::Encoding;
 use mime::Mime;
@@ -84,7 +82,7 @@ pub enum RewritingError {
 
     /// An error that was propagated from one of the content handlers.
     #[error("{0}")]
-    ContentHandlerError(Box<dyn StdError + Send + Sync>),
+    ContentHandlerError(Box<dyn StdError + Send + Sync + 'static>),
 }
 
 /// A streaming HTML rewriter.
@@ -159,58 +157,26 @@ impl<'h, O: OutputSink, H: HandlerTypes> HtmlRewriter<'h, O, H> {
     ///
     /// [`OutputSink`]: trait.OutputSink.html
     pub fn new<'s>(settings: Settings<'h, 's, H>, output_sink: O) -> Self {
+        let preallocated_parsing_buffer_size =
+            settings.memory_settings.preallocated_parsing_buffer_size;
+        let strict = settings.strict;
+
         let encoding = SharedEncoding::new(settings.encoding);
-        let mut selectors_ast = selectors_vm::Ast::default();
-        let mut dispatcher = ContentHandlersDispatcher::<H>::default();
-        let has_selectors =
-            !settings.element_content_handlers.is_empty() || settings.adjust_charset_on_meta_tag;
-
-        let charset_adjust_handler = if settings.adjust_charset_on_meta_tag {
-            let encoding = SharedEncoding::clone(&encoding);
-            Some(handler_adjust_charset_on_meta_tag(encoding))
-        } else {
-            None
-        };
-
-        let element_content_handlers = charset_adjust_handler
-            .into_iter()
-            .chain(settings.element_content_handlers);
-
-        for (selector, handlers) in element_content_handlers {
-            let locator = dispatcher.add_selector_associated_handlers(handlers);
-
-            selectors_ast.add_selector(&selector, locator);
-        }
-
-        for handlers in settings.document_content_handlers {
-            dispatcher.add_document_content_handlers(handlers);
-        }
 
         let memory_limiter =
             SharedMemoryLimiter::new(settings.memory_settings.max_allowed_memory_usage);
 
-        let selector_matching_vm = if has_selectors {
-            Some(SelectorMatchingVm::new(
-                selectors_ast,
-                settings.encoding.into(),
-                memory_limiter.clone(),
-                settings.enable_esi_tags,
-            ))
-        } else {
-            None
-        };
-
-        let controller = HtmlRewriteController::new(dispatcher, selector_matching_vm);
-
         let stream = TransformStream::new(TransformStreamSettings {
-            transform_controller: controller,
+            transform_controller: HtmlRewriteController::from_settings(
+                settings,
+                &memory_limiter,
+                &encoding,
+            ),
             output_sink,
-            preallocated_parsing_buffer_size: settings
-                .memory_settings
-                .preallocated_parsing_buffer_size,
+            preallocated_parsing_buffer_size,
             memory_limiter,
             encoding,
-            strict: settings.strict,
+            strict,
         });
 
         HtmlRewriter {
@@ -350,6 +316,7 @@ pub fn rewrite_str<'h, 's, H: HandlerTypes>(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::html::TextType;
     use crate::html_content::ContentType;
     use crate::test_utils::{Output, ASCII_COMPATIBLE_ENCODINGS, NON_ASCII_COMPATIBLE_ENCODINGS};
     use encoding_rs::Encoding;
@@ -360,7 +327,7 @@ mod tests {
     use std::sync::{Arc, Mutex};
 
     // Assert that HtmlRewriter with `SendHandlerTypes` is `Send`.
-    assert_impl_all!(crate::send::HtmlRewriter<'_, Box<dyn FnMut(&[u8]) + Send>>: Send);
+    assert_impl_all!(crate::send::HtmlRewriter<'_, Box<dyn FnMut(&[u8]) + Send + 'static>>: Send);
 
     fn write_chunks<O: OutputSink>(
         mut rewriter: HtmlRewriter<'_, O>,
@@ -641,6 +608,78 @@ mod tests {
                     "   BAZ<!-- bonjour 1337-->\nBAZ",
                     "</html>PshhhBAZ",
                 )
+            );
+        }
+    }
+
+    #[test]
+    fn rewrite_text_types() {
+        for &enc in &ASCII_COMPATIBLE_ENCODINGS {
+            let actual: String = {
+                let mut output = Output::new(enc);
+
+                let rewriter = HtmlRewriter::new(
+                    Settings {
+                        element_content_handlers: vec![],
+                        document_content_handlers: vec![doc_text!(|c| {
+                            let replace = match c.text_type() {
+                                TextType::PlainText => 'P',
+                                TextType::RCData => 'r',
+                                TextType::RawText => 'R',
+                                TextType::ScriptData => 'S',
+                                TextType::Data => '.',
+                                TextType::CDataSection => 'C',
+                            };
+                            let mut replaced: String = c
+                                .as_str()
+                                .chars()
+                                .map(|c| if c == '\n' { c } else { replace })
+                                .collect();
+                            if c.last_in_text_node() {
+                                replaced.push(';');
+                            }
+                            c.set_str(replaced);
+
+                            Ok(())
+                        })],
+                        encoding: enc.try_into().unwrap(),
+                        ..Settings::new()
+                    },
+                    |c: &[u8]| output.push(c),
+                );
+
+                write_chunks(
+                    rewriter,
+                    enc,
+                    &[
+                        "\n  <!doctype html> <title>rcdata</titlenot> <!--no comment rcdata</title>",
+                        "\n   <textarea>rc<x> --><!--no comment </TEXTAREA> ",
+                        "\n   body <!--> 1 </> 2 <noscript>nnnn</noscript>",
+                        "\n  <script>scr</script> <style>style</style>",
+                        "\n  <script><!-- scr --></script> <style>/*<![CDATA[*/ style /*]]>*/</style>",
+                        "\n  <svg> body <![CDATA[ cdata ]]> body",
+                        "\n  <script>scr</script> <style>style</style>",
+                        "\n  <script><!-- com -->s</script> <style>/*<![CDATA[*/ style /*]]>*/</style>",
+                        "\n  </svg>",
+                    ],
+                );
+
+                output.into()
+            };
+
+            assert_eq!(
+                actual,
+                "\
+                \n..;<!doctype html>.;<title>rrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr;</title>\
+                \n...;<textarea>rrrrrrrrrrrrrrrrrrrrrrrr;</TEXTAREA>.\
+                \n........;<!-->...;</>...;<noscript>RRRR;</noscript>\
+                \n..;<script>SSS;</script>.;<style>RRRRR;</style>\
+                \n..;<script>SSSSSSSSSSSS;</script>.;<style>RRRRRRRRRRRRRRRRRRRRRRRRRRR;</style>\
+                \n..;<svg>......;<![CDATA[CCCCCCC;]]>.....\
+                \n..;<script>...;</script>.;<style>.....;</style>\
+                \n..;<script><!-- com -->.;</script>.;<style>..;<![CDATA[CCCCCCCCCCC;]]>..;</style>\
+                \n..;</svg>\
+                "
             );
         }
     }

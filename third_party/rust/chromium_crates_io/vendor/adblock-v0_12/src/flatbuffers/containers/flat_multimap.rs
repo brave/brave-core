@@ -83,9 +83,16 @@ where
     }
 }
 
-#[derive(Default)]
 pub(crate) struct FlatMultiMapBuilder<I, V> {
     entries: Vec<(I, V)>,
+}
+
+impl<I, V> Default for FlatMultiMapBuilder<I, V> {
+    fn default() -> Self {
+        Self {
+            entries: Vec::new(),
+        }
+    }
 }
 
 impl<I: Ord + std::hash::Hash, V> FlatMultiMapBuilder<I, V> {

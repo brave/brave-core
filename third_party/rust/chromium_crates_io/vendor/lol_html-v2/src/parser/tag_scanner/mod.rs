@@ -44,7 +44,6 @@ pub(crate) struct TagScanner<S> {
     is_in_end_tag: bool,
     tag_name_hash: LocalNameHash,
     last_start_tag_name_hash: LocalNameHash,
-    is_state_enter: bool,
     cdata_allowed: bool,
     state: State<S>,
     closing_quote: u8,
@@ -63,7 +62,6 @@ impl<S: TagHintSink> TagScanner<S> {
             is_in_end_tag: false,
             tag_name_hash: LocalNameHash::default(),
             last_start_tag_name_hash: LocalNameHash::default(),
-            is_state_enter: true,
             cdata_allowed: false,
             state: Self::data_state,
             closing_quote: b'"',
@@ -83,7 +81,7 @@ impl<S: TagHintSink> TagScanner<S> {
             end: self.pos(),
         };
 
-        let input_bytes = Bytes::from(input);
+        let input_bytes = Bytes::new(input);
         let name = LocalName::new(&input_bytes, name_range, self.tag_name_hash);
 
         trace!(@output name);
