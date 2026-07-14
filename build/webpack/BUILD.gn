@@ -44,6 +44,7 @@ node_action("generate_tsconfig") {
   ]
   inputs = [
     "$root_gen_dir/brave/components/common/package.json",
+    "//brave/pnpm-lock.yaml",
     "//brave/build/commands/lib/config.ts",
     "//brave/build/commands/lib/genTsConfig.js",
     "//brave/build/commands/scripts/genTsConfig.js",

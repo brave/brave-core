@@ -5,6 +5,7 @@ script/audit_deps.py @brave/sec-team
 /README.md @bsclifton
 script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
+pnpm*.yaml @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
 
 # Views
