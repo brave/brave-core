@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/profiles/profile.cc b/chrome/browser/profiles/profile.cc
-index 8905fccd5148e5dd6cbc71e5ded09dfbcad015b3..d76b61ebdce073682a14f3459c4e0d3a87478b85 100644
+index 3704d410b78db1eaa8e5aea339960f2fa1f24270..1a5d40d2c8c4558fca490570d0bac0db55a01939 100644
 --- a/chrome/browser/profiles/profile.cc
 +++ b/chrome/browser/profiles/profile.cc
 @@ -123,6 +123,7 @@ bool Profile::OTRProfileID::AllowsBrowserWindows() const {

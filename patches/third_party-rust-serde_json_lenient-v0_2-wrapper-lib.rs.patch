@@ -1,5 +1,5 @@
 diff --git a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
-index 0ab0815146c1cbbd5730652876a22987c5d4a3b3..8b4c4beaa4d99227073e9fcf6f2f0dcf64866c3c 100644
+index 7b06225df314eac615e0fc5da3937a903390c953..8a4cee48886f6882106a41350e352ea399155536 100644
 --- a/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
 +++ b/third_party/rust/serde_json_lenient/v0_2/wrapper/lib.rs
 @@ -3,6 +3,7 @@

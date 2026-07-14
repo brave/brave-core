@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/updater/BUILD.gn b/chrome/browser/updater/BUILD.gn
-index 924151133e660019818f8f789c44c9d665fe77db..6c7193776c2d9708db358d9890e5f796a4584f67 100644
+index b9c442efe4805721eeb732eed905d4e4a668a7aa..335b5f97de72ffb3a65ec5d82bdac9163b85d79c 100644
 --- a/chrome/browser/updater/BUILD.gn
 +++ b/chrome/browser/updater/BUILD.gn
-@@ -36,6 +36,7 @@ source_set("updater") {
+@@ -40,6 +40,7 @@ source_set("updater") {
        "//chrome/updater:browser_sources",
      ]
  

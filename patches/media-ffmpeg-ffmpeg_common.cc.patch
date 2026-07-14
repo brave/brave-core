@@ -1,5 +1,5 @@
 diff --git a/media/ffmpeg/ffmpeg_common.cc b/media/ffmpeg/ffmpeg_common.cc
-index 4bf77b0acb5ae94ff0eb26d953203e4c2280a138..69e242045ee97c2bc4fcfbe6b37cb7c087b769c6 100644
+index be9b8980592e274a9a37df43712250a7a6b955cd..1fad1abef8bb4b02d7674ab878ad19db6159e771 100644
 --- a/media/ffmpeg/ffmpeg_common.cc
 +++ b/media/ffmpeg/ffmpeg_common.cc
 @@ -70,6 +70,7 @@ VideoColorSpace GetGuessedColorSpace(const VideoColorSpace& color_space) {

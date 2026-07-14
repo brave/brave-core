@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/passage_embeddings/BUILD.gn b/chrome/browser/passage_embeddings/BUILD.gn
-index af0d41b47d9326a5b541f991541c8eac51fe6669..0572d36b7f155fe4cdd79bb4106506edbd29d478 100644
+index 621a9dcfa08099e0fc7742e7be08cdf296b5bfed..b521c0f8ca233405ca05b4e1a8a61edfb6943c1d 100644
 --- a/chrome/browser/passage_embeddings/BUILD.gn
 +++ b/chrome/browser/passage_embeddings/BUILD.gn
-@@ -25,6 +25,7 @@ source_set("passage_embeddings") {
+@@ -27,6 +27,7 @@ source_set("passage_embeddings") {
      "//content/public/browser",
      "//services/passage_embeddings/public/mojom",
    ]

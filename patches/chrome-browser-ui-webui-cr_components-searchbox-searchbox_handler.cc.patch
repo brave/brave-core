@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 55cdb14c6c3fd00f2c63a3ba9e46d12330c2529b..10d9c2d8c4b07dda4b44c9d7b8098b4ee576d663 100644
+index 2f1697f79c55a8efd844411919ef973ac037a452..a0d934a377ed66290af1a2dcb932d14f9f7b5b3d 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 @@ -747,6 +747,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(

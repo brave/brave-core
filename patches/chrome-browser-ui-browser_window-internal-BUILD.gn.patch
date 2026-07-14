@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_window/internal/BUILD.gn b/chrome/browser/ui/browser_window/internal/BUILD.gn
-index 907356f9fc45cf2059c3c848d5bea611803eb10a..162b1bea194b1b4d0781a29677c67058eeb314e6 100644
+index 80521c638abd56679fa01b0ce0470689669ebf99..705d2772b6e8a2ff0ae7b6eb8b713d7cd9a61461 100644
 --- a/chrome/browser/ui/browser_window/internal/BUILD.gn
 +++ b/chrome/browser/ui/browser_window/internal/BUILD.gn
 @@ -187,6 +187,7 @@ source_set("internal") {

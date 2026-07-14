@@ -1,5 +1,5 @@
 diff --git a/ui/views/view.h b/ui/views/view.h
-index 8c4da8f506b40fcf6d4d601eb3a87107697f40b3..3e03d87cebd32d6cd0ee63f2ac623960a4582e0d 100644
+index d0a1abb7e887e673cf4eaea30bfc52500f26ae3f..ef2ee00cd2678eb0dfd9cf696aca46826e03f318 100644
 --- a/ui/views/view.h
 +++ b/ui/views/view.h
 @@ -320,6 +320,7 @@ class VIEWS_EXPORT View : public ui::LayerDelegate,

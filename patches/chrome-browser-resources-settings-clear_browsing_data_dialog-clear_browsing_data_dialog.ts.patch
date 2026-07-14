@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
-index 60e4e4c2e89a30581df5a189064d2010986656e3..868e2716e96e15ceca03aa269a3d95a48593fed5 100644
+index bf5b3a8d828b71a5b0504dfb3ff435391a7cd472..b775c77ec893d3c956aa481bc62bac1994ab1b8f 100644
 --- a/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
 +++ b/chrome/browser/resources/settings/clear_browsing_data_dialog/clear_browsing_data_dialog.ts
-@@ -81,10 +81,14 @@ export interface SettingsClearBrowsingDataDialogV2Element {
+@@ -81,10 +81,14 @@ export interface SettingsClearBrowsingDataDialogElement {
   * The list of all available Browsing Data types in the default order they
   * should appear in the dialog.
   */
