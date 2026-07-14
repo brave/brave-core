@@ -242,7 +242,9 @@
     "redux-thunk": "2.4.1",
     "remark-directive": "4.0.0",
     "remark-gfm": "4.0.1",
+    "remark-parse": "11.0.0",
     "throttleit": "1.0.0",
+    "unified": "11.0.5",
     "unist-util-visit": "5.1.0",
     "webext-redux": "2.1.9"
   },
