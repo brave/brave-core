@@ -183,6 +183,11 @@ describe('getPersistedSpotPrices', () => {
     expect(getPersistedSpotPrices()).toEqual([])
   })
 
+  it('returns a stable empty array reference across reads', () => {
+    mockLocalStorageGet.mockReturnValue(null)
+    expect(getPersistedSpotPrices()).toBe(getPersistedSpotPrices())
+  })
+
   it('returns persisted prices from localStorage', () => {
     const stored: Record<string, BraveWallet.AssetPrice> = {
       [`${mockEthPrice.coin}-${mockEthPrice.chainId}-${mockEthPrice.address}`]:
@@ -190,6 +195,15 @@ describe('getPersistedSpotPrices', () => {
     }
     mockLocalStorageGet.mockReturnValue(JSON.stringify(stored))
     expect(getPersistedSpotPrices()).toEqual([mockEthPrice])
+  })
+
+  it('returns a stable persisted array reference while storage is unchanged', () => {
+    const stored: Record<string, BraveWallet.AssetPrice> = {
+      [`${mockEthPrice.coin}-${mockEthPrice.chainId}-${mockEthPrice.address}`]:
+        mockEthPrice,
+    }
+    mockLocalStorageGet.mockReturnValue(JSON.stringify(stored))
+    expect(getPersistedSpotPrices()).toBe(getPersistedSpotPrices())
   })
 
   it('returns an empty array on malformed JSON', () => {
