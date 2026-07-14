@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/task/sequenced_task_runner.h"
 #include "base/values.h"
 #include "brave/components/psst/core/browser/psst_report_uploader.h"
 #include "brave/components/version_info/version_info.h"
@@ -28,7 +29,8 @@ void PsstReporterService::SubmitPsstErrorsReport(
     const int script_version,
     OnSubmitPsstErrorsReportCallback callback) {
   if (!failed_policy_tasks || failed_policy_tasks->empty()) {
-    std::move(callback).Run();
+    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+        FROM_HERE, base::BindOnce(std::move(callback)));
     return;
   }
 
