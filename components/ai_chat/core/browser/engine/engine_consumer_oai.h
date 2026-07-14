@@ -56,7 +56,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       SuggestedQuestionsCallback callback) override;
   void GenerateAssistantResponse(
       PageContentsMap&& page_contents,
-      const ConversationHistory& conversation_history,
+      const ConversationHistoryView& conversation_history,
       bool is_temporary_chat,
       const std::vector<base::WeakPtr<Tool>>& tools,
       std::optional<std::string_view> preferred_tool_name,
@@ -70,7 +70,7 @@ class EngineConsumerOAIRemote : public EngineConsumer {
       GenerationCompletedCallback completed_callback) override;
   void GenerateConversationTitle(
       const PageContentsMap& page_contents,
-      const ConversationHistory& conversation_history,
+      const ConversationHistoryView& conversation_history,
       GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;

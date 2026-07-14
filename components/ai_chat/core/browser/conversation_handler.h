@@ -420,6 +420,13 @@ class ConversationHandler : public mojom::ConversationHandler,
   // to.
   std::vector<mojom::ConversationTurnPtr>& GetChatHistory(
       std::optional<std::string_view> thread_uuid);
+  // Builds the conversation history to send to the engine for a generation in
+  // the given thread (or the root conversation). For a thread, this prepends
+  // the root conversation entries up to and including the thread's origin
+  // entry, followed by the thread's own entries.
+  EngineConsumer::ConversationHistoryView
+  BuildConversationHistoryViewForRequest(
+      const std::optional<std::string>& thread_uuid);
   void PerformAssistantGenerationWithPossibleContent(
       const std::optional<std::string>& thread_uuid);
 

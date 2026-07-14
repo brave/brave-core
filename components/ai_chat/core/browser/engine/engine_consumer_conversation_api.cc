@@ -73,7 +73,7 @@ void EngineConsumerConversationAPI::OnGenerateQuestionSuggestionsResponse(
 
 void EngineConsumerConversationAPI::GenerateAssistantResponse(
     PageContentsMap&& page_contents,
-    const ConversationHistory& conversation_history,
+    const ConversationHistoryView& conversation_history,
     bool is_temporary_chat,
     const std::vector<base::WeakPtr<Tool>>& tools,
     std::optional<std::string_view> preferred_tool_name,
@@ -93,7 +93,7 @@ void EngineConsumerConversationAPI::GenerateAssistantResponse(
   // Override model_name to be used if model_key existed for last human turn,
   // used when regenerating answer.
   std::optional<std::string> model_name = std::nullopt;
-  const auto& last_entry = conversation_history.back();
+  const auto& last_entry = conversation_history->back();
   if (last_entry->character_type == mojom::CharacterType::HUMAN &&
       last_entry->model_key) {
     model_name = model_service_->GetLeoModelNameByKey(*last_entry->model_key);
@@ -139,7 +139,7 @@ bool EngineConsumerConversationAPI::RequiresClientSideTitleGeneration() const {
 
 void EngineConsumerConversationAPI::GenerateConversationTitle(
     const PageContentsMap& page_contents,
-    const ConversationHistory& conversation_history,
+    const ConversationHistoryView& conversation_history,
     GenerationCompletedCallback completed_callback) {
   auto messages = BuildOAIGenerateConversationTitleMessages(
       page_contents, conversation_history, max_associated_content_length_,

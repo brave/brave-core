@@ -424,18 +424,18 @@ MATCHER_P(TurnHasText, expected_text, "") {
 }
 
 MATCHER_P(LastTurnHasText, expected_text, "") {
-  if (arg.empty()) {
+  if (arg->empty()) {
     return false;
   }
-  const mojom::ConversationTurnPtr& entry =
-      (arg.back()->edits.has_value() && !arg.back()->edits->empty()
-           ? arg.back()->edits->back()
-           : arg.back());
+  const mojom::ConversationTurn* entry = arg->back();
+  if (entry->edits.has_value() && !entry->edits->empty()) {
+    entry = entry->edits->back().get();
+  }
   return entry->prompt.value_or(entry->text) == expected_text;
 }
 
 MATCHER_P(LastTurnHasSelectedText, expected_text, "") {
-  return !arg.empty() && arg.back()->selected_text == expected_text;
+  return !arg->empty() && arg->back()->selected_text == expected_text;
 }
 
 // Can't use mojo::Equals with ::testing::Truly
@@ -2420,7 +2420,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(
           [](PageContentsMap page_contents,
-             const std::vector<mojom::ConversationTurnPtr>& history,
+             const EngineConsumer::ConversationHistoryView& history,
              bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,
@@ -4741,7 +4741,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillRepeatedly(
           [](PageContentsMap page_contents,
-             const std::vector<mojom::ConversationTurnPtr>& history,
+             const EngineConsumer::ConversationHistoryView& history,
              bool is_temporary_chat,
              const std::vector<base::WeakPtr<Tool>>& tools,
              std::optional<std::string_view> preferred_tool_name,

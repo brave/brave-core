@@ -41,7 +41,7 @@ struct OAIMessage {
 
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     PrefService* prefs,
     bool exclude_memory,
     uint32_t remaining_length,
@@ -68,7 +68,7 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
 std::optional<std::vector<OAIMessage>>
 BuildOAIGenerateConversationTitleMessages(
     const PageContentsMap& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input);
 

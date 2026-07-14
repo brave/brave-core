@@ -1412,6 +1412,38 @@ std::vector<mojom::ConversationTurnPtr>& ConversationHandler::GetChatHistory(
   return chat_history_;
 }
 
+EngineConsumer::ConversationHistoryView
+ConversationHandler::BuildConversationHistoryViewForRequest(
+    const std::optional<std::string>& thread_uuid) {
+  if (!thread_uuid.has_value()) {
+    return chat_history_;
+  }
+
+  auto* container = base::FindOrNull(threads_, *thread_uuid);
+  CHECK(container);
+
+  std::vector<const mojom::ConversationTurn*> history;
+
+  // Prepend the root conversation entries up to and including the entry this
+  // thread branched off from, so the engine has the context that led to the
+  // branch.
+  const std::string& origin_uuid =
+      container->thread->origin_conversation_entry_uuid;
+  for (const auto& entry : chat_history_) {
+    history.push_back(entry.get());
+    if (entry->uuid == origin_uuid) {
+      break;
+    }
+  }
+
+  // Then append the thread's own entries.
+  for (const auto& entry : container->entries) {
+    history.push_back(entry.get());
+  }
+
+  return std::move(history);
+}
+
 void ConversationHandler::InitToolsForNewGenerationLoop(
     base::OnceClosure on_updated) {
   // Remove state from any previous task
@@ -1451,8 +1483,8 @@ void ConversationHandler::PerformAssistantGenerationWithPossibleContent(
 
 void ConversationHandler::PerformAssistantGeneration(
     const std::optional<std::string>& thread_uuid) {
-  auto& history = GetChatHistory(thread_uuid);
-  if (history.empty()) {
+  auto history = BuildConversationHistoryViewForRequest(thread_uuid);
+  if (history->empty()) {
     DLOG(ERROR) << "Cannot generate assistant response without any history";
     return;
   }

@@ -488,7 +488,7 @@ TEST_P(AIChatServiceUnitTest,
   EXPECT_CALL(*engine, GenerateAssistantResponse)
       .WillOnce([&resolve](
                     PageContentsMap page_contents,
-                    const std::vector<mojom::ConversationTurnPtr>& history,
+                    const EngineConsumer::ConversationHistoryView& history,
                     bool is_temporary_chat,
                     const std::vector<base::WeakPtr<Tool>>& tools,
                     std::optional<std::string_view> preferred_tool_name,

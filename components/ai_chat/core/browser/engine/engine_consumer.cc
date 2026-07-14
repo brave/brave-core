@@ -52,13 +52,37 @@ EngineConsumer::Error::Error(mojom::APIError api_error,
                              mojom::APIErrorDetailsPtr details)
     : api_error(api_error), details(std::move(details)) {}
 
+EngineConsumer::ConversationHistoryView::ConversationHistoryView(
+    const ConversationHistory& owning) {
+  turns.reserve(owning.size());
+  for (const auto& turn : owning) {
+    turns.push_back(turn.get());
+  }
+}
+
+EngineConsumer::ConversationHistoryView::ConversationHistoryView(
+    std::vector<const mojom::ConversationTurn*> turns)
+    : turns(std::move(turns)) {}
+
+EngineConsumer::ConversationHistoryView::~ConversationHistoryView() = default;
+
+const std::vector<const mojom::ConversationTurn*>&
+EngineConsumer::ConversationHistoryView::operator*() const {
+  return turns;
+}
+
+const std::vector<const mojom::ConversationTurn*>*
+EngineConsumer::ConversationHistoryView::operator->() const {
+  return &turns;
+}
+
 // static
 std::string EngineConsumer::GetPromptForEntry(
-    const mojom::ConversationTurnPtr& entry) {
-  const mojom::ConversationTurnPtr& prompt_entry =
-      (entry->edits && !entry->edits->empty()) ? entry->edits->back() : entry;
+    const mojom::ConversationTurn& entry) {
+  const mojom::ConversationTurn& prompt_entry =
+      (entry.edits && !entry.edits->empty()) ? *entry.edits->back() : entry;
 
-  return prompt_entry->prompt.value_or(prompt_entry->text);
+  return prompt_entry.prompt.value_or(prompt_entry.text);
 }
 
 // static
@@ -91,8 +115,8 @@ std::string EngineConsumer::GetPdfDataURL(base::span<uint8_t> pdf_data) {
 }
 
 bool EngineConsumer::CanPerformCompletionRequest(
-    const ConversationHistory& conversation_history) const {
-  if (conversation_history.empty()) {
+    const ConversationHistoryView& conversation_history) const {
+  if (conversation_history->empty()) {
     return false;
   }
 

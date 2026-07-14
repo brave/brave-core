@@ -157,7 +157,7 @@ std::vector<mojom::ContentBlockPtr> BuildOAIPageContentBlocks(
 
 std::vector<OAIMessage> BuildOAIMessages(
     PageContentsMap&& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     PrefService* prefs,
     bool exclude_memory,
     uint32_t remaining_length,
@@ -202,9 +202,9 @@ std::vector<OAIMessage> BuildOAIMessages(
   absl::flat_hash_set<std::pair<size_t, size_t>> web_sources_strip_set;
   size_t web_sources_count = 0;
 
-  for (size_t message_index = conversation_history.size(); message_index > 0;
+  for (size_t message_index = conversation_history->size(); message_index > 0;
        --message_index) {
-    const auto& message = conversation_history[message_index - 1];
+    const auto& message = (*conversation_history)[message_index - 1];
     DCHECK(message->uuid) << "Tried to send a turn without a uuid";
     if (!message->uuid) {
       continue;
@@ -274,9 +274,9 @@ std::vector<OAIMessage> BuildOAIMessages(
   }
 
   // Step 2: Main pass - build conversation in chronological order
-  for (size_t message_index = 0; message_index < conversation_history.size();
+  for (size_t message_index = 0; message_index < conversation_history->size();
        ++message_index) {
-    const auto& message = conversation_history[message_index];
+    const auto& message = (*conversation_history)[message_index];
 
     OAIMessage oai_message;
     oai_message.role = message->character_type == mojom::CharacterType::HUMAN
@@ -286,7 +286,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     // Add memory content block for latest human turn.
     if (!exclude_memory &&
         message->character_type == mojom::CharacterType::HUMAN &&
-        message_index == conversation_history.size() - 1) {
+        message_index == conversation_history->size() - 1) {
       auto memory_block = BuildMemoryContentBlock(prefs);
       if (memory_block) {
         oai_message.content.push_back(
@@ -444,7 +444,7 @@ std::vector<OAIMessage> BuildOAIMessages(
     } else {
       oai_message.content.push_back(
           mojom::ContentBlock::NewTextContentBlock(mojom::TextContentBlock::New(
-              EngineConsumer::GetPromptForEntry(message))));
+              EngineConsumer::GetPromptForEntry(*message))));
     }
 
     // Add the assistant message first
@@ -580,19 +580,20 @@ std::optional<std::vector<OAIMessage>> BuildOAIRewriteSuggestionMessages(
 std::optional<std::vector<OAIMessage>>
 BuildOAIGenerateConversationTitleMessages(
     const PageContentsMap& page_contents,
-    const EngineConsumer::ConversationHistory& conversation_history,
+    const EngineConsumer::ConversationHistoryView& conversation_history,
     uint32_t remaining_length,
     base::FunctionRef<void(std::string&)> sanitize_input) {
   // Validate we have the expected conversation structure
-  if (conversation_history.size() != 2 ||
-      conversation_history[0]->character_type != mojom::CharacterType::HUMAN ||
-      conversation_history[1]->character_type !=
+  if (conversation_history->size() != 2 ||
+      (*conversation_history)[0]->character_type !=
+          mojom::CharacterType::HUMAN ||
+      (*conversation_history)[1]->character_type !=
           mojom::CharacterType::ASSISTANT) {
     return std::nullopt;
   }
 
-  const auto& first_turn = conversation_history[0];
-  const auto& assistant_turn = conversation_history[1];
+  const auto& first_turn = (*conversation_history)[0];
+  const auto& assistant_turn = (*conversation_history)[1];
 
   // Build messages for title generation
   std::vector<OAIMessage> messages;
@@ -625,7 +626,7 @@ BuildOAIGenerateConversationTitleMessages(
                                   !assistant_turn->text.empty();
   std::string title_text = use_assistant_text
                                ? assistant_turn->text
-                               : EngineConsumer::GetPromptForEntry(first_turn);
+                               : EngineConsumer::GetPromptForEntry(*first_turn);
 
   // Withdraw the request entirely if we have nothing to summarize. Sending an
   // empty title block wastes a server round-trip and cannot produce a useful
