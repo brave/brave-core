@@ -164,10 +164,7 @@ const ModelContent = (props: ModelContentProps) => {
               </Label>
             )}
           </div>
-          <div className={styles.labelAndActions}>
-            {label}
-            {trailingContent}
-          </div>
+          <div className={styles.labelAndActions}>{label}</div>
         </div>
         {showDetails && (
           <>
@@ -190,6 +187,8 @@ const ModelContent = (props: ModelContentProps) => {
           </>
         )}
       </div>
+      {/* Sibling of icon/column so the overlay can span the full item height. */}
+      {trailingContent}
     </>
   )
 }
@@ -221,7 +220,10 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
 
   return (
     <div
-      className={styles.optionsWrap}
+      className={classnames({
+        [styles.optionsWrap]: true,
+        [styles.optionsWrapOpen]: isOpen,
+      })}
       onClick={(e) => {
         e.preventDefault()
         e.stopPropagation()
@@ -231,7 +233,7 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
       <ButtonMenu
         className={styles.optionsMenu}
         isOpen={isOpen}
-        onClose={() => onOpenChange(false)}
+        onChange={(e) => onOpenChange(e.isOpen)}
         positionStrategy='fixed'
         placement='bottom-end'
       >
@@ -240,13 +242,14 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
           fab
           kind='plain-faint'
           size='tiny'
-          className={classnames({
-            [styles.moreButton]: true,
-            [styles.moreButtonOpen]: isOpen,
-          })}
+          className={styles.moreButton}
           aria-label={getLocale(S.CHAT_UI_MODEL_MORE_OPTIONS)}
           data-testid={`model-options-${modelKey}`}
           onClick={(e) => {
+            // Stop bubbling so the parent model row isn't selected, and
+            // toggle here because stopPropagation also blocks Leo's anchor
+            // click handler on this nested ButtonMenu.
+            e.preventDefault()
             e.stopPropagation()
             onOpenChange(!isOpen)
           }}
@@ -300,6 +303,8 @@ function ModelOptionsMenu(props: ModelOptionsMenuProps) {
 interface MenuItemProps extends ModelContentProps {
   onClick: () => void
   isMobile?: boolean
+  isOptionsOpen?: boolean
+  onOptionsOpenChange?: (open: boolean) => void
   onTogglePin?: () => void
   onSetAsDefault?: () => void
 }
@@ -315,13 +320,14 @@ export function ModelMenuItem(props: MenuItemProps) {
     isDefault,
     showCapabilitySubtitle,
     isMobile,
+    isOptionsOpen = false,
+    onOptionsOpenChange,
     onClick,
     onClickLearnMore,
     onTogglePin,
     onSetAsDefault,
   } = props
 
-  const [isOptionsOpen, setIsOptionsOpen] = React.useState(false)
   const longPressTimer = React.useRef<number | undefined>(undefined)
   const didLongPress = React.useRef(false)
 
@@ -329,6 +335,13 @@ export function ModelMenuItem(props: MenuItemProps) {
   const canPin = !!onTogglePin && model.key !== AUTOMATIC_MODEL_KEY
   const canSetDefault = !!onSetAsDefault
   const showOptions = canPin || canSetDefault
+
+  const setOptionsOpen = React.useCallback(
+    (open: boolean) => {
+      onOptionsOpenChange?.(open)
+    },
+    [onOptionsOpenChange],
+  )
 
   const clearLongPressTimer = React.useCallback(() => {
     if (longPressTimer.current !== undefined) {
@@ -348,7 +361,7 @@ export function ModelMenuItem(props: MenuItemProps) {
           clearLongPressTimer()
           longPressTimer.current = window.setTimeout(() => {
             didLongPress.current = true
-            setIsOptionsOpen(true)
+            setOptionsOpen(true)
           }, LONG_PRESS_MS)
         },
         onTouchEnd: clearLongPressTimer,
@@ -359,7 +372,7 @@ export function ModelMenuItem(props: MenuItemProps) {
           e.stopPropagation()
           clearLongPressTimer()
           didLongPress.current = true
-          setIsOptionsOpen(true)
+          setOptionsOpen(true)
         },
       }
     : undefined
@@ -402,7 +415,7 @@ export function ModelMenuItem(props: MenuItemProps) {
                 isOpen={isOptionsOpen}
                 canPin={canPin}
                 canSetDefault={canSetDefault}
-                onOpenChange={setIsOptionsOpen}
+                onOpenChange={setOptionsOpen}
                 onTogglePin={onTogglePin}
                 onSetAsDefault={onSetAsDefault}
               />
