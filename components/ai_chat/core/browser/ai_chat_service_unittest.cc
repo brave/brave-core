@@ -1618,6 +1618,7 @@ TEST_P(AIChatServiceUnitTest, DeleteSkill) {
 
 TEST_P(AIChatServiceUnitTest, SetModelPinned) {
   constexpr char kModelKey[] = "chat-claude-sonnet";
+  constexpr char kModelKey2[] = "chat-basic";
 
   MockServiceClient mock_client(ai_chat_service_.get());
   base::RunLoop run_loop;
@@ -1635,17 +1636,33 @@ TEST_P(AIChatServiceUnitTest, SetModelPinned) {
   ASSERT_EQ(pinned_keys.size(), 1u);
   EXPECT_EQ(pinned_keys[0].GetString(), kModelKey);
 
+  // Newly pinned models are inserted at the front.
+  base::RunLoop second_pin_run_loop;
+  EXPECT_CALL(mock_client, OnStateChanged(_))
+      .WillOnce([&](mojom::ServiceStatePtr state) {
+        ASSERT_EQ(state->pinned_model_keys.size(), 2u);
+        EXPECT_EQ(state->pinned_model_keys[0], kModelKey2);
+        EXPECT_EQ(state->pinned_model_keys[1], kModelKey);
+        second_pin_run_loop.Quit();
+      });
+
+  ai_chat_service_->SetModelPinned(kModelKey2, true);
+  second_pin_run_loop.Run();
+
   base::RunLoop unpin_run_loop;
   EXPECT_CALL(mock_client, OnStateChanged(_))
       .WillOnce([&](mojom::ServiceStatePtr state) {
-        EXPECT_TRUE(state->pinned_model_keys.empty());
+        ASSERT_EQ(state->pinned_model_keys.size(), 1u);
+        EXPECT_EQ(state->pinned_model_keys[0], kModelKey2);
         unpin_run_loop.Quit();
       });
 
   ai_chat_service_->SetModelPinned(kModelKey, false);
   unpin_run_loop.Run();
 
-  EXPECT_TRUE(prefs_.GetList(prefs::kPinnedModelKeys).empty());
+  const auto& after_unpin = prefs_.GetList(prefs::kPinnedModelKeys);
+  ASSERT_EQ(after_unpin.size(), 1u);
+  EXPECT_EQ(after_unpin[0].GetString(), kModelKey2);
 }
 
 TEST_P(AIChatServiceUnitTest, SetDefaultModelKey) {

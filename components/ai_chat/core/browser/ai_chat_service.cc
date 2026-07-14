@@ -661,7 +661,9 @@ void AIChatService::SetModelPinned(const std::string& model_key, bool pinned) {
 
   if (pinned) {
     if (it == pinned_keys.end()) {
-      pinned_keys.Append(model_key);
+      // Newest pins first so the pinned list shows recently pinned models at
+      // the top (Automatic remains prepended separately in the UI).
+      pinned_keys.Insert(pinned_keys.begin(), base::Value(model_key));
       OnStateChanged();
     }
   } else if (it != pinned_keys.end()) {
