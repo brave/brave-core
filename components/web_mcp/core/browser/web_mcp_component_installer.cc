@@ -23,7 +23,7 @@
 namespace web_mcp {
 
 // Directory structure of the WebMCP component:
-// kddaehjleefhcbmnkdmjnhiphbomedpf/<component version>/
+// eingdhelnaolbpcdkgddekhifcjfkalf/<component version>/
 //  |_ manifest.json
 //  |_ scripts/
 //    |_ gmail_unread_count.js

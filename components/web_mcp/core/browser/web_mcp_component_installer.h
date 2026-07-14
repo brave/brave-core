@@ -13,19 +13,14 @@ class ComponentUpdateService;
 namespace web_mcp {
 
 inline constexpr char kWebMcpComponentName[] = "Brave WebMCP Tool Scripts";
-inline constexpr char kWebMcpComponentId[] = "kddaehjleefhcbmnkdmjnhiphbomedpf";
+inline constexpr char kWebMcpComponentId[] = "eingdhelnaolbpcdkgddekhifcjfkalf";
 inline constexpr char kWebMcpComponentBase64PublicKey[] =
-    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvX8cJN/"
-    "GXZCwijNam8Pyqb+gFi2GJE+"
-    "cN6cTfvDmToSEivqQ3SQkLZwyORIWKxxrWnopybF2MzUEOLoW1gPjGGGrZVExlcIpLHX0SitFq"
-    "d"
-    "fQDMOSdVD5OOJEvV/YOKyejmWjXcIAhj5/"
-    "J8d+lAvHINCbQQXMvWvnzeo6BBcVrYh6sbg6yDAQ8"
-    "5aoANTDBIffjui8c+wSnfQdZ9B2gP4JRX48iDWYpE2z2Wk/"
-    "q0hecXK4UQbn7BbZmWwChfJWL64E"
-    "+BiGdBV1yhdzJHmXo+05wWPzFB2SjxUjXfnht+fgypeTwNGvBTFBM1qHu3VZ/"
-    "+pZggjUIdMCXUK"
-    "ItqYI5fC8GwIDAQAB";
+    "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA1cs/q1SFnqEgbPFni1hTXJNDqzsf"
+    "JJIzNoUNCD/vPwpgUH0nXvLAgagAyBcxFi3Y7rU3vidnXiFL7iPaikZN40nEfsfE/3FNaIaH"
+    "PQa3xtmL76CqsAT21iYuEu+I3MZIqTNewC7XUqBh5rw1V0joVkQvHMpeKqUgIUhnxeqjQpoy"
+    "L3GLR9d3P+f5g8V206dJUvXqUKc2Cc5tVYpSHIiIhh081fchkYwJ9Yszg3EIhCgnbaoONAHs"
+    "jzfGsJTQ6IlgD2uyOdtQi4/wdlsWNvvlpqLNIVLTIyAy8QlCOTujvyey95CJPF2e/6LuIzky"
+    "KUaje/tFmyDD9xTTcpRSKMVY8QIDAQAB";
 
 // Registers the WebMCP scripts component with the component updater. The
 // delivered scripts are parsed into WebMcpRuleRegistry. Callers gate this on
