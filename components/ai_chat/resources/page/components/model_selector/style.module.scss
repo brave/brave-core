@@ -43,13 +43,27 @@
 }
 
 .menuBody {
+  --menu-body-max-height: min(472px, calc(100svh - 160px));
+  --vendor-button-size: 32px;
+
   display: flex;
   flex-direction: row;
+  align-items: stretch;
   box-sizing: border-box;
   width: 320px;
   min-width: 320px;
   max-width: 320px;
-  max-height: min(472px, calc(100svh - 160px));
+  max-height: var(--menu-body-max-height);
+  // Prefer the vendor rail's natural height so a short model list doesn't
+  // collapse the panel; never exceed the menu max height.
+  min-height: min(
+    calc(
+      2 * var(--leo-spacing-s)
+        + var(--vendor-rail-count, 0) * var(--vendor-button-size)
+        + max(0, var(--vendor-rail-count, 0) - 1) * var(--leo-spacing-s)
+    ),
+    var(--menu-body-max-height)
+  );
   overflow: hidden;
   // Leo's popup sizes to its content. Without containment, a row's
   // min-content (e.g. after the "Default" label appears) can widen it.
@@ -62,10 +76,12 @@
   gap: var(--leo-spacing-s);
   width: 40px;
   flex-shrink: 0;
+  align-self: stretch;
   padding: var(--leo-spacing-s);
   background: var(--leo-color-page-background);
   border-inline-end: 1px solid var(--leo-color-divider-subtle);
   overflow-y: auto;
+  box-sizing: border-box;
 }
 
 .vendorRailButton {
