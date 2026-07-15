@@ -8,7 +8,9 @@
 
 #include <memory>
 
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
+#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 namespace local_ai {
@@ -32,6 +34,9 @@ class UntrustedOnDeviceSpeechRecognitionWorkerUI
   UntrustedOnDeviceSpeechRecognitionWorkerUI& operator=(
       const UntrustedOnDeviceSpeechRecognitionWorkerUI&) = delete;
   ~UntrustedOnDeviceSpeechRecognitionWorkerUI() override;
+
+  void BindInterface(
+      mojo::PendingReceiver<mojom::SpeechRecognitionFactoryHost> receiver);
 
  private:
   WEB_UI_CONTROLLER_TYPE_DECL();
