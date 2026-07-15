@@ -11,16 +11,21 @@ import Shared
 import UIKit
 import os.log
 
-/// A class for rendering a Bundled FavIcon onto a `UIImage`
+/// An actor for rendering a Bundled FavIcon onto a `UIImage`
 public actor BundledFaviconRenderer {
+  /// Shared instance which serializes all access to bundled/custom icons
+  private static let shared = BundledFaviconRenderer()
 
   /// Folder where custom favicons are stored.
   static let faviconOverridesDirectory = "favorite_overrides"
   /// For each favicon override, there should be a file that contains info of what background color to use.
   static let faviconOverridesBackgroundSuffix = ".background_color"
 
-  @MainActor
   public static func loadIcon(url: URL) async throws -> Favicon {
+    try await shared.loadIcon(url: url)
+  }
+
+  private func loadIcon(url: URL) async throws -> Favicon {
     var icon = await customIcon(for: url)
     if icon == nil {
       icon = await bundledIcon(for: url)
@@ -44,8 +49,7 @@ public actor BundledFaviconRenderer {
   ///
   /// If the app does not contain a custom icon for the site provided `nil`
   /// will be returned
-  private static func customIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
-  {
+  private func customIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)? {
     guard
       let folder = try? await AsyncFileManager.default.url(
         for: .applicationSupportDirectory,
@@ -80,8 +84,8 @@ public actor BundledFaviconRenderer {
 
   // MARK: - Bundled Icons
 
-  private static var loadBundledIconsTask: Task<Void, Never>?
-  private static func loadBundledIcons() async {
+  private var loadBundledIconsTask: Task<Void, Never>?
+  private func loadBundledIcons() async {
     if let loadBundledIconsTask {
       await loadBundledIconsTask.value
       return
@@ -120,15 +124,14 @@ public actor BundledFaviconRenderer {
         )
       }
     }
-    Self.loadBundledIconsTask = loadBundledIconsTask
+    self.loadBundledIconsTask = loadBundledIconsTask
     await loadBundledIconsTask.value
   }
   /// Icon attributes for icons that are bundled in the app by default.
   ///
   /// If the app does not contain the icon for the site provided `nil` will be
   /// returned
-  private static func bundledIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)?
-  {
+  private func bundledIcon(for url: URL) async -> (image: UIImage, backgroundColor: UIColor)? {
     if bundledIcons.isEmpty {
       await loadBundledIcons()
     }
@@ -137,9 +140,9 @@ public actor BundledFaviconRenderer {
     // Here, If the site is in the multiRegionDomain array look it up via its second level domain (amazon) instead of its baseDomain (amazon.com)
     let hostName = url.hostSLD
     var bundleIcon: (color: UIColor, url: String)?
-    if Self.multiRegionDomains.contains(hostName), let icon = Self.bundledIcons[hostName] {
+    if Self.multiRegionDomains.contains(hostName), let icon = bundledIcons[hostName] {
       bundleIcon = icon
-    } else if let name = url.baseDomain, let icon = Self.bundledIcons[name] {
+    } else if let name = url.baseDomain, let icon = bundledIcons[name] {
       bundleIcon = icon
     }
     guard let icon = bundleIcon,
@@ -154,7 +157,7 @@ public actor BundledFaviconRenderer {
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
 
-  private static var bundledIcons: [String: (color: UIColor, url: String)] = [:]
+  private var bundledIcons: [String: (color: UIColor, url: String)] = [:]
 
   private struct TopSite: Codable {
     let domain: String?

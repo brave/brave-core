@@ -83,6 +83,12 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       if let res = Bundle.module.url(forResource: path, withExtension: nil),
         let data = try? Data(contentsOf: res)
       {
+        // WebKit may have stopped the task while the resource was being read
+        // from disk. Sending it further callbacks throws an exception.
+        if Task.isCancelled {
+          return false
+        }
+
         urlSchemeTask.didReceive(
           URLResponse(
             url: url,
@@ -122,6 +128,12 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
         return
       }
 
+      // WebKit may have stopped the task during the await above. Sending it
+      // any further callbacks, including failures, throws an exception.
+      if Task.isCancelled {
+        return
+      }
+
       // Need a better way to detect when WebKit is making a request from interactionState vs. a regular request by the user
       // instead of having to check the cache policy
       if !urlSchemeTask.request.isPrivileged
@@ -136,13 +148,14 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
         return
       }
 
-      guard let (urlResponse, data) = await responder.response(forRequest: urlSchemeTask.request)
-      else {
-        urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.responderUnableToHandle)
+      let responderResult = await responder.response(forRequest: urlSchemeTask.request)
+
+      if activeTasks.object(forKey: urlSchemeTask) == nil || Task.isCancelled {
         return
       }
 
-      if activeTasks.object(forKey: urlSchemeTask) == nil || Task.isCancelled {
+      guard let (urlResponse, data) = responderResult else {
+        urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.responderUnableToHandle)
         return
       }
 
