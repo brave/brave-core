@@ -30,6 +30,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
   func animatePresentation(context: any UIViewControllerContextTransitioning) {
     let finalFrame = context.finalFrame(for: self)
     guard let fromView = context.view(forKey: .from),
+      fromView.bounds.width != 0, fromView.bounds.height != 0,
       let selectedTab = tabManager.selectedTab
     else {
       view.frame = finalFrame
@@ -51,7 +52,7 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
 
     guard let destinationIndexPath = containerView.dataSource.indexPath(for: selectedTab.id),
       let destinationCell = containerView.collectionView.cellForItem(at: destinationIndexPath),
-      destinationCell.bounds.size != .zero,
+      destinationCell.bounds.width != 0, destinationCell.bounds.height != 0,
       let destinationCellSnapshot = destinationCell.snapshotView(afterScreenUpdates: true)
     else {
       let fallbackAnimation = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
@@ -131,7 +132,11 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       return
     }
 
-    let finalFrame = context.finalFrame(for: toVC)
+    var finalFrame = context.finalFrame(for: toVC)
+    // Fall back to the container's bounds if UIKit hands us an empty or invalid frame
+    if finalFrame.isEmpty || finalFrame.width.isZero || finalFrame.height.isZero {
+      finalFrame = context.containerView.bounds
+    }
     let dimmingView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
     dimmingView.backgroundColor = .clear
     dimmingView.frame = finalFrame
@@ -150,7 +155,9 @@ extension TabGridHostingController: BasicAnimationControllerDelegate {
       let sourceIndexPath = containerView.dataSource.indexPath(for: selectedTab.id),
       let sourceAttributes = containerView.collectionView.layoutAttributesForItem(
         at: sourceIndexPath
-      )
+      ),
+      sourceAttributes.bounds.width != 0, sourceAttributes.bounds.height != 0,
+      toView.bounds.width != 0, toView.bounds.height != 0
     else {
       let fallbackAnimation = UIViewPropertyAnimator(duration: 0.3, curve: .linear)
       toView.alpha = 0
