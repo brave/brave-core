@@ -286,6 +286,28 @@
   overflow-y: auto;
   flex: 1;
   min-height: 0;
+
+  // Scope to the model list only so nested menus (filter / item options)
+  // keep Nala's default menu-item sizing.
+  leo-menu-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--leo-spacing-l);
+    padding: var(--leo-spacing-s) var(--leo-spacing-m);
+    max-width: 100%;
+    border-radius: var(--leo-radius-m);
+    cursor: pointer;
+
+    &:hover {
+      background: var(--leo-color-container-highlight);
+    }
+
+    &[aria-selected]:not(:hover) {
+      background: var(--leo-color-container-interactive);
+      color: var(--leo-color-text-interactive);
+    }
+  }
 }
 
 .emptyState {

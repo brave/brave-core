@@ -12,6 +12,7 @@ import {
   getVendorRailEntries,
   modelHasAllCapabilities,
 } from '../../model_utils'
+import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import { CapabilityFilter } from './capability_filter'
 import { ModelSearch } from './model_search'
 import { VendorRail } from './vendor_rail'
@@ -160,6 +161,19 @@ function ModelSelectorChrome() {
     Mojom.ModelCapability[]
   >([])
   const [filterOpen, setFilterOpen] = React.useState(false)
+  const [pinnedKeys, setPinnedKeys] = React.useState<string[]>([
+    'chat-claude-sonnet',
+    'chat-gpt-mini',
+  ])
+  const [defaultModelKey, setDefaultModelKey] = React.useState(
+    'chat-claude-sonnet',
+  )
+  const [currentModelKey, setCurrentModelKey] = React.useState(
+    'chat-claude-sonnet',
+  )
+  const [openOptionsKey, setOpenOptionsKey] = React.useState<string | null>(
+    null,
+  )
 
   const vendorEntries = React.useMemo(
     () => getVendorRailEntries(MODELS),
@@ -183,7 +197,8 @@ function ModelSelectorChrome() {
         return true
       }
       const maker = model.options.leoModelOptions?.displayMaker ?? ''
-      const requestName = model.options.customModelOptions?.modelRequestName ?? ''
+      const requestName =
+        model.options.customModelOptions?.modelRequestName ?? ''
       return (
         model.displayName.toLowerCase().includes(query)
         || maker.toLowerCase().includes(query)
@@ -210,35 +225,53 @@ function ModelSelectorChrome() {
             selected={capabilityFilters}
             onChange={setCapabilityFilters}
             isOpen={filterOpen}
-            onOpenChange={setFilterOpen}
+            onOpenChange={(open) => {
+              setFilterOpen(open)
+              if (open) {
+                setOpenOptionsKey(null)
+              }
+            }}
           />
         </div>
         <div className={styles.modelList}>
           {filteredModels.length === 0 ? (
             <div className={styles.emptyState}>No models found</div>
           ) : (
-            filteredModels.map((model) => (
-              <div
-                key={model.key}
-                style={{
-                  padding: '8px 12px',
-                  borderRadius: 8,
-                  font: 'var(--leo-font-default-regular)',
-                }}
-              >
-                {model.displayName}
-                <div
-                  style={{
-                    font: 'var(--leo-font-small-regular)',
-                    color: 'var(--leo-color-text-tertiary)',
+            filteredModels.map((model) => {
+              const isPinned = pinnedKeys.includes(model.key)
+              return (
+                <ModelMenuItem
+                  key={model.key}
+                  model={model}
+                  isCurrent={model.key === currentModelKey}
+                  isPinned={isPinned}
+                  isDefault={model.key === defaultModelKey}
+                  showPremiumLabel={true}
+                  showDetails={true}
+                  showCapabilitySubtitle={true}
+                  isOptionsOpen={openOptionsKey === model.key}
+                  onOptionsOpenChange={(open) => {
+                    setOpenOptionsKey(open ? model.key : null)
+                    if (open) {
+                      setFilterOpen(false)
+                    }
                   }}
-                >
-                  {model.options.leoModelOptions?.displayMaker
-                    || model.options.customModelOptions?.modelRequestName
-                    || ' '}
-                </div>
-              </div>
-            ))
+                  onClick={() => setCurrentModelKey(model.key)}
+                  onSetAsDefault={() => setDefaultModelKey(model.key)}
+                  onTogglePin={
+                    model.key === 'chat-automatic'
+                      ? undefined
+                      : () => {
+                          setPinnedKeys((prev) =>
+                            prev.includes(model.key)
+                              ? prev.filter((key) => key !== model.key)
+                              : [model.key, ...prev],
+                          )
+                        }
+                  }
+                />
+              )
+            })
           )}
         </div>
       </div>
@@ -246,7 +279,7 @@ function ModelSelectorChrome() {
   )
 }
 
-export const _SearchFilterAndVendorRail = {
+export const _SearchFilterRailAndModelItems = {
   render: () => <ModelSelectorChrome />,
 }
 
