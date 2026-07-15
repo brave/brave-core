@@ -86,7 +86,6 @@ brave_settings_ts_files = [
   "br/clear_browsing_data_time_picker.ts",
   "br/config.ts",
   "br/cookies_page.ts",
-  "br/default_browser_page.ts",
   "br/edit_dictionary_page.ts",
   "br/import_data_dialog.ts",
   "br/index.ts",
