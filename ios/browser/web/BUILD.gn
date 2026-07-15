@@ -32,6 +32,7 @@ source_set("web") {
     "//brave/ios/browser/brave_search",
     "//brave/ios/browser/brave_shields",
     "//brave/ios/browser/brave_shields/request_blocking",
+    "//brave/ios/browser/brave_shields/scriptlets",
     "//brave/ios/browser/component_updater:zxcvbn_data_component_installer",
     "//brave/ios/browser/global_privacy_control",
     "//brave/ios/browser/playlist",
