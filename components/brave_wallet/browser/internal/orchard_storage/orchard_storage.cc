@@ -10,6 +10,7 @@
 #include <limits>
 #include <memory>
 #include <string>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -92,43 +93,60 @@ constexpr char kCreateShardTreeCapSql[] =
     "cap_data BLOB NOT NULL,"
     "CONSTRAINT shard_tree_cap_unique UNIQUE (account_id));";
 
+constexpr char kNotesTable[] = "notes";
+constexpr char kSpentNotesTable[] = "spent_notes";
+constexpr char kShardTreeTable[] = "shard_tree";
+constexpr char kShardTreeCapTable[] = "shard_tree_cap";
+constexpr char kCheckpointsTable[] = "checkpoints";
+constexpr char kCheckpointsMarkRemovedTable[] = "checkpoints_mark_removed";
+
+constexpr char kNotesIronwoodTable[] = "notes_ironwood";
+constexpr char kSpentNotesIronwoodTable[] = "spent_notes_ironwood";
+constexpr char kShardTreeIronwoodTable[] = "shard_tree_ironwood";
+constexpr char kShardTreeCapIronwoodTable[] = "shard_tree_cap_ironwood";
+constexpr char kCheckpointsIronwoodTable[] = "checkpoints_ironwood";
+constexpr char kCheckpointsMarkRemovedIronwoodTable[] =
+    "checkpoints_mark_removed_ironwood";
+
 struct PoolTableNames {
-  std::string notes;
-  std::string spent_notes;
-  std::string shard_tree;
-  std::string shard_tree_cap;
-  std::string checkpoints;
-  std::string checkpoints_mark_removed;
+  std::string_view notes;
+  std::string_view spent_notes;
+  std::string_view shard_tree;
+  std::string_view shard_tree_cap;
+  std::string_view checkpoints;
+  std::string_view checkpoints_mark_removed;
 };
 
-PoolTableNames TablesForPool(OrchardPool pool) {
+const PoolTableNames* TablesForPool(OrchardPool pool) {
+  static constexpr PoolTableNames kOrchardTables = {
+      kNotesTable,        kSpentNotesTable,  kShardTreeTable,
+      kShardTreeCapTable, kCheckpointsTable, kCheckpointsMarkRemovedTable};
+  static constexpr PoolTableNames kIronwoodTables = {
+      kNotesIronwoodTable,       kSpentNotesIronwoodTable,
+      kShardTreeIronwoodTable,   kShardTreeCapIronwoodTable,
+      kCheckpointsIronwoodTable, kCheckpointsMarkRemovedIronwoodTable};
+
   switch (pool) {
     case OrchardPool::kOrchard:
-      return PoolTableNames{"notes",       "spent_notes",
-                            "shard_tree",  "shard_tree_cap",
-                            "checkpoints", "checkpoints_mark_removed"};
+      return &kOrchardTables;
     case OrchardPool::kIronwood:
-      return PoolTableNames{
-          "notes_ironwood",       "spent_notes_ironwood",
-          "shard_tree_ironwood",  "shard_tree_cap_ironwood",
-          "checkpoints_ironwood", "checkpoints_mark_removed_ironwood"};
+      return &kIronwoodTables;
   }
   NOTREACHED();
 }
 
 bool CreatePoolDataTables(sql::Database& database, const PoolTableNames& t) {
-  return database.Execute(absl::StrFormat(kCreateNotesSql, t.notes.c_str())) &&
+  return database.Execute(absl::StrFormat(kCreateNotesSql, t.notes)) &&
          database.Execute(
-             absl::StrFormat(kCreateSpentNotesSql, t.spent_notes.c_str())) &&
+             absl::StrFormat(kCreateSpentNotesSql, t.spent_notes)) &&
+         database.Execute(absl::StrFormat(kCreateShardTreeSql, t.shard_tree)) &&
          database.Execute(
-             absl::StrFormat(kCreateShardTreeSql, t.shard_tree.c_str())) &&
-         database.Execute(absl::StrFormat(kCreateShardTreeCheckpointsSql,
-                                          t.checkpoints.c_str())) &&
+             absl::StrFormat(kCreateShardTreeCheckpointsSql, t.checkpoints)) &&
          database.Execute(absl::StrFormat(kCreateCheckpointsMarksRemovedSql,
-                                          t.checkpoints_mark_removed.c_str(),
-                                          t.checkpoints.c_str())) &&
+                                          t.checkpoints_mark_removed,
+                                          t.checkpoints)) &&
          database.Execute(
-             absl::StrFormat(kCreateShardTreeCapSql, t.shard_tree_cap.c_str()));
+             absl::StrFormat(kCreateShardTreeCapSql, t.shard_tree_cap));
 }
 
 sql::Statement PrepareStatement(sql::Database& database,
@@ -146,31 +164,30 @@ sql::Statement PrepareStatement(sql::Database& database,
 // tables are renamed out of the way, recreated with the fixed schema,
 // repopulated from the renamed originals, and the originals are dropped.
 bool MigrateOrchardCheckpointsTables(sql::Database& database) {
-  const PoolTableNames tables = TablesForPool(OrchardPool::kOrchard);
+  const PoolTableNames& tables = *TablesForPool(OrchardPool::kOrchard);
 
   return database.Execute(absl::StrFormat(
              "ALTER TABLE %s RENAME TO checkpoints_mark_removed_v2_old;",
-             tables.checkpoints_mark_removed.c_str())) &&
+             tables.checkpoints_mark_removed)) &&
          database.Execute(
              absl::StrFormat("ALTER TABLE %s RENAME TO checkpoints_v2_old;",
-                             tables.checkpoints.c_str())) &&
+                             tables.checkpoints)) &&
          database.Execute(absl::StrFormat(kCreateShardTreeCheckpointsSql,
-                                          tables.checkpoints.c_str())) &&
+                                          tables.checkpoints)) &&
          database.Execute(absl::StrFormat(
              "INSERT INTO %s (account_id, checkpoint_id, position) "
              "SELECT account_id, checkpoint_id, position FROM "
              "checkpoints_v2_old;",
-             tables.checkpoints.c_str())) &&
+             tables.checkpoints)) &&
          database.Execute("DROP TABLE checkpoints_v2_old;") &&
-         database.Execute(
-             absl::StrFormat(kCreateCheckpointsMarksRemovedSql,
-                             tables.checkpoints_mark_removed.c_str(),
-                             tables.checkpoints.c_str())) &&
+         database.Execute(absl::StrFormat(kCreateCheckpointsMarksRemovedSql,
+                                          tables.checkpoints_mark_removed,
+                                          tables.checkpoints)) &&
          database.Execute(absl::StrFormat(
              "INSERT INTO %s (account_id, checkpoint_id, "
              "mark_removed_position) SELECT account_id, checkpoint_id, "
              "mark_removed_position FROM checkpoints_mark_removed_v2_old;",
-             tables.checkpoints_mark_removed.c_str())) &&
+             tables.checkpoints_mark_removed)) &&
          database.Execute("DROP TABLE checkpoints_mark_removed_v2_old;");
 }
 
@@ -386,9 +403,9 @@ bool OrchardStorage::CreateSchema() {
   sql::Transaction transaction(&database_);
   return transaction.Begin() && database_.Execute(kCreateAccountMetaSql) &&
          CreatePoolDataTables(database_,
-                              TablesForPool(OrchardPool::kOrchard)) &&
+                              *TablesForPool(OrchardPool::kOrchard)) &&
          CreatePoolDataTables(database_,
-                              TablesForPool(OrchardPool::kIronwood)) &&
+                              *TablesForPool(OrchardPool::kIronwood)) &&
          transaction.Commit();
 }
 
@@ -420,7 +437,8 @@ bool OrchardStorage::UpdateSchema() {
     return false;
   }
 
-  if (!CreatePoolDataTables(database_, TablesForPool(OrchardPool::kIronwood))) {
+  if (!CreatePoolDataTables(database_,
+                            *TablesForPool(OrchardPool::kIronwood))) {
     return false;
   }
 
@@ -521,20 +539,20 @@ OrchardStorage::HandleChainReorg(const mojom::AccountIdPtr& account_id,
   }
 
   for (OrchardPool pool : {OrchardPool::kOrchard, OrchardPool::kIronwood}) {
-    const PoolTableNames tables = TablesForPool(pool);
+    const PoolTableNames& tables = *TablesForPool(pool);
 
     sql::Statement remove_from_spent_notes(PrepareStatement(
         database_,
         absl::StrFormat(
             "DELETE FROM %s WHERE spent_block_id > ? AND account_id = ?;",
-            tables.spent_notes.c_str())));
+            tables.spent_notes)));
     remove_from_spent_notes.BindInt64(0, reorg_block_id);
     remove_from_spent_notes.BindString(1, account_id->unique_key);
 
     sql::Statement remove_from_notes(PrepareStatement(
         database_,
         absl::StrFormat("DELETE FROM %s WHERE block_id > ? AND account_id = ?;",
-                        tables.notes.c_str())));
+                        tables.notes)));
     remove_from_notes.BindInt64(0, reorg_block_id);
     remove_from_notes.BindString(1, account_id->unique_key);
 
@@ -571,31 +589,31 @@ OrchardStorage::ResetAccountSyncState(
   CHECK(account_id);
 
   for (OrchardPool pool : {OrchardPool::kOrchard, OrchardPool::kIronwood}) {
-    const PoolTableNames tables = TablesForPool(pool);
+    const PoolTableNames& tables = *TablesForPool(pool);
 
     sql::Statement clear_cap_statement(PrepareStatement(
         database_, absl::StrFormat("DELETE FROM %s WHERE account_id = ?;",
-                                   tables.shard_tree_cap.c_str())));
+                                   tables.shard_tree_cap)));
     clear_cap_statement.BindString(0, account_id->unique_key);
 
     sql::Statement clear_shards_statement(PrepareStatement(
         database_, absl::StrFormat("DELETE FROM %s WHERE account_id = ?;",
-                                   tables.shard_tree.c_str())));
+                                   tables.shard_tree)));
     clear_shards_statement.BindString(0, account_id->unique_key);
 
     sql::Statement clear_discovered_notes(PrepareStatement(
-        database_, absl::StrFormat("DELETE FROM %s WHERE account_id = ?;",
-                                   tables.notes.c_str())));
+        database_,
+        absl::StrFormat("DELETE FROM %s WHERE account_id = ?;", tables.notes)));
     clear_discovered_notes.BindString(0, account_id->unique_key);
 
     sql::Statement clear_spent_notes(PrepareStatement(
         database_, absl::StrFormat("DELETE FROM %s WHERE account_id = ?;",
-                                   tables.spent_notes.c_str())));
+                                   tables.spent_notes)));
     clear_spent_notes.BindString(0, account_id->unique_key);
 
     sql::Statement clear_checkpoints_statement(PrepareStatement(
         database_, absl::StrFormat("DELETE FROM %s WHERE account_id = ?;",
-                                   tables.checkpoints.c_str())));
+                                   tables.checkpoints)));
     clear_checkpoints_statement.BindString(0, account_id->unique_key);
 
     if (!clear_cap_statement.Run() || !clear_shards_statement.Run() ||
@@ -646,12 +664,12 @@ OrchardStorage::GetNullifiers(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_note_spents(PrepareStatement(
       database_,
       absl::StrFormat(
           "SELECT spent_block_id, nullifier FROM %s WHERE account_id = ?;",
-          tables.spent_notes.c_str())));
+          tables.spent_notes)));
   resolve_note_spents.BindString(0, account_id->unique_key);
 
   std::vector<OrchardNoteSpend> result;
@@ -691,7 +709,7 @@ OrchardStorage::GetSpendableNotes(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_unspent_notes(PrepareStatement(
       database_,
       absl::StrFormat(
@@ -702,7 +720,7 @@ OrchardStorage::GetSpendableNotes(OrchardPool pool,
           "ON notes.nullifier = spent_notes.nullifier "
           "AND notes.account_id = spent_notes.account_id "
           "WHERE spent_notes.nullifier IS NULL AND notes.account_id = ?;",
-          tables.notes.c_str(), tables.spent_notes.c_str())));
+          tables.notes, tables.spent_notes)));
   resolve_unspent_notes.BindString(0, account_id->unique_key);
 
   std::vector<OrchardNote> result;
@@ -757,7 +775,7 @@ OrchardStorage::UpdateNotes(OrchardPool pool,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
 
   sql::Statement statement_populate_notes(PrepareStatement(
       database_,
@@ -765,7 +783,7 @@ OrchardStorage::UpdateNotes(OrchardPool pool,
           "INSERT INTO %s "
           "(account_id, amount, block_id, commitment_tree_position, "
           "nullifier, rho, rseed, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
-          tables.notes.c_str())));
+          tables.notes)));
 
   for (const auto& note : found_notes) {
     statement_populate_notes.Reset(true);
@@ -794,7 +812,7 @@ OrchardStorage::UpdateNotes(OrchardPool pool,
       database_,
       absl::StrFormat("INSERT INTO %s (account_id, spent_block_id, nullifier) "
                       "VALUES (?, ?, ?);",
-                      tables.spent_notes.c_str())));
+                      tables.spent_notes)));
 
   for (const auto& spent : found_nullifiers) {
     statement_populate_spent_notes.Reset(true);
@@ -836,11 +854,11 @@ OrchardStorage::GetLatestShardIndex(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_max_shard_id(PrepareStatement(
       database_,
       absl::StrFormat("SELECT MAX(shard_index) FROM %s WHERE account_id = ?;",
-                      tables.shard_tree.c_str())));
+                      tables.shard_tree)));
   resolve_max_shard_id.BindString(0, account_id->unique_key);
   if (!resolve_max_shard_id.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -872,11 +890,11 @@ OrchardStorage::GetCap(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_cap(PrepareStatement(
       database_,
       absl::StrFormat("SELECT cap_data FROM %s WHERE account_id = ?;",
-                      tables.shard_tree_cap.c_str())));
+                      tables.shard_tree_cap)));
   resolve_cap.BindString(0, account_id->unique_key);
 
   if (!resolve_cap.Step()) {
@@ -902,12 +920,12 @@ OrchardStorage::PutCap(OrchardPool pool,
   auto existing_cap = GetCap(pool, account_id);
   RETURN_IF_ERROR(existing_cap);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   if (!existing_cap.value()) {
     sql::Statement stmnt(PrepareStatement(
         database_,
         absl::StrFormat("INSERT INTO %s (account_id, cap_data) VALUES (?, ?);",
-                        tables.shard_tree_cap.c_str())));
+                        tables.shard_tree_cap)));
     stmnt.BindString(0, account_id->unique_key);
     stmnt.BindBlob(1, cap);
     if (!stmnt.Run()) {
@@ -918,7 +936,7 @@ OrchardStorage::PutCap(OrchardPool pool,
     sql::Statement stmnt(PrepareStatement(
         database_,
         absl::StrFormat("UPDATE %s SET cap_data = ? WHERE account_id = ?;",
-                        tables.shard_tree_cap.c_str())));
+                        tables.shard_tree_cap)));
     stmnt.BindBlob(0, cap);
     stmnt.BindString(1, account_id->unique_key);
     if (!stmnt.Run()) {
@@ -941,19 +959,22 @@ OrchardStorage::UpdateSubtreeRoots(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement statement_populate_roots(PrepareStatement(
       database_, absl::StrFormat("INSERT INTO %s "
                                  "(shard_index, subtree_end_height, "
                                  "root_hash, shard_data, account_id) "
                                  "VALUES (?, ?, ?, ?, ?);",
-                                 tables.shard_tree.c_str())));
+                                 tables.shard_tree)));
 
   sql::Statement statement_update_roots(PrepareStatement(
-      database_,
-      absl::StrFormat("UPDATE %s SET subtree_end_height = ?, root_hash = ? "
-                      "WHERE shard_index = ? AND account_id = ?;",
-                      tables.shard_tree.c_str())));
+      database_, absl::StrFormat(
+                     "UPDATE %s "
+                     "SET subtree_end_height = :subtree_end_height, root_hash "
+                     "= :root_hash "
+                     "WHERE "
+                     "shard_index = :shard_index and account_id = :account_id;",
+                     tables.shard_tree)));
 
   for (size_t i = 0; i < roots.size(); i++) {
     if (!roots[i] ||
@@ -998,12 +1019,12 @@ OrchardStorage::TruncateShards(OrchardPool pool,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement remove_shard_by_id(PrepareStatement(
       database_,
       absl::StrFormat(
           "DELETE FROM %s WHERE shard_index >= ? AND account_id = ?;",
-          tables.shard_tree.c_str())));
+          tables.shard_tree)));
   remove_shard_by_id.BindInt64(0, shard_index);
   remove_shard_by_id.BindString(1, account_id->unique_key);
 
@@ -1027,13 +1048,15 @@ OrchardStorage::PutShard(OrchardPool pool,
   ASSIGN_OR_RETURN(auto existing_shard,
                    GetShard(pool, account_id, shard.address));
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   if (existing_shard.has_value()) {
     sql::Statement statement_update_shard(PrepareStatement(
         database_,
-        absl::StrFormat("UPDATE %s SET root_hash = ?, shard_data = ? "
-                        "WHERE shard_index = ? AND account_id = ?;",
-                        tables.shard_tree.c_str())));
+        absl::StrFormat(
+            "UPDATE %s "
+            "SET root_hash = :root_hash, shard_data = :shard_data "
+            "WHERE shard_index = :shard_index AND account_id = :account_id;",
+            tables.shard_tree)));
     if (!shard.root_hash) {
       statement_update_shard.BindNull(0);
     } else {
@@ -1052,8 +1075,8 @@ OrchardStorage::PutShard(OrchardPool pool,
         database_,
         absl::StrFormat(
             "INSERT INTO %s (shard_index, root_hash, shard_data, account_id) "
-            "VALUES (?, ?, ?, ?);",
-            tables.shard_tree.c_str())));
+            "VALUES (:shard_index, :root_hash, :shard_data, :account_id);",
+            tables.shard_tree)));
     statement_put_shard.BindInt64(0, shard.address.index);
     if (!shard.root_hash) {
       statement_put_shard.BindNull(1);
@@ -1086,11 +1109,11 @@ OrchardStorage::GetShard(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_shard_statement(PrepareStatement(
       database_, absl::StrFormat("SELECT root_hash, shard_data FROM %s "
                                  "WHERE account_id = ? AND shard_index = ?;",
-                                 tables.shard_tree.c_str())));
+                                 tables.shard_tree)));
   resolve_shard_statement.BindString(0, account_id->unique_key);
   resolve_shard_statement.BindInt64(1, address.index);
 
@@ -1148,13 +1171,13 @@ OrchardStorage::GetShardRoots(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   std::vector<OrchardShardAddress> result;
   sql::Statement resolve_shards_statement(PrepareStatement(
       database_,
       absl::StrFormat("SELECT shard_index FROM %s WHERE account_id = ? "
                       "ORDER BY shard_index;",
-                      tables.shard_tree.c_str())));
+                      tables.shard_tree)));
   resolve_shards_statement.BindString(0, account_id->unique_key);
 
   while (resolve_shards_statement.Step()) {
@@ -1184,12 +1207,12 @@ OrchardStorage::AddCheckpoint(OrchardPool pool,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement extant_tree_state_statement(PrepareStatement(
       database_,
       absl::StrFormat(
           "SELECT position FROM %s WHERE checkpoint_id = ? AND account_id = ?;",
-          tables.checkpoints.c_str())));
+          tables.checkpoints)));
   extant_tree_state_statement.BindInt64(0, checkpoint_id);
   extant_tree_state_statement.BindString(1, account_id->unique_key);
 
@@ -1207,7 +1230,7 @@ OrchardStorage::AddCheckpoint(OrchardPool pool,
         database_,
         absl::StrFormat("INSERT INTO %s (account_id, checkpoint_id, position) "
                         "VALUES (?, ?, ?);",
-                        tables.checkpoints.c_str())));
+                        tables.checkpoints)));
     insert_checkpoint_statement.BindString(0, account_id->unique_key);
     insert_checkpoint_statement.BindInt64(1, checkpoint_id);
     if (checkpoint.tree_state_position) {
@@ -1226,7 +1249,7 @@ OrchardStorage::AddCheckpoint(OrchardPool pool,
         absl::StrFormat("INSERT INTO %s "
                         "(account_id, checkpoint_id, mark_removed_position) "
                         "VALUES (?, ?, ?);",
-                        tables.checkpoints_mark_removed.c_str())));
+                        tables.checkpoints_mark_removed)));
     for (const auto& mark : checkpoint.marks_removed) {
       insert_marks_removed_statement.Reset(true);
       insert_marks_removed_statement.BindString(0, account_id->unique_key);
@@ -1291,11 +1314,11 @@ base::expected<size_t, OrchardStorage::Error> OrchardStorage::CheckpointCount(
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_checkpoints_count(PrepareStatement(
       database_,
       absl::StrFormat("SELECT COUNT(*) FROM %s WHERE account_id = ?;",
-                      tables.checkpoints.c_str())));
+                      tables.checkpoints)));
   resolve_checkpoints_count.BindString(0, account_id->unique_key);
   if (!resolve_checkpoints_count.Step()) {
     return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1324,11 +1347,11 @@ OrchardStorage::MinCheckpointId(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_min_checkpoint_id(PrepareStatement(
       database_,
       absl::StrFormat("SELECT MIN(checkpoint_id) FROM %s WHERE account_id = ?;",
-                      tables.checkpoints.c_str())));
+                      tables.checkpoints)));
   resolve_min_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_min_checkpoint_id.Step()) {
@@ -1361,11 +1384,11 @@ OrchardStorage::MaxCheckpointId(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement resolve_max_checkpoint_id(PrepareStatement(
       database_,
       absl::StrFormat("SELECT MAX(checkpoint_id) FROM %s WHERE account_id = ?;",
-                      tables.checkpoints.c_str())));
+                      tables.checkpoints)));
   resolve_max_checkpoint_id.BindString(0, account_id->unique_key);
 
   if (!resolve_max_checkpoint_id.Step()) {
@@ -1399,12 +1422,12 @@ OrchardStorage::GetCheckpointAtDepth(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement get_checkpoint_at_depth_statement(PrepareStatement(
       database_,
       absl::StrFormat("SELECT checkpoint_id FROM %s WHERE account_id = ? "
                       "ORDER BY checkpoint_id DESC LIMIT 1 OFFSET ?;",
-                      tables.checkpoints.c_str())));
+                      tables.checkpoints)));
   get_checkpoint_at_depth_statement.BindString(0, account_id->unique_key);
   get_checkpoint_at_depth_statement.BindInt64(1, depth);
 
@@ -1439,11 +1462,11 @@ OrchardStorage::GetMarksRemoved(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement get_marks_removed_statement(PrepareStatement(
       database_, absl::StrFormat("SELECT mark_removed_position FROM %s "
                                  "WHERE checkpoint_id = ? AND account_id = ?;",
-                                 tables.checkpoints_mark_removed.c_str())));
+                                 tables.checkpoints_mark_removed)));
   get_marks_removed_statement.BindInt64(0, checkpoint_id);
   get_marks_removed_statement.BindString(1, account_id->unique_key);
 
@@ -1479,11 +1502,11 @@ OrchardStorage::GetCheckpoint(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement get_checkpoint_statement(PrepareStatement(
       database_, absl::StrFormat("SELECT position FROM %s "
                                  "WHERE checkpoint_id = ? AND account_id = ?;",
-                                 tables.checkpoints.c_str())));
+                                 tables.checkpoints)));
   get_checkpoint_statement.BindInt64(0, checkpoint_id);
   get_checkpoint_statement.BindString(1, account_id->unique_key);
   if (!get_checkpoint_statement.Step()) {
@@ -1503,7 +1526,7 @@ OrchardStorage::GetCheckpoint(OrchardPool pool,
   sql::Statement marks_removed_statement(PrepareStatement(
       database_, absl::StrFormat("SELECT mark_removed_position FROM %s "
                                  "WHERE checkpoint_id = ? AND account_id = ?;",
-                                 tables.checkpoints_mark_removed.c_str())));
+                                 tables.checkpoints_mark_removed)));
   marks_removed_statement.BindInt64(0, checkpoint_id);
   marks_removed_statement.BindString(1, account_id->unique_key);
 
@@ -1542,13 +1565,13 @@ OrchardStorage::GetCheckpoints(OrchardPool pool,
         Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement get_checkpoints_statement(PrepareStatement(
       database_,
       absl::StrFormat(
           "SELECT checkpoint_id, position FROM %s WHERE account_id = ? "
           "ORDER BY position LIMIT ?;",
-          tables.checkpoints.c_str())));
+          tables.checkpoints)));
   get_checkpoints_statement.BindString(0, account_id->unique_key);
   get_checkpoints_statement.BindInt64(1, limit);
 
@@ -1599,12 +1622,12 @@ OrchardStorage::GetMaxCheckpointedHeight(OrchardPool pool,
   }
 
   uint32_t max_checkpointed_height = chain_tip_height - min_confirmations - 1;
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement get_max_checkpointed_height(PrepareStatement(
       database_, absl::StrFormat("SELECT checkpoint_id FROM %s "
                                  "WHERE checkpoint_id <= ? AND account_id = ? "
                                  "ORDER BY checkpoint_id DESC LIMIT 1;",
-                                 tables.checkpoints.c_str())));
+                                 tables.checkpoints)));
   get_max_checkpointed_height.BindInt64(0, max_checkpointed_height);
   get_max_checkpointed_height.BindString(1, account_id->unique_key);
 
@@ -1641,12 +1664,12 @@ OrchardStorage::RemoveCheckpoint(OrchardPool pool,
     return base::ok(Result::kNone);
   }
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement remove_checkpoint_by_id(PrepareStatement(
       database_,
       absl::StrFormat(
           "DELETE FROM %s WHERE checkpoint_id = ? AND account_id = ?;",
-          tables.checkpoints.c_str())));
+          tables.checkpoints)));
   remove_checkpoint_by_id.BindInt64(0, checkpoint_id);
   remove_checkpoint_by_id.BindString(1, account_id->unique_key);
 
@@ -1667,12 +1690,12 @@ OrchardStorage::TruncateCheckpoints(OrchardPool pool,
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   CHECK(account_id);
 
-  const PoolTableNames tables = TablesForPool(pool);
+  const PoolTableNames& tables = *TablesForPool(pool);
   sql::Statement truncate_checkpoints(PrepareStatement(
       database_,
       absl::StrFormat(
           "DELETE FROM %s WHERE checkpoint_id >= ? AND account_id = ?;",
-          tables.checkpoints.c_str())));
+          tables.checkpoints)));
   truncate_checkpoints.BindInt64(0, checkpoint_id);
   truncate_checkpoints.BindString(1, account_id->unique_key);
 
