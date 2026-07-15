@@ -200,8 +200,8 @@ void PsstUiDelegateImpl::NotifyObserversOfTaskStatus(
     long progress,
     const std::vector<PolicyTask>& performed_tasks) {
   if (performed_tasks.empty() && progress == 100) {
-    observer_list_.Notify(&Observer::OnSetRequestStatus, std::string(),
-                          std::optional<std::string>(""));
+    observer_list_.Notify(&Observer::OnSetRequestStatus, /*uid=*/"",
+                          /*error_description=*/"");
     return;
   }
   for (const PolicyTask& task : performed_tasks) {
