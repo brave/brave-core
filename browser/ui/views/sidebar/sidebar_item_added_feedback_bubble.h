@@ -47,6 +47,7 @@ class SidebarItemAddedFeedbackBubble : public views::BubbleDialogDelegateView,
 
   // views::ViewObserver overrides:
   void OnViewBoundsChanged(View* observed_view) override;
+  void OnViewIsDeleting(View* observed_view) override;
 
  private:
   SidebarItemAddedFeedbackBubble(views::View* anchor_view,
