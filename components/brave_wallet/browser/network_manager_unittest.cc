@@ -678,33 +678,33 @@ TEST_F(NetworkManagerUnitTest, GetChain) {
   // Polkadot (mainnet: HD + import keyrings; testnet: HD + import keyrings)
   mojom::NetworkInfo polkadot_mainnet(
       mojom::kPolkadotMainnet, "Polkadot Mainnet",
-      {"https://polkadot.subscan.io/"}, {}, 0,
+      {"https://polkadot.subscan.io"}, {}, 0,
       {GURL("https://polkadot-mainnet.wallet.brave.com/")}, "DOT", "Polkadot",
       10, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
   mojom::NetworkInfo polkadot_mainnet_asset_hub(
       mojom::kPolkadotMainnetAssetHub, "Polkadot Asset Hub",
-      {"https://assethub-polkadot.subscan.io/"}, {}, 0,
+      {"https://assethub-polkadot.subscan.io"}, {}, 0,
       {GURL("https://polkadot-asset-hub.wallet.brave.com/")}, "DOT", "Polkadot",
       10, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotMainnet, mojom::KeyringId::kPolkadotImport});
   mojom::NetworkInfo polkadot_testnet(
       mojom::kPolkadotTestnet, "Polkadot Westend",
-      {"https://westend.subscan.io/"}, {}, 0,
+      {"https://westend.subscan.io"}, {}, 0,
       {GURL("https://polkadot-westend.wallet.brave.com/")}, "WND", "Westend",
       12, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotTestnet,
        mojom::KeyringId::kPolkadotImportTestnet});
   mojom::NetworkInfo polkadot_testnet_asset_hub(
       mojom::kPolkadotTestnetAssetHub, "Westend Asset Hub",
-      {"https://assethub-westend.subscan.io/"}, {}, 0,
+      {"https://assethub-westend.subscan.io"}, {}, 0,
       {GURL("https://westend-asset-hub.wallet.brave.com/")}, "WND", "Westend",
       12, mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotTestnet,
        mojom::KeyringId::kPolkadotImportTestnet});
   mojom::NetworkInfo polkadot_paseo_asset_hub(
       mojom::kPolkadotPaseoAssetHub, "Paseo Asset Hub",
-      {"https://assethub-paseo.subscan.io/"}, {}, 0,
+      {"https://assethub-paseo.subscan.io"}, {}, 0,
       {GURL("https://paseo-asset-hub.wallet.brave.com/")}, "PAS", "Paseo", 10,
       mojom::CoinType::DOT,
       {mojom::KeyringId::kPolkadotTestnet,

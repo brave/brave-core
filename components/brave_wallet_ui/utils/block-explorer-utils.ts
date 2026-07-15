@@ -56,6 +56,13 @@ export const buildExplorerUrl = (
     network.chainId === BraveWallet.CARDANO_MAINNET
     || network.chainId === BraveWallet.CARDANO_TESTNET
 
+  const isPolkadotNet =
+    network.chainId === BraveWallet.POLKADOT_MAINNET
+    || network.chainId === BraveWallet.POLKADOT_MAINNET_ASSET_HUB
+    || network.chainId === BraveWallet.POLKADOT_TESTNET
+    || network.chainId === BraveWallet.POLKADOT_TESTNET_ASSET_HUB
+    || network.chainId === BraveWallet.POLKADOT_PASEO_ASSET_HUB
+
   if (isFileCoinNet) {
     return `${explorerURL}?cid=${value}`
   }
@@ -74,6 +81,18 @@ export const buildExplorerUrl = (
 
   if (isCardanoNet) {
     return `${explorerURL}/${type}/${value}`
+  }
+
+  if (isPolkadotNet) {
+    // Subscan uses /account/<ss58> for addresses and /extrinsic/<hash> for
+    // transactions, rather than the /address/ and /tx/ paths used elsewhere.
+    if (type === 'address') {
+      return `${explorerURL}/account/${value}`
+    }
+    if (type === 'tx') {
+      return `${explorerURL}/extrinsic/${value}`
+    }
+    return `${explorerURL}/${value}`
   }
 
   if (isSolanaMainNet && type === 'token') {

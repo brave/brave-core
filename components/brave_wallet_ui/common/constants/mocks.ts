@@ -232,6 +232,20 @@ export const mockZecTestnetNetwork: BraveWallet.NetworkInfo = {
   supportedKeyrings: [BraveWallet.KeyringId.kZCashTestnet],
 }
 
+export const mockPolkadotMainnetNetwork: BraveWallet.NetworkInfo = {
+  chainId: BraveWallet.POLKADOT_MAINNET,
+  chainName: 'Polkadot Mainnet',
+  activeRpcEndpointIndex: 0,
+  rpcEndpoints: [{ url: 'https://polkadot-mainnet.wallet.brave.com/' }],
+  blockExplorerUrls: ['https://polkadot.subscan.io'],
+  symbol: 'DOT',
+  symbolName: 'Polkadot',
+  decimals: 10,
+  iconUrls: [],
+  coin: BraveWallet.CoinType.DOT,
+  supportedKeyrings: [BraveWallet.KeyringId.kPolkadotMainnet],
+}
+
 export const mockAccount: BraveWallet.AccountInfo = {
   name: 'mockAccountName',
   address: '0x00c0f72E601C31DEb7890612cB92Ac0Fb7090EB0',
