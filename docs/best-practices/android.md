@@ -448,6 +448,62 @@ production APK size by preventing code shrinking.
 
 ---
 
+<a id="AND-024"></a>
+
+## ✅ Keep Bytecode-Redirected Constructors Free of Class Static State
+
+**When bytecode rewriting redirects an allocation to a subclass or replacement
+type, that type's constructor must not read its own static state.**
+
+For example, an upstream class can appear to construct only itself in source:
+
+```java
+// Upstream source
+private static final UpstreamClass INSTANCE = new UpstreamClass();
+
+// Rewritten bytecode, conceptually
+private static final UpstreamClass INSTANCE = new BraveClass();
+```
+
+If a read of a `BraveClass` static field is what first triggers `BraveClass`
+initialization, Java first initializes `UpstreamClass`. The rewritten allocation
+in `UpstreamClass` can then re-enter the `BraveClass` constructor before
+`BraveClass`'s static fields have initialized.
+
+```java
+// ❌ WRONG - a redirected constructor can run before sEntries is initialized
+class BraveClass extends UpstreamClass {
+    private static final List<Entry> sEntries = List.of(new Entry());
+
+    BraveClass() {
+        Registry.register(sEntries);
+    }
+}
+```
+
+```java
+// ✅ CORRECT - registration runs after sEntries is initialized
+class BraveClass extends UpstreamClass {
+    private static final List<Entry> sEntries = List.of(new Entry());
+
+    static {
+        Registry.register(sEntries);
+    }
+
+    BraveClass() {}
+}
+```
+
+Java runs static initialization once in source order. The static block is not
+lazy: place it after the fields it consumes so they initialize before
+registration runs. Keep constructors on this path free of reads from their own
+class-initialized static state.
+
+Test the static-field-first path in an isolated class loader or fresh process
+when an earlier test could initialize either class.
+
+---
+
 <a id="AND-025"></a>
 
 ## ✅ Use `@VisibleForTesting` for Package-Private Test Accessors
