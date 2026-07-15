@@ -40,83 +40,32 @@
 
 .buttonMenu {
   --leo-menu-max-height: calc(100svh - 136px);
-  leo-menu-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--leo-spacing-l);
-    padding: var(--leo-spacing-s) var(--leo-spacing-m);
-    max-width: 270px;
-  }
 }
-
-.menuFooterIconAndText {
-  --leo-icon-size: 20px;
-  --leo-icon-color: var(--leo-color-icon-default);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: var(--leo-spacing-m);
-  font: var(--leo-font-default-regular);
-}
-
-.menuFooter {
-  display: flex;
-  width: 100%;
-  padding: var(--leo-spacing-s);
-  background-color: var(--leo-color-container-background);
-  position: absolute;
-  bottom: 0;
-  inset-inline: 0;
-  background-color: var(--leo-color-container-background);
-  border-radius: 0px 0px 8px 8px;
-  border: 1px solid var(--leo-color-divider-subtle);
-  leo-menu-item {
-    width: 100%;
-    justify-content: space-between;
-    border-radius: var(--leo-radius-s);
-    padding: var(--leo-spacing-m);
-    gap: var(--leo-spacing-m);
-    &:hover {
-      background-color: var(--leo-color-container-highlight);
-    }
-  }
-}
-
-.menuFooterExtraPadding {
-  leo-menu-item {
-    padding: var(--leo-spacing-m) var(--leo-spacing-m) var(--leo-spacing-m)
-      var(--leo-spacing-l);
-  }
-}
-
-.footerGap {
-  min-height: 48px;
-}
-
-.alert {
-  --leo-alert-padding: var(--leo-spacing-l);
-  margin: var(--leo-spacing-s) var(--leo-spacing-s) 0 var(--leo-spacing-s);
-  max-width: 270px;
-}
-
-.alertText {
-  font: var(--leo-font-small-regular);
-}
-
-.icons {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: var(--leo-spacing-s);
-}
-
-
-/* New model-selector building blocks (storybook / upcoming UI). Live
- * index.tsx still uses the footer styles above until integration. */
 
 .menuBody {
+  --menu-body-max-height: min(472px, calc(100svh - 160px));
+  --vendor-button-size: 32px;
+  // Detailed model row: 32px icon / 40px name+subtitle + item padding.
+  --model-row-height: 48px;
+  // Search + filter toolbar: padding + tiny control + bottom border.
+  --search-filters-height: calc(2 * var(--leo-spacing-s) + 28px + 1px);
+  --vendor-rail-height: calc(
+    2 * var(--leo-spacing-s) + var(--vendor-rail-count, 0) *
+      var(--vendor-button-size) + max(0, var(--vendor-rail-count, 0) - 1) *
+      var(--leo-spacing-s)
+  );
+  --pinned-list-height: calc(
+    var(--search-filters-height) + 2 * var(--leo-spacing-s) +
+      var(--pinned-item-count, 0) * var(--model-row-height) +
+      max(0, var(--pinned-item-count, 0) - 1) * var(--leo-spacing-s)
+  );
+  // Grow with the pinned list (and never shorter than the vendor rail),
+  // capped at the menu max so switching vendors / filters doesn't resize.
+  --menu-body-height: min(
+    max(var(--vendor-rail-height), var(--pinned-list-height)),
+    var(--menu-body-max-height)
+  );
+
   display: flex;
   flex-direction: row;
   align-items: stretch;
@@ -124,11 +73,13 @@
   width: 320px;
   min-width: 320px;
   max-width: 320px;
-  height: 360px;
+  height: var(--menu-body-height);
+  min-height: var(--menu-body-height);
+  max-height: var(--menu-body-height);
   overflow: hidden;
-  border: 1px solid var(--leo-color-divider-subtle);
-  border-radius: var(--leo-radius-m);
-  background: var(--leo-color-container-background);
+  // Leo's popup sizes to its content. Without containment, a row's
+  // min-content (e.g. after the "Default" label appears) can widen it.
+  contain: inline-size;
 }
 
 .vendorRail {
@@ -289,6 +240,9 @@
 
   // Scope to the model list only so nested menus (filter / item options)
   // keep Nala's default menu-item sizing.
+  // Leo's built-in item hover only targets direct/slotted children of
+  // .leo-menu-popup (or items in leo-menu-section) — our rows are nested
+  // under .menuBody, so restore the Nala hover highlight here.
   leo-menu-item {
     display: flex;
     align-items: center;
@@ -319,4 +273,22 @@
   text-align: center;
   font: var(--leo-font-small-regular);
   color: var(--leo-color-text-tertiary);
+}
+
+.alert {
+  --leo-alert-padding: var(--leo-spacing-l);
+  margin: var(--leo-spacing-s) var(--leo-spacing-s) 0 var(--leo-spacing-s);
+  max-width: 320px;
+}
+
+.alertText {
+  font: var(--leo-font-small-regular);
+}
+
+.icons {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: var(--leo-spacing-s);
 }

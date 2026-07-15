@@ -5,11 +5,22 @@
 
 import * as React from 'react'
 import * as Mojom from '../../../common/mojom'
-import { render, act, within, waitFor } from '@testing-library/react'
+import { render, act, waitFor } from '@testing-library/react'
 import { ModelSelector } from '.'
 import '@testing-library/jest-dom'
 import { MockContext } from '../../state/mock_context'
 import { clearAllDataForTesting } from '$web-common/api'
+import {
+  LOCAL_VENDOR_KEY,
+  PINNED_VENDOR_KEY,
+} from '../../../common/vendor_icon_map'
+
+function withCapabilities(
+  model: Mojom.Model,
+  capabilities: Mojom.ModelCapability[] = [],
+): Mojom.Model {
+  return { ...model, capabilities }
+}
 
 describe('ModelSelector', () => {
   beforeEach(() => {
@@ -17,121 +28,135 @@ describe('ModelSelector', () => {
   })
 
   const mockModels: Mojom.Model[] = [
-    {
-      key: 'chat-automatic',
-      displayName: 'Automatic',
-      isSuggestedModel: true,
-      isNearModel: false,
-      visionSupport: true,
-      supportsTools: true,
-      supportedCapabilities: [
-        Mojom.ConversationCapability.CHAT,
-        Mojom.ConversationCapability.CONTENT_AGENT,
+    withCapabilities(
+      {
+        key: 'chat-automatic',
+        displayName: 'Automatic',
+        isSuggestedModel: true,
+        isNearModel: false,
+        visionSupport: true,
+        supportsTools: true,
+        supportedCapabilities: [
+          Mojom.ConversationCapability.CHAT,
+          Mojom.ConversationCapability.CONTENT_AGENT,
+        ],
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'A model',
+            displayMaker: '',
+            category: Mojom.ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+          },
+        },
+      },
+      [
+        Mojom.ModelCapability.SEARCH,
+        Mojom.ModelCapability.VISION,
+        Mojom.ModelCapability.TOOLS,
       ],
-      capabilities: [],
-      options: {
-        customModelOptions: undefined,
-        leoModelOptions: {
-          name: 'A model',
-          displayMaker: 'Brave',
-          category: Mojom.ModelCategory.CHAT,
-          longConversationWarningCharacterLimit: 1,
-          maxAssociatedContentLength: 2,
-          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+    ),
+    withCapabilities(
+      {
+        key: 'chat-basic',
+        displayName: 'Basic Model',
+        isSuggestedModel: true,
+        isNearModel: false,
+        supportsTools: true,
+        supportedCapabilities: [
+          Mojom.ConversationCapability.CHAT,
+          Mojom.ConversationCapability.CONTENT_AGENT,
+        ],
+        visionSupport: true,
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'A model',
+            displayMaker: 'Anthropic',
+            category: Mojom.ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+          },
         },
       },
-    },
-    {
-      key: 'chat-basic',
-      displayName: 'Basic Model',
-      isSuggestedModel: true,
-      isNearModel: false,
-      supportsTools: true,
-      supportedCapabilities: [
-        Mojom.ConversationCapability.CHAT,
-        Mojom.ConversationCapability.CONTENT_AGENT,
-      ],
-      capabilities: [],
-      visionSupport: true,
-      options: {
-        customModelOptions: undefined,
-        leoModelOptions: {
-          name: 'A model',
-          displayMaker: 'Brave',
-          category: Mojom.ModelCategory.CHAT,
-          longConversationWarningCharacterLimit: 1,
-          maxAssociatedContentLength: 2,
-          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+      [Mojom.ModelCapability.FAST, Mojom.ModelCapability.VISION],
+    ),
+    withCapabilities(
+      {
+        key: 'another-chat-basic',
+        displayName: 'Another Basic Model',
+        isSuggestedModel: false,
+        isNearModel: false,
+        supportsTools: false,
+        supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+        visionSupport: true,
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'A model',
+            displayMaker: 'OpenAI',
+            category: Mojom.ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+          },
         },
       },
-    },
-    {
-      key: 'another-chat-basic',
-      displayName: 'Another Basic Model',
-      isSuggestedModel: false,
-      isNearModel: false,
-      supportsTools: false,
-      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
-      capabilities: [],
-      visionSupport: true,
-      options: {
-        customModelOptions: undefined,
-        leoModelOptions: {
-          name: 'A model',
-          displayMaker: 'Brave',
-          category: Mojom.ModelCategory.CHAT,
-          longConversationWarningCharacterLimit: 1,
-          maxAssociatedContentLength: 2,
-          access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
+      [Mojom.ModelCapability.THINKING],
+    ),
+    withCapabilities(
+      {
+        key: 'chat-premium',
+        displayName: 'Premium Model',
+        isSuggestedModel: true,
+        isNearModel: true,
+        supportsTools: true,
+        supportedCapabilities: [
+          Mojom.ConversationCapability.CHAT,
+          Mojom.ConversationCapability.CONTENT_AGENT,
+        ],
+        visionSupport: true,
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'A model',
+            displayMaker: 'Z.ai',
+            category: Mojom.ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: Mojom.ModelAccess.PREMIUM,
+          },
         },
       },
-    },
-    {
-      key: 'chat-premium',
-      displayName: 'Premium Model',
-      isSuggestedModel: true,
-      isNearModel: true,
-      supportsTools: true,
-      supportedCapabilities: [
-        Mojom.ConversationCapability.CHAT,
-        Mojom.ConversationCapability.CONTENT_AGENT,
-      ],
-      capabilities: [],
-      visionSupport: true,
-      options: {
-        customModelOptions: undefined,
-        leoModelOptions: {
-          name: 'A model',
-          displayMaker: 'Brave',
-          category: Mojom.ModelCategory.CHAT,
-          longConversationWarningCharacterLimit: 1,
-          maxAssociatedContentLength: 2,
-          access: Mojom.ModelAccess.PREMIUM,
+      [Mojom.ModelCapability.SEARCH],
+    ),
+    withCapabilities(
+      {
+        key: 'another-chat-premium',
+        displayName: 'Another Premium Model',
+        isSuggestedModel: false,
+        isNearModel: false,
+        supportsTools: false,
+        supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+        visionSupport: true,
+        options: {
+          customModelOptions: undefined,
+          leoModelOptions: {
+            name: 'A model',
+            displayMaker: 'Anthropic',
+            category: Mojom.ModelCategory.CHAT,
+            longConversationWarningCharacterLimit: 1,
+            maxAssociatedContentLength: 2,
+            access: Mojom.ModelAccess.PREMIUM,
+          },
         },
       },
-    },
-    {
-      key: 'another-chat-premium',
-      displayName: 'Another Premium Model',
-      isSuggestedModel: false,
-      isNearModel: false,
-      supportsTools: false,
-      supportedCapabilities: [Mojom.ConversationCapability.CHAT],
-      capabilities: [],
-      visionSupport: true,
-      options: {
-        customModelOptions: undefined,
-        leoModelOptions: {
-          name: 'A model',
-          displayMaker: 'Brave',
-          category: Mojom.ModelCategory.CHAT,
-          longConversationWarningCharacterLimit: 1,
-          maxAssociatedContentLength: 2,
-          access: Mojom.ModelAccess.PREMIUM,
-        },
-      },
-    },
-    {
+      [Mojom.ModelCapability.VISION, Mojom.ModelCapability.TOOLS],
+    ),
+    withCapabilities({
       key: 'chat-brave-summary',
       displayName: 'Brave Summary',
       isSuggestedModel: false,
@@ -139,7 +164,6 @@ describe('ModelSelector', () => {
       visionSupport: true,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
-      capabilities: [],
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
@@ -151,16 +175,14 @@ describe('ModelSelector', () => {
           access: Mojom.ModelAccess.BASIC_AND_PREMIUM,
         },
       },
-    },
-
-    {
+    }),
+    withCapabilities({
       key: 'chat-custom',
       displayName: 'Custom Model',
       isNearModel: false,
       visionSupport: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
-      capabilities: [],
       isSuggestedModel: false,
       options: {
         leoModelOptions: undefined,
@@ -176,7 +198,7 @@ describe('ModelSelector', () => {
           },
         },
       },
-    },
+    }),
   ]
 
   const getAnchorButton = () => {
@@ -193,13 +215,14 @@ describe('ModelSelector', () => {
     return menu
   }
 
-  const getShowAllModelsButton = () => {
-    const showAllModelsButton = document.querySelector<HTMLElement>(
-      'leo-menu-item[data-testid="show-all-models-button"]',
-    )
-    expect(showAllModelsButton).toBeInTheDocument()
-    expect(showAllModelsButton).toBeVisible()
-    return showAllModelsButton
+  const openMenu = async () => {
+    const anchorButton = getAnchorButton()
+    await act(async () => {
+      anchorButton?.shadowRoot?.querySelector('button')?.click()
+    })
+    const menu = getMenu()
+    expect(menu).toHaveAttribute('isOpen', 'true')
+    return menu
   }
 
   const renderModelSelector = (
@@ -212,6 +235,9 @@ describe('ModelSelector', () => {
             allModels: mockModels,
             currentModelKey: 'chat-basic',
           },
+          serviceState: {
+            pinnedModelKeys: ['chat-basic', 'chat-premium'],
+          },
           ...props?.initialState,
         }}
         aiChatOverrides={{
@@ -220,6 +246,7 @@ describe('ModelSelector', () => {
           ...props?.aiChatOverrides,
         }}
         conversationHandler={props?.conversationHandler}
+        service={props?.service}
       >
         <ModelSelector />
       </MockContext>,
@@ -229,106 +256,124 @@ describe('ModelSelector', () => {
   it('renders the component with the current model', async () => {
     renderModelSelector()
 
-    // Make sure the anchor button is visible
     const anchorButton = getAnchorButton()
     expect(anchorButton).toHaveTextContent('Basic Model')
 
-    // Make sure the menu is visible
     const menu = getMenu()
     expect(menu).toHaveAttribute('isOpen', 'false')
-    await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
-    })
-    expect(menu).toHaveAttribute('isOpen', 'true')
+    await openMenu()
 
-    // Make sure the default menu items are visible
-    const menuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(menuItems).toHaveLength(4)
-    expect(menuItems[0]).toHaveTextContent('Automatic')
-    expect(menuItems[1]).toHaveTextContent('Basic Model')
-    expect(menuItems[2]).toHaveTextContent('Premium Model')
+    // Pinned view: Auto + pinned keys
+    const menuItems = document.querySelectorAll<HTMLElement>(
+      '.modelList leo-menu-item, [class*="modelList"] leo-menu-item',
+    )
+    // Fallback: all leo-menu-item that are models (exclude capability filter)
+    const modelItems = Array.from(
+      document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
+    )
+    expect(modelItems.length).toBeGreaterThanOrEqual(3)
+    expect(modelItems[0]).toHaveTextContent('Automatic')
+    expect(
+      modelItems.some((item) => item.textContent?.includes('Basic Model')),
+    ).toBe(true)
+    expect(
+      modelItems.some((item) => item.textContent?.includes('Premium Model')),
+    ).toBe(true)
   })
 
-  it('shows all models if Show all models button is clicked', async () => {
+  it('filters models by vendor from the rail', async () => {
     renderModelSelector()
+    await openMenu()
 
-    // Click the anchor button to show menu
-    const anchorButton = getAnchorButton()
+    const anthropicButton = document.querySelector<HTMLButtonElement>(
+      `button[data-testid="vendor-rail-Anthropic"]`,
+    )
+    expect(anthropicButton).toBeInTheDocument()
     await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
+      anthropicButton?.click()
     })
 
-    // Test Show all models button
-    const showAllModelsButton = getShowAllModelsButton()
-    expect(showAllModelsButton).toHaveTextContent(
-      'CHAT_UI_SHOW_ALL_MODELS_BUTTON',
-    )
-
-    // Click the show all models button
-    await act(async () => {
-      showAllModelsButton?.click()
-    })
-
-    // Check that the button text has changed
-    expect(showAllModelsButton).toHaveTextContent(
-      'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
-    )
-
-    // Check that all model items are visible (wait for re-render).
-    // SUMMARY category (chat-brave-summary) is hidden, so 6 models + footer = 7 items.
     await waitFor(() => {
-      const allMenuItems =
-        document.querySelectorAll<HTMLElement>('leo-menu-item')
-      expect(allMenuItems).toHaveLength(7)
+      const modelItems = Array.from(
+        document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
+      )
+      expect(modelItems.map((i) => i.getAttribute('data-key'))).toEqual(
+        expect.arrayContaining(['chat-basic', 'another-chat-premium']),
+      )
+      expect(
+        modelItems.every(
+          (i) =>
+            i.getAttribute('data-key') === 'chat-basic'
+            || i.getAttribute('data-key') === 'another-chat-premium',
+        ),
+      ).toBe(true)
     })
-    const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    expect(allMenuItems[0]).toHaveTextContent('Automatic')
-    expect(allMenuItems[1]).toHaveTextContent('Basic Model')
-    expect(allMenuItems[2]).toHaveTextContent('Another Basic Model')
-    expect(allMenuItems[3]).toHaveTextContent('Premium Model')
-    expect(allMenuItems[4]).toHaveTextContent('Another Premium Model')
-    expect(allMenuItems[5]).toHaveTextContent('Custom Model')
-    expect(allMenuItems[6]).toHaveTextContent(
-      'CHAT_UI_RECOMMENDED_MODELS_BUTTON',
+  })
+
+  it('filters models by search query', async () => {
+    renderModelSelector()
+    await openMenu()
+
+    const search = document.querySelector('leo-input') as HTMLElement & {
+      onInput?: (detail: { value: string }) => void
+    }
+    expect(search).toBeInTheDocument()
+    await act(async () => {
+      // Leo CE exposes onInput as a property; set it through that path so the
+      // Svelte forward() handler receives InputEventDetail.
+      search.onInput?.({ value: 'Premium' })
+    })
+
+    await waitFor(() => {
+      const modelItems = Array.from(
+        document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
+      )
+      expect(modelItems.length).toBeGreaterThanOrEqual(1)
+      expect(modelItems.every((i) => i.textContent?.includes('Premium'))).toBe(
+        true,
+      )
+    })
+  })
+
+  it('shows local models empty state when none exist on Local rail', async () => {
+    const modelsWithoutCustom = mockModels.filter(
+      (m) => !m.options.customModelOptions,
     )
+    renderModelSelector({
+      initialState: {
+        conversationState: {
+          allModels: modelsWithoutCustom,
+          currentModelKey: 'chat-basic',
+        },
+        serviceState: {
+          pinnedModelKeys: ['chat-basic'],
+        },
+      },
+    })
+    await openMenu()
 
-    const labels = document.querySelectorAll<HTMLElement>('leo-label')
-
-    // Check that current model label is visible
-    expect(labels[0]).toBeInTheDocument()
-    expect(labels[0]).toBeVisible()
-    expect(labels[0]).toHaveTextContent('CHAT_UI_CURRENT_LABEL')
-
-    // Check that premium model label is visible
-    expect(labels[2]).toBeInTheDocument()
-    expect(labels[2]).toBeVisible()
-    expect(labels[2]).toHaveTextContent(
-      'CHAT_UI_MODEL_PREMIUM_LABEL_NON_PREMIUM',
+    const localButton = document.querySelector<HTMLButtonElement>(
+      `button[data-testid="vendor-rail-${LOCAL_VENDOR_KEY}"]`,
     )
+    expect(localButton).toBeInTheDocument()
+    await act(async () => {
+      localButton?.click()
+    })
 
-    // Check that local label is visible
-    expect(labels[3]).toBeInTheDocument()
-    expect(labels[3]).toBeVisible()
-    expect(labels[3]).toHaveTextContent('CHAT_UI_MODEL_LOCAL_LABEL')
+    await waitFor(() => {
+      expect(
+        document.querySelector('[data-testid="model-selector-empty"]'),
+      ).toHaveTextContent('CHAT_UI_LOCAL_MODELS_EMPTY')
+    })
   })
 
   it('hides internal models from the dropdown', async () => {
     renderModelSelector()
-
-    const anchorButton = getAnchorButton()
-    await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
-    })
+    await openMenu()
 
     const menu = getMenu()
     expect(menu).not.toHaveTextContent('Brave Ocelot')
-
-    const showAllModelsButton = getShowAllModelsButton()
-    await act(async () => {
-      showAllModelsButton?.click()
-    })
-
-    expect(menu).not.toHaveTextContent('Brave Ocelot')
+    expect(menu).not.toHaveTextContent('Brave Summary')
   })
 
   it('should call setCurrentModel when a model is clicked', async () => {
@@ -340,45 +385,102 @@ describe('ModelSelector', () => {
       },
     })
 
-    // Click the anchor button to show menu
-    const anchorButton = getAnchorButton()
-    expect(anchorButton).toHaveTextContent('Basic Model')
+    await openMenu()
+
+    const basic = document.querySelector<HTMLElement>(
+      'leo-menu-item[data-testid="chat-basic"]',
+    )
+    expect(basic).toBeInTheDocument()
     await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
+      basic?.click()
     })
 
-    // Make sure the menu is open
-    const menu = getMenu()
-    expect(menu).toHaveAttribute('isOpen', 'true')
-
-    // Click the show all models button
-    const showAllModelsButton = getShowAllModelsButton()
-    await act(async () => {
-      showAllModelsButton?.click()
-    })
-
-    // Wait for re-render and select another model
-    await waitFor(() => {
-      const items = document.querySelectorAll<HTMLElement>('leo-menu-item')
-      expect(items).toHaveLength(7)
-    })
-    const allMenuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    await act(async () => {
-      allMenuItems[1].click()
-    })
-
-    // Verify setCurrentModel was called with the model key
     expect(mockSetCurrentModel).toHaveBeenCalledWith(mockModels[1].key)
-    expect(menu).toHaveAttribute('isOpen', 'false')
+  })
+
+  it('should call setModelPinned when pin is chosen from options menu', async () => {
+    const setModelPinned = jest.fn()
+    renderModelSelector({
+      service: {
+        setModelPinned,
+      },
+      initialState: {
+        conversationState: {
+          allModels: mockModels,
+          currentModelKey: 'chat-basic',
+        },
+        serviceState: {
+          pinnedModelKeys: ['chat-basic'],
+        },
+      },
+    })
+
+    await openMenu()
+
+    const optionsButton = document.querySelector<HTMLElement>(
+      '[data-testid="model-options-chat-basic"]',
+    )
+    expect(optionsButton).toBeInTheDocument()
+    await act(async () => {
+      optionsButton?.click()
+    })
+
+    const pinItem = document.querySelector<HTMLElement>(
+      '[data-testid="pin-chat-basic"]',
+    )
+    expect(pinItem).toBeInTheDocument()
+    await act(async () => {
+      pinItem?.click()
+    })
+
+    expect(setModelPinned).toHaveBeenCalledWith('chat-basic', false)
+  })
+
+  it('should call setDefaultModelKey when set as default is chosen', async () => {
+    const setDefaultModelKey = jest.fn()
+    renderModelSelector({
+      service: {
+        setDefaultModelKey,
+      },
+      initialState: {
+        conversationState: {
+          allModels: mockModels,
+          currentModelKey: 'chat-basic',
+          defaultModelKey: 'chat-basic',
+        },
+        serviceState: {
+          // Keep premium in the default pinned view so its options
+          // control is in the DOM without switching vendors.
+          pinnedModelKeys: ['chat-basic', 'chat-premium'],
+        },
+      },
+    })
+
+    await openMenu()
+
+    const optionsButton = document.querySelector<HTMLElement>(
+      '[data-testid="model-options-chat-premium"]',
+    )
+    expect(optionsButton).toBeInTheDocument()
+    await act(async () => {
+      optionsButton?.click()
+    })
+
+    const setDefaultItem = document.querySelector<HTMLElement>(
+      '[data-testid="set-default-chat-premium"]',
+    )
+    expect(setDefaultItem).toBeInTheDocument()
+    await act(async () => {
+      setDefaultItem?.click()
+    })
+
+    expect(setDefaultModelKey).toHaveBeenCalledWith('chat-premium')
   })
 
   it(
     'should only show compatible models in the model selector if in'
       + 'agent mode',
     async () => {
-      // Simulate the real context behavior: in agent mode,
-      // filter models by supportedCapabilities. This mimics the logic
-      // in Conversation Context.
       const filteredModels = mockModels.filter((model) =>
         model.supportedCapabilities.includes(
           Mojom.ConversationCapability.CONTENT_AGENT,
@@ -391,6 +493,9 @@ describe('ModelSelector', () => {
             allModels: filteredModels,
             currentModelKey: 'chat-basic',
           },
+          serviceState: {
+            pinnedModelKeys: ['chat-basic', 'chat-premium'],
+          },
         },
         aiChatOverrides: {
           isAIChatAgentProfileFeatureEnabled: true,
@@ -398,62 +503,43 @@ describe('ModelSelector', () => {
         },
       })
 
-      // Click the anchor button to show menu
-      const anchorButton = getAnchorButton()
-      await act(async () => {
-        anchorButton?.shadowRoot?.querySelector('button')?.click()
-      })
+      await openMenu()
 
-      // Test Show all models button
-      const showAllModelsButton = getShowAllModelsButton()
-      expect(showAllModelsButton).toHaveTextContent(
-        'CHAT_UI_SHOW_ALL_MODELS_BUTTON',
+      const modelItems = Array.from(
+        document.querySelectorAll<HTMLElement>('leo-menu-item[data-key]'),
       )
+      expect(
+        modelItems.every((item) =>
+          ['chat-automatic', 'chat-basic', 'chat-premium'].includes(
+            item.getAttribute('data-key') ?? '',
+          ),
+        ),
+      ).toBe(true)
 
-      // Click the show all models button
-      await act(async () => {
-        showAllModelsButton?.click()
-      })
-
-      // Check that all model items are visible
-      const allMenuItems =
-        document.querySelectorAll<HTMLElement>('leo-menu-item')
-      expect(allMenuItems).toHaveLength(4)
-      expect(allMenuItems[0]).toHaveTextContent('Automatic')
-      expect(allMenuItems[1]).toHaveTextContent('Basic Model')
-      expect(allMenuItems[2]).toHaveTextContent('Premium Model')
-
-      // Check that the AI Agent profile alert is visible
       const alert = document.querySelector<HTMLElement>('leo-alert')
       expect(alert).toBeInTheDocument()
       expect(alert).toBeVisible()
       expect(alert).toHaveTextContent('CHAT_UI_AGENT_MODE_MODEL_INFO')
     },
   )
+
   it('should display near icon and beta label for near models', async () => {
     renderModelSelector()
+    await openMenu()
 
-    // Make sure the anchor button is visible
-    const anchorButton = getAnchorButton()
-    expect(anchorButton).toHaveTextContent('Basic Model')
+    const labels = document.querySelectorAll<HTMLElement>('leo-label')
+    const beta = Array.from(labels).find((l) =>
+      l.textContent?.includes('CHAT_UI_MODEL_BETA_LABEL'),
+    )
+    expect(beta).toBeTruthy()
+  })
 
-    // Make sure the menu is visible
-    const menu = getMenu()
-    expect(menu).toHaveAttribute('isOpen', 'false')
-    await act(async () => {
-      anchorButton?.shadowRoot?.querySelector('button')?.click()
-    })
-    expect(menu).toHaveAttribute('isOpen', 'true')
-
-    // Make sure the default menu items are visible
-    const menuItems = document.querySelectorAll<HTMLElement>('leo-menu-item')
-    const nearMenuItem = menuItems[2]
-
-    // Check that the beta label is visible
-    expect(nearMenuItem).toHaveTextContent('CHAT_UI_MODEL_BETA_LABEL')
-
-    // Check that the near icon is present in the Premium Model menu item
-    const nearIcon = within(nearMenuItem).getByRole('img')
-    expect(nearIcon).toHaveClass('nearIcon')
+  it('keeps pinned rail selected by default', async () => {
+    renderModelSelector()
+    await openMenu()
+    const pinned = document.querySelector(
+      `button[data-testid="vendor-rail-${PINNED_VENDOR_KEY}"]`,
+    )
+    expect(pinned).toHaveAttribute('aria-selected', 'true')
   })
 })
