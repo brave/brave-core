@@ -204,6 +204,8 @@ class EthereumProviderImplUnitTest : public testing::Test {
     BraveWalletServiceDelegateImpl::SetActiveWebContentsForTesting(
         web_contents_.get());
     permissions::PermissionRequestManager::CreateForWebContents(web_contents());
+    auto scoped_disable_autolock =
+        BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting();
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
         BraveWalletServiceDelegate::Create(browser_context()), prefs(),

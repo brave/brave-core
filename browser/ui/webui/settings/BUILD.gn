@@ -56,6 +56,7 @@ source_set("unit_tests") {
         "//brave/components/brave_wallet/browser",
         "//brave/components/brave_wallet/browser:constants",
         "//brave/components/brave_wallet/browser:pref_names",
+        "//brave/components/brave_wallet/browser:test_support",
         "//brave/components/brave_wallet/browser:utils",
         "//brave/components/brave_wallet/common:test_support",
         "//components/user_prefs",

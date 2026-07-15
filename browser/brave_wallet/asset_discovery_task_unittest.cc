@@ -21,13 +21,13 @@
 #include "brave/components/brave_wallet/browser/blockchain_registry.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/simple_hash_client.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -190,8 +190,7 @@ class AssetDiscoveryTaskUnitTest : public testing::Test {
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
-        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
-        GetLocalState());
+        TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
     tx_service_ = wallet_service_->tx_service();

@@ -23,6 +23,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service_test_utils.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/browser/test_utils.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/eth_abi_utils.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
@@ -90,7 +91,7 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
                                        -> std::unique_ptr<KeyedService> {
           return std::make_unique<brave_wallet::BraveWalletService>(
               test_url_loader_factory_.GetSafeWeakWrapper(),
-              brave_wallet::BraveWalletServiceDelegate::Create(context),
+              brave_wallet::TestBraveWalletServiceDelegate::Create(),
               user_prefs::UserPrefs::Get(context),
               g_browser_process->local_state());
         }));

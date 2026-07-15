@@ -14,7 +14,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_observer_base.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
@@ -109,8 +108,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
-        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
-        GetLocalState());
+        TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
     network_manager_ = wallet_service_->network_manager();
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();

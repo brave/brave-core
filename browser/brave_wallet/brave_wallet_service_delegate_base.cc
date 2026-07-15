@@ -6,7 +6,6 @@
 #include "brave/browser/brave_wallet/brave_wallet_service_delegate_base.h"
 
 #include "base/auto_reset.h"
-#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/permission_utils.h"
@@ -14,10 +13,9 @@
 #include "chrome/browser/profiles/profile.h"
 #include "components/permissions/permission_util.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/common/content_switches.h"
 
 namespace {
-bool g_enable_autolock_commandline_check = true;
+bool g_enable_wallet_autolock = true;
 }
 
 namespace brave_wallet {
@@ -99,22 +97,13 @@ bool BraveWalletServiceDelegateBase::IsPrivateWindow() {
 }
 
 bool BraveWalletServiceDelegateBase::IsAutolockEnabled() {
-  if (g_enable_autolock_commandline_check) {
-    if (base::CommandLine::ForCurrentProcess()->HasSwitch(
-            switches::kTestType)) {
-      CHECK_IS_TEST();
-      // We don't want autolock happening in most of the tests.
-      return false;
-    }
-  }
-
-  return true;
+  return g_enable_wallet_autolock;
 }
 
 // static
 base::AutoReset<bool>
-BraveWalletServiceDelegateBase::GetScopedEnableAutolockForTesting() {
-  return {&g_enable_autolock_commandline_check, false};
+BraveWalletServiceDelegateBase::GetScopedDisableAutolockForTesting() {
+  return {&g_enable_wallet_autolock, false};
 }
 
 }  // namespace brave_wallet

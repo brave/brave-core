@@ -218,8 +218,7 @@ class EthAllowanceManagerUnitTest : public testing::Test {
     profile_ = builder.Build();
     wallet_service_ = std::make_unique<BraveWalletService>(
         url_loader_factory_.GetSafeWeakWrapper(),
-        BraveWalletServiceDelegate::Create(profile_.get()), GetPrefs(),
-        GetLocalState());
+        TestBraveWalletServiceDelegate::Create(), GetPrefs(), GetLocalState());
     json_rpc_service_ = wallet_service_->json_rpc_service();
     keyring_service_ = wallet_service_->keyring_service();
     bitcoin_test_rpc_server_ = std::make_unique<BitcoinTestRpcServer>();

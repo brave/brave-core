@@ -66,7 +66,6 @@
 #include "brave/components/brave_wallet/common/fil_address.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/brave_wallet/common/solana_utils.h"
-#include "brave/components/brave_wallet/common/switches.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/prefs/pref_service.h"
@@ -2723,8 +2722,7 @@ void KeyringService::StopAutoLockTimer() {
 
 void KeyringService::ResetAutoLockTimer() {
   // Autolock is disabled in most of the tests.
-  if (!is_autolock_enabled_.value_or(false)) {
-    CHECK_IS_TEST();
+  if (!is_autolock_enabled_) {
     return;
   }
 
@@ -3867,7 +3865,6 @@ void KeyringService::MaybeFixAccountSelection() {
 }
 
 void KeyringService::SetAutolockEnabled(bool enabled) {
-  CHECK(!is_autolock_enabled_.has_value());
   is_autolock_enabled_ = enabled;
 }
 

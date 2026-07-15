@@ -155,10 +155,14 @@ class TestBraveWalletServiceDelegate : public BraveWalletServiceDelegate {
   bool IsPrivateWindow() override;
   bool IsAutolockEnabled() override;
 
+  void set_enable_autolock(bool enable) { enable_autolock_ = enable; }
+
   static std::unique_ptr<BraveWalletServiceDelegate> Create();
 
  private:
   base::ScopedTempDir temp_dir_;
+  // Don't need autolock to trigger in tests.
+  bool enable_autolock_ = false;
 };
 
 void WaitForTxStorageInitialized(TxStorage* delegate);
