@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/public/web/web_local_frame.h b/third_party/blink/public/web/web_local_frame.h
+index b478029ace67b51478d3bbc45bbf96b6a93ddc6e..242f5a6be956d86c6c5a66b7967816e4f7568e6c 100644
+--- a/third_party/blink/public/web/web_local_frame.h
++++ b/third_party/blink/public/web/web_local_frame.h
+@@ -131,6 +131,8 @@ enum class TreeScopeType;
+ // FIXME: Move lots of methods from WebFrame in here.
+ class BLINK_EXPORT WebLocalFrame : public WebFrame {
+  public:
++  virtual void SetOriginForClearWindowNameCheck(const url::Origin&) = 0;
++
+   // Creates a main local frame for the WebView. Can only be invoked when no
+   // main frame exists yet. Call Close() to release the returned frame.
+   // WebLocalFrameClient may not be null.
