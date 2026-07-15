@@ -68,7 +68,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   }
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_AI_CHAT) && defined(TOOLKIT_VIEWS)
   // Null unless the `kAIChatMoveFullPageToSidePanel` feature is enabled and
   // this is a normal window with AI Chat available.
   AIChatSidePanelTabTransferBridge* ai_chat_side_panel_tab_transfer_bridge() {
@@ -132,7 +132,7 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   std::unique_ptr<PlaylistSidePanelCoordinator>
       playlist_side_panel_coordinator_;
 #endif
-#if BUILDFLAG(ENABLE_AI_CHAT)
+#if BUILDFLAG(ENABLE_AI_CHAT) && defined(TOOLKIT_VIEWS)
   std::unique_ptr<AIChatSidePanelTabTransferBridge>
       ai_chat_side_panel_tab_transfer_bridge_;
 #endif

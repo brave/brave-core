@@ -30,7 +30,7 @@ source_set("internal") {
     "//printing/buildflags",
   ]
 
-  if (enable_ai_chat && !is_android) {
+  if (enable_ai_chat && toolkit_views) {
     deps += [
       "//brave/browser/ai_chat",
       "//brave/browser/ui/views/side_panel/ai_chat",
