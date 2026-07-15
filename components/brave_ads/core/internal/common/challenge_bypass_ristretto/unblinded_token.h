@@ -58,6 +58,7 @@ class UnblindedToken final {
   std::optional<std::string> EncodeBase64() const;
 
   std::optional<VerificationKey> DeriveVerificationKey() const;
+  std::optional<VerificationKey> DeriveVerificationKeyRfc() const;
 
   std::optional<TokenPreimage> GetTokenPreimage() const;
 

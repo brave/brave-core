@@ -50,6 +50,10 @@ UnblindedToken SigningKey::RederiveUnblindedToken(const TokenPreimage& t) {
   return UnblindedToken(raw().rederive_unblinded_token(t.raw()));
 }
 
+UnblindedToken SigningKey::RederiveUnblindedTokenRfc(const TokenPreimage& t) {
+  return UnblindedToken(raw().rederive_unblinded_token_rfc(t.raw()));
+}
+
 PublicKey SigningKey::GetPublicKey() {
   return PublicKey(raw().public_key());
 }

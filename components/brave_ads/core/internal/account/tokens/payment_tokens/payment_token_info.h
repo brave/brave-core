@@ -37,6 +37,9 @@ struct PaymentTokenInfo final {
   mojom::ConfirmationType confirmation_type =
       mojom::ConfirmationType::kUndefined;
   mojom::AdType ad_type = mojom::AdType::kUndefined;
+  // Whether `unblinded_token` uses the RFC 9497 compliant derivation for
+  // blinding and verification-key derivation.
+  bool rfc = false;
 };
 
 using PaymentTokenList = std::vector<PaymentTokenInfo>;

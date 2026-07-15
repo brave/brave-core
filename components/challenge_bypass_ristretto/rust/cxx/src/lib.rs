@@ -141,6 +141,7 @@ pub mod ffi {
 
         fn encode_base64(self: &UnblindedToken) -> String;
         fn derive_verification_key(self: &UnblindedToken) -> Box<VerificationKey>;
+        fn derive_verification_key_rfc(self: &UnblindedToken) -> Box<VerificationKey>;
         fn preimage(self: &UnblindedToken) -> Box<TokenPreimage>;
 
         fn decode_base64_unblinded_token(s: &str) -> Box<UnblindedTokenResult>;
@@ -153,6 +154,10 @@ pub mod ffi {
         fn public_key(self: &SigningKey) -> Box<PublicKey>;
         fn sign(self: &SigningKey, token: &BlindedToken) -> Box<SignedTokenResult>;
         fn rederive_unblinded_token(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken>;
+        fn rederive_unblinded_token_rfc(
+            self: &SigningKey,
+            t: &TokenPreimage,
+        ) -> Box<UnblindedToken>;
 
         fn decode_base64_signing_key(s: &str) -> Box<SigningKeyResult>;
         fn error(self: &SigningKeyResult) -> &Error;
@@ -323,7 +328,12 @@ impl Token {
     }
 
     fn blind(self: &Token) -> Box<BlindedToken> {
-        Box::new(self.0.blind().into())
+        Box::new(
+            self.0
+                .blind_rfc::<Sha512>()
+                .expect("token preimage must not map to the identity element")
+                .into(),
+        )
     }
 }
 
@@ -366,6 +376,10 @@ impl UnblindedToken {
         Box::new(self.0.derive_verification_key::<Sha512>().into())
     }
 
+    fn derive_verification_key_rfc(self: &UnblindedToken) -> Box<VerificationKey> {
+        Box::new(self.0.derive_verification_key_rfc::<Sha512>().into())
+    }
+
     fn preimage(self: &UnblindedToken) -> Box<TokenPreimage> {
         Box::new(self.0.t.into())
     }
@@ -397,6 +411,15 @@ impl SigningKey {
 
     fn rederive_unblinded_token(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken> {
         Box::new(self.0.rederive_unblinded_token(&t.0).into())
+    }
+
+    fn rederive_unblinded_token_rfc(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken> {
+        Box::new(
+            self.0
+                .rederive_unblinded_token_rfc::<Sha512>(&t.0)
+                .expect("token preimage must not map to the identity element")
+                .into(),
+        )
     }
 
     fn new_batch_dleq_proof(

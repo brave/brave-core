@@ -39,7 +39,8 @@ void BindColumnTypes(const mojom::DBActionInfoPtr& mojom_db_action) {
       mojom::DBBindColumnType::kString,  // unblinded_token
       mojom::DBBindColumnType::kString,  // public_key
       mojom::DBBindColumnType::kString,  // confirmation_type
-      mojom::DBBindColumnType::kString   // ad_type
+      mojom::DBBindColumnType::kString,  // ad_type
+      mojom::DBBindColumnType::kBool     // rfc
   };
 }
 
@@ -60,6 +61,7 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnString(mojom_db_action, index++,
                      ToString(payment_token.confirmation_type));
     BindColumnString(mojom_db_action, index++, ToString(payment_token.ad_type));
+    BindColumnBool(mojom_db_action, index++, payment_token.rfc);
 
     ++row_count;
   }
@@ -107,9 +109,10 @@ std::string BuildInsertSql(const mojom::DBActionInfoPtr& mojom_db_action,
             unblinded_token,
             public_key,
             confirmation_type,
-            ad_type
+            ad_type,
+            rfc
           ) VALUES $2)",
-      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/5U, row_count)},
+      {kTableName, BuildBindColumnPlaceholders(/*column_count=*/6U, row_count)},
       nullptr);
 }
 
@@ -209,7 +212,8 @@ void PaymentTokens::GetAll(GetPaymentTokensCallback callback) const {
             unblinded_token,
             public_key,
             confirmation_type,
-            ad_type
+            ad_type,
+            rfc
           FROM
             $1)",
       {kTableName}, nullptr);
@@ -242,6 +246,14 @@ void PaymentTokens::Migrate(
   switch (to_version) {
     case 56: {
       Create(mojom_db_transaction);
+      break;
+    }
+
+    case 58: {
+      // Add the RFC 9497 compliant derivation flag.
+      Execute(mojom_db_transaction, R"(
+          ALTER TABLE payment_tokens
+            ADD COLUMN rfc INTEGER NOT NULL DEFAULT 0)");
       break;
     }
 

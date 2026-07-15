@@ -19,7 +19,7 @@ namespace brave_ads::database::table {
 PaymentTokenInfo PaymentTokenFromMojomRow(
     const mojom::DBRowInfoPtr& mojom_db_row) {
   CHECK(mojom_db_row);
-  CHECK_EQ(5U, mojom_db_row->column_values_union.size());
+  CHECK_EQ(6U, mojom_db_row->column_values_union.size());
 
   PaymentTokenInfo payment_token;
   payment_token.transaction_id = ColumnString(mojom_db_row, 0);
@@ -29,6 +29,7 @@ PaymentTokenInfo PaymentTokenFromMojomRow(
   payment_token.confirmation_type =
       ToMojomConfirmationType(ColumnString(mojom_db_row, 3));
   payment_token.ad_type = ToMojomAdType(ColumnString(mojom_db_row, 4));
+  payment_token.rfc = ColumnBool(mojom_db_row, 5);
   return payment_token;
 }
 

@@ -57,6 +57,8 @@ class SigningKey final {
 
   std::optional<UnblindedToken> RederiveUnblindedToken(
       const TokenPreimage& token_preimage);
+  std::optional<UnblindedToken> RederiveUnblindedTokenRfc(
+      const TokenPreimage& token_preimage);
 
   std::optional<PublicKey> GetPublicKey();
 

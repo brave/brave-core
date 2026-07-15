@@ -31,6 +31,10 @@ VerificationKey UnblindedToken::DeriveVerificationKey() const {
   return VerificationKey(raw().derive_verification_key());
 }
 
+VerificationKey UnblindedToken::DeriveVerificationKeyRfc() const {
+  return VerificationKey(raw().derive_verification_key_rfc());
+}
+
 TokenPreimage UnblindedToken::Preimage() const {
   return TokenPreimage(raw().preimage());
 }

@@ -66,7 +66,7 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   for (const auto& unblinded_token : *unblinded_tokens) {
     // The client derives a shared verification key from the unblinded token.
     VerificationKey shared_verification_key =
-        unblinded_token.DeriveVerificationKey();
+        unblinded_token.DeriveVerificationKeyRfc();
 
     // The client signs the message using the shared verification key and sends
     // it to the server as a `signature` in the credential.
@@ -81,14 +81,15 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
     // The server rederives the unblinded token using the server signing key and
     // the token preimage.
     const UnblindedToken rederived_unblinded_token =
-        signing_key.RederiveUnblindedToken(token_preimage);
+        signing_key.RederiveUnblindedTokenRfc(token_preimage);
 
     // The server derives the shared verification key from the unblinded token.
     VerificationKey rederived_shared_verification_key =
-        rederived_unblinded_token.DeriveVerificationKey();
+        rederived_unblinded_token.DeriveVerificationKeyRfc();
 
-    // The server proves and verifies the message using the verification key and
-    // signature.
+    // The server verifies the client's signature with the rederived key. This
+    // succeeds only if the client's blinding and both derivations agree, i.e.
+    // the token passes server-side validation.
     const base::expected<bool, std::string>
         rederived_shared_verification_key_verification_result =
             rederived_shared_verification_key.Verify(*verification_signature,

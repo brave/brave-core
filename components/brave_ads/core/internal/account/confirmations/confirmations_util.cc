@@ -30,7 +30,7 @@ bool Verify(const ConfirmationInfo& confirmation) {
   CHECK(confirmation.reward);
 
   std::optional<cbr::VerificationKey> verification_key =
-      confirmation.reward->unblinded_token.DeriveVerificationKey();
+      confirmation.reward->unblinded_token.DeriveVerificationKeyRfc();
   if (!verification_key) {
     return false;
   }

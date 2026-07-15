@@ -34,6 +34,7 @@ class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) UnblindedToken {
   const cbr_cxx::UnblindedToken& raw() const { return *raw_->data; }
 
   VerificationKey DeriveVerificationKey() const;
+  VerificationKey DeriveVerificationKeyRfc() const;
   TokenPreimage Preimage() const;
   static base::expected<UnblindedToken, std::string> DecodeBase64(
       const std::string& encoded);

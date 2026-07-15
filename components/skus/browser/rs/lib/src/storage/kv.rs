@@ -438,6 +438,7 @@ where
                                         .map(|unblinded_cred| SingleUseCredential {
                                             unblinded_cred,
                                             spent: false,
+                                            rfc: true,
                                         })
                                         .collect(),
                                 ),
@@ -481,6 +482,7 @@ where
                                 .map(|unblinded_cred| SingleUseCredential {
                                     unblinded_cred,
                                     spent: false,
+                                    rfc: true,
                                 })
                                 .collect(),
                         );

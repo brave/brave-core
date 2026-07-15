@@ -72,6 +72,14 @@ std::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
   return VerificationKey(unblinded_token_->DeriveVerificationKey());
 }
 
+std::optional<VerificationKey> UnblindedToken::DeriveVerificationKeyRfc() const {
+  if (!unblinded_token_ || !has_value()) {
+    return std::nullopt;
+  }
+
+  return VerificationKey(unblinded_token_->DeriveVerificationKeyRfc());
+}
+
 std::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {
   if (!unblinded_token_ || !has_value()) {
     return std::nullopt;

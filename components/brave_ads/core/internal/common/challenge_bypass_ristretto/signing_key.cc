@@ -77,6 +77,17 @@ std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
       signing_key_->RederiveUnblindedToken(token_preimage.get()));
 }
 
+std::optional<UnblindedToken> SigningKey::RederiveUnblindedTokenRfc(
+    const TokenPreimage& token_preimage) {
+  if (!signing_key_ || !has_value() || !token_preimage.has_value()) {
+    return std::nullopt;
+  }
+
+  return ValueOrLogError<challenge_bypass_ristretto::UnblindedToken,
+                         UnblindedToken>(
+      signing_key_->RederiveUnblindedTokenRfc(token_preimage.get()));
+}
+
 std::optional<PublicKey> SigningKey::GetPublicKey() {
   if (!signing_key_ || !has_value()) {
     return std::nullopt;

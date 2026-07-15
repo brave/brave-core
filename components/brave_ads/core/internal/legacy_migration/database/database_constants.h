@@ -8,7 +8,7 @@
 
 namespace brave_ads::database {
 
-inline constexpr int kVersionNumber = 57;
+inline constexpr int kVersionNumber = 58;
 inline constexpr int kCompatibleVersionNumber = 57;
 
 // If the database version number is less than or equal to this value, the

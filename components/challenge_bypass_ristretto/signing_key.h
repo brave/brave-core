@@ -40,6 +40,7 @@ class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) SigningKey {
   base::expected<SignedToken, std::string> Sign(
       const BlindedToken& blinded_token) const;
   UnblindedToken RederiveUnblindedToken(const TokenPreimage& t);
+  UnblindedToken RederiveUnblindedTokenRfc(const TokenPreimage& t);
   PublicKey GetPublicKey();
   static base::expected<SigningKey, std::string> DecodeBase64(
       const std::string& encoded);

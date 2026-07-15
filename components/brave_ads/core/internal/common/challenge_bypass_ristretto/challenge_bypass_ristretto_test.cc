@@ -71,7 +71,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   for (const auto& unblinded_token : *unblinded_tokens) {
     // The client derives a shared verification key from the unblinded token.
     std::optional<cbr::VerificationKey> shared_verification_key =
-        unblinded_token.DeriveVerificationKey();
+        unblinded_token.DeriveVerificationKeyRfc();
     EXPECT_TRUE(shared_verification_key);
 
     // The client signs the message using the shared verification key and sends
@@ -89,16 +89,17 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
     // The server rederives the unblinded token using the server signing key and
     // the token preimage.
     std::optional<cbr::UnblindedToken> rederived_unblinded_token =
-        signing_key.RederiveUnblindedToken(*token_preimage);
+        signing_key.RederiveUnblindedTokenRfc(*token_preimage);
     EXPECT_TRUE(rederived_unblinded_token);
 
     // The server derives the shared verification key from the unblinded token.
     std::optional<cbr::VerificationKey> rederived_shared_verification_key =
-        rederived_unblinded_token->DeriveVerificationKey();
+        rederived_unblinded_token->DeriveVerificationKeyRfc();
     EXPECT_TRUE(rederived_shared_verification_key);
 
-    // The server proves and verifies the message using the verification key and
-    // signature.
+    // The server verifies the client's signature with the rederived key. This
+    // succeeds only if the client's blinding and both derivations agree, i.e.
+    // the token passes server-side validation.
     EXPECT_TRUE(rederived_shared_verification_key->Verify(
         *verification_signature, kMessage));
   }
