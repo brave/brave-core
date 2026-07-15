@@ -60,7 +60,7 @@ class ShieldsWebView : public views::WebView,
     if (contents_wrapper_) {
       contents_wrapper_->SetHost(weak_factory_.GetWeakPtr());
     }
-    holder()->SetCornerRadii(gfx::RoundedCornersF(0, 0, 16, 16));
+    holder()->SetNativeViewCornerRadii(gfx::RoundedCornersF(0, 0, 16, 16));
   }
 
   bool HandleContextMenu(content::RenderFrameHost& render_frame_host,
