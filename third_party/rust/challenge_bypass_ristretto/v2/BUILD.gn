@@ -28,12 +28,12 @@ cargo_crate("lib") {
 
   build_native_rust_unit_tests = false
   edition = "2018"
-  cargo_pkg_authors = "eV <ev@7pr.xyz>"
+  cargo_pkg_authors = "Brave Software <security@brave.com>"
   cargo_pkg_name = "challenge-bypass-ristretto"
   cargo_pkg_description = "A rust implemention of the privacy pass cryptographic protocol using the Ristretto group (WIP)"
   cargo_pkg_repository =
       "https://github.com/brave-intl/challenge-bypass-ristretto"
-  cargo_pkg_version = "2.0.2"
+  cargo_pkg_version = "2.1.0"
 
   allow_unsafe = false
 
@@ -44,7 +44,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/hmac/v0_12:lib",
     "//brave/third_party/rust/rand/v0_8:lib",
     "//brave/third_party/rust/rand_chacha/v0_3:lib",
-    "//brave/third_party/rust/rand_core/v0_6:lib",
     "//brave/third_party/rust/serde/v1:lib",
     "//brave/third_party/rust/subtle/v2:lib",
     "//brave/third_party/rust/zeroize/v1:lib",
