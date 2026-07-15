@@ -166,7 +166,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/history/side_bar.html.ts
 +++ gen/chrome/browser/resources/history/preprocessed/side_bar.html.ts
-@@ -4,47 +4,40 @@
+@@ -4,47 +4,46 @@
  
  export function getHtml(this: HistorySideBarElement) {
    // clang-format off
@@ -217,6 +217,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 +         </div>
 +         <cr-toggle ?checked="\${this.braveHistoryEmbeddingsEnabled}" @change="\${this.onBraveHistoryEmbeddingsToggleChange}">
 +         </cr-toggle>
++       </div>
++       <div id="brave-history-embeddings-restart" ?hidden="\${!this.braveHistoryEmbeddingsFeatureEnabled ||
++                       !this.braveHistoryEmbeddingsNeedsRestart}">
++         <cr-button @click="\${this.onBraveHistoryEmbeddingsRelaunchClick}">
++           $i18n{braveHistoryEmbeddingsRelaunchButtonLabel}
++         </cr-button>
 +       </div><div id="spacer"></div>
  <div id="footer" ?hidden="\${!this.showFooter_}">
    <div class="separator"></div>

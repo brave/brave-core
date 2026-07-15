@@ -5,10 +5,11 @@
 
 import { mangle } from 'lit_mangler'
 
-// Inject a Semantic History Search toggle above the side bar's #spacer.
-// The referenced properties and handler live on the Brave HistorySideBarElement
-// subclass declared in side_bar.ts; the augmented HistorySideBarElement
-// interface lets `this.<prop>` accesses type-check here.
+// Inject a Semantic History Search toggle above the side bar's #spacer, plus a
+// "Relaunch" button on its own row below it (shown once the toggle changes).
+// The referenced properties and handlers live on the Brave
+// HistorySideBarElement subclass in side_bar.ts; the augmented interface lets
+// `this.<prop>` accesses type-check here.
 mangle(
   (element) => {
     const spacer = element.querySelector('#spacer')
@@ -31,6 +32,13 @@ mangle(
              ?checked="\${this.braveHistoryEmbeddingsEnabled}"
              @change="\${this.onBraveHistoryEmbeddingsToggleChange}">
          </cr-toggle>
+       </div>
+       <div id="brave-history-embeddings-restart"
+            ?hidden="\${!this.braveHistoryEmbeddingsFeatureEnabled ||
+                       !this.braveHistoryEmbeddingsNeedsRestart}">
+         <cr-button @click="\${this.onBraveHistoryEmbeddingsRelaunchClick}">
+           $i18n{braveHistoryEmbeddingsRelaunchButtonLabel}
+         </cr-button>
        </div>`,
     )
   },

@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_elements/cr_toggle/cr_toggle.js'
+import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 
 import {injectStyle} from '//resources/brave/lit_overriding.js'
 import {loadTimeData} from '//resources/js/load_time_data.js'
@@ -19,6 +20,11 @@ import {
   getBraveHistoryEmbeddingsBrowserProxy,
 } from './brave_history_embeddings_browser_proxy.js'
 // </if>
+
+// Toggle value at startup, before any change. Services are gated at creation
+// time, so a change only takes effect after a relaunch.
+const braveHistoryEmbeddingsStartupEnabled =
+    loadTimeData.getBoolean('enableHistoryEmbeddings')
 
 injectStyle(HistorySideBarElementChromium, css`
   .cr-nav-menu-item {
@@ -60,6 +66,13 @@ injectStyle(HistorySideBarElementChromium, css`
     font-size: 12px;
     margin-top: 2px;
   }
+  #brave-history-embeddings-restart {
+    display: flex;
+    padding: 0 16px 12px;
+  }
+  #brave-history-embeddings-restart cr-button {
+    flex: 1;
+  }
 `)
 
 // Declaration-merge the Brave-only reactive properties onto the upstream
@@ -70,7 +83,9 @@ declare module './side_bar-chromium.js' {
   interface HistorySideBarElement {
     braveHistoryEmbeddingsFeatureEnabled: boolean
     braveHistoryEmbeddingsEnabled: boolean
+    braveHistoryEmbeddingsNeedsRestart: boolean
     onBraveHistoryEmbeddingsToggleChange(e: CustomEvent<boolean>): void
+    onBraveHistoryEmbeddingsRelaunchClick(): void
   }
 }
 
@@ -80,6 +95,7 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
       ...super.properties,
       braveHistoryEmbeddingsFeatureEnabled: {type: Boolean},
       braveHistoryEmbeddingsEnabled: {type: Boolean},
+      braveHistoryEmbeddingsNeedsRestart: {type: Boolean},
     }
   }
 
@@ -87,6 +103,9 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
       loadTimeData.getBoolean('isHistoryEmbeddingsFeatureEnabled')
   override accessor braveHistoryEmbeddingsEnabled: boolean =
       loadTimeData.getBoolean('enableHistoryEmbeddings')
+  // True once the toggle differs from its startup value, so the change is
+  // pending a relaunch. Flipping back to the original value clears it.
+  override accessor braveHistoryEmbeddingsNeedsRestart: boolean = false
 
   // Re-read the toggle state from loadTimeData on every render cycle. The
   // single Mojo subscription in app.ts updates loadTimeData and then calls
@@ -96,11 +115,18 @@ class HistorySideBarElement extends HistorySideBarElementChromium {
     super.willUpdate(changedProperties)
     this.braveHistoryEmbeddingsEnabled =
         loadTimeData.getBoolean('enableHistoryEmbeddings')
+    this.braveHistoryEmbeddingsNeedsRestart =
+        this.braveHistoryEmbeddingsEnabled !==
+        braveHistoryEmbeddingsStartupEnabled
   }
 
   // <if expr="enable_local_ai">
   override onBraveHistoryEmbeddingsToggleChange(e: CustomEvent<boolean>) {
     getBraveHistoryEmbeddingsBrowserProxy().pageHandler.setEnabled(e.detail)
+  }
+
+  override onBraveHistoryEmbeddingsRelaunchClick() {
+    window.open('chrome://restart', '_self')
   }
   // </if>
 }

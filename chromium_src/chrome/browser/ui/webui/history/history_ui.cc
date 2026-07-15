@@ -15,6 +15,7 @@
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/webui/managed_ui_handler.h"
+#include "chrome/grit/generated_resources.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/browser/web_ui_data_source.h"
@@ -36,6 +37,9 @@ class BraveHistoryUIInitializer {
          IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_LABEL},
         {"braveHistoryEmbeddingsToggleDescription",
          IDS_BRAVE_HISTORY_EMBEDDINGS_TOGGLE_DESCRIPTION},
+        // Reuse the shared settings "Relaunch" button label — chrome://settings
+        // uses this same string for its per-toggle restart buttons.
+        {"braveHistoryEmbeddingsRelaunchButtonLabel", IDS_SETTINGS_RESTART},
     };
     source->AddLocalizedStrings(kBraveHistoryEmbeddingsStrings);
   }
