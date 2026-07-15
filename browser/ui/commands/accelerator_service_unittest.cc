@@ -30,6 +30,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -423,17 +424,19 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
   // Test Playlist (bubble and side panel share the same policy)
   const std::vector<int> playlist_commands = {IDC_SHOW_PLAYLIST_BUBBLE,
                                               IDC_TOGGLE_PLAYLIST_SIDE_PANEL};
-  for (int command : playlist_commands) {
-    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
-  }
+  auto is_disabled_by_policy = [&service](int command) {
+    return service.IsCommandDisabledByPolicy(command);
+  };
+  EXPECT_THAT(
+      playlist_commands,
+      testing::Each(testing::Not(testing::Truly(is_disabled_by_policy))));
   profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, false);
-  for (int command : playlist_commands) {
-    EXPECT_TRUE(service.IsCommandDisabledByPolicy(command));
-  }
+  EXPECT_THAT(playlist_commands,
+              testing::Each(testing::Truly(is_disabled_by_policy)));
   profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, true);
-  for (int command : playlist_commands) {
-    EXPECT_FALSE(service.IsCommandDisabledByPolicy(command));
-  }
+  EXPECT_THAT(
+      playlist_commands,
+      testing::Each(testing::Not(testing::Truly(is_disabled_by_policy))));
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
