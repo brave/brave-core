@@ -10,11 +10,8 @@
 
 #include "base/no_destructor.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
-#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service_delegate.h"
-#include "brave/components/brave_wallet/browser/json_rpc_service.h"
-#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/incognito_helpers.h"
 #include "chrome/browser/profiles/profile.h"
@@ -23,6 +20,12 @@
 #include "content/public/browser/storage_partition.h"
 
 namespace brave_wallet {
+
+namespace {
+
+std::optional<bool> g_null_in_tests_override;
+
+}
 
 // static
 BraveWalletServiceFactory* BraveWalletServiceFactory::GetInstance() {
@@ -63,6 +66,10 @@ content::BrowserContext* BraveWalletServiceFactory::GetBrowserContextToUse(
 }
 
 bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
+  if (g_null_in_tests_override.has_value()) {
+    return g_null_in_tests_override.value();
+  }
+
   // Using BrowserTabStripTracker in BraveWalletServiceDelegate can cause
   // upstream tests to crash if they don't have the correct order of
   // creation/destruction of profiles and calls to
@@ -70,6 +77,13 @@ bool BraveWalletServiceFactory::ServiceIsNULLWhileTesting() const {
   // BrowserTabStripTracker relies on global features. By default, make this
   // service NULL for testing and create it manually in tests when needed.
   return true;
+}
+
+BraveWalletServiceFactory::NotNullForTesting::NotNullForTesting() {
+  g_null_in_tests_override = false;
+}
+BraveWalletServiceFactory::NotNullForTesting::~NotNullForTesting() {
+  g_null_in_tests_override.reset();
 }
 
 }  // namespace brave_wallet
