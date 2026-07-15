@@ -25,7 +25,7 @@ class VerificationKey;
 //
 // A token carries whether it uses the RFC 9497 compliant derivation (`rfc`).
 // A verification key must be derived with the same derivation the token was
-// blinded with, so callers cannot pair the wrong type. Tokens use the RFC 9497 
+// blinded with, so callers cannot pair the wrong type. Tokens use the RFC 9497
 // derivation by default.
 
 class UnblindedToken final {

@@ -94,8 +94,8 @@ base::ListValue RedeemPaymentTokensUrlRequestBuilder::BuildPaymentRequestDTO(
   base::ListValue list;
 
   for (const auto& payment_token : payment_tokens_) {
-    std::optional<base::DictValue> credential = cbr::MaybeBuildCredential(
-        payment_token.unblinded_token, payload);
+    std::optional<base::DictValue> credential =
+        cbr::MaybeBuildCredential(payment_token.unblinded_token, payload);
     if (!credential) {
       continue;
     }
