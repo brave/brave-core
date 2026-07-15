@@ -7,9 +7,11 @@
 #include <string>
 #include <vector>
 
+#include "base/functional/bind.h"
 #include "base/json/json_writer.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
@@ -27,7 +29,6 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/actor/core/actor_features.h"
-#include "components/origin_gating/core/origin_gating_cache.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -385,8 +386,15 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   ::actor::MayActOnUrl(
       GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
       actor_service->GetJournal(), actor::TaskId(),
-      origin_gating::OriginGatingCache(/*use_site_not_origin=*/false),
       *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
+      // The extension-store URL is rejected by MayActOnUrl's own checks (see
+      // the BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the site_policy.cc override),
+      // so this no-verdict continuation is never reached, but we allow if it
+      // ever is.
+      base::BindOnce(
+          [](const GURL& url, actor::NoVerdictResultCallback result_callback) {
+            std::move(result_callback).Run(base::ok());
+          }),
       allowed.GetCallback());
   EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);
 }
