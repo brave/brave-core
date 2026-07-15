@@ -1548,6 +1548,48 @@ export class MockedWalletApiProxy {
         errorMessage: null,
       }
     },
+    getZCashAccountInfo: async (_accountId) => {
+      return {
+        accountInfo: {
+          nextTransparentReceiveAddress: {
+            addressString: 't1mockedtransparentreceiveaddress',
+            keyId: {
+              account: 0,
+              change: 0,
+              index: 0,
+            },
+          },
+          nextTransparentChangeAddress: {
+            addressString: 't1mockedtransparentchangeaddress',
+            keyId: {
+              account: 0,
+              change: 1,
+              index: 0,
+            },
+          },
+          accountShieldBirthday: undefined,
+          unifiedAddress: undefined,
+          orchardAddress: undefined,
+          orchardInternalAddress: undefined,
+        },
+      }
+    },
+    getBalance: async (_accountId) => {
+      return {
+        balance: null,
+        errorMessage: null,
+      }
+    },
+    makeAccountShielded: async (_accountId, _accountBirthdayBlock) => {
+      return {
+        errorMessage: null,
+      }
+    },
+    resetSyncState: async (_accountId) => {
+      return {
+        errorMessage: null,
+      }
+    },
   }
 
   setMockedQuote(newQuote: typeof this.mockZeroExQuote) {

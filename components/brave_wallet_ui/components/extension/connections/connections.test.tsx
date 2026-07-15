@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { render } from '@testing-library/react'
 
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
+import { WalletTestThemeProvider } from '../../../utils/test-utils'
 
 // Components
 import { DomainTextContainer, DomainText } from './connections.style'
@@ -24,7 +24,7 @@ const activeOrigin = {
 describe('Connections', () => {
   const renderComponent = () => {
     const { container } = render(
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <DomainTextContainer
           data-key='domain-text-container'
           width='100px'
@@ -50,7 +50,7 @@ describe('Connections', () => {
             />
           </DomainText>
         </DomainTextContainer>
-      </BraveCoreThemeProvider>,
+      </WalletTestThemeProvider>,
     )
     return { container }
   }

@@ -8,8 +8,10 @@ import { render, screen } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../utils/test-utils'
 
 // Components
 import { EditSpendLimit } from './edit_spend_limit'
@@ -19,7 +21,7 @@ describe('EditSpendLimit', () => {
     const store = createMockStore({})
     return render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <EditSpendLimit
             onCancel={jest.fn()}
             onSave={jest.fn()}
@@ -28,7 +30,7 @@ describe('EditSpendLimit', () => {
             approvalTarget='Uniswap V3'
             isApprovalUnlimited={false}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
   }

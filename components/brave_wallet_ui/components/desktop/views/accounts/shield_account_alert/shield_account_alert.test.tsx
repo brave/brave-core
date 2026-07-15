@@ -7,8 +7,10 @@ import * as React from 'react'
 import { render, act, waitFor } from '@testing-library/react'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../../../utils/test-utils'
 
 // Components
 import { ShieldAccountAlert } from './shield_account_alert'
@@ -22,9 +24,9 @@ describe('ShieldAccountAlert', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <ShieldAccountAlert account={mockZecAccount} />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
 

@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
+import { WalletTestThemeProvider } from '../../../utils/test-utils'
 
 // Components
 import { TransactionQueueSelector } from './transaction_queue_selector'
@@ -19,14 +19,14 @@ describe('AdvancedTransactionSettings', () => {
     const rejectAllTransactions = jest.fn()
 
     const { container } = render(
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <TransactionQueueSelector
           transactionsQueueLength={5}
           queueNextTransaction={queueNextTransaction}
           queuePreviousTransaction={queuePreviousTransaction}
           rejectAllTransactions={rejectAllTransactions}
         />
-      </BraveCoreThemeProvider>,
+      </WalletTestThemeProvider>,
     )
 
     // Check button

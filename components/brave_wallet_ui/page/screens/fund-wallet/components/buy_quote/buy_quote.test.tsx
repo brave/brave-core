@@ -6,6 +6,8 @@
 import * as React from 'react'
 import { render, screen } from '@testing-library/react'
 
+import StyledComponentsProvider from '../../../../../../common/StyledComponentsProvider'
+
 // Mock Data
 import {
   mockMeldCryptoQuotes,
@@ -19,14 +21,16 @@ describe('buy quote option', () => {
   it('renders buy quote option and handles click', () => {
     const clickHandler = jest.fn()
     const { container } = render(
-      <BuyQuote
-        quote={mockMeldCryptoQuotes[0]}
-        serviceProviders={mockServiceProviders}
-        isCreatingWidget={false}
-        isBestOption={true}
-        isOpenOverride={true}
-        onBuy={clickHandler}
-      />,
+      <StyledComponentsProvider>
+        <BuyQuote
+          quote={mockMeldCryptoQuotes[0]}
+          serviceProviders={mockServiceProviders}
+          isCreatingWidget={false}
+          isBestOption={true}
+          isOpenOverride={true}
+          onBuy={clickHandler}
+        />
+      </StyledComponentsProvider>,
     )
 
     // Test Text

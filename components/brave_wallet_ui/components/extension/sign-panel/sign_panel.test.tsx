@@ -19,8 +19,10 @@ import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { mockSolanaAccount } from '../../../common/constants/mocks'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../utils/test-utils'
 
 // Components
 import { SignPanel } from './index'
@@ -90,12 +92,12 @@ describe('SignTypedDataPanel', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <SignPanel
             signMessageData={[signCardanoMessageData]}
             showWarning={true}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
 
@@ -128,12 +130,12 @@ describe('SignTypedDataPanel', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <SignPanel
             signMessageData={[signEthTypedDataMessage]}
             showWarning={false}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
 
@@ -152,12 +154,12 @@ describe('SignTypedDataPanel', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <SignPanel
             signMessageData={[signSolanaMessageData]}
             showWarning={false}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
     await waitFor(() => {

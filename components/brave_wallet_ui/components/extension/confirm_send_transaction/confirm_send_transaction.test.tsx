@@ -8,8 +8,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../utils/test-utils'
 import {
   deserializeTransaction, //
 } from '../../../utils/model-serialization-utils'
@@ -48,9 +50,9 @@ const renderWithTransaction = (transaction: any) => {
   )
   return render(
     <Provider store={store}>
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <ConfirmSendTransaction />
-      </BraveCoreThemeProvider>
+      </WalletTestThemeProvider>
     </Provider>,
   )
 }

@@ -5,17 +5,20 @@
 
 import * as React from 'react'
 import { render } from '@testing-library/react'
+import StyledComponentsProvider from '../../../../common/StyledComponentsProvider'
 import { SearchBar } from '.'
 
 describe('wallet search bar', () => {
   it('renders search bar with search icon and search input', () => {
     const { container } = render(
-      <SearchBar
-        placeholder='Search'
-        value='test'
-        action={() => {}}
-        isV2={true}
-      />,
+      <StyledComponentsProvider>
+        <SearchBar
+          placeholder='Search'
+          value='test'
+          action={() => {}}
+          isV2={true}
+        />
+      </StyledComponentsProvider>,
     )
 
     // Test search input

@@ -8,8 +8,10 @@ import { render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../utils/test-utils'
 import { reduceAddress } from '../../../utils/reduce-address'
 
 // Components
@@ -36,13 +38,13 @@ describe('AccountDetailsHeader', () => {
     })
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <AccountDetailsHeader
             account={mockAccount}
             onClickMenuOption={() => {}}
             tokenBalancesRegistry={mockTokenBalanceRegistry}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
     return { container }

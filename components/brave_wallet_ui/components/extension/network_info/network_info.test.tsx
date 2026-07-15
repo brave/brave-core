@@ -11,14 +11,14 @@ import { NetworkInfo } from './network_info'
 
 // Mocks
 import { mockBNBChainNetwork } from '../../../stories/mock-data/mock-networks'
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
+import { WalletTestThemeProvider } from '../../../utils/test-utils'
 
 describe('NetworkInfo', () => {
   it('should render network information correctly', () => {
     const { container } = render(
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <NetworkInfo network={mockBNBChainNetwork} />
-      </BraveCoreThemeProvider>,
+      </WalletTestThemeProvider>,
     )
 
     // Check if the component renders
