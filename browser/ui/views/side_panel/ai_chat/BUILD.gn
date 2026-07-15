@@ -12,8 +12,8 @@ source_set("ai_chat") {
   sources = [
     "ai_chat_movable_side_panel_web_view.cc",
     "ai_chat_movable_side_panel_web_view.h",
-    "ai_chat_side_panel_tab_transfer_controller.cc",
-    "ai_chat_side_panel_tab_transfer_controller.h",
+    "ai_chat_side_panel_tab_transfer_bridge.cc",
+    "ai_chat_side_panel_tab_transfer_bridge.h",
     "ai_chat_side_panel_utils_views.cc",
     "ai_chat_side_panel_web_view.cc",
     "ai_chat_side_panel_web_view.h",

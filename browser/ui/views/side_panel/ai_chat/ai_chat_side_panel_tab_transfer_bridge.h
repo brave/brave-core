@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_CONTROLLER_H_
-#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_CONTROLLER_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_
+#define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_
 
 #include <memory>
 
@@ -22,15 +22,14 @@ class WebContents;
 // small: it does not own the steady-state side panel contents (the
 // `AIChatMovableSidePanelWebView` does) — only the transient hand-off used
 // while a transfer is in-flight.
-class AIChatSidePanelTabTransferController {
+class AIChatSidePanelTabTransferBridge {
  public:
-  explicit AIChatSidePanelTabTransferController(
-      BrowserWindowInterface* browser);
-  AIChatSidePanelTabTransferController(
-      const AIChatSidePanelTabTransferController&) = delete;
-  AIChatSidePanelTabTransferController& operator=(
-      const AIChatSidePanelTabTransferController&) = delete;
-  ~AIChatSidePanelTabTransferController();
+  explicit AIChatSidePanelTabTransferBridge(BrowserWindowInterface* browser);
+  AIChatSidePanelTabTransferBridge(const AIChatSidePanelTabTransferBridge&) =
+      delete;
+  AIChatSidePanelTabTransferBridge& operator=(
+      const AIChatSidePanelTabTransferBridge&) = delete;
+  ~AIChatSidePanelTabTransferBridge();
 
   // Forward (tab -> side panel). Takes ownership of the live AI Chat
   // `web_contents` (already detached from the tab strip by the caller) and
@@ -59,4 +58,4 @@ class AIChatSidePanelTabTransferController {
   std::unique_ptr<content::WebContents> pending_web_contents_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_CONTROLLER_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_TAB_TRANSFER_BRIDGE_H_

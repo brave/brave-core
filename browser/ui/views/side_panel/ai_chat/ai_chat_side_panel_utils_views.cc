@@ -8,7 +8,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
-#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_controller.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/tab_list/tab_list_interface.h"
 #include "chrome/browser/ui/browser.h"
@@ -88,8 +88,8 @@ bool MaybeMoveFullPageChatToSidePanel(
     return false;
   }
 
-  AIChatSidePanelTabTransferController* transfer_controller =
-      browser->GetFeatures().ai_chat_side_panel_tab_transfer_controller();
+  AIChatSidePanelTabTransferBridge* transfer_controller =
+      browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
   if (!transfer_controller) {
     // Flag off, or a window type that has no controller.
     return false;

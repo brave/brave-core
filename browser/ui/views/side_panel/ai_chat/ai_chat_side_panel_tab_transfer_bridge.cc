@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_controller.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 
 #include <utility>
 
@@ -24,16 +24,15 @@ SidePanelEntry::Key ChatEntryKey() {
 
 }  // namespace
 
-AIChatSidePanelTabTransferController::AIChatSidePanelTabTransferController(
+AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
     BrowserWindowInterface* browser)
     : browser_(browser) {
   CHECK(browser_);
 }
 
-AIChatSidePanelTabTransferController::~AIChatSidePanelTabTransferController() =
-    default;
+AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
 
-void AIChatSidePanelTabTransferController::TransferFullPageContentsToSidePanel(
+void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
     std::unique_ptr<content::WebContents> web_contents) {
   CHECK(web_contents);
 
@@ -65,16 +64,16 @@ void AIChatSidePanelTabTransferController::TransferFullPageContentsToSidePanel(
   side_panel_ui->Show(key);
 }
 
-bool AIChatSidePanelTabTransferController::HasPendingTransfer() const {
+bool AIChatSidePanelTabTransferBridge::HasPendingTransfer() const {
   return pending_web_contents_ != nullptr;
 }
 
 std::unique_ptr<content::WebContents>
-AIChatSidePanelTabTransferController::TakePendingContents() {
+AIChatSidePanelTabTransferBridge::TakePendingContents() {
   return std::move(pending_web_contents_);
 }
 
-void AIChatSidePanelTabTransferController::ClearChatEntryCache() {
+void AIChatSidePanelTabTransferBridge::ClearChatEntryCache() {
   const SidePanelEntry::Key key = ChatEntryKey();
 
   // The AI Chat entry lives in the window-scoped registry when the side panel
