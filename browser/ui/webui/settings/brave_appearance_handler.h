@@ -28,8 +28,8 @@ class BraveAppearanceHandler : public settings::SettingsPageUIHandler,
  private:
   // SettingsPageUIHandler overrides:
   void RegisterMessages() override;
-  void OnJavascriptAllowed() override;
-  void OnJavascriptDisallowed() override;
+  void OnJavascriptAllowed() override {}
+  void OnJavascriptDisallowed() override {}
 
   // CommandObserver override:
   void EnabledStateChangedForCommand(int id, bool enabled) override;
