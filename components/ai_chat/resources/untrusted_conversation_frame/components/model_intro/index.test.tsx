@@ -23,6 +23,7 @@ describe('ModelIntro', () => {
     isSuggestedModel: false,
     supportsTools: false,
     supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+    capabilities: [],
     isNearModel: false,
     options: {
       customModelOptions: undefined,

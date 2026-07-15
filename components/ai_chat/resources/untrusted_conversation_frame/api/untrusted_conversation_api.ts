@@ -139,6 +139,7 @@ export default function createUntrustedConversationApi(
         isStoragePrefEnabled: false,
         isStorageNoticeDismissed: false,
         canShowPremiumPrompt: false,
+        pinnedModelKeys: [],
       }),
 
       // Premium status - fetched from service

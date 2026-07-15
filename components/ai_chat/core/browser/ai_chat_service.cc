@@ -31,6 +31,7 @@
 #include "base/time/time.h"
 #include "base/types/strong_alias.h"
 #include "base/uuid.h"
+#include "base/values.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
@@ -53,6 +54,7 @@
 #include "build/build_config.h"
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -644,6 +646,39 @@ void AIChatService::DismissPremiumPrompt() {
   profile_prefs_->SetBoolean(prefs::kUserDismissedPremiumPrompt, true);
 }
 
+void AIChatService::SetModelPinned(const std::string& model_key, bool pinned) {
+  // Automatic is always available in the pinned list and cannot be changed.
+  if (model_key.empty() || model_key == kChatAutomaticModelKey) {
+    return;
+  }
+
+  ScopedListPrefUpdate update(profile_prefs_, prefs::kPinnedModelKeys);
+  base::ListValue& pinned_keys = update.Get();
+
+  auto it = std::ranges::find_if(pinned_keys, [&](const base::Value& value) {
+    return value.is_string() && value.GetString() == model_key;
+  });
+
+  if (pinned) {
+    if (it == pinned_keys.end()) {
+      // Newest pins first so the pinned list shows recently pinned models at
+      // the top (Automatic remains prepended separately in the UI).
+      pinned_keys.Insert(pinned_keys.begin(), base::Value(model_key));
+      OnStateChanged();
+    }
+  } else if (it != pinned_keys.end()) {
+    pinned_keys.erase(it);
+    OnStateChanged();
+  }
+}
+
+void AIChatService::SetDefaultModelKey(const std::string& model_key) {
+  if (model_key.empty() || !model_service_) {
+    return;
+  }
+  model_service_->SetDefaultModelKey(model_key);
+}
+
 void AIChatService::GetSkills(GetSkillsCallback callback) {
   auto skills = prefs::GetSkillsFromPrefs(*profile_prefs_);
   std::move(callback).Run(std::move(skills));
@@ -868,6 +903,14 @@ mojom::ServiceStatePtr AIChatService::BuildState() {
   state->is_storage_pref_enabled = is_storage_enabled;
   state->is_storage_notice_dismissed = has_user_dismissed_storage_notice;
   state->can_show_premium_prompt = can_show_premium_prompt;
+
+  for (const base::Value& value :
+       profile_prefs_->GetList(prefs::kPinnedModelKeys)) {
+    if (value.is_string()) {
+      state->pinned_model_keys.push_back(value.GetString());
+    }
+  }
+
   return state;
 }
 
