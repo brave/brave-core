@@ -10,16 +10,14 @@
 #include "components/content_settings/core/common/content_settings_types.h"
 #include "third_party/blink/public/platform/web_security_origin.h"
 
-class GURL;
-
 #define AllowStorageAccessSync                                              \
   AllowAutoplay(bool play_requested) {                                      \
     return true;                                                            \
   }                                                                         \
-  virtual bool IsCosmeticFilteringEnabled(const GURL& url) {                \
+  virtual bool IsCosmeticFilteringEnabled() {                               \
     return false;                                                           \
   }                                                                         \
-  virtual bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) {      \
+  virtual bool IsFirstPartyCosmeticFilteringEnabled() {                     \
     return false;                                                           \
   }                                                                         \
   virtual brave_shields::mojom::ShieldsSettingsPtr GetBraveShieldsSettings( \

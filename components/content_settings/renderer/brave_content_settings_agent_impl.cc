@@ -304,8 +304,7 @@ bool BraveContentSettingsAgentImpl::IsBraveShieldsDown(
              content_setting_rules_->brave_shields_rules);
 }
 
-bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
-    const GURL& url) {
+bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
   const GURL primary_url(GetTopFrameOriginAsURL(frame));
 
@@ -326,8 +325,7 @@ bool BraveContentSettingsAgentImpl::IsCosmeticFilteringEnabled(
          (setting != brave_shields::ControlType::ALLOW);
 }
 
-bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled(
-    const GURL& url) {
+bool BraveContentSettingsAgentImpl::IsFirstPartyCosmeticFilteringEnabled() {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   brave_shields::ControlType setting = brave_shields::ControlType::DEFAULT;

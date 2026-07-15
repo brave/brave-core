@@ -42,9 +42,9 @@ class BraveContentSettingsAgentImpl
       const BraveContentSettingsAgentImpl&) = delete;
   ~BraveContentSettingsAgentImpl() override;
 
-  bool IsCosmeticFilteringEnabled(const GURL& url) override;
+  bool IsCosmeticFilteringEnabled() override;
 
-  bool IsFirstPartyCosmeticFilteringEnabled(const GURL& url) override;
+  bool IsFirstPartyCosmeticFilteringEnabled() override;
 
   // RenderFrameObserver:
   void DidCommitProvisionalLoad(ui::PageTransition transition) override;
