@@ -202,6 +202,8 @@ class AIChatService : public KeyedService,
   void ConversationExists(const std::string& conversation_uuid,
                           ConversationExistsCallback callback) override;
   void ShareConversation(const std::string& encrypted_contents,
+                         const std::string& key_fragment,
+                         bool copy_to_clipboard,
                          ShareConversationCallback callback) override;
   void BindConversation(
       const std::string& uuid,
@@ -286,6 +288,15 @@ class AIChatService : public KeyedService,
       std::string conversation_uuid,
       base::OnceCallback<void(ConversationHandler*)> callback,
       mojom::ConversationArchivePtr data);
+
+  // Completes ShareConversation once the sharing server has returned the viewer
+  // URL: appends |key_fragment| to build the full shareable link, optionally
+  // copies it to the clipboard as confidential, and returns it via |callback|.
+  void OnShareConversationComplete(
+      const std::string& key_fragment,
+      bool copy_to_clipboard,
+      ShareConversationCallback callback,
+      const std::optional<GURL>& shared_conversation_viewer_url);
 
   void MaybeAssociateContent(
       ConversationHandler* conversation,

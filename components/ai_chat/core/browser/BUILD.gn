@@ -5,6 +5,7 @@
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/text_recognition/common/buildflags/buildflags.gni")
+import("//build/config/features.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 assert(enable_ai_chat)
@@ -153,6 +154,7 @@ static_library("browser") {
     "//third_party/re2",
     "//third_party/zlib/google:compression_utils",
     "//ui/base",
+    "//ui/base/clipboard",
     "//url",
   ]
 
@@ -242,6 +244,15 @@ source_set("unit_tests") {
       "ai_chat_database_unittest.cc",
       "sync/ai_chat_sync_conversions_unittest.cc",
     ]
+  }
+
+  if (use_blink) {
+    # The ShareConversation tests verify the clipboard copy with
+    # ui::TestClipboard, which the clipboard test support target only builds
+    # when use_blink is true. Kept in a separate file so gn check never scans
+    # its clipboard includes on non-blink builds (e.g. iOS).
+    sources += [ "ai_chat_service_share_conversation_unittest.cc" ]
+    deps += [ "//ui/base/clipboard:clipboard_test_support" ]
   }
 }
 

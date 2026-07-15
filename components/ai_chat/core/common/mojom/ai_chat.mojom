@@ -172,10 +172,19 @@ interface Service {
   // Uploads client-encrypted conversation contents to the Brave sharing server
   // so the user can share a link to view them. |encrypted_contents| is the
   // base64-encoded blob (12-byte AES-GCM IV followed by the ciphertext)
-  // produced by the UI. The returned viewer URL does not contain the decryption
-  // key - the UI appends it as a URL fragment. Returns null if sharing failed.
-  ShareConversation(string encrypted_contents)
-      => (url.mojom.Url? shared_conversation_viewer);
+  // produced by the UI. |key_fragment| is the URL-safe-base64 decryption key
+  // which is never sent to the sharing server; it is appended to the server's
+  // viewer URL as a fragment to build the full shareable link. When
+  // |copy_to_clipboard| is true, that full link is written to the system
+  // clipboard marked as confidential (excluded from clipboard history and other
+  // data-leak-prevention surfaces) - this must happen in the browser process
+  // because the renderer cannot set clipboard confidentiality flags. Returns
+  // the full shareable URL (including the key fragment), or null if sharing
+  // failed.
+  ShareConversation(string encrypted_contents,
+                    string key_fragment,
+                    bool copy_to_clipboard)
+      => (url.mojom.Url? shared_conversation_url);
 
   // Bind ability to send events to the UI and receive current state
   BindObserver(pending_remote<ServiceObserver> ui) => (ServiceState state);

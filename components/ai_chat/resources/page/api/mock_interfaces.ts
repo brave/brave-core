@@ -169,8 +169,8 @@ export function createMockService(
     conversationExists: () => Promise.resolve({ exists: true }),
     shareConversation: () =>
       Promise.resolve({
-        sharedConversationViewer: {
-          url: 'https://leo-ai.brave.app/sharing/mock-share-id',
+        sharedConversationUrl: {
+          url: 'https://leo-ai.brave.app/sharing/mock-share-id#mock-key',
         },
       }),
     createSkill: () => {},
