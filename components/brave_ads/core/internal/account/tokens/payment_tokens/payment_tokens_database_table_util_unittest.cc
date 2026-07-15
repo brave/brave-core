@@ -23,7 +23,8 @@ mojom::DBRowInfoPtr BuildPaymentTokenRow(
     const std::string& unblinded_token_base64,
     const std::string& public_key_base64,
     const std::string& confirmation_type,
-    const std::string& ad_type) {
+    const std::string& ad_type,
+    bool rfc) {
   auto mojom_db_row = mojom::DBRowInfo::New();
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(transaction_id));
@@ -35,6 +36,8 @@ mojom::DBRowInfoPtr BuildPaymentTokenRow(
       mojom::DBColumnValueUnion::NewStringValue(confirmation_type));
   mojom_db_row->column_values_union.push_back(
       mojom::DBColumnValueUnion::NewStringValue(ad_type));
+  mojom_db_row->column_values_union.push_back(
+      mojom::DBColumnValueUnion::NewBoolValue(rfc));
   return mojom_db_row;
 }
 
@@ -47,7 +50,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableUtilTest, MapAllFieldsFromMojomRow) {
   mojom::DBRowInfoPtr mojom_db_row = BuildPaymentTokenRow(
       "transaction-id", cbr::test::kUnblindedTokenBase64,
       cbr::test::kPublicKeyBase64, /*confirmation_type=*/"view",
-      /*ad_type=*/"ad_notification");
+      /*ad_type=*/"ad_notification", /*rfc=*/true);
 
   // Act
   const PaymentTokenInfo payment_token = PaymentTokenFromMojomRow(mojom_db_row);
@@ -59,7 +62,7 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableUtilTest, MapAllFieldsFromMojomRow) {
                   cbr::UnblindedToken(cbr::test::kUnblindedTokenBase64),
                   cbr::PublicKey(cbr::test::kPublicKeyBase64),
                   mojom::ConfirmationType::kViewedImpression,
-                  mojom::AdType::kNotificationAd));
+                  mojom::AdType::kNotificationAd, true));
 }
 
 }  // namespace brave_ads::database::table
