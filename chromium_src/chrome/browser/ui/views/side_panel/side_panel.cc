@@ -41,8 +41,9 @@ void UpdateContentWrapperChildCorners(views::View* content_parent_view,
   for (views::View* child : content_parent_view->children()) {
     // If the child is a WebView or paints to a layer, round its corners.
     if (views::IsViewClass<views::WebView>(child)) {
-      views::AsViewClass<views::WebView>(child)->holder()->SetCornerRadii(
-          corners);
+      views::AsViewClass<views::WebView>(child)
+          ->holder()
+          ->SetNativeViewCornerRadii(corners);
     }
     // Try to detect if the child is a views::View wrapper of a WebView. If so,
     // round its corners.
@@ -50,7 +51,7 @@ void UpdateContentWrapperChildCorners(views::View* content_parent_view,
         views::IsViewClass<views::WebView>(child->children()[0])) {
       views::AsViewClass<views::WebView>(child->children()[0])
           ->holder()
-          ->SetCornerRadii(corners);
+          ->SetNativeViewCornerRadii(corners);
     }
     if (child->layer()) {
       child->layer()->SetIsFastRoundedCorner(true);
