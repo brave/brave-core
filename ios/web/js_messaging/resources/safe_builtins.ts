@@ -40,6 +40,16 @@ class SafeBuiltins {
   // Whether or not the window.location has a web scheme (http/https/data)
   readonly windowHasWebScheme: () => boolean
 
+  // Prevents the modification of existing property attributes and values on,
+  // and prevents the addition of new properties on both the value and its
+  // prototype
+  readonly deepFreeze: (value: any) => any
+
+  // Recursively freezes an object, its prototype chain, and all of its
+  // enumerable properties/values. `exceptions` lists constructor names whose
+  // instances should be walked but left unfrozen.
+  readonly recursiveFreeze: (obj: any, exceptions?: string[]) => any
+
   constructor() {
     // Setup private refs to capture in safe builtin functions
     const webkitMessageHandlers = window.webkit.messageHandlers
@@ -93,6 +103,125 @@ class SafeBuiltins {
       }
     }
 
+    const $Object = this.$Object
+    const $Array = this.$Array
+    this.deepFreeze = (value: any): any => {
+      if (!value) {
+        return value
+      }
+      $Object.freeze(value)
+      const prototype = (value as any).prototype
+      if (prototype) {
+        $Object.freeze(prototype)
+      }
+      return value
+    }
+
+    const recursiveFreeze = (obj: any, exceptions: string[] = []): any => {
+      const primitiveTypes = $Array.of(
+        'number',
+        'string',
+        'boolean',
+        'null',
+        'undefined',
+      )
+      const isIgnoredClass = (instance: any): boolean => {
+        return (
+          instance.constructor && exceptions.includes(instance.constructor.name)
+        )
+      }
+      const freezeChild = (value: any) => {
+        if (!value || primitiveTypes.includes(typeof value)) {
+          return
+        }
+        if (value instanceof Object.getPrototypeOf(Uint8Array)) {
+          return
+        }
+        recursiveFreeze(value, exceptions)
+        if (!isIgnoredClass(value)) {
+          $Object.freeze(value)
+        }
+      }
+
+      // Do nothing to primitive types
+      if (primitiveTypes.includes(typeof obj)) {
+        return obj
+      }
+
+      if (!obj || (obj.constructor && obj.constructor.name === 'Object')) {
+        return obj
+      }
+
+      // Do nothing to these prototypes
+      if (obj === Object.prototype || obj === Function.prototype) {
+        return obj
+      }
+
+      // Do nothing for typed arrays as they only contain primitives
+      if (obj instanceof Object.getPrototypeOf(Uint8Array)) {
+        return obj
+      }
+
+      if ($Array.isArray(obj) || obj instanceof Set) {
+        for (const value of obj) {
+          freezeChild(value)
+        }
+        return isIgnoredClass(obj) ? obj : $Object.freeze(obj)
+      } else if (obj instanceof Map) {
+        for (const value of obj.values()) {
+          freezeChild(value)
+        }
+        return isIgnoredClass(obj) ? obj : $Object.freeze(obj)
+      } else if (
+        obj.constructor
+        && (obj.constructor.name === 'Function'
+          || obj.constructor.name === 'AsyncFunction'
+          || obj.constructor.name === 'GeneratorFunction')
+      ) {
+        return $Object.freeze(obj)
+      } else {
+        const prototype = $Object.getPrototypeOf(obj)
+        if (
+          prototype
+          && prototype !== Object.prototype
+          && prototype !== Function.prototype
+        ) {
+          recursiveFreeze(prototype, exceptions)
+          if (!isIgnoredClass(prototype)) {
+            $Object.freeze(prototype)
+          }
+        }
+
+        for (const value of $Object.values(obj)) {
+          freezeChild(value)
+        }
+
+        for (const name of $Object.getOwnPropertyNames(obj)) {
+          // Special handling for getters and setters because accessing them
+          // will return the value, and not the function itself.
+          const descriptor = $Object.getOwnPropertyDescriptor(obj, name)
+          if (descriptor) {
+            for (const value of $Array.of(
+              descriptor.get,
+              descriptor.set,
+              descriptor.value,
+            )) {
+              freezeChild(value)
+            }
+            descriptor.enumerable = false
+            descriptor.writable = false
+            descriptor.configurable = false
+            continue
+          }
+
+          freezeChild(obj[name])
+        }
+
+        return isIgnoredClass(obj) ? obj : $Object.freeze(obj)
+      }
+    }
+    this.recursiveFreeze = recursiveFreeze
+
     // Freeze all the safe builtins and any function we export
     for (const value of [
       this.$Object,
@@ -102,20 +231,10 @@ class SafeBuiltins {
       this.windowHasWebScheme,
       this.sendWebKitMessage,
       this.sendWebKitMessageWithReply,
+      this.deepFreeze,
+      this.recursiveFreeze,
     ]) {
       this.deepFreeze(value)
-    }
-  }
-
-  // Freeze an object and its prototype
-  private deepFreeze(value: any) {
-    if (!value) {
-      return
-    }
-    this.$Object.freeze(value)
-    const prototype = (value as any).prototype
-    if (prototype) {
-      this.$Object.freeze(prototype)
     }
   }
 
