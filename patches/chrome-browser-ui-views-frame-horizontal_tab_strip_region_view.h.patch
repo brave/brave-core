@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
-index 774e58392efa7349ecbde4f4fc4bcf4a5e010ec5..b146bf3deda1dc21bea42a8eb80a63bcac17078d 100644
+index 774e58392efa7349ecbde4f4fc4bcf4a5e010ec5..5b4509b09c83f7e8ac10363c12607e9e79bdc4d4 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h
 @@ -33,7 +33,7 @@ class TabStripControlButton;
@@ -19,7 +19,7 @@ index 774e58392efa7349ecbde4f4fc4bcf4a5e010ec5..b146bf3deda1dc21bea42a8eb80a63bc
  
    // Returns true if |point| falls within the window caption area of the
    // horizontal tab strip. Returns false if the point hits an interactive child
-@@ -115,12 +116,16 @@ class HorizontalTabStripRegionView final : public TabStripRegionView {
+@@ -115,6 +116,10 @@ class HorizontalTabStripRegionView final : public TabStripRegionView {
    bool HasLeadingButtons() const;
  
   private:
@@ -30,10 +30,12 @@ index 774e58392efa7349ecbde4f4fc4bcf4a5e010ec5..b146bf3deda1dc21bea42a8eb80a63bc
    // Updates the border padding for `new_tab_button_`.  This should be called
    // whenever any input of the computation of the border's sizing changes.
    void UpdateButtonBorders();
- 
-   // Updates the left and right margins for the tab strip.
--  void UpdateTabStripMargin();
-+  virtual void UpdateTabStripMargin();
+@@ -123,7 +128,7 @@ class HorizontalTabStripRegionView final : public TabStripRegionView {
+   void UpdateTabStripMargin();
  
    // Gets called on `Layout` and adjusts the x-axis position of the `view` based
-   // on `offset`. This should only used for views that show before tab strip.
+-  // on `offset`. This should only used for views that show before tab strip.
++  // on `offset`virtual . This should only used for views that show before tab strip.
+   void AdjustViewBoundsRect(View* view, int offset);
+ 
+   bool tab_strip_set_ = false;

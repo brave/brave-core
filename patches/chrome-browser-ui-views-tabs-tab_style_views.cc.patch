@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_style_views.cc b/chrome/browser/ui/views/tabs/tab_style_views.cc
-index ed475c06560080d34de24d40f29a21dfd38991d5..5f99e7899172fd13d5d673a90f631e789f612ef6 100644
+index ed475c06560080d34de24d40f29a21dfd38991d5..226d1886a41a57ea94f2ffae54c126fbd53082f1 100644
 --- a/chrome/browser/ui/views/tabs/tab_style_views.cc
 +++ b/chrome/browser/ui/views/tabs/tab_style_views.cc
-@@ -80,19 +80,19 @@ class TabStyleViewsImpl : public TabStyleViews {
+@@ -80,13 +80,13 @@ class TabStyleViewsImpl : public TabStyleViews {
      return hover_controller_.get();
    }
  
@@ -12,46 +12,48 @@ index ed475c06560080d34de24d40f29a21dfd38991d5..5f99e7899172fd13d5d673a90f631e78
    SkColor GetTabSeparatorColor() const;
  
    // Painting helper functions:
--  SkColor GetCurrentTabBackgroundColor(
-+  virtual SkColor GetCurrentTabBackgroundColor(
-       TabStyle::TabSelectionState selection_state,
+   SkColor GetCurrentTabBackgroundColor(
+-      TabStyle::TabSelectionState selection_state,
++      TabStyle::TabSelectionState selection_statevirtual ,
        bool hovered) const;
  
    // Returns the thickness of the stroke drawn around the top and sides of the
-   // tab. Only active tabs may have a stroke, and not in all cases. If there
-   // is no stroke, returns 0.
--  int GetStrokeThickness() const;
-+  virtual int GetStrokeThickness() const;
+@@ -95,7 +95,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   int GetStrokeThickness() const;
  
    bool ShouldPaintTabBackgroundColor(
-       TabStyle::TabSelectionState selection_state,
-@@ -110,7 +110,7 @@ class TabStyleViewsImpl : public TabStyleViews {
-   // Returns a single separator's opacity based on whether it is the
-   // logically `leading` separator. `for_layout` has the same meaning as in
+-      TabStyle::TabSelectionState selection_state,
++      TabStyle::TabSelevirtual ctionState selection_state,
+       bool has_custom_background) const;
+ 
+   // Scales `bounds` by scale and aligns so that adjacent tabs meet up exactly
+@@ -112,7 +112,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // GetSeparatorOpacities().
--  float GetSeparatorOpacity(bool for_layout, bool leading) const;
-+  virtual float GetSeparatorOpacity(bool for_layout, bool leading) const;
+   float GetSeparatorOpacity(bool for_layout, bool leading) const;
  
-   // Helper that returns an interpolated opacity if the tab or its neighbor
+-  // Helper that returns an interpolated opacity if the tab or its neighbor
++  // Helper that returns an interpolated opacitvirtual y if the tab or its neighbor
    // `other_tab` is mid-hover-animation. Used in almost all cases when a
-@@ -122,7 +122,7 @@ class TabStyleViewsImpl : public TabStyleViews {
-   TabStyle::TabSelectionState GetSelectionState() const;
- 
+   // separator is shown, since hovering is independent of tab state.
+   // `for_layout` has the same meaning as in GetSeparatorOpacities().
+@@ -124,7 +124,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // Gets the bounds for the leading and trailing separators for a tab.
--  TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
-+  virtual TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
+   TabStyle::SeparatorBounds GetSeparatorBounds(float scale) const;
  
-   // Returns the opacities of the separators. If `for_layout` is true, returns
+-  // Returns the opacities of the separators. If `for_layout` is true, returns
++  // Returns the opacities of the separators. If `for_layovirtual ut` is true, returns
    // the "layout" opacities, which ignore the effects of surrounding tabs' hover
-@@ -130,7 +130,7 @@ class TabStyleViewsImpl : public TabStyleViews {
+   // effects and consider only the current tab's state.
    TabStyle::SeparatorOpacities GetSeparatorOpacities(bool for_layout) const;
- 
-   // Returns whether the mouse is currently hovering this tab.
--  bool IsHovering() const;
-+  virtual bool IsHovering() const;
- 
+@@ -135,7 +135,7 @@ class TabStyleViewsImpl : public TabStyleViews {
    // Returns whether the hover animation is being shown.
    bool IsHoverAnimationActive() const;
+ 
+-  // Returns the opacity of the hover effect that should be drawn, which may not
++  // Retuvirtual rns the opacity of the hover effect that should be drawn, which may not
+   // be the same as GetHoverAnimationValue.
+   float GetHoverOpacity() const;
+ 
 @@ -341,6 +341,7 @@ SkPath TabStyleViewsImpl::GetPath(TabStyle::PathType path_type,
      extension_corner_radius -= 0.5f * stroke_adjustment;
    }

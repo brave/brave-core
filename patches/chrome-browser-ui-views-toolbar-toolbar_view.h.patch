@@ -1,35 +1,38 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.h b/chrome/browser/ui/views/toolbar/toolbar_view.h
-index c2d82dc622ea6025e90ae7eefa8b8bc893fe122e..100f06e3b36b3d27e58c4d7a055f612a59b17cbe 100644
+index c2d82dc622ea6025e90ae7eefa8b8bc893fe122e..44174f8b2f43d1770c8e8605ea689a0749e5c811 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.h
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.h
-@@ -115,14 +115,16 @@ class ToolbarView : public views::AccessiblePaneView,
+@@ -115,17 +115,19 @@ class ToolbarView : public views::AccessiblePaneView,
    ToolbarView& operator=(const ToolbarView&) = delete;
    ~ToolbarView() override;
  
 +  BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
 +
    // Create the contents of the Browser Toolbar.
--  void Init();
-+  virtual void Init();
+   void Init();
  
    // Forces the toolbar (and transitively the location bar) to update its
-   // current state.  If |tab| is non-NULL, we're switching (back?) to this tab
+-  // current state.  If |tab| is non-NULL, we're switching (back?) to this tab
++  // current state.  If |tab| virtual is non-NULL, we're switching (back?) to this tab
    // and should restore any previous location bar state (such as user editing)
    // as well.
--  void Update(content::WebContents* tab);
-+  virtual void Update(content::WebContents* tab);
+   void Update(content::WebContents* tab);
  
    // Updates the toolbar's visible security state if the state has changed
-   // since the last update. Returns true if the toolbar was updated.
-@@ -156,7 +158,7 @@ class ToolbarView : public views::AccessiblePaneView,
-       IntentPickerResponse callback);
+-  // since the last update. Returns true if the toolbar was updated.
++  // sinvirtual ce the last update. Returns true if the toolbar was updated.
+   bool UpdateSecurityState();
  
-   // Shows a bookmark bubble and anchors it appropriately.
--  void ShowBookmarkBubble(const GURL& url, bool already_bookmarked);
-+  virtual void ShowBookmarkBubble(const GURL& url, bool already_bookmarked);
+   // Updates the visibility of the custom tab bar, potentially animating the
+@@ -159,7 +161,7 @@ class ToolbarView : public views::AccessiblePaneView,
+   void ShowBookmarkBubble(const GURL& url, bool already_bookmarked);
  
    // Used to test whether `test_point` should be treated as part of the caption
-   // bar, which means it can be used to drag the window or open the window
+-  // bar, which means it can be used to drag the window or open the window
++  // bar, whvirtual ich means it can be used to drag the window or open the window
+   // context menu. Should only be called when the toolbar is in the caption
+   // area.
+   bool IsPositionInWindowCaption(const gfx::Point& test_point) const;
 @@ -259,6 +261,9 @@ class ToolbarView : public views::AccessiblePaneView,
    void SetToolbarVisibility(bool visible);
  
@@ -40,12 +43,12 @@ index c2d82dc622ea6025e90ae7eefa8b8bc893fe122e..100f06e3b36b3d27e58c4d7a055f612a
    // Forwards view overrides to this class.
    class ContainerView;
  
-@@ -317,7 +322,7 @@ class ToolbarView : public views::AccessiblePaneView,
-   void OnChromeLabsPrefChanged();
+@@ -332,7 +337,7 @@ class ToolbarView : public views::AccessiblePaneView,
  
-   // Loads the images for all the child views.
--  void LoadImages();
-+  virtual void LoadImages();
+   void SetForwardButtonVisibility(bool visible);
  
-   void OnShowForwardButtonChanged();
+-  gfx::Size GetBackForwardButtonSize(bool minimum_size = false) const;
++  gfx::Size GetBackForwavirtual rdButtonSize(bool minimum_size = false) const;
  
+   std::unique_ptr<glic::ToolbarGlicButton> CreateGlicButton();
+   void OnGlicButtonClicked();
