@@ -31,6 +31,7 @@ from pathlib import Path, PurePosixPath
 import subprocess
 from typing import Any
 
+from engine_env import merge_envs
 import post_process as pp
 from recipe_test_api import StepTestData, TestData
 
@@ -96,7 +97,8 @@ class SubprocessStepRunner:
 
     def run(self, step: dict, *, check: bool,
             capture_output: bool) -> subprocess.CompletedProcess:
-        import platform  # Local import: only the prod path needs it.
+        import os  # Local imports: only the prod path needs these.
+        import platform
         import shutil
 
         cmd = [str(arg) for arg in step['cmd']]
@@ -107,9 +109,20 @@ class SubprocessStepRunner:
             if resolved is None:
                 raise RuntimeError(f'Command not found: {cmd[0]}')
             cmd[0] = resolved
+
+        # Compose the child environment from the context module's overrides and
+        # path affixes over the real environment; when nothing was set, inherit
+        # the parent environment unchanged (env=None).
+        overrides = step.get('env')
+        prefixes = step.get('env_prefixes')
+        suffixes = step.get('env_suffixes')
+        env = None
+        if overrides or prefixes or suffixes:
+            env = merge_envs(os.environ, overrides or {}, prefixes or {},
+                             suffixes or {}, os.pathsep)
         return subprocess.run(cmd,
                               cwd=step.get('cwd'),
-                              env=step.get('env'),
+                              env=env,
                               check=check,
                               capture_output=capture_output,
                               text=True)
@@ -140,7 +153,18 @@ class SimulationStepRunner:
         if step.get('cwd'):
             record['cwd'] = str(step['cwd'])
         if step.get('env'):
-            record['env'] = {k: str(v) for k, v in step['env'].items()}
+            # A `None` value means "remove this variable"; preserve it (rather
+            # than stringifying to 'None') so it renders as null.
+            record['env'] = {
+                k: (None if v is None else str(v))
+                for k, v in step['env'].items()
+            }
+        for affix in ('env_prefixes', 'env_suffixes'):
+            if step.get(affix):
+                record[affix] = {
+                    k: [str(v) for v in values]
+                    for k, values in step[affix].items()
+                }
         if data.retcode:
             record['retcode'] = data.retcode
         self.recorded_steps.append(record)
@@ -233,9 +257,15 @@ def build_steps(runner: SimulationStepRunner, status: str, reason: str | None,
             entry['cwd'] = stabilize(step['cwd'], context)
         if 'env' in step:
             entry['env'] = {
-                k: stabilize(v, context)
+                k: (None if v is None else stabilize(v, context))
                 for k, v in step['env'].items()
             }
+        for affix in ('env_prefixes', 'env_suffixes'):
+            if affix in step:
+                entry[affix] = {
+                    k: [stabilize(v, context) for v in values]
+                    for k, values in step[affix].items()
+                }
         if 'retcode' in step:
             entry['retcode'] = step['retcode']
         steps[step['name']] = entry

@@ -25,6 +25,11 @@ class StepApi(RecipeApi):
     Windows command resolution); under test the engine seeds a
     `SimulationStepRunner` that records the step and returns canned data, so no
     subprocess runs.
+
+    Each step's cwd and environment are drawn from the ambient `context` module
+    (`with api.context(...)`): the step inherits `context.cwd` and applies
+    `context.env` / `env_prefixes` / `env_suffixes`. Explicit `cwd` / `env`
+    arguments, when given, layer on top of that ambient state.
     """
 
     def __init__(self) -> None:
@@ -58,8 +63,10 @@ class StepApi(RecipeApi):
             name: Human-readable step name, logged before the command runs.
             cmd: The program and its arguments as a sequence; each element is
                 stringified (so `Path` objects are fine).
-            cwd: Optional working directory for the subprocess.
-            env: Optional environment mapping; inherits the parent when `None`.
+            cwd: Working directory override for the subprocess; defaults to
+                `context.cwd` (and, when neither is set, the engine's cwd).
+            env: Whole-variable environment overrides layered on top of
+                `context.env` (the explicit value wins per key).
             check: Raise `CalledProcessError` on non-zero exit when True.
             capture_output: Capture stdout/stderr (as text) instead of
                 inheriting the parent's streams.
@@ -71,11 +78,19 @@ class StepApi(RecipeApi):
             subprocess.CalledProcessError: If `check` and the process fails.
             RuntimeError: On Windows, if the command cannot be resolved.
         """
+        # Draw cwd/env from the ambient context, letting explicit arguments
+        # override. The env overrides and the path prefix/suffix affixes are
+        # carried separately so the runner can compose them (production) or
+        # record them (simulation), mirroring recipe_engine's split.
+        context = self.m.context
+        env_overrides = {**context.env, **(env or {})}
         step = {
             'name': name,
             'cmd': [str(arg) for arg in cmd],
-            'cwd': cwd,
-            'env': env,
+            'cwd': cwd if cwd is not None else context.cwd,
+            'env': env_overrides or None,
+            'env_prefixes': context.env_prefixes,
+            'env_suffixes': context.env_suffixes,
         }
         logging.info('[step] %s\n >>>> %s', name, ' '.join(step['cmd']))
         return self._runner().run(step,
