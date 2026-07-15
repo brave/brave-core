@@ -11,6 +11,7 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_features.h"
 #include "chrome/common/chrome_paths.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -213,8 +214,9 @@ class HSTSPartitioningEnabledBrowserTest
     : public HSTSPartitioningBrowserTestBase {
  public:
   HSTSPartitioningEnabledBrowserTest() {
-    scoped_feature_list_.InitAndEnableFeature(
-        net::features::kBravePartitionHSTS);
+    // Disable kHttpsUpgrades because tests designed to use http pages.
+    scoped_feature_list_.InitWithFeatures({net::features::kBravePartitionHSTS},
+                                          {features::kHttpsUpgrades});
   }
 
  private:
@@ -541,11 +543,12 @@ class HSTSSameDomainPartitionUsesOldFormatBrowserTest
  public:
   HSTSSameDomainPartitionUsesOldFormatBrowserTest() {
     if (IsPreTest()) {
-      scoped_feature_list_.InitAndDisableFeature(
-          net::features::kBravePartitionHSTS);
+      // Disable kHttpsUpgrades because tests designed to use http pages.
+      scoped_feature_list_.InitWithFeatures(
+          {}, {net::features::kBravePartitionHSTS, features::kHttpsUpgrades});
     } else {
-      scoped_feature_list_.InitAndEnableFeature(
-          net::features::kBravePartitionHSTS);
+      scoped_feature_list_.InitWithFeatures(
+          {net::features::kBravePartitionHSTS}, {features::kHttpsUpgrades});
     }
   }
 
@@ -617,8 +620,9 @@ class HSTSPartitioningDisabledBrowserTest
     : public HSTSPartitioningBrowserTestBase {
  public:
   HSTSPartitioningDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        net::features::kBravePartitionHSTS);
+    // Disable kHttpsUpgrades because tests designed to use http pages.
+    scoped_feature_list_.InitWithFeatures(
+        {}, {net::features::kBravePartitionHSTS, features::kHttpsUpgrades});
   }
 
  private:

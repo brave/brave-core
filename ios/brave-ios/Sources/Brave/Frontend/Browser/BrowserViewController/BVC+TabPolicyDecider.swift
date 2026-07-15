@@ -602,28 +602,14 @@ extension BrowserViewController {
   }
 
   /// Determines if the given url should be upgraded from http to https.
+  /// Uses Chromium HTTPS upgrade allowlist semantics (not Shields settings).
   fileprivate func shouldUpgradeToHttps(url: URL, isPrivate: Bool) -> Bool {
-    guard FeatureList.kBraveHttpsByDefault.enabled,
-      let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
+    guard let httpUpgradeService = HttpsUpgradeServiceFactory.get(privateMode: isPrivate),
       url.scheme == "http", let host = url.host
     else {
       return false
     }
-    let isInUserAllowList = httpUpgradeService.isHttpAllowed(forHost: host)
-    let shouldUpgrade: Bool
-    switch Preferences.Shields.httpsUpgradeLevel {
-    case .strict:
-      // Always upgrade for Strict HTTPS upgrade unless previously allowed by user.
-      shouldUpgrade = !isInUserAllowList
-    case .standard:
-      // Upgrade for Standard HTTPS upgrade if host is not on the exceptions list and not previously allowed by user.
-      shouldUpgrade =
-        braveCore.httpsUpgradeExceptionsService.canUpgradeToHTTPS(for: url)
-        && !isInUserAllowList
-    case .disabled:
-      shouldUpgrade = false
-    }
-    return shouldUpgrade
+    return !httpUpgradeService.isHttpAllowed(forHost: host)
   }
 
   /// Upon an invalid response, check that we need to roll back any HTTPS upgrade

@@ -58,7 +58,6 @@ source_set("app") {
     "//brave/ios/browser/api/brave_wallet:wallet_mojom_wrappers",
     "//brave/ios/browser/api/content_settings",
     "//brave/ios/browser/api/history",
-    "//brave/ios/browser/api/https_upgrade_exceptions",
     "//brave/ios/browser/api/ipfs",
     "//brave/ios/browser/api/ntp_background_images",
     "//brave/ios/browser/api/opentabs",

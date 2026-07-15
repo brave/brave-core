@@ -34,7 +34,6 @@
 #include "brave/ios/app/brave_profile_controller.h"
 #include "brave/ios/browser/api/brave_shields/adblock_service+private.h"
 #include "brave/ios/browser/api/brave_user_agent/brave_user_agent_exceptions_ios+private.h"
-#include "brave/ios/browser/api/https_upgrade_exceptions/https_upgrade_exceptions_service+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils+private.h"
 #include "brave/ios/browser/api/p3a/brave_p3a_utils.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
@@ -79,8 +78,6 @@ const BraveCoreLogSeverity BraveCoreLogSeverityVerbose =
 }
 @property(nonatomic) BraveProfileController* profileController;
 @property(nonatomic) BraveP3AUtils* p3aUtils;
-@property(nonatomic)
-    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 @property(nonatomic) BraveUserAgentExceptionsIOS* braveUserAgentExceptions;
 @end
 
@@ -288,14 +285,6 @@ static bool CustomLogHandler(int severity,
 }
 
 #pragma mark -
-
-- (HTTPSUpgradeExceptionsService*)httpsUpgradeExceptionsService {
-  if (!_httpsUpgradeExceptionsService) {
-    _httpsUpgradeExceptionsService =
-        [[HTTPSUpgradeExceptionsService alloc] init];
-  }
-  return _httpsUpgradeExceptionsService;
-}
 
 - (BraveUserAgentExceptionsIOS*)braveUserAgentExceptions {
   if (!_braveUserAgentExceptions) {

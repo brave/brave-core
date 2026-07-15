@@ -144,14 +144,6 @@ const flags_ui::FeatureEntry::FeatureVariation
               brave_shields::features::kBraveShieldsContentSettingsIOS),       \
       },                                                                       \
       {                                                                        \
-          "https-by-default",                                                  \
-          "Use HTTPS by Default",                                              \
-          "Attempt to connect to all websites using HTTPS before falling "     \
-          "back to HTTP.",                                                     \
-          flags_ui::kOsIos,                                                    \
-          FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
-      },                                                                       \
-      {                                                                        \
           "block-all-cookies-toggle",                                          \
           "If the feature flag is on, we show the Block all Cookies toggle",   \
           "If the feature flag is on, we show the Block all Cookies toggle",   \
