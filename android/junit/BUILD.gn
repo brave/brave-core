@@ -183,6 +183,7 @@ if (is_android) {
     sources = [
       "src/org/chromium/chrome/browser/ntp/BraveNewTabPageUtilUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/BraveNewTabTakeoverInfobarTest.java",
+      "src/org/chromium/chrome/browser/ntp/BraveNtpTopSitesModeUnitTest.java",
       "src/org/chromium/chrome/browser/ntp/NewTabTakeoverSafeAreaReporterTest.java",
     ]
 
@@ -204,6 +205,27 @@ if (is_android) {
     sources = [ "src/org/chromium/chrome/browser/suggestions/BraveSuggestionsConfigTest.java" ]
 
     deps = [ "//chrome/android/junit:chrome_junit_tests_helper" ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.suggestions.mostvisited") {
+    sources = [ "src/org/chromium/chrome/browser/suggestions/mostvisited/BraveMostVisitedSitesTest.java" ]
+    deps = [
+      "//brave/browser/ntp_customization:java",
+      "//chrome/android/junit:chrome_junit_tests_helper",
+    ]
+  }
+
+  robolectric_library(
+      "brave_junit_tests_org.chromium.chrome.browser.suggestions.tile") {
+    sources = [
+      "src/org/chromium/chrome/browser/suggestions/tile/BraveTileViewTest.java",
+    ]
+    deps = [
+      "//chrome/android/junit:chrome_junit_tests_helper",
+      "//components/browser_ui/test/android:test_support_java",
+      "//components/browser_ui/widget/android:java",
+    ]
   }
 
   robolectric_library("brave_junit_tests_org.chromium.chrome.browser.tasks") {

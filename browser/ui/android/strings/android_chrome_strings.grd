@@ -8031,6 +8031,20 @@ To change this setting, <ph name="BEGIN_LINK">BEGIN_LINK</ph>delete the Brave da
       <message name="IDS_ENTERPRISE_SIGNALS_DISCLAIMER_SHEET_CLOSED" desc="Accessibility string read when the Enterprise Signals Disclaimer bottom sheet is closed.">
         Enterprise signals disclaimer bottom sheet is closed
       </message>
+
+      <!-- NTP top-sites long-press menu -->
+      <message name="IDS_BRAVE_NTP_ADD_SITE" desc="Menu item to manually add a site shortcut to the NTP top-sites widget.">
+        Add site
+      </message>
+      <message name="IDS_BRAVE_NTP_SHOW_FREQUENTLY_VISITED" desc="Menu item to switch the NTP top-sites widget to show frequently visited sites from browser history.">
+        Show frequently visited
+      </message>
+      <message name="IDS_BRAVE_NTP_SHOW_SHORTCUTS" desc="Menu item to switch the NTP top-sites widget to show pinned shortcuts (favorites).">
+        Show shortcuts
+      </message>
+      <message name="IDS_BRAVE_NTP_HIDE_WIDGET" desc="Menu item to hide the NTP top-sites widget entirely.">
+        Hide widget
+      </message>
     </messages>
   </release>
 </grit>
