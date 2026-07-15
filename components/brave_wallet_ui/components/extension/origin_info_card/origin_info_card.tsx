@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Images
 import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
+import PlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -59,15 +60,10 @@ export const OriginInfoCard = (props: Props) => {
 
   const originDisplayName = dapp ? dapp.name : origin.eTldPlusOne
 
-  const dappIcon = dapp
-    ? isStorybook
-      ? dapp.logo
-      : `chrome://image?url=${encodeURIComponent(dapp.logo)}&staticEncode=true`
-    : undefined
-
-  const iconSrc =
-    dappIcon
-    ?? 'chrome://favicon2?size=64&pageUrl='
+  // In Storybook, show a placeholder icon.
+  const iconSrc = isStorybook
+    ? PlaceholderIcon
+    : 'chrome://favicon2?size=64&pageUrl='
       + encodeURIComponent(origin.originSpec)
 
   return (
