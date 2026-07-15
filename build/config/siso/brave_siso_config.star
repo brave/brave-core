@@ -5,9 +5,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Siso configuration adjustments for Brave browser."""
 
+load("@builtin//encoding.star", "json")
 load("@builtin//lib/gn.star", "gn")
+load("@builtin//path.star", "path")
 load("@builtin//runtime.star", "runtime")
 load("@builtin//struct.star", "module", "struct")
+load("./tsc.star", "tsc")
 
 __HOST_OS_IS_LINUX = runtime.os == "linux"
 __HOST_OS_IS_WINDOWS = runtime.os == "windows"
@@ -156,6 +159,12 @@ def __adjust_filegroups(step_config, filegroups):
 def __adjust_handlers(ctx, step_config, handlers):
     # Register the default redirect_cc handler.
     handlers["redirect_cc"] = __redirect_cc_handler
+
+    # Our `webui_eslint_ts` handler can read `--tsconfig` from the GN response
+    # file.
+    if "webui_eslint_ts" in handlers:
+        handlers["webui_eslint_ts"] = __webui_eslint_ts_handler
+
     found_clang_rule = False
 
     # Adjust rules.
@@ -172,6 +181,7 @@ def __adjust_handlers(ctx, step_config, handlers):
                 "blink",
                 "grit",
                 "mojo",
+                "webui",
         )):
             __set_rule_timeout(rule, "15m")
             __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers)
@@ -345,6 +355,99 @@ def __wrap_python_with_chromium_src_inputs_handler(ctx, rule, handlers):
         ])
 
     rule["handler"] = new_handler_name
+
+
+# Splits GN response file contents into argument tokens (by newline, then space).
+def __tokenize_rspfile(rspfile_content):
+    tokens = []
+    for line in str(rspfile_content).split("\n"):
+        for token in line.split(" "):
+            if token:
+                tokens.append(token)
+    return tokens
+
+
+# Returns the value following `--tsconfig` in an argument list, or None.
+def __find_tsconfig_arg(argv):
+    for i, arg in enumerate(argv):
+        if arg == "--tsconfig" and i + 1 < len(argv):
+            return argv[i + 1]
+    return None
+
+
+# Our replacement for upstream `webui_eslint_ts`. We routes eslint_ts.py args
+# through a GN response file (eslint_ts.gni patch), hiding `--tsconfig` from the
+# upstream handler. Read it from the rspfile when absent from argv.
+def __webui_eslint_ts_handler(ctx, cmd):
+    tsconfig_path = __find_tsconfig_arg(cmd.args)
+    if not tsconfig_path:
+        tsconfig_path = __find_tsconfig_arg(
+            __tokenize_rspfile(cmd.rspfile_content))
+    if not tsconfig_path:
+        return cmd
+
+    tsconfig_path = ctx.fs.canonpath(tsconfig_path)
+    tsconfig = {}
+    if ctx.fs.exists(tsconfig_path):
+        tsconfig = json.decode(str(ctx.fs.read(tsconfig_path)))
+
+    # scandeps ships the tsconfig graph's source, not the referenced composite
+    # projects' compiled `.d.ts` outputs (resolved via `paths`, e.g.
+    # `//resources/cr_elements/*`). Upstream ships those via `indirect_inputs`,
+    # but we drop the `typescript/ts_library` rule (__RULES_TO_REMOVE), so
+    # let's add them explicitly.
+    deps = tsc.scandeps(ctx, tsconfig_path, tsconfig)
+    ref_dts = []
+    __collect_reference_dts(ctx, tsconfig_path, tsconfig, {}, ref_dts)
+
+    new_inputs = cmd.inputs + deps + ref_dts
+    ctx.actions.fix(inputs = new_inputs)
+    return __evolve_struct(cmd, inputs = new_inputs)
+
+
+# Maps a composite tsconfig's source `files` (under `rootDir`) to their `.d.ts`
+# outputs (under `outDir`). These build outputs aren't in any `files` array, so
+# scandeps misses them.
+def __declaration_outputs(tsconfig_path, tsconfig):
+    co = tsconfig.get("compilerOptions", {})
+    if not co.get("declaration"):
+        return []
+    out_dir = co.get("outDir")
+    if not out_dir:
+        return []
+    root_dir = co.get("rootDir", ".")
+    tsconfig_dir = path.dir(tsconfig_path)
+    outputs = []
+    for f in tsconfig.get("files", []):
+        # Skip declaration inputs (already shipped) and non-TS entries.
+        if not f.endswith(".ts") or f.endswith(".d.ts"):
+            continue
+        rel = f
+        if root_dir and root_dir != ".":
+            prefix = root_dir + "/"
+            if rel.startswith(prefix):
+                rel = rel[len(prefix):]
+            else:
+                # File lives outside rootDir and it has no output under outDir.
+                continue
+        outputs.append(path.join(tsconfig_dir, out_dir, rel[:-3] + ".d.ts"))
+    return outputs
+
+
+# Walks the tsconfig `references` graph and collects the declaration outputs of
+# every referenced composite project (transitively).
+def __collect_reference_dts(ctx, tsconfig_path, tsconfig, seen, outputs):
+    tsconfig_dir = path.dir(tsconfig_path)
+    for ref in tsconfig.get("references", []):
+        ref_path = path.join(tsconfig_dir, ref["path"])
+        if ref_path in seen:
+            continue
+        seen[ref_path] = True
+        if not ctx.fs.exists(ref_path):
+            continue
+        ref_tsconfig = json.decode(str(ctx.fs.read(ref_path)))
+        outputs.extend(__declaration_outputs(ref_path, ref_tsconfig))
+        __collect_reference_dts(ctx, ref_path, ref_tsconfig, seen, outputs)
 
 
 # Adds chromium_src override files as inputs to commands for supported file types
