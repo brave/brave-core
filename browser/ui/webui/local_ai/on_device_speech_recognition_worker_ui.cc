@@ -7,7 +7,6 @@
 
 #include <memory>
 
-#include "brave/components/local_ai/core/local_ai.mojom.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated_map.h"
@@ -37,8 +36,8 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
   source->OverrideCrossOriginEmbedderPolicy("require-corp");
 
   // Tighten the fallback that SetupWebUIDataSource set to 'self' down to
-  // 'none', so every directive we do not explicitly grant below (img, media,
-  // object, frame, manifest, ...) is denied without a per-directive line.
+  // 'none', so every directive without an explicit grant (img, media, object,
+  // frame, manifest, ...) is denied without a per-directive line.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::DefaultSrc, "default-src 'none';");
 
@@ -61,10 +60,11 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ConnectSrc, "connect-src 'self';");
 
-  // These directives have no default-src fallback, so default-src 'none' above
-  // does NOT cover them. They must be denied explicitly. base-uri blocks a
-  // <base> tag from repointing relative URLs, form-action blocks form-based
-  // egress, and frame-ancestors stops any page from embedding this worker.
+  // These directives have no default-src fallback, so setting default-src to
+  // 'none' does NOT cover them. They must be denied explicitly. base-uri
+  // blocks a <base> tag from repointing relative URLs, form-action blocks
+  // form-based egress, and frame-ancestors stops any page from embedding this
+  // worker.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::BaseURI, "base-uri 'none';");
   source->OverrideContentSecurityPolicy(
@@ -74,14 +74,13 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
       "frame-ancestors 'none';");
 
   // Trusted Types enforcement (`require-trusted-types-for 'script'`) is set
-  // unconditionally by SetupWebUIDataSource above and is not disabled here.
+  // unconditionally by SetupWebUIDataSource and is not disabled here.
   // onnxruntime-web spawns its thread pool via `new Worker(<url string>)`,
-  // which that enforcement routes through the `default` policy
-  // (installed in speech_worker.ts, accepting solely our own same-origin
-  // worker glue). This line only narrows the broad policy
-  // allowlist SetupWebUIDataSource sets down to what this page uses; the
-  // `default` policy name it relies on is appended automatically by Brave's
-  // chromium_src override of WebUIDataSourceImpl.
+  // which that enforcement routes through the `default` policy (installed in
+  // speech_worker.ts, accepting solely our own same-origin worker glue). This
+  // line only narrows the broad policy allowlist SetupWebUIDataSource sets down
+  // to what this page uses; the `default` policy name it relies on is appended
+  // automatically by Brave's chromium_src override of WebUIDataSourceImpl.
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types;");
 }

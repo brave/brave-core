@@ -8,9 +8,7 @@
 
 #include <memory>
 
-#include "brave/components/local_ai/core/local_ai.mojom-forward.h"
 #include "content/public/browser/webui_config.h"
-#include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 
 namespace local_ai {
