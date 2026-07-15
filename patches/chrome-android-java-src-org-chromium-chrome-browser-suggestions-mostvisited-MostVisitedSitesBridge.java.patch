@@ -1,0 +1,17 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/mostvisited/MostVisitedSitesBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/mostvisited/MostVisitedSitesBridge.java
+index 6ba83345463a509f0c128fbfba03ca8f437b4421..734c222dd5111d386bed17d757926303f8f45530 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/suggestions/mostvisited/MostVisitedSitesBridge.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/suggestions/mostvisited/MostVisitedSitesBridge.java
+@@ -33,7 +33,11 @@ public class MostVisitedSitesBridge implements MostVisitedSites {
+      * @param profile The profile for which to fetch most visited sites.
+      */
+     public MostVisitedSitesBridge(Profile profile) {
+-        boolean enableCustomLinks = ChromeFeatureList.sMostVisitedTilesCustomization.isEnabled();
++        this(profile, ChromeFeatureList.sMostVisitedTilesCustomization.isEnabled());
++    }
++
++    /** Package-visible constructor that allows callers to control the custom-links flag. */
++    MostVisitedSitesBridge(Profile profile, boolean enableCustomLinks) {
+         mNativeMostVisitedSitesBridge =
+                 MostVisitedSitesBridgeJni.get().init(profile, enableCustomLinks);
+     }

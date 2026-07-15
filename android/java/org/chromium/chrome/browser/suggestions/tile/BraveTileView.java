@@ -16,6 +16,7 @@ import androidx.core.widget.ImageViewCompat;
 import org.chromium.base.Log;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.R;
+import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.tile.TileView;
@@ -27,6 +28,15 @@ public class BraveTileView extends TileView {
 
     public BraveTileView(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public void togglePinnedShortcutBadge(boolean isVisible) {
+        // In "Show shortcuts" mode every tile is a custom link, so the badge that distinguishes
+        // manually-added shortcuts from frequently-visited ones is redundant on every tile. Only
+        // show it in the mode where both kinds of tile can appear together.
+        super.togglePinnedShortcutBadge(
+                isVisible && NtpUtil.getTopSitesDisplayMode() != NtpUtil.TOP_SITES_MODE_SHORTCUTS);
     }
 
     @Override
