@@ -12,8 +12,17 @@
     html,
     body {
       margin: 0;
+      overflow: hidden;
       font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
         'Helvetica Neue', Arial, sans-serif;
+    }
+
+    /* Shrink-wrap the panel so Cr151+ WebUI bubble autosize (scrollWidth)
+       follows PanelWrapper instead of any overflowing descendants. */
+    #mountPoint {
+      width: max-content;
+      max-width: 100%;
+      overflow: hidden;
     }
   </style>
 </head>

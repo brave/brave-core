@@ -17,6 +17,10 @@ export const PanelWrapper = styled.div<{
   width: ${(p) => (p.width ? p.width : 320)}px;
   height: ${(p) => (p.height ? p.height : p.isLonger ? 540 : 400)}px;
   background-color: ${leo.color.page.background};
+  /* Cr151+ bubble autosize uses document scrollWidth; clip overflow so
+     absolute/fixed children cannot inflate the panel beyond its set size. */
+  overflow: hidden;
+  contain: layout;
 `
 
 export const WelcomePanelWrapper = styled.div`
@@ -25,6 +29,8 @@ export const WelcomePanelWrapper = styled.div`
   justify-content: center;
   width: 320px;
   height: 250px;
+  overflow: hidden;
+  contain: layout;
 `
 
 export const SendWrapper = styled.div`
