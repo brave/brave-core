@@ -10,9 +10,11 @@ import re
 import sys
 
 import brave_chromium_utils
-import brave_node
 import chromium_presubmit_overrides
 import override_utils
+
+with brave_chromium_utils.sys_path('//third_party/node'):
+    import node
 
 PRESUBMIT_VERSION = '2.0.0'
 
@@ -43,11 +45,12 @@ def CheckLeoVariables(input_api, output_api):
 
     try:
         parts = [
-            brave_node.PathInNodeModules('@brave', 'leo', 'src', 'scripts',
-                                         'audit-tokens.js'), '--ignore',
-            '.storybook-out'
+            brave_chromium_utils.wspath(
+                '//brave/node_modules/@brave/leo/src/scripts/audit-tokens.js'),
+            '--ignore',
+            '.storybook-out',
         ]
-        brave_node.RunNode(parts, include_command_in_error=False)
+        node.RunNode(parts)
         return []
     except RuntimeError as err:
         return [output_api.PresubmitError(str(err))]
@@ -144,7 +147,7 @@ def CheckPatchFormatted(input_api, output_api):
     if not input_api.PRESUBMIT_FIX:
         cmd.append('--dry-run')
     try:
-        brave_node.RunNode(cmd, include_command_in_error=False)
+        node.RunNode(cmd)
         return []
     except RuntimeError as err:
         return [
@@ -166,7 +169,7 @@ def CheckESLint(input_api, output_api):
         if input_api.PRESUBMIT_FIX:
             cmd.append('--fix')
         try:
-            brave_node.RunNode(cmd, include_command_in_error=False)
+            node.RunNode(cmd)
             return []
         except RuntimeError as err:
             return [

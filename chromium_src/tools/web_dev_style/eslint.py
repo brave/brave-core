@@ -5,14 +5,18 @@
 
 import os
 
-import brave_node
+import brave_chromium_utils
 import override_utils
+
+with brave_chromium_utils.sys_path('//third_party/node'):
+    import node
 
 
 @override_utils.override_function(globals())
 def Run(_original_function, **kwargs):
     node_args = [
-        brave_node.PathInNodeModules('eslint', 'bin', 'eslint'), '--quiet'
+        brave_chromium_utils.wspath('//brave/node_modules/eslint/bin/eslint'),
+        '--quiet'
     ]
     if os.environ.get('PRESUBMIT_FIX') == '1':
         node_args += ['--fix']
@@ -20,4 +24,4 @@ def Run(_original_function, **kwargs):
     node_args += ['--ignore-pattern', '!.*']
     node_args += kwargs['args']
 
-    return brave_node.RunNodeRaw(node_args)
+    return node.RunNodeRaw(node_args)
