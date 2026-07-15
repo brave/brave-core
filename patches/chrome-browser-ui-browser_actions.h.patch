@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_actions.h b/chrome/browser/ui/browser_actions.h
-index df76b459d241280dbf457da84ddc25df2d4484db..a91fde3bcabbfe9e69482612fa5194570337a455 100644
+index df76b459d241280dbf457da84ddc25df2d4484db..9d529b752ef458727401d2484a78d439bcbc3b9a 100644
 --- a/chrome/browser/ui/browser_actions.h
 +++ b/chrome/browser/ui/browser_actions.h
-@@ -25,7 +25,7 @@ class BrowserActions {
+@@ -25,16 +25,17 @@ class BrowserActions {
    explicit BrowserActions(BrowserWindowInterface* bwi);
    BrowserActions(const BrowserActions&) = delete;
    BrowserActions& operator=(const BrowserActions&) = delete;
@@ -11,3 +11,14 @@ index df76b459d241280dbf457da84ddc25df2d4484db..a91fde3bcabbfe9e69482612fa519457
  
    static std::u16string GetCleanTitleAndTooltipText(std::u16string string);
  
+   actions::ActionItem* root_action_item() const { return root_action_item_; }
+ 
+   // Initialization is separate from construction to allow more precise timing.
+-  void InitializeBrowserActions();
++  virtual void InitializeBrowserActions();
+ 
+  private:
++  friend class BraveBrowserActions;
+   // Helper functions to initialize actions grouped roughly by their type.
+   void InitializeSidePanelActions();
+   void InitializePageActionIconActions();

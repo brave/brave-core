@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
+index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..037c6d5a48d0722b4ea2d3cae7dbbe2ebf68b744 100644
+--- a/chrome/browser/ui/browser.h
++++ b/chrome/browser/ui/browser.h
+@@ -506,13 +506,13 @@ class Browser : public TabStripModelObserver,
+   // Note that if the browser window has been used before, users should always
+   // have a chance to save their work before the window is closed without
+   // triggering beforeunload event.
+-  bool TryToCloseWindow(
++  virtual bool TryToCloseWindow(
+       bool skip_beforeunload,
+       const base::RepeatingCallback<void(bool)>& on_close_confirmed);
+ 
+   // Clears the results of any beforeunload confirmation dialogs triggered by a
+   // TryToCloseWindow call.
+-  void ResetTryToCloseWindow();
++  virtual void ResetTryToCloseWindow();
+ 
+   // Browser closing consists of the following phases:
+   //
+@@ -742,6 +742,8 @@ class Browser : public TabStripModelObserver,
+   friend class BrowserTest;
+   friend class ExclusiveAccessTest;
+   friend class FullscreenControllerInteractiveTest;
++  friend class BookmarkPrefsService;
++  friend class BraveBrowser;
+   FRIEND_TEST_ALL_PREFIXES(AppModeTest, EnableAppModeTest);
+   FRIEND_TEST_ALL_PREFIXES(BrowserCloseTest, LastIncognito);
+   FRIEND_TEST_ALL_PREFIXES(BrowserCloseTest, LastRegular);
+@@ -936,7 +938,7 @@ class Browser : public TabStripModelObserver,
+ 
+   // Handle changes to tab strip model.
+   void OnTabInsertedAt(content::WebContents* contents, int index);
+-  void OnTabClosing(tabs::TabInterface* tab, bool* had_active_modal_dialog);
++  virtual void OnTabClosing(tabs::TabInterface* tab, bool* had_active_modal_dialog);
+   void OnTabDetached(tabs::TabInterface* tab,
+                      bool was_active,
+                      bool had_active_modal_dialog);
+@@ -971,7 +973,7 @@ class Browser : public TabStripModelObserver,
+   //   updates), then scheduled_updates_ is updated for the |source| and update
+   //   pair and a task is scheduled (assuming it isn't running already)
+   //   that invokes ProcessPendingUIUpdates.
+-  void ScheduleUIUpdate(content::WebContents* source, unsigned changed_flags);
++  virtual void ScheduleUIUpdate(content::WebContents* source, unsigned changed_flags);
+ 
+   // Processes all pending updates to the UI that have been scheduled by
+   // ScheduleUIUpdate in scheduled_updates_.
+@@ -1014,7 +1016,7 @@ class Browser : public TabStripModelObserver,
+   // Called when all warnings have completed when attempting to close the
+   // browser directly (e.g. via hotkey, close button, terminate signal, etc.)
+   // Used as a WarnBeforeClosingCallback by HandleBeforeClose().
+-  void FinishWarnBeforeClosing(WarnBeforeClosingResult result);
++  virtual void FinishWarnBeforeClosing(WarnBeforeClosingResult result);
+ 
+   // Assorted utility functions ///////////////////////////////////////////////
+ 

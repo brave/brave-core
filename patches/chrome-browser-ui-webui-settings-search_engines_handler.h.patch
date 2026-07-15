@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/webui/settings/search_engines_handler.h b/chrome/browser/ui/webui/settings/search_engines_handler.h
+index 76977fc0455b19ed0c2555f483cf0de7ebe6084a..2338a10c4ef7a637ffd8971d022ad3a8f88e2938 100644
+--- a/chrome/browser/ui/webui/settings/search_engines_handler.h
++++ b/chrome/browser/ui/webui/settings/search_engines_handler.h
+@@ -46,6 +46,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+   void OnJavascriptDisallowed() override;
+ 
+  private:
++  friend class BraveSearchEnginesHandler;
+   friend class SearchEnginesHandlerTest;
+ 
+   // Retrieves all search engines and returns them to WebUI.
+@@ -57,7 +58,7 @@ class SearchEnginesHandler : public SettingsPageUIHandler,
+   // TODO (crbug.com/494551138): Remove once `SearchSettingsUpdate` is launched.
+   void HandleGetSearchEnginesList(const base::ListValue& args);
+ 
+-  base::DictValue GetSearchEnginesList();
++  virtual base::DictValue GetSearchEnginesList();
+ 
+   // Returns whether the search engine choice should be saved in guest mode
+   // Returns null if the profile is not eligible for guest choice saving.
