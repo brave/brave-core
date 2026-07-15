@@ -573,6 +573,17 @@ public class BytecodeTest {
                         void.class,
                         String.class,
                         Supplier.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/settings/MainSettings",
+                        "openSearchResult",
+                        MethodModifier.STATIC,
+                        boolean.class,
+                        Context.class,
+                        Profile.class,
+                        String.class,
+                        Bundle.class,
+                        ModalDialogManager.class));
 
         Assert.assertTrue(
                 methodExists(
