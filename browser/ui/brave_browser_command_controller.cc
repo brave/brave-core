@@ -86,6 +86,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #endif
 
@@ -420,6 +421,21 @@ void BraveBrowserCommandController::UpdateCommandForSidebar() {
     UpdateCommandEnabled(IDC_SIDEBAR_SHOW_OPTION_MENU, true);
     UpdateCommandEnabled(IDC_SIDEBAR_TOGGLE_POSITION, true);
     UpdateCommandEnabled(IDC_TOGGLE_SIDEBAR, true);
+    UpdateCommandEnabled(IDC_TOGGLE_BOOKMARKS_SIDE_PANEL, true);
+    UpdateCommandEnabled(IDC_TOGGLE_READING_LIST_SIDE_PANEL, true);
+#if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
+    UpdateCommandEnabled(
+        IDC_TOGGLE_PLAYLIST_SIDE_PANEL,
+        playlist::IsPlaylistAllowed(browser_->profile()->GetPrefs()));
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    // The Brave News side panel is only shown when the sidebar feature is on
+    // and the user has opted into Brave News.
+    UpdateCommandEnabled(
+        IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL,
+        base::FeatureList::IsEnabled(brave_news::features::kBraveNewsSidebar) &&
+            brave_news::IsEnabled(browser_->profile()->GetPrefs()));
+#endif
   }
 }
 
@@ -649,6 +665,18 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_SIDEBAR:
       brave::ToggleSidebar(&*browser_);
+      break;
+    case IDC_TOGGLE_BOOKMARKS_SIDE_PANEL:
+      brave::ToggleSidePanel(&*browser_, SidePanelEntryId::kBookmarks);
+      break;
+    case IDC_TOGGLE_READING_LIST_SIDE_PANEL:
+      brave::ToggleSidePanel(&*browser_, SidePanelEntryId::kReadingList);
+      break;
+    case IDC_TOGGLE_PLAYLIST_SIDE_PANEL:
+      brave::ToggleSidePanel(&*browser_, SidePanelEntryId::kPlaylist);
+      break;
+    case IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL:
+      brave::ToggleSidePanel(&*browser_, SidePanelEntryId::kBraveNews);
       break;
     case IDC_COPY_CLEAN_LINK:
       brave::CopySanitizedURL(

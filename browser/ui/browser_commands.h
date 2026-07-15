@@ -13,6 +13,7 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
+#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/tabs/split_tab_metrics.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "content/public/browser/page_navigator.h"
@@ -44,6 +45,11 @@ void NewOffTheRecordWindowTor(Browser* browser);
 void NewOffTheRecordWindowTor(Profile* profile);
 void NewTorConnectionForSite(BrowserWindowInterface*);
 #endif
+
+// Toggles the given side panel entry: closes the sidebar if the entry is
+// already showing, switches to the entry if the sidebar is open on a different
+// entry, or opens the sidebar on the entry if it's closed.
+void ToggleSidePanel(Browser* browser, SidePanelEntryId id);
 
 void ToggleAIChat(Browser* browser);
 

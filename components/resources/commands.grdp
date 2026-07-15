@@ -388,6 +388,18 @@
   <message name="IDS_IDC_TOGGLE_SIDEBAR">
     Toggle sidebar
   </message>
+  <message name="IDS_IDC_TOGGLE_BOOKMARKS_SIDE_PANEL">
+    Toggle Bookmarks side panel
+  </message>
+  <message name="IDS_IDC_TOGGLE_READING_LIST_SIDE_PANEL">
+    Toggle Reading List side panel
+  </message>
+  <message name="IDS_IDC_TOGGLE_PLAYLIST_SIDE_PANEL">
+    Toggle Playlist side panel
+  </message>
+  <message name="IDS_IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL">
+    Toggle Brave News side panel
+  </message>
   <message name="IDS_IDC_TOGGLE_VERTICAL_TABS">
     Toggle vertical tabs
   </message>
