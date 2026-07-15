@@ -96,6 +96,12 @@ struct VPNContactFormView: View {
       if issueType == nil { return }
       if MFMailComposeViewController.canSendMail() {
         isEmailPresented = true
+      } else if let mailtoURL, UIApplication.shared.canOpenURL(mailtoURL) {
+        // The system mail app may have been deleted while a third party mail
+        // client is installed, in which case `MFMailComposeViewController` is
+        // unavailable but a `mailto:` link can still be handled.
+        UIApplication.shared.open(mailtoURL)
+        issueType = nil
       } else {
         isEmailUnavailableAlertPresented = true
         issueType = nil
@@ -103,9 +109,8 @@ struct VPNContactFormView: View {
     }
     .sheet(isPresented: $isEmailPresented) {
       MailComposeRepresentable(
-        subject:
-          "\(Strings.VPN.contactFormTitle) + \(issueType?.displayString ?? IssueType.other.displayString)",
-        recipients: ["braveios@guardianapp.com"],
+        subject: emailSubject,
+        recipients: [recipientEmail],
         messageBody: emailMessageBody
       )
     }
@@ -114,6 +119,30 @@ struct VPNContactFormView: View {
     } message: {
       Text(Strings.VPN.contactFormEmailNotConfiguredBody)
     }
+  }
+
+  private let recipientEmail = "braveios@guardianapp.com"
+
+  private var emailSubject: String {
+    "\(Strings.VPN.contactFormTitle) + \(issueType?.displayString ?? IssueType.other.displayString)"
+  }
+
+  /// A `mailto:` URL used as a fallback when `MFMailComposeViewController` is
+  /// unavailable (e.g. the system mail app was deleted in favour of a third
+  /// party client).
+  private var mailtoURL: URL? {
+    var components = URLComponents()
+    components.scheme = "mailto"
+    components.path = recipientEmail
+    components.queryItems = [
+      URLQueryItem(name: "subject", value: emailSubject),
+      URLQueryItem(name: "body", value: emailMessageBody),
+    ]
+    // `URLComponents` leaves literal `+` unencoded, which some mail clients
+    // interpret as a space, so encode it explicitly.
+    components.percentEncodedQuery = components.percentEncodedQuery?
+      .replacingOccurrences(of: "+", with: "%2B")
+    return components.url
   }
 
   private var emailMessageBody: String {
