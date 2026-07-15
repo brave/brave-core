@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
-index 46664df1ffdebd82c7c36ef41297aebe6510ca78..434f92ee6ae74995a7cd43d2f66c95970bca9a41 100644
+index c555044cbf9ae19a431fcc9327c5e302e3b26084..7b664c46adc95575b069ca89af068d5e29a0ed6c 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/base/SplitChromeApplication.java
 @@ -243,7 +243,7 @@ public class SplitChromeApplication extends SplitCompatApplication {

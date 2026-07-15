@@ -12,7 +12,6 @@
 #include "components/permissions/permission_uma_util.h"
 
 BraveWalletPermissionPromptImpl::BraveWalletPermissionPromptImpl(
-    Browser* browser,
     content::WebContents* web_contents,
     Delegate& delegate)
     : web_contents_(web_contents),

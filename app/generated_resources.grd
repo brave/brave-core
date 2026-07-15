@@ -521,6 +521,16 @@ are declared in tools/grit/grit_args.gni.
       <message name="IDS_HISTORY_TURN_ON_SYNC_PROMO_DESC" desc="Description of the turn on sync/sign-in promo. Further tells users to turn o sync/sign in to Brave to see synced tabs from other devices.">
         To get your tabs from your other devices, turn on sync
       </message>
+      <!-- Sign in on your phone (QR code) strings  -->
+      <message name="IDS_HISTORY_SIGNIN_ON_PHONE_PROMO_TITLE" desc="Title of the Cross device sign in promo on the History page, the promo will open the QR code bubble that allows the user to sign in on their phone.">
+        Pick up where you left off
+      </message>
+      <message name="IDS_HISTORY_SIGNIN_ON_PHONE_PROMO_SUBTITLE" desc="Subtitle of the Cross device sign in promo on the History page, the promo will open the QR code bubble that allows the user to sign in on their phone.">
+        Easily get back to sites you've visited by signing in to the same account on both devices
+      </message>
+      <message name="IDS_HISTORY_SIGNIN_ON_PHONE_PROMO_BUTTON" desc="Action button of the Cross device sign in promo on the History page, the promo will open the QR code bubble that allows the user to sign in on their phone. Clicking this button opens the QR code bubble.">
+        Sign in on your phone
+      </message>
 
       <message name="IDS_HISTORY_SYNC_HISTORY_PROMO" desc="Text of the sync hystory promo. This will show up if a user is not logged in and has no synced tabs.">
         Browse across devices
@@ -599,6 +609,10 @@ are declared in tools/grit/grit_args.gni.
         </message>
       </if>
 
+      <message name="IDS_INSPECT_ELEMENT_ANDROID" desc="The name of the Inspect Element command in the context menu for Android.">
+        Inspect
+      </message>
+
        <!-- content area context menus. Android does not use it -->
       <if expr="not is_android">
         <message name="IDS_CONTENT_CONTEXT_INSPECTELEMENT" desc="The name of the Inspect Element command in the content area context menu">
@@ -609,6 +623,9 @@ are declared in tools/grit/grit_args.gni.
         </message>
         <message name="IDS_CONTENT_CONTEXT_INSPECTELEMENT_WITH_DEVTOOLS" desc="Context menu item for inspecting the element with DevTools.">
           With DevTools
+        </message>
+        <message name="IDS_CONTENT_CONTEXT_SAVE_TO_MEMORY_BANKS" desc="The name of the Save to Memory Banks command in the context menu">
+          Save to Memory
         </message>
         <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_DIALOG_TITLE" desc="The title of a dialog that asks whether to integrate the accessibility image labeling service of Brave to Brave.">
           Get image descriptions from Brave?
@@ -639,7 +656,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print "<ph name="SELECTION">$1<ex>selected text</ex></ph>"
+            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="The name of the View Page Source command in the content area context menu">
             &amp;View page source
@@ -657,7 +674,7 @@ are declared in tools/grit/grit_args.gni.
            Open in reading mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="Context menu menuitem to open selected text in reading mode view">
-           Open "<ph name="SELECTION">$1<ex>text</ex></ph>" in reading mode
+           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in reading mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="Context menu item to listen to this page">
            Listen to this page
@@ -667,10 +684,6 @@ are declared in tools/grit/grit_args.gni.
           </message>
           <message name="IDS_CONTENT_CONTEXT_ARCHIVE_GLIC" desc="Context menu item to archive Glic conversation">
            Archive
-          </message>
-          <!-- TODO(b/510738735) Placeholder for now so mark translateable=false -->
-          <message name="IDS_CONTENT_CONTEXT_DICTATION" desc="Context menu item to start dictation" translateable="false">
-           Start dictation
           </message>
           <message name="IDS_CONTENT_CONTEXT_RELOAD" desc="The name of the Reload command in the content area context menu">
             &amp;Reload
@@ -865,7 +878,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Copy
           </message>
           <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy "<ph name="SELECTION">$1<ex>text</ex></ph>"
+            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_PASTE" desc="The name of the Paste command in the content area context menu" meaning="'Paste' menu command in sentence case">
             &amp;Paste
@@ -876,6 +889,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_ADD_TO_DICTIONARY" desc="The name of the Add to dictionary command in the content area context menu">
             &amp;Add to dictionary
           </message>
+          <if expr="is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_REMOVE_FROM_DICTIONARY" desc="The name of the Remove from Dictionary command in the content area context menu">
+              &amp;Remove from dictionary
+            </message>
+          </if>
           <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_MENU_OPTION" desc="The context-menu item that asks whether to integrate the accessibility image labeling service of Brave to Brave.">
             Get image descriptions from Brave
           </message>
@@ -913,7 +931,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Translate selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate "<ph name="SELECTION">$1<ex>text</ex></ph>" to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -979,7 +997,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Print...
           </message>
           <message name="IDS_CONTENT_CONTEXT_PRINT_SELECTION" desc="In Title Case: The name of the Print command in the content area context menu when there is a text selection.">
-            &amp;Print "<ph name="SELECTION">$1<ex>selected text</ex></ph>"
+            &amp;Print “<ph name="SELECTION">$1<ex>selected text</ex></ph>”
           </message>
           <message name="IDS_CONTENT_CONTEXT_VIEWPAGESOURCE" desc="In Title Case: The name of the View Page Source command in the content area context menu">
             &amp;View Page Source
@@ -997,7 +1015,7 @@ are declared in tools/grit/grit_args.gni.
            Open in Reading Mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_READING_MODE_SELECTION" desc="In Title Case: Context menu menuitem to open selected text in reading mode view">
-           Open "<ph name="SELECTION">$1<ex>text</ex></ph>" in Reading Mode
+           Open “<ph name="SELECTION">$1<ex>text</ex></ph>” in Reading Mode
           </message>
           <message name="IDS_CONTENT_CONTEXT_LISTEN_TO_THIS_PAGE" desc="In Title Case: Context menu item to listen to this page">
            Listen to This Page
@@ -1205,7 +1223,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Copy
           </message>
           <message name="IDS_CONTENT_CONTEXT_COPY_SELECTION" desc="The name of the Copy command with selection in the content area context menu">
-            &amp;Copy "<ph name="SELECTION">$1<ex>text</ex></ph>"
+            &amp;Copy “<ph name="SELECTION">$1<ex>text</ex></ph>”
           </message>
           <!-- Paste and Match Style / Paste as Plain Text -->
           <if expr="is_macosx">
@@ -1227,6 +1245,11 @@ are declared in tools/grit/grit_args.gni.
           <message name="IDS_CONTENT_CONTEXT_ADD_TO_DICTIONARY" desc="In Title Case: The name of the Add to dictionary command in the content area context menu">
             &amp;Add to Dictionary
           </message>
+          <if expr="is_macosx">
+            <message name="IDS_CONTENT_CONTEXT_REMOVE_FROM_DICTIONARY" desc="In Title Case: The name of the Remove from Dictionary command in the content area context menu">
+              &amp;Remove from Dictionary
+            </message>
+          </if>
           <message name="IDS_CONTENT_CONTEXT_ACCESSIBILITY_LABELS_MENU_OPTION" desc="The context-menu item that asks whether to integrate the accessibility image labeling service of Brave to Brave.">
             Get Image Descriptions from Brave
           </message>
@@ -1267,7 +1290,7 @@ are declared in tools/grit/grit_args.gni.
             &amp;Translate Selection to <ph name="LANGUAGE">$1<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_PARTIAL_TRANSLATE_SELECTION" desc="In Title Case: The name of the Translate command in the content area context menu when there is a text selection.">
-            &amp;Translate "<ph name="SELECTION">$1<ex>text</ex></ph>" to <ph name="LANGUAGE">$2<ex>English</ex></ph>
+            &amp;Translate “<ph name="SELECTION">$1<ex>text</ex></ph>” to <ph name="LANGUAGE">$2<ex>English</ex></ph>
           </message>
           <message name="IDS_CONTENT_CONTEXT_SEARCHWEBFOR" desc="In Title Case: The name of the Search the Web for “string” command in the content area context menu">
             &amp;Search <ph name="SEARCH_ENGINE">$1<ex>Brave</ex></ph> for “<ph name="SEARCH_TERMS">$2<ex>flowers</ex></ph>”
@@ -1703,8 +1726,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_REPORT_UNSAFE_SITE" desc="Text label of the Report Unsafe Site menu item">
           Report an &amp;unsafe site...
         </message>
-        <message name="IDS_RESTORE_ALL_TABS" desc="The text label of the Restore All Tabs menu item.">
-          R&amp;estore all tabs
+        <message name="IDS_RESTORE_SPLIT" desc="The text label of the Restore Split View menu item.">
+          R&amp;estore split view
         </message>
         <message name="IDS_RESTORE_TAB" desc="The text label of the Restore Tab menu item">
           R&amp;eopen closed tab
@@ -1756,8 +1779,8 @@ are declared in tools/grit/grit_args.gni.
         <message name="IDS_TAKE_SCREENSHOT" desc="The text label of the Take Screenshot menu item">
           T&amp;ake Screenshot
         </message>
-        <message name="IDS_RESTORE_ALL_TABS" desc="In Title Case: The text label of the Restore All Tabs menu item.">
-          R&amp;estore All Tabs
+        <message name="IDS_RESTORE_SPLIT" desc="In Title Case: The text label of the Restore Split View menu item.">
+          R&amp;estore Split View
         </message>
         <message name="IDS_RESTORE_TAB" desc="In Title Case: The text label of the Restore Tab menu item">
           R&amp;eopen Closed Tab
@@ -1839,6 +1862,9 @@ are declared in tools/grit/grit_args.gni.
       </message>
       <message name="IDS_BROWSER_PROFILE_MANAGED" desc="The text label of the 'Managed by' UI in the app menu, for enterprise users where the profile is managed by a different entity from the browser.">
         Your browser and profile are managed
+      </message>
+      <message name="IDS_CHROME_ENTERPRISE_RELEASE_NOTES" desc="Menu item to open the Brave Enterprise and Education release notes.">
+        Brave Enterprise release notes
       </message>
       <message name="IDS_CHROME_WHATS_NEW" desc="The text label of the Help menu item which takes the user to the Brave What's New page.">
         What's New
@@ -5928,34 +5954,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Learn more about disabled extensions.
       </message>
 
-      <!-- Manifest V2 Deprecation Dialogs -->
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_TITLE" desc="The title of the dialog asking the user if they want to keep the extension installed, which is affected by the Manifest V2 deprecation">
-        Keep "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>"?
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_OK_BUTTON" desc="The text of the dialog button to keep the extension installed, which is affected by the Manifest V2 deprecation">
-        Keep
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_TITLE" desc="The title of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-        "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>" was turned off
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_PLURAL_TITLE" desc="The title of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-        <ph name="NUM_EXTENSIONS">$1<ex>3</ex></ph> extensions were turned off
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_OK_BUTTON" desc="The text of the dialog button that removes the extension(s) that were were disabled due to the Manifest V2 deprecation">
-        Remove
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_CANCEL_BUTTON" desc="The text of the dialog button that opens the settings for the extension(s) that were were disabled due to the Manifest V2 deprecation">
-        {NUM_EXTENSIONS, plural,
-          =1 {Manage extension}
-          other {Manage extensions}
-        }
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_REENABLE_DIALOG_TITLE" desc="The title of the dialog asking the user if they want to enable an extension that was disabled due to the Manifest V2 deprecation">
-        Turn "<ph name="EXTENSION_NAME">$1<ex>Brave Translate</ex></ph>" on?
-      </message>
-      <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_REENABLE_DIALOG_OK_BUTTON" desc="The text of the dialog button to turn on an extension that was disabled due to the Manifest V2 deprecation">
-        Turn on
-      </message>
 
       <!-- Begin Extension Settings Overridden Dialog strings. -->
       <message name="IDS_EXTENSION_SETTINGS_OVERRIDDEN_DIALOG_CHANGE_IT_BACK" desc="The text of the button to revert to old settings; displayed in the dialog describing settings overridden by an extension.">
@@ -5996,6 +5994,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_PREVIOUS_CHOICE" desc="Describes why the previous search provider is being presented as an option for which search to use.">
         Your previous choice
+      </message>
+      <message name="IDS_EXTENSION_SEARCH_OVERRIDDEN_DIALOG_DEFAULT_SEARCH_ENGINE" desc="The name of the default search engine when the previous default search engine name is not available. Used as a placeholder in the explicit choice dialog.">
+        Default search engine
       </message>
       <!-- End Extension Settings Overridden Dialog strings. -->
       <!-- Force Installed Deprecated Apps Deletion Dialog strings. -->
@@ -6656,6 +6657,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_PASSWORD_BUBBLES_FOOTER_SYNCED_TO_ACCOUNT" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords in Brave and synced to their Brave account.">
         You can use saved passwords on any device. They're saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
+      </message>
+      <message name="IDS_PASSWORD_BUBBLES_FOOTER_TRUSTED_VAULT_ERROR" desc="The footer text of the bubbles when there is a trusted vault error, telling the user their passwords are saved to Brave Password Manager.">
+        Your passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> for <ph name="EMAIL">$2<ex>user@gmail.com</ex></ph>.
+      </message>
+      <message name="IDS_PASSWORD_BUBBLES_SUBTITLE_TRUSTED_VAULT_ERROR" desc="The subtitle of the password bubble when saving is blocked by a trusted vault error, telling the user they need to verify their identity to get passwords on all devices.">
+        Verify it's you to get it on all devices with your Brave sync chain
       </message>
       <message name="IDS_PASSWORD_BUBBLES_FOOTER_SAVING_ON_DEVICE" desc="The footer text of the bubbles that offers users to save, update or manage stored passwords only locally in Brave.">
         Passwords are saved to <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave Password Manager</ex></ph> on this device.
@@ -8268,7 +8275,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Share tabs
       </message>
       <message name="IDS_NTP_COMPOSEBOX_RECENT_TAB_SUFFIX" desc="Suffix label appended after the title of the most recently active tab in the Share tabs flyout. Visual separation from the title is handled by CSS, not by leading white space in this string.">
-        · Recent tab
+        Recent tab
       </message>
       <message name="IDS_NTP_COMPOSE_ADD_IMAGE" desc="Text for a button label that opens a menu so users can add an image to their search.">
         Add image
@@ -8353,6 +8360,10 @@ Keep your key file in a safe place. You will need it to create new versions of y
        <message name="IDS_COMPOSE_CURRENT_TAB" desc="Label for the row in the Composebox context menu flyout that shows the current tab the user has open.">
         Current tab
       </message>
+      <message name="IDS_COMPOSE_MAX_FILE_UPLOAD_ERROR" desc="Error message shown in toast when file limit maximum is reached.">
+        You can only add up to <ph name="COUNT">$1<ex>10</ex></ph> files
+      </message>
+
       <message name="IDS_NTP_ACTION_CHIP_TAB_HEADING_1" desc="Heading of the tab action chip on the NTP.">
         Ask about previous tab
       </message>
@@ -9121,6 +9132,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_BOOKMARKS_COMPACT_VIEW" desc="Label for the compact view bookmarks menu option">
         Compact view
       </message>
+      <message name="IDS_BOOKMARKS_SWITCH_TO_COMPACT_VIEW" desc="Screen reader label for the button that switches the bookmarks side panel to compact view.">
+        Switch to compact view
+      </message>
+      <message name="IDS_BOOKMARKS_SWITCH_TO_VISUAL_VIEW" desc="Screen reader label for the button that switches the bookmarks side panel to visual view.">
+        Switch to visual view
+      </message>
       <message name="IDS_BOOKMARKS_SORT_MENU_A11Y_LABEL" is_accessibility_with_no_ui="true" desc="Screen reader label for the button which opens the sort menu in the bookmarks side panel.">
         Sorting and list options
       </message>
@@ -9560,7 +9577,7 @@ Keep your key file in a safe place. You will need it to create new versions of y
         Languages
       </message>
       <message name="IDS_READING_MODE_LANGUAGE_MENU_CLOSE" desc="Label for a button to close a dialog with options for managing language preferences for Read Aloud.">
-        Close
+        Close language menu
       </message>
       <if expr="is_macosx">
         <message name="IDS_READING_MODE_CLOSE" desc="Tooltip and screen reader label for a button to close reading mode.">
@@ -9675,6 +9692,12 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_LENS_DEFAULT_TITLE" desc="Default title of the Lens side panel">
         Image Search
+      </message>
+      <message name="IDS_LENS_COBROWSE_IPH_HEADER" desc="Instruction for the user to use Google Lens visual selection in co browse panel.">
+        Select anything on the page to search
+      </message>
+      <message name="IDS_LENS_COBROWSE_IPH_DESCRIPTION" desc="Informs user how Google Lens can be used in cobrowse.">
+        Use Google Lens to learn more about specific images or text on a page.
       </message>
 
       <!--Tooltip strings -->
@@ -9928,6 +9951,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert announced after resizing a split view.">
         <ph name="VIEW_ONE_ORIENTATION">$1<ex>Left</ex></ph> View now <ph name="VIEW_ONE_PERCENT">$2<ex>50%</ex></ph> wide, <ph name="VIEW_TWO_ORIENTATION">$3<ex>Right</ex></ph> View now <ph name="VIEW_TWO_PERCENT">$4<ex>50%</ex></ph> wide.
       </message>
+      <message name="IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT_STACKED" is_accessibility_with_no_ui="true" desc="Accessible alert announced after resizing a stacked split view.">
+        <ph name="VIEW_ONE_ORIENTATION">$1<ex>Top</ex></ph> View now <ph name="VIEW_ONE_PERCENT">$2<ex>50%</ex></ph> tall, <ph name="VIEW_TWO_ORIENTATION">$3<ex>Bottom</ex></ph> View now <ph name="VIEW_TWO_PERCENT">$4<ex>50%</ex></ph> tall.
+      </message>
       <message name="IDS_SPLIT_VIEW_RESIZE_LEFT_SIDE_ACCESSIBLE_ALERT" is_accessibility_with_no_ui="true" desc="Accessible alert text used in IDS_SPLIT_VIEW_RESIZE_ACCESSIBLE_ALERT for which side the window/pane is seen on.">
                Left
       </message>
@@ -10034,6 +10060,9 @@ Keep your key file in a safe place. You will need it to create new versions of y
       </message>
       <message name="IDS_VERTICAL_TAB_GROUP_MORE_OPTIONS" is_accessibility_with_no_ui="true" desc="The accessibility label for the button in the tab group header that opens the editor bubble.">
             More Options
+      </message>
+      <message name="IDS_VERTICAL_TABS_VIEW_MENU_TOGGLE_COLLAPSE" desc="In Title Case: The mac view menu item that toggles the collapse state.">
+            Collapse Vertical Tabs
       </message>
       <!-- /Vertical Tab Strings -->
 
@@ -10374,9 +10403,6 @@ Keep your key file in a safe place. You will need it to create new versions of y
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Price Tracking promo bubble with a reminder button.">
           Keep up with all your price drops on the go
         </message>
-        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
-          Get price tracking alerts on your phone
-        </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Price Tracking promo bubble with a reminder button.">
           Get price tracking alerts on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
         </message>
@@ -10392,6 +10418,19 @@ Keep your key file in a safe place. You will need it to create new versions of y
         </message>
         <message name="IDS_IOS_DESKTOP_TAB_GROUPS_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Tab Groups promo bubble with a reminder button.">
           Use your tab groups on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+      </if>
+
+      <!--Desktop to iOS Wave 2 Promo Notification Titles-->
+      <if expr="not is_android">
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_NOTIFICATION_TITLE" desc="The notification title for the iOS desktop AI promo.">
+          Reminder: AI-powered browsing in your pocket
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_NOTIFICATION_TITLE" desc="The notification title for the iOS desktop Shopping promo.">
+          Reminder: The best of online shopping in your pocket
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_NOTIFICATION_TITLE" desc="The notification title for the iOS desktop Your Brave promo.">
+          Reminder: Seamless browsing in your pocket
         </message>
       </if>
 
@@ -10426,8 +10465,17 @@ Keep your key file in a safe place. You will need it to create new versions of y
       <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_PINNED" desc="The accessible name for the toolbar button for the split tabs feature, when it is pinned and disabled.">
         Open tab in split view
       </message>
-      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled.">
-        Arrange split view
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED_LEFT_ACTIVE" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled while the left view is active.">
+        Arrange split view - left view active
+      </message>
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED_RIGHT_ACTIVE" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled while the right view is active.">
+        Arrange split view - right view active
+      </message>
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED_TOP_ACTIVE" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled while the top view is active.">
+        Arrange split view - top view active
+      </message>
+      <message name="IDS_ACCNAME_SPLIT_TABS_TOOLBAR_BUTTON_ENABLED_BOTTOM_ACTIVE" desc="The accessible name for the toolbar button for the split tabs feature, when it is enabled while the bottom view is active.">
+        Arrange split view - bottom view active
       </message>
       <message name="IDS_ACCNAME_FIND" desc="The accessible name for the find button.">
         Find
@@ -11809,6 +11857,12 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="The label for a menu item for creating a new split view with a horizontal divider.">
           Stacked
         </message>
+        <message name="IDS_SPLIT_TAB_SHOW_STACKED" desc="The label for a menu item that switches the layout of the split tabs to stacked when clicked.">
+          Show stacked
+        </message>
+        <message name="IDS_SPLIT_TAB_SHOW_SIDE_BY_SIDE" desc="The label for a menu item that switches the layout of the split tabs to side-by-side when clicked.">
+          Show side by side
+        </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send feedback
         </message>
@@ -11856,21 +11910,18 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         <message name="IDS_SPLIT_TAB_NEW_HORIZONTAL" desc="In title case: The label for a menu item for creating a new split view with a horizontal divider.">
           Stacked
         </message>
+        <message name="IDS_SPLIT_TAB_SHOW_STACKED" desc="In title case: The label for a menu item that switches the layout of the split tabs to stacked when clicked.">
+          Show Stacked
+        </message>
+        <message name="IDS_SPLIT_TAB_SHOW_SIDE_BY_SIDE" desc="In title case: The label for a menu item that switches the layout of the split tabs to side-by-side when clicked.">
+          Show Side by Side
+        </message>
         <message name="IDS_SPLIT_TAB_SEND_FEEDBACK" desc="The label for a menu item that opens a dialog to send feedback.">
           Send Feedback
         </message>
       </if>
 
       <!-- Tab Search -->
-      <message name="IDS_TAB_SEARCH_TOOLBAR_BUTTON_PROMO_TITLE" desc="Title text on the tab search toolbar button promo UI.">
-        Tab search is now pinned to your toolbar
-      </message>
-      <message name="IDS_TAB_SEARCH_TOOLBAR_BUTTON_PROMO_BODY" desc="Body text on the tab search toolbar button promo UI.">
-        You can unpin it and open it from the menu
-      </message>
-      <message name="IDS_TAB_SEARCH_TOOLBAR_BUTTON_PROMO_ACTION" desc="Action button text on the tab search toolbar button promo UI.">
-        Unpin
-      </message>
       <message name="IDS_TAB_SEARCH_COMBO_BUTTON_PROMO_TITLE" desc="The body text for a bubble that appears on the tab search button in the tab strip when the user has previously used tab search from the toolbar.">
         Tab search has moved
       </message>
@@ -13307,9 +13358,6 @@ Check your passwords anytime in <ph name="GOOGLE_PASSWORD_MANAGER">$1<ex>Brave P
         </message>
 
         <!-- Reset Profile Settings strings -->
-        <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION" desc="A label describing the consequences of the 'reset profile settings' feature">
-          This will reset your startup page, new tab page, search engine, and pinned tabs. It will also disable all extensions and clear temporary data like cookies. Your bookmarks, history and saved passwords will not be cleared.
-        </message>
         <message name="IDS_TRIGGERED_RESET_PROFILE_SETTINGS_TITLE" desc="Dialog title for reset dialog triggered by a third party tool">
           <ph name="THIRD_PARTY_TOOL_NAME">$1<ex>SuperDuper PC Cleaner Pro</ex></ph> wants to reset your settings.
         </message>
@@ -15138,6 +15186,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
         <message name="IDS_JAVASCRIPT_UNSUPPORTED_ERROR_APPLESCRIPT_MAC" desc="Error dialog title to be displayed when the user attempts to execute JavaScript via AppleScript. Mac-only.">
           Executing JavaScript through AppleScript is turned off. To turn it on, from the menu bar, go to View &gt; Developer &gt; Allow JavaScript from Apple Events. For more information: https://support.google.com/chrome/?p=applescript
         </message>
+        <message name="IDS_DEV_TOOLS_NOT_ALLOWED_APPLESCRIPT_MAC" desc="Error dialog title to be displayed when DevTools are not allowed. Mac-only.">
+                DevTools are not allowed for this URL.
+        </message>
       </if> <!-- is_macosx -->
 
 
@@ -15393,7 +15444,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Recently Closed
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed window.">
-          Restore All Tabs
+          Restore Window
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_MAC" desc="The Mac menu item for restoring all the tabs of a recently closed group.">
+          Restore Group
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_MAC" desc="The Mac menu item for restoring a recently closed split.">
+          Restore Split View
         </message>
         <!-- Window menu -->
         <message name="IDS_MINIMIZE_WINDOW_MAC" desc="The Mac menu item for minimize the window menu." meaning="Mac Menubar: The Mac menu item for minimize the window menu.">
@@ -15538,7 +15595,13 @@ Please help our engineers fix this problem. Tell us what happened right before y
           Recently Closed
         </message>
         <message name="IDS_HISTORY_CLOSED_RESTORE_WINDOW_LINUX" desc="The Linux menu item for restoring all the tabs of a recently closed window.">
-          Restore All Tabs
+          Restore window
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_GROUP_LINUX" desc="The Linux menu item for restoring all the tabs of a recently closed group.">
+          Restore group
+        </message>
+        <message name="IDS_HISTORY_CLOSED_RESTORE_SPLIT_LINUX" desc="The Linux menu item for restoring a recently closed split.">
+          Restore split view
         </message>
       </if>
 
@@ -15696,6 +15759,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_MICROPHONE_CAMERA_NOT_ALLOWED" desc="Title for the media activity indicator when a page is not allowed to use the camera and microphone.">
         Camera &amp; microphone not allowed
+      </message>
+      <message name="IDS_SENSORS_IN_USE" desc="Title for the sensors activity indicator when a page is using motion sensors.">
+        Sensors in use
+      </message>
+      <message name="IDS_SENSORS_BLOCKED" desc="Title for the sensors activity indicator when a page is not allowed to use motion sensors.">
+        Sensors blocked
       </message>
       <message name="IDS_MICROPHONE_IN_USE" desc="Title for the media activity indicator when a page is using the microphone.">
         Microphone in use
@@ -16279,6 +16348,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_RIGHT_VIEW_FORMAT" desc="Accessibility label text for a tab, when it is the right tab of a split view. Example: 'Brave Search - Right view'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Right view
       </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_TOP_VIEW_FORMAT" is_accessibility_with_no_ui="true" desc="Accessibility label text for a tab, when it is the top tab of a split view. Example: 'Brave Search - Top view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Top view
+      </message>
+      <message name="IDS_TAB_AX_LABEL_SPLIT_TAB_BOTTOM_VIEW_FORMAT" is_accessibility_with_no_ui="true" desc="Accessibility label text for a tab, when it is the bottom tab of a split view. Example: 'Brave Search - Bottom view'">
+        <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Bottom view
+      </message>
       <message name="IDS_TAB_AX_LABEL_UNNAMED_GROUP_FORMAT" desc="Accessibility label text for a tab, when it is in a group that has not been named by the user. Example: 'Brave Search - Part of unnamed group'">
         <ph name="WINDOW_TITLE">$1<ex>Brave Search</ex></ph> - Part of unnamed group
       </message>
@@ -16725,26 +16800,24 @@ Please help our engineers fix this problem. Tell us what happened right before y
     </message>
 
     <!-- Serial port chooser -->
-    <if expr="not is_android">
-      <message name="IDS_SERIAL_PORT_CHOOSER_PROMPT" desc="The label that is used to introduce serial port chooser details to the user in a popup.">
-        <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a serial port
-      </message>
-      <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
-        Connect
-      </message>
-      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of serial devices.">
-        Finding devices...
-      </message>
-      <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
-        Finding serial devices...
-      </message>
-      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
-        USB device from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph> (product <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph>)
-      </message>
-      <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
-        USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
-      </message>
-    </if>
+    <message name="IDS_SERIAL_PORT_CHOOSER_PROMPT" desc="The label that is used to introduce serial port chooser details to the user in a popup.">
+      <ph name="Origin">$1<ex>www.google.com</ex></ph> wants to connect to a serial port
+    </message>
+    <message name="IDS_SERIAL_PORT_CHOOSER_CONNECT_BUTTON_TEXT" desc="Label on the button that closes the serial port chooser popup and allows the requesting site access to the selected port.">
+      Connect
+    </message>
+    <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL" desc="Text on label that the browser is loading the list of serial devices.">
+      Finding devices...
+    </message>
+    <message name="IDS_SERIAL_PORT_CHOOSER_LOADING_LABEL_TOOLTIP" desc="Tooltip for the label that the browser is loading the list of serial devices.">
+      Finding serial devices...
+    </message>
+    <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_PRODUCT_ID_AND_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site when the vendor name is available by a numeric product ID must be used.">
+      USB device from <ph name="VENDOR_NAME">$2<ex>Brave</ex></ph> (product <ph name="PRODUCT_ID">$1<ex>0x12AB</ex></ph>)
+    </message>
+    <message name="IDS_SERIAL_POLICY_DESCRIPTION_FOR_USB_VENDOR_NAME" desc="String describing a USB device permission granted by enterprise policy to a site for all devices from a single vendor.">
+      USB devices from <ph name="VENDOR_NAME">$1<ex>Brave</ex></ph>
+    </message>
     <message name="IDS_SERIAL_PORT_CHOOSER_NAME_WITH_PATH" desc="User option displaying a human-readable name for a serial port with the device path in parenthesis">
       <ph name="FRIENDLY_NAME">$1<ex>Virtual COM Port</ex></ph> (<ph name="DEVICE_PATH">$2<ex>COM1</ex></ph>)
     </message>
@@ -18560,20 +18633,23 @@ Please help our engineers fix this problem. Tell us what happened right before y
       <message name="IDS_TRANSLATE_TOAST_UNDO_BUTTON" desc="Button on a toast notification that allows users to undo the translation.">
         Undo
       </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_TITLE" desc="Title to show on the toast for Multistep Filter suggestions." translateable="false">
-        Apply <ph name="FILTER_COUNT">$1</ph> filters from <ph name="TIME_PERIOD">$2</ph> ago? <ph name="DETAILS">$3</ph>
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion toast." translateable="false">
-        Apply
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_TITLE" desc="Title to show on the toast for Multistep Filter suggestions recent toast." translateable="false">
-        Recall <ph name="FILTER_COUNT">$1</ph> filters from <ph name="SOURCE_DOMAIN">$2</ph>? <ph name="DETAILS">$3</ph>
-      </message>
-      <message name="IDS_MULTISTEP_FILTER_SUGGESTION_RECENT_APPLY_BUTTON" desc="Text for the apply button on the Multistep Filter suggestion recent toast." translateable="false">
-        Apply
-      </message>
       <message name="IDS_MULTISTEP_FILTER_CUE_ACTION_TEXT" desc="Text for the action button on the contextual cue for multistep filters." translateable="false">
-        Continue
+        Find
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_DISMISS" desc="Text for the dismiss menu item on the contextual cue for multistep filters." translateable="false">
+        Dismiss
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_SETTINGS" desc="Text for the settings menu item on the contextual cue for multistep filters." translateable="false">
+        Settings
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_CUE_EXPANDABLE_CONTENT_HEADING" desc="Text for the expandable content heading on the contextual cue for multistep filters." translateable="false">
+        From your recent search
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_IPH_BODY" desc="Text shown in the IPH bubble for educating users about Multistep Filter." translateable="false">
+        Brave can now suggest your recent filters and search details, helping you pick up where you left off or compare options across sites
+      </message>
+      <message name="IDS_MULTISTEP_FILTER_IPH_BODY_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text shown in the IPH bubble for educating users about Multistep Filter." translateable="false">
+        Brave can now suggest your recent filters and search details, helping you pick up where you left off or compare options across sites
       </message>
       <message name="IDS_LINK_COPIED_TOAST_BODY" desc="Text on a toast notification that is shown when a link is successfully copied.">
         Link copied
@@ -18622,6 +18698,15 @@ Please help our engineers fix this problem. Tell us what happened right before y
       </message>
       <message name="IDS_SPLIT_VIEW_UNDO_SPLIT_ACTION_BUTTON" desc="Text for the action button on a split view toast notification to undo creating the split view.">
         Undo
+      </message>
+      <message name="IDS_TAB_STRIP_SWITCH_DELAYED_TO_HORIZONTAL_TOAST_BODY" desc="Text on a toast notification shown when the tab strip mode switch to horizontal is delayed because the browser is in immersive fullscreen.">
+        Exit full screen to show tabs horizontally
+      </message>
+      <message name="IDS_TAB_STRIP_SWITCH_DELAYED_TO_VERTICAL_TOAST_BODY" desc="Text on a toast notification shown when the tab strip mode switch to vertical is delayed because the browser is in immersive fullscreen.">
+        Exit full screen to show tabs vertically
+      </message>
+      <message name="IDS_TAB_STRIP_SWITCH_DELAYED_EXIT_FULLSCREEN_ACTION" desc="Action button on a toast notification that exits immersive fullscreen mode.">
+        Exit full screen
       </message>
     </if>
 
@@ -18800,6 +18885,9 @@ Please help our engineers fix this problem. Tell us what happened right before y
     <message name="IDS_IWA_INSTALLER_VERIFICATION_ERROR_SUBTITLE" desc="Subtitle of an error popup during the verification step of the Isolated Web App installer">
       This bundle might be broken or compromised. Please close this window and download it again
     </message>
+    <message name="IDS_IWA_SUB_APPS_INSTALLER_PARENT_APP_NAME" desc="Label before the Sub App's parent Isolated Web App name in the app related dialogs.">
+    Parent App: <ph name="APP_NAME">$1<ex>Brave Maps</ex></ph>
+    </message>
     <if expr="is_chromeos">
         <message name="IDS_IWA_INSTALLER_SHELF_ITEM_TITLE" desc="Title of an Isolated Web App installer item on the ChromeOS Shelf.">
           Application Installer
@@ -18878,9 +18966,12 @@ Please help our engineers fix this problem. Tell us what happened right before y
         </message>
     </if>
 
-    <!-- PDF Ink Signatures elements. -->
+    <!-- PDF Editing elements. -->
     <message name="IDS_PDF_INK_SIGNATURES_IPH_BODY" desc="Content of in-product help to introduce the PDF Ink Signatures feature.">
     Add freehand drawings, signatures, and highlights with the new Draw tool
+    </message>
+    <message name="IDS_PDF_TEXT_ANNOTATIONS_IPH_BODY" desc="Content of in-product help to introduce the PDF Text Annotations feature.">
+    Add text with the new "Add text" tool
     </message>
 
     <!-- PDF Searchify elements. -->
@@ -19073,7 +19164,7 @@ Please help our engineers fix this problem. Tell us what happened right before y
       Choose your account
     </message>
     <message name="IDS_ACCOUNT_CHOOSER_SUBTITLE" desc="Text description for saving files to Drive via Brave PDF viewer.">
-      Find your file in the <ph name="FEATURE_NAME">$1<ex>Saved from Brave</ex></ph> folder
+      Find your <ph name="FILENAME">$1<ex>document.pdf</ex></ph> in the <ph name="FEATURE_NAME">$2<ex>Saved from Brave</ex></ph> folder
     </message>
     <message name="IDS_SAVE_TO_DRIVE_FOLDER_NAME" desc="Name of the folder in Drive where files saved from Brave are stored." meaning="Name of the folder in Drive where files saved from Chrome are stored. Please use the short version of the branded term for Google Chrome i.e. Chrome">
       Saved from Brave

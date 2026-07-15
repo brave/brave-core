@@ -15,13 +15,13 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-class Browser;
+class BrowserWindowInterface;
 
 class FullDiskAccessConfirmDialogDelegate
     : public TabModalConfirmDialogDelegate {
  public:
   FullDiskAccessConfirmDialogDelegate(content::WebContents* web_contents,
-                                      Browser* browser);
+                                      BrowserWindowInterface* browser);
   ~FullDiskAccessConfirmDialogDelegate() override;
 
   FullDiskAccessConfirmDialogDelegate(
@@ -38,7 +38,7 @@ class FullDiskAccessConfirmDialogDelegate
   void OnAccepted() override;
   void OnLinkClicked(WindowOpenDisposition disposition) override;
 
-  raw_ptr<Browser> browser_;
+  raw_ptr<BrowserWindowInterface> browser_;
 };
 
 #endif  // BRAVE_BROWSER_UI_WEBUI_SETTINGS_BRAVE_FULL_DISK_ACCESS_CONFIRM_DIALOG_DELEGATE_H_

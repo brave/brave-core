@@ -150,7 +150,11 @@ PINNED_GROUPS = [
     ('iwyu', re.compile(r'IWYU fixes\.?')),
     ('resource_ids', re.compile(r'Bump resource_ids\.?')),
     ('lit_mangler', re.compile(r'Update Lit mangler snapshot\.?')),
-    ('disable_tests', re.compile(r'Disable failing upstream tests\.?')),
+    ('disable_tests',
+     re.compile(r'Disable failing upstream tests\.?|'
+                r'Filter upstream tests as needed\.?')),
+    ('dead_upstream_tests',
+     re.compile(r'Remove dead upstream tests from filters\.?')),
 ]
 
 # Subjects produced by `npm run update_patches` and string generation --

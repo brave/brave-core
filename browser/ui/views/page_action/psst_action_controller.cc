@@ -17,14 +17,15 @@
 #include "chrome/browser/ui/actions/chrome_action_id.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
-#include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
 #include "third_party/skia/include/core/SkColor.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/events/event_constants.h"
 #include "ui/gfx/canvas.h"
 #include "ui/gfx/image/canvas_image_source.h"
 #include "ui/gfx/paint_vector_icon.h"
+#include "ui/views/bubble/bubble_anchor.h"
 #include "ui/views/controls/menu/menu_item_view.h"
+#include "ui/views/view.h"
 
 namespace {
 
@@ -117,8 +118,9 @@ void PsstActionController::ExecuteAction(
     return;
   }
 
-  IconLabelBubbleView* const anchor_view =
-      toolbar_button_provider->GetPageActionView(kActionShowPsstIcon);
+  views::View* const anchor_view =
+      toolbar_button_provider->GetPageActionBubbleAnchor(kActionShowPsstIcon)
+          .GetIfView();
   if (!anchor_view || !anchor_view->GetWidget()) {
     return;
   }

@@ -28,6 +28,7 @@
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/tabs/split_tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/multi_contents_background_view.h"
@@ -71,6 +72,11 @@ namespace {
 ui::MouseEvent GetDummyEvent() {
   return ui::MouseEvent(ui::EventType::kMousePressed, gfx::PointF(),
                         gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+}
+
+bool IsActiveTabSplit(TabStripModel* model) {
+  const tabs::TabInterface* active_tab = model->GetActiveTab();
+  return active_tab && active_tab->IsSplit();
 }
 
 constexpr char kTestPageWithTargetBlankLink[] = R"(
@@ -427,12 +433,12 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
   auto* tab_strip_model = browser()->tab_strip_model();
 
   // No shadow if split tab is active.
-  EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_TRUE(IsActiveTabSplit(tab_strip_model));
   EXPECT_FALSE(brave_browser_view()->contents_shadow_);
 
   // Shadow if split tab is not active.
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
-  EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_FALSE(IsActiveTabSplit(tab_strip_model));
   EXPECT_TRUE(brave_browser_view()->contents_shadow_);
 
   // Turn off the rounded corners.
@@ -441,7 +447,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
   // Shadow should be gone.
   EXPECT_FALSE(brave_browser_view()->contents_shadow_);
   browser()->tab_strip_model()->ActivateTabAt(0);
-  EXPECT_TRUE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_TRUE(IsActiveTabSplit(tab_strip_model));
   EXPECT_FALSE(brave_browser_view()->contents_shadow_);
 
   // Turn on the rounded corners.
@@ -452,7 +458,7 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest, ContentsShadowTest) {
 
   // Have shadow when split view is not active.
   browser()->tab_strip_model()->ActivateTabAt(2);
-  EXPECT_FALSE(tab_strip_model->IsActiveTabSplit());
+  EXPECT_FALSE(IsActiveTabSplit(tab_strip_model));
   EXPECT_TRUE(brave_browser_view()->contents_shadow_);
 }
 
@@ -599,7 +605,7 @@ IN_PROC_BROWSER_TEST_F(SplitViewCommonBrowserTest, SplitTabInsetsTest) {
 
   // Check split tab's first & second tabs' insets are different.
   // value 4 here is copied from |kPaddingForVerticalTabInTile| in
-  // brave_tab_style_views.inc.cc.
+  // chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc.
   EXPECT_EQ(tab_strip()->tab_at(2)->GetBorder()->GetInsets(),
             insets + gfx::Insets::TLBR(4, 0, 0, 0));
   EXPECT_EQ(tab_strip()->tab_at(3)->GetBorder()->GetInsets(),

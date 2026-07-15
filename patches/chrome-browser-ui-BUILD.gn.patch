@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/BUILD.gn b/chrome/browser/ui/BUILD.gn
-index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..e51230a7c4d503ee4b0262923bb5383d213c79c3 100644
+index 3f0492afd60dd109ef430284050fa191ce26547a..35b728cc1f9b617e10fdf9a303f19aaa44bce7bd 100644
 --- a/chrome/browser/ui/BUILD.gn
 +++ b/chrome/browser/ui/BUILD.gn
-@@ -921,6 +921,7 @@ static_library("ui") {
+@@ -1259,6 +1259,7 @@ static_library("ui") {
      # split out yet.
      "//chrome/browser/webauthn:impl",
    ]
@@ -10,19 +10,7 @@ index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..e51230a7c4d503ee4b0262923bb5383d
  
    if (enable_vr && is_win) {
      deps += [ "//chrome/browser/vr:vr_base" ]
-@@ -3371,7 +3372,10 @@ static_library("ui") {
-         "//chrome/updater/app/server/win:updater_legacy_idl",
-       ]
-     } else {
--      sources += [ "webui/help/version_updater_basic.cc" ]
-+      if (!is_official_build) {
-+        # In official build, //brave/browser/ui handles.
-+        sources += [ "webui/help/version_updater_basic.cc" ]
-+      }
-     }
-   }
- 
-@@ -5423,6 +5427,7 @@ group("ui_public_dependencies") {
+@@ -5611,6 +5612,7 @@ group("ui_public_dependencies") {
      "//components/enterprise/buildflags",
      "//components/paint_preview/buildflags",
      "//components/safe_browsing:buildflags",
@@ -30,7 +18,7 @@ index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..e51230a7c4d503ee4b0262923bb5383d
      "//components/segmentation_platform/public",
      "//components/sync",
      "//components/sync_user_events",
-@@ -5435,6 +5440,7 @@ group("ui_public_dependencies") {
+@@ -5623,6 +5625,7 @@ group("ui_public_dependencies") {
    if (enable_extensions_core) {
      public_deps += [ "//extensions/browser" ]
    }
@@ -38,11 +26,3 @@ index b669d4f3ee5f390b5b30ea4343b0cf082b72ac02..e51230a7c4d503ee4b0262923bb5383d
    if (!is_android) {
      public_deps += [
        "//build:branding_buildflags",
-@@ -5550,6 +5556,7 @@ source_set("tab_search_feature") {
-     "//chrome/common:buildflags",
-     "//components/variations/service",
-   ]
-+  if (!is_android) { deps += [ "//chrome/browser/ui/tabs:features" ] }
- }
- 
- if (!is_android) {

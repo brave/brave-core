@@ -1,5 +1,5 @@
 diff --git a/build/config/win/BUILD.gn b/build/config/win/BUILD.gn
-index 101c2339697caa7542602db3137a936030ff3219..efdc2d831abb9b28f4fad761adaf042fd75bf427 100644
+index 069432bbae2fff5c76785bcbc97ec663e7f04b35..5ee6a877b972d87199fb2d860d4e40f8143b64aa 100644
 --- a/build/config/win/BUILD.gn
 +++ b/build/config/win/BUILD.gn
 @@ -177,6 +177,7 @@ config("compiler") {

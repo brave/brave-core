@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search.mojom-forward.h"
 #include "chrome/browser/ui/webui/tab_search/tab_search_ui.h"
+#include "chrome/browser/ui/window_metadata/window_metadata_controller.h"
 #include "chrome/common/webui_url_constants.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -383,7 +384,8 @@ IN_PROC_BROWSER_TEST_F(TabSearchPageHandlerBrowserTest, GetFocusTabs) {
           ->GetBrowserForMigrationOnly();
   EXPECT_EQ(focus_tabs_browser->GetTabStripModel()->count(), 2)
       << "The new window should have 2 tabs.";
-  EXPECT_EQ(focus_tabs_browser->user_title(), "topic");
+  EXPECT_EQ(WindowMetadataController::From(focus_tabs_browser)->user_title(),
+            "topic");
 
   // Check the tabs are moved to the new window as expected.
   EXPECT_EQ(focus_tabs_browser->GetTabStripModel()

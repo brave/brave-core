@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Build `version_updater_win.cc` for every official build, not just branded
+
+      Brave is official but not `is_chrome_branded`, and still needs the real
+      Windows updater rather than the `version_updater_basic.cc` no-op.
+    re_pattern: '(if \(is_win\) \{\s+if \()is_chrome_branded(\) \{)'
+    replace: '\1is_official_build\2'
+  - description: |
+      Add dependency on group that brings in deps introduced by includes in
+      `brave/chromium_src/chrome/browser/ui/webui/help/version_updater.h`
+    re_pattern: '("version_updater\.h".*?  deps.*?\])'
+    re_flags: [DOTALL]
+    replace: '\1\n  deps += [ "//brave/browser/ui/webui/help" ]'

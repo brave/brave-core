@@ -19,6 +19,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/components/screenshot/core/browser/utils.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
@@ -176,11 +177,9 @@ PrintPreviewExtractorInternal::PrintPreviewExtractorInternal(
     Profile* profile,
     bool is_pdf,
     ImageCallback callback,
-    GetPrintPreviewUIIdMapCallback id_map_callback,
     GetPrintPreviewUIRequestIdMapCallback request_id_map_callback)
     : is_pdf_(is_pdf),
       callback_(std::move(callback)),
-      id_map_callback_(std::move(id_map_callback)),
       request_id_map_callback_(std::move(request_id_map_callback)),
       web_contents_(web_contents),
       profile_(profile) {
@@ -210,10 +209,10 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
     if (!IsPrintPreviewUIBound()) {
       print_render_frame_->SetPrintPreviewUI(BindPrintPreviewUI());
     }
-    if (!print_preview_ui_id_) {
+    if (print_preview_ui_id_.is_empty()) {
       SetPreviewUIId();
     }
-    CHECK(print_preview_ui_id_);
+    CHECK(!print_preview_ui_id_.is_empty());
 
     // Basic print setting from PrintingContext::UsePdfSettings and modified
     base::DictValue settings;
@@ -248,7 +247,7 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
     settings.Set(printing::kSettingScalingType,
                  static_cast<int>(printing::ScalingType::DEFAULT));
     settings.Set(printing::kIsFirstRequest, true);
-    settings.Set(printing::kPreviewUIID, print_preview_ui_id_.value());
+    settings.Set(printing::kPreviewUIID, print_preview_ui_id_.ToString());
     settings.Set(printing::kPreviewRequestID, ++preview_request_id_);
     settings.Set(printing::kSettingHeaderFooterTitle,
                  web_contents_->GetTitle());
@@ -263,7 +262,7 @@ void PrintPreviewExtractorInternal::CreatePrintPreview() {
   }
 }
 
-std::optional<int32_t>
+base::UnguessableToken
 PrintPreviewExtractorInternal::GetPrintPreviewUIIdForTesting() {
   CHECK_IS_TEST();
   return print_preview_ui_id_;
@@ -309,7 +308,7 @@ void PrintPreviewExtractorInternal::DidPrepareDocumentForPreview(
   }
 
   client->PrepareToCompositeDocument(
-      document_cookie, render_frame_host,
+      document_cookie, *render_frame_host,
       mojo::WrapCallbackWithDefaultInvokeIfNotRun(
           base::BindOnce(
               &PrintPreviewExtractorInternal::OnPrepareForDocumentToPdfDone,
@@ -384,8 +383,8 @@ void PrintPreviewExtractorInternal::MetafileReadyForPrinting(
 void PrintPreviewExtractorInternal::PrintPreviewFailed(int32_t document_cookie,
                                                        int32_t request_id) {
   DLOG(ERROR) << __func__ << ": id=" << request_id;
-  if (print_preview_ui_id_) {
-    request_id_map_callback_.Run()[*print_preview_ui_id_] = -1;
+  if (!print_preview_ui_id_.is_empty()) {
+    request_id_map_callback_.Run()[print_preview_ui_id_] = -1;
   }
   SendError("PrintPreviewFailed");
 }
@@ -432,27 +431,26 @@ bool PrintPreviewExtractorInternal::IsPrintPreviewUIBound() const {
 }
 
 void PrintPreviewExtractorInternal::SetPreviewUIId() {
-  DCHECK(!print_preview_ui_id_);
-  print_preview_ui_id_ = id_map_callback_.Run().Add(this);
-  request_id_map_callback_.Run()[*print_preview_ui_id_] = -1;
+  DCHECK(print_preview_ui_id_.is_empty());
+  print_preview_ui_id_ = base::UnguessableToken::Create();
+  request_id_map_callback_.Run()[print_preview_ui_id_] = -1;
 }
 
 void PrintPreviewExtractorInternal::ClearPreviewUIId() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!print_preview_ui_id_) {
+  if (print_preview_ui_id_.is_empty()) {
     return;
   }
 
   DisconnectPrintPreviewUI();
-  PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
-  request_id_map_callback_.Run().erase(*print_preview_ui_id_);
-  id_map_callback_.Run().Remove(*print_preview_ui_id_);
-  print_preview_ui_id_.reset();
+  PrintPreviewDataService::GetInstance()->RemoveEntry(print_preview_ui_id_);
+  request_id_map_callback_.Run().erase(print_preview_ui_id_);
+  print_preview_ui_id_ = base::UnguessableToken();
 }
 
 void PrintPreviewExtractorInternal::OnPrintPreviewRequest(int request_id) {
-  request_id_map_callback_.Run()[*print_preview_ui_id_] = request_id;
+  request_id_map_callback_.Run()[print_preview_ui_id_] = request_id;
 }
 
 void PrintPreviewExtractorInternal::OnPrepareForDocumentToPdfDone(
@@ -469,11 +467,11 @@ void PrintPreviewExtractorInternal::OnCompositePdfPageDone(
     base::ReadOnlySharedMemoryRegion region) {
   DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(print_preview_ui_id_);
+  DCHECK(!print_preview_ui_id_.is_empty());
 
   if (status == printing::mojom::PrintCompositor::Status::kSuccess) {
     PrintPreviewDataService::GetInstance()->SetDataEntry(
-        *print_preview_ui_id_, page_index,
+        print_preview_ui_id_, page_index,
         base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
   }
 }
@@ -485,20 +483,20 @@ void PrintPreviewExtractorInternal::OnCompositeToPdfDone(
     base::ReadOnlySharedMemoryRegion region) {
   DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  DCHECK(print_preview_ui_id_);
+  DCHECK(!print_preview_ui_id_.is_empty());
   if (status == printing::mojom::PrintCompositor::Status::kSuccess) {
     PrintPreviewDataService::GetInstance()->SetDataEntry(
-        *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX,
+        print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX,
         base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
   }
   OnPreviewReady();
 }
 
 void PrintPreviewExtractorInternal::PreviewCleanup() {
-  if (!print_preview_ui_id_) {
+  if (print_preview_ui_id_.is_empty()) {
     return;
   }
-  PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
+  PrintPreviewDataService::GetInstance()->RemoveEntry(print_preview_ui_id_);
   if (!is_pdf_) {
     print_render_frame_->OnPrintPreviewDialogClosed();
   }
@@ -511,11 +509,11 @@ void PrintPreviewExtractorInternal::PreviewCleanup() {
 
 void PrintPreviewExtractorInternal::OnPreviewReady() {
   scoped_refptr<base::RefCountedMemory> data;
-  CHECK(print_preview_ui_id_);
+  CHECK(!print_preview_ui_id_.is_empty());
   data = PrintPreviewDataService::GetInstance()->GetDataEntry(
-      *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX);
+      print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX);
   if (!data.get()) {
-    DLOG(ERROR) << "no data from preview id: " << *print_preview_ui_id_;
+    DLOG(ERROR) << "no data from preview id: " << print_preview_ui_id_;
     SendError("Failed to get preview data");
     return;
   }

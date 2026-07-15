@@ -22,8 +22,10 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
 #include "brave/components/vector_icons/vector_icons.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/grit/generated_resources.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -79,7 +81,8 @@ PlaylistEditBubbleView::PlaylistEditBubbleView(
     views::View* anchor_view,
     base::WeakPtr<PlaylistTabHelper> tab_helper)
     : PlaylistBubbleView(anchor_view, std::move(tab_helper)) {
-  browser_ = chrome::FindBrowserWithTab(&tab_helper_->GetWebContents());
+  browser_ = GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      &tab_helper_->GetWebContents());
   CHECK(browser_);
 
   // What this looks like:
@@ -204,7 +207,7 @@ void PlaylistEditBubbleView::OpenInPlaylist() {
 
 void PlaylistEditBubbleView::ChangeFolder() {
   PlaylistActionDialog::Show<PlaylistMoveDialog>(
-      static_cast<BrowserView*>(browser_->window()), tab_helper_.get());
+      BrowserView::GetBrowserViewForBrowser(browser_), tab_helper_.get());
 }
 
 void PlaylistEditBubbleView::RemoveFromPlaylist() {

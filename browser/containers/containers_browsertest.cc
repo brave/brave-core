@@ -40,6 +40,7 @@
 #include "chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/toolbar_button_provider.h"
 #include "chrome/browser/ui/views/location_bar/icon_label_bubble_view.h"
+#include "chrome/browser/ui/views/page_action/test_support/page_action_test_support.h"
 #include "chrome/browser/ui/zoom/chrome_zoom_level_prefs.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/common/webui_url_constants.h"
@@ -1529,7 +1530,11 @@ IN_PROC_BROWSER_TEST_F(ContainersBrowserTest,
   ASSERT_EQ(1, tab_strip_model->count());
 
   IconLabelBubbleView* partitioned_storage_view =
-      browser()->GetBrowserView().toolbar_button_provider()->GetPageActionView(
+      page_actions::GetIconLabelBubbleViewForTesting(
+          browser()
+              ->GetBrowserView()
+              .toolbar_button_provider()
+              ->GetPageActionViewInterface(kActionShowPartitionedStorage),
           kActionShowPartitionedStorage);
   ASSERT_NE(nullptr, partitioned_storage_view);
 
@@ -1571,7 +1576,11 @@ IN_PROC_BROWSER_TEST_F(
   ASSERT_NE(nullptr, partitioned_storage_action);
 
   IconLabelBubbleView* const partitioned_storage_view =
-      browser()->GetBrowserView().toolbar_button_provider()->GetPageActionView(
+      page_actions::GetIconLabelBubbleViewForTesting(
+          browser()
+              ->GetBrowserView()
+              .toolbar_button_provider()
+              ->GetPageActionViewInterface(kActionShowPartitionedStorage),
           kActionShowPartitionedStorage);
   ASSERT_NE(nullptr, partitioned_storage_view);
 

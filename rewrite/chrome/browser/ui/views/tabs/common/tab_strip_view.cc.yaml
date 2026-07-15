@@ -1,0 +1,19 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Handle TREE_NODE collection type in the OnChildMoved().
+
+      Tree nodes are not rendered in the vertical tab strip view tree (see the
+      sibling CreateViewForNode() switch, which marks TREE_NODE NOTREACHED), so
+      a moved tree node needs no scroll handling.
+    re_pattern:
+      '(OnChildMoved\([^)]*\)\s*\{.*?switch \(moved_node->type\(\)\) \{)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1
+            case TabCollectionNode::Type::TREE_NODE:
+              break;

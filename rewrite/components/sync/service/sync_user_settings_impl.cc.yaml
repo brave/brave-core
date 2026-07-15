@@ -5,13 +5,6 @@
 
 substitutions:
   - description: |-
-      Account for Brave's extra data type in the GetNumDataTypes static_assert.
-      Add one to the upstream count rather than matching its value, so the
-      assert is undisturbed when upstream adds or removes data types.
-    re_pattern: 'static_assert\((\d+) == GetNumDataTypes\(\),'
-    replace: 'static_assert(\1 + 1 == GetNumDataTypes(),'
-
-  - description: |-
       Call BraveAdjustPreferredDataTypes for unconditional and
       local-sync-only type exclusions.
     re_pattern: '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return\s+types;\s*\})'

@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "base/feature_override.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #include "brave/browser/android/youtube_script_injector/features.h"
 #include "brave/browser/brave_browser_features.h"
@@ -122,13 +121,3 @@
 #undef BRAVE_WEB_DISCOVERY_FLAG
 #undef BRAVE_VPN_FLAG
 #undef EMAIL_ALIASES_FLAG
-
-namespace chrome {
-namespace android {
-
-OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAndroidSearchInSettings, base::FEATURE_DISABLED_BY_DEFAULT},
-}});
-
-}  // namespace android
-}  // namespace chrome

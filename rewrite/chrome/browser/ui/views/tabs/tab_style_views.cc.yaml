@@ -1,0 +1,96 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Expose TabStyleViewsImpl's private members to BraveVerticalTabStyle.
+
+      Brave subclasses TabStyleViewsImpl (in
+      chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so its
+      members must be reachable from the derived class.
+    re_pattern: '(class TabStyleViewsImpl\b.*?)\n private:'
+    re_flags: [DOTALL]
+    replace: '\1\n protected:'
+
+  - description: |-
+      Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
+    make_virtual:
+      class_name: TabStyleViewsImpl
+      method_name: GetSeparatorBounds
+
+  - description: |-
+      Virtualise IsHovering for BraveVerticalTabStyle.
+    make_virtual:
+      class_name: TabStyleViewsImpl
+      method_name: IsHovering
+
+  - description: |-
+      Virtualise GetStrokeThickness for BraveVerticalTabStyle.
+
+      Virtualising it to return 0 for vertical/horizontal-update tabs.
+    make_virtual:
+      class_name: TabStyleViewsImpl
+      method_name: GetStrokeThickness
+
+  - description: |-
+      Virtualise GetSeparatorOpacity for BraveVerticalTabStyle.
+
+      Virtualising to tweak separator visibility for vertical tabs and split
+      tabs.
+    make_virtual:
+      class_name: TabStyleViewsImpl
+      method_name: GetSeparatorOpacity
+
+  - description: |-
+      Virtualise GetCurrentTabBackgroundColor for BraveVerticalTabStyle.
+
+      Virtualising to supply its own vertical-tab background colors.
+    make_virtual:
+      class_name: TabStyleViewsImpl
+      method_name: GetCurrentTabBackgroundColor
+
+  - description: |-
+      Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
+      tabs don't carry upstream's rounded extension.
+    re_pattern:
+      '(  float left_extension_corner_radius = extension_corner_radius;)'
+    replace: '  extension_corner_radius = 0;\n\1'
+
+  - description: |-
+      Fully round the tab separators in TabStyleViewsImpl::PaintSeparators
+
+      This patch computes a radius of half the separator width.
+    re_pattern:
+      '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags flags;)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
+        // will be approximated with color, although extremely subtle and
+        // likely only on screens >= 2x (i.e. separator width is 2+px)!
+        const int separator_radius = separator_bounds.leading.width() / 2;
+      \2
+
+  - description: |-
+      Use the fully-rounded separator radius for both separator draws.
+    re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
+    replace: 'separator_radius'
+    count: 2
+
+  - description: |-
+      Disable the upstream `TabStyleViews::CreateForTab` factory.
+
+      It must return `BraveVerticalTabStyle`, which inherits from the `.cc`-local
+      `TabStyleViewsImpl` and so can only be defined after it. A forward
+      declaration isn't enough for `make_unique`, so we disable the whole
+      upstream factory and re-define it in `chromium_src` where the full type is
+      visible.
+    re_pattern:
+      '(// static\nstd::unique_ptr<TabStyleViews>
+      TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
+    re_flags: [DOTALL]
+    replace: |-
+      #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
+      \1
+      #endif

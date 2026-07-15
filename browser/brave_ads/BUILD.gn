@@ -33,7 +33,7 @@ source_set("brave_ads") {
 source_set("impl") {
   visibility = [
     ":*",
-    "//chrome/browser",
+    "//brave/browser:core",
   ]
 
   sources = [

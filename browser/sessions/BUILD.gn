@@ -24,6 +24,7 @@ source_set("browser_tests") {
       "//brave/browser/ui/tabs:tree_tab",
       "//brave/components/tabs",
       "//chrome/browser",
+      "//chrome/browser/prefs:util",
       "//chrome/browser/profiles:profile",
       "//chrome/test:test_support_ui",
       "//components/sessions",

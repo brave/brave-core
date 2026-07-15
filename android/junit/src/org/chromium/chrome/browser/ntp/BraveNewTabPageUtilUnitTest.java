@@ -30,7 +30,7 @@ public class BraveNewTabPageUtilUnitTest {
     @Rule public final MockitoRule mMockitoRule = MockitoJUnit.rule();
 
     @Test
-    public void testIsInNarrowWindowOnTablet() {
+    public void testIsInNarrowWindowOnLff() {
         UiConfig uiConfig = Mockito.mock(UiConfig.class);
 
         UiConfig.DisplayStyle displayStyleWide =
@@ -38,8 +38,8 @@ public class BraveNewTabPageUtilUnitTest {
         when(uiConfig.getCurrentDisplayStyle()).thenReturn(displayStyleWide);
 
         assertTrue(
-                "Brave overridden isInNarrowWindowOnTablet on tablet when displayStyleWide =="
+                "Brave overridden isInNarrowWindowOnLff on LFF when displayStyleWide =="
                         + " HorizontalDisplayStyle.WIDE.",
-                BraveNtpCustomizationUtils.isInNarrowWindowOnTablet(true, uiConfig));
+                BraveNtpCustomizationUtils.isInNarrowWindowOnLff(true, uiConfig));
     }
 }

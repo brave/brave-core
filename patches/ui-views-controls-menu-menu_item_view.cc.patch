@@ -1,5 +1,5 @@
 diff --git a/ui/views/controls/menu/menu_item_view.cc b/ui/views/controls/menu/menu_item_view.cc
-index f22907bb8d3c841c668ce1f31ad829b4062c3bdf..2d9efb8c7bb330922ac7f1ea9510cc70ba9e5cd7 100644
+index fbb45b3a420ec21978ee10f901f22f2c35499e6e..488589977ea2647c3cb9a59b02f1830752f9f65f 100644
 --- a/ui/views/controls/menu/menu_item_view.cc
 +++ b/ui/views/controls/menu/menu_item_view.cc
 @@ -1655,7 +1655,7 @@ void MenuItemView::UpdateSelectionBasedState(bool paint_as_selected) {

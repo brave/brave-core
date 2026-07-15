@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.h b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
-index fb04cbaf8b0491eb2d06764386294de56f367a52..3b864f40bbf5e5805162d33ebe67d1147647aa03 100644
+index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..6250948641340461f9da9ffd911150f07aec6c08 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 @@ -38,7 +38,8 @@ class WindowFeatureController {
@@ -12,7 +12,7 @@ index fb04cbaf8b0491eb2d06764386294de56f367a52..3b864f40bbf5e5805162d33ebe67d114
    ~WindowFeatureController();
  
    WindowFeatureController(const WindowFeatureController&) = delete;
-@@ -70,6 +71,8 @@ class WindowFeatureController {
+@@ -72,6 +73,8 @@ class WindowFeatureController {
   private:
    bool NormalBrowserSupportsWindowFeature(WindowFeature feature,
                                            bool check_can_support) const;
@@ -21,7 +21,7 @@ index fb04cbaf8b0491eb2d06764386294de56f367a52..3b864f40bbf5e5805162d33ebe67d114
    bool PopupBrowserSupportsWindowFeature(WindowFeature feature,
                                           bool check_can_support) const;
    bool AppPopupBrowserSupportsWindowFeature(WindowFeature feature,
-@@ -92,6 +95,7 @@ class WindowFeatureController {
+@@ -94,6 +97,7 @@ class WindowFeatureController {
    const bool is_trusted_source_;
  
    ui::ScopedUnownedUserData<WindowFeatureController> scoped_unowned_user_data_;

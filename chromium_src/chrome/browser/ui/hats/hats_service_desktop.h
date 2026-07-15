@@ -7,7 +7,19 @@
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_HATS_HATS_SERVICE_DESKTOP_H_
 
 #define HatsServiceDesktop HatsServiceDesktop_ChromiumImpl
+
+// Brave disables HaTS surveys entirely. Upstream funnels every survey-show
+// decision through the private, non-virtual `GetCommonLaunchError()`: both the
+// public `CanShowSurvey()` and the internal launch path
+// (`ShowSurvey()` -> `GetLaunchError()` -> `GetCommonLaunchError()`) call it.
+// Make it virtual so we can override it as the single chokepoint that blocks
+// all surveys.
+#define GetCommonLaunchError     \
+  GetCommonLaunchError_Unused(); \
+  virtual LaunchError GetCommonLaunchError
+
 #include <chrome/browser/ui/hats/hats_service_desktop.h>  // IWYU pragma: export
+#undef GetCommonLaunchError
 #undef HatsServiceDesktop
 
 class HatsServiceDesktop : public HatsServiceDesktop_ChromiumImpl {
@@ -18,7 +30,8 @@ class HatsServiceDesktop : public HatsServiceDesktop_ChromiumImpl {
 
   ~HatsServiceDesktop() override;
 
-  bool CanShowSurvey(const std::string& trigger) const override;
+ private:
+  LaunchError GetCommonLaunchError(const std::string& trigger) const override;
 };
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_HATS_HATS_SERVICE_DESKTOP_H_

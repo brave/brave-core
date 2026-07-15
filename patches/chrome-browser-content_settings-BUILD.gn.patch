@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/content_settings/BUILD.gn b/chrome/browser/content_settings/BUILD.gn
-index 60320a154c3b2095f8b3527299b4512839d231ed..b72f9bff4661ee4ebba19af75893ebc4c163510a 100644
+index cf323d152ae786f927305e034c96c97b88653ca3..8fe75a3005ad1824d3f7def1e43056297fd0834e 100644
 --- a/chrome/browser/content_settings/BUILD.gn
 +++ b/chrome/browser/content_settings/BUILD.gn
 @@ -136,6 +136,7 @@ source_set("impl") {
@@ -10,7 +10,7 @@ index 60320a154c3b2095f8b3527299b4512839d231ed..b72f9bff4661ee4ebba19af75893ebc4
  }
  
  # Fixes circular deps with different components. For example -
-@@ -349,6 +350,7 @@ source_set("unit_tests") {
+@@ -351,6 +352,7 @@ source_set("unit_tests") {
    if (is_android) {
      sources += [ "javascript_optimizer_provider_android_unittest.cc" ]
      deps += [ "//chrome/browser/android:tabs_public" ]

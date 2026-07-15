@@ -11,12 +11,10 @@
 -AvatarMenuBrowserTest.AddNewProfile
 -DebuggerExtensionApiTest.ParentTargetPermissions
 -GWSAbandonedPageLoadMetricsObserverBrowserTest.SearchTabHidden
--HeadlessModeProtocolBrowserTest.InputClipboardOps
 -InfoBarUiTest.InvokeUi_bad_flags
 -InfoBarUiTest.InvokeUi_reload_plugin
 -InstanceIDApiTest.GetCreationTimeFormat
 -InterstitialUITest.PinnedCertInterstitial
--HasBeforeUnloadHandlerTest.NonEmptyBeforeUnloadDetected
 -PageInfoBubbleViewBrowserTest.BlockedAndInvalidCert
 -PageInfoBubbleViewBrowserTest.MalwareAndEvCert
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
@@ -40,16 +38,6 @@
 # launcher.
 -PageDiscardingHelperBrowserTest.DiscardedTabEligibleForSuccessiveDiscards/RetainedWebContents
 
-# This test fails on Linux only due to the UI it shows being off-screen. Have
-# not investigated the cause.
--Mv2DeprecationDisabledDialogBrowserTest.InvokeUi
--Mv2DeprecationKeepDialogBrowserTest.InvokeUi
-
-# This test fails because of the following CHECK in identity_test_utils.cc:
-# !primary_account_info.IsEmpty()
--ManagedUserNoticeUIDialogPixelTest.InvokeUi_default/*
--ManagedUserNoticeUIWindowPixelTest.InvokeUi_default/*
-
 # These tests fail because in identity_test_utils.cc waiting for
 # identity_manager->AreRefreshTokensLoaded() times out.
 -AvatarToolbarButtonPromoBrowserTest.*
@@ -59,21 +47,13 @@
 # These tests fail because kPrerender2 feature is disabled.
 -MediaEngagementPreThirdPartyCookieDeprecationBrowserTest.Ignored
 
-# These tests fail because the primary account consent level is null instead of
-# signin::ConsentLevel::kSignin
--All/AvatarToolbarButtonEnterpriseBadgingWithSyncPromoParamsBrowserTest.*
-
 # This test fails because we override RegionalCapabilitiesServiceClientLinux::
 # FetchCountryId to get locale from device instead of the variations service.
 -RegionalCapabilitiesServiceFactoryBrowserTestForVariationsCountry.GetCountryId/FR
 
-# This test fails because we disable PermissionElement origin trial.
--All/PermissionElementOriginTrialBrowserTest.WithOriginTrialToken/BaseEnabled_BlinkDisabled
-
 # These tests fail because Brave enables screen farbling
 # (kBraveBlockScreenFingerprinting) by default on desktop, which modifies
 # screen dimension values returned to web content.
--HeadlessModeProtocolBrowserTest_OzoneScreenSizeOverride.OzoneScreenSizeOverride
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginAllow
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedCrossOriginDeny
 -MultiscreenWindowManagementPermissionContextTest.IsExtendedSameOriginAllow
@@ -158,52 +138,25 @@
 -AdsPageLoadMetricsObserverBrowserTest.*
 -BluetoothLowEnergyApiTest.*
 -CaptureHandleBrowserTest.*
--ConditionalFocusBrowserTest.*
--ContextMenuIncognitoFilterBrowserTest.*
--DomainReliabilityPrefetchProxyBrowserTest.*
--ExtensionApiTestWithSwitch.ExtensionTracing
--ExtensionDialogTest.*
 -ExtensionStartupTest.*
 -ExternalProtocolHandlerSandboxBrowserTest.*
--HeadlessModeProtocolBrowserTest.ScreencastBasics
 -HeadlessModeScreenshotCommandBrowserTest.HeadlessScreenshot
--IndividualNetworkContextsPrefetchProxyBrowserTest.*
 -LayoutInstabilityTest.*
--LocalNetworkAccessWithFeatureEnabledBrowserTest.SpecialSchemeChromeDistiller
 -NewTabUIBrowserTest.*
 -NewTabUIProcessPerTabTest.*
 -OzonePlatformTest.*
 -ParameterizedFrameNodeImplBrowserTest.ViewportIntersection_OutOfView/*
--PolicyTestPrefetchProxyBrowserTest.*
--PolicyTestSetTimeoutWithout1MsClamp.DisablePolicy
--PPAPINaClPNaClNonSfiTest.*
--PrefetchProxyBrowserTest.*
--PrefetchProxyWithDecoyRequestsBrowserTest.*
--PrefetchProxyWithNSPBrowserTest.*
 -PrefHashBrowserTestAccountValueUntrustedAddition.AccountValueUntrustedAddition
 -PrintBrowserTest.*
 -ProfileMainNetworkContext/NetworkContextConfigurationBrowserTest.Hsts/*
--ProbingAndNSPEnabledPrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOff_HTTPHead_PrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOn_BothCanaryGood_PrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOn_TLSCanaryBad_DNSCanaryBad_PrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOn_TLSCanaryBad_DNSCanaryGood_PrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOn_TLSCanaryBadDisabled_DNSCanaryGood_PrefetchProxyBrowserTest.*
--ProbingEnabled_CanaryOn_TLSCanaryGood_DNSCanaryBad_PrefetchProxyBrowserTest.*
 -ProcessMemoryMetricsEmitterTest.*
 -PushSubscriptionWithExpirationTimeTest.*
 -SingleProcessBrowserTest.*
--SpeculationNonPrivatePrefetchesPrefetchProxyTest.*
--SpeculationPrefetchProxyTest.*
 -SpellingOptionsSubMenuObserverTest.*
--SSLReportingPrefetchProxyBrowserTest.*
 -TabCaptureApiTest.*
--WebAppIntegrationBrowserTestMacWinLinux.*
 -WebAppOpaqueBrowserFrameViewTest.*
 -WebAppTagWebAppTest.TabNavigatedAwayNotWebAppTask
 -WebAppTagWebAppTest.WebAppTaskCreatedForStandalone
 -WebAppTagWebAppTest.WebAppTaskCreatedForTab
--WebAuthnCableSecondFactor.*
 -WebRtcBrowserTest.*
 -WebRtcDisableEncryptionFlagBrowserTest.*
--ZeroCacheTimePrefetchProxyBrowserTest.*

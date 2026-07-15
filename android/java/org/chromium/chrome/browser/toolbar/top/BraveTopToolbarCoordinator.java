@@ -115,7 +115,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
             DeviceLockActivityLauncher deviceLockActivityLauncher,
             BottomSheetController bottomSheetController,
             ModalDialogManager modalDialogManager,
-            SnackbarManager snackbarManager) {
+            SnackbarManager snackbarManager,
+            Runnable onSigninTapped,
+            boolean suppressTabStripAtStart) {
         super(
                 controlContainer,
                 toolbarLayout,
@@ -160,7 +162,9 @@ public class BraveTopToolbarCoordinator extends TopToolbarCoordinator {
                 deviceLockActivityLauncher,
                 bottomSheetController,
                 modalDialogManager,
-                snackbarManager);
+                snackbarManager,
+                onSigninTapped,
+                suppressTabStripAtStart);
 
         mBraveToolbarLayout = toolbarLayout;
         mBraveMenuButtonCoordinator = browsingModeMenuButtonCoordinator;

@@ -104,6 +104,7 @@ import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateMa
 import org.chromium.components.browser_ui.device_lock.DeviceLockActivityLauncher;
 import org.chromium.components.browser_ui.widget.scrim.ScrimManager;
 import org.chromium.components.embedder_support.contextmenu.ContextMenuPopulatorFactory;
+import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.content_public.browser.selection.SelectionDropdownMenuDelegate;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.ui.base.ActivityResultTracker;
@@ -235,7 +236,8 @@ public class BraveToolbarManager extends ToolbarManager
             @Nullable OmniboxChipManager omniboxChipManager,
             @Nullable BottomBarHostManager bottomBarHostManager,
             @Nullable ActionRegistry actionRegistry,
-            GlicButtonDelegate toggleGlicCallback) {
+            GlicButtonDelegate toggleGlicCallback,
+            boolean suppressTabStripAtStart) {
         super(
                 activity,
                 bottomControlsStacker,
@@ -295,7 +297,8 @@ public class BraveToolbarManager extends ToolbarManager
                 omniboxChipManager,
                 bottomBarHostManager,
                 actionRegistry,
-                toggleGlicCallback);
+                toggleGlicCallback,
+                suppressTabStripAtStart);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -405,7 +408,7 @@ public class BraveToolbarManager extends ToolbarManager
                         mActivityTabProvider,
                         mToolbarTabController::openHomepage,
                         mCallbackController.makeCancelable(
-                                (reason) -> setUrlBarFocus(true, reason)),
+                                (reason) -> beginFuseboxInput(new AutocompleteInput(reason))),
                         mMenuButtonCoordinator.getMenuButtonHelperSupplier(),
                         mAppThemeColorProvider,
                         mBookmarkModelSupplier,

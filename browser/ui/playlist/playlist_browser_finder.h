@@ -10,14 +10,15 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-class Browser;
+class BrowserWindowInterface;
 
 namespace playlist {
 
-// Returns the Browser that contains the given playlist web ui's WebContents.
+// Returns the browser that contains the given playlist web ui's WebContents.
 // The toolkit(views) dependent implementation is in
 // playlist_browser_finder_views.cc.
-Browser* FindBrowserForPlaylistWebUI(content::WebContents* web_contents);
+BrowserWindowInterface* FindBrowserForPlaylistWebUI(
+    content::WebContents* web_contents);
 
 }  // namespace playlist
 

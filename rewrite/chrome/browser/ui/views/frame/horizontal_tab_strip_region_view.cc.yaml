@@ -7,3 +7,33 @@ substitutions:
   - description: 'Replace TabStrip construction with BraveTabStrip'
     pattern: 'std::make_unique<TabStrip>'
     replace: 'std::make_unique<BraveTabStrip>'
+
+  - description: |
+      Use BraveBrowserTabStripController in place of BrowserTabStripController
+    pattern: 'BrowserTabStripController'
+    replace: 'BraveBrowserTabStripController'
+    count: 3
+
+  - description: |
+      Construct BraveNewTabButton instead of NewTabButton
+    pattern: 'std::make_unique<NewTabButton>'
+    replace: 'std::make_unique<BraveNewTabButton>'
+
+  - description: |
+      Read the new tab button size from BraveNewTabButton::GetButtonSize()
+
+      The Brave new tab button size varies with the tabs update feature flag,
+      so it must be read from the static `BraveNewTabButton::GetButtonSize()`
+      helper.
+    pattern: 'NewTabButton::kButtonSize'
+    replace: 'BraveNewTabButton::GetButtonSize()'
+
+  - description: |
+      Declare the hover card controller as BraveTabHoverCardController
+    pattern: 'std::unique_ptr<TabHoverCardController>'
+    replace: 'std::unique_ptr<BraveTabHoverCardController>'
+
+  - description: |
+      Construct BraveTabHoverCardController
+    pattern: 'std::make_unique<TabHoverCardController>'
+    replace: 'std::make_unique<BraveTabHoverCardController>'

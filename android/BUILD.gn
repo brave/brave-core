@@ -390,7 +390,6 @@ android_resources("java_resources") {
     "java/brave-res/drawable/ic_wallet_lock.xml",
     "java/brave-res/drawable/ic_wallet_settings.xml",
     "java/brave-res/drawable/ic_warning.xml",
-    "java/brave-res/drawable/ic_warning_circle.xml",
     "java/brave-res/drawable/ic_warning_circle_filled.xml",
     "java/brave-res/drawable/ic_warning_circle_filled2.xml",
     "java/brave-res/drawable/ic_web.xml",

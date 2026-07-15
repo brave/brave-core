@@ -8,6 +8,9 @@ specific_include_rules = {
  "brave_open_ai_chat_permission_context_unittest\.cc": [
     "+brave/components/permissions/contexts/brave_open_ai_chat_permission_context.h",
  ],
+ "content_agent_tools_browsertest\.cc": [
+    "+components/origin_gating/core/origin_gating_cache.h",
+ ],
  "content_agent_tool_provider\.cc": [
     "+components/actor/core/task_source_info.h",
  ],

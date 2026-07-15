@@ -9,6 +9,7 @@
 
 #include "base/containers/flat_map.h"
 #include "base/functional/bind.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/browser/screenshot/print_preview_extractor_internal.h"
 #include "chrome/browser/profiles/profile.h"
@@ -16,24 +17,19 @@
 namespace screenshot {
 
 std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
-    base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
-        id_map_callback,
-    base::RepeatingCallback<base::flat_map<int, int>&()>
+    base::RepeatingCallback<base::flat_map<base::UnguessableToken, int>&()>
         request_id_map_callback) {
   return std::make_unique<PrintPreviewExtractor>(base::BindRepeating(
-      [](base::RepeatingCallback<
-             base::IDMap<printing::mojom::PrintPreviewUI*>&()> id_map_callback,
-         base::RepeatingCallback<base::flat_map<int, int>&()>
+      [](base::RepeatingCallback<base::flat_map<base::UnguessableToken, int>&()>
              request_id_map_callback,
          content::WebContents* wc, bool is_pdf,
          PrintPreviewExtractor::CaptureImagesCallback&& callback)
           -> std::unique_ptr<PrintPreviewExtractor::Extractor> {
         return std::make_unique<PrintPreviewExtractorInternal>(
             wc, Profile::FromBrowserContext(wc->GetBrowserContext()), is_pdf,
-            std::move(callback), std::move(id_map_callback),
-            std::move(request_id_map_callback));
+            std::move(callback), std::move(request_id_map_callback));
       },
-      std::move(id_map_callback), std::move(request_id_map_callback)));
+      std::move(request_id_map_callback)));
 }
 
 }  // namespace screenshot

@@ -8,7 +8,6 @@
 #include "base/check.h"
 #include "base/strings/string_number_conversions.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/navigator/browser_navigator_params.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"

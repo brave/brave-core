@@ -8,11 +8,6 @@
 namespace printing {
 
 // static
-base::IDMap<mojom::PrintPreviewUI*>& PrintPreviewUI::GetPrintPreviewUIIdMap() {
-  return g_print_preview_ui_id_map.Get();
-}
-
-// static
 PrintPreviewRequestIdMap& PrintPreviewUI::GetPrintPreviewUIRequestIdMap() {
   return GetPrintPreviewRequestIdMap();
 }

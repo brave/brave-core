@@ -157,7 +157,7 @@ if (enable_ai_chat_tab_management_tool) {
     visibility = [
       ":browser_tests",
       ":unit_tests",
-      "//chrome/browser",
+      "//brave/browser:core",
     ]
 
     sources = [ "tools/tab_management_tool.cc" ]
@@ -194,7 +194,7 @@ if (enable_brave_ai_chat_agent_profile) {
   source_set("ai_chat_agent_profile_impl") {
     visibility = [
       ":browser_tests",
-      "//chrome/browser",
+      "//brave/browser:core",
     ]
 
     sources = [
@@ -422,7 +422,10 @@ source_set("browser_tests") {
         "//chrome/browser/printing/test_print_preview_observer.cc",
         "//chrome/browser/printing/test_print_preview_observer.h",
       ]
-      deps += [ "//printing:test_support" ]
+      deps += [
+        "//chrome/browser/ui/webui/print_preview",
+        "//printing:test_support",
+      ]
     }
 
     data = [

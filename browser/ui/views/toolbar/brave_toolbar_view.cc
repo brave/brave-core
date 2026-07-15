@@ -36,7 +36,6 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/ui_features.h"
 #include "chrome/browser/ui/views/bookmarks/bookmark_bubble_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -54,6 +53,7 @@
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/base/window_open_disposition_utils.h"
 #include "ui/events/event.h"
+#include "ui/views/bubble/bubble_anchor.h"
 #include "ui/views/layout/flex_layout_types.h"
 #include "ui/views/view_class_properties.h"
 #include "ui/views/window/hit_test_utils.h"
@@ -324,13 +324,11 @@ void BraveToolbarView::Init() {
             ? kVerticalTabStripToggleCollapsedIcon
             : kLeoWindowTabsVerticalExpandedIcon);
 
-    if (base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton)) {
-      auto target_index = GetIndexOf(vertical_tab_toggle_);
-      combo_button_ = AddChildViewAt(
-          std::make_unique<TabStripComboButton>(
-              browser(), TabStripComboButton::Context::kHorizontalTabStrip),
-          *target_index);
-    }
+    auto target_index = GetIndexOf(vertical_tab_toggle_);
+    combo_button_ = AddChildViewAt(
+        std::make_unique<TabStripComboButton>(
+            browser(), TabStripComboButton::Context::kHorizontalTabStrip),
+        *target_index);
 
     UpdateVerticalTabToggleVisibility();
     UpdateVerticalTabToggleState();
@@ -351,13 +349,13 @@ void BraveToolbarView::Init() {
       std::make_unique<SidePanelButton>(
           browser()->browser_window_features()->sidebar_controller(),
           profile->GetPrefs()),
-      *GetIndexOf(app_menu_button()) - 1);
+      *GetIndexOf(app_menu_button_) - 1);
   SetBraveButtonFlexBehavior(side_panel_);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   wallet_ =
-      AddChildViewAt(std::make_unique<WalletButton>(app_menu_button(), profile),
-                     *GetIndexOf(app_menu_button()) - 1);
+      AddChildViewAt(std::make_unique<WalletButton>(app_menu_button_, profile),
+                     *GetIndexOf(app_menu_button_) - 1);
   wallet_->SetTriggerableEventFlags(ui::EF_LEFT_MOUSE_BUTTON |
                                     ui::EF_MIDDLE_MOUSE_BUTTON);
   wallet_->UpdateImageAndText();
@@ -371,7 +369,7 @@ void BraveToolbarView::Init() {
   // setup a watcher for policy pref.
   if (ai_chat::IsAllowedForContext(browser_->profile(), false)) {
     ai_chat_button_ = AddChildViewAt(std::make_unique<AIChatButton>(browser()),
-                                     *GetIndexOf(app_menu_button()) - 1);
+                                     *GetIndexOf(app_menu_button_) - 1);
     SetBraveButtonFlexBehavior(ai_chat_button_);
     show_ai_chat_button_.Init(
         ai_chat::prefs::kBraveAIChatShowToolbarButton,
@@ -396,7 +394,7 @@ void BraveToolbarView::Init() {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   if (brave_vpn::BraveVpnServiceFactory::GetForProfile(profile)) {
     brave_vpn_ = AddChildViewAt(std::make_unique<BraveVPNButton>(browser()),
-                                *GetIndexOf(app_menu_button()) - 1);
+                                *GetIndexOf(app_menu_button_) - 1);
     SetBraveButtonFlexBehavior(brave_vpn_);
     show_brave_vpn_button_.Init(
         brave_vpn::prefs::kBraveVPNShowButton, profile->GetPrefs(),
@@ -413,7 +411,7 @@ void BraveToolbarView::Init() {
   // Make sure that avatar button is located right before the app menu.
   if (auto* avatar_button = static_cast<AvatarToolbarButton*>(
           GetAvatarToolbarButtonInterface())) {
-    ReorderChildView(avatar_button, *GetIndexOf(app_menu_button()) - 1);
+    ReorderChildView(avatar_button, *GetIndexOf(app_menu_button_) - 1);
   }
 
   if (tabs::utils::SupportsBraveVerticalTabs(browser_)) {
@@ -561,8 +559,11 @@ void BraveToolbarView::ShowBookmarkBubble(const GURL& url,
     anchor_view = bookmark_;
   }
 
-  BookmarkBubbleView::ShowBubble(anchor_view, GetWebContents(), bookmark_,
-                                 browser_, url, already_bookmarked);
+  // Passing `nullptr` to `highlighted_button` as this argument only gets used
+  // by the legacy page action framework.
+  BookmarkBubbleView::ShowBubble(
+      views::BubbleAnchor(anchor_view), GetWebContents(),
+      /*highlighted_button=*/nullptr, browser_, url, already_bookmarked);
 }
 
 void BraveToolbarView::VisibilityChanged(views::View* starting_from,
@@ -711,7 +712,7 @@ void BraveToolbarView::UpdateVerticalTabTogglePlacement() {
 
   size_t target_idx = 0;
   if (place_near_app_menu) {
-    const auto menu_idx = GetIndexOf(app_menu_button());
+    const auto menu_idx = GetIndexOf(app_menu_button_);
     CHECK(menu_idx.has_value());
     CHECK_GT(*menu_idx, 0u);
     target_idx = *menu_idx - 1;

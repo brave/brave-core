@@ -154,7 +154,7 @@ public class BraveOriginSubscriptionPrefs {
         Callback<Boolean> callback = sCredentialsFetchedCallback;
         sCredentialsFetchedCallback = null;
         if (callback != null) {
-            PostTask.postTask(TaskTraits.UI_DEFAULT, () -> callback.onResult(success));
+            PostTask.postTask(TaskTraits.UI_DEFAULT, callback.bind(success));
         }
     }
 

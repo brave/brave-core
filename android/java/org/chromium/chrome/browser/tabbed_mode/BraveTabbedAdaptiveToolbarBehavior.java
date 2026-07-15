@@ -8,6 +8,7 @@ package org.chromium.chrome.browser.tabbed_mode;
 import android.app.Activity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.base.supplier.NullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
@@ -58,7 +59,9 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
             MonotonicObservableSupplier<@StripVisibilityState Integer> tabStripVisibilitySupplier,
             GlicButtonDelegate toggleGlicCallback,
             Supplier<@Nullable ChromeAndroidTask> chromeAndroidTaskSupplier,
-            BrowserControlsVisibilityManager browserControlsVisibilityManager) {
+            BrowserControlsVisibilityManager browserControlsVisibilityManager,
+            NonNullObservableSupplier<Boolean> isVerticalTabsActiveSupplier,
+            NonNullObservableSupplier<Boolean> isGlicPinnedSupplier) {
         super(
                 activity,
                 activityLifecycleDispatcher,
@@ -72,7 +75,9 @@ public class BraveTabbedAdaptiveToolbarBehavior extends TabbedAdaptiveToolbarBeh
                 tabStripVisibilitySupplier,
                 toggleGlicCallback,
                 chromeAndroidTaskSupplier,
-                browserControlsVisibilityManager);
+                browserControlsVisibilityManager,
+                isVerticalTabsActiveSupplier,
+                isGlicPinnedSupplier);
         mActivity = activity;
     }
 

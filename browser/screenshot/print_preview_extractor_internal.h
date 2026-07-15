@@ -13,11 +13,12 @@
 #include <string>
 #include <vector>
 
-#include "base/containers/id_map.h"
+#include "base/containers/flat_map.h"
 #include "base/functional/callback.h"
 #include "base/memory/read_only_shared_memory_region.h"
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/screenshot/print_preview_extractor.h"
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
 #include "chrome/browser/profiles/profile.h"
@@ -70,16 +71,13 @@ class PreviewPageImageExtractor {
 class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
                                       public printing::mojom::PrintPreviewUI {
  public:
-  using GetPrintPreviewUIIdMapCallback =
-      base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>;
   using GetPrintPreviewUIRequestIdMapCallback =
-      base::RepeatingCallback<base::flat_map<int, int>&()>;
+      base::RepeatingCallback<base::flat_map<base::UnguessableToken, int>&()>;
   PrintPreviewExtractorInternal(
       content::WebContents* web_contents,
       Profile* profile,
       bool is_pdf,
       PrintPreviewExtractor::CaptureImagesCallback callback,
-      GetPrintPreviewUIIdMapCallback id_map_callback,
       GetPrintPreviewUIRequestIdMapCallback request_id_map_callback);
 
   ~PrintPreviewExtractorInternal() override;
@@ -90,7 +88,7 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
 
   void CreatePrintPreview() override;
 
-  std::optional<int32_t> GetPrintPreviewUIIdForTesting() override;
+  base::UnguessableToken GetPrintPreviewUIIdForTesting() override;
 
   void SetPreviewPageImageExtractorForTesting(
       std::unique_ptr<PreviewPageImageExtractor> extractor);
@@ -167,10 +165,9 @@ class PrintPreviewExtractorInternal : public PrintPreviewExtractor::Extractor,
  private:
   bool is_pdf_ = false;
   PrintPreviewExtractor::CaptureImagesCallback callback_;
-  GetPrintPreviewUIIdMapCallback id_map_callback_;
   GetPrintPreviewUIRequestIdMapCallback request_id_map_callback_;
   // unique id to avoid conflicts with other print preview UIs
-  std::optional<int32_t> print_preview_ui_id_;
+  base::UnguessableToken print_preview_ui_id_;
   mojo::AssociatedReceiver<PrintPreviewUI> print_preview_ui_receiver_{this};
 
   int preview_request_id_ = -1;

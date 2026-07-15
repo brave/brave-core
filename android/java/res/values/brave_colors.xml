@@ -140,10 +140,6 @@
     <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
     <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
 
-    <!-- Sync informer icon colors -->
-    <color name="brave_informer_dark_theme_icon_color">@color/primitive_neutral_90</color>
-    <color name="brave_informer_light_theme_icon_color">@color/primitive_neutral_30</color>
-
     <color name="brave_set_default_dialog_text_color">@color/primitive_neutral_30</color>
 
     <!-- Theme colors -->

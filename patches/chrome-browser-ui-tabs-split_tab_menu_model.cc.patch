@@ -1,20 +1,40 @@
 diff --git a/chrome/browser/ui/tabs/split_tab_menu_model.cc b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-index 625dee27498db832d10c0eb0604d7aa0f479e585..0b73f2ee18c4d03d865a7982743139cb08f82329 100644
+index e92a445e264347603ac155483aff5d49635ed4b2..3e04145b8c40d8b0e589f5398e2cdd25d6cb5845 100644
 --- a/chrome/browser/ui/tabs/split_tab_menu_model.cc
 +++ b/chrome/browser/ui/tabs/split_tab_menu_model.cc
-@@ -79,6 +79,7 @@ std::string_view GetMetricsSuffixForCommand(
-       return "ExitSplit";
-     case SplitTabMenuModel::CommandId::kSendFeedback:
-       return "SendFeedback";
-+    BRAVE_GET_METRICS_SUFFIX_FOR_COMMAND
+@@ -54,13 +54,13 @@ std::string_view GetMetricsSuffixForSource(
    }
  }
  
-@@ -259,6 +260,7 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
-     case CommandId::kSendFeedback:
-       SendFeedback();
-       break;
-+    BRAVE_SPLIT_TAB_MENU_MODEL_EXECUTE_COMMAND
-   }
+-int GetCommandIdInt(SplitTabMenuModel::CommandId command_id) {
++int GetCommandIdInt_ChromiumImpl(SplitTabMenuModel::CommandId command_id) {
+   // Start command IDs at 1701 to avoid conflicts with other submenus.
+   return ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId +
+          static_cast<int>(command_id);
+ }
  
-   base::UmaHistogramEnumeration(
+-SplitTabMenuModel::CommandId GetCommandIdEnum(int command_id) {
++SplitTabMenuModel::CommandId GetCommandIdEnum_ChromiumImpl(int command_id) {
+   return static_cast<SplitTabMenuModel::CommandId>(
+       command_id - ExistingBaseSubMenuModel::kMinSplitTabMenuModelCommandId);
+ }
+@@ -69,6 +69,8 @@ std::string_view GetMetricsSuffixForCommand(
+     SplitTabMenuModel::CommandId command_id) {
+   // These strings are persisted to logs. Entries should not be changed.
+   switch (command_id) {
++    case SplitTabMenuModel::CommandId::kToggleLinkState:
++      return "ToggleLinkState";
+     case SplitTabMenuModel::CommandId::kReversePosition:
+       return "ReversePosition";
+     case SplitTabMenuModel::CommandId::kCloseSpecifiedTab:
+@@ -260,6 +262,10 @@ void SplitTabMenuModel::ExecuteCommand(int command_id, int event_flags) {
+   CHECK_EQ(tabs_in_split.size(), 2U);
+   CommandId split_command_id = GetCommandIdEnum(command_id);
+   switch (split_command_id) {
++    case CommandId::kToggleLinkState: {
++      split_tab_data->set_linked(!split_tab_data->linked());
++      break;
++    }
+     case CommandId::kReversePosition:
+       tab_strip_model_->ReverseTabsInSplit(split_id);
+       break;

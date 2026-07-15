@@ -10,7 +10,8 @@
 #include "base/check.h"
 #include "brave/browser/ui/playlist/playlist_browser_finder.h"
 #include "brave/components/playlist/content/browser/playlist_tab_helper.h"
-#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 
 namespace playlist {
 
@@ -20,7 +21,7 @@ PlaylistActiveTabTracker::PlaylistActiveTabTracker(
     : playlist_contents_(playlist_contents), callback_(callback) {
   auto* browser = playlist::FindBrowserForPlaylistWebUI(playlist_contents_);
   CHECK(browser);
-  browser->tab_strip_model()->AddObserver(this);
+  browser->GetTabStripModel()->AddObserver(this);
   OnActiveTabChanged();
 }
 
@@ -70,7 +71,7 @@ PlaylistActiveTabTracker::GetPlaylistTabHelperForActiveWebContents() {
     return nullptr;
   }
   auto* active_web_contents =
-      browser->tab_strip_model()->GetActiveWebContents();
+      browser->GetTabStripModel()->GetActiveWebContents();
   if (!active_web_contents) {
     // Can happen on shutdown.
     return nullptr;

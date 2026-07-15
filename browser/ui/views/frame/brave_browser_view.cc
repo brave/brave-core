@@ -70,7 +70,6 @@
 #include "chrome/browser/ui/frame/window_frame_util.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
-#include "chrome/browser/ui/tab_search_feature.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_frame_view.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
@@ -86,13 +85,13 @@
 #include "chrome/browser/ui/views/tab_search_bubble_host.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
 #include "chrome/browser/ui/views/tabs/shared/tab_strip_flat_edge_button.h"
-#include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/browser/ui/web_applications/app_browser_controller.h"
 #include "chrome/common/pref_names.h"
 #include "components/javascript_dialogs/tab_modal_dialog_manager.h"
 #include "components/permissions/permission_request_manager.h"
+#include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
 #include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
@@ -338,13 +337,6 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
   pref_change_registrar_.Init(GetProfile()->GetPrefs());
 
   pref_change_registrar_.Add(
-      kTabsSearchShow,
-      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
-                          base::Unretained(this)));
-  // Show the correct value in settings on initial start
-  UpdateSearchTabsButtonState();
-
-  pref_change_registrar_.Add(
       kWebViewRoundedCorners,
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
@@ -430,11 +422,6 @@ void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
     return;
   }
 
-  if (pref_name == kTabsSearchShow) {
-    UpdateSearchTabsButtonState();
-    return;
-  }
-
   if (pref_name == kWebViewRoundedCorners) {
     UpdateRoundedCornersUI();
     return;
@@ -470,18 +457,6 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   }
 
   DeprecatedLayoutImmediately();
-}
-
-void BraveBrowserView::UpdateSearchTabsButtonState() {
-  const bool is_vertical_tabs =
-      tabs::utils::ShouldShowBraveVerticalTabs(browser());
-  const bool use_search_button =
-      browser()->profile()->GetPrefs()->GetBoolean(kTabsSearchShow);
-  if (features::HasTabSearchToolbarButton()) {
-    if (auto* tab_search_button = toolbar()->tab_search_button()) {
-      tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
-    }
-  }
 }
 
 BraveBrowserView::~BraveBrowserView() {
@@ -1081,10 +1056,6 @@ void BraveBrowserView::UpdateTabSearchBubbleHost() {
   }
 
   BrowserView::UpdateTabSearchBubbleHost();
-
-  if (!base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton)) {
-    return;
-  }
 
   auto* tab_search_action = actions::ActionManager::Get().FindAction(
       kActionTabSearch, browser_->GetActions()->root_action_item());

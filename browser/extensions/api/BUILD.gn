@@ -4,6 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/common/extensions/api/api_sources.gni")
+import("//brave/components/brave_talk/buildflags/buildflags.gni")
+import("//brave/components/web_discovery/buildflags/buildflags.gni")
 import("//tools/json_schema_compiler/json_schema_api.gni")
 
 function_registration("generated_api_registration") {
@@ -11,6 +13,19 @@ function_registration("generated_api_registration") {
   impl_dir = "//brave/browser/extensions/api/"
   bundle_name = "Brave"
   root_namespace = brave_extensions_api_root_namespace
+
+  custom_impl_schemas = [ "brave_theme" ]
+  inputs = [ "//brave/browser/extensions/api/brave_theme_api.h" ]
+
+  if (enable_web_discovery) {
+    custom_impl_schemas += [ "web_discovery" ]
+    inputs += [ "//brave/browser/extensions/api/web_discovery_api.h" ]
+  }
+
+  if (enable_brave_talk) {
+    custom_impl_schemas += [ "brave_talk" ]
+    inputs += [ "//brave/browser/extensions/api/brave_talk_api.h" ]
+  }
 
   deps = [
     "//extensions/browser",

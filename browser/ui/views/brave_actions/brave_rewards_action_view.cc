@@ -174,10 +174,9 @@ class RewardsActionMenuModel : public ui::SimpleMenuModel,
 };
 
 std::unique_ptr<WebUIBubbleManager> CreateBubbleManager(
-    views::View* anchor_view,
     BrowserWindowInterface* browser_window_interface) {
   return WebUIBubbleManager::Create<brave_rewards::RewardsPageTopUI>(
-      anchor_view, browser_window_interface, GURL(kRewardsPageTopURL),
+      browser_window_interface, GURL(kRewardsPageTopURL),
       IDS_BRAVE_UI_BRAVE_REWARDS);
 }
 
@@ -193,7 +192,7 @@ BraveRewardsActionView::BraveRewardsActionView(
           nullptr,
           false),
       browser_window_interface_(browser_window_interface),
-      bubble_manager_(CreateBubbleManager(this, browser_window_interface)) {
+      bubble_manager_(CreateBubbleManager(browser_window_interface)) {
   DCHECK(browser_window_interface_);
 
   SetButtonController(std::make_unique<views::MenuButtonController>(
@@ -419,7 +418,7 @@ void BraveRewardsActionView::ToggleRewardsPanel() {
     return;
   }
 
-  bubble_manager_->ShowBubble();
+  bubble_manager_->ShowBubble(this);
 
   DCHECK(!bubble_observation_.IsObserving());
   bubble_observation_.Observe(bubble_manager_->GetBubbleWidget());

@@ -1,0 +1,67 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Make ToolbarView::Init() virtual.
+
+      BraveToolbarView overrides Init() to perform its own toolbar setup, so the
+      upstream declaration has to be virtual.
+    make_virtual:
+      class_name: ToolbarView
+      method_name: Init
+
+  - description: |
+      Make ToolbarView::Update() virtual.
+
+      BraveToolbarView overrides Update() to refresh Brave-specific toolbar
+      state, so the upstream declaration has to be virtual.
+    make_virtual:
+      class_name: ToolbarView
+      method_name: Update
+
+  - description: |
+      Expose the app menu button to BraveToolbarView.
+
+      `app_menu_button_` has been made private in `ToolbarView`, as upstream is
+      abstracting it away due to the WebUI work, so we expose an accessor for
+      the concrete type that Brave still uses.
+    re_pattern: '(~ToolbarView\(\) override;)'
+    replace: |-
+      \1
+
+        BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
+
+  - description: |
+      Make ToolbarView::ShowBookmarkBubble() virtual.
+
+      BraveToolbarView overrides ShowBookmarkBubble() to anchor the bookmark
+      bubble to Brave's toolbar layout, so the upstream declaration has to be
+      virtual.
+    make_virtual:
+      class_name: ToolbarView
+      method_name: ShowBookmarkBubble
+
+  - description: |
+      Make ToolbarView::LoadImages() virtual.
+
+      BraveToolbarView overrides LoadImages() to load Brave's toolbar images, so
+      the upstream declaration has to be virtual.
+    make_virtual:
+      class_name: ToolbarView
+      method_name: LoadImages
+
+  - description: |
+      Friend BraveToolbarView and its tests.
+
+      BraveToolbarView and the listed browser tests need access to ToolbarView's
+      otherwise-private members. Anchored at the private: access specifier so the
+      friend declarations land in private scope.
+    re_pattern: '( private:)'
+    replace: |-
+      \1
+        friend class BraveToolbarView;
+        FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
+        FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/settings_shared.css b/chrome/browser/resources/settings/settings_shared.css
-index 37ebfb19d55e0e8f37a7b821864e41319def14ea..cfc224f1de6b7ce56e498b5ac90f585e1e604c12 100644
+index 8c711d3c16049df7d138106de12e174ffc31effe..2378f6471e8802c502cab98521711ea09cfc6df2 100644
 --- a/chrome/browser/resources/settings/settings_shared.css
 +++ b/chrome/browser/resources/settings/settings_shared.css
 @@ -8,7 +8,8 @@
@@ -11,4 +11,4 @@ index 37ebfb19d55e0e8f37a7b821864e41319def14ea..cfc224f1de6b7ce56e498b5ac90f585e
 + * #include=cr-shared-style search-highlight-style br-settings-shared
   * #css_wrapper_metadata_end */
  
- /* Common styles for Material Design settings. */
+ /* Purposefully empty since this style is generated at build time from the

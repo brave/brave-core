@@ -18,6 +18,7 @@ source_set("brave_news") {
     "//base",
     "//brave/components/brave_news/common",
     "//brave/components/constants",
+    "//chrome/browser/ui/webui:theme_source",
     "//chrome/browser/ui/webui/top_chrome",
     "//content/public/browser",
     "//content/public/common",

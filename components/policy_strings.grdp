@@ -386,6 +386,9 @@ Additional details:
   <message name="IDS_POLICY_OK" desc="Text displayed in the status column when a valid value is set for a policy." meaning="Policy is working as expected.">
     OK
   </message>
+  <message name="IDS_POLICY_RESTART_REQUIRED" desc="Text displayed in the status column when a policy requires a browser restart to take effect.">
+    Restart required
+  </message>
   <message name="IDS_POLICY_UNSET" desc="Text displayed in the status column when no value is set for a policy.">
     Not set.
   </message>
@@ -517,10 +520,10 @@ Additional details:
   <message name="IDS_POLICY_STATUS_USER" desc="Title for the user policy status box.">
     User policies
   </message>
-<message name="IDS_POLICY_STATUS_MACHINE" desc="Title for the machine policy status box.">
+  <message name="IDS_POLICY_STATUS_MACHINE" desc="Title for the machine policy status box.">
     Machine policies
   </message>
- <if expr="is_win">
+ <if expr="is_win or is_macosx or is_linux">
   <message name="IDS_POLICY_STATUS_UPDATER" desc="Title for the updater policy status box on windows.">
     Brave Update
   </message>

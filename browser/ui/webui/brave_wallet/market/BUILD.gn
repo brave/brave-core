@@ -23,4 +23,8 @@ source_set("market") {
     "//ui/webui",
     "//ui/webui/resources:resources_grit",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
+  }
 }

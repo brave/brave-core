@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/app_controller_mac.mm b/chrome/browser/app_controller_mac.mm
-index 9f3d5275966561de5b491b9307de4a1fecf8cde0..2b0eba761f6146db19fee8f0d558a40fad82a6fa 100644
+index 442f1d33080b228d656d987b6320ec96affde4b7..1c50442394a610ac14dbf298b31748509a6aee89 100644
 --- a/chrome/browser/app_controller_mac.mm
 +++ b/chrome/browser/app_controller_mac.mm
-@@ -791,7 +791,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
+@@ -794,7 +794,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
  
  + (AppController*)sharedController {
    static AppController* sharedController = [] {
@@ -11,7 +11,7 @@ index 9f3d5275966561de5b491b9307de4a1fecf8cde0..2b0eba761f6146db19fee8f0d558a40f
      NSApp.delegate = sharedController;
      return sharedController;
    }();
-@@ -1524,7 +1524,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
+@@ -1533,7 +1533,7 @@ class AppControllerProfileObserver : public ProfileAttributesStorage::Observer,
    }
  
    auto it = _profileBookmarkMenuBridgeMap.find(profilePath);

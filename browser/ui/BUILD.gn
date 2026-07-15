@@ -52,7 +52,7 @@ group("ui_public_dependencies") {
 source_set("ui") {
   # Depend on //chrome/browser/ui instead of //brave/browser/ui.
   visibility = [
-    "//chrome/browser",
+    "//brave/browser:core",
     "//chrome/browser:core",
     "//chrome/browser/ui",
     "//chrome/browser/ui/webui:configs",
@@ -94,7 +94,6 @@ source_set("ui") {
     "//chrome/browser/history",
     "//chrome/browser/image_fetcher",
     "//chrome/browser/ui:tab_modal_confirm_dialog_delegate",
-    "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/navigator",
     "//chrome/browser/ui/select_file_policy",
@@ -183,6 +182,12 @@ source_set("ui") {
       "//chrome/browser:flags",
       "//chrome/browser/lifetime",
     ]
+
+    public_deps += [ "//chrome/browser/ui/webui:favicon_source" ]
+
+    if (!is_android || enable_webui_ntp) {
+      deps += [ "//chrome/browser/ui/webui:theme_source" ]
+    }
 
     sources += [
       "webui/brave_rewards/rewards_page_data_source.cc",
@@ -449,6 +454,7 @@ source_set("ui") {
       "//chrome/browser/send_tab_to_self",
       "//chrome/browser/sync",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:browser_actions",
       "//chrome/browser/ui:layout_constants",
       "//chrome/browser/ui:url_identity",
       "//chrome/browser/ui/content_settings",
@@ -463,6 +469,8 @@ source_set("ui") {
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/page_action",
       "//chrome/browser/ui/views/side_panel",
+      "//chrome/browser/ui/webui:favicon_source",
+      "//chrome/browser/ui/webui:theme_source",
       "//chrome/browser/ui/webui/sanitized_image:sanitized_image_source",
       "//chrome/browser/ui/webui/searchbox",
       "//chrome/browser/ui/webui/settings",
@@ -587,6 +595,7 @@ source_set("ui") {
       "//brave/components/commander/browser",
       "//chrome/browser/ui:accelerator_utils_headers",
       "//chrome/browser/ui/location_bar",
+      "//chrome/browser/ui/window_metadata",
     ]
   }
 
@@ -704,12 +713,14 @@ source_set("ui") {
       "//chrome/browser/glic",
       "//chrome/browser/metrics",
       "//chrome/browser/sharing_hub",
+      "//chrome/browser/ui:accelerator_table",
       "//chrome/browser/ui/download",
       "//chrome/browser/ui/exclusive_access",
       "//chrome/browser/ui/javascript_dialogs",
       "//chrome/browser/ui/tabs/alert:tab_alert",
       "//chrome/browser/ui/thumbnails",
       "//chrome/browser/ui/views/bubble",
+      "//chrome/browser/ui/views/controls",
       "//chrome/browser/ui/views/download",
       "//chrome/browser/ui/views/infobars",
       "//chrome/browser/ui/views/interaction",
@@ -1086,26 +1097,22 @@ source_set("ui") {
     ]
   }
 
-  # These are no longer compiled into Chromium on Android, but we still
-  # need them
+  # FaviconSource now comes from the //chrome/browser/ui/webui:favicon_source
+  # target, which is enabled on Android via a Brave patch. SanitizedImageSource
+  # is still not compiled into Chromium on Android, so include it here.
   if (is_android) {
     sources += [
-      "//chrome/browser/ui/webui/favicon_source.cc",
-      "//chrome/browser/ui/webui/favicon_source.h",
       "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.cc",
       "//chrome/browser/ui/webui/sanitized_image/sanitized_image_source.h",
     ]
 
     deps += [
-      "//chrome/browser/favicon",
       "//chrome/browser/signin",
-      "//components/favicon/core",
-      "//components/favicon_base",
-      "//components/history/core/browser",
       "//net",
-      "//ui/native_theme",
       "//url",
     ]
+
+    public_deps += [ "//chrome/browser/ui/webui:favicon_source" ]
   }
 
   if (enable_brave_wayback_machine) {
@@ -1221,13 +1228,14 @@ source_set("ui") {
       "views/profiles/brave_avatar_toolbar_button.h",
       "views/tabs/brave_new_tab_button.cc",
       "views/tabs/brave_new_tab_button.h",
-      "views/tabs/brave_tab_search_button.cc",
-      "views/tabs/brave_tab_search_button.h",
       "views/toolbar/brave_toolbar_view.cc",
       "views/toolbar/brave_toolbar_view.h",
     ]
 
-    deps += [ "//brave/browser/ui/views/brave_actions" ]
+    deps += [
+      "//brave/browser/ui/views/brave_actions",
+      "//chrome/browser/ui/views:layout_provider",
+    ]
 
     if (enable_brave_rewards) {
       sources += [
@@ -1311,14 +1319,6 @@ source_set("ui") {
         "views/toolbar/brave_vpn_toggle_button.h",
       ]
     }
-  }
-
-  if (is_win && is_official_build) {
-    sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
-    deps += [
-      "//chrome/browser/google",
-      "//chrome/updater/app/server/win:updater_legacy_idl",
-    ]
   }
 
   if (enable_tor) {
@@ -1492,6 +1492,7 @@ source_set("unit_tests") {
         "//brave/components/skus/browser",
         "//chrome/browser/prefs",
         "//chrome/browser/themes",
+        "//chrome/browser/ui/views:layout_provider",
         "//chrome/test:test_support",
         "//skia",
         "//third_party/abseil-cpp:absl",
@@ -1512,7 +1513,6 @@ source_set("browser_tests") {
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
     sources = [
-      "brave_browser_actions_browsertest.cc",
       "brave_browser_browsertest.cc",
       "views/frame/brave_system_menu_model_builder_browsertest.cc",
       "window_closing_confirm_browsertest.cc",
@@ -1525,7 +1525,6 @@ source_set("browser_tests") {
       "//chrome/browser/devtools:test_support",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
-      "//chrome/browser/ui:tab_search_feature",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/startup",
       "//chrome/test:test_support",

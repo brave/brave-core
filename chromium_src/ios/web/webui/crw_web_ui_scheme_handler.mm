@@ -52,12 +52,13 @@ bool IsBraveAllowedCrossHostSubResource(const GURL& URL) {
   didReceiveResponse:[strongSelf processResponse:response fetcher:fetcher]]; \
         [strongSelf dummy
 
-// Extend the upstream same-origin guard's allow-list. Upstream rejects any
-// sub-resource whose SchemeHostPort differs from the main webView.URL
-// unless its host is chrome://resources. This macro adds a second clause
-// to that check; see IsBraveAllowedCrossHostSubResource for the policy.
-#define DomainIs(host) \
-  DomainIs(host) && !IsBraveAllowedCrossHostSubResource(URL)
+// Extend the upstream same-origin guard’s allow-list. Upstream sets
+// isSharedResourceRequest = true when the URL is chrome://resources so the
+// cross-origin SchemeHostPort check is skipped. This macro widens that
+// admission to also cover URLs accepted by IsBraveAllowedCrossHostSubResource,
+// treating them as shared resources (e.g. chrome://image, chrome://favicon2,
+// and registered chrome-untrusted:// WebUI iframes).
+#define DomainIs(host) DomainIs(host) || IsBraveAllowedCrossHostSubResource(URL)
 
 #include <ios/web/webui/crw_web_ui_scheme_handler.mm>
 

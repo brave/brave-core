@@ -13,6 +13,7 @@ source_set("unit_tests") {
     "//brave/common",
     "//brave/components/infobars/core",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/views:layout_provider",
     "//chrome/test:test_support",
     "//components/infobars/core",
     "//testing/gtest",

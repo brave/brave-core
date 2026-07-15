@@ -20,8 +20,8 @@ class TreeTabNodeId;
 
 // Add a method to TabSlotController to determine whether to hide the close
 // button regardless of its state.
-#define ShouldCompactLeadingEdge()      \
-  ShouldCompactLeadingEdge() const = 0; \
+#define IsFocusInTabStrip()      \
+  IsFocusInTabStrip() const = 0; \
   virtual bool ShouldAlwaysHideCloseButton()
 
 // Add a method to TabSlotController to check if vertical tabs are in floating
@@ -75,7 +75,7 @@ class TreeTabNodeId;
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
-#undef ShouldCompactLeadingEdge
+#undef IsFocusInTabStrip
 #undef ShiftGroupLeft
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_TAB_SLOT_CONTROLLER_H_

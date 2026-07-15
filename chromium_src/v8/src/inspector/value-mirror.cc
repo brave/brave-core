@@ -54,7 +54,7 @@ bool IsEmptyObject(Isolate* isolate, Local<Value> value) {
 bool IsNodeObject(Isolate* isolate, Local<Object> obj) {
   Local<Context> context = isolate->GetCurrentContext();
   while (!obj->IsNull()) {
-    Local<Value> prototype = obj->GetPrototypeV2();
+    Local<Value> prototype = obj->GetPrototype();
     String::Utf8Value prototype_str(isolate, prototype);
     std::string_view prototype_string(*prototype_str, prototype_str.length());
 

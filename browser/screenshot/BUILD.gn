@@ -28,9 +28,9 @@ static_library("screenshot") {
 
 static_library("screenshot_internal") {
   visibility = [
+    "//brave/browser:core",
     "//brave/browser/screenshot",
     "//brave/browser/screenshot:unit_tests",
-    "//chrome/browser",
   ]
   sources = [
     "print_preview_extractor_factory.cc",  # uses extractor internal
@@ -72,6 +72,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/text_recognition/common/buildflags",
+    "//chrome/browser/ui/webui/print_preview",
     "//chrome/services/printing/public/mojom",
     "//chrome/test:test_support",
     "//components/printing/browser",

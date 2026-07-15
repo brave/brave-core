@@ -145,14 +145,15 @@ void FaviconDriverObserver::OnFaviconUpdated(
       web::OriginWithWKSecurityOrigin(scriptMessage.frameInfo.securityOrigin));
 
   DCHECK(message.is_main_frame());
-  if (!message.body() || !message.body()->is_list() || !message.request_url()) {
+  if (!message.legacy_body() || !message.legacy_body()->is_list() ||
+      !message.request_url()) {
     return;
   }
 
   const GURL message_request_url = message.request_url().value();
 
   std::vector<web::FaviconURL> urls;
-  if (!ExtractFaviconURL(message.body()->GetList(), message_request_url,
+  if (!ExtractFaviconURL(message.legacy_body()->GetList(), message_request_url,
                          &urls)) {
     return;
   }

@@ -401,17 +401,34 @@ New bookmarks can’t be saved in your account until you delete some. If you sig
 New bookmarks can’t be saved in your account until you delete some. If you sign out now, unsaved bookmarks will be deleted.
         </message>
       </if>
-      <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
-        This action will:
-        <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
-          • Reset some Brave settings and Brave shortcuts
-          <ph name="LINE_BREAK">&lt;br&gt;</ph>
-          • Disable extensions
-          <ph name="LINE_BREAK">&lt;br&gt;</ph>
-          • Delete cookies and other temporary site data
+      <if expr="is_win">
+        <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
+          This action will:
           <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
-          Bookmarks, history, and saved passwords won't be affected.
-      </message>
+            • Reset your startup page, new tab page, search engine and pinned tabs
+            <ph name="LINE_BREAK">&lt;br&gt;</ph>
+            • Disable extensions
+            <ph name="LINE_BREAK">&lt;br&gt;</ph>
+            • Delete cookies and other temporary site data
+            <ph name="LINE_BREAK">&lt;br&gt;</ph>
+            • Reset Brave shortcuts
+            <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+            Bookmarks, history, and saved passwords won't be affected.
+        </message>
+      </if>
+      <if expr="not is_win">
+        <message name="IDS_RESET_PROFILE_SETTINGS_EXPLANATION_IN_BULLET_POINTS" desc="A label formatted with bullet points describing the consequences of the 'reset profile settings' feature">
+          This action will:
+          <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+            • Reset your startup page, new tab page, search engine and pinned tabs
+            <ph name="LINE_BREAK">&lt;br&gt;</ph>
+            • Disable extensions
+            <ph name="LINE_BREAK">&lt;br&gt;</ph>
+            • Delete cookies and other temporary site data
+            <ph name="LINE_BREAKS">&lt;br&gt;&lt;br&gt;</ph>
+            Bookmarks, history, and saved passwords won't be affected.
+        </message>
+      </if>
       <if expr="not is_chromeos">
         <!-- Browser Window Title Format -->
         <if expr="_is_chrome_for_testing_branded">
@@ -665,7 +682,7 @@ Brave is unable to recover your settings.
       <message name="IDS_PASSWORD_MANAGER_TITLE_BRAND" desc="The product name used in the title of the password bubble." translateable="false">
         Brave
       </message>
-      <message name="IDS_PASSWORD_BUBBLES_PASSWORD_MANAGER_LINK_TEXT_SAVING_ON_DEVICE" desc="The text of the Brave Password Manager links displayed on Password Manager bubbles footer when the credentials are stored only locally.">
+      <message name="IDS_PASSWORD_MANAGER_BRAND_NAME" desc="This string is used both as a standalone label and injected into sentences. Please translate this as a standalone noun in the Nominative case to ensure it looks correct in titles. Sentence structures surrounding it may read slightly awkwardly.">
         Password Manager
       </message>
       <message name="IDS_PASSWORD_MANAGER_SAVE_PASSWORD_SIGNED_OUT_MESSAGE_DESCRIPTION" desc="The description of the Password Manager's save password message when the user is signed out.">
@@ -821,10 +838,10 @@ Brave is unable to recover your settings.
         <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT" desc="Text of the In Product Help message shown for the button to summarize PDF.">
           Get a quick overview of this document and ask questions with Gemini in Brave
         </message>
-        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW" desc="Text of the In Product Help message shown for the button to summarize PDF." translateable="false">
+        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW" desc="Text of the In Product Help message shown for the button to summarize PDF.">
           Share this document with Gemini in Brave to get a quick overview and ask follow-up questions
         </message>
-        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW_SCREENREADER" desc="The screenreader text of the In Product Help message shown for the button to summarize PDF." translateable="false" is_accessibility_with_no_ui="true">
+        <message name="IDS_PDF_GLIC_SUMMARIZE_IPH_TEXT_NEW_SCREENREADER" desc="The screenreader text of the In Product Help message shown for the button to summarize PDF." is_accessibility_with_no_ui="true">
           Click the Summarize button to share this document with Gemini in Brave to get a quick overview and ask follow-up questions
         </message>
       </if>
@@ -938,16 +955,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_EXTENSIONS_ALERT_ITEM_BLOCKLISTED_MALWARE_TITLE" desc="A statement that multiple extension/apps have been newly blocklisted for malware.">
           Brave found that these items contain malware:
-        </message>
-
-        <!-- Manifest V2 Deprecation dialog -->
-        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_KEEP_DIALOG_DESCRIPTION" desc="The description of the dialog asking the user if they want to keep the extension installed, which is affected by the Manifest V2 deprecation">
-          This extension is no longer supported. Brave recommends that you remove it instead.
-        </message>
-        <message name="IDS_EXTENSIONS_MANIFEST_V2_DEPRECATION_DISABLED_DIALOG_DESCRIPTION" desc="The description of the dialog that appears when extensions were disabled due to the Manifest V2 deprecation">
-          {NUM_EXTENSIONS, plural,
-          =1 {This extension is no longer supported. Brave recommends that you remove it.}
-          other {These extensions are no longer supported. Brave recommends that you remove them.}}
         </message>
         <message name="IDS_EXTENSIONS_MV2_DEPRECATION_MESSAGE_DISABLED_SUBTITLE" desc="Subtitle text displayed in the manifest v2 deprecation message for a specific extension during the disabled stage.">
           Brave recommends that you remove it. <ph name="BEGIN_LINK">&lt;a href="$1" aria-description="$2" target="_blank"&gt;</ph>Learn more about supported extensions<ph name="END_LINK">&lt;/a&gt;</ph>
@@ -1495,6 +1502,11 @@ Brave is unable to recover your settings.
         </message>
       </if>
 
+      <!-- Sign in on your phone (QR code) strings  -->
+      <message name="IDS_QR_CODE_BUBBLE_SIGNIN_ON_PHONE_TITLE" desc="Title of the QR Code bubble showing a code for the user to sign in on their phone.">
+        Sign in to Brave on your phone
+      </message>
+
       <!-- App list -->
       <if expr="is_chromeos">
         <message name="IDS_APP_LIST_EXTENSIONS_UNINSTALL" desc="Title text for the context menu item of a non-platform-app app list item that removes the app.">
@@ -1923,6 +1935,18 @@ Brave is unable to recover your settings.
           Pinned! You can access Image Search again from the new button on the toolbar
         </message>
 
+        <message name="IDS_SIDE_PANEL_CONTEXTUAL_TASKS_PINNABLE_IPH" desc="The body text of the IPH describing that the Contextual Tasks side panel is pinnable.">
+          You can pin Contextual Tasks to ask questions as you browse
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP1" desc="The body text of the first step of the Contextual Tasks tutorial.">
+          Open the overflow menu
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP2" desc="The body text of the second step of the Contextual Tasks tutorial.">
+          Select "Pin to toolbar"
+        </message>
+        <message name="IDS_TUTORIAL_CONTEXTUAL_TASKS_STEP3" desc="The body text of the third step of the Contextual Tasks tutorial.">
+          Pinned! Use Contextual Tasks again from the toolbar
+        </message>
         <!-- Overlay WebUI Strings -->
         <message name="IDS_LENS_OVERLAY_COPY" desc="Command in the Lens Overlay context menu to copy text.">
           Copy
@@ -1977,6 +2001,9 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_LABEL" desc="Accessibility label for the initial user eduction bubble that appears at the top of the screen after the user invokes the Lens Overlay feature. Informs the user to select an object to search with Google Lens, or use the escape key to exit the feature.">
           Select anything to search with Image Search or press escape to exit Image Search
+        </message>
+        <message name="IDS_LENS_OVERLAY_COBROWSE_INITIAL_TOAST_LABEL" desc="Label for the initial user education bubble when invoking the Lens Overlay along side the cobrowse side panel, instructing the user to select a region of the screen.">
+          Select region of screen to search
         </message>
         <message name="IDS_LENS_OVERLAY_INITIAL_TOAST_MESSAGE" desc="Text that is shown in the Lens Overlay education bubble when starting the feature. Informs the user to tap an object or drag over the screen to select a region to search with Google Lens.">
           Select anything to search with Image Search
@@ -2506,7 +2533,34 @@ Brave is unable to recover your settings.
         <message name="IDS_SIGNOUT_DICE_WEB_INTERCEPT_BUBBLE_CHROME_SIGNOUT_IPH_TEXT_SCREENREADER" desc="Text announced by screenreaders related to the confirmation message is intended to help users to understand that signing out of a Brave service (like Gmail) will not sign them out of Brave. It appears in a blue in-product help bubble, which points to the Brave Profile Menu; it appears after the user signs out of a Brave service (like Gmail). The user can open the Profile Menu and sign out of Brave, if they wish to do so.">
           To remove your Brave sync chain from Brave, sign out of Brave in the Settings page
         </message>
+
+        <!-- Feature Showcase - Password Manager -->
+        <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_TITLE" desc="Headline for the password security onboarding screen. It introduces the product name 'Password Manager,' which should typically remain in English or follow established brand guidelines for the locale. The intent is to highlight safety and security. (CHAR LIMIT = 50)">
+          Stay safe with Password Manager
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_SUBTITLE" desc="Description for the Password Manager page in the Feature Showcase.">
+          Built into Brave to help you create, save, and autofill strong passwords. Add the shortcut for easy access
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_ILLUSTRATION_A11Y_LABEL" desc="Accessibility label for the illustration on the Password Manager page in the Feature Showcase.">
+          A simplified image showing the Password Manager entry point in Brave
+        </message>
+
+        <!-- Feature Showcase - Lens -->
+        <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_TITLE" desc="This is the headline for the Lens Overlay opt-in screen. It introduces the visual search feature. (CHAR LIMIT = 40).">
+          Browse smarter with Image Search
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_DISCLOSURE" desc="This is a technical disclosure for the Lens Overlay. It specifies that PDFs are also part of the shared data. The tone should be informative.">
+          When you use Image Search on desktop, the page title, URL, and content, including PDFs, are sent to the server
+        </message>
+        <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_ILLUSTRATION_A11Y_LABEL" desc="Accessibility label for the illustration on the Lens Overlay page in the Feature Showcase.">
+          An illustration showing how you can use Image Search to look up a product
+        </message>
       </if>
+
+      <!-- Feature Showcase - Lens Overlay -->
+      <message name="IDS_FEATURE_SHOWCASE_THEMES_TITLE" desc="This is the headline for a customization onboarding screen. It focuses on personalization and user choice. (CHAR LIMIT = 30)">
+        Make Brave yours
+      </message>
 
       <!-- Notification quiet permission IPH -->
       <message name="IDS_QUIET_NOTIFICATION_IPH_TEXT" desc="Text of the blocked notifications indicator promo, that shows under the blocked notifications indicator in the address bar, when a site requests notifications permission. The promo informs the user that as a result of them usually blocking notifications, the request from the site is automatically blocked, and the user can click on the icon to allow notifications.">
@@ -3025,6 +3079,34 @@ Brave is unable to recover your settings.
         </if>
       </if>
 
+      <!-- Dictation strings -->
+      <!-- TODO(b/510738735): Marked non-translateable as the feature
+      isn't yet shipping these aren't yet finalized. -->
+      <if expr="not is_android">
+        <message name="IDS_DICTATION_CONTEXT_MENU_STRING" desc="The string shown in the right-click context menu to start using the dictation feature." translateable="false">
+          Dictation
+        </message>
+
+        <message name="IDS_DICTATION_ONBOARDING_TITLE" desc="The title string in the onboarding dialog for the dictation feature." translateable="false">
+          Turn your spoken thoughts into polished text with Brave.
+        </message>
+        <message name="IDS_DICTATION_ONBOARDING_BULLET_MICROPHONE" desc="The first paragraph in the onboarding dialog describing how the microphone is used." translateable="false">
+          Brave will use your microphone to capture your voice and fill in text fields with cleaned up text.
+        </message>
+        <message name="IDS_DICTATION_ONBOARDING_BULLET_DATA_SHARING" desc="The second paragraph in the onboarding dialog describing data sharing with Brave servers." translateable="false">
+          Your spoken audio, the transcribed text, and the content and URL of the page you're interacting with will be sent to Brave.
+        </message>
+        <message name="IDS_DICTATION_ONBOARDING_BULLET_DISCLAIMER" desc="The disclaimer text in the onboarding dialog describing the use of AI and potential for mistakes and providing a link for more details." translateable="false">
+          Dictation uses AI and can make mistakes. <ph name="LEARN_MORE_LINK">$1<ex>Learn more</ex></ph>
+        </message>
+        <message name="IDS_DICTATION_ONBOARDING_BUTTON_ACCEPT" desc="Button label on the onboarding dialog to confirm the provided information and use the feature." translateable="false">
+          Ok, got it
+        </message>
+        <message name="IDS_DICTATION_BUTTON_START" desc="Button label on the dictation UI that turns on the microphone to start dictating text." translateable="false">
+          Start
+        </message>
+      </if>
+
       <!--Desktop to iOS promo strings-->
       <if expr="not is_android">
         <message name="IDS_IOS_DESKTOP_ESB_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop ESB promo bubble with a reminder button.">
@@ -3070,6 +3152,9 @@ Brave is unable to recover your settings.
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_DESCRIPTION_QR" desc="The description for the iOS desktop price tracking promo bubble with a QR code.">
           Download Brave on your phone to track prices and get alerts when the price drops on any site
         </message>
+        <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Price Tracking promo bubble with a QR Code.">
+          Get price tracking alerts with Brave on your phone
+        </message>
         <message name="IDS_IOS_DESKTOP_PRICE_TRACKING_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after the user chooses to be reminded of price tracking on their iOS device.">
           Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you’ll see a prompt to enable price tracking alerts.
         </message>
@@ -3078,6 +3163,87 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_IOS_DESKTOP_TAB_GROUPS_REMINDER_CONFIRMATION" desc="Body text of the promo bubble that appears after the user chooses to be reminded of tab groups on their iOS device.">
           Next time you open Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>, you’ll see a prompt to use tab groups.
+        </message>
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop AI promo bubble with a QR code.">
+          Scan the QR code with your phone to download Brave and sign in to your Brave sync chain.
+        </message>
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop AI promo bubble with a QR code.">
+          Use Brave's best AI tools with the Brave app on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop AI promo bubble with a reminder.">
+          Take your favorite Brave AI tools on the go with Brave on iOS.
+        </message>
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop AI promo bubble with a reminder.">
+          Get the power of AI when you use the Brave app on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_AI_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop AI promo notification.">
+          Use the Brave app to take the best AI tools on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Best of Brave promo bubble with a QR code.">
+          Scan the QR code with your phone to download Brave and sign in to your Brave sync chain.
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Best of Brave promo bubble with a QR code.">
+          Get the best of Brave with the Brave app on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Best of Brave promo bubble with a reminder.">
+          Seamlessly work with your favorite apps like Google Drive and YouTube on the go with Brave.
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Best of Brave promo bubble with a reminder.">
+          Get the best of Brave with the Brave app on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Best of Brave promo notification.">
+          Access all of your Brave favorites with Brave on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_BEST_OF_GOOGLE_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Best of Brave promo notification.">
+          Reminder: The best of Brave in your pocket
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Safety promo bubble with a QR code.">
+          Scan the QR code with your phone to download Brave and sign in to your Brave sync chain.
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Safety promo bubble with a QR code.">
+          Get Brave's best safety features on the go, with the Brave app on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Safety promo bubble with a reminder.">
+          Get Brave’s best safety features on the go with Brave.
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Safety promo bubble with a reminder.">
+          Take the safety of Brave on the go with the Brave app on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Safety promo notification.">
+          Use the Brave app to take the safety of Brave on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_SAFETY_PROMO_NOTIFICATION_TITLE" desc="The title for the iOS desktop Safety promo notification.">
+          Reminder: Brave’s best safety features in your pocket
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Shopping promo bubble with a QR code.">
+          Scan the QR code with your phone to download Brave and sign in to your Brave sync chain.
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Shopping promo bubble with a QR code.">
+          Get price drop alerts on items you're interested in with the Brave app on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Shopping promo bubble with a reminder.">
+          Discover products with your camera, track price drops and more on the go with Brave on iOS.
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Shopping promo bubble with a reminder.">
+          Get more out of online shopping when you use the Brave app on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_SHOPPING_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Shopping promo notification.">
+          Use the Brave app to take the best shopping tools on the go
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_BUBBLE_DESCRIPTION_QR" desc="The description for the iOS desktop Your Brave promo bubble with a QR code.">
+          Scan the QR code with your phone to download Brave and sign in to your Brave sync chain.
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_BUBBLE_TITLE_QR" desc="The title for the iOS desktop Your Brave promo bubble with a QR code.">
+          Take your passwords, tabs and more on the go with the Brave app on your phone
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_BUBBLE_DESCRIPTION_REMINDER" desc="The description for the iOS desktop Your Brave promo bubble with a reminder.">
+          Pick up right where you left off with Brave on iOS.
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_BUBBLE_TITLE_REMINDER" desc="The title for the iOS desktop Your Brave promo bubble with a reminder.">
+          Take your passwords, tabs and more on the go with the Brave app on your <ph name="DEVICE_TYPE">$1<ex>iPhone</ex></ph>
+        </message>
+        <message name="IDS_IOS_DESKTOP_YOUR_CHROME_PROMO_NOTIFICATION_BODY" desc="The body for the iOS desktop Your Brave promo notification.">
+          Use the Brave app to keep browsing on the go
         </message>
       </if>
 
@@ -3121,6 +3287,14 @@ If this page isn’t working as expected, try allowing optimization.
       </message>
       <message name="IDS_SEND_TAB_TO_SELF_SIGN_IN_PROMO_BUTTON_LABEL" desc="Label of the sign-in button in the send-tab-to-self sign-in promo bubble.">
         Sign in to Brave
+      </message>
+
+      <!-- Enterprise device signals disclaimer -->
+      <message name="IDS_ENTERPRISE_DEVICE_SIGNALS_DISCLAIMER_TITLE" desc="Title of an enterprise device signals collection disclaimer modal dialog. The dialog is shown on Brave startup to managed Brave users who have not previously acknowledged device signals collection.">
+        Your work secured on Brave
+      </message>
+      <message name="IDS_ENTERPRISE_DEVICE_SIGNALS_DISCLAIMER_SUBTITLE" desc="Subtitle of an enterprise device signals collection disclaimer modal dialog. The dialog is shown on Brave startup to managed Brave users who have not previously acknowledged device signals collection.">
+        To secure your work on Brave, your organization will be able to view or manage certain information
       </message>
     <message name="IDS_CHROME_SHORTCUT_NAME_BETA" desc="The Chrome shortcut name for beta channel">
           Google Chrome Beta

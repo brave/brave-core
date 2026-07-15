@@ -1,18 +1,18 @@
 diff --git a/components/sync_device_info/device_info_sync_bridge.cc b/components/sync_device_info/device_info_sync_bridge.cc
-index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086328a6442 100644
+index ea2ceab2ae362b49152c7b143e37715a0428a72a..daa8d253842c00bc480ff4f80b949499f3f37e1e 100644
 --- a/components/sync_device_info/device_info_sync_bridge.cc
 +++ b/components/sync_device_info/device_info_sync_bridge.cc
-@@ -224,7 +224,8 @@ DeviceInfo SpecificsToModel(const DeviceInfoSpecifics& specifics) {
-       specifics.feature_fields().desktop_to_ios_promo_receiving_enabled(),
+@@ -237,7 +237,8 @@ DeviceInfo SpecificsToModel(const DeviceInfoSpecifics& specifics) {
        SpecificsToDesktopToIOSPromoReceivingTypes(specifics),
        SpecificsToGlicExperimentalTriggeringState(specifics),
--      SpecificsToGlicExperimentalTriggeringVersion(specifics));
-+      SpecificsToGlicExperimentalTriggeringVersion(specifics),
+       SpecificsToGlicExperimentalTriggeringVersion(specifics),
+-      android_os_build_fingerprint_prefix);
++      android_os_build_fingerprint_prefix,
 +      SpecificsToSelfDeleteSupport(specifics));
  }
  
  // Allocate a EntityData and copies |specifics| into it.
-@@ -250,7 +251,7 @@ sync_pb::PhoneAsASecurityKeySpecificFields PhoneAsASecurityKeyInfoToProto(
+@@ -263,7 +264,7 @@ sync_pb::PhoneAsASecurityKeySpecificFields PhoneAsASecurityKeyInfoToProto(
  }
  
  // Converts a local DeviceInfo into a freshly allocated DeviceInfoSpecifics.
@@ -21,7 +21,7 @@ index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086
      const DeviceInfo& info) {
    auto specifics = std::make_unique<DeviceInfoSpecifics>();
    specifics->set_cache_guid(info.guid());
-@@ -459,6 +460,18 @@ LocalDeviceInfoProvider* DeviceInfoSyncBridge::GetLocalDeviceInfoProvider() {
+@@ -493,6 +494,18 @@ LocalDeviceInfoProvider* DeviceInfoSyncBridge::GetLocalDeviceInfoProvider() {
  }
  
  void DeviceInfoSyncBridge::RefreshLocalDeviceInfoIfNeeded() {
@@ -40,7 +40,7 @@ index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086
    // Device info cannot be synced if the provider is not initialized. When it
    // gets initialized, local device info will be sent.
    if (!local_device_info_provider_->GetLocalDeviceInfo()) {
-@@ -548,17 +561,19 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
+@@ -588,17 +601,19 @@ std::optional<ModelError> DeviceInfoSyncBridge::ApplyIncrementalSyncChanges(
    for (const std::unique_ptr<EntityChange>& change : entity_changes) {
      const std::string guid = change->storage_key();
  
@@ -61,7 +61,7 @@ index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086
      }
  
      if (change->type() == EntityChange::ACTION_DELETE) {
-@@ -910,6 +925,10 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
+@@ -950,6 +965,10 @@ void DeviceInfoSyncBridge::OnReadAllMetadata(
      return;
    }
  
@@ -72,7 +72,7 @@ index 80de0c0a1f8e887b249cac192fe1c8f9c1643d15..f99e7a570b864f4d1b6592534a6b4086
    // In the regular case for sync being disabled, wait for MergeFullSyncData()
    // before initializing the LocalDeviceInfoProvider.
    if (!syncer::IsInitialSyncDone(
-@@ -1152,6 +1171,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
+@@ -1200,6 +1219,7 @@ DeviceInfoSyncBridge::CountActiveDevicesByType() const {
  }
  
  void DeviceInfoSyncBridge::ExpireOldEntries() {

@@ -5,8 +5,8 @@
 
 source_set("impl") {
   visibility = [
+    "//brave/browser:core",
     "//brave/browser/workspaces:*",
-    "//chrome/browser",
   ]
 
   sources = [

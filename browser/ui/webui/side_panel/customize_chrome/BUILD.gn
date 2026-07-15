@@ -76,6 +76,7 @@ source_set("browser_tests") {
   sources = [ "customize_chrome_browsertest.cc" ]
 
   deps = [
+    "//chrome/browser/ui:browser_actions",
     "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/test:test_support",

@@ -1,12 +1,15 @@
 diff --git a/base/trace_event/builtin_categories.h b/base/trace_event/builtin_categories.h
-index 9e0540a7870db2e879b46cd4884a8c48e5395c7e..b93c8e17f2ffad08b2c43fb1cd01a16f71078db5 100644
+index 87f016e219d6c4e3b403e9290c586d3a777f2914..fbb95618eac2e8158b3e3a547ea2d41a4cf29fac 100644
 --- a/base/trace_event/builtin_categories.h
 +++ b/base/trace_event/builtin_categories.h
-@@ -286,6 +286,7 @@ PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(
-     perfetto::Category("webrtc").SetTags("audio", "video"),
-     perfetto::Category("webrtc_stats"),
-     perfetto::Category("xr"),
-+    BRAVE_INTERNAL_TRACE_LIST_BUILTIN_CATEGORIES
-     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("android_view_hierarchy"))
-         .SetTags("slow"),
-     perfetto::Category(TRACE_DISABLED_BY_DEFAULT("animation-worklet"))
+@@ -61,6 +61,10 @@ PERFETTO_DEFINE_TEST_CATEGORY_PREFIXES("cat",
+ PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS(
+     base,
+     BASE_EXPORT,
++    perfetto::Category("brave"),
++    perfetto::Category("brave.adblock"),
++    perfetto::Category("brave.ads"),
++    perfetto::Category("brave.news"),
+     /* The rest of the list is in alphabetical order */
+     perfetto::Category("__metadata"),
+     perfetto::Category("accessibility"),

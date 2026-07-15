@@ -370,32 +370,6 @@ TEST_F(ListActionModifiersUnitTest,
 #endif  // BUILDFLAG(ENABLE_BRAVE_REWARDS)
 
 TEST_F(ListActionModifiersUnitTest,
-       ApplyBraveSpecificModifications_ShareMenuShouldNotBeAddedWhenDisabled) {
-  // Share Menu should be added by default (Sharing Hub enabled by default)
-  ASSERT_FALSE(sharing_hub::SharingIsDisabledByPolicy(
-      web_contents_->GetBrowserContext()));
-  auto modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      web_contents_.get(), GetBasicActions());
-  auto share_menu_action_it =
-      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
-                        &side_panel::customize_chrome::mojom::Action::id);
-  ASSERT_NE(share_menu_action_it, modified_actions.end());
-
-  // Disable Sharing Hub using pref
-  prefs()->SetBoolean(prefs::kDesktopSharingHubEnabled, false);
-  ASSERT_TRUE(sharing_hub::SharingIsDisabledByPolicy(
-      web_contents_->GetBrowserContext()));
-
-  modified_actions = customize_chrome::ApplyBraveSpecificModifications(
-      web_contents_.get(), GetBasicActions());
-  share_menu_action_it =
-      std::ranges::find(modified_actions, ActionId::kShowShareMenu,
-                        &side_panel::customize_chrome::mojom::Action::id);
-  // Show Share Menu action should not be present
-  EXPECT_EQ(share_menu_action_it, modified_actions.end());
-}
-
-TEST_F(ListActionModifiersUnitTest,
        ApplyBraveSpecificModifications_ComprehensiveOrderTest) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   ASSERT_TRUE(brave_vpn::IsBraveVPNEnabled(web_contents_->GetBrowserContext()));
@@ -440,5 +414,5 @@ TEST_F(ListActionModifiersUnitTest,
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
           EqId(ActionId::kShowBraveNews),
 #endif
-          EqId(ActionId::kShowShareMenu), EqId(ActionId::kShowPwaInstall)));
+          EqId(ActionId::kShowPwaInstall)));
 }

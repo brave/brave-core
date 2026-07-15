@@ -20,7 +20,7 @@ void BraveHistoryUI::BindInterface(
   page_handler_factory_receiver_.Bind(std::move(receiver));
 }
 
-void BraveHistoryUI::CreatePageHandler(
+void BraveHistoryUI::CreateInterfacePageHandler(
     mojo::PendingRemote<brave_history_embeddings::mojom::Page> page,
     mojo::PendingReceiver<brave_history_embeddings::mojom::PageHandler>
         receiver) {
