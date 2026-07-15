@@ -25,7 +25,10 @@ PsstReporterService::PsstReporterService(
     std::unique_ptr<PsstErrorReportUploader> report_uploader)
     : channel_name_callback_(std::move(channel_name_callback)),
       component_version_callback_(std::move(component_version_callback)),
-      report_uploader_(std::move(report_uploader)) {}
+      report_uploader_(std::move(report_uploader)) {
+  CHECK(channel_name_callback_);
+  CHECK(component_version_callback_);
+}
 
 PsstReporterService::~PsstReporterService() = default;
 
@@ -42,15 +45,10 @@ void PsstReporterService::SubmitPsstErrorsReport(
   auto brave_version =
       version_info::GetBraveVersionWithoutChromiumMajorVersion();
 
-  std::optional<std::string> channel;
-  if (!channel_name_callback_.is_null()) {
-    channel = channel_name_callback_.Run();
-  }
+  std::optional<std::string> channel = channel_name_callback_.Run();
 
-  std::optional<std::string> psst_component_version;
-  if (!component_version_callback_.is_null()) {
-    psst_component_version = component_version_callback_.Run();
-  }
+  std::optional<std::string> psst_component_version =
+      component_version_callback_.Run();
 
   base::ListValue failed_tasks;
   for (const auto& ti : failed_policy_tasks.value()) {
