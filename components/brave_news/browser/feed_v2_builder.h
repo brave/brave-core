@@ -136,7 +136,7 @@ class FeedV2Builder {
 
   void PrepareAndFetch();
   void FetchFeed();
-  void OnFetchedFeed(FeedItems items, ETags etags);
+  void OnFetchedFeed(FeedItems items, ETags etags, bool connection_error);
 
   void CalculateSignals();
   void OnCalculatedSignals(Signals signals);
@@ -166,6 +166,10 @@ class FeedV2Builder {
 
   FeedItems raw_feed_items_;
   ETags feed_etags_;
+  // Whether the last fetch failed to reach Brave's feed server (the user
+  // appears to be offline). A failing direct (custom RSS) feed does not set
+  // this, so it never forces the whole feed into a connection-error state.
+  bool feed_connection_error_ = false;
   std::string hash_;
 
   Signals signals_;

@@ -102,7 +102,8 @@ void FeedController::EnsureFeedIsUpdating(
                 base::BindOnce(
                     [](base::WeakPtr<FeedController> controller,
                        const SubscriptionsSnapshot& subscriptions,
-                       Publishers publishers, FeedItems items, ETags etags) {
+                       Publishers publishers, FeedItems items, ETags etags,
+                       bool connection_error) {
                       if (!controller) {
                         return;
                       }

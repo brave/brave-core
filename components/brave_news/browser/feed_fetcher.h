@@ -21,7 +21,12 @@ namespace brave_news {
 
 using FeedItems = std::vector<mojom::FeedItemPtr>;
 using ETags = absl::flat_hash_map<std::string, std::string>;
-using FetchFeedCallback = base::OnceCallback<void(FeedItems items, ETags tags)>;
+// |connection_error| is true only when we failed to reach Brave's own feed
+// server (i.e. the user appears to be offline). A failing direct (custom RSS)
+// feed does not set this, since a single unreachable third-party feed does not
+// mean the whole feed failed to load.
+using FetchFeedCallback = base::OnceCallback<
+    void(FeedItems items, ETags tags, bool connection_error)>;
 using UpdateAvailableCallback = base::OnceCallback<void(bool)>;
 
 class SubscriptionsSnapshot;
@@ -43,13 +48,21 @@ class FeedFetcher {
                          UpdateAvailableCallback callback);
 
  private:
+  friend class FeedFetcherTest;
+
   struct FeedSourceResult {
     std::string key;
     std::string etag;
     FeedItems items;
+    // Whether this source produced a usable response. A source can succeed but
+    // still contribute no items (e.g. a valid but empty feed).
+    bool success = false;
+    // Whether fetching this source failed with a connection/network error.
+    // Only set for Brave's own feed sources: a failing direct (custom RSS) feed
+    // does not imply the user is offline, so it never sets this.
+    bool connection_error = false;
 
     FeedSourceResult();
-    FeedSourceResult(std::string key, std::string etag, FeedItems items);
     ~FeedSourceResult();
     FeedSourceResult(FeedSourceResult&&);
     FeedSourceResult(const FeedSourceResult&) = delete;
@@ -57,7 +70,9 @@ class FeedFetcher {
   };
   using FetchFeedSourceCallback =
       base::OnceCallback<void(FeedSourceResult items)>;
-  static std::tuple<FeedItems, ETags> CombineFeedSourceResults(
+  // Returns the combined feed items, their etags, and whether a connection
+  // error occurred while reaching Brave's feed server.
+  static std::tuple<FeedItems, ETags, bool> CombineFeedSourceResults(
       std::vector<FeedSourceResult> results);
 
   // Steps for |FetchFeed|

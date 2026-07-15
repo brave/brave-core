@@ -54,22 +54,28 @@ GURL GetFeedUrl(const std::string& locale) {
 }  // namespace
 
 FeedFetcher::FeedSourceResult::FeedSourceResult() = default;
-FeedFetcher::FeedSourceResult::FeedSourceResult(std::string key,
-                                                std::string etag,
-                                                FeedItems items)
-    : key(std::move(key)), etag(std::move(etag)), items(std::move(items)) {}
 FeedFetcher::FeedSourceResult::~FeedSourceResult() = default;
 FeedFetcher::FeedSourceResult::FeedSourceResult(
     FeedFetcher::FeedSourceResult&&) = default;
 
 // static
-std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
+std::tuple<FeedItems, ETags, bool> FeedFetcher::CombineFeedSourceResults(
     std::vector<FeedSourceResult> results) {
   std::size_t total_size = 0;
+  bool any_success = false;
+  bool any_connection_error = false;
   for (const auto& result : results) {
     total_size += result.items.size();
+    any_success = any_success || result.success;
+    any_connection_error = any_connection_error || result.connection_error;
   }
   VLOG(1) << "All feed item fetches done with item count: " << total_size;
+
+  // Only report a connection error if we failed to reach Brave's feed server
+  // and no source succeeded. If any source (including a direct feed) loaded, we
+  // know we're online, so an empty feed is a "no articles" state rather than a
+  // connection failure.
+  const bool connection_error = any_connection_error && !any_success;
 
   ETags etags;
   FeedItems feed;
@@ -107,7 +113,7 @@ std::tuple<FeedItems, ETags> FeedFetcher::CombineFeedSourceResults(
     }
   }
 
-  return std::make_tuple(std::move(feed), std::move(etags));
+  return std::make_tuple(std::move(feed), std::move(etags), connection_error);
 }
 
 FeedFetcher::FeedFetcher(
@@ -136,7 +142,7 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
     const Publishers& publishers) {
   if (publishers.empty()) {
     LOG(ERROR) << "Brave News Publisher list was empty";
-    std::move(callback).Run({}, {});
+    std::move(callback).Run({}, {}, /*connection_error=*/false);
     return;
   }
 
@@ -178,6 +184,11 @@ void FeedFetcher::OnFetchFeedFetchedPublishers(
 
               if (auto* feed =
                       std::get_if<DirectFeedResult>(&response.result)) {
+                // A direct feed that parsed is a success even if it had no
+                // usable articles. A DirectFeedError (network failure, bad
+                // response, or unparseable body) is not a connection error, so
+                // it never marks the whole feed as failed to load.
+                result.success = true;
                 std::ranges::transform(
                     feed->articles, std::back_inserter(result.items),
                     [](auto& article) {
@@ -206,7 +217,12 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
   if (result.response_code() != 200 || result.value_body().is_none()) {
     LOG(ERROR) << "Bad response from brave news feed.json. Status: "
                << result.response_code();
-    std::move(callback).Run({});
+    FeedSourceResult source_result;
+    // No valid HTTP response code means we couldn't reach the server, i.e. the
+    // user is likely offline. An HTTP error response (e.g. 4xx/5xx) means the
+    // server was reachable, so it isn't treated as a connection error.
+    source_result.connection_error = !result.IsResponseCodeValid();
+    std::move(callback).Run(std::move(source_result));
     return;
   }
 
@@ -220,8 +236,12 @@ void FeedFetcher::OnFetchFeedFetchedFeed(
             if (!fetcher) {
               return;
             }
-            std::move(callback).Run(
-                {std::move(locale), std::move(etag), std::move(items)});
+            FeedSourceResult source_result;
+            source_result.key = std::move(locale);
+            source_result.etag = std::move(etag);
+            source_result.items = std::move(items);
+            source_result.success = true;
+            std::move(callback).Run(std::move(source_result));
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(locale), std::move(etag),
           std::move(callback)));
@@ -234,12 +254,13 @@ void FeedFetcher::OnFetchFeedFetchedAll(FetchFeedCallback callback,
       base::BindOnce(&CombineFeedSourceResults, std::move(results)),
       base::BindOnce(
           [](base::WeakPtr<FeedFetcher> fetcher, FetchFeedCallback callback,
-             FeedItems items, ETags tags) {
+             FeedItems items, ETags tags, bool connection_error) {
             // If we've been destroyed, don't run the callback.
             if (!fetcher) {
               return;
             }
-            std::move(callback).Run(std::move(items), std::move(tags));
+            std::move(callback).Run(std::move(items), std::move(tags),
+                                    connection_error);
           },
           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
