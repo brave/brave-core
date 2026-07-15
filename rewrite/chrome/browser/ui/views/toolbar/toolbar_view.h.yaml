@@ -9,18 +9,16 @@ substitutions:
 
       BraveToolbarView overrides Init() to perform its own toolbar setup, so the
       upstream declaration has to be virtual.
-    make_virtual:
-      class_name: ToolbarView
-      method_name: Init
+    re_pattern: '(void Init\()'
+    replace: 'virtual \1'
 
   - description: |
       Make ToolbarView::Update() virtual.
 
       BraveToolbarView overrides Update() to refresh Brave-specific toolbar
       state, so the upstream declaration has to be virtual.
-    make_virtual:
-      class_name: ToolbarView
-      method_name: Update
+    re_pattern: '(void Update\()'
+    replace: 'virtual \1'
 
   - description: |
       Expose the app menu button to BraveToolbarView.
@@ -40,18 +38,16 @@ substitutions:
       BraveToolbarView overrides ShowBookmarkBubble() to anchor the bookmark
       bubble to Brave's toolbar layout, so the upstream declaration has to be
       virtual.
-    make_virtual:
-      class_name: ToolbarView
-      method_name: ShowBookmarkBubble
+    re_pattern: '(void ShowBookmarkBubble\()'
+    replace: 'virtual \1'
 
   - description: |
       Make ToolbarView::LoadImages() virtual.
 
       BraveToolbarView overrides LoadImages() to load Brave's toolbar images, so
       the upstream declaration has to be virtual.
-    make_virtual:
-      class_name: ToolbarView
-      method_name: LoadImages
+    re_pattern: '(void LoadImages\()'
+    replace: 'virtual \1'
 
   - description: |
       Friend BraveToolbarView and its tests.

@@ -16,40 +16,35 @@ substitutions:
 
   - description: |-
       Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: GetSeparatorBounds
+    re_pattern: '(TabStyle::SeparatorBounds GetSeparatorBounds\()'
+    replace: 'virtual \1'
 
   - description: |-
       Virtualise IsHovering for BraveVerticalTabStyle.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: IsHovering
+    re_pattern: '(bool IsHovering\()'
+    replace: 'virtual \1'
 
   - description: |-
       Virtualise GetStrokeThickness for BraveVerticalTabStyle.
 
       Virtualising it to return 0 for vertical/horizontal-update tabs.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: GetStrokeThickness
+    re_pattern: '(int GetStrokeThickness\()'
+    replace: 'virtual \1'
 
   - description: |-
       Virtualise GetSeparatorOpacity for BraveVerticalTabStyle.
 
       Virtualising to tweak separator visibility for vertical tabs and split
       tabs.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: GetSeparatorOpacity
+    re_pattern: '(float GetSeparatorOpacity\()'
+    replace: 'virtual \1'
 
   - description: |-
       Virtualise GetCurrentTabBackgroundColor for BraveVerticalTabStyle.
 
       Virtualising to supply its own vertical-tab background colors.
-    make_virtual:
-      class_name: TabStyleViewsImpl
-      method_name: GetCurrentTabBackgroundColor
+    re_pattern: '(SkColor GetCurrentTabBackgroundColor\()'
+    replace: 'virtual \1'
 
   - description: |-
       Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave

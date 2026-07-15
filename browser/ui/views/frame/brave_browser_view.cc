@@ -975,7 +975,9 @@ void BraveBrowserView::UpdateContentsShadowVisibility() {
   // Fixed by hiding contents shadow when split view is active.
   // As split view has another border around contents, we don't need
   // contents shadow.
-  if (browser()->tab_strip_model()->IsActiveTabSplit() ||
+  const tabs::TabInterface* active_tab =
+      browser()->tab_strip_model()->GetActiveTab();
+  if ((active_tab && active_tab->IsSplit()) ||
       (sidebar::IsWebPanelFeatureEnabled() &&
        GetBraveMultiContentsView()->IsWebPanelVisible())) {
     show_contents_shadow = false;

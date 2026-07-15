@@ -36,6 +36,5 @@ substitutions:
       Make UpdateTabStripMargin overridable
 
       BraveHorizontalTabStripRegionView overrides this method.
-    make_virtual:
-      class_name: HorizontalTabStripRegionView
-      method_name: UpdateTabStripMargin
+    re_pattern: '(void UpdateTabStripMargin)'
+    replace: 'virtual \1'
