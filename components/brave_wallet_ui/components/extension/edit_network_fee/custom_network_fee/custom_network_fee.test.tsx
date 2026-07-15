@@ -8,8 +8,10 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react'
 import { Provider } from 'react-redux'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../../common/BraveCoreThemeProvider'
-import { createMockStore } from '../../../../utils/test-utils'
+import {
+  createMockStore,
+  WalletTestThemeProvider,
+} from '../../../../utils/test-utils'
 
 // Components
 import { CustomNetworkFee } from './custom_network_fee'
@@ -35,7 +37,7 @@ describe('CustomNetworkFee', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <CustomNetworkFee
             transactionInfo={mockTransactionInfo}
             selectedNetwork={mockEthMainnet}
@@ -44,7 +46,7 @@ describe('CustomNetworkFee', () => {
             onBack={mockOnBack}
             onClose={mockOnClose}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
 
@@ -113,7 +115,7 @@ describe('CustomNetworkFee', () => {
     const store = createMockStore({})
     const { container } = render(
       <Provider store={store}>
-        <BraveCoreThemeProvider>
+        <WalletTestThemeProvider>
           <CustomNetworkFee
             transactionInfo={nonEip1559TransactionInfo}
             selectedNetwork={mockEthMainnet}
@@ -122,7 +124,7 @@ describe('CustomNetworkFee', () => {
             onBack={mockOnBack}
             onClose={mockOnClose}
           />
-        </BraveCoreThemeProvider>
+        </WalletTestThemeProvider>
       </Provider>,
     )
 

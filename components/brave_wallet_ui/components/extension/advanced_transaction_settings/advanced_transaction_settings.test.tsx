@@ -7,7 +7,7 @@ import * as React from 'react'
 import { render } from '@testing-library/react'
 
 // Utils
-import BraveCoreThemeProvider from '../../../../common/BraveCoreThemeProvider'
+import { WalletTestThemeProvider } from '../../../utils/test-utils'
 
 // Components
 import { AdvancedTransactionSettings } from './advanced_transaction_settings'
@@ -15,13 +15,13 @@ import { AdvancedTransactionSettings } from './advanced_transaction_settings'
 describe('AdvancedTransactionSettings', () => {
   it('should render the component', () => {
     const { container } = render(
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <AdvancedTransactionSettings
           nonce='5'
           onCancel={jest.fn()}
           onSave={jest.fn()}
         />
-      </BraveCoreThemeProvider>,
+      </WalletTestThemeProvider>,
     )
 
     // Check locale

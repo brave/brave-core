@@ -44,6 +44,17 @@ import {
   WalletApiDataOverrides,
 } from '../constants/testing_types'
 import BraveCoreThemeProvider from '../../common/BraveCoreThemeProvider'
+import StyledComponentsProvider from '../../common/StyledComponentsProvider'
+
+export const WalletTestThemeProvider = ({
+  children,
+}: {
+  children?: React.ReactNode
+}) => (
+  <StyledComponentsProvider>
+    <BraveCoreThemeProvider>{children}</BraveCoreThemeProvider>
+  </StyledComponentsProvider>
+)
 
 export interface RootStateOverrides {
   accountTabStateOverride?: Partial<AccountsTabState>
@@ -127,9 +138,9 @@ export function renderComponentOptionsWithMockStore(
 ) {
   return {
     wrapper: ({ children }: { children?: React.ReactNode }) => (
-      <BraveCoreThemeProvider>
+      <WalletTestThemeProvider>
         <Provider store={store}>{children}</Provider>
-      </BraveCoreThemeProvider>
+      </WalletTestThemeProvider>
     ),
   }
 }
