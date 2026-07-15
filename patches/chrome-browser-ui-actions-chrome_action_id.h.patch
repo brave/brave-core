@@ -1,21 +1,23 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index fb93a1bc1e61639409a123d4012edbe4353a1d88..6c63084089b009d2e37d66d62770dbcd721274fe 100644
+index 1a6acad48b6ffcc49e77229d79ffb838681abfa8..29385b33737f01066b8bad69947ccce695417c90 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
-@@ -567,6 +567,7 @@
+@@ -551,6 +551,9 @@
+ // Should be reinserted into CHROME_COMMON_ACTION_IDS when general solution to
+ // add action id mappings is implemented.
+ #define SIDE_PANEL_ACTION_IDS \
++  E(kActionSidePanelShowPlaylist) \
++  E(kActionSidePanelShowChatUI) \
++  E(kActionSidePanelShowBraveNews) \
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-+  E(kActionSidePanelShowPlaylist) E(kActionSidePanelShowChatUI) E(kActionSidePanelShowBraveNews) \
-   E(kActionSidePanelShowBookmarks, IDC_SHOW_BOOKMARK_SIDE_PANEL) \
-   E(kActionSidePanelShowComments, IDC_SHOW_COMMENTS_SIDE_PANEL) \
-   E(kActionSidePanelShowCustomizeChrome, IDC_SHOW_CUSTOMIZE_CHROME_SIDE_PANEL) \
-@@ -615,6 +616,8 @@
-   E(kActionCopyUrl, IDC_COPY_URL) \
-   E(kActionTabGroupsMenu, IDC_SAVED_TAB_GROUPS_MENU) \
-   E(kActionTabSearch, IDC_TAB_SEARCH) \
+@@ -576,6 +579,8 @@
+     IDC_SHOW_TABS_FROM_OTHER_DEVICES_SIDE_PANEL)
+ 
+ #define TOOLBAR_PINNABLE_ACTION_IDS \
 +  E(kActionShowPartitionedStorage) \
 +  E(kActionShowPsstIcon) \
-   E(kActionSplitTab, IDC_SPLIT_TAB) \
-   E(kActionFederation) \
-   E(kActionGlicContextualCueing) \
+   E(kActionHome, IDC_HOME) \
+   E(kActionForward, IDC_FORWARD) \
+   E(kActionNewIncognitoWindow, IDC_NEW_INCOGNITO_WINDOW) \

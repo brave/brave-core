@@ -53,7 +53,7 @@ void ProtectionStatsJavaScriptFeature::ScriptMessageReceived(
     web::WebState* web_state,
     const web::ScriptMessage& message) {
   const base::ListValue* body =
-      message.body() ? message.body()->GetIfList() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfList() : nullptr;
   url::Origin security_origin = message.security_origin();
   if (!body || security_origin.opaque()) {
     return;

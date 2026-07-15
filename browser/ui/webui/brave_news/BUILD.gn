@@ -23,6 +23,7 @@ source_set("brave_news") {
     "//brave/components/constants",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings",
+    "//chrome/browser/ui/webui:theme_source",
     "//chrome/browser/ui/webui/top_chrome",
     "//content/public/browser",
     "//content/public/common",

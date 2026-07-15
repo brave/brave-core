@@ -48,7 +48,7 @@ BraveProxyingWebSocket<T>::~BraveProxyingWebSocket() {
   }
   if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)
-        .Run(net::ERR_ABORTED, std::nullopt);
+        .Run(net::ERR_ABORTED, std::nullopt, std::nullopt);
   }
   if (on_headers_received_callback_) {
     std::move(on_headers_received_callback_)
@@ -242,6 +242,7 @@ void BraveProxyingWebSocket<T>::OnAuthRequired(
 
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::OnBeforeSendHeaders(
+    const GURL& request_url,
     const net::HttpRequestHeaders& headers,
     OnBeforeSendHeadersCallback callback) {
   DCHECK(proxy_has_extra_headers());
@@ -277,7 +278,7 @@ void BraveProxyingWebSocket<T>::OnBeforeRequestComplete(int error_code) {
 
   if (proxy_has_extra_headers()) {
     proxy_trusted_header_client_->OnBeforeSendHeaders(
-        request_.headers,
+        request_.url, request_.headers,
         base::BindOnce(
             &BraveProxyingWebSocket::OnBeforeSendHeadersCompleteFromProxy,
             weak_factory_.GetWeakPtr()));
@@ -289,7 +290,8 @@ void BraveProxyingWebSocket<T>::OnBeforeRequestComplete(int error_code) {
 template <template <typename> class T>
 void BraveProxyingWebSocket<T>::OnBeforeSendHeadersCompleteFromProxy(
     int error_code,
-    const std::optional<net::HttpRequestHeaders>& headers) {
+    const std::optional<net::HttpRequestHeaders>& headers,
+    std::optional<base::DictValue> /*extended_net_log_events*/) {
   DCHECK(proxy_has_extra_headers() ||
          !receiver_as_handshake_client_.is_bound());
   if (error_code != net::OK) {
@@ -338,7 +340,8 @@ void BraveProxyingWebSocket<T>::OnBeforeSendHeadersComplete(int error_code) {
   if (on_before_send_headers_callback_) {
     std::move(on_before_send_headers_callback_)
         .Run(error_code,
-             std::optional<net::HttpRequestHeaders>(request_.headers));
+             std::optional<net::HttpRequestHeaders>(request_.headers),
+             std::nullopt);
   }
 
   if (!proxy_has_extra_headers()) {

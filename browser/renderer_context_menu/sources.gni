@@ -16,6 +16,7 @@ if (is_win || is_linux) {
     "//base",
     "//chrome/app:command_ids",
     "//chrome/app:generated_resources",
+    "//chrome/browser/renderer_context_menu:impl",
     "//components/renderer_context_menu",
     "//ui/base",
   ]

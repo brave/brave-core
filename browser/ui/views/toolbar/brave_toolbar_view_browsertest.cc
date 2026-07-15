@@ -393,17 +393,25 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest, ToolbarCornerRadiusTest) {
   auto* custom_corners_background =
       static_cast<CustomCornersBackground*>(toolbar_view_->background());
   EXPECT_EQ(0, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(custom_corners_background->GetCorners().upper_leading.type,
-            CustomCornersBackground::CornerType::kRoundedWithBackground);
-  EXPECT_EQ(custom_corners_background->GetCorners().upper_trailing.type,
-            CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(
+      custom_corners_background->GetCorners()[CornerOrientation::kTopLeading]
+          .type,
+      CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(
+      custom_corners_background->GetCorners()[CornerOrientation::kTopTrailing]
+          .type,
+      CustomCornersBackground::CornerType::kRoundedWithBackground);
 
   chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
   EXPECT_EQ(1, browser()->tab_strip_model()->active_index());
-  EXPECT_EQ(custom_corners_background->GetCorners().upper_leading.type,
-            CustomCornersBackground::CornerType::kRoundedWithBackground);
-  EXPECT_EQ(custom_corners_background->GetCorners().upper_trailing.type,
-            CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(
+      custom_corners_background->GetCorners()[CornerOrientation::kTopLeading]
+          .type,
+      CustomCornersBackground::CornerType::kRoundedWithBackground);
+  EXPECT_EQ(
+      custom_corners_background->GetCorners()[CornerOrientation::kTopTrailing]
+          .type,
+      CustomCornersBackground::CornerType::kRoundedWithBackground);
 }
 
 IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,

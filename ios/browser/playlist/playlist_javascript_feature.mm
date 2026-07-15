@@ -122,7 +122,7 @@ void PlaylistJavaScriptFeature::ScriptMessageReceived(
   }
 
   const base::DictValue* item =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!item) {
     return;
   }

@@ -1,13 +1,22 @@
 diff --git a/chrome/browser/ui/webui/BUILD.gn b/chrome/browser/ui/webui/BUILD.gn
-index 70818ce2da0e8e5fc9e79ac54fb2f1a37fdcd28b..bb747a98ff5cb3331d2515e9ca8f9022fa2af39f 100644
+index 9ad30f708e9cb4ff2d2bc853513631464e268593..f3fe1f0c7fe43890aa0d0f5172420f8c7f218d95 100644
 --- a/chrome/browser/ui/webui/BUILD.gn
 +++ b/chrome/browser/ui/webui/BUILD.gn
-@@ -251,6 +251,8 @@ source_set("configs") {
-       "//chrome/browser/ui/webui/webui_gallery",
-     ]
+@@ -292,6 +292,8 @@ source_set("configs") {
+   if (enable_webui_ntp) {
+     deps += [ "//chrome/browser/ui/webui/ntp_microsoft_auth" ]
    }
 +  import("//brave/browser/ui/webui/sources.gni")
 +  deps += brave_browser_ui_webui_configs_deps
  }
  
  source_set("webui") {
+@@ -343,7 +345,7 @@ source_set("webui_util") {
+ # //ui/resources only defines under "not is_android or is_desktop_android or
+ # enable_webui_ntp"; gate the target to where it was compiled inside :ui.
+ if (enable_extensions_core || enable_webui_ntp ||
+-    enable_webui_contextual_tasks_composebox) {
++    enable_webui_contextual_tasks_composebox || is_android) {
+   source_set("favicon_source") {
+     sources = [ "favicon_source.cc" ]
+     public = [ "favicon_source.h" ]

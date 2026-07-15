@@ -71,7 +71,7 @@ void BraveSearchMakeDefaultJavaScriptFeature::ScriptMessageReceivedWithReply(
   }
 
   const base::DictValue* body =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!body) {
     std::move(callback).Run(nullptr, nil);
     return;

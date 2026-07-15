@@ -151,7 +151,6 @@ public class CustomizeBraveMenu {
         MENU_ICON_MAP.put(R.id.open_with_id, R.drawable.ic_open_in_new);
         MENU_ICON_MAP.put(R.id.open_webapk_id, R.drawable.ic_open_webapk);
         MENU_ICON_MAP.put(R.id.universal_install, R.drawable.ic_add_to_home_screen);
-        MENU_ICON_MAP.put(R.id.reader_mode_prefs_id, R.drawable.reader_mode_prefs_icon);
         MENU_ICON_MAP.put(R.id.auto_dark_web_contents_id, R.drawable.ic_brightness_medium_24dp);
         MENU_ICON_MAP.put(R.id.paint_preview_show_id, R.drawable.ic_photo_camera);
         MENU_ICON_MAP.put(R.id.get_image_descriptions_id, R.drawable.ic_image_descriptions);
@@ -450,8 +449,7 @@ public class CustomizeBraveMenu {
                         maybeApplyTinting(context, resizedDrawable);
 
                         // Return to UI thread with result.
-                        PostTask.postTask(
-                                TaskTraits.UI_DEFAULT, () -> callback.onResult(resizedDrawable));
+                        PostTask.postTask(TaskTraits.UI_DEFAULT, callback.bind(resizedDrawable));
                     });
         } else {
             // No resizing needed, apply tinting and return directly.

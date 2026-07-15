@@ -23,9 +23,8 @@
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/metrics/metrics_reporting_state.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/browser_window/public/profile_browser_collection.h"
 #include "chrome/browser/ui/chrome_pages.h"
 #include "chrome/common/webui_url_constants.h"
@@ -103,8 +102,9 @@ WelcomeDOMHandler::~WelcomeDOMHandler() {
   RecordP3AHistogram(last_onboarding_phase_);
 }
 
-Browser* WelcomeDOMHandler::GetBrowser() {
-  return chrome::FindBrowserWithTab(web_ui()->GetWebContents());
+BrowserWindowInterface* WelcomeDOMHandler::GetBrowser() {
+  return GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      web_ui()->GetWebContents());
 }
 
 void WelcomeDOMHandler::RegisterMessages() {

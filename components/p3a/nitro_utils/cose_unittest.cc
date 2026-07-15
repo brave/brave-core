@@ -125,7 +125,6 @@ class CoseSign1Test : public testing::Test {
 
   cbor::Value ParseExampleDocument() {
     cbor::Reader::Config cbor_config;
-    cbor_config.allow_and_canonicalize_out_of_order_keys = true;
     return *cbor::Reader::Read(LoadExampleDocument(), cbor_config);
   }
 
@@ -136,7 +135,11 @@ class CoseSign1Test : public testing::Test {
   CoseSign1 cose_sign1;
 };
 
-TEST_F(CoseSign1Test, DecodeFromExampleBytes) {
+// DISABLED for now. Upstream removed allow_and_canonicalize_out_of_order_keys
+// option from cbor parser which causes this test to crash. The code that this
+// test was written for is not currently in use.
+// Upstream change: https://chromium.googlesource.com/chromium/src/+/3f3d8dee
+TEST_F(CoseSign1Test, DISABLED_DecodeFromExampleBytes) {
   EXPECT_TRUE(cose_sign1.payload().is_none());
   EXPECT_TRUE(cose_sign1.protected_headers().is_none());
   EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
@@ -182,7 +185,11 @@ TEST_F(CoseSign1Test, BadLength) {
   EXPECT_TRUE(cose_sign1.unprotected_headers().is_none());
 }
 
-TEST_F(CoseSign1Test, BadSignature) {
+// DISABLED for now. Upstream removed allow_and_canonicalize_out_of_order_keys
+// option from cbor parser which causes this test to crash. The code that this
+// test was written for is not currently in use.
+// Upstream change: https://chromium.googlesource.com/chromium/src/+/3f3d8dee
+TEST_F(CoseSign1Test, DISABLED_BadSignature) {
   cbor::Value parsed_document = ParseExampleDocument();
   std::vector<cbor::Value> doc_arr;
   std::transform(parsed_document.GetArray().begin(),

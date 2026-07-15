@@ -12,6 +12,7 @@ brave_browser_cosmetic_filters_deps = [
   "//base",
   "//brave/components/cosmetic_filters/common:mojom",
   "//chrome/browser/ui",
+  "//chrome/browser/ui/color:color_headers",
   "//third_party/blink/public/common",
 ]
 
@@ -21,7 +22,10 @@ if (is_android) {
     "//brave/browser/android/cosmetic_filters/cosmetic_filters_utils.h",
   ]
 
-  brave_browser_cosmetic_filters_deps += [ "//brave/build/android:jni_headers" ]
+  brave_browser_cosmetic_filters_deps += [
+    "//brave/build/android:jni_headers",
+    "//chrome/browser/android:tabs_public",
+  ]
 } else {
   brave_browser_cosmetic_filters_deps +=
       [ "//chrome/browser/ui/browser_window" ]

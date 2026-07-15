@@ -21,9 +21,8 @@
 #include "extensions/browser/extension_util.h"
 #include "extensions/browser/install_signer.h"
 #include "extensions/browser/install_verifier.h"
-#include "extensions/browser/manifest_v2_experiment_manager.h"
+#include "extensions/browser/manifest_v2_handler.h"
 #include "extensions/browser/mv2_deprecation_impact_checker.h"
-#include "extensions/browser/mv2_experiment_stage.h"
 #include "extensions/common/constants.h"
 #include "extensions/common/extension_builder.h"
 #include "extensions/common/extension_features.h"
@@ -80,52 +79,6 @@ TEST_F(BraveExtensionsManifestV2Test, CheckInstallVerifier) {
         test.expected_must_remain_disabled,
         install_verifier->MustRemainDisabled(extension.get(), &disable_reason));
     EXPECT_EQ(test.expected_reason, disable_reason);
-  }
-}
-
-class BraveExtensionsManifestV2DeprecationTest
-    : public BraveExtensionsManifestV2Test,
-      public ::testing::WithParamInterface<extensions::MV2ExperimentStage> {
- public:
-  BraveExtensionsManifestV2DeprecationTest() {
-    switch (GetParam()) {
-      case extensions::MV2ExperimentStage::kDisableWithReEnable:
-        feature_list_.InitWithFeatures(
-            {extensions_mv2::features::kExtensionsManifestV2}, {});
-        break;
-      case extensions::MV2ExperimentStage::kUnsupported:
-        feature_list_.InitWithFeatures(
-            {extensions_mv2::features::kExtensionsManifestV2,
-             extensions_features::kExtensionManifestV2Unsupported},
-            {});
-        break;
-    }
-  }
-  ~BraveExtensionsManifestV2DeprecationTest() = default;
-
- private:
-  base::test::ScopedFeatureList feature_list_;
-};
-
-INSTANTIATE_TEST_SUITE_P(
-    ,
-    BraveExtensionsManifestV2DeprecationTest,
-    ::testing::Values(extensions::MV2ExperimentStage::kDisableWithReEnable,
-                      extensions::MV2ExperimentStage::kUnsupported));
-
-TEST_P(BraveExtensionsManifestV2DeprecationTest,
-       KnownMV2ExtensionsNotDeprecated) {
-  extensions::MV2DeprecationImpactChecker checker(profile());
-
-  for (const auto& known_mv2 :
-       extensions_mv2::kPreconfiguredManifestV2Extensions) {
-    auto extension =
-        extensions::ExtensionBuilder("test")
-            .SetID(std::string(known_mv2))
-            .AddFlags(extensions::Extension::FROM_WEBSTORE)
-            .SetLocation(extensions::mojom::ManifestLocation::kExternalPolicy)
-            .Build();
-    EXPECT_FALSE(checker.IsExtensionAffected(*extension.get()));
   }
 }
 

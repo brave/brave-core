@@ -1,5 +1,5 @@
 diff --git a/build/config/siso/main.star b/build/config/siso/main.star
-index 548330e241485073c1cb0dd0366018137d4117b0..36d10f6d48b3fd432d81b2053d588a9f5c923e06 100644
+index 9376ce03a3d8e840695ff382e43444d118af426b..3359383ea6331e2014a2eac5b1b52e082e98bcef 100644
 --- a/build/config/siso/main.star
 +++ b/build/config/siso/main.star
 @@ -23,6 +23,7 @@ load("./rust.star", "rust")
@@ -11,7 +11,7 @@ index 548330e241485073c1cb0dd0366018137d4117b0..36d10f6d48b3fd432d81b2053d588a9f
  def __disable_remote(ctx, step_config):
      gn_logs_data = gn_logs.read(ctx)
 @@ -106,6 +107,7 @@ def init(ctx):
-     handlers.update(reproxy.handlers)
+     handlers.update(reclient.handlers)
      handlers.update(typescript_all.handlers)
  
 +    brave_siso_config.configure(ctx, step_config, filegroups, handlers)

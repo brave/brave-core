@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.tab_ui.TabCardThemeUtil;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider.TabFavicon;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider.TabWebContentsFaviconDelegate;
+import org.chromium.chrome.browser.tab_ui.TabListMode;
 import org.chromium.chrome.browser.ui.favicon.brave.R;
 import org.chromium.ui.util.ColorUtils;
 
@@ -36,12 +37,12 @@ public class BraveTabListFaviconProvider extends TabListFaviconProvider {
 
     public BraveTabListFaviconProvider(
             Context context,
-            boolean isTabStrip,
+            @TabListMode int tabListMode,
             int faviconCornerRadiusId,
             @Nullable TabWebContentsFaviconDelegate tabWebContentsFaviconDelegate) {
-        super(context, isTabStrip, faviconCornerRadiusId, tabWebContentsFaviconDelegate);
+        super(context, tabListMode, faviconCornerRadiusId, tabWebContentsFaviconDelegate);
         mContext = context;
-        mIsTabStrip = isTabStrip;
+        mIsTabStrip = tabListMode == TabListMode.BOTTOM_STRIP;
         mDefaultFaviconSize =
                 context.getResources()
                         .getDimensionPixelSize(

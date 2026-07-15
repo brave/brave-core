@@ -113,6 +113,10 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         </if>
       <if expr="is_android">
         </if>
+      <if expr="is_win">
+        </if>
+      <if expr="not is_win">
+        </if>
       <if expr="not is_chromeos">
         <if expr="_is_chrome_for_testing_branded">
           <then>
@@ -488,6 +492,9 @@ If you update this file, be sure also to update google_chrome_strings.grd. -->
         <if expr="not use_titlecase">
           </if>
       </if>
+
+      <if expr="not is_android">
+        </if>
 
       <if expr="not is_android">
         <if expr="use_titlecase">

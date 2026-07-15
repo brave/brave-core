@@ -58,6 +58,7 @@
 #include "gmock/gmock.h"
 #include "net/base/features.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace {
 
@@ -72,7 +73,7 @@ void TestAutofillInWindow(content::WebContents* active_contents,
   // Passwords.
   ChromePasswordManagerClient* client =
       ChromePasswordManagerClient::FromWebContents(active_contents);
-  EXPECT_EQ(client->IsFillingEnabled(fake_url), enabled);
+  EXPECT_EQ(client->IsFillingEnabled(url::Origin::Create(fake_url)), enabled);
   // Other info.
   autofill::ContentAutofillDriver* cross_driver =
       autofill::ContentAutofillDriver::GetForRenderFrameHost(

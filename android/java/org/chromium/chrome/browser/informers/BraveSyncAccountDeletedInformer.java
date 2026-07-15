@@ -12,14 +12,19 @@ import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
 import org.chromium.chrome.browser.app.BraveActivity;
-import org.chromium.chrome.browser.infobar.BraveInfoBarIdentifier;
 import org.chromium.chrome.browser.settings.BraveSyncScreensPreference;
 import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.chrome.browser.tab.Tab;
-import org.chromium.chrome.browser.ui.messages.infobar.BraveSimpleConfirmInfoBarBuilder;
-import org.chromium.chrome.browser.ui.messages.infobar.SimpleConfirmInfoBarBuilder;
+import org.chromium.chrome.browser.ui.messages.snackbar.BraveSnackbarManager;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
+import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager.SnackbarController;
 import org.chromium.components.browser_ui.settings.SettingsNavigation;
 
+// The legacy Android infobar UI was removed upstream
+// (https://chromium-review.googlesource.com/c/chromium/src/+/7887741); this notice is now
+// shown with a bottom Snackbar. The inline "re-create the account" link of the old infobar
+// becomes the snackbar's action button.
 public class BraveSyncAccountDeletedInformer {
     private static final String TAG = "SyncAccountDeleted";
 
@@ -35,54 +40,55 @@ public class BraveSyncAccountDeletedInformer {
                 return;
             }
 
-            BraveSimpleConfirmInfoBarBuilder.createInfobarWithDrawable(
-                    tab.getWebContents(),
-                    new SimpleConfirmInfoBarBuilder.Listener() {
-                        @Override
-                        public void onInfoBarDismissed() {
-                            // Pressing cross
-                            // In any way don't show the informer again
-                            disableInformer();
-                        }
+            SnackbarManager snackbarManager = activity.getSnackbarManager();
+            if (snackbarManager == null) return;
 
+            SnackbarController controller =
+                    new SnackbarController() {
                         @Override
-                        public boolean onInfoBarButtonClicked(boolean isPrimary) {
-                            assert isPrimary : "We don't have secondary button";
-                            // Pressing `OK`
-                            // Don't show the informer again
-                            disableInformer();
-                            return false;
-                        }
-
-                        @Override
-                        public boolean onInfoBarLinkClicked() {
-                            // Pressing link `re-create the account`
-                            // Don't show the informer again
-                            disableInformer();
-                            SettingsNavigation settingsLauncher =
+                        public void onAction(Object actionData) {
+                            // Pressing `Re-create` opens Sync settings and disables the notice.
+                            BraveSyncWorker.get().clearAccountDeletedNoticePending();
+                            SettingsNavigation settingsNavigation =
                                     SettingsNavigationFactory.createSettingsNavigation();
-                            settingsLauncher.startSettings(
+                            settingsNavigation.startSettings(
                                     ContextUtils.getApplicationContext(),
                                     BraveSyncScreensPreference.class);
-                            return false;
                         }
-                    },
-                    BraveInfoBarIdentifier.BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR,
-                    activity,
-                    R.drawable.ic_warning_circle,
-                    // See comment at |BraveSyncAccountDeletedInfoBarDelegate::GetMessageText|
-                    // for the informer text and link test placeholder empty substitution
-                    activity.getString(R.string.brave_sync_account_deleted_infobar_message, ""),
-                    activity.getString(R.string.ok),
-                    "",
-                    activity.getString(R.string.brave_sync_account_deleted_infobar_link_text, ""),
-                    false);
+
+                        @Override
+                        public void onDismissNoAction(Object actionData) {
+                            BraveSyncWorker.get().clearAccountDeletedNoticePending();
+                        }
+                    };
+
+            Snackbar snackbar =
+                    Snackbar.make(
+                                    activity.getString(
+                                            R.string.brave_sync_account_deleted_infobar_message),
+                                    controller,
+                                    Snackbar.TYPE_PERSISTENT,
+                                    Snackbar.UMA_UNKNOWN)
+                            .setAction(
+                                    activity.getString(
+                                            R.string.brave_sync_account_deleted_infobar_link_text),
+                                    /* actionData= */ null)
+                            .setDefaultLines(false);
+
+            snackbarManager.showSnackbar(snackbar);
+
+            // Move the long action label onto its own line below the message, with a trailing close
+            // button. Closing dismisses the snackbar, which triggers onDismissNoAction above and
+            // disables the notice (the same as letting it sit).
+            if (snackbarManager instanceof BraveSnackbarManager) {
+                BraveSnackbarManager braveSnackbarManager = (BraveSnackbarManager) snackbarManager;
+                braveSnackbarManager.setActionBelowMessage(
+                        R.drawable.ic_close,
+                        activity.getString(R.string.close),
+                        () -> braveSnackbarManager.dismissSnackbars(controller));
+            }
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "show " + e);
         }
-    }
-
-    private static void disableInformer() {
-        BraveSyncWorker.get().clearAccountDeletedNoticePending();
     }
 }

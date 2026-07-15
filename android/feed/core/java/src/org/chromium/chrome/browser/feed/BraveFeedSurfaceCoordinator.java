@@ -19,7 +19,6 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
-import org.chromium.chrome.browser.ntp.NewTabPageLaunchOrigin;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegate;
@@ -54,7 +53,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
             BottomSheetController bottomSheetController,
             Supplier<@Nullable ShareDelegate> shareDelegateSupplier,
             @Nullable ScrollableContainerDelegate externalScrollableContainerDelegate,
-            @NewTabPageLaunchOrigin int launchOrigin,
             PrivacyPreferencesManagerImpl privacyPreferencesManager,
             Supplier<Toolbar> toolbarSupplier,
             long embeddingSurfaceCreatedTimeNs,
@@ -77,7 +75,6 @@ public class BraveFeedSurfaceCoordinator extends FeedSurfaceCoordinator {
                 bottomSheetController,
                 shareDelegateSupplier,
                 externalScrollableContainerDelegate,
-                launchOrigin,
                 privacyPreferencesManager,
                 toolbarSupplier,
                 embeddingSurfaceCreatedTimeNs,

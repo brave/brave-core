@@ -73,7 +73,7 @@ void DocumentFetchJavaScriptFeature::ScriptMessageReceived(
   pending_callbacks_.erase(it);
 
   const base::DictValue* dict =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!dict) {
     std::move(callback).Run(0, "");
     return;

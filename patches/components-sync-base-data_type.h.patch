@@ -1,5 +1,5 @@
 diff --git a/components/sync/base/data_type.h b/components/sync/base/data_type.h
-index 8a3e304e0608fb31939eef36546a0ccdfcede338..2e19720412d12d5f347aa2eea7f2bd089a375daf 100644
+index 6943010c8d9afabc94e7f1a145ff8f44264d91d8..71b17feec04d12fb6e23519084a72651c908841f 100644
 --- a/components/sync/base/data_type.h
 +++ b/components/sync/base/data_type.h
 @@ -202,7 +202,8 @@ enum DataType {

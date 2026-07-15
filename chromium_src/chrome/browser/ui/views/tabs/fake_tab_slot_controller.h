@@ -11,8 +11,8 @@
 // Add override for
 // ShouldAlwaysHideTabCloseButton()/CanCloseTabViaMiddleButtonClick() and
 // setters to control its return value in tests.
-#define ShouldCompactLeadingEdge()                               \
-  ShouldCompactLeadingEdge() const override;                     \
+#define IsFocusInTabStrip()                                      \
+  IsFocusInTabStrip() const override;                            \
                                                                  \
  private:                                                        \
   bool should_always_hide_close_button_ = false;                 \
@@ -81,6 +81,6 @@
 #undef ShiftGroupRight
 #undef CanPaintThrobberToLayer
 #undef EndDrag
-#undef ShouldCompactLeadingEdge
+#undef IsFocusInTabStrip
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_TABS_FAKE_TAB_SLOT_CONTROLLER_H_

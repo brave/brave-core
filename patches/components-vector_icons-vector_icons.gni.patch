@@ -1,8 +1,8 @@
 diff --git a/components/vector_icons/vector_icons.gni b/components/vector_icons/vector_icons.gni
-index 05d308e5abfcb18eb5810b8bdb2aced240954554..f44ac7c7a8a3dcfbb076689d8a9f6e7e8a851927 100644
+index 673638298946eb808ed6693ebb45983bc8acd901..921dfa38505875477aa70b7aec95a15be34b683b 100644
 --- a/components/vector_icons/vector_icons.gni
 +++ b/components/vector_icons/vector_icons.gni
-@@ -43,6 +43,7 @@ template("aggregate_vector_icons") {
+@@ -46,6 +46,7 @@ template("aggregate_vector_icons") {
      inputs =
          rebase_path(templates + invoker.sources, ".", invoker.icon_directory) +
          [ "//components/vector_icons/aggregate_vector_icons.py" ]

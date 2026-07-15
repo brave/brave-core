@@ -1,0 +1,46 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Register Brave Shields managed content settings.
+
+      Adds the Brave Shields enabled/disabled managed prefs to the
+      kPrefsForManagedContentSettingsMap array.
+    re_pattern: '(kPrefsForManagedContentSettingsMap\[\] = \{\n)'
+    replace: |
+      \1        {kManagedBraveShieldsDisabledForUrls,
+               ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_BLOCK},
+              {kManagedBraveShieldsEnabledForUrls,
+               ContentSettingsType::BRAVE_SHIELDS, CONTENT_SETTING_ALLOW},
+  - description: |
+      Register Brave Shields managed prefs.
+    re_pattern: '(kManagedPrefs\[\] = \{\n)'
+    replace: |
+      \1    kManagedBraveShieldsDisabledForUrls,
+          kManagedBraveShieldsEnabledForUrls,
+  - description: |
+      Register Brave's managed default prefs.
+    re_pattern: '(kManagedDefaultPrefs\[\] = \{\n)'
+    replace: |
+      \1    kManagedDefaultBraveFingerprintingV2,
+          prefs::kManagedDefaultBraveHttpsUpgrade,
+          prefs::kManagedDefaultBraveReferrersSetting,
+          prefs::kManagedDefaultBraveRemember1PStorageSetting,
+          prefs::kManagedDefaultBraveAdblockSetting,
+  - description: |
+      Register Brave's managed default content settings mappings.
+    re_pattern: '(kPrefsForManagedDefault\[\] = \{\n)'
+    replace: |
+      \1        {ContentSettingsType::BRAVE_FINGERPRINTING_V2,
+               kManagedDefaultBraveFingerprintingV2},
+              {ContentSettingsType::BRAVE_HTTPS_UPGRADE,
+               prefs::kManagedDefaultBraveHttpsUpgrade},
+              {ContentSettingsType::BRAVE_REFERRERS,
+               prefs::kManagedDefaultBraveReferrersSetting},
+              {ContentSettingsType::BRAVE_REMEMBER_1P_STORAGE,
+               prefs::kManagedDefaultBraveRemember1PStorageSetting},
+              {ContentSettingsType::BRAVE_ADS,
+               prefs::kManagedDefaultBraveAdblockSetting},

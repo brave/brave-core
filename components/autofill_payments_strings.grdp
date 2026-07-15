@@ -1737,12 +1737,6 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
   <message name="IDS_AUTOFILL_SAVE_CARD_AND_VIRTUAL_CARD_ENROLL_CONFIRMATION_BUTTON_TEXT" desc="Text shown on the ok button of the confirmation prompt after a card upload or vcn enrollment.">
     Got it
   </message>
-  <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_FAILURE_OK_BUTTON_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for save card failure confirmation prompt's ok button.">
-    Confirming card info can't be saved
-  </message>
-  <message name="IDS_AUTOFILL_VIRTUAL_CARD_ENROLL_CONFIRMATION_FAILURE_OK_BUTTON_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for virtual card enrollment failure confirmation prompt's ok button.">
-    Confirming virtual card can't be turned on
-  </message>
   <if expr="is_ios">
     <message name="IDS_AUTOFILL_SAVE_CARD_CONFIRMATION_SUCCESS_ACCESSIBLE_NAME" desc="Accessible name announced by the screenreader for a checkmark shown on save card infobar modal for card upload success ">
       Card info saved
@@ -1758,6 +1752,9 @@ To hide pay later options, go to <ph name="BEGIN_LINK">&lt;link&gt;</ph>payment 
   </message>
   <message name="IDS_AUTOFILL_IPH_OMNIBOX_PAYMENT_CHIP_LABEL_SCREENREADER" is_accessibility_with_no_ui="true" desc="Screenreader text for the IPH bubble for the Autofill payment omnibox page action chip.">
     To autofill using a saved payment method, select the Autofill payment button.
+  </message>
+  <message name="IDS_AUTOFILL_OMNIBOX_BUBBLE_TITLE" desc="Text shown in the Autofill payment omnibox bubble title.">
+    Choose payment method
   </message>
 
 </grit-part>

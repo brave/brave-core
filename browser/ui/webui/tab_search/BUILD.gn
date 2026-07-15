@@ -27,6 +27,8 @@ source_set("browser_tests") {
     "//chrome/browser/history",
     "//chrome/browser/ui",
     "//chrome/browser/ui/navigator",
+    "//chrome/browser/ui/webui/tab_search",
+    "//chrome/browser/ui/window_metadata",
     "//chrome/test",
     "//chrome/test:test_support",
     "//components/history/core/browser",

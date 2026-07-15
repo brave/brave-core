@@ -97,7 +97,7 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver, LayoutSta
         // private tabs.
         if (mIncognitoStateProvider != null && mIncognitoStateProvider.isIncognitoSelected()) {
             updateColor(
-                    layoutType == LayoutType.TAB_SWITCHER
+                    layoutType == LayoutType.HUB
                             ? ContextCompat.getColor(mContext, R.color.default_bg_color_dark)
                             : mPrimaryColor);
         }

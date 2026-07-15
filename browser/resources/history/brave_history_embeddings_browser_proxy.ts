@@ -21,7 +21,7 @@ export function getBraveHistoryEmbeddingsBrowserProxy(): BraveHistoryEmbeddingsB
     const factory = PageHandlerFactory.getRemote()
     const pageHandler = new PageHandlerRemote()
     const callbackRouter = new PageCallbackRouter()
-    factory.createPageHandler(
+    factory.createInterfacePageHandler(
       callbackRouter.$.bindNewPipeAndPassRemote(),
       pageHandler.$.bindNewPipeAndPassReceiver(),
     )

@@ -18,6 +18,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
+#include "url/origin.h"
 
 class BraveAutofillBrowserTest : public InProcessBrowserTest {
  public:
@@ -51,7 +52,7 @@ class BraveAutofillBrowserTest : public InProcessBrowserTest {
     // Passwords.
     ChromePasswordManagerClient* client =
         ChromePasswordManagerClient::FromWebContents(active_contents);
-    EXPECT_EQ(client->IsFillingEnabled(url), enabled);
+    EXPECT_EQ(client->IsFillingEnabled(url::Origin::Create(url)), enabled);
     // Other info.
     autofill::ContentAutofillDriver* cross_driver =
         autofill::ContentAutofillDriver::GetForRenderFrameHost(

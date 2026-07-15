@@ -122,6 +122,11 @@ class _Sandbox:
         self._repo.cleanup()
 
     @property
+    def repo(self) -> FakeChromiumRepo:
+        """The underlying FakeChromiumRepo (its chromium/ and subrepos)."""
+        return self._repo
+
+    @property
     def root(self) -> Path:
         return self._repo.brave
 

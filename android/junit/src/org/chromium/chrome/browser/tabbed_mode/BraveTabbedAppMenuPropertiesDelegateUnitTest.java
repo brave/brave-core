@@ -45,6 +45,7 @@ import org.chromium.base.test.util.Features.DisableFeatures;
 import org.chromium.base.test.util.Features.EnableFeatures;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ActivityTabProvider;
+import org.chromium.chrome.browser.RecentlyClosedEntriesManager;
 import org.chromium.chrome.browser.app.appmenu.AppMenuPropertiesDelegateImpl.MenuGroup;
 import org.chromium.chrome.browser.bookmarks.BookmarkModel;
 import org.chromium.chrome.browser.bookmarks.PowerBookmarkUtils;
@@ -54,6 +55,7 @@ import org.chromium.chrome.browser.enterprise.util.ManagedBrowserUtilsJni;
 import org.chromium.chrome.browser.feed.FeedFeatures;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.glic.GlicEnabling;
+import org.chromium.chrome.browser.glic.GlicEnablingJni;
 import org.chromium.chrome.browser.hub.HubManager;
 import org.chromium.chrome.browser.hub.Pane;
 import org.chromium.chrome.browser.hub.PaneId;
@@ -85,6 +87,7 @@ import org.chromium.chrome.browser.ui.appmenu.AppMenuItemProperties;
 import org.chromium.chrome.browser.ui.default_browser_promo.DefaultBrowserPromoUtils;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.ui.native_page.NativePage;
+import org.chromium.chrome.browser.ui.side_ui.SideUiStateProvider;
 import org.chromium.components.browser_ui.accessibility.PageZoomManager;
 import org.chromium.components.browser_ui.accessibility.PageZoomUtils;
 import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
@@ -124,7 +127,6 @@ import java.util.List;
     ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
     DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
-    DomDistillerFeatures.READER_MODE_IMPROVEMENTS,
     BraveFeatureList.BRAVE_SHRED,
 })
 @EnableFeatures({
@@ -169,6 +171,9 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     @Mock private HubManager mHubManager;
     @Mock private PaneManager mPaneManager;
     @Mock private Pane mPane;
+    @Mock private RecentlyClosedEntriesManager mRecentlyClosedEntriesManager;
+    @Mock private SideUiStateProvider mSideUiStateProvider;
+    @Mock private GlicEnabling.Natives mGlicEnablingJniMock;
 
     private ShadowPackageManager mShadowPackageManager;
 
@@ -247,6 +252,8 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         IncognitoUtilsJni.setInstanceForTesting(mIncognitoUtilsJniMock);
 
+        GlicEnablingJni.setInstanceForTesting(mGlicEnablingJniMock);
+
         TranslateBridgeJni.setInstanceForTesting(mTranslateBridgeJniMock);
         Mockito.when(mTranslateBridgeJniMock.canManuallyTranslate(any(), anyBoolean()))
                 .thenReturn(false);
@@ -276,7 +283,10 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
                         mReadAloudControllerSupplier,
                         mPageZoomManagerMock,
                         mHubManagerSupplier,
-                        /* openInAppMenuItemProvider= */ null);
+                        /* openInAppMenuItemProvider= */ null,
+                        /* recentlyClosedEntriesManagerSupplier= */ () ->
+                                mRecentlyClosedEntriesManager,
+                        () -> mSideUiStateProvider);
         delegate.setIsJunitTesting(true);
         BaseRobolectricTestRule.runAllBackgroundAndUi();
         mTabbedAppMenuPropertiesDelegate = Mockito.spy(delegate);
@@ -385,6 +395,7 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         expectedItems.add(R.id.divider_line_id);
         expectedItems.add(R.id.find_in_page_id);
         expectedItems.add(R.id.translate_id);
+        expectedItems.add(R.id.reader_mode_menu_id);
         expectedItems.add(R.id.universal_install);
         expectedItems.add(R.id.request_desktop_site_id);
         expectedItems.add(R.id.auto_dark_web_contents_id);
@@ -462,16 +473,13 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
     private void setUpMocksForPageMenu() {
         mActivityTabProvider.setForTesting(mTab);
-        when(mLayoutStateProvider.isLayoutVisible(LayoutType.TAB_SWITCHER)).thenReturn(false);
+        when(mLayoutStateProvider.isLayoutVisible(LayoutType.HUB)).thenReturn(false);
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldCheckBookmarkStar(any(Tab.class));
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldEnableDownloadPage(any(Tab.class));
-        doReturn(false)
-                .when(mTabbedAppMenuPropertiesDelegate)
-                .shouldShowReaderModePrefs(any(Tab.class));
         doReturn(false)
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowManagedByMenuItem(any(Tab.class));
@@ -511,15 +519,14 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
     }
 
     /** Options for tests that control how Menu is being rendered. */
-    // Suppressed warnings for withShowUpdate / withShowPaintPreview / withNativePage /
-    // withShowReaderModePrefs as we may want to use it when will expand the tests
+    // Suppressed warnings for withShowUpdate / withShowPaintPreview / withNativePage
+    // as we may want to use it when will expand the tests
     @SuppressWarnings("UnusedMethod")
     private static class MenuOptions {
         private boolean mIsNativePage;
         private boolean mShowTranslate;
         private boolean mShowUpdate;
         private boolean mShowMoveToOtherWindow;
-        private boolean mShowReaderModePrefs;
         private boolean mShowAddToHomeScreen;
         private boolean mShowPaintPreview;
         private boolean mIsAutoDarkEnabled;
@@ -538,10 +545,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
 
         protected boolean showMoveToOtherWindow() {
             return mShowMoveToOtherWindow;
-        }
-
-        protected boolean showReaderModePrefs() {
-            return mShowReaderModePrefs;
         }
 
         protected boolean showPaintPreview() {
@@ -592,9 +595,6 @@ public class BraveTabbedAppMenuPropertiesDelegateUnitTest {
         doReturn(options.showMoveToOtherWindow())
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowMoveToOtherWindow();
-        doReturn(options.showReaderModePrefs())
-                .when(mTabbedAppMenuPropertiesDelegate)
-                .shouldShowReaderModePrefs(any(Tab.class));
         doReturn(options.showPaintPreview())
                 .when(mTabbedAppMenuPropertiesDelegate)
                 .shouldShowPaintPreview(anyBoolean(), any(Tab.class));

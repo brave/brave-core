@@ -28,6 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
 import org.chromium.chrome.browser.qrreader.QRCodeCameraManager;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
+import org.chromium.components.omnibox.TextSelection;
 
 public class BraveLocationBarQRDialogFragment extends DialogFragment
         implements QRCodeCameraManager.Callback, QRCodeCameraManager.HostProvider {
@@ -159,7 +160,7 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
                         mLocationBarMediator.setUrlBarData(
                                 UrlBarData.forNonUrlText(barcodeValue),
                                 UrlBar.ScrollType.NO_SCROLL,
-                                UrlBarData.SELECT_ALL);
+                                TextSelection.SELECT_ALL);
                     } else {
                         mLocationBarMediator.performSearchQuery(barcodeValue);
                     }

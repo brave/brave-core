@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 98184befe73ccdb129221921717f24a60e1967bc..18e3c35a81174f2072acf1e2d5cb4e3b8843062c 100644
+index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d5529860e 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
-@@ -1007,7 +1007,7 @@ void Reload(BrowserWindowInterface* browser,
+@@ -1037,7 +1037,7 @@ void Reload(BrowserWindowInterface* browser,
    ReloadInternal(browser, disposition, false);
  }
  
@@ -11,7 +11,7 @@ index 98184befe73ccdb129221921717f24a60e1967bc..18e3c35a81174f2072acf1e2d5cb4e3b
                            WindowOpenDisposition disposition) {
    base::RecordAction(UserMetricsAction("ReloadBypassingCache"));
    ReloadInternal(browser, disposition, true);
-@@ -1285,6 +1285,7 @@ void CloseTab(BrowserWindowInterface* browser) {
+@@ -1319,6 +1319,7 @@ void CloseTab(BrowserWindowInterface* browser) {
    }
  
    ToastController* toast_controller = browser->GetFeatures().toast_controller();
@@ -19,7 +19,7 @@ index 98184befe73ccdb129221921717f24a60e1967bc..18e3c35a81174f2072acf1e2d5cb4e3b
    if (!toast_controller) {
      CloseSelectedTabAndRecordTabCountMetric(browser);
      return;
-@@ -1588,7 +1589,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
+@@ -1621,7 +1622,7 @@ void NewSplitTab(BrowserWindowInterface* browser,
    // the regular NTP which renders special content when in Incognito.
    const GURL new_tab_url = browser->GetProfile()->IsIncognitoProfile()
                                 ? chrome::ChromeUINewTabURLAsGURL()

@@ -9,8 +9,8 @@
 #define BRAVE_IOS_BROWSER_API_OPENTABS_SENDTAB_MODEL_LISTENER_IOS_H_
 
 #include <string>
-#include <vector>
 
+#include "base/containers/span.h"
 #include "base/memory/raw_ptr.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_observer.h"
 #include "components/send_tab_to_self/send_tab_to_self_entry.h"
@@ -37,11 +37,11 @@ class SendTabToSelfModelListenerIOS
  private:
   // SendTabToSelfModelListener implementation.
   void OnEntriesAddedRemotely(
-      const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
-          new_entries) override;
-  void OnEntriesRemovedRemotely(const std::vector<std::string>& guids) override;
+      base::span<const send_tab_to_self::SendTabToSelfEntry* const> new_entries)
+      override;
+  void OnEntriesRemovedRemotely(base::span<const std::string> guids) override;
   void OnEntriesOpenedRemotely(
-      const std::vector<const send_tab_to_self::SendTabToSelfEntry*>&
+      base::span<const send_tab_to_self::SendTabToSelfEntry* const>
           opened_entries) override;
 
   id<SendTabToSelfModelStateObserver> observer_;

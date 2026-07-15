@@ -374,9 +374,6 @@
         This page is dangerous
       </message>
 
-      <message name="IDS_CONCAT_TWO_STRINGS_WITH_COMMA" desc="This string concatenates two other strings. In the English language, this particular concatenation is done via a comma and a whitespace in between the other strings. For example: '1 compromised password, 2 weak passwords'">
-        <ph name="TYPE_1">%1$s<ex>2 compromised passwords</ex></ph>, <ph name="TYPE_2">%2$s<ex>7 weak passwords</ex></ph>
-      </message>
 
       <!-- Certificate viewer -->
       <message name="IDS_CERTTITLE" desc="Dialog box title for viewing security certificates. [CHAR_LIMIT=32]">
@@ -399,14 +396,11 @@
       <message name="IDS_RECOMMENDED_BY_YOUR_ORGANIZATION" desc="Text displayed when a value is recommended for a setting through policy and the user is following this recommendation. The setting is still user-editable.">
         Recommended by your organization
       </message>
-      <message name="IDS_ACCESSIBILITY_EXPANDED_GROUP" desc="The accessibility text to read when the selected widget is expanded.">
-        Expanded - click to collapse.
-      </message>
-      <message name="IDS_ACCESSIBILITY_COLLAPSED_GROUP" desc="The accessibility text to read when the selected widget is collapsed.">
-        Collapsed - click to expand.
-      </message>
       <message name="IDS_MENU_HELP" desc="Menu item for opening the help page. [CHAR_LIMIT=27]">
         Help &amp; feedback
+      </message>
+      <message name="IDS_MENU_HELP_NO_FEEDBACK" desc="Menu item for opening the help page when feedback is disabled. [CHAR_LIMIT=27]">
+        Help
       </message>
       <message name="IDS_AUTOMATICALLY_BLOCKED" desc="Description displayed next to an origin when it was placed under embargo by Brave. This indicates to the user that the origin is blocked automatically instead of being the result of the user's decision.">
         Automatically blocked

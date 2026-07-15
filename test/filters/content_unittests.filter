@@ -17,6 +17,8 @@
 -All/FileSystemAccessFileHandleImplRenameWriteModeTest.RequestsCorrectPermissions/*
 -FileSystemAccessFileHandleImplMoveTest.HasDestWriteAccess
 -FileSystemAccessFileHandleImplMoveTest.NoDestWriteAccess
+-FileSystemAccessFileHandleImplRenameOnlyInHomedirTest.InsideHomedirRequiresParentWrite
+-FileSystemAccessFileHandleImplRenameOnlyInHomedirTest.OutsideHomedirDoesNotRequireParentWrite
 -FileSystemAccessFileHandleImplRenameTest.HasWriteAccess
 
 # These tests fail because we disable the client hints that the tests check.
@@ -52,6 +54,7 @@
 
 # These tests fail because we intentionally disable fenced frames via
 # blink::features::kFencedFrames
+-_/SubCaptureTargetIdWebContentsHelperTest.GetRelevantWebContentsFencedFrameReturnsNull/*
 -EmailVerificationRequestTest.FencedFrameRejected
 -FencedFrameReporterTest.AttributionManagerShutDown_NoCrash
 -FencedFrameReporterTest.SendFledgeReportsBeforeMapsReceivedWithErrors
@@ -115,7 +118,6 @@
 -RenderFrameHostImplTest.*
 -SharedStorageLockManagerTest.*
 -SharedStorageLockManagerTransactionalBatchUpdateDisabledTest.*
--SpeculationHostImplLinkPreviewTest.FencedFrameNetworkCutoffDisablesLinkPreview
 -StoragePartitionImplTest.AttributionManagerCreatedInIncognito
 -WebContentsImplTest.NavigateToViewSourceRendererDebugURL
 -WebUILoadingUtilSendDataTest/WebUILoadingUtilSendDataTest.SendData/0

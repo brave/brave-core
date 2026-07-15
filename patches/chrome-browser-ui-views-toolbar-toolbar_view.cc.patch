@@ -1,12 +1,40 @@
 diff --git a/chrome/browser/ui/views/toolbar/toolbar_view.cc b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-index 9f1ad065ba766c0991bf34845ea597bcd33838a5..defada000bea39e597314698b6c312822da7f4b8 100644
+index 5a42610d05b88cc64b534c2e25657e542c0fc286..0fb80980d86f62c7e84f18ce5fc51c02a5202f09 100644
 --- a/chrome/browser/ui/views/toolbar/toolbar_view.cc
 +++ b/chrome/browser/ui/views/toolbar/toolbar_view.cc
-@@ -586,6 +586,7 @@ void ToolbarView::Init() {
+@@ -320,7 +320,7 @@ void ToolbarView::Init() {
+   aura::WindowOcclusionTracker::ScopedPause pause_occlusion;
+ #endif
+ 
+-  std::unique_ptr<LocationBarView> location_bar_view;
++  std::unique_ptr<LocationBarViewAlias> location_bar_view;
+   std::unique_ptr<WebUILocationBar> webui_location_bar;
+   if (features::IsWebUILocationBarEnabled() &&
+       /* TODO(http://crbug.com/470042732): Figure out where we fit in other
+@@ -329,7 +329,7 @@ void ToolbarView::Init() {
+       display_mode_ == DisplayMode::kNormal) {
+     webui_location_bar = std::make_unique<WebUILocationBar>(browser_, this);
+   } else {
+-    location_bar_view = std::make_unique<LocationBarView>(
++    location_bar_view = std::make_unique<LocationBarViewAlias>(
+         browser_, browser_->profile(), browser_->command_controller(), this,
+         display_mode_ != DisplayMode::kNormal);
    }
+@@ -580,7 +580,7 @@ void ToolbarView::Init() {
  
    if (!features::IsWebUIAvatarButtonEnabled()) {
-+    BRAVE_TOOLBAR_VIEW_INIT
      avatar_ =
-         AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
-     bool show_avatar_toolbar_button = true;
+-        AddChildView(std::make_unique<AvatarToolbarButton>(browser_view_));
++        AddChildView(std::make_unique<BraveAvatarToolbarButton>(browser_view_));
+     bool show_avatar_toolbar_button =
+         AvatarToolbarButtonInterface::CanShowForProfile(browser_->profile());
+     avatar_->SetVisible(show_avatar_toolbar_button);
+@@ -592,7 +592,7 @@ void ToolbarView::Init() {
+   // WebUI app menu button handles these internally, so no need to set these
+   // properties here, and the control is added as part of the WebUI toolbar.
+   if (!features::IsWebUIAppMenuButtonEnabled()) {
+-    auto app_menu_button = std::make_unique<BrowserAppMenuButton>(this);
++    auto app_menu_button = std::make_unique<BraveBrowserAppMenuButton>(this);
+     app_menu_button->SetFlipCanvasOnPaintForRTLUI(true);
+     app_menu_button->GetViewAccessibility().SetName(
+         l10n_util::GetStringUTF16(IDS_ACCNAME_APP));

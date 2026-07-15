@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/tab_group_sync/BUILD.gn b/chrome/browser/tab_group_sync/BUILD.gn
-index bdc114823fa5344d8ea826072455d614d8e9a4d3..efb8f1b19c5e08d7954ac03b365fd347619dac4a 100644
+index a7c48b270fce1956c9c6397e9d34305e9b9fa0e0..a5e69ad52a1ccf17913095a6f2e29c9f6f73f860 100644
 --- a/chrome/browser/tab_group_sync/BUILD.gn
 +++ b/chrome/browser/tab_group_sync/BUILD.gn
-@@ -204,6 +204,8 @@ if (is_android) {
+@@ -227,6 +227,8 @@ if (is_android) {
        "//url:gurl_java",
        "//url:url_java",
      ]

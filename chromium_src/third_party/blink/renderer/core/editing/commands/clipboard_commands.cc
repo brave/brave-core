@@ -7,7 +7,7 @@
 
 // Sanitize data only if there's an API call.
 #define BRAVE_CLIPBOARD_COMMANDS_CHECK_SOURCE              \
-  if (source == EditorCommandSource::kDOM) {               \
+  if (source == EditorCommandSource::kDom) {               \
     frame.GetSystemClipboard()->SanitizeOnNextWriteText(); \
   }
 

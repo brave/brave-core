@@ -11,14 +11,17 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 class BraveDropdownItemViewInfoListManager extends DropdownItemViewInfoListManager {
     private final ModelList mManagedModel;
 
     BraveDropdownItemViewInfoListManager(
-            @NonNull ModelList managedModel, @NonNull Context context) {
-        super(managedModel, context);
+            @NonNull ModelList managedModel,
+            @NonNull Context context,
+            @NonNull NonNullObservableSupplier<Integer> roundSidesSupplier) {
+        super(managedModel, context, roundSidesSupplier);
 
         mManagedModel = managedModel;
     }

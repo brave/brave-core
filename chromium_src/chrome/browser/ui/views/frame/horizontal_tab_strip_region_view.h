@@ -8,24 +8,6 @@
 
 #include "base/gtest_prod_util.h"
 
-#define IsPositionInWindowCaption                                   \
-  Unused_IsPositionInWindowCaption() {                              \
-    return false;                                                   \
-  }                                                                 \
-  views::Button* new_tab_button() {                                 \
-    return new_tab_button_;                                         \
-  }                                                                 \
-  friend class BraveVerticalTabStripRegionView;                     \
-  friend class BraveTabStrip;                                       \
-  friend class BraveHorizontalTabStripRegionView;                   \
-  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight); \
-  bool IsPositionInWindowCaption
-
-#define UpdateTabStripMargin virtual UpdateTabStripMargin
-
 #include <chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.h>  // IWYU pragma: export
-
-#undef UpdateTabStripMargin
-#undef IsPositionInWindowCaption
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_FRAME_HORIZONTAL_TAB_STRIP_REGION_VIEW_H_

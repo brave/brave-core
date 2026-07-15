@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/tabs/tab_strip.cc b/chrome/browser/ui/views/tabs/tab_strip.cc
-index dc2fe4f2e1f7e42221b9d43e71c690f233a54e60..334e3afb78a73fb8b9512962c4d52d580d86f741 100644
+index 42bfa606b98488e23cf9168b0fdc14f8f6e855ba..4929e52a4b0d7b509b10c333f7102f2c2700633f 100644
 --- a/chrome/browser/ui/views/tabs/tab_strip.cc
 +++ b/chrome/browser/ui/views/tabs/tab_strip.cc
-@@ -355,7 +355,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -332,7 +332,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
             event.type() == ui::EventType::kGestureScrollBegin))
          << "Event type must be suitable for starting a drag.";
  
@@ -11,7 +11,7 @@ index dc2fe4f2e1f7e42221b9d43e71c690f233a54e60..334e3afb78a73fb8b9512962c4d52d58
  
      // !!! Init may delete `drag_controller_` on some platforms. !!!
      // Init takes capture, which on some platforms may reenter Chrome, the
-@@ -596,6 +596,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -573,6 +573,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
  
    std::vector<gfx::Rect> CalculateBoundsForDraggedViews(
        const std::vector<TabSlotView*>& views) override {
@@ -19,7 +19,7 @@ index dc2fe4f2e1f7e42221b9d43e71c690f233a54e60..334e3afb78a73fb8b9512962c4d52d58
      CHECK(!views.empty()) << "The views vector must not be empty.";
  
      std::vector<gfx::Rect> bounds;
-@@ -945,6 +946,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
+@@ -932,6 +933,7 @@ class TabStrip::TabDragContextImpl : public TabDragContext,
          continue;
        }
  
@@ -27,7 +27,7 @@ index dc2fe4f2e1f7e42221b9d43e71c690f233a54e60..334e3afb78a73fb8b9512962c4d52d58
        // If there's a group header here, and we're dragging a group, we might
        // end up on either side of that header. Check both cases to find the
        // best option.
-@@ -1494,7 +1496,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
+@@ -1481,7 +1483,7 @@ void TabStrip::SetSelection(const ui::ListSelectionModel& new_selection) {
        const tab_groups::TabGroupId new_group = selected_tab->group().value();
        // If the tab that is about to be selected is in a collapsed group,
        // automatically expand the group.

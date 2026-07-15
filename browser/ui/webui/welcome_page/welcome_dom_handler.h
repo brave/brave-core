@@ -20,7 +20,7 @@
 #endif
 
 class Profile;
-class Browser;
+class BrowserWindowInterface;
 
 namespace base {
 class ListValue;
@@ -54,7 +54,7 @@ class WelcomeDOMHandler : public content::WebUIMessageHandler {
   void OnGettingStartedServerCheck(const std::string& callback_id,
                                    bool available);
 
-  Browser* GetBrowser();
+  BrowserWindowInterface* GetBrowser();
 
   size_t last_onboarding_phase_ = 0;
   std::u16string default_browser_name_;

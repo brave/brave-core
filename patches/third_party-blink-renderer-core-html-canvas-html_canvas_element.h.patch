@@ -1,12 +1,26 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 2b023e1a62915b5b1f3c58609da00570dd70ebb0..edeb9af1a801f2ab23000dd4b9d2d2d8e5a4b9e9 100644
+index 759b9d58f00d249cd05f487a8b350ab1973e4e20..809b6434886f3b539c43bbac002e46b845a1b6dc 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -362,6 +362,7 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -103,6 +103,13 @@ class CORE_EXPORT HTMLCanvasElement final
  
-   ElementImage* captureElementImage(Element* element, ExceptionState&);
+   explicit HTMLCanvasElement(Document&);
+   ~HTMLCanvasElement() override;
++  String toDataURL(ScriptState* script_state, const String& mime_type,
++                   const ScriptValue& quality_argument,
++                   ExceptionState& exception_state) const;
++  String toDataURL(ScriptState* script_state, const String& mime_type,
++                   ExceptionState& exception_state) const {
++    return toDataURL(script_state, mime_type, ScriptValue(), exception_state);
++  }
  
-+  BRAVE_HTML_CANVAS_ELEMENT_H_
-  protected:
-   void DidMoveToNewDocument(Document& old_document) override;
-   void DidRecalcStyle(const StyleRecalcChange change) override;
+   ElementType GetElementType() const final {
+     return ElementType::kHTMLCanvasElement;
+@@ -389,6 +396,7 @@ class CORE_EXPORT HTMLCanvasElement final
+   void RemovedFrom(ContainerNode& insertion_point) override;
+ 
+  private:
++  mutable UntracedMember<ExecutionContext> scoped_execution_context_;
+   void Dispose();
+ 
+   void ColorSchemeMayHaveChanged();

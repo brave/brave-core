@@ -1,8 +1,8 @@
 diff --git a/sandbox/policy/win/sandbox_win.cc b/sandbox/policy/win/sandbox_win.cc
-index 1d798fecab6c7df12cddfb0a63e8985a3fafcb4d..f8f0e66ea1c97b5f696cc892c14ac656772e4fee 100644
+index f2a826791ff321a68c02cef923fefb1283e246fc..eb4064c722eb15f1516fcefd6072ace5cef0b17c 100644
 --- a/sandbox/policy/win/sandbox_win.cc
 +++ b/sandbox/policy/win/sandbox_win.cc
-@@ -622,6 +622,7 @@ ResultCode LaunchWithoutSandbox(
+@@ -637,6 +637,7 @@ ResultCode LaunchWithoutSandbox(
    base::LaunchOptions options;
    options.handles_to_inherit = handles_to_inherit;
    options.feedback_cursor_off = true;

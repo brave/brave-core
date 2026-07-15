@@ -1,8 +1,8 @@
 diff --git a/content/browser/renderer_host/navigation_request.cc b/content/browser/renderer_host/navigation_request.cc
-index 2809347b7fa086bf01edcbf0c4763e4862df3ff8..e37524279d03964c0497dcdb072ee7d9e606ed70 100644
+index 6cdbca0cb66d8658a6cf6994c4cde89f5855c367..b17ca1dcf02ab3ff800055f58386f73b203a3a39 100644
 --- a/content/browser/renderer_host/navigation_request.cc
 +++ b/content/browser/renderer_host/navigation_request.cc
-@@ -3940,6 +3940,9 @@ void NavigationRequest::OnRequestRedirected(
+@@ -4019,6 +4019,9 @@ void NavigationRequest::OnRequestRedirected(
    common_params_->url = redirect_info.new_url;
    common_params_->method = redirect_info.new_method;
    common_params_->referrer->url = GURL(redirect_info.new_referrer);
@@ -12,7 +12,7 @@ index 2809347b7fa086bf01edcbf0c4763e4862df3ff8..e37524279d03964c0497dcdb072ee7d9
    common_params_->referrer = Referrer::SanitizeForRequest(
        common_params_->url, *common_params_->referrer);
  
-@@ -5861,6 +5864,10 @@ void NavigationRequest::OnStartChecksComplete(
+@@ -5976,6 +5979,10 @@ void NavigationRequest::OnStartChecksComplete(
      begin_params_->headers = headers.ToString();
    }
  
@@ -22,4 +22,4 @@ index 2809347b7fa086bf01edcbf0c4763e4862df3ff8..e37524279d03964c0497dcdb072ee7d9
 +      &common_params_->referrer);
    // TODO(clamy): Avoid cloning the navigation params and create the
    // ResourceRequest directly here.
-   std::vector<std::unique_ptr<NavigationLoaderInterceptor>> interceptor;
+ 

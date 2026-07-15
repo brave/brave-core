@@ -31,7 +31,6 @@
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/2
 -All/CookieSettingsTest.AllowCookiesUsingExceptions/5
 -AutomationApiTest.*
--ManifestUpdateManagerBrowserTest.UninstallDialogCancelStillShowsAppUpdateDialog
 -SaveDesktopSnapshotTest.SaveDesktopSnapshot
 
 # Flaky Chromium test - resize event fires during print preview due to Brave UI
@@ -65,7 +64,6 @@
 -UpdateMetricsProviderBrowserTest.RunInBackground
 
 # These tests fail on CI but passes locally
--All/PrintCompositorDocumentDataTypeBrowserTest.WindowDotPrint/Xps
 -AppMenuBrowserTest.*
 -LiveCaptionUnavailabilityNotifierTest.CaptionBubbleDestroyed
 
@@ -96,7 +94,6 @@
 # ScopedInstallDetails with default index 0 (STABLE), causing GetChannel() to
 # return STABLE and block the command line switches.
 -WatermarkSettingsCommandLineBrowserTest.GetColors
-
 
 # Known upstream flake: 1.8% flake rate over 30 days per LUCI Analysis.
 # COM interface reference leak (CheckForLeakedAxPlatformNodes detects
@@ -181,7 +178,6 @@
 -NotSet/RendererAppContainerEnabledTest.IsRespected/0
 -OnlyAllowProfileWithNoPrimaryAccount/ExistingWinBrowserSigninUtilTest.*
 -PWAMixedContentBrowserTestWithAutoupgradesDisabled.MixedContentReparentWebContentsIntoAppBrowser
--PaymentRequestContactInfoEditorTest.*
 -PaymentRequestPaymentResponseAllContactDetailsTest.*
 -PaymentRequestShippingOptionViewControllerTest.*
 -PaymentRequestShowPromiseTest.*

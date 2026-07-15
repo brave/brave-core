@@ -5,4 +5,4 @@
 
 # True for CPU targets whose PDB can exceed the 8 GiB limit imposed by the
 # upstream default /pdbpagesize:8192.
-brave_win_use_large_pdb = target_cpu == "x86"
+brave_win_use_large_pdb = !is_component_build && !is_official_build

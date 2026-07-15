@@ -275,6 +275,9 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   // Added 2026-06
   brave_account::prefs::MigrateObsoleteProfilePrefs(profile_prefs);
 
+  // Added 2026-06
+  profile_prefs->ClearPref(kTabsSearchShow);
+
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
 

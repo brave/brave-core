@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/personalization_options.ts b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
-index 781010b8eda0cba8b449d274dff4beded652f4c4..673a9c5bba345e47cd382796709d519c02a6afdb 100644
+index e69db9c4e25538ac3fb82a3ab383630450beff84..50f8c04057892d0c9c156e68cd24a574d43342c9 100644
 --- a/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 +++ b/chrome/browser/resources/settings/privacy_page/personalization_options.ts
 @@ -81,7 +81,7 @@ export class SettingsPersonalizationOptionsElement extends
@@ -36,7 +36,7 @@ index 781010b8eda0cba8b449d274dff4beded652f4c4..673a9c5bba345e47cd382796709d519c
 +    // <if expr="_google_chrome">
      this.registerHelpBubble(
          ANONYMIZED_URL_COLLECTION_ID,
-         this.$.urlCollectionToggle.getBubbleAnchor(), {anchorPaddingTop: 10});
+         this.$.urlCollectionToggle.getBubbleAnchor(), {paddingTop: 10});
 +    // </if>
    }
  

@@ -491,19 +491,21 @@ void PermissionPromptBubbleZOrderManager::RestoreZOrder() {
   z_order_elevated_ = false;
 }
 
-#define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                          \
-  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests()); \
-  auto* permission_lifetime_view =                                        \
-      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());       \
-  AddFootnoteViewIfNeeded(this, delegate_->Requests(), browser());        \
-  if (permission_lifetime_view) {                                         \
-    set_fixed_width(                                                      \
-        std::max(GetPreferredSize().width(),                              \
-                 permission_lifetime_view->GetPreferredSize().width()) +  \
-        margins().width());                                               \
-    set_should_ignore_snapping(true);                                     \
-  }                                                                       \
-  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), browser());
+#define BRAVE_PERMISSION_PROMPT_BUBBLE_BASE_VIEW                           \
+  Browser* const brave_browser =                                           \
+      GetBrowser() ? GetBrowser()->GetBrowserForMigrationOnly() : nullptr; \
+  AddAdditionalWidevineViewControlsIfNeeded(this, delegate_->Requests());  \
+  auto* permission_lifetime_view =                                         \
+      AddPermissionLifetimeComboboxIfNeeded(this, delegate_.get());        \
+  AddFootnoteViewIfNeeded(this, delegate_->Requests(), brave_browser);     \
+  if (permission_lifetime_view) {                                          \
+    set_fixed_width(                                                       \
+        std::max(GetPreferredSize().width(),                               \
+                 permission_lifetime_view->GetPreferredSize().width()) +   \
+        margins().width());                                                \
+    set_should_ignore_snapping(true);                                      \
+  }                                                                        \
+  AddGeolocationDescriptionIfNeeded(this, delegate_.get(), brave_browser);
 
 // Creates PermissionPromptBubbleZOrdermanager instance to manage the z-order
 // of the bubble and its parent widget. Note that we need to do this at this

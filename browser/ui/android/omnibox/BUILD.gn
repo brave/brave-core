@@ -32,6 +32,7 @@ android_library("java") {
     ":java_resources",
     "//base:base_java",
     "//base:base_shared_preferences_java",
+    "//base:supplier_java",
     "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
     "//brave/browser/android/preferences:pref_names_java",
     "//brave/build/android:android_brave_strings_grd",

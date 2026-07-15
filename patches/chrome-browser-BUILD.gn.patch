@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/BUILD.gn b/chrome/browser/BUILD.gn
-index 311a3dfebc076092e33ff29c502ed77f1b0836c3..949658ee3a54cd00e7c062bff4c9f7f304b16c64 100644
+index d06407d4ca6a18e66c49ea725e6e9c40c8042c7a..80f7dee8964e9a8d346367771f44184fa47420d1 100644
 --- a/chrome/browser/BUILD.gn
 +++ b/chrome/browser/BUILD.gn
-@@ -2643,6 +2643,7 @@ static_library("browser") {
-     "//chrome/browser/sharing/glic_experimental_triggering:impl",
-     "//chrome/browser/ui/webauthn:impl",
-   ]
-+  import("//brave/browser/sources.gni") sources += brave_chrome_browser_sources deps += brave_chrome_browser_deps public_deps += brave_chrome_browser_public_deps allow_circular_includes_from += brave_chrome_browser_allow_circular_includes_from
+@@ -4599,6 +4599,7 @@ source_set("browser") {
+   if (!is_android) {
+     deps += [ "//chrome/browser/contextual_cueing/internals" ]
+   }
++  public_deps += [ "//brave/browser:core" ]
  
-   if (enable_webui_ntp) {
-     deps += [
-@@ -5355,6 +5356,7 @@ group("browser_public_dependencies") {
+   # This target intentionally has no sources of its own and no
+   # allow_circular_includes_from; it only aggregates dependencies. Do NOT add
+@@ -4770,6 +4771,7 @@ group("browser_public_dependencies") {
        "//components/offline_pages/core/background:background_offliner",
      ]
    }

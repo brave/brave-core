@@ -14,8 +14,8 @@ namespace extensions {
 
 namespace {
 
-// Called from the original extension_ui.cc's CreateMdExtensionsSource via a
-// patch.
+// Called from the original extensions_ui.cc's CreateAndAddExtensionsSource via
+// a plaster.
 void BraveAddExtensionsResources(content::WebUIDataSource* source,
                                  Profile* profile) {
   source->AddLocalizedString("privateInfoWarning",
@@ -35,20 +35,4 @@ void BraveAddExtensionsResources(content::WebUIDataSource* source,
 
 }  // namespace extensions
 
-// These are defined in generated_resources.h, but since we are including it
-// here the original extensions_ui.cc shouldn't include it again and the
-// redefined values will be used.
-#undef IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE
-#define IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE \
-  IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE
-#undef IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE
-#define IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE \
-  IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE
-
-#define BRAVE_CREATE_EXTENSIONS_SOURCE \
-  BraveAddExtensionsResources(source, profile);
-
-#include <chrome/browser/ui/webui/extensions/extensions_ui.cc>
-#undef BRAVE_CREATE_EXTENSIONS_SOURCE
-#undef IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE
-#undef IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE
+#include <chrome/browser/ui/webui/extensions/extensions_ui.cc>  // IWYU pragma: export

@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
-index 5b3fdecca51c60553bd50ffe3d1bce8478c0554c..4b05b5991989224e0d0a1d722edceb9a43dadd1f 100644
+index 7105205ab38dcfa2b621d3f91b441a486cc2312f..6b69911f892847961c3a439a541b2b7858be5b88 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/privacy/settings/PrivacySettings.java
 @@ -86,7 +86,7 @@ import java.util.function.Consumer;
@@ -17,7 +17,7 @@ index 5b3fdecca51c60553bd50ffe3d1bce8478c0554c..4b05b5991989224e0d0a1d722edceb9a
          menu.clear();
 +        super.onCreateOptionsMenu(menu, inflater);
          MenuItem help =
-                 menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, R.string.menu_help);
+                 menu.add(Menu.NONE, R.id.menu_id_targeted_help, Menu.NONE, getHelpMenuStringRes());
          help.setIcon(
 @@ -619,7 +620,7 @@ public class PrivacySettings extends ChromeBaseSettingsFragment
                      .show(getActivity(), getString(R.string.help_context_privacy), null);

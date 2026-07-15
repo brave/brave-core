@@ -8,7 +8,8 @@
 namespace playlist {
 
 #if !defined(TOOLKIT_VIEWS)
-Browser* FindBrowserForPlaylistWebUI(content::WebContents* web_contents) {
+BrowserWindowInterface* FindBrowserForPlaylistWebUI(
+    content::WebContents* web_contents) {
   return nullptr;
 }
 #endif  // !defined(TOOLKIT_VIEWS)

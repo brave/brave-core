@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/actor/ui/handoff_button_controller.cc b/chrome/browser/actor/ui/handoff_button_controller.cc
-index 61c1ab9da1e6a38a3d6e5217a04755ca7e59a74e..fded0fb5b35971d5baff797ff1f2df5e1ce82387 100644
+index 83772dd2ea57d58deac9f9432dff41b3731dcbed..f1e651a75df4cdc0f4e56a1bab760c4ceeea4a3c 100644
 --- a/chrome/browser/actor/ui/handoff_button_controller.cc
 +++ b/chrome/browser/actor/ui/handoff_button_controller.cc
-@@ -59,7 +59,7 @@ constexpr float kBackgroundInset = 2.0f;
+@@ -58,7 +58,7 @@ constexpr float kBackgroundInset = 2.0f;
  constexpr float kHandoffButtonCornerRadius = 48.0f;
  constexpr int kHandoffButtonIconSize = 20;
  constexpr gfx::Insets kHandoffButtonContentPadding =
@@ -11,7 +11,7 @@ index 61c1ab9da1e6a38a3d6e5217a04755ca7e59a74e..fded0fb5b35971d5baff797ff1f2df5e
  
  // A customized LabelButton that shows a hand cursor on hover.
  class HandoffLabelButton : public views::LabelButton {
-@@ -119,18 +119,12 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
+@@ -118,18 +118,12 @@ class GradientBubbleFrameView : public views::BubbleFrameView {
        shadow_flags.setAntiAlias(true);
        SkPoint center = SkPoint::Make(button_bounds_f.CenterPoint().x(),
                                       button_bounds_f.CenterPoint().y());
@@ -36,7 +36,7 @@ index 61c1ab9da1e6a38a3d6e5217a04755ca7e59a74e..fded0fb5b35971d5baff797ff1f2df5e
        std::vector<SkColor4f> color4fs;
        for (const auto& color : colors) {
          color4fs.push_back(SkColor4f::FromColor(color));
-@@ -386,7 +380,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
+@@ -385,7 +379,7 @@ gfx::Rect HandoffButtonController::GetHandoffButtonBounds() {
            // Position with a fixed offset from the top of the anchor.
            : anchor_bounds.y() - kHandoffButtonTopOffset;
  

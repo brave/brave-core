@@ -48,7 +48,6 @@
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_browser_window.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #else
 #include "ui/android/view_android.h"
 #include "ui/events/android/gesture_event_android.h"

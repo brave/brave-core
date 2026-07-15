@@ -1,8 +1,8 @@
 diff --git a/build/config/locales.gni b/build/config/locales.gni
-index 744de0faf2443bbe9f2c4f5cdbb90b5bac35b0be..0632a3fb69e1157a0156f0980cc6cd1b533b2e84 100644
+index cd5c7a1c656a1735b9342b649c57aa088767f47d..e2dfb719290a4be63ef8ef22479da4698227d59c 100644
 --- a/build/config/locales.gni
 +++ b/build/config/locales.gni
-@@ -174,6 +174,7 @@ extended_locales = [
+@@ -172,6 +172,7 @@ extended_locales = [
    "zh-HK",
    "zu",
  ]

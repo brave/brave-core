@@ -20,6 +20,7 @@ import org.chromium.base.test.BaseRobolectricTestRunner;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider.ResourceTabFavicon;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider.StaticTabFaviconType;
 import org.chromium.chrome.browser.tab_ui.TabListFaviconProvider.TabFavicon;
+import org.chromium.chrome.browser.tab_ui.TabListMode;
 import org.chromium.ui.util.ColorUtils;
 
 /** Unit tests for {@link BraveTabListFaviconProvider}. */
@@ -100,7 +101,7 @@ public class BraveTabListFaviconProviderTest {
     private BraveTabListFaviconProvider createProvider(boolean isTabStrip) {
         return new BraveTabListFaviconProvider(
                 mActivity,
-                isTabStrip,
+                isTabStrip ? TabListMode.BOTTOM_STRIP : TabListMode.GRID,
                 org.chromium.chrome.R.dimen.default_favicon_corner_radius,
                 /* tabWebContentsFaviconDelegate= */ null);
     }

@@ -16,7 +16,7 @@
 #include "brave/components/brave_wallet/browser/scrypt_utils.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
 #include "crypto/kdf.h"
-#include "crypto/process_bound_string.h"
+#include "crypto/secure_util.h"
 
 namespace brave_wallet {
 
@@ -189,7 +189,7 @@ std::optional<std::string> EncodePrivateKeyForExport(
   auto encrypt_result = XSalsaPolyEncrypt(
       base::as_byte_span(pkcs8_key_secure),
       base::span(*derived_key).first<kScryptKeyBytes>(), nonce);
-  crypto::internal::SecureZeroBuffer(*derived_key);
+  crypto::SecureZeroBuffer(*derived_key);
 
   if (!encrypt_result.has_value()) {
     return std::nullopt;

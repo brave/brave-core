@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-index 10c1f99dd2c50e226249357de7e40359950b8c86..3141b5de13c44656f088cb295b418cb39a24c606 100644
+index be6e9eb6450cf0d059b22653b84f94fdd8084232..1ccfb06d13770aed382f48043803c93cc980c008 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/media/FullscreenVideoPictureInPictureController.java
-@@ -277,6 +277,10 @@ public class FullscreenVideoPictureInPictureController {
+@@ -278,6 +278,10 @@ public class FullscreenVideoPictureInPictureController {
              }
          }
  
@@ -13,7 +13,7 @@ index 10c1f99dd2c50e226249357de7e40359950b8c86..3141b5de13c44656f088cb295b418cb3
          try {
              if (!mActivity.enterPictureInPictureMode(builder.build())) return;
          } catch (IllegalStateException | IllegalArgumentException e) {
-@@ -594,6 +598,16 @@ public class FullscreenVideoPictureInPictureController {
+@@ -595,6 +599,16 @@ public class FullscreenVideoPictureInPictureController {
       * This will also update our auto-PiP preference with the framework, if it's changed.
       */
      private void dismissActivityIfNeeded(Activity activity, @MetricsEndReason int reason) {

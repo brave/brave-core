@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/location_bar/brave_star_view.h"
 #include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
@@ -98,9 +97,7 @@
   if (static_cast<int>(type) < 0) /* NOLINT(readability/braces) */ \
     return; (false
 
-#define StarView BraveStarView
 #include <chrome/browser/ui/views/page_action/page_action_icon_controller.cc>
-#undef StarView
 #undef kShown
 #undef kCookieControls
 #undef BRAVE_WAYBACK_MACHINE_PAGE_ACTION_CASE

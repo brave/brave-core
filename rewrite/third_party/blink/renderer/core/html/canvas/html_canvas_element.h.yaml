@@ -1,0 +1,25 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add Brave's synchronous toDataURL overloads.
+
+      Brave exposes toDataURL variants that take an explicit ScriptState so it
+      can be called off the main flow; declared right after the destructor.
+    re_pattern: '(  ~HTMLCanvasElement\(\) override;\n)'
+    replace: |
+      \1  String toDataURL(ScriptState* script_state, const String& mime_type,
+                         const ScriptValue& quality_argument,
+                         ExceptionState& exception_state) const;
+        String toDataURL(ScriptState* script_state, const String& mime_type,
+                         ExceptionState& exception_state) const {
+          return toDataURL(script_state, mime_type, ScriptValue(), exception_state);
+        }
+  - description: |
+      Hold the execution context used by Brave's farbling.
+    re_pattern: '( private:\n)'
+    replace: |
+      \1  mutable UntracedMember<ExecutionContext> scoped_execution_context_;

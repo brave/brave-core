@@ -697,7 +697,7 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 "===================================================================
 --- ../chrome/browser/resources/signin/profile_picker/profile_card.html.ts
 +++ gen/chrome/browser/resources/signin/profile_picker/preprocessed/profile_card.html.ts
-@@ -5,54 +5,37 @@
+@@ -5,56 +5,38 @@
  
  export function getHtml(this: ProfileCardElement) {
    return html\`<!--_html_template_start_-->
@@ -707,9 +707,12 @@ exports[`mangled files should have up to date snapshots ./chromium_src/chrome/br
 -      aria-label="\${this.profileState.profileCardButtonLabel}">
 +  <cr-button id="profileCardButton" @click="\${this.onProfileClick_}" ?disabled="\${this.disabled}" aria-label="\${this.profileState.profileCardButtonLabel}" class="plain">
      <div id="avatarContainer">
-       <img class="profile-avatar" alt="" .src="\${this.profileState.avatarIcon}">
+       <img class="profile-avatar \${
+-      this.profileState.hasAiRing ? 'with-ai-ring' : ''}"
+-          alt="" .src="\${this.profileState.avatarIcon}">
 -      <div id="iconContainer"
 -          ?hidden="\${!this.profileState.avatarBadge.length}">
++      this.profileState.hasAiRing ? 'with-ai-ring' : ''}" alt="" .src="\${this.profileState.avatarIcon}">
 +      <div id="iconContainer" ?hidden="\${!this.profileState.avatarBadge.length}">
          <cr-icon icon="\${this.profileState.avatarBadge}"></cr-icon>
        </div>

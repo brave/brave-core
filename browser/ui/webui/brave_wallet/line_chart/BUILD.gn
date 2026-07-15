@@ -13,6 +13,7 @@ source_set("line_chart") {
     "line_chart_ui.h",
   ]
   deps = [
+    "//brave/browser/ui/webui/brave_wallet/market",
     "//brave/components/brave_wallet/browser:constants",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet_ui:resources",
@@ -22,4 +23,8 @@ source_set("line_chart") {
     "//content/public/browser",
     "//ui/webui",
   ]
+
+  if (!is_android) {
+    deps += [ "//chrome/browser/ui/webui:theme_source" ]
+  }
 }

@@ -3,16 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { RegisterPolymerPrototypeModification, RegisterStyleOverride } from '//resources/brave/polymer_overriding.js'
+import { RegisterPolymerPrototypeModification } from '//resources/brave/polymer_overriding.js'
+import { injectStyle } from '//resources/brave/lit_overriding.js'
+import { css } from '//resources/lit/v3_0/lit.rollup.js'
 import { PowerBookmarksService } from './power_bookmarks_service.js';
 import type { BookmarksTreeNode } from './bookmarks.mojom-webui.js';
 
 import { PowerBookmarksListElement } from './power_bookmarks_list-chromium.js'
-import {
-  html
-} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
-RegisterStyleOverride('power-bookmarks-list', html`<style>
+injectStyle(PowerBookmarksListElement, css`
   :host {
     --iron-icon-width: 16px;
   }
@@ -27,7 +26,7 @@ RegisterStyleOverride('power-bookmarks-list', html`<style>
     border: 1px solid var(--leo-color-divider-interactive);
     border-radius: var(--leo-radius-s);
   }
-</style>`)
+`)
 
 const originalSortBookmarks = PowerBookmarksService.prototype.sortBookmarks
 PowerBookmarksService.prototype.sortBookmarks = function (

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-index 8ab0b54020a8cce36c79a4bf57f0267eed3df40d..0e914d8f495cb456c29c54070a69dc0294220792 100644
+index 2f1697f79c55a8efd844411919ef973ac037a452..a0d934a377ed66290af1a2dcb932d14f9f7b5b3d 100644
 --- a/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
 +++ b/chrome/browser/ui/webui/cr_components/searchbox/searchbox_handler.cc
-@@ -803,6 +803,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
+@@ -747,6 +747,15 @@ std::string SearchboxHandler::AutocompleteIconToResourceName(
    // TODO(446953331): It's error-prone to keep the above if's up to date. When
    //   omnibox input and popup views are replaced with webUI, matches and
    //   actions can store an icon enum instead of `VectorIcon`.
@@ -18,15 +18,14 @@ index 8ab0b54020a8cce36c79a4bf57f0267eed3df40d..0e914d8f495cb456c29c54070a69dc02
    NOTREACHED() << "Every autocomplete icon must have an equivalent SVG "
                    "resource for the NTP Realbox. icon.name: '"
                 << icon.name << "'";
-@@ -1130,8 +1139,9 @@ void SearchboxHandler::QueryAutocompleteWithSuggestInventory(
+@@ -1116,8 +1125,8 @@ void SearchboxHandler::QueryAutocompleteWithSuggestInventory(
    autocomplete_input.set_prevent_inline_autocomplete(
        prevent_inline_autocomplete);
    // Disable keyword matches as NTP realbox has no UI affordance for it.
--  autocomplete_input.set_prefer_keyword(false);
+-  autocomplete_input.set_in_keyword_mode(false);
 -  autocomplete_input.set_allow_exact_keyword_match(false);
 +  autocomplete_input.set_in_keyword_mode(true);
-+  autocomplete_input.set_prefer_keyword(true);
 +  autocomplete_input.set_allow_exact_keyword_match(true);
    // Set the lens overlay suggest inputs, if available.
    if (std::optional<lens::proto::LensOverlaySuggestInputs> suggest_inputs =
-           controller_->client()->GetLensOverlaySuggestInputs()) {
+           client()->GetLensOverlaySuggestInputs()) {

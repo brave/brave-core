@@ -12,6 +12,8 @@
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_contents_observer.h"
 
+class BrowserWindowInterface;
+
 #define HideCustomContextMenu                                                 \
   HideCustomContextMenu() {}                                                  \
   virtual content::WebContents* AddNewContents_ChromiumImpl(                  \
@@ -23,8 +25,8 @@
   virtual void HideCustomContextMenu_Unused
 
 #define PrimaryPageChanged                                                    \
-  SetWebContentsAddNewContentsDelegate(                                       \
-      base::WeakPtr<content::WebContentsDelegate> browser_delegate);          \
+  SetWebContentsAddNewContentsBrowser(                                        \
+      base::WeakPtr<BrowserWindowInterface> browser);                         \
   void CloseTrackedPopups();                                                  \
   content::WebContents* AddNewContents_ChromiumImpl(                          \
       content::WebContents* source,                                           \
@@ -37,7 +39,7 @@
 #define webui_resizes_host_                                         \
   webui_resizes_host_;                                              \
   std::vector<base::WeakPtr<content::WebContents>> tracked_popups_; \
-  base::WeakPtr<content::WebContentsDelegate> browser_delegate_
+  base::WeakPtr<BrowserWindowInterface> browser_
 #include <chrome/browser/ui/webui/top_chrome/webui_contents_wrapper.h>  // IWYU pragma: export
 #undef webui_resizes_host_
 #undef PrimaryPageChanged
