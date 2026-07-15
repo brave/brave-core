@@ -81,6 +81,7 @@ source_set("unit_tests") {
 
   public_deps = [
     "//brave/components/ai_chat/core/common/buildflags",
+    "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_talk/buildflags",
     "//brave/components/brave_wallet/common/buildflags",
     "//brave/components/playlist/core/common/buildflags",
@@ -112,5 +113,9 @@ source_set("unit_tests") {
 
   if (enable_brave_talk) {
     deps += [ "//brave/components/brave_talk" ]
+  }
+
+  if (enable_brave_news) {
+    deps += [ "//brave/components/brave_news/common" ]
   }
 }

@@ -16,6 +16,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -41,6 +42,11 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/features.h"
 #include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+#include "brave/components/brave_news/common/features.h"
+#include "brave/components/brave_news/common/pref_names.h"
 #endif
 
 using ::testing::Eq;
@@ -235,6 +241,12 @@ class SidebarServiceTest : public testing::Test {
     // BravePlaylistEnabled policy.
     prefs_.registry()->RegisterBooleanPref(playlist::kPlaylistEnabledPref,
                                            true);
+#endif
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+    // Register the Brave News opt-in pref that SidebarService now observes to
+    // gate the Brave News item.
+    prefs_.registry()->RegisterBooleanPref(brave_news::prefs::kBraveNewsOptedIn,
+                                           false);
 #endif
   }
   void TearDown() override { ResetService(); }
@@ -1051,6 +1063,66 @@ TEST_F(SidebarServiceTestWithPlaylist, PlaylistHiddenOnStartupWhenPolicyOff) {
   EXPECT_FALSE(HasPlaylistItem(service_->items()));
 }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+namespace {
+
+bool HasBraveNewsItem(const std::vector<SidebarItem>& items) {
+  return std::ranges::any_of(items, [](const SidebarItem& item) {
+    return item.built_in_item_type == SidebarItem::BuiltInItemType::kBraveNews;
+  });
+}
+
+}  // namespace
+
+class SidebarServiceTestWithBraveNews : public SidebarServiceTest {
+ public:
+  SidebarServiceTestWithBraveNews() {
+    scoped_feature_list_.InitAndEnableFeature(
+        brave_news::features::kBraveNewsSidebar);
+  }
+  ~SidebarServiceTestWithBraveNews() override = default;
+
+  // The base fixture's default item list omits Brave News, so provide one that
+  // includes it in order to exercise the opt-in gating.
+  void InitServiceWithBraveNews() {
+    std::vector<SidebarItem::BuiltInItemType> default_item_types{
+        SidebarItem::BuiltInItemType::kBraveNews,
+        SidebarItem::BuiltInItemType::kBookmarks,
+    };
+    service_ = std::make_unique<SidebarService>(&prefs_, default_item_types);
+    service_->AddObserver(&observer_);
+  }
+
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Until the user opts in to Brave News, the sidebar item must not be shown even
+// when the kBraveNewsSidebar feature is enabled.
+TEST_F(SidebarServiceTestWithBraveNews, HiddenOnStartupWhenNotOptedIn) {
+  InitServiceWithBraveNews();
+  EXPECT_FALSE(HasBraveNewsItem(service_->items()));
+}
+
+// Once the user has opted in, the item is present on startup.
+TEST_F(SidebarServiceTestWithBraveNews, ShownOnStartupWhenOptedIn) {
+  prefs_.SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+  InitServiceWithBraveNews();
+  EXPECT_TRUE(HasBraveNewsItem(service_->items()));
+}
+
+// Opting out mid-session removes the item live (RefreshBuiltInItems only
+// removes items, matching the AI Chat / Wallet / Playlist behavior, so the
+// item reappears on the next startup once opted in again).
+TEST_F(SidebarServiceTestWithBraveNews, HiddenWhenOptedOut) {
+  prefs_.SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+  InitServiceWithBraveNews();
+  EXPECT_TRUE(HasBraveNewsItem(service_->items()));
+
+  prefs_.SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
+  EXPECT_FALSE(HasBraveNewsItem(service_->items()));
+}
+#endif  // BUILDFLAG(ENABLE_BRAVE_NEWS)
 
 class SidebarServiceOrderingTest : public SidebarServiceTest {
  public:
