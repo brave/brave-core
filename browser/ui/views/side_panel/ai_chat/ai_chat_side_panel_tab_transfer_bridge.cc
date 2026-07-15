@@ -35,13 +35,14 @@ AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
 void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
     std::unique_ptr<content::WebContents> web_contents) {
   CHECK(web_contents);
+  // A transfer is consumed synchronously by the re-show below, so there should
+  // never be one already in-flight.
+  CHECK(!pending_web_contents_);
 
+  // The bridge is only created for normal windows, which always have a side
+  // panel UI.
   SidePanelUI* side_panel_ui = SidePanelUI::From(browser_);
-  if (!side_panel_ui) {
-    // No side panel UI to host the conversation (e.g. a non-normal window).
-    // Let `web_contents` be destroyed rather than leaking it.
-    return;
-  }
+  CHECK(side_panel_ui);
 
   pending_web_contents_ = std::move(web_contents);
 
