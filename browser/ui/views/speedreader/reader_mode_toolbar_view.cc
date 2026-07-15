@@ -137,12 +137,12 @@ void ReaderModeToolbarView::UpdateBorderAndBackground() {
     SetBorder(views::CreateSolidSidedBorder(gfx::Insets::TLBR(0, 0, 1, 0),
                                             kColorToolbarContentAreaSeparator));
     SetBackground(views::CreateSolidBackground(kColorToolbar));
-    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+    toolbar_->holder()->SetNativeViewCornerRadii(rounded_corners_);
   } else {
     SetBorder(nullptr);
     SetBackground(
         views::CreateRoundedRectBackground(kColorToolbar, rounded_corners_));
-    toolbar_->holder()->SetCornerRadii(rounded_corners_);
+    toolbar_->holder()->SetNativeViewCornerRadii(rounded_corners_);
   }
 }
 
