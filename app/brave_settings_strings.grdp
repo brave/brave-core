@@ -849,7 +849,7 @@
       Show Privacy settings tuning notification on compatible sites
     </message>
     <message name="IDS_SETTINGS_PSST_SUB_LABEL" desc="Privacy settings tuning sub-label">
-      Learn more
+      Allows Brave to automatically suggest (and adjust) site-specific privacy settings.
     </message>
   </if>
   <if expr="is_win">

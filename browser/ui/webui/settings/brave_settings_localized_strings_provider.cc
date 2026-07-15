@@ -142,6 +142,11 @@ constexpr char16_t kSurveyPanelistLearnMoreURL[] =
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
 
+#if BUILDFLAG(ENABLE_PSST)
+constexpr char16_t kPsstLearnMoreUrl[] =
+    u"https://support.brave.app/hc/en-us/articles/8611298579981";
+#endif
+
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
   webui::LocalizedString localized_strings[] = {
@@ -1254,6 +1259,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
                                  kExtensionsV2LearnMoreURL));
 
+#if BUILDFLAG(ENABLE_PSST)
+  html_source->AddString("psstLearnMoreURL", kPsstLearnMoreUrl);
+#endif
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
   html_source->AddBoolean("showSplitViewDragAndDropSetting", false);
