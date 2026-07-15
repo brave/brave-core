@@ -96,6 +96,9 @@ where
 
                         let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;
 
+                        // Derive the verification key with the same derivation
+                        // `unblinded_cred` was blinded with, recorded in
+                        // `cred.rfc`, so the presented signature verifies.
                         let verification_key = if cred.rfc {
                             cred.unblinded_cred.derive_verification_key_rfc::<Sha512>()
                         } else {
@@ -143,6 +146,9 @@ where
 
                         let issuer = self.encode_issuer_id(&order.merchant_id, &item.sku)?;
 
+                        // Derive the verification key with the same derivation
+                        // `unblinded_cred` was blinded with, recorded in
+                        // `cred.rfc`, so the presented signature verifies.
                         let verification_key = if cred.rfc {
                             cred.unblinded_cred.derive_verification_key_rfc::<Sha512>()
                         } else {

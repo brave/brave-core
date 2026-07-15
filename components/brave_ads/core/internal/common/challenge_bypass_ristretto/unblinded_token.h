@@ -22,11 +22,17 @@ class VerificationKey;
 // An `UnblindedToken` is the result of unblinding a `SignedToken`. While both
 // the client and server both "know" this value, it should nevertheless not be
 // sent between the two.
+//
+// A token carries whether it uses the RFC 9497 compliant derivation (`rfc`).
+// A verification key must be derived with the same derivation the token was
+// blinded with, so callers cannot pair the wrong type. Tokens use the RFC 9497 
+// derivation by default.
 
 class UnblindedToken final {
  public:
   UnblindedToken();
-  explicit UnblindedToken(const std::string& unblinded_token_base64);
+  explicit UnblindedToken(const std::string& unblinded_token_base64,
+                          bool rfc = true);
   explicit UnblindedToken(
       const challenge_bypass_ristretto::UnblindedToken& unblinded_token);
 
@@ -57,13 +63,18 @@ class UnblindedToken final {
   static UnblindedToken DecodeBase64(const std::string& unblinded_token_base64);
   std::optional<std::string> EncodeBase64() const;
 
+  // Whether this token uses the RFC 9497 compliant derivation.
+  bool rfc() const { return rfc_; }
+
+  // Derives the verification key using the derivation matching how this token
+  // was blinded, selected by `rfc_`.
   std::optional<VerificationKey> DeriveVerificationKey() const;
-  std::optional<VerificationKey> DeriveVerificationKeyRfc() const;
 
   std::optional<TokenPreimage> GetTokenPreimage() const;
 
  private:
   std::optional<challenge_bypass_ristretto::UnblindedToken> unblinded_token_;
+  bool rfc_ = true;
 };
 
 std::ostream& operator<<(std::ostream& os,

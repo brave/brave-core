@@ -23,13 +23,12 @@ PaymentTokenInfo PaymentTokenFromMojomRow(
 
   PaymentTokenInfo payment_token;
   payment_token.transaction_id = ColumnString(mojom_db_row, 0);
-  payment_token.unblinded_token =
-      cbr::UnblindedToken(ColumnString(mojom_db_row, 1));
+  payment_token.unblinded_token = cbr::UnblindedToken(
+      ColumnString(mojom_db_row, 1), /*rfc=*/ColumnBool(mojom_db_row, 5));
   payment_token.public_key = cbr::PublicKey(ColumnString(mojom_db_row, 2));
   payment_token.confirmation_type =
       ToMojomConfirmationType(ColumnString(mojom_db_row, 3));
   payment_token.ad_type = ToMojomAdType(ColumnString(mojom_db_row, 4));
-  payment_token.rfc = ColumnBool(mojom_db_row, 5);
   return payment_token;
 }
 

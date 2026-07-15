@@ -56,14 +56,14 @@ TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,
                   R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN)"),
               cbr::PublicKey("QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="),
               mojom::ConfirmationType::kViewedImpression,
-              mojom::AdType::kNotificationAd, /*rfc=*/false),
+              mojom::AdType::kNotificationAd),
           ::testing::FieldsAre(
               /*transaction_id*/ "c4ed0916-8c4d-4731-8fd6-c9a35cc0bce5",
               cbr::UnblindedToken(
                   R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN)"),
               cbr::PublicKey("QnShwT9vRebch3WDu28nqlTaNCU5MaOF1n4VV4Q3K1g="),
               mojom::ConfirmationType::kClicked,
-              mojom::AdType::kNotificationAd, /*rfc=*/false))));
+              mojom::AdType::kNotificationAd))));
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,
@@ -87,8 +87,7 @@ TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,
                   /*unblinded_token=*/::testing::_,
                   /*public_key=*/::testing::_,
                   /*confirmation_type=*/::testing::_,
-                  /*ad_type=*/::testing::_,
-                  /*rfc=*/::testing::_))));
+                  /*ad_type=*/::testing::_))));
 }
 
 TEST_F(BraveAdsLegacyConfirmationMigrationPaymentTokensJsonParserTest,

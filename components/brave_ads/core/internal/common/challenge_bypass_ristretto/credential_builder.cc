@@ -24,14 +24,13 @@ constexpr std::string_view kTokenPreimageKey = "t";
 
 std::optional<base::DictValue> MaybeBuildCredential(
     const UnblindedToken& unblinded_token,
-    const std::string& payload,
-    bool rfc) {
+    const std::string& payload) {
   CHECK(unblinded_token.has_value());
   CHECK(!payload.empty());
 
+  // The token selects the derivation matching how it was blinded.
   std::optional<VerificationKey> verification_key =
-      rfc ? unblinded_token.DeriveVerificationKeyRfc()
-          : unblinded_token.DeriveVerificationKey();
+      unblinded_token.DeriveVerificationKey();
   if (!verification_key) {
     return std::nullopt;
   }

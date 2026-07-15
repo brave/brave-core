@@ -266,7 +266,6 @@ RedeemRewardConfirmation::HandleFetchPaymentTokenUrlResponse(
   payment_token.public_key = *public_key;
   payment_token.confirmation_type = confirmation.type;
   payment_token.ad_type = confirmation.ad_type;
-  payment_token.rfc = true;
   return payment_token;
 }
 

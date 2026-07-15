@@ -62,7 +62,9 @@ TEST_F(BraveAdsPaymentTokensDatabaseTableUtilTest, MapAllFieldsFromMojomRow) {
                   cbr::UnblindedToken(cbr::test::kUnblindedTokenBase64),
                   cbr::PublicKey(cbr::test::kPublicKeyBase64),
                   mojom::ConfirmationType::kViewedImpression,
-                  mojom::AdType::kNotificationAd, true));
+                  mojom::AdType::kNotificationAd));
+
+  EXPECT_TRUE(payment_token.unblinded_token.rfc());
 }
 
 }  // namespace brave_ads::database::table

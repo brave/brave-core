@@ -61,7 +61,8 @@ size_t BindColumns(const mojom::DBActionInfoPtr& mojom_db_action,
     BindColumnString(mojom_db_action, index++,
                      ToString(payment_token.confirmation_type));
     BindColumnString(mojom_db_action, index++, ToString(payment_token.ad_type));
-    BindColumnBool(mojom_db_action, index++, payment_token.rfc);
+    BindColumnBool(mojom_db_action, index++,
+                   payment_token.unblinded_token.rfc());
 
     ++row_count;
   }

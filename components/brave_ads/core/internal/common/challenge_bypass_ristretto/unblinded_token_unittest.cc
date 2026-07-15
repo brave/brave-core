@@ -154,6 +154,17 @@ TEST_F(BraveAdsUnblindedTokenTest, DeriveVerificationKey) {
   const cbr::UnblindedToken unblinded_token(cbr::test::kUnblindedTokenBase64);
 
   // Act & Assert
+  EXPECT_TRUE(unblinded_token.rfc());
+  EXPECT_TRUE(unblinded_token.DeriveVerificationKey());
+}
+
+TEST_F(BraveAdsUnblindedTokenTest, DeriveVerificationKeyForNonRfcToken) {
+  // Arrange
+  const cbr::UnblindedToken unblinded_token(cbr::test::kUnblindedTokenBase64,
+                                            /*rfc=*/false);
+
+  // Act & Assert
+  EXPECT_FALSE(unblinded_token.rfc());
   EXPECT_TRUE(unblinded_token.DeriveVerificationKey());
 }
 
