@@ -7,7 +7,6 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import Label from '@brave/leo/react/label'
-import classnames from '$web-common/classnames'
 import { getLocale, formatLocale } from '$web-common/locale'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
@@ -18,27 +17,10 @@ interface PremiumSuggestionProps {
   secondaryActionButton?: React.ReactNode
 }
 
-const featuresList = [
-  {
-    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_1),
-    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_1_DESC),
-    icon: 'widget-generic',
-  },
-  {
-    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_2),
-    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_2_DESC),
-    icon: 'idea',
-  },
-  {
-    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_3),
-    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_3_DESC),
-    icon: 'edit-pencil',
-  },
-  {
-    title: getLocale(S.CHAT_UI_PREMIUM_FEATURE_4),
-    desc: getLocale(S.CHAT_UI_PREMIUM_FEATURE_4_DESC),
-    icon: 'message-bubble-comments',
-  },
+const sellingPoints = [
+  getLocale(S.CHAT_UI_PREMIUM_FEATURE_1),
+  getLocale(S.CHAT_UI_PREMIUM_FEATURE_2),
+  getLocale(S.CHAT_UI_PREMIUM_FEATURE_3),
 ]
 
 function PremiumSuggestion(props: PremiumSuggestionProps) {
@@ -62,70 +44,76 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
 
   return (
     <div className={styles.boxPremium}>
-      <div className={styles.header}>
-        <h4>{props.title}</h4>
-        <p>{props.description}</p>
-      </div>
-      <div className={styles.features}>
-        <ul>
-          {featuresList.map((entry, i) => {
-            return (
-              <li key={i}>
-                <div className={styles.icon}>
-                  <Icon name={entry.icon} />
+      <div className={styles.layout}>
+        <div className={styles.left}>
+          <div className={styles.header}>
+            <h4>{props.title}</h4>
+            {props.description && <p>{props.description}</p>}
+          </div>
+          <ul className={styles.sellingPoints}>
+            {sellingPoints.map((point, i) => {
+              return (
+                <li
+                  key={i}
+                  className={styles.sellingPoint}
+                >
+                  <Icon
+                    className={styles.checkIcon}
+                    name='check-normal'
+                  />
+                  <span>{point}</span>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+        <div className={styles.right}>
+          {!isMobile && (
+            <div className={styles.priceListWrapper}>
+              <div className={styles.planCard}>
+                <div className={styles.planDetails}>
+                  <div className={styles.planHeader}>
+                    <span className={styles.planName}>
+                      {getLocale(S.CHAT_UI_PREMIUM_ANNUAL_LABEL)}
+                    </span>
+                    <span className={styles.planPrice}>
+                      {pricingAnnualInfo}
+                    </span>
+                  </div>
                 </div>
-                <span>
-                  {entry.title}
-                  <p>{entry.desc}</p>
-                </span>
-              </li>
-            )
-          })}
-        </ul>
-      </div>
-      {!isMobile && (
-        <div className={styles.priceListWrapper}>
-          <div className={styles.priceList}>
-            <button
-              className={styles.priceButton}
-              tabIndex={-1}
-            >
-              <div className={styles.bestValueColumn}>
-                <span className={styles.priceButtonLabel}>
-                  {getLocale(S.CHAT_UI_ONE_YEAR_LABEL)}
-                </span>
-                <Label color='green'>
-                  {getLocale(S.CHAT_UI_BEST_VALUE_LABEL)}
+                <Label
+                  className={styles.saveLabel}
+                  mode='loud'
+                  color='primary'
+                >
+                  {getLocale(S.CHAT_UI_PREMIUM_SAVE_PERCENT_LABEL)}
                 </Label>
               </div>
-              <span className={styles.price}>{pricingAnnualInfo}</span>
-            </button>
-            <button
-              className={classnames(
-                styles.priceButton,
-                styles.priceButtonMonthly,
-              )}
-              tabIndex={-1}
+              <div className={styles.planCard}>
+                <div className={styles.planDetails}>
+                  <div className={styles.planHeader}>
+                    <span className={styles.planName}>
+                      {getLocale(S.CHAT_UI_MONTHLY_LABEL)}
+                    </span>
+                    <span className={styles.planPrice}>{pricingInfo}</span>
+                  </div>
+                </div>
+              </div>
+              <div className={styles.subscriptionPolicy}>
+                {getLocale(S.CHAT_UI_SUBSCRIPTION_POLICY_INFO)}
+              </div>
+            </div>
+          )}
+          <div className={styles.actions}>
+            <Button
+              onClick={() => context.uiHandler.goPremium()}
+              ref={buttonRef}
             >
-              <span className={styles.priceButtonLabel}>
-                {getLocale(S.CHAT_UI_MONTHLY_LABEL)}
-              </span>
-              <span className={styles.price}>{pricingInfo}</span>
-            </button>
-          </div>
-          <div className={styles.subscriptionPolicy}>
-            {getLocale(S.CHAT_UI_SUBSCRIPTION_POLICY_INFO)}
+              {getLocale(S.CHAT_UI_UPGRADE_BUTTON_LABEL)}
+            </Button>
+            {props.secondaryActionButton}
           </div>
         </div>
-      )}
-      <div className={styles.actions}>
-        <Button
-          onClick={() => context.uiHandler.goPremium()}
-          ref={buttonRef}
-        >
-          {getLocale(S.CHAT_UI_UPGRADE_BUTTON_LABEL)}
-        </Button>
-        {props.secondaryActionButton}
       </div>
     </div>
   )
