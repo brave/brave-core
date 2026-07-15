@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(DirectFeedFetcherBrowserTest, RedirectToFeed) {
   GURL feed2_url = https_server_.GetURL("/feed2");
 
   fetcher_->DownloadFeed(
-      feed2_url, "test_publisher",
+      feed2_url, std::nullopt, "test_publisher",
       base::BindLambdaForTesting([&](DirectFeedResponse response) {
         const auto& result = std::get<DirectFeedResult>(response.result);
         ASSERT_EQ(1u, result.articles.size());

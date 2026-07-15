@@ -26,6 +26,7 @@
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "ui/base/l10n/time_format.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 #include "url/url_constants.h"
 
 namespace brave_news {
@@ -155,16 +156,19 @@ DirectFeedFetcher::DirectFeedFetcher(
     : url_loader_factory_(url_loader_factory), delegate_(delegate) {}
 DirectFeedFetcher::~DirectFeedFetcher() = default;
 
-void DirectFeedFetcher::DownloadFeed(GURL url,
-                                     std::string publisher_id,
-                                     DownloadFeedCallback callback) {
-  DownloadFeedHelper(url, url, publisher_id, 0, std::move(callback),
-                     std::nullopt);
+void DirectFeedFetcher::DownloadFeed(
+    GURL url,
+    std::optional<url::Origin> initiator_origin,
+    std::string publisher_id,
+    DownloadFeedCallback callback) {
+  DownloadFeedHelper(url, url, std::move(initiator_origin), publisher_id, 0,
+                     std::move(callback), std::nullopt);
 }
 
 void DirectFeedFetcher::DownloadFeedHelper(
     GURL url,
     GURL original_url,
+    std::optional<url::Origin> initiator_origin,
     std::string publisher_id,
     size_t redirect_count,
     DownloadFeedCallback callback,
@@ -196,7 +200,8 @@ void DirectFeedFetcher::DownloadFeedHelper(
             delegate_, base::SingleThreadTaskRunner::GetCurrentDefault(),
             base::BindOnce(&DirectFeedFetcher::DownloadFeedHelper,
                            weak_ptr_factory_.GetWeakPtr(), url, original_url,
-                           publisher_id, redirect_count, std::move(callback)),
+                           std::move(initiator_origin), publisher_id,
+                           redirect_count, std::move(callback)),
             url));
     return;
   }
@@ -212,6 +217,12 @@ void DirectFeedFetcher::DownloadFeedHelper(
   }
 
   request->url = url;
+  // Set the request initiator (e.g. the active tab when this request comes from
+  // the toolbar) so the network service stamps an appropriate Sec-Fetch-Site
+  // header (same-origin / same-site / cross-site) instead of `none`.
+  if (initiator_origin) {
+    request->request_initiator = *initiator_origin;
+  }
   request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
   request->credentials_mode = network::mojom::CredentialsMode::kOmit;
   request->method = net::HttpRequestHeaders::kGetMethod;
@@ -230,8 +241,9 @@ void DirectFeedFetcher::DownloadFeedHelper(
       // Handle response
       base::BindOnce(&DirectFeedFetcher::OnFeedDownloaded,
                      weak_ptr_factory_.GetWeakPtr(), iter, std::move(callback),
-                     url, original_url, std::move(publisher_id),
-                     https_upgrade_info, https_upgraded, redirect_count),
+                     url, original_url, initiator_origin,
+                     std::move(publisher_id), https_upgrade_info,
+                     https_upgraded, redirect_count),
       5 * 1024 * 1024);
 }
 
@@ -240,6 +252,7 @@ void DirectFeedFetcher::OnFeedDownloaded(
     DownloadFeedCallback callback,
     GURL url,
     GURL original_url,
+    std::optional<url::Origin> initiator_origin,
     std::string publisher_id,
     std::optional<Delegate::HTTPSUpgradeInfo> https_upgrade_info,
     bool https_upgraded,
@@ -250,7 +263,8 @@ void DirectFeedFetcher::OnFeedDownloaded(
   if (loader->NetError() == net::ERR_FAILED && loader->GetFinalURL() != url &&
       redirect_count < kMaxRedirectCount) {
     // Redirect detected. Make another request
-    DownloadFeedHelper(loader->GetFinalURL(), original_url, publisher_id,
+    DownloadFeedHelper(loader->GetFinalURL(), original_url,
+                       std::move(initiator_origin), publisher_id,
                        redirect_count + 1, std::move(callback), std::nullopt);
     return;
   }
@@ -282,8 +296,9 @@ void DirectFeedFetcher::OnFeedDownloaded(
       replacements.SetSchemeStr(url::kHttpScheme);
       url = url.ReplaceComponents(replacements);
       https_upgrade_info->should_upgrade = false;
-      DownloadFeedHelper(url, original_url, publisher_id, redirect_count,
-                         std::move(callback), https_upgrade_info);
+      DownloadFeedHelper(url, original_url, std::move(initiator_origin),
+                         publisher_id, redirect_count, std::move(callback),
+                         https_upgrade_info);
       return;
     }
     DirectFeedError error;
