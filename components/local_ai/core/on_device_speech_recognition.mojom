@@ -1,0 +1,50 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module local_ai.mojom;
+
+import "mojo/public/mojom/base/big_buffer.mojom";
+import "services/on_device_model/public/mojom/on_device_model.mojom";
+
+// ---------- On-device speech recognition (ORT-Web Nemotron) ----------
+
+// Companion files plus the model weights for the onnxruntime-web (ORT-Web)
+// Nemotron 0.6B backend. The small graphs, tokens and filterbank
+// along with the two external-weight (.onnx.data) blobs are all delivered in
+// the single Init call; the worker builds its inference sessions directly
+// from these bytes. Only the .onnx + .onnx.data (external-data) export is
+// supported as it lets ORT-Web reference the weights in place instead of making
+// an extra copy of the model files in WASM memory, so the weight sidecars are
+// required, not optional.
+struct OrtModelFiles {
+  mojo_base.mojom.BigBuffer encoder;       // encoder.onnx graph
+  mojo_base.mojom.BigBuffer encoder_data;  // encoder.onnx.data weights
+  mojo_base.mojom.BigBuffer decoder;       // decoder_joint.onnx graph
+  mojo_base.mojom.BigBuffer decoder_data;  // decoder_joint.onnx.data weights
+  mojo_base.mojom.BigBuffer tokens;        // tokens.txt
+  mojo_base.mojom.BigBuffer mel_filters;   // filterbank.bin (128-mel)
+};
+
+// Renderer-implemented backend, driven by the browser. Pairs with
+// SpeechRecognitionFactoryHost below.
+interface SpeechRecognitionFactory {
+  // Load the graphs, companion files and weights once for the worker's
+  // lifetime, building the ORT inference sessions directly from those bytes.
+  Init(OrtModelFiles files) => (bool success);
+
+  // Manufacture one per-utterance ASR stream. The signature matches upstream
+  // Session.AsrStream. Payload types are reused verbatim.
+  CreateAsrStream(
+      on_device_model.mojom.AsrStreamOptions options,
+      pending_receiver<on_device_model.mojom.AsrStreamInput> stream,
+      pending_remote<on_device_model.mojom.AsrStreamResponder> responder);
+};
+
+// Browser-implemented, bound only to the ORT-Web worker WebUI. The worker
+// calls this once, when its page is ready, to hand over a
+// SpeechRecognitionFactory remote to browser.
+interface SpeechRecognitionFactoryHost {
+  RegisterFactory(pending_remote<SpeechRecognitionFactory> factory);
+};
