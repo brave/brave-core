@@ -178,7 +178,7 @@ class BraveNewsTabHelperTest : public InProcessBrowserTest {
 
   brave_news::BraveNewsController* controller() {
     return brave_news::BraveNewsControllerFactory::GetForBrowserContext(
-        browser()->profile());
+        browser()->GetProfile());
   }
 
   net::EmbeddedTestServer* https_server() { return &https_server_; }

@@ -5,7 +5,6 @@
 
 #include "brave/browser/history_embeddings/brave_passage_embeddings_service_controller.h"
 
-#include <memory>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -94,7 +93,7 @@ void BravePassageEmbeddingsServiceController::OnLocalModelsReady(
 }
 
 void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(
-    std::unique_ptr<optimization_guide::ModelInfo> model_info) {
+    std::optional<optimization_guide::ModelInfo> model_info) {
   if (!model_info) {
     VLOG(1) << "No usable LiteRT model in the EmbeddingGemma component; "
                "passage embeddings disabled until it ships one";
@@ -102,7 +101,7 @@ void BravePassageEmbeddingsServiceController::OnLitertModelInfoLoaded(
   // Upstream validates the metadata, records the model paths and notifies
   // observers. With no model info it clears the model recorded before, whose
   // dir the component updater removes once this version is installed.
-  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(model_info.get());
+  PassageEmbeddingsServiceController::MaybeUpdateModelInfo(model_info);
 }
 
 }  // namespace passage_embeddings
