@@ -1,0 +1,13 @@
+diff --git a/third_party/blink/public/web/web_local_frame.h b/third_party/blink/public/web/web_local_frame.h
+index b478029ace67b51478d3bbc45bbf96b6a93ddc6e..76634be38d036ec2860522864c494c2c29f1108b 100644
+--- a/third_party/blink/public/web/web_local_frame.h
++++ b/third_party/blink/public/web/web_local_frame.h
+@@ -999,6 +999,8 @@ class BLINK_EXPORT WebLocalFrame : public WebFrame {
+   virtual bool AllowStorageAccessSyncAndNotify(
+       WebContentSettingsClient::StorageType storage_type) = 0;
+ 
++  virtual void SetOriginForClearWindowNameCheck(const url::Origin&) = 0;
++
+  protected:
+   explicit WebLocalFrame(mojom::TreeScopeType scope,
+                          const LocalFrameToken& frame_token)
