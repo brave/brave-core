@@ -49,8 +49,8 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
         [&]() { return browser()->window()->IsActive(); }));
   }
 
-  auto* service = commands::AcceleratorServiceFactory::GetForContext(
-      browser()->profile());
+  auto* service =
+      commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
   ASSERT_TRUE(service);
 
   NSMenuItem* item = FindMenuItemWithTag([NSApp mainMenu], IDC_NEW_WINDOW);

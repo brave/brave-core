@@ -28,8 +28,7 @@ bool ActiveProfileUsesConfigurableShortcuts() {
   }
 
   Profile* profile = AppController.sharedController.lastProfileIfLoaded;
-  return profile &&
-         commands::AcceleratorServiceFactory::GetForContext(profile);
+  return profile && commands::AcceleratorServiceFactory::GetForContext(profile);
 }
 
 }  // namespace
