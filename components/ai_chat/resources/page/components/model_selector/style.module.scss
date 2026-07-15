@@ -111,3 +111,190 @@
   justify-content: center;
   gap: var(--leo-spacing-s);
 }
+
+
+/* New model-selector building blocks (storybook / upcoming UI). Live
+ * index.tsx still uses the footer styles above until integration. */
+
+.menuBody {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  box-sizing: border-box;
+  width: 320px;
+  min-width: 320px;
+  max-width: 320px;
+  height: 360px;
+  overflow: hidden;
+  border: 1px solid var(--leo-color-divider-subtle);
+  border-radius: var(--leo-radius-m);
+  background: var(--leo-color-container-background);
+}
+
+.vendorRail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  width: 40px;
+  flex-shrink: 0;
+  align-self: stretch;
+  padding: var(--leo-spacing-s);
+  background: var(--leo-color-page-background);
+  border-inline-end: 1px solid var(--leo-color-divider-subtle);
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.vendorRailButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: var(--leo-radius-m);
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+
+  &:hover {
+    background: var(--leo-color-container-interactive);
+
+    .vendorRailIcon {
+      filter: none;
+      --leo-icon-color: var(--leo-color-icon-interactive);
+    }
+  }
+}
+
+.vendorRailIcon {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  // Brand SVGs are multicolor; grayscale keeps them monochrome until
+  // hover/selected. Monochrome icons (pin, local) are unaffected in practice.
+  filter: grayscale(1);
+  transition: filter 0.15s ease;
+}
+
+.vendorRailButtonSelected {
+  background: var(--leo-color-primary-20);
+
+  &:hover {
+    background: var(--leo-color-primary-20);
+  }
+
+  .vendorRailIcon {
+    filter: none;
+    --leo-icon-color: var(--leo-color-icon-interactive);
+  }
+}
+
+.mainPane {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  background: var(--leo-color-container-background);
+}
+
+.searchAndFilters {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  padding: var(--leo-spacing-s);
+  border-bottom: 1px solid var(--leo-color-divider-subtle);
+}
+
+.searchInput {
+  flex: 1;
+  min-width: 0;
+
+  leo-input {
+    width: 100%;
+    // Compact search field inside the model selector toolbar.
+    --leo-control-color: transparent;
+    --leo-control-padding: var(--leo-spacing-s) var(--leo-spacing-m);
+    --leo-control-radius: var(--leo-radius-m);
+  }
+}
+
+.filterButton {
+  --leo-button-color: var(--leo-color-text-secondary);
+  flex-shrink: 0;
+}
+
+.filterButtonActive {
+  --leo-button-color: var(--leo-color-icon-interactive);
+}
+
+.filterCount {
+  margin-inline-start: var(--leo-spacing-s);
+}
+
+.capabilityFilterMenu {
+  // Let the popover hug the widest row (leading icon + longest label +
+  // status check). Item classes below keep every row that same width.
+  :global(.leo-menu-popup) {
+    width: max-content;
+    min-width: max-content;
+  }
+}
+
+.leoDropdownItem {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-xl);
+}
+
+.leoDropdownItemLabel {
+  flex: 1;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.leoDropdownItemSelected {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  color: var(--leo-color-text-interactive);
+
+  .leoDropdownItemLabel {
+    color: var(--leo-color-text-interactive);
+  }
+}
+
+.statusCheck {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  flex-shrink: 0;
+}
+
+// Reserve status-icon space on every row so width stays fixed when
+// selecting / deselecting.
+.statusCheckHidden {
+  visibility: hidden;
+}
+
+.modelList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-s);
+  padding: var(--leo-spacing-s);
+  overflow-y: auto;
+  flex: 1;
+  min-height: 0;
+}
+
+.emptyState {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--leo-spacing-xl) var(--leo-spacing-m);
+  text-align: center;
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
