@@ -18,6 +18,8 @@ import {
   tsLoaderRule,
   ifdefLoaderRule,
   fileLoaderRule,
+  onnxRuntimeWorkerJsRule,
+  wasmRule,
   braveUiFullySpecifiedRule,
   htmlAssetRule,
 } from './rules.ts'
@@ -142,24 +144,8 @@ export function createWebpackConfig(
         ...cssRules({ isDevMode }),
         tsLoaderRule({ configFile: tsConfigPath }),
         ifdefLoaderRule(buildFlags),
-        // Emit onnxruntime-web's worker glue and threaded .wasm as served
-        // assets. dependency: 'url' scopes the glue rule to ORT's new URL()
-        // reference, not our import of the same file. asset/resource makes the
-        // .wasm import resolve to a URL rather than an instantiated module.
-        // .mjs is renamed to .js so it serves as application/javascript.
-        {
-          test: /\.mjs$/,
-          include: /onnxruntime-web/,
-          dependency: 'url',
-          type: 'asset/resource',
-          generator: { filename: '[name].[contenthash].js' },
-        },
-        {
-          test: /\.wasm$/,
-          include: /onnxruntime-web/,
-          type: 'asset/resource',
-          generator: { filename: '[name].[contenthash][ext]' },
-        },
+        onnxRuntimeWorkerJsRule(),
+        wasmRule(),
         fileLoaderRule(),
         // web-discovery-project is built as CommonJS but may be classified
         // as ESM by webpack. Force auto-detection for correct CJS handling.

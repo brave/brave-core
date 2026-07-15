@@ -120,6 +120,40 @@ export function fileLoaderRule(): RuleSetRule {
   }
 }
 
+/**
+ * Emits onnxruntime-web's worker glue script as a served asset instead of
+ * inlining it into the bundle. A Worker downloads its own script from a URL, so
+ * it must be served separately from the bundle. `dependency: 'url'` scopes this
+ * rule to ORT's own `new URL()` reference and leaves our own import of the same
+ * file alone. The `.mjs` is renamed to `.js` so it serves as
+ * application/javascript.
+ *
+ * TODO(https://github.com/brave/brave-browser/issues/57166): this rule is
+ * specific to a dependency (onnxruntime-web). Figure out how to make it more
+ * generic in the future.
+ */
+export function onnxRuntimeWorkerJsRule(): RuleSetRule {
+  return {
+    test: /\.mjs$/,
+    include: /onnxruntime-web/,
+    dependency: 'url',
+    type: 'asset/resource',
+    generator: { filename: '[name].[contenthash].js' },
+  }
+}
+
+/**
+ * Emits `.wasm` imports as served assets, so the import resolves to a URL
+ * rather than an instantiated module.
+ */
+export function wasmRule(): RuleSetRule {
+  return {
+    test: /\.wasm$/,
+    type: 'asset/resource',
+    generator: { filename: '[name].[contenthash][ext]' },
+  }
+}
+
 // brave-ui is compiled as a "module" so Webpack5 expects it to provide file
 // extensions (which it does not), so we need to special case it here.
 export const braveUiFullySpecifiedRule: RuleSetRule = {
