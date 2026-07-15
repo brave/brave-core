@@ -75,6 +75,8 @@ pub mod ffi {
         LengthMismatchError,
         // Decoding failed
         DecodingError,
+        // The input maps to the group identity element
+        InvalidInput,
     }
 
     extern "Rust" {
@@ -295,6 +297,7 @@ impl From<errors::TokenError> for TokenError {
             errors::InternalError::VerifyError => TokenError::VerifyError,
             errors::InternalError::LengthMismatchError => TokenError::LengthMismatchError,
             errors::InternalError::DecodingError => TokenError::DecodingError,
+            errors::InternalError::InvalidInput => TokenError::InvalidInput,
         }
     }
 }
