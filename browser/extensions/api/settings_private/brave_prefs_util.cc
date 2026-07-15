@@ -390,6 +390,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
 #endif
 
+#if BUILDFLAG(IS_WIN)
+  (*s_brave_allowlist)[windows_recall::prefs::kWindowsRecallDisabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
 #if BUILDFLAG(ENABLE_PSST)
   (*s_brave_allowlist)[psst::prefs::kPsstEnabled] =
       settings_api::PrefType::kBoolean;
