@@ -10,8 +10,9 @@ substitutions:
       Brave has its own script to download the hermetic toolchain,
       brave/build/mac/download_hermetic_xcode.py, so it is okay to disable the
       upstream hook as it causes confusing output to be printed to the user.
-    re_pattern: |-
-      ('name': 'mac_toolchain',.+?'condition':\s*)'checkout_mac or checkout_ios'
-    re_flags: [DOTALL]
-    replace: |-
-      \1'False'
+    regex:
+      re_pattern: |-
+        ('name': 'mac_toolchain',.+?'condition':\s*)'checkout_mac or checkout_ios'
+      re_flags: [DOTALL]
+      replace: |-
+        \1'False'

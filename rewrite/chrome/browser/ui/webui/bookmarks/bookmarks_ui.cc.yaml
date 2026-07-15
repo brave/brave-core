@@ -5,5 +5,6 @@
 
 substitutions:
   - description: 'Swap `emptyList` with the a Brave ID.'
-    pattern: 'IDS_BOOKMARK_MANAGER_EMPTY_LIST'
-    replace: 'IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST'
+    regex:
+      pattern: 'IDS_BOOKMARK_MANAGER_EMPTY_LIST'
+      replace: 'IDS_BRAVE_BOOKMARK_MANAGER_EMPTY_LIST'

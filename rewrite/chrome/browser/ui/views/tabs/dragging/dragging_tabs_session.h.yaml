@@ -6,8 +6,9 @@
 substitutions:
   - description:
       'Remove final keyword from DraggingTabsSession to allow subclassing'
-    pattern: 'class DraggingTabsSession final {'
-    replace: 'class DraggingTabsSession {'
+    regex:
+      pattern: 'class DraggingTabsSession final {'
+      replace: 'class DraggingTabsSession {'
 
   - description:
       'Make the DraggingTabsSession destructor virtual to allow subclassing'

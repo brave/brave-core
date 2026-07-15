@@ -13,9 +13,11 @@ substitutions:
       (`SelectAlgorithm`, `GenerateSigningKeySlowly` and
       `GenerateAttestationKeySlowly`), grouping it with `RSA_PSS_SHA256` which
       already takes that path.
-    re_pattern: '(switch\s*\(algo\).*?)(\n\s*continue;\s*// Not supported)'
-    re_flags: [DOTALL]
+    regex:
+      re_pattern: '(switch\s*\(algo\).*?)(\n\s*continue;\s*// Not supported)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+                case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
+
     count: 3
-    replace: |-
-      \1
-              case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2

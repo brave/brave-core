@@ -5,9 +5,10 @@
 
 substitutions:
   - description: Add more overrides to SidePanelWebUIView
-    re_pattern:
-      '(bool HandleKeyboardEvent\(content::WebContents\* source,\s+const
-      input::NativeWebKeyboardEvent& event\) override;)'
-    replace: |-
-      \1
-        bool HandleContextMenu(content::RenderFrameHost& render_frame_host, const content::ContextMenuParams& params) override;
+    regex:
+      re_pattern:
+        '(bool HandleKeyboardEvent\(content::WebContents\* source,\s+const
+        input::NativeWebKeyboardEvent& event\) override;)'
+      replace: |-
+        \1
+          bool HandleContextMenu(content::RenderFrameHost& render_frame_host, const content::ContextMenuParams& params) override;

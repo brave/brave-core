@@ -11,9 +11,10 @@ substitutions:
       Anchored on the license header so the insertion does not depend
       on any particular upstream import surviving — only on the BSD
       header block that every Chromium source file starts with.
-    re_pattern: '(# found in the LICENSE file\.\n\n)'
-    replace: |
-      \1import("//brave/resources/brave_grit.gni")
+    regex:
+      re_pattern: '(# found in the LICENSE file\.\n\n)'
+      replace: |
+        \1import("//brave/resources/brave_grit.gni")
 
   - description: |
       Let `build_webui` callers exclude specific TypeScript files from
@@ -30,17 +31,18 @@ substitutions:
       deeper and therefore can't satisfy the backreference. The
       replacement strings reuse `\1` too, so the inserted hooks pick
       up the same indent.
-    re_pattern:
-      '( *)(preprocess_if_expr\("preprocess_ts_files"\) \{.*?)(\n\1\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1\2
-      \1  if (defined(invoker.exclude_ts_preprocess_files)) {
-      \1    in_files -= invoker.exclude_ts_preprocess_files
-      \1  }
-      \1  if (defined(invoker.preprocess_deps)) {
-      \1    public_deps = invoker.preprocess_deps
-      \1  }\3
+    regex:
+      re_pattern:
+        '( *)(preprocess_if_expr\("preprocess_ts_files"\) \{.*?)(\n\1\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2
+        \1  if (defined(invoker.exclude_ts_preprocess_files)) {
+        \1    in_files -= invoker.exclude_ts_preprocess_files
+        \1  }
+        \1  if (defined(invoker.preprocess_deps)) {
+        \1    public_deps = invoker.preprocess_deps
+        \1  }\3
 
   - description: |
       Same pair of hooks for the HTML/CSS preprocess target: exclude
@@ -50,17 +52,18 @@ substitutions:
       sits one level deeper than the target's own close. The
       backreference pairs the close with the opener so they can't be
       confused.
-    re_pattern:
-      '( *)(preprocess_if_expr\("preprocess_html_css_files"\) \{.*?)(\n\1\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1\2
-      \1  if (defined(invoker.exclude_html_css_preprocess_files)) {
-      \1    in_files -= invoker.exclude_html_css_preprocess_files
-      \1  }
-      \1  if (defined(invoker.preprocess_deps)) {
-      \1    public_deps = invoker.preprocess_deps
-      \1  }\3
+    regex:
+      re_pattern:
+        '( *)(preprocess_if_expr\("preprocess_html_css_files"\) \{.*?)(\n\1\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2
+        \1  if (defined(invoker.exclude_html_css_preprocess_files)) {
+        \1    in_files -= invoker.exclude_html_css_preprocess_files
+        \1  }
+        \1  if (defined(invoker.preprocess_deps)) {
+        \1    public_deps = invoker.preprocess_deps
+        \1  }\3
 
   - description: |
       Default the ESLint `enable_web_component_missing_deps` check to
@@ -70,8 +73,9 @@ substitutions:
       visible to the upstream missing-deps check, so keeping it on by
       default would break the build. Callers can still opt in via
       `invoker.eslint_enable_web_component_missing_deps`.
-    re_pattern: 'enable_web_component_missing_deps = true'
-    replace: 'enable_web_component_missing_deps = false'
+    regex:
+      re_pattern: 'enable_web_component_missing_deps = true'
+      replace: 'enable_web_component_missing_deps = false'
 
   - description: |
       Append `//brave/ui/webui/resources` to `no_explicit_any_exceptions`
@@ -84,10 +88,11 @@ substitutions:
       are. The `[^\]]*` body keeps the match from running past the
       list's own `]` (greedy `.*` would otherwise reach the `grit_flags`
       list further down).
-    re_pattern: '(no_explicit_any_exceptions = \[[^\]]*\])'
-    replace: |-
-      \1
-            no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
+    regex:
+      re_pattern: '(no_explicit_any_exceptions = \[[^\]]*\])'
+      replace: |-
+        \1
+              no_explicit_any_exceptions += [ "//brave/ui/webui/resources" ]
 
   - description: |
       Route the `grit("resources")` template call through Brave's
@@ -95,7 +100,8 @@ substitutions:
       `use_brave_grit` can substitute Brave-specific grit handling.
       The `brave_grit.gni` import that defines this wrapper is added
       to the top of the file by the first substitution in this plaster.
-    re_pattern: '(    )(grit\("resources"\) \{)'
-    replace: |-
-      \1forward_variables_from(invoker, [ "use_brave_grit" ])
-      \1brave_or_default_grit("resources") {
+    regex:
+      re_pattern: '(    )(grit\("resources"\) \{)'
+      replace: |-
+        \1forward_variables_from(invoker, [ "use_brave_grit" ])
+        \1brave_or_default_grit("resources") {

@@ -10,8 +10,9 @@ substitutions:
       Brave subclasses WebUIBubbleManagerImpl and needs to reach
       CreateWebUIBubbleDialog and GetContentsWrapper, so wrap both overrides in
       a `protected:` section.
-    re_pattern:
-      '(\n)(  [^\n]*CreateWebUIBubbleDialog\([^;{]*override;\n[^\n]*GetContentsWrapper\(\)[^\n]*override;\n)'
-    replace: |
-      \1 protected:
-      \2 private:
+    regex:
+      re_pattern:
+        '(\n)(  [^\n]*CreateWebUIBubbleDialog\([^;{]*override;\n[^\n]*GetContentsWrapper\(\)[^\n]*override;\n)'
+      replace: |
+        \1 protected:
+        \2 private:

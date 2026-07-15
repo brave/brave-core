@@ -8,15 +8,17 @@ substitutions:
       Group AI_CHAT_CONVERSATION with the medium-nudge-delay data types in
       GetDefaultLocalChangeNudgeDelay. Anchored on the function and the return
       outcome, so it does not depend on any sibling case key.
-    re_pattern:
-      '(GetDefaultLocalChangeNudgeDelay\(.*?)(\n[ \t]*return
-      kMediumLocalChangeNudgeDelay;)'
-    re_flags: [DOTALL]
-    replace: '\1\n    case AI_CHAT_CONVERSATION:\2'
+    regex:
+      re_pattern:
+        '(GetDefaultLocalChangeNudgeDelay\(.*?)(\n[ \t]*return
+        kMediumLocalChangeNudgeDelay;)'
+      re_flags: [DOTALL]
+      replace: '\1\n    case AI_CHAT_CONVERSATION:\2'
 
   - description: |-
       Group AI_CHAT_CONVERSATION with the data types that cannot get commits
       from extensions in CanGetCommitsFromExtensions.
-    re_pattern: '(CanGetCommitsFromExtensions\(.*?)(\n[ \t]*return false;)'
-    re_flags: [DOTALL]
-    replace: '\1\n    case AI_CHAT_CONVERSATION:\2'
+    regex:
+      re_pattern: '(CanGetCommitsFromExtensions\(.*?)(\n[ \t]*return false;)'
+      re_flags: [DOTALL]
+      replace: '\1\n    case AI_CHAT_CONVERSATION:\2'

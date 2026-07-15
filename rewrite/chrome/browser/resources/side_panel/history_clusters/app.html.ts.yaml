@@ -10,5 +10,6 @@
 substitutions:
   - description:
       'Remove the disclaimer Learn more link from the history side panel.'
-    re_pattern: '\s*<a id="historyEmbeddingsDisclaimerLink"[\s\S]+?</a>'
-    replace: ''
+    regex:
+      re_pattern: '\s*<a id="historyEmbeddingsDisclaimerLink"[\s\S]+?</a>'
+      replace: ''

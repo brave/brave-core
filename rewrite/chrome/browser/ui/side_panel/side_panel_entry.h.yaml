@@ -7,5 +7,6 @@ substitutions:
   - description: |
       Increase the default (and minimum) side panel content width to better fit
       Brave's side panel.
-    pattern: 'static constexpr int kSidePanelDefaultContentWidth = 360;'
-    replace: 'static constexpr int kSidePanelDefaultContentWidth = 400;'
+    regex:
+      pattern: 'static constexpr int kSidePanelDefaultContentWidth = 360;'
+      replace: 'static constexpr int kSidePanelDefaultContentWidth = 400;'

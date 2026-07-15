@@ -14,8 +14,9 @@ substitutions:
   - description:
       'Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT to an empty
       string so the "Learn more" link view renders at zero width.'
-    re_pattern: '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
-    replace: 'IDS_BRAVE_EMPTY_STRING'
+    regex:
+      re_pattern: '\bIDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH_LINK_TEXT\b'
+      replace: 'IDS_BRAVE_EMPTY_STRING'
 
   - description: |
       Swap IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH to the
@@ -25,5 +26,7 @@ substitutions:
       space (the link text was swapped to IDS_BRAVE_EMPTY_STRING above) that
       fails AutocompleteMatch::SanitizeString in
       AutocompleteResult::AppendMatches.
-    re_pattern: 'IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH(\))\s*\+\s*u" "'
-    replace: 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\1'
+    regex:
+      re_pattern:
+        'IDS_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH(\))\s*\+\s*u" "'
+      replace: 'IDS_BRAVE_OMNIBOX_HISTORY_EMBEDDINGS_DISCLAIMER_IPH\1'

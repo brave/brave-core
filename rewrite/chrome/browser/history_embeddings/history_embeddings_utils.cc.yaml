@@ -14,10 +14,12 @@ substitutions:
   - description:
       'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF to the Brave-owned
       string.'
-    re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF\b'
-    replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+    regex:
+      re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER_LOGGING_OFF\b'
+      replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
 
   - description:
       'Swap IDS_HISTORY_EMBEDDINGS_DISCLAIMER to the Brave-owned string.'
-    re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
-    replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'
+    regex:
+      re_pattern: '\bIDS_HISTORY_EMBEDDINGS_DISCLAIMER\b'
+      replace: 'IDS_BRAVE_HISTORY_EMBEDDINGS_DISCLAIMER'

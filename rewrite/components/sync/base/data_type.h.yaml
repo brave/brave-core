@@ -8,12 +8,14 @@ substitutions:
       Append AI_CHAT_CONVERSATION as the last user DataType and make it the new
       LAST_USER_DATA_TYPE. Anchored on LAST_USER_DATA_TYPE value-agnostically so
       it does not depend on which type is currently last.
-    re_pattern: '(\n[ \t]*)LAST_USER_DATA_TYPE = \w+,'
-    replace:
-      '\1AI_CHAT_CONVERSATION,\1LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,'
+    regex:
+      re_pattern: '(\n[ \t]*)LAST_USER_DATA_TYPE = \w+,'
+      replace:
+        '\1AI_CHAT_CONVERSATION,\1LAST_USER_DATA_TYPE = AI_CHAT_CONVERSATION,'
 
   - description: |-
       Append the AI Chat histogram value and make it the new kMaxValue. Anchored
       on kMaxValue value-agnostically.
-    re_pattern: '(\n[ \t]*)kMaxValue = \w+,'
-    replace: '\1kAIChatConversation = 81,\1kMaxValue = kAIChatConversation,'
+    regex:
+      re_pattern: '(\n[ \t]*)kMaxValue = \w+,'
+      replace: '\1kAIChatConversation = 81,\1kMaxValue = kAIChatConversation,'

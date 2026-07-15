@@ -7,8 +7,9 @@ substitutions:
   - description:
       Call BuildCommandsForTreeTab at in
       SessionTabBase::BuildCommandsForBrowser().
-    re_pattern: |-
-      (void SessionServiceBase::BuildCommandsForBrowser\([\s\S]*?\) {)
-    replace: |-
-      \1
-        BuildCommandsForTreeTab(browser->tab_strip_model(), command_storage_manager());
+    regex:
+      re_pattern: |-
+        (void SessionServiceBase::BuildCommandsForBrowser\([\s\S]*?\) {)
+      replace: |-
+        \1
+          BuildCommandsForTreeTab(browser->tab_strip_model(), command_storage_manager());

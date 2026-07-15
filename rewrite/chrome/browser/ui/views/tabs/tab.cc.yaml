@@ -6,17 +6,20 @@
 substitutions:
   - description:
       'Check if tab can be closed via middle mouse button click based on prefs'
-    pattern: 'if (event.IsOnlyMiddleMouseButton())'
-    replace:
-      'if (event.IsOnlyMiddleMouseButton() &&
-      controller_->CanCloseTabViaMiddleButtonClick())'
+    regex:
+      pattern: 'if (event.IsOnlyMiddleMouseButton())'
+      replace:
+        'if (event.IsOnlyMiddleMouseButton() &&
+        controller_->CanCloseTabViaMiddleButtonClick())'
 
   - description: 'Add BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION'
-    re_pattern:
-      '(gfx::Rect favicon_bounds\(start, contents_rect\.y\(\), 0, 0\);\s+if
-      \(showing_icon_\) \{\n)'
-    replace: '\1    BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION\n'
+    regex:
+      re_pattern:
+        '(gfx::Rect favicon_bounds\(start, contents_rect\.y\(\), 0, 0\);\s+if
+        \(showing_icon_\) \{\n)'
+      replace: '\1    BRAVE_UI_VIEWS_TABS_TAB_LAYOUT_ADJUST_ICON_POSITION\n'
 
   - description: 'Add BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'
-    re_pattern: '(if\s*\(showing_alert_indicator_\)\s*\{\n\s*title_right\s*=\s*alert_indicator_button_->x\(\)\s*-\s*after_title_padding;)'
-    replace: '\1\n      BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'
+    regex:
+      re_pattern: '(if\s*\(showing_alert_indicator_\)\s*\{\n\s*title_right\s*=\s*alert_indicator_button_->x\(\)\s*-\s*after_title_padding;)'
+      replace: '\1\n      BRAVE_UI_VIEWS_TABS_TAB_ALERT_INDICATOR_POSITION'

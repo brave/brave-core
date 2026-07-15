@@ -7,20 +7,21 @@ substitutions:
   - description:
       'Insert kActionShowPartitionedStorage and kActionShowPsstIcon before
       kActionVirtualCardEnroll'
-    pattern: 'kActionVirtualCardEnroll,'
-    replace: |-
-      kActionShowPartitionedStorage,
-              {
-                  .histogram_name = "PartitionedStorage",
-                  .type = brave::kPartitionedStorageActionIconType,
-              },
-          },
-          {
-              kActionShowPsstIcon,
-              {
-                 .histogram_name = "PsstIcon",
-                 .type = brave::kPsstIconActionIconType,
-              },
-          },
-          {
-              kActionVirtualCardEnroll,
+    regex:
+      pattern: 'kActionVirtualCardEnroll,'
+      replace: |-
+        kActionShowPartitionedStorage,
+                {
+                    .histogram_name = "PartitionedStorage",
+                    .type = brave::kPartitionedStorageActionIconType,
+                },
+            },
+            {
+                kActionShowPsstIcon,
+                {
+                   .histogram_name = "PsstIcon",
+                   .type = brave::kPsstIconActionIconType,
+                },
+            },
+            {
+                kActionVirtualCardEnroll,

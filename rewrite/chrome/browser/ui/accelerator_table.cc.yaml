@@ -7,5 +7,7 @@ substitutions:
   - description: |-
       Rename GetAcceleratorList() to GetAcceleratorList_ChromiumImpl() so that
       we can have our own implementation of GetAcceleratorList().
-    re_pattern: '(std::vector<AcceleratorMapping>\ GetAcceleratorList)(\(\)\ {)'
-    replace: '\1_ChromiumImpl\2'
+    regex:
+      re_pattern:
+        '(std::vector<AcceleratorMapping>\ GetAcceleratorList)(\(\)\ {)'
+      replace: '\1_ChromiumImpl\2'

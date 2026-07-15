@@ -7,8 +7,9 @@ substitutions:
   - description:
       'Adding ShouldBypassDefaultPreventedForContextMenu() in context menu
       handling'
-    re_pattern:
-      'if \((!event_->defaultPrevented\(\)) && !event_->DefaultHandled\(\) &&'
-    replace:
-      'if ((\1 || ShouldBypassDefaultPreventedForContextMenu(event_)) &&
-      !event_->DefaultHandled() &&'
+    regex:
+      re_pattern:
+        'if \((!event_->defaultPrevented\(\)) && !event_->DefaultHandled\(\) &&'
+      replace:
+        'if ((\1 || ShouldBypassDefaultPreventedForContextMenu(event_)) &&
+        !event_->DefaultHandled() &&'

@@ -12,5 +12,6 @@ substitutions:
       SetCspValues test exercises that override path with
       "trusted-types test;" and expects the stored value back verbatim;
       update the expectation to match the augmented value.
-    re_pattern: 'EXPECT_EQ\("trusted-types test;",'
-    replace: 'EXPECT_EQ("trusted-types test svelte-trusted-html default;",'
+    regex:
+      re_pattern: 'EXPECT_EQ\("trusted-types test;",'
+      replace: 'EXPECT_EQ("trusted-types test svelte-trusted-html default;",'

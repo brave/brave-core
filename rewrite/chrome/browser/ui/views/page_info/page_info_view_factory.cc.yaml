@@ -19,10 +19,11 @@ substitutions:
       following `switch (permission.type)` to single out the fallback
       switch (the function also has an earlier switch on the same
       variable).
-    re_pattern:
-      '(icon = &gfx::VectorIcon::EmptyIcon\(\);\s+switch \(permission\.type\)
-      \{\n)'
-    replace: |
-      \1    case ContentSettingsType::AUTOPLAY:
-            icon = &kAutoplayStatusIcon;
-            break;
+    regex:
+      re_pattern:
+        '(icon = &gfx::VectorIcon::EmptyIcon\(\);\s+switch \(permission\.type\)
+        \{\n)'
+      replace: |
+        \1    case ContentSettingsType::AUTOPLAY:
+              icon = &kAutoplayStatusIcon;
+              break;

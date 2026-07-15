@@ -7,22 +7,24 @@ substitutions:
   - description: |-
       Make mSyncTypeSwitchPreferencesMap protected so BraveManageSyncSettings
       can register the AI Chat toggle. Replaces the bytecode visibility tweak.
-    re_pattern:
-      'private (Map<Integer, ChromeSwitchPreference>
-      mSyncTypeSwitchPreferencesMap)'
-    replace: 'protected \1'
+    regex:
+      re_pattern:
+        'private (Map<Integer, ChromeSwitchPreference>
+        mSyncTypeSwitchPreferencesMap)'
+      replace: 'protected \1'
 
   - description: |-
       Skip the isUsingExplicitPassphrase() block in onPreferenceChange()
 
       It suppresses the "addresses not encrypted" warning, which is not
       applicable to Brave's sync model.
-    re_pattern: |-
-      (onPreferenceChange\(Preference preference, Object newValue\) \{)\n( *)(if \(mSyncService\.isUsingExplicitPassphrase\(\))
-    replace: |-
-      \1
-      \2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
-      \2\3
+    regex:
+      re_pattern: |-
+        (onPreferenceChange\(Preference preference, Object newValue\) \{)\n( *)(if \(mSyncService\.isUsingExplicitPassphrase\(\))
+      replace: |-
+        \1
+        \2if (false)  // Suppress the "addresses not encrypted" warning (not applicable to Brave's sync model).
+        \2\3
 
   - description: |-
       Use an empty AccountInfo for primaryAccount in updateSyncPreferences
@@ -30,7 +32,8 @@ substitutions:
       This forces the signed-in account name passed to
       onGoogleActivityControlsClicked to be empty, keeping Brave's Google
       account details out of the activity controls flow.
-    re_pattern:
-      'primaryAccount = getIdentityManager\(\)\.getPrimaryAccountInfo\(\)'
-    replace: |-
-      primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build()
+    regex:
+      re_pattern:
+        'primaryAccount = getIdentityManager\(\)\.getPrimaryAccountInfo\(\)'
+      replace: |-
+        primaryAccount = new AccountInfo.Builder("", new org.chromium.google_apis.gaia.GaiaId("")).build()

@@ -5,6 +5,8 @@
 
 substitutions:
   - description: 'Point Learn More link to the Brave support article.'
-    re_pattern: '(kCRSLearnMoreLink[^=]*=\s*)(?:"[^"]*"\s*)+;'
+    regex:
+      re_pattern: '(kCRSLearnMoreLink[^=]*=\s*)(?:"[^"]*"\s*)+;'
+      replace: '\1"https://github.com/brave/brave-browser/wiki/TLS-Policy#root-store";'
+
     count: 1
-    replace: '\1"https://github.com/brave/brave-browser/wiki/TLS-Policy#root-store";'

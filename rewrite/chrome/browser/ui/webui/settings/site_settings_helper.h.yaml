@@ -6,9 +6,11 @@
 substitutions:
   - description:
       'Insert Brave `SiteSettingSource` entries before kNumSources sentinel'
-    re_pattern: '(enum class SiteSettingSource\s*\{.*?)(\n\s*kNumSources,)'
-    re_flags: [DOTALL]
+    regex:
+      re_pattern: '(enum class SiteSettingSource\s*\{.*?)(\n\s*kNumSources,)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kRemoteList,\2
+
     count: 1
-    replace: |-
-      \1
-        kRemoteList,\2

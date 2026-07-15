@@ -9,35 +9,36 @@ substitutions:
 
       We add a number of cases to OriginFilter that now need to be handled
       exhaustively in GetOriginList
-    re_pattern: '(GetOriginList\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case web::OriginFilter::kYouTube:
-            return @[
-              @"https://youtube.com",
-              @"https://www.youtube.com",
-              @"https://m.youtube.com",
-            ];
-          case web::OriginFilter::kBraveSearch:
-            return @[
-              @"https://safesearch.brave.com",
-              @"https://safesearch.brave.software",
-              @"https://safesearch.bravesoftware.com",
-              @"https://search-dev-local.brave.com",
-              @"https://search.brave.com",
-              @"https://search.brave.software",
-              @"https://search.bravesoftware.com",
-            ];
-          case web::OriginFilter::kBraveTalk:
-            return @[
-              @"https://talk.brave.com",
-              @"https://talk.bravesoftware.com",
-              @"https://talk.brave.software",
-            ];
-          case web::OriginFilter::kBraveAccount:
-            return @[
-              @"https://account.brave.com",
-              @"https://account.bravesoftware.com",
-              @"https://account.brave.software",
-            ];\2
+    regex:
+      re_pattern: '(GetOriginList\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case web::OriginFilter::kYouTube:
+              return @[
+                @"https://youtube.com",
+                @"https://www.youtube.com",
+                @"https://m.youtube.com",
+              ];
+            case web::OriginFilter::kBraveSearch:
+              return @[
+                @"https://safesearch.brave.com",
+                @"https://safesearch.brave.software",
+                @"https://safesearch.bravesoftware.com",
+                @"https://search-dev-local.brave.com",
+                @"https://search.brave.com",
+                @"https://search.brave.software",
+                @"https://search.bravesoftware.com",
+              ];
+            case web::OriginFilter::kBraveTalk:
+              return @[
+                @"https://talk.brave.com",
+                @"https://talk.bravesoftware.com",
+                @"https://talk.brave.software",
+              ];
+            case web::OriginFilter::kBraveAccount:
+              return @[
+                @"https://account.brave.com",
+                @"https://account.bravesoftware.com",
+                @"https://account.brave.software",
+              ];\2

@@ -11,10 +11,11 @@ substitutions:
       * For small features use the existing 'brave' category.
       * For new big subsystems with a lot of traces create a separate category
         named 'brave.<feature_name>'.
-    re_pattern: '(PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS\(.+?BASE_EXPORT,\n)'
-    re_flags: [DOTALL]
-    replace: |
-      \1    perfetto::Category("brave"),
-          perfetto::Category("brave.adblock"),
-          perfetto::Category("brave.ads"),
-          perfetto::Category("brave.news"),
+    regex:
+      re_pattern: '(PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS\(.+?BASE_EXPORT,\n)'
+      re_flags: [DOTALL]
+      replace: |
+        \1    perfetto::Category("brave"),
+            perfetto::Category("brave.adblock"),
+            perfetto::Category("brave.ads"),
+            perfetto::Category("brave.news"),

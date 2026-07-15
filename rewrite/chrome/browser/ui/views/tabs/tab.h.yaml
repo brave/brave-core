@@ -5,6 +5,8 @@
 
 substitutions:
   - description: 'Adding header for BraveAutocompleteSchemeClassifier'
-    re_pattern: 'bool showing_close_button_ = false;'
-    replace:
-      'ControllableCloseButtonState showing_close_button_{*controller_, *this};'
+    regex:
+      re_pattern: 'bool showing_close_button_ = false;'
+      replace:
+        'ControllableCloseButtonState showing_close_button_{*controller_,
+        *this};'

@@ -11,12 +11,15 @@
 substitutions:
   - description:
       'Redirect upstream kLinkCopied tests to a non-suppressed toast.'
-    pattern: 'ToastId::kLinkCopied'
-    count: 0
-    replace: 'ToastId::kLinkToHighlightCopied'
+    regex:
+      pattern: 'ToastId::kLinkCopied'
+      replace: 'ToastId::kLinkToHighlightCopied'
 
+    count: 0
   - description:
       'Redirect upstream kImageCopied tests to a non-suppressed toast.'
-    pattern: 'ToastId::kImageCopied'
+    regex:
+      pattern: 'ToastId::kImageCopied'
+      replace: 'ToastId::kClearBrowsingData'
+
     count: 0
-    replace: 'ToastId::kClearBrowsingData'

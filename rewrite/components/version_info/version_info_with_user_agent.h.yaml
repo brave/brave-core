@@ -7,5 +7,6 @@ substitutions:
   - description: |
       Report Brave's Chromium version in the User-Agent product string by
       swapping Chromium's PRODUCT_VERSION for our BRAVE_CHROMIUM_VERSION.
-    re_pattern: '\bPRODUCT_VERSION\b'
-    replace: 'BRAVE_CHROMIUM_VERSION'
+    regex:
+      re_pattern: '\bPRODUCT_VERSION\b'
+      replace: 'BRAVE_CHROMIUM_VERSION'

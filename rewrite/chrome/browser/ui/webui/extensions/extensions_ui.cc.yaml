@@ -6,18 +6,21 @@
 substitutions:
   - description: |
       Add Brave's extensions resources to the WebUI data source.
-    re_pattern:
-      '(content::WebUIDataSource\*
-      CreateAndAddExtensionsSource\([^{]*\{.+?\n)(  return source;)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1  BraveAddExtensionsResources(source, profile);
-      \2
+    regex:
+      re_pattern:
+        '(content::WebUIDataSource\*
+        CreateAndAddExtensionsSource\([^{]*\{.+?\n)(  return source;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  BraveAddExtensionsResources(source, profile);
+        \2
   - description: |
       Use Brave's Chrome Web Store item string.
-    pattern: 'IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE'
-    replace: 'IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE'
+    regex:
+      pattern: 'IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE'
+      replace: 'IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE'
   - description: |
       Use Brave's webstore item-source string.
-    pattern: 'IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE'
-    replace: 'IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE'
+    regex:
+      pattern: 'IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE'
+      replace: 'IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE'

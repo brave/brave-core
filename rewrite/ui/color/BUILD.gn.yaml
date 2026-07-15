@@ -9,25 +9,27 @@ substitutions:
 
       The `sources.gni` import and the Brave deps are grouped together at the
       end of the target.
-    re_pattern: '(component\("color"\).*?)\n\}'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        import("//brave/ui/color/sources.gni")
-        sources += brave_ui_color_sources
-        public_deps += brave_ui_color_public_deps
-      }
+    regex:
+      re_pattern: '(component\("color"\).*?)\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          import("//brave/ui/color/sources.gni")
+          sources += brave_ui_color_sources
+          public_deps += brave_ui_color_public_deps
+        }
 
   - description: |
       Brave additions to `component("mixers")`.
 
       The `sources.gni` import and the Brave deps are grouped together at the
       end of the target.
-    re_pattern: '(component\("mixers"\).*?)\n\}'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        import("//brave/ui/color/sources.gni")
-        sources += brave_ui_color_mixer_sources
-        public_deps += brave_ui_color_mixer_public_deps
-      }
+    regex:
+      re_pattern: '(component\("mixers"\).*?)\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          import("//brave/ui/color/sources.gni")
+          sources += brave_ui_color_mixer_sources
+          public_deps += brave_ui_color_mixer_public_deps
+        }

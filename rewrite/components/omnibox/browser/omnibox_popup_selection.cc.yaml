@@ -19,5 +19,6 @@ substitutions:
       labels so we don't depend on the exact form of the upstream return
       expression. This keeps the plaster resilient if Chromium tweaks the
       condition (e.g. swaps the match type check or refactors the body).
-    re_pattern: '(case FOCUSED_BUTTON_THUMBS_DOWN:\n)(\s+)return'
-    replace: '\1\2if ((true)) return false;\n\2return'
+    regex:
+      re_pattern: '(case FOCUSED_BUTTON_THUMBS_DOWN:\n)(\s+)return'
+      replace: '\1\2if ((true)) return false;\n\2return'

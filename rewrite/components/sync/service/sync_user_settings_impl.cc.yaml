@@ -7,8 +7,9 @@ substitutions:
   - description: |-
       Call BraveAdjustPreferredDataTypes for unconditional and
       local-sync-only type exclusions.
-    re_pattern: '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return\s+types;\s*\})'
-    re_flags: ['MULTILINE']
-    replace: |-
-      \1
-        BraveAdjustPreferredDataTypes(&types, prefs_->IsLocalSyncEnabled());\2
+    regex:
+      re_pattern: '(SyncUserSettingsImpl::GetPreferredDataTypes[\s\S]+?)(\s+return\s+types;\s*\})'
+      re_flags: ['MULTILINE']
+      replace: |-
+        \1
+          BraveAdjustPreferredDataTypes(&types, prefs_->IsLocalSyncEnabled());\2

@@ -19,13 +19,15 @@ substitutions:
       statement. The return value (rather than a bare return) is required because a
       bare return before the try would make it an unreachable statement, which Java
       rejects at compile time.
-    re_pattern: '(public void attemptPictureInPicture\(\) \{[\s\S]*?)\btry\s*\{'
-    replace: |-
-      \1if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                      .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
-                  return;
-              }
-              try {
+    regex:
+      re_pattern:
+        '(public void attemptPictureInPicture\(\) \{[\s\S]*?)\btry\s*\{'
+      replace: |-
+        \1if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                        .braveAttemptPictureInPicture(mActivity, webContents, builder, bounds)) {
+                    return;
+                }
+                try {
 
   - description: |-
       Let Brave intercept YouTube PiP dismiss signals.
@@ -35,16 +37,17 @@ substitutions:
       translating the upstream MetricsEndReason enum into individual boolean
       flags so Brave does not depend on the enum directly. Returns early when
       Brave handles it.
-    re_pattern: '(\s+private void dismissActivityIfNeeded\(.*\) \{)'
-    replace: |-
-      \1
-              if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
-                      .maybeHandleDismissActivityForYouTubePictureInPicture(
-                              activity,
-                              reason == MetricsEndReason.START,
-                              reason == MetricsEndReason.RESUME,
-                              reason == MetricsEndReason.LEFT_FULLSCREEN,
-                              reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
-                              reason == MetricsEndReason.NEW_TAB)) {
-                  return;
-              }
+    regex:
+      re_pattern: '(\s+private void dismissActivityIfNeeded\(.*\) \{)'
+      replace: |-
+        \1
+                if (BraveFullscreenVideoPictureInPictureController.class.cast(this)
+                        .maybeHandleDismissActivityForYouTubePictureInPicture(
+                                activity,
+                                reason == MetricsEndReason.START,
+                                reason == MetricsEndReason.RESUME,
+                                reason == MetricsEndReason.LEFT_FULLSCREEN,
+                                reason == MetricsEndReason.WEB_CONTENTS_LEFT_FULLSCREEN,
+                                reason == MetricsEndReason.NEW_TAB)) {
+                    return;
+                }

@@ -9,11 +9,12 @@ substitutions:
 
       This enum doesn't contain a kMaxValue and only has a single case that
       contains an explicit value (kPublic)
-    re_pattern: '(enum class OriginFilter \{\s+kPublic = 0,)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        kYouTube,
-        kBraveSearch,
-        kBraveTalk,
-        kBraveAccount,
+    regex:
+      re_pattern: '(enum class OriginFilter \{\s+kPublic = 0,)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kYouTube,
+          kBraveSearch,
+          kBraveTalk,
+          kBraveAccount,

@@ -19,7 +19,8 @@ substitutions:
 
       The match is generic enough so the name of the arguments are not as
       important.
-    re_pattern:
-      '(public static boolean isInSingleUrlBarMode\(boolean (\w+)\) \{\s+return
-      )!\2;'
-    replace: '\1false;'
+    regex:
+      re_pattern:
+        '(public static boolean isInSingleUrlBarMode\(boolean (\w+)\)
+        \{\s+return )!\2;'
+      replace: '\1false;'

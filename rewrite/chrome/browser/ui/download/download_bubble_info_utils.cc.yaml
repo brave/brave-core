@@ -10,8 +10,9 @@ substitutions:
       DELETE_LOCAL_FILE is a Brave-only extension of DownloadCommands::Command, and
       the matching "Delete" quick action is shown alongside the upstream
       OPEN_WHEN_COMPLETE entry whenever the download can be opened.
-    re_pattern: '(QuickActionsForDownload\([^)]*\)\s*\{[\s\S]*?Command::OPEN_WHEN_COMPLETE,[\s\S]*?\);)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          AddDeleteLocalFileQuickAction(actions);
+    regex:
+      re_pattern: '(QuickActionsForDownload\([^)]*\)\s*\{[\s\S]*?Command::OPEN_WHEN_COMPLETE,[\s\S]*?\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            AddDeleteLocalFileQuickAction(actions);

@@ -10,6 +10,7 @@ substitutions:
       Brave's vector icons default to a larger size than upstream Chromium's, so
       upstream's two-arg `FromVectorIcon` call ends up too big for the menu arrow.
       Pass the explicit 16 px size that upstream implicitly relies on.
-    re_pattern: '(ui::ImageModel::FromVectorIcon\(.*?kSubmenuArrowChromeRefreshOldIcon,.*?)\)'
-    re_flags: [DOTALL]
-    replace: '\1, 16)'
+    regex:
+      re_pattern: '(ui::ImageModel::FromVectorIcon\(.*?kSubmenuArrowChromeRefreshOldIcon,.*?)\)'
+      re_flags: [DOTALL]
+      replace: '\1, 16)'

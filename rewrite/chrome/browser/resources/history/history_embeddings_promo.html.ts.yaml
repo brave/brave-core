@@ -12,6 +12,7 @@ substitutions:
   - description:
       'Remove the Manage-history-search-setting link from the history embeddings
       promo.'
-    re_pattern:
-      '\s*<a href="\$i18n\{historyEmbeddingsSettingsUrl\}"[\s\S]+?</a>'
-    replace: ''
+    regex:
+      re_pattern:
+        '\s*<a href="\$i18n\{historyEmbeddingsSettingsUrl\}"[\s\S]+?</a>'
+      replace: ''

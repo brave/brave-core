@@ -9,5 +9,6 @@ substitutions:
       so the tab search bubble uses TOP_LEFT only for Brave vertical tabs and
       upstream vertical tabstrip; horizontal tab strip uses TOP_RIGHT so the
       bubble opens to the left of the trailing-edge combo button.'
-    pattern: 'position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip'
-    replace: 'use_brave_vertical_tab_'
+    regex:
+      pattern: 'position == tabs::TabSearchPosition::kLeadingHorizontalTabstrip'
+      replace: 'use_brave_vertical_tab_'

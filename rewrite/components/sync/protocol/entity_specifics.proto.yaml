@@ -5,17 +5,19 @@
 
 substitutions:
   - description: 'Import the Brave AI Chat specifics proto.'
-    re_pattern: 'import "components/sync/protocol/ai_thread_specifics.proto";'
-    replace: |-
-      import "brave/components/sync/protocol/ai_chat_specifics.proto";
-      import "components/sync/protocol/ai_thread_specifics.proto";
+    regex:
+      re_pattern: 'import "components/sync/protocol/ai_thread_specifics.proto";'
+      replace: |-
+        import "brave/components/sync/protocol/ai_chat_specifics.proto";
+        import "components/sync/protocol/ai_thread_specifics.proto";
 
   - description: |-
       Add the AI Chat conversation field to EntitySpecifics, before the trailing
       "keep this comment as the last entry" marker so it does not depend on any
       sibling field.
-    re_pattern:
-      '(\n([ \t]*))(// When adding a new type, follow the docs below and keep
-      this comment)'
-    replace:
-      '\1AIChatConversationSpecifics ai_chat_conversation = 10000001;\1\3'
+    regex:
+      re_pattern:
+        '(\n([ \t]*))(// When adding a new type, follow the docs below and keep
+        this comment)'
+      replace:
+        '\1AIChatConversationSpecifics ai_chat_conversation = 10000001;\1\3'

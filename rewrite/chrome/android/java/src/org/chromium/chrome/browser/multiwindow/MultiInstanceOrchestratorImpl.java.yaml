@@ -6,15 +6,17 @@
 substitutions:
   - description:
       'Remove final to allow BraveMultiInstanceOrchestratorImpl to extend it.'
-    pattern: '/* package */ final class MultiInstanceOrchestratorImpl'
-    replace: '/* package */ class MultiInstanceOrchestratorImpl'
+    regex:
+      pattern: '/* package */ final class MultiInstanceOrchestratorImpl'
+      replace: '/* package */ class MultiInstanceOrchestratorImpl'
 
   - description:
       'Make constructor package-private to allow
       BraveMultiInstanceOrchestratorImpl to call super().'
-    pattern:
-      'private MultiInstanceOrchestratorImpl(TabReparentingDelegate
-      tabReparentingDelegate)'
-    replace:
-      'MultiInstanceOrchestratorImpl(TabReparentingDelegate
-      tabReparentingDelegate)'
+    regex:
+      pattern:
+        'private MultiInstanceOrchestratorImpl(TabReparentingDelegate
+        tabReparentingDelegate)'
+      replace:
+        'MultiInstanceOrchestratorImpl(TabReparentingDelegate
+        tabReparentingDelegate)'

@@ -9,10 +9,11 @@ substitutions:
 
       It is necessary to add `ECDSA_SHA384` to any types that get passed as a
       signature algorithm.
-    re_pattern:
-      '(AlgorithmToType\([^)]*\).*?)(\n\s*return
-      connectors_internals::mojom::KeyType::EC;)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case crypto::SignatureVerifier::ECDSA_SHA384:\2
+    regex:
+      re_pattern:
+        '(AlgorithmToType\([^)]*\).*?)(\n\s*return
+        connectors_internals::mojom::KeyType::EC;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case crypto::SignatureVerifier::ECDSA_SHA384:\2

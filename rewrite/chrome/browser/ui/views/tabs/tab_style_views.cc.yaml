@@ -10,9 +10,10 @@ substitutions:
       Brave subclasses TabStyleViewsImpl (in
       chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so its
       members must be reachable from the derived class.
-    re_pattern: '(class TabStyleViewsImpl\b.*?)\n private:'
-    re_flags: [DOTALL]
-    replace: '\1\n protected:'
+    regex:
+      re_pattern: '(class TabStyleViewsImpl\b.*?)\n private:'
+      re_flags: [DOTALL]
+      replace: '\1\n protected:'
 
   - description: |-
       Virtualise GetSeparatorBounds for BraveVerticalTabStyle.
@@ -54,28 +55,32 @@ substitutions:
   - description: |-
       Square off the extension corner in TabStyleViewsImpl::GetPath, so Brave
       tabs don't carry upstream's rounded extension.
-    re_pattern:
-      '(  float left_extension_corner_radius = extension_corner_radius;)'
-    replace: '  extension_corner_radius = 0;\n\1'
+    regex:
+      re_pattern:
+        '(  float left_extension_corner_radius = extension_corner_radius;)'
+      replace: '  extension_corner_radius = 0;\n\1'
 
   - description: |-
       Fully round the tab separators in TabStyleViewsImpl::PaintSeparators
 
       This patch computes a radius of half the separator width.
-    re_pattern:
-      '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags flags;)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
-        // will be approximated with color, although extremely subtle and
-        // likely only on screens >= 2x (i.e. separator width is 2+px)!
-        const int separator_radius = separator_bounds.leading.width() / 2;
-      \2
+    regex:
+      re_pattern:
+        '(void TabStyleViewsImpl::PaintSeparators\(.*?\n)(  cc::PaintFlags
+        flags;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  // Even if |separator_radius| becomes 1 native pixel the 'roundedness'
+          // will be approximated with color, although extremely subtle and
+          // likely only on screens >= 2x (i.e. separator width is 2+px)!
+          const int separator_radius = separator_bounds.leading.width() / 2;
+        \2
 
   - description: |-
       Use the fully-rounded separator radius for both separator draws.
-    re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
-    replace: 'separator_radius'
+    regex:
+      re_pattern: 'tab_style\(\)->GetSeparatorCornerRadius\(\) \* scale'
+      replace: 'separator_radius'
     count: 2
 
   - description: |-
@@ -86,11 +91,12 @@ substitutions:
       declaration isn't enough for `make_unique`, so we disable the whole
       upstream factory and re-define it in `chromium_src` where the full type is
       visible.
-    re_pattern:
-      '(// static\nstd::unique_ptr<TabStyleViews>
-      TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
-    re_flags: [DOTALL]
-    replace: |-
-      #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
-      \1
-      #endif
+    regex:
+      re_pattern:
+        '(// static\nstd::unique_ptr<TabStyleViews>
+        TabStyleViews::CreateForTab\(Tab\* tab\) \{.*?\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        #if 0  // TabStyleViews::CreateForTab declared in the chromium_src.
+        \1
+        #endif

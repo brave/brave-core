@@ -5,15 +5,17 @@
 
 substitutions:
   - description: 'Add handler to modify encoded pinned tab'
-    re_pattern: |-
-      (.+)(serialized_tabs.Append\(EncodeTab.*)
-    replace: |-
-      \1\2
-      \1BraveModifyEncodedPinnedTab(web_contents, serialized_tabs.back());
+    regex:
+      re_pattern: |-
+        (.+)(serialized_tabs.Append\(EncodeTab.*)
+      replace: |-
+        \1\2
+        \1BraveModifyEncodedPinnedTab(web_contents, serialized_tabs.back());
 
   - description: 'Add handler to modify decoded pinned tab'
-    re_pattern: |-
-      (.+)(results.push_back\(tab.value.*)
-    replace: |-
-      \1BraveModifyDecodedPinnedTab(serialized_tab, tab.value());
-      \1\2
+    regex:
+      re_pattern: |-
+        (.+)(results.push_back\(tab.value.*)
+      replace: |-
+        \1BraveModifyDecodedPinnedTab(serialized_tab, tab.value());
+        \1\2

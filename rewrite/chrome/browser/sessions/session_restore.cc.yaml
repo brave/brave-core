@@ -5,8 +5,9 @@
 
 substitutions:
   - description: 'Modify navigation params before Navigate call for startup tab'
-    re_pattern: |-
-      (.+)(Navigate\(&params\);)
-    replace: |-
-      \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
-      \1\2
+    regex:
+      re_pattern: |-
+        (.+)(Navigate\(&params\);)
+      replace: |-
+        \1BraveModifyStartupTabNavigationParams(startup_tab, browser, params);
+        \1\2

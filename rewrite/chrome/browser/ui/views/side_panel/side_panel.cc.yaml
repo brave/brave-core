@@ -14,7 +14,8 @@ substitutions:
       PopulateSidePanel), avoiding the timing issue where
       coordinator->GetCurrentEntryId() still returns the previous entry when
       OnChildViewAdded fires.
-    re_pattern: '(  gfx::RoundedCornersF GetRoundedCorners\(\) \{)'
-    replace: |-
-      \1
-          return brave::GetPanelContentsRoundedCorners(browser_view_);
+    regex:
+      re_pattern: '(  gfx::RoundedCornersF GetRoundedCorners\(\) \{)'
+      replace: |-
+        \1
+            return brave::GetPanelContentsRoundedCorners(browser_view_);

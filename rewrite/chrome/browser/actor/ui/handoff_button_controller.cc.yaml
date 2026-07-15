@@ -11,26 +11,28 @@ substitutions:
       unconditional Brave sweep gradient. Anchors on the `colors` declaration
       and the `pos` array name (not their values) so upstream tweaks to the
       stop positions don't break the match.
-    re_pattern:
-      'std::vector<SkColor> colors;.+?const SkScalar pos\[\] = \{[^}]+\};'
-    re_flags: ['DOTALL']
-    replace: |-
-      std::vector<SkColor> colors = {
-                SkColorSetARGB(255, 250, 114, 80),
-                SkColorSetARGB(255, 255, 24, 147),
-                SkColorSetARGB(255, 167, 138, 255),
-            };
-            const SkScalar pos[] = {0.0f, 0.5f, 1.0f};
+    regex:
+      re_pattern:
+        'std::vector<SkColor> colors;.+?const SkScalar pos\[\] = \{[^}]+\};'
+      re_flags: ['DOTALL']
+      replace: |-
+        std::vector<SkColor> colors = {
+                  SkColorSetARGB(255, 250, 114, 80),
+                  SkColorSetARGB(255, 255, 24, 147),
+                  SkColorSetARGB(255, 167, 138, 255),
+              };
+              const SkScalar pos[] = {0.0f, 0.5f, 1.0f};
 
   - description: |-
       Tighten handoff button content padding.
 
       Anchors on the `kHandoffButtonContentPadding` declaration so upstream
       tweaks to its default insets don't break the match.
-    re_pattern: 'kHandoffButtonContentPadding =\s+gfx::Insets::TLBR\([^)]*\)'
-    replace: |-
-      kHandoffButtonContentPadding =
-          gfx::Insets::TLBR(4, 6, 4, 10)
+    regex:
+      re_pattern: 'kHandoffButtonContentPadding =\s+gfx::Insets::TLBR\([^)]*\)'
+      replace: |-
+        kHandoffButtonContentPadding =
+            gfx::Insets::TLBR(4, 6, 4, 10)
 
   - description: |-
       Nudge the handoff button down when the location bar is visible.
@@ -42,10 +44,11 @@ substitutions:
       `is_tab_strip_visible`. This keeps the substitution scoped to one
       specific function and one specific statement, so unrelated returns of
       the same shape elsewhere in the file can't be mis-targeted.
-    re_pattern:
-      '(gfx::Rect
-      HandoffButtonController::GetHandoffButtonBounds\(\)[\s\S]+?)return
-      gfx::Rect\(\{x, y\}, preferred_size\);'
-    replace:
-      '\1return gfx::Rect({x, y + (is_tab_strip_visible ?
-      kHandoffButtonPreferredHeight / 3 : 0)}, preferred_size);'
+    regex:
+      re_pattern:
+        '(gfx::Rect
+        HandoffButtonController::GetHandoffButtonBounds\(\)[\s\S]+?)return
+        gfx::Rect\(\{x, y\}, preferred_size\);'
+      replace:
+        '\1return gfx::Rect({x, y + (is_tab_strip_visible ?
+        kHandoffButtonPreferredHeight / 3 : 0)}, preferred_size);'

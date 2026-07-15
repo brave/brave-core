@@ -5,24 +5,28 @@
 
 substitutions:
   - description: 'Visit Brave-specific DeviceInfoSpecifics fields.'
-    re_pattern: '(\n[ \t]*)VISIT\(feature_fields\);'
-    replace: '\1VISIT(feature_fields);\1BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS'
+    regex:
+      re_pattern: '(\n[ \t]*)VISIT\(feature_fields\);'
+      replace: '\1VISIT(feature_fields);\1BRAVE_VISIT_DEVICE_INFO_SPECIFICS_BRAVE_FIELDS'
 
   - description: |-
       Inject Brave-specific VISIT_PROTO_FIELDS definitions ahead of the
       SharingSpecificFields visitor.
-    re_pattern: 'VISIT_PROTO_FIELDS\(const\s+sync_pb::SharingSpecificFields&\s*proto\)\s*\{'
-    replace: |-
-      BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
-      VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
+    regex:
+      re_pattern: 'VISIT_PROTO_FIELDS\(const\s+sync_pb::SharingSpecificFields&\s*proto\)\s*\{'
+      replace: |-
+        BRAVE_VISIT_PROTO_FIELDS_BRAVE_SPECIFIC_FIELD
+        VISIT_PROTO_FIELDS(const sync_pb::SharingSpecificFields& proto) {
 
   - description: |-
       Account for Brave's extra data type in the GetNumDataTypes static_assert.
       Add one to the upstream count rather than matching its value, so the
       assert is undisturbed when upstream adds or removes data types.
-    re_pattern: 'static_assert\((\d+) == GetNumDataTypes\(\),'
-    replace: 'static_assert(\1 + 1 == GetNumDataTypes(),'
+    regex:
+      re_pattern: 'static_assert\((\d+) == GetNumDataTypes\(\),'
+      replace: 'static_assert(\1 + 1 == GetNumDataTypes(),'
 
   - description: 'Visit the AI Chat conversation field in EntitySpecifics.'
-    re_pattern: '(\n[ \t]*)VISIT\(gemini_thread\);'
-    replace: '\1VISIT(gemini_thread);\1VISIT(ai_chat_conversation);'
+    regex:
+      re_pattern: '(\n[ \t]*)VISIT\(gemini_thread\);'
+      replace: '\1VISIT(gemini_thread);\1VISIT(ai_chat_conversation);'

@@ -28,11 +28,12 @@ substitutions:
       `app_menu_button_` has been made private in `ToolbarView`, as upstream is
       abstracting it away due to the WebUI work, so we expose an accessor for
       the concrete type that Brave still uses.
-    re_pattern: '(~ToolbarView\(\) override;)'
-    replace: |-
-      \1
+    regex:
+      re_pattern: '(~ToolbarView\(\) override;)'
+      replace: |-
+        \1
 
-        BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
+          BrowserAppMenuButton* app_menu_button() const { return app_menu_button_; }
 
   - description: |
       Make ToolbarView::ShowBookmarkBubble() virtual.
@@ -59,9 +60,10 @@ substitutions:
       BraveToolbarView and the listed browser tests need access to ToolbarView's
       otherwise-private members. Anchored at the private: access specifier so the
       friend declarations land in private scope.
-    re_pattern: '( private:)'
-    replace: |-
-      \1
-        friend class BraveToolbarView;
-        FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
-        FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
+    regex:
+      re_pattern: '( private:)'
+      replace: |-
+        \1
+          friend class BraveToolbarView;
+          FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
+          FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);

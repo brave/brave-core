@@ -10,8 +10,9 @@ substitutions:
       It is necessary to add `ECDSA_SHA384` so that all downstream switch statements
       can handle it. The negative lookahead prevents a duplicate if upstream adds the
       value independently.
-    re_pattern: '(enum SignatureAlgorithm\s*\{.*?)(\n\s*\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          ECDSA_SHA384,\2
+    regex:
+      re_pattern: '(enum SignatureAlgorithm\s*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            ECDSA_SHA384,\2

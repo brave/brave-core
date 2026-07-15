@@ -5,15 +5,17 @@
 
 substitutions:
   - description: 'Moving `CookieMonster` into `chromium_impl` as in the header.'
-    pattern: 'namespace net'
-    count: 2
-    replace: 'namespace net::chromium_impl'
+    regex:
+      pattern: 'namespace net'
+      replace: 'namespace net::chromium_impl'
 
+    count: 2
   - description: |
       Tweaking `MaybeRunDeleteCallback` to use the original class.
 
       Sadly this function alone sits outside in an unnamed namespace in the global
       scope, which make its use of `net::CookieMonster` to select the Brave
       implementation, however this is a simple case.
-    pattern: 'base::WeakPtr<net::CookieMonster> cookie_monster'
-    replace: 'base::WeakPtr<net::chromium_impl::CookieMonster> cookie_monster'
+    regex:
+      pattern: 'base::WeakPtr<net::CookieMonster> cookie_monster'
+      replace: 'base::WeakPtr<net::chromium_impl::CookieMonster> cookie_monster'

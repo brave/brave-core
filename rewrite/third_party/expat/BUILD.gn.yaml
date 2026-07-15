@@ -5,10 +5,11 @@
 
 substitutions:
   - description: 'Grant //brave/ios/browser/svg visibility into expat on iOS.'
-    re_pattern: '(expat_visibility = \[.*?\])'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-      if (is_ios) {
-        expat_visibility += ["//brave/ios/browser/svg:*" ]
-      }
+    regex:
+      re_pattern: '(expat_visibility = \[.*?\])'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+        if (is_ios) {
+          expat_visibility += ["//brave/ios/browser/svg:*" ]
+        }
