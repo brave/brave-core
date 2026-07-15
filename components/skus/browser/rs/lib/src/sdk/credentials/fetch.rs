@@ -81,7 +81,11 @@ where
         let creds: Vec<Token> =
             iter::repeat_with(|| Token::random::<Sha512, _>(&mut csprng)).take(num_creds).collect();
 
-        let blinded_creds: Vec<BlindedToken> = creds.iter().map(|t| t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element")).collect();
+        let blinded_creds: Vec<BlindedToken> = creds
+            .iter()
+            .map(|t| t.blind_rfc::<Sha512>())
+            .collect::<Result<Vec<_>, _>>()
+            .map_err(|e| InternalError::InvalidCall(e.to_string()))?;
 
         self.client.upsert_time_limited_v2_item_creds(item_id, request_id, creds).await?;
 
@@ -142,8 +146,12 @@ where
                                             > (cred.valid_to - chrono::Duration::days(5))
                                     });
 
-                                let creds: Vec<BlindedToken> =
-                                    item_creds.creds.iter().map(|t| t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element")).collect();
+                                let creds: Vec<BlindedToken> = item_creds
+                                    .creds
+                                    .iter()
+                                    .map(|t| t.blind_rfc::<Sha512>())
+                                    .collect::<Result<Vec<_>, _>>()
+                                    .map_err(|e| InternalError::InvalidCall(e.to_string()))?;
 
                                 match item_creds.state {
                                     CredentialState::GeneratedCredentials
@@ -244,9 +252,12 @@ where
                 CredentialType::SingleUse => {
                     let blinded_creds: Vec<BlindedToken> =
                         match self.client.get_single_use_item_creds(&item.id).await? {
-                            Some(item_creds) => {
-                                item_creds.creds.iter().map(|t| t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element")).collect()
-                            }
+                            Some(item_creds) => item_creds
+                                .creds
+                                .iter()
+                                .map(|t| t.blind_rfc::<Sha512>())
+                                .collect::<Result<Vec<_>, _>>()
+                                .map_err(|e| InternalError::InvalidCall(e.to_string()))?,
                             None => {
                                 let mut csprng = OsRng;
                                 let creds: Vec<Token> =
@@ -254,8 +265,11 @@ where
                                         .take(item.quantity as usize)
                                         .collect();
 
-                                let blinded_creds: Vec<BlindedToken> =
-                                    creds.iter().map(|t| t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element")).collect();
+                                let blinded_creds: Vec<BlindedToken> = creds
+                                    .iter()
+                                    .map(|t| t.blind_rfc::<Sha512>())
+                                    .collect::<Result<Vec<_>, _>>()
+                                    .map_err(|e| InternalError::InvalidCall(e.to_string()))?;
 
                                 self.client.init_single_use_item_creds(&item.id, creds).await?;
                                 blinded_creds
@@ -427,8 +441,9 @@ where
                             let mut my_blinded_creds: HashMap<String, Token> = item_creds
                                 .creds
                                 .into_iter()
-                                .map(|t| (t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element").encode_base64(), t))
-                                .collect();
+                                .map(|t| t.blind_rfc::<Sha512>().map(|b| (b.encode_base64(), t)))
+                                .collect::<Result<HashMap<_, _>, _>>()
+                                .map_err(|e| InternalError::InvalidCall(e.to_string()))?;
 
                             // okay, right here we need to filter out all of the
                             // creds that do not have a blinded token that match
@@ -480,8 +495,12 @@ where
                         {
                             // Rederive blinded creds so that the proof will fail if different creds
                             // were signed
-                            let blinded_creds: Vec<BlindedToken> =
-                                item_creds.creds.iter().map(|t| t.blind_rfc::<Sha512>().expect("token preimage must not map to the identity element")).collect();
+                            let blinded_creds: Vec<BlindedToken> = item_creds
+                                .creds
+                                .iter()
+                                .map(|t| t.blind_rfc::<Sha512>())
+                                .collect::<Result<Vec<_>, _>>()
+                                .map_err(|e| InternalError::InvalidCall(e.to_string()))?;
 
                             let unblinded_creds = batch_proof
                                 .verify_and_unblind::<Sha512, _>(
