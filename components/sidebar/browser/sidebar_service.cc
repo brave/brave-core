@@ -540,6 +540,10 @@ bool SidebarService::IsEditableItemAt(size_t index) const {
   return items_[index].is_web_type();
 }
 
+size_t SidebarService::GetDefaultSidebarItemsCountForTesting() const {
+  return GetDefaultSidebarItems().size();
+}
+
 void SidebarService::SetSidebarShowOption(ShowSidebarOption show_options) {
   DCHECK_NE(ShowSidebarOption::kShowOnClick, show_options);
   prefs_->SetInteger(kSidebarShowOption, static_cast<int>(show_options));
