@@ -29,12 +29,18 @@ jest.mock('../slices/api.slice', () => ({
         website: 'https://app.uniswap.org/',
         chains: ['ethereum'],
       },
+      {
+        id: 112,
+        name: 'PancakeSwap V2',
+        website: 'https://pancakeswap.finance',
+        chains: ['binance-smart-chain'],
+      },
     ],
   }),
 }))
 
 describe('useIsDAppVerified hook', () => {
-  it('should return true when origin exists.', async () => {
+  it('should return true when origin matches a dapp website origin.', async () => {
     // setup
     const store = createMockStore(
       {},
@@ -81,6 +87,35 @@ describe('useIsDAppVerified hook', () => {
     )
 
     // wait for query to complete
+    await waitFor(() => {
+      expect(result.current).toBeDefined()
+    })
+
+    expect(result.current.isDAppVerified).toBe(false)
+    expect(result.current.dapp).toBeUndefined()
+  })
+
+  it('should not treat a domain prefix of a verified website as verified.', async () => {
+    // setup
+    const store = createMockStore(
+      {},
+      {
+        networks: [mockEthMainnet],
+      },
+    )
+    const renderOptions = renderHookOptionsWithMockStore(store)
+
+    // pancakeswap.fi is a string prefix of pancakeswap.finance, but must not
+    // inherit the PancakeSwap V2 verified badge.
+    const { result } = renderHook(
+      () =>
+        useIsDAppVerified({
+          originSpec: 'https://pancakeswap.fi',
+          eTldPlusOne: 'pancakeswap.fi',
+        }),
+      renderOptions,
+    )
+
     await waitFor(() => {
       expect(result.current).toBeDefined()
     })

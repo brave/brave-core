@@ -9,13 +9,23 @@ import { BraveWallet } from '../../constants/types'
 // Hooks
 import { useGetTopDappsQuery } from '../slices/api.slice'
 
+const getUrlOrigin = (url: string): string | undefined => {
+  try {
+    return new URL(url).origin
+  } catch {
+    return undefined
+  }
+}
+
 export const useIsDAppVerified = (originInfo: BraveWallet.OriginInfo) => {
   // Queries
   const { data: topDapps } = useGetTopDappsQuery()
 
-  const foundDApp = topDapps?.find((dapp) =>
-    dapp.website.startsWith(originInfo.originSpec),
-  )
+  const requestOrigin = getUrlOrigin(originInfo.originSpec)
+  const foundDApp =
+    requestOrigin === undefined
+      ? undefined
+      : topDapps?.find((dapp) => getUrlOrigin(dapp.website) === requestOrigin)
 
   return { isDAppVerified: foundDApp !== undefined, dapp: foundDApp }
 }
