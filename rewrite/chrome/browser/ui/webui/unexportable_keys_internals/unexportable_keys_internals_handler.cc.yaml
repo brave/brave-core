@@ -8,9 +8,10 @@ substitutions:
       Add `ECDSA_SHA384` to `GetAlgorithmName`.
 
       Returns the literal string "ECDSA_SHA384" for display in the internals WebUI.
-    re_pattern: '(GetAlgorithmName\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case crypto::SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
-            return "ECDSA_SHA384";\2
+    regex:
+      re_pattern: '(GetAlgorithmName\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case crypto::SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
+              return "ECDSA_SHA384";\2

@@ -5,13 +5,14 @@
 
 substitutions:
   - description: Brave additions to `source_set("configs")`.
-    re_pattern: '(source_set\("configs"\).*?)\n\}'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        import("//brave/browser/ui/webui/sources.gni")
-        deps += brave_browser_ui_webui_configs_deps
-      }
+    regex:
+      re_pattern: '(source_set\("configs"\).*?)\n\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          import("//brave/browser/ui/webui/sources.gni")
+          deps += brave_browser_ui_webui_configs_deps
+        }
   - description: |
       Define `favicon_source` on regular Android too.
 
@@ -20,7 +21,8 @@ substitutions:
       (wallet, AI chat, rewards, etc.) need FaviconSource on Android; the
       chromium_src override of favicon_source.cc maps the default favicon
       resources so the source compiles there.
-    re_pattern: 'if \(([^)]+)\) \{\n  source_set\("favicon_source"\)'
-    replace: |-
-      if (\1 || is_android) {
-        source_set("favicon_source")
+    regex:
+      re_pattern: 'if \(([^)]+)\) \{\n  source_set\("favicon_source"\)'
+      replace: |-
+        if (\1 || is_android) {
+          source_set("favicon_source")

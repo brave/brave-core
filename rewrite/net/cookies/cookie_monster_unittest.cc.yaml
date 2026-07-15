@@ -10,6 +10,8 @@ substitutions:
       This is necessary because these tests require access to private members of
       `CookieMonster` brokered through `FRIEND_TEST_ALL_PREFIXES`, and this macro
       does has to match the namespace used.
-    pattern: 'namespace net'
+    regex:
+      pattern: 'namespace net'
+      replace: 'namespace net::chromium_impl'
+
     count: 2
-    replace: 'namespace net::chromium_impl'

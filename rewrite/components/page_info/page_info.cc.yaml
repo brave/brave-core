@@ -10,11 +10,12 @@ substitutions:
       If `delegate_->BraveShouldShowPermission(info.type)` says the
       permission should be hidden, return `false` before the upstream
       logic runs.
-    re_pattern: '(bool PageInfo::ShouldShowPermission\([^)]*\) const \{\n)'
-    replace: |
-      \1  if (!delegate_->BraveShouldShowPermission(info.type)) {
-          return false;
-        }
+    regex:
+      re_pattern: '(bool PageInfo::ShouldShowPermission\([^)]*\) const \{\n)'
+      replace: |
+        \1  if (!delegate_->BraveShouldShowPermission(info.type)) {
+            return false;
+          }
 
   - description: |
       Short-circuit `PageInfo::GetTwoSitePermissionRequesters`
@@ -23,10 +24,11 @@ substitutions:
       This is for`STORAGE_ACCESS we dont surface Storage Access requester pairs
       in page info, so return an empty set before the upstream lookup walks
       `PageSpecificContentSettings` / `HostContentSettings Map`.
-    re_pattern:
-      '(std::set<net::SchemefulSite>
-      PageInfo::GetTwoSitePermissionRequesters\([^)]*\) \{\n)'
-    replace: |
-      \1  if (type == ContentSettingsType::STORAGE_ACCESS) {
-          return {};
-        }
+    regex:
+      re_pattern:
+        '(std::set<net::SchemefulSite>
+        PageInfo::GetTwoSitePermissionRequesters\([^)]*\) \{\n)'
+      replace: |
+        \1  if (type == ContentSettingsType::STORAGE_ACCESS) {
+            return {};
+          }

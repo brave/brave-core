@@ -8,28 +8,31 @@ substitutions:
       Account for Brave's extra data type in the GetNumDataTypes static_assert.
       Add one to the upstream count rather than matching its value, so the
       assert is undisturbed when upstream adds or removes data types.
-    re_pattern: 'static_assert\((\d+) == syncer::GetNumDataTypes\(\),'
-    replace: 'static_assert(\1 + 1 == syncer::GetNumDataTypes(),'
+    regex:
+      re_pattern: 'static_assert\((\d+) == syncer::GetNumDataTypes\(\),'
+      replace: 'static_assert(\1 + 1 == syncer::GetNumDataTypes(),'
 
   - description: |-
       Return the UserSelectableTypeInfo for kAIChat at the end of the switch in
       GetUserSelectableTypeInfo.
-    re_pattern:
-      '(UserSelectableTypeInfo
-      GetUserSelectableTypeInfo\(.*?switch[^{]*\{.*?)(\n[ \t]*\}\n[
-      \t]*NOTREACHED\(\);)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case UserSelectableType::kAIChat:
-            return {kAIChatTypeName, AI_CHAT_CONVERSATION, {AI_CHAT_CONVERSATION}};\2
+    regex:
+      re_pattern:
+        '(UserSelectableTypeInfo
+        GetUserSelectableTypeInfo\(.*?switch[^{]*\{.*?)(\n[ \t]*\}\n[
+        \t]*NOTREACHED\(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case UserSelectableType::kAIChat:
+              return {kAIChatTypeName, AI_CHAT_CONVERSATION, {AI_CHAT_CONVERSATION}};\2
 
   - description: |-
       Add the kAIChat string mapping at the end of the lookup map in
       GetUserSelectableTypeFromString.
-    re_pattern:
-      '(std::optional<UserSelectableType>
-      GetUserSelectableTypeFromString\(.*?base::MakeFixedFlatMap<.*?>\(\{.*?)(\n[
-      \t]*\}\);)'
-    re_flags: [DOTALL]
-    replace: '\1\n          {kAIChatTypeName, UserSelectableType::kAIChat},\2'
+    regex:
+      re_pattern:
+        '(std::optional<UserSelectableType>
+        GetUserSelectableTypeFromString\(.*?base::MakeFixedFlatMap<.*?>\(\{.*?)(\n[
+        \t]*\}\);)'
+      re_flags: [DOTALL]
+      replace: '\1\n          {kAIChatTypeName, UserSelectableType::kAIChat},\2'

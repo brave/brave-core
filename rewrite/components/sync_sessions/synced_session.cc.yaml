@@ -6,6 +6,7 @@
 substitutions:
   - description:
       'Prefix virtual URL on converting SerializedNavigationEntry to SyncData'
-    re_pattern: '(sync_data\.set_virtual_url[\s\S]*?\s+navigation\.)(?:virtual_url\(\)\.spec\(\))'
-    re_flags: [MULTILINE]
-    replace: '\1maybe_prefixed_virtual_url_spec()'
+    regex:
+      re_pattern: '(sync_data\.set_virtual_url[\s\S]*?\s+navigation\.)(?:virtual_url\(\)\.spec\(\))'
+      re_flags: [MULTILINE]
+      replace: '\1maybe_prefixed_virtual_url_spec()'

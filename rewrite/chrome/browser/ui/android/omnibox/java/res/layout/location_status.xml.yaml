@@ -8,6 +8,8 @@
 
 substitutions:
   - description: 'Use BraveStatusView in place of upstream StatusView'
-    pattern: 'org.chromium.chrome.browser.omnibox.status.StatusView'
+    regex:
+      pattern: 'org.chromium.chrome.browser.omnibox.status.StatusView'
+      replace: 'org.chromium.chrome.browser.omnibox.status.BraveStatusView'
+
     count: 2
-    replace: 'org.chromium.chrome.browser.omnibox.status.BraveStatusView'

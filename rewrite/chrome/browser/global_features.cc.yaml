@@ -5,9 +5,11 @@
 
 substitutions:
   - description: 'Replacing GlobalFeatures with BraveGlobalFeatures'
-    pattern: 'new GlobalFeatures()'
-    replace: 'CreateBraveGlobalFeatures()'
+    regex:
+      pattern: 'new GlobalFeatures()'
+      replace: 'CreateBraveGlobalFeatures()'
 
   - description: 'Forward declare CreateBraveGlobalFeatures'
-    re_pattern: '(namespace {)'
-    replace: 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'
+    regex:
+      re_pattern: '(namespace {)'
+      replace: 'GlobalFeatures* CreateBraveGlobalFeatures();\n\1'

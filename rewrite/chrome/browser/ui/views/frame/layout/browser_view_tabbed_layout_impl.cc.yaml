@@ -10,5 +10,6 @@ substitutions:
       With Brave vertical tabs, the leading exclusion is owned by the
       vertical tab strip itself rather than by the horizontal layout, so
       the top container should not also reserve space for it.
-    re_pattern: '(bool needs_exclusion = )true;'
-    replace: '\1!delegate().ShouldShowVerticalTabs();'
+    regex:
+      re_pattern: '(bool needs_exclusion = )true;'
+      replace: '\1!delegate().ShouldShowVerticalTabs();'

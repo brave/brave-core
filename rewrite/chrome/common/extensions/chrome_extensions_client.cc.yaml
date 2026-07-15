@@ -6,9 +6,10 @@
 substitutions:
   - description: |
       Register Brave's extensions API provider.
-    re_pattern:
-      '(ChromeExtensionsClient::ChromeExtensionsClient\(\) \{.+?\n)(\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1  AddAPIProvider(std::make_unique<BraveExtensionsAPIProvider>());
-      \2
+    regex:
+      re_pattern:
+        '(ChromeExtensionsClient::ChromeExtensionsClient\(\) \{.+?\n)(\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  AddAPIProvider(std::make_unique<BraveExtensionsAPIProvider>());
+        \2

@@ -9,6 +9,7 @@ substitutions:
 
       Brave's star action lives on the left of the location bar, so the bubble
       must anchor from there instead of upstream's top-right default.
-    re_pattern: '(bookmark_bubble_ = bubble.get\(\);\n)'
-    replace: |
-      \1  bubble->SetArrow(views::BubbleBorder::TOP_LEFT);
+    regex:
+      re_pattern: '(bookmark_bubble_ = bubble.get\(\);\n)'
+      replace: |
+        \1  bubble->SetArrow(views::BubbleBorder::TOP_LEFT);

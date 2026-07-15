@@ -5,16 +5,17 @@
 
 substitutions:
   - description: 'Append Brave members at the end of struct StartupTab'
-    re_pattern: '(struct StartupTab \{.*?)(\n\};)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
+    regex:
+      re_pattern: '(struct StartupTab \{.*?)(\n\};)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
 
-      #if BUILDFLAG(ENABLE_CONTAINERS)
-        containers::ContainerSpecifier container;
-      #endif
+        #if BUILDFLAG(ENABLE_CONTAINERS)
+          containers::ContainerSpecifier container;
+        #endif
 
-        StartupTab(const StartupTab&);
-        StartupTab& operator=(const StartupTab&);
-        StartupTab(StartupTab&&) noexcept;
-        StartupTab& operator=(StartupTab&&) noexcept;\2
+          StartupTab(const StartupTab&);
+          StartupTab& operator=(const StartupTab&);
+          StartupTab(StartupTab&&) noexcept;
+          StartupTab& operator=(StartupTab&&) noexcept;\2

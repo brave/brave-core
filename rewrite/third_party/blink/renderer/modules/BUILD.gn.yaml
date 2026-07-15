@@ -6,9 +6,10 @@
 substitutions:
   - description: |
       Extend the file-scope modules visibility with brave entries.
-    re_pattern: '(^visibility = \[.*?\])'
-    re_flags: [DOTALL, MULTILINE]
-    replace: '\1\nvisibility += brave_blink_renderer_modules_visibility'
+    regex:
+      re_pattern: '(^visibility = \[.*?\])'
+      re_flags: [DOTALL, MULTILINE]
+      replace: '\1\nvisibility += brave_blink_renderer_modules_visibility'
 
   - description: |
       brave_blink_sub_modules add to `component("modules")`.
@@ -20,8 +21,9 @@ substitutions:
       Without this, brave sub modules never become public_deps of
       `component("modules")` and their symbols fail to link into
       libblink_modules.so.
-    re_pattern: '(component\("modules"\) \{.*?sub_modules = \[.*?\])'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        sub_modules += brave_blink_sub_modules
+    regex:
+      re_pattern: '(component\("modules"\) \{.*?sub_modules = \[.*?\])'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          sub_modules += brave_blink_sub_modules

@@ -9,12 +9,13 @@ substitutions:
 
       Brave extends SyncPrefs with AI Chat fields, so this fixture must populate
       them to remain a complete SyncPrefs for the settings sync tests.
-    re_pattern:
-      '(getSyncAllPrefs\(\): SyncPrefs \{.*?\n)( *)(wifiConfigurationsSynced:
-      true,)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1\2\3
-      \2aiChatManaged: false,
-      \2aiChatRegistered: true,
-      \2aiChatSynced: true,
+    regex:
+      re_pattern:
+        '(getSyncAllPrefs\(\): SyncPrefs \{.*?\n)( *)(wifiConfigurationsSynced:
+        true,)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1\2\3
+        \2aiChatManaged: false,
+        \2aiChatRegistered: true,
+        \2aiChatSynced: true,

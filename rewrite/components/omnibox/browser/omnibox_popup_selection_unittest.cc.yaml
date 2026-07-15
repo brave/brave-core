@@ -20,10 +20,12 @@ substitutions:
       followed by an `EXPECT_EQ(next.state, ...THUMBS_UP|THUMBS_DOWN);`, so
       it tolerates whitespace/line-wrap changes and is unaffected by edits
       to the surrounding `next = ...` assignments.
-    re_pattern:
-      'EXPECT_EQ\(next\.line, 2u\);\s+EXPECT_EQ\(next\.state,
-      LineState::FOCUSED_BUTTON_THUMBS_(?:UP|DOWN)\);'
+    regex:
+      re_pattern:
+        'EXPECT_EQ\(next\.line, 2u\);\s+EXPECT_EQ\(next\.state,
+        LineState::FOCUSED_BUTTON_THUMBS_(?:UP|DOWN)\);'
+      replace: |-
+        EXPECT_EQ(next.line, 0u);
+          EXPECT_EQ(next.state, LineState::NORMAL);
+
     count: 2
-    replace: |-
-      EXPECT_EQ(next.line, 0u);
-        EXPECT_EQ(next.state, LineState::NORMAL);

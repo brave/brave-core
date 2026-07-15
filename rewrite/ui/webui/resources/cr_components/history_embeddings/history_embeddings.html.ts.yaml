@@ -7,6 +7,8 @@ substitutions:
   - description:
       'Hide thumbs up/down feedback buttons to avoid exposing a feedback
       mechanism; nothing leaves the device.'
-    re_pattern: '\s*<cr-feedback-buttons[\s\S]+?</cr-feedback-buttons>'
+    regex:
+      re_pattern: '\s*<cr-feedback-buttons[\s\S]+?</cr-feedback-buttons>'
+      replace: ''
+
     count: 0
-    replace: ''

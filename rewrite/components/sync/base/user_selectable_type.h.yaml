@@ -8,9 +8,10 @@ substitutions:
       Append kAIChat to the UserSelectableType enum as the new kLastType.
       Anchored on the enum and the existing kLastType, value-agnostically, so it
       does not depend on which key happens to be last upstream.
-    re_pattern: '(enum class UserSelectableType \{.+?,)(\s+)kLastType = \w+'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        kAIChat,
-        kLastType = kAIChat
+    regex:
+      re_pattern: '(enum class UserSelectableType \{.+?,)(\s+)kLastType = \w+'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kAIChat,
+          kLastType = kAIChat

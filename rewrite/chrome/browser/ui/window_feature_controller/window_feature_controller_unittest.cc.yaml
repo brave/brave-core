@@ -9,6 +9,7 @@ substitutions:
 
       `WindowFeatureController` now takes the owning `BrowserWindowInterface&` as
       its last constructor argument. This requires a fix for the tests in question.
-    re_pattern: '(make_unique<WindowFeatureController>\(.*?)(\);)'
-    re_flags: [DOTALL]
-    replace: '\1, mock_browser_window_interface_\2'
+    regex:
+      re_pattern: '(make_unique<WindowFeatureController>\(.*?)(\);)'
+      re_flags: [DOTALL]
+      replace: '\1, mock_browser_window_interface_\2'

@@ -11,9 +11,10 @@ substitutions:
       https://issues.chromium.org/issues/512709653. Matching the whole `"win"`
       block keeps the substitution working even when upstream bumps the hash
       or remote path.
-    re_pattern: '"win": \{[^}]*\}'
-    replace: |-
-      "win": {
-                  "hash": "bbfdca9a518712ec83e4cec27407d02e1843e5b5",
-                  "full_remote_path": "chromium-telemetry/perfetto_binaries/trace_processor_shell/win/e2b82363b4c2a1912a6e33c9c6ae8a6561a35b93/trace_processor_shell.exe"
-              }
+    regex:
+      re_pattern: '"win": \{[^}]*\}'
+      replace: |-
+        "win": {
+                    "hash": "bbfdca9a518712ec83e4cec27407d02e1843e5b5",
+                    "full_remote_path": "chromium-telemetry/perfetto_binaries/trace_processor_shell/win/e2b82363b4c2a1912a6e33c9c6ae8a6561a35b93/trace_processor_shell.exe"
+                }

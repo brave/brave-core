@@ -12,6 +12,7 @@ substitutions:
       without walking `BrowserList`. The non-greedy regex captures the full
       argument list (no matter how many arguments upstream chooses to pass) and
       appends `*browser` immediately before the closing `);`.
-    re_pattern: '(CreateInstance<WindowFeatureController>\(.*?)(\);)'
-    re_flags: [DOTALL]
-    replace: '\1, *browser\2'
+    regex:
+      re_pattern: '(CreateInstance<WindowFeatureController>\(.*?)(\);)'
+      re_flags: [DOTALL]
+      replace: '\1, *browser\2'

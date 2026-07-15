@@ -6,7 +6,8 @@
 substitutions:
   - description:
       'Add deps needed by Brave overrides in the lifetime:impl target'
-    re_pattern:
-      '(\n    sources \+= \[\n      "application_lifetime_desktop\.cc")'
-    replace: |-
-      \n    import("//brave/chromium_src/chrome/browser/lifetime/sources.gni") deps += brave_chrome_browser_lifetime_impl_deps\1
+    regex:
+      re_pattern:
+        '(\n    sources \+= \[\n      "application_lifetime_desktop\.cc")'
+      replace: |-
+        \n    import("//brave/chromium_src/chrome/browser/lifetime/sources.gni") deps += brave_chrome_browser_lifetime_impl_deps\1

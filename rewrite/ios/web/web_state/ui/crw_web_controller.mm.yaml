@@ -5,8 +5,10 @@
 
 substitutions:
   - description: Replace CRWWKNavigationHandler with BraveCRWWKNavigationHandler
-    pattern: 'CRWWKNavigationHandler alloc'
-    replace: 'BraveCRWWKNavigationHandler alloc'
+    regex:
+      pattern: 'CRWWKNavigationHandler alloc'
+      replace: 'BraveCRWWKNavigationHandler alloc'
   - description: Replace CRWWKUIHandler with BraveCRWWKUIHandler
-    pattern: 'CRWWKUIHandler alloc'
-    replace: 'BraveCRWWKUIHandler alloc'
+    regex:
+      pattern: 'CRWWKUIHandler alloc'
+      replace: 'BraveCRWWKUIHandler alloc'

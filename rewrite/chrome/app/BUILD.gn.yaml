@@ -8,19 +8,21 @@ substitutions:
   # block, and adds our line just as the last line before the block closes.
   - description:
       "Adding brave_generated_resources_grit to Chromium's resources."
-    re_pattern: '(grit_strings\("generated_resources"\) {[\s\S]*?)(^})'
-    re_flags: [MULTILINE]
-    replace: '\1  deps = [ "//brave/app:brave_generated_resources_grit" ]\n\2'
+    regex:
+      re_pattern: '(grit_strings\("generated_resources"\) {[\s\S]*?)(^})'
+      re_flags: [MULTILINE]
+      replace: '\1  deps = [ "//brave/app:brave_generated_resources_grit" ]\n\2'
 
   # Define IS_BRAVE_ORIGIN_BRANDED for chrome_dll_resources when building with
   # is_brave_origin_branded=true so chrome_dll.rc picks the brave_origin icons.
   # This is what gets loaded for the per-window HICON via WM_SETICON, which is
   # what Windows shows in the alt+tab task switcher.
   - description: 'Add IS_BRAVE_ORIGIN_BRANDED define to chrome_dll_resources.'
-    re_pattern:
-      '(source_set\("chrome_dll_resources"\)
-      {[\s\S]*?"//printing/buildflags",\n    \])'
-    re_flags: [MULTILINE]
-    replace:
-      '\1\n    import("//brave/components/brave_origin/buildflags/buildflags.gni")
-      if (is_brave_origin_branded) { defines = [ "IS_BRAVE_ORIGIN_BRANDED" ] }'
+    regex:
+      re_pattern:
+        '(source_set\("chrome_dll_resources"\)
+        {[\s\S]*?"//printing/buildflags",\n    \])'
+      re_flags: [MULTILINE]
+      replace:
+        '\1\n    import("//brave/components/brave_origin/buildflags/buildflags.gni")
+        if (is_brave_origin_branded) { defines = [ "IS_BRAVE_ORIGIN_BRANDED" ] }'

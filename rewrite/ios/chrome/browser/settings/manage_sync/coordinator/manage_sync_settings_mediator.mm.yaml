@@ -8,8 +8,9 @@ substitutions:
       Group the kAIChat UserSelectableType with the unhandled cases in
       tableViewItemWithDataType:. Anchored on the method and the NOTREACHED()
       outcome rather than a sibling case key.
-    re_pattern:
-      '(tableViewItemWithDataType:.*?switch \(dataType\) \{.*?)(\n[
-      \t]*NOTREACHED\(\);)'
-    re_flags: [DOTALL]
-    replace: '\1\n    case syncer::UserSelectableType::kAIChat:\2'
+    regex:
+      re_pattern:
+        '(tableViewItemWithDataType:.*?switch \(dataType\) \{.*?)(\n[
+        \t]*NOTREACHED\(\);)'
+      re_flags: [DOTALL]
+      replace: '\1\n    case syncer::UserSelectableType::kAIChat:\2'

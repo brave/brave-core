@@ -11,8 +11,9 @@ substitutions:
       instead. The constant is referenced both inside and outside
       `MultiContentsView`, so adjusting it here is preferable to zeroing
       the inset fields in the constructor.
-    re_pattern: 'kSplitViewContentInset = 8;'
-    replace: 'kSplitViewContentInset = 0;'
+    regex:
+      re_pattern: 'kSplitViewContentInset = 8;'
+      replace: 'kSplitViewContentInset = 0;'
 
   - description: |
       Make `GetActiveContentsContainerView` virtual.
@@ -46,10 +47,11 @@ substitutions:
 
       `BraveMultiContentsView` overrides this to reset the resize area
       when the web-panel layout changes.
-    re_pattern: '( +)(void SetBackgroundRadii\([^)]*\);)'
-    replace: |-
-      \1\2
-      \1virtual void ResetResizeArea() {}
+    regex:
+      re_pattern: '( +)(void SetBackgroundRadii\([^)]*\);)'
+      replace: |-
+        \1\2
+        \1virtual void ResetResizeArea() {}
 
   - description: |
       Make `ExecuteOnEachVisibleContentsView` virtual.

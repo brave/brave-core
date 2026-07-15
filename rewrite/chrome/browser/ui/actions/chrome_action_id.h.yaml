@@ -6,14 +6,16 @@
 substitutions:
   - description: |
       Register Brave's side panel action ids.
-    re_pattern: '(#define SIDE_PANEL_ACTION_IDS \\\n)'
-    replace: |
-      \1  E(kActionSidePanelShowPlaylist) \
-        E(kActionSidePanelShowChatUI) \
-        E(kActionSidePanelShowBraveNews) \
+    regex:
+      re_pattern: '(#define SIDE_PANEL_ACTION_IDS \\\n)'
+      replace: |
+        \1  E(kActionSidePanelShowPlaylist) \
+          E(kActionSidePanelShowChatUI) \
+          E(kActionSidePanelShowBraveNews) \
   - description: |
       Register Brave's toolbar action ids.
-    re_pattern: '(#define TOOLBAR_PINNABLE_ACTION_IDS \\\n)'
-    replace: |
-      \1  E(kActionShowPartitionedStorage) \
-        E(kActionShowPsstIcon) \
+    regex:
+      re_pattern: '(#define TOOLBAR_PINNABLE_ACTION_IDS \\\n)'
+      replace: |
+        \1  E(kActionShowPartitionedStorage) \
+          E(kActionShowPsstIcon) \

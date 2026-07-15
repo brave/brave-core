@@ -9,16 +9,17 @@ substitutions:
 
       This plaster is generic enough to guarantee that our entries are always last,
       and that they also become the new kMaxValue.
-    re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        kWidevine,
-        kBraveEthereum,
-        kBraveSolana,
-        kBraveOpenAIChat,
-        kBraveGoogleSignInPermission,
-        kBraveCardano,
-        kBraveMinValue = kWidevine,
-        kBraveMaxValue = kBraveCardano,
-        kMaxValue = kBraveCardano
+    regex:
+      re_pattern: '(enum class RequestType \{.+?,)(\s+)kMaxValue = \w+'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          kWidevine,
+          kBraveEthereum,
+          kBraveSolana,
+          kBraveOpenAIChat,
+          kBraveGoogleSignInPermission,
+          kBraveCardano,
+          kBraveMinValue = kWidevine,
+          kBraveMaxValue = kBraveCardano,
+          kMaxValue = kBraveCardano

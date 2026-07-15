@@ -5,8 +5,9 @@
 
 substitutions:
   - description: 'Add ECDSA_SHA384 to the EC_KEY case in `AlgorithmToType`'
-    re_pattern: '(AlgorithmToType\([^)]*\).*?)(\n\s*return BPKUR::EC_KEY;)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case crypto::SignatureVerifier::ECDSA_SHA384:\2
+    regex:
+      re_pattern: '(AlgorithmToType\([^)]*\).*?)(\n\s*return BPKUR::EC_KEY;)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case crypto::SignatureVerifier::ECDSA_SHA384:\2

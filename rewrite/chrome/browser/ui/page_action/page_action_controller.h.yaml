@@ -10,11 +10,12 @@ substitutions:
       The abstract PageActionController base, ScopedPageActionActivity and other
       free declarations are intentionally left in page_actions::; only the concrete
       impl class is wrapped, so we can shadow it with our own implementation.
-    re_pattern: '(class PageActionControllerImpl[\s\S]*?\n\};)'
-    replace: |
-      namespace chromium_impl {
-      \1
-      }  // namespace chromium_impl
+    regex:
+      re_pattern: '(class PageActionControllerImpl[\s\S]*?\n\};)'
+      replace: |
+        namespace chromium_impl {
+        \1
+        }  // namespace chromium_impl
 
   - description: |
       Make CreateModel virtual so the brave PageActionControllerImpl override can

@@ -7,8 +7,9 @@ substitutions:
   - description:
       Call MaybePopulateTreeTabExtraData() from
       BrowserLiveTabContext::GetExtraDataForTab()
-    re_pattern: |-
-      (std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab\(.*std::map<std::string, std::string> extra_data;)
-    re_flags: [DOTALL]
-    replace: |-
-      \1\n  MaybePopulateTreeTabExtraData(*browser_, index, extra_data);
+    regex:
+      re_pattern: |-
+        (std::map<std::string, std::string> BrowserLiveTabContext::GetExtraDataForTab\(.*std::map<std::string, std::string> extra_data;)
+      re_flags: [DOTALL]
+      replace: |-
+        \1\n  MaybePopulateTreeTabExtraData(*browser_, index, extra_data);

@@ -5,5 +5,6 @@
 
 substitutions:
   - description: 'Add virtual keyword to Init()'
-    pattern: '[[nodiscard]] Liveness Init('
-    replace: '[[nodiscard]] virtual Liveness Init('
+    regex:
+      pattern: '[[nodiscard]] Liveness Init('
+      replace: '[[nodiscard]] virtual Liveness Init('

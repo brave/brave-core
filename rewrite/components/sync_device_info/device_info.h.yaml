@@ -13,12 +13,13 @@ substitutions:
       This regex matches with the constructor declaration, by checking that there is
       a `std::string` somewhere in the list, and adds `self_delete_support` as the
       last argument in the list.
-    re_pattern: '(DeviceInfo\((?=[^)]*std::string).*?)(\);)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1,
-                   SelfDeleteSupport self_delete_support =
-                       SelfDeleteSupport::kNotSupported\2
+    regex:
+      re_pattern: '(DeviceInfo\((?=[^)]*std::string).*?)(\);)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1,
+                     SelfDeleteSupport self_delete_support =
+                         SelfDeleteSupport::kNotSupported\2
 
   - description: |
       Declare a move constructor for DeviceInfo
@@ -28,11 +29,12 @@ substitutions:
       constructor so that Brave-specific call sites can wrap the value-returning
       upstream `SpecificsToModel` into `std::make_unique<DeviceInfo>(...)`,
       removing the need to duplicate the upstream argument list.
-    re_pattern: '(DeviceInfo& operator=\(const DeviceInfo&\) = delete;)'
-    replace: |-
-      \1
+    regex:
+      re_pattern: '(DeviceInfo& operator=\(const DeviceInfo&\) = delete;)'
+      replace: |-
+        \1
 
-        DeviceInfo(DeviceInfo&&);
+          DeviceInfo(DeviceInfo&&);
 
   - description: |
       Add Brave-specific methods to DeviceInfo public interface
@@ -40,30 +42,32 @@ substitutions:
       Adding brave-specific methods to this type's interface. This methods used to
       exist in Chromium, but they were dropped at some point, and then reinstated on
       Brave.
-    re_pattern: '(~DeviceInfo\(\);)'
-    replace: |-
-      \1
-        SelfDeleteSupport self_delete_support() const {
-          return self_delete_support_;
-        }
-        void set_self_delete_support(SelfDeleteSupport self_delete_support) {
-          self_delete_support_ = self_delete_support;
-        }
-        // Gets the OS in string form.
-        std::string GetOSString() const;
-        // Gets the device type in string form.
-        std::string GetDeviceTypeString() const;
-        // Converts the DeviceInfo values to a JS friendly DictionaryValue,
-        // which extension APIs can expose to third party apps.
-        base::DictValue ToValue() const;
+    regex:
+      re_pattern: '(~DeviceInfo\(\);)'
+      replace: |-
+        \1
+          SelfDeleteSupport self_delete_support() const {
+            return self_delete_support_;
+          }
+          void set_self_delete_support(SelfDeleteSupport self_delete_support) {
+            self_delete_support_ = self_delete_support;
+          }
+          // Gets the OS in string form.
+          std::string GetOSString() const;
+          // Gets the device type in string form.
+          std::string GetDeviceTypeString() const;
+          // Converts the DeviceInfo values to a JS friendly DictionaryValue,
+          // which extension APIs can expose to third party apps.
+          base::DictValue ToValue() const;
 
   - description: |
       Add self_delete_support_ as last member of DeviceInfo
 
       This replacement adds `self_delete_support_` as the last member of
       `DeviceInfo`.
-    re_pattern: '(class DeviceInfo \{.*)(\n\};)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        SelfDeleteSupport self_delete_support_;\2
+    regex:
+      re_pattern: '(class DeviceInfo \{.*)(\n\};)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          SelfDeleteSupport self_delete_support_;\2

@@ -9,10 +9,11 @@ substitutions:
 
       `CookieMonsterChangeDispatcher` has to use `chromium_impl::CookieMonster`
       because it gets used by the Chromium implementation of `CookieMonster`.
-    re_pattern: '\bCookieMonster\b'
-    count: 4
-    replace: 'chromium_impl::CookieMonster'
+    regex:
+      re_pattern: '\bCookieMonster\b'
+      replace: 'chromium_impl::CookieMonster'
 
+    count: 4
   - description: |
       Fixing foward decl for chromium_impl::CookieMonster.
 
@@ -20,8 +21,9 @@ substitutions:
       including the one that was foward-declaring `CookieMonster`, this results in
       broken C++ syntax that has to be corrected, to open a namespace and then
       forward-declare inside it.
-    pattern: 'class chromium_impl::CookieMonster;'
-    replace: |-
-      namespace chromium_impl {
-      class CookieMonster;
-      }
+    regex:
+      pattern: 'class chromium_impl::CookieMonster;'
+      replace: |-
+        namespace chromium_impl {
+        class CookieMonster;
+        }

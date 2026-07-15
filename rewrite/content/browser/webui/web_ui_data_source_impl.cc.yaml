@@ -9,7 +9,8 @@ substitutions:
 
       Note: This needs to be done here, so that when upstream overrides the
       CSP it still gets our policies.
-    re_pattern: '((csp_overrides_\.insert_or_assign\(directive), value(\);))'
-    re_flags: [DOTALL]
-    replace: |-
-      \2, GetBraveTrustedTypesValue(directive, value)\3
+    regex:
+      re_pattern: '((csp_overrides_\.insert_or_assign\(directive), value(\);))'
+      re_flags: [DOTALL]
+      replace: |-
+        \2, GetBraveTrustedTypesValue(directive, value)\3

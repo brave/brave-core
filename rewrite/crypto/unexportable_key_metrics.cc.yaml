@@ -8,39 +8,43 @@ substitutions:
       Add `ECDSA_SHA384` to the `kAllAlgorithms` test array.
 
       Ensures ECDSA_SHA384 is exercised alongside ECDSA_SHA256 in TPM metrics.
-    re_pattern: '(kAllAlgorithms\[\]\s*=\s*\{.*?)(\n\s*\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384,\2
+    regex:
+      re_pattern: '(kAllAlgorithms\[\]\s*=\s*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384,\2
 
   - description: |
       Add `ECDSA_SHA384` fallthrough in `MeasureVirtualTpmOperations`.
 
       Treats ECDSA_SHA384 as ECDSA for virtual TPM support classification.
-    re_pattern: '(MeasureVirtualTpmOperations\([^)]*\).*?)(\n\s*supported_virtual_algo)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-            case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
+    regex:
+      re_pattern: '(MeasureVirtualTpmOperations\([^)]*\).*?)(\n\s*supported_virtual_algo)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
 
   - description: |
       Add `ECDSA_SHA384` fallthrough in `MeasureTpmOperationsInternal`.
 
       Treats ECDSA_SHA384 as ECDSA for hardware TPM support classification.
-    re_pattern: '(MeasureTpmOperationsInternal\([^)]*\).*?)(\n\s*supported_algo)'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-            case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
+    regex:
+      re_pattern: '(MeasureTpmOperationsInternal\([^)]*\).*?)(\n\s*supported_algo)'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+              case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:\2
 
   - description: |
       Add `ECDSA_SHA384` to `AlgorithmToString`.
 
       ECDSA_SHA384 keys are reported under the same "ECDSA" histogram bucket.
-    re_pattern: '(AlgorithmToString\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-          case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
-            return "ECDSA";\2
+    regex:
+      re_pattern: '(AlgorithmToString\([^)]*\)\s*\{.*?\n\s*switch[^{]*\{.*?)(\n\s*\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+            case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA384:
+              return "ECDSA";\2

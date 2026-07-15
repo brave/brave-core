@@ -7,8 +7,9 @@ substitutions:
   - description:
       'Add kActionShowPartitionedStorage and kActionShowPsstIcon as the second
       entry of kActionIds'
-    re_pattern:
-      '(kActionIds = std::to_array<actions::ActionId>\(\{\n[ \t]*\w+,\n)'
-    replace: |
-      \1    kActionShowPartitionedStorage,
-          kActionShowPsstIcon,
+    regex:
+      re_pattern:
+        '(kActionIds = std::to_array<actions::ActionId>\(\{\n[ \t]*\w+,\n)'
+      replace: |
+        \1    kActionShowPartitionedStorage,
+            kActionShowPsstIcon,

@@ -10,5 +10,6 @@ substitutions:
       The helper, defined in the chromium_src wrapper for this source, adds a
       "Copy Clean Link" entry to the first-party action list when applicable and
       returns the original label ID so the upstream `emplace_back` keeps working.
-    pattern: 'IDS_SHARING_HUB_COPY_LINK_LABEL'
-    replace: 'MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_)'
+    regex:
+      pattern: 'IDS_SHARING_HUB_COPY_LINK_LABEL'
+      replace: 'MaybeAddCopyCleanLinkItem(context_, &first_party_action_list_)'

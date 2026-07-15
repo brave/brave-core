@@ -9,14 +9,16 @@ substitutions:
 
       The constructor is the first PageActionModel content in the TU; the file-local
       anonymous namespace above it stays in page_actions::.
-    re_pattern: '(PageActionModel::PageActionModel\()'
-    replace: |-
-      namespace chromium_impl {
-      \1
+    regex:
+      re_pattern: '(PageActionModel::PageActionModel\()'
+      replace: |-
+        namespace chromium_impl {
+        \1
 
   - description: |
       Closes the detail namespace `chromium_impl::` in the translation unit.
-    re_pattern: '(\}\s*//\s*namespace page_actions)'
-    replace: |-
-      }  // namespace chromium_impl
-      \1
+    regex:
+      re_pattern: '(\}\s*//\s*namespace page_actions)'
+      replace: |-
+        }  // namespace chromium_impl
+        \1

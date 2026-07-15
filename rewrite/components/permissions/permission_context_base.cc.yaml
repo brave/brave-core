@@ -6,11 +6,14 @@
 substitutions:
   - description:
       'Moving `PermissionContextBase` into `chromium_impl` as in the header.'
-    pattern: 'namespace permissions'
-    count: 2
-    replace: 'namespace permissions::chromium_impl'
+    regex:
+      pattern: 'namespace permissions'
+      replace: 'namespace permissions::chromium_impl'
 
-  - description: 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
-    pattern: 'CanBypassEmbeddingOriginCheck('
     count: 2
-    replace: 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, '
+  - description: 'Calls BraveCanBypassEmbeddingOriginCheck for wallet handling'
+    regex:
+      pattern: 'CanBypassEmbeddingOriginCheck('
+      replace: 'BraveCanBypassEmbeddingOriginCheck(content_settings_type_, '
+
+    count: 2

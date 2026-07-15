@@ -14,9 +14,10 @@ substitutions:
       The namespace introduced here only wraps the classes in the header, so it
       searches for the class declaration first, to avoid wrapping the forward
       declarations.
-    re_pattern: '(class NET_EXPORT CookieMonster.*?)(\n\}\s*// namespace net)'
-    re_flags: [DOTALL]
-    replace: |-
-      namespace chromium_impl {
-      \1
-      }  // namespace chromium_impl\2
+    regex:
+      re_pattern: '(class NET_EXPORT CookieMonster.*?)(\n\}\s*// namespace net)'
+      re_flags: [DOTALL]
+      replace: |-
+        namespace chromium_impl {
+        \1
+        }  // namespace chromium_impl\2

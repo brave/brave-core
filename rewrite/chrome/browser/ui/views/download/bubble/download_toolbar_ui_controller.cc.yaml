@@ -10,8 +10,9 @@ substitutions:
       This replacement adds a `UpdateIcon_BraveImpl` call after the upstream image
       update to apply Brave's icon color and replace the icon when an insecure file
       is downloaded.
-    re_pattern: '(badge_background_color\);)'
-    re_flags: [MULTILINE]
-    replace: |-
-      \1
-        UpdateIcon_BraveImpl(browser_view_, *new_icon, state_, active_, action_item_);
+    regex:
+      re_pattern: '(badge_background_color\);)'
+      re_flags: [MULTILINE]
+      replace: |-
+        \1
+          UpdateIcon_BraveImpl(browser_view_, *new_icon, state_, active_, action_item_);

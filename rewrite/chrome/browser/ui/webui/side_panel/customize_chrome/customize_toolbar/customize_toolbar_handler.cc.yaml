@@ -9,11 +9,12 @@ substitutions:
 
       As ObserveBraveActions() is dependant on pref_registrar_, we should anchor
       the invocation to the pref_registrar_.Init().
-    re_pattern: (CustomizeToolbarHandler::CustomizeToolbarHandler.*?)(^})
-    re_flags: [DOTALL, MULTILINE]
-    replace: |-
-      \1  ObserveBraveActions(&client_, pref_change_registrar_);
-      \2
+    regex:
+      re_pattern: (CustomizeToolbarHandler::CustomizeToolbarHandler.*?)(^})
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1  ObserveBraveActions(&client_, pref_change_registrar_);
+        \2
 
   - description: |
       Modify categories in ListCategories() with list_modifiers.h at the end of
@@ -21,14 +22,15 @@ substitutions:
 
       Captures the callback invoked at the end of ListCategories() and wraps it
       with our modifiers.
-    re_pattern: |-
-      (void CustomizeToolbarHandler::ListCategories\(.*?)(std::move\(callback\)\.Run\(std::move\(categories\)\);)(\n^})
-    re_flags: [DOTALL, MULTILINE]
-    replace: |-
-      \1base::BindOnce(&customize_chrome::AppendBraveSpecificCategories,
-                 web_contents_.get())
-            .Then(std::move(callback))
-            .Run(std::move(categories));\3
+    regex:
+      re_pattern: |-
+        (void CustomizeToolbarHandler::ListCategories\(.*?)(std::move\(callback\)\.Run\(std::move\(categories\)\);)(\n^})
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1base::BindOnce(&customize_chrome::AppendBraveSpecificCategories,
+                   web_contents_.get())
+              .Then(std::move(callback))
+              .Run(std::move(categories));\3
 
   - description: |
       Modify actions in ListActions() with list_modifiers.h at the end of the
@@ -37,15 +39,16 @@ substitutions:
       Captures the callback invoked at the end of ListActions() and wraps it
       with our modifiers.
 
-    re_pattern: |-
-      (void CustomizeToolbarHandler::ListActions\(.*?)(std::move\(callback\)\.Run\(std::move\(actions\)\);)(\n^})
-    re_flags: [DOTALL, MULTILINE]
-    replace: |-
-      \1base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
-            .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
-                                 web_contents_.get()))
-            .Then(std::move(callback))
-            .Run(std::move(actions));\3
+    regex:
+      re_pattern: |-
+        (void CustomizeToolbarHandler::ListActions\(.*?)(std::move\(callback\)\.Run\(std::move\(actions\)\);)(\n^})
+      re_flags: [DOTALL, MULTILINE]
+      replace: |-
+        \1base::BindOnce(&customize_chrome::FilterUnsupportedChromiumActions)
+              .Then(base::BindOnce(&customize_chrome::ApplyBraveSpecificModifications,
+                                   web_contents_.get()))
+              .Then(std::move(callback))
+              .Run(std::move(actions));\3
 
   - description: |
       Handle Brave-specific action pinning/unpinning in PinAction().
@@ -54,14 +57,15 @@ substitutions:
       and adds code to pin brave specific actions before calling the original
       PinAction code.
 
-    re_pattern: |-
-      (void CustomizeToolbarHandler::PinAction\(.*?{)
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        if (PinBraveAction(action_id, prefs(), pin)) {
-          return;
-        }
+    regex:
+      re_pattern: |-
+        (void CustomizeToolbarHandler::PinAction\(.*?{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (PinBraveAction(action_id, prefs(), pin)) {
+            return;
+          }
 
   - description: |
       Replace the resource ID for the "Your Chrome" category with "Brave Menu"
@@ -69,30 +73,33 @@ substitutions:
 
       IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME will be replaced with
       IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR.
-    pattern: IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
-    replace: IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
+    regex:
+      pattern: IDS_NTP_CUSTOMIZE_TOOLBAR_CATEGORY_YOUR_CHROME
+      replace: IDS_CUSTOMIZE_TOOLBAR_CATEGORY_TOOLBAR
 
   - description: |
       Check if Brave specific actions are customized in GetIsCustomized().
 
       Inserts a call to IsBraveActionCustomized() before upstream logic.
 
-    re_pattern: (void CustomizeToolbarHandler::GetIsCustomized\(.*?{)
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        if (IsBraveActionCustomized(web_contents_.get())) {
-          std::move(callback).Run(true);
-          return;
-        }
+    regex:
+      re_pattern: (void CustomizeToolbarHandler::GetIsCustomized\(.*?{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (IsBraveActionCustomized(web_contents_.get())) {
+            std::move(callback).Run(true);
+            return;
+          }
 
   - description: |
       Reset Brave specific actions to default in ResetToDefault().
 
       Inserts a call to ResetBraveActionsToDefault() before upstream logic.
 
-    re_pattern: (void CustomizeToolbarHandler::ResetToDefault\(.*?{)
-    re_flags: [DOTALL]
-    replace: |-
-      \1
-        ResetBraveActionsToDefault(web_contents_.get());
+    regex:
+      re_pattern: (void CustomizeToolbarHandler::ResetToDefault\(.*?{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          ResetBraveActionsToDefault(web_contents_.get());

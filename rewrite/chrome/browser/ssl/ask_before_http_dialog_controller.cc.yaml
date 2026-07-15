@@ -5,6 +5,8 @@
 
 substitutions:
   - description: 'Point Learn More link to the Brave support article.'
-    re_pattern: '(kLearnMoreLink[^=]*=\s*)(?:"[^"]*"\s*)+;'
+    regex:
+      re_pattern: '(kLearnMoreLink[^=]*=\s*)(?:"[^"]*"\s*)+;'
+      replace: '\1"https://support.brave.app/hc/en-us/articles/15513090104717";'
+
     count: 1
-    replace: '\1"https://support.brave.app/hc/en-us/articles/15513090104717";'

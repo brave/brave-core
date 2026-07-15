@@ -12,6 +12,7 @@ substitutions:
       to patch it in. The decision itself lives in `GetBraveDragHandleExtension`
       in the chromium_src shadow of this file.
     # Match every use of the constant, but not its declaration (`... = 6;`).
-    re_pattern: '\bkDragHandleExtension\b(?!\s*=)'
-    replace: 'GetBraveDragHandleExtension(kDragHandleExtension)'
+    regex:
+      re_pattern: '\bkDragHandleExtension\b(?!\s*=)'
+      replace: 'GetBraveDragHandleExtension(kDragHandleExtension)'
     count: 0 # Any current or future use of the constant wants the Brave value.

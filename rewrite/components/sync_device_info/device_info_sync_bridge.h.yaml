@@ -13,11 +13,12 @@ substitutions:
       overrides of `DeviceInfoTracker`; `OnDeviceInfoDeleted` is the delayed
       continuation that `DeleteDeviceInfo` posts to re-check whether the
       deletion was ack'd by the sync server.
-    re_pattern: '( +)(~DeviceInfoSyncBridge\(\) override;)'
-    replace: |-
-      \1\2
-      \1void DeleteDeviceInfo(const std::string& client_id,
-      \1                      base::OnceClosure callback) override;
-      \1std::vector<DeviceInfo> GetAllBraveDeviceInfo() const override;
-      \1void OnDeviceInfoDeleted(const std::string& client_id, const int attempt,
-      \1                         base::OnceClosure callback);
+    regex:
+      re_pattern: '( +)(~DeviceInfoSyncBridge\(\) override;)'
+      replace: |-
+        \1\2
+        \1void DeleteDeviceInfo(const std::string& client_id,
+        \1                      base::OnceClosure callback) override;
+        \1std::vector<DeviceInfo> GetAllBraveDeviceInfo() const override;
+        \1void OnDeviceInfoDeleted(const std::string& client_id, const int attempt,
+        \1                         base::OnceClosure callback);
