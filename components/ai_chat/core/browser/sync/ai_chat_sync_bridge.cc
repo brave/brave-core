@@ -8,11 +8,11 @@
 #include <algorithm>
 #include <memory>
 #include <optional>
-#include <set>
 #include <string>
 #include <string_view>
 #include <utility>
 
+#include "base/check_deref.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
@@ -24,6 +24,7 @@
 #include "components/sync/model/mutable_data_batch.h"
 #include "components/sync/model/sync_metadata_store_change_list.h"
 #include "components/sync/protocol/entity_data.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 namespace ai_chat {
 
@@ -31,9 +32,9 @@ namespace {
 
 // Looks up a conversation by UUID. Returns nullptr if it does not exist or is
 // temporary.
-mojom::ConversationPtr FindSyncableConversation(AIChatDatabase* database,
+mojom::ConversationPtr FindSyncableConversation(AIChatDatabase& database,
                                                 std::string_view uuid) {
-  for (auto& conversation : database->GetAllConversations()) {
+  for (auto& conversation : database.GetAllConversations()) {
     if (conversation->uuid == uuid) {
       if (conversation->temporary) {
         return nullptr;
@@ -50,14 +51,13 @@ AIChatSyncBridge::AIChatSyncBridge(
     std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
     AIChatDatabase* database)
     : syncer::DataTypeSyncBridge(std::move(change_processor)),
-      database_(database) {
-  DCHECK(database_);
+      database_(CHECK_DEREF(database)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   // Load metadata synchronously (we're on the database sequence).
   auto batch = std::make_unique<syncer::MetadataBatch>();
   if (!database_->GetAllSyncMetadata(batch.get())) {
-    this->change_processor()->ReportError(
+    ReportError(
         {FROM_HERE, syncer::ModelError::Type::kAIChatFailedToLoadMetadata});
     return;
   }
@@ -68,19 +68,18 @@ AIChatSyncBridge::~AIChatSyncBridge() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 }
 
+void AIChatSyncBridge::ReportError(const syncer::ModelError& error) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  this->change_processor()->ReportError(error);
+}
+
 std::unique_ptr<syncer::MetadataChangeList>
 AIChatSyncBridge::CreateMetadataChangeList() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return std::make_unique<syncer::SyncMetadataStoreChangeList>(
-      database_, syncer::AI_CHAT_CONVERSATION,
-      base::BindRepeating(
-          [](base::WeakPtr<AIChatSyncBridge> bridge,
-             const syncer::ModelError& error) {
-            if (bridge) {
-              bridge->change_processor()->ReportError(error);
-            }
-          },
-          weak_ptr_factory_.GetWeakPtr()));
+      &database_.get(), syncer::AI_CHAT_CONVERSATION,
+      base::BindRepeating(&AIChatSyncBridge::ReportError,
+                          weak_ptr_factory_.GetWeakPtr()));
 }
 
 std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
@@ -90,7 +89,7 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
 
   // Track which storage keys we already have from remote so we don't
   // re-upload them.
-  std::set<std::string> remote_storage_keys;
+  absl::flat_hash_set<std::string> remote_storage_keys;
   for (const auto& change : entity_data) {
     if (change->type() == syncer::EntityChange::ACTION_DELETE) {
       continue;
@@ -156,7 +155,7 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
   for (const auto& key : storage_keys) {
     if (key.starts_with(kConversationStorageKeyPrefix)) {
       const std::string uuid = key.substr(kConversationStorageKeyPrefix.size());
-      auto conversation = FindSyncableConversation(database_, uuid);
+      auto conversation = FindSyncableConversation(*database_, uuid);
       if (!conversation) {
         continue;
       }
@@ -225,18 +224,21 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetAllDataForDebugging() {
 
 std::string AIChatSyncBridge::GetClientTag(
     const syncer::EntityData& entity_data) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return GetClientTagFromSpecifics(
       entity_data.specifics.ai_chat_conversation());
 }
 
 std::string AIChatSyncBridge::GetStorageKey(
     const syncer::EntityData& entity_data) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   return GetStorageKeyFromSpecifics(
       entity_data.specifics.ai_chat_conversation());
 }
 
 bool AIChatSyncBridge::IsEntityDataValid(
     const syncer::EntityData& entity_data) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   if (!entity_data.specifics.has_ai_chat_conversation()) {
     return false;
   }
@@ -254,6 +256,7 @@ bool AIChatSyncBridge::IsEntityDataValid(
 sync_pb::EntitySpecifics
 AIChatSyncBridge::TrimAllSupportedFieldsFromRemoteSpecifics(
     const sync_pb::EntitySpecifics& entity_specifics) const {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   // The bridge actively uses every field in AIChatConversationSpecifics, so
   // there is nothing to preserve for older clients. Returning an empty
   // EntitySpecifics avoids the I/O cost of caching a copy.

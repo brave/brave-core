@@ -56,6 +56,7 @@
 #include "components/os_crypt/async/browser/os_crypt_async.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync/model/client_tag_based_data_type_processor.h"
+#include "components/sync/model/data_type_controller_delegate.h"
 #include "components/sync/model/proxy_data_type_controller_delegate.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/struct_ptr.h"
@@ -484,10 +485,11 @@ void AIChatService::MaybeInitStorage() {
       // if we can't use encryption.
     }
   } else {
-    // Tear down the bridge on the DB sequence before the database it holds a
-    // raw_ptr to is destroyed below (same ordering rule as Shutdown()), and
-    // drop the backend so a later re-enable rebuilds it — SetBridge() installs
-    // at most once.
+    // Tear down the bridge on the DB sequence before ai_chat_db_ is reset
+    // later in this branch (the bridge holds a raw_ref to the database, so it
+    // must not outlive it — same ordering rule as Shutdown()), and drop the
+    // backend so a later re-enable rebuilds it — SetBridge() installs at most
+    // once.
     if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE,

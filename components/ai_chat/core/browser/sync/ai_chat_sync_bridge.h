@@ -10,7 +10,7 @@
 #include <optional>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/raw_ref.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "components/sync/model/data_type_sync_bridge.h"
@@ -66,7 +66,11 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   }
 
  private:
-  const raw_ptr<AIChatDatabase> database_;
+  // Forwards a sync model error to the change processor. Bound as a WeakPtr
+  // callback for the metadata store's error reporting.
+  void ReportError(const syncer::ModelError& error);
+
+  const raw_ref<AIChatDatabase> database_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 
