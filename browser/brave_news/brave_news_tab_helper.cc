@@ -29,7 +29,8 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
-#include "net/base/url_util.h"
+#include "services/network/public/cpp/ip_address_space_util.h"
+#include "services/network/public/mojom/ip_address_space.mojom.h"
 #include "url/gurl.h"
 
 BraveNewsTabHelper::FeedDetails::FeedDetails() = default;
@@ -79,9 +80,16 @@ const std::vector<GURL> BraveNewsTabHelper::GetAvailableFeedUrls() {
       continue;
     }
 
-    // Don't include localhost feeds as it would allows sites to trigger
-    // requests to localhost.
-    if (net::IsLocalhost(rss_feed.feed_url)) {
+    // Don't include loopback or local-network feeds as it would allow sites to
+    // trigger requests to the user's localhost or local network. This catches
+    // IP literals (e.g. 127.0.0.1, 192.168.1.1), .local mDNS names, and
+    // localhost domains, but not hostnames that only resolve to a local address
+    // via DNS (those can only be detected after resolution).
+    auto address_space =
+        network::GetAddressSpaceFromUrl(rss_feed.feed_url)
+            .value_or(network::mojom::IPAddressSpace::kUnknown);
+    if (address_space == network::mojom::IPAddressSpace::kLoopback ||
+        address_space == network::mojom::IPAddressSpace::kLocal) {
       continue;
     }
 

@@ -181,6 +181,32 @@ IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, FeedsAreDeduplicated) {
   EXPECT_EQ(url, result[0]);
 }
 
+IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest,
+                       LoopbackAndLocalNetworkFeedsAreFilteredOut) {
+  auto* tab_helper = BraveNewsTabHelper::FromWebContents(contents());
+  WaitForFeedsChanged waiter(tab_helper, 1);
+
+  const GURL public_feed("https://example.com/feed");
+  tab_helper->OnReceivedRssUrls(contents()->GetLastCommittedURL(),
+                                {
+                                    // Loopback, in various forms.
+                                    GURL("http://127.0.0.1/feed"),
+                                    GURL("http://[::1]/feed"),
+                                    GURL("http://localhost/feed"),
+                                    // Local network addresses.
+                                    GURL("http://192.168.1.1/feed"),
+                                    GURL("http://10.0.0.1/feed"),
+                                    // A .local mDNS name.
+                                    GURL("http://myprinter.local/feed"),
+                                    // The only feed that should survive.
+                                    public_feed,
+                                });
+
+  auto result = waiter.WaitForFeeds();
+  ASSERT_EQ(1u, result.size());
+  EXPECT_EQ(public_feed, result[0]);
+}
+
 IN_PROC_BROWSER_TEST_F(BraveNewsTabHelperTest, NonExistingFeedsAreRemoved) {
   OptIn();
 

@@ -63,6 +63,8 @@ source_set("impl") {
     "//components/policy/core/common",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
+    "//services/network/public/cpp",
+    "//services/network/public/mojom",
     "//services/service_manager/public/cpp",
     "//url",
   ]
