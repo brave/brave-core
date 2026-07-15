@@ -33,4 +33,5 @@ message EngineMatches {
   url_proto.Url tab_host = 2;
   bool is_third_party = 3;
   ResourceType resource_type = 4;
+  string method = 5;
 }

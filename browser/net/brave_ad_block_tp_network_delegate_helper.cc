@@ -224,7 +224,7 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   auto adblock_result = engine_wrapper->ShouldStartRequest(
-      url_to_check, input.resource_type, source_host,
+      url_to_check, input.resource_type, source_host, input.method,
       input.aggressive_blocking || force_aggressive,
       previous_result.did_match_rule, previous_result.did_match_exception,
       previous_result.did_match_important);

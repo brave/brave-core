@@ -153,7 +153,7 @@ class AdblockEngineBox final {
   auto engine_result = adblock_engine->matches(
       base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
       base::SysNSStringToUTF8(tabHost), base::SysNSStringToUTF8(resourceType),
-      isThirdParty, previouslyMatchedRule, forceCheckExceptions);
+      isThirdParty, "", previouslyMatchedRule, forceCheckExceptions);
   auto result = [[AdblockEngineMatchResult alloc] init];
   result.didMatchRule = engine_result.matched;
   result.didMatchException = engine_result.has_exception;
@@ -179,7 +179,7 @@ class AdblockEngineBox final {
       static_cast<std::string>(adblock_engine->get_csp_directives(
           base::SysNSStringToUTF8(url), base::SysNSStringToUTF8(host),
           base::SysNSStringToUTF8(tabHost),
-          base::SysNSStringToUTF8(resourceType), isThirdParty)));
+          base::SysNSStringToUTF8(resourceType), isThirdParty, "")));
 }
 
 - (bool)deserialize:(NSData*)data {
