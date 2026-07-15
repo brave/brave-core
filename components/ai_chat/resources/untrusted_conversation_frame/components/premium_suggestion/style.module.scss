@@ -4,9 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 .boxPremium {
-  // Own containment so @container below can style descendants based on
-  // this card's width (an element cannot query its own size).
-  container-type: inline-size;
   width: 100%;
   padding: var(--leo-spacing-xl);
   background: var(--leo-color-container-background);
@@ -90,13 +87,6 @@
   flex: 0 0 auto;
 }
 
-.priceListWrapper {
-  display: flex;
-  flex-direction: column;
-  gap: var(--leo-spacing-m);
-  padding-top: var(--leo-spacing-l);
-}
-
 .planCard {
   position: relative;
   display: flex;
@@ -160,7 +150,7 @@
 
 .actions {
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: var(--leo-spacing-m);
   width: 100%;
 
@@ -169,16 +159,20 @@
   }
 }
 
-@container (min-width: 560px) {
-  .layout {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: var(--leo-spacing-2xl);
+.actionsRow {
+  flex-direction: row;
+
+  > * {
+    flex: 1 1 0;
+    min-width: 0;
   }
 
-  .right {
-    width: 360px;
-    flex: 0 0 360px;
-    gap: var(--leo-spacing-xl);
+  @media (max-width: 500px) {
+    flex-direction: column-reverse;
+
+    > * {
+      flex: none;
+      width: 100%;
+    }
   }
 }
