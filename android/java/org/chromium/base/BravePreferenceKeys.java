@@ -140,6 +140,9 @@ public final class BravePreferenceKeys {
 
     public static final String PREF_PULL_TO_REFRESH = "brave_pull_to_refresh";
 
+    public static final String BRAVE_NTP_TOP_SITES_DISPLAY_MODE =
+            "brave_ntp_top_sites_display_mode";
+
     /*
      * Checks if preference key is used in Brave.
      * It's no op currently. We might reconsider

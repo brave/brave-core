@@ -1,0 +1,27 @@
+diff --git a/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java b/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
+index 0ecd4c1563a6400c5a23fdced2d7c994af38aff3..244d29483bc3020195b92a2d3d58f20f4673c548 100644
+--- a/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
++++ b/chrome/android/java/src/org/chromium/chrome/browser/native_page/ContextMenuManager.java
+@@ -269,6 +269,8 @@ public class ContextMenuManager {
+             menuModel.add(builder.build());
+         }
+ 
++        customizeMenuModel(menuModel, delegate);
++
+         if (menuModel.isEmpty()) {
+             return false;
+         }
+@@ -444,6 +446,13 @@ public class ContextMenuManager {
+         return 0;
+     }
+ 
++    /**
++     * Hook for subclasses to customize the built menu model, e.g. adding extra items or altering
++     * existing ones, after the standard items are added but before the menu is shown. Default is a
++     * no-op.
++     */
++    protected void customizeMenuModel(MVCListAdapter.ModelList menuModel, Delegate delegate) {}
++
+     /**
+      * Performs an action corresponding to menu item selected by user.
+      *

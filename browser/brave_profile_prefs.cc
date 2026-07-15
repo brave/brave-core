@@ -185,6 +185,11 @@ namespace {
 
 void OverrideDefaultPrefValues(user_prefs::PrefRegistrySyncable* registry) {
 #if BUILDFLAG(IS_ANDROID)
+  // Register kNtpCustomLinksVisible on Android so it is accessible via
+  // UserPrefs and syncs with the desktop pref of the same name.
+  // Default true = "Show shortcuts" mode (custom links visible).
+  registry->RegisterBooleanPref(ntp_prefs::kNtpCustomLinksVisible, true);
+
   // Clear default popular sites
   registry->SetDefaultPrefValue(ntp_tiles::prefs::kPopularSitesJsonPref,
                                 base::Value(base::Value::Type::LIST));
