@@ -151,6 +151,7 @@ java_binary("java_bytecode_rewriter") {
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabbedNavigationBarColorControllerBaseClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTabbedRootUiCoordinatorClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveThemeUtilsClassAdapter.java",
+    "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTileInteractionDelegateImplClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveTileViewClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarLayoutClassAdapter.java",
     "//brave/build/android/bytecode/java/org/brave/bytecode/BraveToolbarLongPressMenuHandlerClassAdapter.java",

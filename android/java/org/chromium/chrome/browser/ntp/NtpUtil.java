@@ -5,11 +5,19 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import org.chromium.base.BravePreferenceKeys;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.AppearancePreferences;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
+import org.chromium.components.user_prefs.UserPrefs;
 
 public class NtpUtil {
+    public static final int TOP_SITES_MODE_SHORTCUTS = 0;
+    public static final int TOP_SITES_MODE_FREQUENT = 1;
+
+    private static final String PREF_NTP_CUSTOM_LINKS_VISIBLE = "ntp.custom_links_visible";
+
     public static boolean shouldDisplayTopSites() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(BackgroundImagesPreferences.PREF_SHOW_TOP_SITES, true);
@@ -35,5 +43,35 @@ public class NtpUtil {
     public static boolean shouldShowRewardsIcon() {
         return ChromeSharedPreferences.getInstance()
                 .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true);
+    }
+
+    public static int getTopSitesDisplayMode() {
+        return ChromeSharedPreferences.getInstance()
+                .readInt(
+                        BravePreferenceKeys.BRAVE_NTP_TOP_SITES_DISPLAY_MODE,
+                        TOP_SITES_MODE_SHORTCUTS);
+    }
+
+    public static void setTopSitesDisplayMode(int mode) {
+        ChromeSharedPreferences.getInstance()
+                .writeInt(BravePreferenceKeys.BRAVE_NTP_TOP_SITES_DISPLAY_MODE, mode);
+    }
+
+    /**
+     * Reads the Desktop-shared {@code ntp.custom_links_visible} profile pref. Only {@link
+     * org.chromium.chrome.browser.suggestions.mostvisited.BraveMostVisitedSites} should call this,
+     * since it is the sole owner of a legitimately-scoped {@link Profile} reference in this
+     * feature; everywhere else should use {@link #getTopSitesDisplayMode} instead.
+     */
+    public static int getProfileTopSitesDisplayMode(Profile profile) {
+        boolean customLinksVisible =
+                UserPrefs.get(profile).getBoolean(PREF_NTP_CUSTOM_LINKS_VISIBLE);
+        return customLinksVisible ? TOP_SITES_MODE_SHORTCUTS : TOP_SITES_MODE_FREQUENT;
+    }
+
+    /** Writes {@code mode} to the Desktop-shared {@code ntp.custom_links_visible} profile pref. */
+    public static void setProfileTopSitesDisplayMode(Profile profile, int mode) {
+        UserPrefs.get(profile)
+                .setBoolean(PREF_NTP_CUSTOM_LINKS_VISIBLE, mode == TOP_SITES_MODE_SHORTCUTS);
     }
 }
