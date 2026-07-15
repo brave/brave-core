@@ -23,6 +23,26 @@ The upstream extraction pipeline is enabled by chromium_src overrides of
 and `PageContentExtractionServiceFactory` to check `kHistoryEmbeddings` instead
 of the upstream feature flags.
 
+## Enabling / the brave://history toggle
+
+Two prefs gate the feature, via the `IsHistoryEmbeddings*` overrides in
+[`chromium_src/.../history_embeddings_utils.cc`](../../chromium_src/chrome/browser/history_embeddings/history_embeddings_utils.cc):
+
+- **`kBraveLocalAIEnabled`** — local-state master switch (Brave Origin "Local
+  AI"); gates `IsHistoryEmbeddingsFeatureEnabled()`.
+- **`kBraveHistoryEmbeddingsEnabled`** — per-profile brave://history toggle;
+  gates `IsHistoryEmbeddingsEnabledForProfile()`.
+
+The "Tool: On-Device AI" renderer launches only when an embedding service feeds
+the controller. Both such services (`PageEmbeddingsService`,
+`HistoryEmbeddingsService`) refuse to build without
+`PassageEmbedderModelObserverFactory`, so
+[`chromium_src/.../passage_embedder_model_observer_factory.cc`](../../chromium_src/chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.cc)
+gates that one shared dependency on `IsHistoryEmbeddingsEnabledForProfile()` —
+toggle off ⇒ neither service is built ⇒ no renderer. (Its other upstream gates,
+`kPassageEmbedder`/`kPermissionsAIv4`, are disabled in Brave.) Applied at
+service creation, so changes take effect on restart.
+
 ## Why `BindPassageEmbedder` instead of mojo `LoadModels`
 
 Upstream's `mojom::PassageEmbeddingsService::LoadModels` is shaped for
@@ -115,6 +135,11 @@ as a `friend class` on the base so we can reach `observer_list_` and
   `OnPassageVisibilityCalculated` to synthesize passing visibility scores, since
   Brave doesn't use `PageContentAnnotationsService` for content visibility
   filtering.
+
+- **`chromium_src/chrome/browser/passage_embeddings/passage_embedder_model_observer_factory.cc`**
+  — Gates the per-profile `PassageEmbedderModelObserver` on the brave://history
+  toggle so neither embedding service is built when it is off (see "Enabling /
+  the brave://history toggle" above).
 
 - **`chromium_src/chrome/browser/history_embeddings/history_embeddings_service_factory.cc`**
   — Override to use `BravePassageEmbeddingsServiceController` and
