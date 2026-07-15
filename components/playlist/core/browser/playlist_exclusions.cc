@@ -3,16 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/core/browser/playlist_exclusion.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions.h"
 
+#include <optional>
 #include <string_view>
 #include <utility>
 
+#include "base/check.h"
+#include "base/feature_list.h"
+#include "base/functional/callback.h"
 #include "base/json/json_reader.h"
 #include "base/strings/string_util.h"
 #include "base/task/thread_pool.h"
 #include "base/values.h"
 #include "brave/components/brave_component_updater/browser/dat_file_util.h"
+#include "brave/components/playlist/core/common/features.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
 #include "url/gurl.h"
 
@@ -20,7 +25,6 @@ namespace playlist {
 
 namespace {
 
-constexpr char kPlaylistExclusionsFile[] = "playlist_exclusions.json";
 constexpr char kRules[] = "rules";
 constexpr char kRegistrableDomain[] = "registrable_domain";
 constexpr char kDenyRootPath[] = "deny_root_path";
@@ -40,6 +44,41 @@ bool GetPathPrefixesFromValue(const base::Value* value,
     }
   }
   return true;
+}
+
+std::optional<std::vector<PlaylistResolveRule>> LoadPlaylistExclusionsFromFile(
+    const base::FilePath& exclusions_file_path) {
+  const std::string contents =
+      brave_component_updater::GetDATFileAsString(exclusions_file_path);
+  // Bail out if the component file was not loaded.
+  if (contents.empty()) {
+    return std::nullopt;
+  }
+
+  std::optional<base::DictValue> root =
+      base::JSONReader::ReadDict(contents, base::JSON_PARSE_RFC);
+  // Skip malformed JSON payloads.
+  if (!root) {
+    return std::nullopt;
+  }
+
+  const base::ListValue* rules_list = root->FindList(kRules);
+  // Skip payloads without a rules list.
+  if (!rules_list) {
+    return std::nullopt;
+  }
+
+  std::vector<PlaylistResolveRule> rules;
+  base::JSONValueConverter<PlaylistResolveRule> converter;
+  for (const base::Value& rule_val : *rules_list) {
+    PlaylistResolveRule rule;
+    if (converter.Convert(rule_val, &rule) &&
+        !rule.registrable_domain.empty()) {
+      rules.push_back(std::move(rule));
+    }
+  }
+
+  return rules;
 }
 
 }  // namespace
@@ -71,68 +110,27 @@ void PlaylistResolveRule::RegisterJSONConverter(
       GetPathPrefixesFromValue);
 }
 
+PlaylistExclusions::~PlaylistExclusions() = default;
+
 // static
 PlaylistExclusions* PlaylistExclusions::GetInstance() {
   return base::Singleton<PlaylistExclusions>::get();
 }
 
-PlaylistExclusions::PlaylistExclusions() = default;
-
-PlaylistExclusions::~PlaylistExclusions() = default;
-
-void PlaylistExclusions::OnComponentReady(const base::FilePath& component_dir) {
-  component_path_ = component_dir;
-
+void PlaylistExclusions::LoadPlaylistExclusions(
+    const base::FilePath& exclusions_file_path,
+    base::OnceClosure on_complete) {
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
-      base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                     component_path_.AppendASCII(kPlaylistExclusionsFile)),
+      base::BindOnce(&LoadPlaylistExclusionsFromFile, exclusions_file_path),
       base::BindOnce(&PlaylistExclusions::OnPlaylistExclusionsLoaded,
-                     weak_factory_.GetWeakPtr()));
-}
-
-void PlaylistExclusions::OnPlaylistExclusionsLoaded(
-    const std::string& contents) {
-  rules_.clear();
-  is_ready_ = false;
-
-  // Bail out if the component file was not loaded.
-  if (contents.empty()) {
-    return;
-  }
-
-  std::optional<base::DictValue> root =
-      base::JSONReader::ReadDict(contents, base::JSON_PARSE_RFC);
-  // Skip malformed JSON payloads.
-  if (!root) {
-    return;
-  }
-
-  const base::ListValue* rules_list = root->FindList(kRules);
-  // Skip payloads without a rules list.
-  if (!rules_list) {
-    return;
-  }
-
-  base::JSONValueConverter<PlaylistResolveRule> converter;
-  for (const base::Value& rule_val : *rules_list) {
-    PlaylistResolveRule rule;
-    if (!converter.Convert(rule_val, &rule)) {
-      continue;
-    }
-    if (rule.registrable_domain.empty()) {
-      continue;
-    }
-    rules_.push_back(std::move(rule));
-  }
-
-  is_ready_ = true;
+                     weak_factory_.GetWeakPtr(), std::move(on_complete)));
 }
 
 bool PlaylistExclusions::CanResolvePageSrcLater(const GURL& url) const {
-  if (!is_ready_) {
+  if (rules_.empty()) {
     // We don't have the exclusions list loaded yet. To avoid breakage,
     // allow re-resolution for any page.
     return true;
@@ -161,6 +159,19 @@ bool PlaylistExclusions::CanResolvePageSrcLater(const GURL& url) const {
     }
   }
   return true;
+}
+
+PlaylistExclusions::PlaylistExclusions() {
+  CHECK(base::FeatureList::IsEnabled(features::kPlaylist));
+}
+
+void PlaylistExclusions::OnPlaylistExclusionsLoaded(
+    base::OnceClosure on_complete,
+    std::optional<std::vector<PlaylistResolveRule>> rules) {
+  if (rules) {
+    rules_ = std::move(*rules);
+  }
+  std::move(on_complete).Run();
 }
 
 }  // namespace playlist

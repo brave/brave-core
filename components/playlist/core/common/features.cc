@@ -6,6 +6,7 @@
 #include "brave/components/playlist/core/common/features.h"
 
 #include "base/feature_list.h"
+#include "build/build_config.h"
 
 namespace playlist::features {
 

@@ -14,6 +14,7 @@
 #include "brave/components/brave_component_updater/browser/brave_on_demand_updater.h"
 #include "brave/components/brave_user_agent/browser/brave_user_agent_component_installer.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/playlist/core/browser/playlist_exclusions_component_installer.h"
 #include "brave/components/query_filter/browser/query_filter_component_installer.h"
 #include "brave/ios/browser/application_context/brave_application_context_impl.h"
 #include "chrome/browser/component_updater/zxcvbn_data_component_installer.h"
@@ -31,6 +32,7 @@ void RegisterComponentsForUpdate(
       .MaybeRegisterWalletDataFilesComponent(
           cus, GetApplicationContext()->GetLocalState());
   brave_user_agent::RegisterBraveUserAgentComponent(cus);
+  playlist::MaybeRegisterPlaylistExclusionsComponent(cus);
   component_updater::RegisterQueryFilterComponent(cus);
   RegisterZxcvbnDataComponent(cus);
 }

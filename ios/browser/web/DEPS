@@ -4,4 +4,5 @@ include_rules = [
   # That's technically not a layering violation, as there's nothing browser-specific in:
   "+chrome/browser/component_updater/zxcvbn_data_component_installer.h",
   "+brave/components/playlist/core/common",
+  "+brave/components/playlist/core/browser/playlist_exclusions_component_installer.h",
 ]

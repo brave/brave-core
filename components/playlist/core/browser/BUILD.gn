@@ -9,8 +9,10 @@ assert(enable_playlist)
 
 static_library("browser") {
   sources = [
-    "playlist_exclusion.cc",
-    "playlist_exclusion.h",
+    "playlist_exclusions.cc",
+    "playlist_exclusions.h",
+    "playlist_exclusions_component_installer.cc",
+    "playlist_exclusions_component_installer.h",
     "utils.cc",
     "utils.h",
   ]
@@ -20,6 +22,7 @@ static_library("browser") {
     "//brave/components/brave_component_updater/browser:public",
     "//brave/components/playlist/core/common",
     "//brave/components/playlist/core/common/buildflags",
+    "//components/component_updater",
     "//components/prefs",
     "//net",
     "//url",

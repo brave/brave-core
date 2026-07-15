@@ -11,6 +11,7 @@ assert(enable_playlist)
 # https://github.com/brave/brave-browser/issues/27764
 static_library("common") {
   sources = [
+    "constants.h",
     "features.cc",
     "features.h",
     "playlist_render_frame_observer_helper.cc",
