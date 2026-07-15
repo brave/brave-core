@@ -360,8 +360,7 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreNotRegistered) {
   const auto new_tab_accelerators =
       service.GetAcceleratorsForCommand(IDC_NEW_TAB);
   ASSERT_EQ(1u, new_tab_accelerators.size());
-  EXPECT_EQ("Control+KeyT",
-            commands::ToCodesString(new_tab_accelerators[0]));
+  EXPECT_EQ("Control+KeyT", commands::ToCodesString(new_tab_accelerators[0]));
 
   service.RemoveObserver(&observer);
 }

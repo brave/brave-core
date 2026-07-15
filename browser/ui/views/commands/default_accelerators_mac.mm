@@ -234,8 +234,7 @@ MacGlobalAccelerators BuildGlobalAccelerators() {
   auto accumulate =
       [&result](const base::flat_map<int, std::vector<AcceleratorMapping>>&
                     accelerator_map,
-                std::vector<AcceleratorMapping>* category,
-                bool unmodifiable) {
+                std::vector<AcceleratorMapping>* category, bool unmodifiable) {
         for (const auto& [command_id, accelerator_mappings] : accelerator_map) {
           DCHECK_NE(command_id, 0);
           for (const auto& accelerator_mapping : accelerator_mappings) {
@@ -287,8 +286,7 @@ std::optional<ui::Accelerator> GetAcceleratorFromMenuItem(NSMenuItem* item) {
 
 MacGlobalAccelerators::MacGlobalAccelerators() = default;
 MacGlobalAccelerators::~MacGlobalAccelerators() = default;
-MacGlobalAccelerators::MacGlobalAccelerators(MacGlobalAccelerators&&) =
-    default;
+MacGlobalAccelerators::MacGlobalAccelerators(MacGlobalAccelerators&&) = default;
 MacGlobalAccelerators& MacGlobalAccelerators::operator=(
     MacGlobalAccelerators&&) = default;
 
