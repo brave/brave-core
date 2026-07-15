@@ -32,7 +32,7 @@ public class BraveFreshNtpHelperTest {
                 BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentEnabled.getFeatureName());
         // The rewritten ChromeCachedFlags singleton must be BraveCachedFlags.
         assertEquals(BraveCachedFlags.class, ChromeCachedFlags.getInstance().getClass());
-        
+
         assertTrue(
                 BraveCachedFeatureParam.sAllBraveInstances.contains(
                         BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentVariant));
