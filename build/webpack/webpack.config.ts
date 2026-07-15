@@ -19,7 +19,7 @@ import {
   ifdefLoaderRule,
   fileLoaderRule,
   onnxRuntimeWorkerJsRule,
-  wasmRule,
+  onnxRuntimeWasmRule,
   braveUiFullySpecifiedRule,
   htmlAssetRule,
 } from './rules.ts'
@@ -145,7 +145,7 @@ export function createWebpackConfig(
         tsLoaderRule({ configFile: tsConfigPath }),
         ifdefLoaderRule(buildFlags),
         onnxRuntimeWorkerJsRule(),
-        wasmRule(),
+        onnxRuntimeWasmRule(),
         fileLoaderRule(),
         // web-discovery-project is built as CommonJS but may be classified
         // as ESM by webpack. Force auto-detection for correct CJS handling.

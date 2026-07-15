@@ -143,12 +143,15 @@ export function onnxRuntimeWorkerJsRule(): RuleSetRule {
 }
 
 /**
- * Emits `.wasm` imports as served assets, so the import resolves to a URL
- * rather than an instantiated module.
+ * Emits onnxruntime-web's `.wasm` as a served asset so the import resolves to a
+ * URL rather than an instantiated module. Scoped to onnxruntime-web by path: a
+ * blanket `.wasm` rule would also catch wasm-bindgen crates (e.g. opaque_ke)
+ * that import their `.wasm` as a module and rely on its named exports.
  */
-export function wasmRule(): RuleSetRule {
+export function onnxRuntimeWasmRule(): RuleSetRule {
   return {
     test: /\.wasm$/,
+    include: /onnxruntime-web/,
     type: 'asset/resource',
     generator: { filename: '[name].[contenthash][ext]' },
   }
