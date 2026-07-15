@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include "brave/browser/speech/on_device_speech_recognition_controller.h"
+#include "brave/components/local_ai/core/on_device_speech_recognition.mojom.h"
 #include "brave/components/local_ai/core/url_constants.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated.h"
 #include "brave/components/local_ai/resources/grit/on_device_speech_recognition_worker_generated_map.h"
@@ -89,6 +91,12 @@ UntrustedOnDeviceSpeechRecognitionWorkerUI::
     ~UntrustedOnDeviceSpeechRecognitionWorkerUI() = default;
 
 WEB_UI_CONTROLLER_TYPE_IMPL(UntrustedOnDeviceSpeechRecognitionWorkerUI)
+
+void UntrustedOnDeviceSpeechRecognitionWorkerUI::BindInterface(
+    mojo::PendingReceiver<mojom::SpeechRecognitionFactoryHost> receiver) {
+  speech::OnDeviceSpeechRecognitionController::Get()->BindFactoryHost(
+      std::move(receiver));
+}
 
 ///////////////////////////////////////////////////////////////////////////////
 
