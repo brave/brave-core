@@ -25,11 +25,10 @@ DefaultAccelerators& DefaultAccelerators::operator=(DefaultAccelerators&&) =
 DefaultAccelerators GetDefaultAccelerators() {
   DefaultAccelerators result;
 
-  auto add_to_accelerators =
-      [&result](const AcceleratorMapping& mapping) {
-        result.accelerators[mapping.command_id].push_back(
-            ui::Accelerator(mapping.keycode, mapping.modifiers));
-      };
+  auto add_to_accelerators = [&result](const AcceleratorMapping& mapping) {
+    result.accelerators[mapping.command_id].push_back(
+        ui::Accelerator(mapping.keycode, mapping.modifiers));
+  };
 
   std::ranges::for_each(GetAcceleratorList(), add_to_accelerators);
 #if BUILDFLAG(IS_MAC)
