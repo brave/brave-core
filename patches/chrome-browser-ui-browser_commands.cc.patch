@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_commands.cc b/chrome/browser/ui/browser_commands.cc
-index 83efe1922093d916df033033654f010c06632777..33e7d5623802aff6185d838bc065141d5529860e 100644
+index 83efe1922093d916df033033654f010c06632777..cd83aa4b39793472f1bae5c7412c37dfe0f7817f 100644
 --- a/chrome/browser/ui/browser_commands.cc
 +++ b/chrome/browser/ui/browser_commands.cc
 @@ -1319,6 +1319,7 @@ void CloseTab(BrowserWindowInterface* browser) {
