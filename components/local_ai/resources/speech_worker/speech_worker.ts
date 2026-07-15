@@ -16,6 +16,7 @@ import {
   SpeechRecognitionFactoryInterface,
   SpeechRecognitionFactoryReceiver,
 } from 'gen/brave/components/local_ai/core/on_device_speech_recognition.mojom.m.js'
+import { BigBuffer } from 'gen/mojo/public/mojom/base/big_buffer.mojom-webui.js'
 import {
   AsrStreamInputInterface,
   AsrStreamInputPendingReceiver,
@@ -34,30 +35,17 @@ import {
 
 // BigBuffer is a mojo union: either inlined bytes or a shared-memory
 // handle the renderer maps in.
-function readBigBuffer(
-  buffer: {
-    bytes?: number[]
-    sharedMemory?: {
-      bufferHandle: {
-        mapBuffer(o: number, s: number): { buffer: ArrayBuffer | null }
-      }
-      size: number
-    }
-  },
-  name: string,
-): Uint8Array {
+function readBigBuffer(buffer: BigBuffer, name: string): Uint8Array {
   if (buffer.bytes) {
     return new Uint8Array(buffer.bytes)
   }
   if (buffer.sharedMemory) {
-    const mapped = buffer.sharedMemory.bufferHandle.mapBuffer(
-      0,
-      buffer.sharedMemory.size,
-    )
-    if (!mapped.buffer) {
+    const { buffer: mapped, result } =
+      buffer.sharedMemory.bufferHandle.mapBuffer(0, buffer.sharedMemory.size)
+    if (result !== Mojo.RESULT_OK) {
       throw new Error(`Failed to map ${name} shared buffer`)
     }
-    return new Uint8Array(mapped.buffer)
+    return new Uint8Array(mapped)
   }
   throw new Error(`Invalid ${name} BigBuffer`)
 }
