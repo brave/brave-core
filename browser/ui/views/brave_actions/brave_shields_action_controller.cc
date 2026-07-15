@@ -230,6 +230,19 @@ void BraveShieldsActionController::OnButtonPressed() {
   ShowBubble(GURL(kShieldsPanelURL));
 }
 
+void BraveShieldsActionController::OnThemeChanged() {
+  if (!webui_bubble_manager_) {
+    return;
+  }
+
+  if (webui_bubble_manager_->GetBubbleWidget()) {
+    webui_bubble_manager_->GetContentsWrapper()->ReloadWebContents();
+    return;
+  }
+
+  webui_bubble_manager_.reset();
+}
+
 bool BraveShieldsActionController::IsPageInReaderMode(
     content::WebContents* web_contents) const {
   if (!web_contents) {

@@ -119,6 +119,7 @@ std::u16string BraveShieldsActionView::GetRenderedTooltipText(
 
 void BraveShieldsActionView::OnThemeChanged() {
   LabelButton::OnThemeChanged();
+  controller_->OnThemeChanged();
 
   const auto* const color_provider = GetColorProvider();
   if (!color_provider) {
