@@ -6,8 +6,8 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
-import Label from '@brave/leo/react/label'
-import { getLocale, formatLocale } from '$web-common/locale'
+import classnames from '$web-common/classnames'
+import { getLocale } from '$web-common/locale'
 import { useUntrustedConversationContext } from '../../untrusted_conversation_context'
 import styles from './style.module.scss'
 
@@ -26,14 +26,6 @@ const sellingPoints = [
 function PremiumSuggestion(props: PremiumSuggestionProps) {
   const context = useUntrustedConversationContext()
   const buttonRef = React.useRef<HTMLButtonElement>(null)
-
-  const pricingInfo = formatLocale(S.CHAT_UI_PREMIUM_PRICING, {
-    $1: <data>14.99</data>,
-  })
-
-  const pricingAnnualInfo = formatLocale(S.CHAT_UI_PREMIUM_ANNUAL_PRICING, {
-    $1: <data>149.99</data>,
-  })
 
   React.useEffect(() => {
     if (!buttonRef.current) return
@@ -69,49 +61,22 @@ function PremiumSuggestion(props: PremiumSuggestionProps) {
         </div>
         <div className={styles.right}>
           {!isMobile && (
-            <div className={styles.priceListWrapper}>
-              <div className={styles.planCard}>
-                <div className={styles.planDetails}>
-                  <div className={styles.planHeader}>
-                    <span className={styles.planName}>
-                      {getLocale(S.CHAT_UI_PREMIUM_ANNUAL_LABEL)}
-                    </span>
-                    <span className={styles.planPrice}>
-                      {pricingAnnualInfo}
-                    </span>
-                  </div>
-                </div>
-                <Label
-                  className={styles.saveLabel}
-                  mode='loud'
-                  color='primary'
-                >
-                  {getLocale(S.CHAT_UI_PREMIUM_SAVE_PERCENT_LABEL)}
-                </Label>
-              </div>
-              <div className={styles.planCard}>
-                <div className={styles.planDetails}>
-                  <div className={styles.planHeader}>
-                    <span className={styles.planName}>
-                      {getLocale(S.CHAT_UI_MONTHLY_LABEL)}
-                    </span>
-                    <span className={styles.planPrice}>{pricingInfo}</span>
-                  </div>
-                </div>
-              </div>
-              <div className={styles.subscriptionPolicy}>
-                {getLocale(S.CHAT_UI_SUBSCRIPTION_POLICY_INFO)}
-              </div>
+            <div className={styles.subscriptionPolicy}>
+              {getLocale(S.CHAT_UI_SUBSCRIPTION_POLICY_INFO)}
             </div>
           )}
-          <div className={styles.actions}>
+          <div
+            className={classnames(styles.actions, {
+              [styles.actionsRow]: !isMobile,
+            })}
+          >
+            {props.secondaryActionButton}
             <Button
               onClick={() => context.uiHandler.goPremium()}
               ref={buttonRef}
             >
               {getLocale(S.CHAT_UI_UPGRADE_BUTTON_LABEL)}
             </Button>
-            {props.secondaryActionButton}
           </div>
         </div>
       </div>
