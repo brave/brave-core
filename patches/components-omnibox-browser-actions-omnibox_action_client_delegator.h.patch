@@ -1,0 +1,20 @@
+diff --git a/components/omnibox/browser/actions/omnibox_action_client_delegator.h b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
+index ddd7235f30a75571efbececa92e6c14e4096dbfd..4c188a12ef9a9f1987d7030c9ddf5409d281bfe7 100644
+--- a/components/omnibox/browser/actions/omnibox_action_client_delegator.h
++++ b/components/omnibox/browser/actions/omnibox_action_client_delegator.h
+@@ -22,6 +22,15 @@ class OmniboxActionClientDelegator : public OmniboxAction::Client {
+       delete;
+   ~OmniboxActionClientDelegator() override;
+ 
++#if BUILDFLAG(ENABLE_COMMANDER)
++  commander::CommanderFrontendDelegate* GetCommanderDelegate() override;
++#endif  // BUILDFLAG(ENABLE_COMMANDER)
++
++#if BUILDFLAG(ENABLE_AI_CHAT)
++  void OpenLeo(const std::u16string& query) override;
++  bool IsLeoProviderEnabled() override;
++#endif  // BUILDFLAG(ENABLE_AI_CHAT)
++
+   // OmniboxAction::Client:
+   void OpenSharingHub() override;
+   void NewIncognitoWindow() override;
