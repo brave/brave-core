@@ -40,6 +40,11 @@ const getTsConfigForFiles = (genDir: string, files: string[]) => {
   // As the file is generated in the temp directory we need to set the baseUrl
   // so everything resolvese correctly.
   tsConfig.compilerOptions.baseUrl = baseDir
+  // Pass typeRoots path explicitly to work correctly with symlinks in
+  // node_modules (pnpm isolated mode).
+  tsConfig.compilerOptions.typeRoots = [
+    path.join(baseDir, 'node_modules/@types'),
+  ]
 
   // Write the tsconfig to the gen directory.
   const tsConfigName = `lit-mangler-check-tsconfig_${files.map((file) => path.basename(file)).join('_')}.json`
