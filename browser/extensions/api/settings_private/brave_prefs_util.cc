@@ -337,11 +337,6 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
   (*s_brave_allowlist)[decentralized_dns::kSnsResolveMethod] =
       settings_api::PrefType::kNumber;
 
-#if BUILDFLAG(ENABLE_PSST)
-  (*s_brave_allowlist)[decentralized_dns::kSnsResolveMethod] =
-      settings_api::PrefType::kNumber;
-#endif
-
   // Media router pref
   (*s_brave_allowlist)[kEnableMediaRouterOnRestart] =
       settings_api::PrefType::kBoolean;
