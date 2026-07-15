@@ -1244,6 +1244,116 @@ class MergeTest(unittest.TestCase):
         with self.assertRaises(brockit.InvalidInputException):
             brockit.Merge().execute()
 
+    def _setup_remote_without_upstream(self) -> None:
+        """Wires up an `origin/master` remote for a fresh `cr149` branch, but
+        leaves the branch without any upstream set."""
+        self.fake_chromium_src.create_brave_remote()
+        self._git('config',
+                  'receive.denyCurrentBranch',
+                  'ignore',
+                  repo=self.remote)
+        self._git('push', '--force', 'origin', 'HEAD:master')
+        self._git('checkout', '-b', 'cr149')
+
+    def test_merge_with_base_branch_without_upstream(self):
+        """`--base-branch` allows merging when no upstream is set."""
+        self._setup_remote_without_upstream()
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        brockit.Merge().execute(base_branch='origin/master')
+
+        self.assertEqual(self._remote_master(), head)
+
+    def test_merge_raises_when_upstream_tracks_current_branch(self):
+        """An upstream that tracks the current branch itself is rejected and
+        the user is required to pass `--base-branch`."""
+        self._setup_remote_without_upstream()
+        # Publish `cr149` and track it, so the upstream points at the current
+        # branch rather than a base branch.
+        self._git('push', 'origin', 'HEAD:cr149')
+        self._git('branch', '--set-upstream-to=origin/cr149')
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+
+        with self.assertRaises(brockit.InvalidInputException):
+            brockit.Merge().execute()
+
+    def test_merge_base_branch_overrides_upstream_tracking_current_branch(
+            self):
+        """`--base-branch` merges into the base even when the upstream tracks
+        the current branch."""
+        self._setup_remote_without_upstream()
+        self._git('push', 'origin', 'HEAD:cr149')
+        self._git('branch', '--set-upstream-to=origin/cr149')
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        brockit.Merge().execute(base_branch='origin/master')
+
+        self.assertEqual(self._remote_master(), head)
+
+    def test_merge_base_branch_overrides_upstream(self):
+        """An explicit `--base-branch` wins over a configured upstream."""
+        self._setup_upstream()
+        # Point the upstream at a bogus branch to prove it is not consulted
+        # when `--base-branch` is passed.
+        self._git('push', 'origin', 'HEAD:bogus')
+        self._git('branch', '--set-upstream-to=origin/bogus')
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        brockit.Merge().execute(base_branch='origin/master')
+
+        self.assertEqual(self._remote_master(), head)
+
+    @patch('brockit.GhCli')
+    def test_merge_uses_gh_base_branch(self, gh_cls):
+        """When `gh` is logged in, the PR's base branch is used, even when the
+        upstream tracks the current branch."""
+        self._setup_remote_without_upstream()
+        # Track the current branch, so without `gh` the merge would be rejected.
+        self._git('push', 'origin', 'HEAD:cr149')
+        self._git('branch', '--set-upstream-to=origin/cr149')
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        gh = gh_cls.return_value
+        gh.is_logged_in.return_value = True
+        gh.get_pr_base_branch.return_value = 'origin/master'
+
+        brockit.Merge().execute()
+
+        self.assertEqual(self._remote_master(), head)
+        gh.get_pr_base_branch.assert_called_once_with('cr149')
+
+    @patch('brockit.GhCli')
+    def test_merge_falls_back_to_upstream_when_gh_has_no_pr(self, gh_cls):
+        """When `gh` is logged in but reports no base branch, the merge falls
+        back to the configured upstream."""
+        self._setup_upstream()
+        self.fake_chromium_src.write_and_stage_file('foo.txt', 'one',
+                                                    self.brave)
+        self.fake_chromium_src.commit('Branch change', self.brave)
+        head = self._git('rev-parse', 'HEAD')
+
+        gh = gh_cls.return_value
+        gh.is_logged_in.return_value = True
+        gh.get_pr_base_branch.return_value = None
+
+        brockit.Merge().execute()
+
+        self.assertEqual(self._remote_master(), head)
+
     def test_merge_raises_when_nothing_to_merge(self):
         """A branch already at its upstream has nothing to push."""
         self._setup_upstream()

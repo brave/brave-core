@@ -178,9 +178,14 @@ remote.
 tools/cr/brockit.py merge
 ```
 
-The current branch must have an upstream branch set (e.g. `origin/master`).
-*🚀Brockit!* will fetch the upstream for merging. If the merge hits conflicts,
-it is rolled back and the command fails.
+By default, *🚀Brockit!* attempts to find out which one is the base branch using
+`gh`, and failing that it falls back to the upstream branch of the current
+branch. However, The base branch can also be passed explicitly, which overrides
+both:
+
+```sh
+tools/cr/brockit.py merge --base-branch=origin/master
+```
 
 Before merging, *🚀Brockit!* runs a dry-run of `rebase --squash-minor-bumps`
 to make sure the branch is already in its canonical form. If that rebase show
@@ -318,6 +323,7 @@ from typing import ClassVar
 
 from exceptions import (ActionNeededException, BadOutcomeException,
                         InvalidInputException)
+from gh_cli import GhCli
 from git_status import GitStatus
 from patchfile import Patchfile
 import plaster
@@ -447,19 +453,6 @@ def _update_pinslist_timestamp() -> str:
         raise ValueError('Pinslist timestamp failed to update.')
 
     return readable_timestamp
-
-
-def _is_gh_cli_logged_in():
-    """Checks if the GitHub CLI is logged in.
-    """
-    try:
-        result = terminal.run(['gh', 'auth', 'status']).stdout.strip()
-        if 'Logged in to github.com account' in result:
-            return True
-    except subprocess.CalledProcessError:
-        pass
-
-    return False
 
 
 def _get_apply_patches_list() -> dict[Repository, list[Patchfile]] | None:
@@ -809,12 +802,10 @@ class GitHubIssue(Versioned):
         This function checks if there's already an issue with the title
         provided, and returns its details.
         """
-        results = json.loads(
-            terminal.run([
-                'gh', 'issue', 'list', '--repo', 'brave/brave-browser',
-                '--search', title, '--state', 'open', '--json',
-                'number,title,url,body'
-            ]).stdout.strip())
+        results = GhCli().list_issues(repo='brave/brave-browser',
+                                      search=title,
+                                      state='open',
+                                      fields='number,title,url,body')
         return next((entry for entry in results if entry['title'] == title),
                     None)
 
@@ -838,11 +829,8 @@ class GitHubIssue(Versioned):
             # removing the remote portion.
             upstream_branch = upstream_branch.split("/", 1)[-1]
 
-        results = json.loads(
-            terminal.run([
-                'gh', 'pr', 'list', '--head', current_branch,
-                '--json=number,url'
-            ]).stdout.strip())
+        gh = GhCli()
+        results = gh.list_prs(head=current_branch, fields='number,url')
         if results:
             console.log(
                 f'The push request for {current_branch} is: {results[0]["url"]}'
@@ -854,35 +842,37 @@ class GitHubIssue(Versioned):
         is_uplift = (versioning.get_uplift_branch_name_from_package() ==
                      upstream_branch)
         tag = f'[{upstream_branch}] ' if is_uplift else ''
-        cmd = [
-            'gh', 'pr', 'create', '--base', upstream_branch, '--head',
-            current_branch, '--title', f'{tag}{self.compose_issue_title()}',
-            '--body', f'Resolves {issue_url}', '--label',
-            '"CI/run-audit-deps"', '--label', '"CI/run-network-audit"',
-            '--label', '"CI/run-linux-arm64"', '--label', '"CI/run-macos-x64"',
-            '--label', '"CI/run-windows-x86"', '--label',
-            '"CI/run-windows-arm64"', '--assignee', 'cdesouza-chromium'
+        labels = [
+            '"CI/run-audit-deps"', '"CI/run-network-audit"',
+            '"CI/run-linux-arm64"', '"CI/run-macos-x64"',
+            '"CI/run-windows-x86"', '"CI/run-windows-arm64"'
         ]
+        assignees = ['cdesouza-chromium']
         # Emerick and Alexey take care of even-numbered major versions, while
         # Max and Sam do the odd ones.
         if self.target_version.major % 2 == 0:
-            cmd += ['--assignee', 'emerick', '--assignee', 'AlexeyBarabash']
+            assignees += ['emerick', 'AlexeyBarabash']
         else:
-            cmd += ['--assignee', 'mkarolin', '--assignee', 'samartnik']
+            assignees += ['mkarolin', 'samartnik']
 
         if self.is_major() or upstream_branch == 'master':
             # It is not common for upstream test to be run on uplifts of minor
             # upgrades.
-            cmd += ['--label', '"CI/run-upstream-tests"']
+            labels.append('"CI/run-upstream-tests"')
 
-        if self.is_major():
-            cmd += ['--label', '"CI/storybook-url"']
-
-            # Always create PR for major version upgrades as draft
-            cmd.append('--draft')
+        # Always create PR for major version upgrades as draft.
+        draft = self.is_major()
+        if draft:
+            labels.append('"CI/storybook-url"')
 
         try:
-            pr_url = terminal.run(cmd).stdout.strip()
+            pr_url = gh.create_pr(base=upstream_branch,
+                                  head=current_branch,
+                                  title=f'{tag}{self.compose_issue_title()}',
+                                  body=f'Resolves {issue_url}',
+                                  labels=labels,
+                                  assignees=assignees,
+                                  draft=draft)
             terminal.log_task(f'GitHub PR created for this bump: {pr_url}')
         except subprocess.CalledProcessError as e:
             raise BadOutcomeException(
@@ -891,11 +881,7 @@ class GitHubIssue(Versioned):
 
         if is_uplift:
             # Only uplift branches set milestones.
-            results = json.loads(
-                terminal.run([
-                    'gh', 'api', 'repos/brave/brave-core/milestones', '--jq',
-                    '[.[] | {number, title}]'
-                ]).stdout)
+            results = gh.list_milestones('brave/brave-core')
             if not results:
                 raise BadOutcomeException(
                     'No milestones returned for brave-core')
@@ -908,11 +894,9 @@ class GitHubIssue(Versioned):
                     f'Failed to find milestone for branch {upstream_branch}')
 
             pr_number = pr_url.rsplit('/', 1)[-1]
-            terminal.run([
-                'gh', 'api', '-X', 'PATCH',
-                f'repos/brave/brave-core/issues/{pr_number}', '-F',
-                f'milestone={milestone}'
-            ])
+            gh.set_issue_milestone(repo='brave/brave-core',
+                                   issue_number=pr_number,
+                                   milestone=milestone)
 
     def create_or_update_version_issue(self, with_pr: bool):
         """Creates a github issue for the upgrade.
@@ -934,11 +918,9 @@ class GitHubIssue(Versioned):
                     f'A Github issue with the title "{title}" is already '
                     f'created and up-to-date. {str(issue["url"])}')
             else:
-                terminal.run([
-                    'gh', 'issue', 'edit',
-                    str(issue['number']), '--repo', 'brave/brave-browser',
-                    '--body', f'{body}'
-                ])
+                GhCli().edit_issue(number=issue['number'],
+                                   repo='brave/brave-browser',
+                                   body=body)
                 terminal.log_task(f'GitHub issue updated {str(issue["url"])}.')
             if with_pr:
                 self.create_push_request(issue["url"])
@@ -946,22 +928,23 @@ class GitHubIssue(Versioned):
 
         body = MINOR_VERSION_BUMP_ISSUE_TEMPLATE.format(
             googlesource_log_link=link)
-        issue_url = terminal.run([
-            'gh', 'issue', 'create', '--repo', 'brave/brave-browser',
-            '--title', title, '--body', f'{body}', '--label',
-            '"Chromium/upgrade minor"', '--label', '"OS/Android"', '--label',
-            '"OS/Desktop"', '--label', '"QA/Test-Plan-Specified"', '--label',
-            '"QA/Yes"', '--label', '"release-notes/include"', '--assignee',
-            'emerick', '--assignee', 'mkarolin', '--assignee',
-            'cdesouza-chromium'
-        ]).stdout.strip()
+        issue_url = GhCli().create_issue(
+            repo='brave/brave-browser',
+            title=title,
+            body=body,
+            labels=[
+                '"Chromium/upgrade minor"', '"OS/Android"', '"OS/Desktop"',
+                '"QA/Test-Plan-Specified"', '"QA/Yes"',
+                '"release-notes/include"'
+            ],
+            assignees=['emerick', 'mkarolin', 'cdesouza-chromium'])
         terminal.log_task(f'GitHub Issue created for this bump: {issue_url}')
 
         if with_pr:
             self.create_push_request(issue_url)
 
     def execute(self):
-        if not _is_gh_cli_logged_in():
+        if not GhCli().is_logged_in():
             raise BadOutcomeException('GitHub CLI is not logged in.')
 
         self.create_or_update_version_issue(with_pr=True)
@@ -1650,7 +1633,7 @@ class Upgrade(Versioned):
                              working_version=self.working_version,
                              base_version=self.base_version).save()
 
-        if with_github and not _is_gh_cli_logged_in():
+        if with_github and not GhCli().is_logged_in():
             # Fail early if gh cli is not logged in.
             raise InvalidInputException('GitHub CLI is not logged in.')
 
@@ -1915,13 +1898,21 @@ class Merge(Task):
     def status_message(self):
         return "Merging current branch into upstream..."
 
-    def execute(self, dry_run: bool = False):
-        """Merges the current branch into its upstream branch.
+    def execute(self, dry_run: bool = False, base_branch: str | None = None):
+        """Merges the current branch into its base branch.
 
         Args:
             dry_run:
                 When True, runs every validation, but stops short of the
                 actual merge and push.
+            base_branch:
+                The remote-tracking base branch to merge into and push to (in
+                the form <remote>/<branch>, e.g. origin/master). When provided,
+                it overrides every other source. When omitted, the base branch
+                is resolved from the current branch's pull request via the
+                GitHub CLI (when logged in), falling back to the current
+                branch's upstream (used only when it is set and does not track
+                the current branch itself).
         """
         current_branch = repository.brave.current_branch()
         if current_branch == 'HEAD':
@@ -1955,16 +1946,41 @@ class Merge(Task):
                 'Cannot merge: there are uncommitted changes in the working '
                 'tree. Please commit or stash them before merging.')
 
-        upstream = _get_current_branch_upstream_name()
-        if upstream is None:
-            raise InvalidInputException(
-                'Cannot merge: the current branch has no upstream branch set. '
-                '(Maybe set [bold cyan]--set-upstream-to[/] on your branch?)')
+        # Determine the base branch to merge into and push to. An explicit
+        # `--base-branch` always wins. Otherwise, when the GitHub CLI is
+        # logged in, ask it for the current branch's pull request base, which
+        # is authoritative about where the branch should merge. Failing that,
+        # fall back to the current branch's upstream, but only when it is set
+        # and actually points at a base branch rather than tracking the current
+        # branch itself.
+        if base_branch is not None:
+            upstream = base_branch
+        else:
+            upstream = None
+            gh = GhCli()
+            if gh.is_logged_in():
+                upstream = gh.get_pr_base_branch(current_branch)
+            if upstream is None:
+                upstream = _get_current_branch_upstream_name()
+                if upstream is None:
+                    raise InvalidInputException(
+                        'Cannot merge: could not determine the base branch. '
+                        'Pass [bold cyan]--base-branch[/] to specify the base '
+                        'branch to merge into (e.g. '
+                        '[bold cyan]--base-branch=origin/master[/]), or set '
+                        '[bold cyan]--set-upstream-to[/] on your branch.')
+                if upstream.split('/', 1)[-1] == current_branch:
+                    raise InvalidInputException(
+                        f'Cannot merge: the upstream "{upstream}" tracks the '
+                        'current branch rather than a base branch. Pass '
+                        '[bold cyan]--base-branch[/] to specify the base '
+                        'branch to merge into (e.g. '
+                        '[bold cyan]--base-branch=origin/master[/]).')
         if '/' not in upstream:
             raise InvalidInputException(
-                f'Cannot merge: the upstream "{upstream}" does not look like a '
-                'remote-tracking branch (expected the form <remote>/<branch>).'
-            )
+                f'Cannot merge: the base branch "{upstream}" does not look '
+                'like a remote-tracking branch (expected the form '
+                '<remote>/<branch>).')
         remote, remote_branch = upstream.split('/', 1)
 
         repository.brave.run_git('fetch', remote, remote_branch)
@@ -2510,6 +2526,12 @@ def main():
         action='store_true',
         help='A dry run to check if the branch is ready to be merged.',
         dest='dry_run')
+    merge_parser.add_argument(
+        '--base-branch',
+        default=None,
+        help='The branch we are merging to. Defaults to the base branch of '
+        'the pull request (via `gh`), or the upstream branch.',
+        dest='base_branch')
 
     show_parser = subparsers.add_parser(
         'show', help='Prints various insights about brave-core.')
@@ -2690,7 +2712,7 @@ def main():
         if args.command == 'update-version-issue':
             GitHubIssue(resolve_version_with_from_ref_arg()).run()
         if args.command == 'merge':
-            Merge().run(dry_run=args.dry_run)
+            Merge().run(dry_run=args.dry_run, base_branch=args.base_branch)
         if args.command == 'reassign':
             Reassign().run(change=args.change)
         if args.command == 'drop':
