@@ -117,22 +117,6 @@ substitutions:
       re_flags: [] # traditional Python `re` flag names, e.g. [DOTALL]
 ```
 
-For backward compatibility, the `regex` fields may also be placed bare directly
-on the item, without the `regex:` key:
-
-```yaml
-substitutions:
-  - description: ''
-    re_pattern: '' # or `pattern:` for a literal, escaped match
-    replace: ''
-```
-
-> [!WARNING]
->
-> This bare form is deprecated (`TODO(brave.dev/bug/56854)`) and will be removed
-> once all plasters are migrated. Prefer the `regex:` form above for all new
-> plasters.
-
 Use YAML's `|` / `|-` block scalars when you need multi-line `replace` or
 `description` values — `|` keeps a trailing newline, `|-` strips it.
 Single-quoted YAML strings preserve backslashes literally, which is useful for

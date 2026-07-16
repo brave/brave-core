@@ -707,8 +707,9 @@ class PatchfilePlasterApplyTest(unittest.TestCase):
     # count = 0 means "replace all matches, bypass count validation".
     _WORKING_YAML = ('substitutions:\n'
                      '  - description: Replace old_func\n'
-                     '    pattern: old_func\n'
-                     '    replace: new_func\n'
+                     '    regex:\n'
+                     '      pattern: old_func\n'
+                     '      replace: new_func\n'
                      '    count: 0\n')
 
     # No substitutions key → missing required key → PLASTER_BROKEN.
