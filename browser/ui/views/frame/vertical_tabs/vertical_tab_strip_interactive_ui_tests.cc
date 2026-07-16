@@ -8,6 +8,7 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_container_view.h"
 #include "brave/browser/ui/views/frame/vertical_tabs/vertical_tab_strip_region_view.h"
+#include "build/build_config.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
@@ -29,8 +30,17 @@ class VerticalTabStripInteractiveUITest : public InteractiveBrowserTest {
   void ToggleVerticalTabStrip() { brave::ToggleVerticalTabStrip(browser()); }
 };
 
+#if BUILDFLAG(IS_MAC)
+// Fullscreen test flaky on macOS: https://crbug.com/41393319
+#define MAYBE_TabFullscreenUpdatesHostViewBounds \
+  DISABLED_TabFullscreenUpdatesHostViewBounds
+#else
+#define MAYBE_TabFullscreenUpdatesHostViewBounds \
+  TabFullscreenUpdatesHostViewBounds
+#endif
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
-                       TabFullscreenUpdatesHostViewBounds) {
+                       MAYBE_TabFullscreenUpdatesHostViewBounds) {
   ToggleVerticalTabStrip();
 
   auto* host_view = browser_view()->vertical_tab_strip_host_view_for_testing();
@@ -80,8 +90,17 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
   EXPECT_EQ(State::kExpanded, region_view->state());
 }
 
+#if BUILDFLAG(IS_MAC)
+// Fullscreen test flaky on macOS: https://crbug.com/41393319
+#define MAYBE_BrowserFullscreenUpdatesHostViewBounds \
+  DISABLED_BrowserFullscreenUpdatesHostViewBounds
+#else
+#define MAYBE_BrowserFullscreenUpdatesHostViewBounds \
+  BrowserFullscreenUpdatesHostViewBounds
+#endif
+
 IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
-                       BrowserFullscreenUpdatesHostViewBounds) {
+                       MAYBE_BrowserFullscreenUpdatesHostViewBounds) {
   ToggleVerticalTabStrip();
 
   auto* host_view = browser_view()->vertical_tab_strip_host_view_for_testing();
