@@ -2390,6 +2390,7 @@ public class BytecodeTest {
                         WindowAndroid.class,
                         java.util.function.Supplier.class,
                         java.util.function.Supplier.class,
+                        java.util.function.Predicate.class,
                         Runnable.class));
         Assert.assertTrue(
                 constructorsMatch(

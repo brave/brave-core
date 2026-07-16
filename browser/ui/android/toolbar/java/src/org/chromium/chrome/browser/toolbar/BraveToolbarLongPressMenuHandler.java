@@ -19,6 +19,7 @@ import org.chromium.ui.widget.ViewRectProvider;
 import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 
 /** Brave's extension for the handler for the toolbar long press menu. */
@@ -35,6 +36,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
             WindowAndroid windowAndroid,
             Supplier<@Nullable GURL> urlSupplier,
             Supplier<ViewRectProvider> urlBarViewRectProviderSupplier,
+            Predicate<GURL> isSendTabToSelfAvailable,
             Runnable onSendTabToSelfClicked) {
         super(
                 context,
@@ -45,6 +47,7 @@ public class BraveToolbarLongPressMenuHandler extends ToolbarLongPressMenuHandle
                 windowAndroid,
                 urlSupplier,
                 urlBarViewRectProviderSupplier,
+                isSendTabToSelfAvailable,
                 onSendTabToSelfClicked);
 
         mUrlSupplier = urlSupplier;
