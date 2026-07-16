@@ -1,0 +1,53 @@
+# Copyright (c) 2023 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Register Brave local state prefs
+
+      Call into Brave's local state pref registration at the end of the
+      upstream `RegisterLocalStatePrefs`.
+    regex:
+      re_pattern: '(void RegisterLocalStatePrefs\([^)]*\) \{.+?\n)\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  brave::RegisterLocalStatePrefs(registry);
+        }
+
+  - description: |
+      Register Brave profile prefs
+
+      Call into Brave's profile (browser state) pref registration at the end of
+      the upstream `RegisterProfilePrefs`.
+    regex:
+      re_pattern: '(void RegisterProfilePrefs\([^)]*\) \{.+?\n)\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  brave::RegisterBrowserStatePrefs(registry);
+        }
+
+  - description: |
+      Migrate obsolete Brave local state prefs
+
+      Call into Brave's local state migration as the last statement of the
+      upstream `MigrateObsoleteLocalStatePrefs`.
+    regex:
+      re_pattern: '(void MigrateObsoleteLocalStatePrefs\([^)]*\) \{.+?\n)\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  brave::MigrateObsoleteLocalStatePrefs(prefs);
+        }
+
+  - description: |
+      Migrate obsolete Brave profile prefs
+
+      Call into Brave's profile migration as the last statement of the upstream
+      `MigrateObsoleteProfilePrefs`.
+    regex:
+      re_pattern: '(void MigrateObsoleteProfilePrefs\([^)]*\) \{.+?\n)\}'
+      re_flags: [DOTALL]
+      replace: |-
+        \1  brave::MigrateObsoleteProfilePrefs(prefs);
+        }
