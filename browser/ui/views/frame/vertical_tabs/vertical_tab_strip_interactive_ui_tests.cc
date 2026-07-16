@@ -79,3 +79,50 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
       [&]() { return host_view->GetPreferredSize().width() > 0; }));
   EXPECT_EQ(State::kExpanded, region_view->state());
 }
+
+IN_PROC_BROWSER_TEST_F(VerticalTabStripInteractiveUITest,
+                       BrowserFullscreenUpdatesHostViewBounds) {
+  ToggleVerticalTabStrip();
+
+  auto* host_view = browser_view()->vertical_tab_strip_host_view_for_testing();
+  ASSERT_TRUE(host_view);
+
+  auto* region_view = browser_view()
+                          ->vertical_tab_strip_container_view()
+                          ->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+  ASSERT_EQ(State::kExpanded, region_view->state());
+  ASSERT_GT(host_view->GetPreferredSize().width(), 0);
+
+  auto* fullscreen_controller = browser()
+                                    ->GetFeatures()
+                                    .exclusive_access_manager()
+                                    ->fullscreen_controller();
+
+  {
+    ui_test_utils::FullscreenWaiter waiter(browser(),
+                                           {.browser_fullscreen = true});
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
+    waiter.Wait();
+  }
+  ASSERT_TRUE(fullscreen_controller->IsFullscreenForBrowser());
+
+  // Vertical tab strip should be invisible on browser fullscreen.
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return host_view->GetPreferredSize().width() == 0; }));
+
+  {
+    ui_test_utils::FullscreenWaiter waiter(browser(),
+                                           {.browser_fullscreen = false});
+    fullscreen_controller->ToggleBrowserFullscreenMode(/*user_initiated=*/true);
+    waiter.Wait();
+  }
+  ASSERT_FALSE(fullscreen_controller->IsFullscreenForBrowser());
+
+  // Exiting browser fullscreen restores the pre-fullscreen expanded state
+  // and makes the strip visible again.
+  EXPECT_EQ(State::kExpanded, region_view->state());
+  EXPECT_TRUE(region_view->GetVisible());
+  EXPECT_TRUE(base::test::RunUntil(
+      [&]() { return host_view->GetPreferredSize().width() > 0; }));
+}
