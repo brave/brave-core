@@ -16,7 +16,10 @@ public class BraveMainPreferenceBaseClassAdapter extends BraveClassVisitor {
 
     public BraveMainPreferenceBaseClassAdapter(ClassVisitor visitor) {
         super(visitor);
-        changeSuperName(sMainPreferencesClassName,
-                        sBraveMainPreferencesBaseClassName);
+        changeSuperName(sMainPreferencesClassName, sBraveMainPreferencesBaseClassName);
+        // Redirect the static MainSettings.openSearchResult() call site so Brave can handle
+        // Settings-search results that have no android:fragment (e.g. home_screen_widget).
+        changeMethodOwner(
+                sMainPreferencesClassName, "openSearchResult", sBraveMainPreferencesBaseClassName);
     }
 }
