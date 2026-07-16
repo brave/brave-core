@@ -11,7 +11,10 @@
   "problemMatcher": [
     {
       "owner": "cpp",
-      "fileLocation": ["relative", "${config:chrome.outputDir}"],
+      "fileLocation": [
+        "relative",
+        "${config:chrome.outputDir}"
+      ],
       "pattern": {
         "regexp": "^(gen/.*):(\\d+):(\\d+):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
         "file": 1,
@@ -23,7 +26,10 @@
     },
     {
       "owner": "cpp",
-      "fileLocation": ["relative", "${workspaceRoot}"],
+      "fileLocation": [
+        "relative",
+        "${workspaceRoot}"
+      ],
       "pattern": {
         "regexp": "^../../(.*):(\\d+):(\\d+):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
         "file": 1,
@@ -35,7 +41,10 @@
     },
     {
       "owner": "cpp",
-      "fileLocation": ["relative", "${config:chrome.outputDir}"],
+      "fileLocation": [
+        "relative",
+        "${config:chrome.outputDir}"
+      ],
       "pattern": {
         "regexp": "^(gen/.*?):(.*):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
         "file": 1,
@@ -45,7 +54,10 @@
     },
     {
       "owner": "cpp",
-      "fileLocation": ["relative", "${workspaceRoot}"],
+      "fileLocation": [
+        "relative",
+        "${workspaceRoot}"
+      ],
       "pattern": {
         "regexp": "^../../(.*?):(.*):\\s+(warning|\\w*\\s?error):\\s+(.*)$",
         "file": 1,
@@ -72,19 +84,33 @@
       "type": "pickString",
       "id": "chromeOutputDir",
       "description": "Brave build config:",
-      "options": ["Component", "Static", "Debug", "Release"]
+      "options": [
+        "Component",
+        "Static",
+        "Debug",
+        "Release"
+      ]
     },
     {
       "type": "pickString",
       "id": "targetOS",
       "description": "Target OS:",
-      "options": ["host_os", "ios", "android"]
+      "options": [
+        "host_os",
+        "ios",
+        "android"
+      ]
     },
     {
       "type": "pickString",
       "id": "targetCPU",
       "description": "Target CPU:",
-      "options": ["host_cpu", "x64", "arm64", "x86"]
+      "options": [
+        "host_cpu",
+        "x64",
+        "arm64",
+        "x86"
+      ]
     },
     {
       "type": "promptString",
@@ -125,7 +151,9 @@
       "problemMatcher": [
         {
           "owner": "sync",
-          "fileLocation": ["absolute"],
+          "fileLocation": [
+            "absolute"
+          ],
           "pattern": [
             {
               "regexp": "^Brave\\sBrowser\\sSync\\sERROR"
@@ -145,7 +173,10 @@
         {
           "owner": "sync",
           "severity": "warning",
-          "fileLocation": ["relative", "${workspaceFolder}/.."],
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}/.."
+          ],
           "pattern": [
             {
               "regexp": "^WARNING:\\s'(.*)'\\s(.*)$",
@@ -179,7 +210,10 @@
     {
       "label": "sync_and_generate",
       "detail": "npm run sync && generate_compile_commands",
-      "dependsOn": ["sync", "generate_compile_commands"],
+      "dependsOn": [
+        "sync",
+        "generate_compile_commands"
+      ],
       "presentation": {
         "showReuseMessage": false
       },
@@ -218,7 +252,10 @@
       "problemMatcher": [
         {
           "owner": "brave_unit_tests",
-          "fileLocation": ["relative", "${config:chrome.outputDir}"],
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
           "pattern": [
             {
               "regexp": "^\\d+\\s(test\\sfailed)\\:",
@@ -234,7 +271,10 @@
         },
         {
           "owner": "brave_unit_tests",
-          "fileLocation": ["relative", "${config:chrome.outputDir}"],
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
           "pattern": [
             {
               "kind": "file",
@@ -264,7 +304,10 @@
       "problemMatcher": [
         {
           "owner": "brave_browser_tests",
-          "fileLocation": ["relative", "${config:chrome.outputDir}"],
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
           "pattern": [
             {
               "regexp": "^\\d+\\s(test\\sfailed)\\:",
@@ -280,7 +323,10 @@
         },
         {
           "owner": "brave_browser_tests",
-          "fileLocation": ["relative", "${config:chrome.outputDir}"],
+          "fileLocation": [
+            "relative",
+            "${config:chrome.outputDir}"
+          ],
           "pattern": [
             {
               "kind": "file",
@@ -305,7 +351,10 @@
       "problemMatcher": [
         {
           "owner": "gn_check",
-          "fileLocation": ["relative", "${workspaceFolder}"],
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}"
+          ],
           "pattern": [
             {
               "regexp": "^ERROR\\sat\\s\\/\\/(.*):(.*):(.*):\\s(.*)$",
@@ -319,7 +368,10 @@
         },
         {
           "owner": "gn_check",
-          "fileLocation": ["relative", "${workspaceFolder}"],
+          "fileLocation": [
+            "relative",
+            "${workspaceFolder}"
+          ],
           "pattern": [
             {
               "kind": "file",
