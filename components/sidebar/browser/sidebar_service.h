@@ -91,6 +91,8 @@ class SidebarService : public KeyedService {
   std::optional<SidebarItem> GetDefaultPanelItem() const;
   bool IsEditableItemAt(size_t index) const;
 
+  size_t GetDefaultSidebarItemsCountForTesting() const;
+
   SidebarService(const SidebarService&) = delete;
   SidebarService& operator=(const SidebarService&) = delete;
 

@@ -45,7 +45,6 @@
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
 #include "brave/common/pref_names.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/brave_switches.h"
@@ -102,10 +101,6 @@
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/common/features.h"
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-#include "brave/components/brave_news/common/features.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -297,35 +292,8 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   base::RunLoop* run_loop() const { return run_loop_.get(); }
 
   size_t GetDefaultItemCount() const {
-    // kDefaultBuiltInItemTypes.size() already accounts for buildflags
-    // (ENABLE_BRAVE_TALK, ENABLE_AI_CHAT) at compile time.
-    auto item_count =
-        std::size(SidebarServiceFactory::kDefaultBuiltInItemTypes) -
-        1 /* for history*/;
-#if BUILDFLAG(ENABLE_PLAYLIST)
-    if (!base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
-      item_count -= 1;
-    }
-#endif
-
-#if BUILDFLAG(ENABLE_AI_CHAT)
-    if (!ai_chat::features::IsAIChatEnabled()) {
-      item_count -= 1;
-    }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_NEWS)
-    if (!base::FeatureList::IsEnabled(
-            brave_news::features::kBraveNewsSidebar)) {
-      item_count -= 1;
-    }
-#endif
-
-#if !BUILDFLAG(ENABLE_BRAVE_WALLET)
-    item_count -= 1;
-#endif
-
-    return item_count;
+    return SidebarServiceFactory::GetForProfile(browser()->profile())
+        ->GetDefaultSidebarItemsCountForTesting();
   }
 
   int GetFirstPanelItemIndex() {
@@ -353,10 +321,7 @@ class SidebarBrowserTest : public InProcessBrowserTest {
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
 };
 
-// Started to fail from cr151. Disabled temporarily to prevent blocking
-// other PR merging.
-// TODO(https://github.com/brave/brave-browser/issues/57167): Enable it.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DISABLED_BasicTest) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   EXPECT_TRUE(!!GetSidePanelToolbarButton()->context_menu_controller());
 
   // Initially, active index is not set.
@@ -461,10 +426,7 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DISABLED_BasicTest) {
               Optional(browser_view->children().size() - 1));
 }
 
-// Started to fail from cr151. Disabled temporarily to prevent blocking
-// other PR merging.
-// TODO(https://github.com/brave/brave-browser/issues/57167): Enable it.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DISABLED_WebTypePanelTest) {
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
 
