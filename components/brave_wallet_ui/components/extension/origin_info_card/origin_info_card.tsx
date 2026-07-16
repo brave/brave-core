@@ -7,6 +7,7 @@ import * as React from 'react'
 
 // Images
 import BraveIcon from '../../../assets/svg-icons/brave-icon.svg'
+import PlaceholderIcon from '../../../assets/svg-icons/nft-placeholder.svg'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -18,12 +19,8 @@ import {
 } from '../../../utils/string-utils'
 import { getLocale } from '../../../../common/locale'
 
-// Hooks
-import { useIsDAppVerified } from '../../../common/hooks/use_is_dapp_verified'
-
 // Components
 import { CreateSiteOrigin } from '../../shared/create-site-origin'
-import { VerifiedLabel } from '../../shared/verified_label/verified_label'
 
 // Styled Components
 import {
@@ -51,23 +48,13 @@ export const OriginInfoCard = (props: Props) => {
     orientation = 'horizontal',
   } = props
 
-  // Hooks
-  const { isDAppVerified, dapp } = useIsDAppVerified(origin)
-
   // Computed
   const isBraveWallet = getIsBraveWalletOrigin(origin)
 
-  const originDisplayName = dapp ? dapp.name : origin.eTldPlusOne
-
-  const dappIcon = dapp
-    ? isStorybook
-      ? dapp.logo
-      : `chrome://image?url=${encodeURIComponent(dapp.logo)}&staticEncode=true`
-    : undefined
-
-  const iconSrc =
-    dappIcon
-    ?? 'chrome://favicon2?size=64&pageUrl='
+  // In Storybook, show a placeholder icon.
+  const iconSrc = isStorybook
+    ? PlaceholderIcon
+    : 'chrome://favicon2?size=64&pageUrl='
       + encodeURIComponent(origin.originSpec)
 
   return (
@@ -98,24 +85,18 @@ export const OriginInfoCard = (props: Props) => {
         >
           {isBraveWallet
             ? getLocale('braveWalletPanelTitle')
-            : originDisplayName}
+            : origin.eTldPlusOne}
         </OriginName>
         {!isBraveWallet && (
-          <Column
-            gap='4px'
-            alignItems={orientation === 'vertical' ? 'center' : 'flex-start'}
+          <OriginUrl
+            textColor='tertiary'
+            textAlign={orientation === 'horizontal' ? 'left' : undefined}
           >
-            <OriginUrl
-              textColor='tertiary'
-              textAlign={orientation === 'horizontal' ? 'left' : undefined}
-            >
-              <CreateSiteOrigin
-                originSpec={origin.originSpec}
-                eTldPlusOne={origin.eTldPlusOne}
-              />
-            </OriginUrl>
-            {isDAppVerified && <VerifiedLabel />}
-          </Column>
+            <CreateSiteOrigin
+              originSpec={origin.originSpec}
+              eTldPlusOne={origin.eTldPlusOne}
+            />
+          </OriginUrl>
         )}
       </Column>
     </StyledWrapper>
