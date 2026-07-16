@@ -20,7 +20,11 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     goodURLs.forEach {
-      XCTAssertEqual(DomainUserScript(for: $0), .braveSearchHelper, "\($0) failed")
+      XCTAssertEqual(
+        DomainUserScript(for: $0, isPrivateBrowsing: false),
+        .braveSearchHelper,
+        "\($0) failed"
+      )
     }
 
     let badURLs = [
@@ -32,7 +36,7 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     badURLs.forEach {
-      XCTAssertNotEqual(DomainUserScript(for: $0), .braveSearchHelper)
+      XCTAssertNotEqual(DomainUserScript(for: $0, isPrivateBrowsing: false), .braveSearchHelper)
     }
   }
 
@@ -44,7 +48,7 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     goodURLs.forEach {
-      XCTAssertEqual(DomainUserScript(for: $0), .braveTalkHelper)
+      XCTAssertEqual(DomainUserScript(for: $0, isPrivateBrowsing: false), .braveTalkHelper)
     }
 
     let badURLs = [
@@ -58,7 +62,36 @@ class DomainUserScriptTests: XCTestCase {
     ].compactMap { $0 }
 
     badURLs.forEach {
-      XCTAssertNotEqual(DomainUserScript(for: $0), .braveTalkHelper)
+      XCTAssertNotEqual(DomainUserScript(for: $0, isPrivateBrowsing: false), .braveTalkHelper)
+    }
+  }
+
+  func testSKUsAPIAvailability() throws {
+    let goodURLs = [
+      URL(string: "https://account.brave.com"),
+      URL(string: "https://account.bravesoftware.com"),
+      URL(string: "https://account.brave.software"),
+    ].compactMap { $0 }
+
+    goodURLs.forEach {
+      XCTAssertEqual(
+        DomainUserScript(for: $0, isPrivateBrowsing: false),
+        .braveSkus,
+        "\($0) failed"
+      )
+      XCTAssertNil(DomainUserScript(for: $0, isPrivateBrowsing: true))
+    }
+
+    let badURLs = [
+      URL(string: "https://talk.brave.com"),
+      URL(string: "https://search.brave.software.com"),
+      URL(string: "https://community.brave.app"),
+      URL(string: "https://subdomain.search.brave.com"),
+      URL(string: "https://brave.com"),
+    ].compactMap { $0 }
+
+    badURLs.forEach {
+      XCTAssertNotEqual(DomainUserScript(for: $0, isPrivateBrowsing: false), .braveSkus)
     }
   }
 }

@@ -47,6 +47,8 @@ class SkusJavaScriptFeature : public web::JavaScriptFeature,
   // web::JavaScriptFeature:
   bool GetFeatureRepliesToMessages() const override;
   std::optional<std::string> GetScriptMessageHandlerName() const override;
+  std::vector<web::JavaScriptFeature::FeatureScript> GetScripts()
+      const override;
   void ScriptMessageReceivedWithReply(
       web::WebState* web_state,
       const web::ScriptMessage& message,
