@@ -62,17 +62,15 @@ public class BraveNewTabTakeoverInfobar {
                     }
                 };
 
+        String actionLabel =
+                activity.getString(R.string.new_tab_takeover_infobar_learn_more_opt_out_choices);
         Snackbar snackbar =
                 Snackbar.make(
                                 activity.getString(R.string.new_tab_takeover_infobar_message),
                                 controller,
                                 Snackbar.TYPE_PERSISTENT,
                                 Snackbar.UMA_UNKNOWN)
-                        .setAction(
-                                activity.getString(
-                                        R.string
-                                                .new_tab_takeover_infobar_learn_more_opt_out_choices),
-                                /* actionData= */ null)
+                        .setAction(actionLabel, /* actionData= */ null)
                         .setDefaultLines(false);
 
         snackbarManager.showSnackbar(snackbar);
