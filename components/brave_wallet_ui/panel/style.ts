@@ -23,16 +23,6 @@ export const PanelWrapper = styled.div<{
   contain: layout;
 `
 
-export const WelcomePanelWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 320px;
-  height: 250px;
-  overflow: hidden;
-  contain: layout;
-`
-
 export const SendWrapper = styled.div`
   flex: 1;
   flex-direction: column;
