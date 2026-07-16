@@ -32,6 +32,8 @@ def copy_other_arch(src_path, dest_path):
     # non-deterministic web UI bundling (styled-components class hashes,
     # minifier variable names, embedded build timestamps) that varies between
     # any two independent builds (even of the same architecture).
+    # TODO(https://github.com/brave/brave-browser/issues/57254): Make .pak file
+    # builds reproducible and remove the *.pak ignore pattern below.
     shutil.copytree(src_path,
                     dest_path,
                     symlinks=True,
