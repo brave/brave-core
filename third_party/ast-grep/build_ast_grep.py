@@ -29,7 +29,7 @@ from run_cargo import DEFAULT_SYSROOT, RunCargo  # noqa: E402
 
 # ast-grep upstream details.
 AST_GREP_GIT_URL = 'https://github.com/ast-grep/ast-grep.git'
-AST_GREP_REF = '0.44.0'
+AST_GREP_REF = '0.44.1'
 
 # Additional paths under `third_party/` for the source checkout, intermediate
 # build state, and final binary output.

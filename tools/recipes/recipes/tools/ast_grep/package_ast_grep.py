@@ -28,7 +28,10 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
                                           git_cache=env_properties.GIT_CACHE
                                           or None)
 
-    brave_root = api.brave_core_shallow.deploy('third_party/ast-grep')
+    brave_root = api.brave_core_shallow.deploy([
+        'third_party/ast-grep',
+        'tools/cr/toolchains',
+    ])
 
     vpython3 = api.depot_tools.vpython3()
     api.step('package ast-grep', [
@@ -37,6 +40,7 @@ def RunSteps(api: RecipeScriptApi, properties: InputProperties,
         '--clean',
         '--out-dir',
         api.path.out,
+        '--upload',
     ])
 
 
@@ -44,7 +48,8 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.chromium_checkout.with_git_cache(),
-        api.brave_core_shallow.deployed('third_party/ast-grep'),
+        api.brave_core_shallow.deployed('third_party/ast-grep',
+                                        'tools/cr/toolchains'),
         api.properties(chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'fetch chromium'),
         api.post_process(post_process.MustRun, 'package ast-grep'),
