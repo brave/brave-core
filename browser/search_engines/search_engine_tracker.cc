@@ -19,6 +19,7 @@
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_search_conversion/utils.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "brave/components/web_discovery/buildflags/buildflags.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
@@ -298,6 +299,10 @@ void SearchEngineTracker::RecordDefaultEngine() {
   // Record the main default search engine metric
   UMA_HISTOGRAM_ENUMERATION(kDefaultSearchEngineMetric,
                             current_default_engine_);
+
+  p3a_utils::SetCustomAttribute(
+      "search_default",
+      current_default_engine_ == SearchEngineP3A::kBrave ? "brave" : "other");
 
   // Record rewards-based metrics
   bool rewards_enabled =
