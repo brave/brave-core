@@ -648,6 +648,15 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
         return false;
       }
     }
+
+#if BUILDFLAG(IS_MAC)
+    // In this mode, top_container is in overlay widget but top_container is
+    // positioned above the browser view.
+    if (delegate().GetBrowserWindowState() ==
+        WindowState::kFullscreenWithToolbar) {
+      return false;
+    }
+#endif
     return true;
   };
 
@@ -656,6 +665,11 @@ gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMargins() const {
   }
 
   return margins;
+}
+
+gfx::Insets BraveBrowserViewTabbedLayoutImpl::GetContentsMarginsForTesting()
+    const {
+  return GetContentsMargins();
 }
 
 bool BraveBrowserViewTabbedLayoutImpl::ShouldPushBookmarkBarForVerticalTabs()

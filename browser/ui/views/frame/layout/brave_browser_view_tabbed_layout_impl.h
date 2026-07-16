@@ -97,6 +97,10 @@ class BraveBrowserViewTabbedLayoutImpl : public BrowserViewTabbedLayoutImpl {
   bool GetMultiContentsSeparatorForTesting() const;
   bool GetShadowBoxForTesting() const;
 
+  // Test-only accessor for GetContentsMargins(), which is private and
+  // non-virtual.
+  gfx::Insets GetContentsMarginsForTesting() const;
+
   // Populates `layout_data_` with the given window state (and a zero side
   // panel width) so `CalculateSeparatorInfo()` can be exercised without
   // running a full layout pass. Implemented alongside CalculateSeparatorInfo()
