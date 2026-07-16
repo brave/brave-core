@@ -130,6 +130,7 @@ import java.util.List;
     ChromeFeatureList.GLIC,
     ChromeFeatureList.LENS_OVERLAY_ANDROID,
     ChromeFeatureList.SUBMENUS_IN_APP_MENU,
+    ChromeFeatureList.SUBMENUS_IN_APP_MENU_LFF,
     DomDistillerFeatures.READER_MODE_DISTILL_IN_APP,
     BraveFeatureList.BRAVE_SHRED,
 })
