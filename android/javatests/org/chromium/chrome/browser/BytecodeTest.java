@@ -192,7 +192,6 @@ import org.chromium.components.browser_ui.site_settings.PermissionInfo;
 import org.chromium.components.browser_ui.site_settings.SiteSettingsCategory;
 import org.chromium.components.browser_ui.site_settings.Website;
 import org.chromium.components.browser_ui.site_settings.WebsiteAddress;
-import org.chromium.components.browser_ui.site_settings.WebsitePermissionsFetcher.WebsitePermissionsType;
 import org.chromium.components.browser_ui.util.motion.MotionEventInfo;
 import org.chromium.components.browser_ui.widget.MenuOrKeyboardActionController;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
@@ -762,7 +761,7 @@ public class BytecodeTest {
                         "org/chromium/components/browser_ui/site_settings/WebsitePermissionsFetcher", // presubmit: ignore-long-line
                         "getPermissionsType",
                         MethodModifier.STATIC,
-                        WebsitePermissionsType.class,
+                        int.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(
