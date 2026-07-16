@@ -92,13 +92,12 @@ struct DataImporterTutorialView: View {
           },
           label: {
             Text(Strings.DataImporter.importTutorialDetailedProcessMessage)
-              .font(.subheadline.weight(.semibold))
-              .multilineTextAlignment(.center)
               .foregroundStyle(Color(braveSystemName: .textInteractive))
               .fixedSize(horizontal: false, vertical: true)
               .frame(maxWidth: .infinity, maxHeight: .infinity)
           }
         )
+        .buttonStyle(.plainFaint)
       }
       .padding(12.0)
       .navigationTitle(Strings.DataImporter.importTutorialScreenTitle)
