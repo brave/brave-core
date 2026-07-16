@@ -438,9 +438,7 @@ struct TabGridView: View {
       }
     } label: {
       Label(Strings.TabGrid.moreMenuButtonTitle, braveSystemImage: "leo.more.horizontal")
-        .labelStyle(.iconOnly)
-        .font(.callout)
-        .imageScale(.large)
+        .labelStyle(.buttonIconOnly)
     }
     .plainHeaderIconButtonStyle()
     .menuOrder(.fixed)
@@ -464,9 +462,7 @@ struct TabGridView: View {
       }
     } label: {
       Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
-        .labelStyle(.iconOnly)
-        .font(.callout)
-        .imageScale(.large)
+        .labelStyle(.buttonIconOnly)
     }
     .plainHeaderIconButtonStyle()
   }
@@ -482,11 +478,9 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.TabGrid.newTabAccessibilityLabel, braveSystemImage: "leo.plus.add")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
+          .labelStyle(.buttonIconOnly)
       }
-      .plainToolbarIconButtonStyle()
+      .addTabIconButtonStyle()
       .keyboardShortcut("t", modifiers: [.command])
       .frame(maxWidth: .infinity, alignment: .leading)
 
@@ -504,9 +498,7 @@ struct TabGridView: View {
         dismiss()
       } label: {
         Label(Strings.done, braveSystemImage: "leo.check.normal")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
+          .labelStyle(.buttonIconOnly)
       }
       .filledToolbarIconButtonStyle()
       .keyboardShortcut(.defaultAction)
@@ -532,11 +524,9 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.CancelString, braveSystemImage: "leo.close")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
+          .labelStyle(.buttonIconOnly)
       }
-      .plainToolbarIconButtonStyle()
+      .plainHeaderIconButtonStyle()
     }
     .containerCornerOffset(.leading, sizeToFit: true)
     .padding(.vertical, 4)
@@ -549,9 +539,7 @@ struct TabGridView: View {
         activeShredMode = .selectedTabs
       } label: {
         Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
+          .labelStyle(.buttonIconOnly)
       }
       .plainToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
@@ -569,9 +557,7 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.close, braveSystemImage: "leo.close")
-          .labelStyle(.iconOnly)
-          .font(.callout)
-          .imageScale(.large)
+          .labelStyle(.buttonIconOnly)
       }
       .filledToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty)
@@ -661,63 +647,81 @@ struct TabGridView: View {
 
 extension View {
   func plainHeaderIconButtonStyle() -> some View {
-    self.modifier(HeaderToolbarIconButtonStyleModifier())
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(.plainFaint)
+        }
+      }
+      .fixedSize()
+  }
+
+  func addTabIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(TabGridLegacyAddTabButtonStyle())
+        }
+      }
+      .fixedSize()
   }
 
   func plainToolbarIconButtonStyle() -> some View {
-    self.modifier(ToolbarIconButtonStyleModifier(isFilled: false))
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.plainGlass)
+        } else {
+          content.buttonStyle(.plainBordered)
+        }
+      }
+      .fixedSize()
   }
 
   func filledToolbarIconButtonStyle() -> some View {
-    self.modifier(ToolbarIconButtonStyleModifier(isFilled: true))
-  }
-}
-
-private struct HeaderToolbarIconButtonStyleModifier: ViewModifier {
-  @ScaledMetric(relativeTo: .body) private var size = 44
-
-  func body(content: Content) -> some View {
-    styledContent(content)
-      .frame(width: size, height: size)
-      .fixedSize()
-  }
-
-  @ViewBuilder
-  private func styledContent(_ content: Content) -> some View {
-    if #available(iOS 26.0, *) {
-      content
-        .osAvailabilityModifiers { styled in
-          styled.buttonStyle(.plainGlass)
-        }
-    } else {
-      content
-    }
-  }
-}
-
-private struct ToolbarIconButtonStyleModifier: ViewModifier {
-  var isFilled: Bool
-  @ScaledMetric(relativeTo: .body) private var size = 44
-
-  func body(content: Content) -> some View {
-    content
-      .osAvailabilityModifiers { styled in
-        if isFilled {
-          if #available(iOS 26.0, *) {
-            styled.buttonStyle(.glassFilled)
-          } else {
-            styled.buttonStyle(.filled)
-          }
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(.glassFilled)
         } else {
-          if #available(iOS 26.0, *) {
-            styled.buttonStyle(.plainGlass)
-          } else {
-            styled.buttonStyle(.plainBordered)
-          }
+          content.buttonStyle(.filled)
         }
       }
-      .frame(width: size, height: size)
       .fixedSize()
+  }
+}
+
+/// Pre-iOS 26 add-tab button style: a light filled circle with a dark icon per the tab tray design spec.
+private struct TabGridLegacyAddTabButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(12)
+      .foregroundStyle(Color(braveSystemName: isEnabled ? .iconDefault : .textDisabled))
+      .background {
+        if isEnabled {
+          Color(braveSystemName: .containerBackground)
+            .mix(
+              with: Color(braveSystemName: .fixedForeground),
+              by: configuration.isPressed ? 0.1 : 0
+            )
+        } else {
+          Color(braveSystemName: .iconDefault).opacity(0.07)
+        }
+      }
+      .clipShape(.circle)
+      .contentShape(.circle)
+      .hoverEffect()
+      .animation(.linear(duration: 0.15), value: isEnabled)
   }
 }
 
