@@ -64,10 +64,10 @@ export function App() {
         >
           <Icon name='settings' />
         </button>
-        <div className='topsites-container'>
+        <div className='topsites-container allow-background-pointer-events'>
           <TopSites />
         </div>
-        <div className='searchbox-container'>
+        <div className='searchbox-container allow-background-pointer-events'>
           {searchLayoutReady && (
             <Search showSearchSettings={() => setSettingsView('search')} />
           )}
@@ -80,10 +80,10 @@ export function App() {
         >
           <BackgroundClickRegion />
         </div>
-        <div className='caption-container'>
+        <div className='caption-container allow-background-pointer-events'>
           <BackgroundCaption />
         </div>
-        <div className='widget-container'>
+        <div className='widget-container allow-background-pointer-events'>
           {widgetLayoutReady && (
             <>
               {threeColumnWidth ? (
