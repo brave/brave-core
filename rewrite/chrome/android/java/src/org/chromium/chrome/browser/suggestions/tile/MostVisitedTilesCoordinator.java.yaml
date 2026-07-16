@@ -7,7 +7,8 @@ substitutions:
   - description: |-
       Use Brave's context menu manager, which hides "Open in new tab in group"
       on New Tab Page tiles when the "Enable tab groups" master switch is off.
-    re_pattern: |-
-      new (ContextMenuManager\()
-    replace: |-
-      new org.chromium.chrome.browser.native_page.Brave\1
+    regex:
+      re_pattern: |-
+        new (ContextMenuManager\()
+      replace: |-
+        new org.chromium.chrome.browser.native_page.Brave\1

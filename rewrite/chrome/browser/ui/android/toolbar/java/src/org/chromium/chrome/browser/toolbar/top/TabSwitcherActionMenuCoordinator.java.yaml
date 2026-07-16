@@ -8,7 +8,8 @@ substitutions:
       Instantiate Brave's tab switcher action menu coordinator, which hides the
       tab group creation entries when the "Enable tab groups" master switch is
       off.
-    re_pattern: |-
-      new (TabSwitcherActionMenuCoordinator\()
-    replace: |-
-      new Brave\1
+    regex:
+      re_pattern: |-
+        new (TabSwitcherActionMenuCoordinator\()
+      replace: |-
+        new Brave\1
