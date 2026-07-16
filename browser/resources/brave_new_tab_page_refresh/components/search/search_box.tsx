@@ -55,7 +55,7 @@ export function SearchBox(props: Props) {
 
   return (
     <div
-      className={classNames({ expanded })}
+      className={classNames({ expanded }, 'allow-background-pointer-events')}
       data-css-scope={style.scope}
     >
       <Popover
