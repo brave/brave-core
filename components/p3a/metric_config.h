@@ -48,8 +48,8 @@ inline constexpr MetricAttribute kDefaultMetricAttributes[] = {
 
 using MetricAttributes = std::array<std::optional<MetricAttribute>, 8>;
 using MetricAttributesToAppend = std::array<std::optional<MetricAttribute>, 2>;
-using CustomAttributes = std::array<std::optional<std::string_view>, 2>;
-using RemoteCustomAttributes = std::array<std::optional<std::string>, 2>;
+using CustomAttributes = std::array<std::optional<std::string_view>, 4>;
+using RemoteCustomAttributes = std::array<std::optional<std::string>, 4>;
 
 struct MetricConfig {
   // Once the metric value has been sent, the value will be removed from the log

@@ -20,6 +20,7 @@
 #include "base/timer/wall_clock_timer.h"
 #include "brave/components/misc_metrics/brave_search_metrics.h"
 #include "brave/components/misc_metrics/default_browser_monitor.h"
+#include "brave/components/misc_metrics/media_session_metrics.h"
 #include "brave/components/misc_metrics/navigation_source_metrics.h"
 #include "components/browsing_data/core/counters/browsing_data_counter.h"
 #include "components/history/core/browser/history_types.h"
@@ -67,10 +68,19 @@ inline constexpr char kSearchBraveDailyHistogramName[] =
     "Brave.Search.BraveDaily.2";
 inline constexpr char kTorWindowUsedHistogramName[] =
     "Brave.Core.TorWindowUsed";
+inline constexpr char kCombinedSearchStudyHistogramName[] =
+    "Brave.Core.CombinedSearchStudy";
+inline constexpr char kCombinedSearchStudySearchQueryAttributeName[] =
+    "search_query";
+inline constexpr char kCombinedSearchStudyMediaUsageAttributeName[] =
+    "media_usage_min";
+inline constexpr char kCombinedSearchStudyUniquePagesAttributeName[] =
+    "unique_pages";
 
 // Manages browser page loading metrics, including page load counts,
 // failed HTTPS upgrades, and bookmarks.
-class PageMetrics : public DefaultBrowserMonitor::Observer {
+class PageMetrics : public DefaultBrowserMonitor::Observer,
+                    public MediaSessionMetrics::Observer {
  public:
   using FirstRunTimeCallback = base::RepeatingCallback<base::Time(void)>;
 
@@ -80,6 +90,7 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
               history::HistoryService* history_service,
               bookmarks::BookmarkModel* bookmark_model,
               DefaultBrowserMonitor* default_browser_monitor,
+              MediaSessionMetrics* media_session_metrics,
               TemplateURLService* template_url_service,
               FirstRunTimeCallback first_run_time_callback);
   ~PageMetrics() override;
@@ -88,6 +99,10 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   void IncrementPagesLoadedCount(bool is_reload, bool is_otr);
 
+  // Called when the user makes a typed omnibox search query. Used by the
+  // combined search study metric.
+  void RecordOmniboxQuery();
+
   BraveSearchMetrics& brave_search_metrics() { return brave_search_metrics_; }
   NavigationSourceMetrics& navigation_source_metrics() {
     return navigation_source_metrics_;
@@ -95,6 +110,9 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
 
   // DefaultBrowserMonitor::Observer:
   void OnDefaultBrowserStatusChanged(bool is_default) override;
+
+  // MediaSessionMetrics::Observer:
+  void OnMediaPlaybackTick(base::TimeDelta tick_duration) override;
 
  private:
   void InitStorage();
@@ -120,6 +138,10 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
       std::unique_ptr<browsing_data::BrowsingDataCounter::Result> result);
 
   void ReportDomainsLoadedWithStatus();
+
+  void ReportCombinedSearchStudy();
+  void OnCombinedSearchStudyHistoryCountResult(
+      history::HistoryCountResult result);
 
   std::unique_ptr<WeeklyStorage> pages_loaded_storage_;
   std::unique_ptr<WeeklyStorage> pages_reloaded_storage_;
@@ -152,6 +174,9 @@ class PageMetrics : public DefaultBrowserMonitor::Observer {
   base::ScopedObservation<DefaultBrowserMonitor,
                           DefaultBrowserMonitor::Observer>
       default_browser_observation_{this};
+
+  base::ScopedObservation<MediaSessionMetrics, MediaSessionMetrics::Observer>
+      media_session_observation_{this};
 
   BraveSearchMetrics brave_search_metrics_;
   NavigationSourceMetrics navigation_source_metrics_;
