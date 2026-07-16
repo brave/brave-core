@@ -73,7 +73,7 @@ class BraveVPNController {};
 #include "brave/components/playlist/core/browser/utils.h"
 #endif
 
-#if BUILDFLAG(ENABLE_AI_CHAT) && defined(TOOLKIT_VIEWS)
+#if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -196,7 +196,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
         std::make_unique<WorkspacesBubbleController>();
   }
 
-#if BUILDFLAG(ENABLE_AI_CHAT) && defined(TOOLKIT_VIEWS)
+#if BUILDFLAG(ENABLE_AI_CHAT)
   if (base::FeatureList::IsEnabled(
           ai_chat::features::kAIChatMoveFullPageToSidePanel) &&
       browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL &&
@@ -214,7 +214,7 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
   screenshot_controller_.reset();
-#if BUILDFLAG(ENABLE_AI_CHAT) && defined(TOOLKIT_VIEWS)
+#if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat_side_panel_tab_transfer_bridge_.reset();
 #endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
