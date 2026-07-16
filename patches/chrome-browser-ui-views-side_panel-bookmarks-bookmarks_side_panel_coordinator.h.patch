@@ -1,12 +1,23 @@
 diff --git a/chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h b/chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h
-index b08aa0cddccddeddf58e49f3cfca51422bdfc66e..b714f5ad9bf0fe3b549411da11faa1188e21a602 100644
+index b08aa0cddccddeddf58e49f3cfca51422bdfc66e..3d2286d51e24ef865baf162157b72b411d8d5fb5 100644
 --- a/chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h
 +++ b/chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h
-@@ -24,6 +24,7 @@ class BookmarksSidePanelCoordinator {
+@@ -24,15 +24,16 @@ class BookmarksSidePanelCoordinator {
   public:
    explicit BookmarksSidePanelCoordinator(
        BrowserWindowInterface& browser_window_interface);
-+  virtual
-   ~BookmarksSidePanelCoordinator();
+-  ~BookmarksSidePanelCoordinator();
++  virtual ~BookmarksSidePanelCoordinator();
  
    static BookmarksSidePanelCoordinator* From(BrowserWindowInterface* browser);
+ 
+   DECLARE_USER_DATA(BookmarksSidePanelCoordinator);
+ 
+-  void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
++  virtual void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
+ 
+  private:
++  friend class BraveBookmarksSidePanelView;
+   std::unique_ptr<views::View> CreateBookmarksWebView(
+       SidePanelEntryScope& scope);
+ 

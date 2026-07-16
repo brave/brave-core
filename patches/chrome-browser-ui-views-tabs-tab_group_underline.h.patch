@@ -1,0 +1,29 @@
+diff --git a/chrome/browser/ui/views/tabs/tab_group_underline.h b/chrome/browser/ui/views/tabs/tab_group_underline.h
+index 05521c891062cfb582437ec99eb70fb561637ca5..0b657418e36195ffa85167bb8f46c0a0865e4869 100644
+--- a/chrome/browser/ui/views/tabs/tab_group_underline.h
++++ b/chrome/browser/ui/views/tabs/tab_group_underline.h
+@@ -37,7 +37,7 @@ class TabGroupUnderline : public views::View {
+   TabGroupUnderline& operator=(const TabGroupUnderline&) = delete;
+ 
+   // Updates the bounds of the underline for painting.
+-  void UpdateBounds(const views::View* leading_view,
++  virtual void UpdateBounds(const views::View* leading_view,
+                     const views::View* trailing_view);
+   // Checks if the `TabGroupUnderline` should be hidden before
+   // setting the visibility.
+@@ -47,12 +47,13 @@ class TabGroupUnderline : public views::View {
+   void OnPaint(gfx::Canvas* canvas) override;
+ 
+  private:
++  friend class BraveTabGroupUnderline;
+   // Returns the insets from `sibling_view`'s bounds this underline would have
+   // if it were underlining only `sibling_view`.
+-  gfx::Insets GetInsetsForUnderline(const views::View* sibling_view) const;
++  virtual gfx::Insets GetInsetsForUnderline(const views::View* sibling_view) const;
+   // Returns the tab group underline bounds based on a `leading_view` and a
+   // `trailing_view`.
+-  gfx::Rect CalculateTabGroupUnderlineBounds(
++  virtual gfx::Rect CalculateTabGroupUnderlineBounds(
+       const views::View* underline_view,
+       const views::View* leading_view,
+       const views::View* trailing_view) const;

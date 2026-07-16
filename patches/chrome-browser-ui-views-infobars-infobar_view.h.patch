@@ -1,0 +1,21 @@
+diff --git a/chrome/browser/ui/views/infobars/infobar_view.h b/chrome/browser/ui/views/infobars/infobar_view.h
+index ea753618af059e9465562a7278905ac127d5595a..fa9741499c79be71605ea653fa91515ecbd3eee9 100644
+--- a/chrome/browser/ui/views/infobars/infobar_view.h
++++ b/chrome/browser/ui/views/infobars/infobar_view.h
+@@ -126,6 +126,7 @@ class InfoBarView : public infobars::InfoBar,
+   void AddViewBeforeCloseButton(std::unique_ptr<views::View> view);
+ 
+  private:
++  friend class WebDiscoveryInfoBarView;
+   FRIEND_TEST_ALL_PREFIXES(InfoBarViewTest, GetDrawSeparator);
+ 
+   // Recalculates the layout of the infobar's contents, ensuring that views are
+@@ -150,7 +151,7 @@ class InfoBarView : public infobars::InfoBar,
+   // Callback used by the link created by CreateLink().
+   void LinkClicked(const ui::Event& event);
+ 
+-  void CloseButtonPressed();
++  virtual void CloseButtonPressed();
+ 
+   // The optional icon at the left edge of the InfoBar.
+   raw_ptr<views::ImageView> icon_ = nullptr;
