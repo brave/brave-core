@@ -1154,7 +1154,6 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
       width_animation_.Stop();
       SetVisible(false);
       SetState(State::kCollapsed);
-      PreferredSizeChanged();
     }
   } else if (floating_restore_state_) {
     // When exiting floating mode based on the current browser mode, restore the
@@ -1163,8 +1162,12 @@ void BraveVerticalTabStripRegionView::UpdateFloatingStateForBrowserMode() {
     floating_restore_state_.reset();
     SetVisible(true);
     SetState(restore_state);
-    PreferredSizeChanged();
   }
+
+  // This method is called whenever browser mode(fullscreen or focus mode) is
+  // changed. Even floating state is not changed, host view's preferred size
+  // should be updated. Notify to VerticalTabStripContainerView to do it.
+  PreferredSizeChanged();
 }
 
 void BraveVerticalTabStripRegionView::ScheduleFloatingModeTimer() {
