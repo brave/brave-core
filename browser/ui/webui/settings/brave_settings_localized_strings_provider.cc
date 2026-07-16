@@ -29,6 +29,7 @@
 #include "brave/components/containers/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "brave/components/version_info/version_info.h"
@@ -140,6 +141,11 @@ constexpr char16_t kSurveyPanelistLearnMoreURL[] =
 
 constexpr char16_t kExtensionsV2LearnMoreURL[] =
     u"https://brave.com/blog/brave-shields-manifest-v3/";
+
+#if BUILDFLAG(ENABLE_PSST)
+constexpr char16_t kPsstLearnMoreUrl[] =
+    u"https://support.brave.app/hc/en-us/articles/47405731650957";
+#endif
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
                            Profile* profile) {
@@ -1107,6 +1113,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_SHIELDS_TOOLTIP_TEXT},
       {"cookieControlledByGoogleSigninTooltip",
        IDS_SETTINGS_COOKIE_CONTROLLED_BY_GOOGLE_SIGN_IN_TOOLTIP_TEXT},
+#if BUILDFLAG(ENABLE_PSST)
+      {"psstSettingsToggleLabel", IDS_SETTINGS_PSST_LABEL},
+      {"psstSettingsToggleSubLabel", IDS_SETTINGS_PSST_SUB_LABEL},
+#endif  // BUILDFLAG(ENABLE_PSST)
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -1249,6 +1259,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       l10n_util::GetStringFUTF16(IDS_SETTINGS_MANAGE_EXTENSIONS_V2_WARN,
                                  kExtensionsV2LearnMoreURL));
 
+#if BUILDFLAG(ENABLE_PSST)
+  html_source->AddString("psstLearnMoreURL", kPsstLearnMoreUrl);
+#endif
   // Disabled due to crash with tab group dragging.
   // TODO(https://github.com/brave/brave-browser/issues/49752): Re-enable.
   html_source->AddBoolean("showSplitViewDragAndDropSetting", false);

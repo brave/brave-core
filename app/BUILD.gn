@@ -64,6 +64,7 @@ brave_grit("brave_generated_resources_grit") {
     "enable_request_otr=$enable_request_otr",
     "enable_speedreader=$enable_speedreader",
     "enable_text_recognition=$enable_text_recognition",
+    "enable_psst=$enable_psst",
   ]
   source = "brave_generated_resources.grd"
   output_dir = "$root_gen_dir/brave"

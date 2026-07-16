@@ -71,6 +71,18 @@
                             menu-options="[[requestOTRActions_]]">
     </settings-dropdown-menu>
 </div>
+<!-- <if expr="enable_psst"> -->
+<template is="dom-if" if="[[isPsstFeatureEnabled_]]">
+  <settings-toggle-button
+    class="cr-row"
+    pref="{{prefs.brave.psst.settings.enable_psst}}"
+    label="$i18n{psstSettingsToggleLabel}"
+    sub-label="$i18n{psstSettingsToggleSubLabel}"
+    learn-more-url="$i18n{psstLearnMoreURL}">
+  </settings-toggle-button>
+</template>
+<!-- </if> -->
+
 <!-- <if expr="is_win"> -->
   <template is="dom-if" if="[[isWindowsRecallAvailable_]]">
     <settings-toggle-button id="windowsRecallDisabled"

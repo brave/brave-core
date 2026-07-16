@@ -22,6 +22,7 @@
 #include "brave/components/ntp_background_images/common/pref_names.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
+#include "brave/components/psst/buildflags/buildflags.h"
 #include "brave/components/request_otr/common/pref_names.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
@@ -71,6 +72,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/core/common/pref_names.h"
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+#include "brave/components/psst/core/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(IS_WIN)
@@ -382,6 +387,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 
 #if BUILDFLAG(IS_WIN)
   (*s_brave_allowlist)[windows_recall::prefs::kWindowsRecallDisabled] =
+      settings_api::PrefType::kBoolean;
+#endif
+
+#if BUILDFLAG(ENABLE_PSST)
+  (*s_brave_allowlist)[psst::prefs::kPsstEnabled] =
       settings_api::PrefType::kBoolean;
 #endif
 

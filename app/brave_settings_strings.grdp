@@ -844,6 +844,14 @@
       Never
     </message>
   </if>
+  <if expr="enable_psst">
+    <message name="IDS_SETTINGS_PSST_LABEL" desc="Privacy settings tuning label">
+      Show Privacy settings tuning notification on compatible sites
+    </message>
+    <message name="IDS_SETTINGS_PSST_SUB_LABEL" desc="Privacy settings tuning sub-label">
+      Allows Brave to automatically suggest (and adjust) site-specific privacy settings.
+    </message>
+  </if>
   <if expr="is_win">
     <message name="IDS_SETTINGS_WINDOWS_RECALL_DISABLED_LABEL" desc="Windows Recall setting label">
       Block Microsoft Recall
