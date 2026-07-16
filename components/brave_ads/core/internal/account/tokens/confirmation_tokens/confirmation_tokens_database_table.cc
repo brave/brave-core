@@ -216,12 +216,7 @@ void ConfirmationTokens::Migrate(
     }
 
     case 58: {
-      // Discard confirmation tokens so they are refilled using
-      // an RFC 9497 compliant derivation.
-      Execute(mojom_db_transaction, R"(
-          DELETE FROM
-            $1)",
-              {kTableName});
+      DeleteTable(mojom_db_transaction, kTableName);
       break;
     }
 
