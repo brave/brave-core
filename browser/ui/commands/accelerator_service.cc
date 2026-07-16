@@ -431,6 +431,14 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
 #else
       return true;  // News not compiled in, always disabled
 #endif
+    case IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL:
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+      // The Brave News side panel is only usable when the user has opted into
+      // Brave News (this also respects the disabled-by-policy pref).
+      return !brave_news::IsEnabled(pref_service_);
+#else
+      return true;  // News not compiled in, always disabled
+#endif
     case IDC_SHOW_BRAVE_TALK:
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
       return pref_service_->GetBoolean(brave_talk::prefs::kDisabledByPolicy);
@@ -502,6 +510,7 @@ bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
       return true;  // Wayback Machine not compiled in, always disabled
 #endif
     case IDC_SHOW_PLAYLIST_BUBBLE:
+    case IDC_TOGGLE_PLAYLIST_SIDE_PANEL:
 #if BUILDFLAG(ENABLE_PLAYLIST)
       return !pref_service_->GetBoolean(playlist::kPlaylistEnabledPref);
 #else

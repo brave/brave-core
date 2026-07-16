@@ -158,6 +158,13 @@
 #define IDC_PSST_DONT_SHOW_FOR_THIS_SITE 56461
 #define IDC_PSST_DISABLE_PRIVACY_SETTINGS_TUNING 56462
 
+// Side panel toggle commands. These ship with no default accelerators and let
+// users bind their own shortcuts to open/close specific side panels.
+#define IDC_TOGGLE_BOOKMARKS_SIDE_PANEL 56463
+#define IDC_TOGGLE_READING_LIST_SIDE_PANEL 56464
+#define IDC_TOGGLE_PLAYLIST_SIDE_PANEL 56465
+#define IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL 56466
+
 #define IDC_BRAVE_COMMANDS_LAST 57000
 
 #endif  // BRAVE_APP_BRAVE_COMMAND_IDS_H_

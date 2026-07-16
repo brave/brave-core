@@ -30,6 +30,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/testing_pref_service.h"
 #include "content/public/test/browser_task_environment.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -420,13 +421,52 @@ TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  // Test Playlist
-  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
+  // Test Playlist (bubble and side panel share the same policy)
+  const std::vector<int> playlist_commands = {IDC_SHOW_PLAYLIST_BUBBLE,
+                                              IDC_TOGGLE_PLAYLIST_SIDE_PANEL};
+  auto is_disabled_by_policy = [&service](int command) {
+    return service.IsCommandDisabledByPolicy(command);
+  };
+  EXPECT_THAT(
+      playlist_commands,
+      testing::Each(testing::Not(testing::Truly(is_disabled_by_policy))));
   profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, false);
-  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
+  EXPECT_THAT(playlist_commands,
+              testing::Each(testing::Truly(is_disabled_by_policy)));
   profile().GetPrefs()->SetBoolean(playlist::kPlaylistEnabledPref, true);
-  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_SHOW_PLAYLIST_BUBBLE));
+  EXPECT_THAT(
+      playlist_commands,
+      testing::Each(testing::Not(testing::Truly(is_disabled_by_policy))));
 #endif
+
+#if BUILDFLAG(ENABLE_BRAVE_NEWS)
+  // Test Brave News configure command (gated on the disabled-by-policy pref).
+  EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, true);
+  EXPECT_TRUE(service.IsCommandDisabledByPolicy(IDC_CONFIGURE_BRAVE_NEWS));
+  profile().GetPrefs()->SetBoolean(
+      brave_news::prefs::kBraveNewsDisabledByPolicy, false);
+
+  // The Brave News side panel command is only available once the user has
+  // opted into Brave News.
+  EXPECT_TRUE(
+      service.IsCommandDisabledByPolicy(IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL));
+  profile().GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
+                                   true);
+  profile().GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
+  EXPECT_FALSE(
+      service.IsCommandDisabledByPolicy(IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL));
+  profile().GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
+  EXPECT_TRUE(
+      service.IsCommandDisabledByPolicy(IDC_TOGGLE_BRAVE_NEWS_SIDE_PANEL));
+#endif
+
+  // Bookmarks and reading list side panels are always available.
+  EXPECT_FALSE(
+      service.IsCommandDisabledByPolicy(IDC_TOGGLE_BOOKMARKS_SIDE_PANEL));
+  EXPECT_FALSE(
+      service.IsCommandDisabledByPolicy(IDC_TOGGLE_READING_LIST_SIDE_PANEL));
 
   // Test unknown commands (should not be disabled by policy)
   EXPECT_FALSE(service.IsCommandDisabledByPolicy(IDC_NEW_TAB));

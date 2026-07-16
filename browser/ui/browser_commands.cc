@@ -325,12 +325,16 @@ void OpenBraveVPNUrls(Browser* browser, int command_id) {
 #endif
 }
 
-void ToggleAIChat(Browser* browser) {
+void ToggleSidePanel(Browser* browser, SidePanelEntryId id) {
 #if defined(TOOLKIT_VIEWS)
   SidePanelUI* side_panel_ui = browser->GetFeatures().side_panel_ui();
-  side_panel_ui->Toggle(SidePanelEntry::Key(SidePanelEntryId::kChatUI),
+  side_panel_ui->Toggle(SidePanelEntry::Key(id),
                         SidePanelOpenTrigger::kToolbarButton);
 #endif
+}
+
+void ToggleAIChat(Browser* browser) {
+  ToggleSidePanel(browser, SidePanelEntryId::kChatUI);
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)

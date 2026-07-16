@@ -266,6 +266,13 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
       command_controller->IsCommandEnabled(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER));
 
   EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_TOGGLE_SIDEBAR));
+
+  // Bookmarks and reading list side panels are always available in a normal
+  // window.
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_TOGGLE_BOOKMARKS_SIDE_PANEL));
+  EXPECT_TRUE(
+      command_controller->IsCommandEnabled(IDC_TOGGLE_READING_LIST_SIDE_PANEL));
 }
 
 // Create private browser and test its brave commands status.
