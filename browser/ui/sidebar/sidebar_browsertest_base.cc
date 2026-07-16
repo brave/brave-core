@@ -26,8 +26,11 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/components/constants/pref_names.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "brave/components/sidebar/browser/sidebar_service.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
@@ -60,6 +63,13 @@ void SidebarBrowserTest::PreRunTestOnMainThread() {
   // Enable sidebar explicitely because sidebar option is different based on
   // channel.
   service->SetSidebarShowOption(SidebarService::ShowSidebarOption::kShowAlways);
+
+  // Start test with visible toolbar button.
+  // It's hidden by default in origin build.
+#if BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
+  auto* prefs = browser()->profile()->GetPrefs();
+  prefs->SetBoolean(kShowSidePanelButton, true);
+#endif
 }
 
 SidePanelButton* SidebarBrowserTest::GetSidePanelToolbarButton() const {
