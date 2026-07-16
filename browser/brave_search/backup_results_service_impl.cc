@@ -29,6 +29,7 @@
 #include "chrome/browser/content_settings/page_specific_content_settings_delegate.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/browser/page_specific_content_settings.h"
+#include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/navigation_controller.h"
@@ -134,6 +135,16 @@ BackupResultsServiceImpl::BackupResultsServiceImpl(Profile* profile)
   profile_->AddObserver(this);
 }
 BackupResultsServiceImpl::~BackupResultsServiceImpl() = default;
+
+// static
+void BackupResultsServiceImpl::RegisterLocalStatePrefs(
+    PrefRegistrySimple* registry) {
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastViewWidth, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsLastViewHeight, 0);
+  registry->RegisterIntegerPref(prefs::kBackupResultsDailyRequestCount, 0);
+  registry->RegisterTimePref(prefs::kBackupResultsDailyRequestWindowStart, {});
+  BackupResultsMetrics::RegisterPrefs(registry);
+}
 
 // static
 void BackupResultsServiceImpl::RecordLastViewSize(PrefService* local_state,

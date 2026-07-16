@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
+#include "brave/components/brave_search/browser/backup_results_metrics.h"
 #include "brave/components/brave_search_conversion/p3a.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_p3a.h"
@@ -306,6 +307,8 @@ void MigrateObsoleteLocalStatePrefs(PrefService* local_state) {
 #endif
 
   misc_metrics::UptimeMonitorImpl::MigrateObsoletePrefs(local_state);
+  brave_search::BackupResultsMetrics::MigrateObsoleteLocalStatePrefs(
+      local_state);
   brave_search_conversion::p3a::MigrateObsoleteLocalStatePrefs(local_state);
   brave_shields::MigrateObsoletePrefsForAdBlockService(local_state);
 #if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)

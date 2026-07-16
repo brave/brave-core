@@ -22,6 +22,7 @@ class BackupResultsMetricsTest : public ::testing::Test {
 
   void SetUp() override {
     BackupResultsMetrics::RegisterPrefs(prefs_.registry());
+    CreateMetrics();
   }
 
   void CreateMetrics() {
@@ -34,118 +35,116 @@ class BackupResultsMetricsTest : public ::testing::Test {
   base::HistogramTester histogram_tester_;
 };
 
-TEST_F(BackupResultsMetricsTest, RecordsSuccessfulQuery) {
-  CreateMetrics();
-
-  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 0);
-
-  // Record a successful query
+TEST_F(BackupResultsMetricsTest, ReportsZeroPercent) {
+  backup_results_metrics_->RecordQuery(false);
+  backup_results_metrics_->RecordQuery(false);
   backup_results_metrics_->RecordQuery(false);
 
-  // Should report 0 failures
+  // No report should be recorded until a full 24 hour frame has elapsed.
+  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 0);
+  task_environment_.FastForwardBy(base::Hours(23));
+  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 0);
+
+  // Once the frame elapses, report 0% since there were no failures.
+  task_environment_.FastForwardBy(base::Hours(1));
   histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 0,
                                        1);
 }
 
-TEST_F(BackupResultsMetricsTest, RecordsFailedQuery) {
-  CreateMetrics();
+TEST_F(BackupResultsMetricsTest, DoesNotReportWithoutAnyQueries) {
+  task_environment_.FastForwardBy(base::Days(1));
 
-  // Record a failed query
+  // No queries were made in the reporting frame, so nothing should report.
+  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 0);
+}
+
+TEST_F(BackupResultsMetricsTest, ReportsBucketedFailurePercentage) {
+  // 1 failure out of 4 queries -> 25% -> "1-25%" bucket (index 1).
   backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(false);
+  backup_results_metrics_->RecordQuery(false);
+  backup_results_metrics_->RecordQuery(false);
 
-  // Should report 1 failure
+  task_environment_.FastForwardBy(base::Days(1));
+
   histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 1,
                                        1);
 
+  // 2 failures out of 4 queries -> 50% -> "26-50%" bucket (index 2).
   backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(false);
+  backup_results_metrics_->RecordQuery(false);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
   histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 2,
                                       1);
 
-  // Record multiple failed queries
-  for (size_t i = 0; i < 3; i++) {
-    backup_results_metrics_->RecordQuery(true);
-  }
+  // 3 failures out of 4 queries -> 75% -> "51-75%" bucket (index 3).
+  backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(true);
+  backup_results_metrics_->RecordQuery(false);
+
+  task_environment_.FastForwardBy(base::Days(1));
 
   histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 3,
-                                      3);
-  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 5);
-}
-
-TEST_F(BackupResultsMetricsTest, RecordsMixedQueries) {
-  CreateMetrics();
-
-  // Record mix of successful and failed queries
-  backup_results_metrics_->RecordQuery(false);  // success - reports 0 failures
-  backup_results_metrics_->RecordQuery(true);   // failure - reports 1 failure
-  backup_results_metrics_->RecordQuery(
-      false);  // success - reports 1 failure (unchanged)
-  backup_results_metrics_->RecordQuery(true);  // failure - reports 2 failures
-
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 0,
                                       1);
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 1,
-                                      2);  // 1 intermediate report
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 2,
-                                      1);  // final report
+
+  // All queries fail -> 100% -> "76-100%" bucket (index 4).
+  backup_results_metrics_->RecordQuery(true);
+
+  task_environment_.FastForwardBy(base::Days(1));
+
+  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 4,
+                                      1);
+
   histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 4);
 }
 
-TEST_F(BackupResultsMetricsTest, CanResetMetricsDuringTest) {
-  CreateMetrics();
-
-  // Record a query
+TEST_F(BackupResultsMetricsTest, SmallFailurePercentageIsNotRoundedToZero) {
+  // 1 failure out of 1000 queries would round down to 0% with integer
+  // division, but should still be reported as at least 1% (bucket index 1).
   backup_results_metrics_->RecordQuery(true);
+  for (int i = 0; i < 999; i++) {
+    backup_results_metrics_->RecordQuery(false);
+  }
+
+  task_environment_.FastForwardBy(base::Days(1));
+
   histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 1,
                                        1);
-
-  CreateMetrics();
-
-  histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 1,
-                                       2);
-
-  backup_results_metrics_->RecordQuery(false);
-
-  // Should report 0 failures for the new instance
-  histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 1,
-                                       3);
 }
 
-TEST_F(BackupResultsMetricsTest, HistogramUpdatedAfterTimerFires) {
-  CreateMetrics();
-
-  // Record a successful query first to establish last query time
-  backup_results_metrics_->RecordQuery(false);
-  histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 0,
-                                       1);
-
-  task_environment_.FastForwardBy(base::Hours(1));
-
-  histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 0,
-                                       2);
-
-  // Record a failure
+TEST_F(BackupResultsMetricsTest, ResetsCountsAfterReporting) {
+  // First frame: 100% failures -> bucket index 4.
   backup_results_metrics_->RecordQuery(true);
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 1,
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 4,
                                       1);
 
-  // Fast forward by 1 hour (within 24 hours)
-  task_environment_.FastForwardBy(base::Hours(1));
+  // Second frame: counts should have reset, so a single success reports 0%
+  // (bucket index 0).
+  backup_results_metrics_->RecordQuery(false);
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 0,
+                                      1);
 
-  // Timer should have fired and reported the metric again since within 24h
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 1,
-                                      2);
+  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 2);
+}
 
-  task_environment_.FastForwardBy(base::Days(2));
+TEST_F(BackupResultsMetricsTest, PersistsAcrossRestarts) {
+  backup_results_metrics_->RecordQuery(true);
+  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName, 0);
 
-  // Histogram should NOT update anymore since last query time exceeds 24 hours
-  histogram_tester_.ExpectBucketCount(kBackupResultsFailuresHistogramName, 1,
-                                      24);
-  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName,
-                                     26);  // No change
-
+  // Simulate a browser restart; the accumulated counts and frame start time
+  // should be preserved via prefs.
   CreateMetrics();
-  histogram_tester_.ExpectTotalCount(kBackupResultsFailuresHistogramName,
-                                     26);  // No change
+
+  task_environment_.FastForwardBy(base::Days(1));
+  histogram_tester_.ExpectUniqueSample(kBackupResultsFailuresHistogramName, 4,
+                                       1);
 }
 
 }  // namespace brave_search

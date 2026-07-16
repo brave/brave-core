@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/values.h"
+#include "brave/browser/brave_search/backup_results_service_impl.h"
 #include "brave/browser/brave_stats/buildflags.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
 #include "brave/browser/metrics/metrics_reporting_util.h"
@@ -144,6 +145,8 @@ void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
   brave_wallet::RegisterLocalStatePrefsForMigration(registry);
 #endif
+  brave_search::BackupResultsMetrics::RegisterLocalStatePrefsForMigration(
+      registry);
   brave_search_conversion::p3a::RegisterLocalStatePrefsForMigration(registry);
   brave_shields::RegisterPrefsForAdBlockServiceForMigration(registry);
 #if BUILDFLAG(ENABLE_BRAVE_STATS_UPDATER)
@@ -271,7 +274,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(IS_ANDROID)
   misc_metrics::QuickSearchMetrics::RegisterPrefs(registry);
 #endif
-  brave_search::BackupResultsMetrics::RegisterPrefs(registry);
+  brave_search::BackupResultsServiceImpl::RegisterLocalStatePrefs(registry);
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
   playlist::PlaylistServiceFactory::RegisterLocalStatePrefs(registry);
