@@ -4,7 +4,10 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import {loadTimeData} from '//resources/js/load_time_data.js'
-import {RegisterPolymerTemplateModifications} from 'chrome://resources/brave/polymer_overriding.js'
+import {
+  html,
+  RegisterPolymerTemplateModifications
+} from 'chrome://resources/brave/polymer_overriding.js'
 
 RegisterPolymerTemplateModifications({
   'settings-security-page': (templateContent) => {
@@ -46,6 +49,52 @@ RegisterPolymerTemplateModifications({
         // We don't want to show the separator or arrow icon for this
         // collapsible radio button, as we've hidden what's under it
         safeBrowsingStandard.setAttribute('no-collapse', 'true')
+    }
+    // Insert "Limited protection" between Standard and No protection.
+    const safeBrowsingDisabled = templateContent.
+      getElementById('safeBrowsingDisabled')
+    if (!safeBrowsingDisabled || !safeBrowsingDisabled.parentNode) {
+      console.error(
+        '[Brave Settings Overrides] Could not find safeBrowsingDisabled id ' +
+        'on security page.')
+    } else {
+      const limitedLabel = loadTimeData.getString('safeBrowsingLimited')
+      const limitedSubLabel = loadTimeData.getString('safeBrowsingLimitedDesc')
+      const controlledAriaLabel =
+        loadTimeData.getString('controlledSettingPolicy')
+      const limitedValue = loadTimeData.getInteger('braveSafeBrowsingLimited')
+      const limitedFragment = html`
+        <settings-collapse-radio-button id="safeBrowsingLimited" no-collapse
+            name="${limitedValue}"
+            pref="[[prefs.generated.safe_browsing]]"
+            label="${limitedLabel}"
+            sub-label="${limitedSubLabel}"
+            indicator-aria-label="${controlledAriaLabel}">
+        </settings-collapse-radio-button>
+      `
+      safeBrowsingDisabled.parentNode.insertBefore(
+        limitedFragment, safeBrowsingDisabled)
+    }
+    // Append a "Learn more" link below the safe browsing radio buttons.
+    const safeBrowsingSection = templateContent.
+      getElementById('safeBrowsingSection')
+    if (!safeBrowsingSection) {
+      console.error(
+        '[Brave Settings Overrides] Could not find safeBrowsingSection id ' +
+        'on security page.')
+    } else {
+      const learnMoreLabel = loadTimeData.getString('safeBrowsingLearnMore')
+      const learnMoreUrl = loadTimeData.getString('safeBrowsingLearnMoreURL')
+      const learnMoreFragment = html`
+        <div class="cr-padded-text">
+          <a id="safeBrowsingLearnMore"
+              href="${learnMoreUrl}"
+              target="_blank">
+            ${learnMoreLabel}
+          </a>
+        </div>
+      `
+      safeBrowsingSection.appendChild(learnMoreFragment)
     }
     const passwordsLeakToggle = templateContent.
       getElementById('passwordsLeakToggle')

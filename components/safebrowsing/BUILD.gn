@@ -16,5 +16,9 @@ buildflag_header("buildflags") {
 }
 
 source_set("safebrowsing") {
-  public_deps = [ ":buildflags" ]
+  public = [ "constants.h" ]
+  public_deps = [
+    ":buildflags",
+    "//components/safe_browsing/core/common:safe_browsing_prefs",
+  ]
 }
