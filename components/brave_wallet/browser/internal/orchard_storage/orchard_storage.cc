@@ -32,8 +32,9 @@ constexpr int kEmptyDbVersionNumber = 1;
 constexpr int kCurrentVersionNumber = 3;
 
 // CREATE TABLE templates. %s is replaced with the pool-specific table name.
-// For checkpoints_mark_removed, the first %s is the marks table and the second
-// %s is the referenced checkpoints table.
+// For notes, %d is the pool-specific note_version default (2 orchard / 3
+// ironwood). For checkpoints_mark_removed, the first %s is the marks table and
+// the second %s is the referenced checkpoints table.
 constexpr char kCreateNotesSql[] =
     "CREATE TABLE %s ("
     "id INTEGER PRIMARY KEY AUTOINCREMENT,"
@@ -44,7 +45,8 @@ constexpr char kCreateNotesSql[] =
     "commitment_tree_position INTEGER,"
     "nullifier BLOB NOT NULL UNIQUE,"
     "rho BLOB NOT NULL,"
-    "rseed BLOB NOT NULL);";
+    "rseed BLOB NOT NULL,"
+    "note_version INTEGER NOT NULL DEFAULT %d);";
 
 constexpr char kCreateSpentNotesSql[] =
     "CREATE TABLE %s ("
@@ -93,12 +95,18 @@ constexpr char kCreateShardTreeCapSql[] =
     "cap_data BLOB NOT NULL,"
     "CONSTRAINT shard_tree_cap_unique UNIQUE (account_id));";
 
+constexpr char kCreateTreeRetainedCheckpointsSql[] =
+    "CREATE TABLE %s ("
+    "checkpoint_id INTEGER PRIMARY KEY);";
+
 constexpr char kNotesTable[] = "notes";
 constexpr char kSpentNotesTable[] = "spent_notes";
 constexpr char kShardTreeTable[] = "shard_tree";
 constexpr char kShardTreeCapTable[] = "shard_tree_cap";
 constexpr char kCheckpointsTable[] = "checkpoints";
 constexpr char kCheckpointsMarkRemovedTable[] = "checkpoints_mark_removed";
+constexpr char kTreeRetainedCheckpointsTable[] =
+    "orchard_tree_retained_checkpoints";
 
 constexpr char kNotesIronwoodTable[] = "notes_ironwood";
 constexpr char kSpentNotesIronwoodTable[] = "spent_notes_ironwood";
@@ -108,6 +116,10 @@ constexpr char kCheckpointsIronwoodTable[] = "checkpoints_ironwood";
 constexpr char kCheckpointsMarkRemovedIronwoodTable[] =
     "checkpoints_mark_removed_ironwood";
 
+// Note plaintext versions: Orchard (pre-NU6.3) uses 2, Ironwood uses 3.
+constexpr int kOrchardNoteVersion = 2;
+constexpr int kIronwoodNoteVersion = 3;
+
 struct PoolTableNames {
   std::string_view notes;
   std::string_view spent_notes;
@@ -115,16 +127,19 @@ struct PoolTableNames {
   std::string_view shard_tree_cap;
   std::string_view checkpoints;
   std::string_view checkpoints_mark_removed;
+  int default_note_version;
 };
 
 const PoolTableNames* TablesForPool(OrchardPool pool) {
   static constexpr PoolTableNames kOrchardTables = {
       kNotesTable,        kSpentNotesTable,  kShardTreeTable,
-      kShardTreeCapTable, kCheckpointsTable, kCheckpointsMarkRemovedTable};
+      kShardTreeCapTable, kCheckpointsTable, kCheckpointsMarkRemovedTable,
+      kOrchardNoteVersion};
   static constexpr PoolTableNames kIronwoodTables = {
       kNotesIronwoodTable,       kSpentNotesIronwoodTable,
       kShardTreeIronwoodTable,   kShardTreeCapIronwoodTable,
-      kCheckpointsIronwoodTable, kCheckpointsMarkRemovedIronwoodTable};
+      kCheckpointsIronwoodTable, kCheckpointsMarkRemovedIronwoodTable,
+      kIronwoodNoteVersion};
 
   switch (pool) {
     case OrchardPool::kOrchard:
@@ -136,7 +151,8 @@ const PoolTableNames* TablesForPool(OrchardPool pool) {
 }
 
 bool CreatePoolDataTables(sql::Database& database, const PoolTableNames& t) {
-  return database.Execute(absl::StrFormat(kCreateNotesSql, t.notes)) &&
+  return database.Execute(absl::StrFormat(kCreateNotesSql, t.notes,
+                                          t.default_note_version)) &&
          database.Execute(
              absl::StrFormat(kCreateSpentNotesSql, t.spent_notes)) &&
          database.Execute(absl::StrFormat(kCreateShardTreeSql, t.shard_tree)) &&
@@ -404,6 +420,8 @@ bool OrchardStorage::CreateSchema() {
   return transaction.Begin() && database_.Execute(kCreateAccountMetaSql) &&
          CreatePoolDataTables(database_,
                               *TablesForPool(OrchardPool::kOrchard)) &&
+         database_.Execute(absl::StrFormat(kCreateTreeRetainedCheckpointsSql,
+                                           kTreeRetainedCheckpointsTable)) &&
          CreatePoolDataTables(database_,
                               *TablesForPool(OrchardPool::kIronwood)) &&
          transaction.Commit();
@@ -421,8 +439,9 @@ bool OrchardStorage::UpdateSchema() {
   }
   // Only the v2 → v3 migration is supported. The existing orchard
   // "checkpoints" and "checkpoints_mark_removed" tables are rebuilt in place
-  // to use the fixed schema (see MigrateOrchardCheckpointsTables); other
-  // orchard tables and account_meta are kept as-is. A parallel set of
+  // to use the fixed schema (see MigrateOrchardCheckpointsTables); notes gain
+  // a note_version column; orchard_tree_retained_checkpoints is created.
+  // Other orchard tables and account_meta are kept as-is. A parallel set of
   // ironwood tables is created.
   if (meta_table.GetVersionNumber() != 2) {
     return false;
@@ -434,6 +453,18 @@ bool OrchardStorage::UpdateSchema() {
   }
 
   if (!MigrateOrchardCheckpointsTables(database_)) {
+    return false;
+  }
+
+  const PoolTableNames& orchard_tables = *TablesForPool(OrchardPool::kOrchard);
+  if (!database_.Execute(absl::StrFormat(
+          "ALTER TABLE %s ADD COLUMN note_version INTEGER NOT NULL DEFAULT %d;",
+          orchard_tables.notes, orchard_tables.default_note_version))) {
+    return false;
+  }
+
+  if (!database_.Execute(absl::StrFormat(kCreateTreeRetainedCheckpointsSql,
+                                         kTreeRetainedCheckpointsTable))) {
     return false;
   }
 
@@ -714,8 +745,8 @@ OrchardStorage::GetSpendableNotes(OrchardPool pool,
       database_,
       absl::StrFormat(
           "SELECT notes.block_id, notes.commitment_tree_position, notes.amount,"
-          "notes.rho, notes.rseed, notes.nullifier, notes.addr FROM %s AS "
-          "notes "
+          "notes.rho, notes.rseed, notes.nullifier, notes.addr, "
+          "notes.note_version FROM %s AS notes "
           "LEFT OUTER JOIN %s AS spent_notes "
           "ON notes.nullifier = spent_notes.nullifier "
           "AND notes.account_id = spent_notes.account_id "
@@ -737,10 +768,11 @@ OrchardStorage::GetSpendableNotes(OrchardPool pool,
     auto rseed = ReadSizedBlob<kOrchardNoteRSeedSize>(resolve_unspent_notes, 4);
     auto nf = ReadSizedBlob<kOrchardNullifierSize>(resolve_unspent_notes, 5);
     auto addr = ReadSizedBlob<kOrchardRawBytesSize>(resolve_unspent_notes, 6);
+    auto note_version = ReadUint32(resolve_unspent_notes, 7);
 
     if (!rho.has_value() || !rho.value() || !rseed.has_value() ||
         !rseed.value() || !nf.has_value() || !nf.value() || !addr.has_value() ||
-        !addr.value()) {
+        !addr.value() || !note_version) {
       return base::unexpected(
           Error{ErrorCode::kConsistencyError, "Wrong database format"});
     }
@@ -752,6 +784,7 @@ OrchardStorage::GetSpendableNotes(OrchardPool pool,
     note.seed = **rseed;
     note.nullifier = **nf;
     note.addr = **addr;
+    note.note_version = note_version.value();
     result.push_back(std::move(note));
   }
 
@@ -778,12 +811,12 @@ OrchardStorage::UpdateNotes(OrchardPool pool,
   const PoolTableNames& tables = *TablesForPool(pool);
 
   sql::Statement statement_populate_notes(PrepareStatement(
-      database_,
-      absl::StrFormat(
-          "INSERT INTO %s "
-          "(account_id, amount, block_id, commitment_tree_position, "
-          "nullifier, rho, rseed, addr) VALUES (?, ?, ?, ?, ?, ?, ?, ?);",
-          tables.notes)));
+      database_, absl::StrFormat(
+                     "INSERT INTO %s "
+                     "(account_id, amount, block_id, commitment_tree_position, "
+                     "nullifier, rho, rseed, addr, note_version) "
+                     "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);",
+                     tables.notes)));
 
   for (const auto& note : found_notes) {
     statement_populate_notes.Reset(true);
@@ -801,6 +834,7 @@ OrchardStorage::UpdateNotes(OrchardPool pool,
     statement_populate_notes.BindBlob(5, note.rho);
     statement_populate_notes.BindBlob(6, note.seed);
     statement_populate_notes.BindBlob(7, note.addr);
+    statement_populate_notes.BindInt64(8, note.note_version);
 
     if (!statement_populate_notes.Run()) {
       return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
@@ -1705,6 +1739,90 @@ OrchardStorage::TruncateCheckpoints(OrchardPool pool,
   }
 
   return base::ok(Result::kSuccess);
+}
+
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::AddOrchardRetainedCheckpoint(uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!EnsureDbInit()) {
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+  }
+
+  sql::Statement add_retained_checkpoint(database_.GetCachedStatement(
+      SQL_FROM_HERE,
+      "INSERT OR IGNORE INTO orchard_tree_retained_checkpoints "
+      "(checkpoint_id) VALUES (?);"));
+  add_retained_checkpoint.BindInt64(0, checkpoint_id);
+
+  if (!add_retained_checkpoint.Run()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
+  }
+
+  return base::ok(Result::kSuccess);
+}
+
+base::expected<OrchardStorage::Result, OrchardStorage::Error>
+OrchardStorage::RemoveOrchardRetainedCheckpoint(uint32_t checkpoint_id) {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!EnsureDbInit()) {
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+  }
+
+  sql::Statement remove_retained_checkpoint(database_.GetCachedStatement(
+      SQL_FROM_HERE,
+      "DELETE FROM orchard_tree_retained_checkpoints WHERE checkpoint_id = "
+      "?;"));
+  remove_retained_checkpoint.BindInt64(0, checkpoint_id);
+
+  if (!remove_retained_checkpoint.Run()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
+  }
+
+  return base::ok(Result::kSuccess);
+}
+
+base::expected<std::vector<uint32_t>, OrchardStorage::Error>
+OrchardStorage::GetOrchardRetainedCheckpoints() {
+  base::ScopedBlockingCall scoped_blocking_call(FROM_HERE,
+                                                base::BlockingType::WILL_BLOCK);
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  if (!EnsureDbInit()) {
+    return base::unexpected(
+        Error{ErrorCode::kDbInitError, database_.GetErrorMessage()});
+  }
+
+  sql::Statement get_retained_checkpoints(database_.GetCachedStatement(
+      SQL_FROM_HERE,
+      "SELECT checkpoint_id FROM orchard_tree_retained_checkpoints "
+      "ORDER BY checkpoint_id ASC;"));
+
+  std::vector<uint32_t> result;
+  while (get_retained_checkpoints.Step()) {
+    auto checkpoint_id = ReadUint32(get_retained_checkpoints, 0);
+    if (!checkpoint_id) {
+      return base::unexpected(
+          Error{ErrorCode::kConsistencyError, "Wrong checkpoint id format"});
+    }
+    result.push_back(checkpoint_id.value());
+  }
+
+  if (!get_retained_checkpoints.Succeeded()) {
+    return base::unexpected(Error{ErrorCode::kFailedToExecuteStatement,
+                                  database_.GetErrorMessage()});
+  }
+
+  return base::ok(std::move(result));
 }
 
 }  // namespace brave_wallet

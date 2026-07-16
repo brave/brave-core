@@ -141,6 +141,8 @@ struct OrchardNote {
   uint32_t orchard_commitment_tree_position = 0;
   OrchardRho rho{};
   OrchardRseed seed{};
+  // Note plaintext version: 2 for Orchard, 3 for Ironwood.
+  uint32_t note_version = 0;
 
   bool operator==(const OrchardNote& other) const = default;
   base::DictValue ToValue() const;

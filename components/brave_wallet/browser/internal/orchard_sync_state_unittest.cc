@@ -340,6 +340,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_And_Anchor) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       if (i == 1025) {
         commitments.push_back(
@@ -383,6 +384,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_External) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       commitments.push_back(
           CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
@@ -421,6 +423,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_FilterByAddress_Internal) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       notes.push_back(note);
       commitments.push_back(
           CreateCommitment(CreateMockCommitmentValue(i, 2), true, i));
@@ -459,6 +462,7 @@ TEST_F(OrchardSyncStateTest, GetSpendableNotes_NoAnchor) {
       note.block_id = i;
       note.addr.fill(2);
       note.nullifier.fill(i - 1000u);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
 
@@ -573,6 +577,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -580,6 +585,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -648,6 +654,7 @@ TEST_F(OrchardSyncStateTest, Rewind_ToMarkedHeight) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     EXPECT_EQ(OrchardStorage::Result::kSuccess,
@@ -713,6 +720,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
       note.block_id = 1;
       note.amount = 10000;
       note.nullifier.fill(1);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {
@@ -720,6 +728,7 @@ TEST_F(OrchardSyncStateTest, Rewind) {
       note.block_id = 2;
       note.amount = 10000;
       note.nullifier.fill(2);
+      note.note_version = 2;
       result.discovered_notes.push_back(note);
     }
     {

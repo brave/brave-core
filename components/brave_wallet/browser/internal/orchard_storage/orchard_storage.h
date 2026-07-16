@@ -193,6 +193,14 @@ class OrchardStorage {
       const mojom::AccountIdPtr& account_id,
       uint32_t checkpoint_id);
 
+  // Explicitly retained orchard shardtree checkpoints ("anchors"). Retained
+  // checkpoints are exempt from automatic pruning of excess checkpoints.
+  base::expected<Result, Error> AddOrchardRetainedCheckpoint(
+      uint32_t checkpoint_id);
+  base::expected<Result, Error> RemoveOrchardRetainedCheckpoint(
+      uint32_t checkpoint_id);
+  base::expected<std::vector<uint32_t>, Error> GetOrchardRetainedCheckpoints();
+
   base::expected<Result, Error> UpdateSubtreeRoots(
       OrchardPool pool,
       const mojom::AccountIdPtr& account_id,

@@ -1366,6 +1366,7 @@ TEST_F(OrchardStorageTest, PoolIsolation_Notes) {
                     ->UpdateNotes(OrchardPool::kOrchard, account_id, notes, {},
                                   101, "hash101")
                     .has_value());
+    notes.front().note_version = 3;
     EXPECT_TRUE(orchard_storage_
                     ->UpdateNotes(OrchardPool::kIronwood, account_id, notes, {},
                                   101, "hash101")
@@ -1694,75 +1695,165 @@ TEST_F(OrchardStorageTest, MigrateV2ToV3) {
   PopulateOrchardV2DatabaseForTesting(db_path, account_id);
 
   // Opening OrchardStorage triggers the v2→v3 migration.
-  OrchardStorage migrated_storage(db_path);
-  ASSERT_TRUE(migrated_storage.EnsureDbInit());
-
-  // account_meta is unchanged by migration (no pool-specific tables).
   {
-    auto meta = migrated_storage.GetAccountMeta(account_id);
-    ASSERT_TRUE(meta.has_value());
-    ASSERT_TRUE(meta.value().has_value());
-    EXPECT_EQ(meta.value()->account_birthday, 100u);
-    EXPECT_EQ(meta.value()->latest_scanned_block_id, 105u);
+    OrchardStorage migrated_storage(db_path);
+    ASSERT_TRUE(migrated_storage.EnsureDbInit());
+
+    // account_meta is unchanged by migration (no pool-specific tables).
+    {
+      auto meta = migrated_storage.GetAccountMeta(account_id);
+      ASSERT_TRUE(meta.has_value());
+      ASSERT_TRUE(meta.value().has_value());
+      EXPECT_EQ(meta.value()->account_birthday, 100u);
+      EXPECT_EQ(meta.value()->latest_scanned_block_id, 105u);
+    }
+
+    // Note migrated under orchard tables.
+    {
+      auto notes =
+          migrated_storage.GetSpendableNotes(OrchardPool::kOrchard, account_id);
+      ASSERT_TRUE(notes.has_value());
+      EXPECT_EQ(1u, notes->size());
+    }
+
+    // Checkpoint migrated under orchard tables.
+    {
+      auto min_id =
+          migrated_storage.MinCheckpointId(OrchardPool::kOrchard, account_id);
+      ASSERT_TRUE(min_id.has_value());
+      EXPECT_EQ(1u, min_id->value());
+
+      auto checkpoint =
+          migrated_storage.GetCheckpoint(OrchardPool::kOrchard, account_id, 1);
+      ASSERT_TRUE(checkpoint.has_value());
+      ASSERT_TRUE(checkpoint.value().has_value());
+      EXPECT_EQ(4, checkpoint.value()->checkpoint.tree_state_position);
+      // checkpoints_mark_removed rows survive the checkpoints table rebuild.
+      EXPECT_EQ(std::vector<uint32_t>({1, 2, 3}),
+                checkpoint.value()->checkpoint.marks_removed);
+    }
+
+    // Ironwood tables are empty after migration.
+    {
+      auto notes = migrated_storage.GetSpendableNotes(OrchardPool::kIronwood,
+                                                      account_id);
+      ASSERT_TRUE(notes.has_value());
+      EXPECT_EQ(0u, notes->size());
+      auto min_id =
+          migrated_storage.MinCheckpointId(OrchardPool::kIronwood, account_id);
+      ASSERT_TRUE(min_id.has_value());
+      EXPECT_EQ(std::nullopt, min_id.value());
+    }
+
+    // After migration, ironwood tables accept data independently of orchard
+    // (including the same nullifier / checkpoint_id).
+    {
+      std::vector<OrchardNote> notes;
+      notes.push_back(GenerateMockOrchardNote(account_id, 101, 1));
+      // Reuse a nullifier that already exists under orchard after migrate.
+      notes.front().nullifier.fill(1);
+      notes.front().note_version = 3;
+      EXPECT_TRUE(migrated_storage
+                      .UpdateNotes(OrchardPool::kIronwood, account_id, notes,
+                                   {}, 101, "hash101")
+                      .has_value());
+
+      OrchardCheckpoint cp;
+      cp.marks_removed = {};
+      cp.tree_state_position = 4;
+      EXPECT_EQ(
+          OrchardStorage::Result::kSuccess,
+          migrated_storage
+              .AddCheckpoint(OrchardPool::kIronwood, account_id, 1, cp.Clone())
+              .value());
+    }
   }
 
-  // Note migrated under orchard tables.
+  // Inspect schema and note_version after OrchardStorage has closed the DB.
   {
-    auto notes =
-        migrated_storage.GetSpendableNotes(OrchardPool::kOrchard, account_id);
-    ASSERT_TRUE(notes.has_value());
-    EXPECT_EQ(1u, notes->size());
+    sql::Database database(sql::Database::Tag("MigrateV2ToV3Schema"));
+    ASSERT_TRUE(database.Open(db_path));
+
+    EXPECT_TRUE(database.DoesTableExist("orchard_tree_retained_checkpoints"));
+    EXPECT_FALSE(database.DoesTableExist("ironwood_tree_retained_checkpoints"));
+
+    sql::Statement orchard_note_version(database.GetUniqueStatement(
+        "SELECT note_version FROM notes WHERE account_id = ?;"));
+    orchard_note_version.BindString(0, account_id->unique_key);
+    ASSERT_TRUE(orchard_note_version.Step());
+    EXPECT_EQ(2, orchard_note_version.ColumnInt(0));
+
+    sql::Statement ironwood_note_version(database.GetUniqueStatement(
+        "SELECT note_version FROM notes_ironwood WHERE account_id = ?;"));
+    ironwood_note_version.BindString(0, account_id->unique_key);
+    ASSERT_TRUE(ironwood_note_version.Step());
+    EXPECT_EQ(3, ironwood_note_version.ColumnInt(0));
+  }
+}
+
+// v2 databases have no retained-checkpoints table. Migration must create
+// orchard_tree_retained_checkpoints and the table must be usable afterward.
+TEST_F(OrchardStorageTest, MigrateV2ToV3_OrchardRetainedCheckpoints) {
+  auto account_id = MakeIndexBasedAccountId(mojom::CoinType::ZEC,
+                                            mojom::KeyringId::kZCashMainnet,
+                                            mojom::AccountKind::kDerived, 0);
+
+  base::FilePath db_path =
+      temp_dir_.GetPath().AppendASCII("orchard_v2_retained.db");
+  PopulateOrchardV2DatabaseForTesting(db_path, account_id);
+
+  {
+    sql::Database database(sql::Database::Tag("MigrateV2ToV3RetainedBefore"));
+    ASSERT_TRUE(database.Open(db_path));
+    EXPECT_FALSE(database.DoesTableExist("orchard_tree_retained_checkpoints"));
   }
 
-  // Checkpoint migrated under orchard tables.
   {
-    auto min_id =
-        migrated_storage.MinCheckpointId(OrchardPool::kOrchard, account_id);
-    ASSERT_TRUE(min_id.has_value());
-    EXPECT_EQ(1u, min_id->value());
+    OrchardStorage migrated_storage(db_path);
+    ASSERT_TRUE(migrated_storage.EnsureDbInit());
 
-    auto checkpoint =
-        migrated_storage.GetCheckpoint(OrchardPool::kOrchard, account_id, 1);
-    ASSERT_TRUE(checkpoint.has_value());
-    ASSERT_TRUE(checkpoint.value().has_value());
-    EXPECT_EQ(4, checkpoint.value()->checkpoint.tree_state_position);
-    // checkpoints_mark_removed rows survive the checkpoints table rebuild.
-    EXPECT_EQ(std::vector<uint32_t>({1, 2, 3}),
-              checkpoint.value()->checkpoint.marks_removed);
+    {
+      auto retained = migrated_storage.GetOrchardRetainedCheckpoints();
+      ASSERT_TRUE(retained.has_value());
+      EXPECT_TRUE(retained->empty());
+    }
+
+    {
+      auto tx = migrated_storage.Transactionally();
+      ASSERT_TRUE(tx.has_value());
+      EXPECT_EQ(OrchardStorage::Result::kSuccess,
+                migrated_storage.AddOrchardRetainedCheckpoint(100).value());
+      EXPECT_EQ(OrchardStorage::Result::kSuccess,
+                migrated_storage.AddOrchardRetainedCheckpoint(200).value());
+      EXPECT_EQ(OrchardStorage::Result::kSuccess, tx->Commit().value());
+    }
+
+    {
+      auto retained = migrated_storage.GetOrchardRetainedCheckpoints();
+      ASSERT_TRUE(retained.has_value());
+      EXPECT_EQ(std::vector<uint32_t>({100, 200}), retained.value());
+    }
+
+    {
+      auto tx = migrated_storage.Transactionally();
+      ASSERT_TRUE(tx.has_value());
+      EXPECT_EQ(OrchardStorage::Result::kSuccess,
+                migrated_storage.RemoveOrchardRetainedCheckpoint(100).value());
+      EXPECT_EQ(OrchardStorage::Result::kSuccess, tx->Commit().value());
+    }
+
+    {
+      auto retained = migrated_storage.GetOrchardRetainedCheckpoints();
+      ASSERT_TRUE(retained.has_value());
+      EXPECT_EQ(std::vector<uint32_t>({200}), retained.value());
+    }
   }
 
-  // Ironwood tables are empty after migration.
   {
-    auto notes =
-        migrated_storage.GetSpendableNotes(OrchardPool::kIronwood, account_id);
-    ASSERT_TRUE(notes.has_value());
-    EXPECT_EQ(0u, notes->size());
-    auto min_id =
-        migrated_storage.MinCheckpointId(OrchardPool::kIronwood, account_id);
-    ASSERT_TRUE(min_id.has_value());
-    EXPECT_EQ(std::nullopt, min_id.value());
-  }
-
-  // After migration, ironwood tables accept data independently of orchard
-  // (including the same nullifier / checkpoint_id).
-  {
-    std::vector<OrchardNote> notes;
-    notes.push_back(GenerateMockOrchardNote(account_id, 101, 1));
-    // Reuse a nullifier that already exists under orchard after migrate.
-    notes.front().nullifier.fill(1);
-    EXPECT_TRUE(migrated_storage
-                    .UpdateNotes(OrchardPool::kIronwood, account_id, notes, {},
-                                 101, "hash101")
-                    .has_value());
-
-    OrchardCheckpoint cp;
-    cp.marks_removed = {};
-    cp.tree_state_position = 4;
-    EXPECT_EQ(
-        OrchardStorage::Result::kSuccess,
-        migrated_storage
-            .AddCheckpoint(OrchardPool::kIronwood, account_id, 1, cp.Clone())
-            .value());
+    sql::Database database(sql::Database::Tag("MigrateV2ToV3RetainedAfter"));
+    ASSERT_TRUE(database.Open(db_path));
+    EXPECT_TRUE(database.DoesTableExist("orchard_tree_retained_checkpoints"));
+    EXPECT_FALSE(database.DoesTableExist("ironwood_tree_retained_checkpoints"));
   }
 }
 
@@ -1834,6 +1925,47 @@ TEST_F(OrchardStorageTest, MigrateV2ToV3_CheckpointsPrimaryKeyIsPerAccount) {
       migrated_storage.GetCheckpoint(OrchardPool::kOrchard, account_id_2, 1)
           .value()
           .has_value());
+}
+
+TEST_F(OrchardStorageTest, OrchardRetainedCheckpoints) {
+  {
+    auto retained = orchard_storage_->GetOrchardRetainedCheckpoints();
+    ASSERT_TRUE(retained.has_value());
+    EXPECT_TRUE(retained->empty());
+  }
+
+  {
+    auto tx = orchard_storage_->Transactionally();
+    ASSERT_TRUE(tx.has_value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddOrchardRetainedCheckpoint(100).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddOrchardRetainedCheckpoint(200).value());
+    // INSERT OR IGNORE: adding the same checkpoint again is a no-op success.
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->AddOrchardRetainedCheckpoint(100).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess, tx->Commit().value());
+  }
+
+  {
+    auto retained = orchard_storage_->GetOrchardRetainedCheckpoints();
+    ASSERT_TRUE(retained.has_value());
+    EXPECT_EQ(std::vector<uint32_t>({100, 200}), retained.value());
+  }
+
+  {
+    auto tx = orchard_storage_->Transactionally();
+    ASSERT_TRUE(tx.has_value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess,
+              orchard_storage_->RemoveOrchardRetainedCheckpoint(100).value());
+    EXPECT_EQ(OrchardStorage::Result::kSuccess, tx->Commit().value());
+  }
+
+  {
+    auto retained = orchard_storage_->GetOrchardRetainedCheckpoints();
+    ASSERT_TRUE(retained.has_value());
+    EXPECT_EQ(std::vector<uint32_t>({200}), retained.value());
+  }
 }
 
 }  // namespace brave_wallet
