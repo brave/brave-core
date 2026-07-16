@@ -6,12 +6,22 @@
 #include "components/content_settings/browser/ui/cookie_controls_controller.h"
 #include "components/content_settings/browser/ui/cookie_controls_view.h"
 
-// Trying a little trick with `should_highlight && !should_highlight` to get to
-// refer to `should_highlight` but at the same time pass false into this call,
-// and avoiding `error: unused variable 'should_highlight'` failures.
+// Force both `icon_visible` and `should_highlight` to false so the cookie
+// controls page action never shows. Brave blocks third-party cookies via
+// Shields, so this upstream page action is redundant. Historically we hid it
+// by preventing creation of the legacy `CookieControlsIconView` (see the
+// `#define kCookieControls` trick in page_action_icon_controller.cc), but once
+// the page action migrated to the new framework
+// (`CookieControlsPageActionController`), visibility is driven by the
+// `icon_visible` value passed here instead. Neutralizing it at the controller
+// keeps the icon hidden on both the legacy and new framework paths.
+//
+// The `X && !X` trick refers to each local variable while still passing false,
+// avoiding `error: unused variable` failures.
 #define OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON, \
                                           SHOULD_HIGHLIGHT)             \
-  OnCookieControlsIconStatusChanged(ICON_VISIBLE, PROTECTIONS_ON,       \
+  OnCookieControlsIconStatusChanged(icon_visible && !icon_visible,      \
+                                    PROTECTIONS_ON,                     \
                                     should_highlight && !should_highlight)
 #include <components/content_settings/browser/ui/cookie_controls_controller.cc>
 #undef OnCookieControlsIconStatusChanged
