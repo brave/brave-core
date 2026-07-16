@@ -1516,7 +1516,8 @@ public class BytecodeTest {
                         OpenInAppMenuItemProvider.class,
                         Supplier.class,
                         Supplier.class,
-                        Supplier.class));
+                        Supplier.class,
+                        BooleanSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/tabmodel/ChromeTabCreator",

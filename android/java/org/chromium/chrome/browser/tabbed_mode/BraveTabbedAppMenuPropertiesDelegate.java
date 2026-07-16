@@ -84,6 +84,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /** Brave's extension for TabbedAppMenuPropertiesDelegate */
@@ -247,7 +248,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             @Nullable OpenInAppMenuItemProvider openInAppMenuItemProvider,
             Supplier<RecentlyClosedEntriesManager> recentlyClosedEntriesManagerSupplier,
             Supplier<SideUiStateProvider> sideUiStateProviderSupplier,
-            Supplier<Boolean> isXrFullSpaceModeSupplier) {
+            Supplier<Boolean> isXrFullSpaceModeSupplier,
+            BooleanSupplier canActivateTabLayoutToggleMenu) {
         super(
                 context,
                 activityTabProvider,
@@ -267,7 +269,8 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
                 openInAppMenuItemProvider,
                 recentlyClosedEntriesManagerSupplier,
                 sideUiStateProviderSupplier,
-                isXrFullSpaceModeSupplier);
+                isXrFullSpaceModeSupplier,
+                canActivateTabLayoutToggleMenu);
 
         mBraveAppMenuDelegate = appMenuDelegate;
         mBraveContext = context;
