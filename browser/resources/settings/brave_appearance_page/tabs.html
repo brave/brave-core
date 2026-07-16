@@ -128,9 +128,8 @@
         <div class="label">$i18n{appearanceSettingsTabMinWidthMode}</div>
       </div>
       <settings-dropdown-menu
-        pref="{{prefs.brave.tabs.min_width_mode}}"
-        menu-options="[[tabMinWidthModes_]]"
-        selection-value-aliases="[[tabMinWidthSelectionAliases_]]">
+        pref-key="brave.tabs.min_width_mode"
+        menu-options="[[tabMinWidthModes_]]">
       </settings-dropdown-menu>
     </div>
     <settings-toggle-button
@@ -147,7 +146,7 @@
     <div class="label">$i18n{appearanceSettingsTabHoverMode}</div>
   </div>
   <settings-dropdown-menu
-    pref="{{prefs.brave.tabs.hover_mode}}"
+    pref-key="brave.tabs.hover_mode"
     menu-options="[[tabTooltipModes_]]">
   </settings-dropdown-menu>
 </div>
