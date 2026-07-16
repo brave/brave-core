@@ -7,6 +7,7 @@ from __future__ import annotations
 
 from contextlib import contextmanager
 from pathlib import Path
+import json
 import logging
 import platform
 import secrets
@@ -40,35 +41,17 @@ def is_verbose() -> bool:
     return '--verbose' in sys.argv
 
 
-def detect_package_manager() -> str:
-    """Returns 'npm' or 'pnpm' based on the lockfile in the package.json dir."""
-
-    def _find_package_json_dir() -> Path:
-        """Returns the nearest ancestor containing package.json."""
-        directory = Path.cwd().resolve()
-        start_dir = directory
-        while True:
-            if (directory / 'package.json').is_file():
-                return directory
-            if directory.parent == directory:
-                break
-            directory = directory.parent
+def get_package_manager() -> str:
+    """Returns the package manager configured in brave/package.json."""
+    package_json = Path(__file__).resolve().parents[2] / 'package.json'
+    package_config = json.loads(package_json.read_text(encoding='utf-8'))
+    package_manager = package_config.get('devEngines',
+                                         {}).get('packageManager',
+                                                 {}).get('name')
+    if not package_manager:
         raise RuntimeError(
-            f'No package.json found searching upward from {start_dir}.')
-
-    package_dir = _find_package_json_dir()
-    has_npm_lock = (package_dir / 'package-lock.json').is_file()
-    has_pnpm_lock = (package_dir / 'pnpm-lock.yaml').is_file()
-    if has_npm_lock and has_pnpm_lock:
-        raise RuntimeError(
-            'Both package-lock.json and pnpm-lock.yaml exist in '
-            f'{package_dir}.')
-    if has_pnpm_lock:
-        return 'pnpm'
-    if has_npm_lock:
-        return 'npm'
-    raise RuntimeError('No package-lock.json or pnpm-lock.yaml found in '
-                       f'{package_dir}.')
+            f'No devEngines.packageManager.name found in {package_json}.')
+    return package_manager
 
 
 class _PresetLoggingHandler(logging.Handler):
@@ -358,7 +341,7 @@ class Terminal:
         e.g:
             self.run_npm_command('init')
         """
-        package_manager = detect_package_manager()
+        package_manager = get_package_manager()
         args = list(cmd)
         if package_manager == 'pnpm':
             args = [arg for arg in args if arg != '--']
