@@ -62,30 +62,31 @@ public class BraveNewTabTakeoverInfobar {
                     }
                 };
 
+        String actionLabel =
+                activity.getString(R.string.new_tab_takeover_infobar_learn_more_opt_out_choices);
         Snackbar snackbar =
                 Snackbar.make(
                                 activity.getString(R.string.new_tab_takeover_infobar_message),
                                 controller,
                                 Snackbar.TYPE_PERSISTENT,
                                 Snackbar.UMA_UNKNOWN)
-                        .setAction(
-                                activity.getString(
-                                        R.string
-                                                .new_tab_takeover_infobar_learn_more_opt_out_choices),
-                                /* actionData= */ null)
+                        .setAction(actionLabel, /* actionData= */ null)
                         .setDefaultLines(false);
 
         snackbarManager.showSnackbar(snackbar);
 
         // Move the long action label onto its own line below the message, with a trailing close
-        // button. Closing just dismisses the snackbar and does not suppress future displays, so the
-        // notice can still be shown up to its remaining display count.
+        // button. Like the old infobar, closing dismisses the snackbar and suppresses future
+        // displays so the notice is not shown again.
         if (snackbarManager instanceof BraveSnackbarManager) {
             BraveSnackbarManager braveSnackbarManager = (BraveSnackbarManager) snackbarManager;
             braveSnackbarManager.setActionBelowMessage(
                     R.drawable.ic_close,
                     activity.getString(R.string.close),
-                    () -> braveSnackbarManager.dismissSnackbars(controller));
+                    () -> {
+                        suppressInfobar();
+                        braveSnackbarManager.dismissSnackbars(controller);
+                    });
         }
     }
 
