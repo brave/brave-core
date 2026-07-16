@@ -176,20 +176,12 @@ struct TabGridView: View {
     .background(Color(uiColor: browserColors.tabSwitcherBackground))
     .overlay(alignment: .top) {
       VStack(spacing: 12) {
-        let isHeaderDisabled = editMode == .active && !viewModel.isSearching
-        headerBar
-          .transition(.blurReplace().animation(.default))
-          .animation(
-            .default,
-            body: { content in
-              content
-                .opacity(isHeaderDisabled ? 0.5 : 1)
-                .disabled(isHeaderDisabled)
-            }
-          )
         if editMode == .active {
           editModeHeaderBar
             .transition(.blurReplace())
+        } else {
+          headerBar
+            .transition(.blurReplace().animation(.default))
         }
       }
       .padding(.horizontal, 16)
@@ -450,7 +442,7 @@ struct TabGridView: View {
         .font(.callout)
         .imageScale(.large)
     }
-    .plainToolbarIconButtonStyle()
+    .plainHeaderIconButtonStyle()
     .menuOrder(.fixed)
     .accessibilityLabel(Strings.TabGrid.moreMenuButtonTitle)
   }
@@ -476,7 +468,7 @@ struct TabGridView: View {
         .font(.callout)
         .imageScale(.large)
     }
-    .plainToolbarIconButtonStyle()
+    .plainHeaderIconButtonStyle()
   }
 
   var footerBar: some View {
@@ -529,14 +521,9 @@ struct TabGridView: View {
 
   var editModeHeaderBar: some View {
     HStack {
-      HStack {
-        Text(Strings.TabGrid.selectedTabs)
-          .foregroundStyle(Color(braveSystemName: .textPrimary))
-        Text(selectedTabs.count, format: .number)
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
-      }
-      .accessibilityElement()
-      .font(.title3.weight(.semibold))
+      Text(Strings.TabGrid.selectTabsButtonTitle)
+        .font(.title3.weight(.semibold))
+        .foregroundStyle(Color(braveSystemName: .textPrimary))
       Spacer()
       Button {
         withAnimation {
@@ -544,10 +531,12 @@ struct TabGridView: View {
           editMode = .inactive
         }
       } label: {
-        Text(Strings.CancelString)
-          .fontWeight(.medium)
-          .foregroundStyle(Color(braveSystemName: .textSecondary))
+        Label(Strings.CancelString, braveSystemImage: "leo.close")
+          .labelStyle(.iconOnly)
+          .font(.callout)
+          .imageScale(.large)
       }
+      .plainToolbarIconButtonStyle()
     }
     .containerCornerOffset(.leading, sizeToFit: true)
     .padding(.vertical, 4)
@@ -560,10 +549,14 @@ struct TabGridView: View {
         activeShredMode = .selectedTabs
       } label: {
         Label(Strings.TabGrid.shredSelectedTabsButtonTitle, braveSystemImage: "leo.shred.data")
-          .frame(maxWidth: .infinity)
+          .labelStyle(.iconOnly)
+          .font(.callout)
+          .imageScale(.large)
       }
-      .buttonStyle(.outline)
+      .plainToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty || !viewModel.isShredAvailableForSelectedTabs(selectedTabs))
+      .frame(maxWidth: .infinity, alignment: .leading)
+
       Button {
         withAnimation {
           let dismissAfterClose = selectedTabs.count == viewModel.tabs.count
@@ -576,13 +569,19 @@ struct TabGridView: View {
         }
       } label: {
         Label(Strings.close, braveSystemImage: "leo.close")
-          .frame(maxWidth: .infinity)
+          .labelStyle(.iconOnly)
+          .font(.callout)
+          .imageScale(.large)
       }
-      .buttonStyle(.filled)
+      .filledToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty)
+      .frame(maxWidth: .infinity, alignment: .trailing)
     }
+    .foregroundStyle(Color(braveSystemName: .textSecondary))
+    .fontWeight(.medium)
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
+    .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
   }
 
   private func contextMenu(for tabs: [any TabState]) -> UIMenu? {
@@ -661,28 +660,64 @@ struct TabGridView: View {
 }
 
 extension View {
-  @ViewBuilder
+  func plainHeaderIconButtonStyle() -> some View {
+    self.modifier(HeaderToolbarIconButtonStyleModifier())
+  }
+
   func plainToolbarIconButtonStyle() -> some View {
-    aspectRatio(1, contentMode: .fit)
-      .osAvailabilityModifiers { content in
-        if #available(iOS 26.0, *) {
-          content.buttonStyle(.plainGlass)
-        } else {
-          content.buttonStyle(.plainBordered)
-        }
-      }
+    self.modifier(ToolbarIconButtonStyleModifier(isFilled: false))
+  }
+
+  func filledToolbarIconButtonStyle() -> some View {
+    self.modifier(ToolbarIconButtonStyleModifier(isFilled: true))
+  }
+}
+
+private struct HeaderToolbarIconButtonStyleModifier: ViewModifier {
+  @ScaledMetric(relativeTo: .body) private var size = 44
+
+  func body(content: Content) -> some View {
+    styledContent(content)
+      .frame(width: size, height: size)
+      .fixedSize()
   }
 
   @ViewBuilder
-  func filledToolbarIconButtonStyle() -> some View {
-    aspectRatio(1, contentMode: .fit)
-      .osAvailabilityModifiers { content in
-        if #available(iOS 26.0, *) {
-          content.buttonStyle(.glassFilled)
+  private func styledContent(_ content: Content) -> some View {
+    if #available(iOS 26.0, *) {
+      content
+        .osAvailabilityModifiers { styled in
+          styled.buttonStyle(.plainGlass)
+        }
+    } else {
+      content
+    }
+  }
+}
+
+private struct ToolbarIconButtonStyleModifier: ViewModifier {
+  var isFilled: Bool
+  @ScaledMetric(relativeTo: .body) private var size = 44
+
+  func body(content: Content) -> some View {
+    content
+      .osAvailabilityModifiers { styled in
+        if isFilled {
+          if #available(iOS 26.0, *) {
+            styled.buttonStyle(.glassFilled)
+          } else {
+            styled.buttonStyle(.filled)
+          }
         } else {
-          content.buttonStyle(.filled)
+          if #available(iOS 26.0, *) {
+            styled.buttonStyle(.plainGlass)
+          } else {
+            styled.buttonStyle(.plainBordered)
+          }
         }
       }
+      .frame(width: size, height: size)
+      .fixedSize()
   }
 }
 
@@ -699,6 +734,14 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
         : Strings.TabGrid.tabsCountPluralFormatString,
       regularTabCount
     )
+  }
+
+  private var controlHeight: CGFloat {
+    if #available(iOS 26.0, *) {
+      44
+    } else {
+      40
+    }
   }
 
   func makeUIView(context: Context) -> UISegmentedControl {
@@ -730,7 +773,7 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     uiView: UISegmentedControl,
     context: Context
   ) -> CGSize? {
-    return .init(width: uiView.intrinsicContentSize.width + 44, height: 44)
+    .init(width: uiView.intrinsicContentSize.width + 44, height: controlHeight)
   }
 
   private func configureStaticAppearance(_ uiView: UISegmentedControl) {
