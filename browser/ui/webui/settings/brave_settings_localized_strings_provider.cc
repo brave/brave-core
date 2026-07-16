@@ -144,7 +144,7 @@ constexpr char16_t kExtensionsV2LearnMoreURL[] =
 
 #if BUILDFLAG(ENABLE_PSST)
 constexpr char16_t kPsstLearnMoreUrl[] =
-    u"https://support.brave.app/hc/en-us/articles/8611298579981";
+    u"https://support.brave.app/hc/en-us/articles/47405731650957";
 #endif
 
 void BraveAddCommonStrings(content::WebUIDataSource* html_source,
