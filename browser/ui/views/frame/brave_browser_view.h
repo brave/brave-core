@@ -195,6 +195,10 @@ class BraveBrowserView : public BrowserView,
     return top_container_separator_;
   }
 
+  views::View* vertical_tab_strip_host_view_for_testing() const {
+    return vertical_tab_strip_host_view_;
+  }
+
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   // Returns the PWA Shields toolbar button, if it exists. Note that this
   // returns valid pointer only when it's web app browser.
