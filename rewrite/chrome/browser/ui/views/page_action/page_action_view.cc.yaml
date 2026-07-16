@@ -10,9 +10,8 @@ substitutions:
       Upstream only animates the chip in when it is acting as a suggestion
       chip. Brave has page actions whose label must remain visible regardless,
       so we widen the condition to also cover `model.GetAlwaysShowLabel()`.
-    regex:
-      re_pattern: 'else if \((model.ShouldShowSuggestionChip\(\))\)'
-      replace: 'else if (\1 || model.GetAlwaysShowLabel())'
+    re_pattern: 'if \((model.ShouldShowSuggestionChip\(\))\)'
+    replace: 'if (\1 || model.GetAlwaysShowLabel())'
 
   - description: |
       Let Brave adjust the border insets before UpdateBorder() applies them.
@@ -21,12 +20,11 @@ substitutions:
       SetBorder(). Inserting a MaybeOverrideBorder() hook just before that call
       gives Brave a chance to tweak the insets without duplicating the whole
       method.
-    regex:
-      re_pattern: '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
-      re_flags: [DOTALL]
-      replace: |-
-        \1MaybeOverrideBorder(observation_.GetSource(), border_insets);
-          \2
+    re_pattern: '(void PageActionView::UpdateBorder\(\).*?)(SetBorder\()'
+    re_flags: [DOTALL]
+    replace: |-
+      \1MaybeOverrideBorder(observation_.GetSource(), border_insets);
+        \2
 
   - description: |
       Propagate the click event flags through the page action invocation.
@@ -35,10 +33,9 @@ substitutions:
       modifier flags, so Brave action handlers cannot tell e.g. a plain click
       from a ctrl/shift click. We attach them via `kBravePageActionEventFlagKey`
       on the builder in NotifyClick() right before `.Build()`.
-    regex:
-      re_pattern: '(void PageActionView::NotifyClick\(.*?\n)(\s*\.Build\(\)\);)'
-      re_flags: [DOTALL]
-      replace: |-
-        \1          .SetProperty(kBravePageActionEventFlagKey,
-                               event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
-        \2
+    re_pattern: '(void PageActionView::NotifyClick\(.*?\n)(\s*\.Build\(\)\);)'
+    re_flags: [DOTALL]
+    replace: |-
+      \1          .SetProperty(kBravePageActionEventFlagKey,
+                             event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
+      \2

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
-index 6050dcf4b28ac6c5948da627474900509569dc6a..125bb218805e849cc57553fe07a94f59cbeaf8ef 100644
+index 028ecc6d78cc90ece04305c6f2df659268fad3d5..caa4c7c6fa42d70a8f2e9dd1ccfad4218ae1d2b5 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.cc
 +++ b/chrome/browser/ui/page_action/page_action_controller.cc
 @@ -72,6 +72,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
@@ -10,7 +10,7 @@ index 6050dcf4b28ac6c5948da627474900509569dc6a..125bb218805e849cc57553fe07a94f59
  PageActionControllerImpl::PageActionControllerImpl(
      PinnedToolbarActionsModel* pinned_actions_model,
      PageActionModelFactory* page_action_model_factory,
-@@ -492,7 +493,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
+@@ -515,7 +516,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
    if (page_action_model_factory_ != nullptr) {
      return page_action_model_factory_->Create(action_id, is_ephemeral);
    } else {
@@ -19,7 +19,7 @@ index 6050dcf4b28ac6c5948da627474900509569dc6a..125bb218805e849cc57553fe07a94f59
    }
  }
  
-@@ -570,6 +571,7 @@ void PageActionControllerImpl::OnImageAnimationStarted(
+@@ -593,6 +594,7 @@ void PageActionControllerImpl::OnImageAnimationStarted(
    FindPageActionModel(action_id).SetDidAnimateImage(PageActionPassKey());
  }
  

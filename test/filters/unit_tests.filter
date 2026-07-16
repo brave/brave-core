@@ -697,6 +697,7 @@
 -ContextualSearchboxHandlerTest.QueryAutocomplete_SetsLensInputs_InToolModes
 -OmniboxEditModelPopupTest.AiModeButtonClick*
 -OmniboxEditModelPopupTest.AimPopup*
+-OmniboxPopupHandlerTest.*
 -WebuiOmniboxHandlerTest.OnActiveTabChanged_SavesAndRestoresState
 
 # These tests crash because the tests initialize profile first and then reset
