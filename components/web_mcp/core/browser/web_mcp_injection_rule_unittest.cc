@@ -202,8 +202,7 @@ return 'ok';
   auto rule = WebMcpInjectionRule::ParseScript(kScript);
   ASSERT_TRUE(rule);
   EXPECT_EQ(rule->tool_name, "second");
-  EXPECT_EQ(rule->input_schema,
-            R"({"type":"object","properties":{"b":{}}})");
+  EXPECT_EQ(rule->input_schema, R"({"type":"object","properties":{"b":{}}})");
 }
 
 TEST(WebMcpInjectionRuleTest, DoesNotValidateSchemaJson) {

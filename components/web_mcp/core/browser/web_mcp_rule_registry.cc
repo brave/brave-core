@@ -12,6 +12,8 @@
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
+#include "base/sequence_checker.h"
+#include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 
 namespace web_mcp {
@@ -54,14 +56,18 @@ WebMcpRuleRegistry::WebMcpRuleRegistry() = default;
 WebMcpRuleRegistry::~WebMcpRuleRegistry() = default;
 
 void WebMcpRuleRegistry::LoadRules(const base::FilePath& install_dir) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, {base::MayBlock()},
+      FROM_HERE,
+      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&LoadRulesFromDir, install_dir.Append(kScriptsDir)),
       base::BindOnce(&WebMcpRuleRegistry::OnRulesLoaded,
                      weak_factory_.GetWeakPtr()));
 }
 
 void WebMcpRuleRegistry::OnRulesLoaded(std::vector<WebMcpInjectionRule> rules) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   rules_ = std::move(rules);
 }
 
