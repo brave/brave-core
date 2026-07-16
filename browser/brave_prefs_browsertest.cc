@@ -5,6 +5,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/metrics/buildflags/buildflags.h"
+#include "brave/components/brave_origin/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/pref_names.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
@@ -86,6 +87,10 @@ IN_PROC_BROWSER_TEST_F(BraveProfilePrefsBrowserTest, MiscBravePrefs) {
                 brave_shields::prefs::kReduceLanguageEnabled),
             base::FeatureList::IsEnabled(
                 brave_shields::features::kBraveReduceLanguage));
+  EXPECT_EQ(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
+                kShowSidePanelButton),
+            !BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED));
+
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
   EXPECT_TRUE(chrome_test_utils::GetProfile(this)->GetPrefs()->GetBoolean(
       kBraveWaybackMachineEnabled));
