@@ -34,11 +34,13 @@ substitutions:
       Upstream's ActionInvocationContext does not carry the originating event's
       modifier flags, so Brave action handlers cannot tell e.g. a plain click
       from a ctrl/shift click. We attach them via `kBravePageActionEventFlagKey`
-      on the builder in NotifyClick() right before `.Build()`.
+      on the builder in NotifyClick() right before it is invoked.
     regex:
-      re_pattern: '(void PageActionView::NotifyClick\(.*?\n)(\s*\.Build\(\)\);)'
+      re_pattern: |-
+        (void PageActionView::NotifyClick\(.*?)(\n\s*action_item_->InvokeAction\(std::move\(builder\)\.Build\(\)\);)
       re_flags: [DOTALL]
       replace: |-
-        \1          .SetProperty(kBravePageActionEventFlagKey,
-                              event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
-        \2
+        \1
+          builder = std::move(builder).SetProperty(
+              kBravePageActionEventFlagKey,
+              event.IsMouseEvent() ? event.flags() : ui::EF_NONE);\2

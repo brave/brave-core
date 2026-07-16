@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 415e8f510fc4051e18caa829942226670adc5e19..c8c3c422f7d94bc894a1fd92be5bed9217f8f575 100644
+index 73848370b38047b84bd64de608fdac1f4ea77259..a0b5d707414963791f1059dbeec371e25a984258 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -238,7 +238,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+@@ -240,7 +240,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
  
  void PageActionView::HandleSuggestionChipTransition(
      const PageActionModelInterface& model) {
@@ -11,7 +11,7 @@ index 415e8f510fc4051e18caa829942226670adc5e19..c8c3c422f7d94bc894a1fd92be5bed92
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -310,6 +310,7 @@ void PageActionView::UpdateBorder() {
+@@ -312,6 +312,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -19,12 +19,13 @@ index 415e8f510fc4051e18caa829942226670adc5e19..c8c3c422f7d94bc894a1fd92be5bed92
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -356,6 +357,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
-               kPageActionEntryPointKey,
-               static_cast<std::underlying_type_t<PageActionEntryPoint>>(
-                   PageActionEntryPoint::kSuggestionChip))
-+          .SetProperty(kBravePageActionEventFlagKey,
-+                      event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
-           .Build());
+@@ -365,6 +366,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+         static_cast<std::underlying_type_t<SidePanelOpenTrigger>>(
+             *side_panel_trigger));
+   }
++  builder = std::move(builder).SetProperty(
++      kBravePageActionEventFlagKey,
++      event.IsMouseEvent() ? event.flags() : ui::EF_NONE);
+   action_item_->InvokeAction(std::move(builder).Build());
  }
  
