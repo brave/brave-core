@@ -10,6 +10,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/no_destructor.h"
+#include "base/sequence_checker.h"
 #include "brave/components/web_mcp/core/browser/web_mcp_injection_rule.h"
 
 namespace base {
@@ -37,7 +38,10 @@ class WebMcpRuleRegistry {
 
   // The currently loaded rules. Empty until the component has been delivered
   // and parsed.
-  const std::vector<WebMcpInjectionRule>& rules() const { return rules_; }
+  const std::vector<WebMcpInjectionRule>& rules() const {
+    DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+    return rules_;
+  }
 
  private:
   friend base::NoDestructor<WebMcpRuleRegistry>;
@@ -47,6 +51,7 @@ class WebMcpRuleRegistry {
 
   void OnRulesLoaded(std::vector<WebMcpInjectionRule> rules);
 
+  SEQUENCE_CHECKER(sequence_checker_);
   std::vector<WebMcpInjectionRule> rules_;
   base::WeakPtrFactory<WebMcpRuleRegistry> weak_factory_{this};
 };

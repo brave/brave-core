@@ -90,17 +90,17 @@ WebMcpComponentInstallerPolicy::OnCustomInstall(
 
 void WebMcpComponentInstallerPolicy::OnCustomUninstall() {}
 
+bool WebMcpComponentInstallerPolicy::VerifyInstallation(
+    const base::DictValue& manifest,
+    const base::FilePath& install_dir) const {
+  return true;
+}
+
 void WebMcpComponentInstallerPolicy::ComponentReady(
     const base::Version& version,
     const base::FilePath& install_dir,
     base::DictValue manifest) {
   WebMcpRuleRegistry::GetInstance()->LoadRules(install_dir);
-}
-
-bool WebMcpComponentInstallerPolicy::VerifyInstallation(
-    const base::DictValue& manifest,
-    const base::FilePath& install_dir) const {
-  return true;
 }
 
 base::FilePath WebMcpComponentInstallerPolicy::GetRelativeInstallDir() const {
