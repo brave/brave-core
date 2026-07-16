@@ -130,7 +130,7 @@ ACTION_P(InsertPolicyScriptInPageCallback, future, value) {
 }
 
 ACTION_P(ShowCallback, future, urls_to_skip) {
-  std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg3))
+  std::move(const_cast<PsstTabWebContentsObserver::ConsentCallback&>(arg4))
       .Run(urls_to_skip);
   future->SetValue();
 }
@@ -169,6 +169,7 @@ class MockUiDelegate : public PsstTabWebContentsObserver::PsstUiDelegate {
       Show,
       (url::Origin origin,
        PsstWebsiteSettings dialog_data,
+       const int rule_version,
        std::optional<UserScriptResult> user_script_result,
        PsstTabWebContentsObserver::ConsentCallback apply_changes_callback),
       (override));
@@ -224,8 +225,9 @@ class PsstTabWebContentsObserverUnitTestBase
   PrefService* prefs() { return &prefs_; }
 
   MatchedRule* CreateMatchedRule(const std::string& user_script,
-                                 const std::string& policy_script) {
-    return new MatchedRule("name", user_script, policy_script, 1);
+                                 const std::string& policy_script,
+                                 int version = 1) {
+    return new MatchedRule("name", user_script, policy_script, version);
   }
 
   base::MockCallback<PsstTabWebContentsObserver::InjectScriptCallback>&
@@ -665,7 +667,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -786,7 +788,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -878,7 +880,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
               Show(url::Origin::Create(url),
                    PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
                                          std::vector<std::string>()),
-                   _, _))
+                   1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
@@ -966,6 +968,110 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // TODO(https://github.com/brave/brave-browser/issues/49317) We need to check
   // that script result callbacks are not in queue
 }
+TEST_F(PsstTabWebContentsObserverUnitTest,
+       ShowDialogAgainWhenScriptVersionChanged) {
+  const std::string user_script = "user";
+  const std::string policy_script = "policy";
+  const GURL url("https://example1.com");
+  const std::string user_id = "unique_user_id";
+  const int stored_script_version = 1;
+  const int current_script_version = 2;
+
+  base::RunLoop check_loop;
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+      .WillOnce(CheckIfMatchCallback(
+          &check_loop, CreateMatchedRule(user_script, policy_script,
+                                         current_script_version)));
+
+  base::test::TestFuture<base::Value> user_script_insert_future;
+  base::test::TestFuture<void> user_accept_psst_settings_future;
+  base::test::TestFuture<base::Value> policy_script_insert_future;
+
+  // User already accepted the consent dialog previously (consent_status is
+  // kAllow) and this is not the initial run (initial_execution is false), but
+  // the stored PSST settings were recorded for an older script version than
+  // the one that matched this navigation. The dialog must be shown again in
+  // this case, instead of silently reusing the stale consent.
+  auto script_params = base::Value(
+      base::DictValue()
+          .Set("initial_execution", false)
+          .Set("user_id", user_id)
+          .Set("site_name", "example")
+          .Set("tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings"))));
+
+  const std::vector<std::string> stored_uids_to_perform = {"1"};
+  EXPECT_CALL(ui_delegate(),
+              GetPsstWebsiteSettings(url::Origin::Create(url), user_id))
+      .WillOnce([&](const url::Origin&, const std::string&) {
+        PsstWebsiteSettings settings;
+        settings.consent_status = ConsentStatus::kAllow;
+        settings.script_version = stored_script_version;
+        settings.user_id = user_id;
+        settings.uids_to_perform = stored_uids_to_perform;
+        return settings;
+      });
+
+  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+      .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
+                                           script_params.Clone()));
+
+  // The dialog must be shown again since the stored script_version doesn't
+  // match the current rule's version, even though consent_status is kAllow
+  // and this isn't the initial run.
+  EXPECT_CALL(
+      ui_delegate(),
+      Show(url::Origin::Create(url),
+           PsstWebsiteSettingsEq(ConsentStatus::kAllow, stored_script_version,
+                                 user_id, stored_uids_to_perform),
+           current_script_version, _, _))
+      .WillOnce(ShowCallback(&user_accept_psst_settings_future,
+                             stored_uids_to_perform));
+
+  // The policy script always runs with initial_execution set to true, since
+  // it is reached via the consent dialog's accept callback, regardless of
+  // what the user script itself reported.
+  auto expected_policy_params = script_params.Clone();
+  expected_policy_params.GetDict().Set("initial_execution", true);
+  const auto script_with_parameters = base::StrCat(
+      {"const params = ",
+       base::WriteJsonWithOptions(expected_policy_params,
+                                  base::JSONWriter::OPTIONS_PRETTY_PRINT)
+           .value(),
+       ";\n", policy_script});
+
+  auto policy_script_result = base::Value(base::DictValue().Set(
+      "psst",
+      base::DictValue()
+          .Set("progress", 100)
+          .Set("applied_tasks",
+               base::ListValue().Append(base::DictValue()
+                                            .Set("uid", "1")
+                                            .Set("url", "https://example1.com")
+                                            .Set("description", "settings")))));
+
+  EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kCompleted))
+      .Times(1);
+
+  // Policy script executed, parameters added
+  EXPECT_CALL(inject_async_script_callback(), Run(script_with_parameters, _))
+      .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
+                                                 policy_script_result.Clone()));
+
+  DocumentOnLoadObserver observer(web_contents());
+  content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
+                                                             url);
+  observer.Wait();
+
+  check_loop.Run();
+  EXPECT_EQ(script_params, user_script_insert_future.Take());
+  EXPECT_TRUE(user_accept_psst_settings_future.Wait());
+  EXPECT_EQ(policy_script_result, policy_script_insert_future.Take());
+}
+
 class PsstTabWebContentsObserverFeatureDisabledUnitTest
     : public PsstTabWebContentsObserverUnitTestBase {
  public:

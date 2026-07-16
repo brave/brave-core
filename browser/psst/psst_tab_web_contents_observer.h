@@ -50,6 +50,7 @@ class PsstTabWebContentsObserver : public tabs::ContentsObservingTabFeature {
     // Show the consent dialog to the user with the provided data.
     virtual void Show(url::Origin origin,
                       PsstWebsiteSettings dialog_data,
+                      const int rule_version,
                       std::optional<UserScriptResult> user_script_result,
                       ConsentCallback apply_changes_callback) = 0;
     // Update the UI state based on the applied tasks and progress.

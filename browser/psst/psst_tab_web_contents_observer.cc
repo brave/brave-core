@@ -274,7 +274,8 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
 
   if ((!user_script_result_parsed->initial_execution.has_value() ||
        !user_script_result_parsed->initial_execution.value()) &&
-      psst_settings && psst_settings->consent_status == ConsentStatus::kAllow) {
+      psst_settings && psst_settings->consent_status == ConsentStatus::kAllow &&
+      psst_settings->script_version == rule->version()) {
     // If user accepted the consent dialog and it is not the initial iteration
     // (i.e. it is not the first applied PSST setting), we don't need to
     // show the dialog again.
@@ -292,9 +293,10 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     psst_settings->user_id = user_script_result_parsed->user_id;
   }
 
+  const int rule_version = rule->version();
   auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
   ui_delegate_->Show(
-      std::move(origin), std::move(*psst_settings),
+      std::move(origin), std::move(*psst_settings), rule_version,
       std::move(user_script_result_parsed),
       base::BindOnce(&PsstTabWebContentsObserver::OnUserAcceptedPsstSettings,
                      weak_factory_.GetWeakPtr(), id, true, std::move(rule),

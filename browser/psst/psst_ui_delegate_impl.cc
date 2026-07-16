@@ -35,14 +35,30 @@ PsstUiDelegateImpl::~PsstUiDelegateImpl() = default;
 void PsstUiDelegateImpl::Show(
     url::Origin origin,
     PsstWebsiteSettings dialog_data,
+    const int rule_version,
     std::optional<UserScriptResult> user_script_result,
     PsstTabWebContentsObserver::ConsentCallback apply_changes_callback) {
   apply_changes_callback_ = std::move(apply_changes_callback);
   dialog_data_ = std::move(dialog_data);
   origin_ = std::move(origin);
   user_script_result_ = std::move(user_script_result);
+
+  auto icon_status = LocationBarIconStatus::kOnlyIcon;
+
+  // Show icon with badge only if it is initial execution and version changed
+  if (user_script_result->initial_execution.has_value() &&
+      user_script_result->initial_execution.value()) {
+    if ((dialog_data_->consent_status == ConsentStatus::kAsk ||
+         dialog_data_->consent_status == ConsentStatus::kAllow) &&
+        dialog_data_->script_version != rule_version) {
+      icon_status = LocationBarIconStatus::kIconWithBadge;
+      // A new version will be saved when the user accepts the consent dialog.
+      dialog_data_->script_version = rule_version;
+    }
+  }
+
   ui_presenter_->SetLocationBarIconStatus(
-      LocationBarIconStatus::kIconWithBadge,
+      icon_status,
       base::BindOnce(&PsstUiDelegateImpl::OnDontShowForThisSite,
                      weak_ptr_factory_.GetWeakPtr()),
       base::BindOnce(&PsstUiDelegateImpl::OnDisablePrivacySettingsTuning,
