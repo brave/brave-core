@@ -265,9 +265,9 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
     return;
   }
 
+  auto origin = web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   auto psst_settings = ui_delegate_->GetPsstWebsiteSettings(
-      url::Origin::Create(web_contents()->GetLastCommittedURL()),
-      user_script_result_parsed->user_id);
+      origin, user_script_result_parsed->user_id);
   if (psst_settings && psst_settings->consent_status == ConsentStatus::kBlock) {
     return;
   }
@@ -294,7 +294,6 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   const int rule_version = rule->version();
-  auto origin = web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   ui_delegate_->Show(
       std::move(origin), std::move(*psst_settings), rule_version,
       std::move(user_script_result_parsed),
