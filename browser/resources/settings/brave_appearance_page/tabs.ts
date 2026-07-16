@@ -34,13 +34,6 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
 
   static get properties() {
     return {
-      tabMinWidthSelectionAliases_: {
-        readOnly: true,
-        type: Object,
-        value() {
-          return {'0': '1'}
-        },
-      },
       tabMinWidthModes_: {
         readOnly: true,
         type: Array,
@@ -97,7 +90,6 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     }
   }
 
-  declare private tabMinWidthSelectionAliases_: Record<string, string>
   declare private tabMinWidthModes_: Array<{
     value: number,
     name: string,
