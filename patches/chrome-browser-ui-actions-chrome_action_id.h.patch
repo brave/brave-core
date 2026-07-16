@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/actions/chrome_action_id.h b/chrome/browser/ui/actions/chrome_action_id.h
-index 1a6acad48b6ffcc49e77229d79ffb838681abfa8..29385b33737f01066b8bad69947ccce695417c90 100644
+index 1a6acad48b6ffcc49e77229d79ffb838681abfa8..b2974f823d0e471e4f4337e85f9d7cdc1783f0d1 100644
 --- a/chrome/browser/ui/actions/chrome_action_id.h
 +++ b/chrome/browser/ui/actions/chrome_action_id.h
 @@ -551,6 +551,10 @@
@@ -13,7 +13,7 @@ index 1a6acad48b6ffcc49e77229d79ffb838681abfa8..29385b33737f01066b8bad69947ccce6
    /* Side Panel items */ \
    E(kActionSidePanelShowAboutThisSite) \
    E(kActionSidePanelShowAssistant) \
-@@ -576,6 +579,8 @@
+@@ -576,6 +580,8 @@
      IDC_SHOW_TABS_FROM_OTHER_DEVICES_SIDE_PANEL)
  
  #define TOOLBAR_PINNABLE_ACTION_IDS \
