@@ -17,10 +17,12 @@ __HOST_OS_IS_WINDOWS = runtime.os == "windows"
 
 # Rules to remove from handling.
 __RULES_TO_REMOVE = [
-    # We have chromium_src mangling which requires additional inputs/outputs
-    # handling. This is not trivial and require careful configuration. Can be
+    # We have chromium_src Lit mangling which requires additional inputs/outputs
+    # handling. This is not trivial and requires careful configuration. Can be
     # revisited when SISO becomes first class citizen in Brave.
     "typescript/ts_library",
+    "webui/eslint_ts",
+    "webui/minify_js",
 ]
 
 # Rules to remove when MSAN is enabled. In general, MSAN-enabled binaries can't
