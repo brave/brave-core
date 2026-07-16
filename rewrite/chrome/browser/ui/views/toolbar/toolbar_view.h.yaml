@@ -60,10 +60,14 @@ substitutions:
       BraveToolbarView and the listed browser tests need access to ToolbarView's
       otherwise-private members. Anchored at the private: access specifier so the
       friend declarations land in private scope.
+    add_friend:
+      class_name: ToolbarView
+      friend_type: class BraveToolbarView
+
+  - description: 'Friend the BraveToolbarView tests'
     regex:
-      re_pattern: '( private:)'
+      re_pattern: '(friend class BraveToolbarView;)'
       replace: |-
         \1
-          friend class BraveToolbarView;
           FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, SplitTabsToolbarButtonTest);
           FRIEND_TEST_ALL_PREFIXES(BraveToolbarViewTest, ToolbarCornerRadiusTest);
