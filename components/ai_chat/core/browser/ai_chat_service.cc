@@ -19,6 +19,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_deref.h"
 #include "base/containers/adapters.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
@@ -199,11 +200,16 @@ void AIChatService::Shutdown() {
   // finally runs. Posting Shutdown() and ai_chat_db_.Reset() in order on the
   // same sequenced task runner guarantees bridge-then-database destruction
   // order.
-  if (sync_backend_ && db_task_runner_) {
-    db_task_runner_->PostTask(
-        FROM_HERE, base::BindOnce(&AIChatSyncBackend::Shutdown, sync_backend_));
+  //
+  // A non-null |sync_backend_| always implies a non-null |db_task_runner_|
+  // (the backend is only ever constructed with the runner, which is never
+  // reset), so CHECK_DEREF() the runner rather than guarding on it. Move the
+  // backend into the posted closure so it also serves as the UI-side release.
+  if (sync_backend_) {
+    CHECK_DEREF(db_task_runner_)
+        .PostTask(FROM_HERE, base::BindOnce(&AIChatSyncBackend::Shutdown,
+                                            std::move(sync_backend_)));
   }
-  sync_backend_.reset();
   if (ai_chat_db_) {
     ai_chat_db_.Reset();
   }
@@ -504,10 +510,13 @@ void AIChatService::MaybeInitStorage() {
     // sync engine already holds a delegate resolving to this bridge, and its
     // change processor must survive the storage toggle so sync resumes without
     // getting stuck once storage is re-enabled.
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::ClearDatabase, sync_backend_));
+    // A non-null |sync_backend_| always implies a non-null |db_task_runner_|
+    // (see AIChatService::Shutdown()), so CHECK_DEREF() the runner rather than
+    // guarding on it. The backend is intentionally kept alive here.
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(FROM_HERE, base::BindOnce(&AIChatSyncBackend::ClearDatabase,
+                                              sync_backend_));
     }
     // Delete all stored data from database
     if (ai_chat_db_) {
