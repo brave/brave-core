@@ -245,8 +245,10 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 // Moving a full-page AI Chat detaches its live WebContents from the tab strip
 // and shows it in the side panel (preserving state). The helper is only
 // responsible for the move; opening the clicked link is the caller's separate
-// responsibility (AIChatUIPageHandler::OpenURLInNewTab). When the move feature
-// is disabled, the helper is a no-op and AI Chat stays a full tab.
+// responsibility (AIChatUIPageHandler::OpenURLInNewTab). The move only happens
+// with the global (window-scoped) side panel; when the move feature is disabled
+// or the side panel is tab-scoped, the helper is a no-op and AI Chat stays a
+// full tab.
 IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
                        ForwardMovesFullPageChatToSidePanel) {
   auto* tab_strip = browser()->tab_strip_model();
@@ -261,10 +263,14 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
 
   const int initial_tab_count = tab_strip->count();
 
+  // The transfer requires both the move feature and the global side panel.
+  const bool expect_transfer =
+      IsMoveToSidePanelEnabled() && IsGlobalFlagEnabled();
+
   const bool handled = ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents);
 
-  if (!IsMoveToSidePanelEnabled()) {
-    // Feature off: no transfer. AI Chat stays a full tab.
+  if (!expect_transfer) {
+    // No transfer: AI Chat stays a full tab.
     EXPECT_FALSE(handled);
     EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
               TabStripModel::kNoTab);
@@ -332,7 +338,8 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   const bool handled =
       ai_chat::MaybeMoveFullPageChatToSidePanel(full_page_contents);
 
-  if (!IsMoveToSidePanelEnabled()) {
+  // The transfer requires both the move feature and the global side panel.
+  if (!(IsMoveToSidePanelEnabled() && IsGlobalFlagEnabled())) {
     EXPECT_FALSE(handled);
     return;
   }
@@ -347,6 +354,44 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
     return IsSidePanelOpen(browser()) &&
            GetAttachedSidePanelWebContents(browser()) == full_page_contents;
   }));
+}
+
+// Regression test for the tab-scoped side panel. With the global side panel
+// disabled the panel is tied to a tab, so moving a conversation into it and
+// then opening the clicked link (which activates a new tab) would close the
+// panel and destroy the conversation. The move is therefore skipped in this
+// mode: the conversation stays a full-page tab and nothing is lost, even after
+// another tab is activated (as opening the link would do).
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       ForwardMoveKeepsFullPageWhenSidePanelIsContextual) {
+  if (IsGlobalFlagEnabled() || !IsMoveToSidePanelEnabled()) {
+    GTEST_SKIP()
+        << "Only applies to a contextual side panel with move enabled.";
+  }
+
+  auto* tab_strip = browser()->tab_strip_model();
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(leo_contents);
+  const int leo_index = tab_strip->GetIndexOfWebContents(leo_contents);
+
+  // The move is skipped for a contextual side panel.
+  EXPECT_FALSE(ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents));
+
+  // AI Chat is untouched: still a full-page tab, and not shown in the panel.
+  EXPECT_EQ(tab_strip->GetIndexOfWebContents(leo_contents), leo_index);
+  EXPECT_FALSE(IsSidePanelOpen(browser()));
+
+  // Activating another tab (as opening the clicked link would) does not lose
+  // the conversation: it survives as a full-page tab.
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("chrome://version/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
+            TabStripModel::kNoTab);
 }
 
 INSTANTIATE_TEST_SUITE_P(

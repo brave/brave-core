@@ -88,6 +88,16 @@ bool MaybeMoveFullPageChatToSidePanel(
     return false;
   }
 
+  // The transfer only works with the global (window-scoped) side panel. A
+  // tab-scoped side panel is tied to the tab that is active when it opens, so
+  // once the moved conversation is shown and the clicked link activates a new
+  // tab, the panel closes and the conversation would be destroyed. In
+  // contextual mode leave the link to the caller: it opens in a tab and AI Chat
+  // stays a full page.
+  if (!ShouldSidePanelBeGlobal(browser->GetProfile())) {
+    return false;
+  }
+
   AIChatSidePanelTabTransferBridge* transfer_controller =
       browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
   if (!transfer_controller) {
