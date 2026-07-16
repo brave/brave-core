@@ -87,8 +87,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Simple test substitution
-              re_pattern: 'Chromium'
-              replace: 'Plaster'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Plaster'
         ''')
 
         # Use PlasterFile to apply the .yaml file to the committed file.
@@ -198,8 +199,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('substitutions:\n'
                                 '  - description: Simple yaml substitution\n'
-                                "    re_pattern: 'Chromium'\n"
-                                "    replace: 'Plaster'\n")
+                                '    regex:\n'
+                                "      re_pattern: 'Chromium'\n"
+                                "      replace: 'Plaster'\n")
 
         plaster.PlasterFile(plaster_path).apply()
 
@@ -227,16 +229,19 @@ class PlasterTest(unittest.TestCase):
         cases = [
             ('substitutions:\n'
              '  - description: Both patterns specified\n'
-             "    pattern: 'Chromium'\n"
-             "    re_pattern: 'Chromium'\n"
-             "    replace: 'Plaster'\n",
+             '    regex:\n'
+             "      pattern: 'Chromium'\n"
+             "      re_pattern: 'Chromium'\n"
+             "      replace: 'Plaster'\n",
              'Please specify either pattern or re_pattern'),
             ('substitutions:\n'
              '  - description: No pattern specified\n'
-             "    replace: 'Plaster'\n", 'No pattern specified'),
+             '    regex:\n'
+             "      replace: 'Plaster'\n", 'No pattern specified'),
             ('substitutions:\n'
              '  - description: No replace specified\n'
-             "    pattern: 'Chromium'\n", 'No replace value specified'),
+             '    regex:\n'
+             "      pattern: 'Chromium'\n", 'No replace value specified'),
         ]
 
         for yaml_content, expected_error in cases:
@@ -335,8 +340,9 @@ class PlasterTest(unittest.TestCase):
             rewrite_path.write_text(f'''
               substitutions:
                 - description: Replace {orig} with {repl}
-                  re_pattern: '{orig}'
-                  replace: '{repl}'
+                  regex:
+                    re_pattern: '{orig}'
+                    replace: '{repl}'
             ''')
             # Apply the rewrite so files are up-to-date
             plaster_file = plaster.PlasterFile(rewrite_path)
@@ -373,8 +379,9 @@ class PlasterTest(unittest.TestCase):
             rewrite_path.write_text(f'''
               substitutions:
                 - description: Replace {orig} with {repl}
-                  re_pattern: '{orig}'
-                  replace: '{repl}'
+                  regex:
+                    re_pattern: '{orig}'
+                    replace: '{repl}'
             ''')
             plaster_file = plaster.PlasterFile(rewrite_path)
             plaster_file.apply()
@@ -394,8 +401,9 @@ class PlasterTest(unittest.TestCase):
         changed_path.write_text('''
           substitutions:
             - description: Break the rule
-              re_pattern: 'foo2'
-              replace: 'DIFFERENT'
+              regex:
+                re_pattern: 'foo2'
+                replace: 'DIFFERENT'
         ''')
         # Now check should raise PlasterFileNeedsRegen with the path included.
         with self.assertRaises(plaster.PlasterFileNeedsRegen) as context:
@@ -421,9 +429,10 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Test multiple flags in array work
-              re_pattern: 'chromium'
-              replace: 'Brave'
-              re_flags: ['IGNORECASE', 'MULTILINE']
+              regex:
+                re_pattern: 'chromium'
+                replace: 'Brave'
+                re_flags: ['IGNORECASE', 'MULTILINE']
         ''')
 
         plaster_file = plaster.PlasterFile(plaster_path)
@@ -464,9 +473,10 @@ class PlasterTest(unittest.TestCase):
                 plaster_path.write_text(f'''
                   substitutions:
                     - description: Test invalid flag rejection
-                      re_pattern: 'Chromium'
-                      replace: 'Brave'
-                      re_flags: ['{invalid_flag}']
+                      regex:
+                        re_pattern: 'Chromium'
+                        replace: 'Brave'
+                        re_flags: ['{invalid_flag}']
                 ''')
 
                 plaster_file = plaster.PlasterFile(plaster_path)
@@ -495,9 +505,10 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Test empty flags list
-              re_pattern: 'chromium'
-              replace: 'Brave'
-              re_flags: []
+              regex:
+                re_pattern: 'chromium'
+                replace: 'Brave'
+                re_flags: []
         ''')
 
         plaster_file = plaster.PlasterFile(plaster_path)
@@ -538,8 +549,9 @@ class PlasterTest(unittest.TestCase):
                 plaster_path.write_text(f'''
                   substitutions:
                     - description: Test invalid regex rejection
-                      re_pattern: '{invalid_pattern}'
-                      replace: 'Brave'
+                      regex:
+                        re_pattern: '{invalid_pattern}'
+                        replace: 'Brave'
                 ''')
 
                 plaster_file = plaster.PlasterFile(plaster_path)
@@ -567,19 +579,22 @@ class PlasterTest(unittest.TestCase):
             ('''
               substitutions:
                 - description: Both patterns specified
-                  pattern: 'Chromium'
-                  re_pattern: 'Chromium'
-                  replace: 'Plaster'
+                  regex:
+                    pattern: 'Chromium'
+                    re_pattern: 'Chromium'
+                    replace: 'Plaster'
             ''', 'Please specify either pattern or re_pattern'),
             ('''
               substitutions:
                 - description: No pattern specified
-                  replace: 'Plaster'
+                  regex:
+                    replace: 'Plaster'
             ''', 'No pattern specified'),
             ('''
               substitutions:
                 - description: No replace specified
-                  pattern: 'Chromium'
+                  regex:
+                    pattern: 'Chromium'
             ''', 'No replace value specified'),
         ]
 
@@ -617,8 +632,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Replace exact pattern
-              pattern: 'Chromium++'
-              replace: 'Brave++'
+              regex:
+                pattern: 'Chromium++'
+                replace: 'Brave++'
         ''')
 
         # Apply the plaster file
@@ -651,8 +667,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Replace regex pattern
-              re_pattern: 'Chromium\\w+'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium\\w+'
+                replace: 'Brave'
               count: 2
         ''')
 
@@ -685,8 +702,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path1.write_text('''
           substitutions:
             - description: Replace exact brackets
-              pattern: '[brackets]'
-              replace: '{braces}'
+              regex:
+                pattern: '[brackets]'
+                replace: '{braces}'
         ''')
 
         plaster_file1 = plaster.PlasterFile(plaster_path1)
@@ -711,8 +729,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path2.write_text('''
           substitutions:
             - description: Replace using regex
-              re_pattern: '\\[\\w+\\]'
-              replace: '{braces}'
+              regex:
+                re_pattern: '\\[\\w+\\]'
+                replace: '{braces}'
         ''')
 
         plaster_file2 = plaster.PlasterFile(plaster_path2)
@@ -742,8 +761,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Test count mismatch
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
               count: 2
         ''')
 
@@ -773,8 +793,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path_correct.write_text('''
           substitutions:
             - description: Test default count with 1 match
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
         ''')
 
         # Should succeed because there's exactly 1 match (matches default)
@@ -801,8 +822,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path_incorrect.write_text('''
           substitutions:
             - description: Test default count with 2 matches
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
         ''')
 
         # Should fail because there are 2 matches but default expects 1
@@ -838,8 +860,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Test count 0 replaces all
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
               count: 0
         ''')
 
@@ -876,8 +899,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: replace a pattern that is absent
-              re_pattern: 'DoesNotAppear'
-              replace: 'X'
+              regex:
+                re_pattern: 'DoesNotAppear'
+                replace: 'X'
               count: 0
         ''')
 
@@ -912,12 +936,14 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Replace single Chromium
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
               count: 1
             - description: Replace all browsers
-              re_pattern: 'browser'
-              replace: 'application'
+              regex:
+                re_pattern: 'browser'
+                replace: 'application'
               count: 3
         ''')
 
@@ -946,8 +972,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.write_text('''
           substitutions:
             - description: Replace Chromium with Brave
-              re_pattern: 'Chromium'
-              replace: 'Brave'
+              regex:
+                re_pattern: 'Chromium'
+                replace: 'Brave'
         ''')
         plaster_file = plaster.PlasterFile(plaster_path)
         plaster_file.apply()
@@ -982,8 +1009,9 @@ class PlasterTest(unittest.TestCase):
         plaster_file.path.write_text('''
           substitutions:
             - description: A different rule
-              re_pattern: 'Brave'
-              replace: 'Lion'
+              regex:
+                re_pattern: 'Brave'
+                replace: 'Lion'
         ''')
         os.utime(plaster_file.path, (later, later))
         self.assertTrue(plaster_file.needs_apply())
@@ -1117,8 +1145,9 @@ class PlasterTest(unittest.TestCase):
         plaster_path.parent.mkdir(parents=True, exist_ok=True)
         plaster_path.write_text('substitutions:\n'
                                 '  - description: Touch the destructor body\n'
-                                "    pattern: 'MARKER_LINE;'\n"
-                                "    replace: 'MARKER_LINE_CHANGED;'\n")
+                                '    regex:\n'
+                                "      pattern: 'MARKER_LINE;'\n"
+                                "      replace: 'MARKER_LINE_CHANGED;'\n")
 
         plaster.PlasterFile(plaster_path).apply()
 
@@ -1179,9 +1208,9 @@ class RewriterFormsTest(unittest.TestCase):
             self._apply('validation.idl', 'dummy', yaml_body)
         self.assertIn(substr, str(ctx.exception))
 
-    # -- regex op (explicit form of the legacy bare regex) ------------------
+    # -- regex op -----------------------------------------------------------
 
-    def test_regex_op_matches_bare_form(self):
+    def test_regex_op_applies(self):
         result = self._apply(
             'regex_op.idl', 'A Chromium thing.', 'substitutions:\n'
             '  - description: explicit regex op\n'
@@ -1200,13 +1229,15 @@ class RewriterFormsTest(unittest.TestCase):
             '      re_flags: [IGNORECASE, MULTILINE]\n')
         self.assertEqual(result, 'foo\nbaz\n')
 
-    def test_bare_regex_still_applies(self):
-        result = self._apply(
-            'bare.idl', 'A Chromium thing.', 'substitutions:\n'
+    def test_bare_regex_is_rejected(self):
+        # The bare regex form (regex fields directly on the item, without a
+        # `regex:` key) is no longer supported: with no rewriter key it is an
+        # entry that names no rewriter.
+        self._expect_value_error(
+            'substitutions:\n'
             '  - description: legacy bare regex\n'
             "    re_pattern: 'Chromium'\n"
-            "    replace: 'Brave'\n")
-        self.assertEqual(result, 'A Brave thing.')
+            "    replace: 'Brave'\n", 'Unrecognised substitution key')
 
     # -- make_virtual op (real ast-grep binary) -----------------------------
 
@@ -1338,14 +1369,16 @@ class RewriterFormsTest(unittest.TestCase):
             '      class_name: C\n'
             '      method_name: Foo\n', 'Only one rewriter')
 
-    def test_cannot_mix_op_and_bare_regex(self):
+    def test_stray_field_alongside_rewriter_rejected(self):
+        # A stray item-level field next to a rewriter key is an unrecognised
+        # key for that rewriter.
         self._expect_value_error(
             'substitutions:\n'
-            '  - description: mixed\n'
+            '  - description: stray field\n'
             '    regex:\n'
             "      re_pattern: 'x'\n"
             "      replace: 'y'\n"
-            "    re_pattern: 'z'\n", 'Cannot mix')
+            "    re_pattern: 'z'\n", 'Unrecognised key(s) for the "regex"')
 
     def test_unknown_regex_field_rejected(self):
         self._expect_value_error(
@@ -1377,11 +1410,12 @@ class RewriterFormsTest(unittest.TestCase):
         self.assertIn('make_virtual', message)
 
     def test_stray_scalar_key_is_unrecognised(self):
-        # A non-mapping stray key is a bare-field typo, not a rewriter attempt,
-        # so it keeps the generic "Unrecognised substitution key" error.
+        # Non-mapping stray keys name no rewriter, so they get the generic
+        # "Unrecognised substitution key" error rather than the unknown-rewriter
+        # one (which is reserved for mapping-valued keys).
         self._expect_value_error(
             'substitutions:\n'
-            '  - description: typo bare field\n'
+            '  - description: stray fields\n'
             "    re_pattern: 'x'\n"
             "    replace: 'y'\n"
             '    re_flag: [DOTALL]\n', 'Unrecognised substitution key')

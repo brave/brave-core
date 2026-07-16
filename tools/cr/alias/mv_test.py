@@ -615,8 +615,9 @@ class PlasterApplyTest(_Base):
 
     _SUBST_YAML = ('substitutions:\n'
                    '  - description: Replace old_func\n'
-                   '    pattern: old_func\n'
-                   '    replace: new_func\n')
+                   '    regex:\n'
+                   '      pattern: old_func\n'
+                   '      replace: new_func\n')
 
     def _commit_chromium(self, rel: str, content: str) -> None:
         self._repo.write_and_stage_file(rel, content, self._repo.chromium)

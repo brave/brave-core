@@ -501,12 +501,12 @@ class Substitution:
     def _from_item(data: object) -> Substitution:
         """Validate one `substitutions:` entry and build its rewriter.
 
-        An entry names a rewriter when it carries one of `_REWRITERS` as a key.
-        `description` and the optional `count` are item-level for every form.
+        An entry names a rewriter by carrying one of `_REWRITERS` as a key,
+        alongside the item-level `description` and optional `count`.
 
         Raises:
-            ValueError: on a malformed entry (missing/typo'd keys, mixed
-                forms, or invalid rewriter-specific fields).
+            ValueError: on a malformed entry (missing/typo'd keys, a missing
+                or unknown rewriter, or invalid rewriter-specific fields).
         """
         if not isinstance(data, dict):
             raise ValueError(f'substitution entry must be a mapping, got '
@@ -524,13 +524,6 @@ class Substitution:
             raise ValueError(
                 f'Only one rewriter allowed per entry, got '
                 f'{", ".join(rewriter_keys)} (in "{description}")')
-        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
-        # directly on the item, without a `regex:` key) is deprecated. Once all
-        # plasters are migrated, delete this mixing check -- with no bare form
-        # there is nothing to mix.
-        if rewriter_keys and (keys & Regex._FIELD_KEYS):
-            raise ValueError(f'Cannot mix the "{rewriter_keys[0]}" rewriter '
-                             f'with bare regex fields (in "{description}")')
 
         if rewriter_keys:
             name = rewriter_keys[0]
@@ -546,32 +539,24 @@ class Substitution:
                                 expected_count=expected_count,
                                 rewriter=rewriter)
 
-        # No rewriter key: tolerated bare regex (the legacy form).
-        #
-        # TODO(brave.dev/bug/56854): the bare regex form (regex fields placed
-        # directly on the item, without a `regex:` key) is deprecated. Once all
-        # plasters are migrated, delete this whole block and require a rewriter
-        # key above, so an entry with no rewriter key becomes an error.
-        unknown = sorted(keys - ({'description', 'count'} | Regex._FIELD_KEYS))
+        # Every entry must name a rewriter. Surface the most helpful error we
+        # can: a mapping-valued stray key is almost certainly an attempt to use
+        # a rewriter that is not registered -- point the user at the ones that
+        # are; anything else is an unrecognised key.
+        unknown = sorted(keys - {'description', 'count'})
+        bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
+        if bad_rewriters:
+            available = ', '.join(sorted(_REWRITERS)) or '(none)'
+            raise ValueError(
+                f'Unknown rewriter(s): '
+                f'{", ".join(repr(k) for k in bad_rewriters)}; available '
+                f'rewriters: {available} (in "{description}")')
         if unknown:
-            # Every rewriter body is a mapping, so an unknown key carrying one
-            # is almost certainly an attempt to use a rewriter that is not
-            # registered -- point the user at the ones that are.
-            bad_rewriters = [k for k in unknown if isinstance(data[k], dict)]
-            if bad_rewriters:
-                available = ', '.join(sorted(_REWRITERS)) or '(none)'
-                raise ValueError(
-                    f'Unknown rewriter(s): '
-                    f'{", ".join(repr(k) for k in bad_rewriters)}; available '
-                    f'rewriters: {available} (in "{description}")')
             raise ValueError('Unrecognised substitution key(s): '
                              f'{", ".join(repr(k) for k in unknown)}')
-        # Compose a `regex:` body from the bare fields and hand it to Regex.
-        fields = {k: data[k] for k in keys & Regex._FIELD_KEYS}
-        rewriter = Regex.parse(fields, description=description)
-        return Substitution(description=description,
-                            expected_count=expected_count,
-                            rewriter=rewriter)
+        raise ValueError(
+            f'No rewriter specified (in "{description}"); expected one of: '
+            f'{", ".join(sorted(_REWRITERS)) or "(none)"}')
 
     @staticmethod
     def _parse_count(data: dict[str, object], description: str) -> int:
@@ -618,12 +603,7 @@ class Regex(Rewriter):
         ```
     """
 
-    # The pattern/replacement fields, valid either bare on the item or nested
-    # under a `regex:` op key.
-    #
-    # TODO(brave.dev/bug/56854): the bare placement is deprecated; this set
-    # stays for the `regex:` form, but once all plasters are migrated its bare
-    # use in `Substitution._from_item` should go.
+    # The pattern/replacement fields, nested under the `regex:` op key.
     _FIELD_KEYS = frozenset(('pattern', 're_pattern', 'replace', 're_flags'))
 
     def __init__(self, *, re_pattern: str, replace: str, re_flags: int = 0):
@@ -642,7 +622,7 @@ class Regex(Rewriter):
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> Regex:
-        """Build from a regex field mapping (a `regex:` body or bare keys)."""
+        """Build from a `regex:` body (a mapping of the regex fields)."""
         if not isinstance(body, dict):
             raise ValueError(f'"regex" must be a mapping (in "{description}")')
         unknown = sorted(set(body) - cls._FIELD_KEYS)
