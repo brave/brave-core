@@ -1,20 +1,36 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index 2ce4c06f0be5d8eee981524a108271e022c36a6d..b862d00e318d08c3194e8ecbed48452bb0f371cb 100644
+index 35c368e0cac75dbbed3dfccbca3369c7523b8f3b..b7a76a085635bbca8e1ea01991c436fe758c983f 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -493,6 +493,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
- 
-   // Deprecated 07/2026.
-   registry->RegisterIntegerPref(kObsoleteMetricsReportingLevel, 0);
-+  BRAVE_REGISTER_LOCAL_STATE_PREFS
+@@ -508,6 +508,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+   registry->RegisterBooleanPref(kMetricsConsentRestructureFeatureState, false);
+   registry->RegisterTimePref(kObsoleteManagementPlatformLastLogTime,
+                              base::Time());
++  brave::RegisterLocalStatePrefs(registry);
  }
  
  void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -967,6 +968,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterIntegerPref(kPreallocatedAddressesNext, 0);
-   registry->RegisterTimePref(kFirstPlusAddressCreationTime, base::Time());
-   registry->RegisterTimePref(kLastPlusAddressFillingTime, base::Time());
-+  BRAVE_REGISTER_BROWSER_STATE_PREFS
+@@ -991,6 +992,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
+   // Deprecated 07/2026.
+   registry->RegisterTimePref(kObsoleteManagementProfileLastLogTime,
+                              base::Time());
++  brave::RegisterBrowserStatePrefs(registry);
  }
  
  // This method should be periodically pruned of year+ old migrations.
+@@ -1022,6 +1024,7 @@ void MigrateObsoleteLocalStatePrefs(PrefService* prefs) {
+ 
+   // Added 07/2026.
+   prefs->ClearPref(kObsoleteManagementPlatformLastLogTime);
++  brave::MigrateObsoleteLocalStatePrefs(prefs);
+ }
+ 
+ // This method should be periodically pruned of year+ old migrations.
+@@ -1098,6 +1101,7 @@ void MigrateObsoleteProfilePrefs(PrefService* prefs) {
+ 
+   // Added 07/2026.
+   prefs->ClearPref(kObsoleteManagementProfileLastLogTime);
++  brave::MigrateObsoleteProfilePrefs(prefs);
+ }
+ 
+ void MigrateObsoleteUserDefault() {
