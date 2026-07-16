@@ -406,8 +406,17 @@ class Rewriter(abc.ABC):
     HELP: ClassVar[str] = ''
 
     @abc.abstractmethod
-    def apply(self, contents: str) -> tuple[str, int]:
-        """Transform `contents`, returning (new_contents, num_changes)."""
+    def apply(self, contents: str, *, count: int,
+              description: str) -> tuple[str, list[str]]:
+        """Transform `contents`, returning (new_contents, validation_errors).
+
+        `count` is the entry's `count:` (default 1, `0` meaning "one or more").
+        Each rewriter decides how it applies. For a single-site rewriter it is
+        the expected number of matches. A composed rewriter may instead give
+        each of its operations its own expectation. `errors` is the list of
+        human-readable count/validation failures (empty when the entry applied
+        as expected).
+        """
 
     @classmethod
     @abc.abstractmethod
@@ -438,9 +447,16 @@ class Substitution:
     # The rewriter this entry composes; `apply` delegates to it.
     rewriter: Rewriter
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        """Apply the composed rewriter, returning (new_contents, changes)."""
-        return self.rewriter.apply(contents)
+    def apply(self, contents: str) -> tuple[str, list[str]]:
+        """Apply the composed rewriter, returning (new_contents, errors).
+
+        The envelope's `expected_count`/`description` are handed to the
+        rewriter, which owns count validation (per-operation for composed
+        rewriters) and reports any failures as error strings.
+        """
+        return self.rewriter.apply(contents,
+                                   count=self.expected_count,
+                                   description=self.description)
 
     class _NoDupSafeLoader(yaml.SafeLoader):
         """`yaml.SafeLoader` that rejects duplicate mapping keys.
@@ -568,6 +584,64 @@ class Substitution:
         return expected_count
 
 
+@dataclass(frozen=True)
+class MatchExpectation:
+    """How many matches an operation must make to count as correctly applied.
+
+    A closed range `[minimum, maximum]`; `maximum is None` means unbounded. The
+    canonical forms cover every case plaster needs:
+
+    - `exactly(n)`   — precisely `n` matches (the default, `exactly(1)`).
+    - `at_least_one` — one or more (the `count: 0` form).
+    - `optional`     — any number including zero; never fails on its own. Use
+      for an operation that may legitimately find nothing, leaving a
+      cross-operation rule (e.g. "at least one of these") to a rewriter's own
+      validation.
+    """
+
+    minimum: int
+    maximum: int | None
+
+    @classmethod
+    def exactly(cls, n: int) -> MatchExpectation:
+        return cls(n, n)
+
+    @classmethod
+    def at_least_one(cls) -> MatchExpectation:
+        return cls(1, None)
+
+    @classmethod
+    def optional(cls) -> MatchExpectation:
+        return cls(0, None)
+
+    @classmethod
+    def from_count(cls, count: int) -> MatchExpectation:
+        """Map an entry's `count:` to an expectation (`0` -> one-or-more)."""
+        return cls.at_least_one() if count == 0 else cls.exactly(count)
+
+    def accepts(self, matches: int) -> bool:
+        """True if `matches` satisfies this expectation."""
+        return matches >= self.minimum and (self.maximum is None
+                                            or matches <= self.maximum)
+
+    def error_for(self, matches: int) -> str | None:
+        """A failure message if `matches` is unacceptable, else None.
+
+        The `exactly`/`at_least_one` wordings match plaster's historical count
+        errors so existing diagnostics are unchanged.
+        """
+        if self.accepts(matches):
+            return None
+        if self.minimum == 1 and self.maximum is None:
+            return 'Expected at least one match but found none'
+        if self.minimum == self.maximum:
+            return (f'Unexpected number of matches ({matches} vs '
+                    f'{self.minimum})')
+        upper = 'any' if self.maximum is None else self.maximum
+        return (f'Unexpected number of matches ({matches} vs '
+                f'{self.minimum}..{upper})')
+
+
 class Regex(Rewriter):
     """A regex substitution applied with `re.subn` (the native rewriter).
     """
@@ -611,14 +685,18 @@ class Regex(Rewriter):
         self._replace = replace
         self._re_flags = re_flags
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        # `count=0` is provided here so all substitutions are applied, and then
-        # the number of them gets validated by the callers.
-        return re.subn(self._re_pattern,
-                       self._replace,
-                       contents,
-                       flags=self._re_flags,
-                       count=0)
+    def apply(self, contents: str, *, count: int,
+              description: str) -> tuple[str, list[str]]:
+        del description  # Only the count matters for the regex diagnostic.
+        # `count=0` here means "replace every match"; how many were expected is
+        # validated afterwards against the entry's `count:`.
+        content, matches = re.subn(self._re_pattern,
+                                   self._replace,
+                                   contents,
+                                   flags=self._re_flags,
+                                   count=0)
+        error = MatchExpectation.from_count(count).error_for(matches)
+        return content, [error] if error else []
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> Regex:
@@ -674,58 +752,121 @@ class Regex(Rewriter):
         return re_flags
 
 
+@dataclass(frozen=True)
+class Operation:
+    """One planned ast-grep op invocation: the whole contract to the engine.
+
+    `op_id` names an `ast.rewriter` in `rewriters.pyl`; `inputs` binds each of
+    that op's declared `inputs` to a concrete string. Everything else the engine
+    needs -- which matcher to run, which adjacent tokens to consume, the
+    replacement template -- lives in the op spec, so a frontend `Rewriter`
+    composes purely by emitting `Operation`s (one, several of the same op, or a
+    mix of different ops) and never touches engine internals.
+
+    `expectation` is how many matches this operation must make to be considered
+    correctly applied; it is validation metadata that `AstRewriter.run` ignores
+    (the engine just reports how many matches it made) and the composing
+    `Rewriter` checks. A composed rewriter sets a per-operation expectation --
+    e.g. `add_friend` expects each friend inserted exactly once regardless of
+    how many friends there are -- rather than folding everything into one total.
+    """
+
+    # The `rewriters.pyl` rewriter op id this invokes (e.g. `cxx.make_virtual`).
+    op_id: str
+
+    # Values bound to the op's declared `inputs`, injected into its templates.
+    inputs: dict[str, str]
+
+    # How many matches this operation must make (default: exactly one).
+    expectation: MatchExpectation = MatchExpectation.exactly(1)
+
+
 class _AstGrepRewriter(Rewriter):
     """Base for rewriters backed by an ast-grep op declared in `rewriters.pyl`.
 
     A concrete subclass sets the usual `NAME`/`SUMMARY`/`HELP` metadata plus the
-    `OP_ID` it resolves to, the string arguments its body accepts (`_ARG_KEYS`),
-    and any adjacent tokens the op consumes (`_CONSUME_BEFORE`/`_CONSUME_AFTER`,
-    engine details -- see `AstRewriter.apply`). `parse` validates the body as a
-    mapping of exactly those string args and `apply` runs the op, so subclasses
-    are pure declarations.
+    `OP_ID` it resolves to. `apply` runs whatever `operations` returns against
+    the engine, so a subclass expresses itself entirely by *composing*
+    operations rather than by driving the engine.
+
+    The default `operations`/`parse` cover the common 1:1 case: the YAML body is
+    a flat mapping of exactly the op's declared `inputs` (read from the spec,
+    the single source of truth), producing a single operation whose expectation
+    is the entry's `count:`. Subclasses that take a richer body (e.g. a list-
+    valued field expanding to several operations) override `parse` and
+    `operations`, and may override `validate_outcomes` to add cross-operation
+    rules (e.g. "at least one of these optional operations must apply").
     """
 
     # The `rewriters.pyl` op id this resolves to (e.g. `cxx.make_virtual`).
     OP_ID: ClassVar[str] = ''
 
-    # The string argument names the op body must supply.
-    _ARG_KEYS: ClassVar[frozenset[str]] = frozenset()
+    def __init__(self, inputs: dict[str, str] | None = None):
+        # The flat default binds these to the op's single operation; composing
+        # subclasses hold their own parsed shape and leave this empty.
+        self._inputs = inputs if inputs is not None else {}
 
-    # Literals the op assumes sit immediately before / after each matched node.
-    _CONSUME_BEFORE: ClassVar[str] = ''
-    _CONSUME_AFTER: ClassVar[str] = ''
+    def operations(self, count: int) -> list[Operation]:
+        """The ordered ast-grep operations this rewriter expands to.
 
-    def __init__(self, args: dict[str, str]):
-        self._args = args
+        `count` is the entry's `count:`; the default single operation adopts it
+        as its expectation, so a flat rewriter keeps plaster's original count
+        semantics. Composed rewriters typically ignore it in favour of a
+        per-operation expectation.
+        """
+        return [
+            Operation(self.OP_ID, self._inputs,
+                      MatchExpectation.from_count(count))
+        ]
 
-    def apply(self, contents: str) -> tuple[str, int]:
-        rewriter = AstRewriter(RewritersEval.load(), contents)
-        count = rewriter.apply(self.OP_ID,
-                               self._args,
-                               consume_before=self._CONSUME_BEFORE,
-                               consume_after=self._CONSUME_AFTER)
-        return rewriter.content, count
+    def apply(self, contents: str, *, count: int,
+              description: str) -> tuple[str, list[str]]:
+        engine = AstRewriter(RewritersEval.load(), contents)
+        outcomes = [(op, engine.run(op)) for op in self.operations(count)]
+        return engine.content, self.validate_outcomes(outcomes, description)
+
+    def validate_outcomes(self, outcomes: list[tuple[Operation, int]],
+                          description: str) -> list[str]:
+        """Errors for `(operation, matches)` outcomes; empty when all applied.
+
+        The default checks each operation against its own `expectation`.
+        Override to add cross-operation rules -- an override typically calls
+        `super().validate_outcomes(...)` first, then appends group checks.
+        """
+        del description  # Historical count diagnostics do not name the entry.
+        errors = []
+        for op, matches in outcomes:
+            error = op.expectation.error_for(matches)
+            if error:
+                errors.append(error)
+        return errors
+
+    @classmethod
+    def declared_inputs(cls) -> frozenset[str]:
+        """The op's declared `inputs`, read from the `rewriters.pyl` spec."""
+        return frozenset(RewritersEval.load().rewriter(cls.OP_ID)['inputs'])
 
     @classmethod
     def parse(cls, body: object, *, description: str) -> _AstGrepRewriter:
         """Validate a `<NAME>:` body of string args and build the rewriter."""
+        keys = cls.declared_inputs()
         if not isinstance(body, dict):
             raise ValueError(
                 f'"{cls.NAME}" must be a mapping (in "{description}")')
-        unknown = sorted(set(body) - cls._ARG_KEYS)
+        unknown = sorted(set(body) - keys)
         if unknown:
             raise ValueError(
                 f'Unrecognised {cls.NAME} arg(s): '
                 f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
-        missing = sorted(cls._ARG_KEYS - set(body))
+        missing = sorted(keys - set(body))
         if missing:
             raise ValueError(f'{cls.NAME} requires arg(s): '
                              f'{", ".join(missing)} (in "{description}")')
-        for key in sorted(cls._ARG_KEYS):
+        for key in sorted(keys):
             if not isinstance(body[key], str):
                 raise ValueError(f'{cls.NAME} `{key}` must be a string '
                                  f'(in "{description}")')
-        return cls({key: body[key] for key in cls._ARG_KEYS})
+        return cls({key: body[key] for key in keys})
 
 
 class MakeVirtual(_AstGrepRewriter):
@@ -734,7 +875,6 @@ class MakeVirtual(_AstGrepRewriter):
     NAME: Final = 'make_virtual'
     OP_ID: Final = 'cxx.make_virtual'
     SUMMARY: Final = 'Prepend `virtual ` to a class method declaration.'
-    _ARG_KEYS: Final = frozenset(('class_name', 'method_name'))
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Prepends `virtual ` to a C++ method declaration.
@@ -761,26 +901,23 @@ class MakeVirtual(_AstGrepRewriter):
 
 
 class AddFriend(_AstGrepRewriter):
-    """Add a `friend` declaration to a C++ class's private section, via the
-    ast-grep rewriters."""
+    """Add one or more `friend` declarations to a C++ class's private section,
+    via the ast-grep rewriters."""
 
     NAME: Final = 'add_friend'
     OP_ID: Final = 'cxx.add_friend'
-    SUMMARY: Final = 'Add a `friend` declaration to a class private section.'
-    _ARG_KEYS: Final = frozenset(('class_name', 'friend_type'))
-    # The matcher stops at the `private` keyword; the op re-emits the `:` that
-    # follows, so consume the original one.
-    _CONSUME_AFTER: Final = ':'
+    SUMMARY: Final = 'Add `friend` declaration(s) to a class private section.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Inserts a `friend` declaration as the first line of a class's private
-        section. The class must have a `private:` section.
+        Inserts one or more `friend` declarations as the first lines of a
+        class's private section. The class must have a `private:` section.
 
         Fields:
 
         - `class_name` — the class to befriend from.
         - `friend_type` — the friend's declaration body, e.g. `class BraveFoo`
-          becomes `friend class BraveFoo;`.
+          becomes `friend class BraveFoo;`. May be a single string, or a list
+          of them.
 
         Example:
 
@@ -790,8 +927,78 @@ class AddFriend(_AstGrepRewriter):
             add_friend:
               class_name: MultiContentsView
               friend_type: class BraveMultiContentsView
+
+          - description: Friend the Brave worker and its test.
+            add_friend:
+              class_name: DataTypeWorker
+              friend_type:
+                - class BraveDataTypeWorker
+                - class BraveDataTypeWorkerTest
         ```
     """
+
+    def __init__(self, *, class_name: str, friend_types: list[str]):
+        # This rewriter holds its own parsed shape and builds operations from
+        # it, so the base's flat inputs stay empty.
+        super().__init__()
+        self._class_name = class_name
+        self._friend_types = friend_types
+
+    def operations(self, count: int) -> list[Operation]:
+        # Each friend targets the class's single private section, so it is
+        # expected exactly once -- independent of how many friends are listed,
+        # which is why the entry's `count:` is not used here.
+        #
+        # `add_friend` inserts each friend as the *first* private line, so a
+        # later insertion ends up above an earlier one. Emit in reverse so the
+        # friends land in the order the user listed them.
+        del count
+        return [
+            Operation(self.OP_ID, {
+                'class_name': self._class_name,
+                'friend_type': friend_type,
+            }, MatchExpectation.exactly(1))
+            for friend_type in reversed(self._friend_types)
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddFriend:
+        """Validate an `add_friend:` body, accepting a single friend or a list.
+
+        `friend_type` may be a string (one friend) or a non-empty list of
+        strings (several); everything else matches the flat-args form.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'friend_type'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        if not isinstance(body['class_name'], str):
+            raise ValueError(f'{cls.NAME} `class_name` must be a string '
+                             f'(in "{description}")')
+        return cls(class_name=body['class_name'],
+                   friend_types=cls._parse_friend_types(
+                       body['friend_type'], description))
+
+    @staticmethod
+    def _parse_friend_types(value: object, description: str) -> list[str]:
+        """Normalise `friend_type` to a non-empty list of strings."""
+        if isinstance(value, str):
+            return [value]
+        if (isinstance(value, list) and value
+                and all(isinstance(item, str) for item in value)):
+            return list(value)
+        raise ValueError(
+            f'{AddFriend.NAME} `friend_type` must be a string or a non-empty '
+            f'list of strings (in "{description}")')
 
 
 class DropFinal(_AstGrepRewriter):
@@ -801,10 +1008,6 @@ class DropFinal(_AstGrepRewriter):
     NAME: Final = 'drop_final'
     OP_ID: Final = 'cxx.drop_final'
     SUMMARY: Final = 'Remove the `final` specifier from a class declaration.'
-    _ARG_KEYS: Final = frozenset(('class_name', ))
-    # The matcher stops at the `final` keyword; consume the space before it so
-    # dropping `final` leaves no doubled space.
-    _CONSUME_BEFORE: Final = ' '
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
         Removes the `final` specifier from a C++ class declaration, so the class
@@ -919,19 +1122,12 @@ class PlasterFile:
 
         try:
             for substitution in substitutions:
-                contents, num_changes = substitution.apply(contents)
-
-                # count == 0 means "one or more matches", but zero matches still
-                # result in a failure.
-                if substitution.expected_count == 0:
-                    if num_changes == 0:
-                        errors.append(
-                            'Expected at least one match but found none in '
-                            f'{self.path}')
-                elif num_changes != substitution.expected_count:
-                    errors.append(
-                        f'Unexpected number of matches ({num_changes} vs '
-                        f'{substitution.expected_count}) in {self.path}')
+                # Each substitution owns its count validation (per-operation for
+                # composed rewriters) and reports any failures; we just attach
+                # the file being patched.
+                contents, sub_errors = substitution.apply(contents)
+                errors.extend(f'{error} in {self.path}'
+                              for error in sub_errors)
 
         except re.error as e:
             errors.append(f'Invalid regex: {e} in {self.path}')
@@ -992,28 +1188,12 @@ def _is_op_id(op_id: str) -> bool:
     return bool(name) and prefix in _LANGUAGE_BY_PREFIX
 
 
-def _template_args_match(spec: dict) -> dict:
-    """schema validator: a matcher's template uses exactly its declared args.
-
-    Returns the spec unchanged on success or raises schema.SchemaError if the
-    template references a placeholder that is not a declared arg, or declares
-    an arg the template never uses, catching any typos.
-    """
-    placeholders = {
+def _placeholders(template: str) -> set[str]:
+    """The set of named `{placeholder}` fields referenced in `template`."""
+    return {
         name
-        for _, name, _, _ in string.Formatter().parse(spec['template']) if name
+        for _, name, _, _ in string.Formatter().parse(template) if name
     }
-    declared = set(spec['args'])
-    undeclared = sorted(placeholders - declared)
-    if undeclared:
-        raise schema.SchemaError(
-            f'template uses undeclared placeholder(s): {", ".join(undeclared)}'
-        )
-    unused = sorted(declared - placeholders)
-    if unused:
-        raise schema.SchemaError(
-            f'declared arg(s) never used in template: {", ".join(unused)}')
-    return spec
 
 
 # Reusable leaf schemas.
@@ -1031,19 +1211,23 @@ _RESULT_SCHEMA = {
     'node': _NON_EMPTY_STR,
 }
 
-# A matcher op: a templated ast-grep query plus its result shape.
-_MATCHER_SCHEMA = schema.And(
-    {
-        'args': [str],
-        'template': _NON_EMPTY_STR,
-        'result': _RESULT_SCHEMA,
-    }, _template_args_match)
+# A matcher op: a templated ast-grep query plus its result shape. Its inputs
+# are the template's `{placeholder}`s, inferred rather than declared.
+_MATCHER_SCHEMA = {
+    'template': _NON_EMPTY_STR,
+    'result': _RESULT_SCHEMA,
+}
 
 # A rewriter op: locates nodes through a matcher op and edits each via a regex
-# substitution.
+# substitution. `inputs` is its public interface (validated against the
+# templates it feeds in `_check_cross_references`); `replace` may name adjacent
+# tokens to fold into each rewritten span.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
+    'inputs': [str],
     'replace': {
+        schema.Optional('consume_before'): str,
+        schema.Optional('consume_after'): str,
         're_pattern': _REGEX_STR,
         'replace': str,
     },
@@ -1151,9 +1335,12 @@ class RewritersEval:
     def _check_cross_references(self) -> None:
         """Validate rules that span records, which schema cannot express.
 
-        Each rewriter must reference a matcher that exists, and must declare the
+        Each rewriter must reference a matcher that exists, must declare the
         same result node as that matcher (it replaces the node the matcher
-        locates, so the two must agree).
+        locates, so the two must agree), and its declared `inputs` must be
+        exactly the `{placeholder}`s used across the matcher template and the
+        `replace` template -- so the op's advertised interface never drifts from
+        what its templates actually consume.
         """
         for op_id, spec in self._rewriters.items():
             ref = spec['matcher']
@@ -1161,12 +1348,27 @@ class RewritersEval:
                 raise RewritersSchemaError(
                     f'{self._source}: rewriter {op_id!r} references unknown '
                     f'matcher {ref!r}')
-            matcher_node = self._matchers[ref]['result']['node']
+            matcher = self._matchers[ref]
+            matcher_node = matcher['result']['node']
             if spec['result']['node'] != matcher_node:
                 raise RewritersSchemaError(
                     f'{self._source}: rewriter {op_id!r} result node '
                     f'{spec["result"]["node"]!r} does not match matcher '
                     f'{ref!r} node {matcher_node!r}')
+
+            declared = set(spec['inputs'])
+            used = (_placeholders(matcher['template'])
+                    | _placeholders(spec['replace']['replace']))
+            undeclared = sorted(used - declared)
+            if undeclared:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} templates use '
+                    f'undeclared input(s): {", ".join(undeclared)}')
+            unused = sorted(declared - used)
+            if unused:
+                raise RewritersSchemaError(
+                    f'{self._source}: rewriter {op_id!r} declares input(s) '
+                    f'never used in its templates: {", ".join(unused)}')
 
 
 def _ast_grep_platform_dir() -> str:
@@ -1258,11 +1460,12 @@ class AstRewriter:
     """Applies ast-grep rewriter ops to the contents of a single file.
 
     Constructed with an already-parsed `RewritersEval` and the target file's
-    contents. `apply` runs one rewriter op (by id) over the current contents,
+    contents. `run` executes one bound `Operation` over the current contents,
     mutating them in place and returning how many places changed; call it
-    repeatedly to accumulate edits. Op-specific conveniences (which op id and
-    which adjacent tokens to consume) belong with the `Rewriter` classes that
-    drive this engine, not here.
+    repeatedly to accumulate edits. The engine is fully self-contained: an op's
+    matcher, replacement, and any adjacent tokens to consume all come from the
+    op spec, so the `Rewriter` classes that drive it only choose which
+    operations to run.
     """
 
     def __init__(self, rewriters: RewritersEval, content: str):
@@ -1274,40 +1477,35 @@ class AstRewriter:
         """The current file contents, reflecting every applied rewrite."""
         return self._content
 
-    def apply(self,
-              op_id: str,
-              args: dict[str, str],
-              *,
-              consume_before: str = '',
-              consume_after: str = '') -> int:
-        """Run rewriter `op_id` with `args`, mutate content, return count.
+    def run(self, op: Operation) -> int:
+        """Run one bound `Operation`, mutate content, return the change count.
 
         Locates nodes via the op's matcher template, applies the op's `replace`
-        regex substitution (with `args` filled into the replacement template)
-        to each matched node, and splices the results back into the held
-        contents from the end so earlier byte offsets stay valid. Returns the
-        total number of substitutions made.
+        regex substitution (with `op.inputs` filled into the replacement
+        template) to each matched node, and splices the results back into the
+        held contents from the end so earlier byte offsets stay valid. Returns
+        the total number of substitutions made.
 
-        `consume_before` / `consume_after` are literals the op assumes
-        immediately precede / follow each matched node. They are folded into the
-        rewritten span used when the node kind stops short of an adjacent
+        An op's `replace` may name `consume_before` / `consume_after` literals
+        that sit immediately before / after each matched node; they are folded
+        into the rewritten span when the node kind stops short of an adjacent
         token (e.g. the `:` after an access_specifier, or the space before a
-        `final` specifier). They are engine details, not part of the rewriters
-        spec.
+        `final` specifier).
         """
-        rewriter = self._rewriters.rewriter(op_id)
+        rewriter = self._rewriters.rewriter(op.op_id)
         matcher = self._rewriters.matcher(rewriter['matcher'])
-        language = self._rewriters.language_of(op_id)
-        rule_body = matcher['template'].format(**args)
+        language = self._rewriters.language_of(op.op_id)
+        rule_body = matcher['template'].format(**op.inputs)
 
         matches = run_ast_grep(language=language,
                                rule_body=rule_body,
                                source=self._content)
 
-        pattern = rewriter['replace']['re_pattern']
-        replacement = rewriter['replace']['replace'].format(**args)
-        before = consume_before.encode('utf-8')
-        after = consume_after.encode('utf-8')
+        replace = rewriter['replace']
+        pattern = replace['re_pattern']
+        replacement = replace['replace'].format(**op.inputs)
+        before = replace.get('consume_before', '').encode('utf-8')
+        after = replace.get('consume_after', '').encode('utf-8')
 
         source = self._content.encode('utf-8')
         edits = []
