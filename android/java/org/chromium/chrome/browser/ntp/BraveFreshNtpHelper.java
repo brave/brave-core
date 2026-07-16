@@ -5,8 +5,11 @@
 
 package org.chromium.chrome.browser.ntp;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.app.flags.BraveCachedFlags;
+import org.chromium.chrome.browser.flags.ChromeFeatureMap;
+import org.chromium.components.cached_flags.CachedFlag;
+import org.chromium.components.cached_flags.StringCachedFeatureParam;
 
 /**
  * Helper class for managing fresh NTP after idle expiration feature. This feature shows a refreshed
@@ -15,12 +18,28 @@ import org.chromium.chrome.browser.app.flags.BraveCachedFlags;
  */
 @NullMarked
 public class BraveFreshNtpHelper {
+    // Cached feature flag for fresh NTP after idle expiration - safe to access before native is
+    // ready.
+    public static final CachedFlag sBraveFreshNtpAfterIdleExperimentEnabled =
+            new CachedFlag(
+                    ChromeFeatureMap.getInstance(),
+                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
+                    false);
+
+    // Cached variant parameter for fresh NTP experiment - safe to access before native is ready.
+    public static final StringCachedFeatureParam sBraveFreshNtpAfterIdleExperimentVariant =
+            new StringCachedFeatureParam(
+                    ChromeFeatureMap.getInstance(),
+                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
+                    "variant",
+                    "A");
+
     /**
      * @return Whether the fresh NTP after idle expiration feature is enabled. This uses a cached
      *     flag, so it's safe to call even before native is ready.
      */
     public static boolean isEnabled() {
-        return BraveCachedFlags.sBraveFreshNtpAfterIdleExperimentEnabled.isEnabled();
+        return sBraveFreshNtpAfterIdleExperimentEnabled.isEnabled();
     }
 
     /**
@@ -31,6 +50,6 @@ public class BraveFreshNtpHelper {
      * @return The variant string.
      */
     public static String getVariant() {
-        return BraveCachedFlags.sBraveFreshNtpAfterIdleExperimentVariant.getValue();
+        return sBraveFreshNtpAfterIdleExperimentVariant.getValue();
     }
 }

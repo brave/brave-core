@@ -5,48 +5,36 @@
 
 package org.chromium.chrome.browser.app.flags;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.build.annotations.NullMarked;
-import org.chromium.chrome.browser.flags.ChromeFeatureMap;
+import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.util.BraveDynamicColors;
 import org.chromium.components.cached_flags.BraveCachedFeatureParam;
 import org.chromium.components.cached_flags.BraveCachedFlagUtils;
 import org.chromium.components.cached_flags.CachedFeatureParam;
 import org.chromium.components.cached_flags.CachedFlag;
-import org.chromium.components.cached_flags.StringCachedFeatureParam;
 
 import java.util.List;
 
 @NullMarked
 public class BraveCachedFlags extends ChromeCachedFlags {
-    // Cached feature flag for fresh NTP after idle expiration - safe to access before native is
-    // ready
-    public static final CachedFlag sBraveFreshNtpAfterIdleExperimentEnabled =
-            new CachedFlag(
-                    ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
-                    false);
-
-    // Cached variant parameter for fresh NTP experiment - safe to access before native is ready
-    public static final StringCachedFeatureParam sBraveFreshNtpAfterIdleExperimentVariant =
-            new StringCachedFeatureParam(
-                    ChromeFeatureMap.getInstance(),
-                    BraveFeatureList.BRAVE_FRESH_NTP_AFTER_IDLE_EXPERIMENT,
-                    "variant",
-                    "A");
-
     // List of cached flags for Brave features - safe to access before native is ready
     private static final List<CachedFlag> sBraveFlagsCached =
             List.of(
                     BraveDynamicColors.sDynamicColorsEnabled,
-                    sBraveFreshNtpAfterIdleExperimentEnabled);
+                    BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentEnabled);
     // List of cached feature params for Brave features - safe to access before native is ready
     private static final List<CachedFeatureParam<?>> sBraveFeatureParamsCached =
-            List.of(sBraveFreshNtpAfterIdleExperimentVariant);
+            List.of(BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentVariant);
 
-    BraveCachedFlags() {
+    // The build-time bytecode rewriter changes the allocation in
+    // `ChromeCachedFlags.<clinit>` from `new ChromeCachedFlags()` to `new BraveCachedFlags()`.
+    // Set Brave's cached flags and parameters here, after the lists above. Do not
+    // set them in the constructor, which can run before those lists initialize.
+    static {
         BraveCachedFeatureParam.setBraveParams(sBraveFeatureParamsCached);
         BraveCachedFlagUtils.setBraveFlags(sBraveFlagsCached);
         BraveCachedFlagUtils.setBraveParams(sBraveFeatureParamsCached);
     }
+
+    BraveCachedFlags() {}
 }
