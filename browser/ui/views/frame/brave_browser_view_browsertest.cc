@@ -241,8 +241,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest, LayoutWithVerticalTabTest) {
 // browser() is actually launched with vertical tabs already on.
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        PRE_ShouldNotShowWindowIconWithVerticalTabTest) {
-  ASSERT_FALSE(VerticalTabController::FromBrowser(browser())
-                   ->ShouldShowBraveVerticalTabs());
+  ASSERT_FALSE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
 
   browser()->profile()->GetPrefs()->SetBoolean(brave_tabs::kVerticalTabsEnabled,
@@ -252,8 +251,7 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
 IN_PROC_BROWSER_TEST_F(BraveBrowserViewTest,
                        ShouldNotShowWindowIconWithVerticalTabTest) {
   // Browser is launched with vertical tab mode already on.
-  ASSERT_TRUE(VerticalTabController::FromBrowser(browser())
-                  ->ShouldShowBraveVerticalTabs());
+  ASSERT_TRUE(tabs::utils::ShouldShowBraveVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowIcon());
 }
 
