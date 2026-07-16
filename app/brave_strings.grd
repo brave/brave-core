@@ -2539,10 +2539,7 @@ Brave is unable to recover your settings.
           Stay safe with Password Manager
         </message>
         <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_SUBTITLE" desc="Description for the Password Manager page in the Feature Showcase.">
-          Built into Brave to help you create, save, and autofill strong passwords. Add the shortcut for easy access
-        </message>
-        <message name="IDS_FEATURE_SHOWCASE_PASSWORD_MANAGER_ILLUSTRATION_A11Y_LABEL" desc="Accessibility label for the illustration on the Password Manager page in the Feature Showcase.">
-          A simplified image showing the Password Manager entry point in Brave
+          Built into Brave to help you create, save, and autofill strong passwords. Add the shortcut for easy access.
         </message>
 
         <!-- Feature Showcase - Lens -->
@@ -2551,9 +2548,6 @@ Brave is unable to recover your settings.
         </message>
         <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_DISCLOSURE" desc="This is a technical disclosure for the Lens Overlay. It specifies that PDFs are also part of the shared data. The tone should be informative.">
           When you use Image Search on desktop, the page title, URL, and content, including PDFs, are sent to the server
-        </message>
-        <message name="IDS_FEATURE_SHOWCASE_LENS_OVERLAY_ILLUSTRATION_A11Y_LABEL" desc="Accessibility label for the illustration on the Lens Overlay page in the Feature Showcase.">
-          An illustration showing how you can use Image Search to look up a product
         </message>
       </if>
 
@@ -3088,7 +3082,7 @@ Brave is unable to recover your settings.
         </message>
 
         <message name="IDS_DICTATION_ONBOARDING_TITLE" desc="The title string in the onboarding dialog for the dictation feature." translateable="false">
-          Turn your spoken thoughts into polished text with Brave.
+          Turn your spoken thoughts into polished text with Brave
         </message>
         <message name="IDS_DICTATION_ONBOARDING_BULLET_MICROPHONE" desc="The first paragraph in the onboarding dialog describing how the microphone is used." translateable="false">
           Brave will use your microphone to capture your voice and fill in text fields with cleaned up text.

@@ -10,8 +10,8 @@ substitutions:
       Upstream only animates the chip in when it is acting as a suggestion
       chip. Brave has page actions whose label must remain visible regardless,
       so we widen the condition to also cover `model.GetAlwaysShowLabel()`.
-    re_pattern: 'else if \((model.ShouldShowSuggestionChip\(\))\)'
-    replace: 'else if (\1 || model.GetAlwaysShowLabel())'
+    re_pattern: 'if \((model.ShouldShowSuggestionChip\(\))\)'
+    replace: 'if (\1 || model.GetAlwaysShowLabel())'
 
   - description: |
       Let Brave adjust the border insets before UpdateBorder() applies them.

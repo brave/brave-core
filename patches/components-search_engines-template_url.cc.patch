@@ -1,5 +1,5 @@
 diff --git a/components/search_engines/template_url.cc b/components/search_engines/template_url.cc
-index 554c0b8a2619adddceecdd8b2acba6a78e542dfb..4f48f0df9ff9dcf2cae4e80c586498be721dd136 100644
+index a04255be8d55935377562753f3d22b388451a422..bdf7a1782c0a2a858f347a336535f59d7702fc5b 100644
 --- a/components/search_engines/template_url.cc
 +++ b/components/search_engines/template_url.cc
 @@ -843,6 +843,7 @@ bool TemplateURLRef::ParseParameter(size_t start,

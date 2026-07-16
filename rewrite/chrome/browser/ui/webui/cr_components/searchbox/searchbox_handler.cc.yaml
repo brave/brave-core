@@ -7,12 +7,12 @@ substitutions:
   - description: |
       Add Leo omnibox icons to `AutocompleteIconToResourceName`.
 
-      This regex looks for the NOTREACHED at the end of the function, making sure it
-      is in fact the last NOTREACHED, and inserts our code just after, meaning, at the
-      end of the function.
+      This regex looks for the DUMP_WILL_BE_NOTREACHED at the end of the
+      function, making sure it is in fact the last one, and inserts our code
+      just before it, meaning, at the end of the function.
     re_pattern:
       '(SearchboxHandler::AutocompleteIconToResourceName\(.*?\) const
-      \{.*?)(NOTREACHED\b.*?;)(?=(?:(?!NOTREACHED).)*?\n\})'
+      \{.*?)(DUMP_WILL_BE_NOTREACHED\b.*?;)(?=(?:(?!DUMP_WILL_BE_NOTREACHED).)*?\n\})'
     re_flags: [DOTALL]
     replace: |-
       \1if (icon.name == kLeoWindowTabNewIcon.name) {
@@ -20,9 +20,9 @@ substitutions:
         } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
           return kLeoMessageBubbleAskIconResourceName;
         }
-        // This function is used for the WebUI Omnibox which isn't enabled in Brave,
-        // so its okay to disable the NOTREACHED() check here and use the default icon
-        // instead.
+        // This function is used for the WebUI Omnibox which isn't enabled in
+        // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
+        // here and use the default icon instead.
         if ((true)) return "";
         \2
 

@@ -147,6 +147,10 @@ export function createSearchStore() {
 
   loadData()
 
+  // Tracks the latest query sent for autocompletion. Used to filter out stale
+  // results.
+  let activeQueryId = 0
+
   const actions: SearchActions = {
     setShowSearchBox(showSearchBox) {
       store.update({ showSearchBox })
@@ -207,7 +211,12 @@ export function createSearchStore() {
       if (searchEngine && searchEngine.keyword) {
         query = [searchEngine.keyword, query].join(' ')
       }
-      searchProxy.handler.queryAutocomplete(query, false, query.length)
+      searchProxy.handler.queryAutocomplete(
+        activeQueryId++,
+        query,
+        false,
+        query.length,
+      )
     },
 
     openAutocompleteMatch(index, event) {

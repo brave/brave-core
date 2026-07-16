@@ -1,8 +1,8 @@
 diff --git a/content/browser/BUILD.gn b/content/browser/BUILD.gn
-index 538d8c277483618d509d8254c8bdec7849d5fddf..cc30a034b2141a466f37e0b8cbea62ca19d8da37 100644
+index 2c3a21e01a60263574121ec46d80d2e3392ac81a..e51c049794c1e91f8df918aee1c3124b0aa7d570 100644
 --- a/content/browser/BUILD.gn
 +++ b/content/browser/BUILD.gn
-@@ -3851,6 +3851,7 @@ source_set("browser") {
+@@ -3853,6 +3853,7 @@ source_set("browser") {
      deps += [ "//components/vrp_flags" ]
      public_deps += [ "//components/vrp_flags:mojom" ]
    }

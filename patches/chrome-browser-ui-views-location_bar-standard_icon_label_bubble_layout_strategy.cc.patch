@@ -1,0 +1,27 @@
+diff --git a/chrome/browser/ui/views/location_bar/standard_icon_label_bubble_layout_strategy.cc b/chrome/browser/ui/views/location_bar/standard_icon_label_bubble_layout_strategy.cc
+index e6378ebd1206237880014fae9610f5a9d8dc6b71..63314281b3ee77d74256aa47c87c2d5742d47e2d 100644
+--- a/chrome/browser/ui/views/location_bar/standard_icon_label_bubble_layout_strategy.cc
++++ b/chrome/browser/ui/views/location_bar/standard_icon_label_bubble_layout_strategy.cc
+@@ -48,8 +48,8 @@ StandardIconLabelBubbleAnimationLayoutStrategy::CalculateProposedLayout(
+   if (size_bounds.width().is_bounded() &&
+       preferred_size.width() > size_bounds.width()) {
+     preferred_size = host->GetMinimumSize();
+-    if (host->ShouldShowLabel() &&
+-        host->label()->GetElideBehavior() != gfx::NO_ELIDE) {
++    if ((host->ShouldShowLabel() &&
++        host->label()->GetElideBehavior() != gfx::NO_ELIDE) || host->ShouldAlwaysShowLabel()) {
+       preferred_size.set_width(
+           std::max(preferred_size.width(), size_bounds.width().value()));
+     } else {
+@@ -112,9 +112,10 @@ StandardIconLabelBubbleAnimationLayoutStrategy::CalculateProposedLayout(
+   // If the fully expanded label fits, or it is mid-animation, then we
+   // accept the "_with_label" image bounds.
+   const bool can_label_expand = available_label_width >= preferred_label_width;
+-  const bool should_use_label_bounds =
++  bool should_use_label_bounds =
+       host->ShouldShowLabel() &&
+       (can_label_expand || can_expand_label_for_animation);
++  should_use_label_bounds = should_use_label_bounds || host->ShouldAlwaysShowLabel();
+   layout.child_layouts.emplace_back(
+       const_cast<views::View*>(host->image_container_view()), true,
+       should_use_label_bounds ? image_bounds_with_label : image_bounds);

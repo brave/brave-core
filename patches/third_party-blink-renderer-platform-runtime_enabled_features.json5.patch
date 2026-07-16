@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/platform/runtime_enabled_features.json5 b/third_party/blink/renderer/platform/runtime_enabled_features.json5
-index 48d7b3696764718c70df565b1d9c0df89dd85252..42f6e7f457b0283e65fdc0606e2ae887c4a664ef 100644
+index e5702659bbf5cf21b1674e801fd4ddb4909d11a9..94fe7a47b1dad40814f6edc5c725cb676edebf32 100644
 --- a/third_party/blink/renderer/platform/runtime_enabled_features.json5
 +++ b/third_party/blink/renderer/platform/runtime_enabled_features.json5
 @@ -966,6 +966,11 @@

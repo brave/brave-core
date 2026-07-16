@@ -33,7 +33,10 @@ source_set("browser_tests") {
       "searchbox/brave_realbox_handler_browsertest.cc",
     ]
 
-    deps += [ "//chrome/browser/ui/webui/searchbox" ]
+    deps += [
+      "//chrome/browser/ui/webui/searchbox",
+      "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+    ]
   }
 }
 

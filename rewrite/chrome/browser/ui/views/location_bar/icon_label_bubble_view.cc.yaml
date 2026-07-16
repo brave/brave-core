@@ -5,22 +5,6 @@
 
 substitutions:
   - description:
-      'Use preferred size instead of minimum size when ShouldAlwaysShowLabel is
-      true in CalculateProposedLayout()'
-    re_pattern:
-      'if (\(ShouldShowLabel\(\) && label\(\)->GetElideBehavior\(\) !=
-      gfx::NO_ELIDE\)) {'
-    replace: 'if (\1 || ShouldAlwaysShowLabel()) {'
-
-  - description:
-      'Force should_use_label_bounds to true when ShouldAlwaysShowLabel is true
-      in CalculateProposedLayout()'
-    re_pattern: 'const bool should_use_label_bounds =([\s\S]*?);'
-    replace: |-
-      bool should_use_label_bounds =\1;
-        should_use_label_bounds = should_use_label_bounds || ShouldAlwaysShowLabel();
-
-  - description:
       'Use rounded corners from layout constants in GetHighlightPath()'
     re_pattern:
       'const SkRect rect = RectToSkRect\(highlight_bounds\);[\s\S]*?return
