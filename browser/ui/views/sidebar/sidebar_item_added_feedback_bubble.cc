@@ -106,6 +106,13 @@ void SidebarItemAddedFeedbackBubble::OnViewBoundsChanged(View* observed_view) {
   SizeToContents();
 }
 
+void SidebarItemAddedFeedbackBubble::OnViewIsDeleting(View* observed_view) {
+  // The observed SidebarItemsContentsView is going away (e.g. on browser
+  // shutdown, before this bubble's widget is destroyed). Stop observing so the
+  // ScopedObservation is not torn down against freed memory.
+  observed_.Reset();
+}
+
 void SidebarItemAddedFeedbackBubble::AddChildViews() {
   auto* layout_manager = SetLayoutManager(std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kVertical));
