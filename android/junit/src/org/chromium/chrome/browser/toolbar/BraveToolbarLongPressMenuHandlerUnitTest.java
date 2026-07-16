@@ -92,6 +92,7 @@ public final class BraveToolbarLongPressMenuHandlerUnitTest {
                         mWindowAndroid,
                         () -> mUrl,
                         () -> mViewRectProvider,
+                        url -> true,
                         () -> {});
 
         verify(mActivityLifecycleDispatcher).register(mToolbarLongPressMenuHandler);
