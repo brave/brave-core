@@ -45,3 +45,13 @@ TEST(CommandUtilsUnitTest, NoTranslationsIncludeAmpersand) {
            "from menus are not included in the name of commands.";
   }
 }
+
+TEST(CommandUtilsUnitTest, IncludesVerticalTabsToggleCommand) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeature(commands::features::kBraveCommands);
+
+  EXPECT_TRUE(std::ranges::contains(commands::GetCommands(),
+                                    IDC_TOGGLE_VERTICAL_TABS));
+  EXPECT_EQ(commands::GetCommandName(IDC_TOGGLE_VERTICAL_TABS),
+            "Toggle vertical tabs");
+}
