@@ -294,7 +294,7 @@ void PsstTabWebContentsObserver::OnUserScriptResult(
   }
 
   const int rule_version = rule->version();
-  auto origin = url::Origin::Create(web_contents()->GetLastCommittedURL());
+  auto origin = web_contents()->GetPrimaryMainFrame()->GetLastCommittedOrigin();
   ui_delegate_->Show(
       std::move(origin), std::move(*psst_settings), rule_version,
       std::move(user_script_result_parsed),

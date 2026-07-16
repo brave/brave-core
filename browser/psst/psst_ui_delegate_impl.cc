@@ -46,15 +46,12 @@ void PsstUiDelegateImpl::Show(
   auto icon_status = LocationBarIconStatus::kOnlyIcon;
 
   // Show icon with badge only if it is initial execution and version changed
-  if (user_script_result->initial_execution.has_value() &&
-      user_script_result->initial_execution.value()) {
-    if ((dialog_data_->consent_status == ConsentStatus::kAsk ||
-         dialog_data_->consent_status == ConsentStatus::kAllow) &&
-        dialog_data_->script_version != rule_version) {
-      icon_status = LocationBarIconStatus::kIconWithBadge;
-      // A new version will be saved when the user accepts the consent dialog.
-      dialog_data_->script_version = rule_version;
-    }
+  if ((dialog_data_->consent_status == ConsentStatus::kAsk ||
+       dialog_data_->consent_status == ConsentStatus::kAllow) &&
+      dialog_data_->script_version != rule_version) {
+    icon_status = LocationBarIconStatus::kIconWithBadge;
+    // A new version will be saved when the user accepts the consent dialog.
+    dialog_data_->script_version = rule_version;
   }
 
   ui_presenter_->SetLocationBarIconStatus(
