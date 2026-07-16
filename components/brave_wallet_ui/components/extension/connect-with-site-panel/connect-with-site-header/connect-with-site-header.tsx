@@ -14,9 +14,6 @@ import { getLocale } from '../../../../../common/locale'
 // Components
 import { CreateSiteOrigin } from '../../../shared/create-site-origin/index'
 import { Tooltip } from '../../../shared/tooltip/index'
-import {
-  VerifiedLabel, //
-} from '../../../shared/verified_label/verified_label'
 
 // Styled Components
 import {
@@ -34,7 +31,6 @@ import {
   GradientLine,
   LinkIconCircle,
   LinkIcon,
-  VerifiedIcon,
   DomainTextContainer,
 } from './connect-with-site-header.style'
 import { AccountCircle } from '../select-account-item/select-account-item.style'
@@ -42,9 +38,6 @@ import { HorizontalSpace, Column, Row } from '../../../shared/style'
 
 // Hooks
 import { useAddressOrb } from '../../../../common/hooks/use-orb'
-import {
-  useIsDAppVerified, //
-} from '../../../../common/hooks/use_is_dapp_verified'
 
 interface Props {
   originInfo: BraveWallet.OriginInfo
@@ -56,9 +49,6 @@ interface Props {
 
 export const ConnectWithSiteHeader = (props: Props) => {
   const { originInfo, address, isReadyToConnect, isScrolled, onBack } = props
-
-  // Hooks
-  const { isDAppVerified } = useIsDAppVerified(originInfo)
 
   // Memos
   const orb = useAddressOrb(address)
@@ -115,7 +105,6 @@ export const ConnectWithSiteHeader = (props: Props) => {
                     )}`}
                     isReadyToConnect={isReadyToConnect}
                   />
-                  {isDAppVerified && <VerifiedIcon />}
                 </Tooltip>
               </Row>
               <SiteURLCentered>
@@ -149,7 +138,6 @@ export const ConnectWithSiteHeader = (props: Props) => {
                     eTldPlusOne={originInfo.eTldPlusOne}
                   />
                 </SiteURL>
-                {isDAppVerified && <VerifiedLabel />}
               </DomainTextContainer>
             </Row>
           )}
