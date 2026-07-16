@@ -27,6 +27,7 @@ struct QuickViewToolbarView: View {
     VStack(spacing: 0) {
       topRow
         .padding(.top, viewModel.collapseProgress < 1 ? 16 : 4)
+        .padding(.bottom, viewModel.collapseProgress < 1 ? 0 : 4)
       if viewModel.collapseProgress < 1 {
         bottomRow
           .padding(.top, 12)
@@ -201,8 +202,10 @@ struct QuickViewToolbarView: View {
           maxWidth: viewModel.secureContentState.shouldDisplayWarning ? .infinity : nil,
           alignment: .center
         )
-        progressBar
-          .hidden(isHidden: !viewModel.isLoading)
+        if viewModel.collapseProgress < 1 {
+          progressBar
+            .hidden(isHidden: !viewModel.isLoading)
+        }
       }
       .padding(.horizontal, 16)
 
@@ -332,7 +335,9 @@ private struct QuickViewToolbarBottomButtonStyle: ButtonStyle {
 
 extension QuickViewToolbarView {
   /// Height of the URL-only strip that remains visible when collapsed.
+  /// Includes 4pt top and 4pt bottom padding so the URL label is vertically centered.
   static func collapsedHeight(compatibleWith traitCollection: UITraitCollection) -> CGFloat {
     UIFontMetrics(forTextStyle: .subheadline).scaledValue(for: 24, compatibleWith: traitCollection)
+      + 8  // 4pt top padding + 4pt bottom padding when collapsed
   }
 }
