@@ -306,6 +306,7 @@ export default function MarkdownRenderer(mainProps: MarkdownRendererProps) {
   const plugin = React.useCallback(() => {
     const transformer = (tree: Root) => {
       const lastElLineEndsAt = tree.position?.end.line
+
       const lastElCharEndsAt = tree.position?.end.offset
 
       visit(tree, 'element', (el: HastElement) => {

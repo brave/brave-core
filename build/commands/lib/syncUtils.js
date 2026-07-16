@@ -16,6 +16,7 @@ function toGClientConfigItem(name, value, pretty = true) {
     return ''
   }
 
+  // test.
   const valueMap = {
     true: '%True%',
     false: '%False%',

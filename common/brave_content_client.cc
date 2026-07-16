@@ -86,6 +86,7 @@ base::RefCountedMemory* BraveContentClient::GetDataResourceBytes(
 
 void BraveContentClient::AddAdditionalSchemes(Schemes* schemes) {
   ChromeContentClient::AddAdditionalSchemes(schemes);
+
   schemes->standard_schemes.push_back(content::kBraveUIScheme);
   schemes->secure_schemes.push_back(content::kBraveUIScheme);
   schemes->cors_enabled_schemes.push_back(content::kBraveUIScheme);

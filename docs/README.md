@@ -3,7 +3,7 @@
 This directory contains documentation for the Brave Browser. For additional
 resources outside this repository, go to:
 
-- [brave-browser/wiki](https://github.com/brave/brave-browser/wiki)
+- [brave-browser/wiki ](https://github.com/brave/brave-browser/wiki)
 
 ## Document Index
 

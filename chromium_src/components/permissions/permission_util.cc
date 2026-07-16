@@ -25,7 +25,7 @@
   case RequestType::kBraveSolana:   \
   case RequestType::kBraveCardano:
 
-// Since we don't do UMA just reuse an existing UMA type instead of adding one.
+// Since we don't do UMA just reuse an existing UMA type instead of adding one
 #define BRAVE_GET_UMA_VALUE_FOR_REQUEST_TYPE      \
   case RequestType::kWidevine:                    \
     BRAVE_WALLET_UMA_CASES                        \
