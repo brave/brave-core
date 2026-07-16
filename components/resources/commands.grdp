@@ -386,7 +386,7 @@
     Toggle sidebar position
   </message>
   <message name="IDS_IDC_TOGGLE_SIDEBAR">
-    Toggle sidebar
+    Toggle current side panel
   </message>
   <message name="IDS_IDC_TOGGLE_BOOKMARKS_SIDE_PANEL">
     Toggle Bookmarks side panel
