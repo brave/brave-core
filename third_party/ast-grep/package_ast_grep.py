@@ -21,7 +21,13 @@ import platform
 import sys
 import tarfile
 
+sys.path.insert(
+    0,
+    str(Path(__file__).resolve().parents[2] / 'tools' / 'cr' / 'toolchains'))
+
+# pylint: disable=wrong-import-position
 import build_ast_grep
+from upload import S3Uploader, sha256_file, summarise
 
 
 def _platform_tag() -> str:
@@ -80,6 +86,10 @@ def main() -> int:
     parser.add_argument('--verbose',
                         action='store_true',
                         help='Enable debug logging.')
+    parser.add_argument('--upload',
+                        action='store_true',
+                        help='Upload the packaged tarball to our public '
+                        'bucket.')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.DEBUG if args.verbose else logging.INFO,
@@ -88,8 +98,17 @@ def main() -> int:
     build_ast_grep.build(args.jobs, clean=args.clean)
     archive = _create_archive(args.out_dir.expanduser().resolve())
 
+    if args.upload:
+        result = S3Uploader(bucket='brave-build-deps-public').upload(
+            archive, prefix='ast-grep')
+        logging.info('Upload summary:\n%s', summarise(result))
+        sha256, size = result.sha256, result.size_bytes
+    else:
+        sha256, size = sha256_file(archive), archive.stat().st_size
+
     logging.info('Done.')
     logging.info('ast-grep package: %s', archive)
+    logging.info('  sha256: %s  (%d bytes)', sha256, size)
     return 0
 
 

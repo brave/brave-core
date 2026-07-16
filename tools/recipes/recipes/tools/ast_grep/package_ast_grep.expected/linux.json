@@ -78,7 +78,8 @@
       "[WORKSPACE]/chromium/src/brave",
       "sparse-checkout",
       "add",
-      "third_party/ast-grep"
+      "third_party/ast-grep",
+      "tools/cr/toolchains"
     ],
     "name": "sparse-checkout add"
   },
@@ -88,7 +89,8 @@
       "[WORKSPACE]/chromium/src/brave/third_party/ast-grep/package_ast_grep.py",
       "--clean",
       "--out-dir",
-      "[WORKSPACE]/out"
+      "[WORKSPACE]/out",
+      "--upload"
     ],
     "name": "package ast-grep"
   },
