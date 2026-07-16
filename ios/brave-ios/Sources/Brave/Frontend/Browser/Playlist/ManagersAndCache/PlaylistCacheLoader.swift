@@ -58,18 +58,11 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
     super.init(frame: .zero)
 
     tab.browserData = .init(tab: tab)
-    if !FeatureList.kUseProfileWebViewConfiguration.enabled {
-      tab.browserData?.setScript(
-        script: .playlistMediaSource,
-        enabled: true
-      )
-    } else {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.playlist = .init(tab: tab, delegate: self)
     }
     tab.createWebView()
-    if FeatureList.kUseProfileWebViewConfiguration.enabled {
-      BraveWebView.from(tab: tab)?.enablePlaylistCompatibilityMode()
-    }
+    ensurePlaylistMediaSourceSwizzle()
     tab.webViewProxy?.scrollView?.layer.masksToBounds = true
 
     self.addSubview(tab.view)
@@ -84,6 +77,14 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
 
   deinit {
     self.removeFromSuperview()
+  }
+
+  private func ensurePlaylistMediaSourceSwizzle() {
+    if FeatureList.kUseProfileWebViewConfiguration.enabled {
+      BraveWebView.from(tab: tab)?.enablePlaylistCompatibilityMode()
+    } else {
+      tab.browserData?.setScript(script: .playlistMediaSource, enabled: true)
+    }
   }
 
   @MainActor
@@ -118,6 +119,7 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       }
 
       tab.view.frame = superview?.bounds ?? self.bounds
+      ensurePlaylistMediaSourceSwizzle()
       tab.loadRequest(
         URLRequest(url: url, cachePolicy: .reloadIgnoringCacheData, timeoutInterval: 60.0)
       )
@@ -248,11 +250,12 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
         return
       }
 
-      // For now, we ignore base64 video mime-types loaded via the `data:` scheme.
-      if item.duration <= 0.0 && !item.detected || item.src.isEmpty || item.src.hasPrefix("data:")
-        || item.src.hasPrefix("blob:")
-      {
-        cancelRequest()
+      // Ignore transient or non-streamable sources and keep waiting for a playable URL.
+      if item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
+        return
+      }
+
+      if item.src.isEmpty || (item.duration <= 0.0 && !item.detected) {
         return
       }
 
@@ -290,8 +293,10 @@ extension LivePlaylistWebLoader: PlaylistTabHelperDelegate {
     guard let item else { return }
 
     if item.src.hasPrefix("data:") || item.src.hasPrefix("blob:") {
-      handler?(nil)
-      tab?.stopLoading()
+      return
+    }
+
+    if item.src.isEmpty || (item.duration <= 0.0 && !item.detected) {
       return
     }
 
@@ -313,6 +318,10 @@ extension LivePlaylistWebLoader: PlaylistTabHelperDelegate {
 }
 
 extension LivePlaylistWebLoader: TabObserver {
+  func tabDidCreateWebView(_ tab: some TabState) {
+    ensurePlaylistMediaSourceSwizzle()
+  }
+
   func tabDidCommitNavigation(_ tab: some TabState) {
     if !FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.evaluateJavaScript(
@@ -385,6 +394,7 @@ extension LivePlaylistWebLoader: TabPolicyDecider {
             isGPCEnabled: true
           ) ?? []
         if !FeatureList.kUseProfileWebViewConfiguration.enabled {
+          ensurePlaylistMediaSourceSwizzle()
           tab.browserData?.setCustomUserScript(scripts: scriptTypes)
         }
       }
