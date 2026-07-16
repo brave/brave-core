@@ -459,14 +459,11 @@ void AIChatService::DeleteAssociatedWebContent(
 
 void AIChatService::MaybeInitStorage() {
   if (IsAIChatHistoryEnabled()) {
-    // Bring up the background sequence and the sync-bridge holder eagerly so
+    // Bring up the background sequence and the sync backend eagerly so
     // CreateSyncControllerDelegate() can hand out a working
-    // ProxyDataTypeControllerDelegate even before the bridge itself has been
-    // constructed. The bridge installation happens later in
-    // OnOsCryptAsyncReady once the encryptor is available; until then,
-    // AIChatSyncBackend::GetControllerDelegate() returns null and the sync
-    // controller stays in the not-running state — but it is *registered*,
-    // which is what the settings UI's `aiChatRegistered` flag reflects.
+    // ProxyDataTypeControllerDelegate straight away. The backend lives for the
+    // whole service lifetime and is never swapped, so that delegate always
+    // resolves to the same object.
     if (!db_task_runner_) {
       db_task_runner_ = base::ThreadPool::CreateSequencedTaskRunner(
           {base::MayBlock(), base::WithBaseSyncPrimitives(),
@@ -475,6 +472,22 @@ void AIChatService::MaybeInitStorage() {
     }
     if (!sync_backend_ && features::IsBraveSyncAIChatEnabled()) {
       sync_backend_ = base::MakeRefCounted<AIChatSyncBackend>(db_task_runner_);
+      // Install the bridge (and its change processor) now, before the database
+      // exists. This is what the ProxyDataTypeControllerDelegate resolves to,
+      // so the change processor is present to receive OnSyncStarting() from the
+      // sync engine even if that arrives before the database is ready — it just
+      // buffers the start until SetDatabase() reports the model ready. The
+      // database is attached in OnOsCryptAsyncReady() once the encryptor is
+      // available.
+      db_task_runner_->PostTask(
+          FROM_HERE,
+          base::BindOnce(
+              [](scoped_refptr<AIChatSyncBackend> backend) {
+                backend->SetBridge(std::make_unique<AIChatSyncBridge>(
+                    std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
+                        syncer::AI_CHAT_CONVERSATION, base::DoNothing())));
+              },
+              sync_backend_));
     }
     if (!ai_chat_db_ && !os_crypt_init_pending_) {
       DVLOG(0) << "Initializing OS Crypt Async";
@@ -485,16 +498,16 @@ void AIChatService::MaybeInitStorage() {
       // if we can't use encryption.
     }
   } else {
-    // Tear down the bridge on the DB sequence before ai_chat_db_ is reset
-    // later in this branch (the bridge holds a raw_ref to the database, so it
-    // must not outlive it — same ordering rule as Shutdown()), and drop the
-    // backend so a later re-enable rebuilds it — SetBridge() installs at most
-    // once.
+    // Detach the database from the bridge on the DB sequence before ai_chat_db_
+    // is reset later in this branch, so the bridge's raw_ptr to the database
+    // never dangles. The backend and bridge are kept alive (not torn down): the
+    // sync engine already holds a delegate resolving to this bridge, and its
+    // change processor must survive the storage toggle so sync resumes without
+    // getting stuck once storage is re-enabled.
     if (sync_backend_ && db_task_runner_) {
       db_task_runner_->PostTask(
           FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::Shutdown, sync_backend_));
-      sync_backend_.reset();
+          base::BindOnce(&AIChatSyncBackend::ClearDatabase, sync_backend_));
     }
     // Delete all stored data from database
     if (ai_chat_db_) {
@@ -525,21 +538,14 @@ void AIChatService::OnOsCryptAsyncReady(
   ai_chat_db_ = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
       db_task_runner_, std::move(database));
 
-  // Hand the bridge to the sync backend on the same background sequence as
-  // the database. The backend was created in MaybeInitStorage() so any
-  // proxy delegates already handed out to the sync engine resolve to this
-  // bridge as soon as this task runs.
+  // Attach the database to the sync bridge on the same background sequence as
+  // the database. The bridge was installed eagerly in MaybeInitStorage(), so
+  // this task runs after it; the first attach loads sync metadata and reports
+  // the model ready.
   if (sync_backend_) {
-    db_task_runner_->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            [](scoped_refptr<AIChatSyncBackend> backend, AIChatDatabase* db) {
-              backend->SetBridge(std::make_unique<AIChatSyncBridge>(
-                  std::make_unique<syncer::ClientTagBasedDataTypeProcessor>(
-                      syncer::AI_CHAT_CONVERSATION, base::DoNothing()),
-                  db));
-            },
-            sync_backend_, database_ptr));
+    db_task_runner_->PostTask(FROM_HERE,
+                              base::BindOnce(&AIChatSyncBackend::SetDatabase,
+                                             sync_backend_, database_ptr));
   }
 }
 

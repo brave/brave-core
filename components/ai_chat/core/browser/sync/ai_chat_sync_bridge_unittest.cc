@@ -48,14 +48,21 @@ class AIChatSyncBridgeTest : public testing::Test {
     CHECK(temp_directory_.Delete());
   }
 
+  // Creates the bridge and attaches the database (the common case).
   void CreateBridge() {
+    CreateBridgeWithoutDatabase();
+    bridge_->SetDatabase(db_.get());
+  }
+
+  // Creates the bridge without attaching a database, mirroring how the service
+  // installs the bridge eagerly before the database exists.
+  void CreateBridgeWithoutDatabase() {
     auto processor = std::make_unique<
         testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
     mock_processor_ = processor.get();
     ON_CALL(*mock_processor_, IsTrackingMetadata())
         .WillByDefault(testing::Return(true));
-    bridge_ =
-        std::make_unique<AIChatSyncBridge>(std::move(processor), db_.get());
+    bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor));
   }
 
   // Adds a conversation with one entry to the database. Returns the entry
@@ -90,11 +97,23 @@ class AIChatSyncBridgeTest : public testing::Test {
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;
 };
 
-TEST_F(AIChatSyncBridgeTest, InitializationCallsModelReadyToSync) {
+TEST_F(AIChatSyncBridgeTest, SetDatabaseCallsModelReadyToSyncOnce) {
   auto processor = std::make_unique<
       testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
-  EXPECT_CALL(*processor, ModelReadyToSync(_)).Times(1);
-  bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor), db_.get());
+  auto* processor_ptr = processor.get();
+  // Construction alone (before a database is attached) must not report the
+  // model ready.
+  EXPECT_CALL(*processor_ptr, ModelReadyToSync(_)).Times(0);
+  bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor));
+  testing::Mock::VerifyAndClearExpectations(processor_ptr);
+
+  // The first SetDatabase() loads metadata and reports the model ready exactly
+  // once; a detach + re-attach (storage toggled off then on) must not report it
+  // again, since the change processor keeps its in-memory metadata.
+  EXPECT_CALL(*processor_ptr, ModelReadyToSync(_)).Times(1);
+  bridge_->SetDatabase(db_.get());
+  bridge_->ClearDatabase();
+  bridge_->SetDatabase(db_.get());
 }
 
 TEST_F(AIChatSyncBridgeTest, GetStorageKeyAndClientTagForConversation) {
@@ -239,6 +258,28 @@ TEST_F(AIChatSyncBridgeTest, GetDataForCommitEntry) {
   EXPECT_EQ(data->specifics.ai_chat_conversation().entry().uuid(), entry_uuid);
   EXPECT_EQ(data->specifics.ai_chat_conversation().entry().conversation_uuid(),
             "commit-conv-2");
+}
+
+// With no database attached (storage disabled), the bridge must not touch the
+// database or upload anything, and read paths must return empty.
+TEST_F(AIChatSyncBridgeTest, NoDatabaseIsInertButStillServesSyncEngine) {
+  AddTestConversation("detached-conv", "Detached");
+  CreateBridge();
+  bridge_->ClearDatabase();
+
+  // No uploads while detached.
+  EXPECT_CALL(*mock_processor_, Put(_, _, _)).Times(0);
+  syncer::EntityChangeList empty_remote;
+  EXPECT_FALSE(bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
+                                          std::move(empty_remote)));
+
+  // Read paths return empty rather than crashing.
+  EXPECT_FALSE(bridge_->GetDataForCommit({"c:detached-conv"})->HasNext());
+  EXPECT_FALSE(bridge_->GetAllDataForDebugging()->HasNext());
+
+  // Re-attaching restores normal operation.
+  bridge_->SetDatabase(db_.get());
+  EXPECT_TRUE(bridge_->GetDataForCommit({"c:detached-conv"})->HasNext());
 }
 
 }  // namespace

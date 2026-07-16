@@ -10,7 +10,7 @@
 #include <optional>
 #include <string>
 
-#include "base/memory/raw_ref.h"
+#include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "components/sync/model/data_type_sync_bridge.h"
@@ -29,15 +29,30 @@ class AIChatDatabase;
 // Lives on the same background sequence as AIChatDatabase for direct
 // synchronous database access. The controller delegate is exposed to the
 // UI thread via ProxyDataTypeControllerDelegate.
+//
+// The bridge (and its change processor) is created eagerly — before the
+// database exists — so the sync engine always has a real delegate to talk to.
+// The database is attached later, once the os_crypt encryptor is ready, via
+// SetDatabase(); it is detached again via ClearDatabase() whenever on-disk
+// storage is turned off (the database is destroyed then, but the bridge and
+// its processor live on so the sync start handshake survives storage toggles).
 class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
  public:
-  // |database| must outlive this bridge and live on the same sequence.
-  AIChatSyncBridge(
-      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
-      AIChatDatabase* database);
+  explicit AIChatSyncBridge(
+      std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor);
   AIChatSyncBridge(const AIChatSyncBridge&) = delete;
   AIChatSyncBridge& operator=(const AIChatSyncBridge&) = delete;
   ~AIChatSyncBridge() override;
+
+  // Attaches the database (which must outlive the bridge or be detached first
+  // via ClearDatabase(), and live on the same sequence). On the first attach
+  // this also loads sync metadata and reports the model ready to the change
+  // processor; subsequent attaches just re-point at the new database.
+  void SetDatabase(AIChatDatabase* database);
+
+  // Detaches the database. Called before the database is destroyed (e.g. when
+  // on-disk storage is disabled) so |database_| never dangles.
+  void ClearDatabase();
 
   // syncer::DataTypeSyncBridge:
   std::unique_ptr<syncer::MetadataChangeList> CreateMetadataChangeList()
@@ -70,7 +85,13 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // callback for the metadata store's error reporting.
   void ReportError(const syncer::ModelError& error);
 
-  const raw_ref<AIChatDatabase> database_;
+  // Attached via SetDatabase()/ClearDatabase(); null before the first attach
+  // and whenever on-disk storage is disabled.
+  raw_ptr<AIChatDatabase> database_ = nullptr;
+
+  // True once the initial metadata load + ModelReadyToSync() has run, so it is
+  // done only for the first attached database.
+  bool model_ready_to_sync_ = false;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

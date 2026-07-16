@@ -34,6 +34,7 @@
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -43,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -381,6 +383,28 @@ class AIChatServiceUnitTest : public testing::Test,
     ai_chat_service_->db_task_runner_->PostTaskAndReply(
         FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
     run_loop.Run();
+  }
+
+  // Raw pointer to the current sync backend (test-only accessor for the
+  // private member, since TEST_P bodies are not friends of AIChatService).
+  AIChatSyncBackend* SyncBackendPtr() {
+    return ai_chat_service_->sync_backend_.get();
+  }
+
+  // Returns whether the sync backend currently resolves a non-null controller
+  // delegate (i.e. the bridge is installed). Evaluated on the database
+  // sequence, where the backend is owned.
+  bool SyncControllerDelegateResolves() {
+    base::test::TestFuture<bool> future;
+    ai_chat_service_->db_task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(
+            [](scoped_refptr<AIChatSyncBackend> backend) {
+              return static_cast<bool>(backend->GetControllerDelegate());
+            },
+            ai_chat_service_->sync_backend_),
+        future.GetCallback());
+    return future.Take();
   }
 
   bool IsAIChatHistoryEnabled() { return GetParam(); }
@@ -898,12 +922,13 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   ExpectConversationsSize(FROM_HERE, 0);
 }
 
-// With AI Chat sync enabled, toggling the storage pref off
-// then on must not crash. Disabling storage tears down the sync bridge (and
-// drops its backend) on the database sequence, so re-enabling rebuilds a
-// fresh backend instead of re-installing a bridge into the existing one,
-// which could lead to a crash if this sequence is modified.
-TEST_P(AIChatServiceUnitTest, SyncBridgeRebuiltAfterStorageToggle) {
+// With AI Chat sync enabled, toggling the storage pref off then on must keep
+// the sync backend usable. The backend (and the delegate the sync engine
+// holds) is long-lived and never swapped; disabling storage only detaches the
+// database from the bridge, and re-enabling re-attaches a fresh one. The
+// controller delegate must keep resolving throughout, so the data type does
+// not silently stop syncing after a toggle.
+TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
   base::test::ScopedFeatureList sync_features;
   sync_features.InitWithFeatures(
       {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
@@ -913,14 +938,20 @@ TEST_P(AIChatServiceUnitTest, SyncBridgeRebuiltAfterStorageToggle) {
   ResetService();
   WaitForSyncBridgeReady();
 
-  // Toggle storage off (tears the bridge down) and back on; the bridge must be
-  // rebuilt without tripping SetBridge()'s "installed at most once" CHECK.
+  AIChatSyncBackend* backend_before = SyncBackendPtr();
+  ASSERT_TRUE(backend_before);
+  EXPECT_TRUE(SyncControllerDelegateResolves());
+
+  // Toggle storage off then on.
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   WaitForSyncBridgeReady();
 
-  // Reaching here without a CHECK failure is the assertion; the service should
-  // still be usable.
+  // The backend is the same object (not rebuilt), and its delegate still
+  // resolves — so the proxy delegate the sync engine holds is still valid.
+  EXPECT_EQ(SyncBackendPtr(), backend_before);
+  EXPECT_TRUE(SyncControllerDelegateResolves());
+
   EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
 

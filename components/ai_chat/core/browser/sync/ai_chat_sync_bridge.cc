@@ -12,7 +12,6 @@
 #include <string_view>
 #include <utility>
 
-#include "base/check_deref.h"
 #include "base/strings/strcat.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_database.h"
 #include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_conversions.h"
@@ -48,11 +47,26 @@ mojom::ConversationPtr FindSyncableConversation(AIChatDatabase& database,
 }  // namespace
 
 AIChatSyncBridge::AIChatSyncBridge(
-    std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor,
-    AIChatDatabase* database)
-    : syncer::DataTypeSyncBridge(std::move(change_processor)),
-      database_(CHECK_DEREF(database)) {
+    std::unique_ptr<syncer::DataTypeLocalChangeProcessor> change_processor)
+    : syncer::DataTypeSyncBridge(std::move(change_processor)) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
+
+AIChatSyncBridge::~AIChatSyncBridge() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+}
+
+void AIChatSyncBridge::SetDatabase(AIChatDatabase* database) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  database_ = database;
+
+  // The initial metadata load + ModelReadyToSync() happens once, on the first
+  // attached database. A later re-attach (storage toggled off then on) just
+  // re-points |database_|: the change processor keeps its in-memory metadata,
+  // and ModelReadyToSync() must not be called a second time.
+  if (model_ready_to_sync_) {
+    return;
+  }
 
   // Load metadata synchronously (we're on the database sequence).
   auto batch = std::make_unique<syncer::MetadataBatch>();
@@ -61,11 +75,28 @@ AIChatSyncBridge::AIChatSyncBridge(
         {FROM_HERE, syncer::ModelError::Type::kAIChatFailedToLoadMetadata});
     return;
   }
+  model_ready_to_sync_ = true;
   this->change_processor()->ModelReadyToSync(std::move(batch));
 }
 
-AIChatSyncBridge::~AIChatSyncBridge() {
+void AIChatSyncBridge::ClearDatabase() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  database_ = nullptr;
+  // Deliberately does NOT reset |model_ready_to_sync_| or otherwise poke the
+  // change processor: the change processor stays "model ready" across a sync
+  // stop (ClientTagBasedDataTypeProcessor::OnSyncStopping CHECKs
+  // model_ready_to_sync_ is still set), so re-firing ModelReadyToSync() on a
+  // later SetDatabase() would hit its CHECK(!model_ready_to_sync_) and crash.
+  //
+  // Detaching alone therefore leaves sync tracking untouched: after a storage
+  // off->on toggle the processor still believes the (now-empty) model is fully
+  // synced, so it will not re-download conversations from the server until the
+  // next browser start clears the metadata. Making the toggle perform a fresh
+  // initial sync is coordinated at the sync-service layer, not here: the AI
+  // Chat sync DataTypeController reports kMustStopAndClearData while on-disk
+  // storage is off, so the engine stops and clears the type on disable and
+  // re-runs initial sync on re-enable. See
+  // https://github.com/brave/brave-browser/issues/53978.
 }
 
 void AIChatSyncBridge::ReportError(const syncer::ModelError& error) {
@@ -76,8 +107,13 @@ void AIChatSyncBridge::ReportError(const syncer::ModelError& error) {
 std::unique_ptr<syncer::MetadataChangeList>
 AIChatSyncBridge::CreateMetadataChangeList() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // Without a database (storage disabled) there is nowhere to persist metadata;
+  // fall back to the in-memory change list so any changes are simply dropped.
+  if (!database_) {
+    return syncer::DataTypeSyncBridge::CreateMetadataChangeList();
+  }
   return std::make_unique<syncer::SyncMetadataStoreChangeList>(
-      &database_.get(), syncer::AI_CHAT_CONVERSATION,
+      database_, syncer::AI_CHAT_CONVERSATION,
       base::BindRepeating(&AIChatSyncBridge::ReportError,
                           weak_ptr_factory_.GetWeakPtr()));
 }
@@ -86,6 +122,9 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
     std::unique_ptr<syncer::MetadataChangeList> metadata_change_list,
     syncer::EntityChangeList entity_data) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!database_) {
+    return std::nullopt;
+  }
 
   // Track which storage keys we already have from remote so we don't
   // re-upload them.
@@ -152,6 +191,9 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetDataForCommit(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto batch = std::make_unique<syncer::MutableDataBatch>();
+  if (!database_) {
+    return batch;
+  }
   for (const auto& key : storage_keys) {
     if (key.starts_with(kConversationStorageKeyPrefix)) {
       const std::string uuid = key.substr(kConversationStorageKeyPrefix.size());
@@ -196,6 +238,9 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetAllDataForDebugging() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   auto batch = std::make_unique<syncer::MutableDataBatch>();
+  if (!database_) {
+    return batch;
+  }
   for (const auto& conversation : database_->GetAllConversations()) {
     if (conversation->temporary) {
       continue;
@@ -266,6 +311,9 @@ AIChatSyncBridge::TrimAllSupportedFieldsFromRemoteSpecifics(
 void AIChatSyncBridge::ApplyDisableSyncChanges(
     std::unique_ptr<syncer::MetadataChangeList> delete_metadata_change_list) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (!database_) {
+    return;
+  }
   database_->ClearAllEntityMetadata();
   database_->ClearDataTypeState(syncer::AI_CHAT_CONVERSATION);
 }

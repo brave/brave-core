@@ -30,6 +30,20 @@ void AIChatSyncBackend::SetBridge(std::unique_ptr<AIChatSyncBridge> bridge) {
   bridge_ = std::move(bridge);
 }
 
+void AIChatSyncBackend::SetDatabase(AIChatDatabase* database) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->SetDatabase(database);
+  }
+}
+
+void AIChatSyncBackend::ClearDatabase() {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->ClearDatabase();
+  }
+}
+
 base::WeakPtr<syncer::DataTypeControllerDelegate>
 AIChatSyncBackend::GetControllerDelegate() {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);

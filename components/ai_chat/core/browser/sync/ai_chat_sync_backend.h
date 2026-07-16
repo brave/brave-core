@@ -19,6 +19,7 @@ class DataTypeControllerDelegate;
 
 namespace ai_chat {
 
+class AIChatDatabase;
 class AIChatSyncBridge;
 
 // Thread-safe, sequence-affine holder for the AIChatSyncBridge. It lets
@@ -30,6 +31,13 @@ class AIChatSyncBridge;
 // routed through here rather than via a WeakPtr to the bridge, so the posted
 // closure keeps the backend alive across the hop and the bridge is only ever
 // touched on its own sequence.
+//
+// The backend is created once and lives for the whole AIChatService lifetime;
+// it is never swapped out. This keeps the ProxyDataTypeControllerDelegate that
+// the sync engine holds pointing at the same object, so it always resolves to
+// the current bridge. The database, by contrast, comes and goes with the
+// on-disk storage pref and is attached/detached via SetDatabase()/
+// ClearDatabase().
 class AIChatSyncBackend
     : public base::RefCountedDeleteOnSequence<AIChatSyncBackend> {
  public:
@@ -40,8 +48,13 @@ class AIChatSyncBackend
   AIChatSyncBackend& operator=(const AIChatSyncBackend&) = delete;
 
   // Called on the owning sequence to install the bridge once it has been
-  // constructed. Must be called at most once.
+  // constructed (without a database yet). Must be called at most once.
   void SetBridge(std::unique_ptr<AIChatSyncBridge> bridge);
+
+  // Attaches/detaches the database on the owning sequence, forwarding to the
+  // bridge. No-ops if the bridge has been released by Shutdown().
+  void SetDatabase(AIChatDatabase* database);
+  void ClearDatabase();
 
   // Returns the bridge's change-processor controller delegate, or a null
   // weak_ptr if the bridge has not been installed yet (or has been released by
@@ -49,10 +62,11 @@ class AIChatSyncBackend
   // sequence.
   base::WeakPtr<syncer::DataTypeControllerDelegate> GetControllerDelegate();
 
-  // Drops the bridge on the owning sequence so its raw_ptr to the
-  // AIChatDatabase is released before the database is destroyed. The backend
-  // itself may still be kept alive by proxy delegates the sync engine holds;
-  // GetControllerDelegate() returns null after this point.
+  // Drops the bridge on the owning sequence (only at AIChatService shutdown) so
+  // its raw_ptr to the AIChatDatabase is released before the database is
+  // destroyed. The backend itself may still be kept alive by proxy delegates
+  // the sync engine holds; GetControllerDelegate() returns null after this
+  // point.
   void Shutdown();
 
  private:
