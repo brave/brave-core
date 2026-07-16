@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/find_bar_view.h b/chrome/browser/ui/views/find_bar_view.h
-index c5c7be0bb4cd45edf35578ebdaaa04e89db929d1..36f40313ec93fc40626012830bc844f195fd63b1 100644
+index c5c7be0bb4cd45edf35578ebdaaa04e89db929d1..b6da8cc8cc67e44e2f999467d089edd9627b869c 100644
 --- a/chrome/browser/ui/views/find_bar_view.h
 +++ b/chrome/browser/ui/views/find_bar_view.h
 @@ -12,7 +12,10 @@
@@ -163,7 +163,7 @@ index c5c7be0bb4cd45edf35578ebdaaa04e89db929d1..36f40313ec93fc40626012830bc844f1
 +
 +  int EnsureNumericValue(std::u16string raw_value);
 +
-+  int GetBoundedValue(int n);
++  int EnsureBoundedValue(int n);
 +
 +  void HandleLastMatchBtnClick();
 +

@@ -1,0 +1,84 @@
+diff --git a/pdf/pdfium/pdfium_engine_unittest.cc b/pdf/pdfium/pdfium_engine_unittest.cc
+index 71e97c617c42a5a8d2fc8ecc95e1d817c1298cab..efc2eebac3fb502f3789a46362e60e4542a21771 100644
+--- a/pdf/pdfium/pdfium_engine_unittest.cc
++++ b/pdf/pdfium/pdfium_engine_unittest.cc
+@@ -1026,6 +1026,79 @@ TEST_P(PDFiumEngineTest, IsSynthesizedNewline) {
+   EXPECT_TRUE(engine->IsSynthesizedNewline({0, 22}));
+ }
+ 
++TEST_P(PDFiumEngineTest, SelectNthFindResult) {  
++  NiceMock<MockTestClient> client(/*use_skia_renderer=*/GetParam());
++  std::unique_ptr<PDFiumEngine> engine = InitializeEngine(&client, FILE_PATH_LITERAL("hello_world2.pdf"));
++
++  ASSERT_TRUE(engine);
++
++  engine->StartFind(u"e", false);
++  
++  // Wait for search to end.
++  while(engine->IsSearchInProgress()) { /*no-op*/ }
++  
++  ASSERT_TRUE(!engine->IsSearchInProgress());
++  ASSERT_TRUE(!engine->IsPagesEmpty());
++  
++  ASSERT_TRUE(!engine->find_results_for_testing().empty());
++  EXPECT_EQ(engine->find_results_for_testing().size(), static_cast<size_t>(4));
++
++  // Set N to a value in-bounds.
++  int n = 2;
++
++  // Select the Nth match.
++  engine->SelectNthFindResult(n);
++  
++  // Assert state reflects the selection.
++  ASSERT_TRUE(engine->GetCurrentFindIndex().has_value());
++  EXPECT_EQ(engine->GetCurrentFindIndex().value(), static_cast<size_t>(n - 1));
++  EXPECT_EQ(engine->GetSelections().size(), static_cast<size_t>(1));
++  EXPECT_EQ(GetPlatformTextExpectation(base::UTF16ToUTF8(u"e")),
++            engine->GetSelectedText());
++
++  // Get a later match out of order and in-bounds.
++  n = 4;
++
++  // Select the Nth match.
++  engine->SelectNthFindResult(n);
++  
++  // Assert state reflects the selection.
++  ASSERT_TRUE(engine->GetCurrentFindIndex().has_value());
++  EXPECT_EQ(engine->GetCurrentFindIndex().value(), static_cast<size_t>(n - 1));
++  EXPECT_EQ(engine->GetSelections().size(), static_cast<size_t>(1));
++  EXPECT_EQ(GetPlatformTextExpectation(base::UTF16ToUTF8(u"e")),
++            engine->GetSelectedText());
++
++   // Out-of-bounds to the left.
++   n = -1;
++
++   // Select the Nth match.
++  engine->SelectNthFindResult(n);
++  
++  // Assert the engine rejected the underflowing N,
++  // and clamped to the min (first match).
++  ASSERT_TRUE(engine->GetCurrentFindIndex().has_value());
++  EXPECT_EQ(engine->GetCurrentFindIndex().value(), static_cast<size_t>(0)); // Clamp to the min.
++  EXPECT_EQ(engine->GetSelections().size(), static_cast<size_t>(1));
++  EXPECT_EQ(GetPlatformTextExpectation(base::UTF16ToUTF8(u"e")),
++            engine->GetSelectedText());
++
++  // Out-of-bounds to the right.
++  size_t last_match_ordinal = engine->find_results_for_testing().size();
++  n = last_match_ordinal + 1;
++
++  // Select the Nth match.
++ engine->SelectNthFindResult(n);
++ 
++ // Assert the engine rejected the overflowing N,
++ // and clamped to the max (last match).
++ ASSERT_TRUE(engine->GetCurrentFindIndex().has_value());
++ EXPECT_EQ(engine->GetCurrentFindIndex().value(), last_match_ordinal - 1); // Clamp to the max.
++ EXPECT_EQ(engine->GetSelections().size(), static_cast<size_t>(1));
++ EXPECT_EQ(GetPlatformTextExpectation(base::UTF16ToUTF8(u"e")),
++           engine->GetSelectedText());
++}
++
+ INSTANTIATE_TEST_SUITE_P(All, PDFiumEngineTest, testing::Bool());
+ 
+ class PDFiumEngineSelectionTest : public PDFiumEngineTest {

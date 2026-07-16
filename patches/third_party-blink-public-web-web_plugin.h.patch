@@ -1,0 +1,15 @@
+diff --git a/third_party/blink/public/web/web_plugin.h b/third_party/blink/public/web/web_plugin.h
+index f083546406fc8e7311c04f0c5133c1e7fa2ae83e..358f02192eaa0275668ff9987db9a7aedcac5520 100644
+--- a/third_party/blink/public/web/web_plugin.h
++++ b/third_party/blink/public/web/web_plugin.h
+@@ -242,6 +242,10 @@ class WebPlugin {
+   }
+   // Tells the plugin to jump forward or backward in the list of find results.
+   virtual void SelectFindResult(bool forward, int identifier) {}
++  
++  // Tells the plugin to jump directly to the find result at |match_ordinal - 1|.
++  virtual void SelectNthFindResult(int match_ordinal, int identifier) {}
++  
+   // Tells the plugin that the user has stopped the find operation.
+   virtual void StopFind() {}
+ 

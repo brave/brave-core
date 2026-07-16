@@ -1,0 +1,56 @@
+diff --git a/pdf/pdf_view_web_plugin.h b/pdf/pdf_view_web_plugin.h
+index 6a4cd1d5596ee34480c6414d63c77b8ec8fd6e34..924dd160409ecf0b07900af8d72e67ff36e07ec0 100644
+--- a/pdf/pdf_view_web_plugin.h
++++ b/pdf/pdf_view_web_plugin.h
+@@ -322,6 +322,9 @@ class PdfViewWebPlugin final : public PDFiumEngineClient,
+                  bool case_sensitive,
+                  int identifier) override;
+   void SelectFindResult(bool forward, int identifier) override;
++  void SelectNthFindResult(int match_ordinal, int identifier) override;
++  void SetSearchInProgress(bool in_progress) override;
++  bool IsSearchInProgress() { return search_in_progress_; }
+   void StopFind() override;
+   bool CanRotateView() override;
+   void RotateView(blink::WebPlugin::RotationType type) override;
+@@ -480,7 +483,11 @@ class PdfViewWebPlugin final : public PDFiumEngineClient,
+   void RemoveAgentsOfType(blink::mojom::AnnotationType type) override;
+ 
+   // Initializes the plugin for testing, bypassing certain consistency checks.
+-  bool InitializeForTesting();
++  bool InitializeForTesting(bool bypass_container_init = false);
++
++  // Undo the testing bypass to avoid side-effects between consecutive test runs
++  // and/or normal program execution.
++  void ResetContainerInitBypass();
+ 
+   const gfx::Rect& GetPluginRectForTesting() const { return plugin_rect_; }
+ 
+@@ -602,6 +609,10 @@ class PdfViewWebPlugin final : public PDFiumEngineClient,
+ 
+   bool InitializeCommon();
+ 
++  // Conditionally bypass blink::WebPluginContainer initialization during tests. 
++  // Initialization is non-trivial and has a high impedance.
++  void SetContainerInitBypassForTesting(bool should_bypass);
++
+   // Sends whether to do smooth scrolling.
+   void SendSetSmoothScrolling();
+ 
+@@ -824,6 +835,8 @@ class PdfViewWebPlugin final : public PDFiumEngineClient,
+ 
+   bool plugin_can_save_ = false;
+ 
++  bool bypass_plugin_container_init_for_testing_ = false;
++
+   blink::WebString selected_text_;
+ 
+   std::unique_ptr<Client> const client_;
+@@ -951,6 +964,8 @@ class PdfViewWebPlugin final : public PDFiumEngineClient,
+   // transformations are applied.
+   gfx::Vector2dF scroll_offset_at_last_raster_;
+ 
++  bool search_in_progress_ = false;
++
+   // If this is true, then don't scroll the plugin in response to calls to
+   // `UpdateScroll()`. This will be true when the extension page is in the
+   // process of zooming the plugin so that flickering doesn't occur while

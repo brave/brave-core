@@ -1,0 +1,69 @@
+diff --git a/pdf/pdf_view_web_plugin.cc b/pdf/pdf_view_web_plugin.cc
+index a880fb5be0c47884c1f5fe439eddd53471f37ebe..a2ba9bab8dc2b447222039b4c140795b53b6dc7b 100644
+--- a/pdf/pdf_view_web_plugin.cc
++++ b/pdf/pdf_view_web_plugin.cc
+@@ -528,7 +528,8 @@ bool PdfViewWebPlugin::Initialize(blink::WebPluginContainer* container) {
+   return InitializeCommon();
+ }
+ 
+-bool PdfViewWebPlugin::InitializeForTesting() {
++bool PdfViewWebPlugin::InitializeForTesting(bool bypass_container_init) {
++  SetContainerInitBypassForTesting(bypass_container_init);
+   return InitializeCommon();
+ }
+ 
+@@ -546,7 +547,7 @@ bool PdfViewWebPlugin::InitializeCommon() {
+   initial_params_ = {};
+ 
+   if (!params.has_value()) {
+-    return false;
++    return bypass_plugin_container_init_for_testing_ ? true : false;
+   }
+ 
+   // Sets crash keys like `ppapi::proxy::PDFResource::SetCrashData()`. Note that
+@@ -603,6 +604,14 @@ bool PdfViewWebPlugin::InitializeCommon() {
+   return true;
+ }
+ 
++void PdfViewWebPlugin::ResetContainerInitBypass() {
++  SetContainerInitBypassForTesting(false);
++}
++
++void PdfViewWebPlugin::SetContainerInitBypassForTesting(bool should_bypass) {
++  bypass_plugin_container_init_for_testing_ = should_bypass;
++}
++
+ void PdfViewWebPlugin::SendSetSmoothScrolling() {
+   client_->PostMessage(
+       base::DictValue()
+@@ -635,6 +644,7 @@ void PdfViewWebPlugin::Destroy() {
+     PerProcessInitializer::GetInstance().Release();
+   }
+ 
++  ResetContainerInitBypass();
+   client_->SetPluginContainer(nullptr);
+ 
+   delete this;
+@@ -1011,6 +1021,13 @@ void PdfViewWebPlugin::SelectFindResult(bool forward, int identifier) {
+   engine_->SelectFindResult(forward);
+ }
+ 
++void PdfViewWebPlugin::SelectNthFindResult(int match_ordinal, int identifier) {
++  find_identifier_ = identifier;
++  engine_->SelectNthFindResult(match_ordinal);
++}
++
++void PdfViewWebPlugin::SetSearchInProgress(bool in_progress) { search_in_progress_ = in_progress; }
++
+ void PdfViewWebPlugin::StopFind() {
+   find_identifier_ = -1;
+   engine_->StopFind();
+@@ -1251,7 +1268,7 @@ void PdfViewWebPlugin::NotifyNumberOfFindResultsChanged(int total,
+ 
+ void PdfViewWebPlugin::NotifySelectedFindResultChanged(int current_find_index,
+                                                        bool final_result) {
+-  if (find_identifier_ == -1 || !client_->PluginContainer()) {
++  if (find_identifier_ == -1 || (!bypass_plugin_container_init_for_testing_ && !client_->PluginContainer())) {
+     return;
+   }
+ 

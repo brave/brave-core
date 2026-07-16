@@ -1,0 +1,116 @@
+diff --git a/pdf/pdfium/pdfium_engine.cc b/pdf/pdfium/pdfium_engine.cc
+index 1e69739e184afb67e043c1b721352273da89e020..7ff291aa4bc3bb39024d97d8a9b018634b8b27d6 100644
+--- a/pdf/pdfium/pdfium_engine.cc
++++ b/pdf/pdfium/pdfium_engine.cc
+@@ -2286,7 +2286,6 @@ void PDFiumEngine::StartFind(const std::u16string& text, bool case_sensitive) {
+ #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
+   client_->MaybeShowSearchifyInProgress();
+ #endif
+-
+   bool first_search = (current_find_text_ != text);
+   int char_to_start_searching_from = 0;
+   if (first_search) {
+@@ -2309,6 +2308,7 @@ void PDFiumEngine::StartFind(const std::u16string& text, bool case_sensitive) {
+       last_page_to_search_ = next_page_to_search_;
+     }
+     search_in_progress_ = true;
++    client_->SetSearchInProgress(search_in_progress_);
+   }
+ 
+   int current_page = next_page_to_search_;
+@@ -2346,6 +2346,7 @@ void PDFiumEngine::StartFind(const std::u16string& text, bool case_sensitive) {
+ 
+   if (end_of_search) {
+     search_in_progress_ = false;
++    client_->SetSearchInProgress(search_in_progress_);
+ 
+     // Send the final notification.
+     client_->NotifyNumberOfFindResultsChanged(find_results_.size(), true);
+@@ -2494,10 +2495,13 @@ bool PDFiumEngine::SelectFindResult(bool forward) {
+     resume_find_index_.reset();
+   } else if (current_find_index_) {
+     size_t current_index = current_find_index_.value();
+-    if ((forward && current_index >= last_index) ||
+-        (!forward && current_index == 0)) {
+-      current_find_index_.reset();
+-      client_->NotifySelectedFindResultChanged(-1, /*final_result=*/false);
++    bool leftBoundExceeded = !forward && current_index == 0;
++    bool rightBoundExceeded = forward && current_index >= last_index;
++    if (leftBoundExceeded || rightBoundExceeded) {
++      current_find_index_ = new_index = leftBoundExceeded ? last_index : 0;
++      ClearTextSelection();
++      ScrollToBoundingRects(find_results_[new_index], /*force_smooth_scroll=*/false);
++      client_->NotifySelectedFindResultChanged(new_index , /*final_result=*/false);
+       client_->NotifyNumberOfFindResultsChanged(find_results_.size(),
+                                                 /*final_result=*/true);
+       return true;
+@@ -2509,9 +2513,7 @@ bool PDFiumEngine::SelectFindResult(bool forward) {
+   }
+   current_find_index_ = new_index;
+ 
+-  // Clear the current text selection.
+-  SelectionChangeInvalidator selection_invalidator(this);
+-  selection_.clear();
++  ClearTextSelection();
+ 
+   // If the result is not in view, scroll to it.
+   ScrollToBoundingRects(find_results_[current_find_index_.value()],
+@@ -2522,6 +2524,47 @@ bool PDFiumEngine::SelectFindResult(bool forward) {
+   return true;
+ }
+ 
++bool PDFiumEngine::SelectNthFindResult(int match_ordinal) {
++  if (find_results_.empty()) {
++    return false;
++  }
++
++  // Invalidate the previous find selection.
++  FindResultChangeInvalidator find_change_invalidator(this);
++  
++  if (!current_find_index_.has_value()) {
++    current_find_index_ = -1;
++  }
++
++  // Validate match_ordinal (N).
++  if (match_ordinal <= 0) { // N exceeds left bound. 
++    // Clamp to the first match.
++    current_find_index_ = 0; 
++  } 
++  else if (static_cast<size_t>(match_ordinal) > find_results_.size()) { // N exceeds right bound.
++    // Clamp to the last match.
++    current_find_index_ = find_results_.size() - 1; 
++  } 
++  else {
++    // Adjust N for 0-based indexing.
++    current_find_index_ = static_cast<size_t>(match_ordinal - 1);
++  }
++  
++  ClearTextSelection();
++
++  PDFiumRange match = find_results_[current_find_index_.value()];
++
++  // If the result is not in view, scroll to it.
++  ScrollToBoundingRects(match, /*force_smooth_scroll=*/false);
++
++  SelectRange(match);
++
++  client_->NotifySelectedFindResultChanged(
++    current_find_index_.value(), /*final_result=*/!search_in_progress_);
++
++  return true;
++}
++
+ void PDFiumEngine::StopFind() {
+   FindResultChangeInvalidator find_change_invalidator(this);
+ 
+@@ -2746,6 +2789,10 @@ bool PDFiumEngine::HasPermission(DocumentPermission permission) const {
+   return permissions_->HasPermission(permission);
+ }
+ 
++void PDFiumEngine::SelectRange(PDFiumRange range) {
++  selection_.push_back(std::move(range));
++}
++
+ void PDFiumEngine::SelectAll() {
+   if (IsReadOnly()) {
+     return;

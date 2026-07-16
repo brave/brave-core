@@ -1,0 +1,13 @@
+diff --git a/pdf/pdfium/pdfium_engine_client.h b/pdf/pdfium/pdfium_engine_client.h
+index e3d4b25a9b273054107b7771884b1e1380557b73..a60b509685a680b35059d0bf20bc174feb5ee0d7 100644
+--- a/pdf/pdfium/pdfium_engine_client.h
++++ b/pdf/pdfium/pdfium_engine_client.h
+@@ -224,6 +224,8 @@ class PDFiumEngineClient {
+   // indicator is not showing.
+   virtual void MaybeShowSearchifyInProgress() = 0;
+ #endif
++
++  virtual void SetSearchInProgress(bool in_progress) {}
+ };
+ 
+ }  // namespace chrome_pdf

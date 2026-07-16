@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/find_bar_view.cc b/chrome/browser/ui/views/find_bar_view.cc
-index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab49548efef45f 100644
+index 23692d2bc42d1e681320e50969e977aff8541f1c..97bc7d0d186ac819a63e2832f7ac77db31bceee1 100644
 --- a/chrome/browser/ui/views/find_bar_view.cc
 +++ b/chrome/browser/ui/views/find_bar_view.cc
 @@ -9,10 +9,12 @@
@@ -187,20 +187,17 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
  }
  
  void FindBarView::UpdateForResult(
-@@ -412,6 +351,12 @@ void FindBarView::UpdateForResult(
+@@ -412,6 +351,9 @@ void FindBarView::UpdateForResult(
      return;
    }
  
 +  match_count_controls_->SetResult(result);
-+
-+  // We know the total number of matches now,
-+  // so don't allow inputs to the nth match textfield that are greater than the total.
 +  match_count_controls_->SetMaxValue(result.number_of_matches());
 +
    UpdateMatchCountAppearance(result.number_of_matches() == 0 &&
                               result.final_update());
  
-@@ -423,7 +368,7 @@ void FindBarView::UpdateForResult(
+@@ -423,7 +365,7 @@ void FindBarView::UpdateForResult(
  }
  
  void FindBarView::ClearMatchCount() {
@@ -209,7 +206,7 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
    UpdateMatchCountAppearance(false);
    DeprecatedLayoutImmediately();
    SchedulePaint();
-@@ -456,7 +401,7 @@ bool FindBarView::OnMousePressed(const ui::MouseEvent& event) {
+@@ -456,7 +398,7 @@ bool FindBarView::OnMousePressed(const ui::MouseEvent& event) {
  
  const views::ViewAccessibility&
  FindBarView::GetFindBarMatchCountLabelViewAccessibilityForTesting() {
@@ -218,7 +215,7 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
  }
  
  gfx::Size FindBarView::CalculatePreferredSize(
-@@ -465,7 +410,7 @@ gfx::Size FindBarView::CalculatePreferredSize(
+@@ -465,7 +407,7 @@ gfx::Size FindBarView::CalculatePreferredSize(
    // Ignore the preferred size for the match count label, and just let it take
    // up part of the space for the input textfield. This prevents the overall
    // width from changing every time the match count text changes.
@@ -227,7 +224,7 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
      return size;
  }
  
-@@ -625,6 +570,23 @@ void FindBarView::FindNext(bool reverse) {
+@@ -625,6 +567,23 @@ void FindBarView::FindNext(bool reverse) {
    }
  }
  
@@ -251,7 +248,7 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
  void FindBarView::EndFindSession() {
    if (!find_bar_host_) {
      return;
-@@ -641,3 +603,331 @@ void FindBarView::UpdateMatchCountAppearance(bool no_match) {
+@@ -641,3 +600,307 @@ void FindBarView::UpdateMatchCountAppearance(bool no_match) {
  
  BEGIN_METADATA(FindBarView)
  END_METADATA
@@ -366,10 +363,12 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
 +
 +    // Adjust for the comma in a value of thousands or tens of thousands.
 +    // Add 2 more chars' worth of horizontal padding, 1 char for each side.
-+    // new_text_length = new_text_length >= 5 ? new_text_length + static_cast<std::size_t>(2) : new_text_length;
-+    new_text_length = new_text_length >= textfield_default_num_chars_ ? new_text_length + static_cast<std::size_t>(2) : new_text_length;
++    new_text_length = new_text_length >= textfield_default_num_chars_ ? 
++        new_text_length + static_cast<std::size_t>(2) : 
++        new_text_length;
 +
-+    int num_chars = static_cast<int>(std::max(textfield_default_num_chars_, new_text_length));
++    int num_chars = 
++      static_cast<int>(std::max(textfield_default_num_chars_, new_text_length));
 +    nth_match_textfield_->SetDefaultWidthInChars(num_chars);
 +    nth_match_textfield_->PreferredSizeChanged();
 +  }
@@ -459,7 +458,7 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
 +  return num_value;
 +}
 +
-+int FindBarMatchCountControls::GetBoundedValue(int n) {
++int FindBarMatchCountControls::EnsureBoundedValue(int n) {
 +   // Clamp to the min if the user input underflows.
 +   if (n < nth_match_textfield_min_) {
 +    n = nth_match_textfield_min_;
@@ -474,13 +473,9 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
 +}
 +
 +void FindBarMatchCountControls::HandleLastMatchBtnClick() {
-+  int n = GetBoundedValue(last_result_->number_of_matches());
-+  std::u16string nth_match_text(base::UTF8ToUTF16(std::to_string(n)));
-+  last_n_text_ = nth_match_text;
-+
-+  // Update the UI to reflect the sanitized/clamped value.
-+  nth_match_textfield_->SetText(nth_match_text);
-+  find_bar_view_->FindNth(n);
++  int n_validated = EnsureBoundedValue(last_result_->number_of_matches());
++  last_n_text_ = l10n_util::GetStringFUTF16Int(IDS_FIND_IN_PAGE_NTH_MATCH_NUM, n_validated);
++  find_bar_view_->FindNth(n_validated);
 +}
 +
 +
@@ -522,41 +517,22 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
 +        
 +    last_accepted_textfield_scroll_time_ = base::Time::NowFromSystemTime();
 +
-+    std::u16string nth_match_text(sender->GetText());
-+    int n_parsed_int = GetBoundedValue(EnsureNumericValue(nth_match_text));
-+    last_n_text_ = nth_match_text;
-+
 +    const ui::MouseWheelEvent* wheel_event = event.AsMouseWheelEvent();
 +
 +    int x_offset = wheel_event->x_offset();
 +    int y_offset = wheel_event->y_offset();
 +
 +    // User scrolled up/left.
-+    // Decrement N to get the previous match.
-+    if (y_offset >= 0 || x_offset < 0) {
-+      // If N - 1 underflows, then wrap around to the max.
-+      if (n_parsed_int - 1 < nth_match_textfield_min_) {
-+        n_parsed_int = nth_match_textfield_max_;
-+      }
-+      else {
-+        n_parsed_int--;
-+      }
++    // Go to previous match.
++    if (y_offset > 0 || x_offset < 0) {
++      find_bar_view_->FindNext(true);
 +    }
 +
 +    // User scrolled down/right.
-+    // Increment N to get the next match.
-+    else if (y_offset < 0 || x_offset >= 0) {
-+      // If N + 1 overflows, then wrap around to the min.
-+      if (n_parsed_int + 1 > nth_match_textfield_max_) {
-+        n_parsed_int = nth_match_textfield_min_;
-+      }
-+      else {
-+        n_parsed_int++;
-+      }
++    // Go to next match.
++    else if (y_offset < 0 || x_offset > 0) {
++      find_bar_view_->FindNext(false);
 +    }
-+
-+    nth_match_textfield_->SetText(base::UTF8ToUTF16(std::to_string(n_parsed_int)));
-+    find_bar_view_->FindNth(n_parsed_int);
 +    return true;
 +  }
 +
@@ -564,20 +540,17 @@ index 23692d2bc42d1e681320e50969e977aff8541f1c..2ba9c1188eff1e2b15ed8e5ac0ab4954
 +}
 +
 +void FindBarMatchCountControls::OnAfterUserAction(views::Textfield* sender) {
++    std::u16string nth_match_text(sender->GetText());
++
 +  // The composition text wouldn't be what the user is really looking for.
 +  // We delay the search until the user commits the composition text.
 +  if (!sender->IsIMEComposing() && !sender->GetText().empty() &&
-+      sender->GetText() != last_n_text_)
++      nth_match_text != last_n_text_)
 +  {
-+    std::u16string nth_match_text(sender->GetText());
-+    int n_parsed_int = GetBoundedValue(EnsureNumericValue(nth_match_text));
++    int n_validated = EnsureBoundedValue(EnsureNumericValue(nth_match_text));
++    last_n_text_ = l10n_util::GetStringFUTF16Int(IDS_FIND_IN_PAGE_NTH_MATCH_NUM, n_validated);
 +
-+    last_n_text_ = nth_match_text;
-+
-+    // Update the UI to reflect the sanitized/clamped value.
-+    nth_match_textfield_->SetText(base::UTF8ToUTF16(std::to_string(n_parsed_int)));
-+
-+    find_bar_view_->FindNth(n_parsed_int);
++    find_bar_view_->FindNth(n_validated);
 +  }
 +}
 +

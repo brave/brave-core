@@ -1,0 +1,40 @@
+diff --git a/pdf/pdfium/pdfium_engine.h b/pdf/pdfium/pdfium_engine.h
+index d88ddfd14d6bc5f706e97e97f36cb90daaa54a8b..30b7630e8f93f63f1645730258cf30156b5c7fdc 100644
+--- a/pdf/pdfium/pdfium_engine.h
++++ b/pdf/pdfium/pdfium_engine.h
+@@ -226,6 +226,7 @@ class PDFiumEngine : public DocumentLoader::Client,
+   void PrintEnd();
+   void StartFind(const std::u16string& text, bool case_sensitive);
+   bool SelectFindResult(bool forward);
++  bool SelectNthFindResult(int match_ordinal);
+   void StopFind();
+   virtual void ZoomUpdated(double new_zoom_level);
+   void RotateClockwise();
+@@ -272,6 +273,7 @@ class PDFiumEngine : public DocumentLoader::Client,
+   virtual bool HasPermission(DocumentPermission permission) const;
+ 
+   virtual void SelectAll();
++  virtual void SelectRange(PDFiumRange range);
+ 
+   // Gets the list of DocumentAttachmentInfo from the document.
+   virtual const std::vector<DocumentAttachmentInfo>&
+@@ -612,6 +614,19 @@ class PDFiumEngine : public DocumentLoader::Client,
+     return find_results_;
+   }
+ 
++  // Reports |current_find_index_| (for testing)
++  std::optional<size_t> GetCurrentFindIndex() { return current_find_index_; }
++
++  // Reports |selection_|  (for testing)
++  std::vector<PDFiumRange> GetSelections() { return selection_; }
++
++  // Reports |search_in_progress_| (for testing)
++  bool IsSearchInProgress() { return search_in_progress_; }
++
++  // Reports |pages_| emptiness state (for testing)
++  bool IsPagesEmpty() { return pages_.empty(); }
++  
++
+  private:
+   // This is a base class for shared functions and data needed for change
+   // invalidators. Subclasses are used to detect the difference in change rects

@@ -1,0 +1,20 @@
+diff --git a/third_party/blink/renderer/core/frame/find_in_page.cc b/third_party/blink/renderer/core/frame/find_in_page.cc
+index db1e2da7cf9d20de9ffb4eab6e30c4f1b1cdcfa7..b0de41896e67314590501fffba3e91459950118b 100644
+--- a/third_party/blink/renderer/core/frame/find_in_page.cc
++++ b/third_party/blink/renderer/core/frame/find_in_page.cc
+@@ -72,8 +72,13 @@ void FindInPage::Find(int request_id,
+   // Check if the plugin still exists in the document.
+   if (plugin) {
+     if (!options->new_session) {
+-      // Just navigate back/forward.
+-      plugin->SelectFindResult(options->forward, request_id);
++      if (options->match_ordinal <= 0) {
++        // Just navigate back/forward.
++        plugin->SelectFindResult(options->forward, request_id);
++      }
++      else {
++        plugin->SelectNthFindResult(options->match_ordinal, request_id);
++      }
+       LocalFrame* core_frame = frame_->GetFrame();
+       core_frame->GetPage()->GetFocusController().SetFocusedFrame(core_frame);
+     } else if (!plugin->StartFind(search_text, options->match_case,

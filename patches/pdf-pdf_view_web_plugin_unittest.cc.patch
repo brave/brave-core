@@ -1,0 +1,53 @@
+diff --git a/pdf/pdf_view_web_plugin_unittest.cc b/pdf/pdf_view_web_plugin_unittest.cc
+index f1d4f298c929a27bba7bdb4f07dbb7defba30cf6..4678393bf16f77799a53195411524eccbb50c7fb 100644
+--- a/pdf/pdf_view_web_plugin_unittest.cc
++++ b/pdf/pdf_view_web_plugin_unittest.cc
+@@ -1850,6 +1850,48 @@ TEST_F(PdfViewWebPluginTest, NotifyNumberOfFindResultsChanged) {
+   plugin_->NotifyNumberOfFindResultsChanged(/*total=*/5, /*final_result=*/true);
+ }
+ 
++TEST_F(PdfViewWebPluginTest, SelectNthFindResult) {
++  EXPECT_TRUE(plugin_->InitializeForTesting(/*bypass_container_init*/true));
++
++  plugin_->StartFind("x", /*case_sensitive=*/false, /*identifier=*/123);
++
++  while(plugin_->IsSearchInProgress()) { /*no-op*/ }
++
++  ASSERT_TRUE(!plugin_->IsSearchInProgress());
++  
++  const std::vector<gfx::Rect> tickmarks = {gfx::Rect(1, 2), gfx::Rect(3, 4)};
++  plugin_->UpdateTickMarks(tickmarks);
++  
++  int num_matches = 5;
++  EXPECT_CALL(*client_ptr_, ReportFindInPageTickmarks(tickmarks));
++  EXPECT_CALL(*client_ptr_, ReportFindInPageMatchCount(123, num_matches, true));
++  plugin_->NotifyNumberOfFindResultsChanged(/*total=*/num_matches, /*final_result=*/true);
++
++  int n = 2;
++  plugin_->SelectNthFindResult(n, /*identifier=*/123);
++  EXPECT_CALL(*client_ptr_, ReportFindInPageSelection(123, n, true));
++  plugin_->NotifySelectedFindResultChanged(/*current_find_index=*/n - 1, /*final_result=*/true);
++
++  n = 4;
++  plugin_->SelectNthFindResult(n, /*identifier=*/123);
++  EXPECT_CALL(*client_ptr_, ReportFindInPageSelection(123, n, true));
++  plugin_->NotifySelectedFindResultChanged(/*current_find_index=*/n - 1, /*final_result=*/true);
++
++  // Out-of-bounds to the left. 
++  // Clamp to first match.
++  n = -1;
++  plugin_->SelectNthFindResult(n, /*identifier=*/123);
++  EXPECT_CALL(*client_ptr_, ReportFindInPageSelection(123, 1, true)); // First match
++  plugin_->NotifySelectedFindResultChanged(/*current_find_index=*/0, /*final_result=*/true);
++
++  // Out-of-bounds to the right.
++  // Clamp to last match.
++  n = num_matches + 1;
++  plugin_->SelectNthFindResult(n, /*identifier=*/123);
++  EXPECT_CALL(*client_ptr_, ReportFindInPageSelection(123, num_matches, true)); // Last match
++  plugin_->NotifySelectedFindResultChanged(/*current_find_index=*/num_matches - 1, /*final_result=*/true);
++}
++
+ TEST_F(PdfViewWebPluginTest, OnDocumentLoadComplete) {
+   auto message =
+       base::DictValue()

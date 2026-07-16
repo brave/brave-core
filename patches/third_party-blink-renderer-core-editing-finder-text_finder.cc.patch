@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/editing/finder/text_finder.cc b/third_party/blink/renderer/core/editing/finder/text_finder.cc
-index edd24ab6e511a46d4a8aeba29955cce7de4e917d..30d7515c0b6fb7c9646b3710ba210269bf215dc3 100644
+index edd24ab6e511a46d4a8aeba29955cce7de4e917d..ef6a879aa777e2136f3dcf6772393100b5ca4e8b 100644
 --- a/third_party/blink/renderer/core/editing/finder/text_finder.cc
 +++ b/third_party/blink/renderer/core/editing/finder/text_finder.cc
 @@ -252,10 +252,58 @@ bool TextFinder::FindInternal(int identifier,
@@ -15,15 +15,15 @@ index edd24ab6e511a46d4a8aeba29955cce7de4e917d..30d7515c0b6fb7c9646b3710ba210269
 +  // IMPORTANT: Read from cache whenever possible to avoid unnecessary work.
 +
 +  // Validate the active_match_index_ before potentially using it on the cache.
-+  // ASIDE: Together, early validation and subsequent cache read address the marker_controller 
-+  // race condition in Textfinder::Scroll().
++  // ASIDE: Together, early index validation and subsequent cache read 
++  // address the marker_controller race condition in Textfinder::Scroll().
 +  if (options.forward && options.match_ordinal <= 0) {
 +    ++active_match_index_;
 +  } else if (!options.forward && options.match_ordinal <= 0) {
 +    --active_match_index_;
 +  } else if (options.match_ordinal > 0) {
-+    // match_ordinal (N) is 1-based when it arrives from the UI, so decrement to
-+    // convert it to 0-based.
++    // match_ordinal (N) is 1-based when it arrives from the UI, 
++    // so decrement to convert it to 0-based.
 +    active_match_index_ = options.match_ordinal - 1;
 +  }
 +  
