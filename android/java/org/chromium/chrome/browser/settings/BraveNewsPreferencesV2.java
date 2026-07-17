@@ -134,6 +134,11 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         return mPageTitle;
     }
 
+    @Override
+    public String getMainMenuKey() {
+        return "brave_news_v2";
+    }
+
     private void setData() {
         if (!GlobalNightModeStateProviderHolder.getInstance().isInNightMode()
                 && getView() != null) {
