@@ -22,7 +22,7 @@
 #include <string>
 #include <utility>
 
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/files/file_path.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
@@ -105,7 +105,7 @@ std::string GetMacAddressFromGetAdaptersAddresses(
                                                 base::BlockingType::MAY_BLOCK);
 
   // Microsoft recommend a default size of 15k.
-  ULONG buffer_size = base::KiB(15).InBytes();
+  ULONG buffer_size = base::KiBU(15).InBytes();
 
   // Disable as much as we can, since all we want is MAC addresses.
   const ULONG flags = GAA_FLAG_SKIP_ANYCAST | GAA_FLAG_SKIP_DNS_SERVER |
