@@ -41,6 +41,7 @@ namespace brave_new_tab_page_refresh {
 
 class BackgroundFacade;
 class CustomImageChooser;
+class SponsoredSitesFacade;
 class TopSitesFacade;
 class VPNFacade;
 
@@ -49,17 +50,19 @@ class VPNFacade;
 // be delegated to a helper class.
 class NewTabPageHandler : public mojom::NewTabPageHandler {
  public:
-  NewTabPageHandler(mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
-                    std::unique_ptr<CustomImageChooser> custom_image_chooser,
-                    std::unique_ptr<BackgroundFacade> background_facade,
-                    std::unique_ptr<TopSitesFacade> top_sites_facade,
-                    std::unique_ptr<VPNFacade> vpn_facade,
-                    content::WebContents& web_contents,
-                    PrefService& pref_service,
-                    TemplateURLService& template_url_service,
-                    misc_metrics::NewTabMetrics& new_tab_metrics,
-                    misc_metrics::PageMetrics* page_metrics,
-                    bool was_restored);
+  NewTabPageHandler(
+      mojo::PendingReceiver<mojom::NewTabPageHandler> receiver,
+      std::unique_ptr<CustomImageChooser> custom_image_chooser,
+      std::unique_ptr<BackgroundFacade> background_facade,
+      std::unique_ptr<SponsoredSitesFacade> sponsored_sites_facade,
+      std::unique_ptr<TopSitesFacade> top_sites_facade,
+      std::unique_ptr<VPNFacade> vpn_facade,
+      content::WebContents& web_contents,
+      PrefService& pref_service,
+      TemplateURLService& template_url_service,
+      misc_metrics::NewTabMetrics& new_tab_metrics,
+      misc_metrics::PageMetrics* page_metrics,
+      bool was_restored);
 
   ~NewTabPageHandler() override;
 
@@ -133,6 +136,9 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   void GetShowTopSites(GetShowTopSitesCallback callback) override;
   void SetShowTopSites(bool show_top_sites,
                        SetShowTopSitesCallback callback) override;
+  void GetShowSponsoredSites(GetShowSponsoredSitesCallback callback) override;
+  void SetShowSponsoredSites(bool enabled,
+                             SetShowSponsoredSitesCallback callback) override;
   void GetTopSitesListKind(GetTopSitesListKindCallback callback) override;
   void SetTopSitesListKind(mojom::TopSitesListKind list_kind,
                            SetTopSitesListKindCallback callback) override;
@@ -159,6 +165,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
       const std::string& url,
       IncludeMostVisitedTopSiteCallback callback) override;
   void RecordTopSiteClick(RecordTopSiteClickCallback callback) override;
+  void GetSponsoredSites(GetSponsoredSitesCallback callback) override;
   void GetShowClock(GetShowClockCallback callback) override;
   void SetShowClock(bool show_clock, SetShowClockCallback callback) override;
   void GetClockFormat(GetClockFormatCallback callback) override;
@@ -195,6 +202,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
                                    std::vector<base::FilePath> paths);
 
   void OnUpdate(UpdateObserver::Source update_source);
+  void OnSponsoredSitesUpdate();
   void OpenGURL(const GURL& gurl, WindowOpenDisposition disposition);
 
   mojo::Receiver<mojom::NewTabPageHandler> receiver_;
@@ -202,6 +210,7 @@ class NewTabPageHandler : public mojom::NewTabPageHandler {
   UpdateObserver update_observer_;
   std::unique_ptr<CustomImageChooser> custom_image_chooser_;
   std::unique_ptr<BackgroundFacade> background_facade_;
+  std::unique_ptr<SponsoredSitesFacade> sponsored_sites_facade_;
   std::unique_ptr<TopSitesFacade> top_sites_facade_;
   std::unique_ptr<VPNFacade> vpn_facade_;
   raw_ref<content::WebContents> web_contents_;
