@@ -26,7 +26,6 @@
       const views::SizeBounds& size_bounds) const override;                 \
   gfx::Size GetSizeForLabelWidth(int label_width) const override;           \
   bool ShouldShowLabel() const override;                                    \
-  SkColor GetBackgroundColor() const override;                              \
   SkColor GetForegroundColor() const override;                              \
   std::optional<int> GetOverrideHeight() const;                             \
   void OnPageActionModelVisualRefresh(PageActionModelInterface* model);     \

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 9de212e49bb02246978b8dd74d008c0a21036e3e..af74602bd5d21545a1b24c4b9efc072db2ae2652 100644
+index 9de212e49bb02246978b8dd74d008c0a21036e3e..581c8ce092c1cc5963f335b3afb3f93726000432 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -238,7 +238,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
@@ -28,3 +28,13 @@ index 9de212e49bb02246978b8dd74d008c0a21036e3e..af74602bd5d21545a1b24c4b9efc072d
            .Build());
  }
  
+@@ -639,6 +642,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+ }
+ 
+ SkColor PageActionView::GetBackgroundColor() const {
++  if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
++    return *color;
++  }
+   if (observation_.IsObserving() &&
+       observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
+       GetColorProvider()) {
