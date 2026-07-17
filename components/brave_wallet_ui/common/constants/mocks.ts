@@ -717,64 +717,29 @@ BraveWallet.SignCardanoTransactionRequest = {
     + 'f19f1433da96a108ea8bdda693fb1bea748f89adbfa7c2af58404dd83381fdc64b'
     + '6123f193e23c983a99c979a1af44b1bda5ea15d06cf7364161b7b3609bca439b62'
     + 'e232731fb5290c495601cf40b358f915ade8bcff1eb7b802f5f6',
-  inputs: [
-    {
-      address:
-        'addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl',
-      outpointTxid:
-        'a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925',
-      outpointIndex: 0,
-      value: BigInt(10000000),
-      tokens: [],
-    },
-    {
-      address:
-        'addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl',
-      outpointTxid:
-        'addr1v83gkkw3nqzakg5xynlurqcfqhgd65vkfvf5xv8tx25ufds2yvy2h',
-      outpointIndex: 1,
-      value: BigInt(12345678),
-      tokens: [],
-    },
-  ],
-  outputs: [
-    {
-      address:
-        'addr1qy8ampwn98c9y6gcea9cturevw2njm9pcs8apt8aunljymuy88wktx2awyus6hccdu76k3n6gjvkvl3zunyc47k4tgns5k87m6',
-      value: BigInt(10000000),
-      tokens: [],
-    },
-    {
-      address:
-        'addr1q9dl94auumrxp5vxtlxq3e24tfugw6fx05tvqd8rueaa4vz5d8cwkwqtlz2xuvequaczm98tccrcrxfeeu4049fxdqgqccrkze',
-      value: BigInt(1234567),
-      tokens: [],
-    },
-  ],
-  mint: [
-    {
-      tokenIdHex:
-        'abcd1234ef567890ff00ee11dd22cc33bb44aa55cc66ee77aabb998877665544',
-      amount: BigInt(500000),
-    },
-    {
-      tokenIdHex:
-        'deadbeef00112233445566778899aabbccddeeff11223344556677889900aabb',
-      amount: BigInt(250000),
-    },
-  ],
-  withdrawals: [
-    {
-      rewardAccount:
-        'stake1uyv2kce7pqq4nwjrc4pu95sv6cw3zrj6s8v6gs7z4grr0xqff5uxt',
-      coin: BigInt(1000000),
-    },
-    {
-      rewardAccount:
-        'stake1u9tarkvlqk4hgdxg0n9qg9r3kc0m9ckwavv8vapx623apfsc0vwjq',
-      coin: BigInt(500000),
-    },
-  ],
+  detailsJson: JSON.stringify({
+    inputs: [
+      {
+        txHash:
+          'a7b4c1021fa375a4fccb1ac1b3bb01743b3989b5eb732cc6240add8c71edb925',
+        index: '0',
+        value: '10000000',
+        tokens: [],
+        address:
+          'addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zzmj'
+          + '4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl',
+      },
+    ],
+    outputs: [
+      {
+        address:
+          'addr1qy8ampwn98c9y6gcea9cturevw2njm9pcs8apt8aunljymuy88wktx2awyus6hc'
+          + 'cdu76k3n6gjvkvl3zunyc47k4tgns5k87m6',
+        value: '10000000',
+        tokens: [],
+      },
+    ],
+  }),
 }
 
 //

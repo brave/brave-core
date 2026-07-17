@@ -18,26 +18,15 @@ use std::sync::atomic::{AtomicBool, Ordering};
 use blake2b_simd::Params as Blake2bParams;
 use ciborium::{de::from_reader, Value as CborValue};
 
-// Re-export types for external use
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableCoinValue;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableMintToken;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTx;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxBody;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxInput;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxOutput;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxOutputToken;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableTxWitness;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableVkeyWitness;
-#[allow(unused_imports)]
 use crate::ffi::CxxSerializableWithdrawal;
 
 // Constants definitions come from
@@ -54,7 +43,15 @@ const FEE_KEY: u8 = 2;
 const TTL_KEY: u8 = 3;
 const CERTIFICATES_KEY: u8 = 4;
 const WITHDRAWALS_KEY: u8 = 5;
+const SCRIPT_DATA_HASH_KEY: u8 = 11;
 const MINT_KEY: u8 = 9;
+const COLLATERAL_KEY: u8 = 13;
+const COLLATERAL_RETURN_KEY: u8 = 16;
+const TOTAL_COLLATERAL_KEY: u8 = 17;
+const VOTING_PROCEDURES_KEY: u8 = 19;
+const PROPOSAL_PROCEDURES_KEY: u8 = 20;
+const CURRENT_TREASURY_VALUE_KEY: u8 = 21;
+const DONATION_KEY: u8 = 22;
 const VK_WITNESS_KEY: u8 = 0;
 const BABBAGE_OUTPUT_ADDRESS_KEY: u8 = 0;
 const BABBAGE_OUTPUT_VALUE_KEY: u8 = 1;
@@ -212,7 +209,14 @@ mod ffi {
         has_ttl: bool,
         ttl: u64,
         withdrawals: Vec<CxxSerializableWithdrawal>,
+        has_script_data_hash: bool,
+        script_data_hash: [u8; 32], // CARDANO_TX_HASH_SIZE
         mint: Vec<CxxSerializableMintToken>,
+        collateral: Vec<CxxSerializableTxInput>,
+        has_collateral_return: bool,
+        collateral_return: CxxSerializableTxOutput,
+        has_total_collateral: bool,
+        total_collateral: u64,
     }
 
     #[derive(Clone)]
@@ -674,17 +678,66 @@ fn extract_cardano_body(cbor_value: &CborValue) -> Result<(CxxSerializableTxBody
         return Err(());
     }
 
+    // Governance voting/proposal procedures and treasury movements are not
+    // supported. Reject any transaction that carries them so we never sign a
+    // body whose effects we don't decode.
+    if find_map_value(body_map, VOTING_PROCEDURES_KEY).is_some()
+        || find_map_value(body_map, PROPOSAL_PROCEDURES_KEY).is_some()
+        || find_map_value(body_map, CURRENT_TREASURY_VALUE_KEY).is_some()
+        || find_map_value(body_map, DONATION_KEY).is_some()
+    {
+        return Err(());
+    }
+
     // Extract withdrawals (optional).
     let withdrawals = decode_withdrawals(body_map)?;
 
+    // Extract script data hash (optional).
+    let (has_script_data_hash, script_data_hash) =
+        match find_map_value(body_map, SCRIPT_DATA_HASH_KEY) {
+            Some(val) => (true, decode_bytes_array::<CARDANO_TX_HASH_SIZE>(val)?),
+            None => (false, [0u8; CARDANO_TX_HASH_SIZE]),
+        };
+
     // Extract mint (optional).
     let mint = decode_mint(body_map)?;
+
+    // Extract collateral inputs (optional).
+    let collateral = decode_collateral(body_map)?;
+
+    // Extract collateral return (optional).
+    let (has_collateral_return, collateral_return) = decode_collateral_return(body_map)?;
+
+    // Extract total collateral (optional).
+    let (has_total_collateral, total_collateral) =
+        match find_map_value(body_map, TOTAL_COLLATERAL_KEY) {
+            Some(val) => (true, decode_u64(val)?),
+            None => (false, 0),
+        };
 
     // Serialize the body for raw bytes
     let mut raw_body = Vec::new();
     ciborium::ser::into_writer(body_value, &mut raw_body).map_err(|_| ())?;
 
-    Ok((CxxSerializableTxBody { inputs, outputs, fee, has_ttl, ttl, withdrawals, mint }, raw_body))
+    Ok((
+        CxxSerializableTxBody {
+            inputs,
+            outputs,
+            fee,
+            has_ttl,
+            ttl,
+            withdrawals,
+            has_script_data_hash,
+            script_data_hash,
+            mint,
+            collateral,
+            has_collateral_return,
+            collateral_return,
+            has_total_collateral,
+            total_collateral,
+        },
+        raw_body,
+    ))
 }
 
 // https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L699
@@ -726,30 +779,40 @@ fn decode_witness(cbor_value: &CborValue) -> Result<CxxSerializableTxWitness, ()
     Ok(CxxSerializableTxWitness { vkey_witness_set })
 }
 
-fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializableTxInput>, ()> {
-    let inputs_value = find_map_value(body_map, INPUTS_KEY);
+fn decode_tx_input(input_value: &CborValue) -> Result<CxxSerializableTxInput, ()> {
+    let input_array = decode_array(input_value)?;
 
-    let inputs_array = match inputs_value {
-        Some(value) => decode_nonempty_set(value)?,
-        None => return Ok(Vec::new()), // No inputs
-    };
-
-    let mut inputs = Vec::with_capacity(inputs_array.len());
-    for input_value in inputs_array {
-        let input_array = decode_array(input_value)?;
-
-        if input_array.len() != 2 {
-            return Err(());
-        }
-
-        // Extract transaction hash and index
-        let tx_hash = decode_bytes_array(&input_array[0])?;
-        let index = decode_u32(&input_array[1])?;
-
-        inputs.push(CxxSerializableTxInput { tx_hash, index });
+    if input_array.len() != 2 {
+        return Err(());
     }
 
-    Ok(inputs)
+    let tx_hash = decode_bytes_array(&input_array[0])?;
+    let index = decode_u32(&input_array[1])?;
+
+    Ok(CxxSerializableTxInput { tx_hash, index })
+}
+
+fn decode_tx_inputs_set(value: &CborValue) -> Result<Vec<CxxSerializableTxInput>, ()> {
+    let inputs_array = decode_nonempty_set(value)?;
+    inputs_array.iter().map(decode_tx_input).collect()
+}
+
+fn extract_inputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializableTxInput>, ()> {
+    match find_map_value(body_map, INPUTS_KEY) {
+        Some(value) => decode_tx_inputs_set(value),
+        None => Ok(Vec::new()),
+    }
+}
+
+// 13 : nonempty_set<transaction_input> ; collateral
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L126
+fn decode_collateral(
+    body_map: &[(CborValue, CborValue)],
+) -> Result<Vec<CxxSerializableTxInput>, ()> {
+    match find_map_value(body_map, COLLATERAL_KEY) {
+        Some(value) => decode_tx_inputs_set(value),
+        None => Ok(Vec::new()),
+    }
 }
 
 fn extract_tokens(multiasset: &CborValue) -> Result<Vec<CxxSerializableTxOutputToken>, ()> {
@@ -820,6 +883,16 @@ fn parse_babbage_transaction_output(
     Ok(CxxSerializableTxOutput { addr: addr_bytes, coin_value })
 }
 
+// Each item might be an alonzo or babbage transaction output.
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L144
+fn decode_transaction_output(output_value: &CborValue) -> Result<CxxSerializableTxOutput, ()> {
+    match output_value {
+        CborValue::Array(arr) => parse_alonzo_transaction_output(arr),
+        CborValue::Map(output_map) => parse_babbage_transaction_output(output_map),
+        _ => Err(()),
+    }
+}
+
 // Decode array of transaction outputs from the transaction body.
 // 1  : [* transaction_output]
 // https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L114
@@ -830,23 +903,25 @@ fn decode_outputs(body_map: &[(CborValue, CborValue)]) -> Result<Vec<CxxSerializ
     };
 
     let outputs_array = decode_array(outputs_value)?;
+    outputs_array.iter().map(decode_transaction_output).collect()
+}
 
-    let mut outputs = Vec::with_capacity(outputs_array.len());
-    for output_value in outputs_array {
-        // Each item might be an alonzo or babbage transaction output.
-        // https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L144
-        match output_value {
-            CborValue::Array(arr) => {
-                outputs.push(parse_alonzo_transaction_output(&arr)?);
-            }
-            CborValue::Map(output_map) => {
-                outputs.push(parse_babbage_transaction_output(output_map)?);
-            }
-            _ => return Err(()),
-        }
-    }
+// 16 : transaction_output ; collateral return
+// https://github.com/IntersectMBO/cardano-ledger/blob/8d5d83d9929f7facbcd972edfcda8da3bfdeec10/eras/conway/impl/cddl/data/conway.cddl#L129
+fn decode_collateral_return(
+    body_map: &[(CborValue, CborValue)],
+) -> Result<(bool, CxxSerializableTxOutput), ()> {
+    let Some(output_value) = find_map_value(body_map, COLLATERAL_RETURN_KEY) else {
+        return Ok((
+            false,
+            CxxSerializableTxOutput {
+                addr: Vec::new(),
+                coin_value: CxxSerializableCoinValue { lovelace_amount: 0, tokens: Vec::new() },
+            },
+        ));
+    };
 
-    Ok(outputs)
+    Ok((true, decode_transaction_output(output_value)?))
 }
 
 // withdrawals = {+ reward_account => coin}

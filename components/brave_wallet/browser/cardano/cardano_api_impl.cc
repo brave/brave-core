@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_writer.h"
 #include "base/notimplemented.h"
 #include "base/numerics/checked_math.h"
 #include "base/strings/string_number_conversions.h"
@@ -20,6 +21,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_dapp_utils.h"
 #include "brave/components/brave_wallet/browser/cardano/cardano_rpc_schema.h"
+#include "brave/components/brave_wallet/browser/cardano/cardano_tx_decoder.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/cardano_address.h"
@@ -168,17 +170,6 @@ ApplyPaginate(base::span<const cardano_rpc::UnspentOutput> utxos,
   }
 
   return requested_page;
-}
-
-std::optional<cardano_rpc::UnspentOutput> FindUtxoByOutpoint(
-    const cardano_rpc::UnspentOutputs& utxos,
-    const CardanoTxDecoder::SerializableTxInput& input) {
-  for (const auto& utxo : utxos) {
-    if (utxo.tx_hash == input.tx_hash && utxo.output_index == input.index) {
-      return utxo;
-    }
-  }
-  return std::nullopt;
 }
 
 }  // namespace
@@ -516,62 +507,15 @@ mojom::SignCardanoTransactionRequestPtr
 CardanoApiImpl::MakeSignCardanoTransactionRequest(
     const CardanoTxDecoder::DecodedTx& decoded_tx,
     const cardano_rpc::UnspentOutputs& utxos) {
-  std::vector<mojom::CardanoTxInputPtr> inputs;
-  // Fill destination address and value of known inputs.
-  for (const auto& input : decoded_tx.tx.tx_body.inputs) {
-    auto& inserted = inputs.emplace_back(mojom::CardanoTxInput::New(
-        "", base::HexEncode(input.tx_hash), input.index, 0u,
-        std::vector<mojom::CardanoTxTokenValuePtr>()));
-
-    if (auto utxo = FindUtxoByOutpoint(utxos, input)) {
-      inserted->address = utxo->address_to.ToString();
-      inserted->value = utxo->coin_value.lovelace_amount;
-      for (auto& token : utxo->coin_value.tokens) {
-        inserted->tokens.push_back(mojom::CardanoTxTokenValue::New(
-            base::HexEncodeLower(token.first), token.second));
-      }
-    }
-  }
-
-  std::vector<mojom::CardanoTxOutputPtr> outputs;
-  for (const auto& output : decoded_tx.tx.tx_body.outputs) {
-    auto cardano_address = CardanoAddress::FromCborBytes(output.address_bytes);
-    if (!cardano_address) {
-      return nullptr;
-    }
-    outputs.emplace_back(mojom::CardanoTxOutput::New(
-        cardano_address->ToString(), output.coin_value.lovelace_amount,
-        std::vector<mojom::CardanoTxTokenValuePtr>()));
-    for (auto& [token_id, amount] : output.coin_value.tokens) {
-      outputs.back()->tokens.push_back(mojom::CardanoTxTokenValue::New(
-          base::HexEncodeLower(token_id), amount));
-    }
-  }
-
-  std::vector<mojom::CardanoTxMintTokenPtr> mint;
-  for (const auto& mint_item : decoded_tx.tx.tx_body.mint) {
-    mint.push_back(mojom::CardanoTxMintToken::New(
-        base::HexEncodeLower(mint_item.token_id), mint_item.amount));
-  }
-
-  std::vector<mojom::CardanoTxWithdrawalPtr> withdrawals;
-  for (const auto& withdrawal_item : decoded_tx.tx.tx_body.withdrawals) {
-    auto cardano_address =
-        CardanoAddress::FromCborBytes(withdrawal_item.reward_account);
-    if (!cardano_address) {
-      return nullptr;
-    }
-
-    withdrawals.push_back(mojom::CardanoTxWithdrawal::New(
-        cardano_address->ToString(), withdrawal_item.coin));
-  }
+  std::string details =
+      base::WriteJson(FormatCardanoTxDetails(decoded_tx.tx.tx_body, utxos))
+          .value_or("");
 
   return mojom::SignCardanoTransactionRequest::New(
       -1, selected_account_.Clone(), MakeOriginInfo(origin_),
       mojom::ChainId::New(mojom::CoinType::ADA,
                           GetNetworkForCardanoAccount(selected_account_)),
-      base::HexEncode(decoded_tx.raw_tx_bytes), std::move(inputs),
-      std::move(outputs), std::move(mint), std::move(withdrawals));
+      base::HexEncode(decoded_tx.raw_tx_bytes), std::move(details));
 }
 
 base::flat_set<mojom::CardanoKeyIdPtr> CardanoApiImpl::GetPaymentKeyIds(

@@ -813,6 +813,10 @@
   <message name="IDS_BRAVE_WALLET_OUTPUTS" desc="Transaction Details Outputs Label">Outputs</message>
   <message name="IDS_BRAVE_WALLET_MINT" desc="Transaction Details Mint Label">Mint</message>
   <message name="IDS_BRAVE_WALLET_WITHDRAWALS" desc="Transaction Details Withdrawals Label">Withdrawals</message>
+  <message name="IDS_BRAVE_WALLET_SCRIPT_DATA_HASH" desc="Transaction Details Script Data Hash Label">Script Data Hash</message>
+  <message name="IDS_BRAVE_WALLET_COLLATERAL" desc="Transaction Details Collateral Label">Collateral</message>
+  <message name="IDS_BRAVE_WALLET_COLLATERAL_RETURN" desc="Transaction Details Collateral Return Label">Collateral Return</message>
+  <message name="IDS_BRAVE_WALLET_TOTAL_COLLATERAL" desc="Transaction Details Total Collateral Label">Total Collateral</message>
   <message name="IDS_BRAVE_WALLET_VALUE" desc="Transaction Details Value Label">Value</message>
   <message name="IDS_BRAVE_WALLET_TOKEN" desc="Transaction Details Token Label">Token</message>
   <message name="IDS_BRAVE_WALLET_NETWORK_FILTER_SECONDARY" desc="Network Filter Selector Secondary Networks">Secondary networks</message>
