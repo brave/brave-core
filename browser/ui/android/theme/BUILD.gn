@@ -1,6 +1,7 @@
-# Copyright 2021 The Brave Authors. All rights reserved.
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2021 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//build/config/android/rules.gni")
 
@@ -14,4 +15,30 @@ android_library("java") {
     "//third_party/androidx:androidx_annotation_annotation_java",
   ]
   resources_package = "org.chromium.chrome.browser.theme"
+}
+
+android_library("dynamic_colors_java") {
+  sources =
+      [ "java/src/org/chromium/chrome/browser/theme/BraveDynamicColors.java" ]
+
+  deps = [
+    "//base:base_java",
+    "//build/android:build_java",
+    "//chrome/browser/flags:java",
+    "//chrome/browser/preferences:java",
+    "//components/cached_flags:java",
+    "//third_party/android_deps:material_design_java",
+  ]
+}
+
+robolectric_library("junit") {
+  testonly = true
+  sources = [
+    "junit/src/org/chromium/chrome/browser/theme/BraveDynamicColorsTest.java",
+  ]
+
+  deps = [
+    ":dynamic_colors_java",
+    "//chrome/android/junit:chrome_junit_tests_helper",
+  ]
 }

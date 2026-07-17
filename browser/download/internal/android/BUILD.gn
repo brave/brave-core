@@ -13,6 +13,7 @@ android_library("java") {
 
   deps = [
     "//base:base_java",
+    "//brave/browser/ui/android/theme:dynamic_colors_java",
     "//build/android:build_java",
     "//chrome/browser/download/internal/android:java",
     "//chrome/browser/download/internal/android:java_resources",

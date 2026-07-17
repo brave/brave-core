@@ -36,6 +36,8 @@ import androidx.preference.PreferenceViewHolder;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.filters.SmallTest;
 
+import com.google.android.material.color.DynamicColorsOptions;
+
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -275,6 +277,8 @@ public class BytecodeTest {
     @SmallTest
     public void testClassesExist() throws Exception {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/ChromeApplicationImpl"));
+        Assert.assertTrue(classExists("com/google/android/material/color/DynamicColors"));
+        Assert.assertTrue(classExists("org/chromium/chrome/browser/theme/BraveDynamicColors"));
         Assert.assertTrue(classExists("org/chromium/chrome/browser/settings/MainSettings"));
         ThreadUtils.runOnUiThreadBlocking(
                 () -> {
@@ -496,6 +500,36 @@ public class BytecodeTest {
     @Test
     @SmallTest
     public void testMethodsExist() throws Exception {
+        Assert.assertTrue(
+                methodExists(
+                        "com/google/android/material/color/DynamicColors",
+                        "applyToActivityIfAvailable",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Activity.class));
+        Assert.assertTrue(
+                methodExists(
+                        "com/google/android/material/color/DynamicColors",
+                        "applyToActivityIfAvailable",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Activity.class,
+                        DynamicColorsOptions.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/theme/BraveDynamicColors",
+                        "applyToActivityIfAvailable",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Activity.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/theme/BraveDynamicColors",
+                        "applyToActivityIfAvailable",
+                        MethodModifier.STATIC,
+                        void.class,
+                        Activity.class,
+                        DynamicColorsOptions.class));
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/LaunchIntentDispatcher",

@@ -11,7 +11,7 @@ public class BraveDynamicColorsClassAdapter extends BraveClassVisitor {
     static String sDynamicColorsClassName = "com/google/android/material/color/DynamicColors";
 
     static String sBraveDynamicColorsClassName =
-            "org/chromium/chrome/browser/util/BraveDynamicColors";
+            "org/chromium/chrome/browser/theme/BraveDynamicColors";
 
     public BraveDynamicColorsClassAdapter(ClassVisitor visitor) {
         super(visitor);

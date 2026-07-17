@@ -7,11 +7,10 @@ package org.chromium.chrome.browser.download.home.search;
 
 import android.content.Context;
 
-import org.chromium.base.BraveFeatureList;
 import org.chromium.base.Callback;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.download.internal.R;
-import org.chromium.chrome.browser.flags.ChromeFeatureList;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 
 @NullMarked
 public class BraveSearchBarCoordinator extends SearchBarCoordinator {
@@ -19,9 +18,9 @@ public class BraveSearchBarCoordinator extends SearchBarCoordinator {
             Context context, Callback<String> queryCallback, boolean autoFocusSearchBox) {
         super(context, queryCallback, autoFocusSearchBox);
 
-        // When Dynamic colors flag is disabled (default) we replace here icon with one
-        // without color_primary reference toi avoid orange tint on light theme
-        if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_ANDROID_DYNAMIC_COLORS)) {
+        // When dynamic colors are disabled, use a background without color_primary to avoid
+        // orange tint on light theme.
+        if (!BraveDynamicColors.isDynamicColorsEnabled()) {
             getView().setBackgroundResource(R.drawable.no_dynamic_download_search_bar_background);
         }
     }
