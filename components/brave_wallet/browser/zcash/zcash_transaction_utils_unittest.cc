@@ -298,7 +298,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Orchard output, single input.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 2});
     auto result =
         PickZCashOrchardInputs(notes, 10000u, ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
@@ -315,7 +315,7 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Transparent output, single input.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 10000u,
                                          ZCashTargetOutputType::kTransparent);
     EXPECT_TRUE(result.has_value());
@@ -332,9 +332,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Orchard output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result =
         PickZCashOrchardInputs(notes, 150000u, ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
@@ -351,9 +351,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Full amount, orchard output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
@@ -373,9 +373,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Change is 0, but amount is not full, orchard output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 370000u - 15000u,
                                          ZCashTargetOutputType::kOrchard);
     EXPECT_TRUE(result.has_value());
@@ -396,9 +396,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Transparent output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
 
     auto result = PickZCashOrchardInputs(notes, 150000u,
                                          ZCashTargetOutputType::kTransparent);
@@ -418,9 +418,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Transparent output, full amount.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kTransparent);
     EXPECT_TRUE(result.has_value());
@@ -441,9 +441,9 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Change is 0, but amount is not max, transparent output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 3u, {}, 70000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 370000u - 20000u,
                                          ZCashTargetOutputType::kTransparent);
     EXPECT_TRUE(result.has_value());
@@ -464,8 +464,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Unable to pick inputs, not enough funds.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 100000u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 200000u, 0, {}, {}, 2});
     auto result =
         PickZCashOrchardInputs(notes, 300000u, ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
@@ -496,8 +496,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs overflow.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFFFFFFFFFF, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
@@ -506,8 +506,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs overflow.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
     EXPECT_FALSE(result.has_value());
@@ -516,8 +516,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs overflow, transparent output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 0xAAAAAAAAAAAAAAAA, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 0x8888888888888888, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kTransparent);
     EXPECT_FALSE(result.has_value());
@@ -526,8 +526,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs greater than u32, full amount.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFF + 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}});
+    notes.push_back(
+        OrchardNote{{}, 1u, {}, 0xFFFFFFFF + 100000u, 0, {}, {}, 2});
+    notes.push_back(
+        OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kOrchard);
 
@@ -545,8 +547,10 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs greater than u32, full amount, transparent output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 0xFFFFFFFF + 100000u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}});
+    notes.push_back(
+        OrchardNote{{}, 1u, {}, 0xFFFFFFFF + 100000u, 0, {}, {}, 2});
+    notes.push_back(
+        OrchardNote{{}, 2u, {}, 0xFFFFFFFF + 200000u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, kZCashFullAmount,
                                          ZCashTargetOutputType::kTransparent);
 
@@ -564,8 +568,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs greater than u32, with change amount.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 4295117295u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 4295117295u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 4295117295u,
                                          ZCashTargetOutputType::kOrchard);
 
@@ -584,8 +588,8 @@ TEST(ZCashTransactionUtilsUnitTest, PickZCashOrchardInputs) {
   // Inputs greater than u32, with change amount, transparent output.
   {
     std::vector<OrchardNote> notes;
-    notes.push_back(OrchardNote{{}, 1u, {}, 4295117295u, 0, {}, {}});
-    notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}});
+    notes.push_back(OrchardNote{{}, 1u, {}, 4295117295u, 0, {}, {}, 2});
+    notes.push_back(OrchardNote{{}, 2u, {}, 4295167295u, 0, {}, {}, 2});
     auto result = PickZCashOrchardInputs(notes, 4295117295u,
                                          ZCashTargetOutputType::kTransparent);
 

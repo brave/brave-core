@@ -119,6 +119,7 @@ base::DictValue OrchardNote::ToValue() const {
            base::NumberToString(orchard_commitment_tree_position));
   dict.Set("rho", base::HexEncode(rho));
   dict.Set("seed", base::HexEncode(seed));
+  dict.Set("note_version", base::NumberToString(note_version));
 
   return dict;
 }
@@ -202,6 +203,13 @@ std::optional<OrchardNote> OrchardNote::FromValue(
   }
 
   if (!ReadHexByteArrayTo<kOrchardNoteRSeedSize>(value, "seed", result.seed)) {
+    return std::nullopt;
+  }
+
+  // Older serialized notes omit note_version; treat them as Orchard (v2).
+  if (!value.Find("note_version")) {
+    result.note_version = 2;
+  } else if (!ReadUint32StringTo(value, "note_version", result.note_version)) {
     return std::nullopt;
   }
 

@@ -78,6 +78,14 @@ enum ZCashAddrType : uint8_t {
   kMaxValue = kOrchard
 };
 
+// Distinguishes the Orchard-compatible commitment-tree pools. Both pools reuse
+// the same shard-tree logic but keep independent trees, notes, nullifiers and
+// checkpoints inside OrchardStorage, keyed by this value.
+enum class OrchardPool : uint8_t {
+  kOrchard = 0,
+  kIronwood = 1,
+};
+
 enum class OrchardAddressKind {
   // External kind, can be used in account addresses.
   External,
@@ -133,6 +141,8 @@ struct OrchardNote {
   uint32_t orchard_commitment_tree_position = 0;
   OrchardRho rho{};
   OrchardRseed seed{};
+  // Note plaintext version: 2 for Orchard, 3 for Ironwood.
+  uint32_t note_version = 0;
 
   bool operator==(const OrchardNote& other) const = default;
   base::DictValue ToValue() const;

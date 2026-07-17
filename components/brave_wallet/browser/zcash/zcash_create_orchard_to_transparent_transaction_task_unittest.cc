@@ -140,6 +140,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -147,6 +148,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -201,6 +203,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -208,6 +211,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -244,6 +248,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -251,6 +256,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -301,6 +307,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -308,6 +315,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -358,6 +366,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000000000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -365,6 +374,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000000000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -417,6 +427,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 0xFFFFFFFFFFFFFFFFu;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -424,6 +435,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 0x2222222222222222u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -461,6 +473,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 0xFFFFFFFFFFFFFFFFu;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -468,6 +481,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 0x2222222222222222u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
         spendable_notes_bundle.anchor_block_id = 10u;
@@ -504,6 +518,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, NotEnoughFunds) {
           OrchardNote note;
           note.block_id = 1u;
           note.amount = 70000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 
@@ -511,6 +526,7 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, NotEnoughFunds) {
           OrchardNote note;
           note.block_id = 2u;
           note.amount = 80000u;
+          note.note_version = 2;
           spendable_notes_bundle.spendable_notes.push_back(std::move(note));
         }
 

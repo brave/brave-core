@@ -401,12 +401,14 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded) {
         {
           OrchardNote note;
           note.amount = 10u;
+          note.note_version = 2;
           spendable_notes_bundle.all_notes.push_back(note);
           spendable_notes_bundle.spendable_notes.push_back(note);
         }
         {
           OrchardNote note;
           note.amount = 20u;
+          note.note_version = 2;
           spendable_notes_bundle.all_notes.push_back(note);
         }
         return spendable_notes_bundle;
@@ -486,6 +488,7 @@ TEST_F(ZCashWalletServiceUnitTest, GetBalanceWithShielded_FeatureDisabled) {
 
   OrchardNote note;
   note.amount = 10u;
+  note.note_version = 2;
 
   auto update_notes_callback = base::BindLambdaForTesting(
       [](base::expected<OrchardStorage::Result, OrchardStorage::Error>) {});
@@ -2558,6 +2561,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                   "0xa9e915b1e94c953e59c3a5635c565daade75f88f2186899d5598bdd0fd"
                   "751824"));
           note.amount = 100000u;
+          note.note_version = 2;
           note.orchard_commitment_tree_position = 50094446u;
           base::span(note.rho).copy_from(
               *PrefixedHexStringToBytes("0x827a4a0d2e3035ea1775e13bc30b3bfe5bad"
@@ -2578,6 +2582,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_SendShieldedFunds) {
                   "0xb8462634013463dbdb60a4531f6547baa1de7dbde99cc669a165812748"
                   "d1a218"));
           note.amount = 100000u;
+          note.note_version = 2;
           note.orchard_commitment_tree_position = 50094790u;
           base::span(note.rho).copy_from(
               *PrefixedHexStringToBytes("0xa2d159c97b0e5b5f9977c58b9157ddb9c101"
@@ -3208,6 +3213,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
                   "0x45e4df8f6922f7fdab5c08bba239ce53767ce2b80bb525c3a14ead804e"
                   "562d01"));
           note.amount = 90000u;
+          note.note_version = 2;
           note.orchard_commitment_tree_position = 50094973u;
           base::span(note.rho).copy_from(
               *PrefixedHexStringToBytes("0xa9e915b1e94c953e59c3a5635c565daade75"
@@ -3228,6 +3234,7 @@ TEST_F(ZCashWalletServiceUnitTest, MAYBE_UnshieldFunds) {
                   "0x78ab7438de7bebaf4a1850b16aa99d5bec3a5fa4a3cb7e593290d75a95"
                   "4cdd21"));
           note.amount = 100000u;
+          note.note_version = 2;
           note.orchard_commitment_tree_position = 50094829u;
           base::span(note.rho).copy_from(
               *PrefixedHexStringToBytes("0xb8573aeb58630d8f48daf62a2be4474fd1f0"
