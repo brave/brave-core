@@ -3,6 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+import Transport from '@ledgerhq/hw-transport'
 import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import { LedgerMessagingTransport } from './ledger-messaging-transport'
 import {
@@ -37,12 +38,22 @@ export class LedgerUntrustedMessagingTransport //
 
   private fillDeviceNameImpl = async (): Promise<void> => {
     try {
-      const transport = await TransportWebHID.create()
+      const transport = await this.createTransport()
       const deviceName = transport.deviceModel?.productName ?? ''
       await transport.close()
       this.deviceName = deviceName
       console.log('this.deviceName', this.deviceName)
     } catch (error) {}
+  }
+
+  /** Verifies that a Ledger device is connected before creating a
+   * transport for it. */
+  protected createTransport = async (): Promise<Transport> => {
+    const devices = await TransportWebHID.list()
+    if (devices.length === 0) {
+      throw new Error('No Ledger device found.')
+    }
+    return TransportWebHID.create()
   }
 
   private handleGetDeviceName = async (
