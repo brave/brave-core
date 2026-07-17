@@ -18,6 +18,8 @@ import logging
 import os
 from pathlib import Path
 import platform
+import re
+import subprocess
 import sys
 import tarfile
 
@@ -39,10 +41,28 @@ def _platform_tag() -> str:
     return 'linux-x64'
 
 
+def _ast_grep_version() -> str:
+    """Return the release version of the freshly built ast-grep binary.
+
+    Raises:
+        RuntimeError: If the binary is missing or its version cannot be parsed.
+    """
+    binary = build_ast_grep.AST_GREP_BIN
+    if not binary.is_file():
+        raise RuntimeError(f'ast-grep binary not found at {binary}')
+    output = subprocess.run([str(binary), '--version'],
+                            check=True,
+                            capture_output=True,
+                            text=True).stdout
+    match = re.search(r'\d+\.\d+\.\d+(?:[-+][0-9A-Za-z.-]+)?', output)
+    if not match:
+        raise RuntimeError(f'Could not parse ast-grep version from {output!r}')
+    return match.group(0)
+
+
 def _package_name() -> str:
     """Output archive filename: `ast-grep-<version>-<platform>.tar.gz`."""
-    return (f'ast-grep-{build_ast_grep.AST_GREP_REF}-{_platform_tag()}'
-            '.tar.gz')
+    return f'ast-grep-{_ast_grep_version()}-{_platform_tag()}.tar.gz'
 
 
 def _create_archive(out_dir: Path) -> Path:
