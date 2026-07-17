@@ -43,7 +43,6 @@ export default {
         'deviceBusy',
         'openLedgerApp',
         'transactionRejected',
-        'unauthorized',
       ] satisfies HardwareWalletResponseCodeType[],
       control: { type: 'select' },
     },

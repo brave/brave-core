@@ -3,7 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Sol from '@ledgerhq/hw-app-solana'
 import { TransportStatusError } from '@ledgerhq/errors'
 import {
@@ -39,7 +38,7 @@ export class SolanaLedgerUntrustedMessagingTransport //
   private handleGetAccount = async (
     command: SolGetAccountCommand,
   ): Promise<SolGetAccountResponse> => {
-    const transport = await TransportWebHID.create()
+    const transport = await this.createTransport()
     const app = new Sol(transport)
     try {
       const result = await app.getAddress(command.path)
@@ -69,7 +68,7 @@ export class SolanaLedgerUntrustedMessagingTransport //
   private handleSignTransaction = async (
     command: SolSignTransactionCommand,
   ): Promise<SolSignTransactionResponse> => {
-    const transport = await TransportWebHID.create()
+    const transport = await this.createTransport()
     const app = new Sol(transport)
     try {
       const result = await app.signTransaction(

@@ -5,7 +5,6 @@
 
 import Transport from '@ledgerhq/hw-transport'
 import { TransportStatusError } from '@ledgerhq/errors'
-import TransportWebHID from '@ledgerhq/hw-transport-webhid'
 import Btc from '@ledgerhq/hw-app-btc'
 import { BufferReader, BufferWriter } from '@ledgerhq/hw-app-btc/buffertools'
 import {
@@ -44,7 +43,7 @@ export class BitcoinLedgerUntrustedMessagingTransport //
   ): Promise<BtcGetAccountResponse> => {
     let transport: Transport | undefined
     try {
-      transport = await TransportWebHID.create()
+      transport = await this.createTransport()
       const app = new Btc({ transport })
       const result = await app.getWalletXpub({
         path: command.path,
@@ -79,7 +78,7 @@ export class BitcoinLedgerUntrustedMessagingTransport //
     let transport: Transport | undefined
 
     try {
-      transport = await TransportWebHID.create()
+      transport = await this.createTransport()
       const app = new Btc({ transport })
       const signedTransactionHex = await app.createPaymentTransaction({
         inputs: command.inputTransactions.map((i) => {

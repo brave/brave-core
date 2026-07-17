@@ -208,7 +208,6 @@ export interface FetchHardwareWalletAccountsProps {
   scheme: HardwareImportScheme
   startIndex: number
   count: number
-  onAuthorized: () => void
 }
 
 export interface AccountFromDevice {

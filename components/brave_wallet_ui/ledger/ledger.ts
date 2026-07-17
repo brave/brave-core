@@ -3,13 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import '@brave/leo/tokens/css/variables.css'
-import '@brave/leo/web-components/button'
-
-import {
-  LedgerCommand,
-  LEDGER_BRIDGE_URL,
-} from '../common/hardware/ledgerjs/ledger-messages'
 import {
   BridgeType,
   BridgeTypes,
@@ -32,36 +25,7 @@ const checkWebuiScheme = (url: string): string | null => {
   return null
 }
 
-const setUpAuthorizeButtonListener = (
-  targetUrl: string,
-  bridgeType: string,
-) => {
-  const untrustedMessagingTransport = getUntrustedMessagingTransport(
-    bridgeType,
-    targetUrl,
-  )
-  window.addEventListener('DOMContentLoaded', () => {
-    const authorizeBtn = document.getElementById('authorize')
-    if (!authorizeBtn) {
-      return
-    }
-
-    authorizeBtn.addEventListener('click', async () => {
-      try {
-        await untrustedMessagingTransport.promptAuthorization()
-        untrustedMessagingTransport.sendCommand({
-          id: LedgerCommand.AuthorizationSuccess,
-          origin: LEDGER_BRIDGE_URL,
-          command: LedgerCommand.AuthorizationSuccess,
-        })
-      } catch (e) {
-        console.error('Ledger authorization failed:', e)
-      }
-    })
-  })
-}
-
-const getUntrustedMessagingTransport = (
+const setupUntrustedMessagingTransport = (
   bridgeType: string,
   targetUrl: string,
 ): LedgerUntrustedMessagingTransport => {
@@ -97,6 +61,6 @@ const bridgeType = params.get('bridgeType')
 if (targetUrl && bridgeType) {
   const sanitizedUrl = checkWebuiScheme(targetUrl)
   if (sanitizedUrl) {
-    setUpAuthorizeButtonListener(sanitizedUrl, bridgeType)
+    setupUntrustedMessagingTransport(bridgeType, sanitizedUrl)
   }
 }
