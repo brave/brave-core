@@ -413,6 +413,17 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
+  // A frontend link was clicked inside the conversation. If AI Chat is a full
+  // browser tab, move the live conversation into the side panel and open the
+  // link in a tab in its place. No-op unless the feature is enabled and AI
+  // Chat is a full tab; internal chrome/UI links use OpenURLInNewTab directly
+  // and never reach here.
+  ai_chat::MaybeMoveFullPageChatToSidePanel(owner_web_contents_);
+
+  OpenURLInNewTab(url);
+}
+
+void AIChatUIPageHandler::OpenURLInNewTab(const GURL& url) {
 #if BUILDFLAG(IS_ANDROID)
   owner_web_contents_->OpenURL(
       {url, content::Referrer(), WindowOpenDisposition::NEW_FOREGROUND_TAB,
@@ -427,31 +438,31 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
 }
 
 void AIChatUIPageHandler::OpenStorageSupportUrl() {
-  OpenURL(GURL(kLeoStorageSupportUrl));
+  OpenURLInNewTab(GURL(kLeoStorageSupportUrl));
 }
 
 void AIChatUIPageHandler::GoPremium() {
 #if !BUILDFLAG(IS_ANDROID)
-  OpenURL(GURL(kLeoGoPremiumUrl));
+  OpenURLInNewTab(GURL(kLeoGoPremiumUrl));
 #else
   ai_chat::GoPremium(owner_web_contents_.get());
 #endif
 }
 
 void AIChatUIPageHandler::RefreshPremiumSession() {
-  OpenURL(GURL(kLeoRefreshPremiumSessionUrl));
+  OpenURLInNewTab(GURL(kLeoRefreshPremiumSessionUrl));
 }
 
 void AIChatUIPageHandler::ManagePremium() {
 #if !BUILDFLAG(IS_ANDROID)
-  OpenURL(GURL(kURLManagePremium));
+  OpenURLInNewTab(GURL(kURLManagePremium));
 #else
   ai_chat::ManagePremium(owner_web_contents_.get());
 #endif
 }
 
 void AIChatUIPageHandler::OpenModelSupportUrl() {
-  OpenURL(GURL(kLeoModelSupportUrl));
+  OpenURLInNewTab(GURL(kLeoModelSupportUrl));
 }
 
 void AIChatUIPageHandler::ChatContextObserver::WebContentsDestroyed() {

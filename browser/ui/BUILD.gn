@@ -208,6 +208,14 @@ source_set("ui") {
   }
 
   if (enable_ai_chat) {
+    # Compiled on all platforms: the desktop side panel implementations live in
+    # //brave/browser/ui/views/side_panel/ai_chat, while this file provides the
+    # non-views (e.g. Android) fallbacks, so callers stay platform-agnostic.
+    sources += [
+      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
+      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
+    ]
+
     deps += [ "//brave/components/ai_chat/core/common" ]
 
     if (!is_android) {
@@ -321,8 +329,6 @@ source_set("ui") {
       "omnibox/brave_omnibox_client_impl.cc",
       "omnibox/brave_omnibox_client_impl.h",
       "session_crashed_bubble_brave.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.cc",
-      "side_panel/ai_chat/ai_chat_side_panel_utils.h",
       "startup/brave_startup_tab_provider_impl.cc",
       "startup/brave_startup_tab_provider_impl.h",
       "tabs/brave_tab_color_mixer.cc",

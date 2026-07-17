@@ -10,6 +10,7 @@
 
 #include "base/check.h"
 #include "base/functional/callback.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -76,8 +77,18 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
   CHECK(profile);
 
   auto web_view = std::make_unique<AIChatMovableSidePanelWebView>(profile);
+
+  // When a full-page AI Chat is being moved into the side panel, adopt that
+  // live `WebContents` instead of creating a fresh one, so the conversation's
+  // renderer/scroll/Mojo state is preserved.
+  AIChatSidePanelTabTransferBridge* transfer_controller =
+      scope.GetBrowserWindowInterface()
+          .GetFeatures()
+          .ai_chat_side_panel_tab_transfer_bridge();
   web_view->AdoptWebContents(
-      CreateFreshAIChatContents(profile, is_tab_associated, scope));
+      transfer_controller && transfer_controller->HasPendingTransfer()
+          ? transfer_controller->TakePendingContents()
+          : CreateFreshAIChatContents(profile, is_tab_associated, scope));
   return web_view;
 }
 

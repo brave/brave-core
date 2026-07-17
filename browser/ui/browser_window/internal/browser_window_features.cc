@@ -23,6 +23,7 @@
 #include "brave/browser/ui/views/page_info/brave_shields_ui_contents_cache.h"
 #include "brave/browser/ui/views/workspaces/workspaces_bubble_controller.h"
 #include "brave/browser/workspaces/features.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -70,6 +71,12 @@ class BraveVPNController {};
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/core/browser/utils.h"
+#endif
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/browser/ai_chat/ai_chat_service_factory.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_tab_transfer_bridge.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #endif
 
 BrowserWindowFeatures::BrowserWindowFeatures() = default;
@@ -189,6 +196,17 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
         std::make_unique<WorkspacesBubbleController>();
   }
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  if (base::FeatureList::IsEnabled(
+          ai_chat::features::kAIChatMoveFullPageToSidePanel) &&
+      browser_->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL &&
+      ai_chat::AIChatServiceFactory::GetForBrowserContext(
+          browser_->GetProfile())) {
+    ai_chat_side_panel_tab_transfer_bridge_ =
+        std::make_unique<AIChatSidePanelTabTransferBridge>(browser_);
+  }
+#endif
+
   BrowserWindowFeatures_ChromiumImpl::InitPostBrowserViewConstruction(
       browser_view);
 }
@@ -196,6 +214,9 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
   BrowserWindowFeatures_ChromiumImpl::TearDownPreBrowserWindowDestruction();
   screenshot_controller_.reset();
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  ai_chat_side_panel_tab_transfer_bridge_.reset();
+#endif
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn_controller_.reset();
 #endif
