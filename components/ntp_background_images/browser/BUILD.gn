@@ -27,6 +27,8 @@ static_library("browser") {
     "ntp_sponsored_images_data.h",
     "ntp_sponsored_rich_media_ad_event_handler.cc",
     "ntp_sponsored_rich_media_ad_event_handler.h",
+    "ntp_sponsored_sites_data.cc",
+    "ntp_sponsored_sites_data.h",
     "ntp_sponsored_source_util.cc",
     "ntp_sponsored_source_util.h",
     "sponsored_images_component_data.cc",
@@ -131,6 +133,7 @@ source_set("unit_tests") {
     "ntp_background_images_service_unittest.cc",
     "ntp_sponsored_images_data_unittest.cc",
     "ntp_sponsored_rich_media_data_unittest.cc",
+    "ntp_sponsored_sites_data_unittest.cc",
     "ntp_sponsored_source_util_unittest.cc",
     "view_counter_model_unittest.cc",
   ]
