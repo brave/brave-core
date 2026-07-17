@@ -14,7 +14,6 @@
 #include "base/types/expected.h"
 #include "base/values.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
-#include "brave/browser/ai_chat/ai_chat_enterprise_policy_checker.h"
 #include "brave/browser/ai_chat/content_agent_tool_provider.h"
 #include "brave/browser/ai_chat/tools/target_test_util.h"
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
@@ -386,7 +385,6 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   ::actor::MayActOnUrl(
       GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
       actor_service->GetJournal(), actor::TaskId(),
-      *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
       // The extension-store URL is rejected by MayActOnUrl's own checks (see
       // the BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the site_policy.cc override),
       // so this no-verdict continuation is never reached, but we allow if it
