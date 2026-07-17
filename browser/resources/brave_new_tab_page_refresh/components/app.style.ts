@@ -343,13 +343,15 @@ style.passthrough.css`
       background: ${color.divider.subtle};
     }
 
-    button {
+    button, a {
       --leo-icon-size: 20px;
       padding: 8px 24px 8px 8px;
       border-radius: 4px;
       display: flex;
       align-items: center;
       gap: 16px;
+      color: inherit;
+      text-decoration: none;
 
       &:hover, &.highlight {
         background: ${color.container.highlight};

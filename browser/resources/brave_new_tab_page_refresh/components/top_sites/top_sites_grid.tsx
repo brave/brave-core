@@ -53,7 +53,7 @@ export function TopSitesGrid(props: Props) {
 
   const [dragHandler] = React.useState(() =>
     createTileDragHandler({
-      tileSelector: 'a',
+      tileSelector: 'a.top-site-tile',
       autoScroll: 'horizontal',
     }),
   )
@@ -148,7 +148,7 @@ export function TopSitesGrid(props: Props) {
                 {row.map((tile, i) =>
                   tile === 'add-button' ? (
                     <button
-                      key={i}
+                      key='add-button'
                       className='top-site-tile'
                       onClick={props.onAddTopSite}
                     >
@@ -161,7 +161,7 @@ export function TopSitesGrid(props: Props) {
                     </button>
                   ) : (
                     <TopSitesTile
-                      key={i}
+                      key={tile.url}
                       topSite={tile}
                       canDrag={props.canReorderSites}
                       onContextMenu={contextMenuHandler(tile)}
