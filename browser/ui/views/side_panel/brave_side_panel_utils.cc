@@ -32,8 +32,10 @@ namespace brave {
 // registering it.
 void RegisterContextualSidePanel(SidePanelRegistry* registry,
                                  content::WebContents* web_contents) {
+#if BUILDFLAG(ENABLE_AI_CHAT) || BUILDFLAG(ENABLE_BRAVE_WALLET)
   Profile* profile =
       Profile::FromBrowserContext(web_contents->GetBrowserContext());
+#endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
   // Disable tab-scoped panel for content agent profiles.
