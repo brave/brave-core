@@ -1120,9 +1120,10 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
   handler->GetConversationThreadHistory("thread-1", future.GetCallback());
   auto entries = future.Take();
-  ASSERT_EQ(entries.size(), 1u);
-  EXPECT_EQ(entries[0]->uuid, "thread-entry-1");
-  EXPECT_EQ(entries[0]->text, "thread response");
+  ASSERT_EQ(entries.size(), 2u);
+  EXPECT_EQ(entries[0]->uuid, "root-turn");
+  EXPECT_EQ(entries[1]->uuid, "thread-entry-1");
+  EXPECT_EQ(entries[1]->text, "thread response");
 }
 
 TEST_F(ConversationHandlerUnitTest, UpdateOrCreateLastAssistantEntry_Delta) {

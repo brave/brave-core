@@ -496,12 +496,7 @@ void ConversationHandler::GetConversationThreadHistory(
     GetConversationThreadHistoryCallback callback) {
   auto* container = base::FindOrNull(threads_, thread_uuid);
   if (container && !container->entries.empty()) {
-    std::vector<mojom::ConversationTurnPtr> entries;
-    entries.reserve(container->entries.size());
-    for (const auto& entry : container->entries) {
-      entries.emplace_back(entry->Clone());
-    }
-    std::move(callback).Run(std::move(entries));
+    std::move(callback).Run(BuildFullThreadHistory(thread_uuid));
     return;
   }
 
@@ -516,13 +511,34 @@ void ConversationHandler::OnConversationThreadHistoryReceived(
     std::string thread_uuid,
     GetConversationThreadHistoryCallback callback,
     std::vector<mojom::ConversationTurnPtr> entries) {
-  std::vector<mojom::ConversationTurnPtr> result;
-  result.reserve(entries.size());
-  for (const auto& entry : entries) {
-    result.emplace_back(entry->Clone());
-  }
   threads_[thread_uuid].entries = std::move(entries);
-  std::move(callback).Run(std::move(result));
+  std::move(callback).Run(BuildFullThreadHistory(thread_uuid));
+}
+
+std::vector<mojom::ConversationTurnPtr>
+ConversationHandler::BuildFullThreadHistory(const std::string& thread_uuid) {
+  auto* container = base::FindOrNull(threads_, thread_uuid);
+  CHECK(container);
+
+  std::vector<mojom::ConversationTurnPtr> history;
+  history.reserve(container->entries.size() + 1);
+
+  // Prepend the source (origin) entry from the root conversation so the
+  // thread's branching point is included in the result.
+  const std::string& origin_uuid =
+      container->thread->origin_conversation_entry_uuid;
+  for (const auto& entry : chat_history_) {
+    if (entry->uuid == origin_uuid) {
+      history.emplace_back(entry->Clone());
+      break;
+    }
+  }
+
+  // Then append the thread's own entries.
+  for (const auto& entry : container->entries) {
+    history.emplace_back(entry->Clone());
+  }
+  return history;
 }
 
 void ConversationHandler::GetState(GetStateCallback callback) {
