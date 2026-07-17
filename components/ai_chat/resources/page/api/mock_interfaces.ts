@@ -234,6 +234,7 @@ export function createMockUIHandler(
       }),
     getPluralString: () => Promise.resolve({ pluralString: '' }),
     setChatUI: () => Promise.resolve({ isStandalone: false }),
+    showWorkspaceFolderPicker: () => Promise.resolve({ selectedPath: null }),
 
     // Action methods - fire and forget stubs
     newConversation: () => {},
@@ -254,6 +255,7 @@ export function createMockUIHandler(
     disassociateContent: () => {},
     openAIChatAgentProfile: () => {},
     showSoftKeyboard: () => {},
+    setWorkspaceWritesAllowed: () => {},
 
     // Apply overrides
     ...overrides,

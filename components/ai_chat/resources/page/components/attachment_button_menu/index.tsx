@@ -31,6 +31,12 @@ type Props = Pick<
 >
   & Pick<AIChatContext, 'isMobile'> & {
     conversationStarted: boolean
+    // When provided, shows an entry that opens a local "workspace" folder for
+    // Leo's experimental workspace tools. Undefined hides the entry.
+    onSelectWorkspaceFolder?: () => void
+    // When provided, shows an entry that lets Leo's workspace write tools run
+    // without a per-edit permission prompt. Undefined hides the entry.
+    onAllowFileEdits?: () => void
   }
 
 // On Android we don't run the SandboxedTextExtractor or PdfExtractor, so we need some mime protections.
@@ -178,6 +184,40 @@ export default function AttachmentButtonMenu(props: Props) {
             {getLocale(S.AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL)}
           </div>
         </leo-menu-item>
+        {props.onSelectWorkspaceFolder && (
+          <leo-menu-item
+            data-testid='workspace-folder'
+            onClick={() => {
+              props.onSelectWorkspaceFolder?.()
+              props.focusInput()
+            }}
+          >
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='folder-code'
+              />
+              Workspace folder
+            </div>
+          </leo-menu-item>
+        )}
+        {props.onAllowFileEdits && (
+          <leo-menu-item
+            data-testid='allow-file-edits'
+            onClick={() => {
+              props.onAllowFileEdits?.()
+              props.focusInput()
+            }}
+          >
+            <div className={styles.buttonContent}>
+              <Icon
+                className={styles.buttonIcon}
+                name='edit-box'
+              />
+              Allow file edits without asking
+            </div>
+          </leo-menu-item>
+        )}
       </ButtonMenu>
     </>
   )

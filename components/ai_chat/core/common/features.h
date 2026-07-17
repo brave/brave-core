@@ -78,6 +78,11 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatFirstEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatUserChoiceTool);
 
+// Enables experimental "workspace" local coding-agent tools that let Leo read,
+// search, and edit files within a user-selected local folder (native file I/O).
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWorkspaceTools);
+COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatWorkspaceToolsEnabled();
+
 // Enables experimental features being enabled in a separate profile. If
 // disabled, the features will not be enabled anywhere.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);

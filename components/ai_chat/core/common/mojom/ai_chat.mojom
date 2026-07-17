@@ -249,6 +249,18 @@ interface AIChatUIHandler {
   // Get a plural string for the given key and count.
   GetPluralString(string key, int32 count) => (string plural_string);
 
+  // Shows a native folder picker so the user can choose a local "workspace"
+  // folder for the given conversation. The local workspace tools then operate
+  // on the selected folder. Returns the chosen absolute path, or null if the
+  // user cancelled. Only meaningful when the AIChatWorkspaceTools feature is
+  // enabled.
+  ShowWorkspaceFolderPicker(string conversation_uuid)
+      => (string? selected_path);
+
+  // Grants or revokes a per-conversation allowance for the workspace write
+  // tools to run without an individual permission prompt.
+  SetWorkspaceWritesAllowed(string conversation_uuid, bool allowed);
+
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 

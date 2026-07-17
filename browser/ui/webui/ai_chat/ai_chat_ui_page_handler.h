@@ -7,9 +7,11 @@
 #define BRAVE_BROWSER_UI_WEBUI_AI_CHAT_AI_CHAT_UI_PAGE_HANDLER_H_
 
 #include <memory>
+#include <optional>
 #include <string>
 #include <vector>
 
+#include "base/files/file_path.h"
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
@@ -56,6 +58,8 @@ class FaviconService;
 }  // namespace favicon
 
 namespace ai_chat {
+class WorkspaceFolderChooser;
+
 class AIChatUIPageHandler : public mojom::AIChatUIHandler,
                             public AssociatedContentDelegate::Observer
 #if !BUILDFLAG(IS_ANDROID)
@@ -105,6 +109,11 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
   void GetPluralString(const std::string& key,
                        int32_t count,
                        GetPluralStringCallback callback) override;
+  void ShowWorkspaceFolderPicker(
+      const std::string& conversation_uuid,
+      ShowWorkspaceFolderPickerCallback callback) override;
+  void SetWorkspaceWritesAllowed(const std::string& conversation_uuid,
+                                 bool allowed) override;
   void CloseUI() override;
   void SetChatUI(mojo::PendingRemote<mojom::ChatUI> chat_ui,
                  SetChatUICallback callback) override;
@@ -178,6 +187,12 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
       base::OnceCallback<void(mojom::UploadedFilePtr)> callback,
       std::optional<std::string> extracted_text);
 
+  // Records the chosen workspace folder for `conversation_uuid` (if any) and
+  // replies to the WebUI with the selected path.
+  void OnWorkspaceFolderChosen(std::string conversation_uuid,
+                               ShowWorkspaceFolderPickerCallback callback,
+                               std::optional<base::FilePath> selected);
+
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<content::WebContents> owner_web_contents_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
@@ -193,6 +208,9 @@ class AIChatUIPageHandler : public mojom::AIChatUIHandler,
 
   // Active file extractors (owned until extraction completes)
   std::vector<std::unique_ptr<FileTextExtractorBase>> extractors_;
+
+  // Active native folder picker for the workspace tools, if any.
+  std::unique_ptr<WorkspaceFolderChooser> workspace_folder_chooser_;
 
   mojo::Receiver<ai_chat::mojom::AIChatUIHandler> receiver_;
   mojo::Remote<ai_chat::mojom::ChatUI> chat_ui_;

@@ -462,6 +462,36 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                 unassociatedTabs={props.context.unassociatedTabs}
                 setAttachmentsDialog={props.context.setAttachmentsDialog}
                 focusInput={props.context.focusInput}
+                onSelectWorkspaceFolder={
+                  aiChatContext.isWorkspaceToolsEnabled
+                    && conversationState.conversationUuid
+                    ? () => {
+                        aiChatContext.api.uiHandler
+                          .showWorkspaceFolderPicker(
+                            conversationState.conversationUuid!,
+                          )
+                          .then(({ selectedPath }) => {
+                            if (selectedPath) {
+                              console.info(
+                                'Leo workspace folder set:',
+                                selectedPath,
+                              )
+                            }
+                          })
+                      }
+                    : undefined
+                }
+                onAllowFileEdits={
+                  aiChatContext.isWorkspaceToolsEnabled
+                    && conversationState.conversationUuid
+                    ? () => {
+                        aiChatContext.api.uiHandler.setWorkspaceWritesAllowed(
+                          conversationState.conversationUuid!,
+                          true,
+                        )
+                      }
+                    : undefined
+                }
               />
               {props.context.isAIChatAgentProfileFeatureEnabled
                 && !props.context.isAIChatAgentProfile && (

@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TOOLS_TOOL_PROVIDER_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
@@ -38,6 +39,14 @@ class ToolProvider {
 
   ToolProvider(const ToolProvider&) = delete;
   ToolProvider& operator=(const ToolProvider&) = delete;
+
+  // Called once by ConversationHandler shortly after construction to associate
+  // this provider with its conversation. ToolProviders are created before the
+  // ConversationHandler (see ToolProviderFactory), so this is how a provider
+  // that keys per-conversation state (e.g. a selected workspace folder) learns
+  // its conversation id. Default is a no-op.
+  virtual void OnConversationHandlerReady(
+      const std::string& conversation_uuid) {}
 
   // Marks that a new message has been added to the conversation and therefore
   // a new generation loop has started which may result in tool calls.

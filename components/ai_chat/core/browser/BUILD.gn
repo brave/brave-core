@@ -104,6 +104,14 @@ static_library("browser") {
     "types.h",
     "utils.cc",
     "utils.h",
+    "workspace/workspace_file_ops.cc",
+    "workspace/workspace_file_ops.h",
+    "workspace/workspace_service.cc",
+    "workspace/workspace_service.h",
+    "workspace/workspace_tool.cc",
+    "workspace/workspace_tool.h",
+    "workspace/workspace_tool_provider.cc",
+    "workspace/workspace_tool_provider.h",
   ]
 
   if (is_android) {
@@ -205,6 +213,10 @@ source_set("unit_tests") {
     "tools/memory_storage_tool_unittest.cc",
     "tools/tool_input_properties_unittest.cc",
     "utils_unittest.cc",
+    "workspace/workspace_file_ops_unittest.cc",
+    "workspace/workspace_service_unittest.cc",
+    "workspace/workspace_tool_provider_unittest.cc",
+    "workspace/workspace_tool_unittest.cc",
   ]
 
   data = [ "//brave/components/test/data/ai_chat" ]

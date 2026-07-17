@@ -42,6 +42,10 @@ static_library("ai_chat") {
     "web_mcp_injection/web_mcp_injection_rule.h",
     "web_mcp_injection/web_mcp_injector.cc",
     "web_mcp_injection/web_mcp_injector.h",
+    "workspace_service_factory.cc",
+    "workspace_service_factory.h",
+    "workspace_tool_provider_factory.cc",
+    "workspace_tool_provider_factory.h",
   ]
 
   if (enable_ai_chat_tab_management_tool) {

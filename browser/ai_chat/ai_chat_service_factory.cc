@@ -15,6 +15,8 @@
 #include "brave/browser/ai_chat/browser_tool_provider_factory.h"
 #include "brave/browser/ai_chat/model_service_factory.h"
 #include "brave/browser/ai_chat/tab_tracker_service_factory.h"
+#include "brave/browser/ai_chat/workspace_service_factory.h"
+#include "brave/browser/ai_chat/workspace_tool_provider_factory.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
@@ -69,6 +71,7 @@ AIChatServiceFactory::AIChatServiceFactory()
   DependsOn(skus::SkusServiceFactory::GetInstance());
   DependsOn(ModelServiceFactory::GetInstance());
   DependsOn(TabTrackerServiceFactory::GetInstance());
+  DependsOn(WorkspaceServiceFactory::GetInstance());
   DependsOn(misc_metrics::ProfileMiscMetricsServiceFactory::GetInstance());
 }
 
@@ -112,6 +115,15 @@ AIChatServiceFactory::BuildServiceInstanceForBrowserContext(
   tool_provider_factories.push_back(
       std::make_unique<BrowserToolProviderFactory>(
           Profile::FromBrowserContext(context)));
+
+  // Experimental local "workspace" coding tools, gated behind a feature flag.
+  if (features::IsAIChatWorkspaceToolsEnabled()) {
+    if (auto* workspace_service =
+            WorkspaceServiceFactory::GetForBrowserContext(context)) {
+      tool_provider_factories.push_back(
+          std::make_unique<WorkspaceToolProviderFactory>(workspace_service));
+    }
+  }
 
   auto service = std::make_unique<AIChatService>(
       ModelServiceFactory::GetForBrowserContext(context),
