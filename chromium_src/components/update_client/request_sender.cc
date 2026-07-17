@@ -3,15 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-// The code below replaces Ecdsa::Create(kKeyVersion, kKeyPubBytesBase64) by
-// Ecdsa::Create(kBraveKeyVersion, kBraveKeyPubBytesBase64) in upstream's
-// request_sender.cc.
-
 #include "components/update_client/request_sender.h"
 
 #include <array>
-
-#include "base/base64.h"
+#include <cstdint>
 
 namespace {
 
@@ -32,8 +27,4 @@ constexpr auto kBravePublicKey = std::to_array<uint8_t>(
 
 }  // namespace
 
-#define signer_(KEY_VERSION, PUBLIC_KEY) \
-  signer_(kBraveKeyVersion, kBravePublicKey)
-
 #include <components/update_client/request_sender.cc>
-#undef signer_
