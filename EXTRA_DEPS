@@ -95,8 +95,8 @@ extra_deps = {
         'condition': 'host_os == "linux"',
         'objects': [
             {
-                'object_name': 'ast-grep-0.44.0-linux-x64.tar.gz',
-                'sha256sum': 'e5a2d23541d7591fe4ec01190097ca8283a87f4039520271e7cee1ad9998ba5c',
+                'object_name': 'ast-grep-0.44.1-linux-x64.tar.gz',
+                'sha256sum': 'e2d0696358940a5c09a54ef1266b369036717293d9f9312513da6edf98a13176',
             },
         ],
     },
@@ -105,8 +105,8 @@ extra_deps = {
         'condition': 'host_os == "mac" and host_cpu == "x64"',
         'objects': [
             {
-                'object_name': 'ast-grep-0.44.0-mac.tar.gz',
-                'sha256sum': 'ad3f3bcae7a91ce070fbe6b934dbfcf35ec9cf004f9c6d7ecb907165669844e2',
+                'object_name': 'ast-grep-0.44.1-mac.tar.gz',
+                'sha256sum': '38e9259845066f0fc6b2a947f1760305add3c52a8d53d198bd1ae830e12569dc',
             },
         ],
     },
@@ -115,8 +115,8 @@ extra_deps = {
         'condition': 'host_os == "mac" and host_cpu == "arm64"',
         'objects': [
             {
-                'object_name': 'ast-grep-0.44.0-mac-arm64.tar.gz',
-                'sha256sum': '5bcb3568679ea6c636298c2b3e1edb44d54a8483f51d5e1ad0778609ef97bea3',
+                'object_name': 'ast-grep-0.44.1-mac-arm64.tar.gz',
+                'sha256sum': 'ef1cf3f749796c0318c3f6badd75df3e5090ce4cf07c0e7cf89f34c0db452e75',
             },
         ],
     },
@@ -125,8 +125,8 @@ extra_deps = {
         'condition': 'host_os == "win"',
         'objects': [
             {
-                'object_name': 'ast-grep-0.44.0-win.tar.gz',
-                'sha256sum': '1a074eaa2c4ba0e6df2b7a505c45ef26b2605a1360d43c8c2ae4d31624013845',
+                'object_name': 'ast-grep-0.44.1-win.tar.gz',
+                'sha256sum': 'c1e06394908573ddf334f41809b63e9b80122b11048412c41c2b66c52106ea47',
             },
         ],
     },
