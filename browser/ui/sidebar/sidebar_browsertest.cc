@@ -397,6 +397,30 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel, WalletSidePanel) {
   // Opening wallet as a side panel should not create a new tab.
   EXPECT_EQ(initial_tab_count, tab_model()->count());
 }
+
+// Wallet is contextual (per-tab): opening it on one tab should not keep it
+// active after switching to another tab that has not opened it.
+IN_PROC_BROWSER_TEST_F(SidebarBrowserTestWalletSidePanel,
+                       WalletSidePanelIsTabSpecific) {
+  auto wallet_item_index = ActivateWalletPanel();
+  ASSERT_TRUE(wallet_item_index.has_value());
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("brave://newtab/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_EQ(2, tab_model()->count());
+
+  // New tab should not show the wallet panel as active.
+  EXPECT_NE(model()->active_index(), wallet_item_index);
+
+  // Returning to the original tab restores the contextual wallet panel.
+  tab_model()->ActivateTabAt(0);
+  EXPECT_EQ(model()->active_index(), wallet_item_index);
+  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
+  ASSERT_TRUE(panel_ui);
+  EXPECT_EQ(SidePanelEntryId::kWallet, panel_ui->GetCurrentEntryId());
+}
 #endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, PRE_LastlyUsedSidePanelItemTest) {
@@ -990,30 +1014,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
     }
   }
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// Unmanaged panel after wallet item deletion.
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest,
-                       OpenUnManagedPanelAfterDeletingWalletItem) {
-  auto* panel_ui = browser()->GetFeatures().side_panel_ui();
-  const auto items = model()->GetAllSidebarItems();
-  const auto wallet_item_iter =
-      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                        &SidebarItem::built_in_item_type);
-  ASSERT_NE(wallet_item_iter, items.cend());
-  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
-  SidebarServiceFactory::GetForProfile(browser()->profile())
-      ->RemoveItemAt(wallet_item_index);
-  EXPECT_FALSE(!!model()->GetIndexOf(SidebarItem::BuiltInItemType::kWallet));
-
-  // Test with upstream's side panel that runs only with chrome://new-tab-page.
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("chrome://new-tab-page/")));
-  panel_ui->Show(SidePanelEntryId::kCustomizeChrome);
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return GetSidePanel()->GetVisible(); }));
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
 
 class MockSidebarModelObserver : public SidebarModel::Observer {
  public:

@@ -5,11 +5,11 @@
 
 #include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_contents_wrapper.h"
 
+#include <string>
+
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
-#include "brave/components/brave_wallet/common/brave_wallet_constants.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui.h"
-#include "content/public/common/url_constants.h"
 #include "ui/base/page_transition_types.h"
 
 WalletSidePanelContentsWrapper::WalletSidePanelContentsWrapper(
@@ -36,16 +36,9 @@ WalletSidePanelContentsWrapper::WalletSidePanelContentsWrapper(
 WalletSidePanelContentsWrapper::~WalletSidePanelContentsWrapper() = default;
 
 void WalletSidePanelContentsWrapper::ReloadWebContents() {
-  NavigateTo(webui_url_);
-}
-
-void WalletSidePanelContentsWrapper::NavigateTo(const GURL& url) {
-  CHECK(url.SchemeIs(content::kChromeUIScheme));
-  CHECK_EQ(url.host(), brave_wallet::kWalletPanelHost);
-  web_contents()->GetController().LoadURL(url, content::Referrer(),
+  web_contents()->GetController().LoadURL(webui_url_, content::Referrer(),
                                           ui::PAGE_TRANSITION_AUTO_TOPLEVEL,
                                           std::string());
-  // Re-bind embedder after navigation since LoadURL creates a fresh WebUI.
   if (auto* controller = GetWebUIController()) {
     controller->set_embedder(weak_ptr_factory_.GetWeakPtr());
   }

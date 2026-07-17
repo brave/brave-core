@@ -30,7 +30,6 @@
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/brave_wallet/wallet_bubble_manager_delegate.h"
-#include "brave/browser/ui/brave_wallet/wallet_side_panel_utils.h"
 #include "components/tabs/public/tab_interface.h"
 #endif
 
@@ -203,12 +202,8 @@ void BraveWalletTabHelper::ClearSolanaConnectedAccounts(
 
 #if !BUILDFLAG(IS_ANDROID)
 void BraveWalletTabHelper::ShowBubbleImpl(GURL url) {
-  // If the wallet side panel is already visible, route the request there
-  // instead of creating a popup bubble.
-  if (TryNavigateWalletSidePanel(&GetWebContents(), url)) {
-    return;
-  }
-
+  // Dapp requests always use the bubble for this PoC. Contextual side panel
+  // hosting is limited to the base wallet panel URL (no in-panel navigation).
   wallet_bubble_manager_delegate_ =
       WalletBubbleManagerDelegate::MaybeCreate(&GetWebContents(), url);
   if (!wallet_bubble_manager_delegate_) {

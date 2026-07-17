@@ -9,12 +9,10 @@
 #include <memory>
 
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 
 class AIChatSidePanelTabTransferBridge;
-class GURL;
 class BraveShieldsUIContentsCache;
 class BraveNonClientHitTestHelper;
 class BraveVPNController;
@@ -22,7 +20,6 @@ class FocusModeController;
 class PlaylistSidePanelCoordinator;
 class TreeTabSessionManager;
 class VerticalTabController;
-class WalletSidePanelCoordinator;
 class WorkspacesBubbleController;
 
 namespace brave_rewards {
@@ -77,17 +74,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
   AIChatSidePanelTabTransferBridge* ai_chat_side_panel_tab_transfer_bridge() {
     return ai_chat_side_panel_tab_transfer_bridge_.get();
   }
-#endif
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  WalletSidePanelCoordinator* wallet_side_panel_coordinator() {
-    return wallet_side_panel_coordinator_.get();
-  }
-
-  // Routes |url| to the wallet side panel when it is showing. Lives on
-  // BrowserWindowFeatures to avoid a GN dependency cycle between tab_helper and
-  // the wallet side panel coordinator.
-  bool NavigateWalletSidePanelIfActive(const GURL& url);
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -149,9 +135,6 @@ class BrowserWindowFeatures : public BrowserWindowFeatures_ChromiumImpl {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   std::unique_ptr<AIChatSidePanelTabTransferBridge>
       ai_chat_side_panel_tab_transfer_bridge_;
-#endif
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  std::unique_ptr<WalletSidePanelCoordinator> wallet_side_panel_coordinator_;
 #endif
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
   std::unique_ptr<email_aliases::EmailAliasesController>

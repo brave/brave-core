@@ -11,13 +11,12 @@ source_set("wallet") {
   sources = [
     "wallet_side_panel_contents_wrapper.cc",
     "wallet_side_panel_contents_wrapper.h",
-    "wallet_side_panel_coordinator.cc",
-    "wallet_side_panel_coordinator.h",
+    "wallet_side_panel_web_view.cc",
+    "wallet_side_panel_web_view.h",
   ]
 
   public_deps = [
     "//base",
-    "//chrome/browser/ui/tabs:tab_strip",
     "//chrome/browser/ui/webui/top_chrome",
     "//ui/views",
   ]
@@ -27,10 +26,11 @@ source_set("wallet") {
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/resources:strings_grit",
     "//chrome/browser/profiles",
-    "//chrome/browser/ui/browser_window",
     "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/browser/ui/views/side_panel",
     "//content/public/browser",
+    "//ui/base",
+    "//ui/base/metadata",
   ]
 }
 
@@ -38,7 +38,7 @@ source_set("browser_tests") {
   testonly = true
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
-  sources = [ "wallet_side_panel_coordinator_browsertest.cc" ]
+  sources = [ "wallet_side_panel_browsertest.cc" ]
 
   deps = [
     "//brave/browser/ui/sidebar:sidebar_impl",
@@ -47,9 +47,11 @@ source_set("browser_tests") {
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui",
     "//chrome/browser/ui/browser_window",
-    "//chrome/browser/web_applications:web_applications_test_support",
+    "//chrome/browser/ui/side_panel",
+    "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     "//chrome/test:test_support",
     "//chrome/test:test_support_ui",
+    "//components/tabs:public",
     "//content/test:test_support",
     "//testing/gtest",
   ]

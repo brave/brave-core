@@ -26,7 +26,6 @@ class WalletSidePanelContentsWrapper : public WebUIContentsWrapper {
 
   // WebUIContentsWrapper:
   void ReloadWebContents() override;
-  void NavigateTo(const GURL& url);
   base::WeakPtr<WebUIContentsWrapper> GetWeakPtr() override;
 
   WalletPanelUI* GetWebUIController();

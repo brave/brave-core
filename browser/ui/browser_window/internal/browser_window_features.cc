@@ -26,22 +26,12 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-#include "brave/browser/ui/views/side_panel/wallet/wallet_side_panel_coordinator.h"
-#include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
-#include "brave/components/brave_wallet/common/features.h"
-#endif
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/tab_group_sync/tab_group_sync_service_factory.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry.h"
-#include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
-#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "printing/buildflags/buildflags.h"
@@ -157,17 +147,6 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
               browser_view->GetProfile());
     }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    if (browser_view->browser()->GetType() ==
-            BrowserWindowInterface::Type::TYPE_NORMAL &&
-        brave_wallet::IsAllowed(browser_view->GetProfile()->GetPrefs()) &&
-        base::FeatureList::IsEnabled(
-            brave_wallet::features::kBraveWalletSidePanel)) {
-      wallet_side_panel_coordinator_ =
-          std::make_unique<WalletSidePanelCoordinator>(browser_view->browser());
-    }
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
   }
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
@@ -251,9 +230,6 @@ void BrowserWindowFeatures::TearDownPreBrowserWindowDestruction() {
 #if BUILDFLAG(ENABLE_PLAYLIST)
     playlist_side_panel_coordinator_.reset();
 #endif
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-    wallet_side_panel_coordinator_.reset();
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)
   }
 }
 
@@ -261,24 +237,3 @@ void BrowserWindowFeatures::SetVerticalTabControllerForTesting(
     std::unique_ptr<VerticalTabController> vertical_tab_controller) {
   vertical_tab_controller_ = std::move(vertical_tab_controller);
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_WALLET)
-bool BrowserWindowFeatures::NavigateWalletSidePanelIfActive(const GURL& url) {
-  if (!wallet_side_panel_coordinator_) {
-    return false;
-  }
-
-  auto* panel_ui = side_panel_ui();
-  if (!panel_ui) {
-    return false;
-  }
-
-  if (!panel_ui->IsSidePanelEntryShowing(
-          SidePanelEntry::Key(SidePanelEntryId::kWallet))) {
-    return false;
-  }
-
-  wallet_side_panel_coordinator_->Navigate(url);
-  return true;
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_WALLET)

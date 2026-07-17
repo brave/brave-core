@@ -6,15 +6,5 @@
 assert(!is_android)
 
 source_set("brave_wallet") {
-  sources = [
-    "wallet_bubble_manager_delegate.h",
-    "wallet_side_panel_utils.cc",
-    "wallet_side_panel_utils.h",
-  ]
-
-  deps = [
-    "//chrome/browser/ui/browser_window",
-    "//components/tabs:public",
-    "//url",
-  ]
+  sources = [ "wallet_bubble_manager_delegate.h" ]
 }

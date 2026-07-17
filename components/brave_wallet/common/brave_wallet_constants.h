@@ -8,9 +8,6 @@
 
 namespace brave_wallet {
 
-inline constexpr char kWalletPanelURL[] = "chrome://wallet-panel.top-chrome/";
-inline constexpr char kWalletPanelHost[] = "wallet-panel.top-chrome";
-
 inline constexpr size_t kSolanaKeypairSize = 64;
 inline constexpr size_t kSolanaSignatureSize = 64;
 inline constexpr size_t kSolanaPrikeySize = 32;
