@@ -90,7 +90,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
     // The server rederives the unblinded token using the server signing key and
     // the token preimage.
     std::optional<cbr::UnblindedToken> rederived_unblinded_token =
-        signing_key.RederiveUnblindedTokenRfc(*token_preimage);
+        signing_key.RederiveUnblindedToken(*token_preimage);
     EXPECT_TRUE(rederived_unblinded_token);
 
     // The server derives the shared verification key from the unblinded token.
@@ -143,7 +143,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
     // rejects it too: the legacy rederivation yields a different unblinded
     // point, so even the matching finalization does not agree.
     std::optional<cbr::UnblindedToken> legacy_rederived_unblinded_token =
-        signing_key.RederiveUnblindedToken(*token_preimage);
+        signing_key.RederiveUnblindedTokenDeprecated(*token_preimage);
     ASSERT_TRUE(legacy_rederived_unblinded_token);
     std::optional<std::string> legacy_rederived_unblinded_token_base64 =
         legacy_rederived_unblinded_token->EncodeBase64();
@@ -196,7 +196,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedTokenNonRfc) {
   // The legacy (non-RFC) unblinded token, whose point uses the legacy
   // derivation: W = k * legacy_hash_to_group(preimage).
   std::optional<cbr::UnblindedToken> legacy_unblinded_token =
-      signing_key.RederiveUnblindedToken(*token_preimage);
+      signing_key.RederiveUnblindedTokenDeprecated(*token_preimage);
   ASSERT_TRUE(legacy_unblinded_token);
   std::optional<std::string> legacy_unblinded_token_base64 =
       legacy_unblinded_token->EncodeBase64();
@@ -211,7 +211,7 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedTokenNonRfc) {
   // The server's RFC verification method (RFC rederive + RFC finalize) yields a
   // different unblinded point.
   std::optional<cbr::UnblindedToken> rfc_rederived_unblinded_token =
-      signing_key.RederiveUnblindedTokenRfc(*token_preimage);
+      signing_key.RederiveUnblindedToken(*token_preimage);
   ASSERT_TRUE(rfc_rederived_unblinded_token);
   std::optional<cbr::VerificationKey> rfc_shared_verification_key =
       rfc_rederived_unblinded_token->DeriveVerificationKey();

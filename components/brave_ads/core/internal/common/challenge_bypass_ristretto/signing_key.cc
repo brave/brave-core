@@ -66,7 +66,7 @@ std::optional<SignedToken> SigningKey::Sign(
       signing_key_->Sign(blinded_token.get()));
 }
 
-std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
+std::optional<UnblindedToken> SigningKey::RederiveUnblindedTokenDeprecated(
     const TokenPreimage& token_preimage) {
   if (!signing_key_ || !has_value() || !token_preimage.has_value()) {
     return std::nullopt;
@@ -77,7 +77,7 @@ std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
       signing_key_->RederiveUnblindedToken(token_preimage.get()));
 }
 
-std::optional<UnblindedToken> SigningKey::RederiveUnblindedTokenRfc(
+std::optional<UnblindedToken> SigningKey::RederiveUnblindedToken(
     const TokenPreimage& token_preimage) {
   if (!signing_key_ || !has_value() || !token_preimage.has_value()) {
     return std::nullopt;

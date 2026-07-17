@@ -28,7 +28,6 @@ std::optional<base::DictValue> MaybeBuildCredential(
   CHECK(unblinded_token.has_value());
   CHECK(!payload.empty());
 
-  // The token selects the derivation matching how it was blinded.
   std::optional<VerificationKey> verification_key =
       unblinded_token.DeriveVerificationKey();
   if (!verification_key) {

@@ -90,23 +90,24 @@ TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   EXPECT_FALSE(signing_key.Sign(cbr::test::GetInvalidBlindedToken()));
 }
 
-TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
+TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedTokenDeprecated) {
   // Arrange
   cbr::SigningKey signing_key(cbr::test::kSigningKeyBase64);
 
   // Act & Assert
   EXPECT_EQ(cbr::test::GetUnblindedToken(),
-            signing_key.RederiveUnblindedToken(cbr::test::GetTokenPreimage()));
+            signing_key.RederiveUnblindedTokenDeprecated(
+                cbr::test::GetTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest,
-       FailToRederiveUnblindedTokenWithInvalidTokenPreimage) {
+       FailToRederiveUnblindedTokenDeprecatedWithInvalidTokenPreimage) {
   // Arrange
   cbr::SigningKey signing_key(cbr::test::kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_FALSE(
-      signing_key.RederiveUnblindedToken(cbr::test::GetInvalidTokenPreimage()));
+  EXPECT_FALSE(signing_key.RederiveUnblindedTokenDeprecated(
+      cbr::test::GetInvalidTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {
