@@ -209,8 +209,8 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.6",
-    "@brave/leo": "github:brave/leo#9a2dbab610d619b6f7b39c853b9aff8c031f39d9",
-    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#8edabba30a40320d2a9e6353a7c945cf528cf18d",
+    "@brave/leo": "github:brave/leo#a9fe69615e3cc3d7f2388fac1ddfa3db1e12a30a",
+    "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#f601277fdcd837c3e6b7239b73537603c7539119",
     "@brave/wallet-standard-brave": "0.0.16",
     "@dnd-kit/core": "6.3.1",
     "@dnd-kit/sortable": "7.0.1",
