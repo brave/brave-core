@@ -1584,7 +1584,6 @@ provideStrings({
   braveWalletClearFilters: 'Clear filters',
   braveWalletShowMore: 'Show more',
   braveWalletDetails: 'Details',
-  braveWalletVerified: 'Verified by DappRadar',
 
   // ZCash
   braveWalletSwitchToShieldedAccount: 'Switch to a shielded account',
