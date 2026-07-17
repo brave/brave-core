@@ -20,6 +20,7 @@ mojom("mojom") {
   deps = [
     "//brave/components/brave_ads/core/mojom",
     "//brave/components/brave_vpn/common/mojom",
+    "//url/mojom:url_mojom_gurl",
   ]
   enabled_features = []
   if (enable_brave_talk) {
@@ -39,6 +40,8 @@ source_set("brave_new_tab_page_refresh") {
     "new_tab_page_handler.h",
     "new_tab_page_initializer.cc",
     "new_tab_page_initializer.h",
+    "sponsored_sites_facade.cc",
+    "sponsored_sites_facade.h",
     "top_sites_facade.cc",
     "top_sites_facade.h",
     "update_observer.cc",
@@ -70,6 +73,7 @@ source_set("brave_new_tab_page_refresh") {
     "//brave/components/brave_news/common:mojom",
     "//brave/components/brave_news/common/buildflags",
     "//brave/components/brave_perf_predictor/common",
+    "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/mojom:webui",
     "//brave/components/brave_search_conversion",
     "//brave/components/brave_talk/buildflags",
@@ -97,9 +101,11 @@ source_set("brave_new_tab_page_refresh") {
     "//chrome/browser/ui/webui:webui_util",
     "//chrome/browser/ui/webui/searchbox",
     "//components/contextual_search:public",
+    "//components/history/core/browser",
     "//components/prefs",
     "//components/regional_capabilities",
     "//components/strings:components_strings",
+    "//net",
     "//ui/base",
     "//ui/shell_dialogs",
     "//ui/webui",
@@ -202,4 +208,30 @@ source_set("browser_tests") {
   }
 
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+}
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "sponsored_sites_facade_unittest.cc" ]
+
+  deps = [
+    ":brave_new_tab_page_refresh",
+    ":mojom",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_rewards/core",
+    "//brave/components/brave_rewards/core/buildflags",
+    "//brave/components/constants",
+    "//brave/components/ntp_background_images/browser",
+    "//brave/components/ntp_background_images/browser:test_support",
+    "//brave/components/ntp_background_images/common",
+    "//components/history/core/browser",
+    "//components/history/core/test",
+    "//components/prefs",
+    "//components/prefs:test_support",
+    "//components/sync_preferences:test_support",
+    "//testing/gtest",
+    "//url",
+  ]
 }
