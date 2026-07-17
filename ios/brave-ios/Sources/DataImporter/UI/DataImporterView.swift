@@ -129,18 +129,10 @@ public struct DataImportView: View {
           },
           label: {
             Text(Strings.DataImporter.importDataFileSelectorButtonTitle)
-              .font(.headline)
-              .padding(.horizontal)
-              .padding(.vertical, 12.0)
-              .foregroundStyle(Color(braveSystemName: .schemesOnPrimary))
               .frame(maxWidth: .infinity)
-              .background(
-                Color(braveSystemName: .buttonBackground),
-                in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-              )
           }
         )
-        .buttonStyle(.plain)
+        .buttonStyle(.filled)
       }
       .frame(maxWidth: .infinity, maxHeight: .infinity)
 
@@ -172,7 +164,7 @@ public struct DataImportView: View {
         .padding(.horizontal, 16.0)
         .background(
           Color(braveSystemName: .containerDisabled),
-          in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+          in: .capsule
         )
       }
     }

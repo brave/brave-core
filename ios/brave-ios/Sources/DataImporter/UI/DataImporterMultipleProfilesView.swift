@@ -79,7 +79,7 @@ struct DataImporterMultipleProfilesView: View {
         }
         .background(
           Color(braveSystemName: .iosBrowserElevatedIos),
-          in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+          in: .capsule
         )
         .padding()
       }
