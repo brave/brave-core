@@ -71,8 +71,8 @@ class NTPBackgroundImagesService {
   virtual ~NTPBackgroundImagesService();
 
   NTPBackgroundImagesService(const NTPBackgroundImagesService&) = delete;
-  NTPBackgroundImagesService& operator=(
-      const NTPBackgroundImagesService&) = delete;
+  NTPBackgroundImagesService& operator=(const NTPBackgroundImagesService&) =
+      delete;
 
   void Init();
   void StartTearDown();
@@ -85,6 +85,10 @@ class NTPBackgroundImagesService {
   NTPSponsoredImagesData* GetSponsoredImagesData(
       bool supports_rich_media) const;
   NTPSponsoredSitesData* GetSponsoredSitesData() const;
+  // Returns the absolute file path for a sponsored site image request path
+  // (e.g. "amazon.png"), or nullopt if unavailable or invalid.
+  std::optional<base::FilePath> MaybeGetSponsoredSiteImageFilePath(
+      const base::FilePath& request_path) const;
   virtual void RegisterSponsoredImagesComponent();
 
   void MaybeCheckForSponsoredComponentUpdate();
