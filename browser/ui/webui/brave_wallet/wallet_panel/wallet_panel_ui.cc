@@ -118,12 +118,15 @@ WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
       profile, std::make_unique<brave_wallet::BlockchainImagesSource>(profile));
 
   // TODO(https://github.com/brave/brave-browser/issues/55074) should be set
-  // externally.
-  BrowserWindowInterface* const bwi =
-      GetLastActiveBrowserWindowInterfaceWithAnyProfile();
-  CHECK(bwi);
-  active_web_contents_ =
-      bwi->GetTabStripModel()->GetActiveWebContents()->GetWeakPtr();
+  // externally. Keep the existing last-active lookup for the bubble; do not
+  // CHECK — side-panel construction can run when last-active is unset (e.g.
+  // browser tests). CreatePanelHandler already no-ops if this is null. Proper
+  // tab binding for the side panel in a follow-up.
+  if (BrowserWindowInterface* const bwi =
+          GetLastActiveBrowserWindowInterfaceWithAnyProfile()) {
+    active_web_contents_ =
+        bwi->GetTabStripModel()->GetActiveWebContents()->GetWeakPtr();
+  }
 }
 
 WalletPanelUI::~WalletPanelUI() = default;
