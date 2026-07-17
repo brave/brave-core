@@ -120,7 +120,7 @@ def main() -> int:
 
     if args.upload:
         result = S3Uploader(bucket='brave-build-deps-public').upload(
-            archive, prefix='ast-grep')
+            archive, prefix='ast-grep', sign=False)
         logging.info('Upload summary:\n%s', summarise(result))
         sha256, size = result.sha256, result.size_bytes
     else:
