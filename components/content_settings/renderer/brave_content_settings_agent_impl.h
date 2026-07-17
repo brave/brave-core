@@ -71,6 +71,8 @@ class BraveContentSettingsAgentImpl
 
   bool IsReduceLanguageEnabled() override;
 
+  bool AllowHidRequestDeviceWithoutTransientActivation() override;
+
  private:
   FRIEND_TEST_ALL_PREFIXES(BraveContentSettingsAgentImplAutoplayBrowserTest,
                            AutoplayBlockedByDefault);
