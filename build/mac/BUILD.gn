@@ -49,15 +49,23 @@ if (is_universal_binary) {
 
     outputs = [ universal_app_path ]
 
-    public_deps = [
-      ":copy_x64",
-      "//chrome:chrome_app",
-    ]
+    if (mac_prebuilt_package) {
+      public_deps = [
+        ":copy_x64",
+        ":copy_arm64",
+      ]
+    } else {
+      public_deps = [
+        ":copy_x64",
+        "//chrome:chrome_app",
+      ]
+    }
   }
 
-  # placeholder script to allow manual copying of binary into output dir
+  # Copies an app bundle before :universalize, stripping signature artifacts
+  # from signed zips. Source: sibling x64 out dir. Destination: $root_out_dir/x64/.
   action("copy_x64") {
-    script = "//brave/installer/mac/copy_x64_binary.py"
+    script = "//brave/installer/mac/copy_app_bundle_for_universalize.py"
 
     x64_root_out_dir = string_replace(root_out_dir, "_arm64", "")
     x64_arch_src_path = "$x64_root_out_dir/$brave_exe"
@@ -73,6 +81,26 @@ if (is_universal_binary) {
     ]
 
     outputs = [ x64_arch_app_path ]
+  }
+
+  # Copies an app bundle before :universalize, stripping signature artifacts
+  # from signed zips. Source: $root_out_dir/prebuilt/. Destination: $root_out_dir/.
+  action("copy_arm64") {
+    script = "//brave/installer/mac/copy_app_bundle_for_universalize.py"
+
+    arm64_arch_src_path = "$root_out_dir/prebuilt/$brave_exe"
+
+    args = [
+      rebase_path(arm64_arch_src_path),
+      rebase_path(unsigned_app_path),
+    ]
+
+    inputs = [
+      script,
+      arm64_arch_src_path,
+    ]
+
+    outputs = [ unsigned_app_path ]
   }
 }
 
@@ -303,6 +331,7 @@ if (is_official_build && !skip_signing) {
   }
 }
 
+# Signs and builds dmg/pkg/zip.
 action("package") {
   outputs = [
     dmg_path,
@@ -316,12 +345,21 @@ action("package") {
     ":copy_dmg_preinstall",
     ":copy_ds_store",
     ":copy_helper_entitlements",
-    ":copy_postinstall",
     ":copy_signing_config",
     ":preinstall",
-    "//chrome:chrome_app",
     "//chrome/installer/mac",
   ]
+  if (install_omaha4_with_pkg) {
+    deps += [ ":postinstall" ]
+  } else {
+    deps += [ ":copy_postinstall" ]
+  }
+  if (!mac_prebuilt_package) {
+    deps += [ "//chrome:chrome_app" ]
+  }
+  if (is_universal_binary) {
+    deps += [ ":universalize" ]
+  }
   script = "$packaging_dir/sign_chrome.py"
   installer_identity = mac_installer_signing_identifier
   if (skip_signing && installer_identity == "") {
@@ -363,7 +401,6 @@ action("package") {
   }
   if (is_universal_binary) {
     args += [ "--universal" ]
-    deps += [ ":universalize" ]
   }
 }
 
@@ -438,7 +475,7 @@ group("create_dist_mac") {
       deps += [ ":generate_eddsa_sig_for_dmg" ]
     }
 
-    if (last_chrome_installer != "") {
+    if (last_chrome_installer != "" && !mac_prebuilt_package) {
       deps += [ ":build_delta_installer" ]
       if (sparkle_eddsa_private_key != "") {
         deps += [ ":generate_eddsa_sig_for_delta" ]
