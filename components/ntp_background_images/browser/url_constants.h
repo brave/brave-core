@@ -12,6 +12,8 @@ inline constexpr char kBackgroundWallpaperHost[] = "background-wallpaper";
 inline constexpr char kBrandedWallpaperHost[] = "branded-wallpaper";
 inline constexpr char kSponsoredImagesPath[] = "sponsored-images/";
 
+inline constexpr char kSponsoredSiteImageHost[] = "sponsored-site-image";
+
 inline constexpr char kCustomWallpaperHost[] = "custom-wallpaper";
 inline constexpr char kCustomWallpaperURL[] = "chrome://custom-wallpaper/";
 

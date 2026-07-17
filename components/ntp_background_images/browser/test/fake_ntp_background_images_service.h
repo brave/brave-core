@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_NTP_BACKGROUND_IMAGES_BROWSER_TEST_FAKE_NTP_BACKGROUND_IMAGES_SERVICE_H_
 
 #include <cstddef>
+#include <optional>
 #include <string>
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
@@ -22,6 +23,8 @@ class VariationsService;
 }  // namespace variations
 
 namespace ntp_background_images {
+
+struct NTPSponsoredSitesData;
 
 class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
  public:
@@ -43,6 +46,10 @@ class FakeNTPBackgroundImagesService final : public NTPBackgroundImagesService {
   // were ready. Passes `std::nullopt` to `OnHandledSponsoredComponentData` if
   // `json` is malformed, exercising the failure path.
   void OnGetSponsoredComponentJsonData(const std::string& json);
+
+  // Test-only entry point: injects `sites_data` as if the sponsored sites
+  // manifest had just been loaded, notifying observers.
+  void OnGetSponsoredSitesData(std::optional<NTPSponsoredSitesData> sites_data);
 
   size_t register_sponsored_images_component_call_count() const {
     return register_sponsored_images_component_call_count_;
