@@ -17,6 +17,8 @@ mangle(
           + 'Has upstream changed?',
       )
     }
+    // Build-time template edit only; no user-controlled HTML.
+    // eslint-disable-next-line no-unsanitized/property
     input.outerHTML = input.outerHTML.replace(
       /^<cr-input/,
       '<cr-input @keydown="${this.onNameInputKeydown_}"',
