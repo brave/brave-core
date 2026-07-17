@@ -97,6 +97,35 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
     EXPECT_TRUE(
         rederived_shared_verification_key_verification_result.has_value());
     EXPECT_TRUE(*rederived_shared_verification_key_verification_result);
+
+    // A verification key built from the wrong derivation must not validate. The
+    // token was blinded with the RFC 9497 derivation, so deriving its key with
+    // the legacy derivation yields a signature that pairs with neither method.
+    VerificationKey wrong_verification_key =
+        unblinded_token.DeriveVerificationKey();
+    const base::expected<VerificationSignature, std::string>
+        wrong_verification_signature = wrong_verification_key.Sign(kMessage);
+    EXPECT_TRUE(wrong_verification_signature.has_value());
+
+    // Rejected by the RFC verification method (RFC rederive + RFC finalize):
+    // same unblinded point, different finalization.
+    const base::expected<bool, std::string> rfc_rejects_wrong =
+        rederived_shared_verification_key.Verify(*wrong_verification_signature,
+                                                 kMessage);
+    EXPECT_TRUE(rfc_rejects_wrong.has_value());
+    EXPECT_FALSE(*rfc_rejects_wrong);
+
+    // Rejected by the legacy verification method (legacy rederive + legacy
+    // finalize), which derives a different unblinded point.
+    const UnblindedToken legacy_rederived_unblinded_token =
+        signing_key.RederiveUnblindedToken(token_preimage);
+    VerificationKey legacy_shared_verification_key =
+        legacy_rederived_unblinded_token.DeriveVerificationKey();
+    const base::expected<bool, std::string> legacy_rejects_wrong =
+        legacy_shared_verification_key.Verify(*wrong_verification_signature,
+                                              kMessage);
+    EXPECT_TRUE(legacy_rejects_wrong.has_value());
+    EXPECT_FALSE(*legacy_rejects_wrong);
   }
 }
 

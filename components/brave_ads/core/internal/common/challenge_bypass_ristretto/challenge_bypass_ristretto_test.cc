@@ -202,7 +202,8 @@ TEST(BraveAdsChallengeBypassRistrettoTest, ProveAndVerifyUnblindedTokenNonRfc) {
       legacy_unblinded_token->EncodeBase64();
   ASSERT_TRUE(legacy_unblinded_token_base64);
 
-  // The server's legacy verification method (legacy rederive + legacy finalize).
+  // The server's legacy verification method (legacy rederive + legacy
+  // finalize).
   std::optional<cbr::VerificationKey> legacy_shared_verification_key =
       cbr::UnblindedToken(*legacy_unblinded_token_base64, /*rfc=*/false)
           .DeriveVerificationKey();
