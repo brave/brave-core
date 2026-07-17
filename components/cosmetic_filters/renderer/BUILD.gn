@@ -24,6 +24,7 @@ source_set("renderer") {
     "//base",
     "//brave/common:mojo_bindings",
     "//brave/components/brave_shields/core/common",
+    "//brave/components/cosmetic_filters/common",
     "//brave/components/cosmetic_filters/common:mojom",
     "//brave/components/cosmetic_filters/resources/data:generated_resources",
     "//brave/components/de_amp/common",

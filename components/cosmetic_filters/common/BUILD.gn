@@ -1,4 +1,13 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//mojo/public/tools/bindings/mojom.gni")
+
+source_set("common") {
+  sources = [ "scriptlet_constants.h" ]
+}
 
 mojom("mojom") {
   sources = [ "cosmetic_filters.mojom" ]
