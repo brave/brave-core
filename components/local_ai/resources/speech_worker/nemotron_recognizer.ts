@@ -19,15 +19,15 @@ import * as config from './configs'
 import type { FftSize } from './configs'
 import { releaseBytes, argmax } from './utils'
 
-// Encoder outputs we consume. `encoded_len` is the count of valid encoder
+// Encoder outputs we consume. `encoded_lengths` is the count of valid encoder
 // frames; the input length is fixed every call so it normally equals the
 // full time, but we clamp the decode to it defensively.
 const ENC_FETCHES = [
-  'encoded',
-  'encoded_len',
+  'outputs',
+  'encoded_lengths',
   'cache_last_channel_next',
   'cache_last_time_next',
-  'cache_last_channel_len_next',
+  'cache_last_channel_next_len',
 ]
 
 // Shared, loaded-once Nemotron model: the external-data encoder + RNN-T
@@ -115,6 +115,7 @@ export class OrtNemotronModel {
       encoderGraph,
       sessionOptions(encData, 'encoder.onnx.data'),
     )
+
     releaseBytes(encoderGraph)
     releaseBytes(encData)
 
@@ -269,28 +270,28 @@ export class NemotronStreamSession {
       const encoderStarted = performance.now()
       const eo = await this.model.runEncoder(
         {
-          processed_signal: new ort.Tensor('float32', sig, [
+          audio_signal: new ort.Tensor('float32', sig, [
             1,
             config.N_MELS,
             config.NEMO_FRAMES,
           ]),
 
-          processed_signal_length: new ort.Tensor(
+          length: new ort.Tensor(
             'int64',
             BigInt64Array.from([BigInt(config.NEMO_FRAMES)]),
             [1],
           ),
 
           cache_last_channel: new ort.Tensor('float32', this.cacheCh, [
-            config.NEMO_NUM_ENCODER_LAYERS,
             1,
+            config.NEMO_NUM_ENCODER_LAYERS,
             config.NEMO_LEFT_CONTEXT,
             config.NEMO_HIDDEN_DIM,
           ]),
 
           cache_last_time: new ort.Tensor('float32', this.cacheTime, [
-            config.NEMO_NUM_ENCODER_LAYERS,
             1,
+            config.NEMO_NUM_ENCODER_LAYERS,
             config.NEMO_HIDDEN_DIM,
             config.NEMO_CONV_CONTEXT,
           ]),
@@ -303,14 +304,14 @@ export class NemotronStreamSession {
 
       // Copy data out before disposing ORT tensors.
       // Encoder output is laid out as [batch, hidden_dim, time].
-      const encOut = (eo.encoded.data as Float32Array).slice()
+      const encOut = (eo.outputs.data as Float32Array).slice()
 
       // Number of time frames at output of encoder.
-      const nTime = Number(eo.encoded.dims[2])
+      const nTime = Number(eo.outputs.dims[2])
 
       // Number of valid encoder frames to actually decode.
       const nEnc = Math.min(
-        Number((eo.encoded_len.data as BigInt64Array)[0]),
+        Number((eo.encoded_lengths.data as BigInt64Array)[0]),
         nTime,
       )
 
@@ -321,7 +322,7 @@ export class NemotronStreamSession {
 
       // Grows until NEMO_LEFT_CONTEXT and then stays there.
       this.cacheLen = (
-        eo.cache_last_channel_len_next.data as BigInt64Array
+        eo.cache_last_channel_next_len.data as BigInt64Array
       ).slice()
 
       disposeOrt([], eo as unknown as Record<string, OrtTensor>)
