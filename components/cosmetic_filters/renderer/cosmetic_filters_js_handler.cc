@@ -19,6 +19,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
+#include "brave/components/cosmetic_filters/common/scriptlet_constants.h"
 #include "brave/components/cosmetic_filters/resources/grit/cosmetic_filters_generated.h"
 #include "content/public/renderer/render_frame.h"
 #include "gin/converter.h"
@@ -51,7 +52,7 @@ constexpr char kObservingScriptletEntryPoint[] =
 
 constexpr char kScriptletInitScript[] =
     R"((function() {
-          let text = '(function() {\nconst scriptletGlobals = (() => {\nconst forwardedMapMethods = ["has", "get", "set"];\nconst handler = {\nget(target, prop) { if (forwardedMapMethods.includes(prop)) { return Map.prototype[prop].bind(target) } return target.get(prop); },\nset(target, prop, value) { if (!forwardedMapMethods.includes(prop)) { target.set(prop, value); } }\n};\nreturn new Proxy(new Map(%s), handler);\n})();\nlet deAmpEnabled = %s;\n' + %s + '})()';
+          let text = `(function() {\n%s\nlet deAmpEnabled = %s;\n` + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
@@ -693,9 +694,11 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
         brave_shields::features::kBraveAdblockScriptletDebugLogs);
 
+    const std::string scriptlet_globals = absl::StrFormat(
+        kScriptletGlobalsScript,
+        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "");
     scriptlet_script =
-        absl::StrFormat(kScriptletInitScript,
-                        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "",
+        absl::StrFormat(kScriptletInitScript, scriptlet_globals,
                         de_amp_enabled ? "true" : "false", scriptlet_script);
   }
   if (!scriptlet_script.empty()) {

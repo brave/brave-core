@@ -46,6 +46,10 @@ OBJC_EXPORT
 
 + (NSString*)cosmeticFiltersScript;
 
+/// Returns the `scriptletGlobals` script that some of uBlock Origin's scriptlet
+/// resources rely on. Should be prepended to injected scriptlets.
++ (NSString*)scriptletGlobalsScript;
+
 @end
 
 NS_ASSUME_NONNULL_END
