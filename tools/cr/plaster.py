@@ -406,8 +406,12 @@ class Rewriter(abc.ABC):
     HELP: ClassVar[str] = ''
 
     @abc.abstractmethod
-    def apply(self, contents: str, *, count: int,
-              description: str) -> tuple[str, list[str]]:
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
         """Transform `contents`, returning (new_contents, validation_errors).
 
         `count` is the entry's `count:` (default 1, `0` meaning "one or more").
@@ -415,7 +419,8 @@ class Rewriter(abc.ABC):
         the expected number of matches. A composed rewriter may instead give
         each of its operations its own expectation. `errors` is the list of
         human-readable count/validation failures (empty when the entry applied
-        as expected).
+        as expected). `blank_for_parse` is the file-wide
+        `blank_macros_for_ast_parsing` flag used by AST rewriters.
         """
 
     @classmethod
@@ -427,6 +432,43 @@ class Rewriter(abc.ABC):
     def help_text(cls) -> str:
         """The full, user-facing help for this rewriter as dedented Markdown."""
         return textwrap.dedent(cls.HELP or cls.__doc__ or '').strip('\n')
+
+    def source_language(self) -> str | None:
+        """The source language this rewriter requires, or None if agnostic.
+
+        AST rewriters parse the target in a specific language (the `<lang>.`
+        prefix of their op id), so they may only be used on sources of that
+        language. Text rewriters are language-agnostic and return None.
+        """
+        return None
+
+
+# The file-wide plaster keys allowed at the top level of a YAML plaster.
+_TOP_LEVEL_KEYS: Final = frozenset(
+    {'substitutions', 'blank_macros_for_ast_parsing'})
+
+# Target-source suffixes plaster treats as C++. `blank_macros_for_ast_parsing`
+# blanks constructs for the tree-sitter C++ parser, so it is only meaningful for
+# these.
+_CXX_SOURCE_SUFFIXES: Final = frozenset(
+    {'.h', '.hpp', '.hxx', '.h++', '.cc', '.cpp', '.cxx', '.c++', '.mm'})
+
+
+def _is_cxx_source(plaster_path: Path) -> bool:
+    """True if the plaster's target source (its path minus `.yaml`) is C++."""
+    return plaster_path.with_suffix('').suffix in _CXX_SOURCE_SUFFIXES
+
+
+@dataclass(frozen=True)
+class PlasterSpec:
+    """A parsed plaster file: its substitutions plus its file-wide options."""
+
+    # The `substitutions:` entries, in order.
+    substitutions: list[Substitution]
+
+    # Indicates to the AST-rewriter that it needs to blank all cxx preprocessor
+    # directives that can interfere with parsing.
+    blank_macros_for_ast_parsing: bool = False
 
 
 @dataclass(frozen=True)
@@ -447,16 +489,16 @@ class Substitution:
     # The rewriter this entry composes; `apply` delegates to it.
     rewriter: Rewriter
 
-    def apply(self, contents: str) -> tuple[str, list[str]]:
+    def apply(self,
+              contents: str,
+              *,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
         """Apply the composed rewriter, returning (new_contents, errors).
-
-        The envelope's `expected_count`/`description` are handed to the
-        rewriter, which owns count validation (per-operation for composed
-        rewriters) and reports any failures as error strings.
         """
         return self.rewriter.apply(contents,
                                    count=self.expected_count,
-                                   description=self.description)
+                                   description=self.description,
+                                   blank_for_parse=blank_for_parse)
 
     class _NoDupSafeLoader(yaml.SafeLoader):
         """`yaml.SafeLoader` that rejects duplicate mapping keys.
@@ -491,16 +533,27 @@ class Substitution:
         }
 
     @staticmethod
-    def from_yaml(contents: str) -> list[Substitution]:
-        """Parse all substitutions from the contents of a YAML plaster file.
+    def from_yaml(contents: str) -> PlasterSpec:
+        """Parse a YAML plaster file into a `PlasterSpec`.
 
-        YAML plasters use a top-level `substitutions:` list.
+        YAML plasters use a top-level `substitutions:` list, plus file-level
+        values.
         """
         data = yaml.load(contents, Loader=Substitution._NoDupSafeLoader)
         if data is None:
             data = {}
         if not isinstance(data, dict):
             raise ValueError('Plaster YAML must be a mapping at the top level')
+        unknown = sorted(set(data) - _TOP_LEVEL_KEYS)
+        if unknown:
+            raise ValueError('Unrecognised top-level plaster key(s): ' +
+                             ', '.join(repr(k)
+                                       for k in unknown) + '; allowed: ' +
+                             ', '.join(sorted(_TOP_LEVEL_KEYS)))
+        blank_for_parse = data.get('blank_macros_for_ast_parsing', False)
+        if not isinstance(blank_for_parse, bool):
+            raise ValueError(
+                '`blank_macros_for_ast_parsing` must be a boolean')
         raw = data.get('substitutions')
         if raw is None:
             raise ValueError(
@@ -511,7 +564,9 @@ class Substitution:
             raise ValueError(
                 'Plaster YAML `substitutions:` must contain at least one entry'
             )
-        return [Substitution._from_item(entry) for entry in raw]
+        return PlasterSpec(
+            substitutions=[Substitution._from_item(entry) for entry in raw],
+            blank_macros_for_ast_parsing=blank_for_parse)
 
     @staticmethod
     def _from_item(data: object) -> Substitution:
@@ -685,9 +740,14 @@ class Regex(Rewriter):
         self._replace = replace
         self._re_flags = re_flags
 
-    def apply(self, contents: str, *, count: int,
-              description: str) -> tuple[str, list[str]]:
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
         del description  # Only the count matters for the regex diagnostic.
+        del blank_for_parse  # Text substitution never parses; nothing to relax.
         # `count=0` here means "replace every match"; how many were expected is
         # validated afterwards against the entry's `count:`.
         content, matches = re.subn(self._re_pattern,
@@ -806,6 +866,14 @@ class _AstGrepRewriter(Rewriter):
         # subclasses hold their own parsed shape and leave this empty.
         self._inputs = inputs if inputs is not None else {}
 
+    def source_language(self) -> str:
+        """The `<lang>.` prefix for the op (e.g. `cxx` for `cxx.make_virtual`).
+
+        AST rewriters parse the target in this language, so they are only valid
+        on sources of it.
+        """
+        return self.OP_ID.split('.', 1)[0]
+
     def operations(self, count: int) -> list[Operation]:
         """The ordered ast-grep operations this rewriter expands to.
 
@@ -819,9 +887,15 @@ class _AstGrepRewriter(Rewriter):
                       MatchExpectation.from_count(count))
         ]
 
-    def apply(self, contents: str, *, count: int,
-              description: str) -> tuple[str, list[str]]:
-        engine = AstRewriter(RewritersEval.load(), contents)
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
         outcomes = [(op, engine.run(op)) for op in self.operations(count)]
         return engine.content, self.validate_outcomes(outcomes, description)
 
@@ -877,7 +951,9 @@ class MakeVirtual(_AstGrepRewriter):
     SUMMARY: Final = 'Prepend `virtual ` to a class method declaration.'
     # Authored in Markdown; `Help` renders it with rich.
     HELP: Final = r"""
-        Prepends `virtual ` to a C++ method declaration.
+        Adds `virtual ` to a C++ method declaration. A leading attribute like
+        `[[nodiscard]]` is kept first, so `virtual` lands after it
+        (`[[nodiscard]] virtual T Foo()`), as the grammar requires.
 
         Fields:
 
@@ -1114,18 +1190,30 @@ class PlasterFile:
 
         info = PatchinfoBuilder(self.path)
         if suffix == '.yaml':
-            substitutions = Substitution.from_yaml(info.plaster_contents)
+            doc = Substitution.from_yaml(info.plaster_contents)
+            is_cxx = _is_cxx_source(self.path)
+            if doc.blank_macros_for_ast_parsing and not is_cxx:
+                raise ValueError(
+                    '`blank_macros_for_ast_parsing` is only supported for C++ '
+                    f'sources (in {self.path})')
+            if not is_cxx:
+                for substitution in doc.substitutions:
+                    if substitution.rewriter.source_language() == 'cxx':
+                        raise ValueError(
+                            f'the `{substitution.rewriter.NAME}` rewriter is '
+                            f'only supported for C++ sources (in {self.path})')
         else:
             raise ValueError(f'Unsupported plaster file extension: {suffix}')
         contents = repository.chromium.read_file(info.source)
         errors = []
 
         try:
-            for substitution in substitutions:
+            for substitution in doc.substitutions:
                 # Each substitution owns its count validation (per-operation for
                 # composed rewriters) and reports any failures; we just attach
                 # the file being patched.
-                contents, sub_errors = substitution.apply(contents)
+                contents, sub_errors = substitution.apply(
+                    contents, blank_for_parse=doc.blank_macros_for_ast_parsing)
                 errors.extend(f'{error} in {self.path}'
                               for error in sub_errors)
 
@@ -1470,14 +1558,59 @@ class AstRewriter:
     operations to run.
     """
 
-    def __init__(self, rewriters: RewritersEval, content: str):
+    # Class-head export macro (e.g. `MODULES_EXPORT`, `COMPONENT_EXPORT(FOO)`):
+    # the keyword and its space, the macro, then the start of the real name.
+    # Used by `_prepare_cxx_for_parse`.
+    _EXPORT_MACRO_RE = re.compile(r'(\b(?:class|struct)\s+)'
+                                  r'([A-Z][A-Z0-9_]*_EXPORT(?:\s*\([^()]*\))?)'
+                                  r'(\s+[A-Za-z_])')
+
+    # A preprocessor conditional directive line (`#if`, `#ifdef` ...), matched
+    # without its trailing newline. Used by `_prepare_cxx_for_parse`.
+    _CXX_CONDITIONAL_RE = re.compile(
+        r'(?m)^[ \t]*#[ \t]*(?:if|ifdef|ifndef|elif|else|endif)\b.*$')
+
+    def __init__(self,
+                 rewriters: RewritersEval,
+                 content: str,
+                 *,
+                 blank_for_parse: bool = False):
         self._rewriters = rewriters
-        self._content = content
+        self._source = content
+        # When set, blank constructs tree-sitter cannot parse before matching
+        # (see `_prepare_cxx_for_parse`). Off by default. Opt-in per file.
+        self._blank_for_parse = blank_for_parse
 
     @property
     def content(self) -> str:
         """The current file contents, reflecting every applied rewrite."""
-        return self._content
+        return self._source
+
+    def _prepare_cxx_for_parse(self) -> str:
+        """Normalise C++ source for tree-sitter parsing
+
+        Two constructs are handled:
+
+        - A class-head export macro (`class MODULES_EXPORT Foo`): tree-sitter
+          has no macro definitions, so it reads the macro as the class name and
+          drops the real name, any `final`, and the body into an error node.
+          Blanking the macro leaves a plain `class Foo ...`.
+        - A preprocessor conditional (`#if`/`#endif`/...), most damaging inside
+          a base-specifier list (`#if defined(USE_AURA)`), which has no grammar
+          node and breaks the class head. Blanking the directive lines, keeping
+          the guarded code, makes the head parse.
+
+        Both substitutions only replace characters in place, so every byte
+        offset is preserved. Blanking every conditional file-wide is safe
+        because the caller opts in per file via `blank_macros_for_ast_parsing`,
+        and a directive guarding an alternative definition would leave two
+        matches that the count check flags.
+        """
+        source = self._EXPORT_MACRO_RE.sub(
+            lambda m: m.group(1) + ' ' * len(m.group(2)) + m.group(3),
+            self._source)
+        return self._CXX_CONDITIONAL_RE.sub(
+            lambda line: ' ' * len(line.group(0)), source)
 
     def run(self, op: Operation) -> int:
         """Run one bound `Operation`, mutate content, return the change count.
@@ -1500,9 +1633,14 @@ class AstRewriter:
         language = self._rewriters.language_of(op.op_id)
         rule_body = matcher['template'].format(**op.inputs)
 
+        # `_prepare_cxx_for_parse` blanks C++-specific constructs, so it only
+        # applies to `cxx.` ops.
+        blank = self._blank_for_parse and op.op_id.startswith('cxx.')
+        source_for_parse = (self._prepare_cxx_for_parse()
+                            if blank else self._source)
         matches = run_ast_grep(language=language,
                                rule_body=rule_body,
-                               source=self._content)
+                               source=source_for_parse)
         if rewriter.get('first_match'):
             matches = matches[:1]
 
@@ -1512,7 +1650,7 @@ class AstRewriter:
         before = replace.get('consume_before', '').encode('utf-8')
         after = replace.get('consume_after', '').encode('utf-8')
 
-        source = self._content.encode('utf-8')
+        source = self._source.encode('utf-8')
         edits = []
         total = 0
         for match in matches:
@@ -1533,7 +1671,7 @@ class AstRewriter:
         # Apply from the end so each splice leaves earlier offsets unchanged.
         for start, end, new_text in sorted(edits, reverse=True):
             source = source[:start] + new_text.encode('utf-8') + source[end:]
-        self._content = source.decode('utf-8')
+        self._source = source.decode('utf-8')
         return total
 
 

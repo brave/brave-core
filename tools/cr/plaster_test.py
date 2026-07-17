@@ -1508,6 +1508,181 @@ class RewriterFormsTest(unittest.TestCase):
             '  - description: missing arg\n'
             '    drop_final: {}\n', 'drop_final requires arg')
 
+    # -- export-macro classes (real ast-grep binary) ----------------------
+    #
+    # tree-sitter cannot parse `class MACRO_EXPORT Name`, so the engine blanks
+    # the macro before matching. These confirm the AST rewriters reach a class
+    # declared with an export macro while leaving the macro itself in place.
+
+    def test_drop_final_on_export_macro_class(self):
+        result = self._apply(
+            'exp_final.h',
+            'class MODULES_EXPORT C final : public Base {\n};\n',
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: drop final on an exported class\n'
+            '    drop_final:\n'
+            '      class_name: C\n')
+        self.assertEqual(result,
+                         'class MODULES_EXPORT C : public Base {\n};\n')
+
+    def test_make_virtual_on_export_macro_class(self):
+        result = self._apply(
+            'exp_virt.h', 'class MODULES_EXPORT C {\n  void Foo();\n};\n',
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual on an exported class\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class MODULES_EXPORT C {\n  virtual void Foo();\n};\n')
+
+    def test_add_friend_on_parenthesised_export_macro_class(self):
+        # The parenthesised `COMPONENT_EXPORT(FOO)` form is blanked too.
+        result = self._apply(
+            'exp_friend.h',
+            'class COMPONENT_EXPORT(FOO) C {\n private:\n  int x_;\n};\n',
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: friend an exported class\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type: class BraveC\n')
+        self.assertEqual(
+            result, 'class COMPONENT_EXPORT(FOO) C {\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n};\n')
+
+    # -- classes with base-list preprocessor conditionals -----------------
+    #
+    # A `#if` in the base-specifier list stops tree-sitter from resolving the
+    # class; the engine blanks it before matching. These confirm the AST
+    # rewriters reach such a class while the conditional survives in the output.
+
+    _AURA_CLASS = ('class C : public A\n'
+                   '#if defined(USE_AURA)\n'
+                   '    ,\n'
+                   '         public D\n'
+                   '#endif  // defined(USE_AURA)\n'
+                   '{\n'
+                   ' public:\n'
+                   '  void Foo();\n'
+                   ' private:\n'
+                   '  int x_;\n'
+                   '};\n')
+
+    def test_make_virtual_through_base_list_conditional(self):
+        result = self._apply(
+            'aura_virt.h', self._AURA_CLASS,
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: make Foo virtual despite the aura base\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result,
+            self._AURA_CLASS.replace('  void Foo();', '  virtual void Foo();'))
+
+    def test_add_friend_through_base_list_conditional(self):
+        result = self._apply(
+            'aura_friend.h', self._AURA_CLASS,
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: friend despite the aura base\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type: class BraveC\n')
+        self.assertEqual(
+            result,
+            self._AURA_CLASS.replace(' private:\n',
+                                     ' private:\n  friend class BraveC;\n'))
+
+    def test_blanking_is_off_by_default(self):
+        # Without `blank_macros_for_ast_parsing`, the export-macro class is
+        # unparseable, so the rewriter matches nothing and the apply fails.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'no_blank.h', 'class MODULES_EXPORT C final {\n};\n',
+                'substitutions:\n'
+                '  - description: no blanking, so final is invisible\n'
+                '    drop_final:\n'
+                '      class_name: C\n')
+
+    def test_blank_flag_false_does_not_blank(self):
+        # Explicit `false` behaves like the default: still unparseable.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'blank_false.h', 'class MODULES_EXPORT C final {\n};\n',
+                'blank_macros_for_ast_parsing: false\n'
+                'substitutions:\n'
+                '  - description: blanking explicitly off\n'
+                '    drop_final:\n'
+                '      class_name: C\n')
+
+    def test_blank_flag_must_be_boolean(self):
+        self._expect_value_error(
+            'blank_macros_for_ast_parsing: yes please\n'
+            'substitutions:\n'
+            '  - description: bad flag type\n'
+            '    drop_final:\n'
+            '      class_name: C\n',
+            '`blank_macros_for_ast_parsing` must be a boolean')
+
+    def test_unknown_top_level_key_rejected(self):
+        self._expect_value_error(
+            'blank_macros: true\n'
+            'substitutions:\n'
+            '  - description: typo in the top-level flag\n'
+            '    drop_final:\n'
+            '      class_name: C\n', 'Unrecognised top-level plaster key')
+
+    def test_blank_flag_rejected_for_non_cxx_source(self):
+        # `_expect_value_error` targets a `.idl` source; the flag only applies
+        # to C++ files, so it is rejected there.
+        self._expect_value_error(
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: flag on a non-C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n",
+            '`blank_macros_for_ast_parsing` is only supported for C++ sources')
+
+    def test_blank_flag_allowed_for_cxx_source(self):
+        # The same flag is accepted for a `.h` source (here with no AST work to
+        # do, so it just applies the regex).
+        result = self._apply(
+            'cxx_flag.h', 'A Chromium thing.\n',
+            'blank_macros_for_ast_parsing: true\n'
+            'substitutions:\n'
+            '  - description: flag on a C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'Chromium'\n"
+            "      replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.\n')
+
+    def test_ast_rewriter_rejected_for_non_cxx_source(self):
+        # AST rewriters (cxx.* ops) only work on C++ sources; the `.idl` target
+        # of `_expect_value_error` is not one.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: AST rewriter on a non-C++ source\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n',
+            'the `make_virtual` rewriter is only supported for C++ sources')
+
+    def test_regex_rewriter_allowed_for_non_cxx_source(self):
+        # Text rewriters are language-agnostic, so they work on any source.
+        result = self._apply(
+            'plain.idl', 'A Chromium thing.\n', 'substitutions:\n'
+            '  - description: regex on a non-C++ source\n'
+            '    regex:\n'
+            "      re_pattern: 'Chromium'\n"
+            "      replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.\n')
+
     # -- validation ---------------------------------------------------------
 
     def test_two_op_keys_rejected(self):
@@ -1992,6 +2167,94 @@ _SYNTHETIC_SPEC = {
         },
     },
 }
+
+
+class PrepareForParseTest(unittest.TestCase):
+    """Unit tests for AstRewriter._prepare_cxx_for_parse (no ast-grep binary)."""
+
+    def _prepared(self, source: str) -> str:
+        """Return the parse-prepared source, asserting length is preserved.
+
+        `_prepare_cxx_for_parse` only reads the held source and the class regexes,
+        so the rewriters registry is irrelevant and left as None here.
+        """
+        result = plaster.AstRewriter(None, source)._prepare_cxx_for_parse()
+        # The whole point is that offsets are preserved for byte-for-byte
+        # remapping onto the untouched source.
+        self.assertEqual(len(result.encode('utf-8')),
+                         len(source.encode('utf-8')))
+        return result
+
+    def _assert_blanks(self, source: str, macro: str):
+        """Assert `macro` is replaced by equal-length spaces, nothing else."""
+        self.assertEqual(self._prepared(source),
+                         source.replace(macro, ' ' * len(macro), 1))
+
+    # -- export macros ----------------------------------------------------
+
+    def test_blanks_simple_export_macro(self):
+        self._assert_blanks('class MODULES_EXPORT Foo final {};',
+                            'MODULES_EXPORT')
+
+    def test_blanks_parenthesised_export_macro(self):
+        self._assert_blanks('class COMPONENT_EXPORT(BASE) Foo {};',
+                            'COMPONENT_EXPORT(BASE)')
+
+    def test_blanks_struct_and_multiline_head(self):
+        self._assert_blanks('struct NET_EXPORT\n    Foo {};', 'NET_EXPORT')
+
+    def test_leaves_plain_class_untouched(self):
+        for src in ('class Foo final {};', 'class Foo : public Base {};',
+                    'class FooBar {};'):
+            self.assertEqual(self._prepared(src), src)
+
+    def test_leaves_all_caps_class_name_untouched(self):
+        # An all-caps name without an `_EXPORT` suffix is not a macro.
+        self.assertEqual(self._prepared('class URL final {};'),
+                         'class URL final {};')
+
+    def test_only_touches_class_head_macro(self):
+        # An `_EXPORT`-suffixed token elsewhere (a member, a value) is left be.
+        result = self._prepared(
+            'class MODULES_EXPORT Foo {\n  int MY_EXPORT = 1;\n};')
+        self.assertIn('int MY_EXPORT = 1;', result)
+        self.assertNotIn('MODULES_EXPORT', result)
+
+    # -- preprocessor conditionals ----------------------------------------
+
+    def test_blanks_conditionals_anywhere(self):
+        # Directives are blanked wherever they sit -- base list or class body --
+        # while the code they guarded stays put.
+        result = self._prepared('class C : public A\n'
+                                '#if defined(USE_AURA)\n'
+                                '    ,\n'
+                                '         public D\n'
+                                '#endif  // defined(USE_AURA)\n'
+                                '{\n'
+                                ' public:\n'
+                                '#ifdef FOO\n'
+                                '  void OnFoo();\n'
+                                '#else\n'
+                                '  void OnBar();\n'
+                                '#endif\n'
+                                '};\n')
+        for directive in ('#if', '#ifdef', '#else', '#endif'):
+            self.assertNotIn(directive, result)
+        # Guarded code survives.
+        for kept in ('public D', 'void OnFoo();', 'void OnBar();'):
+            self.assertIn(kept, result)
+
+    def test_blanks_every_directive_kind(self):
+        for directive in ('#if X', '#ifdef X', '#ifndef X', '#elif X', '#else',
+                          '#endif'):
+            self.assertEqual(self._prepared(f'a\n{directive}\nb\n'),
+                             f'a\n{" " * len(directive)}\nb\n')
+
+    def test_leaves_non_conditional_directives_untouched(self):
+        # `#include` / `#define` are not conditionals and must be preserved.
+        for src in ('#include <memory>\n', '#define FOO 1\n',
+                    '#pragma once\n'):
+            self.assertEqual(self._prepared(src), src)
 
 
 class RunAstGrepTest(unittest.TestCase):
