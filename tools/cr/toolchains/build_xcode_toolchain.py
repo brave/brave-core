@@ -82,8 +82,9 @@ from rich.progress import (BarColumn, DownloadColumn, Progress,
 # This is necessary because these scripts are used be brockit too.
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+from cherry_picks import _check_call  # pylint: disable=wrong-import-position
 from ephemeral_xcode import (  # pylint: disable=wrong-import-position
-    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo, _check_call)
+    HTTP_FETCH_TIMEOUT_SECS, EphemeralXcode, MacSdkInfo)
 from upload import sha256_file  # pylint: disable=wrong-import-position
 
 # Gitiles raw-text endpoint for `build/xcode_binaries.yaml` at a given
@@ -177,7 +178,7 @@ def _brave_core_commit() -> str:
                        'rev-parse',
                        'HEAD',
                        cwd=Path(__file__).resolve().parent,
-                       capture_stdout=True).strip()
+                       capture_output=True).stdout.strip()
 
 
 def _remote_url_exists(url: str) -> bool:
@@ -437,7 +438,7 @@ class ToolchainBuilder:
         metal_bin = _check_call('xcrun',
                                 '--find',
                                 'metal',
-                                capture_stdout=True).strip()
+                                capture_output=True).stdout.strip()
         self._metal_build = _metal_build_from_path(metal_bin)
         logging.info('Metal toolchain build: %s', self._metal_build
                      or '(unknown)')
