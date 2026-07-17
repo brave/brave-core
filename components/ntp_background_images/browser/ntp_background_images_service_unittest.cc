@@ -7,12 +7,16 @@
 
 #include <memory>
 #include <string>
+#include <utility>
 
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
 #include "base/memory/raw_ptr.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "build/build_config.h"
@@ -21,6 +25,9 @@
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace ntp_background_images {
+
+constexpr char kTestSponsoredSitesUrlPrefix[] =
+    "chrome://sponsored-site-image/";
 
 constexpr char kTestEmptyComponent[] = R"(
     {
@@ -340,12 +347,18 @@ class ObserverMock : public NTPBackgroundImagesService::Observer {
     sponsored_images_data = data;
   }
 
+  void OnSponsoredSitesDataDidUpdate() override {
+    on_sponsored_sites_data_updated = true;
+  }
+
   raw_ptr<NTPBackgroundImagesData> background_images_data = nullptr;
   bool on_background_images_updated = false;
 
   raw_ptr<NTPSponsoredImagesData, DanglingUntriaged> sponsored_images_data =
       nullptr;
   bool on_sponsored_images_updated = false;
+
+  bool on_sponsored_sites_data_updated = false;
 };
 
 class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
@@ -383,6 +396,12 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
   void OnGetSponsoredComponentJsonData(const std::string& json) {
     NTPBackgroundImagesService::OnHandledSponsoredComponentData(
         base::test::ParseJsonDict(json));
+  }
+
+  void OnGetSponsoredSitesData(
+      std::optional<NTPSponsoredSitesData> sites_data) {
+    NTPBackgroundImagesService::OnHandledSponsoredSitesData(
+        std::move(sites_data));
   }
 
   bool sponsored_images_component_started = false;
@@ -733,6 +752,85 @@ TEST_F(NTPBackgroundImagesServiceTest,
   EXPECT_NE(nullptr, second_observer.sponsored_images_data);
 
   service_->RemoveObserver(&second_observer);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       GetsSponsoredSitesDataAndNotifiesObserverWhenValid) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  const base::FilePath image_dir = installed_dir.GetPath().AppendASCII("tiles");
+  ASSERT_TRUE(base::CreateDirectory(image_dir));
+  ASSERT_TRUE(base::WriteFile(image_dir.AppendASCII("image.png"), ""));
+
+  const base::DictValue dict = base::test::ParseJsonDict(R"(
+      {
+        "schemaVersion": 1,
+        "tiles": [
+          {
+            "version": 1,
+            "title": "tiles",
+            "adDisclosure": "Sponsored",
+            "targetUrl": "https://foo.com",
+            "image": {
+              "relativeUrl": "tiles/image.png"
+            }
+          }
+        ]
+      })");
+  NTPSponsoredSitesData sites_data(dict, installed_dir.GetPath(),
+                                   kTestSponsoredSitesUrlPrefix);
+  ASSERT_TRUE(sites_data.IsValid());
+
+  ASSERT_FALSE(service_->GetSponsoredSitesData());
+  ASSERT_FALSE(observer_.on_sponsored_sites_data_updated);
+
+  service_->OnGetSponsoredSitesData(std::move(sites_data));
+
+  const NTPSponsoredSitesData* const result = service_->GetSponsoredSitesData();
+  ASSERT_TRUE(result);
+  EXPECT_THAT(result->sites, ::testing::SizeIs(1));
+  EXPECT_EQ("tiles", result->sites[0].title);
+  EXPECT_TRUE(observer_.on_sponsored_sites_data_updated);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       ClearsSponsoredSitesDataAndStillNotifiesObserverWhenNullopt) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  const base::FilePath image_dir = installed_dir.GetPath().AppendASCII("tiles");
+  ASSERT_TRUE(base::CreateDirectory(image_dir));
+  ASSERT_TRUE(base::WriteFile(image_dir.AppendASCII("image.png"), ""));
+
+  const base::DictValue dict = base::test::ParseJsonDict(R"(
+      {
+        "schemaVersion": 1,
+        "tiles": [
+          {
+            "version": 1,
+            "title": "tiles",
+            "adDisclosure": "Sponsored",
+            "targetUrl": "https://foo.com",
+            "image": {
+              "relativeUrl": "tiles/image.png"
+            }
+          }
+        ]
+      })");
+  NTPSponsoredSitesData sites_data(dict, installed_dir.GetPath(),
+                                   kTestSponsoredSitesUrlPrefix);
+  ASSERT_TRUE(sites_data.IsValid());
+  service_->OnGetSponsoredSitesData(std::move(sites_data));
+  ASSERT_TRUE(service_->GetSponsoredSitesData());
+
+  observer_.on_sponsored_sites_data_updated = false;
+  service_->OnGetSponsoredSitesData(std::nullopt);
+
+  EXPECT_FALSE(service_->GetSponsoredSitesData());
+  EXPECT_TRUE(observer_.on_sponsored_sites_data_updated);
 }
 
 }  // namespace ntp_background_images

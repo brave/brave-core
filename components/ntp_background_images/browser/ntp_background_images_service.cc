@@ -24,15 +24,19 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_data.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_update_util.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_images_data.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_sites_data.h"
 #include "brave/components/ntp_background_images/browser/sponsored_images_component_data.h"
 #include "brave/components/ntp_background_images/browser/switches.h"
+#include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "components/component_updater/component_updater_service.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 #include "components/variations/pref_names.h"
 #include "components/variations/service/variations_service.h"
 #include "components/variations/service/variations_service_utils.h"
+#include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/url_constants.h"
 
 namespace ntp_background_images {
 
@@ -40,6 +44,7 @@ namespace {
 
 constexpr char kNTPManifestFile[] = "photo.json";
 constexpr char kNTPSponsoredManifestFile[] = "campaigns.json";
+constexpr char kNTPSponsoredSitesManifestFile[] = "tiles.json";
 
 constexpr char kNewTabPageCachedSuperReferralComponentInfo[] =
     "brave.new_tab_page.cached_super_referral_component_info";
@@ -309,6 +314,15 @@ NTPSponsoredImagesData* NTPBackgroundImagesService::GetSponsoredImagesData(
   return images_data;
 }
 
+NTPSponsoredSitesData* NTPBackgroundImagesService::GetSponsoredSitesData()
+    const {
+  if (!sponsored_sites_data_ || !sponsored_sites_data_->IsValid()) {
+    return nullptr;
+  }
+
+  return sponsored_sites_data_.get();
+}
+
 void NTPBackgroundImagesService::OnComponentReady(
     const base::FilePath& installed_dir) {
   background_images_installed_dir_ = installed_dir;
@@ -370,6 +384,13 @@ void NTPBackgroundImagesService::OnSponsoredComponentReady(
       base::BindOnce(
           &NTPBackgroundImagesService::OnHandledSponsoredComponentData,
           weak_factory_.GetWeakPtr()));
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, {base::MayBlock()},
+      base::BindOnce(&NTPBackgroundImagesService::HandleSponsoredSitesData,
+                     installed_dir),
+      base::BindOnce(&NTPBackgroundImagesService::OnHandledSponsoredSitesData,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
@@ -399,6 +420,46 @@ void NTPBackgroundImagesService::OnHandledSponsoredComponentData(
   observers_.Notify(&Observer::OnSponsoredContentDidUpdate, *dict);
   observers_.Notify(&Observer::OnSponsoredImagesDataDidUpdate,
                     sponsored_images_data_.get());
+}
+
+// static
+std::optional<NTPSponsoredSitesData>
+NTPBackgroundImagesService::HandleSponsoredSitesData(
+    const base::FilePath& installed_dir) {
+  const std::string json =
+      HandleComponentData(installed_dir, kNTPSponsoredSitesManifestFile);
+  if (json.empty()) {
+    return std::nullopt;
+  }
+
+  const std::optional<base::DictValue> dict =
+      base::JSONReader::ReadDict(json, base::JSON_PARSE_CHROMIUM_EXTENSIONS);
+  if (!dict) {
+    return std::nullopt;
+  }
+
+  const std::string url_prefix =
+      absl::StrFormat("%s%s%s/", content::kChromeUIScheme,
+                      url::kStandardSchemeSeparator, kSponsoredSiteImageHost);
+
+  NTPSponsoredSitesData sites_data(*dict, installed_dir, url_prefix);
+  if (!sites_data.IsValid()) {
+    return std::nullopt;
+  }
+
+  return sites_data;
+}
+
+void NTPBackgroundImagesService::OnHandledSponsoredSitesData(
+    std::optional<NTPSponsoredSitesData> sites_data) {
+  if (!sites_data) {
+    sponsored_sites_data_.reset();
+  } else {
+    sponsored_sites_data_ =
+        std::make_unique<NTPSponsoredSitesData>(std::move(*sites_data));
+  }
+
+  observers_.Notify(&Observer::OnSponsoredSitesDataDidUpdate);
 }
 
 }  // namespace ntp_background_images

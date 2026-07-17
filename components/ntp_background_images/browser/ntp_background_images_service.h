@@ -37,6 +37,7 @@ namespace ntp_background_images {
 
 struct NTPBackgroundImagesData;
 struct NTPSponsoredImagesData;
+struct NTPSponsoredSitesData;
 
 class NTPBackgroundImagesService {
  public:
@@ -52,6 +53,9 @@ class NTPBackgroundImagesService {
 
     // Called when the sponsored content component is updated.
     virtual void OnSponsoredContentDidUpdate(const base::DictValue& data) {}
+
+    // Called when the sponsored sites component is updated.
+    virtual void OnSponsoredSitesDataDidUpdate() {}
 
    protected:
     virtual ~Observer() = default;
@@ -80,6 +84,7 @@ class NTPBackgroundImagesService {
   NTPBackgroundImagesData* GetBackgroundImagesData() const;
   NTPSponsoredImagesData* GetSponsoredImagesData(
       bool supports_rich_media) const;
+  NTPSponsoredSitesData* GetSponsoredSitesData() const;
   virtual void RegisterSponsoredImagesComponent();
 
   void MaybeCheckForSponsoredComponentUpdate();
@@ -139,6 +144,10 @@ class NTPBackgroundImagesService {
       const base::FilePath& installed_dir,
       const std::string& variations_country_code);
   void OnHandledSponsoredComponentData(std::optional<base::DictValue> dict);
+  static std::optional<NTPSponsoredSitesData> HandleSponsoredSitesData(
+      const base::FilePath& installed_dir);
+  void OnHandledSponsoredSitesData(
+      std::optional<NTPSponsoredSitesData> sites_data);
   void OnComponentReady(const base::FilePath& installed_dir);
   void OnGetComponentJsonData(const std::string& json_string);
   void OnVariationsCountryPrefChanged();
@@ -173,6 +182,7 @@ class NTPBackgroundImagesService {
   std::unique_ptr<NTPSponsoredImagesData> sponsored_images_data_;
   std::unique_ptr<NTPSponsoredImagesData>
       sponsored_images_data_excluding_rich_media_;
+  std::unique_ptr<NTPSponsoredSitesData> sponsored_sites_data_;
 
   base::ObserverList<Observer>::Unchecked observers_;
 
