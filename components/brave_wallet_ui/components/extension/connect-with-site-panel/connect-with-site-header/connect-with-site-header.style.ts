@@ -80,7 +80,6 @@ export const SiteURL = styled.span`
   text-align: left;
   color: ${leo.color.text.secondary};
   word-break: break-all;
-  margin-bottom: 6px;
 `
 
 export const SiteURLCentered = styled(SiteURL)`
@@ -153,14 +152,4 @@ export const LinkIconCircle = styled.div`
 export const LinkIcon = styled(Icon)`
   --leo-icon-size: 16px;
   color: ${leo.color.white};
-`
-
-export const VerifiedIcon = styled(Icon).attrs({
-  name: 'verification-filled',
-})`
-  --leo-icon-size: 20px;
-  color: ${leo.color.purple[60]};
-  position: absolute;
-  bottom: -4px;
-  right: -2px;
 `

@@ -118,9 +118,7 @@ describe('ConfirmSendTransactionDApp', () => {
 
     // Verify origin info IS rendered for dapp transactions
     expect(screen.queryByTestId('origin-info-card')).toBeInTheDocument()
-    expect(screen.getByText('Uniswap NFT Aggregator')).toBeInTheDocument()
     expect(screen.getByText('https://app.')).toBeInTheDocument()
-    expect(screen.getByText('uniswap.org')).toBeInTheDocument()
-    expect(screen.getByText('braveWalletVerified')).toBeInTheDocument()
+    expect(screen.getAllByText('uniswap.org').length).toBeGreaterThan(0)
   })
 })
