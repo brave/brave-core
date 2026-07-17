@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
-index 3886a8337be2bd21df18680fa344185d0fc1df43..14d612fd9b53937a5b7f1d3be7090c8d679d3a50 100644
+index 3886a8337be2bd21df18680fa344185d0fc1df43..79248619a9607df622fc2b17ae654b9cd92d9628 100644
 --- a/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 +++ b/third_party/blink/renderer/modules/websockets/websocket_channel_impl.h
 @@ -82,7 +82,7 @@ class WebSocketHandshakeThrottle;
@@ -11,11 +11,12 @@ index 3886a8337be2bd21df18680fa344185d0fc1df43..14d612fd9b53937a5b7f1d3be7090c8d
      : public WebSocketChannel,
        public network::mojom::blink::WebSocketHandshakeClient,
        public network::mojom::blink::WebSocketClient {
-@@ -379,6 +379,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
+@@ -379,7 +379,7 @@ class MODULES_EXPORT WebSocketChannelImpl final
    void OnConnectionError(const base::Location& set_from,
                           uint32_t custom_reason,
                           const std::string& description);
-+  virtual /* Explicit via patch, because Dispose() used everywhere in Blink. */
-   void Dispose();
+-  void Dispose();
++  virtual void Dispose();
  
    const Member<WebSocketChannelClient> client_;
+   KURL url_;

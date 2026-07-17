@@ -9,9 +9,8 @@ substitutions:
 
       Brave derives BraveHorizontalTabStripRegionView from this view, so the
       upstream `final` specifier has to be dropped.
-    regex:
-      pattern: 'class HorizontalTabStripRegionView final'
-      replace: 'class HorizontalTabStripRegionView'
+    drop_final:
+      class_name: HorizontalTabStripRegionView
 
   - description: |
       Expose new_tab_button() to Brave
