@@ -128,6 +128,7 @@ class QuickViewController: UIViewController {
       tab.addPolicyDecider(braveShieldsHelper)
       tab.requestBlockingTabHelper = .init(tab: tab)
       tab.cosmeticFilteringTabHelper = .init(tab: tab)
+      tab.scriptletsTabHelper = .init(tab: tab)
       tab.blockedDomainTabHelper = .init(tab: tab)
     }
     tab.protectionStats = .init(tab: tab)
