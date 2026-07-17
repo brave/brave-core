@@ -13,6 +13,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_writer.h"
+#include "base/test/run_until.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
@@ -40,8 +41,8 @@ mojom::ModelPtr MakeTestModel(const std::string& key) {
   leo_opts->description = "A test model";
   leo_opts->category = mojom::ModelCategory::CHAT;
   leo_opts->access = mojom::ModelAccess::BASIC;
-  leo_opts->max_associated_content_length = 32000;
-  leo_opts->long_conversation_warning_character_limit = 51200;
+  leo_opts->max_associated_content_length = 100000;
+  leo_opts->long_conversation_warning_character_limit = 200000;
 
   auto model = mojom::Model::New();
   model->key = key;
@@ -119,6 +120,12 @@ TEST_F(RemoteModelsProviderTest, ReturnsCachedModelsWithoutFetch) {
   auto provider = MakeProvider();
   GetModels(*provider);
 
+  // Wait for OnWriteComplete to set the pref timestamp before the second call
+  // checks the cache.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !pref_service_.GetTime(prefs::kRemoteModelsCachedAt).is_null();
+  }));
+
   // Second call within TTL — no new network request should be needed.
   // Clear responses so any network request would return nothing.
   url_loader_factory_.ClearResponses();
@@ -134,6 +141,12 @@ TEST_F(RemoteModelsProviderTest, ExpiredCacheTriggersRefetch) {
 
   auto provider = MakeProvider();
   GetModels(*provider);
+
+  // Wait for OnWriteComplete to set the pref timestamp before advancing the
+  // clock past TTL.
+  ASSERT_TRUE(base::test::RunUntil([&] {
+    return !pref_service_.GetTime(prefs::kRemoteModelsCachedAt).is_null();
+  }));
 
   // Advance past TTL, then respond with new models.
   task_environment_.AdvanceClock(kTestTTL + base::Minutes(1));
@@ -152,31 +165,6 @@ TEST_F(RemoteModelsProviderTest, FetchFailureReturnsEmptyVector) {
   auto provider = MakeProvider();
   auto result = GetModels(*provider);
   EXPECT_TRUE(result.empty());
-}
-
-TEST_F(RemoteModelsProviderTest, ConcurrentCallsCoalesced) {
-  std::vector<mojom::ModelPtr> server_models;
-  server_models.push_back(MakeTestModel("model-a"));
-  RespondWithModels(server_models);
-
-  auto provider = MakeProvider();
-
-  // Issue two concurrent calls before either completes.
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future1;
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future2;
-  provider->GetModels(future1.GetCallback());
-  provider->GetModels(future2.GetCallback());
-
-  auto result1 = future1.Take();
-  auto result2 = future2.Take();
-
-  ASSERT_EQ(result1.size(), 1u);
-  EXPECT_EQ(result1[0]->key, "model-a");
-  ASSERT_EQ(result2.size(), 1u);
-  EXPECT_EQ(result2[0]->key, "model-a");
-
-  // Only one network request should have been made.
-  EXPECT_EQ(url_loader_factory_.total_requests(), 1u);
 }
 
 }  // namespace ai_chat

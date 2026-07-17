@@ -31,11 +31,13 @@ namespace ai_chat {
 
 namespace {
 
-void WriteToFile(const base::FilePath& path, std::string content) {
+bool WriteToFile(const base::FilePath& path, std::string content) {
   base::AssertBlockingAllowed();
   if (!base::WriteFile(path, content)) {
     DVLOG(1) << "RemoteModelsDiskCache: failed to write " << path;
+    return false;
   }
+  return true;
 }
 
 std::optional<std::vector<mojom::ModelPtr>> ReadAndParseFromFile(
@@ -99,13 +101,22 @@ void RemoteModelsDiskCache::Load(LoadCallback callback) {
 void RemoteModelsDiskCache::Save(std::vector<mojom::ModelPtr> models,
                                  base::OnceClosure on_complete) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  pref_service_->SetTime(prefs::kRemoteModelsCachedAt, base::Time::Now());
-  base::ThreadPool::PostTaskAndReply(
+  base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
       {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
        base::TaskShutdownBehavior::BLOCK_SHUTDOWN},
       base::BindOnce(&WriteToFile, path_, SerializeCache(models)),
-      std::move(on_complete));
+      base::BindOnce(&RemoteModelsDiskCache::OnWriteComplete,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(on_complete)));
+}
+
+void RemoteModelsDiskCache::OnWriteComplete(base::OnceClosure on_complete,
+                                            bool success) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (success) {
+    pref_service_->SetTime(prefs::kRemoteModelsCachedAt, base::Time::Now());
+  }
+  std::move(on_complete).Run();
 }
 
 }  // namespace ai_chat

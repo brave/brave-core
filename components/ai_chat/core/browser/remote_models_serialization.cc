@@ -110,11 +110,6 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
     return nullptr;
   }
 
-  const std::string* type = options_dict->FindString(kTypeField);
-  if (!type || *type != kLeoType) {
-    return nullptr;
-  }
-
   const std::string* name = options_dict->FindString(kNameField);
   if (!name || name->empty()) {
     return nullptr;
@@ -122,13 +117,13 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
 
   std::optional<int> max_content_length =
       options_dict->FindInt(kMaxAssociatedContentLengthField);
-  if (max_content_length.has_value() && *max_content_length <= 0) {
+  if (!max_content_length.has_value() || *max_content_length <= 0) {
     return nullptr;
   }
 
   std::optional<int> warning_limit =
       options_dict->FindInt(kLongConversationWarningCharacterLimitField);
-  if (warning_limit.has_value() && *warning_limit <= 0) {
+  if (!warning_limit.has_value() || *warning_limit <= 0) {
     return nullptr;
   }
 
@@ -166,15 +161,6 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
 
   leo_opts->category = parsed_capabilities->category;
   leo_opts->access = *parsed_access;
-
-  if (!max_content_length.has_value()) {
-    max_content_length =
-        (leo_opts->access == mojom::ModelAccess::PREMIUM) ? 90000 : 32000;
-  }
-  if (!warning_limit.has_value()) {
-    warning_limit =
-        (leo_opts->access == mojom::ModelAccess::PREMIUM) ? 160000 : 51200;
-  }
 
   leo_opts->max_associated_content_length =
       base::saturated_cast<uint32_t>(*max_content_length);
@@ -225,10 +211,10 @@ base::DictValue ModelToDict(const mojom::Model& model) {
   }
   dict.Set(kCapabilitiesField, std::move(capabilities));
 
+  DCHECK(model.options && model.options->is_leo_model_options());
   if (model.options && model.options->is_leo_model_options()) {
     const auto& leo_opts = model.options->get_leo_model_options();
     base::DictValue options;
-    options.Set(kTypeField, kLeoType);
     options.Set(kNameField, leo_opts->name);
     if (!leo_opts->display_maker.empty()) {
       options.Set(kDisplayMakerField, leo_opts->display_maker);
@@ -278,6 +264,7 @@ std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
 base::ListValue SerializeModels(const std::vector<mojom::ModelPtr>& models) {
   base::ListValue list;
   for (const auto& model : models) {
+    DCHECK(model);
     if (model) {
       list.Append(ModelToDict(*model));
     }

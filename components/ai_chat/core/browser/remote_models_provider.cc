@@ -30,15 +30,9 @@ RemoteModelsProvider::~RemoteModelsProvider() = default;
 
 void RemoteModelsProvider::GetModels(GetModelsCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  DCHECK(!pending_callback_) << "GetModels called while a request is in flight";
 
-  const bool in_progress = !pending_callbacks_.empty();
-  pending_callbacks_.push_back(std::move(callback));
-
-  if (in_progress) {
-    // A cache load or network fetch is already in flight; this callback will
-    // be delivered when it completes.
-    return;
-  }
+  pending_callback_ = std::move(callback);
 
   cache_.Load(base::BindOnce(&RemoteModelsProvider::OnCacheLoaded,
                              weak_ptr_factory_.GetWeakPtr()));
@@ -49,7 +43,7 @@ void RemoteModelsProvider::OnCacheLoaded(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (cached_models.has_value()) {
-    DeliverResult(std::move(*cached_models));
+    std::move(pending_callback_).Run(std::move(*cached_models));
     return;
   }
 
@@ -63,7 +57,6 @@ void RemoteModelsProvider::OnFetchComplete(
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   if (!models.empty()) {
-    // Clone for cache; deliver originals to callers.
     std::vector<mojom::ModelPtr> to_cache;
     to_cache.reserve(models.size());
     for (const auto& m : models) {
@@ -72,27 +65,7 @@ void RemoteModelsProvider::OnFetchComplete(
     cache_.Save(std::move(to_cache), base::DoNothing());
   }
 
-  DeliverResult(std::move(models));
-}
-
-void RemoteModelsProvider::DeliverResult(std::vector<mojom::ModelPtr> models) {
-  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-
-  std::vector<GetModelsCallback> callbacks;
-  callbacks.swap(pending_callbacks_);
-
-  // All callbacks except the last receive a clone; the last takes ownership.
-  for (size_t i = 0; i + 1 < callbacks.size(); ++i) {
-    std::vector<mojom::ModelPtr> copy;
-    copy.reserve(models.size());
-    for (const auto& m : models) {
-      copy.push_back(m.Clone());
-    }
-    std::move(callbacks[i]).Run(std::move(copy));
-  }
-  if (!callbacks.empty()) {
-    std::move(callbacks.back()).Run(std::move(models));
-  }
+  std::move(pending_callback_).Run(std::move(models));
 }
 
 }  // namespace ai_chat

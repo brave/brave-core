@@ -12,6 +12,7 @@
 #include "base/files/file_path.h"
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -57,17 +58,20 @@ class RemoteModelsDiskCache {
   // missing, the JSON is malformed, or no valid models could be parsed.
   void Load(LoadCallback callback);
 
-  // Serializes |models| to disk on a background thread and records the current
-  // time in prefs. Write failures are logged and ignored. |on_complete| is
-  // invoked on the current sequence after the write finishes.
+  // Serializes |models| to disk on a background thread. On success, records the
+  // current time in prefs. Write failures are logged and ignored. |on_complete|
+  // is invoked on the current sequence after the write finishes.
   void Save(std::vector<mojom::ModelPtr> models, base::OnceClosure on_complete);
 
  private:
+  void OnWriteComplete(base::OnceClosure on_complete, bool success);
+
   base::FilePath path_;
   base::TimeDelta ttl_;
   raw_ptr<PrefService> pref_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);
+  base::WeakPtrFactory<RemoteModelsDiskCache> weak_ptr_factory_{this};
 };
 
 }  // namespace ai_chat

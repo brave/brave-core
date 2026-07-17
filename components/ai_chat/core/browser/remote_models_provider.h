@@ -32,9 +32,6 @@ namespace ai_chat {
 // interface. Callers invoke GetModels() and receive the model list from
 // whichever source is available: the disk cache is tried first, and a network
 // fetch is performed only when the cache is absent or expired.
-//
-// Multiple concurrent GetModels() calls are coalesced: if a fetch is already
-// in flight the new callback is queued and invoked when the fetch completes.
 class RemoteModelsProvider {
  public:
   using GetModelsCallback =
@@ -60,15 +57,11 @@ class RemoteModelsProvider {
  private:
   void OnCacheLoaded(std::optional<std::vector<mojom::ModelPtr>> cached_models);
   void OnFetchComplete(std::vector<mojom::ModelPtr> models);
-  void DeliverResult(std::vector<mojom::ModelPtr> models);
 
   RemoteModelsDiskCache cache_;
   RemoteModelsFetcher fetcher_;
   std::string endpoint_url_;
-
-  // Pending callbacks. Non-empty while a cache load or network fetch is in
-  // flight; all callbacks are delivered together when the operation completes.
-  std::vector<GetModelsCallback> pending_callbacks_;
+  GetModelsCallback pending_callback_;
 
   SEQUENCE_CHECKER(sequence_checker_);
   base::WeakPtrFactory<RemoteModelsProvider> weak_ptr_factory_{this};

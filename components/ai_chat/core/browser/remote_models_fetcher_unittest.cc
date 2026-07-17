@@ -34,7 +34,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-1-api",
         "display_maker": "Test Provider",
         "description": "A basic test model",
@@ -50,7 +49,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files", "content_agent"],
       "options": {
-        "type": "leo",
         "name": "test-model-2-api",
         "display_maker": "Test Provider",
         "description": "A premium test model",
@@ -66,7 +64,6 @@ constexpr char kValidModelsJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["summary", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-3-api",
         "display_maker": "Test Provider",
         "description": "A summary model",
@@ -88,7 +85,6 @@ constexpr char kMissingKeyJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
         "access": "basic",
         "max_associated_content_length": 100000,
@@ -106,7 +102,6 @@ constexpr char kMissingDisplayNameJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
         "access": "basic",
         "max_associated_content_length": 100000,
@@ -137,7 +132,6 @@ constexpr char kMissingNameJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "access": "basic",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
@@ -155,27 +149,7 @@ constexpr char kMissingAccessJSON[] = R"({
       "is_near_model": false,
       "capabilities": ["chat", "files"],
       "options": {
-        "type": "leo",
         "name": "test-model-api",
-        "max_associated_content_length": 100000,
-        "long_conversation_warning_character_limit": 200000
-      }
-    }
-  ]
-})";
-
-constexpr char kInvalidTypeJSON[] = R"({
-  "models": [
-    {
-      "key": "invalid-type-model",
-      "display_name": "Invalid Type Model",
-      "is_suggested_model": true,
-      "is_near_model": false,
-      "capabilities": ["chat", "files"],
-      "options": {
-        "type": "custom",
-        "name": "invalid-type-model",
-        "access": "basic",
         "max_associated_content_length": 100000,
         "long_conversation_warning_character_limit": 200000
       }
@@ -351,7 +325,6 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "valid-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -365,7 +338,6 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "invalid-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
@@ -412,7 +384,6 @@ TEST_F(RemoteModelsFetcherTest, MissingCapabilities) {
         "is_suggested_model": false,
         "is_near_model": false,
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
@@ -433,7 +404,6 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
         "is_near_model": false,
         "capabilities": ["files"],
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "access": "basic",
           "max_associated_content_length": 100000,
@@ -442,10 +412,6 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
       }
     ]
   })");
-}
-
-TEST_F(RemoteModelsFetcherTest, InvalidModelType) {
-  ExpectEmptyResult(kInvalidTypeJSON);
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
@@ -484,7 +450,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "unknown-access-api",
           "display_maker": "Test Provider",
           "access": "enterprise",
@@ -496,8 +461,8 @@ TEST_F(RemoteModelsFetcherTest, RejectsUnrecognizedAccessLevel) {
   })");
 }
 
-TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
-  constexpr char kMissingNumericFieldsJSON[] = R"({
+TEST_F(RemoteModelsFetcherTest, RejectsMissingMaxContentLength) {
+  ExpectEmptyResult(R"({
     "models": [
       {
         "key": "basic-model",
@@ -506,76 +471,34 @@ TEST_F(RemoteModelsFetcherTest, MissingNumericFieldsGetTierDefaults) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "basic-model-api",
           "display_maker": "Test Provider",
-          "access": "basic"
+          "access": "basic",
+          "long_conversation_warning_character_limit": 200000
         }
-      },
+      }
+    ]
+  })");
+}
+
+TEST_F(RemoteModelsFetcherTest, RejectsMissingWarningLimit) {
+  ExpectEmptyResult(R"({
+    "models": [
       {
-        "key": "premium-model",
-        "display_name": "Premium Model",
+        "key": "basic-model",
+        "display_name": "Basic Model",
         "is_suggested_model": false,
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
-          "name": "premium-model-api",
+          "name": "basic-model-api",
           "display_maker": "Test Provider",
-          "access": "premium"
+          "access": "basic",
+          "max_associated_content_length": 100000
         }
       }
     ]
-  })";
-
-  SimulateSuccessfulFetch(kMissingNumericFieldsJSON);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
-  const auto& fetched_models = future.Get();
-
-  ASSERT_EQ(2u, fetched_models.size());
-
-  ASSERT_TRUE(fetched_models[0]->options->is_leo_model_options());
-  auto& basic_opts = fetched_models[0]->options->get_leo_model_options();
-  EXPECT_EQ(basic_opts->max_associated_content_length, 32000u);
-  EXPECT_EQ(basic_opts->long_conversation_warning_character_limit, 51200u);
-
-  ASSERT_TRUE(fetched_models[1]->options->is_leo_model_options());
-  auto& premium_opts = fetched_models[1]->options->get_leo_model_options();
-  EXPECT_EQ(premium_opts->max_associated_content_length, 90000u);
-  EXPECT_EQ(premium_opts->long_conversation_warning_character_limit, 160000u);
-}
-
-TEST_F(RemoteModelsFetcherTest, ParsesBareListResponse) {
-  constexpr char kBareListJSON[] = R"([
-    {
-      "key": "test-model-1",
-      "display_name": "Test Model 1",
-      "is_suggested_model": true,
-      "is_near_model": false,
-      "capabilities": ["chat", "files"],
-      "options": {
-        "type": "leo",
-        "name": "test-model-1-api",
-        "display_maker": "Test Provider",
-        "description": "A basic test model",
-        "access": "basic",
-        "max_associated_content_length": 100000,
-        "long_conversation_warning_character_limit": 200000
-      }
-    }
-  ])";
-
-  SimulateSuccessfulFetch(kBareListJSON);
-
-  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
-  const auto& fetched_models = future.Get();
-
-  ASSERT_EQ(1u, fetched_models.size());
-  EXPECT_EQ("test-model-1", fetched_models[0]->key);
-  EXPECT_EQ("Test Model 1", fetched_models[0]->display_name);
+  })");
 }
 
 TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
@@ -588,7 +511,6 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
         "is_near_model": false,
         "capabilities": ["chat", "unknown_capability"],
         "options": {
-          "type": "leo",
           "name": "test-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -621,7 +543,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeMaxContentLength) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "bad-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
@@ -643,7 +564,6 @@ TEST_F(RemoteModelsFetcherTest, RejectsNegativeWarningLimit) {
         "is_near_model": false,
         "capabilities": ["chat", "files"],
         "options": {
-          "type": "leo",
           "name": "bad-model-api",
           "display_maker": "Test Provider",
           "access": "basic",
