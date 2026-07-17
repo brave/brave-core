@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 73848370b38047b84bd64de608fdac1f4ea77259..a0b5d707414963791f1059dbeec371e25a984258 100644
+index cefc089fc9e573acbef2e1d302f7c5b394965b6f..e9d32009ed9e3c2aafdd81dc473fbc36ed1b6971 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -240,7 +240,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+@@ -243,7 +243,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
  
  void PageActionView::HandleSuggestionChipTransition(
      const PageActionModelInterface& model) {
@@ -11,7 +11,7 @@ index 73848370b38047b84bd64de608fdac1f4ea77259..a0b5d707414963791f1059dbeec371e2
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -312,6 +312,7 @@ void PageActionView::UpdateBorder() {
+@@ -315,6 +315,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -19,9 +19,9 @@ index 73848370b38047b84bd64de608fdac1f4ea77259..a0b5d707414963791f1059dbeec371e2
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -365,6 +366,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
-         static_cast<std::underlying_type_t<SidePanelOpenTrigger>>(
-             *side_panel_trigger));
+@@ -361,6 +362,9 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+     builder = std::move(builder).SetProperty(kSidePanelOpenTriggerKey,
+                                              *side_panel_trigger);
    }
 +  builder = std::move(builder).SetProperty(
 +      kBravePageActionEventFlagKey,
@@ -29,3 +29,13 @@ index 73848370b38047b84bd64de608fdac1f4ea77259..a0b5d707414963791f1059dbeec371e2
    action_item_->InvokeAction(std::move(builder).Build());
  }
  
+@@ -664,6 +668,9 @@ void PageActionView::MaybeRecordCollapsedMetrics(int label_width) {
+ }
+ 
+ SkColor PageActionView::GetBackgroundColor() const {
++  if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
++    return *color;
++  }
+   if (observation_.IsObserving() &&
+       observation_.GetSource()->GetOverrideBackgroundColorId().has_value() &&
+       GetColorProvider()) {

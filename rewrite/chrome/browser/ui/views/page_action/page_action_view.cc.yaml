@@ -44,3 +44,19 @@ substitutions:
           builder = std::move(builder).SetProperty(
               kBravePageActionEventFlagKey,
               event.IsMouseEvent() ? event.flags() : ui::EF_NONE);\2
+
+  - description: |
+      Give page action chips a Brave-controlled background.
+
+      Early-return from GetBackgroundColor() via the GetBraveBackgroundColor()
+      hook (defined in the chromium_src override), which honours the model's
+      SkColor override and otherwise keeps chips transparent.
+    regex:
+      re_pattern: |-
+        (PageActionView::GetBackgroundColor\(\).*?\{)
+      re_flags: [DOTALL]
+      replace: |-
+        \1
+          if (auto color = GetBraveBackgroundColor(observation_.GetSource())) {
+            return *color;
+          }
