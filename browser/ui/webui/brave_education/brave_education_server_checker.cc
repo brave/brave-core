@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "base/byte_count.h"
+#include "base/byte_size.h"
 #include "base/check.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/strings/string_split.h"
@@ -23,7 +23,7 @@ namespace brave_education {
 
 namespace {
 
-constexpr base::ByteCount kMaxDownload = base::MiB(1);
+constexpr base::ByteSize kMaxDownload = base::MiBU(1);
 constexpr base::TimeDelta kTimeoutDuration = base::Seconds(2);
 
 constexpr auto kTrafficAnnotation =
