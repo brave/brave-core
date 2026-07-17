@@ -15,9 +15,17 @@ struct TabGridSearchBar: View {
   var scrollView: UIScrollView
   @ScaledMetric(relativeTo: .body) private var height = 44
 
+  private var searchBarHeight: CGFloat {
+    if #available(iOS 26.0, *) {
+      height
+    } else {
+      36
+    }
+  }
+
   var body: some View {
     HStack {
-      Representable(text: $text, isFocused: $isFocused, height: height)
+      Representable(text: $text, isFocused: $isFocused, height: searchBarHeight)
       if isFocused {
         Button {
           isFocused = false
