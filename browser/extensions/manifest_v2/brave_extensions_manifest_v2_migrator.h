@@ -53,6 +53,10 @@ class ExtensionsManifestV2Migrator
                             const extensions::Extension* extension,
                             bool is_updates) override;
 
+  // Starts the backup + Brave-hosted replacement flow for a known
+  // WebStore-hosted MV2 extension (if settings backup is enabled).
+  void MaybeBackupWebStoreExtension(
+      const extensions::ExtensionId& webstore_extension_id);
   void BackupExtensionSettings(
       const extensions::ExtensionId& webstore_extension_id);
   void OnBackupSettingsCompleted(
