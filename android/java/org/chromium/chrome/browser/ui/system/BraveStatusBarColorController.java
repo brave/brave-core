@@ -18,9 +18,9 @@ import org.chromium.chrome.browser.ActivityTabProvider;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
 import org.chromium.chrome.browser.layouts.LayoutManager;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.theme.TopUiThemeColorProvider;
 import org.chromium.chrome.browser.ui.system.StatusBarColorController.StatusBarColorProvider;
-import org.chromium.chrome.browser.util.BraveDynamicColors;
 import org.chromium.components.browser_ui.desktop_windowing.DesktopWindowStateManager;
 import org.chromium.ui.edge_to_edge.EdgeToEdgeSystemBarColorHelper;
 import org.chromium.ui.util.ColorUtils;
@@ -57,8 +57,7 @@ public class BraveStatusBarColorController extends StatusBarColorController {
 
         // Dark theme doesn't have the regression, apply adjustment to light one only.
         // Skip when dynamic colors are enabled — the themed surface color should be used instead.
-        if (!ColorUtils.inNightMode(activity)
-                && !BraveDynamicColors.sDynamicColorsEnabled.isEnabled()) {
+        if (!ColorUtils.inNightMode(activity) && !BraveDynamicColors.isDynamicColorsEnabled()) {
             mBackgroundColorForNtp = Color.WHITE;
         }
     }

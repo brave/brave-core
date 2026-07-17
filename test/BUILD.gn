@@ -1725,6 +1725,7 @@ if (is_android) {
       "//components/variations/android:variations_java",
       "//content/public/android:content_full_java",
       "//third_party/android_deps:espresso_java",
+      "//third_party/android_deps:material_design_java",
       "//third_party/androidx:androidx_annotation_annotation_java",
       "//third_party/androidx:androidx_appcompat_appcompat_java",
       "//third_party/androidx:androidx_fragment_fragment_java",
@@ -1793,6 +1794,7 @@ if (is_android) {
       "//brave/browser/customize_menu/android:junit",
       "//brave/browser/first_run/android:junit",
       "//brave/browser/ui/android/favicon:junit",
+      "//brave/browser/ui/android/theme:junit",
       "//brave/components/minidump_uploader:junit",
     ]
 

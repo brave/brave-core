@@ -7,7 +7,7 @@ package org.chromium.chrome.browser.app.flags;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
-import org.chromium.chrome.browser.util.BraveDynamicColors;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.components.cached_flags.BraveCachedFeatureParam;
 import org.chromium.components.cached_flags.BraveCachedFlagUtils;
 import org.chromium.components.cached_flags.CachedFeatureParam;
@@ -20,7 +20,7 @@ public class BraveCachedFlags extends ChromeCachedFlags {
     // List of cached flags for Brave features - safe to access before native is ready
     private static final List<CachedFlag> sBraveFlagsCached =
             List.of(
-                    BraveDynamicColors.sDynamicColorsEnabled,
+                    BraveDynamicColors.getCachedFlag(),
                     BraveFreshNtpHelper.sBraveFreshNtpAfterIdleExperimentEnabled);
     // List of cached feature params for Brave features - safe to access before native is ready
     private static final List<CachedFeatureParam<?>> sBraveFeatureParamsCached =

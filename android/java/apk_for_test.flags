@@ -1214,3 +1214,11 @@
 -keep class org.chromium.chrome.browser.tabbed_mode.BraveTabbedAdaptiveToolbarBehavior {
     <init>(...);
 }
+
+-keep class com.google.android.material.color.DynamicColors {
+    *** applyToActivityIfAvailable(...);
+}
+
+-keep class org.chromium.chrome.browser.theme.BraveDynamicColors {
+    *** applyToActivityIfAvailable(...);
+}
