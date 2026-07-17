@@ -21,7 +21,7 @@ let package = Package(
       name: "JitsiMeet",
       dependencies: [.product(name: "WebRTC", package: "webrtc"), "hermes"]
     ),
-    .binaryTarget(name: "hermes", path: "hermes.xcframework"),
+    .binaryTarget(name: "hermes", path: "hermesvm.xcframework"),
     .binaryTarget(
       name: "JitsiMeetSDK",
       path: "JitsiMeetSDK.xcframework"
