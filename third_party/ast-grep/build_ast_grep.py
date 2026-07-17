@@ -29,7 +29,10 @@ from run_cargo import DEFAULT_SYSROOT, RunCargo  # noqa: E402
 
 # ast-grep upstream details.
 AST_GREP_GIT_URL = 'https://github.com/ast-grep/ast-grep.git'
-AST_GREP_REF = '0.44.1'
+
+# Pulling this specific hash for `0.44.1`, as the tag itself still has an audit
+# failure.
+AST_GREP_REF = '51496f3b161ba077ad680451062deb4d09da848a'
 
 # Additional paths under `third_party/` for the source checkout, intermediate
 # build state, and final binary output.
@@ -57,8 +60,8 @@ def _platform_dir() -> str:
 AST_GREP_PLATFORM_DIR: Path = AST_GREP_DIR / f'ast-grep-{_platform_dir()}'
 AST_GREP_BIN: Path = AST_GREP_PLATFORM_DIR / 'bin' / f'ast-grep{_RUST_EXE}'
 
-# Third-party cargo subcommands (cargo-auditable, cargo-audit) are installed
-# here with the bundled toolchain, then resolved from this `bin/` on PATH.
+# Third-party cargo subcommands (cargo-audit) are installed here with the
+# bundled toolchain, then resolved from this `bin/` on PATH.
 _CARGO_TOOLS_ROOT: Path = AST_GREP_INTERMEDIATE_DIR / 'cargo-tools'
 _CARGO_TOOLS_BIN: Path = _CARGO_TOOLS_ROOT / 'bin'
 
@@ -75,24 +78,25 @@ def _check_rust_toolchain() -> None:
 
 
 def _clone_ast_grep() -> None:
-    """Shallow-clone ast-grep if not already present.
+    """Shallow-fetch ast-grep at `AST_GREP_REF` if not already present.
 
     Pre-existing checkouts are left alone so local edits / a custom
-    branch survive across runs. `--clean` wipes and re-clones.
+    branch survive across runs. `--clean` wipes and re-fetches.
     """
     if AST_GREP_SRC_DIR.is_dir():
         logging.info('ast-grep source already present at %s', AST_GREP_SRC_DIR)
         return
 
-    AST_GREP_SRC_DIR.parent.mkdir(parents=True, exist_ok=True)
-    logging.info('Cloning ast-grep (%s) into %s', AST_GREP_REF,
+    AST_GREP_SRC_DIR.mkdir(parents=True, exist_ok=True)
+    logging.info('Fetching ast-grep (%s) into %s', AST_GREP_REF,
                  AST_GREP_SRC_DIR)
-    subprocess.run([
-        'git', 'clone', '--depth=1', '--branch', AST_GREP_REF,
-        AST_GREP_GIT_URL,
-        str(AST_GREP_SRC_DIR)
-    ],
+    git = ['git', '-C', str(AST_GREP_SRC_DIR)]
+    subprocess.run([*git, 'init', '-q'], check=True)
+    subprocess.run([*git, 'remote', 'add', 'origin', AST_GREP_GIT_URL],
                    check=True)
+    subprocess.run([*git, 'fetch', '--depth=1', 'origin', AST_GREP_REF],
+                   check=True)
+    subprocess.run([*git, 'checkout', '-q', 'FETCH_HEAD'], check=True)
 
 
 def _run_cargo_in_src(cargo_args: list[str]) -> int:
@@ -100,8 +104,8 @@ def _run_cargo_in_src(cargo_args: list[str]) -> int:
 
     Runs cargo via `RunCargo` (bundled toolchain) from `AST_GREP_SRC_DIR` so the
     checkout's `.cargo/config.toml` is honoured, with the installed
-    cargo-subcommand `bin/` on `PATH` so external subcommands (cargo-auditable,
-    cargo-audit) resolve. `RunCargo` has no cwd/env parameters, hence the manual
+    cargo-subcommand `bin/` on `PATH` so external subcommands (cargo-audit)
+    resolve. `RunCargo` has no cwd/env parameters, hence the manual
     save/restore.
     """
     home_dir = AST_GREP_INTERMEDIATE_DIR / 'cargo-home'
@@ -141,16 +145,11 @@ def _build_ast_grep(jobs: int) -> None:
     AST_GREP_INTERMEDIATE_DIR.mkdir(parents=True, exist_ok=True)
     AST_GREP_PLATFORM_DIR.mkdir(parents=True, exist_ok=True)
 
-    # cargo-auditable embeds the dependency graph into the binary so the audit
-    # scans only the crates actually compiled in.
-    _install_cargo_tool('cargo-auditable')
-
     target_dir = AST_GREP_INTERMEDIATE_DIR / 'target'
     logging.info('Building ast-grep with the Chromium Rust toolchain (%s)',
                  DEFAULT_SYSROOT)
     returncode = _run_cargo_in_src([
-        'auditable', 'build', '--locked', '--release', '--bin', 'ast-grep',
-        '--target-dir',
+        'build', '--locked', '--release', '--bin', 'ast-grep', '--target-dir',
         str(target_dir), f'--jobs={jobs}'
     ])
     if returncode != 0:
@@ -167,15 +166,11 @@ def _build_ast_grep(jobs: int) -> None:
 
 
 def _audit_ast_grep() -> None:
-    """Audit the dependencies compiled into the ast-grep binary.
-
-    `cargo audit bin` reads the dependency tree embedded by `_build_ast_grep`'s
-    `cargo auditable` build and checks exactly those crates against the RustSec
-    advisory database.
+    """Audit the locked dependency graph against the RustSec advisory database.
     """
     _install_cargo_tool('cargo-audit')
-    logging.info('Auditing ast-grep binary dependencies with cargo audit')
-    returncode = _run_cargo_in_src(['audit', 'bin', str(AST_GREP_BIN)])
+    logging.info('Auditing ast-grep dependencies with cargo audit')
+    returncode = _run_cargo_in_src(['audit'])
     if returncode != 0:
         raise RuntimeError(f'cargo audit reported issues (exit {returncode})')
 
@@ -193,14 +188,14 @@ def _clean() -> None:
 
 
 def build(jobs: int, clean: bool = False) -> None:
-    """Build `ast-grep` into `third_party/ast-grep/`, then audit its deps.
+    """Audit ast-grep's dependencies, then build it into `third_party/ast-grep/`.
     """
     if clean:
         _clean()
     _check_rust_toolchain()
     _clone_ast_grep()
-    _build_ast_grep(jobs)
     _audit_ast_grep()
+    _build_ast_grep(jobs)
 
 
 def main() -> int:
