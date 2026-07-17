@@ -25,6 +25,11 @@
 #                 folded into the rewritten span when the matched node stops
 #                 short of an adjacent token (e.g. the `:` after an
 #                 access_specifier, or the space before a `final` specifier).
+#       first_match: optional bool; when true only the first match (in source
+#                 order) is rewritten and any later matches are ignored. Use it
+#                 when the matcher can legitimately find several nodes but the
+#                 rewrite belongs to only the first (e.g. a class that reopens
+#                 `private:` more than once).
 #       result:   { node: <kind> } being replaced.
 #
 # An op yields every match in source order; the caller (plaster) decides how
@@ -65,17 +70,23 @@ inside:
 
         # The `private` access specifier opening `class_name`'s private section.
         # The node is the `private` keyword; the `:` that follows is a separate
-        # token immediately after it.
+        # token immediately after it. The specifier must be a *direct* member of
+        # `class_name`: its immediate parent is the class body
+        # (field_declaration_list), whose immediate parent is the class. Nesting
+        # through the body with the default (neighbor) `stopBy` -- rather than an
+        # `stopBy: end` ancestor search -- keeps a nested class's own `private:`
+        # from matching the enclosing class.
         "cxx.find_class_private_section": {
             "template": """\
 kind: access_specifier
 regex: ^private$
 inside:
-  kind: class_specifier
-  stopBy: end
-  has:
-    field: name
-    regex: ^{class_name}$
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
 """,
             "result": {
                 "node": "access_specifier",
@@ -117,12 +128,15 @@ inside:
             },
         },
 
-        # The class's `private:` section with a `friend` declaration inserted as
-        # its first line. The matcher stops at the `private` keyword, so the op
-        # consumes the original `:` and re-emits it.
+        # The class's first `private:` section with a `friend` declaration
+        # inserted as its first line. The matcher stops at the `private`
+        # keyword, so the op consumes the original `:` and re-emits it. A class
+        # may reopen `private:` more than once, so `first_match` keeps the
+        # friend in the first section only.
         "cxx.add_friend": {
             "matcher": "cxx.find_class_private_section",
             "inputs": ["class_name", "friend_type"],
+            "first_match": True,
             "replace": {
                 "consume_after": ":",
                 "re_pattern": "$",
