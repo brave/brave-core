@@ -515,9 +515,14 @@ struct TabGridView: View {
 
   var editModeHeaderBar: some View {
     HStack {
-      Text(Strings.TabGrid.selectTabsButtonTitle)
-        .font(.title3.weight(.semibold))
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
+      HStack {
+        Text(Strings.TabGrid.selectedTabs)
+          .foregroundStyle(Color(braveSystemName: .textPrimary))
+        Text(selectedTabs.count, format: .number)
+          .foregroundStyle(Color(braveSystemName: .textTertiary))
+      }
+      .accessibilityElement()
+      .font(.title3.weight(.semibold))
       Spacer()
       Button {
         withAnimation {
