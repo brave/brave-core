@@ -1469,30 +1469,6 @@ TEST_F(CardanoApiImplTest, SignTx) {
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
 
-  EXPECT_EQ(request->inputs.size(), 3u);
-  EXPECT_EQ(request->inputs[0]->address, addr1);
-  EXPECT_EQ(request->inputs[0]->value, 34451133u);
-
-  EXPECT_EQ(request->inputs[1]->address, addr2);
-  EXPECT_EQ(request->inputs[1]->value, 34451133u);
-
-  EXPECT_EQ(request->inputs[2]->address, addr1);
-  EXPECT_EQ(request->inputs[2]->value, 5000000u);
-
-  EXPECT_EQ(request->outputs.size(), 3u);
-  EXPECT_EQ(request->outputs[0]->address,
-            "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
-            "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
-  EXPECT_EQ(request->outputs[0]->value, 10000000u);
-
-  EXPECT_EQ(request->outputs[1]->address,
-            "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefv"
-            "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
-  EXPECT_EQ(request->outputs[1]->value, 24282816u);
-
-  EXPECT_EQ(request->outputs[2]->address, addr1);
-  EXPECT_EQ(request->outputs[2]->value, 24282816u);
-
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();
 
@@ -1712,46 +1688,6 @@ TEST_F(CardanoApiImplTest, SignTx_PartialSign) {
 
   EXPECT_EQ(request->origin_info->origin_spec, "https://brave.com");
   EXPECT_EQ(request->raw_tx_data, base::HexEncode(unsigned_tx_bytes));
-
-  EXPECT_EQ(request->inputs.size(), 4u);
-
-  EXPECT_EQ(request->inputs[0]->address, "");
-  EXPECT_EQ(request->inputs[0]->value, 0u);
-  EXPECT_EQ(request->inputs[0]->outpoint_txid,
-            "3737373737373737373737373737373737373737373737373737373737373737");
-  EXPECT_EQ(request->inputs[0]->outpoint_index, 0u);
-
-  EXPECT_EQ(request->inputs[1]->address, addr1);
-  EXPECT_EQ(request->inputs[1]->value, 34451133u);
-  EXPECT_EQ(request->inputs[1]->outpoint_txid,
-            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[1]->outpoint_index, 0u);
-
-  EXPECT_EQ(request->inputs[2]->address, addr2);
-  EXPECT_EQ(request->inputs[2]->value, 34451133u);
-  EXPECT_EQ(request->inputs[2]->outpoint_txid,
-            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[2]->outpoint_index, 1u);
-
-  EXPECT_EQ(request->inputs[3]->address, addr1);
-  EXPECT_EQ(request->inputs[3]->value, 5000000u);
-  EXPECT_EQ(request->inputs[3]->outpoint_txid,
-            "A7B4C1021FA375A4FCCB1AC1B3BB01743B3989B5EB732CC6240ADD8C71EDB925");
-  EXPECT_EQ(request->inputs[3]->outpoint_index, 10u);
-
-  EXPECT_EQ(request->outputs.size(), 3u);
-  EXPECT_EQ(request->outputs[0]->address,
-            "addr1q9zwt6rfn2e3mc63hesal6muyg807cwjnkwg3j5azkvmxm0tyqeyc8eu034zz"
-            "mj4z53l7lh5u7z08l0rvp49ht88s5uskl6tsl");
-  EXPECT_EQ(request->outputs[0]->value, 10000000u);
-
-  EXPECT_EQ(request->outputs[1]->address,
-            "addr1q8s90ehlgwwkq637d3r6qzuxwu6qnprphqadn9pjg2mtcp9hkfmyv4zfhyefv"
-            "jmpww7f7w9gwem3x6gcm3ulw3kpcgws9sgrhg");
-  EXPECT_EQ(request->outputs[1]->value, 24282816u);
-
-  EXPECT_EQ(request->outputs[2]->address, addr1);
-  EXPECT_EQ(request->outputs[2]->value, 24282816u);
 
   auto& api_signed_tx = future.Get<0>();
   auto& error = future.Get<1>();

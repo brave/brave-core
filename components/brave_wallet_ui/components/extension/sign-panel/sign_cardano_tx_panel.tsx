@@ -27,7 +27,6 @@ import {
   DetailText,
   LabelText,
 } from '../pending_transaction_details/pending_transaction_details.styles'
-import DividerLine from '../divider'
 
 // Styled Components
 import {
@@ -39,7 +38,6 @@ import {
   MessageBox,
   SignPanelButtonRow,
   WarningTitleRow,
-  MessageHeaderSection,
 } from './style'
 
 import {
@@ -52,7 +50,7 @@ import {
 } from '../shared-panel-styles'
 
 import { Tooltip } from '../../shared/tooltip/index'
-import { Column, VerticalDivider, Text } from '../../shared/style'
+import { Column, Text, VerticalDivider } from '../../shared/style'
 
 interface Props {
   selectedRequest: BraveWallet.SignCardanoTransactionRequest
@@ -76,142 +74,283 @@ const onClickLearnMore = () => {
 
 type TabName = 'rawTransaction' | 'details'
 
-function renderCardanoTxInputs(inputs: BraveWallet.CardanoTxInput[]) {
-  if (inputs.length === 0) {
+interface CardanoTxDetailsToken {
+  tokenId: string
+  value: string
+}
+
+interface CardanoTxDetailsUtxo {
+  txHash: string
+  index: string
+  value: string | null
+  tokens: CardanoTxDetailsToken[] | null
+  address: string | null
+}
+
+interface CardanoTxDetailsOutput {
+  address: string
+  value: string
+  tokens: CardanoTxDetailsToken[]
+}
+
+interface CardanoTxDetailsWithdrawal {
+  address: string
+  value: string
+}
+
+interface CardanoTxDetails {
+  inputs?: CardanoTxDetailsUtxo[]
+  outputs?: CardanoTxDetailsOutput[]
+  mint?: CardanoTxDetailsToken[]
+  withdrawals?: CardanoTxDetailsWithdrawal[]
+  scriptDataHash?: string
+  collateral?: CardanoTxDetailsUtxo[]
+  collateralReturn?: CardanoTxDetailsOutput
+  totalCollateral?: string
+}
+
+const parseCardanoTxDetails = (details: string): CardanoTxDetails | null => {
+  try {
+    return JSON.parse(details) as CardanoTxDetails
+  } catch {
     return null
   }
+}
 
+const CardanoTxDetailsTokens = ({
+  tokens,
+}: {
+  tokens: CardanoTxDetailsToken[] | null | undefined
+}) => (
+  <>
+    {tokens?.map((token) => (
+      <DetailColumn key={token.tokenId}>
+        <LabelText>{getLocale('braveWalletToken')}:</LabelText>
+        <DetailText>
+          {token.tokenId}:{token.value}
+        </DetailText>
+      </DetailColumn>
+    ))}
+  </>
+)
+
+const CardanoTxDetailsUtxoItem = ({
+  label,
+  utxo,
+}: {
+  label: string
+  utxo: CardanoTxDetailsUtxo
+}) => (
+  <DetailColumn gap='8px'>
+    <DetailColumn>
+      <LabelText>{label}:</LabelText>
+      <DetailText>{`${utxo.txHash}:${utxo.index}`}</DetailText>
+    </DetailColumn>
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+      <DetailText>{utxo.value ?? 'N/A'}</DetailText>
+    </DetailColumn>
+    <CardanoTxDetailsTokens tokens={utxo.tokens} />
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+      <DetailText>{utxo.address ?? 'N/A'}</DetailText>
+    </DetailColumn>
+    <VerticalDivider />
+  </DetailColumn>
+)
+
+const CardanoTxDetailsOutputItem = ({
+  label,
+  output,
+}: {
+  label: string
+  output: CardanoTxDetailsOutput
+}) => (
+  <DetailColumn gap='8px'>
+    <DetailColumn>
+      <LabelText>{label}:</LabelText>
+    </DetailColumn>
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+      <DetailText>{output.value}</DetailText>
+    </DetailColumn>
+    <CardanoTxDetailsTokens tokens={output.tokens} />
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+      <DetailText>{output.address}</DetailText>
+    </DetailColumn>
+    <VerticalDivider />
+  </DetailColumn>
+)
+
+const CardanoTxDetailInputs = ({
+  inputs,
+}: {
+  inputs: CardanoTxDetailsUtxo[] | undefined
+}) => (
+  <>
+    {inputs?.map((input, index) => (
+      <CardanoTxDetailsUtxoItem
+        key={'input' + index}
+        label={getLocale('braveWalletInput')}
+        utxo={input}
+      />
+    ))}
+  </>
+)
+
+const CardanoTxDetailOutputs = ({
+  outputs,
+}: {
+  outputs: CardanoTxDetailsOutput[] | undefined
+}) => (
+  <>
+    {outputs?.map((output, index) => (
+      <CardanoTxDetailsOutputItem
+        key={'output' + index}
+        label={getLocale('braveWalletOutput')}
+        output={output}
+      />
+    ))}
+  </>
+)
+
+const CardanoTxDetailMint = ({
+  mint,
+}: {
+  mint: CardanoTxDetailsToken[] | undefined
+}) => {
+  if (!mint || mint.length === 0) {
+    return null
+  }
   return (
-    <>
-      <MessageHeaderSection>
-        {getLocale('braveWalletInputs')}
-      </MessageHeaderSection>
-      {inputs.map((input, index) => {
-        return (
-          <DetailColumn
-            gap='4px'
-            key={'input' + index}
-          >
-            <LabelText>{getLocale('braveWalletInput')}:</LabelText>
-            <DetailText>{`${input.outpointTxid}:${input.outpointIndex}`}</DetailText>
-            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-            <DetailText>{`${input.value ? input.value : 'N/A'}`}</DetailText>
-            {input.tokens.map((token) => {
-              return (
-                <DetailColumn key={token.tokenIdHex}>
-                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
-                  <DetailText>
-                    {token.tokenIdHex}:{`${token.value}`}
-                  </DetailText>
-                </DetailColumn>
-              )
-            })}
-            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
-            <DetailText>{`${input.address ? input.address : 'N/A'}`}</DetailText>
-            <DividerLine />
-          </DetailColumn>
-        )
-      })}
+    <DetailColumn gap='8px'>
+      <LabelText>{getLocale('braveWalletMint')}:</LabelText>
+      <CardanoTxDetailsTokens tokens={mint} />
       <VerticalDivider />
-    </>
+    </DetailColumn>
   )
 }
 
-function renderCardanoTxOutputs(outputs: BraveWallet.CardanoTxOutput[]) {
-  if (outputs.length === 0) {
+const CardanoTxDetailWithdrawals = ({
+  withdrawals,
+}: {
+  withdrawals: CardanoTxDetailsWithdrawal[] | undefined
+}) => (
+  <>
+    {withdrawals?.map((withdrawal, index) => (
+      <DetailColumn
+        gap='8px'
+        key={'withdrawal' + index}
+      >
+        <LabelText>{getLocale('braveWalletWithdrawals')}:</LabelText>
+        <DetailColumn>
+          <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
+          <DetailText>{withdrawal.address}</DetailText>
+        </DetailColumn>
+        <DetailColumn>
+          <LabelText>{getLocale('braveWalletValue')}:</LabelText>
+          <DetailText>{withdrawal.value}</DetailText>
+        </DetailColumn>
+        <VerticalDivider />
+      </DetailColumn>
+    ))}
+  </>
+)
+
+const CardanoTxDetailScriptDataHash = ({
+  scriptDataHash,
+}: {
+  scriptDataHash: string | undefined
+}) => {
+  if (!scriptDataHash) {
     return null
   }
-
   return (
-    <>
-      <MessageHeaderSection>
-        {getLocale('braveWalletOutputs')}
-      </MessageHeaderSection>
-      {outputs.map((output, index) => {
-        return (
-          <DetailColumn
-            gap='4px'
-            key={'output-external' + index}
-          >
-            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
-            <DetailText>{`${output.address}`}</DetailText>
-            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-            <DetailText>{`${output.value}`}</DetailText>
-            {output.tokens.map((token) => {
-              return (
-                <DetailColumn key={token.tokenIdHex}>
-                  <LabelText>{getLocale('braveWalletToken')}:</LabelText>
-                  <DetailText>
-                    {token.tokenIdHex}:{`${token.value}`}
-                  </DetailText>
-                </DetailColumn>
-              )
-            })}
-          </DetailColumn>
-        )
-      })}
-      <VerticalDivider />
-    </>
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletScriptDataHash')}:</LabelText>
+      <DetailText>{scriptDataHash}</DetailText>
+    </DetailColumn>
   )
 }
 
-function renderCardanoTxMint(mint: BraveWallet.CardanoTxMintToken[]) {
-  if (mint.length === 0) {
+const CardanoTxDetailCollateral = ({
+  collateral,
+}: {
+  collateral: CardanoTxDetailsUtxo[] | undefined
+}) => (
+  <>
+    {collateral?.map((input, index) => (
+      <CardanoTxDetailsUtxoItem
+        key={'collateral' + index}
+        label={getLocale('braveWalletCollateral')}
+        utxo={input}
+      />
+    ))}
+  </>
+)
+
+const CardanoTxDetailCollateralReturn = ({
+  collateralReturn,
+}: {
+  collateralReturn: CardanoTxDetailsOutput | undefined
+}) => {
+  if (!collateralReturn) {
     return null
   }
-
   return (
-    <>
-      <MessageHeaderSection>
-        {getLocale('braveWalletMint')}
-      </MessageHeaderSection>
-      {mint.map((token, index) => {
-        return (
-          <DetailColumn
-            gap='4px'
-            key={'mint' + index}
-          >
-            <LabelText>{getLocale('braveWalletToken')}:</LabelText>
-            <DetailText>{token.tokenIdHex}</DetailText>
-            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-            <DetailText>{`${token.amount}`}</DetailText>
-            <DividerLine />
-          </DetailColumn>
-        )
-      })}
-      <VerticalDivider />
-    </>
+    <DetailColumn gap='8px'>
+      <LabelText>{getLocale('braveWalletCollateralReturn')}:</LabelText>
+      <CardanoTxDetailsOutputItem
+        label={getLocale('braveWalletCollateralReturn')}
+        output={collateralReturn}
+      />
+    </DetailColumn>
   )
 }
 
-function renderCardanoTxWithdrawals(
-  withdrawals: BraveWallet.CardanoTxWithdrawal[],
-) {
-  if (withdrawals.length === 0) {
+const CardanoTxDetailTotalCollateral = ({
+  totalCollateral,
+}: {
+  totalCollateral: string | undefined
+}) => {
+  if (!totalCollateral) {
     return null
+  }
+  return (
+    <DetailColumn>
+      <LabelText>{getLocale('braveWalletTotalCollateral')}:</LabelText>
+      <DetailText>{totalCollateral}</DetailText>
+    </DetailColumn>
+  )
+}
+
+const CardanoTxDetailsView = ({ details }: { details: string }) => {
+  const parsed = React.useMemo(() => parseCardanoTxDetails(details), [details])
+
+  if (!parsed) {
+    return <DetailText style={{ whiteSpace: 'pre-wrap' }}>{details}</DetailText>
   }
 
   return (
-    <>
-      <MessageHeaderSection>
-        {getLocale('braveWalletWithdrawals')}
-      </MessageHeaderSection>
-      {withdrawals.map((withdrawal, index) => {
-        return (
-          <DetailColumn
-            gap='4px'
-            key={'withdrawal' + index}
-          >
-            <LabelText>{getLocale('braveWalletAddress')}:</LabelText>
-            <DetailText>{withdrawal.rewardAccount}</DetailText>
-            <LabelText>{getLocale('braveWalletValue')}:</LabelText>
-            <DetailText>{`${withdrawal.coin}`}</DetailText>
-            <DividerLine />
-          </DetailColumn>
-        )
-      })}
-      <VerticalDivider />
-    </>
+    <Column
+      width='100%'
+      gap='8px'
+      alignItems='flex-start'
+    >
+      <CardanoTxDetailInputs inputs={parsed.inputs} />
+      <CardanoTxDetailOutputs outputs={parsed.outputs} />
+      <CardanoTxDetailMint mint={parsed.mint} />
+      <CardanoTxDetailWithdrawals withdrawals={parsed.withdrawals} />
+      <CardanoTxDetailScriptDataHash scriptDataHash={parsed.scriptDataHash} />
+      <CardanoTxDetailCollateral collateral={parsed.collateral} />
+      <CardanoTxDetailCollateralReturn
+        collateralReturn={parsed.collateralReturn}
+      />
+      <CardanoTxDetailTotalCollateral
+        totalCollateral={parsed.totalCollateral}
+      />
+    </Column>
   )
 }
 
@@ -328,18 +467,15 @@ export const SignCardanoTxPanel = ({
               text='Transaction'
             />
           </TabRow>
-          {selectedTab === 'rawTransaction' ? (
-            <MessageBox width='100%'>
-              <DetailText>{`${selectedRequest.rawTxData}`}</DetailText>
-            </MessageBox>
-          ) : (
-            <MessageBox width='100%'>
-              {renderCardanoTxInputs(selectedRequest.inputs)}
-              {renderCardanoTxOutputs(selectedRequest.outputs)}
-              {renderCardanoTxMint(selectedRequest.mint)}
-              {renderCardanoTxWithdrawals(selectedRequest.withdrawals)}
-            </MessageBox>
-          )}
+          <MessageBox width='100%'>
+            {selectedTab === 'rawTransaction' ? (
+              <DetailText style={{ whiteSpace: 'pre-wrap' }}>
+                {selectedRequest.rawTxData}
+              </DetailText>
+            ) : (
+              <CardanoTxDetailsView details={selectedRequest.detailsJson} />
+            )}
+          </MessageBox>
         </>
       )}
       <Column

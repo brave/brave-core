@@ -103,7 +103,7 @@ CardanoTxDecoder::SerializableTxOutput FromRust(
 CxxSerializableWithdrawal ToRust(
     const CardanoTxDecoder::SerializableWithdrawal& withdrawal) {
   CxxSerializableWithdrawal result;
-  result.reward_account = ToRust(withdrawal.reward_account);
+  result.reward_account = ToRust(withdrawal.address_bytes);
   result.coin = withdrawal.coin;
   return result;
 }
@@ -111,7 +111,7 @@ CxxSerializableWithdrawal ToRust(
 CardanoTxDecoder::SerializableWithdrawal FromRust(
     const CxxSerializableWithdrawal& withdrawal) {
   CardanoTxDecoder::SerializableWithdrawal result;
-  result.reward_account = FromRust(withdrawal.reward_account);
+  result.address_bytes = FromRust(withdrawal.reward_account);
   result.coin = withdrawal.coin;
   return result;
 }
@@ -154,10 +154,28 @@ CxxSerializableTxBody ToRust(const CardanoTxDecoder::SerializableTxBody& body) {
     result.withdrawals.push_back(ToRust(withdrawal));
   }
 
+  result.has_script_data_hash = body.script_data_hash.has_value();
+  if (body.script_data_hash) {
+    result.script_data_hash = *body.script_data_hash;
+  }
+
   result.mint.reserve(body.mint.size());
   for (const auto& mint_token : body.mint) {
     result.mint.push_back(ToRust(mint_token));
   }
+
+  result.collateral.reserve(body.collateral.size());
+  for (const auto& input : body.collateral) {
+    result.collateral.push_back(ToRust(input));
+  }
+
+  result.has_collateral_return = body.collateral_return.has_value();
+  if (body.collateral_return) {
+    result.collateral_return = ToRust(*body.collateral_return);
+  }
+
+  result.has_total_collateral = body.total_collateral.has_value();
+  result.total_collateral = body.total_collateral.value_or(0u);
 
   return result;
 }
@@ -186,10 +204,29 @@ CardanoTxDecoder::SerializableTxBody FromRust(
     result.withdrawals.push_back(FromRust(withdrawal));
   }
 
+  result.script_data_hash = body.has_script_data_hash
+                                ? std::make_optional(body.script_data_hash)
+                                : std::nullopt;
+
   result.mint.reserve(body.mint.size());
   for (const auto& mint_token : body.mint) {
     result.mint.push_back(FromRust(mint_token));
   }
+
+  result.collateral.reserve(body.collateral.size());
+  for (const auto& input : body.collateral) {
+    result.collateral.push_back(FromRust(input));
+  }
+
+  if (body.has_collateral_return) {
+    result.collateral_return = FromRust(body.collateral_return);
+  }
+
+  result.total_collateral =
+      body.has_total_collateral
+          ? std::make_optional(
+                base::StrictNumeric<uint64_t>(body.total_collateral))
+          : std::nullopt;
 
   return result;
 }
@@ -294,9 +331,9 @@ CardanoTxDecoder::SerializableTxOutput::operator=(
 
 CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal() = default;
 CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal(
-    std::vector<uint8_t> reward_account,
+    std::vector<uint8_t> address_bytes,
     uint64_t coin)
-    : reward_account(std::move(reward_account)), coin(coin) {}
+    : address_bytes(std::move(address_bytes)), coin(coin) {}
 CardanoTxDecoder::SerializableWithdrawal::~SerializableWithdrawal() = default;
 CardanoTxDecoder::SerializableWithdrawal::SerializableWithdrawal(
     const SerializableWithdrawal&) = default;

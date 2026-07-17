@@ -50,7 +50,6 @@ export const AccountNameText = styled(Text)`
 `
 
 export const PanelTitle = styled(Text)`
-  width: 236px;
   text-align: center;
   margin-bottom: 15px;
 `

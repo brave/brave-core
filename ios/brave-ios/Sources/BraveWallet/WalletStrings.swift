@@ -6007,6 +6007,38 @@ extension Strings {
       comment:
         "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes stake reward withdrawals."
     )
+    public static let signCardanoTxRequestDetailsScriptDataHashLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsScriptDataHashLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Script Data Hash",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a script data hash."
+    )
+    public static let signCardanoTxRequestDetailsCollateralLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsCollateralLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Collateral",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes collateral inputs."
+    )
+    public static let signCardanoTxRequestDetailsCollateralReturnLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsCollateralReturnLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Collateral Return",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a collateral return output."
+    )
+    public static let signCardanoTxRequestDetailsTotalCollateralLabel = NSLocalizedString(
+      "wallet.signCardanoTxRequestDetailsTotalCollateralLabel",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Total Collateral",
+      comment:
+        "The section header displayed in details for Sign Cardano Transaction Request when the transaction includes a total collateral amount."
+    )
     public static let onboardingNetworkSelectionTitle = NSLocalizedString(
       "wallet.onboardingNetworkSelectionTitle",
       tableName: "BraveWallet",

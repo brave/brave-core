@@ -789,6 +789,9 @@ provideStrings({
   braveWalletOutputs: 'Outputs',
   braveWalletMint: 'Mint',
   braveWalletWithdrawals: 'Withdrawals',
+  braveWalletCollateral: 'Collateral',
+  braveWalletCollateralReturn: 'Collateral Return',
+  braveWalletTotalCollateral: 'Total Collateral',
   braveWalletValue: 'Value',
 
   // Encryption Key Panel

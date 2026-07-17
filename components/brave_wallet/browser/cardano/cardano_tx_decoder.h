@@ -57,14 +57,14 @@ class CardanoTxDecoder {
 
   struct SerializableWithdrawal {
     SerializableWithdrawal();
-    SerializableWithdrawal(std::vector<uint8_t> reward_account, uint64_t coin);
+    SerializableWithdrawal(std::vector<uint8_t> address_bytes, uint64_t coin);
     SerializableWithdrawal(const SerializableWithdrawal&);
     SerializableWithdrawal& operator=(const SerializableWithdrawal&);
     SerializableWithdrawal(SerializableWithdrawal&&);
     SerializableWithdrawal& operator=(SerializableWithdrawal&&);
     ~SerializableWithdrawal();
 
-    std::vector<uint8_t> reward_account;
+    std::vector<uint8_t> address_bytes;
     uint64_t coin = 0;
   };
 
@@ -94,7 +94,11 @@ class CardanoTxDecoder {
     uint64_t fee = 0u;
     std::optional<base::StrictNumeric<uint64_t>> ttl;
     std::vector<SerializableWithdrawal> withdrawals;
+    std::optional<std::array<uint8_t, kCardanoTxHashSize>> script_data_hash;
     std::vector<SerializableMintToken> mint;
+    std::vector<SerializableTxInput> collateral;
+    std::optional<SerializableTxOutput> collateral_return;
+    std::optional<uint64_t> total_collateral;
   };
 
   struct SerializableVkeyWitness {
