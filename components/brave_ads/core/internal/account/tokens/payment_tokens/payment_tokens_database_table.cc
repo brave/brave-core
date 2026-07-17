@@ -131,6 +131,31 @@ void Insert(const mojom::DBTransactionInfoPtr& mojom_db_transaction,
   mojom_db_transaction->actions.push_back(std::move(mojom_db_action));
 }
 
+void MigrateToV56(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Create the `payment_tokens` table at its original schema; the `rfc` column
+  // is added by the version 58 migration.
+  Execute(mojom_db_transaction, R"(
+      CREATE TABLE payment_tokens (
+        transaction_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
+        unblinded_token TEXT NOT NULL,
+        public_key TEXT NOT NULL,
+        confirmation_type TEXT NOT NULL,
+        ad_type TEXT NOT NULL
+      ))");
+}
+
+void MigrateToV58(const mojom::DBTransactionInfoPtr& mojom_db_transaction) {
+  CHECK(mojom_db_transaction);
+
+  // Whether the token uses the RFC 9497 compliant derivation. Pre-existing
+  // tokens use the legacy derivation.
+  Execute(mojom_db_transaction, R"(
+      ALTER TABLE payment_tokens
+        ADD COLUMN rfc INTEGER NOT NULL DEFAULT 0)");
+}
+
 }  // namespace
 
 void PaymentTokens::Save(const PaymentTokenList& payment_tokens,
@@ -235,7 +260,8 @@ void PaymentTokens::Create(
         unblinded_token TEXT NOT NULL,
         public_key TEXT NOT NULL,
         confirmation_type TEXT NOT NULL,
-        ad_type TEXT NOT NULL
+        ad_type TEXT NOT NULL,
+        rfc INTEGER NOT NULL DEFAULT 0
       ))");
 }
 
@@ -246,15 +272,12 @@ void PaymentTokens::Migrate(
 
   switch (to_version) {
     case 56: {
-      Create(mojom_db_transaction);
+      MigrateToV56(mojom_db_transaction);
       break;
     }
 
     case 58: {
-      // Add the RFC 9497 compliant derivation flag.
-      Execute(mojom_db_transaction, R"(
-          ALTER TABLE payment_tokens
-            ADD COLUMN rfc INTEGER NOT NULL DEFAULT 0)");
+      MigrateToV58(mojom_db_transaction);
       break;
     }
 
