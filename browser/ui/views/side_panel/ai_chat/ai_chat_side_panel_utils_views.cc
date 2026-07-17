@@ -17,8 +17,11 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/geometry/rect.h"
+#include "ui/views/controls/webview/webview.h"
 
 namespace ai_chat {
 
@@ -112,6 +115,21 @@ bool MaybeMoveFullPageChatToSidePanel(
 
   const tabs::TabHandle ai_chat_handle = ai_chat_tab->GetHandle();
 
+  // Capture the full-page contents' rect (in browser/widget coordinates) before
+  // detaching, so the side panel can animate the conversation in from where it
+  // currently sits. This must happen before `DetachWebContents`, which orphans
+  // the contents' native view and leaves it unable to report an on-screen rect.
+  // AI Chat is the active tab at this point (its own link was just clicked), so
+  // the active contents web view hosts it.
+  gfx::Rect starting_bounds;
+  if (BrowserElementsViews* elements = BrowserElementsViews::From(browser)) {
+    if (views::WebView* contents_web_view =
+            elements->RetrieveView(kActiveContentsWebViewRetrievalId)) {
+      starting_bounds = contents_web_view->ConvertRectToWidget(
+          contents_web_view->GetContentsBounds());
+    }
+  }
+
   // Detach AI Chat's live contents (not destroyed, not reloaded) and hand it to
   // the controller, which shows it in the side panel.
   std::unique_ptr<content::WebContents> ai_chat_contents =
@@ -121,7 +139,7 @@ bool MaybeMoveFullPageChatToSidePanel(
   }
 
   transfer_controller->TransferFullPageContentsToSidePanel(
-      std::move(ai_chat_contents));
+      std::move(ai_chat_contents), starting_bounds);
   return true;
 }
 

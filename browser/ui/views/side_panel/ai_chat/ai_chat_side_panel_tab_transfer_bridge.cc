@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
+#include "ui/gfx/geometry/rect.h"
 
 namespace {
 
@@ -33,7 +34,8 @@ AIChatSidePanelTabTransferBridge::AIChatSidePanelTabTransferBridge(
 AIChatSidePanelTabTransferBridge::~AIChatSidePanelTabTransferBridge() = default;
 
 void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
-    std::unique_ptr<content::WebContents> web_contents) {
+    std::unique_ptr<content::WebContents> web_contents,
+    const gfx::Rect& starting_bounds_in_browser_coordinates) {
   CHECK(web_contents);
   // A transfer is consumed synchronously by the re-show below, so there should
   // never be one already in-flight.
@@ -62,7 +64,14 @@ void AIChatSidePanelTabTransferBridge::TransferFullPageContentsToSidePanel(
   // `AIChatMovableSidePanelWebView::CreateView`).
   ClearChatEntryCache();
 
-  side_panel_ui->Show(key);
+  // Animate the conversation into the panel from where the full page currently
+  // sits (flash-free). When the caller could not capture a starting rect (e.g.
+  // the full-page contents view was unavailable), fall back to a plain show.
+  if (starting_bounds_in_browser_coordinates.IsEmpty()) {
+    side_panel_ui->Show(key);
+  } else {
+    side_panel_ui->ShowFrom(key, starting_bounds_in_browser_coordinates);
+  }
 }
 
 bool AIChatSidePanelTabTransferBridge::HasPendingTransfer() const {

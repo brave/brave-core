@@ -5,9 +5,11 @@
 
 #include <tuple>
 
+#include "base/memory/scoped_refptr.h"
 #include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
+#include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
@@ -15,10 +17,13 @@
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/animation/browser_animation_controller.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/views/animations/side_panel_animations.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/layout/browser_view_layout.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
@@ -31,6 +36,8 @@
 #include "printing/buildflags/buildflags.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/mojom/window_features/window_features.mojom.h"
+#include "ui/gfx/animation/animation_container.h"
+#include "ui/gfx/animation/animation_test_api.h"
 #include "ui/views/controls/webview/webview.h"
 #include "ui/views/view_utils.h"
 #include "url/gurl.h"
@@ -290,6 +297,66 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
   // reload / no fresh contents).
   ASSERT_TRUE(
       base::test::RunUntil([&]() { return IsSidePanelOpen(browser()); }));
+  EXPECT_EQ(GetAttachedSidePanelWebContents(browser()), leo_contents);
+}
+
+// The forward move slides the conversation into the side panel with a content
+// transition (flash-free) rather than a plain open. The side panel only holds
+// its content as the browser view's "animation content" when it opens via
+// `SidePanelUI::ShowFrom` with a non-empty starting rect, so observing that
+// content mid-animation verifies the move captured the full-page bounds and
+// routed through `ShowFrom` (and did not regress to a plain `Show`).
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       ForwardMoveAnimatesConversationIntoSidePanel) {
+  if (!(IsMoveToSidePanelEnabled() && IsGlobalFlagEnabled())) {
+    GTEST_SKIP() << "The transfer only happens with move + global enabled.";
+  }
+
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* side_panel = browser_view->side_panel();
+  ASSERT_TRUE(side_panel);
+
+  auto* coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(coordinator);
+  // Show the panel content synchronously so the open animation starts as soon
+  // as the move shows the panel.
+  coordinator->SetNoDelaysForTesting(true);
+
+  // Drive the side panel open animation manually so it can be observed
+  // mid-flight. Constructing the test API pauses the container's runner.
+  auto* animation_controller = BrowserAnimationController::From(browser());
+  auto animation_container = base::MakeRefCounted<gfx::AnimationContainer>();
+  animation_controller->SetAnimationContainerForTesting(
+      SidePanelAnimations::kSidePanel, animation_container.get());
+  gfx::AnimationContainerTestApi animation_test_api(animation_container.get());
+
+  // Open a full-page AI Chat conversation in a new tab, keeping the original
+  // tab so the tab strip stays valid after AI Chat is detached.
+  auto* tab_strip = browser()->tab_strip_model();
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL(kAIChatUIURL), WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  content::WebContents* leo_contents = tab_strip->GetActiveWebContents();
+  ASSERT_TRUE(leo_contents);
+
+  ASSERT_TRUE(ai_chat::MaybeMoveFullPageChatToSidePanel(leo_contents));
+
+  // Part-way through the open, the conversation is animating in as the side
+  // panel's content and has not yet been reparented into the panel's content
+  // area. A plain (non-`ShowFrom`) open would never set this.
+  ASSERT_TRUE(base::test::RunUntil([&]() {
+    return browser_view->GetBrowserViewLayoutForTesting()
+               ->side_panel_animation_content() != nullptr;
+  }));
+
+  // When the animation completes the conversation is reparented into the side
+  // panel, which hosts the same live WebContents (no reload / fresh contents).
+  animation_test_api.IncrementTime(base::Milliseconds(500));
+  EXPECT_EQ(browser_view->GetBrowserViewLayoutForTesting()
+                ->side_panel_animation_content(),
+            nullptr);
+  ASSERT_EQ(side_panel->GetContentParentView()->children().size(), 1u);
   EXPECT_EQ(GetAttachedSidePanelWebContents(browser()), leo_contents);
 }
 
