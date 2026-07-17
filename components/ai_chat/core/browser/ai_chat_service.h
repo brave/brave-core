@@ -271,8 +271,7 @@ class AIChatService : public KeyedService,
     tab_tracker_service_ = tab_tracker_service;
   }
 
-  void SetDatabaseForTesting(
-      base::SequenceBound<std::unique_ptr<AIChatDatabase>> db) {
+  void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
   }
 
@@ -385,7 +384,7 @@ class AIChatService : public KeyedService,
   base::FilePath profile_path_;
 
   // Storage for conversations
-  base::SequenceBound<std::unique_ptr<AIChatDatabase>> ai_chat_db_;
+  base::SequenceBound<AIChatDatabase> ai_chat_db_;
 
   // nullopt if haven't started fetching, empty if done fetching
   std::optional<std::vector<ConversationMapCallback>>

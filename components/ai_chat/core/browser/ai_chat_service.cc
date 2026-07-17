@@ -521,8 +521,7 @@ void AIChatService::MaybeInitStorage() {
     // Delete all stored data from database
     if (ai_chat_db_) {
       DVLOG(0) << "Unloading AI Chat database due to pref change";
-      base::SequenceBound<std::unique_ptr<AIChatDatabase>> ai_chat_db =
-          std::move(ai_chat_db_);
+      base::SequenceBound<AIChatDatabase> ai_chat_db = std::move(ai_chat_db_);
       ai_chat_db.AsyncCall(&AIChatDatabase::DeleteAllData)
           .Then(base::BindOnce(&AIChatService::OnDataDeletedForDisabledStorage,
                                weak_ptr_factory_.GetWeakPtr()));
@@ -541,20 +540,17 @@ void AIChatService::OnOsCryptAsyncReady(
   if (!profile_prefs_->GetBoolean(prefs::kBraveChatStorageEnabled)) {
     return;
   }
-  auto database = std::make_unique<AIChatDatabase>(
-      profile_path_.Append(kDBFileName), std::move(encryptor));
-  AIChatDatabase* database_ptr = database.get();
-  ai_chat_db_ = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
-      db_task_runner_, std::move(database));
+  ai_chat_db_ = base::SequenceBound<AIChatDatabase>(
+      db_task_runner_, profile_path_.Append(kDBFileName), std::move(encryptor));
 
   // Attach the database to the sync bridge on the same background sequence as
   // the database. The bridge was installed eagerly in MaybeInitStorage(), so
   // this task runs after it; the first attach loads sync metadata and reports
-  // the model ready.
+  // the model ready. PostTaskWithThisObject() hands the bound object to the
+  // backend on its own sequence without exposing a raw pointer.
   if (sync_backend_) {
-    db_task_runner_->PostTask(FROM_HERE,
-                              base::BindOnce(&AIChatSyncBackend::SetDatabase,
-                                             sync_backend_, database_ptr));
+    ai_chat_db_.PostTaskWithThisObject(
+        base::BindOnce(&AIChatSyncBackend::SetDatabase, sync_backend_));
   }
 }
 

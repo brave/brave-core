@@ -1479,11 +1479,16 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
     return;
   }
 
-  // Create a mock database
-  auto mock_ptr = std::make_unique<NiceMock<MockAIChatDatabase>>();
-  auto* mock_db_ptr = mock_ptr.get();
-  auto mock_db = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
-      task_environment_.GetMainThreadTaskRunner(), std::move(mock_ptr));
+  // Create a mock database. It is bound as its concrete type so the mock is
+  // constructed in place, then upcast-moved into the AIChatDatabase-typed
+  // SetDatabaseForTesting() below. Grab a pointer to it off the sequence to
+  // set expectations on.
+  auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner());
+  NiceMock<MockAIChatDatabase>* mock_db_ptr = nullptr;
+  mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+      [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
 
   // Set up expectations - no database calls should be made
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(0);
