@@ -21,11 +21,9 @@
 
 static_assert(BUILDFLAG(ENABLE_BRAVE_WALLET));
 
-#if !BUILDFLAG(IS_ANDROID)
 namespace views {
 class Widget;
 }  // namespace views
-#endif  // !BUILDFLAG(IS_ANDROID)
 
 namespace content {
 class BrowserContext;
