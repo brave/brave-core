@@ -1313,6 +1313,74 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'class C {\n public:\n  void Foo();\n'
             ' private:\n  friend class BraveC;\n  int x_;\n};\n')
 
+    def test_add_friend_inserts_into_first_private_section_only(self):
+        # A class may reopen `private:` more than once. The friend must land in
+        # the first private section only; the later one is left untouched.
+        result = self._apply(
+            'twoprivate.h', 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  int x_;\n'
+            ' private:\n  int y_;\n};\n', 'substitutions:\n'
+            '  - description: friend the Brave subclass\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type: class BraveC\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n'
+            ' private:\n  int y_;\n};\n')
+
+    def test_add_friend_list_into_first_private_section_only(self):
+        # The same holds for a list of friends: all of them go into the first
+        # private section, in the order listed, and the later one is untouched.
+        result = self._apply(
+            'twoprivate_list.h', 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  int x_;\n'
+            ' private:\n  int y_;\n};\n', 'substitutions:\n'
+            '  - description: friend the Brave subclass and its test\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type:\n'
+            '        - class BraveC\n'
+            '        - class BraveCTest\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  friend class BraveCTest;\n'
+            '  int x_;\n private:\n  int y_;\n};\n')
+
+    def test_add_friend_ignores_nested_class_private_after(self):
+        # A nested class has its own private section. When befriending the outer
+        # class, the friend must land in the outer class's private section, never
+        # the nested one -- here the nested `private:` comes *after* the outer's.
+        result = self._apply(
+            'nested_after.h', 'class Foo {\n private:\n  int x_;\n'
+            '  class Bar {\n   private:\n    int y_;\n  };\n};\n',
+            'substitutions:\n'
+            '  - description: friend the Brave subclass of the outer class\n'
+            '    add_friend:\n'
+            '      class_name: Foo\n'
+            '      friend_type: class BraveFoo\n')
+        self.assertEqual(
+            result, 'class Foo {\n private:\n  friend class BraveFoo;\n'
+            '  int x_;\n'
+            '  class Bar {\n   private:\n    int y_;\n  };\n};\n')
+
+    def test_add_friend_ignores_nested_class_private_before(self):
+        # As above, but the nested class (and so its `private:`) appears *before*
+        # the outer class's own private section. The nested section is earlier in
+        # source order, so this guards against naively taking the first match.
+        result = self._apply(
+            'nested_before.h', 'class Foo {\n public:\n'
+            '  class Bar {\n   private:\n    int y_;\n  };\n'
+            ' private:\n  int x_;\n};\n', 'substitutions:\n'
+            '  - description: friend the Brave subclass of the outer class\n'
+            '    add_friend:\n'
+            '      class_name: Foo\n'
+            '      friend_type: class BraveFoo\n')
+        self.assertEqual(
+            result, 'class Foo {\n public:\n'
+            '  class Bar {\n   private:\n    int y_;\n  };\n'
+            ' private:\n  friend class BraveFoo;\n  int x_;\n};\n')
+
     def test_add_friend_no_private_section_fails(self):
         with self.assertRaises(plaster.PlasterApplyError):
             self._apply(
@@ -1787,6 +1855,19 @@ class RewritersEvalTest(unittest.TestCase):
         self.assertEqual(replace['consume_before'], ' ')
         self.assertEqual(replace['consume_after'], ':')
 
+    def test_rewriter_first_match_is_optional_bool(self):
+        # `first_match` is an optional flag; when present it must be a bool and
+        # is exposed on the rewriter spec.
+        spec = self._valid_spec()
+        spec['ast.rewriter']['cxx.make_virtual']['first_match'] = True
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertIs(
+            rewriters.rewriter('cxx.make_virtual')['first_match'], True)
+
+    def test_rewriter_first_match_must_be_bool(self):
+        self._assert_invalid(lambda spec: spec['ast.rewriter'][
+            'cxx.make_virtual'].update({'first_match': 'yes'}))
+
 
 # ast-grep matcher templates used to build synthetic RewritersEval specs for
 # the engine tests below. The shipped rewriters.pyl is empty until the ops that
@@ -1811,11 +1892,12 @@ _METHOD_DECL_RULE = ('any:\n'
 _PRIVATE_SECTION_RULE = ('kind: access_specifier\n'
                          'regex: ^private$\n'
                          'inside:\n'
-                         '  kind: class_specifier\n'
-                         '  stopBy: end\n'
-                         '  has:\n'
-                         '    field: name\n'
-                         '    regex: ^{class_name}$\n')
+                         '  kind: field_declaration_list\n'
+                         '  inside:\n'
+                         '    kind: class_specifier\n'
+                         '    has:\n'
+                         '      field: name\n'
+                         '      regex: ^{class_name}$\n')
 
 _FINAL_RULE = ('kind: virtual_specifier\n'
                'regex: ^final$\n'
@@ -1861,6 +1943,7 @@ _SYNTHETIC_SPEC = {
         'cxx.add_friend': {
             'matcher': 'cxx.find_class_private_section',
             'inputs': ['class_name', 'friend_type'],
+            'first_match': True,
             'replace': {
                 'consume_after': ':',
                 're_pattern': '$',

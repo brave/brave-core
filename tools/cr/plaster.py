@@ -1221,10 +1221,12 @@ _MATCHER_SCHEMA = {
 # A rewriter op: locates nodes through a matcher op and edits each via a regex
 # substitution. `inputs` is its public interface (validated against the
 # templates it feeds in `_check_cross_references`); `replace` may name adjacent
-# tokens to fold into each rewritten span.
+# tokens to fold into each rewritten span. `first_match`, when true, rewrites
+# only the first match (in source order) and ignores any later ones.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
     'inputs': [str],
+    schema.Optional('first_match'): bool,
     'replace': {
         schema.Optional('consume_before'): str,
         schema.Optional('consume_after'): str,
@@ -1490,7 +1492,8 @@ class AstRewriter:
         that sit immediately before / after each matched node; they are folded
         into the rewritten span when the node kind stops short of an adjacent
         token (e.g. the `:` after an access_specifier, or the space before a
-        `final` specifier).
+        `final` specifier). An op that sets `first_match` rewrites only the
+        first match (in source order), leaving any later matches untouched.
         """
         rewriter = self._rewriters.rewriter(op.op_id)
         matcher = self._rewriters.matcher(rewriter['matcher'])
@@ -1500,6 +1503,8 @@ class AstRewriter:
         matches = run_ast_grep(language=language,
                                rule_body=rule_body,
                                source=self._content)
+        if rewriter.get('first_match'):
+            matches = matches[:1]
 
         replace = rewriter['replace']
         pattern = replace['re_pattern']
