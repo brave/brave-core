@@ -77,32 +77,6 @@ base::Time BravePrivacySandboxSettings::TopicsDataAccessibleSince() const {
   return base::Time::Max();
 }
 
-bool BravePrivacySandboxSettings::IsAttributionReportingEverAllowed() const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::IsAttributionReportingAllowed(
-    const url::Origin& top_frame_origin,
-    const url::Origin& reporting_origin,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::MaySendAttributionReport(
-    const url::Origin& source_origin,
-    const url::Origin& destination_origin,
-    const url::Origin& reporting_origin,
-    content::RenderFrameHost* console_frame) const {
-  return false;
-}
-
-bool BravePrivacySandboxSettings::
-    IsAttributionReportingTransitionalDebuggingAllowed(
-        const url::Origin& top_frame_origin,
-        const url::Origin& reporting_origin) const {
-  return false;
-}
-
 void BravePrivacySandboxSettings::SetFledgeJoiningAllowed(
     const std::string& top_frame_etld_plus1,
     bool allowed) {}
