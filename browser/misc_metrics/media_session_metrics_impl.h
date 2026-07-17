@@ -3,15 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_H_
-#define BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_H_
+#ifndef BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_IMPL_H_
+#define BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_IMPL_H_
 
 #include <memory>
 
 #include "base/functional/callback.h"
 #include "base/memory/raw_ptr.h"
+#include "base/observer_list.h"
 #include "base/time/time.h"
 #include "base/timer/wall_clock_timer.h"
+#include "brave/components/misc_metrics/media_session_metrics.h"
 #include "brave/components/misc_metrics/uptime_monitor.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "services/media_session/public/mojom/media_session.mojom.h"
@@ -33,13 +35,14 @@ inline constexpr char kMediaSessionUsageAttributeName[] = "media_session_usage";
 
 // Observes media session activity to track the percentage of active browsing
 // time during which media was playing. Reports metrics on a weekly basis.
-class MediaSessionMetrics {
+class MediaSessionMetricsImpl : public MediaSessionMetrics {
  public:
-  MediaSessionMetrics(PrefService* local_state, UptimeMonitor* uptime_monitor);
-  ~MediaSessionMetrics();
+  MediaSessionMetricsImpl(PrefService* local_state,
+                          UptimeMonitor* uptime_monitor);
+  ~MediaSessionMetricsImpl() override;
 
-  MediaSessionMetrics(const MediaSessionMetrics&) = delete;
-  MediaSessionMetrics& operator=(const MediaSessionMetrics&) = delete;
+  MediaSessionMetricsImpl(const MediaSessionMetricsImpl&) = delete;
+  MediaSessionMetricsImpl& operator=(const MediaSessionMetricsImpl&) = delete;
 
   static void RegisterPrefs(PrefRegistrySimple* registry);
 
@@ -50,6 +53,10 @@ class MediaSessionMetrics {
   // Called by PageMetricsTabHelper when a WebContents (and its MediaSession)
   // is being destroyed.
   void OnMediaSessionDestroyed(content::MediaSession* media_session);
+
+  // MediaSessionMetrics:
+  void AddObserver(Observer* observer) override;
+  void RemoveObserver(Observer* observer) override;
 
  private:
   class Session final : public media_session::mojom::MediaSessionObserver {
@@ -102,9 +109,11 @@ class MediaSessionMetrics {
   base::WallClockTimer report_timer_;
   base::WallClockTimer tick_timer_;
 
-  base::WeakPtrFactory<MediaSessionMetrics> weak_ptr_factory_{this};
+  base::ObserverList<Observer> observers_;
+
+  base::WeakPtrFactory<MediaSessionMetricsImpl> weak_ptr_factory_{this};
 };
 
 }  // namespace misc_metrics
 
-#endif  // BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_H_
+#endif  // BRAVE_BROWSER_MISC_METRICS_MEDIA_SESSION_METRICS_IMPL_H_

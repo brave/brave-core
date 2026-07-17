@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/misc_metrics/media_session_metrics.h"
+#include "brave/browser/misc_metrics/media_session_metrics_impl.h"
 
 #include <memory>
 #include <string>
@@ -23,15 +23,21 @@
 
 namespace misc_metrics {
 
-class MediaSessionMetricsTest : public testing::Test {
+class MediaSessionMetricsImplTest : public testing::Test,
+                                    public MediaSessionMetrics::Observer {
  public:
-  MediaSessionMetricsTest()
+  MediaSessionMetricsImplTest()
       : task_environment_(base::test::TaskEnvironment::TimeSource::MOCK_TIME) {}
 
   void SetUp() override {
-    MediaSessionMetrics::RegisterPrefs(local_state_.registry());
-    metrics_ =
-        std::make_unique<MediaSessionMetrics>(&local_state_, &uptime_monitor_);
+    MediaSessionMetricsImpl::RegisterPrefs(local_state_.registry());
+    metrics_ = std::make_unique<MediaSessionMetricsImpl>(&local_state_,
+                                                         &uptime_monitor_);
+  }
+
+  // MediaSessionMetrics::Observer:
+  void OnMediaPlaybackTick(base::TimeDelta tick_duration) override {
+    observer_total_duration_ += tick_duration;
   }
 
  protected:
@@ -83,15 +89,17 @@ class MediaSessionMetricsTest : public testing::Test {
 
   MockUptimeMonitor uptime_monitor_;
 
+  base::TimeDelta observer_total_duration_;
+
   std::vector<std::unique_ptr<content::MockMediaSession>> mock_sessions_;
   absl::flat_hash_map<content::MockMediaSession*,
                       mojo::Remote<media_session::mojom::MediaSessionObserver>>
       session_observers_;
 
-  std::unique_ptr<MediaSessionMetrics> metrics_;
+  std::unique_ptr<MediaSessionMetricsImpl> metrics_;
 };
 
-TEST_F(MediaSessionMetricsTest, NoReportBeforeOneWeek) {
+TEST_F(MediaSessionMetricsImplTest, NoReportBeforeOneWeek) {
   AddSession();
   task_environment_.FastForwardBy(base::Days(6));
   histogram_tester_.ExpectTotalCount(kMediaSessionUsageHistogramName, 0);
@@ -99,7 +107,7 @@ TEST_F(MediaSessionMetricsTest, NoReportBeforeOneWeek) {
             std::nullopt);
 }
 
-TEST_F(MediaSessionMetricsTest, ZeroPercentBucket) {
+TEST_F(MediaSessionMetricsImplTest, ZeroPercentBucket) {
   // No media playing → 0 media minutes → 0% → bucket 0.
   task_environment_.FastForwardBy(base::Days(7));
   histogram_tester_.ExpectUniqueSample(kMediaSessionUsageHistogramName, 0, 1);
@@ -107,7 +115,7 @@ TEST_F(MediaSessionMetricsTest, ZeroPercentBucket) {
             "0");
 }
 
-TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
+TEST_F(MediaSessionMetricsImplTest, CorrectPercentageBucket) {
   // 40h playing → ~20% → bucket 2. Attribute: 20% → "1-33".
   task_environment_.FastForwardBy(base::Days(1));
   auto* session = AddSession();
@@ -121,7 +129,7 @@ TEST_F(MediaSessionMetricsTest, CorrectPercentageBucket) {
             "1-33");
 }
 
-TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
+TEST_F(MediaSessionMetricsImplTest, SimultaneousSessionsNoDuplication) {
   // Two sessions playing simultaneously for 40h counts as 2400 min, not 4800.
   task_environment_.FastForwardBy(base::Days(1));
   auto* session1 = AddSession();
@@ -138,7 +146,7 @@ TEST_F(MediaSessionMetricsTest, SimultaneousSessionsNoDuplication) {
             "1-33");
 }
 
-TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
+TEST_F(MediaSessionMetricsImplTest, SessionRemovedWhilePlaying) {
   // A session removed while playing still counts its accumulated time.
   task_environment_.FastForwardBy(base::Days(1));
   auto* session = AddSession();
@@ -153,7 +161,7 @@ TEST_F(MediaSessionMetricsTest, SessionRemovedWhilePlaying) {
             "1-33");
 }
 
-TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
+TEST_F(MediaSessionMetricsImplTest, FrameResetAfterReport) {
   // First week: 1h media / 8 days uptime → bucket 1.
   // Second week: no media → bucket 0.
   task_environment_.FastForwardBy(base::Days(1));
@@ -173,7 +181,7 @@ TEST_F(MediaSessionMetricsTest, FrameResetAfterReport) {
             "0");
 }
 
-TEST_F(MediaSessionMetricsTest, NoActiveTimeAttributeCleared) {
+TEST_F(MediaSessionMetricsImplTest, NoActiveTimeAttributeCleared) {
   // Pre-set the attribute to a known value so we can confirm it is cleared.
   p3a_utils::SetCustomAttribute(kMediaSessionUsageAttributeName, "1-33");
   ASSERT_EQ(relay_observer_.GetCustomAttribute(kMediaSessionUsageAttributeName),
@@ -188,7 +196,26 @@ TEST_F(MediaSessionMetricsTest, NoActiveTimeAttributeCleared) {
             std::nullopt);
 }
 
-TEST_F(MediaSessionMetricsTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
+TEST_F(MediaSessionMetricsImplTest, NotifiesObserverWhilePlaying) {
+  metrics_->AddObserver(this);
+
+  auto* session = AddSession();
+  task_environment_.FastForwardBy(base::Minutes(2));
+  EXPECT_EQ(observer_total_duration_, base::Minutes(2));
+
+  // No further notifications once playback stops.
+  SetPlaying(session, false);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  EXPECT_EQ(observer_total_duration_, base::Minutes(2));
+
+  // No notifications after the observer is removed, even while playing.
+  metrics_->RemoveObserver(this);
+  SetPlaying(session, true);
+  task_environment_.FastForwardBy(base::Minutes(1));
+  EXPECT_EQ(observer_total_duration_, base::Minutes(2));
+}
+
+TEST_F(MediaSessionMetricsImplTest, ActiveProcessTimeOnlyWhenInUseOrPlaying) {
   // With browser not in use and no media, active process time does not
   // accumulate. Playing media should count toward both storages regardless
   // of IsInUse.

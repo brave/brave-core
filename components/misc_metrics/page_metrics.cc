@@ -5,6 +5,8 @@
 
 #include "brave/components/misc_metrics/page_metrics.h"
 
+#include <array>
+#include <string_view>
 #include <utility>
 
 #include "base/check.h"
@@ -16,6 +18,7 @@
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
+#include "brave/components/p3a_utils/custom_attributes.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
 #include "components/bookmarks/browser/bookmark_model.h"
 #include "components/browsing_data/core/counters/bookmark_counter.h"
@@ -50,6 +53,20 @@ constexpr char kInterstitialDecisionHistogramName[] =
 
 constexpr size_t kMinDenominatorForFailedHTTPReport = 100;
 
+constexpr base::TimeDelta kCombinedSearchStudyReportInterval = base::Days(1);
+
+constexpr int kCombinedSearchStudyMediaUsageAttributeThresholds[] = {0, 5, 30,
+                                                                     120};
+constexpr std::array<std::string_view, 5>
+    kCombinedSearchStudyMediaUsageAttributeValues = {"0", "1-5", "6-30",
+                                                     "31-120", "121+"};
+
+constexpr int kCombinedSearchStudyUniquePagesAttributeThresholds[] = {0, 4, 49,
+                                                                      149};
+constexpr std::array<std::string_view, 5>
+    kCombinedSearchStudyUniquePagesAttributeValues = {"0", "1-4", "5-49",
+                                                      "50-149", "150+"};
+
 }  // namespace
 
 using HttpsEvent = security_interstitials::https_only_mode::Event;
@@ -60,6 +77,7 @@ PageMetrics::PageMetrics(PrefService* local_state,
                          history::HistoryService* history_service,
                          bookmarks::BookmarkModel* bookmark_model,
                          DefaultBrowserMonitor* default_browser_monitor,
+                         MediaSessionMetrics* media_session_metrics,
                          TemplateURLService* template_url_service,
                          FirstRunTimeCallback first_run_time_callback)
     : local_state_(local_state),
@@ -75,6 +93,15 @@ PageMetrics::PageMetrics(PrefService* local_state,
   DCHECK(template_url_service);
 
   default_browser_observation_.Observe(default_browser_monitor_);
+  if (media_session_metrics) {
+    media_session_observation_.Observe(media_session_metrics);
+  }
+
+  if (local_state_->GetTime(kMiscMetricsCombinedSearchStudyFrameStartTime)
+          .is_null()) {
+    local_state_->SetTime(kMiscMetricsCombinedSearchStudyFrameStartTime,
+                          base::Time::Now());
+  }
 
   init_timer_.Start(FROM_HERE, kInitReportDelay, this,
                     &PageMetrics::ReportAllMetrics);
@@ -156,6 +183,10 @@ void PageMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsInterstitialAllowDecisionCount);
   registry->RegisterListPref(kMiscMetricsFailedHTTPSUpgradeCount);
   registry->RegisterTimePref(kMiscMetricsFailedHTTPSUpgradeMetricAddedTime, {});
+  registry->RegisterTimePref(kMiscMetricsCombinedSearchStudyFrameStartTime, {});
+  registry->RegisterBooleanPref(kMiscMetricsCombinedSearchStudySearchMade,
+                                false);
+  registry->RegisterTimeDeltaPref(kMiscMetricsCombinedSearchStudyMediaTime, {});
   BraveSearchMetrics::RegisterPrefs(registry);
   NavigationSourceMetrics::RegisterPrefs(registry);
 }
@@ -185,6 +216,17 @@ void PageMetrics::IncrementPagesLoadedCount(bool is_reload, bool is_otr) {
   }
 }
 
+void PageMetrics::RecordOmniboxQuery() {
+  local_state_->SetBoolean(kMiscMetricsCombinedSearchStudySearchMade, true);
+}
+
+void PageMetrics::OnMediaPlaybackTick(base::TimeDelta tick_duration) {
+  local_state_->SetTimeDelta(
+      kMiscMetricsCombinedSearchStudyMediaTime,
+      local_state_->GetTimeDelta(kMiscMetricsCombinedSearchStudyMediaTime) +
+          tick_duration);
+}
+
 void PageMetrics::InitStorage() {
   if (pages_reloaded_storage_ == nullptr) {
     pages_reloaded_storage_ = std::make_unique<WeeklyStorage>(
@@ -212,6 +254,7 @@ void PageMetrics::ReportAllMetrics() {
   ReportBookmarkCount();
   brave_search_metrics_.ReportAllMetrics();
   navigation_source_metrics_.ReportAllMetrics();
+  ReportCombinedSearchStudy();
   periodic_report_timer_.Start(
       FROM_HERE, base::Time::Now() + kReportInterval,
       base::BindOnce(&PageMetrics::ReportAllMetrics, base::Unretained(this)));
@@ -415,6 +458,49 @@ void PageMetrics::ReportBookmarkCount() {
     return;
   }
   bookmark_counter_->Restart();
+}
+
+void PageMetrics::ReportCombinedSearchStudy() {
+  base::Time now = base::Time::Now();
+  base::Time frame_start =
+      local_state_->GetTime(kMiscMetricsCombinedSearchStudyFrameStartTime);
+  if ((now - frame_start) < kCombinedSearchStudyReportInterval) {
+    return;
+  }
+  history_service_->GetHistoryCount(
+      frame_start, now, history::VisitQuery404sPolicy::kExclude404s,
+      base::BindOnce(&PageMetrics::OnCombinedSearchStudyHistoryCountResult,
+                     weak_ptr_factory_.GetWeakPtr()),
+      &history_service_task_tracker_);
+}
+
+void PageMetrics::OnCombinedSearchStudyHistoryCountResult(
+    history::HistoryCountResult result) {
+  int unique_pages = result.success ? result.count : 0;
+
+  bool search_made =
+      local_state_->GetBoolean(kMiscMetricsCombinedSearchStudySearchMade);
+  base::TimeDelta media_time =
+      local_state_->GetTimeDelta(kMiscMetricsCombinedSearchStudyMediaTime);
+  int media_minutes = static_cast<int>(media_time.InMinutes());
+
+  p3a_utils::SetCustomAttribute(kCombinedSearchStudySearchQueryAttributeName,
+                                search_made ? "true" : "false");
+  p3a_utils::SetCustomAttribute(
+      kCombinedSearchStudyMediaUsageAttributeName,
+      kCombinedSearchStudyMediaUsageAttributeValues.at(p3a_utils::BucketIndex(
+          kCombinedSearchStudyMediaUsageAttributeThresholds, media_minutes)));
+  p3a_utils::SetCustomAttribute(
+      kCombinedSearchStudyUniquePagesAttributeName,
+      kCombinedSearchStudyUniquePagesAttributeValues.at(p3a_utils::BucketIndex(
+          kCombinedSearchStudyUniquePagesAttributeThresholds, unique_pages)));
+
+  UMA_HISTOGRAM_BOOLEAN(kCombinedSearchStudyHistogramName, false);
+
+  local_state_->SetTime(kMiscMetricsCombinedSearchStudyFrameStartTime,
+                        base::Time::Now());
+  local_state_->SetBoolean(kMiscMetricsCombinedSearchStudySearchMade, false);
+  local_state_->SetTimeDelta(kMiscMetricsCombinedSearchStudyMediaTime, {});
 }
 
 }  // namespace misc_metrics
