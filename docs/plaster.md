@@ -142,6 +142,15 @@ tools/cr/plaster.py --help                # overview of commands and rewriters
 tools/cr/plaster.py --help make_virtual   # full docs for a specific rewriter
 ```
 
+### File-wide options
+
+Besides `substitutions:`, a plaster file may set file-wide options at the top
+level:
+
+| Key                            | Default | Description                                                   |
+| ------------------------------ | ------- | ------------------------------------------------------------- |
+| `blank_macros_for_ast_parsing` | `false` | Blank parse-blocking macros/conditionals before AST matching. |
+
 ### Applying a plaster
 
 To apply this plaster file, just run `plaster.py`:
