@@ -29,14 +29,9 @@ substitutions:
       class_name: Browser
       method_name: ResetTryToCloseWindow
 
-  # TODO(brave.dev/b/57129): Switch to add_friend once it can be used here.
-  # Browser contains a nested class with its own private: section, so
-  # class_name: Browser matches two private sections. Until that is sorted,
-  # anchor on the unique existing friend declaration instead.
   - description: 'Friend BraveBrowser and BookmarkPrefsService'
-    regex:
-      re_pattern: '(friend class FullscreenControllerInteractiveTest;)'
-      replace: |-
-        \1
-          friend class BookmarkPrefsService;
-          friend class BraveBrowser;
+    add_friend:
+      class_name: Browser
+      friend_type:
+        - class BookmarkPrefsService
+        - class BraveBrowser

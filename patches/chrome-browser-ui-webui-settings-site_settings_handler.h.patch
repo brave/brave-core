@@ -1,15 +1,15 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_handler.h b/chrome/browser/ui/webui/settings/site_settings_handler.h
-index 89404f201ba42617796a5ca843884beee282b2ad..66e11633f5a5b2eb18cb920349d8b7a29bbb35a8 100644
+index 89404f201ba42617796a5ca843884beee282b2ad..0a0fb6a8005e006e86c241e148e8bc51a0e41df7 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_handler.h
 +++ b/chrome/browser/ui/webui/settings/site_settings_handler.h
-@@ -237,6 +237,7 @@ class SiteSettingsHandler
+@@ -236,6 +236,7 @@ class SiteSettingsHandler
+   BrowsingDataModel* GetBrowsingDataModelForTesting();
  
   private:
-   friend class SiteSettingsHandlerBaseTest;
 +  friend class BraveSiteSettingsHandler;
+   friend class SiteSettingsHandlerBaseTest;
    friend class SiteSettingsHandlerInfobarTest;
    // TODO(crbug.com/40101962): Remove this friend class when the Persistent
-   // Permissions feature flag is removed.
 @@ -297,7 +298,7 @@ class SiteSettingsHandler
    // to be removed when entries for |origins| are removed.
    // TODO(crbug.com/40205603): This function is a temporary hack while the
