@@ -378,7 +378,7 @@ struct TabGridView: View {
       } else if !viewModel.isSearching {
         Spacer()
       }
-      if !viewModel.isSearching, !viewModel.tabs.isEmpty, viewModel.isShredMenuVisible {
+      if !viewModel.isSearching, !viewModel.tabs.isEmpty {
         shredMenu
       }
     }
@@ -460,11 +460,13 @@ struct TabGridView: View {
       } label: {
         Text(Strings.TabGrid.shredAllTabsButtonTitle)
       }
+      .disabled(!viewModel.isShredMenuVisible)
     } label: {
       Label(Strings.TabGrid.shredTabsAccessibilityLabel, braveSystemImage: "leo.shred.data")
         .labelStyle(.buttonIconOnly)
     }
     .plainHeaderIconButtonStyle()
+    .disabled(!viewModel.isShredMenuVisible)
   }
 
   var footerBar: some View {
