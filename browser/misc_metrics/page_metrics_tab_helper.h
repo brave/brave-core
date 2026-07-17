@@ -20,7 +20,7 @@ class NavigationHandle;
 
 namespace misc_metrics {
 
-class MediaSessionMetrics;
+class MediaSessionMetricsImpl;
 class PageMetrics;
 
 class PageMetricsTabHelper
@@ -49,7 +49,7 @@ class PageMetricsTabHelper
 
   raw_ptr<content::BrowserContext> browser_context_;
   raw_ptr<PageMetrics> page_metrics_ = nullptr;
-  raw_ptr<MediaSessionMetrics> media_session_metrics_ = nullptr;
+  raw_ptr<MediaSessionMetricsImpl> media_session_metrics_ = nullptr;
   raw_ptr<content::MediaSession> media_session_ = nullptr;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
