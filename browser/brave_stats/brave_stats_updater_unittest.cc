@@ -21,7 +21,6 @@
 #include "brave/browser/brave_stats/brave_stats_updater_params.h"
 #include "brave/browser/brave_stats/features.h"
 #include "brave/browser/serp_metrics/serp_metrics_all_profiles_aggregator_mock.h"
-#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_referrals/browser/brave_referrals_service.h"
 #include "brave/components/brave_referrals/common/pref_names.h"
 #include "brave/components/brave_stats/browser/brave_stats_updater_util.h"
@@ -40,11 +39,6 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/gfx/switches.h"
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-#include "brave/browser/brave_ads/analytics/p3a/brave_stats_helper.h"
-#include "brave/components/brave_ads/core/public/prefs/pref_names.h"
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 using testing::HasSubstr;
 
@@ -89,10 +83,6 @@ class BraveStatsUpdaterTest : public testing::Test {
         testing_local_state_.registry());
     brave::RegisterPrefsForBraveReferralsService(
         testing_local_state_.registry());
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-    brave_ads::BraveStatsHelper::RegisterLocalStatePrefs(
-        testing_local_state_.registry());
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
     SetCurrentTimeForTest(base::Time());
     brave_stats::BraveStatsUpdaterParams::SetFirstRunForTest(true);
@@ -109,13 +99,6 @@ class BraveStatsUpdaterTest : public testing::Test {
     return std::make_unique<brave_stats::BraveStatsUpdaterParams>(
         GetLocalState());
   }
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-  void SetEnableAds(bool ads_enabled) {
-    GetLocalState()->SetBoolean(brave_ads::prefs::kEnabledForLastProfile,
-                                ads_enabled);
-  }
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   void SetCurrentTimeForTest(const base::Time& current_time) {
     brave_stats::BraveStatsUpdaterParams::SetCurrentTimeForTest(current_time);
@@ -250,22 +233,6 @@ TEST_F(BraveStatsUpdaterTest, IsMonthlyUpdateNeededLastCheckedNextMonth) {
 
   EXPECT_EQ(GetLocalState()->GetInteger(kLastCheckMonth), kThisMonth);
 }
-
-#if BUILDFLAG(ENABLE_BRAVE_ADS)
-TEST_F(BraveStatsUpdaterTest, HasAdsDisabled) {
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  SetEnableAds(false);
-  EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "false");
-}
-
-TEST_F(BraveStatsUpdaterTest, HasAdsEnabled) {
-  brave_stats::BraveStatsUpdaterParams brave_stats_updater_params(
-      GetLocalState(), kToday, kThisWeek, kThisMonth);
-  SetEnableAds(true);
-  EXPECT_EQ(brave_stats_updater_params.GetAdsEnabledParam(), "true");
-}
-#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
 TEST_F(BraveStatsUpdaterTest, HasDateOfInstallationFirstRun) {
   base::Time::Exploded exploded;
