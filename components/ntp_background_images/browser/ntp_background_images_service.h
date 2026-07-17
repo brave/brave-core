@@ -85,6 +85,10 @@ class NTPBackgroundImagesService {
   NTPSponsoredImagesData* GetSponsoredImagesData(
       bool supports_rich_media) const;
   NTPSponsoredSitesData* GetSponsoredSitesData() const;
+  // Returns the absolute file path for a sponsored site image request path
+  // (e.g. "amazon.png"), or nullopt if unavailable or invalid.
+  std::optional<base::FilePath> GetSponsoredSiteImageFilePath(
+      const base::FilePath& request_path) const;
   virtual void RegisterSponsoredImagesComponent();
 
   void MaybeCheckForSponsoredComponentUpdate();

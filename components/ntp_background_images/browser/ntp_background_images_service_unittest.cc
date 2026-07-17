@@ -404,6 +404,10 @@ class NTPBackgroundImagesServiceForTesting : public NTPBackgroundImagesService {
         std::move(sites_data));
   }
 
+  void SetSponsoredImagesInstalledDirForTesting(const base::FilePath& dir) {
+    sponsored_images_installed_dir_ = dir;
+  }
+
   bool sponsored_images_component_started = false;
   bool background_images_component_started = false;
   bool mapping_table_requested = false;
@@ -831,6 +835,127 @@ TEST_F(NTPBackgroundImagesServiceTest,
 
   EXPECT_FALSE(service_->GetSponsoredSitesData());
   EXPECT_TRUE(observer_.on_sponsored_sites_data_updated);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       GetSponsoredSiteImageFilePathReturnsPathForKnownSiteImage) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  const base::FilePath image_dir = installed_dir.GetPath().AppendASCII("tiles");
+  ASSERT_TRUE(base::CreateDirectory(image_dir));
+  ASSERT_TRUE(base::WriteFile(image_dir.AppendASCII("image.png"), ""));
+
+  const base::DictValue dict = base::test::ParseJsonDict(R"(
+      {
+        "schemaVersion": 1,
+        "tiles": [
+          {
+            "version": 1,
+            "title": "tiles",
+            "adDisclosure": "Sponsored",
+            "targetUrl": "https://foo.com",
+            "image": {
+              "relativeUrl": "tiles/image.png"
+            }
+          }
+        ]
+      })");
+  NTPSponsoredSitesData sites_data(dict, installed_dir.GetPath(),
+                                   kTestSponsoredSitesUrlPrefix);
+  ASSERT_TRUE(sites_data.IsValid());
+  service_->OnGetSponsoredSitesData(std::move(sites_data));
+  service_->SetSponsoredImagesInstalledDirForTesting(installed_dir.GetPath());
+
+  const std::optional<base::FilePath> result =
+      service_->GetSponsoredSiteImageFilePath(
+          base::FilePath::FromUTF8Unsafe("tiles/image.png"));
+
+  ASSERT_TRUE(result);
+  EXPECT_EQ(image_dir.AppendASCII("image.png"), *result);
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       GetSponsoredSiteImageFilePathRejectsUnknownImage) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  const base::FilePath image_dir = installed_dir.GetPath().AppendASCII("tiles");
+  ASSERT_TRUE(base::CreateDirectory(image_dir));
+  ASSERT_TRUE(base::WriteFile(image_dir.AppendASCII("image.png"), ""));
+
+  const base::DictValue dict = base::test::ParseJsonDict(R"(
+      {
+        "schemaVersion": 1,
+        "tiles": [
+          {
+            "version": 1,
+            "title": "tiles",
+            "adDisclosure": "Sponsored",
+            "targetUrl": "https://foo.com",
+            "image": {
+              "relativeUrl": "tiles/image.png"
+            }
+          }
+        ]
+      })");
+  NTPSponsoredSitesData sites_data(dict, installed_dir.GetPath(),
+                                   kTestSponsoredSitesUrlPrefix);
+  ASSERT_TRUE(sites_data.IsValid());
+  service_->OnGetSponsoredSitesData(std::move(sites_data));
+  service_->SetSponsoredImagesInstalledDirForTesting(installed_dir.GetPath());
+
+  EXPECT_FALSE(service_->GetSponsoredSiteImageFilePath(
+      base::FilePath::FromUTF8Unsafe("bar/other.png")));
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       GetSponsoredSiteImageFilePathRejectsPathTraversal) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  const base::FilePath image_dir = installed_dir.GetPath().AppendASCII("tiles");
+  ASSERT_TRUE(base::CreateDirectory(image_dir));
+  ASSERT_TRUE(base::WriteFile(image_dir.AppendASCII("image.png"), ""));
+
+  const base::DictValue dict = base::test::ParseJsonDict(R"(
+      {
+        "schemaVersion": 1,
+        "tiles": [
+          {
+            "version": 1,
+            "title": "tiles",
+            "adDisclosure": "Sponsored",
+            "targetUrl": "https://foo.com",
+            "image": {
+              "relativeUrl": "tiles/image.png"
+            }
+          }
+        ]
+      })");
+  NTPSponsoredSitesData sites_data(dict, installed_dir.GetPath(),
+                                   kTestSponsoredSitesUrlPrefix);
+  ASSERT_TRUE(sites_data.IsValid());
+  service_->OnGetSponsoredSitesData(std::move(sites_data));
+  service_->SetSponsoredImagesInstalledDirForTesting(installed_dir.GetPath());
+
+  EXPECT_FALSE(service_->GetSponsoredSiteImageFilePath(
+      base::FilePath::FromUTF8Unsafe("../tiles/image.png")));
+}
+
+TEST_F(NTPBackgroundImagesServiceTest,
+       GetSponsoredSiteImageFilePathReturnsNulloptWhenNoSponsoredSitesData) {
+  Init();
+
+  base::ScopedTempDir installed_dir;
+  ASSERT_TRUE(installed_dir.CreateUniqueTempDir());
+  service_->SetSponsoredImagesInstalledDirForTesting(installed_dir.GetPath());
+
+  EXPECT_FALSE(service_->GetSponsoredSiteImageFilePath(
+      base::FilePath::FromUTF8Unsafe("tiles/image.png")));
 }
 
 }  // namespace ntp_background_images

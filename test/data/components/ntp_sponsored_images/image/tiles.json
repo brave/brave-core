@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "tiles": [
+    {
+      "version": 1,
+      "title": "Test Sponsor 1",
+      "adDisclosure": "Sponsored 1",
+      "targetUrl": "https://brave.com",
+      "image": {
+        "relativeUrl": "tiles/image_1.png"
+      }
+    },
+    {
+      "version": 1,
+      "title": "Test Sponsor 2",
+      "adDisclosure": "Sponsored 2",
+      "targetUrl": "https://basicattentiontoken.org",
+      "image": {
+        "relativeUrl": "tiles/image_2.png"
+      }
+    }
+  ]
+}

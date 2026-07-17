@@ -49,6 +49,8 @@ static_library("browser") {
       "ntp_sponsored_image_source.h",
       "ntp_sponsored_rich_media_source.cc",
       "ntp_sponsored_rich_media_source.h",
+      "ntp_sponsored_site_image_source.cc",
+      "ntp_sponsored_site_image_source.h",
     ]
   }
 
