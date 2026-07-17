@@ -14,10 +14,10 @@
 // profile_customization_app.ts imports the upstream module as
 // profile_customization_app-chromium.js, so that path must be served or the
 // dialog fails to load and appears blank.
-#define SetupWebUIDataSource(...)                                         \
-  SetupWebUIDataSource(__VA_ARGS__);                                      \
-  source->AddResourcePath(                                                \
-      "profile_customization_app-chromium.js",                            \
+#define SetupWebUIDataSource(...)              \
+  SetupWebUIDataSource(__VA_ARGS__);           \
+  source->AddResourcePath(                     \
+      "profile_customization_app-chromium.js", \
       IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_CHROMIUM_JS)
 
 #include <chrome/browser/ui/webui/signin/profile_customization_ui.cc>
