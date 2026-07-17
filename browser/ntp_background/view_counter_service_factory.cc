@@ -13,6 +13,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_background_images_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_image_source.h"
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_source.h"
+#include "brave/components/ntp_background_images/browser/ntp_sponsored_site_image_source.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
 #include "brave/components/ntp_background_images/buildflags/buildflags.h"
 #include "brave/components/ntp_background_images/common/view_counter_pref_registry.h"
@@ -91,6 +92,9 @@ ViewCounterServiceFactory::BuildServiceInstanceForBrowserContext(
     content::URLDataSource::Add(
         browser_context,
         std::make_unique<NTPSponsoredRichMediaSource>(service));
+    content::URLDataSource::Add(
+        browser_context,
+        std::make_unique<NTPSponsoredSiteImageSource>(service));
 
     return std::make_unique<ViewCounterService>(
         HostContentSettingsMapFactory::GetForProfile(profile), service,

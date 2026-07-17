@@ -5,6 +5,7 @@
 
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
+#include <algorithm>
 #include <memory>
 
 #include "base/command_line.h"
@@ -36,6 +37,7 @@
 #include "components/variations/service/variations_service_utils.h"
 #include "content/public/common/url_constants.h"
 #include "third_party/abseil-cpp/absl/strings/str_format.h"
+#include "url/gurl.h"
 #include "url/url_constants.h"
 
 namespace ntp_background_images {
@@ -321,6 +323,53 @@ NTPSponsoredSitesData* NTPBackgroundImagesService::GetSponsoredSitesData()
   }
 
   return sponsored_sites_data_.get();
+}
+
+std::optional<base::FilePath>
+NTPBackgroundImagesService::MaybeGetSponsoredSiteImageFilePath(
+    const base::FilePath& request_path) const {
+  if (sponsored_images_installed_dir_.empty()) {
+    return std::nullopt;
+  }
+
+  const NTPSponsoredSitesData* const sites_data = GetSponsoredSitesData();
+  if (!sites_data) {
+    return std::nullopt;
+  }
+
+  // `request_path` is derived from a URL path, which always uses "/" as a
+  // separator; normalize it to the platform separator so it can be compared
+  // against and appended to `base::FilePath`s built from installed_dir.
+  const base::FilePath normalized_request_path =
+      request_path.NormalizePathSeparators();
+
+  // Reject any path that could escape the component directory.
+  if (normalized_request_path.ReferencesParent() ||
+      normalized_request_path.IsAbsolute()) {
+    return std::nullopt;
+  }
+
+  // Only serve images that are actually referenced by a currently active
+  // sponsored site; reject requests for any other file that happens to sit
+  // in the component's installed directory (e.g. the manifest files). Compare
+  // full relative paths, not just filenames, since a site's image may live in
+  // a subdirectory of the component (e.g. a per-campaign folder).
+  const bool is_known_site_image = std::ranges::any_of(
+      sites_data->sites,
+      [&normalized_request_path](const NTPSponsoredSite& site) {
+        const GURL image_url(site.relative_image_url_spec);
+        std::string_view path = image_url.path();
+        if (path.size() <= 1) {
+          return false;
+        }
+        return base::FilePath::FromUTF8Unsafe(path.substr(1))
+                   .NormalizePathSeparators() == normalized_request_path;
+      });
+  if (!is_known_site_image) {
+    return std::nullopt;
+  }
+
+  return sponsored_images_installed_dir_.Append(normalized_request_path);
 }
 
 void NTPBackgroundImagesService::OnComponentReady(
