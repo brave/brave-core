@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser.h b/chrome/browser/ui/browser.h
-index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..037c6d5a48d0722b4ea2d3cae7dbbe2ebf68b744 100644
+index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..f67863db5bc03dec981008ed40a296248d7ffcd2 100644
 --- a/chrome/browser/ui/browser.h
 +++ b/chrome/browser/ui/browser.h
 @@ -506,13 +506,13 @@ class Browser : public TabStripModelObserver,
@@ -18,15 +18,15 @@ index e2fcdc383237c909dfcd51a02e1a9e54cd6f7f0c..037c6d5a48d0722b4ea2d3cae7dbbe2e
  
    // Browser closing consists of the following phases:
    //
-@@ -742,6 +742,8 @@ class Browser : public TabStripModelObserver,
+@@ -739,6 +739,8 @@ class Browser : public TabStripModelObserver,
+ #endif
+ 
+  private:
++  friend class BookmarkPrefsService;
++  friend class BraveBrowser;
    friend class BrowserTest;
    friend class ExclusiveAccessTest;
    friend class FullscreenControllerInteractiveTest;
-+  friend class BookmarkPrefsService;
-+  friend class BraveBrowser;
-   FRIEND_TEST_ALL_PREFIXES(AppModeTest, EnableAppModeTest);
-   FRIEND_TEST_ALL_PREFIXES(BrowserCloseTest, LastIncognito);
-   FRIEND_TEST_ALL_PREFIXES(BrowserCloseTest, LastRegular);
 @@ -936,7 +938,7 @@ class Browser : public TabStripModelObserver,
  
    // Handle changes to tab strip model.
