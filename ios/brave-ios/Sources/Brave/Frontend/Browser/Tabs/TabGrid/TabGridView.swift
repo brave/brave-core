@@ -566,11 +566,10 @@ struct TabGridView: View {
         Label(Strings.close, braveSystemImage: "leo.close")
           .labelStyle(.buttonIconOnly)
       }
-      .filledToolbarIconButtonStyle()
+      .destructiveToolbarIconButtonStyle()
       .disabled(selectedTabs.isEmpty)
       .frame(maxWidth: .infinity, alignment: .trailing)
     }
-    .foregroundStyle(Color(braveSystemName: .textSecondary))
     .fontWeight(.medium)
     .padding(.horizontal, 16)
     .padding(.vertical, 8)
@@ -704,6 +703,19 @@ extension View {
       }
       .fixedSize()
   }
+
+  func destructiveToolbarIconButtonStyle() -> some View {
+    self
+      .controlSize(.regular)
+      .osAvailabilityModifiers { content in
+        if #available(iOS 26.0, *) {
+          content.buttonStyle(TabGridDestructiveGlassFilledButtonStyle())
+        } else {
+          content.buttonStyle(TabGridDestructiveFilledButtonStyle())
+        }
+      }
+      .fixedSize()
+  }
 }
 
 /// Pre-iOS 26 add-tab button style: a light filled circle with a dark icon per the tab tray design spec.
@@ -729,6 +741,52 @@ private struct TabGridLegacyAddTabButtonStyle: ButtonStyle {
       .contentShape(.circle)
       .hoverEffect()
       .animation(.linear(duration: 0.15), value: isEnabled)
+  }
+}
+
+private struct TabGridDestructiveFilledButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(12)
+      .foregroundStyle(Color(braveSystemName: isEnabled ? .schemesOnPrimary : .textDisabled))
+      .background {
+        if isEnabled {
+          Color(braveSystemName: .systemfeedbackErrorIcon)
+            .mix(
+              with: Color(braveSystemName: .fixedForeground),
+              by: configuration.isPressed ? 0.2 : 0
+            )
+        } else {
+          Color(braveSystemName: .buttonDisabled)
+        }
+      }
+      .clipShape(.circle)
+      .contentShape(.circle)
+      .hoverEffect()
+      .animation(.linear(duration: 0.15), value: isEnabled)
+  }
+}
+
+@available(iOS 26.0, *)
+private struct TabGridDestructiveGlassFilledButtonStyle: ButtonStyle {
+  @Environment(\.isEnabled) private var isEnabled
+
+  func makeBody(configuration: Configuration) -> some View {
+    configuration.label
+      .padding(12)
+      .foregroundStyle(isEnabled ? AnyShapeStyle(.white) : AnyShapeStyle(.tertiary))
+      .glassEffect(
+        .regular
+          .tint(
+            isEnabled
+              ? Color(braveSystemName: .systemfeedbackErrorIcon)
+              : Color(uiColor: .tertiarySystemFill)
+          )
+          .interactive(isEnabled),
+        in: .circle
+      )
   }
 }
 
