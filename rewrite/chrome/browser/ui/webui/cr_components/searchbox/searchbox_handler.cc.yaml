@@ -10,28 +10,30 @@ substitutions:
       This regex looks for the DUMP_WILL_BE_NOTREACHED at the end of the
       function, making sure it is in fact the last one, and inserts our code
       just before it, meaning, at the end of the function.
-    re_pattern:
-      '(SearchboxHandler::AutocompleteIconToResourceName\(.*?\) const
-      \{.*?)(DUMP_WILL_BE_NOTREACHED\b.*?;)(?=(?:(?!DUMP_WILL_BE_NOTREACHED).)*?\n\})'
-    re_flags: [DOTALL]
-    replace: |-
-      \1if (icon.name == kLeoWindowTabNewIcon.name) {
-          return kLeoWindowTabNewIconResourceName;
-        } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
-          return kLeoMessageBubbleAskIconResourceName;
-        }
-        // This function is used for the WebUI Omnibox which isn't enabled in
-        // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
-        // here and use the default icon instead.
-        if ((true)) return "";
-        \2
+    regex:
+      re_pattern:
+        '(SearchboxHandler::AutocompleteIconToResourceName\(.*?\) const
+        \{.*?)(DUMP_WILL_BE_NOTREACHED\b.*?;)(?=(?:(?!DUMP_WILL_BE_NOTREACHED).)*?\n\})'
+      re_flags: [DOTALL]
+      replace: |-
+        \1if (icon.name == kLeoWindowTabNewIcon.name) {
+            return kLeoWindowTabNewIconResourceName;
+          } else if (icon.name == kLeoMessageBubbleAskIcon.name) {
+            return kLeoMessageBubbleAskIconResourceName;
+          }
+          // This function is used for the WebUI Omnibox which isn't enabled in
+          // Brave, so its okay to disable the DUMP_WILL_BE_NOTREACHED() check
+          // here and use the default icon instead.
+          if ((true)) return "";
+          \2
 
   - description: |
       Force keyword mode in the NTP realbox.
 
       We tweak a few AutocompleteInput settings because unlike Chromium we only
       want keyword search results.
-    re_pattern: 'autocomplete_input\.set_in_keyword_mode\(false\);\s*autocomplete_input\.set_allow_exact_keyword_match\(false\);'
-    replace: |-
-      autocomplete_input.set_in_keyword_mode(true);
-        autocomplete_input.set_allow_exact_keyword_match(true);
+    regex:
+      re_pattern: 'autocomplete_input\.set_in_keyword_mode\(false\);\s*autocomplete_input\.set_allow_exact_keyword_match\(false\);'
+      replace: |-
+        autocomplete_input.set_in_keyword_mode(true);
+          autocomplete_input.set_allow_exact_keyword_match(true);

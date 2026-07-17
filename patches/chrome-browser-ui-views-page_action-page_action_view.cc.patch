@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 415e8f510fc4051e18caa829942226670adc5e19..373a60344257237839f46d0383eef6786f3aca3a 100644
+index 415e8f510fc4051e18caa829942226670adc5e19..c8c3c422f7d94bc894a1fd92be5bed9217f8f575 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
 @@ -238,7 +238,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
@@ -24,7 +24,7 @@ index 415e8f510fc4051e18caa829942226670adc5e19..373a60344257237839f46d0383eef678
                static_cast<std::underlying_type_t<PageActionEntryPoint>>(
                    PageActionEntryPoint::kSuggestionChip))
 +          .SetProperty(kBravePageActionEventFlagKey,
-+                       event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
++                      event.IsMouseEvent() ? event.flags() : ui::EF_NONE)
            .Build());
  }
  
