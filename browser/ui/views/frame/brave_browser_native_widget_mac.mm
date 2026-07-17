@@ -52,7 +52,7 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
   if (*override_titlebar_height && !browser_view_->ShouldDrawTabStrip()) {
     if (tabs::UseCompactHorizontalTabs()) {
       // Upstream always adds kWebAppMenuMargin * 2 (14px) to the titlebar
-      // height. In Compact mode use a tighter 10px of vertical padding
+      // height. In Compact mode use a tighter 5px of vertical padding
       // instead.
       constexpr int kCompactWebAppTitlebarPadding = 5;
       *titlebar_height -=
