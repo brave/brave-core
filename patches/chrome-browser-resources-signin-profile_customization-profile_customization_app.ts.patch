@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts b/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
-index fa8fdcc1c1259f1c6c9c68f6fe9a6bb7260f6654..97b406ab2846dcc99c1c0c99fd3e378d3e9b81c5 100644
+index fa8fdcc1c1259f1c6c9c68f6fe9a6bb7260f6654..edf32b6885e6e515ec894055de3388fef05bfbf1 100644
 --- a/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
 +++ b/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
 @@ -2,6 +2,7 @@
@@ -10,10 +10,9 @@ index fa8fdcc1c1259f1c6c9c68f6fe9a6bb7260f6654..97b406ab2846dcc99c1c0c99fd3e378d
  import 'chrome://resources/cr_components/theme_color_picker/theme_color_picker.js';
  import 'chrome://resources/cr_elements/cr_button/cr_button.js';
  import 'chrome://resources/cr_elements/cr_icon/cr_icon.js';
-@@ -226,6 +227,3 @@ declare global {
-     'profile-customization-app': ProfileCustomizationAppElement;
+@@ -227,5 +228,3 @@ declare global {
    }
  }
--
+ 
 -customElements.define(
 -    ProfileCustomizationAppElement.is, ProfileCustomizationAppElement);
