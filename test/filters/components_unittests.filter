@@ -228,6 +228,12 @@
 # instead of "Brave Search"
 -AiModeButtonServiceTest.ConfigWithGoogleDse
 
+# These tests fail because we use our own hardcoded CUP signing key (see
+# chromium_src/components/update_client/request_sender.cc), bypassing upstream's
+# ECDSA/ML-DSA-44 (PQC) key-selection logic entirely, so this assertion of
+# upstream key selection never holds in our builds.
+-All/RequestSenderTest.CupKeySelection/*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -AccountInvestigatorTest.*
 -AccountReconcilorDiceTest.*
