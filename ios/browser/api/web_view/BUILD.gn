@@ -45,6 +45,7 @@ source_set("web_view") {
     "//brave/ios/browser/brave_search",
     "//brave/ios/browser/brave_shields",
     "//brave/ios/browser/brave_shields/request_blocking",
+    "//brave/ios/browser/brave_shields/scriptlets",
     "//brave/ios/browser/favicon",
     "//brave/ios/browser/serp_metrics",
     "//brave/ios/browser/skus",

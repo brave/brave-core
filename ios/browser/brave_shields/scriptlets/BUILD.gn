@@ -9,6 +9,9 @@ source_set("scriptlets") {
   sources = [
     "scriptlets_javascript_feature.h",
     "scriptlets_javascript_feature.mm",
+    "scriptlets_tab_helper.h",
+    "scriptlets_tab_helper.mm",
+    "scriptlets_tab_helper_bridge.h",
   ]
   deps = [
     ":scriptlets_js",
@@ -17,6 +20,8 @@ source_set("scriptlets") {
     "//brave/ios/web/js_messaging:randomized_message_handler_name",
     "//ios/web/public",
     "//ios/web/public/js_messaging",
+    "//net",
+    "//url",
   ]
   public_deps = [
     "//base",

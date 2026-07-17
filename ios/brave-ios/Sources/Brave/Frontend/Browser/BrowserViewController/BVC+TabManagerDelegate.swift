@@ -115,6 +115,7 @@ extension BrowserViewController: TabManagerDelegate {
 
     if FeatureList.kUseProfileWebViewConfiguration.enabled {
       tab.requestBlockingTabHelper = .init(tab: tab)
+      tab.scriptletsTabHelper = .init(tab: tab)
     }
 
     tab.braveTalk = .init(tab: tab, coordinator: braveTalkJitsiCoordinator)
