@@ -162,7 +162,7 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                                 .readInt(
                                         BravePreferenceKeys.BRAVE_NEW_TAB_PAGE_OPENING_SCREEN,
                                         BravePreferenceKeys
-                                                .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY);
+                                                .BRAVE_OPENING_SCREEN_OPTION_NEW_TAB_AFTER_INACTIVITY); // presubmit: ignore-long-line
                 mOpeningScreenPref.initialize(currentValue);
                 mOpeningScreenPref.setOnPreferenceChangeListener(this);
             }
@@ -172,6 +172,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
     @Override
     public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
+    }
+
+    @Override
+    public String getMainMenuKey() {
+        return "background_images";
     }
 
     @Override

@@ -82,7 +82,7 @@ public class BraveStatsPreferences extends BravePreferenceFragment
                                                                 .getResources()
                                                                 .getString(
                                                                         R.string
-                                                                                .data_has_been_cleared),
+                                                                                .data_has_been_cleared), // presubmit: ignore-long-line
                                                         Toast.LENGTH_SHORT)
                                                 .show();
                                     }
@@ -95,6 +95,11 @@ public class BraveStatsPreferences extends BravePreferenceFragment
     @Override
     public MonotonicObservableSupplier<String> getPageTitle() {
         return mPageTitle;
+    }
+
+    @Override
+    public String getMainMenuKey() {
+        return "brave_stats";
     }
 
     @Override

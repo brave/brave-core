@@ -91,4 +91,9 @@ public class BraveLanguageSettings extends LanguageSettings {
             appLanguageSection.addPreference(braveTranslateFeaturePreference);
         }
     }
+
+    @Override
+    public String getMainMenuKey() {
+        return "brave_languages";
+    }
 }
