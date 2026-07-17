@@ -39,3 +39,24 @@ optimize_ts("scriptlets_js") {
 
   deps = [ "//brave/ios/web/js_messaging:util_scripts" ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [ "scriptlets_javascript_feature_unittest.mm" ]
+
+  deps = [
+    ":scriptlets",
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/cosmetic_filters/common",
+    "//brave/ios/browser/api/brave_shields",
+    "//ios/chrome/test:ios_chrome_test_with_web_state",
+    "//ios/web/public",
+    "//ios/web/public/test",
+    "//ios/web/public/test/fakes",
+    "//net",
+    "//testing/gtest",
+    "//url",
+  ]
+}
