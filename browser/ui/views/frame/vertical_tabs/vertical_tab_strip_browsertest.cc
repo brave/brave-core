@@ -2206,6 +2206,38 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripHideCompletelyTest,
   EXPECT_FALSE(region_view->GetVisible());
 }
 
+IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest,
+                       HidingToggleButtonCollapsesAndForcesFloating) {
+  ToggleVerticalTabStrip();
+
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* container_view =
+      browser_view()->vertical_tab_strip_container_view_.get();
+  ASSERT_TRUE(container_view);
+  auto* region_view = container_view->vertical_tab_strip_region_view();
+  ASSERT_TRUE(region_view);
+
+  // Vertical tabs default to expanded. Explicitly turn off floating mode.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsFloatingEnabled, false);
+  ASSERT_EQ(BraveVerticalTabStripRegionView::State::kExpanded,
+            region_view->state());
+
+  // Hiding the toggle button should force the tab strip to collapse, since
+  // there is no other way to expand/collapse it, and should force floating
+  // mode on regardless of kVerticalTabsFloatingEnabled.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, false);
+  EXPECT_EQ(BraveVerticalTabStripRegionView::State::kCollapsed,
+            region_view->state());
+  EXPECT_TRUE(prefs->GetBoolean(brave_tabs::kVerticalTabsCollapsed));
+  EXPECT_TRUE(VerticalTabController::FromBrowser(browser())
+                  ->IsFloatingVerticalTabsEnabled());
+
+  // Re-showing the toggle button should restore normal floating behavior.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsShowToggleButton, true);
+  EXPECT_FALSE(VerticalTabController::FromBrowser(browser())
+                   ->IsFloatingVerticalTabsEnabled());
+}
+
 // Verifies that the vertical tab strip host view and the web contents are
 // positioned correctly in RTL mode for both "tab on left" and "tab on right"
 // user preferences. The layout flips the pref into a leading-edge boolean in

@@ -386,6 +386,12 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
                             base::Unretained(this)));
   }
 
+  show_toggle_button_pref_.Init(
+      brave_tabs::kVerticalTabsShowToggleButton, prefs,
+      base::BindRepeating(
+          &BraveVerticalTabStripRegionView::OnShowToggleButtonPrefChanged,
+          base::Unretained(this)));
+
   widget_observation_.Observe(browser_view->GetWidget());
 
   if (auto* focus_mode_controller =
@@ -399,7 +405,7 @@ BraveVerticalTabStripRegionView::BraveVerticalTabStripRegionView(
                           base::Unretained(this)));
 
   // Note: This should happen after all the PrefMembers have been initialized.
-  OnFloatingModePrefChanged();
+  OnShowToggleButtonPrefChanged();
 
   set_context_menu_controller(this);
 }
@@ -1038,6 +1044,19 @@ void BraveVerticalTabStripRegionView::
   // updating widget bounds at
   // BraveVerticalTabStripContainerView::UpdateVerticalTabBounds().
   PreferredSizeChanged();
+}
+
+void BraveVerticalTabStripRegionView::OnShowToggleButtonPrefChanged() {
+  if (!show_toggle_button_pref_.GetValue()) {
+    // There is no other way to expand collapsed vertical tabs when the
+    // toggle button is hidden, so force the base/resting state to collapsed.
+    collapsed_pref_.SetValue(true);
+    SetState(State::kCollapsed);
+  }
+
+  // Floating mode is forced on when the toggle button is hidden; make sure
+  // this state change is applied immediately.
+  OnFloatingModePrefChanged();
 }
 
 void BraveVerticalTabStripRegionView::OnExpandedWidthPrefChanged() {

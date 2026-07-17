@@ -220,6 +220,8 @@ class BraveBrowserView : public BrowserView,
   FRIEND_TEST_ALL_PREFIXES(SpeedReaderBrowserTest, ToolbarLangs);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedState);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, ExpandedWidth);
+  FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest,
+                           HidingToggleButtonCollapsesAndForcesFloating);
   FRIEND_TEST_ALL_PREFIXES(SplitViewBrowserTest, BraveMultiContentsViewTest);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest, GetMinimumWidth);
   FRIEND_TEST_ALL_PREFIXES(VerticalTabStripHideCompletelyTest,

@@ -27,6 +27,8 @@ inline constexpr char kVerticalTabsHideCompletelyWhenCollapsed[] =
     "brave.tabs.vertical_tabs_hide_completely_when_collapsed";
 inline constexpr char kVerticalTabsFloatingEnabled[] =
     "brave.tabs.vertical_tabs_floating_enabled";
+inline constexpr char kVerticalTabsShowToggleButton[] =
+    "brave.tabs.vertical_tabs_show_toggle_button";
 inline constexpr char kVerticalTabsExpandedWidth[] =
     "brave.tabs.vertical_tabs_expanded_width";
 inline constexpr char kVerticalTabsOnRight[] =

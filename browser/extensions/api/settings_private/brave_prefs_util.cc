@@ -354,6 +354,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[brave_tabs::kVerticalTabsHideCompletelyWhenCollapsed] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[brave_tabs::kVerticalTabsShowToggleButton] =
+      settings_api::PrefType::kBoolean;
 
   // Horizontal tabs settings
   (*s_brave_allowlist)[brave_tabs::kCompactHorizontalTabs] =

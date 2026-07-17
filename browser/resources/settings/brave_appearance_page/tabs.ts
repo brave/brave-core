@@ -133,6 +133,18 @@ export class SettingsBraveAppearanceTabsElement extends SettingsBraveAppearanceT
     return loadTimeData.getBoolean('isHideVerticalTabCompletelyFlagEnabled');
   }
 
+  // "Float on mouse over" (auto-expand on hover) is forced on, and its
+  // checkbox shown as checked and disabled, when there is no other way for
+  // the user to expand collapsed vertical tabs: either because the vertical
+  // tab strip is fully hidden when collapsed, or because the toggle button
+  // used to expand/collapse it is hidden.
+  private shouldForceFloatOnMouseOver_(
+      hideCompletelyWhenCollapsed: boolean, showToggleButton: boolean) {
+    return (this.isHideVerticalTabCompletelyFlagEnabled() &&
+            hideCompletelyWhenCollapsed) ||
+        !showToggleButton
+  }
+
   private isScrollableHorizontalTabStripFlagEnabled() {
     return loadTimeData.getBoolean('isScrollableHorizontalTabStripEnabled');
   }
