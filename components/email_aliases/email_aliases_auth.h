@@ -22,7 +22,7 @@ class EmailAliasesAuth : public brave_account::mojom::AuthenticationObserver {
   explicit EmailAliasesAuth(
       mojo::PendingRemote<brave_account::mojom::Authentication>
           brave_account_auth,
-      OnChangedCallback on_changed = base::DoNothing());
+      OnChangedCallback on_changed);
   ~EmailAliasesAuth() override;
 
   bool IsAuthenticated() const;

@@ -57,11 +57,9 @@ void EmailAliasesAuth::OnDisconnect() {
 
 void EmailAliasesAuth::OnAccountStateChanged(
     brave_account::mojom::AccountStatePtr state) {
-  if (state->is_logged_in()) {
-    auth_email_ = state->get_logged_in()->email;
-  } else {
-    auth_email_.clear();
-  }
+  CHECK(state);
+  auth_email_ =
+      state->is_logged_in() ? state->get_logged_in()->email : std::string{};
   on_changed_.Run();
 }
 

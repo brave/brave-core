@@ -193,11 +193,8 @@ void EmailAliasesService::DeleteAlias(const std::string& alias_email,
 
 void EmailAliasesService::AddObserver(
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> observer) {
-  auto id = observers_.Add(std::move(observer));
-  auto* remote = observers_.Get(id);
-  if (remote) {
-    RefreshAliases();
-  }
+  observers_.Add(std::move(observer));
+  RefreshAliases();
 }
 
 bool EmailAliasesService::IsAuthenticated() const {
