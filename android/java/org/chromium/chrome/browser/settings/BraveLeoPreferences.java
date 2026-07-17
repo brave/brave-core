@@ -67,6 +67,11 @@ public class BraveLeoPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public String getMainMenuKey() {
+        return "brave_leo";
+    }
+
+    @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Preference autocomplete = findPreference(PREF_AUTOCOMPLETE);

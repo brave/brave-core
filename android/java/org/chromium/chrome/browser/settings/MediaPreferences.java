@@ -69,6 +69,11 @@ public class MediaPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public String getMainMenuKey() {
+        return "media";
+    }
+
+    @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
 

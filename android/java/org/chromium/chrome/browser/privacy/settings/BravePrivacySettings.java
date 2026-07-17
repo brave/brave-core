@@ -1187,4 +1187,9 @@ public class BravePrivacySettings extends PrivacySettings {
     public MonotonicObservableSupplier<String> getPageTitle() {
         return mBravePageTitle;
     }
+
+    @Override
+    public String getMainMenuKey() {
+        return "brave_shields_and_privacy";
+    }
 }

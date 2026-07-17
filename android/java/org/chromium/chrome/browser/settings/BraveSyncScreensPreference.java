@@ -537,6 +537,11 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return mPageTitle;
     }
 
+    @Override
+    public String getMainMenuKey() {
+        return "brave_sync_layout";
+    }
+
     private void setAppropriateView() {
         if (null == getActivity()) {
             // We can reach here if we were joining the chain, but we closed the preferences.
