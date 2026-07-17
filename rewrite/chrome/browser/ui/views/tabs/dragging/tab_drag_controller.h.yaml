@@ -3,30 +3,28 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# NOTE: The `make_virtual` and `add_friend` AST rewriters cannot be used on this
-# file because the `#if defined(USE_AURA)` conditional in the `TabDragController`
-# base-class list prevents the C++ parser from resolving the class. These
-# substitutions prepend `virtual` and add the friend declaration with plain regex
-# matches instead.
+# The `#if defined(USE_AURA)` conditional in the `TabDragController` base-class
+# list stops tree-sitter from resolving the class, so the AST rewriters below
+# need the base-list conditional blanked out at parse time.
+blank_macros_for_ast_parsing: true
+
 substitutions:
-  - description: 'Add virtual keyword to Init()'
-    regex:
-      pattern: '[[nodiscard]] Liveness Init('
-      replace: '[[nodiscard]] virtual Liveness Init('
+  - description: 'Make Init() virtual'
+    make_virtual:
+      class_name: TabDragController
+      method_name: Init
 
   - description: 'Make DetachAndAttachToNewContext virtual'
-    regex:
-      pattern: 'void DetachAndAttachToNewContext('
-      replace: 'virtual void DetachAndAttachToNewContext('
+    make_virtual:
+      class_name: TabDragController
+      method_name: DetachAndAttachToNewContext
 
   - description: 'Make StartDraggingTabsSession virtual'
-    regex:
-      pattern: 'void StartDraggingTabsSession('
-      replace: 'virtual void StartDraggingTabsSession('
+    make_virtual:
+      class_name: TabDragController
+      method_name: StartDraggingTabsSession
 
   - description: 'Friend BraveTabDragController'
-    regex:
-      re_pattern: '( private:)'
-      replace: |-
-        \1
-          friend class BraveTabDragController;
+    add_friend:
+      class_name: TabDragController
+      friend_type: class BraveTabDragController
