@@ -115,13 +115,14 @@ inside:
     "ast.rewriter": {
 
         # The whole method declaration (multi-line signature and trailing
-        # semicolon included) with `virtual ` prepended.
+        # semicolon included) with `virtual ` inserted before the type. Any
+        # attributes are re-emitted.
         "cxx.make_virtual": {
             "matcher": "cxx.find_class_method_decl",
             "inputs": ["class_name", "method_name"],
             "replace": {
-                "re_pattern": "^",
-                "replace": "virtual ",
+                "re_pattern": "^((?:\\[\\[.*?\\]\\]\\s*)*)",
+                "replace": "\\1virtual ",
             },
             "result": {
                 "node": "field_declaration",

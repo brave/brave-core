@@ -1250,6 +1250,31 @@ class RewriterFormsTest(unittest.TestCase):
             '      method_name: Foo\n')
         self.assertEqual(result, 'class C {\n  virtual void Foo();\n};\n')
 
+    def test_make_virtual_after_leading_attribute(self):
+        # `virtual` must land after a leading attribute, not before it.
+        result = self._apply(
+            'attr.h', 'class C {\n  [[nodiscard]] bool Foo();\n};\n',
+            'substitutions:\n'
+            '  - description: make Foo virtual, keeping the attribute first\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class C {\n  [[nodiscard]] virtual bool Foo();\n};\n')
+
+    def test_make_virtual_after_multiple_leading_attributes(self):
+        result = self._apply(
+            'attrs.h',
+            'class C {\n  [[nodiscard]] [[maybe_unused]] bool Foo();\n};\n',
+            'substitutions:\n'
+            '  - description: keep both attributes before virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class C {\n'
+            '  [[nodiscard]] [[maybe_unused]] virtual bool Foo();\n};\n')
+
     def test_make_virtual_destructor_quoted(self):
         result = self._apply(
             'dtor.h', 'class C {\n public:\n  ~C();\n};\n', 'substitutions:\n'
@@ -1933,8 +1958,8 @@ _SYNTHETIC_SPEC = {
             'matcher': 'cxx.find_class_method_decl',
             'inputs': ['class_name', 'method_name'],
             'replace': {
-                're_pattern': '^',
-                'replace': 'virtual '
+                're_pattern': r'^((?:\[\[.*?\]\]\s*)*)',
+                'replace': r'\1virtual '
             },
             'result': {
                 'node': 'field_declaration'
