@@ -308,6 +308,14 @@ bool BraveBrowserView::ShouldUseBraveWebViewRoundedCornersForContents(
 }
 
 BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
+  // Upstream doesn't set icon because kFeatureTitleBar is not supported by
+  // default via WindowFeatureController::SupportsWindowfeatures. In brave, we
+  // support kFeatureTitleBar so it's set to true when browser is launched with
+  // vertical tab mode. Set to false as we don't want to icon in title bar.
+  if (browser_->is_type_normal()) {
+    SetShowIcon(false);
+  }
+
   tab_strip_placement_ = std::make_unique<TabStripPlacementCoordinator>(
       base::PassKey<BraveBrowserView>(), browser,
       horizontal_tab_strip_region_view_);
