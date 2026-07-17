@@ -54,6 +54,7 @@ interface ApiInit {
     getBrowserProfilesForImport: () => Promise<BrowserProfile[]>
     setAsDefaultBrowser: () => void
     importData: (profileIndex: number, types: Set<ImportDataType>) => void
+    addImportStatusListener: (fn: (status: ImportDataStatus) => void) => void
   }
 }
 
@@ -72,6 +73,18 @@ function defaultInit(): ApiInit {
       },
       importData(profileIndex, types) {
         chrome.send('importData', [profileIndex, importTypesToDict(types)])
+      },
+      addImportStatusListener(fn) {
+        addWebUiListener('brave-import-data-status-changed', (status: any) => {
+          switch (String(status?.event ?? '')) {
+            case 'ImportStarted':
+              fn('in-progress')
+              break
+            case 'ImportEnded':
+              fn('succeeded')
+              break
+          }
+        })
       },
     },
   }
@@ -93,6 +106,19 @@ export function createWelcomeApi(init = defaultInit()) {
       setAsDefaultBrowser: init.messages.setAsDefaultBrowser,
       importData: init.messages.importData,
     },
+  })
+
+  init.messages.addImportStatusListener((status) => {
+    switch (status) {
+      case 'in-progress':
+        api.importDataStatus.update(status)
+        break
+      case 'succeeded':
+        if (api.importDataStatus.current() === 'in-progress') {
+          api.importDataStatus.update('succeeded')
+        }
+        break
+    }
   })
 
   addWebUiListener('brave-import-data-status-changed', (status: any) => {
