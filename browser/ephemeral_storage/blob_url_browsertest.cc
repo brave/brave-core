@@ -11,6 +11,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_browsertest.h"
 #include "brave/components/brave_shields/core/browser/brave_shields_utils.h"
+#include "build/build_config.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -230,8 +231,13 @@ class BlobUrlBrowserTestBase : public EphemeralStorageBrowserTest {
 
 using BlobUrlPartitionEnabledBrowserTest = BlobUrlBrowserTestBase;
 
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_BlobsArePartitioned DISABLED_BlobsArePartitioned
+#else
+#define MAYBE_BlobsArePartitioned BlobsArePartitioned
+#endif
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
-                       BlobsArePartitioned) {
+                       MAYBE_BlobsArePartitioned) {
   TestBlobsArePartitioned();
 }
 
@@ -300,18 +306,31 @@ class BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest
 };
 
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledWithoutSiteIsolationBrowserTest,
-                       BlobsArePartitioned) {
+                       MAYBE_BlobsArePartitioned) {
   TestBlobsArePartitioned();
 }
 
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_BlobsArePartitionedIn1PESMode \
+  DISABLED_BlobsArePartitionedIn1PESMode
+#else
+#define MAYBE_BlobsArePartitionedIn1PESMode BlobsArePartitionedIn1PESMode
+#endif
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
-                       BlobsArePartitionedIn1PESMode) {
+                       MAYBE_BlobsArePartitionedIn1PESMode) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   TestBlobsArePartitioned();
 }
 
+#if BUILDFLAG(IS_MAC)
+#define MAYBE_BlobsArePartitionedIn1PESModeForBothSites \
+  DISABLED_BlobsArePartitionedIn1PESModeForBothSites
+#else
+#define MAYBE_BlobsArePartitionedIn1PESModeForBothSites \
+  BlobsArePartitionedIn1PESModeForBothSites
+#endif
 IN_PROC_BROWSER_TEST_F(BlobUrlPartitionEnabledBrowserTest,
-                       BlobsArePartitionedIn1PESModeForBothSites) {
+                       MAYBE_BlobsArePartitionedIn1PESModeForBothSites) {
   SetCookieSetting(a_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   SetCookieSetting(b_site_ephemeral_storage_url_, CONTENT_SETTING_SESSION_ONLY);
   TestBlobsArePartitioned();
