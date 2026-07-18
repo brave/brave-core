@@ -57,6 +57,16 @@ class AcceleratorMenuCoordinatorMac::ObjCStorage {
     std::string codes;
   };
 
+  static void RestorePristine(const PristineMenuItemState& state) {
+    NSMenuItem* item = state.item;
+    item.keyEquivalent = state.key_equivalent;
+    item.keyEquivalentModifierMask = state.modifier_mask;
+    if (@available(macos 12.0, *)) {
+      item.allowsAutomaticKeyEquivalentLocalization = state.allows_localization;
+      item.allowsAutomaticKeyEquivalentMirroring = state.allows_mirroring;
+    }
+  }
+
   // Returns the pristine state of the menu item mapped to |command_id|, or
   // nullptr if no menu item dispatches the command.
   const PristineMenuItemState* FindPristineItem(int command_id) {
@@ -68,16 +78,6 @@ class AcceleratorMenuCoordinatorMac::ObjCStorage {
   void RestoreAll() {
     for (auto& [command_id, state] : pristine_items_by_command_) {
       RestorePristine(state);
-    }
-  }
-
-  static void RestorePristine(const PristineMenuItemState& state) {
-    NSMenuItem* item = state.item;
-    item.keyEquivalent = state.key_equivalent;
-    item.keyEquivalentModifierMask = state.modifier_mask;
-    if (@available(macos 12.0, *)) {
-      item.allowsAutomaticKeyEquivalentLocalization = state.allows_localization;
-      item.allowsAutomaticKeyEquivalentMirroring = state.allows_mirroring;
     }
   }
 
