@@ -39,6 +39,19 @@ struct DefaultAccelerators {
 // Gets the default list of accelerators.
 DefaultAccelerators GetDefaultAccelerators();
 
+#if BUILDFLAG(IS_MAC)
+// Returns shortcuts mapped to the global menu (which can be changed by the OS
+// too, via System Settings > Keyboard > Keyboard Shortcuts > App Shortcuts -
+// this is why there's no static table for these), plus global shortcuts that
+// aren't present in the main menu.
+//
+// The result is computed once and cached: AcceleratorMenuCoordinatorMac
+// mutates the live menu's key equivalents to apply user customizations, so
+// re-reading the menu later (e.g. when a second profile creates its
+// AcceleratorService) would treat customized values as defaults.
+const DefaultAccelerators& GetGlobalAccelerators();
+#endif  // BUILDFLAG(IS_MAC)
+
 }  // namespace commands
 
 #endif  // BRAVE_BROWSER_UI_COMMANDS_DEFAULT_ACCELERATORS_H_
