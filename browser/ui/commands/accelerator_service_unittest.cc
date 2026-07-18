@@ -340,6 +340,8 @@ class TestAcceleratorsObserver : public AcceleratorService::Observer {
 
 }  // namespace
 
+// Menu dispatched accelerators only exist on macOS (see DefaultAccelerators).
+#if BUILDFLAG(IS_MAC)
 TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreNotRegistered) {
   commands::DefaultAccelerators defaults = MakeDefaults(
       {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
@@ -425,6 +427,7 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
     EXPECT_EQ("Control+KeyT", commands::ToCodesString(accelerators[0]));
   }
 }
+#endif  // BUILDFLAG(IS_MAC)
 
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsForCommandAccessors) {
   commands::AcceleratorService service(

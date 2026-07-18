@@ -15,6 +15,7 @@
 #include "brave/browser/ui/commands/default_accelerators.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/commands.mojom.h"
+#include "build/build_config.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
@@ -107,12 +108,14 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   // modified.
   base::flat_set<ui::Accelerator> system_managed_;
 
-  // macOS only (empty elsewhere): default accelerators dispatched via a main
-  // menu NSMenuItem key equivalent. Unlike |system_managed_| these can be
-  // modified or removed - AcceleratorMenuCoordinatorMac syncs the menu items
-  // with customizations - but while assigned to their default command they are
-  // dispatched by the menu, so they must not be registered with the browser.
+#if BUILDFLAG(IS_MAC)
+  // Default accelerators dispatched via a main menu NSMenuItem key equivalent.
+  // Unlike |system_managed_| these can be modified or removed -
+  // AcceleratorMenuCoordinatorMac syncs the menu items with customizations -
+  // but while assigned to their default command they are dispatched by the
+  // menu, so they must not be registered with the browser.
   AcceleratorPrefManager::Accelerators menu_dispatched_;
+#endif  // BUILDFLAG(IS_MAC)
 
   mojo::ReceiverSet<CommandsService> receivers_;
   mojo::RemoteSet<mojom::CommandsListener> mojo_listeners_;
