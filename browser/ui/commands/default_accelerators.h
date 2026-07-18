@@ -8,6 +8,7 @@
 
 #include "base/containers/flat_set.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
+#include "build/build_config.h"
 #include "ui/base/accelerators/accelerator.h"
 
 namespace commands {
@@ -25,12 +26,14 @@ struct DefaultAccelerators {
   // registered with the browser's FocusManager as the OS dispatches them.
   base::flat_set<ui::Accelerator> system_managed;
 
-  // macOS only (empty elsewhere): accelerators dispatched via a main menu
-  // NSMenuItem key equivalent. They can be modified or removed by the user
-  // (the menu is kept in sync by AcceleratorMenuCoordinatorMac), but must not
-  // be registered with the FocusManager while assigned to their default
-  // command, to avoid double handling.
+#if BUILDFLAG(IS_MAC)
+  // Accelerators dispatched via a main menu NSMenuItem key equivalent. They
+  // can be modified or removed by the user (the menu is kept in sync by
+  // AcceleratorMenuCoordinatorMac), but must not be registered with the
+  // FocusManager while assigned to their default command, to avoid double
+  // handling.
   AcceleratorPrefManager::Accelerators menu_dispatched;
+#endif  // BUILDFLAG(IS_MAC)
 };
 
 // Gets the default list of accelerators.
