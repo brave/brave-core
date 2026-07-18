@@ -117,8 +117,8 @@
     },
     {
       "label": "sync",
-      "type": "pnpm",
-      "script": "sync",
+      "type": "shell",
+      "command": "pnpm run sync",
       "presentation": {
         "group": "sync"
       },
@@ -337,8 +337,8 @@
     },
     {
       "label": "update_patches",
-      "type": "pnpm",
-      "script": "update_patches",
+      "type": "shell",
+      "command": "pnpm run update_patches",
       "problemMatcher": [],
       "presentation": {
         "group": "patches",
