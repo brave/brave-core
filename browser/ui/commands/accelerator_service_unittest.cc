@@ -430,6 +430,36 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
     EXPECT_EQ("Control+KeyT", commands::ToCodesString(accelerators[0]));
   }
 }
+
+TEST_F(AcceleratorServiceUnitTest,
+       CanAddAcceleratorToCommandWithSystemManagedDefault) {
+  commands::DefaultAccelerators defaults = MakeDefaults(
+      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
+  defaults.system_managed = {commands::FromCodesString("Control+KeyT")};
+  commands::AcceleratorService service(profile().GetPrefs(),
+                                       std::move(defaults));
+
+  // The system managed default itself is unmodifiable...
+  auto command = service.GetCommandForTesting(IDC_NEW_TAB);
+  ASSERT_EQ(1u, command->accelerators.size());
+  EXPECT_TRUE(command->accelerators[0]->unmodifiable);
+
+  // ...but additional accelerators can still be assigned to the command, and
+  // they are dispatched by the browser (sent to observers), not by the OS.
+  TestAcceleratorsObserver observer;
+  service.AddObserver(&observer);
+  service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
+
+  command = service.GetCommandForTesting(IDC_NEW_TAB);
+  ASSERT_EQ(2u, command->accelerators.size());
+  EXPECT_FALSE(command->accelerators[1]->unmodifiable);
+
+  ASSERT_TRUE(observer.changed().contains(IDC_NEW_TAB));
+  ASSERT_EQ(1u, observer.changed().at(IDC_NEW_TAB).size());
+  EXPECT_EQ("Control+KeyK",
+            commands::ToCodesString(observer.changed().at(IDC_NEW_TAB)[0]));
+  service.RemoveObserver(&observer);
+}
 #endif  // BUILDFLAG(IS_MAC)
 
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsForCommandAccessors) {
