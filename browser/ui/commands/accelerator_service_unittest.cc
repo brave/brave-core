@@ -278,6 +278,8 @@ TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
   EXPECT_FALSE(command->modified);
 }
 
+// System managed accelerators only exist on macOS (see DefaultAccelerators).
+#if BUILDFLAG(IS_MAC)
 TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
   commands::AcceleratorPrefManager::Accelerators defaults = {
       {IDC_FOCUS_MENU_BAR, {commands::FromCodesString("Alt+KeyF")}},
@@ -316,6 +318,7 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
     EXPECT_EQ("Control+KeyT", unmodifiable_accelerator->codes);
   }
 }
+#endif  // BUILDFLAG(IS_MAC)
 
 namespace {
 

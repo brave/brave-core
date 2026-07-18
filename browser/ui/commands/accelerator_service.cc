@@ -140,10 +140,10 @@ AcceleratorService::AcceleratorService(PrefService* pref_service,
                                        DefaultAccelerators default_accelerators)
     : pref_service_(pref_service),
       pref_manager_(pref_service, commands::GetCommands()),
-      default_accelerators_(std::move(default_accelerators.accelerators)),
-      system_managed_(std::move(default_accelerators.system_managed))
+      default_accelerators_(std::move(default_accelerators.accelerators))
 #if BUILDFLAG(IS_MAC)
       ,
+      system_managed_(std::move(default_accelerators.system_managed)),
       menu_dispatched_(std::move(default_accelerators.menu_dispatched))
 #endif  // BUILDFLAG(IS_MAC)
 {
