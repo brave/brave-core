@@ -53,7 +53,7 @@ class AcceleratorMenuCoordinatorMac : public BrowserCollectionObserver,
  private:
   // Holds the Objective-C state (menu items and their pristine key
   // equivalents), so this header stays includable from C++.
-  struct ObjCStorage;
+  class ObjCStorage;
 
   // Updates the menu items mapped to |command_id| to reflect the current
   // accelerators in |service_|.

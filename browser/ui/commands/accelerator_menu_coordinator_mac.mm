@@ -43,7 +43,8 @@ bool IsKeyEquivalentManagedElsewhere(int command_id) {
 
 }  // namespace
 
-struct AcceleratorMenuCoordinatorMac::ObjCStorage {
+class AcceleratorMenuCoordinatorMac::ObjCStorage {
+ public:
   struct PristineMenuItemState {
     NSMenuItem* item = nil;
     // The item's default key equivalent, captured before any mutation.
@@ -56,16 +57,36 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
     std::string codes;
   };
 
-  // Built once, before any mutation, so the captured state is pristine. The
-  // main menu's command items are static after startup.
-  bool indexed = false;
-  base::flat_map<int, PristineMenuItemState> pristine_items_by_command;
+  // Returns the pristine state of the menu item mapped to |command_id|, or
+  // nullptr if no menu item dispatches the command.
+  const PristineMenuItemState* FindPristineItem(int command_id) {
+    EnsureIndexed();
+    return base::FindOrNull(pristine_items_by_command_, command_id);
+  }
 
+  // Restores every indexed item to its pristine key equivalent.
+  void RestoreAll() {
+    for (auto& [command_id, state] : pristine_items_by_command_) {
+      RestorePristine(state);
+    }
+  }
+
+  static void RestorePristine(const PristineMenuItemState& state) {
+    NSMenuItem* item = state.item;
+    item.keyEquivalent = state.key_equivalent;
+    item.keyEquivalentModifierMask = state.modifier_mask;
+    if (@available(macos 12.0, *)) {
+      item.allowsAutomaticKeyEquivalentLocalization = state.allows_localization;
+      item.allowsAutomaticKeyEquivalentMirroring = state.allows_mirroring;
+    }
+  }
+
+ private:
   void EnsureIndexed() {
-    if (indexed) {
+    if (indexed_) {
       return;
     }
-    indexed = true;
+    indexed_ = true;
 
     NSMenu* menu = [NSApp mainMenu];
     if (!menu) {
@@ -92,27 +113,15 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
       state.codes = ToCodesString(*accelerator);
       // No command is expected to have more than one menu item with a key
       // equivalent.
-      CHECK(!pristine_items_by_command.contains(command_id));
-      pristine_items_by_command.insert({command_id, std::move(state)});
+      CHECK(!pristine_items_by_command_.contains(command_id));
+      pristine_items_by_command_.insert({command_id, std::move(state)});
     });
   }
 
-  // Restores every indexed item to its pristine key equivalent.
-  void RestoreAll() {
-    for (auto& [command_id, state] : pristine_items_by_command) {
-      RestorePristine(state);
-    }
-  }
-
-  static void RestorePristine(const PristineMenuItemState& state) {
-    NSMenuItem* item = state.item;
-    item.keyEquivalent = state.key_equivalent;
-    item.keyEquivalentModifierMask = state.modifier_mask;
-    if (@available(macos 12.0, *)) {
-      item.allowsAutomaticKeyEquivalentLocalization = state.allows_localization;
-      item.allowsAutomaticKeyEquivalentMirroring = state.allows_mirroring;
-    }
-  }
+  // Built once, before any mutation, so the captured state is pristine. The
+  // main menu's command items are static after startup.
+  bool indexed_ = false;
+  base::flat_map<int, PristineMenuItemState> pristine_items_by_command_;
 };
 
 AcceleratorMenuCoordinatorMac::AcceleratorMenuCoordinatorMac()
@@ -169,9 +178,7 @@ void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
     return;
   }
 
-  objc_storage_->EnsureIndexed();
-  const auto* state =
-      base::FindOrNull(objc_storage_->pristine_items_by_command, command_id);
+  const auto* state = objc_storage_->FindPristineItem(command_id);
   if (!state) {
     return;
   }
