@@ -31,8 +31,8 @@ jobs:
           git remote add upstream https://github.com/brave/brave-core.git
           git fetch upstream master
 
-      - name: Merge upstream master
-        run: git merge --no-edit upstream/master
+      - name: Rebase local commits onto upstream master
+        run: git rebase upstream/master
 
       - name: Push master
-        run: git push origin HEAD:master
+        run: git push --force-with-lease origin HEAD:master
