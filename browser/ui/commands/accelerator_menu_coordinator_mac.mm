@@ -118,8 +118,9 @@ class AcceleratorMenuCoordinatorMac::ObjCStorage {
     });
   }
 
-  // Built once, before any mutation, so the captured state is pristine. The
-  // main menu's command items are static after startup.
+  // Indexed only once, by the first EnsureIndexed() call, before any mutation,
+  // so the captured state is pristine. The main menu's command items are
+  // static after startup.
   bool indexed_ = false;
   base::flat_map<int, PristineMenuItemState> pristine_items_by_command_;
 };
