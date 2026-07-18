@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <optional>
+#include <vector>
 
 #include "base/check.h"
 #include "base/check_is_test.h"
@@ -18,8 +19,10 @@
 #include "base/no_destructor.h"
 #include "base/strings/sys_string_conversions.h"
 #include "brave/app/command_utils.h"
+#include "brave/browser/ui/commands/default_accelerators.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/global_keyboard_shortcuts_mac.h"
+#include "chrome/browser/ui/accelerator_table.h"
 #include "chrome/browser/ui/cocoa/accelerators_cocoa.h"
 #include "ui/events/cocoa/cocoa_event_utils.h"
 #include "ui/events/event_constants.h"
@@ -192,7 +195,7 @@ void AccumulateAcceleratorsRecursively(
   });
 }
 
-MacGlobalAccelerators BuildGlobalAccelerators() {
+DefaultAccelerators BuildGlobalAccelerators() {
   base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
       menu_backed_map;
   base::flat_map<int /*command_id*/, std::vector<AcceleratorMapping>>
@@ -230,28 +233,30 @@ MacGlobalAccelerators BuildGlobalAccelerators() {
         ToAcceleratorMapping(command_id, accelerator));
   }
 
-  MacGlobalAccelerators result;
+  DefaultAccelerators result;
   auto accumulate =
       [&result](const base::flat_map<int, std::vector<AcceleratorMapping>>&
                     accelerator_map,
-                std::vector<AcceleratorMapping>* category, bool unmodifiable) {
+                bool menu_backed, bool unmodifiable) {
         for (const auto& [command_id, accelerator_mappings] : accelerator_map) {
           DCHECK_NE(command_id, 0);
           for (const auto& accelerator_mapping : accelerator_mappings) {
             DCHECK(accelerator_mapping.modifiers);
-            result.all.push_back(accelerator_mapping);
-            if (category) {
-              category->push_back(accelerator_mapping);
+            const ui::Accelerator accelerator(accelerator_mapping.keycode,
+                                              accelerator_mapping.modifiers);
+            result.accelerators[command_id].push_back(accelerator);
+            if (menu_backed) {
+              result.menu_dispatched[command_id].push_back(accelerator);
             }
             if (unmodifiable || IsUnmodifiableCommand(command_id)) {
-              result.unmodifiable.push_back(accelerator_mapping);
+              result.system_managed.insert(accelerator);
             }
           }
         }
       };
-  accumulate(menu_backed_map, &result.menu_backed, /*unmodifiable=*/false);
-  accumulate(not_in_menu_map, nullptr, /*unmodifiable=*/false);
-  accumulate(static_table_map, nullptr, /*unmodifiable=*/true);
+  accumulate(menu_backed_map, /*menu_backed=*/true, /*unmodifiable=*/false);
+  accumulate(not_in_menu_map, /*menu_backed=*/false, /*unmodifiable=*/false);
+  accumulate(static_table_map, /*menu_backed=*/false, /*unmodifiable=*/true);
   return result;
 }
 
@@ -284,19 +289,13 @@ std::optional<ui::Accelerator> GetAcceleratorFromMenuItem(NSMenuItem* item) {
   return ui::Accelerator(mapping->keycode, mapping->modifiers);
 }
 
-MacGlobalAccelerators::MacGlobalAccelerators() = default;
-MacGlobalAccelerators::~MacGlobalAccelerators() = default;
-MacGlobalAccelerators::MacGlobalAccelerators(MacGlobalAccelerators&&) = default;
-MacGlobalAccelerators& MacGlobalAccelerators::operator=(
-    MacGlobalAccelerators&&) = default;
-
-const MacGlobalAccelerators& GetGlobalAccelerators() {
+const DefaultAccelerators& GetGlobalAccelerators() {
   // Cached: the live menu's key equivalents are mutated later to reflect user
   // customizations (see AcceleratorMenuCoordinatorMac), so the pristine
   // defaults must only be read once, before any mutation. The first call
   // happens while constructing the first profile's AcceleratorService, which
   // precedes any menu sync since syncing is driven by service observation.
-  static base::NoDestructor<MacGlobalAccelerators> cached(
+  static base::NoDestructor<DefaultAccelerators> cached(
       BuildGlobalAccelerators());
   return *cached;
 }
