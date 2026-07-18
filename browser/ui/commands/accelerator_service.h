@@ -105,7 +105,8 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
 
   // Some accelerators are managed by the system - we need to make sure we don't
   // register these (which can result in double handling) or allow them to be
-  // modified.
+  // modified. Only populated on macOS (see DefaultAccelerators), but kept on
+  // all platforms so shared code paths need no ifdefs.
   base::flat_set<ui::Accelerator> system_managed_;
 
 #if BUILDFLAG(IS_MAC)
