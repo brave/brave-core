@@ -9,7 +9,6 @@
 
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/check.h"
 #include "base/check_op.h"
@@ -59,7 +58,7 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
   // Built once, before any mutation, so the captured state is pristine. The
   // main menu's command items are static after startup.
   bool indexed = false;
-  base::flat_map<int, std::vector<PristineMenuItemState>> pristine_items_by_command;
+  base::flat_map<int, PristineMenuItemState> pristine_items_by_command;
 
   void EnsureIndexed() {
     if (indexed) {
@@ -90,16 +89,17 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
         state.allows_mirroring = item.allowsAutomaticKeyEquivalentMirroring;
       }
       state.codes = ToCodesString(*accelerator);
-      pristine_items_by_command[command_id].push_back(std::move(state));
+      // No command is expected to have more than one menu item with a key
+      // equivalent.
+      CHECK(!pristine_items_by_command.contains(command_id));
+      pristine_items_by_command.insert({command_id, std::move(state)});
     });
   }
 
   // Restores every indexed item to its pristine key equivalent.
   void RestoreAll() {
-    for (auto& [command_id, states] : pristine_items_by_command) {
-      for (auto& state : states) {
-        RestorePristine(state);
-      }
+    for (auto& [command_id, state] : pristine_items_by_command) {
+      RestorePristine(state);
     }
   }
 
@@ -181,24 +181,23 @@ void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
     current_codes.insert(ToCodesString(accelerator));
   }
 
-  for (auto& state : it->second) {
+  const auto& state = it->second;
+  if (current_codes.contains(state.codes)) {
+    // The default accelerator is (still) assigned to this command: the item
+    // shows and dispatches it.
+    ObjCStorage::RestorePristine(state);
+  } else {
+    // The default accelerator was removed or moved to another command.
+    // Clear the key equivalent so the menu no longer dispatches it. Note
+    // that custom accelerators are deliberately not written into the menu:
+    // they are registered with the browser's FocusManager instead (see
+    // AcceleratorService::IsOsDispatched).
     NSMenuItem* item = state.item;
-    if (current_codes.contains(state.codes)) {
-      // The default accelerator is (still) assigned to this command: the item
-      // shows and dispatches it.
-      ObjCStorage::RestorePristine(state);
-    } else {
-      // The default accelerator was removed or moved to another command.
-      // Clear the key equivalent so the menu no longer dispatches it. Note
-      // that custom accelerators are deliberately not written into the menu:
-      // they are registered with the browser's FocusManager instead (see
-      // AcceleratorService::IsOsDispatched).
-      if (@available(macos 12.0, *)) {
-        item.allowsAutomaticKeyEquivalentLocalization = NO;
-      }
-      item.keyEquivalent = @"";
-      item.keyEquivalentModifierMask = 0;
+    if (@available(macos 12.0, *)) {
+      item.allowsAutomaticKeyEquivalentLocalization = NO;
     }
+    item.keyEquivalent = @"";
+    item.keyEquivalentModifierMask = 0;
   }
 }
 
