@@ -10,10 +10,6 @@
 #include "chrome/browser/ui/accelerator_table.h"
 #include "ui/base/accelerators/accelerator.h"
 
-#if BUILDFLAG(IS_MAC)
-#include "brave/browser/ui/views/commands/default_accelerators_mac.h"
-#endif  // BUILDFLAG(IS_MAC)
-
 namespace commands {
 
 DefaultAccelerators::DefaultAccelerators() = default;
@@ -25,23 +21,21 @@ DefaultAccelerators& DefaultAccelerators::operator=(DefaultAccelerators&&) =
 DefaultAccelerators GetDefaultAccelerators() {
   DefaultAccelerators result;
 
-  auto add_to_accelerators = [&result](const AcceleratorMapping& mapping) {
-    result.accelerators[mapping.command_id].push_back(
-        ui::Accelerator(mapping.keycode, mapping.modifiers));
-  };
-
-  std::ranges::for_each(GetAcceleratorList(), add_to_accelerators);
+  std::ranges::for_each(
+      GetAcceleratorList(), [&result](const AcceleratorMapping& mapping) {
+        result.accelerators[mapping.command_id].push_back(
+            ui::Accelerator(mapping.keycode, mapping.modifiers));
+      });
 #if BUILDFLAG(IS_MAC)
-  const MacGlobalAccelerators& global_accelerators = GetGlobalAccelerators();
-  std::ranges::for_each(global_accelerators.all, add_to_accelerators);
-  for (const AcceleratorMapping& mapping : global_accelerators.menu_backed) {
-    result.menu_dispatched[mapping.command_id].push_back(
-        ui::Accelerator(mapping.keycode, mapping.modifiers));
+  const DefaultAccelerators& global_accelerators = GetGlobalAccelerators();
+  for (const auto& [command_id, accelerators] :
+       global_accelerators.accelerators) {
+    auto& command_accelerators = result.accelerators[command_id];
+    command_accelerators.insert(command_accelerators.end(),
+                                accelerators.begin(), accelerators.end());
   }
-  for (const AcceleratorMapping& mapping : global_accelerators.unmodifiable) {
-    result.system_managed.insert(
-        ui::Accelerator(mapping.keycode, mapping.modifiers));
-  }
+  result.menu_dispatched = global_accelerators.menu_dispatched;
+  result.system_managed = global_accelerators.system_managed;
 #endif  // BUILDFLAG(IS_MAC)
   return result;
 }
