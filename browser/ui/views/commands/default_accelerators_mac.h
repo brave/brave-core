@@ -56,7 +56,7 @@ const MacGlobalAccelerators& GetGlobalAccelerators();
 
 // Whether |command_id|'s key equivalents are hard-coded and dynamically
 // swapped by upstream's app_controller_mac.mm, so user customizations can't
-// be applied to them (IDC_CLOSE_TAB / IDC_CLOSE_WINDOW).
+// be applied to them (i.e. IDC_CLOSE_TAB / IDC_CLOSE_WINDOW).
 bool IsUnmodifiableCommand(int command_id);
 
 #if defined(__OBJC__)
