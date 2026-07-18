@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "base/check.h"
+#include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "brave/app/brave_command_ids.h"
@@ -155,7 +156,7 @@ void AcceleratorMenuCoordinatorMac::OnAcceleratorsChanged(
 }
 
 void AcceleratorMenuCoordinatorMac::OnProfileWillBeDestroyed(Profile* profile) {
-  CHECK(profile == profile_);
+  CHECK_EQ(profile, profile_);
   profile_observation_.Reset();
   service_observation_.Reset();
   service_ = nullptr;
