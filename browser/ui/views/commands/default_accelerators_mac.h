@@ -44,7 +44,7 @@ struct MacGlobalAccelerators {
 };
 
 // Returns shortcuts mapped to the global menu (which can be changed by the OS
-// too, via System Settings > Keyboard > Keyboard Shortcuts > App Shortcuts —
+// too, via System Settings > Keyboard > Keyboard Shortcuts > App Shortcuts -
 // this is why there's no static table for these), plus global shortcuts that
 // aren't present in the main menu.
 //
