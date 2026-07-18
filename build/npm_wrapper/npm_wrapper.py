@@ -97,8 +97,8 @@ def find_real_npm() -> str:
 def should_use_pnpm(project_dir: str) -> bool:
     package_path = Path(project_dir) / PACKAGE_JSON
     try:
-        package = json.loads(package_path.read_text())
-    except (FileNotFoundError, json.JSONDecodeError, OSError) as e:
+        package = json.loads(package_path.read_text(encoding='utf-8'))
+    except Exception as e:
         raise RuntimeError(
             f'failed to read package manager name from {package_path}') from e
 
