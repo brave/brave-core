@@ -319,7 +319,7 @@ void AcceleratorService::AddObserver(Observer* observer) {
 
     std::ranges::copy_if(
         accelerators, std::back_inserter(changed[command_id]),
-        [this, command_id = command_id](const ui::Accelerator& accelerator) {
+        [this, command_id](const ui::Accelerator& accelerator) {
           return !IsOsDispatched(command_id, accelerator);
         });
   }
@@ -422,7 +422,7 @@ void AcceleratorService::NotifyCommandsChanged(
     // that might break these commands being triggered from the system.
     std::ranges::copy_if(
         changed_command, std::back_inserter(changed[command_id]),
-        [this, command_id = command_id](const ui::Accelerator& accelerator) {
+        [this, command_id](const ui::Accelerator& accelerator) {
           return !IsOsDispatched(command_id, accelerator);
         });
   }
