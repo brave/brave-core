@@ -468,7 +468,24 @@ ConversationHandler::GetConversationHistory() const {
 }
 
 void ConversationHandler::GetConversationHistory(
+    const std::optional<std::string>& thread_uuid,
     GetConversationHistoryCallback callback) {
+  if (thread_uuid) {
+    auto* container = base::FindOrNull(threads_, *thread_uuid);
+    CHECK(container);
+    if (!container->entries.empty()) {
+      std::move(callback).Run(BuildFullThreadHistory(*thread_uuid));
+      return;
+    }
+
+    ai_chat_service_->GetConversationThreadEntries(
+        *thread_uuid,
+        base::BindOnce(
+            &ConversationHandler::OnConversationThreadHistoryReceived,
+            weak_ptr_factory_.GetWeakPtr(), *thread_uuid, std::move(callback)));
+    return;
+  }
+
   std::vector<mojom::ConversationTurnPtr> history;
   for (const auto& turn : chat_history_) {
     history.emplace_back(turn->Clone());
@@ -491,25 +508,9 @@ void ConversationHandler::GetConversationThreads(
   std::move(callback).Run(std::move(threads));
 }
 
-void ConversationHandler::GetConversationThreadHistory(
-    const std::string& thread_uuid,
-    GetConversationThreadHistoryCallback callback) {
-  auto* container = base::FindOrNull(threads_, thread_uuid);
-  if (container && !container->entries.empty()) {
-    std::move(callback).Run(BuildFullThreadHistory(thread_uuid));
-    return;
-  }
-
-  ai_chat_service_->GetConversationThreadEntries(
-      thread_uuid,
-      base::BindOnce(&ConversationHandler::OnConversationThreadHistoryReceived,
-                     weak_ptr_factory_.GetWeakPtr(), thread_uuid,
-                     std::move(callback)));
-}
-
 void ConversationHandler::OnConversationThreadHistoryReceived(
     std::string thread_uuid,
-    GetConversationThreadHistoryCallback callback,
+    GetConversationHistoryCallback callback,
     std::vector<mojom::ConversationTurnPtr> entries) {
   threads_[thread_uuid].entries = std::move(entries);
   std::move(callback).Run(BuildFullThreadHistory(thread_uuid));

@@ -600,7 +600,7 @@ function StoryContext(
             },
           })
         },
-        getConversationHistory: async () => ({
+        getConversationHistory: async (_threadUuid: string | null) => ({
           conversationHistory: await getConversationHistory(),
         }),
       }}
@@ -641,7 +641,7 @@ function StoryContext(
       <ActiveChatContext.Provider value={activeChatContext}>
         <UntrustedMockContext
           conversationHandler={{
-            getConversationHistory: async () => ({
+            getConversationHistory: async (_threadUuid: string | null) => ({
               conversationHistory: await getConversationHistory(),
             }),
           }}

@@ -48,7 +48,7 @@ function App(props: AppProps) {
   useUntrustedFrameDragHandling(onDrag)
 
   const isConversationLoaded =
-    !api.useGetConversationHistory().isPlaceholderData
+    !api.useGetConversationHistory(null).isPlaceholderData
 
   // Set up document height communication with parent frame only when
   // ready to avoid layout flash.

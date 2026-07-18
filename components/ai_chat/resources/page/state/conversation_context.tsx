@@ -74,7 +74,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
   const aiChat = useAIChat()
 
   const { api } = props
-  const conversationHistory = api.useGetConversationHistoryData()
+  const conversationHistory = api.useGetConversationHistoryData(null)
   const { getStateData: conversationState } = api.useGetState()
 
   const sendFeedbackState = useSendFeedback(api)
@@ -454,7 +454,7 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     // After mutation, any returned promise will be awaited before settling.
     // This won't re-fetch the conversation history, just get the latest
     // version if it's not invalidated.
-    const conversationHistory = await api.getConversationHistory.fetch()
+    const conversationHistory = await api.getConversationHistory.fetch(null)
     // Since we're in an async callback, we need to get the latest version of
     // data.
     setPendingMessageFiles((pendingMessageFiles) => {

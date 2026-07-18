@@ -66,7 +66,7 @@ export default function FeatureMenu(props: Props) {
       )
     } else {
       const conversationHistory =
-        conversationContext.api.getConversationHistory.current()
+        conversationContext.api.getConversationHistory.current(null)
       textToCopy = formatConversationForClipboard(conversationHistory)
     }
 

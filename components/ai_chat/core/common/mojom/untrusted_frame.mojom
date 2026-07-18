@@ -57,8 +57,9 @@ interface UntrustedConversationHandler {
       pending_remote<UntrustedConversationUI> untrusted_ui)
           => (ConversationEntriesState conversation_entries_state);
 
-  // Get all visible history entries, including in-progress responses
-  GetConversationHistory() => (array<ConversationTurn> conversation_history);
+  // Get all visible history entries, including in-progress responses.
+  GetConversationHistory(string? thread_uuid) =>
+      (array<ConversationTurn> conversation_history);
 
   // Returns thread metadata for this conversation. Entries are not loaded.
   GetConversationThreads() => (array<Thread> threads);

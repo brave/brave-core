@@ -60,7 +60,7 @@ function Main() {
   )
 
   const isHistoryPlaceholderData =
-    conversationContext.api.useGetConversationHistory().isPlaceholderData
+    conversationContext.api.useGetConversationHistory(null).isPlaceholderData
 
   const maybeShowSoftKeyboard = (querySubmitted: boolean) => {
     if (

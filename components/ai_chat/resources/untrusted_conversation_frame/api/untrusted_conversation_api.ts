@@ -108,7 +108,7 @@ export default function createUntrustedConversationApi(
       ...endpointsFor(conversationHandler, {
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          prefetchWithArgs: [],
+          prefetchWithArgs: [null],
           placeholderData: [] as Mojom.ConversationTurn[],
         },
       }),
@@ -186,9 +186,9 @@ export default function createUntrustedConversationApi(
         {
           onConversationHistoryUpdate(entry) {
             if (!entry) {
-              api.getConversationHistory.invalidate()
+              api.getConversationHistory.invalidate(null)
             } else {
-              api.getConversationHistory.update((old) =>
+              api.getConversationHistory.update(null, (old) =>
                 updateConversationHistory(old, entry),
               )
             }
@@ -197,14 +197,14 @@ export default function createUntrustedConversationApi(
           onConversationThreadUpdate(_thread) {},
 
           onToolUseEventOutput(entryUuid, toolUse) {
-            const currentHistory = api.getConversationHistory.current()
+            const currentHistory = api.getConversationHistory.current(null)
             const updatedHistory = updateToolUseEventInHistory(
               currentHistory,
               entryUuid,
               toolUse,
             )
             if (updatedHistory) {
-              api.getConversationHistory.update(updatedHistory)
+              api.getConversationHistory.update(null, updatedHistory)
             }
           },
 

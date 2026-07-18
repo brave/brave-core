@@ -61,7 +61,8 @@ export function createMockUntrustedConversationHandler(
 ): Closable<Mojom.UntrustedConversationHandlerInterface> {
   return makeCloseable({
     // Query methods - return empty/default results
-    getConversationHistory: () => Promise.resolve({ conversationHistory: [] }),
+    getConversationHistory: (_threadUuid: string | null) =>
+      Promise.resolve({ conversationHistory: [] }),
     bindUntrustedConversationUI: () =>
       Promise.resolve({
         conversationEntriesState: defaultConversationEntriesState,

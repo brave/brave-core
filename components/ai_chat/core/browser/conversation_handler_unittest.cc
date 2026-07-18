@@ -1108,8 +1108,8 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
   // Thread entries should NOT be loaded yet (lazy).
   EXPECT_TRUE(container->entries.empty());
 
-  // Populate the thread cache and verify GetConversationThreadHistory
-  // returns the cached entries without delegating to the service.
+  // Populate the thread cache and verify GetConversationHistory with a
+  // thread_uuid returns the cached entries without delegating to the service.
   container->entries.emplace_back(mojom::ConversationTurn::New(
       "thread-entry-1", std::make_optional<std::string>("thread-1"),
       mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
@@ -1118,7 +1118,7 @@ TEST_F(ConversationHandlerUnitTest, ThreadHistory) {
       std::nullopt, nullptr, std::vector<std::string>{}));
 
   base::test::TestFuture<std::vector<mojom::ConversationTurnPtr>> future;
-  handler->GetConversationThreadHistory("thread-1", future.GetCallback());
+  handler->GetConversationHistory("thread-1", future.GetCallback());
   auto entries = future.Take();
   ASSERT_EQ(entries.size(), 2u);
   EXPECT_EQ(entries[0]->uuid, "root-turn");

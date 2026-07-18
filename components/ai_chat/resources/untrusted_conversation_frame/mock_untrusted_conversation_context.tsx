@@ -128,6 +128,7 @@ const MockContext = React.forwardRef<MockContextRef, MockContextProps>(
 
       if (initialState.conversationHistory) {
         untrustedApi.api.getConversationHistory.update(
+          null,
           initialState.conversationHistory,
         )
       }

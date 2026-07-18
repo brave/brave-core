@@ -182,11 +182,9 @@ class ConversationHandler : public mojom::ConversationHandler,
 
   // mojom::ConversationHandler
   void GetState(GetStateCallback callback) override;
-  void GetConversationHistory(GetConversationHistoryCallback callback) override;
+  void GetConversationHistory(const std::optional<std::string>& thread_uuid,
+                              GetConversationHistoryCallback callback) override;
   void GetConversationThreads(GetConversationThreadsCallback callback) override;
-  void GetConversationThreadHistory(
-      const std::string& thread_uuid,
-      GetConversationThreadHistoryCallback callback) override;
   void SetTemporary(bool temporary) override;
   void PauseTask() override;
   void ResumeTask() override;
@@ -470,7 +468,7 @@ class ConversationHandler : public mojom::ConversationHandler,
       EngineConsumer::SuggestedQuestionResult result);
   void OnConversationThreadHistoryReceived(
       std::string thread_uuid,
-      GetConversationThreadHistoryCallback callback,
+      GetConversationHistoryCallback callback,
       std::vector<mojom::ConversationTurnPtr> entries);
   // Builds thread history by prepending the source entry the thread branched
   // off from in the root conversation.
@@ -536,7 +534,7 @@ class ConversationHandler : public mojom::ConversationHandler,
   mojom::ConversationTurnPtr pending_conversation_entry_;
 
   // Thread metadata map. Entries within each container are lazily loaded
-  // by GetConversationThreadHistory.
+  // by GetConversationHistory when a |thread_uuid| is provided.
   absl::flat_hash_map<std::string, ThreadContainer> threads_;
   // Any previously-generated suggested questions
   std::vector<Suggestion> suggestions_;

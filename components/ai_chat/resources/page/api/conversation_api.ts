@@ -71,7 +71,7 @@ export default function createConversationApi(
         },
         getConversationHistory: {
           response: (result) => result.conversationHistory,
-          prefetchWithArgs: [],
+          prefetchWithArgs: [null],
           placeholderData: [] as Mojom.ConversationTurn[],
         },
         // Mutations are only called when the mutate() function is run, e.g.
@@ -135,10 +135,10 @@ export default function createConversationApi(
             if (!entry) {
               // Force full update, getConversationHistory will be re-fetched if the
               // data is asked for (or if set to prefetch).
-              api.getConversationHistory.invalidate()
+              api.getConversationHistory.invalidate(null)
             } else {
               // Update can also be called with a function that takes the previous state
-              api.getConversationHistory.update((old) =>
+              api.getConversationHistory.update(null, (old) =>
                 updateConversationHistory(old, entry),
               )
             }
