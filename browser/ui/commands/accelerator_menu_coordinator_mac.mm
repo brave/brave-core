@@ -44,7 +44,7 @@ bool IsKeyEquivalentManagedElsewhere(int command_id) {
 }  // namespace
 
 struct AcceleratorMenuCoordinatorMac::ObjCStorage {
-  struct MenuItemState {
+  struct PristineMenuItemState {
     NSMenuItem* item = nil;
     // The item's default key equivalent, captured before any mutation.
     NSString* key_equivalent = nil;
@@ -59,7 +59,7 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
   // Built once, before any mutation, so the captured state is pristine. The
   // main menu's command items are static after startup.
   bool indexed = false;
-  base::flat_map<int, std::vector<MenuItemState>> items_by_command;
+  base::flat_map<int, std::vector<PristineMenuItemState>> items_by_command;
 
   void EnsureIndexed() {
     if (indexed) {
@@ -80,7 +80,7 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
       if (!accelerator) {
         return;
       }
-      MenuItemState state;
+      PristineMenuItemState state;
       state.item = item;
       state.key_equivalent = [item.keyEquivalent copy];
       state.modifier_mask = item.keyEquivalentModifierMask;
@@ -103,7 +103,7 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
     }
   }
 
-  static void RestorePristine(const MenuItemState& state) {
+  static void RestorePristine(const PristineMenuItemState& state) {
     NSMenuItem* item = state.item;
     item.keyEquivalent = state.key_equivalent;
     item.keyEquivalentModifierMask = state.modifier_mask;
