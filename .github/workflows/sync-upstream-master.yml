@@ -1,0 +1,38 @@
+name: Sync upstream master
+
+on:
+  schedule:
+    - cron: "17 3 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: sync-upstream-master
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Configure Git
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Fetch upstream master
+        run: |
+          git remote add upstream https://github.com/brave/brave-core.git
+          git fetch upstream master
+
+      - name: Merge upstream master
+        run: git merge --no-edit upstream/master
+
+      - name: Push master
+        run: git push origin HEAD:master

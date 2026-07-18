@@ -7,8 +7,12 @@ import UIKit
 
 struct UX {
   struct TabsBar {
-    static let buttonWidth = UIDevice.current.userInterfaceIdiom == .pad ? 40 : 0
-    static let height: CGFloat = 29
-    static let minimumWidth: CGFloat = UIDevice.current.userInterfaceIdiom == .pad ? 180 : 160
+    static let isPad = UIDevice.current.userInterfaceIdiom == .pad
+    static let buttonWidth: CGFloat = isPad ? 44 : 0
+    static let height: CGFloat = isPad ? 34 : 29
+    static let minimumWidth: CGFloat = isPad ? 192 : 160
+    static let closeButtonWidth: CGFloat = isPad ? 36 : 30
+    static let closeButtonImageInset: CGFloat = isPad ? 8 : 6
+    static let closeButtonImageScale: CGFloat = isPad ? 1.2 : 1
   }
 }

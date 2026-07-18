@@ -23,8 +23,12 @@ class TabBarCell: UICollectionViewCell {
       for: .normal
     )
     button.tintColor = UIColor(braveSystemName: .textPrimary)
-    // Close button is a bit wider to increase tap area, this aligns the 'X' image closer to the right.
-    button.imageEdgeInsets.left = 6
+    // The wider iPad control keeps the larger close glyph easy to tap while aligning it to the tab edge.
+    button.imageEdgeInsets.left = UX.TabsBar.closeButtonImageInset
+    button.imageView?.transform = CGAffineTransform(
+      scaleX: UX.TabsBar.closeButtonImageScale,
+      y: UX.TabsBar.closeButtonImageScale
+    )
     return button
   }()
 
@@ -105,7 +109,7 @@ class TabBarCell: UICollectionViewCell {
     closeButton.snp.makeConstraints { make in
       make.top.bottom.equalTo(self)
       make.right.equalTo(self).inset(2)
-      make.width.equalTo(30)
+      make.width.equalTo(UX.TabsBar.closeButtonWidth)
     }
 
     separatorLine.snp.makeConstraints { make in
