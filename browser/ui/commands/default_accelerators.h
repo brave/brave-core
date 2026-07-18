@@ -22,11 +22,11 @@ struct DefaultAccelerators {
   // The default accelerators for each command.
   AcceleratorPrefManager::Accelerators accelerators;
 
+#if BUILDFLAG(IS_MAC)
   // Accelerators that can't be modified or removed by the user, and are not
   // registered with the browser's FocusManager as the OS dispatches them.
   base::flat_set<ui::Accelerator> system_managed;
 
-#if BUILDFLAG(IS_MAC)
   // Accelerators dispatched via a main menu NSMenuItem key equivalent. They
   // can be modified or removed by the user (the menu is kept in sync by
   // AcceleratorMenuCoordinatorMac), but must not be registered with the
