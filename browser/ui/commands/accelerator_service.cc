@@ -141,8 +141,12 @@ AcceleratorService::AcceleratorService(PrefService* pref_service,
     : pref_service_(pref_service),
       pref_manager_(pref_service, commands::GetCommands()),
       default_accelerators_(std::move(default_accelerators.accelerators)),
-      system_managed_(std::move(default_accelerators.system_managed)),
-      menu_dispatched_(std::move(default_accelerators.menu_dispatched)) {
+      system_managed_(std::move(default_accelerators.system_managed))
+#if BUILDFLAG(IS_MAC)
+      ,
+      menu_dispatched_(std::move(default_accelerators.menu_dispatched))
+#endif  // BUILDFLAG(IS_MAC)
+{
   Initialize();
 }
 
@@ -440,12 +444,16 @@ bool AcceleratorService::IsOsDispatched(
     return true;
   }
 
+#if BUILDFLAG(IS_MAC)
   // Menu dispatched accelerators are only handled by the OS while they remain
   // assigned to their default command - reassigned to another command they are
   // registered with the browser like any custom accelerator.
   const auto* menu_dispatched = base::FindOrNull(menu_dispatched_, command_id);
   return menu_dispatched &&
          std::ranges::contains(*menu_dispatched, accelerator);
+#else
+  return false;
+#endif  // BUILDFLAG(IS_MAC)
 }
 
 bool AcceleratorService::IsCommandDisabledByPolicy(int command_id) const {
