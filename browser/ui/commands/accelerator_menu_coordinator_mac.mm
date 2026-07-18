@@ -59,7 +59,7 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
   // Built once, before any mutation, so the captured state is pristine. The
   // main menu's command items are static after startup.
   bool indexed = false;
-  base::flat_map<int, std::vector<PristineMenuItemState>> items_by_command;
+  base::flat_map<int, std::vector<PristineMenuItemState>> pristine_items_by_command;
 
   void EnsureIndexed() {
     if (indexed) {
@@ -90,13 +90,13 @@ struct AcceleratorMenuCoordinatorMac::ObjCStorage {
         state.allows_mirroring = item.allowsAutomaticKeyEquivalentMirroring;
       }
       state.codes = ToCodesString(*accelerator);
-      items_by_command[command_id].push_back(std::move(state));
+      pristine_items_by_command[command_id].push_back(std::move(state));
     });
   }
 
   // Restores every indexed item to its pristine key equivalent.
   void RestoreAll() {
-    for (auto& [command_id, states] : items_by_command) {
+    for (auto& [command_id, states] : pristine_items_by_command) {
       for (auto& state : states) {
         RestorePristine(state);
       }
@@ -169,8 +169,8 @@ void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
   }
 
   objc_storage_->EnsureIndexed();
-  auto it = objc_storage_->items_by_command.find(command_id);
-  if (it == objc_storage_->items_by_command.end()) {
+  auto it = objc_storage_->pristine_items_by_command.find(command_id);
+  if (it == objc_storage_->pristine_items_by_command.end()) {
     return;
   }
 
