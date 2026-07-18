@@ -12,6 +12,7 @@
 #include "base/containers/flat_set.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
+#include "brave/browser/ui/commands/default_accelerators.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "components/keyed_service/core/keyed_service.h"
@@ -34,9 +35,7 @@ class AcceleratorService : public mojom::CommandsService, public KeyedService {
   };
 
   AcceleratorService(PrefService* pref_service,
-                     AcceleratorPrefManager::Accelerators default_accelerators,
-                     base::flat_set<ui::Accelerator> system_managed,
-                     AcceleratorPrefManager::Accelerators menu_dispatched = {});
+                     DefaultAccelerators default_accelerators);
   AcceleratorService(const AcceleratorService&) = delete;
   AcceleratorService& operator=(const AcceleratorService&) = delete;
   ~AcceleratorService() override;

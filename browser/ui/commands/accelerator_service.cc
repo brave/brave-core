@@ -136,16 +136,13 @@ base::flat_map<int, mojom::CommandPtr> ToMojoCommands(
 
 }  // namespace
 
-AcceleratorService::AcceleratorService(
-    PrefService* pref_service,
-    AcceleratorPrefManager::Accelerators default_accelerators,
-    base::flat_set<ui::Accelerator> system_managed,
-    AcceleratorPrefManager::Accelerators menu_dispatched)
+AcceleratorService::AcceleratorService(PrefService* pref_service,
+                                       DefaultAccelerators default_accelerators)
     : pref_service_(pref_service),
       pref_manager_(pref_service, commands::GetCommands()),
-      default_accelerators_(std::move(default_accelerators)),
-      system_managed_(std::move(system_managed)),
-      menu_dispatched_(std::move(menu_dispatched)) {
+      default_accelerators_(std::move(default_accelerators.accelerators)),
+      system_managed_(std::move(default_accelerators.system_managed)),
+      menu_dispatched_(std::move(default_accelerators.menu_dispatched)) {
   Initialize();
 }
 

@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_COMMANDS_DEFAULT_ACCELERATORS_H_
 
 #include "base/containers/flat_set.h"
-#include "brave/browser/ui/commands/accelerator_service.h"
+#include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "ui/base/accelerators/accelerator.h"
 
 namespace commands {
