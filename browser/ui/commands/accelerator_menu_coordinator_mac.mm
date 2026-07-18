@@ -14,6 +14,7 @@
 #include "base/check_op.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
+#include "base/containers/map_util.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/views/commands/default_accelerators_mac.h"
@@ -169,8 +170,9 @@ void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
   }
 
   objc_storage_->EnsureIndexed();
-  auto it = objc_storage_->pristine_items_by_command.find(command_id);
-  if (it == objc_storage_->pristine_items_by_command.end()) {
+  const auto* state =
+      base::FindOrNull(objc_storage_->pristine_items_by_command, command_id);
+  if (!state) {
     return;
   }
 
@@ -181,18 +183,17 @@ void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
     current_codes.insert(ToCodesString(accelerator));
   }
 
-  const auto& state = it->second;
-  if (current_codes.contains(state.codes)) {
+  if (current_codes.contains(state->codes)) {
     // The default accelerator is (still) assigned to this command: the item
     // shows and dispatches it.
-    ObjCStorage::RestorePristine(state);
+    ObjCStorage::RestorePristine(*state);
   } else {
     // The default accelerator was removed or moved to another command.
     // Clear the key equivalent so the menu no longer dispatches it. Note
     // that custom accelerators are deliberately not written into the menu:
     // they are registered with the browser's FocusManager instead (see
     // AcceleratorService::IsOsDispatched).
-    NSMenuItem* item = state.item;
+    NSMenuItem* item = state->item;
     if (@available(macos 12.0, *)) {
       item.allowsAutomaticKeyEquivalentLocalization = NO;
     }
