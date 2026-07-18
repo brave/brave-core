@@ -5,6 +5,8 @@
 
 #include "brave/browser/ui/commands/accelerator_service.h"
 
+#include <utility>
+
 #include "base/test/scoped_feature_list.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -63,6 +65,17 @@
 
 namespace commands {
 
+namespace {
+
+DefaultAccelerators MakeDefaults(
+    AcceleratorPrefManager::Accelerators accelerators = {}) {
+  DefaultAccelerators defaults;
+  defaults.accelerators = std::move(accelerators);
+  return defaults;
+}
+
+}  // namespace
+
 class AcceleratorServiceUnitTest : public testing::Test {
  public:
   AcceleratorServiceUnitTest() {
@@ -82,7 +95,8 @@ class AcceleratorServiceUnitTest : public testing::Test {
 TEST_F(AcceleratorServiceUnitTest, CanOverrideExistingShortcut) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
+      MakeDefaults(
+          {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}));
 
   auto accelerators = service.GetAcceleratorsForTesting();
   ASSERT_EQ(1u, accelerators[IDC_NEW_TAB].size());
@@ -98,12 +112,12 @@ TEST_F(AcceleratorServiceUnitTest, CanOverrideExistingShortcut) {
 }
 
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsArePersisted) {
-  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
+  commands::AcceleratorService service(profile().GetPrefs(), MakeDefaults());
 
   auto accelerators = service.GetAcceleratorsForTesting();
   service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyT");
 
-  commands::AcceleratorService service2(profile().GetPrefs(), {}, {});
+  commands::AcceleratorService service2(profile().GetPrefs(), MakeDefaults());
   accelerators = service2.GetAcceleratorsForTesting();
 
   ASSERT_EQ(1u, accelerators[IDC_NEW_TAB].size());
@@ -114,7 +128,8 @@ TEST_F(AcceleratorServiceUnitTest, AcceleratorsArePersisted) {
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeRemoved) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
+      MakeDefaults(
+          {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}));
   service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
   auto accelerators = service.GetAcceleratorsForTesting();
   EXPECT_EQ(2u, accelerators[IDC_NEW_TAB].size());
@@ -136,11 +151,10 @@ TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeRemoved) {
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsCanBeReset) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB,
-        {commands::FromCodesString("Control+KeyT"),
-         commands::FromCodesString("Control+KeyK"),
-         commands::FromCodesString("Control+KeyU")}}},
-      {});
+      MakeDefaults({{IDC_NEW_TAB,
+                     {commands::FromCodesString("Control+KeyT"),
+                      commands::FromCodesString("Control+KeyK"),
+                      commands::FromCodesString("Control+KeyU")}}}));
 
   auto accelerators = service.GetAcceleratorsForTesting();
   ASSERT_EQ(3u, accelerators[IDC_NEW_TAB].size());
@@ -175,11 +189,11 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
   {
     commands::AcceleratorService service(
         profile().GetPrefs(),
-        {{IDC_NEW_TAB,
-          {commands::FromCodesString("Control+KeyT"),
-           commands::FromCodesString("Control+KeyQ")}},
-         {IDC_NEW_WINDOW, {commands::FromCodesString("Control+KeyN")}}},
-        {});
+        MakeDefaults(
+            {{IDC_NEW_TAB,
+              {commands::FromCodesString("Control+KeyT"),
+               commands::FromCodesString("Control+KeyQ")}},
+             {IDC_NEW_WINDOW, {commands::FromCodesString("Control+KeyN")}}}));
     service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyJ");
     service.AssignAcceleratorToCommand(IDC_NEW_WINDOW, "Control+KeyW");
   }
@@ -193,12 +207,12 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
   // 5) New default accelerator to IDC_PIN_TARGET_TAB
   commands::AcceleratorService new_service(
       profile().GetPrefs(),
-      {{{IDC_NEW_TAB,
-         {commands::FromCodesString("Control+KeyT"),
-          commands::FromCodesString("Control+KeyY"),
-          commands::FromCodesString("Control+KeyW")}},
-        {IDC_WINDOW_PIN_TAB, {commands::FromCodesString("Alt+KeyP")}}}},
-      {});
+      MakeDefaults(
+          {{IDC_NEW_TAB,
+            {commands::FromCodesString("Control+KeyT"),
+             commands::FromCodesString("Control+KeyY"),
+             commands::FromCodesString("Control+KeyW")}},
+           {IDC_WINDOW_PIN_TAB, {commands::FromCodesString("Alt+KeyP")}}}));
   auto accelerators = new_service.GetAcceleratorsForTesting();
   ASSERT_EQ(4u, accelerators[IDC_NEW_TAB].size());
   EXPECT_EQ("Control+KeyT",
@@ -220,10 +234,10 @@ TEST_F(AcceleratorServiceUnitTest, DefaultAcceleratorsCanBeUpdated) {
 TEST_F(AcceleratorServiceUnitTest, DuplicateDefaultsAreIgnored) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_FOCUS_MENU_BAR,
-        {commands::FromCodesString("Alt"), commands::FromCodesString("Alt"),
-         commands::FromCodesString("AltGr")}}},
-      {});
+      MakeDefaults(
+          {{IDC_FOCUS_MENU_BAR,
+            {commands::FromCodesString("Alt"), commands::FromCodesString("Alt"),
+             commands::FromCodesString("AltGr")}}}));
   auto accelerators = service.GetAcceleratorsForTesting();
   ASSERT_EQ(2u, accelerators[IDC_FOCUS_MENU_BAR].size());
   EXPECT_EQ("Alt",
@@ -271,7 +285,8 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
 
   // First, move the default shortcut Ctrl+T to IDC_FOCUS_MENU_BAR
   {
-    commands::AcceleratorService service(profile().GetPrefs(), defaults, {});
+    commands::AcceleratorService service(profile().GetPrefs(),
+                                         MakeDefaults(defaults));
 
     // In future, this will be unmodifiable.
     service.AssignAcceleratorToCommand(IDC_FOCUS_MENU_BAR, "Control+KeyT");
@@ -282,9 +297,12 @@ TEST_F(AcceleratorServiceUnitTest, UnmodifiableDefaultsAreReset) {
 
   // Then, relaunch the service with that as an unmodifiable shortcut.
   {
-    commands::AcceleratorService service(
-        profile().GetPrefs(), defaults,
-        {commands::FromCodesString("Control+KeyT")});
+    commands::DefaultAccelerators unmodifiable_defaults =
+        MakeDefaults(defaults);
+    unmodifiable_defaults.system_managed = {
+        commands::FromCodesString("Control+KeyT")};
+    commands::AcceleratorService service(profile().GetPrefs(),
+                                         std::move(unmodifiable_defaults));
 
     const auto& menu_command = service.GetCommandForTesting(IDC_FOCUS_MENU_BAR);
     ASSERT_EQ(1u, menu_command->accelerators.size());
@@ -323,10 +341,12 @@ class TestAcceleratorsObserver : public AcceleratorService::Observer {
 }  // namespace
 
 TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreNotRegistered) {
-  commands::AcceleratorService service(
-      profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {},
+  commands::DefaultAccelerators defaults = MakeDefaults(
       {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}});
+  defaults.menu_dispatched = {
+      {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}};
+  commands::AcceleratorService service(profile().GetPrefs(),
+                                       std::move(defaults));
 
   TestAcceleratorsObserver observer;
   service.AddObserver(&observer);
@@ -366,12 +386,17 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreNotRegistered) {
 }
 
 TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
-  const commands::AcceleratorPrefManager::Accelerators defaults = {
+  const commands::AcceleratorPrefManager::Accelerators default_accelerators = {
       {IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}};
+  auto make_menu_dispatched_defaults = [&default_accelerators]() {
+    commands::DefaultAccelerators defaults = MakeDefaults(default_accelerators);
+    defaults.menu_dispatched = default_accelerators;
+    return defaults;
+  };
 
   {
-    commands::AcceleratorService service(profile().GetPrefs(), defaults, {},
-                                         defaults);
+    commands::AcceleratorService service(profile().GetPrefs(),
+                                         make_menu_dispatched_defaults());
 
     // Unlike system managed accelerators, menu dispatched ones are modifiable,
     // so the frontend offers to remove them.
@@ -386,8 +411,8 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
   // Unlike system managed accelerators, the removal survives a restart (menu
   // dispatched defaults are not forcibly re-added).
   {
-    commands::AcceleratorService service(profile().GetPrefs(), defaults, {},
-                                         defaults);
+    commands::AcceleratorService service(profile().GetPrefs(),
+                                         make_menu_dispatched_defaults());
     EXPECT_TRUE(service.GetAcceleratorsForCommand(IDC_NEW_TAB).empty());
 
     auto command = service.GetCommandForTesting(IDC_NEW_TAB);
@@ -404,7 +429,8 @@ TEST_F(AcceleratorServiceUnitTest, MenuDispatchedAcceleratorsAreModifiable) {
 TEST_F(AcceleratorServiceUnitTest, AcceleratorsForCommandAccessors) {
   commands::AcceleratorService service(
       profile().GetPrefs(),
-      {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}, {});
+      MakeDefaults(
+          {{IDC_NEW_TAB, {commands::FromCodesString("Control+KeyT")}}}));
 
   service.AssignAcceleratorToCommand(IDC_NEW_TAB, "Control+KeyK");
 
@@ -423,7 +449,7 @@ TEST_F(AcceleratorServiceUnitTest, AcceleratorsForCommandAccessors) {
 }
 
 TEST_F(AcceleratorServiceUnitTest, PolicyFiltering) {
-  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
+  commands::AcceleratorService service(profile().GetPrefs(), MakeDefaults());
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
   // Test Brave News
@@ -701,7 +727,7 @@ class AcceleratorServiceUnitTestWithLocalState : public testing::Test {
 };
 
 TEST_F(AcceleratorServiceUnitTestWithLocalState, PolicyFiltering) {
-  commands::AcceleratorService service(profile().GetPrefs(), {}, {});
+  commands::AcceleratorService service(profile().GetPrefs(), MakeDefaults());
 
 #if BUILDFLAG(ENABLE_TOR)
   // Test Tor-related commands (which use local state)

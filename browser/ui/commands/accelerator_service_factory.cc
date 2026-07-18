@@ -56,10 +56,8 @@ AcceleratorServiceFactory::BuildServiceInstanceForBrowserContext(
   auto* profile = Profile::FromBrowserContext(context);
   DCHECK(profile);
 
-  auto defaults = GetDefaultAccelerators();
-  return std::make_unique<AcceleratorService>(
-      profile->GetPrefs(), std::move(defaults.accelerators),
-      std::move(defaults.system_managed), std::move(defaults.menu_dispatched));
+  return std::make_unique<AcceleratorService>(profile->GetPrefs(),
+                                              GetDefaultAccelerators());
 }
 
 }  // namespace commands
