@@ -5,13 +5,17 @@
 
 #import <Cocoa/Cocoa.h>
 
+#include "base/files/file_path.h"
 #include "base/test/run_until.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/commands/default_accelerators.h"
 #include "brave/components/commands/common/accelerator_parsing.h"
 #include "chrome/app/chrome_command_ids.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/profiles/profile_manager.h"
+#include "chrome/browser/profiles/profile_test_util.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/test/base/in_process_browser_test.h"
@@ -19,6 +23,14 @@
 #include "testing/gtest_mac.h"
 
 namespace {
+
+void ActivateBrowser(Browser* browser) {
+  if (!browser->window()->IsActive()) {
+    browser->window()->Activate();
+    ASSERT_TRUE(
+        base::test::RunUntil([&]() { return browser->window()->IsActive(); }));
+  }
+}
 
 NSMenuItem* FindMenuItemWithTag(NSMenu* menu, int tag) {
   for (NSMenuItem* item in [menu itemArray]) {
@@ -43,11 +55,7 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
                        KeyEquivalentFollowsCustomizations) {
   // Make sure the coordinator observes this profile's accelerator service:
   // it reacts to browser activation.
-  if (!browser()->window()->IsActive()) {
-    browser()->window()->Activate();
-    ASSERT_TRUE(base::test::RunUntil(
-        [&]() { return browser()->window()->IsActive(); }));
-  }
+  ActivateBrowser(browser());
 
   auto* service =
       commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
@@ -97,4 +105,44 @@ IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
        service->GetAcceleratorsForCommand(IDC_NEW_TAB)) {
     EXPECT_NE(default_codes, commands::ToCodesString(accelerator));
   }
+}
+
+IN_PROC_BROWSER_TEST_F(AcceleratorMenuCoordinatorMacBrowserTest,
+                       KeyEquivalentFollowsActiveProfile) {
+  ActivateBrowser(browser());
+
+  auto* service =
+      commands::AcceleratorServiceFactory::GetForContext(browser()->profile());
+  ASSERT_TRUE(service);
+
+  NSMenuItem* item = FindMenuItemWithTag([NSApp mainMenu], IDC_NEW_WINDOW);
+  ASSERT_TRUE(item);
+  NSString* default_key_equivalent = [item.keyEquivalent copy];
+  ASSERT_GT(default_key_equivalent.length, 0u);
+
+  // Removing the default shortcuts in this profile clears the menu item's key
+  // equivalent.
+  for (const auto& accelerator :
+       service->GetAcceleratorsForCommand(IDC_NEW_WINDOW)) {
+    service->UnassignAcceleratorFromCommand(
+        IDC_NEW_WINDOW, commands::ToCodesString(accelerator));
+  }
+  EXPECT_EQ(0u, item.keyEquivalent.length);
+
+  // Activating a browser for a second profile, which still has the default
+  // shortcuts, resyncs the menu to that profile.
+  ProfileManager* profile_manager = g_browser_process->profile_manager();
+  Profile& second_profile = profiles::testing::CreateProfileSync(
+      profile_manager,
+      profile_manager->user_data_dir().AppendASCII("Second Profile"));
+  Browser* second_browser = CreateBrowser(&second_profile);
+  ActivateBrowser(second_browser);
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return item.keyEquivalent.length > 0u; }));
+  EXPECT_NSEQ(default_key_equivalent, item.keyEquivalent);
+
+  // Activating the first profile's browser applies its customization again.
+  ActivateBrowser(browser());
+  ASSERT_TRUE(
+      base::test::RunUntil([&]() { return item.keyEquivalent.length == 0u; }));
 }
