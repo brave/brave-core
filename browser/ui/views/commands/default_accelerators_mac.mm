@@ -229,6 +229,7 @@ DefaultAccelerators BuildGlobalAccelerators() {
       continue;
     }
 
+    DVLOG(2) << "STATIC TABLE (unmodifiable) : " << command_id;
     static_table_map[command_id].push_back(
         ToAcceleratorMapping(command_id, accelerator));
   }
