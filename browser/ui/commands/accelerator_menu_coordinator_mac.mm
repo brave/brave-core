@@ -133,8 +133,8 @@ void AcceleratorMenuCoordinatorMac::OnBrowserActivated(
   profile_ = profile;
   profile_observation_.Observe(profile);
 
-  // The service can be null for profiles the factory doesn't cover (e.g.
-  // Guest). Those windows fall back to the default shortcuts (see
+  // The service can be null for profiles the factory doesn't cover. Those
+  // windows fall back to the default shortcuts (see
   // BraveBrowserView::LoadAccelerators), so restore the pristine menu.
   service_ = AcceleratorServiceFactory::GetForContext(profile);
   if (!service_) {
