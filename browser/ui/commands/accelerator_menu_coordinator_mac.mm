@@ -76,6 +76,7 @@ class AcceleratorMenuCoordinatorMac::ObjCStorage {
 
   // Restores every indexed item to its pristine key equivalent.
   void RestoreAll() {
+    EnsureIndexed();
     for (auto& [command_id, state] : pristine_items_by_command_) {
       RestorePristine(state);
     }
@@ -172,6 +173,11 @@ void AcceleratorMenuCoordinatorMac::OnProfileWillBeDestroyed(Profile* profile) {
   service_observation_.Reset();
   service_ = nullptr;
   profile_ = nullptr;
+
+  // Until another browser is activated there is no service whose
+  // customizations the menu should reflect, so restore the pristine defaults,
+  // just like for profiles with no service.
+  objc_storage_->RestoreAll();
 }
 
 void AcceleratorMenuCoordinatorMac::SyncCommand(int command_id) {
