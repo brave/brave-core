@@ -11,10 +11,8 @@
 #include "base/functional/function_ref.h"
 #include "ui/base/accelerators/accelerator.h"
 
-#if defined(__OBJC__)
 @class NSMenu;
 @class NSMenuItem;
-#endif
 
 namespace commands {
 
@@ -23,7 +21,6 @@ namespace commands {
 // be applied to them (i.e. IDC_CLOSE_TAB / IDC_CLOSE_WINDOW).
 bool IsUnmodifiableCommand(int command_id);
 
-#if defined(__OBJC__)
 // Parses |item|'s key equivalent into an accelerator, using the same
 // interpretation that GetGlobalAccelerators() uses to build the defaults.
 // Returns std::nullopt if the item has no key equivalent or its tag isn't a
@@ -34,7 +31,6 @@ std::optional<ui::Accelerator> GetAcceleratorFromMenuItem(NSMenuItem* item);
 // services menu (whose items are managed by the OS).
 void ForEachMenuItem(NSMenu* menu,
                      base::FunctionRef<void(NSMenuItem*)> visitor);
-#endif
 
 }  // namespace commands
 
