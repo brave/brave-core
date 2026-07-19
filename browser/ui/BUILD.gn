@@ -778,6 +778,8 @@ source_set("ui") {
         "views/renderer_context_menu/brave_render_view_context_menu_views.cc",
         "views/renderer_context_menu/brave_render_view_context_menu_views.h",
       ]
+
+      deps += [ "//chrome/browser/ui/views/renderer_context_menu" ]
     }
 
     if (enable_sparkle) {
