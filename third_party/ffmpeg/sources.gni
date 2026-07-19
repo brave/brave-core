@@ -38,11 +38,6 @@ if (enable_ffmpeg_hevc_support) {
     "libavcodec/hevc/ps.c",
     "libavcodec/hevc/refs.c",
     "libavcodec/hevc/sei.c",
-
-    # Film grain and Dolby Vision RPU support for HEVC streams
-    "libavcodec/aom_film_grain.c",
-    "libavcodec/dovi_rpu.c",
-    "libavcodec/dovi_rpudec.c",
   ]
 
   # HEVC x86_64 optimizations.
