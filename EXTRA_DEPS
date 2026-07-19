@@ -9,7 +9,8 @@
 #
 #   bucket      an https prefix `object_name` is appended to.
 #   condition   dep-level gate (host_os/host_cpu/...); resolved during sync.
-#   objects     one or more archives, each with `object_name` + `sha256sum`, an
+#   objects     one or more archives, each with `object_name`, `sha256sum`, and
+#               `size_bytes` (the exact archive size, checked on download), an
 #               optional per-object `condition`, and optional `overlayed_on`:
 #                 * overlayed_on -- extracted on top of that upstream archive.
 #                 * omitted      -- owns its destination (wiped each install).
@@ -27,24 +28,28 @@ extra_deps = {
             {
                 'object_name': 'linux-x64-rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800-1.tar.xz',
                 'sha256sum': 'c0f111bdb9721719346cc9099fb6582b7bda05a08083bafa9c1c2d604768f67f',
+                'size_bytes': 43313388,
                 'overlayed_on': 'Linux_x64/rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800.tar.xz',
                 'condition': 'host_os == "linux"',
             },
             {
                 'object_name': 'mac-arm64-rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800-1.tar.xz',
                 'sha256sum': 'ee2499d7cdfcb10c102d9e427f88e4922f19e7aa698793083178e8c4dc738ac4',
+                'size_bytes': 40340368,
                 'overlayed_on': 'Mac_arm64/rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800.tar.xz',
                 'condition': 'host_os == "mac" and host_cpu == "arm64"',
             },
             {
                 'object_name': 'mac-rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800-1.tar.xz',
                 'sha256sum': 'd8b4c695b9dcc46d5ba92f25fc51dd9d3d6dc687de5b671c2d7b6b919514b563',
+                'size_bytes': 43051448,
                 'overlayed_on': 'Mac/rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800.tar.xz',
                 'condition': 'host_os == "mac" and host_cpu == "x64"',
             },
             {
                 'object_name': 'win-rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800-1.tar.xz',
                 'sha256sum': '60e5e33ea1841aac3f4364b459a9c9d43594b957267dca29563be0a9e63474d2',
+                'size_bytes': 43731456,
                 'overlayed_on': 'Win/rust-toolchain-b998449636a48e2c4a362809085b600a0174e1f2-2-llvmorg-23-init-19482-g53d18800.tar.xz',
                 'condition': 'host_os == "win"',
             },
@@ -57,6 +62,7 @@ extra_deps = {
             {
                 'object_name': 'node-v24.18.0-linux-x64.tar.gz',
                 'sha256sum': '2e8e150bf8ca55cc7b1d89c9d71138d57a1b7900c5687b3fb1e03d5e6ba1231c',
+                'size_bytes': 57371867,
             },
         ],
     },
@@ -67,6 +73,7 @@ extra_deps = {
             {
                 'object_name': 'node-v24.18.0-mac-x64.tar.gz',
                 'sha256sum': 'c33ce3dfc0fb84dd6b54ebd6fdc5646ae4358e164f11a80af3abf09d40954871',
+                'size_bytes': 53417350,
             },
         ],
     },
@@ -77,6 +84,7 @@ extra_deps = {
             {
                 'object_name': 'node-v24.18.0-mac-arm64.tar.gz',
                 'sha256sum': '96c7a5b4c9d096084137333fa5a964514d593f859d0328a574f4509d4e3d6522',
+                'size_bytes': 52225821,
             },
         ],
     },
@@ -87,6 +95,7 @@ extra_deps = {
             {
                 'object_name': 'node-v24.18.0-win-x64.tar.gz',
                 'sha256sum': 'c0a0e3b9fe5cadfedc4c6e82943a3c1201460716449c8e4cd188256751cca386',
+                'size_bytes': 37681514,
             },
         ],
     },
@@ -97,6 +106,7 @@ extra_deps = {
             {
                 'object_name': 'ast-grep-0.44.1-linux-x64.tar.gz',
                 'sha256sum': 'e2d0696358940a5c09a54ef1266b369036717293d9f9312513da6edf98a13176',
+                'size_bytes': 7935160,
             },
         ],
     },
@@ -107,6 +117,7 @@ extra_deps = {
             {
                 'object_name': 'ast-grep-0.44.1-mac.tar.gz',
                 'sha256sum': '38e9259845066f0fc6b2a947f1760305add3c52a8d53d198bd1ae830e12569dc',
+                'size_bytes': 7775908,
             },
         ],
     },
@@ -117,6 +128,7 @@ extra_deps = {
             {
                 'object_name': 'ast-grep-0.44.1-mac-arm64.tar.gz',
                 'sha256sum': 'ef1cf3f749796c0318c3f6badd75df3e5090ce4cf07c0e7cf89f34c0db452e75',
+                'size_bytes': 7774326,
             },
         ],
     },
@@ -127,6 +139,7 @@ extra_deps = {
             {
                 'object_name': 'ast-grep-0.44.1-win.tar.gz',
                 'sha256sum': 'c1e06394908573ddf334f41809b63e9b80122b11048412c41c2b66c52106ea47',
+                'size_bytes': 7667559,
             },
         ],
     },

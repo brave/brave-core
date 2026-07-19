@@ -247,6 +247,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'node.tar.gz',
                 'sha256sum': _sha256(data),
+                'size_bytes': len(data),
                 'condition': 'host_os == "linux"'
             }],
         }
@@ -267,6 +268,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'overlay.tar.gz',
                 'sha256sum': _sha256(data),
+                'size_bytes': len(data),
                 'overlayed_on': 'Linux_x64/base.tar.xz',
                 'condition': 'host_os == "linux"',
             }],
@@ -286,6 +288,7 @@ class InstallTest(unittest.TestCase):
             'objects': [{
                 'object_name': 'overlay.tar.gz',
                 'sha256sum': 'a',
+                'size_bytes': 1,
                 'overlayed_on': 'Linux_x64/base.tar.xz',
                 'condition': 'host_os == "linux"',
             }],
@@ -394,11 +397,13 @@ class FromCheckoutIntegrationTest(unittest.TestCase):
                 {
                     'object_name': 'node-linux.tar.gz',
                     'sha256sum': _sha256(data),
+                    'size_bytes': len(data),
                     'condition': 'host_os == "linux"',
                 },
                 {
                     'object_name': 'node-mac.tar.gz',
                     'sha256sum': 'unused',
+                    'size_bytes': 0,
                     'condition': 'host_os == "mac"',
                 },
             ],
