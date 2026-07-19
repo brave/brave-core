@@ -185,6 +185,7 @@ def _parse_npm_argv(argv: Sequence[str]) -> ParsedNpmArgs:
             continue
 
         if flag in ('--version', '-v'):
+            force_passthrough = True
             show_version = True
             i += 1
             continue

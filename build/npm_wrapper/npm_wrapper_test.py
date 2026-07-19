@@ -201,6 +201,20 @@ class TestMainPassthrough(unittest.TestCase):
             self.assertEqual(rc, 0)
             real_npm.assert_called_once_with(['install', '-g', 'pnpm'])
 
+    def test_version_passthrough_without_package_json(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            orig = os.getcwd()
+            try:
+                os.chdir(tmp)
+                with mock.patch.object(npm_wrapper,
+                                       'run_real_npm',
+                                       return_value=0) as real_npm:
+                    rc = npm_wrapper.main(['--version'])
+                self.assertEqual(rc, 0)
+                real_npm.assert_called_once_with(['--version'])
+            finally:
+                os.chdir(orig)
+
     def test_global_install_passthrough_with_pnpm_package_manager(self):
         with tempfile.TemporaryDirectory() as tmp:
             write_package_json(tmp, 'pnpm')
