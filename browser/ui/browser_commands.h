@@ -86,6 +86,12 @@ void ToggleFocusMode(BrowserWindowInterface* browser);
 void ToggleShieldsEnabled(Browser* browser);
 void ToggleJavascriptEnabled(Browser* browser);
 
+// Launches the element picker ("Block elements") for the browser's active tab,
+// if the page and Shields settings support it. Backs IDC_BLOCK_ELEMENTS so
+// users can assign a custom keyboard shortcut. Implemented in the cosmetic
+// filters layer (which can't be depended on from here) to reach the picker.
+void LaunchContentPicker(Browser* browser);
+
 #if BUILDFLAG(ENABLE_COMMANDER)
 void ToggleCommander(Browser* browser);
 #endif

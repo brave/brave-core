@@ -20,9 +20,16 @@
 #include "ui/base/l10n/l10n_util.h"
 
 #if !BUILDFLAG(IS_ANDROID)
+#include "base/feature_list.h"
+#include "brave/browser/brave_shields/brave_shields_tab_helper.h"
 #include "brave/browser/ui/brave_pages.h"
+#include "brave/browser/ui/browser_commands.h"
+#include "brave/components/brave_shields/core/common/features.h"
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
 #include "chrome/browser/ui/color/chrome_color_id.h"
+#include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "components/tabs/public/tab_interface.h"
 #include "ui/color/color_provider.h"
 #else
@@ -150,3 +157,46 @@ CosmeticFiltersTabHelper::~CosmeticFiltersTabHelper() = default;
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(CosmeticFiltersTabHelper);
 }  // namespace cosmetic_filters
+
+#if !BUILDFLAG(IS_ANDROID)
+namespace brave {
+
+void LaunchContentPicker(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  if (!base::FeatureList::IsEnabled(
+          brave_shields::features::kBraveShieldsElementPicker)) {
+    return;
+  }
+
+  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!contents) {
+    return;
+  }
+
+  // The element picker only works on http(s) pages.
+  if (!contents->GetLastCommittedURL().SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  // Element blocking requires Shields (and ad blocking) to be enabled.
+  auto* shields =
+      brave_shields::BraveShieldsTabHelper::FromWebContents(contents);
+  if (!shields || !shields->GetBraveShieldsEnabled() ||
+      shields->GetAdBlockMode() == brave_shields::mojom::AdBlockMode::ALLOW) {
+    return;
+  }
+
+  // Respect the "allow element blocking in private windows" setting.
+  if (browser->profile()->IsOffTheRecord() &&
+      !shields->GetAllowElementBlockerInPrivateModeEnabled()) {
+    return;
+  }
+
+  cosmetic_filters::CosmeticFiltersTabHelper::LaunchContentPicker(contents);
+}
+
+}  // namespace brave
+#endif  // !BUILDFLAG(IS_ANDROID)
