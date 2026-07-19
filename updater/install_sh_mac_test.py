@@ -318,7 +318,7 @@ class InstallShPatchTest(unittest.TestCase):
         # we cannot guarantee install.sh reaps every such helper before it
         # exits. So this read can block indefinitely and must never gate the
         # test. Termination is instead driven by the install.sh process exiting
-        # (proc.wait below), a condition we own and can observe; a still-blocked
+        # (via proc.wait), a condition we own and can observe; a still-blocked
         # prompt thread is abandoned, just like drain(). The thread is a daemon
         # so a leaked, pipe-blocked copy can never stall interpreter shutdown
         # (and thus hang the C++ harness that waits for this script to exit).
