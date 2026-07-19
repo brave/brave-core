@@ -79,6 +79,7 @@ source_set("impl") {
       "//brave/components/constants",
       "//chrome/browser/ui/browser_window",
       "//chrome/browser/ui/navigator",
+      "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
     ]
   }
