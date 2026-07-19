@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_account/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/email_aliases/buildflags/buildflags.h"
@@ -45,6 +46,7 @@
 #include "components/sync/base/command_line_switches.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/test_utils.h"
+#include "net/test/embedded_test_server/embedded_test_server.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -469,6 +471,45 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
   EXPECT_EQ(GURL("about:blank"), tsm->GetWebContentsAt(0)->GetVisibleURL());
   EXPECT_EQ(will_pin, tsm->GetWebContentsAt(1)->GetVisibleURL());
 }
+
+// The element picker (and its command controller) is desktop-only.
+#if !BUILDFLAG(IS_ANDROID)
+class BraveBrowserCommandControllerElementPickerTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerElementPickerTest() {
+    scoped_features_.InitAndEnableFeature(
+        brave_shields::features::kBraveShieldsElementPicker);
+  }
+  ~BraveBrowserCommandControllerElementPickerTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// The "Block elements" command (IDC_BLOCK_ELEMENTS) launches the element
+// picker, which can only run on http(s) pages. It should be enabled only while
+// such a page is active, and follow same-tab navigations.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerTest,
+                       EnabledOnlyOnHttpPages) {
+  auto* command_controller = browser()->command_controller();
+
+  // The initial tab isn't an http(s) page, so the command starts disabled.
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
+
+  // Navigating to an http(s) page enables the command.
+  embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+  ASSERT_TRUE(embedded_test_server()->Start());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/simple.html")));
+  EXPECT_TRUE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
+
+  // Navigating to a non-http(s) page (a WebUI page) disables it again.
+  ASSERT_TRUE(
+      ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
+}
+#endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
                        BraveCommandsAddAllToNewGroup) {
