@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/actor/site_policy.cc b/chrome/browser/actor/site_policy.cc
-index a89a344582957c2bffa33002ab6610956dfcb04b..9faaab377a959a60ebe0b791df4f48d42e644f91 100644
+index 65e3f8c9a655a92a5b4ba61544edc077688dc1c8..46f74fb3d2bdfaa2cd6046ce15d54cc8d1ef5dd2 100644
 --- a/chrome/browser/actor/site_policy.cc
 +++ b/chrome/browser/actor/site_policy.cc
-@@ -162,6 +162,7 @@ void MayActOnUrlInternal(
-     return;
-   }
- 
+@@ -84,6 +84,7 @@ void MayActOnUrlInternal(const GURL& url,
+                          NoVerdictContinuation resolve_no_verdict,
+                          std::unique_ptr<DecisionWrapper> decision_wrapper) {
+   CHECK(resolve_no_verdict);
 +  BRAVE_MAY_ACT_ON_URL_INTERNAL
-   if (IsActorSafetyCheckDisabled()) {
-     decision_wrapper->Accept();
-     return;
+   std::move(resolve_no_verdict)
+       .Run(url,
+            base::BindOnce(
