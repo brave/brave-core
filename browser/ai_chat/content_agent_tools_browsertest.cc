@@ -383,7 +383,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   auto* actor_service =
       actor::ActorKeyedServiceFactory::GetActorKeyedService(agent_profile_);
   ::actor::MayActOnUrl(
-      GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
+      GURL("https://chromewebstore.google.com/example"),
       actor_service->GetJournal(), actor::TaskId(),
       // The extension-store URL is rejected by MayActOnUrl's own checks (see
       // the BRAVE_MAY_ACT_ON_URL_INTERNAL hook in the site_policy.cc override),
