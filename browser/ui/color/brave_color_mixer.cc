@@ -784,6 +784,11 @@ void AddBraveOmniboxColorMixer(ui::ColorProvider* provider,
     return;
   }
 
+  // Don't override omnibox colors when user has a custom theme
+  if (key.custom_theme) {
+    return;
+  }
+
   auto& postprocessing_mixer = provider->AddPostprocessingMixer();
   // Location bar
   // Note: The darker (ultra dark) theme intentionally keeps the original
