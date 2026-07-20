@@ -142,6 +142,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     Task { @MainActor in
       let (profileController, profileState) = await loadDefaultProfile()
+
+      // The scene may have disconnected while `loadDefaultProfile` was awaiting. UIKit clears
+      // `session.scene` back to nil once a scene disconnects, so use that to detect this rather
+      // than tracking our own state. Creating a new `UIWindow` for a windowScene that has
+      // already disconnected will crash, so bail out if that's the case.
+      guard windowScene.session.scene != nil else { return }
+
       Self.profileState = profileState
       PlaylistCoordinator.shared.isPlaylistAvailable =
         profileController.profile.prefs.isPlaylistAvailable
