@@ -92,6 +92,7 @@ extension BrowserViewController: TabPolicyDecider {
       tab.externalAppPopupContinuation?.resume(with: .success(false))
       tab.externalAppPopupContinuation = nil
       tab.externalAppPopup = nil
+      tab.isExternalAppAlertPresented = false
     }
 
     // Handle internal:// urls
