@@ -22,7 +22,9 @@
 #include "chrome/browser/profiles/profile_observer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "services/on_device_model/public/mojom/on_device_model.mojom.h"
 
 namespace base {
@@ -43,7 +45,8 @@ namespace speech {
 // Start() that arrives before kReady is queued in pending_sessions_ and
 // forwarded once Ready.
 class OnDeviceSpeechRecognitionController
-    : public local_ai::mojom::AsrSession,
+    : public local_ai::mojom::SpeechRecognitionFactoryHost,
+      public local_ai::mojom::AsrSession,
       public local_ai::BackgroundWebContents::Delegate,
       public ProfileObserver {
  public:
@@ -74,6 +77,16 @@ class OnDeviceSpeechRecognitionController
   // Returns a remote the engine holds for one recognition. Dropping it ends
   // the session.
   mojo::PendingRemote<local_ai::mojom::AsrSession> GetAsrSession();
+
+  // Binds the FactoryHost receiver for the ORT worker WebUI.
+  void BindFactoryHost(
+      mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
+          receiver);
+
+  // local_ai::mojom::SpeechRecognitionFactoryHost:
+  void RegisterFactory(
+      mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory)
+      override;
 
   // local_ai::mojom::AsrSession:
   void Start(
@@ -120,9 +133,16 @@ class OnDeviceSpeechRecognitionController
       Profile* otr_profile);
   void OnStartupTimeout();
 
+  // Read the Nemotron graphs/companion files and whole-model weights off a
+  // blocking sequence, then build the worker's ORT sessions in Init.
+  void LoadOrtModel();
+  void OnOrtFilesRead(local_ai::mojom::OrtModelFilesPtr files);
+  void OnOrtInitResult(bool success);
+
   void StartIdleTimer();
   void OnIdleTimeout();
 
+  void OnFactoryDisconnected();
   void OnAsrSessionDisconnected();
   void TearDown();
 
@@ -137,7 +157,10 @@ class OnDeviceSpeechRecognitionController
 
   std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents_;
 
+  mojo::Receiver<local_ai::mojom::SpeechRecognitionFactoryHost>
+      factory_host_receiver_{this};
   mojo::ReceiverSet<local_ai::mojom::AsrSession> asr_session_receivers_;
+  mojo::Remote<local_ai::mojom::SpeechRecognitionFactory> factory_;
 
   struct PendingSession {
     PendingSession();
