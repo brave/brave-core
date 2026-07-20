@@ -185,6 +185,13 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
      * device list so the dynamically-added rows are re-measured against the correct width. This
      * runs from a posted runnable (not from within a layout pass) so the forced re-layout is
      * honored.
+     *
+     * <p>Since cr151 the Multi-column Settings feature (default-on) hosts this fragment in a narrow
+     * detail pane rather than full screen. In that mode the screenWidthDp-based centering padding
+     * is wrong (it is computed for the whole screen, not the pane) and would collapse the content,
+     * so we skip it and let the pane constrain the width - mirroring upstream WideDisplayPadding,
+     * which does not attach a ViewResizer when {@link
+     * SettingsActivity#isTwoColumnSettingsVisible()}.
      */
     private void correctWideDisplayLayoutAfterRotation() {
         // Post twice so this runs after the framework's rotation layout pass and the ViewResizer
@@ -210,7 +217,14 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
         int screenWidthDp = getResources().getConfiguration().screenWidthDp;
         int padding = 0;
-        if (screenWidthDp >= UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP) {
+        // In Multi-column Settings mode this fragment lives in a narrow detail pane, which already
+        // constrains the width. Applying the full-screen centering padding here would squeeze the
+        // content, so only compute it in single-column (full-width) mode. The host is always a
+        // SettingsActivity (getActivity() null case is handled by the early return above).
+        FragmentActivity activity = requireActivity();
+        assert activity instanceof SettingsActivity;
+        boolean twoColumn = ((SettingsActivity) activity).isTwoColumnSettingsVisible();
+        if (!twoColumn && screenWidthDp >= UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP) {
             int minWidePadding =
                     getResources().getDimensionPixelSize(R.dimen.settings_wide_display_min_padding);
             int excessWidthDp = screenWidthDp - UiConfig.WIDE_DISPLAY_STYLE_MIN_WIDTH_DP;
