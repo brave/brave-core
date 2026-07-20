@@ -253,13 +253,18 @@ ExtensionsManifestV2Migrator::ExtensionsManifestV2Migrator(Profile* profile)
   prefs_observation_.Observe(extension_prefs);
   registry_observation_.Observe(registry);
 
+  // Since cr151 Brave re-allows MV2 extensions, Chromium no longer disables
+  // known WebStore-hosted MV2 extensions with
+  // DISABLE_UNSUPPORTED_MANIFEST_VERSION. Detect any that are already installed
+  // by presence and start their migration. Extensions installed while running
+  // are handled in OnExtensionInstalled(), and any that still get disabled for
+  // the unsupported-manifest reason are handled in
+  // OnExtensionDisableReasonsChanged().
   for (const auto webstore_extension : kWebStoreHosted) {
-    const auto disable_reasons = extension_prefs->GetDisableReasons(
-        extensions::ExtensionId(webstore_extension.first));
-    if (disable_reasons.contains(
-            extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION)) {
-      OnExtensionDisableReasonsChanged(
-          extensions::ExtensionId(webstore_extension.first), disable_reasons);
+    const extensions::ExtensionId webstore_extension_id(
+        webstore_extension.first);
+    if (extension_prefs->GetInstalledExtensionInfo(webstore_extension_id)) {
+      MaybeBackupWebStoreExtension(webstore_extension_id);
     }
   }
 }
@@ -282,14 +287,12 @@ void ExtensionsManifestV2Migrator::OnExtensionPrefsWillBeDestroyed(
 void ExtensionsManifestV2Migrator::OnExtensionDisableReasonsChanged(
     const extensions::ExtensionId& extension_id,
     extensions::DisableReasonSet disabled_reasons) {
-  if (!features::IsSettingsBackupEnabled() ||
-      !IsKnownWebStoreHostedExtension(extension_id) ||
-      !disabled_reasons.contains(
+  if (!disabled_reasons.contains(
           extensions::disable_reason::DISABLE_UNSUPPORTED_MANIFEST_VERSION)) {
     return;
   }
 
-  BackupExtensionSettings(extension_id);
+  MaybeBackupWebStoreExtension(extension_id);
 }
 
 void ExtensionsManifestV2Migrator::OnShutdown(
@@ -301,10 +304,20 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
     content::BrowserContext* browser_context,
     const extensions::Extension* extension,
     bool is_updates) {
-  if (!features::IsSettingsImportEnabled()) {
+  if (is_updates) {
     return;
   }
-  if (is_updates ||
+
+  // A known WebStore-hosted MV2 extension was just installed by the user. Back
+  // up its settings and replace it with the Brave-hosted equivalent.
+  if (extensions_mv2::IsKnownWebStoreHostedExtension(extension->id())) {
+    MaybeBackupWebStoreExtension(extension->id());
+    return;
+  }
+
+  // The Brave-hosted replacement finished installing. Import the backed-up
+  // settings into it.
+  if (!features::IsSettingsImportEnabled() ||
       !extensions_mv2::IsKnownBraveHostedExtension(extension->id())) {
     return;
   }
@@ -317,6 +330,16 @@ void ExtensionsManifestV2Migrator::OnExtensionInstalled(
                      extension->version(), profile_->GetPath()),
       base::BindOnce(&ExtensionsManifestV2Migrator::OnSettingsImported,
                      weak_factory_.GetWeakPtr(), extension->id()));
+}
+
+void ExtensionsManifestV2Migrator::MaybeBackupWebStoreExtension(
+    const extensions::ExtensionId& webstore_extension_id) {
+  if (!features::IsSettingsBackupEnabled() ||
+      !IsKnownWebStoreHostedExtension(webstore_extension_id)) {
+    return;
+  }
+
+  BackupExtensionSettings(webstore_extension_id);
 }
 
 void ExtensionsManifestV2Migrator::BackupExtensionSettings(
@@ -350,6 +373,15 @@ void ExtensionsManifestV2Migrator::OnBackupSettingsCompleted(
       registry->GetInstalledExtension(*brave_hosted_extension_id);
   if (extension) {
     // Already installed.
+    return;
+  }
+  // The migration for a WebStore-hosted extension can be triggered more than
+  // once (e.g. both on install and on disable), so a silent install for the
+  // Brave-hosted equivalent may already be in flight. Don't start a duplicate.
+  if (std::ranges::any_of(silent_installers_, [&brave_hosted_extension_id](
+                                                  const auto& installer) {
+        return installer->extension_id() == *brave_hosted_extension_id;
+      })) {
     return;
   }
   auto installer = ExtensionManifestV2Installer::CreateSilent(
@@ -386,7 +418,12 @@ void ExtensionsManifestV2Migrator::OnSilentInstall(
   if (success) {
     const auto webstore_extension_id =
         GetWebStoreHostedExtensionId(extension_id);
-    if (webstore_extension_id) {
+    // Only uninstall the WebStore-hosted extension if it's still installed. A
+    // duplicate migration pass may have already removed it, and calling
+    // UninstallExtension() for a missing extension hits a CHECK.
+    if (webstore_extension_id &&
+        extensions::ExtensionRegistry::Get(profile_)->GetInstalledExtension(
+            *webstore_extension_id)) {
       extensions::ExtensionRegistrar::Get(profile_)->UninstallExtension(
           *webstore_extension_id,
           extensions::UninstallReason::UNINSTALL_REASON_INTERNAL_MANAGEMENT,
