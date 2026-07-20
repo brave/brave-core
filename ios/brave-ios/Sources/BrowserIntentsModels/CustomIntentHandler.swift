@@ -3,103 +3,64 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import CoreSpotlight
-import Intents
-import MobileCoreServices
-import Shared
+import AppIntents
 
-public class OpenWebsiteIntentHandler: NSObject, OpenWebsiteIntentHandling {
+public struct OpenWebsiteIntent: AppIntent {
+  public static var title: LocalizedStringResource = "Open Website"
+  public static var openAppWhenRun = true
 
-  public func handle(
-    intent: OpenWebsiteIntent,
-    completion: @escaping (OpenWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenWebsiteIntentResponse(code: .failure, userActivity: nil))
+  @Parameter(title: "Website URL")
+  public var websiteURL: String
 
-      return
-    }
-
-    completion(OpenWebsiteIntentResponse.success(websiteURL: urlString))
+  public init() {
+    websiteURL = ""
   }
 
-  public func confirm(
-    intent: OpenWebsiteIntent,
-    completion: @escaping (OpenWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenWebsiteIntentResponse(code: .failure, userActivity: nil))
-      return
-    }
+  public init(websiteURL: String) {
+    self.websiteURL = websiteURL
+  }
 
-    completion(OpenWebsiteIntentResponse(code: .success, userActivity: nil))
+  public func perform() async throws -> some IntentResult {
+    .result()
   }
 }
 
-public class OpenHistoryWebsiteIntentHandler: NSObject, OpenHistoryWebsiteIntentHandling {
+public struct OpenHistoryWebsiteIntent: AppIntent {
+  public static var title: LocalizedStringResource = "Open Website from History"
+  public static var openAppWhenRun = true
 
-  public func handle(
-    intent: OpenHistoryWebsiteIntent,
-    completion: @escaping (OpenHistoryWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenHistoryWebsiteIntentResponse(code: .failure, userActivity: nil))
+  @Parameter(title: "Website URL")
+  public var websiteURL: String
 
-      return
-    }
-
-    completion(OpenHistoryWebsiteIntentResponse.success(websiteURL: urlString))
+  public init() {
+    websiteURL = ""
   }
 
-  public func confirm(
-    intent: OpenHistoryWebsiteIntent,
-    completion: @escaping (OpenHistoryWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenHistoryWebsiteIntentResponse(code: .failure, userActivity: nil))
-      return
-    }
+  public init(websiteURL: String) {
+    self.websiteURL = websiteURL
+  }
 
-    completion(OpenHistoryWebsiteIntentResponse(code: .success, userActivity: nil))
+  public func perform() async throws -> some IntentResult {
+    .result()
   }
 }
 
-public class OpenBookmarkWebsiteIntentHandler: NSObject, OpenBookmarkWebsiteIntentHandling {
+public struct OpenBookmarkWebsiteIntent: AppIntent {
+  public static var title: LocalizedStringResource = "Open Bookmark"
+  public static var openAppWhenRun = true
 
-  public func handle(
-    intent: OpenBookmarkWebsiteIntent,
-    completion: @escaping (OpenBookmarkWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenBookmarkWebsiteIntentResponse(code: .failure, userActivity: nil))
+  @Parameter(title: "Website URL")
+  public var websiteURL: String
 
-      return
-    }
-
-    completion(OpenBookmarkWebsiteIntentResponse.success(websiteURL: urlString))
+  public init() {
+    websiteURL = ""
   }
 
-  public func confirm(
-    intent: OpenBookmarkWebsiteIntent,
-    completion: @escaping (OpenBookmarkWebsiteIntentResponse) -> Void
-  ) {
-    guard let urlString = intent.websiteURL, let url = URL(string: urlString), let host = url.host,
-      !host.isEmpty, url.isWebPage(includeDataURIs: false)
-    else {
-      completion(OpenBookmarkWebsiteIntentResponse(code: .failure, userActivity: nil))
-      return
-    }
+  public init(websiteURL: String) {
+    self.websiteURL = websiteURL
+  }
 
-    completion(OpenBookmarkWebsiteIntentResponse(code: .success, userActivity: nil))
+  public func perform() async throws -> some IntentResult {
+    .result()
   }
 }

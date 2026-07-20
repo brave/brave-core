@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import BraveShields
 import BraveWidgetsModels
 import DesignSystem
@@ -14,7 +15,7 @@ import WidgetKit
 struct SingleStatWidget: Widget {
 
   var body: some WidgetConfiguration {
-    IntentConfiguration(
+    AppIntentConfiguration(
       kind: "SingleStatWidget",
       intent: StatsConfigurationIntent.self,
       provider: StatProvider()
@@ -32,7 +33,7 @@ private struct StatEntry: TimelineEntry {
   var statData: StatData
 }
 
-private struct StatProvider: IntentTimelineProvider {
+private struct StatProvider: AppIntentTimelineProvider {
   typealias Intent = StatsConfigurationIntent
   typealias Entry = StatEntry
 
@@ -42,30 +43,22 @@ private struct StatProvider: IntentTimelineProvider {
       statData: .init(name: Strings.Shields.shieldsAdAndTrackerStats, value: "100k")
     )
   }
-  func getSnapshot(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (Entry) -> Void
-  ) {
+  func snapshot(for configuration: Intent, in context: Context) async -> Entry {
     let stat = configuration.statKind
     let entry = StatEntry(
       date: Date(),
       statData: .init(name: stat.name, value: stat.displayString, color: stat.valueColor)
     )
-    completion(entry)
+    return entry
   }
-  func getTimeline(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (Timeline<Entry>) -> Void
-  ) {
+  func timeline(for configuration: Intent, in context: Context) async -> Timeline<Entry> {
     let stat = configuration.statKind
     let entry = StatEntry(
       date: Date(),
       statData: .init(name: stat.name, value: stat.displayString, color: stat.valueColor)
     )
     let timeline = Timeline(entries: [entry], policy: .never)
-    completion(timeline)
+    return timeline
   }
 }
 

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import BraveShared
 import BraveWidgetsModels
 import Foundation
@@ -13,7 +14,7 @@ import WidgetKit
 struct LockScreenShortcutWidget: Widget {
   var body: some WidgetConfiguration {
     if #available(iOSApplicationExtension 16.0, *) {
-      return IntentConfiguration(
+      return AppIntentConfiguration(
         kind: "LockScreenShortcutWidget",
         intent: LockScreenShortcutConfigurationIntent.self,
         provider: LockScreenShortcutProvider()
@@ -34,7 +35,7 @@ struct LockScreenShortcutEntry: TimelineEntry {
   var widgetShortcut: WidgetShortcut?
 }
 
-struct LockScreenShortcutProvider: IntentTimelineProvider {
+struct LockScreenShortcutProvider: AppIntentTimelineProvider {
   typealias Intent = LockScreenShortcutConfigurationIntent
   typealias Entry = LockScreenShortcutEntry
 
@@ -49,33 +50,13 @@ struct LockScreenShortcutProvider: IntentTimelineProvider {
   func placeholder(in context: Context) -> Entry {
     .init(date: Date(), widgetShortcut: .bookmarks)
   }
-  func getSnapshot(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (Entry) -> Void
-  ) {
-    Task {
-      let shortcut = await shortcut(for: configuration)
-      let entry = LockScreenShortcutEntry(
-        date: Date(),
-        widgetShortcut: shortcut
-      )
-      completion(entry)
-    }
+  func snapshot(for configuration: Intent, in context: Context) async -> Entry {
+    let shortcut = await shortcut(for: configuration)
+    return LockScreenShortcutEntry(date: Date(), widgetShortcut: shortcut)
   }
-  func getTimeline(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (Timeline<Entry>) -> Void
-  ) {
-    Task {
-      let shortcut = await shortcut(for: configuration)
-      let entry = LockScreenShortcutEntry(
-        date: Date(),
-        widgetShortcut: shortcut
-      )
-      completion(.init(entries: [entry], policy: .never))
-    }
+  func timeline(for configuration: Intent, in context: Context) async -> Timeline<Entry> {
+    let entry = LockScreenShortcutEntry(date: Date(), widgetShortcut: await shortcut(for: configuration))
+    return .init(entries: [entry], policy: .never)
   }
 }
 

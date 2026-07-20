@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import BraveCore
 import BraveNews
 import BraveVPN
@@ -10,7 +11,6 @@ import BrowserIntentsModels
 import CoreSpotlight
 import Data
 import Growth
-import Intents
 import MobileCoreServices
 import PlaylistUI
 import Preferences
@@ -256,31 +256,6 @@ public class ActivityShortcutManager: NSObject {
     }
   }
 
-  // MARK: Intent Creation Methods
-
-  private func createCustomIntent(for type: IntentType, with urlString: String) -> INIntent {
-    switch type {
-    case .openWebsite:
-      let intent = OpenWebsiteIntent()
-      intent.websiteURL = urlString
-      intent.suggestedInvocationPhrase = Strings.Shortcuts.customIntentOpenWebsiteSuggestedPhrase
-
-      return intent
-    case .openHistory:
-      let intent = OpenHistoryWebsiteIntent()
-      intent.websiteURL = urlString
-      intent.suggestedInvocationPhrase = Strings.Shortcuts.customIntentOpenHistorySuggestedPhrase
-
-      return intent
-    case .openBookmarks:
-      let intent = OpenBookmarkWebsiteIntent()
-      intent.websiteURL = urlString
-      intent.suggestedInvocationPhrase = Strings.Shortcuts.customIntentOpenBookmarkSuggestedPhrase
-
-      return intent
-    }
-  }
-
   // MARK: Intent Donation Methods
 
   public func donateCustomIntent(for type: IntentType, with urlString: String) {
@@ -290,17 +265,21 @@ public class ActivityShortcutManager: NSObject {
       return
     }
 
-    let intent = createCustomIntent(for: type, with: urlString)
-
-    let interaction = INInteraction(intent: intent, response: nil)
-    interaction.donate { error in
-      guard let error = error else {
-        return
+    Task {
+      do {
+        switch type {
+        case .openWebsite:
+          try await OpenWebsiteIntent(websiteURL: urlString).donate()
+        case .openHistory:
+          try await OpenHistoryWebsiteIntent(websiteURL: urlString).donate()
+        case .openBookmarks:
+          try await OpenBookmarkWebsiteIntent(websiteURL: urlString).donate()
+        }
+      } catch {
+        Logger.module.error(
+          "Failed to donate shortcut open website, error: \(error.localizedDescription)"
+        )
       }
-
-      Logger.module.error(
-        "Failed to donate shortcut open website, error: \(error.localizedDescription)"
-      )
     }
   }
 }

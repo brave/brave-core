@@ -381,17 +381,16 @@ var package = Package(
     .target(
       name: "BrowserIntentsModels",
       dependencies: ["Shared"],
-      sources: ["BrowserIntents.intentdefinition", "CustomIntentHandler.swift"],
-      plugins: ["IntentBuilderPlugin"]
+      sources: ["CustomIntentHandler.swift"]
     ),
     .target(
       name: "BraveWidgetsModels",
       dependencies: ["FaviconModels"],
       sources: [
-        "BraveWidgets.intentdefinition", "LockScreenFavoriteIntentHandler.swift",
-        "FavoritesWidgetData.swift", "DisabledShortcutsWidgetData.swift",
+        "WidgetConfigurationIntents.swift", "FavoritesWidgetData.swift",
+        "DisabledShortcutsWidgetData.swift",
       ],
-      plugins: ["IntentBuilderPlugin", "LoggerPlugin"]
+      plugins: ["LoggerPlugin"]
     ),
     .target(name: "TestHelpers", dependencies: ["Data", "BraveShared"]),
     .target(

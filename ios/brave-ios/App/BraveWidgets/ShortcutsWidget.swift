@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import BraveShared
 import BraveWidgetsModels
 import Intents
@@ -12,7 +13,7 @@ import WidgetKit
 
 struct ShortcutsWidget: Widget {
   var body: some WidgetConfiguration {
-    IntentConfiguration(
+    AppIntentConfiguration(
       kind: "ShortcutsWidget",
       intent: ShortcutsConfigurationIntent.self,
       provider: ShortcutProvider()
@@ -32,7 +33,7 @@ private struct ShortcutEntry: TimelineEntry {
   var shortcutSlots: [WidgetShortcut]
 }
 
-private struct ShortcutProvider: IntentTimelineProvider {
+private struct ShortcutProvider: AppIntentTimelineProvider {
   typealias Intent = ShortcutsConfigurationIntent
   typealias Entry = ShortcutEntry
 
@@ -46,18 +47,8 @@ private struct ShortcutProvider: IntentTimelineProvider {
     ].filter { !disabledShortcuts.contains($0) }
   }
 
-  func getSnapshot(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (ShortcutEntry) -> Void
-  ) {
-    Task {
-      let entry = ShortcutEntry(
-        date: Date(),
-        shortcutSlots: await shortcuts(for: configuration)
-      )
-      completion(entry)
-    }
+  func snapshot(for configuration: Intent, in context: Context) async -> ShortcutEntry {
+    ShortcutEntry(date: Date(), shortcutSlots: await shortcuts(for: configuration))
   }
 
   func placeholder(in context: Context) -> ShortcutEntry {
@@ -67,18 +58,9 @@ private struct ShortcutProvider: IntentTimelineProvider {
     )
   }
 
-  func getTimeline(
-    for configuration: Intent,
-    in context: Context,
-    completion: @escaping (Timeline<ShortcutEntry>) -> Void
-  ) {
-    Task {
-      let entry = ShortcutEntry(
-        date: Date(),
-        shortcutSlots: await shortcuts(for: configuration)
-      )
-      completion(.init(entries: [entry], policy: .never))
-    }
+  func timeline(for configuration: Intent, in context: Context) async -> Timeline<ShortcutEntry> {
+    let entry = ShortcutEntry(date: Date(), shortcutSlots: await shortcuts(for: configuration))
+    return .init(entries: [entry], policy: .never)
   }
 }
 

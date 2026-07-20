@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AppIntents
 import BraveShared
 import BraveWidgetsModels
 import FaviconModels
@@ -14,7 +15,7 @@ import WidgetKit
 struct LockScreenFavoriteWidget: Widget {
   var body: some WidgetConfiguration {
     if #available(iOSApplicationExtension 16.0, *) {
-      return IntentConfiguration(
+      return AppIntentConfiguration(
         kind: "LockScreenFavoriteWidget",
         intent: LockScreenFavoriteConfigurationIntent.self,
         provider: LockScreenFavoriteProvider()
@@ -35,7 +36,7 @@ private struct LockScreenFavoriteEntry: TimelineEntry {
   var favorite: WidgetFavorite?
 }
 
-private struct LockScreenFavoriteProvider: IntentTimelineProvider {
+private struct LockScreenFavoriteProvider: AppIntentTimelineProvider {
   typealias Intent = LockScreenFavoriteConfigurationIntent
   typealias Entry = LockScreenFavoriteEntry
 
@@ -43,43 +44,31 @@ private struct LockScreenFavoriteProvider: IntentTimelineProvider {
     Entry(date: Date(), favorite: nil)
   }
 
-  func widgetFavorite(for url: URL?, completion: @escaping (WidgetFavorite?) -> Void) {
-    Task {
-      let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
-      var selectedFavorite = favorites.first(where: { $0.url == url }) ?? favorites.first
-      if let favicon = selectedFavorite?.favicon, let image = favicon.image {
-        image.prepareThumbnail(of: .init(width: 64, height: 64)) { image in
-          selectedFavorite?.favicon = .init(
-            image: image,
-            isMonogramImage: favicon.isMonogramImage,
-            backgroundColor: favicon.backgroundColor
-          )
-          completion(selectedFavorite)
-        }
-      } else {
-        completion(selectedFavorite)
+  func widgetFavorite(for url: URL?) async -> WidgetFavorite? {
+    let favorites = await FavoritesWidgetData.loadWidgetData() ?? []
+    var selectedFavorite = favorites.first(where: { $0.url == url }) ?? favorites.first
+    guard let favicon = selectedFavorite?.favicon, let image = favicon.image else {
+      return selectedFavorite
+    }
+    let thumbnail = await withCheckedContinuation { continuation in
+      image.prepareThumbnail(of: .init(width: 64, height: 64)) { thumbnail in
+        continuation.resume(returning: thumbnail)
       }
     }
+    guard let thumbnail else { return selectedFavorite }
+    selectedFavorite?.favicon = .init(
+      image: thumbnail,
+      isMonogramImage: favicon.isMonogramImage,
+      backgroundColor: favicon.backgroundColor
+    )
+    return selectedFavorite
   }
-  func getSnapshot(
-    for configuration: LockScreenFavoriteConfigurationIntent,
-    in context: Context,
-    completion: @escaping (LockScreenFavoriteEntry) -> Void
-  ) {
-    widgetFavorite(for: configuration.favorite?.url) { selectedFavorite in
-      completion(Entry(date: Date(), favorite: selectedFavorite))
-    }
+  func snapshot(for configuration: Intent, in context: Context) async -> Entry {
+    Entry(date: Date(), favorite: await widgetFavorite(for: configuration.favorite?.url))
   }
-  func getTimeline(
-    for configuration: LockScreenFavoriteConfigurationIntent,
-    in context: Context,
-    completion: @escaping (Timeline<LockScreenFavoriteEntry>) -> Void
-  ) {
-    widgetFavorite(for: configuration.favorite?.url) { selectedFavorite in
-      completion(
-        Timeline(entries: [Entry(date: Date(), favorite: selectedFavorite)], policy: .never)
-      )
-    }
+  func timeline(for configuration: Intent, in context: Context) async -> Timeline<Entry> {
+    let entry = Entry(date: Date(), favorite: await widgetFavorite(for: configuration.favorite?.url))
+    return Timeline(entries: [entry], policy: .never)
   }
 }
 
