@@ -34,16 +34,17 @@ class NoDestructor;
 
 namespace speech {
 
-// `base::NoDestructor` singleton that owns the BackgroundWebContents hosting
-// the WASM worker and hands out per-recognition AsrSessions.
+// `base::NoDestructor` singleton that owns the BackgroundWebContents
+// hosting the WASM worker, drives model loading against it, and hands out
+// per-recognition AsrSessions that it forwards to the worker once ready.
 //
 // State machine:
 //   kIdle -> kBwcStarting -> kWorkerStarting -> kModelLoading -> kReady
 //
-// TearDown() returns to kIdle from any state on idle/startup timeout or
-// profile/contents destruction; the next Start() restarts the pipeline. A
-// Start() that arrives before kReady is queued in pending_sessions_ and
-// forwarded once Ready.
+// TearDown() returns to kIdle from any state on idle/startup timeout, worker
+// crash, factory/session disconnect, or profile/contents destruction; the
+// next Start() restarts the pipeline. A Start() that arrives before kReady is
+// queued in pending_sessions_ and forwarded once Ready.
 class OnDeviceSpeechRecognitionController
     : public local_ai::mojom::SpeechRecognitionFactoryHost,
       public local_ai::mojom::AsrSession,
@@ -138,6 +139,13 @@ class OnDeviceSpeechRecognitionController
   void LoadOrtModel();
   void OnOrtFilesRead(local_ai::mojom::OrtModelFilesPtr files);
   void OnOrtInitResult(bool success);
+
+  void ForwardPendingSessions();
+  void ForwardSession(
+      on_device_model::mojom::AsrStreamOptionsPtr options,
+      mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+      mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder>
+          responder);
 
   void StartIdleTimer();
   void OnIdleTimeout();

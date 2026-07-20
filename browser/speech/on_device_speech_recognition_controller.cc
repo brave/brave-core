@@ -171,12 +171,18 @@ void OnDeviceSpeechRecognitionController::Start(
     mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
     mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
   // No model installed: don't spin up a guest profile + cross-origin-isolated
-  // renderer just to discover the files are missing. Dropping the
-  // stream/responder pipes here surfaces to the engine as a recognition
-  // failure, the same outcome as a failed load.
+  // renderer just to discover the files are missing in OnOrtFilesRead.
+  // Dropping the stream/responder pipes here surfaces to the engine as a
+  // recognition failure, the same outcome as a failed load.
   if (local_ai::OnDeviceSpeechModelsState::GetInstance()
           ->GetModelDir()
           .empty()) {
+    return;
+  }
+
+  // Worker is ready, forward session to worker.
+  if (state_ == State::kReady) {
+    ForwardSession(std::move(options), std::move(stream), std::move(responder));
     return;
   }
 
@@ -185,7 +191,7 @@ void OnDeviceSpeechRecognitionController::Start(
     StartWorker();
   }
 
-  // Queue the session until the worker is ready.
+  // Queue the session until worker is ready.
   PendingSession pending;
   pending.options = std::move(options);
   pending.stream = std::move(stream);
@@ -292,9 +298,10 @@ void OnDeviceSpeechRecognitionController::OnOrtFilesRead(
     return;
   }
 
-  // Defensive deref guard. The weak binding (dropped by TearDown()) means this
-  // reply does not run after teardown, so factory_ is expected to be bound
-  // here, but guard the raw Remote deref anyway.
+  // Defensive deref guard, consistent with ForwardSession(). The weak binding
+  // (dropped by TearDown()) means this reply does not run after teardown, so
+  // factory_ is expected to be bound here, but guard the raw Remote deref
+  // anyway.
   if (!factory_.is_bound()) {
     return;
   }
@@ -313,7 +320,27 @@ void OnDeviceSpeechRecognitionController::OnOrtInitResult(bool success) {
     return;
   }
   state_ = State::kReady;
-  // Forwarding queued sessions to the worker lands in the routing change.
+  ForwardPendingSessions();
+}
+
+void OnDeviceSpeechRecognitionController::ForwardPendingSessions() {
+  std::vector<PendingSession> drained;
+  drained.swap(pending_sessions_);
+  for (auto& pending : drained) {
+    ForwardSession(std::move(pending.options), std::move(pending.stream),
+                   std::move(pending.responder));
+  }
+}
+
+void OnDeviceSpeechRecognitionController::ForwardSession(
+    on_device_model::mojom::AsrStreamOptionsPtr options,
+    mojo::PendingReceiver<on_device_model::mojom::AsrStreamInput> stream,
+    mojo::PendingRemote<on_device_model::mojom::AsrStreamResponder> responder) {
+  if (!factory_.is_bound()) {
+    return;
+  }
+  factory_->CreateAsrStream(std::move(options), std::move(stream),
+                            std::move(responder));
 }
 
 void OnDeviceSpeechRecognitionController::StartIdleTimer() {
