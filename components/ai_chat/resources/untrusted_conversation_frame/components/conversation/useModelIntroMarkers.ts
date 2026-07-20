@@ -38,8 +38,12 @@ function createModelIntroMarker(
 }
 
 /**
- * Tracks append-only ModelIntro markers for the active conversation session.
+ * Tracks ModelIntro markers for the active conversation session.
  * Only used by Conversation (and passed down to ConversationEntries).
+ *
+ * Markers are sticky once the user sends a prompt after selecting a model.
+ * Repeated model changes at the same conversation position (before sending)
+ * replace the pending marker instead of stacking.
  */
 export function useModelIntroMarkers(): ModelIntroMarker[] {
   const context = useUntrustedConversationContext()
@@ -132,11 +136,15 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
       const pairedGroups = getPairedConversationGroups(conversationHistory)
       const afterPairIndex =
         conversationHistory.length === 0 ? null : pairedGroups.length - 1
+      const nextMarker = createModelIntroMarker(currentModelKey, afterPairIndex)
 
-      return [
-        ...previousMarkers,
-        createModelIntroMarker(currentModelKey, afterPairIndex),
-      ]
+      // User changed the model again before sending a prompt — replace the
+      // pending marker at this position instead of stacking another pill.
+      if (lastMarker && lastMarker.afterPairIndex === afterPairIndex) {
+        return [...previousMarkers.slice(0, -1), nextMarker]
+      }
+
+      return [...previousMarkers, nextMarker]
     })
   }, [conversationHistory.length, state.currentModelKey, state.defaultModelKey])
 
