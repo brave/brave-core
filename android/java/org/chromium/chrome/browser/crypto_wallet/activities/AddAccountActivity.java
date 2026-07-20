@@ -63,15 +63,15 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
     @NonNull
     public static Intent createIntentToAddAccount(
-            @NonNull Context context, @CoinType.EnumType int coinForNewAccount) {
-        Intent intent = new Intent(context, AddAccountActivity.class);
+            final Context context, @CoinType.EnumType final int coinForNewAccount) {
+        final Intent intent = new Intent(context, AddAccountActivity.class);
         intent.putExtra(Utils.COIN_TYPE, coinForNewAccount);
         return intent;
     }
 
     @Override
     protected void onPreCreate() {
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         if (intent != null) {
             mCoinForNewAccount = intent.getIntExtra(Utils.COIN_TYPE, -1);
             mEditedAccountInfo = WalletUtils.getAccountInfoFromIntent(intent);
@@ -93,7 +93,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         }
         setContentView(R.layout.activity_add_account);
 
-        Toolbar toolbar = findViewById(R.id.toolbar);
+        final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(getResources().getString(R.string.add_account));
@@ -131,7 +131,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                     @Override
                     public void onTextChanged(CharSequence s, int start, int before, int count) {
                         // Disable add button if input is empty.
-                        String inputText = s.toString().trim();
+                        final String inputText = s.toString().trim();
                         btnAdd.setEnabled(!TextUtils.isEmpty(inputText));
                     }
                 });
