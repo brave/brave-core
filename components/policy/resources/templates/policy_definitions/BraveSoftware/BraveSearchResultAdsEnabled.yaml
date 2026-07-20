@@ -1,0 +1,32 @@
+caption: Control Brave search result ads processing
+default: null
+desc: |-
+  Control Brave search result ads processing.
+
+  The policy controls whether Brave processes search result ads when users see them.
+
+  If the policy is set to false, processing of Brave search result ads is disabled and users cannot enable it.
+
+  If the policy is set to true or left unset, Brave search result ads are processed only when no Rewards external wallet is connected.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Enable Brave search result ads processing when no Rewards external wallet is connected
+  value: true
+- caption: Disable Brave search result ads processing
+  value: false
+- caption: Use default behavior
+  value: null
+owners:
+- managed-policies@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:151-
+- android:151-
+tags: []
+type: main
