@@ -4,7 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Using `chromium_impl::CookieMonster` as in the header.'
-    regex:
-      re_pattern: '\bCookieMonster\b'
-      replace: 'chromium_impl::CookieMonster'
+  - description: |
+      Rename CookieMonster references to CookieMonster_ChromiumImpl.
+    rename_class:
+      class_name: CookieMonster
+      rename: CookieMonster_ChromiumImpl

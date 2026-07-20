@@ -10,26 +10,26 @@ namespace net {
 CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
                              NetLog* net_log,
                              std::unique_ptr<PrefDelegate> pref_delegate)
-    : chromium_impl::CookieMonster(store, net_log, std::move(pref_delegate)),
+    : CookieMonster_ChromiumImpl(store, net_log, std::move(pref_delegate)),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
-CookieMonster::CookieMonster(base::PassKey<chromium_impl::CookieMonster> key,
+CookieMonster::CookieMonster(base::PassKey<CookieMonster_ChromiumImpl> key,
                              scoped_refptr<PersistentCookieStore> store,
                              base::TimeDelta last_access_threshold,
                              NetLog* net_log,
                              std::unique_ptr<PrefDelegate> pref_delegate)
-    : chromium_impl::CookieMonster(key,
-                                   store,
-                                   last_access_threshold,
-                                   net_log,
-                                   std::move(pref_delegate)),
+    : CookieMonster_ChromiumImpl(key,
+                                 store,
+                                 last_access_threshold,
+                                 net_log,
+                                 std::move(pref_delegate)),
       net_log_(
           NetLogWithSource::Make(net_log, NetLogSourceType::COOKIE_STORE)) {}
 
 CookieMonster::~CookieMonster() {}
 
-chromium_impl::CookieMonster*
+CookieMonster_ChromiumImpl*
 CookieMonster::GetOrCreateEphemeralCookieStoreForTopFrameURL(
     const GURL& top_frame_url) {
   std::string domain = URLToEphemeralStorageDomain(top_frame_url);
@@ -38,8 +38,8 @@ CookieMonster::GetOrCreateEphemeralCookieStoreForTopFrameURL(
     return it->second.get();
 
   return ephemeral_cookie_stores_
-      .emplace(domain, new chromium_impl::CookieMonster(nullptr /* store */,
-                                                        net_log_.net_log()))
+      .emplace(domain, new CookieMonster_ChromiumImpl(nullptr /* store */,
+                                                      net_log_.net_log()))
       .first->second.get();
 }
 
@@ -48,8 +48,8 @@ void CookieMonster::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
   for (auto& it : ephemeral_cookie_stores_) {
     it.second->DeleteCanonicalCookieAsync(cookie, DeleteCallback());
   }
-  chromium_impl::CookieMonster::DeleteCanonicalCookieAsync(cookie,
-                                                           std::move(callback));
+  CookieMonster_ChromiumImpl::DeleteCanonicalCookieAsync(cookie,
+                                                         std::move(callback));
 }
 
 void CookieMonster::DeleteAllCreatedInTimeRangeAsync(
@@ -59,7 +59,7 @@ void CookieMonster::DeleteAllCreatedInTimeRangeAsync(
     it.second->DeleteAllCreatedInTimeRangeAsync(creation_range,
                                                 DeleteCallback());
   }
-  chromium_impl::CookieMonster::DeleteAllCreatedInTimeRangeAsync(
+  CookieMonster_ChromiumImpl::DeleteAllCreatedInTimeRangeAsync(
       creation_range, std::move(callback));
 }
 
@@ -74,15 +74,15 @@ void CookieMonster::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
   for (auto& it : ephemeral_cookie_stores_) {
     it.second->DeleteAllMatchingInfoAsync(delete_info, DeleteCallback());
   }
-  chromium_impl::CookieMonster::DeleteAllMatchingInfoAsync(delete_info,
-                                                           std::move(callback));
+  CookieMonster_ChromiumImpl::DeleteAllMatchingInfoAsync(delete_info,
+                                                         std::move(callback));
 }
 
 void CookieMonster::DeleteSessionCookiesAsync(DeleteCallback callback) {
   for (auto& it : ephemeral_cookie_stores_) {
     it.second->DeleteSessionCookiesAsync(DeleteCallback());
   }
-  chromium_impl::CookieMonster::DeleteSessionCookiesAsync(std::move(callback));
+  CookieMonster_ChromiumImpl::DeleteSessionCookiesAsync(std::move(callback));
 }
 
 void CookieMonster::SetCookieableSchemes(
@@ -91,8 +91,8 @@ void CookieMonster::SetCookieableSchemes(
   for (auto& it : ephemeral_cookie_stores_) {
     it.second->SetCookieableSchemes(schemes, SetCookieableSchemesCallback());
   }
-  chromium_impl::CookieMonster::SetCookieableSchemes(std::move(schemes),
-                                                     std::move(callback));
+  CookieMonster_ChromiumImpl::SetCookieableSchemes(std::move(schemes),
+                                                   std::move(callback));
 }
 
 void CookieMonster::SetCanonicalCookieAsync(
@@ -112,7 +112,7 @@ void CookieMonster::SetCanonicalCookieAsync(
                              CookieAccessResult(cookie_inclusion_status));
       return;
     }
-    chromium_impl::CookieMonster* ephemeral_monster =
+    CookieMonster_ChromiumImpl* ephemeral_monster =
         GetOrCreateEphemeralCookieStoreForTopFrameURL(
             options.top_frame_origin()->GetURL());
     ephemeral_monster->SetCanonicalCookieAsync(std::move(cookie), source_url,
@@ -121,7 +121,7 @@ void CookieMonster::SetCanonicalCookieAsync(
     return;
   }
 
-  chromium_impl::CookieMonster::SetCanonicalCookieAsync(
+  CookieMonster_ChromiumImpl::SetCanonicalCookieAsync(
       std::move(cookie), source_url, options, std::move(callback),
       std::move(cookie_access_result));
 }
@@ -138,7 +138,7 @@ void CookieMonster::GetCookieListWithOptionsAsync(
                              CookieAccessResultList());
       return;
     }
-    chromium_impl::CookieMonster* ephemeral_monster =
+    CookieMonster_ChromiumImpl* ephemeral_monster =
         GetOrCreateEphemeralCookieStoreForTopFrameURL(
             options.top_frame_origin()->GetURL());
     ephemeral_monster->GetCookieListWithOptionsAsync(
@@ -146,7 +146,7 @@ void CookieMonster::GetCookieListWithOptionsAsync(
     return;
   }
 
-  chromium_impl::CookieMonster::GetCookieListWithOptionsAsync(
+  CookieMonster_ChromiumImpl::GetCookieListWithOptionsAsync(
       url, options, cookie_partition_key_collection, std::move(callback));
 }
 

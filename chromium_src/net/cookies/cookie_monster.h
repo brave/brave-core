@@ -10,14 +10,14 @@
 
 namespace net {
 
-class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
+class NET_EXPORT CookieMonster : public CookieMonster_ChromiumImpl {
  public:
   // These constructors and destructors must be kept in sync with those in
   // Chromium's CookieMonster.
   CookieMonster(scoped_refptr<PersistentCookieStore> store,
                 NetLog* net_log,
                 std::unique_ptr<PrefDelegate> pref_delegate = nullptr);
-  CookieMonster(base::PassKey<chromium_impl::CookieMonster>,
+  CookieMonster(base::PassKey<CookieMonster_ChromiumImpl>,
                 scoped_refptr<PersistentCookieStore> store,
                 base::TimeDelta last_access_threshold,
                 NetLog* net_log,
@@ -53,9 +53,9 @@ class NET_EXPORT CookieMonster : public chromium_impl::CookieMonster {
 
  private:
   NetLogWithSource net_log_;
-  std::map<std::string, std::unique_ptr<chromium_impl::CookieMonster>>
+  std::map<std::string, std::unique_ptr<CookieMonster_ChromiumImpl>>
       ephemeral_cookie_stores_;
-  chromium_impl::CookieMonster* GetOrCreateEphemeralCookieStoreForTopFrameURL(
+  CookieMonster_ChromiumImpl* GetOrCreateEphemeralCookieStoreForTopFrameURL(
       const GURL& top_frame_url);
 };
 

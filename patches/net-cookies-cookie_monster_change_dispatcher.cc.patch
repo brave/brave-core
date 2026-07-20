@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_monster_change_dispatcher.cc b/net/cookies/cookie_monster_change_dispatcher.cc
-index 37a63ff41a432bdc5045cf3ef5bddafc6b4f7b73..6dbd3bea8982c9bd4d70097468373d4b34c80ea0 100644
+index 37a63ff41a432bdc5045cf3ef5bddafc6b4f7b73..4260d46826b4cde8fb7002528f5a0c22f6c6d54b 100644
 --- a/net/cookies/cookie_monster_change_dispatcher.cc
 +++ b/net/cookies/cookie_monster_change_dispatcher.cc
 @@ -113,7 +113,7 @@ void CookieMonsterChangeDispatcher::Subscription::DoDispatchChange(
@@ -7,7 +7,7 @@ index 37a63ff41a432bdc5045cf3ef5bddafc6b4f7b73..6dbd3bea8982c9bd4d70097468373d4b
  
  CookieMonsterChangeDispatcher::CookieMonsterChangeDispatcher(
 -    const CookieMonster* cookie_monster)
-+    const chromium_impl::CookieMonster* cookie_monster)
++    const CookieMonster_ChromiumImpl* cookie_monster)
      : cookie_monster_(cookie_monster) {}
  
  CookieMonsterChangeDispatcher::~CookieMonsterChangeDispatcher() {

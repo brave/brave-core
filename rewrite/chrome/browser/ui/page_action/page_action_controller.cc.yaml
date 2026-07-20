@@ -5,37 +5,7 @@
 
 substitutions:
   - description: |
-      Opens the detail namespace `chromium_impl::` in the translation unit.
-
-      The constructor is the first PageActionControllerImpl content in the TU; the
-      ScopedPageActionActivity definitions and the file-local `using PassKey` above
-      the constructor stay in page_actions::.
-    regex:
-      re_pattern: '(PageActionControllerImpl::PageActionControllerImpl\()'
-      replace: |-
-        namespace chromium_impl {
-        \1
-
-  - description: |
-      Closes the detail namespace `chromium_impl::` in the translation unit.
-
-      operator<< free function. operator<< must remain in page_actions:: so ADL on
-      page_actions::SuggestionChipConfig still finds it.
-    regex:
-      re_pattern:
-        '(std::ostream& operator<<\(std::ostream& os, const
-        SuggestionChipConfig)'
-      replace: |-
-        }  // namespace chromium_impl
-        \1
-
-  - description: |2
-       Instantiates `page_actions::PageActionModel`
-
-      `PageActionModel` gets shadowed by a brave-specifc implementation, that cannot
-      be instantiated on its own, as it is made an abstract class by another plaster.
-      This substitution corrects the resolution, so we instantiate
-      `page_actions::PageActionModel` with the parent namespace.
-    regex:
-      re_pattern: '\bPageActionModel\b'
-      replace: '::page_actions::PageActionModel'
+      Rename PageActionControllerImpl to PageActionControllerImpl_ChromiumImpl.
+    rename_class:
+      class_name: PageActionControllerImpl
+      rename: PageActionControllerImpl_ChromiumImpl

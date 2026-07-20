@@ -16,7 +16,7 @@ namespace permissions {
 
 class PermissionLifetimeManager;
 
-class PermissionContextBase : public chromium_impl::PermissionContextBase {
+class PermissionContextBase : public PermissionContextBase_ChromiumImpl {
  public:
   PermissionContextBase(
       content::BrowserContext* browser_context,

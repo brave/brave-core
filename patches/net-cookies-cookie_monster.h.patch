@@ -1,20 +1,75 @@
 diff --git a/net/cookies/cookie_monster.h b/net/cookies/cookie_monster.h
-index c5249984334c44b593b3bd9e7d834be82260cea2..f7ae2ea139feabeac2d54c6bc1362a8359d27779 100644
+index c5249984334c44b593b3bd9e7d834be82260cea2..d3122d11c365f1dc8eed8afe7a0905d5f8e4cfc5 100644
 --- a/net/cookies/cookie_monster.h
 +++ b/net/cookies/cookie_monster.h
-@@ -58,6 +58,7 @@ class CookieInclusionStatus;
+@@ -58,7 +58,7 @@ class CookieInclusionStatus;
  // latter case, the cookie callback will be queued in tasks_pending_for_key_
  // while PermanentCookieStore loads cookies for the specified domain key on DB
  // thread.
-+namespace chromium_impl {
- class NET_EXPORT CookieMonster : public CookieStore {
+-class NET_EXPORT CookieMonster : public CookieStore {
++class NET_EXPORT CookieMonster_ChromiumImpl : public CookieStore {
   public:
    class PersistentCookieStore;
-@@ -980,6 +981,7 @@ class NET_EXPORT CookieMonster::PersistentCookieStore
-   friend class base::RefCountedThreadSafe<PersistentCookieStore>;
+ 
+@@ -182,29 +182,29 @@ class NET_EXPORT CookieMonster : public CookieStore {
+   // this class, but it must remain valid for the duration of the cookie
+   // monster's existence. If |store| is NULL, then no backing store will be
+   // updated. |net_log| must outlive the CookieMonster and can be null.
+-  CookieMonster(scoped_refptr<PersistentCookieStore> store,
++  CookieMonster_ChromiumImpl(scoped_refptr<PersistentCookieStore> store,
+                 NetLog* net_log,
+                 std::unique_ptr<PrefDelegate> pref_delegate = nullptr);
+ 
+   // Internal ctor, exposed publicly only for std::make_unique.
+   // `net_log` must outlive the CookieMonster.
+-  CookieMonster(base::PassKey<CookieMonster>,
++  CookieMonster_ChromiumImpl(base::PassKey<CookieMonster_ChromiumImpl>,
+                 scoped_refptr<PersistentCookieStore> store,
+                 base::TimeDelta last_access_threshold,
+                 NetLog* net_log,
+                 std::unique_ptr<PrefDelegate> pref_delegate);
+ 
+   // `net_log` must outlive the CookieMonster.
+-  static std::unique_ptr<CookieMonster> CreateForTesting(
++  static std::unique_ptr<CookieMonster_ChromiumImpl> CreateForTesting(
+       scoped_refptr<PersistentCookieStore> store,
+       base::TimeDelta last_access_threshold,
+       NetLog* net_log,
+       std::unique_ptr<PrefDelegate> pref_delegate);
+ 
+-  CookieMonster(const CookieMonster&) = delete;
+-  CookieMonster& operator=(const CookieMonster&) = delete;
++  CookieMonster_ChromiumImpl(const CookieMonster_ChromiumImpl&) = delete;
++  CookieMonster_ChromiumImpl& operator=(const CookieMonster_ChromiumImpl&) = delete;
+ 
+-  ~CookieMonster() override;
++  ~CookieMonster_ChromiumImpl() override;
+ 
+   // Writes all the cookies in |list| into the store, replacing all cookies
+   // currently present in store.
+@@ -627,7 +627,7 @@ class NET_EXPORT CookieMonster : public CookieStore {
+   // web observable. Different `CookieChangeCause` will be dispatched based on
+   // the `observability` value.
+   std::variant<CookieMap::iterator,
+-               CookieMonster::PartitionedCookieMapIterators>
++               CookieMonster_ChromiumImpl::PartitionedCookieMapIterators>
+   InternalInsertCookie(const std::string& key,
+                        std::unique_ptr<CanonicalCookie> cc,
+                        bool sync_to_store,
+@@ -920,13 +920,13 @@ class NET_EXPORT CookieMonster : public CookieStore {
+ 
+   THREAD_CHECKER(thread_checker_);
+ 
+-  base::WeakPtrFactory<CookieMonster> weak_ptr_factory_{this};
++  base::WeakPtrFactory<CookieMonster_ChromiumImpl> weak_ptr_factory_{this};
  };
  
-+}  // namespace chromium_impl
- }  // namespace net
+-typedef base::RefCountedThreadSafe<CookieMonster::PersistentCookieStore>
++typedef base::RefCountedThreadSafe<CookieMonster_ChromiumImpl::PersistentCookieStore>
+     RefcountedPersistentCookieStore;
  
- #endif  // NET_COOKIES_COOKIE_MONSTER_H_
+-class NET_EXPORT CookieMonster::PersistentCookieStore
++class NET_EXPORT CookieMonster_ChromiumImpl::PersistentCookieStore
+     : public RefcountedPersistentCookieStore {
+  public:
+   typedef base::OnceCallback<void(

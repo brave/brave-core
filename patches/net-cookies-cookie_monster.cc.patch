@@ -1,5 +1,5 @@
 diff --git a/net/cookies/cookie_monster.cc b/net/cookies/cookie_monster.cc
-index 83db80e1586859eb7eea229e294f25c5c87346a0..289fc95a250a26d3b8bb8ca8b93dce9fa69f9a42 100644
+index 83db80e1586859eb7eea229e294f25c5c87346a0..4b909c2caac2ac7a55e2e9409ee5fc25caa39250 100644
 --- a/net/cookies/cookie_monster.cc
 +++ b/net/cookies/cookie_monster.cc
 @@ -147,7 +147,7 @@ enum CookieType {
@@ -7,22 +7,911 @@ index 83db80e1586859eb7eea229e294f25c5c87346a0..289fc95a250a26d3b8bb8ca8b93dce9f
  };
  
 -void MaybeRunDeleteCallback(base::WeakPtr<net::CookieMonster> cookie_monster,
-+void MaybeRunDeleteCallback(base::WeakPtr<net::chromium_impl::CookieMonster> cookie_monster,
++void MaybeRunDeleteCallback(base::WeakPtr<net::CookieMonster_ChromiumImpl> cookie_monster,
                              base::OnceClosure callback) {
    if (cookie_monster && callback)
      std::move(callback).Run();
-@@ -222,7 +222,7 @@ void LogStoredCookieToUMA(const net::CanonicalCookie& cc,
+@@ -183,7 +183,7 @@ size_t NameValueSizeBytes(const net::CanonicalCookie& cc) {
+ }
  
- }  // namespace
+ size_t NumBytesInCookieMapForKey(
+-    const net::CookieMonster::CookieMap& cookie_map,
++    const net::CookieMonster_ChromiumImpl::CookieMap& cookie_map,
+     const std::string& key) {
+   size_t result = 0;
+   auto range = cookie_map.equal_range(key);
+@@ -194,7 +194,7 @@ size_t NumBytesInCookieMapForKey(
+ }
  
--namespace net {
-+namespace net::chromium_impl {
+ size_t NumBytesInCookieItVector(
+-    const net::CookieMonster::CookieItVector& cookie_its) {
++    const net::CookieMonster_ChromiumImpl::CookieItVector& cookie_its) {
+   size_t result = 0;
+   for (const auto& it : cookie_its) {
+     result += NameValueSizeBytes(*it->second);
+@@ -226,23 +226,23 @@ namespace net {
  
  // See comments at declaration of these variables in cookie_monster.h
  // for details.
-@@ -3028,4 +3028,4 @@ std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
-   });
+-const size_t CookieMonster::kDomainMaxCookies = 180;
+-const size_t CookieMonster::kDomainPurgeCookies = 30;
+-const size_t CookieMonster::kMaxCookies = 3300;
+-const size_t CookieMonster::kPurgeCookies = 300;
++const size_t CookieMonster_ChromiumImpl::kDomainMaxCookies = 180;
++const size_t CookieMonster_ChromiumImpl::kDomainPurgeCookies = 30;
++const size_t CookieMonster_ChromiumImpl::kMaxCookies = 3300;
++const size_t CookieMonster_ChromiumImpl::kPurgeCookies = 300;
+ 
+-const size_t CookieMonster::kMaxDomainPurgedKeys = 100;
++const size_t CookieMonster_ChromiumImpl::kMaxDomainPurgedKeys = 100;
+ 
+-const size_t CookieMonster::kPerPartitionDomainMaxCookieBytes = 10240;
+-const size_t CookieMonster::kPerPartitionDomainMaxCookies = 180;
++const size_t CookieMonster_ChromiumImpl::kPerPartitionDomainMaxCookieBytes = 10240;
++const size_t CookieMonster_ChromiumImpl::kPerPartitionDomainMaxCookies = 180;
+ 
+-const size_t CookieMonster::kDomainCookiesQuotaLow = 30;
+-const size_t CookieMonster::kDomainCookiesQuotaMedium = 50;
+-const size_t CookieMonster::kDomainCookiesQuotaHigh =
++const size_t CookieMonster_ChromiumImpl::kDomainCookiesQuotaLow = 30;
++const size_t CookieMonster_ChromiumImpl::kDomainCookiesQuotaMedium = 50;
++const size_t CookieMonster_ChromiumImpl::kDomainCookiesQuotaHigh =
+     kDomainMaxCookies - kDomainPurgeCookies - kDomainCookiesQuotaLow -
+     kDomainCookiesQuotaMedium;
+ 
+-const int CookieMonster::kSafeFromGlobalPurgeDays = 30;
++const int CookieMonster_ChromiumImpl::kSafeFromGlobalPurgeDays = 30;
+ 
+ namespace {
+ 
+@@ -259,14 +259,14 @@ const int kDefaultAccessUpdateThresholdSeconds = 60;
+ // Comparator to sort cookies from highest creation date to lowest
+ // creation date.
+ struct OrderByCreationTimeDesc {
+-  bool operator()(const CookieMonster::CookieMap::iterator& a,
+-                  const CookieMonster::CookieMap::iterator& b) const {
++  bool operator()(const CookieMonster_ChromiumImpl::CookieMap::iterator& a,
++                  const CookieMonster_ChromiumImpl::CookieMap::iterator& b) const {
+     return a->second->CreationDate() > b->second->CreationDate();
+   }
+ };
+ 
+-bool LRACookieSorter(const CookieMonster::CookieMap::iterator& it1,
+-                     const CookieMonster::CookieMap::iterator& it2) {
++bool LRACookieSorter(const CookieMonster_ChromiumImpl::CookieMap::iterator& it1,
++                     const CookieMonster_ChromiumImpl::CookieMap::iterator& it2) {
+   if (it1->second->LastAccessDate() != it2->second->LastAccessDate())
+     return it1->second->LastAccessDate() < it2->second->LastAccessDate();
+ 
+@@ -276,8 +276,8 @@ bool LRACookieSorter(const CookieMonster::CookieMap::iterator& it1,
+ 
+ // For a CookieItVector iterator range [|it_begin|, |it_end|),
+ // sorts the first |num_sort| elements by LastAccessDate().
+-void SortLeastRecentlyAccessed(CookieMonster::CookieItVector::iterator it_begin,
+-                               CookieMonster::CookieItVector::iterator it_end,
++void SortLeastRecentlyAccessed(CookieMonster_ChromiumImpl::CookieItVector::iterator it_begin,
++                               CookieMonster_ChromiumImpl::CookieItVector::iterator it_end,
+                                size_t num_sort) {
+   DCHECK_LE(static_cast<int>(num_sort), it_end - it_begin);
+   std::partial_sort(it_begin, it_begin + num_sort, it_end, LRACookieSorter);
+@@ -288,9 +288,9 @@ void SortLeastRecentlyAccessed(CookieMonster::CookieItVector::iterator it_begin,
+ // |non_secure_cookie_its|. Both |secure_cookie_its| and |non_secure_cookie_its|
+ // must be non-NULL.
+ void SplitCookieVectorIntoSecureAndNonSecure(
+-    const CookieMonster::CookieItVector& cookie_its,
+-    CookieMonster::CookieItVector* secure_cookie_its,
+-    CookieMonster::CookieItVector* non_secure_cookie_its) {
++    const CookieMonster_ChromiumImpl::CookieItVector& cookie_its,
++    CookieMonster_ChromiumImpl::CookieItVector* secure_cookie_its,
++    CookieMonster_ChromiumImpl::CookieItVector* non_secure_cookie_its) {
+   DCHECK(secure_cookie_its && non_secure_cookie_its);
+   for (const auto& curit : cookie_its) {
+     if (curit->second->SecureAttribute()) {
+@@ -301,7 +301,7 @@ void SplitCookieVectorIntoSecureAndNonSecure(
+   }
  }
  
--}  // namespace net
-+}  // namespace net::chromium_impl
+-bool LowerBoundAccessDateComparator(const CookieMonster::CookieMap::iterator it,
++bool LowerBoundAccessDateComparator(const CookieMonster_ChromiumImpl::CookieMap::iterator it,
+                                     Time access_date) {
+   return it->second->LastAccessDate() < access_date;
+ }
+@@ -310,9 +310,9 @@ bool LowerBoundAccessDateComparator(const CookieMonster::CookieMap::iterator it,
+ // from a CookieItVector sorted by LastAccessDate(), returns the
+ // first iterator with access date >= |access_date|, or cookie_its_end if this
+ // holds for all.
+-CookieMonster::CookieItVector::iterator LowerBoundAccessDate(
+-    const CookieMonster::CookieItVector::iterator its_begin,
+-    const CookieMonster::CookieItVector::iterator its_end,
++CookieMonster_ChromiumImpl::CookieItVector::iterator LowerBoundAccessDate(
++    const CookieMonster_ChromiumImpl::CookieItVector::iterator its_begin,
++    const CookieMonster_ChromiumImpl::CookieItVector::iterator its_end,
+     Time access_date) {
+   return std::lower_bound(its_begin, its_end, access_date,
+                           LowerBoundAccessDateComparator);
+@@ -371,7 +371,7 @@ bool IsCookieEligibleForEviction(CookiePriority current_priority_level,
+ 
+ size_t CountCookiesForPossibleDeletion(
+     CookiePriority priority,
+-    const CookieMonster::CookieItVector& cookies,
++    const CookieMonster_ChromiumImpl::CookieItVector& cookies,
+     bool protect_secure_cookies) {
+   size_t cookies_count = 0U;
+   for (const auto& cookie : cookies) {
+@@ -385,8 +385,8 @@ size_t CountCookiesForPossibleDeletion(
+ }
+ 
+ struct DeletionCookieLists {
+-  std::list<CookieMonster::CookieItList::const_iterator> host_cookies;
+-  std::list<CookieMonster::CookieItList::const_iterator> domain_cookies;
++  std::list<CookieMonster_ChromiumImpl::CookieItList::const_iterator> host_cookies;
++  std::list<CookieMonster_ChromiumImpl::CookieItList::const_iterator> domain_cookies;
+ };
+ 
+ // Performs 2 tasks
+@@ -397,7 +397,7 @@ struct DeletionCookieLists {
+ size_t CountCookiesAndGenerateListsForPossibleDeletion(
+     CookiePriority priority,
+     DeletionCookieLists& could_be_deleted,
+-    const CookieMonster::CookieItList& cookies,
++    const CookieMonster_ChromiumImpl::CookieItList& cookies,
+     bool generate_for_secure) {
+   size_t total_cookies_at_priority = 0;
+ 
+@@ -432,7 +432,7 @@ size_t CountCookiesAndGenerateListsForPossibleDeletion(
+ // in `cookies`.
+ DeletionCookieLists
+ CountCookiesAndGenerateListsForPossibleDeletionPartitionedCookies(
+-    const CookieMonster::CookieItList& cookies) {
++    const CookieMonster_ChromiumImpl::CookieItList& cookies) {
+   DeletionCookieLists could_be_deleted;
+   for (auto list_it = cookies.begin(); list_it != cookies.end(); list_it++) {
+     const auto cookiemap_it = *list_it;
+@@ -471,16 +471,16 @@ void RecordPersistanceHistograms(const CanonicalCookie& cookie,
+ 
+ }  // namespace
+ 
+-CookieMonster::CookieMonster(scoped_refptr<PersistentCookieStore> store,
++CookieMonster_ChromiumImpl::CookieMonster_ChromiumImpl(scoped_refptr<PersistentCookieStore> store,
+                              NetLog* net_log,
+                              std::unique_ptr<PrefDelegate> pref_delegate)
+-    : CookieMonster(base::PassKey<CookieMonster>(),
++    : CookieMonster_ChromiumImpl(base::PassKey<CookieMonster_ChromiumImpl>(),
+                     std::move(store),
+                     base::Seconds(kDefaultAccessUpdateThresholdSeconds),
+                     net_log,
+                     std::move(pref_delegate)) {}
+ 
+-CookieMonster::CookieMonster(base::PassKey<CookieMonster>,
++CookieMonster_ChromiumImpl::CookieMonster_ChromiumImpl(base::PassKey<CookieMonster_ChromiumImpl>,
+                              scoped_refptr<PersistentCookieStore> store,
+                              base::TimeDelta last_access_threshold,
+                              NetLog* net_log,
+@@ -498,19 +498,19 @@ CookieMonster::CookieMonster(base::PassKey<CookieMonster>,
+ }
+ 
+ // static
+-std::unique_ptr<CookieMonster> CookieMonster::CreateForTesting(
++std::unique_ptr<CookieMonster_ChromiumImpl> CookieMonster_ChromiumImpl::CreateForTesting(
+     scoped_refptr<PersistentCookieStore> store,
+     base::TimeDelta last_access_threshold,
+     NetLog* net_log,
+     std::unique_ptr<PrefDelegate> pref_delegate) {
+-  return std::make_unique<CookieMonster>(
+-      base::PassKey<CookieMonster>(), std::move(store), last_access_threshold,
++  return std::make_unique<CookieMonster_ChromiumImpl>(
++      base::PassKey<CookieMonster_ChromiumImpl>(), std::move(store), last_access_threshold,
+       net_log, std::move(pref_delegate));
+ }
+ 
+ // Asynchronous CookieMonster API
+ 
+-void CookieMonster::FlushStore(base::OnceClosure callback) {
++void CookieMonster_ChromiumImpl::FlushStore(base::OnceClosure callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   if (initialized_ && store_.get()) {
+@@ -521,24 +521,24 @@ void CookieMonster::FlushStore(base::OnceClosure callback) {
+   }
+ }
+ 
+-void CookieMonster::SetForceKeepSessionState() {
++void CookieMonster_ChromiumImpl::SetForceKeepSessionState() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   if (store_)
+     store_->SetForceKeepSessionState();
+ }
+ 
+-void CookieMonster::SetAllCookiesAsync(const CookieList& list,
++void CookieMonster_ChromiumImpl::SetAllCookiesAsync(const CookieList& list,
+                                        SetCookiesCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::SetAllCookies, base::Unretained(this), list,
++      &CookieMonster_ChromiumImpl::SetAllCookies, base::Unretained(this), list,
+       std::move(callback)));
+ }
+ 
+-void CookieMonster::SetCanonicalCookieAsync(
++void CookieMonster_ChromiumImpl::SetCanonicalCookieAsync(
+     std::unique_ptr<CanonicalCookie> cookie,
+     const GURL& source_url,
+     const CookieOptions& options,
+@@ -555,13 +555,13 @@ void CookieMonster::SetCanonicalCookieAsync(
+           // base::Unretained is safe as DoCookieCallbackForHostOrDomain stores
+           // the callback on |*this|, so the callback will not outlive
+           // the object.
+-          &CookieMonster::SetCanonicalCookie, base::Unretained(this),
++          &CookieMonster_ChromiumImpl::SetCanonicalCookie, base::Unretained(this),
+           std::move(cookie), source_url, options, std::move(callback),
+           std::move(cookie_access_result)),
+       domain);
+ }
+ 
+-void CookieMonster::SetUnsafeCanonicalCookieForTestAsync(
++void CookieMonster_ChromiumImpl::SetUnsafeCanonicalCookieForTestAsync(
+     std::unique_ptr<CanonicalCookie> cookie,
+     SetCookiesCallback callback) {
+   CanonicalCookie::CanonicalizationResult result = cookie->IsCanonical();
+@@ -573,12 +573,12 @@ void CookieMonster::SetUnsafeCanonicalCookieForTestAsync(
+           // base::Unretained is safe as DoCookieCallbackForHostOrDomain stores
+           // the callback on |*this|, so the callback will not outlive
+           // the object.
+-          &CookieMonster::SetUnsafeCanonicalCookieForTest,
++          &CookieMonster_ChromiumImpl::SetUnsafeCanonicalCookieForTest,
+           base::Unretained(this), std::move(cookie), std::move(callback)),
+       domain);
+ }
+ 
+-void CookieMonster::GetCookieListWithOptionsAsync(
++void CookieMonster_ChromiumImpl::GetCookieListWithOptionsAsync(
+     const GURL& url,
+     const CookieOptions& options,
+     const CookiePartitionKeyCollection& cookie_partition_key_collection,
+@@ -590,67 +590,67 @@ void CookieMonster::GetCookieListWithOptionsAsync(
+           // base::Unretained is safe as DoCookieCallbackForURL stores
+           // the callback on |*this|, so the callback will not outlive
+           // the object.
+-          &CookieMonster::GetCookieListWithOptions, base::Unretained(this), url,
++          &CookieMonster_ChromiumImpl::GetCookieListWithOptions, base::Unretained(this), url,
+           options, cookie_partition_key_collection, std::move(callback)),
+       url);
+ }
+ 
+-void CookieMonster::GetAllCookiesAsync(GetAllCookiesCallback callback) {
++void CookieMonster_ChromiumImpl::GetAllCookiesAsync(GetAllCookiesCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::GetAllCookies, base::Unretained(this),
++      &CookieMonster_ChromiumImpl::GetAllCookies, base::Unretained(this),
+       std::move(callback)));
+ }
+ 
+-void CookieMonster::GetAllCookiesWithAccessSemanticsAsync(
++void CookieMonster_ChromiumImpl::GetAllCookiesWithAccessSemanticsAsync(
+     GetAllCookiesWithAccessSemanticsCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::GetAllCookies, base::Unretained(this),
+-      base::BindOnce(&CookieMonster::AttachAccessSemanticsListForCookieList,
++      &CookieMonster_ChromiumImpl::GetAllCookies, base::Unretained(this),
++      base::BindOnce(&CookieMonster_ChromiumImpl::AttachAccessSemanticsListForCookieList,
+                      base::Unretained(this), std::move(callback))));
+ }
+ 
+-void CookieMonster::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
++void CookieMonster_ChromiumImpl::DeleteCanonicalCookieAsync(const CanonicalCookie& cookie,
+                                                DeleteCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::DeleteCanonicalCookie, base::Unretained(this), cookie,
++      &CookieMonster_ChromiumImpl::DeleteCanonicalCookie, base::Unretained(this), cookie,
+       std::move(callback)));
+ }
+ 
+-void CookieMonster::DeleteAllCreatedInTimeRangeAsync(
++void CookieMonster_ChromiumImpl::DeleteAllCreatedInTimeRangeAsync(
+     const TimeRange& creation_range,
+     DeleteCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::DeleteAllCreatedInTimeRange, base::Unretained(this),
++      &CookieMonster_ChromiumImpl::DeleteAllCreatedInTimeRange, base::Unretained(this),
+       creation_range, std::move(callback)));
+ }
+ 
+-void CookieMonster::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
++void CookieMonster_ChromiumImpl::DeleteAllMatchingInfoAsync(CookieDeletionInfo delete_info,
+                                                DeleteCallback callback) {
+   auto cookie_matcher =
+-      base::BindRepeating(&CookieMonster::MatchCookieDeletionInfo,
++      base::BindRepeating(&CookieMonster_ChromiumImpl::MatchCookieDeletionInfo,
+                           base::Unretained(this), std::move(delete_info));
+ 
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::DeleteMatchingCookies, base::Unretained(this),
++      &CookieMonster_ChromiumImpl::DeleteMatchingCookies, base::Unretained(this),
+       std::move(cookie_matcher), DELETE_COOKIE_EXPLICIT, std::move(callback)));
+ }
+ 
+-void CookieMonster::DeleteSessionCookiesAsync(
++void CookieMonster_ChromiumImpl::DeleteSessionCookiesAsync(
+     CookieStore::DeleteCallback callback) {
+   auto session_cookie_matcher =
+       base::BindRepeating([](const net::CanonicalCookie& cookie) {
+@@ -660,23 +660,23 @@ void CookieMonster::DeleteSessionCookiesAsync(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::DeleteMatchingCookies, base::Unretained(this),
++      &CookieMonster_ChromiumImpl::DeleteMatchingCookies, base::Unretained(this),
+       std::move(session_cookie_matcher), DELETE_COOKIE_EXPIRED,
+       std::move(callback)));
+ }
+ 
+-void CookieMonster::DeleteMatchingCookiesAsync(
++void CookieMonster_ChromiumImpl::DeleteMatchingCookiesAsync(
+     CookieStore::DeletePredicate predicate,
+     CookieStore::DeleteCallback callback) {
+   DoCookieCallback(base::BindOnce(
+       // base::Unretained is safe as DoCookieCallback stores
+       // the callback on |*this|, so the callback will not outlive
+       // the object.
+-      &CookieMonster::DeleteMatchingCookies, base::Unretained(this),
++      &CookieMonster_ChromiumImpl::DeleteMatchingCookies, base::Unretained(this),
+       std::move(predicate), DELETE_COOKIE_EXPLICIT, std::move(callback)));
+ }
+ 
+-void CookieMonster::SetCookieableSchemes(
++void CookieMonster_ChromiumImpl::SetCookieableSchemes(
+     std::vector<std::string> schemes,
+     SetCookieableSchemesCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -693,7 +693,7 @@ void CookieMonster::SetCookieableSchemes(
+ }
+ 
+ // This function must be called before the CookieMonster is used.
+-void CookieMonster::SetPersistSessionCookies(bool persist_session_cookies) {
++void CookieMonster_ChromiumImpl::SetPersistSessionCookies(bool persist_session_cookies) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   DCHECK(!initialized_);
+   net_log_.AddEntryWithBoolParams(
+@@ -703,21 +703,21 @@ void CookieMonster::SetPersistSessionCookies(bool persist_session_cookies) {
+ }
+ 
+ // static
+-std::vector<std::string> CookieMonster::GetDefaultCookieableSchemes() {
++std::vector<std::string> CookieMonster_ChromiumImpl::GetDefaultCookieableSchemes() {
+   return std::vector<std::string>{"http", "https", "ws", "wss"};
+ }
+ 
+-CookieChangeDispatcher& CookieMonster::GetChangeDispatcher() {
++CookieChangeDispatcher& CookieMonster_ChromiumImpl::GetChangeDispatcher() {
+   return change_dispatcher_;
+ }
+ 
+-CookieMonster::~CookieMonster() {
++CookieMonster_ChromiumImpl::~CookieMonster_ChromiumImpl() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   net_log_.EndEvent(NetLogEventType::COOKIE_STORE_ALIVE);
+ }
+ 
+ // static
+-bool CookieMonster::CookieSorter(const CanonicalCookie* cc1,
++bool CookieMonster_ChromiumImpl::CookieSorter(const CanonicalCookie* cc1,
+                                  const CanonicalCookie* cc2) {
+   // Mozilla sorts on the path length (longest first), and then it sorts by
+   // creation time (oldest first).  The RFC says the sort order for the domain
+@@ -727,7 +727,7 @@ bool CookieMonster::CookieSorter(const CanonicalCookie* cc1,
+   return cc1->Path().length() > cc2->Path().length();
+ }
+ 
+-void CookieMonster::GetAllCookies(GetAllCookiesCallback callback) {
++void CookieMonster_ChromiumImpl::GetAllCookies(GetAllCookiesCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // This function is being called to scrape the cookie list for management UI
+@@ -764,7 +764,7 @@ void CookieMonster::GetAllCookies(GetAllCookiesCallback callback) {
+   MaybeRunCookieCallback(std::move(callback), cookie_list);
+ }
+ 
+-void CookieMonster::AttachAccessSemanticsListForCookieList(
++void CookieMonster_ChromiumImpl::AttachAccessSemanticsListForCookieList(
+     GetAllCookiesWithAccessSemanticsCallback callback,
+     const CookieList& cookie_list) {
+   std::vector<CookieAccessSemantics> access_semantics_list;
+@@ -775,7 +775,7 @@ void CookieMonster::AttachAccessSemanticsListForCookieList(
+                          access_semantics_list);
+ }
+ 
+-void CookieMonster::GetCookieListWithOptions(
++void CookieMonster_ChromiumImpl::GetCookieListWithOptions(
+     const GURL& url,
+     const CookieOptions& options,
+     const CookiePartitionKeyCollection& cookie_partition_key_collection,
+@@ -841,7 +841,7 @@ void CookieMonster::GetCookieListWithOptions(
+   }
+ }
+ 
+-void CookieMonster::DeleteAllCreatedInTimeRange(const TimeRange& creation_range,
++void CookieMonster_ChromiumImpl::DeleteAllCreatedInTimeRange(const TimeRange& creation_range,
+                                                 DeleteCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+@@ -888,7 +888,7 @@ void CookieMonster::DeleteAllCreatedInTimeRange(const TimeRange& creation_range,
+                               : base::OnceClosure()));
+ }
+ 
+-bool CookieMonster::MatchCookieDeletionInfo(
++bool CookieMonster_ChromiumImpl::MatchCookieDeletionInfo(
+     const CookieDeletionInfo& delete_info,
+     const net::CanonicalCookie& cookie) {
+   bool delegate_treats_url_as_trustworthy = false;  // irrelevant if no URL.
+@@ -906,7 +906,7 @@ bool CookieMonster::MatchCookieDeletionInfo(
+                          delegate_treats_url_as_trustworthy});
+ }
+ 
+-void CookieMonster::DeleteCanonicalCookie(const CanonicalCookie& cookie,
++void CookieMonster_ChromiumImpl::DeleteCanonicalCookie(const CanonicalCookie& cookie,
+                                           DeleteCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   uint32_t result = 0u;
+@@ -948,7 +948,7 @@ void CookieMonster::DeleteCanonicalCookie(const CanonicalCookie& cookie,
+                               : base::OnceClosure()));
+ }
+ 
+-void CookieMonster::DeleteMatchingCookies(DeletePredicate predicate,
++void CookieMonster_ChromiumImpl::DeleteMatchingCookies(DeletePredicate predicate,
+                                           DeletionCause cause,
+                                           DeleteCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -992,12 +992,12 @@ void CookieMonster::DeleteMatchingCookies(DeletePredicate predicate,
+                               : base::OnceClosure()));
+ }
+ 
+-void CookieMonster::MarkCookieStoreAsInitialized() {
++void CookieMonster_ChromiumImpl::MarkCookieStoreAsInitialized() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   initialized_ = true;
+ }
+ 
+-void CookieMonster::FetchAllCookiesIfNecessary() {
++void CookieMonster_ChromiumImpl::FetchAllCookiesIfNecessary() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   if (store_.get() && !started_fetching_all_cookies_) {
+     started_fetching_all_cookies_ = true;
+@@ -1005,7 +1005,7 @@ void CookieMonster::FetchAllCookiesIfNecessary() {
+   }
+ }
+ 
+-void CookieMonster::FetchAllCookies() {
++void CookieMonster_ChromiumImpl::FetchAllCookies() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   DCHECK(store_.get()) << "Store must exist to initialize";
+   DCHECK(!finished_fetching_all_cookies_)
+@@ -1013,12 +1013,12 @@ void CookieMonster::FetchAllCookies() {
+ 
+   // We bind in the current time so that we can report the wall-clock time for
+   // loading cookies.
+-  store_->Load(base::BindOnce(&CookieMonster::OnLoaded,
++  store_->Load(base::BindOnce(&CookieMonster_ChromiumImpl::OnLoaded,
+                               weak_ptr_factory_.GetWeakPtr(), TimeTicks::Now()),
+                net_log_);
+ }
+ 
+-void CookieMonster::OnLoaded(
++void CookieMonster_ChromiumImpl::OnLoaded(
+     TimeTicks beginning_time,
+     std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -1040,7 +1040,7 @@ void CookieMonster::OnLoaded(
+   InvokeQueue();
+ }
+ 
+-void CookieMonster::OnKeyLoaded(
++void CookieMonster_ChromiumImpl::OnKeyLoaded(
+     const std::string& key,
+     std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -1068,7 +1068,7 @@ void CookieMonster::OnKeyLoaded(
+   keys_loaded_.insert(key);
+ }
+ 
+-void CookieMonster::StoreLoadedCookies(
++void CookieMonster_ChromiumImpl::StoreLoadedCookies(
+     std::vector<std::unique_ptr<CanonicalCookie>> cookies) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+@@ -1133,7 +1133,7 @@ void CookieMonster::StoreLoadedCookies(
+   EnsureCookiesMapIsValid();
+ }
+ 
+-void CookieMonster::InvokeQueue() {
++void CookieMonster_ChromiumImpl::InvokeQueue() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // Move all per-key tasks into the global queue, if there are any.  This is
+@@ -1162,7 +1162,7 @@ void CookieMonster::InvokeQueue() {
+   keys_loaded_.clear();
+ }
+ 
+-void CookieMonster::EnsureCookiesMapIsValid() {
++void CookieMonster_ChromiumImpl::EnsureCookiesMapIsValid() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // Iterate through all the of the cookies, grouped by host.
+@@ -1204,7 +1204,7 @@ void CookieMonster::EnsureCookiesMapIsValid() {
+ // (2) For each list with more than 1 entry, keep the cookie having the
+ //     most recent creation time, and delete the others.
+ //
+-void CookieMonster::TrimDuplicateCookiesForKey(
++void CookieMonster_ChromiumImpl::TrimDuplicateCookiesForKey(
+     const std::string& key,
+     CookieMap::iterator begin,
+     CookieMap::iterator end,
+@@ -1291,10 +1291,10 @@ void CookieMonster::TrimDuplicateCookiesForKey(
+ }
+ 
+ std::vector<CanonicalCookie*>
+-CookieMonster::FindCookiesForRegistryControlledHost(
++CookieMonster_ChromiumImpl::FindCookiesForRegistryControlledHost(
+     const GURL& url,
+     CookieMap* cookie_map,
+-    CookieMonster::PartitionedCookieMap::iterator* partition_it) {
++    CookieMonster_ChromiumImpl::PartitionedCookieMap::iterator* partition_it) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   if (!cookie_map)
+@@ -1330,7 +1330,7 @@ CookieMonster::FindCookiesForRegistryControlledHost(
+ }
+ 
+ std::vector<CanonicalCookie*>
+-CookieMonster::FindPartitionedCookiesForRegistryControlledHost(
++CookieMonster_ChromiumImpl::FindPartitionedCookiesForRegistryControlledHost(
+     const CookiePartitionKey& cookie_partition_key,
+     const GURL& url) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -1343,7 +1343,7 @@ CookieMonster::FindPartitionedCookiesForRegistryControlledHost(
+   return FindCookiesForRegistryControlledHost(url, it->second.get(), &it);
+ }
+ 
+-void CookieMonster::FilterCookiesWithOptions(
++void CookieMonster_ChromiumImpl::FilterCookiesWithOptions(
+     const GURL& url,
+     const CookieOptions& options,
+     const CookiePartitionKeyCollection& cookie_partition_key_collection,
+@@ -1485,8 +1485,8 @@ void CookieMonster::FilterCookiesWithOptions(
+   }
+ }
+ 
+-CookieMonster::CookieChangeObservability
+-CookieMonster::MaybeDeleteEquivalentCookieAndUpdateStatus(
++CookieMonster_ChromiumImpl::CookieChangeObservability
++CookieMonster_ChromiumImpl::MaybeDeleteEquivalentCookieAndUpdateStatus(
+     const std::string& key,
+     const CanonicalCookie& cookie_being_set,
+     bool allowed_to_set_secure_cookie,
+@@ -1620,7 +1620,7 @@ CookieMonster::MaybeDeleteEquivalentCookieAndUpdateStatus(
+ }
+ 
+ // static
+-CookieChangeCause CookieMonster::ToCookieChangeCause(
++CookieChangeCause CookieMonster_ChromiumImpl::ToCookieChangeCause(
+     CookieChangeObservability observability) {
+   switch (observability) {
+     case CookieChangeObservability::kWebObservable:
+@@ -1634,9 +1634,9 @@ CookieChangeCause CookieMonster::ToCookieChangeCause(
+                << static_cast<int>(observability);
+ }
+ 
+-std::variant<CookieMonster::CookieMap::iterator,
+-             CookieMonster::PartitionedCookieMapIterators>
+-CookieMonster::InternalInsertCookie(const std::string& key,
++std::variant<CookieMonster_ChromiumImpl::CookieMap::iterator,
++             CookieMonster_ChromiumImpl::PartitionedCookieMapIterators>
++CookieMonster_ChromiumImpl::InternalInsertCookie(const std::string& key,
+                                     std::unique_ptr<CanonicalCookie> cc,
+                                     bool sync_to_store,
+                                     const CookieAccessResult& access_result,
+@@ -1721,11 +1721,11 @@ CookieMonster::InternalInsertCookie(const std::string& key,
+   return inserted;
+ }
+ 
+-bool CookieMonster::ShouldUpdatePersistentStore(CanonicalCookie& cc) {
++bool CookieMonster_ChromiumImpl::ShouldUpdatePersistentStore(CanonicalCookie& cc) {
+   return (cc.IsPersistent() || persist_session_cookies_) && store_.get();
+ }
+ 
+-void CookieMonster::SetCanonicalCookie(
++void CookieMonster_ChromiumImpl::SetCanonicalCookie(
+     std::unique_ptr<CanonicalCookie> cc,
+     const GURL& source_url,
+     const CookieOptions& options,
+@@ -1874,7 +1874,7 @@ void CookieMonster::SetCanonicalCookie(
+   MaybeRunCookieCallback(std::move(callback), access_result);
+ }
+ 
+-void CookieMonster::SetAllCookies(CookieList list,
++void CookieMonster_ChromiumImpl::SetAllCookies(CookieList list,
+                                   SetCookiesCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+@@ -1916,7 +1916,7 @@ void CookieMonster::SetAllCookies(CookieList list,
+   MaybeRunCookieCallback(std::move(callback), CookieAccessResult());
+ }
+ 
+-void CookieMonster::SetUnsafeCanonicalCookieForTest(
++void CookieMonster_ChromiumImpl::SetUnsafeCanonicalCookieForTest(
+     std::unique_ptr<CanonicalCookie> cc,
+     SetCookiesCallback callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -1937,7 +1937,7 @@ void CookieMonster::SetUnsafeCanonicalCookieForTest(
+   MaybeRunCookieCallback(std::move(callback), access_result);
+ }
+ 
+-void CookieMonster::InternalUpdateCookieAccessTime(CanonicalCookie& cc,
++void CookieMonster_ChromiumImpl::InternalUpdateCookieAccessTime(CanonicalCookie& cc,
+                                                    Time current) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+@@ -1956,7 +1956,7 @@ void CookieMonster::InternalUpdateCookieAccessTime(CanonicalCookie& cc,
+ 
+ // InternalDeleteCookies must not invalidate iterators other than the one being
+ // deleted.
+-void CookieMonster::InternalDeleteCookie(CookieMap::iterator it,
++void CookieMonster_ChromiumImpl::InternalDeleteCookie(CookieMap::iterator it,
+                                          bool sync_to_store,
+                                          DeletionCause deletion_cause) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -2011,7 +2011,7 @@ void CookieMonster::InternalDeleteCookie(CookieMap::iterator it,
+   cookies_.erase(it);
+ }
+ 
+-void CookieMonster::InternalDeletePartitionedCookie(
++void CookieMonster_ChromiumImpl::InternalDeletePartitionedCookie(
+     PartitionedCookieMap::iterator partition_it,
+     CookieMap::iterator cookie_it,
+     bool sync_to_store,
+@@ -2078,7 +2078,7 @@ void CookieMonster::InternalDeletePartitionedCookie(
+ 
+ // Domain expiry behavior is unchanged by key/expiry scheme (the
+ // meaning of the key is different, but that's not visible to this routine).
+-size_t CookieMonster::GarbageCollect(Time current, const std::string& key) {
++size_t CookieMonster_ChromiumImpl::GarbageCollect(Time current, const std::string& key) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   size_t num_deleted = 0;
+@@ -2259,7 +2259,7 @@ size_t CookieMonster::GarbageCollect(Time current, const std::string& key) {
+   return num_deleted;
+ }
+ 
+-size_t CookieMonster::GarbageCollectPartitionedCookies(
++size_t CookieMonster_ChromiumImpl::GarbageCollectPartitionedCookies(
+     base::Time current,
+     const CookiePartitionKey& cookie_partition_key,
+     const std::string& key) {
+@@ -2381,7 +2381,7 @@ size_t CookieMonster::GarbageCollectPartitionedCookies(
+   return num_deleted;
+ }
+ 
+-size_t CookieMonster::PurgeLeastRecentMatches(CookieItVector& cookies,
++size_t CookieMonster_ChromiumImpl::PurgeLeastRecentMatches(CookieItVector& cookies,
+                                               CookiePriority priority,
+                                               size_t to_protect,
+                                               size_t purge_goal,
+@@ -2433,7 +2433,7 @@ size_t CookieMonster::PurgeLeastRecentMatches(CookieItVector& cookies,
+   return removed;
+ }
+ 
+-size_t CookieMonster::PurgeLeastRecentMatchesForOBC(
++size_t CookieMonster_ChromiumImpl::PurgeLeastRecentMatchesForOBC(
+     CookieItList& cookies,
+     CookiePriority priority,
+     size_t to_protect,
+@@ -2511,7 +2511,7 @@ size_t CookieMonster::PurgeLeastRecentMatchesForOBC(
+   return removed;
+ }
+ 
+-size_t CookieMonster::GarbageCollectExpired(Time current,
++size_t CookieMonster_ChromiumImpl::GarbageCollectExpired(Time current,
+                                             const CookieMapItPair& itpair,
+                                             CookieItVector* cookie_its) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -2532,7 +2532,7 @@ size_t CookieMonster::GarbageCollectExpired(Time current,
+   return num_deleted;
+ }
+ 
+-size_t CookieMonster::GarbageCollectExpiredPartitionedCookies(
++size_t CookieMonster_ChromiumImpl::GarbageCollectExpiredPartitionedCookies(
+     Time current,
+     const PartitionedCookieMap::iterator& cookie_partition_it,
+     const CookieMapItPair& itpair,
+@@ -2556,7 +2556,7 @@ size_t CookieMonster::GarbageCollectExpiredPartitionedCookies(
+   return num_deleted;
+ }
+ 
+-void CookieMonster::GarbageCollectAllExpiredPartitionedCookies(Time current) {
++void CookieMonster_ChromiumImpl::GarbageCollectAllExpiredPartitionedCookies(Time current) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   for (auto it = partitioned_cookies_.begin();
+        it != partitioned_cookies_.end();) {
+@@ -2573,7 +2573,7 @@ void CookieMonster::GarbageCollectAllExpiredPartitionedCookies(Time current) {
+   }
+ }
+ 
+-size_t CookieMonster::GarbageCollectDeleteRange(
++size_t CookieMonster_ChromiumImpl::GarbageCollectDeleteRange(
+     Time current,
+     DeletionCause cause,
+     CookieItVector::iterator it_begin,
+@@ -2586,7 +2586,7 @@ size_t CookieMonster::GarbageCollectDeleteRange(
+   return it_end - it_begin;
+ }
+ 
+-size_t CookieMonster::GarbageCollectLeastRecentlyAccessed(
++size_t CookieMonster_ChromiumImpl::GarbageCollectLeastRecentlyAccessed(
+     base::Time current,
+     base::Time safe_date,
+     size_t purge_goal,
+@@ -2638,7 +2638,7 @@ size_t CookieMonster::GarbageCollectLeastRecentlyAccessed(
+ // non-problem).
+ //
+ // static
+-std::string CookieMonster::GetKey(std::string_view domain) {
++std::string CookieMonster_ChromiumImpl::GetKey(std::string_view domain) {
+   std::string effective_domain(
+       registry_controlled_domains::GetDomainAndRegistry(
+           domain, registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES));
+@@ -2648,7 +2648,7 @@ std::string CookieMonster::GetKey(std::string_view domain) {
+   return cookie_util::CookieDomainAsHost(effective_domain);
+ }
+ 
+-bool CookieMonster::HasCookieableScheme(const GURL& url) {
++bool CookieMonster_ChromiumImpl::HasCookieableScheme(const GURL& url) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   // Make sure the request is on a cookie-able url scheme.
+@@ -2665,14 +2665,14 @@ bool CookieMonster::HasCookieableScheme(const GURL& url) {
+   return is_cookieable;
+ }
+ 
+-CookieAccessSemantics CookieMonster::GetAccessSemanticsForCookie(
++CookieAccessSemantics CookieMonster_ChromiumImpl::GetAccessSemanticsForCookie(
+     const CanonicalCookie& cookie) const {
+   if (cookie_access_delegate())
+     return cookie_access_delegate()->GetAccessSemantics(cookie);
+   return CookieAccessSemantics::UNKNOWN;
+ }
+ 
+-CookieScopeSemantics CookieMonster::GetScopeSemanticsForCookieDomain(
++CookieScopeSemantics CookieMonster_ChromiumImpl::GetScopeSemanticsForCookieDomain(
+     const std::string_view domain) const {
+   if (cookie_access_delegate()) {
+     return cookie_access_delegate()->GetScopeSemantics(domain);
+@@ -2680,7 +2680,7 @@ CookieScopeSemantics CookieMonster::GetScopeSemanticsForCookieDomain(
+   return CookieScopeSemantics::UNKNOWN;
+ }
+ 
+-CookieScopeSemantics CookieMonster::CheckAndActivateLegacyScopeBehavior(
++CookieScopeSemantics CookieMonster_ChromiumImpl::CheckAndActivateLegacyScopeBehavior(
+     const std::string_view domain) {
+   const std::string cookie_key = GetKey(domain);
+   CookieScopeSemantics cookie_scope_semantic =
+@@ -2718,7 +2718,7 @@ CookieScopeSemantics CookieMonster::CheckAndActivateLegacyScopeBehavior(
+   return cookie_scope_semantic;
+ }
+ 
+-void CookieMonster::DeleteAllAliasingCookies(const std::string& domain) {
++void CookieMonster_ChromiumImpl::DeleteAllAliasingCookies(const std::string& domain) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   std::map<UniqueCookieKey, std::pair<base::Time, UniqueCookieKey>>
+       most_recent_cookies;
+@@ -2764,7 +2764,7 @@ void CookieMonster::DeleteAllAliasingCookies(const std::string& domain) {
+   }
+ }
+ 
+-void CookieMonster::UpdateMostRecentCookie(
++void CookieMonster_ChromiumImpl::UpdateMostRecentCookie(
+     const CookieMapItPair& itpair,
+     std::map<UniqueCookieKey, std::pair<base::Time, UniqueCookieKey>>&
+         most_recent_cookies) {
+@@ -2794,7 +2794,7 @@ void CookieMonster::UpdateMostRecentCookie(
+ // last_statistic_record_time_ is initialized to Now() rather than null
+ // in the constructor so that we won't take statistics right after
+ // startup, to avoid bias from browsers that are started but not used.
+-void CookieMonster::RecordPeriodicStats(base::Time current_time) {
++void CookieMonster_ChromiumImpl::RecordPeriodicStats(base::Time current_time) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   const base::TimeDelta kRecordStatisticsIntervalTime(
+@@ -2810,7 +2810,7 @@ void CookieMonster::RecordPeriodicStats(base::Time current_time) {
+     last_statistic_record_time_ = current_time;
+ }
+ 
+-bool CookieMonster::DoRecordPeriodicStats() {
++bool CookieMonster_ChromiumImpl::DoRecordPeriodicStats() {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   SCOPED_UMA_HISTOGRAM_TIMER("Cookie.TimeToRecordPeriodicStats");
+@@ -2896,7 +2896,7 @@ bool CookieMonster::DoRecordPeriodicStats() {
+   return true;
+ }
+ 
+-void CookieMonster::DoCookieCallback(base::OnceClosure callback) {
++void CookieMonster_ChromiumImpl::DoCookieCallback(base::OnceClosure callback) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+ 
+   MarkCookieStoreAsInitialized();
+@@ -2914,7 +2914,7 @@ void CookieMonster::DoCookieCallback(base::OnceClosure callback) {
+   std::move(callback).Run();
+ }
+ 
+-void CookieMonster::OnPreconnect(const GURL& url) {
++void CookieMonster_ChromiumImpl::OnPreconnect(const GURL& url) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+   constexpr std::string_view kCookieOnPreconnectLoadCookie =
+       "Cookie.OnPreconnect.LoadCookie";
+@@ -2924,17 +2924,17 @@ void CookieMonster::OnPreconnect(const GURL& url) {
+   }
+   base::UmaHistogramBoolean(kCookieOnPreconnectLoadCookie, true);
+   base::SingleThreadTaskRunner::GetCurrentDefault()->PostTask(
+-      FROM_HERE, base::BindOnce(&CookieMonster::DoCookieCallbackForHostOrDomain,
++      FROM_HERE, base::BindOnce(&CookieMonster_ChromiumImpl::DoCookieCallbackForHostOrDomain,
+                                 weak_ptr_factory_.GetWeakPtr(),
+                                 base::DoNothing(), std::string(url.host())));
+ }
+ 
+-void CookieMonster::DoCookieCallbackForURL(base::OnceClosure callback,
++void CookieMonster_ChromiumImpl::DoCookieCallbackForURL(base::OnceClosure callback,
+                                            const GURL& url) {
+   DoCookieCallbackForHostOrDomain(std::move(callback), url.host());
+ }
+ 
+-void CookieMonster::DoCookieCallbackForHostOrDomain(
++void CookieMonster_ChromiumImpl::DoCookieCallbackForHostOrDomain(
+     base::OnceClosure callback,
+     std::string_view host_or_domain) {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
+@@ -2959,7 +2959,7 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
+       auto it = tasks_pending_for_key_.find(key);
+       if (it == tasks_pending_for_key_.end()) {
+         store_->LoadCookiesForKey(
+-            key, base::BindOnce(&CookieMonster::OnKeyLoaded,
++            key, base::BindOnce(&CookieMonster_ChromiumImpl::OnKeyLoaded,
+                                 weak_ptr_factory_.GetWeakPtr(), key));
+         it = tasks_pending_for_key_
+                  .emplace(key, base::circular_deque<base::OnceClosure>())
+@@ -2973,8 +2973,8 @@ void CookieMonster::DoCookieCallbackForHostOrDomain(
+   std::move(callback).Run();
+ }
+ 
+-CookieMonster::CookieSentToSamePort
+-CookieMonster::IsCookieSentToSamePortThatSetIt(
++CookieMonster_ChromiumImpl::CookieSentToSamePort
++CookieMonster_ChromiumImpl::IsCookieSentToSamePortThatSetIt(
+     const GURL& destination,
+     int source_port,
+     CookieSourceScheme source_scheme) {
+@@ -3010,7 +3010,7 @@ CookieMonster::IsCookieSentToSamePortThatSetIt(
+   return CookieSentToSamePort::kNo;
+ }
+ 
+-std::optional<bool> CookieMonster::SiteHasCookieInOtherPartition(
++std::optional<bool> CookieMonster_ChromiumImpl::SiteHasCookieInOtherPartition(
+     const net::SchemefulSite& site,
+     const CookiePartitionKey& partition_key) const {
+   DCHECK_CALLED_ON_VALID_THREAD(thread_checker_);
