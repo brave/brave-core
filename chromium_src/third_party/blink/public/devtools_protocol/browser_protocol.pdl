@@ -27,6 +27,12 @@ domain Page
 
 
 domain Network
+  experimental type AdblockFilterRuleInfo extends object
+    properties
+      string rawLine
+      integer sourceIndex
+      integer lineNumber
+
   experimental type AdblockInfo extends object
     properties
       string requestUrl
@@ -40,6 +46,8 @@ domain Network
       boolean didMatchException
       boolean hasMockData
       optional string rewrittenUrl
+      optional AdblockFilterRuleInfo filter
+      optional AdblockFilterRuleInfo exception
 
   experimental event requestAdblockInfoReceived
     parameters
