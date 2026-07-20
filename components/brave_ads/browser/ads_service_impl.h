@@ -14,6 +14,7 @@
 #include <string_view>
 #include <vector>
 
+#include "base/callback_list.h"
 #include "base/files/file_path.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
@@ -27,6 +28,7 @@
 #include "brave/components/brave_adaptive_captcha/brave_adaptive_captcha_service.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_monitor.h"
 #include "brave/components/brave_ads/browser/application_state/application_state_observer.h"
+#include "brave/components/brave_ads/browser/application_state/shutdown_monitor.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component.h"
 #include "brave/components/brave_ads/browser/component_updater/resource_component_observer.h"
 #include "brave/components/brave_ads/core/browser/network/http_client.h"
@@ -117,6 +119,7 @@ class AdsServiceImpl : public AdsService,
       std::unique_ptr<DeviceId> device_id,
       std::unique_ptr<BatAdsServiceFactory> bat_ads_service_factory,
       std::unique_ptr<ApplicationStateMonitor> application_state_monitor,
+      std::unique_ptr<ShutdownMonitor> shutdown_monitor,
       ResourceComponent& resource_component,
       history::HistoryService* history_service,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -399,6 +402,9 @@ class AdsServiceImpl : public AdsService,
   void OnBrowserDidBecomeActive() override;
   void OnBrowserDidResignActive() override;
 
+  // ShutdownMonitor:
+  void OnBrowserWillShutdown();
+
   // ResourceComponentObserver:
   void OnResourceComponentDidChange(const std::string& manifest_version,
                                     const std::string& id) override;
@@ -485,6 +491,9 @@ class AdsServiceImpl : public AdsService,
   std::unique_ptr<ApplicationStateMonitor> application_state_monitor_;
   base::ScopedObservation<ApplicationStateMonitor, ApplicationStateObserver>
       application_state_monitor_observation_{this};
+
+  std::unique_ptr<ShutdownMonitor> shutdown_monitor_;
+  base::CallbackListSubscription app_terminating_subscription_;
 
   // Reset eagerly in Shutdown() so the observer is detached from
   // PolicyService before the destructor runs.

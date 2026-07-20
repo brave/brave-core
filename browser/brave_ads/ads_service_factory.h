@@ -21,6 +21,7 @@ namespace brave_ads {
 
 class AdsService;
 class AdsTooltipsDelegateImpl;
+class ShutdownMonitor;
 
 // Singleton that owns all AdsService and associates them with Profiles.
 class AdsServiceFactory final : public BrowserContextKeyedServiceFactory {
@@ -40,6 +41,7 @@ class AdsServiceFactory final : public BrowserContextKeyedServiceFactory {
   ~AdsServiceFactory() override;
 
   std::unique_ptr<AdsTooltipsDelegateImpl> CreateAdsTooltipsDelegate() const;
+  std::unique_ptr<ShutdownMonitor> CreateShutdownMonitor() const;
 
   // BrowserContextKeyedServiceFactory:
   std::unique_ptr<KeyedService> BuildServiceInstanceForBrowserContext(
