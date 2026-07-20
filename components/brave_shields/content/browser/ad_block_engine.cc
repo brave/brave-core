@@ -177,6 +177,21 @@ base::DictValue AdBlockEngine::GetDebugInfo() {
   result.Set("flatbuffer_size",
              static_cast<int>(debug_info_struct.flatbuffer_size));
   result.Set("regex_data", std::move(regex_list));
+
+  base::ListValue source_info;
+  for (const auto& item : debug_info_struct.source_info) {
+    base::DictValue source_info_dict;
+    source_info_dict.Set("title", std::string(item.title.value));
+    source_info_dict.Set("homepage", std::string(item.homepage.value));
+    source_info_dict.Set("network_filter_count",
+                         static_cast<int>(item.network_filter_count));
+    source_info_dict.Set("cosmetic_filter_count",
+                         static_cast<int>(item.cosmetic_filter_count));
+    source_info_dict.Set("parse_error_count",
+                         static_cast<int>(item.parse_error));
+    source_info.Append(std::move(source_info_dict));
+  }
+  result.Set("source_info", std::move(source_info));
   return result;
 }
 

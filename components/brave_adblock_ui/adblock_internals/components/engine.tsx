@@ -6,10 +6,19 @@
 import * as React from 'react'
 import { RegexDebugEntry, Regex } from './regex'
 
+export interface SourceInfo {
+  title: string
+  homepage: string
+  network_filter_count: number
+  cosmetic_filter_count: number
+  parse_error_count: number
+}
+
 export class EngineDebugInfo {
   compiled_regex_count: number = 0
   regex_data: RegexDebugEntry[] = []
   flatbuffer_size: number = 0
+  source_info: SourceInfo[] = []
 }
 
 interface Props {

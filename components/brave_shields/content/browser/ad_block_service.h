@@ -95,6 +95,7 @@ class AdBlockService {
         AdBlockResourceProvider* resource_provider,
         AdBlockFiltersProviderManager* filters_provider_manager,
         bool engine_is_default,
+        bool debug_mode,
         scoped_refptr<base::SequencedTaskRunner> task_runner);
 
     SourceProviderObserver(const SourceProviderObserver&) = delete;
@@ -122,6 +123,7 @@ class AdBlockService {
 
     OnResourcesLoadedCallback on_resources_loaded_;
     const bool engine_is_default_;
+    const bool debug_mode_;
 
     scoped_refptr<base::SequencedTaskRunner> task_runner_;
 
@@ -190,6 +192,9 @@ class AdBlockService {
   void DiscardRegex(uint64_t regex_id);
 
   void SetupDiscardPolicy(const adblock::RegexManagerDiscardPolicy& policy);
+
+  bool IsDebugMode() const;
+  void SetDebugMode(bool debug_mode);
 
   // Test accessors
   AdBlockFiltersProviderManager* GetFiltersProviderManagerForTesting();

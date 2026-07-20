@@ -21,7 +21,7 @@ use resource_storage::*;
 mod ffi {
     extern "Rust" {
         type FilterSet;
-        fn new_filter_set() -> Box<FilterSet>;
+        fn new_filter_set(debug: bool) -> Box<FilterSet>;
         fn add_filter_list(&mut self, rules: &CxxVector<u8>) -> AddFilterListResult;
         fn add_filter_list_with_permissions(
             &mut self,
@@ -147,10 +147,19 @@ mod ffi {
         usage_count: usize,
     }
 
+    struct SourceInfo {
+        title: OptionalString,
+        homepage: OptionalString,
+        network_filter_count: usize,
+        cosmetic_filter_count: usize,
+        parse_error: usize,
+    }
+
     struct DebugInfo {
         regex_data: Vec<RegexDebugEntry>,
         compiled_regex_count: usize,
         flatbuffer_size: usize,
+        source_info: Vec<SourceInfo>,
     }
 
     struct RegexManagerDiscardPolicy {

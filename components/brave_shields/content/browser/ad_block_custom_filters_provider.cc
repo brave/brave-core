@@ -124,7 +124,8 @@ void AdBlockCustomFiltersProvider::LoadFilterSet(
   TRACE_EVENT("brave.adblock", "AdBlockCustomFiltersProvider::LoadFilterSet",
               perfetto::TerminatingFlow::ProcessScoped(flow_id));
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  auto custom_filters = GetCustomFilters();
+  std::string custom_filters = "! Title: User-defined custom filters\n";
+  custom_filters += GetCustomFilters();
 
   auto buffer =
       std::vector<unsigned char>(custom_filters.begin(), custom_filters.end());

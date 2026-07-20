@@ -27,7 +27,7 @@ class StripProceduralFiltersTest : public testing::Test {
   void TearDown() override {}
 
   base::DictValue ResourcesForRules(const std::string& rules) {
-    auto f = adblock::new_filter_set();
+    auto f = adblock::new_filter_set(false);
     f->add_filter_list(std::vector<uint8_t>(rules.cbegin(), rules.cend()));
     auto e = adblock::engine_from_filter_set(std::move(f)).value;
 
