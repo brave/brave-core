@@ -7,13 +7,17 @@
 from __future__ import annotations
 
 from collections.abc import Iterable
+import contextlib
 import logging
-from pathlib import Path
+from pathlib import Path, PurePosixPath
 
 from recipe_api import RecipeApi
 
 # Default SSH remote for the brave-core repository.
 REPO_URL = 'git@github.com:brave/brave-core.git'
+
+# The path in brave-core for the bootstrap scripts that may be added to PATH.
+BOOTSTRAP_PATH = 'tools/cr/bootstrap'
 
 
 class BraveCoreShallowApi(RecipeApi):
@@ -115,13 +119,26 @@ class BraveCoreShallowApi(RecipeApi):
             ]
             self.m.step('clone brave-core (shallow, sparse)', clone_cmd)
 
-        # Extend the sparse working tree with the requested subtrees. `add`
-        # (rather than `set`) accumulates, so subtrees checked out by a prior
-        # call or an external bootstrap into this same checkout survive.
-        self.m.step(
-            'sparse-checkout add',
-            ['git', '-C',
-             str(dest), 'sparse-checkout', 'add', *rel_paths])
+        # Ask the checkout which subtrees are already present and drop any
+        # request it (or an ancestor) already covers, so a path is never
+        # deployed twice.
+        deployed = {PurePosixPath(d) for d in self._sparse_checkout_list(dest)}
+        new_paths = []
+        for p in rel_paths:
+            lineage = PurePosixPath(p)
+            # Covered when the path itself, or a deployed ancestor, is in the
+            # sparse set: a cone entry brings its whole subtree.
+            if deployed.isdisjoint((lineage, *lineage.parents)):
+                new_paths.append(p)
+
+        if new_paths:
+            # Extend the sparse working tree with the not-yet-present subtrees.
+            # `add` (rather than `set`) accumulates, so subtrees checked out by
+            # a prior call or an external bootstrap into this checkout survive.
+            self.m.step(
+                'sparse-checkout add',
+                ['git', '-C',
+                 str(dest), 'sparse-checkout', 'add', *new_paths])
 
         for rel in rel_paths:
             if not self.m.path.exists(dest / rel):
@@ -130,3 +147,45 @@ class BraveCoreShallowApi(RecipeApi):
                     f'(looked under {dest})')
 
         return dest
+
+    def _sparse_checkout_list(self, dest: Path) -> set[str]:
+        """Return the checkout's current cone-mode sparse directories.
+
+        Empty when the sparse set lists nothing (e.g. a just-cloned tree whose
+        cone is still empty) or is uninitialised. Non-zero is treated as
+        "nothing deployed yet" rather than an error.
+        """
+        result = self.m.step(
+            'sparse-checkout list',
+            ['git', '-C', str(dest), 'sparse-checkout', 'list'],
+            check=False,
+            capture_output=True)
+        if result.returncode != 0 or not result.stdout:
+            return set()
+        return {
+            line.strip()
+            for line in result.stdout.splitlines() if line.strip()
+        }
+
+    @contextlib.contextmanager
+    def bootstrap_on_path(self,
+                          *,
+                          dest: str | Path | None = None,
+                          url: str = REPO_URL,
+                          ref: str | None = None,
+                          depth: int = 2):
+        """Deploy `tools/cr/bootstrap` and put it first on PATH for the block.
+
+        Args:
+            dest, url, ref, depth: Forwarded to `deploy` (see its docs).
+
+        Yields:
+            The absolute `Path` to the brave-core checkout root.
+        """
+        root = self.deploy(BOOTSTRAP_PATH,
+                           dest=dest,
+                           url=url,
+                           ref=ref,
+                           depth=depth)
+        with self.m.context(env_prefixes={'PATH': [root / BOOTSTRAP_PATH]}):
+            yield root

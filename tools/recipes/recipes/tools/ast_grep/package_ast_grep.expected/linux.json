@@ -77,6 +77,16 @@
       "-C",
       "[WORKSPACE]/chromium/src/brave",
       "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/chromium/src/brave",
+      "sparse-checkout",
       "add",
       "third_party/ast-grep",
       "tools/cr/toolchains"

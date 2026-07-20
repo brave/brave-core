@@ -26,17 +26,6 @@
   },
   {
     "cmd": [
-      "git",
-      "-C",
-      "[WORKSPACE]/chromium/src/brave",
-      "sparse-checkout",
-      "add",
-      "tools/cr/bootstrap"
-    ],
-    "name": "sparse-checkout add"
-  },
-  {
-    "cmd": [
       "npm",
       "--version"
     ],
