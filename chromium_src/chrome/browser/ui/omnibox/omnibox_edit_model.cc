@@ -12,6 +12,7 @@
 #include "brave/components/omnibox/browser/brave_search_provider.h"
 #include "chrome/browser/ui/omnibox/omnibox_controller.h"
 #include "components/omnibox/browser/autocomplete_classifier.h"
+#include "components/omnibox/browser/searchbox_utils.h"
 #include "components/vector_icons/vector_icons.h"
 
 #if BUILDFLAG(ENABLE_COMMANDER)
@@ -35,6 +36,34 @@ SetInputIsPastedFromClipboard(OmniboxController* omnibox_controller,
   return std::nullopt;
 }
 }  // namespace
+
+// Upstream's OmniboxEditModel::CanPasteAndGo()/PasteAndGo() now delegate to the
+// free functions below. The CanPasteAndGo/PasteAndGo macro renaming (further
+// down) blindly renames every occurrence of those identifiers, including these
+// unrelated, differently-scoped free function calls, which would otherwise
+// leave them referring to symbols that don't exist. Provide those symbols here,
+// forwarding to the real searchbox:: implementations.
+namespace searchbox {
+
+bool CanPasteAndGo_Chromium(OmniboxClient* client, const std::u16string& text) {
+  return CanPasteAndGo(client, text);
+}
+
+void PasteAndGo_Chromium(
+    AutocompleteController* autocomplete_controller,
+    OmniboxClient* client,
+    const std::u16string& text,
+    base::TimeTicks searchbox_focused_timestamp = base::TimeTicks(),
+    base::TimeTicks first_modification_timestamp = base::TimeTicks(),
+    base::TimeTicks match_selection_timestamp = base::TimeTicks(),
+    metrics::OmniboxEventProto::KeywordModeEntryMethod
+        keyword_mode_entry_method = metrics::OmniboxEventProto::INVALID) {
+  PasteAndGo(autocomplete_controller, client, text, searchbox_focused_timestamp,
+             first_modification_timestamp, match_selection_timestamp,
+             keyword_mode_entry_method);
+}
+
+}  // namespace searchbox
 
 #define CanPasteAndGo CanPasteAndGo_Chromium
 #define PasteAndGo PasteAndGo_Chromium
