@@ -51,45 +51,45 @@ export default function ModelIntro(props: ModelIntroProps) {
           <Icon name={getModelIcon(model)} />
         </div>
         <span className={styles.name}>{modelName}</span>
-      </div>
-      {isLeoModel && (
-        <Tooltip
-          mode='default'
-          className={styles.tooltip}
-          offset={4}
-          // <if expr="is_ios">
-          visible={isTooltipVisible}
-          // </if>
-        >
-          <div
-            slot='content'
-            className={styles.tooltipContent}
-          >
-            {formatLocale(getIntroMessageKey(model), {
-              $1: (content) => {
-                return (
-                  <button
-                    key={content}
-                    onClick={() => context.uiHandler.openModelSupportUrl()}
-                  >
-                    {content}
-                  </button>
-                )
-              },
-            })}
-          </div>
-          <Button
-            fab
-            kind='plain-faint'
-            className={styles.tooltipButton}
+        {isLeoModel && (
+          <Tooltip
+            mode='default'
+            className={styles.tooltip}
+            offset={4}
             // <if expr="is_ios">
-            onClick={() => setIsTooltipVisible((prev) => !prev)}
+            visible={isTooltipVisible}
             // </if>
           >
-            <Icon name='info-outline' />
-          </Button>
-        </Tooltip>
-      )}
+            <div
+              slot='content'
+              className={styles.tooltipContent}
+            >
+              {formatLocale(getIntroMessageKey(model), {
+                $1: (content) => {
+                  return (
+                    <button
+                      key={content}
+                      onClick={() => context.uiHandler.openModelSupportUrl()}
+                    >
+                      {content}
+                    </button>
+                  )
+                },
+              })}
+            </div>
+            <Button
+              fab
+              kind='plain-faint'
+              className={styles.tooltipButton}
+              // <if expr="is_ios">
+              onClick={() => setIsTooltipVisible((prev) => !prev)}
+              // </if>
+            >
+              <Icon name='info-outline' />
+            </Button>
+          </Tooltip>
+        )}
+      </div>
     </div>
   )
 }
