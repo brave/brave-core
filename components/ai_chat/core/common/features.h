@@ -66,6 +66,16 @@ extern const base::FeatureParam<bool> kShouldIndentPageContentBlocks;
 COMPONENT_EXPORT(AI_CHAT_COMMON)
 BASE_DECLARE_FEATURE(kAIChatRemoteModelsConfig);
 
+// Endpoint URL to fetch the remote AI chat model list from. The remote
+// models path is inactive while this is empty (the default).
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<std::string> kRemoteModelsEndpoint;
+
+// How long a cached remote model list is considered fresh before it must be
+// re-fetched.
+COMPONENT_EXPORT(AI_CHAT_COMMON)
+extern const base::FeatureParam<int> kRemoteModelsCacheTTLMinutes;
+
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatHistory);

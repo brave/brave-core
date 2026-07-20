@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_REMOTE_MODELS_FETCHER_H_
 
 #include <memory>
-#include <string>
 #include <vector>
 
 #include "base/functional/callback.h"
@@ -40,11 +39,12 @@ class RemoteModelsFetcher {
   RemoteModelsFetcher(const RemoteModelsFetcher&) = delete;
   RemoteModelsFetcher& operator=(const RemoteModelsFetcher&) = delete;
 
-  // Fetches and parses models from |url|, then invokes |callback| with the
-  // results. |url| must be a valid HTTPS URL; non-HTTPS or malformed URLs
-  // result in an empty callback. On network or parse failure, the callback
-  // is invoked with an empty vector.
-  void FetchModels(const std::string& url, FetchModelsCallback callback);
+  // Fetches and parses models from the endpoint configured via
+  // features::kRemoteModelsEndpoint, then invokes |callback| with the
+  // results. If the configured endpoint is empty, malformed, or not HTTPS,
+  // or on network/parse failure, the callback is invoked with an empty
+  // vector.
+  void FetchModels(FetchModelsCallback callback);
 
  private:
   void OnFetchComplete(FetchModelsCallback callback,

@@ -7,9 +7,12 @@
 
 #include <optional>
 #include <string>
+#include <string_view>
 #include <utility>
 #include <vector>
 
+#include "base/check.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/logging.h"
 #include "base/numerics/safe_conversions.h"
 #include "base/values.h"
@@ -19,39 +22,55 @@ namespace ai_chat {
 
 namespace {
 
+constexpr auto kStringToAccessMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
+        {"basic", mojom::ModelAccess::BASIC},
+        {"premium", mojom::ModelAccess::PREMIUM},
+        {"basic_and_premium", mojom::ModelAccess::BASIC_AND_PREMIUM},
+    });
+
+constexpr auto kAccessToStringMap =
+    base::MakeFixedFlatMap<mojom::ModelAccess, std::string_view>({
+        {mojom::ModelAccess::BASIC, "basic"},
+        {mojom::ModelAccess::PREMIUM, "premium"},
+        {mojom::ModelAccess::BASIC_AND_PREMIUM, "basic_and_premium"},
+    });
+
+constexpr auto kStringToCapabilityMap =
+    base::MakeFixedFlatMap<std::string_view, mojom::ConversationCapability>({
+        {"chat", mojom::ConversationCapability::CHAT},
+        {"content_agent", mojom::ConversationCapability::CONTENT_AGENT},
+        {"deep_research", mojom::ConversationCapability::DEEP_RESEARCH},
+        {"files", mojom::ConversationCapability::FILES},
+        {"summary", mojom::ConversationCapability::SUMMARY},
+    });
+
+constexpr auto kCapabilityToStringMap =
+    base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>({
+        {mojom::ConversationCapability::CHAT, "chat"},
+        {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
+        {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
+        {mojom::ConversationCapability::FILES, "files"},
+        {mojom::ConversationCapability::SUMMARY, "summary"},
+    });
+
 std::optional<mojom::ModelAccess> ParseAccess(const std::string& access_str) {
-  if (access_str == "basic") {
-    return mojom::ModelAccess::BASIC;
+  auto it = kStringToAccessMap.find(access_str);
+  if (it == kStringToAccessMap.end()) {
+    DVLOG(1) << "Unknown model access: " << access_str;
+    return std::nullopt;
   }
-  if (access_str == "premium") {
-    return mojom::ModelAccess::PREMIUM;
-  }
-  if (access_str == "basic_and_premium") {
-    return mojom::ModelAccess::BASIC_AND_PREMIUM;
-  }
-  DVLOG(1) << "Unknown model access: " << access_str;
-  return std::nullopt;
+  return it->second;
 }
 
 std::optional<mojom::ConversationCapability> ParseCapability(
     const std::string& capability_str) {
-  if (capability_str == "chat") {
-    return mojom::ConversationCapability::CHAT;
+  auto it = kStringToCapabilityMap.find(capability_str);
+  if (it == kStringToCapabilityMap.end()) {
+    DVLOG(1) << "Unknown conversation capability: " << capability_str;
+    return std::nullopt;
   }
-  if (capability_str == "content_agent") {
-    return mojom::ConversationCapability::CONTENT_AGENT;
-  }
-  if (capability_str == "deep_research") {
-    return mojom::ConversationCapability::DEEP_RESEARCH;
-  }
-  if (capability_str == "files") {
-    return mojom::ConversationCapability::FILES;
-  }
-  if (capability_str == "summary") {
-    return mojom::ConversationCapability::SUMMARY;
-  }
-  DVLOG(1) << "Unknown conversation capability: " << capability_str;
-  return std::nullopt;
+  return it->second;
 }
 
 struct ParsedCapabilities {
@@ -172,30 +191,16 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
   return model;
 }
 
-std::string AccessToString(mojom::ModelAccess access) {
-  switch (access) {
-    case mojom::ModelAccess::BASIC:
-      return "basic";
-    case mojom::ModelAccess::PREMIUM:
-      return "premium";
-    case mojom::ModelAccess::BASIC_AND_PREMIUM:
-      return "basic_and_premium";
-  }
+std::string_view AccessToString(mojom::ModelAccess access) {
+  auto it = kAccessToStringMap.find(access);
+  CHECK(it != kAccessToStringMap.end());
+  return it->second;
 }
 
-std::string CapabilityToString(mojom::ConversationCapability capability) {
-  switch (capability) {
-    case mojom::ConversationCapability::CHAT:
-      return "chat";
-    case mojom::ConversationCapability::CONTENT_AGENT:
-      return "content_agent";
-    case mojom::ConversationCapability::DEEP_RESEARCH:
-      return "deep_research";
-    case mojom::ConversationCapability::FILES:
-      return "files";
-    case mojom::ConversationCapability::SUMMARY:
-      return "summary";
-  }
+std::string_view CapabilityToString(mojom::ConversationCapability capability) {
+  auto it = kCapabilityToStringMap.find(capability);
+  CHECK(it != kCapabilityToStringMap.end());
+  return it->second;
 }
 
 base::DictValue ModelToDict(const mojom::Model& model) {
@@ -211,24 +216,22 @@ base::DictValue ModelToDict(const mojom::Model& model) {
   }
   dict.Set(kCapabilitiesField, std::move(capabilities));
 
-  DCHECK(model.options && model.options->is_leo_model_options());
-  if (model.options && model.options->is_leo_model_options()) {
-    const auto& leo_opts = model.options->get_leo_model_options();
-    base::DictValue options;
-    options.Set(kNameField, leo_opts->name);
-    if (!leo_opts->display_maker.empty()) {
-      options.Set(kDisplayMakerField, leo_opts->display_maker);
-    }
-    options.Set(kDescriptionField, leo_opts->description);
-    options.Set(kAccessField, AccessToString(leo_opts->access));
-    options.Set(
-        kMaxAssociatedContentLengthField,
-        base::saturated_cast<int>(leo_opts->max_associated_content_length));
-    options.Set(kLongConversationWarningCharacterLimitField,
-                base::saturated_cast<int>(
-                    leo_opts->long_conversation_warning_character_limit));
-    dict.Set(kOptionsField, std::move(options));
+  CHECK(model.options && model.options->is_leo_model_options());
+  const auto& leo_opts = model.options->get_leo_model_options();
+  base::DictValue options;
+  options.Set(kNameField, leo_opts->name);
+  if (!leo_opts->display_maker.empty()) {
+    options.Set(kDisplayMakerField, leo_opts->display_maker);
   }
+  options.Set(kDescriptionField, leo_opts->description);
+  options.Set(kAccessField, AccessToString(leo_opts->access));
+  options.Set(
+      kMaxAssociatedContentLengthField,
+      base::saturated_cast<int>(leo_opts->max_associated_content_length));
+  options.Set(kLongConversationWarningCharacterLimitField,
+              base::saturated_cast<int>(
+                  leo_opts->long_conversation_warning_character_limit));
+  dict.Set(kOptionsField, std::move(options));
 
   return dict;
 }
@@ -236,14 +239,11 @@ base::DictValue ModelToDict(const mojom::Model& model) {
 }  // namespace
 
 std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
-  const base::ListValue* models_list = nullptr;
-
-  if (json.is_dict()) {
-    models_list = json.GetDict().FindList(kModelsKey);
-  } else if (json.is_list()) {
-    models_list = &json.GetList();
+  if (!json.is_dict()) {
+    return {};
   }
 
+  const base::ListValue* models_list = json.GetDict().FindList(kModelsKey);
   if (!models_list) {
     return {};
   }
@@ -264,10 +264,8 @@ std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json) {
 base::ListValue SerializeModels(const std::vector<mojom::ModelPtr>& models) {
   base::ListValue list;
   for (const auto& model : models) {
-    DCHECK(model);
-    if (model) {
-      list.Append(ModelToDict(*model));
-    }
+    CHECK(model);
+    list.Append(ModelToDict(*model));
   }
   return list;
 }

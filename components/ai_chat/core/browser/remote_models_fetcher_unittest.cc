@@ -11,8 +11,10 @@
 
 #include "base/strings/string_util.h"
 #include "base/test/bind.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -167,6 +169,8 @@ class RemoteModelsFetcherTest : public testing::Test {
                 &test_url_loader_factory_)) {}
 
   void SetUp() override {
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChatRemoteModelsConfig, {{"endpoint_url", kTestEndpoint}});
     fetcher_ =
         std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
   }
@@ -219,11 +223,12 @@ class RemoteModelsFetcherTest : public testing::Test {
   void ExpectEmptyResult(const std::string& json) {
     SimulateSuccessfulFetch(json);
     base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-    fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+    fetcher_->FetchModels(future.GetCallback());
     EXPECT_TRUE(future.Get().empty());
   }
 
   base::test::TaskEnvironment task_environment_;
+  base::test::ScopedFeatureList scoped_feature_list_;
   network::TestURLLoaderFactory test_url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   std::unique_ptr<RemoteModelsFetcher> fetcher_;
@@ -233,7 +238,7 @@ TEST_F(RemoteModelsFetcherTest, SuccessfulFetch) {
   SimulateSuccessfulFetch(kValidModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(3u, fetched_models.size());
@@ -295,7 +300,7 @@ TEST_F(RemoteModelsFetcherTest, HTTPError500) {
   SimulateHTTPError(500);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -303,7 +308,7 @@ TEST_F(RemoteModelsFetcherTest, NetworkError) {
   SimulateNetworkError();
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -311,7 +316,7 @@ TEST_F(RemoteModelsFetcherTest, InvalidJSON) {
   SimulateSuccessfulFetch(kInvalidJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -350,7 +355,7 @@ TEST_F(RemoteModelsFetcherTest, ValidModelsReturnedWhenSomeFail) {
   SimulateSuccessfulFetch(kMixedModelsJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(1u, fetched_models.size());
@@ -415,20 +420,45 @@ TEST_F(RemoteModelsFetcherTest, NoCategoryCapability) {
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatRemoteModelsConfig,
+      {{"endpoint_url", "http://example.com/models"}});
+
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("http://example.com/models", future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsHTTPForLocalhost) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatRemoteModelsConfig,
+      {{"endpoint_url", "http://localhost:8080/models"}});
+
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("http://localhost:8080/models", future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
 TEST_F(RemoteModelsFetcherTest, RejectsInvalidURL) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatRemoteModelsConfig,
+      {{"endpoint_url", "not-a-valid-url"}});
+
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels("not-a-valid-url", future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
+  EXPECT_TRUE(future.Get().empty());
+}
+
+TEST_F(RemoteModelsFetcherTest, RejectsEmptyEndpoint) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatRemoteModelsConfig, {{"endpoint_url", ""}});
+
+  base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -436,7 +466,7 @@ TEST_F(RemoteModelsFetcherTest, EmptyResponse) {
   SimulateSuccessfulFetch(R"({"models": []})");
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -524,7 +554,7 @@ TEST_F(RemoteModelsFetcherTest, SkipsUnknownCapabilities) {
   SimulateSuccessfulFetch(kUnknownCapabilityJSON);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(kTestEndpoint, future.GetCallback());
+  fetcher_->FetchModels(future.GetCallback());
   const auto& fetched_models = future.Get();
 
   ASSERT_EQ(1u, fetched_models.size());

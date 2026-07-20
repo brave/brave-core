@@ -12,9 +12,11 @@
 
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -59,11 +61,12 @@ class RemoteModelsDiskCacheTest : public testing::Test {
   }
 
   base::FilePath CachePath() const {
-    return temp_dir_.GetPath().AppendASCII("ai_chat_remote_models.json");
+    return temp_dir_.GetPath().Append(
+        FILE_PATH_LITERAL("remote_models_cache.json"));
   }
 
   RemoteModelsDiskCache MakeCache() {
-    return RemoteModelsDiskCache(CachePath(), kDefaultTTL, &pref_service_);
+    return RemoteModelsDiskCache(temp_dir_.GetPath(), &pref_service_);
   }
 
   // Runs Load() and blocks until the callback fires.
@@ -146,6 +149,21 @@ TEST_F(RemoteModelsDiskCacheTest, ExpiredCacheReturnsNullopt) {
 
   // Advance past the TTL.
   task_environment_.AdvanceClock(kDefaultTTL + base::Minutes(1));
+
+  EXPECT_FALSE(RunLoad(cache).has_value());
+}
+
+TEST_F(RemoteModelsDiskCacheTest, RespectsOverriddenTTL) {
+  base::test::ScopedFeatureList feature_list;
+  feature_list.InitAndEnableFeatureWithParameters(
+      features::kAIChatRemoteModelsConfig, {{"cache_ttl_minutes", "5"}});
+
+  auto cache = MakeCache();
+  std::vector<mojom::ModelPtr> models;
+  models.push_back(MakeTestModel("model-key-1", "model-name-1"));
+  SaveAndWait(cache, std::move(models));
+
+  task_environment_.AdvanceClock(base::Minutes(6));
 
   EXPECT_FALSE(RunLoad(cache).has_value());
 }

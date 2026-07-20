@@ -19,12 +19,9 @@ namespace ai_chat {
 RemoteModelsProvider::RemoteModelsProvider(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     PrefService* pref_service,
-    base::FilePath cache_path,
-    base::TimeDelta cache_ttl,
-    std::string endpoint_url)
-    : cache_(std::move(cache_path), cache_ttl, pref_service),
-      fetcher_(url_loader_factory),
-      endpoint_url_(std::move(endpoint_url)) {}
+    base::FilePath profile_path)
+    : cache_(std::move(profile_path), pref_service),
+      fetcher_(url_loader_factory) {}
 
 RemoteModelsProvider::~RemoteModelsProvider() = default;
 
@@ -47,8 +44,7 @@ void RemoteModelsProvider::OnCacheLoaded(
     return;
   }
 
-  fetcher_.FetchModels(endpoint_url_,
-                       base::BindOnce(&RemoteModelsProvider::OnFetchComplete,
+  fetcher_.FetchModels(base::BindOnce(&RemoteModelsProvider::OnFetchComplete,
                                       weak_ptr_factory_.GetWeakPtr()));
 }
 

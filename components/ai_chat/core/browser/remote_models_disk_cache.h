@@ -14,7 +14,6 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
 
 class PrefService;
@@ -39,14 +38,14 @@ namespace ai_chat {
 class RemoteModelsDiskCache {
  public:
   // Invoked with cached models when the cache exists and is within the TTL
-  // supplied via the |ttl| constructor argument. Invoked with std::nullopt if
+  // from features::kRemoteModelsCacheTTLMinutes. Invoked with std::nullopt if
   // the cache is missing, expired, or corrupt.
   using LoadCallback =
       base::OnceCallback<void(std::optional<std::vector<mojom::ModelPtr>>)>;
 
-  RemoteModelsDiskCache(base::FilePath path,
-                        base::TimeDelta ttl,
-                        PrefService* pref_service);
+  // |profile_path| is the profile directory; the cache file is created
+  // within it under a name owned by this class.
+  RemoteModelsDiskCache(base::FilePath profile_path, PrefService* pref_service);
   ~RemoteModelsDiskCache();
 
   RemoteModelsDiskCache(const RemoteModelsDiskCache&) = delete;
@@ -67,7 +66,6 @@ class RemoteModelsDiskCache {
   void OnWriteComplete(base::OnceClosure on_complete, bool success);
 
   base::FilePath path_;
-  base::TimeDelta ttl_;
   raw_ptr<PrefService> pref_service_;
 
   SEQUENCE_CHECKER(sequence_checker_);

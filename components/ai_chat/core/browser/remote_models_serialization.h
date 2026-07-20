@@ -33,9 +33,8 @@ inline constexpr char kMaxAssociatedContentLengthField[] =
 inline constexpr char kLongConversationWarningCharacterLimitField[] =
     "long_conversation_warning_character_limit";
 
-// Parses a JSON value (either a dict with a "models" key, or a bare array)
-// and returns the successfully parsed models. Entries that fail field
-// validation are silently skipped.
+// Parses a JSON dict with a "models" key and returns the successfully parsed
+// models. Entries that fail field validation are silently skipped.
 std::vector<mojom::ModelPtr> ParseModelsFromJSON(const base::Value& json);
 
 // Serializes |models| to a JSON list value using the server JSON format, so

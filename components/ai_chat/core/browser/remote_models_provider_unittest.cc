@@ -14,11 +14,13 @@
 #include "base/files/scoped_temp_dir.h"
 #include "base/json/json_writer.h"
 #include "base/test/run_until.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/testing_pref_service.h"
@@ -68,14 +70,15 @@ class RemoteModelsProviderTest : public testing::Test {
   void SetUp() override {
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     prefs::RegisterProfilePrefs(pref_service_.registry());
+    scoped_feature_list_.InitAndEnableFeatureWithParameters(
+        features::kAIChatRemoteModelsConfig, {{"endpoint_url", kTestEndpoint}});
   }
 
   std::unique_ptr<RemoteModelsProvider> MakeProvider() {
     return std::make_unique<RemoteModelsProvider>(
         base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
             &url_loader_factory_),
-        &pref_service_, temp_dir_.GetPath().AppendASCII("remote_models.json"),
-        kTestTTL, kTestEndpoint);
+        &pref_service_, temp_dir_.GetPath());
   }
 
   std::vector<mojom::ModelPtr> GetModels(RemoteModelsProvider& provider) {
@@ -95,6 +98,7 @@ class RemoteModelsProviderTest : public testing::Test {
 
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
+  base::test::ScopedFeatureList scoped_feature_list_;
   base::ScopedTempDir temp_dir_;
   TestingPrefServiceSimple pref_service_;
   network::TestURLLoaderFactory url_loader_factory_;

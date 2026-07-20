@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_REMOTE_MODELS_PROVIDER_H_
 
 #include <optional>
-#include <string>
 #include <vector>
 
 #include "base/files/file_path.h"
@@ -15,7 +14,6 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
-#include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/remote_models_disk_cache.h"
 #include "brave/components/ai_chat/core/browser/remote_models_fetcher.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
@@ -40,9 +38,7 @@ class RemoteModelsProvider {
   RemoteModelsProvider(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* pref_service,
-      base::FilePath cache_path,
-      base::TimeDelta cache_ttl,
-      std::string endpoint_url);
+      base::FilePath profile_path);
   ~RemoteModelsProvider();
 
   RemoteModelsProvider(const RemoteModelsProvider&) = delete;
@@ -60,7 +56,6 @@ class RemoteModelsProvider {
 
   RemoteModelsDiskCache cache_;
   RemoteModelsFetcher fetcher_;
-  std::string endpoint_url_;
   GetModelsCallback pending_callback_;
 
   SEQUENCE_CHECKER(sequence_checker_);

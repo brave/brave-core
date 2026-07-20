@@ -23,6 +23,7 @@
 #include "base/time/time.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -30,6 +31,9 @@
 namespace ai_chat {
 
 namespace {
+
+constexpr base::FilePath::CharType kCacheFileName[] =
+    FILE_PATH_LITERAL("remote_models_cache.json");
 
 bool WriteToFile(const base::FilePath& path, std::string content) {
   base::AssertBlockingAllowed();
@@ -72,19 +76,20 @@ std::string SerializeCache(const std::vector<mojom::ModelPtr>& models) {
 
 }  // namespace
 
-RemoteModelsDiskCache::RemoteModelsDiskCache(base::FilePath path,
-                                             base::TimeDelta ttl,
+RemoteModelsDiskCache::RemoteModelsDiskCache(base::FilePath profile_path,
                                              PrefService* pref_service)
-    : path_(std::move(path)), ttl_(ttl), pref_service_(pref_service) {}
+    : path_(profile_path.Append(kCacheFileName)), pref_service_(pref_service) {}
 
 RemoteModelsDiskCache::~RemoteModelsDiskCache() = default;
 
 void RemoteModelsDiskCache::Load(LoadCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
+  const base::TimeDelta ttl =
+      base::Minutes(features::kRemoteModelsCacheTTLMinutes.Get());
   const base::Time cached_at =
       pref_service_->GetTime(prefs::kRemoteModelsCachedAt);
-  if (cached_at.is_null() || base::Time::Now() - cached_at > ttl_) {
+  if (cached_at.is_null() || base::Time::Now() - cached_at > ttl) {
     DVLOG(1) << "RemoteModelsDiskCache: cache absent or expired";
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE, base::BindOnce(std::move(callback), std::nullopt));

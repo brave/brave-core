@@ -12,6 +12,7 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/remote_models_serialization.h"
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "net/traffic_annotation/network_traffic_annotation.h"
@@ -68,9 +69,8 @@ RemoteModelsFetcher::RemoteModelsFetcher(
 
 RemoteModelsFetcher::~RemoteModelsFetcher() = default;
 
-void RemoteModelsFetcher::FetchModels(const std::string& url,
-                                      FetchModelsCallback callback) {
-  const GURL endpoint_url(url);
+void RemoteModelsFetcher::FetchModels(FetchModelsCallback callback) {
+  const GURL endpoint_url(features::kRemoteModelsEndpoint.Get());
 
   if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs(url::kHttpsScheme)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
