@@ -16,6 +16,8 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kMaxSignedExtensions = 64;
+
 // Runtime metadata is sourced from the hex string returned by
 // state_getMetadata:
 // https://github.com/w3f/PSPs/blob/b6d570173146e7a012cf43d270177e02ed886e2e/PSPs/drafts/psp-6.md#1119-state_getmetadata
@@ -47,7 +49,7 @@ class PolkadotChainMetadata {
       uint8_t transfer_all_call_index,
       uint16_t ss58_prefix,
       uint32_t spec_version,
-      bool asset_tx_payment,
+      const std::array<uint8_t, kMaxSignedExtensions>& signed_extensions,
       bool has_assets_pallet,
       uint8_t assets_pallet_index,
       uint8_t assets_transfer_all_call_index,

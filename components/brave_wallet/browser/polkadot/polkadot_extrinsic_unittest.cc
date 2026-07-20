@@ -557,11 +557,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   auto testnet_metadata = MakePaseoAssetHubMetadata();
 
   // Our extrinsic lives here:
-  // https://assethub-paseo.subscan.io/extrinsic/10464509-2
+  // https://assethub-paseo.subscan.io/extrinsic/11216013-2
 
   // Confirm extrinsic presence with:
   // curl -H "Content-Type: application/json" -d
-  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x7eee4f792fd223d51591d6963b7e7098f18ac515b74ac3d49f6d3cf4557bf69e"]}'
+  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x17bb8e8f13a874675591da6a705ef45060ca87003550842fb8dd925a03866921"]}'
   // https://asset-hub-paseo-rpc.n.dwellir.com/
 
   const char recipient_hex[] =
@@ -572,13 +572,13 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
 
   uint32_t asset_id = 50001010;
   uint128_t send_amount = 1000000;
-  uint32_t spec_version = 2002002;
-  uint32_t transaction_version = 15;
+  uint32_t spec_version = 2004001;
+  uint32_t transaction_version = 16;
 
-  uint32_t sender_nonce = 4;
-  uint32_t block_number = 10464506;
+  uint32_t sender_nonce = 5;
+  uint32_t block_number = 11216010;
   const char block_hash_encoded[] =
-      R"(0x6998c30ffb64a94ed53b97f4a2a72e667a7c909571c1ff4879cf1acb59142817)";
+      R"(0xbea9ccca2a4e841e1febe370a639a8a909ed5aa97c4109786fe7d508a5c1db06)";
 
   const char genesis_hash_encoded[] =
       R"(0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2)";
@@ -616,7 +616,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   const char expected_signatured[] =
-      R"(908e912c55c81dbbc69e05ae8f22793c2e32042601c6defe6a1e6cdd9cc14d554e579945a51524303d8a9ea95b9194085742aa7a4dd548e7718541fa8e5dba82)";
+      R"(5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
@@ -626,24 +626,25 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "5102"  // SCALE-encoded length.
+      "6502"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender.
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
-      "01"  // Signature type (sr25519).
+      "01"  // Signature type (sr25519)
       // Signature.
-      "908e912c55c81dbbc69e05ae8f22793c2e32042601c6defe6a1e6cdd9cc14d55"
-      "4e579945a51524303d8a9ea95b9194085742aa7a4dd548e7718541fa8e5dba82"
-      "a503"      // Mortal era.
-      "10"        // SCALE-encoded nonce.
+      "5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10"
+      "cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88"
+      "0000000000"
+      "a500"      // Mortal era.
+      "14"        // SCALE-encoded nonce.
       "00"        // Tip.
       "00"        // Asset ID for fee payment.
       "00"        // Mode.
       "3209"      // Pallet index, call index.
-      "cad1eb0b"  // Scale-encoded asset id.
-      "00"        // Address type
-      // Recipient
+      "cad1eb0b"  // SCALE-encoded asset id.
+      "00"        // Address type.
+      // Recipient.
       "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
       "02093d00"  // SCALE-encoded send amount.
       ;
@@ -655,11 +656,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   auto testnet_metadata = MakePaseoAssetHubMetadata();
 
   // Our extrinsic lives here:
-  // https://assethub-paseo.subscan.io/extrinsic/10545385-2
+  // https://assethub-paseo.subscan.io/extrinsic/11216408-2
 
   // Confirm extrinsic presence with:
   // curl -H "Content-Type: application/json" -d
-  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x1742561de288726ae2bc266cadd80bb93e11f7fbf93a7cd88fe2da5f1489e621"]}'
+  // '{"id":1,"jsonrpc":"2.0","method":"chain_getBlock","params":["0x1dbb0b0a903848197e3f04debfb06cad34445f450831a7471225417f96e93b20"]}'
   // https://asset-hub-paseo-rpc.n.dwellir.com/
 
   const char recipient_hex[] =
@@ -670,13 +671,13 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
 
   uint32_t asset_id = 50001010;
   uint128_t send_amount = 0;
-  uint32_t spec_version = 2003001;
-  uint32_t transaction_version = 15;
+  uint32_t spec_version = 2004001;
+  uint32_t transaction_version = 16;
 
-  uint32_t sender_nonce = 0;
-  uint32_t block_number = 10545382;
+  uint32_t sender_nonce = 1;
+  uint32_t block_number = 11216406;
   const char block_hash_encoded[] =
-      R"(0xc67460694f5a469493914f72eadf4b688e4c842596db4e65c71198b131eed0be)";
+      R"(0xe181230eb4d228033dc64af6d083673e7965bb2475b0f80c902d41de960dfce8)";
 
   const char genesis_hash_encoded[] =
       R"(0xd6eec26135305a8ad257a20d003357284c8aa03d0bdb2b357ab0a22371e11ef2)";
@@ -714,7 +715,7 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   EXPECT_TRUE(keypair.VerifyMessage(signature, signature_payload));
 
   const char expected_signatured[] =
-      R"(8c1e793351d610fcaf6dc13d8f3aea0c337fd0ae8fcfe7abda1ea18dce0a9a5d940dfc351961a3ffa82acd8f08f847b9c1934e2020009a4c72c6fcb4d9dd9c84)";
+      R"(36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d81181612480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
   auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
@@ -724,17 +725,18 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
   std::string_view expected_extrinsic =
-      "4502"  // SCALE-encoded length.
+      "5902"  // SCALE-encoded length.
       "84"    // Signed, extrinsic v4.
       "00"    // Multi-address type.
       // Sender
       "ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e"
       "01"  // Signature type (sr25519).
       // Signature.
-      "8c1e793351d610fcaf6dc13d8f3aea0c337fd0ae8fcfe7abda1ea18dce0a9a5d"
-      "940dfc351961a3ffa82acd8f08f847b9c1934e2020009a4c72c6fcb4d9dd9c84"
-      "6502"      // Mortal era.
-      "00"        // SCALE-encoded nonce.
+      "36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d811816"
+      "12480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f"
+      "0000000000"
+      "6501"      // Mortal era.
+      "04"        // SCALE-encoded nonce.
       "00"        // Tip.
       "00"        // Aset ID for fee payment.
       "00"        // Mode.

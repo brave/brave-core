@@ -308,26 +308,112 @@ fn get_call_index(
         .ok_or(Error::InvalidMetadata)
 }
 
-// Returns true if "ChargeAssetTxPayment" is present in the signed extensions,
-// indicating the signature payload must include an asset_id field.
-// https://docs.rs/frame-metadata/latest/frame_metadata/v15/struct.SignedExtensionMetadata.html
-// https://github.com/paritytech/polkadot-sdk/blob/c3ecf63034924511d6b92e3533c23c15765f16b9/substrate/frame/transaction-payment/asset-conversion-tx-payment/src/lib.rs#L165-L182
-fn parse_signed_extensions(input: &mut &[u8]) -> Result<bool, Error> {
-    let mut found = false;
+#[repr(u8)]
+pub enum SignedExtension {
+    AuthorizeValueTransfer = 1,
+    AuthorizeCall,
+    AsPgas,
+    AsRingAlias,
+    AsDotnsGateway,
+    RestrictOrigins,
+    CheckNonZeroSender,
+    CheckSpecVersion,
+    CheckTxVersion,
+    CheckGenesis,
+    CheckMortality,
+    CheckNonce,
+    CheckWeight,
+    ChargeAssetTxPayment,
+    PrevalidateAttests,
+    CheckMetadataHash,
+    EthSetOrigin,
+    StorageWeightReclaim,
+    ChargeTransactionPayment,
+    WeightReclaim,
+    // Special sentinel.
+    UnusedLast,
+}
+
+impl TryFrom<u8> for SignedExtension {
+    type Error = Error;
+
+    fn try_from(value: u8) -> Result<Self, Self::Error> {
+        let min = 1;
+        let max = SignedExtension::UnusedLast as u8;
+
+        if value < min || value >= max {
+            return Err(Error::UnknownSignedExtension);
+        }
+
+        // SAFETY: safe because our enum has u8 representation and we just checked the
+        // value above.
+        let extension = unsafe { std::mem::transmute::<_, SignedExtension>(value) };
+        Ok(extension)
+    }
+}
+
+const MAX_SIGNED_EXTENSIONS: usize = 64;
+
+// Returns an array of bytes that describe the signed extensions being used by
+// the backing parachain. Note, not all signed extensions will wind up producing
+// output in the signing payload. Some are there purely for the sake of other
+// fields being present or describing how the extrinsic will be validated. We
+// manually curate the appropriate output for each extension.
+fn parse_signed_extensions(input: &mut &[u8]) -> Result<[u8; MAX_SIGNED_EXTENSIONS], Error> {
+    let mut extensions = [0_u8; MAX_SIGNED_EXTENSIONS];
+    let mut pos = extensions.iter_mut();
+
     decode_vec(input, |input| {
         let identifier: String = decode_scale(input)?;
-        if normalize_ident(&identifier) == "chargeassettxpayment" {
-            found = true;
+        let id = normalize_ident(&identifier);
+
+        let extension = match id.as_str() {
+            "authorizevaluetransfer" => SignedExtension::AuthorizeValueTransfer,
+            "authorizecall" => SignedExtension::AuthorizeCall,
+            "aspgas" => SignedExtension::AsPgas,
+            "asringalias" => SignedExtension::AsRingAlias,
+            "asdotnsgateway" => SignedExtension::AsDotnsGateway,
+            "restrictorigins" => SignedExtension::RestrictOrigins,
+            "checknonzerosender" => SignedExtension::CheckNonZeroSender,
+            "checkspecversion" => SignedExtension::CheckSpecVersion,
+            "checktxversion" => SignedExtension::CheckTxVersion,
+            "checkgenesis" => SignedExtension::CheckGenesis,
+            "checkmortality" => SignedExtension::CheckMortality,
+            "checknonce" => SignedExtension::CheckNonce,
+            "checkweight" => SignedExtension::CheckWeight,
+            "chargeassettxpayment" => SignedExtension::ChargeAssetTxPayment,
+            "prevalidateattests" => SignedExtension::PrevalidateAttests,
+            "checkmetadatahash" => SignedExtension::CheckMetadataHash,
+            "ethsetorigin" => SignedExtension::EthSetOrigin,
+            "storageweightreclaim" => SignedExtension::StorageWeightReclaim,
+            "chargetransactionpayment" => SignedExtension::ChargeTransactionPayment,
+            "weightreclaim" => SignedExtension::WeightReclaim,
+            _ => {
+                return Err(Error::UnknownSignedExtension);
+            }
+        };
+
+        if let Some(ext) = pos.next() {
+            *ext = extension as u8;
+        } else {
+            return Err(Error::UnknownSignedExtension);
         }
-        let _: u32 = decode_type_id(input)?; // ty
+
+        let _ty: u32 = decode_type_id(input)?; // ty
+
+        // These denote the actual type of the extension for use in generating the
+        // "implicit" data part of the signature payload.
         let _: u32 = decode_type_id(input)?; // additional_signed
         Ok(())
     })?;
 
-    Ok(found)
+    Ok(extensions)
 }
 
-fn parse_extrinsic_metadata(input: &mut &[u8], version: u8) -> Result<bool, Error> {
+fn parse_extrinsic_metadata(
+    input: &mut &[u8],
+    version: u8,
+) -> Result<[u8; MAX_SIGNED_EXTENSIONS], Error> {
     match version {
         // V14: https://docs.rs/frame-metadata/latest/frame_metadata/v14/struct.ExtrinsicMetadata.html
         //   { ty: Compact<u32>, version: u8, signed_extensions: Vec<...> }
@@ -397,7 +483,7 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
 
     let pallets = parse_pallets(&mut input, /* has_pallet_docs= */ version >= 15)?;
 
-    let asset_tx_payment = parse_extrinsic_metadata(&mut input, version)?;
+    let signed_extensions = parse_extrinsic_metadata(&mut input, version)?;
 
     let balances_pallet = pallets
         .iter()
@@ -467,7 +553,7 @@ fn parse_chain_metadata_fields(bytes: &[u8]) -> Result<CxxPolkadotChainMetadata,
         has_assets_pallet,
         ss58_prefix,
         spec_version,
-        asset_tx_payment,
+        signed_extensions,
     })
 }
 

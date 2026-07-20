@@ -841,6 +841,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_WestendAssetHub) {
 TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
   // Captured transaction:
   // https://assethub-paseo.subscan.io/extrinsic/0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb
+  //
+  // This test has been updated manually to include extra signature extensions
+  // that have been added. This test ensures that our PolkadotWalletService
+  // correctly generates these extensions.
+
   keyring_service_->Reset();
   GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
 
@@ -874,11 +879,11 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "490284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
-      "0136eef01ae13c4a7e7edf0d051e5da1a3619a70a14d32af4b4efa12624800bd48443c02"
-      "fe3b15c8193510e75abd3034ffdf266f803eb4952cd35cf5a4972b9c85a502080000000a"
-      "0300ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe745561e0700"
-      "c12a9b64";
+      "5d0284000e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
+      "01089e090162275c31ee169bfbd0522f4b6d1eb5713e960e898ec984968e592354c98bf2"
+      "ba35d8b870fe27d2b9a2fd7180456a33e95fdc6274bdd7fed1856e77830000000000a502"
+      "080000000a0300ae70948d0c015b6c2b1ac46b8931ad6301f2c648f3f0adf71d08a68fe7"
+      "45561e0700c12a9b64";
 
   polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
   polkadot_mock_rpc->SetExpectedExtrinsic(kExpectedExtrinsic);
@@ -949,13 +954,14 @@ TEST_F(PolkadotWalletServiceUnitTest,
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "5902"
+      "6d02"
       "84"
       "00"
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"
-      "d4d97e26d075a6588dc8a6f1ca670e1e4295df86695c56da9f356e34f6056f0c"
-      "39733a4052a24e605e02d15bcdb46e3018630098209af5ba546cac3274664781"
+      "e66681108e1e6f2911c3e2cd1c33f6ddf56bab8bbadbf2a329759b4fd068f609"
+      "9134af059cbd72cf3851afd6991a73a539bda79eaff836bcf78c1be7b78e5182"
+      "0000000000"
       "a502"
       "08"
       "00"
@@ -1038,13 +1044,14 @@ TEST_F(PolkadotWalletServiceUnitTest,
       url_loader_factory_.GetSafeWeakWrapper());
 
   static constexpr char kExpectedExtrinsic[] =
-      "4502"
+      "5902"
       "84"
       "00"
       "0e161e17289c260a07020cc2a23192e882d5bee006b1390deed844b881b7e71e"
       "01"
-      "a48263fa5ec7de68a8b5aa8773561fb2d9837c6253b1ff2fad652c03bfd0c414"
-      "119eea0d5fd38fc752d3cb40e316d8e25e26a08eafcd52a1b2f4bd06bb9d8e85"
+      "44c88f2a63f3cf78623a6137ed805586c4063716f09f5318375a2d20431d8423"
+      "6263dbe82040e6c7460bf3ded8cd28a6c5c0504cad5e13eba7284dd4e01d5a80"
+      "0000000000"
       "a502"
       "08"
       "00"
