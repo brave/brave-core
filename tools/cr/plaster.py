@@ -1105,10 +1105,174 @@ class DropFinal(_AstGrepRewriter):
     """
 
 
+class PreemptFunctionImpl(_AstGrepRewriter):
+    """Insert a statement block at the top of a C++ function body, via the
+    ast-grep rewriters.
+    """
+
+    NAME: Final = 'preempt_function_impl'
+    OP_ID: Final = 'cxx.preempt_function_impl'
+    SUMMARY: Final = 'Insert a statement block at the top of a function body.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Inserts a statement block as the first thing in a C++ function's body,
+        right after the opening brace. Use it to preempt the implementation of
+        an upstream function, rather than renaming it to an inner
+        `_ChromiumImpl`.
+
+        Fields:
+
+        - `function_name` — the function's name exactly as its definition
+          writes it: a qualified `Class::Method` for a member, or the bare name
+          for a free function.
+
+        Exactly one of the following selects what to insert:
+
+        - `return_if` — a boolean condition that expands to `if (<condition>)
+          return;`, or `if (<condition>) return <return_value>;` when
+          `return_value` is also given.
+        - `code` — a free-form statement block. Write it flush-left; the whole
+          block is indented to the body's first-statement level for you.
+
+        - `return_value` — optional, only valid with `return_if`: the value the
+          generated early return yields.
+
+        Each overload sharing the name is one match, so an overloaded method
+        needs a matching `count`.
+
+        Examples:
+
+        ```yaml
+        substitutions:
+          - description: Skip autocomplete when Brave has it disabled.
+            preempt_function_impl:
+              function_name: OmniboxController::StartAutocomplete
+              return_if: '!IsAutocompleteEnabled(client_->GetPrefs())'
+
+          - description: Never expose the feedback buttons; return false early.
+            preempt_function_impl:
+              function_name: OmniboxResultView::IsFeedbackButtonVisible
+              return_if: 'true'
+              return_value: 'false'
+
+          - description: Pin Brave-managed actions before the upstream body.
+            preempt_function_impl:
+              function_name: CustomizeToolbarHandler::PinAction
+              code: |-
+                if (PinBraveAction(action_id, prefs(), pin)) {
+                  return;
+                }
+        ```
+
+        The last entry turns this upstream definition:
+
+        ```cpp
+        void CustomizeToolbarHandler::PinAction(int action_id, bool pin) {
+          // ... upstream body ...
+        }
+        ```
+
+        into (note the flush-left `code` block indented to the body level):
+
+        ```cpp
+        void CustomizeToolbarHandler::PinAction(int action_id, bool pin) {
+          if (PinBraveAction(action_id, prefs(), pin)) {
+            return;
+          }
+          // ... upstream body ...
+        }
+        ```
+    """
+
+    # The keys that select what to insert; exactly one must be present.
+    _MODE_KEYS: Final = frozenset({'code', 'return_if'})
+
+    def __init__(self, *, function_name: str, prologue: str):
+        # This rewriter holds its own parsed shape (the resolved prologue text)
+        # and builds its operation from it, so the base's flat inputs stay
+        # empty.
+        super().__init__()
+        self._function_name = function_name
+        self._prologue = prologue
+
+    def operations(self, count: int) -> list[Operation]:
+        # A function body is matched once per overload, so the entry's `count:`
+        # carries through unchanged (an overloaded method needs a matching
+        # count).
+        #
+        # The prologue lands as the body's first statement, so indent every
+        # non-blank line to the body's first level -- two spaces, which is where
+        # an out-of-line `Class::Method` definition always sits (file/namespace
+        # scope). Escape backslashes last, since the text is spliced into a
+        # `re.sub` replacement where a backslash is special.
+        prologue = _indent_yaml(self._prologue).replace('\\', '\\\\')
+        return [
+            Operation(self.OP_ID, {
+                'function_name': self._function_name,
+                'prologue': prologue,
+            }, MatchExpectation.from_count(count))
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> PreemptFunctionImpl:
+        """Validate a `preempt_function_impl:` body and resolve what to insert.
+
+        Requires `function_name`, plus exactly one of `code` or `return_if`;
+        `return_value` is optional and only valid with `return_if`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        allowed = {'function_name', 'return_value'} | cls._MODE_KEYS
+        unknown = sorted(set(body) - allowed)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        if not isinstance(body.get('function_name'),
+                          str) or not body['function_name']:
+            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
+                             f'string (in "{description}")')
+        prologue = cls._resolve_prologue(body, description)
+        return cls(function_name=body['function_name'], prologue=prologue)
+
+    @classmethod
+    def _resolve_prologue(cls, body: dict, description: str) -> str:
+        """Build the text to insert from the `code`/`return_if` fields."""
+        modes = sorted(cls._MODE_KEYS & set(body))
+        if len(modes) != 1:
+            raise ValueError(
+                f'{cls.NAME} requires exactly one of `code` or `return_if` '
+                f'(in "{description}")')
+        mode = modes[0]
+        if mode == 'code':
+            if 'return_value' in body:
+                raise ValueError(
+                    f'{cls.NAME} `return_value` is only valid with `return_if` '
+                    f'(in "{description}")')
+            code = body['code']
+            if not isinstance(code, str) or not code:
+                raise ValueError(
+                    f'{cls.NAME} `code` must be a non-empty string '
+                    f'(in "{description}")')
+            return code
+        condition = body['return_if']
+        if not isinstance(condition, str) or not condition:
+            raise ValueError(f'{cls.NAME} `return_if` must be a non-empty '
+                             f'string (in "{description}")')
+        return_value = body.get('return_value', '')
+        if not isinstance(return_value, str):
+            raise ValueError(f'{cls.NAME} `return_value` must be a string '
+                             f'(in "{description}")')
+        value = f' {return_value}' if return_value else ''
+        return f'if ({condition}) return{value};'
+
+
 # A set with all the rewriters available in plaster.
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
-    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal)
+    for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
+                     PreemptFunctionImpl)
 })
 
 

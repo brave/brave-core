@@ -1508,6 +1508,225 @@ class RewriterFormsTest(unittest.TestCase):
             '  - description: missing arg\n'
             '    drop_final: {}\n', 'drop_final requires arg')
 
+    # -- preempt_function_impl op (real ast-grep binary) --------------------------
+
+    def test_preempt_function_impl_return_if(self):
+        result = self._apply(
+            'guard.cc', 'void C::Foo() {\n  Upstream();\n}\n',
+            'substitutions:\n'
+            '  - description: skip upstream when Brave has it disabled\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::Foo\n'
+            "      return_if: '!Enabled()'\n")
+        self.assertEqual(
+            result, 'void C::Foo() {\n  if (!Enabled()) return;\n'
+            '  Upstream();\n}\n')
+
+    def test_preempt_function_impl_free_function(self):
+        # A free function is named without a class qualifier -- just the bare
+        # declarator name.
+        result = self._apply(
+            'free.cc', 'void FreeFunc(int x) {\n  Upstream(x);\n}\n',
+            'substitutions:\n'
+            '  - description: guard a free function\n'
+            '    preempt_function_impl:\n'
+            '      function_name: FreeFunc\n'
+            "      return_if: '!Enabled()'\n")
+        self.assertEqual(
+            result, 'void FreeFunc(int x) {\n  if (!Enabled()) return;\n'
+            '  Upstream(x);\n}\n')
+
+    def test_preempt_function_impl_ignores_forward_declaration(self):
+        # A forward declaration is a bodyless `declaration`, not a
+        # `function_definition`, so the matcher skips it (count stays 1) and the
+        # guard lands only in the definition.
+        source = ('void FreeFunc(int x);\n\n'
+                  'void FreeFunc(int x) {\n  Upstream(x);\n}\n')
+        result = self._apply(
+            'forward.cc', source, 'substitutions:\n'
+            '  - description: guard the definition, not the declaration\n'
+            '    preempt_function_impl:\n'
+            '      function_name: FreeFunc\n'
+            "      return_if: '!Enabled()'\n")
+        self.assertEqual(
+            result,
+            source.replace('{\n  Upstream(x);',
+                           '{\n  if (!Enabled()) return;\n  Upstream(x);'))
+
+    def test_preempt_function_impl_anonymous_namespace_function(self):
+        # A function inside an anonymous namespace is named by its bare
+        # declarator -- the enclosing `namespace {}` is contextual, not part of
+        # the name.
+        source = ('namespace {\n\n'
+                  'bool ShouldProceed(int x) {\n  return x > 0;\n}\n\n'
+                  '}  // namespace\n')
+        result = self._apply(
+            'anon.cc', source, 'substitutions:\n'
+            '  - description: guard a function in an anonymous namespace\n'
+            '    preempt_function_impl:\n'
+            '      function_name: ShouldProceed\n'
+            "      return_if: '!Enabled()'\n")
+        self.assertEqual(
+            result,
+            source.replace('{\n  return x > 0;',
+                           '{\n  if (!Enabled()) return;\n  return x > 0;'))
+
+    def test_preempt_function_impl_return_if_with_value(self):
+        result = self._apply(
+            'guard_value.cc', 'bool C::IsVisible() {\n  return real_;\n}\n',
+            'substitutions:\n'
+            '  - description: force the answer for Brave\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::IsVisible\n'
+            "      return_if: 'true'\n"
+            "      return_value: 'false'\n")
+        self.assertEqual(
+            result, 'bool C::IsVisible() {\n  if (true) return false;\n'
+            '  return real_;\n}\n')
+
+    def test_preempt_function_impl_code_block(self):
+        # The `code` block is authored flush-left; the engine indents the whole
+        # block to the body's first-statement level (two spaces).
+        result = self._apply(
+            'code.cc', 'void C::Pin(int id) {\n  Upstream();\n}\n',
+            'substitutions:\n'
+            '  - description: pin Brave actions before the upstream body\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::Pin\n'
+            '      code: |-\n'
+            '        if (PinBraveAction(id)) {\n'
+            '          return;\n'
+            '        }\n')
+        self.assertEqual(
+            result, 'void C::Pin(int id) {\n  if (PinBraveAction(id)) {\n'
+            '    return;\n  }\n  Upstream();\n}\n')
+
+    def test_preempt_function_impl_code_block_blank_line_not_indented(self):
+        # A blank line inside the block stays empty -- no trailing whitespace.
+        result = self._apply(
+            'code_blank.cc', 'void C::Pin(int id) {\n  Upstream();\n}\n',
+            'substitutions:\n'
+            '  - description: two guarded statements split by a blank line\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::Pin\n'
+            '      code: |-\n'
+            '        Prepare(id);\n'
+            '\n'
+            '        Track(id);\n')
+        self.assertEqual(
+            result, 'void C::Pin(int id) {\n  Prepare(id);\n\n'
+            '  Track(id);\n  Upstream();\n}\n')
+
+    def test_preempt_function_impl_survives_braced_default_argument(self):
+        # A `= {}` default argument and a multi-line signature both defeat a
+        # naive `\\(.*?{` regex, which would stop at the argument's brace. The
+        # AST matcher lands on the real body brace regardless.
+        source = ('void C::Tricky(const Options& opts = {},\n'
+                  '               int flags = 0) {\n  Upstream();\n}\n')
+        result = self._apply(
+            'tricky.cc', source, 'substitutions:\n'
+            '  - description: guard a function with a braced default arg\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::Tricky\n'
+            "      return_if: '!ok'\n")
+        self.assertEqual(
+            result,
+            source.replace('{\n  Upstream();', '{\n  if (!ok) return;\n'
+                           '  Upstream();'))
+
+    def test_preempt_function_impl_targets_named_function_only(self):
+        # Only the named function's body is touched, not a sibling in the same
+        # file.
+        result = self._apply(
+            'siblings.cc',
+            'void C::A() {\n  a();\n}\n\nvoid C::B() {\n  b();\n}\n',
+            'substitutions:\n'
+            '  - description: guard only B\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::B\n'
+            "      return_if: 'g()'\n")
+        self.assertEqual(
+            result, 'void C::A() {\n  a();\n}\n\n'
+            'void C::B() {\n  if (g()) return;\n  b();\n}\n')
+
+    def test_preempt_function_impl_overloads_need_count(self):
+        result = self._apply(
+            'overloads.cc',
+            'void C::F() {\n  a();\n}\n\nvoid C::F(int x) {\n  b();\n}\n',
+            'substitutions:\n'
+            '  - description: guard both overloads\n'
+            '    count: 2\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::F\n'
+            "      return_if: 'g()'\n")
+        self.assertEqual(
+            result, 'void C::F() {\n  if (g()) return;\n  a();\n}\n\n'
+            'void C::F(int x) {\n  if (g()) return;\n  b();\n}\n')
+
+    def test_preempt_function_impl_overload_count_mismatch_fails(self):
+        # Two overloads match, but the default count is 1.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'overloads_bad.cc',
+                'void C::F() {\n  a();\n}\n\nvoid C::F(int x) {\n  b();\n}\n',
+                'substitutions:\n'
+                '  - description: forgot the count\n'
+                '    preempt_function_impl:\n'
+                '      function_name: C::F\n'
+                "      return_if: 'g()'\n")
+
+    def test_preempt_function_impl_absent_function_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'missing.cc', 'void C::Foo() {\n}\n', 'substitutions:\n'
+                '  - description: no such function\n'
+                '    preempt_function_impl:\n'
+                '      function_name: C::Nope\n'
+                "      return_if: 'g()'\n")
+
+    def test_preempt_function_impl_both_modes_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: two modes\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::F\n'
+            '      code: x;\n'
+            "      return_if: 'g()'\n", 'exactly one of `code` or `return_if`')
+
+    def test_preempt_function_impl_no_mode_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: no mode\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::F\n',
+            'exactly one of `code` or `return_if`')
+
+    def test_preempt_function_impl_return_value_requires_return_if(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: return_value with code\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::F\n'
+            '      code: x;\n'
+            "      return_value: 'false'\n",
+            '`return_value` is only valid with `return_if`')
+
+    def test_preempt_function_impl_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    preempt_function_impl:\n'
+            '      function_name: C::F\n'
+            '      cod: x;\n', 'Unrecognised preempt_function_impl arg')
+
+    def test_preempt_function_impl_missing_function_name_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing function_name\n'
+            '    preempt_function_impl:\n'
+            "      return_if: 'g()'\n",
+            'preempt_function_impl `function_name` must be a non-empty string')
+
     # -- export-macro classes (real ast-grep binary) ----------------------
     #
     # tree-sitter cannot parse `class MACRO_EXPORT Name`, so the engine blanks
