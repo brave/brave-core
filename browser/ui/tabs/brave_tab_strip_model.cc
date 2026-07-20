@@ -85,6 +85,37 @@ void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
   }
 }
 
+std::vector<int> BraveTabStripModel::GetTreeTabDescendantIndices(int index) {
+  if (!tree_tab_model_) {
+    return {};
+  }
+
+  auto* node_collection =
+      tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
+          GetTabAtIndex(index));
+  if (!node_collection) {
+    return {};
+  }
+
+  std::vector<tree_tab::TreeTabNodeId> descendant_ids;
+  node_collection->node().CollectDescendantIds(descendant_ids);
+
+  std::vector<int> descendant_indices;
+  for (const auto& id : descendant_ids) {
+    auto* node = tree_tab_model_->GetNode(id);
+    if (!node) {
+      continue;
+    }
+    for (const tabs::TabInterface* descendant_tab : node->GetTabs()) {
+      const int descendant_index = GetIndexOfTab(descendant_tab);
+      if (descendant_index != TabStripModel::kNoTab) {
+        descendant_indices.push_back(descendant_index);
+      }
+    }
+  }
+  return descendant_indices;
+}
+
 void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
                                       TabStripUserGestureDetails detail) {
   if (mru_cycle_list_.empty()) {
