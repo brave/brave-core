@@ -30,7 +30,7 @@ std::string BuildFetchPaymentTokenUrlResponseBody() {
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
                 "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
                 "signedTokens" : [
-                  "Ktsii4pOKOjfmqziUsdlV3lJETaGXG0rksRujn1i1Qs="
+                  "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
               }
             })";

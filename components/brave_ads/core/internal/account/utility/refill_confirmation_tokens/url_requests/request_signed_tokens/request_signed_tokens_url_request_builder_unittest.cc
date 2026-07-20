@@ -41,7 +41,7 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
       R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="7Nwtj+0lxBgRnA2ewJfZBU+s3yo5NlESR6XExLfeQh10vKdrPw6RWcuNLfxj7i5M/V1SNwRAIm9oEOD3xjoGCA==")",
       "content-type: application/json", "accept: application/json"};
   expected_mojom_url_request->content =
-      R"({"blindedTokens":["+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0=","qJRP/aub7Io1osPghMfENIAZ8ImOH7D/tLzuokEHgQQ=","Rpubvx6PW1Emd4MLEUEvcilslF9IXH4rOf6M/DIw0RQ="]})";
+      R"({"blindedTokens":["Gth1bHgNtDx689fPCEdua/1ggMRHRahtzIdDr/EyWAg=","YJ/51LJE2yR0BaHUbHWm4iUFfxXzXikyiA4baKv2cUg=","2KzyUG/4ag8Jass356+Cs/JPlQ3MqW+69AO/mrMi3Rk="]})";
   expected_mojom_url_request->content_type = "application/json";
   expected_mojom_url_request->method = mojom::UrlRequestMethodType::kPost;
   EXPECT_EQ(expected_mojom_url_request, mojom_url_request);
