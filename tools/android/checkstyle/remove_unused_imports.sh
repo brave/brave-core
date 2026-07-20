@@ -6,10 +6,11 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 SCRIPT_DIR="$( dirname -- "${BASH_SOURCE[0]}"; )"
-SCRIPT_DIR="$( realpath -e -- "$SCRIPT_DIR"; )"
+# `cd` requires an existing directory, while `-P` resolves symbolic links.
+SCRIPT_DIR="$( cd -P -- "$SCRIPT_DIR" && pwd -P; )"
 
 CHROMIUM_CHECKSTYLE_DIR="$SCRIPT_DIR/../../../../tools/android/checkstyle"
-CHROMIUM_CHECKSTYLE_DIR="$( realpath -e -- "$CHROMIUM_CHECKSTYLE_DIR"; )"
+CHROMIUM_CHECKSTYLE_DIR="$( cd -P -- "$CHROMIUM_CHECKSTYLE_DIR" && pwd -P; )"
 export PYTHONPATH="$CHROMIUM_CHECKSTYLE_DIR"
 
 python3  "$SCRIPT_DIR/remove_unused_imports.py"
