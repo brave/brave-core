@@ -38,12 +38,14 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.ui.base.BraveClipboardHelper;
+import org.jni_zero.NullMarked;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+@NullMarked
 public class AddAccountActivity extends BraveWalletBaseActivity {
     private static final String TAG = "AddAccountActivity";
 
