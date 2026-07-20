@@ -580,6 +580,27 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return mPageTitle;
     }
 
+    /**
+     * Sets the title shown for the current Sync (sub-)screen.
+     *
+     * <p>On a phone (single-pane settings) the sole toolbar shows the current screen, which is
+     * driven by the activity title. In cr151 Multi-column Settings the activity title is the left
+     * list-pane toolbar ("Settings") and must not be overwritten by a Sync sub-screen; the detail
+     * (right) pane title is driven by {@link #getPageTitle()} instead, so update that supplier.
+     */
+    private void setScreenTitle(int titleResId) {
+        Activity activity = getActivity();
+        if (activity == null) {
+            return;
+        }
+        if (activity instanceof SettingsActivity settingsActivity
+                && settingsActivity.isTwoColumnSettingsVisible()) {
+            mPageTitle.set(getString(titleResId));
+        } else {
+            activity.setTitle(titleResId);
+        }
+    }
+
     @Override
     public String getMainMenuKey() {
         return "brave_sync_layout";
@@ -594,7 +615,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         getActivity()
                 .getWindow()
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        getActivity().setTitle(R.string.sync_category_title);
+        setScreenTitle(R.string.sync_category_title);
 
         boolean firstSetupComplete = getBraveSyncWorker().isInitialSyncFeatureSetupComplete();
 
@@ -767,7 +788,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 mScrollViewEnterCodeWords.setVisibility(View.VISIBLE);
             }
             updateBackPressState();
-            getActivity().setTitle(R.string.brave_sync_code_words_title);
+            setScreenTitle(R.string.brave_sync_code_words_title);
             if (null != mCodeWords && null != mBraveSyncWordCountTitle) {
                 mCodeWords.addTextChangedListener(
                         new TextWatcher() {
@@ -1357,7 +1378,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             mCameraManager.createCameraSource();
         }
 
-        getActivity().setTitle(R.string.brave_sync_scan_chain_code);
+        setScreenTitle(R.string.brave_sync_scan_chain_code);
         if (null != mScrollViewSyncChainCode) {
             mScrollViewSyncChainCode.setVisibility(View.VISIBLE);
         }
@@ -1382,7 +1403,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void setNewChainLayout() {
-        getActivity().setTitle(R.string.brave_sync_start_new_chain);
+        setScreenTitle(R.string.brave_sync_start_new_chain);
         if (null != mScrollViewSyncInitial) {
             mScrollViewSyncInitial.setVisibility(View.GONE);
         }
@@ -1424,7 +1445,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void setAddMobileDeviceLayout() {
-        getActivity().setTitle(R.string.brave_sync_btn_mobile);
+        setScreenTitle(R.string.brave_sync_btn_mobile);
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -1470,7 +1491,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     }
 
     private void setAddLaptopLayout() {
-        getActivity().setTitle(R.string.brave_sync_btn_laptop);
+        setScreenTitle(R.string.brave_sync_btn_laptop);
 
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_SECURE);
 
@@ -1524,7 +1545,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         getActivity()
                 .getWindow()
                 .setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
-        getActivity().setTitle(R.string.sync_category_title);
+        setScreenTitle(R.string.sync_category_title);
         if (mCameraManager != null) {
             mCameraManager.stopCameraSource();
         }
