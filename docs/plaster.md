@@ -135,6 +135,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_friend`            | AST  | Adds a `friend` declaration to a private section. |
 | `drop_final`            | AST  | Removes `final` from a C++ class declaration.     |
 | `preempt_function_impl` | AST  | Inserts at the top of a C++ function body.        |
+| `rename_class`          | AST  | Renames a C++ class.                              |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
