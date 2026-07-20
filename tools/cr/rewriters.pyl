@@ -246,6 +246,29 @@ regex: ^{class_name}$
             },
         },
 
+        # The function body wrapped in an immediately-invoked `[&]` lambda, with
+        # `epilogue` appended after it. The matcher lands on the whole
+        # compound_statement; a DOTALL `^{ ... }$` capture folds the entire
+        # upstream body (`\1`) between a lambda prefix and its `}();`
+        # invocation, so the body's own lines are re-emitted verbatim, then
+        # appends `epilogue` as the body's trailing statements.
+        # `capture` is empty (a void wrap: `[&]() {...}();`) or an
+        # `auto <var> =` lead so the epilogue can read the wrapped body's return
+        # value. The caller passes `epilogue` indented to the body level and
+        # both spliced values with backslashes escaped for the `re.sub`
+        # replacement.
+        "cxx.after_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "capture", "epilogue"],
+            "replace": {
+                "re_pattern": "(?s)^\\{(.*)\\}$",
+                "replace": "{{\\n  {capture}[&]() {{\\1  }}();\\n{epilogue}\\n}}",
+            },
+            "result": {
+                "node": "compound_statement",
+            },
+        },
+
         # Each matched name token replaced with `rename`. The matcher already
         # pinned every match's text to exactly `class_name`, so the whole token
         # (`^.+$`) is swapped for the new name.

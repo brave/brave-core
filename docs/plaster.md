@@ -135,6 +135,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `add_friend`            | AST  | Adds a `friend` declaration to a private section. |
 | `drop_final`            | AST  | Removes `final` from a C++ class declaration.     |
 | `preempt_function_impl` | AST  | Inserts at the top of a C++ function body.        |
+| `after_function_impl`   | AST  | Wraps a C++ function body and runs code after.    |
 | `rename_class`          | AST  | Renames a C++ class.                              |
 | `add_to_protected`      | AST  | Adds a member to a class `protected:` section.    |
 
