@@ -1686,6 +1686,12 @@ Are you sure you want to do this?
       <message name="IDS_NIGHT_MODE_SUMMARY" desc="Summary for Night Mode, which forces web content into dark mode.">
         Force dark mode for web content
       </message>
+      <message name="IDS_BRAVE_ANDROID_DYNAMIC_COLORS_TITLE" desc="Title for the Android Appearance preference that enables dynamic colors.">
+        Dynamic colors
+      </message>
+      <message name="IDS_BRAVE_ANDROID_DYNAMIC_COLORS_SUMMARY" desc="Summary for the Android Appearance preference that enables dynamic colors.">
+        Change the color palette to match user settings and wallpaper colors
+      </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SEARCH_ACCELERATOR" desc="Content description for the search accelerator button">
         Search
       </message>
