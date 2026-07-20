@@ -281,7 +281,10 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
         fragmentArgs.putString(
                 BraveConstants.BRAVE_NEWS_PREFERENCES_TYPE, braveNewsPreferencesType.toString());
         mSettingsLauncher.startSettings(
-                getActivity(), BraveNewsPreferencesDetails.class, fragmentArgs);
+                getActivity(),
+                BraveNewsPreferencesDetails.class,
+                fragmentArgs,
+                /* addToBackStack= */ true);
     }
 
     private void initBraveNewsController(final Runnable action) {
