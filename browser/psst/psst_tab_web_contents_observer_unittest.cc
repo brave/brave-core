@@ -266,6 +266,14 @@ class PsstTabWebContentsObserverUnitTest
     feature_list_.InitAndEnableFeature(psst::features::kEnablePsst);
     PsstTabWebContentsObserverUnitTestBase::SetUp();
   }
+
+ protected:
+  const std::string user_script_ = "user";
+  const std::string policy_script_ = "policy";
+  const GURL url_ = GURL("https://example1.com");
+  const std::string user_id_ = "unique_user_id";
+  const int stored_script_version_ = 1;
+  const int current_script_version_ = 2;
 };
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CreateForRegularBrowserContext) {
@@ -291,14 +299,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessRestoredNavigationEntry) {
-  auto url = GURL("https://example1.com");
-
   content::NavigationController& controller = web_contents()->GetController();
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch).Times(0);
 
   std::unique_ptr<content::NavigationEntry> restored_entry =
       content::NavigationEntry::Create();
-  restored_entry->SetURL(url);
+  restored_entry->SetURL(url_);
   restored_entry->SetTitle(u"Restored Page");
 
   std::vector<std::unique_ptr<content::NavigationEntry>> entries;
@@ -347,14 +353,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldOnlyProcessHttpOrHttps) {
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldProcessMultipleMainFrameNavigations) {
   const std::string first_nav_user_script = "user1";
-  const std::string policy_script = "policy";
   const GURL first_navigation_url("https://example1.com");
 
   base::RunLoop first_nav_check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(first_navigation_url, _))
       .WillOnce(CheckIfMatchCallback(
           &first_nav_check_loop,
-          CreateMatchedRule(first_nav_user_script, policy_script)));
+          CreateMatchedRule(first_nav_user_script, policy_script_)));
 
   // Called twice, once for each navigation, with Failed status as user script
   // result is empty in both cases
@@ -380,13 +385,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(second_navigation_url, _))
       .WillOnce(CheckIfMatchCallback(
           &second_nav_check_loop,
-          CreateMatchedRule(second_nav_user_script, policy_script)));
+          CreateMatchedRule(second_nav_user_script, policy_script_)));
 
   base::test::TestFuture<base::Value> second_nav_user_script_insert_future;
   EXPECT_CALL(inject_script_callback(), Run(second_nav_user_script, _))
       .WillOnce(InsertScriptInPageCallback(
           &second_nav_user_script_insert_future, base::Value()));
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(
@@ -398,16 +403,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
   const GURL redirect_target("https://redirect.example1.com/");
 
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(redirect_target, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
   // Called once, with Failed status as user script result is empty
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
@@ -415,14 +417,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest, ShouldProcessRedirectsNavigations) {
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   auto value = base::Value();
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            std::move(value)));
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
-  auto simulator =
-      content::NavigationSimulator::CreateBrowserInitiated(url, web_contents());
+  auto simulator = content::NavigationSimulator::CreateBrowserInitiated(
+      url_, web_contents());
   simulator->Redirect(redirect_target);
   simulator->Commit();
 
@@ -468,50 +470,46 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShouldNotProcessIfSameDocumentNavigation) {
-  const GURL url("https://example1.com");
   // should call once for the initial load and then not again
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(1);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   auto sim = content::NavigationSimulator::CreateRendererInitiated(
-      GURL(base::JoinString({url.spec(), "anchor"}, "#")),
+      GURL(base::JoinString({url_.spec(), "anchor"}, "#")),
       web_contents()->GetPrimaryMainFrame());
   sim->CommitSameDocument();
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, DefaultPrefEnabledShouldProcess) {
-  const GURL url("https://example1.com");
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(1);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(1);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, PrefDisabledDontProcess) {
-  const GURL url("https://example1.com");
   prefs()->SetBoolean(prefs::kPsstEnabled, false);
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _)).Times(0);
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _)).Times(0);
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, CheckIfMatchReturnsNull) {
-  const GURL url("https://example1.com");
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchFailsCallback(&check_loop));
   EXPECT_CALL(inject_script_callback(), Run).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -519,28 +517,25 @@ TEST_F(PsstTabWebContentsObserverUnitTest, CheckIfMatchReturnsNull) {
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsEmptyNoPolicyScript) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
       .Times(1);
 
   // User script result is an empty value
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value()));
   // No policy script executed
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
   check_loop.Run();
   EXPECT_EQ(base::Value(), user_script_insert_future.Take());
@@ -548,14 +543,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsDictEmptyPolicyScript) {
-  const std::string user_script = "user";
   // Policy script is empty
   const std::string policy_script = "";
-  const GURL url("https://example1.com");
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script)));
 
   // Called once, with Failed status as user script result is empty dictionary
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
@@ -564,7 +557,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
@@ -572,7 +565,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -581,13 +574,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptNotReturnUserNoPolicyScript) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
 
   // Called once, with Failed status as user script result is empty dictionary
@@ -595,15 +585,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   // User script result is an empty dictionary
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            base::Value(base::DictValue())));
   // No policy script executed
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -612,14 +602,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsUserHasPolicyScript) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
-  const std::string user_id = "unique_user_id";
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
   base::test::TestFuture<base::Value> user_script_insert_future;
   base::test::TestFuture<void> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
@@ -628,7 +614,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(
       base::DictValue()
           .Set("initial_execution", true)
-          .Set("user_id", user_id)
+          .Set("user_id", user_id_)
           .Set("site_name", "example")
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
@@ -656,16 +642,16 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
       .Times(1);
 
   EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
-              Show(url::Origin::Create(url),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+              Show(url::Origin::Create(url_),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -676,7 +662,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
-       ";\n", policy_script});
+       ";\n", policy_script_});
 
   // Policy script executed, parameters added
   EXPECT_CALL(inject_async_script_callback(), Run(script_with_parameters, _))
@@ -685,7 +671,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -696,10 +682,6 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsWrongUserIdNoPolicyScript) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
-
   struct {
     std::string test_name;
     base::Value user_script_result;
@@ -715,9 +697,9 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   for (const auto& test_case : test_cases) {
     SCOPED_TRACE(test_case.test_name);
     base::RunLoop check_loop;
-    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+    EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
         .WillOnce(CheckIfMatchCallback(
-            &check_loop, CreateMatchedRule(user_script, policy_script)));
+            &check_loop, CreateMatchedRule(user_script_, policy_script_)));
     base::test::TestFuture<base::Value> user_script_insert_future;
 
     // Call UI delegate method once (Failed state) as user_script_result
@@ -725,15 +707,15 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
     EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
         .Times(1);
 
-    EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+    EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
         .WillOnce(InsertScriptInPageCallback(
             &user_script_insert_future, test_case.user_script_result.Clone()));
     // No policy script executed
-    EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+    EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
     DocumentOnLoadObserver observer(web_contents());
     content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                               url);
+                                                               url_);
     observer.Wait();
 
     check_loop.Run();
@@ -743,27 +725,23 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UserScriptReturnsUnsupportedDictNoPolicyScriptParams) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
-  const std::string user_id = "unique_user_id";
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   base::test::TestFuture<void> user_accept_psst_settings_future;
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
 
   // Create a dictionary with unsupported blob storage value
   auto script_params = base::Value(
       base::DictValue()
           .Set("initial_execution", true)
-          .Set("user_id", user_id)
+          .Set("user_id", user_id_)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
                                             .Set("uid", "1")
@@ -779,27 +757,27 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   EXPECT_CALL(ui_delegate(), UpdateTasks(100, _, mojom::PsstStatus::kFailed))
       .Times(1);
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
-              Show(url::Origin::Create(url),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+              Show(url::Origin::Create(url_),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              expected_uids_to_perform));
 
   // Policy script executed, parameters not added
-  EXPECT_CALL(inject_async_script_callback(), Run(policy_script, _))
+  EXPECT_CALL(inject_async_script_callback(), Run(policy_script_, _))
       .WillOnce(InsertPolicyScriptInPageCallback(&policy_script_insert_future,
                                                  policy_script_result.Clone()));
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -809,18 +787,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
   const std::string task_description = "task description";
-  const std::string user_id = "unique_user_id";
   const int progress = 50;
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
   base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
   // UpdateTasks must be called with correct parameters, as policy script
   // returns valid result
@@ -843,13 +817,13 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
   base::test::TestFuture<base::Value> policy_script_insert_future;
 
   EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url), user_id));
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_));
 
   // Create a user script return value
   auto script_params = base::Value(
       base::DictValue()
           .Set("initial_execution", true)
-          .Set("user_id", user_id)
+          .Set("user_id", user_id_)
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
                                             .Set("uid", "1")
@@ -867,18 +841,18 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
                                 base::ListValue().Append(
                                     base::DictValue()
                                         .Set("uid", "1")
-                                        .Set("url", url.spec())
+                                        .Set("url", url_.spec())
                                         .Set("description", task_description))))
           .Set("result", true));
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
   const std::vector<std::string> expected_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
-              Show(url::Origin::Create(url),
-                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id,
+              Show(url::Origin::Create(url_),
+                   PsstWebsiteSettingsEq(ConsentStatus::kAsk, 1, user_id_,
                                          std::vector<std::string>()),
                    1, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
@@ -889,7 +863,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
        base::WriteJsonWithOptions(script_params.Clone(),
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
-       ";\n", policy_script});
+       ";\n", policy_script_});
   // Policy script executed, parameters added
   EXPECT_CALL(inject_async_script_callback(),
               Run(policy_script_with_parameters, _))
@@ -898,7 +872,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
@@ -909,23 +883,20 @@ TEST_F(PsstTabWebContentsObserverUnitTest, UiDelegateUpdateTasksCalled) {
 
   const auto& applied_tasks = applied_tasks_future.Take();
   EXPECT_EQ(1u, applied_tasks.size());
-  EXPECT_EQ(url.spec(), applied_tasks[0].url);
+  EXPECT_EQ(url_.spec(), applied_tasks[0].url);
   EXPECT_EQ(task_description, applied_tasks[0].description);
 }
 
 TEST_F(PsstTabWebContentsObserverUnitTest,
        UiDelegateUpdateTasksCalledAsUserScriptTimeout) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
   const std::string task_description = "task description";
   const int progress = 100;
   base::RunLoop check_loop;
   base::test::TestFuture<long> progress_future;
   base::test::TestFuture<std::vector<PolicyTask>> applied_tasks_future;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_)));
 
   // UpdateTasks must be called with in case of timeout failure, to indicate
   // that the complete workflow has ended with error.
@@ -949,17 +920,17 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(base::DictValue().Set("user_id", "value"));
 
   // User script's callback is delayed, causing the flow to fail
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageDelayedCallback(
           &user_script_insert_future, task_environment(),
           kScriptTimeout.InSeconds() + 1, script_params.Clone()));
 
   // No policy script executed
-  EXPECT_CALL(inject_script_callback(), Run(policy_script, _)).Times(0);
+  EXPECT_CALL(inject_script_callback(), Run(policy_script_, _)).Times(0);
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
   check_loop.Run();
   EXPECT_EQ(script_params, user_script_insert_future.Take());
@@ -970,18 +941,11 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShowDialogAgainWhenScriptVersionChanged) {
-  const std::string user_script = "user";
-  const std::string policy_script = "policy";
-  const GURL url("https://example1.com");
-  const std::string user_id = "unique_user_id";
-  const int stored_script_version = 1;
-  const int current_script_version = 2;
-
   base::RunLoop check_loop;
-  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url, _))
+  EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
-          &check_loop, CreateMatchedRule(user_script, policy_script,
-                                         current_script_version)));
+          &check_loop, CreateMatchedRule(user_script_, policy_script_,
+                                         current_script_version_)));
 
   base::test::TestFuture<base::Value> user_script_insert_future;
   base::test::TestFuture<void> user_accept_psst_settings_future;
@@ -995,7 +959,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   auto script_params = base::Value(
       base::DictValue()
           .Set("initial_execution", false)
-          .Set("user_id", user_id)
+          .Set("user_id", user_id_)
           .Set("site_name", "example")
           .Set("tasks",
                base::ListValue().Append(base::DictValue()
@@ -1005,17 +969,17 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   const std::vector<std::string> stored_uids_to_perform = {"1"};
   EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url), user_id))
+              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
       .WillOnce([&](const url::Origin&, const std::string&) {
         PsstWebsiteSettings settings;
         settings.consent_status = ConsentStatus::kAllow;
-        settings.script_version = stored_script_version;
-        settings.user_id = user_id;
+        settings.script_version = stored_script_version_;
+        settings.user_id = user_id_;
         settings.uids_to_perform = stored_uids_to_perform;
         return settings;
       });
 
-  EXPECT_CALL(inject_script_callback(), Run(user_script, _))
+  EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
       .WillOnce(InsertScriptInPageCallback(&user_script_insert_future,
                                            script_params.Clone()));
 
@@ -1024,10 +988,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // and this isn't the initial run.
   EXPECT_CALL(
       ui_delegate(),
-      Show(url::Origin::Create(url),
-           PsstWebsiteSettingsEq(ConsentStatus::kAllow, stored_script_version,
-                                 user_id, stored_uids_to_perform),
-           current_script_version, _, _))
+      Show(url::Origin::Create(url_),
+           PsstWebsiteSettingsEq(ConsentStatus::kAllow, stored_script_version_,
+                                 user_id_, stored_uids_to_perform),
+           current_script_version_, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              stored_uids_to_perform));
 
@@ -1041,7 +1005,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
        base::WriteJsonWithOptions(expected_policy_params,
                                   base::JSONWriter::OPTIONS_PRETTY_PRINT)
            .value(),
-       ";\n", policy_script});
+       ";\n", policy_script_});
 
   auto policy_script_result = base::Value(base::DictValue().Set(
       "psst",
@@ -1063,7 +1027,7 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 
   DocumentOnLoadObserver observer(web_contents());
   content::NavigationSimulator::NavigateAndCommitFromBrowser(web_contents(),
-                                                             url);
+                                                             url_);
   observer.Wait();
 
   check_loop.Run();
