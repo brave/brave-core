@@ -432,6 +432,11 @@ class Rewriter(abc.ABC):
         """Build a rewriter from its YAML body, validating its fields."""
 
     @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        """Reject an unsupported `count:` for this rewriter.
+        """
+
+    @classmethod
     def help_text(cls) -> str:
         """The full, user-facing help for this rewriter as dedented Markdown."""
         return textwrap.dedent(cls.HELP or cls.__doc__ or '').strip('\n')
@@ -605,9 +610,11 @@ class Substitution:
                                  f'rewriter: '
                                  f'{", ".join(repr(k) for k in unknown)} '
                                  f'(in "{description}")')
-            # The chosen rewriter decides what an omitted `count:` means.
+            # The chosen rewriter decides what an omitted `count:` means, and
+            # may reject a count it does not support.
             expected_count = Substitution._parse_count(
                 data, description, _REWRITERS[name].DEFAULT_COUNT)
+            _REWRITERS[name].validate_count(expected_count, description)
             rewriter = _REWRITERS[name].parse(data[name],
                                               description=description)
             return Substitution(description=description,
@@ -1274,10 +1281,8 @@ class PreemptFunctionImpl(_AstGrepRewriter):
         return f'if ({condition}) return{value};'
 
 
-# A set with all the rewriters available in plaster.
 class RenameClass(_AstGrepRewriter):
-    """Rename a C++ class -- its declaration, type uses, `Class::` qualifiers
-    and con/destructor names -- via the ast-grep rewriters."""
+    """Rename a C++ class."""
 
     NAME: Final = 'rename_class'
     OP_ID: Final = 'cxx.rename_class'
@@ -1307,10 +1312,107 @@ class RenameClass(_AstGrepRewriter):
     """
 
 
+class AddToProtected(_AstGrepRewriter):
+    """Add a member declaration to a C++ class's `protected:` section"""
+
+    NAME: Final = 'add_to_protected'
+    # Two ops share the work (see `operations`); this names the language and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'cxx.add_to_protected'
+    SUMMARY: Final = 'Add code to a class protected section (creating one if '\
+                     'needed).'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Adds code to a C++ class's `protected:` section. It will either use an
+        existing `protected:` section or create a new one.
+
+        Fields:
+
+        - `class_name` — the class to add to.
+        - `code` — free-form text to insert in the protected section, e.g. a
+          declaration like `virtual void OnFoo() = 0;`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Add a protected hook for the Brave subclass to override.
+            add_to_protected:
+              class_name: TestLauncher_ChromiumImpl
+              code: 'virtual const TestResult& OnTestResult(const TestResult& result) = 0;'
+        ```
+    """
+
+    # This rewriter uses composite operations that look for an existing
+    # protected section, or add one before `private:`.
+    _ADD_TO_EXISTING: Final = 'cxx.add_to_protected'
+    _CREATE_BEFORE_PRIVATE: Final = 'cxx.add_protected_before_private'
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is inserted once, into whichever placement applies, so a
+        # `count:` other than 1 is meaningless here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
+                             f'not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def __init__(self, *, class_name: str, code: str):
+        super().__init__()
+        self._class_name = class_name
+        self._code = code
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        # The code is inserted exactly once either in an existing protected
+        # section or in a new one created just before a private section.
+        del count, description
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        code = _indent_yaml(self._code).replace('\\', '\\\\')
+        inputs = {'class_name': self._class_name, 'code': code}
+        op = Operation(self._ADD_TO_EXISTING, inputs,
+                       MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        if changes == 0:
+            op = Operation(self._CREATE_BEFORE_PRIVATE, inputs,
+                           MatchExpectation.exactly(1))
+            changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddToProtected:
+        """Validate an `add_to_protected:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'code'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required):
+            if not isinstance(body[key], str) or not body[key]:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(class_name=body['class_name'], code=body['code'])
+
+
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
     for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
-                     PreemptFunctionImpl, RenameClass)
+                     PreemptFunctionImpl, RenameClass, AddToProtected)
 })
 
 

@@ -1873,6 +1873,178 @@ class RewriterFormsTest(unittest.TestCase):
             '    rename_class:\n'
             '      class_name: Foo\n', 'rename_class requires arg')
 
+    # -- add_to_protected op (real ast-grep binary) -----------------
+
+    def test_add_to_protected_creates_section_before_private(self):
+        # No existing protected section: a fresh `protected:` is created just
+        # before `private:`.
+        result = self._apply(
+            'prot_new.h',
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: add a protected hook\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            ' protected:\n  virtual void Bar() = 0;\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_reuses_existing_protected(self):
+        # An existing protected section is reused: the code becomes its first
+        # line, and no second protected section is created before private.
+        result = self._apply(
+            'prot_reuse.h', 'class C {\n protected:\n  void Existing();\n'
+            ' private:\n  int x_;\n};\n', 'substitutions:\n'
+            '  - description: reuse the protected section\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n protected:\n  virtual void Bar() = 0;\n'
+            '  void Existing();\n private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_scoped_to_named_class(self):
+        # Only the named class is touched; a sibling class with its own private
+        # section is left alone (the matchers are scoped by class_name).
+        result = self._apply(
+            'prot_scope.h', 'class C {\n private:\n  int c_;\n};\n\n'
+            'class D {\n private:\n  int d_;\n};\n', 'substitutions:\n'
+            '  - description: add only to C\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n protected:\n  virtual void Bar() = 0;\n\n'
+            ' private:\n  int c_;\n};\n\n'
+            'class D {\n private:\n  int d_;\n};\n')
+
+    def test_add_to_protected_multiline_code(self):
+        # A multi-line `code` block inserts several declarations, each indented
+        # to the member level.
+        result = self._apply(
+            'prot_multi.h', 'class C {\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: add two protected hooks\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        virtual void A() = 0;\n'
+            '        virtual void B() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n'
+            ' protected:\n  virtual void A() = 0;\n  virtual void B() = 0;\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_indents_flush_left_nested_code(self):
+        # A flush-left `code` block is indented to the member level (two spaces),
+        # and its own relative indentation is preserved (the nested `DoStuff();`
+        # ends up two spaces deeper) -- like preempt_function_impl's `code`.
+        result = self._apply(
+            'prot_nested.h', 'class C {\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: add a hook with an inline body\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        void OnFoo() {\n'
+            '          DoStuff();\n'
+            '        }\n')
+        self.assertEqual(
+            result, 'class C {\n'
+            ' protected:\n  void OnFoo() {\n    DoStuff();\n  }\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_blank_line_in_code_stays_empty(self):
+        # A blank line inside the `code` block stays empty -- no trailing
+        # whitespace from the member-level indentation.
+        result = self._apply(
+            'prot_blank.h', 'class C {\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: two declarations split by a blank line\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        virtual void A() = 0;\n'
+            '\n'
+            '        virtual void B() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n'
+            ' protected:\n  virtual void A() = 0;\n\n  virtual void B() = 0;\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_reused_section_indents_code(self):
+        # Indentation is applied the same way when reusing an existing protected
+        # section: the multi-line block lands at the member level above the
+        # existing members.
+        result = self._apply(
+            'prot_reuse_multi.h',
+            'class C {\n protected:\n  void Existing();\n'
+            ' private:\n  int x_;\n};\n', 'substitutions:\n'
+            '  - description: add two hooks to the existing protected section\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        void A();\n'
+            '        void B();\n')
+        self.assertEqual(
+            result, 'class C {\n protected:\n  void A();\n  void B();\n'
+            '  void Existing();\n private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_no_anchor_fails(self):
+        # A class with neither a protected nor a private section has nothing to
+        # anchor on.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'prot_none.h', 'class C {\n public:\n  void Foo();\n};\n',
+                'substitutions:\n'
+                '  - description: no anchor\n'
+                '    add_to_protected:\n'
+                '      class_name: C\n'
+                '      code: virtual void Bar() = 0;\n')
+
+    def test_add_to_protected_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      cod: virtual void Bar() = 0;\n',
+            'Unrecognised add_to_protected arg')
+
+    def test_add_to_protected_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing code\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n', 'add_to_protected requires arg')
+
+    def test_add_to_protected_explicit_count_one_ok(self):
+        # An explicit `count: 1` is the only count accepted; it applies normally.
+        result = self._apply(
+            'prot_count_ok.h', 'class C {\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: explicit count of one\n'
+            '    count: 1\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class C {\n protected:\n  virtual void Bar() = 0;\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_protected_count_other_than_one_rejected(self):
+        # It always adds exactly once, so any other count is a config error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n',
+            'does not accept a count other than 1')
+
     # -- export-macro classes (real ast-grep binary) ----------------------
     #
     # tree-sitter cannot parse `class MACRO_EXPORT Name`, so the engine blanks

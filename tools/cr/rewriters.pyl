@@ -93,6 +93,24 @@ inside:
             },
         },
 
+        # Finds the protected section in a given class.
+        "cxx.find_class_protected_section": {
+            "template": """\
+kind: access_specifier
+regex: ^protected$
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
         # The `final` specifier on `class_name`'s declaration (the
         # virtual_specifier node holding the `final` keyword). Only the
         # class-head `final` matches; a method's trailing `final` is nested
@@ -240,6 +258,36 @@ regex: ^{class_name}$
             },
             "result": {
                 "node": "identifier",
+            },
+        },
+
+        # Inserts `code` under an existing `protected:` specifier for the class.
+        "cxx.add_to_protected": {
+            "matcher": "cxx.find_class_protected_section",
+            "inputs": ["class_name", "code"],
+            "first_match": True,
+            "replace": {
+                "consume_after": ":",
+                "re_pattern": "$",
+                "replace": ":\\n{code}",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Inserts a fresh `protected:` section just before an existing
+        # `private:` one, and adds `code` under it.
+        "cxx.add_protected_before_private": {
+            "matcher": "cxx.find_class_private_section",
+            "inputs": ["class_name", "code"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "^private$",
+                "replace": "protected:\\n{code}\\n\\n private",
+            },
+            "result": {
+                "node": "access_specifier",
             },
         },
     },

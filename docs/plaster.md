@@ -136,6 +136,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `drop_final`            | AST  | Removes `final` from a C++ class declaration.     |
 | `preempt_function_impl` | AST  | Inserts at the top of a C++ function body.        |
 | `rename_class`          | AST  | Renames a C++ class.                              |
+| `add_to_protected`      | AST  | Adds a member to a class `protected:` section.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
