@@ -67,13 +67,15 @@ class TarballInstallerTest(unittest.TestCase):
                    *,
                    object_name: str = 'pkg.tar.gz',
                    sha256sum: str | None = None,
+                   size_bytes: int | None = None,
                    owns_dest: bool = True) -> m.TarballInstaller:
-        """A `TarballInstaller` for `data`, defaulting to its true sha256."""
+        """A `TarballInstaller` for `data`, defaulting to its true size/sha256."""
         return m.TarballInstaller(
             dest_dir=self.dest,
             url=f'https://downloads.invalid/{object_name}',
             object_name=object_name,
             sha256sum=_sha256(data) if sha256sum is None else sha256sum,
+            size_bytes=len(data) if size_bytes is None else size_bytes,
             owns_dest=owns_dest)
 
     def _download(self, data: bytes):
@@ -140,6 +142,16 @@ class TarballInstallerTest(unittest.TestCase):
         self.assertFalse(self.dest.exists())
         self.assertFalse(installer.is_installed())
 
+    def test_size_mismatch_raises_and_installs_nothing(self):
+        data = _make_tar([('f', b'x')])
+        # Right bytes (so the sha would pass), but the pinned size is wrong: the
+        # size check must fire first and abort before anything is extracted.
+        installer = self._installer(data, size_bytes=len(data) + 1)
+        with self.assertRaisesRegex(ValueError, 'size mismatch'):
+            installer.install(self._download(data))
+        self.assertFalse(self.dest.exists())
+        self.assertFalse(installer.is_installed())
+
     def test_download_refuses_non_https_url(self):
         installer = self._installer(_make_tar([('f', b'x')]))
         with self.assertRaisesRegex(ValueError, 'non-https'):
@@ -192,6 +204,7 @@ class ProgressTest(unittest.TestCase):
                                   url='https://downloads.invalid/pkg',
                                   object_name='pkg.tar.gz',
                                   sha256sum='a',
+                                  size_bytes=len(data),
                                   owns_dest=True)
         err = io.StringIO()
         with mock.patch.object(m, 'urlopen', return_value=_FakeResponse(data)):
@@ -205,6 +218,7 @@ class ProgressTest(unittest.TestCase):
                                   url='u',
                                   object_name='node.tar.gz',
                                   sha256sum='a',
+                                  size_bytes=0,
                                   owns_dest=True)
         err = io.StringIO()
         with contextlib.redirect_stderr(err):
@@ -225,12 +239,14 @@ class ForDepTest(unittest.TestCase):
             Path('/ws'), 'src/p',
             self._spec([{
                 'object_name': 'x.tar.gz',
-                'sha256sum': 'abc'
+                'sha256sum': 'abc',
+                'size_bytes': 123
             }]))
         self.assertEqual(inst.dest_dir, Path('/ws/src/p'))
         self.assertEqual(inst.url, 'https://downloads.invalid/x.tar.gz')
         self.assertEqual(inst.object_name, 'x.tar.gz')
         self.assertEqual(inst.sha256sum, 'abc')
+        self.assertEqual(inst.size_bytes, 123)
         self.assertTrue(inst.owns_dest)
 
     def test_overlay_object_does_not_own_dest(self):
@@ -239,6 +255,7 @@ class ForDepTest(unittest.TestCase):
             self._spec([{
                 'object_name': 'x.tar.gz',
                 'sha256sum': 'abc',
+                'size_bytes': 123,
                 'overlayed_on': 'base.tar.xz'
             }]))
         self.assertFalse(inst.owns_dest)
@@ -247,11 +264,13 @@ class ForDepTest(unittest.TestCase):
         spec = self._spec([
             {
                 'object_name': 'a.tar.gz',
-                'sha256sum': '1'
+                'sha256sum': '1',
+                'size_bytes': 1
             },
             {
                 'object_name': 'b.tar.gz',
-                'sha256sum': '2'
+                'sha256sum': '2',
+                'size_bytes': 2
             },
         ])
         with self.assertRaisesRegex(ValueError, 'single-object'):

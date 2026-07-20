@@ -141,6 +141,16 @@ class ExtraDepsTableTest(unittest.TestCase):
         for path, spec in m.EXTRA_DEPS.items():
             self.assertTrue(spec['bucket'].startswith('https://'), path)
 
+    def test_every_object_declares_size_and_sha(self):
+        """Each object carries a sha256 and a positive `size_bytes`; the
+        installer validates the downloaded archive against both."""
+        for path, spec in m.EXTRA_DEPS.items():
+            for obj in spec['objects']:
+                name = f'{path}:{obj.get("object_name")}'
+                self.assertIsInstance(obj.get('sha256sum'), str, name)
+                self.assertIsInstance(obj.get('size_bytes'), int, name)
+                self.assertGreater(obj['size_bytes'], 0, name)
+
 
 if __name__ == '__main__':
     unittest.main()

@@ -197,6 +197,7 @@ class ExtraDepsRunner:
                                      url=spec['bucket'] + obj['object_name'],
                                      object_name=obj['object_name'],
                                      sha256sum=obj['sha256sum'],
+                                     size_bytes=obj['size_bytes'],
                                      owns_dest=not overlayed_on)
 
         # An overlay must sit on the base it was built against: validate it

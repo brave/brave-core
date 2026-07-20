@@ -4,8 +4,9 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """`TarballInstaller`: fetch, verify, and extract one `EXTRA_DEPS` object.
 
-Stdlib-only: it downloads over HTTP, verifies the sha256, extracts the archive,
-and writes the sidecar files that record what is deployed. Also runnable as a
+Stdlib-only: it downloads over HTTP, verifies the size and sha256, extracts the
+archive, and writes the sidecar files that record what is deployed. Also runnable
+as a
 CLI to deploy a single-object `EXTRA_DEPS` entry into the checkout.
 """
 
@@ -43,8 +44,9 @@ _INSTALLABLE = sorted(path for path, spec in EXTRA_DEPS.items()
 class TarballInstaller:
     """Installs one resolved `EXTRA_DEPS` object into its destination.
 
-    Handles the mechanics for a single object: sha256 verification, extraction
-    (wiping the destination first when it owns it), and writing the sidecar
+    Handles the mechanics for a single object: size + sha256 verification,
+    extraction (wiping the destination first when it owns it), and writing the
+    sidecar
     files `extra_deps` reads back to tell a deployed tree from a stale one:
 
       .{prefix}_hash                the object's sha256
@@ -61,6 +63,8 @@ class TarballInstaller:
     object_name: str
     # The expected sha256 of the archive.
     sha256sum: str
+    # The expected size of the archive in bytes.
+    size_bytes: int
     # True when the dep owns dest_dir (wiped before extract); False when it
     # overlays an existing upstream tree (extracted on top).
     owns_dest: bool
@@ -84,6 +88,7 @@ class TarballInstaller:
                    url=spec['bucket'] + obj['object_name'],
                    object_name=obj['object_name'],
                    sha256sum=obj['sha256sum'],
+                   size_bytes=obj['size_bytes'],
                    owns_dest=not obj.get('overlayed_on'))
 
     def is_installed(self) -> bool:
@@ -116,7 +121,13 @@ class TarballInstaller:
         return True
 
     def _verify(self, archive_path: Path) -> None:
-        """Raise `ValueError` unless `archive_path` hashes to `sha256sum`."""
+        """Raise `ValueError` unless `archive_path` matches size and sha256.
+        """
+        actual_size = archive_path.stat().st_size
+        if actual_size != self.size_bytes:
+            raise ValueError(f'size mismatch for {self.url}\n'
+                             f'  expected: {self.size_bytes} bytes\n'
+                             f'  actual:   {actual_size} bytes')
         digest = hashlib.sha256()
         # Not using mmap to make this script more tolerable to a larger range
         # of Python versions, as this script is called by `launcher.py` without
