@@ -398,6 +398,9 @@ class Rewriter(abc.ABC):
     # The `<name>:` key that selects this rewriter in a `substitutions:` entry.
     NAME: ClassVar[str] = ''
 
+    # A rewriter-specific override for the default value of `count:`.
+    DEFAULT_COUNT: ClassVar[int | None] = None
+
     # One-line summary shown in the `Rewriters` help index.
     SUMMARY: ClassVar[str] = ''
 
@@ -588,8 +591,6 @@ class Substitution:
         if not isinstance(description, str):
             raise ValueError('No description specified for substitution entry')
 
-        expected_count = Substitution._parse_count(data, description)
-
         rewriter_keys = sorted(keys & _REWRITERS.keys())
         if len(rewriter_keys) > 1:
             raise ValueError(
@@ -604,6 +605,9 @@ class Substitution:
                                  f'rewriter: '
                                  f'{", ".join(repr(k) for k in unknown)} '
                                  f'(in "{description}")')
+            # The chosen rewriter decides what an omitted `count:` means.
+            expected_count = Substitution._parse_count(
+                data, description, _REWRITERS[name].DEFAULT_COUNT)
             rewriter = _REWRITERS[name].parse(data[name],
                                               description=description)
             return Substitution(description=description,
@@ -630,8 +634,10 @@ class Substitution:
             f'{", ".join(sorted(_REWRITERS)) or "(none)"}')
 
     @staticmethod
-    def _parse_count(data: dict[str, object], description: str) -> int:
-        expected_count = data.get('count', 1)
+    def _parse_count(data: dict[str, object],
+                     description: str,
+                     default: int | None = None) -> int:
+        expected_count = data.get('count', 1 if default is None else default)
         # bool is a subclass of int; reject it explicitly.
         if (not isinstance(expected_count, int)
                 or isinstance(expected_count, bool)):
@@ -1269,10 +1275,42 @@ class PreemptFunctionImpl(_AstGrepRewriter):
 
 
 # A set with all the rewriters available in plaster.
+class RenameClass(_AstGrepRewriter):
+    """Rename a C++ class -- its declaration, type uses, `Class::` qualifiers
+    and con/destructor names -- via the ast-grep rewriters."""
+
+    NAME: Final = 'rename_class'
+    OP_ID: Final = 'cxx.rename_class'
+    SUMMARY: Final = 'Rename a class and every code token of its name.'
+    # For this rewriter we have less of a concerns about `count`.
+    DEFAULT_COUNT: Final = 0
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Renames a C++ class everywhere its name appears as a *code token*: the
+        class declaration, type positions (`Foo*`, `<Foo>`), the `Foo::`
+        qualifier on out-of-line members, and constructor/destructor names.
+
+        Fields:
+
+        - `class_name` — the current class name.
+        - `rename` — the name to rename it to (e.g. `Foo_ChromiumImpl`).
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Rename so the Brave subclass can reuse the name.
+            rename_class:
+              class_name: TestLauncher
+              rename: TestLauncher_ChromiumImpl
+        ```
+    """
+
+
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
     for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
-                     PreemptFunctionImpl)
+                     PreemptFunctionImpl, RenameClass)
 })
 
 
