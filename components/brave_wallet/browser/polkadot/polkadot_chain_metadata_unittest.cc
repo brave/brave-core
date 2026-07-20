@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
 
+#include <array>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -27,14 +28,14 @@ std::string ScaleEncodeString(std::string_view value) {
 }  // namespace
 
 TEST(PolkadotChainMetadataUnitTest, FromFields) {
+  std::array<uint8_t, kMaxSignedExtensions> signed_extensions = {1, 2, 3, 4};
   auto metadata = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
       /*transaction_payment_pallet_index=*/0x20,
       /*transfer_allow_death_call_index=*/2,
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
-      /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
-      /*asset_tx_payment=*/true,
+      /*ss58_prefix=*/42, /*spec_version=*/1'234'567, signed_extensions,
       /*has_assets_pallet=*/true,
       /*assets_pallet_index=*/50,
       /*assets_transfer_all_call_index=*/10,
@@ -52,7 +53,7 @@ TEST(PolkadotChainMetadataUnitTest, FromFields) {
   EXPECT_EQ(metadata->assets_transfer_keep_alive_call_index, 9u);
   EXPECT_EQ(metadata->ss58_prefix, 42u);
   EXPECT_EQ(metadata->spec_version, 1'234'567u);
-  EXPECT_TRUE(metadata->asset_tx_payment);
+  EXPECT_EQ(metadata->signed_extensions, signed_extensions);
 }
 
 TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
@@ -63,7 +64,7 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -75,7 +76,7 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
   metadata_c->spec_version = 1'234'568;
 
   PolkadotChainMetadata metadata_d = metadata_a;
-  metadata_d->asset_tx_payment = true;
+  metadata_d->signed_extensions[0] = 1;
 
   auto metadata_e = PolkadotChainMetadata::FromFields(
       /*system_pallet_index=*/0, /*balances_pallet_index=*/7,
@@ -84,7 +85,7 @@ TEST(PolkadotChainMetadataUnitTest, EqualityOperator) {
       /*transfer_keep_alive_call_index=*/4,
       /*transfer_all_call_index=*/5,
       /*ss58_prefix=*/42, /*spec_version=*/1'234'567,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/true,
       /*assets_pallet_index=*/50,
       /*assets_transfer_all_call_index=*/10,
@@ -158,7 +159,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponsePolkadot) {
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, /*spec_version=*/2'000'007,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{7, 8, 9, 10, 11, 12, 13, 19, 15, 16},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -191,7 +192,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/0, /*spec_version=*/2'002'001,
-      /*asset_tx_payment=*/true,
+      /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18},
       /*has_assets_pallet=*/true,
       /*assets_pallet_index=*/50,
       /*assets_transfer_all_call_index=*/32,
@@ -223,7 +224,7 @@ TEST(PolkadotChainMetadataUnitTest, ParseRealStateGetMetadataResponseWestend) {
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/1'022'000,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 19, 16, 20},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -256,7 +257,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/1'022'005,
-      /*asset_tx_payment=*/true,
+      /*signed_extensions=*/{2, 7, 8, 9, 10, 11, 12, 13, 14, 16, 17, 18},
       /*has_assets_pallet=*/true,
       /*assets_pallet_index=*/50,
       /*assets_transfer_all_call_index=*/32,
@@ -288,8 +289,9 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_allow_death_call_index=*/0,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
-      /*ss58_prefix=*/0, /*spec_version=*/2'002'002,
-      /*asset_tx_payment=*/true,
+      /*ss58_prefix=*/0, /*spec_version=*/2'004'001,
+      /*signed_extensions=*/
+      {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18},
       /*has_assets_pallet=*/true,
       /*assets_pallet_index=*/50,
       /*assets_transfer_all_call_index=*/32,
@@ -332,7 +334,7 @@ TEST(PolkadotChainMetadataUnitTest, Security_V14NoStorage_ParsesCorrectly) {
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -371,7 +373,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -410,7 +412,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -450,7 +452,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -488,7 +490,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -526,7 +528,7 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
@@ -569,12 +571,41 @@ TEST(PolkadotChainMetadataUnitTest,
       /*transfer_keep_alive_call_index=*/3,
       /*transfer_all_call_index=*/4,
       /*ss58_prefix=*/42, /*spec_version=*/100,
-      /*asset_tx_payment=*/false,
+      /*signed_extensions=*/{},
       /*has_assets_pallet=*/false,
       /*assets_pallet_index=*/0,
       /*assets_transfer_all_call_index=*/0,
       /*assets_transfer_keep_alive_call_index=*/0);
   EXPECT_EQ(*metadata, expected);
+}
+
+TEST(PolkadotChainMetadataUnitTest,
+     Security_UnknownSignedExtension_RejectsMetadata) {
+  std::vector<uint8_t> bytes;
+  ASSERT_TRUE(PrefixedHexStringToBytes(
+      // RuntimeMetadataPrefixed: magic "meta", V15, and portable
+      // registry. Balances calls include transfer_allow_death(0),
+      // transfer_keep_alive(3), and transfer_all(4).
+      "0x6d6574610f08000000000000040000010c507472616e736665725f616c6c6f775f6465"
+      "6174680000004c7472616e736665725f6b6565705f616c697665000300307472616e7366"
+      "65725f616c6c00040000"
+      // System pallet has no storage; SS58Prefix is encoded as fixed-width
+      // u16(42), with Version.spec_version=100.
+      "0c1853797374656d00000008285353353850726566697800082a00001c56657273696f6e"
+      "005820706f6c6b61646f74106e6f6465010000006400000000000000"
+      // Balances pallet index 5 references the call enum above;
+      // TransactionPayment pallet index 3 is present for fee metadata.
+      "2042616c616e6365730001040000000500485472616e73616374696f6e5061796d656e74"
+      "00000000000300"
+      // V15 extrinsic metadata declaring a single signed extension whose
+      // identifier ("Unknown", len 7) is not in the curated allow-list. The
+      // vector length is Compact(1)=0x04 and each element carries the
+      // identifier string followed by its ty and additional_signed type ids.
+      "040000000004"
+      "1c556e6b6e6f776e"
+      "0000",
+      &bytes));
+  EXPECT_FALSE(PolkadotChainMetadata::FromBytes(bytes));
 }
 
 TEST(PolkadotChainMetadataUnitTest,
