@@ -15,103 +15,220 @@ import {
   AUTOMATIC_MODEL_KEY,
   NEAR_AI_LEARN_MORE_URL,
 } from '../../../common/constants'
+import {
+  LOCAL_VENDOR_KEY,
+  PINNED_VENDOR_KEY,
+} from '../../../common/vendor_icon_map'
 import { useAIChat } from '../../state/ai_chat_context'
 import { useConversation } from '../../state/conversation_context'
-import { isSelectableModel } from '../../model_utils'
+import {
+  getAvailableModelCapabilities,
+  getVendorRailEntries,
+  isSelectableModel,
+  modelHasAllCapabilities,
+} from '../../model_utils'
 import { ModelMenuItem } from '../model_menu_item/model_menu_item'
 import { NearIcon } from '../near_label/near_label'
+import { FuzzyFinder } from '../filter_menu/fuzzy_finder'
+import { matches } from '../filter_menu/query'
+import { CapabilityFilter } from './capability_filter'
+import { ModelSearch } from './model_search'
+import { VendorRail } from './vendor_rail'
 import styles from './style.module.scss'
+
+function matchesModelQuery(query: string, model: Mojom.Model) {
+  if (!query) {
+    return true
+  }
+  const finder = new FuzzyFinder(query)
+  const nameMatch = matches(finder, model.displayName)
+  const maker = model.options.leoModelOptions?.displayMaker ?? ''
+  const makerMatch = maker ? matches(finder, maker) : undefined
+  const requestName = model.options.customModelOptions?.modelRequestName ?? ''
+  const requestMatch = requestName ? matches(finder, requestName) : undefined
+  return !!(nameMatch || makerMatch || requestMatch)
+}
 
 export function ModelSelector() {
   const aiChatContext = useAIChat()
   const conversationContext = useConversation()
 
-  // State
   const [isOpen, setIsOpen] = React.useState(false)
-  const [showAllModels, setShowAllModels] = React.useState(false)
+  const [selectedVendorKey, setSelectedVendorKey] =
+    React.useState(PINNED_VENDOR_KEY)
+  const [searchQuery, setSearchQuery] = React.useState('')
+  const [capabilityFilters, setCapabilityFilters] = React.useState<
+    Mojom.ModelCapability[]
+  >([])
+  // Only one nested popover (filter or a model's options) can be open.
+  const [openPopover, setOpenPopover] = React.useState<
+    null | { kind: 'filter' } | { kind: 'model-options'; modelKey: string }
+  >(null)
 
-  // Memos
   const selectableModels = React.useMemo(
     () => conversationContext.allModels.filter(isSelectableModel),
     [conversationContext.allModels],
   )
 
-  const suggestedModels = React.useMemo(
-    () => selectableModels.filter((model) => model.isSuggestedModel),
+  const availableCapabilities = React.useMemo(
+    () => getAvailableModelCapabilities(selectableModels),
     [selectableModels],
   )
 
-  const models = React.useMemo(() => {
-    // Show all BASIC_AND_PREMIUM models if showAllModels is true
-    if (showAllModels) {
-      return selectableModels.filter(
-        (model) =>
-          model.options.leoModelOptions?.access
-          === Mojom.ModelAccess.BASIC_AND_PREMIUM,
+  // Drop selections for capabilities that no longer appear on any model.
+  React.useEffect(() => {
+    setCapabilityFilters((prev) => {
+      const next = prev.filter((capability) =>
+        availableCapabilities.includes(capability),
       )
+      return next.length === prev.length ? prev : next
+    })
+  }, [availableCapabilities])
+
+  const pinnedModelKeys = React.useMemo(() => {
+    const keys = aiChatContext.pinnedModelKeys ?? []
+    if (keys.length > 0) {
+      return keys
     }
 
-    // Find the Auto model (chat-automatic)
-    const autoModel = selectableModels.find(
-      (model) => model.key === AUTOMATIC_MODEL_KEY,
-    )
+    // Empty pref: seed with the same models that used to appear in the
+    // recommended short list (excluding Auto, which is always shown first).
+    const defaultKeys: string[] = []
     const defaultModel = conversationContext.userDefaultModel
     const currentModel = conversationContext.currentModel
-    const recommendedList: Mojom.Model[] = []
 
-    // Keep Auto model first in list
-    if (autoModel) {
-      recommendedList.push(autoModel)
-    }
-
-    // Add defaultModel if it exists and is not Auto
     if (
       defaultModel
       && defaultModel.key !== AUTOMATIC_MODEL_KEY
       && isSelectableModel(defaultModel)
     ) {
-      recommendedList.push(defaultModel)
+      defaultKeys.push(defaultModel.key)
     }
 
-    // Add currentModel if it exists and is not Auto or defaultModel
     if (
       currentModel
       && currentModel.key !== AUTOMATIC_MODEL_KEY
       && currentModel.key !== defaultModel?.key
       && isSelectableModel(currentModel)
     ) {
-      recommendedList.push(currentModel)
+      defaultKeys.push(currentModel.key)
     }
 
-    // Add suggestedModels that are not already in the list
-    const existingKeys = new Set(recommendedList.map((model) => model.key))
-    const filteredSuggestedModels = suggestedModels.filter(
-      (model) => !existingKeys.has(model.key),
-    )
-    recommendedList.push(...filteredSuggestedModels)
+    const existing = new Set(defaultKeys)
+    for (const model of selectableModels) {
+      if (
+        model.isSuggestedModel
+        && model.key !== AUTOMATIC_MODEL_KEY
+        && !existing.has(model.key)
+      ) {
+        defaultKeys.push(model.key)
+      }
+    }
 
-    return recommendedList
+    return defaultKeys
   }, [
-    showAllModels,
+    aiChatContext.pinnedModelKeys,
     selectableModels,
     conversationContext.userDefaultModel,
     conversationContext.currentModel,
-    suggestedModels,
   ])
 
-  const premiumModels = React.useMemo(
-    () =>
-      selectableModels.filter(
-        (model) =>
-          model.options.leoModelOptions?.access === Mojom.ModelAccess.PREMIUM,
-      ),
+  const pinnedKeySet = React.useMemo(
+    () => new Set(pinnedModelKeys),
+    [pinnedModelKeys],
+  )
+
+  const vendorEntries = React.useMemo(
+    () => getVendorRailEntries(selectableModels),
     [selectableModels],
   )
 
-  const customModels = React.useMemo(
-    () => selectableModels.filter((model) => model.options.customModelOptions),
-    [selectableModels],
-  )
+  // Count models shown on the pinned tab; drives the fixed menu height so
+  // the panel grows with pins up to the max without resizing on vendor change.
+  const pinnedItemCount = React.useMemo(() => {
+    let count = 0
+    if (selectableModels.some((model) => model.key === AUTOMATIC_MODEL_KEY)) {
+      count++
+    }
+    for (const key of pinnedModelKeys) {
+      if (key === AUTOMATIC_MODEL_KEY) {
+        continue
+      }
+      if (selectableModels.some((model) => model.key === key)) {
+        count++
+      }
+    }
+    return count
+  }, [selectableModels, pinnedModelKeys])
+
+  const models = React.useMemo(() => {
+    const query = searchQuery.trim()
+
+    // Search is global across all models; vendor rail only scopes the list
+    // when the search box is empty.
+    let list: Mojom.Model[] = []
+    if (query) {
+      list = selectableModels.slice()
+    } else if (selectedVendorKey === PINNED_VENDOR_KEY) {
+      const autoModel = selectableModels.find(
+        (model) => model.key === AUTOMATIC_MODEL_KEY,
+      )
+      if (autoModel) {
+        list.push(autoModel)
+      }
+      for (const key of pinnedModelKeys) {
+        if (key === AUTOMATIC_MODEL_KEY) {
+          continue
+        }
+        const model = selectableModels.find((m) => m.key === key)
+        if (model) {
+          list.push(model)
+        }
+      }
+    } else if (selectedVendorKey === LOCAL_VENDOR_KEY) {
+      list = selectableModels.filter(
+        (model) => !!model.options.customModelOptions,
+      )
+    } else {
+      list = selectableModels.filter(
+        (model) =>
+          model.options.leoModelOptions?.displayMaker === selectedVendorKey,
+      )
+    }
+
+    if (capabilityFilters.length > 0) {
+      // Keep Automatic visible on the pinned tab even when it has no
+      // matching capability tags.
+      list = list.filter(
+        (model) =>
+          (selectedVendorKey === PINNED_VENDOR_KEY
+            && !query
+            && model.key === AUTOMATIC_MODEL_KEY)
+          || modelHasAllCapabilities(model, capabilityFilters),
+      )
+    }
+
+    if (query) {
+      list = list.filter((model) => matchesModelQuery(query, model))
+    }
+
+    // Automatic is always first whenever it appears in the list.
+    const automaticIndex = list.findIndex(
+      (model) => model.key === AUTOMATIC_MODEL_KEY,
+    )
+    if (automaticIndex > 0) {
+      const [automaticModel] = list.splice(automaticIndex, 1)
+      list.unshift(automaticModel)
+    }
+
+    return list
+  }, [
+    selectedVendorKey,
+    selectableModels,
+    pinnedModelKeys,
+    capabilityFilters,
+    searchQuery,
+  ])
 
   const onClickLearnMore = React.useCallback(() => {
     aiChatContext.api.uiHandler?.openURL({
@@ -119,18 +236,38 @@ export function ModelSelector() {
     })
   }, [aiChatContext.api.uiHandler])
 
+  const handleClose = React.useCallback(() => {
+    setIsOpen(false)
+    setSearchQuery('')
+    setCapabilityFilters([])
+    setSelectedVendorKey(PINNED_VENDOR_KEY)
+    setOpenPopover(null)
+  }, [])
+
+  const emptyMessage = React.useMemo(() => {
+    if (selectedVendorKey === LOCAL_VENDOR_KEY && !searchQuery) {
+      return getLocale(S.CHAT_UI_LOCAL_MODELS_EMPTY)
+    }
+    return getLocale(S.CHAT_UI_NO_MODELS_FOUND)
+  }, [selectedVendorKey, searchQuery])
+
   return (
     <ButtonMenu
       className={styles.buttonMenu}
       isOpen={isOpen}
-      onClose={() => setIsOpen(false)}
+      onChange={(e) => {
+        if (e.isOpen) {
+          setIsOpen(true)
+        } else {
+          handleClose()
+        }
+      }}
       positionStrategy='fixed'
     >
       <Button
         slot='anchor-content'
         kind='plain-faint'
         size='tiny'
-        onClick={() => setIsOpen(!isOpen)}
         className={classnames({
           [styles.anchorButton]: true,
           [styles.anchorButtonOpen]: isOpen,
@@ -169,73 +306,123 @@ export function ModelSelector() {
           </Alert>
         )}
 
-      {models.map((model) => {
-        return (
-          <ModelMenuItem
-            key={model.key}
-            model={model}
-            isCurrent={model.key === conversationContext.currentModel?.key}
-            showPremiumLabel={!aiChatContext.isPremiumUser}
-            showDetails={true}
-            onClick={() => conversationContext.setCurrentModel(model)}
-            onClickLearnMore={onClickLearnMore}
-          />
-        )
-      })}
-
-      {showAllModels
-        && premiumModels.map((model) => {
-          return (
-            <ModelMenuItem
-              key={model.key}
-              model={model}
-              isCurrent={model.key === conversationContext.currentModel?.key}
-              showPremiumLabel={!aiChatContext.isPremiumUser}
-              showDetails={true}
-              onClick={() => conversationContext.setCurrentModel(model)}
-              onClickLearnMore={onClickLearnMore}
-            />
-          )
-        })}
-
-      {showAllModels
-        && customModels.map((model) => {
-          return (
-            <ModelMenuItem
-              key={model.key}
-              model={model}
-              isCurrent={model.key === conversationContext.currentModel?.key}
-              showPremiumLabel={!aiChatContext.isPremiumUser}
-              showDetails={true}
-              onClick={() => conversationContext.setCurrentModel(model)}
-            />
-          )
-        })}
-
-      <div className={styles.footerGap} />
       <div
-        className={classnames({
-          [styles.menuFooter]: true,
-          [styles.menuFooterExtraPadding]: !showAllModels,
-        })}
+        className={styles.menuBody}
+        style={
+          {
+            '--vendor-rail-count': vendorEntries.length,
+            '--pinned-item-count': pinnedItemCount,
+          } as React.CSSProperties
+        }
       >
-        <leo-menu-item
-          data-testid='show-all-models-button'
-          onClick={(e) => {
-            e.stopPropagation()
-            setShowAllModels(!showAllModels)
-          }}
-        >
-          <div className={styles.menuFooterIconAndText}>
-            {showAllModels && <Icon name='carat-left' />}
-            {getLocale(
-              showAllModels
-                ? S.CHAT_UI_RECOMMENDED_MODELS_BUTTON
-                : S.CHAT_UI_SHOW_ALL_MODELS_BUTTON,
+        <VendorRail
+          entries={vendorEntries}
+          selectedKey={selectedVendorKey}
+          onSelect={setSelectedVendorKey}
+        />
+        <div className={styles.mainPane}>
+          <div className={styles.searchAndFilters}>
+            <ModelSearch
+              value={searchQuery}
+              onChange={setSearchQuery}
+            />
+            <CapabilityFilter
+              available={availableCapabilities}
+              selected={capabilityFilters}
+              onChange={setCapabilityFilters}
+              isOpen={openPopover?.kind === 'filter'}
+              onOpenChange={(open) =>
+                setOpenPopover(open ? { kind: 'filter' } : null)
+              }
+            />
+          </div>
+          <div className={styles.modelList}>
+            {models.length === 0 ? (
+              <div
+                className={styles.emptyState}
+                data-testid='model-selector-empty'
+              >
+                {emptyMessage}
+              </div>
+            ) : (
+              models.map((model) => {
+                const isPinned = pinnedKeySet.has(model.key)
+                const isDefault =
+                  model.key === conversationContext.userDefaultModel?.key
+                return (
+                  <ModelMenuItem
+                    key={model.key}
+                    model={model}
+                    isCurrent={
+                      model.key === conversationContext.currentModel?.key
+                    }
+                    isPinned={isPinned}
+                    isDefault={isDefault}
+                    showPremiumLabel={!aiChatContext.isPremiumUser}
+                    showDetails={true}
+                    showCapabilitySubtitle={true}
+                    isMobile={aiChatContext.isMobile}
+                    isOptionsOpen={
+                      openPopover?.kind === 'model-options'
+                      && openPopover.modelKey === model.key
+                    }
+                    onOptionsOpenChange={(open) =>
+                      setOpenPopover(
+                        open
+                          ? { kind: 'model-options', modelKey: model.key }
+                          : null,
+                      )
+                    }
+                    onClick={() => {
+                      conversationContext.setCurrentModel(model)
+                      handleClose()
+                    }}
+                    onClickLearnMore={onClickLearnMore}
+                    onSetAsDefault={() =>
+                      aiChatContext.setDefaultModelKey(model.key)
+                    }
+                    onTogglePin={
+                      // Automatic is always in the pinned list and cannot be
+                      // pinned/unpinned by the user.
+                      model.key === AUTOMATIC_MODEL_KEY
+                        ? undefined
+                        : () => {
+                            const persisted =
+                              aiChatContext.pinnedModelKeys ?? []
+                            if (persisted.length === 0) {
+                              // Pref is empty and the UI is using the
+                              // recommended-list seed — materialize that set
+                              // into the pref before/while applying this pin
+                              // change so other defaults aren't lost.
+                              // setModelPinned prepends, so walk the seed
+                              // reverse and pin the toggled model last so it
+                              // ends up first when pinning.
+                              const seedWithout = pinnedModelKeys.filter(
+                                (key) => key !== model.key,
+                              )
+                              for (
+                                let i = seedWithout.length - 1;
+                                i >= 0;
+                                i--
+                              ) {
+                                aiChatContext.setModelPinned(
+                                  seedWithout[i],
+                                  true,
+                                )
+                              }
+                              aiChatContext.setModelPinned(model.key, !isPinned)
+                              return
+                            }
+
+                            aiChatContext.setModelPinned(model.key, !isPinned)
+                          }
+                    }
+                  />
+                )
+              })
             )}
           </div>
-          {!showAllModels && <Icon name='carat-right' />}
-        </leo-menu-item>
+        </div>
       </div>
     </ButtonMenu>
   )

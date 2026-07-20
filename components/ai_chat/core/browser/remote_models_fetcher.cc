@@ -31,6 +31,9 @@ constexpr char kModelsKey[] = "models";
 constexpr char kKeyField[] = "key";
 constexpr char kDisplayNameField[] = "display_name";
 constexpr char kCapabilitiesField[] = "capabilities";
+// User-facing selector tags (Fast, Vision, etc.), distinct from conversation
+// capabilities above.
+constexpr char kModelCapabilitiesField[] = "model_capabilities";
 constexpr char kIsSuggestedModelField[] = "is_suggested_model";
 constexpr char kIsNearModelField[] = "is_near_model";
 constexpr char kOptionsField[] = "options";
@@ -111,6 +114,52 @@ std::optional<mojom::ConversationCapability> ParseCapability(
   }
   DVLOG(1) << "Unknown conversation capability: " << capability_str;
   return std::nullopt;
+}
+
+std::optional<mojom::ModelCapability> ParseModelCapability(
+    const std::string& capability_str) {
+  if (capability_str == "fast") {
+    return mojom::ModelCapability::FAST;
+  }
+  if (capability_str == "thinking") {
+    return mojom::ModelCapability::THINKING;
+  }
+  if (capability_str == "search") {
+    return mojom::ModelCapability::SEARCH;
+  }
+  if (capability_str == "vision") {
+    return mojom::ModelCapability::VISION;
+  }
+  if (capability_str == "tools") {
+    return mojom::ModelCapability::TOOLS;
+  }
+  if (capability_str == "audio") {
+    return mojom::ModelCapability::AUDIO;
+  }
+  if (capability_str == "video") {
+    return mojom::ModelCapability::VIDEO;
+  }
+  DVLOG(1) << "Unknown model capability: " << capability_str;
+  return std::nullopt;
+}
+
+std::vector<mojom::ModelCapability> ParseModelCapabilities(
+    const base::DictValue& model_dict) {
+  std::vector<mojom::ModelCapability> capabilities;
+  const base::ListValue* capabilities_list =
+      model_dict.FindList(kModelCapabilitiesField);
+  if (!capabilities_list) {
+    return capabilities;
+  }
+  for (const auto& capability_value : *capabilities_list) {
+    if (!capability_value.is_string()) {
+      continue;
+    }
+    if (auto capability = ParseModelCapability(capability_value.GetString())) {
+      capabilities.push_back(*capability);
+    }
+  }
+  return capabilities;
 }
 
 struct ParsedCapabilities {
@@ -210,6 +259,7 @@ mojom::ModelPtr ParseModel(const base::DictValue& model_dict) {
       model_dict.FindBool(kIsSuggestedModelField).value_or(false);
   model->is_near_model = model_dict.FindBool(kIsNearModelField).value_or(false);
   model->supported_capabilities = std::move(parsed_capabilities->capabilities);
+  model->capabilities = ParseModelCapabilities(model_dict);
 
   auto leo_opts = mojom::LeoModelOptions::New();
   leo_opts->name = *name;

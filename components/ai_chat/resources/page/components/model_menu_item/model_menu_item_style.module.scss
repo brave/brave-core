@@ -3,6 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
+.menuItemHitArea {
+  position: relative;
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: var(--leo-spacing-l);
+  min-width: 0;
+  width: 100%;
+  align-self: stretch;
+}
+
 .modelIcon {
   --leo-icon-size: 20px;
   --leo-icon-color: var(--leo-color-icon-default);
@@ -36,16 +47,26 @@
   flex-grow: 1;
   display: flex;
   flex-direction: column;
+  min-width: 0;
 }
 
 .modelName {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  min-width: 0;
+  flex: 1;
   font: var(--leo-font-default-regular);
   color: var(--leo-color-text-primary);
   gap: var(--leo-spacing-s);
+}
+
+.modelNameText {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
 }
 
 .modelSubtitle {
@@ -61,11 +82,117 @@
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  min-width: 0;
   gap: var(--leo-spacing-s);
 }
 
 .modelLabel {
   display: flex;
+}
+
+.labelAndActions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-s);
+  flex-shrink: 0;
+}
+
+// Absolutely overlays the trailing label (e.g. Premium) with a fade into the
+// row background so content softens under the more control.
+.optionsWrap {
+  // Default matches hover; selected (non-hover) uses interactive below.
+  --options-fade-color: var(--leo-color-container-highlight);
+
+  position: absolute;
+  inset-block: 0;
+  inset-inline-end: 0;
+  // Avoid z-index here: it would create a stacking context that traps the
+  // nested position:fixed Leo popup below later rows' hover overlays.
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  // Wide enough that the Premium badge meaningfully fades before the icon.
+  padding-inline-start: 40px;
+  pointer-events: none;
+  background: linear-gradient(
+    to right,
+    transparent 0%,
+    var(--options-fade-color) 55%,
+    var(--options-fade-color) 100%
+  );
+}
+
+// Match modelList's selected background when the row isn't hovered
+// (e.g. more-menu open on the current model).
+:global(leo-menu-item[aria-selected]:not(:hover)) .optionsWrap {
+  --options-fade-color: var(--leo-color-container-interactive);
+}
+
+:global([dir='rtl']) .optionsWrap {
+  background: linear-gradient(
+    to left,
+    transparent 0%,
+    var(--options-fade-color) 55%,
+    var(--options-fade-color) 100%
+  );
+}
+
+.optionsWrapOpen {
+  display: flex;
+}
+
+// Raise the whole model row while its more-menu is open so later rows'
+// hover gradients cannot paint over the open popup.
+.menuItemOptionsOpen {
+  position: relative;
+  z-index: 2;
+}
+
+@media (hover: hover) {
+  :global(leo-menu-item:hover) .optionsWrap,
+  :global(leo-menu-item:focus-within) .optionsWrap {
+    display: flex;
+  }
+}
+
+.optionsMenu {
+  line-height: 0;
+  pointer-events: auto;
+}
+
+.moreButton {
+  --leo-icon-size: 18px;
+  --leo-button-padding: 4px;
+  color: var(--leo-color-icon-default);
+  pointer-events: auto;
+}
+
+// Nala Dropdown list-item layout for Pin / Set as default.
+// See: https://nala.bravesoftware.com/?path=/story/components-dropdown--both-icons
+.leoDropdownItem {
+  --leo-icon-size: 18px;
+  --leo-icon-color: var(--leo-color-icon-default);
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-xl);
+  min-width: 180px;
+}
+
+.leoDropdownItemLabel {
+  flex: 1;
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+}
+
+.leoDropdownItemSelected {
+  --leo-icon-color: var(--leo-color-icon-interactive);
+  color: var(--leo-color-text-interactive);
+
+  .leoDropdownItemLabel {
+    color: var(--leo-color-text-interactive);
+  }
 }
 
 .learnMoreLink {

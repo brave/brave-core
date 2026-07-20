@@ -8,6 +8,7 @@
 #include <algorithm>
 #include <array>
 #include <cstdint>
+#include <initializer_list>
 #include <ios>
 #include <iterator>
 #include <memory>
@@ -58,6 +59,33 @@ namespace ai_chat {
 class AIChatCredentialManager;
 
 namespace {
+
+std::vector<mojom::ModelCapability> MakeCapabilities(
+    std::initializer_list<mojom::ModelCapability> capabilities) {
+  return std::vector<mojom::ModelCapability>(capabilities);
+}
+
+std::vector<mojom::ModelCapability> CapabilitiesFromFlags(
+    bool vision_support,
+    bool supports_tools,
+    bool audio_support = false,
+    bool video_support = false) {
+  std::vector<mojom::ModelCapability> capabilities;
+  if (vision_support) {
+    capabilities.push_back(mojom::ModelCapability::VISION);
+  }
+  if (supports_tools) {
+    capabilities.push_back(mojom::ModelCapability::TOOLS);
+  }
+  if (audio_support) {
+    capabilities.push_back(mojom::ModelCapability::AUDIO);
+  }
+  if (video_support) {
+    capabilities.push_back(mojom::ModelCapability::VIDEO);
+  }
+  return capabilities;
+}
+
 constexpr char kDefaultModelKey[] = "brave.ai_chat.default_model_key";
 constexpr char kCustomModelsList[] = "brave.ai_chat.custom_models";
 constexpr char kCustomModelItemLabelKey[] = "label";
@@ -123,6 +151,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
                             mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities({mojom::ModelCapability::SEARCH,
+                                              mojom::ModelCapability::VISION,
+                                              mojom::ModelCapability::TOOLS});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
       models.push_back(std::move(model));
@@ -148,6 +179,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::FAST, mojom::ModelCapability::SEARCH,
+           mojom::ModelCapability::VISION, mojom::ModelCapability::TOOLS});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -174,6 +208,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities({mojom::ModelCapability::SEARCH,
+                                              mojom::ModelCapability::VISION,
+                                              mojom::ModelCapability::TOOLS});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -201,6 +238,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities({mojom::ModelCapability::FAST});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -228,6 +266,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = true;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities({mojom::ModelCapability::FAST,
+                                              mojom::ModelCapability::SEARCH,
+                                              mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -256,6 +297,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::FAST, mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -284,6 +327,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::FAST, mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -312,6 +357,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::FAST, mojom::ModelCapability::THINKING});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -338,6 +385,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities =
+          MakeCapabilities({mojom::ModelCapability::THINKING});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -364,6 +413,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::SEARCH, mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -390,6 +441,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::SEARCH, mojom::ModelCapability::THINKING});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -416,6 +469,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities({mojom::ModelCapability::FAST,
+                                              mojom::ModelCapability::SEARCH,
+                                              mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -442,6 +498,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities =
+          MakeCapabilities({mojom::ModelCapability::THINKING});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -468,6 +526,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities =
+          MakeCapabilities({mojom::ModelCapability::THINKING});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -494,6 +554,9 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::THINKING, mojom::ModelCapability::SEARCH,
+           mojom::ModelCapability::VISION, mojom::ModelCapability::TOOLS});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -522,6 +585,8 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
           mojom::ConversationCapability::DEEP_RESEARCH};
       model->is_suggested_model = false;
       model->is_near_model = false;
+      model->capabilities = MakeCapabilities(
+          {mojom::ModelCapability::FAST, mojom::ModelCapability::VISION});
       model->options =
           mojom::ModelOptions::NewLeoModelOptions(std::move(options));
 
@@ -542,6 +607,7 @@ const std::vector<mojom::ModelPtr>& GetLeoModels() {
       model->supports_tools = false;
       model->is_suggested_model = true;
       model->is_near_model = true;
+      model->capabilities = {};
 
       if (features::kNEARModelsEncryption.Get()) {
         // GLM 5.1 (private inference / OHTTP)
@@ -1214,6 +1280,8 @@ const std::vector<mojom::ModelPtr> ModelService::GetCustomModels() {
     model->supports_tools =
         model_pref.FindBool(kCustomModelSupportsTools).value_or(false);
     model->supported_capabilities = {mojom::ConversationCapability::CHAT};
+    model->capabilities =
+        CapabilitiesFromFlags(model->vision_support, model->supports_tools);
     model->options = mojom::ModelOptions::NewCustomModelOptions(
         std::move(custom_model_opts));
 
