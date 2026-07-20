@@ -101,7 +101,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerCleanLinkFeatureDisabledBrowserTest,
   BraveAppController* ac = base::apple::ObjCCastStrict<BraveAppController>(
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -134,7 +134,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemVisible) {
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -162,7 +162,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, CopyLinkItemNotVisible) {
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* copy_item = [edit_submenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
@@ -195,7 +195,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
       [[NSApplication sharedApplication] delegate]);
   ASSERT_TRUE(ac);
 
-  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* edit_submenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   NSMenuItem* clean_link_menu_item =
       [edit_submenu itemWithTag:IDC_COPY_CLEAN_LINK];
 
@@ -348,7 +348,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest, TorMenuItemExists) {
   [controller setLastProfile:browser()->profile()];
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =
@@ -372,7 +372,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =
@@ -407,7 +407,7 @@ IN_PROC_BROWSER_TEST_F(BraveAppControllerBrowserTest,
 
   [controller mainMenuCreated];
 
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   ASSERT_TRUE(fileMenu);
 
   NSMenuItem* torMenuItem =
