@@ -18,17 +18,22 @@ class TabBarCell: UICollectionViewCell {
   private lazy var closeButton: UIButton = {
     let button = UIButton()
     button.addTarget(self, action: #selector(closeTab), for: .touchUpInside)
-    button.setImage(
-      UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template,
-      for: .normal
-    )
+    if UX.TabsBar.isPad {
+      let symbolConfiguration = UIImage.SymbolConfiguration(
+        pointSize: UX.TabsBar.closeButtonSymbolPointSize,
+        weight: .medium
+      )
+      button.setImage(
+        UIImage(systemName: "xmark.circle.fill", withConfiguration: symbolConfiguration),
+        for: .normal
+      )
+    } else {
+      button.setImage(
+        UIImage(named: "close_tab_bar", in: .module, compatibleWith: nil)!.template,
+        for: .normal
+      )
+    }
     button.tintColor = UIColor(braveSystemName: .textPrimary)
-    // The wider iPad control keeps the larger close glyph easy to tap while aligning it to the tab edge.
-    button.imageEdgeInsets.left = UX.TabsBar.closeButtonImageInset
-    button.imageView?.transform = CGAffineTransform(
-      scaleX: UX.TabsBar.closeButtonImageScale,
-      y: UX.TabsBar.closeButtonImageScale
-    )
     return button
   }()
 
