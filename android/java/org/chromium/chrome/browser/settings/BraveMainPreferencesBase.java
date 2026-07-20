@@ -27,7 +27,7 @@ import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.accessibility.BraveAccessibilitySettings;
-import org.chromium.chrome.browser.autofill.settings.HomeOfTransactionsFragment;
+import org.chromium.chrome.browser.autofill.settings.AutofillAndPasswordsFragment;
 import org.chromium.chrome.browser.autofill.settings.options.BraveAutofillOptionsSearchIndex;
 import org.chromium.chrome.browser.autofill.settings.options.BraveAutofillOptionsSearchIndex.SettingsRoutes;
 import org.chromium.chrome.browser.brave_leo.BraveLeoPrefUtils;
@@ -795,10 +795,10 @@ public abstract class BraveMainPreferencesBase extends BravePreferenceFragment
                     MainSettings.class.getName(),
                     MainSettings.PREF_AUTOFILL_AND_PASSWORDS,
                     MainSettings.PREF_AUTOFILL_OPTIONS,
-                    HomeOfTransactionsFragment.class.getName(),
-                    HomeOfTransactionsFragment.PREF_AUTOFILL_SETTINGS,
-                    HomeOfTransactionsFragment.EXTRA_REFERRER,
-                    HomeOfTransactionsFragment.AutofillSettingsReferrer.SETTINGS_MENU);
+                    AutofillAndPasswordsFragment.class.getName(),
+                    AutofillAndPasswordsFragment.PREF_AUTOFILL_SETTINGS,
+                    AutofillAndPasswordsFragment.EXTRA_REFERRER,
+                    AutofillAndPasswordsFragment.AutofillSettingsReferrer.SETTINGS_MENU);
 
     public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
             new ChromeBaseSearchIndexProvider(MainSettings.class.getName(), 0) {
