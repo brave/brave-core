@@ -172,7 +172,7 @@ void BraveRestoreProfileMenu() {
   // callback, or immediately if no dialog is needed.
   {
     NSMenu* mainMenu = [NSApp mainMenu];
-    NSMenuItem* profileMenu = [mainMenu itemWithTag:IDC_PROFILE_MAIN_MENU];
+    NSMenuItem* profileMenu = [mainMenu itemWithTag:kProfileMenuId];
     if (profileMenu) {
       _profileMenuIndex = [mainMenu indexOfItem:profileMenu];
       _profileMenuItem = profileMenu;
@@ -181,7 +181,7 @@ void BraveRestoreProfileMenu() {
   }
 #endif  // BUILDFLAG(IS_BRAVE_ORIGIN_BRANDED)
 
-  NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:IDC_EDIT_MENU] submenu];
+  NSMenu* editMenu = [[[NSApp mainMenu] itemWithTag:kEditMenuId] submenu];
   _copyMenuItem = [editMenu itemWithTag:IDC_CONTENT_CONTEXT_COPY];
   DCHECK(_copyMenuItem);
 
@@ -192,7 +192,7 @@ void BraveRestoreProfileMenu() {
 
 #if BUILDFLAG(ENABLE_TOR)
   // Find and set up the main menu Tor item
-  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:IDC_FILE_MENU] submenu];
+  NSMenu* fileMenu = [[[NSApp mainMenu] itemWithTag:kMacFileMenuId] submenu];
   _torMainMenuItem = [fileMenu itemWithTag:IDC_NEW_OFFTHERECORD_WINDOW_TOR];
   CHECK(_torMainMenuItem);
   [[_torMainMenuItem menu] setDelegate:self];
