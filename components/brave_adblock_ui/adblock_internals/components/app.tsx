@@ -23,6 +23,7 @@ const EngineSourceInfo = (props: { source_info: SourceInfo[] }) => {
       <table>
         <thead>
           <tr>
+            <th>Source ID</th>
             <th>Title</th>
             <th>Homepage</th>
             <th>Network filters</th>
@@ -33,12 +34,14 @@ const EngineSourceInfo = (props: { source_info: SourceInfo[] }) => {
         <tbody>
           {props.source_info.map((sourceInfo, index) => (
             <tr key={index}>
+              <td>{index}</td>
               <td>{sourceInfo.title}</td>
               <td>
                 {sourceInfo.homepage && (
                   <a
                     href={sourceInfo.homepage}
-                    target='_blank' rel='noopener noreferrer'
+                    target='_blank'
+                    rel='noopener noreferrer'
                   >
                     {sourceInfo.homepage}
                   </a>
@@ -56,6 +59,15 @@ const EngineSourceInfo = (props: { source_info: SourceInfo[] }) => {
 }
 
 const EngineInfo = (props: { engine: EngineDebugInfo; caption: string }) => {
+  const [networkFilterCount, cosmeticFilterCount] =
+    props.engine.source_info.reduce(
+      ([networkFilterCount, cosmeticFilterCount], sourceInfo) => [
+        networkFilterCount + sourceInfo.network_filter_count,
+        cosmeticFilterCount + sourceInfo.cosmetic_filter_count,
+      ],
+      [0, 0],
+    )
+
   return (
     <div>
       <h2>{props.caption}</h2>
@@ -63,6 +75,8 @@ const EngineInfo = (props: { engine: EngineDebugInfo; caption: string }) => {
         Flatbuffer size:{' '}
         {(props.engine.flatbuffer_size / 1024 / 1024).toFixed(2)} MB
       </div>
+      <div>Network filters: {networkFilterCount.toLocaleString()}</div>
+      <div>Cosmetic filters: {cosmeticFilterCount.toLocaleString()}</div>
       <div>Compiled regexes: {props.engine.compiled_regex_count}</div>
       <EngineSourceInfo source_info={props.engine.source_info} />
     </div>
@@ -127,7 +141,13 @@ export const App = () => {
               getDebugInfo()
             }}
           />
-          <label>Debug mode (<span id='debug-mode-warning'>WARNING: extra memory and CPU costs</span>)</label>
+          <label>
+            Debug mode (
+            <span id='debug-mode-warning'>
+              WARNING: extra memory and CPU costs
+            </span>
+            )
+          </label>
         </div>
         <div>
           <h2>Regex debug</h2>
