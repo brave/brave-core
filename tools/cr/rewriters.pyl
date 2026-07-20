@@ -111,6 +111,34 @@ inside:
                 "node": "virtual_specifier",
             },
         },
+
+        # The body (compound_statement) of the definition of `function_name`.
+        # The match is the whole `{ ... }` block of the function_definition
+        # whose declarator text is exactly `function_name` -- a qualified
+        # `Class::Method` for a member, or the bare name for a free function.
+        # The function_declarator is reached with `stopBy: end`, so
+        # return-type wrappers (pointer/reference declarators, a trailing return
+        # type) between it and the definition do not matter. Anchoring on the
+        # AST body -- rather than a regex from the signature to the first `{` --
+        # is immune to braces in the parameter list (a `= {}` default argument),
+        # a multi-line signature, or an earlier overload. Each overload sharing
+        # the name yields its own match.
+        "cxx.find_function_body": {
+            "template": """\
+kind: compound_statement
+inside:
+  kind: function_definition
+  has:
+    kind: function_declarator
+    stopBy: end
+    has:
+      field: declarator
+      regex: ^{function_name}$
+""",
+            "result": {
+                "node": "compound_statement",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -161,6 +189,24 @@ inside:
             },
             "result": {
                 "node": "virtual_specifier",
+            },
+        },
+
+        # The function body with `prologue` inserted as its first statement,
+        # right after the opening brace. The matcher lands on the whole
+        # compound_statement, so anchoring the replace on `^{` inserts after the
+        # brace and leaves the rest of the body untouched. The caller passes
+        # `prologue` already indented to the body's first-statement level and
+        # with backslashes escaped for the `re.sub` replacement.
+        "cxx.preempt_function_impl": {
+            "matcher": "cxx.find_function_body",
+            "inputs": ["function_name", "prologue"],
+            "replace": {
+                "re_pattern": "^\\{",
+                "replace": "{{\\n{prologue}",
+            },
+            "result": {
+                "node": "compound_statement",
             },
         },
     },
