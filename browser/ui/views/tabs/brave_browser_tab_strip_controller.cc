@@ -177,7 +177,7 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
   }
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
-    brave::CloseDuplicateTabs(browser());
+    brave::CloseDuplicatesOfActiveTab(browser());
     return;
   }
 
@@ -227,7 +227,7 @@ bool BraveBrowserTabStripController::IsContextMenuCommandEnabled(
   }
 
   if (command_id == TabStripModel::CommandCloseDuplicateTabs) {
-    return brave::HasDuplicateTabs(browser());
+    return brave::HasDuplicatesOfActiveTab(browser());
   }
 
   if (command_id == TabStripModel::CommandShowVerticalTabs) {
