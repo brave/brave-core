@@ -4,7 +4,7 @@
 
 #include "Base.xcconfig"
 
-MOZ_BUNDLE_DISPLAY_NAME = Brave ($(USER))
+MOZ_BUNDLE_DISPLAY_NAME = BR0WS3R
 
 BRAVE_URL_SCHEME = brave-debug
 
