@@ -50,17 +50,14 @@ def maybe_keep_upstream_version(override_in_folder, out_folder, override_file):
 
 def run_mangler(out_folder, mangler_file, preprocess_file):
     """Runs the mangler on the given file"""
-    tsx = brave_chromium_utils.wspath('//brave/node_modules/tsx/dist/cli.mjs')
-    ts_config = brave_chromium_utils.wspath("//brave/tsconfig-mangle.json")
     lit_mangler = brave_chromium_utils.wspath(
         "//brave/tools/chromium_src/lit_mangler/lit_mangler_cli.ts")
 
     # Note: We read from and write to the preprocess file - this way any
     # preprocessing that upstream does will be mangled.
     node.RunNode([
-        tsx, '--tsconfig', ts_config, lit_mangler, 'mangle', '--typecheck',
-        '-m', mangler_file, '-i', preprocess_file, '-o', preprocess_file, '-g',
-        out_folder
+        lit_mangler, 'mangle', '--typecheck', '-m', mangler_file, '-i',
+        preprocess_file, '-o', preprocess_file, '-g', out_folder
     ])
 
 

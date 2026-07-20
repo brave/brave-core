@@ -3,15 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { program } from 'commander'
-import { load, write } from './lit_mangler'
+import { program } from '@commander-js/extra-typings'
+import { load, write } from './lit_mangler.ts'
 import childProcess from 'child_process'
 import path from 'path'
 import fs from 'fs'
+import { registerHooks } from 'module'
+import { pathToFileURL } from 'url'
 import ts from 'typescript'
 
 const baseDir = path.join(import.meta.dirname, '../../../')
-const tsConfigPath = path.join(baseDir, 'tsconfig-mangle.json')
+const tsConfigPath = path.join(import.meta.dirname, 'tsconfig.json')
 
 /**
  * Unfortunately tsc doesn't support passing in a path map for a single file
@@ -29,6 +31,9 @@ const getTsConfigForFiles = (genDir: string, files: string[]) => {
     console.error('Error reading tsconfig:', error)
     process.exit(1)
   }
+
+  // Extend the tsconfig to include the build tsconfig.json.
+  tsConfig.extends = path.join(baseDir, 'build', 'tsconfig.json')
 
   // Override the include path to only include the lit_mangler and the file
   // we want to check
@@ -54,7 +59,8 @@ const getTsConfigForFiles = (genDir: string, files: string[]) => {
 }
 
 const runTypecheck = (genDir: string, files: string[]) => {
-  const result = childProcess.spawnSync('tsc', [
+  const result = childProcess.spawnSync(process.execPath, [
+    path.join(baseDir, 'node_modules', 'typescript', 'bin', 'tsc'),
     '-p',
     getTsConfigForFiles(genDir, files),
   ])
@@ -71,38 +77,44 @@ const runTypecheck = (genDir: string, files: string[]) => {
 
 program
   .command('mangle')
-  .option(
+  .requiredOption(
     '-m, --mangler <file>',
     'The file with containing the mangler instructions',
   )
-  .option('-i, --input <file>', 'The file to mangle')
-  .option('-o, --output <file>', 'Where to output the mangled file')
-  .option('-g, --gen-dir <folder>', 'The folder for generated files')
+  .requiredOption('-i, --input <file>', 'The file to mangle')
+  .requiredOption('-o, --output <file>', 'Where to output the mangled file')
+  .requiredOption('-g, --gen-dir <folder>', 'The folder for generated files')
   .option('-t, --typecheck', 'Run typechecking before mangling')
-  .action(
-    async ({
-      mangler,
-      input,
-      output,
-      typecheck,
-      genDir,
-    }: {
-      mangler: string
-      input: string
-      output: string
-      typecheck: boolean
-      genDir: string
-    }) => {
-      load(input)
+  .action(async (options) => {
+    load(options.input)
 
-      if (typecheck) {
-        runTypecheck(genDir, [mangler])
-      }
+    // Typecheck the mangler file.
+    if (options.typecheck) {
+      runTypecheck(options.genDir, [options.mangler])
+    }
 
-      // Note: Windows requires the file:// scheme for absolute import paths
-      await import(`file://${mangler}`)
-      write(output)
-    },
-  )
+    // Register import hook so `lit_mangler` can be imported by the mangler.
+    const litManglerUrl = pathToFileURL(
+      path.join(import.meta.dirname, 'lit_mangler.ts'),
+    ).href
+    const hooks = registerHooks({
+      resolve(specifier, context, nextResolve) {
+        if (specifier === 'lit_mangler') {
+          return { shortCircuit: true, url: litManglerUrl }
+        }
+        return nextResolve(specifier, context)
+      },
+    })
 
-program.parse(process.argv)
+    // Run the mangler.
+    try {
+      await import(pathToFileURL(options.mangler).href)
+    } finally {
+      hooks.deregister()
+    }
+
+    // Write the mangled file.
+    write(options.output)
+  })
+
+program.parseAsync()

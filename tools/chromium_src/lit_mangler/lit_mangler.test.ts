@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { utilsForTest, HTMLTemplateTags } from './lit_mangler'
+import { utilsForTest, type HTMLTemplateTags } from './lit_mangler.ts'
 import ts from 'typescript'
 
 const loadTextForTesting = (text: string) => {

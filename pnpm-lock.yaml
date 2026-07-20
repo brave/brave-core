@@ -459,9 +459,6 @@ importers:
       ts-loader:
         specifier: 9.5.2
         version: 9.5.2(typescript@5.9.3)(webpack@5.105.0)
-      tsx:
-        specifier: 4.19.2
-        version: 4.19.2
       typesafe-actions:
         specifier: 2.2.0
         version: 2.2.0
@@ -16280,6 +16277,7 @@ snapshots:
       get-tsconfig: 4.10.0
     optionalDependencies:
       fsevents: 2.3.3
+    optional: true
 
   tsyringe@4.10.0:
     dependencies:
