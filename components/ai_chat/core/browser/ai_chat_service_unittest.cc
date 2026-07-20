@@ -31,8 +31,10 @@
 #include "base/test/bind.h"
 #include "base/test/gmock_callback_support.h"
 #include "base/test/mock_callback.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
+#include "base/test/test_future.h"
 #include "base/test/values_test_util.h"
 #include "base/time/time.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_credential_manager.h"
@@ -42,6 +44,7 @@
 #include "brave/components/ai_chat/core/browser/engine/mock_engine_consumer.h"
 #include "brave/components/ai_chat/core/browser/mock_conversation_handler_observer.h"
 #include "brave/components/ai_chat/core/browser/model_service.h"
+#include "brave/components/ai_chat/core/browser/sync/ai_chat_sync_backend.h"
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/browser/test/mock_associated_content.h"
 #include "brave/components/ai_chat/core/browser/test_utils.h"
@@ -367,6 +370,41 @@ class AIChatServiceUnitTest : public testing::Test,
   void WaitForConversationUnload() {
     task_environment_.AdvanceClock(base::Seconds(5));
     task_environment_.RunUntilIdle();
+  }
+
+  // Waits for asynchronous storage initialization to create the database, then
+  // flushes the database sequence so the sync bridge (re)install that
+  // OnOsCryptAsyncReady() posts behind it has run. Waits for that specific
+  // work rather than for the whole system to go idle.
+  void WaitForSyncBridgeReady() {
+    ASSERT_TRUE(base::test::RunUntil(
+        [&] { return !ai_chat_service_->ai_chat_db_.is_null(); }));
+    base::RunLoop run_loop;
+    ai_chat_service_->db_task_runner_->PostTaskAndReply(
+        FROM_HERE, base::DoNothing(), run_loop.QuitClosure());
+    run_loop.Run();
+  }
+
+  // Raw pointer to the current sync backend (test-only accessor for the
+  // private member, since TEST_P bodies are not friends of AIChatService).
+  AIChatSyncBackend* SyncBackendPtr() {
+    return ai_chat_service_->sync_backend_.get();
+  }
+
+  // Returns whether the sync backend currently resolves a non-null controller
+  // delegate (i.e. the bridge is installed). Evaluated on the database
+  // sequence, where the backend is owned.
+  bool SyncControllerDelegateResolves() {
+    base::test::TestFuture<bool> future;
+    ai_chat_service_->db_task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(
+            [](scoped_refptr<AIChatSyncBackend> backend) {
+              return static_cast<bool>(backend->GetControllerDelegate());
+            },
+            ai_chat_service_->sync_backend_),
+        future.GetCallback());
+    return future.Take();
   }
 
   bool IsAIChatHistoryEnabled() { return GetParam(); }
@@ -882,6 +920,39 @@ TEST_P(AIChatServiceUnitTest, MaybeInitStorage_DisableStoragePref) {
   prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
   // Conversations are no longer in persistant storage
   ExpectConversationsSize(FROM_HERE, 0);
+}
+
+// With AI Chat sync enabled, toggling the storage pref off then on must keep
+// the sync backend usable. The backend (and the delegate the sync engine
+// holds) is long-lived and never swapped; disabling storage only detaches the
+// database from the bridge, and re-enabling re-attaches a fresh one. The
+// controller delegate must keep resolving throughout, so the data type does
+// not silently stop syncing after a toggle.
+TEST_P(AIChatServiceUnitTest, SyncBackendSurvivesStorageToggle) {
+  base::test::ScopedFeatureList sync_features;
+  sync_features.InitWithFeatures(
+      {features::kAIChatHistory, features::kBraveSyncAIChat}, {});
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  // Rebuild the service so it picks up the sync feature and installs a bridge
+  // on the database sequence.
+  ResetService();
+  WaitForSyncBridgeReady();
+
+  AIChatSyncBackend* backend_before = SyncBackendPtr();
+  ASSERT_TRUE(backend_before);
+  EXPECT_TRUE(SyncControllerDelegateResolves());
+
+  // Toggle storage off then on.
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, false);
+  prefs_.SetBoolean(prefs::kBraveChatStorageEnabled, true);
+  WaitForSyncBridgeReady();
+
+  // The backend is the same object (not rebuilt), and its delegate still
+  // resolves — so the proxy delegate the sync engine holds is still valid.
+  EXPECT_EQ(SyncBackendPtr(), backend_before);
+  EXPECT_TRUE(SyncControllerDelegateResolves());
+
+  EXPECT_TRUE(ai_chat_service_->CreateConversation());
 }
 
 TEST_P(AIChatServiceUnitTest, OpenConversationWithStagedEntries_NoPermission) {
@@ -1408,11 +1479,16 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
     return;
   }
 
-  // Create a mock database
-  auto mock_ptr = std::make_unique<NiceMock<MockAIChatDatabase>>();
-  auto* mock_db_ptr = mock_ptr.get();
-  auto mock_db = base::SequenceBound<std::unique_ptr<AIChatDatabase>>(
-      task_environment_.GetMainThreadTaskRunner(), std::move(mock_ptr));
+  // Create a mock database. It is bound as its concrete type so the mock is
+  // constructed in place, then upcast-moved into the AIChatDatabase-typed
+  // SetDatabaseForTesting() below. Grab a pointer to it off the sequence to
+  // set expectations on.
+  auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
+      task_environment_.GetMainThreadTaskRunner());
+  MockAIChatDatabase* mock_db_ptr = nullptr;
+  mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
+      [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
+  ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));
 
   // Set up expectations - no database calls should be made
   EXPECT_CALL(*mock_db_ptr, AddConversation(_, _, _)).Times(0);

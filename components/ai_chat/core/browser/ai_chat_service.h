@@ -46,6 +46,10 @@
 #include "mojo/public/cpp/bindings/remote_set.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
+namespace syncer {
+class DataTypeControllerDelegate;
+}  // namespace syncer
+
 namespace os_crypt_async {
 class Encryptor;
 class OSCryptAsync;
@@ -58,6 +62,7 @@ class SharedURLLoaderFactory;
 
 namespace ai_chat {
 
+class AIChatSyncBackend;
 class ModelService;
 class TabTrackerService;
 class AIChatMetrics;
@@ -102,6 +107,12 @@ class AIChatService : public KeyedService,
 
   // KeyedService
   void Shutdown() override;
+
+  // Creates a sync controller delegate for the AI Chat data type. Uses
+  // ProxyDataTypeControllerDelegate to forward from UI thread to the
+  // background sequence where the bridge lives.
+  std::unique_ptr<syncer::DataTypeControllerDelegate>
+  CreateSyncControllerDelegate();
 
   // ConversationHandler::Observer
   void OnRequestInProgressChanged(ConversationHandler* handler,
@@ -262,8 +273,7 @@ class AIChatService : public KeyedService,
     tab_tracker_service_ = tab_tracker_service;
   }
 
-  void SetDatabaseForTesting(
-      base::SequenceBound<std::unique_ptr<AIChatDatabase>> db) {
+  void SetDatabaseForTesting(base::SequenceBound<AIChatDatabase> db) {
     ai_chat_db_ = std::move(db);
   }
 
@@ -385,7 +395,7 @@ class AIChatService : public KeyedService,
   base::FilePath profile_path_;
 
   // Storage for conversations
-  base::SequenceBound<std::unique_ptr<AIChatDatabase>> ai_chat_db_;
+  base::SequenceBound<AIChatDatabase> ai_chat_db_;
 
   // nullopt if haven't started fetching, empty if done fetching
   std::optional<std::vector<ConversationMapCallback>>
@@ -435,6 +445,24 @@ class AIChatService : public KeyedService,
   // Whether conversations can utilize content agent capabilities. For now,
   // this is profile-specific.
   bool is_content_agent_allowed_ = false;
+
+  // Background task runner for the database and sync bridge. Created
+  // synchronously the first time MaybeInitStorage() succeeds so that a
+  // ProxyDataTypeControllerDelegate can be handed out even before the bridge
+  // has finished initializing on it.
+  scoped_refptr<base::SequencedTaskRunner> db_task_runner_;
+
+  // True while an os_crypt_async GetInstance() call is in flight, to
+  // prevent MaybeInitStorage() from starting a second one (which would
+  // race and cause a double bridge install when the second callback
+  // fires).
+  bool os_crypt_init_pending_ = false;
+
+  // Thread-safe, sequence-affine holder for the sync bridge (see
+  // AIChatSyncBackend). Constructed eagerly so CreateSyncControllerDelegate()
+  // can hand out a proxy delegate before the bridge itself exists; the bridge
+  // is owned, accessed, and destroyed only on |db_task_runner_|.
+  scoped_refptr<AIChatSyncBackend> sync_backend_;
 
   base::WeakPtrFactory<AIChatService> weak_ptr_factory_{this};
 };
