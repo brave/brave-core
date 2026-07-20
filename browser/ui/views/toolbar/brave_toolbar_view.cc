@@ -17,6 +17,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/app/vector_icons/vector_icons.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/views/frame/brave_non_client_hit_test_helper.h"
 #include "brave/browser/ui/views/frame/focus_mode_top_overlay.h"
@@ -300,6 +301,11 @@ void BraveToolbarView::Init() {
         brave_tabs::kVerticalTabsOnRight, profile->GetPrefs(),
         base::BindRepeating(&BraveToolbarView::UpdateVerticalTabTogglePlacement,
                             base::Unretained(this)));
+    show_vertical_tab_toggle_button_.Init(
+        brave_tabs::kVerticalTabsShowToggleButton, profile->GetPrefs(),
+        base::BindRepeating(
+            &BraveToolbarView::UpdateVerticalTabToggleVisibility,
+            base::Unretained(this)));
 #if BUILDFLAG(IS_LINUX)
     use_custom_chrome_frame_.Init(
         prefs::kUseCustomChromeFrame, profile->GetOriginalProfile()->GetPrefs(),
@@ -706,8 +712,8 @@ void BraveToolbarView::UpdateVerticalTabToggleVisibility() {
     return;
   }
 
-  vertical_tab_toggle_->SetVisible(
-      tabs::utils::ShouldShowBraveVerticalTabs(browser_));
+  vertical_tab_toggle_->SetVisible(VerticalTabController::FromBrowser(browser_)
+                                       ->ShouldShowVerticalTabToggleButton());
 }
 
 void BraveToolbarView::UpdateVerticalTabTogglePlacement() {

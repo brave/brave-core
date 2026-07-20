@@ -166,6 +166,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnExpandedStatePerWindowPrefChanged();
   void OnExpandedWidthPrefChanged();
   void OnHideComopletelyWhenCollapsedPrefChanged();
+  void OnShowToggleButtonPrefChanged();
 
   bool IsFloatingVerticalTabsEnabled() const;
   bool IsFloatingEnabledForBrowserFullscreen() const;
@@ -231,6 +232,7 @@ class BraveVerticalTabStripRegionView : public views::View,
   BooleanPrefMember expanded_state_per_window_pref_;
   BooleanPrefMember floating_mode_pref_;
   BooleanPrefMember hide_completely_when_collapsed_pref_;
+  BooleanPrefMember show_toggle_button_pref_;
 
   IntegerPrefMember expanded_width_pref_;
   int expanded_width_ = 220;

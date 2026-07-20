@@ -40,6 +40,7 @@ base::span<const base::cstring_view> GetBravePersistentPrefNames() {
       brave_tabs::kVerticalTabsEnabled,
       brave_tabs::kVerticalTabsCollapsed,
       brave_tabs::kVerticalTabsFloatingEnabled,
+      brave_tabs::kVerticalTabsShowToggleButton,
       brave_tabs::kVerticalTabsShowTitleOnWindow,
       brave_tabs::kVerticalTabsOnRight,
       brave_tabs::kVerticalTabsShowScrollbar,
