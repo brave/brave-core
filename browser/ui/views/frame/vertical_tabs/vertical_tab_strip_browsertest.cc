@@ -2188,6 +2188,14 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripFocusModeTest,
   focus_mode_controller()->SetEnabled(false);
   EXPECT_EQ(State::kExpanded, region_view->state());
   EXPECT_TRUE(region_view->GetVisible());
+
+  // Enabling vertical tabs when Focus Mode is already enabled should also hide
+  // the tabstrip.
+  ToggleVerticalTabStrip();
+  focus_mode_controller()->SetEnabled(true);
+  ToggleVerticalTabStrip();
+  EXPECT_EQ(State::kCollapsed, region_view->state());
+  EXPECT_FALSE(region_view->GetVisible());
 }
 
 // The state saved when entering floating mode is round-tripped: a strip that

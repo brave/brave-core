@@ -708,6 +708,7 @@ void BraveVerticalTabStripRegionView::Layout(PassKey) {
 }
 
 void BraveVerticalTabStripRegionView::OnShowVerticalTabsPrefChanged() {
+  UpdateFloatingStateForBrowserMode();
   UpdateLayout();
 
   if (!VerticalTabController::FromBrowser(browser_)
