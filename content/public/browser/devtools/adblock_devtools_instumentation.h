@@ -6,6 +6,7 @@
 #ifndef BRAVE_CONTENT_PUBLIC_BROWSER_DEVTOOLS_ADBLOCK_DEVTOOLS_INSTUMENTATION_H_
 #define BRAVE_CONTENT_PUBLIC_BROWSER_DEVTOOLS_ADBLOCK_DEVTOOLS_INSTUMENTATION_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 
@@ -19,6 +20,19 @@ class NavigationHandle;
 }
 
 namespace content::devtools_instrumentation {
+
+// Identifies where a matched filter/exception rule came from, on a
+// best-effort basis. Only populated when the adblock engine was built in
+// debug mode; otherwise absent even when a rule matched.
+struct CONTENT_EXPORT AdblockFilterRuleInfo {
+  // String representation of the original filter rule. May be a
+  // "best effort" representation if multiple filters were fused together.
+  std::string raw_line;
+  // Zero-based index of the filter list source the rule came from.
+  uint32_t source_index = 0;
+  // Zero-indexed line number of the filter within its source list.
+  uint32_t line_number = 0;
+};
 
 struct CONTENT_EXPORT AdblockInfo {
   AdblockInfo();
@@ -42,6 +56,8 @@ struct CONTENT_EXPORT AdblockInfo {
   bool did_match_exception = false;
   bool has_mock_data = false;
   std::optional<std::string> rewritten_url;
+  std::optional<AdblockFilterRuleInfo> filter;
+  std::optional<AdblockFilterRuleInfo> exception;
 };
 
 CONTENT_EXPORT void SendAdblockInfo(

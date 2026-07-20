@@ -34,7 +34,11 @@ export class RequestAdblockView extends LegacyWrapper.LegacyWrapper
         render(
           html` ${Object.entries(adblockInfo ? adblockInfo : {}).map(
             ([key, value]) => {
-              return this.#renderRow(key, `${value}`)
+              const displayValue =
+                value && typeof value === 'object'
+                  ? JSON.stringify(value)
+                  : `${value}`
+              return this.#renderRow(key, displayValue)
             }
           )}`,
           this.#shadow,
