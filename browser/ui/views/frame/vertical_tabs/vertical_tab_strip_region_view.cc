@@ -788,6 +788,12 @@ void BraveVerticalTabStripRegionView::OnMouseEntered() {
   ScheduleFloatingModeTimer();
 }
 
+void BraveVerticalTabStripRegionView::HandleMouseEvent(
+    const gfx::PointF& point_in_screen) {
+  ShowVerticalTabStripOnMouseOver(point_in_screen);
+  CollapseVerticalTabStripOnMouseOut(point_in_screen);
+}
+
 void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (!IsFloatingVerticalTabsEnabled()) {
@@ -815,6 +821,20 @@ void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
     OnMouseEntered();
     return;
   }
+}
+
+void BraveVerticalTabStripRegionView::CollapseVerticalTabStripOnMouseOut(
+    const gfx::PointF& point_in_screen) {
+  if (state_ != State::kFloating) {
+    return;
+  }
+
+  if (gfx::RectF(GetBoundsInScreen()).Contains(point_in_screen)) {
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  ScheduleCollapseTimer();
 }
 
 void BraveVerticalTabStripRegionView::OnMousePressedInTree() {
