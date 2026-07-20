@@ -50,9 +50,8 @@ class ParsedNpmArgs:
     show_version: bool
 
 
-def main(argv: Optional[Sequence[str]] = None) -> int:
-    if argv is None:
-        argv = sys.argv[1:]
+def main() -> int:
+    argv = sys.argv[1:]
 
     parsed = _parse_npm_argv(argv)
     project_dir = resolve_project_dir(parsed.prefix)
