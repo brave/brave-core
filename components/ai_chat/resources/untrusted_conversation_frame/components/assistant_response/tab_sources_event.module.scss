@@ -1,0 +1,62 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+.tabSources {
+  margin-top: var(--leo-spacing-m);
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--leo-spacing-s);
+  }
+
+  li button {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-m);
+    width: 100%;
+    padding: var(--leo-spacing-m);
+    border: 1px solid var(--leo-color-divider-subtle);
+    border-radius: var(--leo-radius-m);
+    background: transparent;
+    cursor: pointer;
+    text-align: left;
+    color: inherit;
+
+    &:hover {
+      background: var(--leo-color-container-highlight);
+    }
+  }
+}
+
+.favicon {
+  width: 16px;
+  height: 16px;
+  flex-shrink: 0;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xs);
+  min-width: 0;
+  flex: 1;
+}
+
+.title {
+  font: var(--leo-font-default-regular);
+  color: var(--leo-color-text-primary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.host {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-secondary);
+}

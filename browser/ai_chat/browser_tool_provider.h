@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/browser/tools/tool_provider.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 
 class Profile;
 
@@ -25,6 +26,7 @@ namespace ai_chat {
 class CodeExecutionTool;
 class HistorySearchTool;
 class TabManagementTool;
+class TabSemanticSearchTool;
 
 // Implementation of ToolProvider that provides browser-specific
 // tools for conversations.
@@ -52,6 +54,9 @@ class BrowserToolProvider : public ToolProvider {
   std::unique_ptr<HistorySearchTool> history_search_tool_;
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   std::unique_ptr<TabManagementTool> tab_management_tool_;
+#endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  std::unique_ptr<TabSemanticSearchTool> tab_semantic_search_tool_;
 #endif
   raw_ptr<Profile> profile_ = nullptr;
 };

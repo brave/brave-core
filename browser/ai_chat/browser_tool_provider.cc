@@ -16,12 +16,17 @@
 #include "brave/components/ai_chat/core/browser/tools/tool.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/local_ai/buildflags/buildflags.h"
 #include "chrome/browser/history_embeddings/history_embeddings_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/browser_context.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
 #include "brave/browser/ai_chat/tools/tab_management_tool.h"
+#endif
+
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+#include "brave/browser/ai_chat/tools/tab_semantic_search_tool.h"
 #endif
 
 namespace ai_chat {
@@ -46,6 +51,11 @@ std::vector<base::WeakPtr<Tool>> BrowserToolProvider::GetTools() {
     tool_ptrs.push_back(tab_management_tool_->GetWeakPtr());
   }
 #endif
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+  if (tab_semantic_search_tool_) {
+    tool_ptrs.push_back(tab_semantic_search_tool_->GetWeakPtr());
+  }
+#endif
 
   return tool_ptrs;
 }
@@ -60,9 +70,13 @@ void BrowserToolProvider::CreateTools(
   if (features::IsCodeExecutionToolEnabled()) {
     code_execution_tool_ = std::make_unique<CodeExecutionTool>(browser_context);
   }
-  if (history_embeddings::IsHistoryEmbeddingsEnabledForProfile(
-          Profile::FromBrowserContext(browser_context))) {
+  if (profile_ &&
+      history_embeddings::IsHistoryEmbeddingsEnabledForProfile(profile_)) {
     history_search_tool_ = std::make_unique<HistorySearchTool>(browser_context);
+#if BUILDFLAG(ENABLE_LOCAL_AI)
+    tab_semantic_search_tool_ =
+        std::make_unique<TabSemanticSearchTool>(profile_);
+#endif
   }
 #if BUILDFLAG(ENABLE_AI_CHAT_TAB_MANAGEMENT_TOOL)
   if (base::FeatureList::IsEnabled(features::kTabManagementTool)) {

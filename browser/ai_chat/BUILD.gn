@@ -67,12 +67,14 @@ static_library("ai_chat") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/ai_chat/core/common/mojom",
     "//brave/components/constants",
+    "//brave/components/local_ai/buildflags",
     "//brave/components/resources:static_resources_grit",
     "//brave/components/resources:strings_grit",
     "//brave/components/script_injector/common/mojom",
     "//brave/net/base:utils",
     "//chrome/browser:browser_process",
     "//chrome/browser/actor",
+    "//chrome/browser/history",
     "//chrome/browser/history_embeddings",
     "//chrome/browser/profiles:profile",
     "//chrome/browser/ui/tabs:tabs_public",
@@ -88,6 +90,16 @@ static_library("ai_chat") {
     "//services/network/public/cpp",
     "//third_party/blink/public/common",
   ]
+
+  # TabSemanticSearchTool ranks the user's open tabs with on-device history
+  # embeddings; it (and open_tab_search) is desktop only.
+  if (enable_local_ai) {
+    sources += [
+      "tools/tab_semantic_search_tool.cc",
+      "tools/tab_semantic_search_tool.h",
+    ]
+    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+  }
 
   if (is_android) {
     deps += [ "//brave/build/android:jni_headers" ]
@@ -304,6 +316,11 @@ source_set("unit_tests") {
     "//url",
   ]
 
+  if (enable_local_ai) {
+    sources += [ "tools/tab_semantic_search_tool_unittest.cc" ]
+    deps += [ "//brave/browser/history_embeddings:open_tab_search" ]
+  }
+
   if (enable_ai_chat_tab_management_tool) {
     sources += [ "tools/tab_management_tool_unittest.cc" ]
     deps += [ "//brave/browser/ai_chat:ai_chat_tab_management_tool_impl" ]
@@ -419,8 +436,14 @@ source_set("browser_tests") {
     ]
 
     if (enable_local_ai) {
-      sources += [ "tools/history_search_tool_browsertest.cc" ]
-      deps += [ "//brave/components/local_ai/core" ]
+      sources += [
+        "tools/history_search_tool_browsertest.cc",
+        "tools/tab_semantic_search_tool_browsertest.cc",
+      ]
+      deps += [
+        "//brave/components/local_ai/core",
+        "//chrome/browser/ui/tabs:tabs_public",
+      ]
     }
 
     if (enable_ai_chat_tab_management_tool) {

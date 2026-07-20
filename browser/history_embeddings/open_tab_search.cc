@@ -14,6 +14,7 @@
 #include "base/containers/map_util.h"
 #include "base/containers/to_vector.h"
 #include "base/functional/bind.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/cancelable_task_tracker.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -30,12 +31,6 @@
 namespace history_embeddings {
 
 namespace {
-
-// Minimal descriptor of an open tab collected by `SnapshotOpenTabs`.
-struct OpenTabInfo {
-  int32_t tab_id = 0;
-  GURL url;
-};
 
 // Same predicate as `TabSearchPageHandler_ChromiumImpl::ShouldTrackBrowser`.
 // Uses `BrowserWindowInterface*` rather than `Browser*` because
@@ -75,33 +70,40 @@ std::vector<OpenTabInfo> SnapshotOpenTabs(Profile* profile) {
           if (!url.SchemeIsHTTPOrHTTPS()) {
             continue;
           }
-          tabs.push_back({tab->GetHandle().raw_value(), std::move(url)});
+          std::string title = base::UTF16ToUTF8(contents->GetTitle());
+          if (title.empty()) {
+            title = url.host();
+          }
+          tabs.push_back(
+              {tab->GetHandle().raw_value(), std::move(title), std::move(url)});
         }
         return true;
       });
   return tabs;
 }
 
-// Emits the ranked tab_ids by joining the URLID→tab_id index against the
-// scored URL rows.
-void DispatchTabIdsForScoredUrls(
-    RankedTabIdsCallback& callback,
-    const base::flat_map<history::URLID, int32_t>& tab_id_by_url_id,
+// Emits the matched tabs by joining the URLID→tabs index against the scored
+// URL rows. Multiple open tabs may share a URL (and therefore a URLID), so
+// each ranked row can produce more than one tab.
+void DispatchRankedTabs(
+    RankedOpenTabsCallback& callback,
+    const base::flat_map<history::URLID, std::vector<OpenTabInfo>>&
+        tabs_by_url_id,
     SearchResult result) {
-  std::vector<int32_t> tab_ids;
+  std::vector<OpenTabInfo> ranked;
   for (const auto& row : result.scored_url_rows) {
-    if (auto* tab_id =
-            base::FindOrNull(tab_id_by_url_id, row.scored_url.url_id)) {
-      tab_ids.push_back(*tab_id);
+    if (auto* matched =
+            base::FindOrNull(tabs_by_url_id, row.scored_url.url_id)) {
+      ranked.insert(ranked.end(), matched->begin(), matched->end());
     }
   }
-  std::move(callback).Run(std::move(tab_ids));
+  std::move(callback).Run(std::move(ranked));
 }
 
 void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
                       std::string query,
                       HistoryEmbeddingsSearch* embeddings_search,
-                      RankedTabIdsCallback callback,
+                      RankedOpenTabsCallback callback,
                       std::optional<std::vector<history::URLID>> url_ids) {
   // HistoryService returned no result (e.g. shutdown / cancellation).
   if (!url_ids) {
@@ -110,14 +112,19 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
   }
   CHECK_EQ(tabs.size(), url_ids->size());
   std::vector<history::URLID> url_id_filter;
-  base::flat_map<history::URLID, int32_t> tab_id_by_url_id;
+  base::flat_map<history::URLID, std::vector<OpenTabInfo>> tabs_by_url_id;
   url_id_filter.reserve(url_ids->size());
   for (size_t i = 0; i < url_ids->size(); ++i) {
     if ((*url_ids)[i] == 0) {
       continue;
     }
-    url_id_filter.push_back((*url_ids)[i]);
-    tab_id_by_url_id.emplace((*url_ids)[i], tabs[i].tab_id);
+    // Only add each URLID once to the filter; duplicate ids in the SQL
+    // `IN (?, ?, ...)` list are harmless but wasteful.
+    auto& matched = tabs_by_url_id[(*url_ids)[i]];
+    if (matched.empty()) {
+      url_id_filter.push_back((*url_ids)[i]);
+    }
+    matched.push_back(std::move(tabs[i]));
   }
   // None of the open tabs have a corresponding URLID in history yet, so the
   // embeddings search would have nothing to score against.
@@ -130,9 +137,9 @@ void OnUrlIdsResolved(std::vector<OpenTabInfo> tabs,
       /*previous_search_result=*/nullptr, query,
       /*time_range_start=*/std::nullopt, count,
       /*skip_answering=*/true, std::move(url_id_filter),
-      base::BindRepeating(&DispatchTabIdsForScoredUrls,
+      base::BindRepeating(&DispatchRankedTabs,
                           base::OwnedRef(std::move(callback)),
-                          std::move(tab_id_by_url_id)));
+                          std::move(tabs_by_url_id)));
 }
 
 }  // namespace
@@ -141,7 +148,7 @@ void SearchOpenTabsByContent(Profile* profile,
                              history::HistoryService* history_service,
                              HistoryEmbeddingsSearch* embeddings_search,
                              std::string query,
-                             RankedTabIdsCallback callback,
+                             RankedOpenTabsCallback callback,
                              base::CancelableTaskTracker* task_tracker) {
   std::vector<OpenTabInfo> tabs = SnapshotOpenTabs(profile);
   // No tracked tabs to rank against — `SnapshotOpenTabs` only keeps
