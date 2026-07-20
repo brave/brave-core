@@ -101,7 +101,7 @@ export function useModelIntroMarkers(): ModelIntroMarker[] {
     }
   }, [conversationHistory.length, conversationHistory[0]?.uuid])
 
-  // Append a marker when the user selects a non-default model.
+  // Create or replace a marker when the user selects a non-default model.
   React.useEffect(() => {
     const { currentModelKey, defaultModelKey } = state
 

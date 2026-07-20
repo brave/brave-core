@@ -65,7 +65,46 @@ describe('useModelIntroMarkers', () => {
     })
   })
 
-  it('creates inline markers for each non-default model change during a conversation', async () => {
+  it('replaces the top marker when changing models again before sending', async () => {
+    const { result, mockRef } = renderModelIntroMarkersHook({
+      conversationEntriesState: {
+        currentModelKey: 'default-model',
+        defaultModelKey: 'default-model',
+      },
+    })
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'first-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'first-model',
+      afterPairIndex: null,
+    })
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'second-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'second-model',
+      afterPairIndex: null,
+    })
+  })
+
+  it('replaces the pending inline marker when changing models before the next prompt', async () => {
     const conversationHistory = [
       createConversationTurnWithDefaults({
         uuid: 'turn-1',
@@ -107,6 +146,69 @@ describe('useModelIntroMarkers', () => {
     })
 
     await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+    expect(result.current[0]).toMatchObject({
+      modelKey: 'second-model',
+      afterPairIndex: 0,
+    })
+  })
+
+  it('keeps earlier markers and adds a new one after another prompt is sent', async () => {
+    const firstTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-1',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'First reply',
+    })
+    const { result, mockRef } = renderModelIntroMarkersHook(
+      {
+        conversationEntriesState: {
+          currentModelKey: 'default-model',
+          defaultModelKey: 'default-model',
+        },
+        conversationHistory: [firstTurn],
+      },
+      [firstTurn],
+    )
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'first-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
+      expect(result.current).toHaveLength(1)
+    })
+
+    const secondTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-2',
+      characterType: Mojom.CharacterType.HUMAN,
+      text: 'Follow-up',
+    })
+    const thirdTurn = createConversationTurnWithDefaults({
+      uuid: 'turn-3',
+      characterType: Mojom.CharacterType.ASSISTANT,
+      text: 'Second reply',
+    })
+
+    await act(async () => {
+      mockRef.current!.api.getConversationHistory.update([
+        firstTurn,
+        secondTurn,
+        thirdTurn,
+      ])
+    })
+
+    await act(async () => {
+      mockRef.current!.api.state.update({
+        currentModelKey: 'second-model',
+        defaultModelKey: 'default-model',
+      })
+    })
+
+    await waitFor(() => {
       expect(result.current).toHaveLength(2)
     })
     expect(result.current[0]).toMatchObject({
@@ -115,7 +217,7 @@ describe('useModelIntroMarkers', () => {
     })
     expect(result.current[1]).toMatchObject({
       modelKey: 'second-model',
-      afterPairIndex: 0,
+      afterPairIndex: 1,
     })
   })
 
