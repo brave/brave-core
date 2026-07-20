@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include <memory>
+
 #include "base/task/sequenced_task_runner.h"
 #include "brave/content/public/browser/devtools/adblock_devtools_instumentation.h"
 #include "content/browser/devtools/devtools_agent_host_impl.h"
@@ -14,6 +16,16 @@
 #include "content/public/browser/frame_tree_node_id.h"
 
 namespace {
+
+std::unique_ptr<content::protocol::Network::AdblockFilterRuleInfo>
+ToProtocolAdblockFilterRuleInfo(
+    const content::devtools_instrumentation::AdblockFilterRuleInfo& info) {
+  return content::protocol::Network::AdblockFilterRuleInfo::Create()
+      .SetRawLine(info.raw_line)
+      .SetSourceIndex(static_cast<int>(info.source_index))
+      .SetLineNumber(static_cast<int>(info.line_number))
+      .Build();
+}
 
 void SendAdblockInfoInternal(
     content::FrameTreeNodeId frame_tree_node_id,
@@ -58,6 +70,14 @@ void SendAdblockInfoInternal(
 
   if (info.rewritten_url) {
     adblock_info->SetRewrittenUrl(info.rewritten_url.value());
+  }
+
+  if (info.filter) {
+    adblock_info->SetFilter(ToProtocolAdblockFilterRuleInfo(*info.filter));
+  }
+  if (info.exception) {
+    adblock_info->SetException(
+        ToProtocolAdblockFilterRuleInfo(*info.exception));
   }
 
   for (auto* handler :

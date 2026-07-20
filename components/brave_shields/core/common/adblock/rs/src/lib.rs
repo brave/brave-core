@@ -131,13 +131,23 @@ mod ffi {
         end: u32,
     }
 
-    #[derive(Default)]
     struct BlockerResult {
         matched: bool,
         important: bool,
         has_exception: bool,
         redirect: OptionalString,
         rewritten_url: OptionalString,
+        filter: UniquePtr<FilterRuleInfo>,
+        exception: UniquePtr<FilterRuleInfo>,
+    }
+
+    // Represents `Option<adblock::sourcemap::FilterRuleDebugInfo>` since cxx
+    // does not support optional fields in shared structs.
+    #[derive(Default)]
+    struct FilterRuleInfo {
+        raw_line: String,
+        source_index: u32,
+        line_number: u32,
     }
 
     struct RegexDebugEntry {
