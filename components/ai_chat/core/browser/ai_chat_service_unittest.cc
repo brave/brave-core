@@ -1485,7 +1485,7 @@ TEST_P(AIChatServiceUnitTest, TemporaryConversation_NoDatabaseInteraction) {
   // set expectations on.
   auto mock_db = base::SequenceBound<NiceMock<MockAIChatDatabase>>(
       task_environment_.GetMainThreadTaskRunner());
-  NiceMock<MockAIChatDatabase>* mock_db_ptr = nullptr;
+  MockAIChatDatabase* mock_db_ptr = nullptr;
   mock_db.PostTaskWithThisObject(base::BindLambdaForTesting(
       [&](NiceMock<MockAIChatDatabase>* db) { mock_db_ptr = db; }));
   ASSERT_TRUE(base::test::RunUntil([&] { return mock_db_ptr != nullptr; }));

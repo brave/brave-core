@@ -33,12 +33,8 @@ class AIChatSyncBridgeTest : public testing::Test {
  public:
   void SetUp() override {
     CHECK(temp_directory_.CreateUniqueTempDir());
-    os_crypt_ = os_crypt_async::GetTestOSCryptAsyncForTesting(
-        /*is_sync_for_unittests=*/true);
-
-    base::test::TestFuture<scoped_refptr<os_crypt_async::Encryptor>> future;
-    os_crypt_->GetInstance(future.GetCallback());
-    db_ = std::make_unique<AIChatDatabase>(db_file_path(), future.Take());
+    db_ = std::make_unique<AIChatDatabase>(
+        db_file_path(), os_crypt_async::GetTestEncryptorForTesting());
   }
 
   void TearDown() override {
@@ -91,7 +87,6 @@ class AIChatSyncBridgeTest : public testing::Test {
   base::test::TaskEnvironment task_environment_{
       base::test::TaskEnvironment::TimeSource::MOCK_TIME};
   base::ScopedTempDir temp_directory_;
-  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_;
   std::unique_ptr<AIChatDatabase> db_;
   std::unique_ptr<AIChatSyncBridge> bridge_;
   raw_ptr<syncer::MockDataTypeLocalChangeProcessor> mock_processor_ = nullptr;

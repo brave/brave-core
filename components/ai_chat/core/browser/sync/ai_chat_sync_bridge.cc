@@ -76,7 +76,7 @@ void AIChatSyncBridge::SetDatabase(AIChatDatabase* database) {
     return;
   }
   model_ready_to_sync_ = true;
-  this->change_processor()->ModelReadyToSync(std::move(batch));
+  change_processor()->ModelReadyToSync(std::move(batch));
 }
 
 void AIChatSyncBridge::ClearDatabase() {
@@ -101,7 +101,52 @@ void AIChatSyncBridge::ClearDatabase() {
 
 void AIChatSyncBridge::ReportError(const syncer::ModelError& error) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-  this->change_processor()->ReportError(error);
+  change_processor()->ReportError(error);
+}
+
+void AIChatSyncBridge::ForEachLocalEntity(
+    base::FunctionRef<bool(const std::string&)> should_include,
+    base::FunctionRef<void(std::string, std::unique_ptr<syncer::EntityData>)>
+        emit) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  CHECK(database_);
+
+  for (const auto& conversation : database_->GetAllConversations()) {
+    if (conversation->temporary) {
+      continue;
+    }
+
+    std::string conversation_key =
+        base::StrCat({kConversationStorageKeyPrefix, conversation->uuid});
+
+    if (should_include(conversation_key)) {
+      emit(std::move(conversation_key),
+           CreateEntityDataFromSpecifics(
+               ConversationMetadataToSpecifics(*conversation)));
+    }
+
+    auto archive = database_->GetConversationData(conversation->uuid);
+    if (!archive) {
+      continue;
+    }
+
+    for (const auto& entry : archive->entries) {
+      if (!entry->uuid) {
+        continue;
+      }
+
+      std::string entry_key =
+          base::StrCat({kEntryStorageKeyPrefix, *entry->uuid});
+
+      if (!should_include(entry_key)) {
+        continue;
+      }
+
+      emit(std::move(entry_key),
+           CreateEntityDataFromSpecifics(EntryToSpecifics(
+               conversation->uuid, *entry, conversation->associated_content)));
+    }
+  }
 }
 
 std::unique_ptr<syncer::MetadataChangeList>
@@ -140,39 +185,15 @@ std::optional<syncer::ModelError> AIChatSyncBridge::MergeFullSyncData(
 
   // Upload every non-temporary local conversation: its metadata plus each of
   // its entries that aren't already present remotely.
-  for (const auto& conversation : database_->GetAllConversations()) {
-    if (conversation->temporary) {
-      continue;
-    }
-    const std::string conversation_key =
-        base::StrCat({kConversationStorageKeyPrefix, conversation->uuid});
-    if (!remote_storage_keys.contains(conversation_key)) {
-      auto specifics = ConversationMetadataToSpecifics(*conversation);
-      this->change_processor()->Put(conversation_key,
-                                    CreateEntityDataFromSpecifics(specifics),
-                                    metadata_change_list.get());
-    }
-
-    auto archive = database_->GetConversationData(conversation->uuid);
-    if (!archive) {
-      continue;
-    }
-    for (const auto& entry : archive->entries) {
-      if (!entry->uuid) {
-        continue;
-      }
-      const std::string entry_key =
-          base::StrCat({kEntryStorageKeyPrefix, *entry->uuid});
-      if (remote_storage_keys.contains(entry_key)) {
-        continue;
-      }
-      auto specifics = EntryToSpecifics(conversation->uuid, *entry,
-                                        conversation->associated_content);
-      this->change_processor()->Put(entry_key,
-                                    CreateEntityDataFromSpecifics(specifics),
-                                    metadata_change_list.get());
-    }
-  }
+  ForEachLocalEntity(
+      [&](const std::string& storage_key) {
+        return !remote_storage_keys.contains(storage_key);
+      },
+      [&](std::string storage_key,
+          std::unique_ptr<syncer::EntityData> entity_data) {
+        change_processor()->Put(std::move(storage_key), std::move(entity_data),
+                                metadata_change_list.get());
+      });
 
   return std::nullopt;
 }
@@ -241,29 +262,14 @@ std::unique_ptr<syncer::DataBatch> AIChatSyncBridge::GetAllDataForDebugging() {
   if (!database_) {
     return batch;
   }
-  for (const auto& conversation : database_->GetAllConversations()) {
-    if (conversation->temporary) {
-      continue;
-    }
-    auto meta_specifics = ConversationMetadataToSpecifics(*conversation);
-    batch->Put(
-        base::StrCat({kConversationStorageKeyPrefix, conversation->uuid}),
-        CreateEntityDataFromSpecifics(meta_specifics));
 
-    auto archive = database_->GetConversationData(conversation->uuid);
-    if (!archive) {
-      continue;
-    }
-    for (const auto& entry : archive->entries) {
-      if (!entry->uuid) {
-        continue;
-      }
-      auto entry_specifics = EntryToSpecifics(conversation->uuid, *entry,
-                                              conversation->associated_content);
-      batch->Put(base::StrCat({kEntryStorageKeyPrefix, *entry->uuid}),
-                 CreateEntityDataFromSpecifics(entry_specifics));
-    }
-  }
+  ForEachLocalEntity([](const std::string&) { return true; },
+                     [&](std::string storage_key,
+                         std::unique_ptr<syncer::EntityData> entity_data) {
+                       batch->Put(std::move(storage_key),
+                                  std::move(entity_data));
+                     });
+
   return batch;
 }
 

@@ -10,6 +10,7 @@
 #include <optional>
 #include <string>
 
+#include "base/functional/function_ref.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
@@ -84,6 +85,13 @@ class AIChatSyncBridge : public syncer::DataTypeSyncBridge {
   // Forwards a sync model error to the change processor. Bound as a WeakPtr
   // callback for the metadata store's error reporting.
   void ReportError(const syncer::ModelError& error);
+
+  // Iterate through all sync-allowed entities in the local database, invoking
+  // |emit| for each one that additionally satisfies |should_include|.
+  void ForEachLocalEntity(
+      base::FunctionRef<bool(const std::string&)> should_include,
+      base::FunctionRef<void(std::string, std::unique_ptr<syncer::EntityData>)>
+          emit);
 
   // Attached via SetDatabase()/ClearDatabase(); null before the first attach
   // and whenever on-disk storage is disabled.
