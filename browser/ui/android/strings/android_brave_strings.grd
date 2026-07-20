@@ -1690,7 +1690,7 @@ Are you sure you want to do this?
         Dynamic colors
       </message>
       <message name="IDS_BRAVE_ANDROID_DYNAMIC_COLORS_SUMMARY" desc="Summary for the Android Appearance preference that enables dynamic colors.">
-        Change the color palette to match user settings and wallpaper colors
+        App theme matches wallpaper colors
       </message>
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_SEARCH_ACCELERATOR" desc="Content description for the search accelerator button">
         Search
