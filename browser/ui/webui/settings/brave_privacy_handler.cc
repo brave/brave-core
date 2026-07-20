@@ -130,10 +130,12 @@ void BravePrivacyHandler::AddLoadTimeData(content::WebUIDataSource* data_source,
       "isRequestOTRFeatureEnabled",
       base::FeatureList::IsEnabled(request_otr::features::kBraveRequestOTRTab));
 #endif
-#if BUILDFLAG(ENABLE_PSST)
   data_source->AddBoolean(
       "isPsstFeatureEnabled",
+#if BUILDFLAG(ENABLE_PSST)
       base::FeatureList::IsEnabled(psst::features::kEnablePsst));
+#else
+      false);
 #endif
   data_source->AddBoolean(
       "isGoogleSignInFeatureEnabled",
