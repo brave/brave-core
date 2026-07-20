@@ -3006,6 +3006,387 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
             group_b);
 }
 
+// Selecting a parent tab together with its (connected) child and moving them
+// as one block must keep the child nested under the parent's tree node
+// instead of flattening it out to become a top-level sibling.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_ParentAndChildBothSelected_KeepsChildNested) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Add a child under the parent tab.
+  auto tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_tab = tab_strip_model().GetTabAtIndex(1);
+  ASSERT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+
+  // Add two more top-level tabs so there's somewhere to move past. Add them
+  // directly with ADD_NONE and no opener - AddTab() (AppendWebContents with
+  // foreground=true) would set ADD_INHERIT_OPENER and chain each new tab off
+  // the currently active tab instead of creating separate top-level nodes.
+  for (int i = 0; i < 2; ++i) {
+    auto other_tab_interface = std::make_unique<tabs::TabModel>(
+        CreateWebContents(), &tab_strip_model());
+    tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(4, tab_strip_model().count());
+  auto* other_tab_a = tab_strip_model().GetTabAtIndex(2);
+  auto* other_tab_b = tab_strip_model().GetTabAtIndex(3);
+
+  // Parent+child form a single tree node, plus 2 more top-level tabs.
+  ASSERT_EQ(unpinned_collection().ChildCount(), 3u);
+
+  // Select the parent and its child together and move the block to the end.
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(0);
+  selection_model.AddIndexToSelection(1);
+  selection_model.set_active(1);
+  selection_model.set_anchor(0);
+  tab_strip_model().SetSelectionFromModel(selection_model);
+  tab_strip_model().MoveSelectedTabsTo(2, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  // The block moved past the two other tabs, which are now first.
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), other_tab_a);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), other_tab_b);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), parent_tab);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3), child_tab);
+
+  // The child must remain nested under the parent's tree node, not flattened
+  // out to become a top-level sibling.
+  EXPECT_EQ(child_tab->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(parent_tab->GetParentCollection()->ChildCount(), 2u);
+  EXPECT_EQ(unpinned_collection().ChildCount(), 3u);
+}
+
+// Selecting a parent tab together with a nested group/split that lives
+// entirely underneath it, and moving them as one block, must keep the
+// group's wrapping tree node nested under the parent's tree node instead of
+// flattening it out to become a top-level sibling.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_ParentAndNestedGroupBothSelected_KeepsGroupNested) {
+  EnsureTabGroupSyncServiceInitialized();
+  SetTreeTabsEnabled(true);
+
+  // Build parent -> tab_a -> tab_b (three levels).
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  auto tab_a_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_a_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_a_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_a = tab_strip_model().GetTabAtIndex(1);
+
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_b = tab_strip_model().GetTabAtIndex(2);
+
+  // Add an extra top-level tab so there's something else in the strip. Add it
+  // directly with ADD_NONE and no opener - AddTab() (AppendWebContents with
+  // foreground=true) would set ADD_INHERIT_OPENER and chain it off the
+  // currently active tab (parent_tab) instead of making it a separate
+  // top-level node.
+  auto extra_tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(extra_tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Group tab_a and tab_b together. This should wrap them in a tree node that
+  // takes over tab_a's old position, nested under the parent's tree node.
+  tab_groups::TabGroupId group_id =
+      tab_strip_model().AddToNewGroup({tab_strip_model().GetIndexOfTab(tab_a),
+                                       tab_strip_model().GetIndexOfTab(tab_b)});
+  ASSERT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+
+  const tabs::TabCollection* group_collection = tab_a->GetParentCollection();
+  ASSERT_EQ(group_collection->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_tree_node =
+      group_collection->GetParentCollection();
+  ASSERT_EQ(group_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(group_tree_node->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u)
+      << "parent's tree node (containing the nested group) + 1 extra tab";
+
+  // Select the parent tab and both grouped tabs together and move the whole
+  // block.
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(
+      tab_strip_model().GetIndexOfTab(parent_tab));
+  selection_model.AddIndexToSelection(tab_strip_model().GetIndexOfTab(tab_a));
+  selection_model.AddIndexToSelection(tab_strip_model().GetIndexOfTab(tab_b));
+  selection_model.set_active(tab_strip_model().GetIndexOfTab(tab_b));
+  selection_model.set_anchor(tab_strip_model().GetIndexOfTab(parent_tab));
+  tab_strip_model().SetSelectionFromModel(selection_model);
+  tab_strip_model().MoveSelectedTabsTo(1, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  EXPECT_TRUE(tab_strip_model().group_model()->ContainsTabGroup(group_id));
+  ExpectGroupModelTabListCount(group_id, 2u);
+
+  // The group's tree node must still be nested under the parent's tree node,
+  // not flattened out to become a top-level sibling.
+  const tabs::TabCollection* group_collection_after =
+      tab_a->GetParentCollection();
+  ASSERT_EQ(group_collection_after->type(), tabs::TabCollection::Type::GROUP);
+  const tabs::TabCollection* group_tree_node_after =
+      group_collection_after->GetParentCollection();
+  ASSERT_EQ(group_tree_node_after->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(group_tree_node_after->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 2u);
+}
+
+// Selecting a parent tab together with only one of its two children (the
+// other child is left unselected) and moving them as a block must keep the
+// selected child nested under the parent's tree node, while the unselected
+// child is hoisted out to become a top-level sibling instead of being
+// dragged along.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_ParentAndOneOfTwoChildrenSelected_KeepsSelectedChildNested) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  // Add two children under the parent tab: |child_b| and |child_c|.
+  for (int i = 0; i < 2; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_interface->set_opener(parent_tab);
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  auto* child_b = tab_strip_model().GetTabAtIndex(1);
+  auto* child_c = tab_strip_model().GetTabAtIndex(2);
+
+  // Add an extra top-level tab so there's somewhere to move past. Add it
+  // directly with ADD_NONE and no opener - AddTab() (AppendWebContents with
+  // foreground=true) would set ADD_INHERIT_OPENER and chain it off the
+  // currently active tab instead of creating a separate top-level node.
+  auto extra_tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(extra_tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(4, tab_strip_model().count());
+  auto* extra_tab = tab_strip_model().GetTabAtIndex(3);
+
+  // Parent's tree node has 3 children (child_b, child_c), plus the extra tab.
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u);
+
+  // Select the parent and only child_b (not child_c), then move the block to
+  // the end.
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(0);
+  selection_model.AddIndexToSelection(1);
+  selection_model.set_active(1);
+  selection_model.set_anchor(0);
+  tab_strip_model().SetSelectionFromModel(selection_model);
+  tab_strip_model().MoveSelectedTabsTo(2, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  // child_c is hoisted out to become a top-level sibling, taking the
+  // parent's old slot; extra_tab follows it; the moved block (parent with
+  // child_b nested) lands at the end.
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), child_c);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), extra_tab);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), parent_tab);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3), child_b);
+
+  // child_b must remain nested under the parent's tree node.
+  EXPECT_EQ(child_b->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(parent_tab->GetParentCollection()->ChildCount(), 2u);
+
+  // child_c must have been hoisted out to become its own top-level tree
+  // node, no longer nested under the parent's tree node.
+  EXPECT_EQ(child_c->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 3u);
+}
+
+// A three-level partial selection: parent tab with two children, the second
+// of which has its own child (a grandchild of the parent). Selecting the
+// parent and both children, but not the grandchild, must keep the selected
+// nodes nested together while the unselected grandchild is hoisted out.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_ParentTwoChildrenAndGrandchildSelected_KeepsHierarchy) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  auto child_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_b_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_b = tab_strip_model().GetTabAtIndex(1);
+
+  auto child_c_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_c_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_c_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* child_c = tab_strip_model().GetTabAtIndex(2);
+
+  auto grandchild_d_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  grandchild_d_interface->set_opener(child_c);
+  tab_strip_model().AddTab(std::move(grandchild_d_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* grandchild_d = tab_strip_model().GetTabAtIndex(3);
+  ASSERT_EQ(grandchild_d->GetParentCollection()->GetParentCollection(),
+            child_c->GetParentCollection());
+
+  // Add an extra top-level tab so there's somewhere to move past. Add it
+  // directly with ADD_NONE and no opener - AddTab() (AppendWebContents with
+  // foreground=true) would set ADD_INHERIT_OPENER and chain it off the
+  // currently active tab instead of creating a separate top-level node.
+  auto extra_tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(extra_tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(5, tab_strip_model().count());
+  auto* extra_tab = tab_strip_model().GetTabAtIndex(4);
+
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u);
+
+  // Select the parent, child_b, and child_c, but not grandchild_d, then move
+  // the block to the end.
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(0);
+  selection_model.AddIndexToSelection(1);
+  selection_model.AddIndexToSelection(2);
+  selection_model.set_active(2);
+  selection_model.set_anchor(0);
+  tab_strip_model().SetSelectionFromModel(selection_model);
+  tab_strip_model().MoveSelectedTabsTo(2, std::nullopt);
+
+  ASSERT_EQ(5, tab_strip_model().count());
+  // grandchild_d is hoisted out to become a top-level sibling, taking the
+  // parent's old slot; extra_tab follows it; the moved block (parent with
+  // child_b and child_c nested) lands at the end.
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(0), grandchild_d);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(1), extra_tab);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(2), parent_tab);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(3), child_b);
+  EXPECT_EQ(tab_strip_model().GetTabAtIndex(4), child_c);
+
+  // child_b and child_c must remain nested under the parent's tree node.
+  EXPECT_EQ(child_b->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(child_c->GetParentCollection()->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(parent_tab->GetParentCollection()->ChildCount(), 3u);
+
+  // grandchild_d must have been hoisted all the way out to become its own
+  // top-level tree node.
+  EXPECT_EQ(grandchild_d->GetParentCollection()->GetParentCollection(),
+            &unpinned_collection());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 3u);
+}
+
+// Selecting a parent tab together with a nested split that lives entirely
+// underneath it, and moving them as one block, must keep the split's
+// wrapping tree node nested under the parent's tree node instead of
+// flattening it out to become a top-level sibling.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    MoveSelectedTabsTo_ParentAndNestedSplitBothSelected_KeepsSplitNested) {
+  SetTreeTabsEnabled(true);
+
+  // Build parent -> tab_a -> tab_b (three levels).
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+
+  auto tab_a_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_a_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(tab_a_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_a = tab_strip_model().GetTabAtIndex(1);
+
+  auto tab_b_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_b_interface->set_opener(tab_a);
+  tab_strip_model().AddTab(std::move(tab_b_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  auto* tab_b = tab_strip_model().GetTabAtIndex(2);
+
+  // Add an extra top-level tab so there's something else in the strip. Add it
+  // directly with ADD_NONE and no opener - AddTab() (AppendWebContents with
+  // foreground=true) would set ADD_INHERIT_OPENER and chain it off the
+  // currently active tab (parent_tab) instead of making it a separate
+  // top-level node.
+  auto extra_tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(extra_tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(4, tab_strip_model().count());
+
+  // Split tab_a and tab_b together. This should wrap them in a tree node that
+  // takes over tab_a's old position, nested under the parent's tree node.
+  CreateSplitWithTabs(&tab_strip_model(),
+                      tab_strip_model().GetIndexOfTab(tab_a),
+                      tab_strip_model().GetIndexOfTab(tab_b));
+  VerifySplitCreated(&tab_strip_model(), &tab_strip_collection());
+  split_tabs::SplitTabId split_id =
+      *tab_strip_collection().ListSplits().begin();
+
+  const tabs::TabCollection* split_collection = tab_a->GetParentCollection();
+  ASSERT_EQ(split_collection->type(), tabs::TabCollection::Type::SPLIT);
+  const tabs::TabCollection* split_tree_node =
+      split_collection->GetParentCollection();
+  ASSERT_EQ(split_tree_node->type(), tabs::TabCollection::Type::TREE_NODE);
+  ASSERT_EQ(split_tree_node->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  ASSERT_EQ(unpinned_collection().ChildCount(), 2u)
+      << "parent's tree node (containing the nested split) + 1 extra tab";
+
+  // Select the parent tab and both split tabs together and move the whole
+  // block.
+  ui::ListSelectionModel selection_model;
+  selection_model.AddIndexToSelection(
+      tab_strip_model().GetIndexOfTab(parent_tab));
+  selection_model.AddIndexToSelection(tab_strip_model().GetIndexOfTab(tab_a));
+  selection_model.AddIndexToSelection(tab_strip_model().GetIndexOfTab(tab_b));
+  selection_model.set_active(tab_strip_model().GetIndexOfTab(tab_b));
+  selection_model.set_anchor(tab_strip_model().GetIndexOfTab(parent_tab));
+  tab_strip_model().SetSelectionFromModel(selection_model);
+  tab_strip_model().MoveSelectedTabsTo(1, std::nullopt);
+
+  ASSERT_EQ(4, tab_strip_model().count());
+  EXPECT_TRUE(tab_strip_model().ContainsSplit(split_id));
+
+  // The split's tree node must still be nested under the parent's tree node,
+  // not flattened out to become a top-level sibling.
+  const tabs::TabCollection* split_collection_after =
+      tab_a->GetParentCollection();
+  ASSERT_EQ(split_collection_after->type(), tabs::TabCollection::Type::SPLIT);
+  const tabs::TabCollection* split_tree_node_after =
+      split_collection_after->GetParentCollection();
+  ASSERT_EQ(split_tree_node_after->type(),
+            tabs::TabCollection::Type::TREE_NODE);
+  EXPECT_EQ(split_tree_node_after->GetParentCollection(),
+            parent_tab->GetParentCollection());
+  EXPECT_EQ(unpinned_collection().ChildCount(), 2u);
+}
+
 IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                        AddTab_EmptyNewTab_NoNestedTreeTab) {
   SetTreeTabsEnabled(true);
