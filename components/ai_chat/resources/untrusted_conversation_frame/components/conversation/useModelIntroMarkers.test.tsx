@@ -95,12 +95,14 @@ describe('useModelIntroMarkers', () => {
       })
     })
 
+    // Wait for the modelKey itself — length stays 1 across the replace, so
+    // asserting only on length can pass before the pending marker is updated.
     await waitFor(() => {
       expect(result.current).toHaveLength(1)
-    })
-    expect(result.current[0]).toMatchObject({
-      modelKey: 'second-model',
-      afterPairIndex: null,
+      expect(result.current[0]).toMatchObject({
+        modelKey: 'second-model',
+        afterPairIndex: null,
+      })
     })
   })
 
@@ -145,12 +147,14 @@ describe('useModelIntroMarkers', () => {
       })
     })
 
+    // Wait for the modelKey itself — length stays 1 across the replace, so
+    // asserting only on length can pass before the pending marker is updated.
     await waitFor(() => {
       expect(result.current).toHaveLength(1)
-    })
-    expect(result.current[0]).toMatchObject({
-      modelKey: 'second-model',
-      afterPairIndex: 0,
+      expect(result.current[0]).toMatchObject({
+        modelKey: 'second-model',
+        afterPairIndex: 0,
+      })
     })
   })
 
