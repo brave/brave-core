@@ -95,7 +95,6 @@
     "name": "package ast-grep"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

@@ -9,3 +9,10 @@ wheel: <
   name: "infra/python/wheels/protobuf-py3"
   version: "version:6.32.1"
 >
+
+# Used by the simulation test runner (engine.py test run|train) to enforce
+# 100% coverage of recipe and recipe_module source.
+wheel: <
+  name: "infra/python/wheels/coverage/${vpython_platform}"
+  version: "version:7.3.1"
+>

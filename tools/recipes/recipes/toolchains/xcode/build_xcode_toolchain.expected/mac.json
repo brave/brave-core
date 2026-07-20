@@ -55,7 +55,6 @@
     "name": "build xcode toolchain"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

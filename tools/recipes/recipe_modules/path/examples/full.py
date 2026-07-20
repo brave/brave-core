@@ -19,6 +19,9 @@ def RunSteps(api):
     api.path.mkdir(api.path.out)
     if api.path.is_dir(api.path.out):
         api.step('out ready', ['echo', str(api.path.out)])
+    # Exercise the home() seam and `~`-expansion via abs().
+    api.step('home', ['echo', str(api.path.home())])
+    api.step('cache', ['echo', str(api.path.abs('~/cache'))])
 
 
 def GenTests(api):
@@ -29,6 +32,9 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'out ready'),
         api.post_process(post_process.StepCommandContains, 'out ready',
                          ['[WORKSPACE]/out']),
+        api.post_process(post_process.StepCommandContains, 'home', ['[HOME]']),
+        api.post_process(post_process.StepCommandContains, 'cache',
+                         ['[HOME]/cache']),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(

@@ -12,7 +12,7 @@ from pathlib import Path
 from recipe_api import RecipeApi
 
 
-class _RealFs:
+class _RealFs:  # pragma: no cover - production filesystem backend.
     """Production backend: the real filesystem."""
 
     def exists(self, path: str | Path) -> bool:
@@ -74,11 +74,10 @@ class _SimFs:
 class PathApi(RecipeApi):
     """Named, workspace-relative job paths, seeded by the engine.
 
-    Mirrors (in miniature) `recipe_engine/path`: recipes build paths from these
-    named roots instead of hardcoding them or taking them as properties. Only
-    the workspace root is configurable (engine `--workspace`); everything else
-    is derived from it, so the on-disk layout is fixed and consistent across
-    recipes.
+    Recipes build paths from these named roots instead of hardcoding them or
+    taking them as properties. Only the workspace root is configurable (engine
+    `--workspace`); everything else is derived from it, so the on-disk layout is
+    fixed and consistent across recipes.
     """
 
     @property

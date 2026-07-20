@@ -22,8 +22,7 @@ injected as `api.<module>`, so a recipe writes, e.g.:
 Each `api.*` call returns a `TestData` *fragment*; `api.test(name, *fragments)`
 folds them together (via `TestData.__add__`) into the case the engine runs.
 
-Notable simplifications vs upstream: no output placeholders, and a simple
-`check(cond, hint)` collector rather than the AST-introspecting `Checker`.
+Notable simplification: no output placeholders.
 """
 
 from __future__ import annotations
@@ -74,12 +73,17 @@ class StepTestData:
         )
 
 
-class PostprocessHook(NamedTuple):
-    """A `post_process` callback plus where it was registered (for messages)."""
+class PostprocessHookContext(NamedTuple):
+    """A `post_process` callback plus where it was registered.
+
+    `filename`/`lineno` locate the `api.post_process(...)` call site, so a failed
+    check can render the `added <file>:<lineno>` footer and the call repr.
+    """
     func: Callable[..., Any]
     args: tuple
     kwargs: dict
-    context: str  # "<file>:<lineno>" of the api.post_process(...) call.
+    filename: str
+    lineno: int
 
 
 class TestData:
@@ -104,7 +108,7 @@ class TestData:
         # (e.g. mod_data['platform'] = {'name': 'mac'}).
         self.mod_data: dict[str, dict[str, Any]] = {}
         # post_process checks run against the recorded steps after simulation.
-        self.post_process_hooks: list[PostprocessHook] = []
+        self.post_process_hooks: list[PostprocessHookContext] = []
         # Expected overall status ('SUCCESS' | 'FAILURE' | 'EXCEPTION'); None
         # means "don't assert" (a mismatch during a run is still reported).
         self.expected_status: str | None = None
@@ -246,7 +250,7 @@ class RecipeTestApi:
     # -- Fragment builders available on the root api (and inherited by modules).
 
     # `api.properties(...)` / `api.properties.environ(...)`. A shared, stateless
-    # builder (mirrors recipes_py's `properties` module TEST_API).
+    # builder.
     properties = _PropertiesTestApi()
 
     @staticmethod
@@ -286,11 +290,12 @@ class RecipeTestApi:
         """A fragment registering a post-process check (see `post_process`)."""
         frame = inspect.currentframe()
         caller = frame.f_back if frame is not None else None
-        context = (f'{caller.f_code.co_filename}:{caller.f_lineno}'
-                   if caller is not None else '<unknown>')
+        filename = (caller.f_code.co_filename
+                    if caller is not None else '<unknown>')
+        lineno = caller.f_lineno if caller is not None else 0
         data = TestData()
         data.post_process_hooks.append(
-            PostprocessHook(func, args, kwargs, context))
+            PostprocessHookContext(func, args, kwargs, filename, lineno))
         return data
 
     @staticmethod

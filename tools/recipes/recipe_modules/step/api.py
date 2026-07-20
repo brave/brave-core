@@ -18,7 +18,7 @@ class StepApi(RecipeApi):
     """Runs a subprocess as a named build step.
 
     The instance is callable, so recipes and modules invoke it as
-    `api.step(name, cmd, ...)`, mirroring `recipe_engine/step`. This is the one
+    `api.step(name, cmd, ...)`. This is the one
     place work actually happens; everything else describes work in terms of
     steps. The API only *describes* a step (name + command + cwd/env) and hands
     it to a step runner: in production a `SubprocessStepRunner` shells out (with
@@ -39,8 +39,11 @@ class StepApi(RecipeApi):
         self._prod_runner = None
 
     def _runner(self):
-        if self._test is not None:
-            return self._test.step_runner
+        if self._test is None:  # pragma: no cover - production step backend.
+            return self._prod_runner_lazy()
+        return self._test.step_runner
+
+    def _prod_runner_lazy(self):  # pragma: no cover - production step backend.
         if self._prod_runner is None:
             # Imported lazily so `step` stays dependency-free at import time and
             # simulation code isn't loaded on the production path until needed.
@@ -81,7 +84,7 @@ class StepApi(RecipeApi):
         # Draw cwd/env from the ambient context, letting explicit arguments
         # override. The env overrides and the path prefix/suffix affixes are
         # carried separately so the runner can compose them (production) or
-        # record them (simulation), mirroring recipe_engine's split.
+        # record them (simulation).
         context = self.m.context
         env_overrides = {**context.env, **(env or {})}
         step = {

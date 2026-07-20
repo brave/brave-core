@@ -4,9 +4,8 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Base class for Brave recipe modules.
 
-Deliberately tiny mirror of `recipe_engine.recipe_api.RecipeApi` from
-chrome-infra's recipes_py. Every recipe module exposes exactly one `RecipeApi`
-subclass (in its `api.py`). After constructing it, the engine attaches the
+A deliberately tiny base class. Every recipe module exposes exactly one
+`RecipeApi` subclass (in its `api.py`). After constructing it, the engine attaches the
 module's resolved `DEPS` onto `self.m`, which is the "module injection site",
 so a module reaches each dependency as `self.m.<dep_name>` (and itself as
 `self.m.<own_name>`).

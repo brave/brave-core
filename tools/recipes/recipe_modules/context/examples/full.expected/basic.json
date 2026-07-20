@@ -29,6 +29,11 @@
         "[WORKSPACE]/node/bin"
       ]
     },
+    "env_suffixes": {
+      "LD_LIBRARY_PATH": [
+        "/opt/lib"
+      ]
+    },
     "name": "nested context"
   },
   {
@@ -39,7 +44,6 @@
     "name": "outside context"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

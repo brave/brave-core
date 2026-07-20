@@ -26,7 +26,6 @@
     "name": "sparse-checkout add"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

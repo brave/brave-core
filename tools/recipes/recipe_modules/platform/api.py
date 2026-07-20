@@ -16,11 +16,11 @@ import sys
 
 from recipe_api import RecipeApi
 
-# Canonical short platform names, matching recipes_py.
+# Canonical short platform names.
 _VALID = ('linux', 'mac', 'win')
 
 
-def _host_name() -> str:
+def _host_name() -> str:  # pragma: no cover - production host detection.
     if sys.platform == 'win32':
         return 'win'
     if sys.platform == 'darwin':
@@ -35,7 +35,7 @@ class PlatformApi(RecipeApi):
         super().__init__()
         # Default to the real host; refined in initialise() once the engine has
         # seeded `_test`. Accessors below just read `self._name`. No per-call
-        # test-mode branching (mirrors recipes_py's PlatformApi).
+        # test-mode branching.
         self._name = _host_name()
 
     def initialise(self) -> None:
