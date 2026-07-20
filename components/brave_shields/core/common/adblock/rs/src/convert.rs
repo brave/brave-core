@@ -58,6 +58,7 @@ impl From<InnerSourceInfo> for SourceInfo {
             network_filter_count: info.network_filter_count as usize,
             cosmetic_filter_count: info.cosmetic_filter_count as usize,
             parse_error: info.parse_error as usize,
+            invalid_lines: info.invalid_lines,
         }
     }
 }

@@ -189,6 +189,15 @@ base::DictValue AdBlockEngine::GetDebugInfo() {
                          static_cast<int>(item.cosmetic_filter_count));
     source_info_dict.Set("parse_error_count",
                          static_cast<int>(item.parse_error));
+    std::string invalid_lines_concatenated;
+    for (const auto& invalid_line : item.invalid_lines) {
+      invalid_lines_concatenated.append(
+          std::string_view(invalid_line.data(), invalid_line.size()));
+      invalid_lines_concatenated.append("\n");
+    }
+    source_info_dict.Set("invalid_lines",
+                         std::move(invalid_lines_concatenated));
+
     source_info.Append(std::move(source_info_dict));
   }
   result.Set("source_info", std::move(source_info));

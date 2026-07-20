@@ -17,6 +17,10 @@ class AppState {
 }
 
 const EngineSourceInfo = (props: { source_info: SourceInfo[] }) => {
+  const [expandedSource, setExpandedSource] = React.useState<number | null>(
+    null,
+  )
+
   return (
     <details>
       <summary>+ Sources ({props.source_info.length})</summary>
@@ -33,24 +37,45 @@ const EngineSourceInfo = (props: { source_info: SourceInfo[] }) => {
         </thead>
         <tbody>
           {props.source_info.map((sourceInfo, index) => (
-            <tr key={index}>
-              <td>{index}</td>
-              <td>{sourceInfo.title}</td>
-              <td>
-                {sourceInfo.homepage && (
+            <React.Fragment key={index}>
+              <tr>
+                <td>{index}</td>
+                <td>{sourceInfo.title}</td>
+                <td>
+                  {sourceInfo.homepage && (
+                    <a
+                      href={sourceInfo.homepage}
+                      target='_blank'
+                      rel='noopener noreferrer'
+                    >
+                      {sourceInfo.homepage}
+                    </a>
+                  )}
+                </td>
+                <td>{sourceInfo.network_filter_count}</td>
+                <td>{sourceInfo.cosmetic_filter_count}</td>
+                <td>
                   <a
-                    href={sourceInfo.homepage}
-                    target='_blank'
-                    rel='noopener noreferrer'
+                    href='#'
+                    onClick={(e) => {
+                      e.preventDefault()
+                      setExpandedSource(expandedSource === index ? null : index)
+                    }}
                   >
-                    {sourceInfo.homepage}
+                    {sourceInfo.parse_error_count}
                   </a>
-                )}
-              </td>
-              <td>{sourceInfo.network_filter_count}</td>
-              <td>{sourceInfo.cosmetic_filter_count}</td>
-              <td>{sourceInfo.parse_error_count}</td>
-            </tr>
+                </td>
+              </tr>
+              {expandedSource === index && (
+                <tr>
+                  <td colSpan={6}>
+                    <pre style={{ whiteSpace: 'pre-wrap' }}>
+                      {sourceInfo.invalid_lines}
+                    </pre>
+                  </td>
+                </tr>
+              )}
+            </React.Fragment>
           ))}
         </tbody>
       </table>

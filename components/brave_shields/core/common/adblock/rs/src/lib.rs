@@ -153,6 +153,7 @@ mod ffi {
         network_filter_count: usize,
         cosmetic_filter_count: usize,
         parse_error: usize,
+        invalid_lines: Vec<String>,
     }
 
     struct DebugInfo {

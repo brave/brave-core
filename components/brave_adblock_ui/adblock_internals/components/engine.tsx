@@ -12,6 +12,7 @@ export interface SourceInfo {
   network_filter_count: number
   cosmetic_filter_count: number
   parse_error_count: number
+  invalid_lines: string
 }
 
 export class EngineDebugInfo {
