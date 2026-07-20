@@ -1115,6 +1115,7 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         boolean.class,
+                        boolean.class,
                         int.class));
         Assert.assertTrue(
                 methodExists(

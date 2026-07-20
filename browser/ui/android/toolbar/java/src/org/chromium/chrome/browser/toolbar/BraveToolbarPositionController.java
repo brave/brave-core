@@ -16,6 +16,7 @@ public class BraveToolbarPositionController {
             boolean isOmniboxFocused,
             boolean isFindInPageShowing,
             boolean isFormFieldFocusedWithKeyboardVisible,
+            boolean isBrowserControlsHidden,
             boolean doesUserPreferTopToolbar,
             @ControlsPosition int currentPosition) {
         // We want it to be shown on the NTP and tab switcher.
@@ -26,6 +27,7 @@ public class BraveToolbarPositionController {
                 isOmniboxFocused,
                 isFindInPageShowing,
                 isFormFieldFocusedWithKeyboardVisible,
+                isBrowserControlsHidden,
                 doesUserPreferTopToolbar,
                 currentPosition);
     }
