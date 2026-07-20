@@ -426,7 +426,7 @@ class SendTokenStoreTests: XCTestCase {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     )
     store.selectedSendToken = token
 

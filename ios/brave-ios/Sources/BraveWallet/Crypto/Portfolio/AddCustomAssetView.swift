@@ -412,7 +412,7 @@ struct AddCustomAssetView: View {
           coingeckoId: coingeckoId,
           chainId: network.chainId,
           coin: network.coin,
-          isShielded: false
+          zcashTokenType: .none
         )
       case .nft:
         var tokenIdToHex = ""
@@ -450,7 +450,7 @@ struct AddCustomAssetView: View {
             coingeckoId: coingeckoId,
             chainId: network.chainId,
             coin: network.coin,
-            isShielded: false
+            zcashTokenType: .none
           )
         }
       }

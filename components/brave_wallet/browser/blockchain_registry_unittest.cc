@@ -244,7 +244,7 @@ const char on_ramp_currency_lists_json[] = R"({
         "solana",
         "0x65",
         mojom::CoinType::SOL,
-        false);
+        mojom::ZCashTokenType::kNone);
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
 // added in the meantime to fix the build error. Remove this attribute and
@@ -268,7 +268,7 @@ const char on_ramp_currency_lists_json[] = R"({
         "usd-coin",
         "0x65",
         mojom::CoinType::SOL,
-        false);
+        mojom::ZCashTokenType::kNone);
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
 // added in the meantime to fix the build error. Remove this attribute and
@@ -292,7 +292,7 @@ const char on_ramp_currency_lists_json[] = R"({
         "",
         "0x65",
         mojom::CoinType::SOL,
-        false);
+        mojom::ZCashTokenType::kNone);
 
 // TODO(https://github.com/brave/brave-browser/issues/48713): This is a case of
 // `-Wexit-time-destructors` violation and `[[clang::no_destroy]]` has been
@@ -317,7 +317,7 @@ const char on_ramp_currency_lists_json[] = R"({
         "",
         "0x65",
         mojom::CoinType::SOL,
-        false);
+        mojom::ZCashTokenType::kNone);
 
 const char chain_list_json[] = R"(
   [

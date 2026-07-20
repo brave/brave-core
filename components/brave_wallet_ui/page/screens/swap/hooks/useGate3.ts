@@ -13,6 +13,7 @@ import { BraveWallet } from '../../../../constants/types'
 import Amount from '../../../../utils/amount'
 import { hexStrToNumberArray } from '../../../../utils/hex-utils'
 import { toMojoUnion } from '../../../../utils/mojo-utils'
+import { isShieldedToken } from '../../../../utils/asset-utils'
 
 // Query hooks
 import {
@@ -383,7 +384,7 @@ export function useGate3(params: SwapParams) {
             to,
             value: new Amount(value).toHex(),
             sendingMaxAmount: false,
-            useShieldedPool: fromToken.isShielded,
+            useShieldedPool: isShieldedToken(fromToken),
             memo: undefined,
             swapInfo: {
               sourceCoin: fromToken.coin,

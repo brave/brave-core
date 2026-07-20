@@ -96,7 +96,7 @@ export const SOLTransfer = ({
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
       chainId: network.chainId,
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     }
   }, [transfer, network])
 
@@ -222,7 +222,7 @@ export const SPLTokenTransfer = ({
       symbol: transfer.asset.symbol,
       chainId: network.chainId,
       isNft: METAPLEX_NFT_KINDS.includes(transfer.asset.metaplexTokenStandard),
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     }
   }, [transfer, combinedTokensRegistry, network])
 

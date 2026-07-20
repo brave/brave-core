@@ -31,7 +31,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
     .init(
       contractAddress: "0xB8c77482e45F1F44dE1745F52C74426C631bDD52",
@@ -51,7 +51,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
     .init(
       contractAddress: "0xdac17f958d2ee523a2206206994597c13d831ec7",
@@ -71,7 +71,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
     .init(
       contractAddress: "0x57f1887a8bf19b14fc0df6fd9b2acc9af147ea85",
@@ -91,7 +91,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
     .init(
       contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
@@ -111,7 +111,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
     .init(
       contractAddress: "0x7D1AfA7B718fb893dB30A3aBc0Cfc608AaCfeBB0",
@@ -131,7 +131,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     ),
   ]
 

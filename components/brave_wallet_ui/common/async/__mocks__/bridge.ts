@@ -905,7 +905,7 @@ export class MockedWalletApiProxy {
           registry: this.tokenBalancesRegistry,
           tokenId: '',
           coin: BraveWallet.CoinType.ETH,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         }),
         error: 0,
         errorMessage: '',
@@ -933,7 +933,7 @@ export class MockedWalletApiProxy {
           registry: this.tokenBalancesRegistry,
           tokenId,
           coin: BraveWallet.CoinType.ETH,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         }),
         error: 0,
         errorMessage: '',
@@ -961,7 +961,7 @@ export class MockedWalletApiProxy {
           registry: this.tokenBalancesRegistry,
           tokenId,
           coin: BraveWallet.CoinType.ETH,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         }),
         error: 0,
         errorMessage: '',
@@ -997,7 +997,7 @@ export class MockedWalletApiProxy {
         registry: this.tokenBalancesRegistry,
         tokenId: '',
         coin: BraveWallet.CoinType.SOL,
-        isShielded: false,
+        zcashTokenType: BraveWallet.ZCashTokenType.kNone,
       })
 
       return {
@@ -1042,7 +1042,7 @@ export class MockedWalletApiProxy {
           contractAddress: token.contractAddress,
           registry: this.tokenBalancesRegistry,
           tokenId: '',
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
 
         return {
@@ -1079,7 +1079,7 @@ export class MockedWalletApiProxy {
           coin: account.accountId.coin,
           chainId,
           tokenId: '', // ERC20,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
 
         if (!balancesByAssetId[assetId]) {
@@ -1115,7 +1115,7 @@ export class MockedWalletApiProxy {
                 ...id,
                 chainId: t.chainId,
                 coin: account.accountId.coin,
-                isShielded: false,
+                zcashTokenType: BraveWallet.ZCashTokenType.kNone,
               }),
           )
           || this.userAssets.find(
@@ -1125,7 +1125,7 @@ export class MockedWalletApiProxy {
                 ...id,
                 chainId: t.chainId,
                 coin: account.accountId.coin,
-                isShielded: false,
+                zcashTokenType: BraveWallet.ZCashTokenType.kNone,
               }),
           )
 
@@ -1140,7 +1140,7 @@ export class MockedWalletApiProxy {
           registry: this.tokenBalancesRegistry,
           tokenId: id.tokenId,
           coin: id.chainId.coin,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         })
 
         return BigInt(amount)
@@ -1272,7 +1272,7 @@ export class MockedWalletApiProxy {
           logo: '',
           isSpam: false,
           visible: false,
-          isShielded: false,
+          zcashTokenType: BraveWallet.ZCashTokenType.kNone,
         },
         error: 0,
         errorMessage: '',
@@ -1314,7 +1314,7 @@ export class MockedWalletApiProxy {
           registry: this.tokenBalancesRegistry,
           tokenId: token.tokenId,
           coin: token.coin,
-          isShielded: token.isShielded,
+          zcashTokenType: token.zcashTokenType,
         })
         const priceUsd = unbiasedRandom(0.00000001, 100_000)
         return {

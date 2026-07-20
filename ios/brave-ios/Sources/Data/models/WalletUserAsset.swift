@@ -81,7 +81,7 @@ public final class WalletUserAsset: NSManagedObject, CRUD {
       coingeckoId: self.coingeckoId,
       chainId: self.chainId,
       coin: BraveWallet.CoinType(rawValue: Int(self.coin))!,
-      isShielded: false
+      zcashTokenType: .none
     )
   }
 

@@ -1035,6 +1035,15 @@ enum SPLTokenProgram {
   kToken2022 = 3,
 };
 
+// Zcash only. Identifies which pool a token/asset represents.
+// kNone is the default for all non-Zcash tokens.
+enum ZCashTokenType {
+  kNone = 0,
+  kTransparent = 1,
+  kOrchard = 2,
+  kIronwood = 3,
+};
+
 struct BlockchainToken {
   // TODO(jocelyn): contract_address should be renamed to address to be a
   // general naming for different coin type. Currently it's token mint address
@@ -1056,7 +1065,8 @@ struct BlockchainToken {
   string coingecko_id = "";
   string chain_id;
   CoinType coin;
-  bool is_shielded = false;  // Zcash only, marks whether asset belongs to the shielded pool.
+  // Zcash only. kNone for every non-Zcash token.
+  ZCashTokenType zcash_token_type = kNone;
 };
 
 struct AllowanceInfo {
@@ -2110,6 +2120,7 @@ struct ZCashKeyId {
 struct ZCashBalance {
   uint64 total_balance;
   uint64 transparent_balance;
+  // Orchrad balance, Ironwood balance TBD.
   uint64 shielded_balance;
   uint64 shielded_pending_balance;
   // Transparent balances
@@ -2370,6 +2381,7 @@ struct ZecTxOutput {
 };
 
 struct ZecTxData {
+  // Whether Orchard pool is used. Ironwood TBD.
   bool use_shielded_pool;
   string to;
   bool sending_max_amount;

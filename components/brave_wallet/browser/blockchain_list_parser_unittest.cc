@@ -130,17 +130,17 @@ TEST(BlockchainListParseUnitTest, ParseTokenList) {
       "So11111111111111111111111111111111111111112", "Wrapped SOL",
       "So11111111111111111111111111111111111111112.png", false, false, false,
       false, mojom::SPLTokenProgram::kToken, false, false, "SOL", 9, true, "",
-      "solana", "0x65", mojom::CoinType::SOL, false);
+      "solana", "0x65", mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
   auto usdc = mojom::BlockchainToken::New(
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v", "USD Coin",
       "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v.png", false, false, false,
       false, mojom::SPLTokenProgram::kToken, false, false, "USDC", 6, true, "",
-      "usd-coin", "0x65", mojom::CoinType::SOL, false);
+      "usd-coin", "0x65", mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
   auto tsla = mojom::BlockchainToken::New(
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ", "Tesla Inc.",
       "2inRoG4DuMRRzZxAt913CCdNZCu2eGsDD9kZTrsj2DAZ.png", false, false, false,
       false, mojom::SPLTokenProgram::kToken2022, false, false, "TSLA", 8, true,
-      "", "", "0x65", mojom::CoinType::SOL, false);
+      "", "", "0x65", mojom::CoinType::SOL, mojom::ZCashTokenType::kNone);
   std::vector<mojom::BlockchainTokenPtr> solana_token_list;
   solana_token_list.push_back(std::move(tsla));
   solana_token_list.push_back(std::move(usdc));

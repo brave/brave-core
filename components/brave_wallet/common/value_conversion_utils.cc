@@ -385,7 +385,23 @@ mojom::BlockchainTokenPtr ValueToBlockchainToken(const base::DictValue& value) {
     token_ptr->spl_token_program = mojom::SPLTokenProgram::kUnsupported;
   }
   token_ptr->is_compressed = value.FindBool("is_compressed").value_or(false);
-  token_ptr->is_shielded = value.FindBool("is_shielded").value_or(false);
+  if (auto type_int = value.FindInt("zcash_token_type")) {
+    auto type = static_cast<mojom::ZCashTokenType>(*type_int);
+    token_ptr->zcash_token_type =
+        mojom::IsKnownEnumValue(type) ? type : mojom::ZCashTokenType::kNone;
+  } else {
+    // Back-compat with schema that stored a bool `is_shielded`.
+    // true → kOrchard; false + ZEC → kTransparent; non-ZEC → kNone.
+    // Shielded tokens are never persisted, so a legacy `true` is only
+    // defensive.
+    if (value.FindBool("is_shielded").value_or(false)) {
+      token_ptr->zcash_token_type = mojom::ZCashTokenType::kOrchard;
+    } else if (token_ptr->coin == mojom::CoinType::ZEC) {
+      token_ptr->zcash_token_type = mojom::ZCashTokenType::kTransparent;
+    } else {
+      token_ptr->zcash_token_type = mojom::ZCashTokenType::kNone;
+    }
+  }
 
   return token_ptr;
 }
@@ -410,7 +426,7 @@ base::DictValue BlockchainTokenToValue(const mojom::BlockchainTokenPtr& token) {
   value.Set("chain_id", token->chain_id);
   value.Set("spl_token_program", static_cast<int>(token->spl_token_program));
   value.Set("is_compressed", token->is_compressed);
-  value.Set("is_shielded", token->is_shielded);
+  value.Set("zcash_token_type", static_cast<int>(token->zcash_token_type));
   return value;
 }
 
