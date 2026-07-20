@@ -1680,6 +1680,7 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         MonotonicObservableSupplier.class,
                         TopInsetProvider.class,
+                        OneshotSupplier.class,
                         StartupMetricsTracker.class,
                         BackPressManager.class));
         Assert.assertTrue(
@@ -1700,6 +1701,7 @@ public class BytecodeTest {
                         SnackbarManager.class,
                         boolean.class,
                         Supplier.class,
+                        OneshotSupplier.class,
                         HomeSurfaceTracker.class,
                         BackPressManager.class));
         Assert.assertTrue(
