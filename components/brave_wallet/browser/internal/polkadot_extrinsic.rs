@@ -46,7 +46,7 @@ mod ffi {
         pub has_assets_pallet: bool,
         pub ss58_prefix: u16,
         pub spec_version: u32,
-        pub asset_tx_payment: bool,
+        pub signed_extensions: [u8; 64],
     }
 
     extern "Rust" {
@@ -172,6 +172,10 @@ pub enum Error {
     InvalidMetadata,
     /// Invalid length.
     InvalidLength,
+    /// Unknowned SignedExtension
+    UnknownSignedExtension,
+    /// SignedExtension overflow (more than we've anticipated).
+    SignedExtensionOverflow,
 }
 
 impl fmt::Display for Error {
@@ -181,6 +185,10 @@ impl fmt::Display for Error {
             Error::InvalidScale => write!(f, "Invalid SCALE-encoded bytes were found."),
             Error::InvalidMetadata => write!(f, "Invalid chain metadata was encountered."),
             Error::InvalidLength => write!(f, "Invalid length."),
+            Error::UnknownSignedExtension => write!(f, "Unknowned SignedExtension encountered."),
+            Error::SignedExtensionOverflow => {
+                write!(f, "SignedExtension overflow was encountered.")
+            }
         }
     }
 }
@@ -222,49 +230,101 @@ fn scale_encode_mortality(number: u32, mut period: u32) -> [u8; 2] {
     [(encoded & 0xff) as u8, (encoded >> 8) as u8]
 }
 
-fn append_extra(buf: &mut Vec<u8>, asset_tx_payment: bool) {
-    // The asset_id is hard-coded to zero here as we only support paying transaction
-    // fees via the chain's native token (DOT) for our initial first pass.
+fn append_extra(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    sender_nonce: u32,
+    block_number: u32,
+    buf: &mut Vec<u8>,
+) {
+    use polkadot_chain_metadata::SignedExtension;
 
-    if asset_tx_payment {
-        buf.extend_from_slice(&[
-            0x00, /* tip */
-            0x00, /* asset_id */
-            0x00, /* mode (disable metadata hash verification) */
-        ]);
-    } else {
-        buf.extend_from_slice(&[
-            0x00, /* tip */
-            0x00, /* mode (disable metadata hash verification) */
-        ]);
+    for &extension in &chain_metadata.signed_extensions {
+        if extension == 0 {
+            continue;
+        }
+
+        let extension: SignedExtension =
+            extension.try_into().expect("Encountered invalid SignedExtension.");
+
+        match extension {
+            SignedExtension::AuthorizeValueTransfer
+            | SignedExtension::AsPgas
+            | SignedExtension::AsRingAlias
+            | SignedExtension::AsDotnsGateway
+            | SignedExtension::RestrictOrigins => {
+                buf.extend_from_slice(&[0x00]);
+            }
+            SignedExtension::CheckMortality => {
+                buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
+            }
+            SignedExtension::CheckNonce => {
+                Compact(sender_nonce).encode_to(buf);
+            }
+            SignedExtension::ChargeAssetTxPayment => {
+                buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* asset_id */]);
+            }
+            SignedExtension::ChargeTransactionPayment => {
+                buf.extend_from_slice(&[0x00 /* tip */]);
+            }
+            SignedExtension::CheckMetadataHash => {
+                buf.extend_from_slice(&[0x00 /* mode (disable metadata hash verification) */]);
+            }
+            _ => continue,
+        }
     }
 }
 
-/// The definition for the extrinsic signature can be found here:
-/// https://spec.polkadot.network/id-extrinsics#defn-extrinsic-signature
-///
-/// Extrinsic signatures are created using the following data:
-/// P = { Raw if ||Raw|| <= 256, Blake2(Raw) if ||Raw|| > 256 }
-/// Raw = (M_i, F_i(m), E, R_v, F_v, H_h(G), H_h(B))
-///
-/// M_i = module indicator of the extrinsic (i.e. System, Balances, ...).
-/// F_i(m) = function indicator of the module (i.e. call index, parameters).
-/// E = extra data (mortality, nonce of sender, tip, mode).
-/// R_v = spec_version of the runtime (fetched via state_getRuntimeVersion).
-/// F_v = transaction version of the runtime (fetched via
-///       state_getRuntimeVersion).
-/// H_h(G) = block hash of the genesis block.
-/// H_h(B) = block hash of the block which starts the extrinsic's mortality.
-///
-/// We return a binary blob containing all of these fields so that it's suitable
-/// for cryptographic signing.
-///
-/// The formal spec doesn't define it but here:
-/// https://wiki.polkadot.com/learn/learn-transaction-construction/
-/// we learn that metadata hashing can be applied to extrinsics but we disable
-/// this verification by setting the mode to 0.
-/// See also:
-/// https://github.com/polkadot-fellows/RFCs/blob/85ca3ff275ded2e690c4c175d5333d12b139d863/text/0078-merkleized-metadata.md
+fn append_implicit(
+    chain_metadata: &CxxPolkadotChainMetadata,
+    spec_version: u32,
+    transaction_version: u32,
+    genesis_hash: &[u8; 32],
+    block_hash: &[u8; 32],
+    buf: &mut Vec<u8>,
+) {
+    use polkadot_chain_metadata::SignedExtension;
+
+    for &extension in &chain_metadata.signed_extensions {
+        if extension == 0 {
+            continue;
+        }
+
+        let extension: SignedExtension =
+            extension.try_into().expect("Encountered invalid SignedExtension.");
+
+        match extension {
+            SignedExtension::CheckSpecVersion => {
+                buf.extend_from_slice(&spec_version.to_le_bytes());
+            }
+            SignedExtension::CheckTxVersion => {
+                buf.extend_from_slice(&transaction_version.to_le_bytes());
+            }
+            SignedExtension::CheckGenesis => {
+                buf.extend_from_slice(genesis_hash);
+            }
+            SignedExtension::CheckMortality => {
+                buf.extend_from_slice(block_hash);
+            }
+            SignedExtension::CheckMetadataHash => {
+                buf.extend_from_slice(&[0x00]);
+            }
+            _ => continue,
+        }
+    }
+}
+
+// To generate the signature payload, we follow what's in the polkadot-sdk docs.
+// We create a binary string by concatenating the call data, and then the
+// transaction extensions. Transaction extensions comes in two varities and the
+// same name will have two different types, based on the context.
+// We manually curate a whitelist of the associated types for each extension and
+// write it out appropriately.
+// An example of this dual-type nature can be seen here:
+// https://github.com/polkadot-js/api/blob/db81417393858fa40b7b8168d80d52280db407d2/packages/types-support/src/metadata/v16/asset-hub-polkadot-json.json#L11468-L11535
+//
+// It's important to note that on-chain metadata doesn't necessarily match
+// what's in the above link.
+// https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/extrinsic_encoding/index.html#the-signed-payload-format
 fn generate_extrinsic_signature_payload_impl(
     chain_metadata: &CxxPolkadotChainMetadata,
     sender_nonce: u32,
@@ -327,25 +387,16 @@ fn generate_extrinsic_signature_payload_impl(
         Compact(u128::from_le_bytes(*send_amount_bytes)).encode_to(&mut buf);
     }
 
-    // Write extra data, E.
-    buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
-    Compact(sender_nonce).encode_to(&mut buf);
-    append_extra(&mut buf, chain_metadata.asset_tx_payment);
-
-    // Write R_v.
-    buf.extend_from_slice(&spec_version.to_le_bytes());
-
-    // Write F_v.
-    buf.extend_from_slice(&transaction_version.to_le_bytes());
-
-    // Write H_h(G).
-    buf.extend_from_slice(genesis_hash);
-
-    // Write H_h(B)
-    buf.extend_from_slice(block_hash);
-
-    // Write metadata hash (nullary).
-    buf.extend_from_slice(&[0x00]);
+    // https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/extrinsic_encoding/index.html#the-signed-payload-format
+    append_extra(chain_metadata, sender_nonce, block_number, &mut buf);
+    append_implicit(
+        chain_metadata,
+        spec_version,
+        transaction_version,
+        genesis_hash,
+        block_hash,
+        &mut buf,
+    );
 
     // If our payload exceeds 256 bytes, hash it down to 32 bytes as demonstarted by
     // the polkadot-js implementation here:
@@ -444,9 +495,7 @@ fn make_signed_transfer_extrinsic_impl(
     buf.extend_from_slice(sender_pubkey);
     buf.extend_from_slice(&[SR25519_SIGNATURE]);
     buf.extend_from_slice(signature);
-    buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
-    Compact(sender_nonce).encode_to(&mut buf);
-    append_extra(&mut buf, chain_metadata.asset_tx_payment);
+    append_extra(chain_metadata, sender_nonce, block_number, &mut buf);
 
     let (pallet_idx, call_idx) = {
         if asset_id.is_some() {

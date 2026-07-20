@@ -8,6 +8,7 @@
 #include <string>
 
 #include "base/numerics/checked_math.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -29,10 +30,10 @@ constexpr char kAssetsPalletIndex[] = "assets_pallet_index";
 constexpr char kAssetsTransferAllCallIndex[] = "assets_transfer_all_call_index";
 constexpr char kAssetsTransferKeepAliveCallIndex[] =
     "assets_transfer_keep_alive_call_index";
-constexpr char kAssetTxPayment[] = "asset_tx_payment";
 constexpr char kSs58Prefix[] = "ss58_prefix";
 constexpr char kSpecVersion[] = "spec_version";
 constexpr char kVersionField[] = "version";
+constexpr char kSignedExtensions[] = "signed_extensions";
 
 // Pref structure stored under kBraveWalletPolkadotChainMetadata:
 // {
@@ -48,9 +49,9 @@ constexpr char kVersionField[] = "version";
 //     "assets_pallet_index": int,               // u8
 //     "assets_transfer_all_call_index": int,    // u8
 //     "assets_transfer_keep_alive_call_index": int,  // u8
-//     "asset_tx_payment": bool,                 // bool
+//     "signed_extensions": string,              // hex string
 //     "ss58_prefix": int,                       // u16
-//     "spec_version": int                       // u32
+//     "spec_version": int,                       // u32
 //   },
 //   ...
 // }
@@ -75,6 +76,13 @@ bool ReadBool(const base::DictValue& dict, const char* key, bool* out_value) {
 
   *out_value = *value;
   return true;
+}
+
+bool ReadBytes(const base::DictValue& dict,
+               std::string_view key,
+               base::span<uint8_t, kMaxSignedExtensions> extensions) {
+  const auto* hex = dict.FindString(key);
+  return hex && base::HexStringToSpan(*hex, extensions);
 }
 
 }  // namespace
@@ -157,8 +165,8 @@ PolkadotChainMetadataPrefs::GetChainMetadata(std::string_view chain_id) const {
     return std::nullopt;
   }
 
-  if (!ReadBool(*chain_metadata, kAssetTxPayment,
-                &metadata->asset_tx_payment)) {
+  if (!ReadBytes(*chain_metadata, kSignedExtensions,
+                 metadata->signed_extensions)) {
     return std::nullopt;
   }
 
@@ -225,7 +233,8 @@ bool PolkadotChainMetadataPrefs::SetChainMetadata(
   value.Set(kAssetsTransferAllCallIndex, assets_transfer_all_call_index);
   value.Set(kAssetsTransferKeepAliveCallIndex,
             assets_transfer_keep_alive_call_index);
-  value.Set(kAssetTxPayment, metadata->asset_tx_payment);
+  value.Set(kSignedExtensions,
+            base::HexEncodeLower(metadata->signed_extensions));
   value.Set(kSs58Prefix, ss58_prefix);
   value.Set(kSpecVersion, spec_version);
   ScopedDictPrefUpdate update(profile_prefs_.get(),
