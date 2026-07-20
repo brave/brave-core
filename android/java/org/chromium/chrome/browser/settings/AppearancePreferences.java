@@ -35,6 +35,7 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
+import org.chromium.chrome.browser.theme.BraveDynamicColors;
 import org.chromium.chrome.browser.toolbar.ToolbarPositionController;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarButtonVariant;
 import org.chromium.chrome.browser.toolbar.adaptive.AdaptiveToolbarPrefs;
@@ -102,6 +103,13 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         setPreferenceVisibleIfPresent(
                 PREF_BRAVE_DISABLE_SHARING_HUB, shouldShowSharingHubPreference());
 
+        if (BraveDynamicColors.isDynamicColorsAvailable()) {
+            setPreferenceVisibleIfPresent(
+                    BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, true);
+        } else {
+            removePreferenceIfPresent(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
+        }
+
         if (BraveTabUiFeatureUtilities.isBraveAndroidTabGroupsSettingsFeatureEnabled()) {
             removePreferenceIfPresent(PREF_BRAVE_ENABLE_TAB_GROUPS);
             removePreferenceIfPresent(PREF_SHOW_UNDO_WHEN_TABS_CLOSED);
@@ -160,6 +168,14 @@ public class AppearancePreferences extends AppearanceSettingsFragment
                 findPreference(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY);
         if (enableBottomToolbar != null) {
             enableBottomToolbar.setOnPreferenceChangeListener(this);
+        }
+
+        ChromeSwitchPreference dynamicColorsPref =
+                (ChromeSwitchPreference)
+                        findPreference(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
+        if (dynamicColorsPref != null) {
+            dynamicColorsPref.setChecked(BraveDynamicColors.isDynamicColorsEnabled());
+            dynamicColorsPref.setOnPreferenceChangeListener(this);
         }
 
         Preference sharingHub = findPreference(PREF_BRAVE_DISABLE_SHARING_HUB);
@@ -288,6 +304,9 @@ public class AppearancePreferences extends AppearanceSettingsFragment
             BraveFeatureUtil.enableFeature(
                     BraveFeatureList.ENABLE_FORCE_DARK, (boolean) newValue, true);
             shouldRelaunch = true;
+        } else if (BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED.equals(key)) {
+            ChromeSharedPreferences.getInstance().writeBoolean(key, (boolean) newValue);
+            shouldRelaunch = true;
         } else if (PREF_BRAVE_DISABLE_SHARING_HUB.equals(key)) {
             setSharingHubEnabled((boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_TAB_GROUPS.equals(key)) {
@@ -386,19 +405,20 @@ public class AppearancePreferences extends AppearanceSettingsFragment
     private void applyOrdering() {
         setPreferenceOrder(PREF_NAVIGATION_SECTION, 0);
         setPreferenceOrder(AppearanceSettingsFragment.PREF_UI_THEME, 1);
-        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 2);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 3);
-        setPreferenceOrder(PREF_ADDRESS_BAR, 4);
-        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 5);
-        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 6);
-        setPreferenceOrder(PREF_GENERAL_SECTION, 7);
-        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 8);
-        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 9);
-        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 10);
-        setPreferenceOrder(PREF_ADS_SWITCH, 11);
-        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 12);
-        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 13);
-        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 14);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED, 2);
+        setPreferenceOrder(PREF_BRAVE_CUSTOMIZE_MENU, 3);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_TOOLBAR_SHORTCUT, 4);
+        setPreferenceOrder(PREF_ADDRESS_BAR, 5);
+        setPreferenceOrder(BravePreferenceKeys.BRAVE_BOTTOM_TOOLBAR_ENABLED_KEY, 6);
+        setPreferenceOrder(PREF_ENABLE_MULTI_WINDOWS, 7);
+        setPreferenceOrder(PREF_GENERAL_SECTION, 8);
+        setPreferenceOrder(PREF_BRAVE_NIGHT_MODE_ENABLED, 9);
+        setPreferenceOrder(PREF_BRAVE_DISABLE_SHARING_HUB, 10);
+        setPreferenceOrder(PREF_SHOW_BRAVE_REWARDS_ICON, 11);
+        setPreferenceOrder(PREF_ADS_SWITCH, 12);
+        setPreferenceOrder(AppearanceSettingsFragment.PREF_BOOKMARK_BAR, 13);
+        setPreferenceOrder(PREF_BRAVE_ENABLE_TAB_GROUPS, 14);
+        setPreferenceOrder(PREF_SHOW_UNDO_WHEN_TABS_CLOSED, 15);
     }
 
     private void setPreferenceOrder(String key, int order) {
@@ -489,6 +509,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
 
                     if (!shouldShowSharingHubPreference()) {
                         indexData.removeEntryForKey(frag, PREF_BRAVE_DISABLE_SHARING_HUB);
+                    }
+
+                    if (!BraveDynamicColors.isDynamicColorsAvailable()) {
+                        indexData.removeEntryForKey(
+                                frag, BravePreferenceKeys.BRAVE_ANDROID_DYNAMIC_COLORS_ENABLED);
                     }
 
                     if (BraveTabUiFeatureUtilities
