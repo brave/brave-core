@@ -7,13 +7,7 @@
 
 #include "brave/base/test/launcher/teamcity_reporter.h"
 
-#define TestLauncher TestLauncher_ChromiumImpl
-#define AddTestResult(...) AddTestResult(OnTestResult(__VA_ARGS__));
-
 #include <base/test/launcher/test_launcher.cc>
-
-#undef TestLauncher
-#undef AddTestResult
 
 namespace base {
 
