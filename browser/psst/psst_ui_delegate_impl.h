@@ -41,6 +41,7 @@ class PsstUiDelegateImpl : public PsstTabWebContentsObserver::PsstUiDelegate {
   // PsstUiDelegate overrides
   void Show(url::Origin origin,
             PsstWebsiteSettings dialog_data,
+            const int rule_version,
             std::optional<UserScriptResult> user_script_result,
             PsstTabWebContentsObserver::ConsentCallback apply_changes_callback)
       override;
