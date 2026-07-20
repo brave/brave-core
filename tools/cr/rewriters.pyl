@@ -139,6 +139,24 @@ inside:
                 "node": "compound_statement",
             },
         },
+
+        # Every identifier-family token whose text is exactly `class_name`: the
+        # name in the class declaration and in type positions (type_identifier),
+        # the `Class::` qualifier on out-of-line members (namespace_identifier),
+        # and the constructor/destructor name plus any other bare use
+        # (identifier).
+        "cxx.find_class_name_tokens": {
+            "template": """\
+any:
+  - kind: type_identifier
+  - kind: namespace_identifier
+  - kind: identifier
+regex: ^{class_name}$
+""",
+            "result": {
+                "node": "identifier",
+            },
+        },
     },
     "ast.rewriter": {
 
@@ -207,6 +225,21 @@ inside:
             },
             "result": {
                 "node": "compound_statement",
+            },
+        },
+
+        # Each matched name token replaced with `rename`. The matcher already
+        # pinned every match's text to exactly `class_name`, so the whole token
+        # (`^.+$`) is swapped for the new name.
+        "cxx.rename_class": {
+            "matcher": "cxx.find_class_name_tokens",
+            "inputs": ["class_name", "rename"],
+            "replace": {
+                "re_pattern": "^.+$",
+                "replace": "{rename}",
+            },
+            "result": {
+                "node": "identifier",
             },
         },
     },

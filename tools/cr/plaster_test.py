@@ -1727,6 +1727,152 @@ class RewriterFormsTest(unittest.TestCase):
             "      return_if: 'g()'\n",
             'preempt_function_impl `function_name` must be a non-empty string')
 
+    # -- rename_class op (real ast-grep binary) -----------------------------
+
+    # `count` is omitted throughout: rename_class defaults to `count: 0` (one or
+    # more), unlike every other rewriter (which defaults to exactly one).
+
+    def test_rename_class_renames_declaration_and_type_uses(self):
+        # The class declaration and a type-position use are both renamed; a
+        # different class that merely shares a prefix is left alone.
+        result = self._apply(
+            'rename.h',
+            'class Foo {\n};\n\nclass FooBar {\n  Foo* foo_;\n};\n',
+            'substitutions:\n'
+            '  - description: rename Foo to Foo_ChromiumImpl\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'class Foo_ChromiumImpl {\n};\n\n'
+            'class FooBar {\n  Foo_ChromiumImpl* foo_;\n};\n')
+
+    def test_rename_class_renames_qualifiers_and_ctor(self):
+        # The `Foo::` qualifier and the out-of-line constructor name are both
+        # renamed.
+        result = self._apply(
+            'rename_ctor.cc', 'Foo::Foo() {}\nvoid Foo::Bar() {}\n',
+            'substitutions:\n'
+            '  - description: rename Foo\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'Foo_ChromiumImpl::Foo_ChromiumImpl() {}\n'
+            'void Foo_ChromiumImpl::Bar() {}\n')
+
+    def test_rename_class_leaves_string_literal_untouched(self):
+        # The whole point of matching AST identifier nodes: a same-spelled
+        # string literal survives. The exact-quote-adjacent form (`"Foo"`) is
+        # the case a `#define`/regex token rename would wrongly rewrite.
+        result = self._apply(
+            'rename_str.cc', 'void Foo::Run() {\n  Register("Foo");\n}\n',
+            'substitutions:\n'
+            '  - description: rename Foo but keep the string\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'void Foo_ChromiumImpl::Run() {\n  Register("Foo");\n}\n')
+
+    def test_rename_class_leaves_token_inside_a_larger_string_untouched(self):
+        # `Foo` sits in the *middle* of a string, not adjacent to a quote -- the
+        # case a `(?<!")...(?!")` regex guard would still rewrite, but an AST
+        # match never can (the whole literal is one string node).
+        result = self._apply(
+            'rename_midstr.cc',
+            'void Foo::Log() {\n  LOG(INFO) << "start Foo done";\n}\n',
+            'substitutions:\n'
+            '  - description: rename Foo, keep it inside the message string\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'void Foo_ChromiumImpl::Log() {\n'
+            '  LOG(INFO) << "start Foo done";\n}\n')
+
+    def test_rename_class_leaves_line_and_block_comments_untouched(self):
+        # Neither a `//` line comment nor a `/* */` block comment mentioning the
+        # name is rewritten -- comments are not identifier nodes.
+        result = self._apply(
+            'rename_comment.cc', '// Foo does things.\n'
+            '/* Foo again, and Foo. */\n'
+            'void Foo::Run() {\n}\n', 'substitutions:\n'
+            '  - description: rename Foo but keep both comments\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, '// Foo does things.\n'
+            '/* Foo again, and Foo. */\n'
+            'void Foo_ChromiumImpl::Run() {\n}\n')
+
+    def test_rename_class_default_count_renames_all_occurrences(self):
+        # With the default `count: 0`, omitting `count` renames every occurrence
+        # (here four tokens across two lines) instead of demanding exactly one.
+        result = self._apply(
+            'rename_many.cc', 'Foo::Foo() {}\nvoid Foo::Bar() {}\n',
+            'substitutions:\n'
+            '  - description: rename Foo everywhere, no count needed\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'Foo_ChromiumImpl::Foo_ChromiumImpl() {}\n'
+            'void Foo_ChromiumImpl::Bar() {}\n')
+
+    def test_rename_class_explicit_count_still_asserts_exact(self):
+        # An explicit `count` overrides the default and asserts an exact number;
+        # here two tokens match the stated two.
+        result = self._apply(
+            'rename_exact.h', 'class Foo {\n  Foo* self_;\n};\n',
+            'substitutions:\n'
+            '  - description: rename the two Foo tokens\n'
+            '    count: 2\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result,
+            'class Foo_ChromiumImpl {\n  Foo_ChromiumImpl* self_;\n};\n')
+
+    def test_rename_class_explicit_count_mismatch_fails(self):
+        # Two tokens match, but the entry asserts one.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'rename_bad_count.h', 'class Foo {\n  Foo* self_;\n};\n',
+                'substitutions:\n'
+                '  - description: wrong explicit count\n'
+                '    count: 1\n'
+                '    rename_class:\n'
+                '      class_name: Foo\n'
+                '      rename: Foo_ChromiumImpl\n')
+
+    def test_rename_class_absent_fails(self):
+        # The default `count: 0` is "one or more", so zero matches still fails.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'rename_absent.h', 'class Bar {\n};\n', 'substitutions:\n'
+                '  - description: no such class\n'
+                '    rename_class:\n'
+                '      class_name: Foo\n'
+                '      rename: Foo_ChromiumImpl\n')
+
+    def test_rename_class_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      renam: Bar\n', 'Unrecognised rename_class arg')
+
+    def test_rename_class_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing rename\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n', 'rename_class requires arg')
+
     # -- export-macro classes (real ast-grep binary) ----------------------
     #
     # tree-sitter cannot parse `class MACRO_EXPORT Name`, so the engine blanks
