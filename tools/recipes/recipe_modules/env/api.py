@@ -19,7 +19,7 @@ import shutil
 from recipe_api import RecipeApi
 
 
-class _RealEnv:
+class _RealEnv:  # pragma: no cover - production env backend, not simulated.
     """Production backend: the real process environment and PATH lookup."""
 
     def get(self, key: str, default: str | None) -> str | None:

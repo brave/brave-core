@@ -6,7 +6,7 @@
 
 Exposes the module's simulated preconditions as helpers so a *recipe* that
 merely depends on `brave_core_shallow` can arrange them without itself depending
-on `path`, mirroring how recipes_py modules provide their own test seams.
+on `path`.
 """
 
 from __future__ import annotations

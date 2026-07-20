@@ -120,6 +120,12 @@ vpython3 tools/recipes/engine.py test list     # list all test case ids
 vpython3 tools/recipes/engine.py test run --filter package_rust
 ```
 
+On a full (unfiltered) `run` or `train`, the runner also enforces 100% line
+coverage of all `recipes/` and `recipe_modules/` source, reports any module with
+no test coverage at all, and (on `run`) flags orphaned expectation files -- any
+of which fails the run. Production-only I/O backends (the `_Real*` seams, never
+exercised by simulation) are marked `# pragma: no cover`.
+
 Simulation is possible because the seam modules, such as `step`, `path`, `env`,
 `platform`, are the only ones that touch the outside world, and in test mode
 they read/mutate the case's simulated state instead. A recipe or module that
@@ -148,28 +154,33 @@ Fragment builders live on the root api (`api.test`, `api.properties`,
 module-specific precondition helpers).
 
 `post_process` checks run against the recorded steps after simulation, each
-registered with `api.post_process(<check>, <args...>)`. A failing check fails
-the test; a check may also filter the written expectation. The available checks:
+registered with `api.post_process(<check>, <args...>)`. A failing check does not
+abort its hook: it is recorded with the failing source line and the resolved
+values of its sub-expressions (AST-introspected), and fails the test. A check
+may also return a filtered `steps` mapping to narrow the written expectation.
+The available checks:
 
-| Check                 | Arguments             | Passes when                                                             |
-| --------------------- | --------------------- | ----------------------------------------------------------------------- |
-| `MustRun`             | `step_name`           | a step with that exact name ran                                         |
-| `DoesNotRun`          | `step_name`           | no step with that name ran                                              |
-| `MustRunRE`           | `pattern`             | some step name matches the regex                                        |
-| `DoesNotRunRE`        | `pattern`             | no step name matches the regex                                          |
-| `StepCommandContains` | `step_name, args`     | the step ran and its command contains `args` as an in-order subsequence |
-| `StepCommandRE`       | `step_name, patterns` | the step ran and `patterns[i]` matches `cmd[i]` for each `i`            |
-| `StepSuccess`         | `step_name`           | the step ran with retcode `0`                                           |
-| `StepFailure`         | `step_name`           | the step ran with a non-zero retcode                                    |
-| `StatusSuccess`       | _(none)_              | the overall run status is `SUCCESS`                                     |
-| `StatusFailure`       | _(none)_              | the overall run status is `FAILURE` (a checked step failed)             |
-| `StatusException`     | _(none)_              | the overall run status is `EXCEPTION` (the recipe raised)               |
-| `DropExpectation`     | _(none)_              | always; suppresses writing this test's expectation file                 |
+| Check                 | Arguments             | Passes when                                                                        |
+| --------------------- | --------------------- | ---------------------------------------------------------------------------------- |
+| `MustRun`             | `step_name...`        | every named step ran                                                               |
+| `DoesNotRun`          | `step_name...`        | none of the named steps ran                                                        |
+| `MustRunRE`           | `pattern`             | some step name matches the regex                                                   |
+| `DoesNotRunRE`        | `pattern...`          | no step name matches any regex                                                     |
+| `StepCommandContains` | `step_name, args`     | the step ran and its command contains `args` as an in-order subsequence            |
+| `StepCommandRE`       | `step_name, patterns` | the step ran, each `patterns[i]` fully matches `cmd[i]`, with no surplus of either |
+| `StepSuccess`         | `step_name`           | the step ran with retcode `0`                                                      |
+| `StepFailure`         | `step_name`           | the step ran with a non-zero retcode                                               |
+| `StatusSuccess`       | _(none)_              | the run succeeded (`$result` has no `failure`)                                     |
+| `StatusFailure`       | _(none)_              | the run had a non-infra failure (a checked step failed)                            |
+| `StatusException`     | _(none)_              | the run had an infra failure (the recipe raised)                                   |
+| `StatusAnyFailure`    | _(none)_              | the run failed, infra or non-infra                                                 |
+| `DropExpectation`     | _(none)_              | always; suppresses writing this test's expectation file                            |
 
 `DropExpectation` is filter-only (it writes/keeps no golden), and should be
 considered for cases where there are too many permutations.
 
 Modules are tested via small example recipes under
-`recipe_modules/<module>/examples/`, run through this same machinery.
-Expectation files sit next to each recipe in a `<recipe>.expected/` directory
-and are committed.
+`recipe_modules/<module>/examples/` (with focused edge cases under
+`recipe_modules/<module>/tests/`), run through this same machinery. Expectation
+files sit next to each recipe in a `<recipe>.expected/` directory and are
+committed.

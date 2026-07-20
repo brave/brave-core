@@ -24,7 +24,6 @@
     "name": "use vpython3"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

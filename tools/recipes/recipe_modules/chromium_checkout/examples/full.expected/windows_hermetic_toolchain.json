@@ -65,7 +65,6 @@
     "name": "win toolchain env"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

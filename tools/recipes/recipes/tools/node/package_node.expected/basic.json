@@ -60,7 +60,6 @@
     "name": "package node"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

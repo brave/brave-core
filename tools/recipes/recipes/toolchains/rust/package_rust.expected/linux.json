@@ -98,7 +98,6 @@
     "name": "build rust toolchain"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

@@ -150,7 +150,7 @@ class _Engine:
         for dep_name in deps:
             setattr(inst.m, dep_name,
                     self._instantiate_module(dep_name, chain + [name]))
-        # A module can reach itself via `self.m.<own_name>`, as in recipes_py.
+        # A module can reach itself via `self.m.<own_name>`.
         setattr(inst.m, name, inst)
 
         # Seed the simulation context (test mode only) after DEPS are wired but

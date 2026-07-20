@@ -5,8 +5,8 @@
 """Test API for the `step` module: seed a step's simulated result.
 
 `api.step_data(...)` on the root api is the usual entry point; this exposes the
-same thing as `api.step.data(...)` for symmetry with recipes_py, so a step's
-retcode/output can be seeded next to other `api.step.*` fragments.
+same thing as `api.step.data(...)`, so a step's retcode/output can be seeded next
+to other `api.step.*` fragments.
 """
 
 from __future__ import annotations

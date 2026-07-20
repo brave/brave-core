@@ -1,17 +1,6 @@
 [
   {
     "cmd": [
-      "git",
-      "clone",
-      "--depth",
-      "1",
-      "https://chromium.googlesource.com/chromium/tools/depot_tools",
-      "[WORKSPACE]/chromium/third_party/depot_tools"
-    ],
-    "name": "clone depot_tools"
-  },
-  {
-    "cmd": [
       "gclient"
     ],
     "name": "verify gclient"

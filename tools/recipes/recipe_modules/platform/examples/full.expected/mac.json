@@ -2,16 +2,16 @@
   {
     "cmd": [
       "echo",
-      "/depot_tools/gclient"
+      "mac"
     ],
-    "name": "resolved gclient"
+    "name": "report platform"
   },
   {
     "cmd": [
       "echo",
-      "on"
+      "mac"
     ],
-    "name": "flag set"
+    "name": "mac only"
   },
   {
     "name": "$result"

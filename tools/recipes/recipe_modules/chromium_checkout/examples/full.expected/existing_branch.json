@@ -58,7 +58,6 @@
     "name": "gclient sync"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

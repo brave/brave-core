@@ -20,7 +20,6 @@
     "name": "after"
   },
   {
-    "name": "$result",
-    "status": "SUCCESS"
+    "name": "$result"
   }
 ]

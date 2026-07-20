@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import post_process
 
-DEPS = ['depot_tools', 'env', 'platform', 'step']
+DEPS = ['depot_tools', 'env', 'path', 'platform', 'step']
 
 
 def RunSteps(api):
@@ -23,7 +23,7 @@ def GenTests(api):
         api.post_process(post_process.MustRun, 'clone depot_tools'),
         api.post_process(post_process.MustRun, 'verify gclient'),
         api.post_process(post_process.StepCommandRE, 'use vpython3',
-                         [r'vpython3$', r'--version']),
+                         [r'.*vpython3', r'--version']),
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(
@@ -33,9 +33,18 @@ def GenTests(api):
         api.post_process(post_process.StatusSuccess),
     )
     yield api.test(
+        'already deployed',
+        api.platform.name('linux'),
+        # A standalone depot_tools already sits under the Chromium checkout.
+        api.path.files('chromium/third_party/depot_tools/gclient'),
+        api.post_process(post_process.DoesNotRun, 'clone depot_tools'),
+        api.post_process(post_process.MustRun, 'verify gclient'),
+        api.post_process(post_process.StatusSuccess),
+    )
+    yield api.test(
         'windows',
         api.platform.name('win'),
         api.post_process(post_process.StepCommandRE, 'use vpython3',
-                         [r'vpython3\.bat$', r'--version']),
+                         [r'.*vpython3\.bat', r'--version']),
         api.post_process(post_process.StatusSuccess),
     )

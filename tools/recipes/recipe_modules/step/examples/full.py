@@ -28,7 +28,8 @@ def GenTests(api):
     )
     yield api.test(
         'step fails',
-        api.step_data('might fail', retcode=1),
+        # Uses the step module's own `api.step.data(...)` seeding helper.
+        api.step.data('might fail', retcode=1),
         api.post_process(post_process.MustRun, 'might fail'),
         api.post_process(post_process.StepFailure, 'might fail'),
         api.post_process(post_process.DoesNotRun, 'after'),
