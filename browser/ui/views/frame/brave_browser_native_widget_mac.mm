@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/toolbar/toolbar_view.h"
+#include "chrome/browser/ui/views/web_apps/frame_toolbar/web_app_frame_toolbar_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/remote_cocoa/common/native_widget_ns_window_host.mojom.h"
 
@@ -46,6 +47,17 @@ void BraveBrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(
 
   BrowserNativeWidgetMac::GetWindowFrameTitlebarHeight(override_titlebar_height,
                                                        titlebar_height);
+
+  if (*override_titlebar_height && !browser_view_->ShouldDrawTabStrip()) {
+    if (tabs::UseCompactHorizontalTabs()) {
+      // Upstream always adds kWebAppMenuMargin * 2 (14px) to the titlebar
+      // height. In Compact mode use a tighter 5px of vertical padding
+      // instead.
+      constexpr int kCompactWebAppTitlebarPadding = 5;
+      *titlebar_height -=
+          (kWebAppMenuMargin * 2) - kCompactWebAppTitlebarPadding;
+    }
+  }
 }
 
 void BraveBrowserNativeWidgetMac::ValidateUserInterfaceItem(
