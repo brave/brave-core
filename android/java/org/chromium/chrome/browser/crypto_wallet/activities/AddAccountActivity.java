@@ -9,6 +9,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -80,6 +81,16 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
     @Override
     protected void triggerLayoutInflation() {
+        if (mEditedAccountInfo == null) {
+            // The screen may show a private key or a password. Secure the window
+            // before any content is rendered, as restoring the instance state
+            // after a configuration change can populate these fields well before
+            // native initialization completes.
+            getWindow()
+                    .setFlags(
+                            WindowManager.LayoutParams.FLAG_SECURE,
+                            WindowManager.LayoutParams.FLAG_SECURE);
+        }
         setContentView(R.layout.activity_add_account);
 
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -127,6 +138,13 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         btnAdd.setOnClickListener(
                 v -> {
+                    if (mKeyringService == null) {
+                        // Wallet services are unavailable until native
+                        // initialization completes. Restoring the instance state
+                        // after a configuration change re-enables the button
+                        // before that happens, so ignore early clicks.
+                        return;
+                    }
                     if (mEditedAccountInfo != null) {
                         updateAccountName();
                         return;
@@ -159,7 +177,11 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         if (mEditedAccountInfo != null) {
             Button btnAdd = findViewById(R.id.btn_add);
             btnAdd.setText(getResources().getString(R.string.wallet_accounts_update));
-            mAddAccountText.setText(mEditedAccountInfo.name);
+            // Prefill the current account name only when the field is empty,
+            // preserving the text restored after a configuration change.
+            if (TextUtils.isEmpty(mAddAccountText.getText().toString().trim())) {
+                mAddAccountText.setText(mEditedAccountInfo.name);
+            }
             ActionBar actionBar = getSupportActionBar();
             if (actionBar != null) {
                 actionBar.setTitle(getResources().getString(R.string.update_account));
@@ -169,17 +191,36 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             return;
         }
 
-        getWindow()
-                .setFlags(
-                        WindowManager.LayoutParams.FLAG_SECURE,
-                        WindowManager.LayoutParams.FLAG_SECURE);
+        if (mWalletModel == null) {
+            // Account creation cannot work without the wallet model. This may
+            // happen when the activity is restored after its process was killed
+            // and BraveActivity has not been recreated yet.
+            finish();
+            return;
+        }
         LiveDataUtil.observeOnce(
                 mWalletModel.getKeyringModel().mAccountInfos,
                 accounts -> {
-                    mAddAccountText.setText(
-                            WalletUtils.generateUniqueAccountName(
-                                    mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                    // Prefill a generated name only when the field is empty,
+                    // preserving the text restored after a configuration change.
+                    if (TextUtils.isEmpty(mAddAccountText.getText().toString().trim())) {
+                        mAddAccountText.setText(
+                                WalletUtils.generateUniqueAccountName(
+                                        mCoinForNewAccount, accounts.toArray(new AccountInfo[0])));
+                    }
                 });
+    }
+
+    @Override
+    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+        // View visibility is not part of the saved view hierarchy state. Show
+        // the password field again when the restored private key content is a
+        // JSON keystore, mirroring the file picker flow.
+        if (mEditedAccountInfo == null
+                && Utils.isJSONValid(mPrivateKeyControl.getText().toString())) {
+            findViewById(R.id.import_account_password_layout).setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
