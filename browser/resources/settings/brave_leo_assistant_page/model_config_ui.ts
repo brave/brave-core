@@ -149,6 +149,14 @@ export class ModelConfigUI extends ModelConfigUIBase {
       return
     }
 
+    const capabilities: mojom.ModelCapability[] = []
+    if (this.hasVisionSupport) {
+      capabilities.push(mojom.ModelCapability.VISION)
+    }
+    if (this.supportsTools) {
+      capabilities.push(mojom.ModelCapability.TOOLS)
+    }
+
     const modelConfig: mojom.Model = {
       options: {
         customModelOptions: {
@@ -170,6 +178,7 @@ export class ModelConfigUI extends ModelConfigUIBase {
       videoSupport: false,
       supportsTools: this.supportsTools,
       supportedCapabilities: [mojom.ConversationCapability.CHAT],
+      capabilities,
       isSuggestedModel: false,
       isNearModel: false,
       supportsPrivateInference: false,

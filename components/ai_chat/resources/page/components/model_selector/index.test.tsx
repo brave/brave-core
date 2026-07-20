@@ -28,6 +28,7 @@ describe('ModelSelector', () => {
         Mojom.ConversationCapability.CHAT,
         Mojom.ConversationCapability.CONTENT_AGENT,
       ],
+      capabilities: [],
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
@@ -50,6 +51,7 @@ describe('ModelSelector', () => {
         Mojom.ConversationCapability.CHAT,
         Mojom.ConversationCapability.CONTENT_AGENT,
       ],
+      capabilities: [],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -70,6 +72,7 @@ describe('ModelSelector', () => {
       isNearModel: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+      capabilities: [],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -93,6 +96,7 @@ describe('ModelSelector', () => {
         Mojom.ConversationCapability.CHAT,
         Mojom.ConversationCapability.CONTENT_AGENT,
       ],
+      capabilities: [],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -113,6 +117,7 @@ describe('ModelSelector', () => {
       isNearModel: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+      capabilities: [],
       visionSupport: true,
       options: {
         customModelOptions: undefined,
@@ -134,6 +139,7 @@ describe('ModelSelector', () => {
       visionSupport: true,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+      capabilities: [],
       options: {
         customModelOptions: undefined,
         leoModelOptions: {
@@ -154,6 +160,7 @@ describe('ModelSelector', () => {
       visionSupport: false,
       supportsTools: false,
       supportedCapabilities: [Mojom.ConversationCapability.CHAT],
+      capabilities: [],
       isSuggestedModel: false,
       options: {
         leoModelOptions: undefined,
