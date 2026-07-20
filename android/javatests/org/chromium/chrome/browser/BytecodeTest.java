@@ -2092,7 +2092,8 @@ public class BytecodeTest {
                         NonNullObservableSupplier.class,
                         OneshotSupplier.class,
                         BottomBarHostManager.class,
-                        VerticalTabsActionDelegate.class));
+                        VerticalTabsActionDelegate.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
