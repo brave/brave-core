@@ -12,18 +12,18 @@ extension UIView {
 
     let offset = offset ?? .zero
 
-    // Temporary check to handle _UIGraphicsBeginImageContextWithOptions zero/invalid size error
-    // Should be replaced with UIGraphicsImageRenderer
     guard size.width.isFinite, size.height.isFinite, size.width > 0, size.height > 0 else {
       return nil
     }
 
-    UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale * quality)
-    drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
-    let image = UIGraphicsGetImageFromCurrentImageContext()
-    UIGraphicsEndImageContext()
+    let format = UIGraphicsImageRendererFormat()
+    format.scale = UIScreen.main.scale * quality
+    format.opaque = false
 
-    return image
+    let renderer = UIGraphicsImageRenderer(size: size, format: format)
+    return renderer.image { _ in
+      drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
+    }
   }
 
   /// Takes a screenshot of the view with the given aspect ratio.
