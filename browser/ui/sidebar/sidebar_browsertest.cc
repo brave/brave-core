@@ -256,17 +256,13 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-  // Activate wallet item and check it's loaded at current tab when the side
-  // panel feature is disabled (the default).
-  if (!base::FeatureList::IsEnabled(
-          brave_wallet::features::kBraveWalletSidePanel)) {
-    iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                             &SidebarItem::built_in_item_type);
-    EXPECT_NE(items.end(), iter);
-    controller()->ActivateItemAt(std::distance(items.begin(), iter));
-    EXPECT_EQ(0, tab_model()->active_index());
-    EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
-  }
+  // Activate second sidebar item(wallet) and check it's loaded at current tab.
+  iter = std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                           &SidebarItem::built_in_item_type);
+  EXPECT_NE(items.end(), iter);
+  controller()->ActivateItemAt(std::distance(items.begin(), iter));
+  EXPECT_EQ(0, tab_model()->active_index());
+  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL(), iter->url);
 #endif
 
   // New tab is not created.
@@ -274,77 +270,6 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 }
 
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
-// Wallet sidebar item opens as a web-type tab by default (flag off).
-IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
-  // Click builtin wallet item and it's loaded at current active tab.
-  const auto items = model()->GetAllSidebarItems();
-  const auto wallet_item_iter =
-      std::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
-                        &SidebarItem::built_in_item_type);
-  ASSERT_NE(wallet_item_iter, items.cend());
-  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
-  auto wallet_item = model()->GetAllSidebarItems()[wallet_item_index];
-  EXPECT_FALSE(wallet_item.open_in_panel);
-  EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
-  SimulateSidebarItemClickAt(wallet_item_index);
-  EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
-  EXPECT_EQ(0, tab_model()->active_index());
-  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
-            wallet_item.url.host());
-
-  // Create NTP and click wallet item. Then wallet tab(index 0) is activated.
-  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL("brave://newtab/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  // NTP is active tab.
-  EXPECT_EQ(1, tab_model()->active_index());
-  SimulateSidebarItemClickAt(wallet_item_index);
-  // Wallet tab is active tab.
-  EXPECT_EQ(0, tab_model()->active_index());
-  EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
-            wallet_item.url.host());
-
-  // Create NTP.
-  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
-      browser(), GURL("brave://newtab/"),
-      WindowOpenDisposition::NEW_FOREGROUND_TAB,
-      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-  // NTP is active tab and load wallet on it.
-  EXPECT_EQ(2, tab_model()->active_index());
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), wallet_item.url));
-
-  // Click wallet item and then first wallet tab(tab index 0) is activated.
-  SimulateSidebarItemClickAt(wallet_item_index);
-  EXPECT_EQ(0, tab_model()->active_index());
-
-  // Click wallet item and then second wallet tab(index 2) is activated.
-  SimulateSidebarItemClickAt(wallet_item_index);
-  EXPECT_EQ(2, tab_model()->active_index());
-
-  // Click wallet item and then first wallet tab(index 0) is activated.
-  SimulateSidebarItemClickAt(wallet_item_index);
-  EXPECT_EQ(0, tab_model()->active_index());
-
-  // Checking windows' activation state is flaky in browser tests.
-#if !BUILDFLAG(IS_MAC)
-  auto* browser2 = CreateBrowser(browser()->profile());
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return browser2->window()->IsActive(); }));
-
-  // |browser2| doesn't have any wallet tab. So, clicking wallet sidebar item
-  // activates other browser's first wallet tab.
-  browser2->GetFeatures().sidebar_controller()->ActivateItemAt(
-      wallet_item_index);
-
-  // Wait till browser() is activated.
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return browser()->window()->IsActive(); }));
-
-  EXPECT_EQ(0, tab_model()->active_index());
-#endif
-}
-
 // Wallet sidebar tests with kBraveWalletSidePanel enabled: wallet item
 // opens as a side panel instead of navigating a tab.
 class SidebarBrowserTestWalletSidePanel : public SidebarBrowserTest {

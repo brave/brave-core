@@ -57,16 +57,8 @@ IN_PROC_BROWSER_TEST_F(WalletSidePanelBrowserTest, ShowsWalletSidePanel) {
   EXPECT_EQ(SidePanelEntryId::kWallet, panel_ui->GetCurrentEntryId());
 }
 
-class WalletSidePanelDisabledBrowserTest : public InProcessBrowserTest {
- public:
-  WalletSidePanelDisabledBrowserTest() {
-    scoped_feature_list_.InitAndDisableFeature(
-        brave_wallet::features::kBraveWalletSidePanel);
-  }
-
- private:
-  base::test::ScopedFeatureList scoped_feature_list_;
-};
+// Feature is disabled by default; no need to disable it explicitly.
+using WalletSidePanelDisabledBrowserTest = InProcessBrowserTest;
 
 IN_PROC_BROWSER_TEST_F(WalletSidePanelDisabledBrowserTest,
                        DoesNotRegisterContextualEntry) {
