@@ -941,6 +941,14 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
 }
 TEST_F(PsstTabWebContentsObserverUnitTest,
        ShowDialogAgainWhenScriptVersionChanged) {
+  const std::vector<std::string> stored_uids_to_perform = {"1"};
+
+  PsstWebsiteSettings settings;
+  settings.consent_status = ConsentStatus::kAllow;
+  settings.script_version = stored_script_version_;
+  settings.user_id = user_id_;
+  settings.uids_to_perform = stored_uids_to_perform;
+
   base::RunLoop check_loop;
   EXPECT_CALL(psst_rule_registry(), CheckIfMatch(url_, _))
       .WillOnce(CheckIfMatchCallback(
@@ -967,16 +975,10 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
                                             .Set("url", "https://example1.com")
                                             .Set("description", "settings"))));
 
-  const std::vector<std::string> stored_uids_to_perform = {"1"};
-  EXPECT_CALL(ui_delegate(),
-              GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
-      .WillOnce([&](const url::Origin&, const std::string&) {
-        PsstWebsiteSettings settings;
-        settings.consent_status = ConsentStatus::kAllow;
-        settings.script_version = stored_script_version_;
-        settings.user_id = user_id_;
-        settings.uids_to_perform = stored_uids_to_perform;
-        return settings;
+  ON_CALL(ui_delegate(),
+          GetPsstWebsiteSettings(url::Origin::Create(url_), user_id_))
+      .WillByDefault([&settings](const url::Origin&, const std::string&) {
+        return settings.Clone();
       });
 
   EXPECT_CALL(inject_script_callback(), Run(user_script_, _))
@@ -986,12 +988,12 @@ TEST_F(PsstTabWebContentsObserverUnitTest,
   // The dialog must be shown again since the stored script_version doesn't
   // match the current rule's version, even though consent_status is kAllow
   // and this isn't the initial run.
-  EXPECT_CALL(
-      ui_delegate(),
-      Show(url::Origin::Create(url_),
-           PsstWebsiteSettingsEq(ConsentStatus::kAllow, stored_script_version_,
-                                 user_id_, stored_uids_to_perform),
-           current_script_version_, _, _))
+  EXPECT_CALL(ui_delegate(),
+              Show(url::Origin::Create(url_),
+                   PsstWebsiteSettingsEq(
+                       settings.consent_status, settings.script_version,
+                       settings.user_id, settings.uids_to_perform),
+                   current_script_version_, _, _))
       .WillOnce(ShowCallback(&user_accept_psst_settings_future,
                              stored_uids_to_perform));
 
