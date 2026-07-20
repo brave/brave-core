@@ -19,6 +19,7 @@
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/bookmark_button.h"
 #include "brave/browser/ui/views/toolbar/side_panel_button.h"
+#include "brave/browser/workspaces/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -790,4 +791,103 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
   prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
   RunScheduledLayouts();
   EXPECT_FALSE(toolbar_view_->GetBorder()) << "after disabling vertical tabs";
+}
+
+// ---- Workspaces toolbar button tests ----------------------------------------
+
+class BraveToolbarViewTest_WorkspacesEnabled : public BraveToolbarViewTest {
+ public:
+  BraveToolbarViewTest_WorkspacesEnabled() {
+    scoped_feature_list_.InitAndEnableFeature(features::kWorkspaces);
+  }
+
+ protected:
+  base::test::ScopedFeatureList scoped_feature_list_;
+};
+
+// Without kWorkspaces the button is never created.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest,
+                       WorkspacesButtonAbsentWhenFeatureDisabled) {
+  EXPECT_EQ(toolbar_view_->workspaces_button_for_testing(), nullptr);
+}
+
+// The workspaces button is visible only while vertical tabs are active.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
+                       WorkspacesButtonVisibilityTracksVerticalTabs) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* button = toolbar_view_->workspaces_button_for_testing();
+  ASSERT_TRUE(button);
+
+  // Vertical tabs are off by default — button should be hidden.
+  EXPECT_FALSE(prefs->GetBoolean(brave_tabs::kVerticalTabsEnabled));
+  EXPECT_FALSE(button->GetVisible());
+
+  // Enable vertical tabs — button should become visible.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  EXPECT_TRUE(button->GetVisible());
+
+  // Disable vertical tabs — button should hide again.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
+  EXPECT_FALSE(button->GetVisible());
+}
+
+// The workspaces button always sits immediately after the vertical tab toggle
+// in the toolbar's child order, regardless of whether the tab strip is on the
+// left or right and even when the toggle itself is hidden (vertical tabs
+// disabled). GetIndexOf works on all children regardless of visibility, so the
+// ordering invariant can be verified in each state.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
+                       WorkspacesButtonAlwaysImmediatelyAfterToggle) {
+  auto* prefs = browser()->profile()->GetPrefs();
+  auto* toggle = toolbar_view_->vertical_tab_toggle_button();
+  auto* workspaces = toolbar_view_->workspaces_button_for_testing();
+  ASSERT_TRUE(toggle);
+  ASSERT_TRUE(workspaces);
+
+  // ---- Tabs on the left (default) ----
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, true);
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, false);
+  RunScheduledLayouts();
+
+  const auto toggle_ix_left = toolbar_view_->GetIndexOf(toggle);
+  const auto workspace_ix_left = toolbar_view_->GetIndexOf(workspaces);
+  ASSERT_TRUE(toggle_ix_left.has_value())
+      << "toggle missing from toolbar (tabs on left)";
+  ASSERT_TRUE(workspace_ix_left.has_value())
+      << "workspaces button missing from toolbar (tabs on left)";
+  EXPECT_EQ(*workspace_ix_left, *toggle_ix_left + 1)
+      << "workspaces button should be immediately after toggle (tabs on left)";
+
+  // ---- Tabs on the right ----
+  prefs->SetBoolean(brave_tabs::kVerticalTabsOnRight, true);
+  RunScheduledLayouts();
+
+  const auto toggle_ix_right = toolbar_view_->GetIndexOf(toggle);
+  const auto workspace_ix_right = toolbar_view_->GetIndexOf(workspaces);
+  ASSERT_TRUE(toggle_ix_right.has_value())
+      << "toggle missing from toolbar (tabs on right)";
+  ASSERT_TRUE(workspace_ix_right.has_value())
+      << "workspaces button missing from toolbar (tabs on right)";
+  EXPECT_EQ(*workspace_ix_right, *toggle_ix_right + 1)
+      << "workspaces button should be immediately after toggle (tabs on right)";
+
+  // ---- Toggle hidden (vertical tabs disabled) ----
+  // Both buttons become invisible, but they stay in the hierarchy. The child
+  // order must still be maintained so re-enabling snaps back correctly.
+  prefs->SetBoolean(brave_tabs::kVerticalTabsEnabled, false);
+  RunScheduledLayouts();
+
+  EXPECT_FALSE(toggle->GetVisible()) << "toggle should be hidden";
+  EXPECT_FALSE(workspaces->GetVisible())
+      << "workspaces button should be hidden";
+
+  const auto toggle_ix_hidden = toolbar_view_->GetIndexOf(toggle);
+  const auto workspace_ix_hidden = toolbar_view_->GetIndexOf(workspaces);
+  ASSERT_TRUE(toggle_ix_hidden.has_value())
+      << "toggle unexpectedly removed from toolbar when hidden";
+  ASSERT_TRUE(workspace_ix_hidden.has_value())
+      << "workspaces button unexpectedly removed from toolbar when hidden";
+  EXPECT_EQ(*workspace_ix_hidden, *toggle_ix_hidden + 1)
+      << "workspaces button should remain immediately after toggle even when "
+         "both are hidden";
 }
