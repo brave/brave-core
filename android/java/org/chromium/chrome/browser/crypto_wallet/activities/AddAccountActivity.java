@@ -22,7 +22,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.widget.Toolbar;
 
@@ -30,6 +29,8 @@ import org.chromium.base.Log;
 import org.chromium.brave_wallet.mojom.AccountInfo;
 import org.chromium.brave_wallet.mojom.BraveWalletConstants;
 import org.chromium.brave_wallet.mojom.CoinType;
+import org.chromium.build.annotations.NullMarked;
+import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.KeyringModel.FilecoinNetworkType;
@@ -38,7 +39,6 @@ import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
 import org.chromium.chrome.browser.util.LiveDataUtil;
 import org.chromium.ui.base.BraveClipboardHelper;
-import org.jni_zero.NullMarked;
 
 import java.io.BufferedReader;
 import java.io.InputStream;
@@ -53,17 +53,18 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     private static final int FILECOIN_TESTNET_POSITION = 1;
 
     private @CoinType.EnumType int mCoinForNewAccount;
-    private AccountInfo mEditedAccountInfo;
+    private @Nullable AccountInfo mEditedAccountInfo;
 
     private EditText mPrivateKeyControl;
     private EditText mAddAccountText;
     private EditText mImportAccountPasswordText;
     private Spinner mFilecoinNetworkSpinner;
     private static final int FILE_PICKER_REQUEST_CODE = 1;
-    private WalletModel mWalletModel;
-    @FilecoinNetworkType private String mSelectedFilecoinNetwork;
+    private @Nullable WalletModel mWalletModel;
 
-    @NonNull
+    @FilecoinNetworkType
+    private String mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
+
     public static Intent createIntentToAddAccount(
             final Context context, @CoinType.EnumType final int coinForNewAccount) {
         final Intent intent = new Intent(context, AddAccountActivity.class);
@@ -78,7 +79,6 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
             mCoinForNewAccount = intent.getIntExtra(Utils.COIN_TYPE, -1);
             mEditedAccountInfo = WalletUtils.getAccountInfoFromIntent(intent);
         }
-        mSelectedFilecoinNetwork = BraveWalletConstants.FILECOIN_MAINNET;
     }
 
     @Override
@@ -97,8 +97,11 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
 
         final Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle(getResources().getString(R.string.add_account));
+        final ActionBar actionBar = getSupportActionBar();
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setTitle(getResources().getString(R.string.add_account));
+        }
 
         mAddAccountText = findViewById(R.id.add_account_text);
         mPrivateKeyControl = findViewById(R.id.import_account_text);
@@ -148,7 +151,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
                         return;
                     }
                     if (mEditedAccountInfo != null) {
-                        updateAccountName();
+                        updateAccountName(mEditedAccountInfo);
                         return;
                     }
 
@@ -214,7 +217,7 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     @Override
-    protected void onRestoreInstanceState(@NonNull Bundle savedInstanceState) {
+    protected void onRestoreInstanceState(@Nullable Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         // View visibility is not part of the saved view hierarchy state. Show
         // the password field again when the restored private key content is a
@@ -226,13 +229,17 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         switch (requestCode) {
             case FILE_PICKER_REQUEST_CODE:
-                if (resultCode == -1) {
+                final Uri fileUri =
+                        resultCode == Activity.RESULT_OK && data != null ? data.getData() : null;
+                if (fileUri != null) {
                     try {
-                        Uri fileUri = data.getData();
                         InputStream inputStream = getContentResolver().openInputStream(fileUri);
+                        if (inputStream == null) {
+                            break;
+                        }
                         BufferedReader br = new BufferedReader(new InputStreamReader(inputStream));
                         StringBuilder sb = new StringBuilder();
                         String line;
@@ -266,9 +273,9 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
         }
     }
 
-    private void updateAccountName() {
+    private void updateAccountName(final AccountInfo editedAccountInfo) {
         mKeyringService.setAccountName(
-                mEditedAccountInfo.accountId,
+                editedAccountInfo.accountId,
                 mAddAccountText.getText().toString(),
                 this::handleUpdateAccount);
     }
@@ -319,6 +326,12 @@ public class AddAccountActivity extends BraveWalletBaseActivity {
     }
 
     private void addAccount(@CoinType.EnumType int coinType) {
+        if (mWalletModel == null) {
+            // Unreachable in practice: when the wallet model is unavailable the
+            // activity finishes during native initialization, before the add
+            // button can be clicked.
+            return;
+        }
         mWalletModel
                 .getKeyringModel()
                 .addAccount(
