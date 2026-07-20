@@ -34,6 +34,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.app.ActivityCompat;
@@ -55,7 +56,6 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveSyncWorker;
-import org.chromium.chrome.browser.back_press.BackPressHelper;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.qrreader.CameraSourcePreview;
@@ -79,7 +79,6 @@ import java.util.ArrayList;
 /** Settings fragment that allows to control Sync functionality. */
 public class BraveSyncScreensPreference extends BravePreferenceFragment
         implements View.OnClickListener,
-                BackPressHelper.ObsoleteBackPressedHandler,
                 QRCodeCameraManager.Callback,
                 QRCodeCameraManager.HostProvider,
                 BraveSyncDevices.DeviceInfoChangedListener,
@@ -150,6 +149,26 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
     private final SettableMonotonicObservableSupplier<String> mPageTitle =
             ObservableSuppliers.createMonotonic();
+
+    // Intercepts the system back press while a Sync sub-screen is shown, so back navigates one step
+    // within the Sync flow (see #handleSyncSubScreenBackPress) instead of leaving the Sync screen.
+    // It is disabled on the Sync landing screen, letting the back press propagate to the settings
+    // host, which returns to the main settings screen. Registered on the fragment's view lifecycle
+    // in onViewCreated().
+    //
+    // cr151 note: the fragment previously implemented BackPressHelper.ObsoleteBackPressedHandler,
+    // which the Multi-column Settings host no longer consults, leaving back presses unhandled and
+    // closing Settings entirely. A directly-registered OnBackPressedCallback is used instead of
+    // implementing the modern BackPressHandler, because SettingsActivity's
+    // registerMainFragmentBackPressHandler() forbids the (non-standalone) detail-pane fragment from
+    // implementing BackPressHandler while the single-activity feature is enabled.
+    private final OnBackPressedCallback mBackPressedCallback =
+            new OnBackPressedCallback(/* enabled= */ false) {
+                @Override
+                public void handleOnBackPressed() {
+                    handleSyncSubScreenBackPress();
+                }
+            };
 
     BraveSyncWorker getBraveSyncWorker() {
         return BraveSyncWorker.get();
@@ -251,9 +270,19 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return mInflater.inflate(R.layout.brave_sync_layout, container, false);
     }
 
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        // Intercept back only while a Sync sub-screen is shown; see mBackPressedCallback. Tied to
+        // the view lifecycle so it is removed automatically when the fragment's view is destroyed.
+        requireActivity()
+                .getOnBackPressedDispatcher()
+                .addCallback(getViewLifecycleOwner(), mBackPressedCallback);
+    }
+
     private boolean ensureCameraPermission() {
         if (ActivityCompat.checkSelfPermission(
-                    getActivity().getApplicationContext(), Manifest.permission.CAMERA)
+                        getActivity().getApplicationContext(), Manifest.permission.CAMERA)
                 == PackageManager.PERMISSION_GRANTED) {
             return true;
         }
@@ -601,6 +630,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null != mCodeWords) {
                 mCodeWords.setText("");
             }
+            updateBackPressState();
             return;
         }
         setSyncDoneLayout();
@@ -736,6 +766,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
             if (null != mScrollViewEnterCodeWords) {
                 mScrollViewEnterCodeWords.setVisibility(View.VISIBLE);
             }
+            updateBackPressState();
             getActivity().setTitle(R.string.brave_sync_code_words_title);
             if (null != mCodeWords && null != mBraveSyncWordCountTitle) {
                 mCodeWords.addTextChangedListener(
@@ -762,7 +793,16 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         } else if (mShowCategoriesButton == v) {
             SettingsNavigation settingsLauncher =
                     SettingsNavigationFactory.createSettingsNavigation();
-            settingsLauncher.startSettings(getContext(), BraveManageSyncSettings.class);
+            // addToBackStack=true so the sync options (datatypes) screen is pushed on top of this
+            // screen. In cr151 Multi-column Settings, navigating without a back-stack entry swaps
+            // the detail pane with no entry to pop, so back closes Settings instead of returning
+            // here. See https://github.com/brave/brave-core/commit/5ea51a2 for the same fix on the
+            // custom search engines screen.
+            settingsLauncher.startSettings(
+                    getContext(),
+                    BraveManageSyncSettings.class,
+                    /* fragmentArgs= */ null,
+                    /* addToBackStack= */ true);
         } else if (mAddDeviceButton == v) {
             setNewChainLayout();
         } else if (mDeleteAccountButton == v) {
@@ -1338,6 +1378,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                 }
             }
         }
+        updateBackPressState();
     }
 
     private void setNewChainLayout() {
@@ -1366,6 +1407,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
                         .getResources()
                         .getConfiguration()
                         .orientation);
+        updateBackPressState();
     }
 
     private String mCodephrase;
@@ -1406,6 +1448,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         generateNewQrCode();
+        updateBackPressState();
     }
 
     private void setQrCountDown(LocalDateTime notAfterTime) {
@@ -1451,6 +1494,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         }
 
         generateNewCodeWords();
+        updateBackPressState();
     }
 
     private void setWordsCountDown(LocalDateTime notAfterTime) {
@@ -1514,6 +1558,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
 
         onDevicesAvailable();
         resumeSyncStateChangedObserver();
+        updateBackPressState();
     }
 
     private void adjustWidth(View view, int orientation) {
@@ -1567,22 +1612,41 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         return getActivity() != null && !isRemoving() && !isDetached();
     }
 
-    // Handles 'Back' button. Returns true if it is handled, false otherwise.
-    @Override
-    public boolean onBackPressed() {
+    // Handles 'Back' while a Sync sub-screen is shown: navigates one step back within the Sync
+    // flow. Only invoked while mBackPressedCallback is enabled (a sub-screen is visible); on the
+    // Sync landing screen the callback is disabled and the back press propagates to the settings
+    // host, which returns to the main settings screen.
+    private void handleSyncSubScreenBackPress() {
         if ((View.VISIBLE == mScrollViewSyncChainCode.getVisibility())
                 || (View.VISIBLE == mScrollViewSyncStartChain.getVisibility())) {
             setAppropriateView();
-            return true;
         } else if ((View.VISIBLE == mScrollViewAddMobileDevice.getVisibility())
                 || (View.VISIBLE == mScrollViewAddLaptop.getVisibility())) {
             setNewChainLayout();
-            return true;
         } else if (View.VISIBLE == mScrollViewEnterCodeWords.getVisibility()) {
             setJoinExistingChainLayout();
-            return true;
         }
-        return false;
+    }
+
+    /**
+     * Recomputes whether back should be intercepted, from the currently visible sub-screen, and
+     * enables/disables {@link #mBackPressedCallback} accordingly. Must be called after every view
+     * transition so back is intercepted only while a Sync sub-screen is shown.
+     */
+    private void updateBackPressState() {
+        mBackPressedCallback.setEnabled(isSyncSubScreenVisible());
+    }
+
+    private boolean isSyncSubScreenVisible() {
+        return isVisible(mScrollViewSyncChainCode)
+                || isVisible(mScrollViewSyncStartChain)
+                || isVisible(mScrollViewAddMobileDevice)
+                || isVisible(mScrollViewAddLaptop)
+                || isVisible(mScrollViewEnterCodeWords);
+    }
+
+    private static boolean isVisible(View view) {
+        return view != null && View.VISIBLE == view.getVisibility();
     }
 
     @Override
