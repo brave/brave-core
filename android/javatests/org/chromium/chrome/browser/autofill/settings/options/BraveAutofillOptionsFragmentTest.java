@@ -58,8 +58,7 @@ public class BraveAutofillOptionsFragmentTest {
     @Test
     @SmallTest
     public void testPrivateWindowSwitchAddedForSettingsReferrer() {
-        AutofillOptionsFragment fragment =
-                launchFragment(AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+        AutofillOptionsFragment fragment = launchFragment(AutofillOptionsReferrer.SETTINGS);
 
         ChromeSwitchPreference privateWindowPref = getPrivateWindowPreference(fragment);
         assertEquals(
@@ -75,8 +74,7 @@ public class BraveAutofillOptionsFragmentTest {
     @Test
     @SmallTest
     public void testPrivateWindowSwitchWritesProfilePref() {
-        AutofillOptionsFragment fragment =
-                launchFragment(AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+        AutofillOptionsFragment fragment = launchFragment(AutofillOptionsReferrer.SETTINGS);
         ChromeSwitchPreference privateWindowPref = getPrivateWindowPreference(fragment);
 
         boolean newValue = !privateWindowPref.isChecked();
@@ -88,8 +86,7 @@ public class BraveAutofillOptionsFragmentTest {
     @Test
     @SmallTest
     public void testPrivateWindowSwitchOrder() {
-        AutofillOptionsFragment fragment =
-                launchFragment(AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+        AutofillOptionsFragment fragment = launchFragment(AutofillOptionsReferrer.SETTINGS);
 
         Preference thirdPartyFilling =
                 fragment.findPreference(AutofillOptionsFragment.PREF_AUTOFILL_THIRD_PARTY_FILLING);
@@ -114,8 +111,7 @@ public class BraveAutofillOptionsFragmentTest {
     @Test
     @SmallTest
     public void testPrivateWindowSwitchNotDuplicatedAfterRecreate() {
-        AutofillOptionsFragment fragment =
-                launchFragment(AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+        AutofillOptionsFragment fragment = launchFragment(AutofillOptionsReferrer.SETTINGS);
         assertEquals(1, countTopLevelPrivateWindowPreferences(fragment));
 
         mSettingsActivityTestRule.recreateActivity();
@@ -128,8 +124,7 @@ public class BraveAutofillOptionsFragmentTest {
     @SmallTest
     public void testPrivateWindowSwitchAddedForDeepLinkReferrer() {
         AutofillOptionsFragment fragment =
-                launchFragment(
-                        AutofillOptionsFragment.AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS);
+                launchFragment(AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS);
 
         assertNotNull(getPrivateWindowPreference(fragment));
     }
@@ -137,26 +132,18 @@ public class BraveAutofillOptionsFragmentTest {
     @Test
     @SmallTest
     public void testSupportedAutofillOptionsReferrersAreExplicit() {
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.SETTINGS);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT);
         assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+                AutofillOptionsReferrer.AUTOFILL_AND_PASSWORDS_FRAGMENT);
         assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_AND_PASSWORDS_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_IDENTITY_DOCS_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_TRAVEL_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_SHOPPING_FRAGMENT);
-        assertSupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS);
-        assertUnsupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.COUNT);
-        assertUnsupportedAutofillOptionsReferrer(
-                AutofillOptionsFragment.AutofillOptionsReferrer.COUNT + 1);
+                AutofillOptionsReferrer.AUTOFILL_IDENTITY_DOCS_FRAGMENT);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.AUTOFILL_TRAVEL_FRAGMENT);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.AUTOFILL_SHOPPING_FRAGMENT);
+        assertSupportedAutofillOptionsReferrer(AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS);
+        assertUnsupportedAutofillOptionsReferrer(AutofillOptionsReferrer.MAX_VALUE + 1);
+        assertUnsupportedAutofillOptionsReferrer(AutofillOptionsReferrer.MAX_VALUE + 2);
     }
 
     @Test
@@ -167,8 +154,7 @@ public class BraveAutofillOptionsFragmentTest {
                         null, new Bundle()));
     }
 
-    private AutofillOptionsFragment launchFragment(
-            @AutofillOptionsFragment.AutofillOptionsReferrer int referrer) {
+    private AutofillOptionsFragment launchFragment(@AutofillOptionsReferrer int referrer) {
         mSettingsActivityTestRule.startSettingsActivity(
                 AutofillOptionsFragment.createRequiredArgs(referrer));
         AutofillOptionsFragment fragment = mSettingsActivityTestRule.getFragment();

@@ -38,19 +38,17 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    static void validateAutofillOptionsReferrer(
-            @AutofillOptionsFragment.AutofillOptionsReferrer int referrer) {
+    static void validateAutofillOptionsReferrer(@AutofillOptionsReferrer int referrer) {
         switch (referrer) {
-            case AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_AND_PASSWORDS_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_IDENTITY_DOCS_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_TRAVEL_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.AUTOFILL_SHOPPING_FRAGMENT:
-            case AutofillOptionsFragment.AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS:
+            case AutofillOptionsReferrer.SETTINGS:
+            case AutofillOptionsReferrer.PAYMENT_METHODS_FRAGMENT:
+            case AutofillOptionsReferrer.AUTOFILL_PROFILES_FRAGMENT:
+            case AutofillOptionsReferrer.AUTOFILL_AND_PASSWORDS_FRAGMENT:
+            case AutofillOptionsReferrer.AUTOFILL_IDENTITY_DOCS_FRAGMENT:
+            case AutofillOptionsReferrer.AUTOFILL_TRAVEL_FRAGMENT:
+            case AutofillOptionsReferrer.AUTOFILL_SHOPPING_FRAGMENT:
+            case AutofillOptionsReferrer.DEEP_LINK_TO_SETTINGS:
                 return;
-            case AutofillOptionsFragment.AutofillOptionsReferrer.COUNT:
             default:
                 throw new IllegalArgumentException(
                         "Unsupported AutofillOptionsReferrer: " + referrer);
@@ -58,21 +56,20 @@ public abstract class BraveAutofillOptionsFragmentBase extends ChromeBaseSetting
     }
 
     @VisibleForTesting(otherwise = VisibleForTesting.PRIVATE)
-    static @AutofillOptionsFragment.AutofillOptionsReferrer int
-            getReferrerFromInstanceStateOrLaunchBundle(
-                    @Nullable Bundle savedInstanceState, @Nullable Bundle launchBundle) {
+    static @AutofillOptionsReferrer int getReferrerFromInstanceStateOrLaunchBundle(
+            @Nullable Bundle savedInstanceState, @Nullable Bundle launchBundle) {
         if (savedInstanceState != null
                 && savedInstanceState.containsKey(
                         AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER)) {
             return savedInstanceState.getInt(
                     AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER,
-                    AutofillOptionsFragment.AutofillOptionsReferrer.COUNT);
+                    AutofillOptionsReferrer.MAX_VALUE + 1);
         }
 
         Bundle extras = assumeNonNull(launchBundle);
         return extras.getInt(
                 AutofillOptionsFragment.AUTOFILL_OPTIONS_REFERRER,
-                AutofillOptionsFragment.AutofillOptionsReferrer.COUNT);
+                AutofillOptionsReferrer.MAX_VALUE + 1);
     }
 
     private void addAutofillPrivateWindowPreference() {

@@ -54,8 +54,7 @@ public final class BraveAutofillOptionsSearchIndex {
     }
 
     private static Bundle createAutofillOptionsSettingsArgs() {
-        return AutofillOptionsFragment.createRequiredArgs(
-                AutofillOptionsFragment.AutofillOptionsReferrer.SETTINGS);
+        return AutofillOptionsFragment.createRequiredArgs(AutofillOptionsReferrer.SETTINGS);
     }
 
     private static Bundle createHomeOfTransactionsArgs(SettingsRoutes routes) {
