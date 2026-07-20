@@ -42,7 +42,7 @@ class TranslateTabHelper: TabObserver {
 
   private(set) var translationState: TranslationState = .unavailable {
     didSet {
-      guard oldValue != translationState, let tab else { return }
+      guard let tab else { return }
       delegate?.updateTranslateURLBar(tab: tab, state: translationState)
     }
   }
@@ -150,8 +150,18 @@ class TranslateTabHelper: TabObserver {
   }
 
   func tabDidStartNavigation(_ tab: some TabState) {
+    if let url = tab.visibleURL, url.isInternalURL(for: .readermode) {
+      return  // preserve translationState through reader mode
+    }
     translationState = .unavailable
     translationControllerDelegate.resetCachedLangugaes()
+  }
+
+  func tabDidFinishNavigation(_ tab: some TabState) {
+    guard let url = tab.visibleURL, url.isInternalURL(for: .readermode) else { return }
+    // CWVTranslationController won't fire for internal URLs, so restore
+    // the button directly (BVC hid it unconditionally at nav start).
+    delegate?.updateTranslateURLBar(tab: tab, state: translationState)
   }
 
   func tabWillBeDestroyed(_ tab: some TabState) {
