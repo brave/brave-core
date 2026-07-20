@@ -53,12 +53,14 @@
 #include "brave/components/sidebar/browser/constants.h"
 #include "brave/components/sidebar/common/features.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/app/chrome_command_ids.h"
 #include "chrome/browser/app_mode/app_mode_utils.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/devtools/devtools_ui_controller.h"
 #include "chrome/browser/devtools/devtools_window.h"
+#include "chrome/browser/ui/browser_actions.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/browser_element_identifiers.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -81,6 +83,9 @@
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
+#include "chrome/browser/ui/views/tab_search_bubble_host.h"
+#include "chrome/browser/ui/views/tabs/shared/tab_strip_combo_button.h"
+#include "chrome/browser/ui/views/tabs/shared/tab_strip_flat_edge_button.h"
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/tabs/tab_strip.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
@@ -344,6 +349,11 @@ BraveBrowserView::BraveBrowserView(Browser* browser) : BrowserView(browser) {
       base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
                           base::Unretained(this)));
 
+  pref_change_registrar_.Add(
+      brave_tabs::kVerticalTabsEnabled,
+      base::BindRepeating(&BraveBrowserView::OnPreferenceChanged,
+                          base::Unretained(this)));
+
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   pref_change_registrar_.Add(
       brave_vpn::prefs::kBraveVPNShowButton,
@@ -415,6 +425,11 @@ void BraveBrowserView::OnCompactModePrefChanged() {
 }
 
 void BraveBrowserView::OnPreferenceChanged(const std::string& pref_name) {
+  if (pref_name == brave_tabs::kVerticalTabsEnabled) {
+    UpdateTabSearchBubbleHost();
+    return;
+  }
+
   if (pref_name == kTabsSearchShow) {
     UpdateSearchTabsButtonState();
     return;
@@ -466,10 +481,6 @@ void BraveBrowserView::UpdateSearchTabsButtonState() {
     if (auto* tab_search_button = toolbar()->tab_search_button()) {
       tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
     }
-  } else if (auto* tab_search_button =
-                 BrowserElementsViews::From(browser())
-                     ->GetViewAs<TabSearchButton>(kTabSearchButtonElementId)) {
-    tab_search_button->SetVisible(!is_vertical_tabs && use_search_button);
   }
 }
 
@@ -1062,6 +1073,42 @@ bool BraveBrowserView::ShouldDrawTabStrokes() const {
   const float contrast_ratio =
       color_utils::GetContrastRatio(background_color, frame_color);
   return contrast_ratio < kBraveMinimumContrastRatioForOutlines;
+}
+
+void BraveBrowserView::UpdateTabSearchBubbleHost() {
+  if (!GetIsNormalType()) {
+    return;
+  }
+
+  BrowserView::UpdateTabSearchBubbleHost();
+
+  if (!base::FeatureList::IsEnabled(tabs::kHorizontalTabStripComboButton)) {
+    return;
+  }
+
+  auto* tab_search_action = actions::ActionManager::Get().FindAction(
+      kActionTabSearch, browser_->GetActions()->root_action_item());
+  CHECK(tab_search_action);
+
+  // As we use toolbar's combo button in vertical tab mode, host should be
+  // re-initialzed with it.
+  if (tabs::utils::ShouldShowBraveVerticalTabs(browser())) {
+    auto* toolbar_view = views::AsViewClass<BraveToolbarView>(toolbar());
+    auto* combo_button = toolbar_view->combo_button();
+    tab_search_bubble_host_ = std::make_unique<TabSearchBubbleHost>(
+        combo_button->end_button(), browser_.get());
+    tab_search_bubble_host_->set_use_brave_vertical_tab();
+    combo_button->SetTabSearchBubbleHost(tab_search_bubble_host_.get());
+
+    tab_search_action->SetImage(
+        ui::ImageModel::FromVectorIcon(kLeoWindowSearchIcon));
+  } else {
+    // In horizontal tab mode, we can use upstream's host as it refers tab
+    // strip's combo button. We use that combo button. Just re-arranged its
+    // position.
+    tab_search_action->SetImage(
+        ui::ImageModel::FromVectorIcon(kLeoCaratDownIcon));
+  }
 }
 
 BraveMultiContentsView* BraveBrowserView::GetBraveMultiContentsView() const {

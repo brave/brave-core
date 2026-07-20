@@ -729,9 +729,9 @@
 -SiteSettingsHelperChooserExceptionTest.GetChooserExceptionListFromProfile
 
 # These tests fail because we override HasTabSearchToolbarButton to always
-# return true.
--TabStripPrefsTest.MigrateTabSearchPref_ExperimentDisabled
--TabStripPrefsTest.MigrateTabSearchPref_RecoveryFromBrokenMigration
+# return false.
+-TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Pinned
+-TabStripPrefsTest.MigrateTabSearchPref_ExperimentEnabled_Unpinned
 
 # These tests are related to MV2 extension deprecation, which is disabled until 
 # MV2 extensions are removed from the Web Store.
