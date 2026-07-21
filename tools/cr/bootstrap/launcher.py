@@ -242,9 +242,46 @@ class SelfUpdater:
         return module
 
 
+@dataclass(frozen=True)
+class Invocation:
+    """A resolved command to run for a shim.
+
+    `argv` is the command prefix to run. `path_prepend`, when set, is a
+    directory to prepend to `$PATH` for the child process so that any nested
+    `node` lookups resolve to the checkout binary directly, instead of recursing
+    back through the shim that sits first on `$PATH`.
+    """
+
+    # The argv prefix to run the tool with.
+    argv: list[str]
+
+    # A directory to prepend to `$PATH` before running, or None.
+    path_prepend: Path | None = None
+
+
+def _run_with_path_prepended(directory: Path | None, run):
+    """Run `run()` with `directory` prepended to `$PATH`, then restore `$PATH`.
+
+    The prepend is skipped when `directory` is None, or when it is already on
+    `$PATH`, for the duration of the call.
+    """
+    previous = os.environ.get('PATH', '')
+    already_present = directory is not None and any(
+        entry and Path(entry).resolve() == directory.resolve()
+        for entry in previous.split(os.pathsep))
+    if directory is None or already_present:
+        return run()
+    os.environ['PATH'] = (os.pathsep.join([str(directory), previous])
+                          if previous else str(directory))
+    try:
+        return run()
+    finally:
+        os.environ['PATH'] = previous
+
+
 def resolve_invocation(tool: str, checkout: Path | None,
-                       allow_fallback: bool) -> list[str] | None:
-    """The argv prefix to run `tool` from `checkout`.
+                       allow_fallback: bool) -> Invocation | None:
+    """The command to run `tool` from `checkout`.
 
     This function attempts to resolve the invocation for a given tool. Tools
     are usually run from checkout, but certain tools are allowed to fallback to
@@ -263,23 +300,26 @@ def resolve_invocation(tool: str, checkout: Path | None,
                 updater.deploy()
         if target.is_file():
             if shim.runtime == 'vpython':
-                invocation = [
-                    str(_resolve_vpython3(checkout.parent)),
-                    str(target)
-                ]
+                invocation = Invocation(
+                    [str(_resolve_vpython3(checkout.parent)),
+                     str(target)])
             elif shim.runtime == 'node':
                 # Run with whatever `node` is on $PATH (our node shim, which
                 # resolves the right node in turn).
                 node = shutil.which('node')
                 if node is not None:
-                    invocation = [node, str(target)]
+                    invocation = Invocation([node, str(target)])
             else:
-                invocation = [str(target)]
+                # A bare checkout binary (node). Prepend its directory to
+                # `$PATH` so child processes that spawn `node` hit this binary
+                # directly rather than recursing through the shim.
+                invocation = Invocation([str(target)],
+                                        path_prepend=target.parent)
 
     if invocation is None and allow_fallback:
         system = _resolve_system_binary(tool.split('-', 1)[0])
         if system is not None:
-            invocation = [system]
+            invocation = Invocation([system])
     return invocation
 
 
@@ -326,7 +366,9 @@ def main() -> int:
     if invocation is not None:
         # Intentionally do not change cwd: the tool runs relative to the current
         # path.
-        return subprocess.call([*invocation, *tool_args])
+        return _run_with_path_prepended(
+            invocation.path_prepend,
+            lambda: subprocess.call([*invocation.argv, *tool_args]))
 
     # Resolved a known tool but produced nothing to run — report why.
     if parsed.allow_fallback:

@@ -348,10 +348,16 @@ class ResolveInvocationTest(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             root, key = Path(tmp), self._key()
             node = self._make_target(root, f'node-{key}')
-            self.assertEqual(
-                launcher.resolve_invocation(f'node-{key}',
-                                            self._checkout(root), False),
-                [str(node)])
+            invocation = launcher.resolve_invocation(f'node-{key}',
+                                                     self._checkout(root),
+                                                     False)
+            self.assertEqual(invocation.argv, [str(node)])
+            # The bare node binary carries its own directory to prepend to
+            # $PATH, so child processes that spawn `node` (e.g. a package's
+            # `prepare` script under npm) hit this binary directly instead of
+            # recursing back through the shim, which would fail outside a
+            # checkout ("no checkout-local binary found and no node on $PATH").
+            self.assertEqual(invocation.path_prepend, node.parent)
 
     def test_npm_runs_through_node_on_path(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -363,7 +369,9 @@ class ResolveInvocationTest(unittest.TestCase):
                                    return_value='/usr/bin/node'):
                 invocation = launcher.resolve_invocation(
                     f'npm-{key}', self._checkout(root), True)
-            self.assertEqual(invocation, ['/usr/bin/node', str(npm_cli)])
+            self.assertEqual(invocation.argv, ['/usr/bin/node', str(npm_cli)])
+            # npm runs via the node shim on $PATH, so it needs no PATH prepend.
+            self.assertIsNone(invocation.path_prepend)
 
     def test_vpython_tool_runs_through_vpython3(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -374,8 +382,9 @@ class ResolveInvocationTest(unittest.TestCase):
                                                      False)
             self.assertIsNotNone(invocation)
             # brockit is launched as: <vpython3> <brockit.py>.
-            self.assertEqual(len(invocation), 2)
-            self.assertTrue(invocation[1].endswith('brockit.py'))
+            self.assertEqual(len(invocation.argv), 2)
+            self.assertTrue(invocation.argv[1].endswith('brockit.py'))
+            self.assertIsNone(invocation.path_prepend)
 
     def test_git_cr_runs_through_vpython3(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -386,8 +395,9 @@ class ResolveInvocationTest(unittest.TestCase):
                                                      False)
             self.assertIsNotNone(invocation)
             # git-cr is launched as: <vpython3> <cmd.py>.
-            self.assertEqual(len(invocation), 2)
-            self.assertTrue(invocation[1].endswith('cmd.py'))
+            self.assertEqual(len(invocation.argv), 2)
+            self.assertTrue(invocation.argv[1].endswith('cmd.py'))
+            self.assertIsNone(invocation.path_prepend)
 
     def test_falls_back_to_system_when_allowed(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -397,7 +407,9 @@ class ResolveInvocationTest(unittest.TestCase):
                                    return_value='/usr/bin/node'):
                 invocation = launcher.resolve_invocation(
                     'node', self._checkout(Path(tmp)), True)
-            self.assertEqual(invocation, ['/usr/bin/node'])
+            self.assertEqual(invocation.argv, ['/usr/bin/node'])
+            # A system-node fallback lives on $PATH already: no prepend.
+            self.assertIsNone(invocation.path_prepend)
 
     def test_none_without_target_and_no_fallback(self):
         with tempfile.TemporaryDirectory() as tmp:
@@ -446,7 +458,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             f'node-{key}', checkout, False)
             call.assert_called_once()
             self.assertEqual(
-                invocation,
+                invocation.argv,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_missing_node_falls_back_when_download_deploys_nothing(self):
@@ -472,7 +484,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             invocation = launcher.resolve_invocation(
                                 'node', checkout, True)
             call.assert_called_once()
-            self.assertEqual(invocation, ['/usr/bin/node'])
+            self.assertEqual(invocation.argv, ['/usr/bin/node'])
 
     def test_no_bootstrap_without_installer(self):
         # With no install_extra_deps.py present the bootstrap is a no-op, and
@@ -503,7 +515,7 @@ class ResolveInvocationTest(unittest.TestCase):
                     invocation = launcher.resolve_invocation(
                         'node', checkout, True)
             call.assert_not_called()
-            self.assertEqual(invocation, ['/usr/bin/node'])
+            self.assertEqual(invocation.argv, ['/usr/bin/node'])
 
     def test_vpython_tool_not_bootstrapped(self):
         # Only node/npm carry an self_update_extra_dep_entry; a missing vpython tool is never
@@ -544,7 +556,7 @@ class ResolveInvocationTest(unittest.TestCase):
                             f'node-{key}', checkout, False)
             call.assert_called_once()
             self.assertEqual(
-                invocation,
+                invocation.argv,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_pinned_version_deployed_skips_bootstrap(self):
@@ -565,7 +577,7 @@ class ResolveInvocationTest(unittest.TestCase):
                         f'node-{key}', checkout, False)
             call.assert_not_called()
             self.assertEqual(
-                invocation,
+                invocation.argv,
                 [str(root / launcher.SHIM_TARGETS[f'node-{key}'].path)])
 
     def test_load_extra_deps_reads_checkout_module(self):
@@ -601,6 +613,142 @@ class ResolveInvocationTest(unittest.TestCase):
                                '_load_extra_deps',
                                return_value=module):
             self.assertFalse(updater.needs_update())
+
+
+class RunWithPathPrependedTest(unittest.TestCase):
+    """Exercises `launcher._run_with_path_prepended`.
+
+    When a node call resolves to the checkout-local binary, the launcher
+    prepends that binary's directory to `$PATH` while it runs. This is what lets
+    a package's lifecycle script (e.g. `figma-api-exporter`'s `prepare` running
+    `tsc`) find `node` directly under npm, instead of recursing into the shim
+    which then fails with "no checkout-local binary found and no node on $PATH".
+    """
+
+    def setUp(self):
+        self._saved_path = os.environ.get('PATH', '')
+
+    def tearDown(self):
+        os.environ['PATH'] = self._saved_path
+
+    def test_returns_the_callables_result(self):
+        self.assertEqual(
+            launcher._run_with_path_prepended(Path('/ws/node/bin'),
+                                              lambda: 42), 42)
+
+    def test_prepends_directory_first_while_running(self):
+        os.environ['PATH'] = os.pathsep.join(['/usr/bin', '/bin'])
+        node_dir = Path('/ws/src/brave/third_party/node/node-linux-x64/bin')
+        seen = {}
+
+        def _run():
+            seen['entries'] = os.environ['PATH'].split(os.pathsep)
+
+        launcher._run_with_path_prepended(node_dir, _run)
+        self.assertEqual(seen['entries'][0], str(node_dir))
+        self.assertEqual(seen['entries'][1:], ['/usr/bin', '/bin'])
+
+    def test_restores_path_after_running(self):
+        original = os.pathsep.join(['/usr/bin', '/bin'])
+        os.environ['PATH'] = original
+        launcher._run_with_path_prepended(Path('/ws/node/bin'), lambda: None)
+        self.assertEqual(os.environ['PATH'], original)
+
+    def test_restores_path_when_callable_raises(self):
+        original = os.pathsep.join(['/usr/bin', '/bin'])
+        os.environ['PATH'] = original
+
+        def _boom():
+            raise RuntimeError('boom')
+
+        with self.assertRaises(RuntimeError):
+            launcher._run_with_path_prepended(Path('/ws/node/bin'), _boom)
+        self.assertEqual(os.environ['PATH'], original)
+
+    def test_none_directory_is_a_no_op(self):
+        original = os.pathsep.join(['/usr/bin', '/bin'])
+        os.environ['PATH'] = original
+        seen = {}
+        launcher._run_with_path_prepended(
+            None, lambda: seen.setdefault('path', os.environ['PATH']))
+        self.assertEqual(seen['path'], original)
+        self.assertEqual(os.environ['PATH'], original)
+
+    def test_does_not_re_add_when_already_present(self):
+        # The idempotency guard: a directory already on $PATH is left untouched,
+        # so nested/repeated invocations don't grow $PATH.
+        node_dir = Path('/ws/node/bin')
+        original = os.pathsep.join([str(node_dir), '/usr/bin'])
+        os.environ['PATH'] = original
+        seen = {}
+        launcher._run_with_path_prepended(
+            node_dir, lambda: seen.setdefault('path', os.environ['PATH']))
+        self.assertEqual(seen['path'], original)
+
+    def test_detects_presence_by_resolved_path(self):
+        # Presence is judged by resolved path, so a non-canonical spelling of an
+        # already-present entry is still recognized and not re-added.
+        with tempfile.TemporaryDirectory() as tmp:
+            node_dir = Path(tmp) / 'node' / 'bin'
+            node_dir.mkdir(parents=True)
+            noncanonical = node_dir / '..' / 'bin'
+            os.environ['PATH'] = os.pathsep.join([str(node_dir), '/usr/bin'])
+            seen = {}
+            launcher._run_with_path_prepended(
+                noncanonical, lambda: seen.setdefault(
+                    'entries', os.environ['PATH'].split(os.pathsep)))
+            self.assertEqual(seen['entries'].count(str(node_dir)), 1)
+            self.assertNotIn(str(noncanonical), seen['entries'])
+
+
+class MainRunsNodeWithPathTest(unittest.TestCase):
+    """End-to-end regression: `main` runs the checkout-local node with its own
+    directory on `$PATH`, so a grandchild `node` (spawned by an npm lifecycle
+    script) resolves the binary directly rather than recursing into the shim.
+    """
+
+    def setUp(self):
+        self._saved_path = os.environ.get('PATH', '')
+
+    def tearDown(self):
+        os.environ['PATH'] = self._saved_path
+
+    def test_node_child_sees_checkout_bin_on_path(self):
+        key = launcher.host_platform_key()
+        if key is None:
+            self.skipTest('unsupported host platform')
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            node = root / launcher.SHIM_TARGETS[f'node-{key}'].path
+            node.parent.mkdir(parents=True, exist_ok=True)
+            node.write_text('', encoding='utf-8', newline='')
+            checkout = root / 'src' / 'brave'
+
+            os.environ['PATH'] = '/usr/bin'
+            seen = {}
+
+            def _capture(argv):
+                seen['argv'] = argv
+                seen['path'] = os.environ['PATH']
+                return 0
+
+            with mock.patch.object(launcher,
+                                   '_find_cwd_checkout',
+                                   return_value=checkout):
+                with mock.patch.object(launcher.sys, 'argv',
+                                       ['launcher.py', 'node', 'build.js']):
+                    with mock.patch.object(launcher.subprocess,
+                                           'call',
+                                           side_effect=_capture) as call:
+                        return_code = launcher.main()
+            self.assertEqual(return_code, 0)
+            call.assert_called_once()
+            self.assertEqual(seen['argv'], [str(node), 'build.js'])
+            # node's own directory lands first on the child's $PATH.
+            self.assertEqual(seen['path'].split(os.pathsep)[0],
+                             str(node.parent))
+            # ...and $PATH is restored once the call returns.
+            self.assertEqual(os.environ['PATH'], '/usr/bin')
 
 
 class MultiRepoSelfUpdaterTest(unittest.TestCase):
