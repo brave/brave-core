@@ -183,12 +183,14 @@ class BraveVerticalTabStripRegionView : public views::View,
   void OnMouseEntered();
 
   // Show vertical tab strip when mouse moves around the hot corner when it's
-  // completely hidden.
-  void ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
+  // completely hidden. Returns true if the vertical tab strip is shown, false
+  // otherwise.
+  bool ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
 
   // Collapse vertical tab strip when mouse moves out of its area while
   // floating.
   void CollapseVerticalTabStripOnMouseOut(const gfx::PointF& point_in_screen);
+
   void OnMousePressedInTree();
   void UpdateBubbleArrow();
 
