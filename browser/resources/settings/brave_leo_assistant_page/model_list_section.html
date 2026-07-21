@@ -1,6 +1,11 @@
 <style include="cr-shared-style settings-shared">
   .ollama-toggle {
     margin-bottom: var(--leo-spacing-xl);
+    border-top: none !important;
+    border-bottom: 1px solid var(--leo-color-divider-subtle);
+    --iron-icon-width: 20px;
+    --iron-icon-height: 20px;
+    --iron-icon-fill-color: var(--leo-color-icon-default);
   }
 
   .list {
@@ -21,6 +26,24 @@
 
   .model:last-of-type {
     border-bottom: none;
+  }
+
+  .model-info {
+    display: flex;
+    align-items: center;
+    gap: var(--leo-spacing-l);
+    min-width: 0;
+  }
+
+  .model-text {
+    min-width: 0;
+  }
+
+  .model-icon {
+    --iron-icon-width: 20px;
+    --iron-icon-height: 20px;
+    --iron-icon-fill-color: var(--leo-color-icon-default);
+    flex-shrink: 0;
   }
 
   .list-container {
@@ -102,17 +125,17 @@
       >
         <div class="model">
           <div class="model-info">
-            <div class="label">[[item.displayName]]</div>
-            <div class="label-secondary">
-              [[item.options.customModelOptions.modelRequestName]]
+            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
+              <cr-icon class="model-icon" icon="ollama"></cr-icon>
+            </template>
+            <div class="model-text">
+              <div class="label">[[item.displayName]]</div>
+              <div class="label-secondary">
+                [[item.options.customModelOptions.modelRequestName]]
+              </div>
             </div>
           </div>
           <div class="model-actions">
-            <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
-              <span class="label-secondary" style="font-size: 12px; padding: 8px;">
-                $i18n{braveLeoAssistantOllamaManagedLabel}
-              </span>
-            </template>
             <cr-icon-button
               on-click="handleEdit_"
               class="size-20"
@@ -133,29 +156,12 @@
 </div>
 
 <div class="action-box">
-  <template
-    is="dom-if"
-    if="[[!showModelConfig_]]"
+  <leo-button
+    id="addNewModel"
+    on-click="handleAddNewModel_"
+    class="action-button"
+    >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
   >
-    <leo-button
-      on-click="handleAddNewModel_"
-      class="action-button"
-      >$i18n{braveLeoAssistantAddNewModelButtonLabel}</leo-button
-    >
-  </template>
 </div>
-
-<template
-  is="dom-if"
-  if="[[showModelConfig_]]"
-  restamp
->
-  <model-config-ui
-    id="model-config-ui"
-    model-item="[[getEditingModel_(isEditingModelIndex_, customModelsList_)]]"
-    on-save="onModelConfigSave_"
-    on-close="onModelConfigClose_"
-  ></model-config-ui>
-</template>
 
 </settings-section>
