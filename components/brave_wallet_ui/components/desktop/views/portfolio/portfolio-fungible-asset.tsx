@@ -106,11 +106,11 @@ import { StyledWrapper, ButtonRow } from './style'
 import { Row, Column } from '../../../shared/style'
 import {
   TokenDetailsModal, //
-} from './components/token-details-modal/token-details-modal'
+} from '../../popup-modals/token_details_modal/token_details_modal'
 import {
   WalletActions, //
 } from '../../../../common/actions'
-import { HideTokenModal } from './components/hide-token-modal/hide-token-modal'
+import { HideTokenModal } from '../../popup-modals/hide_token_modal/hide_token_modal'
 import {
   WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'

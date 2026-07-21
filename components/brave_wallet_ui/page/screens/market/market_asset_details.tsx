@@ -9,7 +9,7 @@ import { skipToken } from '@reduxjs/toolkit/query/react'
 import Button from '@brave/leo/react/button'
 
 // redux
-import { useAppDispatch } from '../../../../common/hooks/use-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // types  & constants
 import {
@@ -17,52 +17,52 @@ import {
   WalletRoutes,
   TokenPriceHistory,
   LineChartIframeData,
-} from '../../../../constants/types'
+} from '../../../constants/types'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../common/constants/local-storage-keys'
+} from '../../../common/constants/local-storage-keys'
 
 // Utils
-import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { getLocale } from '../../../../../common/locale'
+import { getAssetIdKey } from '../../../utils/asset-utils'
+import { getLocale } from '../../../../common/locale'
 import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
-} from '../../../../utils/routes-utils'
-import { getIsRewardsToken } from '../../../../utils/rewards_utils'
+} from '../../../utils/routes-utils'
+import { getIsRewardsToken } from '../../../utils/rewards_utils'
 import {
   getStoredPortfolioTimeframe, //
-} from '../../../../utils/local-storage-utils'
-import Amount from '../../../../utils/amount'
-import { getBalance } from '../../../../utils/balance-utils'
-import { networkSupportsAccount } from '../../../../utils/network-utils'
+} from '../../../utils/local-storage-utils'
+import Amount from '../../../utils/amount'
+import { getBalance } from '../../../utils/balance-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
   getPriceRequestsForTokens,
-} from '../../../../utils/pricing-utils'
+} from '../../../utils/pricing-utils'
 import {
   querySubscriptionOptions60s, //
-} from '../../../../common/slices/constants'
+} from '../../../common/slices/constants'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletPageActions } from '../../actions'
 
 // Components
 import {
   LineChartControls, //
-} from '../../line-chart/line-chart-controls/line-chart-controls'
-import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
+} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
+import { AssetDetailsHeader } from '../../../components/desktop/card-headers/asset-details-header'
 import {
   TokenDetailsModal, //
-} from '../portfolio/components/token-details-modal/token-details-modal'
+} from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'
 import {
   HideTokenModal, //
-} from '../portfolio/components/hide-token-modal/hide-token-modal'
-import { CoinStats } from '../portfolio/components/coin-stats/coin-stats'
+} from '../../../components/desktop/popup-modals/hide_token_modal/hide_token_modal'
+import { CoinStats } from './components/coin_stats/coin_stats'
 
 // Hooks
-import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
+import { useFindBuySupportedToken } from '../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useGetNetworkQuery,
   useGetPriceHistoryQuery,
@@ -70,30 +70,30 @@ import {
   useGetCoinMarketQuery,
   useGetTokenSpotPricesQuery,
   useUpdateUserAssetVisibleMutation,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
   useGetCombinedTokensListQuery,
-} from '../../../../common/slices/api.slice.extra'
+} from '../../../common/slices/api.slice.extra'
 import {
   useScopedBalanceUpdater, //
-} from '../../../../common/hooks/use-scoped-balance-updater'
+} from '../../../common/hooks/use-scoped-balance-updater'
 import {
   useSyncedLocalStorage, //
-} from '../../../../common/hooks/use_local_storage'
-import { useRoute } from '../../../../common/hooks/use_route'
+} from '../../../common/hooks/use_local_storage'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Styled Components
-import { Row, Column } from '../../../shared/style'
-import { Skeleton } from '../../../shared/loading-skeleton/styles'
+import { Row, Column } from '../../../components/shared/style'
+import { Skeleton } from '../../../components/shared/loading-skeleton/styles'
 import {
   WalletPageWrapper, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { ButtonRow, StyledWrapper } from '../portfolio/style'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import { ButtonRow, StyledWrapper } from './market.style'
 
 const emptyPriceList: TokenPriceHistory[] = []
 
-export const MarketAsset = () => {
+export const MarketAssetDetails = () => {
   // state
   const [showTokenDetailsModal, setShowTokenDetailsModal] =
     React.useState<boolean>(false)
@@ -451,5 +451,3 @@ export const MarketAsset = () => {
     </WalletPageWrapper>
   )
 }
-
-export default MarketAsset

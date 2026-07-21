@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as leo from '@brave/leo/tokens/css/variables'
 import styled from 'styled-components'
@@ -77,4 +77,28 @@ export const MarketDataIframe = styled.iframe<{
   min-height: ${(p) =>
     p.iframeHeight ? `calc(${p.iframeHeight}px + 72px)` : 'unset'};
   border: none;
+`
+
+export const StyledWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  width: 100%;
+  height: 100%;
+`
+
+export const ButtonRow = styled.div<{
+  noMargin?: boolean
+  horizontalPadding?: number
+}>`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  width: 100%;
+  margin: ${(p) => (p.noMargin ? '0px' : '20px 0px')};
+  padding: 0px
+    ${(p) => (p.horizontalPadding !== undefined ? p.horizontalPadding : 0)}px;
+  gap: 12px;
 `
