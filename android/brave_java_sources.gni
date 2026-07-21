@@ -104,6 +104,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/BraveToolbarSwipeLayout.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewBackgroundTabAnimationData.java",
   "../../brave/android/java/org/chromium/chrome/browser/compositor/layouts/phone/BraveNewTabAnimationLayout.java",
+  "../../brave/android/java/org/chromium/chrome/browser/compositor/overlays/strip/BraveTabContextMenuCoordinator.java",
   "../../brave/android/java/org/chromium/chrome/browser/contextmenu/BraveChromeContextMenuPopulator.java",
   "../../brave/android/java/org/chromium/chrome/browser/cosmetic_filters/BraveCosmeticFiltersUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/crash/BravePureJavaExceptionReporter.java",
@@ -253,6 +254,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiInstanceOrchestratorImpl.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/multiwindow/BraveMultiWindowUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/native_page/BraveContextMenuManager.java",
   "../../brave/android/java/org/chromium/chrome/browser/night_mode/settings/BraveRadioButtonGroupThemePreference.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationPlatformBridge.java",
   "../../brave/android/java/org/chromium/chrome/browser/notifications/BraveNotificationWarningDialog.java",
@@ -539,6 +541,7 @@ brave_browser_ui_android_toolbar_sources = [
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/adaptive/settings/BraveRadioButtonGroupAdaptiveToolbarPreference.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BottomTabSwitcherActionMenuCoordinator.java",
+  "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveTabSwitcherActionMenuCoordinator.java",
   "//brave/browser/ui/android/toolbar/java/src/org/chromium/chrome/browser/toolbar/top/BraveToolbarLayout.java",
 ]
 

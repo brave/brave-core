@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |-
+      Make the constructor overridable so BraveTabContextMenuCoordinator can
+      subclass this strip context menu coordinator.
+    regex:
+      re_pattern: |-
+        private (TabContextMenuCoordinator\()
+      replace: |-
+        protected \1
+
+  - description: |-
+      Instantiate Brave's strip context menu coordinator, which hides the tab
+      group creation entries when the "Enable tab groups" master switch is off.
+    regex:
+      re_pattern: |-
+        new (TabContextMenuCoordinator\()
+      replace: |-
+        new Brave\1
