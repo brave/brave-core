@@ -485,6 +485,25 @@ void PolkadotMockRpc::AddGetRuntimeInfo() {
             })");
 }
 
+void PolkadotMockRpc::AddGetLatestRuntimeVersion(uint32_t spec_version) {
+  // The metadata provider probes the chain's latest runtime version to decide
+  // whether its cached metadata is still current. Only specVersion and
+  // transactionVersion are consumed.
+  req_res_pairs_.emplace(
+      base::test::ParseJsonDict(
+          R"({"id":1,"jsonrpc":"2.0","method":"state_getRuntimeVersion","params":[]})"),
+      absl::StrFormat(
+          R"({
+            "jsonrpc":"2.0",
+            "id":1,
+            "result":{
+              "specVersion":%u,
+              "transactionVersion":27
+            }
+          })",
+          spec_version));
+}
+
 void PolkadotMockRpc::AddGetGenesisBlockHash() {
   // We need to grab the genesis block hash.
   if (reject_genesis_block_hash_) {

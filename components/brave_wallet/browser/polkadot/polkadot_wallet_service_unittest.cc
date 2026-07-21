@@ -15,6 +15,8 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/network_manager.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata.h"
+#include "brave/components/brave_wallet/browser/polkadot/polkadot_chain_metadata_prefs.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_keyring.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_substrate_rpc.h"
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_test_utils.h"
@@ -716,6 +718,62 @@ TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoGenesisHash) {
 TEST_F(PolkadotWalletServiceUnitTest, SignTransferExtrinsic_NoRuntimeVersion) {
   auto signed_extrinsic = SignTransferExtrinsicWithFailedStep(
       [](PolkadotMockRpc& rpc) { rpc.RejectRuntimeVersion(); });
+  EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
+}
+
+TEST_F(PolkadotWalletServiceUnitTest,
+       SignTransferExtrinsic_TamperedSignedExtensionsInPrefs) {
+  // This test deliberately corrupts the on-disk chain metadata to inject an
+  // unknown/untrusted signing extension.
+  constexpr uint32_t kSpecVersion = 1021000;
+
+  auto polkadot_mock_rpc = std::make_unique<PolkadotMockRpc>(
+      &url_loader_factory_, network_manager_.get());
+
+  auto polkadot_wallet_service = std::make_unique<PolkadotWalletService>(
+      *keyring_service_, *network_manager_, prefs_,
+      url_loader_factory_.GetSafeWeakWrapper());
+
+  UnlockWallet();
+
+  auto sender_pubkey =
+      keyring_service_->GetPolkadotPubKey(polkadot_testnet_account_->account_id)
+          .value();
+
+  // Westend-shaped metadata, but with a corrupted signed-extension identifier
+  // (0x63 maps to no known SignedExtension).
+  std::array<uint8_t, kMaxSignedExtensions> tampered_extensions = {
+      8, 9, 10, 11, 12, 0x63};
+
+  auto metadata = MakeWestendMetadata();
+  metadata->signed_extensions = tampered_extensions;
+  metadata->spec_version = kSpecVersion;
+
+  // Seed the untrusted on-disk cache. The service is already constructed, so
+  // writing here also stamps the metadata schema version and the entry
+  // survives.
+  PolkadotChainMetadataPrefs(prefs_).SetChainMetadata(mojom::kPolkadotTestnet,
+                                                      metadata);
+
+  polkadot_mock_rpc->SetSenderPubKey(sender_pubkey);
+  polkadot_mock_rpc->AddReqResPairs();
+  // Matching spec version makes the provider serve the cached tampered metadata
+  // rather than re-fetch and re-parse the SCALE blob (which would reject it).
+  polkadot_mock_rpc->AddGetLatestRuntimeVersion(kSpecVersion);
+  polkadot_mock_rpc->FinalizeSetup();
+
+  std::array<uint8_t, kPolkadotSubstrateAccountIdSize> recipient_pubkey = {};
+  ASSERT_TRUE(base::HexStringToSpan(kBob, recipient_pubkey));
+
+  base::test::TestFuture<base::expected<PolkadotExtrinsicMetadata, std::string>>
+      test_future;
+  polkadot_wallet_service->GenerateSignedTransferExtrinsic(
+      mojom::kPolkadotTestnet, polkadot_testnet_account_->account_id.Clone(),
+      std::variant<uint128_t, TransferAll>(uint128_t{1234}), std::nullopt,
+      recipient_pubkey, test_future.GetCallback());
+
+  auto signed_extrinsic = test_future.Take();
+  ASSERT_FALSE(signed_extrinsic.has_value());
   EXPECT_EQ(signed_extrinsic.error(), WalletInternalErrorMessage());
 }
 
