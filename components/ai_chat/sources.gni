@@ -19,3 +19,12 @@ if (enable_ai_chat) {
   brave_blink_renderer_modules_peerconnection_deps +=
       [ "//brave/components/ai_chat/core/common:constants" ]
 }
+
+# Deps for third_party/blink/renderer/core (script_tools). Same rationale and
+# guard as above: the model_context.cc plaster patch reads
+# kAIChatLeoWorkspaceUIHost to allow WebMCP only on the leo-workspace page.
+brave_blink_renderer_core_script_tools_deps = []
+if (enable_ai_chat) {
+  brave_blink_renderer_core_script_tools_deps +=
+      [ "//brave/components/ai_chat/core/common:constants" ]
+}

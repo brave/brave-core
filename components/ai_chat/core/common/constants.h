@@ -53,6 +53,11 @@ inline constexpr char kAIChatCodeSandboxUIHost[] = "aichat-code-sandbox";
 inline constexpr char kAIChatCodeSandboxUIURL[] =
     "chrome-untrusted://aichat-code-sandbox/";
 
+// The chrome-untrusted WebUI that hosts Leo's local "workspace" file tools.
+inline constexpr char kAIChatLeoWorkspaceUIHost[] = "leo-workspace";
+inline constexpr char kAIChatLeoWorkspaceUIURL[] =
+    "chrome-untrusted://leo-workspace/";
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_COMMON_CONSTANTS_H_

@@ -1,0 +1,25 @@
+diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
+index b43715b25c22dce6d8f893870cd8ecdb94b21a0a..c9a7a889140581f72532171a60e20876a903b24f 100644
+--- a/third_party/blink/renderer/core/script_tools/model_context.cc
++++ b/third_party/blink/renderer/core/script_tools/model_context.cc
+@@ -8,6 +8,7 @@
+ #include "base/metrics/histogram_functions.h"
+ #include "base/task/single_thread_task_runner.h"
+ #include "base/time/time.h"
++#include "brave/components/ai_chat/core/common/constants.h"
+ #include "third_party/blink/public/platform/browser_interface_broker_proxy.h"
+ #include "third_party/blink/public/web/web_script_tool_types.h"
+ #include "third_party/blink/renderer/bindings/core/v8/capture_source_location.h"
+@@ -847,7 +848,11 @@ bool ModelContext::IsModelContextAllowed() const {
+               url::kFileScheme &&
+           key.IsUniversalFileAgent()) ||
+          (document_->GetSettings() &&
+-          !document_->GetSettings()->GetWebSecurityEnabled());
++          !document_->GetSettings()->GetWebSecurityEnabled()) ||
++         (document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
++              "chrome-untrusted" &&
++           document_->GetExecutionContext()->GetSecurityOrigin()->Host() ==
++              ai_chat::kAIChatLeoWorkspaceUIHost);
+ }
+ 
+ ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(
