@@ -163,6 +163,19 @@ IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest,
   EXPECT_EQ(region->workspaces_button_for_testing(), nullptr);
 }
 
+// No workspaces button is created in a guest window, even when the feature is
+// enabled. Guest profiles are off-the-record (IsOffTheRecord() == true), so
+// they hit the same guard as private browsing windows.
+IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, ButtonAbsentInGuest) {
+  ASSERT_TRUE(GetWorkspacesButton()) << "Workspaces button should exist in a "
+                                        "normal window with the feature on";
+
+  auto* guest_browser = CreateGuestBrowser();
+  auto* region = GetHorizontalTabStripRegion(guest_browser);
+  ASSERT_TRUE(region);
+  EXPECT_EQ(region->workspaces_button_for_testing(), nullptr);
+}
+
 // Clicking the workspaces button shows a WorkspacesBubbleView.
 IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, BubbleOpensOnClick) {
   EXPECT_TRUE(OpenBubble());

@@ -808,7 +808,7 @@ void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
   // browser window (not private, not PWA/popup/PIP/etc).
   if (!base::FeatureList::IsEnabled(features::kWorkspaces) ||
       browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
-      browser_->profile()->IsIncognitoProfile()) {
+      browser_->profile()->IsOffTheRecord()) {
     return;
   }
 

@@ -278,7 +278,7 @@ void BraveHorizontalTabStripRegionView::CreateWorkspaceButtonIfNeeded() {
 
   auto* bwi = tab_strip_->GetBrowserWindowInterface();
   if (bwi->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
-      bwi->GetProfile()->IsIncognitoProfile()) {
+      bwi->GetProfile()->IsOffTheRecord()) {
     return;
   }
 
