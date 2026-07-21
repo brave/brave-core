@@ -53,6 +53,8 @@ class AdEvents final : public TableInterface {
                        GetAdEventVirtualPrefsCallback callback) const;
 
   void GetUnexpired(GetAdEventsCallback callback) const;
+  void GetUnexpired(base::TimeDelta time_window,
+                    GetAdEventsCallback callback) const;
   void GetUnexpired(mojom::AdType mojom_ad_type,
                     GetAdEventsCallback callback) const;
 
