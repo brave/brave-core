@@ -29,6 +29,7 @@ struct CxxCheckpointIdResultWrapper;
 struct CxxCheckpointsResultWrapper;
 struct CxxOrchardShardResultWrapper;
 struct CxxOrchardShardTreeCapResultWrapper;
+struct CxxRetainedCheckpointsResultWrapper;
 struct CxxShardRootsResultWrapper;
 
 class CxxOrchardShardTreeDelegate {
@@ -68,6 +69,16 @@ class CxxOrchardShardTreeDelegate {
   ::rust::Box<CxxBoolResultWrapper> TruncateCheckpoint(
       uint32_t checkpoint_id) const;
   ::rust::Box<CxxCheckpointsResultWrapper> GetCheckpoints(size_t limit) const;
+
+  // Explicitly retained checkpoints are only persisted for the Orchard pool
+  // (`OrchardStorage::*OrchardRetainedCheckpoint*`); the Ironwood pool has no
+  // equivalent storage yet, so these are no-ops for `pool_ == kIronwood`.
+  ::rust::Box<CxxBoolResultWrapper> AddRetainedCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CxxBoolResultWrapper> RemoveRetainedCheckpoint(
+      uint32_t checkpoint_id) const;
+  ::rust::Box<CxxRetainedCheckpointsResultWrapper> GetRetainedCheckpoints()
+      const;
 
  private:
   raw_ref<OrchardStorage> storage_;

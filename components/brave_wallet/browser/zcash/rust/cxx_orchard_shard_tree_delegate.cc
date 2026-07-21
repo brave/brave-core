@@ -301,4 +301,46 @@ CxxOrchardShardTreeDelegate::GetCheckpoints(size_t limit) const {
   return wrap_checkpoints(std::move(result));
 }
 
+::rust::Box<CxxBoolResultWrapper>
+CxxOrchardShardTreeDelegate::AddRetainedCheckpoint(
+    uint32_t checkpoint_id) const {
+  if (pool_ != OrchardPool::kOrchard) {
+    return wrap_bool(true);
+  }
+  auto result = storage_->AddOrchardRetainedCheckpoint(checkpoint_id);
+  if (!result.has_value()) {
+    return wrap_bool_error();
+  }
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
+}
+
+::rust::Box<CxxBoolResultWrapper>
+CxxOrchardShardTreeDelegate::RemoveRetainedCheckpoint(
+    uint32_t checkpoint_id) const {
+  if (pool_ != OrchardPool::kOrchard) {
+    return wrap_bool(true);
+  }
+  auto result = storage_->RemoveOrchardRetainedCheckpoint(checkpoint_id);
+  if (!result.has_value()) {
+    return wrap_bool_error();
+  }
+  return wrap_bool(result.value() == OrchardStorage::Result::kSuccess);
+}
+
+::rust::Box<CxxRetainedCheckpointsResultWrapper>
+CxxOrchardShardTreeDelegate::GetRetainedCheckpoints() const {
+  if (pool_ != OrchardPool::kOrchard) {
+    return wrap_retained_checkpoints({});
+  }
+  auto result = storage_->GetOrchardRetainedCheckpoints();
+  if (!result.has_value()) {
+    return wrap_retained_checkpoints_error();
+  }
+  ::rust::Vec<uint32_t> retained;
+  for (const auto& checkpoint_id : result.value()) {
+    retained.push_back(checkpoint_id);
+  }
+  return wrap_retained_checkpoints(std::move(retained));
+}
+
 }  // namespace brave_wallet::orchard

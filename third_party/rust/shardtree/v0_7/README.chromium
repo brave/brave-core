@@ -1,0 +1,10 @@
+Name: shardtree
+URL: https://crates.io/crates/shardtree
+Version: 0.7.0
+Revision: 2b402d4bc686a1e6af4ac129c888dbb7d420d183
+License: Apache-2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/shardtree-v0_7/LICENSE-APACHE
+Shipped: yes
+Security Critical: yes
+
+Description: A space-efficient Merkle tree with witnessing of marked leaves, checkpointing & state restoration.

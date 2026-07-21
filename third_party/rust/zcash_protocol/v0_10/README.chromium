@@ -1,0 +1,9 @@
+Name: zcash_protocol
+URL: https://crates.io/crates/zcash_protocol
+Version: 0.10.0
+License: Apache-2.0
+License File:
+Shipped: yes
+Security Critical: yes
+
+Description: Zcash protocol network constants and value types.
