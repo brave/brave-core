@@ -44,7 +44,10 @@ std::optional<RewardInfo> BuildReward(const ConfirmationInfo& confirmation) {
 
   // Blinded token
   const cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
-  CHECK(!blinded_tokens.empty());
+  if (blinded_tokens.empty()) {
+    BLOG(0, "Failed to blind token");
+    return std::nullopt;
+  }
   reward.blinded_token = blinded_tokens.front();
 
   // Confirmation token

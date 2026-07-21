@@ -29,7 +29,8 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   // The client blinds this token using a blinding scalar. Blinding ensures that
   // the token is not recognizable or linkable to the original value until it's
   // unblinded.
-  const BlindedToken blinded_token = token.Blind();
+  const base::expected<BlindedToken, std::string> blinded_token = token.Blind();
+  ASSERT_TRUE(blinded_token.has_value());
 
   // The server generates a random signing key.
   SigningKey signing_key = SigningKey::Random();
@@ -37,7 +38,7 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   // The server signs the blinded token using its signing key. This signature
   // proves the server’s endorsement of the token.
   const base::expected<SignedToken, std::string> signed_token =
-      signing_key.Sign(blinded_token);
+      signing_key.Sign(*blinded_token);
   EXPECT_TRUE(signed_token.has_value());
 
   // The client verifies the batch DLEQ proof using the public key provided by
@@ -45,7 +46,7 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
   // to the public key.
   const PublicKey public_key = signing_key.GetPublicKey();
 
-  const std::vector<BlindedToken> blinded_tokens = {blinded_token};
+  const std::vector<BlindedToken> blinded_tokens = {*blinded_token};
   const std::vector<SignedToken> signed_tokens = {*signed_token};
   base::expected<BatchDLEQProof, std::string> batch_dleq_proof =
       BatchDLEQProof::Create(blinded_tokens, signed_tokens, signing_key);

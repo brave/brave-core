@@ -120,7 +120,7 @@ pub mod ffi {
 
         fn generate_token() -> Box<Token>;
         fn encode_base64(self: &Token) -> String;
-        fn blind(self: &Token) -> Box<BlindedToken>;
+        fn blind(self: &Token) -> Box<BlindedTokenResult>;
 
         fn decode_base64_token(s: &str) -> Box<TokenResult>;
         fn error(self: &TokenResult) -> &Error;
@@ -330,12 +330,12 @@ impl Token {
         self.0.encode_base64()
     }
 
-    fn blind(self: &Token) -> Box<BlindedToken> {
+    fn blind(self: &Token) -> Box<BlindedTokenResult> {
+        // Fallible: `blind_rfc` returns an error if the token preimage maps to
+        // the group identity element (RFC 9497 §3.3.1). Surface it to the
+        // caller so it can be handled gracefully.
         Box::new(
-            self.0
-                .blind_rfc::<Sha512>()
-                .expect("token preimage must not map to the identity element")
-                .into(),
+            || -> Result<BlindedToken, Error> { Ok(self.0.blind_rfc::<Sha512>()?.into()) }().into(),
         )
     }
 }
