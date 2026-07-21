@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/webui/signin/profile_customization_ui.cc b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
+index 37f3de8ad7212268c4a6a391d8c271f6d5ab44a0..68966dfd946c77dc0b4d55eb1d21660712ba4009 100644
+--- a/chrome/browser/ui/webui/signin/profile_customization_ui.cc
++++ b/chrome/browser/ui/webui/signin/profile_customization_ui.cc
+@@ -42,6 +42,8 @@ ProfileCustomizationUI::ProfileCustomizationUI(content::WebUI* web_ui)
+       profile, chrome::kChromeUIProfileCustomizationHost);
+ 
+   static constexpr webui::ResourcePath kResources[] = {
++      {"profile_customization_app-chromium.js",
++       IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_CHROMIUM_JS},
+       {"profile_customization_app.js",
+        IDR_SIGNIN_PROFILE_CUSTOMIZATION_PROFILE_CUSTOMIZATION_APP_JS},
+       {"profile_customization_app.css.js",
