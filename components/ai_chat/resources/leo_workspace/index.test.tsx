@@ -39,7 +39,7 @@ beforeEach(() => {
   })
 
   registeredToolNames = []
-  Object.defineProperty(navigator, 'modelContext', {
+  Object.defineProperty(document, 'modelContext', {
     configurable: true,
     writable: true,
     value: {
@@ -54,7 +54,7 @@ beforeEach(() => {
 })
 
 afterEach(() => {
-  delete navigator.modelContext
+  delete document.modelContext
   delete window.launchQueue
 })
 

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 // Registers the workspace file tools with Leo via the WebMCP API
-// (navigator.modelContext). The primary editing tool follows Anthropic's
+// (document.modelContext). The primary editing tool follows Anthropic's
 // text-editor tool ("str_replace_based_edit_tool"): a single tool with a
 // `command` enum (view / create / str_replace / insert) and matching parameter
 // names, so it lands in the model's training distribution. Search and
@@ -24,7 +24,7 @@ interface ModelContext {
   registerTool(tool: ModelContextTool): Promise<void>
 }
 declare global {
-  interface Navigator {
+  interface Document {
     modelContext?: ModelContext
   }
 }
@@ -58,9 +58,9 @@ function asInt(v: unknown, fallback: number): number {
 export async function registerTools(
   root: FileSystemDirectoryHandle,
 ): Promise<void> {
-  const mc = navigator.modelContext
+  const mc = document.modelContext
   if (!mc) {
-    console.error('[leo-workspace] navigator.modelContext is unavailable')
+    console.error('[leo-workspace] document.modelContext is unavailable')
     return
   }
 
