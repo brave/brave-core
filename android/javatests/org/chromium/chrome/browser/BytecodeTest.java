@@ -3027,10 +3027,6 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/download/BraveDownloadMessageUiControllerImpl")); // presubmit: ignore-long-line
         Assert.assertTrue(
                 checkSuperName(
-                        "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator",
-                        "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediatorBase")); // presubmit: ignore-long-line
-        Assert.assertTrue(
-                checkSuperName(
                         "org/chromium/chrome/browser/autofill/settings/AutofillPaymentMethodsFragment", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentBase")); // presubmit: ignore-long-line
         Assert.assertTrue(
