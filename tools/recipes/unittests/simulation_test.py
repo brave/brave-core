@@ -21,13 +21,13 @@ from recipe_test_api import RecipeTestApi, StepTestData, TestData
 class SimFSTest(unittest.TestCase):
 
     def test_file_and_ancestor_semantics(self):
-        fs = simulation.SimFS(files=['/b/s/chromium/src/chrome/VERSION'])
-        self.assertTrue(fs.is_file('/b/s/chromium/src/chrome/VERSION'))
-        self.assertTrue(fs.exists('/b/s/chromium/src/chrome/VERSION'))
+        fs = simulation.SimFS(files=['/b/s/brave-browser/src/chrome/VERSION'])
+        self.assertTrue(fs.is_file('/b/s/brave-browser/src/chrome/VERSION'))
+        self.assertTrue(fs.exists('/b/s/brave-browser/src/chrome/VERSION'))
         # Ancestors of a seeded file are directories that exist.
-        self.assertTrue(fs.is_dir('/b/s/chromium/src'))
+        self.assertTrue(fs.is_dir('/b/s/brave-browser/src'))
         # The file itself is not a directory.
-        self.assertFalse(fs.is_dir('/b/s/chromium/src/chrome/VERSION'))
+        self.assertFalse(fs.is_dir('/b/s/brave-browser/src/chrome/VERSION'))
         self.assertFalse(fs.exists('/b/s/nope'))
 
     def test_mkdir_mutates(self):
@@ -93,7 +93,7 @@ class TestContextTest(unittest.TestCase):
                 }
             },
             'path': {
-                'files': ['chromium/src/chrome/VERSION'],
+                'files': ['brave-browser/src/chrome/VERSION'],
                 'dirs': []
             },
         }
@@ -102,7 +102,8 @@ class TestContextTest(unittest.TestCase):
         self.assertEqual(ctx.env['K'], 'V')
         self.assertEqual(ctx.which_map['gclient'], '/g')
         # Relative seed resolves under the simulated workspace.
-        self.assertTrue(ctx.fs.is_file('/b/s/chromium/src/chrome/VERSION'))
+        self.assertTrue(
+            ctx.fs.is_file('/b/s/brave-browser/src/chrome/VERSION'))
 
 
 class ExpectationTest(unittest.TestCase):

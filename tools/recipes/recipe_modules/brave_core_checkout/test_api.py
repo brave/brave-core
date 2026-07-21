@@ -2,11 +2,11 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""Test API for `brave_core_shallow`: set up its checkout preconditions.
+"""Test API for `brave_core_checkout`: set up its checkout preconditions.
 
 Exposes the module's simulated preconditions as helpers so a *recipe* that
-merely depends on `brave_core_shallow` can arrange them without itself depending
-on `path`.
+merely depends on `brave_core_checkout` can arrange them without itself
+depending on `path`.
 """
 
 from __future__ import annotations
@@ -14,11 +14,11 @@ from __future__ import annotations
 from recipe_test_api import RecipeTestApi, TestData
 
 # Where the module checks brave-core out (matches `api.path.brave_core`).
-_BRAVE_CORE = 'chromium/src/brave'
+_BRAVE_CORE = 'brave-browser/src/brave'
 
 
-class BraveCoreShallowTestApi(RecipeTestApi):
-    """Seed the simulated state `brave_core_shallow.deploy` inspects."""
+class BraveCoreCheckoutTestApi(RecipeTestApi):
+    """Seed the simulated state `brave_core_checkout.deploy` inspects."""
 
     def deployed(self, *paths: str) -> TestData:
         """Mark repo-relative *paths* present after the sparse checkout.

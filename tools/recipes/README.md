@@ -141,7 +141,7 @@ def GenTests(api):
     yield api.test(
         'linux',
         api.chromium_checkout.with_git_cache(),                 # seed preconditions
-        api.brave_core_shallow.deployed('tools/cr/toolchains'),
+        api.brave_core_checkout.deployed('tools/cr/toolchains'),
         api.properties(brave_subrevision=1, chromium_ref='151.0.7917.1'),
         api.post_process(post_process.MustRun, 'fetch chromium'),
         api.post_process(post_process.StatusSuccess),

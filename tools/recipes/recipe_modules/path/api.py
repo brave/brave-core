@@ -87,8 +87,8 @@ class PathApi(RecipeApi):
 
     @property
     def chromium_src(self) -> Path:
-        """Chromium `src/` checkout: `<workspace>/chromium/src`."""
-        return self._workspace / 'chromium' / 'src'
+        """Chromium `src/` checkout: `<workspace>/brave-browser/src`."""
+        return self._workspace / 'brave-browser' / 'src'
 
     @property
     def brave_core(self) -> Path:

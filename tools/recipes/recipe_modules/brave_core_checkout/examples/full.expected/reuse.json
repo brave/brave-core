@@ -2,23 +2,32 @@
   {
     "cmd": [
       "git",
-      "clone",
+      "-C",
+      "[WORKSPACE]/brave-browser/src/brave",
+      "fetch",
       "--depth",
       "2",
-      "--filter=blob:none",
-      "--sparse",
-      "--branch",
-      "master",
-      "git@github.com:brave/brave-core.git",
-      "[WORKSPACE]/chromium/src/brave"
+      "origin",
+      "master"
     ],
-    "name": "clone brave-core (shallow, sparse)"
+    "name": "fetch brave-core ref"
   },
   {
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/chromium/src/brave",
+      "[WORKSPACE]/brave-browser/src/brave",
+      "checkout",
+      "--force",
+      "FETCH_HEAD"
+    ],
+    "name": "checkout brave-core ref"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/brave-browser/src/brave",
       "sparse-checkout",
       "list"
     ],
@@ -28,7 +37,7 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/chromium/src/brave",
+      "[WORKSPACE]/brave-browser/src/brave",
       "sparse-checkout",
       "add",
       "tools/cr/bootstrap"
@@ -42,7 +51,7 @@
     ],
     "env_prefixes": {
       "PATH": [
-        "[WORKSPACE]/chromium/src/brave/tools/cr/bootstrap"
+        "[WORKSPACE]/brave-browser/src/brave/tools/cr/bootstrap"
       ]
     },
     "name": "npm version"

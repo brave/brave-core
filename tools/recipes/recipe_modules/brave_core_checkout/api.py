@@ -2,7 +2,7 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""The `brave_core_shallow` module API."""
+"""The `brave_core_checkout` module API."""
 
 from __future__ import annotations
 
@@ -20,7 +20,7 @@ REPO_URL = 'git@github.com:brave/brave-core.git'
 BOOTSTRAP_PATH = 'tools/cr/bootstrap'
 
 
-class BraveCoreShallowApi(RecipeApi):
+class BraveCoreCheckoutApi(RecipeApi):
     """Deploys subpaths of brave-core via a shallow, sparse checkout.
 
     Instead of cloning the whole (large) repository, this fetches just enough
