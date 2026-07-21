@@ -801,6 +801,9 @@
   <message name="IDS_AI_CHAT_ATTACH_OPEN_HISTORY_BUTTON_LABEL" desc="The button label for attaching history" formatter_data="webui=AiChat">
     History…
   </message>
+  <message name="IDS_AI_CHAT_WORKSPACE_FOLDER_BUTTON_LABEL" desc="The button label for selecting a local workspace folder for Leo's experimental workspace tools" formatter_data="webui=AiChat">
+    Workspace folder
+  </message>
   <message name="IDS_AI_CHAT_USE_MICROPHONE_BUTTON_LABEL" desc="The button label for Leo's microphone feature" formatter_data="webui=AiChat">
     Use microphone
   </message>
