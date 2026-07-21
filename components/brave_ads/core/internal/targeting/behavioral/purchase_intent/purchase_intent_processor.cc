@@ -118,7 +118,7 @@ std::optional<SegmentList>
 PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
     const KeywordList& search_query_keywords) const {
   base::optional_ref<const PurchaseIntentResourceInfo> purchase_intent =
-      resource_->get();
+      resource_->GetPurchaseIntent();
   if (!purchase_intent) {
     return std::nullopt;
   }
@@ -140,7 +140,7 @@ PurchaseIntentProcessor::MaybeGetSegmentsForSearchQuery(
 int PurchaseIntentProcessor::ComputeFunnelKeyphraseWeightForSearchQuery(
     const KeywordList& search_query_keywords) const {
   base::optional_ref<const PurchaseIntentResourceInfo> purchase_intent =
-      resource_->get();
+      resource_->GetPurchaseIntent();
   if (!purchase_intent) {
     return kDefaultFunnelKeyphraseWeightForSearchQuery;
   }
@@ -176,7 +176,7 @@ PurchaseIntentProcessor::MaybeExtractSignalForUrl(const GURL& url) const {
 std::optional<PurchaseIntentFunnelInfo>
 PurchaseIntentProcessor::MaybeGetFunnelForUrl(const GURL& url) const {
   base::optional_ref<const PurchaseIntentResourceInfo> purchase_intent =
-      resource_->get();
+      resource_->GetPurchaseIntent();
   if (!purchase_intent) {
     return std::nullopt;
   }
