@@ -1,0 +1,163 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# Creates an executable shim that runs another binary with args/env/cwd baked
+# into a config and additional CLI arguments passed as is.
+#
+# Example:
+#
+#   import("//brave/build/node_bin.gni")
+#   import("//brave/build/tool_shim/tool_shim.gni")
+#
+#   tool_shim("brave_jest_tests") {
+#     executable = node_bin
+#     cwd = "//brave"
+#     args = [
+#       rebase_path("//brave/node_modules/jest/bin/jest.js", cwd),
+#       "--config",
+#       rebase_path("//brave/jest.config.ts", cwd),
+#     ]
+#     env = {
+#       SOME_ENV_VAR = "some value"
+#     }
+#   }
+#
+# Then: out/Default/brave_jest_tests --testNamePattern=auth
+template("tool_shim") {
+  assert(defined(invoker.executable), "executable is required")
+  _exe_suffix = ""
+  if (is_win) {
+    _exe_suffix = ".exe"
+  }
+
+  if (defined(invoker.output_name)) {
+    _output_name = invoker.output_name
+  } else {
+    _output_name = target_name
+  }
+  if (defined(invoker.output_dir)) {
+    _output_dir = invoker.output_dir
+  } else {
+    _output_dir = root_out_dir
+  }
+
+  _output_path = "${_output_dir}/${_output_name}${_exe_suffix}"
+  _config_path = "${_output_dir}/${_output_name}.json"
+
+  generated_file("${target_name}__config") {
+    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+    outputs = [ _config_path ]
+    contents = {
+      executable = rebase_path(invoker.executable, _output_dir)
+
+      if (defined(invoker.args)) {
+        args = invoker.args
+      }
+      if (defined(invoker.env)) {
+        env = invoker.env
+      }
+      if (defined(invoker.cwd)) {
+        cwd = rebase_path(invoker.cwd, _output_dir)
+      } else {
+        cwd = rebase_path(root_build_dir, _output_dir)
+      }
+    }
+    output_conversion = "json"
+  }
+
+  _tool_shim_dir = get_label_info("//brave/build/tool_shim", "root_out_dir")
+  _tool_shim_path = "$_tool_shim_dir/tool_shim${_exe_suffix}"
+
+  copy("${target_name}__exe") {
+    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+    sources = [ _tool_shim_path ]
+    outputs = [ _output_path ]
+    deps = [ "//brave/build/tool_shim" ]
+  }
+
+  group(target_name) {
+    forward_variables_from(invoker, TESTONLY_AND_VISIBILITY)
+    forward_variables_from(invoker, "*", TESTONLY_AND_VISIBILITY)
+
+    if (!defined(data)) {
+      data = []
+    }
+    data += [
+      _output_path,
+      _config_path,
+      invoker.executable,
+    ]
+
+    if (!defined(deps)) {
+      deps = []
+    }
+    deps += [
+      ":${target_name}__config",
+      ":${target_name}__exe",
+    ]
+  }
+}
+
+# Creates a host executable shim that runs another binary with args/env/cwd
+# baked into a config and additional CLI arguments passed as is.
+#
+# Example:
+#
+#   import("//brave/build/node_bin.gni")
+#   import("//brave/build/tool_shim/tool_shim.gni")
+#
+#   host_tool_shim("brave_jest_tests") {
+#     executable = node_bin
+#     cwd = "//brave"
+#     args = [
+#       rebase_path("//brave/node_modules/jest/bin/jest.js", cwd),
+#       "--config",
+#       rebase_path("//brave/jest.config.ts", cwd),
+#     ]
+#     env = {
+#       SOME_ENV_VAR = "some value"
+#     }
+#   }
+#
+# Then: out/Default/bin/brave_jest_tests --testNamePattern=auth
+template("host_tool_shim") {
+  if (current_toolchain == host_toolchain) {
+    if (defined(invoker.output_name)) {
+      _output_name = invoker.output_name
+    } else {
+      _output_name = target_name
+    }
+    if (defined(invoker.output_dir)) {
+      _output_dir = invoker.output_dir
+    } else {
+      _output_dir = "$root_build_dir/bin"
+    }
+
+    tool_shim("${target_name}__host") {
+      # Make sure to NOT forward dependencies to the host toolchain shim.
+      forward_variables_from(invoker,
+                             TESTONLY_AND_VISIBILITY + [
+                                   "executable",
+                                   "args",
+                                   "env",
+                                   "cwd",
+                                 ])
+      output_name = _output_name
+      output_dir = _output_dir
+    }
+  }
+
+  group(target_name) {
+    forward_variables_from(invoker,
+                           TESTONLY_AND_VISIBILITY + [
+                                 "data",
+                                 "data_deps",
+                                 "deps",
+                                 "public_deps",
+                               ])
+    public_deps = [ ":${target_name}__host($host_toolchain)" ]
+  }
+  not_needed(invoker, "*")
+}
