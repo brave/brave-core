@@ -84,6 +84,8 @@ COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatFirstEnabled();
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatUserChoiceTool);
 
+COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatWorkspaceTools);
+
 // Enables experimental features being enabled in a separate profile. If
 // disabled, the features will not be enabled anywhere.
 COMPONENT_EXPORT(AI_CHAT_COMMON) BASE_DECLARE_FEATURE(kAIChatAgentProfile);
