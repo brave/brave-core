@@ -13,12 +13,12 @@ pub struct FilterSet(pub(crate) InnerFilterSet);
 
 impl Default for Box<FilterSet> {
     fn default() -> Self {
-        new_filter_set()
+        new_filter_set(false)
     }
 }
 
-pub fn new_filter_set() -> Box<FilterSet> {
-    Box::new(FilterSet(InnerFilterSet::new(false)))
+pub fn new_filter_set(debug: bool) -> Box<FilterSet> {
+    Box::new(FilterSet(InnerFilterSet::new(debug)))
 }
 
 impl FilterSet {

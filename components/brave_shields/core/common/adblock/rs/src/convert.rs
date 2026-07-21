@@ -7,10 +7,10 @@ use std::time::Duration;
 
 use crate::ffi::{
     AddedFiltersRecord, BlockerResult, DebugInfo, FilterListMetadata, OptionalString, OptionalU16,
-    RegexDebugEntry, RegexManagerDiscardPolicy,
+    RegexDebugEntry, RegexManagerDiscardPolicy, SourceInfo,
 };
 use adblock::blocker::BlockerResult as InnerBlockerResult;
-use adblock::engine::EngineDebugInfo as InnerEngineDebugInfo;
+use adblock::engine::{EngineDebugInfo as InnerEngineDebugInfo, SourceInfo as InnerSourceInfo};
 use adblock::lists::{
     AddedFiltersRecord as InnerAddedFiltersRecord, ExpiresInterval,
     FilterListMetadata as InnerFilterListMetadata,
@@ -50,12 +50,26 @@ impl From<InnerRegexDebugEntry> for RegexDebugEntry {
     }
 }
 
+impl From<InnerSourceInfo> for SourceInfo {
+    fn from(info: InnerSourceInfo) -> Self {
+        Self {
+            title: OptionalString::from(info.title),
+            homepage: OptionalString::from(info.homepage),
+            network_filter_count: info.network_filter_count as usize,
+            cosmetic_filter_count: info.cosmetic_filter_count as usize,
+            parse_error: info.parse_error as usize,
+            invalid_lines: info.invalid_lines,
+        }
+    }
+}
+
 impl From<InnerEngineDebugInfo> for DebugInfo {
     fn from(info: InnerEngineDebugInfo) -> Self {
         Self {
             regex_data: info.regex_debug_info.regex_data.into_iter().map(|e| e.into()).collect(),
             compiled_regex_count: info.regex_debug_info.compiled_regex_count,
             flatbuffer_size: info.flatbuffer_size,
+            source_info: info.source_info.into_iter().map(|e| e.into()).collect(),
         }
     }
 }
