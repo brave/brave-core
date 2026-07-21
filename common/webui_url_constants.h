@@ -14,4 +14,7 @@ inline constexpr char kAIChatChartDisplayUIURL[] =
     "chrome-untrusted://aichat-chart-display/";
 inline constexpr char kAIChatChartDisplayUIHost[] = "aichat-chart-display";
 
+inline constexpr char kWorkspaceUIURL[] = "chrome-untrusted://workspace/";
+inline constexpr char kWorkspaceUIHost[] = "workspace";
+
 #endif  // BRAVE_COMMON_WEBUI_URL_CONSTANTS_H_
