@@ -6,6 +6,7 @@
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler.h"
 
 #include "base/notimplemented.h"
+#include "base/strings/sys_string_conversions.h"
 #include "brave/components/brave_wallet/ios/browser/wallet_page_handler_bridge.h"
 #include "brave/ios/browser/ui/webui/brave_wallet/wallet_page_handler_bridge_holder.h"
 #include "ios/web/public/web_state.h"
@@ -45,4 +46,14 @@ void WalletPageHandler::OpenWalletHome() {
   id<WalletPageHandlerBridge> bridge =
       brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
   [bridge openWalletHome];
+}
+
+void WalletPageHandler::ScanQRCode(ScanQRCodeCallback callback) {
+  id<WalletPageHandlerBridge> bridge =
+      brave_wallet::PageHandlerBridgeHolder::FromWebState(web_state_)->bridge();
+  auto shared_callback =
+      std::make_shared<ScanQRCodeCallback>(std::move(callback));
+  [bridge scanAddressQRCode:^(NSString* address) {
+    std::move(*shared_callback).Run(base::SysNSStringToUTF8(address));
+  }];
 }

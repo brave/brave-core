@@ -475,6 +475,10 @@ interface PageHandler {
   // Wallet WebUI in another tab. For example, the user taps the button
   // to open Wallet WebUI in another tab while syncing ZCash Shielded Account.
   OpenWalletHome();
+
+  // Mobile only
+  // - Used by Wallet WebUI when user needs to scan QR code to read address
+  ScanQRCode() => (string address);
 };
 
 enum AssetPriceTimeframe {

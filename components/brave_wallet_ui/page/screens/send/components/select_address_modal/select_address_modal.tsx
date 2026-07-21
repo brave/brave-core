@@ -11,9 +11,10 @@ import Tooltip from '@brave/leo/react/tooltip'
 
 // Selectors
 import {
-  useSafeWalletSelector, //
+  useSafeUISelector,
+  useSafeWalletSelector,
 } from '../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../common/selectors'
+import { WalletSelectors, UISelectors } from '../../../../../common/selectors'
 
 // Types
 import {
@@ -107,6 +108,9 @@ import {
   SearchBoxContainer,
   PasteButton,
 } from './select_address_modal.style'
+
+// wallet page api proxy
+import getWalletPageApiProxy from '../../../../../page/wallet_page_api_proxy'
 
 interface Props {
   onClose: () => void
@@ -480,6 +484,13 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       }
     }, [])
 
+    const onScanQRCode = React.useCallback(async () => {
+      const { address } = await getWalletPageApiProxy().pageHandler.scanQRCode()
+      if (address !== '') {
+        setSearchValue(address)
+      }
+    }, [])
+
     if (showChecksumInfo) {
       return (
         <PopupModal
@@ -494,6 +505,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         </PopupModal>
       )
     }
+
+    const isIOS = useSafeUISelector(UISelectors.isIOS)
 
     // render
     return (
@@ -533,13 +546,18 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
               type='text'
               disabled={isGeneratingAddress}
             >
-              <Column slot='right-icon'>
+              <Row slot='right-icon'>
                 <Tooltip text={getLocale('braveWalletPasteFromClipboard')}>
                   <PasteButton onClick={onPaste}>
                     <Icon name='copy-plain-text' />
                   </PasteButton>
                 </Tooltip>
-              </Column>
+                {isIOS && (
+                  <PasteButton onClick={onScanQRCode}>
+                    <Icon name='qr-code' />
+                  </PasteButton>
+                )}
+              </Row>
             </AddressInput>
           </SearchBoxContainer>
           {isGeneratingAddress ? (

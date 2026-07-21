@@ -31,6 +31,8 @@ NS_SWIFT_NAME(WalletPageHandler)
 /// Handle when the user makes interation in Wallet WebUI will require to open
 /// Wallet WebUI in a new tab
 - (void)openWalletHome;
+/// Handle when the user wants to scan a QR code
+- (void)scanAddressQRCode:(void (^)(NSString* address))completion;
 
 @end
 

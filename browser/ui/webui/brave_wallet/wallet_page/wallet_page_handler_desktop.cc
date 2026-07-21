@@ -47,4 +47,9 @@ void WalletPageHandler::OpenWalletHome() {
   NOTREACHED();
 }
 
+void WalletPageHandler::ScanQRCode(ScanQRCodeCallback callback) {
+  // iOS/Mobile only
+  NOTREACHED();
+}
+
 }  // namespace brave_wallet

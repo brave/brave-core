@@ -9,14 +9,22 @@ import SnapKit
 import Strings
 import SwiftUI
 
-struct AddressQRCodeScannerView: View {
-  var coin: BraveWallet.CoinType
-  @Binding var address: String
+public struct AddressQRCodeScannerView: View {
+  public var coin: BraveWallet.CoinType
+  @Binding public var address: String
   @State private var isErrorPresented: Bool = false
   @State private var permissionDenied: Bool = false
   @Environment(\.presentationMode) @Binding private var presentationMode
 
-  var body: some View {
+  public init(
+    coin: BraveWallet.CoinType,
+    address: Binding<String>
+  ) {
+    self.coin = coin
+    self._address = address
+  }
+
+  public var body: some View {
     NavigationView {
       #if targetEnvironment(simulator)
       ZStack {
