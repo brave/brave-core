@@ -2083,6 +2083,241 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: virtual void Bar() = 0;\n',
             'does not accept a count other than 1')
 
+    def test_add_to_protected_creates_section_in_nested_class(self):
+        # A nested class is indented to its own column: the new protected
+        # section and its member follow the nested class's indentation, not the
+        # top-level one.
+        result = self._apply(
+            'prot_nested_class.h', 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n   private:\n    int x_;\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: add a protected hook to the nested class\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n'
+            '   protected:\n    virtual void Bar() = 0;\n\n'
+            '   private:\n    int x_;\n  };\n};\n')
+
+    def test_add_to_protected_reuses_section_in_nested_class(self):
+        # Reusing an existing protected section in a nested class indents the
+        # inserted member to the nested member column.
+        result = self._apply(
+            'prot_nested_reuse.h', 'class Outer {\n public:\n  class C {\n'
+            '   protected:\n    void Existing();\n   private:\n    int x_;\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: reuse the nested protected section\n'
+            '    add_to_protected:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar() = 0;\n')
+        self.assertEqual(
+            result, 'class Outer {\n public:\n  class C {\n'
+            '   protected:\n    virtual void Bar() = 0;\n    void Existing();\n'
+            '   private:\n    int x_;\n  };\n};\n')
+
+    # -- add_to_public op (real ast-grep binary) --------------------
+
+    def test_add_to_public_appends_before_following_section(self):
+        # The code becomes the last public member, right before the private
+        # section that follows public -- not the first public line.
+        result = self._apply(
+            'pub_before_priv.h',
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: expose a public hook\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            '  virtual void Bar();\n\n private:\n  int x_;\n};\n')
+
+    def test_add_to_public_appends_before_first_following_section(self):
+        # With both a protected and a private section, the append lands before
+        # the first one after public (protected) -- the end of public.
+        result = self._apply(
+            'pub_before_prot.h',
+            'class C {\n public:\n  void Foo();\n protected:\n  void P();\n'
+            ' private:\n  int x_;\n};\n', 'substitutions:\n'
+            '  - description: expose a public hook\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            '  virtual void Bar();\n\n protected:\n  void P();\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_public_appends_before_closing_brace(self):
+        # A pure interface (only a public section): with no following specifier
+        # to anchor on, the code lands just before the class's closing brace.
+        result = self._apply(
+            'pub_only.h', 'class C {\n public:\n  void Foo();\n};\n',
+            'substitutions:\n'
+            '  - description: expose a public hook\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            '  virtual void Bar();\n};\n')
+
+    def test_add_to_public_reordered_sections_use_closing_brace(self):
+        # `public:` is the last section (private declared first): nothing
+        # follows public, so the append falls back to the closing brace.
+        result = self._apply(
+            'pub_last.h',
+            'class C {\n private:\n  int x_;\n public:\n  void Foo();\n};\n',
+            'substitutions:\n'
+            '  - description: expose a public hook\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result,
+            'class C {\n private:\n  int x_;\n public:\n  void Foo();\n'
+            '  virtual void Bar();\n};\n')
+
+    def test_add_to_public_scoped_to_named_class(self):
+        # Only the named class is touched; a sibling class is left alone.
+        result = self._apply(
+            'pub_scope.h', 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  int c_;\n};\n\n'
+            'class D {\n public:\n  void Baz();\n private:\n  int d_;\n};\n',
+            'substitutions:\n'
+            '  - description: add only to C\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            '  virtual void Bar();\n\n private:\n  int c_;\n};\n\n'
+            'class D {\n public:\n  void Baz();\n private:\n  int d_;\n};\n')
+
+    def test_add_to_public_multiline_code(self):
+        # A multi-line `code` block appends several declarations, each indented
+        # to the member level.
+        result = self._apply(
+            'pub_multi.h',
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: add two public hooks\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        virtual void A();\n'
+            '        virtual void B();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            '  virtual void A();\n  virtual void B();\n\n'
+            ' private:\n  int x_;\n};\n')
+
+    def test_add_to_public_first_of_multiple_public_sections(self):
+        # A reopened `public:` appends to the *first* public section (the append
+        # anchors on the first following section, here the private one).
+        result = self._apply(
+            'pub_reopen.h', 'class C {\n public:\n  void A();\n'
+            ' private:\n  int x_;\n public:\n  void B();\n};\n',
+            'substitutions:\n'
+            '  - description: append to the first public section\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void A();\n'
+            '  virtual void Bar();\n\n private:\n  int x_;\n public:\n'
+            '  void B();\n};\n')
+
+    def test_add_to_public_no_public_fails(self):
+        # A class with no public section has nothing to append to.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'pub_none.h', 'class C {\n private:\n  int x_;\n};\n',
+                'substitutions:\n'
+                '  - description: no public section\n'
+                '    add_to_public:\n'
+                '      class_name: C\n'
+                '      code: virtual void Bar();\n')
+
+    def test_add_to_public_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      cod: virtual void Bar();\n',
+            'Unrecognised add_to_public arg')
+
+    def test_add_to_public_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing code\n'
+            '    add_to_public:\n'
+            '      class_name: C\n', 'add_to_public requires arg')
+
+    def test_add_to_public_count_other_than_one_rejected(self):
+        # It always adds exactly once, so any other count is a config error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bogus count\n'
+            '    count: 2\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n',
+            'does not accept a count other than 1')
+
+    def test_add_to_public_appends_before_section_in_nested_class(self):
+        # A nested class is indented to its own column: the appended member sits
+        # at the nested member column and the following section keeps its own.
+        result = self._apply(
+            'pub_nested_section.h', 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n   private:\n    int x_;\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: expose a public hook on the nested class\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n    virtual void Bar();\n\n'
+            '   private:\n    int x_;\n  };\n};\n')
+
+    def test_add_to_public_appends_before_close_in_nested_class(self):
+        # A nested pure-interface class: the appended member sits at the nested
+        # member column and the closing brace keeps its own indentation.
+        result = self._apply(
+            'pub_nested_close.h', 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n  };\n};\n', 'substitutions:\n'
+            '  - description: expose a public hook on the nested interface\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: virtual void Bar();\n')
+        self.assertEqual(
+            result, 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n    virtual void Bar();\n'
+            '  };\n};\n')
+
+    def test_add_to_public_multiline_indents_uniformly_when_nested(self):
+        # Every appended line lands at the same nested member column -- the
+        # first line is not indented differently from the rest.
+        result = self._apply(
+            'pub_nested_multi.h', 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n   private:\n    int x_;\n'
+            '  };\n};\n', 'substitutions:\n'
+            '  - description: add two nested public hooks\n'
+            '    add_to_public:\n'
+            '      class_name: C\n'
+            '      code: |-\n'
+            '        virtual void A();\n'
+            '        virtual void B();\n')
+        self.assertEqual(
+            result, 'class Outer {\n public:\n  class C {\n'
+            '   public:\n    void Foo();\n'
+            '    virtual void A();\n    virtual void B();\n\n'
+            '   private:\n    int x_;\n  };\n};\n')
+
     # -- after_function_impl op (real ast-grep binary) -------------------------
 
     def test_after_function_impl_void(self):
@@ -2800,6 +3035,24 @@ class RewritersEvalTest(unittest.TestCase):
         replace = rewriters.rewriter('cxx.make_virtual')['replace']
         self.assertEqual(replace['consume_before'], ' ')
         self.assertEqual(replace['consume_after'], ':')
+
+    def test_rewriter_consume_placeholder_must_be_declared(self):
+        # A `{placeholder}` used only in a consume token is an input like any
+        # other, so it must appear in `inputs`.
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['replace'].
+            __setitem__('consume_before', '{indent}'), 'undeclared input')
+
+    def test_rewriter_consume_placeholder_declared_is_valid(self):
+        # Declaring the consume token's placeholder in `inputs` makes it valid.
+        spec = self._valid_spec()
+        spec['ast.rewriter']['cxx.make_virtual']['replace'][
+            'consume_before'] = '{indent}'
+        spec['ast.rewriter']['cxx.make_virtual']['inputs'].append('indent')
+        rewriters = plaster.RewritersEval(repr(spec))
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['replace']
+            ['consume_before'], '{indent}')
 
     def test_rewriter_first_match_is_optional_bool(self):
         # `first_match` is an optional flag; when present it must be a bool and

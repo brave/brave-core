@@ -1509,20 +1509,39 @@ class AddToProtected(_AstGrepRewriter):
               description: str,
               blank_for_parse: bool = False) -> tuple[str, list[str]]:
         # The code is inserted exactly once either in an existing protected
-        # section or in a new one created just before a private section.
+        # section or in a new one created just before a private section. Each
+        # placement is indented to the anchor's real column (Chromium members
+        # sit one space in from their access specifier), so a nested class is
+        # indented correctly rather than at the top-level column.
         del count, description
         engine = AstRewriter(RewritersEval.load(),
                              contents,
                              blank_for_parse=blank_for_parse)
-        code = _indent_yaml(self._code).replace('\\', '\\\\')
-        inputs = {'class_name': self._class_name, 'code': code}
-        op = Operation(self._ADD_TO_EXISTING, inputs,
-                       MatchExpectation.exactly(1))
+        source = contents.encode('utf-8')
+        class_inputs = {'class_name': self._class_name}
+
+        anchor = engine.first_match(
+            Operation(self._ADD_TO_EXISTING, class_inputs))
+        if anchor is not None:
+            member = len(_leading_indent(source, anchor.start)) + 1
+            op = Operation(
+                self._ADD_TO_EXISTING, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code, member),
+                }, MatchExpectation.exactly(1))
+        else:
+            anchor = engine.first_match(
+                Operation(self._CREATE_BEFORE_PRIVATE, class_inputs))
+            # A missing anchor leaves the run to report the count shortfall.
+            indent = _leading_indent(source, anchor.start) if anchor else ''
+            op = Operation(
+                self._CREATE_BEFORE_PRIVATE, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 1),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
         changes = engine.run(op)
-        if changes == 0:
-            op = Operation(self._CREATE_BEFORE_PRIVATE, inputs,
-                           MatchExpectation.exactly(1))
-            changes = engine.run(op)
         error = op.expectation.error_for(changes)
         return engine.content, [error] if error else []
 
@@ -1549,11 +1568,130 @@ class AddToProtected(_AstGrepRewriter):
         return cls(class_name=body['class_name'], code=body['code'])
 
 
+class AddToPublic(_AstGrepRewriter):
+    """Append a member declaration to the end of a C++ class's `public:` section
+    """
+
+    NAME: Final = 'add_to_public'
+    # Two ops share the work (see `apply`); this names the language and a
+    # representative op for the base's helpers.
+    OP_ID: Final = 'cxx.append_to_public_before_section'
+    SUMMARY: Final = 'Append code to the end of a class public section.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Appends code to a C++ class's `public:` section, at the end of it.
+
+        Fields:
+
+        - `class_name` — the class to add to.
+        - `code` — free-form text to append to the public section, e.g. a
+          declaration like `virtual void OnFoo();`.
+
+        Example:
+
+        ```yaml
+        substitutions:
+          - description: Expose a Brave hook on the public interface.
+            add_to_public:
+              class_name: TestLauncher_ChromiumImpl
+              code: 'virtual const TestResult& OnTestResult(const TestResult& result);'
+        ```
+    """
+
+    # This rewriter appends either before the section that follows public, or
+    # -- when public is the last/only section -- before the class's closing
+    # brace.
+    _APPEND_BEFORE_SECTION: Final = 'cxx.append_to_public_before_section'
+    _APPEND_BEFORE_CLOSE: Final = 'cxx.append_to_public_before_close'
+
+    @classmethod
+    def validate_count(cls, count: int, description: str) -> None:
+        # The code is inserted once, into whichever placement applies, so a
+        # `count:` other than 1 is meaningless here.
+        if count != 1:
+            raise ValueError(f'{cls.NAME} adds the code exactly once and does '
+                             f'not accept a count other than 1 '
+                             f'(in "{description}")')
+
+    def __init__(self, *, class_name: str, code: str):
+        super().__init__()
+        self._class_name = class_name
+        self._code = code
+
+    def apply(self,
+              contents: str,
+              *,
+              count: int,
+              description: str,
+              blank_for_parse: bool = False) -> tuple[str, list[str]]:
+        # The code is appended exactly once, either just before the section
+        # that follows public or, when public is last, before the closing brace.
+        # Each placement is indented to the anchor's real column so a nested
+        # class is indented correctly rather than at the top-level column.
+        del count, description
+        engine = AstRewriter(RewritersEval.load(),
+                             contents,
+                             blank_for_parse=blank_for_parse)
+        source = contents.encode('utf-8')
+        class_inputs = {'class_name': self._class_name}
+
+        anchor = engine.first_match(
+            Operation(self._APPEND_BEFORE_SECTION, class_inputs))
+        if anchor is not None:
+            indent = _leading_indent(source, anchor.start)
+            op = Operation(
+                self._APPEND_BEFORE_SECTION, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 1),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
+        else:
+            anchor = engine.first_match(
+                Operation(self._APPEND_BEFORE_CLOSE, class_inputs))
+            # The closing brace is the last byte of the matched body; a missing
+            # anchor leaves the run to report the count shortfall.
+            indent = (_leading_indent(source, anchor.end -
+                                      1) if anchor else '')
+            op = Operation(
+                self._APPEND_BEFORE_CLOSE, {
+                    'class_name': self._class_name,
+                    'code': _indent_code(self._code,
+                                         len(indent) + 2),
+                    'indent': indent,
+                }, MatchExpectation.exactly(1))
+        changes = engine.run(op)
+        error = op.expectation.error_for(changes)
+        return engine.content, [error] if error else []
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AddToPublic:
+        """Validate an `add_to_public:` body of string args."""
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        required = {'class_name', 'code'}
+        unknown = sorted(set(body) - required)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        missing = sorted(required - set(body))
+        if missing:
+            raise ValueError(f'{cls.NAME} requires arg(s): '
+                             f'{", ".join(missing)} (in "{description}")')
+        for key in sorted(required):
+            if not isinstance(body[key], str) or not body[key]:
+                raise ValueError(f'{cls.NAME} `{key}` must be a non-empty '
+                                 f'string (in "{description}")')
+        return cls(class_name=body['class_name'], code=body['code'])
+
+
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
     for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
                      PreemptFunctionImpl, AfterFunctionImpl, RenameClass,
-                     AddToProtected)
+                     AddToProtected, AddToPublic)
 })
 
 
@@ -1754,8 +1892,9 @@ _MATCHER_SCHEMA = {
 # A rewriter op: locates nodes through a matcher op and edits each via a regex
 # substitution. `inputs` is its public interface (validated against the
 # templates it feeds in `_check_cross_references`); `replace` may name adjacent
-# tokens to fold into each rewritten span. `first_match`, when true, rewrites
-# only the first match (in source order) and ignores any later ones.
+# tokens to fold into each rewritten span, which are `{input}`-formatted like
+# `replace` itself. `first_match`, when true, rewrites only the first match (in
+# source order) and ignores any later ones.
 _REWRITER_SCHEMA = {
     'matcher': _NON_EMPTY_STR,
     'inputs': [str],
@@ -1892,8 +2031,11 @@ class RewritersEval:
                     f'{ref!r} node {matcher_node!r}')
 
             declared = set(spec['inputs'])
+            replace = spec['replace']
             used = (_placeholders(matcher['template'])
-                    | _placeholders(spec['replace']['replace']))
+                    | _placeholders(replace['replace'])
+                    | _placeholders(replace.get('consume_before', ''))
+                    | _placeholders(replace.get('consume_after', '')))
             undeclared = sorted(used - declared)
             if undeclared:
                 raise RewritersSchemaError(
@@ -1953,6 +2095,27 @@ def _indent_yaml(text: str, spaces: int = 2) -> str:
     pad = ' ' * spaces
     return '\n'.join(pad + line if line.strip() else line
                      for line in text.splitlines())
+
+
+def _indent_code(text: str, spaces: int) -> str:
+    """Indent `code` to a member level and escape it for a `re.sub` replacement.
+
+    A member-level rewriter splices `code` into an ast-grep op's `re.sub`
+    replacement, so it is indented to the target column and its backslashes are
+    doubled (a backslash is special in a replacement string).
+    """
+    return _indent_yaml(text, spaces).replace('\\', '\\\\')
+
+
+def _leading_indent(source: bytes, pos: int) -> str:
+    """The leading whitespace of the line containing byte offset `pos`.
+
+    Used to anchor an insertion to the real indentation of a class member,
+    keyword or brace, rather than assuming the top-level column.
+    """
+    line_start = source.rfind(b'\n', 0, pos) + 1
+    line = source[line_start:pos]
+    return line[:len(line) - len(line.lstrip(b' \t'))].decode('utf-8')
 
 
 def run_ast_grep(*, language: str, rule_body: str,
@@ -2057,21 +2220,8 @@ class AstRewriter:
         return self._CXX_CONDITIONAL_RE.sub(
             lambda line: ' ' * len(line.group(0)), source)
 
-    def run(self, op: Operation) -> int:
-        """Run one bound `Operation`, mutate content, return the change count.
-
-        Locates nodes via the op's matcher template, applies the op's `replace`
-        regex substitution (with `op.inputs` filled into the replacement
-        template) to each matched node, and splices the results back into the
-        held contents from the end so earlier byte offsets stay valid. Returns
-        the total number of substitutions made.
-
-        An op's `replace` may name `consume_before` / `consume_after` literals
-        that sit immediately before / after each matched node; they are folded
-        into the rewritten span when the node kind stops short of an adjacent
-        token (e.g. the `:` after an access_specifier, or the space before a
-        `final` specifier). An op that sets `first_match` rewrites only the
-        first match (in source order), leaving any later matches untouched.
+    def _locate(self, op: Operation) -> list[AstMatch]:
+        """Every match for `op`'s matcher, in source order.
         """
         rewriter = self._rewriters.rewriter(op.op_id)
         matcher = self._rewriters.matcher(rewriter['matcher'])
@@ -2083,17 +2233,49 @@ class AstRewriter:
         blank = self._blank_for_parse and op.op_id.startswith('cxx.')
         source_for_parse = (self._prepare_cxx_for_parse()
                             if blank else self._source)
-        matches = run_ast_grep(language=language,
-                               rule_body=rule_body,
-                               source=source_for_parse)
+        return run_ast_grep(language=language,
+                            rule_body=rule_body,
+                            source=source_for_parse)
+
+    def first_match(self, op: Operation) -> AstMatch | None:
+        """The first match for `op`'s matcher, or None. Does not mutate content.
+
+        Parse-normalisation preserves byte offsets, so a caller can read the
+        real source (e.g. to derive an insertion's indentation) at the returned
+        offsets before running the op.
+        """
+        matches = self._locate(op)
+        return matches[0] if matches else None
+
+    def run(self, op: Operation) -> int:
+        """Run one bound `Operation`, mutate content, return the change count.
+
+        Locates nodes via the op's matcher template, applies the op's `replace`
+        regex substitution (with `op.inputs` filled into the replacement
+        template) to each matched node, and splices the results back into the
+        held contents from the end so earlier byte offsets stay valid. Returns
+        the total number of substitutions made.
+
+        An op's `replace` may name `consume_before` / `consume_after` tokens
+        (themselves `op.inputs`-formatted) that sit immediately before / after
+        each matched node; they are folded into the rewritten span when the node
+        kind stops short of an adjacent token (e.g. the `:` after an
+        access_specifier, or the space before a `final` specifier). An op that
+        sets `first_match` rewrites only the first match (in source order),
+        leaving any later matches untouched.
+        """
+        rewriter = self._rewriters.rewriter(op.op_id)
+        matches = self._locate(op)
         if rewriter.get('first_match'):
             matches = matches[:1]
 
         replace = rewriter['replace']
         pattern = replace['re_pattern']
         replacement = replace['replace'].format(**op.inputs)
-        before = replace.get('consume_before', '').encode('utf-8')
-        after = replace.get('consume_after', '').encode('utf-8')
+        before = replace.get('consume_before',
+                             '').format(**op.inputs).encode('utf-8')
+        after = replace.get('consume_after',
+                            '').format(**op.inputs).encode('utf-8')
 
         source = self._source.encode('utf-8')
         edits = []
