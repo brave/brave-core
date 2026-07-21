@@ -14,25 +14,32 @@ substitutions:
 
   - description: |
       Expose new_tab_button() to Brave
-    regex:
-      re_pattern: '(  ~HorizontalTabStripRegionView\(\) override;)'
-      replace: |-
-        \1
-          views::Button* new_tab_button() { return new_tab_button_; }
+    add_to_public:
+      class_name: HorizontalTabStripRegionView
+      code: 'views::Button* new_tab_button() { return new_tab_button_; }'
 
   - description: |
-      Friend the Brave tab strip classes and vertical tab strip test
+      Friend the vertical tab strip browser test
 
-      Grants the Brave tab strip subclasses and the vertical tab strip browser
-      test access to private members.
+      FRIEND_TEST_ALL_PREFIXES is a macro rather than a `friend class`, so it is
+      added with a regex. It runs before add_friend below so the friend classes
+      end up ahead of it (as add_friend prepends to the private section).
     regex:
       re_pattern: '( private:)'
       replace: |-
         \1
-          friend class BraveVerticalTabStripRegionView;
-          friend class BraveTabStrip;
-          friend class BraveHorizontalTabStripRegionView;
           FRIEND_TEST_ALL_PREFIXES(VerticalTabStripBrowserTest, MinHeight);
+
+  - description: |
+      Friend the Brave tab strip subclasses
+
+      Grants the Brave tab strip subclasses access to private members.
+    add_friend:
+      class_name: HorizontalTabStripRegionView
+      friend_type:
+        - class BraveVerticalTabStripRegionView
+        - class BraveTabStrip
+        - class BraveHorizontalTabStripRegionView
 
   - description: |
       Make UpdateTabStripMargin overridable

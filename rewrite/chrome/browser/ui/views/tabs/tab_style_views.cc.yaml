@@ -8,12 +8,12 @@ substitutions:
       Expose TabStyleViewsImpl's private members to BraveVerticalTabStyle.
 
       Brave subclasses TabStyleViewsImpl (in
-      chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so its
-      members must be reachable from the derived class.
-    regex:
-      re_pattern: '(class TabStyleViewsImpl\b.*?)\n private:'
-      re_flags: [DOTALL]
-      replace: '\1\n protected:'
+      chromium_src/chrome/browser/ui/views/tabs/tab_style_views.cc), so it needs
+      friend access to reach the base's private members and override its private
+      virtuals.
+    add_friend:
+      class_name: TabStyleViewsImpl
+      friend_type: class BraveVerticalTabStyle
 
   - description: |-
       Virtualise GetSeparatorBounds for BraveVerticalTabStyle.

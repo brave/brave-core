@@ -1,11 +1,11 @@
 diff --git a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-index 759b9d58f00d249cd05f487a8b350ab1973e4e20..809b6434886f3b539c43bbac002e46b845a1b6dc 100644
+index 759b9d58f00d249cd05f487a8b350ab1973e4e20..ce8107bc5aea5d0b885c1c0b55a8d82cc7092e8f 100644
 --- a/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
 +++ b/third_party/blink/renderer/core/html/canvas/html_canvas_element.h
-@@ -103,6 +103,13 @@ class CORE_EXPORT HTMLCanvasElement final
+@@ -383,12 +383,21 @@ class CORE_EXPORT HTMLCanvasElement final
  
-   explicit HTMLCanvasElement(Document&);
-   ~HTMLCanvasElement() override;
+   ElementImage* captureElementImage(Element* element, ExceptionState&);
+ 
 +  String toDataURL(ScriptState* script_state, const String& mime_type,
 +                   const ScriptValue& quality_argument,
 +                   ExceptionState& exception_state) const;
@@ -13,10 +13,10 @@ index 759b9d58f00d249cd05f487a8b350ab1973e4e20..809b6434886f3b539c43bbac002e46b8
 +                   ExceptionState& exception_state) const {
 +    return toDataURL(script_state, mime_type, ScriptValue(), exception_state);
 +  }
- 
-   ElementType GetElementType() const final {
-     return ElementType::kHTMLCanvasElement;
-@@ -389,6 +396,7 @@ class CORE_EXPORT HTMLCanvasElement final
++
+  protected:
+   void DidMoveToNewDocument(Document& old_document) override;
+   void DidRecalcStyle(const StyleRecalcChange change) override;
    void RemovedFrom(ContainerNode& insertion_point) override;
  
   private:
