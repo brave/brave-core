@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
@@ -10,60 +10,62 @@ import { useLocation } from 'react-router-dom'
 // Constants
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../../../common/constants/local-storage-keys'
+} from '../../../../../common/constants/local-storage-keys'
 import {
   emptyRewardsInfo, //
-} from '../../../../../../common/async/base-query-cache'
+} from '../../../../../common/async/base-query-cache'
 
 // Types
 import {
   BraveWallet,
   SerializableTransactionInfo,
   WalletRoutes,
-} from '../../../../../../constants/types'
+} from '../../../../../constants/types'
 
 // Utils
-import { getLocale } from '../../../../../../../common/locale'
-import Amount from '../../../../../../utils/amount'
-import { getBalance } from '../../../../../../utils/balance-utils'
-import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
-import { getIsRewardsToken } from '../../../../../../utils/rewards_utils'
+import { getLocale } from '../../../../../../common/locale'
+import Amount from '../../../../../utils/amount'
+import { getBalance } from '../../../../../utils/balance-utils'
+import { computeFiatAmount } from '../../../../../utils/pricing-utils'
+import { getIsRewardsToken } from '../../../../../utils/rewards_utils'
 
 // Options
-import { PortfolioAssetOptions } from '../../../../../../options/nav-options'
+import { PortfolioAssetOptions } from '../../../../../options/nav-options'
 
 // Components
-import { PortfolioAccountItem } from '../../../../portfolio-account-item/index'
+import {
+  PortfolioAccountItem, //
+} from '../../../../../components/desktop/portfolio-account-item/index'
 import {
   SegmentedControl, //
-} from '../../../../../shared/segmented_control/segmented_control'
+} from '../../../../../components/shared/segmented_control/segmented_control'
 import {
   SellAssetModal, //
-} from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
-import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
+} from '../../../../../components/desktop/popup-modals/sell-asset-modal/sell-asset-modal'
+import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton/index'
 import {
   VirtualizedTransactionList, //
-} from '../../../../virtualized_transaction_list/virtualized_transaction_list'
+} from '../../../../../components/desktop/virtualized_transaction_list/virtualized_transaction_list'
 import {
   TransactionDetailsModal, //
-} from '../../../../popup-modals/transaction_details_modal/transaction_details_modal'
+} from '../../../../../components/desktop/popup-modals/transaction_details_modal/transaction_details_modal'
 
 // Hooks
 import {
   useMultiChainSellAssets, //
-} from '../../../../../../common/hooks/use-multi-chain-sell-assets'
+} from '../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetNetworkQuery,
   useGetRewardsInfoQuery,
   useGetSelectedChainQuery,
-} from '../../../../../../common/slices/api.slice'
+} from '../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry, //
-} from '../../../../../../common/slices/entities/token-balance.entity'
+} from '../../../../../common/slices/entities/token-balance.entity'
 import {
   useSyncedLocalStorage, //
-} from '../../../../../../common/hooks/use_local_storage'
+} from '../../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import {
@@ -71,7 +73,7 @@ import {
   EmptyTransactionsIcon,
   EmptyAccountsIcon,
   EyeIcon,
-} from '../../style'
+} from './accounts_and_transactions_list.style'
 import {
   Column,
   Text,
@@ -79,7 +81,7 @@ import {
   VerticalDivider,
   VerticalSpacer,
   HorizontalSpace,
-} from '../../../../../shared/style'
+} from '../../../../../components/shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken | undefined

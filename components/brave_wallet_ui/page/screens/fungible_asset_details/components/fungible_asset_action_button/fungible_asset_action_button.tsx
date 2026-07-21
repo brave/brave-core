@@ -8,7 +8,7 @@ import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 
 // Styled Components
-import { Column, Text } from '../../../../../shared/style'
+import { Column, Text } from '../../../../../components/shared/style'
 
 interface Props {
   text: string
@@ -16,7 +16,7 @@ interface Props {
   onClick: () => void
 }
 
-export const PortfolioAssetActionButton = (props: Props) => {
+export const FungibleAssetActionButton = (props: Props) => {
   const { text, icon, onClick } = props
 
   return (

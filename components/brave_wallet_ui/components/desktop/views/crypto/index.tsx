@@ -30,7 +30,7 @@ import {
   EditVisibleAssetsModal, //
 } from '../../popup-modals/edit-visible-assets-modal/index'
 import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/portfolio_overview'
-import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
+import { FungibleAssetDetails } from '../../../../page/screens/fungible_asset_details/fungible_asset_details'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../../../../page/screens/market/market'
 import { Accounts } from '../accounts/accounts'
@@ -131,7 +131,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
           path={WalletRoutes.PortfolioAsset}
           exact
         >
-          <PortfolioFungibleAsset />
+          <FungibleAssetDetails />
         </Route>
 
         <Route
