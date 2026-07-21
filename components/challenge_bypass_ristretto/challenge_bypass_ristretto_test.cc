@@ -81,8 +81,9 @@ TEST(ChallengeBypassRistrettoTest, ProveAndVerifyUnblindedToken) {
 
     // The server rederives the unblinded token using the server signing key and
     // the token preimage.
-    const base::expected<UnblindedToken, std::string> rederived_unblinded_token =
-        signing_key.RederiveUnblindedTokenRfc(token_preimage);
+    const base::expected<UnblindedToken, std::string>
+        rederived_unblinded_token =
+            signing_key.RederiveUnblindedTokenRfc(token_preimage);
     ASSERT_TRUE(rederived_unblinded_token.has_value());
 
     // The server derives the shared verification key from the unblinded token.

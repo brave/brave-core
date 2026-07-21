@@ -31,7 +31,8 @@ Token Token::Random() {
 }
 
 base::expected<BlindedToken, std::string> Token::Blind() {
-  rust::Box<cbr_cxx::BlindedTokenResult> raw_blinded_token_result(raw().blind());
+  rust::Box<cbr_cxx::BlindedTokenResult> raw_blinded_token_result(
+      raw().blind());
 
   if (!raw_blinded_token_result->is_ok()) {
     return base::unexpected("Failed to blind token");
