@@ -9,6 +9,7 @@ import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
+import org.chromium.chrome.browser.ui.messages.snackbar.Snackbar;
 import org.chromium.chrome.browser.ui.messages.snackbar.SnackbarManager;
 import org.chromium.chrome.browser.undo_tab_close_snackbar.UndoBarController.UndoActionData;
 
@@ -24,7 +25,8 @@ public class BraveUndoBarControllerBase implements SnackbarManager.SnackbarContr
             if (closedTabs.isEmpty()) {
                 return;
             }
-            UndoActionData undoActionData = new UndoActionData(closedTabs, savedTabGroupSyncIds);
+            UndoActionData undoActionData =
+                    new UndoActionData(closedTabs, savedTabGroupSyncIds, Snackbar.UMA_UNKNOWN);
             onDismissNoAction(undoActionData);
             return;
         }
