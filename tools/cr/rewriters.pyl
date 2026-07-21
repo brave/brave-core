@@ -158,17 +158,24 @@ inside:
             },
         },
 
-        # Every identifier-family token whose text is exactly `class_name`: the
-        # name in the class declaration and in type positions (type_identifier),
-        # the `Class::` qualifier on out-of-line members (namespace_identifier),
-        # and the constructor/destructor name plus any other bare use
-        # (identifier).
+        # Every identifier-family token whose text is exactly `class_name`:
+        # type positions (type_identifier), the `Class::` qualifier
+        # (namespace_identifier), the ctor/dtor name and bare uses (identifier),
+        # and the delegating/base name in a member initializer (`: Class(...)`,
+        # a field_identifier). The last is scoped to the name slot (first child
+        # of a field_initializer), so a member access like `other.Class` in the
+        # argument list is left untouched.
         "cxx.find_class_name_tokens": {
             "template": """\
 any:
   - kind: type_identifier
   - kind: namespace_identifier
   - kind: identifier
+  - all:
+      - kind: field_identifier
+      - nthChild: 1
+      - inside:
+          kind: field_initializer
 regex: ^{class_name}$
 """,
             "result": {
