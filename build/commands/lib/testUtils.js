@@ -46,7 +46,7 @@ const getTestGroupDeps = (testDepFile) => {
 
 const getTestsToRun = (config, suite) => {
   const testsToRun = getTestGroupDeps(
-    path.join(config.outputDir, `${suite}.json`),
+    path.join(config.outputDir, `${suite}.group.json`),
   )
 
   if (testsToRun.length === 0) {

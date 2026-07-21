@@ -70,7 +70,7 @@ if (!is_android) {
 group("chromium_unit_tests") {
   testonly = true
   data_deps = chromium_unit_tests_deps
-  write_file("$root_out_dir/chromium_unit_tests.json",
+  write_file("$root_out_dir/chromium_unit_tests.group.json",
              chromium_unit_tests_deps,
              "json")
 }
@@ -79,7 +79,10 @@ group("chromium_unit_tests") {
 # brave_all_unit_tests.
 brave_all_unit_tests_deps = [ "//brave/components:brave_components_unittests" ]
 if (!is_ios) {
-  brave_all_unit_tests_deps += [ "//brave/test:brave_unit_tests" ]
+  brave_all_unit_tests_deps += [
+    "//brave/test:brave_jest_tests",
+    "//brave/test:brave_unit_tests",
+  ]
 } else {
   brave_all_unit_tests_deps += [
     "//brave/ios/testing:ios_brave_unit_tests",
@@ -108,7 +111,7 @@ if (is_win) {
 group("brave_all_unit_tests") {
   testonly = true
   data_deps = brave_all_unit_tests_deps
-  write_file("$root_out_dir/brave_all_unit_tests.json",
+  write_file("$root_out_dir/brave_all_unit_tests.group.json",
              brave_all_unit_tests_deps,
              "json")
 }
