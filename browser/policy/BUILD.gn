@@ -26,6 +26,7 @@ source_set("brave_simple_policy_map") {
     "//brave/components/ai_chat/core/common/buildflags",
     "//brave/components/brave_ads/buildflags",
     "//brave/components/brave_news/common/buildflags",
+    "//brave/components/brave_policy:policy_pref_interceptor",
     "//brave/components/brave_rewards/core",
     "//brave/components/brave_rewards/core/buildflags",
     "//brave/components/brave_shields/core/common",
@@ -67,7 +68,10 @@ source_set("brave_simple_policy_map") {
   }
 
   if (enable_speedreader) {
-    deps += [ "//brave/components/speedreader" ]
+    deps += [
+      "//brave/components/speedreader",
+      "//brave/components/speedreader:pref_names",
+    ]
   }
 
   if (enable_brave_wayback_machine) {
@@ -91,7 +95,10 @@ source_set("brave_simple_policy_map") {
   }
 
   if (enable_playlist) {
-    deps += [ "//brave/components/playlist/content/browser" ]
+    deps += [
+      "//brave/components/playlist/content/browser",
+      "//brave/components/playlist/core/common",
+    ]
   }
 
   if (enable_email_aliases) {
