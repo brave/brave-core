@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
 
-#include <optional>
 #include <utility>
 
 #include "base/check.h"
@@ -30,8 +29,7 @@
 #include "brave/components/brave_ads/core/internal/ads_client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/ads_core/ads_core_util.h"
 #include "brave/components/brave_ads/core/internal/ads_notifier_manager.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token.h"
-#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/token.h"
+#include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/blinded_token_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/net/http/http_status_code_util.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_request_string_util.h"
@@ -86,34 +84,30 @@ void RefillConfirmationTokens::Refill() {
   NotifyWillRefillConfirmationTokens(
       /*count=*/CalculateAmountOfConfirmationTokensToRefill());
 
-  GenerateTokens();
+  if (!GenerateTokens()) {
+    return FailedToRefill();
+  }
 
   RequestSignedTokens();
 }
 
-void RefillConfirmationTokens::GenerateTokens() {
+bool RefillConfirmationTokens::GenerateTokens() {
   const size_t count = CalculateAmountOfConfirmationTokensToRefill();
   cbr::TokenList tokens = GetTokenGenerator()->Generate(count);
 
-  // Blind each token, keeping `tokens_` and `blinded_tokens_` index-aligned. A
-  // token whose preimage maps to the identity element should not be blinded
-  // Drop the offending token and keep the rest of the batch.
-  cbr::TokenList blindable_tokens;
-  cbr::BlindedTokenList blinded_tokens;
-  blindable_tokens.reserve(tokens.size());
-  blinded_tokens.reserve(tokens.size());
-  for (cbr::Token& token : tokens) {
-    std::optional<cbr::BlindedToken> blinded_token = token.Blind();
-    if (!blinded_token) {
-      continue;
-    }
-
-    blindable_tokens.push_back(std::move(token));
-    blinded_tokens.push_back(*std::move(blinded_token));
+  cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
+  if (blinded_tokens.empty()) {
+    // A token whose preimage maps to the identity element cannot be blinded
+    // (see `cbr::Token::Blind`). This is astronomically unlikely; abort the
+    // refill so the next cycle regenerates fresh tokens, keeping `tokens_` and
+    // `blinded_tokens_` index-aligned.
+    BLOG(0, "Failed to blind confirmation tokens");
+    return false;
   }
 
-  tokens_ = std::move(blindable_tokens);
+  tokens_ = std::move(tokens);
   blinded_tokens_ = std::move(blinded_tokens);
+  return true;
 }
 
 bool RefillConfirmationTokens::ShouldRequestSignedTokens() const {

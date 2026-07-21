@@ -35,7 +35,8 @@ base::expected<BlindedToken, std::string> Token::Blind() {
       raw().blind());
 
   if (!raw_blinded_token_result->is_ok()) {
-    return base::unexpected("Failed to blind token");
+    return base::unexpected(
+        static_cast<std::string>(raw_blinded_token_result->error().msg));
   }
 
   return BlindedToken(raw_blinded_token_result->unwrap());

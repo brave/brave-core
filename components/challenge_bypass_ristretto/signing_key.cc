@@ -56,7 +56,8 @@ SigningKey::RederiveUnblindedTokenRfc(const TokenPreimage& t) {
       raw().rederive_unblinded_token_rfc(t.raw()));
 
   if (!raw_unblinded_token_result->is_ok()) {
-    return base::unexpected("Failed to rederive unblinded token");
+    return base::unexpected(
+        static_cast<std::string>(raw_unblinded_token_result->error().msg));
   }
 
   return UnblindedToken(raw_unblinded_token_result->unwrap());
