@@ -566,7 +566,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
                                    test::kRequestSignedTokensNonce),
        {{net::HTTP_OK, /*response_body=*/R"(
             {
-              "batchProof": "flsRyY/zcE6V1ymow+hJW9DdVjGlEAGyVr3QN7kc1Qf6eeYOSK93thF+IZehEXrsRFjFoV3reEm60a/pEq7XAA==",
+              "batchProof": "4yMcvTV0FjOYXsXIcq1JmDyFNwBA45aYS6crtoc+UA71w3p8ZeRzqA6RsddkNlDHIfMCl6mcW58zmt39Y9T0AQ==",
               "signedTokens": [
                 "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs=",
                 "XuBEdiNS8cOMKApsIiHygcnVOVssvaoudyd1wMI+O1Y=",

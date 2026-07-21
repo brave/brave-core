@@ -37,8 +37,8 @@ TEST_F(BraveAdsRequestSignedTokensUrlRequestBuilderTest, BuildUrl) {
   expected_mojom_url_request->url = GURL(
       R"(https://mywallet.ads.bravesoftware.com/v3/confirmation/token/27a39b2f-9b2e-4eb0-bbb2-2f84447496e7)");
   expected_mojom_url_request->headers = {
-      "digest: SHA-256=6vJaxnB5ipkIXjrPAgf3+2+lgtNYrjYuySqPDS72azI=",
-      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="7Nwtj+0lxBgRnA2ewJfZBU+s3yo5NlESR6XExLfeQh10vKdrPw6RWcuNLfxj7i5M/V1SNwRAIm9oEOD3xjoGCA==")",
+      "digest: SHA-256=S3MYObW+qt1l675Evl1fsORKTx2xto2+d8kpD5td28k=",
+      R"(signature: keyId="primary",algorithm="ed25519",headers="digest",signature="X7wYe32lMV74QksNyq0XMasf0qmNXYSACzrVoreC/LhsoL5JkDwTjb7FKT3mpK2KcAIcwzUu97uKmR0yhbAHCA==")",
       "content-type: application/json", "accept: application/json"};
   expected_mojom_url_request->content =
       R"({"blindedTokens":["Gth1bHgNtDx689fPCEdua/1ggMRHRahtzIdDr/EyWAg=","YJ/51LJE2yR0BaHUbHWm4iUFfxXzXikyiA4baKv2cUg=","2KzyUG/4ag8Jass356+Cs/JPlQ3MqW+69AO/mrMi3Rk="]})";

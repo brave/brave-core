@@ -28,7 +28,7 @@ std::string BuildFetchPaymentTokenUrlResponseBody() {
               "creativeInstanceId" : "546fe7b0-5047-4f28-a11c-81f14edcf0f6",
               "paymentToken" : {
                 "publicKey" : "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM=",
-                "batchProof" : "6bAH3z5sAoLdtM5tDrSJkhcYi4lp3GY+jh/ubSxTnQCgfkmKve/7s1bcIzvjsLvvPDuWABRZyBml6IzeG86ICg==",
+                "batchProof" : "yQVqfyw0RRSkmzQbDKo33TEI2JWJ3q0isL3/L8QxZAQs2cq4FQaNDZxad3/XeX54t2PCqo3C6Lhd+IQZRb28Bw==",
                 "signedTokens" : [
                   "2g0WjgYZfADeoAYI0kkXNVCcXCpfg5lv5yRdCHigkGs="
                 ]
