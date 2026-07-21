@@ -1142,6 +1142,22 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
         translate::switches::kBraveTranslateUseGoogleEndpoint,
     };
     command_line->CopySwitchesFrom(browser_command_line, kSwitchNames);
+
+    // The Leo "workspace" tools rely on the WebMCP runtime feature
+    // (navigator.modelContext) to register their tools from the workspace page.
+    // WebMCP is experimental and off by default, so enable it for all renderers
+    // while the workspace-tools feature is on (off by default).
+    if (base::FeatureList::IsEnabled(
+            ai_chat::features::kAIChatWorkspaceTools)) {
+      std::string blink_features =
+          command_line->GetSwitchValueASCII(switches::kEnableBlinkFeatures);
+      if (!blink_features.empty()) {
+        blink_features += ",";
+      }
+      blink_features += "WebMCP";
+      command_line->AppendSwitchASCII(switches::kEnableBlinkFeatures,
+                                      blink_features);
+    }
   }
 }
 
