@@ -47,10 +47,11 @@ class MockOrchardSyncState : public OrchardSyncState {
       : OrchardSyncState(path_to_database) {}
   ~MockOrchardSyncState() override {}
 
-  MOCK_METHOD2(
+  MOCK_METHOD3(
       GetSpendableNotes,
       base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                      OrchardStorage::Error>(
+          OrchardPool pool,
           const mojom::AccountIdPtr& account_id,
           const OrchardAddrRawPart& internal_addr));
 };
@@ -132,8 +133,9 @@ class ZCashCreateOrchardToTransparentTransactionTaskTest
 };
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -196,8 +198,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, TransactionCreated) {
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_NoAnchorBlockId) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -241,8 +244,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_MaxAmount) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -301,8 +305,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_AllAmount) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -361,8 +366,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_MaxAmount_OverflowCheck) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -423,8 +429,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_OverflowCheck_FullAmount) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -469,8 +476,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
        TransactionCreated_OverflowCheck_CustomAmount) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& addr) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -514,8 +522,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest,
 }
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, NotEnoughFunds) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_address) {
         OrchardSyncState::SpendableNotesBundle spendable_notes_bundle;
         {
@@ -558,8 +567,9 @@ TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, NotEnoughFunds) {
 }
 
 TEST_F(ZCashCreateOrchardToTransparentTransactionTaskTest, Error) {
-  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _))
-      .WillByDefault([&](const mojom::AccountIdPtr& account_id,
+  ON_CALL(mock_orchard_sync_state(), GetSpendableNotes(_, _, _))
+      .WillByDefault([&](OrchardPool /*pool*/,
+                         const mojom::AccountIdPtr& account_id,
                          const OrchardAddrRawPart& internal_addr) {
         return base::unexpected(OrchardStorage::Error{
             OrchardStorage::ErrorCode::kConsistencyError, ""});

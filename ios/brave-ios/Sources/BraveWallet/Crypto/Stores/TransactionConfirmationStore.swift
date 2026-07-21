@@ -748,7 +748,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
               let correctZecBalance: Double =
                 Double(
                   zecTxData.useShieldedPool
-                    ? zecBalance.shieldedBalance : zecBalance.transparentBalance
+                    ? zecBalance.orchardBalance : zecBalance.transparentBalance
                 ) / 100_000_000
               isBalanceSufficient = BDouble(correctZecBalance) >= gasValue + fromValue
             } else if shouldFetchGasTokenBalance || zecGasTokenBalanceCache == nil {
