@@ -42,7 +42,6 @@ source_set("headers") {
     "prefs/pref_registry.h",
     "targeting/geographical/subdivision/supported_subdivisions.h",
     "user_attention/user_idle_detection/user_idle_detection_feature.h",
-    "user_engagement/reactions/reactions_util.h",
   ]
 
   deps = [

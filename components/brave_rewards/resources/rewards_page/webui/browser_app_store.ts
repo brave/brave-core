@@ -527,27 +527,33 @@ export function createAppStore(): AppStore {
 
     async getAdsHistory() {
       const { history } = await pageHandler.getAdsHistory()
-      adsHistoryAdapter.parseData(history)
+      adsHistoryAdapter.setItems(history ?? [])
       return adsHistoryAdapter.getItems()
     },
 
     async setAdLikeStatus(id, status) {
-      const detail = adsHistoryAdapter.getRawDetail(id)
+      const reaction = adsHistoryAdapter.getReaction(id)
+      if (!reaction) {
+        return
+      }
       const previous = adsHistoryAdapter.setAdLikeStatus(id, status)
       switch (status || previous) {
         case 'liked':
-          await pageHandler.toggleAdLike(detail)
+          await pageHandler.toggleAdLike(reaction)
           break
         case 'disliked':
-          await pageHandler.toggleAdDislike(detail)
+          await pageHandler.toggleAdDislike(reaction)
           break
       }
     },
 
     async setAdInappropriate(id, value) {
-      const detail = adsHistoryAdapter.getRawDetail(id)
+      const reaction = adsHistoryAdapter.getReaction(id)
+      if (!reaction) {
+        return
+      }
       adsHistoryAdapter.setInappropriate(id, value)
-      await pageHandler.toggleAdInappropriate(detail)
+      await pageHandler.toggleAdInappropriate(reaction)
     },
 
     async removeRecurringContribution(id) {

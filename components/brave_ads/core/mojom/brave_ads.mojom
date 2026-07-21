@@ -121,6 +121,25 @@ enum ConfirmationType {
   kMedia100
 };
 
+struct AdHistoryItemInfo {
+  mojo_base.mojom.Time created_at;
+  AdType type;
+  ConfirmationType confirmation_type;
+  string placement_id;
+  string creative_instance_id;
+  string creative_set_id;
+  string campaign_id;
+  string advertiser_id;
+  string segment;
+  string title;
+  string description;
+  url.mojom.Url target_url;
+  ReactionType like_ad_reaction;
+  bool is_saved;
+  bool is_flagged;
+  ReactionType like_segment_reaction;
+};
+
 struct CreativeSetConversionInfo {
   string? url_pattern;
   mojo_base.mojom.TimeDelta observation_window;

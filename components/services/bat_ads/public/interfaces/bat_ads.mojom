@@ -178,7 +178,7 @@ interface BatAds {
       (bool success);
 
   GetAdHistory(mojo_base.mojom.Time from_time, mojo_base.mojom.Time to_time) =>
-      (mojo_base.mojom.ListValue? value);
+      (array<brave_ads.mojom.AdHistoryItemInfo>? ad_history);
 
   ToggleLikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) => (bool success);
   ToggleDislikeAd(brave_ads.mojom.ReactionInfo mojom_reaction) =>

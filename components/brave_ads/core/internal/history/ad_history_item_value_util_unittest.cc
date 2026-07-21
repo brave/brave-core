@@ -5,15 +5,11 @@
 
 #include "brave/components/brave_ads/core/public/history/ad_history_item_value_util.h"
 
-#include <string_view>
-
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/common/test/test_base.h"
 #include "brave/components/brave_ads/core/internal/common/test/time_test_util.h"
-#include "brave/components/brave_ads/core/internal/history/ad_history_builder_util.h"
 #include "brave/components/brave_ads/core/internal/history/test/ad_history_test_util.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
-#include "brave/components/brave_ads/core/public/history/ad_history_item_info.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -110,18 +106,6 @@ TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemFromLegacyDict) {
                                      mojom::ConfirmationType::kViewedImpression,
                                      /*use_random_uuids=*/false),
             AdHistoryItemFromDict(dict));
-}
-
-TEST_F(BraveAdsAdHistoryItemValueUtilTest, AdHistoryItemToDict) {
-  // Arrange
-  const AdHistoryItemInfo ad_history_item =
-      test::BuildAdHistoryItem(mojom::AdType::kNotificationAd,
-                               mojom::ConfirmationType::kViewedImpression,
-                               /*use_random_uuids=*/false);
-
-  // Act & Assert
-  EXPECT_EQ(base::test::ParseJsonDict(kAdHistoryItemAsJson),
-            AdHistoryItemToDict(ad_history_item));
 }
 
 }  // namespace brave_ads
