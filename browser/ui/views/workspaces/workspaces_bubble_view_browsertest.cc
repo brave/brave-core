@@ -148,6 +148,21 @@ IN_PROC_BROWSER_TEST_F(WorkspacesFeatureDisabledBrowserTest,
   EXPECT_EQ(region->workspaces_button_for_testing(), nullptr);
 }
 
+// No workspaces button is created for private browsing windows, even when the
+// feature is enabled (the button is present in normal windows of the same
+// profile, so this verifies the private-window guard specifically).
+IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest,
+                       ButtonAbsentInPrivateBrowsing) {
+  // Sanity-check: the normal window already has the button.
+  ASSERT_TRUE(GetWorkspacesButton()) << "Workspaces button should exist in a "
+                                        "normal window with the feature on";
+
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* region = GetHorizontalTabStripRegion(incognito_browser);
+  ASSERT_TRUE(region);
+  EXPECT_EQ(region->workspaces_button_for_testing(), nullptr);
+}
+
 // Clicking the workspaces button shows a WorkspacesBubbleView.
 IN_PROC_BROWSER_TEST_F(WorkspacesBubbleBrowserTest, BubbleOpensOnClick) {
   EXPECT_TRUE(OpenBubble());

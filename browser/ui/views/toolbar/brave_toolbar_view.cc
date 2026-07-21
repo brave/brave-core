@@ -804,8 +804,11 @@ void BraveToolbarView::OnVerticalTabTogglePressed() {
 }
 
 void BraveToolbarView::CreateWorkspaceButtonIfNeeded() {
+  // Only show the spaces button if the feature is enabled and this is a regular
+  // browser window (not private, not PWA/popup/PIP/etc).
   if (!base::FeatureList::IsEnabled(features::kWorkspaces) ||
-      browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL) {
+      browser_->GetType() != BrowserWindowInterface::Type::TYPE_NORMAL ||
+      browser_->profile()->IsIncognitoProfile()) {
     return;
   }
 

@@ -891,3 +891,14 @@ IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
       << "workspaces button should remain immediately after toggle even when "
          "both are hidden";
 }
+
+// The workspaces button is not created for private browsing windows.
+IN_PROC_BROWSER_TEST_F(BraveToolbarViewTest_WorkspacesEnabled,
+                       WorkspacesButtonAbsentInPrivateBrowsing) {
+  auto* incognito_browser = CreateIncognitoBrowser(browser()->profile());
+  auto* incognito_view =
+      BrowserView::GetBrowserViewForBrowser(incognito_browser);
+  auto* incognito_toolbar =
+      static_cast<BraveToolbarView*>(incognito_view->toolbar());
+  EXPECT_EQ(incognito_toolbar->workspaces_button_for_testing(), nullptr);
+}
