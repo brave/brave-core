@@ -1,0 +1,23 @@
+diff --git a/third_party/blink/renderer/core/script_tools/model_context.cc b/third_party/blink/renderer/core/script_tools/model_context.cc
+index b43715b25c22dce6d8f893870cd8ecdb94b21a0a..41dcd2e916c563385b0132ce1719d8174055f2c8 100644
+--- a/third_party/blink/renderer/core/script_tools/model_context.cc
++++ b/third_party/blink/renderer/core/script_tools/model_context.cc
+@@ -847,7 +847,17 @@ bool ModelContext::IsModelContextAllowed() const {
+               url::kFileScheme &&
+           key.IsUniversalFileAgent()) ||
+          (document_->GetSettings() &&
+-          !document_->GetSettings()->GetWebSecurityEnabled());
++          !document_->GetSettings()->GetWebSecurityEnabled()) ||
++         // Brave: allow chrome-untrusted:// WebUI documents (e.g. the
++         // chrome-untrusted://workspace page that hosts Leo's local
++         // tools) to use the Model Context API. Such origins can't be
++         // placed in an origin-keyed agent cluster (that requires an
++         // http/https origin), but each chrome-untrusted host is served
++         // from its own isolated origin and process and does not use
++         // document.domain, so the cross-document concern the
++         // origin-keyed check guards against does not apply.
++         document_->GetExecutionContext()->GetSecurityOrigin()->Protocol() ==
++             "chrome-untrusted";
+ }
+ 
+ ScriptPromise<IDLSequence<RegisteredTool>> ModelContext::getTools(
