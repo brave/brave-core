@@ -1281,6 +1281,146 @@ class PreemptFunctionImpl(_AstGrepRewriter):
         return f'if ({condition}) return{value};'
 
 
+class AfterFunctionImpl(_AstGrepRewriter):
+    """Wrap a function body in a lambda and run a code block after it.
+
+    The upstream body runs first, then our code. The idea of this rewriter is to
+    eliminate the need for certain cases where we either rename a function in
+    upstream to an inner `_ChromiumImpl` and call it, or when we subclass a
+    function to override it and call the base.
+
+    This rewriter offers a third option: wrap the upstream body in a lambda and
+    run a code block after it.
+    """
+
+    NAME: Final = 'after_function_impl'
+    OP_ID: Final = 'cxx.after_function_impl'
+    SUMMARY: Final = 'Run a statement block after a function body, wrapped so '\
+                     'it always runs.'
+    # Authored in Markdown; `Help` renders it with rich.
+    HELP: Final = r"""
+        Wraps a C++ function's whole body in an immediately-invoked `[&]` lambda
+        and runs a statement block after it, so that code always runs before the
+        function ends. This is an alternative to renaming the function to an
+        inner `_ChromiumImpl`, or to subclassing and calling the base, when you
+        want to run code after the upstream body.
+
+        The upstream body becomes `[&]() { ... }();`: a lambda capturing
+        everything (including `this`) by reference and invoked immediately.
+
+        Fields:
+
+        - `function_name` — the function's name exactly as its definition
+          writes it: a qualified `Class::Method` for a member, or the bare name
+          for a free function.
+        - `code` — the statement block to append.
+        - `result_var` — optional. For a non-void function, names a variable
+          bound to the wrapped body's return value (`auto <result_var> = [&]()
+          { ... }();`) so the appended `code` can use it. When set, the appended
+          `code` owns the function's final `return`.
+
+        Each overload sharing the name is one match, so an overloaded method
+        needs a matching `count`.
+
+        Examples:
+
+        ```yaml
+        substitutions:
+          - description: Record a metric after the upstream body always runs.
+            after_function_impl:
+              function_name: DownloadDisplayController::OnButtonPressed
+              code: |-
+                RecordBraveDownloadInteraction();
+
+          - description: Let Brave adjust the computed value before returning.
+            after_function_impl:
+              function_name: OmniboxController::ComputeScore
+              result_var: score
+              code: |-
+                return ComputeScore_BraveImpl(score);
+        ```
+
+        The second entry turns this upstream definition:
+
+        ```cpp
+        int OmniboxController::ComputeScore() {
+          // ... upstream body with its own returns ...
+        }
+        ```
+
+        into (the upstream body is wrapped, not reindented):
+
+        ```cpp
+        int OmniboxController::ComputeScore() {
+          auto score = [&]() {
+          // ... upstream body with its own returns ...
+          }();
+          return ComputeScore_BraveImpl(score);
+        }
+        ```
+    """
+
+    def __init__(self, *, function_name: str, capture: str, epilogue: str):
+        super().__init__()
+        self._function_name = function_name
+        self._capture = capture
+        self._epilogue = epilogue
+
+    def operations(self, count: int) -> list[Operation]:
+        # Escape backslashes last in both spliced values, since they are spliced
+        # into a `re.sub` replacement where a backslash is special.
+        epilogue = _indent_yaml(self._epilogue).replace('\\', '\\\\')
+        capture = self._capture.replace('\\', '\\\\')
+        return [
+            Operation(
+                self.OP_ID, {
+                    'function_name': self._function_name,
+                    'capture': capture,
+                    'epilogue': epilogue,
+                }, MatchExpectation.from_count(count))
+        ]
+
+    @classmethod
+    def parse(cls, body: object, *, description: str) -> AfterFunctionImpl:
+        """Validate an `after_function_impl:` body and resolve what to append.
+
+        Requires `function_name` and `code`. `result_var` is optional and, when
+        given, binds the wrapped body's value to `auto <result_var>`.
+        """
+        if not isinstance(body, dict):
+            raise ValueError(
+                f'"{cls.NAME}" must be a mapping (in "{description}")')
+        allowed = {'function_name', 'code', 'result_var'}
+        unknown = sorted(set(body) - allowed)
+        if unknown:
+            raise ValueError(
+                f'Unrecognised {cls.NAME} arg(s): '
+                f'{", ".join(repr(k) for k in unknown)} (in "{description}")')
+        if not isinstance(body.get('function_name'),
+                          str) or not body['function_name']:
+            raise ValueError(f'{cls.NAME} `function_name` must be a non-empty '
+                             f'string (in "{description}")')
+        code = body.get('code')
+        if not isinstance(code, str) or not code:
+            raise ValueError(f'{cls.NAME} `code` must be a non-empty string '
+                             f'(in "{description}")')
+        capture = cls._resolve_capture(body, description)
+        return cls(function_name=body['function_name'],
+                   capture=capture,
+                   epilogue=code)
+
+    @classmethod
+    def _resolve_capture(cls, body: dict, description: str) -> str:
+        """Build the `auto <result_var> = ` lead, or empty for a void wrap."""
+        if 'result_var' not in body:
+            return ''
+        result_var = body['result_var']
+        if not isinstance(result_var, str) or not result_var:
+            raise ValueError(f'{cls.NAME} `result_var` must be a non-empty '
+                             f'string (in "{description}")')
+        return f'auto {result_var} = '
+
+
 class RenameClass(_AstGrepRewriter):
     """Rename a C++ class."""
 
@@ -1412,7 +1552,8 @@ class AddToProtected(_AstGrepRewriter):
 _REWRITERS: MappingProxyType[str, type[Rewriter]] = MappingProxyType({
     rewriter.NAME: rewriter
     for rewriter in (Regex, MakeVirtual, AddFriend, DropFinal,
-                     PreemptFunctionImpl, RenameClass, AddToProtected)
+                     PreemptFunctionImpl, AfterFunctionImpl, RenameClass,
+                     AddToProtected)
 })
 
 

@@ -2045,6 +2045,177 @@ class RewriterFormsTest(unittest.TestCase):
             '      code: virtual void Bar() = 0;\n',
             'does not accept a count other than 1')
 
+    # -- after_function_impl op (real ast-grep binary) -------------------------
+
+    def test_after_function_impl_void(self):
+        # A void function: the body is wrapped in a bare IIFE lambda and the
+        # appended code runs after it, unconditionally.
+        result = self._apply(
+            'append.cc', 'void C::Foo() {\n  Upstream();\n}\n',
+            'substitutions:\n'
+            '  - description: always run Brave code after the body\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Foo\n'
+            '      code: |-\n'
+            '        RecordBraveMetric();\n')
+        self.assertEqual(
+            result, 'void C::Foo() {\n  [&]() {\n  Upstream();\n  }();\n'
+            '  RecordBraveMetric();\n}\n')
+
+    def test_after_function_impl_captures_result(self):
+        # A non-void function: `result_var` binds the wrapped body's value so
+        # the appended code can use it and own the final return.
+        result = self._apply(
+            'append_result.cc', 'int C::Compute() {\n  return real_;\n}\n',
+            'substitutions:\n'
+            '  - description: adjust the computed value for Brave\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Compute\n'
+            '      result_var: score\n'
+            '      code: |-\n'
+            '        return BraveAdjust(score);\n')
+        self.assertEqual(
+            result, 'int C::Compute() {\n  auto score = [&]() {\n'
+            '  return real_;\n  }();\n  return BraveAdjust(score);\n}\n')
+
+    def test_after_function_impl_wraps_early_returns(self):
+        # Every `return` in the upstream body only returns from the lambda, so
+        # the appended code still runs. The body's own lines are untouched.
+        source = ('void C::Foo() {\n'
+                  '  if (!ready_) {\n'
+                  '    return;\n'
+                  '  }\n'
+                  '  Work();\n'
+                  '}\n')
+        result = self._apply(
+            'append_early.cc', source, 'substitutions:\n'
+            '  - description: guarantee cleanup runs\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Foo\n'
+            '      code: |-\n'
+            '        BraveCleanup();\n')
+        self.assertEqual(
+            result, 'void C::Foo() {\n  [&]() {\n'
+            '  if (!ready_) {\n    return;\n  }\n  Work();\n  }();\n'
+            '  BraveCleanup();\n}\n')
+
+    def test_after_function_impl_free_function(self):
+        result = self._apply(
+            'append_free.cc', 'void FreeFunc(int x) {\n  Upstream(x);\n}\n',
+            'substitutions:\n'
+            '  - description: append to a free function\n'
+            '    after_function_impl:\n'
+            '      function_name: FreeFunc\n'
+            '      code: |-\n'
+            '        AfterFree(x);\n')
+        self.assertEqual(
+            result, 'void FreeFunc(int x) {\n  [&]() {\n  Upstream(x);\n'
+            '  }();\n  AfterFree(x);\n}\n')
+
+    def test_after_function_impl_multiline_code_indented(self):
+        # A multi-line `code` block is authored flush-left and indented to the
+        # body level as a whole; a blank line stays empty.
+        result = self._apply(
+            'append_block.cc', 'void C::Foo() {\n  Upstream();\n}\n',
+            'substitutions:\n'
+            '  - description: append a two-statement block\n'
+            '    after_function_impl:\n'
+            '      function_name: C::Foo\n'
+            '      code: |-\n'
+            '        Prepare();\n'
+            '\n'
+            '        Track();\n')
+        self.assertEqual(
+            result, 'void C::Foo() {\n  [&]() {\n  Upstream();\n  }();\n'
+            '  Prepare();\n\n  Track();\n}\n')
+
+    def test_after_function_impl_targets_named_function_only(self):
+        # Only the named function's body is wrapped, not a sibling.
+        result = self._apply(
+            'append_siblings.cc',
+            'void C::A() {\n  a();\n}\n\nvoid C::B() {\n  b();\n}\n',
+            'substitutions:\n'
+            '  - description: append only to B\n'
+            '    after_function_impl:\n'
+            '      function_name: C::B\n'
+            '      code: |-\n'
+            '        after_b();\n')
+        self.assertEqual(
+            result, 'void C::A() {\n  a();\n}\n\n'
+            'void C::B() {\n  [&]() {\n  b();\n  }();\n  after_b();\n}\n')
+
+    def test_after_function_impl_overloads_need_count(self):
+        result = self._apply(
+            'append_overloads.cc',
+            'void C::F() {\n  a();\n}\n\nvoid C::F(int x) {\n  b();\n}\n',
+            'substitutions:\n'
+            '  - description: append to both overloads\n'
+            '    count: 2\n'
+            '    after_function_impl:\n'
+            '      function_name: C::F\n'
+            '      code: |-\n'
+            '        done();\n')
+        self.assertEqual(
+            result,
+            'void C::F() {\n  [&]() {\n  a();\n  }();\n  done();\n}\n\n'
+            'void C::F(int x) {\n  [&]() {\n  b();\n  }();\n  done();\n}\n')
+
+    def test_after_function_impl_overload_count_mismatch_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'append_overloads_bad.cc',
+                'void C::F() {\n  a();\n}\n\nvoid C::F(int x) {\n  b();\n}\n',
+                'substitutions:\n'
+                '  - description: forgot the count\n'
+                '    after_function_impl:\n'
+                '      function_name: C::F\n'
+                '      code: |-\n'
+                '        done();\n')
+
+    def test_after_function_impl_absent_function_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'append_missing.cc', 'void C::Foo() {\n}\n', 'substitutions:\n'
+                '  - description: no such function\n'
+                '    after_function_impl:\n'
+                '      function_name: C::Nope\n'
+                '      code: |-\n'
+                '        x();\n')
+
+    def test_after_function_impl_missing_code_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing code\n'
+            '    after_function_impl:\n'
+            '      function_name: C::F\n',
+            'after_function_impl `code` must be a non-empty string')
+
+    def test_after_function_impl_missing_function_name_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing function_name\n'
+            '    after_function_impl:\n'
+            '      code: x();\n',
+            'after_function_impl `function_name` must be a non-empty string')
+
+    def test_after_function_impl_empty_result_var_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: empty result_var\n'
+            '    after_function_impl:\n'
+            '      function_name: C::F\n'
+            '      result_var: \'\'\n'
+            '      code: x();\n',
+            'after_function_impl `result_var` must be a non-empty string')
+
+    def test_after_function_impl_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    after_function_impl:\n'
+            '      function_name: C::F\n'
+            '      cod: x();\n', 'Unrecognised after_function_impl arg')
+
     # -- export-macro classes (real ast-grep binary) ----------------------
     #
     # tree-sitter cannot parse `class MACRO_EXPORT Name`, so the engine blanks
