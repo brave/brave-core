@@ -53,7 +53,8 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
         >
           <Icon name='more-vertical' />
         </Button>
-        {conversationContext.canSubmitUserEntries
+        {!conversationContext.isReadOnly
+          && conversationContext.canSubmitUserEntries
           && props.onEditQuestionClicked && (
             <leo-menu-item
               data-testid='edit-question-button'
@@ -69,7 +70,7 @@ export default function ContextMenuHuman(props: ContextMenuHumanProps) {
             <span>{getLocale(S.CHAT_UI_COPY_PROMPT_BUTTON_LABEL)}</span>
           </leo-menu-item>
         )}
-        {props.onSaveAsSkillClicked && (
+        {!conversationContext.isReadOnly && props.onSaveAsSkillClicked && (
           <leo-menu-item onClick={props.onSaveAsSkillClicked}>
             <Icon name='slash' />
             <span>{getLocale(S.CHAT_UI_SAVE_AS_SKILL_BUTTON_LABEL)}</span>
