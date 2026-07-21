@@ -19,7 +19,7 @@ export interface BalanceResult {
   coinType: BraveWallet.CoinType
   /** For NFTs */
   tokenId: string
-  isShielded: boolean
+  zcashTokenType: BraveWallet.ZCashTokenType
 }
 
 type SetBalanceArg = BalanceResult & {
@@ -108,7 +108,7 @@ export function setBalance({
   tokenBalancesRegistry,
   coinType,
   tokenId,
-  isShielded,
+  zcashTokenType,
 }: SetBalanceArg) {
   const accountBalanceKey = getAccountBalancesKey(accountId)
   if (!tokenBalancesRegistry.accounts[accountBalanceKey]) {
@@ -127,7 +127,7 @@ export function setBalance({
       coin: coinType,
       contractAddress,
       tokenId,
-      isShielded,
+      zcashTokenType,
     })
   ] = balance
 }
@@ -139,7 +139,7 @@ export function getBalanceFromRegistry({
   contractAddress,
   tokenId,
   coin,
-  isShielded,
+  zcashTokenType,
 }: {
   registry: TokenBalancesRegistry
   accountUniqueId: string
@@ -147,7 +147,7 @@ export function getBalanceFromRegistry({
   contractAddress: string
   tokenId: string
   coin: BraveWallet.CoinType
-  isShielded: boolean
+  zcashTokenType: BraveWallet.ZCashTokenType
 }) {
   return (
     registry.accounts[accountUniqueId]?.chains?.[chainId]?.tokenBalances?.[
@@ -156,7 +156,7 @@ export function getBalanceFromRegistry({
         chainId,
         contractAddress: contractAddress,
         tokenId,
-        isShielded,
+        zcashTokenType,
       })
     ] || '0'
   )

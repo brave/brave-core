@@ -24,7 +24,7 @@ class BraveWalletExtensionsTests: XCTestCase {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     )
     let ethToken: BraveWallet.BlockchainToken = .init(
       contractAddress: "mock-eth-contract-address",
@@ -44,7 +44,7 @@ class BraveWalletExtensionsTests: XCTestCase {
       coingeckoId: "",
       chainId: "",
       coin: .eth,
-      isShielded: false
+      zcashTokenType: .none
     )
     let ethNetwork = BraveWallet.NetworkInfo.mockMainnet
 
@@ -69,7 +69,7 @@ class BraveWalletExtensionsTests: XCTestCase {
       coingeckoId: "",
       chainId: "",
       coin: .sol,
-      isShielded: false
+      zcashTokenType: .none
     )
     let solToken: BraveWallet.BlockchainToken = .init(
       contractAddress: "mock-sol-contract-address",
@@ -89,7 +89,7 @@ class BraveWalletExtensionsTests: XCTestCase {
       coingeckoId: "",
       chainId: "",
       coin: .sol,
-      isShielded: false
+      zcashTokenType: .none
     )
     let solNetwork = BraveWallet.NetworkInfo.mockSolana
 

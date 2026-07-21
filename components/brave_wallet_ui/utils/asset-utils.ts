@@ -145,6 +145,12 @@ export const sortNativeAndAndBatAssetsToTop = (
   })
 }
 
+export const isShieldedToken = (
+  token: Pick<BraveWallet.BlockchainToken, 'zcashTokenType'>,
+) =>
+  token.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
+  || token.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+
 export type GetBlockchainTokenIdArg = Pick<
   BraveWallet.BlockchainToken,
   | 'coin'
@@ -153,7 +159,7 @@ export type GetBlockchainTokenIdArg = Pick<
   | 'isErc721'
   | 'tokenId'
   | 'isNft'
-  | 'isShielded'
+  | 'zcashTokenType'
 >
 
 /**
@@ -163,18 +169,18 @@ export type GetBlockchainTokenIdArg = Pick<
 export const getAssetIdKey = (
   asset: Pick<
     GetBlockchainTokenIdArg,
-    'contractAddress' | 'chainId' | 'tokenId' | 'coin' | 'isShielded'
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin' | 'zcashTokenType'
   >,
 ) => {
   return asset.tokenId
     ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.tokenId}-${
         asset.chainId
       }`
-    : asset.isShielded
-      ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${
-          asset.chainId
-        }-shielded`
-      : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
+    : asset.zcashTokenType === BraveWallet.ZCashTokenType.kIronwood
+      ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}-ironwood`
+      : asset.zcashTokenType === BraveWallet.ZCashTokenType.kOrchard
+        ? `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}-shielded`
+        : `${asset.coin}-${asset.contractAddress.toLowerCase()}-${asset.chainId}`
 }
 
 export const dedupeAssetsByIdKey = (assets: BraveWallet.BlockchainToken[]) => {
@@ -213,7 +219,7 @@ export const findTokenBySymbol = (
 export const findTokenByAssetId = <
   T extends Pick<
     BraveWallet.BlockchainToken,
-    'contractAddress' | 'chainId' | 'tokenId' | 'coin' | 'isShielded'
+    'contractAddress' | 'chainId' | 'tokenId' | 'coin' | 'zcashTokenType'
   >,
 >(
   assetId: string,
@@ -223,7 +229,7 @@ export const findTokenByAssetId = <
 }
 
 export const isNativeAsset = (
-  token: Pick<BraveWallet.BlockchainToken, 'contractAddress' | 'isShielded'>,
+  token: Pick<BraveWallet.BlockchainToken, 'contractAddress'>,
 ) => token.contractAddress === ''
 
 export const formatTokenBalance = (

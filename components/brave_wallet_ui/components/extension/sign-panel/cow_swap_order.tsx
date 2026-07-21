@@ -57,7 +57,7 @@ const makeUnknownToken = (
   name: '',
   coingeckoId: UNKNOWN_TOKEN_COINGECKO_ID,
   decimals: 0,
-  isShielded: false,
+  zcashTokenType: BraveWallet.ZCashTokenType.kNone,
 })
 
 interface Props {

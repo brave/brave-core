@@ -65,6 +65,7 @@ import { endsWithAny } from '../../../../../utils/string-utils'
 import {
   findTokenByContractAddress,
   getAssetIdKey,
+  isShieldedToken,
 } from '../../../../../utils/asset-utils'
 import { isFVMAccount } from '../../../../../utils/account-utils'
 
@@ -325,7 +326,9 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         ? {
             chainId: selectedNetwork.chainId,
             accountId: fromAccountId,
-            useShieldedPool: !!selectedAsset?.isShielded,
+            useShieldedPool: !!(
+              selectedAsset && isShieldedToken(selectedAsset)
+            ),
             address: trimmedSearchValue,
           }
         : skipToken,
@@ -704,7 +707,7 @@ export const AccountGroupItem = (props: AccountsListProps) => {
         isDisabled={
           // Show transparent address of the selected account
           // if shielded asset chosen.
-          !selectedAsset?.isShielded
+          !(selectedAsset && isShieldedToken(selectedAsset))
           && account.accountId.uniqueKey === fromAccountId?.uniqueKey
         }
         isSelected={account.accountId.uniqueKey === fromAccountId?.uniqueKey}
@@ -722,9 +725,9 @@ export const AccountGroupItem = (props: AccountsListProps) => {
           onClick={() =>
             onSelectAccount(account, zcashAccountInfo.orchardInternalAddress)
           }
-          isDisabled={!!selectedAsset?.isShielded}
+          isDisabled={!!(selectedAsset && isShieldedToken(selectedAsset))}
           isSelected={
-            !!selectedAsset?.isShielded
+            !!(selectedAsset && isShieldedToken(selectedAsset))
             && account.accountId.uniqueKey === fromAccountId?.uniqueKey
           }
           isShielded={true}

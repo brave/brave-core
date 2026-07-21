@@ -104,7 +104,7 @@ export const EvmNativeAssetOrErc20TokenTransfer = ({
       logo: foundTokenLogo || transfer.asset.imageUrl,
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     }
   }, [transfer.asset, network, tokensRegistry])
 
@@ -247,7 +247,7 @@ export const NonFungibleErcTokenTransfer = ({
       name: transfer.asset.name,
       symbol: transfer.asset.symbol,
       tokenId: transfer.asset.tokenId || '',
-      isShielded: false,
+      zcashTokenType: BraveWallet.ZCashTokenType.kNone,
     }
   }, [transfer, network, tokensRegistry])
 
