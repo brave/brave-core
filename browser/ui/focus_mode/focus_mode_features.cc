@@ -7,6 +7,6 @@
 
 namespace features {
 
-BASE_FEATURE(kBraveFocusMode, base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kBraveFocusMode, base::FEATURE_ENABLED_BY_DEFAULT);
 
 }  // namespace features
