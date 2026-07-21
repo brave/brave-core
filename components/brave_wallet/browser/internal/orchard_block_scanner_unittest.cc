@@ -7,10 +7,12 @@
 
 #include <algorithm>
 
+#include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_wallet/browser/internal/hd_key_zip32.h"
 #include "brave/components/brave_wallet/browser/zcash/zcash_test_utils.h"
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/hex_utils.h"
 #include "brave/components/services/brave_wallet/public/mojom/zcash_decoder.mojom.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -180,19 +182,19 @@ TEST(OrchardBlockScannerTest, DiscoverNewNotes) {
 
   auto result = scanner.ScanBlocks({}, std::move(blocks));
 
-  EXPECT_EQ(result.value().discovered_notes.size(), 4u);
-  EXPECT_EQ(result.value().discovered_notes[0].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[0].amount, 3625561528u);
-  EXPECT_EQ(result.value().discovered_notes[1].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[1].amount, 891903885u);
-  EXPECT_EQ(result.value().discovered_notes[2].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[2].amount, 1881904414u);
-  EXPECT_EQ(result.value().discovered_notes[3].block_id, 11u);
-  EXPECT_EQ(result.value().discovered_notes[3].amount, 2549979667u);
-  EXPECT_EQ(result.value().latest_scanned_block_id, 11u);
-  EXPECT_EQ(result.value().latest_scanned_block_hash, "0xaabb");
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 4u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[1].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[1].amount, 891903885u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[2].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[2].amount, 1881904414u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[3].block_id, 11u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[3].amount, 2549979667u);
+  EXPECT_EQ(result.value().orchard.latest_scanned_block_id, 11u);
+  EXPECT_EQ(result.value().orchard.latest_scanned_block_hash, "0xaabb");
 
-  EXPECT_EQ(result.value().found_spends.size(), 5u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 5u);
 }
 
 TEST(OrchardBlockScannerTest, WrongInput) {
@@ -475,17 +477,17 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers_SameBatch) {
 
   auto result = scanner.ScanBlocks({}, std::move(blocks));
 
-  EXPECT_EQ(result.value().discovered_notes.size(), 1u);
-  EXPECT_EQ(result.value().discovered_notes[0].block_id, 10u);
-  EXPECT_EQ(result.value().discovered_notes[0].amount, 3625561528u);
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 1u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.discovered_notes[0].amount, 3625561528u);
 
-  EXPECT_EQ(result.value().found_spends.size(), 2u);
-  EXPECT_EQ(result.value().found_spends[0].block_id, 10u);
-  EXPECT_EQ(result.value().found_spends[1].block_id, 11u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 2u);
+  EXPECT_EQ(result.value().orchard.found_spends[0].block_id, 10u);
+  EXPECT_EQ(result.value().orchard.found_spends[1].block_id, 11u);
 
   EXPECT_EQ(
-      std::vector<uint8_t>(result.value().found_spends[1].nullifier.begin(),
-                           result.value().found_spends[1].nullifier.end()),
+      std::vector<uint8_t>(result.value().orchard.found_spends[1].nullifier.begin(),
+                           result.value().orchard.found_spends[1].nullifier.end()),
       PrefixedHexStringToBytes(
           "0x6588cc7fabfab2b2a4baa89d4dfafaa50cc89d22f96d10fb7689461b921ad40d")
           .value());
@@ -533,7 +535,6 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   note.block_id = 10;
   std::ranges::copy(nullifier_bytes, note.nullifier.begin());
   note.amount = 1;
-  note.note_version = 2;
 
   notes.push_back(note);
   blocks.push_back(std::move(block));
@@ -543,9 +544,96 @@ TEST(OrchardBlockScanner, FoundKnownNullifiers) {
   auto result = scanner.ScanBlocks(tree_state, std::move(blocks));
 
   EXPECT_TRUE(result.has_value());
-  EXPECT_EQ(result.value().found_spends.size(), 1u);
-  EXPECT_EQ(result.value().found_spends[0].nullifier, spend.nullifier);
-  EXPECT_EQ(result.value().discovered_notes.size(), 0u);
+  EXPECT_EQ(result.value().orchard.found_spends.size(), 1u);
+  EXPECT_EQ(result.value().orchard.found_spends[0].nullifier, spend.nullifier);
+  EXPECT_EQ(result.value().orchard.discovered_notes.size(), 0u);
+}
+
+// Builds a block that contains ironwood_actions with valid nullifier sizes.
+// Returns a single block at the given height.
+std::vector<zcash::mojom::CompactBlockPtr> BuildBlocksWithIronwoodActions(
+    uint32_t height,
+    size_t num_ironwood_actions) {
+  auto block = zcash::mojom::CompactBlock::New();
+  block->height = height;
+  block->hash = {0x01, 0x02};
+
+  auto tx = zcash::mojom::CompactTx::New();
+  for (size_t i = 0; i < num_ironwood_actions; i++) {
+    auto action = zcash::mojom::CompactOrchardAction::New();
+    action->nullifier = std::vector<uint8_t>(kOrchardNullifierSize, static_cast<uint8_t>(i + 1));
+    action->cmx = std::vector<uint8_t>(kOrchardCmxSize, 0);
+    action->ephemeral_key = std::vector<uint8_t>(kOrchardEphemeralKeySize, 0);
+    action->ciphertext = std::vector<uint8_t>(kOrchardCipherTextSize, 0);
+    tx->ironwood_actions.push_back(std::move(action));
+  }
+  block->vtx.push_back(std::move(tx));
+
+  std::vector<zcash::mojom::CompactBlockPtr> blocks;
+  blocks.push_back(std::move(block));
+  return blocks;
+}
+
+// With the Ironwood feature flag OFF, ironwood_actions in blocks are
+// ignored even when a non-null Ironwood tree state is passed.
+TEST(OrchardBlockScannerTest, IronwoodFeatureOff_ResultIsNullopt) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "false"}});
+
+  auto scanner = OrchardBlockScanner(OrchardFullViewKey(
+      {0x74, 0x0b, 0xbe, 0x5d, 0x05, 0x80, 0xb2, 0xca, 0xd4, 0x30, 0x18,
+       0x0d, 0x02, 0xcc, 0x12, 0x8b, 0x9a, 0x14, 0x0d, 0x5e, 0x07, 0xc1,
+       0x51, 0x72, 0x1d, 0xc1, 0x6d, 0x25, 0xd4, 0xe2, 0x0f, 0x15, 0x9f,
+       0x2f, 0x82, 0x67, 0x38, 0x94, 0x5a, 0xd0, 0x1f, 0x47, 0xf7, 0x0d,
+       0xb0, 0xc3, 0x67, 0xc2, 0x46, 0xc2, 0x0c, 0x61, 0xff, 0x55, 0x83,
+       0x94, 0x8c, 0x39, 0xde, 0xa9, 0x68, 0xfe, 0xfd, 0x1b, 0x02, 0x1c,
+       0xcf, 0x89, 0x60, 0x4f, 0x5f, 0x7c, 0xc6, 0xe0, 0x34, 0xb3, 0x2d,
+       0x33, 0x89, 0x08, 0xb8, 0x19, 0xfb, 0xe3, 0x25, 0xfe, 0xe6, 0x45,
+       0x8b, 0x56, 0xb4, 0xca, 0x71, 0xa7, 0xe4, 0x3d}));
+
+  OrchardTreeState ironwood_tree_state;
+  auto blocks = BuildBlocksWithIronwoodActions(10u, 3);
+
+  auto result =
+      scanner.ScanBlocks(OrchardTreeState(), blocks, &ironwood_tree_state);
+
+  ASSERT_TRUE(result.has_value());
+  EXPECT_EQ(result.value().ironwood, std::nullopt);
+}
+
+// With the Ironwood feature flag ON and a non-null Ironwood tree state,
+// ironwood_actions are scanned and the result.ironwood field is populated.
+TEST(OrchardBlockScannerTest, IronwoodFeatureOn_IronwoodResultPopulated) {
+  base::test::ScopedFeatureList features;
+  features.InitAndEnableFeatureWithParameters(
+      features::kBraveWalletZCashFeature,
+      {{"zcash_shielded_transactions_enabled", "true"},
+       {"zcash_ironwood_enabled", "true"}});
+
+  auto scanner = OrchardBlockScanner(OrchardFullViewKey(
+      {0x74, 0x0b, 0xbe, 0x5d, 0x05, 0x80, 0xb2, 0xca, 0xd4, 0x30, 0x18,
+       0x0d, 0x02, 0xcc, 0x12, 0x8b, 0x9a, 0x14, 0x0d, 0x5e, 0x07, 0xc1,
+       0x51, 0x72, 0x1d, 0xc1, 0x6d, 0x25, 0xd4, 0xe2, 0x0f, 0x15, 0x9f,
+       0x2f, 0x82, 0x67, 0x38, 0x94, 0x5a, 0xd0, 0x1f, 0x47, 0xf7, 0x0d,
+       0xb0, 0xc3, 0x67, 0xc2, 0x46, 0xc2, 0x0c, 0x61, 0xff, 0x55, 0x83,
+       0x94, 0x8c, 0x39, 0xde, 0xa9, 0x68, 0xfe, 0xfd, 0x1b, 0x02, 0x1c,
+       0xcf, 0x89, 0x60, 0x4f, 0x5f, 0x7c, 0xc6, 0xe0, 0x34, 0xb3, 0x2d,
+       0x33, 0x89, 0x08, 0xb8, 0x19, 0xfb, 0xe3, 0x25, 0xfe, 0xe6, 0x45,
+       0x8b, 0x56, 0xb4, 0xca, 0x71, 0xa7, 0xe4, 0x3d}));
+
+  OrchardTreeState ironwood_tree_state;
+  constexpr size_t kIronwoodActionCount = 3;
+  auto blocks = BuildBlocksWithIronwoodActions(10u, kIronwoodActionCount);
+
+  auto result =
+      scanner.ScanBlocks(OrchardTreeState(), blocks, &ironwood_tree_state);
+
+  ASSERT_TRUE(result.has_value());
+  ASSERT_TRUE(result.value().ironwood.has_value());
+  EXPECT_EQ(result.value().ironwood->found_spends.size(), kIronwoodActionCount);
 }
 
 }  // namespace brave_wallet

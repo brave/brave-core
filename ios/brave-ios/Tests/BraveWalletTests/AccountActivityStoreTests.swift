@@ -230,8 +230,10 @@ class AccountActivityStoreTests: XCTestCase {
         .init(
           totalBalance: UInt64(mockZecBalance) ?? 0,
           transparentBalance: UInt64(mockZecBalance) ?? 0,
-          shieldedBalance: 0,
-          shieldedPendingBalance: 0,
+          orchardBalance: 0,
+          orchardPendingBalance: 0,
+        ironwoodBalance: 0,
+        ironwoodPendingBalance: 0,
           balances: [:]
         ),
         nil

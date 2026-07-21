@@ -69,7 +69,7 @@ class OrchardSyncState {
       const std::string& rewind_block_hash);
 
   base::expected<std::vector<OrchardNoteSpend>, OrchardStorage::Error>
-  GetNullifiers(const mojom::AccountIdPtr& account_id);
+  GetNullifiers(OrchardPool pool, const mojom::AccountIdPtr& account_id);
 
   base::expected<OrchardStorage::Result, OrchardStorage::Error>
   ApplyScanResults(const mojom::AccountIdPtr& account_id,
@@ -78,14 +78,15 @@ class OrchardSyncState {
                    OrchardBlockScanner::Result block_scanner_results);
 
   base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-  GetLatestShardIndex(const mojom::AccountIdPtr& account_id);
+  GetLatestShardIndex(OrchardPool pool, const mojom::AccountIdPtr& account_id);
 
   virtual base::expected<std::optional<uint32_t>, OrchardStorage::Error>
-  GetMinCheckpointId(const mojom::AccountIdPtr& account_id);
+  GetMinCheckpointId(OrchardPool pool, const mojom::AccountIdPtr& account_id);
 
   virtual base::expected<std::optional<SpendableNotesBundle>,
                          OrchardStorage::Error>
-  GetSpendableNotes(const mojom::AccountIdPtr& account_id,
+  GetSpendableNotes(OrchardPool pool,
+                    const mojom::AccountIdPtr& account_id,
                     const OrchardAddrRawPart& change_address);
 
   // Clears sync data related to the account. Updates account birthday if
@@ -98,7 +99,8 @@ class OrchardSyncState {
   void ResetDatabase();
 
   virtual base::expected<std::vector<OrchardInput>, OrchardStorage::Error>
-  CalculateWitnessForCheckpoint(const mojom::AccountIdPtr& account_id,
+  CalculateWitnessForCheckpoint(OrchardPool pool,
+                                const mojom::AccountIdPtr& account_id,
                                 const std::vector<OrchardInput>& notes,
                                 uint32_t checkpoint_position);
 
@@ -111,8 +113,11 @@ class OrchardSyncState {
       std::unique_ptr<orchard::OrchardShardTree> shard_tree);
   OrchardStorage& orchard_storage();
 
+  static std::string ShardTreeKey(OrchardPool pool,
+                                  const mojom::AccountIdPtr& account_id);
+
   orchard::OrchardShardTree& GetOrCreateShardTree(
-      const mojom::AccountIdPtr& account_id) LIFETIME_BOUND;
+      OrchardPool pool, const mojom::AccountIdPtr& account_id) LIFETIME_BOUND;
 
   OrchardStorage storage_;
   std::map<std::string, std::unique_ptr<orchard::OrchardShardTree>>

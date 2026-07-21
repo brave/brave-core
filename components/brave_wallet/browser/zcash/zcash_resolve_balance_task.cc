@@ -57,16 +57,26 @@ void ZCashResolveBalanceTask::WorkOnTask() {
     return;
   }
 
-  if (IsZCashShieldedTransactionsEnabled()) {
-    if (!spendable_notes_result_) {
-      zcash_wallet_service_->sync_state()
-          .AsyncCall(&OrchardSyncState::GetSpendableNotes)
-          .WithArgs(context_.account_id.Clone(),
-                    context_.account_internal_addr.value())
-          .Then(base::BindOnce(&ZCashResolveBalanceTask::OnGetSpendableNotes,
-                               weak_ptr_factory_.GetWeakPtr()));
-      return;
-    }
+  if (IsZCashShieldedTransactionsEnabled() && !orchard_notes_result_) {
+    zcash_wallet_service_->sync_state()
+        .AsyncCall(&OrchardSyncState::GetSpendableNotes)
+        .WithArgs(OrchardPool::kOrchard, context_.account_id.Clone(),
+                  context_.account_internal_addr.value())
+        .Then(base::BindOnce(&ZCashResolveBalanceTask::OnGetSpendableNotes,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             OrchardPool::kOrchard));
+    return;
+  }
+
+  if (IsZCashIronwoodEnabled() && !ironwood_notes_result_) {
+    zcash_wallet_service_->sync_state()
+        .AsyncCall(&OrchardSyncState::GetSpendableNotes)
+        .WithArgs(OrchardPool::kIronwood, context_.account_id.Clone(),
+                  context_.account_internal_addr.value())
+        .Then(base::BindOnce(&ZCashResolveBalanceTask::OnGetSpendableNotes,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             OrchardPool::kIronwood));
+    return;
   }
 
   if (!result_) {
@@ -78,6 +88,7 @@ void ZCashResolveBalanceTask::WorkOnTask() {
 }
 
 void ZCashResolveBalanceTask::OnGetSpendableNotes(
+    OrchardPool pool,
     base::expected<std::optional<OrchardSyncState::SpendableNotesBundle>,
                    OrchardStorage::Error> result) {
   if (!result.has_value()) {
@@ -85,20 +96,21 @@ void ZCashResolveBalanceTask::OnGetSpendableNotes(
     ScheduleWorkOnTask();
     return;
   }
-
-  if (!result.value()) {
-    spendable_notes_result_ = OrchardSyncState::SpendableNotesBundle();
-  } else {
-    spendable_notes_result_ = std::move(result.value());
-  }
-
+  auto& bundle = result.value();
+  auto& target = (pool == OrchardPool::kIronwood) ? ironwood_notes_result_
+                                                  : orchard_notes_result_;
+  target = bundle ? std::move(bundle.value())
+                  : OrchardSyncState::SpendableNotesBundle();
   ScheduleWorkOnTask();
 }
 
 void ZCashResolveBalanceTask::CreateBalance() {
   auto result = mojom::ZCashBalance::New();
   result->transparent_balance = 0;
-  result->shielded_balance = 0;
+  result->orchard_balance = 0;
+  result->orchard_pending_balance = 0;
+  result->ironwood_balance = 0;
+  result->ironwood_pending_balance = 0;
 
   for (const auto& by_addr : utxo_map_.value()) {
     uint64_t balance_by_addr = 0;
@@ -108,25 +120,42 @@ void ZCashResolveBalanceTask::CreateBalance() {
     result->transparent_balance += balance_by_addr;
     result->balances[by_addr.first] = balance_by_addr;
   }
-
   result->total_balance = result->transparent_balance;
 
-  if (IsZCashShieldedTransactionsEnabled()) {
-    if (spendable_notes_result_) {
-      for (const auto& note : spendable_notes_result_->all_notes) {
-        result->shielded_pending_balance += note.amount;
-      }
-      for (const auto& note : spendable_notes_result_->spendable_notes) {
-        result->shielded_balance += note.amount;
-      }
-      if (result->shielded_pending_balance < result->shielded_balance) {
-        error_ = "Pending balance error";
-        ScheduleWorkOnTask();
-        return;
-      }
-      result->shielded_pending_balance -= result->shielded_balance;
-      result->total_balance += result->shielded_balance;
+  auto accumulate = [](const OrchardSyncState::SpendableNotesBundle& bundle,
+                       uint64_t& spendable_out, uint64_t& pending_out) -> bool {
+    uint64_t spendable = 0, pending = 0;
+    for (const auto& note : bundle.all_notes) {
+      pending += note.amount;
     }
+    for (const auto& note : bundle.spendable_notes) {
+      spendable += note.amount;
+    }
+    if (pending < spendable) {
+      return false;
+    }
+    spendable_out = spendable;
+    pending_out = pending - spendable;
+    return true;
+  };
+
+  if (orchard_notes_result_) {
+    if (!accumulate(*orchard_notes_result_, result->orchard_balance,
+                    result->orchard_pending_balance)) {
+      error_ = "Pending balance error";
+      ScheduleWorkOnTask();
+      return;
+    }
+    result->total_balance += result->orchard_balance;
+  }
+  if (ironwood_notes_result_) {
+    if (!accumulate(*ironwood_notes_result_, result->ironwood_balance,
+                    result->ironwood_pending_balance)) {
+      error_ = "Pending balance error";
+      ScheduleWorkOnTask();
+      return;
+    }
+    result->total_balance += result->ironwood_balance;
   }
 
   result_ = std::move(result);

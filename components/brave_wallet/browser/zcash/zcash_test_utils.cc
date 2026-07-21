@@ -22,11 +22,13 @@ MockOrchardBlockScannerProxy::~MockOrchardBlockScannerProxy() = default;
 
 void MockOrchardBlockScannerProxy::ScanBlocks(
     OrchardTreeState tree_state,
+    std::optional<OrchardTreeState> ironwood_tree_state,
     std::vector<zcash::mojom::CompactBlockPtr> blocks,
     base::OnceCallback<void(base::expected<OrchardBlockScanner::Result,
                                            OrchardBlockScanner::ErrorCode>)>
         callback) {
-  callback_.Run(std::move(tree_state), std::move(blocks), std::move(callback));
+  callback_.Run(std::move(tree_state), std::move(ironwood_tree_state),
+                std::move(blocks), std::move(callback));
 }
 
 OrchardNullifier GenerateMockNullifier(const mojom::AccountIdPtr& account_id,
