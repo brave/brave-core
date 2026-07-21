@@ -50,8 +50,16 @@ UnblindedToken SigningKey::RederiveUnblindedToken(const TokenPreimage& t) {
   return UnblindedToken(raw().rederive_unblinded_token(t.raw()));
 }
 
-UnblindedToken SigningKey::RederiveUnblindedTokenRfc(const TokenPreimage& t) {
-  return UnblindedToken(raw().rederive_unblinded_token_rfc(t.raw()));
+base::expected<UnblindedToken, std::string> SigningKey::RederiveUnblindedTokenRfc(
+    const TokenPreimage& t) {
+  rust::Box<cbr_cxx::UnblindedTokenResult> raw_unblinded_token_result(
+      raw().rederive_unblinded_token_rfc(t.raw()));
+
+  if (!raw_unblinded_token_result->is_ok()) {
+    return base::unexpected("Failed to rederive unblinded token");
+  }
+
+  return UnblindedToken(raw_unblinded_token_result->unwrap());
 }
 
 PublicKey SigningKey::GetPublicKey() {

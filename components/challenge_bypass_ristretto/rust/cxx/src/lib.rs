@@ -159,7 +159,7 @@ pub mod ffi {
         fn rederive_unblinded_token_rfc(
             self: &SigningKey,
             t: &TokenPreimage,
-        ) -> Box<UnblindedToken>;
+        ) -> Box<UnblindedTokenResult>;
 
         fn decode_base64_signing_key(s: &str) -> Box<SigningKeyResult>;
         fn error(self: &SigningKeyResult) -> &Error;
@@ -331,7 +331,7 @@ impl Token {
     }
 
     fn blind(self: &Token) -> Box<BlindedTokenResult> {
-        // Fallible: `blind_rfc` returns an error if the token preimage maps to
+        // `blind_rfc` returns an error if the token preimage maps to
         // the group identity element (RFC 9497 §3.3.1). Surface it to the
         // caller so it can be handled gracefully.
         Box::new(
@@ -416,12 +416,18 @@ impl SigningKey {
         Box::new(self.0.rederive_unblinded_token(&t.0).into())
     }
 
-    fn rederive_unblinded_token_rfc(self: &SigningKey, t: &TokenPreimage) -> Box<UnblindedToken> {
+    fn rederive_unblinded_token_rfc(
+        self: &SigningKey,
+        t: &TokenPreimage,
+    ) -> Box<UnblindedTokenResult> {
+        // `rederive_unblinded_token_rfc` returns an error if the token
+        // preimage maps to the group identity element (RFC 9497 §3.3.1). Surface
+        // it to the caller so it can be handled gracefully.
         Box::new(
-            self.0
-                .rederive_unblinded_token_rfc::<Sha512>(&t.0)
-                .expect("token preimage must not map to the identity element")
-                .into(),
+            || -> Result<UnblindedToken, Error> {
+                Ok(self.0.rederive_unblinded_token_rfc::<Sha512>(&t.0)?.into())
+            }()
+            .into(),
         )
     }
 
