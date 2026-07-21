@@ -436,6 +436,9 @@
   <message name="IDS_IDC_TOGGLE_JAVASCRIPT">
     Toggle JavaScript
   </message>
+  <message name="IDS_IDC_BLOCK_ELEMENTS" desc="Name of the command/shortcut that launches the element picker to block page elements">
+    Block elements
+  </message>
   <message name="IDS_IDC_SHOW_PLAYLIST_BUBBLE">
     Show playlist bubble
   </message>
