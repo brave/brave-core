@@ -7,10 +7,10 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // Hooks
+import { usePersistedMeldCryptoCurrenciesQuery } from '../../../../common/hooks/use_persisted_meld_crypto_currencies'
 import {
   useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
-  useGetMeldCryptoCurrenciesQuery,
 } from '../../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery, //
@@ -64,7 +64,7 @@ export const MarketView = () => {
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
   const { data: combinedTokensList } = useGetCombinedTokensListQuery()
 
-  const { data: buyAssets } = useGetMeldCryptoCurrenciesQuery()
+  const { data: buyAssets } = usePersistedMeldCryptoCurrenciesQuery()
 
   const { data: allCoins = [], isLoading: isLoadingCoinMarketData } =
     useGetCoinMarketQuery({

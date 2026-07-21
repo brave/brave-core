@@ -26,10 +26,10 @@ import {
 import { useQuery } from '../../../../common/hooks/use-query'
 
 // Queries
+import { usePersistedMeldCryptoCurrenciesQuery } from '../../../../common/hooks/use_persisted_meld_crypto_currencies'
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetMeldFiatCurrenciesQuery,
-  useGetMeldCryptoCurrenciesQuery,
   useGetMeldCountriesQuery,
   useGenerateMeldCryptoQuotesMutation,
   useGetTokenSpotPricesQuery,
@@ -113,7 +113,7 @@ export const useBuy = () => {
   const { data: defaultFiatCurrency = 'USD' } = useGetDefaultFiatCurrencyQuery()
   const { data: fiatCurrencies } = useGetMeldFiatCurrenciesQuery()
   const { data: meldSupportedBuyAssets, isLoading: isLoadingAssets } =
-    useGetMeldCryptoCurrenciesQuery()
+    usePersistedMeldCryptoCurrenciesQuery()
   const { accounts } = useAccountsQuery()
   const { data: countries, isLoading: isLoadingCountries } =
     useGetMeldCountriesQuery()
