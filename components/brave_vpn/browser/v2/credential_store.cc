@@ -111,7 +111,7 @@ bool CredentialStore::HasAnyCredential() const {
 }
 
 std::optional<base::Time> CredentialStore::GetExpirationTime() const {
-  if (!HasValidSubscriberCredential()) {
+  if (!HasValidSkusCredential() && !HasValidSubscriberCredential()) {
     return std::nullopt;
   }
   const base::DictValue& dict =

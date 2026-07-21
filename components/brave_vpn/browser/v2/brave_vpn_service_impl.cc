@@ -16,23 +16,28 @@
 #include "base/notimplemented.h"
 #include "base/sequence_checker.h"
 #include "base/types/to_address.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/purchased_state_manager.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn::v2 {
 
 BraveVpnServiceImpl::BraveVpnServiceImpl(
     PrefService* local_prefs,
     PrefService* profile_prefs,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
     GetSkusServiceCallback skus_service_getter)
     : profile_prefs_(CHECK_DEREF(profile_prefs)),
+      api_client_(
+          std::make_unique<BraveVpnApiClient>(std::move(url_loader_factory))),
       skus_client_(
           std::make_unique<SkusServiceClient>(std::move(skus_service_getter))),
       connection_state_(mojom::ConnectionState::DISCONNECTED) {
   DCHECK(IsBraveVPNFeatureEnabled());
   purchased_state_manager_ = std::make_unique<PurchasedStateManager>(
-      local_prefs, skus_client_.get(),
+      local_prefs, api_client_.get(), skus_client_.get(),
       base::BindRepeating(&BraveVpnServiceImpl::OnPurchasedStateChanged,
                           base::Unretained(this)));
 }
@@ -86,6 +91,7 @@ void BraveVpnServiceImpl::GetAllRegions(GetAllRegionsCallback callback) {
 
 void BraveVpnServiceImpl::Shutdown() {
   purchased_state_manager_.reset();
+  api_client_.reset();
   skus_client_->Reset();
   BraveVpnService::Shutdown();
 }

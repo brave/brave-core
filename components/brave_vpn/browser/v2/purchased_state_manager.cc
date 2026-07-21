@@ -19,9 +19,12 @@
 #include "base/task/sequenced_task_runner.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
+#include "base/types/expected.h"
+#include "brave/components/brave_vpn/browser/v2/api/brave_vpn_api_client.h"
 #include "brave/components/brave_vpn/browser/v2/credential_store.h"
 #include "brave/components/brave_vpn/browser/v2/credential_summary.h"
 #include "brave/components/brave_vpn/browser/v2/skus_service_client.h"
+#include "brave/components/brave_vpn/common/brave_vpn_constants.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/skus/browser/skus_utils.h"
@@ -39,9 +42,11 @@ namespace brave_vpn::v2 {
 
 PurchasedStateManager::PurchasedStateManager(
     PrefService* local_prefs,
+    BraveVpnApiClient* api_client,
     SkusServiceClient* skus_client,
     PurchasedStateChangedCallback callback)
     : local_prefs_(CHECK_DEREF(local_prefs)),
+      api_client_(CHECK_DEREF(api_client)),
       skus_client_(CHECK_DEREF(skus_client)),
       purchased_state_changed_callback_(std::move(callback)),
       credential_store_(std::make_unique<CredentialStore>(local_prefs)) {
@@ -92,15 +97,18 @@ void PurchasedStateManager::Load(const std::string& domain) {
                  "credential";
       BeginLoad(request_environment);
 
-      // TODO(https://github.com/brave/brave-browser/issues/54600)
-      // The API request class is intentionally not wired up yet. Once it is,
-      // this will call GetSubscriberCredentialV12, binding the current loading
-      // sequence into the callback.
-      // NOTE: exchange failures must settle as FAILED, not NOT_PURCHASED (v1
-      // Android uses NOT_PURCHASED). FinishLoad() clears the credential store
-      // on NOT_PURCHASED, which would destroy the cached SKUS credential that
-      // the exchange-retry fast path depends on.
-      NOTIMPLEMENTED();
+      // The cached SKUS credential must have an expiration time, because the
+      // store only retains valid SKUS credentials.
+      std::optional<base::Time> expiration_time =
+          credential_store_->GetExpirationTime();
+      CHECK(expiration_time.has_value());
+
+      // Exchange the cached SKUS credential for a subscriber credential.
+      api_client_->GetSubscriberCredentialV12(
+          base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
+                         weak_factory_.GetWeakPtr(), loading_sequence_, domain,
+                         expiration_time.value()),
+          credential_store_->GetSkusCredential(), loading_environment_);
       return;
     }
   }
@@ -210,16 +218,6 @@ void PurchasedStateManager::FinishLoad(std::string env,
   loading_environment_.clear();
   load_timeout_timer_.Stop();
   SetPurchasedState(env, state, std::move(description));
-
-  // If we know that we're not purchased for the current environment, clear any
-  // cached credentials. This prevents stale credentials from being used in
-  // future loads.
-  if (env == GetCurrentEnvironment() &&
-      (state == mojom::PurchasedState::NOT_PURCHASED ||
-       state == mojom::PurchasedState::SESSION_EXPIRED ||
-       state == mojom::PurchasedState::OUT_OF_CREDENTIALS)) {
-    credential_store_->Clear();
-  }
 
   // A silent (non-current-environment) load ended without committing. If it
   // previously cancelled a visible load, the visible state may be stranded at
@@ -389,15 +387,69 @@ void PurchasedStateManager::OnPrepareCredentialsPresentation(
   local_prefs_->SetTime(prefs::kBraveVPNSessionExpiredDate, {});
 #endif
 
-  // TODO(https://github.com/brave/brave-browser/issues/54600)
-  // The API request class is intentionally not wired up yet. Once it is,
-  // this will call GetSubscriberCredentialV12, binding the current loading
-  // sequence into the callback.
-  // NOTE: exchange failures must settle as FAILED, not NOT_PURCHASED (v1
-  // Android uses NOT_PURCHASED). FinishLoad() clears the credential store on
-  // NOT_PURCHASED, which would destroy the cached SKUS credential that the
-  // exchange-retry fast path depends on.
-  NOTIMPLEMENTED();
+  // Exchange the cached SKUS credential for a subscriber credential.
+  api_client_->GetSubscriberCredentialV12(
+      base::BindOnce(&PurchasedStateManager::OnGetSubscriberCredential,
+                     weak_factory_.GetWeakPtr(), loading_sequence_, domain,
+                     time),
+      credential, loading_environment_);
+}
+
+void PurchasedStateManager::OnGetSubscriberCredential(
+    uint64_t sequence,
+    const std::string& domain,
+    const base::Time& expiration_time,
+    base::expected<std::string, std::string> result) {
+  if (sequence != loading_sequence_) {
+    VLOG(2) << __func__ << ": Ignoring response of a stale load";
+    return;
+  }
+  if (!skus::DomainIsForProduct(domain, skus::GetVpnProductPrefix())) {
+    VLOG(2) << __func__ << ": Called for non-vpn product";
+    return;
+  }
+
+  if (!result.has_value()) {
+    VLOG(1) << __func__ << ": Failed to get subscriber credential ("
+            << result.error() << ")";
+
+    const bool token_no_longer_valid =
+        result.error() == ::brave_vpn::kTokenNoLongerValid;
+
+    // "Token no longer valid" means the credential was already consumed. Make
+    // one more attempt with a fresh SKUS credential (two attempts total).
+    if (token_no_longer_valid) {
+      if (!credential_store_->IsExchangeRetried()) {
+        VLOG(2) << __func__
+                << "Token no longer valid, retrying with fresh SKUS credential";
+        // Set the retried flag before re-requesting so a synchronous callback
+        // won't loop forever.
+        credential_store_->SetExchangeRetried(true);
+        // As we request a new credential, clear the cached value.
+        credential_store_->Clear();
+        RequestCredentialSummary(domain);
+      } else {
+        // The retry also came back invalid: the token is definitively no good.
+        VLOG(2) << __func__ << ": Token no longer valid after retry";
+        FinishLoad(
+            loading_environment_, mojom::PurchasedState::FAILED,
+            l10n_util::GetStringUTF8(IDS_BRAVE_VPN_PURCHASE_TOKEN_NOT_VALID));
+      }
+    } else {
+      // Otherwise it's a transient vendor/network error. The cached credential
+      // will eventually expire and a new one will be fetched.
+      VLOG(2) << __func__ << ": Transient error, will retry later";
+      FinishLoad(loading_environment_, mojom::PurchasedState::FAILED,
+                 l10n_util::GetStringUTF8(
+                     IDS_BRAVE_VPN_PURCHASE_CREDENTIALS_FETCH_FAILED));
+    }
+    return;
+  }
+
+  // Got a valid subscriber credential.
+  credential_store_->SetSubscriberCredential(result.value(), expiration_time);
+  ScheduleSubscriberCredentialRefresh();
+  FinishLoad(loading_environment_, mojom::PurchasedState::PURCHASED);
 }
 
 void PurchasedStateManager::RunPurchasedStateCallback(
