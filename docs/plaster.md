@@ -138,6 +138,7 @@ introduce more rewriters. These are the ones we have supported for now.
 | `after_function_impl`   | AST  | Wraps a C++ function body and runs code after.    |
 | `rename_class`          | AST  | Renames a C++ class.                              |
 | `add_to_protected`      | AST  | Adds a member to a class `protected:` section.    |
+| `add_to_public`         | AST  | Appends a member to a class `public:` section.    |
 
 Use `plaster --help` to discover rewriters and read their full docs:
 
