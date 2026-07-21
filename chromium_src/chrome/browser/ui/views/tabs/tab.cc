@@ -5,8 +5,8 @@
 
 #include "chrome/browser/ui/views/tabs/tab.h"
 
+#include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip_layout_helper.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/ui/layout_constants.h"
 
@@ -34,11 +34,15 @@
 // Unfortunately, when in vertical tabs mode this will prevent the favicon and
 // close button from appearing. As a workaround, use `tabs::kVerticalTabHeight`
 // instead of LayoutConstant::kTabHeight when in vertical tabs mode.
-#define GetLayoutConstant(COMPONENT)                \
-  ((COMPONENT == LayoutConstant::kTabHeight &&      \
-    tabs::utils::ShouldShowBraveVerticalTabs(       \
-        controller()->GetBrowserWindowInterface())) \
-       ? tabs::kVerticalTabHeight                   \
+#define GetLayoutConstant(COMPONENT)                                      \
+  ((COMPONENT == LayoutConstant::kTabHeight &&                            \
+    [&] {                                                                 \
+      auto* vertical_tab_controller = VerticalTabController::FromBrowser( \
+          controller()->GetBrowserWindowInterface());                     \
+      return vertical_tab_controller &&                                   \
+             vertical_tab_controller->ShouldShowBraveVerticalTabs();      \
+    }())                                                                  \
+       ? tabs::kVerticalTabHeight                                         \
        : GetLayoutConstant(COMPONENT))
 
 #include <chrome/browser/ui/views/tabs/tab.cc>

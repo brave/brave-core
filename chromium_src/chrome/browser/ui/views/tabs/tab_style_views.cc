@@ -11,7 +11,6 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/tabs/public/vertical_tab_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab.h"
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/layout_constants.h"
 #include "chrome/browser/ui/tabs/features.h"
 #include "chrome/browser/ui/views/tabs/tab_slot_controller.h"
