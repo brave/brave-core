@@ -95,6 +95,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kSerpMetricsFeature;
 @property(class, nonatomic, readonly) Feature* kPlaylist;
 @property(class, nonatomic, readonly) Feature* kPlaylistOfflineCacheEnabled;
+@property(class, nonatomic, readonly) Feature* kPlaylistCacheFirstEnabled;
 @end
 
 NS_ASSUME_NONNULL_END
