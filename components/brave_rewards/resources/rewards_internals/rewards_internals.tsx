@@ -5,7 +5,6 @@
 
 import * as React from 'react'
 import { createRoot } from 'react-dom/client'
-import StyledComponentsProvider from '$web-common/StyledComponentsProvider'
 import { setIconBasePath } from '@brave/leo/react/icon'
 
 import { AppContext } from './lib/app_context'
@@ -17,9 +16,7 @@ setIconBasePath('chrome://resources/brave-icons')
 const root = createRoot(document.getElementById('root')!)
 
 root.render(
-  <StyledComponentsProvider>
-    <AppContext.Provider value={createAppStore()}>
-      <App />
-    </AppContext.Provider>
-  </StyledComponentsProvider>,
+  <AppContext.Provider value={createAppStore()}>
+    <App />
+  </AppContext.Provider>,
 )
