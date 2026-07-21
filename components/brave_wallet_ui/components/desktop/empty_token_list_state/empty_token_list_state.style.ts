@@ -10,10 +10,10 @@ import * as leo from '@brave/leo/tokens/css/variables'
 import {
   NoTokensIconLight,
   NoTokensIconDark,
-} from '../../../../../../assets/svg-icons/empty-state-icons'
+} from '../../../assets/svg-icons/empty-state-icons'
 
 // Shared Styles
-import { Column, Text } from '../../../../../shared/style'
+import { Column, Text } from '../../shared/style'
 
 export const StyledWrapper = styled(Column)`
   max-width: 620px;

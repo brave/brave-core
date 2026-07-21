@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import { Row, Text, Column } from '../../../../../shared/style'
+import { Row, Text, Column } from '../../../../../components/shared/style'
 
 export const Title = styled(Text)`
   font: ${leo.font.small.regular};

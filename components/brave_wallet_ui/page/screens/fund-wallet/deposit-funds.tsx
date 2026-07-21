@@ -93,7 +93,7 @@ import {
 import {
   RenderTokenFunc,
   VirtualizedTokensList,
-} from '../../../components/desktop/views/portfolio/components/token-lists/virtualized-tokens-list'
+} from '../portfolio_overview/components/token_lists/virtualized_tokens_list'
 import SearchBar from '../../../components/shared/search-bar/index'
 import SelectAccountItem from '../../../components/shared/select-account-item/index'
 import SelectAccount from '../../../components/shared/select-account/index'

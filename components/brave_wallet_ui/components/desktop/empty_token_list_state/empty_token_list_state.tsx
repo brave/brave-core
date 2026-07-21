@@ -8,13 +8,13 @@ import Button from '@brave/leo/react/button'
 import { useHistory } from 'react-router'
 
 // Hooks
-import { useRoute } from '../../../../../../common/hooks/use_route'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Types
-import { WalletRoutes } from '../../../../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // Utils
-import { getLocale } from '../../../../../../../common/locale'
+import { getLocale } from '../../../../common/locale'
 
 // Styled Components
 import {
@@ -23,12 +23,8 @@ import {
   Description,
   ButtonWrapper,
   EmptyStateIcon,
-} from './empty-token-list-state.style'
-import {
-  Row,
-  VerticalSpace,
-  HorizontalSpace,
-} from '../../../../../shared/style'
+} from './empty_token_list_state.style'
+import { Row, VerticalSpace, HorizontalSpace } from '../../shared/style'
 
 interface Props {
   onDepositOverride?: () => void

@@ -7,13 +7,13 @@ import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
 // Constants
-import { WalletRoutes } from '../../../../../../constants/types'
+import { WalletRoutes } from '../../../../../constants/types'
 
 // Hooks
-import { useRoute } from '../../../../../../common/hooks/use_route'
+import { useRoute } from '../../../../../common/hooks/use_route'
 
 // Utils
-import { getLocale } from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../common/locale'
 
 // Styled components
 import {
@@ -24,7 +24,7 @@ import {
   CardTitle,
   CardDescription,
 } from './getting_started.style'
-import { Column } from '../../../../../shared/style'
+import { Column } from '../../../../../components/shared/style'
 
 export const GettingStarted = () => {
   // Routing

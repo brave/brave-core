@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -9,85 +9,88 @@ import { useHistory } from 'react-router'
 // Constants
 import {
   HIDE_SMALL_BALANCES_FIAT_THRESHOLD, //
-} from '../../../../../../common/constants/magics'
+} from '../../../../../common/constants/magics'
 import {
   emptyRewardsInfo, //
-} from '../../../../../../common/async/base-query-cache'
+} from '../../../../../common/async/base-query-cache'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../../../common/constants/local-storage-keys'
+} from '../../../../../common/constants/local-storage-keys'
 
 // Selectors
 import {
   useSafeUISelector,
   useSafeWalletSelector,
-} from '../../../../../../common/hooks/use-safe-selector'
-import {
-  UISelectors,
-  WalletSelectors,
-} from '../../../../../../common/selectors'
+} from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
 // Types
 import {
   BraveWallet,
   UserAssetInfoType,
   WalletRoutes,
-} from '../../../../../../constants/types'
-import { RenderTokenFunc } from './virtualized-tokens-list'
+} from '../../../../../constants/types'
+import { RenderTokenFunc } from './virtualized_tokens_list'
 
 // Options
 import {
   AssetFilterOptions,
   HighToLowAssetsFilterOption,
-} from '../../../../../../options/asset-filter-options'
+} from '../../../../../options/asset-filter-options'
 import {
   AccountsGroupByOption,
   NetworksGroupByOption,
   NoneGroupByOption,
-} from '../../../../../../options/group-assets-by-options'
+} from '../../../../../options/group-assets-by-options'
 
 // Utils
-import Amount from '../../../../../../utils/amount'
-import { getLocale } from '../../../../../../../common/locale'
+import Amount from '../../../../../utils/amount'
+import { getLocale } from '../../../../../../common/locale'
 import {
   networkEntityAdapter, //
-} from '../../../../../../common/slices/entities/network.entity'
-import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
+} from '../../../../../common/slices/entities/network.entity'
+import { computeFiatAmount } from '../../../../../utils/pricing-utils'
 import {
   emptyNetwork,
   networkSupportsAccount,
-} from '../../../../../../utils/network-utils'
-import { getBalance } from '../../../../../../utils/balance-utils'
+} from '../../../../../utils/network-utils'
+import { getBalance } from '../../../../../utils/balance-utils'
 import {
   getIsRewardsAccount,
   getIsRewardsNetwork,
   getIsRewardsToken,
-} from '../../../../../../utils/rewards_utils'
+} from '../../../../../utils/rewards_utils'
 import {
   useLocalStorage, //
-} from '../../../../../../common/hooks/use_local_storage'
+} from '../../../../../common/hooks/use_local_storage'
 
 // Components
-import SearchBar from '../../../../../shared/search-bar/index'
-import { PortfolioAssetItemLoadingSkeleton } from '../../../../portfolio-asset-item/portfolio-asset-item-loading-skeleton'
+import SearchBar from '../../../../../components/shared/search-bar/index'
+import {
+  PortfolioAssetItemLoadingSkeleton, //
+} from '../../../../../components/desktop/portfolio-asset-item/portfolio-asset-item-loading-skeleton'
 import {
   AssetGroupContainer, //
-} from '../../../../asset-group-container/asset-group-container'
+} from '../../../../../components/desktop/asset-group-container/asset-group-container'
 import {
   EmptyTokenListState, //
-} from '../empty-token-list-state/empty-token-list-state'
+} from '../../../../../components/desktop/empty_token_list_state/empty_token_list_state'
 
 // Queries
 import {
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
-} from '../../../../../../common/slices/api.slice'
+} from '../../../../../common/slices/api.slice'
 import {
   TokenBalancesRegistry, //
-} from '../../../../../../common/slices/entities/token-balance.entity'
+} from '../../../../../common/slices/entities/token-balance.entity'
 
 // Styled Components
-import { Row, ScrollableColumn, Text } from '../../../../../shared/style'
+import {
+  Row,
+  ScrollableColumn,
+  Text,
+} from '../../../../../components/shared/style'
 import {
   PortfolioActionButton,
   ButtonIcon,
@@ -95,8 +98,8 @@ import {
   ControlBarWrapper,
   SearchButtonWrapper,
   ContentWrapper,
-} from '../../style'
-import { FlatTokenListWrapper, GroupTokenListWrapper } from './token-list.style'
+} from '../../portfolio_overview.style'
+import { FlatTokenListWrapper, GroupTokenListWrapper } from './token_list.style'
 
 interface Props {
   userAssetList: UserAssetInfoType[]

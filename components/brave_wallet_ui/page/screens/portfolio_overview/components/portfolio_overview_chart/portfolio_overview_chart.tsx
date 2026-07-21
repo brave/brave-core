@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
@@ -10,26 +10,26 @@ import {
   BraveWallet,
   LineChartIframeData,
   TokenPriceHistory,
-} from '../../../../../../constants/types'
+} from '../../../../../constants/types'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../../../common/constants/local-storage-keys'
+} from '../../../../../common/constants/local-storage-keys'
 
 // utils
 import {
   useGetDefaultFiatCurrencyQuery, //
-} from '../../../../../../common/slices/api.slice'
+} from '../../../../../common/slices/api.slice'
 import {
   useSyncedLocalStorage, //
-} from '../../../../../../common/hooks/use_local_storage'
+} from '../../../../../common/hooks/use_local_storage'
 
 // components
 import {
   LineChartControls, //
-} from '../../../../line-chart/line-chart-controls/line-chart-controls'
+} from '../../../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
 
 // style
-import { Column, Row } from '../../../../../shared/style'
+import { Column, Row } from '../../../../../components/shared/style'
 
 interface Props {
   hasZeroBalance: boolean

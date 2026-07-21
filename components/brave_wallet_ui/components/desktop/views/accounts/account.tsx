@@ -99,7 +99,7 @@ import {
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
 import {
   EmptyTokenListState, //
-} from '../portfolio/components/empty-token-list-state/empty-token-list-state'
+} from '../../empty_token_list_state/empty_token_list_state'
 import {
   ViewOnBlockExplorerModal, //
 } from '../../popup-modals/view_on_block_explorer_modal/view_on_block_explorer_modal'
