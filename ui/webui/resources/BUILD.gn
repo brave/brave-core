@@ -281,6 +281,7 @@ leo_icons_sources = [
   "firefox-color.svg",
   "flash.svg",
   "flashdrive.svg",
+  "folder-code.svg",
   "folder-exchange.svg",
   "folder-export.svg",
   "folder-new.svg",
