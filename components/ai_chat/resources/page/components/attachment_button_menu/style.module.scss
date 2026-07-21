@@ -21,11 +21,19 @@
 
 .buttonContent {
   display: flex;
+  align-items: center;
   gap: var(--leo-spacing-xl);
 }
 
 .buttonIcon {
   --leo-icon-size: 20px;
+}
+
+.favicon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+  object-fit: contain;
 }
 
 .anchor {

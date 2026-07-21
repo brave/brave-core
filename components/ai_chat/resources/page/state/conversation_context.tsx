@@ -415,11 +415,14 @@ export function useProvideConversationContext(props: ConversationContextProps) {
     )
 
     return aiChat.defaultTabContentId && !existingAttachedContent && tab
-      ? () => {
-          aiChat.api.uiHandler.associateTab(
-            tab,
-            conversationState.conversationUuid,
-          )
+      ? {
+          url: tab.url.url,
+          associate: () => {
+            aiChat.api.uiHandler.associateTab(
+              tab,
+              conversationState.conversationUuid,
+            )
+          },
         }
       : undefined
   }, [
