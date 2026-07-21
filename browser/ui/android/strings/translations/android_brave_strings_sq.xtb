@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Gjithmonë vizito URL-të origjinale (jo-AMP), në vend të versioneve të Google sa Accelerojnë Faqet e Lëvizshme</translation>
 <translation id="920638232916443453">Rivërje automatikisht URL-t gjurmuese</translation>
 <translation id="1118970888826017401">Aktivizo mbështetjen për anashkalimin e URL-ve që përcjellin gjurmime të nivelit të lartë.</translation>
-<translation id="94154759592465111">Blloko skriptet</translation>
+<translation id="4824468494729001999">Blloko programthe</translation>
 <translation id="7714773920987474116">Bllokon JavaScript (mund të prishë sajtet)</translation>
 <translation id="2233004324252915283">Blloko përmbajtjen e rekomanduar nga YouTube</translation>
 <translation id="1005372663692637999">Bllokon elementet e kartës së fundit dhe të ardhshme në youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Fshin cookies dhe të dhënat e tjera të faqes kur mbyllni një faqe</translation>
 <translation id="7740929262043547697">Lejo bllokimin e elementeve në dritare private</translation>
 <translation id="1260864846935682371">Aktivizon veçorinë Bllokimi i Elementeve e Mburojave në dritare private. Vini re se elementet e bllokuara në dritare private do të bllokohen edhe në dritaret jo-private.</translation>
+<translation id="4021136205151368133">Shënim: kjo mund të ulë mbrojtjen e privatësisë nga Brave.</translation>
+<translation id="2876155735620608356">Mburojat janë ngritur për këtë sajt</translation>
+<translation id="8605306630462821888">Mburojat janë ulur për këtë sajt</translation>
+<translation id="1574700443447059851">Gjurmues, reklama, dhe më shumë të bllokuara.</translation>
+<translation id="4039014515785210563">Zgjidhni si të trajtohen gjurmuesit dhe reklamat</translation>
+<translation id="8423733350479881051">Zgjidhni si të trajtohen cookie-t</translation>
+<translation id="9064628362799094520">Shkatërroj të dhënat e faqes</translation>
+<translation id="2862348905922940916">Riktheji këtë sajt te parazgjedhjet e Mburojave</translation>
+<translation id="269939061709857874">Sajti u rikthye te parazgjedhjet e Mburojave</translation>
+<translation id="3623708006387030755">Rregullime globale të Mburojave</translation>
+<translation id="2387532482048804818">Na trego nëse sajti nuk funksionoi mirë me Mburojat aktiv.</translation>
+<translation id="5412004902081180614">Raporto</translation>
+<translation id="1209739344687072997">Raporto një sajt të dëmtuar</translation>
+<translation id="2606165159306988240">Bëji me dije programuesit e Brave se ky sajt nuk punon mirë me këtë sajt.</translation>
+<translation id="6806248680442980382">Faleminderit që ndihmuat Brave të bëhet më mirë për të gjithë. Ky raport do të përmbajë vetëm informacionin e nevojshëm për të rregulluar këtë faqe.</translation>
+<translation id="7549123865054511884">Çfarë nuk po punon në këtë sajt?</translation>
+<translation id="9094461910562981998">Kontaktoni me mua në (opsionale)</translation>
+<translation id="7645128170699559106">Email, emër përdoruesi X dhe më tepër</translation>
+<translation id="446579367766109694">Nëse jepni informacion kontakti, ai do të ruhet për raportet e ardhshme</translation>
+<translation id="2653659639078652383">Parashtroje</translation>
+<translation id="8459191579769999214">Shikoni screenshot</translation>
+<translation id="4530541918195747729">Raporti u parashtrua. Faleminderit!</translation>
+<translation id="5528772406060281700">Shkatërroj të dhënat e faqes</translation>
+<translation id="6795622376590884449">Shkatërroj automatikisht</translation>
+<translation id="3520341243738311408">Kur mbyllen skedat e sajtit</translation>
+<translation id="3559735673608367395">Kur del aplikacioni</translation>
+<translation id="9140049656798805345">Shkatërroj të dhënat e faqes tani</translation>
 <translation id="1680858055899097121">Mos mbaj skeda gjatë seancave të shfletimit</translation>
 <translation id="7142548388914389999">Lejo analiza produkti që ruajnë privatësinë (P3A)</translation>
 <translation id="5254037869598726291">Informacioni i anomizuar P3A ndihmon Brave të vlerësojë përdorimin e përgjithshëm dhe të sigurojë që ne po përmirësojmë funksionet popullore.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Mendime private mbi produktet</translation>
 <translation id="3545804467215833536">Shtyp për të parë Mburojat Brave</translation>
 <translation id="1724327820822194498">Shikoni të gjitha gjërat e këqija që i bllokoi Brave në çdo faqe, me Mburojat.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> dhe <ph name="TRACKER"/> reklama të tjera dhe gjurmues të bllokuar</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> dhe reklama të tjera dhe gjurmues të bllokuar</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> reklama &amp; gjurmues të bllokuar</translation>
 <translation id="8281886186245836920">Kapërceje</translation>
-<translation id="986879628471635371">Zgjidhja e problemeve duke u bërë</translation>
 <translation id="5806601733251372221">Mburoja e Brave-s</translation>
-<translation id="8537217141725709400">Fitoni <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Shpërblime Brave</translation>
-<translation id="5870330605209713397">duke parë reklama që respektojnë privatësinë dhe mbështetni faqet dhe krijuesit tuaj të preferuar.</translation>
-<translation id="5302488867897327287">Duke shtypur Filloni të përdorni Shpërblimet Brave, ju pranoni</translation>
 <translation id="4281844954008187215">Kushtet e Shërbimit</translation>
 <translation id="6871397658902960384">Fillo të shfletosh</translation>
-<translation id="454386012157232640">Unë nuk pashë asnjë reklamë</translation>
-<translation id="1448877943847791441">Brave do të tregojë reklamën tënde të parë në</translation>
-<translation id="4410793187232041318">Tani do të fitosh shenja nga Reklama Brave.</translation>
 <translation id="6511854390690723657">Kjo është reklama jote e parë Brave. Shtyp të mësosh më tepër.</translation>
-<translation id="2070991379950719711">Fillo përdor Shpërblimet Brave</translation>
-<translation id="48520986898237073">Vazhdo te portofoli</translation>
 <translation id="6213254277250932867">Kam një frazë rikuperimi me 12 fjalë</translation>
 <translation id="4225265925807365011">Kam një frazë rikuperimi me 24 fjalë</translation>
 <translation id="3570367516044491911">Vendose shfletues parësor</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Skanoni Kodin QR</translation>
 <translation id="5317781812114905957">Udhëzime</translation>
 <translation id="8515319483805157233">Për të kërkuar me Kodin QR, vendosni Kodin QR në qendër të kornizës.</translation>
+<translation id="3333887201479867589">Shpërblime Brave</translation>
 <translation id="7658239707568436148">Anuloje</translation>
 <translation id="1201402288615127009">Pasuesi</translation>
 <translation id="8481779960444041069">Për të përmirësuar privatësinë tuaj, vendosni Brave si Shfletuesin tuaj të paracaktuar</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Hape dosjen</translation>
 <translation id="8985635554450124959">Sinkronizimi mund të mos jetë i konfiguruar</translation>
 <translation id="7173114856073700355">Hap cilësimet</translation>
-<translation id="496896260395129787">Ky llogari Sinkronizimi Brave u fshi nga një pajisje tjetër. Nëse nuk kishit për qëllim të çaktivizonit Sinkronizimin,<ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>rivendosni llogarinë</translation>
+<translation id="674078455841038219">Kjo llogari Sinkronizimi Brave u fshi nga një pajisje tjetër. Nëse nuk kishit për qëllim të çaktivizonit Sinkronizimin, rikrijoni llogarinë.</translation>
+<translation id="8913415701676265311">Rikrijoje</translation>
 <translation id="4094590686212463338">Nuk mund të bashkoheni në këtë zinxhir sinkronizimi. Zinxhiri i sinkronizimit u fshi.</translation>
 <translation id="4908081302669157000">Numra telefonikë, email-e, dhe adresa</translation>
+<translation id="1571419474754278280">Biseda me Leo AI</translation>
 <translation id="1056898198331236512">Paralajmërim</translation>
 <translation id="1426410128494586442">Po</translation>
 <translation id="7811264919113243207">Kjo do të ndajë të dhënat e Brave përfshirë potencialisht fjalëkalimet tuaja me pajisjen që ka gjeneruar këtë kod QR.
@@ -366,10 +383,9 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="1413177583895309156">Brave VPN kodon dhe mbron çdo gjë që bën në internet, edhe jashtë shfletuesit Brave.</translation>
 <translation id="3974348661685061050">Provoje falas për 7 ditë</translation>
 <translation id="5789441016350810005">Reklama Brave dërguar kur shfletuesi është në sfond</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Dritare e re faqeje</translation>
 <translation id="5927196110206824867">Imazhet e sfondit të sponsorizuara mbështesin misionin e Brave për të ndërtuar një Web të pavarur, të orientuar nga përdoruesi. Dhe ndryshe nga Big Tech, ne matim performancën e reklamave anonim për të ruajtur privatësinë tuaj.</translation>
-<translation id="8748471354357836070">Mësoni më shumë / zgjedhje për tu larguar</translation>
+<translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="3171669670217312786">Pamje Sfondi</translation>
 <translation id="8522669544471808198">Trego Pamjet e Sfondit</translation>
 <translation id="6258554626602400736">Trego Reklama në Faqen e Re të Skedës</translation>
@@ -397,7 +413,7 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="7151914815476509258">Bllokoni gjurmues &amp; reklama (Standard)</translation>
 <translation id="7384778069178817075">Lejo gjithë gjurmuesit dhe reklamat</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Opsioni "Blloko të gjitha kukit" ka dalë jashtë përdorimit. Për të mësuar se si të mundësoni me forcë këtë opsion, vizitoni<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>faqen tonë të ndihmës<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Blloko Kukit</translation>
+<translation id="8823559166155093873">Blloko cookie-t</translation>
 <translation id="614747795780742163">Parandalon faqet e internetit nga ruajtja e informacionit për vizitat e tua të kaluara</translation>
 <translation id="6883611015375728278">Blloko krejt cookie-t</translation>
 <translation id="6196640612572343990">Blloko kukit e palëve të treta</translation>
@@ -408,7 +424,7 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="1876882294512858963">Gjithmonë shko Off-The-Record</translation>
 <translation id="554464532999080267">Pyet përpara se të shkosh Off-The-Record (standarde)</translation>
 <translation id="926857659063503456">Asnjëherë mos shko Off-The-Record</translation>
-<translation id="3895527457258986253">Blloko Shenjat e Gishtërinjve</translation>
+<translation id="6531019308847917584">Blloko gjurmët</translation>
 <translation id="7854108565842971747">Këto janë rregullimet e paracaktuara të Mburojave për vendet e reja të internetit. Ndryshimi i tyre nuk do të ndikojë në rregullimet ekzistuese për vendet e internetit individual.</translation>
 <translation id="218587021686734263">Parandalo shenjat e gishtërinjve përmes preferencave të gjuhës</translation>
 <translation id="1706099589708266367">Redukton sa shumë faqet e internetit mund të mësojnë rreth teje bazuar në rregullimet e gjuhës së shfletuesit tënd.</translation>
@@ -418,24 +434,12 @@ A jeni të sigurtë që dëshironi të bëni këtë?</translation>
 <translation id="7445306466605902444">Bllokim i shenjave të gishtave (i rreptë, mund të prishë sajtet)</translation>
 <translation id="5582686930349810484">Bllokim i shenjave të gishtave (standarde)</translation>
 <translation id="769702552748212954">Lejo të gjitha shenjat e gishtave</translation>
-<translation id="876424292214881779">Reklama dhe përmbajtje të tjera të padëshiruara të bllokuara</translation>
-<translation id="6849027612978668678">Faqet e internetit shpesh përfshijnë kuki dhe skripte që përpiqen të të identifikojnë ty dhe pajisjen tënde. Ato duan të dinë se kush je dhe të të ndjekin nëpër web, duke gjurmuar atë që bën në çdo faqe interneti.
-
-Brave i bllokon këto gjëra kështu që ti mund të shfletosh pa u ndjekur kudo.</translation>
-<translation id="8553998445606452168">Rreth Mburojave Brave</translation>
-<translation id="8912304686498704084">LART</translation>
-<translation id="4963218453264888510">POSHTË</translation>
-<translation id="7474113515179313724">Po e shfleton këtë faqe pa ruajtësit e privatësisë së Brave. Mos nuk funksionon siç duhet kur aktivizon Mburojat?</translation>
 <translation id="4226543734057230801">Rrjetet Ethereum</translation>
 <translation id="3504157706952484145">Rrjetet Filecoin</translation>
 <translation id="1561541094377237745">Rrjetet Solana</translation>
 <translation id="7141438739990875547">Rrjetet Bitcoin</translation>
 <translation id="9055546041146396417">Nëse kjo faqe duket e prishur, provoje me Mburoja të çaktivizuara.</translation>
 <translation id="7898672232170410330">Blloko elementin</translation>
-<translation id="9064628362799094520">Shkatërroj të dhënat e faqes</translation>
-<translation id="8949611615512336262">Shkatërroj automatikisht: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Shkatërroj të dhënat e faqes tani</translation>
-<translation id="6795622376590884449">Shkatërroj automatikisht</translation>
 <translation id="7961015016161918242">Asnjëherë</translation>
 <translation id="3200744626782631683">Të dhënat e shfletimit kurrë nuk shkatërrohen automatikisht.</translation>
 <translation id="1991004083507807299">Skeda e faqes mbyllur</translation>
@@ -446,23 +450,11 @@ Brave i bllokon këto gjëra kështu që ti mund të shfletosh pa u ndjekur kudo
 <translation id="2997451887458851244">Përditëso Auto Shred dhe rregullo se cilat të dhëna shkatërrohen.</translation>
 <translation id="363903976200491771">Shkatërroni automatikisht të dhënat e shfletimit</translation>
 <translation id="1028873002018537235">Shkatërro historikun e shfletimit</translation>
-<translation id="1209739344687072997">Raporto një sajt të dëmtuar</translation>
-<translation id="8510478288840333677">Bëji me dije programuesit e Brave se kjo faqe interneti nuk punon mirë me Mbrojtje-n:</translation>
-<translation id="1653405824851871276">Faleminderit që ndihmoi për ta bërë Brave më të mirë për të gjithë. Ky raport do të përmbajë vetëm informacionet e nevojshme për ne që të rregullojmë këtë sajt. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Mësoni më tepër.</translation>
-<translation id="8740275226259417070">Kjo është një faqe gabimi. Nuk mund të raportohet si faqe e prishur.</translation>
 <translation id="721949491455392748">Përfshij screenshot të faqes aktuale</translation>
-<translation id="8459191579769999214">Shikoni screenshot</translation>
 <translation id="6476216365964140603">Detaje shtesë (opsionale)</translation>
-<translation id="6145852496180774737">Kontaktoni me mua në: (opsionale)</translation>
-<translation id="6367576083705149078">Nëse jepni informacion kontakti, ai do të ruhet për raportet e ardhshme.</translation>
-<translation id="7616645803364270729">Email, Twitter, etj.</translation>
-<translation id="5299848999918506028">Faleminderit!</translation>
-<translation id="76550953340008122">Faleminderit që bëre me dije programuesit e Brave-s se ka diçka që nuk shkon me këtë faqe interneti. Ne do të bëjmë më të mirën ta rregullojmë këtë.</translation>
 <translation id="3037432377946455872">Cili është problemi kryesor që po shikon?</translation>
 <translation id="8731661215617360873">Zgjidh një opsion</translation>
 <translation id="650318023204990401">Kontrolle të përparuara</translation>
-<translation id="7205939464631857223">Hiq të gjitha elementet e bllokuara</translation>
 <translation id="5370478469168390143">Ruaj të dhënat online</translation>
 <translation id="1118508688433541158">Shfleto më shpejt dhe blloko reklamat me Brave</translation>
 <translation id="7427391215172269363">Çdo ditë kursej të dhëna duke shfletuar web-in me Brave.</translation>
@@ -514,17 +506,17 @@ Të Bllokuara</translation>
 <translation id="2718046830255553131">Të dhënat e raporteve të privatësisë janë fshirë.</translation>
 <translation id="8376263745431603066">Aktivizo "Modalitetin e Natës" (Eksperimental)</translation>
 <translation id="1383876407941801731">Kërko</translation>
-<translation id="6165508094623778733">Mësoni më tepër</translation>
 <translation id="13296465911709339">Teksti juaj është kopjuar në kujtesën e fragmenteve.</translation>
 <translation id="2735834606413553397">Adresa publike është kopjuar në kujtesën e fragmenteve.</translation>
 <translation id="2977461003134694205">Statistikat e privatësisë</translation>
 <translation id="8804164990146287819">Rregulla Privatësie</translation>
 <translation id="5705882733397021510">Shko mbrapsht</translation>
+<translation id="8450375131309292971">Tërhiq për të rifreskuar</translation>
+<translation id="880475987868032564">Aktivizon gjestin e tërheqjes për të rifreskuar. Rrëshqitja poshtë nga maja e një faqeje do ta rifreskojë faqen.</translation>
 <translation id="7889432931837317731">Hape automatikisht kur të jetë e mundur</translation>
 <translation id="1029304566263314007">Shfaq njoftimet e progresit të shkarkimit</translation>
 <translation id="2977501775944575564">Shkarkim Paralel</translation>
 <translation id="6224180438946945617">Aktivizo shkarkimin paralel për të përshpejtuar shpejtësinë e shkarkimit</translation>
-<translation id="8967385052772844086">Shiko Raportin e Plotë të Privatësisë</translation>
 <translation id="3479552764303398839">Jo tani</translation>
 <translation id="7138272885617540195">Lejo lidhjet e aplikacionit të hapen në aplikacione jashtë Brave</translation>
 <translation id="4954512758656527938">Kuleta e parazgjedhur Ethereum</translation>
@@ -782,7 +774,6 @@ Nëse nuk e pranoni këtë kërkesë, VPN nuk do të rindërlidhet dhe lidhja ju
 <translation id="2156993118928861787">Adresë e pavlefshme</translation>
 <translation id="7791543448312431591">Shtoje</translation>
 <translation id="6889920539620318793">Cakto si aktiv</translation>
-<translation id="2653659639078652383">Parashtroje</translation>
 <translation id="4945690646623486292">Zgjidh Rrjetin</translation>
 <translation id="8006088103295786154">Hyni në Kuletën Brave</translation>
 <translation id="5308380583665731573">Lidh</translation>
@@ -1108,7 +1099,6 @@ mbështetet nga IA dhe është ndërtuar drejt e në shfletues</translation>
 <translation id="1336494649091412226">Jeni i sigurt se doni të dilni nga Brave?</translation>
 <translation id="6061635824229591714">Shkatërroj të dhënat e faqes?</translation>
 <translation id="1265051174491933207">Shkatërrimi do të fshijë të dhënat e faqes dhe do të mbyllë të gjitha skedat '<ph name="SITE_NAME"/>'. Kjo nuk mund të zhbëhet.</translation>
-<translation id="5528772406060281700">Shkatërroj të dhënat e faqes</translation>
 <translation id="4426990318287827331">Shkatërro të dhënat</translation>
 <translation id="7942415993090181327">Historiku i bisedave</translation>
 <translation id="6859935199732075666">Trego gabimet e Sigurimit të Shfletimit</translation>

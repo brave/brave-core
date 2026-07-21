@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Uvijek posjetite izvorne URL-ove stranice (ne AMP-ove) umjesto Googleovih inačica ubrzanih stranica za mobilne uređaje</translation>
 <translation id="920638232916443453">Automatski preusmjeri URL-ove za praćenje</translation>
 <translation id="1118970888826017401">Omogućite podršku za zaobilaženje URL-ova za preusmjeravanje praćenja najviše razine.</translation>
-<translation id="94154759592465111">Blokiraj skripte</translation>
+<translation id="4824468494729001999">Blokiraj skripte</translation>
 <translation id="7714773920987474116">Blokira Javascript (mogu se rušiti mrežna mjesta)</translation>
 <translation id="2233004324252915283">Blokirajte preporučeni sadržaj usluge YouTube</translation>
 <translation id="1005372663692637999">Blokira sljedeće i završne elemente kartice na youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Kada zatvorite mrežno mjesto, brišu se kolačići i drugi podaci o mrežnom mjestu.</translation>
 <translation id="7740929262043547697">Dopusti blokiranje elemenata u privatnim Windows prozorima</translation>
 <translation id="1260864846935682371">Omogućuje značajku Štitova za blokiranje elemenata u privatnim Windows prozorima. Imajte na umu da će elementi blokirani u privatnim Windows prozorima također biti blokirani i u neprivatnim.</translation>
+<translation id="4021136205151368133">Napomena: to može smanjiti Braveove zaštite privatnosti.</translation>
+<translation id="2876155735620608356">Štitovi gore za ovu stranicu</translation>
+<translation id="8605306630462821888">Štitovi dolje za ovu stranicu</translation>
+<translation id="1574700443447059851">Blokirani elementi za praćenje, oglasi i više.</translation>
+<translation id="4039014515785210563">Odaberite kako postupati s pratiteljima i oglasima</translation>
+<translation id="8423733350479881051">Odaberite kako postupati s kolačićima</translation>
+<translation id="9064628362799094520">Uništiti podatke mrežne stranice</translation>
+<translation id="2862348905922940916">Vrati ovu stranicu na zadane postavke značajke Štitovi</translation>
+<translation id="269939061709857874">Stranica vraćena na zadane postavke značajke Štitovi</translation>
+<translation id="3623708006387030755">Globalne postavke značajke Štitovi</translation>
+<translation id="2387532482048804818">Obavijestite nas ako mrežno mjesto ne radi pravilno s omogućenim Štitovima.</translation>
+<translation id="5412004902081180614">Prijavi</translation>
+<translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
+<translation id="2606165159306988240">Javite razvojnim inženjerima preglednika Brave da ova stranica ne radi ispravno s ovom stranicom.</translation>
+<translation id="6806248680442980382">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. U ovom se izvješću navode samo informacije koje su nam potrebne da bismo popravili mrežno mjesto.</translation>
+<translation id="7549123865054511884">Što ne radi na ovoj stranici?</translation>
+<translation id="9094461910562981998">Kontakt: (dodatno)</translation>
+<translation id="7645128170699559106">E-pošta, korisničko ime za X i još više</translation>
+<translation id="446579367766109694">Ostavite li kontaktne podatke oni će se spremiti za buduće prijave</translation>
+<translation id="2653659639078652383">Pošalji</translation>
+<translation id="8459191579769999214">Prikažite snimku zaslona</translation>
+<translation id="4530541918195747729">Prijava poslana. Hvala vam!</translation>
+<translation id="5528772406060281700">Uništiti podatke s mrežne stranice</translation>
+<translation id="6795622376590884449">Automatsko uništavanje</translation>
+<translation id="3520341243738311408">Kad se zatvore kartice stranice</translation>
+<translation id="3559735673608367395">Kad se aplikacija zatvori</translation>
+<translation id="9140049656798805345">Odmah uništiti podatke s mrežne stranice</translation>
 <translation id="1680858055899097121">Ne zadržavaj kartice između sesija pregledavanja</translation>
 <translation id="7142548388914389999">Dopusti analitiku proizvoda kojom se čuva privatnost (P3A)</translation>
 <translation id="5254037869598726291">Anonimiziranim informacijama P3A pomaže se pri procjenjivanju ukupne upotrebe preglednikom Brave i jamčenju da radimo na poboljšanju popularnih značajki.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Privatni uvidi u proizvod</translation>
 <translation id="3545804467215833536">Dodirnite za prikaz štitova Brave</translation>
 <translation id="1724327820822194498">Pogledajte sve loše stvari koje je Brave blokirao štitovima na svakoj stranici.</translation>
-<translation id="5386259141409498372">Blokirani su oglasi <ph name="BIG_TECH"/> i <ph name="TRACKER"/> ostalih oglasa i elemenata za praćenje</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> i drugi elementi za praćenje su blokirani</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> oglasi i elementi za praćenje su blokirani</translation>
 <translation id="8281886186245836920">Preskoči</translation>
-<translation id="986879628471635371">Uvođenje rješavanja problema</translation>
 <translation id="5806601733251372221">Štitnici Brave</translation>
-<translation id="8537217141725709400">Zaradite <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Nagrade Brave</translation>
-<translation id="5870330605209713397">zadanim pregledavanjem oglasa kojima se poštuje privatnost i podržavanjem omiljenih mrežnih mjesta i stvaratelja.</translation>
-<translation id="5302488867897327287">Dodirivanjem stavke Počni upotrebljavati uslugu Nagrade Brave pristajete na</translation>
 <translation id="4281844954008187215">Odredbe pružanja usluge</translation>
 <translation id="6871397658902960384">Započni pretraživanje</translation>
-<translation id="454386012157232640">Ne vidim oglas</translation>
-<translation id="1448877943847791441">U pregledniku se Brave prvi vaš oglas prikazuje za</translation>
-<translation id="4410793187232041318">Sada ćete zaraditi tokene od oglasa Brave.</translation>
 <translation id="6511854390690723657">Ovo je vaš prvi oglas Brave. Dodirnite kako biste saznali više.</translation>
-<translation id="2070991379950719711">Počni upotrebljavati uslugu Nagrade Brave</translation>
-<translation id="48520986898237073">Nastavi na novčanik</translation>
 <translation id="6213254277250932867">Imam rečenicu za oporavak od 12 riječi</translation>
 <translation id="4225265925807365011">Imam rečenicu za oporavak od 24 riječi</translation>
 <translation id="3570367516044491911">Postavi kao zadani preglednik</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Skeniraj kôd QR</translation>
 <translation id="5317781812114905957">Upute</translation>
 <translation id="8515319483805157233">Za pretraživanje po kôdu QR postavite kôd QR u središte okvira.</translation>
+<translation id="3333887201479867589">Nagrade Brave</translation>
 <translation id="7658239707568436148">Odustani</translation>
 <translation id="1201402288615127009">Sljedeće</translation>
 <translation id="8481779960444041069">Za poboljšavanje privatnosti postavite Brave kao zadani preglednik</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Otvorite mapu</translation>
 <translation id="8985635554450124959">Sinkroniziranje se ne može postaviti</translation>
 <translation id="7173114856073700355">Otvorite Postavke</translation>
-<translation id="496896260395129787">Račun za značajku Sinkronizacija Brave izbrisan je s drugog uređaja. Ako niste mislili onemogućiti značajku Sinkronizacija, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>ponovno izradite račun</translation>
+<translation id="674078455841038219">Račun za značajku Sinkronizacija Brave izbrisan je s drugog uređaja. Ako niste mislili onemogućiti značajku Sinkronizacija, ponovno stvorite račun.</translation>
+<translation id="8913415701676265311">Ponovno stvori</translation>
 <translation id="4094590686212463338">Nije moguće pridružiti se ovom lancu sinkronizacije. Lanac sinkronizacije je izbrisan.</translation>
 <translation id="4908081302669157000">Telefonski brojevi, e-pošte i adrese</translation>
+<translation id="1571419474754278280">Leo AI razgovori</translation>
 <translation id="1056898198331236512">Upozorenje</translation>
 <translation id="1426410128494586442">Da</translation>
 <translation id="7811264919113243207">Time se dijele vaši podatci preglednika Brave uključujući potencijalno vaše lozinke s uređajem kojim se generirao taj kȏd QR   .
@@ -366,10 +383,9 @@ Sigurno želite to napraviti?</translation>
 <translation id="1413177583895309156">Brave VPN kriptira i štiti sve što radite online, čak i izvan preglednika Brave.</translation>
 <translation id="3974348661685061050">Isprobajte 7 dana besplatno</translation>
 <translation id="5789441016350810005">Poslani su oglas Brave kada je preglednik u pozadini</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Stranica Nova kartica</translation>
 <translation id="5927196110206824867">Sponzorirane pozadine podržavaju Braveovu misiju da izgradi nezavisni internet koji je prvenstveno usmjeren na korisnike. I za razliku od velikih tehnoloških korporacija mi anonimno mjerimo performanse oglasa kako bismo sačuvali vašu privatnost.</translation>
-<translation id="8748471354357836070">Doznajte više / mogućnosti odjave</translation>
+<translation id="6165508094623778733">Saznaj više</translation>
 <translation id="3171669670217312786">Pozadinske slike</translation>
 <translation id="8522669544471808198">Prikaži pozadinske slike</translation>
 <translation id="6258554626602400736">Prikaži oglase na stranici nove kartice</translation>
@@ -400,7 +416,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="7151914815476509258">Blokiraj elemente za praćenje &amp; oglase (standardno)</translation>
 <translation id="7384778069178817075">Dopusti sve elemente za praćenje i oglase</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>Opcija „Blokiraj sve kolačiće” je zastarjela. Kako biste saznali kako prinudno aktivirati ovu opciju posjetite<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>našu stranicu za pomoć<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Blokiraj kolačiće</translation>
+<translation id="8823559166155093873">Blokiraj kolačiće</translation>
 <translation id="614747795780742163">Sprječavaju se mrežna mjesta da pohrane informacije o prethodnim posjetima</translation>
 <translation id="6883611015375728278">Blokiraj sve kolačiće</translation>
 <translation id="6196640612572343990">Blokiraj kolačiće trećih strana</translation>
@@ -411,7 +427,7 @@ Sigurno želite to napraviti?</translation>
 <translation id="1876882294512858963">Uvijek privatni način rada</translation>
 <translation id="554464532999080267">Slanje upita prije prelaska u privatni način rada (standardno)</translation>
 <translation id="926857659063503456">Nikada privatni način rada</translation>
-<translation id="3895527457258986253">Blokiraj izrade digitalnog otiska</translation>
+<translation id="6531019308847917584">Blokiraj izradu digitalnog otiska</translation>
 <translation id="7854108565842971747">Ovo su zadane postavke značajke Brave Shields za nova mreža mjesta. Mijenjanjem ovih postavki ne mijenjaju se postojeće postavke prethodno postavljene za određeno mrežno mjesto.</translation>
 <translation id="218587021686734263">Spriječite otiske prstiju putem postavki jezika</translation>
 <translation id="1706099589708266367">Smanjuje koliko mrežna mjesta mogu saznati o vama na temelju jezičnih postavki vašeg preglednika.</translation>
@@ -421,22 +437,12 @@ Sigurno želite to napraviti?</translation>
 <translation id="7445306466605902444">Blokirano pritiskanja prstima (striktno, mrežna se mjesta mogu rušiti)</translation>
 <translation id="5582686930349810484">Blokirano pritiskanja prstima (standardno)</translation>
 <translation id="769702552748212954">Dopusti sve pokušaje pritiskanja prstima</translation>
-<translation id="876424292214881779">Blokirani oglasi i druge čudne stavke</translation>
-<translation id="6849027612978668678">Stranice često sadrže kolačiće i skripte koje pokušavaju identificirati vas i vaš uređaj. Žele otkriti tko ste i prate vas na cijeloj mreži, prateći što radite na svakoj stranici.\n\nBrave blokira te stvari tako da možete pregledavati bez da vas netko prati.</translation>
-<translation id="8553998445606452168">O značajci Brave Shields</translation>
-<translation id="8912304686498704084">GORE</translation>
-<translation id="4963218453264888510">DOLJE</translation>
-<translation id="7474113515179313724">Pregledavate ovo mrežno mjesto bez sigurnosne zaštite i zaštite privatnosti preglednika Brave. Radi li ispravno s uključenom značajkom Štitnika?</translation>
 <translation id="4226543734057230801">Mreže Ethereum</translation>
 <translation id="3504157706952484145">Mreže Filecoin</translation>
 <translation id="1561541094377237745">Mreže Solana</translation>
 <translation id="7141438739990875547">Mreže Bitcoin</translation>
 <translation id="9055546041146396417">Ako se mrežno mjesto čini neispravno, pokušajte isključiti štitove.</translation>
 <translation id="7898672232170410330">Blokiraj element</translation>
-<translation id="9064628362799094520">Uništiti podatke mrežne stranice</translation>
-<translation id="8949611615512336262">Automatsko uništavanje: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Odmah uništiti podatke s mrežne stranice</translation>
-<translation id="6795622376590884449">Automatsko uništavanje</translation>
 <translation id="7961015016161918242">Nikad</translation>
 <translation id="3200744626782631683">Podaci o pregledavanju nikada se ne brišu automatski.</translation>
 <translation id="1991004083507807299">Kartice mrežne stranice zatvorene</translation>
@@ -447,23 +453,11 @@ Sigurno želite to napraviti?</translation>
 <translation id="2997451887458851244">Ažurirajte Auto Shred i prilagodite koje se podatke briše.</translation>
 <translation id="363903976200491771">Automatski usitnite podatke pregledavanja</translation>
 <translation id="1028873002018537235">Izbrusite povijest pregledavanja</translation>
-<translation id="1209739344687072997">Prijavi nevaljano mrežno mjesto</translation>
-<translation id="8510478288840333677">Javite razvojnim inženjerima preglednika Brave da ovo mrežno mjesto ne radi ispravno pri uporabi značajke Štitovi:</translation>
-<translation id="1653405824851871276">Hvala vam što pomažete u stvaranju preglednika Brave koji je bolji za sve. U ovom se izvješću navode samo informacije koje su nam potrebne da bismo popravili mrežno mjesto. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Saznaj više.</translation>
-<translation id="8740275226259417070">Ta je stranica stranica s pogreškom. Ne može se prijaviti kao neispravno mrežno mjesto.</translation>
 <translation id="721949491455392748">Uvrstite snimku zaslona trenutne mrežne stranice</translation>
-<translation id="8459191579769999214">Prikažite snimku zaslona</translation>
 <translation id="6476216365964140603">Dodatne pojedinosti (mogućnosti)</translation>
-<translation id="6145852496180774737">Kontakt: (dodatno)</translation>
-<translation id="6367576083705149078">Ostavite li kontaktne podatke oni će se spremiti za buduće prijave.</translation>
-<translation id="7616645803364270729">E-pošta, Twitter itd.</translation>
-<translation id="5299848999918506028">Hvala vam!</translation>
-<translation id="76550953340008122">Hvala vam što se javili razvojnim inženjerima preglednika Brave da nešto nije u redu s ovim mjestom. Činimo sve da uklonimo navedeni problem!</translation>
 <translation id="3037432377946455872">Koji je glavni problem koji vidite?</translation>
 <translation id="8731661215617360873">Odaberite jednu opciju</translation>
 <translation id="650318023204990401">Napredne kontrole</translation>
-<translation id="7205939464631857223">Izbriši sve blokirane elemente</translation>
 <translation id="5370478469168390143">Spremi podatke na mreži</translation>
 <translation id="1118508688433541158">Pregledavajte brže i blokirajte oglase u pregledniku Brave</translation>
 <translation id="7427391215172269363">Svaki dan smanjujem broj podataka pregledavanjem mreže preglednikom Brave.</translation>
@@ -513,17 +507,17 @@ Sigurno želite to napraviti?</translation>
 <translation id="2718046830255553131">Podatci izvješća o privatnosti su izbrisani.</translation>
 <translation id="8376263745431603066">Omogući "Noćni način rada" (Eksperimentalno)</translation>
 <translation id="1383876407941801731">Traži</translation>
-<translation id="6165508094623778733">Saznajte više</translation>
 <translation id="13296465911709339">Vaš je tekst kopiran u međuspremnik.</translation>
 <translation id="2735834606413553397">Javna adresa kopirana u međuspremnik.</translation>
 <translation id="2977461003134694205">Statistika privatnosti</translation>
 <translation id="8804164990146287819">Pravilnik o zaštiti privatnosti</translation>
 <translation id="5705882733397021510">Idi natrag</translation>
+<translation id="8450375131309292971">Povuci za osvježavanje</translation>
+<translation id="880475987868032564">Omogućuje gestu povlačenja za osvježavanje. Povlačenjem prema dolje s vrha stranice osvježit će se stranica.</translation>
 <translation id="7889432931837317731">Automatski se otvara kad god je to moguće</translation>
 <translation id="1029304566263314007">Prikaz obavijesti o napretku preuzimanja</translation>
 <translation id="2977501775944575564">Paralelno preuzimanje</translation>
 <translation id="6224180438946945617">Omogućite paralelno preuzimanje da biste ubrzali brzinu preuzimanja</translation>
-<translation id="8967385052772844086">Prikaži cijelo izvješće o privatnosti</translation>
 <translation id="3479552764303398839">Ne sada</translation>
 <translation id="7138272885617540195">Dopustite poveznicama aplikacije da otvaraju aplikacije izvan preglednika Brave</translation>
 <translation id="4954512758656527938">Zadani novčanik za platformu Ethereum</translation>
@@ -789,7 +783,6 @@ Ako ne prihvatite taj zahtjev, mreža VPN ponovno se ne spaja i nema zaštite va
 <translation id="2156993118928861787">Nevaljana adresa</translation>
 <translation id="7791543448312431591">Dodaj</translation>
 <translation id="6889920539620318793">Postavi kao aktivno</translation>
-<translation id="2653659639078652383">Pošalji</translation>
 <translation id="4945690646623486292">Odaberi mrežu</translation>
 <translation id="8006088103295786154">Pristupi novčaniku Brave</translation>
 <translation id="5308380583665731573">Poveži se</translation>
@@ -1113,7 +1106,6 @@ račun. Želite li ga sada napraviti?</translation>
 <translation id="1336494649091412226">Jeste li sigurni da želite izaći iz Bravea?</translation>
 <translation id="6061635824229591714">Uništiti podatke s mrežne stranice?</translation>
 <translation id="1265051174491933207">Uništavanje će izbrisati podatke s mrežne stranice i zatvoriti sve kartice za '<ph name="SITE_NAME"/>'. Ovo se ne može poništiti.</translation>
-<translation id="5528772406060281700">Uništiti podatke s mrežne stranice</translation>
 <translation id="4426990318287827331">Uništavanje podataka</translation>
 <translation id="7942415993090181327">Povijest čavrljanja</translation>
 <translation id="6859935199732075666">Pokaži greške priliko sigurnog pregledavanja</translation>

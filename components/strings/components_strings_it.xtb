@@ -13,7 +13,6 @@
 <translation id="1019413721762100891">Off</translation>
 <translation id="1024111578869940408">A volte gli attaccanti imitano i siti modificando l'indirizzo web in modo poco evidente.</translation>
 <translation id="1024913885641459127">Recensioni di prodotti e confronti di prezzi</translation>
-<translation id="1025174656774447058">Condividere automaticamente le schede aperte per questa conversazione?</translation>
 <translation id="102916930470544692">Passkey</translation>
 <translation id="1030706264415084469"><ph name="URL"/> vuole memorizzare in modo definitivo grandi quantità di dati sul dispositivo</translation>
 <translation id="1030949145805074938">{COUNT,plural, =0{Nessuno}=1{Da 1 sito. Uscirai dalla maggior parte dei siti. }other{Da # siti. Uscirai dalla maggior parte dei siti. }}</translation>
@@ -25,6 +24,7 @@
 <translation id="1038106730571050514">Mostra suggerimenti</translation>
 <translation id="1038168778161626396">Solo crittografia</translation>
 <translation id="1038842779957582377">nome sconosciuto</translation>
+<translation id="1039767473048604223"><ph name="DEVICE_NAME"/> <ph name="MODEL"/></translation>
 <translation id="1041998700806130099">Messaggio foglio di lavoro</translation>
 <translation id="1044897699341250361">Cosa significa</translation>
 <translation id="1046350918013988591">Coupon e offerte di sconti</translation>
@@ -116,7 +116,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="1178821169867863726">12 x 16 in</translation>
 <translation id="1181037720776840403">Rimuovi</translation>
 <translation id="1185331130467528132"><ph name="URL"/> vuole accedere ad altri dispositivi connessi alla rete locale</translation>
-<translation id="1185343831726846924">Conferma che la carta virtuale non può essere attivata</translation>
 <translation id="1186201132766001848">Controlla password</translation>
 <translation id="1187430513518041110">Auto e veicoli</translation>
 <translation id="1188817995162638216">Annullare il salvataggio del file?</translation>
@@ -266,6 +265,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="1407135791313364759">Apri tutte</translation>
 <translation id="5842844490804767323">Per compilare automaticamente questo IBAN la prossima volta, salvalo nel tuo Account Brave</translation>
 <translation id="1408787208417187241">Tripla pinzatura in alto</translation>
+<translation id="1410306713026702438"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/> di <ph name="NUM_MATCHES_IN_GROUP"/> nel gruppo <ph name="GROUP_HEADER"/>.</translation>
 <translation id="5488251800208457874">Le altre persone che usano questo dispositivo non vedranno la tua attività, di conseguenza potrai navigare in modo più privato. La modalità di raccolta dei dati da parte dei siti web visitati e dei servizi utilizzati, incluso Brave, rimane invariata. I download, i preferiti e gli elementi dell'elenco di lettura verranno salvati.</translation>
 <translation id="1410941016594047814">Busta Invite</translation>
 <translation id="648124447162177252">Il CVC di questa carta verrà criptato e salvato in Brave Wallet per un pagamento più rapido</translation>
@@ -297,6 +297,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="1445896388055045436">Mostra i premi e i vantaggi disponibili per la carta al momento del pagamento. Si applicano i termini dell'emittente.</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">Impossibile impostare le chiavi "<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>" nello stesso dizionario delle chiavi "<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>"</translation>
+<translation id="923286722567024030">Salva il Redress Number in Brave Wallet</translation>
 <translation id="1455413310270022028">Gomma</translation>
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{Visualizza 0 recensioni}=1{Visualizza 1 recensione}other{Visualizza tutte le # recensioni}}</translation>
 <translation id="1458059624921545588">Persone e società</translation>
@@ -310,6 +311,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="1463793142714244641">Multiproprietà e case vacanze</translation>
 <translation id="4855177403643365941">IBAN salvato nel tuo Account Brave</translation>
 <translation id="1467432559032391204">Sinistra</translation>
+<translation id="1471514598850585811">Laptop</translation>
 <translation id="1472675084647422956">Mostra altro</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="1473495410389165587">Inserisci 3 o più parole per ricevere aiuto per la scrittura</translation>
@@ -473,6 +475,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="173080396488393970">Questo tipo di carta non è supportato</translation>
 <translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">Chiedi di persona</translation>
+<translation id="5456336665142990002">Aggiorna il numero di rettifica in Brave Wallet</translation>
 <translation id="1733064249834771892">caratteri</translation>
 <translation id="1733631169686303142">Apparecchiature audio</translation>
 <translation id="1733762317901693627">Anche i siti che in genere sono sicuri possono essere compromessi da attaccanti. Visita <ph name="BEGIN_LINK"/>questo sito non sicuro<ph name="END_LINK"/> soltanto se hai davvero compreso i rischi.</translation>
@@ -577,6 +580,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="1902576642799138955">Periodo di validità</translation>
 <translation id="1908217026282415406">Uso e movimento della videocamera</translation>
 <translation id="1908690643053136980">L'amministratore non consente <ph name="PERMISSION"/> per questo sito</translation>
+<translation id="5430059593940336932">Salva il documento d'identità in Brave Wallet</translation>
 <translation id="1913037223029790376">Usa il CVC della carta virtuale</translation>
 <translation id="191374271204266022">Copia come JSON</translation>
 <translation id="1914326953223720820">Servizio di decompressione</translation>
@@ -656,6 +660,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2045871135676061132">Busta Personal</translation>
 <translation id="2046951263634619614">Rivenditori di libri</translation>
 <translation id="2048261947532620704">Traduzione della pagina in corso…</translation>
+<translation id="2055016614992422886">Conversazione</translation>
 <translation id="2059166748188874810">Comune</translation>
 <translation id="2059202684901022309">55,8 × 86,3 cm</translation>
 <translation id="2064568741209980952">Credito e prestiti</translation>
@@ -705,6 +710,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2122165854541876335">Risorse per i consumatori</translation>
 <translation id="2122214041802369259">Prezzo alto</translation>
 <translation id="2122719317867821810">Questa policy funziona come previsto, ma altrove è impostato un valore in conflitto che viene sostituito da questa policy.</translation>
+<translation id="1405760536280692221">Aggiorna il veicolo in Brave Wallet</translation>
 <translation id="2126374524350484896">App creazione file PDF:</translation>
 <translation id="2127090458081644412">Password salvata su questo dispositivo</translation>
 <translation id="2127747486437921899">Corsivo</translation>
@@ -845,7 +851,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2316087952091171402">Meno di <ph name="UPPER_ESTIMATE"/>. Alcuni siti potrebbero caricarsi più lentamente alla prossima visita.</translation>
 <translation id="2316090909467242775">Prova questa password di recupero</translation>
 <translation id="2316159751672436664">Personalizza i tuoi strumenti di accessibilità nelle impostazioni di ChromeOS</translation>
-<translation id="2316887270356262533">Consente di liberare meno di 1 MB. Alcuni siti potrebbero caricarsi più lentamente alla prossima visita.</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> richiede un nome utente e una password.</translation>
 <translation id="2318594867107319532">Timestamp ultimo aggiornamento delle norme:</translation>
 <translation id="2320564945062300737">Prodotti per la cura del viso</translation>
@@ -976,6 +981,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="5238917643845023930"><ph name="BEGIN_BOLD"/>I contenuti della pagina di pagamento vengono condivisi con Brave per offrire queste opzioni.<ph name="END_BOLD"/> I piani di pagamento sono soggetti a idoneità. Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LINK"/>impostazioni di pagamento<ph name="END_LINK"/>.</translation>
 <translation id="2526062290525841862">Per eseguire questa app, riattiva la modalità sviluppatore per app web isolate</translation>
 <translation id="5151177152796946073">Puoi usare gli indirizzi salvati in tutti i prodotti Brave. Questo indirizzo verrà salvato nel tuo Account Brave <ph name="ACCOUNT"/>.</translation>
+<translation id="2526590354069164005">Desktop</translation>
 <translation id="2527451058878391043">Il CVC si trova sul lato anteriore della tua carta. È il codice di 4 cifre in alto a destra, sopra il numero della carta.</translation>
 <translation id="2529899080962247600">Questo campo non deve avere più di <ph name="MAX_ITEMS_LIMIT"/> voci. Tutte le voci in più verranno ignorate.</translation>
 <translation id="2530042584066815841">Blocco e uso del mouse</translation>
@@ -1101,6 +1107,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="271663710482723385">Premi |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| per uscire dalla modalità a schermo intero</translation>
 <translation id="2717336592027046789">Rotolo</translation>
 <translation id="2718207025093645426">L'utente o dispositivo gestito non ha policy caricate.</translation>
+<translation id="271850739643214113">Il tuo account Pix è stato collegato correttamente a Google Pay</translation>
 <translation id="2719233594187778789">URL non univoco ignorato: <ph name="URL_NAME"/></translation>
 <translation id="2721148159707890343">Richiesta riuscita</translation>
 <translation id="2722622039067384533">Arredamento per il soggiorno</translation>
@@ -1135,6 +1142,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2782088940970074970">Noleggi auto</translation>
 <translation id="278436560439594386">Elettrodomestici</translation>
 <translation id="2784474685437057136">B5 Extra</translation>
+<translation id="2784795832957740711">Password · Passkey</translation>
 <translation id="2784949926578158345">La connessione è stata reimpostata.</translation>
 <translation id="2786008859124691917">Biciclette e accessori</translation>
 <translation id="2792012897584536778">Gli amministratori di questo dispositivo hanno configurato certificati di sicurezza che potrebbero consentire loro di visualizzare i contenuti dei siti web che visiti.</translation>
@@ -1184,6 +1192,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2903493209154104877">Indirizzi</translation>
 <translation id="290376772003165898">La pagina non è in <ph name="LANGUAGE"/>?</translation>
 <translation id="2904180982022726666">La tua organizzazione limita ciò che puoi condividere</translation>
+<translation id="1182878111396330838">Quando questa opzione è attiva, Brave condividerà le schede pertinenti in questa finestra per aiutarti a ottenere risposte più mirate.</translation>
 <translation id="2905107382358353958">Avviso relativo a nuova impostazione di pagamento</translation>
 <translation id="2909946352844186028">È stato rilevato un cambio di rete.</translation>
 <translation id="2910062169995917863">Sessione scaduta</translation>
@@ -1206,6 +1215,7 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{<ph name="SHIPPING_ADDRESS_PREVIEW"/> e <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> altro}other{<ph name="SHIPPING_ADDRESS_PREVIEW"/> e altri <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/>}}</translation>
 <translation id="2930531075747147366">Scheda dall'altro dispositivo</translation>
 <translation id="2930577230479659665">Taglia dopo la stampa di ciascuna copia</translation>
+<translation id="2931453528659195355">Gestisci informazioni sugli acquisti</translation>
 <translation id="2933624813161016821">Alluminio goffrato</translation>
 <translation id="2935726091208500473">condivisione delle schede</translation>
 <translation id="293796669683825859">Commenti</translation>
@@ -1234,7 +1244,6 @@ In caso contrario l'uso sarà bloccato dalle impostazioni sulla privacy. I conte
 <translation id="297173220375858963">Desktop publishing</translation>
 <translation id="2972581237482394796">&amp;Ripeti</translation>
 <translation id="4715521049551299401">Impossibile salvare questo IBAN nel tuo Account Brave. È invece salvato su Brave su questo dispositivo. Brave ti chiederà di nuovo l'autorizzazione la prossima volta che utilizzerai questo IBAN.</translation>
-<translation id="7590587154325086798">Se questa opzione è attiva, Brave condividerà tutte le schede in questa finestra per aiutarti a ricevere risposte più pertinenti. Puoi attivare questa opzione per tutte le conversazioni nelle Impostazioni.</translation>
 <translation id="297667759942911166">Collabora a gruppi di schede</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>, attualmente selezionata. <ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">Opera</translation>
@@ -1360,6 +1369,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3158539265159265653">Disco</translation>
 <translation id="3162070126914310576">Al momento non è possibile registrare questo dispositivo perché l'unità organizzativa ha raggiunto il limite di registrazione iniziale. Per ricevere assistenza, contatta l'amministratore.</translation>
 <translation id="3162559335345991374">La rete Wi-Fi in uso potrebbe richiedere la visita della relativa pagina di accesso.</translation>
+<translation id="316542773973815724">Navigazione</translation>
 <translation id="316638481603975524">Può chiedere di installare le app web</translation>
 <translation id="5128545107355520364">Brave ti proporrà di salvarle in <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/> la prossima volta che le utilizzerai</translation>
 <translation id="3168744840365648658">Apparecchiature radio</translation>
@@ -1377,6 +1387,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3194737229810486521"><ph name="URL"/> vuole memorizzare in modo definitivo i dati sul dispositivo</translation>
 <translation id="3194765668709099364">Klarna</translation>
 <translation id="3195213714973468956"><ph name="PRINTER_NAME"/> su <ph name="SERVER_NAME"/></translation>
+<translation id="3196902089458890316">Condividere sempre le schede pertinenti per ottenere risposte migliori?</translation>
 <translation id="3197136577151645743">Può chiedere di sapere quando stai utilizzando attivamente questo dispositivo</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premi Tab e poi Invio per gestire le informazioni da sincronizzare nelle impostazioni di Brave</translation>
 <translation id="3203025201812691413">L'URL non può essere vuoto</translation>
@@ -1413,6 +1424,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3236212803136366317">Vantaggi della carta</translation>
 <translation id="2816340899490518371">Impossibile salvare su Brave Wallet</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premi Tab poi Invio per personalizzare l'aspetto del browser</translation>
+<translation id="3243131902823383230">Laptop <ph name="MANUFACTURER"/></translation>
 <translation id="3243650379537999343">Traccia</translation>
 <translation id="3248329428895535435">Non mostrare per questo sito</translation>
 <translation id="3249102948665905108">Caricamento del file su <ph name="CLOUD_PROVIDER"/> completato con errori</translation>
@@ -1510,6 +1522,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3422472998109090673"><ph name="HOST_NAME"/> non è attualmente raggiungibile.</translation>
 <translation id="3422794267539320056">Tocca il dinosauro o premi la barra spaziatrice per giocare</translation>
 <translation id="3423742043356668186">Sistema specificato</translation>
+<translation id="6418111414395514325">Aggiorna il passaporto in Brave Wallet</translation>
 <translation id="3427342743765426898">&amp;Ripeti modifica</translation>
 <translation id="3428151540071562330">Uno o più URI del modello server DnsOverHttpsTemplates non sono validi e non verranno utilizzati.</translation>
 <translation id="3432601291244612633">Chiudi pagina</translation>
@@ -1520,6 +1533,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="343474037147570563">I file che carichi o alleghi vengono inviati a Google Cloud o a terze parti per essere analizzati. Ad esempio, potrebbero essere analizzati per rilevare dati sensibili o malware, essere archiviati in base alle policy aziendali ed essere visibili al tuo amministratore.</translation>
 <translation id="3435557549311968410">Continuo (corto)</translation>
 <translation id="3435738964857648380">Sicurezza</translation>
+<translation id="3436125638121079308">Condividere automaticamente le schede pertinenti per ricevere risposte migliori in questa conversazione?</translation>
 <translation id="3438509337461223476">Condividi automaticamente le schede pertinenti aperte in ogni conversazione</translation>
 <translation id="3440783957068352691">Quadrata</translation>
 <translation id="3441653493275994384">Schermo</translation>
@@ -1579,6 +1593,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3537165859691846083">Letter Plus</translation>
 <translation id="353816159217417898">Serigrafia (paged)</translation>
 <translation id="7554105781342217505">Scopri di più su Brave Enterprise Connectors</translation>
+<translation id="3542005451565251757">Questo avviso è stato visualizzato perché il sito non supporta HTTPS e hai attivato la protezione avanzata nelle impostazioni di Android. <ph name="LEARN_MORE"/></translation>
 <translation id="3542628208405253498">Immagine della carta</translation>
 <translation id="3542768452570884558">Apri link in un'altra finestra</translation>
 <translation id="3543597750097719865">Firma X9.62 ECDSA con SHA-512</translation>
@@ -1630,7 +1645,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="361438452008624280">Voce "<ph name="LANGUAGE_ID"/>": lingua sconosciuta o non supportata.</translation>
 <translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premi Tab e poi Invio per eseguire il controllo di sicurezza nelle impostazioni di Brave</translation>
 <translation id="3615309852743236517">Manicure e pedicure</translation>
-<translation id="3620034424637552643">Spesso utilizzata per indicazioni stradali, consegne e altro ancora</translation>
 <translation id="3620239073311576716">Uniformi e indumenti da lavoro</translation>
 <translation id="8284620253545560278">Impossibile salvare questo IBAN in Brave Wallet. È stato invece salvato su Brave su questo dispositivo. Brave ti chiederà di nuovo l'autorizzazione la prossima volta che utilizzerai questo IBAN.</translation>
 <translation id="3621401353678567613">Per ricevere avvisi relativi ai cali di prezzo per i prodotti che monitori, attiva le notifiche nelle impostazioni.</translation>
@@ -1651,7 +1665,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3641116835972736297">Football americano</translation>
 <translation id="3642196846309122856">Riprova a scaricare i file</translation>
 <translation id="3642638418806704195">Applicazione:</translation>
-<translation id="3644768007456662469">Icona elemento pagamenti</translation>
 <translation id="3647286794400715637">Ogni voce della stringa dell'URL deve contenere da 1 a 2 URL.</translation>
 <translation id="5085151248144746413">Pulsante chiusura suggerimento di Brave, premi Invio per chiudere, <ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="3650584904733503804">Convalida riuscita</translation>
@@ -1682,6 +1695,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3681841880472207951">Video Quicktime</translation>
 <translation id="3687920599421452763">Furgoni e minivan</translation>
 <translation id="3693327506115126094">Scegli come verificare la tua identità</translation>
+<translation id="3693516565203081475">Scegli metodo di pagamento</translation>
 <translation id="3698353241727597930">L'amministratore ha configurato il salvataggio di <ph name="FILES"/> nello spazio di archiviazione <ph name="CLOUD_STORAGE"/> gestito dall'azienda. Questi file potrebbero essere monitorati, controllati e conservati quando li elimini.</translation>
 <translation id="974818914962304978">Pulsante Crea sito, attiva per creare rapidamente un nuovo sito in Brave Sites</translation>
 <translation id="3700094625653511150">Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/></translation>
@@ -1736,6 +1750,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3761718714832595332">Nascondi stato</translation>
 <translation id="3763752038825281594">In precedenza non hai consentito l'autorizzazione <ph name="PERMISSION"/> per questo sito</translation>
 <translation id="3765588406864124894">Mailbox 9</translation>
+<translation id="3766505784424699541">Ricevi risposte personalizzate più efficaci condividendo automaticamente le schede pertinenti in questa finestra se sono correlate a questa conversazione.</translation>
 <translation id="3767485424735936570">La policy dell'amministratore sconsiglia di copiare e incollare questi contenuti su <ph name="VM_NAME"/></translation>
 <translation id="3769584711865378220"><ph name="URL"/> vuole modificare l'accesso alla posizione da approssimativa a esatta</translation>
 <translation id="3772211998634047851">Carta (per scrivere)</translation>
@@ -1821,6 +1836,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="3901925938762663762">La carta è scaduta</translation>
 <translation id="390391808978419508">Timeout dell'apertura</translation>
 <translation id="3905894480064208252">{0,plural, =1{Trasferimento del file bloccato}other{Trasferimento di <ph name="FILE_COUNT"/> file bloccato}}</translation>
+<translation id="3906022360148923497">Icona dello strumento di pagamento</translation>
 <translation id="3906954721959377182">Tablet</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/> <ph name="ERROR"/></translation>
 <translation id="3910231615117880630">Scopri di più sui contenuti incorporati</translation>
@@ -2025,6 +2041,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="422722221769396062">Servizi di ristorazione a domicilio</translation>
 <translation id="4230204356098880324">Può chiedere di usare e muovere la videocamera</translation>
 <translation id="4231448684371260244">8 x 13 in</translation>
+<translation id="279016548542240532">Paga con Pix senza cambiare app in Brave</translation>
 <translation id="4239799716689808527">Etichette</translation>
 <translation id="424063167283213501">Salva Known Traveler Number</translation>
 <translation id="4241830393007970744">Gli attaccanti sul sito che hai cercato di visitare potrebbero indurti con l'inganno a installare software o a rivelare informazioni come password, numeri di telefono o delle carte di credito.</translation>
@@ -2041,6 +2058,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4255487295905690262">Riceverai avvisi via email se il prezzo calerà su qualsiasi sito.</translation>
 <translation id="425582637250725228">Le modifiche apportate potrebbero non essere salvate.</translation>
 <translation id="4258748452823770588">Firma errata</translation>
+<translation id="4258927999980634471">Condividere automaticamente le schede pertinenti per questa conversazione?</translation>
 <translation id="1025132080548500660">Per recuperare la cronologia dagli altri tuoi dispositivi, sincronizza la cronologia e le schede con <ph name="ACCOUNT_EMAIL"/>. Puoi interrompere la sincronizzazione in qualsiasi momento nelle impostazioni. Brave potrebbe personalizzare la Ricerca e altri servizi in base alla tua cronologia.</translation>
 <translation id="4265635050210404830">Le tue carte fedeltà</translation>
 <translation id="4265872034478892965">Consentita dall'amministratore</translation>
@@ -2107,6 +2125,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4340810192899866471">Importa da JSON</translation>
 <translation id="6116812392674177288">Questo computer sembra non essere gestito dall'azienda, pertanto la norma consente di installare automaticamente soltanto le estensioni ospitate sul Brave Web Store. L'URL di aggiornamento del Brave Web Store è "<ph name="CWS_UPDATE_URL"/>".</translation>
 <translation id="4342742994656318294">Parchi tematici</translation>
+<translation id="998875513896293677">I titoli e gli URL delle pagine vengono inviati a Brave e potrebbero essere esaminati da revisori umani</translation>
 <translation id="4346670990181948854">Informazioni di viaggio · Veicoli</translation>
 <translation id="4348834659292907206">La connessione al sito <ph name="SITE"/> non è sicura</translation>
 <translation id="4349365535725594680">Impossibile condividere contenuti riservati</translation>
@@ -2114,6 +2133,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4350629523305688469">Vassoio malfunzionante</translation>
 <translation id="4351060348582610152"><ph name="ORIGIN"/> richiede di eseguire la scansione per rilevare dispositivi Bluetooth nelle vicinanze. Sono stati rilevati i seguenti dispositivi:</translation>
 <translation id="4355383636893709732">Aggiornamento di ChromeOS per le app per Android</translation>
+<translation id="4357577888320640139">Condividere automaticamente le schede pertinenti in ogni conversazione?</translation>
 <translation id="4358059973562876591">I modelli che hai specificato potrebbero non essere applicati a causa di un errore con la policy DnsOverHttpsMode.</translation>
 <translation id="4358461427845829800">Gestisci metodi di pagamento…</translation>
 <translation id="4366943895537458493">Lastra</translation>
@@ -2147,6 +2167,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4415748029120993980">Curva ellittica SECG secp384r1 (anche nota come NIST P-384)</translation>
 <translation id="4418150423720608641">ML-DSA-87</translation>
 <translation id="4419287616181386201">Le password possono essere eliminate nelle relative impostazioni di gestione</translation>
+<translation id="4425137053900958839">Approfitta di tutta la comodità e la sicurezza di Pix su cui puoi sempre contare</translation>
 <translation id="4425750422187370446">Abbigliamento da atletica</translation>
 <translation id="443121186588148776">Porta seriale</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> non ha accettato il certificato di accesso oppure non ne è stato fornito uno.</translation>
@@ -2156,7 +2177,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4434045419905280838">Popup e reindirizzamenti</translation>
 <translation id="443673843213245140">L'utilizzo di un proxy è stato disattivato ma è stata specificata una configurazione proxy esplicita.</translation>
 <translation id="4438821706955556403">Prezzo tipico</translation>
-<translation id="4439687924334332880">Ricevi risposte personalizzate più efficaci condividendo automaticamente le schede aperte in questa finestra se sono correlate a questa conversazione. Puoi attivare questa opzione per tutte le conversazioni nelle Impostazioni.</translation>
 <translation id="4441832193888514600">Ignorata perché la policy può essere impostata solo da un utente cloud.</translation>
 <translation id="3741072729587003870">Già inviato a Brave sul tuo <ph name="DEVICE_NAME"/></translation>
 <translation id="4445694043187340808"><ph name="STARTER_PACK_TABS_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premi Invio per cercare nelle schede</translation>
@@ -2222,6 +2242,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4557573143631562971">Assicurazione sulla casa</translation>
 <translation id="4558551763791394412">Prova a disattivare le estensioni.</translation>
 <translation id="4566017918361049074">Attività all'aria aperta</translation>
+<translation id="6895010158785274408">Aggiorna la carta di identità in Brave Wallet</translation>
 <translation id="4569155249847375786">Verificato</translation>
 <translation id="4570008401337135432">Allineamento testo</translation>
 <translation id="457875822857220463">Consegna</translation>
@@ -2243,6 +2264,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="46128681529823442">Attrezzature e articoli per il calcio</translation>
 <translation id="4612904677925722054">Questo sito potrebbe includere contenuti inappropriati per i minori. Un genitore o tutore deve autorizzarti a visitare questo sito web.</translation>
 <translation id="4619564267100705184">Verifica la tua identità</translation>
+<translation id="3127071008735497897">Salva la patente di guida in Brave Wallet</translation>
 <translation id="4622292761762557753">Trasferisci comunque</translation>
 <translation id="4622647778991854660">Abilita le notifiche nel Centro notifiche. Apri <ph name="LINK"/>.</translation>
 <translation id="4623894491222334521">Documenti di identità</translation>
@@ -2286,6 +2308,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4691093235373904540">Installazione e riparazione di tetti</translation>
 <translation id="4692623383562244444">Motori di ricerca</translation>
 <translation id="4695702626068620848"><ph name="KEYWORD"/> - Chiedi a <ph name="KEYWORD_SHORT_NAME"/></translation>
+<translation id="4697071790493980729">Nessun risultato trovato</translation>
 <translation id="4698308118265482293">Aggiorna il passaporto</translation>
 <translation id="4698692901173737941">Sport di combattimento</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -2296,6 +2319,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4705573018059932476">Hai scelto di eseguire la verifica con <ph name="AUTHENTICATOR"/> sui siti che utilizzano <ph name="PROVIDER_ORIGIN"/>. Questo fornitore potrebbe aver memorizzato informazioni su come paghi, che puoi <ph name="LINK_TEXT"/>.</translation>
 <translation id="4708268264240856090">La connessione è stata interrotta</translation>
 <translation id="4708276642004148190">Forniture idriche e trattamento dell'acqua</translation>
+<translation id="4710249055485272920">Impossibile trovare queste informazioni</translation>
 <translation id="4711628883879888561">Collabora al gruppo di schede</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="471880041731876836">Non sei autorizzato a visitare questo sito</translation>
@@ -2307,6 +2331,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4726672564094551039">Ricarica policy</translation>
 <translation id="4728558894243024398">Piattaforma</translation>
 <translation id="4729147136006144950">Beneficenza e filantropia</translation>
+<translation id="4730773064303503917">Invia Pix ad amici e attività commerciali utilizzando Wallet</translation>
 <translation id="4730977633786878901">Recensioni</translation>
 <translation id="4731638775147756694">Questa applicazione è stata bloccata dal tuo amministratore</translation>
 <translation id="4732860731866514038">Download del language pack <ph name="LANGUAGE"/> in corso… <ph name="PERCENT"/>%</translation>
@@ -2339,6 +2364,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="4766713847338118463">Doppia pinzatura in basso</translation>
 <translation id="4768816584204270288">Quando paghi a rate, viene inserito un numero di carta virtuale temporaneo. Puoi fare clic per copiare e incollare i dati della carta per questo acquisto.</translation>
 <translation id="4768864802656530630">Log di sistema dettagliati. <ph name="BEGIN_LINK"/>Scopri di più<ph name="END_LINK"/></translation>
+<translation id="4341731325100657394">Aggiorna il KTN in Brave Wallet</translation>
 <translation id="4771249073710170730">Modellismo e modellini radiocomandati</translation>
 <translation id="4771973620359291008">Si è verificato un errore sconosciuto.</translation>
 <translation id="4774055414220872623">Forniture per arte e artigianato</translation>
@@ -2587,6 +2613,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5154702632169343078">Oggetto</translation>
 <translation id="5157504274688344097">Ipermercati e grandi magazzini</translation>
 <translation id="5158275234811857234">Copertina</translation>
+<translation id="4196087060674489723">Stai contribuendo a migliorare la compilazione automatica avanzata condividendo i dati con Brave</translation>
 <translation id="5161334686036120870">Argomento:</translation>
 <translation id="5161506081086828129">Fascicolatore 9</translation>
 <translation id="5164537320435517152">Elimina i file tra <ph name="MINUTES"/> min</translation>
@@ -2630,7 +2657,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5238301240406177137">Salva nell'account</translation>
 <translation id="5239119062986868403">Prezzo tipico</translation>
 <translation id="5239623327352565343">Posizione consentita</translation>
-<translation id="5241048084654737238">Impossibile salvare la conferma delle informazioni sulla carta</translation>
 <translation id="5242610955375133957">Pellicola asciutta</translation>
 <translation id="5243004157379865295">Aggiorna indirizzo</translation>
 <translation id="8854897060240443467">Pulsante Gestisci l'Account Brave, attiva per gestire le tue informazioni, la privacy e la sicurezza nel tuo Account Brave</translation>
@@ -2688,6 +2714,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="2334093076041322971">Gestisci nel tuo Account Brave</translation>
 <translation id="5327248766486351172">Nome</translation>
 <translation id="5329858041417644019">Il browser in uso non è gestito</translation>
+<translation id="5330451136755214328">Computer <ph name="MANUFACTURER"/></translation>
 <translation id="5331585574693522196">Imposta come predefinito</translation>
 <translation id="5332219387342487447">Modalità di spedizione</translation>
 <translation id="5332769172018416402">Chiedi in un messaggio</translation>
@@ -2726,6 +2753,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5385857628869214740">Umorismo</translation>
 <translation id="5386426401304769735">Il certificato di questo sito contiene un certificato che è stato firmato utilizzando SHA-1.</translation>
 <translation id="5391010642126249196">Visitato</translation>
+<translation id="5391030615542642809">Dispositivo <ph name="MANUFACTURER"/></translation>
 <translation id="5391306025131596142">&amp;Apri la pagina Cronologia</translation>
 <translation id="539203134595252721">Ping pong</translation>
 <translation id="5392506727170022660">Metallo (semilucido)</translation>
@@ -2767,6 +2795,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="543656192084990644">Sensori di movimento non consentiti</translation>
 <translation id="5441409130426352029"><ph name="ATTRIBUTE_VALUE"/>, in precedenza <ph name="PREVIOUS_VALUE"/></translation>
 <translation id="5443468954631487277">Ordine inverso a faccia in su</translation>
+<translation id="4784093498984929780">Salva il passaporto in Brave Wallet</translation>
 <translation id="5447235695608032700">Consenti a <ph name="SITE"/> di utilizzare le informazioni salvate su di te</translation>
 <translation id="5447973833955560753">Password di recupero</translation>
 <translation id="6108397422772394696">Quando Brave segnala eventi di sicurezza, i relativi dati pertinenti vengono inviati al tuo amministratore. Questi dati possono includere URL delle pagine visitate in Brave o da cui hai copiato dei dati, metadati o nomi dei file, indirizzi IP, arresti anomali del browser o delle schede e il nome utente che usi per accedere alle applicazioni basate sul web, al tuo dispositivo e a Brave.</translation>
@@ -2777,6 +2806,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW"/>}=1{<ph name="CONTACT_PREVIEW"/> e <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> altro}other{<ph name="CONTACT_PREVIEW"/> e altri <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/>}}</translation>
 <translation id="5463625433003343978">Ricerca di dispositivi in corso…</translation>
 <translation id="5464236009658034488">Forniture per uffici</translation>
+<translation id="5465128270485645058">Ricevi risposte personalizzate più efficaci condividendo automaticamente le schede aperte in questa finestra se sono correlate a questa conversazione.</translation>
 <translation id="5465724643247062031">Vetro (opaco)</translation>
 <translation id="5466018172325111652">Non hai ricevuto il codice? <ph name="BEGIN_LINK"/>Ricevi nuovo codice<ph name="END_LINK"/></translation>
 <translation id="5466818462212249084">App per pagamenti</translation>
@@ -2937,6 +2967,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5707154300732650394">Riprendi il percorso</translation>
 <translation id="57094364128775171">Suggerisci password efficace…</translation>
 <translation id="570953204696852961">Rosso 3</translation>
+<translation id="5072319759819261375">Chiedi invece a Gemini in Brave</translation>
 <translation id="571403275720188526">(arm64)</translation>
 <translation id="571510845185711675">Veterinari</translation>
 <translation id="5715150588940290235">Eliminare i codici di sicurezza salvati?</translation>
@@ -2946,6 +2977,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5718601519531438273">Include informazioni come passaporti e patenti di guida</translation>
 <translation id="5720705177508910913">Utente corrente</translation>
 <translation id="5720895412771013401">Computer</translation>
+<translation id="5721147290164931316">Scansiona per accedere dal tuo smartphone</translation>
 <translation id="5721367770070844253">{count,plural, =1{{website_1}}=2{{website_1}, {website_2}}=3{{website_1}, {website_2} e 1 altro}other{{website_1}, {website_2} e altri {more_count}}}</translation>
 <translation id="572328651809341494">Schede recenti</translation>
 <translation id="5723873695528696965">Controllare e riprogrammare i tuoi dispositivi MIDI</translation>
@@ -2978,6 +3010,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5765072501007116331">Seleziona un indirizzo per conoscere i requisiti e i metodi di consegna</translation>
 <translation id="57689295674415555">Il numero della carta virtuale non è stato inserito?</translation>
 <translation id="5773286975255318081">Ad esempio, nomi utente dei profili e versioni del browser</translation>
+<translation id="5774897849666641211">Fai domande su questa scheda</translation>
 <translation id="5776313857861697733">Priorità</translation>
 <translation id="577804500166306874">Caricamento del risultato</translation>
 <translation id="5781136890105823427">Esperimento attivato</translation>
@@ -3055,6 +3088,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5911020115933784199">Eventi e spettacoli</translation>
 <translation id="5911110632211230665">Apertura bloccata</translation>
 <translation id="1765144800915733093">Apri Brave Wallet</translation>
+<translation id="7227888833179196534">Salva il KTN in Brave Wallet</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/> ha aggiunto questa scheda</translation>
 <translation id="5915189366813702112">Condizioni lavorative flessibili</translation>
 <translation id="59174027418879706">Attivato</translation>
@@ -3279,6 +3313,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6246316216123107851"><ph name="NUM_DAYS"/> giorni fa</translation>
 <translation id="6246382863801034910">Veicolo</translation>
 <translation id="6246868321321344665">La tua organizzazione può vedere i dati di navigazione, ad esempio le password e la cronologia, sia nel profilo di lavoro sia in quello personale</translation>
+<translation id="6248479108671123143"><ph name="MEMBER_FIRST_NAME"/> ha modificato questa scheda, <ph name="TAB_TITLE"/></translation>
 <translation id="6248988683584659830">Cerca nelle impostazioni</translation>
 <translation id="6250932670816326647">Prodotti per il corpo e per il bagno</translation>
 <translation id="6251906504834538140">{0,plural, =1{Spostamento del file bloccato}other{Spostamento di <ph name="FILE_COUNT"/> file bloccato}}</translation>
@@ -3315,6 +3350,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6302546952464230349">Mostra i dettagli dell'autorizzazione <ph name="PERMISSION_NAME"/></translation>
 <translation id="6304398603974202180">Software multimediale</translation>
 <translation id="6305205051461490394"><ph name="URL"/> non è raggiungibile.</translation>
+<translation id="3718751461629938404">Quando digiti una richiesta per la compilazione automatica avanzata, Brave registra il modo in cui utilizzi la funzionalità, ad esempio se accetti, modifichi o ignori i suggerimenti di compilazione automatica</translation>
 <translation id="6306713302480826305">Questo indirizzo verrà eliminato da questo dispositivo e da altri dispositivi su cui hai eseguito l'accesso</translation>
 <translation id="6307968763353904914">Al momento la tua banca non offre carte virtuali per questo metodo di pagamento. Puoi comunque usare la carta <ph name="CARD_LABEL"/> per pagare online.</translation>
 <translation id="6311410654831092784">Cartoncino</translation>
@@ -3332,7 +3368,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="633348045801643466">Mostra le opzioni di <ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>pagamento posticipato<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/> in fase di pagamento</translation>
 <translation id="6335029926534404762">Scarpe da atletica</translation>
 <translation id="6336948221660696475">VR non consentita</translation>
-<translation id="6337133576188860026">Consente di liberare meno di <ph name="SIZE"/>. Alcuni siti potrebbero caricarsi più lentamente alla prossima visita.</translation>
 <translation id="6337534724793800597">Filtra le policy per nome</translation>
 <translation id="633770708279464947">Il valore <ph name="SECURE_DNS_SALT"/> non è valido e non verrà utilizzato.</translation>
 <translation id="6738574149680202366">Password • Gestore delle password di Brave</translation>
@@ -3450,6 +3485,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6494750904506170417">popup e reindirizzamenti</translation>
 <translation id="6495664197699704593">La password viene salvata solo su questo dispositivo. Per usarla sugli altri tuoi dispositivi, <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="5070187877614745794">Per usare un altro servizio di compilazione automatica in Brave, scegli il tuo nelle impostazioni di Android</translation>
+<translation id="6496531801333278234">Trovato da Personal Intelligence. Puoi gestire le tue informazioni nelle impostazioni.</translation>
 <translation id="6499038740797743453">Reimpostare la password?</translation>
 <translation id="6502510275417601303">Avviso relativo a chiusura nuova impostazione di pagamento</translation>
 <translation id="6502991525169604759">Senza le tue modifiche</translation>
@@ -3484,6 +3520,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6550245281449521513">Blocco del mouse non consentito</translation>
 <translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>, novità</translation>
 <translation id="6552566579578780089">Pagamenti</translation>
+<translation id="6553777254569586547"><ph name="SUGGESTION_TITLE"/>. <ph name="SUGGESTION_TYPE"/>. <ph name="MATCH_POSITION"/> di <ph name="NUM_MATCHES_IN_GROUP"/> nel gruppo <ph name="GROUP_HEADER"/>.</translation>
 <translation id="6554732001434021288">Ultima visita: <ph name="NUM_DAYS"/> giorni fa</translation>
 <translation id="6556866813142980365">Ripeti</translation>
 <translation id="6557715786897013164">14 x 17 in</translation>
@@ -3561,6 +3598,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="5406652219015697259">Brave chiede se vuoi salvare le tue carte nel tuo Account Brave perché hai eseguito l'accesso. Puoi modificare questo comportamento nelle impostazioni. Il nome del titolare della carta proviene dal tuo account.</translation>
 <translation id="6690688090329768424">"<ph name="PROXY_INVALID_DESTINATION"/>" non è un pattern di destinazione valido.</translation>
 <translation id="6691397311652656001">Libera più di <ph name="REQUIRED_FREE_DISK_SPACE"/> di spazio</translation>
+<translation id="4022909937585430639">Questo avviso è stato visualizzato perché il sito non supporta HTTPS ed è attivo il programma di protezione avanzata di Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>, premi Tab poi Invio per trovare il tuo dispositivo nell'Account Brave.</translation>
 <translation id="6695428916538794739">Film d'azione e d'avventura</translation>
 <translation id="6696424331653607346">Guide turistiche e diari di viaggio</translation>
@@ -3572,6 +3610,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6702851555558236418">Software audio e musicali</translation>
 <translation id="6702919718839027939">Presentazione</translation>
 <translation id="6704458454638854812">La proprietà "custom_size" è impostata, il nome previsto è "custom".</translation>
+<translation id="670477556876354552">Riavvio necessario</translation>
 <translation id="6706005862292023715">Trattamenti per finestre e tendaggi</translation>
 <translation id="6706210727756204531">Ambito</translation>
 <translation id="1162411425302454249">Impossibile salvare questo IBAN nel tuo Account Brave. È invece salvato su Brave su questo dispositivo.</translation>
@@ -3630,6 +3669,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6798066466127540426">L'elenco non contiene un provider di ricerca valido.</translation>
 <translation id="6798460514924505775">Busta Chou 3</translation>
 <translation id="6799145206637008376">Inserisci il CVC della carta virtuale</translation>
+<translation id="6800773453940486492"><ph name="MEMBER_FIRST_NAME"/> ha aggiunto questa scheda, <ph name="TAB_TITLE"/></translation>
 <translation id="6801920212017470190">Tieni sotto controllo tutti i cali di prezzo ovunque ti trovi</translation>
 <translation id="6805030849054648206">Busta B6/C4</translation>
 <translation id="6807791860691150411">Istruzione</translation>
@@ -3668,7 +3708,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6874604403660855544">&amp;Ripeti aggiunta</translation>
 <translation id="6875873347995743859">Invia all'assistente</translation>
 <translation id="6875894866901426843">L'amministratore eliminerà i tuoi file locali, inclusi quelli nel cestino, il giorno <ph name="DATE_TIME"/>.</translation>
-<translation id="6880812263216766325">Condividere sempre le schede aperte per ottenere risposte migliori?</translation>
 <translation id="6880941331070119097">Opzione prezzo alto</translation>
 <translation id="5856252669085142737">Crea rapidamente un nuovo documento Brave</translation>
 <translation id="6883221904761970440">Il foglio per l'autenticazione delle credenziali di pagamento sicure è chiuso</translation>
@@ -3685,7 +3724,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="6893057134494550310">Pellicola laminata</translation>
 <translation id="6893171174618024812">Per disattivare l'app per pagamenti in Brave, vai alle <ph name="BEGIN_LINK1"/>impostazioni di pagamento<ph name="END_LINK1"/></translation>
 <translation id="6895330447102777224">La carta è stata confermata</translation>
-<translation id="6895573608763679343"><ph name="SUGGESTION_TITLE"/>, <ph name="SUGGESTION_DESCRIPTION"/>, <ph name="MATCH_POSITION"/> di <ph name="NUM_MATCHES_IN_GROUP"/> nel gruppo <ph name="GROUP_HEADER"/>.</translation>
 <translation id="6896758677409633944">Copia</translation>
 <translation id="6897140037006041989">User-agent</translation>
 <translation id="6898699227549475383">Organizzazione (O)</translation>
@@ -3828,6 +3866,7 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="7110116949943042888">Offerte di lavoro temporaneo e stagionale</translation>
 <translation id="7110368079836707726">Istituti superiori e Università</translation>
 <translation id="7111507312244504964">Valutazioni e perizie immobiliari</translation>
+<translation id="7117290130383718594">Annotazioni di testo</translation>
 <translation id="7118618213916969306">Cerca URL dagli appunti, <ph name="SHORT_URL"/></translation>
 <translation id="7118852830504022370">Questo avviso è stato visualizzato perché il sito non supporta HTTPS. <ph name="BEGIN_LEARN_MORE_LINK"/>Scopri di più sull'avviso<ph name="END_LEARN_MORE_LINK"/>.</translation>
 <translation id="7119063404975271297">Drammi TV</translation>
@@ -3876,7 +3915,6 @@ Per nascondere le opzioni di pagamento posticipato, vai alle <ph name="BEGIN_LIN
 <translation id="718872491229180389">Cheerleading</translation>
 <translation id="7188840756966467339">Riavvia e applica policy</translation>
 <translation id="7192188280913829296">È necessario specificare anche l'attributo "vendor_id".</translation>
-<translation id="7192203810768312527">Libera <ph name="SIZE"/>. Alcuni siti potrebbero caricarsi più lentamente alla prossima visita.</translation>
 <translation id="7192537357091279678">Unità e dispositivi di archiviazione per computer</translation>
 <translation id="7193661028827781021">Consultazione</translation>
 <translation id="719464814642662924">Visa</translation>
@@ -3921,7 +3959,6 @@ Ulteriori dettagli:
 <translation id="7257453341537973799">Pianificazione carriera e risorse</translation>
 <translation id="725866823122871198">Impossibile stabilire una connessione privata con il sito <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> perché data e ora del computer (<ph name="DATE_AND_TIME"/>) sono sbagliate.</translation>
 <translation id="7260075294900977274">Una nuova cartella intelligente che ti consente di salvare tutte le tue pagine di shopping in un unico posto, monitorare automaticamente i prezzi, ottenere insight sul prezzo e altro ancora</translation>
-<translation id="3394231533559589636">Questo sito rimarrà bloccato perché è attivo il programma di protezione avanzata di Brave. <ph name="LEARN_MORE"/></translation>
 <translation id="7265608370113700582">L'indirizzo è disponibile solo su questo dispositivo</translation>
 <translation id="7266094331715305887">app sul dispositivo</translation>
 <translation id="7269151392155523061">La scorciatoia non può essere uguale alla parola chiave dell'aggregatore di ricerca definita da <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/>: <ph name="SHORTCUT_NAME"/></translation>
@@ -3947,6 +3984,7 @@ Ulteriori dettagli:
 <translation id="7310392214323165548">Il dispositivo verrà riavviato a breve</translation>
 <translation id="7311244614769792472">Nessun risultato trovato</translation>
 <translation id="7313107491291103073">La tua organizzazione ha segnalato questo sito perché potrebbe violare una policy.</translation>
+<translation id="7313260329718515829">Le richieste inviate a Personal Intelligence con Gemini vengono analizzate per migliorare la compilazione automatica</translation>
 <translation id="7316521168101843192">Salvataggio del file su Microsoft OneDrive in corso…</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">Guida alla connessione</translation>
@@ -4021,6 +4059,7 @@ Ulteriori dettagli:
 <translation id="7418620734632363981">Programmazione</translation>
 <translation id="7419091773564635591">Computer ed elettronica</translation>
 <translation id="7419106976560586862">Percorso profilo</translation>
+<translation id="742088698616475957">Computer fisso <ph name="MANUFACTURER"/></translation>
 <translation id="7421067045979951561">gestori di protocollo</translation>
 <translation id="7422347648202898039">Etichette (sicurezza)</translation>
 <translation id="4814329941923406129">Pulsante Gestisci i cookie, attiva per gestire le preferenze relative ai cookie nelle impostazioni di Brave</translation>
@@ -4043,7 +4082,6 @@ Ulteriori dettagli:
 <translation id="1548956355291859153">Pulsante Gestisci sincronizzazione, attiva per gestire le informazioni da sincronizzare nelle impostazioni di Brave</translation>
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>Leggere ulteriori informazioni<ph name="END_LINK"/> sul problema.</translation>
 <translation id="745208957946308667">Gioco Dino, premi la barra spaziatrice per giocare</translation>
-<translation id="74521886886364465"><ph name="SUGGESTION_TITLE"/>, <ph name="MATCH_POSITION"/> di <ph name="NUM_MATCHES_IN_GROUP"/> nel gruppo <ph name="GROUP_HEADER"/>.</translation>
 <translation id="7453032093368223821">Gestisci altri dati</translation>
 <translation id="7454377933424667109">Account cloud</translation>
 <translation id="7455452752247248289">Tecnologia aziendale</translation>
@@ -4073,7 +4111,6 @@ Ulteriori dettagli:
 <translation id="7489255442002627311"><ph name="BNPL_ISSUER_NAME"/> controllerà la tua idoneità (questo non influirà sulla tua affidabilità creditizia). In caso di approvazione, <ph name="BNPL_ISSUER_NAME"/> ti fornirà dei piani di pagamento tra cui scegliere per completare l'acquisto.</translation>
 <translation id="7489392576326061356">Shampoo e balsami</translation>
 <translation id="7489919936111034362">Il tuo spazio di archiviazione di Google Drive è esaurito</translation>
-<translation id="7490026840522163531">Condividere automaticamente le schede aperte in ogni conversazione?</translation>
 <translation id="7495528107193238112">Questi contenuti sono bloccati. Contatta il proprietario del sito per risolvere il problema.</translation>
 <translation id="749865518782565832">Lavori idraulici</translation>
 <translation id="1314010941893038514">Quando fai acquisti su Brave, vedi le opzioni e-wallet e Pix</translation>
@@ -4129,12 +4166,14 @@ Ulteriori dettagli:
 <translation id="7569072768465750771">{COUNT,plural, =0{Nessuna}=1{1 scheda su questo dispositivo}other{# schede su questo dispositivo}}</translation>
 <translation id="7569490014721427265">Golf</translation>
 <translation id="7569983096843329377">Nero</translation>
+<translation id="5042051836875308124">Aggiorna il documento d'identità in Brave Wallet</translation>
 <translation id="7570862164055912832">Redress Number</translation>
 <translation id="5806362888687058351">Brave AI Mode</translation>
 <translation id="7574998639136359461">Attrezzature e articoli per sport invernali</translation>
 <translation id="7575207903026901870">Rimuovi il pulsante Suggerimento, premi INVIO per rimuovere questo suggerimento</translation>
 <translation id="7575800019233204241">"La connessione non è privata", "&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;", "&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;" o "Errore certificato SSL"</translation>
 <translation id="7575887283389198269">Cellulari</translation>
+<translation id="7579113844074980463">Tablet <ph name="MANUFACTURER"/></translation>
 <translation id="7579442726219254162">Variabile sconosciuta "<ph name="VARIABLE"/>" nella configurazione gestita di "<ph name="APPLICATION_ID"/>".</translation>
 <translation id="7581199239021537589">Spostamento Y lato 2 immagine</translation>
 <translation id="4790068920551988473">Crea rapidamente un nuovo evento in Brave Calendar</translation>
@@ -4152,6 +4191,7 @@ Ulteriori dettagli:
 <translation id="7599089013883397081">Timeout del download</translation>
 <translation id="1062868744766141611">Chiedi a Brave informazioni su questa pagina</translation>
 <translation id="7606123685356405076">Modelli di Gemini 3</translation>
+<translation id="7138721839933201978">Salva il veicolo in Brave Wallet</translation>
 <translation id="7610193165460212391">Il valore non è compreso nell'intervallo (<ph name="VALUE"/>).</translation>
 <translation id="761261689936461781">Spesso</translation>
 <translation id="7613889955535752492">Scadenza: <ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
@@ -4180,7 +4220,9 @@ Ulteriori dettagli:
 <translation id="8275603180424408640">La password appena usata è stata compromessa nell'ambito di una violazione dei dati. Gestore delle password di Brave consiglia di cambiarla subito.</translation>
 <translation id="7647206758853451655">Qualità di stampa</translation>
 <translation id="7648133459447652947">Per mostrare il cursore, cambia app, ricarica la pagina o torna indietro</translation>
+<translation id="764847582138410250">Scansiona per accedere dal tuo smartphone</translation>
 <translation id="7648527891719919697">Questo sito rimarrà bloccato perché hai attivato la protezione avanzata nelle <ph name="BEGIN_ANDROID_SETTINGS_LINK"/>impostazioni di Android<ph name="END_ANDROID_SETTINGS_LINK"/>. <ph name="BEGIN_LEARN_MORE_LINK"/>Scopri di più su questo avviso<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="1658842203772810888">Salva il Known Traveler Number in Brave Wallet</translation>
 <translation id="7648992873808071793">Memorizzare file sul dispositivo</translation>
 <translation id="7649070708921625228">Guida</translation>
 <translation id="7650141368285545431">Usa passkey da un altro dispositivo</translation>
@@ -4271,6 +4313,7 @@ Ulteriori dettagli:
 <translation id="7773005668374414287">Stesso ordine a faccia in su</translation>
 <translation id="7779418012194492374">Revoca l'accesso per <ph name="DEVICE_NAME"/></translation>
 <translation id="7781829728241885113">Ieri</translation>
+<translation id="15891224440739379">Salva la carta di identità in Brave Wallet</translation>
 <translation id="7782465647372057580">Le informazioni sull'account sono criptate e vengono mantenute private</translation>
 <translation id="7785471469930192436">Consulta le istruzioni del tuo motore di ricerca per eliminare la tua cronologia delle ricerche, se possibile</translation>
 <translation id="7785790577395078482">questo tablet</translation>
@@ -4385,6 +4428,7 @@ Ulteriori dettagli:
 <translation id="7966803981046576691">Tipo di account lavoro</translation>
 <translation id="7967477318370169806">Fondi comuni di investimento</translation>
 <translation id="7967636097426665267">Apparecchiature di comunicazione</translation>
+<translation id="7967973398323409409">Nessuno può vedere le informazioni che compili automaticamente</translation>
 <translation id="79682505114836835">Il valore "<ph name="VALUE"/>" è un colore esadecimale non valido.</translation>
 <translation id="7968982339740310781">Mostra dettagli</translation>
 <translation id="7972714317346275248">PKCS #1 SHA-384 con crittografia RSA</translation>
@@ -4619,6 +4663,7 @@ Ulteriori dettagli:
 <translation id="8351131234907093545">Crea nota</translation>
 <translation id="8352849934814541340">L'amministratore di questo dispositivo ha installato applicazioni per funzioni aggiuntive. Le applicazioni hanno accesso ad alcuni tuoi dati.</translation>
 <translation id="8355270400102541638">Contesto arresto anomalo locale:</translation>
+<translation id="8362914115861174987">Traduci in</translation>
 <translation id="8363502534493474904">Disattivare la modalità aereo</translation>
 <translation id="8363929499301563123">Cookie dei siti web (lo stato di accesso sui siti web visitati di recente verrà conservato)</translation>
 <translation id="8364627913115013041">Non impostata.</translation>
@@ -4638,11 +4683,11 @@ Ulteriori dettagli:
 <translation id="8381674639488873545">L'addebito potrebbe essere singolo oppure ricorrente e potrebbe non essere evidente. <ph name="BEGIN_LINK"/>Mostra comunque<ph name="END_LINK"/></translation>
 <translation id="8382097126743287270">Schermo intero automatico</translation>
 <translation id="838307841291975086">Station wagon</translation>
-<translation id="838953173259347825">Ricevi risposte personalizzate più efficaci condividendo automaticamente le schede aperte in questa finestra se sono correlate a questa conversazione. Puoi attivare questa opzione per tutte le conversazioni nelle</translation>
 <translation id="8389532092404711541">In genere <ph name="LOW_PRICE"/></translation>
 <translation id="8389940864052787379">Veicoli ad alte prestazioni e personalizzati</translation>
 <translation id="8390725133630534698">La possibilità di condivisione da <ph name="ORIGIN_NAME"/> a <ph name="VM_NAME"/> è stata bloccata da una policy dell'amministratore</translation>
 <translation id="8392783408127179588">Ricaricamento policy in corso...</translation>
+<translation id="2792973694349074955">Aggiorna la patente di guida in Brave Wallet</translation>
 <translation id="8396522675989118466">È il codice a <ph name="NUMBER_OF_DIGITS"/> cifre indicato sul <ph name="SIDE_OF_CARD"/></translation>
 <translation id="8398335999901363925">Metodi di pagamento che è possibile compilare tramite tocco aperti a schermo intero.</translation>
 <translation id="8398446215576328011">Ripristina policy applicate</translation>
@@ -4918,7 +4963,6 @@ Ulteriori dettagli:
 <translation id="1154336171889402657">Non è stato possibile salvare queste informazioni in Brave Wallet. Sono state invece salvate in Brave su questo dispositivo. Brave ti proporrà di salvarle in Wallet la prossima volta che le utilizzerai.</translation>
 <translation id="8863218129525348270">Per pagare più velocemente la prossima volta, salva la carta sul tuo dispositivo</translation>
 <translation id="8864939224504814334">Completi e abiti professionali</translation>
-<translation id="8865650218866129025">Condividere automaticamente le schede aperte per ricevere risposte migliori in questa conversazione?</translation>
 <translation id="8866132857352163524">Colonne sonore</translation>
 <translation id="8866481888320382733">Errore durante l'analisi delle impostazioni policy</translation>
 <translation id="8866928039507595380">Piegatura</translation>
@@ -5038,9 +5082,11 @@ Ulteriori dettagli:
 <translation id="9063800855227801443">Impossibile acquisire contenuti riservati</translation>
 <translation id="9065203028668620118">Modifica</translation>
 <translation id="9065745800631924235">Ricerca di <ph name="TEXT"/> nella cronologia</translation>
+<translation id="9066116644715286230">{NUM_TABS,plural, =1{Dettagli sulla condivisione della scheda. Condivisione di 1 scheda da {WEBSITE_LIST_STR}}other{Dettagli sulla condivisione delle schede. Condivisione di {NUM_TABS} schede da {WEBSITE_LIST_STR}}}</translation>
 <translation id="90695670378604968">Plastica (opaca)</translation>
 <translation id="9069693763241529744">Bloccata da un'estensione</translation>
 <translation id="9073799351042754113">Hai deciso di disattivare gli avvisi di sicurezza per questo sito.</translation>
+<translation id="907426083053157749">Smartphone <ph name="MANUFACTURER"/></translation>
 <translation id="9075717835386447447">Marrone chiaro 1</translation>
 <translation id="8582968438435503394">Per poterti offrire suggerimenti e migliorare questa funzionalità, l'URL e i contenuti della pagina vengono condivisi con Brave. Puoi cambiare idea in qualsiasi momento e <ph name="LEARN_MORE"/>.</translation>
 <translation id="9078912659001679888">Frullatori e spremiagrumi</translation>
@@ -5052,7 +5098,6 @@ Ulteriori dettagli:
 <translation id="9090243919347147717">Allegati</translation>
 <translation id="9090548458280093580">Cerca nella cronologia con l'AI</translation>
 <translation id="9090993752571911635">Provider di servizi internet (ISP)</translation>
-<translation id="9092305980625216393">Spesso utilizzata per meteo, notizie locali e altro ancora</translation>
 <translation id="9093723786115107672">Pigiameria</translation>
 <translation id="9094424186948667194">Accedere ad altri servizi e app su questo dispositivo</translation>
 <translation id="9094544726794842788">Non mi piace apre un modulo per inviare un feedback dettagliato sul motivo per cui non ti piacciono questi risultati</translation>
@@ -5177,7 +5222,6 @@ Ulteriori dettagli:
 <translation id="964050462028070434">Gestisci password e passkey…</translation>
 <translation id="964681140808832181">Sì, voglio annullare</translation>
 <translation id="969892804517981540">Build ufficiale</translation>
-<translation id="8082647786512502565">Se questa opzione è attiva, Brave condividerà tutte le schede in questa finestra per aiutarti a ricevere risposte più pertinenti. Puoi attivare questa opzione per tutte le chat nelle</translation>
 <translation id="97054401902912338">Scopri di più sui filtri dei contenuti</translation>
 <translation id="973788791897303708">Questo gruppo di schede è al completo</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{Nessuno}=1{1 elemento}other{# elementi}}</translation>

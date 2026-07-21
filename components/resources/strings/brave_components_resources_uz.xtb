@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Keyingi nonce qiymatini olish muvaffaqiyatsiz</translation>
 <translation id="6180576227145734714">Tranzaksiya maʼlumotlari 'to' ko'rsatilgan bo'lsa, to'g'ri manzil bo'lishi kerak</translation>
 <translation id="6688162556547723415">So'ralgan usul yoki hisob foydalanuvchi tomonidan ruxsat berilmagan.</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="6122742277607781713">Portfel</translation>
-<translation id="7020503656406658141">Narxlar</translation>
 <translation id="3586775666459823714">NFT'lar</translation>
 <translation id="1987317783729300807">Hisoblar</translation>
 <translation id="3567988240819868195">Bozor</translation>
@@ -1819,7 +1817,6 @@
 <translation id="803703704549420287">Filtrlarni tozalash</translation>
 <translation id="1472675084647422956">Ko'proq ko'rsatish</translation>
 <translation id="4522570452068850558">Tafsilotlar</translation>
-<translation id="4583937519241190398">DappRadar tomonidan tasdiqlangan</translation>
 <translation id="8713438253026855351">Qalqonli hisobga o'tish</translation>
 <translation id="3526789880090101085">Hisobni qalqonlash</translation>
 <translation id="3155166394760577549">Tranzaksiya maxfiyligini oshirish uchun himoyalashni yoqing.</translation>
@@ -1952,6 +1949,7 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Avtomobillar</translation>
 <translation id="7726519849288907308">Mashhurlar</translation>
+<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Madaniyat</translation>
 <translation id="6807791860691150411">Taʼlim</translation>
 <translation id="3706423975342040244">Ko‘ngilochar</translation>
@@ -2168,6 +2166,7 @@
 <translation id="2367972762794486313">Dasturni ko‘rsatish</translation>
 <translation id="3142853026316054951">Focus rejimini almashtirish</translation>
 <translation id="3468387898712904997">Yangi email manzili</translation>
+<translation id="4711475997833555304">Pochtangizga yo'naltiriladigan tasodifiy email yarating.</translation>
 <translation id="2796584247246518451">Yangi vaqtinchalik konteyner</translation>
 <translation id="8591883849678260674">Aslni ko‘rish</translation>
 <translation id="1969654232209826429">min. o‘qish</translation>
@@ -2227,8 +2226,10 @@
 <translation id="8743383817154663379">So'rovingizni qayta ishlashda xato yuz berdi. Iltimos, keyinroq qayta urinib ko'ring.</translation>
 <translation id="2712650703044366764">Ushbu model noto‘g‘ri endpointga ega. Iltimos, sozlashlaringizni tekshiring va qayta urinib ko‘ring.</translation>
 <translation id="7092656392206649236">Leo bilan aloqa qilishda xato yuz berdi. Iltimos, qayta urinib ko'ring.</translation>
+<translation id="4539536233699928121">NEAR bilan aloqa qilishda xato yuz berdi. Iltimos, qayta urinib ko'ring.</translation>
 <translation id="3552709750512842961">Holat kodi: <ph name="STATUS_CODE"/>, xato kodi: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Holat kodi: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Holat kodi: <ph name="STATUS_CODE"/>, ichki holat kodi: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Siz premium chegara limitiga yetdingiz. Iltimos, bir necha soatdan so'ng qayta urinib ko'ring.</translation>
 <translation id="3683964919745779766">Siz ushbu model uchun stavka limitiga yetib keldingiz yoki kreditlaringiz tugadi. Iltimos, keyinroq qayta urinib ko‘ring.</translation>
 <translation id="7692501701960747469">Ushbu model uchun sozlangan API kaliti yaroqsiz. Iltimos, sozlamalaringizni tekshiring va qayta urinib ko‘ring.</translation>
@@ -2402,6 +2403,9 @@
 <translation id="9051226419897869406">Brave Leo bilan Maxfiy Suhbat</translation>
 <translation id="2414904697165579184">Javoblarni varaq(lar) kontenti asosida shakllantirish</translation>
 <translation id="8258324391302611485">Bu sahifa kontenti xabarlaringiz bilan birga Leo'ga yuboriladi.</translation>
+<translation id="443008484043213881">Vositalar</translation>
+<translation id="4343623396828510727">Bu saytlar Leo ushbu saytga va saytdan maʼlumot yuborish uchun foydalanishi mumkin boʻlgan vositalarni taqdim etadi. Agar bu suhbatda ushbu sayt koʻrishini istamaydigan maʼlumotlar boʻlsa, bu vositalarni biriktirmang yoki tasdiqlamang.</translation>
+<translation id="5021823940147712387">Vositalarni olib tashlash</translation>
 <translation id="318819763888864209">Barcha obunalar avtomatik yangilanadi, lekin yangilashdan oldinistalgan payt bekor qilinishi mumkin.</translation>
 <translation id="5091223967610958">Leo'ni yaxshilashga yordam berish uchun sahifada bo'lgan sahifa hosnamini (<ph name="HOST_NAME"/>) ulashing</translation>
 <translation id="8732450785281947197">Leo AI vositalari</translation>
@@ -2480,6 +2484,9 @@
 <translation id="7918928051723770926">Vazifa bajarildi</translation>
 <translation id="2113810663179257944">Kod bajarilishi</translation>
 <translation id="4838375634693651776">Sizning so'rovingizga yordam berish uchun kodni sandboxda ijro etish</translation>
+<translation id="6990975553143971265">Brauzer tarixingizda "<ph name="QUERY"/>" qidirilmoqda</translation>
+<translation id="8302511726757276645">Brauzer tarixingiz qidirilmoqda</translation>
+<translation id="8410699755320690690">Brave AI brauzer tarixingizni qidirmoqchi. Qidiruv qurilmangizda mahalliy tarzda ishlaydi, shuning uchun toʻliq tarixingiz hech qayerga yuborilmaydi. Faqat mos keluvchi sahifalarning sarlavhalari, URL manzillari va indekslangan matn qismlari ushbu suhbatning bir qismi sifatida Brave AI ga yuboriladi.</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Chiqish:</translation>
 <translation id="6911817209337314910">Siz tanlashingiz uchun bir nechta variantlarni yaratmoqdaman</translation>
@@ -2689,6 +2696,21 @@
 <translation id="7586067492365979844">Brave Qalqonlar yangi bosh va dizayniga ega. U sayt ma'lumotlari bilan birlashtirilgan bo'lib, bir masofani o'z ichiga oladi.</translation>
 <translation id="9114542678887529043">Brave Qalqonlar yangi bosh va dizayniga ega. Manzil satrida sayt belgisini bosish orqali unga kirish.</translation>
 <translation id="4242533952199664413">Sozlamalarni ochish</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Qurilma xotirasi</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Shrift</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">Klaviatura</translation>
+<translation id="5302048478445481009">Til</translation>
+<translation id="7986250835989845763">Media qurilmalar</translation>
+<translation id="4267171000817377500">Plaginlar</translation>
+<translation id="3441653493275994384">Ekran</translation>
+<translation id="1772612984983840854">Nutq sintezi</translation>
+<translation id="1167475333911019229">USB qurilma seriya raqami</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Maxfiylik. Standart orqali.</translation>
 <translation id="4366423156486478559">Har bir bosgan havolangizda Brave himoyasini oling. Faqat Brave'ni standart sifatida o'rnating va brauzer qiling. Xavfsiz.</translation>
 <translation id="3830912418080848377">Sozlamalarni import qilish</translation>
@@ -2725,7 +2747,6 @@
 <translation id="6821966107067356137">RSS feed qo‘shish</translation>
 <translation id="2478076885740497414">Ilova o'rnatish</translation>
 <translation id="8293206222192510085">Xatcho‘p qo‘shish</translation>
-<translation id="1010029336854254368">Ulashish Menyusi</translation>
 <translation id="7758460733045216901">Bukmarklar paneli</translation>
 <translation id="958268166261124668">Brave VPN: Ulandi</translation>
 <translation id="6021669293402055982">Brave VPN: Uzildi</translation>
@@ -2847,17 +2868,31 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="5816720995022674532">Origin Linux qurilmalarida bepul foydalanish uchun mavjud, lekin Brave-ni biznes sifatida qo'llab-quvvatlashni xohlasangiz <ph name="BEGIN_LINK"/>sotib olishga mumkin<ph name="END_LINK"/>. Sotib olish Android, iOS, macOS va Windows qurilmalarida Origin-dan foydalanish imkonini ham beradi.</translation>
 <translation id="3065220545261045367">Brave-ni Origin-ni sotib olish orqali qo'llab-quvvatlang</translation>
 <translation id="2069499076031488636">Linux-da Brave Origin bilan bepul davom etish</translation>
+<translation id="6820590295368504396">SKU xizmatiga ulanib boʻlmadi</translation>
+<translation id="2525146368601152300">Sotib olish IDsi boʻsh</translation>
+<translation id="7858444547014304753">Notoʻgʻri sotib olish IDsi</translation>
+<translation id="2016076837307423164">Maʼlumotlarni olib boʻlmadi</translation>
+<translation id="3890481923176188801">Sotib olish topilmadi</translation>
 <translation id="5713644099811900409">Brave hisob</translation>
 <translation id="2906576968270573525">Brave hisobiga kirish yoki uning ro'yxatdan o'tishni yarating</translation>
 <translation id="6972754398087986839">Boshlash</translation>
 <translation id="5378207817582281342">Deyarli tayyor!</translation>
 <translation id="3750210661641549834">Hisobingizni yaratish uchun email manzilingizni tasdiqlang.</translation>
-<translation id="4129813507847680661">Roʻyxatdan oʻtish kodini kiriting</translation>
+<translation id="4351175281479794167">Tasdiqlash kodini kiriting</translation>
 <translation id="1672793037892810340">Sizga kiritishingiz kerak boʻlgan kodli email yuborilgan boʻlishi kerak.</translation>
 <translation id="4821255729182569254">Tasdiqlash emailini qayta yuborish</translation>
 <translation id="5837679375142747484">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki uni <ph name="BEGIN_LINK"/>qayta yuboring<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Email koʻrinmayaptimi? Spam jildingizni tekshiring yoki uni qayta yuboring.</translation>
 <translation id="1020730839570724178">Roʻyxatdan oʻtishni bekor qilish</translation>
+<translation id="7155125570724238786">Parolingizni tiklash uchun email manzilingizni tasdiqlang.</translation>
+<translation id="816074628631172140">Email manzilingiz tasdiqlandi. Parolni tiklashni yakunlash uchun yangi parol oʻrnating.</translation>
+<translation id="7543374051303238869">Yangi parol oʻrnatish</translation>
+<translation id="8378209932853841849">Parol tiklashni bekor qilish</translation>
+<translation id="4405566535206792621">Parolingizni oʻzgartirish uchun email manzilingizni tasdiqlang.</translation>
+<translation id="3135333563420939059">Email manzilingiz tasdiqlandi. Parolni oʻzgartirishni yakunlash uchun yangi parol oʻrnating.</translation>
+<translation id="4227581348172626540">Parol oʻzgartirishni bekor qilish</translation>
+<translation id="808894953321890993">Parolni oʻzgartirish</translation>
+<translation id="7967687455715421528">Parolni oʻzgartirib boʻlmadi</translation>
 <translation id="4869737930995549965">Chiqish</translation>
 <translation id="5538654494923870167">Brave hisobingiz bilan ishni boshlang</translation>
 <translation id="1544145635547515689">Brave hisobini yaratish</translation>
@@ -2872,10 +2907,11 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="5486261815000869482">Parolni tasdiqlang</translation>
 <translation id="7345706641791090287">Parolingizni tasdiqlang</translation>
 <translation id="7114054701490058191">Parollar mos kelmadi</translation>
+<translation id="4277028893293644418">Parolni tiklash</translation>
+<translation id="9033485352495162741">Tasdiqlash muvaffaqiyatli. Endi istagan yangi parolingizni kiriting:</translation>
 <translation id="1293857704520741614">Hisobingizga kiring</translation>
 <translation id="118617366439356381">Parolingizni unutdingizmi?</translation>
 <translation id="5183159033908953146">Brave hisobi email manzilingizni tasdiqlang va parolingizni tiklash uchun havola olasiz. Havola faqat 30 daqiqa davomida amal qiladi.</translation>
-<translation id="3997368361371298873">Ogohlantirish: ushbu qurilmaga kirmaganingiz uchun parolni tiklash serverdagi <ph name="BEGIN_BOLD"/>barcha maʼlumotlaringizni oʻchiradi<ph name="END_BOLD"/>. Agar kirgan boshqa qurilmangiz boʻlsa, parolni tiklash oʻrniga oʻsha qurilmadan parolni oʻzgartiring.</translation>
 <translation id="3674472551471103443">Parolingizni tiklang</translation>
 <translation id="2755539422340788311">Emailingizni tasdiqlang</translation>
 <translation id="6641436078676327508">Sizga qisqa kodli email yuborilgan boʻlishi kerak. Davom etish uchun uni shu yerga kiriting.</translation>
@@ -2892,10 +2928,16 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="7144067487084094749">Bu email manzili uchun hisob allaqachon mavjud. Hisob yaratish oʻrniga tizimga kirib koʻring.</translation>
 <translation id="5288951359968156008">Bu email manzilining domeni qoʻllab-quvvatlanmaydi. Iltimos, boshqa email manzilidan foydalaning.</translation>
 <translation id="7625678607509255072">Email tasdiqlash chegarasi oshib ketdi. Iltimos, qayta urinishdan oldin 30 daqiqa kuting.</translation>
-<translation id="4582421696414628320">Tasdiqlash muddati tugadi. Roʻyxatdan oʻtish jarayonini qaytadan boshlang.</translation>
+<translation id="9121175588136821850">Tasdiqlash kodi muddati tugadi. Roʻyxatdan oʻtish jarayonini qaytadan boshlang.</translation>
 <translation id="8439543211004394821">Juda koʻp notoʻgʻri kodlar kiritildi. Roʻyxatdan oʻtish jarayonini qaytadan boshlang.</translation>
 <translation id="3229986152760633988">Notoʻgʻri kod, iltimos qayta urinib koʻring.</translation>
 <translation id="818783632689113711">Ushbu elektron pochta manzili uchun allaqachon hisob so'ralgan. Iltimos, elektron pochtangizni tekshiring yoki 30 daqiqadan so'ng yana urinib ko'ring.</translation>
+<translation id="4776810543245166572">Bu email manzil uchun hech qanday hisob topilmadi.</translation>
+<translation id="7090885444036935209">Notoʻgʻri email manzil.</translation>
+<translation id="1542836798393843657">Bu email manzil uchun juda koʻp tasdiqlash urinishlari boʻldi. 24 soatdan keyin qayta urinib koʻring.</translation>
+<translation id="7572012011062736429">Ichki xato. Dialogni yoping, tasdiqlashni bekor qiling va qayta urinib koʻring.</translation>
+<translation id="2477280119520811719">Tasdiqlash kodi muddati tugadi. Parol oʻzgartirish jarayonini qaytadan boshlang.</translation>
+<translation id="7103280722523884198">Juda koʻp notoʻgʻri kodlar kiritildi. Parol oʻzgartirish jarayonini qaytadan boshlang.</translation>
 <translation id="4178004989875422946">Brave hisobi sizga Brave xizmatlaridan oson foydalanish imkonini beradi.</translation>
 <translation id="4902897635127068510"><ph name="SUGGESTION"/> ni nazarda tutdingizmi?</translation>
 <translation id="8314772463905284467">Caps Lock yoqilgan</translation>
@@ -2904,6 +2946,7 @@ Sizni ulanishga tayyorlaylik!</translation>
 <translation id="2112559299194052697">Qayta yuborib boʻlmadi</translation>
 <translation id="7932611814134267012">Juda koʻp tasdiqlash emaillari allaqachon yuborilgan. Iltimos, spam jildingizni tekshiring.</translation>
 <translation id="1364223093800750401">Email allaqachon tasdiqlangan.</translation>
+<translation id="1353061468772282268">Tasdiqlash kodining muddati tugadi. Tasdiqlashni bekor qiling va qayta urinib koʻring.</translation>
 <translation id="3353844160742960162">Maxfiylik sozlamalarini sozlash</translation>
 <translation id="528205534230423181">Bu sayt Brave avtomatik ravishda siz uchun sozlay oladigan maxfiylik sozlamalarini taklif qiladi. Quyidagilarni tavsiya qilamiz:</translation>
 <translation id="1063227610401477317">Oʻzgarishlarni qoʻllash</translation>

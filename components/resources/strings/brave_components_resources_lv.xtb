@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Neizdevās iegūt nākamo šī brīža vērtību</translation>
 <translation id="6180576227145734714">Darījuma datiem “uz” ir jābūt derīgai adresei, ja norādīts</translation>
 <translation id="6688162556547723415">Lietotājs nav atļāvis pieprasīto metodi un/vai kontu.</translation>
-<translation id="8767749833522980474">Kriptovalūta</translation>
 <translation id="6122742277607781713">Portfelis</translation>
-<translation id="7020503656406658141">Cenas</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Konti</translation>
 <translation id="3567988240819868195">Tirgus</translation>
@@ -1822,7 +1820,6 @@
 <translation id="803703704549420287">Notīrīt filtrus</translation>
 <translation id="1472675084647422956">Rādīt vairāk</translation>
 <translation id="4522570452068850558">Detalizēta informācija</translation>
-<translation id="4583937519241190398">DappRadar apstiprināts</translation>
 <translation id="8713438253026855351">Pārslēgties uz Aizsargātu kontu</translation>
 <translation id="3526789880090101085">Aizsargāts konts</translation>
 <translation id="3155166394760577549">Iespējojiet aizsardzību, lai uzlabotu darījumu privātumu.</translation>
@@ -1955,6 +1952,7 @@
 <translation id="6261915643960475695">Bizness</translation>
 <translation id="8265589281845759879">Auto</translation>
 <translation id="7726519849288907308">Slavenības</translation>
+<translation id="8767749833522980474">Kriptovalūta</translation>
 <translation id="7577010593836079522">Kultūra</translation>
 <translation id="6807791860691150411">Izglītība</translation>
 <translation id="3706423975342040244">Izklaide</translation>
@@ -2171,6 +2169,7 @@
 <translation id="2367972762794486313">Rādīt lietotnes</translation>
 <translation id="3142853026316054951">Pārslēgt fokusa režīmu</translation>
 <translation id="3468387898712904997">Jauns e-pasta pseidonīms</translation>
+<translation id="4711475997833555304">Izveidojiet nejaušu e-pastu, kas tiek pārsūtīts uz jūsu iesūtni.</translation>
 <translation id="2796584247246518451">Jauns pagaidu konteiners</translation>
 <translation id="8591883849678260674">Skatīt oriģinālu</translation>
 <translation id="1969654232209826429">min. lasīšanas laiks</translation>
@@ -2230,8 +2229,10 @@
 <translation id="8743383817154663379">Apstrādājot jūsu pieprasījumu, kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="2712650703044366764">Šī modeļa galapunkts ir nederīgs. Pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
 <translation id="7092656392206649236">Sazinoties ar Leo, kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.</translation>
+<translation id="4539536233699928121">Sazinoties ar NEAR, kaut kas nogāja greizi. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="3552709750512842961">Statusa kods: <ph name="STATUS_CODE"/>, kļūdas kods: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Statusa kods: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Statusa kods: <ph name="STATUS_CODE"/>, iekšējais statusa kods: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Esat sasniedzis augstākās likmes ierobežojumu. Lūdzu, mēģiniet vēlreiz pēc dažām stundām.</translation>
 <translation id="3683964919745779766">Jūs esat sasnieguši pieprasījumu ierobežojumu vai jums ir beigušies kredīti. Lūdzu, mēģiniet vēlreiz vēlāk.</translation>
 <translation id="7692501701960747469">Šim modelim konfigurētā API atslēga nav derīga. Lūdzu, pārbaudiet konfigurāciju un mēģiniet vēlreiz.</translation>
@@ -2405,6 +2406,9 @@
 <translation id="9051226419897869406">Tērzējiet privāti ar Brave Leo</translation>
 <translation id="2414904697165579184">Veidot atbildes, pamatojoties uz cilnes saturu</translation>
 <translation id="8258324391302611485">Šīs lapas saturs tiks nosūtīts Leo kopā ar jūsu ziņojumiem.</translation>
+<translation id="443008484043213881">Rīki</translation>
+<translation id="4343623396828510727">Šīs vietnes piedāvā rīkus, kurus Leo var izmantot, lai sūtītu datus uz šo vietni un no tās. Nepievienojiet un neapstipriniet šos rīkus, ja šī saruna satur datus, kurus nevēlaties rādīt šai vietnei.</translation>
+<translation id="5021823940147712387">Noņemt rīkus</translation>
 <translation id="318819763888864209">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā var atcelt pirms atjaunošanas.</translation>
 <translation id="5091223967610958">Atklājiet jūsu apmeklētās lapas (<ph name="HOST_NAME"/>) resursdatora nosaukumu, lai mēs varētu uzlabot Leo.</translation>
 <translation id="8732450785281947197">Leo MI rīki</translation>
@@ -2483,6 +2487,9 @@
 <translation id="7918928051723770926">Uzdevums pabeigts</translation>
 <translation id="2113810663179257944">Koda izpilde</translation>
 <translation id="4838375634693651776">Izpilda kodu smilšu kastē, lai palīdzētu atbildēt uz jūsu vaicājumu</translation>
+<translation id="6990975553143971265">Meklē jūsu pārlūka vēsturē “<ph name="QUERY"/>”</translation>
+<translation id="8302511726757276645">Meklē jūsu pārlūka vēsturē</translation>
+<translation id="8410699755320690690">Brave AI vēlas meklēt jūsu pārlūkošanas vēsturē. Meklēšana notiek lokāli jūsu ierīcē, tāpēc visa jūsu vēsture netiek nekur nosūtīta. Kā daļa no šīs sarunas Brave AI tiks nosūtīti tikai atbilstošo lapu nosaukumi, URL adreses un indeksētie teksta fragmenti.</translation>
 <translation id="4379566111233326721">Kods:</translation>
 <translation id="3542130965673205258">Izvade:</translation>
 <translation id="6911817209337314910">Ģenerē dažas iespējas, no kurām izvēlēties</translation>
@@ -2692,6 +2699,21 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="7586067492365979844">Brave Shields ir jauna mājas un dizains. Tas tagad ir integrēts ar vietnes informāciju vienota pieredzes nolūkā.</translation>
 <translation id="9114542678887529043">Brave Shields ir jauna mājas un dizains. Piekļūstiet tai, noklikšķinot uz vietnes ikonas adreses joslā.</translation>
 <translation id="4242533952199664413">Atvērt iestatījumus</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Ierīces atmiņa</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Fonts</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">Tastatūra</translation>
+<translation id="5302048478445481009">Valoda</translation>
+<translation id="7986250835989845763">Multivides ierīces</translation>
+<translation id="4267171000817377500">Spraudņi</translation>
+<translation id="3441653493275994384">Ekrāns</translation>
+<translation id="1772612984983840854">Runas sintēze</translation>
+<translation id="1167475333911019229">USB ierīces sērijas numurs</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Privātums. Pēc noklusējuma.</translation>
 <translation id="4366423156486478559">Brave aizsardzība katrā klikšķī. Vienkārši iestati Brave kā savu noklusējuma pārlūku un sērfo. Privāti.</translation>
 <translation id="3830912418080848377">Importē iestatījumus</translation>
@@ -2728,7 +2750,6 @@ Bloķēti <ph name="NUMBER"/> izsekotāji, reklāmas un cits</translation>
 <translation id="6821966107067356137">Pievienot RSS plūsmu</translation>
 <translation id="2478076885740497414">Instalēt lietotni</translation>
 <translation id="8293206222192510085">Pievienot grāmatzīmi</translation>
-<translation id="1010029336854254368">Koplietošanas izvēlne</translation>
 <translation id="7758460733045216901">Grāmatzīmju panelis</translation>
 <translation id="958268166261124668">Brave VPN: Savienots</translation>
 <translation id="6021669293402055982">Brave VPN: Atvienots</translation>
@@ -2851,17 +2872,31 @@ esošo cilni.</translation>
 <translation id="5816720995022674532">Origin ir pieejams bez maksas Linux ierīcēs, taču joprojām <ph name="BEGIN_LINK"/>pieejams iegādei<ph name="END_LINK"/>, ja vēlētos atbalstīt Brave kā biznesi. Iegāde arī atbloķētu iespēju izmantot Origin Android, iOS, macOS un Windows ierīcēs.</translation>
 <translation id="3065220545261045367">Atbalstīt Brave, pircot Origin</translation>
 <translation id="2069499076031488636">Turpināt ar Origin bez maksas Linux</translation>
+<translation id="6820590295368504396">Nav iespējams savienot ar SKU pakalpojumu</translation>
+<translation id="2525146368601152300">Iegādes ID ir tukšs</translation>
+<translation id="7858444547014304753">Nederīgs iegādes ID</translation>
+<translation id="2016076837307423164">Neizdevās iegūt akreditācijas datus</translation>
+<translation id="3890481923176188801">Iegāde nav atrasta</translation>
 <translation id="5713644099811900409">Brave konts</translation>
 <translation id="2906576968270573525">Piesakieties vai izveidojiet Brave kontu</translation>
 <translation id="6972754398087986839">Sākt darbu</translation>
 <translation id="5378207817582281342">Gandrīz pie mērķa!</translation>
 <translation id="3750210661641549834">Lai izveidotu kontu, lūdzu, apstipriniet savu e-pasta adresi.</translation>
-<translation id="4129813507847680661">Ievadiet reģistrācijas kodu</translation>
+<translation id="4351175281479794167">Ievadiet verifikācijas kodu</translation>
 <translation id="1672793037892810340">Jums vajadzēja saņemt e-pastu ar kodu, kas būs jāievada.</translation>
 <translation id="4821255729182569254">Atkārtoti nosūtīt apstiprinājuma e-pastu</translation>
 <translation id="5837679375142747484">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai <ph name="BEGIN_LINK"/>nosūtiet to atkārtoti<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Neredzat e-pastu? Pārbaudiet surogātpasta mapi vai nosūtiet to atkārtoti.</translation>
 <translation id="1020730839570724178">Atcelt reģistrāciju</translation>
+<translation id="7155125570724238786">Lai atiestatītu paroli, lūdzu, apstipriniet savu e-pasta adresi.</translation>
+<translation id="816074628631172140">Jūsu e-pasts ir apstiprināts. Iestatiet jaunu paroli, lai pabeigtu paroles atiestatīšanu.</translation>
+<translation id="7543374051303238869">Iestatīt jaunu paroli</translation>
+<translation id="8378209932853841849">Atcelt paroles atiestatīšanu</translation>
+<translation id="4405566535206792621">Lai mainītu paroli, lūdzu, apstipriniet savu e-pasta adresi.</translation>
+<translation id="3135333563420939059">Jūsu e-pasts ir apstiprināts. Iestatiet jaunu paroli, lai pabeigtu paroles maiņu.</translation>
+<translation id="4227581348172626540">Atcelt paroles maiņu</translation>
+<translation id="808894953321890993">Mainīt paroli</translation>
+<translation id="7967687455715421528">Nav iespējams mainīt paroli</translation>
 <translation id="4869737930995549965">Izrakstīties</translation>
 <translation id="5538654494923870167">Sāciet darbu ar savu Brave kontu</translation>
 <translation id="1544145635547515689">Izveidot Brave kontu</translation>
@@ -2876,10 +2911,11 @@ esošo cilni.</translation>
 <translation id="5486261815000869482">Apstipriniet paroli</translation>
 <translation id="7345706641791090287">Apstipriniet savu paroli</translation>
 <translation id="7114054701490058191">Paroles nesakrīt</translation>
+<translation id="4277028893293644418">Atiestatīt paroli</translation>
+<translation id="9033485352495162741">Apstiprināšana veiksmīga. Tagad ievadiet vēlamo jauno paroli:</translation>
 <translation id="1293857704520741614">Piesakieties savā kontā</translation>
 <translation id="118617366439356381">Aizmirsāt savu paroli?</translation>
 <translation id="5183159033908953146">Apstipriniet sava Brave konta e-pastu, un jūs saņemsiet saiti, lai atiestatītu paroli. Saite būs derīga tikai 30 minūtes.</translation>
-<translation id="3997368361371298873">Brīdinājums: tā kā jūs neesat pieteicies šajā ierīcē, paroles atiestatīšana <ph name="BEGIN_BOLD"/>dzēsīs visus jūsu datus<ph name="END_BOLD"/> serverī. Ja jums ir cita ierīce, kurā esat pieteicies, mainiet paroli no šīs ierīces, nevis atiestatiet to.</translation>
 <translation id="3674472551471103443">Atiestatiet savu paroli</translation>
 <translation id="2755539422340788311">Apstipriniet savu e-pastu</translation>
 <translation id="6641436078676327508">Jums vajadzēja saņemt e-pastu ar īsu kodu. Lūdzu, ievadiet to šeit, lai turpinātu.</translation>
@@ -2896,10 +2932,16 @@ esošo cilni.</translation>
 <translation id="7144067487084094749">Šai e-pasta adresei jau pastāv konts. Mēģiniet pieteikties, nevis izveidot kontu.</translation>
 <translation id="5288951359968156008">Šīs e-pasta adreses domēns netiek atbalstīts. Lūdzu, izmantojiet citu e-pasta adresi.</translation>
 <translation id="7625678607509255072">Pārsniegts e-pasta verifikāciju limits. Lūdzu, pagaidiet 30 minūtes, pirms mēģināt vēlreiz.</translation>
-<translation id="4582421696414628320">Verifikācijas termiņš beidzies. Sāciet reģistrācijas procesu no jauna.</translation>
+<translation id="9121175588136821850">Verifikācijas koda termiņš beidzies. Sāciet reģistrācijas procesu no jauna.</translation>
 <translation id="8439543211004394821">Tika ievadīts pārāk daudz nepareizu kodu. Sāciet reģistrācijas procesu no jauna.</translation>
 <translation id="3229986152760633988">Nepareizs kods, lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="818783632689113711">Kontam šajā e-pasta adresē jau ir pieprasīta izveide. Lūdzu, pārbaudiet savu e-pastu vai mēģiniet vēlreiz pēc 30 minūtēm.</translation>
+<translation id="4776810543245166572">Šai e-pasta adresei nav atrasts neviens konts.</translation>
+<translation id="7090885444036935209">Nederīga e-pasta adrese.</translation>
+<translation id="1542836798393843657">Pārāk daudz verifikācijas mēģinājumu šai e-pasta adresei. Mēģiniet vēlreiz pēc 24 stundām.</translation>
+<translation id="7572012011062736429">Iekšēja kļūda. Aizveriet dialoglodziņu, atceliet verifikāciju un mēģiniet vēlreiz.</translation>
+<translation id="2477280119520811719">Verifikācijas koda termiņš beidzies. Sāciet paroles maiņas procesu no jauna.</translation>
+<translation id="7103280722523884198">Tika ievadīts pārāk daudz nepareizu kodu. Sāciet paroles maiņas procesu no jauna.</translation>
 <translation id="4178004989875422946">Brave konts ļaus jums viegli piekļūt Brave pakalpojumiem.</translation>
 <translation id="4902897635127068510">Vai jūs domājāt <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock ir ieslēgts</translation>
@@ -2908,6 +2950,7 @@ esošo cilni.</translation>
 <translation id="2112559299194052697">Nevar nosūtīt atkārtoti</translation>
 <translation id="7932611814134267012">Jau ir nosūtīts pārāk daudz verifikācijas e-pastu. Lūdzu, pārbaudiet surogātpasta mapi.</translation>
 <translation id="1364223093800750401">E-pasts jau ir verificēts.</translation>
+<translation id="1353061468772282268">Verifikācijas koda termiņš ir beidzies. Atceliet verifikāciju un mēģiniet vēlreiz.</translation>
 <translation id="3353844160742960162">Privātuma iestatījumu pielāgošana</translation>
 <translation id="528205534230423181">Šī tīmekļa vietne piedāvā privātuma iestatījumus, ko Brave var automātiski pielāgot jūsu vietā. Lūk, ko mēs iesakām:</translation>
 <translation id="1063227610401477317">Lietot izmaiņas</translation>

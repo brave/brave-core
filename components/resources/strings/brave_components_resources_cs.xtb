@@ -791,9 +791,7 @@
 <translation id="5486744676117070166">Nepodařilo se získat další hodnotu Nonce</translation>
 <translation id="6180576227145734714">Transakční údaj 'to' musí být při zadání platná adresa.</translation>
 <translation id="6688162556547723415">Požadovaná metoda nebo účet nebyly uživatelem autorizovány.</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="7020503656406658141">Ceny</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Účty</translation>
 <translation id="3567988240819868195">Trh</translation>
@@ -1832,7 +1830,6 @@
 <translation id="803703704549420287">Vymazat filtry</translation>
 <translation id="1472675084647422956">Zobrazit více</translation>
 <translation id="4522570452068850558">Detaily</translation>
-<translation id="4583937519241190398">Ověřeno službou DappRadar</translation>
 <translation id="8713438253026855351">Přejít na chráněný účet</translation>
 <translation id="3526789880090101085">Ochránit účet</translation>
 <translation id="3155166394760577549">Povolit štíty za účelem zvýšení ochrany soukromí transakcí.</translation>
@@ -1966,6 +1963,7 @@ other {# zdrojů}
 <translation id="6261915643960475695">Byznys</translation>
 <translation id="8265589281845759879">Auta</translation>
 <translation id="7726519849288907308">Celebrity</translation>
+<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Vzdělávání</translation>
 <translation id="3706423975342040244">Zábava</translation>
@@ -2182,6 +2180,7 @@ other {# zdrojů}
 <translation id="2367972762794486313">Zobrazit aplikace</translation>
 <translation id="3142853026316054951">Přepnout režim zaměření</translation>
 <translation id="3468387898712904997">Nový e-mailový alias</translation>
+<translation id="4711475997833555304">Vytvoří náhodný e-mail, který přeposílá poštu do vaší schránky.</translation>
 <translation id="2796584247246518451">Nový dočasný kontejner</translation>
 <translation id="8591883849678260674">Zobrazit originál</translation>
 <translation id="1969654232209826429">min. čtení</translation>
@@ -2245,8 +2244,10 @@ other {# zdrojů}
 <translation id="8743383817154663379">Při zpracování vašeho požadavku se něco pokazilo. Zkuste to prosím znovu později.</translation>
 <translation id="2712650703044366764">Tento model má neplatný koncový bod. Zkontrolujte prosím svou konfiguraci a zkuste to znovu.</translation>
 <translation id="7092656392206649236">Při komunikaci s Leo se něco pokazilo. Zkuste to prosím znovu.</translation>
+<translation id="4539536233699928121">Při komunikaci s NEAR se něco pokazilo. Zkuste to prosím znovu.</translation>
 <translation id="3552709750512842961">Stavový kód: <ph name="STATUS_CODE"/>, chybový kód: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Stavový kód: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Stavový kód: <ph name="STATUS_CODE"/>, vnitřní stavový kód: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dosáhli jste limitu prémiové sazby. Zkuste to znovu za několik hodin.</translation>
 <translation id="3683964919745779766">Dosáhli jste limitu služby pro tento model nebo vám došly kredity. Zkuste to prosím později.</translation>
 <translation id="7692501701960747469">Klíč API nakonfigurovaný pro tento model je neplatný. Zkontrolujte prosím konfiguraci a zkuste to znovu.</translation>
@@ -2420,6 +2421,9 @@ other {# zdrojů}
 <translation id="9051226419897869406">Chatujte bez porušení soukromí s Brave Leo</translation>
 <translation id="2414904697165579184">Utvářejte odpovědi na základě obsahu karty či karet</translation>
 <translation id="8258324391302611485">Obsah této stránky bude odeslán Leovi společně s vašimi zprávami.</translation>
+<translation id="443008484043213881">Nástroje</translation>
+<translation id="4343623396828510727">Tyto stránky poskytují nástroje, které Leo může použít k odesílání dat na tento web a z něj. Nepřipojujte ani neschvalujte tyto nástroje, pokud tato konverzace obsahuje data, která nechcete, aby tento web viděl.</translation>
+<translation id="5021823940147712387">Odstranit nástroje</translation>
 <translation id="318819763888864209">Všechna předplatná se automaticky obnovují, ale lze je kdykoli před obnovením zrušit.</translation>
 <translation id="5091223967610958">Sdílejte název hostitele stránky, na které se nacházíte (<ph name="HOST_NAME"/>), abyste nám pomohli vylepšit Leo.</translation>
 <translation id="8732450785281947197">Nástroje UI Leo</translation>
@@ -2498,6 +2502,9 @@ other {# zdrojů}
 <translation id="7918928051723770926">Úkol dokončen</translation>
 <translation id="2113810663179257944">Spuštění kódu</translation>
 <translation id="4838375634693651776">Spouštění kódu v izolovaném prostředí pro pomoc s vaším dotazem</translation>
+<translation id="6990975553143971265">Prohledávání vaší historie prohlížeče pro „<ph name="QUERY"/>“</translation>
+<translation id="8302511726757276645">Prohledávání vaší historie prohlížeče</translation>
+<translation id="8410699755320690690">Brave AI chce prohledat vaši historii prohlížení. Vyhledávání probíhá lokálně na vašem zařízení, takže vaše úplná historie se nikam neodesílá. V rámci této konverzace budou do Brave AI odeslány pouze názvy odpovídajících stránek, URL adresy a indexované textové pasáže.</translation>
 <translation id="4379566111233326721">Kód:</translation>
 <translation id="3542130965673205258">Výstup:</translation>
 <translation id="6911817209337314910">Generování několika možností, ze kterých si můžete vybrat</translation>
@@ -2708,6 +2715,21 @@ other {# zdrojů}
 <translation id="7586067492365979844">Štíty Brave mají nový domov a design. Nyní se integrují s informacemi o webu pro jednotné prostředí.</translation>
 <translation id="9114542678887529043">Štíty Brave mají nový domov a design. Přístup k nim získáte kliknutím na ikonu webu v adresním řádku.</translation>
 <translation id="4242533952199664413">Otevřít nastavení</translation>
+<translation id="3616113530831147358">Zvuk</translation>
+<translation id="7972837668077967426">Plátno</translation>
+<translation id="2182250753201267390">Paměť zařízení</translation>
+<translation id="1217374757325197995">Fond zdrojů událostí</translation>
+<translation id="1823768272150895732">Písmo</translation>
+<translation id="436315497893815819">Souběžnost hardwaru</translation>
+<translation id="7846634333498149051">Klávesnice</translation>
+<translation id="5302048478445481009">Jazyk</translation>
+<translation id="7986250835989845763">Multimediální zařízení</translation>
+<translation id="4267171000817377500">Pluginy</translation>
+<translation id="3441653493275994384">Obrazovka</translation>
+<translation id="1772612984983840854">Syntéza řeči</translation>
+<translation id="1167475333911019229">Sériové číslo zařízení USB</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Fond Web Socketů</translation>
 <translation id="6294662480095808915">Ochrana soukromí. Vždy.</translation>
 <translation id="4366423156486478559">Nastavte si Brave jako výchozí prohlížeč a budete mít ochranu od Brave při otevření každého odkazu.</translation>
 <translation id="3830912418080848377">Importovat nastavení</translation>
@@ -2744,7 +2766,6 @@ other {# zdrojů}
 <translation id="6821966107067356137">Přidat RSS kanál</translation>
 <translation id="2478076885740497414">Instalovat aplikaci</translation>
 <translation id="8293206222192510085">Přidat záložku</translation>
-<translation id="1010029336854254368">Nabídka Sdílení</translation>
 <translation id="7758460733045216901">Panel záložek</translation>
 <translation id="958268166261124668">Brave VPN: Připojeno</translation>
 <translation id="6021669293402055982">Brave VPN: Odpojeno</translation>
@@ -2867,17 +2888,31 @@ Pojďme vás připojit!</translation>
 <translation id="5816720995022674532">Origin je zdarma k používání na Linux zařízeních, ale je stále <ph name="BEGIN_LINK"/>k dispozici na nákup<ph name="END_LINK"/>, pokud byste chtěli podpořit Brave jako obchod. Nákup by také umožnil používat Origin na zařízeních Android, iOS, macOS a Windows.</translation>
 <translation id="3065220545261045367">Podpořit Brave nákupem Origin</translation>
 <translation id="2069499076031488636">Pokračujte s Origin zdarma na Linux</translation>
+<translation id="6820590295368504396">Nelze se připojit k SKU službě</translation>
+<translation id="2525146368601152300">ID nákupu je prázdné</translation>
+<translation id="7858444547014304753">Neplatné ID nákupu</translation>
+<translation id="2016076837307423164">Nepodařilo se načíst ověřovací údaje</translation>
+<translation id="3890481923176188801">Nákup nenalezen</translation>
 <translation id="5713644099811900409">Brave účet</translation>
 <translation id="2906576968270573525">Přihlaste se nebo si vytvořte Brave účet</translation>
 <translation id="6972754398087986839">Get Started</translation>
 <translation id="5378207817582281342">Skoro hotovo!</translation>
 <translation id="3750210661641549834">Pro vytvoření účtu prosím ověřte svou e-mailovou adresu.</translation>
-<translation id="4129813507847680661">Zadat registrační kód</translation>
+<translation id="4351175281479794167">Zadat ověřovací kód</translation>
 <translation id="1672793037892810340">Měli byste obdržet e-mail s kódem, který bude potřeba zadat.</translation>
 <translation id="4821255729182569254">Znovu poslat potvrzovací e-mail</translation>
 <translation id="5837679375142747484">Nevidíte e-mail? Zkontrolujte svou spamovou složku nebo jej <ph name="BEGIN_LINK"/>odeslat znovu<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Nevidíte e-mail? Zkontrolujte svou spamovou složku nebo jej odeslat znovu.</translation>
 <translation id="1020730839570724178">Zrušit registraci</translation>
+<translation id="7155125570724238786">Pro obnovení hesla prosím ověřte svou e-mailovou adresu.</translation>
+<translation id="816074628631172140">Váš e-mail byl ověřen. Nastavte nové heslo pro dokončení obnovení hesla.</translation>
+<translation id="7543374051303238869">Nastavit nové heslo</translation>
+<translation id="8378209932853841849">Zrušit obnovení hesla</translation>
+<translation id="4405566535206792621">Pro změnu hesla prosím ověřte svou e-mailovou adresu.</translation>
+<translation id="3135333563420939059">Váš e-mail byl ověřen. Nastavte nové heslo pro dokončení změny hesla.</translation>
+<translation id="4227581348172626540">Zrušit změnu hesla</translation>
+<translation id="808894953321890993">Změnit heslo</translation>
+<translation id="7967687455715421528">Nelze změnit heslo</translation>
 <translation id="4869737930995549965">Odhlásit se</translation>
 <translation id="5538654494923870167">Začněte používat svůj účet Brave</translation>
 <translation id="1544145635547515689">Vytvořit účet Brave</translation>
@@ -2892,10 +2927,11 @@ Pojďme vás připojit!</translation>
 <translation id="5486261815000869482">Potvrdit heslo</translation>
 <translation id="7345706641791090287">Potvrďte své heslo</translation>
 <translation id="7114054701490058191">Hesla se neshodují</translation>
+<translation id="4277028893293644418">Obnovit heslo</translation>
+<translation id="9033485352495162741">Potvrzení proběhlo úspěšně. Nyní zadejte požadované nové heslo:</translation>
 <translation id="1293857704520741614">Přihlaste se ke svému účtu</translation>
 <translation id="118617366439356381">Zapomněli jste heslo?</translation>
 <translation id="5183159033908953146">Potvrďte e-mail svého účtu Brave a poté obdržíte odkaz pro obnovení hesla. Odkaz bude platný pouze 30 minut.</translation>
-<translation id="3997368361371298873">Varování: protože nejste na tomto zařízení přihlášeni, obnovení hesla <ph name="BEGIN_BOLD"/>smaže všechna vaše data<ph name="END_BOLD"/> na serveru. Pokud máte jiné zařízení, na kterém jste přihlášeni, změňte heslo z tohoto zařízení místo obnovení hesla.</translation>
 <translation id="3674472551471103443">Obnovit heslo</translation>
 <translation id="2755539422340788311">Ověřte svůj e-mail</translation>
 <translation id="6641436078676327508">Měli byste obdržet e-mail s krátkým kódem. Zadejte jej zde pro pokračování.</translation>
@@ -2912,10 +2948,16 @@ Pojďme vás připojit!</translation>
 <translation id="7144067487084094749">Pro tuto e-mailovou adresu již existuje účet. Zkuste se přihlásit místo vytvoření účtu.</translation>
 <translation id="5288951359968156008">Doména této e-mailové adresy není podporována. Použijte prosím jinou e-mailovou adresu.</translation>
 <translation id="7625678607509255072">Překročen limit ověření e-mailu. Před opakováním počkejte prosím 30 minut.</translation>
-<translation id="4582421696414628320">Platnost ověření vypršela. Spusťte registrační proces znovu.</translation>
+<translation id="9121175588136821850">Platnost ověřovacího kódu vypršela. Spusťte registrační proces znovu.</translation>
 <translation id="8439543211004394821">Bylo zadáno příliš mnoho nesprávných kódů. Spusťte registrační proces znovu.</translation>
 <translation id="3229986152760633988">Nesprávný kód, zkuste to prosím znovu.</translation>
 <translation id="818783632689113711">Pro tuto e-mailovou adresu už byl požadavek na účet odeslán. Zkontrolujte prosím svůj e-mail nebo to zkuste znovu za 30 minut.</translation>
+<translation id="4776810543245166572">Pro tuto e-mailovou adresu nebyl nalezen žádný účet.</translation>
+<translation id="7090885444036935209">Neplatná e-mailová adresa.</translation>
+<translation id="1542836798393843657">Příliš mnoho pokusů o ověření pro tuto e-mailovou adresu. Zkuste to znovu za 24 hodin.</translation>
+<translation id="7572012011062736429">Interní chyba. Zavřete dialogové okno, zrušte ověření a zkuste to znovu.</translation>
+<translation id="2477280119520811719">Platnost ověřovacího kódu vypršela. Spusťte proces změny hesla znovu.</translation>
+<translation id="7103280722523884198">Bylo zadáno příliš mnoho nesprávných kódů. Spusťte proces změny hesla znovu.</translation>
 <translation id="4178004989875422946">Účet Brave vám umožní snadný přístup ke službám Brave.</translation>
 <translation id="4902897635127068510">Měli jste na mysli <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock je zapnutý</translation>
@@ -2924,6 +2966,7 @@ Pojďme vás připojit!</translation>
 <translation id="2112559299194052697">Nelze odeslat znovu</translation>
 <translation id="7932611814134267012">Již bylo odesláno příliš mnoho ověřovacích e-mailů. Zkontrolujte prosím svou spamovou složku.</translation>
 <translation id="1364223093800750401">E-mail je již ověřen.</translation>
+<translation id="1353061468772282268">Platnost ověřovacího kódu vypršela. Zrušte ověření a zkuste to znovu.</translation>
 <translation id="3353844160742960162">Ladění nastavení soukromí</translation>
 <translation id="528205534230423181">Tento web nabízí nastavení soukromí, která pro vás Brave může automaticky upravit. Zde je naše doporučení:</translation>
 <translation id="1063227610401477317">Použít změny</translation>
