@@ -49,6 +49,11 @@ mod ffi {
         pub signed_extensions: [u8; 64],
     }
 
+    /// Holds bytes used for signature payloads and signed extrinsics.
+    pub struct CxxPolkadotExtrinsic {
+        pub bytes: Vec<u8>,
+    }
+
     extern "Rust" {
         fn compact_scale_encode_u32(x: u32) -> Vec<u8>;
         fn scale_encode_string(value: &[u8]) -> Vec<u8>;
@@ -63,6 +68,12 @@ mod ffi {
             metadata_bytes: &[u8],
         ) -> Box<CxxPolkadotChainMetadataResult>;
 
+        type CxxPolkadotExtrinsicResult;
+
+        fn is_ok(self: &CxxPolkadotExtrinsicResult) -> bool;
+        fn error_message(self: &CxxPolkadotExtrinsicResult) -> String;
+        fn unwrap(self: &mut CxxPolkadotExtrinsicResult) -> Box<CxxPolkadotExtrinsic>;
+
         fn scale_encode_mortality(number: u32, period: u32) -> [u8; 2];
 
         fn generate_extrinsic_signature_payload(
@@ -76,7 +87,7 @@ mod ffi {
             block_number: u32,
             genesis_hash: &[u8; 32],
             block_hash: &[u8; 32],
-        ) -> Vec<u8>;
+        ) -> Box<CxxPolkadotExtrinsicResult>;
 
         fn generate_assets_extrinsic_signature_payload(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -90,7 +101,7 @@ mod ffi {
             block_number: u32,
             genesis_hash: &[u8; 32],
             block_hash: &[u8; 32],
-        ) -> Vec<u8>;
+        ) -> Box<CxxPolkadotExtrinsicResult>;
 
         fn make_signed_extrinsic(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -101,7 +112,7 @@ mod ffi {
             signature: &[u8; 64],
             block_number: u32,
             sender_nonce: u32,
-        ) -> Vec<u8>;
+        ) -> Box<CxxPolkadotExtrinsicResult>;
 
         fn make_signed_asset_transfer_extrinsic(
             chain_metadata: &CxxPolkadotChainMetadata,
@@ -113,7 +124,7 @@ mod ffi {
             block_number: u32,
             sender_nonce: u32,
             asset_id: u32,
-        ) -> Vec<u8>;
+        ) -> Box<CxxPolkadotExtrinsicResult>;
 
         fn parse_fee_info(input: &[u8], fee_bytes: &mut [u8; 16]) -> bool;
 
@@ -130,6 +141,9 @@ mod ffi {
 
 use ffi::CxxPolkadotChainMetadata;
 impl_result!(CxxPolkadotChainMetadata, CxxPolkadotChainMetadataResult);
+
+use ffi::CxxPolkadotExtrinsic;
+impl_result!(CxxPolkadotExtrinsic, CxxPolkadotExtrinsicResult);
 
 use crate::polkadot_chain_metadata::parse_chain_metadata_from_scale;
 
@@ -235,7 +249,7 @@ fn append_extra(
     sender_nonce: u32,
     block_number: u32,
     buf: &mut Vec<u8>,
-) {
+) -> Result<(), Error> {
     use polkadot_chain_metadata::SignedExtension;
 
     for &extension in &chain_metadata.signed_extensions {
@@ -243,8 +257,9 @@ fn append_extra(
             continue;
         }
 
-        let extension: SignedExtension =
-            extension.try_into().expect("Encountered invalid SignedExtension.");
+        let Ok(extension) = extension.try_into() else {
+            return Err(Error::UnknownSignedExtension);
+        };
 
         match extension {
             SignedExtension::AuthorizeValueTransfer
@@ -272,6 +287,8 @@ fn append_extra(
             _ => continue,
         }
     }
+
+    Ok(())
 }
 
 fn append_implicit(
@@ -281,7 +298,7 @@ fn append_implicit(
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
     buf: &mut Vec<u8>,
-) {
+) -> Result<(), Error> {
     use polkadot_chain_metadata::SignedExtension;
 
     for &extension in &chain_metadata.signed_extensions {
@@ -289,8 +306,9 @@ fn append_implicit(
             continue;
         }
 
-        let extension: SignedExtension =
-            extension.try_into().expect("Encountered invalid SignedExtension.");
+        let Ok(extension) = extension.try_into() else {
+            return Err(Error::UnknownSignedExtension);
+        };
 
         match extension {
             SignedExtension::CheckSpecVersion => {
@@ -311,6 +329,8 @@ fn append_implicit(
             _ => continue,
         }
     }
+
+    Ok(())
 }
 
 // To generate the signature payload, we follow what's in the polkadot-sdk docs.
@@ -337,7 +357,7 @@ fn generate_extrinsic_signature_payload_impl(
     block_number: u32,
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
-) -> Vec<u8> {
+) -> Result<Vec<u8>, Error> {
     let &CxxPolkadotChainMetadata {
         balances_pallet_index,
         transfer_keep_alive_call_index,
@@ -388,7 +408,7 @@ fn generate_extrinsic_signature_payload_impl(
     }
 
     // https://paritytech.github.io/polkadot-sdk/master/polkadot_sdk_docs/reference_docs/extrinsic_encoding/index.html#the-signed-payload-format
-    append_extra(chain_metadata, sender_nonce, block_number, &mut buf);
+    append_extra(chain_metadata, sender_nonce, block_number, &mut buf)?;
     append_implicit(
         chain_metadata,
         spec_version,
@@ -396,7 +416,7 @@ fn generate_extrinsic_signature_payload_impl(
         genesis_hash,
         block_hash,
         &mut buf,
-    );
+    )?;
 
     // If our payload exceeds 256 bytes, hash it down to 32 bytes as demonstarted by
     // the polkadot-js implementation here:
@@ -409,7 +429,7 @@ fn generate_extrinsic_signature_payload_impl(
     }
 
     assert!(buf.len() <= 256);
-    buf
+    Ok(buf)
 }
 
 fn generate_extrinsic_signature_payload(
@@ -423,8 +443,8 @@ fn generate_extrinsic_signature_payload(
     block_number: u32,
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
-) -> Vec<u8> {
-    generate_extrinsic_signature_payload_impl(
+) -> Box<CxxPolkadotExtrinsicResult> {
+    let result = generate_extrinsic_signature_payload_impl(
         chain_metadata,
         sender_nonce,
         send_amount_bytes,
@@ -437,6 +457,9 @@ fn generate_extrinsic_signature_payload(
         genesis_hash,
         block_hash,
     )
+    .map(|bytes| CxxPolkadotExtrinsic { bytes });
+
+    Box::new(CxxPolkadotExtrinsicResult(result))
 }
 
 fn generate_assets_extrinsic_signature_payload(
@@ -451,8 +474,8 @@ fn generate_assets_extrinsic_signature_payload(
     block_number: u32,
     genesis_hash: &[u8; 32],
     block_hash: &[u8; 32],
-) -> Vec<u8> {
-    generate_extrinsic_signature_payload_impl(
+) -> Box<CxxPolkadotExtrinsicResult> {
+    let result = generate_extrinsic_signature_payload_impl(
         chain_metadata,
         sender_nonce,
         send_amount_bytes,
@@ -465,6 +488,9 @@ fn generate_assets_extrinsic_signature_payload(
         genesis_hash,
         block_hash,
     )
+    .map(|bytes| CxxPolkadotExtrinsic { bytes });
+
+    Box::new(CxxPolkadotExtrinsicResult(result))
 }
 
 fn make_signed_transfer_extrinsic_impl(
@@ -477,7 +503,7 @@ fn make_signed_transfer_extrinsic_impl(
     block_number: u32,
     sender_nonce: u32,
     asset_id: Option<u32>,
-) -> Vec<u8> {
+) -> Result<Vec<u8>, Error> {
     let &CxxPolkadotChainMetadata {
         balances_pallet_index,
         transfer_keep_alive_call_index,
@@ -495,7 +521,7 @@ fn make_signed_transfer_extrinsic_impl(
     buf.extend_from_slice(sender_pubkey);
     buf.extend_from_slice(&[SR25519_SIGNATURE]);
     buf.extend_from_slice(signature);
-    append_extra(chain_metadata, sender_nonce, block_number, &mut buf);
+    append_extra(chain_metadata, sender_nonce, block_number, &mut buf)?;
 
     let (pallet_idx, call_idx) = {
         if asset_id.is_some() {
@@ -534,7 +560,7 @@ fn make_signed_transfer_extrinsic_impl(
         buf.splice(0..0, encoded_len.iter().copied());
     });
 
-    buf
+    Ok(buf)
 }
 
 fn make_signed_extrinsic(
@@ -546,8 +572,8 @@ fn make_signed_extrinsic(
     signature: &[u8; 64],
     block_number: u32,
     sender_nonce: u32,
-) -> Vec<u8> {
-    make_signed_transfer_extrinsic_impl(
+) -> Box<CxxPolkadotExtrinsicResult> {
+    let result = make_signed_transfer_extrinsic_impl(
         chain_metadata,
         sender_pubkey,
         recipient_pubkey,
@@ -558,6 +584,9 @@ fn make_signed_extrinsic(
         sender_nonce,
         None,
     )
+    .map(|bytes| CxxPolkadotExtrinsic { bytes });
+
+    Box::new(CxxPolkadotExtrinsicResult(result))
 }
 
 fn make_signed_asset_transfer_extrinsic(
@@ -570,8 +599,8 @@ fn make_signed_asset_transfer_extrinsic(
     block_number: u32,
     sender_nonce: u32,
     asset_id: u32,
-) -> Vec<u8> {
-    make_signed_transfer_extrinsic_impl(
+) -> Box<CxxPolkadotExtrinsicResult> {
+    let result = make_signed_transfer_extrinsic_impl(
         chain_metadata,
         sender_pubkey,
         recipient_pubkey,
@@ -582,6 +611,9 @@ fn make_signed_asset_transfer_extrinsic(
         sender_nonce,
         Some(asset_id),
     )
+    .map(|bytes| CxxPolkadotExtrinsic { bytes });
+
+    Box::new(CxxPolkadotExtrinsicResult(result))
 }
 
 // Definition of the type's binary representation is provided here:
