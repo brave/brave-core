@@ -8,6 +8,7 @@
 #include <initializer_list>
 
 #include "brave/components/vector_icons/vector_icons.h"
+#include "build/build_config.h"
 #include "chrome/app/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/overlay/back_to_tab_button.h"
@@ -23,6 +24,15 @@
 #include "ui/gfx/canvas.h"
 #include "ui/views/view_utils.h"
 
+#if BUILDFLAG(IS_LINUX)
+#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/shell_integration_linux.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
+#include "content/public/browser/video_picture_in_picture_window_controller.h"
+#endif  // BUILDFLAG(IS_LINUX)
+
 namespace {
 
 constexpr int kTopControlIconSize = 20;
@@ -35,6 +45,38 @@ BraveVideoOverlayWindowViews::BraveVideoOverlayWindowViews(
 }
 
 BraveVideoOverlayWindowViews::~BraveVideoOverlayWindowViews() = default;
+
+#if BUILDFLAG(IS_LINUX)
+// static
+void BraveVideoOverlayWindowViews::SetLinuxWMClass(
+    views::Widget::InitParams& params,
+    content::VideoPictureInPictureWindowController* controller) {
+  // Default to the browser's identity, matching what
+  // BrowserNativeWidgetAuraLinux::GetWidgetParams() sets for browser windows.
+  params.wm_class_name = shell_integration_linux::GetProgramClassName();
+  params.wm_class_class = shell_integration_linux::GetProgramClassClass();
+  params.wayland_app_id = params.wm_class_class;
+
+  // Videos from an installed web app window carry the app's identity instead,
+  // like the Windows taskbar-id handling in VideoOverlayWindowViews::Create().
+  BrowserWindowInterface* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+          controller->GetWebContents());
+  if (!browser) {
+    return;
+  }
+
+  Browser* raw_browser = browser->GetBrowserForMigrationOnly();
+  if (raw_browser->is_type_app() || raw_browser->is_type_app_popup()) {
+    params.wm_class_name =
+        shell_integration_linux::GetWMClassFromAppName(raw_browser->app_name());
+    if (Profile* profile = browser->GetProfile()) {
+      params.wayland_app_id = shell_integration_linux::GetXdgAppIdForWebApp(
+          raw_browser->app_name(), profile->GetPath());
+    }
+  }
+}
+#endif  // BUILDFLAG(IS_LINUX)
 
 void BraveVideoOverlayWindowViews::SetUpViews() {
   VideoOverlayWindowViews::SetUpViews();
