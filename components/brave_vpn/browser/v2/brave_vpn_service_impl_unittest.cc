@@ -10,6 +10,7 @@
 #include <string>
 
 #include "base/functional/bind.h"
+#include "base/memory/scoped_refptr.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/test_future.h"
@@ -25,6 +26,9 @@
 #include "components/prefs/testing_pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 namespace brave_vpn::v2 {
@@ -43,6 +47,9 @@ class BraveVpnServiceImplTest : public testing::Test {
   void SetUp() override {
     brave_vpn::RegisterLocalStatePrefs(local_pref_service_.registry());
     brave_vpn::RegisterProfilePrefs(profile_pref_service_.registry());
+    shared_url_loader_factory_ =
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            &url_loader_factory_);
   }
 
   mojo::PendingRemote<skus::mojom::SkusService> GetSkusService() {
@@ -53,6 +60,7 @@ class BraveVpnServiceImplTest : public testing::Test {
   void CreateService() {
     service_ = std::make_unique<BraveVpnServiceImpl>(
         &local_pref_service_, &profile_pref_service_,
+        shared_url_loader_factory_,
         base::BindRepeating(&BraveVpnServiceImplTest::GetSkusService,
                             base::Unretained(this)));
   }
@@ -64,6 +72,8 @@ class BraveVpnServiceImplTest : public testing::Test {
   base::test::ScopedFeatureList scoped_feature_list_;
   TestingPrefServiceSimple local_pref_service_;
   sync_preferences::TestingPrefServiceSyncable profile_pref_service_;
+  network::TestURLLoaderFactory url_loader_factory_;
+  scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   skus::FakeSkusService fake_skus_service_;
   int skus_bind_count_ = 0;
   // Declared last so it is destroyed before the prefs and the fake SKUS
