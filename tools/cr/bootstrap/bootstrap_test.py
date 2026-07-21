@@ -319,6 +319,17 @@ class FindShimTargetTest(unittest.TestCase):
         self.assertEqual(launcher.find_shim_target('node'),
                          launcher.SHIM_TARGETS[f'node-{key}'])
 
+    def test_pnpm_is_a_single_cross_platform_node_shim(self):
+        # pnpm lives in the one node_modules tree (no per-platform suffix), so
+        # the bare token resolves directly and runs as a node script that
+        # self-updates from the node_modules EXTRA_DEPS entry.
+        target = launcher.find_shim_target('pnpm')
+        self.assertEqual(target, launcher.SHIM_TARGETS['pnpm'])
+        self.assertEqual(target.runtime, 'node')
+        self.assertTrue(target.path.endswith('node_modules/pnpm/bin/pnpm.mjs'))
+        self.assertEqual(target.self_update_extra_dep_entry,
+                         'src/brave/third_party/node/node_modules')
+
     def test_unknown_token_raises(self):
         with self.assertRaises(launcher.UnknownShimError):
             launcher.find_shim_target('bogus')
@@ -871,31 +882,32 @@ class ArgumentForwardingTest(unittest.TestCase):
 
 
 class BatShimLauncherResolutionTest(unittest.TestCase):
-    """Guards the Windows `.bat` shims against the `%~dp0`-is-cwd regression.
+    """Guards the Windows shims against the `%~dp0`-is-cwd regression.
 
-    When a shim is invoked as a bare `node`/`npm` by another process (e.g. npm
-    running a package's lifecycle scripts), cmd can expand `%~dp0` to the
-    current directory, so a bare `python3 "%~dp0launcher.py"` pointed at the cwd
-    and failed with `can't open file '...\\launcher.py'`. Each `.bat` must fall
-    back to resolving its own name on `%PATH%` (`%~dp$PATH:0`) so `launcher.py`
-    is found beside the shim, not in the cwd.
+    When a shim is invoked as a bare `node`/`npm`/`pnpm` by another process
+    (e.g. npm running a package's lifecycle scripts), cmd can expand `%~dp0` to
+    the current directory, so a bare `python3 "%~dp0launcher.py"` pointed at the
+    cwd and failed with `can't open file '...\\launcher.py'`. Each Windows shim
+    must fall back to resolving its own name on `%PATH%` (`%~dp$PATH:0`) so
+    `launcher.py` is found beside the shim, not in the cwd. Covers both `.bat`
+    and `.cmd` variants (npm/pnpm ship `.cmd`, which callers spawn by name).
     """
 
-    _BAT_SHIMS = ('node.bat', 'npm.bat', 'brockit.bat', 'plaster.bat',
-                  'git-cr.bat')
+    _WIN_SHIMS = ('node.bat', 'npm.bat', 'npm.cmd', 'pnpm.cmd', 'brockit.bat',
+                  'plaster.bat', 'git-cr.bat')
 
     def _read(self, name: str) -> str:
         path = Path(launcher.__file__).resolve().parent / name
         return path.read_text(encoding='utf-8')
 
-    def test_every_bat_shim_exists(self):
-        for name in self._BAT_SHIMS:
+    def test_every_win_shim_exists(self):
+        for name in self._WIN_SHIMS:
             self.assertTrue(
                 (Path(launcher.__file__).resolve().parent / name).is_file(),
                 name)
 
-    def test_bat_shims_resolve_launcher_via_path_fallback(self):
-        for name in self._BAT_SHIMS:
+    def test_win_shims_resolve_launcher_via_path_fallback(self):
+        for name in self._WIN_SHIMS:
             text = self._read(name)
             self.assertIn('launcher.py', text, name)
             # Try `%~dp0` first, but fall back to a %PATH% search for our own
@@ -903,10 +915,10 @@ class BatShimLauncherResolutionTest(unittest.TestCase):
             self.assertIn('if not exist "%_dir%launcher.py"', text, name)
             self.assertIn('%~dp$PATH:0', text, name)
 
-    def test_bat_shims_do_not_run_launcher_straight_from_dp0(self):
+    def test_win_shims_do_not_run_launcher_straight_from_dp0(self):
         # The fragile form this bug was about: python3 invoking `%~dp0launcher`
         # directly, with no %PATH% fallback.
-        for name in self._BAT_SHIMS:
+        for name in self._WIN_SHIMS:
             text = self._read(name)
             self.assertNotIn('python3 "%~dp0launcher.py"', text, name)
 
