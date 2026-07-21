@@ -709,8 +709,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_SERVER_ENDPOINT_TOOLTIP_INFO},
       {"braveLeoAssistantInputModelApiKeyTooltipInfo",
        IDS_SETTINGS_LEO_ASSISTANT_INPUT_MODEL_API_KEY_TOOLTIP_INFO},
-      {"braveLeoAssistantCloseButtonLabel",
-       IDS_SETTINGS_LEO_ASSISTANT_CLOSE_BUTTON_LABEL},
       {"braveLeoAssistantProxyNote", IDS_SETTINGS_LEO_ASSISTANT_PROXY_NOTE},
       {"braveLeoAssistantEndpointError",
        IDS_SETTINGS_LEO_ASSISTANT_ENDPOINT_ERROR},
@@ -811,8 +809,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_LEO_ASSISTANT_SEARCH_MEMORIES_PLACEHOLDER},
       {"braveLeoAssistantOllamaSyncLabel",
        IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_SYNC_LABEL},
-      {"braveLeoAssistantOllamaManagedLabel",
-       IDS_SETTINGS_LEO_ASSISTANT_OLLAMA_MANAGED_LABEL},
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
       // Survey Panelist Page

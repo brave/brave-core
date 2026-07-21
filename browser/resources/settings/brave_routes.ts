@@ -63,6 +63,9 @@ export default function addBraveRoutes(r: Partial<SettingsRoutes>) {
 
     r.BRAVE_LEO_CUSTOMIZATION = r.BRAVE_LEO_ASSISTANT
       .createChild('/leo-ai/customization')
+
+    r.BRAVE_LEO_ADD_MODEL = r.BRAVE_LEO_ASSISTANT
+      .createChild('/leo-ai/add-model')
   }
   if (pageVisibility.content) {
     r.BRAVE_CONTENT = r.BASIC.createSection('/braveContent', 'content')

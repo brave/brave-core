@@ -3,8 +3,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import './model_config_ui.js'
-
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
 import 'chrome://resources/cr_elements/icons.html.js'
 
@@ -13,10 +11,12 @@ import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
 import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 
 import { BaseMixin } from '../base_mixin.js'
+import { routes } from '../route.js'
+import { Router } from '../router.js'
+import { SettingsViewMixin } from '../settings_page/settings_view_mixin.js'
 
 import { getTemplate } from './model_list_section.html.js'
 import {
-  OperationResult,
   BraveLeoAssistantBrowserProxyImpl,
   OLLAMA_ENDPOINT
 } from './brave_leo_assistant_browser_proxy.js'
@@ -25,7 +25,8 @@ import type {
   Model
 } from './brave_leo_assistant_browser_proxy.js'
 
-const ModelListSectionBase = PrefsMixin(I18nMixin(BaseMixin(PolymerElement)))
+const ModelListSectionBase =
+  PrefsMixin(I18nMixin(BaseMixin(SettingsViewMixin(PolymerElement))))
 
 class ModelListSection extends ModelListSectionBase {
   static get is() {
@@ -41,14 +42,6 @@ class ModelListSection extends ModelListSectionBase {
       customModelsList_: {
         type: Array
       },
-      isEditingModelIndex_: {
-        type: Number,
-        value: null
-      },
-      showModelConfig_: {
-        type: Boolean,
-        value: false
-      },
       isOllamaConnected_: {
         type: Boolean,
         value: false
@@ -59,8 +52,6 @@ class ModelListSection extends ModelListSectionBase {
   browserProxy_: BraveLeoAssistantBrowserProxy =
     BraveLeoAssistantBrowserProxyImpl.getInstance()
   declare customModelsList_: Model[]
-  declare isEditingModelIndex_: number | null
-  declare showModelConfig_: boolean
   declare isOllamaConnected_: boolean
 
   override ready() {
@@ -82,52 +73,13 @@ class ModelListSection extends ModelListSectionBase {
     this.checkOllamaConnection_()
   }
 
-  async onModelConfigSave_(e: { detail: { modelConfig: Model } }) {
-    // Determine the action based on the editing index
-    // Need to do explicit null check because 0 is a valid index
-    const isEditing = this.isEditingModelIndex_ !== null
-
-    // Since model-config-ui is conditionally rendered, we use this.$$ API to access the element
-    const modelConfigElement = this.$$('#model-config-ui') as unknown as {
-      isUrlInvalid: boolean
-      invalidUrlErrorMessage: string
+  override getAssociatedControlFor(childViewId: string): HTMLElement {
+    switch (childViewId) {
+      case 'add-model':
+        return this.shadowRoot!.querySelector('#addNewModel')!;
+      default:
+        throw new Error(`Unknown child view id: ${childViewId}`)
     }
-
-    if (!e.detail.modelConfig.options.customModelOptions) {
-      console.error('Custom model options are missing')
-      return
-    }
-
-    let response = null
-    if (isEditing) {
-      response = await this.browserProxy_
-        .getSettingsHelper()
-        .saveCustomModel(
-          this
-            .isEditingModelIndex_ as number /* We can be confident that this is a number because of the null check */,
-          e.detail.modelConfig
-        )
-    } else {
-      response = await this.browserProxy_
-        .getSettingsHelper()
-        .addCustomModel(e.detail.modelConfig)
-    }
-
-    if (response.result === OperationResult.InvalidUrl) {
-      modelConfigElement.isUrlInvalid = true
-      modelConfigElement.invalidUrlErrorMessage = this.i18n(
-        'braveLeoAssistantEndpointError'
-      )
-      return
-    }
-
-    this.showModelConfig_ = false
-    this.isEditingModelIndex_ = null
-  }
-
-  onModelConfigClose_() {
-    this.isEditingModelIndex_ = null
-    this.showModelConfig_ = false
   }
 
   handleDelete_(e: Event & {model: {index: number}}) {
@@ -142,16 +94,14 @@ class ModelListSection extends ModelListSectionBase {
   }
 
   handleEdit_(e: Event & {model: {index: number}}) {
-    this.isEditingModelIndex_ = e.model.index
-    this.showModelConfig_ = true
+    Router.getInstance().navigateTo(
+      routes.BRAVE_LEO_ADD_MODEL,
+      new URLSearchParams({index: String(e.model.index)})
+    )
   }
 
   handleAddNewModel_() {
-    this.showModelConfig_ = true
-  }
-
-  private getEditingModel_(index: number, customModelsList: Model[]) {
-    return customModelsList[index] ?? null
+    Router.getInstance().navigateTo(routes.BRAVE_LEO_ADD_MODEL)
   }
 
   private hasCustomModels_(customModelsList: Model[]) {
