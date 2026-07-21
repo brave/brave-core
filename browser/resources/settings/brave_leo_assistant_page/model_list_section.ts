@@ -4,7 +4,9 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js'
+import 'chrome://resources/cr_elements/cr_icon/cr_icon.js'
 import 'chrome://resources/cr_elements/icons.html.js'
+import 'chrome://resources/brave/leo.bundle.js'
 
 import { PrefsMixin } from '/shared/settings/prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'

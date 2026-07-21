@@ -3,6 +3,9 @@
     margin-bottom: var(--leo-spacing-xl);
     border-top: none !important;
     border-bottom: 1px solid var(--leo-color-divider-subtle);
+    --iron-icon-width: 20px;
+    --iron-icon-height: 20px;
+    --iron-icon-fill-color: var(--leo-color-icon-default);
   }
 
   .list {
@@ -37,7 +40,9 @@
   }
 
   .model-icon {
-    --leo-icon-size: 20px;
+    --iron-icon-width: 20px;
+    --iron-icon-height: 20px;
+    --iron-icon-fill-color: var(--leo-color-icon-default);
     flex-shrink: 0;
   }
 
@@ -121,7 +126,7 @@
         <div class="model">
           <div class="model-info">
             <template is="dom-if" if="[[isOllamaManagedModel_(item, prefs.brave.ai_chat.ollama_fetch_enabled.value, isOllamaConnected_)]]">
-              <leo-icon class="model-icon" name="ollama"></leo-icon>
+              <cr-icon class="model-icon" icon="ollama"></cr-icon>
             </template>
             <div class="model-text">
               <div class="label">[[item.displayName]]</div>
