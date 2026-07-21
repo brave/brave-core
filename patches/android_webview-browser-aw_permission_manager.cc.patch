@@ -1,0 +1,90 @@
+diff --git a/android_webview/browser/aw_permission_manager.cc b/android_webview/browser/aw_permission_manager.cc
+index 98a66976ba8dd60b586bc64ebcd5a63954cbf3e9..ae54f1f349db129a9573a63337ad6d604c2d2883 100644
+--- a/android_webview/browser/aw_permission_manager.cc
++++ b/android_webview/browser/aw_permission_manager.cc
+@@ -449,6 +449,21 @@ void AwPermissionManager::RequestPermissionsFromCurrentDocument(
+             permissions[i],
+             content::PermissionResult(PermissionStatus::GRANTED));
+         break;
++      case PermissionType::BRAVE_ADS:
++      case PermissionType::BRAVE_TRACKERS:
++      case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
++      case PermissionType::BRAVE_FINGERPRINTING_V2:
++      case PermissionType::BRAVE_SHIELDS:
++      case PermissionType::BRAVE_REFERRERS:
++      case PermissionType::BRAVE_COOKIES:
++      case PermissionType::BRAVE_SPEEDREADER:
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++      case PermissionType::BRAVE_ETHEREUM:
++      case PermissionType::BRAVE_SOLANA:
++      case PermissionType::BRAVE_CARDANO:
++#endif
++      case PermissionType::BRAVE_GOOGLE_SIGN_IN:
++      case PermissionType::BRAVE_OPEN_AI_CHAT:
+       case PermissionType::NUM:
+         NOTREACHED() << "PermissionType::NUM was not expected here.";
+     }
+@@ -586,6 +601,21 @@ PermissionStatus AwPermissionManager::GetPermissionStatusInternal(
+     case blink::PermissionType::LOCAL_FONTS:
+     case blink::PermissionType::NFC:
+     case blink::PermissionType::NOTIFICATIONS:
++    case PermissionType::BRAVE_ADS:
++    case PermissionType::BRAVE_TRACKERS:
++    case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
++    case PermissionType::BRAVE_FINGERPRINTING_V2:
++    case PermissionType::BRAVE_SHIELDS:
++    case PermissionType::BRAVE_REFERRERS:
++    case PermissionType::BRAVE_COOKIES:
++    case PermissionType::BRAVE_SPEEDREADER:
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++    case PermissionType::BRAVE_ETHEREUM:
++    case PermissionType::BRAVE_SOLANA:
++    case PermissionType::BRAVE_CARDANO:
++#endif
++    case PermissionType::BRAVE_GOOGLE_SIGN_IN:
++    case PermissionType::BRAVE_OPEN_AI_CHAT:
+     case blink::PermissionType::NUM:
+     case blink::PermissionType::PAYMENT_HANDLER:
+     case blink::PermissionType::PERIODIC_BACKGROUND_SYNC:
+@@ -775,6 +805,21 @@ void AwPermissionManager::CancelPermissionRequest(int request_id) {
+       case PermissionType::LOOPBACK_NETWORK:
+         // There is nothing to cancel so this is simply ignored.
+         break;
++      case PermissionType::BRAVE_ADS:
++      case PermissionType::BRAVE_TRACKERS:
++      case PermissionType::BRAVE_HTTP_UPGRADABLE_RESOURCES:
++      case PermissionType::BRAVE_FINGERPRINTING_V2:
++      case PermissionType::BRAVE_SHIELDS:
++      case PermissionType::BRAVE_REFERRERS:
++      case PermissionType::BRAVE_COOKIES:
++      case PermissionType::BRAVE_SPEEDREADER:
++#if BUILDFLAG(ENABLE_BRAVE_WALLET)
++      case PermissionType::BRAVE_ETHEREUM:
++      case PermissionType::BRAVE_SOLANA:
++      case PermissionType::BRAVE_CARDANO:
++#endif
++      case PermissionType::BRAVE_GOOGLE_SIGN_IN:
++      case PermissionType::BRAVE_OPEN_AI_CHAT:
+       case PermissionType::NUM:
+         NOTREACHED() << "PermissionType::NUM was not expected here.";
+     }
+@@ -803,6 +848,9 @@ void AwPermissionManager::CancelPermissionRequests() {
+ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
+     const url::Origin& origin,
+     bool audio) {
++  if ((true)) {
++    return;
++  }
+   auto it = enumerate_devices_labels_cache_.find(origin);
+   if (it == enumerate_devices_labels_cache_.end()) {
+     enumerate_devices_labels_cache_[origin] = std::make_pair(audio, false);
+@@ -814,6 +862,9 @@ void AwPermissionManager::SetOriginCanReadEnumerateDevicesAudioLabels(
+ void AwPermissionManager::SetOriginCanReadEnumerateDevicesVideoLabels(
+     const url::Origin& origin,
+     bool video) {
++  if ((true)) {
++    return;
++  }
+   auto it = enumerate_devices_labels_cache_.find(origin);
+   if (it == enumerate_devices_labels_cache_.end())
+     enumerate_devices_labels_cache_[origin] = std::make_pair(false, video);
