@@ -352,22 +352,11 @@ impl TryFrom<u8> for SignedExtension {
     }
 }
 
-const MAX_SIGNED_EXTENSIONS: usize = 64;
+impl TryFrom<&str> for SignedExtension {
+    type Error = Error;
 
-// Returns an array of bytes that describe the signed extensions being used by
-// the backing parachain. Note, not all signed extensions will wind up producing
-// output in the signing payload. Some are there purely for the sake of other
-// fields being present or describing how the extrinsic will be validated. We
-// manually curate the appropriate output for each extension.
-fn parse_signed_extensions(input: &mut &[u8]) -> Result<[u8; MAX_SIGNED_EXTENSIONS], Error> {
-    let mut extensions = [0_u8; MAX_SIGNED_EXTENSIONS];
-    let mut pos = extensions.iter_mut();
-
-    decode_vec(input, |input| {
-        let identifier: String = decode_scale(input)?;
-        let id = normalize_ident(&identifier);
-
-        let extension = match id.as_str() {
+    fn try_from(value: &str) -> Result<Self, Self::Error> {
+        let extension = match value {
             "authorizevaluetransfer" => SignedExtension::AuthorizeValueTransfer,
             "authorizecall" => SignedExtension::AuthorizeCall,
             "aspgas" => SignedExtension::AsPgas,
@@ -393,6 +382,26 @@ fn parse_signed_extensions(input: &mut &[u8]) -> Result<[u8; MAX_SIGNED_EXTENSIO
             }
         };
 
+        Ok(extension)
+    }
+}
+
+const MAX_SIGNED_EXTENSIONS: usize = 64;
+
+// Returns an array of bytes that describe the signed extensions being used by
+// the backing parachain. Note, not all signed extensions will wind up producing
+// output in the signing payload. Some are there purely for the sake of other
+// fields being present or describing how the extrinsic will be validated. We
+// manually curate the appropriate output for each extension.
+fn parse_signed_extensions(input: &mut &[u8]) -> Result<[u8; MAX_SIGNED_EXTENSIONS], Error> {
+    let mut extensions = [0_u8; MAX_SIGNED_EXTENSIONS];
+    let mut pos = extensions.iter_mut();
+
+    decode_vec(input, |input| {
+        let identifier: String = decode_scale(input)?;
+        let id = normalize_ident(&identifier);
+
+        let extension: SignedExtension = id.as_str().try_into()?;
         if let Some(ext) = pos.next() {
             *ext = extension as u8;
         } else {
