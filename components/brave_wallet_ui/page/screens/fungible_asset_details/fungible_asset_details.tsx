@@ -8,7 +8,7 @@ import { Redirect, useHistory, useParams } from 'react-router'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // redux
-import { useAppDispatch } from '../../../../common/hooks/use-redux'
+import { useAppDispatch } from '../../../common/hooks/use-redux'
 
 // types
 import {
@@ -16,67 +16,82 @@ import {
   WalletRoutes,
   TokenPriceHistory,
   LineChartIframeData,
-} from '../../../../constants/types'
+} from '../../../constants/types'
 
 // constants
-import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../common/constants/local-storage-keys'
+} from '../../../common/constants/local-storage-keys'
 
 // Utils
-import Amount from '../../../../utils/amount'
+import Amount from '../../../utils/amount'
 import {
   findTransactionToken,
   parseSwapInfo,
   sortTransactionByDate,
-} from '../../../../utils/tx-utils'
-import { getBalance } from '../../../../utils/balance-utils'
+} from '../../../utils/tx-utils'
+import { getBalance } from '../../../utils/balance-utils'
 import {
   computeFiatAmount,
   getPriceIdForToken,
   getPriceRequestsForTokens,
-} from '../../../../utils/pricing-utils'
-import { networkSupportsAccount } from '../../../../utils/network-utils'
+} from '../../../utils/pricing-utils'
+import { networkSupportsAccount } from '../../../utils/network-utils'
 import {
   getAssetIdKey,
   getDoesCoinSupportSwap,
   getDoesCoinSupportBridge,
-} from '../../../../utils/asset-utils'
-import { getLocale } from '../../../../../common/locale'
-import { isRewardsAssetId } from '../../../../utils/rewards_utils'
+} from '../../../utils/asset-utils'
+import { getLocale } from '../../../../common/locale'
+import { isRewardsAssetId } from '../../../utils/rewards_utils'
 import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
   makeSendRoute,
   makeSwapOrBridgeRoute,
-} from '../../../../utils/routes-utils'
+} from '../../../utils/routes-utils'
 import {
   getStoredPortfolioTimeframe, //
-} from '../../../../utils/local-storage-utils'
+} from '../../../utils/local-storage-utils'
 
 // actions
-import { WalletPageActions } from '../../../../page/actions'
+import { WalletPageActions } from '../../actions'
+import {
+  WalletActions, //
+} from '../../../common/actions'
 
 // Components
 import {
   LineChartControls, //
-} from '../../line-chart/line-chart-controls/line-chart-controls'
+} from '../../../components/desktop/line-chart/line-chart-controls/line-chart-controls'
 import {
   AccountsAndTransactionsList, //
-} from './components/accounts-and-transctions-list'
+} from './components/accounts_and_transactions_list/accounts_and_transactions_list'
 import {
   EditTokenModal, //
-} from '../../popup-modals/edit_token_modal/edit_token_modal'
+} from '../../../components/desktop/popup-modals/edit_token_modal/edit_token_modal'
 import {
-  PortfolioAssetActionButton, //
-} from './components/portfolio_asset_action_button/portfolio_asset_action_button'
+  FungibleAssetActionButton, //
+} from './components/fungible_asset_action_button/fungible_asset_action_button'
+import {
+  HideTokenModal, //
+} from '../../../components/desktop/popup-modals/hide_token_modal/hide_token_modal'
+import {
+  WalletPageWrapper, //
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
+import {
+  AssetDetailsHeader, //
+} from '../../../components/desktop/card-headers/asset-details-header'
+import {
+  TokenDetailsModal, //
+} from '../../../components/desktop/popup-modals/token_details_modal/token_details_modal'
 
 // Hooks
 import {
   useScopedBalanceUpdater, //
-} from '../../../../common/hooks/use-scoped-balance-updater'
-import { useFindBuySupportedToken } from '../../../../common/hooks/use-multi-chain-buy-assets'
+} from '../../../common/hooks/use-scoped-balance-updater'
+import { useFindBuySupportedToken } from '../../../common/hooks/use-multi-chain-buy-assets'
 import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
@@ -85,44 +100,33 @@ import {
   useGetRewardsInfoQuery,
   useUpdateUserAssetVisibleMutation,
   useGetNetworksRegistryQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   useAccountsQuery,
   useGetCombinedTokensRegistryQuery,
-} from '../../../../common/slices/api.slice.extra'
+} from '../../../common/slices/api.slice.extra'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../../common/hooks/use-persisted-spot-prices'
+} from '../../../common/hooks/use-persisted-spot-prices'
 import {
   querySubscriptionOptions60s, //
-} from '../../../../common/slices/constants'
+} from '../../../common/slices/constants'
 import {
   useSyncedLocalStorage, //
-} from '../../../../common/hooks/use_local_storage'
-import { useRoute } from '../../../../common/hooks/use_route'
+} from '../../../common/hooks/use_local_storage'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Styled Components
-import { StyledWrapper, ButtonRow } from './style'
-import { Row, Column } from '../../../shared/style'
-import {
-  TokenDetailsModal, //
-} from '../../popup-modals/token_details_modal/token_details_modal'
-import {
-  WalletActions, //
-} from '../../../../common/actions'
-import { HideTokenModal } from '../../popup-modals/hide_token_modal/hide_token_modal'
-import {
-  WalletPageWrapper, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { AssetDetailsHeader } from '../../card-headers/asset-details-header'
+import { StyledWrapper, ButtonRow } from './fungible_asset_details.style'
+import { Row, Column } from '../../../components/shared/style'
 
 // Selectors
-import { useSafeUISelector } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 const emptyPriceList: TokenPriceHistory[] = []
 
-export const PortfolioFungibleAsset = () => {
+export const FungibleAssetDetails = () => {
   // state
   const [showTokenDetailsModal, setShowTokenDetailsModal] =
     React.useState<boolean>(false)
@@ -495,33 +499,33 @@ export const PortfolioFungibleAsset = () => {
         <Row padding='0px 20px'>
           <ButtonRow>
             {foundMeldBuyToken && !isRewardsToken && (
-              <PortfolioAssetActionButton
+              <FungibleAssetActionButton
                 text={getLocale('braveWalletBuy')}
                 icon='coins-alt1'
                 onClick={onClickBuy}
               />
             )}
-            <PortfolioAssetActionButton
+            <FungibleAssetActionButton
               text={getLocale('braveWalletSend')}
               icon='send'
               onClick={onClickSend}
             />
             {isSwapSupported && (
-              <PortfolioAssetActionButton
+              <FungibleAssetActionButton
                 text={getLocale('braveWalletSwap')}
                 icon='currency-exchange'
                 onClick={() => onClickSwapOrBridge('swap')}
               />
             )}
             {!isIOS && isBridgeSupported && (
-              <PortfolioAssetActionButton
+              <FungibleAssetActionButton
                 text={getLocale('braveWalletBridge')}
                 icon='web3-bridge'
                 onClick={() => onClickSwapOrBridge('bridge')}
               />
             )}
             {isSelectedAssetDepositSupported && (
-              <PortfolioAssetActionButton
+              <FungibleAssetActionButton
                 text={getLocale('braveWalletAccountsDeposit')}
                 icon='money-bag-coins'
                 onClick={onClickDeposit}
@@ -581,5 +585,3 @@ export const PortfolioFungibleAsset = () => {
     </WalletPageWrapper>
   )
 }
-
-export default PortfolioFungibleAsset
