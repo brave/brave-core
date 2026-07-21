@@ -163,6 +163,13 @@
         "identifier" : "PlaylistUITests",
         "name" : "PlaylistUITests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "BraveUITests",
+        "name" : "BraveUITests"
+      }
     }
   ],
   "version" : 1
