@@ -32,7 +32,7 @@ import {
 import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/portfolio_overview'
 import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
-import { MarketView } from '../market'
+import { MarketView } from '../../../../page/screens/market/market'
 import { Accounts } from '../accounts/accounts'
 import { Account } from '../accounts/account'
 import { AddAccountModal } from '../../popup-modals/add-account-modal/add-account-modal'
@@ -43,7 +43,7 @@ import { AccountSettingsModal } from '../../popup-modals/account-settings-modal/
 import {
   WalletPageWrapper, //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import { MarketAsset } from '../market/market_asset'
+import { MarketAssetDetails } from '../../../../page/screens/market/market_asset_details'
 import { NftCollection } from '../nfts/components/nft_collection'
 import {
   PageNotFound, //
@@ -185,7 +185,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
         >
           <WalletPageWrapper wrapContentInBox={true}>
             <DefaultPageWrapper>
-              <MarketAsset />
+              <MarketAssetDetails />
             </DefaultPageWrapper>
           </WalletPageWrapper>
         </Route>

@@ -1,23 +1,23 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
 // types
-import { BraveWallet } from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../constants/types'
 
 // utils
-import { getLocale } from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 
 // components
-import CopyTooltip from '../../../../../shared/copy-tooltip/copy-tooltip'
-import withPlaceholderIcon from '../../../../../shared/create-placeholder-icon'
-import { Skeleton } from '../../../../../shared/loading-skeleton/styles'
+import CopyTooltip from '../../../shared/copy-tooltip/copy-tooltip'
+import withPlaceholderIcon from '../../../shared/create-placeholder-icon'
+import { Skeleton } from '../../../shared/loading-skeleton/styles'
 
 // styles
-import PopupModal from '../../../../../desktop/popup-modals'
+import { PopupModal } from '../index'
 import {
   StyledWrapper,
   TokenBalanceRow,
@@ -29,8 +29,8 @@ import {
   ContractAddress,
   HideTokenButton,
   modalWidth,
-} from './token-details-modal-styles'
-import { AssetIcon } from '../../style'
+} from './token_details_modal.style'
+import { MediumAssetIcon } from '../../../shared/style'
 
 interface Props {
   selectedAsset: BraveWallet.BlockchainToken
@@ -41,7 +41,9 @@ interface Props {
   onShowHideTokenModal: () => void
 }
 
-const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, { size: 'big' })
+const AssetIconWithPlaceholder = withPlaceholderIcon(MediumAssetIcon, {
+  size: 'big',
+})
 
 export const TokenDetailsModal = (props: Props) => {
   const {

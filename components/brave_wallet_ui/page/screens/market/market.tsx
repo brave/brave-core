@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
@@ -11,18 +11,18 @@ import {
   useGetCoinMarketQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetMeldCryptoCurrenciesQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   useGetCombinedTokensListQuery, //
-} from '../../../../common/slices/api.slice.extra'
-import { useRoute } from '../../../../common/hooks/use_route'
+} from '../../../common/slices/api.slice.extra'
+import { useRoute } from '../../../common/hooks/use_route'
 
 // Constants
-import { WalletRoutes } from '../../../../constants/types'
+import { WalletRoutes } from '../../../constants/types'
 
 // Styled Components
-import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './style'
-import { Column } from '../../../shared/style'
+import { LoadIcon, LoadIconWrapper, MarketDataIframe } from './market.style'
+import { Column } from '../../../components/shared/style'
 
 // Utils
 import {
@@ -37,13 +37,13 @@ import {
   UpdateBuyableAssetsMessage,
   UpdateDepositableAssetsMessage,
   UpdateIframeHeightMessage,
-} from '../../../../market/market-ui-messages'
+} from '../../../market/market-ui-messages'
 import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
-} from '../../../../utils/routes-utils'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
-import { getAssetSymbol } from '../../../../utils/meld_utils'
+} from '../../../utils/routes-utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
+import { getAssetSymbol } from '../../../utils/meld_utils'
 
 const assetsRequestLimit = 250
 

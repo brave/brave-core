@@ -58,7 +58,7 @@ import { AssetFilterOptions } from '../options/market-data-filter-options'
 import { marketGridHeaders } from '../options/market-data-headers'
 
 // components
-import { TopRow } from '../components/desktop/views/market/style'
+import { TopRow } from '../page/screens/market/market.style'
 import {
   AssetsFilterDropdown, //
 } from '../components/desktop/assets-filter-dropdown/index'
