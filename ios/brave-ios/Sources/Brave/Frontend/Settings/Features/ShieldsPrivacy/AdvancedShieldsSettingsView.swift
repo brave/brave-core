@@ -12,7 +12,6 @@ import SwiftUI
 
 struct AdvancedShieldsSettingsView: View {
   @ObservedObject private var settings: AdvancedShieldsSettings
-  @State private var showManageWebsiteData = false
 
   var openURLAction: ((URL) -> Void)?
 
@@ -26,27 +25,6 @@ struct AdvancedShieldsSettingsView: View {
       ClearDataSectionView(settings: settings)
 
       Section {
-        Button {
-          showManageWebsiteData = true
-        } label: {
-          // Hack to show the disclosure
-          NavigationLink(
-            destination: { EmptyView() },
-            label: {
-              LabelView(
-                title: Strings.manageWebsiteDataTitle,
-                subtitle: nil
-              )
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .contentShape(.rect)
-            }
-          )
-        }
-        .buttonStyle(.plain)
-        .sheet(isPresented: $showManageWebsiteData) {
-          ManageWebsiteDataView()
-        }
-
         NavigationLink {
           PrivacyReportSettingsView()
         } label: {
