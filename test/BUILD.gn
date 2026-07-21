@@ -1217,6 +1217,7 @@ test("brave_browser_tests") {
 
   if (!is_android) {
     deps += [
+      "//brave/browser/workspaces",
       "//chrome/browser/profile_resetter:profile_resetter_test_base",
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
