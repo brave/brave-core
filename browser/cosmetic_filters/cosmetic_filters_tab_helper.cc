@@ -26,7 +26,6 @@
 #include "brave/browser/ui/browser_commands.h"
 #include "brave/components/brave_shields/core/common/features.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -161,7 +160,7 @@ WEB_CONTENTS_USER_DATA_KEY_IMPL(CosmeticFiltersTabHelper);
 #if !BUILDFLAG(IS_ANDROID)
 namespace brave {
 
-void LaunchContentPicker(Browser* browser) {
+void LaunchContentPicker(BrowserWindowInterface* browser) {
   if (!browser) {
     return;
   }
@@ -171,7 +170,7 @@ void LaunchContentPicker(Browser* browser) {
     return;
   }
 
-  auto* contents = browser->tab_strip_model()->GetActiveWebContents();
+  auto* contents = browser->GetTabStripModel()->GetActiveWebContents();
   if (!contents) {
     return;
   }
@@ -190,7 +189,7 @@ void LaunchContentPicker(Browser* browser) {
   }
 
   // Respect the "allow element blocking in private windows" setting.
-  if (browser->profile()->IsOffTheRecord() &&
+  if (browser->GetProfile()->IsOffTheRecord() &&
       !shields->GetAllowElementBlockerInPrivateModeEnabled()) {
     return;
   }

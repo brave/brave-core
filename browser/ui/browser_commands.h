@@ -90,7 +90,7 @@ void ToggleJavascriptEnabled(Browser* browser);
 // if the page and Shields settings support it. Backs IDC_BLOCK_ELEMENTS so
 // users can assign a custom keyboard shortcut. Implemented in the cosmetic
 // filters layer (which can't be depended on from here) to reach the picker.
-void LaunchContentPicker(Browser* browser);
+void LaunchContentPicker(BrowserWindowInterface* browser);
 
 #if BUILDFLAG(ENABLE_COMMANDER)
 void ToggleCommander(Browser* browser);

@@ -509,6 +509,36 @@ IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerTest,
       ui_test_utils::NavigateToURL(browser(), GURL("chrome://version")));
   EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
 }
+
+class BraveBrowserCommandControllerElementPickerDisabledTest
+    : public BraveBrowserCommandControllerTest {
+ public:
+  BraveBrowserCommandControllerElementPickerDisabledTest() {
+    scoped_features_.InitAndDisableFeature(
+        brave_shields::features::kBraveShieldsElementPicker);
+  }
+  ~BraveBrowserCommandControllerElementPickerDisabledTest() override = default;
+
+ private:
+  base::test::ScopedFeatureList scoped_features_;
+};
+
+// When the element picker feature is disabled, the "Block elements" command
+// (IDC_BLOCK_ELEMENTS) should never be available, even on http(s) pages.
+IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerElementPickerDisabledTest,
+                       CommandUnavailableWhenFeatureDisabled) {
+  auto* command_controller = browser()->command_controller();
+
+  // Disabled on the initial (non-http) tab.
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
+
+  // Still disabled after navigating to an http(s) page.
+  embedded_test_server()->ServeFilesFromSourceDirectory("chrome/test/data");
+  ASSERT_TRUE(embedded_test_server()->Start());
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(
+      browser(), embedded_test_server()->GetURL("/simple.html")));
+  EXPECT_FALSE(command_controller->IsCommandEnabled(IDC_BLOCK_ELEMENTS));
+}
 #endif  // !BUILDFLAG(IS_ANDROID)
 
 IN_PROC_BROWSER_TEST_F(BraveBrowserCommandControllerTest,
