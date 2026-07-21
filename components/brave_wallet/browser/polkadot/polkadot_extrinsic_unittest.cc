@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_wallet/browser/polkadot/polkadot_extrinsic.h"
 
+#include "base/containers/to_vector.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bip39.h"
@@ -31,6 +32,15 @@ constexpr uint8_t kSchnorrkelSeed[] = {
     244, 146, 236, 44,  196, 68,  73, 197, 105, 123, 50,
     105, 25,  112, 59,  172, 3,   28, 174, 127, 96,
 };
+
+std::vector<uint8_t> UnwrapExtrinsicBytes(
+    ::rust::Box<CxxPolkadotExtrinsicResult> result) {
+  if (!result->is_ok()) {
+    ADD_FAILURE() << result->error_message();
+    return {};
+  }
+  return base::ToVector(result->unwrap()->bytes);
+}
 
 }  // namespace
 
@@ -111,10 +121,10 @@ TEST(PolkadotExtrinsics, SignaturePayload) {
       "0xbdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a671913",
       block_hash));
 
-  auto encoded = generate_extrinsic_signature_payload(
+  auto encoded = UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
       *testnet_metadata, sender_nonce, send_amount_bytes,
       /*transfer_all=*/false, recipient, spec_version, transaction_version,
-      block_number, genesis_hash, block_hash);
+      block_number, genesis_hash, block_hash));
 
   constexpr const char kExpected[] =
       R"(0403008eaf04151687736326c9fea17e25fc5287613693c912909cb226aa4794f26a484913750108000061900f001b000000e143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423ebdcb3205ee391126e758556ffef5bb0d5a5fd1bbd996c671a079d5b02a67191300)";
@@ -162,10 +172,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, spec_version, transaction_version, block_number, genesis_hash,
-      block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -175,9 +186,9 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive) {
       R"(2a1f28c7d292dd8ecbe9e461c318ab970582153bbb1c0a648d6d6961db064c1a284d223455cabaf9c5d0d8a77ed63178b6ccfba83cfb6dda61faa12062031486)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce);
+      transfer_all, signature, block_number, sender_nonce));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -285,10 +296,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, spec_version, transaction_version, block_number, genesis_hash,
-      block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -298,9 +310,9 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll) {
       R"(0442eb6ee79e19a958e614a854a496303200c95a8420b378b1a0b1f0ae1949335b3e5e675ffd1d905ffd91f7b9ea5e9f9f92faba18607c79d72d9a428e5e8383)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce);
+      transfer_all, signature, block_number, sender_nonce));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -368,10 +380,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive_AssetId) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, spec_version, transaction_version, block_number, genesis_hash,
-      block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -381,9 +394,9 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferKeepAlive_AssetId) {
       R"(de8379bdff3b46793aafb9ef811a21e3014b9417cc288a974369533ad864d32d30e52d839c8bfae650f0e1940de1c354e22293febc63605a73dd01d8e59ec485)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce);
+      transfer_all, signature, block_number, sender_nonce));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -482,10 +495,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, spec_version, transaction_version, block_number, genesis_hash,
-      block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -495,9 +509,9 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_TransferAll_AssetId) {
       R"(bac21dbe3fc9544b429378d054632bff8701e6a2385b617b2c86c8534ab98459d2fd7a98b8da4180694e8032f65a3f574bdb41e8566e70e97677c09fb741328e)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_extrinsic(
+  auto signed_extrinsic = UnwrapExtrinsicBytes(make_signed_extrinsic(
       *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce);
+      transfer_all, signature, block_number, sender_nonce));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -606,10 +620,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_assets_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, asset_id, spec_version, transaction_version, block_number,
-      genesis_hash, block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_assets_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, asset_id, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -619,9 +634,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferKeepAlive) {
       R"(5efe791156873c32cc943d154cb2876b041b5345df6c975a5f426afefd121b10cc8da530fcecda4b14d8670669d33ac0685c83511af89eeae64b5c4c63532a88)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
-      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce, asset_id);
+  auto signed_extrinsic =
+      UnwrapExtrinsicBytes(make_signed_asset_transfer_extrinsic(
+          *testnet_metadata, keypair.GetPublicKey(), recipient,
+          send_amount_bytes, transfer_all, signature, block_number,
+          sender_nonce, asset_id));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
@@ -705,10 +722,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
   std::array<uint8_t, 32> block_hash = {};
   EXPECT_TRUE(PrefixedHexStringToFixed(block_hash_encoded, block_hash));
 
-  auto signature_payload = generate_assets_extrinsic_signature_payload(
-      *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
-      recipient, asset_id, spec_version, transaction_version, block_number,
-      genesis_hash, block_hash);
+  auto signature_payload =
+      UnwrapExtrinsicBytes(generate_assets_extrinsic_signature_payload(
+          *testnet_metadata, sender_nonce, send_amount_bytes, transfer_all,
+          recipient, asset_id, spec_version, transaction_version, block_number,
+          genesis_hash, block_hash));
 
   auto signature = keypair.SignMessage(signature_payload);
 
@@ -718,9 +736,11 @@ TEST(PolkadotExtrinsics, SignedExtrinsic_AssetsTransferAll) {
       R"(36ef9fb067bc836b62c7b7c73c92970b3862067fa5e87efd0bae5b092d81181612480cdcd9b2282a3c25b0c19928ccb9e3e000ad82611ec747fc9f5d74ab748f)";
   EXPECT_EQ(base::HexEncodeLower(signature), expected_signatured);
 
-  auto signed_extrinsic = make_signed_asset_transfer_extrinsic(
-      *testnet_metadata, keypair.GetPublicKey(), recipient, send_amount_bytes,
-      transfer_all, signature, block_number, sender_nonce, asset_id);
+  auto signed_extrinsic =
+      UnwrapExtrinsicBytes(make_signed_asset_transfer_extrinsic(
+          *testnet_metadata, keypair.GetPublicKey(), recipient,
+          send_amount_bytes, transfer_all, signature, block_number,
+          sender_nonce, asset_id));
 
   auto extrinsic = base::HexEncodeLower(signed_extrinsic);
 
