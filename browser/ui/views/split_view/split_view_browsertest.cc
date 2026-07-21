@@ -497,6 +497,40 @@ IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
   EXPECT_EQ(contents_view->layer()->rounded_corner_radii(), border_radius);
 }
 
+// Regression test for https://github.com/brave/brave-browser/issues/57245:
+// detaching a split tab into a new window used to CHECK-crash in
+// BraveContentsViewUtil::GetRoundedCornersForContentsView().
+IN_PROC_BROWSER_TEST_F(SideBySideWithRoundedCornersTest,
+                       DetachSplitTabToNewWindowDoesNotCrash) {
+  // Keep an extra, non-split tab so the source window survives the move.
+  chrome::AddTabAt(browser(), GURL(), -1, /*foreground*/ true);
+
+  chrome::NewSplitTab(browser(), split_tabs::SplitTabLayout::kSideBySide,
+                      split_tabs::SplitTabCreatedSource::kToolbarButton);
+  auto* tab_strip_model = browser()->tab_strip_model();
+  ASSERT_TRUE(IsActiveTabSplit(tab_strip_model));
+
+  auto split_id =
+      tab_strip_model->GetSplitForTab(tab_strip_model->active_index());
+  ASSERT_TRUE(split_id);
+  const gfx::Range range =
+      tab_strip_model->GetSplitData(*split_id)->GetIndexRange();
+  std::vector<int> split_indices;
+  for (uint32_t i = range.start(); i < range.end(); ++i) {
+    split_indices.push_back(static_cast<int>(i));
+  }
+
+  auto browser_created_observer =
+      std::make_optional<ui_test_utils::BrowserCreatedObserver>();
+
+  chrome::MoveTabsToNewWindow(browser(), split_indices);
+  Browser* new_browser = browser_created_observer->Wait();
+
+  ASSERT_TRUE(new_browser);
+  EXPECT_FALSE(tab_strip_model->ContainsSplit(*split_id));
+  EXPECT_TRUE(IsActiveTabSplit(new_browser->tab_strip_model()));
+}
+
 // Use for testing brave split view and SideBySide together.
 class SplitViewCommonBrowserTest : public InProcessBrowserTest {
  public:
