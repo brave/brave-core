@@ -20,9 +20,12 @@
 
 namespace brave_vpn::v2 {
 
+// Unretained is safe: the shutdown handlers may invoke this callback from a
+// background thread, but only while the process (and hence |this|, which
+// lives for main()'s duration) is alive.
 AgentApp::AgentApp()
     : shutdown_handlers_(std::make_unique<ShutdownHandlers>(
-          base::BindRepeating(&AgentApp::Shutdown, base::Unretained(this)))) {}
+          base::BindOnce(&AgentApp::Shutdown, base::Unretained(this)))) {}
 
 AgentApp::~AgentApp() = default;
 
@@ -59,12 +62,8 @@ void AgentApp::Shutdown() {
 }
 
 void AgentApp::ExecuteShutdown() {
-  if (is_shutting_down_) {
-    return;
-  }
-  is_shutting_down_ = true;
-  VLOG(1) << "Shutting down Brave VPN Agent";
   if (quit_closure_) {
+    VLOG(1) << "Shutting down Brave VPN Agent";
     std::move(quit_closure_).Run();
   }
 }

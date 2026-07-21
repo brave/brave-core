@@ -45,8 +45,6 @@ class AgentApp final {
   scoped_refptr<base::SingleThreadTaskRunner> main_runner_;
   std::unique_ptr<ShutdownHandlers> shutdown_handlers_;
   base::OnceClosure quit_closure_;
-
-  bool is_shutting_down_ = false;
 };
 
 }  // namespace brave_vpn::v2

@@ -25,9 +25,7 @@ namespace brave_vpn::v2 {
 // inside death-test children, which are separate processes.
 
 TEST(ShutdownHandlersDeathTest, NullCallbackChecks) {
-  EXPECT_CHECK_DEATH({
-    [[maybe_unused]] ShutdownHandlers handlers{base::RepeatingClosure()};
-  });
+  EXPECT_CHECK_DEATH({ ShutdownHandlers{base::OnceClosure()}; });
 }
 
 TEST(ShutdownHandlersDeathTest, InstallTwiceAfterSuccessChecks) {

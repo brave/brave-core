@@ -26,6 +26,9 @@ namespace brave_vpn::v2 {
 namespace {
 // The self-pipe. The write end is used from the signal handler, so it must be
 // fully set up before the handlers are installed.
+// Unlike chrome/browser/shutdown_signal_handlers_posix.cc, we keep no
+// g_pipe_pid guard: the agent never forks, so the handler cannot run in a child
+// that shares this pipe.
 int g_shutdown_pipe_read_fd = -1;
 int g_shutdown_pipe_write_fd = -1;
 
@@ -34,7 +37,7 @@ int g_shutdown_pipe_write_fd = -1;
 // non-joinable and deletes itself when done, Chromium-style.
 class ShutdownDetector : public base::PlatformThread::Delegate {
  public:
-  ShutdownDetector(int shutdown_fd, base::RepeatingClosure shutdown_callback)
+  ShutdownDetector(int shutdown_fd, base::OnceClosure shutdown_callback)
       : shutdown_fd_(shutdown_fd),
         shutdown_callback_(std::move(shutdown_callback)) {
     CHECK_NE(shutdown_fd_, -1);
@@ -47,24 +50,25 @@ class ShutdownDetector : public base::PlatformThread::Delegate {
   void ThreadMain() override {
     base::PlatformThread::SetName("VpnShutdownDetector");
 
-    char signaled{0};
-    const ssize_t bytes_read =
-        HANDLE_EINTR(read(shutdown_fd_, &signaled, sizeof(signaled)));
-    if (bytes_read == static_cast<ssize_t>(sizeof(signaled))) {
-      shutdown_callback_.Run();
+    // The wakeup_byte value is irrelevant; a successful read means "shut down".
+    if (char wakeup_byte{}; HANDLE_EINTR(read(shutdown_fd_, &wakeup_byte,
+                                              sizeof(wakeup_byte))) > 0) {
+      std::move(shutdown_callback_).Run();
     }
-    // bytes_read == 0 means the write end was closed without a signal being
-    // delivered; just let the thread exit.
     delete this;
   }
 
  private:
   const int shutdown_fd_;
-  const base::RepeatingClosure shutdown_callback_;
+  base::OnceClosure shutdown_callback_;
 };
 
 void GracefulShutdownHandler(int sig) {
-  // Reinstall the default handler.  We had one shot at graceful shutdown.
+  // Reinstall the default handler. We had one shot at graceful shutdown.
+  // Note this restores only the signal that fired, so the "second signal
+  // force-kills a hung shutdown" behavior is per-signal (e.g. SIGINT then
+  // SIGTERM will not force-kill). Windows makes it process-wide via
+  // g_shutdown_requested.
   struct sigaction action = {};
   action.sa_handler = SIG_DFL;
   RAW_CHECK(sigaction(sig, &action, nullptr) == 0);
@@ -72,10 +76,10 @@ void GracefulShutdownHandler(int sig) {
   RAW_CHECK(g_shutdown_pipe_write_fd != -1);
   RAW_CHECK(g_shutdown_pipe_read_fd != -1);
 
-  const char signaled{1};
+  const char wakeup_byte{};
   const ssize_t rv = HANDLE_EINTR(
-      write(g_shutdown_pipe_write_fd, &signaled, sizeof(signaled)));
-  RAW_CHECK(rv == static_cast<ssize_t>(sizeof(signaled)));
+      write(g_shutdown_pipe_write_fd, &wakeup_byte, sizeof(wakeup_byte)));
+  RAW_CHECK(rv == static_cast<ssize_t>(sizeof(wakeup_byte)));
 }
 
 }  // namespace
@@ -90,8 +94,8 @@ bool ShutdownHandlers::Install() {
   g_shutdown_pipe_write_fd = pipefd[1];
 
   // Deletes itself once the pipe is signaled or closed.
-  auto* detector =
-      new ShutdownDetector(g_shutdown_pipe_read_fd, shutdown_callback_);
+  auto* detector = new ShutdownDetector(g_shutdown_pipe_read_fd,
+                                        std::move(shutdown_callback_));
   // PlatformThread does not delete its delegate.
   ANNOTATE_LEAKING_OBJECT_PTR(detector);
   CHECK(base::PlatformThread::CreateNonJoinable(0, detector));

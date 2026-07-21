@@ -124,8 +124,8 @@ MULTIPROCESS_TEST_MAIN(HungShutdownChild) {
 
   base::WaitableEvent never_signaled;
   ShutdownHandlers handlers(
-      base::BindRepeating([](base::WaitableEvent* event) { event->Wait(); },
-                          base::Unretained(&never_signaled)));
+      base::BindOnce([](base::WaitableEvent* event) { event->Wait(); },
+                     base::Unretained(&never_signaled)));
   CHECK(handlers.Install());
   CHECK(SignalEvent(dir.Append(kReadySignal)));
 

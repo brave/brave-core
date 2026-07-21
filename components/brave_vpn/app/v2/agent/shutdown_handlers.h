@@ -18,9 +18,9 @@ namespace brave_vpn::v2 {
 //   * Install() must be called on the main thread, after the main task runner
 //   and the RunLoop quit closure have been set up, because the callback may
 //   fire as soon as the handlers are installed.
-//   * |shutdown_callback| may be invoked from an arbitrary background thread.
-//   It is supposed to be cheap, thread-safe and idempotent: posts the real
-//   shutdown work to the main thread.
+//   * |shutdown_callback| may be invoked at most once from an arbitrary
+//   background thread. It is supposed to be cheap and thread-safe: posts the
+//   real shutdown work to the main thread.
 //   * Following the Chromium convention, the first signal requests a graceful
 //   shutdown; a second one falls through to the OS default disposition and
 //   terminates the process immediately.
@@ -30,7 +30,7 @@ namespace brave_vpn::v2 {
 // amount of state shared with the (possibly still running) handler threads.
 class ShutdownHandlers final {
  public:
-  using ShutdownCallback = base::RepeatingClosure;
+  using ShutdownCallback = base::OnceClosure;
 
   explicit ShutdownHandlers(ShutdownCallback shutdown_callback);
   ~ShutdownHandlers();
@@ -39,7 +39,8 @@ class ShutdownHandlers final {
   ShutdownHandlers& operator=(const ShutdownHandlers&) = delete;
 
   // Installs the platform-specific handlers. Must be called on the main thread,
-  // and must not be called again after it succeeds. Returns true if the
+  // and must not be called again after it succeeds; may be called again after
+  // it returns false, which leaves no state behind. Returns true if the
   // handlers were installed, false if the platform does not support them (e.g.
   // no console on Windows).
   bool Install();
@@ -54,7 +55,7 @@ class ShutdownHandlers final {
   // Platform-specific teardown; called from the destructor if installed.
   void Uninstall();
 
-  const ShutdownCallback shutdown_callback_;
+  ShutdownCallback shutdown_callback_;
   bool installed_ = false;
 };
 

@@ -8,6 +8,7 @@
 #include <windows.h>
 
 #include <atomic>
+#include <utility>
 
 #include "base/check.h"
 #include "base/debug/leak_annotations.h"
@@ -20,12 +21,26 @@ namespace {
 // State shared with the console control handler, which the OS runs on a thread
 // it injects into this process. Heap-allocated and intentionally leaked so that
 // an in-flight handler can never observe destroyed objects.
-base::RepeatingClosure* g_shutdown_callback = nullptr;
+
+// Set once in Install() before SetConsoleCtrlHandler(), so handler threads
+// always see the fully-published pointer. Never rewritten afterward, so a
+// non-atomic pointer is race-free. Pointee is run at most once, guaranteed by
+// g_shutdown_requested.
+base::OnceClosure* g_shutdown_callback = nullptr;
+
+// Same as g_shutdown_callback: written once before SetConsoleCtrlHandler(),
+// never after, so the plain pointer needs no atomic. Pointee is a
+// WaitableEvent, which is internally thread-safe, so the main-thread Signal()
+// vs. handler-thread Wait() handshake is not a data race.
 base::WaitableEvent* g_shutdown_complete_event = nullptr;
 
 // The first event requests a graceful shutdown; subsequent events fall through
 // to the default handler, which terminates the process. This mirrors the POSIX
 // "second signal kills immediately" convention.
+// Sequential consistency (the default) is intentional: while a weaker ordering
+// would be correct today, one might later start relying on that flag to publish
+// other state, and it'll turn into a silent race. The stronger ordering costs
+// nothing on this cold path.
 std::atomic<bool> g_shutdown_requested{false};
 
 // How long the handler may hold off process termination on
@@ -42,7 +57,7 @@ BOOL WINAPI ConsoleCtrlHandler(DWORD ctrl_type) {
         // the graceful shutdown has hung.
         return FALSE;
       }
-      g_shutdown_callback->Run();
+      std::move(*g_shutdown_callback).Run();
       // TRUE suppresses the default handler, which would terminate the process
       // immediately and skip our cleanup.
       return TRUE;
@@ -54,7 +69,7 @@ BOOL WINAPI ConsoleCtrlHandler(DWORD ctrl_type) {
       // here until the main thread reports completion (or the OS deadline
       // approaches), so the graceful path has time to run.
       if (!g_shutdown_requested.exchange(true)) {
-        g_shutdown_callback->Run();
+        std::move(*g_shutdown_callback).Run();
       }
       g_shutdown_complete_event->TimedWait(kShutdownCompleteTimeout);
       return TRUE;
@@ -75,7 +90,7 @@ bool ShutdownHandlers::Install() {
 
   // Set up the shared state before registering the handler so the handler can
   // never observe null globals.
-  g_shutdown_callback = new base::RepeatingClosure(shutdown_callback_);
+  g_shutdown_callback = new base::OnceClosure(std::move(shutdown_callback_));
   g_shutdown_complete_event =
       new base::WaitableEvent(base::WaitableEvent::ResetPolicy::MANUAL,
                               base::WaitableEvent::InitialState::NOT_SIGNALED);
