@@ -499,8 +499,7 @@ TEST(BraveWalletUtilsUnitTest, GenerateRandomHexString) {
 TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
   EXPECT_EQ(
       BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinMainnet)),
-      [] {
-        auto dict = ParseJsonDict(R"(
+      ParseJsonDict(R"(
       {
         "address": "",
         "chain_id": "bitcoin_mainnet",
@@ -518,18 +517,14 @@ TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
         "name": "Bitcoin",
         "symbol": "BTC",
         "token_id": "",
-        "visible": true
+        "visible": true,
+        "zcash_token_type": 0
       }
-      )");
-        dict.Set("zcash_token_type",
-                 static_cast<int>(mojom::ZCashTokenType::kNone));
-        return dict;
-      }());
+      )"));
 
   EXPECT_EQ(
       BlockchainTokenToValue(GetBitcoinNativeToken(mojom::kBitcoinTestnet)),
-      [] {
-        auto dict = ParseJsonDict(R"(
+      ParseJsonDict(R"(
       {
         "address": "",
         "chain_id": "bitcoin_testnet",
@@ -547,13 +542,10 @@ TEST(BraveWalletUtilsUnitTest, BitcoinNativeAssets) {
         "name": "Bitcoin",
         "symbol": "BTC",
         "token_id": "",
-        "visible": true
+        "visible": true,
+        "zcash_token_type": 0
       }
-      )");
-        dict.Set("zcash_token_type",
-                 static_cast<int>(mojom::ZCashTokenType::kNone));
-        return dict;
-      }());
+      )"));
 }
 
 TEST(BraveWalletUtilsUnitTest, ZcashNativeAssets) {
@@ -622,8 +614,7 @@ TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
   // Relay chain DOT carries the "dot" coingecko_id for price lookups.
   EXPECT_EQ(
       BlockchainTokenToValue(GetPolkadotNativeToken(mojom::kPolkadotMainnet)),
-      [] {
-        auto dict = ParseJsonDict(R"(
+      ParseJsonDict(R"(
       {
         "address": "",
         "chain_id": "polkadot_mainnet",
@@ -641,20 +632,16 @@ TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
         "name": "Polkadot",
         "symbol": "DOT",
         "token_id": "",
-        "visible": true
+        "visible": true,
+        "zcash_token_type": 0
       }
-      )");
-        dict.Set("zcash_token_type",
-                 static_cast<int>(mojom::ZCashTokenType::kNone));
-        return dict;
-      }());
+      )"));
 
   // Asset Hub holds the same teleported DOT, so it shares the "dot"
   // coingecko_id. Without it, Asset Hub DOT shows no price info.
   EXPECT_EQ(BlockchainTokenToValue(
                 GetPolkadotNativeToken(mojom::kPolkadotMainnetAssetHub)),
-            [] {
-              auto dict = ParseJsonDict(R"(
+            ParseJsonDict(R"(
       {
         "address": "",
         "chain_id": "polkadot_asset_hub",
@@ -672,13 +659,10 @@ TEST(BraveWalletUtilsUnitTest, PolkadotNativeAssets) {
         "name": "Polkadot",
         "symbol": "DOT",
         "token_id": "",
-        "visible": true
+        "visible": true,
+        "zcash_token_type": 0
       }
-      )");
-              dict.Set("zcash_token_type",
-                       static_cast<int>(mojom::ZCashTokenType::kNone));
-              return dict;
-            }());
+      )"));
 
   // Testnet chains (Westend relay, Westend Asset Hub, Paseo Asset Hub) hold
   // valueless test tokens and intentionally have no coingecko_id.
