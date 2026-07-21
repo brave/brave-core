@@ -8,6 +8,10 @@ import Button from '@brave/leo/react/button'
 // Utils
 import { getLocale } from '../../../../common/locale'
 
+// Selectors
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+
 // Styled Components
 import { StyledWrapper, Alert, Icon } from './style'
 import { Row } from '../../shared/style'
@@ -22,6 +26,9 @@ export interface Props {
 
 export const WalletBanner = (props: Props) => {
   const { onDismiss, onClick, bannerType, description, buttonText } = props
+
+  // Selector
+  const isIOS = useSafeUISelector(UISelectors.isIOS)
 
   return (
     <StyledWrapper>
@@ -40,13 +47,15 @@ export const WalletBanner = (props: Props) => {
           slot='actions'
           width='unset'
         >
-          <Button
-            kind='plain'
-            onClick={onClick}
-            size='tiny'
-          >
-            {buttonText}
-          </Button>
+          {!isIOS && (
+            <Button
+              kind='plain'
+              onClick={onClick}
+              size='tiny'
+            >
+              {buttonText}
+            </Button>
+          )}
           <Button
             kind='plain-faint'
             onClick={onDismiss}
