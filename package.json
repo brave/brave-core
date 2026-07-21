@@ -243,11 +243,11 @@
     "webext-redux": "2.1.9"
   },
   "overrides": {
-    "axios": "1.16.0",
+    "axios": "1.18.0",
     "elliptic": "6.6.1",
     "esbuild": "0.28.1",
     "prismjs": "1.30.0",
-    "protobufjs": "7.6.3",
+    "protobufjs": "7.6.5",
     "tiny-secp256k1": "1.1.7",
     "uuid": "14.0.0"
   }
