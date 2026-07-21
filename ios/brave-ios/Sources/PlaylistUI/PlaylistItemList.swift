@@ -21,8 +21,8 @@ struct PlaylistItemList: View {
 
   @Environment(\.openTabURL) private var openTabURL
   private typealias PlaylistItemUUID = String
-  @State private var downloadStates: [PlaylistItemUUID: PlaylistDownloadManager.DownloadState] = [:]
-  @State private var downloadProgress: [PlaylistItemUUID: Double] = [:]
+  @State private var cacheStates: [PlaylistItemUUID: PlaylistDownloadManager.CacheState] = [:]
+  @State private var cacheProgress: [PlaylistItemUUID: Double] = [:]
 
   init(
     items: [PlaylistItem],
@@ -55,16 +55,21 @@ struct PlaylistItemList: View {
             duration: .init(item.duration),
             isSelected: selectedItemID == item.id,
             isPlaying: isPlaying,
-            downloadState: {
-              guard let uuid = item.uuid, let state = downloadStates[uuid] else {
+            cacheState: {
+              // Cache-first caches every item automatically, so per-item cache status
+              // the "Preparing" progress and the ready checkmark is visual noise.
+              if FeatureList.kPlaylistCacheFirstEnabled.enabled {
                 return nil
               }
-              if state == .downloaded {
+              guard let uuid = item.uuid, let state = cacheStates[uuid] else {
+                return nil
+              }
+              if state == .cached {
                 return .completed
               }
               if state == .inProgress {
                 // PlaylistDownloadManager reports percent as 0...100 not 0...1
-                let percentCompleted = downloadProgress[uuid, default: 0.0] / 100.0
+                let percentCompleted = cacheProgress[uuid, default: 0.0] / 100.0
                 return .downloading(percentComplete: percentCompleted)
               }
               return nil
@@ -81,8 +86,10 @@ struct PlaylistItemList: View {
         .contextMenu {
           // Mirror the badge's source of truth: only offer "Remove offline data" when the cached file
           // actually exists on disk. Otherwise we'd offer to remove a phantom download for an item whose bookmark
-          // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`).
-          if let uuid = item.uuid, downloadStates[uuid] == .downloaded {
+          // survived but whose file was wiped (e.g. by iOS reclaiming `com.apple.UserManagedAssets*`). Cache-first manages the cache automatically
+          if let uuid = item.uuid, cacheStates[uuid] == .cached,
+            !FeatureList.kPlaylistCacheFirstEnabled.enabled
+          {
             Button {
               Task { @MainActor in
                 await PlaylistManager.shared.deleteCache(item: .init(item: item))
@@ -155,17 +162,17 @@ struct PlaylistItemList: View {
     .task {
       for item in items {
         guard let uuid = item.uuid else { continue }
-        downloadStates[uuid] = await PlaylistManager.shared.downloadState(for: uuid)
+        cacheStates[uuid] = await PlaylistManager.shared.cacheState(for: uuid)
       }
     }
     .onReceive(PlaylistManager.shared.downloadStateChanged) { output in
-      downloadStates[output.id] = output.state
-      if output.state == .downloaded, let item = items.first(where: { $0.uuid == output.id }) {
+      cacheStates[output.id] = output.state
+      if output.state == .cached, let item = items.first(where: { $0.uuid == output.id }) {
         PlaylistManager.shared.getAssetDuration(item: .init(item: item)) { _ in }
       }
     }
     .onReceive(PlaylistManager.shared.downloadProgressUpdated) { output in
-      downloadProgress[output.id] = output.percentComplete
+      cacheProgress[output.id] = output.percentComplete
     }
   }
 }
