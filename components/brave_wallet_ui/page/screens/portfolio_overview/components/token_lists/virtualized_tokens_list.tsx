@@ -1,23 +1,23 @@
 // Copyright (c) 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { VariableSizeList as List } from 'react-window'
 import AutoSizer from 'react-virtualized-auto-sizer'
 
 // Types
-import { BraveWallet } from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../constants/types'
 
 // Utils
 import {
   dedupeAssetsByIdKey,
   getAssetIdKey,
-} from '../../../../../../utils/asset-utils'
+} from '../../../../../utils/asset-utils'
 
 // Styles
-import { listItemInitialHeight, AutoSizerStyle } from './token-list.style'
+import { listItemInitialHeight, AutoSizerStyle } from './token_list.style'
 
 type ViewMode = 'list' | 'grid'
 

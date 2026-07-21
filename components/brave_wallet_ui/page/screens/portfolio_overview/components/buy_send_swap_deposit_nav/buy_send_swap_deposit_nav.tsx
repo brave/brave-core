@@ -6,34 +6,34 @@
 import * as React from 'react'
 
 // Types
-import { NavOption } from '../../../../../../constants/types'
+import { NavOption } from '../../../../../constants/types'
 
 // Hooks
-import { useRoute } from '../../../../../../common/hooks/use_route'
+import { useRoute } from '../../../../../common/hooks/use_route'
 
 // Options
 import {
   BuySendSwapDepositOptions,
   BuySendSwapDepositIOSOptions,
-} from '../../../../../../options/nav-options'
+} from '../../../../../options/nav-options'
 
 // Utils
-import { getLocale } from '../../../../../../../common/locale'
+import { getLocale } from '../../../../../../common/locale'
 
 // Selectors
 import {
   useSafeUISelector, //
-} from '../../../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../../../common/selectors'
+} from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../common/selectors'
 
 // Components
 import {
   PortfolioActionsMoreMenu, //
-} from '../../../../wallet-menus/portfolio_actions_more_menu'
+} from '../../../../../components/desktop/wallet-menus/portfolio_actions_more_menu'
 
 // Styled Components
-import { Button, ButtonIcon } from './buy-send-swap-deposit-nav.style'
-import { Row, Column, Text } from '../../../../../shared/style'
+import { Button, ButtonIcon } from './buy_send_swap_deposit_nav.style'
+import { Row, Column, Text } from '../../../../../components/shared/style'
 
 export const BuySendSwapDepositNav = () => {
   // selectors

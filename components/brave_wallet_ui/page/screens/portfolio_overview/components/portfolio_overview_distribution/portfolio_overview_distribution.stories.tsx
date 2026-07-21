@@ -9,12 +9,12 @@ import * as React from 'react'
 import {
   mockBtcToken,
   mockEthToken,
-} from '../../../../../../stories/mock-data/mock-asset-options'
+} from '../../../../../stories/mock-data/mock-asset-options'
 
 // Components
 import {
   WalletPageStory, //
-} from '../../../../../../stories/wrappers/wallet-page-story-wrapper'
+} from '../../../../../stories/wrappers/wallet-page-story-wrapper'
 import { PortfolioOverviewDistribution } from './portfolio_overview_distribution'
 
 export const _PortfolioOverviewDistribution = {

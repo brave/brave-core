@@ -7,10 +7,15 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 
 // Shared Styles
-import { Text, Column, Row, WalletButton } from '../../../../../shared/style'
+import {
+  Text,
+  Column,
+  Row,
+  WalletButton,
+} from '../../../../../components/shared/style'
 import {
   layoutPanelWidth, //
-} from '../../../../wallet-page-wrapper/wallet-page-wrapper.style'
+} from '../../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const GettingStartedWrapper = styled(Column)`
   padding: 0px 32px 32px 32px;

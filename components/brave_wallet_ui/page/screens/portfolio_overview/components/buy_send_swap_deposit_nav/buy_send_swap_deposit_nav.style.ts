@@ -6,7 +6,7 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css/variables'
 import Icon from '@brave/leo/react/icon'
-import { WalletButton } from '../../../../../shared/style'
+import { WalletButton } from '../../../../../components/shared/style'
 
 export const Button = styled(WalletButton)<{
   minWidth?: number

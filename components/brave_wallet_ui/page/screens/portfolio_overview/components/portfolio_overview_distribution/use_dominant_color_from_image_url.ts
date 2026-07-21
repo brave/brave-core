@@ -8,7 +8,7 @@ import * as React from 'react'
 import {
   getDominantColorFromImageURL,
   getDominantColorFromImageURLAsync,
-} from '../../../../../../utils/style.utils'
+} from '../../../../../utils/style.utils'
 
 /**
  * Resolves a dominant color from a wallet token logo URL after the image has

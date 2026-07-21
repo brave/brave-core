@@ -1,7 +1,7 @@
 // Copyright (c) 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
@@ -11,96 +11,96 @@ import { Route, Switch } from 'react-router-dom'
 // Selectors
 import {
   useSafeUISelector, //
-} from '../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../common/selectors'
+} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // hooks
 import {
   useBalancesFetcher, //
-} from '../../../../common/hooks/use-balances-fetcher'
+} from '../../../common/hooks/use-balances-fetcher'
 import {
   useLocalStorage,
   useSyncedLocalStorage,
-} from '../../../../common/hooks/use_local_storage'
+} from '../../../common/hooks/use_local_storage'
 import {
   usePortfolioVisibleNetworks, //
-} from '../../../../common/hooks/use_portfolio_networks'
+} from '../../../common/hooks/use_portfolio_networks'
 import {
   usePortfolioAccounts, //
-} from '../../../../common/hooks/use_portfolio_accounts'
+} from '../../../common/hooks/use_portfolio_accounts'
 
 // Constants
 import {
   LOCAL_STORAGE_KEYS, //
-} from '../../../../common/constants/local-storage-keys'
+} from '../../../common/constants/local-storage-keys'
 import {
   BraveWallet,
   UserAssetInfoType,
   WalletRoutes,
   WalletStatus,
-} from '../../../../constants/types'
-import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+} from '../../../constants/types'
+import { emptyRewardsInfo } from '../../../common/async/base-query-cache'
 
 // Utils
-import Amount from '../../../../utils/amount'
+import Amount from '../../../utils/amount'
 import {
   computeFiatAmount,
   getTokenPriceAmountFromRegistry,
   getPriceRequestsForTokens,
-} from '../../../../utils/pricing-utils'
-import { getBalance } from '../../../../utils/balance-utils'
-import { getAssetIdKey } from '../../../../utils/asset-utils'
+} from '../../../utils/pricing-utils'
+import { getBalance } from '../../../utils/balance-utils'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 import {
   networkEntityAdapter, //
-} from '../../../../common/slices/entities/network.entity'
-import { networkSupportsAccount } from '../../../../utils/network-utils'
-import { getIsRewardsToken } from '../../../../utils/rewards_utils'
+} from '../../../common/slices/entities/network.entity'
+import { networkSupportsAccount } from '../../../utils/network-utils'
+import { getIsRewardsToken } from '../../../utils/rewards_utils'
 import {
   getStoredPortfolioTimeframe, //
-} from '../../../../utils/local-storage-utils'
-import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
+} from '../../../utils/local-storage-utils'
+import { makePortfolioAssetRoute } from '../../../utils/routes-utils'
 
 // Options
 import {
   PortfolioNavOptions,
   PortfolioNavOptionsNoNFTsTab,
-} from '../../../../options/nav-options'
+} from '../../../options/nav-options'
 import {
   AccountsGroupByOption, //
   NoneGroupByOption,
-} from '../../../../options/group-assets-by-options'
+} from '../../../options/group-assets-by-options'
 
 // Components
-import { LoadingSkeleton } from '../../../shared/loading-skeleton/index'
+import { LoadingSkeleton } from '../../../components/shared/loading-skeleton/index'
 import {
   SegmentedControl, //
-} from '../../../shared/segmented_control/segmented_control'
-import { PortfolioAssetItem } from '../../portfolio-asset-item/index'
-import { TokenLists } from './components/token-lists/token-list'
+} from '../../../components/shared/segmented_control/segmented_control'
+import { PortfolioAssetItem } from '../../../components/desktop/portfolio-asset-item/index'
+import { TokenLists } from './components/token_lists/token_list'
 import {
   PortfolioOverviewChart, //
-} from './components/portfolio-overview-chart/portfolio-overview-chart'
-import ColumnReveal from '../../../shared/animated-reveals/column-reveal'
-import { Nfts } from '../nfts/components/nfts'
+} from './components/portfolio_overview_chart/portfolio_overview_chart'
+import ColumnReveal from '../../../components/shared/animated-reveals/column-reveal'
+import { Nfts } from '../../../components/desktop/views/nfts/components/nfts'
 import {
   BuySendSwapDepositNav, //
-} from './components/buy-send-swap-deposit-nav/buy-send-swap-deposit-nav'
+} from './components/buy_send_swap_deposit_nav/buy_send_swap_deposit_nav'
 import {
   PortfolioFiltersModal, //
-} from '../../popup-modals/filter-modals/portfolio-filters-modal'
+} from '../../../components/desktop/popup-modals/filter-modals/portfolio-filters-modal'
 import {
   TransactionsScreen, //
-} from '../../../../page/screens/transactions/transactions-screen'
+} from '../transactions/transactions-screen'
 import {
   WalletPageWrapper, //
-} from '../../wallet-page-wrapper/wallet-page-wrapper'
+} from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper'
 import {
   PortfolioOverviewHeader, //
-} from '../../card-headers/portfolio-overview-header'
-import { Banners } from '../banners/banners'
+} from '../../../components/desktop/card-headers/portfolio-overview-header'
+import { Banners } from '../../../components/desktop/views/banners/banners'
 import {
   LastPricesUpdatedTooltip, //
-} from '../../../shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
+} from '../../../components/shared/last_prices_updated_tooltip/last_prices_updated_tooltip'
 import { GettingStarted } from './components/getting_started/getting_started'
 
 // Styled Components
@@ -112,14 +112,14 @@ import {
   BalanceAndChangeWrapper,
   BalanceAndLineChartWrapper,
   ActivityWrapper,
-} from './style'
+} from './portfolio_overview.style'
 import {
   Text,
   Column,
   Row,
   HorizontalSpace,
   DefaultPageWrapper,
-} from '../../../shared/style'
+} from '../../../components/shared/style'
 
 // Queries
 import {
@@ -128,16 +128,16 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
   useGetUserTokensRegistryQuery,
-} from '../../../../common/slices/api.slice'
+} from '../../../common/slices/api.slice'
 import {
   querySubscriptionOptions60s, //
-} from '../../../../common/slices/constants'
+} from '../../../common/slices/constants'
 import {
   usePersistedTokenSpotPricesQuery, //
-} from '../../../../common/hooks/use-persisted-spot-prices'
+} from '../../../common/hooks/use-persisted-spot-prices'
 import {
   selectAllVisibleFungibleUserAssetsFromQueryResult, //
-} from '../../../../common/slices/entities/blockchain-token.entity'
+} from '../../../common/slices/entities/blockchain-token.entity'
 import {
   PortfolioOverviewDistribution,
   PortfolioOverviewDistributionData,

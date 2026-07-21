@@ -7,21 +7,21 @@ import * as React from 'react'
 import Tooltip from '@brave/leo/react/tooltip'
 
 // Types
-import { BraveWallet } from '../../../../../../constants/types'
+import { BraveWallet } from '../../../../../constants/types'
 
 // Hooks
 import { useDominantColorFromImageURL } from './use_dominant_color_from_image_url'
 
 // Components
-import { LoadingSkeleton } from '../../../../../shared/loading-skeleton'
+import { LoadingSkeleton } from '../../../../../components/shared/loading-skeleton'
 
 // Utils
-import { getLocale } from '../../../../../../../common/locale'
-import { getAssetIdKey } from '../../../../../../utils/asset-utils'
+import { getLocale } from '../../../../../../common/locale'
+import { getAssetIdKey } from '../../../../../utils/asset-utils'
 
 // Selectors
-import { useSafeUISelector } from '../../../../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../../../../common/selectors'
+import { useSafeUISelector } from '../../../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../../../common/selectors'
 
 // Styled Components
 import {
@@ -33,7 +33,7 @@ import {
   SegmentPercent,
   SegmentFiat,
 } from './portfolio_overview_distribution.style'
-import { Column, Row } from '../../../../../shared/style'
+import { Column, Row } from '../../../../../components/shared/style'
 import styles from './style.module.scss'
 
 // iOS WebKit blocks sampling remote images to canvas; use fixed segment hues instead.

@@ -29,7 +29,7 @@ import { ExploreWeb3Header } from '../../card-headers/explorer_web3_header'
 import {
   EditVisibleAssetsModal, //
 } from '../../popup-modals/edit-visible-assets-modal/index'
-import { PortfolioOverview } from '../portfolio/portfolio-overview'
+import { PortfolioOverview } from '../../../../page/screens/portfolio_overview/portfolio_overview'
 import { PortfolioFungibleAsset } from '../portfolio/portfolio-fungible-asset'
 import { PortfolioNftAsset } from '../portfolio/portfolio-nft-asset'
 import { MarketView } from '../market'
