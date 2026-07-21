@@ -20,7 +20,14 @@ Per-test provider `config` keys:
     skills:          [str] skills that must be discoverable (linked by
                            agents/skills/setup.py); verified before the run
     allowedTools:    str   value for `claude --allowedTools` (default below)
-    changes:         [ {apply: patch} | {stage: path} ]   git fixups (optional)
+    changes:         [ {apply: patch} | {stage: path} ]   git fixups (optional);
+                           `apply` paths are resolved relative to brave-core root
+    sandbox:         bool  run a mutating (code-refactor) eval in a throwaway
+                           per-run git repo instead of the real tree. Fixtures
+                           and the agent's edits land there, and the result is
+                           mirrored to agents/testing/.last_run/sandbox/ so
+                           asserts read it at a stable path. Read-only evals omit
+                           this and run in brave-core itself.
     fake_gh:         {...} canned-data object for fake_gh.py (see that file).
                            When present, a stub `gh` is put first on PATH so the
                            run never touches real GitHub.
@@ -53,6 +60,8 @@ from pathlib import Path
 _TESTING_DIR = Path(__file__).resolve().parent
 _BRAVE_SRC = _TESTING_DIR.parents[1]           # .../src/brave
 _SKILLS_SRC = _BRAVE_SRC / 'agents' / 'skills'
+# Upstream Chromium skills in the parent checkout (see agents/skills/setup.py).
+_UPSTREAM_SKILLS_SRC = _BRAVE_SRC.parent / 'agents' / 'skills'
 _LAST_RUN_DIR = _TESTING_DIR / '.last_run'
 _SETUP_PY = _SKILLS_SRC / 'setup.py'
 
@@ -90,10 +99,12 @@ def _ensure_skills_linked(skills):
         subprocess.run([sys.executable, str(_SETUP_PY), 'link', '-q'],
                        cwd=str(_BRAVE_SRC), check=False)
     missing = [s for s in (skills or [])
-               if not (_SKILLS_SRC / s).is_dir()]
+               if not (_SKILLS_SRC / s).is_dir()
+               and not (_UPSTREAM_SKILLS_SRC / s).is_dir()]
     if missing:
         raise FileNotFoundError(
-            f'Requested skill(s) not found under {_SKILLS_SRC}: {missing}')
+            f'Requested skill(s) not found under {_SKILLS_SRC} or '
+            f'{_UPSTREAM_SKILLS_SRC}: {missing}')
 
 
 def _apply_changes(changes, cwd):
@@ -101,11 +112,75 @@ def _apply_changes(changes, cwd):
         if len(change) != 1:
             raise ValueError('Invalid change: must have exactly one key.')
         if 'apply' in change:
-            subprocess.check_call(['git', 'apply', change['apply']], cwd=cwd)
+            # Config paths are written relative to the brave-core root (like the
+            # CS-003 eval's `agents/prompts/eval/.../fixture.patch`). Absolutize
+            # against it so the patch resolves even when `cwd` is a sandbox dir.
+            patch = change['apply']
+            if not os.path.isabs(patch):
+                patch = str(_BRAVE_SRC / patch)
+            subprocess.check_call(['git', 'apply', patch], cwd=cwd)
         elif 'stage' in change:
             subprocess.check_call(['git', 'add', change['stage']], cwd=cwd)
         else:
             raise ValueError('change key must be "apply" or "stage".')
+
+
+def _link_skill_into(name, dest_dir):
+    """Symlink one skill (Brave first, else upstream) into `dest_dir`."""
+    src = _SKILLS_SRC / name
+    if not src.is_dir():
+        src = _UPSTREAM_SKILLS_SRC / name
+    if not src.is_dir():
+        return False
+    dest_dir.mkdir(parents=True, exist_ok=True)
+    link = dest_dir / name
+    if link.is_symlink() or link.exists():
+        return True
+    # Absolute target: the sandbox is an ephemeral per-run temp dir, so there is
+    # no "checkout moved" case to survive, and a relative target computed from a
+    # temp path can be wrong when it crosses a symlink (e.g. macOS /var ->
+    # /private/var). Resolve so it points at the real skill dir regardless.
+    os.symlink(str(src.resolve()), link, target_is_directory=True)
+    return True
+
+
+def _init_sandbox(run_dir, skills):
+    """Create an isolated git-repo sandbox for a mutating (code-refactor) eval.
+
+    Read-only evals (like review-prs) run in the real brave-core tree, but a
+    refactor eval must not mutate it — and, run `runs_per_test` times, its setup
+    patch would fail to re-apply. So the agent runs in a throwaway per-run repo:
+    fixtures are applied here, the agent edits here, and asserts read the mirror
+    at .last_run/sandbox/. Skills are linked into the sandbox's own
+    `.claude/skills/` so they stay discoverable from this cwd.
+    """
+    sandbox = run_dir / 'sandbox'
+    sandbox.mkdir(parents=True, exist_ok=True)
+    # A real (if empty) git repo: some skills detect the repo root, and it keeps
+    # the agent's own `git` calls working. No baseline commit is needed —
+    # asserts read files directly, not `git status`.
+    subprocess.run(['git', 'init', '-q'], cwd=str(sandbox), check=False)
+    skills_dir = sandbox / '.claude' / 'skills'
+    for name in skills or []:
+        _link_skill_into(name, skills_dir)
+    return sandbox
+
+
+def _mirror_sandbox(sandbox):
+    """Copy the sandbox tree to a stable .last_run/sandbox/ path for asserts.
+
+    Asserts run with cwd = the eval config dir, so they reach the result files
+    at a fixed relative path (`../../../testing/.last_run/sandbox/...`) rather
+    than the random per-run temp dir. `.git`/`.claude` are scaffolding, not
+    results, so they are excluded.
+    """
+    dest = _LAST_RUN_DIR / 'sandbox'
+    _LAST_RUN_DIR.mkdir(parents=True, exist_ok=True)
+    if dest.exists():
+        shutil.rmtree(dest)
+    shutil.copytree(sandbox, dest,
+                    ignore=shutil.ignore_patterns('.git', '.claude'))
+    return dest
 
 
 def _resolve_diff_file(path):
@@ -217,8 +292,15 @@ def call_api(prompt, options, context):
         org_members_file.write_text('', encoding='utf-8')
         env['BRAVE_ORG_MEMBERS_PATH'] = str(org_members_file)
 
+    # A mutating (code-refactor) eval runs in a throwaway sandbox repo so it
+    # never touches the real tree and can re-run cleanly; a read-only eval
+    # (review-prs) runs in brave-core itself.
+    sandbox_mode = bool(config.get('sandbox'))
+    work_dir = _init_sandbox(run_dir, config.get('skills')) if sandbox_mode \
+        else _BRAVE_SRC
+
     try:
-        _apply_changes(config.get('changes'), cwd=str(_BRAVE_SRC))
+        _apply_changes(config.get('changes'), cwd=str(work_dir))
     except (subprocess.CalledProcessError, ValueError) as e:
         return {'error': f'failed to apply changes: {e}'}
 
@@ -229,11 +311,12 @@ def call_api(prompt, options, context):
     # from checked-in eval config, not remote/untrusted data.
     cmd = [claude_bin, '-p', prompt, '--allowedTools', allowed_tools]
     metrics = {'user_prompt': prompt, 'run_dir': str(run_dir),
+               'work_dir': str(work_dir),
                'command': ' '.join(shlex.quote(c) for c in cmd)}
     start = time.time()
     try:
         # nosemgrep: python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args
-        proc = subprocess.run(cmd, cwd=str(_BRAVE_SRC), env=env, text=True,
+        proc = subprocess.run(cmd, cwd=str(work_dir), env=env, text=True,
                               capture_output=True, timeout=timeout)
     except subprocess.TimeoutExpired:
         return {'error': f'Claude Code timed out after {timeout}s',
@@ -244,6 +327,8 @@ def call_api(prompt, options, context):
     metrics['duration'] = time.time() - start
 
     output = (proc.stdout or '') + (proc.stderr or '')
+    if sandbox_mode:
+        metrics['sandbox'] = str(_mirror_sandbox(work_dir))
     collected, result_files = _harvest_results(run_dir)
     metrics['collected_results'] = str(collected)
     metrics['result_files'] = result_files
