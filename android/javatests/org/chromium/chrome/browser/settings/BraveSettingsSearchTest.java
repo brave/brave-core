@@ -674,47 +674,60 @@ public class BraveSettingsSearchTest {
         // assertSearchResultEmpty();
     }
 
-    // Disabled: MediaPreferences has no search index provider.
-    // TODO(https://github.com/brave/brave-browser/issues/57181)
-    // /**
-    //  * Verifies that key Brave-specific settings entries appear in the Media Settings
-    //  * search results.
-    //  */
-    // @Test
-    // @SmallTest
-    // @Feature({"Preferences"})
-    // public void testMediaSettingsAreSearchable() {
-    //     mSettingsActivityTestRule.startSettingsActivity();
+    /**
+     * Verifies that key Brave-specific settings entries appear in the Media Settings search
+     * results.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    public void testMediaSettingsAreSearchable() {
+        mSettingsActivityTestRule.startSettingsActivity();
 
-    //     // General
-    //     typeIntoSearch("Widevine DRM");
-    //     assertSearchResult("Widevine DRM");
+        // General
+        typeIntoSearch("Widevine DRM");
+        assertSearchResult("Widevine DRM");
 
-    //     clearAndTypeIntoSearch("Background play");
-    //     assertSearchResult("Background play");
+        clearAndTypeIntoSearch("Background play");
+        assertSearchResult("Background play");
 
-    //     // YouTube
-    //     clearAndTypeIntoSearch("Open YouTube links in Brave");
-    //     assertSearchResult("Open YouTube links in Brave");
+        // YouTube
+        clearAndTypeIntoSearch("Open YouTube links in Brave");
+        assertSearchResult("Open YouTube links in Brave");
 
-    //     clearAndTypeIntoSearch("Block YouTube Shorts");
-    //     assertSearchResult("Block YouTube Shorts");
+        clearAndTypeIntoSearch("Block YouTube Shorts");
+        assertSearchResult("Block YouTube Shorts");
 
-    //     clearAndTypeIntoSearch("Block YouTube Playables");
-    //     assertSearchResult("Block YouTube Playables");
+        clearAndTypeIntoSearch("Block YouTube Playables");
+        assertSearchResult("Block YouTube Playables");
 
-    //     clearAndTypeIntoSearch("Block YouTube recommended content");
-    //     assertSearchResult("Block YouTube recommended content");
+        clearAndTypeIntoSearch("Block YouTube recommended content");
+        assertSearchResult("Block YouTube recommended content");
 
-    //     clearAndTypeIntoSearch("Block YouTube distracting elements");
-    //     assertSearchResult("Block YouTube distracting elements");
+        clearAndTypeIntoSearch("Block YouTube distracting elements");
+        assertSearchResult("Block YouTube distracting elements");
 
-    //     clearAndTypeIntoSearch("Block YouTube auto-dubbed videos");
-    //     assertSearchResult("Block YouTube auto-dubbed videos");
+        clearAndTypeIntoSearch("Block YouTube auto-dubbed videos");
+        assertSearchResult("Block YouTube auto-dubbed videos");
 
-    //     clearAndTypeIntoSearch("Block YouTube members-only videos");
-    //     assertSearchResult("Block YouTube members-only videos");
-    // }
+        clearAndTypeIntoSearch("Block YouTube members-only videos");
+        assertSearchResult("Block YouTube members-only videos");
+    }
+
+    /**
+     * Verifies that the "Background play" Media setting is not searchable when the Brave background
+     * video playback feature is disabled.
+     */
+    @Test
+    @SmallTest
+    @Feature({"Preferences"})
+    @DisableFeatures(BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)
+    public void testMediaSettingsAreSearchable_BackgroundPlayFeatureDisabled() {
+        mSettingsActivityTestRule.startSettingsActivity();
+
+        typeIntoSearch("Background play");
+        assertSearchResultEmpty();
+    }
 
     /**
      * Verifies that key Brave-specific settings entries appear in the Appearance Settings search

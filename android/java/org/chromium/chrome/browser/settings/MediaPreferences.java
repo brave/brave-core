@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 
 import androidx.preference.Preference;
@@ -24,6 +25,8 @@ import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.shields.FilterListServiceFactory;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.BaseSearchIndexProvider;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 
 /* Class for Media section of main preferences */
@@ -276,4 +279,19 @@ public class MediaPreferences extends BravePreferenceFragment
         }
         super.onDestroy();
     }
+
+    public static final BaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new BaseSearchIndexProvider(MediaPreferences.class.getName(), R.xml.media_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(Context context, SettingsIndexData indexData) {
+                    // "Background play" is only shown when the feature is enabled, mirroring the
+                    // visibility logic in onCreate().
+                    if (!ChromeFeatureList.isEnabled(
+                            BraveFeatureList.BRAVE_BACKGROUND_VIDEO_PLAYBACK)) {
+                        indexData.removeEntryForKey(
+                                MediaPreferences.class.getName(), PREF_BACKGROUND_VIDEO_PLAYBACK);
+                    }
+                }
+            };
 }
