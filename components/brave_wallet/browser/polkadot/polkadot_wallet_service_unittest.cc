@@ -900,9 +900,10 @@ TEST_F(PolkadotWalletServiceUnitTest, SignAndSendTransaction_PaseoAssetHub) {
   // Captured transaction:
   // https://assethub-paseo.subscan.io/extrinsic/0xec9e1043a7dd8f045c86f6058d356193dd654c068126647a89ac5a92696fa5bb
   //
-  // This test has been updated manually to include extra signature extensions
-  // that have been added. This test ensures that our PolkadotWalletService
-  // correctly generates these extensions.
+  // The original captured transaction was based off of production data before
+  // Paseo rolled out an upgrade that expanded their set of SignedExtensions.
+  // This test has been manually updated to include this new set of extensions
+  // and as such, won't appear literally as-is in a chain_getBlock call.
 
   keyring_service_->Reset();
   GetAccountUtils().CreateWallet(kAssetHubMnemonic, kTestWalletPassword);
