@@ -382,6 +382,7 @@ struct TabGridView: View {
         shredMenu
       }
     }
+    .fixedSize(horizontal: false, vertical: true)
     .containerCornerOffset(.leading, sizeToFit: true)
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .dynamicTypeSize(.xSmall..<DynamicTypeSize.accessibility2)
@@ -484,14 +485,17 @@ struct TabGridView: View {
       }
       .addTabIconButtonStyle()
       .keyboardShortcut("t", modifiers: [.command])
-      .frame(maxWidth: .infinity, alignment: .leading)
+      Spacer()
 
       if !privateBrowsingOnly.value {
         TabGridModeSwitcher(
           isPrivateBrowsing: $viewModel.isPrivateBrowsing,
           regularTabCount: viewModel.regularTabCount
         )
+        .scaledToFit()
+        .dynamicTypeSize(.xSmall..<DynamicTypeSize.xxxLarge)
       }
+      Spacer()
 
       Button {
         if viewModel.tabs.isEmpty {
@@ -504,7 +508,6 @@ struct TabGridView: View {
       }
       .filledToolbarIconButtonStyle()
       .keyboardShortcut(.defaultAction)
-      .frame(maxWidth: .infinity, alignment: .trailing)
     }
     .foregroundStyle(Color(braveSystemName: .textSecondary))
     .fontWeight(.medium)
@@ -765,28 +768,31 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
       }),
       for: .valueChanged
     )
-    configureStaticAppearance(uiView)
-    updatePrivateBrowsingAppearance(uiView)
+    uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
     return uiView
   }
 
   func updateUIView(_ uiView: UISegmentedControl, context: Context) {
     uiView.setTitle(tabCount, forSegmentAt: 0)
     uiView.selectedSegmentIndex = isPrivateBrowsing ? 1 : 0
-    updatePrivateBrowsingAppearance(uiView)
-  }
-
-  func sizeThatFits(
-    _ proposal: ProposedViewSize,
-    uiView: UISegmentedControl,
-    context: Context
-  ) -> CGSize? {
-    .init(width: uiView.intrinsicContentSize.width + 44, height: controlHeight)
-  }
-
-  private func configureStaticAppearance(_ uiView: UISegmentedControl) {
-    uiView.selectedSegmentTintColor = UIColor(braveSystemName: .containerBackground)
-    let titleFont = UIFont.preferredFont(for: .subheadline, weight: .medium)
+    uiView.backgroundColor = UIColor(
+      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
+    )
+    let titleFont = UIFont.preferredFont(
+      for: .subheadline,
+      weight: .medium,
+      traitCollection: .init(
+        preferredContentSizeCategory: uiView.traitCollection.toolbarButtonContentSizeCategory
+      )
+    )
+    uiView.setTitleTextAttributes(
+      [
+        .font: titleFont,
+        .foregroundColor: isPrivateBrowsing
+          ? UIColor.white : UIColor(braveSystemName: .iconDefault),
+      ],
+      for: .selected
+    )
     uiView.setTitleTextAttributes(
       [
         .font: titleFont,
@@ -796,18 +802,17 @@ private struct TabGridModeSwitcher: UIViewRepresentable {
     )
   }
 
-  private func updatePrivateBrowsingAppearance(_ uiView: UISegmentedControl) {
-    uiView.backgroundColor = UIColor(
-      braveSystemName: isPrivateBrowsing ? .privateWindow10 : .neutral10
-    )
-    let titleFont = UIFont.preferredFont(for: .subheadline, weight: .medium)
-    uiView.setTitleTextAttributes(
-      [
-        .font: titleFont,
-        .foregroundColor: isPrivateBrowsing
-          ? UIColor.white : UIColor(braveSystemName: .iconDefault),
-      ],
-      for: .selected
+  func sizeThatFits(
+    _ proposal: ProposedViewSize,
+    uiView: UISegmentedControl,
+    context: Context
+  ) -> CGSize? {
+    .init(
+      width: min(
+        proposal.replacingUnspecifiedDimensions().width,
+        uiView.intrinsicContentSize.width
+      ),
+      height: controlHeight
     )
   }
 }

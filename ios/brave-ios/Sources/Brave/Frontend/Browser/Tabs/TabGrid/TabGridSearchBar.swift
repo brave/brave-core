@@ -13,19 +13,10 @@ struct TabGridSearchBar: View {
   @Binding var text: String
   @Binding var isFocused: Bool
   var scrollView: UIScrollView
-  @ScaledMetric(relativeTo: .body) private var height = 44
-
-  private var searchBarHeight: CGFloat {
-    if #available(iOS 26.0, *) {
-      height
-    } else {
-      36
-    }
-  }
 
   var body: some View {
     HStack {
-      Representable(text: $text, isFocused: $isFocused, height: searchBarHeight)
+      Representable(text: $text, isFocused: $isFocused)
       if isFocused {
         Button {
           isFocused = false
@@ -46,17 +37,14 @@ extension TabGridSearchBar {
   private struct Representable: UIViewRepresentable {
     @Binding var text: String
     @Binding var isFocused: Bool
-    var height: CGFloat
 
     public init(
       text: Binding<String>,
       isFocused: Binding<Bool>,
-      height: CGFloat,
       onSubmit: (() -> Void)? = nil
     ) {
       self._text = text
       self._isFocused = isFocused
-      self.height = height
     }
 
     public func makeUIView(context: Context) -> UISearchTextField {
@@ -94,7 +82,10 @@ extension TabGridSearchBar {
       uiView: UISearchTextField,
       context: Context
     ) -> CGSize? {
-      return .init(width: proposal.replacingUnspecifiedDimensions().width, height: height)
+      if #unavailable(iOS 26.0) {
+        return .init(width: proposal.replacingUnspecifiedDimensions().width, height: 36)
+      }
+      return nil
     }
 
     public func makeCoordinator() -> Coordinator {
