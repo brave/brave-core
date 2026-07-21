@@ -278,12 +278,13 @@ if sys.platform == 'win32':
 
 
 def _latest_index_object(index_url: str,
-                         expected_stem: str) -> tuple[str, str]:
+                         expected_stem: str) -> tuple[str, str, int]:
     """Download a platform's YAML index and return its latest archive.
 
     The index lists builds in chronological order, so the last element is the
     most recent archive for that platform + revision. Returns
-    `(object_name, sha256sum)`, where `object_name` is the archive's basename.
+    `(object_name, sha256sum, size_bytes)`, where `object_name` is the
+    archive's basename.
 
     `expected_stem` is the `<platform>-<upstream-stem>` the archive name must
     start with. A mismatch means the index was fetched from the wrong key or is
@@ -300,16 +301,17 @@ def _latest_index_object(index_url: str,
         raise RuntimeError(f'Published toolchain index is empty: {index_url}')
     latest = entries[-1]
     if (not isinstance(latest, dict) or 'url' not in latest
-            or 'sha256sum' not in latest):
+            or 'sha256sum' not in latest or 'size_bytes' not in latest):
         raise RuntimeError(
             f'Malformed entry in toolchain index {index_url}: expected a '
-            f'mapping with "url" and "sha256sum", got {latest!r}')
+            f'mapping with "url", "sha256sum", and "size_bytes", got '
+            f'{latest!r}')
     object_name = latest['url'].rsplit('/', 1)[-1]
     if not object_name.startswith(f'{expected_stem}-'):
         raise RuntimeError(
             f'Toolchain index {index_url} yielded {object_name!r}, which does '
             f'not start with the expected {expected_stem!r} stem.')
-    return object_name, latest['sha256sum']
+    return object_name, latest['sha256sum'], latest['size_bytes']
 
 
 def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
@@ -324,7 +326,7 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
             'bucket': '<bucket>/',
             'condition': 'not rust_force_head_revision',
             'objects': [
-              {'object_name': ..., 'sha256sum': ...,
+              {'object_name': ..., 'sha256sum': ..., 'size_bytes': ...,
                'overlayed_on': ..., 'condition': ...},
               ...
             ],
@@ -346,11 +348,13 @@ def rust_toolchain_extra_dep(upstream_stem: str) -> dict[str, dict]:
     for platform_prefix, condition in SUPPORTED_PLATFORM_CONDITIONS.items():
         stem = f'{platform_prefix}-{upstream_stem}'
         index_url = f'{TOOLCHAIN_BUCKET_URL}/{stem}.yaml'
-        object_name, sha256sum = _latest_index_object(index_url, stem)
+        object_name, sha256sum, size_bytes = _latest_index_object(
+            index_url, stem)
         host_os = PLATFORM_PREFIX_TO_CHROMIUM_HOST_OS[platform_prefix]
         objects.append({
             'object_name': object_name,
             'sha256sum': sha256sum,
+            'size_bytes': size_bytes,
             # Upstream Chromium-built Rust toolchain this archive overlays; see
             # `sync_deps.GetRustObjectNames` for the matching naming scheme.
             'overlayed_on': f'{host_os}/{upstream_stem}.tar.xz',
@@ -830,6 +834,7 @@ class ToolchainBuilder:
           * `url`              — full bucket URL the tarball will be served at.
           * `timestamp`        — ISO 8601 UTC time of this build.
           * `sha256sum`        — hex SHA-256 of the tarball bytes.
+          * `size_bytes`       — exact size of the tarball in bytes.
           * `chromium_version` — `MAJOR.MINOR.BUILD.PATCH` parsed from
                                  `chrome/VERSION`.
           * `chromium_commit`  — HEAD commit hash in the Chromium checkout.
@@ -942,6 +947,7 @@ class ToolchainBuilder:
             'url': archive_url,
             'timestamp': datetime.now(timezone.utc).isoformat(),
             'sha256sum': archive_sha256,
+            'size_bytes': archive_path.stat().st_size,
             'chromium_version': self._chromium_version(),
             'chromium_commit': self._chromium_commit(),
             'command_line': self._command_line(),

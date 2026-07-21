@@ -57,11 +57,13 @@ NEW_ENTRY = {
             {
                 'object_name': 'linux-x64-rust-toolchain-2.tar.xz',
                 'sha256sum': 'newlinuxsha',
+                'size_bytes': 111,
                 'condition': 'host_os == "linux"',
             },
             {
                 'object_name': 'win-rust-toolchain-2.tar.xz',
                 'sha256sum': 'newwinsha',
+                'size_bytes': 222,
                 'condition': 'host_os == "win"',
             },
         ],
@@ -193,6 +195,7 @@ FAKE_INDEX = {
     'url': ('https://example.invalid/xcode-hermetic-toolchain/'
             'xcode-hermetic-toolchain-26.5-25F70.tar.gz'),
     'sha256sum': 'b' * 64,
+    'size_bytes': 883762569,
     'xcode_version': '26.5',
     'xcode_build': '17F42',
     'metal_build': '17E188',
@@ -425,6 +428,7 @@ HERMETIC_XCODE_SCRIPT_INITIAL = """\
 # Sample header.
 
 MAC_BINARIES_HASH = 'oldhash'
+MAC_BINARIES_SIZE = 999
 
 # This contains binaries from Xcode 26.4 (17E202) along with the macOS 26.4 SDK
 # (25E251) and the Metal toolchain (17E150).
@@ -521,9 +525,12 @@ class XcodeRepinTest(_FakeRepoTest):
         script = self._read_hermetic_xcode_script()
         self.assertIn(f"MAC_BINARIES_HASH = '{FAKE_INDEX['sha256sum']}'",
                       script)
+        self.assertIn(f"MAC_BINARIES_SIZE = {FAKE_INDEX['size_bytes']}",
+                      script)
         self.assertIn("MAC_SDK_OFFICIAL_VERSION = '26.5'", script)
         self.assertIn("MAC_SDK_OFFICIAL_BUILD_VERSION = '25F70'", script)
         self.assertNotIn("'oldhash'", script)
+        self.assertNotIn('MAC_BINARIES_SIZE = 999', script)
         sdk_info = toolchain.build_xcode_toolchain.MacSdkInfo(
             sdk_version='26.5', product_build_version='25F70')
         self.assertIn(

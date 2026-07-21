@@ -193,12 +193,8 @@ class ExtraDepsRunner:
             return
 
         overlayed_on = obj.get('overlayed_on')
-        installer = TarballInstaller(dest_dir=_SRC_DIR.parent / path,
-                                     url=spec['bucket'] + obj['object_name'],
-                                     object_name=obj['object_name'],
-                                     sha256sum=obj['sha256sum'],
-                                     size_bytes=obj['size_bytes'],
-                                     owns_dest=not overlayed_on)
+        installer = TarballInstaller.for_object(_SRC_DIR.parent / path,
+                                                spec['bucket'], obj)
 
         # An overlay must sit on the base it was built against: validate it
         # still matches DEPS before touching the destination. No `overlayed_on`

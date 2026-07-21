@@ -2,18 +2,17 @@
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
-"""`TarballInstaller`: fetch, verify, and extract one `EXTRA_DEPS` object.
+"""`TarballInstaller`: fetch, verify, and extract one bucket-hosted archive.
 
-Stdlib-only: it downloads over HTTP, verifies the size and sha256, extracts the
-archive, and writes the sidecar files that record what is deployed. Also runnable
-as a
-CLI to deploy a single-object `EXTRA_DEPS` entry into the checkout.
+This script is designed to be used with EXTRA_DEPS entries, but the object can
+also be directly provided by the caller.
 """
 
 from __future__ import annotations
 
 import argparse
 from collections.abc import Callable
+from collections.abc import Mapping
 from dataclasses import dataclass
 import hashlib
 import json
@@ -70,6 +69,20 @@ class TarballInstaller:
     owns_dest: bool
 
     @classmethod
+    def for_object(cls, dest_dir: Path, bucket: str,
+                   obj: Mapping) -> TarballInstaller:
+        """Build an installer for a single caller-provided archive object.
+
+        `obj` are expected to follow the schema format for `EXTRA_DEPS` objects.
+        """
+        return cls(dest_dir=dest_dir,
+                   url=bucket + obj['object_name'],
+                   object_name=obj['object_name'],
+                   sha256sum=obj['sha256sum'],
+                   size_bytes=obj['size_bytes'],
+                   owns_dest=not obj.get('overlayed_on'))
+
+    @classmethod
     def for_dep(cls, root: Path, path: str, spec: dict) -> TarballInstaller:
         """Build an installer for the single object of `spec` under `root`.
 
@@ -83,13 +96,7 @@ class TarballInstaller:
             raise ValueError(
                 f'{path}: only single-object entries can be installed here, '
                 f'but this one has {len(objects)}')
-        obj = objects[0]
-        return cls(dest_dir=root / path,
-                   url=spec['bucket'] + obj['object_name'],
-                   object_name=obj['object_name'],
-                   sha256sum=obj['sha256sum'],
-                   size_bytes=obj['size_bytes'],
-                   owns_dest=not obj.get('overlayed_on'))
+        return cls.for_object(root / path, spec['bucket'], objects[0])
 
     def is_installed(self) -> bool:
         """True when the `_hash` sidecar already records `sha256sum`."""
@@ -112,10 +119,16 @@ class TarballInstaller:
             with archive_path.open('wb') as archive_file:
                 download(self.url, archive_file)
             self._verify(archive_path)
-            if self.owns_dest and self.dest_dir.exists():
-                # Drop the previous extraction so nothing stale lingers;
-                # overlays deliberately keep the upstream tree they sit on.
-                shutil.rmtree(self.dest_dir)
+            if self.owns_dest and (self.dest_dir.exists()
+                                   or self.dest_dir.is_symlink()):
+                # Drop the previous extraction so nothing stale lingers. A
+                # symlinked destination is replaced by the real extracted tree
+                # (rmtree refuses a symlink). Overlays deliberately keep the
+                # upstream tree they sit on.
+                if self.dest_dir.is_symlink():
+                    self.dest_dir.unlink()
+                else:
+                    shutil.rmtree(self.dest_dir)
             member_names = self._extract(archive_path)
         self._write_sidecars(member_names)
         return True
