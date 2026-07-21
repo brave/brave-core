@@ -468,8 +468,7 @@ public class BraveWalletPanel implements DialogInterface {
         mBtnSelectedNetwork = mPopupView.findViewById(R.id.btn_dapps_panel_networks);
         mBtnSelectedNetwork.setOnClickListener(
                 v -> {
-                    Intent intent = new Intent(mActivity, NetworkSelectorActivity.class);
-                    intent.setAction(Intent.ACTION_VIEW);
+                    final Intent intent = NetworkSelectorActivity.createIntent(mActivity);
                     mActivity.startActivity(intent);
                 });
         mCvSolConnectionStatus = mPopupView.findViewById(R.id.v_dapps_panel_sol_connection_status);

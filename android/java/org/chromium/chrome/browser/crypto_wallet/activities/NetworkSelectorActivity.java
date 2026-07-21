@@ -54,9 +54,9 @@ public class NetworkSelectorActivity extends BraveWalletBaseActivity
      */
     @NonNull
     public static Intent createIntent(@NonNull final Context context) {
-        Intent braveNetworkSelectionIntent = new Intent(context, NetworkSelectorActivity.class);
-        braveNetworkSelectionIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        return braveNetworkSelectionIntent;
+        final Intent intent = new Intent(context, NetworkSelectorActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        return intent;
     }
 
     @Override
