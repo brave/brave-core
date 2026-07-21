@@ -5,6 +5,8 @@
 
 #include "chrome/browser/favicon/favicon_utils.h"
 
+#include <optional>
+
 #include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "content/public/browser/navigation_entry.h"
@@ -14,16 +16,21 @@
 #include "brave/components/brave_wallet/common/web_ui_constants.h"
 #endif
 
-// Allow brave internal pages to break out of favicon themeing
-#define ShouldThemifyFaviconForEntry ShouldThemifyFaviconForEntry_ChromiumImpl
+namespace favicon {
+
+std::optional<bool> ShouldThemifyFaviconForEntryBraveImpl(
+    content::NavigationEntry* entry);
+
+}  // namespace favicon
+
 #include <chrome/browser/favicon/favicon_utils.cc>
-#undef ShouldThemifyFaviconForEntry
 
 namespace favicon {
 
-bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
+std::optional<bool> ShouldThemifyFaviconForEntryBraveImpl(
+    content::NavigationEntry* entry) {
   const GURL& virtual_url = entry->GetVirtualURL();
-  // Don't theme for certain brave favicons which are full color
+  // Don't theme for certain brave favicons which are full color.
   if (virtual_url.SchemeIs(content::kChromeUIScheme) &&
       (virtual_url.host() == kRewardsPageHost ||
 #if BUILDFLAG(ENABLE_BRAVE_WALLET)
@@ -33,7 +40,7 @@ bool ShouldThemifyFaviconForEntry(content::NavigationEntry* entry) {
        virtual_url.host() == chrome::kChromeUINewTabHost)) {
     return false;
   }
-  return ShouldThemifyFaviconForEntry_ChromiumImpl(entry);
+  return std::nullopt;
 }
 
 }  // namespace favicon
