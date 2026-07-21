@@ -21,10 +21,11 @@
 #                 can be rendered.
 #       replace:  { re_pattern, replace }, re.sub'd over each match's source;
 #                 `replace` is {input}-formatted first (literal braces: {{ }}).
-#                 Optional `consume_before` / `consume_after` literals are
-#                 folded into the rewritten span when the matched node stops
-#                 short of an adjacent token (e.g. the `:` after an
-#                 access_specifier, or the space before a `final` specifier).
+#                 Optional `consume_before` / `consume_after` tokens (also
+#                 {input}-formatted) are folded into the rewritten span when the
+#                 matched node stops short of an adjacent token (e.g. the `:`
+#                 after an access_specifier, the space before a `final`
+#                 specifier, or a class member's leading indentation).
 #       first_match: optional bool; when true only the first match (in source
 #                 order) is rewritten and any later matches are ignored. Use it
 #                 when the matcher can legitimately find several nodes but the
@@ -108,6 +109,47 @@ inside:
 """,
             "result": {
                 "node": "access_specifier",
+            },
+        },
+
+        # Finds the first access specifier after the `public:` section, the
+        # first match being the boundary of the `public:` section.
+        "cxx.find_section_after_public": {
+            "template": """\
+kind: access_specifier
+regex: ^(private|protected)$
+follows:
+  kind: access_specifier
+  regex: ^public$
+  stopBy: end
+inside:
+  kind: field_declaration_list
+  inside:
+    kind: class_specifier
+    has:
+      field: name
+      regex: ^{class_name}$
+""",
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # The body of a class after the `public:` section is found.
+        "cxx.find_class_body_with_public": {
+            "template": """\
+kind: field_declaration_list
+has:
+  kind: access_specifier
+  regex: ^public$
+inside:
+  kind: class_specifier
+  has:
+    field: name
+    regex: ^{class_name}$
+""",
+            "result": {
+                "node": "field_declaration_list",
             },
         },
 
@@ -307,17 +349,59 @@ regex: ^{class_name}$
         },
 
         # Inserts a fresh `protected:` section just before an existing
-        # `private:` one, and adds `code` under it.
+        # `private:` one, and adds `code` under it. The matched `private`
+        # keyword's own leading whitespace prefixes the new `protected:`, so it
+        # inherits the class's indentation; `code` arrives at the member level
+        # and `indent` re-emits the `private` keyword at its original column.
         "cxx.add_protected_before_private": {
             "matcher": "cxx.find_class_private_section",
-            "inputs": ["class_name", "code"],
+            "inputs": ["class_name", "code", "indent"],
             "first_match": True,
             "replace": {
                 "re_pattern": "^private$",
-                "replace": "protected:\\n{code}\\n\\n private",
+                "replace": "protected:\\n{code}\\n\\n{indent}private",
             },
             "result": {
                 "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section, just
+        # before the section that follows it. `consume_before` folds the
+        # keyword's entire leading indentation (`indent`) into the span so the
+        # replacement controls all whitespace: `code` (already member-indented)
+        # becomes the last public line(s), a blank line separates it, then the
+        # boundary keyword (`\1`) is re-emitted at that same `indent`.
+        "cxx.append_to_public_before_section": {
+            "matcher": "cxx.find_section_after_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "consume_before": "{indent}",
+                "re_pattern": "^(private|protected)$",
+                "replace": "{code}\\n\\n{indent}\\1",
+            },
+            "result": {
+                "node": "access_specifier",
+            },
+        },
+
+        # Appends `code` at the end of `class_name`'s public section when it is
+        # the last (or only) section, inserting it just before the body's
+        # closing brace. The pattern consumes the final `}` together with the
+        # newline and indentation on its line, so inline method bodies earlier
+        # in the class are left alone and the brace is re-emitted at its
+        # original column (`indent`) after the appended, member-indented `code`.
+        "cxx.append_to_public_before_close": {
+            "matcher": "cxx.find_class_body_with_public",
+            "inputs": ["class_name", "code", "indent"],
+            "first_match": True,
+            "replace": {
+                "re_pattern": "\\n[ \\t]*\\}$",
+                "replace": "\\n{code}\\n{indent}}}",
+            },
+            "result": {
+                "node": "field_declaration_list",
             },
         },
     },
