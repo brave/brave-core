@@ -1,7 +1,7 @@
 # `tools/cr/bootstrap`
 
-Provides shims for `plaster` and `brockit`, selecting them relative to the Brave
-repository in the current directory.
+This path incubates a boostrap module, to provide shims as ergonomics for tools
+we use to build Brave.
 
 ## Install
 
@@ -15,9 +15,8 @@ On macOS / Linux this configures your current shell (override with
 
 - **bash** → a marked block in `~/.bashrc`
 - **zsh** → a marked block in `~/.zshrc`
-- **fish** → a drop-in at `~/.config/fish/conf.d/brave-bootstrap.fish` that
-  prepends to `$PATH` directly (it avoids `fish_add_path`, which would persist
-  the entry in the universal `fish_user_paths` variable and outlive the file)
+- **fish** → a drop-in at `~/.config/fish/conf.d/zzz-brave-bootstrap.fish` that
+  prepends to `$PATH` directly.
 
 On Windows it adds this directory to the user `Path` under `HKCU\Environment`.
 
@@ -46,17 +45,24 @@ checkout than the one that was installed.
 cd ~/browser/src/brave/components # anywhere inside a checkout
 plaster check                     # runs that checkout's plaster.py
 brockit lift --to=1.2.3.4         # runs that checkout's brockit.py
+git cr commit -m "…"              # runs that checkout's alias/cmd.py
 ```
 
-These shims are resolved relative to `brave-core`, so attempting to call these
-from a directory that is not inside `brave-core` will result in a failure.
+`plaster` / `brockit` / `git cr` are resolved relative to `brave-core`, so
+calling them from a directory that is not inside `brave-core` will fail. `node`
+/ `npm` instead fall back to the system tool in that case (see below).
 
-## How it works
+```sh
+cd ~/browser/src/brave
+node --version                    # runs third_party/node's node
+cd /tmp
+node --version                    # falls back to the system node
+```
 
-- `brockit`, `plaster` (POSIX) and `brockit.bat`, `plaster.bat` (Windows) are
-  thin wrappers that call `launcher.py <tool> <args…>`.
-- `launcher.py` resolves the brave-core root via `git rev-parse --show-toplevel`
-  (validating the root is a `brave` work tree, matching `repository.py`), then
-  execs `vpython3 <root>/tools/cr/<tool>.py <args…>` **without changing the
-  cwd**, so the tool runs relative to your current path.
-- `bootstrap.py` installs/uninstalls this directory on `$PATH`.
+## The chicken-and-egg `node` problem
+
+The shims for `node`/`npm` run cheap checks for the tarball installations, to
+determine if a new file needs to be downloaded. This is done through the
+`EXTRA_DEPS` mechanism itself, which makes this a lightweight sync check. For
+repos with no mechanism for self-updating, the path resolution degrades back to
+whatever is the system underlying binaries.

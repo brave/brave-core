@@ -15,6 +15,7 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/strings/string_util.h"
+#include "base/test/run_until.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/test_future.h"
 #include "base/values.h"
@@ -119,7 +120,8 @@ class ContentAgentToolProviderBrowserTest : public InProcessBrowserTest {
   ContentAgentToolProviderBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         /*enabled_features=*/{features::kAIChatAgentProfile},
-        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating});
+        /*disabled_features=*/{actor::kGlicCrossOriginNavigationGating,
+                               ::features::kGlicConfirmTabClose});
   }
 
   ~ContentAgentToolProviderBrowserTest() override = default;
@@ -325,6 +327,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolProviderBrowserTest,
 
   // Close the tab
   tab_handle.Get()->Close();
+  ASSERT_TRUE(base::test::RunUntil([&]() { return !tab_handle.Get(); }));
 
   base::test::TestFuture<Tool::ToolResult, Tool::ToolArtifacts> result_future;
   tool_provider_->ExecuteActions(actions, result_future.GetCallback());

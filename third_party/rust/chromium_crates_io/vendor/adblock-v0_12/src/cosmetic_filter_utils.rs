@@ -52,7 +52,7 @@ pub(crate) fn key_from_selector(selector: &str) -> Option<String> {
                 let codepoint = u32::from_str_radix(&capture[..capture.len() - 1], 16).ok()?;
 
                 // Not all u32s are valid Unicode codepoints
-                key += &core::char::from_u32(codepoint)?.to_string();
+                key.push(core::char::from_u32(codepoint)?);
             }
         }
         Some(key + &escaped[beginning..])

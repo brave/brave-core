@@ -120,7 +120,9 @@ void BraveBrowserTabStripController::ExecuteContextMenuCommand(
     // selection size is 2 as because upstream puts both tabs
     // in single split view as selected. In this situation, |tab|
     // could be in that active split view or not. Close |tab|.
-    if (model_->IsActiveTabSplit() && model_->selection_model().size() == 2) {
+    const tabs::TabInterface* active_tab = model_->GetActiveTab();
+    if (active_tab && active_tab->IsSplit() &&
+        model_->selection_model().size() == 2) {
       tab->Close();
       return;
     }

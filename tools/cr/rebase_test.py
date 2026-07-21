@@ -268,6 +268,9 @@ class PatternMatchTest(unittest.TestCase):
             ('resource_ids', '[cr149] Bump resource_ids'),
             ('lit_mangler', '[cr149] Update Lit mangler snapshot'),
             ('disable_tests', '[cr149] Disable failing upstream tests'),
+            ('disable_tests', '[cr149] Filter upstream tests as needed'),
+            ('dead_upstream_tests',
+             '[cr149] Remove dead upstream tests from filters'),
         ]
         for expected_id, subject in cases:
             with self.subTest(subject=subject):
@@ -416,8 +419,10 @@ class RewritePlanTest(unittest.TestCase):
     def test_squashed_reorders_pinned_groups_by_priority(self):
         """Pinned groups emit in the priority order:
         version → plaster_reruns → conflict → gnrt → iwyu → resource_ids
-        → lit_mangler → disable_tests, regardless of arrival order."""
+        → lit_mangler → disable_tests → dead_upstream_tests, regardless of
+        arrival order."""
         path = self._todo(
+            'pick zzz # [cr148] Remove dead upstream tests from filters\n'
             'pick aaa # [cr148] Disable failing upstream tests\n'
             'pick bbb # [cr148] Update Lit mangler snapshot\n'
             'pick ccc # [cr148] Bump resource_ids\n'
@@ -442,7 +447,8 @@ class RewritePlanTest(unittest.TestCase):
             'pick ddd # [cr148] IWYU fixes.\n'
             'pick ccc # [cr148] Bump resource_ids\n'
             'pick bbb # [cr148] Update Lit mangler snapshot\n'
-            'pick aaa # [cr148] Disable failing upstream tests\n')
+            'pick aaa # [cr148] Disable failing upstream tests\n'
+            'pick zzz # [cr148] Remove dead upstream tests from filters\n')
 
     def test_squashed_keeps_recyclable_lines_in_place(self):
         """Recyclable lines are NOT grouped or moved with pinned commits.

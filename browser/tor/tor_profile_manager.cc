@@ -92,7 +92,7 @@ class TorTabNavigator final : public content::WebContentsObserver,
                        const std::optional<url::Origin>& initiator_origin) {
     auto* tab = FindNTPTab(tor_browser);
     if (!tab) {
-      tab = &chrome::NewTab(tor_browser);
+      tab = &chrome::NewTab(tor_browser, NewTabTypes::kNewTabCommand);
     }
     if (!url.is_valid() || !tab) {
       return;

@@ -14,13 +14,12 @@
 # https://source.chromium.org/chromium/chromium/src/+/d23864706c014549e1f1333face1ece0046c52bd
 
 substitutions:
-  - description:
-      'Force single URL bar mode off (return false instead of !isTablet)'
-    pattern: |2-
-          public static boolean isInSingleUrlBarMode(boolean isTablet) {
-              return !isTablet;
-          }
-    replace: |2-
-          public static boolean isInSingleUrlBarMode(boolean isTablet) {
-              return false;
-          }
+  - description: |
+      Force single URL bar mode off (return false instead of negating the arg)
+
+      The match is generic enough so the name of the arguments are not as
+      important.
+    re_pattern:
+      '(public static boolean isInSingleUrlBarMode\(boolean (\w+)\) \{\s+return
+      )!\2;'
+    replace: '\1false;'

@@ -140,7 +140,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const net::SiteForCookies& site_for_cookies,
       const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
-          handshake_client) override;
+          handshake_client,
+      content::ContentBrowserClient::WebSocketOptions options) override;
 
   void MaybeHideReferrer(content::BrowserContext* browser_context,
                          const GURL& request_url,
@@ -215,6 +216,7 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
       const std::optional<std::string>& user_agent,
       mojo::PendingRemote<network::mojom::WebSocketHandshakeClient>
           handshake_client,
+      content::ContentBrowserClient::WebSocketOptions options,
       BraveProxyingWebSocket<T>* proxy);
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>

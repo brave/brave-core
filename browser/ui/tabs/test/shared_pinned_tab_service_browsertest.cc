@@ -402,7 +402,7 @@ IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest, BringAllTabs) {
 IN_PROC_BROWSER_TEST_F(SharedPinnedTabServiceBrowserTest,
                        CloseTabShortCutShouldBeDisabled) {
   auto* browser = CreateNewBrowser();
-  chrome::NewTab(browser);
+  chrome::NewTab(browser, NewTabTypes::kNewTabCommand);
 
   EXPECT_EQ(browser->tab_strip_model()->count(), 2);
   EXPECT_EQ(browser->tab_strip_model()->active_index(), 1);

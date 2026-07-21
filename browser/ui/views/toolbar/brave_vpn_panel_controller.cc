@@ -41,8 +41,7 @@ void BraveVPNPanelController::ShowBraveVPNPanel(bool show_select) {
   }
   if (!webui_bubble_manager_) {
     webui_bubble_manager_ = WebUIBubbleManager::Create<VPNPanelUI>(
-        anchor_view, browser_view_->browser(), GURL(url),
-        IDS_BRAVE_VPN_PANEL_NAME);
+        browser_view_->browser(), GURL(url), IDS_BRAVE_VPN_PANEL_NAME);
   }
 
   if (webui_bubble_manager_->GetBubbleWidget()) {
@@ -50,7 +49,7 @@ void BraveVPNPanelController::ShowBraveVPNPanel(bool show_select) {
     return;
   }
 
-  webui_bubble_manager_->ShowBubble();
+  webui_bubble_manager_->ShowBubble(anchor_view);
 }
 
 void BraveVPNPanelController::ResetBubbleManager() {

@@ -96,6 +96,10 @@ source_set("unit_tests") {
     "//testing/gtest",
   ]
 
+  if (toolkit_views) {
+    deps += [ "//chrome/browser/ui/views:layout_provider" ]
+  }
+
   if (enable_custom_background) {
     sources += [
       "brave_ntp_custom_background_service_delegate_unittest.cc",

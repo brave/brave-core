@@ -112,7 +112,7 @@ IN_PROC_BROWSER_TEST_F(BraveTabMenuBrowserTest, Basics) {
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandBookmarkAllTabs));
 
-  chrome::NewTab(browser());
+  chrome::NewTab(browser(), NewTabTypes::kNewTabCommand);
   // Still restore tab menu is disabled because there is no closed tab.
   EXPECT_FALSE(menu->IsCommandIdEnabled(TabStripModel::CommandRestoreTab));
   // Bookmark all tabs item is enabled if the number of tabs are 2 or more.

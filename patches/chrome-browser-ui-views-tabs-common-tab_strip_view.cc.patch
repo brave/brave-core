@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
+index 48ef06476b0368819774ba39e98b5ed6c5c5b2e6..6adc5ac1f3ab633b53e8bb722a200f83dbfd9c2e 100644
+--- a/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
++++ b/chrome/browser/ui/views/tabs/common/tab_strip_view.cc
+@@ -316,6 +316,8 @@ void TabStripView::OnChildMoved(TabCollectionNode* moved_node) {
+ 
+   if (is_active_tab || has_focus) {
+     switch (moved_node->type()) {
++      case TabCollectionNode::Type::TREE_NODE:
++        break;
+       case TabCollectionNode::Type::TAB: {
+         const tabs::TabInterface* tab =
+             std::get<const tabs::TabInterface*>(moved_node->GetNodeData());

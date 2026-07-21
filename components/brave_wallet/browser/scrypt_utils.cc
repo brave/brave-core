@@ -11,7 +11,7 @@
 #include "base/containers/to_vector.h"
 #include "base/numerics/safe_conversions.h"
 #include "brave/vendor/bat-native-tweetnacl/tweetnacl.h"
-#include "crypto/process_bound_string.h"
+#include "crypto/secure_util.h"
 
 namespace brave_wallet {
 
@@ -72,7 +72,7 @@ std::optional<SecureVector> XSalsaPolyDecrypt(
   auto payload = base::span(decrypted).subspan(
       base::checked_cast<size_t>(crypto_secretbox_ZEROBYTES));
   SecureVector secure_payload(payload.begin(), payload.end());
-  crypto::internal::SecureZeroBuffer(decrypted);
+  crypto::SecureZeroBuffer(decrypted);
   return secure_payload;
 }
 
@@ -91,7 +91,7 @@ std::optional<SecureVector> ScryptDeriveKey(
   }
 
   SecureVector secure_key(derived_key.begin(), derived_key.end());
-  crypto::internal::SecureZeroBuffer(derived_key);
+  crypto::SecureZeroBuffer(derived_key);
   return secure_key;
 }
 

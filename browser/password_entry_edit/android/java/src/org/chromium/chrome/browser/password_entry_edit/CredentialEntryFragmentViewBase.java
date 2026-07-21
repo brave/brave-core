@@ -18,6 +18,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.browser_ui.settings.EmbeddableSettingsPage;
 
 /**
@@ -126,12 +127,18 @@ public abstract class CredentialEntryFragmentViewBase extends PreferenceFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (getActivity().isFinishing() && mComponentStateDelegate != null) {
+        // Tear down the native backend both when the hosting activity is finishing (separate
+        // activity) and when this fragment is being removed from the back stack (embedded within
+        // the single Settings activity). Skip config changes, where the fragment is recreated.
+        if ((getActivity().isFinishing() || isRemoving()) && mComponentStateDelegate != null) {
             mComponentStateDelegate.onDestroy();
         }
     }
 
     void dismiss() {
-        getActivity().finish();
+        // Use finishCurrentSettings so that, when hosted within the single Settings activity, this
+        // page is popped from the back stack (returning to the password list) rather than finishing
+        // the whole activity. It falls back to finishing the activity when shown standalone.
+        SettingsNavigationFactory.createSettingsNavigation().finishCurrentSettings(this);
     }
 }

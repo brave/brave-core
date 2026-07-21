@@ -24,5 +24,13 @@ bool IsPageActionMigrated(PageActionIconType page_action) {
     return true;
   }
 
+  if (page_action == PageActionIconType::kBookmarkStar) {
+    // Brave hides the location bar bookmark star (we have our own bookmark
+    // button in the toolbar). Keeping it on the legacy path lets the
+    // star_view.cc patch keep it hidden, matching the behavior from before
+    // upstream enabled kPageActionsMigrationBookmarkStar by default in cr151.
+    return false;
+  }
+
   return IsPageActionMigrated_Chromium(page_action);
 }

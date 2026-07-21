@@ -122,13 +122,21 @@
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.NtpCustomizationUtils {
-    *** isInNarrowWindowOnTablet(...);
+    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
 }
 
 -keep class org.chromium.chrome.browser.ntp_customization.BraveNtpCustomizationUtils {
-    *** isInNarrowWindowOnTablet(...);
+    *** isInNarrowWindowOnLff(...);
     *** isNtpThemeCustomizationEnabled(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.theme.NtpCustomizationPromoManager {
+    *** canShowCustomizationIph(...);
+}
+
+-keep class org.chromium.chrome.browser.ntp_customization.theme.BraveNtpCustomizationPromoManager {
+    *** canShowCustomizationIph(...);
 }
 
 -keep class org.chromium.chrome.browser.ui.appmenu.AppMenu {
@@ -1095,15 +1103,6 @@
 
 -keep class org.chromium.chrome.browser.tab_group_sync.BraveStartupHelper {
     *** handleUnsavedLocalTabGroups(...);
-}
-
--keep class org.chromium.chrome.browser.infobar.InfoBarContainerView {
-    <init>(...);
-    *** mEdgeToEdgeSupplier;
-}
-
--keep class org.chromium.chrome.browser.infobar.BraveInfoBarContainerView {
-    <init>(...);
 }
 
 -keep class org.chromium.chrome.browser.toolbar.ToolbarLongPressMenuHandler {

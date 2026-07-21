@@ -47,6 +47,9 @@
   <message name="IDS_SKILLS_DISABLED_ERROR_PAGE_DESCRIPTION" desc="Description of the error page that occurs when chrome://skills is disabled by the settings toggle">
     The Skills feature is currently disabled. Update your Brave Settings to get started.
   </message>
+  <message name="IDS_SKILLS_REMOTE_AUTHORITY_UNREACHABLE_DESCRIPTION" desc="Description of the error page that occurs when the remote guest skills webview cannot load or be reached.">
+    We're having trouble connecting to the server. Please try again later.
+  </message>
   <message name="IDS_SKILLS_GO_TO_SETTINGS" desc="Label of the button that navigates the user to Brave Settings page for Skills.">
     Go to Settings
   </message>

@@ -15,12 +15,11 @@ namespace {
 
 bool IsAutoplay(content_settings::PageSpecificContentSettings* content_settings,
                 ContentSettingImageModel* model) {
-  // If upstream adds other types to the dashboard we may need to update this
-  // code.
-  DCHECK(model->image_type() ==
-         ContentSettingImageModel::ImageType::kMediaStream);
-
-  if (!content_settings) {
+  // Autoplay is identified by kMediaStream type and absence of mic and camera
+  // access.
+  if (!content_settings ||
+      model->image_type() !=
+          ContentSettingImageModel::ImageType::kMediaStream) {
     return false;
   }
 

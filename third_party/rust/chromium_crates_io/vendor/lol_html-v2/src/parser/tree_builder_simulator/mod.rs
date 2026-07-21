@@ -14,7 +14,6 @@
 mod ambiguity_guard;
 
 use self::ambiguity_guard::AmbiguityGuard;
-use crate::base::Bytes;
 use crate::html::{LocalNameHash, Namespace, Tag, TextType};
 use crate::parser::{TagLexeme, TagTokenOutline};
 use TagTokenOutline::{EndTag, StartTag};
@@ -54,13 +53,17 @@ macro_rules! expect_tag {
     ($lexeme:expr, $tag_pat:pat => $action:expr) => {
         match *$lexeme.token_outline() {
             $tag_pat => $action,
-            _ => unreachable!("Got unexpected tag type"),
+            _ => {
+                debug_assert!(false, "Got unexpected tag type");
+                return TreeBuilderFeedback::None;
+            }
         }
     };
 }
 
+/// Unlike eq_ignore_ascii_case it only lowercases `actual`
 #[inline]
-fn eq_case_insensitive(actual: &Bytes<'_>, expected: &[u8]) -> bool {
+fn eq_case_insensitive(actual: &[u8], expected: &[u8]) -> bool {
     if actual.len() != expected.len() {
         return false;
     }
@@ -202,10 +205,14 @@ impl TreeBuilderSimulator {
     fn leave_ns(&mut self) -> TreeBuilderFeedback {
         self.ns_stack.pop();
 
-        self.current_ns = *self
-            .ns_stack
-            .last()
-            .expect("Namespace stack should always have at least one item");
+        let Some(item) = self.ns_stack.last() else {
+            debug_assert!(
+                false,
+                "Namespace stack should always have at least one item"
+            );
+            return TreeBuilderFeedback::None;
+        };
+        self.current_ns = *item;
 
         TreeBuilderFeedback::SetAllowCdata(self.current_ns != Namespace::Html)
     }

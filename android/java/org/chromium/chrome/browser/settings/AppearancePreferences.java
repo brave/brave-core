@@ -99,6 +99,11 @@ public class AppearancePreferences extends AppearanceSettingsFragment
         applyOrdering();
     }
 
+    @Override
+    public String getMainMenuKey() {
+        return "brave_appearance";
+    }
+
     private void removePreferenceIfPresent(String key) {
         Preference preference = getPreferenceScreen().findPreference(key);
         if (preference != null) getPreferenceScreen().removePreference(preference);

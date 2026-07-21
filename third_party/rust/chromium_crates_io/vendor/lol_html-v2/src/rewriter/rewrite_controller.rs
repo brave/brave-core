@@ -1,7 +1,10 @@
 use super::handlers_dispatcher::{ContentHandlersDispatcher, SelectorHandlersLocator};
-use super::{HandlerTypes, RewritingError};
+use super::{HandlerTypes, RewritingError, Settings};
+use crate::base::SharedEncoding;
 use crate::html::{LocalName, Namespace};
+use crate::memory::SharedMemoryLimiter;
 use crate::rewritable_units::{DocumentEnd, Token, TokenCaptureFlags};
+use crate::selectors_vm::Ast;
 use crate::selectors_vm::{AuxStartTagInfoRequest, ElementData, SelectorMatchingVm, VmError};
 use crate::transform_stream::{DispatcherError, StartTagHandlingResult, TransformController};
 use hashbrown::HashSet;
@@ -28,6 +31,54 @@ pub(crate) struct HtmlRewriteController<'h, H: HandlerTypes> {
 }
 
 impl<'h, H: HandlerTypes> HtmlRewriteController<'h, H> {
+    // `HtmlRewriter::new` has a generic `OutputSink`, so inlining this method
+    // would needlessly duplicate the code for every sink.
+    #[inline(never)]
+    pub(super) fn from_settings(
+        settings: Settings<'h, '_, H>,
+        memory_limiter: &SharedMemoryLimiter,
+        encoding: &SharedEncoding,
+    ) -> Self {
+        let mut selectors_ast = Ast::default();
+        let mut dispatcher = ContentHandlersDispatcher::<H>::default();
+        let has_selectors =
+            !settings.element_content_handlers.is_empty() || settings.adjust_charset_on_meta_tag;
+
+        let charset_adjust_handler = if settings.adjust_charset_on_meta_tag {
+            let encoding = SharedEncoding::clone(encoding);
+            Some(super::handler_adjust_charset_on_meta_tag(encoding))
+        } else {
+            None
+        };
+
+        let element_content_handlers = charset_adjust_handler
+            .into_iter()
+            .chain(settings.element_content_handlers);
+
+        for (selector, handlers) in element_content_handlers {
+            let locator = dispatcher.add_selector_associated_handlers(handlers);
+
+            selectors_ast.add_selector(&selector, locator);
+        }
+
+        for handlers in settings.document_content_handlers {
+            dispatcher.add_document_content_handlers(handlers);
+        }
+
+        let selector_matching_vm = if has_selectors {
+            Some(SelectorMatchingVm::new(
+                selectors_ast,
+                settings.encoding.into(),
+                memory_limiter.clone(),
+                settings.enable_esi_tags,
+            ))
+        } else {
+            None
+        };
+
+        Self::new(dispatcher, selector_matching_vm)
+    }
+
     #[inline]
     pub(crate) const fn new(
         handlers_dispatcher: ContentHandlersDispatcher<'h, H>,

@@ -1,8 +1,8 @@
 diff --git a/testing/xvfb.py b/testing/xvfb.py
-index cf446d939a4e9e1fa4f6e516d8e836392100b879..4f9c36603571a9d15e099d093ebc2418a289a7df 100755
+index 18a6ed277898797ef3045b0fb94ace6889cbb845..409f96928366cdfbb8cf0bd210c936b3568dc1cd 100755
 --- a/testing/xvfb.py
 +++ b/testing/xvfb.py
-@@ -113,7 +113,7 @@ def dbus_session(env):  # pylint: disable=inconsistent-return-statements
+@@ -114,7 +114,7 @@ def dbus_session(env):  # pylint: disable=inconsistent-return-statements
  def run_executable(cmd,
                     env,
                     stdoutfile=None,

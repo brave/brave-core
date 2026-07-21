@@ -53,8 +53,10 @@ void BraveBrowserViewTabbedLayoutImpl::ConfigureTopContainerBackground(
   if (delegate().ShouldShowVerticalTabs() &&
       !delegate().ShouldShowWindowTitleForVerticalTabs()) {
     CustomCornersBackground::Corners corners;
-    corners.upper_trailing = background->GetWindowCorner(/*upper=*/true);
-    corners.upper_leading = background->GetWindowCorner(/*upper=*/true);
+    corners[CornerOrientation::kTopTrailing] =
+        background->GetWindowCorner(/*upper=*/true);
+    corners[CornerOrientation::kTopLeading] =
+        background->GetWindowCorner(/*upper=*/true);
     background->SetCorners(corners);
   }
 #endif  // BUILDFLAG(IS_LINUX)
@@ -278,18 +280,18 @@ void BraveBrowserViewTabbedLayoutImpl::DoPostLayoutVisualAdjustments(
       !delegate().ShouldShowWindowTitleForVerticalTabs()) {
     // Curve toolbar corners like window corner as toolbar it's top-most UI in
     // vertical tabs.
-    toolbar_corners.upper_trailing =
+    toolbar_corners[CornerOrientation::kTopTrailing] =
         toolbar_background->GetWindowCorner(/*upper=*/true);
-    toolbar_corners.upper_leading =
+    toolbar_corners[CornerOrientation::kTopLeading] =
         toolbar_background->GetWindowCorner(/*upper=*/true);
     toolbar_background->SetCorners(toolbar_corners);
     return;
   }
 #endif  // BUILDFLAG(IS_LINUX)
 
-  toolbar_corners.upper_trailing.type =
+  toolbar_corners[CornerOrientation::kTopTrailing].type =
       CustomCornersBackground::CornerType::kRoundedWithBackground;
-  toolbar_corners.upper_leading.type =
+  toolbar_corners[CornerOrientation::kTopLeading].type =
       CustomCornersBackground::CornerType::kRoundedWithBackground;
   toolbar_background->SetCorners(toolbar_corners);
 }

@@ -9,9 +9,11 @@
 #include <utility>
 
 #include "base/command_line.h"
+#include "base/containers/flat_map.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/brave_shields/brave_shields_web_contents_observer.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
@@ -161,12 +163,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
         std::make_unique<ai_chat::PrintPreviewExtractionDelegateImpl>(
             web_contents,
-            screenshot::CreatePrintPreviewExtractor(
-                base::BindRepeating(
-                    []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
-                      return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
-                    }),
-                base::BindRepeating([]() -> base::flat_map<int, int>& {
+            screenshot::CreatePrintPreviewExtractor(base::BindRepeating(
+                []() -> base::flat_map<base::UnguessableToken, int>& {
                   return printing::PrintPreviewUI::
                       GetPrintPreviewUIRequestIdMap();
                 })))

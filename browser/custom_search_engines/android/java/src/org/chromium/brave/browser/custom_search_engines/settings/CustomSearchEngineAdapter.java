@@ -5,8 +5,10 @@
 
 package org.chromium.brave.browser.custom_search_engines.settings;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.Bundle;
 import android.text.SpannableStringBuilder;
 import android.text.Spanned;
 import android.text.style.StyleSpan;
@@ -16,14 +18,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.chromium.base.BravePreferenceKeys;
+import org.chromium.base.ContextUtils;
 import org.chromium.brave.browser.custom_search_engines.ConfirmationDialog;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesManager;
 import org.chromium.brave.browser.custom_search_engines.CustomSearchEnginesPrefManager;
@@ -33,6 +33,7 @@ import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
+import org.chromium.chrome.browser.settings.SettingsNavigationFactory;
 import org.chromium.components.favicon.LargeIconBridge;
 import org.chromium.components.search_engines.TemplateUrl;
 import org.chromium.components.search_engines.TemplateUrlService;
@@ -130,43 +131,38 @@ public class CustomSearchEngineAdapter extends ListAdapter<String, RecyclerView.
     }
 
     private void openAddCustomSearchEngineFragment() {
-        if (!(mContext instanceof FragmentActivity)) {
-            return;
-        }
-        FragmentActivity activity = (FragmentActivity) mContext;
-        Fragment hostFragment = activity.getSupportFragmentManager().findFragmentById(R.id.content);
-        if (!(hostFragment instanceof PreferenceFragmentCompat)
-                || !(activity
-                        instanceof PreferenceFragmentCompat.OnPreferenceStartFragmentCallback)) {
-            return;
-        }
-        AddCustomSearchEngineItemPreference addPref =
-                new AddCustomSearchEngineItemPreference(mContext);
-        addPref.setFragment(AddCustomSearchEnginePreferenceFragment.class.getName());
-        ((PreferenceFragmentCompat.OnPreferenceStartFragmentCallback) activity)
-                .onPreferenceStartFragment((PreferenceFragmentCompat) hostFragment, addPref);
+        openAddCustomSearchEngineFragment(null);
     }
 
-    private void openAddCustomSearchEngineFragment(String searchEngineKeyword) {
-        if (!(mContext instanceof FragmentActivity)) {
-            return;
+    private void openAddCustomSearchEngineFragment(@Nullable String searchEngineKeyword) {
+        // Prefer the hosting Activity as the launch context so navigation stays within the current
+        // settings task. `mContext` is the preference's (possibly themed) context, so unwrap it to
+        // the Activity when possible. SettingsNavigation works across all settings hosting modes
+        // (single-column, multi-column, single-activity), unlike manually resolving the host
+        // fragment via findFragmentById(R.id.content), which no longer returns a
+        // PreferenceFragmentCompat once multi-column settings are enabled.
+        Context context = mContext;
+        Activity activity = ContextUtils.activityFromContext(context);
+        if (activity != null) {
+            context = activity;
         }
 
-        FragmentActivity activity = (FragmentActivity) mContext;
-        Fragment hostFragment = activity.getSupportFragmentManager().findFragmentById(R.id.content);
-        if (!(hostFragment instanceof PreferenceFragmentCompat)
-                || !(activity
-                        instanceof PreferenceFragmentCompat.OnPreferenceStartFragmentCallback)) {
-            return;
+        Bundle args = null;
+        if (searchEngineKeyword != null) {
+            args = new Bundle();
+            args.putString(CustomSearchEnginesManager.KEYWORD, searchEngineKeyword);
         }
 
-        AddCustomSearchEngineItemPreference editPref =
-                new AddCustomSearchEngineItemPreference(mContext);
-        editPref.setFragment(AddCustomSearchEnginePreferenceFragment.class.getName());
-        editPref.getExtras().putString(CustomSearchEnginesManager.KEYWORD, searchEngineKeyword);
-
-        ((PreferenceFragmentCompat.OnPreferenceStartFragmentCallback) activity)
-                .onPreferenceStartFragment((PreferenceFragmentCompat) hostFragment, editPref);
+        // addToBackStack=true so this screen is pushed on top of the Search engines screen rather
+        // than replacing the whole detail stack. In multi-column settings, navigating without a
+        // back-stack entry clears the detail pane's stack, so back would slide the pane shut and
+        // land on the top-level Settings screen instead of returning to Search engines.
+        SettingsNavigationFactory.createSettingsNavigation()
+                .startSettings(
+                        context,
+                        AddCustomSearchEnginePreferenceFragment.class,
+                        args,
+                        /* addToBackStack= */ true);
     }
 
     private void removeSearchEngine(String searchEngineKeyword) {

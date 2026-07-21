@@ -48,6 +48,9 @@
   <message name="IDS_ACTOR_TASK_LIST_BUBBLE_ROW_COMPLETED_TASK_SUBTITLE" desc="Subtitle shown for a task in the task list bubble informing the user that the task is completed." formatter_data="android_java">
    Done
   </message>
+  <message name="IDS_EXPERIMENTAL_TRIGGERING_TASK_LIST_BUBBLE_ROW_COMPLETED_TASK_SUBTITLE" desc="Subtitle shown for an experimental triggering task in the task list bubble informing the user that the task is completed.">
+   Task done and returned to Gemini Spark
+  </message>
   <message name="IDS_ACTOR_TASK_LIST_BUBBLE_ROW_FAILED_TASK_SUBTITLE" desc="Subtitle shown for a task in the task list bubble informing the user that the task has failed." formatter_data="android_java">
    Something went wrong
   </message>
@@ -157,13 +160,16 @@
   <message name="IDS_PEEK_STATE_PAUSE_BUTTON_A11Y_LABEL" desc="Accessibility label for the button to pause the actor task." formatter_data="android_java" is_accessibility_with_no_ui="true">
     Pause
   </message>
+  <message name="IDS_PEEK_STATE_ACCESSIBLE_LABEL" desc="Accessibility label for the Gemini in Brave peek view which represents a minimized chat. The placeholder is the displayed text (e.g. title or description) of the peek view." formatter_data="android_java">
+    <ph name="DISPLAYED_TEXT">%1$s<ex>Ask Gemini</ex></ph>, Gemini in Brave
+  </message>
   <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_TITLE" desc="Title of a dialog asking if the user really wants to stop the actor task." formatter_data="android_java">
-    Leave site?
+    Leave site and end task?
   </message>
   <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_DESCRIPTION" desc="Description of the action of stopping an actor task, shown in a confirmation dialog." formatter_data="android_java">
-    Leaving this site stops your task. Open a new tab to let Gemini keep working.
+    If you leave this site your task will end. To keep the task going while you visit other sites, open a new tab.
   </message>
   <message name="IDS_ACTOR_LEAVE_SITE_DIALOG_LEAVE_SITE" desc="Button text to confirm leaving the site and stopping the task." formatter_data="android_java">
-    Leave site
+    Leave
   </message>
 </grit-part>

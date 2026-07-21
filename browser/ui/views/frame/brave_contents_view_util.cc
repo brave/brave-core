@@ -137,13 +137,20 @@ gfx::RoundedCornersF BraveContentsViewUtil::GetRoundedCornersForContentsView(
   if (tab && tab->IsSplit()) {
     auto split_tab_id = tab->GetSplit();
     auto* tab_strip_model = browser_window_interface->GetTabStripModel();
-    auto* split_data = tab_strip_model->GetSplitData(*split_tab_id);
 
-    // Handle each split tab's lower edge.
-    if (split_data->ListTabs()[0] == tab) {
-      has_right_side_ui = true;
-    } else {
-      has_left_side_ui = true;
+    // While a split tab is being detached (e.g. dragged into a new window),
+    // TabStripModel removes the split collection before notifying observers,
+    // yet |tab| still reports itself as split. GetSplitData() CHECK-fails on
+    // a missing split, so confirm the split still exists in the model first.
+    if (tab_strip_model->ContainsSplit(*split_tab_id)) {
+      auto* split_data = tab_strip_model->GetSplitData(*split_tab_id);
+
+      // Handle each split tab's lower edge.
+      if (split_data->ListTabs()[0] == tab) {
+        has_right_side_ui = true;
+      } else {
+        has_left_side_ui = true;
+      }
     }
   }
 

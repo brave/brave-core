@@ -98,11 +98,16 @@ class EmailAliasesDialogDelegate
     if (!autofill_driver) {
       return;
     }
-    autofill_driver->GetAutofillAgent()->ApplyFieldAction(
-        autofill::mojom::FieldActionType::kReplaceAll,
-        autofill::mojom::ActionPersistence::kFill,
-        autofill::FieldRendererId(field_renderer_id_),
-        base::UTF8ToUTF16(email));
+    // Casting to `AutofillDriver` to call `ApplyFieldAction()` through the
+    // public interface, as `ContentAutofillDriver` moves these functions to the
+    // private section.
+    static_cast<autofill::AutofillDriver*>(autofill_driver)
+        ->ApplyFieldAction(autofill::mojom::FieldActionType::kReplaceAll,
+                           autofill::mojom::ActionPersistence::kFill,
+                           autofill::FieldGlobalId{
+                               autofill_driver->GetFrameToken(),
+                               autofill::FieldRendererId(field_renderer_id_)},
+                           base::UTF8ToUTF16(email));
   }
 
   void OnManageAliases() override {

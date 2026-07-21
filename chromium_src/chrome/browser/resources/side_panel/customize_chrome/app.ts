@@ -10,7 +10,7 @@ import { CrLitElement, html, css } from '//resources/lit/v3_0/lit.rollup.js'
 import type { CSSResultGroup } from '//resources/lit/v3_0/lit.rollup.js'
 import { loadTimeData } from '//resources/js/load_time_data.js'
 import { I18nMixinLit } from '//resources/cr_elements/i18n_mixin_lit.js'
-import { CustomizeColorSchemeModeBrowserProxy } from '//resources/cr_components/customize_color_scheme_mode/browser_proxy.js'
+import { browserProxyFactory } from '//resources/cr_components/customize_color_scheme_mode/customize_color_scheme_mode.mojom-webui.js'
 
 export * from './app-chromium.js'
 
@@ -126,7 +126,7 @@ class DarkerThemeToggleElement extends I18nMixinLit(CrLitElement) {
   override disconnectedCallback() {
     if (this.setColorSchemeModeListenerId_) {
       const colorSchemeModeClientCallbackRouter =
-        CustomizeColorSchemeModeBrowserProxy.getInstance().callbackRouter
+        browserProxyFactory.getInstance().callbackRouter
       colorSchemeModeClientCallbackRouter.removeListener(
         this.setColorSchemeModeListenerId_,
       )

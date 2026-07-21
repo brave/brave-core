@@ -27,6 +27,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/actor/core/actor_features.h"
+#include "components/origin_gating/core/origin_gating_cache.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/dns/mock_host_resolver.h"
@@ -384,6 +385,7 @@ IN_PROC_BROWSER_TEST_F(ContentAgentToolsTest, BlockExtensionStore) {
   ::actor::MayActOnUrl(
       GURL("https://chromewebstore.google.com/example"), false, agent_profile_,
       actor_service->GetJournal(), actor::TaskId(),
+      origin_gating::OriginGatingCache(/*use_site_not_origin=*/false),
       *AIChatEnterprisePolicyChecker::NoEnterprisePolicyChecker(),
       allowed.GetCallback());
   EXPECT_NE(allowed.Take(), actor::MayActOnUrlBlockReason::kAllowed);

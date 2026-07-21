@@ -147,6 +147,11 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     }
 
     @Override
+    public String getMainMenuKey() {
+        return "brave_playlist";
+    }
+
+    @Override
     public boolean onPreferenceChange(Preference preference, Object newValue) {
         String key = preference.getKey();
         if (BravePreferenceKeys.PREF_ENABLE_PLAYLIST.equals(key)) {

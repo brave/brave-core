@@ -10,13 +10,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Range;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.supplier.MonotonicObservableSupplier;
 import org.chromium.base.supplier.OneshotSupplier;
+import org.chromium.base.supplier.SettableNullableObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -34,11 +34,13 @@ import org.chromium.components.browser_ui.accessibility.PageZoomIndicatorCoordin
 import org.chromium.components.omnibox.AutocompleteInput;
 import org.chromium.components.omnibox.AutocompleteInput.AutocompleteState;
 import org.chromium.components.omnibox.OmniboxFocusReason;
+import org.chromium.components.omnibox.TextSelection;
 import org.chromium.components.search_engines.TemplateUrlService;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.permissions.PermissionCallback;
+import org.chromium.url.GURL;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
@@ -88,7 +90,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
             FuseboxCoordinator fuseboxCoordinator,
             LocationBarEmbedder locationBarEmbedder,
             @Nullable OmniboxChipManager omniboxChipManager,
-            @Nullable LocationBarFocusScrimHandler scrimHandler) {
+            @Nullable LocationBarFocusScrimHandler scrimHandler,
+            SettableNullableObservableSupplier<GURL> exactMatchUrlSupplier) {
         super(
                 context,
                 locationBarLayout,
@@ -112,7 +115,8 @@ public class BraveLocationBarMediator extends LocationBarMediator {
                 fuseboxCoordinator,
                 locationBarEmbedder,
                 omniboxChipManager,
-                scrimHandler);
+                scrimHandler,
+                exactMatchUrlSupplier);
     }
 
     public static Class<OmniboxUma> getOmniboxUmaClass() {
@@ -249,7 +253,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
     // BraveLocationBarQRDialogFragment.onDetectedQrCode to keep pre cr146
     // behavior.
     public boolean setUrlBarData(
-            UrlBarData data, @ScrollType int scrollType, Range<Integer> selection) {
+            UrlBarData data, @ScrollType int scrollType, TextSelection selection) {
         return mUrlCoordinator.setUrlBarData(data, scrollType, selection);
     }
 
@@ -275,7 +279,7 @@ public class BraveLocationBarMediator extends LocationBarMediator {
         setUrlBarText(
                 UrlBarData.forNonUrlText(query),
                 UrlBar.ScrollType.NO_SCROLL,
-                UrlBarData.SELECT_ALL);
+                TextSelection.SELECT_ALL);
         mAutocompleteCoordinator.startAutocompleteForQuery(query);
         mUrlCoordinator.setKeyboardVisibility(true, false);
     }

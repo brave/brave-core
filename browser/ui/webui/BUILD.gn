@@ -33,7 +33,10 @@ source_set("browser_tests") {
       "searchbox/brave_realbox_handler_browsertest.cc",
     ]
 
-    deps += [ "//chrome/browser/ui/webui/searchbox" ]
+    deps += [
+      "//chrome/browser/ui/webui/searchbox",
+      "//chrome/browser/ui/webui/searchbox:searchbox_test_utils",
+    ]
   }
 }
 
@@ -54,6 +57,9 @@ source_set("unit_tests") {
 
   if (enable_sparkle && enable_omaha4) {
     sources += [ "help/brave_version_updater_mac_unittest.mm" ]
-    deps += [ "//brave/browser/updater:features" ]
+    deps += [
+      "//brave/browser/updater:features",
+      "//chrome/browser/ui/webui/help",
+    ]
   }
 }

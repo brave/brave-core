@@ -1,0 +1,11 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# This group is used in the patch of chrome/browser/ui/webui/help/BUILD.gn to
+# bring in deps introduced by #includes in chromium_src override
+# chromium_src/chrome/browser/ui/webui/help/version_updater.h
+group("help") {
+  public_deps = [ "//brave/browser:sparkle_buildflags" ]
+}

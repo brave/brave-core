@@ -1,8 +1,8 @@
 diff --git a/ios/web/web_state/ui/crw_web_controller.mm b/ios/web/web_state/ui/crw_web_controller.mm
-index 8a01791abfa024064970a882d4d8b92e06fc4a7d..20bd5b6338e83b577ff1334396797768a11c5e5a 100644
+index 80b60a6e7f041b0f4bade3366fd4439d2b3d0628..c85f33504950d722026f2ac47e2525d76ee63a59 100644
 --- a/ios/web/web_state/ui/crw_web_controller.mm
 +++ b/ios/web/web_state/ui/crw_web_controller.mm
-@@ -311,11 +311,11 @@ BOOL ExtractInteractionState(NSData* data, NSData** interactionState) {
+@@ -338,11 +338,11 @@ JavaScriptCompletionBlock WrapCompletionBlock(
        web::AnnotationsTextManager::CreateForWebState(_webStateImpl);
      }
  

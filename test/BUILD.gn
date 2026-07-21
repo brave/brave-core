@@ -541,6 +541,7 @@ test("brave_unit_tests") {
       "//chrome/browser/profile_resetter",
       "//chrome/browser/push_messaging",
       "//chrome/browser/push_messaging:service_impl_public",
+      "//chrome/browser/ui:accelerator_table",
       "//chrome/browser/ui/views/bubble",
       "//chrome/browser/ui/webui/devtools",
       "//components/favicon/content",
@@ -1020,6 +1021,8 @@ test("brave_browser_tests") {
     "//brave/components/brave_referrals/browser",
     "//brave/components/brave_rewards/core",
     "//brave/components/email_aliases/buildflags",
+    "//chrome/browser/ui:incognito_allowed_url",
+    "//chrome/browser/ui/views/translate",
   ]
 
   if (enable_session_service) {
@@ -1102,7 +1105,6 @@ test("brave_browser_tests") {
     "//chrome/browser/sync",
     "//chrome/browser/tab_list",
     "//chrome/browser/ui",
-    "//chrome/browser/ui:tab_search_feature",
     "//chrome/browser/ui/browser_window:create_browser_window",
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
@@ -1201,6 +1203,7 @@ test("brave_browser_tests") {
       "//chrome/browser/ui/frame",
       "//chrome/browser/ui/side_panel",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+      "//chrome/browser/ui/webui/bookmarks",
     ]
   }
 
@@ -1356,7 +1359,6 @@ test("brave_browser_tests") {
     sources += [
       "//brave/browser/ui/views/bookmarks/bookmark_bar_browsertest.cc",
       "//brave/browser/ui/views/frame/brave_non_client_hit_test_helper_browsertest.cc",
-      "//brave/browser/ui/views/frame/brave_tabs_search_button_browsertest.cc",
       "//brave/browser/ui/views/omnibox/brave_omnibox_view_views_browsertest.cc",
       "//brave/browser/ui/views/omnibox/omnibox_autocomplete_browsertest.cc",
       "//brave/browser/ui/views/profiles/brave_profile_menu_view_browsertest.cc",
@@ -1437,6 +1439,7 @@ test("brave_browser_tests") {
       "//chrome/browser/apps/app_service",
       "//chrome/browser/password_manager",
       "//chrome/browser/themes",
+      "//chrome/browser/ui:browser_location_bar_model_delegate",
       "//chrome/browser/ui/webui/side_panel/bookmarks:mojo_bindings",
       "//components/autofill/content/browser",
       "//components/autofill/core/browser",
@@ -1507,6 +1510,13 @@ test("brave_browser_tests") {
 
   if (is_android) {
     use_default_launcher = false
+
+    # Generates the real ProductConfig class consumed by
+    # ChromeBrowserTestsApplication. Mirrors upstream android_browsertests,
+    # which
+    # added this in https://crrev.com/c/7981137 when it switched from
+    # ResourceBundle.setNoAvailableLocalePaks() to ProductConfig.LOCALES.
+    product_config_java_packages = [ "org.chromium.chrome.browser" ]
 
     android_manifest =
         "${target_gen_dir}/brave_browser_tests_manifest/AndroidManifest.xml"

@@ -71,6 +71,15 @@ void BraveBrowserWidget::SetTabDragKind(TabDragKind kind) {
 ui::ColorProviderKey BraveBrowserWidget::GetColorProviderKey() const {
   auto key = BrowserWidget::GetColorProviderKey();
 
+  // `ThemeService::GetColorProviderKey()` clears `custom_theme` for incognito
+  // profiles, which drops the private/Tor/guest window theme supplier we
+  // install via GetCustomTheme(). Re-apply it here so private window colors
+  // (e.g. `ui::kColorFrameActive`) come from BravePrivateWindowThemeSupplier
+  // instead of falling back to `ui::kColorSysHeader`.
+  if (theme_supplier_) {
+    key.custom_theme = GetCustomTheme();
+  }
+
   // We want to use dark mode for guest profile.
   if (view_->browser()->profile()->IsGuestSession()) {
     key.color_mode = ui::ColorProviderKey::ColorMode::kDark;

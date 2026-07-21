@@ -48,7 +48,7 @@ source_set("component_loader") {
 source_set("brave_prefs_util_impl") {
   visibility = [
     ":*",
-    "//chrome/browser",
+    "//brave/browser:core",
   ]
   sources = [ "api/settings_private/brave_prefs_util_impl.cc" ]
 

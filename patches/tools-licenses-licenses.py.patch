@@ -1,5 +1,5 @@
 diff --git a/tools/licenses/licenses.py b/tools/licenses/licenses.py
-index d62ef1c2ddaa837c2b85c675b91f2d73f283edd2..4f3a36172e94f40e79a22e3ce5c297ff831adc26 100755
+index a96f5c1531cd2cbef0da4f79c93906b9a1f982e6..2857884ae9c417974521802d15d38950dc680232 100755
 --- a/tools/licenses/licenses.py
 +++ b/tools/licenses/licenses.py
 @@ -32,6 +32,7 @@ import find_depot_tools

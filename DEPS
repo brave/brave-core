@@ -205,6 +205,26 @@ hooks = [
                'tools/cr/install_extra_deps.py',
                'src/third_party/rust-toolchain']
   },
+  {
+    'name': 'download_ast_grep',
+    'pattern': '.',
+    'action': ['vpython3',
+               'tools/cr/install_extra_deps.py',
+               'src/brave/third_party/ast-grep/ast-grep-linux',
+               'src/brave/third_party/ast-grep/ast-grep-mac',
+               'src/brave/third_party/ast-grep/ast-grep-mac_arm64',
+               'src/brave/third_party/ast-grep/ast-grep-win']
+  },
+  {
+    'name': 'download_node',
+    'pattern': '.',
+    'action': ['vpython3',
+               'tools/cr/install_extra_deps.py',
+               'src/brave/third_party/node/node-linux-x64',
+               'src/brave/third_party/node/node-mac-x64',
+               'src/brave/third_party/node/node-mac-arm64',
+               'src/brave/third_party/node/node-win-x64']
+  },
 ]
 
 include_rules = [

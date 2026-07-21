@@ -417,6 +417,12 @@ std::string GenerateContentStructure(const ContentNode& node, int depth = 0) {
       attributes = BuildAttributes(attrs);
       break;
 
+    case ContentAttributeType::CONTENT_ATTRIBUTE_DIALOG_MODAL:
+    case ContentAttributeType::CONTENT_ATTRIBUTE_DIALOG_MODELESS:
+      tag_name = "dialog";
+      attributes = BuildAttributes(attrs);
+      break;
+
     case ContentAttributeType::CONTENT_ATTRIBUTE_SVG_ROOT:
       tag_name = "svg";
       attributes = BuildAttributes(attrs);

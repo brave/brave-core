@@ -253,12 +253,12 @@ void BraveShieldsActionController::ShowBubble(GURL webui_url) {
   }
   if (!webui_bubble_manager_ || webui_url != last_webui_url_) {
     webui_bubble_manager_ = create_bubble_manager_callback_.Run(
-        anchor_view_, browser_window_interface_, webui_url, IDS_BRAVE_SHIELDS,
+        browser_window_interface_, webui_url, IDS_BRAVE_SHIELDS,
         /*force_load_on_create=*/false);
   }
   last_webui_url_ = webui_url;
 
-  webui_bubble_manager_->ShowBubble();
+  webui_bubble_manager_->ShowBubble(anchor_view_.get());
 }
 
 views::Widget* BraveShieldsActionController::GetBubbleWidget() {

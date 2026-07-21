@@ -5,7 +5,8 @@
 
 #include "brave/browser/ui/playlist/playlist_browser_finder.h"
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 
 namespace playlist {
@@ -30,7 +31,8 @@ BrowserView* FindBrowserViewFromSidebarContents(
 }  // namespace
 
 // Implementation for playlist_browser_finder.h
-Browser* FindBrowserForPlaylistWebUI(content::WebContents* web_contents) {
+BrowserWindowInterface* FindBrowserForPlaylistWebUI(
+    content::WebContents* web_contents) {
   if (auto* browser_view = FindBrowserViewFromSidebarContents(web_contents)) {
     return browser_view->browser();
   }
@@ -38,7 +40,8 @@ Browser* FindBrowserForPlaylistWebUI(content::WebContents* web_contents) {
   // If |BrowserView| is not found from Sidebar's |WebContents|, try to find it
   // from tab's |WebContents|.
   // https://github.com/brave/brave-browser/issues/37528
-  return chrome::FindBrowserWithTab(web_contents);
+  return GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(
+      web_contents);
 }
 
 }  // namespace playlist

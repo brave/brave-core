@@ -10,6 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
 #include "base/notreached.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/browser/ui/focus_mode/focus_mode_controller.h"
 #include "brave/browser/ui/focus_mode/focus_mode_utils.h"
@@ -159,14 +160,11 @@ void BrowserWindowFeatures::InitPostBrowserViewConstruction(
 
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   {
-    auto extractor = screenshot::CreatePrintPreviewExtractor(
-        base::BindRepeating(
-            []() -> base::IDMap<printing::mojom::PrintPreviewUI*>& {
-              return printing::PrintPreviewUI::GetPrintPreviewUIIdMap();
-            }),
-        base::BindRepeating([]() -> base::flat_map<int, int>& {
-          return printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap();
-        }));
+    auto extractor =
+        screenshot::CreatePrintPreviewExtractor(base::BindRepeating(
+            []() -> base::flat_map<base::UnguessableToken, int>& {
+              return printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap();
+            }));
     screenshot_controller_ = std::make_unique<screenshot::ScreenshotController>(
         browser_view->GetProfile(),
         base::BindRepeating(

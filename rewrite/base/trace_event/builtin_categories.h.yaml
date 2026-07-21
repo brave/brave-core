@@ -1,0 +1,20 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Register Brave's builtin trace categories.
+
+      Please add all Brave categories here, keeping the list sorted:
+      * For small features use the existing 'brave' category.
+      * For new big subsystems with a lot of traces create a separate category
+        named 'brave.<feature_name>'.
+    re_pattern: '(PERFETTO_DEFINE_CATEGORIES_IN_NAMESPACE_WITH_ATTRS\(.+?BASE_EXPORT,\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1    perfetto::Category("brave"),
+          perfetto::Category("brave.adblock"),
+          perfetto::Category("brave.ads"),
+          perfetto::Category("brave.news"),

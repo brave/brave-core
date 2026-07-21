@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc b/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
-index 1064cbdac66ff3accfc3dc28d53c2a76e673a2f1..b5097f853484488dd1f7e2b26f78684684bceb2b 100644
+index a6878a1e1f96235dcc3224e8f489e6ea2412f9cb..a24c751b3c5400cf298f4f64cfcbcd6335a25af1 100644
 --- a/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
 +++ b/chrome/browser/ui/views/translate/translate_bubble_view_unittest.cc
-@@ -241,6 +241,7 @@ class TranslateBubbleViewTest : public ChromeViewsTestBase {
+@@ -242,6 +242,7 @@ class TranslateBubbleViewTest : public ChromeViewsTestBase {
  
   protected:
    void SetUp() override {

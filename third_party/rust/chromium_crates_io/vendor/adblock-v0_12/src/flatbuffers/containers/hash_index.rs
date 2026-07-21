@@ -188,7 +188,7 @@ impl<I: HashKey, V: Default + Clone> HashIndexBuilder<I, V> {
         self.indexes = vec![I::default(); new_capacity];
         self.values = vec![V::default(); new_capacity];
 
-        for (key, value) in old_indexes.into_iter().zip(old_values.into_iter()) {
+        for (key, value) in old_indexes.into_iter().zip(old_values) {
             if !HashKey::is_empty(&key) {
                 let slot = find_slot(&key, new_capacity, |slot| -> bool {
                     HashKey::is_empty(&self.indexes[slot])

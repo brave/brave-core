@@ -9,18 +9,6 @@ This is a small, general-purpose installer for archives Brave publishes to its
 own download bucket, similar to gclient's `gcs` dependency types. This mechanism
 was first written for the Rust/WASM toolchain, and to make the process of having
 it deployed more generic, and reusable for other cases.
-
-`EXTRA_DEPS` mirrors the shape of a gclient `gcs` dependency, keyed by the
-checkout-relative destination path. Each object lists an `object_name`, its
-`sha256sum`, a `condition`, and `overlayed_on` -- the upstream Chromium archive
-the object is layered on top of (informational; recorded for traceability). The
-archive is expected to lay its members out relative to the destination root, so
-it can be extracted straight on top of it.
-
-`condition` strings (both dep-level and per-object) are resolved with
-depot_tools by loading the checkout's `.gclient` config and the owning
-solution's DEPS, so every variable resolves exactly as it would during a real
-`gclient sync`.
 """
 
 from __future__ import annotations
@@ -29,64 +17,31 @@ import argparse
 from collections.abc import Mapping
 import logging
 import sys
-import tarfile
-import tempfile
 from pathlib import Path
 
 # `src/` directory (this script lives at src/brave/tools/cr/).
 _SRC_DIR = Path(__file__).resolve().parents[3]
 
-# Importing script and depot_tools explicitly, so we can call this script from
-# the terminal without needing to set up the PYTHONPATH. `depot_tools` is
-# inserted at the front so its `third_party` package (which provides
-# `third_party.schema`, needed by gclient_eval) is not shadowed by the
-# `third_party` package in the vpython virtualenv.
-sys.path.append(str(Path(__file__).resolve().parents[2] / 'script'))
+# Importing depot_tools explicitly, so we can call this script from the terminal
+# without needing to set up the PYTHONPATH. `depot_tools` is inserted at the
+# front so its `third_party` package (which provides `third_party.schema`,
+# needed by gclient_eval) is not shadowed by the `third_party` package in the
+# vpython virtualenv.
 sys.path.insert(0, str(_SRC_DIR / 'third_party' / 'depot_tools'))
 
-import deps  # pylint: disable=wrong-import-position
 import gclient  # pylint: disable=wrong-import-position,import-error
 import gclient_eval  # pylint: disable=wrong-import-position,import-error
 import gclient_paths  # pylint: disable=wrong-import-position,import-error
 import gclient_utils  # pylint: disable=wrong-import-position,import-error
 
+from extra_deps import EXTRA_DEPS  # pylint: disable=wrong-import-position
+from tarball_installer import (  # pylint: disable=wrong-import-position
+    TarballInstaller)
+
 # This script's own logger, so we don't step on gclient's logger. It is also of
 # notice that most logs are DEBUG. No-op runs should not produce any output in
 # normal runs, to avoid cluttering the sync output.
 _LOG = logging.getLogger('install_extra_deps')
-
-EXTRA_DEPS = {
-    'src/third_party/rust-toolchain': {
-        'bucket': 'https://brave-build-deps-public.s3.brave.com/rust-toolchain-aux/',
-        'condition': 'not rust_force_head_revision',
-        'objects': [
-            {
-                'object_name': 'linux-x64-rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66-1.tar.xz',
-                'sha256sum': '9e8664e93466c21a3ffedfe4d9e5996a7c967b64575cd2145ab39a6cc3f0ec7f',
-                'overlayed_on': 'Linux_x64/rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66.tar.xz',
-                'condition': 'host_os == "linux"',
-            },
-            {
-                'object_name': 'mac-arm64-rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66-1.tar.xz',
-                'sha256sum': 'ed9e927ebde21a8b6f991b598e18050988a295a5f49e4db35ff70ce25e9ffeea',
-                'overlayed_on': 'Mac_arm64/rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66.tar.xz',
-                'condition': 'host_os == "mac" and host_cpu == "arm64"',
-            },
-            {
-                'object_name': 'mac-rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66-1.tar.xz',
-                'sha256sum': '6cc780e5baa3f2500633e4ee56dd3116d70c375455052b871ee71e2b90ecad62',
-                'overlayed_on': 'Mac/rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66.tar.xz',
-                'condition': 'host_os == "mac" and host_cpu == "x64"',
-            },
-            {
-                'object_name': 'win-rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66-1.tar.xz',
-                'sha256sum': '869f725b2591892218bcfe70e926e41586ac6bb7921b97b48a2b8cd6468ae569',
-                'overlayed_on': 'Win/rust-toolchain-4c4205163abcbd08948b3efab796c543ba1ea687-5-llvmorg-23-init-10931-g20b6ec66.tar.xz',
-                'condition': 'host_os == "win"',
-            },
-        ],
-    },
-}
 
 
 def _select_object(objects: list[dict],
@@ -98,8 +53,8 @@ def _select_object(objects: list[dict],
     host platform).
     """
     matches = [
-        obj for obj in objects
-        if gclient_eval.EvaluateCondition(obj['condition'], variables)
+        obj for obj in objects if 'condition' not in obj
+        or gclient_eval.EvaluateCondition(obj['condition'], variables)
     ]
     if not matches:
         return None
@@ -109,50 +64,7 @@ def _select_object(objects: list[dict],
     return matches[0]
 
 
-def _extract(archive_path: Path, dest_dir: Path) -> None:
-    """Overlay the archive onto the destination directory.
-
-    This function extracts the archive in-place. Artefacts are supposed to be
-    laid out into the archive with the relative paths where they should be
-    installed. Furthermore, this function does not attempt to handle staleness
-    from previous extractions.
-
-    Extraction uses tarfile's `data` filter (PEP 706) so a malformed archive
-    cannot escape `dest_dir` via absolute paths, `..` traversal, or links
-    pointing outside it. The archive is only extracted though based on the
-    verified sha256, so this is just extra defense.
-    """
-    with tarfile.open(archive_path, mode='r:*') as tar:
-        tar.extractall(path=dest_dir, filter='data')
-
-
-def _marker_file_name(object_name: str) -> str:
-    """Return the install-marker filename for *object_name*.
-
-    The marker's name takes into account potential collisions with `gclient`s
-    own naming scheme for this type of source, to avoid stepping on each others
-    markers, specially as the rust WASM toolchain is deployed as a overlay on
-    top of a `gcs`-type dependency.
-    """
-    file_prefix = object_name.replace('/', '_').replace('.', '_')
-    return f'.extra_dep_{file_prefix}.stamp'
-
-
-def _installed_hash(dest_dir: Path, object_name: str) -> str:
-    """Return the sha256 recorded by the last successful install, or ''."""
-    marker_file = dest_dir / _marker_file_name(object_name)
-    if marker_file.is_file():
-        return marker_file.read_bytes().decode('utf-8').strip()
-    return ''
-
-
-def _record_hash(dest_dir: Path, object_name: str, sha256sum: str) -> None:
-    """Persist the installed sha256 for subsequent freshness checks."""
-    marker_file = dest_dir / _marker_file_name(object_name)
-    marker_file.write_text(f'{sha256sum}\n', encoding='utf-8', newline='')
-
-
-class ExtraDepsInstaller:
+class ExtraDepsRunner:
     """Installs `EXTRA_DEPS` entries with gclient-resolved conditions.
 
     Holds the loaded `.gclient` context for a run so each solution's variables
@@ -166,7 +78,7 @@ class ExtraDepsInstaller:
         self._scope_by_solution: dict[str, dict[str, object]] = {}
 
     @classmethod
-    def from_checkout(cls) -> ExtraDepsInstaller:
+    def from_checkout(cls) -> ExtraDepsRunner:
         """Build an installer from the checkout's `.gclient` config.
 
         This installer emulates DEPS as an environmnet. `_SRC_DIR.parent` is
@@ -192,14 +104,14 @@ class ExtraDepsInstaller:
 
         Returns a dict with two keys:
 
-          * `vars` -- the exact dict gclient builds while processing that
+          * `vars`: the exact dict gclient builds while processing that
             solution's DEPS during a sync: the DEPS-declared `vars` overlaid
             with `.gclient` custom_vars, plus the built-in vars (`host_os`,
             `host_cpu`, `checkout_*`, ...). Letting depot_tools load and merge
             everything means this script never has to know which variables exist
             or how to compute their values. Conditions resolve the same way they
             would with `sync`.
-          * `deps` -- the raw `deps` mapping declared in the DEPS file, keyed by
+          * `deps`: the raw `deps` mapping declared in the DEPS file, keyed by
             checkout-relative path. Used to cross-check that an overlay still
             targets the upstream archive currently pinned in DEPS.
         """
@@ -280,29 +192,22 @@ class ExtraDepsInstaller:
             _LOG.debug('No matching object for %s on this host', path)
             return
 
-        # An overlay must only be applied on top of the upstream base it was
-        # built against. Verify that base is still the one pinned in DEPS before
-        # touching the destination.
         overlayed_on = obj.get('overlayed_on')
+        installer = TarballInstaller(dest_dir=_SRC_DIR.parent / path,
+                                     url=spec['bucket'] + obj['object_name'],
+                                     object_name=obj['object_name'],
+                                     sha256sum=obj['sha256sum'],
+                                     owns_dest=not overlayed_on)
+
+        # An overlay must sit on the base it was built against: validate it
+        # still matches DEPS before touching the destination. No `overlayed_on`
+        # means the dep owns its destination, so there is no base to validate.
         if overlayed_on:
             self._validate_overlay_target(path, overlayed_on)
 
-        dest_dir = _SRC_DIR.parent / path
-        object_name = obj['object_name']
-        sha256sum = obj['sha256sum']
-        if _installed_hash(dest_dir, object_name) == sha256sum:
-            _LOG.debug('%s already up to date (%s)', path, object_name)
-            return
-
-        url = spec['bucket'] + object_name
-        with tempfile.TemporaryDirectory() as tmp_dir:
-            archive_path = Path(tmp_dir) / object_name
-            with archive_path.open('wb') as archive_file:
-                deps.DownloadUrl(url, archive_file)
-            deps.VerifySHA256(str(archive_path), sha256sum, url)
-            _extract(archive_path, dest_dir)
-        _record_hash(dest_dir, object_name, sha256sum)
-        _LOG.info('Installed %s into %s', object_name, dest_dir)
+        # `install()` no-ops (returns False) when the sidecar already records
+        # this object's sha, so there is no separate deployment check here.
+        installer.install()
 
 
 def main() -> int:
@@ -314,17 +219,21 @@ def main() -> int:
     _LOG.setLevel(logging.INFO)
 
     parser = argparse.ArgumentParser(
-        description='Download and install the bucket-hosted archive for the '
-        'given EXTRA_DEPS entry.')
+        description='Download and install the bucket-hosted archive(s) for the '
+        'given EXTRA_DEPS entries.')
     parser.add_argument(
-        'dep',
+        'deps',
+        nargs='+',
         choices=sorted(EXTRA_DEPS),
         metavar='DEP_PATH',
-        help='Path key in EXTRA_DEPS identifying the entry to install '
-        '(e.g. src/third_party/rust-toolchain).')
+        help='One or more path keys in EXTRA_DEPS identifying the entries to '
+        'install. Entries whose condition is false on this host are skipped, '
+        'so a single invocation may list every per-platform variant.')
     args = parser.parse_args()
 
-    ExtraDepsInstaller.from_checkout().install(args.dep, EXTRA_DEPS[args.dep])
+    runner = ExtraDepsRunner.from_checkout()
+    for dep in args.deps:
+        runner.install(dep, EXTRA_DEPS[dep])
     return 0
 
 

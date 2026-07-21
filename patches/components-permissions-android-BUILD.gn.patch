@@ -1,5 +1,5 @@
 diff --git a/components/permissions/android/BUILD.gn b/components/permissions/android/BUILD.gn
-index f57bac0ecf5c1f55c07ab025354c7e5c6cfae680..10856dce56bc2cc08f760441a9fba0d94f31e3f8 100644
+index 410511e1424ab40c47de889f4a00f7d7839099ae..1ebac0be606a9417f6b8d4a87fe77efe4e7c13ee 100644
 --- a/components/permissions/android/BUILD.gn
 +++ b/components/permissions/android/BUILD.gn
 @@ -219,6 +219,7 @@ android_library("java") {

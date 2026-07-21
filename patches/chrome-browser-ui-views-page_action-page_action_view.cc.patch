@@ -1,17 +1,17 @@
 diff --git a/chrome/browser/ui/views/page_action/page_action_view.cc b/chrome/browser/ui/views/page_action/page_action_view.cc
-index 32b7b6ea6bd7a6eac01b1e8e4efaa97e9f718812..d154925584dddf18b73981936b091aca59ec6d7a 100644
+index 415e8f510fc4051e18caa829942226670adc5e19..373a60344257237839f46d0383eef6786f3aca3a 100644
 --- a/chrome/browser/ui/views/page_action/page_action_view.cc
 +++ b/chrome/browser/ui/views/page_action/page_action_view.cc
-@@ -173,7 +173,7 @@ void PageActionView::OnPageActionModelChanged(
-   if (!visible) {
-     ResetSlideAnimation(/*show=*/false);
-     NotifyIsChipShowingChange();
--  } else if (model.ShouldShowSuggestionChip()) {
-+  } else if (model.ShouldShowSuggestionChip() || model.GetAlwaysShowLabel()) {
+@@ -238,7 +238,7 @@ void PageActionView::HandleSlideAndCrossfadeTransition(
+ 
+ void PageActionView::HandleSuggestionChipTransition(
+     const PageActionModelInterface& model) {
+-  if (model.ShouldShowSuggestionChip()) {
++  if (model.ShouldShowSuggestionChip() || model.GetAlwaysShowLabel()) {
      if (model.GetShouldAnimateChipIn()) {
        AnimateIn(/*string_id=*/std::nullopt);
      } else {
-@@ -238,6 +238,7 @@ void PageActionView::UpdateBorder() {
+@@ -310,6 +310,7 @@ void PageActionView::UpdateBorder() {
        !observation_.GetSource()->GetImage().IsVectorIcon()) {
      border_insets = GetInsetsForNonVectorIcon();
    }
@@ -19,7 +19,7 @@ index 32b7b6ea6bd7a6eac01b1e8e4efaa97e9f718812..d154925584dddf18b73981936b091aca
    SetBorder(views::CreateEmptyBorder(border_insets));
  }
  
-@@ -284,6 +285,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
+@@ -356,6 +357,8 @@ void PageActionView::NotifyClick(const ui::Event& event) {
                kPageActionEntryPointKey,
                static_cast<std::underlying_type_t<PageActionEntryPoint>>(
                    PageActionEntryPoint::kSuggestionChip))

@@ -1,13 +1,58 @@
 diff --git a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-index 63985d1fed4c9c5d0520689d033173294a61ac19..60b06f9b4c63b44f435ae2abf4ec50cb6336cc1c 100644
+index 7c991f9d6181ae649b1dc92d2b4466bba37ffc22..849dc45aa0bc3a8601e8dc7b9d1f9987c55531f0 100644
 --- a/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
 +++ b/chrome/browser/ui/views/frame/horizontal_tab_strip_region_view.cc
-@@ -160,7 +160,7 @@ std::unique_ptr<TabStrip> CreateTabStrip(
-   std::unique_ptr<TabHoverCardController> hover_card_controller(
-       std::make_unique<TabHoverCardController>(tab_strip_region_view,
+@@ -153,14 +153,14 @@ std::unique_ptr<TabStrip> CreateTabStrip(
+             ->GetTabMenuModelFactory();
+   }
+ 
+-  auto tabstrip_controller = std::make_unique<BrowserTabStripController>(
++  auto tabstrip_controller = std::make_unique<BraveBrowserTabStripController>(
+       browser_view->browser()->GetTabStripModel(), browser_view,
+       std::move(tab_menu_model_factory));
+ 
+-  std::unique_ptr<TabHoverCardController> hover_card_controller(
+-      std::make_unique<TabHoverCardController>(tab_strip_region_view,
++  std::unique_ptr<BraveTabHoverCardController> hover_card_controller(
++      std::make_unique<BraveTabHoverCardController>(tab_strip_region_view,
                                                 browser_view->browser()));
 -  auto tab_strip = std::make_unique<TabStrip>(std::move(tabstrip_controller),
 +  auto tab_strip = std::make_unique<BraveTabStrip>(std::move(tabstrip_controller),
                                                std::move(hover_card_controller));
    return tab_strip;
  }
+@@ -237,7 +237,7 @@ HorizontalTabStripRegionView::HorizontalTabStripRegionView(
+ 
+   if (ShouldShowNewTabButton(browser)) {
+     std::unique_ptr<TabStripControlButton> tab_strip_control_button =
+-        std::make_unique<NewTabButton>(
++        std::make_unique<BraveNewTabButton>(
+             base::BindRepeating(&TabStrip::NewTabButtonPressed,
+                                 base::Unretained(tab_strip_)),
+             features::IsRoundedIconsEnabled() ? vector_icons::kAddWeight500Icon
+@@ -494,14 +494,14 @@ void HorizontalTabStripRegionView::InitializeTabStrip() {
+   }
+ 
+   tab_strip_->Initialize();
+-  static_cast<BrowserTabStripController*>(tab_strip_->controller())
++  static_cast<BraveBrowserTabStripController*>(tab_strip_->controller())
+       ->InitFromModel(tab_strip_);
+   tab_strip_set_ = true;
+ }
+ 
+ void HorizontalTabStripRegionView::ResetTabStrip() {
+   tab_strip_set_ = false;
+-  static_cast<BrowserTabStripController*>(tab_strip_->controller())->Reset();
++  static_cast<BraveBrowserTabStripController*>(tab_strip_->controller())->Reset();
+   tab_strip_->Reset();
+ }
+ 
+@@ -617,7 +617,7 @@ void HorizontalTabStripRegionView::UpdateButtonBorders() {
+   const int extra_vertical_space =
+       GetLayoutConstant(LayoutConstant::kTabStripHeight) -
+       GetLayoutConstant(LayoutConstant::kTabstripToolbarOverlap) -
+-      NewTabButton::kButtonSize.height();
++      BraveNewTabButton::GetButtonSize().height();
+   const int top_inset = extra_vertical_space / 2;
+   const int bottom_inset =
+       extra_vertical_space - top_inset +

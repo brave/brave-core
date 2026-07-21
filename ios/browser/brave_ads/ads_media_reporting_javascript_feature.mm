@@ -49,7 +49,7 @@ void AdsMediaReportingJavaScriptFeature::ScriptMessageReceived(
     web::WebState* web_state,
     const web::ScriptMessage& message) {
   const base::DictValue* script_dict =
-      message.body() ? message.body()->GetIfDict() : nullptr;
+      message.legacy_body() ? message.legacy_body()->GetIfDict() : nullptr;
   if (!script_dict) {
     return;
   }

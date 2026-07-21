@@ -18,8 +18,6 @@
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/shared_pinned_tab_dummy_view.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
@@ -136,12 +134,13 @@ class SharedContentsData
 
       dummy_contents_data->SynchronizeURL();
 
-      Browser* browser = chrome::FindBrowserWithTab(dummy_contents);
-      DCHECK(browser);
+      BrowserWindow* browser_window =
+          BrowserWindow::FindBrowserWindowWithWebContents(dummy_contents);
+      DCHECK(browser_window);
 
       // Passing nullptr so that omnibox resets the URL based on the active web
       // contents.
-      browser->window()->UpdateToolbar(nullptr);
+      browser_window->UpdateToolbar(nullptr);
     }
   }
 

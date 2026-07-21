@@ -7,7 +7,7 @@ license = "MPL-2.0"
 
 [dependencies]
 cxx = "1"
-scraper = "0.22"
+scraper = "0.24"
 
 [lib]
 name = "document_extractor_cxx"

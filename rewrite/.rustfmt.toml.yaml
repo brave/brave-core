@@ -1,0 +1,23 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Ignore Brave's vendored third-party Rust code.
+
+      Append Brave-specific paths to the end of the upstream `ignore` list so
+      rustfmt leaves our vendored crates alone.
+    re_pattern: '(ignore = \[.+?",\n)\]'
+    re_flags: [DOTALL]
+    replace: |-
+      \1  "brave/third_party/",
+        "brave/tools/crates/vendor/",
+        "brave/third_party/wasm/vendor/",
+      ]
+  - description: |
+      Do not format submodules.
+    re_pattern: '\Z'
+    replace: |
+      skip_children = true  # Do not format submodules.

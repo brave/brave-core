@@ -11,6 +11,7 @@ source_set("layout_provider") {
 
   deps = [
     "//base",
+    "//chrome/browser/ui/views:layout_provider",
     "//ui/views",
   ]
 }

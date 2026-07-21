@@ -29,7 +29,7 @@ source_set("brave_news") {
 }
 
 source_set("impl") {
-  visibility = [ "//chrome/browser" ]
+  visibility = [ "//brave/browser:core" ]
 
   sources = [
     "brave_news_controller_factory.cc",

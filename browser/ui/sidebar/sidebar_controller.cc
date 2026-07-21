@@ -22,7 +22,6 @@
 #include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
@@ -39,10 +38,6 @@
 namespace sidebar {
 
 namespace {
-
-SidebarService* GetSidebarService(Profile* profile) {
-  return SidebarServiceFactory::GetForProfile(profile);
-}
 
 std::vector<int> GetAllExistingTabIndexForHost(TabStripModel* tab_strip_model,
                                                std::string_view host) {
@@ -64,7 +59,7 @@ SidebarController::SidebarController(Browser* browser, Profile* profile)
       profile_(profile),
       browser_(browser),
       sidebar_model_(new SidebarModel(profile_)) {
-  sidebar_service_observed_.Observe(GetSidebarService(profile_));
+  sidebar_service_observed_.Observe(GetSidebarService());
 }
 
 SidebarController::~SidebarController() = default;
@@ -262,7 +257,7 @@ void SidebarController::AddItemWithCurrentTab() {
   DCHECK(active_contents);
   const GURL url = active_contents->GetVisibleURL();
   const std::u16string title = active_contents->GetTitle();
-  GetSidebarService(profile_)->AddItem(SidebarItem::Create(
+  GetSidebarService()->AddItem(SidebarItem::Create(
       url, title, SidebarItem::Type::kTypeWeb,
       SidebarItem::BuiltInItemType::kNone, IsWebPanelFeatureEnabled()));
 }
@@ -304,6 +299,10 @@ SidebarWebPanelController* SidebarController::GetWebPanelController() {
   }
 
   return web_panel_controller_.get();
+}
+
+SidebarService* SidebarController::GetSidebarService() {
+  return SidebarServiceFactory::GetForProfile(profile_);
 }
 
 }  // namespace sidebar

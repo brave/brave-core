@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/media/encrypted_media_supported_types_browsertest.cc b/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
-index ebfc4178298a6248cb090fb658caf3afa5d9aaa6..c9042640e6da9535ed34292226509d00d9c94b76 100644
+index 16fdfa1245b4981f55b7ee190a802a25fb0476cb..4f0935c3723324e33b5b684824acd3affe816c83 100644
 --- a/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
 +++ b/chrome/browser/media/encrypted_media_supported_types_browsertest.cc
-@@ -518,7 +518,11 @@ class EncryptedMediaSupportedTypesTest : public InProcessBrowserTest {
+@@ -517,7 +517,11 @@ class EncryptedMediaSupportedTypesTest : public InProcessBrowserTest {
      // capabilities which won't indicate support when running the tests.
      // TODO(crbug.com/40226210): Fix this so that we can inject HEVC support on
      // Windows.

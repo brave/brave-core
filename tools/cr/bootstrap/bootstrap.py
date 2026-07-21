@@ -32,21 +32,13 @@ import shutil
 import subprocess
 import sys
 
-import launcher
-
 # The directory this script lives in — the one we add to `$PATH`.
 BOOTSTRAP_DIR = Path(__file__).resolve().parent
 
-# The shim commands this directory puts on `$PATH`, derived from the launcher's
-# tool registry so new tools only need to be added in one place
-# (`launcher.TOOL_PATHS`). Used to detect an existing install via `shutil.which`
-# (which also resolves the `.bat` variants on Windows through `PATHEXT`).
-SHIM_COMMANDS = tuple(launcher.TOOL_PATHS)
+# The marker in path used to detect an existing boostrap install.
+_INSTALL_MARKER = 'brockit'
 
-# Markers delimiting the block we manage inside POSIX rc files. Fixed strings
-# (independent of the checkout) so re-installing from another checkout simply
-# repoints `$PATH`; the shims dispatch by cwd regardless of which checkout's
-# bootstrap dir is on `$PATH`.
+# Delimiters used to identify the managed block in rc files.
 BEGIN_MARKER = '# >>> brave bootstrap >>>'
 END_MARKER = '# <<< brave bootstrap <<<'
 
@@ -55,7 +47,16 @@ SHELLS = ('bash', 'zsh', 'fish')
 
 # The fish drop-in file is owned entirely by this script: its presence is the
 # managed state, so uninstall just deletes it.
-_FISH_DROP_IN = Path('.config') / 'fish' / 'conf.d' / 'brave-bootstrap.fish'
+#
+# fish sources `conf.d/*.fish` alphabetically, *before* `config.fish`. Node
+# version managers (fnm, nvm, ...) ship their own conf.d snippet that prepends
+# their node to `$PATH`, so to win we must sort *after* them: the `zzz-` prefix
+# puts us last. See `fish_drop_in` for the prepend itself.
+_FISH_CONF_D = Path('.config') / 'fish' / 'conf.d'
+_FISH_DROP_IN = _FISH_CONF_D / 'zzz-brave-bootstrap.fish'
+
+# A legacy name that we used to use.
+_FISH_DROP_IN_LEGACY = _FISH_CONF_D / 'brave-bootstrap.fish'
 
 # -- Pure helpers (unit-tested) ----------------------------------------------
 
@@ -94,10 +95,8 @@ def fish_drop_in(bootstrap_dir: Path) -> str:
 
     Prepends the directory to `$PATH` (highest precedence) on each new shell,
     dropping any pre-existing occurrence first so it lands exactly once at the
-    front. Everything lives in this file: it deliberately avoids
-    `fish_add_path`, which would persist the entry in the *universal*
-    `fish_user_paths` variable and survive deletion of this file (making
-    uninstall ineffective).
+    front. The file name (see `_FISH_DROP_IN`) sorts last in `conf.d` so this
+    runs *after* version-manager snippets like fnm's and wins.
     """
     path = bootstrap_dir.as_posix()
     line = f'set -gx PATH "{path}" (string match --invert -- "{path}" $PATH)'
@@ -131,6 +130,33 @@ def remove_windows_entry(current: str, bootstrap_dir: Path) -> str:
     return ';'.join(entries)
 
 
+# -- Install detection --------------------------------------------------------
+
+
+def find_existing_bootstrap() -> str | None:
+    """Returns the path of the bootstrap marker shim reachable on `$PATH`.
+
+    Resolves the marker via `shutil.which`, so it reports whatever a
+    freshly-spawned shell would actually run — the signal we use to refuse a
+    second, conflicting install. Returns None when nothing is found.
+    """
+    return shutil.which(_INSTALL_MARKER)
+
+
+def installed_bootstrap_dir() -> Path:
+    """The bootstrap directory that is actually on `$PATH`.
+
+    Derived from the live shim located by `find_existing_bootstrap` (its parent
+    directory), so `uninstall` targets the install that is really in effect —
+    even when run from a different checkout than the one originally installed.
+    Falls back to this script's own directory when no shim is on `$PATH`.
+    """
+    found = find_existing_bootstrap()
+    if found:
+        return Path(found).resolve().parent
+    return BOOTSTRAP_DIR
+
+
 # -- POSIX install / uninstall ------------------------------------------------
 
 
@@ -159,6 +185,10 @@ def _install_posix(shells: list[str]) -> int:
     for shell in shells:
         path = _profile_path(shell)
         if shell == 'fish':
+            # if the old file is found, we delete it too.
+            legacy = Path.home() / _FISH_DROP_IN_LEGACY
+            if legacy.exists():
+                legacy.unlink()
             _write(path, fish_drop_in(BOOTSTRAP_DIR))
         else:
             _write(path, apply_block(_read(path), BOOTSTRAP_DIR))
@@ -212,10 +242,12 @@ def _uninstall_posix() -> int:
     for shell in SHELLS:
         path = _profile_path(shell)
         if shell == 'fish':
-            if path.exists():
-                path.unlink()
-                print(f'Removed: {path}')
-                removed = True
+            # Remove the current drop-in and any leftover under the old name.
+            for drop_in in (path, Path.home() / _FISH_DROP_IN_LEGACY):
+                if drop_in.exists():
+                    drop_in.unlink()
+                    print(f'Removed: {drop_in}')
+                    removed = True
             if _erase_fish_user_path(target_dir):
                 removed = True
             continue
@@ -284,34 +316,6 @@ def _uninstall_windows() -> int:
 # -- CLI ----------------------------------------------------------------------
 
 
-def find_existing_bootstrap() -> str | None:
-    """Returns the path of a bootstrap shim already reachable on `$PATH`.
-
-    Resolves the shim command names via `shutil.which`, so it reports whatever
-    a freshly-spawned shell would actually run — the signal we use to refuse a
-    second, conflicting install. Returns None when nothing is found.
-    """
-    for command in SHIM_COMMANDS:
-        found = shutil.which(command)
-        if found:
-            return found
-    return None
-
-
-def installed_bootstrap_dir() -> Path:
-    """The bootstrap directory that is actually on `$PATH`.
-
-    Derived from the live shim located by `find_existing_bootstrap` (its parent
-    directory), so `uninstall` targets the install that is really in effect —
-    even when run from a different checkout than the one originally installed.
-    Falls back to this script's own directory when no shim is on `$PATH`.
-    """
-    found = find_existing_bootstrap()
-    if found:
-        return Path(found).resolve().parent
-    return BOOTSTRAP_DIR
-
-
 def _default_shell() -> str:
     name = Path(os.environ.get('SHELL', '')).name
     return name if name in SHELLS else 'bash'
@@ -324,6 +328,7 @@ def _resolve_shells(selection: str | None) -> list[str]:
 
 
 def main() -> int:
+    """Dispatch the install/uninstall subcommand for the host platform."""
     parser = argparse.ArgumentParser(
         description='Install/uninstall the brave tool shims on $PATH.')
     sub = parser.add_subparsers(dest='command', required=True)

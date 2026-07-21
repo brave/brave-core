@@ -6,6 +6,7 @@
 package org.chromium.chrome.browser.ui.messages.snackbar;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.text.SpannableString;
@@ -14,6 +15,7 @@ import android.text.Spanned;
 import android.text.style.StyleSpan;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -48,6 +50,16 @@ public class BraveSnackbarView extends SnackbarView {
     private boolean mViewRestructured;
     // Reference to the title TextView we add programmatically
     private @Nullable TextView mTitleTextView;
+    // The end-aligned row holding the action button (and optional close button) in the
+    // action-below-message layout. Non-null only while that layout is applied; tracked so it can be
+    // reverted when this (reused) SnackbarView is updated for a different snackbar.
+    private @Nullable LinearLayout mActionRow;
+    // The action-below-message layout follows the snackbar that requested it, not this (reused)
+    // view: it is re-applied when that snackbar is shown and reverted for any other snackbar.
+    private @Nullable Snackbar mActionBelowSnackbar;
+    private int mActionBelowCloseIconResId;
+    private @Nullable String mActionBelowCloseContentDescription;
+    private @Nullable Runnable mActionBelowCloseCallback;
 
     public BraveSnackbarView(
             Activity activity,
@@ -86,6 +98,191 @@ public class BraveSnackbarView extends SnackbarView {
                     clickCallback.run();
                 });
         mContainerView.setClickable(true);
+    }
+
+    /**
+     * Switches the snackbar to a two-line layout where the action button drops onto its own line
+     * below the message, aligned to the end (right in LTR). This matches the Material "longer
+     * action" snackbar and is used for notices whose action label is too long to sit beside a
+     * multi-line message. When {@code onCloseCallback} is non-null, a trailing close button is
+     * added to the right of the action button.
+     *
+     * <pre>
+     * ┌─────────────────────────────────────────────┐
+     * │ Message line one                            │
+     * │ Message line two                            │
+     * │                          [Action]  [×]      │ ← action + close, end-aligned
+     * └─────────────────────────────────────────────┘
+     * </pre>
+     *
+     * @param closeIconResId Drawable resource for the close button (resolved in the caller's
+     *     resource package). Ignored when {@code onCloseCallback} is null.
+     * @param closeContentDescription Accessibility label for the close button, or null.
+     * @param onCloseCallback Invoked when the close button is tapped; when null no close button is
+     *     added.
+     */
+    public void setActionBelowMessage(
+            int closeIconResId,
+            @Nullable String closeContentDescription,
+            @Nullable Runnable onCloseCallback) {
+        // Remember the request so it can follow this snackbar across view reuse (see update()).
+        mActionBelowSnackbar = mSnackbar;
+        mActionBelowCloseIconResId = closeIconResId;
+        mActionBelowCloseContentDescription = closeContentDescription;
+        mActionBelowCloseCallback = onCloseCallback;
+        applyActionBelowMessage();
+    }
+
+    /**
+     * The {@link SnackbarView} is reused across snackbars (the manager updates it in place rather
+     * than recreating it). After the base class repopulates the view, re-apply the
+     * action-below-message layout if this is the snackbar that requested it, otherwise revert it so
+     * the stacked layout and close button don't leak into an unrelated snackbar.
+     */
+    @Override
+    boolean update(Snackbar snackbar) {
+        boolean result = super.update(snackbar);
+        if (snackbar == mActionBelowSnackbar) {
+            applyActionBelowMessage();
+        } else {
+            resetActionBelowMessage();
+        }
+        return result;
+    }
+
+    private @Nullable LinearLayout getSnackbarLayout() {
+        if (mContainerView == null) {
+            return null;
+        }
+        View snackbarView = mContainerView.findViewById(R.id.snackbar);
+        return snackbarView instanceof LinearLayout ? (LinearLayout) snackbarView : null;
+    }
+
+    private void applyActionBelowMessage() {
+        LinearLayout snackbarLayout = getSnackbarLayout();
+        if (snackbarLayout == null) {
+            Log.e(TAG, "applyActionBelowMessage: snackbar layout not found");
+            return;
+        }
+        Context context = snackbarLayout.getContext();
+
+        // Start from a clean state in case this layout was already applied to this reused view.
+        resetActionBelowMessage();
+
+        // Stack the message and action vertically instead of side by side.
+        snackbarLayout.setOrientation(LinearLayout.VERTICAL);
+
+        // Let the message span the full width (it uses width=0/weight=1 for the horizontal layout).
+        View messageView = snackbarLayout.findViewById(R.id.snackbar_message);
+        if (messageView != null
+                && messageView.getLayoutParams() instanceof LinearLayout.LayoutParams) {
+            LinearLayout.LayoutParams lp =
+                    (LinearLayout.LayoutParams) messageView.getLayoutParams();
+            lp.width = LinearLayout.LayoutParams.MATCH_PARENT;
+            lp.weight = 0;
+            // updateInternal() zeroes the end margin when there's an action button (it normally
+            // sits to the right). In this stacked layout the message spans the full width, so
+            // restore a symmetric end margin to match the start margin.
+            lp.setMarginEnd(
+                    snackbarLayout
+                            .getResources()
+                            .getDimensionPixelSize(R.dimen.snackbar_text_view_margin));
+            messageView.setLayoutParams(lp);
+        }
+
+        View buttonView = snackbarLayout.findViewById(R.id.snackbar_button);
+        if (buttonView == null) {
+            Log.e(TAG, "applyActionBelowMessage: action button not found");
+            return;
+        }
+
+        // Build a trailing, end-aligned row that holds the action button (and an optional close
+        // button to its right) on its own line below the message.
+        LinearLayout actionRow = new LinearLayout(context);
+        actionRow.setOrientation(LinearLayout.HORIZONTAL);
+        actionRow.setGravity(android.view.Gravity.CENTER_VERTICAL);
+        LinearLayout.LayoutParams rowParams =
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+        rowParams.gravity = android.view.Gravity.END;
+        actionRow.setLayoutParams(rowParams);
+
+        // Move the existing action button into the row.
+        snackbarLayout.removeView(buttonView);
+        buttonView.setLayoutParams(
+                new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT));
+        actionRow.addView(buttonView);
+
+        if (mActionBelowCloseCallback != null && mActionBelowCloseIconResId != 0) {
+            final Runnable closeCallback = mActionBelowCloseCallback;
+            ImageButton closeButton = new ImageButton(context);
+            closeButton.setImageResource(mActionBelowCloseIconResId);
+            // Borderless, icon-only button.
+            closeButton.setBackground(null);
+            if (mActionBelowCloseContentDescription != null) {
+                closeButton.setContentDescription(mActionBelowCloseContentDescription);
+            }
+            // Tint the icon to match the action button text so the two read as a pair.
+            if (buttonView instanceof TextView) {
+                closeButton.setColorFilter(((TextView) buttonView).getCurrentTextColor());
+            }
+            // 14dp padding around the 24dp icon yields a ~52dp (>=48dp) touch target.
+            int padding =
+                    snackbarLayout
+                            .getResources()
+                            .getDimensionPixelSize(R.dimen.snackbar_message_margin);
+            closeButton.setPadding(padding, padding, padding, padding);
+            closeButton.setOnClickListener(v -> closeCallback.run());
+            actionRow.addView(closeButton);
+        }
+
+        snackbarLayout.addView(actionRow);
+        mActionRow = actionRow;
+    }
+
+    /** Undoes {@link #applyActionBelowMessage()}, restoring the stock horizontal layout. */
+    private void resetActionBelowMessage() {
+        if (mActionRow == null) {
+            return;
+        }
+        LinearLayout snackbarLayout = getSnackbarLayout();
+        if (snackbarLayout == null) {
+            mActionRow = null;
+            return;
+        }
+
+        // Pull the action button back out of our row so it becomes a direct child again.
+        View buttonView = mActionRow.findViewById(R.id.snackbar_button);
+        mActionRow.removeAllViews();
+        snackbarLayout.removeView(mActionRow);
+        mActionRow = null;
+
+        snackbarLayout.setOrientation(LinearLayout.HORIZONTAL);
+
+        if (buttonView != null) {
+            LinearLayout.LayoutParams buttonLp =
+                    new LinearLayout.LayoutParams(
+                            LinearLayout.LayoutParams.WRAP_CONTENT,
+                            LinearLayout.LayoutParams.WRAP_CONTENT);
+            buttonLp.gravity = android.view.Gravity.CENTER_VERTICAL;
+            buttonView.setLayoutParams(buttonLp);
+            snackbarLayout.addView(buttonView);
+        }
+
+        // Restore the message's original width/weight (matching floating_snackbar.xml); its margins
+        // are reset by the base class's updateInternal().
+        View messageView = snackbarLayout.findViewById(R.id.snackbar_message);
+        if (messageView != null
+                && messageView.getLayoutParams() instanceof LinearLayout.LayoutParams) {
+            LinearLayout.LayoutParams lp =
+                    (LinearLayout.LayoutParams) messageView.getLayoutParams();
+            lp.width = 0;
+            lp.weight = 1;
+            messageView.setLayoutParams(lp);
+        }
     }
 
     /**

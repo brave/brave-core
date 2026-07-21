@@ -6,7 +6,10 @@
 
 import unittest
 from pathlib import Path
+import argparse
+import contextlib
 import hashlib
+import io
 import json
 import os
 import time
@@ -149,6 +152,35 @@ class PlasterTest(unittest.TestCase):
         self.assertNotEqual(mtime_after, mtime_changed)
         self.assertEqual(temp_file.read_text(), 'bar')
         temp_file.unlink()
+
+    def test_checksum_hashes_raw_bytes_without_newline_normalization(self):
+        # The checksum must be over the file's raw bytes so it matches
+        # build/commands/lib/calculateFileChecksum.js, which apply_patches uses
+        # to validate .patchinfo entries. A text-mode read would fold CRLF into
+        # LF and diverge for files with Windows line endings.
+        temp_file = plaster.PLASTER_FILES_PATH / 'temp_crlf_checksum.txt'
+        content = b'line one\r\nline two\r\n'
+        temp_file.write_bytes(content)
+        try:
+            pair = plaster.PathChecksumPair(temp_file)
+            self.assertEqual(pair.checksum,
+                             hashlib.sha256(content).hexdigest())
+            # An LF-normalized digest (what a text-mode read produced) must not
+            # match, confirming the CRLF bytes are preserved.
+            self.assertNotEqual(
+                pair.checksum,
+                hashlib.sha256(content.replace(b'\r\n', b'\n')).hexdigest())
+        finally:
+            temp_file.unlink()
+
+    def test_checksum_of_empty_file(self):
+        temp_file = plaster.PLASTER_FILES_PATH / 'temp_empty_checksum.txt'
+        temp_file.write_bytes(b'')
+        try:
+            pair = plaster.PathChecksumPair(temp_file)
+            self.assertEqual(pair.checksum, hashlib.sha256(b'').hexdigest())
+        finally:
+            temp_file.unlink()
 
     def test_yaml_plaster_applies(self):
         """A .yaml plaster applies its substitutions and emits patch files."""
@@ -783,9 +815,9 @@ class PlasterTest(unittest.TestCase):
 
     def test_count_zero_replaces_all(self):
         """
-        Test that count=0 replaces all matches and bypasses count validation.
-        Note: All substitutions now behave as count=0 since count=0 is
-        always passed to subn.
+        Test that count=0 replaces all matches (requiring at least one).
+        count=0 rewrites every match but still fails if nothing matched; here
+        there are three matches, so it succeeds.
         """
         test_file_chromium = Path(
             'chrome/common/extensions/api/test_count_zero_all.idl')
@@ -811,7 +843,8 @@ class PlasterTest(unittest.TestCase):
               count: 0
         ''')
 
-        # Should succeed because count=0 means replace all and bypass validation
+        # Should succeed: count=0 replaces all matches, and there is at least
+        # one match here.
         plaster_file = plaster.PlasterFile(plaster_path)
         plaster_file.apply()
 
@@ -819,6 +852,39 @@ class PlasterTest(unittest.TestCase):
                   test_file_chromium).read_text()
         self.assertEqual(result,
                          'Brave content with Brave and more Brave text.')
+
+    def test_count_zero_no_match_fails(self):
+        """
+        Test that count=0 fails when there are no matches.
+
+        count=0 means "one or more matches"; a pattern that matches nothing
+        must fail rather than silently leave the source untouched.
+        """
+        test_file_chromium = Path(
+            'chrome/common/extensions/api/test_count_zero_no_match.idl')
+
+        # Write and commit a file that lacks the pattern entirely.
+        self.fake_chromium_src.write_and_stage_file(
+            test_file_chromium, 'A Chromium thing.',
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add test_count_zero_no_match.idl',
+                                      self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file_chromium) +
+                                                     '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('''
+          substitutions:
+            - description: replace a pattern that is absent
+              re_pattern: 'DoesNotAppear'
+              replace: 'X'
+              count: 0
+        ''')
+
+        plaster_file = plaster.PlasterFile(plaster_path)
+        with self.assertRaises(plaster.PlasterApplyError) as ctx:
+            plaster_file.apply()
+        self.assertIn('at least one match', str(ctx.exception))
 
     def test_count_explicit_values_work(self):
         """Test that explicit count values work correctly for validation.
@@ -987,6 +1053,905 @@ class PlasterTest(unittest.TestCase):
         older = patchinfo_path.stat().st_mtime - 100
         os.utime(patchinfo_path, (older, older))
         self.assertFalse(plaster_file.needs_apply())
+
+    # A source whose hunk-header function context differs depending on the
+    # userdiff driver git selects: the built-in `objc` driver's xfuncname regex
+    # skips the ObjC++ `Profile::~Profile()` member definition and anchors on
+    # the previous C-style free function, whereas the default/`cpp` driver
+    # reports the enclosing destructor. The change lands deep enough inside the
+    # destructor that the hunk's leading context does not reach its opening
+    # line, forcing git to search backwards for the function name.
+    _DRIVER_SENSITIVE_MM = ('// Copyright.\n'
+                            '#include "thing.h"\n'
+                            '\n'
+                            'void AssignTestingFactories(int a,\n'
+                            '                            int b) {\n'
+                            '  DoSomething();\n'
+                            '}\n'
+                            '\n'
+                            'Profile::~Profile() {\n'
+                            '  // Allows blocking in this scope for testing.\n'
+                            '  ScopedAllowBlocking allow;\n'
+                            '\n'
+                            '  // Notify before destroying anything.\n'
+                            '  NotifyDestroyed();\n'
+                            '\n'
+                            '  // Tear down the incognito profile first.\n'
+                            '  otr_.reset();\n'
+                            '\n'
+                            '  // Shut dependencies down backward.\n'
+                            '  MARKER_LINE;\n'
+                            '  more_cleanup();\n'
+                            '}\n')
+
+    def test_patch_generation_ignores_ambient_git_attributes(self):
+        """Generated patches do not depend on the developer's git attributes.
+
+        The hunk-header function context is produced by whichever userdiff
+        driver git selects for a source, and that selection depends on the
+        ambient environment (a per-user/global `core.attributesFile`, the
+        system gitattributes, git version built-ins). `.mm` files in particular
+        resolve to the `objc` driver on some setups (notably Apple Git), which
+        yields a different hunk header than the default driver and so makes the
+        committed patch bytes differ between machines. `save_patch_if_changed`
+        pins the diff to a dedicated attributes file and disables the system
+        gitattributes so the output is deterministic regardless of environment.
+        """
+        test_file = Path('chrome/browser/profile.mm')
+        self.fake_chromium_src.write_and_stage_file(
+            test_file, self._DRIVER_SENSITIVE_MM,
+            self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit('Add profile.mm',
+                                      self.fake_chromium_src.chromium)
+
+        # Simulate a machine whose ambient git configuration routes `.mm` files
+        # through the `objc` driver, e.g. via a per-user `core.attributesFile`.
+        ambient_attributes = (self.fake_chromium_src.base_path /
+                              'ambient_gitattributes')
+        ambient_attributes.write_text('*.mm diff=objc\n')
+        self.fake_chromium_src._run_git_command(
+            ['config', 'core.attributesFile',
+             str(ambient_attributes)], self.fake_chromium_src.chromium)
+
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(test_file) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text('substitutions:\n'
+                                '  - description: Touch the destructor body\n'
+                                "    pattern: 'MARKER_LINE;'\n"
+                                "    replace: 'MARKER_LINE_CHANGED;'\n")
+
+        plaster.PlasterFile(plaster_path).apply()
+
+        patch = plaster.PatchinfoBuilder(plaster_path).patch.path.read_text()
+        hunk_header = next(line for line in patch.splitlines()
+                           if line.startswith('@@'))
+
+        # Sanity check: the ambient `objc` mapping genuinely diverges from the
+        # default driver for this source, so the assertion below is meaningful.
+        # Otherwise a git without a diverging `objc` driver would make this test
+        # pass without exercising anything.
+        objc_diff = self.fake_chromium_src._run_git_command([
+            '-c', f'core.attributesFile={ambient_attributes}', 'diff',
+            str(test_file)
+        ], self.fake_chromium_src.chromium)
+        objc_header = next(line for line in objc_diff.splitlines()
+                           if line.startswith('@@'))
+        self.assertIn(
+            'AssignTestingFactories', objc_header,
+            'ambient objc mapping is expected to anchor the hunk '
+            'header on the free function; git behavior may have '
+            'changed')
+
+        # The generated patch must ignore the ambient `objc` mapping and use the
+        # default driver, which reports the enclosing destructor.
+        self.assertIn('Profile::~Profile()', hunk_header)
+        self.assertNotIn('AssignTestingFactories', hunk_header)
+
+
+class RewriterFormsTest(unittest.TestCase):
+    """End-to-end tests for the substitution envelope and its rewriters.
+
+    Rewriters apply through `PlasterFile` against a fake Chromium repo, just
+    like real usage; `make_virtual` runs the real ast-grep binary. Further
+    rewriters attach to the same envelope later.
+    """
+
+    def setUp(self):
+        self.fake_chromium_src = FakeChromiumRepo()
+        self.fake_chromium_src.setup()
+        self.addCleanup(self.fake_chromium_src.cleanup)
+
+    def _apply(self, name: str, source: str, yaml_body: str) -> str:
+        """Write `source`+plaster, apply, and return the rewritten source."""
+        src = Path('chrome/common/extensions/api') / name
+        self.fake_chromium_src.write_and_stage_file(
+            src, source, self.fake_chromium_src.chromium)
+        self.fake_chromium_src.commit(f'Add {name}',
+                                      self.fake_chromium_src.chromium)
+        plaster_path = plaster.PLASTER_FILES_PATH / (str(src) + '.yaml')
+        plaster_path.parent.mkdir(parents=True, exist_ok=True)
+        plaster_path.write_text(yaml_body)
+        plaster.PlasterFile(plaster_path).apply()
+        return (self.fake_chromium_src.chromium / src).read_text()
+
+    def _expect_value_error(self, yaml_body: str, substr: str):
+        with self.assertRaises(ValueError) as ctx:
+            self._apply('validation.idl', 'dummy', yaml_body)
+        self.assertIn(substr, str(ctx.exception))
+
+    # -- regex op (explicit form of the legacy bare regex) ------------------
+
+    def test_regex_op_matches_bare_form(self):
+        result = self._apply(
+            'regex_op.idl', 'A Chromium thing.', 'substitutions:\n'
+            '  - description: explicit regex op\n'
+            '    regex:\n'
+            "      re_pattern: 'Chromium'\n"
+            "      replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.')
+
+    def test_regex_op_honours_flags(self):
+        result = self._apply(
+            'regex_flags.idl', 'foo\nBAR\n', 'substitutions:\n'
+            '  - description: nested regex with flags\n'
+            '    regex:\n'
+            "      re_pattern: '^bar$'\n"
+            "      replace: 'baz'\n"
+            '      re_flags: [IGNORECASE, MULTILINE]\n')
+        self.assertEqual(result, 'foo\nbaz\n')
+
+    def test_bare_regex_still_applies(self):
+        result = self._apply(
+            'bare.idl', 'A Chromium thing.', 'substitutions:\n'
+            '  - description: legacy bare regex\n'
+            "    re_pattern: 'Chromium'\n"
+            "    replace: 'Brave'\n")
+        self.assertEqual(result, 'A Brave thing.')
+
+    # -- make_virtual op (real ast-grep binary) -----------------------------
+
+    def test_make_virtual_op(self):
+        result = self._apply(
+            'virt.h', 'class C {\n  void Foo();\n};\n', 'substitutions:\n'
+            '  - description: make Foo virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(result, 'class C {\n  virtual void Foo();\n};\n')
+
+    def test_make_virtual_destructor_quoted(self):
+        result = self._apply(
+            'dtor.h', 'class C {\n public:\n  ~C();\n};\n', 'substitutions:\n'
+            '  - description: make the destructor virtual\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            "      method_name: '~C'\n")
+        self.assertEqual(result, 'class C {\n public:\n  virtual ~C();\n};\n')
+
+    def test_make_virtual_overloads_need_count(self):
+        result = self._apply(
+            'ovl.h', 'class C {\n  void Foo();\n  void Foo(int x);\n};\n',
+            'substitutions:\n'
+            '  - description: make both overloads virtual\n'
+            '    count: 2\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n')
+        self.assertEqual(
+            result, 'class C {\n  virtual void Foo();\n'
+            '  virtual void Foo(int x);\n};\n')
+
+    def test_make_virtual_count_mismatch_fails(self):
+        # Two overloads match, but the default count is 1.
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'ovl2.h', 'class C {\n  void Foo();\n  void Foo(int x);\n};\n',
+                'substitutions:\n'
+                '  - description: forgot the count\n'
+                '    make_virtual:\n'
+                '      class_name: C\n'
+                '      method_name: Foo\n')
+
+    def test_make_virtual_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_nam: Foo\n', 'Unrecognised make_virtual arg')
+
+    def test_make_virtual_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    make_virtual:\n'
+            '      class_name: C\n', 'make_virtual requires arg')
+
+    # -- add_friend op (real ast-grep binary) -------------------------------
+
+    def test_add_friend_op(self):
+        result = self._apply(
+            'friend.h',
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n',
+            'substitutions:\n'
+            '  - description: friend the Brave subclass\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      friend_type: class BraveC\n')
+        self.assertEqual(
+            result, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n};\n')
+
+    def test_add_friend_no_private_section_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'nofriend.h', 'class C {\n public:\n  void Foo();\n};\n',
+                'substitutions:\n'
+                '  - description: no private section to insert into\n'
+                '    add_friend:\n'
+                '      class_name: C\n'
+                '      friend_type: class BraveC\n')
+
+    def test_add_friend_unknown_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo arg\n'
+            '    add_friend:\n'
+            '      class_name: C\n'
+            '      freind: class BraveC\n', 'Unrecognised add_friend arg')
+
+    # -- drop_final op (real ast-grep binary) -----------------------------
+
+    def test_drop_final_op(self):
+        result = self._apply(
+            'final.h', 'class C final : public Base {\n};\n',
+            'substitutions:\n'
+            '  - description: drop final so Brave can subclass\n'
+            '    drop_final:\n'
+            '      class_name: C\n')
+        self.assertEqual(result, 'class C : public Base {\n};\n')
+
+    def test_drop_final_absent_fails(self):
+        with self.assertRaises(plaster.PlasterApplyError):
+            self._apply(
+                'nofinal.h', 'class C {\n};\n', 'substitutions:\n'
+                '  - description: nothing to remove\n'
+                '    drop_final:\n'
+                '      class_name: C\n')
+
+    def test_drop_final_missing_arg_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: missing arg\n'
+            '    drop_final: {}\n', 'drop_final requires arg')
+
+    # -- validation ---------------------------------------------------------
+
+    def test_two_op_keys_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: two ops\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            '    make_virtual:\n'
+            '      class_name: C\n'
+            '      method_name: Foo\n', 'Only one rewriter')
+
+    def test_cannot_mix_op_and_bare_regex(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: mixed\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            "    re_pattern: 'z'\n", 'Cannot mix')
+
+    def test_unknown_regex_field_rejected(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: bad regex field\n'
+            '    regex:\n'
+            "      re_pattern: 'x'\n"
+            "      replace: 'y'\n"
+            "      bogus: 'z'\n", 'Unrecognised regex field')
+
+    def test_regex_op_must_be_a_mapping(self):
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: scalar regex body\n'
+            "    regex: 'nope'\n", '"regex" must be a mapping')
+
+    def test_unknown_rewriter_is_rejected(self):
+        # A rewriter-shaped key (mapping body) that is not registered names an
+        # unknown rewriter; the error lists the available ones.
+        with self.assertRaises(ValueError) as ctx:
+            self._apply(
+                'unknown_rw.h', 'class C {};\n', 'substitutions:\n'
+                '  - description: not a real rewriter\n'
+                '    make_final:\n'
+                '      class_name: C\n')
+        message = str(ctx.exception)
+        self.assertIn('Unknown rewriter', message)
+        self.assertIn("'make_final'", message)
+        self.assertIn('make_virtual', message)
+
+    def test_stray_scalar_key_is_unrecognised(self):
+        # A non-mapping stray key is a bare-field typo, not a rewriter attempt,
+        # so it keeps the generic "Unrecognised substitution key" error.
+        self._expect_value_error(
+            'substitutions:\n'
+            '  - description: typo bare field\n'
+            "    re_pattern: 'x'\n"
+            "    replace: 'y'\n"
+            '    re_flag: [DOTALL]\n', 'Unrecognised substitution key')
+
+
+class RewriterRegistryTest(unittest.TestCase):
+    """The `_REWRITERS` registry drives both YAML dispatch and help."""
+
+    def test_regex_is_registered_under_its_name(self):
+        self.assertIs(plaster._REWRITERS['regex'], plaster.Regex)
+
+    def test_registry_is_read_only(self):
+        with self.assertRaises(TypeError):
+            plaster._REWRITERS['regex'] = plaster.Regex
+
+    def test_every_rewriter_is_self_describing(self):
+        # Each rewriter must be keyed by its own NAME and carry the metadata the
+        # help system relies on, so a new rewriter can never show up blank.
+        for name, cls in plaster._REWRITERS.items():
+            self.assertEqual(cls.NAME, name)
+            self.assertTrue(cls.SUMMARY, f'{name} is missing a SUMMARY')
+            self.assertTrue(cls.help_text(), f'{name} is missing help text')
+
+
+class RewritersEvalTest(unittest.TestCase):
+    """Schema evaluation and access tests for plaster.RewritersEval."""
+
+    def setUp(self):
+        # load() memoises a process-wide instance; clear it so tests that
+        # exercise the singleton start from a clean slate.
+        plaster.RewritersEval._instance = None
+        self.addCleanup(setattr, plaster.RewritersEval, '_instance', None)
+
+    @staticmethod
+    def _valid_spec() -> dict:
+        """A minimal, schema-valid rewriters spec as a Python dict."""
+        return {
+            'ast.matcher': {
+                'cxx.find_class_method_decl': {
+                    'args': ['class_name', 'method_name'],
+                    'template': ('kind: field_declaration\n'
+                                 'has:\n'
+                                 '  regex: ^{method_name}$\n'
+                                 'inside:\n'
+                                 '  regex: ^{class_name}$\n'),
+                    'result': {
+                        'node': 'field_declaration',
+                    },
+                },
+            },
+            'ast.rewriter': {
+                'cxx.make_virtual': {
+                    'matcher': 'cxx.find_class_method_decl',
+                    'replace': {
+                        're_pattern': '^',
+                        'replace': 'virtual '
+                    },
+                    'result': {
+                        'node': 'field_declaration',
+                    },
+                },
+            },
+        }
+
+    def _eval_valid(self) -> plaster.RewritersEval:
+        return plaster.RewritersEval(repr(self._valid_spec()))
+
+    def _assert_invalid(self, mutate, expected_substr=None):
+        """Apply `mutate` to a valid spec and assert it fails validation."""
+        spec = self._valid_spec()
+        mutate(spec)
+        with self.assertRaises(plaster.RewritersSchemaError) as cm:
+            plaster.RewritersEval(repr(spec))
+        if expected_substr is not None:
+            self.assertIn(expected_substr, str(cm.exception))
+
+    # -- the real on-disk spec ---------------------------------------------
+
+    def test_load_real_rewriters_file(self):
+        """The shipped rewriters.pyl validates and exposes its ops."""
+        rewriters = plaster.RewritersEval.load()
+        self.assertIn('cxx.find_class_method_decl', rewriters.matchers)
+        for op in ('cxx.make_virtual', 'cxx.add_friend', 'cxx.drop_final'):
+            self.assertIn(op, rewriters.rewriters)
+
+    def test_load_is_a_singleton(self):
+        """load() reads the file once and returns the same instance."""
+        first = plaster.RewritersEval.load()
+        second = plaster.RewritersEval.load()
+        self.assertIs(first, second)
+
+    # -- access -------------------------------------------------------------
+
+    def test_accessors_return_specs(self):
+        rewriters = self._eval_valid()
+        self.assertEqual(
+            rewriters.matcher('cxx.find_class_method_decl')['args'],
+            ['class_name', 'method_name'])
+        self.assertEqual(
+            rewriters.rewriter('cxx.make_virtual')['matcher'],
+            'cxx.find_class_method_decl')
+
+    def test_unknown_op_access_raises(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(plaster.RewritersSchemaError):
+            rewriters.matcher('cxx.nope')
+        with self.assertRaises(plaster.RewritersSchemaError):
+            rewriters.rewriter('cxx.nope')
+
+    def test_language_of(self):
+        self.assertEqual(
+            plaster.RewritersEval.language_of('cxx.find_class_method_decl'),
+            'cpp')
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval.language_of('py.find_class_method_decl')
+
+    def test_exposed_mappings_are_read_only(self):
+        rewriters = self._eval_valid()
+        with self.assertRaises(TypeError):
+            rewriters.matchers['x'] = {}
+        with self.assertRaises(TypeError):
+            rewriters.rewriters['x'] = {}
+
+    def test_valid_spec_round_trips(self):
+        rewriters = self._eval_valid()
+        self.assertEqual(list(rewriters.matchers),
+                         ['cxx.find_class_method_decl'])
+        self.assertEqual(list(rewriters.rewriters), ['cxx.make_virtual'])
+
+    # -- top-level / parsing failures --------------------------------------
+
+    def test_not_a_literal(self):
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval('this is not a literal (((')
+
+    def test_top_level_not_a_dict(self):
+        with self.assertRaises(plaster.RewritersSchemaError):
+            plaster.RewritersEval('[1, 2, 3]')
+
+    def test_present_but_empty_groups_are_valid(self):
+        # A group may be present with no ops yet (as the shipped file is).
+        rewriters = plaster.RewritersEval(
+            "{'ast.matcher': {}, 'ast.rewriter': {}}")
+        self.assertEqual(dict(rewriters.matchers), {})
+        self.assertEqual(dict(rewriters.rewriters), {})
+
+    def test_unknown_category(self):
+        # schema rejects keys outside the top-level matcher/rewriter set.
+        self._assert_invalid(lambda s: s.update({'mangler': {}}), 'Wrong keys')
+
+    def test_category_not_a_mapping(self):
+        self._assert_invalid(lambda s: s.__setitem__('ast.matcher', []),
+                             "should be instance of 'dict'")
+
+    # -- op id --------------------------------------------------------------
+
+    def test_op_id_without_prefix(self):
+        # An id that does not match the _OP_ID key schema is an unexpected key.
+        def mutate(s):
+            s['ast.matcher']['nodothere'] = s['ast.matcher'].pop(
+                'cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'Wrong keys')
+
+    def test_op_id_unknown_prefix(self):
+
+        def mutate(s):
+            s['ast.matcher']['py.find_class_method_decl'] = s[
+                'ast.matcher'].pop('cxx.find_class_method_decl')
+
+        self._assert_invalid(mutate, 'Wrong keys')
+
+    # -- matcher schema ------------------------------------------------------
+
+    def test_matcher_missing_required_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].pop(
+                'template'), 'Missing keys')
+
+    def test_matcher_unknown_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].update(
+                {'language': 'cpp'}), 'Wrong keys')
+
+    def test_matcher_args_not_list_of_strings(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl'].
+            __setitem__('args', 'class_name'), "should be instance of 'list'")
+
+    def test_matcher_undeclared_placeholder(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']
+            ['cxx.find_class_method_decl'].__setitem__(
+                'template', 'regex: ^{class_name}$ ^{method_name}$ ^{bogus}$'),
+            'undeclared placeholder')
+
+    def test_matcher_unused_arg(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl']['args'].
+            append('unused'), 'never used')
+
+    def test_matcher_bad_result(self):
+        self._assert_invalid(
+            lambda s: s['ast.matcher']['cxx.find_class_method_decl']['result'].
+            pop('node'), 'Missing keys')
+
+    # -- rewriter schema ----------------------------------------------------
+
+    def test_rewriter_unknown_matcher_reference(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual'].__setitem__(
+                'matcher', 'cxx.ghost'), 'unknown matcher')
+
+    def test_rewriter_replace_missing_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['replace'].pop(
+                're_pattern'), 'Missing keys')
+
+    def test_rewriter_invalid_replace_regex(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['replace'].
+            __setitem__('re_pattern', '(unclosed'), 'valid regular expression')
+
+    def test_rewriter_result_node_mismatch(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual']['result'].
+            __setitem__('node', 'declaration'), 'does not match matcher')
+
+    def test_rewriter_unknown_key(self):
+        self._assert_invalid(
+            lambda s: s['ast.rewriter']['cxx.make_virtual'].update(
+                {'append': '!'}), 'Wrong keys')
+
+
+# ast-grep matcher templates used to build synthetic RewritersEval specs for
+# the engine tests below. The shipped rewriters.pyl is empty until the ops that
+# consume these land; these mirror the specs plaster will ship then, so the
+# engine can be exercised end-to-end against the real binary in the meantime.
+_METHOD_DECL_RULE = ('any:\n'
+                     '  - kind: field_declaration\n'
+                     '  - kind: declaration\n'
+                     'has:\n'
+                     '  kind: function_declarator\n'
+                     '  stopBy: end\n'
+                     '  has:\n'
+                     '    field: declarator\n'
+                     '    regex: ^{method_name}$\n'
+                     'inside:\n'
+                     '  kind: class_specifier\n'
+                     '  stopBy: end\n'
+                     '  has:\n'
+                     '    field: name\n'
+                     '    regex: ^{class_name}$\n')
+
+_PRIVATE_SECTION_RULE = ('kind: access_specifier\n'
+                         'regex: ^private$\n'
+                         'inside:\n'
+                         '  kind: class_specifier\n'
+                         '  stopBy: end\n'
+                         '  has:\n'
+                         '    field: name\n'
+                         '    regex: ^{class_name}$\n')
+
+_FINAL_RULE = ('kind: virtual_specifier\n'
+               'regex: ^final$\n'
+               'inside:\n'
+               '  kind: class_specifier\n'
+               '  has:\n'
+               '    field: name\n'
+               '    regex: ^{class_name}$\n')
+
+_SYNTHETIC_SPEC = {
+    'ast.matcher': {
+        'cxx.find_class_method_decl': {
+            'args': ['class_name', 'method_name'],
+            'template': _METHOD_DECL_RULE,
+            'result': {
+                'node': 'field_declaration'
+            },
+        },
+        'cxx.find_class_private_section': {
+            'args': ['class_name'],
+            'template': _PRIVATE_SECTION_RULE,
+            'result': {
+                'node': 'access_specifier'
+            },
+        },
+        'cxx.find_class_final': {
+            'args': ['class_name'],
+            'template': _FINAL_RULE,
+            'result': {
+                'node': 'virtual_specifier'
+            },
+        },
+    },
+    'ast.rewriter': {
+        'cxx.make_virtual': {
+            'matcher': 'cxx.find_class_method_decl',
+            'replace': {
+                're_pattern': '^',
+                'replace': 'virtual '
+            },
+            'result': {
+                'node': 'field_declaration'
+            },
+        },
+        'cxx.add_friend': {
+            'matcher': 'cxx.find_class_private_section',
+            'replace': {
+                're_pattern': '$',
+                'replace': ':\\n  friend {friend_type};'
+            },
+            'result': {
+                'node': 'access_specifier'
+            },
+        },
+        'cxx.drop_final': {
+            'matcher': 'cxx.find_class_final',
+            'replace': {
+                're_pattern': '^final$',
+                'replace': ''
+            },
+            'result': {
+                'node': 'virtual_specifier'
+            },
+        },
+    },
+}
+
+
+class RunAstGrepTest(unittest.TestCase):
+    """Integration tests for plaster.run_ast_grep (real ast-grep binary)."""
+
+    # A small C++ source. ASCII-only, so byte offsets equal character indices.
+    _SRC = 'class C {\n  void Foo();\n  void Bar();\n};\n'
+
+    def _find(self, method_name: str, source: str) -> list[plaster.AstMatch]:
+        body = _METHOD_DECL_RULE.format(class_name='C',
+                                        method_name=method_name)
+        return plaster.run_ast_grep(language='cpp',
+                                    rule_body=body,
+                                    source=source)
+
+    def test_finds_match_with_byte_offsets(self):
+        matches = self._find('Foo', self._SRC)
+        self.assertEqual(len(matches), 1)
+        # AstMatch is a byte range; the text is read back from the source.
+        raw = self._SRC.encode('utf-8')
+        m = matches[0]
+        self.assertEqual(raw[m.start:m.end], b'void Foo();')
+        self.assertEqual(m.length, len(b'void Foo();'))
+        self.assertEqual(m.end, m.start + m.length)
+
+    def test_no_match_returns_empty(self):
+        self.assertEqual(self._find('Nope', self._SRC), [])
+
+    def test_overloads_each_match(self):
+        source = 'class C {\n  void Foo();\n  void Foo(int x);\n};\n'
+        raw = source.encode('utf-8')
+        matches = self._find('Foo', source)
+        self.assertEqual([raw[m.start:m.end].decode() for m in matches],
+                         ['void Foo();', 'void Foo(int x);'])
+
+    def test_raises_on_bad_rule(self):
+        with self.assertRaises(plaster.AstGrepError):
+            plaster.run_ast_grep(language='cpp',
+                                 rule_body='kind: not_a_real_kind',
+                                 source='int x;\n')
+
+
+class AstRewriterTest(unittest.TestCase):
+    """Integration tests for plaster.AstRewriter (real ast-grep binary).
+
+    Driven with a synthetic RewritersEval built from `_SYNTHETIC_SPEC`, since
+    the shipped rewriters.pyl carries no ops yet.
+    """
+
+    _SRC = 'class C {\n  void Foo();\n  void Bar();\n};\n'
+
+    def _rewriter(self, source: str = _SRC) -> plaster.AstRewriter:
+        return plaster.AstRewriter(
+            plaster.RewritersEval(repr(_SYNTHETIC_SPEC)), source)
+
+    def test_make_virtual_single(self):
+        rewriter = self._rewriter()
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        self.assertEqual(count, 1)
+        self.assertEqual(
+            rewriter.content,
+            'class C {\n  virtual void Foo();\n  void Bar();\n};\n')
+
+    def test_make_virtual_destructor(self):
+        # Destructors parse as `declaration` with a `destructor_name`, not the
+        # `field_declaration`/`field_identifier` of a regular method.
+        rewriter = self._rewriter('class C {\n public:\n  ~C();\n};\n')
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': '~C'
+        })
+        self.assertEqual(count, 1)
+        self.assertEqual(rewriter.content,
+                         'class C {\n public:\n  virtual ~C();\n};\n')
+
+    def test_make_virtual_overloads_count_each(self):
+        rewriter = self._rewriter(
+            'class C {\n  void Foo();\n  void Foo(int x);\n};\n')
+        count = rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        self.assertEqual(count, 2)
+        # Splicing from the end keeps the earlier overload's offset valid.
+        self.assertEqual(
+            rewriter.content, 'class C {\n  virtual void Foo();\n'
+            '  virtual void Foo(int x);\n};\n')
+
+    def test_no_match_leaves_content_unchanged(self):
+        rewriter = self._rewriter()
+        self.assertEqual(
+            rewriter.apply('cxx.make_virtual', {
+                'class_name': 'C',
+                'method_name': 'Nope'
+            }), 0)
+        self.assertEqual(rewriter.content, self._SRC)
+
+    def test_content_accumulates_across_calls(self):
+        rewriter = self._rewriter()
+        rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Foo'
+        })
+        rewriter.apply('cxx.make_virtual', {
+            'class_name': 'C',
+            'method_name': 'Bar'
+        })
+        self.assertEqual(
+            rewriter.content,
+            'class C {\n  virtual void Foo();\n  virtual void Bar();\n};\n')
+
+    def test_add_friend_inserts_after_private_colon(self):
+        rewriter = self._rewriter(
+            'class C {\n public:\n  void Foo();\n private:\n  int x_;\n};\n')
+        count = rewriter.apply('cxx.add_friend', {
+            'class_name': 'C',
+            'friend_type': 'class BraveC'
+        },
+                               consume_after=':')
+        self.assertEqual(count, 1)
+        # The friend lands as the first private line; the `:` is not duplicated.
+        self.assertEqual(
+            rewriter.content, 'class C {\n public:\n  void Foo();\n'
+            ' private:\n  friend class BraveC;\n  int x_;\n};\n')
+
+    def test_add_friend_no_private_section(self):
+        rewriter = self._rewriter('class C {\n public:\n  void Foo();\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.add_friend', {
+                'class_name': 'C',
+                'friend_type': 'class BraveC'
+            },
+                           consume_after=':'), 0)
+        self.assertEqual(rewriter.content,
+                         'class C {\n public:\n  void Foo();\n};\n')
+
+    def test_drop_final_with_base(self):
+        # The class `final` is dropped (and the space before it); a method's
+        # trailing `final` is left untouched.
+        rewriter = self._rewriter(
+            'class C final : public Base {\n  void f() final;\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
+                           consume_before=' '), 1)
+        self.assertEqual(rewriter.content,
+                         'class C : public Base {\n  void f() final;\n};\n')
+
+    def test_drop_final_no_base(self):
+        rewriter = self._rewriter('class C final {\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
+                           consume_before=' '), 1)
+        self.assertEqual(rewriter.content, 'class C {\n};\n')
+
+    def test_drop_final_absent(self):
+        rewriter = self._rewriter('class C {\n};\n')
+        self.assertEqual(
+            rewriter.apply('cxx.drop_final', {'class_name': 'C'},
+                           consume_before=' '), 0)
+        self.assertEqual(rewriter.content, 'class C {\n};\n')
+
+
+class HelpTest(unittest.TestCase):
+    """gn-style `plaster --help [topic]` overview, categories and topic docs.
+
+    Every case drives the real `Help` action through a parser wired like `main`
+    (`--help [topic]`), so parsing and rendering are exercised together.
+    """
+
+    def _parse(self, *topic: str) -> tuple[int, str]:
+        """Parse `--help [topic]`, returning its exit code and stdout.
+
+        The parser is wired with the global options and the `Help` action the
+        same way `main` does, plus a fake command registry.
+        """
+        apply_parser = argparse.ArgumentParser(prog='plaster apply')
+        apply_parser.add_argument('--all', action='store_true')
+        commands = {
+            'apply': (apply_parser, 'Apply all plaster files.'),
+            'check': (argparse.ArgumentParser(prog='plaster check'), 'Check.'),
+        }
+        parser = argparse.ArgumentParser(add_help=False)
+        parser.add_argument('--verbose',
+                            action='store_true',
+                            help='Enable verbose logging')
+        parser.add_argument('-h',
+                            '--help',
+                            action=plaster.Help,
+                            commands=commands)
+
+        buf = io.StringIO()
+        # `Help` prints via rich `console` and, for command topics, via
+        # `argparse.print_help()`; both land on stdout. It always exits.
+        with contextlib.redirect_stdout(buf):
+            with self.assertRaises(SystemExit) as ctx:
+                parser.parse_args(['--help', *topic])
+        return ctx.exception.code, buf.getvalue()
+
+    def test_overview_lists_usage_categories_and_options(self):
+        code, out = self._parse()
+        self.assertEqual(code, 0)
+        self.assertIn('usage:', out)
+        self.assertIn('Commands', out)
+        self.assertIn('apply', out)
+        self.assertIn('Rewriters', out)
+        self.assertIn('regex', out)
+        # The global options block must survive our custom overview.
+        self.assertIn('Options', out)
+        self.assertIn('--verbose', out)
+        self.assertIn('--help', out)
+
+    def test_commands_category_prints_only_commands(self):
+        code, out = self._parse('commands')
+        self.assertEqual(code, 0)
+        self.assertIn('apply', out)
+        self.assertNotIn('Rewriters', out)
+
+    def test_rewriters_category_prints_only_rewriters(self):
+        code, out = self._parse('rewriters')
+        self.assertEqual(code, 0)
+        self.assertIn('regex', out)
+        self.assertNotIn('Commands', out)
+
+    def test_rewriter_topic_prints_its_docs(self):
+        code, out = self._parse('regex')
+        self.assertEqual(code, 0)
+        self.assertIn('re.subn', out)
+        self.assertIn('re_flags', out)
+
+    def test_command_topic_prints_argparse_help(self):
+        code, out = self._parse('apply')
+        self.assertEqual(code, 0)
+        self.assertIn('usage', out)
+        self.assertIn('--all', out)
+
+    def test_unknown_topic_is_an_error(self):
+        code, out = self._parse('does-not-exist')
+        self.assertEqual(code, 1)
+        self.assertIn('Unknown help topic', out)
 
 
 class PatchinfoTest(unittest.TestCase):

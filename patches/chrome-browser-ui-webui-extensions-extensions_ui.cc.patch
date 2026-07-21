@@ -1,12 +1,30 @@
 diff --git a/chrome/browser/ui/webui/extensions/extensions_ui.cc b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-index 59abbb0f267577e65393d94c42cb05fb43d60fb4..91bba9cd19a94b5c9b1369e36d684b89216be3ae 100644
+index b8bec16f630e5bcf46b5897093016b1e7ae439ab..31ec2094c0ae0c6dc95d59166747475628f31004 100644
 --- a/chrome/browser/ui/webui/extensions/extensions_ui.cc
 +++ b/chrome/browser/ui/webui/extensions/extensions_ui.cc
-@@ -512,6 +512,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+@@ -121,7 +121,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+       {"appsTitle", IDS_EXTENSIONS_APPS_TITLE},
+       {"noExtensionsOrApps", IDS_EXTENSIONS_NO_INSTALLED_ITEMS},
+       {"noDescription", IDS_EXTENSIONS_NO_DESCRIPTION},
+-      {"viewInStore", IDS_EXTENSIONS_ITEM_CHROME_WEB_STORE},
++      {"viewInStore", IDS_EXTENSIONS_BRAVE_ITEM_CHROME_WEB_STORE},
+       {"extensionWebsite", IDS_EXTENSIONS_ITEM_EXTENSION_WEBSITE},
+       {"dropToInstall", IDS_EXTENSIONS_INSTALL_DROP_TARGET},
+       {"editSitePermissionsAllowAllExtensions",
+@@ -246,7 +246,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
+       {"itemSourcePolicy", IDS_EXTENSIONS_ITEM_SOURCE_POLICY},
+       {"itemSourceSideloaded", IDS_EXTENSIONS_ITEM_SOURCE_SIDELOADED},
+       {"itemSourceUnpacked", IDS_EXTENSIONS_ITEM_SOURCE_UNPACKED},
+-      {"itemSourceWebstore", IDS_EXTENSIONS_ITEM_SOURCE_WEBSTORE},
++      {"itemSourceWebstore", IDS_EXTENSIONS_BRAVE_ITEM_SOURCE_WEBSTORE},
+       {"itemVersion", IDS_EXTENSIONS_ITEM_VERSION},
+       {"itemReloaded", IDS_EXTENSIONS_ITEM_RELOADED},
+       {"itemReloading", IDS_EXTENSIONS_ITEM_RELOADING},
+@@ -511,6 +511,7 @@ content::WebUIDataSource* CreateAndAddExtensionsSource(Profile* profile,
                                              ? "webui-refresh-2026"
                                              : "");
  
-+  BRAVE_CREATE_EXTENSIONS_SOURCE
++  BraveAddExtensionsResources(source, profile);
    return source;
  }
  

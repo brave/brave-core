@@ -24,6 +24,7 @@ source_set("history") {
     ":mojom",
     "//chrome/browser:browser_public_dependencies",
     "//chrome/browser/ui",
+    "//chrome/browser/ui/webui/history",
     "//content/public/browser",
     "//mojo/public/cpp/bindings",
     "//ui/webui/resources/cr_components/help_bubble:mojo_bindings",

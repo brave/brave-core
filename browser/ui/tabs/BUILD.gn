@@ -28,7 +28,7 @@ source_set("tabs_public") {
 
 if (!is_android) {
   source_set("impl") {
-    visibility = [ "//chrome/browser" ]
+    visibility = [ "//brave/browser:core" ]
 
     sources = [ "brave_tab_features.cc" ]
 
@@ -38,6 +38,8 @@ if (!is_android) {
       "//brave/browser/ui/views/page_action",
       "//chrome/browser/content_settings:content_settings_factory",
       "//chrome/browser/profiles",
+      "//chrome/browser/ui:ui_features",
+      "//chrome/browser/ui/page_action",
       "//chrome/browser/ui/side_panel:side_panel_views_dependent",
       "//chrome/browser/ui/tabs:impl",
     ]

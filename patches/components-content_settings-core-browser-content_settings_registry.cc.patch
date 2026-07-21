@@ -1,5 +1,5 @@
 diff --git a/components/content_settings/core/browser/content_settings_registry.cc b/components/content_settings/core/browser/content_settings_registry.cc
-index 950cfa5d881beae8b69a6dab48d56191742505f5..e1e7541046d8cb32bb7e360e96781972f7b8fc38 100644
+index fba7f48fed6b7c7ea53910d66d93d01bcc99fa63..ca91a203b3d6d39e52524e7173a44b1095207a3b 100644
 --- a/components/content_settings/core/browser/content_settings_registry.cc
 +++ b/components/content_settings/core/browser/content_settings_registry.cc
 @@ -119,6 +119,7 @@ void ContentSettingsRegistry::Init() {
@@ -10,10 +10,10 @@ index 950cfa5d881beae8b69a6dab48d56191742505f5..e1e7541046d8cb32bb7e360e96781972
  #if BUILDFLAG(USE_BLINK)
                 | WebsiteSettingsRegistry::PLATFORM_IOS
  #endif
-@@ -843,6 +844,7 @@ void ContentSettingsRegistry::Init() {
+@@ -852,6 +853,7 @@ void ContentSettingsRegistry::Init() {
             WebsiteSettingsRegistry::DESKTOP,
-            ContentSettingsInfo::DONT_INHERIT_IN_INCOGNITO,
-            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_ORIGINS_ONLY);
+            ContentSettingsInfo::INHERIT_IN_INCOGNITO,
+            PermissionSettingsInfo::EXCEPTIONS_ON_SECURE_AND_INSECURE_ORIGINS);
 +  BRAVE_INIT
  }
  

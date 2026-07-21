@@ -12,7 +12,6 @@
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/sharing_hub/sharing_hub_features.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/views/page_action/page_action_icon_params.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -34,15 +33,8 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
     return params;
   }
 
-  if (sharing_hub::HasPageAction(params.browser->profile(),
-                                 params.browser->is_type_popup())) {
-    params.types_enabled.push_back(PageActionIconType::kSharingHub);
-  }
-
 #if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
-  params.types_enabled.insert(
-      std::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
-      brave::kWaybackMachineActionIconType);
+  params.types_enabled.push_back(brave::kWaybackMachineActionIconType);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -51,11 +43,7 @@ PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   if (params.browser && params.browser->is_type_normal() &&
       !params.browser->profile()->IsOffTheRecord() &&
       playlist::IsPlaylistAllowed(params.browser->profile()->GetPrefs())) {
-    // Insert Playlist action before sharing hub or at the end of the vector.
-    params.types_enabled.insert(
-        std::ranges::find(params.types_enabled,
-                          PageActionIconType::kSharingHub),
-        brave::kPlaylistPageActionIconType);
+    params.types_enabled.push_back(brave::kPlaylistPageActionIconType);
   }
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 

@@ -8,9 +8,10 @@
 
 #include <memory>
 
-#include "base/containers/id_map.h"
+#include "base/containers/flat_map.h"
+#include "base/functional/callback_forward.h"
+#include "base/unguessable_token.h"
 #include "brave/browser/screenshot/print_preview_extractor.h"
-#include "components/printing/common/print.mojom.h"
 #include "printing/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_PRINT_PREVIEW));
@@ -22,9 +23,7 @@ namespace screenshot {
 // Deps to callbacks are injected from the caller to avoid circular dependencies
 // between this module and the `chrome/browser/ui/` target.
 std::unique_ptr<PrintPreviewExtractor> CreatePrintPreviewExtractor(
-    base::RepeatingCallback<base::IDMap<printing::mojom::PrintPreviewUI*>&()>
-        id_map_callback,
-    base::RepeatingCallback<base::flat_map<int, int>&()>
+    base::RepeatingCallback<base::flat_map<base::UnguessableToken, int>&()>
         request_id_map_callback);
 
 }  // namespace screenshot

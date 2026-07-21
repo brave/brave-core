@@ -1,10 +1,10 @@
 diff --git a/components/autofill/core/browser/ui/autofill_external_delegate.cc b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-index e3aef8d8975f3ea4c9e210cf5aea08670c840ea4..22cadd2b9fb595fad87c8463fcb0dd431b63a7d8 100644
+index d06420ac37bd229c54c592fd6bdfe1489882e3fe..ff23c1a43bdd0492da671526ce8f7629253230f9 100644
 --- a/components/autofill/core/browser/ui/autofill_external_delegate.cc
 +++ b/components/autofill/core/browser/ui/autofill_external_delegate.cc
-@@ -418,6 +418,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
+@@ -453,6 +453,7 @@ void AutofillExternalDelegate::AttemptToDisplayAutofillSuggestions(
    // updated to match.
-   InsertDataListValues(suggestions);
+   InsertDataListValues(last_query_.field_datalist_options, suggestions);
  
 +  BRAVE_AUTOFILL_EXTERNAL_DELEGATE_ATTEMPT_TO_DISPLAY_AUTOFILL_SUGGESTIONS
    // TODO(crbug.com/362630793): Try to eliminate this state. The controller

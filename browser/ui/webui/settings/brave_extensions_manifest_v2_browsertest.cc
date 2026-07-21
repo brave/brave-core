@@ -13,6 +13,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/extensions/chrome_content_verifier_delegate.h"
 #include "chrome/browser/extensions/extension_service.h"
+#include "chrome/browser/extensions/scoped_test_mv2_enabler.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -328,6 +329,7 @@ IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
 IN_PROC_BROWSER_TEST_F(BraveExtensionsManifestV2InstallerBrowserTest,
                        ExtensionWorks) {
   base::ScopedAllowBlockingForTesting allow_blocking;
+  extensions::ScopedTestMV2Enabler mv2_enabler;
 
   constexpr char kTestExtension[] =
       "eedcldngdlcmkjdcdlffmjhpbfdcmkce";  // test/data/manifest_v2

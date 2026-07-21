@@ -77,7 +77,6 @@ public class BraveClassAdapter {
         chain = new BraveIdentityDiscControllerClassAdapter(chain);
         chain = new BraveIncognitoNewTabPageClassAdapter(chain);
         chain = new BraveIncognitoTabSwitcherPaneClassAdapter(chain);
-        chain = new BraveInfoBarContainerViewClassAdapter(chain);
         chain = new BraveIntentHandlerClassAdapter(chain);
         chain = new BraveLauncherActivityClassAdapter(chain);
         chain = new BraveLaunchIntentDispatcherClassAdapter(chain);
@@ -103,6 +102,7 @@ public class BraveClassAdapter {
         chain = new BraveNewTabPageCoordinatorClassAdapter(chain);
         chain = new BraveNewTabPageLayoutClassAdapter(chain);
         chain = new BraveNtpCustomizationUtilsClassAdapter(chain);
+        chain = new BraveNtpCustomizationPromoManagerClassAdapter(chain);
         chain = new BraveNotificationBuilderClassAdapter(chain);
         chain = new BraveNotificationManagerProxyImplClassAdapter(chain);
         chain = new BraveNotificationPermissionRationaleDialogControllerClassAdapter(chain);

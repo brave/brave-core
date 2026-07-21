@@ -43,6 +43,8 @@
 #define RecentlyClosedWindowWithSplitAndRegularTabs \
   DISABLED_RecentlyClosedWindowWithSplitAndRegularTabs
 #define RecentlyClosedGroupWithSplit DISABLED_RecentlyClosedGroupWithSplit
+#define SavingBrowserHistoryDisabledPolicyChangeMidSession \
+  DISABLED_SavingBrowserHistoryDisabledPolicyChangeMidSession
 
 // Disabling these tests because upstream code won't execute
 // IDC_SHOW_HISTORY_CLUSTERS_SIDE_PANEL command when history clusters aren't
@@ -64,6 +66,7 @@
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_TEST
 
 #undef LogMenuMetricsForShowGroupedHistory
+#undef SavingBrowserHistoryDisabledPolicyChangeMidSession
 #undef RecentlyClosedGroupWithSplit
 #undef RecentlyClosedWindowWithSplitAndRegularTabs
 #undef RecentlyClosedWindowWithGroupsAndSplits

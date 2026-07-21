@@ -51,6 +51,7 @@ import org.chromium.content_public.browser.MediaSession;
 import org.chromium.content_public.browser.MediaSessionObserver;
 import org.chromium.content_public.browser.WebContents;
 import org.chromium.content_public.browser.WebContentsObserver;
+import org.chromium.media_session.mojom.MediaSession.SuspendType;
 
 import java.util.concurrent.TimeUnit;
 
@@ -416,7 +417,7 @@ public class BraveYouTubePictureInPictureControllerTest {
 
         assertTrue(controller.onEnterPictureInPictureMode());
 
-        verify(mMediaSession).resume();
+        verify(mMediaSession).resume(SuspendType.SYSTEM);
         verify(mBraveActivity, never()).getCurrentWebContents();
     }
 

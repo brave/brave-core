@@ -18,8 +18,8 @@
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/browser_thread.h"
@@ -146,12 +146,10 @@ BraveNewsBubbleView::BraveNewsBubbleView(views::View* action_view,
 BraveNewsBubbleView::~BraveNewsBubbleView() = default;
 
 void BraveNewsBubbleView::OpenManageFeeds() {
-  auto* browser = chrome::FindBrowserWithTab(contents_);
-  browser->OpenURL(
-      {GURL("brave://newtab/?openSettings=BraveNews"), content::Referrer(),
-       WindowOpenDisposition::NEW_FOREGROUND_TAB, ui::PAGE_TRANSITION_LINK,
-       false},
-      /*navigation_handle_callback=*/{});
+  auto* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(contents_);
+  browser->OpenGURL(GURL("brave://newtab/?openSettings=BraveNews"),
+                    WindowOpenDisposition::NEW_FOREGROUND_TAB);
 }
 
 void BraveNewsBubbleView::OnWidgetDestroyed(views::Widget*) {

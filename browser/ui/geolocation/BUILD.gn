@@ -14,6 +14,7 @@ source_set("browser_tests") {
     "//base",
     "//brave/components/constants",
     "//chrome/browser",
+    "//chrome/browser/ssl:cert_verifier_test_support",
     "//chrome/browser/ui",
     "//chrome/common:constants",
     "//chrome/test:test_support_ui",

@@ -1,12 +1,12 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index be64728ae58e4238d02c7e5d70dd853d4c395e19..91148d96ed05259a92935b4389eb66aaf49ce373 100644
+index 52071acc017745da2f1e713e3be85ce3a4dddc6d..fb20198d601cbc005dfab2e8fdd82f9ff52f5f31 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -95,6 +95,7 @@ class AvatarToolbarButton : public ToolbarButton,
+@@ -96,6 +96,7 @@ class AvatarToolbarButton : public ToolbarButton,
    void OnBoundsChanged(const gfx::Rect& previous_bounds) override;
  
   private:
-+  BRAVE_AVATAR_BUTTON_H
++  friend class BraveAvatarToolbarButton;
+   // Used by tests to access the private state_manager_ for verification.
+   friend class ::AvatarToolbarButtonTestAccessor;
    FRIEND_TEST_ALL_PREFIXES(AvatarToolbarButtonTest,
-                            HighlightMeetsMinimumContrast);
- 

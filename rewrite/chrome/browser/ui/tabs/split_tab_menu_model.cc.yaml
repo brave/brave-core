@@ -1,0 +1,36 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Handle Brave's kToggleLinkState command in the metrics suffix switch.
+    re_pattern: '(GetMetricsSuffixForCommand\(.+?switch \(command_id\) \{\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1    case SplitTabMenuModel::CommandId::kToggleLinkState:
+            return "ToggleLinkState";
+  - description: |
+      Handle Brave's kToggleLinkState command in the execute switch.
+    re_pattern: '(ExecuteCommand\(.+?switch \(split_command_id\) \{\n)'
+    re_flags: [DOTALL]
+    replace: |
+      \1    case CommandId::kToggleLinkState: {
+            split_tab_data->set_linked(!split_tab_data->linked());
+            break;
+          }
+  - description: |
+      Rename the file-local GetCommandIdEnum definition to _ChromiumImpl.
+
+      This allows us to expose this internal linkage function as
+      `SplitTabMenuModel::GetCommandIdEnum`.
+    re_pattern: 'GetCommandIdEnum(\([^;]+?\) \{)'
+    replace: 'GetCommandIdEnum_ChromiumImpl\1'
+  - description: |
+      Rename the file-local GetCommandIdInt definition to _ChromiumImpl.
+
+      This allows us to expose this internal linkage function as
+      `SplitTabMenuModel::GetCommandIdInt`.
+    re_pattern: 'GetCommandIdInt(\([^;]+?\) \{)'
+    replace: 'GetCommandIdInt_ChromiumImpl\1'

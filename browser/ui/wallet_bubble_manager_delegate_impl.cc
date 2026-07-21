@@ -18,9 +18,10 @@
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/browser.h"
-#include "chrome/browser/ui/browser_finder.h"
+#include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
 #include "chrome/browser/ui/views/bubble/webui_bubble_manager.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
 #include "components/grit/brave_components_strings.h"
 #include "content/public/browser/web_contents.h"
@@ -88,20 +89,23 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
                                  public views::ViewObserver {
  public:
   WalletWebUIBubbleManager(views::View* anchor_view,
-                           Browser* browser,
+                           BrowserWindowInterface* browser,
                            const GURL& webui_url,
                            int task_manager_string_id,
                            bool force_load_on_create)
-      : WebUIBubbleManagerImpl(anchor_view,
-                               browser,
+      : WebUIBubbleManagerImpl(browser,
                                webui_url,
                                task_manager_string_id,
                                force_load_on_create),
         browser_(browser),
         anchor_view_(anchor_view) {}
 
+  bool ShowBubble() {
+    return WebUIBubbleManagerImpl::ShowBubble(anchor_view_.get());
+  }
+
   base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
-      const std::optional<gfx::Rect>& anchor,
+      Anchor anchor,
       views::BubbleBorder::Arrow arrow) override {
     // This is prevent duplicate logic of cached_contents_wrapper creation
     // so we close WebUIBubbleDialogView and re-create bubble with
@@ -114,8 +118,12 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     auto* contents_wrapper = cached_contents_wrapper();
     CHECK(contents_wrapper);
+    std::optional<gfx::Rect> anchor_rect;
+    if (std::holds_alternative<gfx::Rect>(anchor)) {
+      anchor_rect = std::get<gfx::Rect>(anchor);
+    }
     auto bubble_view = std::make_unique<WalletWebUIBubbleDialogView>(
-        anchor_view_, contents_wrapper, anchor, arrow);
+        anchor_view_, contents_wrapper, anchor_rect, arrow);
     bubble_view_ = bubble_view->GetWeakPtr();
     auto* widget =
         views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
@@ -136,12 +144,12 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel || !browser_ || !browser_->AsWeakPtr()) {
+    if (!wallet_panel || !browser_) {
       return bubble_view_;
     }
-    // Set Browser delegate to redirect popups to be opened as Popup window
-    contents_wrapper->SetWebContentsAddNewContentsDelegate(
-        browser_->AsWeakPtr());
+    // Redirect popups opened from the panel to open as separate popup windows.
+    contents_wrapper->SetWebContentsAddNewContentsBrowser(
+        browser_->GetWeakPtr());
 
     return bubble_view_;
   }
@@ -162,7 +170,7 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
   }
 
  private:
-  const raw_ptr<Browser> browser_;
+  const raw_ptr<BrowserWindowInterface> browser_;
   const raw_ptr<views::View> anchor_view_;
   base::WeakPtr<WebUIBubbleDialogView> bubble_view_ = nullptr;
   base::WeakPtrFactory<WalletWebUIBubbleManager> weak_factory_{this};
@@ -184,15 +192,18 @@ WalletBubbleManagerDelegateImpl::WalletBubbleManagerDelegateImpl(
     content::WebContents* web_contents,
     const GURL& webui_url)
     : web_contents_(web_contents) {
-  Browser* browser = chrome::FindBrowserWithTab(web_contents_);
+  BrowserWindowInterface* browser =
+      GlobalBrowserCollection::GetInstance()->FindBrowserWithTab(web_contents_);
   DCHECK(browser);
 
   views::View* anchor_view;
-  if (browser->is_type_normal()) {
-    anchor_view = static_cast<BraveBrowserView*>(browser->window())
+  if (browser->GetType() == BrowserWindowInterface::Type::TYPE_NORMAL) {
+    anchor_view = static_cast<BraveBrowserView*>(
+                      BrowserView::GetBrowserViewForBrowser(browser))
                       ->GetWalletButtonAnchorView();
   } else {
-    anchor_view = static_cast<BrowserView*>(browser->window())->top_container();
+    anchor_view =
+        BrowserView::GetBrowserViewForBrowser(browser)->top_container();
   }
 
   DCHECK(anchor_view);

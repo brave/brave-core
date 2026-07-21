@@ -87,7 +87,6 @@ specific_include_rules = {
     "+components/passage_embeddings/core/passage_embeddings_features.h",
     "+components/personal_context/core/personal_context_features.h",
     "+components/skills/features.h",
-    "+components/variations/net/omnibox_autofocus_http_headers.h",
     "+extensions/common/extension_features.h",
     "+gpu/config/gpu_finch_features.h",
     "+net/base/features.h",

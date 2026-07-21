@@ -1,5 +1,6 @@
 use super::*;
 use crate::parser::state_machine::StateMachineActions;
+use crate::parser::ActionError;
 
 use NonTagContentTokenOutline::*;
 use TagTokenOutline::{EndTag, StartTag};
@@ -16,19 +17,23 @@ macro_rules! get_token_part_range {
     };
 }
 
+impl<S: LexemeSink> Lexer<S> {
+    fn emit_eof(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
+        let lexeme = self.create_lexeme_with_raw_exclusive(
+            context.previously_consumed_byte_count,
+            input,
+            Some(Eof),
+        );
+
+        self.emit_lexeme(context, &lexeme)
+    }
+}
+
 impl<S: LexemeSink> StateMachineActions for Lexer<S> {
     type Context = ParserContext<S>;
 
     impl_common_sm_actions!();
 
-    #[inline]
-    fn emit_eof(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
-        let lexeme = self.create_lexeme_with_raw_exclusive(input, Some(Eof));
-
-        self.emit_lexeme(context, &lexeme)
-    }
-
-    #[inline]
     fn emit_text(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
         if self.pos() > self.lexeme_start {
             // NOTE: unlike any other tokens (except EOF), text tokens don't have
@@ -36,8 +41,11 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
             // representation of text token content is the raw slice.
             // Also, we always emit text if we encounter some other bounded
             // lexical structure and, thus, we use exclusive range for the raw slice.
-            let lexeme =
-                self.create_lexeme_with_raw_exclusive(input, Some(Text(self.last_text_type)));
+            let lexeme = self.create_lexeme_with_raw_exclusive(
+                context.previously_consumed_byte_count,
+                input,
+                Some(Text(self.last_text_type)),
+            );
 
             self.emit_lexeme(context, &lexeme)?;
         }
@@ -45,26 +53,38 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
         Ok(())
     }
 
-    #[inline]
+    #[inline(never)]
+    fn emit_text_and_eof(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
+        self.emit_text(context, input)?;
+        self.emit_eof(context, input)
+    }
+
+    #[inline(never)]
     fn emit_current_token(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
         let token = self.current_non_tag_content_token.take();
-        let lexeme = self.create_lexeme_with_raw_inclusive(input, token);
+        let lexeme = self.create_lexeme_with_raw_inclusive(
+            context.previously_consumed_byte_count,
+            input,
+            token,
+        );
 
         self.emit_lexeme(context, &lexeme)
     }
 
-    #[inline]
+    #[inline(never)]
     fn emit_tag(&mut self, context: &mut ParserContext<S>, input: &[u8]) -> ActionResult {
         let token = self
             .current_tag_token
             .take()
-            .expect("Tag token should exist at this point");
+            .ok_or_else(|| ActionError::internal("Tag token should exist at this point"))?;
 
-        let feedback = self
-            .try_get_tree_builder_feedback(context, &token)
-            .map_err(ActionError::from)?;
+        let feedback = self.try_get_tree_builder_feedback(context, &token)?;
 
-        let mut lexeme = self.create_lexeme_with_raw_inclusive(input, token);
+        let mut lexeme = self.create_lexeme_with_raw_inclusive(
+            context.previously_consumed_byte_count,
+            input,
+            token,
+        );
 
         // NOTE: exit from any non-initial text parsing mode always happens on tag emission
         // (except for CDATA, but there is a special action to take care of it).
@@ -84,10 +104,7 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
             *ns = context.tree_builder_simulator.current_ns();
         }
 
-        match self
-            .emit_tag_lexeme(context, &lexeme)
-            .map_err(ActionError::RewritingError)?
-        {
+        match self.emit_tag_lexeme(context, &lexeme)? {
             ParserDirective::Lex => Ok(()),
             ParserDirective::WherePossibleScanForTagsOnly => self.change_parser_directive(
                 self.lexeme_start,
@@ -97,38 +114,51 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
         }
     }
 
-    #[inline]
+    #[inline(never)]
     fn emit_current_token_and_eof(
         &mut self,
         context: &mut ParserContext<S>,
         input: &[u8],
     ) -> ActionResult {
         let token = self.current_non_tag_content_token.take();
-        let lexeme = self.create_lexeme_with_raw_exclusive(input, token);
+        let lexeme = self.create_lexeme_with_raw_exclusive(
+            context.previously_consumed_byte_count,
+            input,
+            token,
+        );
 
         self.emit_lexeme(context, &lexeme)?;
         self.emit_eof(context, input)
     }
 
-    #[inline]
+    /// Emits `<[CDATA[` and such.
+    #[inline(never)]
     fn emit_raw_without_token(
         &mut self,
         context: &mut ParserContext<S>,
         input: &[u8],
     ) -> ActionResult {
-        let lexeme = self.create_lexeme_with_raw_inclusive(input, None);
+        let lexeme = self.create_lexeme_with_raw_inclusive(
+            context.previously_consumed_byte_count,
+            input,
+            None,
+        );
 
         self.emit_lexeme(context, &lexeme)
     }
 
-    #[inline]
+    #[inline(never)]
     fn emit_raw_without_token_and_eof(
         &mut self,
         context: &mut ParserContext<S>,
         input: &[u8],
     ) -> ActionResult {
         // NOTE: since we are at EOF we use exclusive range for token's raw.
-        let lexeme = self.create_lexeme_with_raw_exclusive(input, None);
+        let lexeme = self.create_lexeme_with_raw_exclusive(
+            context.previously_consumed_byte_count,
+            input,
+            None,
+        );
 
         self.emit_lexeme(context, &lexeme)?;
         self.emit_eof(context, input)
@@ -153,14 +183,14 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
         });
     }
 
-    #[inline]
+    #[cold]
     fn create_doctype(&mut self, _context: &mut ParserContext<S>, _input: &[u8]) {
-        self.current_non_tag_content_token = Some(Doctype {
+        self.current_non_tag_content_token = Some(Doctype(Box::new(DoctypeTokenOutline {
             name: None,
             public_id: None,
             system_id: None,
             force_quirks: false,
-        });
+        })));
     }
 
     #[inline]
@@ -194,39 +224,29 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
 
     #[inline]
     fn set_force_quirks(&mut self, _context: &mut ParserContext<S>, _input: &[u8]) {
-        if let Some(Doctype {
-            ref mut force_quirks,
-            ..
-        }) = self.current_non_tag_content_token
-        {
-            *force_quirks = true;
+        if let Some(Doctype(doctype)) = &mut self.current_non_tag_content_token {
+            doctype.force_quirks = true;
         }
     }
 
     #[inline]
     fn finish_doctype_name(&mut self, _context: &mut ParserContext<S>, _input: &[u8]) {
-        if let Some(Doctype { ref mut name, .. }) = self.current_non_tag_content_token {
-            *name = Some(get_token_part_range!(self));
+        if let Some(Doctype(doctype)) = &mut self.current_non_tag_content_token {
+            doctype.name = Some(get_token_part_range!(self));
         }
     }
 
     #[inline]
     fn finish_doctype_public_id(&mut self, _context: &mut ParserContext<S>, _input: &[u8]) {
-        if let Some(Doctype {
-            ref mut public_id, ..
-        }) = self.current_non_tag_content_token
-        {
-            *public_id = Some(get_token_part_range!(self));
+        if let Some(Doctype(doctype)) = &mut self.current_non_tag_content_token {
+            doctype.public_id = Some(get_token_part_range!(self));
         }
     }
 
     #[inline]
     fn finish_doctype_system_id(&mut self, _context: &mut ParserContext<S>, _input: &[u8]) {
-        if let Some(Doctype {
-            ref mut system_id, ..
-        }) = self.current_non_tag_content_token
-        {
-            *system_id = Some(get_token_part_range!(self));
+        if let Some(Doctype(doctype)) = &mut self.current_non_tag_content_token {
+            doctype.system_id = Some(get_token_part_range!(self));
         }
     }
 
@@ -236,7 +256,7 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
             Some(StartTag { ref mut name, .. } | EndTag { ref mut name, .. }) => {
                 *name = get_token_part_range!(self);
             }
-            _ => unreachable!("Tag should exist at this point"),
+            _ => return Err(ActionError::internal("Tag should exist at this point")),
         }
 
         Ok(())
@@ -254,7 +274,7 @@ impl<S: LexemeSink> StateMachineActions for Lexer<S> {
                         ref mut name_hash, ..
                     },
                 ) => name_hash.update(ch),
-                _ => unreachable!("Tag should exist at this point"),
+                _ => debug_assert!(false, "Tag should exist at this point"),
             }
         }
     }
