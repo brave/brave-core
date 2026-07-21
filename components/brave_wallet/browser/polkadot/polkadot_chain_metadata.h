@@ -8,8 +8,8 @@
 
 #include <stdint.h>
 
+#include <array>
 #include <optional>
-#include <string_view>
 
 #include "base/containers/span.h"
 #include "brave/components/brave_wallet/browser/internal/polkadot_extrinsic.rs.h"
