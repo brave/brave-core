@@ -261,13 +261,20 @@ fn append_extra(
             return Err(Error::UnknownSignedExtension);
         };
 
+        use parity_scale_codec::Encode;
+
+        // None encodes to the same underlying 0x00 value, no matter what the value of
+        // Option<T> is, so None::<()> is sufficient for our purposes.
+
         match extension {
             SignedExtension::AuthorizeValueTransfer
             | SignedExtension::AsPgas
             | SignedExtension::AsRingAlias
-            | SignedExtension::AsDotnsGateway
-            | SignedExtension::RestrictOrigins => {
-                buf.extend_from_slice(&[0x00]);
+            | SignedExtension::AsDotnsGateway => {
+                None::<()>.encode_to(buf);
+            }
+            SignedExtension::RestrictOrigins => {
+                false.encode_to(buf);
             }
             SignedExtension::CheckMortality => {
                 buf.extend_from_slice(&scale_encode_mortality(block_number, PERIOD));
@@ -276,13 +283,15 @@ fn append_extra(
                 Compact(sender_nonce).encode_to(buf);
             }
             SignedExtension::ChargeAssetTxPayment => {
-                buf.extend_from_slice(&[0x00 /* tip */, 0x00 /* asset_id */]);
+                Compact(0x00_u128).encode_to(buf); /* tip */
+                None::<()>.encode_to(buf) /* asset_id */
             }
             SignedExtension::ChargeTransactionPayment => {
-                buf.extend_from_slice(&[0x00 /* tip */]);
+                Compact(0x00_u128).encode_to(buf); /* tip */
             }
             SignedExtension::CheckMetadataHash => {
-                buf.extend_from_slice(&[0x00 /* mode (disable metadata hash verification) */]);
+                // Disabled is the 0'th variant of the Mode type.
+                buf.extend_from_slice(&[0x00 /* mode */]);
             }
             _ => continue,
         }
@@ -324,7 +333,8 @@ fn append_implicit(
                 buf.extend_from_slice(block_hash);
             }
             SignedExtension::CheckMetadataHash => {
-                buf.extend_from_slice(&[0x00]);
+                // Disabled is the 0'th variant of the Mode type.
+                buf.extend_from_slice(&[0x00 /* mode */]);
             }
             _ => continue,
         }
