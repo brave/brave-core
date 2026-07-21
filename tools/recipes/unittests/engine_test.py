@@ -160,8 +160,10 @@ class WorkspaceTest(unittest.TestCase):
             path = eng._instantiate_module('path', [])
             workspace = Path(tmp).resolve()
             self.assertEqual(path.workspace, workspace)
-            self.assertEqual(path.chromium_src, workspace / 'chromium/src')
-            self.assertEqual(path.brave_core, workspace / 'chromium/src/brave')
+            self.assertEqual(path.chromium_src,
+                             workspace / 'brave-browser/src')
+            self.assertEqual(path.brave_core,
+                             workspace / 'brave-browser/src/brave')
             self.assertEqual(path.out, workspace / 'out')
             self.assertEqual(Path.cwd(), workspace)
 
@@ -172,11 +174,12 @@ class WorkspaceTest(unittest.TestCase):
     def test_brave_core_ref_seeded_with_override(self):
         module = engine._Engine(
             brave_core_ref='feature/x')._instantiate_module(
-                'brave_core_shallow', [])
+                'brave_core_checkout', [])
         self.assertEqual(getattr(module, '_brave_core_ref'), 'feature/x')
 
     def test_brave_core_ref_defaults_to_master(self):
-        module = engine._Engine()._instantiate_module('brave_core_shallow', [])
+        module = engine._Engine()._instantiate_module('brave_core_checkout',
+                                                      [])
         self.assertEqual(getattr(module, '_brave_core_ref'), 'master')
 
 

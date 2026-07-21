@@ -38,7 +38,7 @@ def GenTests(api):
         'ensure with cache',
         api.env.set('MODE', 'with_cache'),
         api.path.dirs('/b/cache'),
-        api.path.files('chromium/src/chrome/VERSION'),
+        api.path.files('brave-browser/src/chrome/VERSION'),
         api.env.on_path('gclient', '/dt/gclient'),
         api.post_process(post_process.StatusSuccess),
         api.post_process(post_process.DropExpectation),

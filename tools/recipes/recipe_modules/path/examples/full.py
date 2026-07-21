@@ -27,7 +27,7 @@ def RunSteps(api):
 def GenTests(api):
     yield api.test(
         'seeded',
-        api.path.files('chromium/src/chrome/VERSION'),
+        api.path.files('brave-browser/src/chrome/VERSION'),
         api.post_process(post_process.MustRun, 'found version'),
         api.post_process(post_process.MustRun, 'out ready'),
         api.post_process(post_process.StepCommandContains, 'out ready',

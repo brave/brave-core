@@ -43,7 +43,7 @@ class RecipeApi:
         # ignore it. Defaults to `.` until the engine overrides it.
         self._workspace: Path = Path()
         # brave-core ref the checkout modules clone, seeded by the engine.
-        # `brave_core_shallow` uses it; defaults to `master` until overridden.
+        # `brave_core_checkout` uses it; defaults to `master` until overridden.
         self._brave_core_ref: str = 'master'
         # Simulation context, seeded by the engine only in test mode. `None`
         # means production: the seam modules (`path`, `env`, `platform`, `step`)

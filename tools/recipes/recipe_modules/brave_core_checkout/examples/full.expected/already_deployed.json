@@ -1,0 +1,42 @@
+[
+  {
+    "cmd": [
+      "git",
+      "clone",
+      "--depth",
+      "2",
+      "--filter=blob:none",
+      "--sparse",
+      "--branch",
+      "master",
+      "git@github.com:brave/brave-core.git",
+      "[WORKSPACE]/brave-browser/src/brave"
+    ],
+    "name": "clone brave-core (shallow, sparse)"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/brave-browser/src/brave",
+      "sparse-checkout",
+      "list"
+    ],
+    "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "npm",
+      "--version"
+    ],
+    "env_prefixes": {
+      "PATH": [
+        "[WORKSPACE]/brave-browser/src/brave/tools/cr/bootstrap"
+      ]
+    },
+    "name": "npm version"
+  },
+  {
+    "name": "$result"
+  }
+]

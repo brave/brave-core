@@ -6,7 +6,7 @@
       "--depth",
       "1",
       "https://chromium.googlesource.com/chromium/tools/depot_tools",
-      "[WORKSPACE]/chromium/third_party/depot_tools"
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools"
     ],
     "name": "clone depot_tools"
   },
@@ -22,7 +22,7 @@
       "--nohooks",
       "chromium"
     ],
-    "cwd": "[WORKSPACE]/chromium",
+    "cwd": "[WORKSPACE]/brave-browser",
     "name": "fetch chromium"
   },
   {
@@ -33,7 +33,7 @@
       "origin",
       "refs/tags/151.0.7917.1:refs/tags/151.0.7917.1"
     ],
-    "cwd": "[WORKSPACE]/chromium/src",
+    "cwd": "[WORKSPACE]/brave-browser/src",
     "name": "fetch tag"
   },
   {
@@ -43,7 +43,7 @@
       "--force",
       "FETCH_HEAD"
     ],
-    "cwd": "[WORKSPACE]/chromium/src",
+    "cwd": "[WORKSPACE]/brave-browser/src",
     "name": "checkout FETCH_HEAD"
   },
   {
@@ -53,7 +53,7 @@
       "--force",
       "-D"
     ],
-    "cwd": "[WORKSPACE]/chromium/src",
+    "cwd": "[WORKSPACE]/brave-browser/src",
     "name": "gclient sync"
   },
   {

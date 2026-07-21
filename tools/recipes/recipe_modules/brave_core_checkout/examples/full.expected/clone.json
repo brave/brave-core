@@ -10,7 +10,7 @@
       "--branch",
       "master",
       "git@github.com:brave/brave-core.git",
-      "[WORKSPACE]/chromium/src/brave"
+      "[WORKSPACE]/brave-browser/src/brave"
     ],
     "name": "clone brave-core (shallow, sparse)"
   },
@@ -18,11 +18,22 @@
     "cmd": [
       "git",
       "-C",
-      "[WORKSPACE]/chromium/src/brave",
+      "[WORKSPACE]/brave-browser/src/brave",
       "sparse-checkout",
       "list"
     ],
     "name": "sparse-checkout list"
+  },
+  {
+    "cmd": [
+      "git",
+      "-C",
+      "[WORKSPACE]/brave-browser/src/brave",
+      "sparse-checkout",
+      "add",
+      "tools/cr/bootstrap"
+    ],
+    "name": "sparse-checkout add"
   },
   {
     "cmd": [
@@ -31,7 +42,7 @@
     ],
     "env_prefixes": {
       "PATH": [
-        "[WORKSPACE]/chromium/src/brave/tools/cr/bootstrap"
+        "[WORKSPACE]/brave-browser/src/brave/tools/cr/bootstrap"
       ]
     },
     "name": "npm version"

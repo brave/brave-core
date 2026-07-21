@@ -48,9 +48,9 @@ class DepotToolsApi(RecipeApi):
             self._depot_tools_path = Path(resolved).parent
             return
 
-        # Checking for a standalone depot_tools under what would be a supposed
-        # Chromium checkout.
-        depot_tools_path = self.m.path.abs(self.m.path.chromium_src.parent /
+        # Checking for a standalone depot_tools inside what would be a supposed
+        # Chromium checkout (Chromium vendors it at `src/third_party/depot_tools`).
+        depot_tools_path = self.m.path.abs(self.m.path.chromium_src /
                                            DEPOT_TOOLS_PATH)
         if self.m.path.is_file(depot_tools_path / 'gclient'):
             # If Chromium has already been deployed, we just use whatever

@@ -7,7 +7,7 @@
   },
   {
     "cmd": [
-      "[WORKSPACE]/chromium/third_party/depot_tools/vpython3",
+      "[WORKSPACE]/brave-browser/src/third_party/depot_tools/vpython3",
       "--version"
     ],
     "name": "use vpython3"
