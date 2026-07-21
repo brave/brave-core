@@ -9,14 +9,14 @@ import PackagePlugin
 @main
 struct LoggerPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-    let outputDirectory = context.pluginWorkDirectory.appending("GeneratedSources")
+    let outputDirectory = context.pluginWorkDirectoryURL.appendingPathComponent("GeneratedSources")
     guard let target = target as? SourceModuleTarget else {
       Diagnostics.error("Attempted to use `LoggerPlugin` on an unsupported module target")
       return []
     }
 
     try FileManager.default.createDirectory(
-      atPath: outputDirectory.string,
+      atPath: outputDirectory.path,
       withIntermediateDirectories: true
     )
     let source = """
@@ -30,10 +30,10 @@ struct LoggerPlugin: BuildToolPlugin {
       }
       """
 
-    let filePath = outputDirectory.appending("logger.swift")
-    if !FileManager.default.fileExists(atPath: filePath.string) {
+    let filePath = outputDirectory.appendingPathComponent("logger.swift")
+    if !FileManager.default.fileExists(atPath: filePath.path) {
       try source.write(
-        toFile: filePath.string,
+        to: filePath,
         atomically: true,
         encoding: .utf8
       )
@@ -42,9 +42,9 @@ struct LoggerPlugin: BuildToolPlugin {
     return [
       .buildCommand(
         displayName: "Generate logger",
-        executable: Path("/bin/zsh"),
+        executable: URL(fileURLWithPath: "/bin/zsh"),
         arguments: [],
-        outputFiles: [outputDirectory.appending("logger.swift")]
+        outputFiles: [filePath]
       )
     ]
   }

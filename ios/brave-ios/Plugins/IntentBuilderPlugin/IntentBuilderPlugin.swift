@@ -9,7 +9,7 @@ import PackagePlugin
 @main
 struct IntentBuilderPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
-    let outputDirectory = context.pluginWorkDirectory.appending("GeneratedSources")
+    let outputDirectory = context.pluginWorkDirectoryURL.appendingPathComponent("GeneratedSources")
     guard let target = target as? SourceModuleTarget else {
       Diagnostics.error("Attempted to use `IntentBuilderPlugin` on an unsupported module target")
       return []
@@ -18,11 +18,11 @@ struct IntentBuilderPlugin: BuildToolPlugin {
       .map { file in
         .prebuildCommand(
           displayName: "Generate intents sources",
-          executable: Path("/usr/bin/xcrun"),
+          executable: URL(fileURLWithPath: "/usr/bin/xcrun"),
           arguments: [
             "intentbuilderc", "generate",
-            "-input", file.path.string,
-            "-output", outputDirectory,
+            "-input", file.url.path,
+            "-output", outputDirectory.path,
             "-language", "Swift",
             "-swiftVersion", "5.6",
             "-classPrefix", "",

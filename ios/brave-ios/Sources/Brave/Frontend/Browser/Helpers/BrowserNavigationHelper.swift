@@ -52,8 +52,17 @@ class BrowserNavigationHelper {
 
   func openBookmarks() {
     guard let bvc = bvc else { return }
+    openBookmarks(in: bvc.bookmarkManager.lastVisitedFolder(), for: bvc)
+  }
+
+  func openBookmarks(in folder: Bookmarkv2) {
+    guard let bvc else { return }
+    openBookmarks(in: folder, for: bvc)
+  }
+
+  private func openBookmarks(in folder: Bookmarkv2?, for bvc: BrowserViewController) {
     let vc = BookmarksViewController(
-      folder: bvc.bookmarkManager.lastVisitedFolder(),
+      folder: folder,
       bookmarkManager: bvc.bookmarkManager,
       isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
     )

@@ -13,11 +13,11 @@ struct LeoAssetsPlugin: BuildToolPlugin {
   func createBuildCommands(context: PluginContext, target: Target) async throws -> [Command] {
     // Check to make sure we have pulled down the icons correctly
     let fileManager = FileManager.default
-    let braveCoreRootDirectory = context.package.directory.removingLastComponent()
-      .removingLastComponent()
-    let leoColorsDirectory = braveCoreRootDirectory.appending("node_modules/@brave/leo")
+    let braveCoreRootDirectory = context.package.directoryURL.deletingLastPathComponent()
+      .deletingLastPathComponent()
+    let leoColorsDirectory = braveCoreRootDirectory.appendingPathComponent("node_modules/@brave/leo")
 
-    if !fileManager.fileExists(atPath: leoColorsDirectory.string) {
+    if !fileManager.fileExists(atPath: leoColorsDirectory.path) {
       Diagnostics.error(
         "Required Leo assets not found: \(FileManager.default.currentDirectoryPath)"
       )
@@ -31,21 +31,21 @@ struct LeoAssetsPlugin: BuildToolPlugin {
     }
 
     let copyColorsCommand: Command = {
-      let tokensPath = leoColorsDirectory.appending("tokens/ios-swift")
-      let outputDirectory = context.pluginWorkDirectory.appending("LeoColors")
+      let tokensPath = leoColorsDirectory.appendingPathComponent("tokens/ios-swift")
+      let outputDirectory = context.pluginWorkDirectoryURL.appendingPathComponent("LeoColors")
       return .buildCommand(
         displayName: "Copy Leo Colors",
-        executable: Path("/bin/zsh"),
+        executable: URL(fileURLWithPath: "/bin/zsh"),
         arguments: [
-          "-c", "find \"\(tokensPath)\" -name \\*.swift -exec cp {} \"\(outputDirectory)\" \\;",
+          "-c", "find \"\(tokensPath.path)\" -name \\*.swift -exec cp {} \"\(outputDirectory.path)\" \\;",
         ],
         inputFiles: [
-          tokensPath.appending("Gradients.swift"),
-          tokensPath.appending("ColorSetAccessors.swift"),
+          tokensPath.appendingPathComponent("Gradients.swift"),
+          tokensPath.appendingPathComponent("ColorSetAccessors.swift"),
         ],
         outputFiles: [
-          outputDirectory.appending("Gradients.swift"),
-          outputDirectory.appending("ColorSetAccessors.swift"),
+          outputDirectory.appendingPathComponent("Gradients.swift"),
+          outputDirectory.appendingPathComponent("ColorSetAccessors.swift"),
         ]
       )
     }()

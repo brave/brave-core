@@ -42,6 +42,12 @@ extension Strings {
     value: "Show Last Visited Bookmarks",
     comment: "General settings bookmarks last visited folder toggle title"
   )
+  public static let bookmarksBarTitle = NSLocalizedString(
+    "BookmarksBarTitle",
+    bundle: .module,
+    value: "Show Bookmarks Bar",
+    comment: "General settings iPad bookmarks bar toggle title"
+  )
 }
 
 // Logins Helper.

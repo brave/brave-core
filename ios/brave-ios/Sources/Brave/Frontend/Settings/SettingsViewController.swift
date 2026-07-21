@@ -986,6 +986,14 @@ class SettingsViewController: TableViewController, BraveAccountAuthenticationObs
 
     let defaultHostContentSettings = braveCore.defaultHostContentSettings
     if UIDevice.isIpad {
+      general.rows.append(
+        .boolRow(
+          title: Strings.bookmarksBarTitle,
+          option: Preferences.General.showBookmarksBar,
+          image: UIImage(systemName: "book.closed")
+        )
+      )
+
       let defaultPageModeSwitch = SwitchAccessoryView(
         initialValue: defaultHostContentSettings.defaultPageMode == .desktop,
         valueChange: { value in

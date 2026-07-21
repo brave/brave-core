@@ -65,6 +65,18 @@ public class BrowserViewController: UIViewController {
     return tabsBar
   }()
 
+  private lazy var bookmarksBar = BookmarksBarView(
+    bookmarkManager: bookmarkManager,
+    privateBrowsingManager: privateBrowsingManager
+  ) { [weak self] item in
+    guard let self else { return }
+    if item.isFolder {
+      navigationHelper.openBookmarks(in: item)
+    } else if let urlString = item.url, let url = URL(string: urlString) {
+      select(url: url, isUserDefinedURLNavigation: true)
+    }
+  }
+
   // These views wrap the top and bottom toolbars to provide background effects on them
   private(set) lazy var header = HeaderContainerView(privateBrowsingManager: privateBrowsingManager)
   private let headerHeightLayoutGuide = UILayoutGuide()
@@ -460,6 +472,7 @@ public class BrowserViewController: UIViewController {
     // Observe some user preferences
     Preferences.Privacy.privateBrowsingOnly.observe(from: self)
     Preferences.General.tabBarVisibility.observe(from: self)
+    Preferences.General.showBookmarksBar.observe(from: self)
     Preferences.General.defaultPageZoomLevel.observe(from: self)
     Preferences.Shields.allShields.forEach { $0.observe(from: self) }
     Preferences.Rewards.hideRewardsIcon.observe(from: self)
@@ -874,6 +887,7 @@ public class BrowserViewController: UIViewController {
     view.addSubview(webViewContainerBackdrop)
     view.addSubview(webViewContainer)
     header.expandedBarStackView.addArrangedSubview(topToolbar)
+    header.expandedBarStackView.addArrangedSubview(bookmarksBar)
     header.collapsedBarContainerView.addSubview(collapsedURLBarView)
 
     addChild(tabsBar)
@@ -898,6 +912,7 @@ public class BrowserViewController: UIViewController {
     // Setup constraints
     setupConstraints()
     updateToolbarStateForTraitCollection(self.traitCollection)
+    updateBookmarksBarVisibility()
 
     // Legacy Review Handling
     AppReviewManager.shared.handleAppReview(for: .legacy, using: self)
@@ -1585,6 +1600,7 @@ public class BrowserViewController: UIViewController {
       addChild(ntpController)
       let subview = isUsingBottomBar ? header : statusBarOverlay
       view.insertSubview(ntpController.view, belowSubview: subview)
+      view.bringSubviewToFront(header)
       ntpController.didMove(toParent: self)
 
       ntpController.view.snp.makeConstraints {
@@ -1706,6 +1722,10 @@ public class BrowserViewController: UIViewController {
     } else {
       tabsBar.view.isHidden = !shouldShow
     }
+  }
+
+  private func updateBookmarksBarVisibility() {
+    bookmarksBar.isEnabled = UIDevice.isIpad && Preferences.General.showBookmarksBar.value
   }
 
   private func updateApplicationShortcuts() {
@@ -2235,6 +2255,7 @@ public class BrowserViewController: UIViewController {
           topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
           header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
           tabsBar.view.alpha = topToolbar.locationContainer.alpha
+          bookmarksBar.alpha = topToolbar.locationContainer.alpha
           toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
         }
         animator.startAnimation()
@@ -2266,6 +2287,7 @@ public class BrowserViewController: UIViewController {
       }
       topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       tabsBar.view.alpha = topToolbar.locationContainer.alpha
+      bookmarksBar.alpha = topToolbar.locationContainer.alpha
       header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
       toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       return
@@ -2286,6 +2308,7 @@ public class BrowserViewController: UIViewController {
     // expandedBarStackView is already hidden, which would leave both bars invisible.
     if toolbarVisibilityViewModel.isEnabled {
       tabsBar.view.alpha = topToolbar.locationContainer.alpha
+      bookmarksBar.alpha = topToolbar.locationContainer.alpha
       topToolbar.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
       header.collapsedBarContainerView.alpha = 1 - topToolbar.locationContainer.alpha
       toolbar?.actionButtons.forEach { $0.alpha = topToolbar.locationContainer.alpha }
@@ -2894,6 +2917,8 @@ extension BrowserViewController: PreferencesObserver {
     switch key {
     case Preferences.General.tabBarVisibility.key:
       updateTabsBarVisibility()
+    case Preferences.General.showBookmarksBar.key:
+      updateBookmarksBarVisibility()
     case Preferences.Privacy.privateBrowsingOnly.key:
       privateBrowsingManager.isPrivateBrowsing = Preferences.Privacy.privateBrowsingOnly.value
       setupTabs()
