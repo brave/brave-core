@@ -1,0 +1,284 @@
+diff --git a/ui/views/controls/button/md_text_button.cc b/ui/views/controls/button/md_text_button.cc
+index f4f6b86afebdc20b3ad6aeffd34f64655195df77..82f7eaa32ce237bf240f348a18dbeae86163a659 100644
+--- a/ui/views/controls/button/md_text_button.cc
++++ b/ui/views/controls/button/md_text_button.cc
+@@ -43,7 +43,7 @@
+ 
+ namespace views {
+ 
+-MdTextButton::MdTextButton(
++MdTextButton_ChromiumImpl::MdTextButton_ChromiumImpl(
+     PressedCallback callback,
+     std::u16string_view text,
+     int button_context,
+@@ -58,7 +58,7 @@ MdTextButton::MdTextButton(
+   SetHasInkDropActionOnClick(true);
+   SetShowInkDropWhenHotTracked(true);
+   InkDrop::Get(this)->SetBaseColorCallback(base::BindRepeating(
+-      [](MdTextButton* host) { return host->GetHoverColor(host->GetStyle()); },
++      [](MdTextButton_ChromiumImpl* host) { return host->GetHoverColor(host->GetStyle()); },
+       this));
+ 
+   constexpr int kImageSpacing = 8;
+@@ -86,9 +86,9 @@ MdTextButton::MdTextButton(
+   UpdatePadding();
+ }
+ 
+-MdTextButton::~MdTextButton() = default;
++MdTextButton_ChromiumImpl::~MdTextButton_ChromiumImpl() = default;
+ 
+-void MdTextButton::SetStyle(ui::ButtonStyle button_style) {
++void MdTextButton_ChromiumImpl::SetStyle(ui::ButtonStyle button_style) {
+   if (style_ == button_style) {
+     return;
+   }
+@@ -99,11 +99,11 @@ void MdTextButton::SetStyle(ui::ButtonStyle button_style) {
+   UpdateColors();
+ }
+ 
+-ui::ButtonStyle MdTextButton::GetStyle() const {
++ui::ButtonStyle MdTextButton_ChromiumImpl::GetStyle() const {
+   return style_;
+ }
+ 
+-void MdTextButton::SetBgColorIdOverride(
++void MdTextButton_ChromiumImpl::SetBgColorIdOverride(
+     const std::optional<ui::ColorId> color_id) {
+   CHECK(!bg_color_override_.has_value());
+ 
+@@ -115,7 +115,7 @@ void MdTextButton::SetBgColorIdOverride(
+   OnPropertyChanged(&bg_color_id_override_, PropertyEffects::kNone);
+ }
+ 
+-void MdTextButton::SetBgColorOverrideDeprecated(
++void MdTextButton_ChromiumImpl::SetBgColorOverrideDeprecated(
+     const std::optional<SkColor>& color) {
+   CHECK(!bg_color_id_override_.has_value());
+ 
+@@ -127,15 +127,15 @@ void MdTextButton::SetBgColorOverrideDeprecated(
+   OnPropertyChanged(&bg_color_override_, PropertyEffects::kNone);
+ }
+ 
+-std::optional<SkColor> MdTextButton::GetBgColorOverrideDeprecated() const {
++std::optional<SkColor> MdTextButton_ChromiumImpl::GetBgColorOverrideDeprecated() const {
+   return bg_color_override_;
+ }
+ 
+-std::optional<ui::ColorId> MdTextButton::GetBgColorIdOverride() const {
++std::optional<ui::ColorId> MdTextButton_ChromiumImpl::GetBgColorIdOverride() const {
+   return bg_color_id_override_;
+ }
+ 
+-void MdTextButton::SetStrokeColorIdOverride(
++void MdTextButton_ChromiumImpl::SetStrokeColorIdOverride(
+     const std::optional<ui::ColorId> color_id) {
+   CHECK(!stroke_color_override_.has_value());
+ 
+@@ -147,7 +147,7 @@ void MdTextButton::SetStrokeColorIdOverride(
+   OnPropertyChanged(&stroke_color_id_override_, PropertyEffects::kNone);
+ }
+ 
+-void MdTextButton::SetStrokeColorOverrideDeprecated(
++void MdTextButton_ChromiumImpl::SetStrokeColorOverrideDeprecated(
+     const std::optional<SkColor>& color) {
+   CHECK(!stroke_color_id_override_.has_value());
+ 
+@@ -159,15 +159,15 @@ void MdTextButton::SetStrokeColorOverrideDeprecated(
+   OnPropertyChanged(&stroke_color_override_, PropertyEffects::kNone);
+ }
+ 
+-std::optional<SkColor> MdTextButton::GetStrokeColorOverrideDeprecated() const {
++std::optional<SkColor> MdTextButton_ChromiumImpl::GetStrokeColorOverrideDeprecated() const {
+   return stroke_color_override_;
+ }
+ 
+-std::optional<ui::ColorId> MdTextButton::GetStrokeColorIdOverride() const {
++std::optional<ui::ColorId> MdTextButton_ChromiumImpl::GetStrokeColorIdOverride() const {
+   return stroke_color_id_override_;
+ }
+ 
+-void MdTextButton::SetCornerRadii(const gfx::RoundedCornersF& radii) {
++void MdTextButton_ChromiumImpl::SetCornerRadii(const gfx::RoundedCornersF& radii) {
+   if (radii_ == radii) {
+     return;
+   }
+@@ -176,11 +176,11 @@ void MdTextButton::SetCornerRadii(const gfx::RoundedCornersF& radii) {
+   OnPropertyChanged(&radii_, PropertyEffects::kPaint);
+ }
+ 
+-void MdTextButton::SetCornerRadius(float radius) {
++void MdTextButton_ChromiumImpl::SetCornerRadius(float radius) {
+   SetCornerRadii(gfx::RoundedCornersF(radius));
+ }
+ 
+-gfx::RoundedCornersF MdTextButton::GetCornerRadii() const {
++gfx::RoundedCornersF MdTextButton_ChromiumImpl::GetCornerRadii() const {
+   if (radii_.has_value()) {
+     return radii_.value();
+   }
+@@ -188,60 +188,60 @@ gfx::RoundedCornersF MdTextButton::GetCornerRadii() const {
+       ShapeContextTokens::kButtonRadius, size()));
+ }
+ 
+-void MdTextButton::OnThemeChanged() {
++void MdTextButton_ChromiumImpl::OnThemeChanged() {
+   LabelButton::OnThemeChanged();
+   UpdateColors();
+ }
+ 
+-void MdTextButton::StateChanged(ButtonState old_state) {
++void MdTextButton_ChromiumImpl::StateChanged(ButtonState old_state) {
+   LabelButton::StateChanged(old_state);
+   UpdateColors();
+ }
+ 
+-void MdTextButton::SetImageModel(
++void MdTextButton_ChromiumImpl::SetImageModel(
+     ButtonState for_state,
+     const std::optional<ui::ImageModel>& image_model) {
+   LabelButton::SetImageModel(for_state, image_model);
+   UpdatePadding();
+ }
+ 
+-void MdTextButton::OnFocus() {
++void MdTextButton_ChromiumImpl::OnFocus() {
+   LabelButton::OnFocus();
+   UpdateColors();
+ }
+ 
+-void MdTextButton::OnBlur() {
++void MdTextButton_ChromiumImpl::OnBlur() {
+   LabelButton::OnBlur();
+   UpdateColors();
+ }
+ 
+-void MdTextButton::OnBoundsChanged(const gfx::Rect& previous_bounds) {
++void MdTextButton_ChromiumImpl::OnBoundsChanged(const gfx::Rect& previous_bounds) {
+   LabelButton::OnBoundsChanged(previous_bounds);
+ 
+   // A fully rounded corner radius is calculated based on the button size.
+   OnCornerRadiusValueChanged();
+ }
+ 
+-void MdTextButton::SetEnabledTextColors(std::optional<ui::ColorVariant> color) {
++void MdTextButton_ChromiumImpl::SetEnabledTextColors(std::optional<ui::ColorVariant> color) {
+   LabelButton::SetEnabledTextColors(std::move(color));
+   UpdateColors();
+ }
+ 
+-void MdTextButton::SetCustomPadding(const std::optional<gfx::Insets>& padding) {
++void MdTextButton_ChromiumImpl::SetCustomPadding(const std::optional<gfx::Insets>& padding) {
+   custom_padding_ = padding;
+   UpdatePadding();
+ }
+ 
+-std::optional<gfx::Insets> MdTextButton::GetCustomPadding() const {
++std::optional<gfx::Insets> MdTextButton_ChromiumImpl::GetCustomPadding() const {
+   return custom_padding_.value_or(CalculateDefaultPadding());
+ }
+ 
+-void MdTextButton::SetText(std::u16string_view text) {
++void MdTextButton_ChromiumImpl::SetText(std::u16string_view text) {
+   LabelButton::SetText(text);
+   UpdatePadding();
+ }
+ 
+-PropertyEffects MdTextButton::UpdateStyleToIndicateDefaultStatus() {
++PropertyEffects MdTextButton_ChromiumImpl::UpdateStyleToIndicateDefaultStatus() {
+   SetStyle(style_ == ui::ButtonStyle::kProminent || GetIsDefault()
+                ? ui::ButtonStyle::kProminent
+                : ui::ButtonStyle::kDefault);
+@@ -249,7 +249,7 @@ PropertyEffects MdTextButton::UpdateStyleToIndicateDefaultStatus() {
+   return PropertyEffects::kNone;
+ }
+ 
+-void MdTextButton::UpdatePadding() {
++void MdTextButton_ChromiumImpl::UpdatePadding() {
+   // Don't use font-based padding when there's no text visible.
+   if (GetText().empty()) {
+     SetBorder(NullBorder());
+@@ -260,7 +260,7 @@ void MdTextButton::UpdatePadding() {
+       CreateEmptyBorder(custom_padding_.value_or(CalculateDefaultPadding())));
+ }
+ 
+-gfx::Insets MdTextButton::CalculateDefaultPadding() const {
++gfx::Insets MdTextButton_ChromiumImpl::CalculateDefaultPadding() const {
+   int target_height = LayoutProvider::GetControlHeightForFont(
+       label()->GetTextContext(), style::STYLE_PRIMARY, label()->font_list());
+ 
+@@ -283,7 +283,7 @@ gfx::Insets MdTextButton::CalculateDefaultPadding() const {
+                            right_padding);
+ }
+ 
+-void MdTextButton::UpdateTextColor() {
++void MdTextButton_ChromiumImpl::UpdateTextColor() {
+   if (explicitly_set_normal_color()) {
+     return;
+   }
+@@ -311,7 +311,7 @@ void MdTextButton::UpdateTextColor() {
+   set_explicitly_set_colors(colors);
+ }
+ 
+-void MdTextButton::UpdateBackgroundColor() {
++void MdTextButton_ChromiumImpl::UpdateBackgroundColor() {
+   bool is_disabled = GetVisualState() == STATE_DISABLED;
+   const ui::ColorProvider* color_provider = GetColorProvider();
+   SkColor bg_color = color_provider->GetColor(ui::kColorButtonBackground);
+@@ -360,7 +360,7 @@ void MdTextButton::UpdateBackgroundColor() {
+           true /* antialias */, true /* should_border_scale */)));
+ }
+ 
+-void MdTextButton::UpdateIconColor() {
++void MdTextButton_ChromiumImpl::UpdateIconColor() {
+   if (use_text_color_for_icon_ && HasImage(ButtonState::STATE_NORMAL)) {
+     const std::optional<ui::ImageModel>& image_model =
+         GetImageModel(ButtonState::STATE_NORMAL);
+@@ -375,7 +375,7 @@ void MdTextButton::UpdateIconColor() {
+   }
+ }
+ 
+-void MdTextButton::UpdateColors() {
++void MdTextButton_ChromiumImpl::UpdateColors() {
+   if (GetWidget()) {
+     UpdateTextColor();
+     UpdateBackgroundColor();
+@@ -384,7 +384,7 @@ void MdTextButton::UpdateColors() {
+   }
+ }
+ 
+-SkColor MdTextButton::GetHoverColor(ui::ButtonStyle button_style) {
++SkColor MdTextButton_ChromiumImpl::GetHoverColor(ui::ButtonStyle button_style) {
+   switch (button_style) {
+     case ui::ButtonStyle::kProminent:
+       return GetColorProvider()->GetColor(ui::kColorSysStateHoverOnProminent);
+@@ -396,18 +396,18 @@ SkColor MdTextButton::GetHoverColor(ui::ButtonStyle button_style) {
+   }
+ }
+ 
+-void MdTextButton::OnCornerRadiusValueChanged() {
++void MdTextButton_ChromiumImpl::OnCornerRadiusValueChanged() {
+   LabelButton::SetFocusRingCornerRadii(GetCornerRadii());
+   // UpdateColors also updates the background border radius.
+   UpdateColors();
+ }
+ 
+-std::unique_ptr<ActionViewInterface> MdTextButton::GetActionViewInterface() {
++std::unique_ptr<ActionViewInterface> MdTextButton_ChromiumImpl::GetActionViewInterface() {
+   return std::make_unique<MdTextButtonActionViewInterface>(this);
+ }
+ 
+ MdTextButtonActionViewInterface::MdTextButtonActionViewInterface(
+-    MdTextButton* action_view)
++    MdTextButton_ChromiumImpl* action_view)
+     : LabelButtonActionViewInterface(action_view), action_view_(action_view) {}
+ 
+ void MdTextButtonActionViewInterface::ActionItemChangedImpl(
+@@ -418,7 +418,7 @@ void MdTextButtonActionViewInterface::ActionItemChangedImpl(
+                               action_item->GetImage());
+ }
+ 
+-BEGIN_METADATA(MdTextButton)
++BEGIN_METADATA(MdTextButton_ChromiumImpl)
+ ADD_PROPERTY_METADATA(gfx::RoundedCornersF, CornerRadii)
+ ADD_PROPERTY_METADATA(std::optional<SkColor>, BgColorOverrideDeprecated)
+ ADD_PROPERTY_METADATA(std::optional<ui::ColorId>, BgColorIdOverride)

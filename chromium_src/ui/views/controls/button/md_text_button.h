@@ -11,20 +11,11 @@
 #include "ui/gfx/vector_icon_types.h"
 #include "ui/views/controls/button/label_button.h"
 
-// Rename MdTextButton to MdTextButtonBase
-#define MdTextButton MdTextButtonBase
-
-// Redefine UpdateTextColor as protected virtual so we can override it.
-#define UpdateTextColor     \
-  UpdateTextColor_Unused(); \
-                            \
- protected:                 \
-  virtual void UpdateTextColor
+namespace views {
+class MdTextButton;
+}  // namespace views
 
 #include <ui/views/controls/button/md_text_button.h>  // IWYU pragma: export
-
-#undef UpdateTextColor
-#undef MdTextButton
 
 namespace views {
 
@@ -32,8 +23,8 @@ namespace views {
 //  - Different hover text and boder color for non-prominent button
 //  - Different hover bg color for prominent background
 //  - No shadow for prominent background
-class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
-  METADATA_HEADER(MdTextButton, views::MdTextButtonBase)
+class VIEWS_EXPORT MdTextButton : public MdTextButton_ChromiumImpl {
+  METADATA_HEADER(MdTextButton, views::MdTextButton_ChromiumImpl)
 
  public:
   struct ButtonColors {
@@ -61,7 +52,7 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
     use_default_for_tonal_ = use_default;
   }
 
-  // MdTextButtonBase:
+  // MdTextButton_ChromiumImpl:
   void UpdateTextColor() override;
   void UpdateBackgroundColor() override;
   void UpdateColors() override;
@@ -81,6 +72,9 @@ class VIEWS_EXPORT MdTextButton : public MdTextButtonBase {
   int icon_size_ = 0;
   raw_ptr<const gfx::VectorIcon> icon_ = nullptr;
 };
+
+BEGIN_VIEW_BUILDER(VIEWS_EXPORT, MdTextButton, MdTextButton_ChromiumImpl)
+END_VIEW_BUILDER
 
 }  // namespace views
 
