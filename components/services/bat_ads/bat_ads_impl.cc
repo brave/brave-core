@@ -15,7 +15,7 @@
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_info.h"
 #include "brave/components/brave_ads/core/public/ad_units/new_tab_page_ad/new_tab_page_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
-#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_util.h"
 #include "brave/components/brave_ads/core/public/ads.h"
 #include "brave/components/brave_ads/core/public/ads_constants.h"
 #include "brave/components/brave_ads/core/public/ads_observer.h"
@@ -116,13 +116,7 @@ void BatAdsImpl::MaybeGetNotificationAd(
           base::BindOnce(
               [](MaybeGetNotificationAdCallback callback,
                  base::optional_ref<const brave_ads::NotificationAdInfo> ad) {
-                if (!ad) {
-                  return std::move(callback).Run(/*ad*/ std::nullopt);
-                }
-
-                std::optional<base::DictValue> dict =
-                    brave_ads::NotificationAdToDict(*ad);
-                std::move(callback).Run(std::move(dict));
+                std::move(callback).Run(brave_ads::ToMojom(ad));
               },
               std::move(callback)),
           /*ad=*/std::nullopt));

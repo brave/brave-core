@@ -20,7 +20,6 @@
 
 namespace brave_ads {
 class AdsClientNotifierObserver;
-struct NotificationAdInfo;
 }  // namespace brave_ads
 
 namespace bat_ads {
@@ -50,7 +49,7 @@ class BatAdsClientMojoBridge final : public brave_ads::AdsClient {
 
   bool CanShowNotificationAds() const override;
   bool CanShowNotificationAdsWhileBrowserIsBackgrounded() const override;
-  void ShowNotificationAd(const brave_ads::NotificationAdInfo& ad) override;
+  void ShowNotificationAd(brave_ads::mojom::NotificationAdInfoPtr ad) override;
   void CloseNotificationAd(const std::string& placement_id) override;
 
   void GetSiteHistory(int max_count,

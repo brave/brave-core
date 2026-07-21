@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "महीना";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "ज़्यादा जानने के लिए, यहाँ टैप करें।";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "यह आपका पहला Brave ऐड है";
-
 /* Bookmark title / Device name */
 "Name" = "नाम";
 

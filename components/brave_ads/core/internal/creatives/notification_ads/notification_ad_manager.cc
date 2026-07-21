@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/prefs/pref_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_info.h"
+#include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_util.h"
 #include "brave/components/brave_ads/core/public/ad_units/notification_ad/notification_ad_value_util.h"
 #include "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
@@ -62,7 +63,7 @@ void NotificationAdManager::Add(const NotificationAdInfo& ad) {
 
   ads_.push_back(ad);
 
-  GetAdsClient().ShowNotificationAd(ad);
+  GetAdsClient().ShowNotificationAd(ToMojom(ad));
 
 #if BUILDFLAG(IS_ANDROID)
   if (ads_.size() > kMaximumNotificationAds) {

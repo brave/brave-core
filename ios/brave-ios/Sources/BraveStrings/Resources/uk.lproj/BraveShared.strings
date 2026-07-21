@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "міс.";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Торкніться тут, щоб дізнатися більше.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Це ваша перша реклама Brave";
-
 /* Bookmark title / Device name */
 "Name" = "Назва";
 

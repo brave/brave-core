@@ -7801,20 +7801,6 @@ extension Strings {
 // MARK: - Ads
 extension Strings {
   public struct Ads {
-    public static let myFirstAdTitle = NSLocalizedString(
-      "MyFirstAdTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "This is your first Brave ad",
-      comment: ""
-    )
-    public static let myFirstAdBody = NSLocalizedString(
-      "MyFirstAdBody",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Tap here to learn more.",
-      comment: ""
-    )
     public static let open = NSLocalizedString(
       "BraveRewardsOpen",
       tableName: "BraveShared",

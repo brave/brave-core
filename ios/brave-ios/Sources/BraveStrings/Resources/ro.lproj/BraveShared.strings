@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "lună";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "Apasă aici pentru a afla mai multe.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Acesta este primul tău anunț Brave ";
-
 /* Bookmark title / Device name */
 "Name" = "Nume";
 

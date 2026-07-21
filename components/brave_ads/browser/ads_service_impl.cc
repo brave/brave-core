@@ -978,14 +978,12 @@ void AdsServiceImpl::OpenNewTabWithAd(const std::string& placement_id) {
 }
 
 void AdsServiceImpl::OpenNewTabWithAdCallback(
-    std::optional<base::DictValue> dict) {
-  if (!dict) {
+    brave_ads::mojom::NotificationAdInfoPtr notification_ad) {
+  if (!notification_ad) {
     return VLOG(0) << "Failed to get notification ad";
   }
 
-  const NotificationAdInfo notification_ad = NotificationAdFromDict(*dict);
-
-  OpenNewTabWithUrl(notification_ad.target_url);
+  OpenNewTabWithUrl(notification_ad->target_url);
 }
 
 void AdsServiceImpl::OpenNewTabWithUrl(const GURL& url) {
@@ -1456,22 +1454,23 @@ void AdsServiceImpl::CanShowNotificationAdsWhileBrowserIsBackgrounded(
       delegate_->CanShowSystemNotificationsWhileBrowserIsBackgrounded());
 }
 
-void AdsServiceImpl::ShowNotificationAd(base::DictValue dict) {
-  const NotificationAdInfo ad = NotificationAdFromDict(dict);
+void AdsServiceImpl::ShowNotificationAd(
+    brave_ads::mojom::NotificationAdInfoPtr notification_ad) {
+  CHECK(notification_ad);
 
   std::u16string title;
-  if (base::IsStringUTF8(ad.title)) {
-    title = base::UTF8ToUTF16(ad.title);
+  if (base::IsStringUTF8(notification_ad->title)) {
+    title = base::UTF8ToUTF16(notification_ad->title);
   }
 
   std::u16string body;
-  if (base::IsStringUTF8(ad.body)) {
-    body = base::UTF8ToUTF16(ad.body);
+  if (base::IsStringUTF8(notification_ad->body)) {
+    body = base::UTF8ToUTF16(notification_ad->body);
   }
 
-  delegate_->ShowNotificationAd(ad.placement_id, title, body);
+  delegate_->ShowNotificationAd(notification_ad->placement_id, title, body);
 
-  StartNotificationAdTimeOutTimer(ad.placement_id);
+  StartNotificationAdTimeOutTimer(notification_ad->placement_id);
 }
 
 void AdsServiceImpl::CloseNotificationAd(const std::string& placement_id) {

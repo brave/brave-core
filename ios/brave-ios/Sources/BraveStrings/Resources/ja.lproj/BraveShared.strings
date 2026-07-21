@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "月";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "詳しくはこちら";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "これは初めてのBrave広告です";
-
 /* Bookmark title / Device name */
 "Name" = "名前";
 

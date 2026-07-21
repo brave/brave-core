@@ -13,7 +13,7 @@
 #include <vector>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"
 #import "brave/components/brave_ads/core/public/ads_client/ads_client.h"
 
 @protocol AdsClientBridge
@@ -46,7 +46,7 @@
     callback:(brave_ads::ResultCallback)callback;
 - (void)remove:(const std::string&)name
       callback:(brave_ads::ResultCallback)callback;
-- (void)showNotificationAd:(const brave_ads::NotificationAdInfo&)info;
+- (void)showNotificationAd:(brave_ads::mojom::NotificationAdInfoPtr)mojom_ad;
 - (void)closeNotificationAd:(const std::string&)placement_id;
 - (void)UrlRequest:(brave_ads::mojom::UrlRequestInfoPtr)url_request
           callback:(brave_ads::UrlRequestCallback)callback;

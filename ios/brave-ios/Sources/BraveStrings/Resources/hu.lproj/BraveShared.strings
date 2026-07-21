@@ -1000,12 +1000,6 @@
 /* Abbreviation for 'Month', use full word' Month' if this word can't be shortened in your language */
 "monthAbbreviation" = "hó";
 
-/* No comment provided by engineer. */
-"MyFirstAdBody" = "További információért koppintson ide.";
-
-/* No comment provided by engineer. */
-"MyFirstAdTitle" = "Ez az első Brave hirdetése";
-
 /* Bookmark title / Device name */
 "Name" = "Név";
 
