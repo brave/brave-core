@@ -104,6 +104,8 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
   source->AddBoolean("isConversationShareEnabled",
                      base::FeatureList::IsEnabled(
                          ai_chat::features::kAIChatConversationShare));
+  source->AddBoolean("isWorkspaceToolsEnabled",
+                     ai_chat::features::IsAIChatWorkspaceToolsEnabled());
 
   web_ui->AddRequestableScheme(content::kChromeUIUntrustedScheme);
   source->OverrideContentSecurityPolicy(
