@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/browser.cc b/chrome/browser/ui/browser.cc
-index 1d3cce8a2a9b278f9a359301329bc1bb62a2f207..6cbf73528bcc89b32505c6001f4e87d76450ff97 100644
+index 39ea3dfbf52cc69dbe79a6a50fcced0300127aef..c1df949c57ddae7d3e72cfd162e969735bdc374e 100644
 --- a/chrome/browser/ui/browser.cc
 +++ b/chrome/browser/ui/browser.cc
-@@ -465,7 +465,7 @@ Browser* Browser::Create(const CreateParams& params) {
+@@ -467,7 +467,7 @@ Browser* Browser::Create(const CreateParams& params) {
    // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
@@ -11,7 +11,7 @@ index 1d3cce8a2a9b278f9a359301329bc1bb62a2f207..6cbf73528bcc89b32505c6001f4e87d7
    Browser* const browser_ptr = browser.get();
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowser(std::move(browser));
-@@ -481,7 +481,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
+@@ -483,7 +483,7 @@ std::unique_ptr<Browser> Browser::DeprecatedCreateOwnedForTesting(
    // should handle this; see e.g. crbug.com/40154317 and crbug.com/40798999.
    CHECK_EQ(CreationStatus::kOk, GetCreationStatusForProfile(params.profile));
  
@@ -20,11 +20,13 @@ index 1d3cce8a2a9b278f9a359301329bc1bb62a2f207..6cbf73528bcc89b32505c6001f4e87d7
    BrowserManagerServiceFactory::GetForProfile(params.profile)
        ->AddBrowserForTesting(browser.get());
    return browser;
-@@ -494,7 +494,7 @@ Browser::Browser(const CreateParams& params)
+@@ -494,8 +494,8 @@ Browser::Browser(const CreateParams& params)
+       profile_(params.profile),
        window_(nullptr),
        tab_strip_model_delegate_(
-           std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
+-          std::make_unique<chrome::BrowserTabStripModelDelegate>(this)),
 -      tab_strip_model_(std::make_unique<TabStripModel>(
++          std::make_unique<chrome::BraveTabStripModelDelegate>(this)),
 +      tab_strip_model_(std::make_unique<BraveTabStripModel>(
            tab_strip_model_delegate_.get(),
            params.profile,

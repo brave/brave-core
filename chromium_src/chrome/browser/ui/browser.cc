@@ -8,8 +8,4 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "chrome/browser/ui/browser_command_controller.h"
 
-#define BrowserTabStripModelDelegate BraveTabStripModelDelegate
-
 #include <chrome/browser/ui/browser.cc>
-
-#undef BrowserTabStripModelDelegate
