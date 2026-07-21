@@ -28,6 +28,7 @@
 #include "brave/components/ntp_background_images/browser/ntp_sponsored_rich_media_ad_event_handler.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/contextual_search/contextual_search_service_factory.h"
+#include "chrome/browser/history/history_service_factory.h"
 #include "chrome/browser/ntp_tiles/chrome_most_visited_sites_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
@@ -47,7 +48,6 @@
 #include "brave/components/ai_chat/core/browser/tab_tracker_service.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "chrome/browser/bookmarks/bookmark_model_factory.h"
-#include "chrome/browser/history/history_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_ADS)
@@ -107,7 +107,9 @@ void BraveNewTabPageUI::BindInterface(
       g_brave_browser_process->ntp_background_images_service(),
       ntp_background_images::ViewCounterServiceFactory::GetForProfile(profile));
   auto sponsored_sites_facade = std::make_unique<SponsoredSitesFacade>(
-      *prefs, g_brave_browser_process->ntp_background_images_service());
+      *prefs, g_brave_browser_process->ntp_background_images_service(),
+      HistoryServiceFactory::GetForProfile(profile,
+                                           ServiceAccessType::EXPLICIT_ACCESS));
   auto top_sites_facade = std::make_unique<TopSitesFacade>(
       ChromeMostVisitedSitesFactory::NewForProfile(profile), *prefs);
 

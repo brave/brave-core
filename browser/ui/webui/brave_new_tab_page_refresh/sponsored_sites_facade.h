@@ -12,10 +12,15 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/raw_ref.h"
 #include "base/scoped_observation.h"
+#include "base/task/cancelable_task_tracker.h"
 #include "brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.h"
 #include "brave/components/ntp_background_images/browser/ntp_background_images_service.h"
 
 class PrefService;
+
+namespace history {
+class HistoryService;
+}  // namespace history
 
 namespace brave_new_tab_page_refresh {
 
@@ -26,7 +31,8 @@ class SponsoredSitesFacade
  public:
   SponsoredSitesFacade(PrefService& pref_service,
                        ntp_background_images::NTPBackgroundImagesService*
-                           background_images_service);
+                           background_images_service,
+                       history::HistoryService* history_service);
 
   SponsoredSitesFacade(const SponsoredSitesFacade&) = delete;
   SponsoredSitesFacade& operator=(const SponsoredSitesFacade&) = delete;
@@ -52,6 +58,8 @@ class SponsoredSitesFacade
   raw_ref<PrefService> pref_service_;
   raw_ptr<ntp_background_images::NTPBackgroundImagesService>
       background_images_service_;
+  raw_ptr<history::HistoryService> history_service_;
+  base::CancelableTaskTracker history_task_tracker_;
   base::RepeatingClosure updated_callback_;
   base::ScopedObservation<
       ntp_background_images::NTPBackgroundImagesService,
