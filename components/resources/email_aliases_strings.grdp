@@ -12,6 +12,12 @@
   <message name="IDS_SETTINGS_EMAIL_ALIASES_LABEL" desc="The label for the email aliases" formatter_data="webui=EmailAliases">
     Email Aliases
   </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL" desc="The label for the email aliases autofill suggestion toggle" formatter_data="webui=EmailAliases">
+    Suggest email aliases when signing up
+  </message>
+  <message name="IDS_SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_SUBLABEL" desc="The sub-label for the email aliases autofill suggestion toggle" formatter_data="webui=EmailAliases">
+    Offer to create an email alias when filling in email fields on websites
+  </message>
   <message name="IDS_SETTINGS_EMAIL_ALIASES_COPIED_TO_CLIPBOARD" desc="The label for the copied to clipboard" formatter_data="webui=EmailAliases">
     Copied to clipboard
   </message>

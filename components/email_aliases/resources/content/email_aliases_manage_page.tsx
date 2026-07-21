@@ -15,6 +15,7 @@ import {
   EmailAliasesMetricsRemote,
   EmailAliasesServiceInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
+import { useBraveAccountState, isAccountLoggedIn } from './use_email_aliases'
 
 const PageCol = styled(Col)`
   font: ${font.default.regular};
@@ -33,12 +34,24 @@ const BraveAccountSignIn = () => {
   })
 }
 
-export const SignInPage = () => (
-  <PageCol>
-    <Introduction />
-    <BraveAccountSignIn />
-  </PageCol>
-)
+const AutofillSuggestionToggle = ({ prefs }: { prefs: object }) => {
+  return React.createElement('settings-email-aliases-autofill-toggle', {
+    prefs,
+  })
+}
+
+export const SignInPage = ({ prefs }: { prefs: object }) => {
+  const accountState = useBraveAccountState()
+  return (
+    <PageCol>
+      <Introduction />
+      <BraveAccountSignIn />
+      {isAccountLoggedIn(accountState) && (
+        <AutofillSuggestionToggle prefs={prefs} />
+      )}
+    </PageCol>
+  )
+}
 
 export const ManagePage = ({
   aliasesUpdate,

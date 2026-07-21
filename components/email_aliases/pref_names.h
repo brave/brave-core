@@ -26,6 +26,10 @@ inline constexpr char kSettingsPageMethodReported[] =
 
 inline constexpr char kPromoShown[] = "brave.email_aliases.promo_shown";
 
+// Whether to suggest email aliases in autofill.
+inline constexpr char kEmailAliasesAutofillSuggestion[] =
+    "brave.email_aliases.autofill_suggestion";
+
 }  // namespace email_aliases::prefs
 
 #endif  // BRAVE_COMPONENTS_EMAIL_ALIASES_PREF_NAMES_H_

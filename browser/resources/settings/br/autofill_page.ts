@@ -96,7 +96,7 @@ RegisterPolymerTemplateModifications({
     }
     viewManager.append(html`
       <settings-email-aliases-page page-title="Email Aliases" slot="view"
-         id="email-aliases" data-parent-view-id="parent">
+         id="email-aliases" prefs="{{prefs}}" data-parent-view-id="parent">
       </settings-email-aliases-page>
     `)
   }
