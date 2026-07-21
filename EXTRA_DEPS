@@ -99,6 +99,16 @@ extra_deps = {
             },
         ],
     },
+    'src/brave/third_party/node/node_modules': {
+        'bucket': 'https://brave-build-deps-public.s3.brave.com/nodejs/',
+        'objects': [
+            {
+                'object_name': 'node_modules-4c3f83a.tar.gz',
+                'sha256sum': 'e9e855fa7a7ab58beb438fac7562a6e24742c298db1d6b9d78a7b7b846d7df98',
+                'size_bytes': 4574220,
+            },
+        ],
+    },
     'src/brave/third_party/ast-grep/ast-grep-linux': {
         'bucket': 'https://brave-build-deps-public.s3.brave.com/ast-grep/',
         'condition': 'host_os == "linux"',
