@@ -20,6 +20,7 @@
 #include "brave/components/ai_chat/core/browser/tools/tool_utils.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "content/public/browser/render_frame_host.h"
+#include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "services/service_manager/public/cpp/interface_provider.h"
 #include "third_party/blink/public/mojom/content_extraction/script_tools.mojom.h"
@@ -32,24 +33,34 @@ ContentTool::ContentTool(const blink::mojom::ScriptTool& script_tool,
     : rfh_(std::move(rfh)), internal_tool_name_(script_tool.name) {
   const GURL& url = rfh_.AsRenderFrameHostIfValid()->GetLastCommittedURL();
 
-  // Name of the ContentTool is {host}{path}_tool_name. The path is included
-  // (not just the host) so that tools with the same name registered on
-  // different pages of the same host don't collapse to the same tool name.
-  name_ = base::StrCat({url.host(), url.path(), "_", script_tool.name});
+  if (url.SchemeIs(content::kChromeUIUntrustedScheme)) {
+    // First-party WebUI (e.g. the Leo workspace page at
+    // chrome-untrusted://workspace) that registers tools via WebMCP. These are
+    // system-owned, so surface the tool's own name and description verbatim: no
+    // host/path prefix (the page is unique and controls its names) and no
+    // "website-provided" framing.
+    name_ = script_tool.name;
+    description_ = script_tool.description;
+  } else {
+    // Name of the ContentTool is {host}{path}_tool_name. The path is included
+    // (not just the host) so that tools with the same name registered on
+    // different pages of the same host don't collapse to the same tool name.
+    name_ = base::StrCat({url.host(), url.path(), "_", script_tool.name});
+
+    // We add some additional information to the description of the content tool
+    // to make it obvious the tool is coming from a website.
+    description_ = base::StrCat(
+        {"Website-provided tool for the current page at ", url.spec(), ".",
+         "Name: ", script_tool.name, ".",
+         "Website-provided description: ", script_tool.description, ".",
+         "Only use this tool when it is relevant to the user's request on this "
+         "page."});
+  }
 
   // Toolnames only allow alphanumeric characters and underscores.
   std::replace_if(
       name_.begin(), name_.end(),
       [](char c) { return !absl::ascii_isalnum(c) && c != '_'; }, '_');
-
-  // We add some additional information to the description of the content tool
-  // to make it obvious the tool is coming from a website.
-  description_ = base::StrCat(
-      {"Website-provided tool for the current page at ", url.spec(), ".",
-       "Name: ", script_tool.name, ".",
-       "Website-provided description: ", script_tool.description, ".",
-       "Only use this tool when it is relevant to the user's request on this "
-       "page."});
 
   if (!script_tool.input_schema) {
     return;
