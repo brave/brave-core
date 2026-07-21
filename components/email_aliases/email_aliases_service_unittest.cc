@@ -31,6 +31,7 @@
 #include "brave/components/email_aliases/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/testing_pref_service.h"
+#include "mojo/public/cpp/bindings/remote.h"
 #include "net/base/net_errors.h"
 #include "net/http/http_status_code.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -44,12 +45,8 @@ namespace email_aliases {
 
 using ::testing::_;
 
-using AuthenticationStatus = email_aliases::mojom::AuthenticationStatus;
-
 class AliasObserver : public mojom::EmailAliasesServiceObserver {
  public:
-  void OnAuthStateChanged(mojom::AuthStatePtr) override {}
-
   void OnAliasesUpdated(mojom::AliasesUpdatePtr update) override {
     ++alias_updates;
     last_update_ = std::move(update);
@@ -168,19 +165,38 @@ class EmailAliasesAPITest : public ::testing::Test {
           std::move(callback).Run(base::ok(std::move(token)));
         });
 
+    EXPECT_CALL(*brave_account_auth_, AddObserver(testing::_))
+        .Times(1)
+        .WillOnce(
+            [this](mojo::PendingRemote<
+                   brave_account::mojom::AuthenticationObserver> observer) {
+              email_aliases_auth_observer_remote_.Bind(std::move(observer));
+            });
+
     service_ = std::make_unique<EmailAliasesService>(
         brave_account_auth_->BindAndGetRemote(),
         url_loader_factory_.GetSafeWeakWrapper(), prefs_);
-    email_aliases::test::AuthStateObserver::Setup(service_.get(), true);
-    service_->GetAuth()->SetAuthEmailForTesting("test@login.com");
 
-    // Default list response so AddObserver's initial refresh does not notify an
-    // error
+    ASSERT_TRUE(base::test::RunUntil(
+        [this]() { return email_aliases_auth_observer_remote_.is_bound(); }));
+
+    // Default list response so login-triggered refresh does not notify an
+    // error.
     AddRefreshResponseFor();
+
+    email_aliases_auth_observer_remote_->OnAccountStateChanged(
+        brave_account::mojom::AccountState::NewLoggedIn(
+            brave_account::mojom::LoggedInState::New("test@login.com",
+                                                     nullptr)));
+    email_aliases_auth_observer_remote_.FlushForTesting();
+
+    ASSERT_TRUE(
+        base::test::RunUntil([this]() { return service_->IsAuthenticated(); }));
 
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> remote;
     observer_.BindReceiver(remote.InitWithNewPipeAndPassReceiver());
     service_->AddObserver(std::move(remote));
+    ASSERT_TRUE(observer_.WaitForAliasUpdateCount(1));
     observer_.ResetForTesting();
   }
 
@@ -193,6 +209,8 @@ class EmailAliasesAPITest : public ::testing::Test {
   std::unique_ptr<
       testing::NiceMock<brave_account::MockBraveAccountAuthentication>>
       brave_account_auth_;
+  mojo::Remote<brave_account::mojom::AuthenticationObserver>
+      email_aliases_auth_observer_remote_;
   std::unique_ptr<EmailAliasesService> service_;
   AliasObserver observer_;
 };
@@ -397,7 +415,7 @@ TEST_F(EmailAliasesAPITest,
                           /*note=*/std::nullopt,
                           /*wait_for_update=*/false);
   ASSERT_TRUE(result_out.has_value());
-  EXPECT_EQ(observer_.alias_update_count(), 2u);
+  EXPECT_TRUE(observer_.WaitForAliasUpdateCount(1));
   ASSERT_TRUE(observer_.last_update());
   ASSERT_EQ(observer_.last_update()->which(),
             mojom::AliasesUpdate::Tag::kError);

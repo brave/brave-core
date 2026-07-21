@@ -9,7 +9,6 @@ import { ManagePageConnected } from '../email_aliases'
 import {
   Alias,
   AliasesUpdate,
-  AuthenticationStatus,
   EmailAliasesServiceInterface,
   EmailAliasesServiceObserverInterface,
 } from 'gen/brave/components/email_aliases/email_aliases.mojom.m'
@@ -26,36 +25,16 @@ class MockEmailAliasesService extends EmailAliasesServiceInterface {
   }
 
   notifyObserverAliasesUpdated(aliases: Alias[]) {
-    if (this.observer === undefined) {
-      throw new Error('Expected observer to be defined')
-    }
     this.observer?.onAliasesUpdated({ aliases } as AliasesUpdate)
   }
 
   notifyObserverAliasesLoadError(message: string) {
-    if (this.observer === undefined) {
-      throw new Error('Expected observer to be defined')
-    }
     this.observer?.onAliasesUpdated({ error: message } as AliasesUpdate)
-  }
-
-  notifyObserverAuthStateChanged(
-    status: AuthenticationStatus,
-    email: string,
-    errorMessage?: string,
-  ) {
-    if (this.observer === undefined) {
-      throw new Error('Expected observer to be defined')
-    }
-    this.observer?.onAuthStateChanged({ status, email, errorMessage })
   }
 
   generateAlias = jest.fn()
   updateAlias = jest.fn()
   deleteAlias = jest.fn()
-  requestAuthentication = jest.fn()
-  cancelAuthentication = jest.fn()
-  logout = jest.fn()
 }
 
 const createBindObserver =
@@ -70,11 +49,13 @@ const mockEmail = 'test@brave.com'
 // Test setup helpers
 const setupTest = async () => {
   const mockEmailAliasesService = new MockEmailAliasesService()
+  const bindObserver = createBindObserver(mockEmailAliasesService)
 
   render(
     <ManagePageConnected
+      authEmail={mockEmail}
       emailAliasesService={mockEmailAliasesService}
-      bindObserver={createBindObserver(mockEmailAliasesService)}
+      bindObserver={bindObserver}
     />,
   )
 
@@ -94,30 +75,12 @@ const mockAliases = [
   },
 ]
 
-const authenticate = async (
-  service: MockEmailAliasesService,
-  status: AuthenticationStatus,
-  email: string = mockEmail,
-  errorMessage?: string,
-) => {
-  await act(() => {
-    service.notifyObserverAuthStateChanged(status, email, errorMessage)
-  })
-}
-
 const updateAliases = async (
   service: MockEmailAliasesService,
   aliases = mockAliases,
 ) => {
   await act(() => {
     service.notifyObserverAliasesUpdated(aliases)
-  })
-}
-
-const expectAliasesNotVisible = async () => {
-  await waitFor(() => {
-    expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
-    expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
   })
 }
 
@@ -128,7 +91,6 @@ describe('ManagePageConnected', () => {
 
   it('can add new aliases via observer', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add an alias
     await updateAliases(service, [
@@ -173,7 +135,6 @@ describe('ManagePageConnected', () => {
 
   it('can remove aliases via observer', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
     await updateAliases(service, [
@@ -218,7 +179,6 @@ describe('ManagePageConnected', () => {
 
   it('can update aliases via observer', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
     await updateAliases(service, [
@@ -276,7 +236,6 @@ describe('ManagePageConnected', () => {
 
   it('can clear aliases via observer', async () => {
     const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
 
     // Add aliases
     await updateAliases(service, [
@@ -311,156 +270,5 @@ describe('ManagePageConnected', () => {
       expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
       expect(screen.queryByText('alias3@brave.com')).not.toBeInTheDocument()
     })
-  })
-
-  it('does not show aliases when logged out', async () => {
-    const service = await setupTest()
-
-    // Notify of aliases, while not logged in.
-    await updateAliases(service, [
-      {
-        email: 'alias1@brave.com',
-        note: 'Test Alias 1',
-        domains: undefined,
-      },
-      {
-        email: 'alias2@brave.com',
-        note: 'Test Alias 2',
-        domains: undefined,
-      },
-    ])
-
-    // Shouldn't show the aliases in the UI.
-    await expectAliasesNotVisible()
-  })
-
-  it('hides aliases when logged out', async () => {
-    const service = await setupTest()
-
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-    await updateAliases(service)
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
-
-    // Shouldn't be showing the aliases in the UI - we're logged out.
-    await expectAliasesNotVisible()
-  })
-
-  it('does not show aliases which were added before logging in', async () => {
-    const service = await setupTest()
-
-    await updateAliases(service)
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-
-    await expectAliasesNotVisible()
-  })
-
-  it('does not show aliases from previous logins', async () => {
-    const service = await setupTest()
-
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-    await updateAliases(service)
-
-    await waitFor(() => {
-      expect(screen.queryByText('alias1@brave.com')).toBeInTheDocument()
-      expect(screen.queryByText('alias2@brave.com')).toBeInTheDocument()
-    })
-
-    await authenticate(service, AuthenticationStatus.kUnauthenticated)
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-
-    // We shouldn't be showing the aliases from the previous login
-    await expectAliasesNotVisible()
-  })
-
-  it('clears aliases when we are suddenly unauthenticated', async () => {
-    const service = await setupTest()
-
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-    await updateAliases(service)
-    await authenticate(service, AuthenticationStatus.kUnauthenticated)
-
-    await expectAliasesNotVisible()
-  })
-
-  it("Data doesn't persist across different logins", async () => {
-    const service = await setupTest()
-
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-    await updateAliases(service)
-    await authenticate(
-      service,
-      AuthenticationStatus.kUnauthenticated,
-      mockEmail,
-    )
-    await expectAliasesNotVisible()
-
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-    await expectAliasesNotVisible()
-  })
-
-  it('shows error alert instead of alias list when refresh fails', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-
-    const errorText = 'Could not load your email aliases.'
-    await act(() => {
-      service.notifyObserverAliasesLoadError(errorText)
-    })
-
-    await waitFor(() => {
-      expect(screen.getByText(errorText)).toBeInTheDocument()
-    })
-    expect(screen.queryByText('alias1@brave.com')).not.toBeInTheDocument()
-    expect(screen.queryByText('alias2@brave.com')).not.toBeInTheDocument()
-  })
-
-  it('clears refresh error alert when user becomes unauthenticated', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kAuthenticated)
-
-    const errorText = 'Could not load your email aliases.'
-    await act(() => {
-      service.notifyObserverAliasesLoadError(errorText)
-    })
-    await waitFor(() => {
-      expect(screen.getByText(errorText)).toBeInTheDocument()
-    })
-
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
-
-    await waitFor(() => {
-      expect(screen.queryByText(errorText)).not.toBeInTheDocument()
-    })
-  })
-
-  it('does not show refresh error when not authenticated', async () => {
-    const service = await setupTest()
-    await authenticate(service, AuthenticationStatus.kUnauthenticated, '')
-
-    const errorText = 'Could not load your email aliases.'
-    await act(() => {
-      service.notifyObserverAliasesLoadError(errorText)
-    })
-
-    expect(screen.queryByText(errorText)).not.toBeInTheDocument()
-  })
-
-  it('does not display refresh errors or aliases when not authenticated', async () => {
-    const service = await setupTest()
-
-    const errorText = 'Could not load your email aliases.'
-    await act(() => {
-      service.notifyObserverAliasesLoadError(errorText)
-    })
-    await updateAliases(service, [
-      {
-        email: 'alias1@brave.com',
-        note: 'Test Alias 1',
-        domains: undefined,
-      },
-    ])
-
-    expect(screen.queryByText(errorText)).not.toBeInTheDocument()
-    await expectAliasesNotVisible()
   })
 })

@@ -3,28 +3,34 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include <algorithm>
 #include <memory>
-#include <vector>
+#include <string>
 
-#include "base/check_deref.h"
-#include "base/functional/callback_helpers.h"
+#include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
 #include "base/test/run_until.h"
+#include "base/test/test_future.h"
 #include "base/time/time.h"
+#include "base/values.h"
 #include "brave/browser/brave_account/brave_account_service_factory.h"
 #include "brave/browser/email_aliases/email_aliases_service_factory.h"
 #include "brave/browser/ui/email_aliases/email_aliases_controller.h"
 #include "brave/browser/ui/webui/brave_settings_ui.h"
+#include "brave/components/brave_account/brave_account_encryption.h"
+#include "brave/components/brave_account/brave_account_service.h"
+#include "brave/components/brave_account/endpoint_client/test_support.h"
+#include "brave/components/brave_account/endpoints/auth_validate.h"
+#include "brave/components/brave_account/endpoints/login_finalize.h"
+#include "brave/components/brave_account/endpoints/login_init.h"
+#include "brave/components/brave_account/endpoints/service_token.h"
 #include "brave/components/brave_account/features.h"
-#include "brave/components/brave_account/mock_brave_account_authentication.h"
+#include "brave/components/brave_account/mojom/brave_account.mojom.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/email_aliases_api.h"
 #include "brave/components/email_aliases/email_aliases_service.h"
 #include "brave/components/email_aliases/features.h"
 #include "brave/components/email_aliases/pref_names.h"
-#include "brave/components/email_aliases/test_utils.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu.h"
 #include "chrome/browser/renderer_context_menu/render_view_context_menu_browsertest_util.h"
@@ -36,8 +42,11 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/grit/brave_components_strings.h"
+#include "components/keyed_service/core/keyed_service.h"
+#include "components/os_crypt/async/browser/test_utils.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_context.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/render_view_host.h"
 #include "content/public/browser/render_widget_host.h"
@@ -47,7 +56,11 @@
 #include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "content/public/test/test_navigation_observer.h"
+#include "mojo/public/cpp/bindings/remote.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/network_switches.h"
+#include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
+#include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -55,6 +68,40 @@ namespace email_aliases {
 
 namespace {
 constexpr char kSuccessEmail[] = "success@domain.com";
+
+void MockLoginResponses(
+    network::TestURLLoaderFactory& test_url_loader_factory) {
+  using brave_account::endpoints::AuthValidate;
+  using brave_account::endpoints::LoginFinalize;
+  using brave_account::endpoints::LoginInit;
+  using brave_account::endpoints::ServiceToken;
+
+  brave_account::endpoint_client::MockResponseFor<LoginInit>(
+      test_url_loader_factory,
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         LoginInit::Response::SuccessBody body;
+         body.login_token = "login_token";
+         body.serialized_ke2 = "serialized_ke2";
+         return body;
+       }()});
+
+  brave_account::endpoint_client::MockResponseFor<LoginFinalize>(
+      test_url_loader_factory,
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         LoginFinalize::Response::SuccessBody body;
+         body.auth_token = "authentication_token";
+         body.email = kSuccessEmail;
+         return body;
+       }()});
+
+  brave_account::endpoint_client::MockResponseFor<ServiceToken>(
+      test_url_loader_factory,
+      {.net_error = net::OK, .status_code = net::HTTP_OK, .body = [] {
+         ServiceToken::Response::SuccessBody body;
+         body.auth_token = "cached_service_token";
+         return body;
+       }()});
+}
 
 std::unique_ptr<net::test_server::HttpResponse> ManageHandler(
     const net::test_server::HttpRequest& request) {
@@ -105,6 +152,7 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
  public:
   EmailAliasesBrowserTestBase() {
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
+    os_crypt_async_ = os_crypt_async::GetTestOSCryptAsyncForTesting(true);
   }
 
   ~EmailAliasesBrowserTestBase() override {
@@ -113,17 +161,18 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
 
   void SetUpBrowserContextKeyedServices(
       content::BrowserContext* context) override {
-    if (features::IsEmailAliasesEnabled()) {
-      EmailAliasesServiceFactory::GetInstance()->SetTestingFactory(
-          context,
-          base::BindLambdaForTesting([&](content::BrowserContext* context)
-                                         -> std::unique_ptr<KeyedService> {
-            return std::make_unique<EmailAliasesService>(
-                brave_account_auth_.BindAndGetRemote(),
-                context->GetDefaultStoragePartition()
-                    ->GetURLLoaderFactoryForBrowserProcess(),
-                CHECK_DEREF(user_prefs::UserPrefs::Get(context)));
-          }));
+    if (base::FeatureList::IsEnabled(
+            brave_account::features::BraveAccountFeatureForTesting())) {
+      brave_account::BraveAccountServiceFactory::GetInstance()
+          ->SetTestingFactory(
+              context,
+              base::BindLambdaForTesting([this](content::BrowserContext* ctx)
+                                             -> std::unique_ptr<KeyedService> {
+                return std::make_unique<brave_account::BraveAccountService>(
+                    Profile::FromBrowserContext(ctx)->GetPrefs(),
+                    test_url_loader_factory_.GetSafeWeakWrapper(),
+                    os_crypt_async_.get());
+              }));
     }
   }
 
@@ -140,16 +189,43 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
       // BraveBrowserCommandControllerWithEmailAliasesTest.
       user_prefs::UserPrefs::Get(browser()->profile())
           ->SetBoolean(prefs::kPromoShown, true);
-    }
 
-    ON_CALL(GetBraveAccountAuth(),
-            GetServiceToken(brave_account::mojom::Service::kEmailAliases,
-                            testing::_))
-        .WillByDefault([](auto service, auto callback) {
-          auto token = brave_account::mojom::GetServiceTokenResult::New();
-          token->serviceToken = "email-aliases-token";
-          std::move(callback).Run(base::ok(std::move(token)));
-        });
+      brave_account::BraveAccountServiceFactory::GetFor(browser()->profile())
+          ->BindInterface(authentication_.BindNewPipeAndPassReceiver());
+    }
+  }
+
+  void SetBraveAccountLoggedIn() {
+    MockLoginResponses(test_url_loader_factory_);
+
+    base::test::TestFuture<
+        base::expected<brave_account::mojom::LoginInitializeResultPtr,
+                       brave_account::mojom::LoginErrorPtr>>
+        login_init_future;
+    authentication_->LoginInitialize(
+        brave_account::mojom::Service::kEmailAliases, kSuccessEmail,
+        "serialized_ke1", login_init_future.GetCallback());
+    const auto login_init_result = login_init_future.Take();
+    ASSERT_TRUE(login_init_result.has_value());
+
+    base::test::TestFuture<
+        base::expected<brave_account::mojom::LoginFinalizeResultPtr,
+                       brave_account::mojom::LoginErrorPtr>>
+        login_finalize_future;
+    authentication_->LoginFinalize(
+        login_init_result.value()->encryptedLoginToken, "client_mac",
+        login_finalize_future.GetCallback());
+    ASSERT_TRUE(login_finalize_future.Get().has_value());
+
+    ASSERT_TRUE(base::test::RunUntil(
+        [this]() { return email_aliases_service()->IsAuthenticated(); }));
+  }
+
+  void SetBraveAccountLoggedOut() {
+    authentication_->LogOut();
+
+    ASSERT_TRUE(base::test::RunUntil(
+        [this]() { return !email_aliases_service()->IsAuthenticated(); }));
   }
 
   void SetUp() override {
@@ -330,16 +406,12 @@ class EmailAliasesBrowserTestBase : public InProcessBrowserTest {
                                  ui::mojom::MenuSourceType::kMouse);
   }
 
-  testing::NiceMock<brave_account::MockBraveAccountAuthentication>&
-  GetBraveAccountAuth() {
-    return brave_account_auth_;
-  }
-
  private:
   content::ContentMockCertVerifier mock_cert_verifier_;
   net::EmbeddedTestServer https_server_{net::EmbeddedTestServer::TYPE_HTTPS};
-  testing::NiceMock<brave_account::MockBraveAccountAuthentication>
-      brave_account_auth_;
+  network::TestURLLoaderFactory test_url_loader_factory_;
+  mojo::Remote<brave_account::mojom::Authentication> authentication_;
+  std::unique_ptr<os_crypt_async::OSCryptAsync> os_crypt_async_;
 };
 
 class EmailAliasesBrowserTest : public EmailAliasesBrowserTestBase {
@@ -405,11 +477,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuNotAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
-  auto* service = email_aliases_service();
-  {
-    auto initilized = test::AuthStateObserver::Setup(service, true);
-  }
-  service->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  SetBraveAccountLoggedIn();
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
 
@@ -439,7 +507,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorized) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  SetBraveAccountLoggedIn();
 
   const GURL settings_page("chrome://settings/email-aliases");
 
@@ -470,7 +538,7 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedManage) {
 }
 
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  SetBraveAccountLoggedIn();
 
   Navigate(GURL("https://a.test/email_aliases/inputs.html"));
   InjectHelpers(ActiveWebContents());
@@ -498,20 +566,17 @@ IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, ContextMenuAuthorizedCancel) {
   EXPECT_TRUE(AwaitText("#type-email", ""));  // text not changed
 }
 IN_PROC_BROWSER_TEST_F(EmailAliasesBrowserTest, LogInLogOut) {
-  // Prepare auth token
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  SetBraveAccountLoggedIn();
 
   // Settings in logged-in state
   Navigate(GURL("chrome://settings/email-aliases"));
   InjectHelpers(ActiveWebContents());
   Wait("#create-new-item-button");
 
-  // Reset token
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting("");
+  SetBraveAccountLoggedOut();
   WaitDisappear("#create-new-item-button");  // Settings in sing-in state.
 
-  // Logged-in again
-  email_aliases_service()->GetAuth()->SetAuthEmailForTesting(kSuccessEmail);
+  SetBraveAccountLoggedIn();
   Wait("#create-new-item-button");  // Logged-in state.
 }
 

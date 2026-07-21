@@ -112,7 +112,7 @@ EmailAliasesService::EmailAliasesService(
   CHECK(base::FeatureList::IsEnabled(email_aliases::features::kEmailAliases));
   CHECK(brave_account_auth);
 
-  auth_.emplace(pref_service_.get(), std::move(brave_account_auth),
+  auth_.emplace(std::move(brave_account_auth),
                 base::BindRepeating(&EmailAliasesService::OnAuthChanged,
                                     weak_factory_.GetWeakPtr()));
 }
@@ -154,19 +154,7 @@ std::string EmailAliasesService::GetAuthEmail() const {
   return auth_->GetAuthEmail();
 }
 
-mojom::AuthenticationStatus EmailAliasesService::GetCurrentStatus() {
-  if (auth_->IsAuthenticated()) {
-    return mojom::AuthenticationStatus::kAuthenticated;
-  }
-  return mojom::AuthenticationStatus::kUnauthenticated;
-}
-
 void EmailAliasesService::OnAuthChanged() {
-  const auto status = GetCurrentStatus();
-  const auto email = GetAuthEmail();
-  for (auto& observer : observers_) {
-    observer->OnAuthStateChanged(mojom::AuthState::New(status, email));
-  }
   RefreshAliases();
 }
 
@@ -205,13 +193,8 @@ void EmailAliasesService::DeleteAlias(const std::string& alias_email,
 
 void EmailAliasesService::AddObserver(
     mojo::PendingRemote<mojom::EmailAliasesServiceObserver> observer) {
-  auto id = observers_.Add(std::move(observer));
-  auto* remote = observers_.Get(id);
-  if (remote) {
-    remote->OnAuthStateChanged(
-        mojom::AuthState::New(GetCurrentStatus(), GetAuthEmail()));
-    RefreshAliases();
-  }
+  observers_.Add(std::move(observer));
+  RefreshAliases();
 }
 
 bool EmailAliasesService::IsAuthenticated() const {
@@ -252,7 +235,7 @@ void EmailAliasesService::OnEditAliasResponse(
 
 void EmailAliasesService::RefreshAliases() {
   CHECK(auth_);
-  if (observers_.empty() || !auth_->IsAuthenticated()) {
+  if (observers_.empty()) {
     return;
   }
   auth_->GetServiceToken(
