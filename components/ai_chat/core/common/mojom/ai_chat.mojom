@@ -257,10 +257,6 @@ interface AIChatUIHandler {
   ShowWorkspaceFolderPicker(string conversation_uuid)
       => (string? selected_path);
 
-  // Grants or revokes a per-conversation allowance for the workspace write
-  // tools to run without an individual permission prompt.
-  SetWorkspaceWritesAllowed(string conversation_uuid, bool allowed);
-
   // This might be a no-op if the UI isn't closeable
   CloseUI();
 

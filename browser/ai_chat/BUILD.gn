@@ -42,10 +42,6 @@ static_library("ai_chat") {
     "web_mcp_injection/web_mcp_injection_rule.h",
     "web_mcp_injection/web_mcp_injector.cc",
     "web_mcp_injection/web_mcp_injector.h",
-    "workspace_service_factory.cc",
-    "workspace_service_factory.h",
-    "workspace_tool_provider_factory.cc",
-    "workspace_tool_provider_factory.h",
   ]
 
   if (enable_ai_chat_tab_management_tool) {
@@ -377,6 +373,7 @@ source_set("browser_tests") {
       "page_content_fetcher_browsertest.cc",
       "text_file_extractor_browsertest.cc",
       "web_mcp_browsertest.cc",
+      "workspace_tools_browsertest.cc",
     ]
 
     if (enable_pdf) {

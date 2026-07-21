@@ -255,7 +255,6 @@ export function createMockUIHandler(
     disassociateContent: () => {},
     openAIChatAgentProfile: () => {},
     showSoftKeyboard: () => {},
-    setWorkspaceWritesAllowed: () => {},
 
     // Apply overrides
     ...overrides,

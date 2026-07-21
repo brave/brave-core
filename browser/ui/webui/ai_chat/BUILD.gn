@@ -21,6 +21,8 @@ source_set("ai_chat") {
     "code_sandbox_ui.h",
     "workspace_folder_chooser.cc",
     "workspace_folder_chooser.h",
+    "workspace_ui.cc",
+    "workspace_ui.h",
   ]
 
   deps = [

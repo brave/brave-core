@@ -464,7 +464,7 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                 focusInput={props.context.focusInput}
                 onSelectWorkspaceFolder={
                   aiChatContext.isWorkspaceToolsEnabled
-                    && conversationState.conversationUuid
+                  && conversationState.conversationUuid
                     ? () => {
                         aiChatContext.api.uiHandler
                           .showWorkspaceFolderPicker(
@@ -478,17 +478,6 @@ const InputBox = React.forwardRef<InputBoxHandle, InputBoxProps>(
                               )
                             }
                           })
-                      }
-                    : undefined
-                }
-                onAllowFileEdits={
-                  aiChatContext.isWorkspaceToolsEnabled
-                    && conversationState.conversationUuid
-                    ? () => {
-                        aiChatContext.api.uiHandler.setWorkspaceWritesAllowed(
-                          conversationState.conversationUuid!,
-                          true,
-                        )
                       }
                     : undefined
                 }
