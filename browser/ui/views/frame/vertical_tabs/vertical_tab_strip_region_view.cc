@@ -794,15 +794,24 @@ void BraveVerticalTabStripRegionView::OnMouseEntered() {
   ScheduleFloatingModeTimer();
 }
 
-void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
+void BraveVerticalTabStripRegionView::HandleMouseEvent(
+    const gfx::PointF& point_in_screen) {
+  if (ShowVerticalTabStripOnMouseOver(point_in_screen)) {
+    return;
+  }
+
+  CollapseVerticalTabStripOnMouseOut(point_in_screen);
+}
+
+bool BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
     const gfx::PointF& point_in_screen) {
   if (!IsFloatingVerticalTabsEnabled()) {
-    return;
+    return false;
   }
 
   // If already expanded, no need to show on mouse over.
   if (state_ == State::kExpanded || state_ == State::kFloating) {
-    return;
+    return false;
   }
 
   gfx::RectF mouse_event_detect_bounds(
@@ -819,8 +828,24 @@ void BraveVerticalTabStripRegionView::ShowVerticalTabStripOnMouseOver(
 
   if (mouse_event_detect_bounds.Contains(point_in_screen)) {
     OnMouseEntered();
+    return true;
+  }
+
+  return false;
+}
+
+void BraveVerticalTabStripRegionView::CollapseVerticalTabStripOnMouseOut(
+    const gfx::PointF& point_in_screen) {
+  if (state_ != State::kFloating) {
     return;
   }
+
+  if (gfx::RectF(GetBoundsInScreen()).Contains(point_in_screen)) {
+    return;
+  }
+
+  mouse_enter_timer_.Stop();
+  ScheduleCollapseTimer();
 }
 
 void BraveVerticalTabStripRegionView::OnMousePressedInTree() {

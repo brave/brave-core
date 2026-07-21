@@ -101,9 +101,15 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ListenFullscreenChanges();
   void StopListeningFullscreenChanges();
 
-  // Show vertical tab strip when mouse moves around the hot corner
-  // when it's completely hidden.
-  void ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
+  // Handles a mouse move event from the browser-wide mouse move monitor.
+  // Shows the vertical tab strip when the mouse moves around the hot corner
+  // while it's completely hidden, and collapses it when the mouse moves out
+  // of its area while floating. The collapse check is a self-correcting
+  // fallback for OnMouseExited(): that callback can rely on a stale
+  // IsMouseHovered() reading right at the boundary with web contents and
+  // never schedule a collapse, whereas this re-checks the live cursor
+  // position on every subsequent move.
+  void HandleMouseEvent(const gfx::PointF& point_in_screen);
 
   // views::View:
   gfx::Size CalculatePreferredSize(
@@ -176,6 +182,16 @@ class BraveVerticalTabStripRegionView : public views::View,
   void ScheduleFloatingModeTimer();
   void ScheduleCollapseTimer();
   void OnMouseEntered();
+
+  // Show vertical tab strip when mouse moves around the hot corner when it's
+  // completely hidden. Returns true if the vertical tab strip is shown, false
+  // otherwise.
+  bool ShowVerticalTabStripOnMouseOver(const gfx::PointF& point_in_screen);
+
+  // Collapse vertical tab strip when mouse moves out of its area while
+  // floating.
+  void CollapseVerticalTabStripOnMouseOut(const gfx::PointF& point_in_screen);
+
   void OnMousePressedInTree();
   void UpdateBubbleArrow();
 
