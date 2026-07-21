@@ -89,6 +89,10 @@ SHIM_TARGETS: dict[str, Shim] = {
         'src/brave/third_party/node/node-win-x64/node_modules/npm/bin/npm-cli.js',
         'node',
         self_update_extra_dep_entry='src/brave/third_party/node/node-win-x64'),
+    'pnpm': Shim(
+        'src/brave/third_party/node/node_modules/pnpm/bin/pnpm.mjs',
+        'node',
+        self_update_extra_dep_entry='src/brave/third_party/node/node_modules'),
 }
 
 
@@ -341,7 +345,8 @@ def build_parser() -> argparse.ArgumentParser:
         help='Allow falling back to a binary on $PATH if outside a checkout.')
     parser.add_argument('tool',
                         metavar='TOOL',
-                        help='shim to run (e.g. brockit, plaster, node, npm)')
+                        help='shim to run (e.g. brockit, plaster, node, npm, '
+                        'pnpm)')
     parser.add_argument('tool_args',
                         metavar='...',
                         nargs=argparse.REMAINDER,
