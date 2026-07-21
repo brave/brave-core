@@ -1761,6 +1761,44 @@ class RewriterFormsTest(unittest.TestCase):
             result, 'Foo_ChromiumImpl::Foo_ChromiumImpl() {}\n'
             'void Foo_ChromiumImpl::Bar() {}\n')
 
+    def test_rename_class_renames_forwarding_constructor(self):
+        # A forwarding (delegating) constructor names the class again in its
+        # member initializer list -- `: Foo(...)` -- which tree-sitter parses as
+        # a field_identifier, not the identifier/type_identifier the other uses
+        # are. That token must be renamed along with the rest (the real-world
+        # miss was `CookieMonster::CookieMonster(...) : CookieMonster(...)`).
+        result = self._apply(
+            'rename_fwd_ctor.cc', 'Foo::Foo(int a)\n'
+            '    : Foo(base::PassKey<Foo>(), a) {}\n'
+            '\n'
+            'Foo::Foo(base::PassKey<Foo>, int a) {}\n', 'substitutions:\n'
+            '  - description: rename Foo, forwarding ctor included\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'Foo_ChromiumImpl::Foo_ChromiumImpl(int a)\n'
+            '    : Foo_ChromiumImpl(base::PassKey<Foo_ChromiumImpl>(), a) {}\n'
+            '\n'
+            'Foo_ChromiumImpl::Foo_ChromiumImpl('
+            'base::PassKey<Foo_ChromiumImpl>, int a) {}\n')
+
+    def test_rename_class_leaves_member_access_in_initializer_untouched(self):
+        # The forwarding-ctor fix only claims the *name* slot of a member
+        # initializer (`: Foo(...)`). A same-spelled member access passed as an
+        # argument (`other.Foo`) is not that slot and must survive, or the fix
+        # would over-match member accesses that merely share the class name.
+        result = self._apply(
+            'rename_init_member.cc', 'Foo::Foo(const Other& other)\n'
+            '    : value_(other.Foo) {}\n', 'substitutions:\n'
+            '  - description: rename Foo but keep the member access\n'
+            '    rename_class:\n'
+            '      class_name: Foo\n'
+            '      rename: Foo_ChromiumImpl\n')
+        self.assertEqual(
+            result, 'Foo_ChromiumImpl::Foo_ChromiumImpl(const Other& other)\n'
+            '    : value_(other.Foo) {}\n')
+
     def test_rename_class_leaves_string_literal_untouched(self):
         # The whole point of matching AST identifier nodes: a same-spelled
         # string literal survives. The exact-quote-adjacent form (`"Foo"`) is
