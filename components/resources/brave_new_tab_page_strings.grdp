@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <grit-part>
 
+  <message name="IDS_NEW_TAB_WHAT_IS_A_SPONSORED_SITE_LABEL" desc="Label for 'What is a sponsored site?' link in sponsored site context menu" formatter_data="webui=BraveNewTabPage">
+    What is a sponsored site?
+  </message>
+
   <message name="IDS_NEW_TAB_ADD_TOP_SITE_LABEL" desc="Label button that opens the Add Site dialog" formatter_data="webui=BraveNewTabPage">
     Add site
   </message>
@@ -129,6 +133,10 @@
     Refresh on every new tab
   </message>
 
+  <message name="IDS_NEW_TAB_REMOVE_SPONSORED_SITES_LABEL" desc="Label for button that disables sponsored sites" formatter_data="webui=BraveNewTabPage">
+    Remove sponsored sites
+  </message>
+
   <message name="IDS_NEW_TAB_REMOVE_TOP_SITE_LABEL" desc="Label for button that removes a top site" formatter_data="webui=BraveNewTabPage">
     Remove
   </message>
@@ -253,6 +261,10 @@
     Show new tab page ads
   </message>
 
+  <message name="IDS_NEW_TAB_SHOW_SPONSORED_SITES_LABEL" desc="Label for control that toggles sponsored site visibility in top sites" formatter_data="webui=BraveNewTabPage">
+    Show sponsored sites
+  </message>
+
   <message name="IDS_NEW_TAB_SHOW_STATS_LABEL" desc="Label for showing or hiding Brave Stats on the NTP" formatter_data="webui=BraveNewTabPage">
     Brave Stats
   </message>
@@ -271,6 +283,10 @@
 
   <message name="IDS_NEW_TAB_SOLID_BACKGROUND_LABEL" desc="Solid background colors title" formatter_data="webui=BraveNewTabPage">
     Solid colors
+  </message>
+
+  <message name="IDS_NEW_TAB_SPONSORED_SITE_TOOLTIP_TEXT" desc="Tooltip text shown when hovering a sponsored site tile. $1 is the site name." formatter_data="webui=BraveNewTabPage">
+    Our new sponsored sites help us keep Brave free. If you use <ph name="SITE_NAME">$1<ex>Amazon</ex></ph> from your New Tab Page, you are supporting Brave's mission. You can hide or change it at any time. <ph name="LINK_BEGIN">$2</ph>Learn more<ph name="LINK_END">/$2</ph>.
   </message>
 
   <message name="IDS_NEW_TAB_STATS_ADS_BLOCKED_TEXT" desc="Text for trackers and ads blocked stat" formatter_data="webui=BraveNewTabPage">

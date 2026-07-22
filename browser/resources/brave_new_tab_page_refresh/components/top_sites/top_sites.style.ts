@@ -38,6 +38,11 @@ export const style = scoped.css`
     --self-page-width:
       calc(var(--self-columns-per-page) * var(--self-tile-width));
 
+    /* Do not add transform/filter/backdrop-filter/contain to this rule or
+       any ancestor between it and the root selector above. Any of those
+       properties establishes a new containing block for position:fixed
+       descendants, which will result in embedded tooltips getting
+       clipped. */
     position: relative;
     overflow-x: scroll;
     overflow-y: hidden;
@@ -147,6 +152,39 @@ export const style = scoped.css`
     font: ${font.small.semibold};
     text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.40);
     text-align: center;
+  }
+
+  .sponsored-site-tooltip {
+    max-width: 320px;
+  }
+
+  /* Collapses the tooltip's shadow-DOM bubble, which stays visible even
+     when the text inside it is hidden. */
+  .top-sites:has(:popover-open) {
+    --leo-tooltip-background: transparent;
+    --leo-tooltip-padding: 0;
+    --leo-tooltip-shadow: none;
+  }
+
+  .top-sites:has(:popover-open) .sponsored-site-tooltip {
+    display: none;
+  }
+
+  .top-site-ad-disclosure {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    align-self: stretch;
+    color: ${color.white};
+    text-align: center;
+    text-shadow: 0px 1px 4px rgba(0, 0, 0, 0.20);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 100%;
+    letter-spacing: -0.08px;
+    opacity: 0.6;
+    margin-top: -6px;
   }
 
   .left-spacer {

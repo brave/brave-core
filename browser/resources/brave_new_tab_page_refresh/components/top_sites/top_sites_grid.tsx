@@ -15,8 +15,10 @@ import {
 import { getString } from '../../lib/strings'
 import { usePersistedJSON } from '$web-common/usePersistedState'
 import { TopSitesTile } from './top_site_tile'
+import { SponsoredSitesTile } from './sponsored_site_tile'
 import { createTileDragHandler } from './tile_drag_handler'
 import { inlineCSSVars } from '../../lib/inline_css_vars'
+import { GridItem, useTopSitesGridItems } from './top_sites_grid_items'
 
 import { horizontalContentPadding } from '../app.style'
 
@@ -36,11 +38,13 @@ interface Props {
   canReorderSites: boolean
   onAddTopSite: () => void
   onTopSiteContextMenu: (topSite: TopSite, event: React.MouseEvent) => void
+  onSponsoredSiteContextMenu: (event: React.MouseEvent) => void
 }
 
 export function TopSitesGrid(props: Props) {
   const actions = useTopSitesActions()
-  const topSites = useTopSitesState((s) => s.topSites)
+  const topSitesCount = useTopSitesState((s) => s.topSites.length)
+  const gridItems = useTopSitesGridItems({ canAddSite: props.canAddSite })
   const columnsPerPage = useColumnsPerPage(
     props.expanded ? maxTileColumnCount : collapsedTileColumnCount,
   )
@@ -53,21 +57,21 @@ export function TopSitesGrid(props: Props) {
 
   const [dragHandler] = React.useState(() =>
     createTileDragHandler({
-      tileSelector: 'a',
+      tileSelector: 'a.top-site-tile',
       autoScroll: 'horizontal',
     }),
   )
 
   const pageWidth = columnsPerPage * tileWidth
-  const tileCount = topSites.length + (props.canAddSite ? 1 : 0)
+
+  const tileCount = gridItems.length
 
   const pages = React.useMemo(() => {
-    return splitIntoPages(topSites, {
+    return splitIntoPages(gridItems, {
       columnsPerPage,
       rowsPerPage: props.expanded ? maxTileRowCount : collapsedTileRowCount,
-      canAddSite: props.canAddSite,
     })
-  }, [topSites, tileCount, columnsPerPage, props.canAddSite, props.expanded])
+  }, [gridItems, columnsPerPage, props.expanded])
 
   React.useEffect(() => {
     const elem = scrollRef.current
@@ -87,13 +91,32 @@ export function TopSitesGrid(props: Props) {
         scrollToPage(scrollPage + (direction === 'forward' ? 1 : -1))
       },
       onDrop(from, to) {
-        const site = topSites[from]
-        if (site && to >= 0) {
-          actions.setTopSitePosition(site.url, to)
+        // `from`/`to` are indices over every rendered <a> tile, including
+        // sponsored sites that are rendered ahead of top sites and are not
+        // draggable.
+        const fromItem = gridItems[from]
+        if (!fromItem || fromItem.type !== 'top-site') {
+          return
+        }
+
+        // A drop at or before a (non-draggable) sponsored site snaps to the
+        // start of the top sites list; a drop past the last top site snaps
+        // to the end.
+        const toItem = gridItems[to]
+        let position: number
+        if (toItem?.type === 'top-site') {
+          position = toItem.index
+        } else if (toItem?.type === 'sponsored-site') {
+          position = 0
+        } else {
+          position = topSitesCount - 1
+        }
+        if (position >= 0) {
+          actions.setTopSitePosition(fromItem.site.url, position)
         }
       },
     })
-  }, [scrollPage, topSites])
+  }, [scrollPage, gridItems, topSitesCount])
 
   useTopSiteAdded(() => {
     const elem = scrollRef.current
@@ -146,9 +169,9 @@ export function TopSitesGrid(props: Props) {
                 className='top-site-row'
               >
                 {row.map((tile, i) =>
-                  tile === 'add-button' ? (
+                  tile.type === 'add-button' ? (
                     <button
-                      key={i}
+                      key='add-button'
                       className='top-site-tile'
                       onClick={props.onAddTopSite}
                     >
@@ -159,12 +182,18 @@ export function TopSitesGrid(props: Props) {
                         {getString(S.NEW_TAB_ADD_TOP_SITE_LABEL)}
                       </span>
                     </button>
+                  ) : tile.type === 'sponsored-site' ? (
+                    <SponsoredSitesTile
+                      key={tile.site.targetUrl}
+                      site={tile.site}
+                      onContextMenu={props.onSponsoredSiteContextMenu}
+                    />
                   ) : (
                     <TopSitesTile
-                      key={i}
-                      topSite={tile}
+                      key={tile.site.url}
+                      topSite={tile.site}
                       canDrag={props.canReorderSites}
-                      onContextMenu={contextMenuHandler(tile)}
+                      onContextMenu={contextMenuHandler(tile.site)}
                       onNavigate={actions.recordTopSiteClick}
                     />
                   ),
@@ -202,7 +231,7 @@ function useColumnsPerPage(maxColumns: number) {
 // In order to avoid a layout dependency on the dimensions of the
 // not-yet-rendered top sites container, calculate the available grid width
 // based upon the current body width, minus non-grid width.
-function getColumnsPerPage(maxColumns: number) {
+export function getColumnsPerPage(maxColumns: number) {
   const available =
     document.body.clientWidth - nonGridWidth - horizontalContentPadding * 2
   let columns = Math.floor(available / tileWidth)
@@ -211,31 +240,26 @@ function getColumnsPerPage(maxColumns: number) {
   return columns
 }
 
-interface SplitIntoPagesOptions {
+export interface SplitIntoPagesOptions {
   columnsPerPage: number
   rowsPerPage: number
-  canAddSite: boolean
 }
 
-type GridItem = TopSite | 'add-button'
-
-function splitIntoPages(topSites: TopSite[], options: SplitIntoPagesOptions) {
-  const { columnsPerPage, rowsPerPage, canAddSite } = options
+export function splitIntoPages(
+  items: GridItem[],
+  options: SplitIntoPagesOptions,
+) {
+  const { columnsPerPage, rowsPerPage } = options
 
   if (columnsPerPage === 0 || rowsPerPage === 0) {
     return []
-  }
-
-  const tiles: GridItem[] = [...topSites]
-  if (canAddSite) {
-    tiles.push('add-button')
   }
 
   let currentRow: GridItem[] = []
   let currentPage: GridItem[][] = [currentRow]
   const pages: GridItem[][][] = [currentPage]
 
-  tiles.forEach((tile) => {
+  items.forEach((item) => {
     if (currentRow.length >= columnsPerPage) {
       if (currentPage.length >= rowsPerPage) {
         currentPage = []
@@ -244,13 +268,13 @@ function splitIntoPages(topSites: TopSite[], options: SplitIntoPagesOptions) {
       currentRow = []
       currentPage.push(currentRow)
     }
-    currentRow.push(tile)
+    currentRow.push(item)
   })
 
   return pages
 }
 
-function useTopSiteAdded(callback: () => void, deps: any[]) {
+export function useTopSiteAdded(callback: () => void, deps: any[]) {
   const count = useTopSitesState((s) => s.topSites.length)
   const prevRef = React.useRef(count)
   React.useEffect(() => {

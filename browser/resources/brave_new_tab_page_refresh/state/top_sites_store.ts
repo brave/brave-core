@@ -3,20 +3,26 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { StateStore, createStateStore } from '$web-common/state_store'
-
+import { createStateStore, StateStore } from '$web-common/state_store'
 import {
+  SponsoredSite,
   TopSite,
   TopSitesListKind,
 } from 'gen/brave/browser/ui/webui/brave_new_tab_page_refresh/brave_new_tab_page.mojom.m.js'
 
-export { TopSite, TopSitesListKind }
+export { SponsoredSite, TopSite, TopSitesListKind }
+
+export const sponsoredSiteLearnMoreURL =
+  'https://support.brave.app/hc/en-us/articles/47175807694989'
 
 export interface TopSitesState {
   initialized: boolean
+
   maxCustomTopSites: number
+  showSponsoredSites: boolean
   showTopSites: boolean
   topSitesListKind: TopSitesListKind
+  sponsoredSites: SponsoredSite[]
   topSites: TopSite[]
   actions: TopSitesActions
 }
@@ -27,10 +33,13 @@ export function defaultTopSitesStore(): TopSitesStore {
   return createStateStore<TopSitesState>({
     initialized: false,
     maxCustomTopSites: 48,
+    showSponsoredSites: true,
     showTopSites: true,
     topSitesListKind: TopSitesListKind.kMostVisited,
+    sponsoredSites: [],
     topSites: [],
     actions: {
+      setShowSponsoredSites(showSponsoredSites) {},
       setShowTopSites(showTopSites) {},
       setTopSitesListKind(listKind) {},
       addTopSite(url, title) {},
@@ -44,6 +53,7 @@ export function defaultTopSitesStore(): TopSitesStore {
 }
 
 export interface TopSitesActions {
+  setShowSponsoredSites: (showSponsoredSites: boolean) => void
   setShowTopSites: (showTopSites: boolean) => void
   setTopSitesListKind: (listKind: TopSitesListKind) => void
   addTopSite: (url: string, title: string) => void
