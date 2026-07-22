@@ -195,9 +195,7 @@ export default function ImageLightbox(props: Props) {
                 fab
                 kind='outline'
                 className={
-                  isCopySuccess
-                    ? styles.copyButtonSuccess
-                    : styles.actionButton
+                  isCopySuccess ? styles.copyButtonSuccess : styles.actionButton
                 }
                 title={getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL)}
                 aria-label={getLocale(
@@ -211,7 +209,9 @@ export default function ImageLightbox(props: Props) {
                 fab
                 kind='outline'
                 className={styles.actionButton}
-                title={getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL)}
+                title={getLocale(
+                  S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
+                )}
                 aria-label={getLocale(
                   S.CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL,
                 )}

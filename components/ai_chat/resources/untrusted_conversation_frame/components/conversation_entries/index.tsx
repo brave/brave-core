@@ -442,8 +442,9 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                                     firstEntryEdit.uploadedFiles || []
                                   }
                                   onPreview={(file) => {
-                                    conversationContext.parentUiFrame
-                                      ?.showImageLightbox(file)
+                                    conversationContext.parentUiFrame?.showImageLightbox(
+                                      file,
+                                    )
                                   }}
                                 />
                               </div>

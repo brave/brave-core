@@ -97,9 +97,10 @@ describe('ImageLightbox', () => {
 
     // 800x400 fits in 720x720 max → dialog width 720 (height follows via
     // height: auto on the image, preserving aspect ratio).
-    expect(
-      container.querySelector('[data-dialog-style]'),
-    ).toHaveAttribute('data-dialog-style', '--leo-dialog-width: 720px')
+    expect(container.querySelector('[data-dialog-style]')).toHaveAttribute(
+      'data-dialog-style',
+      '--leo-dialog-width: 720px',
+    )
   })
 
   it('copies the image to the clipboard', async () => {
