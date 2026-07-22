@@ -261,14 +261,11 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
                         indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_IMAGES);
                         indexData.removeEntryForKey(frag, PREF_SPONSORED_IMAGES_LEARN_MORE);
                     }
-                    // The opening-screen options are only shown when the Fresh NTP feature is
-                    // enabled and the assigned variant is not "A"; otherwise the whole category is
-                    // removed from the screen. Mirror that here.
-                    if (!BraveFreshNtpHelper.isEnabled()
-                            || "A".equals(BraveFreshNtpHelper.getVariant())) {
-                        indexData.removeEntryForKey(frag, PREF_OPENING_SCREEN);
-                        indexData.removeEntryForKey(frag, PREF_OPENING_SCREEN_CATEGORY);
-                    }
+                    // The opening-screen section (PREF_OPENING_SCREEN_CATEGORY) is shown only when
+                    // the Fresh NTP feature is enabled with a non-"A" variant, but it needs no
+                    // handling here: the PreferenceCategory itself is never indexed, and its single
+                    // child (PREF_OPENING_SCREEN) is a custom radio-group widget with no
+                    // android:title, so it is not matchable by search regardless of feature state.
                 }
             };
 }
