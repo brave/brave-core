@@ -91,7 +91,7 @@ std::vector<int> BraveTabStripModel::GetTreeTabDescendantIndices(int index) {
   }
 
   auto* node_collection =
-      tabs::TreeTabNodeTabCollection::GetNearestTreeTabNodeCollection(
+      tabs::TreeTabNodeTabCollection::GetTreeTabNodeCollection(
           GetTabAtIndex(index));
   if (!node_collection) {
     return {};
