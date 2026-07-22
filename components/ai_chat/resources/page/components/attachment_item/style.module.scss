@@ -36,7 +36,7 @@
 .image {
   width: 40px;
   height: 40px;
-  object-fit: contain;
+  object-fit: cover;
   border-radius: var(--leo-radius-s);
   flex-shrink: 0;
 }

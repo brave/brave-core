@@ -19,7 +19,14 @@ jest.mock('@brave/leo/react/dialog', () => {
     if (!props.isOpen) {
       return null
     }
-    return <div className={props.className}>{props.children}</div>
+    return (
+      <div
+        className={props.className}
+        data-dialog-style={props.style}
+      >
+        {props.children}
+      </div>
+    )
   }
 })
 
@@ -73,8 +80,8 @@ describe('ImageLightbox', () => {
     )
   })
 
-  it('sizes the image area from the image aspect ratio', () => {
-    render(
+  it('sizes the dialog width from the image aspect ratio', () => {
+    const { container } = render(
       <ImageLightbox
         file={mockFile}
         onClose={jest.fn()}
@@ -88,9 +95,11 @@ describe('ImageLightbox', () => {
       fireEvent.load(image)
     })
 
-    const container = image.parentElement as HTMLElement
-    // 800x400 fits in 720x720 max → scaled to 720x360
-    expect(container).toHaveStyle({ width: '720px', height: '360px' })
+    // 800x400 fits in 720x720 max → dialog width 720 (height follows via
+    // height: auto on the image, preserving aspect ratio).
+    expect(
+      container.querySelector('[data-dialog-style]'),
+    ).toHaveAttribute('data-dialog-style', '--leo-dialog-width: 720px')
   })
 
   it('copies the image to the clipboard', async () => {

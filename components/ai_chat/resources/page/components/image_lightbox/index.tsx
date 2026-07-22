@@ -25,29 +25,28 @@ function getImageBlob(file: Mojom.UploadedFile): Blob {
   return new Blob([new Uint8Array(file.data)], { type: 'image/png' })
 }
 
-function getFittedImageSize(
+/**
+ * Returns the dialog width that fits the image within the viewport caps while
+ * preserving aspect ratio. Height is left to the image (`height: auto`) so the
+ * preview area always matches the image with no letterboxing.
+ */
+function getFittedDialogWidth(
   naturalWidth: number,
   naturalHeight: number,
-): { width: number; height: number } {
+): number {
   const maxWidth = Math.min(window.innerWidth * 0.9, MAX_IMAGE_WIDTH)
   const maxHeight = Math.min(window.innerHeight * 0.7, MAX_IMAGE_HEIGHT)
-  const scale = Math.min(
-    maxWidth / naturalWidth,
-    maxHeight / naturalHeight,
-    1,
-  )
-  return {
-    width: Math.max(1, Math.round(naturalWidth * scale)),
-    height: Math.max(1, Math.round(naturalHeight * scale)),
+  let width = Math.min(naturalWidth, maxWidth)
+  const heightAtWidth = (width / naturalWidth) * naturalHeight
+  if (heightAtWidth > maxHeight) {
+    width = (maxHeight / naturalHeight) * naturalWidth
   }
+  return Math.max(1, Math.round(width))
 }
 
 export default function ImageLightbox(props: Props) {
   const { file, onClose } = props
-  const [imageSize, setImageSize] = React.useState<{
-    width: number
-    height: number
-  } | null>(null)
+  const [dialogWidth, setDialogWidth] = React.useState<number | null>(null)
   const [isCopySuccess, setIsCopySuccess] = React.useState(false)
   const copySuccessTimeoutRef = React.useRef<ReturnType<
     typeof setTimeout
@@ -68,7 +67,7 @@ export default function ImageLightbox(props: Props) {
   }, [file])
 
   React.useEffect(() => {
-    setImageSize(null)
+    setDialogWidth(null)
     setIsCopySuccess(false)
     clearCopySuccessTimeout()
   }, [file, clearCopySuccessTimeout])
@@ -107,7 +106,7 @@ export default function ImageLightbox(props: Props) {
     (event: React.SyntheticEvent<HTMLImageElement>) => {
       const { naturalWidth, naturalHeight } = event.currentTarget
       if (naturalWidth > 0 && naturalHeight > 0) {
-        setImageSize(getFittedImageSize(naturalWidth, naturalHeight))
+        setDialogWidth(getFittedDialogWidth(naturalWidth, naturalHeight))
       }
     },
     [],
@@ -156,8 +155,12 @@ export default function ImageLightbox(props: Props) {
     link.click()
   }, [file, dataUrl])
 
-  const dialogStyle = imageSize
-    ? `--leo-dialog-width: ${imageSize.width}px`
+  // Leo Dialog uses --leo-dialog-width as max-width (its own width is
+  // nearly full-bleed). Cap max-width to the fitted image width so the
+  // dialog shrinks to the image; the <img> uses height: auto so the
+  // preview height always matches the aspect ratio with no letterboxing.
+  const dialogStyle = dialogWidth
+    ? `--leo-dialog-width: ${dialogWidth}px`
     : undefined
 
   return (
@@ -172,14 +175,7 @@ export default function ImageLightbox(props: Props) {
     >
       {file && (
         <div className={styles.card}>
-          <div
-            className={styles.imageContainer}
-            style={
-              imageSize
-                ? { width: imageSize.width, height: imageSize.height }
-                : undefined
-            }
-          >
+          <div className={styles.imageContainer}>
             {dataUrl && (
               <img
                 className={styles.image}
