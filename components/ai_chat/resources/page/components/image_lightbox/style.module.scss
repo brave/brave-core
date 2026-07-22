@@ -5,7 +5,7 @@
 
 .dialog {
   --leo-dialog-padding: 0;
-  --leo-dialog-width: min(90vw, 480px);
+  --leo-dialog-width: min(90vw, 400px);
   --leo-dialog-background: transparent;
   background: transparent;
   box-shadow: none;
@@ -75,7 +75,10 @@
   --leo-icon-size: 20px;
 }
 
+.actionButton {
+  --leo-button-color: var(--leo-color-icon-secondary);
+}
+
 .copyButtonSuccess {
   --leo-button-color: var(--leo-color-systemfeedback-success-icon);
-  --leo-icon-color: var(--leo-color-systemfeedback-success-text);
 }
