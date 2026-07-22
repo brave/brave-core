@@ -6,10 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 #define BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 
-#include <optional>
-#include <string>
-
 #include "ui/base/metadata/metadata_header_macros.h"
+#include "ui/color/color_id.h"
 #include "ui/views/view.h"
 
 // The RoundedSeparator class is a view that shows a line used to visually
@@ -26,7 +24,7 @@ class RoundedSeparator : public views::View {
   RoundedSeparator& operator=(const RoundedSeparator&) = delete;
   ~RoundedSeparator() override;
 
-  void SetColor(SkColor color);
+  void SetColorId(ui::ColorId color_id);
 
   void SetPreferredHeight(int height);
 
@@ -37,7 +35,7 @@ class RoundedSeparator : public views::View {
 
  private:
   int preferred_height_ = kThickness;
-  std::optional<SkColor> overridden_color_;
+  ui::ColorId color_id_ = ui::kColorSeparator;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
