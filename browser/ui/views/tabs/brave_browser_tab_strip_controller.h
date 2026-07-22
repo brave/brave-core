@@ -60,6 +60,7 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   void OnTreeTabChanged(const TreeTabChange& change) override;
 
   // BrowserTabStripController overrides:
+  void SelectTab(int model_index, const ui::Event& event) override;
   void ExecuteContextMenuCommand(tabs::TabInterface* tab,
                                  TabStripModel::ContextMenuCommand command_id,
                                  int event_flags) override;
@@ -77,6 +78,18 @@ class BraveBrowserTabStripController : public BrowserTabStripController {
   bool ShouldShowTreeTabs();
 
   void ExpandAllCollapsedAncestors(const tree_tab::TreeTabNodeId& id);
+
+  // Set to the resolved model index right after SelectTab() expands a
+  // tree-tab parent's subtree selection on a mouse press, and consumed (read
+  // then cleared) by the very next SelectTab() call. Tab::OnMousePressed()
+  // only calls SelectTab() on press when the tab wasn't already selected, and
+  // Tab::OnMouseReleased() unconditionally calls it again right afterward
+  // when no drag occurred - so a first click on a previously-unselected
+  // parent produces two SelectTab() calls for the same physical click. Without
+  // this, the release call would see the subtree as "already selected" (from
+  // the press moments earlier) and mistake it for a deliberate second click,
+  // collapsing what it just selected. See SelectTab() for details.
+  std::optional<int> tree_tab_subtree_expanded_on_press_index_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_TABS_BRAVE_BROWSER_TAB_STRIP_CONTROLLER_H_

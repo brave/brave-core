@@ -25,6 +25,12 @@
 #include "chrome/browser/ui/tabs/tab_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/tabs/dragging/tab_drag_controller.h"
+#include "chrome/browser/ui/views/tabs/shared/tab_strip_types.h"
+#include "chrome/browser/ui/views/tabs/tab.h"
+#include "chrome/browser/ui/views/tabs/tab_strip.h"
+#include "chrome/browser/ui/views/tabs/tab_strip_controller.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "components/prefs/pref_service.h"
 #include "components/saved_tab_groups/public/tab_group_sync_service.h"
@@ -40,6 +46,7 @@
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "ui/base/models/list_selection_model.h"
+#include "ui/events/event.h"
 
 namespace {
 
@@ -144,6 +151,35 @@ class TreeTabsBrowserTest : public InProcessBrowserTest {
 
   void SetTreeTabsEnabled(bool enabled) {
     profile()->GetPrefs()->SetBoolean(brave_tabs::kTreeTabsEnabled, enabled);
+  }
+
+  // The underlying TabStrip (and its TabStripController) is used regardless
+  // of whether the tab strip is currently displayed horizontally or
+  // vertically, so this is safe to use even with vertical tabs enabled (see
+  // other tests' use of horizontal_tab_strip_for_testing() under
+  // brave/browser/ui/views/frame/vertical_tabs/).
+  TabStripController* controller() { return tab_strip()->controller(); }
+
+  TabStrip* tab_strip() {
+    return browser()->GetBrowserView().horizontal_tab_strip_for_testing();
+  }
+
+  // Simulates clicking |model_index| with a plain (unmodified) left click,
+  // calling TabStripController::SelectTab() the same way
+  // Tab::OnMousePressed()/Tab::OnMouseReleased() do: Tab::OnMousePressed()
+  // only calls SelectTab() on press if the tab wasn't already selected;
+  // Tab::OnMouseReleased() always calls it again afterward when no drag
+  // occurred.
+  void ClickTab(int model_index) {
+    if (!tab_strip_model().IsTabSelected(model_index)) {
+      ui::MouseEvent press(ui::EventType::kMousePressed, gfx::PointF(),
+                           gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+      controller()->SelectTab(model_index, press);
+    }
+
+    ui::MouseEvent release(ui::EventType::kMouseReleased, gfx::PointF(),
+                           gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+    controller()->SelectTab(model_index, release);
   }
 
   // Tab group APIs used in tests require the sync service to report
@@ -3404,4 +3440,183 @@ IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
                 ->GetParentCollection()
                 ->type(),
             tabs::TabCollection::Type::UNPINNED);
+}
+
+// A plain mouse press on a tree-tab parent must expand the selection to
+// include its whole subtree right away - before any release/drag happens -
+// since a subsequent drag reads the live selection at press time.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       SelectTab_PressOnParent_SelectsWholeSubtreeImmediately) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  ui::MouseEvent press(ui::EventType::kMousePressed, gfx::PointF(),
+                       gfx::PointF(), base::TimeTicks::Now(), 0, 0);
+  controller()->SelectTab(0, press);
+
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(0));
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(1));
+}
+
+// Regression test: releasing the mouse after a plain click (no drag) used to
+// call SelectTab() again with a gesture type that bypassed the subtree
+// expansion, resetting the selection back down to just the clicked tab. The
+// subtree must remain selected after the release.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    SelectTab_ClickOnParent_KeepsSubtreeSelectedAfterRelease) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  ClickTab(0);
+
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(0));
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(1));
+}
+
+// A second plain click on a tree-tab parent whose whole subtree is already
+// selected must collapse the selection back down to just the clicked tab,
+// instead of leaving the subtree selected or re-expanding it.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       SelectTab_ClickParentTwice_TogglesSubtreeSelectionOff) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  ClickTab(0);
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+
+  ClickTab(0);
+
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(0));
+  EXPECT_FALSE(tab_strip_model().IsTabSelected(1));
+}
+
+// Clicking a tab with no tree-tab descendants must behave exactly like a
+// normal single-tab click - no unrelated tabs should end up selected.
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       SelectTab_ClickOnLeafTab_OnlySelectsThatTab) {
+  SetTreeTabsEnabled(true);
+
+  // Add top-level tabs directly with ADD_NONE and no opener - AddTab()
+  // (AppendWebContents with foreground=true) would set ADD_INHERIT_OPENER
+  // and chain each new tab off the currently active tab instead of creating
+  // separate top-level nodes.
+  for (int i = 0; i < 2; ++i) {
+    auto tab_interface = std::make_unique<tabs::TabModel>(CreateWebContents(),
+                                                          &tab_strip_model());
+    tab_strip_model().AddTab(std::move(tab_interface), -1,
+                             ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  }
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  ClickTab(1);
+
+  EXPECT_FALSE(tab_strip_model().IsTabSelected(0));
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(1));
+  EXPECT_FALSE(tab_strip_model().IsTabSelected(2));
+}
+
+// Clicking an unrelated top-level tab must not pull some other tree-tab
+// parent's subtree into the selection.
+IN_PROC_BROWSER_TEST_F(
+    TreeTabsBrowserTest,
+    SelectTab_ClickOnUnrelatedTab_DoesNotSelectOtherSubtree) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+
+  auto other_tab_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  tab_strip_model().AddTab(std::move(other_tab_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(3, tab_strip_model().count());
+
+  // Click the unrelated top-level tab (no descendants); the parent+child
+  // subtree must not be pulled into the selection.
+  ClickTab(2);
+
+  EXPECT_FALSE(tab_strip_model().IsTabSelected(0));
+  EXPECT_FALSE(tab_strip_model().IsTabSelected(1));
+  EXPECT_TRUE(tab_strip_model().IsTabSelected(2));
+}
+
+// Regression test for the original bug report: dragging a tree-tab parent
+// used to flatten its child out of the tree, because only the parent was
+// selected by the time the drag started. This drives the real production
+// hand-off - TabSlotController::MaybeStartDrag(), the same method
+// Tab::OnMousePressed() calls right after SelectTab() - to confirm the drag
+// session actually starts with the whole subtree as its live selection,
+// then ends the session immediately with EndDrag() (no ContinueDrag()/
+// movement - that enters the real tab-reorder + native drag-loop machinery,
+// which isn't safe to drive directly from a plain browser_test).
+IN_PROC_BROWSER_TEST_F(TreeTabsBrowserTest,
+                       DragParentTab_StartsDragWithWholeSubtreeSelected) {
+  SetTreeTabsEnabled(true);
+
+  auto* parent_tab = tab_strip_model().GetTabAtIndex(0);
+  auto child_interface =
+      std::make_unique<tabs::TabModel>(CreateWebContents(), &tab_strip_model());
+  child_interface->set_opener(parent_tab);
+  tab_strip_model().AddTab(std::move(child_interface), -1,
+                           ui::PAGE_TRANSITION_AUTO_BOOKMARK, ADD_NONE);
+  ASSERT_EQ(2, tab_strip_model().count());
+
+  tab_strip()->StopAnimating();
+  Tab* parent_tab_view = tab_strip()->tab_at(0);
+  ASSERT_TRUE(parent_tab_view);
+
+  // Mirrors Tab::OnMousePressed(): snapshot the selection before anything
+  // changes, then (since the parent isn't yet selected) call SelectTab(),
+  // which is where the subtree gets expanded, then hand off to
+  // MaybeStartDrag() with the pre-click selection - exactly as the view layer
+  // does.
+  ui::ListSelectionModel original_selection = tab_strip()->GetSelectionModel();
+  ui::MouseEvent press(ui::EventType::kMousePressed,
+                       gfx::PointF(parent_tab_view->width() / 2.0f,
+                                   parent_tab_view->height() / 2.0f),
+                       gfx::PointF(), base::TimeTicks::Now(),
+                       ui::EF_LEFT_MOUSE_BUTTON, ui::EF_LEFT_MOUSE_BUTTON);
+  controller()->SelectTab(0, press);
+
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(0));
+  ASSERT_TRUE(tab_strip_model().IsTabSelected(1));
+
+  tab_strip()->MaybeStartDrag(parent_tab_view, press, original_selection);
+  ASSERT_TRUE(TabDragController::IsActive());
+
+  // The whole point: MaybeStartDrag() reads the tab strip's live selection
+  // to decide what to drag, and it must still contain both the parent and
+  // child - i.e. a real drag started right now would carry both.
+  EXPECT_TRUE(tab_strip()->IsTabSelected(parent_tab_view));
+  EXPECT_TRUE(tab_strip()->IsTabSelected(tab_strip()->tab_at(1)));
+
+  tab_strip()->EndDrag(EndDragReason::kComplete);
+  EXPECT_FALSE(TabDragController::IsActive());
 }

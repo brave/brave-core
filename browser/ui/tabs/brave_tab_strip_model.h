@@ -65,6 +65,13 @@ class BraveTabStripModel : public TabStripModel {
   const tree_tab::TreeTabNodeId* GetTreeTabNodeIdForGroup(
       tab_groups::TabGroupId group_id) const;
 
+  // Returns the recursive tab indices of every tab in the tree tab subtree
+  // rooted at |index|, excluding |index| itself. Returns an empty vector if
+  // tree tabs are disabled or |index|'s tab has no tree tab descendants. Used
+  // by BraveBrowserTabStripController::SelectTab() to expand a mouse click on
+  // a tree-tab parent to select its whole subtree.
+  std::vector<int> GetTreeTabDescendantIndices(int index);
+
   // TabStripModel:
   void SelectRelativeTab(TabRelativeDirection direction,
                          TabStripUserGestureDetails detail) override;
