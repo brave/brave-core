@@ -1234,7 +1234,7 @@ TEST_F(EngineConsumerConversationAPIUnitTest,
 TEST_F(EngineConsumerConversationAPIUnitTest,
        GenerateAssistantResponse_WithModelKeyOverride) {
   auto* mock_api_client = GetMockConversationAPIClient();
-  constexpr char kModelKey[] = "chat-basic";
+  constexpr char kModelKey[] = "chat-automatic";
 
   // Expect PerformRequest with the overridden model name
   EXPECT_CALL(

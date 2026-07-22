@@ -1535,7 +1535,7 @@ TEST_P(AIChatDatabaseMigrationTest, MigrationToVCurrent) {
     EXPECT_EQ(conversation->model_key, conversation_model_key);
 
     // 2. Entry-level model_key persistence
-    const std::string entry_model_key = "chat-basic";
+    const std::string entry_model_key = "chat-automatic";
     auto conversation_data = db_->GetConversationData(uuid);
     ASSERT_EQ(conversation_data->entries.size(), 2u);
     EXPECT_FALSE(conversation_data->entries[0]->model_key);

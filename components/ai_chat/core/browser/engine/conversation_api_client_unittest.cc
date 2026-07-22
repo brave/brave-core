@@ -875,7 +875,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
           // Send response with both content and tool calls
           auto chunk = base::test::ParseJsonDict(R"({
             "object": "chat.completion.chunk",
-            "model": "llama-3-8b-instruct",
+            "model": "automatic",
             "choices": [{
               "delta": {
                 "content": "This is a test completion",
@@ -919,7 +919,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result.model_key, "chat-basic");
+        EXPECT_EQ(result.model_key, "chat-automatic");
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -932,7 +932,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
                                                  "{\"location\":\"New York\"}",
                                                  std::nullopt, std::nullopt,
                                                  nullptr, false));
-        EXPECT_EQ(result.model_key, "chat-basic");
+        EXPECT_EQ(result.model_key, "chat-automatic");
       });
 
   EXPECT_CALL(mock_callbacks, OnDataReceived)
@@ -945,7 +945,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_WithToolUseResponse) {
             mojom::ToolUseEvent::New(
                 "search_web", "call_456", "{\"query\":\"Hello, world!\"}",
                 std::nullopt, std::nullopt, nullptr, false));
-        EXPECT_EQ(result.model_key, "chat-basic");
+        EXPECT_EQ(result.model_key, "chat-automatic");
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
@@ -1270,7 +1270,7 @@ TEST_F(ConversationAPIClientUnitTest,
   // Tests that the model name override is correctly passed to the API
   auto [messages, expected_messages_json] =
       GetMockMessagesAndExpectedMessagesJson();
-  std::string override_model_name = "llama-3-8b-instruct";
+  std::string override_model_name = "automatic";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -1294,7 +1294,7 @@ TEST_F(ConversationAPIClientUnitTest,
         // Simulate streaming chunk
         auto chunk_dict = base::test::ParseJsonDict(R"({
           "object": "chat.completion.chunk",
-          "model": "llama-3-8b-instruct",
+          "model": "automatic",
           "choices": [{
             "delta": {"content": "This is a test completion"}
           }]
@@ -1316,7 +1316,7 @@ TEST_F(ConversationAPIClientUnitTest,
         EXPECT_TRUE(result.event->is_completion_event());
         EXPECT_EQ(result.event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result.model_key, "chat-basic");
+        EXPECT_EQ(result.model_key, "chat-automatic");
       });
 
   EXPECT_CALL(mock_callbacks, OnCompleted(_))
@@ -1348,7 +1348,7 @@ TEST_F(ConversationAPIClientUnitTest,
   // Tests that the non-streaming version (Request) is called with null
   // callback
   auto messages = GetMockMessagesAndExpectedMessagesJson().first;
-  std::string override_model_name = "llama-3-8b-instruct";
+  std::string override_model_name = "automatic";
 
   MockAPIRequestHelper* mock_request_helper =
       client_->GetMockAPIRequestHelper();
@@ -1377,7 +1377,7 @@ TEST_F(ConversationAPIClientUnitTest,
 
             // Create a response with both completion and model information
             auto response_dict = base::test::ParseJsonDict(R"({
-          "model": "llama-3-8b-instruct",
+          "model": "automatic",
           "choices": [{
             "message": {"content": "This is a test completion"}
           }]
@@ -1399,7 +1399,7 @@ TEST_F(ConversationAPIClientUnitTest,
         ASSERT_TRUE(result->event->is_completion_event());
         EXPECT_EQ(result->event->get_completion_event()->completion,
                   "This is a test completion");
-        EXPECT_EQ(result->model_key, "chat-basic");
+        EXPECT_EQ(result->model_key, "chat-automatic");
       });
 
   // Begin request with model override but NULL data_received_callback
@@ -1437,7 +1437,7 @@ TEST_F(ConversationAPIClientUnitTest, PerformRequest_NEARVerification) {
         // Simulate completion
         auto completion_dict = base::test::ParseJsonDict(R"({
           "object": "chat.completion.chunk",
-          "model": "llama-3-8b-instruct",
+          "model": "automatic",
           "choices": [{
             "delta": {"content": "Verified response"}
           }]
@@ -1628,7 +1628,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Both total_tokens and trimmed_tokens present");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "total_tokens": 1234567890,
       "trimmed_tokens": 987654321
     })");
@@ -1641,7 +1641,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     1234567890u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     987654321u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1657,7 +1657,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Both total_tokens and trimmed_tokens missing");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct"
+      "model": "automatic"
     })");
 
     EXPECT_CALL(mock_callbacks, OnDataReceived(_))
@@ -1668,7 +1668,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1684,7 +1684,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Only total_tokens present");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "total_tokens": 5000
     })");
 
@@ -1696,7 +1696,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     5000u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1712,7 +1712,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Only trimmed_tokens present");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "trimmed_tokens": 3000
     })");
 
@@ -1724,7 +1724,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     3000u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1740,7 +1740,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Negative values default to 0");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "total_tokens": -100,
       "trimmed_tokens": -50
     })");
@@ -1753,7 +1753,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     0u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1769,7 +1769,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
     SCOPED_TRACE("Mixed values - positive total, negative trimmed");
     auto content_receipt = base::test::ParseJsonDict(R"({
       "object": "brave-chat.contentReceipt",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "total_tokens": 8000,
       "trimmed_tokens": -200
     })");
@@ -1782,7 +1782,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_ContentReceipt) {
                     8000u);
           EXPECT_EQ(result.event->get_content_receipt_event()->trimmed_tokens,
                     0u);
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -1908,7 +1908,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_InlineSearch) {
     SCOPED_TRACE("Both query and results present");
     auto inline_search = base::test::ParseJsonDict(R"({
       "object": "brave-chat.inlineSearch",
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "query": "weather today",
       "results": [
         {"title": "Weather.com", "url": "https://weather.com"},
@@ -1923,7 +1923,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_InlineSearch) {
           const auto* event = result.event->get_inline_search_event().get();
           EXPECT_EQ(event->query, "weather today");
           EXPECT_FALSE(event->results_json.empty());
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -2027,7 +2027,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_CompletionChunk) {
       "id": "chatcmpl-123",
       "object": "chat.completion.chunk",
       "created": 1677652288,
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "choices": [{
         "index": 0,
         "delta": {
@@ -2044,7 +2044,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_CompletionChunk) {
           ASSERT_TRUE(result.event->is_completion_event());
           EXPECT_EQ(result.event->get_completion_event()->completion,
                     "This is a chunk.");
-          EXPECT_EQ(result.model_key, "chat-basic");
+          EXPECT_EQ(result.model_key, "chat-automatic");
         });
 
     client_->OnQueryDataReceived(
@@ -2062,7 +2062,7 @@ TEST_F(ConversationAPIClientUnitTest, OnQueryDataReceived_CompletionChunk) {
       "id": "chatcmpl-456",
       "object": "chat.completion.chunk",
       "created": 1677652288,
-      "model": "llama-3-8b-instruct",
+      "model": "automatic",
       "choices": [{
         "index": 0,
         "delta": {
