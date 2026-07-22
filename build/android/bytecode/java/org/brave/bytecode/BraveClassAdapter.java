@@ -22,7 +22,6 @@ public class BraveClassAdapter {
         chain = new BraveCustomTabToolbarButtonsViewBinderClassAdapter(chain);
         chain = new BraveApplicationImplBaseClassAdapter(chain);
         chain = new BraveAutocompleteEditTextClassAdapter(chain);
-        chain = new BraveAutocompleteMediatorBaseClassAdapter(chain);
         chain = new BraveAutocompleteMediatorClassAdapter(chain);
         chain = new BraveAutofillClientProviderUtilsClassAdapter(chain);
         chain = new BraveAutofillPaymentMethodsFragmentBaseClassAdapter(chain);
