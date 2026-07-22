@@ -106,6 +106,197 @@ def GenTests(api):
 `api.properties` also accepts top-level keyword arguments as a shorthand, e.g.
 `api.properties(chromium_ref='151.0.7917.1', brave_subrevision=1)`.
 
+## Configs
+
+**Configs are a way for a module to expose its "global" state in a reusable,
+composable way.** Where [Properties](#properties) are the recipe's _input_,
+configs are a module's _tunable internal state_: a module declares the shape of
+that state as a schema, then offers named, composable "config items" that a
+recipe selects from.
+
+A common problem in building things is an inordinately large matrix of
+configuration. A checkout module, for example, has axes like target platform,
+target arch, build config, git-cache layout, hermetic-toolchain source, and so
+on. There are many combinations but only a relatively small number of _valid_
+ones. Configs let a module represent the valid states as named recipes to
+follow, rather than leaving every recipe to assemble raw values correctly.
+
+The `hello` recipe module (`recipe_modules/hello/`) is a small, fully worked
+example of everything below; the snippets here are drawn from it.
+
+### Declaring a schema
+
+A module opts into the config system by adding a `config.py` next to its
+`api.py`. It first defines a _schema_: a callable returning a `ConfigGroup` that
+describes the "config blob" the module deals with.
+
+```python
+# recipe_modules/hello/config.py
+from config import BadConf, ConfigGroup, Single, Static, config_item_context
+
+def BaseConfig(TARGET='Bob'):
+    # A config blob is not complete() until every required entry has a value.
+    return ConfigGroup(
+        verb=Single(str),
+        tool=Single(str, required=True),
+        # Schema-factory arguments are ALL_CAPS by convention and threaded in as
+        # Static (read-only input) data. This avoids name clashes with the
+        # per-invocation CONFIG_VARS described below.
+        TARGET=Static(str(TARGET)),
+    )
+
+config_ctx = config_item_context(BaseConfig)
+```
+
+`BaseConfig` must return a `ConfigGroup`; every blob you get from this context
+is a modified copy of what the schema returns. The building blocks (all imported
+from `config`) are:
+
+| Type          | Holds                                                         |
+| ------------- | ------------------------------------------------------------- |
+| `Single`      | one scalar of a given type (`required` controls completeness) |
+| `Static`      | one immutable, write-once input value (hidden by default)     |
+| `Enum`        | one value restricted to a fixed set                           |
+| `List`        | an ordered, type-checked list of scalars                      |
+| `Set`         | a type-checked set of scalars                                 |
+| `Dict`        | a dict with an optional value-type constraint                 |
+| `ConfigGroup` | a nested named struct (schemas nest arbitrarily)              |
+| `ConfigList`  | an ordered list of `ConfigGroup`s                             |
+
+You manipulate a blob like plain Python data (`c.tool = 'echo'`,
+`c.some_set.add(x)`), but assignment is type-checked and the schema is _closed_:
+assigning an unknown attribute is an error, and a `Static` member cannot be
+reassigned after construction.
+
+`config_ctx` is the context for all config items in this file. The engine
+discovers the single `config_item_context(...)` result in a module's `config.py`
+and exposes it to the module's `RecipeApi` automatically -- no wiring needed.
+
+### Defining config items
+
+A _config item_ is a function decorated with `config_ctx` that takes a config
+blob `c` and mutates it in place (it must not return a value).
+
+```python
+# recipe_modules/hello/config.py (continued)
+
+# is_root means every config item applies this one first. At most one per module.
+@config_ctx(is_root=True)
+def BASE(c):
+    if c.TARGET == 'DarthVader':
+        c.verb = 'Die in a fire %s!'
+    else:
+        c.verb = 'Hello %s'
+
+@config_ctx(group='tool')  # Items in the same group are mutually exclusive.
+def super_tool(c):
+    if c.TARGET != 'Charlie':
+        raise BadConf('Can only use super tool for Charlie!')
+    c.tool = 'unicorn.py'
+
+@config_ctx(group='tool')
+def default_tool(c):
+    c.tool = 'echo'
+```
+
+The `config_ctx` decorator accepts:
+
+- **`is_root`** -- marks the single "basis" item, applied implicitly before
+  every other item on a blob. At most one root per module.
+- **`group`** -- items sharing a group are mutually exclusive on one blob;
+  applying a second member raises `BadConf`.
+- **`includes`** -- names of other config items to run against the blob _before_
+  this item's body (already-applied includes are skipped).
+- **`deps`** -- group names that must already be satisfied on the blob before
+  this item may apply; otherwise `BadConf`.
+
+Any violation (double application, group conflict, unmet `deps`, a failing
+`include`) raises `BadConf`.
+
+### Using a config
+
+`RecipeApi` provides all the plumbing. A module reads its current blob as
+`self.c`, and a recipe reaches it directly as `api.<module>.c`.
+
+```python
+# recipe_modules/hello/api.py
+from recipe_api import RecipeApi
+
+class HelloApi(RecipeApi):
+    def greet(self):
+        self.m.step('Greet Admired Individual', [
+            self.m.path.workspace / self.c.tool,
+            self.c.verb % self.c.TARGET,
+        ])
+```
+
+A recipe (or another module) selects a config with `set_config`:
+
+```python
+# recipe_modules/hello/examples/simple.py
+DEPS = ['hello']
+
+def RunSteps(api):
+    api.hello.set_config('default_tool')
+    api.hello.greet()  # Greets 'Bob' with echo.
+```
+
+`set_config(name, **CONFIG_VARS)` builds a fresh blob and assigns it to
+`api.hello.c`. It does so by:
+
+1. computing the schema arguments (`CONFIG_VARS`), lowest-to-highest precedence:
+   `get_config_defaults()` (overridable on the api to compute defaults
+   dynamically), then the keyword arguments to `set_config`;
+2. instantiating the schema with those arguments (`BaseConfig(**CONFIG_VARS)`);
+3. applying the named config item -- and its root and `includes` -- to the blob.
+
+So passing a `CONFIG_VARS` value steers both the schema and the items that
+branch on it:
+
+```python
+api.hello.set_config('super_tool', TARGET='Charlie')  # -> unicorn.py, 'Hello Charlie'
+api.hello.set_config('default_tool', TARGET='DarthVader')  # -> echo, 'Die in a fire ...'
+```
+
+Two lower-level entry points are also available, though `set_config` is
+preferred:
+
+- **`make_config(name,
+  **CONFIG_VARS)`** returns a blob without storing it in `self.c`.
+- **`apply_config(name)`** applies an additional named item on top of the
+  existing `self.c`, layering configs after an initial `set_config`.
+
+> **Note:** older versions of chrome-infra's `set_config` also applied the named
+> item across the module's `DEPS`. That behaviour was
+> [recognized as a design mistake](https://chromium.googlesource.com/infra/luci/recipes-py/)
+> and removed upstream; this engine matches current upstream and does **not** do
+> it. `set_config` only ever touches the current module's own `self.c`.
+
+### Testing configs
+
+Config code is subject to the same 100% coverage requirement as the rest of a
+module (see [Testing](#testing)), so exercise each item and each branch from
+example/test recipes. A config item that raises `BadConf` surfaces as an
+`EXCEPTION`-status run, which a `tests/` recipe can assert:
+
+```python
+# recipe_modules/hello/tests/badconf.py
+from post_process import DropExpectation, StatusException
+
+DEPS = ['hello']
+
+def RunSteps(api):
+    api.hello.set_config('super_tool', TARGET='Not Charlie')  # raises BadConf
+
+def GenTests(api):
+    yield api.test(
+        'badconf',
+        api.post_process(StatusException),
+        api.post_process(DropExpectation),
+        status='EXCEPTION',
+    )
+```
+
 ## Testing
 
 Recipes and recipe modules are tested by _simulation_: a recipe declares

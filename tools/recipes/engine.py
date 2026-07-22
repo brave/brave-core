@@ -97,6 +97,32 @@ def _find_api_class(api_module: types.ModuleType,
     return classes[0]
 
 
+def _load_config_ctx(module_name: str):
+    """Return the `ConfigContext` from a module's `config.py`, or None.
+
+    A module opts into the config system by defining a `config.py` that assigns
+    exactly one `config_item_context(...)` result at module scope (the module's
+    CONFIG_CTX). Modules without a `config.py` return None (they have no
+    config). See the "Configs" section of README.md.
+    """
+    config_path = RECIPES_ROOT / MODULES_PKG / module_name / 'config.py'
+    if not config_path.exists():
+        return None
+    from config import ConfigContext  # pylint: disable=import-outside-toplevel
+    config_module = importlib.import_module(f'{MODULES_PKG}.{module_name}'
+                                            '.config')
+    contexts = [
+        value for value in vars(config_module).values()
+        if isinstance(value, ConfigContext)
+    ]
+    if len(contexts) != 1:
+        raise RuntimeError(
+            f"recipe module '{module_name}' has a config.py but defines "
+            f'{len(contexts)} config contexts; expected exactly one '
+            '(from config_item_context(...))')
+    return contexts[0]
+
+
 class _Engine:
     """Resolves DEPS and instantiates module APIs, caching by module name."""
 
@@ -142,11 +168,13 @@ class _Engine:
         api_class = _find_api_class(api_module, name)
 
         inst = api_class()
-        # Seed engine-provided values (workspace, brave-core ref) so modules can
-        # use them. setattr keeps the engine out of the instance's protected
-        # members directly.
+        # Seed engine-provided values (workspace, brave-core ref, and the
+        # module's name and config context) so modules can use them. setattr
+        # keeps the engine out of the instance's protected members directly.
         setattr(inst, '_workspace', self._workspace)
         setattr(inst, '_brave_core_ref', self._brave_core_ref)
+        setattr(inst, '_module_name', name)
+        setattr(inst, '_config_ctx', _load_config_ctx(name))
         for dep_name in deps:
             setattr(inst.m, dep_name,
                     self._instantiate_module(dep_name, chain + [name]))
