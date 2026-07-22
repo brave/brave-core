@@ -11,6 +11,7 @@ import { loadTimeData } from '$web-common/loadTimeData'
 // Props required to provide the context
 export interface UntrustedConversationContextProps {
   api: UntrustedConversationAPI
+  isReadOnly?: boolean
 }
 
 const IS_MOBILE = loadTimeData.getBoolean('isMobile')
@@ -39,6 +40,8 @@ export function useProvideUntrustedConversationContext(
 
   return {
     api,
+
+    isReadOnly: props.isReadOnly ?? false,
 
     showPremiumSuggestionForRegenerate,
     setShowPremiumSuggestionForRegenerate,
