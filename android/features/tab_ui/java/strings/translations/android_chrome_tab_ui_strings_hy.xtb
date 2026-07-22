@@ -183,7 +183,6 @@
 <translation id="7129458170538955174">Այս խանութի մասին տեղեկությունները բացված են կիսով չափ</translation>
 <translation id="7204204600596740190">Մի քանի ներդիրի ընտրության ռեժիմ</translation>
 <translation id="7211038039686180558">Ձեր ներդիրների խմբերն ավտոմատ պահվում և թարմացվում են ձեր բոլոր սարքերում, որոնցում մտել եք հաշիվ</translation>
-<translation id="731648547091221002">Ընտրված է <ph name="COLOR_NAME"/> գույնը</translation>
 <translation id="7326879924029668159">Դիտեք վերադարձման կանոնները և այլ տեղեկություններ</translation>
 <translation id="7352298686197644113">Տեսեք, թե ձեր բացված ներդիրներում որ ապրանքն ունի ամենացածր գինը</translation>
 <translation id="7369451074646620503">«<ph name="TAB_GROUP_NAME"/>» ներդիրների խումբն այլևս հասանելի չէ</translation>
@@ -209,7 +208,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ Գնահատական՝ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_ONE"/> կարծիք}one{Գնահատական՝ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> կարծիք}other{Գնահատական՝ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/>, <ph name="REVIEWS_COUNT_MANY"/> կարծիք}}</translation>
 <translation id="7885132941432959125">Տեղափոխել ներդիրն աջ</translation>
 <translation id="7887334752153342268">Կրկնօրինակել</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> գույնն ընտրված չէ</translation>
 <translation id="7961015016161918242">Երբեք</translation>
 <translation id="7966321538264951561">Փակել հուշումները։</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Բացել ներդիրը նոր պատուհանում}one{Բացել ներդիրն այլ պատուհանում}other{Բացել ներդիրն այլ պատուհանում}}</translation>

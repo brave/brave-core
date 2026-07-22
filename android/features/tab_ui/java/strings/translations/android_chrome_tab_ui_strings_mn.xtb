@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Энэ дэлгүүрийн талаарх мэдээллийг тал өндөртэйгээр нээсэн</translation>
 <translation id="7204204600596740190">Олон сонголттой горим</translation>
 <translation id="7211038039686180558">Таны табын бүлгийг таны нэвтэрсэн бүх төхөөрөмж дээр автоматаар хадгалж, шинэчилдэг</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/>-г сонгосон</translation>
 <translation id="7326879924029668159">Буцаалтын бодлого болон илүү ихийг хараарай</translation>
 <translation id="7352298686197644113">Таны нээлттэй табд аль зүйл илүү хямд үнэтэй байгааг хараарай</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" табын бүлэг цаашид байхгүй болсон</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> үнэлгээ, <ph name="REVIEWS_COUNT_ONE"/> шүүмж}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> үнэлгээ, <ph name="REVIEWS_COUNT_MANY"/> шүүмж}}</translation>
 <translation id="7885132941432959125">Табыг баруун тийш зөөх</translation>
 <translation id="7887334752153342268">Хувилах</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/>-г сонгоогүй</translation>
 <translation id="7961015016161918242">Хэзээ ч</translation>
 <translation id="7966321538264951561">Зөвлөмжийг үл хэрэгсэх.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Табыг шинэ цонх руу зөөнө}other{Табыг өөр цонх руу зөөнө}}</translation>

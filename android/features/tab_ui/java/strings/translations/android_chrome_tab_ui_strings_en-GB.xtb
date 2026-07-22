@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">Information about this shop opened at half height</translation>
 <translation id="7204204600596740190">Multi-select mode</translation>
 <translation id="7211038039686180558">Your tab groups automatically save and update across all your signed-in devices</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> selected</translation>
 <translation id="7326879924029668159">See return policy and more</translation>
 <translation id="7352298686197644113">See which item in your open tabs has a lower price</translation>
 <translation id="7369451074646620503">'<ph name="TAB_GROUP_NAME"/>' tab group no longer available</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> rating, <ph name="REVIEWS_COUNT_ONE"/> review}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> rating, <ph name="REVIEWS_COUNT_MANY"/> reviews}}</translation>
 <translation id="7885132941432959125">Move tab right</translation>
 <translation id="7887334752153342268">Duplicate</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> not selected</translation>
 <translation id="7961015016161918242">Never</translation>
 <translation id="7966321538264951561">Dismiss the suggestions.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{Move tab to new window}other{Move tab to another window}}</translation>

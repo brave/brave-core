@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">ఈ స్టోర్ గురించిన సమాచారం స్క్రీన్‌లో సగం వరకు తెరవబడింది</translation>
 <translation id="7204204600596740190">బహుళ-ఎంపిక మోడ్</translation>
 <translation id="7211038039686180558">మీ ట్యాబ్ గ్రూప్‌లు మీరు సైన్ ఇన్ చేసిన అన్ని పరికరాలలో ఆటోమేటిక్‌గా సేవ్ చేయడం, అప్‌డేట్ చేయడం జరుగుతుంది</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> ఎంచుకోబడింది</translation>
 <translation id="7326879924029668159">రిటర్న్ పాలసీ, ఇంకా మరిన్నింటిని చూడండి</translation>
 <translation id="7352298686197644113">మీరు ప్రస్తుతం తెరిచి ఉంచిన ట్యాబ్‌లలో ఏ ఐటెమ్ ధర తగ్గిందో చూడండి</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" ట్యాబ్ గ్రూప్ ఇకపై అందుబాటులో ఉండదు</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> రేటింగ్, <ph name="REVIEWS_COUNT_ONE"/> రివ్యూ}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> రేటింగ్, <ph name="REVIEWS_COUNT_MANY"/> రివ్యూలు}}</translation>
 <translation id="7885132941432959125">ట్యాబ్‌ను కుడి వైపునకు తరలించు</translation>
 <translation id="7887334752153342268">నకిలీ</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> ఎంచుకోబడలేదు</translation>
 <translation id="7961015016161918242">ఎప్పుడూ వద్దు</translation>
 <translation id="7966321538264951561">సూచనలను తీసివేయండి.</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{ట్యాబ్‌ను కొత్త విండోకు తరలించండి}other{ట్యాబ్‌ను మరొక విండోకు తరలించండి}}</translation>

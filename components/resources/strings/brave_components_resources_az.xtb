@@ -783,9 +783,7 @@
 <translation id="5486744676117070166">Sonraki nonce dəyərini əldə etmək mümkün olmadı</translation>
 <translation id="6180576227145734714">Əməliyyat məlumatlarında 'to' qeyd edildiyində etibarlı bir ünvana sahib olmalıdır</translation>
 <translation id="6688162556547723415">İstifadəçi tərəfindən sorğu və ya hesab səlahiyyətləndirilməyib</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="6122742277607781713">Portfel</translation>
-<translation id="7020503656406658141">Qiymətlər</translation>
 <translation id="3586775666459823714">NFTlər</translation>
 <translation id="1987317783729300807">Hesablar</translation>
 <translation id="3567988240819868195">Bazar</translation>
@@ -1819,7 +1817,6 @@
 <translation id="803703704549420287">Filtrləri təmizlə</translation>
 <translation id="1472675084647422956">Daha çox göstər</translation>
 <translation id="4522570452068850558">Təfərrüatlar</translation>
-<translation id="4583937519241190398">DappRadar tərəfindən təsdiqlənmişdir</translation>
 <translation id="8713438253026855351">Qorunan hesaba keç</translation>
 <translation id="3526789880090101085">Əsas hesaba keç</translation>
 <translation id="3155166394760577549">Əməliyyatın məxfiliyini artırmaq üçün təhlükəsizlik qalxanlarını aktivləşdirin.</translation>
@@ -1952,6 +1949,7 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Avtomobillər</translation>
 <translation id="7726519849288907308">Məşhurlar</translation>
+<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Mədəniyyət</translation>
 <translation id="6807791860691150411">Təhsil</translation>
 <translation id="3706423975342040244">Əyləncə</translation>
@@ -2168,6 +2166,7 @@
 <translation id="2367972762794486313">Tətbiqləri göstər</translation>
 <translation id="3142853026316054951">Fokus rejimini aç/bağla</translation>
 <translation id="3468387898712904997">Yeni e-poçt ləqəbi</translation>
+<translation id="4711475997833555304">Gələn qutunuza yönləndirən təsadüfi bir e-poçt yaradın.</translation>
 <translation id="2796584247246518451">Yeni müvəqqəti container</translation>
 <translation id="8591883849678260674">Orijinalı göstər</translation>
 <translation id="1969654232209826429">dəqiqə. oxuma</translation>
@@ -2227,8 +2226,10 @@
 <translation id="8743383817154663379">Sorğunuz işlənəndə bir xəta baş verdi. Zəhmət olmasa, bir az sonra yenidən cəhd edin.</translation>
 <translation id="2712650703044366764">Bu modelin son nöqtəsi yanlışdır. Konfiqurasiyanızı yoxlayın və yenidən cəhd edin.</translation>
 <translation id="7092656392206649236">Leo ilə əlaqə zamanı bir xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.</translation>
+<translation id="4539536233699928121">NEAR ilə əlaqə zamanı bir xəta baş verdi. Zəhmət olmasa, yenidən cəhd edin.</translation>
 <translation id="3552709750512842961">Status kodu: <ph name="STATUS_CODE"/>, xəta kodu: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Status kodu: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Status kodu: <ph name="STATUS_CODE"/>, daxili status kodu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Siz premium sorğu limitinə çatmısınız. Bir neçə saatdan sonra yenidən cəhd edin.</translation>
 <translation id="3683964919745779766">Bu model üçün məhdudiyyətə çatmısınız və ya krediti bitibsiniz. Zəhmət olmasa, yenidən cəhd edin.</translation>
 <translation id="7692501701960747469">Bu model üçün konfiqurasiya edilmiş API açarı etibarsızdır. Zəhmət olmasa, konfiqurasiyanızı yoxlayın və yenidən cəhd edin.</translation>
@@ -2402,6 +2403,9 @@
 <translation id="9051226419897869406">Brave Leo ilə özəl söhbət edin</translation>
 <translation id="2414904697165579184">Cavabları tab-vərəqələrin məzmununa əsasən formalaşdırın</translation>
 <translation id="8258324391302611485">Bu səhifənin məzmunu mesajlarınızla birgə Leo-ya göndəriləcək.</translation>
+<translation id="443008484043213881">Alətlər</translation>
+<translation id="4343623396828510727">Bu saytlar Leo-nun bu sayta və bu saytdan məlumat göndərmək üçün istifadə edə biləcəyi alətləri təqdim edir. Bu söhbətdə bu saytın görməsini istəmədiyiniz məlumatlar varsa, bu alətləri əlavə etməyin və ya təsdiqləməyin.</translation>
+<translation id="5021823940147712387">Alətləri çıxar</translation>
 <translation id="318819763888864209">Bütün abunəliklər avtomatik yenilənir, ammayenilənmədən əvvəl istənilən vaxt ləğv edilə bilər.</translation>
 <translation id="5091223967610958">Leo-nun daha yaxşı olması üçün olduğunuz səhifənin ana adını (<ph name="HOST_NAME"/>) paylaşın.</translation>
 <translation id="8732450785281947197">Leo AI alətləri</translation>
@@ -2480,6 +2484,9 @@
 <translation id="7918928051723770926">Tapşırıq tamamlandı</translation>
 <translation id="2113810663179257944">Kodun İcrası</translation>
 <translation id="4838375634693651776">Sorğunuza kömək etmək üçün sandboxda kod icra edilir</translation>
+<translation id="6990975553143971265">Brauzer tarixçənizdə "<ph name="QUERY"/>" axtarılır</translation>
+<translation id="8302511726757276645">Brauzer tarixçəniz axtarılır</translation>
+<translation id="8410699755320690690">Brave AI brauzer tarixçənizdə axtarış aparmaq istəyir. Axtarış cihazınızda lokal olaraq işlədiyi üçün bütün tarixçəniz heç bir yerə göndərilmir. Yalnız uyğun gələn səhifələrin başlıqları, URL-ləri və indekslənmiş mətn parçaları bu söhbətin bir hissəsi kimi Brave AI-yə göndəriləcək.</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Çıxış:</translation>
 <translation id="6911817209337314910">Sizin seçməyiniz üçün bəzi seçimlər yaradılır</translation>
@@ -2689,6 +2696,21 @@
 <translation id="7586067492365979844">Brave Təhlükəsizlik Qalxanı yeni ev və dizayna sahib olur. İndi sayt məlumatları ilə inteqrasiya olunur.</translation>
 <translation id="9114542678887529043">Brave Təhlükəsizlik Qalxanı yeni ev və dizayna sahib olur. Ünvan çubuğundakı sayt nişanasını klikləməklə ona daxil olun.</translation>
 <translation id="4242533952199664413">Ayarlara açın</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Cihaz Yaddaşı</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Şrift</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">Klaviatura</translation>
+<translation id="5302048478445481009">Dil</translation>
+<translation id="7986250835989845763">Media Cihazları</translation>
+<translation id="4267171000817377500">Pluginlər</translation>
+<translation id="3441653493275994384">Ekran</translation>
+<translation id="1772612984983840854">Nitq Sintezi</translation>
+<translation id="1167475333911019229">USB Cihazının Seriya Nömrəsi</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Gizlilik. Varsayılan olaraq.</translation>
 <translation id="4366423156486478559">Hər klik etdiyiniz linkdə Brave qorunması əldə edin. Sadəcə olaraq Brave-ni standart olaraq təyin edin və gəzinin. Gizli.</translation>
 <translation id="3830912418080848377">Ayarları İdxal Et</translation>
@@ -2725,7 +2747,6 @@
 <translation id="6821966107067356137">RSS lenti əlavə et</translation>
 <translation id="2478076885740497414">Tətbiqi quraşdır</translation>
 <translation id="8293206222192510085">Əlfəcin əlavə et</translation>
-<translation id="1010029336854254368">Paylaş Menyusu</translation>
 <translation id="7758460733045216901">Əlfəcinlər Paneli</translation>
 <translation id="958268166261124668">Brave VPN: Qoşuldu</translation>
 <translation id="6021669293402055982">Brave VPN: Ayrıldı</translation>
@@ -2847,17 +2868,31 @@ Gəlin sizi bağlayaq!</translation>
 <translation id="5816720995022674532">Origin Linux cihazlarında istifadə etmək üçün pulsuz olsa da, Brave-i bir biznes kimi dəstəkləmək istəyirsinizsə, yenə də <ph name="BEGIN_LINK"/>satışa çıxarılıb<ph name="END_LINK"/>.  Satın almaq Android, iOS, macOS və Windows cihazlarında Origin istifadə etmə imkanını açacaq.</translation>
 <translation id="3065220545261045367">Origin-i satın almaqla Brave-i dəstəkləyin</translation>
 <translation id="2069499076031488636">Linux-də Origin-ə pulsuz davam edin</translation>
+<translation id="6820590295368504396">SKU xidmətinə qoşulmaq mümkün deyil</translation>
+<translation id="2525146368601152300">Alış Kimliyi boşdur</translation>
+<translation id="7858444547014304753">Etibarsız Alış Kimliyi</translation>
+<translation id="2016076837307423164">Etibarnamələri əldə etmək alınmadı</translation>
+<translation id="3890481923176188801">Alış tapılmadı</translation>
 <translation id="5713644099811900409">Brave Hesabı</translation>
 <translation id="2906576968270573525">Brave hesabına daxil olun və ya yaradın</translation>
 <translation id="6972754398087986839">Başla</translation>
 <translation id="5378207817582281342">Az qaldı!</translation>
 <translation id="3750210661641549834">Hesabınızı yaratmaq üçün e-poçt ünvanınızı təsdiqləyin.</translation>
-<translation id="4129813507847680661">Qeydiyyat kodunu daxil edin</translation>
+<translation id="4351175281479794167">Təsdiq kodunu daxil edin</translation>
 <translation id="1672793037892810340">Sizə daxil etməli olduğunuz kodla e-poçt göndərilmiş olmalıdır.</translation>
 <translation id="4821255729182569254">Təsdiq e-poçtunu yenidən göndər</translation>
 <translation id="5837679375142747484">E-poçtu görmədiniz mi? Spam qovluğunuzu yoxlayın və ya <ph name="BEGIN_LINK"/>yenidən göndərin<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">E-poçtu görmədiniz mi? Spam qovluğunuzu yoxlayın və ya yenidən göndərin.</translation>
 <translation id="1020730839570724178">Qeydiyyatı ləğv et</translation>
+<translation id="7155125570724238786">Parolunuzu sıfırlamaq üçün e-poçt ünvanınızı təsdiqləyin.</translation>
+<translation id="816074628631172140">E-poçtunuz təsdiqləndi. Parol sıfırlamasını tamamlamaq üçün yeni parol təyin edin.</translation>
+<translation id="7543374051303238869">Yeni parol təyin et</translation>
+<translation id="8378209932853841849">Parol sıfırlamasını ləğv et</translation>
+<translation id="4405566535206792621">Parolunuzu dəyişmək üçün e-poçt ünvanınızı təsdiqləyin.</translation>
+<translation id="3135333563420939059">E-poçtunuz təsdiqləndi. Parol dəyişikliyini tamamlamaq üçün yeni parol təyin edin.</translation>
+<translation id="4227581348172626540">Parol dəyişikliyini ləğv et</translation>
+<translation id="808894953321890993">Parolu dəyiş</translation>
+<translation id="7967687455715421528">Parolu dəyişmək mümkün deyil</translation>
 <translation id="4869737930995549965">Çıxış et</translation>
 <translation id="5538654494923870167">Brave hesabınızla başlayın</translation>
 <translation id="1544145635547515689">Brave hesabı yaradın</translation>
@@ -2872,10 +2907,11 @@ Gəlin sizi bağlayaq!</translation>
 <translation id="5486261815000869482">Parolu təsdiqləyin</translation>
 <translation id="7345706641791090287">Parolunuzu təsdiqləyin</translation>
 <translation id="7114054701490058191">Parollar uyğun gəlmir</translation>
+<translation id="4277028893293644418">Parolu sıfırla</translation>
+<translation id="9033485352495162741">Təsdiq uğurlu oldu. İndi istədiyiniz yeni parolu daxil edin:</translation>
 <translation id="1293857704520741614">Hesabınıza daxil olun</translation>
 <translation id="118617366439356381">Parolunuzu unutmusunuz?</translation>
 <translation id="5183159033908953146">Brave hesabınızın e-poçtunu təsdiqləyin və parolunuzu sıfırlamaq üçün link alacaqsınız. Link yalnız 30 dəqiqə etibarlı olacaq.</translation>
-<translation id="3997368361371298873">Xəbərdarlıq: bu cihaza daxil olmadığınız üçün, parolunuzu sıfırlamaq serverdəki <ph name="BEGIN_BOLD"/>bütün məlumatlarınızı silə<ph name="END_BOLD"/>cək. Əgər daxil olduğunuz başqa bir cihazınız varsa, parolunuzu sıfırlamaq əvəzinə həmin cihazdan parolunuzu dəyişdirin.</translation>
 <translation id="3674472551471103443">Parolunuzu sıfırlayın</translation>
 <translation id="2755539422340788311">E-poçtunuzu təsdiqləyin</translation>
 <translation id="6641436078676327508">Sizə qısa kodla e-poçt göndərilmiş olmalıdır. Davam etmək üçün onu burada daxil edin.</translation>
@@ -2892,10 +2928,16 @@ Gəlin sizi bağlayaq!</translation>
 <translation id="7144067487084094749">Bu e-poçt ünvanı üçün artıq hesab mövcuddur. Hesab yaratmaq əvəzinə daxil olmağa cəhd edin.</translation>
 <translation id="5288951359968156008">Bu e-poçt ünvanının domeni dəstəklənmir. Zəhmət olmasa fərqli bir e-poçt ünvanı istifadə edin.</translation>
 <translation id="7625678607509255072">E-poçt təsdiq limiti aşıldı. Zəhmət olmasa yenidən cəhd etməzdən əvvəl 30 dəqiqə gözləyin.</translation>
-<translation id="4582421696414628320">Təsdiqin vaxtı bitdi. Qeydiyyat prosesini yenidən başladın.</translation>
+<translation id="9121175588136821850">Təsdiq kodunun vaxtı bitdi. Qeydiyyat prosesini yenidən başladın.</translation>
 <translation id="8439543211004394821">Çox sayda yanlış kod daxil edildi. Qeydiyyat prosesini yenidən başladın.</translation>
 <translation id="3229986152760633988">Yanlış kod, zəhmət olmasa yenidən cəhd edin.</translation>
 <translation id="818783632689113711">Bu e-poçt ünvanı üçün artıq hesab tələb edilib. Zəhmət olmasa e-poçtunuzu yoxlayın və ya 30 dəqiqədən sonra yenidən cəhd edin.</translation>
+<translation id="4776810543245166572">Bu e-poçt ünvanı üçün hesab tapılmadı.</translation>
+<translation id="7090885444036935209">Etibarsız e-poçt ünvanı.</translation>
+<translation id="1542836798393843657">Bu e-poçt ünvanı üçün çox sayda təsdiq cəhdi. 24 saatdan sonra yenidən cəhd edin.</translation>
+<translation id="7572012011062736429">Daxili xəta. Dialoqu bağlayın, təsdiqi ləğv edin və yenidən cəhd edin.</translation>
+<translation id="2477280119520811719">Təsdiq kodunun vaxtı bitdi. Parol dəyişikliyi prosesini yenidən başladın.</translation>
+<translation id="7103280722523884198">Çox sayda yanlış kod daxil edildi. Parol dəyişikliyi prosesini yenidən başladın.</translation>
 <translation id="4178004989875422946">Brave hesabı Brave xidmətlərinə asanlıqla daxil olmağa imkan verəcək.</translation>
 <translation id="4902897635127068510"><ph name="SUGGESTION"/> nəzərdə tutmusunuz?</translation>
 <translation id="8314772463905284467">Caps Lock aktivdir</translation>
@@ -2904,6 +2946,7 @@ Gəlin sizi bağlayaq!</translation>
 <translation id="2112559299194052697">Yenidən göndərmək mümkün deyil</translation>
 <translation id="7932611814134267012">Artıq çox sayda təsdiq e-poçtu göndərilib. Zəhmət olmasa spam qovluğunuzu yoxlayın.</translation>
 <translation id="1364223093800750401">E-poçt artıq təsdiqlənib.</translation>
+<translation id="1353061468772282268">Təsdiq kodunun vaxtı bitdi. Təsdiqi ləğv edin və yenidən cəhd edin.</translation>
 <translation id="3353844160742960162">Məxfilik Parametrlərinin Tənzimlənməsi</translation>
 <translation id="528205534230423181">Bu sayt Brave-in sizin üçün avtomatik olaraq tənzimləyə biləcəyi məxfilik parametrləri təklif edir. Tövsiyə etdiyimiz budur:</translation>
 <translation id="1063227610401477317">Dəyişiklikləri tətbiq edin</translation>

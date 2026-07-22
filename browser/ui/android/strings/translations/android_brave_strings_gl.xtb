@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Visite sempre URL de páxinas orixinais (que non sexan de AMP) en lugar de versións de páxinas para móbiles aceleradas de Google</translation>
 <translation id="920638232916443453">Redireccionar automaticamente as URL de seguimento</translation>
 <translation id="1118970888826017401">Activar a compatibilidade coa excepción de redirección de máximo nivel das URL de seguimento</translation>
-<translation id="94154759592465111">Bloquear guións</translation>
+<translation id="4824468494729001999">Bloquear guións</translation>
 <translation id="7714773920987474116">Bloquea JavaScript (pode que os sitios non funcionen)</translation>
 <translation id="2233004324252915283">Bloquear contido recomendado de YouTube</translation>
 <translation id="1005372663692637999">Bloquea os elementos da tarxeta final e A continuación en youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Borra as cookies e os datos dos outros sitios cando pechas un sitio</translation>
 <translation id="7740929262043547697">Permitir o bloqueo de elementos nas ventás do modo de incógnito</translation>
 <translation id="1260864846935682371">Activa a función de bloqueo de elementos dos Escudos nas ventás do modo de incógnito. Ten en conta que os elementos bloqueados nas ventás do modo de incógnito tamén se bloquearán nas ventás non privadas.</translation>
+<translation id="4021136205151368133">Nota: isto pode reducir a protección da privacidade de Brave.</translation>
+<translation id="2876155735620608356">Escudos activados neste sitio</translation>
+<translation id="8605306630462821888">Escudos desactivados neste sitio</translation>
+<translation id="1574700443447059851">Bloqueáronse rastreadores e anuncios, entre outras cousas.</translation>
+<translation id="4039014515785210563">Escolle como xestionar os rastrexadores e os anuncios</translation>
+<translation id="8423733350479881051">Escolle como xestionar as cookies</translation>
+<translation id="9064628362799094520">Eliminar os datos do sitio</translation>
+<translation id="2862348905922940916">Restablecer os valores predeterminados de Escudos neste sitio</translation>
+<translation id="269939061709857874">Restablecéronse os valores predeterminados de Escudos no sitio</translation>
+<translation id="3623708006387030755">Configuración global de Escudos</translation>
+<translation id="2387532482048804818">Indíquenos se o sitio non funcionaba correctamente con Shields activo.</translation>
+<translation id="5412004902081180614">Informar</translation>
+<translation id="1209739344687072997">Informar sobre un sitio roto</translation>
+<translation id="2606165159306988240">Informa aos desenvolvedores de Brave que este sitio non funciona correctamente con este sitio.</translation>
+<translation id="6806248680442980382">Grazas por axudar a que Brave sexa mellor para todos. Este informe só conterá a información necesaria para que poidamos corrixir este sitio.</translation>
+<translation id="7549123865054511884">Que non funciona neste sitio?</translation>
+<translation id="9094461910562981998">Contacto: (opcional)</translation>
+<translation id="7645128170699559106">Correo electrónico, nome de usuario de X e máis</translation>
+<translation id="446579367766109694">Se facilitas a información de contacto, esta gardarase para futuros informes</translation>
+<translation id="2653659639078652383">Enviar</translation>
+<translation id="8459191579769999214">Ver captura de pantalla</translation>
+<translation id="4530541918195747729">Informe enviado. Grazas!</translation>
+<translation id="5528772406060281700">Queres eliminar os datos do sitio</translation>
+<translation id="6795622376590884449">Eliminación automática</translation>
+<translation id="3520341243738311408">Cando se pechan as pestanas do sitio</translation>
+<translation id="3559735673608367395">Cando se sae da aplicación</translation>
+<translation id="9140049656798805345">Eliminar os datos do sitio agora</translation>
 <translation id="1680858055899097121">Que non sigan as lapelas aí entre as sesións de navegación</translation>
 <translation id="7142548388914389999">Permitir análises de produtos que protexan a privacidade (P3A)</translation>
 <translation id="5254037869598726291">A información anónima de P3A axuda a Brave a calcular o uso xeral e a asegurar que estamos a mellorar as funcións máis populares.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Información privada do produto</translation>
 <translation id="3545804467215833536">Preme para ver Escudos de Brave</translation>
 <translation id="1724327820822194498">Mira todos os elementos non desexados que Brave bloqueou en cada páxina con Escudos.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> e <ph name="TRACKER"/> anuncios e rastreadores máis bloqueados</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> e outros anuncios e rastreadores bloqueados</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> anuncios e rastreadores bloqueados</translation>
 <translation id="8281886186245836920">Omitir</translation>
-<translation id="986879628471635371">Resolución de problemas a bordo</translation>
 <translation id="5806601733251372221">Escudos Brave</translation>
-<translation id="8537217141725709400">Gaña <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Recompensas de Brave</translation>
-<translation id="5870330605209713397">ao ver anuncios que respectan a privacidade e apoiar os seus sitios e creadores favoritos de xeito predeterminado.</translation>
-<translation id="5302488867897327287">Ao premer "Comezar a usar Brave Rewards", aceptas as</translation>
 <translation id="4281844954008187215">Termos do servizo</translation>
 <translation id="6871397658902960384">Comece a buscar</translation>
-<translation id="454386012157232640">Non vin un anuncio</translation>
-<translation id="1448877943847791441">Brave mostrará o seu primeiro anuncio en</translation>
-<translation id="4410793187232041318">Agora ganarás un token dos anuncios de Brave.</translation>
 <translation id="6511854390690723657">Este é o teu primeiro anuncio. Prema aquí para saber máis.</translation>
-<translation id="2070991379950719711">Comezar a usar Brave Rewards</translation>
-<translation id="48520986898237073">Continuar para a carteira</translation>
 <translation id="6213254277250932867">Teño unha frase de recuperación de 12 palabras</translation>
 <translation id="4225265925807365011">Teño unha frase de recuperación de 24 palabras</translation>
 <translation id="3570367516044491911">Establecer como nvegador predeterminado</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Escanear código QR</translation>
 <translation id="5317781812114905957">Instrucións</translation>
 <translation id="8515319483805157233">Para buscar por código QR, aliña o código QR no centro do marco.</translation>
+<translation id="3333887201479867589">Recompensas de Brave</translation>
 <translation id="7658239707568436148">Cancelar</translation>
 <translation id="1201402288615127009">Seguinte</translation>
 <translation id="8481779960444041069">Se queres mellorar a túa privacidade, establece Brave como navegador predefinido</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Abrir cartafol</translation>
 <translation id="8985635554450124959">Non se puido establecer a sincronización</translation>
 <translation id="7173114856073700355">Abrir Configuración</translation>
-<translation id="496896260395129787">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>volve crear a conta.</translation>
+<translation id="674078455841038219">Esta conta de Sincronización de Brave eliminouse doutro dispositivo. Se non querías desactivar Sincronización, volve crear a conta.</translation>
+<translation id="8913415701676265311">Volver crear</translation>
 <translation id="4094590686212463338">Non foi posible unirse a esta cadea de sincronización. Eliminouse a cadea de sincronización.</translation>
 <translation id="4908081302669157000">Números de teléfono, correos electrónicos e enderezos</translation>
+<translation id="1571419474754278280">Conversas de Leo AI</translation>
 <translation id="1056898198331236512">Advertencia</translation>
 <translation id="1426410128494586442">Si</translation>
 <translation id="7811264919113243207">Isto compartirá os teus datos de Brave, incluíndo potencialmente os teus contrasinais, co dispositivo que xerou este código QR.
@@ -366,10 +383,9 @@ Seguro que queres facelo?</translation>
 <translation id="1413177583895309156">A función Brave VPN cifra e protexe todo o que fagas en liña, inclusive fóra do navegador de Brave.</translation>
 <translation id="3974348661685061050">Próbaa de balde durante 7 días</translation>
 <translation id="5789441016350810005">Os anuncios de Brave son enviados cando o navegador está nun segundo plano</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Nova lapela</translation>
 <translation id="5927196110206824867">As imaxes de fondo con patrocinio contribúen á misión de Brave de crear unha web independente e centrada no usuario. E, ao contrario das grandes tecnolóxicas, medimos o rendemento publicitario de xeito anónimo para preservar a túa privacidade.</translation>
-<translation id="8748471354357836070">Máis información/opcións de exclusión</translation>
+<translation id="6165508094623778733">Máis información</translation>
 <translation id="3171669670217312786">Imaxes de fondo</translation>
 <translation id="8522669544471808198">Amosar as imaxes en segundo plano</translation>
 <translation id="6258554626602400736">Amosar anuncios na páxina de novo separador</translation>
@@ -397,7 +413,7 @@ Seguro que queres facelo?</translation>
 <translation id="7151914815476509258">Bloquear os rastreadores e os anuncios (opción estándar)</translation>
 <translation id="7384778069178817075">Permitir todos os rastreadores e os anuncios</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>A opción "Bloquear todos os rastros" xa non está dispoñible. Se desexas saber como activala manualmente, consulta<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>a nosa páxina de axuda<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Bloquear cookies</translation>
+<translation id="8823559166155093873">Bloquear as cookies</translation>
 <translation id="614747795780742163">Evita que os sitios web almacenen información sobre as túas visitas anteriores</translation>
 <translation id="6883611015375728278">Bloquear todas as cookies</translation>
 <translation id="6196640612572343990">Bloquear cookies de terceiros</translation>
@@ -408,7 +424,7 @@ Seguro que queres facelo?</translation>
 <translation id="1876882294512858963">Utilizar sempre o modo confidencial</translation>
 <translation id="554464532999080267">Preguntar antes de acceder ao modo confidencial (estándar)</translation>
 <translation id="926857659063503456">Non acceder xamais ao modo confidencial</translation>
-<translation id="3895527457258986253">Bloquear as pegadas dixitais</translation>
+<translation id="6531019308847917584">Bloquear as pegadas dixitais</translation>
 <translation id="7854108565842971747">Esta é a configuración predeterminada de Escudos para novos sitios. Cambiala non afectará á configuración existente de cada sitio.</translation>
 <translation id="218587021686734263">Evita o uso das pegadas dixitais mediante a configuración do idioma</translation>
 <translation id="1706099589708266367">Reduce a cantidade de datos persoais sobre ti que poden obter os sitios web segundo a configuración do idioma do teu navegador.</translation>
@@ -418,22 +434,12 @@ Seguro que queres facelo?</translation>
 <translation id="7445306466605902444">Pegada dixital bloqueada (estrita, pode que algúns sitios non funcionen)</translation>
 <translation id="5582686930349810484">Pegada dixital bloqueada (estándar)</translation>
 <translation id="769702552748212954">Permitir todas as pegadas dixitais</translation>
-<translation id="876424292214881779">Anuncios e outras cousas arrepiantes bloqueadas</translation>
-<translation id="6849027612978668678">Os sitios adoitan incluír cookies e scripts que tentan identificarte a ti e ao teu dispositivo. Queren descubrir quen es e seguirte por toda a Web, facendo un seguimento do que fas en cada sitio.\n\nBrave bloquea estas accións para que poidas navegar sen que te sigan.</translation>
-<translation id="8553998445606452168">Sobre os escudos de Brave</translation>
-<translation id="8912304686498704084">Arriba</translation>
-<translation id="4963218453264888510">Abaixo</translation>
-<translation id="7474113515179313724">Estás navegando neste sitio sen as proteccións de privacidade de Brave. Non funciona ben con Shields up?</translation>
 <translation id="4226543734057230801">Redes de Ethereum</translation>
 <translation id="3504157706952484145">Redes de Filecoin</translation>
 <translation id="1561541094377237745">Redes de Solana</translation>
 <translation id="7141438739990875547">Redes de Bitcoin</translation>
 <translation id="9055546041146396417">Se este sitio aparece roto, proba Shields.</translation>
 <translation id="7898672232170410330">Bloquear elemento</translation>
-<translation id="9064628362799094520">Queres eliminar os datos do sitio</translation>
-<translation id="8949611615512336262">Eliminar automaticamente: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Eliminar datos do sitio agora</translation>
-<translation id="6795622376590884449">Eliminar automaticamente</translation>
 <translation id="7961015016161918242">Nunca</translation>
 <translation id="3200744626782631683">Os datos de navegación nunca se eliminan automaticamente.</translation>
 <translation id="1991004083507807299">Separador do sitio pechado</translation>
@@ -444,23 +450,11 @@ Seguro que queres facelo?</translation>
 <translation id="2997451887458851244">Actualizar Auto Shred e axustar que datos se eliminan</translation>
 <translation id="363903976200491771">Esmigalzar automaticamente os datos de navegación</translation>
 <translation id="1028873002018537235">Esmagar o historial de navegación</translation>
-<translation id="1209739344687072997">Informar sobre un sitio roto</translation>
-<translation id="8510478288840333677">Informe aos desenvolvedores de Brave que este sitio non funciona correctamente con Shields:</translation>
-<translation id="1653405824851871276">Grazas por axudar a que Brave sexa mellor para todos. Este informe só conterá a información necesaria para que poidamos corrixir este sitio. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Saiba máis.</translation>
-<translation id="8740275226259417070">Esta é unha páxina de erro. Non se pode notificar como un sitio danado.</translation>
 <translation id="721949491455392748">Incluír captura de pantalla da páxina actual</translation>
-<translation id="8459191579769999214">Ver captura de pantalla</translation>
 <translation id="6476216365964140603">Detalles adicionais (opcional)</translation>
-<translation id="6145852496180774737">Contacto: (opcional)</translation>
-<translation id="6367576083705149078">Se compartes a túa información de contacto, gardarase para futuros informes.</translation>
-<translation id="7616645803364270729">Correo electrónico, Twitter, etc.</translation>
-<translation id="5299848999918506028">Por favor!</translation>
-<translation id="76550953340008122">Grazas por facer saber aos desenvolvedores de Brave que hai algo mal neste sitio. Faremos o mellor para solucionalo!</translation>
 <translation id="3037432377946455872">Que problema atopaches?</translation>
 <translation id="8731661215617360873">Escolle unha opción</translation>
 <translation id="650318023204990401">Controis avanzados</translation>
-<translation id="7205939464631857223">Baleirar todos os elementos bloqueados</translation>
 <translation id="5370478469168390143">Gardar os datos en liña</translation>
 <translation id="1118508688433541158">Navega máis rápido e bloquea os anuncios con Brave</translation>
 <translation id="7427391215172269363">Aforro datos cada día navegando pola rede con Brave.</translation>
@@ -510,17 +504,17 @@ Seguro que queres facelo?</translation>
 <translation id="2718046830255553131">Borráronse os datos dos informes de privacidade.</translation>
 <translation id="8376263745431603066">Activar o "modo nocturno" (experimental)</translation>
 <translation id="1383876407941801731">Buscar</translation>
-<translation id="6165508094623778733">Máis información</translation>
 <translation id="13296465911709339">Copiouse o teu texto no portapapeis.</translation>
 <translation id="2735834606413553397">O enderezo público copiouse no portapapeis.</translation>
 <translation id="2977461003134694205">Estadísticas de privacidade</translation>
 <translation id="8804164990146287819">Política de privacidade</translation>
 <translation id="5705882733397021510">Volver</translation>
+<translation id="8450375131309292971">Tirar para actualizar</translation>
+<translation id="880475987868032564">Activa o xesto de tirar para actualizar. Ao pasar o dedo cara abaixo desde a parte superior dunha páxina, esta actualizarase.</translation>
 <translation id="7889432931837317731">Abrir automaticamente cando sexa posible</translation>
 <translation id="1029304566263314007">Mostrar notificacións do progreso de descarga</translation>
 <translation id="2977501775944575564">Descarga paralela</translation>
 <translation id="6224180438946945617">Activa a descarga paralela para acelerar a velocidade de descarga</translation>
-<translation id="8967385052772844086">Ver informe de privacidade completo</translation>
 <translation id="3479552764303398839">Agora non</translation>
 <translation id="7138272885617540195">Permitir abrir as ligazóns da aplicación en aplicacións alleas a Brave</translation>
 <translation id="4954512758656527938">Carteira predeterminada de Ethereum</translation>
@@ -783,7 +777,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="2156993118928861787">Enderezo inválido</translation>
 <translation id="7791543448312431591">Engadir</translation>
 <translation id="6889920539620318793">Configurar como activo</translation>
-<translation id="2653659639078652383">Enviar</translation>
 <translation id="4945690646623486292">Seleccionar rede</translation>
 <translation id="8006088103295786154">Acceder á Carteira de Brave</translation>
 <translation id="5308380583665731573">Conectar</translation>
@@ -1104,7 +1097,6 @@ Se non aceptas esta solicitude, a VPN non se volverá conectar e a conexión a I
 <translation id="1336494649091412226">Queres saír de Brave?</translation>
 <translation id="6061635824229591714">Queres eliminar os datos do sitio?</translation>
 <translation id="1265051174491933207">A eliminación borrará os datos do sitio e pechará todas as lapelas de '<ph name="SITE_NAME"/>'. Isto non se poderá desfacer.</translation>
-<translation id="5528772406060281700">Queres eliminar os datos do sitio</translation>
 <translation id="4426990318287827331">Eliminar datos</translation>
 <translation id="7942415993090181327">Historial de conversas</translation>
 <translation id="6859935199732075666">Mostrar erros de Navegación segura</translation>

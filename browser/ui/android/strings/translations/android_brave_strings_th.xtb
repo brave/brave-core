@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">ไปที่ URL หน้าเดิม (ที่ไม่ใช่ AMP) เสมอแทนเวอร์ชัน Accelerated Mobile Page ของ Google</translation>
 <translation id="920638232916443453">เปลี่ยนเส้นทาง URL ติดตามอัตโนมัติ</translation>
 <translation id="1118970888826017401">เปิดใช้การรองรับในการเลี่ยงเปลี่ยนเส้นทาง URL ติดตามระดับสูง</translation>
-<translation id="94154759592465111">สคริปต์บล็อก</translation>
+<translation id="4824468494729001999">บล็อกสคริปต์</translation>
 <translation id="7714773920987474116">บล็อก JavaScript (อาจทำเว็บเสียหาย)</translation>
 <translation id="2233004324252915283">บล็อกเนื้อหาที่แนะนำของ YouTube</translation>
 <translation id="1005372663692637999">บล็อกองค์ประกอบการ์ดถัดไปและการ์ดสิ้นสุดบน youtube.com</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">ล้างคุกกี้และข้อมูลอื่นๆ ของไซต์เมื่อคุณปิดไซต์</translation>
 <translation id="7740929262043547697">อนุญาตการบล็อกองค์ประกอบในหน้าต่างแบบส่วนตัว</translation>
 <translation id="1260864846935682371">เปิดใช้งานฟีเจอร์บล็อกองค์ประกอบของ Shields ในหน้าต่างแบบส่วนตัว โปรดทราบว่าส่วนที่ถูกบล็อกในหน้าต่างแบบส่วนตัวจะถูกบล็อกในหน้าต่างทั่วไปด้วย</translation>
+<translation id="4021136205151368133">หมายเหตุ: การดำเนินการนี้อาจลดการปกป้องความเป็นส่วนตัวของ Brave</translation>
+<translation id="2876155735620608356">Shields เปิด สำหรับเว็บไซต์นี้</translation>
+<translation id="8605306630462821888">Shields ปิด สำหรับเว็บไซต์นี้</translation>
+<translation id="1574700443447059851">บล็อกตัวติดตาม โฆษณา และอื่นๆ</translation>
+<translation id="4039014515785210563">เลือกวิธีจัดการ trackers และโฆษณา</translation>
+<translation id="8423733350479881051">เลือกวิธีจัดการ cookies</translation>
+<translation id="9064628362799094520">ย่อยข้อมูลของเว็บไซต์</translation>
+<translation id="2862348905922940916">รีเซ็ตเว็บไซต์นี้เป็นค่าเริ่มต้นของ Shields</translation>
+<translation id="269939061709857874">รีเซ็ตเว็บไซต์เป็นค่าเริ่มต้นของ Shields แล้ว</translation>
+<translation id="3623708006387030755">การตั้งค่า Shields ส่วนกลาง</translation>
+<translation id="2387532482048804818">แจ้งเราหากเว็บไซต์ทำงานผิดปกติเมื่อเปิด Shields</translation>
+<translation id="5412004902081180614">รายงาน</translation>
+<translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
+<translation id="2606165159306988240">แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องกับเว็บไซต์นี้</translation>
+<translation id="6806248680442980382">ขอบคุณที่ช่วยทำให้ Brave มีประสิทธิภาพมากขึ้นสำหรับทุกคน โดยรายงานนี้จะมีข้อมูลที่จำเป็นสำหรับเราในการแก้ไขเว็บไซต์นี้เท่านั้น</translation>
+<translation id="7549123865054511884">อะไรที่ไม่ทำงานบนเว็บไซต์นี้?</translation>
+<translation id="9094461910562981998">ติดต่อฉันที่ (ไม่บังคับ)</translation>
+<translation id="7645128170699559106">อีเมล, ชื่อผู้ใช้ X และอื่น ๆ</translation>
+<translation id="446579367766109694">หากคุณให้ข้อมูลการติดต่อ ข้อมูลจะถูกบันทึกเพื่อใช้ในรายงานในอนาคต</translation>
+<translation id="2653659639078652383">ส่ง</translation>
+<translation id="8459191579769999214">ดูภาพหน้าจอ</translation>
+<translation id="4530541918195747729">ส่งรายงานแล้ว ขอบคุณ!</translation>
+<translation id="5528772406060281700">ย่อยข้อมูลของเว็บไซต์</translation>
+<translation id="6795622376590884449">ย่อยแบบอัตโนมัติ</translation>
+<translation id="3520341243738311408">เมื่อปิดแท็บของเว็บไซต์</translation>
+<translation id="3559735673608367395">เมื่อออกจากแอป</translation>
+<translation id="9140049656798805345">ย่อยข้อมูลของเว็บไซต์เดี๋ยวนี้</translation>
 <translation id="1680858055899097121">อย่าคงแท็บไว้เมื่อจบการท่องเว็บแต่ละรอบ</translation>
 <translation id="7142548388914389999">อนุญาตการวิเคราะห์ผลิตภัณฑ์โดยรักษาความเป็นส่วนตัว (P3A)</translation>
 <translation id="5254037869598726291">ข้อมูล P3A ที่ไม่ระบุชื่อช่วยให้ Brave ประเมินการใช้งานโดยรวม และช่วยให้มั่นใจว่าเรากำลังปรับปรุงฟีเจอร์ยอดนิยม</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">ข้อมูลเชิงลึกของผลิตภัณฑ์แบบส่วนตัว</translation>
 <translation id="3545804467215833536">แตะเพื่อดู Brave Shields</translation>
 <translation id="1724327820822194498">ดูสิ่งรบกวนทั้งหมดที่ Brave บล็อกในทุกหน้าด้วย Brave Shields</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> และ <ph name="TRACKER"/> บล็อกโฆษณาอื่นๆ &amp; ตัวติดตามแล้ว</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> และโฆษณาอื่น ๆ &amp; การติดตาม ถูกบล็อก</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> บล็อกโฆษณา &amp; ตัวติดตามแล้ว</translation>
 <translation id="8281886186245836920">ข้าม</translation>
-<translation id="986879628471635371">การแก้ไขปัญหาการเตรียมความพร้อม</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">รับ <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">ด้วยการดูโฆษณาที่เคารพความเป็นส่วนตัวและสนับสนุนเว็บและครีเอเตอร์คนโปรดของคุณ</translation>
-<translation id="5302488867897327287">เมื่อแตะเริ่มต้นใช้ Brave Reward จะถือว่าคุณยอมรับใน</translation>
 <translation id="4281844954008187215">ข้อตกลงการใช้บริการ</translation>
 <translation id="6871397658902960384">เริ่มท่องเว็บ</translation>
-<translation id="454386012157232640">ฉันไม่เห็นโฆษณาเลย</translation>
-<translation id="1448877943847791441">Brave จะแสดงโฆษณาแรกของคุณใน</translation>
-<translation id="4410793187232041318">ตอนนี้คุณได้รับโทเคนจาก Brave Ads</translation>
 <translation id="6511854390690723657">นี่เป็นโฆษณา Brave อันแรกของคุณ แตะเพื่อเรียนรู้เพิ่มเติม</translation>
-<translation id="2070991379950719711">เริ่มต้นใช้ Brave Reward</translation>
-<translation id="48520986898237073">ไปยังกระเป๋าเงิน</translation>
 <translation id="6213254277250932867">ฉันมีวลีกู้คืนรหัส 12 คำ</translation>
 <translation id="4225265925807365011">ฉันมีวลีกู้คืนรหัส 24 คำ</translation>
 <translation id="3570367516044491911">ตั้งเป็นเบราว์เซอร์เริ่มต้น</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">สแกน QR Code</translation>
 <translation id="5317781812114905957">คำแนะนำ</translation>
 <translation id="8515319483805157233">หากต้องการค้นหาด้วย QR Code ให้นำ QR Code มาไว้ตรงกลางกรอบ</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">ยกเลิก</translation>
 <translation id="1201402288615127009">ถัดไป</translation>
 <translation id="8481779960444041069">เพื่อการปรับปรุงความเป็นส่วนตัวของคุณ โปรดตั้งค่า Brave เป็นเบราว์เซอร์เริ่มต้นของคุณ</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">เปิดโฟลเดอร์</translation>
 <translation id="8985635554450124959">ไม่สามารถตั้งค่าการซิงค์</translation>
 <translation id="7173114856073700355">เปิดการตั้งค่า</translation>
-<translation id="496896260395129787">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้ <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>สร้างบัญชีใหม่อีกครั้ง</translation>
+<translation id="674078455841038219">บัญชี Brave Sync นี้ถูกลบจากอุปกรณ์อื่น ถ้าคุณไม่ตั้งใจที่จะปิดการซิงค์ ให้สร้างบัญชีใหม่</translation>
+<translation id="8913415701676265311">สร้างใหม่</translation>
 <translation id="4094590686212463338">ไม่สามารถเข้าร่วมกลุ่มการซิงค์ได้เนื่องจากกลุ่มการซิงค์ถูกลบไปแล้ว</translation>
 <translation id="4908081302669157000">หมายเลขโทรศัพท์ อีเมล และที่อยู่</translation>
+<translation id="1571419474754278280">การสนทนา Leo AI</translation>
 <translation id="1056898198331236512">คำเตือน</translation>
 <translation id="1426410128494586442">ใช่</translation>
 <translation id="7811264919113243207">การดำเนินการนี้จะแชร์ข้อมูล Brave ของคุณ รวมถึงอาจแชร์รหัสผ่านของคุณ กับอุปกรณ์ที่สร้างรหัส QR นี้
@@ -366,10 +383,9 @@
 <translation id="1413177583895309156">Brave VPN เข้ารหัสและปกป้องทุกสิ่งที่คุณทำออนไลน์ แม้จะอยู่นอกเบราว์เซอร์ Brave ก็ตาม</translation>
 <translation id="3974348661685061050">ทดลองใช้งานฟรี 7 วัน</translation>
 <translation id="5789441016350810005">Brave Ads ที่ถูกส่งเมื่อเบราว์เซอร์อยู่ในเบื้องหลัง</translation>
-<translation id="1486343603936278248">โทเคน</translation>
 <translation id="7781069478569868053">หน้าแท็บใหม่</translation>
 <translation id="5927196110206824867">ภาพพื้นหลังที่มีสปอนเซอร์ช่วยสนับสนุนภารกิจของ Brave ในการสร้างเว็บที่เป็นอิสระและยึดผู้ใช้เป็นศูนย์กลาง และไม่เหมือนกับบริษัทยักษ์ใหญ่ทางเทคโนโลยี เราวัดประสิทธิภาพของโฆษณาโดยไม่ระบุตัวตน เพื่อคุ้มครองความเป็นส่วนตัวของคุณ</translation>
-<translation id="8748471354357836070">เรียนรู้เพิ่มเติม/ตัวเลือกการยกเลิกการเข้าร่วม</translation>
+<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="3171669670217312786">ภาพพื้นหลัง</translation>
 <translation id="8522669544471808198">แสดงรูปภาพพื้นหลัง</translation>
 <translation id="6258554626602400736">แสดงโฆษณาหน้าแท็บใหม่</translation>
@@ -400,7 +416,7 @@
 <translation id="7151914815476509258">บล็อกตัวติดตาม &amp; Ads (ทั่วไป)</translation>
 <translation id="7384778069178817075">อนุญาตโฆษณา &amp; แอปติดตามทั้งหมด</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>ตัวเลือก "บล็อกคุกกี้ทั้งหมด" ถูกยกเลิกแล้ว หากต้องการเรียนรู้วิธีการเปิดใช้งานตัวเลือกนี้แบบบังคับ ให้ไปที่<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>หน้าความช่วยเหลือของเรา<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">บล็อกคุกกี้</translation>
+<translation id="8823559166155093873">บล็อกคุกกี้</translation>
 <translation id="614747795780742163">ป้องกันเว็บไซต์จากการเก็บข้อมูลเกี่ยวกับการเยี่ยมชมเว็บก่อนหน้านี้ของคุณ</translation>
 <translation id="6883611015375728278">บล็อกคุกกี้ทั้งหมด</translation>
 <translation id="6196640612572343990">บล็อกคุกกี้ของบุคคลที่สาม</translation>
@@ -411,7 +427,7 @@
 <translation id="1876882294512858963">ไปที่ Off-The-Record เสมอ</translation>
 <translation id="554464532999080267">ถามก่อนจะไปที่ Off-The-Record (มาตรฐาน)</translation>
 <translation id="926857659063503456">ห้ามไปที่ Off-The-Record</translation>
-<translation id="3895527457258986253">บล็อกการเก็บร่องรอย</translation>
+<translation id="6531019308847917584">บล็อกการพิมพ์ลายนิ้วมือ</translation>
 <translation id="7854108565842971747">นี่คือการตั้งค่า Shields เริ่มต้นสำหรับเว็บไซต์ใหม่ โดยการเปลี่ยนแปลงเหล่านี้จะไม่ส่งผลต่อการตั้งค่าที่มีอยู่ของแต่ละเว็บไซต์</translation>
 <translation id="218587021686734263">ป้องกันลายนิ้วมือผ่านการตั้งค่าภาษา</translation>
 <translation id="1706099589708266367">ลดจำนวนเว็บไซต์ที่สามารถเรียนรู้เกี่ยวกับคุณตามภาษาของเบราว์เซอร์ที่คุณตั้งค่าไว้</translation>
@@ -421,22 +437,12 @@
 <translation id="7445306466605902444">บล็อก Fingerprinting แล้ว (เข้มงวด อาจทำหน้าเว็บเสียหาย)</translation>
 <translation id="5582686930349810484">บล็อก Fingerprinting แล้ว (ธรรมดา)</translation>
 <translation id="769702552748212954">อนุญาตการสร้างลายนิ้วมือทั้งหมด</translation>
-<translation id="876424292214881779">บล็อกโฆษณาและสิ่งที่น่ากลัวต่างๆ ถูกแล้ว</translation>
-<translation id="6849027612978668678">หลายเว็บไซต์มักใส่คุกกี้และสคริปต์ที่พยายามระบุตัวตนคุณและอุปกรณ์ของคุณ พวกเขาอยากรู้ว่าคุณเป็นใคร และจะติดตามคุณและสิ่งที่คุณทำบนทุกเว็บไซต์ \n\nโดยที่ Brave จะบล็อกสิ่งเหล่านี้เพื่อให้คุณสามารถท่องอินเทอร์เน็ตได้โดยไม่ถูกติดตามตัว</translation>
-<translation id="8553998445606452168">เกี่ยวกับ Brave Shields</translation>
-<translation id="8912304686498704084">ขึ้น</translation>
-<translation id="4963218453264888510">ลง</translation>
-<translation id="7474113515179313724">คุณกำลังค้นเว็บนี้โดยไม่มีการป้องกันความเป็นส่วนตัวของ Brave เว็บนี้ทำงานไม่ถูกต้องเมื่อเปิด Shields หรือ?</translation>
 <translation id="4226543734057230801">เครือข่าย Ethereum</translation>
 <translation id="3504157706952484145">เครือข่าย Filecoin</translation>
 <translation id="1561541094377237745">เครือข่าย Solana</translation>
 <translation id="7141438739990875547">เครือข่าย Bitcoin</translation>
 <translation id="9055546041146396417">หากเว็บดูเหมือนมีปัญหา ลองปิด Shields ดู</translation>
 <translation id="7898672232170410330">บล็อกองค์ประกอบ</translation>
-<translation id="9064628362799094520">ย่อยข้อมูลของเว็บไซต์</translation>
-<translation id="8949611615512336262">ย่อยแบบอัตโนมัติ: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">ย่อยข้อมูลของเว็บไซต์เดี๋ยวนี้</translation>
-<translation id="6795622376590884449">ย่อยแบบอัตโนมัติ</translation>
 <translation id="7961015016161918242">ไม่ต้องเลย</translation>
 <translation id="3200744626782631683">ข้อมูลการท่องเว็บจะไม่ถูกลบโดยอัตโนมัติ</translation>
 <translation id="1991004083507807299">ปิดแท็บของเว็บไซต์แล้ว</translation>
@@ -447,23 +453,11 @@
 <translation id="2997451887458851244">อัปเดต Auto Shred และปรับข้อมูลที่ต้องการทำลาย</translation>
 <translation id="363903976200491771">ทำลายข้อมูลการท่องเว็บโดยอัตโนมัติ</translation>
 <translation id="1028873002018537235">ทำลายประวัติการท่องเว็บ</translation>
-<translation id="1209739344687072997">รายงานเว็บไซต์เสียหาย</translation>
-<translation id="8510478288840333677">แจ้งให้ผู้พัฒนา Brave ทราบว่าเว็บไซต์นี้ทำงานไม่ถูกต้องเมื่อเปิดระบบปกป้อง:</translation>
-<translation id="1653405824851871276">ขอบคุณที่ช่วยทำให้ Brave มีประสิทธิภาพมากขึ้นสำหรับทุกคน โดยรายงานนี้จะมีข้อมูลที่จำเป็นสำหรับเราในการแก้ไขเว็บไซต์นี้เท่านั้น <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">เรียนรู้เพิ่มเติม</translation>
-<translation id="8740275226259417070">หน้านี้คือหน้าข้อผิดพลาด ซึ่งจะไม่สามารถรายงานหน้านี้ว่าเป็นเว็บไซต์เสียหายได้</translation>
 <translation id="721949491455392748">รวมภาพหน้าจอของหน้าปัจจุบัน</translation>
-<translation id="8459191579769999214">ดูภาพหน้าจอ</translation>
 <translation id="6476216365964140603">รายละเอียดเพิ่มเติม (ไม่บังคับ)</translation>
-<translation id="6145852496180774737">ติดต่อฉันที่: (ไม่บังคับ)</translation>
-<translation id="6367576083705149078">หากคุณให้ข้อมูลการติดต่อ มันจะถูกบันทึกไว้สำหรับการรายงานในอนาคต.</translation>
-<translation id="7616645803364270729">อีเมล Twitter ฯลฯ</translation>
-<translation id="5299848999918506028">ขอบคุณค่ะ</translation>
-<translation id="76550953340008122">ขอบคุณที่แจ้งให้ผู้พัฒนา Brave ทราบว่ามีข้อผิดพลาดในเว็บไซต์นี้ เราจะพยายามแก้ไขปัญหานี้อย่างเต็มที่</translation>
 <translation id="3037432377946455872">ปัญหาหลักที่คุณกำลังเห็นคืออะไร</translation>
 <translation id="8731661215617360873">เลือกหนึ่งตัวเลือก</translation>
 <translation id="650318023204990401">การควบคุมขั้นสูง</translation>
-<translation id="7205939464631857223">ลบทุกองค์ประกอบที่ถูกบล็อก</translation>
 <translation id="5370478469168390143">บันทึกข้อมูลออนไลน์</translation>
 <translation id="1118508688433541158">ท่องเว็บเร็วขึ้นและบล็อกโฆษณาด้วย Brave</translation>
 <translation id="7427391215172269363">ฉันบันทึกข้อมูลด้วยการท่องเว็บด้วย Brave ทุกวัน</translation>
@@ -513,17 +507,17 @@
 <translation id="2718046830255553131">ล้างข้อมูลรายงานความเป็นส่วนตัวแล้ว</translation>
 <translation id="8376263745431603066">เปิดใช้งาน "โหมดการคืน" (ทดลอง)</translation>
 <translation id="1383876407941801731">ค้นหา</translation>
-<translation id="6165508094623778733">ดูข้อมูลเพิ่มเติม</translation>
 <translation id="13296465911709339">ข้อความของคุณได้ถูกคัดลอกไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="2735834606413553397">คัดลอกที่อยู่สาธารณะไปยังคลิปบอร์ดแล้ว</translation>
 <translation id="2977461003134694205">สถิติความเป็นส่วนตัว</translation>
 <translation id="8804164990146287819">นโยบายสความเป็นส่วนตัว</translation>
 <translation id="5705882733397021510">ย้อนกลับ</translation>
+<translation id="8450375131309292971">ดึงเพื่อรีเฟรช</translation>
+<translation id="880475987868032564">เปิดใช้งานท่าทางดึงเพื่อรีเฟรช การปัดลงจากด้านบนสุดของหน้าจะรีเฟรชหน้านั้น</translation>
 <translation id="7889432931837317731">เปิดโดยอัตโนมัติเมื่อเป็นไปได้</translation>
 <translation id="1029304566263314007">แสดงการแจ้งเตือนความคืบหน้าการดาวน์โหลด</translation>
 <translation id="2977501775944575564">การดาวน์โหลดหลายรายการพร้อมกัน</translation>
 <translation id="6224180438946945617">เปิดใช้งานการดาวน์โหลดหลายรายการพร้อมกันเพื่อเร่งความเร็วในการดาวน์โหลด</translation>
-<translation id="8967385052772844086">ดูรายงานความเป็นส่วนตัวฉบับเต็ม</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="7138272885617540195">อนุญาตให้เปิดลิงก์แอปในแอปนอก Brave</translation>
 <translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
@@ -787,7 +781,6 @@
 <translation id="2156993118928861787">ที่อยู่ไม่ถูกต้อง</translation>
 <translation id="7791543448312431591">เพิ่ม</translation>
 <translation id="6889920539620318793">ตั้งค่าเป็นใช้งาน</translation>
-<translation id="2653659639078652383">ส่ง</translation>
 <translation id="4945690646623486292">เลือกเครือข่าย</translation>
 <translation id="8006088103295786154">เข้าถึง Brave Wallet</translation>
 <translation id="5308380583665731573">เชื่อมต่อ</translation>
@@ -1108,7 +1101,6 @@
 <translation id="1336494649091412226">คุณแน่ใจไหมว่าต้องการออกจาก Brave</translation>
 <translation id="6061635824229591714">ต้องการย่อยข้อมูลของเว็บไซต์นี้หรือไม่</translation>
 <translation id="1265051174491933207">การย่อยข้อมูลจะลบข้อมูลของเว็บไซต์และปิดแท็บทั้งหมดของ '<ph name="SITE_NAME"/>' การกระทำนี้ไม่สามารถยกเลิกได้</translation>
-<translation id="5528772406060281700">ย่อยข้อมูลของเว็บไซต์</translation>
 <translation id="4426990318287827331">ย่อยข้อมูล</translation>
 <translation id="7942415993090181327">ประวัติการแชท</translation>
 <translation id="6859935199732075666">แสดงข้อผิดพลาดของ Safe Browsing</translation>
