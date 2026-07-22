@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -1620,6 +1621,17 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null != view) {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    // QRCodeCameraManager.Callback implementation
+    @Override
+    public void onPlayServicesUnavailable(Dialog errorDialog) {
+        // Scanning the QR code is not possible without Google Play Services, but the code words
+        // button on this screen still is, so the user stays here after acknowledging the error.
+        if (errorDialog == null || !isHostValid() || requireActivity().isFinishing()) {
+            return;
+        }
+        errorDialog.show();
     }
 
     // QRCodeCameraManager.HostProvider implementation

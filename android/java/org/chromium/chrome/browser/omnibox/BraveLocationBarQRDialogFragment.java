@@ -170,12 +170,11 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
     }
 
     @Override
-    public boolean onPlayServicesUnavailable(Dialog errorDialog) {
-        if (errorDialog != null) {
+    public void onPlayServicesUnavailable(Dialog errorDialog) {
+        if (errorDialog != null && isHostValid()) {
             errorDialog.show();
         }
         dismiss();
-        return true;
     }
 
     // QRCodeCameraManager.HostProvider implementation
