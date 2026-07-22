@@ -66,7 +66,6 @@ export const _AssistantTask = {
         <AssistantTask
           assistantEntries={taskConversationEntries}
           isActiveTask={args.isActiveTask}
-          isLeoModel={true}
           allowedLinks={[]}
         />
       </MockContext>

@@ -345,7 +345,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
               <AssistantTask
                 assistantEntries={group}
                 isActiveTask={isActiveGroup}
-                isLeoModel={conversationContext.isLeoModel}
                 allowedLinks={allowedLinks}
               />
             )}
@@ -383,7 +382,6 @@ function ConversationEntries(props: { scrollToBottom: () => void }) {
                           }
                           isEntryInProgress={isEntryInProgress}
                           allowedLinks={allowedLinks}
-                          isLeoModel={conversationContext.isLeoModel}
                           toolArtifacts={
                             i === group.length - 1 ? toolArtifacts : null
                           }

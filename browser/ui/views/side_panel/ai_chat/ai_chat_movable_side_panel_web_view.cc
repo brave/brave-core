@@ -24,6 +24,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_entry_scope.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "chrome/browser/ui/views/status_bubble_views.h"
 #include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
 #include "components/web_modal/web_contents_modal_dialog_manager.h"
@@ -93,7 +94,8 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
 }
 
 AIChatMovableSidePanelWebView::AIChatMovableSidePanelWebView(Profile* profile)
-    : views::WebView(profile) {
+    : views::WebView(profile),
+      status_bubble_(std::make_unique<StatusBubbleViews>(this)) {
   // Use the shared side panel web view id so the hosted contents is
   // discoverable by the same lookups the wrapper-based view supports (e.g.
   // `SidePanelCoordinator::GetWebContentsForTest` and the webui_browser side
@@ -107,6 +109,26 @@ AIChatMovableSidePanelWebView::AIChatMovableSidePanelWebView(Profile* profile)
 
 AIChatMovableSidePanelWebView::~AIChatMovableSidePanelWebView() {
   SetWebContents(nullptr);
+}
+
+bool AIChatMovableSidePanelWebView::
+    GetNeedsNotificationWhenVisibleBoundsChange() const {
+  return true;
+}
+
+void AIChatMovableSidePanelWebView::OnVisibleBoundsChanged() {
+  if (status_bubble_) {
+    status_bubble_->Reposition();
+  }
+}
+
+void AIChatMovableSidePanelWebView::UpdateTargetURL(
+    content::WebContents* source,
+    const GURL& url) {
+  status_bubble_url_for_testing_ = url;
+  if (status_bubble_) {
+    status_bubble_->SetURL(url);
+  }
 }
 
 void AIChatMovableSidePanelWebView::AdoptWebContents(

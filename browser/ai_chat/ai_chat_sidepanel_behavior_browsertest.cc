@@ -12,6 +12,8 @@
 #include "base/time/time.h"
 #include "brave/browser/ai_chat/ai_chat_agent_profile_helper.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
+#include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
@@ -30,6 +32,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/browser/web_contents_delegate.h"
 #include "content/public/browser/web_ui.h"
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
@@ -459,6 +462,57 @@ IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   EXPECT_NE(tab_strip->GetIndexOfWebContents(leo_contents),
             TabStripModel::kNoTab);
+}
+
+// Hovering a link in the AI Chat panel must disclose its destination, just like
+// a normal tab. The side panel's WebContents delegate does not drive the
+// browser status bubble, so each view backing (the wrapper-based
+// `AIChatSidePanelWebView` when the move feature is off, and the movable
+// `AIChatMovableSidePanelWebView` when it is on) forwards `UpdateTargetURL`
+// into its own status bubble. This verifies that path reaches the status bubble
+// for whichever view backs the panel, and that leaving a link clears it.
+IN_PROC_BROWSER_TEST_P(AIChatGlobalSidePanelBrowserTest,
+                       HoveringLinkForwardsTargetURLToStatusBubble) {
+  auto* side_panel_coordinator = SidePanelCoordinator::From(browser());
+  ASSERT_TRUE(side_panel_coordinator);
+  side_panel_coordinator->Show(SidePanelEntry::Id::kChatUI);
+
+  // Find the view actually attached to the browser window (see
+  // AddNewContentsUsesCorrectDisposition for why GetWebContentsForTest is not
+  // used here).
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser());
+  ASSERT_TRUE(browser_view);
+  auto* side_panel = browser_view->side_panel();
+  ASSERT_TRUE(side_panel);
+  auto* view = side_panel->GetContentParentView()->GetViewByID(
+      SidePanelWebUIView::kSidePanelWebViewId);
+  ASSERT_TRUE(view);
+  auto* side_panel_web_contents =
+      static_cast<views::WebView*>(view)->web_contents();
+  ASSERT_TRUE(side_panel_web_contents);
+  content::WaitForLoadStop(side_panel_web_contents);
+
+  auto* delegate = side_panel_web_contents->GetDelegate();
+  ASSERT_TRUE(delegate);
+
+  // The view by this ID is exactly our concrete side panel view, so the
+  // downcast is safe. Which concrete type depends on the move feature.
+  auto status_bubble_url = [&]() -> const GURL& {
+    return IsMoveToSidePanelEnabled()
+               ? static_cast<AIChatMovableSidePanelWebView*>(view)
+                     ->status_bubble_url_for_testing()
+               : static_cast<AIChatSidePanelWebView*>(view)
+                     ->status_bubble_url_for_testing();
+  };
+
+  // Hovering a link forwards its destination to the status bubble.
+  const GURL hovered("https://example.com/hovered");
+  delegate->UpdateTargetURL(side_panel_web_contents, hovered);
+  EXPECT_EQ(status_bubble_url(), hovered);
+
+  // Leaving the link (empty URL) clears the status bubble.
+  delegate->UpdateTargetURL(side_panel_web_contents, GURL());
+  EXPECT_TRUE(status_bubble_url().is_empty());
 }
 
 INSTANTIATE_TEST_SUITE_P(
