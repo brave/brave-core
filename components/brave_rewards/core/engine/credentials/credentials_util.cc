@@ -58,8 +58,14 @@ std::vector<BlindedToken> GenerateBlindCreds(const std::vector<Token>& creds) {
 
   std::vector<BlindedToken> blinded_creds;
   for (auto cred : creds) {
-    BlindedToken blinded_cred = cred.Blind();
-    blinded_creds.push_back(std::move(blinded_cred));
+    auto blinded_cred = cred.Blind();
+    if (!blinded_cred.has_value()) {
+      // If the credential preimage maps to the identity element,
+      // discard the whole batch so blinded creds stay aligned
+      // with creds.
+      return {};
+    }
+    blinded_creds.push_back(*std::move(blinded_cred));
   }
 
   return blinded_creds;

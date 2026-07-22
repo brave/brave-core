@@ -38,7 +38,7 @@ TEST_F(BraveAdsRewardConfirmationPayloadUtilTest,
                 R"JSON(
                     {
                       "blindedPaymentTokens": [
-                        "+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0="
+                        "Gth1bHgNtDx689fPCEdua/1ggMRHRahtzIdDr/EyWAg="
                       ],
                       "publicKey": "OqhZpUC8B15u+Gc11rQYRl8O3zOSAUIEC2JuDHI32TM="
                     })JSON"),

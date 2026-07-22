@@ -234,6 +234,11 @@ impl Order {
 pub struct SingleUseCredential {
     pub unblinded_cred: UnblindedToken,
     pub spent: bool,
+    // Selects the verification-key derivation used when this credential is
+    // presented; it must match how `unblinded_cred` was blinded. `serde(default)`
+    // deserializes a missing value as `false`.
+    #[serde(default)]
+    pub rfc: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]

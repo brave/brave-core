@@ -84,15 +84,30 @@ void RefillConfirmationTokens::Refill() {
   NotifyWillRefillConfirmationTokens(
       /*count=*/CalculateAmountOfConfirmationTokensToRefill());
 
-  GenerateTokens();
+  if (!GenerateTokens()) {
+    return FailedToRefill();
+  }
 
   RequestSignedTokens();
 }
 
-void RefillConfirmationTokens::GenerateTokens() {
+bool RefillConfirmationTokens::GenerateTokens() {
   const size_t count = CalculateAmountOfConfirmationTokensToRefill();
-  tokens_ = GetTokenGenerator()->Generate(count);
-  blinded_tokens_ = cbr::BlindTokens(*tokens_);
+  cbr::TokenList tokens = GetTokenGenerator()->Generate(count);
+
+  cbr::BlindedTokenList blinded_tokens = cbr::BlindTokens(tokens);
+  if (blinded_tokens.empty()) {
+    // A token whose preimage maps to the identity element cannot be blinded
+    // (see `cbr::Token::Blind`). This is astronomically unlikely; abort the
+    // refill so the next cycle regenerates fresh tokens, keeping `tokens_` and
+    // `blinded_tokens_` index-aligned.
+    BLOG(0, "Failed to blind confirmation tokens");
+    return false;
+  }
+
+  tokens_ = std::move(tokens);
+  blinded_tokens_ = std::move(blinded_tokens);
+  return true;
 }
 
 bool RefillConfirmationTokens::ShouldRequestSignedTokens() const {

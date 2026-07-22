@@ -60,7 +60,9 @@ PaymentTokenList ParsePaymentTokensFromList(const base::ListValue& list) {
       BLOG(0, "Missing payment unblinded token");
       continue;
     }
-    payment_token.unblinded_token = cbr::UnblindedToken(*unblinded_token);
+    // Tokens migrated from legacy storage predate the RFC 9497 derivation.
+    payment_token.unblinded_token =
+        cbr::UnblindedToken(*unblinded_token, /*rfc=*/false);
     if (!payment_token.unblinded_token.has_value()) {
       BLOG(0, "Invalid payment unblinded token");
       continue;

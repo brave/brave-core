@@ -32,7 +32,7 @@ class COMPONENT_EXPORT(CHALLENGE_BYPASS_RISTRETTO) Token {
   const cbr_cxx::Token& raw() const { return *raw_->data; }
 
   static Token Random();
-  BlindedToken Blind();
+  base::expected<BlindedToken, std::string> Blind();
   static base::expected<Token, std::string> DecodeBase64(
       const std::string& encoded);
   std::string EncodeBase64() const;

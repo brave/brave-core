@@ -30,9 +30,16 @@ Token Token::Random() {
   return Token(std::move(raw_token));
 }
 
-BlindedToken Token::Blind() {
-  rust::Box<cbr_cxx::BlindedToken> raw_blinded_token(raw().blind());
-  return BlindedToken(std::move(raw_blinded_token));
+base::expected<BlindedToken, std::string> Token::Blind() {
+  rust::Box<cbr_cxx::BlindedTokenResult> raw_blinded_token_result(
+      raw().blind());
+
+  if (!raw_blinded_token_result->is_ok()) {
+    return base::unexpected(
+        static_cast<std::string>(raw_blinded_token_result->error().msg));
+  }
+
+  return BlindedToken(raw_blinded_token_result->unwrap());
 }
 
 // static

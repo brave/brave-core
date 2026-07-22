@@ -90,23 +90,28 @@ TEST_F(BraveAdsSigningKeyTest, FailToSignWithInvalidBlindedToken) {
   EXPECT_FALSE(signing_key.Sign(cbr::test::GetInvalidBlindedToken()));
 }
 
-TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedToken) {
+TEST_F(BraveAdsSigningKeyTest, RederiveUnblindedTokenDeprecated) {
   // Arrange
   cbr::SigningKey signing_key(cbr::test::kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_EQ(cbr::test::GetUnblindedToken(),
-            signing_key.RederiveUnblindedToken(cbr::test::GetTokenPreimage()));
+  // The deprecated derivation produces the legacy unblinded token, which
+  // differs from the RFC 9497 `kUnblindedTokenBase64`.
+  const cbr::UnblindedToken deprecated_unblinded_token(
+      R"(IXDCnZnVEJ0orkbZfr2ut2NQPQ0ofdervKBmQ2hyjcClGCjA3/ExbBumO0ua5cxwo//nN0uKQ60kknru8hRXx0DWhwHwuFlxmot8WgVbnQ0XtPx7q9BG0jbI00AJStwN)");
+  EXPECT_EQ(deprecated_unblinded_token,
+            signing_key.RederiveUnblindedTokenDeprecated(
+                cbr::test::GetTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest,
-       FailToRederiveUnblindedTokenWithInvalidTokenPreimage) {
+       FailToRederiveUnblindedTokenDeprecatedWithInvalidTokenPreimage) {
   // Arrange
   cbr::SigningKey signing_key(cbr::test::kSigningKeyBase64);
 
   // Act & Assert
-  EXPECT_FALSE(
-      signing_key.RederiveUnblindedToken(cbr::test::GetInvalidTokenPreimage()));
+  EXPECT_FALSE(signing_key.RederiveUnblindedTokenDeprecated(
+      cbr::test::GetInvalidTokenPreimage()));
 }
 
 TEST_F(BraveAdsSigningKeyTest, GetPublicKey) {
