@@ -17,7 +17,7 @@ TEST(BraveLayoutConstantsTest, BraveValueTest) {
   EXPECT_EQ(28, GetLayoutConstant(LayoutConstant::kToolbarButtonHeight));
   EXPECT_EQ(6,
             GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius));
-  EXPECT_EQ(GetLayoutConstant(LayoutConstant::kLocationBarElementPadding),
-            GetLayoutConstant(
-                LayoutConstant::kLocationBarTrailingDecorationEdgePadding));
+  EXPECT_EQ(2, GetLayoutConstant(LayoutConstant::kLocationBarElementPadding));
+  EXPECT_EQ(0, GetLayoutConstant(
+                   LayoutConstant::kLocationBarTrailingDecorationEdgePadding));
 }

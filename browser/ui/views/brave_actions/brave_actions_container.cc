@@ -20,7 +20,6 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/views/chrome_layout_provider.h"
 #include "components/prefs/pref_service.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/layout/box_layout.h"
@@ -104,7 +103,7 @@ void BraveActionsContainer::AddActionViewForShields() {
   }
   shields_action_btn_ = AddChildViewAt(
       std::make_unique<BraveShieldsActionView>(
-          browser_window_interface_, *ChromeLayoutProvider::Get(),
+          browser_window_interface_,
           base::BindRepeating(&WebUIBubbleManager::Create<ShieldsPanelUI>)),
       0);
   shields_action_btn_->SetPreferredSize(GetActionSize());

@@ -9,20 +9,19 @@
 #include <utility>
 
 #include "base/functional/bind.h"
+#include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/layout_constants.h"
-#include "chrome/browser/ui/omnibox/omnibox_theme.h"
-#include "chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h"
+#include "chrome/browser/ui/views/location_bar/location_bar_util.h"
 #include "components/grit/brave_components_strings.h"
 #include "extensions/common/constants.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/gfx/geometry/rect.h"
 #include "ui/gfx/geometry/skia_conversions.h"
-#include "ui/views/animation/ink_drop_impl.h"
+#include "ui/views/animation/ink_drop.h"
 #include "ui/views/controls/button/label_button_border.h"
 #include "ui/views/controls/button/menu_button_controller.h"
 #include "ui/views/controls/highlight_path_generator.h"
-#include "ui/views/layout/layout_provider.h"
 #include "ui/views/view.h"
 #include "ui/views/view_class_properties.h"
 
@@ -41,14 +40,12 @@ DEFINE_CLASS_ELEMENT_IDENTIFIER_VALUE(BraveShieldsActionView,
 
 BraveShieldsActionView::BraveShieldsActionView(
     BrowserWindowInterface* browser_window_interface,
-    views::LayoutProvider& layout_provider,
     CreateWebUIBubbleManagerCallback create_bubble_manager_callback)
     : LabelButton(views::Button::PressedCallback(), std::u16string()),
       browser_window_interface_(browser_window_interface),
       controller_(std::make_unique<BraveShieldsActionController>(
           browser_window_interface,
-          std::move(create_bubble_manager_callback))),
-      layout_provider_(layout_provider) {
+          std::move(create_bubble_manager_callback))) {
   controller_->SetOnStateChanged(
       base::BindRepeating(&BraveShieldsActionView::OnControllerStateChanged,
                           weak_ptr_factory_.GetWeakPtr()));
@@ -91,8 +88,8 @@ SkPath BraveShieldsActionView::GetHighlightPath() const {
       gfx::Insets::TLBR(0, 0, 0, -1 * kBraveActionLeftMarginExtra);
   gfx::Rect rect(GetPreferredSize());
   rect.Inset(highlight_insets);
-  const int radii = layout_provider_->GetCornerRadiusMetric(
-      views::Emphasis::kHigh, rect.size());
+  const int radii =
+      GetLayoutConstant(LayoutConstant::kLocationBarChildCornerRadius);
   return SkPath::RRect(gfx::RectToSkRect(rect), radii, radii);
 }
 
@@ -120,18 +117,10 @@ std::u16string BraveShieldsActionView::GetRenderedTooltipText(
 void BraveShieldsActionView::OnThemeChanged() {
   LabelButton::OnThemeChanged();
 
-  const auto* const color_provider = GetColorProvider();
-  if (!color_provider) {
-    return;
-  }
-
-  // Apply same ink drop effect with location bar's other icon views.
-  auto* ink_drop = views::InkDrop::Get(this);
-  ink_drop->SetMode(views::InkDropHost::InkDropMode::ON);
+  // Match hover/pressed ink drop with other location bar icon views.
   SetHasInkDropActionOnClick(true);
-  views::InkDrop::Get(this)->SetVisibleOpacity(kOmniboxOpacitySelected);
-  views::InkDrop::Get(this)->SetHighlightOpacity(kOmniboxOpacityHovered);
-  ink_drop->SetBaseColor(color_provider->GetColor(kColorOmniboxText));
+  ConfigureInkDropForRefresh2023(this, kColorOmniboxIconHover,
+                                 kColorOmniboxIconPressed);
 
   // Refresh the icon so any theme-dependent tint (e.g. the Brave Origin icon in
   // branded builds) is re-rendered with the new colors.

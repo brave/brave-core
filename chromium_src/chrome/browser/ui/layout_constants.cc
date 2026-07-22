@@ -98,8 +98,11 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return UseCompactHorizontalTabs() ? 28 : 32;
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
-    case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
       return UseCompactHorizontalTabs() ? 1 : 2;
+    // 2px less than the shared element padding above so trailing icons sit
+    // closer to the omnibar's right edge.
+    case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
+      return 0;
     default:
       break;
   }
