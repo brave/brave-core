@@ -1061,7 +1061,6 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     public void onDestroy() {
         super.onDestroy();
         if (mPlayServicesErrorDialog != null) {
-            mPlayServicesErrorDialog.setOnDismissListener(null);
             mPlayServicesErrorDialog.dismiss();
             mPlayServicesErrorDialog = null;
         }
