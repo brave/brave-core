@@ -1612,6 +1612,7 @@ if (is_android) {
     sources = [
       "//brave/android/javatests/org/chromium/chrome/browser/BraveSafetyNetThreatsPrioritiesTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/BytecodeTest.java",
+      "//brave/android/javatests/org/chromium/chrome/browser/PrivateTabThemeChangeTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/options/BraveAutofillOptionsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/autofill/settings/BraveAutofillPaymentMethodsFragmentTest.java",
       "//brave/android/javatests/org/chromium/chrome/browser/homepage/settings/BraveHomepageSettingsTest.java",
@@ -1738,7 +1739,9 @@ if (is_android) {
       "//third_party/androidx:androidx_lifecycle_lifecycle_common_java",
       "//third_party/androidx:androidx_preference_preference_java",
       "//third_party/androidx:androidx_recyclerview_recyclerview_java",
+      "//third_party/androidx:androidx_test_monitor_java",
       "//third_party/androidx:androidx_test_runner_java",
+      "//third_party/androidx:androidx_test_uiautomator_uiautomator_java",
       "//third_party/hamcrest:hamcrest_core_java",
       "//third_party/hamcrest:hamcrest_library_java",
       "//third_party/junit",
