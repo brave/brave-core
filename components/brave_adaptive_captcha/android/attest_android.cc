@@ -37,6 +37,12 @@ namespace {
 
 constexpr char kContentType[] = "application/json";
 
+constexpr char kPaymentIdKey[] = "paymentId";
+constexpr char kUniqueValueKey[] = "uniqueValue";
+constexpr char kIntegrityTokenKey[] = "integrityToken";
+constexpr char kPackageNameKey[] = "packageName";
+constexpr char kSolutionKey[] = "solution";
+
 net::NetworkTrafficAnnotationTag kAnnotationTag =
     net::DefineNetworkTrafficAnnotation("brave_adaptive_captcha_attestation",
                                         R"(
@@ -80,7 +86,7 @@ void AttestAndroid::StartAttestation(const std::string& payment_id,
   CAPTCHA_VLOG(1) << "Start attestation: " << url;
 
   base::DictValue body;
-  body.Set("paymentId", payment_id);
+  body.Set(kPaymentIdKey, payment_id);
 
   api_request_helper_.Request(
       "POST", GURL(url), ToJson(body), kContentType,
@@ -105,7 +111,7 @@ void AttestAndroid::OnStartAttestationResponse(
     return;
   }
 
-  const std::string* unique_value = body.GetDict().FindString("uniqueValue");
+  const std::string* unique_value = body.GetDict().FindString(kUniqueValueKey);
   if (!unique_value) {
     CAPTCHA_VLOG(1) << "Start attestation response is missing uniqueValue";
     std::move(callback).Run(std::string());
@@ -127,9 +133,9 @@ void AttestAndroid::AttestPaymentId(const std::string& payment_id,
   CAPTCHA_VLOG(1) << "Attest payment id: " << url;
 
   base::DictValue body;
-  body.Set("integrityToken", integrity_token);
-  body.Set("uniqueValue", unique_value);
-  body.Set("packageName", package_name);
+  body.Set(kIntegrityTokenKey, integrity_token);
+  body.Set(kUniqueValueKey, unique_value);
+  body.Set(kPackageNameKey, package_name);
 
   api_request_helper_.Request(
       "PUT", GURL(url), ToJson(body), kContentType,
@@ -162,7 +168,7 @@ void AttestAndroid::SolveCaptcha(const std::string& payment_id,
   CAPTCHA_VLOG(1) << "Solve captcha: " << url;
 
   base::DictValue body;
-  body.Set("solution", payment_id);
+  body.Set(kSolutionKey, payment_id);
 
   api_request_helper_.Request(
       "POST", GURL(url), ToJson(body), kContentType,
