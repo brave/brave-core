@@ -52,7 +52,8 @@ constexpr char kObservingScriptletEntryPoint[] =
 
 constexpr char kScriptletInitScript[] =
     R"((function() {
-          let text = `(function() {\n%s\nlet deAmpEnabled = %s;\n` + %s + '})()';
+          let text =
+              `(function() {\n%s\n` + %s + '})()';
           let script;
           try {
             script = document.createElement('script');
@@ -694,12 +695,10 @@ void CosmeticFiltersJSHandler::ApplyRules(bool de_amp_enabled) {
     const bool scriptlet_debug_enabled = base::FeatureList::IsEnabled(
         brave_shields::features::kBraveAdblockScriptletDebugLogs);
 
-    const std::string scriptlet_globals = absl::StrFormat(
-        kScriptletGlobalsScript,
-        scriptlet_debug_enabled ? "[[\"canDebug\", true]]" : "");
-    scriptlet_script =
-        absl::StrFormat(kScriptletInitScript, scriptlet_globals,
-                        de_amp_enabled ? "true" : "false", scriptlet_script);
+    const std::string scriptlet_globals = GetScriptletGlobalsScript(
+        de_amp_enabled, /*can_debug=*/scriptlet_debug_enabled);
+    scriptlet_script = absl::StrFormat(kScriptletInitScript, scriptlet_globals,
+                                       scriptlet_script);
   }
   if (!scriptlet_script.empty()) {
     web_frame->ExecuteScriptInIsolatedWorld(

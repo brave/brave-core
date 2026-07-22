@@ -25,7 +25,6 @@
 #include "components/component_updater/component_updater_service.h"
 #include "components/grit/brave_components_resources.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
-#include "third_party/abseil-cpp/absl/strings/str_format.h"
 #include "ui/base/resource/resource_bundle.h"
 
 namespace brave_shields {
@@ -228,10 +227,10 @@ void AdBlockResourceObserver::OnResourcesLoaded(
   return base::SysUTF8ToNSString(resource_string);
 }
 
-+ (NSString*)scriptletGlobalsScript {
-  /// iOS doesn't provide the `canDebug` arg, so use empty string.
-  return base::SysUTF8ToNSString(
-      absl::StrFormat(cosmetic_filters::kScriptletGlobalsScript, ""));
++ (NSString*)scriptletGlobalsScriptWithDeAmpEnabled:(bool)isDeAmpEnabled {
+  // iOS doesn't support the canDebug flag, so just keep as false.
+  return base::SysUTF8ToNSString(cosmetic_filters::GetScriptletGlobalsScript(
+      isDeAmpEnabled, /*can_debug=*/false));
 }
 
 @end

@@ -46,9 +46,10 @@ OBJC_EXPORT
 
 + (NSString*)cosmeticFiltersScript;
 
-/// Returns the `scriptletGlobals` script that some of uBlock Origin's scriptlet
-/// resources rely on. Should be prepended to injected scriptlets.
-+ (NSString*)scriptletGlobalsScript;
+/// Returns the globals script (`scriptletGlobals` and `deAmpEnabled`) that some
+/// of uBlock Origin's scriptlet resources rely on. Should be prepended to
+/// injected scriptlets.
++ (NSString*)scriptletGlobalsScriptWithDeAmpEnabled:(bool)isDeAmpEnabled;
 
 @end
 
