@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
-index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..b7a5ba43bcca85e128ed9607ecd59b78b139b36c 100644
+index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..d80906fdffe46c63fc40ff7670411faa05fd8715 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.cc
 @@ -17,12 +17,14 @@ WindowFeatureController::WindowFeatureController(
@@ -8,14 +8,14 @@ index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..b7a5ba43bcca85e128ed9607ecd59b78
      bool is_trusted_source,
 -    ui::UnownedUserDataHost& host)
 +    ui::UnownedUserDataHost& host,
-+    BrowserWindowInterface& browser)
++      VerticalTabController& vertical_tab_controller)
      : fullscreen_controller_(CHECK_DEREF(fullscreen_controller)),
        app_controller_(app_controller),
        browser_type_(browser_type),
        is_trusted_source_(is_trusted_source),
 -      scoped_unowned_user_data_(host, *this) {}
 +      scoped_unowned_user_data_(host, *this),
-+      browser_(browser) {}
++      vertical_tab_controller_(vertical_tab_controller) {}
  
  WindowFeatureController::~WindowFeatureController() = default;
  
@@ -27,8 +27,8 @@ index ec7bd3ea6cd00a5093b9bac2cfca9fe1a0bc4bfb..b7a5ba43bcca85e128ed9607ecd59b78
 +  if (feature == WindowFeature::kFeatureTitleBar) {
 +    // In case of vertical tab strip is allowed, we need to have ability to
 +    // show title bar on Windows.
-+    return tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) &&
-+           tabs::utils::ShouldShowWindowTitleForVerticalTabs(&browser_.get());
++    return vertical_tab_controller_->ShouldShowBraveVerticalTabs() &&
++           vertical_tab_controller_->ShouldShowWindowTitleForVerticalTabs();
 +  }
 +  #endif
    switch (feature) {
