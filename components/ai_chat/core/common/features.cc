@@ -9,6 +9,7 @@
 
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/ai_chat/core/common/constants.h"
 #include "build/build_config.h"
@@ -54,8 +55,8 @@ BASE_FEATURE(kAIChatRemoteModelsConfig, base::FEATURE_DISABLED_BY_DEFAULT);
 
 const base::FeatureParam<std::string> kRemoteModelsEndpoint{
     &kAIChatRemoteModelsConfig, "endpoint_url", ""};
-const base::FeatureParam<int> kRemoteModelsCacheTTLMinutes{
-    &kAIChatRemoteModelsConfig, "cache_ttl_minutes", 1440};  // 24 hours
+const base::FeatureParam<base::TimeDelta> kRemoteModelsCacheTTL{
+    &kAIChatRemoteModelsConfig, "cache_ttl", base::Days(1)};
 
 bool IsAIChatEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChat);

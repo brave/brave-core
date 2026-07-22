@@ -424,9 +424,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsHTTPEndpoint) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatRemoteModelsConfig,
       {{"endpoint_url", "http://example.com/models"}});
+  auto fetcher =
+      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(future.GetCallback());
+  fetcher->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -435,9 +437,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsHTTPForLocalhost) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatRemoteModelsConfig,
       {{"endpoint_url", "http://localhost:8080/models"}});
+  auto fetcher =
+      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(future.GetCallback());
+  fetcher->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -446,9 +450,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsInvalidURL) {
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatRemoteModelsConfig,
       {{"endpoint_url", "not-a-valid-url"}});
+  auto fetcher =
+      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(future.GetCallback());
+  fetcher->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 
@@ -456,9 +462,11 @@ TEST_F(RemoteModelsFetcherTest, RejectsEmptyEndpoint) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
       features::kAIChatRemoteModelsConfig, {{"endpoint_url", ""}});
+  auto fetcher =
+      std::make_unique<RemoteModelsFetcher>(shared_url_loader_factory_);
 
   base::test::TestFuture<std::vector<mojom::ModelPtr>> future;
-  fetcher_->FetchModels(future.GetCallback());
+  fetcher->FetchModels(future.GetCallback());
   EXPECT_TRUE(future.Get().empty());
 }
 

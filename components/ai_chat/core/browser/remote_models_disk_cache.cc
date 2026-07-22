@@ -85,8 +85,7 @@ RemoteModelsDiskCache::~RemoteModelsDiskCache() = default;
 void RemoteModelsDiskCache::Load(LoadCallback callback) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
-  const base::TimeDelta ttl =
-      base::Minutes(features::kRemoteModelsCacheTTLMinutes.Get());
+  const base::TimeDelta ttl = features::kRemoteModelsCacheTTL.Get();
   const base::Time cached_at =
       pref_service_->GetTime(prefs::kRemoteModelsCachedAt);
   if (cached_at.is_null() || base::Time::Now() - cached_at > ttl) {

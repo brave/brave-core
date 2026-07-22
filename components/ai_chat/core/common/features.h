@@ -11,6 +11,7 @@
 #include "base/component_export.h"
 #include "base/feature_list.h"
 #include "base/metrics/field_trial_params.h"
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 
 static_assert(BUILDFLAG(ENABLE_AI_CHAT));
@@ -74,7 +75,7 @@ extern const base::FeatureParam<std::string> kRemoteModelsEndpoint;
 // How long a cached remote model list is considered fresh before it must be
 // re-fetched.
 COMPONENT_EXPORT(AI_CHAT_COMMON)
-extern const base::FeatureParam<int> kRemoteModelsCacheTTLMinutes;
+extern const base::FeatureParam<base::TimeDelta> kRemoteModelsCacheTTL;
 
 COMPONENT_EXPORT(AI_CHAT_COMMON) bool IsAIChatEnabled();
 

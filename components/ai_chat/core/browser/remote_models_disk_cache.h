@@ -38,7 +38,7 @@ namespace ai_chat {
 class RemoteModelsDiskCache {
  public:
   // Invoked with cached models when the cache exists and is within the TTL
-  // from features::kRemoteModelsCacheTTLMinutes. Invoked with std::nullopt if
+  // from features::kRemoteModelsCacheTTL. Invoked with std::nullopt if
   // the cache is missing, expired, or corrupt.
   using LoadCallback =
       base::OnceCallback<void(std::optional<std::vector<mojom::ModelPtr>>)>;

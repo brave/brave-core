@@ -14,6 +14,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/sequence_checker.h"
 #include "brave/components/ai_chat/core/common/mojom/common.mojom-forward.h"
+#include "url/gurl.h"
 
 namespace network {
 class SharedURLLoaderFactory;
@@ -40,10 +41,10 @@ class RemoteModelsFetcher {
   RemoteModelsFetcher& operator=(const RemoteModelsFetcher&) = delete;
 
   // Fetches and parses models from the endpoint configured via
-  // features::kRemoteModelsEndpoint, then invokes |callback| with the
-  // results. If the configured endpoint is empty, malformed, or not HTTPS,
-  // or on network/parse failure, the callback is invoked with an empty
-  // vector.
+  // features::kRemoteModelsEndpoint at construction time, then invokes
+  // |callback| with the results. If the configured endpoint is empty,
+  // malformed, or not HTTPS, or on network/parse failure, the callback is
+  // invoked with an empty vector.
   void FetchModels(FetchModelsCallback callback);
 
  private:
@@ -51,6 +52,7 @@ class RemoteModelsFetcher {
                        api_request_helper::APIRequestResult result);
 
   std::unique_ptr<api_request_helper::APIRequestHelper> api_request_helper_;
+  const GURL endpoint_url_;
 
   SEQUENCE_CHECKER(sequence_checker_);
 

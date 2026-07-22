@@ -156,7 +156,7 @@ TEST_F(RemoteModelsDiskCacheTest, ExpiredCacheReturnsNullopt) {
 TEST_F(RemoteModelsDiskCacheTest, RespectsOverriddenTTL) {
   base::test::ScopedFeatureList feature_list;
   feature_list.InitAndEnableFeatureWithParameters(
-      features::kAIChatRemoteModelsConfig, {{"cache_ttl_minutes", "5"}});
+      features::kAIChatRemoteModelsConfig, {{"cache_ttl", "5m"}});
 
   auto cache = MakeCache();
   std::vector<mojom::ModelPtr> models;

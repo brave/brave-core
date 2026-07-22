@@ -65,14 +65,13 @@ RemoteModelsFetcher::RemoteModelsFetcher(
     : api_request_helper_(
           std::make_unique<api_request_helper::APIRequestHelper>(
               kTrafficAnnotation,
-              url_loader_factory)) {}
+              url_loader_factory)),
+      endpoint_url_(features::kRemoteModelsEndpoint.Get()) {}
 
 RemoteModelsFetcher::~RemoteModelsFetcher() = default;
 
 void RemoteModelsFetcher::FetchModels(FetchModelsCallback callback) {
-  const GURL endpoint_url(features::kRemoteModelsEndpoint.Get());
-
-  if (!endpoint_url.is_valid() || !endpoint_url.SchemeIs(url::kHttpsScheme)) {
+  if (!endpoint_url_.is_valid() || !endpoint_url_.SchemeIs(url::kHttpsScheme)) {
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
         FROM_HERE,
         base::BindOnce(std::move(callback), std::vector<mojom::ModelPtr>{}));
@@ -88,7 +87,7 @@ void RemoteModelsFetcher::FetchModels(FetchModelsCallback callback) {
   options.timeout = base::Seconds(30);
 
   api_request_helper_->Request(
-      "GET", endpoint_url, "", "", std::move(result_callback),
+      "GET", endpoint_url_, "", "", std::move(result_callback),
       base::flat_map<std::string, std::string>(), options);
 }
 
