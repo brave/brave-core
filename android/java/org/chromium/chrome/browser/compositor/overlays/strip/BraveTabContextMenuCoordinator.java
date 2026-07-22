@@ -28,6 +28,7 @@ import org.chromium.ui.modaldialog.ModalDialogManager;
 import org.chromium.ui.modelutil.MVCListAdapter.ModelList;
 
 import java.util.function.BiConsumer;
+import java.util.function.BooleanSupplier;
 import java.util.function.Supplier;
 
 /**
@@ -52,7 +53,8 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
             SnackbarManager snackbarManager,
             @Nullable ActivityResultTracker activityResultTracker,
             @Nullable ModalDialogManager modalDialogManager,
-            @TabClosingSource int tabClosingSource) {
+            @TabClosingSource int tabClosingSource,
+            @Nullable BooleanSupplier canActivateTabLayoutToggleMenuSupplier) {
         super(
                 tabModelSupplier,
                 tabGroupListBottomSheetCoordinator,
@@ -68,7 +70,8 @@ public class BraveTabContextMenuCoordinator extends TabContextMenuCoordinator {
                 snackbarManager,
                 activityResultTracker,
                 modalDialogManager,
-                tabClosingSource);
+                tabClosingSource,
+                canActivateTabLayoutToggleMenuSupplier);
     }
 
     @Override
