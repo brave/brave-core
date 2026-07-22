@@ -11,6 +11,7 @@
 #include "base/test/run_until.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/email_aliases/features.h"
+#include "brave/components/email_aliases/pref_names.h"
 #include "build/build_config.h"
 #include "chrome/browser/autofill/autofill_uitest_util.h"
 #include "chrome/browser/policy/policy_test_utils.h"
@@ -247,6 +248,16 @@ IN_PROC_BROWSER_TEST_P(EmailAliasesAutofillTest,
       FindBraveEmailAliasSuggestion(autofill_client()->suggestions());
   ASSERT_NE(brave_suggestion, nullptr);
   ExpectBraveEmailAliasAddressEntry(*brave_suggestion);
+
+  autofill_client()->ResetSuggestions();
+
+  // Disable "New Email Alias" suggestion.
+  browser()->profile()->GetPrefs()->SetBoolean(
+      prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled, false);
+
+  content::SimulateMouseClickOrTapElementWithId(GetWebContents(), "email");
+  autofill_manager()->WaitForAskForValuesToFill();
+  EXPECT_TRUE(autofill_client()->suggestions().empty());
 
   autofill_client()->ResetSuggestions();
 }
