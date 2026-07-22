@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Let callers check whether TemplateUrlService still has its native object.
+
+      Android can recreate an activity while this Java object remains after
+      native code clears its pointer. Callers must check before they call JNI.
+    count: 1
+    regex:
+      re_pattern:
+        '(    private void clearNativePtr\(\)
+        \{\n        mNativeTemplateUrlServiceAndroid =
+        0;\n    \}\n)(\n    public boolean isLoaded\(\) \{)'
+      replace: |-
+        \1    /**
+             * Returns whether the native service is available for JNI calls.
+             *
+             * The Java wrapper can outlive native teardown during activity
+             * recreation. This does not indicate whether {@link #isLoaded()} returns true.
+             */
+            public boolean hasNativeService() {
+                return mNativeTemplateUrlServiceAndroid != 0;
+            }
+        \2
