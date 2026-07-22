@@ -109,7 +109,6 @@ describe('ImageLightbox', () => {
     Object.assign(navigator, {
       clipboard: { write },
     })
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     ;(globalThis as any).ClipboardItem = class ClipboardItem {
       constructor(public items: Record<string, Blob>) {}
     }
