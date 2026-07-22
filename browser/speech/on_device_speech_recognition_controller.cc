@@ -137,6 +137,8 @@ mojo::PendingRemote<local_ai::mojom::AsrSession>
 OnDeviceSpeechRecognitionController::GetAsrSession() {
   mojo::PendingRemote<local_ai::mojom::AsrSession> remote;
   asr_session_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());
+  // Handing out a session puts the worker in use, so make sure no idle
+  // teardown is pending.
   idle_timer_.Stop();
   return remote;
 }
@@ -144,8 +146,8 @@ OnDeviceSpeechRecognitionController::GetAsrSession() {
 void OnDeviceSpeechRecognitionController::BindFactoryHost(
     mojo::PendingReceiver<local_ai::mojom::SpeechRecognitionFactoryHost>
         receiver) {
-  // This is renderer-triggered (the worker page requests the interface) and a
-  // renderer cannot be assumed well-behaved, so it could request the interface
+  // The FactoryHost is exposed to the worker WebUI, a chrome-untrusted
+  // renderer that cannot be assumed well-behaved and may request the interface
   // again while already bound. Bind() DCHECKs on an already-bound receiver, and
   // a renderer must never be able to trip a browser DCHECK, so reset first to
   // supersede any existing connection.
