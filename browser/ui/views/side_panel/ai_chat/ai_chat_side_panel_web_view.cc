@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_movable_side_panel_web_view.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/common/ai_chat_urls.h"
@@ -100,7 +101,18 @@ AIChatSidePanelWebView::AIChatSidePanelWebView(
           &AIChatSidePanelWebView::OnTargetURLChanged, base::Unretained(this)));
 }
 
-AIChatSidePanelWebView::~AIChatSidePanelWebView() = default;
+AIChatSidePanelWebView::~AIChatSidePanelWebView() {
+  // Clear the target-URL callback before our members (notably `status_bubble_`)
+  // are destroyed. The callback is bound with `base::Unretained(this)` and is
+  // held by `contents_wrapper()`, which the base class destroys only after this
+  // derived destructor returns. Resetting it here ensures a late
+  // `UpdateTargetURL` during teardown can't call into a partially destroyed
+  // view.
+  if (auto* wrapper =
+          static_cast<AIChatSidePanelContentsWrapper*>(contents_wrapper())) {
+    wrapper->SetTargetURLChangedCallback(base::NullCallback());
+  }
+}
 
 bool AIChatSidePanelWebView::GetNeedsNotificationWhenVisibleBoundsChange()
     const {
@@ -114,6 +126,7 @@ void AIChatSidePanelWebView::OnVisibleBoundsChanged() {
 }
 
 void AIChatSidePanelWebView::OnTargetURLChanged(const GURL& url) {
+  status_bubble_url_for_testing_ = url;
   if (status_bubble_) {
     status_bubble_->SetURL(url);
   }

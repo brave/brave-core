@@ -384,6 +384,7 @@ source_set("browser_tests") {
       "//brave/browser/misc_metrics",
       "//brave/browser/ui/sidebar",
       "//brave/browser/ui/sidebar:sidebar_impl",
+      "//brave/browser/ui/views/side_panel/ai_chat",
       "//brave/browser/ui/webui/ai_chat",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",

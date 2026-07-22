@@ -48,13 +48,99 @@ test('RenderLink component with citations.', async () => {
   expect(label).toBeVisible()
   expect(label).toHaveTextContent('1')
 
-  // Make sure the citation is visible
-  const citation = document.querySelector<HTMLButtonElement>('.citation')
+  // The citation renders as an anchor (not a button) carrying the destination
+  // href, so hovering it discloses the destination via the browser status
+  // bubble, like a normal tab.
+  const citation = document.querySelector<HTMLAnchorElement>('.citation')
   expect(citation).toBeInTheDocument()
   expect(citation).toBeVisible()
   expect(citation).toHaveTextContent('1')
-  expect(citation?.tagName).toBe('BUTTON')
+  expect(citation?.tagName).toBe('A')
   expect(citation?.className).toBe('citation')
+  expect(citation?.getAttribute('href')).toBe('https://brave.com')
+  expect(citation?.getAttribute('target')).toBe('_blank')
+  expect(citation?.getAttribute('rel')).toBe('noopener noreferrer')
+})
+
+// A citation source given without a trailing slash still matches the
+// canonicalized href, so an equivalent URL renders as a chip.
+test('RenderLink treats canonically-equal citation URLs as a match.', () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://brave.com/', children: '1' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
+  )
+  const citation = document.querySelector<HTMLAnchorElement>('.citation')
+  expect(citation).toBeInTheDocument()
+  expect(citation?.tagName).toBe('A')
+})
+
+// Look-alike URLs must NOT be treated as citations. Citation matching compares
+// canonical URL identity, not a string prefix, so none of these masquerade as
+// the allowed `https://brave.com` citation source. Each renders as a plain
+// anchor (whose destination is still disclosed on hover) rather than a trusted
+// citation chip.
+test.each([
+  { name: 'host suffix', href: 'https://brave.com.evil.example' },
+  { name: 'userinfo prefix', href: 'https://brave.com@evil.example' },
+  { name: 'path suffix', href: 'https://brave.com.evil.example/brave.com' },
+  { name: 'subdomain look-alike', href: 'https://brave.com-evil.example' },
+])(
+  'RenderLink does not treat $name as a citation of https://brave.com',
+  ({ href }) => {
+    render(
+      <MockContext>
+        <RenderLink
+          a={{ href, children: '1' }}
+          allowedLinks={['https://brave.com']}
+        />
+      </MockContext>,
+    )
+    // Never a citation chip...
+    expect(document.querySelector('.citation')).not.toBeInTheDocument()
+    // ...but still a plain anchor carrying the real (non-trusted) destination.
+    const link = screen.getByText('1')
+    expect(link.tagName).toBe('A')
+    expect(link.className).toBe('conversationLink')
+    expect(link.getAttribute('href')).toBe(href)
+  },
+)
+
+// A citation URL with a fragment is a distinct resource from the allowed
+// source and must not render as a citation chip.
+test('RenderLink does not treat a fragment variant as a citation.', () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://brave.com/#evil', children: '1' }}
+        allowedLinks={['https://brave.com/']}
+      />
+    </MockContext>,
+  )
+  expect(document.querySelector('.citation')).not.toBeInTheDocument()
+  expect(screen.getByText('1').tagName).toBe('A')
+})
+
+// A deceptive label ("trusted text" pointing at an attacker URL) is not numeric
+// text, so it can never become a citation chip. It renders as a plain anchor
+// whose real destination is disclosed on hover.
+test('RenderLink renders a deceptive-label link as a plain anchor.', () => {
+  render(
+    <MockContext>
+      <RenderLink
+        a={{ href: 'https://attacker.example', children: 'brave.com' }}
+        allowedLinks={['https://brave.com']}
+      />
+    </MockContext>,
+  )
+  expect(document.querySelector('.citation')).not.toBeInTheDocument()
+  const link = screen.getByText('brave.com')
+  expect(link.tagName).toBe('A')
+  expect(link.className).toBe('conversationLink')
+  expect(link.getAttribute('href')).toBe('https://attacker.example')
 })
 
 // A numeric-text link that is not a citation source renders as a plain anchor,

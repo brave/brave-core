@@ -113,18 +113,39 @@ interface RenderLinkProps {
   allowedLinks?: string[]
 }
 
+// Returns true when `href` resolves to the same canonical URL as one of the
+// citation sources. This compares URL identity rather than a string prefix so
+// that a look-alike host (e.g. `https://brave.com.evil.example`) or a userinfo
+// prefix (e.g. `https://brave.com@evil.example`) cannot masquerade as the cited
+// `https://brave.com` and render as a trusted citation chip.
+function isCitationUrl(
+  href: string | undefined,
+  allowedLinks: string[] | undefined,
+): boolean {
+  if (href === undefined || allowedLinks === undefined) {
+    return false
+  }
+  let canonicalHref: string
+  try {
+    canonicalHref = new URL(href).href
+  } catch {
+    return false
+  }
+  return allowedLinks.some((link) => {
+    try {
+      return new URL(link).href === canonicalHref
+    } catch {
+      return false
+    }
+  })
+}
+
 export function RenderLink(props: RenderLinkProps) {
   const { a, allowedLinks } = props
   const { href, children } = a
 
   // Computed. All HTTPS links are allowed; other schemes (e.g. http) are not.
   const isLinkAllowed = href?.toLowerCase().startsWith('https://') ?? false
-
-  const handleLinkClicked = React.useCallback(() => {
-    if (href && isLinkAllowed) {
-      window.open(href, '_blank', 'noopener noreferrer')
-    }
-  }, [href])
 
   if (!isLinkAllowed) {
     // Completely hide relative links.
@@ -139,17 +160,21 @@ export function RenderLink(props: RenderLinkProps) {
   const isCitation =
     typeof children === 'string'
     && /^\d+$/.test(children)
-    && (allowedLinks?.some((link) => href?.startsWith(link)) ?? false)
+    && isCitationUrl(href, allowedLinks)
 
   if (isCitation) {
+    // Render as an anchor (not a button) so hovering discloses the destination
+    // via the browser status bubble, matching a normal tab.
     return (
       <Label>
-        <button
+        <a
           className={styles.citation}
-          onClick={handleLinkClicked}
+          href={href}
+          target='_blank'
+          rel='noopener noreferrer'
         >
           {children}
-        </button>
+        </a>
       </Label>
     )
   }

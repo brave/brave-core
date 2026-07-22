@@ -10,6 +10,7 @@
 
 #include "brave/browser/ui/views/side_panel/ai_chat/ai_chat_side_panel_contents_wrapper.h"
 #include "chrome/browser/ui/views/side_panel/side_panel_web_ui_view.h"
+#include "url/gurl.h"
 
 namespace blink::mojom {
 class FileChooserParams;
@@ -21,7 +22,6 @@ class RenderFrameHost;
 }  // namespace content
 
 class AIChatUI;
-class GURL;
 class Profile;
 class StatusBubbleViews;
 
@@ -71,6 +71,13 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
                       scoped_refptr<content::FileSelectListener> listener,
                       const blink::mojom::FileChooserParams& params) override;
 
+  // Returns the most recent hovered-link URL forwarded to the status bubble
+  // (empty when no link is hovered). Lets tests verify that link-hover
+  // destination disclosure is wired up.
+  const GURL& status_bubble_url_for_testing() const {
+    return status_bubble_url_for_testing_;
+  }
+
  private:
   // This callback is invoked multiple times, so we need to ensure that
   // focus is set only once with `should_focus_`.
@@ -85,6 +92,9 @@ class AIChatSidePanelWebView : public SidePanelWebUIViewT<AIChatUI> {
 
   // Shows the hovered link's URL in the bottom-left of the panel, like a tab.
   std::unique_ptr<StatusBubbleViews> status_bubble_;
+
+  // Mirror of the last URL forwarded to `status_bubble_`, for tests.
+  GURL status_bubble_url_for_testing_;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_AI_CHAT_AI_CHAT_SIDE_PANEL_WEB_VIEW_H_
