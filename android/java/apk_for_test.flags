@@ -548,10 +548,6 @@
     <init>(...);
 }
 
--keep class org.chromium.chrome.browser.omnibox.suggestions.BraveAutocompleteMediatorBase {
-    public <init>(...);
-}
-
 -keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
     *** mInstanceId;
     handleMenuOrKeyboardAction(...);
