@@ -9,7 +9,7 @@
 #include <memory>
 #include <string>
 
-#include "base/memory/raw_ptr.h"
+#include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_handler.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/wallet_handler.h"
@@ -27,7 +27,8 @@
 
 namespace content {
 class BrowserContext;
-}
+class WebContents;
+}  // namespace content
 
 class WalletPanelUI : public TopChromeWebUIController,
                       public brave_wallet::mojom::PanelHandlerFactory {
@@ -100,7 +101,7 @@ class WalletPanelUI : public TopChromeWebUIController,
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
   std::unique_ptr<brave_rewards::mojom::RewardsPageHandler> rewards_handler_;
 #endif
-  raw_ptr<content::WebContents> active_web_contents_ = nullptr;
+  base::WeakPtr<content::WebContents> active_web_contents_;
 
   mojo::Receiver<brave_wallet::mojom::PanelHandlerFactory>
       panel_factory_receiver_{this};

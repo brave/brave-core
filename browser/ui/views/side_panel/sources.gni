@@ -4,6 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 brave_browser_ui_views_side_panel_deps = [
+  "//brave/components/brave_wallet/common/buildflags",
   "//brave/ui/color:nala_color_id",
   "//chrome/browser/ui:layout_constants",
 ]

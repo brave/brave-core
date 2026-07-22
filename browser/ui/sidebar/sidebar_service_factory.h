@@ -13,6 +13,7 @@
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_talk/buildflags/buildflags.h"
+#include "brave/components/brave_wallet/common/buildflags/buildflags.h"
 #include "brave/components/playlist/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/browser/sidebar_item.h"
 #include "components/keyed_service/content/browser_context_keyed_service_factory.h"
@@ -47,7 +48,9 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
 #if BUILDFLAG(ENABLE_BRAVE_TALK)
           SidebarItem::BuiltInItemType::kBraveTalk,
 #endif
+#if BUILDFLAG(ENABLE_BRAVE_WALLET)
           SidebarItem::BuiltInItemType::kWallet,
+#endif
           SidebarItem::BuiltInItemType::kBookmarks,
           SidebarItem::BuiltInItemType::kReadingList,
           SidebarItem::BuiltInItemType::kHistory,
