@@ -155,9 +155,11 @@ void BraveActionsContainer::UpdateVisibility() {
 }
 
 gfx::Size BraveActionsContainer::GetActionSize() const {
-  return {30, GetLayoutConstant(LayoutConstant::kLocationBarHeight) -
-                  2 * GetLayoutConstant(
-                          LayoutConstant::kLocationBarElementPadding)};
+  constexpr int kBraveActionWidth = 30;
+  return {kBraveActionWidth,
+          GetLayoutConstant(LayoutConstant::kLocationBarHeight) -
+              2 * GetLayoutConstant(
+                      LayoutConstant::kLocationBarElementPadding)};
 }
 
 void BraveActionsContainer::SetShouldHide(bool should_hide) {
