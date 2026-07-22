@@ -154,6 +154,10 @@ source_set("ui") {
       sources += [
         "views/permission_bubble/brave_wallet_permission_prompt_impl.cc",
         "views/permission_bubble/brave_wallet_permission_prompt_impl.h",
+        "views/side_panel/wallet/wallet_side_panel_contents_wrapper.cc",
+        "views/side_panel/wallet/wallet_side_panel_contents_wrapper.h",
+        "views/side_panel/wallet/wallet_side_panel_web_view.cc",
+        "views/side_panel/wallet/wallet_side_panel_web_view.h",
         "views/toolbar/wallet_button.cc",
         "views/toolbar/wallet_button.h",
         "views/toolbar/wallet_button_notification_source.cc",
@@ -1559,6 +1563,19 @@ source_set("browser_tests") {
         "//brave/components/playlist/core/common",
         "//chrome/browser/ui/browser_window",
         "//chrome/browser/web_applications:web_applications_test_support",
+      ]
+    }
+
+    if (enable_brave_wallet) {
+      sources += [ "views/side_panel/wallet/wallet_side_panel_browsertest.cc" ]
+
+      deps += [
+        "//brave/browser/ui/sidebar:sidebar_impl",
+        "//brave/components/brave_wallet/browser:utils",
+        "//brave/components/brave_wallet/common",
+        "//chrome/browser/ui/side_panel",
+        "//chrome/browser/ui/side_panel:side_panel_views_dependent",
+        "//components/tabs:public",
       ]
     }
 
