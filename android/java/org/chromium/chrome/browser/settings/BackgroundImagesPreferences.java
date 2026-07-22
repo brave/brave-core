@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.settings;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -28,10 +29,13 @@ import org.chromium.chrome.browser.ntp.BraveFreshNtpHelper;
 import org.chromium.chrome.browser.ntp.NtpUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.settings.search.ChromeBaseSearchIndexProvider;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.browser_ui.settings.search.SettingsIndexData;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 import org.chromium.misc_metrics.mojom.OpeningScreenSwitchType;
@@ -241,4 +245,30 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             Log.e(TAG, "recordOpeningScreenSwitch " + e);
         }
     }
+
+    public static final ChromeBaseSearchIndexProvider SEARCH_INDEX_DATA_PROVIDER =
+            new ChromeBaseSearchIndexProvider(
+                    BackgroundImagesPreferences.class.getName(),
+                    R.xml.background_images_preferences) {
+
+                @Override
+                public void updateDynamicPreferences(
+                        Context context, SettingsIndexData indexData, Profile profile) {
+                    String frag = BackgroundImagesPreferences.class.getName();
+                    // Sponsored images and their "learn more" link are hidden when Brave Rewards
+                    // is disabled by policy, mirroring onActivityCreated().
+                    if (BraveRewardsPolicy.isDisabledByPolicy(profile)) {
+                        indexData.removeEntryForKey(frag, PREF_SHOW_SPONSORED_IMAGES);
+                        indexData.removeEntryForKey(frag, PREF_SPONSORED_IMAGES_LEARN_MORE);
+                    }
+                    // The opening-screen options are only shown when the Fresh NTP feature is
+                    // enabled and the assigned variant is not "A"; otherwise the whole category is
+                    // removed from the screen. Mirror that here.
+                    if (!BraveFreshNtpHelper.isEnabled()
+                            || "A".equals(BraveFreshNtpHelper.getVariant())) {
+                        indexData.removeEntryForKey(frag, PREF_OPENING_SCREEN);
+                        indexData.removeEntryForKey(frag, PREF_OPENING_SCREEN_CATEGORY);
+                    }
+                }
+            };
 }

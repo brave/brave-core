@@ -20,7 +20,8 @@
             android:title="@string/show_sponsored_images" />
 
         <org.chromium.components.browser_ui.settings.ChromeBasePreference
-            android:key="sponsored_images_learn_more" />
+            android:key="sponsored_images_learn_more"
+            android:title="@string/sponsored_images_learn_more" />
 
     </PreferenceCategory>
 
