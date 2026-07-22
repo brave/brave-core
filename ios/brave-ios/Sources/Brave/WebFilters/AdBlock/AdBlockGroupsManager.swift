@@ -545,7 +545,12 @@ import os
   /// The javascript for a custom scriptlet
   private static let customScriptletSource = """
     document.addEventListener("DOMContentLoaded", () => {
-      console.log("Custom Scriptlet - DOMContentLoaded");
+      document.body.innerHTML = '';
+      const message = document.createElement('h1');
+      message.textContent = 'Stephen Was Here';
+      message.style.textAlign = 'center';
+      message.style.marginTop = '20%';
+      document.body.appendChild(message);
     });
     """
 

@@ -69,6 +69,7 @@ struct FilterListsView: View {
   @Environment(\.editMode) private var editMode
   @State private var showingAddSheet = false
   @State private var showingCustomFiltersSheet = false
+  @State private var isShowingCustomScriptletsModal = false
   @State private var customRules: String?
   @State private var rulesError: Error?
   @State private var filterListsUpdateStatus = FilterListUpdateStatus.unknown
@@ -114,6 +115,15 @@ struct FilterListsView: View {
             description: Strings.Shields.customFiltersDescription
           )
         }
+
+        Section {
+          customScriptletsRows
+        } header: {
+          SectionHeaderView(
+            title: "Custom Scriptlets",
+            description: "Add custom scriptlets here. Be sure to add to custom rules."
+          )
+        }
       }
 
       Section {
@@ -140,6 +150,14 @@ struct FilterListsView: View {
       content: {
         NavigationView {
           CustomFilterListView(customRules: $customRules)
+        }
+      }
+    )
+    .fullScreenCover(
+      isPresented: $isShowingCustomScriptletsModal,
+      content: {
+        NavigationView {
+          CustomScriptletView()
         }
       }
     )
@@ -192,7 +210,7 @@ struct FilterListsView: View {
       Text(Strings.Shields.customFiltersPlaceholder)
     }
   }
-
+  
   @ViewBuilder private var customFiltersRows: some View {
     if let customRules = customRules {
       Text(customRules)
@@ -212,6 +230,28 @@ struct FilterListsView: View {
       Text(
         customRules != nil
           ? Strings.Shields.editCustomFiltersLabel : Strings.Shields.customFiltersPlaceholder
+      )
+    }
+  }
+  
+  @ViewBuilder private var customScriptletsRows: some View {
+//    if let customRules = customRules {
+//      Text(customRules)
+//        .lineLimit(2)
+//        .multilineTextAlignment(.leading)
+//        .font(.system(size: 14, weight: .regular, design: .monospaced))
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//    } else if let error = rulesError {
+//      Text(error.localizedDescription)
+//        .foregroundStyle(Color(UIColor(braveSystemName: .systemfeedbackErrorText)))
+//        .font(.subheadline)
+//        .frame(maxWidth: .infinity, alignment: .leading)
+//    }
+    Button {
+      isShowingCustomScriptletsModal = true
+    } label: {
+      Text(
+        "Add New Scriptlet"
       )
     }
   }
