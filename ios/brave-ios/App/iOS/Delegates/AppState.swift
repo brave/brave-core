@@ -134,7 +134,7 @@ public class AppState {
       if let task {
         return await task.value
       }
-      let task = Task { @MainActor in
+      let task = Task {
         await braveCore.loadDefaultProfile()
       }
       self.task = task

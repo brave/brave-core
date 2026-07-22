@@ -29,11 +29,6 @@ public class PlaylistCoordinator: NSObject {
 
   public weak var browserController: BrowserViewController?
 
-
-  /// For CarPlay to load BraveCore's default profile at launch independently of a `BrowserViewController`,
-  /// which never exists if the app is cold-launched directly from the CarPlay screen
-  public var loadDefaultProfileController: (() async -> BraveProfileController)?
-
   var currentlyPlayingItemIndex = -1
   var currentPlaylistItem: PlaylistInfo?
   var isPlaylistControllerPresented = false
@@ -215,21 +210,16 @@ public class PlaylistCoordinator: NSObject {
     }
   }
 
-  private func attemptInterfaceConnection(isCarPlayAvailable: Bool) {
+  private func attemptInterfaceConnection(isCarPlayAvailable: Bool, profile: (any Profile)?) {
     self.isCarPlayAvailable = isCarPlayAvailable
 
     // If there is no media player, create one,
     // pass it to the carplay controller
-    if isCarPlayAvailable {
+    if isCarPlayAvailable, let profile {
       // Protect against reentrancy.
-      guard carPlayController == nil, let loadDefaultProfileController else { return }
-
-      Task { @MainActor in
-        let profileController = await loadDefaultProfileController()
-        // Bail if CarPlay disconnected (or a controller was already created) while we were loading the profile.
-        guard self.isCarPlayAvailable, self.carPlayController == nil else { return }
-        self.isPlaylistAvailable = profileController.profile.prefs.isPlaylistAvailable
-        self.carPlayController = self.getCarPlayController(profile: profileController.profile)
+      if carPlayController == nil {
+        isPlaylistAvailable = profile.prefs.isPlaylistAvailable
+        carPlayController = getCarPlayController(profile: profile)
       }
     } else {
       carPlayController = nil
@@ -243,14 +233,17 @@ public class PlaylistCoordinator: NSObject {
 }
 
 extension PlaylistCoordinator: CPSessionConfigurationDelegate {
-  public func connect(interfaceController: CPInterfaceController) {
+  /// - parameter profile: BraveCore's default profile, which the caller must ensure is already loaded before connecting
+  ///
+  /// CarPlay launches independently of a `BrowserViewController` when cold-launched from the CarPlay screen
+  public func connect(interfaceController: CPInterfaceController, profile: any Profile) {
     carplayInterface = interfaceController
     carplaySessionConfiguration = CPSessionConfiguration(delegate: self)
 
     isCarPlayAvailable = true
 
     DispatchQueue.main.async {
-      self.attemptInterfaceConnection(isCarPlayAvailable: true)
+      self.attemptInterfaceConnection(isCarPlayAvailable: true, profile: profile)
     }
   }
 
@@ -260,7 +253,7 @@ extension PlaylistCoordinator: CPSessionConfigurationDelegate {
     carplayInterface = nil
 
     DispatchQueue.main.async {
-      self.attemptInterfaceConnection(isCarPlayAvailable: false)
+      self.attemptInterfaceConnection(isCarPlayAvailable: false, profile: nil)
     }
   }
 
