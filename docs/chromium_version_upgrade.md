@@ -27,21 +27,22 @@ It is the current practice, when changing upstream tag, to produce these changes
 documenting specific steps documenting the steps involved in a upstream tag
 update.
 
-| Commit name                 | Purpose                                                                                                                    |
-| --------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `Upgrade`                   | A change with the upgrading of the chromium tag in `package.json`                                                          |
-| `Conflict-resolved patches` | Patches that may have failed to apply, and required manual conflict resolution, once `npm run init` was run on the new tag |
-| `Update patches`            | Regerated versions of all patches that applied cleanly.                                                                    |
-| `Updated strings`           | Translation strings may have had updates once regenerated under the new Chromium tag.                                      |
+| Commit name                 | Purpose                                                                                                                     |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `Upgrade`                   | A change with the upgrading of the chromium tag in `package.json`                                                           |
+| `Conflict-resolved patches` | Patches that may have failed to apply, and required manual conflict resolution, once `pnpm run init` was run on the new tag |
+| `Update patches`            | Regerated versions of all patches that applied cleanly.                                                                     |
+| `Updated strings`           | Translation strings may have had updates once regenerated under the new Chromium tag.                                       |
 
 There may be many other changes necessary to get Brave to build with the tag
 being picked, but these four changes are a common idiom when doing doing a
 version bump.
 
-## Doing a version upgrade with `npm run` tools
+## Doing a version upgrade with `pnpm run` tools
 
 All version bumps are done with _🚀Brockit!_, however this section goes over the
-basic underlying steps of how one can produce a bump only using `npm run` tools.
+basic underlying steps of how one can produce a bump only using `pnpm run`
+tools.
 
 It is important to have a good understanding of the steps involved in order to
 be able to understand what exactly the automation on top is doing.
@@ -74,9 +75,9 @@ failure, dealing with conflict resolution.
 
 ```shell
 # Checks out the new tag, and tries to apply all patches
-$ npm run init
+$ pnpm run init
 
-# npm run apply patches (not needed as init already calls it for us)
+# pnpm run apply_patches (not needed as init already calls it for us)
 ```
 
 At this point, if no failure occurs, there's nothing else to be done, and one
@@ -87,7 +88,7 @@ A failed run usually produces a failure report listing the files that failed to
 apply.
 
 ```
-$ npm run init
+$ pnpm run init
 # ... For the sake of explanation, just the failures
 
 2 failed patches:
@@ -161,24 +162,24 @@ change, outside the `Conflict-resolved patches` change, as it makes it easier
 for reviewers to understand the reason why some patch is being removed or
 drastically changed.
 
-#### `npm run update_patches` and committing conflict resolution
+#### `pnpm run update_patches` and committing conflict resolution
 
 Once all merge conflicts are resolved, update all patches, and commit the the
 conflict-resolved change to your branch.
 
 ```shell
-$ npm run update_patches
+$ pnpm run update_patches
 $ git add patches/chrome-browser-ui-views-frame-browser_view_layout.cc.patch
 $ git add patches/chrome-browser-ui-webui-settings-site_settings_helper.cc.patch
 $ git commit -m " Conflict-resolved patches from Chromium 119.7049.17 to Chromium 120.0.7050.40."
 ```
 
-### Updating all patches left by `npm run update_patches`
+### Updating all patches left by `pnpm run update_patches`
 
 At this stage, if you have not updated all patches yet, then have do so.
 
 ```shell
-$ npm run update_patches
+$ pnpm run update_patches
 ```
 
 With all patches that had problems out of the way, and committed as part of
@@ -190,7 +191,7 @@ git add -u *.patch
 $ git commit -m " Update patches from Chromium 119.7049.17 to Chromium 120.0.7050.40."
 
 # Run init again to make sure all patches are green.
-$ npm run init
+$ pnpm run init
 ```
 
 ### Regenerating l18n strings
@@ -199,7 +200,7 @@ This last step consists of regenarating all string files that are replicated in
 `brave-core` from chromium.
 
 ```shell
-$ npm run chromium_rebase_l10n
+$ pnpm run chromium_rebase_l10n
 $ git add *.grdp *.grd *.xtb
 $ git commit -m " Updated strings for Chromium 120.0.7050.40."
 ```

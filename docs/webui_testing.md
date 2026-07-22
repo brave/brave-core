@@ -31,10 +31,10 @@ describe('your file should work the way I want', () => {
 })
 ```
 
-You can run all tests with `npm run test-unit` or filter to a specific test with
-`npm run test-unit -- -t "should be able to add"`. The tests run quite quickly
-and you can run them in `watch` mode to automatically run tests affected by a
-change with `npm run test-unit -- --watch`.
+You can run all tests with `pnpm run test-unit` or filter to a specific test
+with `pnpm run test-unit -t "should be able to add"`. The tests run quite
+quickly and you can run them in `watch` mode to automatically run tests affected
+by a change with `pnpm run test-unit --watch`.
 
 We use [Testing Library](https://testing-library.com/) for writing React unit
 tests. It can render React trees to a Jest DOM, allowing you to take snapshots

@@ -21,7 +21,7 @@ When Chromium changes are unavoidable, follow this preference order:
 
    ```bash
    cd src/brave
-   npm run update_patches
+   pnpm run update_patches
    ```
 
    This reads the changes you made to files in `src/` and updates the

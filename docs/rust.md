@@ -20,7 +20,7 @@ The `tools/crates/` directory vendors Rust CLI tools (`cargo-audit`,
 dependency (e.g. for a security advisory) without re-vendoring everything:
 
 ```sh
-npm run update_brave_tools_crates -- --update-crate=<name>@<version>
+pnpm run update_brave_tools_crates --update-crate=<name>@<version>
 ```
 
 This downloads the crate directly from crates.io and patches only the targeted
@@ -28,7 +28,7 @@ This downloads the crate directly from crates.io and patches only the targeted
 crates, run without arguments:
 
 ```sh
-npm run update_brave_tools_crates
+pnpm run update_brave_tools_crates
 ```
 
 ### Patching crates
