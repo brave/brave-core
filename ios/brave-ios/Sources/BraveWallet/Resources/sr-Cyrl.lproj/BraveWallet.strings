@@ -713,10 +713,10 @@
 "wallet.editVisibleAssetsButtonTitle" = "Измени видљива средства";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
-"wallet.ensDomainInterstitialPageButtonProceed" = "Настави користећи сервер Infura";
+"wallet.ensDomainInterstitialPageButtonProceed" = "Настави користећи Chainstack сервер";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave ће користити сервер Infura за разрешавање назива домена .eth који се налазе у систему Ethereum Name Service (ENS). Brave скрива вашу IP адресу. Ако активирате ову опцију, Infura ће видети да неко покушава да посети те домене .eth, али ништа друго. Погледајте документе сервера Infura: <a href=%1$@>%2$@</a> и <a href=%3$@>%4$@</a>.";
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave ће се ослањати на подешену Ethereum Mainnet RPC услугу, која је подразумевано Chainstack, за разрешавање назива домена .eth који се налазе у систему Ethereum Name Service (ENS). Brave скрива вашу IP адресу. Ако активирате ову опцију, Chainstack ће видети да неко покушава да посети те домене .eth, али ништа друго. Погледајте документе сервера Chainstack: <a href=%1$@>%2$@</a> и <a href=%3$@>%4$@</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Желите ли да активирате Ethereum Name Service (ENS) у Brave-у?";
@@ -2176,8 +2176,8 @@
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Прикажи у активностима";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave ће користити сервер Infura за разрешавање назива домена .crypto (као и %1$@) који се налазе у систему Unstoppable Domains. Brave скрива вашу IP адресу. Ако активирате ову опцију, Infura ће видети да неко покушава да посети те домене .eth, али ништа друго. Погледајте документе сервера Infura: <a href=%2$@>%3$@</a> и <a href=%4$@>%5$@</a>.";
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave ће бити подешена Ethereum RPC услуга, која је подразумевано Chainstack, за разрешавање назива домена .crypto (као и %1$@) који се налазе у систему Unstoppable Domains. Brave скрива вашу IP адресу. Ако активирате ову опцију, Chainstack ће видети да неко покушава да посети те домене, али ништа друго. Погледајте документе сервера Chainstack: <a href=%2$@>%3$@</a> и <a href=%4$@>%5$@</a>.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Желите ли да активирате Unstoppable Domains у Brave-у?";

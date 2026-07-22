@@ -20,7 +20,7 @@
 "importDataFileSelectorMessage" = "Importă marcajele, istoricul și alte date ale browserului în Brave.";
 
 /* The title of the main screen that lets the user import data. The title is shown in the navigation bar. */
-"importDataFileSelectorNavigationTitle" = "Importă datele de navigare";
+"importDataFileSelectorNavigationTitle" = "Importare date de navigare";
 
 /* The title of a Text on screen that explains to the user what type of data can be imported. */
 "importDataFileSelectorTitle" = "Importă marcajele și multe altele";

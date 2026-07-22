@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "บัญชี";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "โปรดตรวจสอบสิทธิ์เพื่อจัดการรหัสผ่านของคุณ";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "การดำเนินการนี้จะลบรหัสผ่านที่บันทึกไว้สำหรับ %@ ออกจากซิงค์เชนและอุปกรณ์ของคุณ";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "เสนอให้บันทึกรหัสผ่าน";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "ป้อนรหัสผ่าน";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "เปิดเผย";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "ค้นหาเว็บไซต์";
@@ -1561,12 +1570,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "เปิดใช้งานการกดค้าง";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "เพลย์ลิสต์สื่อ & ข้อมูลออฟไลน์";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "เพลย์ลิสต์ข้อมูลออฟไลน์";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "เปลี่ยน";
 
@@ -2065,21 +2068,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave ปิดตัวลงอย่างไม่คาดคิด";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "ด้วย Brave Rewards คุณสามารถดูโฆษณาที่รักษาความเป็นส่วนตัวจากเครือข่าย Brave Ads ได้ ไม่ต้องมีตัวติดตาม ไม่เกิดความล่าช้า และข้อมูลของคุณจะยังคงปลอดภัยอย่างสมบูรณ์";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "เปิดใช้งาน Rewards";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "คลิกที่ใดก็ได้บนหน้าจอเพื่อดำเนินการต่อใน Brave Talk";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "คุณสามารถเริ่มการโทรฟรีได้เลยตอนนี้";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "หากต้องการเริ่มการโทรฟรี ให้เปิดการทำงานของ Brave Rewards";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "เปิดใช้งานเพื่อช่วยสนับสนุน Brave และชุมชน BAT";
 
@@ -2091,9 +2079,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "ขอบคุณสำหรับการช่วยสนับสนุน Brave และชุมชน BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "โดยการคลิก คุณยอมรับข้อกำหนด %1$@ และ %2$@ ปิดใช้งานได้ตลอดเวลาในการตั้งค่า";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "ช่วยสนับสนุน Brave และชุมชน BAT โดยเปิดใช้งาน Brave Rewards และดูโฆษณาของ Brave";

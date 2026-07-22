@@ -2,7 +2,7 @@
 "adsHeader" = "Ads";
 
 /* A title asking if the user already purchased on brave.com */
-"alreadyPurchasedTitle" = "Vous avez déjà acheté sur brave.com ?";
+"alreadyPurchasedTitle" = "Vous avez déjà acheté un abonnement sur brave.com ?";
 
 /* A section header title for analytics-related settings */
 "analyticsHeader" = "Données analytiques";
@@ -38,7 +38,7 @@
 "oneTimePurchaseLabel" = "Achat unique";
 
 /* A toggle label for Brave Playlist feature */
-"playlistLabel" = "Liste de lecture";
+"playlistLabel" = "Playlist";
 
 /* A toggle label for privacy preserving analytics feature */
 "privacyPreservingAnalyticsLabel" = "Collecte analytique privée et sécurisée";
