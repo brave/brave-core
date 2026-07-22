@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/window_feature_controller/window_feature_controller.h b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
-index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..a6e82924284146a409e04e44b72a81aae4f8fc18 100644
+index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..dff35e7847066f4d91e4bc7f44fec83b899df312 100644
 --- a/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 +++ b/chrome/browser/ui/window_feature_controller/window_feature_controller.h
 @@ -38,7 +38,8 @@ class WindowFeatureController {
@@ -8,7 +8,7 @@ index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..a6e82924284146a409e04e44b72a81aa
        bool is_trusted_source,
 -      ui::UnownedUserDataHost& host);
 +      ui::UnownedUserDataHost& host,
-+      BrowserWindowInterface& browser);
++      VerticalTabController& vertical_tab_controller);
    ~WindowFeatureController();
  
    WindowFeatureController(const WindowFeatureController&) = delete;
@@ -16,7 +16,7 @@ index 7c203d12c129f2a7b949c5ccb5144d04b175d58b..a6e82924284146a409e04e44b72a81aa
    const bool is_trusted_source_;
  
    ui::ScopedUnownedUserData<WindowFeatureController> scoped_unowned_user_data_;
-+  const raw_ref<BrowserWindowInterface> browser_;
++  const raw_ref<VerticalTabController> vertical_tab_controller_;
  };
  
  #endif  // CHROME_BROWSER_UI_WINDOW_FEATURE_CONTROLLER_WINDOW_FEATURE_CONTROLLER_H_

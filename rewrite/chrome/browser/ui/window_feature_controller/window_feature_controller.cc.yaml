@@ -5,27 +5,27 @@
 
 substitutions:
   - description: |
-      Add `browser` to the ctor.
+      Add `vertical tab controller` to the ctor.
 
-      This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
     regex:
       re_pattern: '(WindowFeatureController::WindowFeatureController\(.*?)(\)\n\s+:)'
       re_flags: [DOTALL]
       replace: |-
         \1,
-            BrowserWindowInterface& browser\2
+              VerticalTabController& vertical_tab_controller\2
 
   - description: |
-      Initialise `browser_` in the constructor
+      Initialise `vertical_tab_controller_` in the constructor
 
-      This `browser_` field is required for `NormalBrowserSupportsWindowFeature`.
+      This `vertical_tab_controller_` field is required for `NormalBrowserSupportsWindowFeature`.
     regex:
       re_pattern:
         '(WindowFeatureController::WindowFeatureController\(.*?)( \{\})'
       re_flags: [DOTALL]
       replace: |-
         \1,
-              browser_(browser)\2
+              vertical_tab_controller_(vertical_tab_controller)\2
 
   - description: |
       Give Brave control over NormalBrowserSupportsWindowFeature on Windows.
@@ -40,7 +40,7 @@ substitutions:
         if (feature == WindowFeature::kFeatureTitleBar) {
           // In case of vertical tab strip is allowed, we need to have ability to
           // show title bar on Windows.
-          return tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) &&
-                 tabs::utils::ShouldShowWindowTitleForVerticalTabs(&browser_.get());
+          return vertical_tab_controller_->ShouldShowBraveVerticalTabs() &&
+                 vertical_tab_controller_->ShouldShowWindowTitleForVerticalTabs();
         }
         #endif
