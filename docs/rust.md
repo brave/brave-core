@@ -15,7 +15,10 @@ When integrating Rust code into brave-core, keep the following points in mind:
 - https://cxx.rs/ is recommended to understand the underlying concepts around
   the Rust <-- FFI --> C++ FFI layer. At Brave, we use FFI to integrate our
   [adblock engine](https://sourcegraph.com/r/github.com/brave/brave-core/-/tree/components/brave_shields/core/common/adblock/rs)
-  which is written in Rust with our native C++ code.
+  which is written in Rust with our native C++ code. It's also recommended to
+  look at
+  https://github.com/brave/brave-core/blob/master/docs/best-practices/coding-standards-apis.md#-string-usage-in-rustc-ffi
+  which captures the coding standard when working with Rust in Brave.
 
 ### Updating vendored tool crates
 
