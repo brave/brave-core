@@ -1,0 +1,20 @@
+diff --git a/chrome/browser/actor/execution_engine.cc b/chrome/browser/actor/execution_engine.cc
+index 162c8e2b290ded8e12869d2efc064e2b1d03c655..e9da53b74486a4e712cd72e8b8e2636bcc3ef0b5 100644
+--- a/chrome/browser/actor/execution_engine.cc
++++ b/chrome/browser/actor/execution_engine.cc
+@@ -980,6 +980,7 @@ void ExecutionEngine::MayActOnTab(const tabs::TabInterface& tab,
+   const GURL& url = web_contents.GetPrimaryMainFrame()->GetLastCommittedURL();
+   auto decision_wrapper = std::make_unique<DecisionWrapper>(
+       journal, url, task_id, "MayActOnTab", std::move(callback));
++  BRAVE_MAY_ACT_ON_URL_INTERNAL
+   auto event = GateableEvent::kPageAction;
+   origin_gating_checker_.ComputeGatingDecision(
+       std::make_unique<PageActionGatingContext>(web_contents.GetWeakPtr()),
+@@ -1650,6 +1651,7 @@ void ExecutionEngine::IsAcceptableNavigationDestination(
+     DecisionCallbackWithReason callback) {
+   auto decision_wrapper = std::make_unique<DecisionWrapper>(
+       *journal_, url, task_->id(), "MayActOnUrl", std::move(callback));
++  BRAVE_MAY_ACT_ON_URL_INTERNAL
+   auto event = GateableEvent::kNavigationRequest;
+   origin_gating_checker_.ComputeGatingDecision(
+       /*context=*/nullptr, event, /*source=*/GURL(), url,
