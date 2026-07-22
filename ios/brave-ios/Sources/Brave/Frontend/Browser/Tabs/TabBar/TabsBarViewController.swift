@@ -279,6 +279,9 @@ class TabsBarViewController: UIViewController {
 
   func reloadDataAndRestoreSelectedTab(isAnimated: Bool? = nil) {
     collectionView.reloadData()
+    collectionView.collectionViewLayout.invalidateLayout()
+    collectionView.layoutIfNeeded()
+    updateOverflowIndicatorsLayout()
 
     guard let tabManager = tabManager, let selectedTabIndex = selectedTabIndexPath else {
       return

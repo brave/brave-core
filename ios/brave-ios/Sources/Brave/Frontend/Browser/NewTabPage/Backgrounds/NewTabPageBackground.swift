@@ -31,11 +31,11 @@ class NewTabPageBackground: PreferencesObserver {
   private(set) var wallpaperId = UUID()
   /// The background/wallpaper image if available
   var backgroundImage: UIImage? {
-    currentBackground?.backgroundImage
+    nil
   }
   /// The background video URL if available
   var backgroundVideoPath: URL? {
-    currentBackground?.backgroundVideoPath
+    nil
   }
   /// The sponsors logo if available
   var sponsorLogoImage: UIImage? {

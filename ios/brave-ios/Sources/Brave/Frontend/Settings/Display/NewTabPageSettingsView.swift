@@ -3,68 +3,15 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
-import BraveUI
-import Foundation
 import Preferences
 import SwiftUI
 
 struct NewTabPageSettingsView: View {
-  var isSponsoredBackgroundsSupported: Bool
-  var shouldShowSponsoredImagesAndVideosSetting: Bool
-  var linkTapped: ((URLRequest) -> Void)?
-
-  @ObservedObject private var backgroundImages = Preferences.NewTabPage.backgroundImages
-  @ObservedObject private var showNewTabPrivacyHub = Preferences.NewTabPage.showNewTabPrivacyHub
   @ObservedObject private var showNewTabFavourites = Preferences.NewTabPage.showNewTabFavourites
-
-  // This is observed to ensure the view updates correctly, but we instead access
-  // Preferences.NewTabPage.backgroundMediaType which accesses backgroundMediaTypeRaw
-  @ObservedObject private var backgroundMediaTypeRaw = Preferences.NewTabPage.backgroundMediaTypeRaw
 
   var body: some View {
     Form {
       Section {
-        Toggle(Strings.NTP.settingsBackgroundImages, isOn: $backgroundImages.value)
-        if backgroundImages.value, isSponsoredBackgroundsSupported {
-          NavigationLink {
-            BackgroundMediaTypePicker(
-              shouldShowSponsoredImagesAndVideosSetting: shouldShowSponsoredImagesAndVideosSetting,
-              selection: Binding(
-                get: { Preferences.NewTabPage.backgroundMediaType },
-                set: { Preferences.NewTabPage.backgroundMediaType = $0 }
-              )
-            )
-            .environment(
-              \.openURL,
-              OpenURLAction { _ in
-                self.linkTapped?(URLRequest(url: .brave.newTabTakeoverLearnMoreLinkUrl))
-                return .handled
-              }
-            )
-          } label: {
-            LabeledContent {
-              switch Preferences.NewTabPage.backgroundMediaType {
-              case .defaultImages:
-                Text(Strings.NTP.settingsDefaultImagesOnly)
-              case .sponsoredImages:
-                Text(Strings.NTP.settingsSponsoredImagesSelection)
-              case .sponsoredImagesAndVideos:
-                Text(
-                  shouldShowSponsoredImagesAndVideosSetting
-                    ? Strings.NTP.settingsSponsoredImagesAndVideosSelection
-                    : Strings.NTP.settingsSponsoredImagesSelection
-                )
-              }
-            } label: {
-              Text(Strings.NTP.settingsBackgroundImageSubMenu)
-            }
-          }
-        }
-      } header: {
-        Text(Strings.NTP.settingsBackgroundImages)
-      }
-      Section {
-        Toggle(Strings.PrivacyHub.privacyReportsTitle, isOn: $showNewTabPrivacyHub.value)
         Toggle(Strings.Widgets.favoritesWidgetTitle, isOn: $showNewTabFavourites.value)
       } header: {
         Text(Strings.Widgets.widgetTitle)
@@ -75,61 +22,11 @@ struct NewTabPageSettingsView: View {
     .navigationBarTitleDisplayMode(.inline)
   }
 
-  private struct BackgroundMediaTypePicker: View {
-    var shouldShowSponsoredImagesAndVideosSetting: Bool
-    @Binding var selection: BackgroundMediaType
-
-    @Environment(\.dismiss) private var dismiss
-
-    var body: some View {
-      Form {
-        Section {
-          Picker("", selection: $selection) {
-            Text(Strings.NTP.settingsDefaultImagesOnly)
-              .tag(BackgroundMediaType.defaultImages)
-            if shouldShowSponsoredImagesAndVideosSetting {
-              Text(Strings.NTP.settingsSponsoredImagesSelection)
-                .tag(BackgroundMediaType.sponsoredImages)
-            }
-            Text(
-              shouldShowSponsoredImagesAndVideosSetting
-                ? Strings.NTP.settingsSponsoredImagesAndVideosSelection
-                : Strings.NTP.settingsSponsoredImagesSelection
-            )
-            .tag(BackgroundMediaType.sponsoredImagesAndVideos)
-          }
-          .pickerStyle(.inline)
-          .labelsHidden()
-          .onChange(of: selection, initial: false) {
-            dismiss()
-          }
-        } header: {
-          Text(Strings.NTP.settingsBackgroundImageSubMenu)
-        } footer: {
-          // Contains markdown with a link
-          Text(LocalizedStringKey(Strings.NTP.imageTypeSelectionDescription))
-            .tint(Color(braveSystemName: .textInteractive))
-        }
-      }
-      .navigationTitle(Strings.NTP.settingsBackgroundImageSubMenu)
-      .navigationBarTitleDisplayMode(.inline)
-    }
-  }
 }
 
 class NTPTableViewController: UIHostingController<NewTabPageSettingsView> {
-  var rewards: BraveRewards?
-  var linkTapped: ((URLRequest) -> Void)?
-
-  init(rewards: BraveRewards?, linkTapped: ((URLRequest) -> Void)?) {
-    super.init(
-      rootView: .init(
-        isSponsoredBackgroundsSupported: rewards != nil,
-        shouldShowSponsoredImagesAndVideosSetting:
-          rewards?.ads.shouldShowSponsoredImagesAndVideosSetting() == true,
-        linkTapped: linkTapped
-      )
-    )
+  init() {
+    super.init(rootView: .init())
   }
 
   @available(*, unavailable)

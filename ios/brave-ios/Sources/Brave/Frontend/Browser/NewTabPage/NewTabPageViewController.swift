@@ -178,51 +178,9 @@ class NewTabPageViewController: UIViewController {
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
 
-    Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
 
     sections = [
-      StatsSectionProvider(
-        isPrivateBrowsing: tab.isPrivate,
-        openPrivacyHubPressed: { [weak self] in
-          guard let self, let tab = browserTab else { return }
-          if privateBrowsingManager.isPrivateBrowsing == true {
-            return
-          }
-
-          let isOriginPurchased =
-            BraveOriginServiceFactory.get(profile: tab.profile)?.isPurchased() == true
-          let host = UIHostingController(
-            rootView: PrivacyReportsManager.prepareView(
-              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing,
-              isOriginPurchased: isOriginPurchased
-            )
-          )
-          host.rootView.onDismiss = { [weak self] in
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-              guard let self = self else { return }
-
-              // Handle App Rating
-              // User finished viewing the privacy report (tapped close)
-              AppReviewManager.shared.handleAppReview(for: .revised, using: self)
-            }
-          }
-
-          host.rootView.openPrivacyReportsUrl = { [weak self] in
-            self?.delegate?.navigateToInput(
-              URL.brave.privacyFeatures.absoluteString,
-              inNewTab: false,
-              // Privacy Reports view is unavailable in private mode.
-              switchingToPrivateMode: false
-            )
-          }
-
-          present(host, animated: true)
-        },
-        hidePrivacyHubPressed: { [weak self] in
-          self?.hidePrivacyHub()
-        }
-      ),
       FavoritesSectionProvider(
         action: { [weak self] bookmark, action in
           self?.handleFavoriteAction(favorite: bookmark, action: action)
@@ -274,16 +232,7 @@ class NewTabPageViewController: UIViewController {
       guard let self else { return }
       setupBackgroundImage()
 
-      let isTabVisible = viewIfLoaded?.window != nil
-      setupBackgroundVideoIfNeeded(shouldCreatePlayer: isTabVisible)
-      if isTabVisible {
-        // `viewDidAppear` is not called when the view is already visible, so
-        // report the viewed impression event and load the video asset here
-        // if needed.
-        reportSponsoredBackgroundViewedEventIfNeeded()
-
-        loadAndAutoplayBackgroundVideoAdIfNeeded()
-      }
+      setupBackgroundVideoIfNeeded(shouldCreatePlayer: false)
     }
 
     Preferences.BraveNews.isEnabled.observe(from: self)
@@ -328,8 +277,6 @@ class NewTabPageViewController: UIViewController {
     view.addSubview(videoButtonsView)
     view.addSubview(collectionView)
     view.addSubview(feedOverlayView)
-
-    collectionView.backgroundView = backgroundButtonsView
 
     feedOverlayView.headerView.settingsButton.addTarget(
       self,
@@ -416,12 +363,6 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredBackgroundViewedEventIfNeeded()
-
-    loadAndAutoplayBackgroundVideoAdIfNeeded()
-
-    presentNotification()
-
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.50) {
       self.delegate?.showNTPOnboarding()
     }
@@ -436,7 +377,7 @@ class NewTabPageViewController: UIViewController {
   override func willMove(toParent parent: UIViewController?) {
     super.willMove(toParent: parent)
 
-    backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
+    backgroundView.imageView.image = nil
 
     if parent == nil {
       videoAdPlayer?.cancelPlayIfNeeded()
@@ -615,26 +556,9 @@ class NewTabPageViewController: UIViewController {
 
   func setupBackgroundImage() {
     collectionView.reloadData()
-
-    hideVisibleSponsoredImageNotification()
-
-    if let background = background.currentBackground {
-      switch background {
-      case .image(let background):
-        if case let name = background.author, !name.isEmpty {
-          backgroundButtonsView.activeButton = .imageCredit(name)
-        } else {
-          backgroundButtonsView.activeButton = .none
-        }
-      case .sponsoredMedia(let background, _):
-        backgroundButtonsView.activeButton = .brandLogo(background.logo)
-      }
-    } else {
-      backgroundButtonsView.activeButton = .none
-    }
-
-    gradientView.isHidden = background.backgroundImage == nil
-    backgroundView.imageView.image = background.backgroundImage
+    backgroundButtonsView.activeButton = .none
+    gradientView.isHidden = true
+    backgroundView.imageView.image = nil
   }
 
   private func calculateBackgroundCenterPoints() {
@@ -1152,8 +1076,7 @@ class NewTabPageViewController: UIViewController {
 
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
-    if key == Preferences.NewTabPage.showNewTabPrivacyHub.key
-      || key == Preferences.NewTabPage.showNewTabFavourites.key
+    if key == Preferences.NewTabPage.showNewTabFavourites.key
     {
       collectionView.reloadData()
       return
