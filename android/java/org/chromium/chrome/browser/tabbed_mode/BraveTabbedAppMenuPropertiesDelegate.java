@@ -584,7 +584,7 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             modelList.add(
                     new MVCListAdapter.ListItem(
                             AppMenuHandler.AppMenuItemType.STANDARD,
-                            buildModelForStandardMenuItem(
+                            AppMenuItemUtils.buildModelForStandardMenuItem(
                                     mContext,
                                     mAppMenuItemTheme,
                                     R.id.add_to_group_menu_id,
