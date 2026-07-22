@@ -62,8 +62,8 @@ void BraveActionsContainer::Init() {
       gfx::Size(kSeparatorWidth + kSeparatorMargin,
                 GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));
   // Left margin only; right-side gap comes from between_child_spacing above.
-  brave_button_separator_->SetBorder(views::CreateEmptyBorder(
-      gfx::Insets::TLBR(0, kSeparatorMargin, 0, 0)));
+  brave_button_separator_->SetBorder(
+      views::CreateEmptyBorder(gfx::Insets::TLBR(0, kSeparatorMargin, 0, 0)));
   // Just in case the extensions load before this function does (not likely!)
   // add children to the front in reverse order.
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)

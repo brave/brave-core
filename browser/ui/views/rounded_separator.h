@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 #define BRAVE_BROWSER_UI_VIEWS_ROUNDED_SEPARATOR_H_
 
-#include <string>
-
 #include "ui/base/metadata/metadata_header_macros.h"
 #include "ui/color/color_id.h"
 #include "ui/views/view.h"
