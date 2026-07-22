@@ -472,7 +472,7 @@ class MainTest(unittest.TestCase):
                                    'from_checkout',
                                    return_value=runner):
                 with mock.patch.object(sys, 'argv',
-                                       ['install_extra_deps', dep]):
+                                       ['install_extra_deps', 'sync', dep]):
                     self.assertEqual(m.main(), 0)
         runner.install.assert_called_once_with(dep, self._FAKE_EXTRA_DEPS[dep])
 
@@ -486,7 +486,7 @@ class MainTest(unittest.TestCase):
                                    'from_checkout',
                                    return_value=runner):
                 with mock.patch.object(sys, 'argv',
-                                       ['install_extra_deps', *deps]):
+                                       ['install_extra_deps', 'sync', *deps]):
                     self.assertEqual(m.main(), 0)
         self.assertEqual(
             runner.install.call_args_list,
@@ -499,7 +499,7 @@ class MainTest(unittest.TestCase):
                                    'from_checkout') as checkout:
                 with mock.patch.object(
                         sys, 'argv',
-                    ['install_extra_deps', 'src/does/not/exist']):
+                    ['install_extra_deps', 'sync', 'src/does/not/exist']):
                     # argparse prints a usage error to stderr before exiting;
                     # keep it out of the test output.
                     with contextlib.redirect_stderr(io.StringIO()):

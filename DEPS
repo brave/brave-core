@@ -202,6 +202,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/third_party/rust-toolchain']
   },
   {
@@ -209,6 +210,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/brave/third_party/ast-grep/ast-grep-linux',
                'src/brave/third_party/ast-grep/ast-grep-mac',
                'src/brave/third_party/ast-grep/ast-grep-mac_arm64',
@@ -219,6 +221,7 @@ hooks = [
     'pattern': '.',
     'action': ['vpython3',
                'tools/cr/install_extra_deps.py',
+               'sync',
                'src/brave/third_party/node/node-linux-x64',
                'src/brave/third_party/node/node-mac-x64',
                'src/brave/third_party/node/node-mac-arm64',
