@@ -23,36 +23,46 @@ namespace ai_chat {
 
 namespace {
 
+constexpr char kBasicAccess[] = "basic";
+constexpr char kPremiumAccess[] = "premium";
+constexpr char kBasicAndPremiumAccess[] = "basic_and_premium";
+
+constexpr char kChatCapability[] = "chat";
+constexpr char kContentAgentCapability[] = "content_agent";
+constexpr char kDeepResearchCapability[] = "deep_research";
+constexpr char kFilesCapability[] = "files";
+constexpr char kSummaryCapability[] = "summary";
+
 constexpr auto kStringToAccessMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ModelAccess>({
-        {"basic", mojom::ModelAccess::BASIC},
-        {"premium", mojom::ModelAccess::PREMIUM},
-        {"basic_and_premium", mojom::ModelAccess::BASIC_AND_PREMIUM},
+        {kBasicAccess, mojom::ModelAccess::BASIC},
+        {kPremiumAccess, mojom::ModelAccess::PREMIUM},
+        {kBasicAndPremiumAccess, mojom::ModelAccess::BASIC_AND_PREMIUM},
     });
 
 constexpr auto kAccessToStringMap =
     base::MakeFixedFlatMap<mojom::ModelAccess, std::string_view>({
-        {mojom::ModelAccess::BASIC, "basic"},
-        {mojom::ModelAccess::PREMIUM, "premium"},
-        {mojom::ModelAccess::BASIC_AND_PREMIUM, "basic_and_premium"},
+        {mojom::ModelAccess::BASIC, kBasicAccess},
+        {mojom::ModelAccess::PREMIUM, kPremiumAccess},
+        {mojom::ModelAccess::BASIC_AND_PREMIUM, kBasicAndPremiumAccess},
     });
 
 constexpr auto kStringToCapabilityMap =
     base::MakeFixedFlatMap<std::string_view, mojom::ConversationCapability>({
-        {"chat", mojom::ConversationCapability::CHAT},
-        {"content_agent", mojom::ConversationCapability::CONTENT_AGENT},
-        {"deep_research", mojom::ConversationCapability::DEEP_RESEARCH},
-        {"files", mojom::ConversationCapability::FILES},
-        {"summary", mojom::ConversationCapability::SUMMARY},
+        {kChatCapability, mojom::ConversationCapability::CHAT},
+        {kContentAgentCapability, mojom::ConversationCapability::CONTENT_AGENT},
+        {kDeepResearchCapability, mojom::ConversationCapability::DEEP_RESEARCH},
+        {kFilesCapability, mojom::ConversationCapability::FILES},
+        {kSummaryCapability, mojom::ConversationCapability::SUMMARY},
     });
 
 constexpr auto kCapabilityToStringMap =
     base::MakeFixedFlatMap<mojom::ConversationCapability, std::string_view>({
-        {mojom::ConversationCapability::CHAT, "chat"},
-        {mojom::ConversationCapability::CONTENT_AGENT, "content_agent"},
-        {mojom::ConversationCapability::DEEP_RESEARCH, "deep_research"},
-        {mojom::ConversationCapability::FILES, "files"},
-        {mojom::ConversationCapability::SUMMARY, "summary"},
+        {mojom::ConversationCapability::CHAT, kChatCapability},
+        {mojom::ConversationCapability::CONTENT_AGENT, kContentAgentCapability},
+        {mojom::ConversationCapability::DEEP_RESEARCH, kDeepResearchCapability},
+        {mojom::ConversationCapability::FILES, kFilesCapability},
+        {mojom::ConversationCapability::SUMMARY, kSummaryCapability},
     });
 
 struct ParsedCapabilities {

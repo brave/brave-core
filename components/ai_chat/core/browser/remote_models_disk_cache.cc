@@ -16,7 +16,6 @@
 #include "base/json/json_writer.h"
 #include "base/location.h"
 #include "base/logging.h"
-#include "base/task/sequenced_task_runner.h"
 #include "base/task/task_traits.h"
 #include "base/task/thread_pool.h"
 #include "base/threading/thread_restrictions.h"
@@ -88,8 +87,7 @@ void RemoteModelsDiskCache::Load(LoadCallback callback) {
       pref_service_->GetTime(prefs::kRemoteModelsCachedAt);
   if (cached_at.is_null() || base::Time::Now() - cached_at > ttl) {
     DVLOG(1) << "RemoteModelsDiskCache: cache absent or expired";
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(std::move(callback), std::nullopt));
+    std::move(callback).Run(std::nullopt);
     return;
   }
 

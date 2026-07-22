@@ -24,10 +24,7 @@ namespace ai_chat {
 // does not hold models in memory between calls; it only reads from and writes
 // to disk.
 //
-// Cache file format:
-//   {
-//     "models": [ ...model objects in the server JSON format... ]
-//   }
+// Cache file format: a JSON array of model objects in the server JSON format.
 //
 // The fetch timestamp is stored in PrefService under
 // |prefs::kRemoteModelsCachedAt| so that the TTL check can be performed
