@@ -10,24 +10,7 @@
 
 #include "base/test/launcher/test_result.h"
 
-namespace base {
-class TestLauncher;
-using TestLauncher_BraveImpl = TestLauncher;
-}  // namespace base
-
-#define TestLauncher TestLauncher_ChromiumImpl
-#define OnTestFinished                                                  \
-  NotUsed();                                                            \
-  friend TestLauncher_BraveImpl;                                        \
-  virtual const TestResult& OnTestResult(const TestResult& result) = 0; \
-  virtual void OnTestFinished
-#define MaybeSaveSummaryAsJSON virtual MaybeSaveSummaryAsJSON
-
 #include <base/test/launcher/test_launcher.h>  // IWYU pragma: export
-
-#undef TestLauncher
-#undef OnTestFinished
-#undef MaybeSaveSummaryAsJSON
 
 namespace base {
 
