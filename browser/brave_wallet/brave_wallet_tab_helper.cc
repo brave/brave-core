@@ -35,6 +35,7 @@
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"  // nogncheck
 #include "chrome/browser/ui/browser_window/public/browser_window_interface_iterator.h"  // nogncheck
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "ui/views/widget/widget.h"
 #endif
 
 namespace brave_wallet {
@@ -316,6 +317,11 @@ GURL BraveWalletTabHelper::GetBubbleURL() {
 
 content::WebContents* BraveWalletTabHelper::GetBubbleWebContentsForTesting() {
   return wallet_bubble_manager_delegate_->GetWebContentsForTesting();
+}
+
+views::Widget* BraveWalletTabHelper::GetBubbleWidgetForTesting() {
+  return wallet_bubble_manager_delegate_
+      ->GetBubbleWidgetForTesting();  // IN-TEST
 }
 
 GURL BraveWalletTabHelper::GetApproveBubbleURL() {

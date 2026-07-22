@@ -17,6 +17,8 @@
 #include "brave/browser/ui/views/frame/brave_browser_view.h"
 #include "brave/browser/ui/webui/brave_wallet/wallet_panel/wallet_panel_ui.h"
 #include "chrome/browser/file_select_helper.h"
+#include "chrome/browser/picture_in_picture/picture_in_picture_occlusion_observer.h"
+#include "chrome/browser/picture_in_picture/scoped_picture_in_picture_occlusion_observation.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
 #include "chrome/browser/ui/browser_window/public/global_browser_collection.h"
@@ -32,7 +34,8 @@
 
 namespace brave_wallet {
 
-class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
+class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView,
+                                    public PictureInPictureOcclusionObserver {
   METADATA_HEADER(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
  public:
   WalletWebUIBubbleDialogView(
@@ -63,6 +66,25 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
                                      params);
   }
 
+  // views::BubbleDialogDelegateView:
+  void AddedToWidget() override {
+    WebUIBubbleDialogView::AddedToWidget();
+    occlusion_observation_.Observe(GetWidget());
+  }
+
+  // PictureInPictureOcclusionObserver:
+  void OnOcclusionStateChanged(bool occluded) override {
+    auto* web_contents = web_view()->GetWebContents();
+    if (!web_contents) {
+      return;
+    }
+    if (occluded) {
+      ignore_input_events_ = web_contents->IgnoreInputEvents(std::nullopt);
+    } else {
+      ignore_input_events_.reset();
+    }
+  }
+
  private:
   // WidgetObserver:
   void OnWidgetTreeActivated(views::Widget* root_widget,
@@ -77,6 +99,11 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
       GetWidget()->CloseWithReason(views::Widget::ClosedReason::kLostFocus);
     }
   }
+
+  std::optional<content::WebContents::ScopedIgnoreInputEvents>
+      ignore_input_events_;
+
+  ScopedPictureInPictureOcclusionObservation occlusion_observation_{this};
 
   base::ScopedObservation<views::Widget, views::WidgetObserver>
       anchor_widget_observation_{this};
@@ -128,7 +155,6 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     auto* widget =
         views::BubbleDialogDelegateView::CreateBubble(std::move(bubble_view));
     CHECK(widget);
-    widget->SetZOrderLevel(ui::ZOrderLevel::kSecuritySurface);
 
     // Checking if we create WalletPanelUI instance of WebUI and
     // extracting WebUIContentsWrapper class to pass real browser delegate
@@ -168,6 +194,8 @@ class WalletWebUIBubbleManager : public WebUIBubbleManagerImpl<WalletPanelUI>,
     }
     return bubble_view_->web_view()->GetWebContents();
   }
+
+  views::Widget* GetBubbleWidgetForTesting() { return GetBubbleWidget(); }
 
  private:
   const raw_ptr<BrowserWindowInterface> browser_;
@@ -236,6 +264,13 @@ bool WalletBubbleManagerDelegateImpl::IsShowingBubble() {
 bool WalletBubbleManagerDelegateImpl::IsBubbleClosedForTesting() {
   return !webui_bubble_manager_ || !webui_bubble_manager_->GetBubbleWidget() ||
          webui_bubble_manager_->GetBubbleWidget()->IsClosed();
+}
+
+views::Widget* WalletBubbleManagerDelegateImpl::GetBubbleWidgetForTesting() {
+  if (!webui_bubble_manager_) {
+    return nullptr;
+  }
+  return webui_bubble_manager_->GetBubbleWidgetForTesting();  // IN-TEST
 }
 
 }  // namespace brave_wallet

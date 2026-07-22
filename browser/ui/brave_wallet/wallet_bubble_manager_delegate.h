@@ -14,6 +14,10 @@ namespace content {
 class WebContents;
 }  // namespace content
 
+namespace views {
+class Widget;
+}  // namespace views
+
 namespace brave_wallet {
 
 class WalletBubbleManagerDelegate {
@@ -33,6 +37,7 @@ class WalletBubbleManagerDelegate {
   virtual bool IsShowingBubble() = 0;
   virtual bool IsBubbleClosedForTesting() = 0;
   virtual content::WebContents* GetWebContentsForTesting() = 0;
+  virtual views::Widget* GetBubbleWidgetForTesting() = 0;
 
  protected:
   WalletBubbleManagerDelegate() = default;
