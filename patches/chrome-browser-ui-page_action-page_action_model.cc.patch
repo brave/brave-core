@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.cc b/chrome/browser/ui/page_action/page_action_model.cc
-index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..75390cdcfb379dcecfca4f49bc57c45b16d18e70 100644
+index 4e1f80c6259013a18f347676d034fb59aa017354..f3ade8bac967fd9b18ed1586893d02d84dda5358 100644
 --- a/chrome/browser/ui/page_action/page_action_model.cc
 +++ b/chrome/browser/ui/page_action/page_action_model.cc
 @@ -16,6 +16,7 @@ namespace {
@@ -10,8 +10,8 @@ index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..75390cdcfb379dcecfca4f49bc57c45b
  PageActionModel::PageActionModel(actions::ActionId action_id, bool is_ephemeral)
      : action_id_(action_id), is_ephemeral_(is_ephemeral) {}
  
-@@ -425,4 +426,5 @@ bool PageActionModel::GetShowTrailingIcon() const {
-   return show_trailing_icon_;
+@@ -440,4 +441,5 @@ std::optional<ui::ColorId> PageActionModel::GetOverrideBackgroundColorId()
+   return override_background_color_id_;
  }
  
 +}  // namespace chromium_impl
