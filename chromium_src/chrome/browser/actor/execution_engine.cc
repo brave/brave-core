@@ -22,7 +22,10 @@ bool IsChromeWebStoreURL(const GURL& url) {
 
 }  // namespace
 
-// Add Brave-specific restrictions
+// Add Brave-specific restrictions before delegating to the origin gating
+// checker. Applied at both the page-action (`MayActOnTab`) and navigation
+// (`IsAcceptableNavigationDestination`) entry points, which each own a
+// `decision_wrapper` for `url`.
 #define BRAVE_MAY_ACT_ON_URL_INTERNAL                       \
   if (IsChromeWebStoreURL(url)) {                           \
     decision_wrapper->Reject(                               \
@@ -31,5 +34,5 @@ bool IsChromeWebStoreURL(const GURL& url) {
     return;                                                 \
   }
 
-#include <chrome/browser/actor/site_policy.cc>
+#include <chrome/browser/actor/execution_engine.cc>
 #undef BRAVE_MAY_ACT_ON_URL_INTERNAL
