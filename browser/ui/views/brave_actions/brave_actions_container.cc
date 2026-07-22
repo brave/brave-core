@@ -39,7 +39,7 @@ BraveActionsContainer::BraveActionsContainer(
 BraveActionsContainer::~BraveActionsContainer() = default;
 
 void BraveActionsContainer::Init() {
-  constexpr int kSeparatorMargin = 1;
+  constexpr int kSeparatorMargin = 3;
   constexpr int kSeparatorWidth = 1;
 
   // automatic layout

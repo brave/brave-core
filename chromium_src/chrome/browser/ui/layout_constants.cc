@@ -79,6 +79,10 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 6;
+    // Match collapsed chip width to the site-info icon:
+    // kLocationBarIconSize (16) + 2 * LOCATION_BAR_PAGE_INFO_ICON_PADDING (6).
+    case LayoutConstant::kLocationBarChipPadding:
+      return 6;
     case LayoutConstant::kTabSeparatorHeight: {
       return 16;
     }
