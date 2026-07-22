@@ -80,6 +80,18 @@ Shared abstractions used by the entry points and tests:
   Invoke with the `sync` subcommand and the target path, e.g.
   `install_extra_deps.py sync src/path/to/install/dir`.
 
+  Repin an entry in place with the `setdep` subcommand, which rewrites the
+  archive's `object_name`, `sha256sum`, and `size_bytes` while preserving every
+  comment, blank line, and quote style in the `EXTRA_DEPS` file:
+
+  ```sh
+  install_extra_deps.py setdep \
+    -r src/path/to/install/dir@<archive>.tar.xz,<hex sha256>,<size_bytes>
+  ```
+
+  Join a multi-object (e.g. per-platform) entry's objects with `?`, in the
+  entry's existing order. Repeat `-r` to repin several entries at once.
+
 ## Subdirectories
 
 - `alias/` — `git cr` git-alias subcommands (`commit`, `mv`, `follow-renames`,

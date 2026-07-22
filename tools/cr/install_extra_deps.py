@@ -14,9 +14,12 @@ it deployed more generic, and reusable for other cases.
 from __future__ import annotations
 
 import argparse
+import ast
 from collections.abc import Mapping
+from io import StringIO
 import logging
 import sys
+import tokenize
 from pathlib import Path
 
 # `src/` directory (this script lives at src/brave/tools/cr/).
@@ -34,7 +37,8 @@ import gclient_eval  # pylint: disable=wrong-import-position,import-error
 import gclient_paths  # pylint: disable=wrong-import-position,import-error
 import gclient_utils  # pylint: disable=wrong-import-position,import-error
 
-from extra_deps import EXTRA_DEPS  # pylint: disable=wrong-import-position
+from extra_deps import (  # pylint: disable=wrong-import-position
+    EXTRA_DEPS, EXTRA_DEPS_FILE)
 from tarball_installer import (  # pylint: disable=wrong-import-position
     TarballInstaller)
 
@@ -62,6 +66,93 @@ def _select_object(objects: list[dict],
         raise RuntimeError('Multiple objects match the resolved variables: ' +
                            ', '.join(obj['object_name'] for obj in matches))
     return matches[0]
+
+
+# Object keys `setdep` rewrites
+_SETDEP_OBJECT_KEYS = ('object_name', 'sha256sum', 'size_bytes')
+
+
+def _parse_object_spec(spec: str) -> dict[str, str]:
+    """Parse one `object_name,sha256sum,size_bytes` triple from a setdep arg."""
+    fields = [field.strip() for field in spec.split(',')]
+    if len(fields) != len(_SETDEP_OBJECT_KEYS) or not all(fields):
+        raise ValueError(
+            f'Object {spec!r} must be `{",".join(_SETDEP_OBJECT_KEYS)}` (all '
+            f'fields required).')
+    obj = dict(zip(_SETDEP_OBJECT_KEYS, fields))
+    if not obj['size_bytes'].isdigit():
+        raise ValueError(f'size_bytes must be a non-negative integer, got '
+                         f'{obj["size_bytes"]!r}.')
+    return obj
+
+
+def _load_editable_extra_deps() -> gclient_eval._NodeDict:
+    """Parse the EXTRA_DEPS file into gclient's token-aware, editable form.
+
+    We drive the tokeniser, capturing every comment, blank line, and quote
+    style.
+
+    gclient's in-place editor (`SetGCS`) and renderer key off a top-level
+    `deps` mapping, so the table is also exposed under `deps` (sharing the very
+    same nodes and tokens) to drive that machinery unchanged.
+    """
+    content = EXTRA_DEPS_FILE.read_text(encoding='utf-8')
+    filename = str(EXTRA_DEPS_FILE)
+
+    # pylint: disable=protected-access
+    tokens = {
+        token[2]: list(token)
+        for token in tokenize.generate_tokens(StringIO(content).readline)
+    }
+    scope = gclient_eval._NodeDict({}, tokens)
+    for statement in ast.parse(content, filename=filename).body:
+        if (not isinstance(statement, ast.Assign)
+                or len(statement.targets) != 1
+                or not isinstance(statement.targets[0], ast.Name)):
+            raise ValueError(
+                f'{filename}: only simple `name = ...` assignments are '
+                f'supported.')
+        scope.SetNode(statement.targets[0].id,
+                      gclient_eval._gclient_eval(statement.value, filename),
+                      statement.value)
+
+    if 'extra_deps' not in scope:
+        raise ValueError(f'{filename}: no `extra_deps` assignment found.')
+    scope.SetNode('deps', scope['extra_deps'], scope.GetNode('extra_deps'))
+    return scope
+
+
+def setdep(revisions: list[str]) -> None:
+    """Repin one or more EXTRA_DEPS entries in place, preserving formatting.
+
+    Each `revisions` element is a `DEP@object[?object...]` string (as
+    `gclient setdep -r` takes), where every object is an
+    `object_name,sha256sum,size_bytes` triple. The number of objects must match
+    the entry's current object count, and their order is preserved.
+    """
+    scope = _load_editable_extra_deps()
+    for revision in revisions:
+        path, separator, objects_spec = revision.partition('@')
+        if not separator or not path or not objects_spec:
+            raise ValueError(
+                f'Revision {revision!r} must be of the form `DEP@object,...`.')
+        if path not in EXTRA_DEPS:
+            raise ValueError(f'Unknown EXTRA_DEPS entry {path!r}. Known '
+                             f'entries: {sorted(EXTRA_DEPS)}.')
+        new_objects = [
+            _parse_object_spec(obj) for obj in objects_spec.split('?')
+        ]
+        # `SetGCS` rewrites the matching string tokens in place, and raises if
+        # the object count does not match the entry's current count.
+        gclient_eval.SetGCS(scope, path, new_objects)
+        _LOG.info('Repinned %s', path)
+
+    # `RenderDEPSFile` untokenizes the (now-mutated) tokens back to source, so
+    # everything the edit did not touch is byte-for-byte preserved. `newline=''`
+    # keeps the file's `\n` line endings intact on every platform.
+    EXTRA_DEPS_FILE.write_text(gclient_eval.RenderDEPSFile(scope),
+                               encoding='utf-8',
+                               newline='')
 
 
 class ExtraDepsRunner:
@@ -233,7 +324,28 @@ def main() -> int:
         'install. Entries whose condition is false on this host are skipped, '
         'so a single invocation may list every per-platform variant.')
 
+    setdep_parser = subparsers.add_parser(
+        'setdep',
+        help='Repin EXTRA_DEPS entries in place, preserving comments and '
+        'formatting (like `gclient setdep`).')
+    setdep_parser.add_argument(
+        '-r',
+        '--revision',
+        action='append',
+        dest='revisions',
+        required=True,
+        metavar='DEP@object_name,sha256sum,size_bytes[?...]',
+        help='Repin the EXTRA_DEPS entry DEP to the given object(s). Each '
+        'object is an `object_name,sha256sum,size_bytes` triple; join multiple '
+        'objects with `?`, in the entry\'s existing order. The object count '
+        'must match the entry\'s current count. May be repeated to repin '
+        'several entries in one invocation.')
+
     args = parser.parse_args()
+
+    if args.command == 'setdep':
+        setdep(args.revisions)
+        return 0
 
     runner = ExtraDepsRunner.from_checkout()
     for dep in args.deps:
