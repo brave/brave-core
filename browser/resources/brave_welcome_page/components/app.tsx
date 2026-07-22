@@ -9,6 +9,7 @@ import { useStepList } from './use_step_list'
 import { whenStepRendered } from './use_step_transition'
 import { WelcomeStep } from './welcome_step'
 import { ImportStep } from './import_step'
+import { AppearanceStep } from './appearance_step'
 
 import { style } from './app.style'
 
@@ -65,6 +66,13 @@ export function App() {
       case 'import':
         return (
           <ImportStep
+            onNext={stepForward}
+            onBack={stepBack}
+          />
+        )
+      case 'appearance':
+        return (
+          <AppearanceStep
             onNext={stepForward}
             onBack={stepBack}
           />

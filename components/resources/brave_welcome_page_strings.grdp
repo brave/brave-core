@@ -49,6 +49,50 @@
     Bring along your old browser content
   </message>
 
+  <message name="IDS_WELCOME_PAGE_LEARN_MORE_LINK_LABEL" desc="Label for a link to more information about a product or feature" formatter_data="webui=BraveWelcomePage">
+    Learn more.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_APPEARANCE_STEP_TITLE" desc="Title for appearance step" formatter_data="webui=BraveWelcomePage">
+    Customize Brave
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_APPEARANCE_STEP_TEXT" desc="Text on appearance step" formatter_data="webui=BraveWelcomePage">
+    Personalize your browsing experience with the tab layout and color modes you prefer.
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_LABEL" desc="Label for the tab layout setting" formatter_data="webui=BraveWelcomePage">
+    Tab layout
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_HORIZONTAL_LABEL" desc="Label for the horizontal tab layout option" formatter_data="webui=BraveWelcomePage">
+    Horizontal
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_TAB_LAYOUT_VERTICAL_LABEL" desc="Label for the vertical tab layout option" formatter_data="webui=BraveWelcomePage">
+    Vertical
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_LABEL" desc="Label for the theme setting" formatter_data="webui=BraveWelcomePage">
+    Theme
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_SYSTEM_LABEL" desc="Label for the option that matches the system theme" formatter_data="webui=BraveWelcomePage">
+    Device
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_LIGHT_LABEL" desc="Label for the light theme option" formatter_data="webui=BraveWelcomePage">
+    Light
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_DARK_LABEL" desc="Label for the dark theme option" formatter_data="webui=BraveWelcomePage">
+    Dark
+  </message>
+
+  <message name="IDS_WELCOME_PAGE_THEME_GREY_COLOR_LABEL" desc="Accessible label for the grey theme color swatch" formatter_data="webui=BraveWelcomePage">
+    Grey (Default)
+  </message>
+
   <message name="IDS_WELCOME_PAGE_SELECT_BROWSER_TITLE" desc="Title prompting the user to select their previous browser" formatter_data="webui=BraveWelcomePage">
     Select your previous browser
   </message>
