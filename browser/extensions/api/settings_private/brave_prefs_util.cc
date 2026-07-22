@@ -403,8 +403,9 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
 #endif
 
 #if BUILDFLAG(ENABLE_EMAIL_ALIASES)
-  (*s_brave_allowlist)[email_aliases::prefs::kEmailAliasesAutofillSuggestion] =
-      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)
+      [email_aliases::prefs::kEmailAliasesNewAliasAutofillSuggestionEnabled] =
+          settings_api::PrefType::kBoolean;
 #endif
 
   return *s_brave_allowlist;
