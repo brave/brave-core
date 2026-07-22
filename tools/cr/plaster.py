@@ -2321,7 +2321,15 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
               and filepath.endswith(PLASTER_EXTENSION)):
             expected_plaster_files.add(filepath)
         else:
-            raise ValueError(f'Unexpected file path: {filepath}')
+            hint = ''
+            # Control characters mean the shell interpreted unquoted
+            # backslash escapes (e.g. '\a' -> bell) before we saw the path,
+            # mangling it beyond recovery. Guide the user to quote it.
+            if any(ord(c) < 0x20 for c in filepath):
+                hint = ('\nThe path contains control characters, likely '
+                        'because an unquoted backslash path was escaped by '
+                        'the shell. Quote the path or use forward slashes.')
+            raise PlasterError(f'Unexpected file path: {filepath!r}{hint}')
 
     plaster_parent = Path(PLASTER_FILES_PATH).parent
 

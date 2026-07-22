@@ -108,21 +108,18 @@ class PlasterTest(unittest.TestCase):
         self.assertEqual(patchinfo_from_disk['schemaVersion'], 1)
         self.assertEqual(
             patchinfo_from_disk['patchChecksum'],
-            hashlib.sha256(
-                patchinfo.patch.path.read_text().encode()).hexdigest())
+            hashlib.sha256(patchinfo.patch.path.read_bytes()).hexdigest())
         self.assertEqual(patchinfo_from_disk['appliesTo'][0]['path'],
                          str(test_file_chromium))
         self.assertEqual(
             patchinfo_from_disk['appliesTo'][0]['checksum'],
-            hashlib.sha256(
-                (self.fake_chromium_src.chromium /
-                 test_file_chromium).read_text().encode()).hexdigest())
+            hashlib.sha256((self.fake_chromium_src.chromium /
+                            test_file_chromium).read_bytes()).hexdigest())
         # PatchinfoBuilder normalizes plaster path to be relative to brave root.
         self.assertEqual(patchinfo_from_disk['plaster']['path'],
                          str(patchinfo.plaster_file))
-        self.assertEqual(
-            patchinfo_from_disk['plaster']['checksum'],
-            hashlib.sha256(plaster_path.read_text().encode()).hexdigest())
+        self.assertEqual(patchinfo_from_disk['plaster']['checksum'],
+                         hashlib.sha256(plaster_path.read_bytes()).hexdigest())
 
         self.assertEqual(patchinfo_from_disk['patchChecksum'],
                          patchinfo.patch.checksum)
