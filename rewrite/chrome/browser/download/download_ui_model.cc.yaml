@@ -1,0 +1,28 @@
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+substitutions:
+  - description: |
+      Add fall-through case handling for Brave-specific download commands.
+
+      These commands are not used by the DownloadUIModel, so they fall through
+      alongside EDIT_WITH_MEDIA_APP.
+    count: 3
+    regex:
+      re_pattern: '(\n *)(case DownloadCommands::EDIT_WITH_MEDIA_APP:)'
+      replace: |-
+        \1\2
+            case DownloadCommands::REMOVE_FROM_LIST:
+            case DownloadCommands::DELETE_LOCAL_FILE:
+            case DownloadCommands::COPY_DOWNLOAD_LINK:
+
+  - description: |
+      There's inconsistency between the download bubble and brave://downloads
+      page in showing "File removed" status for removed files. To keep the
+      consistency, use IDS_DOWNLOAD_FILE_REMOVED so both the download bubble and
+      brave://downloads page show "Deleted" for removed files.
+    regex:
+      pattern: 'IDS_DOWNLOAD_STATUS_REMOVED'
+      replace: 'IDS_DOWNLOAD_FILE_REMOVED'
