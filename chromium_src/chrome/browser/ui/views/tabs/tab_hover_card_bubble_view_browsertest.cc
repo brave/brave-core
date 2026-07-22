@@ -66,7 +66,7 @@ class TabHoverCardBubbleViewBrowserTest : public DialogBrowserTest,
       return false;
     }
 
-    TabHoverCardBubbleView* const hover_card = GetHoverCard(tab_strip);
+    TabHoverCardBubbleView* const hover_card = GetHoverCard(browser());
     if (!hover_card) {
       SCOPED_TRACE(testing::Message()
                    << "expected tab strip to have a hover card");
