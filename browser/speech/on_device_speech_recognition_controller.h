@@ -39,7 +39,7 @@ namespace speech {
 // per-recognition AsrSessions that it forwards to the worker once ready.
 //
 // State machine:
-//   kIdle -> kBwcStarting -> kWorkerStarting -> kModelLoading -> kReady
+//   kIdle -> kRendererStarting -> kModelLoading -> kReady
 //
 // TearDown() returns to kIdle from any state on idle/startup timeout, worker
 // crash, factory/session disconnect, or profile/contents destruction; the
@@ -108,15 +108,12 @@ class OnDeviceSpeechRecognitionController
 
   enum class State {
     // No live worker. The first Start() calls StartWorker() and advances to
-    // kBwcStarting.
+    // kRendererStarting.
     kIdle,
-    // The BackgroundWebContents is being created asynchronously. Advances to
-    // kWorkerStarting in OnBackgroundContentsCreated() once it exists.
-    kBwcStarting,
-    // The BackgroundWebContents exists and the worker page is booting.
-    // Advances to kModelLoading in RegisterFactory() once the worker
-    // registers its factory.
-    kWorkerStarting,
+    // The BackgroundWebContents is being created and the worker page is
+    // booting inside it. Advances to kModelLoading in RegisterFactory() once
+    // the worker registers its factory.
+    kRendererStarting,
     // The factory is bound and the model is loading. Advances to kReady in
     // OnOrtInitResult() on success.
     kModelLoading,

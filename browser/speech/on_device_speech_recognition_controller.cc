@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/check_is_test.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/memory/ptr_util.h"
@@ -115,6 +116,7 @@ OnDeviceSpeechRecognitionController::Get() {
 std::unique_ptr<OnDeviceSpeechRecognitionController>
 OnDeviceSpeechRecognitionController::CreateForTesting(  // IN-TEST
     CreateBackgroundWebContentsCallback create_background_web_contents) {
+  CHECK_IS_TEST();
   return base::WrapUnique(new OnDeviceSpeechRecognitionController(
       std::move(create_background_web_contents)));
 }
@@ -153,7 +155,7 @@ void OnDeviceSpeechRecognitionController::BindFactoryHost(
 
 void OnDeviceSpeechRecognitionController::RegisterFactory(
     mojo::PendingRemote<local_ai::mojom::SpeechRecognitionFactory> factory) {
-  if (state_ != State::kWorkerStarting || factory_.is_bound()) {
+  if (state_ != State::kRendererStarting || factory_.is_bound()) {
     return;
   }
   startup_timer_.Stop();
@@ -232,7 +234,7 @@ void OnDeviceSpeechRecognitionController::StartWorker() {
   if (state_ != State::kIdle) {
     return;
   }
-  state_ = State::kBwcStarting;
+  state_ = State::kRendererStarting;
 
   // startup_timer_ is a member, so it cannot fire after `this` is destroyed.
   startup_timer_.Start(
@@ -255,7 +257,7 @@ void OnDeviceSpeechRecognitionController::StartWorker() {
 void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
     std::unique_ptr<local_ai::BackgroundWebContents> background_web_contents,
     Profile* otr_profile) {
-  if (state_ != State::kBwcStarting) {
+  if (state_ != State::kRendererStarting) {
     // Torn down while the worker environment was being created.
     return;
   }
@@ -272,8 +274,6 @@ void OnDeviceSpeechRecognitionController::OnBackgroundContentsCreated(
   // destruction so the WebContents never outlives its BrowserContext (which
   // would trip BrowserContextImpl's rph_with_bc_reference NOTREACHED).
   profile_observation_.Observe(otr_profile);
-
-  state_ = State::kWorkerStarting;
 }
 
 void OnDeviceSpeechRecognitionController::LoadOrtModel() {
@@ -359,7 +359,7 @@ void OnDeviceSpeechRecognitionController::OnIdleTimeout() {
 }
 
 void OnDeviceSpeechRecognitionController::OnStartupTimeout() {
-  if (state_ != State::kBwcStarting && state_ != State::kWorkerStarting) {
+  if (state_ != State::kRendererStarting) {
     return;
   }
   TearDown();

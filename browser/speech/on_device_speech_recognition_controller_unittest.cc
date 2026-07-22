@@ -288,7 +288,7 @@ class OnDeviceSpeechRecognitionControllerTest : public testing::Test {
 
   content::BrowserTaskEnvironment task_environment_;
   // The guest OTR profile the fake reports as the worker's home. A non-null
-  // profile lets the boot flow reach WorkerStarting.
+  // profile lets the boot flow proceed.
   TestingProfile otr_profile_;
   // A different profile, for asserting the observer ignores others.
   TestingProfile other_profile_;
@@ -421,7 +421,7 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, StartupTimeoutTearsDown) {
 // A creation reply from a torn-down cycle must not land in a later cycle and
 // adopt a stale worker. TearDown()'s InvalidateWeakPtrs() drops the reply; the
 // state check alone is insufficient because the later cycle is also
-// kBwcStarting.
+// kRendererStarting.
 TEST_F(OnDeviceSpeechRecognitionControllerTest, StaleBwcCreationReplyDropped) {
   SetInstalled(true);
   capture_created_ = true;
@@ -435,7 +435,7 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, StaleBwcCreationReplyDropped) {
   // The startup timer tears cycle 1 down, invalidating the captured reply.
   task_environment_.FastForwardBy(base::Seconds(31));
 
-  // Cycle 2: back in kBwcStarting (its reply is captured, not run).
+  // Cycle 2: back in kRendererStarting (its reply is captured, not run).
   Session s2 = StartSession();
 
   // Deliver the stale cycle-1 reply. It must be ignored (its weak pointer was
@@ -447,12 +447,12 @@ TEST_F(OnDeviceSpeechRecognitionControllerTest, StaleBwcCreationReplyDropped) {
   EXPECT_EQ(nullptr, stale_bwc);
 }
 
-// RegisterFactory is a no-op unless the controller is in kWorkerStarting. A
+// RegisterFactory is a no-op unless the controller is in kRendererStarting. A
 // register in kIdle is ignored, and a second register after the worker has
-// advanced past kWorkerStarting is ignored too (state has moved on), so the
+// advanced past kRendererStarting is ignored too (state has moved on), so the
 // live worker is untouched.
 TEST_F(OnDeviceSpeechRecognitionControllerTest,
-       RegisterFactoryIgnoredOutsideWorkerStarting) {
+       RegisterFactoryIgnoredOutsideRendererStarting) {
   SetInstalled(true);
 
   // In kIdle (no Start yet): registering a factory does nothing.
