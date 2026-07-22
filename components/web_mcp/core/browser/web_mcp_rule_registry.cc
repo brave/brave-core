@@ -59,7 +59,11 @@ void WebMcpRuleRegistry::LoadRules(const base::FilePath& install_dir) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
-      {base::MayBlock(), base::TaskPriority::BEST_EFFORT,
+      // TODO(https://github.com/brave/brave-browser/issues/55232): Convert
+      // back to BEST_EFFORT and use CreateUpdateableSequencedTaskRunner() to
+      // raise the priority on demand once a page navigation actually needs the
+      // rules.
+      {base::MayBlock(), base::TaskPriority::USER_VISIBLE,
        base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN},
       base::BindOnce(&LoadRulesFromDir, install_dir.Append(kScriptsDir)),
       base::BindOnce(&WebMcpRuleRegistry::OnRulesLoaded,
@@ -68,6 +72,10 @@ void WebMcpRuleRegistry::LoadRules(const base::FilePath& install_dir) {
 
 void WebMcpRuleRegistry::OnRulesLoaded(std::vector<WebMcpInjectionRule> rules) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  // TODO(https://github.com/brave/brave-browser/issues/57413): Holding every
+  // rule (with its full script body) in memory won't scale once we ship more
+  // than a few scripts. Parse a lightweight list of URLPattern => script path
+  // instead, and load each script body on demand when a navigation matches.
   rules_ = std::move(rules);
 }
 
