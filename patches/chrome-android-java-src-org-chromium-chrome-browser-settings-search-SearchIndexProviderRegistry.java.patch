@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
-index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..bf6da685b07a39c0e1efeff36f7b7329348d8664 100644
+index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..79656972304361427d9312cd7a8b34d5bd6a51ba 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/settings/search/SearchIndexProviderRegistry.java
 @@ -7,7 +7,6 @@ package org.chromium.chrome.browser.settings.search;
@@ -59,7 +59,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..bf6da685b07a39c0e1efeff36f7b7329
                      SafetyCheckSettingsFragment.SEARCH_INDEX_DATA_PROVIDER,
                      TabsSettings.SEARCH_INDEX_DATA_PROVIDER,
                      ManageSyncSettings.SEARCH_INDEX_DATA_PROVIDER,
-@@ -157,5 +150,33 @@ public final class SearchIndexProviderRegistry {
+@@ -157,5 +150,34 @@ public final class SearchIndexProviderRegistry {
                      DownloadSettings.SEARCH_INDEX_DATA_PROVIDER,
                      DeveloperSettings.SEARCH_INDEX_DATA_PROVIDER,
                      TracingSettings.SEARCH_INDEX_DATA_PROVIDER,
@@ -74,6 +74,7 @@ index 1077426a3061fd7f4fcc6ea1a6c5693d79293f6d..bf6da685b07a39c0e1efeff36f7b7329
 +                    org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveLicensePreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.MediaPreferences.SEARCH_INDEX_DATA_PROVIDER,
++                    org.chromium.chrome.browser.settings.BackgroundImagesPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveOriginPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveSearchEnginesPreferences.SEARCH_INDEX_DATA_PROVIDER,
 +                    org.chromium.chrome.browser.settings.BraveSyncScreensPreference.SEARCH_INDEX_DATA_PROVIDER,
