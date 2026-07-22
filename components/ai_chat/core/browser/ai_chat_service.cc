@@ -470,10 +470,32 @@ void AIChatService::DeleteAssociatedWebContent(
 
   ai_chat_db_.AsyncCall(&AIChatDatabase::DeleteAssociatedWebContent)
       .WithArgs(begin_time, end_time)
-      .Then(std::move(callback));
+      .Then(base::BindOnce(&AIChatService::OnAssociatedWebContentDeleted,
+                           weak_ptr_factory_.GetWeakPtr(),
+                           std::move(callback)));
 
   // Update local data
   ReloadConversations();
+}
+
+void AIChatService::OnAssociatedWebContentDeleted(
+    base::OnceCallback<void(bool)> callback,
+    std::optional<std::vector<ClearedAssociatedContentEntry>> cleared) {
+  // Notify the sync bridge that each affected entry changed so the cleared
+  // associated content propagates. This runs from the delete's reply, i.e.
+  // after the delete completed, so the bridge re-reads the now-cleared content
+  // when it rebuilds each entry's specifics.
+  if (cleared && sync_backend_) {
+    for (const auto& entry : *cleared) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationEntryModified,
+                             sync_backend_, entry.conversation_uuid,
+                             entry.entry_uuid));
+    }
+  }
+  std::move(callback).Run(cleared.has_value());
 }
 
 void AIChatService::MaybeInitStorage() {

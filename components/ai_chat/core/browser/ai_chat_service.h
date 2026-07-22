@@ -299,6 +299,12 @@ class AIChatService : public KeyedService,
       base::OnceCallback<void(ConversationHandler*)> callback,
       mojom::ConversationArchivePtr data);
 
+  // Reply for DeleteAssociatedWebContent(): emits a sync change for each entry
+  // whose associated content was cleared, then runs |callback| with success.
+  void OnAssociatedWebContentDeleted(
+      base::OnceCallback<void(bool)> callback,
+      std::optional<std::vector<ClearedAssociatedContentEntry>> cleared);
+
   // Completes ShareConversation once the sharing server has returned the viewer
   // URL: appends |key_fragment| to build the full shareable link, optionally
   // copies it to the clipboard as confidential, and returns it via |callback|.

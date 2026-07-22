@@ -981,7 +981,8 @@ TEST_P(AIChatDatabaseTest, AddOrUpdateAssociatedContent_MultiContent) {
 
   // Delete the associated content
   EXPECT_TRUE(db_->DeleteAssociatedWebContent(
-      base::Time::Now() - base::Hours(3), std::nullopt));
+                     base::Time::Now() - base::Hours(3), std::nullopt)
+                  .has_value());
 
   // Verify the associated content is deleted
   result = db_->GetConversationData(uuid);
@@ -1084,8 +1085,14 @@ TEST_P(AIChatDatabaseTest, DeleteAssociatedWebContent) {
             expected_contents[0]);
 
   // Delete associated content to only consider the second conversation
-  EXPECT_TRUE(db_->DeleteAssociatedWebContent(
-      base::Time::Now() + base::Minutes(-61), std::nullopt));
+  auto cleared = db_->DeleteAssociatedWebContent(
+      base::Time::Now() + base::Minutes(-61), std::nullopt);
+  // Only the second conversation's entry was in range, so only its associated
+  // content is reported as cleared.
+  ASSERT_TRUE(cleared.has_value());
+  ASSERT_EQ(cleared->size(), 1u);
+  EXPECT_EQ((*cleared)[0].conversation_uuid, "second");
+  EXPECT_EQ((*cleared)[0].entry_uuid, history_second.front()->uuid.value());
 
   // Verify only url, title and content was deleted and only from the second
   // conversation
