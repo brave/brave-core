@@ -842,6 +842,28 @@ TEST_F(
 }
 
 TEST_F(BraveAdsSiteVisitTest,
+       DoNotNotifyDidNotLandOnPageWhenSearchResultAdRedirectFailsToLoad) {
+  // Arrange
+  const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);
+
+  const AdInfo ad = test::BuildAd(mojom::AdType::kSearchResultAd,
+                                  /*use_random_uuids=*/true);
+  tab_helper_.OpenTab(
+      /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")},
+      net::HTTP_OK);
+  site_visit_->set_last_clicked_ad(ad);
+
+  // Act & Assert
+  EXPECT_CALL(site_visit_observer_mock_, OnDidNotLandOnPage).Times(0);
+  tab_helper_.FailToLoadUrl(
+      /*tab_id=*/1,
+      /*redirect_chain=*/
+      {GURL("https://search.brave.com/a/redirect?placement_id=1")});
+}
+
+TEST_F(BraveAdsSiteVisitTest,
        PageLandIsNotRecordedWhenNavigationCommitsBeforeLastClickedAdIsSet) {
   // Arrange
   const base::test::ScopedFeatureList scoped_feature_list(kSiteVisitFeature);

@@ -353,6 +353,12 @@ void SiteVisit::OnTabDidFailToLoad(const TabInfo& tab) {
     return;
   }
 
+  if (DidSearchResultAdClickRedirectFail(tab, *ad)) {
+    return BLOG(1,
+                "Navigation to the search result ad redirect URL failed "
+                "without reaching the target page");
+  }
+
   DidNotLandOnPage(tab.id, *ad);
 }
 
