@@ -26,7 +26,6 @@
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_ui.h"
-#include "ui/base/base_window.h"
 
 BraveAppearanceHandler::BraveAppearanceHandler() = default;
 
@@ -112,12 +111,20 @@ bool BraveAppearanceHandler::IsCompactModeToggleEnabled() {
   }
 
   auto* browser_window_interface = tab->GetBrowserWindowInterface();
+  auto* exclusive_access_manager =
+      browser_window_interface
+          ? browser_window_interface->GetFeatures().exclusive_access_manager()
+          : nullptr;
 
   // Compact mode is incompatible with immersive fullscreen (see
   // WindowFeatureController::UsesImmersiveFullscreenMode()), so the toggle
-  // is disabled while the browser window is fullscreen.
-  return !browser_window_interface || !browser_window_interface->GetWindow() ||
-         !browser_window_interface->GetWindow()->IsFullscreen();
+  // is disabled while the browser window is fullscreen. Uses
+  // IsFullscreenForBrowser() rather than the raw window fullscreen state so
+  // that tab-initiated fullscreen (e.g. a fullscreened video) doesn't disable
+  // the toggle.
+  return !exclusive_access_manager ||
+         !exclusive_access_manager->fullscreen_controller()
+              ->IsFullscreenForBrowser();
 #else
   return true;
 #endif
