@@ -4,6 +4,7 @@ CI/run-audit-deps:
       - DEPS
       - package.json
       - package-lock.json
+      - pnpm-lock.yaml
       - script/audit_deps.py
       - "**/Cargo.toml"
       - "**/Cargo.lock"
@@ -40,6 +41,7 @@ CI/storybook-url:
       - "**/*.scss"
       - package.json
       - package-lock.json
+      - pnpm-lock.yaml
 
 feature/web3/wallet:
   - changed-files:
