@@ -297,10 +297,8 @@ if (enable_speedreader) {
 }
 
 if (enable_email_aliases) {
-  brave_settings_web_component_files += [
-    "email_aliases_page/email_aliases_autofill_toggle.ts",
-    "email_aliases_page/email_aliases_page.ts",
-  ]
+  brave_settings_web_component_files +=
+      [ "email_aliases_page/email_aliases_page.ts" ]
 }
 
 # Generate the list for inclusion via preprocess and exclusion for chromium's
