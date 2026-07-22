@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">GoogleのAccelerated Mobile Pageバージョンではなく、常にオリジナルの (AMPでない) ページURLにアクセスする</translation>
 <translation id="920638232916443453">自動リダイレクト追跡URL</translation>
 <translation id="1118970888826017401">トップレベルのリダイレクト追跡URLのバイパスに対するサポートを有効にします</translation>
-<translation id="94154759592465111">スクリプトをブロックする</translation>
+<translation id="4824468494729001999">スクリプトをブロックする</translation>
 <translation id="7714773920987474116">JavaScript をブロック（サイト破損の可能性あり）</translation>
 <translation id="2233004324252915283">YouTubeのおすすめコンテンツをブロック</translation>
 <translation id="1005372663692637999">youtube.comで自動再生とエンドカードをブロック</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">サイトを閉じる際に、Cookieやその他のサイトデータを消去します</translation>
 <translation id="7740929262043547697">プライベートウィンドウで要素のブロックを許可する</translation>
 <translation id="1260864846935682371">プライベートウィンドウでShieldsの要素ブロック機能を有効にします。なお、プライベートウィンドウでブロックされた要素は非プライベートウィンドウでもブロックされます。</translation>
+<translation id="4021136205151368133">注意：これによりBraveのプライバシー保護が低下する可能性があります。</translation>
+<translation id="2876155735620608356">このサイトはシールドがオンです</translation>
+<translation id="8605306630462821888">このサイトはシールドがオフです</translation>
+<translation id="1574700443447059851">トラッカー、広告などがブロックされました。</translation>
+<translation id="4039014515785210563">トラッカーと広告の処理方法を選択</translation>
+<translation id="8423733350479881051">cookieの処理方法を選択</translation>
+<translation id="9064628362799094520">サイトのデータを削除</translation>
+<translation id="2862348905922940916">このサイトをシールドのデフォルト設定にリセット</translation>
+<translation id="269939061709857874">サイトをシールドのデフォルト設定にリセットしました</translation>
+<translation id="3623708006387030755">シールドのグローバル設定</translation>
+<translation id="2387532482048804818">シールドをオンにした場合、サイトが正しく動作しませんでしたか？</translation>
+<translation id="5412004902081180614">報告</translation>
+<translation id="1209739344687072997">サイト表示の不具合を報告</translation>
+<translation id="2606165159306988240">Braveの開発者に、こちらのサイトが正常に動作しないことをご共有いただけませんか.</translation>
+<translation id="6806248680442980382">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。</translation>
+<translation id="7549123865054511884">このサイトで動作していないものは何ですか?</translation>
+<translation id="9094461910562981998">連絡先 (オプション)</translation>
+<translation id="7645128170699559106">メール、Xのユーザー名など</translation>
+<translation id="446579367766109694">連絡先情報を入力すると、今後の報告のために保存されます</translation>
+<translation id="2653659639078652383">送信</translation>
+<translation id="8459191579769999214">スクリーンショットを見る</translation>
+<translation id="4530541918195747729">報告が送信されました。ありがとうございます!</translation>
+<translation id="5528772406060281700">サイトデータを削除</translation>
+<translation id="6795622376590884449">自動削除</translation>
+<translation id="3520341243738311408">サイトのタブが閉じられたとき</translation>
+<translation id="3559735673608367395">アプリが終了したとき</translation>
+<translation id="9140049656798805345">サイトデータを削除</translation>
 <translation id="1680858055899097121">セッション間でタブを保持しない</translation>
 <translation id="7142548388914389999">プライバシーを保護したプロダクト分析 (P3A) を許可する</translation>
 <translation id="5254037869598726291">匿名化されたP3A情報は、Braveが全体的な使用状況を推定し、よく使われている機能を改善するために役立ちます。</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">プライベート製品インサイト</translation>
 <translation id="3545804467215833536">タップしてBraveシールドを表示</translation>
 <translation id="1724327820822194498">シールドを使うと、Braveでブロックされたすべてのアイテムを確認できます。</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> およびその他 <ph name="TRACKER"/> 件の広告 &amp; トラッカーをブロックしました</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/>などの広告 &amp; トラッカーをブロックしました</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> 個の広告 &amp; トラッカーをブロックしました</translation>
 <translation id="8281886186245836920">スキップ</translation>
-<translation id="986879628471635371">トラブルシューティングのチュートリアル</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400"><ph name="TOKEN"/>を獲得</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">プライバシーを侵害しない広告を閲覧して、お気に入りのサイトやクリエイターをデフォルト設定でサポートしましょう。</translation>
-<translation id="5302488867897327287">「Brave Rewardsの使用を開始」をタップすると、あなたは以下の内容に同意したことになります</translation>
 <translation id="4281844954008187215">利用規約</translation>
 <translation id="6871397658902960384">ブラウジングを開始します</translation>
-<translation id="454386012157232640">広告が表示されませんでした</translation>
-<translation id="1448877943847791441">これから最初の広告を表示します</translation>
-<translation id="4410793187232041318">これでBrave Adsを表示させBATポイントを獲得できるようになりました。</translation>
 <translation id="6511854390690723657">これは初めてのBrave広告です。タップして詳細をご覧ください。</translation>
-<translation id="2070991379950719711">Brave Rewardsの使用を開始</translation>
-<translation id="48520986898237073">引き続きウォレットに進む</translation>
 <translation id="6213254277250932867">12語のリカバリーフレーズをお持ちの方</translation>
 <translation id="4225265925807365011">24語のリカバリーフレーズをお持ちの方</translation>
 <translation id="3570367516044491911">デフォルトのブラウザに設定</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">QRコードをスキャンする</translation>
 <translation id="5317781812114905957">手順</translation>
 <translation id="8515319483805157233">QRコードで検索するには、フレームの中心にQRコードを合わせます。</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">キャンセル</translation>
 <translation id="1201402288615127009">次へ</translation>
 <translation id="8481779960444041069">Braveをデフォルトのブラウザに設定して、プライバシーを向上させましょう</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">フォルダを開く</translation>
 <translation id="8985635554450124959">同期を設定できませんでした</translation>
 <translation id="7173114856073700355">設定を開く</translation>
-<translation id="496896260395129787">このBrave同期アカウントは、同期先のデバイスから削除されました。同期を無効にする必要がない場合は、<ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>アカウントを作成し直してください</translation>
+<translation id="674078455841038219">このBrave Sync アカウントは、別のデバイスから削除されました。同期を無効にする必要がない場合は、アカウントを再作成してください。</translation>
+<translation id="8913415701676265311">再作成</translation>
 <translation id="4094590686212463338">この同期チェーンに参加できません。同期チェーンが削除されています。</translation>
 <translation id="4908081302669157000">電話番号、メールアドレス、住所</translation>
+<translation id="1571419474754278280">Leo AIの会話</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">はい</translation>
 <translation id="7811264919113243207">この操作を行うと、パスワードを含むBraveのデータが、このQRコードを生成したデバイスと共有されます。
@@ -366,10 +383,9 @@
 <translation id="1413177583895309156">Brave VPN はBrave ブラウザを使用していてもいなくても、オンラインで行うすべての操作を暗号化して保護します。</translation>
 <translation id="3974348661685061050">7日間無料で試す</translation>
 <translation id="5789441016350810005">ブラウザがバックグラウンドにあるときに送信されるBrave広告</translation>
-<translation id="1486343603936278248">トークン</translation>
 <translation id="7781069478569868053">新しいタブページ</translation>
 <translation id="5927196110206824867">スポンサー画像は、ユーザーファーストの独立したウェブを構築するというBraveのミッションをサポートしています。また、ビッグテックとは異なり、あなたのプライバシーを守るために匿名で広告パフォーマンスを測定します。</translation>
-<translation id="8748471354357836070">詳細 / オプトアウトの選択</translation>
+<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="3171669670217312786">背景画像</translation>
 <translation id="8522669544471808198">背景画像を表示</translation>
 <translation id="6258554626602400736">新しいタブページの広告を表示</translation>
@@ -400,7 +416,7 @@
 <translation id="7151914815476509258">トラッカーと広告をブロック（標準）</translation>
 <translation id="7384778069178817075">すべてのトラッカー &amp; 広告を許可</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>「すべてのクッキーをブロック」オプションは廃止されました。このオプションを強制的に有効にする方法については、<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>ヘルプページ<ph name="END_LINK_1"/>をご覧ください。</translation>
-<translation id="3763681089644577874">クッキーをブロック</translation>
+<translation id="8823559166155093873">クッキーをブロック</translation>
 <translation id="614747795780742163">以前の訪問に関する情報を、ウェブサイトが保存しないようにします</translation>
 <translation id="6883611015375728278">すべてのクッキーをブロック</translation>
 <translation id="6196640612572343990">3rdパーティクッキーをブロック</translation>
@@ -411,7 +427,7 @@
 <translation id="1876882294512858963">常にOTRモードを使用</translation>
 <translation id="554464532999080267">OTRモードへの切り替え前 (起動前) に一言声をかける</translation>
 <translation id="926857659063503456">OTRモードを使用しない</translation>
-<translation id="3895527457258986253">フィンガープリントをブロック</translation>
+<translation id="6531019308847917584">フィンガープリンティングをブロック</translation>
 <translation id="7854108565842971747">新しいサイトに対するShieldsのデフォルト設定です。この設定を変更しても、既存のサイト設定には影響しません。</translation>
 <translation id="218587021686734263">言語設定によるフィンガープリントの防止</translation>
 <translation id="1706099589708266367">ブラウザの言語設定に基づき、ウェブサイトがお客様について学習する度合いを低減します。</translation>
@@ -421,22 +437,12 @@
 <translation id="7445306466605902444">フィンガープリントがブロックされました（強、サイトの表示が崩れる可能性）</translation>
 <translation id="5582686930349810484">フィンガープリントをブロック済み（標準）</translation>
 <translation id="769702552748212954">すべてのフィンガープリントを許可する</translation>
-<translation id="876424292214881779">ブロック済の広告およびその他の不審な通信</translation>
-<translation id="6849027612978668678">多くの場合、ウェブサイトにはあなた (のデバイス) を識別するためにCookieとスクリプトが含まれます。あなたが誰であるかを判別・追跡しあなたが他のサイトで何をしているかを知ろうとします。\n\nBraveはこれらをブロックし、あなたが追跡されることなくブラウザできるようにします。</translation>
-<translation id="8553998445606452168">Brave Shieldsについて</translation>
-<translation id="8912304686498704084">オン</translation>
-<translation id="4963218453264888510">オフ</translation>
-<translation id="7474113515179313724">現在、Braveのプライバシー保護機能なしでこのサイトを閲覧しています。Shieldsを有効にするとサイトに問題がありましたか？</translation>
 <translation id="4226543734057230801">Ethereumネットワーク</translation>
 <translation id="3504157706952484145">Filecoinネットワーク</translation>
 <translation id="1561541094377237745">Solanaネットワーク</translation>
 <translation id="7141438739990875547">Bitcoinネットワーク</translation>
 <translation id="9055546041146396417">ウェブサイトが正常に動作していないように見える場合は、Shieldをオフにしてみてください。</translation>
 <translation id="7898672232170410330">要素を指定してブロック</translation>
-<translation id="9064628362799094520">サイトのデータを削除</translation>
-<translation id="8949611615512336262">自動削除: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">サイトデータを削除</translation>
-<translation id="6795622376590884449">自動削除</translation>
 <translation id="7961015016161918242">使用しない</translation>
 <translation id="3200744626782631683">閲覧データは決して自動的に破棄されることはありません</translation>
 <translation id="1991004083507807299">サイトタブの終了時</translation>
@@ -447,23 +453,11 @@
 <translation id="2997451887458851244">「自動シュレッダー」を更新し、シュレッダー処理の対象となるデータを調整する</translation>
 <translation id="363903976200491771">閲覧履歴を自動的に削除する</translation>
 <translation id="1028873002018537235">閲覧履歴を削除する</translation>
-<translation id="1209739344687072997">サイト表示の不具合を報告</translation>
-<translation id="8510478288840333677">Shieldを使うとこのサイトが適切に動作しないことをBraveの開発者に知らせましょう：</translation>
-<translation id="1653405824851871276">Braveの改善に向けてのご協力をいただきありがとうございます。このレポートには、このサイトを修正するために必要な情報のみが含まれています。<ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">詳細を見る</translation>
-<translation id="8740275226259417070">このページはエラーページです。報告対象に含めることができません。</translation>
 <translation id="721949491455392748">現在のページのスクリーンショットを含める</translation>
-<translation id="8459191579769999214">スクリーンショットを見る</translation>
 <translation id="6476216365964140603">追加情報 (オプション)</translation>
-<translation id="6145852496180774737">連絡先: (オプション)</translation>
-<translation id="6367576083705149078">連絡先情報を入力すると、今後の報告のために保存されます.</translation>
-<translation id="7616645803364270729">メールアドレス、Twitterなど</translation>
-<translation id="5299848999918506028">ありがとうございます！</translation>
-<translation id="76550953340008122">このサイトの問題をBraveの開発者にお知らせいただき、ありがとうございます。最善を尽くしてその修正を行います！</translation>
 <translation id="3037432377946455872">あなたが経験している主な問題は何ですか？</translation>
 <translation id="8731661215617360873">カテゴリを1つ選択</translation>
 <translation id="650318023204990401">詳細設定</translation>
-<translation id="7205939464631857223">ブロックされた要素をすべて消去</translation>
 <translation id="5370478469168390143">データをオンラインで保存する</translation>
 <translation id="1118508688433541158">Braveなら読み込みが高速で、広告をブロックできます</translation>
 <translation id="7427391215172269363">BraveでWebを閲覧して毎日データ通信量を節約しています。</translation>
@@ -513,17 +507,17 @@
 <translation id="2718046830255553131">プライバシーレポートのデータが消去されました。</translation>
 <translation id="8376263745431603066">「ナイトモード」を有効にする（実験的）</translation>
 <translation id="1383876407941801731">検索</translation>
-<translation id="6165508094623778733">詳しく知る</translation>
 <translation id="13296465911709339">テキストがクリップボードにコピーされました。</translation>
 <translation id="2735834606413553397">パブリックアドレスをクリップボードにコピーしました。</translation>
 <translation id="2977461003134694205">プライバシー統計</translation>
 <translation id="8804164990146287819">プライバシーポリシー</translation>
 <translation id="5705882733397021510">戻る</translation>
+<translation id="8450375131309292971">プルして更新</translation>
+<translation id="880475987868032564">プルして更新するジェスチャーを有効にします。ページ上部から下にスワイプすると、ページが更新されます。</translation>
 <translation id="7889432931837317731">可能な場合は自動的に開きます</translation>
 <translation id="1029304566263314007">ダウンロード進捗通知を表示</translation>
 <translation id="2977501775944575564">パラレルダウンロード</translation>
 <translation id="6224180438946945617">パラレルダウンロードを有効にしてダウンロード速度をアップ</translation>
-<translation id="8967385052772844086">完全なプライバシーレポートを表示します</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
 <translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
@@ -787,7 +781,6 @@
 <translation id="2156993118928861787">アドレスが無効です。</translation>
 <translation id="7791543448312431591">追加する</translation>
 <translation id="6889920539620318793">アクティブに設定</translation>
-<translation id="2653659639078652383">送信</translation>
 <translation id="4945690646623486292">ネットワークを選択</translation>
 <translation id="8006088103295786154">Braveウォレットにアクセス</translation>
 <translation id="5308380583665731573">接続</translation>
@@ -1109,7 +1102,6 @@
 <translation id="1336494649091412226">Braveを 終了しますか？</translation>
 <translation id="6061635824229591714">サイトデータを削除しますか？</translation>
 <translation id="1265051174491933207">削除を選択すると、すべての「<ph name="SITE_NAME"/>」のタブが閉じられ、サイトデータがすべて削除されます。これは元に戻せません。</translation>
-<translation id="5528772406060281700">サイトデータを削除</translation>
 <translation id="4426990318287827331">データを削除</translation>
 <translation id="7942415993090181327">チャット履歴</translation>
 <translation id="6859935199732075666">セーフ ブラウジングのエラーを表示</translation>

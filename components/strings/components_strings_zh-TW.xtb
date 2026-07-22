@@ -13,7 +13,6 @@
 <translation id="1019413721762100891">關閉</translation>
 <translation id="1024111578869940408">攻擊者有時會在網址中加入不易察覺的細微變更來仿冒網站。</translation>
 <translation id="1024913885641459127">產品評論與比價</translation>
-<translation id="1025174656774447058">要自動與這個對話串共用開啟的分頁嗎？</translation>
 <translation id="102916930470544692">密碼金鑰</translation>
 <translation id="1030706264415084469"><ph name="URL"/> 要求在你的裝置上永久儲存大量資料</translation>
 <translation id="1030949145805074938">{COUNT,plural, =0{無}=1{來自 1 個網站。刪除 Cookie 後，大多數網站都會將你登出。}other{來自 # 個網站。刪除 Cookie 後，大多數網站都會將你登出。}}</translation>
@@ -25,6 +24,7 @@
 <translation id="1038106730571050514">顯示搜尋建議</translation>
 <translation id="1038168778161626396">只有 Encipher</translation>
 <translation id="1038842779957582377">不明名稱</translation>
+<translation id="1039767473048604223"><ph name="DEVICE_NAME"/> <ph name="MODEL"/></translation>
 <translation id="1041998700806130099">工作表訊息</translation>
 <translation id="1044897699341250361">說明</translation>
 <translation id="1046350918013988591">優待券與折扣優惠</translation>
@@ -116,7 +116,6 @@
 <translation id="1178821169867863726">12 x 16 吋</translation>
 <translation id="1181037720776840403">移除</translation>
 <translation id="1185331130467528132"><ph name="URL"/> 想存取區域網路上的其他裝置</translation>
-<translation id="1185343831726846924">確認無法啟用虛擬卡片</translation>
 <translation id="1186201132766001848">檢查密碼</translation>
 <translation id="1187430513518041110">汽車與交通工具</translation>
 <translation id="1188817995162638216">要取消儲存檔案嗎？</translation>
@@ -266,6 +265,7 @@
 <translation id="1407135791313364759">全部開啟</translation>
 <translation id="5842844490804767323">如要下次自動填入這個 IBAN，請先儲存到 Brave 帳戶</translation>
 <translation id="1408787208417187241">三釘 (頂端)</translation>
+<translation id="1410306713026702438"><ph name="SUGGESTION_TITLE"/>，<ph name="SUGGESTION_DESCRIPTION"/>，<ph name="SUGGESTION_TYPE"/>。「<ph name="GROUP_HEADER"/>」群組的第 <ph name="MATCH_POSITION"/> 個項目，共 <ph name="NUM_MATCHES_IN_GROUP"/> 個項目。</translation>
 <translation id="5488251800208457874">這部裝置的其他使用者不會看到你的活動，瀏覽網路時更能保障隱私。無痕模式不會影響網站與相關服務 (包括 Brave) 收集資料的方式。系統依然會儲存下載內容、書籤及閱讀清單中的項目。</translation>
 <translation id="1410941016594047814">Envelope Invite</translation>
 <translation id="648124447162177252">為加快結帳速度，這張卡片的驗證碼會加密儲存在 Brave 錢包中</translation>
@@ -297,6 +297,7 @@
 <translation id="1445896388055045436">結帳時顯示可用的卡片福利和獎勵 (適用發卡機構的條款規定)。</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
 <translation id="1448166547804028941">「<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>」鍵無法在相同的字典中設為「<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>」鍵</translation>
+<translation id="923286722567024030">將檢核號碼 (redress number) 儲存到 Brave 錢包</translation>
 <translation id="1455413310270022028">橡皮擦</translation>
 <translation id="1457992721081300557">{NUM_REVIEWS,plural, =0{查看 0 則評論}=1{查看 1 則評論}other{查看全部 # 則評論}}</translation>
 <translation id="1458059624921545588">人文與社會</translation>
@@ -310,6 +311,7 @@
 <translation id="1463793142714244641">分時度假與度假房產</translation>
 <translation id="4855177403643365941">已將 IBAN 儲存至 Brave 帳戶</translation>
 <translation id="1467432559032391204">向左</translation>
+<translation id="1471514598850585811">筆記型電腦</translation>
 <translation id="1472675084647422956">顯示更多</translation>
 <translation id="1473183651233018052">JIS B10</translation>
 <translation id="1473495410389165587">請輸入 3 個以上的字詞，才能取得撰寫協助</translation>
@@ -472,6 +474,7 @@
 <translation id="173080396488393970">不支援這種信用卡類型</translation>
 <translation id="1731563515262205847">ML-DSA-65</translation>
 <translation id="1732445923934584865">改為當面要求</translation>
+<translation id="5456336665142990002">更新 Brave 錢包中的救濟號碼</translation>
 <translation id="1733064249834771892">字型</translation>
 <translation id="1733631169686303142">音訊設備</translation>
 <translation id="1733762317901693627">即使是平常可以安心造訪的網站，有時也會遭到攻擊者入侵。除非你確實瞭解相關風險，否則請勿造訪<ph name="BEGIN_LINK"/>這個不安全的網站<ph name="END_LINK"/>。</translation>
@@ -576,6 +579,7 @@
 <translation id="1902576642799138955">有效期間</translation>
 <translation id="1908217026282415406">使用及調整攝影機</translation>
 <translation id="1908690643053136980">系統管理員不允許這個網站使用<ph name="PERMISSION"/></translation>
+<translation id="5430059593940336932">將身分證儲存到 Brave 錢包</translation>
 <translation id="1913037223029790376">請使用這張虛擬卡片的信用卡驗證碼</translation>
 <translation id="191374271204266022">複製為 JSON 格式</translation>
 <translation id="1914326953223720820">解壓縮服務</translation>
@@ -655,6 +659,7 @@
 <translation id="2045871135676061132">個人信封</translation>
 <translation id="2046951263634619614">零售書店</translation>
 <translation id="2048261947532620704">正在翻譯頁面</translation>
+<translation id="2055016614992422886">對話</translation>
 <translation id="2059166748188874810">縣/市</translation>
 <translation id="2059202684901022309">22 x 34 吋</translation>
 <translation id="2064568741209980952">信用與貸款</translation>
@@ -704,6 +709,7 @@
 <translation id="2122165854541876335">消費者資源</translation>
 <translation id="2122214041802369259">價格偏高</translation>
 <translation id="2122719317867821810">這項政策運作正常，但與其他地方設定的值有所衝突，並已覆寫該值。</translation>
+<translation id="1405760536280692221">更新 Brave 錢包中的車輛資訊</translation>
 <translation id="2126374524350484896">PDF 轉換工具：</translation>
 <translation id="2127090458081644412">已將密碼儲存到這部裝置</translation>
 <translation id="2127747486437921899">斜體</translation>
@@ -775,7 +781,7 @@
 <translation id="2213606439339815911">正在擷取項目...</translation>
 <translation id="2213612003795704869">列印頁面</translation>
 <translation id="4680299265942129298">請更新 Brave，才能繼續使用共用分頁群組</translation>
-<translation id="2214453882118345682">使用相機購物、翻譯及辨識所見內容。</translation>
+<translation id="2214453882118345682">用相機翻譯、辨認眼前的一切，看到心儀商品輕鬆買。</translation>
 <translation id="4045100732984144870">使用 Brave 自動填入功能</translation>
 <translation id="2215539479425228550">攀岩與登山運動</translation>
 <translation id="2215727959747642672">檔案編輯</translation>
@@ -844,7 +850,6 @@
 <translation id="2316087952091171402">低於 <ph name="UPPER_ESTIMATE"/>。下次造訪某些網站時，載入速度可能會變慢。</translation>
 <translation id="2316090909467242775">試試這組復原密碼</translation>
 <translation id="2316159751672436664">在 Chrome OS 設定中依個人需求調整無障礙工具</translation>
-<translation id="2316887270356262533">釋出不到 1 MB。下次造訪部分網站時，載入速度可能會變慢。</translation>
 <translation id="2317259163369394535"><ph name="DOMAIN"/> 要求提供使用者名稱和密碼。</translation>
 <translation id="2318594867107319532">上次政策時間戳記：</translation>
 <translation id="2320564945062300737">臉部護理產品</translation>
@@ -975,6 +980,7 @@
 <translation id="5238917643845023930"><ph name="BEGIN_BOLD"/>系統會將結帳頁面的內容分享給 Brave，以便提供這些選項。<ph name="END_BOLD"/>付款方案須符合資格條件。如要隱藏「先買後付」選項，請前往<ph name="BEGIN_LINK"/>付款設定<ph name="END_LINK"/>。</translation>
 <translation id="2526062290525841862">如要執行這個應用程式，請重新啟用隔離網頁應用程式的開發人員模式</translation>
 <translation id="5151177152796946073">你可以在各項 Brave 產品中使用已儲存的地址。這個地址將儲存至你的 Brave 帳戶 (<ph name="ACCOUNT"/>)。</translation>
+<translation id="2526590354069164005">桌面</translation>
 <translation id="2527451058878391043">信用卡驗證碼位於卡片正面，即卡號右上方的 4 位數字。</translation>
 <translation id="2529899080962247600">這個欄位最多只能包含 <ph name="MAX_ITEMS_LIMIT"/> 個項目，超過的項目會遭到忽略。</translation>
 <translation id="2530042584066815841">滑鼠鎖定和使用</translation>
@@ -1100,6 +1106,7 @@
 <translation id="271663710482723385">按下 |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| 即可結束全螢幕模式</translation>
 <translation id="2717336592027046789">卷</translation>
 <translation id="2718207025093645426">受管理的使用者或裝置未載入政策。</translation>
+<translation id="271850739643214113">Pix 帳戶已成功連結至 Google Pay</translation>
 <translation id="2719233594187778789">已忽略重複網址：<ph name="URL_NAME"/></translation>
 <translation id="2721148159707890343">要求成功</translation>
 <translation id="2722622039067384533">客廳家具</translation>
@@ -1134,6 +1141,7 @@
 <translation id="2782088940970074970">租車</translation>
 <translation id="278436560439594386">家電</translation>
 <translation id="2784474685437057136">B5 Extra</translation>
+<translation id="2784795832957740711">密碼 · 密碼金鑰</translation>
 <translation id="2784949926578158345">連線已重設。</translation>
 <translation id="2786008859124691917">腳踏車與配件</translation>
 <translation id="2792012897584536778">這個裝置的系統管理員已設定安全憑證，這些憑證將允許系統管理員檢視你所造訪的網站內容。</translation>
@@ -1183,6 +1191,7 @@
 <translation id="2903493209154104877">地址</translation>
 <translation id="290376772003165898">不是<ph name="LANGUAGE"/>網頁嗎？</translation>
 <translation id="2904180982022726666">貴機構限制你能共用的內容</translation>
+<translation id="1182878111396330838">開啟後，Brave 會分享此視窗中的相關分頁，讓回覆更貼近需求。</translation>
 <translation id="2905107382358353958">新付款設定的快訊</translation>
 <translation id="2909946352844186028">系統偵測到網路變更。</translation>
 <translation id="2910062169995917863">工作階段逾時</translation>
@@ -1205,6 +1214,7 @@
 <translation id="2929525460561903222">{SHIPPING_ADDRESS,plural, =0{<ph name="SHIPPING_ADDRESS_PREVIEW"/>}=1{「<ph name="SHIPPING_ADDRESS_PREVIEW"/>」和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 個地址}other{「<ph name="SHIPPING_ADDRESS_PREVIEW"/>」和另外 <ph name="NUMBER_OF_ADDITIONAL_ADDRESSES"/> 個地址}}</translation>
 <translation id="2930531075747147366">來自其他裝置的分頁</translation>
 <translation id="2930577230479659665">完成每次複印後裁切</translation>
+<translation id="2931453528659195355">管理購物資訊</translation>
 <translation id="2933624813161016821">壓紋箔</translation>
 <translation id="2935726091208500473">共用分頁</translation>
 <translation id="293796669683825859">留言</translation>
@@ -1233,7 +1243,6 @@
 <translation id="297173220375858963">電腦排版</translation>
 <translation id="2972581237482394796">重做(&amp;R)</translation>
 <translation id="4715521049551299401">這個 IBAN 無法儲存到 Brave 帳戶，因此改存到這部裝置的 Brave。下次你使用這個 IBAN 時，Brave 會再次詢問。</translation>
-<translation id="7590587154325086798">開啟後，Brave 會共用這個視窗的所有分頁，以提供更貼近需求的回覆。你可以前往「設定」為所有對話串開啟這個選項。</translation>
 <translation id="297667759942911166">在分頁群組中協作</translation>
 <translation id="2977665033722899841"><ph name="ROW_NAME"/>，目前已選取。<ph name="ROW_CONTENT"/></translation>
 <translation id="2978824962390592855">歌劇</translation>
@@ -1358,6 +1367,7 @@
 <translation id="3158539265159265653">光碟</translation>
 <translation id="3162070126914310576">貴機構單位已達到初始註冊上限，因此目前無法註冊這部裝置。請向管理員尋求協助。</translation>
 <translation id="3162559335345991374">目前使用的 Wi-Fi 網路可能會要求您造訪登入網頁。</translation>
+<translation id="316542773973815724">導覽</translation>
 <translation id="316638481603975524">可以要求安裝網頁應用程式</translation>
 <translation id="5128545107355520364">下次使用時，Brave 會詢問你是否要儲存到 <ph name="IDS_AUTOFILL_GOOGLE_WALLET_TITLE"/></translation>
 <translation id="3168744840365648658">無線電設備</translation>
@@ -1378,6 +1388,7 @@
 <translation id="3194737229810486521"><ph name="URL"/> 要求在你的裝置上永久儲存資料</translation>
 <translation id="3194765668709099364">Klarna</translation>
 <translation id="3195213714973468956"><ph name="SERVER_NAME"/> 上的 <ph name="PRINTER_NAME"/></translation>
+<translation id="3196902089458890316">是否要一律分享相關分頁，以取得更實用的回覆？</translation>
 <translation id="3197136577151645743">可以要求偵測你使用這部裝置的時間</translation>
 <translation id="6629751330289763215"><ph name="MANAGE_SYNC_FOCUSED_FRIENDLY_MATCH_TEXT"/>；按下 Tab 鍵再按下 Enter 鍵即可在 Brave 設定中管理要同步處理哪些資訊</translation>
 <translation id="3203025201812691413">網址不得留空</translation>
@@ -1414,6 +1425,7 @@
 <translation id="3236212803136366317">卡片福利</translation>
 <translation id="2816340899490518371">無法儲存至 Google Pay</translation>
 <translation id="3240683217920639535"><ph name="MANAGE_CHROME_THEMES_FOCUSED_FRIENDLY_MATCH_TEXT"/>；按下 Tab 鍵再按下 Enter 鍵即可自訂瀏覽器外觀</translation>
+<translation id="3243131902823383230"><ph name="MANUFACTURER"/> 筆記型電腦</translation>
 <translation id="3243650379537999343">繪圖</translation>
 <translation id="3248329428895535435">不要在這個網站顯示</translation>
 <translation id="3249102948665905108">已完成「<ph name="CLOUD_PROVIDER"/>」檔案上傳作業，但有錯誤</translation>
@@ -1511,6 +1523,7 @@
 <translation id="3422472998109090673">目前無法連上 <ph name="HOST_NAME"/>。</translation>
 <translation id="3422794267539320056">輕觸恐龍或按下空格鍵即可開始遊戲</translation>
 <translation id="3423742043356668186">指定的系統</translation>
+<translation id="6418111414395514325">更新 Brave 錢包中的護照資訊</translation>
 <translation id="3427342743765426898">重做編輯(&amp;R)</translation>
 <translation id="3428151540071562330">一或多個 DnsOverHttpsTemplates 伺服器範本 URI 無效，因此系統不會採用這些伺服器範本 URI。</translation>
 <translation id="3432601291244612633">關閉頁面</translation>
@@ -1521,6 +1534,7 @@
 <translation id="343474037147570563">你上傳或附加的檔案會傳送到 Google Cloud 或第三方進行分析。舉例來說，前述公司組織可能會掃描檔案，檢查是否含有敏感資料或惡意軟體，也可能會依據公司政策儲存這些檔案供系統管理員查看。</translation>
 <translation id="3435557549311968410">連續 (短邊)</translation>
 <translation id="3435738964857648380">安全性</translation>
+<translation id="3436125638121079308">是否要自動分享相關分頁，在此對話中取得更實用的回覆？</translation>
 <translation id="3438509337461223476">自動與所有對話分享開啟的分頁</translation>
 <translation id="3440783957068352691">正方形</translation>
 <translation id="3441653493275994384">螢幕</translation>
@@ -1580,6 +1594,7 @@
 <translation id="3537165859691846083">Letter Plus</translation>
 <translation id="353816159217417898">螢幕 (分頁顯示)</translation>
 <translation id="7554105781342217505">進一步瞭解 Brave Enterprise 連接器</translation>
+<translation id="3542005451565251757">這個網站不支援 HTTPS，且你已在 Android 設定中開啟進階保護功能，因此系統顯示這則警告訊息。<ph name="LEARN_MORE"/></translation>
 <translation id="3542628208405253498">卡片圖片</translation>
 <translation id="3542768452570884558">在新視窗中開啟連結</translation>
 <translation id="3543597750097719865">使用 SHA-512 的 X9.62 ECDSA 簽章</translation>
@@ -1631,7 +1646,6 @@
 <translation id="361438452008624280">清單項目「<ph name="LANGUAGE_ID"/>」：不明或不支援的語言。</translation>
 <translation id="3274500070896023877"><ph name="RUN_CHROME_SAFETY_CHECK_FOCUSED_FRIENDLY_MATCH_TEXT"/>；按下 Tab 鍵再按下 Enter 鍵即可在 Brave 設定中執行安全檢查</translation>
 <translation id="3615309852743236517">美甲與美足保養</translation>
-<translation id="3620034424637552643">通常用於規劃路線、外送等</translation>
 <translation id="3620239073311576716">制服與工作服</translation>
 <translation id="8284620253545560278">無法將這張卡片儲存到 Brave 錢包，因此改存到這部裝置的 Brave。下次你使用這個 IBAN 時，Brave 會再次詢問。</translation>
 <translation id="3621401353678567613">如要接收追蹤商品的降價快訊，請前往設定開啟通知。</translation>
@@ -1652,7 +1666,6 @@
 <translation id="3641116835972736297">美式足球</translation>
 <translation id="3642196846309122856">再次嘗試下載檔案</translation>
 <translation id="3642638418806704195">應用程式：</translation>
-<translation id="3644768007456662469">「付款項目」圖示</translation>
 <translation id="3647286794400715637">每個網址字串項目都必須包含 1 到 2 個網址。</translation>
 <translation id="5085151248144746413">關閉 Brave 提示的按鈕，按下 Enter 鍵即可關閉，<ph name="REMOVE_BUTTON_FOCUSED_FRIENDLY_MATCH_TEXT"/></translation>
 <translation id="3650584904733503804">驗證成功</translation>
@@ -1683,6 +1696,7 @@
 <translation id="3681841880472207951">QuickTime 影片</translation>
 <translation id="3687920599421452763">貨車與小貨車</translation>
 <translation id="3693327506115126094">選擇身分驗證方式</translation>
+<translation id="3693516565203081475">選擇付款方式</translation>
 <translation id="3698353241727597930">系統管理員已將<ph name="FILES"/>的儲存位置設為由貴公司管理的 <ph name="CLOUD_STORAGE"/>。即使你刪除這些檔案，貴公司仍可能會監控、稽核及保留這些檔案。</translation>
 <translation id="974818914962304978">「建立網站」按鈕，啟動後即可在 Brave 協作平台中快速建立新網站</translation>
 <translation id="3700094625653511150">如要隱藏「先買後付」選項，請前往<ph name="IDS_AUTOFILL_CARD_BNPL_SELECT_PROVIDER_FOOTNOTE_HIDE_OPTION_PAYMENT_SETTINGS_LINK_TEXT"/></translation>
@@ -1737,8 +1751,9 @@
 <translation id="3761718714832595332">隱藏狀態</translation>
 <translation id="3763752038825281594">你先前不允許這個網站使用<ph name="PERMISSION"/></translation>
 <translation id="3765588406864124894">出紙槽 9</translation>
+<translation id="3766505784424699541">自動分享此視窗中與對話相關的分頁，讓回覆更貼近需求。</translation>
 <translation id="3767485424735936570">系統管理員政策不建議複製這項內容並貼到「<ph name="VM_NAME"/>」</translation>
-<translation id="3769584711865378220"><ph name="URL"/> 想將位置存取權從「概略」改成「精確」</translation>
+<translation id="3769584711865378220"><ph name="URL"/> 想將位置存取權從「大概」改成「精確」</translation>
 <translation id="3772211998634047851">紙 (證券紙)</translation>
 <translation id="8247912309816231326"><ph name="CREATE_GOOGLE_KEEP_NOTE_FOCUSED_FRIENDLY_MATCH_TEXT"/>；按下 Tab 鍵再按下 Enter 鍵即可在 Brave Keep 中快速建立新記事</translation>
 <translation id="3780694243617746492">輸出紙槽</translation>
@@ -1822,6 +1837,7 @@
 <translation id="3901925938762663762">這張信用卡已過期</translation>
 <translation id="390391808978419508">開啟作業逾時</translation>
 <translation id="3905894480064208252">{0,plural, =1{禁止傳送這個檔案}other{禁止傳送這 <ph name="FILE_COUNT"/> 個檔案}}</translation>
+<translation id="3906022360148923497">付款方式圖示</translation>
 <translation id="3906954721959377182">平板電腦</translation>
 <translation id="3909695131102177774"><ph name="LABEL"/>：<ph name="ERROR"/></translation>
 <translation id="3910231615117880630">進一步瞭解嵌入的內容</translation>
@@ -1899,7 +1915,7 @@
 <translation id="403724377879219932">可以要求存取區域網路上的其他裝置</translation>
 <translation id="4038863931942689384"><ph name="ATTRIBUTE_VALUE"/>，最新</translation>
 <translation id="4039506337798853114">如要顯示游標，請按下 |<ph name="ACCELERATOR"/>| 鍵</translation>
-<translation id="4042597221652780603">概略</translation>
+<translation id="4042597221652780603">大概</translation>
 <translation id="4045070493270310437">重新開啟分頁</translation>
 <translation id="4045226534284799755">請先登入 Microsoft 帳戶，然後再試一次</translation>
 <translation id="4045441967987592849">重新開啟</translation>
@@ -2018,7 +2034,7 @@
 <translation id="421066178035138955">使用虛擬實境裝置和資料</translation>
 <translation id="4213500579045346575">健美</translation>
 <translation id="4214357935346142455">登入畫面設定檔</translation>
-<translation id="4218327733815631046">維持概略位置</translation>
+<translation id="4218327733815631046">維持大概位置</translation>
 <translation id="4219596572397833317">提供價格記錄等資訊，協助你做出更聰明的購物決策。</translation>
 <translation id="4220128509585149162">當機</translation>
 <translation id="4223404254440398437">不允許使用麥克風</translation>
@@ -2026,6 +2042,7 @@
 <translation id="422722221769396062">餐廳外送服務</translation>
 <translation id="4230204356098880324">可以要求使用及移動你的攝影機</translation>
 <translation id="4231448684371260244">8 x 13 英寸</translation>
+<translation id="279016548542240532">在 Brave 透過 Pix 付款，不必切換應用程式</translation>
 <translation id="4239799716689808527">標籤</translation>
 <translation id="424063167283213501">儲存已知旅客號碼</translation>
 <translation id="4241830393007970744">你嘗試前往的網站可能有攻擊者，會誘騙你安裝軟體或提供資訊，例如密碼、電話號碼或信用卡號碼。</translation>
@@ -2042,6 +2059,7 @@
 <translation id="4255487295905690262">如果產品在任何網站上降價，系統會透過電子郵件快訊通知你。</translation>
 <translation id="425582637250725228">系統可能不會儲存你所做的變更。</translation>
 <translation id="4258748452823770588">簽名有誤</translation>
+<translation id="4258927999980634471">要自動與此對話分享相關分頁嗎？</translation>
 <translation id="1025132080548500660">如要取得其他裝置上的歷史記錄，請將歷史記錄和分頁同步到 <ph name="ACCOUNT_EMAIL"/>。你隨時可以前往設定頁面停止同步。Brave 可能會根據你的歷史記錄，在 Brave 搜尋和其他服務中提供個人化體驗。</translation>
 <translation id="4265635050210404830">你的會員卡</translation>
 <translation id="4265872034478892965">依據管理員的設定允許</translation>
@@ -2108,6 +2126,7 @@
 <translation id="4340810192899866471">從 JSON 匯入</translation>
 <translation id="6116812392674177288">系統偵測結果顯示這台電腦未受企業管理，因此政策只能自動安裝透過 Brave 線上應用程式商店代管的擴充功能。Brave 線上應用程式商店更新網址為「<ph name="CWS_UPDATE_URL"/>」。</translation>
 <translation id="4342742994656318294">主題樂園</translation>
+<translation id="998875513896293677">網頁標題和網址會傳送給 Brave，並可能交由人工審查</translation>
 <translation id="4346670990181948854">旅遊資訊 · 車輛</translation>
 <translation id="4348834659292907206">與 <ph name="SITE"/> 的連線並不安全</translation>
 <translation id="4349365535725594680">無法分享機密內容</translation>
@@ -2115,6 +2134,7 @@
 <translation id="4350629523305688469">多功能紙匣</translation>
 <translation id="4351060348582610152"><ph name="ORIGIN"/> 要求掃描附近的藍牙裝置。已找到下列裝置：</translation>
 <translation id="4355383636893709732">Android 應用程式的 ChromeOS 更新</translation>
+<translation id="4357577888320640139">自動與所有對話分享相關分頁？</translation>
 <translation id="4358059973562876591">DnsOverHttpsMode 政策發生錯誤，因此系統無法套用你指定的範本。</translation>
 <translation id="4358461427845829800">管理付款方式...</translation>
 <translation id="4366943895537458493">印版</translation>
@@ -2138,7 +2158,7 @@
 <translation id="4406883609789734330">即時字幕</translation>
 <translation id="4406896451731180161">搜尋結果</translation>
 <translation id="5221858344642681996">為維護安全性，貴機構不允許在 Brave 中重複使用密碼。Brave 會將密碼加密處理，以保護使用者隱私。</translation>
-<translation id="4409271659088619928">你的搜尋引擎是 <ph name="DSE"/>。如要瞭解如何刪除搜尋記錄，請查看搜尋引擎的操作說明 (如果有的話)。</translation>
+<translation id="4409271659088619928">你的搜尋引擎是 <ph name="DSE"/>。你可以查看搜尋引擎的操作說明 (如有)，瞭解如何刪除搜尋記錄。</translation>
 <translation id="4409556632583862731">發起討論串</translation>
 <translation id="4412074349188076601">這項設定標示為可安裝，但沒有映像檔可供這個架構使用，因此無法安裝。</translation>
 <translation id="4412377069090572315">使用者評論</translation>
@@ -2148,6 +2168,7 @@
 <translation id="4415748029120993980">SECG 橢圓曲線 secp384r1 (亦稱為 NIST P-384)</translation>
 <translation id="4418150423720608641">ML-DSA-87</translation>
 <translation id="4419287616181386201">前往相關管理設定即可刪除密碼</translation>
+<translation id="4425137053900958839">全面享受 Pix 便利又安全的服務</translation>
 <translation id="4425750422187370446">運動服飾</translation>
 <translation id="443121186588148776">序列埠</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> 不接受你的登入憑證，或是你可能未提供登入憑證。</translation>
@@ -2157,7 +2178,6 @@
 <translation id="4434045419905280838">彈出式視窗與重新導向</translation>
 <translation id="443673843213245140">雖然已停用 Proxy，不過已指定明確 Proxy 設定。</translation>
 <translation id="4438821706955556403">一般價格</translation>
-<translation id="4439687924334332880">自動分享此視窗中與這個對話串相關的已開啟分頁，即可獲得更符合需求的回覆。你可以前往「設定」為所有對話串開啟這個選項。</translation>
 <translation id="4441832193888514600">由於這項政策只能設為雲端使用者政策，因此系統予以忽略。</translation>
 <translation id="3741072729587003870">已傳送到「<ph name="DEVICE_NAME"/>」上的 Brave</translation>
 <translation id="4445694043187340808"><ph name="STARTER_PACK_TABS_FOCUSED_FRIENDLY_MATCH_TEXT"/>，按下 Enter 鍵即可搜尋分頁</translation>
@@ -2223,6 +2243,7 @@
 <translation id="4557573143631562971">住宅保險</translation>
 <translation id="4558551763791394412">試試看停用擴充功能。</translation>
 <translation id="4566017918361049074">戶外活動</translation>
+<translation id="6895010158785274408">更新 Brave 錢包中的身分證</translation>
 <translation id="4569155249847375786">驗證完成</translation>
 <translation id="4570008401337135432">文字對齊方式</translation>
 <translation id="457875822857220463">快遞</translation>
@@ -2244,6 +2265,7 @@
 <translation id="46128681529823442">足球裝備</translation>
 <translation id="4612904677925722054">這個網站可能含有兒童不宜的內容。你必須獲得家長或監護人許可，才能造訪這個網站。</translation>
 <translation id="4619564267100705184">驗證身分</translation>
+<translation id="3127071008735497897">將駕照儲存到 Brave 錢包</translation>
 <translation id="4622292761762557753">仍要轉移</translation>
 <translation id="4622647778991854660">請前往通知中心啟用通知。開啟<ph name="LINK"/>。</translation>
 <translation id="4623894491222334521">身分證明文件</translation>
@@ -2287,6 +2309,7 @@
 <translation id="4691093235373904540">屋頂施工</translation>
 <translation id="4692623383562244444">搜尋引擎</translation>
 <translation id="4695702626068620848"><ph name="KEYWORD"/> - 問問 <ph name="KEYWORD_SHORT_NAME"/></translation>
+<translation id="4697071790493980729">找不到相符的搜尋結果</translation>
 <translation id="4698308118265482293">更新護照</translation>
 <translation id="4698692901173737941">搏擊運動</translation>
 <translation id="4701488924964507374"><ph name="SENTENCE1"/> <ph name="SENTENCE2"/></translation>
@@ -2297,6 +2320,7 @@
 <translation id="4705573018059932476">你已選擇透過<ph name="AUTHENTICATOR"/>在使用 <ph name="PROVIDER_ORIGIN"/> 的網站上進行驗證。這個供應商可能已儲存你的付款方式等相關資訊，你可以<ph name="LINK_TEXT"/>。</translation>
 <translation id="4708268264240856090">您的連線已中斷</translation>
 <translation id="4708276642004148190">供水與處理</translation>
+<translation id="4710249055485272920">找不到這項資訊</translation>
 <translation id="4711628883879888561">在分頁群組中協作</translation>
 <translation id="4712404868219726379">Windows Hello</translation>
 <translation id="471880041731876836">你沒有這個網站的瀏覽權限</translation>
@@ -2308,6 +2332,7 @@
 <translation id="4726672564094551039">重新載入政策</translation>
 <translation id="4728558894243024398">平台</translation>
 <translation id="4729147136006144950">公益機構與慈善事業</translation>
+<translation id="4730773064303503917">透過 Brave 錢包用 Pix 付款給親友和商家</translation>
 <translation id="4730977633786878901">查看評論</translation>
 <translation id="4731638775147756694">系統管理員已封鎖這個應用程式</translation>
 <translation id="4732860731866514038">正在下載<ph name="LANGUAGE"/>語言套件... <ph name="PERCENT"/>%</translation>
@@ -2340,6 +2365,7 @@
 <translation id="4766713847338118463">雙釘 (底部)</translation>
 <translation id="4768816584204270288">分期付款時會填入一次性虛擬卡號。點選即可複製並貼上用於這筆交易的卡片資料。</translation>
 <translation id="4768864802656530630">詳細系統記錄。<ph name="BEGIN_LINK"/>瞭解詳情<ph name="END_LINK"/></translation>
+<translation id="4341731325100657394">更新 Brave 錢包中的已知旅客號碼</translation>
 <translation id="4771249073710170730">遙控和模型</translation>
 <translation id="4771973620359291008">發生不明的錯誤。</translation>
 <translation id="4774055414220872623">藝術與工藝用品</translation>
@@ -2394,7 +2420,7 @@
 <translation id="4864406669374375262">已將版本字串複製到剪貼簿</translation>
 <translation id="486459320933704969">你必須獲得家長或監護人許可，才能造訪這個網站</translation>
 <translation id="4864801646102013152">居家修繕</translation>
-<translation id="4865063548323785458">儲存及自動填寫密碼，輕鬆登入網站和應用程式</translation>
+<translation id="4865063548323785458">儲存並自動填入密碼，輕鬆登入網站和應用程式</translation>
 <translation id="4866506163384898554">按下 |<ph name="ACCELERATOR1"/>| + |<ph name="ACCELERATOR2"/>| 即可顯示游標</translation>
 <translation id="705866218143904293">如要繼續使用共用分頁群組，請更新 Brave</translation>
 <translation id="4873616204573862158">眼鏡</translation>
@@ -2588,6 +2614,7 @@
 <translation id="5154702632169343078">主體</translation>
 <translation id="5157504274688344097">量販店與百貨公司</translation>
 <translation id="5158275234811857234">封面</translation>
+<translation id="4196087060674489723">將資料提供給 Brave，即可協助改良強化版自動填入功能</translation>
 <translation id="5161334686036120870">標題：</translation>
 <translation id="5161506081086828129">堆疊出紙器 9</translation>
 <translation id="5164537320435517152"><ph name="MINUTES"/> 分鐘後刪除檔案</translation>
@@ -2631,7 +2658,6 @@
 <translation id="5238301240406177137">儲存到帳戶</translation>
 <translation id="5239119062986868403">一般價格</translation>
 <translation id="5239623327352565343">允許存取位置資訊</translation>
-<translation id="5241048084654737238">確認無法儲存卡片資訊</translation>
 <translation id="5242610955375133957">乾墨膜</translation>
 <translation id="5243004157379865295">更新地址</translation>
 <translation id="8854897060240443467">「管理 Brave 帳戶」按鈕，啟動後即可管理 Brave 帳戶的資訊、隱私權和安全性</translation>
@@ -2689,6 +2715,7 @@
 <translation id="2334093076041322971">在 Brave 帳戶中管理</translation>
 <translation id="5327248766486351172">名稱</translation>
 <translation id="5329858041417644019">你的瀏覽器未受管理</translation>
+<translation id="5330451136755214328"><ph name="MANUFACTURER"/> 電腦</translation>
 <translation id="5331585574693522196">設為預設</translation>
 <translation id="5332219387342487447">運送方式</translation>
 <translation id="5332769172018416402">透過訊息詢問</translation>
@@ -2727,6 +2754,7 @@
 <translation id="5385857628869214740">幽默趣味</translation>
 <translation id="5386426401304769735">這個網站的憑證鏈結包含使用 SHA-1 進行簽署的憑證。</translation>
 <translation id="5391010642126249196">造訪時間：</translation>
+<translation id="5391030615542642809"><ph name="MANUFACTURER"/> 裝置</translation>
 <translation id="5391306025131596142">開啟歷史記錄頁面</translation>
 <translation id="539203134595252721">桌球</translation>
 <translation id="5392506727170022660">金屬 (半光面)</translation>
@@ -2768,6 +2796,7 @@
 <translation id="543656192084990644">不允許使用動作感應器</translation>
 <translation id="5441409130426352029"><ph name="ATTRIBUTE_VALUE"/>，原本為：<ph name="PREVIOUS_VALUE"/></translation>
 <translation id="5443468954631487277">相反順序 (正面朝上)</translation>
+<translation id="4784093498984929780">將護照儲存到 Brave 錢包</translation>
 <translation id="5447235695608032700">允許 <ph name="SITE"/> 使用與你相關的既有資訊</translation>
 <translation id="5447973833955560753">備援密碼</translation>
 <translation id="6108397422772394696">Brave 在標記安全性事件時，會將事件相關資料傳送給系統管理員，內容可能包括你在 Brave 中造訪的網頁網址、複製資料的來源網址、檔案名稱或中繼資料、IP 位址、瀏覽器或分頁當機相關資料，以及用於登入網頁應用程式、裝置和 Brave 的使用者名稱。</translation>
@@ -2778,6 +2807,7 @@
 <translation id="5458150163479425638">{CONTACT,plural, =0{<ph name="CONTACT_PREVIEW"/>}=1{「<ph name="CONTACT_PREVIEW"/>」和另外 <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> 項聯絡資訊}other{「<ph name="CONTACT_PREVIEW"/>」和另外 <ph name="NUMBER_OF_ADDITIONAL_CONTACTS"/> 項聯絡資訊}}</translation>
 <translation id="5463625433003343978">正在尋找裝置…</translation>
 <translation id="5464236009658034488">辦公用品</translation>
+<translation id="5465128270485645058">自動分享此視窗中與對話相關的開啟分頁，讓回覆更貼近需求。</translation>
 <translation id="5465724643247062031">玻璃 (不透明)</translation>
 <translation id="5466018172325111652">沒有收到動態密碼嗎？<ph name="BEGIN_LINK"/>取得新的動態密碼<ph name="END_LINK"/></translation>
 <translation id="5466818462212249084">付款應用程式</translation>
@@ -2938,6 +2968,7 @@
 <translation id="5707154300732650394">繼續瀏覽歷程</translation>
 <translation id="57094364128775171">建議高強度密碼…</translation>
 <translation id="570953204696852961">紅色 3</translation>
+<translation id="5072319759819261375">不妨問問 Brave 內建 Gemini</translation>
 <translation id="571403275720188526">(arm64)</translation>
 <translation id="571510845185711675">獸醫</translation>
 <translation id="5715150588940290235">要刪除已儲存的安全碼嗎？</translation>
@@ -2947,6 +2978,7 @@
 <translation id="5718601519531438273">提供護照和駕照等資訊</translation>
 <translation id="5720705177508910913">目前使用者</translation>
 <translation id="5720895412771013401">桌上型電腦</translation>
+<translation id="5721147290164931316">掃描即可使用手機登入</translation>
 <translation id="5721367770070844253">{count,plural, =1{{website_1}}=2{{website_1}、{website_2}}=3{{website_1}、{website_2} 和另外 1 個}other{{website_1}、{website_2} 和另外 {more_count} 個}}</translation>
 <translation id="572328651809341494">最近開啟的分頁</translation>
 <translation id="5723873695528696965">控制 MIDI 裝置及重設程式</translation>
@@ -2979,6 +3011,7 @@
 <translation id="5765072501007116331">如要查看快遞方式和相關規定，請選取一個地址</translation>
 <translation id="57689295674415555">尚未填寫虛擬卡號嗎？</translation>
 <translation id="5773286975255318081">例如設定檔使用者名稱和瀏覽器版本</translation>
+<translation id="5774897849666641211">針對這個分頁提問</translation>
 <translation id="5776313857861697733">優先順序</translation>
 <translation id="577804500166306874">正在載入結果</translation>
 <translation id="5781136890105823427">實驗已啟用</translation>
@@ -3056,6 +3089,7 @@
 <translation id="5911020115933784199">活動與展演資訊</translation>
 <translation id="5911110632211230665">已禁止開啟</translation>
 <translation id="1765144800915733093">開啟 Brave 錢包</translation>
+<translation id="7227888833179196534">將 KTN 儲存到 Brave 錢包</translation>
 <translation id="5914465277418006379"><ph name="MEMBER_FIRST_NAME"/>已新增這個分頁</translation>
 <translation id="5915189366813702112">彈性工作安排</translation>
 <translation id="59174027418879706">已啟用</translation>
@@ -3281,6 +3315,7 @@
 <translation id="6246316216123107851"><ph name="NUM_DAYS"/> 天前</translation>
 <translation id="6246382863801034910">車輛</translation>
 <translation id="6246868321321344665">貴機構可查看瀏覽資料，例如工作和個人資料夾中的密碼和歷史記錄</translation>
+<translation id="6248479108671123143"><ph name="MEMBER_FIRST_NAME"/>已變更這個分頁：<ph name="TAB_TITLE"/></translation>
 <translation id="6248988683584659830">搜尋設定</translation>
 <translation id="6250932670816326647">沐浴與身體護理產品</translation>
 <translation id="6251906504834538140">{0,plural, =1{禁止移動這個檔案}other{禁止移動這 <ph name="FILE_COUNT"/> 個檔案}}</translation>
@@ -3317,6 +3352,7 @@
 <translation id="6302546952464230349">顯示<ph name="PERMISSION_NAME"/>權限詳細資料</translation>
 <translation id="6304398603974202180">多媒體軟體</translation>
 <translation id="6305205051461490394">無法連上 <ph name="URL"/>。</translation>
+<translation id="3718751461629938404">當你的輸入觸發強化版自動填入時，Brave 會記錄這項功能的使用方式，例如你是否接受、編輯或忽略自動填入建議</translation>
 <translation id="6306713302480826305">這個地址將從這部裝置和其他已登入的裝置中刪除</translation>
 <translation id="6307968763353904914">你的銀行目前無法提供適用這個付款方式的虛擬卡片，不過你還是能使用 <ph name="CARD_LABEL"/> 線上付款。</translation>
 <translation id="6311410654831092784">卡片紙</translation>
@@ -3334,7 +3370,6 @@
 <translation id="633348045801643466">結帳時顯示「<ph name="PAY_LATER_OPTIONS_HELP_LINK_BEGIN"/>先買後付<ph name="PAY_LATER_OPTIONS_HELP_LINK_END"/>」選項</translation>
 <translation id="6335029926534404762">運動鞋</translation>
 <translation id="6336948221660696475">不允許使用 VR</translation>
-<translation id="6337133576188860026">釋出不到 <ph name="SIZE"/>。下次造訪部分網站時，載入速度可能會變慢。</translation>
 <translation id="6337534724793800597">依名稱篩選政策</translation>
 <translation id="633770708279464947"><ph name="SECURE_DNS_SALT"/> 的值無效，系統不會使用這個值。</translation>
 <translation id="6738574149680202366">密碼 • Brave 密碼管理工具</translation>
@@ -3452,6 +3487,7 @@
 <translation id="6494750904506170417">彈出式視窗與重新導向</translation>
 <translation id="6495664197699704593">這個密碼只會儲存到這部裝置。如要在其他裝置上使用，請<ph name="GOOGLE_PASSWORD_MANAGER"/>。</translation>
 <translation id="5070187877614745794">如要在 Brave 中使用其他自動填入服務，請前往 Android 設定選擇自動填入服務供應商</translation>
+<translation id="6496531801333278234">由「個人化智慧服務」找到。你可以前往設定管理資訊。</translation>
 <translation id="6499038740797743453">要重設密碼嗎？</translation>
 <translation id="6502510275417601303">新付款設定的快訊已關閉</translation>
 <translation id="6502991525169604759">不包含你所做的變更</translation>
@@ -3486,6 +3522,7 @@
 <translation id="6550245281449521513">不允許鎖定滑鼠</translation>
 <translation id="6551737294564628267"><ph name="ATTRIBUTE_NAME"/>最新</translation>
 <translation id="6552566579578780089">付款方式</translation>
+<translation id="6553777254569586547"><ph name="SUGGESTION_TITLE"/>，<ph name="SUGGESTION_TYPE"/>，「<ph name="GROUP_HEADER"/>」群組的第 <ph name="MATCH_POSITION"/> 個項目，共 <ph name="NUM_MATCHES_IN_GROUP"/> 個項目。</translation>
 <translation id="6554732001434021288">上次造訪日期：<ph name="NUM_DAYS"/> 天前</translation>
 <translation id="6556866813142980365">重做</translation>
 <translation id="6557715786897013164">14 x 17 吋</translation>
@@ -3563,6 +3600,7 @@
 <translation id="5406652219015697259">你已登入帳戶，因此 Brave 詢問你是否要將卡片儲存至 Brave 帳戶。你可以在設定中變更這項行為。持卡人姓名來自你的帳戶。</translation>
 <translation id="6690688090329768424">「<ph name="PROXY_INVALID_DESTINATION"/>」不是有效的目的地模式。</translation>
 <translation id="6691397311652656001">請釋出超過 <ph name="REQUIRED_FREE_DISK_SPACE"/> 的空間</translation>
+<translation id="4022909937585430639">這個網站不支援 HTTPS，且你已加入 Brave 進階保護計畫，因此系統顯示這則警告訊息。<ph name="LEARN_MORE"/></translation>
 <translation id="6522914004575214087"><ph name="FIND_MY_PHONE_FOCUSED_FRIENDLY_MATCH_TEXT"/>；按下 Tab 鍵再按下 Enter 鍵即可找出你在 Brave 帳戶中的裝置</translation>
 <translation id="6695428916538794739">動作冒險片</translation>
 <translation id="6696424331653607346">旅遊指南與遊記</translation>
@@ -3574,6 +3612,7 @@
 <translation id="6702851555558236418">音訊與音樂軟體</translation>
 <translation id="6702919718839027939">簡報模式</translation>
 <translation id="6704458454638854812">屬性已設為「custom_size」，請將名稱設為「自訂」。</translation>
+<translation id="670477556876354552">需要重新啟動</translation>
 <translation id="6706005862292023715">窗簾與窗飾</translation>
 <translation id="6706210727756204531">範圍</translation>
 <translation id="1162411425302454249">這個 IBAN 無法儲存到 Brave 帳戶，因此改存到這部裝置的 Brave。</translation>
@@ -3632,6 +3671,7 @@
 <translation id="6798066466127540426">清單未包含有效的搜尋引擎。</translation>
 <translation id="6798460514924505775">信封 Chou 3</translation>
 <translation id="6799145206637008376">請填寫這張虛擬卡片的信用卡驗證碼</translation>
+<translation id="6800773453940486492"><ph name="MEMBER_FIRST_NAME"/>已新增這個分頁：<ph name="TAB_TITLE"/></translation>
 <translation id="6801920212017470190">隨時掌握降價資訊，優惠不漏接</translation>
 <translation id="6805030849054648206">Envelope B6/C4</translation>
 <translation id="6807791860691150411">教育</translation>
@@ -3670,7 +3710,6 @@
 <translation id="6874604403660855544">重做新增(&amp;R)</translation>
 <translation id="6875873347995743859">傳送給助理</translation>
 <translation id="6875894866901426843">系統管理員會在 <ph name="DATE_TIME"/> 刪除你的本機檔案，包括垃圾桶中的所有檔案。</translation>
-<translation id="6880812263216766325">是否要一律分享開啟的分頁，以取得更實用的回覆？</translation>
 <translation id="6880941331070119097">高價選項</translation>
 <translation id="5856252669085142737">快速建立新的 Brave 文件</translation>
 <translation id="6883221904761970440">已關閉安全付款憑證驗證表</translation>
@@ -3687,7 +3726,6 @@
 <translation id="6893057134494550310">貼合膜</translation>
 <translation id="6893171174618024812">如要在 Brave 中關閉付款應用程式，請前往<ph name="BEGIN_LINK1"/>付款設定<ph name="END_LINK1"/></translation>
 <translation id="6895330447102777224">您的信用卡已通過驗證</translation>
-<translation id="6895573608763679343"><ph name="SUGGESTION_TITLE"/>，<ph name="SUGGESTION_DESCRIPTION"/>，「<ph name="GROUP_HEADER"/>」群組的第 <ph name="MATCH_POSITION"/> 個項目，共 <ph name="NUM_MATCHES_IN_GROUP"/> 個項目。</translation>
 <translation id="6896758677409633944">複製</translation>
 <translation id="6897140037006041989">使用者代理程式</translation>
 <translation id="6898699227549475383">組織 (O)</translation>
@@ -3830,6 +3868,7 @@
 <translation id="7110116949943042888">臨時和季節性工作</translation>
 <translation id="7110368079836707726">大專院校</translation>
 <translation id="7111507312244504964">物業檢查與估價</translation>
+<translation id="7117290130383718594">文字註解</translation>
 <translation id="7118618213916969306">搜尋剪貼簿網址 <ph name="SHORT_URL"/></translation>
 <translation id="7118852830504022370">這個網站不支援 HTTPS，因此系統顯示這則警告訊息。<ph name="BEGIN_LEARN_MORE_LINK"/>進一步瞭解這項警告<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="7119063404975271297">電視劇</translation>
@@ -3878,7 +3917,6 @@
 <translation id="718872491229180389">啦啦隊</translation>
 <translation id="7188840756966467339">重新啟動並套用政策</translation>
 <translation id="7192188280913829296">必須一併指定「vendor_id」屬性。</translation>
-<translation id="7192203810768312527">釋出 <ph name="SIZE"/>。下次造訪部分網站時，載入速度可能會變慢。</translation>
 <translation id="7192537357091279678">電腦磁碟機與儲存空間</translation>
 <translation id="7193661028827781021">參考資料</translation>
 <translation id="719464814642662924">Visa</translation>
@@ -3923,7 +3961,6 @@
 <translation id="7257453341537973799">職業資源與規劃</translation>
 <translation id="725866823122871198">你電腦的日期和時間 (<ph name="DATE_AND_TIME"/>) 不正確，因此無法與 <ph name="BEGIN_BOLD"/><ph name="DOMAIN"/><ph name="END_BOLD"/> 建立私人連線。</translation>
 <translation id="7260075294900977274">新的智慧型資料夾可集中儲存所有購物頁面，並自動追蹤價格、取得價格分析資訊等等</translation>
-<translation id="3394231533559589636">你已加入 Brave 進階保護計畫，因此這個網站會維持封鎖狀態。<ph name="LEARN_MORE"/></translation>
 <translation id="7265608370113700582">這項地址資訊僅供此裝置存取</translation>
 <translation id="7266094331715305887">裝置上的應用程式</translation>
 <translation id="7269151392155523061">捷徑不得與 <ph name="SEARCH_AGGREGATOR_SETTINGS_POLICY"/> 定義的搜尋聚合器關鍵字相同：<ph name="SHORTCUT_NAME"/></translation>
@@ -3949,6 +3986,7 @@
 <translation id="7310392214323165548">裝置很快就會重新啟動</translation>
 <translation id="7311244614769792472">找不到任何結果</translation>
 <translation id="7313107491291103073">貴機構已將這個網站標記為可能違反政策，</translation>
+<translation id="7313260329718515829">系統會分析傳送給 Gemini 個人化智慧服務的要求，以改良自動填入功能</translation>
 <translation id="7316521168101843192">正在將檔案儲存至 Microsoft OneDrive</translation>
 <translation id="7319430975418800333">A3</translation>
 <translation id="7320336641823683070">連線說明</translation>
@@ -4023,6 +4061,7 @@
 <translation id="7418620734632363981">程式設計</translation>
 <translation id="7419091773564635591">電腦和電子產品</translation>
 <translation id="7419106976560586862">設定檔路徑</translation>
+<translation id="742088698616475957"><ph name="MANUFACTURER"/> 電腦</translation>
 <translation id="7421067045979951561">通訊協定處理常式</translation>
 <translation id="7422347648202898039">標籤 (安全紙)</translation>
 <translation id="4814329941923406129">「管理 Cookie」按鈕，啟動後即可在 Brave 設定中管理 Cookie 偏好設定</translation>
@@ -4045,7 +4084,6 @@
 <translation id="1548956355291859153">「管理同步功能」按鈕，啟動後即可在 Brave 設定中管理要同步處理哪些資訊</translation>
 <translation id="7451311239929941790"><ph name="BEGIN_LINK"/>進一步瞭解<ph name="END_LINK"/>這個問題。</translation>
 <translation id="745208957946308667">恐龍遊戲，按下空白鍵即可遊玩</translation>
-<translation id="74521886886364465"><ph name="SUGGESTION_TITLE"/>，「<ph name="GROUP_HEADER"/>」群組的第 <ph name="MATCH_POSITION"/> 個項目，共 <ph name="NUM_MATCHES_IN_GROUP"/> 個項目。</translation>
 <translation id="7453032093368223821">管理其他資料</translation>
 <translation id="7454377933424667109">雲端帳戶</translation>
 <translation id="7455452752247248289">企業技術</translation>
@@ -4075,7 +4113,6 @@
 <translation id="7489255442002627311">「<ph name="BNPL_ISSUER_NAME"/>」會確認資格，這不會影響你的信用評分。如果核准，「<ph name="BNPL_ISSUER_NAME"/>」就會提供付款方案供你選擇，讓你完成購買程序。</translation>
 <translation id="7489392576326061356">洗髮精與潤髮乳</translation>
 <translation id="7489919936111034362">Brave 雲端硬碟儲存空間已滿</translation>
-<translation id="7490026840522163531">要自動與所有對話串共用開啟的分頁嗎？</translation>
 <translation id="7495528107193238112">這項內容已遭到封鎖，請聯絡網站擁有者以修正問題。</translation>
 <translation id="749865518782565832">水管工程</translation>
 <translation id="1314010941893038514">在 Brave 中進行購買交易時可選擇「電子錢包」和「Pix」</translation>
@@ -4131,12 +4168,14 @@
 <translation id="7569072768465750771">{COUNT,plural, =0{無}=1{這部裝置上的 1 個分頁}other{這部裝置上的 # 個分頁}}</translation>
 <translation id="7569490014721427265">高爾夫</translation>
 <translation id="7569983096843329377">黑色</translation>
+<translation id="5042051836875308124">更新 Brave 錢包中的身分證資訊</translation>
 <translation id="7570862164055912832">補救號碼</translation>
 <translation id="5806362888687058351">Brave AI 模式</translation>
 <translation id="7574998639136359461">冬季運動用品</translation>
 <translation id="7575207903026901870">移除建議按鈕，按下 Enter 鍵即可移除這項建議</translation>
 <translation id="7575800019233204241">「你的連線不是私人連線」、「&lt;span class="error-code"&gt;NET::ERR_CERT_AUTHORITY_INVALID&lt;/span&gt;」、「&lt;span class="error-code"&gt;ERR_CERT_COMMON_NAME_INVALID&lt;/span&gt;」、「&lt;span class="error-code"&gt;NET::ERR_CERT_WEAK_SIGNATURE_ALGORITHM&lt;/span&gt;」或「SSL 憑證錯誤」</translation>
 <translation id="7575887283389198269">手機</translation>
+<translation id="7579113844074980463"><ph name="MANUFACTURER"/> 平板電腦</translation>
 <translation id="7579442726219254162">在「<ph name="APPLICATION_ID"/>」受管理設定中的未知變數「<ph name="VARIABLE"/>」。</translation>
 <translation id="7581199239021537589">側邊 2 圖片 Y 批次</translation>
 <translation id="4790068920551988473">在 Brave 日曆中快速建立新活動</translation>
@@ -4154,6 +4193,7 @@
 <translation id="7599089013883397081">下載作業逾時</translation>
 <translation id="1062868744766141611">問問 Brave 這個網頁的內容</translation>
 <translation id="7606123685356405076">Gemini 3 模型</translation>
+<translation id="7138721839933201978">將車輛資訊儲存到 Brave 錢包</translation>
 <translation id="7610193165460212391">值超出 <ph name="VALUE"/> 的範圍。</translation>
 <translation id="761261689936461781">粗</translation>
 <translation id="7613889955535752492">有效期限：<ph name="EXPIRATION_MONTH"/>/<ph name="EXPIRATION_YEAR"/></translation>
@@ -4182,7 +4222,9 @@
 <translation id="8275603180424408640">你剛剛使用的密碼已在資料侵害事件中外洩，Brave 密碼管理工具建議你立即變更密碼。</translation>
 <translation id="7647206758853451655">列印品質</translation>
 <translation id="7648133459447652947">如要顯示游標，請切換應用程式、重新載入頁面或返回</translation>
+<translation id="764847582138410250">掃描即可使用手機登入</translation>
 <translation id="7648527891719919697">你已在 <ph name="BEGIN_ANDROID_SETTINGS_LINK"/>Android 設定<ph name="END_ANDROID_SETTINGS_LINK"/>中開啟進階保護功能，因此這個網站將維持封鎖狀態。<ph name="BEGIN_LEARN_MORE_LINK"/>進一步瞭解這項警告<ph name="END_LEARN_MORE_LINK"/></translation>
+<translation id="1658842203772810888">將已知旅客號碼儲存到 Brave 錢包</translation>
 <translation id="7648992873808071793">在這個裝置上儲存檔案</translation>
 <translation id="7649070708921625228">說明</translation>
 <translation id="7650141368285545431">使用其他裝置的密碼金鑰</translation>
@@ -4273,6 +4315,7 @@
 <translation id="7773005668374414287">相同順序 (正面朝上)</translation>
 <translation id="7779418012194492374">撤銷「<ph name="DEVICE_NAME"/>」的存取權</translation>
 <translation id="7781829728241885113">昨天</translation>
+<translation id="15891224440739379">將身分證件儲存到 Brave 錢包</translation>
 <translation id="7782465647372057580">系統會加密帳戶資訊，妥善保護你的隱私</translation>
 <translation id="7785471469930192436">如要刪除搜尋記錄，請參閱搜尋引擎的相關操作說明 (如果有的話)</translation>
 <translation id="7785790577395078482">這台平板電腦</translation>
@@ -4387,6 +4430,7 @@
 <translation id="7966803981046576691">工作帳戶類型</translation>
 <translation id="7967477318370169806">共同基金</translation>
 <translation id="7967636097426665267">通訊設備</translation>
+<translation id="7967973398323409409">自動填入的資訊不會向任何人顯示</translation>
 <translation id="79682505114836835">「<ph name="VALUE"/>」是無效的十六進位顏色值。</translation>
 <translation id="7968982339740310781">查看詳細資料</translation>
 <translation id="7972714317346275248">PKCS #1 SHA-384 (使用 RSA 加密)</translation>
@@ -4621,6 +4665,7 @@
 <translation id="8351131234907093545">寫筆記</translation>
 <translation id="8352849934814541340">這部裝置的管理員已安裝支援額外功能的應用程式，這些應用程式可存取你的部分資料。</translation>
 <translation id="8355270400102541638">本機當機內容：</translation>
+<translation id="8362914115861174987">譯文語言：</translation>
 <translation id="8363502534493474904">關閉飛航模式</translation>
 <translation id="8363929499301563123">網站 Cookie (保留近期造訪網站的登入狀態)</translation>
 <translation id="8364627913115013041">未設定。</translation>
@@ -4640,11 +4685,11 @@
 <translation id="8381674639488873545">這些費用可能是一次性或週期性的費用，而且可能難以察覺。<ph name="BEGIN_LINK"/>仍要顯示<ph name="END_LINK"/></translation>
 <translation id="8382097126743287270">自動進入全螢幕模式</translation>
 <translation id="838307841291975086">旅行車</translation>
-<translation id="838953173259347825">自動分享此視窗中與這個對話串相關的已開啟分頁，即可獲得更符合需求的回覆。如要為所有對話串開啟這個選項，請前往</translation>
 <translation id="8389532092404711541">一般為 <ph name="LOW_PRICE"/></translation>
 <translation id="8389940864052787379">改裝車與性能車</translation>
 <translation id="8390725133630534698">系統管理員政策禁止將 <ph name="ORIGIN_NAME"/> 的內容分享到 <ph name="VM_NAME"/></translation>
 <translation id="8392783408127179588">正在重新載入政策</translation>
+<translation id="2792973694349074955">更新 Brave 錢包中的駕照資訊</translation>
 <translation id="8396522675989118466">這是<ph name="SIDE_OF_CARD"/>的 <ph name="NUMBER_OF_DIGITS"/> 位數安全碼</translation>
 <translation id="8398335999901363925">付款方式已顯示在整個畫面上，輕觸即可填入。</translation>
 <translation id="8398446215576328011">還原已套用的政策</translation>
@@ -4920,7 +4965,6 @@
 <translation id="1154336171889402657">這項資訊無法儲存到 Brave 錢包，因此改存到這部裝置的 Brave。下次使用時，Brave 會詢問你是否要儲存至錢包。</translation>
 <translation id="8863218129525348270">將卡片資訊儲存在裝置上，下次就能更快完成付款程序</translation>
 <translation id="8864939224504814334">套裝與上班服飾</translation>
-<translation id="8865650218866129025">是否要自動分享開啟的分頁，在此對話串取得更實用的回覆？</translation>
 <translation id="8866132857352163524">原聲帶</translation>
 <translation id="8866481888320382733">解析政策設定時發生錯誤</translation>
 <translation id="8866928039507595380">折疊</translation>
@@ -5040,9 +5084,11 @@
 <translation id="9063800855227801443">無法擷取機密內容</translation>
 <translation id="9065203028668620118">編輯</translation>
 <translation id="9065745800631924235">「<ph name="TEXT"/>」的搜尋記錄</translation>
+<translation id="9066116644715286230">{NUM_TABS,plural, =1{分頁分享詳情。正在分享 {WEBSITE_LIST_STR} 的 1 個分頁}other{分頁分享詳情。正在分享 {WEBSITE_LIST_STR} 的 {NUM_TABS} 個分頁}}</translation>
 <translation id="90695670378604968">塑膠 (霧面)</translation>
 <translation id="9069693763241529744">依據擴充功能設定封鎖</translation>
 <translation id="9073799351042754113">你已選擇關閉這個網站的安全性警告。</translation>
+<translation id="907426083053157749"><ph name="MANUFACTURER"/> 手機</translation>
 <translation id="9075717835386447447">棕褐色 1</translation>
 <translation id="8582968438435503394">為提供建議及改善這項功能，系統會將網頁網址和內容提供給 Brave。你隨時可以改變心意，也可以<ph name="LEARN_MORE"/>。</translation>
 <translation id="9078912659001679888">食物調理機和榨汁機</translation>
@@ -5054,7 +5100,6 @@
 <translation id="9090243919347147717">附件</translation>
 <translation id="9090548458280093580">採用 AI 技術的搜尋記錄功能</translation>
 <translation id="9090993752571911635">網際網路服務供應商 (ISP)</translation>
-<translation id="9092305980625216393">通常用於天氣、當地新聞等</translation>
 <translation id="9093723786115107672">睡衣</translation>
 <translation id="9094424186948667194">存取這部裝置上的其他應用程式和服務</translation>
 <translation id="9094544726794842788">如果按倒讚，系統會顯示意見回饋表單。你可以在表單中詳細說明為何不喜歡這些結果</translation>
@@ -5179,7 +5224,6 @@
 <translation id="964050462028070434">管理密碼和密碼金鑰…</translation>
 <translation id="964681140808832181">是的，我要取消</translation>
 <translation id="969892804517981540">正式版本</translation>
-<translation id="8082647786512502565">開啟後，Brave 會共用這個視窗的所有分頁，以提供更貼近需求的回覆。如要為所有對話開啟這個選項，請前往</translation>
 <translation id="97054401902912338">進一步瞭解內容篩選器</translation>
 <translation id="973788791897303708">這個分頁群組已額滿</translation>
 <translation id="975560348586398090">{COUNT,plural, =0{無}=1{1 個項目}other{# 個項目}}</translation>

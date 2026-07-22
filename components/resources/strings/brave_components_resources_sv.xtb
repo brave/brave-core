@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Det gick inte att hämta nästa nonce-värde</translation>
 <translation id="6180576227145734714">Transaktionsdata "till" måste vara en giltig adress när den anges</translation>
 <translation id="6688162556547723415">Den begärda metoden och/eller kontot har inte godkänts av användaren.</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="6122742277607781713">Portfolio</translation>
-<translation id="7020503656406658141">Priser</translation>
 <translation id="3586775666459823714">NFTs</translation>
 <translation id="1987317783729300807">Konton</translation>
 <translation id="3567988240819868195">Marknad</translation>
@@ -1822,7 +1820,6 @@
 <translation id="803703704549420287">Rensa filter</translation>
 <translation id="1472675084647422956">Visa mer</translation>
 <translation id="4522570452068850558">Info</translation>
-<translation id="4583937519241190398">Verifierad av DappRadar</translation>
 <translation id="8713438253026855351">Byt till ett skyddat konto</translation>
 <translation id="3526789880090101085">Skydda konto</translation>
 <translation id="3155166394760577549">Aktivera skydd för att förbättra transaktionssekretessen.</translation>
@@ -1955,6 +1952,7 @@
 <translation id="6261915643960475695">Affärsliv</translation>
 <translation id="8265589281845759879">Bilar</translation>
 <translation id="7726519849288907308">Kändisar</translation>
+<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultur</translation>
 <translation id="6807791860691150411">Utbildning</translation>
 <translation id="3706423975342040244">Underhållning</translation>
@@ -2171,6 +2169,7 @@
 <translation id="2367972762794486313">Visa appar</translation>
 <translation id="3142853026316054951">Växla fokusläge</translation>
 <translation id="3468387898712904997">Nytt e-postalias</translation>
+<translation id="4711475997833555304">Skapa en slumpmässig e-postadress som vidarebefordras till din inkorg.</translation>
 <translation id="2796584247246518451">Ny tillfällig behållare</translation>
 <translation id="8591883849678260674">Se original</translation>
 <translation id="1969654232209826429">min. läsning</translation>
@@ -2230,8 +2229,10 @@
 <translation id="8743383817154663379">Något gick fel när vi behandlade din förfrågan. Vänligen försök igen senare.</translation>
 <translation id="2712650703044366764">Den här modellen har en ogiltig slutpunkt. Kontrollera din konfiguration och försök igen.</translation>
 <translation id="7092656392206649236">Något gick fel vid kommunikationen med Leo. Försök igen.</translation>
+<translation id="4539536233699928121">Något gick fel vid kommunikationen med NEAR. Försök igen.</translation>
 <translation id="3552709750512842961">Statuskod: <ph name="STATUS_CODE"/>, felkod: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Statuskod: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Statuskod: <ph name="STATUS_CODE"/>, inre statuskod: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Du har nått frekvensgränsen för Premium. Försök igen om några timmar.</translation>
 <translation id="3683964919745779766">Du har nått prisgränsen för den här modellen eller har slut på krediter. Vänligen försök igen senare.</translation>
 <translation id="7692501701960747469">API-nyckeln som är konfigurerad för den här modellen är ogiltig. Kontrollera din konfiguration och försök igen.</translation>
@@ -2405,6 +2406,9 @@
 <translation id="9051226419897869406">Chatta privat med Brave Leo</translation>
 <translation id="2414904697165579184">Forma svar baserat på flikinnehållet</translation>
 <translation id="8258324391302611485">Den här sidans innehåll kommer att skickas till Leo tillsammans med dina meddelanden.</translation>
+<translation id="443008484043213881">Verktyg</translation>
+<translation id="4343623396828510727">Dessa webbplatser exponerar verktyg som Leo kan använda för att skicka data till och från denna webbplats. Bifoga eller godkänn inte dessa verktyg om denna konversation innehåller data som du inte vill att denna webbplats ska se.</translation>
+<translation id="5021823940147712387">Ta bort verktyg</translation>
 <translation id="318819763888864209">Alla prenumerationer förnyas automatiskt men kan avbrytas när som helst före förnyelsen.</translation>
 <translation id="5091223967610958">Dela värdnamnet för sidan du är på (<ph name="HOST_NAME"/>) och hjälp oss att göra Leo bättre.</translation>
 <translation id="8732450785281947197">Leo AI-verktyg</translation>
@@ -2483,6 +2487,9 @@
 <translation id="7918928051723770926">Uppgiften är slutförd</translation>
 <translation id="2113810663179257944">Kodkörning</translation>
 <translation id="4838375634693651776">Körning av kod i en sandlåda för att hjälpa dig med din fråga</translation>
+<translation id="6990975553143971265">Söker i din webbläsarhistorik efter ”<ph name="QUERY"/>”</translation>
+<translation id="8302511726757276645">Söker i din webbläsarhistorik</translation>
+<translation id="8410699755320690690">Brave AI vill söka i din webbläsarhistorik. Sökningen körs lokalt på din enhet, så hela din historik skickas ingenstans. Endast de matchande sidornas titlar, URL:er och indexerade textstycken skickas till Brave AI som en del av denna konversation.</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Ut:</translation>
 <translation id="6911817209337314910">Att ta fram några alternativ som du kan välja mellan</translation>
@@ -2692,6 +2699,21 @@
 <translation id="7586067492365979844">Brave Skydd har ett nytt hem och design. Det integreras nu med webbplatsinformation för en integrerad upplevelse.</translation>
 <translation id="9114542678887529043">Brave Skydd har ett nytt hem och design. Öppna det genom att klicka på webbplatsikonen i adressfältet.</translation>
 <translation id="4242533952199664413">Öppna inställningar</translation>
+<translation id="3616113530831147358">Ljud</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Enhetsminne</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Teckensnitt</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">Tangentbord</translation>
+<translation id="5302048478445481009">Språk</translation>
+<translation id="7986250835989845763">Medieenheter</translation>
+<translation id="4267171000817377500">Plugin-program</translation>
+<translation id="3441653493275994384">Skärm</translation>
+<translation id="1772612984983840854">Talsyntes</translation>
+<translation id="1167475333911019229">USB-enhetens serienummer</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Integritet. Som standard.</translation>
 <translation id="4366423156486478559">Få Brave-skydd varje gång du klickar på en länk. Ställ bara in Brave som standard och surfa vidare privat.</translation>
 <translation id="3830912418080848377">Importera inställningar</translation>
@@ -2728,7 +2750,6 @@
 <translation id="6821966107067356137">Lägg till RSS-flöde</translation>
 <translation id="2478076885740497414">Installera app</translation>
 <translation id="8293206222192510085">Lägg till bokmärke</translation>
-<translation id="1010029336854254368">Delningmeny</translation>
 <translation id="7758460733045216901">Panel för bokmärken</translation>
 <translation id="958268166261124668">Brave VPN: Ansluten</translation>
 <translation id="6021669293402055982">Brave VPN: Frånkopplad</translation>
@@ -2850,17 +2871,31 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="5816720995022674532">Origin är gratis att använda på Linux-enheter, men är fortfarande <ph name="BEGIN_LINK"/>tillgänglig för köp<ph name="END_LINK"/> om du vill stödja Brave som en verksamhet. Köp skulle också låsa upp möjligheten att använda Origin på Android, iOS, macOS och Windows-enheter.</translation>
 <translation id="3065220545261045367">Stödja Brave genom att köpa Origin</translation>
 <translation id="2069499076031488636">Fortsätt med Origin gratis på Linux</translation>
+<translation id="6820590295368504396">Det gick inte att ansluta till SKU-tjänsten</translation>
+<translation id="2525146368601152300">Köp-ID är tomt</translation>
+<translation id="7858444547014304753">Ogiltigt köp-ID</translation>
+<translation id="2016076837307423164">Det gick inte att hämta autentiseringsuppgifter</translation>
+<translation id="3890481923176188801">Köpet hittades inte</translation>
 <translation id="5713644099811900409">Brave-konto</translation>
 <translation id="2906576968270573525">Logga in eller skapa ett Brave-konto</translation>
 <translation id="6972754398087986839">Kom igång</translation>
 <translation id="5378207817582281342">Nästan där!</translation>
 <translation id="3750210661641549834">För att skapa ditt konto, vänligen verifiera din e-postadress.</translation>
-<translation id="4129813507847680661">Ange registreringskod</translation>
+<translation id="4351175281479794167">Ange verifieringskod</translation>
 <translation id="1672793037892810340">Du borde ha fått ett e-postmeddelande med en kod som du behöver ange.</translation>
 <translation id="4821255729182569254">Skicka bekräftelsemail igen</translation>
 <translation id="5837679375142747484">Ser du inte e-postmeddelandet? Kolla din skräppostmapp eller <ph name="BEGIN_LINK"/>skicka det igen<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Ser du inte e-postmeddelandet? Kolla din skräppostmapp eller skicka det igen.</translation>
 <translation id="1020730839570724178">Avbryt registrering</translation>
+<translation id="7155125570724238786">För att återställa ditt lösenord, vänligen verifiera din e-postadress.</translation>
+<translation id="816074628631172140">Din e-postadress har verifierats. Ange ett nytt lösenord för att slutföra återställningen av ditt lösenord.</translation>
+<translation id="7543374051303238869">Ange nytt lösenord</translation>
+<translation id="8378209932853841849">Avbryt lösenordsåterställning</translation>
+<translation id="4405566535206792621">För att ändra ditt lösenord, vänligen verifiera din e-postadress.</translation>
+<translation id="3135333563420939059">Din e-postadress har verifierats. Ange ett nytt lösenord för att slutföra ändringen av ditt lösenord.</translation>
+<translation id="4227581348172626540">Avbryt lösenordsändring</translation>
+<translation id="808894953321890993">Ändra lösenord</translation>
+<translation id="7967687455715421528">Det gick inte att ändra lösenord</translation>
 <translation id="4869737930995549965">Logga ut</translation>
 <translation id="5538654494923870167">Kom igång med ditt Brave-konto</translation>
 <translation id="1544145635547515689">Skapa ett Brave-konto</translation>
@@ -2875,10 +2910,11 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="5486261815000869482">Bekräfta lösenord</translation>
 <translation id="7345706641791090287">Bekräfta ditt lösenord</translation>
 <translation id="7114054701490058191">Lösenorden överensstämmer inte</translation>
+<translation id="4277028893293644418">Återställ lösenord</translation>
+<translation id="9033485352495162741">Bekräftelse lyckades. Ange nu det nya lösenord du vill använda:</translation>
 <translation id="1293857704520741614">Logga in på ditt konto</translation>
 <translation id="118617366439356381">Glömt ditt lösenord?</translation>
 <translation id="5183159033908953146">Bekräfta din Brave-konto-e-postadress så får du en länk för att återställa ditt lösenord. Länken är endast giltig i 30 minuter.</translation>
-<translation id="3997368361371298873">Varning: eftersom du inte är inloggad på den här enheten kommer återställning av ditt lösenord att <ph name="BEGIN_BOLD"/>radera all din data<ph name="END_BOLD"/> på servern. Om du har en annan enhet där du är inloggad, ändra ditt lösenord från den enheten istället för att återställa ditt lösenord.</translation>
 <translation id="3674472551471103443">Återställ ditt lösenord</translation>
 <translation id="2755539422340788311">Verifiera din e-post</translation>
 <translation id="6641436078676327508">Du borde ha fått ett e-postmeddelande med en kort kod. Ange den här för att fortsätta.</translation>
@@ -2895,10 +2931,16 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="7144067487084094749">Ett konto finns redan för denna e-postadress. Försök logga in istället för att skapa ett konto.</translation>
 <translation id="5288951359968156008">Domänen för denna e-postadress stöds inte. Använd en annan e-postadress.</translation>
 <translation id="7625678607509255072">Gränsen för e-postverifiering har överskridits. Vänta 30 minuter innan du försöker igen.</translation>
-<translation id="4582421696414628320">Verifieringen har gått ut. Starta registreringsprocessen igen.</translation>
+<translation id="9121175588136821850">Verifieringskoden har gått ut. Starta registreringsprocessen igen.</translation>
 <translation id="8439543211004394821">För många felaktiga koder angavs. Starta registreringsprocessen igen.</translation>
 <translation id="3229986152760633988">Fel kod, försök igen.</translation>
 <translation id="818783632689113711">Ett konto har redan begärts för den här e-postadressen. Kontrollera din e-post eller försök igen om 30 minuter.</translation>
+<translation id="4776810543245166572">Inget konto hittades för denna e-postadress.</translation>
+<translation id="7090885444036935209">Ogiltig e-postadress.</translation>
+<translation id="1542836798393843657">För många verifieringsförsök för denna e-postadress. Försök igen om 24 timmar.</translation>
+<translation id="7572012011062736429">Internt fel. Stäng dialogrutan, avbryt verifieringen och försök igen.</translation>
+<translation id="2477280119520811719">Verifieringskoden har gått ut. Starta lösenordsändringsprocessen igen.</translation>
+<translation id="7103280722523884198">För många felaktiga koder angavs. Starta lösenordsändringsprocessen igen.</translation>
 <translation id="4178004989875422946">Ett Brave-konto låter dig enkelt komma åt Brave-tjänster.</translation>
 <translation id="4902897635127068510">Menade du <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock är på</translation>
@@ -2907,6 +2949,7 @@ tryck på Tab och sedan på Retur för att växla till den öppna fliken</transl
 <translation id="2112559299194052697">Kunde inte skicka igen</translation>
 <translation id="7932611814134267012">För många verifierings-e-postmeddelanden har redan skickats. Kontrollera din skräppostmapp.</translation>
 <translation id="1364223093800750401">E-post redan verifierad.</translation>
+<translation id="1353061468772282268">Verifieringskoden har gått ut. Avbryt verifieringen och försök igen.</translation>
 <translation id="3353844160742960162">Justering av integritetsinställningar</translation>
 <translation id="528205534230423181">Denna webbplats erbjuder integritetsinställningar som Brave automatiskt kan justera åt dig. Här är vad vi rekommenderar:</translation>
 <translation id="1063227610401477317">Applicera förändringar</translation>

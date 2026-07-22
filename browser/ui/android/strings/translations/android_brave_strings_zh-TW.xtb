@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">務必前往原始 (非 AMP) 頁面的 URL，而非使用 Google 的 Accelerated Mobile Page 版本</translation>
 <translation id="920638232916443453">自動重新導向追蹤 URL</translation>
 <translation id="1118970888826017401">啟用對繞過頂層重新導向追蹤 URL 的支援。</translation>
-<translation id="94154759592465111">阻擋指令稿</translation>
+<translation id="4824468494729001999">封鎖指令碼</translation>
 <translation id="7714773920987474116">封鎖 JavaScript (可能會使網站無法正常運作)</translation>
 <translation id="2233004324252915283">封鎖 YouTube 推薦內容</translation>
 <translation id="1005372663692637999">封鎖 youtube.com 的「下一部影片」和結尾畫面等元素。</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">在您關閉網站時清除 cookie 和其他網站資料</translation>
 <translation id="7740929262043547697">在無痕式視窗中允許元素封鎖</translation>
 <translation id="1260864846935682371">在無痕式視窗中啟用盾牌的封鎖元素功能。請注意，在無痕式視窗中封鎖的元素，也會在非無痕式視窗中封鎖。</translation>
+<translation id="4021136205151368133">注意：這可能會降低 Brave 的隱私防護。</translation>
+<translation id="2876155735620608356">針對此網站盾牌已開啟</translation>
+<translation id="8605306630462821888">針對此網站盾牌已關閉</translation>
+<translation id="1574700443447059851">已封鎖追蹤程式、廣告等。</translation>
+<translation id="4039014515785210563">選擇如何處理追蹤器與廣告</translation>
+<translation id="8423733350479881051">選擇如何處理 cookie</translation>
+<translation id="9064628362799094520">銷毀網站的資料</translation>
+<translation id="2862348905922940916">將此網站重設為盾牌預設值</translation>
+<translation id="269939061709857874">網站已重設為盾牌預設值</translation>
+<translation id="3623708006387030755">盾牌全域設定</translation>
+<translation id="2387532482048804818">告訴我們網站是否在啟用 Shields 後就無法正常運作。</translation>
+<translation id="5412004902081180614">舉報</translation>
+<translation id="1209739344687072997">回報壞掉的網站</translation>
+<translation id="2606165159306988240">讓 Brave 的開發人員知悉此網站無法正常運作。</translation>
+<translation id="6806248680442980382">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。</translation>
+<translation id="7549123865054511884">此網站有什麼無法運作？</translation>
+<translation id="9094461910562981998">聯絡方式 (選填)</translation>
+<translation id="7645128170699559106">電子郵件、X 使用者名稱等</translation>
+<translation id="446579367766109694">如果您提供聯絡資訊，該資訊將被儲存，以備日後的報告使用</translation>
+<translation id="2653659639078652383">提交</translation>
+<translation id="8459191579769999214">檢視螢幕截圖</translation>
+<translation id="4530541918195747729">報告已送出。謝謝您！</translation>
+<translation id="5528772406060281700">銷毀網站資料</translation>
+<translation id="6795622376590884449">自動銷毀</translation>
+<translation id="3520341243738311408">當網站分頁關閉時</translation>
+<translation id="3559735673608367395">當應用程式結束時</translation>
+<translation id="9140049656798805345">立即銷毀網站資料</translation>
 <translation id="1680858055899097121">終止瀏覽後不要保留分頁</translation>
 <translation id="7142548388914389999">允許保護私隱的產品分析 (P3A)</translation>
 <translation id="5254037869598726291">匿名的 P3A 資訊可協助 Brave 預估整體使用量，並確保我們可以改進受歡迎的功能。</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">私人產品深入分析</translation>
 <translation id="3545804467215833536">輕觸以查看 Brave Shields</translation>
 <translation id="1724327820822194498">查看 Brave 使用 Shields 在每個頁面上封鎖的所有惡意內容。</translation>
-<translation id="5386259141409498372">已封鎖 <ph name="BIG_TECH"/> 和其他 <ph name="TRACKER"/> 個廣告和追蹤器</translation>
-<translation id="7256200875155794202">已封鎖 <ph name="BIG_TECH"/> 以及其他廣告和追蹤器</translation>
 <translation id="3092683655478890840">已封鎖 <ph name="TRACKER_COUNT"/> 個廣告和追蹤器</translation>
 <translation id="8281886186245836920">略過</translation>
-<translation id="986879628471635371">新手故障排除</translation>
 <translation id="5806601733251372221">Brave 防護</translation>
-<translation id="8537217141725709400">賺取 <ph name="TOKEN"/></translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">預設透過觀看尊重隱私的廣告來支援您最愛的網站與創作者。</translation>
-<translation id="5302488867897327287">透過點擊「開始使用 Brave Rewards」，即表示您同意</translation>
 <translation id="4281844954008187215">服務條款</translation>
 <translation id="6871397658902960384">開始瀏覽</translation>
-<translation id="454386012157232640">我沒看到任何廣告</translation>
-<translation id="1448877943847791441">Brave 將於以下時間內顯示首則廣告：</translation>
-<translation id="4410793187232041318">現在您可以透過 Brave 廣告來賺取代幣了。</translation>
 <translation id="6511854390690723657">這是你的首則 Brave 廣告。點按了解詳情。</translation>
-<translation id="2070991379950719711">開始使用 Brave Rewards</translation>
-<translation id="48520986898237073">繼續到錢包</translation>
 <translation id="6213254277250932867">我的復原詞句有 12 個字</translation>
 <translation id="4225265925807365011">我的復原詞句有 24 個字</translation>
 <translation id="3570367516044491911">設為預設瀏覽器</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">掃描 QR Code</translation>
 <translation id="5317781812114905957">說明</translation>
 <translation id="8515319483805157233">若要以 QR 碼搜尋，請將 QR 碼放在方框中央。</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">取消</translation>
 <translation id="1201402288615127009">繼續</translation>
 <translation id="8481779960444041069">若要享有隱私程度更高的瀏覽體驗，請將 Brave 設為您的預設瀏覽器</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">開啟資料夾</translation>
 <translation id="8985635554450124959">無法設定同步</translation>
 <translation id="7173114856073700355">開啟設定</translation>
-<translation id="496896260395129787">此 Brave Sync 帳戶已從其他裝置刪除。如果您不是要停用 Sync，請<ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>重新建立帳戶</translation>
+<translation id="674078455841038219">此 Brave 同步帳戶已從其他裝置刪除。如果您不是要停用同步，請重新建立帳戶。</translation>
+<translation id="8913415701676265311">重新建立</translation>
 <translation id="4094590686212463338">無法加入此同步鏈。同步鏈已被刪除。</translation>
 <translation id="4908081302669157000">電話號碼、電子郵件和地址</translation>
+<translation id="1571419474754278280">Leo AI 對話</translation>
 <translation id="1056898198331236512">警告</translation>
 <translation id="1426410128494586442">是</translation>
 <translation id="7811264919113243207">這會與產生這個二維碼的裝置分享您的 Brave 資料，可能包括您的密碼。
@@ -366,10 +383,9 @@
 <translation id="1413177583895309156">Brave VPN 會加密並保護您在線上所做的任何事情，即使並未使用 Brave 瀏覽器。</translation>
 <translation id="3974348661685061050">免費試用７天</translation>
 <translation id="5789441016350810005">Brave Ads 會在瀏覽器於背景執行時發送</translation>
-<translation id="1486343603936278248">代幣</translation>
 <translation id="7781069478569868053">新分頁</translation>
 <translation id="5927196110206824867">贊助商背景圖片支援 Brave 建立一個獨立、使用者優先網路的使命。與大型科技公司不同，我們以匿名方式衡量廣告效能，以維護您的隱私。</translation>
-<translation id="8748471354357836070">瞭解更多 / 退出選擇</translation>
+<translation id="6165508094623778733">深入瞭解</translation>
 <translation id="3171669670217312786">背景圖片</translation>
 <translation id="8522669544471808198">顯示背景圖片</translation>
 <translation id="6258554626602400736">顯示新標籤頁廣告</translation>
@@ -400,7 +416,7 @@
 <translation id="7151914815476509258">封鎖追蹤程式 &amp; 廣告（標準）</translation>
 <translation id="7384778069178817075">允許所有追蹤器與廣告</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>「攔截所有 Cookie」選項已被廢除。若要瞭解如何強制啟用此選項，請前往<ph name="END_LINK_0"/><ph name="BEGIN_LINK_1"/>支援頁面<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">封鎖 Cookies</translation>
+<translation id="8823559166155093873">封鎖 Cookie</translation>
 <translation id="614747795780742163">防止網站儲存您上一次造訪的資訊</translation>
 <translation id="6883611015375728278">阻擋所有 cookies</translation>
 <translation id="6196640612572343990">封鎖第三方 Cookie</translation>
@@ -411,7 +427,7 @@
 <translation id="1876882294512858963">永遠停止記錄</translation>
 <translation id="554464532999080267">停止記錄前先詢問（標準）</translation>
 <translation id="926857659063503456">永不停止記錄</translation>
-<translation id="3895527457258986253">封鎖指紋識別</translation>
+<translation id="6531019308847917584">封鎖指紋識別功能</translation>
 <translation id="7854108565842971747">這些是新網站的 Shields 預設設定。變更此些設定不會影響您現時對每個網站的設定。</translation>
 <translation id="218587021686734263">透過語言設定防止指紋辨識攻擊</translation>
 <translation id="1706099589708266367">減少網站可以根據您瀏覽器的語言設定所掌握到的內容。</translation>
@@ -421,22 +437,12 @@
 <translation id="7445306466605902444">封鎖指紋（嚴格，可能會破壞網站）</translation>
 <translation id="5582686930349810484">封鎖指紋（標準）</translation>
 <translation id="769702552748212954">允許所有指紋追蹤</translation>
-<translation id="876424292214881779">已封鎖廣告與其他令人毛骨悚然的東西</translation>
-<translation id="6849027612978668678">網站時常含有 Cookie 和程式碼，這些程式會嘗試辨認您的身分和裝置。此設計是要識別您的身分，並追蹤您在網路上各個網站的使用情形。\n\nBrave 會封鎖這些程式，讓您在瀏覽網路期間不受追蹤。</translation>
-<translation id="8553998445606452168">關於 Brave Shields</translation>
-<translation id="8912304686498704084">开启</translation>
-<translation id="4963218453264888510">关闭</translation>
-<translation id="7474113515179313724">您正在沒有受到 Brave 的隱私保護下瀏覽此網站。是因為 Shields up 功能哪裡出錯了嗎？</translation>
 <translation id="4226543734057230801">以太坊網路</translation>
 <translation id="3504157706952484145">Filecoin 網路</translation>
 <translation id="1561541094377237745">Solana 網路</translation>
 <translation id="7141438739990875547">比特幣網路</translation>
 <translation id="9055546041146396417">如果此網站顯示為損壞，請試試 Shields down</translation>
 <translation id="7898672232170410330">封鎖元素</translation>
-<translation id="9064628362799094520">銷毀網站的資料</translation>
-<translation id="8949611615512336262">自動銷毀：<ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">立即銷毀網站資料</translation>
-<translation id="6795622376590884449">自動銷毀</translation>
 <translation id="7961015016161918242">一律不要</translation>
 <translation id="3200744626782631683">瀏覽資料絕不會自動被銷毀</translation>
 <translation id="1991004083507807299">網站分頁關閉</translation>
@@ -447,23 +453,11 @@
 <translation id="2997451887458851244">更新「自動銷毀」功能，並調整要銷毀的資料</translation>
 <translation id="363903976200491771">自動刪除瀏覽資料</translation>
 <translation id="1028873002018537235">刪除瀏覽紀錄</translation>
-<translation id="1209739344687072997">回報壞掉的網站</translation>
-<translation id="8510478288840333677">讓 Brave 開發者知道此網站無法與 Shields 一起運作：</translation>
-<translation id="1653405824851871276">感謝您協助 Brave 改善服務。此報告只會包含我們修復此網站所需的資訊。<ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">深入瞭解。</translation>
-<translation id="8740275226259417070">此為錯誤頁面。無法將其回報為錯誤網站。</translation>
 <translation id="721949491455392748">附上目前頁面的螢幕截圖</translation>
-<translation id="8459191579769999214">檢視螢幕截圖</translation>
 <translation id="6476216365964140603">其他詳細資訊 (選填)</translation>
-<translation id="6145852496180774737">聯絡方式：(選填)</translation>
-<translation id="6367576083705149078">如果您提供聯絡資訊，該資訊將被儲存，以備日後的報告使用.</translation>
-<translation id="7616645803364270729">電子郵件、Twitter 等</translation>
-<translation id="5299848999918506028">感謝！</translation>
-<translation id="76550953340008122">感謝讓 Brave 開發者知道此網站會壞掉。我們將會盡力修復它。</translation>
 <translation id="3037432377946455872">您看到的主要問題是什麼？</translation>
 <translation id="8731661215617360873">選擇一個選項</translation>
 <translation id="650318023204990401">進階控制</translation>
-<translation id="7205939464631857223">清除所有攔截元件</translation>
 <translation id="5370478469168390143">降低線上使用流量</translation>
 <translation id="1118508688433541158">使用 Brave 瀏覽更快並封鎖廣告</translation>
 <translation id="7427391215172269363">我每日都會透過 Brave 瀏覽網路來節省流量。</translation>
@@ -513,17 +507,17 @@
 <translation id="2718046830255553131">已清除隱私權報告資料。</translation>
 <translation id="8376263745431603066">啟用「夜間模式」（實驗性）</translation>
 <translation id="1383876407941801731">搜尋</translation>
-<translation id="6165508094623778733">了解更多</translation>
 <translation id="13296465911709339">您的文字已複製到剪貼簿。</translation>
 <translation id="2735834606413553397">已將公共地址複製到剪貼簿。</translation>
 <translation id="2977461003134694205">隱私統計</translation>
 <translation id="8804164990146287819">隱私政策</translation>
 <translation id="5705882733397021510">返回</translation>
+<translation id="8450375131309292971">下拉重新整理</translation>
+<translation id="880475987868032564">啟用下拉重新整理手勢。從頁面頂端向下滑動即可重新整理頁面。</translation>
 <translation id="7889432931837317731">可能的話自動開啟</translation>
 <translation id="1029304566263314007">顯示下載進度通知</translation>
 <translation id="2977501775944575564">並行下載</translation>
 <translation id="6224180438946945617">啟用並行下載以加快下載速度</translation>
-<translation id="8967385052772844086">檢視完整的隱私權報告</translation>
 <translation id="3479552764303398839">現在不要</translation>
 <translation id="7138272885617540195">允許在 Brave 以外的應用程式中開啟應用程式連結</translation>
 <translation id="4954512758656527938">預設以太坊錢包</translation>
@@ -787,7 +781,6 @@
 <translation id="2156993118928861787">網址無效</translation>
 <translation id="7791543448312431591">新增</translation>
 <translation id="6889920539620318793">設定為啟用</translation>
-<translation id="2653659639078652383">提交</translation>
 <translation id="4945690646623486292">選取網路</translation>
 <translation id="8006088103295786154">存取 Brave 錢包</translation>
 <translation id="5308380583665731573">連線</translation>
@@ -1108,7 +1101,6 @@
 <translation id="1336494649091412226">您確定要退出 Brave 嗎？</translation>
 <translation id="6061635824229591714">要銷毀網站資料嗎？</translation>
 <translation id="1265051174491933207">銷毀將刪除網站資料並關閉所有「<ph name="SITE_NAME"/>」分頁。此操作無法復原。</translation>
-<translation id="5528772406060281700">銷毀網站資料</translation>
 <translation id="4426990318287827331">銷毀資料</translation>
 <translation id="7942415993090181327">聊天紀錄</translation>
 <translation id="6859935199732075666">顯示安全瀏覽錯誤</translation>

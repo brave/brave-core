@@ -787,9 +787,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="5486744676117070166">No ha estat possible obtenir el següent valor de nonce</translation>
 <translation id="6180576227145734714">La dada de transacció 'to' ha de ser una adreça vàlida quan s'especifica</translation>
 <translation id="6688162556547723415">El mètode o el compte sol·licitats no han estat autoritzats per l'usuari.</translation>
-<translation id="8767749833522980474">Crypto</translation>
 <translation id="6122742277607781713">Cartera</translation>
-<translation id="7020503656406658141">Preus</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Comptes</translation>
 <translation id="3567988240819868195">Mercat</translation>
@@ -1822,7 +1820,6 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="803703704549420287">Esborra filtres</translation>
 <translation id="1472675084647422956">Mostra'n més</translation>
 <translation id="4522570452068850558">Detalls</translation>
-<translation id="4583937519241190398">Verificat per DappRadar</translation>
 <translation id="8713438253026855351">Canvia a un compte protegit</translation>
 <translation id="3526789880090101085">Compte protegit</translation>
 <translation id="3155166394760577549">Habilitar escuts per millorar la privacitat de les transaccions.</translation>
@@ -1955,6 +1952,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="6261915643960475695">Empresa</translation>
 <translation id="8265589281845759879">Cotxes</translation>
 <translation id="7726519849288907308">Celebritats</translation>
+<translation id="8767749833522980474">Crypto</translation>
 <translation id="7577010593836079522">Cultura</translation>
 <translation id="6807791860691150411">Educació</translation>
 <translation id="3706423975342040244">Entreteniment</translation>
@@ -2171,6 +2169,7 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="2367972762794486313">Mostra les aplicacions</translation>
 <translation id="3142853026316054951">Activa/desactiva el mode concentració</translation>
 <translation id="3468387898712904997">Nou correu electrònic alternatiu</translation>
+<translation id="4711475997833555304">Crea un correu electrònic aleatori que es reenviï a la teva safata d'entrada.</translation>
 <translation id="2796584247246518451">Nou contenidor temporal</translation>
 <translation id="8591883849678260674">Veure original</translation>
 <translation id="1969654232209826429">min. de lectura</translation>
@@ -2230,8 +2229,10 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="8743383817154663379">S'ha produït un error en processar la teva sol·licitud. Torna-ho a provar més tard.</translation>
 <translation id="2712650703044366764">Aquest model té un punt final no vàlid. Revisa les teves configuracions i torna-ho a intentar.</translation>
 <translation id="7092656392206649236">S'ha produït un error en comunicar-se amb Leo. Siusplau torna-ho a provar.</translation>
+<translation id="4539536233699928121">S'ha produït un error en comunicar amb NEAR. Siusplau torna-ho a provar.</translation>
 <translation id="3552709750512842961">Codi d'estat: <ph name="STATUS_CODE"/>, codi d'error: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Codi d'estat: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Codi d'estat: <ph name="STATUS_CODE"/>, codi d'estat intern: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Has arribat al límit de la tarifa Premium. Torna-ho a provar d'aquí a unes hores.</translation>
 <translation id="3683964919745779766">Has assolit el límit de taxa per aquest model i no et queden crèdits. Torna-ho a provar més tard.</translation>
 <translation id="7692501701960747469">La clau API configurada per a aquest model no és vàlida. Comprova la teva configuració i torna-ho a provar.</translation>
@@ -2405,6 +2406,9 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="9051226419897869406">Xateja en privat amb Brave Leo</translation>
 <translation id="2414904697165579184">Les respostes s'ajusten en funció del contingut de les pestanyes</translation>
 <translation id="8258324391302611485">El contingut d'aquesta pàgina s'enviarà a Leo juntament amb els teus missatges.</translation>
+<translation id="443008484043213881">Eines</translation>
+<translation id="4343623396828510727">Aquests llocs exposen eines que Leo pot utilitzar per enviar dades cap a i des d'aquest lloc. No adjuntis ni aprovis aquestes eines si aquesta conversa conté dades que no vols que aquest lloc vegi.</translation>
+<translation id="5021823940147712387">Suprimeix les eines</translation>
 <translation id="318819763888864209">Totes les subscripcions es renoven automàticament, però es poden cancel·lar en qualsevol moment abans de la renovació.</translation>
 <translation id="5091223967610958">Comparteix el nom del servidor de la pàgina on et trobes (<ph name="HOST_NAME"/>) per ajudar-nos a millorar Leo.</translation>
 <translation id="8732450785281947197">Eines d'intel·ligència artificial de Leo</translation>
@@ -2483,6 +2487,9 @@ condicions d'ús <ph name="END_PROVIDER_TOU_LINK"/> i <ph name="BEGIN_PROVIDER_P
 <translation id="7918928051723770926">Tasca completada</translation>
 <translation id="2113810663179257944">Execució de codi</translation>
 <translation id="4838375634693651776">S'està executant codi en sandbox per ajudar amb la vostra consulta</translation>
+<translation id="6990975553143971265">Cercant a l'historial del navegador per "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">Cercant a l'historial del navegador</translation>
+<translation id="8410699755320690690">La IA de Brave vol cercar al teu historial de navegació. La cerca s'executa localment al teu aparell, així que l'historial complet no s'envia enlloc. Només els títols, les URL i els fragments de text indexats de les pàgines coincidents s'enviaran a la IA de Brave com a part d'aquesta conversa.</translation>
 <translation id="4379566111233326721">Codi:</translation>
 <translation id="3542130965673205258">Sortida:</translation>
 <translation id="6911817209337314910">S'estan generant algunes opcions perquè en trieu</translation>
@@ -2692,6 +2699,21 @@ other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SIT
 <translation id="7586067492365979844">Els Escuts de Brave tenen una nova ubicació i disseny. Ara s'integra amb la informació del lloc per a una experiència d'una única parada.</translation>
 <translation id="9114542678887529043">Els Escuts de Brave tenen una nova ubicació i disseny. Accediu-hi fent clic a la icona del lloc a la barra d'adreces.</translation>
 <translation id="4242533952199664413">Obre configuració</translation>
+<translation id="3616113530831147358">Àudio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Memòria de l'aparell</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Tipus de lletra</translation>
+<translation id="436315497893815819">Concurrència de maquinari</translation>
+<translation id="7846634333498149051">Teclat</translation>
+<translation id="5302048478445481009">Idioma</translation>
+<translation id="7986250835989845763">Aparells multimèdia</translation>
+<translation id="4267171000817377500">Connectors</translation>
+<translation id="3441653493275994384">Pantalla</translation>
+<translation id="1772612984983840854">Síntesi de veu</translation>
+<translation id="1167475333911019229">Número de sèrie de l'aparell USB</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Privadesa. Per defecte.</translation>
 <translation id="4366423156486478559">Obtingues protecció de Brave en cada enllaç que cliquis. Simplement estableix Brave com a predeterminat i navega-hi. De manera privada.</translation>
 <translation id="3830912418080848377">Importa la configuració</translation>
@@ -2728,7 +2750,6 @@ other {Escuts de Brave ha bloquejat {BLOCKED_COUNT} rastrejadors a <ph name="SIT
 <translation id="6821966107067356137">Afegeix font RSS</translation>
 <translation id="2478076885740497414">Instal·la l'aplicació</translation>
 <translation id="8293206222192510085">Afegeix una adreça d'interès</translation>
-<translation id="1010029336854254368">Menú de comparteix</translation>
 <translation id="7758460733045216901">Panell d'adreces d'interès</translation>
 <translation id="958268166261124668">VPN de Brave: connectada</translation>
 <translation id="6021669293402055982">VPN de Brave: desconnectada</translation>
@@ -2851,17 +2872,31 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="5816720995022674532">Origin és gratuït per utilitzar en dispositius Linux, però segueix <ph name="BEGIN_LINK"/>disponible per a compra<ph name="END_LINK"/> si vols suportar Brave com a negoci. Comprar també desbloquearia la capacitat d'utilitzar Origin a dispositius Android, iOS, macOS i Windows.</translation>
 <translation id="3065220545261045367">Suporta Brave comprant Origin</translation>
 <translation id="2069499076031488636">Continua amb Origin gratuïtament a Linux</translation>
+<translation id="6820590295368504396">No s'ha pogut connectar al servei SKU</translation>
+<translation id="2525146368601152300">L'ID de compra és buit</translation>
+<translation id="7858444547014304753">ID de compra no vàlid</translation>
+<translation id="2016076837307423164">No s'han pogut obtenir les credencials</translation>
+<translation id="3890481923176188801">No s'ha trobat la compra</translation>
 <translation id="5713644099811900409">Compte de Brave</translation>
 <translation id="2906576968270573525">Inicia sessió o crea un compte de Brave</translation>
 <translation id="6972754398087986839">Comença</translation>
 <translation id="5378207817582281342">Quasi allà!</translation>
 <translation id="3750210661641549834">Per crear el teu compte, verifica la teva adreça de correu electrònic.</translation>
-<translation id="4129813507847680661">Introdueix el codi de registre</translation>
+<translation id="4351175281479794167">Introdueix el codi de verificació</translation>
 <translation id="1672793037892810340">Hauries d'haver rebut un correu amb un codi que hauràs d'introduir.</translation>
 <translation id="4821255729182569254">Reenvia el correu de confirmació</translation>
 <translation id="5837679375142747484">No veus el correu? Comprova la teva carpeta de spam o <ph name="BEGIN_LINK"/>torna'l a enviar<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">No veus el correu? Comprova la teva carpeta de spam o torna'l a enviar.</translation>
 <translation id="1020730839570724178">Cancel·la el registre</translation>
+<translation id="7155125570724238786">Per restablir la teva contrasenya, verifica la teva adreça de correu electrònic.</translation>
+<translation id="816074628631172140">El teu correu electrònic s'ha verificat. Estableix una nova contrasenya per completar el restabliment de la contrasenya.</translation>
+<translation id="7543374051303238869">Estableix una nova contrasenya</translation>
+<translation id="8378209932853841849">Cancel·la el restabliment de la contrasenya</translation>
+<translation id="4405566535206792621">Per canviar la teva contrasenya, verifica la teva adreça de correu electrònic.</translation>
+<translation id="3135333563420939059">El teu correu electrònic s'ha verificat. Estableix una nova contrasenya per completar el canvi de contrasenya.</translation>
+<translation id="4227581348172626540">Cancel·la el canvi de contrasenya</translation>
+<translation id="808894953321890993">Canvia la contrasenya</translation>
+<translation id="7967687455715421528">No s'ha pogut canviar la contrasenya</translation>
 <translation id="4869737930995549965">Tanca la sessió</translation>
 <translation id="5538654494923870167">Comença amb el teu compte de Brave</translation>
 <translation id="1544145635547515689">Crea un compte de Brave</translation>
@@ -2876,10 +2911,11 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="5486261815000869482">Confirma la contrasenya</translation>
 <translation id="7345706641791090287">Confirma la teva contrasenya</translation>
 <translation id="7114054701490058191">Les contrasenyes no coincideixen</translation>
+<translation id="4277028893293644418">Restableix la contrasenya</translation>
+<translation id="9033485352495162741">Confirmació correcta. Ara introdueix la nova contrasenya que vulguis:</translation>
 <translation id="1293857704520741614">Inicia sessió al teu compte</translation>
 <translation id="118617366439356381">Has oblidat la contrasenya?</translation>
 <translation id="5183159033908953146">Confirma el correu electrònic del teu compte de Brave i rebràs un enllaç per restablir la contrasenya. L'enllaç només serà vàlid durant 30 minuts.</translation>
-<translation id="3997368361371298873">Avís: com que no has iniciat sessió en aquest aparell, restablir la contrasenya <ph name="BEGIN_BOLD"/>suprimirà totes les teves dades<ph name="END_BOLD"/> del servidor. Si tens un altre aparell on hagis iniciat sessió, canvia la contrasenya des d'aquell aparell en lloc de restablir-la.</translation>
 <translation id="3674472551471103443">Restableix la contrasenya</translation>
 <translation id="2755539422340788311">Verifica el teu correu electrònic</translation>
 <translation id="6641436078676327508">Hauries d'haver rebut un correu amb un codi curt. Introdueix-lo aquí per continuar.</translation>
@@ -2896,10 +2932,16 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="7144067487084094749">Ja existeix un compte amb aquesta adreça de correu electrònic. Prova d'iniciar sessió en lloc de crear un compte.</translation>
 <translation id="5288951359968156008">El domini d'aquesta adreça de correu electrònic no està admès. Utilitza una adreça diferent.</translation>
 <translation id="7625678607509255072">S'ha superat el límit de verificacions per correu electrònic. Espera 30 minuts abans de tornar-ho a provar.</translation>
-<translation id="4582421696414628320">La verificació ha caducat. Inicia el procés de registre de nou.</translation>
+<translation id="9121175588136821850">El codi de verificació ha caducat. Inicia el procés de registre de nou.</translation>
 <translation id="8439543211004394821">S'han introduït massa codis incorrectes. Inicia el procés de registre de nou.</translation>
 <translation id="3229986152760633988">Codi incorrecte, torna-ho a provar.</translation>
 <translation id="818783632689113711">Ja s'ha sol·licitat un compte per a aquesta adreça electrònica. Comproveu el vostre correu electrònic o torneu-ho a provar d'aquí a 30 minuts.</translation>
+<translation id="4776810543245166572">No s'ha trobat cap compte per a aquesta adreça de correu electrònic.</translation>
+<translation id="7090885444036935209">Adreça de correu electrònic no vàlida.</translation>
+<translation id="1542836798393843657">Massa intents de verificació per a aquesta adreça de correu electrònic. Torna-ho a provar d'aquí a 24 hores.</translation>
+<translation id="7572012011062736429">Error intern. Tanca el diàleg, cancel·la la verificació i torna-ho a provar.</translation>
+<translation id="2477280119520811719">El codi de verificació ha caducat. Inicia el procés de canvi de contrasenya de nou.</translation>
+<translation id="7103280722523884198">S'han introduït massa codis incorrectes. Inicia el procés de canvi de contrasenya de nou.</translation>
 <translation id="4178004989875422946">Un compte de Brave et permetrà accedir fàcilment als serveis de Brave.</translation>
 <translation id="4902897635127068510">Volíeu dir <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Bloq Maj està activat</translation>
@@ -2908,6 +2950,7 @@ Connecteu-vos-hi ara mateix!</translation>
 <translation id="2112559299194052697">No s'ha pogut tornar a enviar</translation>
 <translation id="7932611814134267012">Ja s'han enviat massa correus de verificació. Comprova la teva carpeta de spam.</translation>
 <translation id="1364223093800750401">El correu electrònic ja s'ha verificat.</translation>
+<translation id="1353061468772282268">El codi de verificació ha caducat. Cancel·la la verificació i torna-ho a provar.</translation>
 <translation id="3353844160742960162">Ajust de la configuració de privadesa</translation>
 <translation id="528205534230423181">Aquest lloc web ofereix opcions de privadesa que Brave pot ajustar automàticament per a tu. Això és el que et recomanem:</translation>
 <translation id="1063227610401477317">Aplica els canvis</translation>

@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">यो स्टोरसम्बन्धी जानकारी स्क्रिनको आधा भाग ओगट्ने गरी खोलिएको छ</translation>
 <translation id="7204204600596740190">एकभन्दा बढी ट्याब चयन गर्ने मोड</translation>
 <translation id="7211038039686180558">तपाईंका ट्याब समूहहरू स्वतः सेभ गरिन्छ र तपाईंले साइन इन गरेका सबै डिभाइसहरूमा अपडेट गरिन्छ</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> चयन गरिएको छ</translation>
 <translation id="7326879924029668159">सामान फिर्ता गर्नेसम्बन्धी नीतिका साथै थप जानकारी हेर्नुहोस्</translation>
 <translation id="7352298686197644113">तपाईंले खोल्नुभएका ट्याबहरूमा भएको कुन चाहिँ वस्तुको मूल्य कम छ हेर्नुहोस्</translation>
 <translation id="7369451074646620503">"<ph name="TAB_GROUP_NAME"/>" ट्याब समूह अब उपलब्ध छैन</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> मूल्याङ्कन, <ph name="REVIEWS_COUNT_ONE"/> समीक्षा}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> मूल्याङ्कन, <ph name="REVIEWS_COUNT_MANY"/> वटा समीक्षा}}</translation>
 <translation id="7885132941432959125">ट्याब सारेर दायाँतिर लैजानुहोस्</translation>
 <translation id="7887334752153342268">नक्कल बनाउनुहोस्</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> चयन गरिएको छैन</translation>
 <translation id="7961015016161918242">कहिल्यै पनि होइन</translation>
 <translation id="7966321538264951561">सिफारिसहरू खारेज गर्नुहोस्।</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{ट्याब सारेर नयाँ विन्डोमा लैजानुहोस्}other{ट्याब सारेर अर्को विन्डोमा लैजानुहोस्}}</translation>

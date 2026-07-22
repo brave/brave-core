@@ -41,7 +41,7 @@
 <translation id="5197219128592971597">Bezoek altijd originele (niet-AMP) pagina-URL's in plaats van mobiele paginaversies van Google Accelerated</translation>
 <translation id="920638232916443453">Automatisch tracerings-URL's omleiden</translation>
 <translation id="1118970888826017401">Schakel ondersteuning in voor het omzeilen van omleidings-/tracerings-URL's van het hoogste niveau.</translation>
-<translation id="94154759592465111">Blokkeer scripts</translation>
+<translation id="4824468494729001999">Blokkeer scripts</translation>
 <translation id="7714773920987474116">Hiermee wordt JavaScript geblokkeerd (websites werken hierdoor mogelijk niet)</translation>
 <translation id="2233004324252915283">Aanbevolen content van YouTube blokkeren</translation>
 <translation id="1005372663692637999">Blokkeert de elementen voor de volgende content en aftiteling op youtube.com.</translation>
@@ -151,6 +151,33 @@
 <translation id="6975864539539353406">Verwijdert cookies en andere sitegegevens wanneer u een site afsluit</translation>
 <translation id="7740929262043547697">Elementblokkering toestaan in privévensters</translation>
 <translation id="1260864846935682371">Schakelt de functie Shields Elementen blokkeren in voor privévensters. Let op: elementen die worden geblokkeerd in privévensters worden ook geblokkeerd in niet-privévensters.</translation>
+<translation id="4021136205151368133">Opmerking: dit kan de privacybescherming van Brave verminderen.</translation>
+<translation id="2876155735620608356">Shields aan voor deze site</translation>
+<translation id="8605306630462821888">Shields uit voor deze site</translation>
+<translation id="1574700443447059851">Trackers, advertenties en meer geblokkeerd.</translation>
+<translation id="4039014515785210563">Kies hoe je trackers en advertenties wilt afhandelen</translation>
+<translation id="8423733350479881051">Kies hoe je cookies wilt afhandelen</translation>
+<translation id="9064628362799094520">Sitegegevens versnipperen</translation>
+<translation id="2862348905922940916">Deze site terugzetten naar de standaardinstellingen van Shields</translation>
+<translation id="269939061709857874">Site teruggezet naar de standaardinstellingen van Shields</translation>
+<translation id="3623708006387030755">Globale instellingen Shields</translation>
+<translation id="2387532482048804818">Laat ons weten of de website niet goed werkte terwijl Shields geactiveerd waren.</translation>
+<translation id="5412004902081180614">Meldingen</translation>
+<translation id="1209739344687072997">Meld een gebroken site</translation>
+<translation id="2606165159306988240">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met deze site.</translation>
+<translation id="6806248680442980382">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen.</translation>
+<translation id="7549123865054511884">Wat werkt er niet op deze site?</translation>
+<translation id="9094461910562981998">Neem contact met me op via (optioneel)</translation>
+<translation id="7645128170699559106">E-mail, X-gebruikersnaam en meer</translation>
+<translation id="446579367766109694">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten</translation>
+<translation id="2653659639078652383">Verzenden</translation>
+<translation id="8459191579769999214">Schermafbeelding bekijken</translation>
+<translation id="4530541918195747729">Rapport ingediend. Bedankt!</translation>
+<translation id="5528772406060281700">Sitegegevens versnipperen</translation>
+<translation id="6795622376590884449">Automatische versnippering</translation>
+<translation id="3520341243738311408">Wanneer sitetabbladen worden gesloten</translation>
+<translation id="3559735673608367395">Wanneer de app wordt afgesloten</translation>
+<translation id="9140049656798805345">Sitegegevens nu versnipperen</translation>
 <translation id="1680858055899097121">Blijf niet tussen tabbladen doorbladeren.</translation>
 <translation id="7142548388914389999">Productanalyse met privacybescherming (P3A) toestaan</translation>
 <translation id="5254037869598726291">Op basis van geanonimiseerde P3A-gegevens kan Brave het algemene gebruik schatten en kunnen we populaire functies verbeteren.</translation>
@@ -209,24 +236,12 @@
 <translation id="5109496672133133896">Persoonlijke productinzichten</translation>
 <translation id="3545804467215833536">Tik om Brave Shields te bekijken</translation>
 <translation id="1724327820822194498">Bekijk alles wat Brave heeft geblokkeerd op alle pagina's met Shields.</translation>
-<translation id="5386259141409498372"><ph name="BIG_TECH"/> en nog <ph name="TRACKER"/> advertenties en trackers geblokkeerd</translation>
-<translation id="7256200875155794202"><ph name="BIG_TECH"/> en andere advertenties en trackers geblokkeerd</translation>
 <translation id="3092683655478890840"><ph name="TRACKER_COUNT"/> advertenties en trackers geblokkeerd</translation>
 <translation id="8281886186245836920">Overslaan</translation>
-<translation id="986879628471635371">Problemen met onboarding oplossingen</translation>
 <translation id="5806601733251372221">Brave Shields</translation>
-<translation id="8537217141725709400">Verdien <ph name="TOKEN"/>s</translation>
-<translation id="3333887201479867589">Brave Rewards</translation>
-<translation id="5870330605209713397">door advertenties te bekijken die privacy in acht nemen en uw favoriete sites en makers bij standaard ondersteunen.</translation>
-<translation id="5302488867897327287">Door te tikken op 'Starten met het gebruik van Brave Rewards', gaat u akkoord met</translation>
 <translation id="4281844954008187215">Servicevoorwaarden</translation>
 <translation id="6871397658902960384">Begin met bladeren</translation>
-<translation id="454386012157232640">Ik zag geen advertentie</translation>
-<translation id="1448877943847791441">Brave toont je eerste advertentie in</translation>
-<translation id="4410793187232041318">Nu verdien je token van Brave Ads.</translation>
 <translation id="6511854390690723657">Dit is je eerste Brave advertentie. Tik om meer te leren.</translation>
-<translation id="2070991379950719711">Starten met het gebruik van Brave Rewards</translation>
-<translation id="48520986898237073">Doorgaan naar wallet</translation>
 <translation id="6213254277250932867">Ik heb een herstelzin van 12 woorden</translation>
 <translation id="4225265925807365011">Ik heb een herstelzin van 24 woorden</translation>
 <translation id="3570367516044491911">Stel in als standaard browser</translation>
@@ -234,6 +249,7 @@
 <translation id="1545749641540134597">Scan QR-code</translation>
 <translation id="5317781812114905957">Instructies</translation>
 <translation id="8515319483805157233">Om te zoeken via QR-code plaatst u de QR-code in het midden van het scherm.</translation>
+<translation id="3333887201479867589">Brave Rewards</translation>
 <translation id="7658239707568436148">Annuleren</translation>
 <translation id="1201402288615127009">Volgende</translation>
 <translation id="8481779960444041069">Stel Brave in als standaardbrowser om uw privacy te verbeteren</translation>
@@ -339,10 +355,11 @@
 <translation id="2803313416453193357">Map openen</translation>
 <translation id="8985635554450124959">Synchronisatie kon niet worden opgezet</translation>
 <translation id="7173114856073700355">Instellingen openen</translation>
-<translation id="496896260395129787">Dit Brave Sync-acocunt is verwijderd van een ander apparaat. Als u Sync niet wilde uitschakelen, <ph name="LINK_TEXT"/></translation>
-<translation id="4353815407425635948"><ph name="INFOBAR_TEXT"/>maak het account dan opnieuw aan</translation>
+<translation id="674078455841038219">Dit Brave Sync-account is verwijderd van een ander apparaat. Als je Sync niet wilde uitschakelen, maak het account opnieuw aan.</translation>
+<translation id="8913415701676265311">Opnieuw aanmaken</translation>
 <translation id="4094590686212463338">Kan niet aan deze synchronisatieketen deelnemen. De synchronisatieketen is verwijderd.</translation>
 <translation id="4908081302669157000">Telefoonnummers, e-mails en adressen</translation>
+<translation id="1571419474754278280">Leo AI-gesprekken</translation>
 <translation id="1056898198331236512">Waarschuwing</translation>
 <translation id="1426410128494586442">Ja</translation>
 <translation id="7811264919113243207">Hiermee deel je je Brave-gegevens, inclusief mogelijke wachtwoorden, met het apparaat dat deze QR-code heeft gegenereerd.
@@ -366,10 +383,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1413177583895309156">Brave VPN versleutelt en beschermt alles wat je online doet, zelfs buiten de Brave Browser.</translation>
 <translation id="3974348661685061050">Probeer 7 dagen gratis</translation>
 <translation id="5789441016350810005">Brave Ads die worden verzonden wanneer de browser op de achtergrond draait</translation>
-<translation id="1486343603936278248">token</translation>
 <translation id="7781069478569868053">Nieuwe tabbladpagina</translation>
 <translation id="5927196110206824867">Dankzij gesponsorde achtergrondafbeeldingen kan Brave bouwen aan een onafhankelijk web waarin de gebruiker centraal staat. En anders dan bij Big Tech gebeurt het meten van advertenties bij ons volledig anoniem: jouw privacy komt op de eerste plaats.</translation>
-<translation id="8748471354357836070">Meer informatie / afmeldingsopties</translation>
+<translation id="6165508094623778733">Meer Leren</translation>
 <translation id="3171669670217312786">Achtergrondafbeeldingen</translation>
 <translation id="8522669544471808198">Achtergrondafbeeldingen weergeven</translation>
 <translation id="6258554626602400736">Advertenties op nieuwe tabbladen</translation>
@@ -397,7 +413,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7151914815476509258">Trackers &amp; advertenties blokkeren (standaard)</translation>
 <translation id="7384778069178817075">Laat alle trackers &amp; advertenties toe</translation>
 <translation id="1173312143376149085"><ph name="BEGIN_LINK_0"/>De optie 'Alle cookies blokkeren' is uitgefaseerd. Als je wilt weten hoe je deze optie geforceerd kunt inschakelen, ga je naar<ph name="END_LINK_0"/> <ph name="BEGIN_LINK_1"/>onze Help-pagina<ph name="END_LINK_1"/></translation>
-<translation id="3763681089644577874">Cookies blokkeren</translation>
+<translation id="8823559166155093873">Cookies blokkeren</translation>
 <translation id="614747795780742163">Voorkomt dat websites informatie over je eerdere bezoeken opslaan</translation>
 <translation id="6883611015375728278">Blokkeer alle cookies</translation>
 <translation id="6196640612572343990">Indirecte cookies blokkeren</translation>
@@ -408,7 +424,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1876882294512858963">Altijd Off-The-Record gebruiken</translation>
 <translation id="554464532999080267">Toestemming vragen voor Off-The-Record gaan (standaard)</translation>
 <translation id="926857659063503456">Nooit Off-The-Record gaan</translation>
-<translation id="3895527457258986253">Blokkeer fingerprinting</translation>
+<translation id="6531019308847917584">Fingerprinting blokkeren</translation>
 <translation id="7854108565842971747">Dit zijn de standaard Shields-instellingen voor nieuwe websites. Wijzigingen aan deze instellingen hebben geen invloed op je bestaande instellingen per website.</translation>
 <translation id="218587021686734263">Voorkom fingerprinting via taalinstellingen</translation>
 <translation id="1706099589708266367">Vermindert wat websites over u te weten kunnen komen op basis van de taalinstellingen van uw browser.</translation>
@@ -418,22 +434,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="7445306466605902444">Vingerafdrukken geblokkeerd (strikt, kan websites doen stukgaan)</translation>
 <translation id="5582686930349810484">Vingerafdrukken geblokkeerd (standaard)</translation>
 <translation id="769702552748212954">Sta alle vingerafdrukken toe</translation>
-<translation id="876424292214881779">Advertenties en andere griezelige dingen zijn geblokkeerd</translation>
-<translation id="6849027612978668678">Sites gebruiken vaak cookies en scripts die jou en je apparaat proberen te identificeren. Ze willen achterhalen wie je bent, je volgen op het web en bijhouden wat je op elke site doet.\n\nBrave blokkeert deze acties zodat je kunt browsen zonder dat iemand je volgt.</translation>
-<translation id="8553998445606452168">Over Brave Shields</translation>
-<translation id="8912304686498704084">BOVEN</translation>
-<translation id="4963218453264888510">BENEDEN</translation>
-<translation id="7474113515179313724">Je surft op deze site zonder de privacybescherming van Brave. Werkt het niet goed als Shields aan staat?</translation>
 <translation id="4226543734057230801">Ethereum-netwerken</translation>
 <translation id="3504157706952484145">Filecoin-netwerken</translation>
 <translation id="1561541094377237745">Solana-netwerken</translation>
 <translation id="7141438739990875547">Bitcoin-netwerken</translation>
 <translation id="9055546041146396417">Als deze site niet lijkt te werken, probeer dan Shields uit te zetten.</translation>
 <translation id="7898672232170410330">Element blokkeren</translation>
-<translation id="9064628362799094520">Sitegegevens versnipperen</translation>
-<translation id="8949611615512336262">Automatische versnippering: <ph name="AUTO_SHRED_MODE_TEXT"/></translation>
-<translation id="9140049656798805345">Versnipper sitegegevens nu</translation>
-<translation id="6795622376590884449">Automatische versnippering</translation>
 <translation id="7961015016161918242">Nooit</translation>
 <translation id="3200744626782631683">Browsegegevens worden nooit automatisch vernietigd</translation>
 <translation id="1991004083507807299">Tabbladen van site gesloten</translation>
@@ -444,23 +450,11 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2997451887458851244">Werk 'Auto Shred' bij en stel in welke gegevens moeten worden vernietigd</translation>
 <translation id="363903976200491771">Browsegegevens automatisch vernietigen</translation>
 <translation id="1028873002018537235">Browsegeschiedenis verwijderen</translation>
-<translation id="1209739344687072997">Meld een gebroken site</translation>
-<translation id="8510478288840333677">Laat de ontwikkelaars van Brave weten dat deze site niet goed werkt met Shields:</translation>
-<translation id="1653405824851871276">Bedankt voor je hulp om Brave beter te maken voor iedereen. Dit rapport zal alleen informatie bevatten die we nodig hebben om deze site te herstellen. <ph name="LEARN_MORE"/></translation>
-<translation id="8759753423332885148">Learn more.</translation>
-<translation id="8740275226259417070">Dit is een foutpagina die niet als een defecte site kan worden gemeld.</translation>
 <translation id="721949491455392748">Voeg een schermafbeelding van de huidige pagina toe</translation>
-<translation id="8459191579769999214">Schermafbeelding bekijken</translation>
 <translation id="6476216365964140603">Aanvullende gegevens (optioneel)</translation>
-<translation id="6145852496180774737">Neem contact met me op via: (optioneel)</translation>
-<translation id="6367576083705149078">Als je contactgegevens opgeeft, worden deze bewaard voor toekomstige rapporten.</translation>
-<translation id="7616645803364270729">E-mail, Twitter, etc.</translation>
-<translation id="5299848999918506028">Bedankt!</translation>
-<translation id="76550953340008122">Bedankt dat u de ontwikkelaars van Brave heeft laten weten dat er iets mis is met deze site. We zullen ons best doen om het te repareren!</translation>
 <translation id="3037432377946455872">Wat is het voornaamste probleem?</translation>
 <translation id="8731661215617360873">Selecteer een optie</translation>
 <translation id="650318023204990401">Geavanceerde instellingen</translation>
-<translation id="7205939464631857223">Alle geblokkeerde elementen wissen</translation>
 <translation id="5370478469168390143">Sla gegevens online op</translation>
 <translation id="1118508688433541158">Browse sneller en blokkeer advertenties met Brave</translation>
 <translation id="7427391215172269363">Ik bespaar dagelijks data door online te browsen met Brave.</translation>
@@ -510,17 +504,17 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2718046830255553131">Gegevens van privacyrapporten zijn gewist.</translation>
 <translation id="8376263745431603066">"Nachtmodus" inschakelen (experimenteel)</translation>
 <translation id="1383876407941801731">Zoeken</translation>
-<translation id="6165508094623778733">Meer Leren</translation>
 <translation id="13296465911709339">Uw tekst is gekopieerd naar het klembord.</translation>
 <translation id="2735834606413553397">Openbaar adres is gekopieerd naar klembord.</translation>
 <translation id="2977461003134694205">Privacystatistieken</translation>
 <translation id="8804164990146287819">Privacybeleid</translation>
 <translation id="5705882733397021510">Terugkeren</translation>
+<translation id="8450375131309292971">Trekken om te vernieuwen</translation>
+<translation id="880475987868032564">Schakelt het gebaar 'trekken om te vernieuwen' in. Door vanaf de bovenkant van een pagina naar beneden te vegen, wordt de pagina vernieuwd.</translation>
 <translation id="7889432931837317731">Indien mogelijk automatisch openen</translation>
 <translation id="1029304566263314007">Meldingen van voortgang van download weergeven</translation>
 <translation id="2977501775944575564">Parallel downloaden</translation>
 <translation id="6224180438946945617">Schakel parallel downloaden in voor een hogere downloadsnelheid</translation>
-<translation id="8967385052772844086">Volledig privacyrapport weergeven</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="7138272885617540195">Sta app-links toe om apps buiten Brave te openen</translation>
 <translation id="4954512758656527938">Standaard Ethereum-wallet</translation>
@@ -784,7 +778,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2156993118928861787">Ongeldig adres</translation>
 <translation id="7791543448312431591">Voeg toe</translation>
 <translation id="6889920539620318793">Instellen als actief</translation>
-<translation id="2653659639078652383">Verzenden</translation>
 <translation id="4945690646623486292">Netwerk selecteren</translation>
 <translation id="8006088103295786154">Toegang tot Brave Wallet</translation>
 <translation id="5308380583665731573">Connect</translation>
@@ -1105,7 +1098,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="1336494649091412226">Weet je zeker dat je Brave wilt afsluiten?</translation>
 <translation id="6061635824229591714">Sitegegevens versnipperen?</translation>
 <translation id="1265051174491933207">Door de versnippering worden alle sitegegevens verwijderd en alle '<ph name="SITE_NAME"/>'-tabbladen gesloten. Deze actie kan niet ongedaan worden gemaakt.</translation>
-<translation id="5528772406060281700">Sitegegevens versnipperen</translation>
 <translation id="4426990318287827331">Versnipper gegevens</translation>
 <translation id="7942415993090181327">Chatgeschiedenis</translation>
 <translation id="6859935199732075666">Safe Browsing-fouten weergeven</translation>

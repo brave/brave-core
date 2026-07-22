@@ -792,9 +792,7 @@
 <translation id="5486744676117070166">Nie udało się pobrać wartości identyfikatora jednorazowego</translation>
 <translation id="6180576227145734714">Po określeniu dana transakcji „to” musi zawierać prawidłowy adres</translation>
 <translation id="6688162556547723415">Żądana metoda i/lub konto nie zostały autoryzowane przez użytkownika.</translation>
-<translation id="8767749833522980474">Krypto</translation>
 <translation id="6122742277607781713">Portfel</translation>
-<translation id="7020503656406658141">Ceny</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Konta</translation>
 <translation id="3567988240819868195">Rynek</translation>
@@ -1830,7 +1828,6 @@
 <translation id="803703704549420287">Wyczyść filtry</translation>
 <translation id="1472675084647422956">Pokaż więcej</translation>
 <translation id="4522570452068850558">Szczegóły</translation>
-<translation id="4583937519241190398">Zweryfikowane przez DappRadar</translation>
 <translation id="8713438253026855351">Przełącz się na konto chronione</translation>
 <translation id="3526789880090101085">Ochroń konto</translation>
 <translation id="3155166394760577549">Włącz ochronę, by zwiększyć prywatność transakcji.</translation>
@@ -1965,6 +1962,7 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Samochody</translation>
 <translation id="7726519849288907308">Celebryci</translation>
+<translation id="8767749833522980474">Krypto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Edukacja</translation>
 <translation id="3706423975342040244">Rozrywka</translation>
@@ -2181,6 +2179,7 @@
 <translation id="2367972762794486313">Pokaż aplikacje</translation>
 <translation id="3142853026316054951">Przełącz tryb skupienia</translation>
 <translation id="3468387898712904997">Nowy alias e-mail</translation>
+<translation id="4711475997833555304">Utwórz losowy adres e-mail, który przekierowuje do Twojej skrzynki odbiorczej.</translation>
 <translation id="2796584247246518451">Nowy kontener tymczasowy</translation>
 <translation id="8591883849678260674">Zobacz stronę oryginalną</translation>
 <translation id="1969654232209826429">min. czytania</translation>
@@ -2240,8 +2239,10 @@
 <translation id="8743383817154663379">Coś poszło nie tak podczas przetwarzania żądania. Spróbuj ponownie później.</translation>
 <translation id="2712650703044366764">Ten model ma nieprawidłowy adres końcowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
 <translation id="7092656392206649236">Coś poszło nie tak podczas komunikacji z Leo. Spróbuj ponownie.</translation>
+<translation id="4539536233699928121">Coś poszło nie tak podczas komunikacji z NEAR. Spróbuj ponownie.</translation>
 <translation id="3552709750512842961">Kod statusu: <ph name="STATUS_CODE"/>, kod błędu: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Kod statusu: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Kod statusu: <ph name="STATUS_CODE"/>, wewnętrzny kod statusu: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Osiągnięto limit częstości w wersji premium. Spróbuj ponownie za kilka godzin.</translation>
 <translation id="3683964919745779766">Osiągnięto limit zapytań dla tego modelu lub skończyły się kredyty. Spróbuj ponownie później.</translation>
 <translation id="7692501701960747469">Klucz API skonfigurowany dla tego modelu jest nieprawidłowy. Sprawdź konfigurację i spróbuj ponownie.</translation>
@@ -2415,6 +2416,9 @@
 <translation id="9051226419897869406">Rozpocznij prywatną rozmowę z Brave Leo</translation>
 <translation id="2414904697165579184">Formułuj odpowiedzi na podstawie zawartości stron</translation>
 <translation id="8258324391302611485">Zawartość tej strony zostanie wysłana Leo wraz z Twoimi wiadomościami.</translation>
+<translation id="443008484043213881">Narzędzia</translation>
+<translation id="4343623396828510727">Te witryny udostępniają narzędzia, których Leo może użyć do wysyłania danych do i z tej witryny. Nie dołączaj ani nie zatwierdzaj tych narzędzi, jeśli ta rozmowa zawiera dane, których nie chcesz udostępniać tej witrynie.</translation>
+<translation id="5021823940147712387">Usuń narzędzia</translation>
 <translation id="318819763888864209">Wszystkie subskrypcje są odnawiane automatycznie, ale można je anulować przed odnowieniem.</translation>
 <translation id="5091223967610958">Podziel się z nami nazwą hosta witryny, którą odwiedzasz (<ph name="HOST_NAME"/>), aby pomóc nam ulepszyć Leo.</translation>
 <translation id="8732450785281947197">Narzędzia SI Leo</translation>
@@ -2493,6 +2497,9 @@
 <translation id="7918928051723770926">Zadanie ukończone</translation>
 <translation id="2113810663179257944">Wykonanie kodu</translation>
 <translation id="4838375634693651776">Wykonywanie kodu w piaskownicy, aby pomóc w Twoim zapytaniu</translation>
+<translation id="6990975553143971265">Wyszukiwanie w historii przeglądarki dla „<ph name="QUERY"/>”</translation>
+<translation id="8302511726757276645">Wyszukiwanie w historii przeglądarki</translation>
+<translation id="8410699755320690690">Brave AI chce przeszukać Twoją historię przeglądania. Wyszukiwanie odbywa się lokalnie na Twoim urządzeniu, więc pełna historia nie jest nigdzie wysyłana. Tylko tytuły, adresy URL i zindeksowane fragmenty tekstu pasujących stron zostaną wysłane do Brave AI w ramach tej rozmowy.</translation>
 <translation id="4379566111233326721">Kod:</translation>
 <translation id="3542130965673205258">Dane wyjściowe:</translation>
 <translation id="6911817209337314910">Generowanie kilku opcji do wyboru</translation>
@@ -2702,6 +2709,21 @@
 <translation id="7586067492365979844">Tarcze Brave mają nowy dom i design. Teraz integruje się z informacjami o witrynie, aby uzyskać kompleksowe doświadczenie.</translation>
 <translation id="9114542678887529043">Tarcze Brave mają nowy dom i design. Uzyskaj do nich dostęp, klikając ikonę witryny na pasku adresu.</translation>
 <translation id="4242533952199664413">Otwórz ustawienia</translation>
+<translation id="3616113530831147358">Dźwięk</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Pamięć urządzenia</translation>
+<translation id="1217374757325197995">Pula źródeł zdarzeń</translation>
+<translation id="1823768272150895732">Czcionka</translation>
+<translation id="436315497893815819">Współbieżność sprzętowa</translation>
+<translation id="7846634333498149051">Klawiatura</translation>
+<translation id="5302048478445481009">Język</translation>
+<translation id="7986250835989845763">Urządzenia multimedialne</translation>
+<translation id="4267171000817377500">Wtyczki</translation>
+<translation id="3441653493275994384">Ekran</translation>
+<translation id="1772612984983840854">Synteza mowy</translation>
+<translation id="1167475333911019229">Numer seryjny urządzenia USB</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Pula gniazd sieciowych</translation>
 <translation id="6294662480095808915">Domyślna prywatność.</translation>
 <translation id="4366423156486478559">Uzyskaj ochronę przeglądarki Brave w przypadku każdego klikniętego łącza. Wystarczy, że ustawisz przeglądarkę Brave jako domyślną. Przeglądaj bez obaw o naruszenie prywatności.</translation>
 <translation id="3830912418080848377">Importuj ustawienia</translation>
@@ -2738,7 +2760,6 @@
 <translation id="6821966107067356137">Dodaj kanał RSS</translation>
 <translation id="2478076885740497414">Zainstaluj aplikację</translation>
 <translation id="8293206222192510085">Dodaj zakładkę</translation>
-<translation id="1010029336854254368">Menu udostępniania</translation>
 <translation id="7758460733045216901">Panel zakładek</translation>
 <translation id="958268166261124668">VPN Brave: połączony</translation>
 <translation id="6021669293402055982">VPN Brave: rozłączony</translation>
@@ -2860,17 +2881,31 @@ Zaraz Cię połączymy!</translation>
 <translation id="5816720995022674532">Origin jest bezpłatny na urządzeniach Linux, ale wciąż jest <ph name="BEGIN_LINK"/>dostępny do zakupu<ph name="END_LINK"/> jeśli chcesz wspomóc Brave jako biznes. Zakup pozwoliłby również na użytkowanie Origin na urządzeniach Android, iOS, macOS i Windows.</translation>
 <translation id="3065220545261045367">Wspomóż Brave kupując Origin</translation>
 <translation id="2069499076031488636">Kontynuuj z Origin za darmo na Linux</translation>
+<translation id="6820590295368504396">Nie można połączyć się z usługą SKU</translation>
+<translation id="2525146368601152300">Identyfikator zakupu jest pusty</translation>
+<translation id="7858444547014304753">Nieprawidłowy identyfikator zakupu</translation>
+<translation id="2016076837307423164">Nie udało się pobrać danych uwierzytelniających</translation>
+<translation id="3890481923176188801">Nie znaleziono zakupu</translation>
 <translation id="5713644099811900409">Konto Brave</translation>
 <translation id="2906576968270573525">Zaloguj się lub utwórz konto Brave</translation>
 <translation id="6972754398087986839">Rozpocznij</translation>
 <translation id="5378207817582281342">Prawie gotowe!</translation>
 <translation id="3750210661641549834">Aby utworzyć konto, zweryfikuj swój adres e-mail.</translation>
-<translation id="4129813507847680661">Wprowadź kod rejestracyjny</translation>
+<translation id="4351175281479794167">Wprowadź kod weryfikacyjny</translation>
 <translation id="1672793037892810340">Powinieneś otrzymać wiadomość e-mail z kodem, który należy wprowadzić.</translation>
 <translation id="4821255729182569254">Wyślij ponownie email potwierdzający</translation>
 <translation id="5837679375142747484">Nie widzisz e-maila? Sprawdź folder spam lub <ph name="BEGIN_LINK"/>wyślij ponownie<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Nie widzisz e-maila? Sprawdź folder spam lub wyślij ponownie.</translation>
 <translation id="1020730839570724178">Anuluj rejestrację</translation>
+<translation id="7155125570724238786">Aby zresetować hasło, zweryfikuj swój adres e-mail.</translation>
+<translation id="816074628631172140">Twój adres e-mail został zweryfikowany. Ustaw nowe hasło, aby dokończyć resetowanie hasła.</translation>
+<translation id="7543374051303238869">Ustaw nowe hasło</translation>
+<translation id="8378209932853841849">Anuluj resetowanie hasła</translation>
+<translation id="4405566535206792621">Aby zmienić hasło, zweryfikuj swój adres e-mail.</translation>
+<translation id="3135333563420939059">Twój adres e-mail został zweryfikowany. Ustaw nowe hasło, aby dokończyć zmianę hasła.</translation>
+<translation id="4227581348172626540">Anuluj zmianę hasła</translation>
+<translation id="808894953321890993">Zmień hasło</translation>
+<translation id="7967687455715421528">Nie można zmienić hasła</translation>
 <translation id="4869737930995549965">Wyloguj się</translation>
 <translation id="5538654494923870167">Rozpocznij korzystanie z konta Brave</translation>
 <translation id="1544145635547515689">Utwórz konto Brave</translation>
@@ -2885,10 +2920,11 @@ Zaraz Cię połączymy!</translation>
 <translation id="5486261815000869482">Potwierdź hasło</translation>
 <translation id="7345706641791090287">Potwierdź swoje hasło</translation>
 <translation id="7114054701490058191">Hasła nie są zgodne</translation>
+<translation id="4277028893293644418">Zresetuj hasło</translation>
+<translation id="9033485352495162741">Potwierdzenie zakończone powodzeniem. Teraz wprowadź nowe hasło:</translation>
 <translation id="1293857704520741614">Zaloguj się do swojego konta</translation>
 <translation id="118617366439356381">Nie pamiętasz hasła?</translation>
 <translation id="5183159033908953146">Potwierdź adres e-mail konta Brave, a następnie otrzymasz link do zresetowania hasła. Link będzie ważny tylko przez 30 minut.</translation>
-<translation id="3997368361371298873">Ostrzeżenie: ponieważ nie jesteś zalogowany na tym urządzeniu, zresetowanie hasła spowoduje <ph name="BEGIN_BOLD"/>usunięcie wszystkich Twoich danych<ph name="END_BOLD"/> z serwera. Jeśli masz inne urządzenie, na którym jesteś zalogowany, zmień hasło z tego urządzenia, zamiast je resetować.</translation>
 <translation id="3674472551471103443">Zresetuj hasło</translation>
 <translation id="2755539422340788311">Zweryfikuj swój adres e-mail</translation>
 <translation id="6641436078676327508">Powinieneś otrzymać wiadomość e-mail z krótkim kodem. Wprowadź go tutaj, aby kontynuować.</translation>
@@ -2905,10 +2941,16 @@ Zaraz Cię połączymy!</translation>
 <translation id="7144067487084094749">Konto dla tego adresu e-mail już istnieje. Spróbuj się zalogować zamiast tworzyć konto.</translation>
 <translation id="5288951359968156008">Domena tego adresu e-mail nie jest obsługiwana. Użyj innego adresu e-mail.</translation>
 <translation id="7625678607509255072">Przekroczono limit weryfikacji e-mail. Odczekaj 30 minut przed kolejną próbą.</translation>
-<translation id="4582421696414628320">Weryfikacja wygasła. Rozpocznij proces rejestracji od nowa.</translation>
+<translation id="9121175588136821850">Kod weryfikacyjny wygasł. Rozpocznij proces rejestracji od nowa.</translation>
 <translation id="8439543211004394821">Wprowadzono zbyt wiele nieprawidłowych kodów. Rozpocznij proces rejestracji od nowa.</translation>
 <translation id="3229986152760633988">Nieprawidłowy kod, spróbuj ponownie.</translation>
 <translation id="818783632689113711">Konto dla tego adresu e-mail zostało już zażądane. Sprawdź swoją pocztę e-mail lub spróbuj ponownie za 30 minut.</translation>
+<translation id="4776810543245166572">Nie znaleziono konta dla tego adresu e-mail.</translation>
+<translation id="7090885444036935209">Nieprawidłowy adres e-mail.</translation>
+<translation id="1542836798393843657">Zbyt wiele prób weryfikacji dla tego adresu e-mail. Spróbuj ponownie za 24 godziny.</translation>
+<translation id="7572012011062736429">Błąd wewnętrzny. Zamknij okno dialogowe, anuluj weryfikację i spróbuj ponownie.</translation>
+<translation id="2477280119520811719">Kod weryfikacyjny wygasł. Rozpocznij proces zmiany hasła od nowa.</translation>
+<translation id="7103280722523884198">Wprowadzono zbyt wiele nieprawidłowych kodów. Rozpocznij proces zmiany hasła od nowa.</translation>
 <translation id="4178004989875422946">Konto Brave umożliwi Ci łatwy dostęp do usług Brave.</translation>
 <translation id="4902897635127068510">Czy chodziło Ci o <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock jest włączony</translation>
@@ -2917,6 +2959,7 @@ Zaraz Cię połączymy!</translation>
 <translation id="2112559299194052697">Nie można wysłać ponownie</translation>
 <translation id="7932611814134267012">Wysłano już zbyt wiele wiadomości weryfikacyjnych. Sprawdź folder spam.</translation>
 <translation id="1364223093800750401">Adres e-mail został już zweryfikowany.</translation>
+<translation id="1353061468772282268">Kod weryfikacyjny wygasł. Anuluj weryfikację i spróbuj ponownie.</translation>
 <translation id="3353844160742960162">Dostrajanie ustawień prywatności</translation>
 <translation id="528205534230423181">Ta strona oferuje ustawienia prywatności, które Brave może automatycznie dostosować za Ciebie. Oto, co zalecamy:</translation>
 <translation id="1063227610401477317">Zatwierdź zmiany</translation>
