@@ -13,6 +13,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
   private var unlockWalletHandler: (() -> Void)?
   private var showOnboardingHandler: ((Bool) -> Void)?
   private var openWalletHomeHandler: (() -> Void)?
+  private var scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?
 
   public init?(
     tab: some TabState,
@@ -20,7 +21,8 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     showWalletBackUpHandler: (() -> Void)?,
     unlockWalletHandler: (() -> Void)?,
     showOnboardingHandler: ((Bool) -> Void)?,
-    openWalletHomeHandler: (() -> Void)?
+    openWalletHomeHandler: (() -> Void)?,
+    scanAddressQRCodeHandler: ((@escaping (String) -> Void) -> Void)?
   ) {
     if !tab.isChromiumTab || !(FeatureList.kBraveWalletWebUIIOS?.enabled ?? false) {
       return nil
@@ -31,6 +33,7 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
     self.unlockWalletHandler = unlockWalletHandler
     self.showOnboardingHandler = showOnboardingHandler
     self.openWalletHomeHandler = openWalletHomeHandler
+    self.scanAddressQRCodeHandler = scanAddressQRCodeHandler
     super.init()
     tab.addObserver(self)
   }
@@ -68,6 +71,10 @@ public class WalletWebUIHelper: NSObject, TabObserver, WalletPageHandler {
 
   public func openWalletHome() {
     openWalletHomeHandler?()
+  }
+
+  public func scanAddressQRCode(_ completion: @escaping (String) -> Void) {
+    scanAddressQRCodeHandler?(completion)
   }
 }
 
