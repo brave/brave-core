@@ -3,7 +3,7 @@
   "include": [
     "./lit_mangler.ts",
     "./lit_mangler_cli.ts",
-    "../../../chromium_src/**/*.lit_mangler.ts",
+    "../../../rewrite/**/*.lit_mangler.ts",
   ],
   "compilerOptions": {
     "baseUrl": "../../..",

@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-index 98634cdd2cb0646cbdf06314697eb2d20d9fd7b8..6b3d5021ebaa147555952cd7fdd275d0b3fad024 100644
+index 98634cdd2cb0646cbdf06314697eb2d20d9fd7b8..0951613f38fcd781dd6fd9231ef87f7c9ca1a3b6 100644
 --- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
 +++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import {isGlicVersion} from './profile_picker_flags.js';
-@@ -15,8 +11,7 @@ ${isGlicVersion() ? html`
+@@ -15,8 +15,7 @@ ${isGlicVersion() ? html`
  ` : ''}
  <div class="flex-container">
    <div class="title-container">
@@ -20,7 +12,7 @@ index 98634cdd2cb0646cbdf06314697eb2d20d9fd7b8..6b3d5021ebaa147555952cd7fdd275d0
      <h1 class="title" .innerHTML="${this.getTitle_()}"></h1>
      <div class="subtitle" .innerHTML="${this.getSubtitle_()}"></div>
    </div>
-@@ -29,29 +24,20 @@ ${isGlicVersion() ? html`
+@@ -29,29 +28,20 @@ ${isGlicVersion() ? html`
              @disable-all-picker-buttons="${this.onDisableAllPickerButtons_}">
          </profile-card>
        `)}

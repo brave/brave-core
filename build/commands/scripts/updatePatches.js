@@ -79,10 +79,7 @@ async function loadPlasterPathFilter(rewriteDir) {
     for await (const file of glob(patterns, { cwd: rewriteDir })) {
       // `<source><ext>` -> `<source>`, normalized to posix separators so it
       // matches the paths reported by git.
-      const source = file
-        .split(path.sep)
-        .join('/')
-        .slice(0, -ext.length)
+      const source = file.split(path.sep).join('/').slice(0, -ext.length)
       managedSources.add(source)
     }
   }

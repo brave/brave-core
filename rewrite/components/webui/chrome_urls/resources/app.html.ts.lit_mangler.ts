@@ -15,56 +15,68 @@ mangle((element) => {
 })
 
 // Rewrite chrome://chrome-urls -> brave://chrome-urls
-mangle((element) => {
-  const anchor = element.querySelector('a')
-  if (!anchor) {
-    throw new Error('[chrome_urls override] Missing anchor element')
-  }
-  if (anchor.textContent !== 'chrome://chrome-urls') {
-    throw new Error('[chrome_urls override] Unexpected anchor textContent')
-  }
-  anchor.textContent = 'brave://chrome-urls'
-}, x => x.text.includes('href="#"'))
+mangle(
+  (element) => {
+    const anchor = element.querySelector('a')
+    if (!anchor) {
+      throw new Error('[chrome_urls override] Missing anchor element')
+    }
+    if (anchor.textContent !== 'chrome://chrome-urls') {
+      throw new Error('[chrome_urls override] Unexpected anchor textContent')
+    }
+    anchor.textContent = 'brave://chrome-urls'
+  },
+  (x) => x.text.includes('href="#"'),
+)
 
 // Rewrite standard chrome URLs to use brave: scheme (these appear under the
 // "List of Brave URLs" header) and rewrite internal debugging page URLs to use
 // brave: scheme (these appear under the "Internal Debugging Page URLs" header
 // when the debugging pages are enabled)
-mangleAll((element) => {
-  const anchor = element.querySelector('a')
-  if (!anchor) {
-    throw new Error('[chrome_urls override] Missing anchor element')
-  }
-  if (anchor.textContent !== '\${info.url}') {
-    throw new Error('[chrome_urls override] Unexpected anchor textContent')
-  }
-  anchor.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('href="${info.url}"'))
+mangleAll(
+  (element) => {
+    const anchor = element.querySelector('a')
+    if (!anchor) {
+      throw new Error('[chrome_urls override] Missing anchor element')
+    }
+    if (anchor.textContent !== '\${info.url}') {
+      throw new Error('[chrome_urls override] Unexpected anchor textContent')
+    }
+    anchor.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
+  },
+  (x) => x.text.includes('href="${info.url}"'),
+)
 
 // Rewrite inactive chrome URLs to use brave: scheme (these also appear under
 // the "List of Brave URLs" header) and rewrite internal debugging page URLs to
 // use brave: scheme (these appear under the "Internal Debugging Page URLs"
 // header when the debugging pages are disabled)
-mangleAll((element) => {
-  const listItem = element.querySelector('li')
-  if (!listItem) {
-    throw new Error('[chrome_urls override] Missing list item element')
-  }
-  if (listItem.textContent !== '\${info.url}') {
-    throw new Error('[chrome_urls override] Unexpected list item textContent')
-  }
-  listItem.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('<li>${info.url}</li>'))
+mangleAll(
+  (element) => {
+    const listItem = element.querySelector('li')
+    if (!listItem) {
+      throw new Error('[chrome_urls override] Missing list item element')
+    }
+    if (listItem.textContent !== '\${info.url}') {
+      throw new Error('[chrome_urls override] Unexpected list item textContent')
+    }
+    listItem.textContent = '\${info.url.replace(/chrome:/, "brave:")}'
+  },
+  (x) => x.text.includes('<li>${info.url}</li>'),
+)
 
 // Rewrite command URLs to use brave: scheme (these appear under the
 // "Command URLs for Debug" header)
-mangle((element) => {
-  const listItem = element.querySelector('li')
-  if (!listItem) {
-    throw new Error('[chrome_urls override] Missing list item element')
-  }
-  if (listItem.textContent !== '\${url}') {
-    throw new Error('[chrome_urls override] Unexpected list item textContent')
-  }
-  listItem.textContent = '\${url.replace(/chrome:/, "brave:")}'
-}, x => x.text.includes('<li>${url}</li>'))
+mangle(
+  (element) => {
+    const listItem = element.querySelector('li')
+    if (!listItem) {
+      throw new Error('[chrome_urls override] Missing list item element')
+    }
+    if (listItem.textContent !== '\${url}') {
+      throw new Error('[chrome_urls override] Unexpected list item textContent')
+    }
+    listItem.textContent = '\${url.replace(/chrome:/, "brave:")}'
+  },
+  (x) => x.text.includes('<li>${url}</li>'),
+)

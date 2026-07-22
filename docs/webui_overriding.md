@@ -249,13 +249,16 @@ already-preprocessed output.
 
 Two consequences to be aware of:
 
-- Avoid mangling inside an `<if expr>` / `<include>` region. The transform
-  round-trips the template through the DOM, and reserializing an unresolved grit
-  directive can corrupt it. Target elements outside those regions.
-- The DOM round-trip reformats the whole template it touches (collapsing
-  multi-line attributes, dropping the leading copyright comment). The generated
-  patch is therefore larger than the logical change and may need regenerating
-  after upstream whitespace changes. This is expected — the patch is
+- Avoid mangling a template that contains a grit `<include>`. The transform
+  round-trips the template through the DOM, which treats `<include>` as a
+  container rather than a standalone directive: it appends a spurious
+  `</include>` and swallows the markup that follows it. `<if expr>` regions are
+  safe — they round-trip unchanged, and mangling inside one is fine (see
+  `rewrite/chrome/browser/resources/history/synced_device_manager.html.ts.lit_mangler.ts`).
+- The DOM round-trip reformats the whole template it touches, collapsing
+  multi-line attribute lists onto a single line. The generated patch is
+  therefore larger than the logical change and may need regenerating after
+  upstream whitespace changes. This is expected — the patch is
   machine-generated, never hand-edited; just re-run `tools/cr/plaster.py apply`.
 
 ## Polymer Template Modifications

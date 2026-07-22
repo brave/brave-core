@@ -5,7 +5,7 @@
 
 import { mangle } from 'lit_mangler'
 
-mangle(fragment => {
+mangle((fragment) => {
   const anchor = fragment.querySelector('a')
   if (!anchor) {
     throw new Error('anchor not found')

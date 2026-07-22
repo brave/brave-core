@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/history/synced_device_manager.html.ts b/chrome/browser/resources/history/synced_device_manager.html.ts
-index e20649dbf91e0ba1455a8df0de9c17c3f7903332..c126cce5bcc405013898f7654bb4f2e01c1f3a67 100644
+index e20649dbf91e0ba1455a8df0de9c17c3f7903332..1b80f1b53905b8b03018ccc283fcc78a9e4fca36 100644
 --- a/chrome/browser/resources/history/synced_device_manager.html.ts
 +++ b/chrome/browser/resources/history/synced_device_manager.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2025 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- // <if expr="not is_chromeos">
- import {HistorySignInState} from './constants.js';
-@@ -12,8 +8,7 @@ import type {HistorySyncedDeviceManagerElement} from './synced_device_manager.js
+@@ -12,8 +12,7 @@ import type {HistorySyncedDeviceManagerElement} from './synced_device_manager.js
  export function getHtml(this: HistorySyncedDeviceManagerElement) {
    // clang-format off
    return html`<!--_html_template_start_-->
@@ -20,7 +12,7 @@ index e20649dbf91e0ba1455a8df0de9c17c3f7903332..c126cce5bcc405013898f7654bb4f2e0
    ${this.syncedDevices_.map((syncedDevice, index) => html`
      <history-synced-device-card
          .device="${syncedDevice.device}"
-@@ -28,19 +23,16 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+@@ -28,19 +27,16 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
      </history-synced-device-card>
    `)}
  </div>
@@ -44,7 +36,7 @@ index e20649dbf91e0ba1455a8df0de9c17c3f7903332..c126cce5bcc405013898f7654bb4f2e0
      $i18n{turnOnSyncButton}
    </cr-button>
  </div>
-@@ -127,7 +119,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+@@ -127,7 +123,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
    ` : ''}
  </if>
  
@@ -53,7 +45,7 @@ index e20649dbf91e0ba1455a8df0de9c17c3f7903332..c126cce5bcc405013898f7654bb4f2e0
    <cr-action-menu role-description="$i18n{menu}">
      <button id="menuOpenButton" class="dropdown-item"
          @click="${this.onOpenAllClick_}">
-@@ -138,7 +130,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
+@@ -138,7 +134,7 @@ export function getHtml(this: HistorySyncedDeviceManagerElement) {
        $i18n{deleteSession}
      </button>
    </cr-action-menu>

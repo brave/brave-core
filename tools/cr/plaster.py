@@ -2126,8 +2126,6 @@ class PlasterFile:
         brave_root = Path(repository.brave.root).resolve()
         chromium_root = Path(repository.chromium.root).resolve()
 
-        tsx_cli = brave_root / 'node_modules' / 'tsx' / 'dist' / 'cli.mjs'
-        ts_config = brave_root / 'tsconfig-mangle.json'
         lit_mangler_cli = (brave_root / 'tools' / 'chromium_src' /
                            'lit_mangler' / 'lit_mangler_cli.ts')
         mangler = Path(self.path).resolve()
@@ -2151,18 +2149,12 @@ class PlasterFile:
             tmp_out = tmp_dir / f'.mangled.{source_name}'
             tmp_in.write_text(pristine, encoding='utf-8', newline='\n')
 
-            # The CLI's `--typecheck` spawns `tsc` by name; make brave's
-            # node_modules/.bin resolvable so it is found.
-            env = {**os.environ}
-            bin_dir = brave_root / 'node_modules' / '.bin'
-            env['PATH'] = f'{bin_dir}{os.pathsep}{env.get("PATH", "")}'
-
+            # The CLI is a TypeScript entry point run directly by node (type
+            # stripping); it resolves `tsc` for `--typecheck` itself.
             terminal.run([
-                node.GetBinaryPath(), tsx_cli, '--tsconfig', ts_config,
-                lit_mangler_cli, 'mangle', '--typecheck', '-m', mangler, '-i',
-                tmp_in, '-o', tmp_out, '-g', tmp_dir
-            ],
-                         env=env)
+                node.GetBinaryPath(), lit_mangler_cli, 'mangle', '--typecheck',
+                '-m', mangler, '-i', tmp_in, '-o', tmp_out, '-g', tmp_dir
+            ])
 
             return tmp_out.read_text(encoding='utf-8')
 

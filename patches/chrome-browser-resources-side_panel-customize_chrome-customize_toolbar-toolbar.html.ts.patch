@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts b/chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts
-index f478a1e838f4c054b664bf23ef4b1feb87658b76..e2513e34cc76888314dfffa2bb98d797ef9d4876 100644
+index f478a1e838f4c054b664bf23ef4b1feb87658b76..9f9e1fb70c03574cbfb156fb576b70bc6a251aba 100644
 --- a/chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts
 +++ b/chrome/browser/resources/side_panel/customize_chrome/customize_toolbar/toolbar.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {ToolbarElement} from './toolbar.js';
-@@ -9,24 +5,20 @@ import type {ToolbarElement} from './toolbar.js';
+@@ -9,24 +9,20 @@ import type {ToolbarElement} from './toolbar.js';
  export function getHtml(this: ToolbarElement) {
    return html`<!--_html_template_start_-->
  <div class="sp-card">
@@ -47,7 +39,7 @@ index f478a1e838f4c054b664bf23ef4b1feb87658b76..e2513e34cc76888314dfffa2bb98d797
  <hr class="sp-cards-separator">
  <div class="sp-card" id="pinningSelectionCard">
    ${
-@@ -76,13 +68,11 @@ export function getHtml(this: ToolbarElement) {
+@@ -76,13 +72,11 @@ export function getHtml(this: ToolbarElement) {
                    html`<hr class="sp-hr">` :
                    ''}
    `)}
