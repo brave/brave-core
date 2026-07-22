@@ -786,9 +786,7 @@
 <translation id="5486744676117070166">Неуспешно получаване на следващата стойност на nonce</translation>
 <translation id="6180576227145734714">Данните за трансакция в полето „to“ трябва да бъдат валиден адрес, когато са посочени</translation>
 <translation id="6688162556547723415">Заявеният метод и/или акаунт не е упълномощен от потребителя.</translation>
-<translation id="8767749833522980474">Крипто</translation>
 <translation id="6122742277607781713">Портфолио</translation>
-<translation id="7020503656406658141">Цени</translation>
 <translation id="3586775666459823714">NFT</translation>
 <translation id="1987317783729300807">Акаунти</translation>
 <translation id="3567988240819868195">Пазар</translation>
@@ -1822,7 +1820,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="803703704549420287">Изчистване на филтрите</translation>
 <translation id="1472675084647422956">Показване на още</translation>
 <translation id="4522570452068850558">Подробности</translation>
-<translation id="4583937519241190398">Проверено от DappRadar</translation>
 <translation id="8713438253026855351">Преминаване към защитен акаунт</translation>
 <translation id="3526789880090101085">Защитен акаунт</translation>
 <translation id="3155166394760577549">Разреши защитата, за да подобриш поверителността на транзакциите.</translation>
@@ -1955,6 +1952,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6261915643960475695">Бизнес</translation>
 <translation id="8265589281845759879">Коли</translation>
 <translation id="7726519849288907308">Знаменитости</translation>
+<translation id="8767749833522980474">Крипто</translation>
 <translation id="7577010593836079522">Култура</translation>
 <translation id="6807791860691150411">Образование</translation>
 <translation id="3706423975342040244">Развлечения</translation>
@@ -2171,6 +2169,7 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="2367972762794486313">Показване на приложенията</translation>
 <translation id="3142853026316054951">Превключване на режима на фокус</translation>
 <translation id="3468387898712904997">Нов имейл псевдоним</translation>
+<translation id="4711475997833555304">Създайте случаен имейл, който препраща към входящата ви поща.</translation>
 <translation id="2796584247246518451">Нов временен контейнер</translation>
 <translation id="8591883849678260674">Вижте оригинала</translation>
 <translation id="1969654232209826429">мин. четене</translation>
@@ -2230,8 +2229,10 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="8743383817154663379">Нещо се обърка при обработка на заявката ти. Моля, опитай отново по-късно.</translation>
 <translation id="2712650703044366764">Този модел има невалидна крайна точка. Моля, проверете конфигурацията си и опитайте отново.</translation>
 <translation id="7092656392206649236">Нещо се обърка при комуникацията с Лио. Моля, опитай отново.</translation>
+<translation id="4539536233699928121">Нещо се обърка при комуникацията с NEAR. Моля, опитай отново.</translation>
 <translation id="3552709750512842961">Код на състоянието: <ph name="STATUS_CODE"/>, код на грешката: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Код на състоянието: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Код на състоянието: <ph name="STATUS_CODE"/>, вътрешен код на състоянието: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Достигнахте лимита за оценка за premium. Моля, опитайте отново след няколко часа.</translation>
 <translation id="3683964919745779766">Достигнал си лимита на тарифата за този модел или си изчерпал своя кредит. Моля, опитай отново по-късно.</translation>
 <translation id="7692501701960747469">Конфигурираният за този модел API ключ е невалиден. Моля, провери конфигурацията си и опитай отново.</translation>
@@ -2405,6 +2406,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="9051226419897869406">Чати поверително с Brave Leo</translation>
 <translation id="2414904697165579184">Оформи отговорите на базата на съдържанието на раздела(-ите)</translation>
 <translation id="8258324391302611485">Съдържанието на тази страница ще бъде изпратено на Лио заедно със съобщенията ти.</translation>
+<translation id="443008484043213881">Инструменти</translation>
+<translation id="4343623396828510727">Тези сайтове предоставят инструменти, които Лио може да използва за изпращане на данни към и от този сайт. Не прикачвайте и не одобрявайте тези инструменти, ако този разговор съдържа данни, които не искате този сайт да вижда.</translation>
+<translation id="5021823940147712387">Премахване на инструментите</translation>
 <translation id="318819763888864209">Всички абонаменти се подновяват автоматично, но могат да бъдат отказани по всяко време преди подновяването.</translation>
 <translation id="5091223967610958">Споделете името на хоста на страницата, на която се намирате (<ph name="HOST_NAME"/>), за да ни помогнете да направим Лео по-добър.</translation>
 <translation id="8732450785281947197">ИИ Инструменти от Лео</translation>
@@ -2483,6 +2487,9 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7918928051723770926">Задачата е завършена</translation>
 <translation id="2113810663179257944">Изпълнение на код</translation>
 <translation id="4838375634693651776">Изпълнение на код в пясъчница, за да помогна с вашата заявка</translation>
+<translation id="6990975553143971265">Търсене в историята на браузъра за „<ph name="QUERY"/>“</translation>
+<translation id="8302511726757276645">Търсене в историята на браузъра</translation>
+<translation id="8410699755320690690">Brave AI иска да търси в историята на сърфирането ви. Търсенето се извършва локално на вашето устройство, така че цялата ви история не се изпраща никъде. Само заглавията, URL адресите и индексираните текстови откъси на съответстващите страници ще бъдат изпратени до Brave AI като част от този разговор.</translation>
 <translation id="4379566111233326721">Код:</translation>
 <translation id="3542130965673205258">Изход:</translation>
 <translation id="6911817209337314910">Генериране на няколко опции, от които да изберете</translation>
@@ -2692,6 +2699,21 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="7586067492365979844">Brave защити имат нов дом и дизайн. Сега се интегрира с информация за сайт за еднократен опит.</translation>
 <translation id="9114542678887529043">Brave защити имат нов дом и дизайн. Достъпете го, като щракнете на икона на сайта в адресната лента.</translation>
 <translation id="4242533952199664413">Към настройките</translation>
+<translation id="3616113530831147358">Аудио</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Памет на устройството</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Шрифт</translation>
+<translation id="436315497893815819">Хардуерна конкурентност</translation>
+<translation id="7846634333498149051">Клавиатура</translation>
+<translation id="5302048478445481009">Език</translation>
+<translation id="7986250835989845763">Медийни устройства</translation>
+<translation id="4267171000817377500">Плъгини</translation>
+<translation id="3441653493275994384">Екран</translation>
+<translation id="1772612984983840854">Синтез на реч</translation>
+<translation id="1167475333911019229">Сериен номер на USB устройство</translation>
+<translation id="6897140037006041989">Потребителски агент</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Поверителност. По подразбиране.</translation>
 <translation id="4366423156486478559">Получете защита от Brave за всяка връзка, върху която кликнете. Просто задайте Brave по подразбиране и сърфирайте. Частно.</translation>
 <translation id="3830912418080848377">Импортиране на настройки</translation>
@@ -2728,7 +2750,6 @@ other {{PENDING_TRANSACTIONS} more transactions pending.}
 <translation id="6821966107067356137">Добавяне на RSS емисия</translation>
 <translation id="2478076885740497414">Инсталиране на приложение</translation>
 <translation id="8293206222192510085">Добавяне на отметка</translation>
-<translation id="1010029336854254368">Меню за споделяне</translation>
 <translation id="7758460733045216901">Панел с отметки</translation>
 <translation id="958268166261124668">Brave VPN: свързан</translation>
 <translation id="6021669293402055982">Brave VPN: прекъсната връзка</translation>
@@ -2851,17 +2872,31 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="5816720995022674532">Origin е безплатен за използване на Linux устройства, но все още <ph name="BEGIN_LINK"/>е достъпен за закупуване<ph name="END_LINK"/>, ако желаете да поддържите Brave като бизнес. Закупуването би разблокирало също способността да използвате Origin на Android, iOS, macOS и Windows устройства.</translation>
 <translation id="3065220545261045367">Подкрепа на Brave чрез закупуване на Origin</translation>
 <translation id="2069499076031488636">Продължете с Origin безплатно на Linux</translation>
+<translation id="6820590295368504396">Не може да се свърже с услугата SKU</translation>
+<translation id="2525146368601152300">Идентификаторът на покупката е празен</translation>
+<translation id="7858444547014304753">Невалиден идентификатор на покупката</translation>
+<translation id="2016076837307423164">Неуспешно извличане на идентификационните данни</translation>
+<translation id="3890481923176188801">Покупката не е намерена</translation>
 <translation id="5713644099811900409">Brave акаунт</translation>
 <translation id="2906576968270573525">Влез или си направи Brave акаунт</translation>
 <translation id="6972754398087986839">Първи стъпки</translation>
 <translation id="5378207817582281342">Почти готово!</translation>
 <translation id="3750210661641549834">За да създадете акаунта си, моля, потвърдете имейл адреса си.</translation>
-<translation id="4129813507847680661">Въведете кода за регистрация</translation>
+<translation id="4351175281479794167">Въведете кода за потвърждение</translation>
 <translation id="1672793037892810340">Трябва да сте получили имейл с код, който трябва да въведете.</translation>
 <translation id="4821255729182569254">Повторно изпращане на потвърдително писмо</translation>
 <translation id="5837679375142747484">Не виждате имейла? Проверете папката за спам или <ph name="BEGIN_LINK"/>изпратете повторно<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Не виждате имейла? Проверете папката за спам или го изпратете повторно.</translation>
 <translation id="1020730839570724178">Отмяна на регистрацията</translation>
+<translation id="7155125570724238786">За да нулирате паролата си, моля, потвърдете имейл адреса си.</translation>
+<translation id="816074628631172140">Имейлът ви беше потвърден. Задайте нова парола, за да завършите нулирането на паролата.</translation>
+<translation id="7543374051303238869">Задаване на нова парола</translation>
+<translation id="8378209932853841849">Отказ от нулиране на паролата</translation>
+<translation id="4405566535206792621">За да промените паролата си, моля, потвърдете имейл адреса си.</translation>
+<translation id="3135333563420939059">Имейлът ви беше потвърден. Задайте нова парола, за да завършите промяната на паролата.</translation>
+<translation id="4227581348172626540">Отказ от промяна на паролата</translation>
+<translation id="808894953321890993">Промяна на паролата</translation>
+<translation id="7967687455715421528">Не може да се промени паролата</translation>
 <translation id="4869737930995549965">Изход</translation>
 <translation id="5538654494923870167">Започнете с вашия акаунт в Brave</translation>
 <translation id="1544145635547515689">Създаване на акаунт в Brave</translation>
@@ -2876,10 +2911,11 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="5486261815000869482">Потвърждение на паролата</translation>
 <translation id="7345706641791090287">Потвърдете паролата си</translation>
 <translation id="7114054701490058191">Паролите не съвпадат</translation>
+<translation id="4277028893293644418">Нулиране на паролата</translation>
+<translation id="9033485352495162741">Потвърждението е успешно. Сега въведете желаната нова парола:</translation>
 <translation id="1293857704520741614">Влезте в акаунта си</translation>
 <translation id="118617366439356381">Забравена парола?</translation>
 <translation id="5183159033908953146">Потвърдете имейла на вашия акаунт в Brave и ще получите връзка за нулиране на паролата. Връзката ще бъде валидна само 30 минути.</translation>
-<translation id="3997368361371298873">Предупреждение: тъй като не сте влезли на това устройство, нулирането на паролата ви ще <ph name="BEGIN_BOLD"/>изтрие всички ваши данни<ph name="END_BOLD"/> на сървъра. Ако имате друго устройство, на което сте влезли, променете паролата си от това устройство, вместо да я нулирате.</translation>
 <translation id="3674472551471103443">Нулирайте паролата си</translation>
 <translation id="2755539422340788311">Потвърдете имейла си</translation>
 <translation id="6641436078676327508">Трябва да сте получили имейл с кратък код. Моля, въведете го тук, за да продължите.</translation>
@@ -2896,10 +2932,16 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="7144067487084094749">Вече съществува акаунт за този имейл адрес. Опитайте да влезете, вместо да създавате акаунт.</translation>
 <translation id="5288951359968156008">Домейнът на този имейл адрес не се поддържа. Моля, използвайте друг имейл адрес.</translation>
 <translation id="7625678607509255072">Превишен е лимитът за потвърждение по имейл. Моля, изчакайте 30 минути, преди да опитате отново.</translation>
-<translation id="4582421696414628320">Потвърждението изтече. Започнете процеса на регистрация отново.</translation>
+<translation id="9121175588136821850">Кодът за потвърждение изтече. Започнете процеса на регистрация отново.</translation>
 <translation id="8439543211004394821">Въведени са твърде много неправилни кодове. Започнете процеса на регистрация отново.</translation>
 <translation id="3229986152760633988">Грешен код, моля, опитайте отново.</translation>
 <translation id="818783632689113711">Вече е заявен акаунт за този имейл адрес. Моля, проверете имейла си или опитайте отново след 30 минути.</translation>
+<translation id="4776810543245166572">Няма намерен акаунт за този имейл адрес.</translation>
+<translation id="7090885444036935209">Невалиден имейл адрес.</translation>
+<translation id="1542836798393843657">Твърде много опити за потвърждение за този имейл адрес. Опитайте отново след 24 часа.</translation>
+<translation id="7572012011062736429">Вътрешна грешка. Затворете диалоговия прозорец, отменете потвърждението и опитайте отново.</translation>
+<translation id="2477280119520811719">Кодът за потвърждение изтече. Започнете процеса на промяна на паролата отново.</translation>
+<translation id="7103280722523884198">Въведени са твърде много неправилни кодове. Започнете процеса на промяна на паролата отново.</translation>
 <translation id="4178004989875422946">Акаунтът в Brave ще ви позволи лесно да достъпвате услугите на Brave.</translation>
 <translation id="4902897635127068510">Имахте ли предвид <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock е включен</translation>
@@ -2908,6 +2950,7 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="2112559299194052697">Не може да се изпрати повторно</translation>
 <translation id="7932611814134267012">Вече са изпратени твърде много имейли за потвърждение. Моля, проверете папката за спам.</translation>
 <translation id="1364223093800750401">Имейлът вече е потвърден.</translation>
+<translation id="1353061468772282268">Кодът за потвърждение изтече. Отменете потвърждението и опитайте отново.</translation>
 <translation id="3353844160742960162">Настройка на настройките за поверителност</translation>
 <translation id="528205534230423181">Този уебсайт предлага настройки за поверителност, които Brave може автоматично да коригира за вас. Ето какво препоръчваме:</translation>
 <translation id="1063227610401477317">Приложете промените</translation>

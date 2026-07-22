@@ -781,9 +781,7 @@
 <translation id="5486744676117070166">Naslednje vrednosti nonce ni bilo mogoče pridobiti</translation>
 <translation id="6180576227145734714">Podatki o transakciji 'to' morajo pri specifikaciji biti veljaven naslov</translation>
 <translation id="6688162556547723415">Uporabnik ni odobril zahtevane metode in/ali računa.</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="6122742277607781713">Portfelj</translation>
-<translation id="7020503656406658141">Cene</translation>
 <translation id="3586775666459823714">NFT-ji</translation>
 <translation id="1987317783729300807">Računi</translation>
 <translation id="3567988240819868195">Trg</translation>
@@ -1826,7 +1824,6 @@
 <translation id="803703704549420287">Počistite filtre</translation>
 <translation id="1472675084647422956">Pokaži več</translation>
 <translation id="4522570452068850558">Podrobnosti</translation>
-<translation id="4583937519241190398">Preveril DappRadar</translation>
 <translation id="8713438253026855351">Preklop na zaščiteni račun</translation>
 <translation id="3526789880090101085">Zaščita računa</translation>
 <translation id="3155166394760577549">Omogočite ščitenje, da povečate zasebnost transakcij.</translation>
@@ -1959,6 +1956,7 @@
 <translation id="6261915643960475695">Posel</translation>
 <translation id="8265589281845759879">Avtomobili</translation>
 <translation id="7726519849288907308">Zvezdniki</translation>
+<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kultura</translation>
 <translation id="6807791860691150411">Izobraževanje</translation>
 <translation id="3706423975342040244">Razvedrilo</translation>
@@ -2175,6 +2173,7 @@
 <translation id="2367972762794486313">Pokaži aplikacije</translation>
 <translation id="3142853026316054951">Preklopi način fokusa</translation>
 <translation id="3468387898712904997">Nov e-poštni vzdevek</translation>
+<translation id="4711475997833555304">Ustvarite naključno e-pošto, ki jo posreduje v vaš nabiralnik.</translation>
 <translation id="2796584247246518451">Nov začasni vsebnik</translation>
 <translation id="8591883849678260674">Poglej original</translation>
 <translation id="1969654232209826429">min. branje</translation>
@@ -2234,8 +2233,10 @@
 <translation id="8743383817154663379">Pri obdelavi vaše zahteve je šlo nekaj narobe. Prosimo, poskusite znova pozneje.</translation>
 <translation id="2712650703044366764">Ta model ima neveljavno končno točko. Preverite konfiguracijo in poskusite znova.</translation>
 <translation id="7092656392206649236">Med komunikacijo z Leom je šlo nekaj narobe. Prosimo, poskusite znova.</translation>
+<translation id="4539536233699928121">Med komunikacijo z NEAR je šlo nekaj narobe. Prosimo, poskusite znova.</translation>
 <translation id="3552709750512842961">Statusna koda: <ph name="STATUS_CODE"/>, koda napake: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Statusna koda: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Statusna koda: <ph name="STATUS_CODE"/>, notranja statusna koda: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Dosegli ste omejitev stopnje Premium. Poskusite znova čez nekaj ur.</translation>
 <translation id="3683964919745779766">Dosegli ste omejitev za ta model ali vam je zmanjkalo kreditov. Prosimo, poskusite znova pozneje.</translation>
 <translation id="7692501701960747469">Ključ API, konfiguriran za ta model, je neveljaven. Preverite konfiguracijo in poskusite znova.</translation>
@@ -2409,6 +2410,9 @@
 <translation id="9051226419897869406">Klepetaj zasebno z Brave Leo</translation>
 <translation id="2414904697165579184">Oblikujte odgovore na podlagi vsebine zavihkov</translation>
 <translation id="8258324391302611485">Vsebina te strani bo poslana Leu skupaj z vašimi sporočili.</translation>
+<translation id="443008484043213881">Orodja</translation>
+<translation id="4343623396828510727">Ta spletna mesta izpostavljajo orodja, ki jih Leo lahko uporablja za pošiljanje podatkov na to spletno mesto in z njega. Ne pripenjajte ali odobravajte teh orodij, če ta pogovor vsebuje podatke, za katere ne želite, da bi jih to spletno mesto videlo.</translation>
+<translation id="5021823940147712387">Odstrani orodja</translation>
 <translation id="318819763888864209">Vse naročnine se samodejno podaljšajo, vendar jih lahko kadar koli pred podaljšanjem prekličete.</translation>
 <translation id="5091223967610958">Delite ime gostitelja strani, na kateri se nahajate (<ph name="HOST_NAME"/>), in nam tako pomagajte izboljšati Lea.</translation>
 <translation id="8732450785281947197">Orodja Leo AI</translation>
@@ -2487,6 +2491,9 @@
 <translation id="7918928051723770926">Naloga je zaključena</translation>
 <translation id="2113810663179257944">Zagon kode</translation>
 <translation id="4838375634693651776">Izvajanje kode v peskovniku, da bi vam pomagali pri vašem vprašanju</translation>
+<translation id="6990975553143971265">Iskanje po zgodovini brskalnika za "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">Iskanje po zgodovini brskalnika</translation>
+<translation id="8410699755320690690">Brave AI želi iskati po vaši zgodovini brskanja. Iskanje se izvaja lokalno na vaši napravi, tako da vaša celotna zgodovina ni poslana nikamor. Kot del tega pogovora bodo Brave AI poslani samo naslovi, URL-ji in indeksirani besedilni odlomki ustreznih strani.</translation>
 <translation id="4379566111233326721">Koda:</translation>
 <translation id="3542130965673205258">Izhod:</translation>
 <translation id="6911817209337314910">Priprava nekaj možnosti, med katerimi lahko izbirate</translation>
@@ -2696,6 +2703,21 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="7586067492365979844">Brave Ščiti ima novo domačo stran in oblikovanje. Sedaj se integrira s podatki o spletnem mestu za popolnoma integrirano izkušnjo.</translation>
 <translation id="9114542678887529043">Brave Ščiti ima novo domačo stran in oblikovanje. Do njega dostopite s klikom na ikono spletnega mesta v naslovni vrstici.</translation>
 <translation id="4242533952199664413">Odpri nastavitve</translation>
+<translation id="3616113530831147358">Zvok</translation>
+<translation id="7972837668077967426">Platno</translation>
+<translation id="2182250753201267390">Pomnilnik naprave</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Pisava</translation>
+<translation id="436315497893815819">Sočasnost strojne opreme</translation>
+<translation id="7846634333498149051">Tipkovnica</translation>
+<translation id="5302048478445481009">Jezik</translation>
+<translation id="7986250835989845763">Medijske naprave</translation>
+<translation id="4267171000817377500">Vtičniki</translation>
+<translation id="3441653493275994384">Zaslon</translation>
+<translation id="1772612984983840854">Sinteza govora</translation>
+<translation id="1167475333911019229">Serijska številka naprave USB</translation>
+<translation id="6897140037006041989">Uporabniški agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Zasebnost. Privzeto.</translation>
 <translation id="4366423156486478559">Zagotovite si zaščito Brave za vsako povezavo, na katero kliknete. Preprosto nastavite brskalnik Brave kot privzet in brskajte. Zasebno.</translation>
 <translation id="3830912418080848377">Uvozite nastavitve</translation>
@@ -2732,7 +2754,6 @@ other {Brave ščiti so blokirali {BLOCKED_COUNT} sledilce na <ph name="SITE_URL
 <translation id="6821966107067356137">Dodaj RSS vir</translation>
 <translation id="2478076885740497414">Namesti aplikacijo</translation>
 <translation id="8293206222192510085">Dodaj zaznamek</translation>
-<translation id="1010029336854254368">Meni za deljenje</translation>
 <translation id="7758460733045216901">Plošča z zaznamki</translation>
 <translation id="958268166261124668">Brave VPN: povezan</translation>
 <translation id="6021669293402055982">Brave VPN: povezava prekinjena</translation>
@@ -2849,17 +2870,31 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="5816720995022674532">Origin je brezplačen za uporabo na napravah Linux, vendar je še vedno <ph name="BEGIN_LINK"/>na voljo za nakup<ph name="END_LINK"/>, če želite podpirati Brave kot podjetje. Nakup bi vam omogočil tudi uporabo Origin na napravah Android, iOS, macOS in Windows.</translation>
 <translation id="3065220545261045367">Podprite Brave s pomočjo nakupa Origin</translation>
 <translation id="2069499076031488636">Nadaljujte s programom Origin brezplačno na Linux</translation>
+<translation id="6820590295368504396">Povezave s storitvijo SKU ni mogoče vzpostaviti</translation>
+<translation id="2525146368601152300">ID nakupa je prazen</translation>
+<translation id="7858444547014304753">Neveljaven ID nakupa</translation>
+<translation id="2016076837307423164">Poverilnic ni bilo mogoče pridobiti</translation>
+<translation id="3890481923176188801">Nakupa ni mogoče najti</translation>
 <translation id="5713644099811900409">Račun Brave</translation>
 <translation id="2906576968270573525">Prijavite se ali ustvarite račun Brave</translation>
 <translation id="6972754398087986839">Kako začeti</translation>
 <translation id="5378207817582281342">Skoraj tam!</translation>
 <translation id="3750210661641549834">Za ustvarjanje računa potrdite svoj e-poštni naslov.</translation>
-<translation id="4129813507847680661">Vnesite registracijsko kodo</translation>
+<translation id="4351175281479794167">Vnesite potrditveno kodo</translation>
 <translation id="1672793037892810340">Prejeli ste e-poštno sporočilo s kodo, ki jo morate vnesti.</translation>
 <translation id="4821255729182569254">Ponovno pošlji potrdilno e-pošto</translation>
 <translation id="5837679375142747484">Ne vidite e-poštnega sporočila? Preverite mapo z neželeno pošto ali ga <ph name="BEGIN_LINK"/>ponovno pošljite<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Ne vidite e-poštnega sporočila? Preverite mapo z neželeno pošto ali ga ponovno pošljite.</translation>
 <translation id="1020730839570724178">Prekliči registracijo</translation>
+<translation id="7155125570724238786">Za ponastavitev gesla potrdite svoj e-poštni naslov.</translation>
+<translation id="816074628631172140">Vaša e-pošta je bila potrjena. Nastavite novo geslo za dokončanje ponastavitve gesla.</translation>
+<translation id="7543374051303238869">Nastavi novo geslo</translation>
+<translation id="8378209932853841849">Prekliči ponastavitev gesla</translation>
+<translation id="4405566535206792621">Za spremembo gesla potrdite svoj e-poštni naslov.</translation>
+<translation id="3135333563420939059">Vaša e-pošta je bila potrjena. Nastavite novo geslo za dokončanje spremembe gesla.</translation>
+<translation id="4227581348172626540">Prekliči spremembo gesla</translation>
+<translation id="808894953321890993">Spremeni geslo</translation>
+<translation id="7967687455715421528">Gesla ni mogoče spremeniti</translation>
 <translation id="4869737930995549965">Odjava</translation>
 <translation id="5538654494923870167">Začnite z računom Brave</translation>
 <translation id="1544145635547515689">Ustvarite račun Brave</translation>
@@ -2874,10 +2909,11 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="5486261815000869482">Potrdite geslo</translation>
 <translation id="7345706641791090287">Potrdite svoje geslo</translation>
 <translation id="7114054701490058191">Gesli se ne ujemata</translation>
+<translation id="4277028893293644418">Ponastavi geslo</translation>
+<translation id="9033485352495162741">Potrditev je uspela. Zdaj vnesite želeno novo geslo:</translation>
 <translation id="1293857704520741614">Prijavite se v svoj račun</translation>
 <translation id="118617366439356381">Ste pozabili geslo?</translation>
 <translation id="5183159033908953146">Potrdite e-poštni naslov svojega računa Brave in prejeli boste povezavo za ponastavitev gesla. Povezava bo veljavna le 30 minut.</translation>
-<translation id="3997368361371298873">Opozorilo: ker niste prijavljeni v to napravo, bo ponastavitev gesla <ph name="BEGIN_BOLD"/>izbrisala vse vaše podatke<ph name="END_BOLD"/> na strežniku. Če imate drugo napravo, kjer ste prijavljeni, spremenite geslo iz te naprave namesto ponastavitve gesla.</translation>
 <translation id="3674472551471103443">Ponastavite geslo</translation>
 <translation id="2755539422340788311">Potrdite svoj e-poštni naslov</translation>
 <translation id="6641436078676327508">Prejeli ste e-poštno sporočilo s kratko kodo. Vnesite jo tukaj za nadaljevanje.</translation>
@@ -2894,10 +2930,16 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="7144067487084094749">Za ta e-poštni naslov že obstaja račun. Poskusite se prijaviti namesto ustvarjanja računa.</translation>
 <translation id="5288951359968156008">Domena tega e-poštnega naslova ni podprta. Uporabite drug e-poštni naslov.</translation>
 <translation id="7625678607509255072">Presežena je omejitev preverjanja e-pošte. Počakajte 30 minut, preden poskusite znova.</translation>
-<translation id="4582421696414628320">Potrditev je potekla. Ponovno začnite postopek registracije.</translation>
+<translation id="9121175588136821850">Potrditvena koda je potekla. Ponovno začnite postopek registracije.</translation>
 <translation id="8439543211004394821">Vnesenih je bilo preveč napačnih kod. Ponovno začnite postopek registracije.</translation>
 <translation id="3229986152760633988">Napačna koda, poskusite znova.</translation>
 <translation id="818783632689113711">Za ta e-poštni naslov je bil že zahtevan račun. Preverite svojo e-pošto ali poskusite ponovno čez 30 minut.</translation>
+<translation id="4776810543245166572">Za ta e-poštni naslov ni bilo mogoče najti računa.</translation>
+<translation id="7090885444036935209">Neveljaven e-poštni naslov.</translation>
+<translation id="1542836798393843657">Preveč poskusov preverjanja za ta e-poštni naslov. Poskusite znova čez 24 ur.</translation>
+<translation id="7572012011062736429">Notranja napaka. Zaprite pogovorno okno, prekličite potrditev in poskusite znova.</translation>
+<translation id="2477280119520811719">Potrditvena koda je potekla. Ponovno začnite postopek spremembe gesla.</translation>
+<translation id="7103280722523884198">Vnesenih je bilo preveč napačnih kod. Ponovno začnite postopek spremembe gesla.</translation>
 <translation id="4178004989875422946">Račun Brave vam bo omogočil enostaven dostop do storitev Brave.</translation>
 <translation id="4902897635127068510">Ali ste morda mislili na <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock je vklopljen</translation>
@@ -2906,6 +2948,7 @@ pritisnite Tab in nato Enter, da preklopite na odprti zavihek</translation>
 <translation id="2112559299194052697">Ponovno pošiljanje ni mogoče</translation>
 <translation id="7932611814134267012">Poslanih je bilo že preveč potrditvenih e-poštnih sporočil. Preverite mapo z neželeno pošto.</translation>
 <translation id="1364223093800750401">E-poštni naslov je že potrjen.</translation>
+<translation id="1353061468772282268">Potrditvena koda je potekla. Prekličite potrditev in poskusite znova.</translation>
 <translation id="3353844160742960162">Prilagoditev nastavitev zasebnosti</translation>
 <translation id="528205534230423181">To spletno mesto ponuja nastavitve zasebnosti, ki jih Brave lahko samodejno prilagodi za vas. Tukaj je naše priporočilo:</translation>
 <translation id="1063227610401477317">Uporabi spremembe</translation>

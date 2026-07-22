@@ -181,7 +181,6 @@
 <translation id="7129458170538955174">ဤဆိုင် တစ်ဝက်ဖွင့်သည့်အကြောင်း</translation>
 <translation id="7204204600596740190">မျိုးစုံရွေးမုဒ်</translation>
 <translation id="7211038039686180558">တဘ်အုပ်စုများကို လက်မှတ်ထိုးဝင်ထားသည့် သင့်စက်အားလုံးတွင် အလိုအလျောက်သိမ်းပြီး အပ်ဒိတ်လုပ်ပါသည်</translation>
-<translation id="731648547091221002"><ph name="COLOR_NAME"/> ရွေးထားသည်</translation>
 <translation id="7326879924029668159">ပြန်ပို့သည့်မူဝါဒနှင့် အခြားအရာများ ကြည့်နိုင်သည်</translation>
 <translation id="7352298686197644113">သင်ဖွင့်ထားသောတဘ်များတွင် မည်သည့်အရာက ဈေးကျသွားကြောင်း ကြည့်နိုင်သည်</translation>
 <translation id="7369451074646620503">“<ph name="TAB_GROUP_NAME"/>” တဘ်အုပ်စုကို မရတော့ပါ</translation>
@@ -207,7 +206,6 @@
 <translation id="7854360405711302755">{REVIEWS,plural, =1{ <ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> အဆင့်သတ်မှတ်ချက်၊ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_ONE"/> ခု}other{<ph name="CURRENT_RATING"/>/<ph name="RATING_BASELINE"/> အဆင့်သတ်မှတ်ချက်၊ သုံးသပ်ချက် <ph name="REVIEWS_COUNT_MANY"/> ခု}}</translation>
 <translation id="7885132941432959125">တဘ်ကို ညာဘက်သို့ ရွှေ့ရန်</translation>
 <translation id="7887334752153342268">မူပွားယူရန်</translation>
-<translation id="7939917283308035850"><ph name="COLOR_NAME"/> ရွေးမထားပါ</translation>
 <translation id="7961015016161918242">ဘယ်သောအခါမှ</translation>
 <translation id="7966321538264951561">အကြံပြုချက်များကို ပယ်ပါ။</translation>
 <translation id="796696298310625748">{WINDOW_COUNT,plural, =1{တဘ်ကို ဝင်းဒိုးအသစ်သို့ ရွှေ့ရန်}other{တဘ်ကို ဝင်းဒိုးနောက်တစ်ခုသို့ ရွှေ့ရန်}}</translation>

@@ -782,9 +782,7 @@
 <translation id="5486744676117070166">Dështoi të merrej vlera tjetër nonce</translation>
 <translation id="6180576227145734714">Të dhënat e transaksionit 'te' duhet të jenë një adresë e vlefshme kur specifikohet</translation>
 <translation id="6688162556547723415">Metoda dhe/ose llogaria e kërkuar nuk është autorizuar nga përdoruesi.</translation>
-<translation id="8767749833522980474">Kripto</translation>
 <translation id="6122742277607781713">Portofol</translation>
-<translation id="7020503656406658141">Çmimet</translation>
 <translation id="3586775666459823714">NFT-të</translation>
 <translation id="1987317783729300807">Llogaritë</translation>
 <translation id="3567988240819868195">Tregu</translation>
@@ -1815,7 +1813,6 @@
 <translation id="803703704549420287">Pastro filtrat</translation>
 <translation id="1472675084647422956">Shfaq më shumë</translation>
 <translation id="4522570452068850558">Hollësi</translation>
-<translation id="4583937519241190398">Verifikuar nga DappRadar</translation>
 <translation id="8713438253026855351">Kalo te një llogari e mbrojtur</translation>
 <translation id="3526789880090101085">Mbro llogarinë</translation>
 <translation id="3155166394760577549">Aktivizo mbrojtjen për të përmirësuar privatësinë e transaksioneve.</translation>
@@ -1948,6 +1945,7 @@
 <translation id="6261915643960475695">Biznes</translation>
 <translation id="8265589281845759879">Makina</translation>
 <translation id="7726519849288907308">Të famshme</translation>
+<translation id="8767749833522980474">Kripto</translation>
 <translation id="7577010593836079522">Kulturë</translation>
 <translation id="6807791860691150411">Arsim</translation>
 <translation id="3706423975342040244">Argëtim</translation>
@@ -2164,6 +2162,7 @@
 <translation id="2367972762794486313">Shfaq aplikacionet</translation>
 <translation id="3142853026316054951">Aktivizo/çaktivizo modalitetin e fokusit</translation>
 <translation id="3468387898712904997">Pseudonim i ri i email-it</translation>
+<translation id="4711475997833555304">Krijoni një email të rastësishëm që përcillet te kutia juaj postare.</translation>
 <translation id="2796584247246518451">Kontejner i përkohshëm i ri</translation>
 <translation id="8591883849678260674">Shfaq origjinalin</translation>
 <translation id="1969654232209826429">min. leximi</translation>
@@ -2223,8 +2222,10 @@
 <translation id="8743383817154663379">Diçka shkoi keq gjatë përpunimit të kërkesës suaj. Ju lutemi provoni përsëri më vonë.</translation>
 <translation id="2712650703044366764">Ky model ka një fund të pavlefshëm. Ju lutem kontrolloni konfigurimin tuaj dhe provoni sërish.</translation>
 <translation id="7092656392206649236">Diçka shkoi keq gjatë komunikimit me Leo. Ju lutemi provoni përsëri.</translation>
+<translation id="4539536233699928121">Diçka shkoi keq gjatë komunikimit me NEAR. Ju lutemi provoni përsëri.</translation>
 <translation id="3552709750512842961">Kodi i statusit: <ph name="STATUS_CODE"/>, kodi i gabimit: <ph name="ERROR_CODE"/></translation>
 <translation id="9215978379284690246">Kodi i statusit: <ph name="STATUS_CODE"/></translation>
+<translation id="5820497878628354073">Kodi i statusit: <ph name="STATUS_CODE"/>, kodi i brendshëm i statusit: <ph name="INNER_STATUS_CODE"/></translation>
 <translation id="1996126325390835277">Ke arritur kufirin e shpejtësisë premium. Provoni përsëri pas disa orësh.</translation>
 <translation id="3683964919745779766">Keni arritur limitin e shpejtësisë për këtë model ose jeni pa kredite. Ju lutem provoni përsëri më vonë.</translation>
 <translation id="7692501701960747469">Çelësi API i konfiguruar për këtë model është i pavlefshëm. Ju lutem kontrolloni konfigurimin tuaj dhe provoni përsëri.</translation>
@@ -2398,6 +2399,9 @@
 <translation id="9051226419897869406">Bisedo Pricishtë me Brave Leo</translation>
 <translation id="2414904697165579184">Formëso përgjigjet bazuar në përmbajtjen e skedës</translation>
 <translation id="8258324391302611485">Përmbajtja e kësaj faqeje do të dërgohet te Leo bashkë me mesazhet e tua.</translation>
+<translation id="443008484043213881">Mjete</translation>
+<translation id="4343623396828510727">Këto sajte ekspozojnë mjete që Leo mund t'i përdorë për të dërguar të dhëna nga dhe drejt këtij sajti. Mos i bashkëngjitni ose aprovoni këto mjete nëse ky bisedim përmban të dhëna që nuk doni t'i shohë ky sajt.</translation>
+<translation id="5021823940147712387">Hiqni mjetet</translation>
 <translation id="318819763888864209">Të gjitha abonimet rinovohen automatikisht, por mund tëanulohen në çdo kohë përpara rinovimit.</translation>
 <translation id="5091223967610958">Ndaj emrin e hostit të faqes ku je (<ph name="HOST_NAME"/>) për të na ndihmuar të përmirësojmë Leoin.</translation>
 <translation id="8732450785281947197">Mjetet Leo AI</translation>
@@ -2476,6 +2480,9 @@
 <translation id="7918928051723770926">Detyra u përfundua</translation>
 <translation id="2113810663179257944">Ekzekutim Kodi</translation>
 <translation id="4838375634693651776">Po ekzekuton kodin në sandbox për t'ju ndihmuar me pyetjen tuaj</translation>
+<translation id="6990975553143971265">Duke kërkuar në historikun tënd për "<ph name="QUERY"/>"</translation>
+<translation id="8302511726757276645">Duke kërkuar në historikun tënd</translation>
+<translation id="8410699755320690690">Brave AI dëshiron të kërkojë në historikun tënd të shfletimit. Kërkimi ekzekutohet lokalisht në pajisjen tënde, kështu që historiku yt i plotë nuk dërgohet askund. Vetëm titujt, URL-të dhe pasazhet e tekstit të indeksuar të faqeve përputhëse do t'i dërgohen Brave AI si pjesë e këtij bisedimi.</translation>
 <translation id="4379566111233326721">Kodi:</translation>
 <translation id="3542130965673205258">Output-i:</translation>
 <translation id="6911817209337314910">Po gjeneron disa opsione për ju për të zgjedhur</translation>
@@ -2685,6 +2692,21 @@
 <translation id="7586067492365979844">Mburojat Brave kanë një shtëpi të re dhe dizajn. Tani integrohet me informacionin e faqes për një përvojë në një vend.</translation>
 <translation id="9114542678887529043">Mburojat Brave kanë një shtëpi të re dhe dizajn. Hyrni në të duke klikuar ikonën e faqes në shiritin e adresave.</translation>
 <translation id="4242533952199664413">Hap rregullimet</translation>
+<translation id="3616113530831147358">Audio</translation>
+<translation id="7972837668077967426">Canvas</translation>
+<translation id="2182250753201267390">Kujtesa e Pajisjes</translation>
+<translation id="1217374757325197995">Event Source Pool</translation>
+<translation id="1823768272150895732">Font</translation>
+<translation id="436315497893815819">Hardware Concurrency</translation>
+<translation id="7846634333498149051">Tastiera</translation>
+<translation id="5302048478445481009">Gjuhë</translation>
+<translation id="7986250835989845763">Pajisjet Media</translation>
+<translation id="4267171000817377500">Shtojcat</translation>
+<translation id="3441653493275994384">Ekrani</translation>
+<translation id="1772612984983840854">Speech Synthesis</translation>
+<translation id="1167475333911019229">Numri Serial i Pajisjes USB</translation>
+<translation id="6897140037006041989">User Agent</translation>
+<translation id="6433005682384591812">Web Sockets Pool</translation>
 <translation id="6294662480095808915">Privatësia. Paraprakisht.</translation>
 <translation id="4366423156486478559">Merr mbrojtjen Brave në çdo lidhje që klikon. Thjesht vendosni Brave si të parazgjedhur dhe shfleto. Privatësisht.</translation>
 <translation id="3830912418080848377">Importo Parametrat</translation>
@@ -2721,7 +2743,6 @@
 <translation id="6821966107067356137">Shto burimin e RSS-së</translation>
 <translation id="2478076885740497414">Instalo aplikacionin</translation>
 <translation id="8293206222192510085">Shto faqeruajtës</translation>
-<translation id="1010029336854254368">Meny e Ndarjes</translation>
 <translation id="7758460733045216901">Paneli i Faqeruejtësve</translation>
 <translation id="958268166261124668">VPN Brave: I lidhur</translation>
 <translation id="6021669293402055982">VPN Brave: I lidhur</translation>
@@ -2842,17 +2863,31 @@ Le të ju lidhim!</translation>
 <translation id="5816720995022674532">Origin është falas për të përdorur në pajisjet Linux, por ende <ph name="BEGIN_LINK"/>në dispozicion për blerje<ph name="END_LINK"/> nëse dëshironi të mbështesni Brave si një biznes. Blerja do të shbllokonte gjithashtu aftësinë për të përdorur Origin në pajisjet Android, iOS, macOS, dhe Windows.</translation>
 <translation id="3065220545261045367">Mbështesni Brave duke blerë Origin</translation>
 <translation id="2069499076031488636">Vazhdoni me Origin falas në Linux</translation>
+<translation id="6820590295368504396">E pamundur të lidhet me shërbimin SKU</translation>
+<translation id="2525146368601152300">ID-ja e blerjes është bosh</translation>
+<translation id="7858444547014304753">ID e blerjes e pavlefshme</translation>
+<translation id="2016076837307423164">Marrja e kredencialeve dështoi</translation>
+<translation id="3890481923176188801">Blerja nuk u gjet</translation>
 <translation id="5713644099811900409">Llogari Brave</translation>
 <translation id="2906576968270573525">Hyr ose krijo një llogari Brave</translation>
 <translation id="6972754398087986839">Fillo</translation>
 <translation id="5378207817582281342">Thuajse mbaruam!</translation>
 <translation id="3750210661641549834">Që të krijohet llogaria jote, të lutemi verifiko adresën tënde email.</translation>
-<translation id="4129813507847680661">Fut kodin e regjistrimit</translation>
+<translation id="4351175281479794167">Fut kodin e verifikimit</translation>
 <translation id="1672793037892810340">Duhet të kesh marrë një email me një kod që duhet ta fusësh.</translation>
 <translation id="4821255729182569254">Ridërgo emailin e konfirmimit</translation>
 <translation id="5837679375142747484">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose <ph name="BEGIN_LINK"/>ridërgoje<ph name="END_LINK"/>.</translation>
 <translation id="1080588816740959885">Nuk e sheh emailin? Kontrollo dosjen e postës së padëshiruar ose ridërgoje.</translation>
 <translation id="1020730839570724178">Anulo regjistrimin</translation>
+<translation id="7155125570724238786">Që të rivendoset fjalëkalimi yt, të lutemi verifiko adresën tënde email.</translation>
+<translation id="816074628631172140">Emaili yt është verifikuar. Vendos një fjalëkalim të ri për të përfunduar rivendosjen e fjalëkalimit.</translation>
+<translation id="7543374051303238869">Vendos fjalëkalim të ri</translation>
+<translation id="8378209932853841849">Anulo rivendosjen e fjalëkalimit</translation>
+<translation id="4405566535206792621">Që të ndryshosh fjalëkalimin tënd, të lutemi verifiko adresën tënde email.</translation>
+<translation id="3135333563420939059">Emaili yt është verifikuar. Vendos një fjalëkalim të ri për të përfunduar ndryshimin e fjalëkalimit.</translation>
+<translation id="4227581348172626540">Anulo ndryshimin e fjalëkalimit</translation>
+<translation id="808894953321890993">Ndrysho fjalëkalimin</translation>
+<translation id="7967687455715421528">I pamundur ndryshimi i fjalëkalimit</translation>
 <translation id="4869737930995549965">Çkyçu</translation>
 <translation id="5538654494923870167">Fillo me llogarinë tënde Brave</translation>
 <translation id="1544145635547515689">Krijo një llogari Brave</translation>
@@ -2867,10 +2902,11 @@ Le të ju lidhim!</translation>
 <translation id="5486261815000869482">Konfirmo fjalëkalimin</translation>
 <translation id="7345706641791090287">Konfirmo fjalëkalimin tënd</translation>
 <translation id="7114054701490058191">Fjalëkalimet nuk përputhen</translation>
+<translation id="4277028893293644418">Rivendos fjalëkalimin</translation>
+<translation id="9033485352495162741">Konfirmimi u krye me sukses. Tani fut fjalëkalimin tënd të ri të dëshiruar:</translation>
 <translation id="1293857704520741614">Futu në llogarinë tënde</translation>
 <translation id="118617366439356381">Harrove fjalëkalimin?</translation>
 <translation id="5183159033908953146">Konfirmo emailin e llogarisë tënde Brave dhe më pas do të marrësh një lidhje për të rivendosur fjalëkalimin. Lidhja do të jetë e vlefshme vetëm për 30 minuta.</translation>
-<translation id="3997368361371298873">Kujdes: meqenëse nuk je i kyçur në këtë pajisje, rivendosja e fjalëkalimit do të <ph name="BEGIN_BOLD"/>fshijë të gjitha të dhënat e tua<ph name="END_BOLD"/> në server. Nëse ke një pajisje tjetër ku je i kyçur, ndrysho fjalëkalimin nga ajo pajisje në vend që ta rivendosësh.</translation>
 <translation id="3674472551471103443">Rivendos fjalëkalimin tënd</translation>
 <translation id="2755539422340788311">Verifiko emailin tënd</translation>
 <translation id="6641436078676327508">Duhet të kesh marrë një email me një kod të shkurtër. Të lutemi futeni këtu për të vazhduar.</translation>
@@ -2887,10 +2923,16 @@ Le të ju lidhim!</translation>
 <translation id="7144067487084094749">Ekziston tashmë një llogari për këtë adresë email. Provo të futesh në vend që të krijosh një llogari.</translation>
 <translation id="5288951359968156008">Domain-i i kësaj adrese email nuk mbështetet. Të lutemi përdor një adresë tjetër email.</translation>
 <translation id="7625678607509255072">Është tejkaluar kufiri i verifikimit me email. Të lutemi prit 30 minuta para se të provosh sërish.</translation>
-<translation id="4582421696414628320">Verifikimi skadoi. Fillo sërish procesin e regjistrimit.</translation>
+<translation id="9121175588136821850">Kodi i verifikimit skadoi. Fillo sërish procesin e regjistrimit.</translation>
 <translation id="8439543211004394821">U futën shumë kode të pasakta. Fillo sërish procesin e regjistrimit.</translation>
 <translation id="3229986152760633988">Kod i gabuar, të lutemi provo sërish.</translation>
 <translation id="818783632689113711">Një llogari është kërkuar tashmë për këtë adresë email-i. Ju lutemi kontrolloni email-in tuaj ose provoni përsëri pas 30 minutash.</translation>
+<translation id="4776810543245166572">Nuk u gjet asnjë llogari për këtë adresë email.</translation>
+<translation id="7090885444036935209">Adresa email e pavlefshme.</translation>
+<translation id="1542836798393843657">Shumë përpjekje verifikimi për këtë adresë email. Provo sërish pas 24 orësh.</translation>
+<translation id="7572012011062736429">Gabim i brendshëm. Mbylle dialogun, anulo verifikimin dhe provo sërish.</translation>
+<translation id="2477280119520811719">Kodi i verifikimit skadoi. Fillo sërish procesin e ndryshimit të fjalëkalimit.</translation>
+<translation id="7103280722523884198">U futën shumë kode të pasakta. Fillo sërish procesin e ndryshimit të fjalëkalimit.</translation>
 <translation id="4178004989875422946">Një llogari Brave do të të lejojë të hysh lehtësisht në shërbimet Brave.</translation>
 <translation id="4902897635127068510">A keni menduar <ph name="SUGGESTION"/>?</translation>
 <translation id="8314772463905284467">Caps Lock është i ndezur</translation>
@@ -2899,6 +2941,7 @@ Le të ju lidhim!</translation>
 <translation id="2112559299194052697">Nuk mund të ridërgohet</translation>
 <translation id="7932611814134267012">Janë dërguar tashmë shumë email verifikimi. Të lutemi kontrollo dosjen e postës së padëshiruar.</translation>
 <translation id="1364223093800750401">Emaili është verifikuar tashmë.</translation>
+<translation id="1353061468772282268">Kodi i verifikimit ka skaduar. Anulo verifikimin dhe provo sërish.</translation>
 <translation id="3353844160742960162">Përshtatja e Cilësimeve të Privatësisë</translation>
 <translation id="528205534230423181">Ky website ofron cilësime privatësie që Brave mund t'i përshtatë automatikisht për ty. Ja çfarë rekomandojmë:</translation>
 <translation id="1063227610401477317">Zbato Ndryshimet</translation>
