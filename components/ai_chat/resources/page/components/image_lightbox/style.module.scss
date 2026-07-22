@@ -1,0 +1,82 @@
+// Copyright (c) 2026 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// you can obtain one at https://mozilla.org/MPL/2.0/.
+
+.dialog {
+  --leo-dialog-padding: 0;
+  --leo-dialog-width: min(90vw, 480px);
+  --leo-dialog-background: transparent;
+  background: transparent;
+  box-shadow: none;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: var(--leo-radius-xl);
+  background-color: var(--leo-color-container-background);
+}
+
+.imageContainer {
+  // Sized from the image's natural aspect ratio once loaded.
+  line-height: 0;
+  overflow: hidden;
+  max-width: 100%;
+}
+
+.image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--leo-spacing-l);
+  padding: var(--leo-spacing-xl);
+  background-color: var(--leo-color-container-background);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--leo-spacing-xs);
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.title {
+  font: var(--leo-font-default-semibold);
+  color: var(--leo-color-text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.subtitle {
+  font: var(--leo-font-small-regular);
+  color: var(--leo-color-text-tertiary);
+}
+
+.actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--leo-spacing-m);
+  flex-shrink: 0;
+
+  --leo-icon-size: 20px;
+}
+
+.copyButtonSuccess {
+  --leo-button-color: var(--leo-color-systemfeedback-success-icon);
+  --leo-icon-color: var(--leo-color-systemfeedback-success-text);
+  color: var(--leo-color-systemfeedback-success-text);
+}

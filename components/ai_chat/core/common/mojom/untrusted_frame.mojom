@@ -38,6 +38,10 @@ interface ParentUIFrame {
   // Show the skill creation dialog with the provided prompt text
   ShowSkillDialog(string prompt);
 
+  // Show image attachment lightbox in the parent trusted UI so the
+  // backdrop is not clipped by the untrusted iframe.
+  ShowImageLightbox(UploadedFile file);
+
   // Request the parent frame to create a new conversation
   RequestNewConversation();
 

@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { render, screen, waitFor } from '@testing-library/react'
+import { render, screen, waitFor, fireEvent } from '@testing-library/react'
 import {
   AttachmentItem,
   AttachmentPageItem,
@@ -19,6 +19,11 @@ import * as Mojom from '../../../common/mojom'
 Object.defineProperty(URL, 'createObjectURL', {
   writable: true,
   value: jest.fn(() => 'mock-object-url'),
+})
+
+Object.defineProperty(URL, 'revokeObjectURL', {
+  writable: true,
+  value: jest.fn(),
 })
 
 describe('attachment item', () => {
@@ -386,5 +391,51 @@ describe('AttachmentUploadItems', () => {
     expect(
       screen.getByText('CHAT_UI_FULL_PAGE_SCREENSHOT_TITLE'),
     ).toBeInTheDocument()
+  })
+
+  it('calls onPreview when an image thumbnail is clicked', () => {
+    const onPreview = jest.fn()
+    const uploadedFiles = [
+      createMockFile('photo.jpg', Mojom.UploadedFileType.kImage),
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
+    ]
+
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={onPreview}
+      />,
+    )
+
+    const previewButtons = screen.getAllByRole('button', {
+      name: 'CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL',
+    })
+    expect(previewButtons).toHaveLength(1)
+
+    fireEvent.click(previewButtons[0])
+    expect(onPreview).toHaveBeenCalledTimes(1)
+    expect(onPreview).toHaveBeenCalledWith(uploadedFiles[0])
+  })
+
+  it('does not render a preview button for pdf or text files', () => {
+    const onPreview = jest.fn()
+    const uploadedFiles = [
+      createMockFile('document.pdf', Mojom.UploadedFileType.kPdf),
+      createMockFile('notes.txt', Mojom.UploadedFileType.kText),
+    ]
+
+    render(
+      <AttachmentUploadItems
+        uploadedFiles={uploadedFiles}
+        onPreview={onPreview}
+      />,
+    )
+
+    expect(
+      screen.queryByRole('button', {
+        name: 'CHAT_UI_IMAGE_LIGHTBOX_PREVIEW_BUTTON_LABEL',
+      }),
+    ).not.toBeInTheDocument()
+    expect(onPreview).not.toHaveBeenCalled()
   })
 })
