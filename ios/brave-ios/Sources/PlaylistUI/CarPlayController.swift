@@ -86,8 +86,8 @@ public class CarPlayController {
   }
 
   @MainActor private func handlePlayerError() {
-    // Can't show an error alert while in CarPlay, so invoke the error's recovery handler
-    // (which advances to the next item) instead of presenting it to the driver.
+    // Avoid showing error alerts so as not to distract the driver in scenarios where the where the user is the driver.
+    // Invoke the error's recovery handler which advances to the next item (for better user experience)
     guard let error = player.error else { return }
     error.handler?()
     player.error = nil
