@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Comptes";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Autentifica't per gestionar les teves contrasenyes.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Això eliminarà la contrasenya o les contrasenyes desades de %@ de la vostra cadena de sincronització i del vostre aparell.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Ofereix desar contrasenyes";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Introdueix la contrasenya";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Revela";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Cerca llocs web";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Activa premsa llarga";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Llista de reproducció d'arxius & Dades fora de línia";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Dades fora de línia de la llista de reproducció";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Canvia";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave s'ha tancat inesperadament.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Amb Recompenses de Brave, pots veure anuncis que preserven la privacitat des de la xarxa d'Anuncis de Brave. Sense rastrejadors. Sense alentiments. I les teves dades es mantenen totalment segures.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Activa les recompenses";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Clica a qualsevol lloc de la pantalla per continuar a Conversa de Brave.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Ara pots iniciar una trucada gratuïta";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Per iniciar una trucada gratuïta, activa Recompenses de Brave";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Activa per ajudar a donar suport a Brave i a la comunitat BAT.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Gràcies per ajudar a donar suport a Brave i a la comunitat BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "En clicar, acceptes les %1$@ i %2$@. Desactiva-ho en qualsevol moment a Configuració.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Ajuda a donar suport a Brave i a la comunitat BAT activant Recompenses de Brave i veient Anuncis de Brave.";

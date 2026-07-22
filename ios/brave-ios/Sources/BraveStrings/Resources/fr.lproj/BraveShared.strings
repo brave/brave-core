@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Comptes";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Veuillez vous authentifier pour gérer vos mots de passe.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Cette action supprimera le ou les mots de passe enregistrés pour %@ de votre chaîne de synchronisation et de votre appareil.";
 
@@ -86,7 +89,7 @@
 "autofill.managePasswords.deleteCredentialsAlertTitle" = "Confirmer ?";
 
 /* Label for the button used to delete the current login. */
-"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Testing Delete 1 for French";
+"autofill.managePasswords.deleteManagePasswordButtonTitle" = "Supprimer";
 
 /* Title for the section header in the Manage Passwords list screen, that lists the saved sites */
 "autofill.managePasswords.headerTitle" = "Enregistré";
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Proposer d'enregistrer les mots de passe";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Entrez votre mot de passe";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Afficher";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Rechercher des sites web";
@@ -1484,7 +1493,7 @@
 "playlist.carplayRestartPlaybackOptionTitle" = "Redémarrer la lecture";
 
 /* The title of the section containing settings/options in CarPlay */
-"playlist.carplaySettingsSectionTitle" = "Réglages";
+"playlist.carplaySettingsSectionTitle" = "Paramètres";
 
 /* The title of the playlist when in Carplay mode */
 "playlist.carplayTitle" = "Playlist Brave";
@@ -1566,12 +1575,6 @@
 
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Activer l'appui long";
-
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Données hors ligne et contenu multimédia";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Données hors ligne de la playlist";
 
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Modifier";
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave s’est fermé de manière inattendue.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Avec le programme de récompenses Brave, vous visionnez des publicités respectueuses de la vie privée grâce au réseau Brave Ads. Pas de traqueur. Pas de ralentissement. Et vos données restent en sécurité.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Activer le programme de récompenses Brave";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Cliquez sur l’écran pour continuer vers la discussion Brave.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Vous pouvez désormais démarrer un appel gratuit";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Pour démarrer un appel gratuit, activez le programme de récompenses Brave.";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Activez cette fonctionnalité pour soutenir Brave et la communauté BAT.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Merci de soutenir Brave et la communauté BAT !";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "En cliquant, vous acceptez les %1$@ et la %2$@. Désactivez cette option à tout moment dans les paramètres.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Soutenez Brave et la communauté BAT en activant le programme de récompenses Brave et en affichant les publicités Brave.";
@@ -2444,7 +2429,7 @@
 "settings.blockYouTubeDistractingElementsDesc" = "Bloque les éléments indésirables sur YouTube";
 
 /* Title beside the toggle for blocking YouTube distracting elements */
-"settings.blockYouTubeDistractingElementsTitle" = "Bloquer les éléments indésirables sur YouTube";
+"settings.blockYouTubeDistractingElementsTitle" = "Bloque les éléments indésirables sur YouTube";
 
 /* Description beside the toggle for blocking YouTube recommendations */
 "settings.blockYoutubeRecommendationsDesc" = "Bloque les vidéos à suivre et les écrans de fin sur youtube.com";
@@ -2663,7 +2648,7 @@
 "shortcuts.activityTypeOpenSyncedTabsSuggestedPhrase" = "Ouvrir les onglets issus d’autres appareils";
 
 /* No comment provided by engineer. */
-"shortcuts.activityTypeOpenSyncedTabsTitle" = "Ouvrir les onglets issus d'autres appareils";
+"shortcuts.activityTypeOpenSyncedTabsTitle" = "Ouvrir les onglets issus d’autres appareils";
 
 /* No comment provided by engineer. */
 "shortcuts.activityTypeTabDescription" = "Commencer à chercher sur le Web en toute sécurité avec Brave";
@@ -2687,7 +2672,7 @@
 "shortcuts.shortcutSettingsClearBrowserHistoryDescription" = "Crée un raccourci pour ouvrir un nouvel onglet et effacer l’historique du navigateur avec Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Effacer l'historique de navigation";
+"shortcuts.shortcutSettingsClearBrowserHistoryTitle" = "Effacer l’historique de navigation";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsEnableVPNDescription" = "Crée un raccourci pour activer le VPN Brave avec Siri";
@@ -2705,13 +2690,13 @@
 "shortcuts.shortcutSettingsOpenBraveNewsDescription" = "Crée un raccourci pour ouvrir un nouvel onglet et afficher le fil d’actualités Brave avec Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ouvrir Brave News";
+"shortcuts.shortcutSettingsOpenBraveNewsTitle" = "Ouvrir les actualités Brave";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenHistoryListDescription" = "Crée un raccourci pour ouvrir l’historique du navigateur avec Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Ouvrir l'historique du navigateur";
+"shortcuts.shortcutSettingsOpenHistoryListTitle" = "Ouvrir l’historique du navigateur";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsOpenNewPrivateTabDescription" = "Crée un raccourci pour ouvrir un nouvel onglet de navigation privée avec Siri";
@@ -2735,7 +2720,7 @@
 "shortcuts.shortcutSettingsOpenSyncedTabsDescription" = "Crée un raccourci pour ouvrir les onglets d’autres appareils avec Siri";
 
 /* No comment provided by engineer. */
-"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Ouvrir les onglets issus d'autres appareils";
+"shortcuts.shortcutSettingsOpenSyncedTabsTitle" = "Ouvrir les onglets issus d’autres appareils";
 
 /* No comment provided by engineer. */
 "shortcuts.shortcutSettingsTitle" = "Raccourcis Siri";
@@ -2750,7 +2735,7 @@
 "ShowHistory" = "Afficher l’historique";
 
 /* Label to display in the Discoverability overlay for keyboard shortcuts */
-"showHistoryTitle" = "Afficher l'historique";
+"showHistoryTitle" = "Afficher l’historique";
 
 /* Setting preference to only show the browser tabs bar when the device is in the landscape orientation. */
 "ShowInLandscapeOnly" = "Mode Paysage uniquement";
@@ -2780,7 +2765,7 @@
 "socialSharing.domainSpecificDataSavedTitle" = "Chaque jour, j’économise des données en naviguant sur le Web avec Brave.";
 
 /* Text used for social sharing together with Brave Shield values */
-"socialSharing.shareDescriptionTitle" = "Chaque jour, j'économise des données en naviguant sur le Web avec Brave.";
+"socialSharing.shareDescriptionTitle" = "Chaque jour, j’économise des données en naviguant sur le Web avec Brave.";
 
 /* Open search section of settings */
 "StandardTabSearch" = "Onglet standard";
@@ -2837,13 +2822,13 @@
 "sync.chainAccountDeletionErrorDescription" = "Synchroniser l’appareil";
 
 /* Alert title for error while deleting sync chain */
-"sync.chainAccountDeletionErrorTitle" = "Synchroniser l'appareil";
+"sync.chainAccountDeletionErrorTitle" = "Synchroniser l’appareil";
 
 /* Alert description for the occasion when an user is trying to join a already deleted account */
 "sync.chainAlreadyDeletedAlertDescription" = "Impossible d’associer cette chaîne. Le compte a été supprimé.";
 
 /* Alert title for the occasion when an user is trying to join a already deleted account */
-"sync.chainAlreadyDeletedAlertTitle" = "Synchroniser l'appareil";
+"sync.chainAlreadyDeletedAlertTitle" = "Synchroniser l’appareil";
 
 /* Choose device type for sync */
 "sync.chooseDevice" = "Choisir le type d’appareil";
@@ -3032,7 +3017,7 @@
 "sync.setPasscodeAlertDescription" = "Pour ajouter un appareil à la chaîne de synchronisation ou activer la synchronisation par mot de passe, vous devez d’abord définir un code d’accès sur votre appareil.";
 
 /* The title displayed in alert when a user needs to set passcode */
-"sync.setPasscodeAlertTitle" = "Définir un code d'accès";
+"sync.setPasscodeAlertTitle" = "Définir un code d’accès";
 
 /* Header title for Sync settings */
 "sync.settingsHeader" = "Les appareils de votre chaîne de synchronisation apparaissent dans la liste ci-dessous. Vous pouvez les gérer depuis n’importe lequel des appareils.";
@@ -3131,7 +3116,7 @@
 "tabGrid.privateBrowsingInfoBulletTwoTitle" = "Visibilité de l’activité";
 
 /* A title shown when in private browsing mode with no tabs open */
-"tabGrid.privateBrowsingInfoTitle" = "Onglet privé";
+"tabGrid.privateBrowsingInfoTitle" = "Onglet de navigation privée";
 
 /* Accessibility label for the regular browsing option in the browsing mode picker */
 "tabGrid.privateBrowsingModeAccessibilityLabel" = "Navigation privée";

@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "גריסה אוטומטית";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "מחק אוטומטית את נתוני הגלישה";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "אגרסיבי";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "אף פעם";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "נתוני הגלישה לעולם לא נמחקים באופן אוטומטי";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "כשהאפליקציה סגורה";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "נתוני הגלישה נמחקים באופן אוטומטי כאשר האפליקציה Brave נסגרת / מופעלת מחדש";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "כשכרטיסיות האתר סגורות";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "נתוני הגלישה נמחקים באופן אוטומטי כאשר כל הכרטיסיות הפתוחות של אתר נסגרות";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "גריסה תסגור את כל הכרטיסיות, ותמחק את כל נתוני האתר. פעולה זו לא ניתנת לביטול.";
