@@ -6,31 +6,19 @@
 #ifndef BRAVE_COMPONENTS_COSMETIC_FILTERS_COMMON_SCRIPTLET_CONSTANTS_H_
 #define BRAVE_COMPONENTS_COSMETIC_FILTERS_COMMON_SCRIPTLET_CONSTANTS_H_
 
+#include <string>
+
 namespace cosmetic_filters {
 
-// Defines `scriptletGlobals`, a `Map` wrapped in a `Proxy` that some of uBlock
-// Origin's scriptlet resources rely on. Prepended to injected scriptlets on all
-// platforms. It contains a single `%s` placeholder for the `Map` constructor
-// arguments (`canDebug` used on non-iOS platforms).
-constexpr const char kScriptletGlobalsScript[] = R"js(
-  const scriptletGlobals = (() => {
-    const forwardedMapMethods = ["has", "get", "set"];
-    const handler = {
-      get(target, prop) {
-        if (forwardedMapMethods.includes(prop)) {
-          return Map.prototype[prop].bind(target)
-        }
-        return target.get(prop);
-      },
-      set(target, prop, value) {
-        if (!forwardedMapMethods.includes(prop)) {
-          target.set(prop, value);
-        }
-      }
-    };
-    return new Proxy(new Map(%s), handler);
-  })();
-)js";
+// Builds the globals block that is prepended to injected scriptlets on all
+// platforms. It defines:
+//   - `scriptletGlobals`, a `Map` wrapped in a `Proxy` that some of uBlock
+//     Origin's scriptlet resources rely on.
+//   - `deAmpEnabled`, used by the de-amp scriptlet resource.
+//
+// `is_de_amp_enabled` toggles de-amping. `can_debug` enables uBlock Origin's
+// scriptlet debug logging and is only set on non-iOS platforms.
+std::string GetScriptletGlobalsScript(bool is_de_amp_enabled, bool can_debug);
 
 }  // namespace cosmetic_filters
 
