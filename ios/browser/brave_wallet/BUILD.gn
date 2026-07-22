@@ -15,6 +15,10 @@ source_set("brave_wallet") {
     "brave_wallet_service_factory.mm",
     "brave_wallet_utils.h",
     "brave_wallet_utils.mm",
+    "cardano_provider_javascript_feature.h",
+    "cardano_provider_javascript_feature.mm",
+    "cardano_provider_tab_helper.h",
+    "cardano_provider_tab_helper.mm",
     "ethereum_provider_javascript_feature.h",
     "ethereum_provider_javascript_feature.mm",
     "ethereum_provider_tab_helper.h",
@@ -27,6 +31,7 @@ source_set("brave_wallet") {
     "wallet_pref_names_bridge.mm",
   ]
   deps = [
+    ":cardano_provider_js",
     ":ethereum_provider_js",
     "//brave/components/brave_wallet/browser",
     "//brave/components/brave_wallet/browser:constants",
@@ -65,6 +70,17 @@ optimize_ts("ethereum_provider_js") {
   visibility = [ ":brave_wallet" ]
 
   sources = [ "resources/ethereum_provider.ts" ]
+
+  deps = [
+    "//brave/ios/web/js_messaging:safe_builtins",
+    "//brave/ios/web/js_messaging:util_scripts",
+  ]
+}
+
+optimize_ts("cardano_provider_js") {
+  visibility = [ ":brave_wallet" ]
+
+  sources = [ "resources/cardano_provider.ts" ]
 
   deps = [
     "//brave/ios/web/js_messaging:safe_builtins",
