@@ -107,6 +107,10 @@ void TabManager::NotifyTabDidLoad(const TabInfo& tab, int http_status_code) {
   observers_.Notify(&TabManagerObserver::OnTabDidLoad, tab, http_status_code);
 }
 
+void TabManager::NotifyTabDidFailToLoad(const TabInfo& tab) {
+  observers_.Notify(&TabManagerObserver::OnTabDidFailToLoad, tab);
+}
+
 void TabManager::NotifyTabDidChangeFocus(int32_t tab_id) {
   observers_.Notify(&TabManagerObserver::OnTabDidChangeFocus, tab_id);
 }
@@ -234,6 +238,12 @@ void TabManager::OnNotifyTabDidChange(int32_t tab_id,
 void TabManager::OnNotifyTabDidLoad(int32_t tab_id, int http_status_code) {
   if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
     NotifyTabDidLoad(*tab, http_status_code);
+  }
+}
+
+void TabManager::OnNotifyTabDidFailToLoad(int32_t tab_id) {
+  if (std::optional<TabInfo> tab = MaybeGetForId(tab_id)) {
+    NotifyTabDidFailToLoad(*tab);
   }
 }
 

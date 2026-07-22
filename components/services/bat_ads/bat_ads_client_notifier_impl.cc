@@ -98,6 +98,10 @@ void BatAdsClientNotifierImpl::NotifyTabDidLoad(int32_t tab_id,
   ads_client_notifier_.NotifyTabDidLoad(tab_id, http_status_code);
 }
 
+void BatAdsClientNotifierImpl::NotifyTabDidFailToLoad(int32_t tab_id) {
+  ads_client_notifier_.NotifyTabDidFailToLoad(tab_id);
+}
+
 void BatAdsClientNotifierImpl::NotifyDidCloseTab(int32_t tab_id) {
   ads_client_notifier_.NotifyDidCloseTab(tab_id);
 }

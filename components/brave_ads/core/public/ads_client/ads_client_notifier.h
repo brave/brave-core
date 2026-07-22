@@ -55,6 +55,7 @@ class AdsClientNotifier final {
                           bool is_restoring,
                           bool is_visible);
   void NotifyTabDidLoad(int32_t tab_id, int http_status_code);
+  void NotifyTabDidFailToLoad(int32_t tab_id);
   void NotifyDidCloseTab(int32_t tab_id);
   void NotifyUserGestureEventTriggered(ui::PageTransition page_transition);
   void NotifyUserDidBecomeIdle();

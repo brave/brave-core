@@ -228,6 +228,12 @@ void AdsTabHelper::MaybeNotifyTabDidLoad() {
                                  *http_status_code_);
 }
 
+void AdsTabHelper::MaybeNotifyTabDidFailToLoad() {
+  if (ads_service_) {
+    ads_service_->NotifyTabDidFailToLoad(/*tab_id=*/session_id_.id());
+  }
+}
+
 bool AdsTabHelper::ShouldNotifyTabContentDidChange() const {
   // Don't notify about content changes if the ads service is not available, the
   // tab was restored, was a previously committed navigation, the web contents

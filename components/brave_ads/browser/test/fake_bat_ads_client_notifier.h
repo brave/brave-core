@@ -66,6 +66,7 @@ class FakeBatAdsClientNotifier : public bat_ads::mojom::BatAdsClientNotifier {
                           bool /*is_visible*/) override {}
   void NotifyTabDidLoad(int32_t /*tab_id*/,
                         int32_t /*http_status_code*/) override {}
+  void NotifyTabDidFailToLoad(int32_t /*tab_id*/) override {}
   void NotifyDidCloseTab(int32_t /*tab_id*/) override {}
   void NotifyUserGestureEventTriggered(int32_t /*page_transition*/) override {}
   void NotifyUserDidBecomeIdle() override;

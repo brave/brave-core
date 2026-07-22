@@ -177,6 +177,24 @@ TEST_F(BraveAdsTabManagerTest, CloseTab) {
   ads_client_notifier_.NotifyDidCloseTab(/*tab_id=*/1);
 }
 
+TEST_F(BraveAdsTabManagerTest, FailToLoadTab) {
+  // Arrange
+  EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);
+  EXPECT_CALL(tab_manager_observer_mock_, OnTabDidChangeFocus);
+  ads_client_notifier_.NotifyTabDidChange(
+      /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
+      /*is_new_navigation=*/true, /*is_restoring=*/false, /*is_visible=*/true);
+
+  // Act & Assert
+  EXPECT_CALL(
+      tab_manager_observer_mock_,
+      OnTabDidFailToLoad(TabInfo{/*id=*/1,
+                                 /*is_visible=*/true,
+                                 /*redirect_chain=*/{GURL("https://brave.com")},
+                                 /*is_playing_media=*/false}));
+  ads_client_notifier_.NotifyTabDidFailToLoad(/*tab_id=*/1);
+}
+
 TEST_F(BraveAdsTabManagerTest, IsPlayingMedia) {
   // Arrange
   EXPECT_CALL(tab_manager_observer_mock_, OnDidOpenNewTab);

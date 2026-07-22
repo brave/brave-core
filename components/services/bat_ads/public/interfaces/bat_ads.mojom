@@ -46,6 +46,7 @@ interface BatAdsClientNotifier {
                      bool is_visible);
   NotifyTabDidLoad(int32 tab_id,
                    int32 http_status_code);
+  NotifyTabDidFailToLoad(int32 tab_id);
   NotifyDidCloseTab(int32 tab_id);
 
   NotifyUserGestureEventTriggered(int32 page_transition);
