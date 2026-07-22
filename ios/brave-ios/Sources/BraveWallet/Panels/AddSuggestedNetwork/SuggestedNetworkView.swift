@@ -177,8 +177,8 @@ struct SuggestedNetworkView: View {
           }
           .padding(24)
           .background(
-            Color(braveSystemName: .systemfeedbackErrorBackground)
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+            Color(braveSystemName: .systemfeedbackErrorBackground),
+            in: .rect(cornerRadius: 10, style: .continuous)
           )
         }
       }
