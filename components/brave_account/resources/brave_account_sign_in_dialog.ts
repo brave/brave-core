@@ -11,10 +11,7 @@ import {
 } from './brave_account_browser_proxy.js'
 import { getCss } from './brave_account_sign_in_dialog.css.js'
 import { getHtml } from './brave_account_sign_in_dialog.html.js'
-import {
-  LoginClientErrorCode,
-  LoginError,
-} from './brave_account.mojom-webui.js'
+import { LoginClientErrorCode, LoginError } from './login.mojom-webui.js'
 import { showError } from './brave_account_common.js'
 
 import {

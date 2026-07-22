@@ -19,6 +19,7 @@
 #include "brave/components/brave_account/endpoints/login_finalize.h"
 #include "brave/components/brave_account/endpoints/login_init.h"
 #include "brave/components/brave_account/mojom/brave_account.mojom.h"
+#include "brave/components/brave_account/mojom/login.mojom.h"
 #include "components/prefs/pref_service.h"
 #include "mojo/public/cpp/bindings/remote.h"
 #include "net/http/http_status_code.h"

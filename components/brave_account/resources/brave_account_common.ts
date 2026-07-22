@@ -13,9 +13,6 @@ import {
 import { loadTimeData } from '//resources/js/load_time_data.js'
 
 import {
-  LoginClientErrorCode,
-  LoginError,
-  LoginServerErrorCode,
   ResendConfirmationEmailClientErrorCode,
   ResendConfirmationEmailError,
   ResendConfirmationEmailServerErrorCode,
@@ -25,6 +22,11 @@ import {
   ChangePasswordError,
   ChangePasswordServerErrorCode,
 } from './change_password.mojom-webui.js'
+import {
+  LoginClientErrorCode,
+  LoginError,
+  LoginServerErrorCode,
+} from './login.mojom-webui.js'
 import {
   RegisterClientErrorCode,
   RegisterError,
