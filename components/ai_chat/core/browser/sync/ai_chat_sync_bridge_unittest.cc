@@ -45,19 +45,19 @@ class AIChatSyncBridgeTest : public testing::Test {
   }
 
   // Creates the bridge and attaches the database (the common case).
-  void CreateBridge() {
-    CreateBridgeWithoutDatabase();
+  void CreateBridge(bool is_tracking_metadata = true) {
+    CreateBridgeWithoutDatabase(is_tracking_metadata);
     bridge_->SetDatabase(db_.get());
   }
 
   // Creates the bridge without attaching a database, mirroring how the service
   // installs the bridge eagerly before the database exists.
-  void CreateBridgeWithoutDatabase() {
+  void CreateBridgeWithoutDatabase(bool is_tracking_metadata = true) {
     auto processor = std::make_unique<
         testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
     mock_processor_ = processor.get();
     ON_CALL(*mock_processor_, IsTrackingMetadata())
-        .WillByDefault(testing::Return(true));
+        .WillByDefault(testing::Return(is_tracking_metadata));
     bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor));
   }
 
@@ -219,14 +219,7 @@ TEST_F(AIChatSyncBridgeTest, OnConversationEntryDeletedEmitsDelete) {
 
 TEST_F(AIChatSyncBridgeTest, OnConversationAddedNoOpWhenNotTracking) {
   AddTestConversation("conv-1", "Test");
-
-  auto processor = std::make_unique<
-      testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
-  mock_processor_ = processor.get();
-  ON_CALL(*mock_processor_, IsTrackingMetadata())
-      .WillByDefault(testing::Return(false));
-  bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor));
-  bridge_->SetDatabase(db_.get());
+  CreateBridge(/*is_tracking_metadata=*/false);
 
   EXPECT_CALL(*mock_processor_, Put(_, _, _)).Times(0);
   bridge_->OnConversationAdded("conv-1");

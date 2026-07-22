@@ -790,19 +790,15 @@ void AIChatService::GetPremiumStatus(
 }
 
 void AIChatService::DeleteConversation(const std::string& id) {
-  auto handler_it = conversation_handlers_.find(id);
-  if (handler_it != conversation_handlers_.end()) {
-    conversation_observations_.RemoveObservation(handler_it->second.get());
-    conversation_handlers_.erase(id);
+  if (auto node = conversation_handlers_.extract(id)) {
+    conversation_observations_.RemoveObservation(node.mapped().get());
     if (ai_chat_metrics_) {
       ai_chat_metrics_->RecordConversationUnload(id);
     }
   }
   bool temporary = false;
-  auto conversation_it = conversations_.find(id);
-  if (conversation_it != conversations_.end()) {
-    temporary = (*conversation_it).second->temporary;
-    conversations_.erase(conversation_it);
+  if (auto node = conversations_.extract(id)) {
+    temporary = node.mapped()->temporary;
   }
   DVLOG(1) << "Erased conversation due to deletion request (" << id
            << "). Now have " << conversations_.size()
@@ -815,10 +811,11 @@ void AIChatService::DeleteConversation(const std::string& id) {
     // Notify the sync bridge BEFORE the DB delete so it can enumerate the
     // conversation's entries (still present in the DB) and emit deletes for
     // each entry sync record. Both tasks run on db_task_runner_ in order.
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE, base::BindOnce(&AIChatSyncBackend::OnConversationDeleted,
-                                    sync_backend_, id));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(FROM_HERE,
+                    base::BindOnce(&AIChatSyncBackend::OnConversationDeleted,
+                                   sync_backend_, id));
     }
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversation))
@@ -1094,27 +1091,25 @@ void AIChatService::HandleFirstEntry(
            << " being persisted for first time.";
   CHECK(entry->uuid.has_value());
 
-  std::vector<std::string> associated_content;
-  if (maybe_associated_content.has_value()) {
-    associated_content = std::move(maybe_associated_content.value());
-  }
-
   // We can persist the conversation metadata for the first time as well as the
   // entry.
   if (ai_chat_db_ && !conversation->temporary) {
     ai_chat_db_.AsyncCall(base::IgnoreResult(&AIChatDatabase::AddConversation))
-        .WithArgs(conversation->Clone(), std::move(associated_content),
+        .WithArgs(conversation->Clone(),
+                  std::move(maybe_associated_content).value_or({}),
                   entry->Clone());
     // Notify the sync bridge of the new conversation and its first entry as
     // separate sync records.
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE, base::BindOnce(&AIChatSyncBackend::OnConversationAdded,
-                                    sync_backend_, conversation->uuid));
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::OnConversationEntryAdded,
-                         sync_backend_, conversation->uuid, *entry->uuid));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(FROM_HERE,
+                    base::BindOnce(&AIChatSyncBackend::OnConversationAdded,
+                                   sync_backend_, conversation->uuid));
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationEntryAdded,
+                             sync_backend_, conversation->uuid, *entry->uuid));
     }
   }
   // Record metrics
@@ -1159,16 +1154,18 @@ void AIChatService::HandleNewEntry(
     }
     // Notify the sync bridge that a new entry exists and that conversation
     // metadata (model_key, last_modified time) may have changed.
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::OnConversationEntryAdded,
-                         sync_backend_, handler->get_conversation_uuid(),
-                         *entry->uuid));
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::OnConversationModified,
-                         sync_backend_, handler->get_conversation_uuid()));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationEntryAdded,
+                             sync_backend_, handler->get_conversation_uuid(),
+                             *entry->uuid));
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationModified,
+                             sync_backend_, handler->get_conversation_uuid()));
     }
   }
 
@@ -1186,11 +1183,12 @@ void AIChatService::OnConversationEntryRemoved(ConversationHandler* handler,
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::DeleteConversationEntry))
         .WithArgs(entry_uuid);
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::OnConversationEntryDeleted,
-                         sync_backend_, entry_uuid));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationEntryDeleted,
+                             sync_backend_, entry_uuid));
     }
   }
 }
@@ -1204,12 +1202,13 @@ void AIChatService::OnToolUseEventOutput(ConversationHandler* handler,
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateToolUseEvent))
         .WithArgs(entry_uuid, event_order, std::move(tool_use));
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE,
-          base::BindOnce(&AIChatSyncBackend::OnConversationEntryModified,
-                         sync_backend_, handler->get_conversation_uuid(),
-                         std::string(entry_uuid)));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(
+              FROM_HERE,
+              base::BindOnce(&AIChatSyncBackend::OnConversationEntryModified,
+                             sync_backend_, handler->get_conversation_uuid(),
+                             entry_uuid));
     }
   }
 }
@@ -1243,10 +1242,11 @@ void AIChatService::OnConversationTitleChanged(
     ai_chat_db_
         .AsyncCall(base::IgnoreResult(&AIChatDatabase::UpdateConversationTitle))
         .WithArgs(conversation_uuid, new_title);
-    if (sync_backend_ && db_task_runner_) {
-      db_task_runner_->PostTask(
-          FROM_HERE, base::BindOnce(&AIChatSyncBackend::OnConversationModified,
-                                    sync_backend_, conversation_uuid));
+    if (sync_backend_) {
+      CHECK_DEREF(db_task_runner_)
+          .PostTask(FROM_HERE,
+                    base::BindOnce(&AIChatSyncBackend::OnConversationModified,
+                                   sync_backend_, conversation_uuid));
     }
   }
 }
