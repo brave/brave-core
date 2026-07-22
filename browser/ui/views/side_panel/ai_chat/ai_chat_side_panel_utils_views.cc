@@ -18,6 +18,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/interaction/browser_elements_views.h"
+#include "chrome/browser/ui/webui/webui_embedding_context.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_contents.h"
 #include "ui/gfx/geometry/rect.h"
@@ -141,6 +142,38 @@ bool MaybeMoveFullPageChatToSidePanel(
   transfer_controller->TransferFullPageContentsToSidePanel(
       std::move(ai_chat_contents), starting_bounds);
   return true;
+}
+
+bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents) {
+  if (!base::FeatureList::IsEnabled(features::kAIChatMoveFullPageToSidePanel)) {
+    return false;
+  }
+
+  // A side-panel-hosted AI Chat keeps its browser-window association while
+  // hosted (see `AIChatMovableSidePanelWebView`), so resolve the window from
+  // the contents without a `Browser*`.
+  BrowserWindowInterface* browser =
+      webui::GetBrowserWindowInterface(ai_chat_web_contents);
+  if (!browser) {
+    return false;
+  }
+
+  // Symmetric with the forward move: only the global (window-scoped) side panel
+  // transfers. A tab-scoped panel is tied to the tab it opened on, so moving
+  // the conversation out and closing the panel there is not the standalone case
+  // we support; leave it to the caller's fresh-tab path.
+  if (!ShouldSidePanelBeGlobal(browser->GetProfile())) {
+    return false;
+  }
+
+  AIChatSidePanelTabTransferBridge* transfer_bridge =
+      browser->GetFeatures().ai_chat_side_panel_tab_transfer_bridge();
+  if (!transfer_bridge) {
+    // Flag off, or a window type that has no bridge.
+    return false;
+  }
+
+  return transfer_bridge->MoveSidePanelContentsToTab(ai_chat_web_contents);
 }
 
 }  // namespace ai_chat

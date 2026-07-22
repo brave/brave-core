@@ -33,6 +33,10 @@ bool MaybeMoveFullPageChatToSidePanel(
     content::WebContents* ai_chat_web_contents) {
   return false;
 }
+
+bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents) {
+  return false;
+}
 #endif
 
 bool ShouldSidePanelBeGlobal(Profile* profile) {

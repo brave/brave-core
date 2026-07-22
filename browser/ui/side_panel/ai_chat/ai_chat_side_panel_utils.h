@@ -28,6 +28,16 @@ void ClosePanel(content::WebContents* web_contents);
 bool MaybeMoveFullPageChatToSidePanel(
     content::WebContents* ai_chat_web_contents);
 
+// Reverse (side panel -> tab): when `ai_chat_web_contents` is the live AI Chat
+// conversation hosted in the global side panel, moves that live `WebContents`
+// into a new full-page tab (preserving state) and closes the panel. Returns
+// true if the switch was handled this way (the caller must then NOT open a
+// fresh full-page tab). No-op (returns false) unless the
+// `kAIChatMoveFullPageToSidePanel` feature is enabled, the side panel is the
+// global standalone AI Chat, and it is the one being shown. Desktop only; the
+// definition lives in the toolkit_views translation unit.
+bool MaybeMoveSidePanelChatToTab(content::WebContents* ai_chat_web_contents);
+
 // Closes the side panel only if the AI Chat entry is the one currently being
 // shown. Used when moving a conversation to a full-page tab, where leaving the
 // now-duplicate AI Chat side panel open would be confusing.

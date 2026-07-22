@@ -79,17 +79,38 @@ std::unique_ptr<views::View> AIChatMovableSidePanelWebView::CreateView(
 
   auto web_view = std::make_unique<AIChatMovableSidePanelWebView>(profile);
 
-  // When a full-page AI Chat is being moved into the side panel, adopt that
-  // live `WebContents` instead of creating a fresh one, so the conversation's
-  // renderer/scroll/Mojo state is preserved.
-  AIChatSidePanelTabTransferBridge* transfer_controller =
+  AIChatSidePanelTabTransferBridge* transfer_bridge =
       scope.GetBrowserWindowInterface()
           .GetFeatures()
           .ai_chat_side_panel_tab_transfer_bridge();
-  web_view->AdoptWebContents(
-      transfer_controller && transfer_controller->HasPendingTransfer()
-          ? transfer_controller->TakePendingContents()
-          : CreateFreshAIChatContents(profile, is_tab_associated, scope));
+
+  if (transfer_bridge && transfer_bridge->HasPendingTransfer()) {
+    // A full-page AI Chat is being moved into the side panel: adopt that live
+    // `WebContents` instead of creating a fresh one, so the conversation's
+    // renderer/scroll/Mojo state is preserved.
+    std::unique_ptr<content::WebContents> moved_in =
+        transfer_bridge->TakePendingContents();
+    // The contents' tab associations were torn down when it was detached from
+    // the tab strip, which leaves a stale tab tracker in the webui embedding
+    // context. Re-establish the browser-window association (mirroring
+    // `ContextualTasksSidePanelCoordinator::SetBrowserWindowInterface`) so
+    // links and modal dialogs still resolve the hosting window while it is
+    // panel-hosted, and so the reverse move can later hand it back to a tab.
+    webui::SetTabInterface(moved_in.get(), nullptr);
+    webui::SetBrowserWindowInterface(moved_in.get(),
+                                     &scope.GetBrowserWindowInterface());
+    web_view->AdoptWebContents(std::move(moved_in));
+  } else {
+    web_view->AdoptWebContents(
+        CreateFreshAIChatContents(profile, is_tab_associated, scope));
+  }
+
+  // Register as the window's live AI Chat side panel view so the reverse move
+  // (side panel -> tab) can find and release this view's contents. The bridge
+  // observes the view and clears the registration when it is destroyed.
+  if (transfer_bridge) {
+    transfer_bridge->SetActiveChatView(web_view.get());
+  }
   return web_view;
 }
 
@@ -135,6 +156,14 @@ void AIChatMovableSidePanelWebView::AdoptWebContents(
     std::unique_ptr<content::WebContents> web_contents) {
   owned_web_contents_ = std::move(web_contents);
   SetWebContents(owned_web_contents_.get());
+}
+
+std::unique_ptr<content::WebContents>
+AIChatMovableSidePanelWebView::ReleaseWebContents() {
+  // Detach the contents from the view (hides it and drops the modal-dialog
+  // manager) without destroying it, then relinquish ownership.
+  SetWebContents(nullptr);
+  return std::move(owned_web_contents_);
 }
 
 void AIChatMovableSidePanelWebView::SetWebContents(

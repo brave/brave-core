@@ -66,6 +66,12 @@ class AIChatMovableSidePanelWebView
   // Takes ownership of `web_contents` and displays it in this view.
   void AdoptWebContents(std::unique_ptr<content::WebContents> web_contents);
 
+  // Relinquishes ownership of the hosted `WebContents`, detaching it from this
+  // view without destroying it. Used by the reverse transfer (side panel ->
+  // tab) so the live conversation can be re-inserted into a browser tab.
+  // Returns null when the view is not currently hosting any contents.
+  std::unique_ptr<content::WebContents> ReleaseWebContents();
+
   // views::WebView:
   void SetWebContents(content::WebContents* web_contents) override;
 

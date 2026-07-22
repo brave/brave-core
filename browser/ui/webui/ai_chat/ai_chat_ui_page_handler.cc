@@ -387,6 +387,16 @@ void AIChatUIPageHandler::OpenConversationFullPage(
   if (ai_chat_metrics_) {
     ai_chat_metrics_->RecordFullPageSwitch();
   }
+
+  // If this conversation is the live AI Chat hosted in the (global) side panel,
+  // move that live `WebContents` into a full-page tab, preserving its state,
+  // instead of navigating a fresh one. No-op unless the feature is enabled and
+  // the side panel is the standalone global AI Chat; otherwise fall through to
+  // opening a fresh full-page tab below.
+  if (ai_chat::MaybeMoveSidePanelChatToTab(owner_web_contents_)) {
+    return;
+  }
+
   NavigateParams params(profile_, ConversationUrl(conversation_uuid),
                         ui::PAGE_TRANSITION_TYPED);
   params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
