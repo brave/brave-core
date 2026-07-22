@@ -77,7 +77,7 @@ int OnBeforeURLRequest_SiteHacksWork(const ResponseCallback& next_callback,
   if (ctx->allow_brave_shields() &&
       IsTrackingQueryParametersFilteringEnabled(ctx)) {
     auto filtered_url = query_filter::MaybeApplyQueryStringFilter(
-        ctx->initiator_url(), ctx->redirect_source(), ctx->request_url(),
+        ctx->request_initiator(), ctx->redirect_source(), ctx->request_url(),
         ctx->method(), ctx->internal_redirect());
 
     if (filtered_url.has_value()) {

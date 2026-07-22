@@ -131,7 +131,7 @@ impl Engine {
         &self,
         url: &CxxString,
         hostname: &CxxString,
-        source_hostname: &CxxString,
+        initiator_hostname: &CxxString,
         request_type: &CxxString,
         third_party_request: bool,
         method: &CxxString,
@@ -145,7 +145,7 @@ impl Engine {
                 &adblock::request::Request::preparsed(
                     url.to_str().unwrap(),
                     hostname.to_str().unwrap(),
-                    source_hostname.to_str().unwrap(),
+                    initiator_hostname.to_str().unwrap(),
                     request_type.to_str().unwrap(),
                     third_party_request,
                     method.to_str().unwrap_or_default(),
