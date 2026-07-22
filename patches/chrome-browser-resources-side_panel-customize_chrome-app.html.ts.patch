@@ -1,0 +1,63 @@
+diff --git a/chrome/browser/resources/side_panel/customize_chrome/app.html.ts b/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
+index a0256ca75f5ce2313c0f434d673f43e18068158d..720bcaa6bfa5b239e7cd2fdbcc35caef29950e1d 100644
+--- a/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
++++ b/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
+@@ -1,7 +1,3 @@
+-// Copyright 2024 The Chromium Authors
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {AppElement} from './app.js';
+@@ -9,29 +5,23 @@ import type {AppElement} from './app.js';
+ export function getHtml(this: AppElement) {
+   // clang-format off
+   return html`<!--_html_template_start_-->
+-<cr-page-selector id="container"
+-    class="sp-scroller sp-scroller-top-of-page sp-scroller-bottom-of-page"
+-    selected="${this.page_}" attr-for-selected="page-name">
++<cr-page-selector id="container" class="sp-scroller sp-scroller-top-of-page sp-scroller-bottom-of-page" selected="${this.page_}" attr-for-selected="page-name">
+   <div page-name="overview" id="overviewPage">
+     <div id="appearance" class="section sp-card">
+-      <sp-heading hide-back-button>
+-        <h2 slot="heading">$i18n{appearanceHeader}</h2>
++      <sp-heading hide-back-button="">
++      <close-panel-button id="closeButton" iron-icon="close" slot="buttons"></close-panel-button>
++        <h2 slot="heading"><leo-icon name="themes"></leo-icon>$i18n{appearanceHeader}</h2>
+       </sp-heading>
+-      <customize-chrome-appearance @edit-theme-click="${this.onEditThemeClick_}"
+-          @wallpaper-search-click="${this.onWallpaperSearchClick_}"
+-          id="appearanceElement">
++      <customize-chrome-appearance @edit-theme-click="${this.onEditThemeClick_}" @wallpaper-search-click="${this.onWallpaperSearchClick_}" id="appearanceElement">
+       </customize-chrome-appearance>
+-    </div>
++    
++      <brave-darker-theme-toggle></brave-darker-theme-toggle></div>
+     <hr class="sp-cards-separator">
+-    <cr-button id="toolbarButton" class="section sp-card"
+-        @click="${this.onToolbarCustomizationButtonClick_}">
+-      <sp-heading hide-back-button id="toolbar-customization-heading">
+-        <h2 slot="heading" id="toolbar-customization-inner-heading"
+-            aria-label="$i18n{toolbarButtonA11yLabel}">
+-          $i18n{toolbarHeader}
+-        </h2>
++    <cr-button id="toolbarButton" class="section sp-card" @click="${this.onToolbarCustomizationButtonClick_}">
++      <sp-heading hide-back-button="" id="toolbar-customization-heading">
++        <h2 slot="heading" id="toolbar-customization-inner-heading" aria-label="$i18n{toolbarButtonA11yLabel}">$i18n{braveCustomizeMenuToolbarLabel}</h2>
+       </sp-heading>
+-      <cr-icon icon="cr:chevron-right" slot="suffix-icon"></cr-icon>
++      <cr-icon icon="window-edit" slot="prefix-icon"></cr-icon>
+     </cr-button>
+     ${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
+       && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html`
+@@ -113,8 +103,7 @@ export function getHtml(this: AppElement) {
+         page-name="wallpaper-search" id="wallpaperSearchPage">
+     </customize-chrome-wallpaper-search>
+   ` : ''}
+-  <customize-chrome-toolbar @back-click="${this.onBackClick_}"
+-      page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
++  <customize-chrome-toolbar @back-click="${this.onBackClick_}" page-name="toolbar" id="toolbarPage"></customize-chrome-toolbar>
+ </cr-page-selector>
+ <!--_html_template_end_-->`;
+   // clang-format on

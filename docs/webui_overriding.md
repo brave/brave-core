@@ -129,11 +129,17 @@ Unfortunately, the above strategies don't work for modifying Lit HTML. To modify
 a Lit HTML template we need a way to directly modify the source file. This is
 done with a Lit mangler.
 
-Create a file in `chromium_src` for `path/to/your/file.html.ts` at
-`chromium_src/path/to/your/file.html.ts.lit_mangler.ts`
+A Lit mangler is a [`plaster`](./plaster.md) backend: it generates a committed
+patch that is applied to the upstream source at `npm run sync`, just like any
+other patch. You author the mangler, run a command to (re)generate the patch,
+and commit both.
+
+Create a file next to the other `rewrite/` plasters, mirroring the upstream
+path. For `path/to/your/file.html.ts` that is
+`rewrite/path/to/your/file.html.ts.lit_mangler.ts`:
 
 ```ts
-import mangle from 'lit-mangler'
+import { mangle } from 'lit_mangler'
 
 mangle(
   (element) => {
@@ -142,6 +148,20 @@ mangle(
   (literal) => literal.text.includes("id='thing-i-want-to-edit'"),
 )
 ```
+
+Then generate the patch:
+
+```sh
+# Regenerates patches/<dashed-source-path>.patch from the mangler.
+tools/cr/plaster.py apply
+
+# Dry-run: fails if the committed patch is out of date with the mangler.
+tools/cr/plaster.py check
+```
+
+Commit the `rewrite/*.lit_mangler.ts` file together with the generated
+`patches/*.patch`. A source may have at most one generator — you cannot have
+both a `.yaml` plaster and a `.lit_mangler.ts` targeting the same file.
 
 The `mangle` function extracts all templates from the `.html.ts` file and loads
 them into an HTMLElement, so you can manipulate them using the DOM APIs.
@@ -167,7 +187,7 @@ html`<div class="container">
 // 2. Add an `id` attribute to the `li` elements
 // 3. Wrap the child text in a span
 
-import mangle from 'lit-mangler'
+import { mangle } from 'lit_mangler'
 
 mangle(
   (e) => {
@@ -205,12 +225,38 @@ mangle(
 )
 ```
 
-These overrides have an automatically generated test which checks to see whether
-the mangler still applies. To generate (or update the test) run
-`npm run test-unit -- -t "mangled files should have up to date snapshots" -u`.
+### Keeping manglers up to date
 
-If the test fails it indicates that upstream has changed and we should check the
-override still applies. If it does, then it is safe to update the snapshot.
+Because the mangler produces a committed patch, staleness is caught the same way
+as for any plaster:
+
+- `tools/cr/plaster.py check` (run in presubmit via `CheckPlasterFiles`) fails
+  if the committed patch no longer matches what the mangler produces.
+- `npm run update_patches` will not clobber a mangler-owned patch; it errors and
+  tells you to run `tools/cr/plaster.py apply` if the patch is out of date.
+
+If `check` fails after a Chromium bump, upstream has changed. Confirm the
+override still makes sense, then run `tools/cr/plaster.py apply` to regenerate
+the patch and commit the result.
+
+### Behavioral note: manglers run on the raw upstream source
+
+The mangler now transforms the **raw** upstream `.html.ts` (with its copyright
+header present and grit directives such as `<if expr>` / `<include>`
+unresolved), and the resulting patch is applied before grit preprocessing runs
+at build time. This differs from the old build-time mangler, which ran on the
+already-preprocessed output.
+
+Two consequences to be aware of:
+
+- Avoid mangling inside an `<if expr>` / `<include>` region. The transform
+  round-trips the template through the DOM, and reserializing an unresolved grit
+  directive can corrupt it. Target elements outside those regions.
+- The DOM round-trip reformats the whole template it touches (collapsing
+  multi-line attributes, dropping the leading copyright comment). The generated
+  patch is therefore larger than the logical change and may need regenerating
+  after upstream whitespace changes. This is expected — the patch is
+  machine-generated, never hand-edited; just re-run `tools/cr/plaster.py apply`.
 
 ## Polymer Template Modifications
 

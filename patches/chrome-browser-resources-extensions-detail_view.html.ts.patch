@@ -1,0 +1,30 @@
+diff --git a/chrome/browser/resources/extensions/detail_view.html.ts b/chrome/browser/resources/extensions/detail_view.html.ts
+index e20041e7f820acc1a7fc033b8c4e69ba41aa724a..2bae46c846e3e2d851910ac66eac07c7a05daf4d 100644
+--- a/chrome/browser/resources/extensions/detail_view.html.ts
++++ b/chrome/browser/resources/extensions/detail_view.html.ts
+@@ -1,7 +1,3 @@
+-// Copyright 2024 The Chromium Authors
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {ExtensionsDetailViewElement} from './detail_view.js';
+@@ -343,14 +339,11 @@ this text can be found by Ctrl + F because it isn't hidden. -->
+             <span>$i18n{itemPinToToolbar}</span>
+           </extensions-toggle-row>` : ''}
+         ${this.shouldShowIncognitoOption_() ? html`
+-          <extensions-toggle-row id="allow-incognito"
+-              ?checked="${this.data.incognitoAccess.isActive}" class="hr"
+-              @change="${this.onAllowIncognitoChange_}">
++          <extensions-toggle-row id="allow-incognito" ?checked="${this.data.incognitoAccess.isActive}" class="hr" @change="${this.onAllowIncognitoChange_}">
+             <div>
+               <div>$i18n{itemAllowIncognito}</div>
+-              <div class="section-content">$i18n{incognitoInfoWarning}</div>
+-              <div class="section-content" id="allow-incognito-warning"
+-                  ?hidden="${!this.data.incognitoAccessPendingChange}">
++              <div class="section-content">$i18n{privateInfoWarning}<span ?hidden="${!this.data.incognitoAccess.isActive}"> $i18n{spanningInfoWarning}</span><span> $i18n{privateAndTorInfoWarning}</span></div>
++              <div class="section-content" id="allow-incognito-warning" ?hidden="${!this.data.incognitoAccessPendingChange}">
+                 $i18n{pendingChangeWarning}
+               </div>
+             </div>

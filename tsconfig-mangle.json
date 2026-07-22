@@ -1,8 +1,8 @@
 {
   "include": [
-    "./tools/chromium_src/lit_mangler.ts",
-    "./tools/chromium_src/lit_mangler_cli.ts",
-    "./chromium_src/**/*.lit_mangler.ts",
+    "./tools/chromium_src/lit_mangler/lit_mangler.ts",
+    "./tools/chromium_src/lit_mangler/lit_mangler_cli.ts",
+    "./rewrite/**/*.lit_mangler.ts",
   ],
   "compilerOptions": {
     "allowJs": true,

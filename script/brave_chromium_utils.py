@@ -13,10 +13,14 @@ from typing import Any, Dict, Optional
 
 
 def get_additional_extensions():
-    """Additional extensions which can be appended to the name of the file."""
-    return [
-        '.lit_mangler.ts',
-    ]
+    """Additional extensions which can be appended to the name of the file.
+
+    This is an extension point for chromium_src overrides whose filename is the
+    upstream name plus an extra suffix. It is currently empty: lit manglers used
+    to live here as `<name>.lit_mangler.ts`, but they now generate committed
+    patches from `rewrite/` (see tools/cr/plaster.py and docs/webui_overriding.md).
+    """
+    return []
 
 
 @functools.lru_cache(maxsize=None)

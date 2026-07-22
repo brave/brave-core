@@ -1,0 +1,50 @@
+diff --git a/components/webui/chrome_urls/resources/app.html.ts b/components/webui/chrome_urls/resources/app.html.ts
+index 1ea42f51009fb6f76242a3a3257d5f8018a6c0cd..f17b8061886ce8cf1a5f0b4cd38a2ddfc38f3411 100644
+--- a/components/webui/chrome_urls/resources/app.html.ts
++++ b/components/webui/chrome_urls/resources/app.html.ts
+@@ -1,7 +1,3 @@
+-// Copyright 2024 The Chromium Authors
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import type {ChromeUrlsAppElement} from './app.js';
+@@ -9,14 +5,14 @@ import type {ChromeUrlsAppElement} from './app.js';
+ export function getHtml(this: ChromeUrlsAppElement) {
+   // clang-format off
+   return html`
+-<h2>List of Chrome URLs</h2>
++<h2>List of Brave URLs</h2>
+ <ul>
+   ${this.webuiUrlInfos_.map(info => html`
+     ${this.isChromeUrlsUrl_(info) ?
+-      html`<li><a href="#">chrome://chrome-urls</a></li>` :
++      html`<li><a href="#">brave://chrome-urls</a></li>` :
+       html`${info.enabled ?
+-        html`<li><a href="${info.url}">${info.url}</a></li>` :
+-        html`<li>${info.url}</li>`
++        html`<li><a href="${info.url}">${info.url.replace(/chrome:/, "brave:")}</a></li>` :
++        html`<li>${info.url.replace(/chrome:/, "brave:")}</li>`
+       }`
+     }`)}
+ </ul>
+@@ -33,8 +29,8 @@ ${this.internalUrlInfos_.length ? html`
+   <ul>
+     ${this.internalUrlInfos_.map(info => html`
+       ${this.isInternalUiEnabled_(info) ?
+-        html`<li><a href="${info.url}">${info.url}</a></li>` :
+-        html`<li>${info.url}</li>`
++        html`<li><a href="${info.url}">${info.url.replace(/chrome:/, "brave:")}</a></li>` :
++        html`<li>${info.url.replace(/chrome:/, "brave:")}</li>`
+       }`)}
+   </ul>` : ''}
+ ${this.commandUrls_.length ? html`
+@@ -45,6 +41,6 @@ ${this.commandUrls_.length ? html`
+     address bar if you need them.
+   </p>
+   <ul>
+-    ${this.commandUrls_.map(url => html`<li>${url}</li>`)}
++    ${this.commandUrls_.map(url => html`<li>${url.replace(/chrome:/, "brave:")}</li>`)}
+   </ul>` : ''}`;
+ }

@@ -21,6 +21,7 @@ import re
 import string
 import subprocess
 import sys
+import tempfile
 import textwrap
 from types import MappingProxyType
 from typing import ClassVar, Final
@@ -49,6 +50,26 @@ PATCHES_PATH = repository.brave.root / 'patches'
 
 # The plaster file extension.
 PLASTER_EXTENSION = '.yaml'
+
+# The lit-mangler plaster backend file extension (a compound extension). A file
+# `rewrite/<source>.lit_mangler.ts` generates the patch for `<source>` by
+# running the Node lit-mangler transform (see `PlasterFile._run_lit_mangler`),
+# rather than by applying declarative YAML substitutions.
+MANGLER_EXTENSION = '.lit_mangler.ts'
+
+
+def _source_from_plaster(plaster_relative: Path) -> Path:
+    """Given a plaster path relative to `rewrite/`, return the source it targets.
+
+    Strips the compound `.lit_mangler.ts` extension for lit-mangler backends,
+    otherwise the single plaster extension (e.g. `.yaml`). For example
+    `chrome/.../item.html.ts.lit_mangler.ts` -> `chrome/.../item.html.ts`, and
+    `components/.../request_type.h.yaml` -> `components/.../request_type.h`.
+    """
+    name = plaster_relative.name
+    if name.endswith(MANGLER_EXTENSION):
+        return plaster_relative.with_name(name[:-len(MANGLER_EXTENSION)])
+    return plaster_relative.with_suffix('')
 
 # A particular gitattributes file that is used to ensure we get deterministic
 # patch output across platforms and git versions.
@@ -298,8 +319,8 @@ class PatchinfoBuilder:
             self.plaster_contents.encode()).hexdigest()
 
         # Setup source file (path derived from plaster file, no extension).
-        self.source = self.plaster_file.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
+        self.source = _source_from_plaster(
+            self.plaster_file.relative_to(PLASTER_FILES_PATH))
         self.source_with_checksum = PathChecksumPair(
             Path(repository.chromium.from_brave(self.source)))
 
@@ -1436,9 +1457,11 @@ class PlasterFile:
 
         for root, _, files in os.walk(PLASTER_FILES_PATH):
             for file in files:
-                if file.endswith(PLASTER_EXTENSION):
+                if file.endswith(PLASTER_EXTENSION) or file.endswith(
+                        MANGLER_EXTENSION):
                     plaster_files.append(cls(Path(root) / file))
 
+        _check_source_collisions(plaster_files)
         return plaster_files
 
     def needs_apply(self) -> bool:
@@ -1451,8 +1474,8 @@ class PlasterFile:
         tooling, which warrent checksum checks for all of them, and at that
         point if any of the checksum values don't match, we do return True.
         """
-        source_relative = self.path.relative_to(
-            PLASTER_FILES_PATH).with_suffix('')
+        source_relative = _source_from_plaster(
+            self.path.relative_to(PLASTER_FILES_PATH))
         source_path = Path(repository.chromium.from_brave(source_relative))
         patch_stem = source_relative.as_posix().replace('/', '-')
         patch_path = PATCHES_PATH / f'{patch_stem}.patch'
@@ -1490,24 +1513,44 @@ class PlasterFile:
             or PathChecksumPair(patch_path).checksum != info.patch_checksum)
 
     def apply(self, dry_run=False):
-        suffix = self.path.suffix.lower()
-
         info = PatchinfoBuilder(self.path)
-        if suffix == '.yaml':
-            doc = Substitution.from_yaml(info.plaster_contents)
-            is_cxx = _is_cxx_source(self.path)
-            if doc.blank_macros_for_ast_parsing and not is_cxx:
-                raise ValueError(
-                    '`blank_macros_for_ast_parsing` is only supported for C++ '
-                    f'sources (in {self.path})')
-            if not is_cxx:
-                for substitution in doc.substitutions:
-                    if substitution.rewriter.source_language() == 'cxx':
-                        raise ValueError(
-                            f'the `{substitution.rewriter.NAME}` rewriter is '
-                            f'only supported for C++ sources (in {self.path})')
+
+        # Each backend produces the post-transform source `contents`; the save
+        # tail (source, patch, patchinfo) is shared. Both read the pristine
+        # source from git as the source of truth, never from disk.
+        if self.path.name.endswith(MANGLER_EXTENSION):
+            contents = self._run_lit_mangler(info)
+        elif self.path.suffix.lower() == '.yaml':
+            contents = self._apply_substitutions(info)
         else:
-            raise ValueError(f'Unsupported plaster file extension: {suffix}')
+            raise ValueError(
+                f'Unsupported plaster file extension: {self.path.suffix}')
+
+        has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
+        has_changed = info.save_patch_if_changed(
+            dry_run=dry_run) or has_changed
+        if dry_run:
+            if has_changed:
+                raise PlasterFileNeedsRegen(
+                    f"Plaster file needs to be reapplied: {self.path}")
+        else:
+            info.save_patchinfo_if_changed()
+
+    def _apply_substitutions(self, info: PatchinfoBuilder) -> str:
+        """Applies the YAML substitution backend, returning the new contents."""
+        doc = Substitution.from_yaml(info.plaster_contents)
+        is_cxx = _is_cxx_source(self.path)
+        if doc.blank_macros_for_ast_parsing and not is_cxx:
+            raise ValueError(
+                '`blank_macros_for_ast_parsing` is only supported for C++ '
+                f'sources (in {self.path})')
+        if not is_cxx:
+            for substitution in doc.substitutions:
+                if substitution.rewriter.source_language() == 'cxx':
+                    raise ValueError(
+                        f'the `{substitution.rewriter.NAME}` rewriter is '
+                        f'only supported for C++ sources (in {self.path})')
+
         contents = repository.chromium.read_file(info.source)
         errors = []
 
@@ -1527,15 +1570,64 @@ class PlasterFile:
         if errors:
             raise PlasterApplyError(errors)
 
-        has_changed = info.save_source_if_changed(contents, dry_run=dry_run)
-        has_changed = info.save_patch_if_changed(
-            dry_run=dry_run) or has_changed
-        if dry_run:
-            if has_changed:
-                raise PlasterFileNeedsRegen(
-                    f"Plaster file needs to be reapplied: {self.path}")
-        else:
-            info.save_patchinfo_if_changed()
+        return contents
+
+    def _run_lit_mangler(self, info: PatchinfoBuilder) -> str:
+        """Applies the lit-mangler backend, returning the new contents.
+
+        Runs the Node lit-mangler CLI against the pristine upstream file read
+        from git. Mirrors the (now removed) build-time invocation in
+        `chromium_src/tools/grit/preprocess_if_expr.py`, but reads the pristine
+        source from git and works entirely in a temp dir so the transform never
+        touches the working tree — keeping `check`/dry-run side-effect free.
+
+        Note: unlike the build (which mangled the file *after* grit `if expr`
+        preprocessing), this mangles the *raw* upstream source. The resulting
+        patch is applied to the raw file and grit preprocesses the patched file
+        at build time.
+        """
+        brave_root = Path(repository.brave.root).resolve()
+        chromium_root = Path(repository.chromium.root).resolve()
+
+        tsx_cli = brave_root / 'node_modules' / 'tsx' / 'dist' / 'cli.mjs'
+        ts_config = brave_root / 'tsconfig-mangle.json'
+        lit_mangler_cli = (brave_root / 'tools' / 'chromium_src' /
+                           'lit_mangler' / 'lit_mangler_cli.ts')
+        mangler = Path(self.path).resolve()
+
+        # Resolve node from the vendored toolchain, matching the build.
+        node_dir = str(chromium_root / 'third_party' / 'node')
+        sys.path.insert(0, node_dir)
+        try:
+            import node  # pylint: disable=import-outside-toplevel,import-error
+        finally:
+            sys.path.remove(node_dir)
+
+        pristine = repository.chromium.read_file(info.source)
+
+        with tempfile.TemporaryDirectory() as tmp:
+            tmp_dir = Path(tmp)
+            # The CLI keys behavior off the input filename (e.g. `.html` vs
+            # `.html.ts`), so preserve the source's basename for the input.
+            source_name = Path(info.source).name
+            tmp_in = tmp_dir / source_name
+            tmp_out = tmp_dir / f'.mangled.{source_name}'
+            tmp_in.write_text(pristine, encoding='utf-8', newline='\n')
+
+            # The CLI's `--typecheck` spawns `tsc` by name; make brave's
+            # node_modules/.bin resolvable so it is found.
+            env = {**os.environ}
+            bin_dir = brave_root / 'node_modules' / '.bin'
+            env['PATH'] = f'{bin_dir}{os.pathsep}{env.get("PATH", "")}'
+
+            terminal.run([
+                node.GetBinaryPath(), tsx_cli, '--tsconfig', ts_config,
+                lit_mangler_cli, 'mangle', '--typecheck', '-m', mangler, '-i',
+                tmp_in, '-o', tmp_out, '-g', tmp_dir
+            ],
+                         env=env)
+
+            return tmp_out.read_text(encoding='utf-8')
 
 
 class PlasterError(Exception):
@@ -1979,6 +2071,27 @@ class AstRewriter:
         return total
 
 
+def _check_source_collisions(plaster_files: list[PlasterFile]) -> None:
+    """Raises if two plaster files target the same source.
+
+    A source may have at most one plaster generator: two plasters targeting the
+    same source (e.g. a `.yaml` and a `.lit_mangler.ts`) would fight over the
+    same patch file. This is enforced at discovery time so the conflict is
+    reported clearly rather than manifesting as a patch that flip-flops.
+    """
+    by_source: dict[Path, Path] = {}
+    for plaster_file in plaster_files:
+        source = _source_from_plaster(
+            plaster_file.path.relative_to(PLASTER_FILES_PATH))
+        existing = by_source.get(source)
+        if existing is not None:
+            raise PlasterError(
+                f'Multiple plaster files target the same source "{source}": '
+                f'"{existing}" and "{plaster_file.path}". A source may have at '
+                'most one plaster generator.')
+        by_source[source] = plaster_file.path
+
+
 def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
     """Returns plaster files matching the provided file paths.
 
@@ -1993,9 +2106,13 @@ def get_plaster_files(filepaths: list[str] | None = None) -> list[PlasterFile]:
         if filepath.startswith('patches/') and filepath.endswith('.patch'):
             base = filepath[len('patches/'):-len('.patch')]
             stem = f'rewrite/{base.replace("-", "/")}'
+            # A patch could be owned by either backend; both candidates are
+            # added and the non-existent one is filtered out below.
             expected_plaster_files.add(f'{stem}{PLASTER_EXTENSION}')
-        elif (filepath.startswith('rewrite/')
-              and filepath.endswith(PLASTER_EXTENSION)):
+            expected_plaster_files.add(f'{stem}{MANGLER_EXTENSION}')
+        elif filepath.startswith('rewrite/') and (
+                filepath.endswith(PLASTER_EXTENSION)
+                or filepath.endswith(MANGLER_EXTENSION)):
             expected_plaster_files.add(filepath)
         else:
             raise ValueError(f'Unexpected file path: {filepath}')
