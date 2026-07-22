@@ -1,5 +1,9 @@
 <settings-subpage page-title="[[pageTitle_]]" class="multi-card">
   <settings-section id="signInSection">
+    <div id="signInRoot"></div>
+    <settings-email-aliases-autofill-toggle prefs="{{prefs}}"
+        hidden$="[[!showAutofillToggle_]]">
+    </settings-email-aliases-autofill-toggle>
   </settings-section>
   <settings-section id="manageSection">
   </settings-section>
