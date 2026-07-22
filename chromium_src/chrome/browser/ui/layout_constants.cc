@@ -82,6 +82,11 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
       return 6;
+    // Uniform padding keeps the LHS camera/mic chip square. Match site-info
+    // width in normal (16 + 2*6 = 28); use 4 in compact so the chip fits
+    // location_height (16 + 2*4 = 24 ≤ 26).
+    case LayoutConstant::kLocationBarChipPadding:
+      return UseCompactHorizontalTabs() ? 4 : 6;
     case LayoutConstant::kTabSeparatorHeight: {
       return 16;
     }
