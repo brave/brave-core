@@ -28,6 +28,14 @@ are supposed to match the path for the file being plastered. A deprecated
 [Legacy TOML format (deprecated)](#legacy-toml-format-deprecated) at the end of
 this document.
 
+> [!NOTE]
+>
+> _Plaster_ also drives a second, non-YAML backend: **Lit manglers**
+> (`rewrite/<source>.html.ts.lit_mangler.ts`) transform upstream Lit HTML
+> templates via the DOM and generate their patch the same way. `plaster apply`
+> and `plaster check` handle them transparently. See
+> [WebUI Overriding → Lit Mangling](./webui_overriding.md#lit-mangling).
+
 > [!WARNING]
 >
 > At the moment, only plaster files to sources in Chromium's `src` repo are

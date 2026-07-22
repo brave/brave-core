@@ -55,31 +55,36 @@ const chromiumPathFilter = loadChromiumPathFilter(
   path.join(config.braveCoreDir, 'build', 'update_patches_exclusions.cfg'),
 )
 
-// Extension of plaster files under `rewrite/`. Keep in sync with
-// `PLASTER_EXTENSION` in tools/cr/plaster.py.
+// Extensions of files under `rewrite/` that own a generated patch. Keep in sync
+// with `PLASTER_EXTENSION` / `MANGLER_EXTENSION` in tools/cr/plaster.py.
 const plasterExtension = '.yaml'
+const manglerExtension = '.lit_mangler.ts'
+const managedExtensions = [plasterExtension, manglerExtension]
 
 // A file that when present indicates that we are doing a lift with brockit.
 const versionUpgradeFile = '.version_upgrade'
 
 // Builds a predicate that tells whether a Chromium source path's patch is owned
-// by a plaster file. A plaster file at `rewrite/<source>.yaml` is responsible
-// for generating the patch for `<source>`, so `update_patches` must not
-// regenerate it.
+// by a rewrite generator. A file at `rewrite/<source>.yaml` (plaster) or
+// `rewrite/<source>.lit_mangler.ts` (lit mangler) is responsible for generating
+// the patch for `<source>`, so `update_patches` must not regenerate it.
 async function loadPlasterPathFilter(rewriteDir) {
   const managedSources = new Set()
 
-  // The second pattern matches plaster files whose name starts with a dot (e.g.
+  // Each managed extension maps `rewrite/<source><ext>` -> `<source>`. The
+  // dot-prefixed pattern matches files whose name starts with a dot (e.g.
   // `chrome/updater/mac/.install.sh.yaml`); glob's `*` skips leading dots.
-  const patterns = [`**/*${plasterExtension}`, `**/.*${plasterExtension}`]
-  for await (const file of glob(patterns, { cwd: rewriteDir })) {
-    // `<source>.yaml` -> `<source>`, normalized to posix separators so it
-    // matches the paths reported by git.
-    const source = file
-      .split(path.sep)
-      .join('/')
-      .slice(0, -plasterExtension.length)
-    managedSources.add(source)
+  for (const ext of managedExtensions) {
+    const patterns = [`**/*${ext}`, `**/.*${ext}`]
+    for await (const file of glob(patterns, { cwd: rewriteDir })) {
+      // `<source><ext>` -> `<source>`, normalized to posix separators so it
+      // matches the paths reported by git.
+      const source = file
+        .split(path.sep)
+        .join('/')
+        .slice(0, -ext.length)
+      managedSources.add(source)
+    }
   }
 
   return (s) => managedSources.has(s)
@@ -173,7 +178,8 @@ export default async function RunCommand(filePaths, options) {
         console.error('\nPlaster patches that could not be updated:')
         for (const source of outdatedPlasterPaths) {
           console.error(
-            `  - ${source} (managed by rewrite/${source}${plasterExtension})`,
+            `  - ${source} (managed by a rewrite/ generator: `
+              + `${plasterExtension} or ${manglerExtension})`,
           )
         }
         console.error("\nRun 'tools/cr/plaster.py apply' to regenerate them.")

@@ -1,0 +1,56 @@
+diff --git a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
+index 98634cdd2cb0646cbdf06314697eb2d20d9fd7b8..6b3d5021ebaa147555952cd7fdd275d0b3fad024 100644
+--- a/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
++++ b/chrome/browser/resources/signin/profile_picker/profile_picker_main_view.html.ts
+@@ -1,7 +1,3 @@
+-// Copyright 2024 The Chromium Authors
+-// Use of this source code is governed by a BSD-style license that can be
+-// found in the LICENSE file.
+-
+ import {html} from '//resources/lit/v3_0/lit.rollup.js';
+ 
+ import {isGlicVersion} from './profile_picker_flags.js';
+@@ -15,8 +11,7 @@ ${isGlicVersion() ? html`
+ ` : ''}
+ <div class="flex-container">
+   <div class="title-container">
+-    <img id="pickerLogo" @click="${this.onProductLogoClick_}"
+-        src="picker_logo.svg" role="presentation">
++    <img id="pickerLogo" @click="${this.onProductLogoClick_}" src="picker_logo.svg" role="presentation">
+     <h1 class="title" .innerHTML="${this.getTitle_()}"></h1>
+     <div class="subtitle" .innerHTML="${this.getSubtitle_()}"></div>
+   </div>
+@@ -29,29 +24,20 @@ ${isGlicVersion() ? html`
+             @disable-all-picker-buttons="${this.onDisableAllPickerButtons_}">
+         </profile-card>
+       `)}
+-      <cr-button id="addProfile" class="profile-item"
+-          @click="${this.onAddProfileClick_}"
+-          ?hidden="${!this.profileCreationAllowed_}"
+-          ?disabled="${this.pickerButtonsDisabled_}"
+-          aria-labelledby="addProfileButtonLabel">
+-        <div id="addProfileButtonLabel"
+-            class="profile-card-info prominent-text">
++      <cr-button id="addProfile" class="profile-item plain" @click="${this.onAddProfileClick_}" ?hidden="${!this.profileCreationAllowed_}" ?disabled="${this.pickerButtonsDisabled_}" aria-labelledby="addProfileButtonLabel">
++        <div id="addProfileButtonLabel" class="profile-card-info prominent-text">
+           $i18n{addSpaceButton}
+         </div>
+         <cr-icon icon="profiles:add"></cr-icon>
+       </cr-button>
+     </div>
+   </div>
+-  <div id="footer-text" class="subtitle"
+-      ?hidden="${this.shouldHideFooterText_()}">
++  <div id="footer-text" class="subtitle" ?hidden="${this.shouldHideFooterText_()}">
+     $i18nRaw{glicAddProfileHelper}
+   </div>
+ </div>
+ <div class="footer">
+-  <cr-button id="browseAsGuestButton"
+-      @click="${this.onLaunchGuestProfileClick_}"
+-      ?hidden="${!this.guestModeEnabled_}"
+-      ?disabled="${this.pickerButtonsDisabled_}">
++  <cr-button id="browseAsGuestButton" @click="${this.onLaunchGuestProfileClick_}" ?hidden="${!this.guestModeEnabled_}" ?disabled="${this.pickerButtonsDisabled_}">
+     <cr-icon icon="profiles:account-box" slot="prefix-icon"></cr-icon>
+     $i18n{browseAsGuestButton}
+   </cr-button>

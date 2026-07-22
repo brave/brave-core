@@ -630,9 +630,12 @@ def CheckPlasterFiles(input_api, output_api):
     affected_files = []
     for f in input_api.AffectedFiles(include_deletes=True):
         local_path = f.LocalPath()
-        if (local_path.startswith("patches/") and local_path.endswith(".patch")
-            ) or (local_path.startswith("rewrite/")
-                  and local_path.endswith(".toml")):
+        # A patch may be owned by a plaster (`.yaml`) or a lit mangler
+        # (`.lit_mangler.ts`); `plaster.py check` maps each to its generator.
+        if (local_path.startswith("patches/")
+                and local_path.endswith(".patch")) or (
+                    local_path.startswith("rewrite/")
+                    and local_path.endswith((".yaml", ".lit_mangler.ts"))):
             affected_files.append(local_path)
 
     if not affected_files:
