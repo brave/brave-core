@@ -49,8 +49,7 @@ def _check_files_status(context, expected_statuses, verb):
         actual_files = '\n'.join(files_with_status)
         return {
             'pass': False,
-            'reason':
-            f'Expected {verb} files were not {verb}:\n{unexected_files}'
+            'reason': f'Expected {verb} files were not {verb}:\n{unexected_files}'
             f'\nActual {verb} files:\n{actual_files}',
             'score': 0
         }

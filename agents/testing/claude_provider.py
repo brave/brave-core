@@ -21,13 +21,13 @@ Per-test provider `config` keys:
                            agents/skills/setup.py); verified before the run
     allowedTools:    str   value for `claude --allowedTools` (default below)
     changes:         [ {apply: patch} | {stage: path} ]   git fixups (optional);
-                           `apply` paths are resolved relative to brave-core root
+                           `apply` paths resolve relative to the repo root
     sandbox:         bool  run a mutating (code-refactor) eval in a throwaway
                            per-run git repo instead of the real tree. Fixtures
                            and the agent's edits land there, and the result is
                            mirrored to agents/testing/.last_run/sandbox/ so
-                           asserts read it at a stable path. Read-only evals omit
-                           this and run in brave-core itself.
+                           asserts read it at a stable path. Read-only evals
+                           omit this and run in brave-core itself.
     fake_gh:         {...} canned-data object for fake_gh.py (see that file).
                            When present, a stub `gh` is put first on PATH so the
                            run never touches real GitHub.
@@ -58,7 +58,7 @@ import time
 from pathlib import Path
 
 _TESTING_DIR = Path(__file__).resolve().parent
-_BRAVE_SRC = _TESTING_DIR.parents[1]           # .../src/brave
+_BRAVE_SRC = _TESTING_DIR.parents[1]  # .../src/brave
 _SKILLS_SRC = _BRAVE_SRC / 'agents' / 'skills'
 # Upstream Chromium skills in the parent checkout (see agents/skills/setup.py).
 _UPSTREAM_SKILLS_SRC = _BRAVE_SRC.parent / 'agents' / 'skills'
@@ -85,7 +85,8 @@ def _resolve_claude_bin():
     """
     raw = os.environ.get('CLAUDE_BIN', 'claude')
     if not _BIN_RE.match(raw):
-        raise ValueError(f'invalid CLAUDE_BIN (unexpected characters): {raw!r}')
+        raise ValueError(
+            f'invalid CLAUDE_BIN (unexpected characters): {raw!r}')
     resolved = shutil.which(raw) or (raw if os.path.isfile(raw)
                                      and os.access(raw, os.X_OK) else None)
     if not resolved:
@@ -96,11 +97,15 @@ def _resolve_claude_bin():
 def _ensure_skills_linked(skills):
     """Make sure requested skills are discoverable in .claude/skills/."""
     if _SETUP_PY.exists():
-        subprocess.run([sys.executable, str(_SETUP_PY), 'link', '-q'],
-                       cwd=str(_BRAVE_SRC), check=False)
-    missing = [s for s in (skills or [])
-               if not (_SKILLS_SRC / s).is_dir()
-               and not (_UPSTREAM_SKILLS_SRC / s).is_dir()]
+        subprocess.run(
+            [sys.executable, str(_SETUP_PY), 'link', '-q'],
+            cwd=str(_BRAVE_SRC),
+            check=False)
+    missing = [
+        s for s in (skills or [])
+        if not (_SKILLS_SRC / s).is_dir() and not (_UPSTREAM_SKILLS_SRC /
+                                                   s).is_dir()
+    ]
     if missing:
         raise FileNotFoundError(
             f'Requested skill(s) not found under {_SKILLS_SRC} or '
@@ -178,7 +183,8 @@ def _mirror_sandbox(sandbox):
     _LAST_RUN_DIR.mkdir(parents=True, exist_ok=True)
     if dest.exists():
         shutil.rmtree(dest)
-    shutil.copytree(sandbox, dest,
+    shutil.copytree(sandbox,
+                    dest,
                     ignore=shutil.ignore_patterns('.git', '.claude'))
     return dest
 
@@ -231,8 +237,9 @@ def _write_fake_gh(fake_gh_cfg, run_dir):
 def _harvest_results(run_dir):
     """Merge every subagent *_results.json under run_dir into .last_run/."""
     _LAST_RUN_DIR.mkdir(parents=True, exist_ok=True)
-    result_files = sorted(glob.glob(str(run_dir / '**' / 'pr_*' /
-                                        '*_results.json'), recursive=True))
+    result_files = sorted(
+        glob.glob(str(run_dir / '**' / 'pr_*' / '*_results.json'),
+                  recursive=True))
     merged = {'result_files': [], 'violations': []}
     for rf in result_files:
         try:
@@ -250,7 +257,9 @@ def _harvest_results(run_dir):
     return out, result_files
 
 
-def call_api(prompt, options, context):
+def call_api(prompt, options, context):  # pylint: disable=unused-argument
+    # `context` (test vars/metadata) is unused but part of promptfoo's required
+    # provider signature, which it calls positionally.
     config = (options or {}).get('config', {})
     try:
         timeout = int(config.get('timeoutSeconds', DEFAULT_TIMEOUT_SECONDS))
@@ -277,8 +286,9 @@ def call_api(prompt, options, context):
     # Strip the parent Claude Code session markers so the nested headless run
     # starts clean (also correct when this provider itself runs under CI/an
     # outer agent). Harmless when unset.
-    for k in ('CLAUDECODE', 'CLAUDE_CODE_CHILD_SESSION', 'CLAUDE_CODE_SESSION_ID',
-              'CLAUDE_CODE_ENTRYPOINT', 'CLAUDE_CODE_SSE_PORT'):
+    for k in ('CLAUDECODE', 'CLAUDE_CODE_CHILD_SESSION',
+              'CLAUDE_CODE_SESSION_ID', 'CLAUDE_CODE_ENTRYPOINT',
+              'CLAUDE_CODE_SSE_PORT'):
         env.pop(k, None)
 
     mut_file = None
@@ -310,20 +320,32 @@ def call_api(prompt, options, context):
     # _resolve_claude_bin() above; allowed_tools is regex-checked. Inputs come
     # from checked-in eval config, not remote/untrusted data.
     cmd = [claude_bin, '-p', prompt, '--allowedTools', allowed_tools]
-    metrics = {'user_prompt': prompt, 'run_dir': str(run_dir),
-               'work_dir': str(work_dir),
-               'command': ' '.join(shlex.quote(c) for c in cmd)}
+    metrics = {
+        'user_prompt': prompt,
+        'run_dir': str(run_dir),
+        'work_dir': str(work_dir),
+        'command': ' '.join(shlex.quote(c) for c in cmd)
+    }
     start = time.time()
     try:
         # nosemgrep: python.lang.security.audit.dangerous-subprocess-use-tainted-env-args.dangerous-subprocess-use-tainted-env-args
-        proc = subprocess.run(cmd, cwd=str(work_dir), env=env, text=True,
-                              capture_output=True, timeout=timeout)
+        proc = subprocess.run(cmd,
+                              cwd=str(work_dir),
+                              env=env,
+                              text=True,
+                              capture_output=True,
+                              timeout=timeout,
+                              check=False)
     except subprocess.TimeoutExpired:
-        return {'error': f'Claude Code timed out after {timeout}s',
-                'metrics': metrics}
+        return {
+            'error': f'Claude Code timed out after {timeout}s',
+            'metrics': metrics
+        }
     except FileNotFoundError:
-        return {'error': f"Claude Code binary '{claude_bin}' not found.",
-                'metrics': metrics}
+        return {
+            'error': f"Claude Code binary '{claude_bin}' not found.",
+            'metrics': metrics
+        }
     metrics['duration'] = time.time() - start
 
     output = (proc.stdout or '') + (proc.stderr or '')
@@ -337,8 +359,10 @@ def call_api(prompt, options, context):
             metrics['gh_mutations'] = [json.loads(x) for x in f if x.strip()]
 
     if proc.returncode != 0:
-        return {'error': f'Claude Code exited {proc.returncode}.\n{output}',
-                'metrics': metrics}
+        return {
+            'error': f'Claude Code exited {proc.returncode}.\n{output}',
+            'metrics': metrics
+        }
     return {'output': output.strip(), 'metrics': metrics}
 
 

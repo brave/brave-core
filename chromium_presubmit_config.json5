@@ -112,6 +112,9 @@
       "android/java/org/chromium/chrome/browser/qrreader/BarcodeTrackerFactory.java",
       "android/java/org/chromium/chrome/browser/qrreader/CameraSource.java",
       "android/java/org/chromium/chrome/browser/qrreader/CameraSourcePreview.java",
+      // Verbatim port of chromium's //agents/testing asserts; keeps its
+      // upstream Chromium BSD header intentionally.
+      "agents/testing/asserts/check_changes.py",
     ],
 
     // Checks to be fixed.

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 
-# Copyright 2026 The Brave Authors. All rights reserved.
+# Copyright (c) 2026 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 """Link agent skills into the Claude Code discovery dir.
 
 The source of truth for Brave's skills is ``src/brave/agents/skills/<name>/``
-(versioned and reviewed, mirroring chromium's ``//agents/skills/``). Claude Code,
-however, only discovers skills under a ``skills/`` directory inside a ``.claude``
+(versioned and reviewed, mirroring chromium's ``//agents/skills/``). But Claude
+Code only discovers skills under a ``skills/`` directory inside a ``.claude``
 config dir. This script bridges the two by creating one symlink per skill:
 
     .claude/skills/<name>  ->  agents/skills/<name>
@@ -34,11 +34,11 @@ On Windows we COPY instead of symlink, because git's symlink support on Windows
 is unreliable and creating symlinks there often needs elevated privileges.
 
 Usage:
-    python3 agents/skills/setup.py link            # project .claude/skills (default)
-    python3 agents/skills/setup.py link --user     # ~/.claude/skills
+    python3 agents/skills/setup.py link  # project .claude/skills (default)
+    python3 agents/skills/setup.py link --user  # ~/.claude/skills
     python3 agents/skills/setup.py link --no-upstream  # Brave skills only
-    python3 agents/skills/setup.py list            # show source vs. linked state
-    python3 agents/skills/setup.py unlink          # remove only the links we own
+    python3 agents/skills/setup.py list  # show source vs. linked state
+    python3 agents/skills/setup.py unlink  # remove only the links we own
 """
 
 import argparse
@@ -99,7 +99,7 @@ def available_skills(upstream: bool = True) -> dict[str, Path]:
 
 
 def _link_one(name: str, src: Path, dest: Path) -> bool:
-    """Create/refresh a single link (or copy on Windows). Returns True on success."""
+    """Create/refresh one link (or copy on Windows); True on success."""
     # Already correctly linked to our source? Nothing to do.
     if dest.is_symlink():
         try:
@@ -116,8 +116,8 @@ def _link_one(name: str, src: Path, dest: Path) -> bool:
         if _IS_WINDOWS:
             shutil.rmtree(dest, ignore_errors=True)
         else:
-            _log('  SKIP %s — a non-symlink already exists at %s (left as-is)',
-                 name, dest)
+            _log('  SKIP %s — non-symlink already at %s (left as-is)', name,
+                 dest)
             return True
 
     dest.parent.mkdir(parents=True, exist_ok=True)
@@ -126,7 +126,8 @@ def _link_one(name: str, src: Path, dest: Path) -> bool:
         _log('  copied  %s', name)
     else:
         # Relative target keeps the link valid if the checkout moves.
-        os.symlink(os.path.relpath(src, dest.parent), dest,
+        os.symlink(os.path.relpath(src, dest.parent),
+                   dest,
                    target_is_directory=True)
         _log('  linked  %s', name)
     return True
@@ -150,7 +151,7 @@ def link_skills(user: bool, upstream: bool = True) -> bool:
 
 
 def unlink_skills(user: bool, upstream: bool = True) -> bool:
-    """Remove only links that point back into a known skills dir (never real dirs)."""
+    """Remove only links pointing into a known skills dir (never real dirs)."""
     dest_root = _discovery_dir(user)
     if not dest_root.is_dir():
         return True
@@ -192,25 +193,36 @@ def list_skills(user: bool, upstream: bool = True) -> bool:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description=__doc__,
-                                     formatter_class=argparse.RawDescriptionHelpFormatter)
-    parser.add_argument('command', choices=['link', 'unlink', 'list'],
-                        nargs='?', default='link')
-    parser.add_argument('--user', action='store_true',
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    parser.add_argument('command',
+                        choices=['link', 'unlink', 'list'],
+                        nargs='?',
+                        default='link')
+    parser.add_argument('--user',
+                        action='store_true',
                         help='Target ~/.claude/skills instead of the project '
-                             'src/brave/.claude/skills.')
-    parser.add_argument('--no-upstream', dest='upstream', action='store_false',
+                        'src/brave/.claude/skills.')
+    parser.add_argument('--no-upstream',
+                        dest='upstream',
+                        action='store_false',
                         help="Only Brave's own skills; skip upstream Chromium "
-                             'skills under src/agents/skills.')
-    parser.add_argument('-q', '--quiet', action='store_true',
+                        'skills under src/agents/skills.')
+    parser.add_argument('-q',
+                        '--quiet',
+                        action='store_true',
                         help='Only log warnings/errors (for sync hooks).')
     args = parser.parse_args()
 
     logging.basicConfig(level=logging.WARNING if args.quiet else logging.INFO,
                         format='%(message)s')
 
-    handler = {'link': link_skills, 'unlink': unlink_skills,
-               'list': list_skills}[args.command]
+    handler = {
+        'link': link_skills,
+        'unlink': unlink_skills,
+        'list': list_skills
+    }[args.command]
     return 0 if handler(args.user, args.upstream) else 1
 
 

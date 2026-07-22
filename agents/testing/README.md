@@ -1,10 +1,10 @@
 # Skill-eval harness
 
 A Brave port of chromium's `//agents/testing/` promptfoo harness, retargeted at
-**Claude Code** (our skills use Claude Code-only frontmatter and are not runnable
-under gemini-cli). It's a characterization/regression suite for skills: a fixed
-fixture + fixed task → an expected *structural* outcome, so weakening a skill's
-prose shows up as the agent's output degrading.
+**Claude Code** (our skills use Claude Code-only frontmatter and are not
+runnable under gemini-cli). It's a characterization/regression suite for skills:
+a fixed fixture + fixed task → an expected _structural_ outcome, so weakening a
+skill's prose shows up as the agent's output degrading.
 
 It is **not** a per-PR gate — it spins a real agent and burns tokens. Run it
 path-filtered (when `agents/skills/**` or `agents/testing/**` changes), on a
@@ -78,7 +78,7 @@ whatever auth Claude Code needs for headless runs.
      `.last_run/results.json`; for a sandbox eval, mirrors the edited tree to
      `.last_run/sandbox/` (both are deterministic paths for asserts).
 3. Asserts (`check_changes.py` + promptfoo `icontains`) check the result
-   *structurally* — e.g. the flagged violation names the rule ID and the
+   _structurally_ — e.g. the flagged violation names the rule ID and the
    offending symbol, or the refactor created the controller files and moved the
    method — not the model's prose.
 4. A test passes if at least `pass_k_threshold` of `runs_per_test` runs pass.
@@ -90,8 +90,8 @@ Drop a `*.promptfoo.yaml` + `*.prompt.md` + fixture under
 review/inspection skill, follow `review-prs/CS-003` (one file per best-practice
 rule, `fake_gh`). For a code-mutating skill, follow
 `browser-window-feature-refactor` (`sandbox: true`, assert on
-`.last_run/sandbox/`). Keep asserts name/signature-agnostic: pin the *pattern
-the skill teaches*, not an exact result.
+`.last_run/sandbox/`). Keep asserts name/signature-agnostic: pin the _pattern
+the skill teaches_, not an exact result.
 
 ## Open items
 

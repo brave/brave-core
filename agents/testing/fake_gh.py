@@ -66,8 +66,12 @@ def _pr_object(pr, number, repo):
         'state': pr.get('state', 'open'),
         'merged': pr.get('merged', False),
         'mergeable': pr.get('mergeable', 'MERGEABLE'),
-        'user': {'login': pr.get('author', 'external-user')},
-        'head': {'sha': pr.get('headRefOid', 'deadbeefdeadbeefdeadbeef')},
+        'user': {
+            'login': pr.get('author', 'external-user')
+        },
+        'head': {
+            'sha': pr.get('headRefOid', 'deadbeefdeadbeefdeadbeef')
+        },
         'html_url': f'https://github.com/{repo}/pull/{number}',
     }
 
@@ -78,7 +82,9 @@ def _pr_view_object(pr, number, repo):
         'number': int(number) if number else 0,
         'title': pr.get('title', ''),
         'state': (pr.get('state') or 'open').upper(),
-        'author': {'login': pr.get('author', 'external-user')},
+        'author': {
+            'login': pr.get('author', 'external-user')
+        },
         'isDraft': pr.get('isDraft', False),
         'headRefOid': pr.get('headRefOid', 'deadbeefdeadbeefdeadbeef'),
         'baseRefName': pr.get('baseRefName', 'master'),
@@ -109,8 +115,9 @@ def _is_mutation(args):
     mutating_pr = {'review', 'comment', 'merge', 'close', 'edit', 'ready'}
     if args[0] == 'pr' and len(args) > 1 and args[1] in mutating_pr:
         return True
-    if args[0] == 'issue' and len(args) > 1 and args[1] in {'create', 'comment',
-                                                            'edit', 'close'}:
+    if args[0] == 'issue' and len(args) > 1 and args[1] in {
+            'create', 'comment', 'edit', 'close'
+    }:
         return True
     return False
 
@@ -158,16 +165,19 @@ def main(argv):
             return 0
         m = re.match(r'repos/[^/]+/[^/]+/pulls/(\d+)/comments', endpoint)
         if m:
-            print(json.dumps(prs.get(m.group(1), {}).get('review_comments', [])))
+            print(
+                json.dumps(prs.get(m.group(1), {}).get('review_comments', [])))
             return 0
         m = re.match(r'repos/[^/]+/[^/]+/issues/(\d+)/comments', endpoint)
         if m:
-            print(json.dumps(prs.get(m.group(1), {}).get('issue_comments', [])))
+            print(json.dumps(
+                prs.get(m.group(1), {}).get('issue_comments', [])))
             return 0
         m = re.match(r'repos/[^/]+/[^/]+/pulls/(\d+)$', endpoint)
         if m:
-            print(json.dumps(_pr_object(prs.get(m.group(1), {}), m.group(1),
-                                        repo)))
+            print(
+                json.dumps(
+                    _pr_object(prs.get(m.group(1), {}), m.group(1), repo)))
             return 0
         # Unknown read endpoint: empty JSON so callers that json.loads() are ok.
         print('[]')

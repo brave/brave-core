@@ -89,9 +89,13 @@ def run_one(test):
     for i in range(test.runs_per_test):
         print(f'    run {i + 1}/{test.runs_per_test} ...', flush=True)
         proc = subprocess.run(
-            ['npx', '--yes', f'promptfoo@{PROMPTFOO_VERSION}', 'eval',
-             '-c', str(cfg), '--no-cache'],
-            cwd=str(cfg.parent), env=env,
+            [
+                'npx', '--yes', f'promptfoo@{PROMPTFOO_VERSION}', 'eval', '-c',
+                str(cfg), '--no-cache'
+            ],
+            cwd=str(cfg.parent),
+            env=env,
+            check=False,
         )
         if proc.returncode == 0:
             passes += 1
@@ -99,11 +103,14 @@ def run_one(test):
 
 
 def main():
-    ap = argparse.ArgumentParser(description=__doc__,
-                                 formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument('--tag-filter', default='',
+    ap = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter)
+    ap.add_argument('--tag-filter',
+                    default='',
                     help='Comma-separated tags; run only tests carrying one.')
-    ap.add_argument('--list', action='store_true',
+    ap.add_argument('--list',
+                    action='store_true',
                     help='List discovered tests and exit.')
     args = ap.parse_args()
 
@@ -125,8 +132,10 @@ def main():
 
     # Make sure skills are discoverable before any provider run.
     if _SETUP_PY.exists():
-        subprocess.run([sys.executable, str(_SETUP_PY), 'link', '-q'],
-                       cwd=str(_BRAVE_SRC), check=False)
+        subprocess.run(
+            [sys.executable, str(_SETUP_PY), 'link', '-q'],
+            cwd=str(_BRAVE_SRC),
+            check=False)
 
     results = []
     for t in tests:
