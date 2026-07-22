@@ -20,7 +20,7 @@ window.loadTimeData = loadTimeData
 
 interface SettingsEmailAliasesPageElement {
   $: {
-    signInSection: HTMLElement,
+    signInRoot: HTMLElement,
     manageSection: HTMLElement,
   }
 }
@@ -41,21 +41,27 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
         value: () => loadTimeData.getString(
             EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL),
       },
+      showAutofillToggle_: {
+        type: Boolean,
+        value: false,
+      },
     };
   }
 
   declare pageTitle_: string;
+  declare showAutofillToggle_: boolean;
 
   override ready() {
     super.ready();
 
-    Promise.all([
-      customElements.whenDefined('settings-brave-account-row'),
-      customElements.whenDefined('settings-email-aliases-autofill-toggle'),
-    ]).then(() => {
+    customElements.whenDefined('settings-brave-account-row').then(() => {
       const bundlePath = '/email_aliases.bundle.js'
       import(bundlePath).then(({mount}) => {
-        mount(this.$.signInSection, this.$.manageSection, {prefs: this.prefs});
+        mount(this.$.signInRoot, this.$.manageSection, {
+          onLoggedInChange: (loggedIn: boolean) => {
+            this.showAutofillToggle_ = loggedIn;
+          },
+        });
       });
     });
 

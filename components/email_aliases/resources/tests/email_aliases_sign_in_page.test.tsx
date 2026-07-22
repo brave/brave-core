@@ -22,18 +22,15 @@ const defineStubElement = (name: string) => {
   }
 }
 
-const mockPrefs = {}
-
 const makeLoggedInAccountState = (): AccountState =>
   ({ loggedIn: { email: 'test@brave.com' } }) as AccountState
 
 const makeLoggedOutAccountState = (): AccountState =>
   ({ loggedOut: {} }) as AccountState
 
-describe('SignInPage autofill suggestion toggle', () => {
+describe('SignInPage autofill suggestion toggle visibility', () => {
   beforeAll(() => {
     defineStubElement('settings-brave-account-row')
-    defineStubElement('settings-email-aliases-autofill-toggle')
   })
 
   beforeEach(() => {
@@ -41,25 +38,18 @@ describe('SignInPage autofill suggestion toggle', () => {
   })
 
   it.each([
-    ['account state is unknown', undefined],
-    ['the user is logged out', makeLoggedOutAccountState()],
-  ])('does not render autofill toggle when %s', (_label, accountState) => {
-    mockUseBraveAccountState.mockReturnValue(accountState)
+    ['account state is unknown', undefined, false],
+    ['the user is logged out', makeLoggedOutAccountState(), false],
+    ['the user is logged in', makeLoggedInAccountState(), true],
+  ])(
+    'notifies onLoggedInChange when %s',
+    (_label, accountState, expectedLoggedIn) => {
+      mockUseBraveAccountState.mockReturnValue(accountState)
+      const onLoggedInChange = jest.fn()
 
-    const { container } = render(<SignInPage prefs={mockPrefs} />)
+      render(<SignInPage onLoggedInChange={onLoggedInChange} />)
 
-    expect(
-      container.querySelector('settings-email-aliases-autofill-toggle'),
-    ).not.toBeInTheDocument()
-  })
-
-  it('renders autofill toggle when the user is logged in', () => {
-    mockUseBraveAccountState.mockReturnValue(makeLoggedInAccountState())
-
-    const { container } = render(<SignInPage prefs={mockPrefs} />)
-
-    expect(
-      container.querySelector('settings-email-aliases-autofill-toggle'),
-    ).toBeInTheDocument()
-  })
+      expect(onLoggedInChange).toHaveBeenCalledWith(expectedLoggedIn)
+    },
+  )
 })

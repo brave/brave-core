@@ -34,21 +34,22 @@ const BraveAccountSignIn = () => {
   })
 }
 
-const AutofillSuggestionToggle = ({ prefs }: { prefs: object }) => {
-  return React.createElement('settings-email-aliases-autofill-toggle', {
-    prefs,
-  })
-}
-
-export const SignInPage = ({ prefs }: { prefs: object }) => {
+export const SignInPage = ({
+  onLoggedInChange,
+}: {
+  onLoggedInChange?: (loggedIn: boolean) => void
+} = {}) => {
   const accountState = useBraveAccountState()
+  const loggedIn = isAccountLoggedIn(accountState)
+
+  React.useEffect(() => {
+    onLoggedInChange?.(loggedIn)
+  }, [loggedIn, onLoggedInChange])
+
   return (
     <PageCol>
       <Introduction />
       <BraveAccountSignIn />
-      {isAccountLoggedIn(accountState) && (
-        <AutofillSuggestionToggle prefs={prefs} />
-      )}
     </PageCol>
   )
 }

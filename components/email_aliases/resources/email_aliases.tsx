@@ -74,7 +74,7 @@ export const EmailAliasesManagePage = ({
 }
 
 export type EmailAliasesMountOptions = {
-  prefs: object
+  onLoggedInChange: (loggedIn: boolean) => void
 }
 
 export const mount = (
@@ -102,7 +102,7 @@ export const mount = (
       target={signInElem.getRootNode() as ShadowRoot}
       shouldForwardProp={shouldForwardProp}
     >
-      <SignInPage prefs={options.prefs} />
+      <SignInPage onLoggedInChange={options.onLoggedInChange} />
     </StyleSheetManager>,
   )
 
