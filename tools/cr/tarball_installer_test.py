@@ -53,6 +53,34 @@ def _make_zip(members: list[tuple[str, bytes]]):
     return buf.getvalue()
 
 
+@contextlib.contextmanager
+def _simulate_pre_pep706_python():
+    """Make the runtime look like a `tarfile` without the PEP 706 filter.
+
+    Drops `tarfile.data_filter` and makes `extractall` reject the `filter`
+    kwarg, mimicking Python 3.12 predecessors (and pre-backport 3.8-3.11) so a
+    regression to an unconditional `filter='data'` call would fail here.
+    """
+    had_attr = hasattr(tarfile, 'data_filter')
+    saved_attr = getattr(tarfile, 'data_filter', None)
+    real_extractall = tarfile.TarFile.extractall
+
+    def _reject_filter(tar_self, *args, **kwargs):
+        if 'filter' in kwargs:
+            raise TypeError(
+                "extractall() got an unexpected keyword argument 'filter'")
+        return real_extractall(tar_self, *args, **kwargs)
+
+    if had_attr:
+        del tarfile.data_filter
+    with mock.patch.object(tarfile.TarFile, 'extractall', _reject_filter):
+        try:
+            yield
+        finally:
+            if had_attr:
+                tarfile.data_filter = saved_attr
+
+
 class TarballInstallerTest(unittest.TestCase):
     """Tests for `TarballInstaller` fetch/extract/sidecar mechanics."""
 
@@ -90,6 +118,17 @@ class TarballInstallerTest(unittest.TestCase):
         data = _make_tar([('bin/node', b'node'), ('README.md', b'hi')])
         installer = self._installer(data)
         self.assertTrue(installer.install(self._download(data)))
+        self.assertEqual((self.dest / 'bin/node').read_bytes(), b'node')
+        self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
+        self.assertTrue(installer.is_installed())
+
+    def test_install_extracts_tarball_without_pep706_filter(self):
+        """Extraction still works on a Python that lacks the `filter='data'`
+        guard (this script runs under whatever bare `python3` is on $PATH)."""
+        data = _make_tar([('bin/node', b'node'), ('README.md', b'hi')])
+        installer = self._installer(data)
+        with _simulate_pre_pep706_python():
+            self.assertTrue(installer.install(self._download(data)))
         self.assertEqual((self.dest / 'bin/node').read_bytes(), b'node')
         self.assertEqual((self.dest / 'README.md').read_bytes(), b'hi')
         self.assertTrue(installer.is_installed())

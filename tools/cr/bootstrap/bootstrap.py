@@ -178,7 +178,10 @@ def _read(path: Path) -> str:
 
 def _write(path: Path, text: str) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding='utf-8', newline='')
+    # `write_bytes` (not `write_text(newline=...)`, whose `newline` kwarg is
+    # Python 3.10+) so the UTF-8 text lands verbatim with LF endings under any
+    # `python3`. These are POSIX shell rc files, so LF is intended.
+    path.write_bytes(text.encode('utf-8'))
 
 
 def _install_posix(shells: list[str]) -> int:
