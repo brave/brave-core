@@ -31,6 +31,7 @@
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+#include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/web_mcp/core/browser/web_mcp_component_installer.h"
 #include "third_party/blink/public/common/features.h"
 #endif
@@ -62,9 +63,11 @@ void RegisterComponentsForUpdate() {
   psst::RegisterPsstComponent(cus);
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  // Only fetch WebMCP tool scripts when the runtime feature is enabled; the
-  // per-tab injector (WebMcpInjector) is gated on the same feature.
-  if (base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
+  // Only fetch WebMCP tool scripts when AI Chat is enabled and the runtime
+  // feature is on. Note: this is the process-wide feature/policy state; the
+  // per-tab injector (WebMcpInjector) is still gated on the kWebMCP feature.
+  if (ai_chat::features::IsAIChatEnabled() &&
+      base::FeatureList::IsEnabled(blink::features::kWebMCP)) {
     web_mcp::RegisterWebMcpComponent(cus);
   }
 #endif

@@ -20,8 +20,8 @@ class WebContents;
 
 namespace ai_chat {
 
-// Injects Brave-provided WebMCP tools into pages whose URL matches a rule. The
-// rules are delivered by the component updater and held in
+// Injects Component-provided WebMCP tools into pages whose URL matches a rule.
+// The rules are delivered by the component updater and held in
 // web_mcp::WebMcpRuleRegistry. The injected script calls
 // `navigator.modelContext.registerTool(...)` in the page's main world; the
 // existing ContentTool pipeline then discovers the tool automatically.
