@@ -7,6 +7,8 @@ script/deps.py @brave/deps-reviewers
 package*.json @brave/js-deps-reviewers
 pnpm*.yaml @brave/js-deps-reviewers
 rewrite/ @brave/brave-core-owners
+rewrite/**/*.h.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
+rewrite/**/*.cc.yaml @brave/brave-core-owners @brave/chromium-src-reviewers
 
 # Views
 # Do not add to BRAVE_VIEW_OWNED_BY_CLIENT_PASS_KEY
