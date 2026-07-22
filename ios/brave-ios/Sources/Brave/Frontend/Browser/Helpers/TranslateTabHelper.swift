@@ -42,7 +42,7 @@ class TranslateTabHelper: TabObserver {
 
   private(set) var translationState: TranslationState = .unavailable {
     didSet {
-      guard let tab else { return }
+      guard oldValue != translationState, let tab else { return }
       delegate?.updateTranslateURLBar(tab: tab, state: translationState)
     }
   }
@@ -158,8 +158,17 @@ class TranslateTabHelper: TabObserver {
   }
 
   func tabDidFinishNavigation(_ tab: some TabState) {
-    guard let url = tab.visibleURL, url.isInternalURL(for: .readermode) else { return }
-    // CWVTranslationController won't fire for internal URLs, so restore
+    guard let url = tab.visibleURL, url.isInternalURL(for: .readermode) else {
+      // reset to .unavailable to align with BraveTranslateTabHelper
+      // reset this in nav start is not sufficient enough for back navigation since
+      // url could still be the old url.
+      // if url is not reader mode internal, CWVTranslationController will fire
+      // translatio detection delegate which will set the correct value there
+      translationState = .unavailable
+      translationControllerDelegate.resetCachedLangugaes()
+      return
+    }
+    // on the other hand, CWVTranslationController won't fire for internal URLs, so restore
     // the button directly (BVC hid it unconditionally at nav start).
     delegate?.updateTranslateURLBar(tab: tab, state: translationState)
   }
