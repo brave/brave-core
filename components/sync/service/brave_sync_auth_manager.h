@@ -16,8 +16,10 @@ namespace syncer {
 
 class BraveSyncAuthManager : public SyncAuthManager {
  public:
-  BraveSyncAuthManager(signin::IdentityManager* identity_manager,
-                       SyncAuthManager::Delegate* delegate);
+  BraveSyncAuthManager(
+      signin::IdentityManager* identity_manager,
+      SyncAuthManager::Delegate* delegate,
+      base::TimeDelta account_managed_status_finder_timeout = base::Seconds(5));
   BraveSyncAuthManager(const BraveSyncAuthManager&) = delete;
   BraveSyncAuthManager& operator=(const BraveSyncAuthManager&) = delete;
   ~BraveSyncAuthManager() override;
