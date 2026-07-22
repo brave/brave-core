@@ -29,6 +29,11 @@ public class PlaylistCoordinator: NSObject {
 
   public weak var browserController: BrowserViewController?
 
+
+  /// For CarPlay to load BraveCore's default profile at launch independently of a `BrowserViewController`,
+  /// which never exists if the app is cold-launched directly from the CarPlay screen
+  public var loadDefaultProfileController: (() async -> BraveProfileController)?
+
   var currentlyPlayingItemIndex = -1
   var currentPlaylistItem: PlaylistInfo?
   var isPlaylistControllerPresented = false
@@ -217,10 +222,14 @@ public class PlaylistCoordinator: NSObject {
     // pass it to the carplay controller
     if isCarPlayAvailable {
       // Protect against reentrancy.
-      if carPlayController == nil, let browserController {
-        carPlayController = getCarPlayController(
-          profile: browserController.profileController.profile
-        )
+      guard carPlayController == nil, let loadDefaultProfileController else { return }
+
+      Task { @MainActor in
+        let profileController = await loadDefaultProfileController()
+        // Bail if CarPlay disconnected (or a controller was already created) while we were loading the profile.
+        guard self.isCarPlayAvailable, self.carPlayController == nil else { return }
+        self.isPlaylistAvailable = profileController.profile.prefs.isPlaylistAvailable
+        self.carPlayController = self.getCarPlayController(profile: profileController.profile)
       }
     } else {
       carPlayController = nil

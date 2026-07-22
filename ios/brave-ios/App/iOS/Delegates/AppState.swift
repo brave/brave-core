@@ -38,6 +38,7 @@ public class AppState {
   public let profile: LegacyBrowserProfile
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
+  public let defaultProfileLoader = DefaultProfileLoader()
   private var didBecomeActive = false
 
   public var state: State = .launching(options: [:], active: false) {
@@ -119,6 +120,26 @@ public class AppState {
     case active
     case backgrounded
     case terminating
+  }
+
+  /// Loads BraveCore's default profile at most once, even when requested concurrently by multiple scenes
+  public final class DefaultProfileLoader {
+    private var task: Task<BraveProfileController, Never>?
+
+    @MainActor
+    public func profileController(braveCore: BraveCoreMain) async -> BraveProfileController {
+      if let profileController = braveCore.profileController {
+        return profileController
+      }
+      if let task {
+        return await task.value
+      }
+      let task = Task { @MainActor in
+        await braveCore.loadDefaultProfile()
+      }
+      self.task = task
+      return await task.value
+    }
   }
 
   private static func setupConstants() {

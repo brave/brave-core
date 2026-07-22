@@ -291,13 +291,16 @@ extension SceneDelegate {
 
   @MainActor private func loadDefaultProfile() async -> (BraveProfileController, ProfileState) {
     let braveCore = AppState.shared.braveCore
-    if let profileController = braveCore.profileController, let profileState = Self.profileState {
+    let profileController = await AppState.shared.defaultProfileLoader.profileController(
+      braveCore: braveCore
+    )
+    if let profileState = Self.profileState {
       return (profileController, profileState)
     }
-    // Setup default profile & profile state
-    let defaultProfileController = await braveCore.loadDefaultProfile()
-    let profileState = ProfileState(profileController: defaultProfileController)
-    return (defaultProfileController, profileState)
+    // Setup profile state.
+    // Note that the profile itself may have already been loaded by CarPlay connecting independently of this scene.
+    let profileState = ProfileState(profileController: profileController)
+    return (profileController, profileState)
   }
 
   @objc private func enableUserSelectedTypesForSync() {

@@ -69,6 +69,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: false)
 
+    // Since CarPlay can connect directly from a cold launch initiated from the CarPlay screen,
+    // it needs its own way to load BraveCore's default profile which must be set before any scene connects.
+    PlaylistCoordinator.shared.loadDefaultProfileController = {
+      await AppState.shared.defaultProfileLoader.profileController(
+        braveCore: AppState.shared.braveCore
+      )
+    }
+
     // Set the Safari UA for browsing.
     setUserAgent()
 
