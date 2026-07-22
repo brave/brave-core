@@ -20,10 +20,13 @@
 #include "chrome/browser/ui/browser_command_controller.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_features.h"
 #include "chrome/browser/ui/browser_window/public/browser_window_interface.h"
+#include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
+#include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "components/tabs/public/tab_interface.h"
 #include "content/public/browser/web_ui.h"
+#include "ui/base/base_window.h"
 
 BraveAppearanceHandler::BraveAppearanceHandler() = default;
 
@@ -66,10 +69,28 @@ void BraveAppearanceHandler::RegisterMessages() {
 
   if (auto* tab = tabs::TabInterface::MaybeGetFromContents(
           web_ui()->GetWebContents())) {
-    command_updater_ = tab->GetBrowserWindowInterface()
-                           ->GetFeatures()
-                           .browser_command_controller();
+    auto* browser_window_interface = tab->GetBrowserWindowInterface();
+    command_updater_ =
+        browser_window_interface->GetFeatures().browser_command_controller();
     command_updater_->AddCommandObserver(IDC_TOGGLE_VERTICAL_TABS, this);
+
+    web_ui()->RegisterMessageCallback(
+        "getIsCompactModeToggleEnabled",
+        base::BindRepeating(
+            &BraveAppearanceHandler::GetIsCompactModeToggleEnabled,
+            base::Unretained(this)));
+
+#if BUILDFLAG(IS_MAC)
+    // Unretained() is safe: |fullscreen_subscription_| is a member, so it
+    // unsubscribes this callback on our destruction, before |this| dangles.
+    fullscreen_subscription_ =
+        browser_window_interface->GetFeatures()
+            .exclusive_access_manager()
+            ->fullscreen_controller()
+            ->RegisterOnFullscreenStateChanged(base::BindRepeating(
+                &BraveAppearanceHandler::OnFullscreenStateChanged,
+                base::Unretained(this)));
+#endif
   }
 }
 
@@ -80,6 +101,40 @@ void BraveAppearanceHandler::EnabledStateChangedForCommand(int id,
     FireWebUIListener("vertical-tabs-toggle-enabled-changed",
                       base::Value(enabled));
   }
+}
+
+bool BraveAppearanceHandler::IsCompactModeToggleEnabled() {
+#if BUILDFLAG(IS_MAC)
+  auto* tab =
+      tabs::TabInterface::MaybeGetFromContents(web_ui()->GetWebContents());
+  if (!tab) {
+    return true;
+  }
+
+  auto* browser_window_interface = tab->GetBrowserWindowInterface();
+
+  // Compact mode is incompatible with immersive fullscreen (see
+  // WindowFeatureController::UsesImmersiveFullscreenMode()), so the toggle
+  // is disabled while the browser window is fullscreen.
+  return !browser_window_interface || !browser_window_interface->GetWindow() ||
+         !browser_window_interface->GetWindow()->IsFullscreen();
+#else
+  return true;
+#endif
+}
+
+void BraveAppearanceHandler::OnFullscreenStateChanged() {
+  if (IsJavascriptAllowed()) {
+    FireWebUIListener("compact-mode-toggle-enabled-changed",
+                      base::Value(IsCompactModeToggleEnabled()));
+  }
+}
+
+void BraveAppearanceHandler::GetIsCompactModeToggleEnabled(
+    const base::ListValue& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], base::Value(IsCompactModeToggleEnabled()));
 }
 
 void BraveAppearanceHandler::OnPreferenceChanged(const std::string& pref_name) {

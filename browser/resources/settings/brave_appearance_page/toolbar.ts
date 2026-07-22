@@ -5,7 +5,9 @@
 
 import { afterNextRender, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import { I18nMixin, I18nMixinInterface } from 'chrome://resources/cr_elements/i18n_mixin.js'
+import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import { PrefsMixin, PrefsMixinInterface } from '/shared/settings/prefs/prefs_mixin.js'
+import { sendWithPromise } from 'chrome://resources/js/cr.js'
 import { loadTimeData } from "../i18n_setup.js"
 import { getTemplate } from './toolbar.html.js'
 import {Route, RouteObserverMixin, Router} from '../router.js';
@@ -20,9 +22,9 @@ import '../settings_shared.css.js'
 import '../settings_vars.css.js'
 import './bookmark_bar.js'
 
-const SettingsBraveAppearanceToolbarElementBase = RouteObserverMixin(
+const SettingsBraveAppearanceToolbarElementBase = WebUiListenerMixin(RouteObserverMixin(
   I18nMixin(PrefsMixin(PolymerElement))
-)
+))
 
 /**
  * 'settings-brave-appearance-toolbar' is the settings page area containing
@@ -43,10 +45,24 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
         type: Boolean,
         value: loadTimeData.getBoolean('isShowBraveShieldsInPageInfoEnabled'),
       },
+      compactModeToggleEnabled_: {
+        type: Boolean,
+        value: true,
+      },
     }
   }
 
   private declare isShowBraveShieldsInPageInfoEnabled_: boolean
+  private declare compactModeToggleEnabled_: boolean
+
+  override connectedCallback() {
+    super.connectedCallback()
+    sendWithPromise<boolean>('getIsCompactModeToggleEnabled').then(
+        (enabled: boolean) => { this.compactModeToggleEnabled_ = enabled })
+    this.addWebUiListener(
+        'compact-mode-toggle-enabled-changed',
+        (enabled: boolean) => { this.compactModeToggleEnabled_ = enabled })
+  }
 
   /**
    * RouteObserverMixin
