@@ -276,7 +276,16 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   brave_account::prefs::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added 2026-06
+#if !BUILDFLAG(IS_ANDROID)
+  const auto* deprecated_tab_search_show =
+      profile_prefs->FindPreference(kTabsSearchShow);
+  if (deprecated_tab_search_show &&
+      !deprecated_tab_search_show->IsDefaultValue()) {
+    profile_prefs->SetBoolean(prefs::kTabSearchPinnedToTabstrip,
+                              profile_prefs->GetBoolean(kTabsSearchShow));
+  }
   profile_prefs->ClearPref(kTabsSearchShow);
+#endif
 
   // END_MIGRATE_OBSOLETE_PROFILE_PREFS
 }
