@@ -77,8 +77,8 @@ Shared abstractions used by the entry points and tests:
   }
   ```
 
-  Invoke with the target path, e.g.
-  `install_extra_deps.py src/path/to/install/dir`.
+  Invoke with the `sync` subcommand and the target path, e.g.
+  `install_extra_deps.py sync src/path/to/install/dir`.
 
 ## Subdirectories
 

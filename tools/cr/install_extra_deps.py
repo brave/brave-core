@@ -218,7 +218,13 @@ def main() -> int:
     parser = argparse.ArgumentParser(
         description='Download and install the bucket-hosted archive(s) for the '
         'given EXTRA_DEPS entries.')
-    parser.add_argument(
+    subparsers = parser.add_subparsers(dest='command', required=True)
+
+    sync_parser = subparsers.add_parser(
+        'sync',
+        help='Download and install the bucket-hosted archive(s) for the given '
+        'EXTRA_DEPS entries.')
+    sync_parser.add_argument(
         'deps',
         nargs='+',
         choices=sorted(EXTRA_DEPS),
@@ -226,6 +232,7 @@ def main() -> int:
         help='One or more path keys in EXTRA_DEPS identifying the entries to '
         'install. Entries whose condition is false on this host are skipped, '
         'so a single invocation may list every per-platform variant.')
+
     args = parser.parse_args()
 
     runner = ExtraDepsRunner.from_checkout()
