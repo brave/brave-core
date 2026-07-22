@@ -5,8 +5,43 @@
 
 import fs from 'node:fs'
 import path from 'node:path'
+import { spawnSync } from 'node:child_process'
 
+checkDeveloperModeOnWindows()
 checkWorkingDirectoryChainOnWindows()
+
+// Building on Windows requires Developer Mode, most notably to create
+// symbolic links without an elevated process.
+function checkDeveloperModeOnWindows() {
+  if (process.platform !== 'win32') {
+    return
+  }
+
+  const result = spawnSync(
+    'reg.exe',
+    [
+      'query',
+      String.raw`HKLM\SOFTWARE\Microsoft\Windows\CurrentVersion\AppModelUnlock`,
+      '/v',
+      'AllowDevelopmentWithoutDevLicense',
+    ],
+    { encoding: 'utf8' },
+  )
+
+  if (
+    result.error
+    || result.status !== 0
+    || !/\bAllowDevelopmentWithoutDevLicense\s+REG_DWORD\s+0x1\b/i.test(
+      result.stdout,
+    )
+  ) {
+    console.error(
+      'Windows Developer Mode must be enabled. Enable it in Settings > System > Advanced.\n'
+        + 'Read more: https://learn.microsoft.com/windows/apps/get-started/enable-your-device-for-development',
+    )
+    process.exit(1)
+  }
+}
 
 // Check that the working directory and all parent directories are not symlinks
 // or junctions on Windows. Upstream doesn't support such setup, so we check
