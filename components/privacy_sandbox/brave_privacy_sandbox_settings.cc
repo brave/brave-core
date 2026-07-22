@@ -88,7 +88,7 @@ void BravePrivacySandboxSettings::ClearFledgeJoiningAllowedSettings(
 bool BravePrivacySandboxSettings::IsFledgeAllowed(
     const url::Origin& top_frame_origin,
     const url::Origin& auction_party,
-    content::InterestGroupApiOperation interest_group_api_operation,
+    privacy_sandbox::InterestGroupApiOperation interest_group_api_operation,
     content::RenderFrameHost* console_frame) const {
   return false;
 }

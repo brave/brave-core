@@ -184,7 +184,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // An allow exception should not override the preference value.
   SetupTestState(
@@ -208,7 +208,7 @@ TEST_F(PrivacySandboxSettingsTest, PreferenceOverridesDefaultContentSetting) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 }
 
 TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
@@ -233,7 +233,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // User created exceptions should not apply if a managed default coookie
   // setting exists. What the managed default setting actually is should *not*
@@ -260,7 +260,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // Managed content setting exceptions.
   SetupTestState(
@@ -289,7 +289,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // A less specific block exception.
   SetupTestState(
@@ -316,7 +316,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // Exceptions which specify a top frame origin.
   SetupTestState(
@@ -338,7 +338,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://another-test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // Exceptions which specify a wildcard top frame origin.
   SetupTestState(
@@ -360,7 +360,7 @@ TEST_F(PrivacySandboxSettingsTest, CookieBlockExceptionsNeverApply) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 }
 
 TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
@@ -376,7 +376,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // FLEDGE should be disabled if all cookies are blocked.
   SetupTestState(
@@ -390,7 +390,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // FLEDGE should be disabled if the privacy sandbox is disabled, regardless
   // of other cookie settings.
@@ -409,7 +409,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 
   // The managed cookie content setting should not override a disabled privacy
   // sandbox setting.
@@ -424,7 +424,7 @@ TEST_F(PrivacySandboxSettingsTest, IsFledgeAllowed) {
   EXPECT_FALSE(privacy_sandbox_settings()->IsFledgeAllowed(
       url::Origin::Create(GURL("https://test.com")),
       url::Origin::Create(GURL("https://embedded.com")),
-      content::InterestGroupApiOperation::kJoin));
+      InterestGroupApiOperation::kJoin));
 }
 
 TEST_F(PrivacySandboxSettingsTest, IsTopicsAllowed) {
