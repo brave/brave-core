@@ -8,7 +8,6 @@ package org.chromium.chrome.browser.qrreader;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.hardware.Camera;
 import android.hardware.display.DisplayManager;
@@ -44,10 +43,12 @@ public class QRCodeCameraManager
         /** Called when a QR code is detected. */
         void onDetectedQrCode(Barcode barcode);
 
-        /** Called when Google Play Services is not available. Returns true if handled. */
-        default boolean onPlayServicesUnavailable(@Nullable Dialog errorDialog) {
-            return false;
-        }
+        /**
+         * Called when Google Play Services is not available, which means barcode detection cannot
+         * run. No camera source is created in that case. The host owns the error UI: it decides
+         * whether to show {@code errorDialog} and where to send the user instead.
+         */
+        void onPlayServicesUnavailable(@Nullable Dialog errorDialog);
     }
 
     /** Interface for providing activity context and fragment state. */
@@ -146,6 +147,21 @@ public class QRCodeCameraManager
         }
         Context context = activity.getApplicationContext();
 
+        // Barcode detection is backed by Google Play Services, so there is nothing to create
+        // without it. The check lives here, on the path taken when the host opens the scanner,
+        // rather than in startCameraSource(), which also runs on every window focus change, resume
+        // and rotation. Notifying the host from there made the error dialog reappear in a loop:
+        // showing it took window focus away, dismissing it gave the focus back, and regaining the
+        // focus restarted the camera source, which showed the dialog again.
+        int playServicesStatus =
+                GoogleApiAvailability.getInstance().isGooglePlayServicesAvailable(context);
+        if (playServicesStatus != ConnectionResult.SUCCESS) {
+            mCallback.onPlayServicesUnavailable(
+                    GoogleApiAvailability.getInstance()
+                            .getErrorDialog(activity, playServicesStatus, RC_HANDLE_GMS));
+            return;
+        }
+
         // A barcode detector is created to track barcodes. An associated multi-processor instance
         // is set to receive the barcode detection results, track the barcodes, and maintain
         // graphics for each barcode on screen. The factory is used by the multi-processor to
@@ -192,34 +208,6 @@ public class QRCodeCameraManager
             return false;
         }
         if (!mCameraSourcePreview.mCameraExist) {
-            return false;
-        }
-
-        Activity activity = mHostProvider.getHostActivity();
-        if (activity == null) {
-            return false;
-        }
-
-        // Check that the device has play services available.
-        try {
-            int code =
-                    GoogleApiAvailability.getInstance()
-                            .isGooglePlayServicesAvailable(activity.getApplicationContext());
-            if (code != ConnectionResult.SUCCESS) {
-                Dialog dlg =
-                        GoogleApiAvailability.getInstance()
-                                .getErrorDialog(activity, code, RC_HANDLE_GMS);
-                if (mCallback.onPlayServicesUnavailable(dlg)) {
-                    return false;
-                }
-                if (dlg != null) {
-                    dlg.show();
-                }
-            }
-        } catch (ActivityNotFoundException e) {
-            Log.e(TAG, "Unable to start camera source.", e);
-            mCameraSource.release();
-            mCameraSource = null;
             return false;
         }
 
@@ -301,15 +289,17 @@ public class QRCodeCameraManager
 
     /** Recreates and restarts the camera source to handle 180-degree rotation. */
     private void recreateCameraSource() {
-        if (mCameraSourcePreview == null) {
+        // A null camera source means there is nothing to recreate, either because the host never
+        // opened the scanner or because creating it was refused, for instance when Google Play
+        // Services is missing. Recreating it here would notify the host of that again on every
+        // 180 degree rotation.
+        if (mCameraSourcePreview == null || mCameraSource == null) {
             return;
         }
 
         mCameraSourcePreview.stop();
-        if (mCameraSource != null) {
-            mCameraSource.release();
-            mCameraSource = null;
-        }
+        mCameraSource.release();
+        mCameraSource = null;
 
         createCameraSource(true, false);
         try {

@@ -7,6 +7,7 @@ package org.chromium.chrome.browser.settings;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -127,6 +128,7 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     private FrameLayout mLayoutMobile;
     private FrameLayout mLayoutLaptop;
     private AlertDialog mFinalWarningDialog;
+    private Dialog mPlayServicesErrorDialog;
     private TabLayout mTabLayout;
 
     // Below enum is matching the values of GetDeviceTypeString() in brave_device_info.cc
@@ -1058,6 +1060,10 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (mPlayServicesErrorDialog != null) {
+            mPlayServicesErrorDialog.dismiss();
+            mPlayServicesErrorDialog = null;
+        }
         if (mCameraManager != null) {
             mCameraManager.release();
         }
@@ -1620,6 +1626,21 @@ public class BraveSyncScreensPreference extends BravePreferenceFragment
         if (null != view) {
             view.setBackgroundColor(Color.TRANSPARENT);
         }
+    }
+
+    // QRCodeCameraManager.Callback implementation
+    @Override
+    public void onPlayServicesUnavailable(Dialog errorDialog) {
+        // Scanning the QR code is not possible without Google Play Services, but the code words
+        // button on this screen still is, so the user stays here after acknowledging the error.
+        if (errorDialog == null || !isHostValid() || requireActivity().isFinishing()) {
+            return;
+        }
+        // The dialog is attached to the activity window, so it has to be dismissed before this
+        // fragment goes away, otherwise the window is leaked.
+        mPlayServicesErrorDialog = errorDialog;
+        errorDialog.setOnDismissListener(dialog -> mPlayServicesErrorDialog = null);
+        errorDialog.show();
     }
 
     // QRCodeCameraManager.HostProvider implementation
