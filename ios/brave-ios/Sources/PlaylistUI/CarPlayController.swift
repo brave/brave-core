@@ -72,7 +72,6 @@ public class CarPlayController {
   private var currentFolderListTemplate: CPListTemplate?
   private var currentItemListTemplate: CPListTemplate?
   private var selectedFolderID: PlaylistFolder.ID?
-  private var isErrorPresented: Bool = false
   private var downloadStates: [String: PlaylistDownloadManager.CacheState] = [:]
 
   @MainActor private func updateFoldersList() {
@@ -87,55 +86,11 @@ public class CarPlayController {
   }
 
   @MainActor private func handlePlayerError() {
-    if isErrorPresented, player.error == nil, interface.presentedTemplate is CPAlertTemplate {
-      // Handle the case where a user dismisses an error in the app while CarPlay is open
-      interface.dismissTemplate(animated: true) { [weak self] _, _ in
-        self?.isErrorPresented = false
-      }
-      return
-    }
-
-    guard let error = player.error, let title = error.failureReason ?? error.errorDescription,
-      !isErrorPresented
-    else {
-      return
-    }
-
-    let alert = CPAlertTemplate(
-      titleVariants: [title],
-      actions: [
-        CPAlertAction(
-          title: Strings.PlayList.okayButtonTitle,
-          style: .default,
-          handler: { [weak self] _ in
-            self?.interface.dismissTemplate(
-              animated: true,
-              completion: { success, error in
-                guard let self else { return }
-                self.player.error?.handler?()
-                self.player.error = nil
-                self.isErrorPresented = false
-                if self.interface.topTemplate == CPNowPlayingTemplate.shared {
-                  self.interface.popTemplate(animated: true, completion: nil)
-                }
-              }
-            )
-          }
-        )
-      ]
-    )
-
-    // Preemptively set this so repeat object changes dont present multiple times
-    isErrorPresented = true
-    interface.presentTemplate(
-      alert,
-      animated: true,
-      completion: { [weak self] success, _ in
-        if !success {
-          self?.isErrorPresented = false
-        }
-      }
-    )
+    // Can't show an error alert while in CarPlay, so invoke the error's recovery handler
+    // (which advances to the next item) instead of presenting it to the driver.
+    guard let error = player.error else { return }
+    error.handler?()
+    player.error = nil
   }
 
   private var cancellables: Set<AnyCancellable> = []
