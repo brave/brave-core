@@ -1,0 +1,30 @@
+caption: Enable Brave notification ads
+default: null
+desc: |-
+  Enable or disable Brave notification ads.
+
+  If this policy is set to false, Brave notification ads are disabled and users cannot enable them.
+
+  If this policy is set to true or left unset, Brave notification ads are enabled when Rewards is enabled but users can disable them in settings.
+example_value: true
+features:
+  can_be_mandatory: true
+  can_be_recommended: false
+  dynamic_refresh: true
+  per_profile: true
+items:
+- caption: Enable Brave notification ads when Rewards is enabled (can be disabled in settings)
+  value: true
+- caption: Disable Brave notification ads
+  value: false
+- caption: Use default behavior
+  value: null
+owners:
+- managed-policies@brave.com
+schema:
+  type: boolean
+supported_on:
+- chrome.*:151-
+- android:151-
+tags: []
+type: main

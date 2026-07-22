@@ -63,14 +63,15 @@ describe('AdsSettingsModal', () => {
     HTMLDialogElement.prototype.showModal = jest.fn()
   })
 
-  it('show new tab page preferences when policy unset', () => {
+  it('show preferences when policies unset', () => {
     renderAdsSettingsModal(
       createAdsInfo({
         adsManagedByPolicy: { 'new-tab-page': false, 'notification': false },
         adsEnabled: { 'new-tab-page': true, 'notification': false },
       }),
     )
-    expect(screen.getByText('adTypeNewTabPageLabel')).toBeInTheDocument()
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).toBeInTheDocument()
     expect(screen.queryByText('adTypeNotificationLabel')).toBeInTheDocument()
   })
 
@@ -81,7 +82,8 @@ describe('AdsSettingsModal', () => {
         adsEnabled: { 'new-tab-page': true, 'notification': false },
       }),
     )
-    expect(screen.getByText('adTypeNewTabPageLabel')).toBeInTheDocument()
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).toBeInTheDocument()
     expect(screen.queryByText('adTypeNotificationLabel')).toBeInTheDocument()
   })
 
@@ -92,7 +94,60 @@ describe('AdsSettingsModal', () => {
         adsEnabled: { 'new-tab-page': false, 'notification': false },
       }),
     )
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
     expect(screen.queryByText('adTypeNewTabPageLabel')).not.toBeInTheDocument()
     expect(screen.queryByText('adTypeNotificationLabel')).toBeInTheDocument()
+  })
+
+  it('show notification preferences when enabled by policy', () => {
+    renderAdsSettingsModal(
+      createAdsInfo({
+        adsManagedByPolicy: { 'new-tab-page': false, 'notification': true },
+        adsEnabled: { 'new-tab-page': true, 'notification': true },
+      }),
+    )
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNotificationLabel')).toBeInTheDocument()
+  })
+
+  it('hide notification preferences when disabled by policy', () => {
+    renderAdsSettingsModal(
+      createAdsInfo({
+        adsManagedByPolicy: { 'new-tab-page': false, 'notification': true },
+        adsEnabled: { 'new-tab-page': true, 'notification': false },
+      }),
+    )
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).toBeInTheDocument()
+    expect(
+      screen.queryByText('adTypeNotificationLabel'),
+    ).not.toBeInTheDocument()
+  })
+
+  it('show preferences when both enabled by policies', () => {
+    renderAdsSettingsModal(
+      createAdsInfo({
+        adsManagedByPolicy: { 'new-tab-page': true, 'notification': true },
+        adsEnabled: { 'new-tab-page': true, 'notification': true },
+      }),
+    )
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).toBeInTheDocument()
+    expect(screen.queryByText('adTypeNotificationLabel')).toBeInTheDocument()
+  })
+
+  it('hide preferences when both disabled by policy', () => {
+    renderAdsSettingsModal(
+      createAdsInfo({
+        adsManagedByPolicy: { 'new-tab-page': true, 'notification': true },
+        adsEnabled: { 'new-tab-page': false, 'notification': false },
+      }),
+    )
+    expect(screen.queryByText('adsSettingsAdTypeTitle')).not.toBeInTheDocument()
+    expect(screen.queryByText('adTypeNewTabPageLabel')).not.toBeInTheDocument()
+    expect(
+      screen.queryByText('adTypeNotificationLabel'),
+    ).not.toBeInTheDocument()
   })
 })

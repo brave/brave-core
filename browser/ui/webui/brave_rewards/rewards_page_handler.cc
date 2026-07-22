@@ -426,6 +426,8 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
           kNewTabPageShowSponsoredImagesBackgroundImage);
   settings->notification_ads_enabled =
       prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
+  settings->notification_ads_managed_by_policy =
+      prefs_->IsManagedPreference(brave_ads::prefs::kOptedInToNotificationAds);
 
   settings->notification_ads_per_hour =
       ads_service_->GetMaximumNotificationAdsPerHour();
