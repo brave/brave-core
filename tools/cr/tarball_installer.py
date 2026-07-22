@@ -229,7 +229,15 @@ class TarballInstaller:
                 return names
         with tarfile.open(archive_path, mode='r:*') as tar:
             names = tar.getnames()
-            tar.extractall(path=self.dest_dir, filter='data')
+            # The `filter='data'` extraction guard (PEP 706) only exists on
+            # Python 3.12+ and the 3.8.17/3.9.17/3.10.12/3.11.4 backports. This
+            # script runs under whatever bare `python3` invoked `launcher.py`
+            # (no vpython guarantee), so fall back when the runtime is older.
+            # `tarfile.data_filter` is present exactly when the kwarg is.
+            if hasattr(tarfile, 'data_filter'):
+                tar.extractall(path=self.dest_dir, filter='data')
+            else:
+                tar.extractall(path=self.dest_dir)
             return names
 
     def _write_sidecars(self, member_names: list[str]) -> None:
@@ -239,10 +247,11 @@ class TarballInstaller:
             '_content_names': json.dumps(member_names),
         }
         for suffix, content in contents.items():
+            # `write_bytes` (not `write_text(newline=...)`, whose `newline`
+            # kwarg is Python 3.10+) so the exact `\n`-terminated UTF-8 lands on
+            # disk without platform newline translation, on any `python3`.
             sidecar_path(self.dest_dir, self.object_name,
-                         suffix).write_text(f'{content}\n',
-                                            encoding='utf-8',
-                                            newline='')
+                         suffix).write_bytes(f'{content}\n'.encode('utf-8'))
 
 
 def main(argv: list[str] | None = None) -> int:
