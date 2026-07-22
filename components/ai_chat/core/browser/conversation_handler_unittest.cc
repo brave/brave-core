@@ -1670,12 +1670,12 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
-              "chat-basic" /* model_key */)),
+              "chat-automatic" /* model_key */)),
           base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
-                  "chat-basic" /* model_key */)))));
+                  "chat-automatic" /* model_key */)))));
   testing::NiceMock<MockConversationHandlerObserver> observer;
   // Verify both entries are removed
   EXPECT_CALL(observer, OnConversationEntryRemoved(conversation_handler_.get(),
@@ -1733,12 +1733,12 @@ TEST_F(ConversationHandlerUnitTest, MAYBE_ModifyConversation) {
       .WillOnce(::testing::DoAll(
           base::test::RunOnceCallback<6>(EngineConsumer::GenerationResultData(
               expected_new_completion_event->Clone(),
-              "chat-basic" /* model_key */)),
+              "chat-automatic" /* model_key */)),
           base::test::RunOnceCallback<7>(
               base::ok(EngineConsumer::GenerationResultData(
                   mojom::ConversationEntryEvent::NewCompletionEvent(
                       mojom::CompletionEvent::New("")),
-                  "chat-basic" /* model_key */)))));
+                  "chat-automatic" /* model_key */)))));
 
   conversation_handler_->ModifyConversation(
       conversation_history[0]->uuid.value(), "prompt3", std::nullopt);
@@ -2295,7 +2295,7 @@ TEST_F(ConversationHandlerUnitTest, UploadFile) {
   EXPECT_CALL(client, OnModelDataChanged)
       .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
                                            &base::RunLoop::Quit));
-  conversation_handler_->ChangeModel("chat-basic");
+  conversation_handler_->ChangeModel("chat-nemotron-nano-3-30b");
   loop_for_change_model.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -2889,10 +2889,10 @@ TEST_F(ConversationHandlerUnitTest, RateMessage) {
 
   // Test regular case with model_key present in turn
   {
-    // Set the model_key for the assistant turn to be a "chat-basic" model
+    // Set the model_key for the assistant turn to be a "chat-automatic" model
     conversation_handler_->GetConversationHistory().back()->model_key =
-        "chat-basic";
-    auto model_name = model_service_->GetLeoModelNameByKey("chat-basic");
+        "chat-automatic";
+    auto model_name = model_service_->GetLeoModelNameByKey("chat-automatic");
     ASSERT_TRUE(model_name);
     EXPECT_CALL(*mock_feedback_api_, SendRating(true, false, _, *model_name, _))
         .WillOnce(
@@ -4602,7 +4602,7 @@ TEST_F(ConversationHandlerUnitTest, VisionModelSwitchOnScreenshots) {
   EXPECT_CALL(client, OnModelDataChanged)
       .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
                                            &base::RunLoop::Quit));
-  conversation_handler_->ChangeModel("chat-basic");
+  conversation_handler_->ChangeModel("chat-nemotron-nano-3-30b");
   loop_for_change_model.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
 
@@ -5582,28 +5582,30 @@ INSTANTIATE_TEST_SUITE_P(
     ConversationHandlerSkillImageUploadTest,
     testing::Values(
         // Unmodeled skill + image, starting non-vision: switch to vision.
-        SkillImageUploadScenario{"UnmodeledFromNonVision", "chat-basic",
-                                 std::nullopt, kClaudeHaikuModelKey, true},
+        SkillImageUploadScenario{"UnmodeledFromNonVision",
+                                 "chat-nemotron-nano-3-30b", std::nullopt,
+                                 kClaudeHaikuModelKey, true},
         // Unmodeled skill + image, already on vision: no switch.
         SkillImageUploadScenario{"UnmodeledFromVision", kClaudeHaikuModelKey,
                                  std::nullopt, kClaudeHaikuModelKey, false},
         // Pinned non-vision + image, on vision: vision wins, no switch
         // (validates the no-double-switch path).
-        SkillImageUploadScenario{"PinnedNonVisionFromVision",
-                                 kClaudeHaikuModelKey, "chat-basic",
-                                 kClaudeHaikuModelKey, false},
+        SkillImageUploadScenario{
+            "PinnedNonVisionFromVision", kClaudeHaikuModelKey,
+            "chat-nemotron-nano-3-30b", kClaudeHaikuModelKey, false},
         // Pinned non-vision + image, on non-vision: switch once to vision
         // (NOT to the pinned non-vision model).
-        SkillImageUploadScenario{"PinnedNonVisionFromNonVision", "chat-basic",
-                                 "chat-basic", kClaudeHaikuModelKey, true},
+        SkillImageUploadScenario{
+            "PinnedNonVisionFromNonVision", "chat-nemotron-nano-3-30b",
+            "chat-nemotron-nano-3-30b", kClaudeHaikuModelKey, true},
         // Pinned vision equals current + image: no switch.
         SkillImageUploadScenario{"PinnedVisionEqualsCurrent",
                                  kClaudeHaikuModelKey, kClaudeHaikuModelKey,
                                  kClaudeHaikuModelKey, false},
         // Pinned vision different from current + image: switch to pin once.
-        SkillImageUploadScenario{"PinnedVisionDifferentFromCurrent",
-                                 "chat-basic", kClaudeHaikuModelKey,
-                                 kClaudeHaikuModelKey, true}),
+        SkillImageUploadScenario{
+            "PinnedVisionDifferentFromCurrent", "chat-nemotron-nano-3-30b",
+            kClaudeHaikuModelKey, kClaudeHaikuModelKey, true}),
     [](const testing::TestParamInfo<SkillImageUploadScenario>& info) {
       return std::string(info.param.test_name);
     });
@@ -5620,7 +5622,7 @@ TEST_F(ConversationHandlerUnitTest,
   EXPECT_CALL(client, OnModelDataChanged)
       .WillOnce(testing::InvokeWithoutArgs(&loop_for_change_model,
                                            &base::RunLoop::Quit));
-  conversation_handler_->ChangeModel("chat-basic");
+  conversation_handler_->ChangeModel("chat-nemotron-nano-3-30b");
   loop_for_change_model.Run();
   testing::Mock::VerifyAndClearExpectations(&client);
   conversation_handler_->SetEngineForTesting(
@@ -5662,7 +5664,8 @@ TEST_F(ConversationHandlerUnitTest,
   run_loop.Run();
 
   // Model stayed put — no vision switch for non-image uploads.
-  EXPECT_EQ(conversation_handler_->GetCurrentModel().key, "chat-basic");
+  EXPECT_EQ(conversation_handler_->GetCurrentModel().key,
+            "chat-nemotron-nano-3-30b");
   EXPECT_FALSE(conversation_handler_->GetCurrentModel().vision_support);
 
   // Verify conversation history contains both skill data and uploaded files
