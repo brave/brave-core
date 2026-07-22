@@ -12,6 +12,10 @@ When integrating Rust code into brave-core, keep the following points in mind:
 - Look at existing deps in `third_party/rust` and try to match up versions
   whenever possible. We are trying to avoid having multiple copies of the same
   third party libs
+- https://cxx.rs/ is recommended to understand the underlying concepts around
+  the Rust <-- FFI --> C++ FFI layer. At Brave, we use FFI to integrate our
+  [adblock engine](https://sourcegraph.com/r/github.com/brave/brave-core/-/tree/components/brave_shields/core/common/adblock/rs)
+  which is written in Rust with our native C++ code.
 
 ### Updating vendored tool crates
 
