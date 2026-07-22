@@ -9,12 +9,21 @@
 #include <optional>
 
 #include "base/values.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/confirmation_token_issuer_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/payment_token_issuer_info.h"
 
 namespace brave_ads {
 
-base::ListValue TokenIssuersToList(const TokenIssuerList& token_issuers);
-std::optional<TokenIssuerList> MaybeBuildTokenIssuersFromList(
+struct TokenIssuersInfo final {
+  ConfirmationTokenIssuerInfo confirmation;
+  PaymentTokenIssuerInfo payment;
+};
+
+base::ListValue TokenIssuersToList(
+    const ConfirmationTokenIssuerInfo& confirmation,
+    const PaymentTokenIssuerInfo& payment);
+
+std::optional<TokenIssuersInfo> MaybeBuildTokenIssuersFromList(
     const base::ListValue& list);
 
 }  // namespace brave_ads

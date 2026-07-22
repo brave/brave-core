@@ -6,26 +6,16 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/confirmation_token_issuer_util.h"
 
 #include <cstddef>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_feature.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_info.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_types.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/token_issuers/token_issuer_util.h"
 
 namespace brave_ads {
 
 bool IsConfirmationTokenIssuerValid(const IssuersInfo& issuers) {
-  std::optional<TokenIssuerInfo> token_issuer =
-      GetTokenIssuerForType(issuers, TokenIssuerType::kConfirmations);
-  if (!token_issuer) {
-    return false;
-  }
-
-  return token_issuer->public_keys.size() <=
-         kMaximumTokenIssuerPublicKeys.Get();
+  return !issuers.confirmation_token_issuer.public_keys.empty() &&
+         issuers.confirmation_token_issuer.public_keys.size() <=
+             kMaximumTokenIssuerPublicKeys.Get();
 }
 
 }  // namespace brave_ads
