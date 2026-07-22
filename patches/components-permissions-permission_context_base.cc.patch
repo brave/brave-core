@@ -1,16 +1,117 @@
 diff --git a/components/permissions/permission_context_base.cc b/components/permissions/permission_context_base.cc
-index 171e53dd8d5065254dc252ab6bc5b19b5dd45d9c..dbd103ab11108d09ae96651666560e151da31769 100644
+index 171e53dd8d5065254dc252ab6bc5b19b5dd45d9c..ce700b6df4c3f5392a7500eb2aba87b235cfe7d9 100644
 --- a/components/permissions/permission_context_base.cc
 +++ b/components/permissions/permission_context_base.cc
-@@ -76,7 +76,7 @@
- #include "ui/android/window_android.h"
- #endif
+@@ -93,13 +93,13 @@ void LogPermissionBlockedMessage(content::RenderFrameHost* rfh,
+ }  // namespace
  
--namespace permissions {
-+namespace permissions::chromium_impl {
- namespace {
+ // static
+-const char PermissionContextBase::kPermissionsKillSwitchFieldStudy[] =
++const char PermissionContextBase_ChromiumImpl::kPermissionsKillSwitchFieldStudy[] =
+     "PermissionsKillSwitch";
+ // static
+-const char PermissionContextBase::kPermissionsKillSwitchBlockedValue[] =
++const char PermissionContextBase_ChromiumImpl::kPermissionsKillSwitchBlockedValue[] =
+     "blocked";
  
- using PermissionStatus = blink::mojom::PermissionStatus;
+-PermissionContextBase::PermissionContextBase(
++PermissionContextBase_ChromiumImpl::PermissionContextBase_ChromiumImpl(
+     content::BrowserContext* browser_context,
+     ContentSettingsType content_settings_type,
+     network::mojom::PermissionsPolicyFeature permissions_policy_feature)
+@@ -110,12 +110,12 @@ PermissionContextBase::PermissionContextBase(
+       << content_settings_type_;
+ }
+ 
+-PermissionContextBase::~PermissionContextBase() {
++PermissionContextBase_ChromiumImpl::~PermissionContextBase_ChromiumImpl() {
+   DCHECK(permission_observers_.empty());
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+ }
+ 
+-void PermissionContextBase::RequestPermission(
++void PermissionContextBase_ChromiumImpl::RequestPermission(
+     std::unique_ptr<PermissionRequestData> request_data,
+     BrowserPermissionCallback callback) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+@@ -283,18 +283,18 @@ void PermissionContextBase::RequestPermission(
+   DecidePermission(std::move(request_data), std::move(callback));
+ }
+ 
+-bool PermissionContextBase::IsRestrictedToSecureOrigins() const {
++bool PermissionContextBase_ChromiumImpl::IsRestrictedToSecureOrigins() const {
+   return true;
+ }
+ 
+-void PermissionContextBase::UserMadePermissionDecision(
++void PermissionContextBase_ChromiumImpl::UserMadePermissionDecision(
+     const PermissionRequestID& id,
+     const GURL& requesting_origin,
+     const GURL& embedding_origin,
+     PermissionDecision decision) {}
+ 
+ std::unique_ptr<PermissionRequest>
+-PermissionContextBase::CreatePermissionRequest(
++PermissionContextBase_ChromiumImpl::CreatePermissionRequest(
+     content::WebContents* web_contents,
+     std::unique_ptr<PermissionRequestData> request_data,
+     PermissionRequest::PermissionDecidedCallback permission_decided_callback,
+@@ -304,11 +304,11 @@ PermissionContextBase::CreatePermissionRequest(
+       std::move(request_finished_callback), UsesAutomaticEmbargo());
+ }
+ 
+-bool PermissionContextBase::UsesAutomaticEmbargo() const {
++bool PermissionContextBase_ChromiumImpl::UsesAutomaticEmbargo() const {
+   return true;
+ }
+ 
+-const PermissionRequest* PermissionContextBase::FindPermissionRequest(
++const PermissionRequest* PermissionContextBase_ChromiumImpl::FindPermissionRequest(
+     const PermissionRequestID& id) const {
+   const auto request = pending_requests_.find(id.ToString());
+ 
+@@ -319,12 +319,12 @@ const PermissionRequest* PermissionContextBase::FindPermissionRequest(
+   return &*(request->second.first);
+ }
+ 
+-GURL PermissionContextBase::GetEffectiveEmbedderOrigin(
++GURL PermissionContextBase_ChromiumImpl::GetEffectiveEmbedderOrigin(
+     content::RenderFrameHost* rfh) const {
+   return PermissionUtil::GetLastCommittedOriginAsURL(rfh->GetMainFrame());
+ }
+ 
+-content::PermissionResult PermissionContextBase::GetPermissionStatus(
++content::PermissionResult PermissionContextBase_ChromiumImpl::GetPermissionStatus(
+     const PermissionRequestData& request_data,
+     content::RenderFrameHost* render_frame_host) const {
+   if (base::FeatureList::IsEnabled(blink::features::kGeolocationElement) &&
+@@ -348,7 +348,7 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
+                              request_data.embedding_origin);
+ }
+ 
+-content::PermissionResult PermissionContextBase::GetPermissionStatus(
++content::PermissionResult PermissionContextBase_ChromiumImpl::GetPermissionStatus(
+     const PermissionResolver& resolver,
+     content::RenderFrameHost* render_frame_host,
+     const GURL& requesting_origin,
+@@ -491,7 +491,7 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
+                                    retrieved_permission_data);
+ }
+ 
+-content::PermissionResult PermissionContextBase::GetPermissionStatus(
++content::PermissionResult PermissionContextBase_ChromiumImpl::GetPermissionStatus(
+     const blink::mojom::PermissionDescriptorPtr& permission_descriptor,
+     content::RenderFrameHost* render_frame_host,
+     const GURL& requesting_origin,
+@@ -501,7 +501,7 @@ content::PermissionResult PermissionContextBase::GetPermissionStatus(
+                              embedding_origin);
+ }
+ 
+-bool PermissionContextBase::IsPermissionAvailableToOrigins(
++bool PermissionContextBase_ChromiumImpl::IsPermissionAvailableToOrigins(
+     const GURL& requesting_origin,
+     const GURL& embedding_origin) const {
+   if (IsRestrictedToSecureOrigins()) {
 @@ -513,7 +513,7 @@ bool PermissionContextBase::IsPermissionAvailableToOrigins(
      // possible as this corresponds to the requirements of the secure contexts
      // spec and matches what is implemented in blink. Right now we just check
@@ -20,6 +121,65 @@ index 171e53dd8d5065254dc252ab6bc5b19b5dd45d9c..dbd103ab11108d09ae96651666560e15
              requesting_origin, embedding_origin) &&
          !network::IsUrlPotentiallyTrustworthy(embedding_origin)) {
        return false;
+@@ -523,7 +523,7 @@ bool PermissionContextBase::IsPermissionAvailableToOrigins(
+ }
+ 
+ content::PermissionResult
+-PermissionContextBase::UpdatePermissionStatusWithDeviceStatus(
++PermissionContextBase_ChromiumImpl::UpdatePermissionStatusWithDeviceStatus(
+     content::WebContents* web_contents,
+     content::PermissionResult result,
+     const GURL& requesting_origin,
+@@ -541,7 +541,7 @@ PermissionContextBase::UpdatePermissionStatusWithDeviceStatus(
+   if (result.status != blink::mojom::PermissionStatus::GRANTED) {
+     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+         FROM_HERE, base::BindOnce(
+-                       [](base::WeakPtr<PermissionContextBase> self,
++                       [](base::WeakPtr<PermissionContextBase_ChromiumImpl> self,
+                           base::WeakPtr<content::WebContents> wc) {
+                          if (!self) {
+                            return;
+@@ -585,7 +585,7 @@ PermissionContextBase::UpdatePermissionStatusWithDeviceStatus(
+   return result;
+ }
+ 
+-void PermissionContextBase::ResetPermission(const GURL& requesting_origin,
++void PermissionContextBase_ChromiumImpl::ResetPermission(const GURL& requesting_origin,
+                                             const GURL& embedding_origin) {
+   if (!content_settings::WebsiteSettingsRegistry::GetInstance()->Get(
+           content_settings_type())) {
+@@ -598,11 +598,11 @@ void PermissionContextBase::ResetPermission(const GURL& requesting_origin,
+                                       content_settings_type(), base::Value());
+ }
+ 
+-bool PermissionContextBase::AlwaysIncludeDeviceStatus() const {
++bool PermissionContextBase_ChromiumImpl::AlwaysIncludeDeviceStatus() const {
+   return false;
+ }
+ 
+-bool PermissionContextBase::IsPermissionKillSwitchOn() const {
++bool PermissionContextBase_ChromiumImpl::IsPermissionKillSwitchOn() const {
+   const std::string param = base::GetFieldTrialParamValue(
+       kPermissionsKillSwitchFieldStudy,
+       PermissionUtil::GetPermissionString(content_settings_type_));
+@@ -610,7 +610,7 @@ bool PermissionContextBase::IsPermissionKillSwitchOn() const {
+   return param == kPermissionsKillSwitchBlockedValue;
+ }
+ 
+-PermissionSetting PermissionContextBase::GetPermissionStatusInternal(
++PermissionSetting PermissionContextBase_ChromiumImpl::GetPermissionStatusInternal(
+     content::RenderFrameHost* render_frame_host,
+     const GURL& requesting_origin,
+     const GURL& embedding_origin) const {
+@@ -620,7 +620,7 @@ PermissionSetting PermissionContextBase::GetPermissionStatusInternal(
+                              content_settings_type());
+ }
+ 
+-void PermissionContextBase::DecidePermission(
++void PermissionContextBase_ChromiumImpl::DecidePermission(
+     std::unique_ptr<PermissionRequestData> request_data,
+     BrowserPermissionCallback callback) {
+   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 @@ -629,7 +629,7 @@ void PermissionContextBase::DecidePermission(
    // origin displayed in the prompt should never differ from the top-level
    // origin. Storage access API requests are excluded as they are expected to
@@ -29,9 +189,140 @@ index 171e53dd8d5065254dc252ab6bc5b19b5dd45d9c..dbd103ab11108d09ae96651666560e15
               request_data->requesting_origin, request_data->embedding_origin) ||
           request_data->requesting_origin == request_data->embedding_origin ||
           content_settings_type_ == ContentSettingsType::STORAGE_ACCESS);
-@@ -927,4 +927,4 @@ void PermissionContextBase::NotifyObservers(
+@@ -651,8 +651,8 @@ void PermissionContextBase::DecidePermission(
+   }
+ 
+   auto decided_cb = base::BindRepeating(
+-      &PermissionContextBase::PermissionDecided, weak_factory_.GetWeakPtr());
+-  auto cleanup_cb = base::BindOnce(&PermissionContextBase::CleanUpRequest,
++      &PermissionContextBase_ChromiumImpl::PermissionDecided, weak_factory_.GetWeakPtr());
++  auto cleanup_cb = base::BindOnce(&PermissionContextBase_ChromiumImpl::CleanUpRequest,
+                                    weak_factory_.GetWeakPtr(), web_contents,
+                                    request_data->id);
+   PermissionRequestID permission_request_id = request_data->id;
+@@ -673,7 +673,7 @@ void PermissionContextBase::DecidePermission(
+   permission_request_manager->AddRequest(rfh, std::move(request));
+ }
+ 
+-void PermissionContextBase::PermissionDecided(
++void PermissionContextBase_ChromiumImpl::PermissionDecided(
+     const permissions::PermissionPromptDecision& decision,
+     const PermissionRequestData& request_data) {
+   UserMadePermissionDecision(request_data.id, request_data.requesting_origin,
+@@ -703,18 +703,18 @@ void PermissionContextBase::PermissionDecided(
+                       persist, /*permission_result=*/nullptr, decision);
+ }
+ 
+-content::BrowserContext* PermissionContextBase::browser_context() const {
++content::BrowserContext* PermissionContextBase_ChromiumImpl::browser_context() const {
+   return browser_context_;
+ }
+ 
+-void PermissionContextBase::OnContentSettingChanged(
++void PermissionContextBase_ChromiumImpl::OnContentSettingChanged(
+     const ContentSettingsPattern& primary_pattern,
+     const ContentSettingsPattern& secondary_pattern,
+     ContentSettingsTypeSet content_type_set) {
+   NotifyObservers(primary_pattern, secondary_pattern, content_type_set);
+ }
+ 
+-void PermissionContextBase::AddObserver(
++void PermissionContextBase_ChromiumImpl::AddObserver(
+     permissions::Observer* permission_observer) {
+   if (permission_observers_.empty() &&
+       !content_setting_observer_registered_by_subclass_) {
+@@ -725,7 +725,7 @@ void PermissionContextBase::AddObserver(
+   permission_observers_.AddObserver(permission_observer);
+ }
+ 
+-void PermissionContextBase::RemoveObserver(
++void PermissionContextBase_ChromiumImpl::RemoveObserver(
+     permissions::Observer* permission_observer) {
+   permission_observers_.RemoveObserver(permission_observer);
+   if (permission_observers_.empty() &&
+@@ -737,13 +737,13 @@ void PermissionContextBase::RemoveObserver(
+ }
+ 
+ std::unique_ptr<PermissionResolver>
+-PermissionContextBase::CreatePermissionResolver(
++PermissionContextBase_ChromiumImpl::CreatePermissionResolver(
+     const blink::mojom::PermissionDescriptorPtr& permission_descriptor) const {
+   return std::make_unique<ContentSettingPermissionResolver>(
+       content_settings_type_);
+ }
+ 
+-void PermissionContextBase::MaybeUpdateCachedHasDevicePermission(
++void PermissionContextBase_ChromiumImpl::MaybeUpdateCachedHasDevicePermission(
+     content::WebContents* web_contents) {
+   bool has_device_permission;
+   if (has_device_permission_for_test_.has_value()) {
+@@ -778,7 +778,7 @@ void PermissionContextBase::MaybeUpdateCachedHasDevicePermission(
    }
  }
  
--}  // namespace permissions
-+}  // namespace permissions::chromium_impl
+-content::PermissionResult PermissionContextBase::ComputeNewPermissionResult(
++content::PermissionResult PermissionContextBase_ChromiumImpl::ComputeNewPermissionResult(
+     const PermissionRequestData& request_data,
+     const permissions::PermissionPromptDecision& decision) {
+   // Note that rfh may be null, see crbug.com/426909787.
+@@ -796,7 +796,7 @@ content::PermissionResult PermissionContextBase::ComputeNewPermissionResult(
+       content::PermissionStatusSource::UNSPECIFIED, new_value);
+ }
+ 
+-void PermissionContextBase::NotifyPermissionSet(
++void PermissionContextBase_ChromiumImpl::NotifyPermissionSet(
+     const PermissionRequestData& request_data,
+     BrowserPermissionCallback callback,
+     bool persist,
+@@ -834,7 +834,7 @@ void PermissionContextBase::NotifyPermissionSet(
+     content::WebContents* web_contents =
+         content::WebContents::FromRenderFrameHost(rfh);
+     request->second.first->set_request_finished_callback(base::BindOnce(
+-        &PermissionContextBase::CleanUpRequestEmbeddedPermissionElement,
++        &PermissionContextBase_ChromiumImpl::CleanUpRequestEmbeddedPermissionElement,
+         weak_factory_.GetWeakPtr(), web_contents, request_data.id,
+         std::move(callback), decision.overall_decision, new_permission_result));
+   } else {
+@@ -842,13 +842,13 @@ void PermissionContextBase::NotifyPermissionSet(
+   }
+ }
+ 
+-void PermissionContextBase::CleanUpRequest(content::WebContents* web_contents,
++void PermissionContextBase_ChromiumImpl::CleanUpRequest(content::WebContents* web_contents,
+                                            const PermissionRequestID& id) {
+   size_t success = pending_requests_.erase(id.ToString());
+   DCHECK(success == 1) << "Missing request " << id.ToString();
+ }
+ 
+-void PermissionContextBase::CleanUpRequestEmbeddedPermissionElement(
++void PermissionContextBase_ChromiumImpl::CleanUpRequestEmbeddedPermissionElement(
+     content::WebContents* web_contents,
+     const PermissionRequestID& id,
+     BrowserPermissionCallback callback,
+@@ -864,7 +864,7 @@ void PermissionContextBase::CleanUpRequestEmbeddedPermissionElement(
+   CleanUpRequest(web_contents, id);
+ }
+ 
+-void PermissionContextBase::UpdateSetting(
++void PermissionContextBase_ChromiumImpl::UpdateSetting(
+     const PermissionRequestData& request_data,
+     const PermissionSetting& setting,
+     bool is_one_time) {
+@@ -902,7 +902,7 @@ void PermissionContextBase::UpdateSetting(
+           content_settings_type(), setting, constraints);
+ }
+ 
+-bool PermissionContextBase::PermissionAllowedByPermissionsPolicy(
++bool PermissionContextBase_ChromiumImpl::PermissionAllowedByPermissionsPolicy(
+     content::RenderFrameHost* rfh) const {
+   // Some features don't have an associated permissions policy yet. Allow those.
+   if (permissions_policy_feature_ ==
+@@ -913,7 +913,7 @@ bool PermissionContextBase::PermissionAllowedByPermissionsPolicy(
+   return rfh->IsFeatureEnabled(permissions_policy_feature_);
+ }
+ 
+-void PermissionContextBase::NotifyObservers(
++void PermissionContextBase_ChromiumImpl::NotifyObservers(
+     const ContentSettingsPattern& primary_pattern,
+     const ContentSettingsPattern& secondary_pattern,
+     ContentSettingsTypeSet content_type_set) const {

@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.h b/chrome/browser/ui/page_action/page_action_model.h
-index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058ccb5c680a 100644
+index a8ceae38c751f7c793777ca569e9c2bc115aea35..403ae6ebdf15652744a8224597c48b8d478ec86e 100644
 --- a/chrome/browser/ui/page_action/page_action_model.h
 +++ b/chrome/browser/ui/page_action/page_action_model.h
-@@ -136,9 +136,28 @@ class PageActionModelInterface {
+@@ -136,16 +136,34 @@ class PageActionModelInterface {
    virtual bool GetShowTrailingIcon() const = 0;
  
    virtual bool IsEphemeral() const = 0;
@@ -27,11 +27,22 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
  };
  
  // PageActionModel represents the page action's state, scoped to a single tab.
-+namespace chromium_impl {
- class PageActionModel : public PageActionModelInterface {
+-class PageActionModel : public PageActionModelInterface {
++class PageActionModel_ChromiumImpl : public PageActionModelInterface {
   public:
-   explicit PageActionModel(actions::ActionId action_id,
-@@ -256,6 +275,7 @@ class PageActionModel : public PageActionModelInterface {
+-  explicit PageActionModel(actions::ActionId action_id,
++  explicit PageActionModel_ChromiumImpl(actions::ActionId action_id,
+                            bool is_ephemeral = false);
+-  PageActionModel(const PageActionModel&) = delete;
+-  PageActionModel& operator=(const PageActionModel&) = delete;
+-  ~PageActionModel() override;
++  PageActionModel_ChromiumImpl(const PageActionModel_ChromiumImpl&) = delete;
++  PageActionModel_ChromiumImpl& operator=(const PageActionModel_ChromiumImpl&) = delete;
++  ~PageActionModel_ChromiumImpl() override;
+ 
+   actions::ActionId GetActionId() const override;
+ 
+@@ -256,6 +274,7 @@ class PageActionModel : public PageActionModelInterface {
    bool IsEphemeral() const override;
  
   private:
@@ -39,7 +50,7 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
    // Identifies which property triggered a NotifyChange call, used for
    // per-property reentrancy checks.
    enum class Property {
-@@ -282,7 +302,12 @@ class PageActionModel : public PageActionModelInterface {
+@@ -282,7 +301,12 @@ class PageActionModel : public PageActionModelInterface {
      kAnimationStyle,
      kTrailingImage,
      kShowTrailingIcon,
@@ -53,11 +64,3 @@ index a8ceae38c751f7c793777ca569e9c2bc115aea35..e4ec5ce3e337e121e958bd773216058c
    };
    using PropertySet =
        base::EnumSet<Property, Property::kShowRequested, Property::kMaxValue>;
-@@ -395,6 +420,7 @@ class PageActionModel : public PageActionModelInterface {
- 
-   base::ObserverList<PageActionModelObserver> observer_list_;
- };
-+}  // namespace chromium_impl
- 
- class PageActionModelFactory {
-  public:

@@ -1,18 +1,396 @@
 diff --git a/chrome/browser/ui/page_action/page_action_model.cc b/chrome/browser/ui/page_action/page_action_model.cc
-index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..75390cdcfb379dcecfca4f49bc57c45b16d18e70 100644
+index 57f0cd288f0a9a0508e443f9fd2209b1ba409fa6..b219b736bef46a250407cc58c64b91009bb7b640 100644
 --- a/chrome/browser/ui/page_action/page_action_model.cc
 +++ b/chrome/browser/ui/page_action/page_action_model.cc
-@@ -16,6 +16,7 @@ namespace {
+@@ -16,19 +16,19 @@ namespace {
  using ::actions::ActionItem;
  }  // namespace
  
-+namespace chromium_impl {
- PageActionModel::PageActionModel(actions::ActionId action_id, bool is_ephemeral)
+-PageActionModel::PageActionModel(actions::ActionId action_id, bool is_ephemeral)
++PageActionModel_ChromiumImpl::PageActionModel_ChromiumImpl(actions::ActionId action_id, bool is_ephemeral)
      : action_id_(action_id), is_ephemeral_(is_ephemeral) {}
  
-@@ -425,4 +426,5 @@ bool PageActionModel::GetShowTrailingIcon() const {
+-PageActionModel::~PageActionModel() {
++PageActionModel_ChromiumImpl::~PageActionModel_ChromiumImpl() {
+   observer_list_.Notify(
+       &PageActionModelObserver::OnPageActionModelWillBeDeleted, *this);
+ }
+ 
+-actions::ActionId PageActionModel::GetActionId() const {
++actions::ActionId PageActionModel_ChromiumImpl::GetActionId() const {
+   return action_id_;
+ }
+ 
+-void PageActionModel::SetShowRequested(PageActionPassKey, bool requested) {
++void PageActionModel_ChromiumImpl::SetShowRequested(PageActionPassKey, bool requested) {
+   if (show_requested_ == requested) {
+     return;
+   }
+@@ -36,7 +36,7 @@ void PageActionModel::SetShowRequested(PageActionPassKey, bool requested) {
+   NotifyChange(Property::kShowRequested);
+ }
+ 
+-void PageActionModel::SetShouldShowSuggestionChip(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetShouldShowSuggestionChip(PageActionPassKey,
+                                                   bool show) {
+   did_show_chip_ = false;
+   if (should_show_suggestion_chip_ == show) {
+@@ -46,7 +46,7 @@ void PageActionModel::SetShouldShowSuggestionChip(PageActionPassKey,
+   NotifyChange(Property::kShouldShowSuggestionChip);
+ }
+ 
+-void PageActionModel::SetSuggestionChipConfig(
++void PageActionModel_ChromiumImpl::SetSuggestionChipConfig(
+     PageActionPassKey,
+     const SuggestionChipConfig& config) {
+   if (should_animate_ == config.should_animate &&
+@@ -58,7 +58,7 @@ void PageActionModel::SetSuggestionChipConfig(
+   NotifyChange(Property::kSuggestionChipConfig);
+ }
+ 
+-void PageActionModel::SetTabActive(PageActionPassKey, bool is_active) {
++void PageActionModel_ChromiumImpl::SetTabActive(PageActionPassKey, bool is_active) {
+   if (is_tab_active_ == is_active) {
+     return;
+   }
+@@ -66,7 +66,7 @@ void PageActionModel::SetTabActive(PageActionPassKey, bool is_active) {
+   NotifyChange(Property::kTabActive);
+ }
+ 
+-void PageActionModel::SetHasPinnedIcon(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetHasPinnedIcon(PageActionPassKey,
+                                        bool has_pinned_icon) {
+   if (has_pinned_icon_ == has_pinned_icon) {
+     return;
+@@ -75,7 +75,7 @@ void PageActionModel::SetHasPinnedIcon(PageActionPassKey,
+   NotifyChange(Property::kHasPinnedIcon);
+ }
+ 
+-void PageActionModel::SetActionItemProperties(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetActionItemProperties(PageActionPassKey,
+                                               const ActionItem* action_item) {
+   bool model_changed = false;
+ 
+@@ -109,7 +109,7 @@ void PageActionModel::SetActionItemProperties(PageActionPassKey,
+   }
+ }
+ 
+-bool PageActionModel::GetVisible() const {
++bool PageActionModel_ChromiumImpl::GetVisible() const {
+   const bool hidden_by_omnibox =
+       is_suppressed_by_omnibox_ && !is_exempt_from_omnibox_suppression_;
+ 
+@@ -117,69 +117,69 @@ bool PageActionModel::GetVisible() const {
+          action_item_visible_ && show_requested_ && !has_pinned_icon_;
+ }
+ 
+-bool PageActionModel::IsChipShowing() const {
++bool PageActionModel_ChromiumImpl::IsChipShowing() const {
+   return is_chip_showing_;
+ }
+ 
+-bool PageActionModel::ShouldShowSuggestionChip() const {
++bool PageActionModel_ChromiumImpl::ShouldShowSuggestionChip() const {
+   return should_show_suggestion_chip_;
+ }
+ 
+-bool PageActionModel::GetShouldAnimateChipOut() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnimateChipOut() const {
+   return should_animate_;
+ }
+ 
+-bool PageActionModel::GetShouldAnimateChipIn() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnimateChipIn() const {
+   // Only animate in if the chip was not shown yet.
+   return should_animate_ && !did_show_chip_;
+ }
+ 
+-bool PageActionModel::GetShouldAnimateImage() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnimateImage() const {
+   return image_animation_parameters_.has_value() && !did_animate_image_;
+ }
+ 
+-bool PageActionModel::GetShouldAnnounceChip() const {
++bool PageActionModel_ChromiumImpl::GetShouldAnnounceChip() const {
+   return should_announce_chip_;
+ }
+ 
+-const ui::ImageModel& PageActionModel::GetImage() const {
++const ui::ImageModel& PageActionModel_ChromiumImpl::GetImage() const {
+   return override_image_.has_value() ? override_image_.value()
+                                      : action_item_image_;
+ }
+ 
+ std::optional<PageActionAnimationParams>
+-PageActionModel::GetImageAnimationParameters() const {
++PageActionModel_ChromiumImpl::GetImageAnimationParameters() const {
+   return image_animation_parameters_;
+ }
+ 
+-const std::u16string& PageActionModel::GetText() const {
++const std::u16string& PageActionModel_ChromiumImpl::GetText() const {
+   return override_text_.has_value() ? override_text_.value() : text_;
+ }
+ 
+-const std::u16string& PageActionModel::GetAccessibleName() const {
++const std::u16string& PageActionModel_ChromiumImpl::GetAccessibleName() const {
+   return override_accessible_name_.has_value()
+              ? override_accessible_name_.value()
+              : text_;
+ }
+ 
+-const std::u16string& PageActionModel::GetTooltipText() const {
++const std::u16string& PageActionModel_ChromiumImpl::GetTooltipText() const {
+   return override_tooltip_.has_value() ? override_tooltip_.value() : tooltip_;
+ }
+ 
+-bool PageActionModel::GetActionItemIsShowingBubble() const {
++bool PageActionModel_ChromiumImpl::GetActionItemIsShowingBubble() const {
+   return action_item_is_showing_bubble_;
+ }
+ 
+-bool PageActionModel::GetActionActive() const {
++bool PageActionModel_ChromiumImpl::GetActionActive() const {
+   return action_active_;
+ }
+ 
+-PageActionColorSource PageActionModel::GetColorSource() const {
++PageActionColorSource PageActionModel_ChromiumImpl::GetColorSource() const {
+   return color_source_.has_value() ? *color_source_
+                                    : PageActionColorSource::kForeground;
+ }
+ 
+-void PageActionModel::SetOverrideText(
++void PageActionModel_ChromiumImpl::SetOverrideText(
+     PageActionPassKey,
+     const std::optional<std::u16string>& override_text) {
+   if (override_text_ == override_text) {
+@@ -189,7 +189,7 @@ void PageActionModel::SetOverrideText(
+   NotifyChange(Property::kOverrideText);
+ }
+ 
+-void PageActionModel::SetOverrideAccessibleName(
++void PageActionModel_ChromiumImpl::SetOverrideAccessibleName(
+     PageActionPassKey,
+     const std::optional<std::u16string>& override_accessible_name) {
+   if (override_accessible_name_ == override_accessible_name) {
+@@ -199,7 +199,7 @@ void PageActionModel::SetOverrideAccessibleName(
+   NotifyChange(Property::kOverrideAccessibleName);
+ }
+ 
+-void PageActionModel::SetOverrideImage(
++void PageActionModel_ChromiumImpl::SetOverrideImage(
+     PageActionPassKey,
+     const std::optional<ui::ImageModel>& override_image,
+     PageActionColorSource color_source,
+@@ -215,7 +215,7 @@ void PageActionModel::SetOverrideImage(
+   NotifyChange(Property::kOverrideImage);
+ }
+ 
+-void PageActionModel::SetOverrideTooltip(
++void PageActionModel_ChromiumImpl::SetOverrideTooltip(
+     PageActionPassKey,
+     const std::optional<std::u16string>& override_tooltip) {
+   if (override_tooltip_ == override_tooltip) {
+@@ -225,7 +225,7 @@ void PageActionModel::SetOverrideTooltip(
+   NotifyChange(Property::kOverrideTooltip);
+ }
+ 
+-void PageActionModel::SetIsSuppressedByOmnibox(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetIsSuppressedByOmnibox(PageActionPassKey,
+                                                bool is_suppressed) {
+   if (is_suppressed_by_omnibox_ == is_suppressed) {
+     return;
+@@ -234,7 +234,7 @@ void PageActionModel::SetIsSuppressedByOmnibox(PageActionPassKey,
+   NotifyChange(Property::kIsSuppressedByOmnibox);
+ }
+ 
+-void PageActionModel::SetExemptFromOmniboxSuppression(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetExemptFromOmniboxSuppression(PageActionPassKey,
+                                                       bool is_exempt) {
+   if (is_exempt_from_omnibox_suppression_ == is_exempt) {
+     return;
+@@ -243,7 +243,7 @@ void PageActionModel::SetExemptFromOmniboxSuppression(PageActionPassKey,
+   NotifyChange(Property::kExemptFromOmniboxSuppression);
+ }
+ 
+-void PageActionModel::SetIsChipShowing(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetIsChipShowing(PageActionPassKey,
+                                        bool is_chip_showing) {
+   did_show_chip_ |= is_chip_showing;
+   if (is_chip_showing_ == is_chip_showing) {
+@@ -254,7 +254,7 @@ void PageActionModel::SetIsChipShowing(PageActionPassKey,
+   NotifyChange(Property::kIsChipShowing);
+ }
+ 
+-void PageActionModel::SetActionActive(PageActionPassKey, bool is_active) {
++void PageActionModel_ChromiumImpl::SetActionActive(PageActionPassKey, bool is_active) {
+   if (action_active_ == is_active) {
+     return;
+   }
+@@ -263,7 +263,7 @@ void PageActionModel::SetActionActive(PageActionPassKey, bool is_active) {
+   NotifyChange(Property::kActionActive);
+ }
+ 
+-void PageActionModel::SetAnimationStyle(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetAnimationStyle(PageActionPassKey,
+                                         PageActionAnimationStyle style) {
+   if (animation_style_ == style) {
+     return;
+@@ -272,7 +272,7 @@ void PageActionModel::SetAnimationStyle(PageActionPassKey,
+   NotifyChange(Property::kAnimationStyle);
+ }
+ 
+-void PageActionModel::SetTrailingImage(
++void PageActionModel_ChromiumImpl::SetTrailingImage(
+     PageActionPassKey,
+     const std::optional<ui::ImageModel>& image) {
+   if (trailing_image_ == image) {
+@@ -282,7 +282,7 @@ void PageActionModel::SetTrailingImage(
+   NotifyChange(Property::kTrailingImage);
+ }
+ 
+-void PageActionModel::SetShowTrailingIcon(PageActionPassKey, bool show) {
++void PageActionModel_ChromiumImpl::SetShowTrailingIcon(PageActionPassKey, bool show) {
+   if (show_trailing_icon_ == show) {
+     return;
+   }
+@@ -290,15 +290,15 @@ void PageActionModel::SetShowTrailingIcon(PageActionPassKey, bool show) {
+   NotifyChange(Property::kShowTrailingIcon);
+ }
+ 
+-void PageActionModel::AddObserver(PageActionModelObserver* observer) {
++void PageActionModel_ChromiumImpl::AddObserver(PageActionModelObserver* observer) {
+   observer_list_.AddObserver(observer);
+ }
+ 
+-void PageActionModel::RemoveObserver(PageActionModelObserver* observer) {
++void PageActionModel_ChromiumImpl::RemoveObserver(PageActionModelObserver* observer) {
+   observer_list_.RemoveObserver(observer);
+ }
+ 
+-void PageActionModel::NotifyChange(Property property) {
++void PageActionModel_ChromiumImpl::NotifyChange(Property property) {
+   // Crash if the same property is modified again during notification, as this
+   // would cause an infinite loop (A notifies -> observer sets A -> notifies
+   // -> ...).
+@@ -317,11 +317,11 @@ void PageActionModel::NotifyChange(Property property) {
+   notified_properties_.Remove(property);
+ }
+ 
+-bool PageActionModel::IsEphemeral() const {
++bool PageActionModel_ChromiumImpl::IsEphemeral() const {
+   return is_ephemeral_;
+ }
+ 
+-void PageActionModel::SetShouldShowAnchoredMessage(PageActionPassKey,
++void PageActionModel_ChromiumImpl::SetShouldShowAnchoredMessage(PageActionPassKey,
+                                                    bool show) {
+   if (should_show_anchored_message_ == show) {
+     return;
+@@ -330,7 +330,7 @@ void PageActionModel::SetShouldShowAnchoredMessage(PageActionPassKey,
+   NotifyChange(Property::kShouldShowAnchoredMessage);
+ }
+ 
+-void PageActionModel::SetAnchoredMessageText(
++void PageActionModel_ChromiumImpl::SetAnchoredMessageText(
+     PageActionPassKey,
+     const std::u16string& anchored_message) {
+   if (anchored_message_text_ == anchored_message) {
+@@ -340,7 +340,7 @@ void PageActionModel::SetAnchoredMessageText(
+   NotifyChange(Property::kAnchoredMessageText);
+ }
+ 
+-void PageActionModel::SetAnchoredMessageAction(
++void PageActionModel_ChromiumImpl::SetAnchoredMessageAction(
+     PageActionPassKey,
+     const AnchoredMessageActionIconType action_icon_type,
+     std::unique_ptr<ui::SimpleMenuModel> model) {
+@@ -351,14 +351,14 @@ void PageActionModel::SetAnchoredMessageAction(
+   NotifyChange(Property::kAnchoredMessageActionIcon);
+ }
+ 
+-void PageActionModel::SetAnchoredMessageIcon(
++void PageActionModel_ChromiumImpl::SetAnchoredMessageIcon(
+     PageActionPassKey,
+     const std::optional<ui::ImageModel>& icon) {
+   anchored_message_icon_ = icon;
+   NotifyChange(Property::kAnchoredMessageIcon);
+ }
+ 
+-void PageActionModel::SetAnchoredMessageExpandableContent(
++void PageActionModel_ChromiumImpl::SetAnchoredMessageExpandableContent(
+     PageActionPassKey,
+     std::optional<AnchoredMessageExpandableContent> expandable_content) {
+   if (expandable_content_ == expandable_content) {
+@@ -368,15 +368,15 @@ void PageActionModel::SetAnchoredMessageExpandableContent(
+   NotifyChange(Property::kAnchoredMessageExpandableContent);
+ }
+ 
+-bool PageActionModel::ShouldShowAnchoredMessage() const {
++bool PageActionModel_ChromiumImpl::ShouldShowAnchoredMessage() const {
+   return should_show_anchored_message_;
+ }
+ 
+-bool PageActionModel::IsAnchoredMessageShowing() const {
++bool PageActionModel_ChromiumImpl::IsAnchoredMessageShowing() const {
+   return is_anchored_message_showing_;
+ }
+ 
+-void PageActionModel::SetIsAnchoredMessageShowing(
++void PageActionModel_ChromiumImpl::SetIsAnchoredMessageShowing(
+     PageActionPassKey,
+     bool is_anchored_message_showing) {
+   if (is_anchored_message_showing_ == is_anchored_message_showing) {
+@@ -386,42 +386,42 @@ void PageActionModel::SetIsAnchoredMessageShowing(
+   NotifyChange(Property::kIsAnchoredMessageShowing);
+ }
+ 
+-void PageActionModel::SetDidAnimateImage(PageActionPassKey pass_key) {
++void PageActionModel_ChromiumImpl::SetDidAnimateImage(PageActionPassKey pass_key) {
+   did_animate_image_ = true;
+ }
+ 
+-const std::u16string& PageActionModel::GetAnchoredMessageText() const {
++const std::u16string& PageActionModel_ChromiumImpl::GetAnchoredMessageText() const {
+   return anchored_message_text_;
+ }
+ 
+ AnchoredMessageActionIconType
+-PageActionModel::GetAnchoredMessageActionIconType() const {
++PageActionModel_ChromiumImpl::GetAnchoredMessageActionIconType() const {
+   return anchored_message_action_icon_type_;
+ }
+ 
+-ui::SimpleMenuModel* PageActionModel::GetAnchoredMessageMenuModel() const {
++ui::SimpleMenuModel* PageActionModel_ChromiumImpl::GetAnchoredMessageMenuModel() const {
+   return anchored_message_menu_model_.get();
+ }
+ 
+-const std::optional<ui::ImageModel>& PageActionModel::GetAnchoredMessageIcon()
++const std::optional<ui::ImageModel>& PageActionModel_ChromiumImpl::GetAnchoredMessageIcon()
+     const {
+   return anchored_message_icon_;
+ }
+ 
+ const std::optional<AnchoredMessageExpandableContent>&
+-PageActionModel::GetAnchoredMessageExpandableContent() const {
++PageActionModel_ChromiumImpl::GetAnchoredMessageExpandableContent() const {
+   return expandable_content_;
+ }
+ 
+-PageActionAnimationStyle PageActionModel::GetAnimationStyle() const {
++PageActionAnimationStyle PageActionModel_ChromiumImpl::GetAnimationStyle() const {
+   return animation_style_;
+ }
+ 
+-std::optional<ui::ImageModel> PageActionModel::GetTrailingImage() const {
++std::optional<ui::ImageModel> PageActionModel_ChromiumImpl::GetTrailingImage() const {
+   return trailing_image_;
+ }
+ 
+-bool PageActionModel::GetShowTrailingIcon() const {
++bool PageActionModel_ChromiumImpl::GetShowTrailingIcon() const {
    return show_trailing_icon_;
  }
  
-+}  // namespace chromium_impl
- }  // namespace page_actions

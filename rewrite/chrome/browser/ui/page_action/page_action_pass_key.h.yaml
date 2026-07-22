@@ -4,8 +4,7 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description:
-      'Befriend page_actions::chromium_impl::PageActionControllerImpl'
+  - description: 'Befriend page_actions::PageActionControllerImpl_ChromiumImpl'
     add_friend:
       class_name: PageActionPassKey
-      friend_type: class page_actions::chromium_impl::PageActionControllerImpl
+      friend_type: class page_actions::PageActionControllerImpl_ChromiumImpl

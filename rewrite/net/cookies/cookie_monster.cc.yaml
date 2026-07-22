@@ -4,18 +4,12 @@
 # You can obtain one at https://mozilla.org/MPL/2.0/.
 
 substitutions:
-  - description: 'Moving `CookieMonster` into `chromium_impl` as in the header.'
-    regex:
-      pattern: 'namespace net'
-      replace: 'namespace net::chromium_impl'
-
-    count: 2
   - description: |
-      Tweaking `MaybeRunDeleteCallback` to use the original class.
+      Rename CookieMonster to CookieMonster_ChromiumImpl to match the header.
 
-      Sadly this function alone sits outside in an unnamed namespace in the global
-      scope, which make its use of `net::CookieMonster` to select the Brave
-      implementation, however this is a simple case.
-    regex:
-      pattern: 'base::WeakPtr<net::CookieMonster> cookie_monster'
-      replace: 'base::WeakPtr<net::chromium_impl::CookieMonster> cookie_monster'
+      This also fixes up the lone `net::CookieMonster` reference inside the
+      unnamed-namespace `MaybeRunDeleteCallback` helper, which must keep using the
+      renamed upstream class.
+    rename_class:
+      class_name: CookieMonster
+      rename: CookieMonster_ChromiumImpl

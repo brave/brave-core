@@ -17,9 +17,9 @@ PermissionContextBase::PermissionContextBase(
     content::BrowserContext* browser_context,
     ContentSettingsType content_settings_type,
     network::mojom::PermissionsPolicyFeature permissions_policy_feature)
-    : chromium_impl::PermissionContextBase(browser_context,
-                                           content_settings_type,
-                                           permissions_policy_feature) {}
+    : PermissionContextBase_ChromiumImpl(browser_context,
+                                         content_settings_type,
+                                         permissions_policy_feature) {}
 
 PermissionContextBase::~PermissionContextBase() = default;
 
@@ -47,8 +47,7 @@ void PermissionContextBase::PermissionDecided(
     }
   }
 
-  chromium_impl::PermissionContextBase::PermissionDecided(decision,
-                                                          request_data);
+  PermissionContextBase_ChromiumImpl::PermissionDecided(decision, request_data);
 }
 
 }  // namespace permissions

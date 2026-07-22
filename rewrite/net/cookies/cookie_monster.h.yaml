@@ -5,19 +5,10 @@
 
 substitutions:
   - description: |
-      Wrap CookieMonster class in chromium_impl namespace
+      Rename CookieMonster to CookieMonster_ChromiumImpl
 
-      This substitution moves the `CookieMonster` in its entirety into a detail
-      namespace called `chromium_impl`, so we can shadow that class with an official
-      brave implementation for `CookieMonster` that derives from `chromium_impl` one.
-
-      The namespace introduced here only wraps the classes in the header, so it
-      searches for the class declaration first, to avoid wrapping the forward
-      declarations.
-    regex:
-      re_pattern: '(class NET_EXPORT CookieMonster.*?)(\n\}\s*// namespace net)'
-      re_flags: [DOTALL]
-      replace: |-
-        namespace chromium_impl {
-        \1
-        }  // namespace chromium_impl\2
+      This lets Brave shadow the upstream class with its own `net::CookieMonster`
+      that reuses the name and derives from the renamed upstream class.
+    rename_class:
+      class_name: CookieMonster
+      rename: CookieMonster_ChromiumImpl

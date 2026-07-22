@@ -5,13 +5,11 @@
 
 substitutions:
   - description: |
-      Moving all of tests into `chromium_impl` namespace.
+      Rename CookieMonster to CookieMonster_ChromiumImpl.
 
-      This is necessary because these tests require access to private members of
-      `CookieMonster` brokered through `FRIEND_TEST_ALL_PREFIXES`, and this macro
-      does has to match the namespace used.
-    regex:
-      pattern: 'namespace net'
-      replace: 'namespace net::chromium_impl'
-
-    count: 2
+      The tests access private members brokered through
+      FRIEND_TEST_ALL_PREFIXES. Keeping both the renamed class and the tests in
+      `namespace net` preserves the friend matching.
+    rename_class:
+      class_name: CookieMonster
+      rename: CookieMonster_ChromiumImpl

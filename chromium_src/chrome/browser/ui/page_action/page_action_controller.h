@@ -21,10 +21,10 @@ namespace page_actions {
 // Brave override of the upstream concrete page-action controller. Used by
 // PartitionedStoragePageActionController to drive Brave-specific page actions
 // (chip colors, label, height, triggerable event).
-class PageActionControllerImpl
-    : public chromium_impl::PageActionControllerImpl {
+class PageActionControllerImpl : public PageActionControllerImpl_ChromiumImpl {
  public:
-  using chromium_impl::PageActionControllerImpl::PageActionControllerImpl;
+  using PageActionControllerImpl_ChromiumImpl::
+      PageActionControllerImpl_ChromiumImpl;
   ~PageActionControllerImpl() override;
 
   void SetAlwaysShowLabel(actions::ActionId action_id, bool always_show);
@@ -40,7 +40,7 @@ class PageActionControllerImpl
                          const gfx::Insets& border);
   void ClearOverrideBorder(actions::ActionId action_id);
 
-  // chromium_impl::PageActionControllerImpl:
+  // PageActionControllerImpl_ChromiumImpl:
   std::unique_ptr<PageActionModelInterface> CreateModel(
       actions::ActionId action_id,
       bool is_ephemeral) override;

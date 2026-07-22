@@ -1,16 +1,25 @@
 diff --git a/components/permissions/permission_context_base.h b/components/permissions/permission_context_base.h
-index fa672a2d9359973b278160e50e52185e8a09a3c7..ae746fc8793af98068ae4d4c2f54b8354280714b 100644
+index fa672a2d9359973b278160e50e52185e8a09a3c7..31d1b616cd75c4b22f1f700b09199de863af7c2f 100644
 --- a/components/permissions/permission_context_base.h
 +++ b/components/permissions/permission_context_base.h
-@@ -89,6 +89,7 @@ using BrowserPermissionCallback =
+@@ -89,13 +89,13 @@ using BrowserPermissionCallback =
  // See midi_permission_context.h/cc or push_permission_context.cc/h for some
  // examples.
  
-+namespace chromium_impl {
- class PermissionContextBase : public content_settings::Observer {
+-class PermissionContextBase : public content_settings::Observer {
++class PermissionContextBase_ChromiumImpl : public content_settings::Observer {
   public:
-   PermissionContextBase(
-@@ -302,6 +303,7 @@ class PermissionContextBase : public content_settings::Observer {
+-  PermissionContextBase(
++  PermissionContextBase_ChromiumImpl(
+       content::BrowserContext* browser_context,
+       ContentSettingsType content_settings_type,
+       network::mojom::PermissionsPolicyFeature permissions_policy_feature);
+-  ~PermissionContextBase() override;
++  ~PermissionContextBase_ChromiumImpl() override;
+ 
+   // A field trial used to enable the global permissions kill switch.
+   // This is public so permissions that don't yet inherit from
+@@ -302,6 +302,7 @@ class PermissionContextBase : public content_settings::Observer {
  #endif  // BUILDFLAG(IS_ANDROID)
  
   private:
@@ -18,7 +27,7 @@ index fa672a2d9359973b278160e50e52185e8a09a3c7..ae746fc8793af98068ae4d4c2f54b835
    friend class PermissionContextBaseTests;
  
    // Called when a request is no longer used so it can be cleaned up.
-@@ -316,7 +318,7 @@ class PermissionContextBase : public content_settings::Observer {
+@@ -316,7 +317,7 @@ class PermissionContextBase : public content_settings::Observer {
  
    // This is the callback for PermissionRequest and is called once the user
    // allows/blocks/dismisses a permission prompt.
@@ -27,11 +36,12 @@ index fa672a2d9359973b278160e50e52185e8a09a3c7..ae746fc8793af98068ae4d4c2f54b835
                           const PermissionRequestData& request_data);
  
    raw_ptr<content::BrowserContext> browser_context_;
-@@ -337,6 +339,7 @@ class PermissionContextBase : public content_settings::Observer {
-   base::WeakPtrFactory<PermissionContextBase> weak_factory_{this};
+@@ -334,7 +335,7 @@ class PermissionContextBase : public content_settings::Observer {
+ 
+   // Must be the last member, to ensure that it will be
+   // destroyed first, which will invalidate weak pointers
+-  base::WeakPtrFactory<PermissionContextBase> weak_factory_{this};
++  base::WeakPtrFactory<PermissionContextBase_ChromiumImpl> weak_factory_{this};
  };
  
-+}  // namespace chromium_impl
  }  // namespace permissions
- 
- #endif  // COMPONENTS_PERMISSIONS_PERMISSION_CONTEXT_BASE_H_

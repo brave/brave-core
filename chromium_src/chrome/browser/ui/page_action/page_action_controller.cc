@@ -67,8 +67,8 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
     actions::ActionId action_id,
     bool is_ephemeral) {
   if (page_action_model_factory_ != nullptr) {
-    return chromium_impl::PageActionControllerImpl::CreateModel(action_id,
-                                                                is_ephemeral);
+    return PageActionControllerImpl_ChromiumImpl::CreateModel(action_id,
+                                                              is_ephemeral);
   }
 
   return std::make_unique<PageActionModel>(is_ephemeral);

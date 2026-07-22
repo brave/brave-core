@@ -1,29 +1,520 @@
 diff --git a/chrome/browser/ui/page_action/page_action_controller.cc b/chrome/browser/ui/page_action/page_action_controller.cc
-index 028ecc6d78cc90ece04305c6f2df659268fad3d5..caa4c7c6fa42d70a8f2e9dd1ccfad4218ae1d2b5 100644
+index 028ecc6d78cc90ece04305c6f2df659268fad3d5..421f3014c93958fea0efb5a8c4c4bd84a3de222f 100644
 --- a/chrome/browser/ui/page_action/page_action_controller.cc
 +++ b/chrome/browser/ui/page_action/page_action_controller.cc
-@@ -72,6 +72,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
+@@ -72,7 +72,7 @@ void ScopedPageActionActivity::RegisterWillDestroyControllerCallback() {
    }
  }
  
-+namespace chromium_impl {
- PageActionControllerImpl::PageActionControllerImpl(
+-PageActionControllerImpl::PageActionControllerImpl(
++PageActionControllerImpl_ChromiumImpl::PageActionControllerImpl_ChromiumImpl(
      PinnedToolbarActionsModel* pinned_actions_model,
      PageActionModelFactory* page_action_model_factory,
-@@ -515,7 +516,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
-   if (page_action_model_factory_ != nullptr) {
-     return page_action_model_factory_->Create(action_id, is_ephemeral);
-   } else {
--    return std::make_unique<PageActionModel>(action_id, is_ephemeral);
-+    return std::make_unique<::page_actions::PageActionModel>(action_id, is_ephemeral);
+     PageActionMetricsRecorderFactory* page_action_metrics_recorder_factory)
+@@ -84,34 +84,34 @@ PageActionControllerImpl::PageActionControllerImpl(
    }
  }
  
-@@ -593,6 +594,7 @@ void PageActionControllerImpl::OnImageAnimationStarted(
-   FindPageActionModel(action_id).SetDidAnimateImage(PageActionPassKey());
+-PageActionControllerImpl::~PageActionControllerImpl() {
++PageActionControllerImpl_ChromiumImpl::~PageActionControllerImpl_ChromiumImpl() {
+   on_will_destroy_callback_list_.Notify(*this);
  }
  
-+}  // namespace chromium_impl
- std::ostream& operator<<(std::ostream& os, const SuggestionChipConfig& config) {
-   os << "{ should_animate: " << config.should_animate
-      << ", should_announce_chip: " << config.should_announce_chip << " }";
+-void PageActionControllerImpl::Initialize(
++void PageActionControllerImpl_ChromiumImpl::Initialize(
+     tabs::TabInterface& tab_interface,
+     const std::vector<actions::ActionId>& action_ids,
+     const PageActionPropertiesProviderInterface& properties_provider) {
+   tab_activated_callback_subscription_ =
+       tab_interface.RegisterDidActivate(base::BindRepeating(
+-          &PageActionControllerImpl::OnTabActivated, base::Unretained(this)));
++          &PageActionControllerImpl_ChromiumImpl::OnTabActivated, base::Unretained(this)));
+   tab_deactivated_callback_subscription_ = tab_interface.RegisterWillDeactivate(
+-      base::BindRepeating(&PageActionControllerImpl::OnTabWillDeactivate,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::OnTabWillDeactivate,
+                           base::Unretained(this)));
+   chip_selector_ = CreateChipSelector(
+-      base::BindRepeating(&PageActionControllerImpl::DoShowSuggestionChip,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoShowSuggestionChip,
+                           base::Unretained(this)),
+-      base::BindRepeating(&PageActionControllerImpl::DoHideSuggestionChip,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoHideSuggestionChip,
+                           base::Unretained(this)),
+-      base::BindRepeating(&PageActionControllerImpl::DoShowAnchoredMessage,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoShowAnchoredMessage,
+                           base::Unretained(this)),
+-      base::BindRepeating(&PageActionControllerImpl::DoHideAnchoredMessage,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DoHideAnchoredMessage,
+                           base::Unretained(this)));
+ 
+   metrics_recorder_ = CreateMetricsRecorder(
+       tab_interface,
+       base::BindRepeating(
+-          &PageActionControllerImpl::GetVisibleEphemeralPageActionsCount,
++          &PageActionControllerImpl_ChromiumImpl::GetVisibleEphemeralPageActionsCount,
+           base::Unretained(this)));
+ 
+   for (actions::ActionId id : action_ids) {
+@@ -128,7 +128,7 @@ void PageActionControllerImpl::Initialize(
+   }
+ }
+ 
+-void PageActionControllerImpl::Register(
++void PageActionControllerImpl_ChromiumImpl::Register(
+     actions::ActionId action_id,
+     bool is_tab_active,
+     bool is_ephemeral,
+@@ -143,21 +143,21 @@ void PageActionControllerImpl::Register(
+   activity_counters_[action_id] = 0;
+ }
+ 
+-void PageActionControllerImpl::Show(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::Show(actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetShowRequested(PageActionPassKey(),
+                                                   /*requested=*/true);
+ }
+ 
+-void PageActionControllerImpl::Hide(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::Hide(actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetShowRequested(PageActionPassKey(),
+                                                   /*requested=*/false);
+ }
+ 
+-void PageActionControllerImpl::ShowSuggestionChip(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::ShowSuggestionChip(actions::ActionId action_id) {
+   ShowSuggestionChip(action_id, SuggestionChipConfig());
+ }
+ 
+-void PageActionControllerImpl::ShowSuggestionChip(
++void PageActionControllerImpl_ChromiumImpl::ShowSuggestionChip(
+     actions::ActionId action_id,
+     const SuggestionChipConfig& config) {
+   if (config.priority == PageActionPriorityCategory::kUnknown &&
+@@ -172,7 +172,7 @@ void PageActionControllerImpl::ShowSuggestionChip(
+   }
+ }
+ 
+-void PageActionControllerImpl::DoShowSuggestionChip(
++void PageActionControllerImpl_ChromiumImpl::DoShowSuggestionChip(
+     actions::ActionId action_id,
+     const SuggestionChipConfig& config) {
+   PageActionModelInterface& model = FindPageActionModel(action_id);
+@@ -180,18 +180,18 @@ void PageActionControllerImpl::DoShowSuggestionChip(
+   model.SetShouldShowSuggestionChip(PageActionPassKey(), /*show=*/true);
+ }
+ 
+-void PageActionControllerImpl::HideSuggestionChip(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::HideSuggestionChip(actions::ActionId action_id) {
+   chip_selector_->RequestChipHide(action_id);
+ }
+ 
+-void PageActionControllerImpl::DoHideSuggestionChip(
++void PageActionControllerImpl_ChromiumImpl::DoHideSuggestionChip(
+     actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetShouldShowSuggestionChip(
+       PageActionPassKey(),
+       /*show=*/false);
+ }
+ 
+-void PageActionControllerImpl::ShowAnchoredMessage(
++void PageActionControllerImpl_ChromiumImpl::ShowAnchoredMessage(
+     actions::ActionId action_id,
+     const AnchoredMessageConfig& config) {
+   if (config.priority == PageActionPriorityCategory::kUnknown &&
+@@ -206,7 +206,7 @@ void PageActionControllerImpl::ShowAnchoredMessage(
+   }
+ }
+ 
+-void PageActionControllerImpl::DoShowAnchoredMessage(
++void PageActionControllerImpl_ChromiumImpl::DoShowAnchoredMessage(
+     actions::ActionId action_id,
+     const AnchoredMessageConfig& config) {
+   FindPageActionModel(action_id).SetShouldShowAnchoredMessage(
+@@ -222,11 +222,11 @@ void PageActionControllerImpl::DoShowAnchoredMessage(
+   }
+   anchored_message_timeout_.Start(
+       FROM_HERE, base::Seconds(15),
+-      base::BindRepeating(&PageActionControllerImpl::DowngradeAnchoredMessage,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::DowngradeAnchoredMessage,
+                           base::Unretained(this), action_id));
+ }
+ 
+-void PageActionControllerImpl::DowngradeAnchoredMessage(
++void PageActionControllerImpl_ChromiumImpl::DowngradeAnchoredMessage(
+     actions::ActionId action_id) {
+   if (active_anchored_message_ != action_id) {
+     return;
+@@ -234,12 +234,12 @@ void PageActionControllerImpl::DowngradeAnchoredMessage(
+   ShowSuggestionChip(action_id);
+ }
+ 
+-void PageActionControllerImpl::HideAnchoredMessage(
++void PageActionControllerImpl_ChromiumImpl::HideAnchoredMessage(
+     actions::ActionId action_id) {
+   chip_selector_->RequestAnchoredMessageHide(action_id);
+ }
+ 
+-void PageActionControllerImpl::DoHideAnchoredMessage(
++void PageActionControllerImpl_ChromiumImpl::DoHideAnchoredMessage(
+     actions::ActionId action_id) {
+   if (active_anchored_message_ == action_id) {
+     active_anchored_message_ = std::nullopt;
+@@ -254,7 +254,7 @@ void PageActionControllerImpl::DoHideAnchoredMessage(
+       /*show=*/false);
+ }
+ 
+-void PageActionControllerImpl::PauseAnchoredMessageTimeout(
++void PageActionControllerImpl_ChromiumImpl::PauseAnchoredMessageTimeout(
+     actions::ActionId action_id) {
+   if (active_anchored_message_ == action_id) {
+     ++anchored_message_timeout_pause_count_;
+@@ -265,7 +265,7 @@ void PageActionControllerImpl::PauseAnchoredMessageTimeout(
+   }
+ }
+ 
+-void PageActionControllerImpl::ResumeAnchoredMessageTimeout(
++void PageActionControllerImpl_ChromiumImpl::ResumeAnchoredMessageTimeout(
+     actions::ActionId action_id) {
+   if (active_anchored_message_ == action_id) {
+     --anchored_message_timeout_pause_count_;
+@@ -278,11 +278,11 @@ void PageActionControllerImpl::ResumeAnchoredMessageTimeout(
+ }
+ 
+ std::optional<actions::ActionId>
+-PageActionControllerImpl::GetActiveAnchoredMessage() const {
++PageActionControllerImpl_ChromiumImpl::GetActiveAnchoredMessage() const {
+   return active_anchored_message_;
+ }
+ 
+-ScopedPageActionActivity PageActionControllerImpl::AddActivity(
++ScopedPageActionActivity PageActionControllerImpl_ChromiumImpl::AddActivity(
+     actions::ActionId action_id) {
+   auto& counter = activity_counters_[action_id];
+   ++counter;
+@@ -290,7 +290,7 @@ ScopedPageActionActivity PageActionControllerImpl::AddActivity(
+   return ScopedPageActionActivity(*this, action_id);
+ }
+ 
+-void PageActionControllerImpl::DecrementActivityCounter(
++void PageActionControllerImpl_ChromiumImpl::DecrementActivityCounter(
+     actions::ActionId action_id) {
+   auto it = activity_counters_.find(action_id);
+   CHECK(it != activity_counters_.end());
+@@ -301,42 +301,42 @@ void PageActionControllerImpl::DecrementActivityCounter(
+   }
+ }
+ 
+-void PageActionControllerImpl::ActionItemChanged(
++void PageActionControllerImpl_ChromiumImpl::ActionItemChanged(
+     const actions::ActionItem* action_item) {
+   auto& model = FindPageActionModel(action_item->GetActionId().value());
+   model.SetActionItemProperties(PageActionPassKey(), action_item);
+ }
+ 
+-void PageActionControllerImpl::OnTabActivated(tabs::TabInterface* tab) {
++void PageActionControllerImpl_ChromiumImpl::OnTabActivated(tabs::TabInterface* tab) {
+   SetModelsTabActive(/*is_active=*/true);
+   if (anchored_message_timeout_.IsRunning()) {
+     anchored_message_timeout_.Reset();
+   }
+ }
+ 
+-void PageActionControllerImpl::OnTabWillDeactivate(tabs::TabInterface* tab) {
++void PageActionControllerImpl_ChromiumImpl::OnTabWillDeactivate(tabs::TabInterface* tab) {
+   SetModelsTabActive(/*is_active=*/false);
+ }
+ 
+-void PageActionControllerImpl::SetModelsTabActive(bool is_active) {
++void PageActionControllerImpl_ChromiumImpl::SetModelsTabActive(bool is_active) {
+   for (auto& [id, model] : page_actions_) {
+     model->SetTabActive(PageActionPassKey(), is_active);
+   }
+ }
+ 
+-void PageActionControllerImpl::OverrideText(
++void PageActionControllerImpl_ChromiumImpl::OverrideText(
+     actions::ActionId action_id,
+     const std::u16string& override_text) {
+   FindPageActionModel(action_id).SetOverrideText(PageActionPassKey(),
+                                                  override_text);
+ }
+ 
+-void PageActionControllerImpl::ClearOverrideText(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::ClearOverrideText(actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetOverrideText(
+       PageActionPassKey(), /*override_text=*/std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::OverrideAccessibleName(
++void PageActionControllerImpl_ChromiumImpl::OverrideAccessibleName(
+     actions::ActionId action_id,
+     const std::u16string& override_accessible_name) {
+   FindPageActionModel(action_id).SetOverrideAccessibleName(
+@@ -344,26 +344,26 @@ void PageActionControllerImpl::OverrideAccessibleName(
+       /*override_accessible_name=*/override_accessible_name);
+ }
+ 
+-void PageActionControllerImpl::ClearOverrideAccessibleName(
++void PageActionControllerImpl_ChromiumImpl::ClearOverrideAccessibleName(
+     actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetOverrideAccessibleName(
+       PageActionPassKey(), /*override_accessible_name=*/std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::OverrideImage(
++void PageActionControllerImpl_ChromiumImpl::OverrideImage(
+     actions::ActionId action_id,
+     const ui::ImageModel& override_image) {
+   OverrideImage(action_id, override_image, PageActionColorSource::kForeground);
+ }
+ 
+-void PageActionControllerImpl::OverrideImage(
++void PageActionControllerImpl_ChromiumImpl::OverrideImage(
+     actions::ActionId action_id,
+     const ui::ImageModel& override_image,
+     PageActionColorSource color_source) {
+   OverrideImage(action_id, override_image, color_source, std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::OverrideImage(
++void PageActionControllerImpl_ChromiumImpl::OverrideImage(
+     actions::ActionId action_id,
+     const ui::ImageModel& override_image,
+     PageActionColorSource color_source,
+@@ -372,7 +372,7 @@ void PageActionControllerImpl::OverrideImage(
+       PageActionPassKey(), override_image, color_source, animation_parameters);
+ }
+ 
+-void PageActionControllerImpl::ClearOverrideImage(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::ClearOverrideImage(actions::ActionId action_id) {
+   auto& model = FindPageActionModel(action_id);
+   model.SetOverrideImage(PageActionPassKey(),
+                          /*override_image=*/std::nullopt,
+@@ -380,70 +380,70 @@ void PageActionControllerImpl::ClearOverrideImage(actions::ActionId action_id) {
+                          /*animation_parameters=*/std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::SetAnimationStyle(
++void PageActionControllerImpl_ChromiumImpl::SetAnimationStyle(
+     actions::ActionId action_id,
+     PageActionAnimationStyle style) {
+   FindPageActionModel(action_id).SetAnimationStyle(PageActionPassKey(), style);
+ }
+ 
+-void PageActionControllerImpl::SetTrailingImage(
++void PageActionControllerImpl_ChromiumImpl::SetTrailingImage(
+     actions::ActionId action_id,
+     const ui::ImageModel& trailing_image) {
+   FindPageActionModel(action_id).SetTrailingImage(PageActionPassKey(),
+                                                   trailing_image);
+ }
+ 
+-void PageActionControllerImpl::ClearTrailingImage(actions::ActionId action_id) {
++void PageActionControllerImpl_ChromiumImpl::ClearTrailingImage(actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetTrailingImage(PageActionPassKey(),
+                                                   std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::SetShowTrailingIcon(actions::ActionId action_id,
++void PageActionControllerImpl_ChromiumImpl::SetShowTrailingIcon(actions::ActionId action_id,
+                                                    bool show) {
+   FindPageActionModel(action_id).SetShowTrailingIcon(PageActionPassKey(), show);
+ }
+ 
+-void PageActionControllerImpl::OverrideTooltip(
++void PageActionControllerImpl_ChromiumImpl::OverrideTooltip(
+     actions::ActionId action_id,
+     const std::u16string& override_tooltip) {
+   FindPageActionModel(action_id).SetOverrideTooltip(PageActionPassKey(),
+                                                     override_tooltip);
+ }
+ 
+-void PageActionControllerImpl::ClearOverrideTooltip(
++void PageActionControllerImpl_ChromiumImpl::ClearOverrideTooltip(
+     actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetOverrideTooltip(
+       PageActionPassKey(), /*override_tooltip=*/std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::SetAnchoredMessageText(
++void PageActionControllerImpl_ChromiumImpl::SetAnchoredMessageText(
+     actions::ActionId action_id,
+     const std::u16string& anchored_message_text) {
+   FindPageActionModel(action_id).SetAnchoredMessageText(PageActionPassKey(),
+                                                         anchored_message_text);
+ }
+ 
+-void PageActionControllerImpl::SetAnchoredMessageIcon(
++void PageActionControllerImpl_ChromiumImpl::SetAnchoredMessageIcon(
+     actions::ActionId action_id,
+     const ui::ImageModel& icon) {
+   FindPageActionModel(action_id).SetAnchoredMessageIcon(PageActionPassKey(),
+                                                         icon);
+ }
+ 
+-void PageActionControllerImpl::ClearAnchoredMessageIcon(
++void PageActionControllerImpl_ChromiumImpl::ClearAnchoredMessageIcon(
+     actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetAnchoredMessageIcon(PageActionPassKey(),
+                                                         std::nullopt);
+ }
+ 
+-void PageActionControllerImpl::SetAnchoredMessageExpandableContent(
++void PageActionControllerImpl_ChromiumImpl::SetAnchoredMessageExpandableContent(
+     actions::ActionId action_id,
+     std::optional<AnchoredMessageExpandableContent> expandable_content) {
+   FindPageActionModel(action_id).SetAnchoredMessageExpandableContent(
+       PageActionPassKey(), std::move(expandable_content));
+ }
+ 
+-void PageActionControllerImpl::SetAnchoredMessageAction(
++void PageActionControllerImpl_ChromiumImpl::SetAnchoredMessageAction(
+     actions::ActionId action_id,
+     AnchoredMessageActionIconType action_icon_type,
+     std::unique_ptr<ui::SimpleMenuModel> model) {
+@@ -457,11 +457,11 @@ void PageActionControllerImpl::SetAnchoredMessageAction(
+       PageActionPassKey(), action_icon_type, std::move(model));
+ }
+ 
+-bool PageActionControllerImpl::ActionExists(actions::ActionId action_id) const {
++bool PageActionControllerImpl_ChromiumImpl::ActionExists(actions::ActionId action_id) const {
+   return page_actions_.contains(action_id);
+ }
+ 
+-void PageActionControllerImpl::AddObserver(
++void PageActionControllerImpl_ChromiumImpl::AddObserver(
+     actions::ActionId action_id,
+     base::ScopedObservation<PageActionModelInterface, PageActionModelObserver>&
+         observation) {
+@@ -469,17 +469,17 @@ void PageActionControllerImpl::AddObserver(
+ }
+ 
+ base::CallbackListSubscription
+-PageActionControllerImpl::CreateActionItemSubscription(
++PageActionControllerImpl_ChromiumImpl::CreateActionItemSubscription(
+     actions::ActionItem* action_item) {
+   base::CallbackListSubscription subscription =
+       action_item->AddActionChangedCallback(
+-          base::BindRepeating(&PageActionControllerImpl::ActionItemChanged,
++          base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::ActionItemChanged,
+                               weak_factory_.GetWeakPtr(), action_item));
+   ActionItemChanged(action_item);
+   return subscription;
+ }
+ 
+-void PageActionControllerImpl::SetShouldHidePageActions(
++void PageActionControllerImpl_ChromiumImpl::SetShouldHidePageActions(
+     bool should_hide_page_actions) {
+   for (auto& [id, model] : page_actions_) {
+     model->SetIsSuppressedByOmnibox(PageActionPassKey(),
+@@ -487,11 +487,11 @@ void PageActionControllerImpl::SetShouldHidePageActions(
+   }
+ }
+ 
+-void PageActionControllerImpl::OnActionsChanged() {
++void PageActionControllerImpl_ChromiumImpl::OnActionsChanged() {
+   PinnedActionsModelChanged();
+ }
+ 
+-void PageActionControllerImpl::PinnedActionsModelChanged() {
++void PageActionControllerImpl_ChromiumImpl::PinnedActionsModelChanged() {
+   PinnedToolbarActionsModel* pinned_actions_model =
+       pinned_actions_observation_.GetSource();
+   CHECK(pinned_actions_model);
+@@ -501,7 +501,7 @@ void PageActionControllerImpl::PinnedActionsModelChanged() {
+   }
+ }
+ 
+-PageActionModelInterface& PageActionControllerImpl::FindPageActionModel(
++PageActionModelInterface& PageActionControllerImpl_ChromiumImpl::FindPageActionModel(
+     actions::ActionId action_id) const {
+   auto id_to_model = page_actions_.find(action_id);
+   CHECK(id_to_model != page_actions_.end());
+@@ -509,7 +509,7 @@ PageActionModelInterface& PageActionControllerImpl::FindPageActionModel(
+   return *id_to_model->second.get();
+ }
+ 
+-std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
++std::unique_ptr<PageActionModelInterface> PageActionControllerImpl_ChromiumImpl::CreateModel(
+     actions::ActionId action_id,
+     bool is_ephemeral) {
+   if (page_action_model_factory_ != nullptr) {
+@@ -520,7 +520,7 @@ std::unique_ptr<PageActionModelInterface> PageActionControllerImpl::CreateModel(
+ }
+ 
+ std::unique_ptr<PageActionMetricsRecorderInterface>
+-PageActionControllerImpl::CreateMetricsRecorder(
++PageActionControllerImpl_ChromiumImpl::CreateMetricsRecorder(
+     tabs::TabInterface& tab_interface,
+     VisibleEphemeralPageActionsCountCallback
+         visible_ephemeral_page_actions_count_callback) {
+@@ -535,37 +535,37 @@ PageActionControllerImpl::CreateMetricsRecorder(
+   }
+ }
+ 
+-void PageActionControllerImpl::RegisterCallbacks(PageActionPassKey,
++void PageActionControllerImpl_ChromiumImpl::RegisterCallbacks(PageActionPassKey,
+                                                  actions::ActionId action_id,
+                                                  Delegate* delegate) {
+   CHECK(delegate);
+   delegate->SetIsChipShowingChangedCallback(
+-      base::BindRepeating(&PageActionControllerImpl::OnIsChipShowingChanged,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::OnIsChipShowingChanged,
+                           weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetImageAnimationStartedCallback(
+-      base::BindRepeating(&PageActionControllerImpl::OnImageAnimationStarted,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::OnImageAnimationStarted,
+                           weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetAnchoredMessageCloseCallback(
+-      base::BindRepeating(&PageActionControllerImpl::HideAnchoredMessage,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::HideAnchoredMessage,
+                           weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetClickCallback(
+-      base::BindRepeating(&PageActionControllerImpl::RecordClickMetric,
++      base::BindRepeating(&PageActionControllerImpl_ChromiumImpl::RecordClickMetric,
+                           weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetAnchoredMessageExpandCallback(base::BindRepeating(
+-      &PageActionControllerImpl::PauseAnchoredMessageTimeout,
++      &PageActionControllerImpl_ChromiumImpl::PauseAnchoredMessageTimeout,
+       weak_factory_.GetWeakPtr(), action_id));
+   delegate->SetAnchoredMessageCollapseCallback(base::BindRepeating(
+-      &PageActionControllerImpl::ResumeAnchoredMessageTimeout,
++      &PageActionControllerImpl_ChromiumImpl::ResumeAnchoredMessageTimeout,
+       weak_factory_.GetWeakPtr(), action_id));
+ }
+ 
+-void PageActionControllerImpl::RecordClickMetric(
++void PageActionControllerImpl_ChromiumImpl::RecordClickMetric(
+     actions::ActionId action_id,
+     PageActionTrigger trigger_source) {
+   metrics_recorder_->RecordClick(action_id, trigger_source);
+ }
+ 
+-int PageActionControllerImpl::GetVisibleEphemeralPageActionsCount() const {
++int PageActionControllerImpl_ChromiumImpl::GetVisibleEphemeralPageActionsCount() const {
+   int visible_ephemeral_page_actions_count = 0;
+   for (auto& [id, model] : page_actions_) {
+     if (model->GetVisible() && model->IsEphemeral()) {
+@@ -576,19 +576,19 @@ int PageActionControllerImpl::GetVisibleEphemeralPageActionsCount() const {
+ }
+ 
+ base::CallbackListSubscription
+-PageActionControllerImpl::RegisterOnWillDestroyCallback(
++PageActionControllerImpl_ChromiumImpl::RegisterOnWillDestroyCallback(
+     base::OnceCallback<void(PageActionController&)> callback) {
+   return on_will_destroy_callback_list_.Add(std::move(callback));
+ }
+ 
+-void PageActionControllerImpl::OnIsChipShowingChanged(
++void PageActionControllerImpl_ChromiumImpl::OnIsChipShowingChanged(
+     actions::ActionId action_id,
+     bool is_chip_showing) {
+   FindPageActionModel(action_id).SetIsChipShowing(PageActionPassKey(),
+                                                   is_chip_showing);
+ }
+ 
+-void PageActionControllerImpl::OnImageAnimationStarted(
++void PageActionControllerImpl_ChromiumImpl::OnImageAnimationStarted(
+     actions::ActionId action_id) {
+   FindPageActionModel(action_id).SetDidAnimateImage(PageActionPassKey());
+ }

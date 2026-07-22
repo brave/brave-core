@@ -6,9 +6,10 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_PASS_KEY_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_PAGE_ACTION_PAGE_ACTION_PASS_KEY_H_
 
-namespace page_actions::chromium_impl {
-class PageActionControllerImpl;
-}  // namespace page_actions::chromium_impl
+namespace page_actions {
+class PageActionControllerImpl_ChromiumImpl;  // NOLINT(build/forward_decl):
+                                              // Needed by the shadowed file
+}  // namespace page_actions
 
 #include <chrome/browser/ui/page_action/page_action_pass_key.h>  // IWYU pragma: export
 
