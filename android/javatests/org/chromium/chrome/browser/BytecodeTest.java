@@ -114,6 +114,7 @@ import org.chromium.chrome.browser.omnibox.OverrideUrlLoadingDelegate;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
 import org.chromium.chrome.browser.omnibox.status.StatusCoordinator.PageInfoAction;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteUIContext;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownEmbedder;
@@ -1803,6 +1804,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/AutocompleteMediator", // presubmit: ignore-long-line
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveAutocompleteMediator", // presubmit: ignore-long-line
                         Context.class,
+                        OmniboxResourceProvider.class,
                         AutocompleteDelegate.class,
                         UrlBarEditingTextStateProvider.class,
                         PropertyModel.class,
@@ -1886,7 +1888,8 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder", // presubmit: ignore-long-line
                         Supplier.class,
                         BookmarkState.class,
-                        MonotonicObservableSupplier.class));
+                        MonotonicObservableSupplier.class,
+                        OmniboxResourceProvider.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager", // presubmit: ignore-long-line

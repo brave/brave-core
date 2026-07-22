@@ -23,6 +23,7 @@ import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.LocationBarEmbedderUiOverrides;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.fusebox.FuseboxCoordinator;
+import org.chromium.chrome.browser.omnibox.styles.OmniboxResourceProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.action.OmniboxActionDelegateImpl;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
 import org.chromium.chrome.browser.omnibox.voice.VoiceRecognitionIntentHandler;
@@ -62,6 +63,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
 
     BraveAutocompleteMediator(
             Context context,
+            OmniboxResourceProvider resourceProvider,
             AutocompleteDelegate delegate,
             UrlBarEditingTextStateProvider textProvider,
             PropertyModel listPropertyModel,
@@ -81,6 +83,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
             LocationBarEmbedderUiOverrides uiOverrides) {
         super(
                 context,
+                resourceProvider,
                 delegate,
                 textProvider,
                 listPropertyModel,
