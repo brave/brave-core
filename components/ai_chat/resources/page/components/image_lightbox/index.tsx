@@ -19,6 +19,7 @@ interface Props {
 }
 
 const MAX_IMAGE_WIDTH = 720
+const MAX_IMAGE_HEIGHT = 720
 
 function getImageBlob(file: Mojom.UploadedFile): Blob {
   return new Blob([new Uint8Array(file.data)], { type: 'image/png' })
@@ -29,7 +30,12 @@ function getFittedImageSize(
   naturalHeight: number,
 ): { width: number; height: number } {
   const maxWidth = Math.min(window.innerWidth * 0.9, MAX_IMAGE_WIDTH)
-  const scale = Math.min(maxWidth / naturalWidth, 1)
+  const maxHeight = Math.min(window.innerHeight * 0.7, MAX_IMAGE_HEIGHT)
+  const scale = Math.min(
+    maxWidth / naturalWidth,
+    maxHeight / naturalHeight,
+    1,
+  )
   return {
     width: Math.max(1, Math.round(naturalWidth * scale)),
     height: Math.max(1, Math.round(naturalHeight * scale)),
@@ -190,29 +196,18 @@ export default function ImageLightbox(props: Props) {
             </div>
             <div className={styles.actions}>
               <Button
-                fab={!isCopySuccess}
+                fab
                 kind='outline'
                 className={
                   isCopySuccess ? styles.copyButtonSuccess : undefined
                 }
-                title={getLocale(
-                  isCopySuccess
-                    ? S.CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL
-                    : S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL,
-                )}
+                title={getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL)}
                 aria-label={getLocale(
-                  isCopySuccess
-                    ? S.CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL
-                    : S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL,
+                  S.CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL,
                 )}
                 onClick={handleCopy}
               >
-                <Icon
-                  slot={isCopySuccess ? 'icon-before' : undefined}
-                  name={isCopySuccess ? 'check-normal' : 'copy'}
-                />
-                {isCopySuccess
-                  && getLocale(S.CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL)}
+                <Icon name={isCopySuccess ? 'check-normal' : 'copy'} />
               </Button>
               <Button
                 fab

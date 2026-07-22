@@ -774,9 +774,6 @@
   <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_COPY_BUTTON_LABEL" desc="Button label to copy an attached image to the clipboard from the lightbox" formatter_data="webui=AiChat">
     Copy image
   </message>
-  <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL" desc="Button label shown briefly after an attached image has been copied from the lightbox" formatter_data="webui=AiChat">
-    Copied
-  </message>
   <message name="IDS_CHAT_UI_IMAGE_LIGHTBOX_DOWNLOAD_BUTTON_LABEL" desc="Button label to download an attached image from the lightbox" formatter_data="webui=AiChat">
     Download image
   </message>

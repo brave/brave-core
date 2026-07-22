@@ -89,7 +89,7 @@ describe('ImageLightbox', () => {
     })
 
     const container = image.parentElement as HTMLElement
-    // 800x400 scaled to max width 720 → 720x360
+    // 800x400 fits in 720x720 max → scaled to 720x360
     expect(container).toHaveStyle({ width: '720px', height: '360px' })
   })
 
@@ -128,9 +128,6 @@ describe('ImageLightbox', () => {
       copyButton.querySelector('leo-icon[name="check-normal"]'),
     ).toBeTruthy()
     expect(copyButton.className).toContain('copyButtonSuccess')
-    expect(copyButton).toHaveTextContent(
-      'CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL',
-    )
 
     act(() => {
       jest.advanceTimersByTime(2000)
@@ -138,9 +135,6 @@ describe('ImageLightbox', () => {
 
     expect(copyButton.querySelector('leo-icon[name="copy"]')).toBeTruthy()
     expect(copyButton.className).not.toContain('copyButtonSuccess')
-    expect(copyButton).not.toHaveTextContent(
-      'CHAT_UI_IMAGE_LIGHTBOX_COPIED_BUTTON_LABEL',
-    )
     jest.useRealTimers()
   })
 
