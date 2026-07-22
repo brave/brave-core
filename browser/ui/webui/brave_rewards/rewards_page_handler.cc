@@ -421,6 +421,9 @@ void RewardsPageHandler::GetAdsSettings(GetAdsSettingsCallback callback) {
   settings->new_tab_page_ads_enabled =
       prefs_->GetBoolean(ntp_background_images::prefs::
                              kNewTabPageShowSponsoredImagesBackgroundImage);
+  settings->new_tab_page_ads_managed_by_policy = prefs_->IsManagedPreference(
+      ntp_background_images::prefs::
+          kNewTabPageShowSponsoredImagesBackgroundImage);
   settings->notification_ads_enabled =
       prefs_->GetBoolean(brave_ads::prefs::kOptedInToNotificationAds);
 

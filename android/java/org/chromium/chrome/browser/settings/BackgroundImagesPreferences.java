@@ -85,23 +85,31 @@ public class BackgroundImagesPreferences extends BravePreferenceFragment
             mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
         boolean rewardsDisabledByPolicy = BraveRewardsPolicy.isDisabledByPolicy(getProfile());
+        boolean sponsoredImagesManagedByPolicy =
+                UserPrefs.get(getProfile())
+                        .isManagedPreference(
+                                BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE);
+        boolean sponsoredImagesEnabled =
+                UserPrefs.get(getProfile())
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE);
+        boolean hideSponsoredImages =
+                rewardsDisabledByPolicy
+                        || (sponsoredImagesManagedByPolicy && !sponsoredImagesEnabled);
         mShowSponsoredImagesPref =
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
-        if (mShowSponsoredImagesPref != null && rewardsDisabledByPolicy) {
+        if (mShowSponsoredImagesPref != null && hideSponsoredImages) {
             mShowSponsoredImagesPref.setVisible(false);
         } else if (mShowSponsoredImagesPref != null) {
-            mShowSponsoredImagesPref.setEnabled(
+            boolean backgroundImagesEnabled =
                     UserPrefs.get(getProfile())
-                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
-            mShowSponsoredImagesPref.setChecked(
-                    UserPrefs.get(getProfile())
-                            .getBoolean(
-                                    BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
+            mShowSponsoredImagesPref.setEnabled(backgroundImagesEnabled);
+            mShowSponsoredImagesPref.setChecked(sponsoredImagesEnabled);
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
         }
         mLearnMorePreference =
                 (ChromeBasePreference) findPreference(PREF_SPONSORED_IMAGES_LEARN_MORE);
-        if (mLearnMorePreference != null && rewardsDisabledByPolicy) {
+        if (mLearnMorePreference != null && hideSponsoredImages) {
             mLearnMorePreference.setVisible(false);
         } else if (mLearnMorePreference != null) {
             SpannableString spannableString =

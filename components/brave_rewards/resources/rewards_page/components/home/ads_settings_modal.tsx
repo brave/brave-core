@@ -42,6 +42,10 @@ export function AdsSettingsModal(props: Props) {
     adsInfo.adTypesReceivedThisMonth,
   ).reduce((prev, current) => prev + current, 0)
 
+  const showNewTabPageAds =
+    !adsInfo.adsManagedByPolicy['new-tab-page']
+    || adsInfo.adsEnabled['new-tab-page']
+
   function onToggleChange(adType: AdType) {
     return (detail: { checked: boolean }) => {
       actions.setAdTypeEnabled(adType, detail.checked)
@@ -149,14 +153,16 @@ export function AdsSettingsModal(props: Props) {
             <span>{getString('adsSettingsAdTypeTitle')}</span>
             <span>{getString('adsSettingsAdViewsTitle')}</span>
           </div>
-          <div className='row'>
-            <Toggle
-              checked={adsInfo.adsEnabled['new-tab-page']}
-              onChange={onToggleChange('new-tab-page')}
-            />
-            <span className='name'>{getString('adTypeNewTabPageLabel')}</span>
-            <span>{adsInfo.adTypesReceivedThisMonth['new-tab-page']}</span>
-          </div>
+          {showNewTabPageAds && (
+            <div className='row'>
+              <Toggle
+                checked={adsInfo.adsEnabled['new-tab-page']}
+                onChange={onToggleChange('new-tab-page')}
+              />
+              <span className='name'>{getString('adTypeNewTabPageLabel')}</span>
+              <span>{adsInfo.adTypesReceivedThisMonth['new-tab-page']}</span>
+            </div>
+          )}
           <div className='row'>
             <Toggle
               checked={adsInfo.adsEnabled.notification}

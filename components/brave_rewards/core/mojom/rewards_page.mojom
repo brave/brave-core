@@ -30,6 +30,7 @@ struct AdsSettings {
   bool browser_upgrade_required;
   bool is_supported_region;
   bool new_tab_page_ads_enabled;
+  bool new_tab_page_ads_managed_by_policy;
   bool notification_ads_enabled;
   int32 notification_ads_per_hour;
   bool should_allow_subdivision_targeting;

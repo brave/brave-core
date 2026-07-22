@@ -18,6 +18,7 @@
 #include "brave/browser/ui/webui/brave_sanitized_image_source.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/brave_ads/buildflags/buildflags.h"
 #include "brave/components/brave_news/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/brave_search_conversion/pref_names.h"
@@ -54,6 +55,10 @@
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+#include "brave/components/ntp_background_images/common/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_BRAVE_NEWS)
@@ -191,6 +196,15 @@ void NewTabPageInitializer::AddLoadTimeValues() {
   source_->AddBoolean(
       "customBackgroundFeatureEnabled",
       !prefs->IsManagedPreference(prefs::kNtpCustomBackgroundDict));
+
+#if BUILDFLAG(ENABLE_BRAVE_ADS)
+  source_->AddBoolean("sponsoredImagesManagedByPolicy",
+                      prefs->IsManagedPreference(
+                          ntp_background_images::prefs::
+                              kNewTabPageShowSponsoredImagesBackgroundImage));
+#else
+  source_->AddBoolean("sponsoredImagesManagedByPolicy", false);
+#endif  // BUILDFLAG(ENABLE_BRAVE_ADS)
 
   source_->AddString("sponsoredRichMediaBaseUrl",
                      kNTPNewTabTakeoverRichMediaUrl);

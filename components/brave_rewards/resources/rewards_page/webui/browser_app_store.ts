@@ -221,6 +221,10 @@ export function createAppStore(): AppStore {
             'new-tab-page': settings.newTabPageAdsEnabled,
             'notification': settings.notificationAdsEnabled,
           },
+          adsManagedByPolicy: {
+            'new-tab-page': settings.newTabPageAdsManagedByPolicy,
+            'notification': false,
+          },
           adTypesReceivedThisMonth: {
             'new-tab-page': adTypeSummaryThisMonth.newTabPageAds,
             'notification': adTypeSummaryThisMonth.notificationAds,

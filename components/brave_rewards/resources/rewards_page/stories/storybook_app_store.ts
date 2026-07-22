@@ -40,6 +40,10 @@ export function createAppStore(): AppStore {
         'new-tab-page': true,
         'notification': false,
       },
+      adsManagedByPolicy: {
+        'new-tab-page': false,
+        'notification': false,
+      },
       adTypesReceivedThisMonth: {
         'new-tab-page': 92,
         'notification': 4,
