@@ -713,10 +713,10 @@
 "wallet.editVisibleAssetsButtonTitle" = "编辑可见资产";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
-"wallet.ensDomainInterstitialPageButtonProceed" = "使用 Infura 服务器继续操作";
+"wallet.ensDomainInterstitialPageButtonProceed" = "继续使用 Chainstack 服务器";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析以太坊名称服务（ENS）的 .eth 域名。Brave 将会隐藏您的 IP 地址。如果您启用此功能，Infura 将会看到有人试图访问这些 .eth 域名，但不会看到其他信息。查看 Infura 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave 将依赖你配置的以太坊主网 RPC 服务（默认为 Chainstack）来解析以太坊名称服务（ENS）上的 .eth 域名。Brave 将隐藏你的 IP 地址。如果你启用此功能，Chainstack 将看到有人试图访问这些 .eth 域名，但看不到其他内容。查看 Chainstack 的 <a href=%1$@>%2$@</a> 和 <a href=%3$@>%4$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "在 Brave 中启用支援以太坊域名服务 (ENS)？";
@@ -2176,8 +2176,8 @@
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "在活动中查看";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave 将使用 Infura 来解析 Unstoppable Domains 上的 .crypto (以及 %1$@) 域名。如果您启用这项功能，Infura 将看到有人试图访问这些域名，但不会看到其他信息。查看 Infura 的 <a href=%2$@>%3$@</a> 和<a href=%4$@>%5$@</a>。";
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave 将使用配置的以太坊 RPC 服务（默认为 Chainstack）来解析 Unstoppable Domains 上的 .crypto（以及 %1$@）域名。Brave 将隐藏你的 IP 地址。如果你启用此功能，Chainstack 将看到有人试图访问这些域名，但看不到其他内容。查看 Chainstack 的 <a href=%2$@>%3$@</a> 和 <a href=%4$@>%5$@</a>。";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "是否在 Brave 中启用对不可阻挡域的支持？";
