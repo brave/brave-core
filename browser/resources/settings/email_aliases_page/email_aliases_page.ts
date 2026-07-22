@@ -9,7 +9,7 @@ import '../controls/settings_toggle_button.js';
 import '../settings_page/settings_subpage.js';
 import '../settings_page/settings_section.js';
 import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js';
-import {EmailAliasesStrings} from '../brave_components_webui_strings.js';
+import {EmailAliasesStrings} from '../brave_components_webui_strings.js'
 import {getTemplate} from './email_aliases_page.html.js';
 
 // Unfortunately, our current WebPack build does not support ESModule output and
@@ -41,19 +41,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
         value: () => loadTimeData.getString(
             EmailAliasesStrings.SETTINGS_EMAIL_ALIASES_LABEL),
       },
-      autofillSuggestionLabel_: {
-        type: String,
-        value: () => loadTimeData.getString(
-            EmailAliasesStrings
-                .SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL),
-      },
-      autofillSuggestionSubLabel_: {
-        type: String,
-        value: () => loadTimeData.getString(
-            EmailAliasesStrings
-                .SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_SUBLABEL),
-      },
-      showAutofillToggle_: {
+      showEmailAliasesSettings_: {
         type: Boolean,
         value: false,
       },
@@ -61,9 +49,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
   }
 
   declare pageTitle_: string;
-  declare autofillSuggestionLabel_: string;
-  declare autofillSuggestionSubLabel_: string;
-  declare showAutofillToggle_: boolean;
+  declare showEmailAliasesSettings_: boolean;
 
   override ready() {
     super.ready();
@@ -73,7 +59,7 @@ class SettingsEmailAliasesPageElement extends PrefsMixin(PolymerElement) {
       import(bundlePath).then(({mount}) => {
         mount(this.$.signInRoot, this.$.manageSection, {
           onLoggedInChange: (loggedIn: boolean) => {
-            this.showAutofillToggle_ = loggedIn;
+            this.showEmailAliasesSettings_ = loggedIn;
           },
         });
       });

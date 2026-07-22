@@ -3,10 +3,11 @@
     <div id="signInRoot"></div>
     <settings-toggle-button
         class="cr-row"
-        hidden$="[[!showAutofillToggle_]]"
+        icon="email-shield"
+        hidden$="[[!showEmailAliasesSettings_]]"
         pref="{{prefs.brave.email_aliases.new_alias_autofill_suggestion_enabled}}"
-        label="[[autofillSuggestionLabel_]]"
-        sub-label="[[autofillSuggestionSubLabel_]]">
+        label="$i18n{SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_LABEL}"
+        sub-label="$i18n{SETTINGS_EMAIL_ALIASES_AUTOFILL_SUGGESTION_SUBLABEL}">
     </settings-toggle-button>
   </settings-section>
   <settings-section id="manageSection">
