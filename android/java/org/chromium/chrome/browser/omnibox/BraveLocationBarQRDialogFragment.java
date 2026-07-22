@@ -183,7 +183,7 @@ public class BraveLocationBarQRDialogFragment extends DialogFragment
 
     @Override
     public void onPlayServicesUnavailable(Dialog errorDialog) {
-        if (errorDialog == null || !isHostValid()) {
+        if (errorDialog == null || !isHostValid() || requireActivity().isFinishing()) {
             dismiss();
             return;
         }
