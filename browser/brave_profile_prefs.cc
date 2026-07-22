@@ -405,6 +405,9 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2026-03
   registry->RegisterBooleanPref(kNewTabPageHideAllWidgets, false);
+
+  // Added 2026-06
+  registry->RegisterBooleanPref(kTabsSearchShow, false);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
@@ -424,7 +427,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterBooleanPref(kShowScreenshotButton, false);
   registry->RegisterBooleanPref(kLocationBarIsWide, false);
   registry->RegisterBooleanPref(kMRUCyclingEnabled, false);
-  registry->RegisterBooleanPref(kTabsSearchShow, false);
   registry->RegisterBooleanPref(kTabMuteIndicatorNotClickable, false);
 
   brave_sync::Prefs::RegisterProfilePrefs(registry);
