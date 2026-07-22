@@ -28,8 +28,9 @@ std::optional<challenge_bypass_ristretto::UnblindedToken> Create(
 
 UnblindedToken::UnblindedToken() = default;
 
-UnblindedToken::UnblindedToken(const std::string& unblinded_token_base64)
-    : unblinded_token_(Create(unblinded_token_base64)) {}
+UnblindedToken::UnblindedToken(const std::string& unblinded_token_base64,
+                               bool rfc)
+    : unblinded_token_(Create(unblinded_token_base64)), rfc_(rfc) {}
 
 UnblindedToken::UnblindedToken(
     const challenge_bypass_ristretto::UnblindedToken& unblinded_token)
@@ -69,7 +70,10 @@ std::optional<VerificationKey> UnblindedToken::DeriveVerificationKey() const {
     return std::nullopt;
   }
 
-  return VerificationKey(unblinded_token_->DeriveVerificationKey());
+  // Select the derivation that matches how this token was blinded so the
+  // verification key pairs with the server's.
+  return VerificationKey(rfc_ ? unblinded_token_->DeriveVerificationKeyRfc()
+                              : unblinded_token_->DeriveVerificationKey());
 }
 
 std::optional<TokenPreimage> UnblindedToken::GetTokenPreimage() const {

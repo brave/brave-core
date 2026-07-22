@@ -54,7 +54,7 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
                 R"JSON(
                     {
                       "blindedPaymentTokens": [
-                        "+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0="
+                        "Gth1bHgNtDx689fPCEdua/1ggMRHRahtzIdDr/EyWAg="
                       ],
                       "buildChannel": "release",
                       "catalog": [

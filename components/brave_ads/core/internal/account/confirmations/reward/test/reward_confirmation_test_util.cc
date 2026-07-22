@@ -46,7 +46,7 @@ RewardInfo BuildReward(const ConfirmationInfo& confirmation) {
       R"(/mfTAAjHrWmAlLiEktbqNS/dxoMVdnz1esoVplQUs7yG/apAq2K6OeST6lBTKFJmOq7rV8QbY/DF2HFRMcz/JVkVTu9dLQdR595gZf/D4PvSuhgk5RcoBm3fSFGI4JQF)");
 
   reward.blinded_token =
-      cbr::BlindedToken(R"(+qJiMi6k0hRzRAEN239nLthLqrNm53O78x/PV8I/JS0=)");
+      cbr::BlindedToken(R"(Gth1bHgNtDx689fPCEdua/1ggMRHRahtzIdDr/EyWAg=)");
 
   reward.unblinded_token = cbr::UnblindedToken(
       R"(/mfTAAjHrWmAlLiEktbqNS/dxoMVdnz1esoVplQUs7yG/apAq2K6OeST6lBTKFJmOq7rV8QbY/DF2HFRMcz/JTrpqSWv/sNVO/Pi8nHDyl3CET+S2CKkMmYlXW3DgqxW)");
