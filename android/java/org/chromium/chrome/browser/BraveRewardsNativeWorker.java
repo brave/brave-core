@@ -17,6 +17,7 @@ import org.jni_zero.NativeMethods;
 import org.json.JSONException;
 
 import org.chromium.brave_rewards.mojom.PublisherStatus;
+import org.chromium.chrome.browser.rewards.adaptive_captcha.AdaptiveCaptchaHelper;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.embedder_support.util.UrlConstants;
 
@@ -277,25 +278,34 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public String getCaptchaSolutionURL(String paymentId, String captchaId) {
+    public void startAttestation(String captchaId, String paymentId) {
         synchronized (sLock) {
-            return BraveRewardsNativeWorkerJni.get().getCaptchaSolutionURL(
-                    mNativeBraveRewardsNativeWorker, paymentId, captchaId);
+            BraveRewardsNativeWorkerJni.get()
+                    .startAttestation(mNativeBraveRewardsNativeWorker, captchaId, paymentId);
         }
     }
 
-    public String getAttestationURL() {
+    public void attestPaymentId(
+            String captchaId,
+            String paymentId,
+            String integrityToken,
+            String uniqueValue,
+            String packageName) {
         synchronized (sLock) {
-            return BraveRewardsNativeWorkerJni.get().getAttestationURL(
-                    mNativeBraveRewardsNativeWorker);
+            BraveRewardsNativeWorkerJni.get()
+                    .attestPaymentId(
+                            mNativeBraveRewardsNativeWorker,
+                            captchaId,
+                            paymentId,
+                            integrityToken,
+                            uniqueValue,
+                            packageName);
         }
     }
 
-    public String getAttestationURLWithPaymentId(String paymentId) {
-        synchronized (sLock) {
-            return BraveRewardsNativeWorkerJni.get().getAttestationURLWithPaymentId(
-                    mNativeBraveRewardsNativeWorker, paymentId);
-        }
+    @CalledByNative
+    public void onAttestationNeedsIntegrityToken(String captchaId, String paymentId, String nonce) {
+        AdaptiveCaptchaHelper.fetchPlayIntegrityToken(captchaId, paymentId, nonce);
     }
 
     public String getPublisherFavIconURL(int tabId) {
@@ -747,13 +757,16 @@ public class BraveRewardsNativeWorker {
 
         String getPublisherURL(long nativeBraveRewardsNativeWorker, int tabId);
 
-        String getCaptchaSolutionURL(
-                long nativeBraveRewardsNativeWorker, String paymentId, String captchaId);
+        void startAttestation(
+                long nativeBraveRewardsNativeWorker, String captchaId, String paymentId);
 
-        String getAttestationURL(long nativeBraveRewardsNativeWorker);
-
-        String getAttestationURLWithPaymentId(
-                long nativeBraveRewardsNativeWorker, String paymentId);
+        void attestPaymentId(
+                long nativeBraveRewardsNativeWorker,
+                String captchaId,
+                String paymentId,
+                String integrityToken,
+                String uniqueValue,
+                String packageName);
 
         String getPublisherFavIconURL(long nativeBraveRewardsNativeWorker, int tabId);
 

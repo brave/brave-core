@@ -19,6 +19,13 @@ source_set("brave_adaptive_captcha") {
     "server_util.h",
   ]
 
+  if (is_android) {
+    sources += [
+      "android/attest_android.cc",
+      "android/attest_android.h",
+    ]
+  }
+
   deps = [
     "//base",
     "//brave/components/api_request_helper",
