@@ -20,6 +20,4 @@ class BraveHashAffiliationFetcher
 
 }  // namespace
 
-#define HashAffiliationFetcher BraveHashAffiliationFetcher
 #include <components/affiliations/core/browser/affiliation_fetcher_factory_impl.cc>
-#undef HashAffiliationFetcher
