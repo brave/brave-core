@@ -16,6 +16,7 @@
 #include "brave/browser/ui/webui/brave_shields/shields_panel_ui.h"
 #include "brave/components/brave_rewards/core/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/layout_constants.h"
@@ -57,8 +58,7 @@ void BraveActionsContainer::Init() {
 
   // children
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
-  // TODO(petemill): theme color
-  brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
+  brave_button_separator_->SetColorId(nala::kColorDividerSubtle);
   brave_button_separator_->SetPreferredSize(
       gfx::Size(kSeparatorWidth + kSeparatorMargin,
                 GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));

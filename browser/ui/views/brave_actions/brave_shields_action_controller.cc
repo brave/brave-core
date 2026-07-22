@@ -13,6 +13,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "brave/browser/ui/views/brave_actions/brave_icon_with_badge_image_source.h"
 #include "brave/components/brave_origin/buildflags/buildflags.h"
+#include "brave/ui/color/nala/nala_color_id.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/url_constants.h"
 #include "brave/components/constants/webui_url_constants.h"
@@ -47,8 +48,6 @@
 #endif
 
 namespace {
-constexpr SkColor kBadgeBg = SkColorSetRGB(0x63, 0x64, 0x72);
-
 // Returns the color provider for |web_contents|, falling back to the native UI
 // color provider when there is no active web contents.
 const ui::ColorProvider* GetColorProviderForWebContents(
@@ -187,7 +186,9 @@ BraveShieldsActionController::GetImageSource(
 
     if (!badge_text.empty()) {
       badge = std::make_unique<IconWithBadgeImageSource::Badge>(
-          badge_text, SK_ColorWHITE, kBadgeBg);
+          badge_text, SK_ColorWHITE,
+          GetColorProviderForWebContents(web_contents)
+              ->GetColor(nala::kColorPrimitiveNeutral40));
     }
   }
 
