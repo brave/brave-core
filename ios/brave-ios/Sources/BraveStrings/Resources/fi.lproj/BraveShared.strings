@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Tilit";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Todenna, niin pääset hallitsemaan salasanoja.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Tämä poistaa tallennetut salasanat kohteelle %@ synkronointiketjustasi ja laitteeltasi.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Tarjoa salasanojen tallennusta";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Anna salasana";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Näytä";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Hae sivustoja";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Ota Pidä painettuna -asetus käyttöön";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Soittolistamedia ja offline-tiedot";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Soittolistan offline-tiedot";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Vaihda";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave suljettiin yllättäen.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Brave-palkintojen avulla voit tarkastella Brave-mainosverkoston yksityisyyttä suojelevia mainoksia. Ei seurantaohjelmia. Ei hidastavia tekijöitä. Ja tietosi pysyvät täysin suojattuina.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Ota Rewards käyttöön";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Napsauta mitä tahansa näytön kohtaa jatkaaksesi Brave Talk -videopuheluun.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Voit nyt aloittaa ilmaisen puhelun";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Aloita ilmainen puhelu ottamalla Brave Rewards käyttöön";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Ota käyttöön tukeaksesi Bravea ja BAT-yhteisöä.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Kiitos, että autat tukemaan Bravea ja BAT-yhteisöä!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Klikkaamalla hyväksyt seuraavat: %1$@ ja %2$@. Poista käytöstä milloin tahansa asetuksissa.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Tue Bravea ja BAT-yhteisöä ottamalla Brave-palkinnot käyttöön ja katsomalla Brave-mainoksia.";

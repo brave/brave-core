@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "账户";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "请进行身份验证以管理您的密码。";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "这将从您的同步链和设备中移除 %@ 已保存的密码。";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "提示保存密码";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "输入密码";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "显示";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "搜索网站";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "启用长按";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "播放列表媒体 & 离线数据";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "播放列表离线数据";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "更改";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave 意外關閉。";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "有了 Brave Rewards，您可以查看來自 Brave Ads 網路的隱私保護廣告。無須追蹤器，無須減速，且您的資料也能絕對安全。";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "開啟 Rewards";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "按下畫面上的任何位置以繼續 Brave 聊天。";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "您現在可以開始免費通話了";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "如要開始免費通話，請開啟 Brave Rewards";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "开启支持 Brave 和 BAT 社区。";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "感谢您为 Brave 和 BAT 社区提供支持！";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "按下即表示您同意 %1$@ 和 %2$@。可在設定中隨時取消。";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "启用 Brave Rewards，观看 Brave 广告，支持 Brave 和 BAT 社区。";

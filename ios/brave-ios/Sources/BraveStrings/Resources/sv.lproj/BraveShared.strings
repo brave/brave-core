@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Konton";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Autentisera för att hantera dina lösenord.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Detta kommer att ta bort de sparade lösenorden för %@ från din synkroniseringskedja och din enhet.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Erbjud att spara lösenord";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Ange lösenord";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Avslöja";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Sök efter webbplatser";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Aktivera långt tryck";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Spellista Media & Offline-data";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Offline-data för spellista";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Ändra";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave avslutades oväntat.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Med Brave Rewards kan du se sekretessbevarande annonser från Brave Ads-nätverket. Inga spårare. Inga kapacitetssänkningar. Och dina data förblir helt säkra.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Slå på belöningar";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Klicka var som helst på skärmen för att fortsätta till Brave Talk.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Nu kan du starta ett gratis samtal";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Aktivera Brave Rewards för att starta ett gratis samtal";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Aktivera för att stödja Brave och BAT-communityn.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Tack för att du hjälper till att stödja Brave och BAT-communityn!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Genom att klicka godkänner du %1$@ och %2$@. Inaktivera när som helst i Inställningar.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Hjälp till att stödja Brave och BAT-communityn genom att aktivera Brave Belöningar och se Brave Annonser.";

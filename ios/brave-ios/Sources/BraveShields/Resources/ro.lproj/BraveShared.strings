@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Auto distrugere";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Distrugere automată a datelor de navigare";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Agresiv";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Niciodată";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Datele de navigare nu sunt niciodată eliminate automat";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "La închiderea aplicației";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Datele de navigare sunt eliminate automat când aplicația Brave este închisă / repornită";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "La închiderea filelor site-ului";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Datele de navigare sunt eliminate automat când toate filele deschise pe un site sunt închise";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Distrugerea va închide toate filele și va șterge toate datele de pe acest site. Nu se poate anula.";

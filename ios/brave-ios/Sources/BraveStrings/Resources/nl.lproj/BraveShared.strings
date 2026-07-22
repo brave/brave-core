@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Accounts";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Authenticeer om uw wachtwoorden te beheren.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "Hiermee worden de opgeslagen wachtwoorden voor %@ verwijderd uit je synchronisatieketen en van je apparaat.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Aanbieden om wachtwoorden op te slaan";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Wachtwoord invoeren";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Toon";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Zoek websites";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Druk lang";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Media en offline gegevens van Playlist";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Offline gegevens van Playlist";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Wijzig";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave is onverwacht gesloten";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Met Brave Rewards kun je privacybeschermende advertenties uit het Brave Ads-netwerk bekijken. Geen trackers. Geen vertragingen. En al je gegevens blijven volledig veilig.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Zet Rewards aan";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Klik ergens op het scherm om door te gaan naar Brave Talk.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Je kunt nu een gratis gesprek starten";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Zet Brave Rewards aan om een gratis gesprek te starten";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Zet deze functie aan om Brave en de BAT Community te steunen.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Bedankt voor het steunen van Brave en de BAT Community!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "Als je klikt, ga je akkoord met de %1$@ en het %2$@. Je kunt dit altijd uitschakelen in Instellingen.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Steun Brave en de BAT Community door Brave Rewards in te schakelen en advertenties in Brave te zien.";
