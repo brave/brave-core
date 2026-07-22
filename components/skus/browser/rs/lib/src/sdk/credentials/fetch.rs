@@ -335,14 +335,33 @@ where
             if !order.has_expired(Utc::now().naive_utc()) {
                 for item in &order.items {
                     if item.credential_type == CredentialType::TimeLimitedV2 {
-                        if let Some(credential_expires_at) = self
+                        let has_legacy_creds = self
+                            .client
+                            .get_time_limited_v2_creds(&item.id)
+                            .await?
+                            .and_then(|creds| creds.unblinded_creds)
+                            .into_iter()
+                            .flatten()
+                            .filter_map(|chunk| chunk.unblinded_creds)
+                            .flatten()
+                            .any(|cred| !cred.rfc);
+                        if has_legacy_creds {
+                            self.delete_order_credentials(order_id).await?;
+                            return self.fetch_order_credentials(order_id).await;
+                        }
+
+                        match self
                             .last_matching_time_limited_v2_credential(&item.id)
                             .await?
                             .map(|cred| cred.valid_to)
                         {
-                            if Utc::now().naive_utc() > credential_expires_at {
+                            Some(valid_to) if Utc::now().naive_utc() > valid_to => {
                                 return self.fetch_order_credentials(order_id).await;
                             }
+                            None => {
+                                return self.fetch_order_credentials(order_id).await;
+                            }
+                            _ => {}
                         }
                     }
                 }
