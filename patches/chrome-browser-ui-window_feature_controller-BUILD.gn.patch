@@ -1,0 +1,12 @@
+diff --git a/chrome/browser/ui/window_feature_controller/BUILD.gn b/chrome/browser/ui/window_feature_controller/BUILD.gn
+index 8fe49bb5e6163168797322e80ef87e025ee85f18..fdd36b4e5548218cdcb94565cbe6d39053f79667 100644
+--- a/chrome/browser/ui/window_feature_controller/BUILD.gn
++++ b/chrome/browser/ui/window_feature_controller/BUILD.gn
+@@ -20,6 +20,7 @@ source_set("window_feature_controller") {
+     "//chrome/browser/ui/fullscreen",
+     "//chrome/browser/ui/web_applications",
+   ]
++  deps += [ "//brave/chromium_src/chrome/browser/ui/window_feature_controller" ]
+ }
+ 
+ source_set("unit_tests") {

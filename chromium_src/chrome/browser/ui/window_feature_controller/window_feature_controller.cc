@@ -7,6 +7,7 @@
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "build/build_config.h"
+#include "chrome/browser/ui/layout_constants.h"
 
 #if BUILDFLAG(IS_MAC)
 #define UsesImmersiveFullscreenMode UsesImmersiveFullscreenMode_ChromiumImpl
@@ -21,19 +22,21 @@
 #undef UsesImmersiveFullscreenTabbedMode
 
 bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
-  // Disable immersive when vertical tabs were on at startup: overlay_widget_ is
-  // not created in that case, so immersive would crash. The first call happens
-  // during BrowserView construction (before the user can toggle vertical tabs),
-  // so this captures the startup state.
-  if (!vertical_tabs_on_at_startup_.has_value()) {
-    vertical_tabs_on_at_startup_ =
-        tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get());
+  // Disable immersive when vertical tabs(or compact mode) were on at startup:
+  // overlay_widget_ is not created in that case, so immersive would crash. The
+  // first call happens during BrowserView construction (before the user can
+  // toggle vertical tabs), so this captures the startup state.
+  if (!disabled_at_startup_.has_value()) {
+    disabled_at_startup_ =
+        tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
+        tabs::UseCompactHorizontalTabs();
   }
-  if (*vertical_tabs_on_at_startup_) {
+  if (*disabled_at_startup_) {
     return false;
   }
   // Immersive is also incompatible with vertical tabs at runtime.
-  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
+      tabs::UseCompactHorizontalTabs()) {
     return false;
   }
 
@@ -41,7 +44,8 @@ bool WindowFeatureController::UsesImmersiveFullscreenMode() const {
 }
 
 bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
-  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get())) {
+  if (tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) ||
+      tabs::UseCompactHorizontalTabs()) {
     return false;
   }
 
