@@ -82,6 +82,7 @@ substitutions:
                             org.chromium.chrome.browser.settings.BraveLeoPreferences.SEARCH_INDEX_DATA_PROVIDER,
                             org.chromium.chrome.browser.settings.BraveLicensePreferences.SEARCH_INDEX_DATA_PROVIDER,
                             org.chromium.chrome.browser.settings.MediaPreferences.SEARCH_INDEX_DATA_PROVIDER,
+                            org.chromium.chrome.browser.settings.BackgroundImagesPreferences.SEARCH_INDEX_DATA_PROVIDER,
                             org.chromium.chrome.browser.settings.BraveOriginPreferences.SEARCH_INDEX_DATA_PROVIDER,
                             org.chromium.chrome.browser.settings.BraveSearchEnginesPreferences.SEARCH_INDEX_DATA_PROVIDER,
                             org.chromium.chrome.browser.settings.BraveSyncScreensPreference.SEARCH_INDEX_DATA_PROVIDER,
