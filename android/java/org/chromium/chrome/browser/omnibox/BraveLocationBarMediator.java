@@ -150,14 +150,11 @@ public class BraveLocationBarMediator extends LocationBarMediator {
 
     @Override
     public void onResumeWithNative() {
-        if (mTemplateUrlServiceSupplier.get() != null
-                && !mTemplateUrlServiceSupplier.get().isLoaded()) {
-            mTemplateUrlServiceSupplier
-                    .get()
-                    .runWhenLoaded(
-                            () -> {
-                                super.onResumeWithNative();
-                            });
+        TemplateUrlService templateUrlService = mTemplateUrlServiceSupplier.get();
+        if (templateUrlService != null
+                && templateUrlService.hasNativeService()
+                && !templateUrlService.isLoaded()) {
+            templateUrlService.runWhenLoaded(this::onResumeWithNative);
             return;
         }
         super.onResumeWithNative();
