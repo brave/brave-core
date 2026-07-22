@@ -39,6 +39,9 @@ BraveActionsContainer::BraveActionsContainer(
 BraveActionsContainer::~BraveActionsContainer() = default;
 
 void BraveActionsContainer::Init() {
+  constexpr int kSeparatorMargin = 1;
+  constexpr int kSeparatorWidth = 1;
+
   // automatic layout
   auto vertical_container_layout = std::make_unique<views::BoxLayout>(
       views::BoxLayout::Orientation::kHorizontal);
@@ -46,20 +49,22 @@ void BraveActionsContainer::Init() {
       views::BoxLayout::MainAxisAlignment::kCenter);
   vertical_container_layout->set_cross_axis_alignment(
       views::BoxLayout::CrossAxisAlignment::kCenter);
+  // Gap after the separator (and between action buttons). The separator's left
+  // border handles spacing from icons to its left; a right border alone is
+  // swallowed visually by the adjacent button's bounds, so use layout spacing.
+  vertical_container_layout->set_between_child_spacing(kSeparatorMargin);
   SetLayoutManager(std::move(vertical_container_layout));
 
   // children
   RoundedSeparator* brave_button_separator_ = new RoundedSeparator();
   // TODO(petemill): theme color
   brave_button_separator_->SetColor(SkColorSetRGB(0xb2, 0xb5, 0xb7));
-  constexpr int kSeparatorMargin = 3;
-  constexpr int kSeparatorWidth = 1;
   brave_button_separator_->SetPreferredSize(
-      gfx::Size(kSeparatorWidth + kSeparatorMargin * 2,
+      gfx::Size(kSeparatorWidth + kSeparatorMargin,
                 GetLayoutConstant(LayoutConstant::kLocationBarIconSize)));
-  // separator left & right margin
+  // Left margin only; right-side gap comes from between_child_spacing above.
   brave_button_separator_->SetBorder(views::CreateEmptyBorder(
-      gfx::Insets::TLBR(0, kSeparatorMargin, 0, kSeparatorMargin)));
+      gfx::Insets::TLBR(0, kSeparatorMargin, 0, 0)));
   // Just in case the extensions load before this function does (not likely!)
   // add children to the front in reverse order.
 #if BUILDFLAG(ENABLE_BRAVE_REWARDS)
@@ -151,7 +156,7 @@ void BraveActionsContainer::UpdateVisibility() {
 }
 
 gfx::Size BraveActionsContainer::GetActionSize() const {
-  return {34, GetLayoutConstant(LayoutConstant::kLocationBarHeight) -
+  return {30, GetLayoutConstant(LayoutConstant::kLocationBarHeight) -
                   2 * GetLayoutConstant(
                           LayoutConstant::kLocationBarElementPadding)};
 }

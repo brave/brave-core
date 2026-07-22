@@ -78,7 +78,7 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
       return std::nullopt;
     }
     case LayoutConstant::kLocationBarChildCornerRadius:
-      return 4;
+      return 6;
     case LayoutConstant::kTabSeparatorHeight: {
       return 16;
     }
@@ -92,10 +92,6 @@ std::optional<int> GetBraveLayoutConstant(LayoutConstant constant) {
     case LayoutConstant::kLocationBarHeight:
       // Consider adjust below element padding also when this height is changed.
       return UseCompactHorizontalTabs() ? 28 : 32;
-    case LayoutConstant::kLocationBarTrailingIconSize:
-      return 18;
-    case LayoutConstant::kLocationBarIconSize:
-      return 16;
     case LayoutConstant::kLocationBarElementPadding:
     case LayoutConstant::kLocationBarPageInfoIconVerticalPadding:
     case LayoutConstant::kLocationBarTrailingDecorationEdgePadding:
