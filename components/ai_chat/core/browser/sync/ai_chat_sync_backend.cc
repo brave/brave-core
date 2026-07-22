@@ -58,4 +58,51 @@ void AIChatSyncBackend::Shutdown() {
   bridge_.reset();
 }
 
+void AIChatSyncBackend::OnConversationAdded(const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationAdded(uuid);
+  }
+}
+
+void AIChatSyncBackend::OnConversationModified(const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationModified(uuid);
+  }
+}
+
+void AIChatSyncBackend::OnConversationDeleted(const std::string& uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationDeleted(uuid);
+  }
+}
+
+void AIChatSyncBackend::OnConversationEntryAdded(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationEntryAdded(conversation_uuid, entry_uuid);
+  }
+}
+
+void AIChatSyncBackend::OnConversationEntryModified(
+    const std::string& conversation_uuid,
+    const std::string& entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationEntryModified(conversation_uuid, entry_uuid);
+  }
+}
+
+void AIChatSyncBackend::OnConversationEntryDeleted(
+    const std::string& entry_uuid) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+  if (bridge_) {
+    bridge_->OnConversationEntryDeleted(entry_uuid);
+  }
+}
+
 }  // namespace ai_chat

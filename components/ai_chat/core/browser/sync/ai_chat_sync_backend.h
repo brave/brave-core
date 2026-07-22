@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_SYNC_AI_CHAT_SYNC_BACKEND_H_
 
 #include <memory>
+#include <string>
 
 #include "base/memory/ref_counted_delete_on_sequence.h"
 #include "base/memory/weak_ptr.h"
@@ -68,6 +69,17 @@ class AIChatSyncBackend
   // the sync engine holds; GetControllerDelegate() returns null after this
   // point.
   void Shutdown();
+
+  // Outbound local-change notifications, forwarded to the bridge on the owning
+  // sequence. Each call is a no-op once Shutdown() has released the bridge.
+  void OnConversationAdded(const std::string& uuid);
+  void OnConversationModified(const std::string& uuid);
+  void OnConversationDeleted(const std::string& uuid);
+  void OnConversationEntryAdded(const std::string& conversation_uuid,
+                                const std::string& entry_uuid);
+  void OnConversationEntryModified(const std::string& conversation_uuid,
+                                   const std::string& entry_uuid);
+  void OnConversationEntryDeleted(const std::string& entry_uuid);
 
  private:
   friend class base::RefCountedDeleteOnSequence<AIChatSyncBackend>;

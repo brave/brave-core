@@ -228,7 +228,7 @@ class MockAIChatDatabase : public AIChatDatabase {
   MOCK_METHOD(bool, DeleteConversationEntry, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteConversation, (std::string_view), (override));
   MOCK_METHOD(bool, DeleteAllData, (), (override));
-  MOCK_METHOD(bool,
+  MOCK_METHOD((std::optional<std::vector<ClearedAssociatedContentEntry>>),
               DeleteAssociatedWebContent,
               (std::optional<base::Time>, std::optional<base::Time>),
               (override));

@@ -30,6 +30,14 @@ extern const int kLowestSupportedDatabaseVersion;
 extern const int kCompatibleDatabaseVersionNumber;
 extern const int kCurrentDatabaseVersion;
 
+// Identifies a conversation entry whose associated web content was cleared by
+// DeleteAssociatedWebContent(), so callers can propagate the change (e.g.
+// re-sync the affected entries).
+struct ClearedAssociatedContentEntry {
+  std::string conversation_uuid;
+  std::string entry_uuid;
+};
+
 // Persists AI Chat conversations and associated content. Conversations are
 // mainly formed of their conversation entries. Edits to conversation entries
 // should be handled with removal and re-adding so that other classes can make
@@ -96,8 +104,13 @@ class AIChatDatabase : public syncer::SyncMetadataStore {
   // Drops all data and tables in the database, and re-creates empty tables
   virtual bool DeleteAllData();
 
-  virtual bool DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
-                                          std::optional<base::Time> end_time);
+  // Clears (sets to NULL) the url/title/last_contents of associated content for
+  // every conversation that has an entry dated within [begin_time, end_time].
+  // Returns the entries whose content was actually cleared, so callers can
+  // propagate the change; returns std::nullopt if the operation failed.
+  virtual std::optional<std::vector<ClearedAssociatedContentEntry>>
+  DeleteAssociatedWebContent(std::optional<base::Time> begin_time,
+                             std::optional<base::Time> end_time);
 
   // Reads all sync metadata (entity metadata + data type state) into the batch.
   bool GetAllSyncMetadata(syncer::MetadataBatch* metadata_batch);

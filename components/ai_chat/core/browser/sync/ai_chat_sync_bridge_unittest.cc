@@ -45,19 +45,19 @@ class AIChatSyncBridgeTest : public testing::Test {
   }
 
   // Creates the bridge and attaches the database (the common case).
-  void CreateBridge() {
-    CreateBridgeWithoutDatabase();
+  void CreateBridge(bool is_tracking_metadata = true) {
+    CreateBridgeWithoutDatabase(is_tracking_metadata);
     bridge_->SetDatabase(db_.get());
   }
 
   // Creates the bridge without attaching a database, mirroring how the service
   // installs the bridge eagerly before the database exists.
-  void CreateBridgeWithoutDatabase() {
+  void CreateBridgeWithoutDatabase(bool is_tracking_metadata = true) {
     auto processor = std::make_unique<
         testing::NiceMock<syncer::MockDataTypeLocalChangeProcessor>>();
     mock_processor_ = processor.get();
     ON_CALL(*mock_processor_, IsTrackingMetadata())
-        .WillByDefault(testing::Return(true));
+        .WillByDefault(testing::Return(is_tracking_metadata));
     bridge_ = std::make_unique<AIChatSyncBridge>(std::move(processor));
   }
 
@@ -182,6 +182,47 @@ TEST_F(AIChatSyncBridgeTest,
   syncer::EntityChangeList empty_remote;
   bridge_->MergeFullSyncData(bridge_->CreateMetadataChangeList(),
                              std::move(empty_remote));
+}
+
+TEST_F(AIChatSyncBridgeTest,
+       OnConversationDeletedEmitsDeleteForConvAndEntries) {
+  const std::string entry_uuid = AddTestConversation("conv-to-delete", "Test");
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Delete("e:" + entry_uuid, _, _)).Times(1);
+  EXPECT_CALL(*mock_processor_, Delete("c:conv-to-delete", _, _)).Times(1);
+  bridge_->OnConversationDeleted("conv-to-delete");
+}
+
+TEST_F(AIChatSyncBridgeTest, OnConversationAddedEmitsConversationOnly) {
+  AddTestConversation("conv-to-add", "New Conv");
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Put("c:conv-to-add", _, _)).Times(1);
+  bridge_->OnConversationAdded("conv-to-add");
+}
+
+TEST_F(AIChatSyncBridgeTest, OnConversationEntryAddedEmitsEntryOnly) {
+  const std::string entry_uuid = AddTestConversation("conv-with-entry", "Test");
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Put("e:" + entry_uuid, _, _)).Times(1);
+  bridge_->OnConversationEntryAdded("conv-with-entry", entry_uuid);
+}
+
+TEST_F(AIChatSyncBridgeTest, OnConversationEntryDeletedEmitsDelete) {
+  CreateBridge();
+
+  EXPECT_CALL(*mock_processor_, Delete("e:some-entry", _, _)).Times(1);
+  bridge_->OnConversationEntryDeleted("some-entry");
+}
+
+TEST_F(AIChatSyncBridgeTest, OnConversationAddedNoOpWhenNotTracking) {
+  AddTestConversation("conv-1", "Test");
+  CreateBridge(/*is_tracking_metadata=*/false);
+
+  EXPECT_CALL(*mock_processor_, Put(_, _, _)).Times(0);
+  bridge_->OnConversationAdded("conv-1");
 }
 
 TEST_F(AIChatSyncBridgeTest, ApplyDisableSyncChangesClearsMetadata) {
