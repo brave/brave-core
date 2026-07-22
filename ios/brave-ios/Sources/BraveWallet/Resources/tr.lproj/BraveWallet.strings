@@ -713,10 +713,10 @@
 "wallet.editVisibleAssetsButtonTitle" = "Görünür Varlıkları Düzenle";
 
 /* Title on the button that users can click to enable Brave to resolve the ENS domain they entered. */
-"wallet.ensDomainInterstitialPageButtonProceed" = "Infura sunucusunu kullanarak ilerleyin";
+"wallet.ensDomainInterstitialPageButtonProceed" = "Chainstack sunucusunu kullanarak ilerleyin";
 
-/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Infura's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.ensDomainInterstitialPageDescription" = "Brave, Ethereum Name Service (ENS) üzerinde bulunan .eth alan adlarını çözmek için Infura'yı kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu .eth alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> belgelerine bakın.";
+/* Description displayed when users chose Brave to ask them if they want the ENS to be resolved every time they enter one. The first '%@' will be replaced with a link to Chainstack's terms of use page. The second '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The third '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.ensDomainInterstitialPageDescription" = "Brave, Ethereum Name Service (ENS) üzerinde bulunan .eth alan adlarını çözmek için, varsayılan olarak Chainstack olan yapılandırdığınız Ethereum Mainnet RPC hizmetini kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Chainstack, birilerinin bu .eth alan adlarını ziyaret etmeye çalıştığını görür, ancak başka hiçbir veriyi görmez. Chainstack'in <a href=%1$@>%2$@</a> ve <a href=%3$@>%4$@</a> belgelerine bakın.";
 
 /* Title displayed when users chose Brave to ask them if they want the ENS domain to be resolved every time they enter one. */
 "wallet.ensDomainInterstitialPageTitle" = "Brave'de Ethereum Name Service (ENS) Desteği Etkinleştirilsin mi?";
@@ -2176,8 +2176,8 @@
 /* The title for the button. User would tap on this button to view the transaction status in the `Activity` tab. */
 "wallet.txStatusViewInActivity" = "Etkinlikte Görüntüle";
 
-/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Infura's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Infura's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
-"wallet.udDomainInterstitialPageDescription" = "Brave, Unstoppable Domains'te yer alan .crypto (ve aynı zamanda %1$@) alan adlarını çözmek için Infura'yı kullanacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Infura, birilerinin bu alan adlarını ziyaret ettiğini görür, ancak başka hiçbir veriyi görmez. Infura'nın <a href=%2$@>%3$@</a> ve <a href=%4$@>%5$@</a> belgelerine bakın.";
+/* Description displayed when users chose Brave to ask them if they want the Unstoppable Domains to be resolved every time they enter one. The first '%@' will be replaced with a list of supported TLDs like '.x' or '.bitcoin'. The second '%@' be replaced with a link to Chainstack's terms of use page. The third '%@' will be replaced with the value of 'Web3DomainInterstitialPageTAndU'. The fourth '%@' will be replaced with a link to Chainstack's privacy policy page. The last '%@' will be replaced with the value of 'Web3DomainInterstitialPagePrivacyPolicy'. */
+"wallet.udDomainInterstitialPageDescription" = "Brave, Unstoppable Domains'te yer alan .crypto (ve aynı zamanda %1$@) alan adlarını çözmek için, varsayılan olarak Chainstack olan yapılandırılmış Ethereum RPC hizmeti olacaktır. Brave, IP adresinizi saklar. Bu özelliği açarsanız Chainstack, birilerinin bu alan adlarını ziyaret etmeye çalıştığını görür, ancak başka hiçbir veriyi görmez. Chainstack'in <a href=%2$@>%3$@</a> ve <a href=%4$@>%5$@</a> belgelerine bakın.";
 
 /* Title displayed when users chose Brave to ask them if they want the Unstoppable Domains domain to be resolved every time they enter one. */
 "wallet.udDomainInterstitialPageTitle" = "Brave'de Unstoppable Domains desteği etkinleştirilsin mi?";

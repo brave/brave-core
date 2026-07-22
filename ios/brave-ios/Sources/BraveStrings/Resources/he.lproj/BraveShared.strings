@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "חשבונות";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "יש לבצע אימות כדי לנהל את הסיסמאות שלך.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "פעולה זו תסיר את הסיסמאות השמורות עבור %@ משרשרת הסנכרון שלך ומהמכשיר שלך.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "הצעה לשמירת סיסמאות";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "יש להזין ססמה";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "חשיפה";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "חיפוש אתרים";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "הפעלת לחיצה ארוכה";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "מדיה של פלייליסטים ונתונים לא מקוונים";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "נתונים לא מקוונים של פלייליסטים";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "שנה";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave נסגר באופן לא צפוי.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "עם תגמולי Brave, יש לך אפשרות לצפות במודעות משמרות-פרטיות מרשת מודעות Brave. בלי כלי מעקב. בלי האטות. והנתונים שלך נשארים בטוחים לחלוטין.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "הפעל את Rewards";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "הקש בכל מקום על המסך על מנת להמשיך ל-Brave Talk";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "כעת תוכל/י להתחיל שיחה בחינם";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "להתחלת שיחה שיחה בחינם, יש להפעיל את Brave Rewards";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "יש להפעיל כדי לתמוך ב-Brave ובקהילת BAT.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "תודה על הסיוע בתמיכה ב-Brave ובקהילת BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "הלחיצה מהווה הסכמה ל%1$@ ו%2$@. אפשר להשבית את זה בכל עת בהגדרות.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "לעזור לתמוך ב-Brave ובקהילת BAT באמצעות הפעלת תגמולי Brave וצפייה במודעות Brave.";

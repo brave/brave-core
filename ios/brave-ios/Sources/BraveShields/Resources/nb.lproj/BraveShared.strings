@@ -28,6 +28,9 @@
 /* A picker title for selecting a automatic shred setting option */
 "AutoShred" = "Makuler automatisk";
 
+/* The description for shredding when the app is closed */
+"AutoShredSectionTitle" = "Makuler nettleserdata automatisk";
+
 /* The option the user can select to do aggressive ad and tracker blocking */
 "BlockAdsAndTrackingAggressive" = "Aggressiv";
 
@@ -205,11 +208,20 @@
 /* An option setting for never automatically shreding site data */
 "ShredNever" = "Aldri";
 
+/* The description for never automatically shreding site data */
+"ShredNeverDescription" = "Nettleserdata makuleres aldri automatisk";
+
 /* An option setting for automatically shredding only when the app is closed */
 "ShredOnAppClose" = "Når appen lukkes";
 
+/* The description for shredding when the app is closed */
+"ShredOnAppCloseDescription" = "Nettleserdata makuleres automatisk når Brave-appen lukkes / startes på nytt";
+
 /* An option setting for automatically shredding when the site is closed */
 "ShredOnSiteTabsClosed" = "Når faner for nettstedet lukkes";
+
+/* The description for shredding when the site is closed */
+"ShredOnSiteTabsClosedDescription" = "Nettleserdata makuleres automatisk når alle faner som er åpne mot et nettsted, lukkes";
 
 /* A message for a confirmation window that appears when a user clicks on 'Shred All Tabs'. */
 "ShredSiteAllTabsConfirmationMessage" = "Makulering vil lukke alle faner, og slette alle nettsteddataene. Dette kan ikke angres.";

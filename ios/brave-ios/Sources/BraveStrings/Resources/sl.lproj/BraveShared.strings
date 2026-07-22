@@ -79,6 +79,9 @@
 /* Label for account when indicating that a domain has multiple accounts */
 "autofill.managePassword.multipleAccounts" = "Računi";
 
+/* The reason string shown in the biometric/passcode authentication prompt when the user tries to access autofill management. */
+"autofill.managePasswords.authenticationReason" = "Prijavite se za upravljanje gesel.";
+
 /* Alert message warning the user that deleting non-synced passwords will permanently remove them */
 "autofill.managePasswords.deleteCredentialConfirmMessage" = "S tem boste shranjena gesla za %@ odstranili iz svoje verige Sync in svoje naprave.";
 
@@ -99,6 +102,12 @@
 
 /* Display text for the option to offer to save passwords */
 "autofill.managePasswords.offerToSavePasswords" = "Ponudi shranjevanje gesel";
+
+/* Placeholder for the password field when adding or editing a login */
+"autofill.managePasswords.passwordDetail.inputPasswordPlaceholder" = "Vnesite geslo";
+
+/* Reveal password label */
+"autofill.managePasswords.passwordDetail.revealPassword" = "Razkrij";
 
 /* Prompt that is diplayed in the search bar of the Manage Passwords list screen */
 "autofill.managePasswords.searchWebsitesPrompt" = "Iskanje spletnih mest";
@@ -1567,12 +1576,6 @@
 /* Title for the Playlist Settings Option for long press gesture */
 "playlist.playlistLongPressSettingsOptionTitle" = "Omogoči dolg pritisk";
 
-/* Text for Playlist Media & Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistMediaAndOfflineDataToggleOption" = "Mediji in podatki brez povezave seznama predvajanja";
-
-/* Text for Playlist Offline Data Toggle while clearing the offline data storage in settings */
-"playlist.playlistOfflineDataToggleOption" = "Podatki brez povezave seznama predvajanja";
-
 /* Title of a button displayed when first adding some media to Playlist. Its shown next to the name of a folder that the item is recently added to to imply that you are changing the folder it was saved to */
 "playlist.playlistPopoverChangeFoldersButtonTitle" = "Spremeni";
 
@@ -2071,21 +2074,6 @@
 /* Restore Tabs Prompt Title */
 "RestoreTabOnCrashAlertTitle" = "Brave se je nepričakovano zaprl.";
 
-/* Body for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInBody" = "Z Brave Nagradami lahko gledate oglase, ki ohranjajo zasebnost, iz omrežja Brave Oglasov. Brez sledilnikov. Brez upočasnitve. In vaši podatki ostanejo popolnoma varni.";
-
-/* Title for Brave Talk rewards opt-in screen button */
-"rewards.braveTalkRewardsOptInButtonTitle" = "Vklopite nagrade";
-
-/* Body for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessBody" = "Kliknite kamorkoli na zaslonu in nadaljujte s Brave Video klici.";
-
-/* Title for successful Brave Talk rewards opt-in */
-"rewards.braveTalkRewardsOptInSuccessTitle" = "Zdaj lahko začnete brezplačen klic";
-
-/* Title for Brave Talk rewards opt-in screen */
-"rewards.braveTalkRewardsOptInTitle" = "Če želite začeti brezplačen klic, vklopite Brave Nagrade";
-
 /* Displayed when Brave Rewards is disabled */
 "rewards.disabledBody" = "Vklopite, da pomagate podpirati Brave in skupnost BAT.";
 
@@ -2097,9 +2085,6 @@
 
 /* Displayed in the status container when rewards is enabled but you're not currently supporting any publishers (0 AC count) */
 "rewards.enabledStatusBody" = "Hvala, ker ste nam pomagali podpirati Brave in skupnost BAT!";
-
-/* The placeholders say 'Terms of Service' and 'Privacy Policy'. So full sentence goes like: 'By clicking, you agree to the Terms of Service and Privacy Policy...' */
-"rewards.optInDisclaimer" = "S klikom se strinjate s %1$@ in %2$@. Kadarkoli lahko onemogočite v nastavitvah.";
 
 /* No comment provided by engineer. */
 "rewards.settingsToggleMessage" = "Pomagajte podpirati Brave in skupnost BAT z omogočanjem Brave Nagrad in ogledavanjem Brave Oglasov.";
