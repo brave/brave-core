@@ -24,6 +24,7 @@
 #include "brave/components/ai_chat/core/common/mojom/untrusted_frame.mojom.h"
 #include "brave/components/ai_chat/resources/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
+#include "brave/components/version_info/version_info.h"
 #include "brave/ios/browser/ai_chat/ai_chat_service_factory.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge.h"
 #include "brave/ios/browser/ai_chat/ai_chat_ui_handler_bridge_holder.h"
@@ -72,6 +73,9 @@ AIChatUI::AIChatUI(web::WebUIIOS* web_ui, const GURL& url)
   source->AddBoolean("isConversationShareEnabled",
                      base::FeatureList::IsEnabled(
                          ai_chat::features::kAIChatConversationShare));
+  // Brave client version, used to tag serialized conversations for sharing.
+  source->AddString("braveVersion",
+                    version_info::GetBraveVersionWithoutChromiumMajorVersion());
 
   source->OverrideContentSecurityPolicy(
       network::mojom::CSPDirectiveName::ScriptSrc,
