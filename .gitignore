@@ -108,4 +108,13 @@ xcuserdata
 .claude/CLAUDE.md
 .claude/worktrees/
 
+# Generated agent-skill discovery dirs. Source of truth is agents/skills/;
+# these are populated with symlinks by agents/skills/setup.py on every sync.
+.claude/skills/
+.agents/
+
+# Skill-eval harness scratch (harvested results, python caches).
+agents/testing/.last_run/
+agents/**/__pycache__/
+
 /.ignore/
