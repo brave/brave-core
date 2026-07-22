@@ -27,8 +27,11 @@ std::string AppendBraveServiceKeyHeaderString() {
 
 BraveSyncAuthManager::BraveSyncAuthManager(
     signin::IdentityManager* identity_manager,
-    SyncAuthManager::Delegate* delegate)
-    : SyncAuthManager(identity_manager, delegate) {}
+    SyncAuthManager::Delegate* delegate,
+    base::TimeDelta account_managed_status_finder_timeout)
+    : SyncAuthManager(identity_manager,
+                      delegate,
+                      account_managed_status_finder_timeout) {}
 
 BraveSyncAuthManager::~BraveSyncAuthManager() = default;
 
