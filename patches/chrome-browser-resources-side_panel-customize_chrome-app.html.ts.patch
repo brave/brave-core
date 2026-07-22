@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/customize_chrome/app.html.ts b/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
-index a0256ca75f5ce2313c0f434d673f43e18068158d..720bcaa6bfa5b239e7cd2fdbcc35caef29950e1d 100644
+index a0256ca75f5ce2313c0f434d673f43e18068158d..34e0457acc56f2feadd553ffc656533bb408c3f2 100644
 --- a/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
 +++ b/chrome/browser/resources/side_panel/customize_chrome/app.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {AppElement} from './app.js';
-@@ -9,29 +5,23 @@ import type {AppElement} from './app.js';
+@@ -9,29 +9,23 @@ import type {AppElement} from './app.js';
  export function getHtml(this: AppElement) {
    // clang-format off
    return html`<!--_html_template_start_-->
@@ -51,7 +43,7 @@ index a0256ca75f5ce2313c0f434d673f43e18068158d..720bcaa6bfa5b239e7cd2fdbcc35caef
      </cr-button>
      ${this.ntpNextFeaturesEnabled_ && this.ntpNextDisablementEnabled_
        && this.aimPolicyEnabled_ && this.isSourceTabFirstPartyNtp_() ? html`
-@@ -113,8 +103,7 @@ export function getHtml(this: AppElement) {
+@@ -113,8 +107,7 @@ export function getHtml(this: AppElement) {
          page-name="wallpaper-search" id="wallpaperSearchPage">
      </customize-chrome-wallpaper-search>
    ` : ''}

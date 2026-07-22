@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/app_home/app_home_empty_page.html.ts b/chrome/browser/resources/app_home/app_home_empty_page.html.ts
-index a63179592e5450d8071b96bc06a5725f2f2f03df..ffa5921c43f8c6df81783a7269d1ac0c7f801fe9 100644
+index a63179592e5450d8071b96bc06a5725f2f2f03df..f611ee7e96f9c11918a981b4ad68f397a217056e 100644
 --- a/chrome/browser/resources/app_home/app_home_empty_page.html.ts
 +++ b/chrome/browser/resources/app_home/app_home_empty_page.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {AppHomeEmptyPageElement} from './app_home_empty_page.js';
-@@ -11,8 +7,7 @@ export function getHtml(this: AppHomeEmptyPageElement) {
+@@ -11,8 +11,7 @@ export function getHtml(this: AppHomeEmptyPageElement) {
  <div class="container">
    <img src="chrome://resources/images/apps_home_empty_238x170.svg">
      <p>$i18n{appAppearanceLabel}</p>

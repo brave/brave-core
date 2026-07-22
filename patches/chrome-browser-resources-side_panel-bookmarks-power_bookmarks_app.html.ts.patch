@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_app.html.ts b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_app.html.ts
-index 4dacecf0a50972cea10c077c17546400a044fc72..bb1d51442de61c5d979a9acb5650cf32d02ddfb7 100644
+index 4dacecf0a50972cea10c077c17546400a044fc72..ec51e48efeed8be78d531f102b9fb9e227d15e94 100644
 --- a/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_app.html.ts
 +++ b/chrome/browser/resources/side_panel/bookmarks/power_bookmarks_app.html.ts
-@@ -1,7 +1,3 @@
--/* Copyright 2026 The Chromium Authors
-- * Use of this source code is governed by a BSD-style license that can be
-- * found in the LICENSE file. */
--
- import '//resources/cr_elements/cr_lazy_render/cr_lazy_render_lit.js';
- 
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
-@@ -12,90 +8,40 @@ export function getHtml(this: PowerBookmarksAppElement) {
+@@ -12,90 +12,40 @@ export function getHtml(this: PowerBookmarksAppElement) {
    // clang-format off
    return html`<!--_html_template_start_-->
  <div class="column" id="powerBookmarksContainer">
@@ -115,7 +107,7 @@ index 4dacecf0a50972cea10c077c17546400a044fc72..bb1d51442de61c5d979a9acb5650cf32
  </power-bookmarks-edit-dialog>
  
  <cr-dialog id="disabledFeatureDialog">
-@@ -110,12 +56,7 @@ export function getHtml(this: PowerBookmarksAppElement) {
+@@ -110,12 +60,7 @@ export function getHtml(this: PowerBookmarksAppElement) {
    </div>
  </cr-dialog>
  

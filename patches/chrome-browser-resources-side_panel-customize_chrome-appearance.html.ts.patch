@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts b/chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
-index 7c05052814e0718d666ef5c49252e3af2eba96e6..de336ec3bd72bde5de4bc990fca9f047a5cbd08a 100644
+index 7c05052814e0718d666ef5c49252e3af2eba96e6..ed264d5a0ed964459ef592d21695901831a8f075 100644
 --- a/chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
 +++ b/chrome/browser/resources/side_panel/customize_chrome/appearance.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {AppearanceElement} from './appearance.js';
-@@ -9,72 +5,31 @@ import type {AppearanceElement} from './appearance.js';
+@@ -9,72 +9,31 @@ import type {AppearanceElement} from './appearance.js';
  export function getHtml(this: AppearanceElement) {
    // clang-format off
    return html`<!--_html_template_start_-->
@@ -93,7 +85,7 @@ index 7c05052814e0718d666ef5c49252e3af2eba96e6..de336ec3bd72bde5de4bc990fca9f047
  </customize-chrome-hover-button>
  ${this.showManagedDialog_ ? html`
    <managed-dialog @close="${this.onManagedDialogClose_}"
-@@ -82,6 +37,19 @@ ${this.showManagedDialog_ ? html`
+@@ -82,6 +41,19 @@ ${this.showManagedDialog_ ? html`
        body="$i18n{managedColorsBody}">
    </managed-dialog>
  ` : ''}

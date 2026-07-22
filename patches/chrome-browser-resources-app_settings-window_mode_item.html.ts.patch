@@ -1,15 +1,8 @@
 diff --git a/chrome/browser/resources/app_settings/window_mode_item.html.ts b/chrome/browser/resources/app_settings/window_mode_item.html.ts
-index a8047b56f1ce700dc60e45ac284ca05bf6f37c16..a5e2108e206beeb2fd84769d9df9cf103778d822 100644
+index a8047b56f1ce700dc60e45ac284ca05bf6f37c16..05a690be87e97dbe4bce4f71379fbe99fe422c39 100644
 --- a/chrome/browser/resources/app_settings/window_mode_item.html.ts
 +++ b/chrome/browser/resources/app_settings/window_mode_item.html.ts
-@@ -1,17 +1,18 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {WindowModeItemElement} from './window_mode_item.js';
+@@ -8,10 +8,15 @@ import type {WindowModeItemElement} from './window_mode_item.js';
  
  export function getHtml(this: WindowModeItemElement) {
    return html`<!--_html_template_start_-->

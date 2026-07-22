@@ -1,16 +1,8 @@
 diff --git a/chrome/browser/resources/extensions/item.html.ts b/chrome/browser/resources/extensions/item.html.ts
-index 7069f3ae2facef97a238223699f68e8d5c9be763..e2bbf62a87576db238e0eb5476c828a012b6540c 100644
+index 7069f3ae2facef97a238223699f68e8d5c9be763..ffdcf43a5f74d30edaf87c1d4cd8ccefc09a1e93 100644
 --- a/chrome/browser/resources/extensions/item.html.ts
 +++ b/chrome/browser/resources/extensions/item.html.ts
-@@ -1,7 +1,3 @@
--// Copyright 2024 The Chromium Authors
--// Use of this source code is governed by a BSD-style license that can be
--// found in the LICENSE file.
--
- import {html} from '//resources/lit/v3_0/lit.rollup.js';
- 
- import type {ItemElement} from './item.js';
-@@ -18,8 +14,7 @@ export function getHtml(this: ItemElement) {
+@@ -18,8 +18,7 @@ export function getHtml(this: ItemElement) {
  <div id="card" class="${this.computeClasses_()}">
    <div id="main">
      <div id="icon-wrapper">
@@ -20,7 +12,7 @@ index 7069f3ae2facef97a238223699f68e8d5c9be763..e2bbf62a87576db238e0eb5476c828a0
        ${this.computeSourceIndicatorIcon_() ? html`
          <div id="source-indicator">
            <div class="source-icon-wrapper" role="img"
-@@ -43,18 +38,17 @@ export function getHtml(this: ItemElement) {
+@@ -43,18 +42,17 @@ export function getHtml(this: ItemElement) {
            doesn't shrink (because it's not display: flex).-->
        <div>
          <div id="name-and-version" class="layout-horizontal-center">
@@ -45,7 +37,7 @@ index 7069f3ae2facef97a238223699f68e8d5c9be763..e2bbf62a87576db238e0eb5476c828a0
          ${this.data.description}
        </div>
        ${this.showSevereWarnings() ? html`
-@@ -137,13 +131,10 @@ export function getHtml(this: ItemElement) {
+@@ -137,13 +135,10 @@ export function getHtml(this: ItemElement) {
    </div>
    <div id="button-strip" class="layout-horizontal-center cr-secondary-text">
      <div class="layout-horizontal-center flex">
@@ -61,7 +53,7 @@ index 7069f3ae2facef97a238223699f68e8d5c9be763..e2bbf62a87576db238e0eb5476c828a0
          $i18n{remove}
        </cr-button>
        ${this.shouldShowErrorsButton_() ? html`
-@@ -177,18 +168,9 @@ export function getHtml(this: ItemElement) {
+@@ -177,18 +172,9 @@ export function getHtml(this: ItemElement) {
            aria-describedby="a11yAssociation" class="action-button">
          $i18n{itemReload}
        </cr-button>` : ''}
