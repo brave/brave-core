@@ -47,11 +47,9 @@ substitutions:
 
       `BraveMultiContentsView` overrides this to reset the resize area
       when the web-panel layout changes.
-    regex:
-      re_pattern: '( +)(void SetBackgroundRadii\([^)]*\);)'
-      replace: |-
-        \1\2
-        \1virtual void ResetResizeArea() {}
+    add_to_public:
+      class_name: MultiContentsView
+      code: 'virtual void ResetResizeArea() {}'
 
   - description: |
       Make `ExecuteOnEachVisibleContentsView` virtual.

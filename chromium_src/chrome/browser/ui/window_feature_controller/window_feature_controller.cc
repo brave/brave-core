@@ -49,20 +49,3 @@ bool WindowFeatureController::UsesImmersiveFullscreenTabbedMode() const {
       UsesImmersiveFullscreenTabbedMode_ChromiumImpl();
 }
 #endif
-
-bool WindowFeatureController::NormalBrowserSupportsWindowFeature(
-    WindowFeature feature,
-    bool check_can_support) const {
-#if BUILDFLAG(IS_WIN)
-  if (feature == WindowFeature::kFeatureTitleBar) {
-    // In case of vertical tab strip is allowed, we need to have ability to
-    // show title bar on Windows.
-    return tabs::utils::ShouldShowBraveVerticalTabs(&browser_.get()) &&
-           tabs::utils::ShouldShowWindowTitleForVerticalTabs(&browser_.get());
-  }
-#endif
-
-  return WindowFeatureController::
-      NormalBrowserSupportsWindowFeature_ChromiumImpl(feature,
-                                                      check_can_support);
-}

@@ -25,15 +25,3 @@ substitutions:
       replace: |-
         \1
           const raw_ref<BrowserWindowInterface> browser_;\2
-
-  - description: |
-      Mirror NormalBrowserSupportsWindowFeature as `_ChromiumImpl`
-
-      This sibling function is required for the customisation of
-      NormalBrowserSupportsWindowFeature.
-    regex:
-      re_pattern:
-        '(bool )(NormalBrowserSupportsWindowFeature)(\([\s\S]*?\) const;)'
-      replace: |-
-        \1\2\3
-          \1\2_ChromiumImpl\3

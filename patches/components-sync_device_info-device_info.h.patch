@@ -1,8 +1,8 @@
 diff --git a/components/sync_device_info/device_info.h b/components/sync_device_info/device_info.h
-index bfcb8729f6ab80ddec4bb001a6059686e736e38e..4fe6ae2d3ba96c0dc39bf35c1ff3114a4d69decd 100644
+index bfcb8729f6ab80ddec4bb001a6059686e736e38e..ad7984cb81b288c44fc9098819627b116d423721 100644
 --- a/components/sync_device_info/device_info.h
 +++ b/components/sync_device_info/device_info.h
-@@ -210,11 +210,28 @@ class DeviceInfo {
+@@ -210,7 +210,9 @@ class DeviceInfo {
                   desktop_to_ios_promo_receiving_types,
               GlicExperimentalTriggeringState glic_experimental_triggering_state,
               std::optional<int> glic_experimental_triggering_version,
@@ -13,9 +13,12 @@ index bfcb8729f6ab80ddec4bb001a6059686e736e38e..4fe6ae2d3ba96c0dc39bf35c1ff3114a
  
    DeviceInfo& operator=(const DeviceInfo&) = delete;
  
+@@ -347,6 +349,22 @@ class DeviceInfo {
+   // Glic. Pass std::nullopt if unavailable.
+   void set_glic_experimental_triggering_version(std::optional<int> version);
+ 
 +  DeviceInfo(DeviceInfo&&);
 +
-   ~DeviceInfo();
 +  SelfDeleteSupport self_delete_support() const {
 +    return self_delete_support_;
 +  }
@@ -29,10 +32,11 @@ index bfcb8729f6ab80ddec4bb001a6059686e736e38e..4fe6ae2d3ba96c0dc39bf35c1ff3114a
 +  // Converts the DeviceInfo values to a JS friendly DictionaryValue,
 +  // which extension APIs can expose to third party apps.
 +  base::DictValue ToValue() const;
- 
-   std::unique_ptr<DeviceInfo> DeepCopyForTesting() const;
- 
-@@ -426,6 +443,7 @@ class DeviceInfo {
++
+  private:
+   // Used by DeepCopyForTesting().
+   DeviceInfo(const DeviceInfo& other);
+@@ -426,6 +444,7 @@ class DeviceInfo {
    // |IsStoredLocalDeviceInfoStillAccurate| in device_info_sync_bridge.cc or
    // else changes in that member might not trigger uploads of updated
    // DeviceInfos.
