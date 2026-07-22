@@ -19,6 +19,10 @@ source_set("ai_chat") {
     "chart_display_ui.h",
     "code_sandbox_ui.cc",
     "code_sandbox_ui.h",
+    "workspace_folder_chooser.cc",
+    "workspace_folder_chooser.h",
+    "workspace_ui.cc",
+    "workspace_ui.h",
   ]
 
   deps = [
@@ -54,6 +58,7 @@ source_set("ai_chat") {
     "//printing",
     "//services/data_decoder/public/cpp",
     "//ui/gfx/codec",
+    "//ui/shell_dialogs",
     "//ui/webui",
   ]
 

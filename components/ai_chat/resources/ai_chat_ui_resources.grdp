@@ -16,6 +16,9 @@
   <include name="IDR_AI_CHAT_CHART_DISPLAY_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/chart_display/chart_display.html"
     use_base_dir="false"
     type="BINDATA" />
+  <include name="IDR_AI_CHAT_WORKSPACE_HTML" file="${root_gen_dir}/brave/components/ai_chat/resources/preprocessed/workspace/workspace.html"
+    use_base_dir="false"
+    type="BINDATA" />
   <include name="IDR_AI_CHAT_BIGNUMBER_JS" file="../../node_modules/bignumber.js/bignumber.js"
     type="BINDATA" />
 </grit-part>

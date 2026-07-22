@@ -236,7 +236,7 @@ ConversationHandler::ConversationHandler(
   associated_content_manager_ = associated_content_manager.get();
   tool_providers_.push_back(std::move(associated_content_manager));
 
-  // Observe tool providers
+  // Observe tool providers and let them associate with this conversation.
   for (const auto& tool_provider : tool_providers_) {
     tool_provider->AddObserver(this);
   }

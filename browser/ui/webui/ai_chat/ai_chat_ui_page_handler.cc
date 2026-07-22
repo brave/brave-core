@@ -23,7 +23,9 @@
 #include "brave/browser/misc_metrics/profile_misc_metrics_service.h"
 #include "brave/browser/misc_metrics/profile_misc_metrics_service_factory.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/webui/ai_chat/workspace_folder_chooser.h"
 #include "brave/components/ai_chat/content/browser/associated_url_content.h"
+#include "brave/components/ai_chat/content/browser/workspace_associated_content.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_service.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
@@ -360,6 +362,48 @@ void AIChatUIPageHandler::GetPluralString(const std::string& key,
                                 &webui::LocalizedString::name);
   CHECK(iter != webui::kAiChatStrings.end());
   std::move(callback).Run(l10n_util::GetPluralStringFUTF8(iter->id, count));
+}
+
+void AIChatUIPageHandler::ShowWorkspaceFolderPicker(
+    const std::string& conversation_uuid,
+    ShowWorkspaceFolderPickerCallback callback) {
+  if (!features::IsAIChatWorkspaceToolsEnabled() || !owner_web_contents_ ||
+      !profile_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  workspace_folder_chooser_ =
+      std::make_unique<WorkspaceFolderChooser>(*owner_web_contents_, *profile_);
+  workspace_folder_chooser_->ShowDialog(base::BindOnce(
+      &AIChatUIPageHandler::OnWorkspaceFolderChosen,
+      weak_ptr_factory_.GetWeakPtr(), conversation_uuid, std::move(callback)));
+}
+
+void AIChatUIPageHandler::OnWorkspaceFolderChosen(
+    std::string conversation_uuid,
+    ShowWorkspaceFolderPickerCallback callback,
+    std::optional<base::FilePath> selected) {
+  workspace_folder_chooser_.reset();
+  if (!selected || !owner_web_contents_) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  auto* context = owner_web_contents_->GetBrowserContext();
+  auto* service = AIChatServiceFactory::GetForBrowserContext(context);
+  auto* conversation =
+      service ? service->GetConversation(conversation_uuid) : nullptr;
+  if (!conversation) {
+    std::move(callback).Run(std::nullopt);
+    return;
+  }
+  // The workspace page is a chrome-untrusted:// content, which isn't in
+  // |kAllowedContentSchemes|, so attach it directly via the manager rather than
+  // AIChatService::AssociateOwnedContent (which would reject the scheme).
+  conversation->associated_content_manager()->AddOwnedContent(
+      std::make_unique<ai_chat::WorkspaceAssociatedContent>(
+          *selected, context,
+          base::BindOnce(&brave::AttachPrivacySensitiveTabHelpers)));
+  std::move(callback).Run(selected->AsUTF8Unsafe());
 }
 
 void AIChatUIPageHandler::OpenAIChatSettings() {

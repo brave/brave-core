@@ -70,6 +70,12 @@ bool IsAIChatFirstEnabled() {
 
 BASE_FEATURE(kAIChatUserChoiceTool, base::FEATURE_DISABLED_BY_DEFAULT);
 
+BASE_FEATURE(kAIChatWorkspaceTools, base::FEATURE_DISABLED_BY_DEFAULT);
+
+bool IsAIChatWorkspaceToolsEnabled() {
+  return base::FeatureList::IsEnabled(features::kAIChatWorkspaceTools);
+}
+
 BASE_FEATURE(kAIChatAgentProfile, base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsAIChatAgentProfileEnabled() {

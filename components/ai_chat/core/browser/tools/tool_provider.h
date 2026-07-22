@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_TOOLS_TOOL_PROVIDER_H_
 
 #include <cstdint>
+#include <string>
 #include <vector>
 
 #include "base/functional/callback_forward.h"
