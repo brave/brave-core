@@ -35,6 +35,7 @@
 #include "net/log/net_log.h"
 #include "services/network/host_resolver.h"
 #include "testing/gtest/include/gtest/gtest.h"
+#include "url/origin.h"
 
 using brave::ResponseCallback;
 using brave_component_updater::BraveComponent;
@@ -216,7 +217,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, NoInitiatorURL) {
 
 TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
   auto request_info = this->MakeRequest(GURL());
-  request_info->set_initiator_url(GURL("https://example.com"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.com")));
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
   EXPECT_FALSE(this->CheckRequest(request_info));
@@ -227,8 +229,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, EmptyRequestURL) {
 TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, DevToolURL) {
   const GURL url("devtools://devtools/");
   auto request_info = this->MakeRequest(url);
-  request_info->set_initiator_url(
-      GURL("devtools://devtools/bundled/root/root.js"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("devtools://devtools/bundled/root/root.js")));
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
 
   EXPECT_FALSE(this->CheckRequest(request_info));
@@ -241,7 +243,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, RequestDataURL) {
       "data:image/gif;base64,R0lGODlhAQABAIAAAP///"
       "wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==");
   auto request_info = this->MakeRequest(url);
-  request_info->set_initiator_url(GURL("https://example.com"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://example.com")));
   request_info->set_resource_type(blink::mojom::ResourceType::kImage);
 
   EXPECT_FALSE(this->CheckRequest(request_info));
@@ -256,7 +259,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, SimpleBlocking) {
   auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
-  request_info->set_initiator_url(GURL("https://bravesoftware.com"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://bravesoftware.com")));
 
   EXPECT_TRUE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kAdBlocked);
@@ -273,7 +277,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, Default1pException) {
   auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
-  request_info->set_initiator_url(GURL("https://brave.com"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://brave.com")));
 
   EXPECT_TRUE(this->CheckRequest(request_info));
   EXPECT_EQ(request_info->blocked_by(), brave::kNotBlocked);
@@ -288,7 +293,8 @@ TYPED_TEST(BraveAdBlockTPNetworkDelegateHelperTest, AggressiveNo1pException) {
   auto request_info = this->MakeRequest(url);
   request_info->set_request_identifier(1);
   request_info->set_resource_type(blink::mojom::ResourceType::kScript);
-  request_info->set_initiator_url(GURL("https://brave.com"));
+  request_info->set_request_initiator(
+      url::Origin::Create(GURL("https://brave.com")));
   request_info->set_aggressive_blocking(true);
 
   EXPECT_TRUE(this->CheckRequest(request_info));

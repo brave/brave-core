@@ -63,7 +63,7 @@ struct EngineFlags {
 };
 
 struct ShouldBlockRequestParams {
-  GURL initiator_url;
+  url::Origin request_initiator;
   GURL request_url;
   blink::mojom::ResourceType resource_type =
       BraveRequestInfo::kInvalidResourceType;
@@ -205,10 +205,8 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   ShouldBlockRequestResult result;
   result.engine_flags = previous_result;
 
-  if (!input.initiator_url.is_valid()) {
-    return result;
-  }
-  const std::string source_host = std::string(input.initiator_url.host());
+  // Can be empty if the request initiator is opaque.
+  const std::string source_host = std::string(input.request_initiator.host());
 
   GURL url_to_check;
   if (canonical_url.has_value()) {
@@ -218,13 +216,13 @@ ShouldBlockRequestResult ShouldBlockRequestOnTaskRunner(
   }
 
   bool force_aggressive = SameDomainOrHost(
-      input.initiator_url,
       url::Origin::CreateFromNormalizedTuple("https", "youtube.com", 443),
+      input.request_initiator,
       net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES);
 
   SCOPED_UMA_HISTOGRAM_TIMER("Brave.Adblock.ShouldBlockRequest");
   auto adblock_result = engine_wrapper->ShouldStartRequest(
-      url_to_check, input.resource_type, source_host, input.method,
+      url_to_check, input.resource_type, input.request_initiator, input.method,
       input.aggressive_blocking || force_aggressive,
       previous_result.did_match_rule, previous_result.did_match_exception,
       previous_result.did_match_important);
@@ -315,7 +313,7 @@ void UseCnameResult(const ResponseCallback& next_callback,
                     std::optional<std::string> cname) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
 
-  if (!ctx) {
+  if (!ctx || !ctx->request_initiator()) {
     next_callback.Run();
     return;
   }
@@ -327,7 +325,7 @@ void UseCnameResult(const ResponseCallback& next_callback,
     const GURL canonical_url =
         ctx->request_url().ReplaceComponents(replacements);
 
-    ShouldBlockRequestParams input{ctx->initiator_url(),
+    ShouldBlockRequestParams input{*ctx->request_initiator(),
                                    ctx->request_url(),
                                    ctx->resource_type(),
                                    ctx->aggressive_blocking(),
@@ -400,7 +398,7 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   DCHECK_NE(ctx->request_identifier(), 0UL);
   DCHECK(!ctx->request_url().is_empty());
-  DCHECK(!ctx->initiator_url().is_empty());
+  CHECK(ctx->request_initiator());
 
   // DNS queries won't be routed through Tor or proxies, so we need to
   // skip requests in those contexts.
@@ -418,15 +416,13 @@ void OnBeforeURLRequestAdBlockTP(const ResponseCallback& next_callback,
           brave_shields::features::kBraveAdblockDefault1pBlocking) &&
       should_check_uncloaked && !ctx->aggressive_blocking() &&
       SameDomainOrHost(
-          ctx->request_url(),
-          url::Origin::CreateFromNormalizedTuple(
-              "https", std::string(ctx->initiator_url().host()), 80),
+          ctx->request_url(), *ctx->request_initiator(),
           net::registry_controlled_domains::INCLUDE_PRIVATE_REGISTRIES)) {
     should_check_uncloaked = false;
   }
 
   ShouldBlockRequestParams input{
-      ctx->initiator_url(),       ctx->request_url(), ctx->resource_type(),
+      *ctx->request_initiator(),  ctx->request_url(), ctx->resource_type(),
       ctx->aggressive_blocking(), ctx->method(),      ctx->render_frame_token(),
       ctx->devtools_request_id()};
   auto* ad_block_service = g_brave_browser_process->ad_block_service();
@@ -442,10 +438,15 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
                                         T<BraveRequestInfo> ctx) {
   // If the following info isn't available, then proper content settings can't
   // be looked up, so do nothing.
-  if (ctx->request_url().is_empty() || ctx->initiator_url().is_empty() ||
-      !ctx->initiator_url().has_host() || !ctx->allow_brave_shields() ||
+  if (ctx->request_url().is_empty() || !ctx->allow_brave_shields() ||
       ctx->allow_ads() ||
       ctx->resource_type() == BraveRequestInfo::kInvalidResourceType) {
+    return net::OK;
+  }
+
+  const auto request_initiator = ctx->request_initiator();
+  if (!request_initiator) {
+    // Skip browser-initiated requests.
     return net::OK;
   }
 
@@ -458,7 +459,7 @@ int OnBeforeURLRequest_AdBlockTPPreWork(const ResponseCallback& next_callback,
 
   // Also, until a better solution is available, we explicitly allow any
   // request from an extension.
-  if (ctx->initiator_url().SchemeIs(kChromeExtensionScheme) &&
+  if (request_initiator->scheme() == kChromeExtensionScheme &&
       !base::FeatureList::IsEnabled(
           ::brave_shields::features::kBraveExtensionNetworkBlocking)) {
     return net::OK;

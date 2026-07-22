@@ -140,7 +140,7 @@ std::optional<GURL> ApplyQueryFilter(const GURL& original_url) {
 }
 
 std::optional<GURL> MaybeApplyQueryStringFilter(
-    const GURL& initiator_url,
+    const std::optional<url::Origin>& request_initiator,
     const GURL& redirect_source_url,
     const GURL& request_url,
     const std::string& request_method,
@@ -171,9 +171,9 @@ std::optional<GURL> MaybeApplyQueryStringFilter(
       // Same-site redirects are exempted.
       return std::nullopt;
     }
-  } else if (initiator_url.is_valid() &&
+  } else if (request_initiator.has_value() &&
              net::registry_controlled_domains::SameDomainOrHost(
-                 initiator_url, request_url,
+                 request_url, *request_initiator,
                  net::registry_controlled_domains::
                      INCLUDE_PRIVATE_REGISTRIES)) {
     // Same-site requests are exempted.

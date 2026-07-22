@@ -37,6 +37,7 @@
 #include "content/public/browser/web_contents_user_data.h"
 #include "net/base/net_errors.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -65,7 +66,7 @@ ShouldBlockDomainOnTaskRunner(
   // necessary.
   bool aggressive_for_engine = true;
   auto result = engine_wrapper->ShouldStartRequest(
-      url, blink::mojom::ResourceType::kMainFrame, std::string(url.host()),
+      url, blink::mojom::ResourceType::kMainFrame, url::Origin::Create(url),
       "GET", aggressive_for_engine, false, false, false);
 
   block_result.should_block =

@@ -22,6 +22,7 @@
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "third_party/rust/cxx/v1/cxx.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 using brave_component_updater::DATFileDataBuffer;
 
@@ -43,7 +44,7 @@ class AdBlockEngine {
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::string& tab_host,
+      const url::Origin& request_initiator,
       const std::string& method,
       bool previously_matched_rule,
       bool previously_matched_exception,
@@ -51,7 +52,7 @@ class AdBlockEngine {
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::string& tab_host,
+      const std::optional<url::Origin>& request_initiator,
       const std::string& method);
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
 

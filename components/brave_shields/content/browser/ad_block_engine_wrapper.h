@@ -22,6 +22,7 @@
 #include "brave/components/brave_shields/core/common/adblock/rs/src/lib.rs.h"
 #include "third_party/blink/public/mojom/loader/resource_load_info.mojom-shared.h"
 #include "url/gurl.h"
+#include "url/origin.h"
 
 namespace brave_shields {
 
@@ -42,7 +43,7 @@ class AdBlockEngineWrapper {
   adblock::BlockerResult ShouldStartRequest(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::string& tab_host,
+      const url::Origin& request_initiator,
       const std::string& method,
       bool aggressive_blocking,
       bool previously_matched_rule,
@@ -62,7 +63,7 @@ class AdBlockEngineWrapper {
   std::optional<std::string> GetCspDirectives(
       const GURL& url,
       blink::mojom::ResourceType resource_type,
-      const std::string& tab_host,
+      const std::optional<url::Origin>& request_initiator,
       const std::string& method);
 
   void UseResources(const adblock::BraveCoreResourceStorage& storage);
