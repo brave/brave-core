@@ -491,6 +491,8 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
       }
     }, [])
 
+    const isIOS = useSafeUISelector(UISelectors.isIOS)
+
     if (showChecksumInfo) {
       return (
         <PopupModal
@@ -505,8 +507,6 @@ export const SelectAddressModal = React.forwardRef<HTMLDivElement, Props>(
         </PopupModal>
       )
     }
-
-    const isIOS = useSafeUISelector(UISelectors.isIOS)
 
     // render
     return (
