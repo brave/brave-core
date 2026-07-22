@@ -24,6 +24,7 @@ import org.chromium.base.supplier.NonNullObservableSupplier;
 import org.chromium.build.annotations.NullMarked;
 import org.chromium.build.annotations.Nullable;
 import org.chromium.chrome.ui.messages.R;
+import org.chromium.ui.KeyboardVisibilityDelegate;
 import org.chromium.ui.base.WindowAndroid;
 
 /** Brave's extension of SnackbarView. */
@@ -75,6 +76,26 @@ public class BraveSnackbarView extends SnackbarView {
                 parentView,
                 windowAndroid,
                 additionalBottomMarginPxSupplier);
+    }
+
+    /**
+     * Hides the snackbar while the soft keyboard is visible and restores it once the keyboard is
+     * dismissed.
+     */
+    @Override
+    void adjustViewPosition() {
+        super.adjustViewPosition();
+
+        @Nullable ViewGroup containerView = mContainerView;
+        if (containerView == null) {
+            return;
+        }
+
+        boolean keyboardVisible =
+                KeyboardVisibilityDelegate.getInstance()
+                                .calculateTotalKeyboardHeight(containerView.getRootView())
+                        > 0;
+        containerView.setVisibility(keyboardVisible ? View.GONE : View.VISIBLE);
     }
 
     /**
