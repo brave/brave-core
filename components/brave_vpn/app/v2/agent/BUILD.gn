@@ -19,15 +19,23 @@ source_set("core") {
   sources = [
     "agent_app.cc",
     "agent_app.h",
+    "shutdown_handlers.cc",
+    "shutdown_handlers.h",
     "single_instance.h",
   ]
 
   if (is_win) {
-    sources += [ "win/single_instance_win.cc" ]
+    sources += [
+      "win/shutdown_handlers_win.cc",
+      "win/single_instance_win.cc",
+    ]
   }
 
-  if (is_mac) {
-    sources += [ "posix/single_instance_posix.cc" ]
+  if (is_posix) {
+    sources += [
+      "posix/shutdown_handlers_posix.cc",
+      "posix/single_instance_posix.cc",
+    ]
   }
 
   public_deps = [ "//base" ]
@@ -133,7 +141,11 @@ if (is_mac) {
 
 source_set("unit_tests") {
   testonly = true
-  sources = [ "single_instance_unittest.cc" ]
+  sources = [
+    "agent_app_unittest.cc",
+    "shutdown_handlers_unittest.cc",
+    "single_instance_unittest.cc",
+  ]
 
   deps = [
     ":core",

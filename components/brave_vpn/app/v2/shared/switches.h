@@ -9,6 +9,7 @@
 namespace brave_vpn::v2::switches {
 
 inline constexpr char kVpnAppLogFile[] = "log-file";
+inline constexpr char kVpnAppConsole[] = "console";
 inline constexpr char kVpnAppProcessType[] = "type";
 inline constexpr char kVpnAppUserDataDir[] = "user-data-dir";
 inline constexpr char kVpnAppChannelName[] = "channel-name";
